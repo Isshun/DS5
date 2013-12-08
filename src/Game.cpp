@@ -114,11 +114,14 @@ void	Game::loop()
 
 		  // GOTO
 #if DEBUG
-		  if (event.type == sf::Event::KeyReleased&& event.key.code == sf::Keyboard::G) {
+		  if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::G) {
 			Cursor* cursor = _ui->getCursor();
 			character->go(cursor->_x, cursor->_y);
 		  }
 #endif
+
+		  // if (!event.key.code)
+		  // 	return false;
 
 		  _force_refresh = _ui->checkKeyboard(event, _frame, _lastInput, _worldMap);
 		  gere_quit();

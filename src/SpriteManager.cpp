@@ -23,13 +23,13 @@ sf::Sprite*		SpriteManager::getSprite(int type) {
   sprite->setTexture(*_texture);
 
   switch (type) {
-  case BaseItem::HULL:
+  case BaseItem::STRUCTURE_HULL:
 	sprite->setTextureRect(sf::IntRect(32, 32, 30, 30));
 	break;
-  case BaseItem::WALL:
+  case BaseItem::STRUCTURE_WALL:
 	sprite->setTextureRect(sf::IntRect(32, 32, 30, 30));
 	break;
-  case BaseItem::FLOOR:
+  case BaseItem::STRUCTURE_FLOOR:
 	sprite->setTextureRect(sf::IntRect(96, 32, 30, 30));
 	break;
   default:

@@ -29,42 +29,42 @@ WorldMap::~WorldMap() {
 }
 
 void WorldMap::init() {
-  putItem(2, 4, BaseItem::HULL);
-  putItem(3, 4, BaseItem::HULL);
-  putItem(4, 4, BaseItem::HULL);
-  putItem(5, 4, BaseItem::HULL);
-  putItem(6, 4, BaseItem::HULL);
-  putItem(6, 3, BaseItem::HULL);
-  putItem(6, 2, BaseItem::HULL);
-  putItem(6, 1, BaseItem::HULL);
-  putItem(1, 2, BaseItem::HULL);
-  putItem(1, 3, BaseItem::HULL);
-  putItem(1, 4, BaseItem::HULL);
+  putItem(2, 4, BaseItem::STRUCTURE_HULL);
+  putItem(3, 4, BaseItem::STRUCTURE_HULL);
+  putItem(4, 4, BaseItem::STRUCTURE_HULL);
+  putItem(5, 4, BaseItem::STRUCTURE_HULL);
+  putItem(6, 4, BaseItem::STRUCTURE_HULL);
+  putItem(6, 3, BaseItem::STRUCTURE_HULL);
+  putItem(6, 2, BaseItem::STRUCTURE_HULL);
+  putItem(6, 1, BaseItem::STRUCTURE_HULL);
+  putItem(1, 2, BaseItem::STRUCTURE_HULL);
+  putItem(1, 3, BaseItem::STRUCTURE_HULL);
+  putItem(1, 4, BaseItem::STRUCTURE_HULL);
 
-  putItem(0, 2, BaseItem::FLOOR);
-  putItem(0, 3, BaseItem::FLOOR);
-  putItem(0, 4, BaseItem::FLOOR);
-  putItem(0, 5, BaseItem::FLOOR);
-  putItem(1, 6, BaseItem::FLOOR);
-  putItem(2, 7, BaseItem::FLOOR);
-  putItem(3, 8, BaseItem::FLOOR);
-  putItem(4, 8, BaseItem::FLOOR);
-  putItem(5, 8, BaseItem::FLOOR);
-  putItem(0, 1, BaseItem::FLOOR);
-  putItem(1, 1, BaseItem::FLOOR);
-  putItem(2, 1, BaseItem::FLOOR);
-  putItem(2, 2, BaseItem::FLOOR);
-  putItem(2, 3, BaseItem::FLOOR);
-  putItem(3, 2, BaseItem::FLOOR);
-  putItem(3, 3, BaseItem::FLOOR);
-  putItem(4, 2, BaseItem::FLOOR);
-  putItem(4, 3, BaseItem::FLOOR);
-  putItem(5, 2, BaseItem::FLOOR);
-  putItem(5, 3, BaseItem::FLOOR);
-  // putItem(1, 4, BaseItem::FLOOR);
-  // putItem(1, 4, BaseItem::FLOOR);
-  // putItem(1, 4, BaseItem::FLOOR);
-  // putItem(1, 4, BaseItem::FLOOR);
+  putItem(0, 2, BaseItem::STRUCTURE_FLOOR);
+  putItem(0, 3, BaseItem::STRUCTURE_FLOOR);
+  putItem(0, 4, BaseItem::STRUCTURE_FLOOR);
+  putItem(0, 5, BaseItem::STRUCTURE_FLOOR);
+  putItem(1, 6, BaseItem::STRUCTURE_FLOOR);
+  putItem(2, 7, BaseItem::STRUCTURE_FLOOR);
+  putItem(3, 8, BaseItem::STRUCTURE_FLOOR);
+  putItem(4, 8, BaseItem::STRUCTURE_FLOOR);
+  putItem(5, 8, BaseItem::STRUCTURE_FLOOR);
+  putItem(0, 1, BaseItem::STRUCTURE_FLOOR);
+  putItem(1, 1, BaseItem::STRUCTURE_FLOOR);
+  putItem(2, 1, BaseItem::STRUCTURE_FLOOR);
+  putItem(2, 2, BaseItem::STRUCTURE_FLOOR);
+  putItem(2, 3, BaseItem::STRUCTURE_FLOOR);
+  putItem(3, 2, BaseItem::STRUCTURE_FLOOR);
+  putItem(3, 3, BaseItem::STRUCTURE_FLOOR);
+  putItem(4, 2, BaseItem::STRUCTURE_FLOOR);
+  putItem(4, 3, BaseItem::STRUCTURE_FLOOR);
+  putItem(5, 2, BaseItem::STRUCTURE_FLOOR);
+  putItem(5, 3, BaseItem::STRUCTURE_FLOOR);
+  // putItem(1, 4, BaseItem::STRUCTURE_FLOOR);
+  // putItem(1, 4, BaseItem::STRUCTURE_FLOOR);
+  // putItem(1, 4, BaseItem::STRUCTURE_FLOOR);
+  // putItem(1, 4, BaseItem::STRUCTURE_FLOOR);
 }
 
 bool WorldMap::getSolid(int x, int y) {
@@ -77,8 +77,8 @@ void WorldMap::putItem(int x, int y, int type) {
 
   BaseItem *item = new BaseItem();
   switch (type) {
-  case BaseItem::HULL:
-  case BaseItem::WALL:
+  case BaseItem::STRUCTURE_HULL:
+  case BaseItem::STRUCTURE_WALL:
 	item->isSolid = true;
   }
 
