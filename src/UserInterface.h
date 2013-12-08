@@ -67,6 +67,9 @@ class UserInterface {
   void	setBuildMenu(int code);
   bool	checkKeyboard(sf::Event	event, int frame, int lastInput, WorldMap* worldMap);
   Cursor*	getCursor() { return _cursor; }
+  int	getBuildItemType() { return _buildItemType; }
+  int	getCode() { return _code; }
+  void	mouseMoved(int x, int y);
 
  private:
   Cursor*	_cursor;

@@ -12,6 +12,13 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+struct {
+  int			type;
+  int			posX;
+  int			posY;
+  int			textureIndex;
+} typedef		SpriteResource;
+
 class SpriteManager {
  public:
   SpriteManager();

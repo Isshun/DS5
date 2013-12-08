@@ -148,6 +148,12 @@ UserInterface::UserInterface() {
 UserInterface::~UserInterface() {
 }
 
+void	UserInterface::mouseMoved(int x, int y) {
+  if (x > UI_WIDTH) {
+	_cursor->setMousePos(x - UI_WIDTH, y - UI_HEIGHT);
+  }
+}
+
 void UserInterface::drawModeBuild(sf::RenderWindow* app) {
   sf::Font font;
   if (!font.loadFromFile("snap/xolonium/Xolonium-Regular.otf"))
@@ -198,13 +204,15 @@ void UserInterface::draw(sf::RenderWindow* app) {
   }
 
   // Cursor
-  sf::Texture texture;
-  texture.loadFromFile("sprites/cursor.png");
-  sf::Sprite sprite;
-  sprite.setTexture(texture);
-  sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
-  sprite.setPosition(UI_WIDTH + _cursor->_x * TILE_SIZE, UI_HEIGHT + _cursor->_y * TILE_SIZE);
-  app->draw(sprite);
+  if (_code == CODE_BUILD_ITEM) {
+	sf::Texture texture;
+	texture.loadFromFile("sprites/cursor.png");
+	sf::Sprite sprite;
+	sprite.setTexture(texture);
+	sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+	sprite.setPosition(UI_WIDTH + _cursor->_x * TILE_SIZE, UI_HEIGHT + _cursor->_y * TILE_SIZE);
+	app->draw(sprite);
+  }
 }
 
 void UserInterface::setBuildItem(int code, const char* text, int type) {

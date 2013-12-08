@@ -111,6 +111,25 @@ void	Game::loop()
       // Events
       while (_app->pollEvent(event))
 		{
+		  if (event.type == sf::Event::MouseMoved) {
+			_ui->mouseMoved(event.mouseMove.x, event.mouseMove.y);
+		  }
+
+		  if (event.type == sf::Event::MouseButtonPressed) {
+		  }
+
+		  if (event.type == sf::Event::MouseButtonReleased) {
+			int posX = ((event.mouseButton.x - UI_WIDTH) / TILE_SIZE);
+			int posY = ((event.mouseButton.y - UI_HEIGHT) / TILE_SIZE);
+
+			std::cout << "event: " << posX << " x " << posY << std::endl;
+			
+			if (_ui->getCode() == UserInterface::CODE_BUILD_ITEM) {
+			  Cursor* cursor = _ui->getCursor();
+			  _worldMap->putItem(cursor->_x, cursor->_y, _ui->getBuildItemType());
+			}
+
+		  }
 
 		  // GOTO
 #if DEBUG

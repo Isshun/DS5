@@ -51,4 +51,6 @@
 #define	UI_PADDING 10
 #define UI_FONT_SIZE 32
 
+#define TILE_SIZE 32
+
 #endif
