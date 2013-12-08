@@ -1,6 +1,11 @@
 #ifndef _TOSNG_H
 #define _TOSNG_H_
 
+#define DEBUG	1
+
+#define CHARACTER_MOVE_INTERVAL 6
+#define KEY_REPEAT_INTERVAL 5
+
 #define	VIDEO_ZOOM	1
 #define VIDEO_WINDOW_W	320
 #define VIDEO_WINDOW_H	240
@@ -40,5 +45,10 @@
 #define SHELL_GREEN	"\33[32m"
 #define SHELL_ORANGE	"\33[33m"
 #define SHELL_BLUE	"\33[1m\33[34m"
+
+#define	UI_WIDTH 200
+#define	UI_HEIGHT 0
+#define	UI_PADDING 10
+#define UI_FONT_SIZE 32
 
 #endif

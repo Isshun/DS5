@@ -128,212 +128,212 @@ void	Scene::pnj_update()
 
 }
 
-void	Scene::draw_surface(WorldMap *worldMap)
-{
+// void	Scene::draw_surface()
+// {
 
-	sf::Texture texture;
-	texture.loadFromFile("sprites/house_in_1.png");
-	texture.setSmooth(true);
+// 	sf::Texture texture;
+// 	texture.loadFromFile("sprites/house_in_1.png");
+// 	texture.setSmooth(true);
 
-	int w = worldMap->getWidth();
-	int h = worldMap->getHeight();
+// 	int w = worldMap->getWidth();
+// 	int h = worldMap->getHeight();
 
 
-	for (int i = 0; i < w; i++) {
-		for (int j = 0; j < h; j++) {
-			BaseItem* item = worldMap->getItem(i, j);
-			if (item != 0) {
-			  sf::Sprite sprite;
-			  sprite.setTexture(texture);
-			  switch (item->type) {
-			  case BaseItem::HULL:
-				sprite.setTextureRect(sf::IntRect(32, 32, 30, 30));
-				break;
-			  default:
-				sprite.setTextureRect(sf::IntRect(64, 64, 30, 30));
-				break;
-			  }
-			  sprite.setPosition(i * 32, j * 32);
-			  app->draw(sprite);
-			} else {
-			  sf::Sprite sprite;
-			  sprite.setTexture(texture);
-			  sprite.setTextureRect(sf::IntRect(0, 0, 30, 30));
-			  sprite.setPosition(i * 32, j * 32);
-			  app->draw(sprite);
-			}
-		}
-	}
-}
+// 	for (int i = 0; i < w; i++) {
+// 		for (int j = 0; j < h; j++) {
+// 			BaseItem* item = worldMap->getItem(i, j);
+// 			if (item != 0) {
+// 			  sf::Sprite sprite;
+// 			  sprite.setTexture(texture);
+// 			  switch (item->type) {
+// 			  case BaseItem::HULL:
+// 				sprite.setTextureRect(sf::IntRect(32, 32, 30, 30));
+// 				break;
+// 			  default:
+// 				sprite.setTextureRect(sf::IntRect(64, 64, 30, 30));
+// 				break;
+// 			  }
+// 			  sprite.setPosition(i * 32, j * 32);
+// 			  app->draw(sprite);
+// 			} else {
+// 			  sf::Sprite sprite;
+// 			  sprite.setTexture(texture);
+// 			  sprite.setTextureRect(sf::IntRect(0, 0, 30, 30));
+// 			  sprite.setPosition(i * 32, j * 32);
+// 			  app->draw(sprite);
+// 			}
+// 		}
+// 	}
+// }
 
-void	Scene::drawInfo()
-{
-  std::stringstream ss;
+// void	Scene::drawInfo()
+// {
+//   std::stringstream ss;
 
-  sf::Text Text;
-  Text.setString(ss.str());
-  Text.setFont(MyFont);
-  Text.setCharacterSize(18);
-  Text.setStyle(sf::Text::Regular);
+//   sf::Text Text;
+//   Text.setString(ss.str());
+//   Text.setFont(MyFont);
+//   Text.setCharacterSize(18);
+//   Text.setStyle(sf::Text::Regular);
   
-  //sf::String Text(ss.str(), MyFont, 18);
-  Text.setPosition(20, 12);
-  app->draw(Text);
+//   //sf::String Text(ss.str(), MyFont, 18);
+//   Text.setPosition(20, 12);
+//   app->draw(Text);
 
 
-  std::stringstream ss_fps;
-  ss_fps << "fps: " << 1 / _time_elapsed.asMilliseconds();
+//   std::stringstream ss_fps;
+//   ss_fps << "fps: " << 1 / _time_elapsed.asMilliseconds();
 
-  sf::Text Fps;
-  Fps.setString(ss_fps.str());
-  Fps.setFont(MyFont);
-  Fps.setCharacterSize(18);
-  Fps.setStyle(sf::Text::Regular);
-  //  sf::String Fps(ss_fps.str(), MyFont, 18);
-  Fps.setPosition(150, 12);
-  app->draw(Fps);
+//   sf::Text Fps;
+//   Fps.setString(ss_fps.str());
+//   Fps.setFont(MyFont);
+//   Fps.setCharacterSize(18);
+//   Fps.setStyle(sf::Text::Regular);
+//   //  sf::String Fps(ss_fps.str(), MyFont, 18);
+//   Fps.setPosition(150, 12);
+//   app->draw(Fps);
 
-  // layers info
-  std::stringstream ss_layer;
-  ss_layer << "layers: ";
-  for (int i = 0; i < nb_layer; i++)
-    ss_layer << (bg[i] ? "1" : "0");
-  //sf::String Layer(ss_layer.str(), MyFont, 18);
-  sf::Text Layer;
-  Layer.setString(ss_layer.str());
-  Layer.setFont(MyFont);
-  Layer.setCharacterSize(18);
-  Layer.setStyle(sf::Text::Regular);
-  Layer.setPosition(20, 24);
-  app->draw(Layer);
+//   // layers info
+//   std::stringstream ss_layer;
+//   ss_layer << "layers: ";
+//   for (int i = 0; i < nb_layer; i++)
+//     ss_layer << (bg[i] ? "1" : "0");
+//   //sf::String Layer(ss_layer.str(), MyFont, 18);
+//   sf::Text Layer;
+//   Layer.setString(ss_layer.str());
+//   Layer.setFont(MyFont);
+//   Layer.setCharacterSize(18);
+//   Layer.setStyle(sf::Text::Regular);
+//   Layer.setPosition(20, 24);
+//   app->draw(Layer);
 
-//  //player info
-//  std::stringstream ss_player;
-//  ss_player << "player: " << (player ? "1" : "0");
-//  //sf::String Player(ss_player.str(), MyFont, 18);
-//  sf::Text Player;
-//  Player.setString(ss_player.str());
-//  Player.setFont(MyFont);
-//  Player.setCharacterSize(18);
-//  Player.setStyle(sf::Text::Regular);
-//  Player.setPosition(150, 24);
-//  app->draw(Player);
-
-
-  //timer - debug
-  if (this->timer_start)
-    {
-      std::stringstream ss_timer;
-      if (this->timer_end)
-	ss_timer << "timer: " << (this->timer_end - this->timer_start) << " [stop]";
-      else
-	ss_timer << "timer: " << (time(0) - this->timer_start) << " [play]";
-
-	  sf::Text Timer;
-	  Timer.setString(ss_timer.str());
-	  Timer.setFont(MyFont);
-	  Timer.setCharacterSize(18);
-	  Timer.setStyle(sf::Text::Regular);
-	  Timer.setPosition(150, 24);
-      //sf::String Timer(ss_timer.str(), MyFont, 18);
-      Timer.setPosition(20, 36);
-      app->draw(Timer);
-    }
-}
-
-void	Scene::reload()
-{
-  this->load_info();
-  this->reload_bg(0);
-  this->reload_bg(1);
-  this->reload_bg(2);
-  this->reload_bg(3);
-  this->reload_bg(4);
-}
+// //  //player info
+// //  std::stringstream ss_player;
+// //  ss_player << "player: " << (player ? "1" : "0");
+// //  //sf::String Player(ss_player.str(), MyFont, 18);
+// //  sf::Text Player;
+// //  Player.setString(ss_player.str());
+// //  Player.setFont(MyFont);
+// //  Player.setCharacterSize(18);
+// //  Player.setStyle(sf::Text::Regular);
+// //  Player.setPosition(150, 24);
+// //  app->draw(Player);
 
 
-// fixme: inutile en l'etat
-// recup les event de la scene dans le gere_key de Game et les placer ici
-void	Scene::gere_key()
-{
-//   if (event.type == SDL_KEYUP)
-//     player->set_run(false);
+//   //timer - debug
+//   if (this->timer_start)
+//     {
+//       std::stringstream ss_timer;
+//       if (this->timer_end)
+// 	ss_timer << "timer: " << (this->timer_end - this->timer_start) << " [stop]";
+//       else
+// 	ss_timer << "timer: " << (time(0) - this->timer_start) << " [play]";
 
-//   if (event.type != SDL_KEYDOWN)
-//     return;
-}
+// 	  sf::Text Timer;
+// 	  Timer.setString(ss_timer.str());
+// 	  Timer.setFont(MyFont);
+// 	  Timer.setCharacterSize(18);
+// 	  Timer.setStyle(sf::Text::Regular);
+// 	  Timer.setPosition(150, 24);
+//       //sf::String Timer(ss_timer.str(), MyFont, 18);
+//       Timer.setPosition(20, 36);
+//       app->draw(Timer);
+//     }
+// }
+
+// void	Scene::reload()
+// {
+//   this->load_info();
+//   this->reload_bg(0);
+//   this->reload_bg(1);
+//   this->reload_bg(2);
+//   this->reload_bg(3);
+//   this->reload_bg(4);
+// }
 
 
+// // fixme: inutile en l'etat
+// // recup les event de la scene dans le gere_key de Game et les placer ici
+// void	Scene::gere_key()
+// {
+// //   if (event.type == SDL_KEYUP)
+// //     player->set_run(false);
 
-
-// fixme: redondant avec physique_layer
-// fixme: a clarifier
-bool	Scene::get_physique(int x, int y)
-{
-  if (x < 0 || y < 0)
-    return false;
-
-  if (x > this->width || y > this->height)
-    return false;
-
-  try {
-    if (bg[0])
-      return !this->bg[0]->get_area(x, y);
-  } catch (const std::string str) {
-    std::cout << "Catched [Scene]: " << str << "x=" << x << " y=" << y << std::endl;
-  } catch (const char *str) {
-    std::cout << "Catched [Scene]: " << str << "x=" << x << " y=" << y << std::endl;
-  }
-
-  return false;
-}
+// //   if (event.type != SDL_KEYDOWN)
+// //     return;
+// }
 
 
 
 
+// // fixme: redondant avec physique_layer
+// // fixme: a clarifier
+// bool	Scene::get_physique(int x, int y)
+// {
+//   if (x < 0 || y < 0)
+//     return false;
+
+//   if (x > this->width || y > this->height)
+//     return false;
+
+//   try {
+//     if (bg[0])
+//       return !this->bg[0]->get_area(x, y);
+//   } catch (const std::string str) {
+//     std::cout << "Catched [Scene]: " << str << "x=" << x << " y=" << y << std::endl;
+//   } catch (const char *str) {
+//     std::cout << "Catched [Scene]: " << str << "x=" << x << " y=" << y << std::endl;
+//   }
+
+//   return false;
+// }
 
 
-/**
- **   Gestion des layers
- **/
 
-void	Scene::toogle_bg(int n_bg)
-{
-  if (this->bg[n_bg] == NULL)
-    this->load_bg(n_bg);
-  else
-    this->unload_bg(n_bg);
-}
 
-void	Scene::reload_bg(int n_bg)
-{
-  try {
-    this->unload_bg(n_bg);
-  } catch (const char *str) {
-    std::cout << "[reload_bg] an exception occurred: " << str << "(#" << n_bg << ")" << std::endl;
-  }
 
-  try {
-    this->load_bg(n_bg);
-  } catch (const char *str) {
-    std::cout << "[reload_bg] an exception occurred: " << str << "(#" << n_bg << ")" << std::endl;
-  }
+
+// /**
+//  **   Gestion des layers
+//  **/
+
+// void	Scene::toogle_bg(int n_bg)
+// {
+//   if (this->bg[n_bg] == NULL)
+//     this->load_bg(n_bg);
+//   else
+//     this->unload_bg(n_bg);
+// }
+
+// void	Scene::reload_bg(int n_bg)
+// {
+//   try {
+//     this->unload_bg(n_bg);
+//   } catch (const char *str) {
+//     std::cout << "[reload_bg] an exception occurred: " << str << "(#" << n_bg << ")" << std::endl;
+//   }
+
+//   try {
+//     this->load_bg(n_bg);
+//   } catch (const char *str) {
+//     std::cout << "[reload_bg] an exception occurred: " << str << "(#" << n_bg << ")" << std::endl;
+//   }
   
-}
+// }
 
-void	Scene::unload_bg(int n_bg)
-{
-  if (this->bg[n_bg] == NULL)
-    throw("[unload_bg] try to unload NULL intance of Layer, abort");
+// void	Scene::unload_bg(int n_bg)
+// {
+//   if (this->bg[n_bg] == NULL)
+//     throw("[unload_bg] try to unload NULL intance of Layer, abort");
 
-  delete this->bg[n_bg];
-  this->bg[n_bg] = NULL;
-}
+//   delete this->bg[n_bg];
+//   this->bg[n_bg] = NULL;
+// }
 
-void	Scene::load_bg(int n_bg)
-{
-  if (this->bg[n_bg] != NULL)
-    throw("[load_bg] try to load a new intance over pre-existing layer, abort");
+// void	Scene::load_bg(int n_bg)
+// {
+//   if (this->bg[n_bg] != NULL)
+//     throw("[load_bg] try to load a new intance over pre-existing layer, abort");
 
-  this->bg[n_bg] = new  Layer(path_map, this->height, this->width, n_bg);
-}
+//   this->bg[n_bg] = new  Layer(path_map, this->height, this->width, n_bg);
+// }

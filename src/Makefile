@@ -1,9 +1,8 @@
 SRC	=	main.cpp	\
 		Game.cpp	\
 		Log.cpp		\
-		Scene.cpp	\
-		Layer.cpp	\
 		MapSearchNode.cpp	\
+		UserInterface.cpp	\
 		BaseItem.cpp	\
 		SpriteManager.cpp	\
 		WorldMap.cpp	\

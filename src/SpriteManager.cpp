@@ -26,6 +26,9 @@ sf::Sprite*		SpriteManager::getSprite(int type) {
   case BaseItem::HULL:
 	sprite->setTextureRect(sf::IntRect(32, 32, 30, 30));
 	break;
+  case BaseItem::WALL:
+	sprite->setTextureRect(sf::IntRect(32, 32, 30, 30));
+	break;
   case BaseItem::FLOOR:
 	sprite->setTextureRect(sf::IntRect(96, 32, 30, 30));
 	break;

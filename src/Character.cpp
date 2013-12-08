@@ -1,8 +1,7 @@
 #include <iostream>
 
-#include "tosng.h"
+#include "defines.h"
 #include "Character.hpp"
-#include "Scene.hpp"
 #include "stlastar.h"
 
 extern Scene	*scene;
@@ -118,4 +117,17 @@ void		Character::move()
 	  // _astarsearch = 0;
 	}
   }
+}
+
+
+void Character::draw(sf::RenderWindow* app) {
+	sf::Texture texture;
+	texture.loadFromFile("sprites/cless.png");
+	texture.setSmooth(true);
+
+	sf::Sprite sprite;
+	sprite.setTexture(texture);
+	sprite.setTextureRect(sf::IntRect(0, 0, 30, 30));
+	sprite.setPosition(UI_WIDTH + _posX * 32, UI_HEIGHT + _posY * 32);
+	app->draw(sprite);
 }

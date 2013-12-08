@@ -5,12 +5,11 @@
 #include <utime.h>
 
 #include "Character.hpp"
-#include "Layer.hpp"
-#include "tosng.h"
-#include "Scene.hpp"
+#include "defines.h"
 #include "WorldMap.h"
 #include "SpriteManager.h"
 #include "Cursor.h"
+#include "UserInterface.h"
 
 struct s_link {
   const char	*name;
@@ -23,7 +22,7 @@ struct s_link {
 
 class	Game {
 public:
-  Game();
+  Game(sf::RenderWindow* app);
   ~Game();
 
   WorldMap	*_worldMap;
@@ -49,15 +48,16 @@ public:
 
 public:
   Scene		*scene;
-  Cursor	*_cursor;
   //temp
   //sf::Sprite	Sprite2;
 
 private:
+  sf::RenderWindow* _app;
   sf::Event	event;
 
   SpriteManager*		_spriteManager;
   Character*			character;
+  UserInterface*		_ui;
 
   bool	_force_refresh;
   // Music		*music;

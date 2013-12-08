@@ -4,7 +4,7 @@
 #include <ctime>
 #include <map>
 #include <list>
-#include "Layer.hpp"
+#include "defines.h"
 #include "WorldMap.h"
 #include "MapSearchNode.h"
 
@@ -22,6 +22,7 @@ class	Character
 	~Character();
 
   void	update_position(Scene *scene);
+  void draw(sf::RenderWindow* app);
 
   // Gets
   sf::Vector2<int>	&get_position();
@@ -46,8 +47,6 @@ class	Character
   int	current_frame;
   map<int,map_direction>	tile;
   sf::Vector2<int>		position;
-
-  Layer	*physique_layer;
 
   int	_posX;
   int	_posY;

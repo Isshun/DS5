@@ -17,7 +17,7 @@ class BaseItem {
   BaseItem();
   ~BaseItem();
 
-  enum { NONE, HULL, FLOOR };
+  enum { NONE, WALL, HULL, FLOOR };
 
   int			type;
   bool			isSolid;

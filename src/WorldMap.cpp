@@ -5,6 +5,9 @@
  *      Author: alex
  */
 
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
 #include "WorldMap.h"
 
 WorldMap::WorldMap() {
@@ -70,8 +73,15 @@ bool WorldMap::getSolid(int x, int y) {
 
 
 void WorldMap::putItem(int x, int y, int type) {
+  std::cout << "put item: " << type << std::endl;
+
   BaseItem *item = new BaseItem();
-  item->isSolid = type == BaseItem::HULL;
+  switch (type) {
+  case BaseItem::HULL:
+  case BaseItem::WALL:
+	item->isSolid = true;
+  }
+
   item->type = type;
 
   _items[x][y] = item;
