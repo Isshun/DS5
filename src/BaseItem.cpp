@@ -8,8 +8,8 @@
 #include "BaseItem.h"
 
 BaseItem::BaseItem() {
-	sprite = 0;
 	isSolid = false;
+	type = NONE;
 }
 
 BaseItem::~BaseItem() {

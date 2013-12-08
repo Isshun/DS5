@@ -13,12 +13,14 @@
 #include <SFML/Graphics.hpp>
 
 class BaseItem {
-public:
-					BaseItem();
-					~BaseItem();
+ public:
+  BaseItem();
+  ~BaseItem();
 
-	bool			isSolid;
-	sf::Sprite*		sprite;
+  enum { NONE, HULL, FLOOR };
+
+  int			type;
+  bool			isSolid;
 };
 
 #endif /* BASEITEM_H_ */

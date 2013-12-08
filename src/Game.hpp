@@ -9,6 +9,7 @@
 #include "tosng.h"
 #include "Scene.hpp"
 #include "WorldMap.h"
+#include "SpriteManager.h"
 #include "Cursor.h"
 
 struct s_link {
@@ -20,9 +21,8 @@ struct s_link {
   int		jump_y;
 };
 
-class	Game
-{
- public:
+class	Game {
+public:
   Game();
   ~Game();
 
@@ -31,6 +31,7 @@ class	Game
   void	loop();
   void	update();
   void	refresh();
+  void	draw_surface();
 
   bool	is_paused() { return this->pause; }
   bool	is_run() { return !this->pause; }
@@ -55,13 +56,13 @@ public:
 private:
   sf::Event	event;
 
-
-  Character*	character;
+  SpriteManager*		_spriteManager;
+  Character*			character;
 
   bool	_force_refresh;
   // Music		*music;
   bool		up_to_date;
-//   SDL_Surface	*window;
+  //   SDL_Surface	*window;
   bool		pause;
 
   unsigned int _frame;

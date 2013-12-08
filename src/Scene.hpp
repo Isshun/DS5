@@ -19,8 +19,6 @@ class	Scene
   bool	get_pause(){return this->pause;}
   const char	*get_name(){return this->name.c_str();}
 
-  void	draw_surface(WorldMap *);
-
 //   // Events
   void	gere_key();
 //   voidgere_mouse();

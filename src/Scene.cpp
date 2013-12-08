@@ -143,16 +143,24 @@ void	Scene::draw_surface(WorldMap *worldMap)
 		for (int j = 0; j < h; j++) {
 			BaseItem* item = worldMap->getItem(i, j);
 			if (item != 0) {
-				sf::Sprite* sprite = item->sprite;
-				sprite->setPosition(i * 32, j * 32);
-				app->draw(*sprite);
+			  sf::Sprite sprite;
+			  sprite.setTexture(texture);
+			  switch (item->type) {
+			  case BaseItem::HULL:
+				sprite.setTextureRect(sf::IntRect(32, 32, 30, 30));
+				break;
+			  default:
+				sprite.setTextureRect(sf::IntRect(64, 64, 30, 30));
+				break;
+			  }
+			  sprite.setPosition(i * 32, j * 32);
+			  app->draw(sprite);
 			} else {
-				sf::Sprite* sprite = new sf::Sprite();
-			    sprite->setTexture(texture);
-			    sprite->setTextureRect(sf::IntRect(0, 0, 30, 30));
-				sprite->setPosition(i * 32, j * 32);
-				app->draw(*sprite);
-				delete sprite;
+			  sf::Sprite sprite;
+			  sprite.setTexture(texture);
+			  sprite.setTextureRect(sf::IntRect(0, 0, 30, 30));
+			  sprite.setPosition(i * 32, j * 32);
+			  app->draw(sprite);
 			}
 		}
 	}

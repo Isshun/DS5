@@ -14,7 +14,18 @@ int GetMap( int x, int y )
 	  return 9;
 	}
 
-  return gl_worldmap->getItem(x, y) != 0 && gl_worldmap->getItem(x, y)->isSolid ? 9 : 0;
+  BaseItem* item = gl_worldmap->getItem(x, y);
+
+  // Space
+  if (item == NULL || item->type == BaseItem::NONE)
+	return 2;
+
+  // WALL
+  if (item != NULL && item->isSolid)
+	return 9;
+
+  // DEFAULT
+  return 1;
 }
 
 bool MapSearchNode::IsSameState( MapSearchNode &rhs )
@@ -141,12 +152,16 @@ bool MapSearchNode::GetSuccessors( AStarSearch<MapSearchNode> *astarsearch, MapS
 // of our map the answer is the map terrain value at this node since that is
 // conceptually where we're moving
 
-float MapSearchNode::GetCost( MapSearchNode &successor )
-{
+float MapSearchNode::GetCost( MapSearchNode &successor ) {
+  float cost = 1.0f;
+
+  // Diagonal
   if (successor.x != x && successor.y != y)
-	return 1.4;
+	cost += 0.4f;
 
-  return 1;
+  // Space
+  if (GetMap(x, y) == 2)
+	cost += 0.8f;
 
-  // return (float) GetMap(x, y);
+  return cost;
 }

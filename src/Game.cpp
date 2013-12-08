@@ -27,26 +27,7 @@ Game::Game(): run(true), up_to_date(false), pause(false) {
   _worldMap = new WorldMap();
   gl_worldmap = _worldMap;
 
-  sf::Texture texture;
-  texture.loadFromFile("sprites/house_in_1.png");
-  texture.setSmooth(true);
-
-  BaseItem *item = new BaseItem();
-  item->isSolid = 1;
-  item->sprite = new sf::Sprite();
-  item->sprite->setTexture(texture);
-  item->sprite->setTextureRect(sf::IntRect(32, 32, 30, 30));
-  _worldMap->putItem(item, 2, 4);
-  _worldMap->putItem(item, 3, 4);
-  _worldMap->putItem(item, 4, 4);
-  _worldMap->putItem(item, 5, 4);
-  _worldMap->putItem(item, 6, 4);
-  _worldMap->putItem(item, 6, 3);
-  _worldMap->putItem(item, 6, 2);
-  _worldMap->putItem(item, 6, 1);
-  _worldMap->putItem(item, 1, 2);
-  _worldMap->putItem(item, 1, 3);
-  _worldMap->putItem(item, 1, 4);
+  _spriteManager = new SpriteManager();
 
   character = new Character(2, 2);
   character->go(8, 8);
@@ -108,7 +89,7 @@ void	Game::refresh()
   app->clear(sf::Color(0, 0, 50));
 
   // Draw scene
-  scene->draw_surface(_worldMap);
+  draw_surface();
 
   // Character
   if (character != 0) {
@@ -136,6 +117,20 @@ void	Game::refresh()
   sprite->setTextureRect(sf::IntRect(0, 0, 32, 32));
   sprite->setPosition(_cursor->_x * TILE_SIZE, _cursor->_y * TILE_SIZE);
   app->draw(*sprite);
+}
+
+void	Game::draw_surface() {
+  int w = _worldMap->getWidth();
+  int h = _worldMap->getHeight();
+
+  for (int i = 0; i < w; i++) {
+	for (int j = 0; j < h; j++) {
+	  BaseItem* item = _worldMap->getItem(i, j);
+	  sf::Sprite* sprite = _spriteManager->getSprite(item != NULL ? item->type : BaseItem::NONE);
+	  sprite->setPosition(i * 32, j * 32);
+	  app->draw(*sprite);
+	}
+  }
 }
 
 void	Game::gere_key()
@@ -197,13 +192,10 @@ void	Game::gere_key()
 
 		  BaseItem *item = new BaseItem();
 		  item->isSolid = 1;
-		  item->sprite = new sf::Sprite();
-		  item->sprite->setTexture(texture);
-		  item->sprite->setTextureRect(sf::IntRect(32, 32, 30, 30));
 
-		  _worldMap->putItem(item, _cursor->_x, _cursor->_y);
+		  _worldMap->putItem(_cursor->_x, _cursor->_y, BaseItem::HULL);
 		} else {
-		  _worldMap->putItem(NULL, _cursor->_x, _cursor->_y);
+		  _worldMap->putItem(_cursor->_x, _cursor->_y, BaseItem::NONE);
 		}
 	  }
       break;

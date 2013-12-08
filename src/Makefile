@@ -5,6 +5,7 @@ SRC	=	main.cpp	\
 		Layer.cpp	\
 		MapSearchNode.cpp	\
 		BaseItem.cpp	\
+		SpriteManager.cpp	\
 		WorldMap.cpp	\
 		Cursor.cpp	\
 		Character.cpp
