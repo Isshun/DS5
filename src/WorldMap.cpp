@@ -110,11 +110,27 @@ BaseItem*		WorldMap::getItemToBuild() {
   return item;
 }
 
-void		WorldMap::buildComplete(BaseItem* item) {
-  std::list<BaseItem*>::iterator it;
+void		WorldMap::buildAbort(BaseItem* item) {
+  item->builder = NULL;
 
+  std::list<BaseItem*>::iterator it;
   for (it = _building->begin(); it != _building->end(); ++it) {
 	if (*it == item) {
+	  _todo->push_back(item);
+	  _building->erase(it);
+	  std::cout << Info() << "WorldMap: item building abort" << std::endl;
+	  return;
+	}
+  }
+}
+
+void		WorldMap::buildComplete(BaseItem* item) {
+  item->builder = NULL;
+
+  std::list<BaseItem*>::iterator it;
+  for (it = _building->begin(); it != _building->end(); ++it) {
+	if (*it == item) {
+	  _building->erase(it);
 	  std::cout << Info() << "WorldMap: item now complete" << std::endl;
 	  return;
 	}

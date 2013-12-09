@@ -46,7 +46,8 @@ sf::Sprite*		SpriteManager::getSprite(BaseItem* item) {
 	for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
 	  if (spritesRes[i].type == item->type) {
 		sf::Sprite* sprite = new sf::Sprite();
-		sprite->setColor(sf::Color(255,255,255,80+item->progress/100*170));
+		int alpha = 75 + 180 / item->matter * item->progress;
+		sprite->setColor(sf::Color(255,255,255,alpha));
 		sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
 		sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
 										   spritesRes[i].posY * TILE_SIZE,

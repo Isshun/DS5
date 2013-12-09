@@ -2,6 +2,7 @@
 
 #include "defines.h"
 #include "Character.hpp"
+#include "ResourceManager.h"
 #include "stlastar.h"
 
 extern Scene	*scene;
@@ -34,6 +35,7 @@ Character::~Character() {
 
 void	Character::build(BaseItem* item) {
   job = item;
+  item->builder = this;
   int posX = item->getX();
   int posY = item->getY();
   go(posX, posY);
@@ -98,7 +100,7 @@ void		Character::go(int toX, int toY) {
 
 void		Character::move()
 {
-
+  // Move
   if (_astarsearch != NULL) {
 
 	// Next node
@@ -120,20 +122,33 @@ void		Character::move()
 	// clear path
 	else {
 	  std::cout << Debug() << "Character: reached" << std::endl;
-
-	  if (job != NULL) {
-		((BaseItem*)job)->progress = 100;
-		gl_worldmap->buildComplete((BaseItem*)job);
-		job = NULL;
-		std::cout << Debug() << "Character: work done" << std::endl;
-	  }
-
 	  _astarsearch->FreeSolutionNodes();
-	  //_astarsearch->EnsureMemoryFreed();
+	  _astarsearch->EnsureMemoryFreed();
 	  delete _astarsearch;
 	  _astarsearch = 0;
 	}
   }
+
+  // Work
+  if (job != NULL) {
+	BaseItem* item = (BaseItem*)job;
+	if (item->getX() == _posX && item->getY() == _posY) {
+	  switch (ResourceManager::getInstance().build(item)) {
+	  case ResourceManager::NO_MATTER:
+		std::cout << Debug() << "Character: not enough matter" << std::endl;
+		gl_worldmap->buildAbort(item);
+		job = NULL;
+		break;
+	  case ResourceManager::BUILD_COMPLETE:
+		std::cout << Debug() << "Character: build complete" << std::endl;
+		gl_worldmap->buildComplete(item);
+		job = NULL;
+	  case ResourceManager::BUILD_PROGRESS:
+		std::cout << Debug() << "Character: build progress" << std::endl;
+	  }
+	}
+  }
+
 }
 
 

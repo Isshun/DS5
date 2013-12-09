@@ -5,6 +5,7 @@ SRC	=	main.cpp	\
 		UserInterface.cpp	\
 		BaseItem.cpp	\
 		SpriteManager.cpp	\
+		ResourceManager.cpp	\
 		WorldMap.cpp	\
 		Cursor.cpp	\
 		Character.cpp

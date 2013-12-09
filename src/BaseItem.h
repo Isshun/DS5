@@ -17,6 +17,7 @@ struct {
   bool			solid;
   int			width;
   int			height;
+  int			matter;
 } typedef		ItemInfo;
 
 class BaseItem {
@@ -85,6 +86,8 @@ class BaseItem {
   void			setPosition(int x, int y) { _x = x; _y = y; }
 
   static ItemInfo getItemInfo(int type);
+
+  int			matter;
 
  private:
   int			_width;

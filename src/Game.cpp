@@ -6,12 +6,12 @@
 #include <SFML/Graphics.hpp>
 
 #include "Game.hpp"
+#include "ResourceManager.h"
 
 WorldMap* gl_worldmap;
 
 extern int old_time1;
 extern int old_time2;
-// extern sf::RenderWindow	*app;
 
 sf::Time _time_elapsed;
 
@@ -43,23 +43,18 @@ Game::Game(sf::RenderWindow* app): run(true), up_to_date(false), pause(false) {
 }
 
 Game::~Game() {
-  //   delete player;
-  //   delete scene;
-  //   delete music;
 }
 
-
-//fixme: 
-// au changement de scene, conserver la meme instance de player pour la nouvelle scene OU
-// set le nouveau player avec les parametres de l'ancien
-//resolv:
-// l'obj player a ete redescendu dans l'obj Game, a voir
 void	Game::update() {
-  if (character->job == NULL) {
-	BaseItem* item = _worldMap->getItemToBuild();
-	if (item != NULL) {
-	  std::cout << Debug() << "Game: add build job to character" << std::endl;
-	  character->build(item);
+
+  // Launch build
+  if (ResourceManager::getInstance().getMatter() > 0) {
+	if (character->job == NULL) {
+	  BaseItem* item = _worldMap->getItemToBuild();
+	  if (item != NULL) {
+		std::cout << Debug() << "Game: add build job to character" << std::endl;
+		character->build(item);
+	  }
 	}
   }
 
@@ -92,10 +87,6 @@ void	Game::refresh() {
 void	Game::draw_surface() {
   int w = _worldMap->getWidth();
   int h = _worldMap->getHeight();
-
-  // sf::Font font;
-  // if (!font.loadFromFile("snap/xolonium/Xolonium-Regular.otf"))
-  // 	throw(std::string("failed to load: ").append("snap/xolonium/Xolonium-Regular.otf").c_str());
 
   // Run through items
   for (int i = 0; i < w; i++) {
@@ -173,31 +164,13 @@ void	Game::loop()
 			_ui->mouseRelease(event.mouseButton.x, event.mouseButton.y);
 		  }
 
-		  // if (event.type == sf::Event::MouseButtonReleased) {
-		  // 	int posX = ((event.mouseButton.x - UI_WIDTH) / TILE_SIZE);
-		  // 	int posY = ((event.mouseButton.y - UI_HEIGHT) / TILE_SIZE);
-
-		  // 	std::cout << "event: " << posX << " x " << posY << std::endl;
-			
-		  // 	if (_ui->getCode() == UserInterface::CODE_BUILD_ITEM) {
-		  // 	  Cursor* cursor = _ui->getCursor();
-		  // 	  _worldMap->putItem(cursor->_x, cursor->_y, _ui->getBuildItemType());
-		  // 	}
-
-		  // }
-
 		  // GOTO
-
-
 // #if DEBUG
 // 		  if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::G) {
 // 			Cursor* cursor = _ui->getCursor();
 // 			character->go(cursor->_x, cursor->_y);
 // 		  }
 // #endif
-
-		  // if (!event.key.code)
-		  // 	return false;
 
 		  _force_refresh = _ui->checkKeyboard(event, _frame, _lastInput, _worldMap);
 		  gere_quit();
@@ -213,14 +186,6 @@ void	Game::loop()
 		  _app->display();
 		  display_timer.restart();
 		}
-
-//      // Move pnj
-//	  _time_elapsed = pnj_timer.getElapsedTime();
-//      if (_time_elapsed.asMilliseconds() > 20)
-//		{
-//		  scene->pnj_update();
-//		  pnj_timer.restart();
-//		}
     }
 }
 
