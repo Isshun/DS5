@@ -73,17 +73,14 @@ bool WorldMap::getSolid(int x, int y) {
 
 
 void WorldMap::putItem(int x, int y, int type) {
-  std::cout << "put item: " << type << std::endl;
-
-  BaseItem *item = new BaseItem();
-  switch (type) {
-  case BaseItem::STRUCTURE_HULL:
-  case BaseItem::STRUCTURE_WALL:
-	item->isSolid = true;
+  if (x < 0 || y < 0 || x >= _width || y >= _height) {
+	std::cout << "put item out of bound (type: " << type << ", x: " << x << ", y: " << y << ")" << std::endl;
+	return;
   }
 
-  item->type = type;
+  std::cout << "put item: " << type << std::endl;
 
+  BaseItem *item = new BaseItem(type);
   _items[x][y] = item;
 }
 

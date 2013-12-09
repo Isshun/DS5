@@ -18,8 +18,8 @@ Game::Game(sf::RenderWindow* app): run(true), up_to_date(false), pause(false) {
   _app = app;
   _lastInput = 0;
   _frame = 0;
-  _ui = new UserInterface();
   _worldMap = new WorldMap();
+  _ui = new UserInterface(_worldMap);
   gl_worldmap = _worldMap;
 
   _spriteManager = new SpriteManager();
@@ -88,9 +88,24 @@ void	Game::draw_surface() {
   for (int i = 0; i < w; i++) {
 	for (int j = 0; j < h; j++) {
 	  BaseItem* item = _worldMap->getItem(i, j);
-	  sf::Sprite* sprite = _spriteManager->getSprite(item != NULL ? item->type : BaseItem::NONE);
-	  sprite->setPosition(UI_WIDTH + i * 32, UI_HEIGHT + j * 32);
-	  _app->draw(*sprite);
+
+	  if (item != NULL) {
+		for (int x = 0; x < item->getWidth(); x++) {
+		  for (int y = 0; y < item->getHeight(); y++) {
+			if (item != NULL && item->type != BaseItem::NONE) {
+			  sf::Sprite* sprite = _spriteManager->getSprite(BaseItem::STRUCTURE_FLOOR);
+			  sprite->setPosition(UI_WIDTH + i * TILE_SIZE + x * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE + y * TILE_SIZE);
+			  _app->draw(*sprite);
+			}
+		  }
+		}
+	  }
+
+	  {
+		sf::Sprite* sprite = _spriteManager->getSprite(item != NULL ? item->type : BaseItem::NONE);
+		sprite->setPosition(UI_WIDTH + i * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE);
+		_app->draw(*sprite);
+	  }
 	}
   }
 }
@@ -114,22 +129,27 @@ void	Game::loop()
 		  if (event.type == sf::Event::MouseMoved) {
 			_ui->mouseMoved(event.mouseMove.x, event.mouseMove.y);
 		  }
-
+\
 		  if (event.type == sf::Event::MouseButtonPressed) {
+			_ui->mousePress(event.mouseButton.x, event.mouseButton.y);
 		  }
 
 		  if (event.type == sf::Event::MouseButtonReleased) {
-			int posX = ((event.mouseButton.x - UI_WIDTH) / TILE_SIZE);
-			int posY = ((event.mouseButton.y - UI_HEIGHT) / TILE_SIZE);
-
-			std::cout << "event: " << posX << " x " << posY << std::endl;
-			
-			if (_ui->getCode() == UserInterface::CODE_BUILD_ITEM) {
-			  Cursor* cursor = _ui->getCursor();
-			  _worldMap->putItem(cursor->_x, cursor->_y, _ui->getBuildItemType());
-			}
-
+			_ui->mouseRelease(event.mouseButton.x, event.mouseButton.y);
 		  }
+
+		  // if (event.type == sf::Event::MouseButtonReleased) {
+		  // 	int posX = ((event.mouseButton.x - UI_WIDTH) / TILE_SIZE);
+		  // 	int posY = ((event.mouseButton.y - UI_HEIGHT) / TILE_SIZE);
+
+		  // 	std::cout << "event: " << posX << " x " << posY << std::endl;
+			
+		  // 	if (_ui->getCode() == UserInterface::CODE_BUILD_ITEM) {
+		  // 	  Cursor* cursor = _ui->getCursor();
+		  // 	  _worldMap->putItem(cursor->_x, cursor->_y, _ui->getBuildItemType());
+		  // 	}
+
+		  // }
 
 		  // GOTO
 #if DEBUG

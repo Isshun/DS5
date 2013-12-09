@@ -16,6 +16,8 @@ struct {
   int			type;
   int			posX;
   int			posY;
+  int			width;
+  int			height;
   int			textureIndex;
 } typedef		SpriteResource;
 
@@ -27,7 +29,7 @@ class SpriteManager {
   sf::Sprite*		getSprite(int type);
 
  private:
-  sf::Texture*		_texture;
+  sf::Texture*		_texture[8];
 };
 
 #endif /* SPRITEMANAGER_H_ */

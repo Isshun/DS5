@@ -12,9 +12,16 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+struct {
+  int			type;
+  bool			solid;
+  int			width;
+  int			height;
+} typedef		ItemInfo;
+
 class BaseItem {
  public:
-  BaseItem();
+  BaseItem(int type);
   ~BaseItem();
 
   enum {
@@ -48,6 +55,7 @@ class BaseItem {
 	AMPHITHEATER_STAGE,
 	QUARTER_BED,
 	QUARTER_DESK,
+	QUARTER_CHAIR,
 	QUARTER_WARDROBE,
 	QUARTER_CHEST,
 	QUARTER_BEDSIDE_TABLE,
@@ -66,6 +74,13 @@ class BaseItem {
 
   int			type;
   bool			isSolid;
+
+  int			getWidth() { return _width; }
+  int			getHeight() { return _height; }
+
+ private:
+  int			_width;
+  int			_height;
 };
 
 #endif /* BASEITEM_H_ */

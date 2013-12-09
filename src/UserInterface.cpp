@@ -98,8 +98,9 @@ Entry	entries_build_amphitheater[] = {
 Entry	entries_build_quarter[] = {
   {UserInterface::CODE_BUILD_ITEM,	"bed",	"b",			sf::Keyboard::B,	BaseItem::QUARTER_BED},
   {UserInterface::CODE_BUILD_ITEM,	"desk",	"d",			sf::Keyboard::D,	BaseItem::QUARTER_DESK},
+  {UserInterface::CODE_BUILD_ITEM,	"chair",	"c",		sf::Keyboard::C,	BaseItem::QUARTER_CHAIR},
   {UserInterface::CODE_BUILD_ITEM,	"wardrobe",	"w",		sf::Keyboard::W,	BaseItem::QUARTER_WARDROBE},
-  {UserInterface::CODE_BUILD_ITEM,	"chest of drawers",	"c",sf::Keyboard::C,	BaseItem::QUARTER_CHEST},
+  {UserInterface::CODE_BUILD_ITEM,	"chest of drawers",	"ch",sf::Keyboard::H,	BaseItem::QUARTER_CHEST},
   {UserInterface::CODE_BUILD_ITEM,	"bedside table", "be",	sf::Keyboard::E,	BaseItem::QUARTER_BEDSIDE_TABLE},
   {UserInterface::CODE_NONE,	NULL,			NULL,	0,		0}
 };
@@ -139,19 +140,46 @@ Entry	entries_zone[] = {
   {UserInterface::CODE_NONE,	NULL,			NULL,	0,		0}
 };
 
-UserInterface::UserInterface() {
+UserInterface::UserInterface(WorldMap* worldMap) {
+  _worldMap = worldMap;
   _cursor = new Cursor();
   _entries = entries_main;
   _code = CODE_MAIN;
+  _keyLeftPressed = false;
 }
 
 UserInterface::~UserInterface() {
 }
 
 void	UserInterface::mouseMoved(int x, int y) {
-  if (x > UI_WIDTH) {
+  if (x > UI_WIDTH && _keyLeftPressed) {
+	_keyMovePosX = (x - UI_WIDTH) / TILE_SIZE;
+	_keyMovePosY = (y - UI_HEIGHT) / TILE_SIZE;
+  } else if (x > UI_WIDTH) {
 	_cursor->setMousePos(x - UI_WIDTH, y - UI_HEIGHT);
   }
+}
+
+void	UserInterface::mousePress(int x, int y) {
+  _keyLeftPressed = true;
+  _keyMovePosX = _keyPressPosX = (x - UI_WIDTH) / TILE_SIZE;
+  _keyMovePosY = _keyPressPosY = (y - UI_HEIGHT) / TILE_SIZE;
+}
+
+void	UserInterface::mouseRelease(int x, int y) {
+  int startX = std::min(_keyPressPosX, _keyMovePosX);
+  int startY = std::min(_keyPressPosY, _keyMovePosY);
+  int toX = std::max(_keyPressPosX, _keyMovePosX);
+  int toY = std::max(_keyPressPosY, _keyMovePosY);
+  for (int x = startX; x <= toX; x++) {
+	for (int y = startY; y <= toY; y++) {
+	  if (_code == CODE_BUILD_ITEM) {
+		_worldMap->putItem(x, y, _buildItemType);
+	  }
+	}
+  }
+
+  _keyLeftPressed = false;
 }
 
 void UserInterface::drawModeBuild(sf::RenderWindow* app) {
@@ -207,11 +235,27 @@ void UserInterface::draw(sf::RenderWindow* app) {
   if (_code == CODE_BUILD_ITEM) {
 	sf::Texture texture;
 	texture.loadFromFile("sprites/cursor.png");
-	sf::Sprite sprite;
-	sprite.setTexture(texture);
-	sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
-	sprite.setPosition(UI_WIDTH + _cursor->_x * TILE_SIZE, UI_HEIGHT + _cursor->_y * TILE_SIZE);
-	app->draw(sprite);
+	if (_keyLeftPressed) {
+	  int startX = std::min(_keyPressPosX, _keyMovePosX);
+	  int startY = std::min(_keyPressPosY, _keyMovePosY);
+	  int toX = std::max(_keyPressPosX, _keyMovePosX);
+	  int toY = std::max(_keyPressPosY, _keyMovePosY);
+	  for (int x = startX; x <= toX; x++) {
+		for (int y = startY; y <= toY; y++) {
+		  sf::Sprite sprite;
+		  sprite.setTexture(texture);
+		  sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+		  sprite.setPosition(UI_WIDTH + x * TILE_SIZE, y * TILE_SIZE);
+		  app->draw(sprite);
+		}
+	  }
+	} else {
+	  sf::Sprite sprite;
+	  sprite.setTexture(texture);
+	  sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+	  sprite.setPosition(UI_WIDTH + _cursor->_x * TILE_SIZE, UI_HEIGHT + _cursor->_y * TILE_SIZE);
+	  app->draw(sprite);
+	}
   }
 }
 

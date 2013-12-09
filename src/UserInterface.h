@@ -26,7 +26,7 @@ struct {
 
 class UserInterface {
  public:
-  UserInterface();
+  UserInterface(WorldMap* worldMap);
   ~UserInterface();
 
   enum { ENTRY_NONE, ENTRY_MAIN, ENTRY_BUILD, ENTRY_ZONE };
@@ -70,13 +70,20 @@ class UserInterface {
   int	getBuildItemType() { return _buildItemType; }
   int	getCode() { return _code; }
   void	mouseMoved(int x, int y);
+  void	mousePress(int x, int y);
+  void	mouseRelease(int x, int y);
 
  private:
   Cursor*	_cursor;
   Entry*	_entries;
+  WorldMap* _worldMap;
   int		_code;
   int		_parent_code;
-
+  bool		_keyLeftPressed;
+  int		_keyPressPosX;
+  int		_keyPressPosY;
+  int		_keyMovePosX;
+  int		_keyMovePosY;
   int			_buildItemType;
   const char*	_buildItemText;
 };
