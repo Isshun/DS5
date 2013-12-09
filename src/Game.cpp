@@ -58,7 +58,7 @@ void	Game::update() {
   if (character->job == NULL) {
 	BaseItem* item = _worldMap->getItemToBuild();
 	if (item != NULL) {
-	  std::cout << "Game: new build to character" << std::endl;
+	  std::cout << Debug() << "Game: add build job to character" << std::endl;
 	  character->build(item);
 	}
   }

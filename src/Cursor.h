@@ -8,6 +8,8 @@
 #ifndef CURSOR_H_
 #define CURSOR_H_
 
+#include "defines.h"
+
 class Cursor {
 public:
 	Cursor();

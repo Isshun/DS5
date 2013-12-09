@@ -10,6 +10,7 @@
 #include <string.h>
 #include <list>
 #include "WorldMap.h"
+#include "Log.hpp"
 
 WorldMap::WorldMap() {
   _todo = new std::list<BaseItem*>();
@@ -80,7 +81,7 @@ void WorldMap::putItem(int x, int y, int type) {
 	return;
   }
 
-  std::cout << "put item: " << type << std::endl;
+  std::cout << Debug() << "put item: " << type << std::endl;
 
   BaseItem *item = new BaseItem(type);
   item->setPosition(x, y);
@@ -90,7 +91,7 @@ void WorldMap::putItem(int x, int y, int type) {
 
 BaseItem*		WorldMap::getItemToBuild() {
   if (_todo->size() == 0) {
-	std::cout << "WorldMap: todo list is empty" << std::endl;
+	std::cout << Debug() << "WorldMap: todo list is empty" << std::endl;
 	return NULL;
   }
 
@@ -106,7 +107,7 @@ void		WorldMap::buildComplete(BaseItem* item) {
 
   for (it = _building->begin(); it != _building->end(); ++it) {
 	if (*it == item) {
-	  std::cout << "WorldMap: item now complete" << std::endl;
+	  std::cout << Info() << "WorldMap: item now complete" << std::endl;
 	  return;
 	}
   }

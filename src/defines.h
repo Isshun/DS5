@@ -1,6 +1,8 @@
 #ifndef _TOSNG_H
 #define _TOSNG_H_
 
+#include "Log.hpp"
+
 #define DEBUG	1
 
 #define CHARACTER_MOVE_INTERVAL 6
