@@ -21,7 +21,7 @@ WorldMap::WorldMap() {
   for (int x = 0; x < _width; x++) {
 	_items[x] = new BaseItem*[_height];
 	for (int y = 0; y < _height; y++) {
-	  _items[x][y] = 0;
+	  _items[x][y] = NULL;
 	}
   }
 
@@ -76,13 +76,21 @@ bool WorldMap::getSolid(int x, int y) {
 }
 
 void WorldMap::putItem(int x, int y, int type) {
+  // Return if out of bound
   if (x < 0 || y < 0 || x >= _width || y >= _height) {
-	std::cout << "put item out of bound (type: " << type << ", x: " << x << ", y: " << y << ")" << std::endl;
+	std::cout << Error() << "put item out of bound (type: "
+			  << type << ", x: " << x << ", y: " << y << ")" << std::endl;
 	return;
   }
 
-  std::cout << Debug() << "put item: " << type << std::endl;
+  // Return if item already exists
+  if (_items[x][y] != NULL && _items[x][y]->type == type) {
+	std::cout << Debug() << "Same item existing for " << x << " x " << y << std::endl;
+	return;
+  }
 
+  // Put item
+  std::cout << Debug() << "put item: " << type << std::endl;
   BaseItem *item = new BaseItem(type);
   item->setPosition(x, y);
   _items[x][y] = item;
