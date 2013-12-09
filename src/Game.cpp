@@ -86,7 +86,7 @@ void	Game::refresh() {
   }
 
   // User interface
-  _ui->draw();
+  _ui->refresh();
 }
 
 void	Game::draw_surface() {

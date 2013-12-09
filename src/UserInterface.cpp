@@ -219,8 +219,7 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
   }
 }
 
-void UserInterface::draw() {
-
+void	UserInterface::refreshMenu() {
   sf::Font font;
   if (!font.loadFromFile("snap/xolonium/Xolonium-Regular.otf"))
 	throw(std::string("failed to load: ").append("snap/xolonium/Xolonium-Regular.otf").c_str());
@@ -252,8 +251,9 @@ void UserInterface::draw() {
 	}
 	break;
   }
+}
 
-  // Cursor
+void	UserInterface::refreshCursor() {
   if (_code == CODE_BUILD_ITEM) {
 
 	// Structure: multiple 1x1 tile
@@ -281,7 +281,11 @@ void UserInterface::draw() {
 				 _cursor->_y + itemInfo.height - 1);
 	}
   }
+}
 
+void UserInterface::refresh() {
+  refreshMenu();
+  refreshCursor();
 }
 
 void UserInterface::setBuildItem(int code, const char* text, int type) {
