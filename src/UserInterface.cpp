@@ -293,11 +293,10 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
 	for (int i = 0; _entries[i].code != UserInterface::CODE_NONE; i++) {
 	  if (_entries[i].key == event.key.code) {
 
-		_parent_code = _code;
-
 		switch (_code) {
 
 		case CODE_BUILD:
+		  _parent_code = _code;
 		  _code = _entries[i].code;
 		  setBuildMenu(_entries[i].code);
 		  break;
@@ -315,11 +314,13 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
 		case CODE_BUILD_TRANSPORTATION:
 		case CODE_BUILD_TACTICAL:
 		case CODE_BUILD_SCIENCE:
+		  _parent_code = _code;
 		  _code = _entries[i].code;
 		  setBuildItem(_entries[i].code, _entries[i].text, _entries[i].data);
 		  break;
 
 		case CODE_MAIN:
+		  _parent_code = _code;
 		  _code = _entries[i].code;
 
 		  if (_entries[i].code == CODE_BUILD)

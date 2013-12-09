@@ -17,11 +17,12 @@ public:
 
 	int			getWidth() { return _width; }
 	int			getHeight() { return _height; }
+	BaseItem*	getItemToBuild();
 
 	bool		getSolid(int x, int y);
 
 	void		putItem(int x, int y, int type);
-	BaseItem*	getItem(int x, int y);
+	BaseItem*	getItem(int x, int y) {return (x < 0 || x >= _width || y < 0 || y >= _height) ? NULL : _items[x][y]; }
 
 private:
 	BaseItem***	_items;

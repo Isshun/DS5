@@ -12,6 +12,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "BaseItem.h"
+
 struct {
   int			type;
   int			posX;
@@ -26,7 +28,7 @@ class SpriteManager {
   SpriteManager();
   ~SpriteManager();
 
-  sf::Sprite*		getSprite(int type);
+  sf::Sprite*		getSprite(BaseItem* item);
 
  private:
   sf::Texture*		_texture[8];

@@ -23,7 +23,8 @@ class	Character
 
   void	update_position(Scene *scene);
   void draw(sf::RenderWindow* app);
-
+  void	build(BaseItem* item);
+  
   // Gets
   sf::Vector2<int>	&get_position();
   sf::Sprite	&get_sprite();
@@ -50,6 +51,7 @@ class	Character
 
   int	_posX;
   int	_posY;
+  void*	job;
 
 private:
   const char	*path;

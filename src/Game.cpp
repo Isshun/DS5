@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
+#include <sstream>
 
 #include <SFML/Graphics.hpp>
 
@@ -53,8 +54,15 @@ Game::~Game() {
 // set le nouveau player avec les parametres de l'ancien
 //resolv:
 // l'obj player a ete redescendu dans l'obj Game, a voir
-void	Game::update()
-{
+void	Game::update() {
+  if (character->job == NULL) {
+	BaseItem* item = _worldMap->getItemToBuild();
+	if (item != NULL) {
+	  std::cout << "Game: new build to character" << std::endl;
+	  character->build(item);
+	}
+  }
+
   this->up_to_date = false;
   _force_refresh = false;
 }
@@ -85,15 +93,21 @@ void	Game::draw_surface() {
   int w = _worldMap->getWidth();
   int h = _worldMap->getHeight();
 
+  // sf::Font font;
+  // if (!font.loadFromFile("snap/xolonium/Xolonium-Regular.otf"))
+  // 	throw(std::string("failed to load: ").append("snap/xolonium/Xolonium-Regular.otf").c_str());
+
+  // Run through items
   for (int i = 0; i < w; i++) {
 	for (int j = 0; j < h; j++) {
 	  BaseItem* item = _worldMap->getItem(i, j);
 
+	  // Draw floor
 	  if (item != NULL) {
 		for (int x = 0; x < item->getWidth(); x++) {
 		  for (int y = 0; y < item->getHeight(); y++) {
 			if (item != NULL && item->type != BaseItem::NONE) {
-			  sf::Sprite* sprite = _spriteManager->getSprite(BaseItem::STRUCTURE_FLOOR);
+			  sf::Sprite* sprite = _spriteManager->getSprite(item);
 			  sprite->setPosition(UI_WIDTH + i * TILE_SIZE + x * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE + y * TILE_SIZE);
 			  _app->draw(*sprite);
 			}
@@ -101,11 +115,32 @@ void	Game::draw_surface() {
 		}
 	  }
 
+	  // Draw item
 	  {
-		sf::Sprite* sprite = _spriteManager->getSprite(item != NULL ? item->type : BaseItem::NONE);
+		sf::Sprite* sprite = _spriteManager->getSprite(item);
 		sprite->setPosition(UI_WIDTH + i * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE);
 		_app->draw(*sprite);
 	  }
+ 
+	  // // Draw progress
+	  // if (item != NULL) {
+	  // 	for (int x = 0; x < item->getWidth(); x++) {
+	  // 	  for (int y = 0; y < item->getHeight(); y++) {
+	  // 		if (item != NULL && item->type != BaseItem::NONE) {
+	  // 		  sf::Text text;
+	  // 		  std::ostringstream oss;
+	  // 		  oss << item->progress;
+	  // 		  text.setString(oss.str());
+	  // 		  text.setFont(font);
+	  // 		  text.setCharacterSize(10);
+	  // 		  text.setPosition(UI_WIDTH + i * TILE_SIZE + x * TILE_SIZE + 2,
+	  // 						   UI_HEIGHT + j * TILE_SIZE + y * TILE_SIZE + 18);
+	  // 		  _app->draw(text);
+	  // 		}
+	  // 	  }
+	  // 	}
+	  // }
+
 	}
   }
 }
@@ -152,12 +187,14 @@ void	Game::loop()
 		  // }
 
 		  // GOTO
-#if DEBUG
-		  if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::G) {
-			Cursor* cursor = _ui->getCursor();
-			character->go(cursor->_x, cursor->_y);
-		  }
-#endif
+
+
+// #if DEBUG
+// 		  if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::G) {
+// 			Cursor* cursor = _ui->getCursor();
+// 			character->go(cursor->_x, cursor->_y);
+// 		  }
+// #endif
 
 		  // if (!event.key.code)
 		  // 	return false;

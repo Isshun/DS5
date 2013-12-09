@@ -22,6 +22,8 @@ ItemInfo	itemsInfo[] = {
 BaseItem::BaseItem(int t) {
 	isSolid = false;
 	type = t;
+	progress = 0;
+	builder = NULL;
 
 	for (int i = 0; itemsInfo[i].type != BaseItem::NONE; i++) {
 	  if (itemsInfo[i].type == t) {

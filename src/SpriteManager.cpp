@@ -41,22 +41,24 @@ SpriteManager::~SpriteManager() {
   delete _texture[2];
 }
 
-sf::Sprite*		SpriteManager::getSprite(int type) {
-  sf::Sprite* sprite = new sf::Sprite();
-
-  for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
-	if (spritesRes[i].type == type) {
-	  sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
-	  sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
-										 spritesRes[i].posY * TILE_SIZE,
-										 spritesRes[i].width * TILE_SIZE,
-										 spritesRes[i].height * TILE_SIZE));
-	  return sprite;
+sf::Sprite*		SpriteManager::getSprite(BaseItem* item) {
+  if (item != NULL) {
+	for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
+	  if (spritesRes[i].type == item->type) {
+		sf::Sprite* sprite = new sf::Sprite();
+		sprite->setColor(sf::Color(255,255,255,80+item->progress/100*170));
+		sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
+		sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
+										   spritesRes[i].posY * TILE_SIZE,
+										   spritesRes[i].width * TILE_SIZE,
+										   spritesRes[i].height * TILE_SIZE));
+		return sprite;
+	  }
 	}
   }
 
+  sf::Sprite* sprite = new sf::Sprite();
   sprite->setTexture(*_texture[0]);
   sprite->setTextureRect(sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
-
   return sprite;
 }

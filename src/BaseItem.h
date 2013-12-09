@@ -74,13 +74,21 @@ class BaseItem {
 
   int			type;
   bool			isSolid;
+  int			progress;
+  void*			builder;
 
   int			getWidth() { return _width; }
   int			getHeight() { return _height; }
+  int			getX() { return _x; }
+  int			getY() { return _y; }
+
+  void			setPosition(int x, int y) { _x = x; _y = y; }
 
  private:
   int			_width;
   int			_height;
+  int			_x;
+  int			_y;
 };
 
 #endif /* BASEITEM_H_ */

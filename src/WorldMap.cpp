@@ -28,6 +28,17 @@ WorldMap::~WorldMap() {
 	// TODO Auto-generated destructor stub
 }
 
+BaseItem*		WorldMap::getItemToBuild() {
+  for (int y = 0; y < _height; y++) {
+	for (int x = 0; x < _width; x++) {
+	  BaseItem* item = getItem(x, y);
+	  if (item != NULL && item->progress < 100 && item->builder == NULL)
+		return item;
+	}
+  }
+  return NULL;
+}
+
 void WorldMap::init() {
   putItem(2, 4, BaseItem::STRUCTURE_HULL);
   putItem(3, 4, BaseItem::STRUCTURE_HULL);
@@ -81,13 +92,6 @@ void WorldMap::putItem(int x, int y, int type) {
   std::cout << "put item: " << type << std::endl;
 
   BaseItem *item = new BaseItem(type);
+  item->setPosition(x, y);
   _items[x][y] = item;
-}
-
-
-BaseItem*	WorldMap::getItem(int x, int y) {
-  if (x < 0 || x >= _width) return 0;
-  if (y < 0 || y >= _height) return 0;
-
-  return _items[x][y];
 }

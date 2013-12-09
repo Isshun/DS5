@@ -21,14 +21,21 @@ extern sf::RenderWindow	*app;
 
 Character::Character(int x, int y)
 {
+  job = NULL;
   _posY = y;
   _posX = x;
   _astarsearch = 0;
 }
 
 // FIXME: taille du sprite en dur
-Character::~Character()
-{
+Character::~Character() {
+}
+
+void	Character::build(BaseItem* item) {
+  job = item;
+  int posX = item->getX();
+  int posY = item->getY();
+  go(posX, posY);
 }
 
 void		Character::go(int toX, int toY) {
@@ -111,6 +118,13 @@ void		Character::move()
 
 	// clear path
 	else {
+	  std::cout << "Character: reached" << std::endl;
+
+	  if (job != NULL) {
+		((BaseItem*)job)->progress = 100;
+		job = NULL;
+		std::cout << "Character: work done" << std::endl;
+	  }
 	  // _astarsearch->FreeSolutionNodes();
 	  // _astarsearch->EnsureMemoryFreed();
 	  // delete _astarsearch;
