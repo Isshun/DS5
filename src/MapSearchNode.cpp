@@ -46,10 +46,9 @@ bool MapSearchNode::IsSameState( MapSearchNode &rhs )
 
 void MapSearchNode::PrintNodeInfo()
 {
-        char str[100];
-        sprintf( str, "Node position : (%d,%d)\n", x,y );
-
-        cout << str;
+        // char str[100];
+        // sprintf( str, "Node position : (%d,%d)\n", x,y );
+        // cout << str;
 }
 
 // Here's the heuristic function that estimates the distance from a Node

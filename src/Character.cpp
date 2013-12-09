@@ -8,6 +8,7 @@ extern Scene	*scene;
 #include <SFML/Graphics.hpp>
 
 extern sf::RenderWindow	*app;
+extern WorldMap* gl_worldmap;
 
 #define Character_W	32
 #define Character_H	64
@@ -39,7 +40,7 @@ void	Character::build(BaseItem* item) {
 }
 
 void		Character::go(int toX, int toY) {
-  cout << "FindPath: " << toX << " x " << toY << endl;
+  cout << "Charactere: go(" << toX << ", " << toY << ")" << endl;
 
   if (_astarsearch != 0) {
 	_astarsearch->FreeSolutionNodes();
@@ -81,7 +82,7 @@ void		Character::go(int toX, int toY) {
 	 while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
 
 	 if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED ) {
-	   cout << "Search found goal state: " << SearchSteps << endl;
+	   // cout << "Search found goal state: " << SearchSteps << endl;
 	 }
 	 else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) {
 	   cout << "Search terminated. Did not find goal state\n";
@@ -122,6 +123,7 @@ void		Character::move()
 
 	  if (job != NULL) {
 		((BaseItem*)job)->progress = 100;
+		gl_worldmap->buildComplete((BaseItem*)job);
 		job = NULL;
 		std::cout << "Character: work done" << std::endl;
 	  }
