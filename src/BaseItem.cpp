@@ -37,3 +37,15 @@ BaseItem::BaseItem(int t) {
 BaseItem::~BaseItem() {
 	// TODO Auto-generated destructor stub
 }
+
+ItemInfo BaseItem::getItemInfo(int type) {
+  int i = 0;
+
+  for (; itemsInfo[i].type != BaseItem::NONE; i++) {
+	if (itemsInfo[i].type == type) {
+	  return itemsInfo[i];
+	}
+  }
+
+  return itemsInfo[i];
+}

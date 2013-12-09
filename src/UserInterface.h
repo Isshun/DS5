@@ -26,7 +26,7 @@ struct {
 
 class UserInterface {
  public:
-  UserInterface(WorldMap* worldMap);
+  UserInterface(sf::RenderWindow* app, WorldMap* worldMap);
   ~UserInterface();
 
   enum { ENTRY_NONE, ENTRY_MAIN, ENTRY_BUILD, ENTRY_ZONE };
@@ -61,8 +61,8 @@ class UserInterface {
 
 
 
-  void	draw(sf::RenderWindow* app);
-  void	drawModeBuild(sf::RenderWindow* app);
+  void	draw();
+  void	drawModeBuild();
   void	setBuildItem(int code, const char* text, int type);
   void	setBuildMenu(int code);
   bool	checkKeyboard(sf::Event	event, int frame, int lastInput, WorldMap* worldMap);
@@ -74,6 +74,9 @@ class UserInterface {
   void	mouseRelease(int x, int y);
 
  private:
+  void	drawCursor(int startX, int startY, int toX, int toY);
+
+  sf::RenderWindow* _app;
   Cursor*	_cursor;
   Entry*	_entries;
   WorldMap* _worldMap;

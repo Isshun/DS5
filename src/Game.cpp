@@ -11,7 +11,7 @@ WorldMap* gl_worldmap;
 
 extern int old_time1;
 extern int old_time2;
-extern sf::RenderWindow	*app;
+// extern sf::RenderWindow	*app;
 
 sf::Time _time_elapsed;
 
@@ -20,7 +20,7 @@ Game::Game(sf::RenderWindow* app): run(true), up_to_date(false), pause(false) {
   _lastInput = 0;
   _frame = 0;
   _worldMap = new WorldMap();
-  _ui = new UserInterface(_worldMap);
+  _ui = new UserInterface(app, _worldMap);
   gl_worldmap = _worldMap;
 
   _spriteManager = new SpriteManager();
@@ -86,7 +86,7 @@ void	Game::refresh() {
   }
 
   // User interface
-  _ui->draw(_app);
+  _ui->draw();
 }
 
 void	Game::draw_surface() {

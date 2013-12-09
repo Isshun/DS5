@@ -29,7 +29,7 @@ Entry	entries_build[] = {
   // {UserInterface::CODE_BUILD_SCHOOL,	"school",			"s",	sf::Keyboard::W,		0},
   {UserInterface::CODE_BUILD_BAR,		"bar",				"b",	sf::Keyboard::B,		0},
   {UserInterface::CODE_BUILD_AMPHITHEATER,	"entertainment","en",	sf::Keyboard::N,		0},
-  {UserInterface::CODE_BUILD_QUARTER,	"quarter",			"q",	sf::Keyboard::Q,		0},
+  {UserInterface::CODE_BUILD_QUARTER,	"residence",		"r",	sf::Keyboard::R,		0},
   {UserInterface::CODE_BUILD_ENVIRONMENT,	"environment",	"env",	sf::Keyboard::V,		0},
   {UserInterface::CODE_BUILD_TRANSPORTATION,"transportation","t",	sf::Keyboard::T,		0},
   {UserInterface::CODE_BUILD_TACTICAL,	"defense",			"d",	sf::Keyboard::D,		0},
@@ -140,7 +140,8 @@ Entry	entries_zone[] = {
   {UserInterface::CODE_NONE,	NULL,			NULL,	0,		0}
 };
 
-UserInterface::UserInterface(WorldMap* worldMap) {
+UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap) {
+  _app = app;
   _worldMap = worldMap;
   _cursor = new Cursor();
   _entries = entries_main;
@@ -169,8 +170,13 @@ void	UserInterface::mousePress(int x, int y) {
 void	UserInterface::mouseRelease(int x, int y) {
   int startX = std::min(_keyPressPosX, _keyMovePosX);
   int startY = std::min(_keyPressPosY, _keyMovePosY);
-  int toX = std::max(_keyPressPosX, _keyMovePosX);
-  int toY = std::max(_keyPressPosY, _keyMovePosY);
+  int toX = startX;
+  int toY = startY;
+  if (_parent_code == CODE_BUILD_STRUCTURE) {
+	toX = std::max(_keyPressPosX, _keyMovePosX);
+	toY = std::max(_keyPressPosY, _keyMovePosY);
+  }
+
   for (int x = startX; x <= toX; x++) {
 	for (int y = startY; y <= toY; y++) {
 	  if (_code == CODE_BUILD_ITEM) {
@@ -182,7 +188,7 @@ void	UserInterface::mouseRelease(int x, int y) {
   _keyLeftPressed = false;
 }
 
-void UserInterface::drawModeBuild(sf::RenderWindow* app) {
+void UserInterface::drawModeBuild() {
   sf::Font font;
   if (!font.loadFromFile("snap/xolonium/Xolonium-Regular.otf"))
 	throw(std::string("failed to load: ").append("snap/xolonium/Xolonium-Regular.otf").c_str());
@@ -194,10 +200,26 @@ void UserInterface::drawModeBuild(sf::RenderWindow* app) {
   shortcut.setStyle(sf::Text::Underlined);
   shortcut.setColor(sf::Color(255, 255, 0));
   shortcut.setPosition(UI_PADDING + 0, UI_PADDING + 0);
-  app->draw(shortcut);
+  _app->draw(shortcut);
 }
 
-void UserInterface::draw(sf::RenderWindow* app) {
+void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
+  sf::Texture texture;
+  texture.loadFromFile("sprites/cursor.png");
+
+  sf::Sprite sprite;
+  sprite.setTexture(texture);
+  sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+
+  for (int x = startX; x <= toX; x++) {
+	for (int y = startY; y <= toY; y++) {
+	  sprite.setPosition(UI_WIDTH + x * TILE_SIZE, y * TILE_SIZE);
+	  _app->draw(sprite);
+	}
+  }
+}
+
+void UserInterface::draw() {
 
   sf::Font font;
   if (!font.loadFromFile("snap/xolonium/Xolonium-Regular.otf"))
@@ -205,7 +227,7 @@ void UserInterface::draw(sf::RenderWindow* app) {
 
   switch (_code) {
   case CODE_BUILD_ITEM:
-	drawModeBuild(app);
+	drawModeBuild();
 	break;
   case CODE_ZONE:
 	break;
@@ -217,7 +239,7 @@ void UserInterface::draw(sf::RenderWindow* app) {
 	  text.setCharacterSize(UI_FONT_SIZE);
 	  text.setStyle(sf::Text::Regular);
 	  text.setPosition(UI_PADDING + 0, UI_PADDING + i * UI_FONT_SIZE);
-	  app->draw(text);
+	  _app->draw(text);
 
 	  sf::Text shortcut;
 	  shortcut.setString(_entries[i].shortcut);
@@ -226,37 +248,40 @@ void UserInterface::draw(sf::RenderWindow* app) {
 	  shortcut.setStyle(sf::Text::Underlined);
 	  shortcut.setColor(sf::Color(255, 255, 0));
 	  shortcut.setPosition(UI_PADDING + 0, UI_PADDING + i * UI_FONT_SIZE);
-	  app->draw(shortcut);
+	  _app->draw(shortcut);
 	}
 	break;
   }
 
   // Cursor
   if (_code == CODE_BUILD_ITEM) {
-	sf::Texture texture;
-	texture.loadFromFile("sprites/cursor.png");
-	if (_keyLeftPressed) {
-	  int startX = std::min(_keyPressPosX, _keyMovePosX);
-	  int startY = std::min(_keyPressPosY, _keyMovePosY);
-	  int toX = std::max(_keyPressPosX, _keyMovePosX);
-	  int toY = std::max(_keyPressPosY, _keyMovePosY);
-	  for (int x = startX; x <= toX; x++) {
-		for (int y = startY; y <= toY; y++) {
-		  sf::Sprite sprite;
-		  sprite.setTexture(texture);
-		  sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
-		  sprite.setPosition(UI_WIDTH + x * TILE_SIZE, y * TILE_SIZE);
-		  app->draw(sprite);
-		}
-	  }
-	} else {
-	  sf::Sprite sprite;
-	  sprite.setTexture(texture);
-	  sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
-	  sprite.setPosition(UI_WIDTH + _cursor->_x * TILE_SIZE, UI_HEIGHT + _cursor->_y * TILE_SIZE);
-	  app->draw(sprite);
+
+	// Structure: multiple 1x1 tile
+	if (_keyLeftPressed && _parent_code == CODE_BUILD_STRUCTURE) {
+	  drawCursor(std::min(_keyPressPosX, _keyMovePosX),
+				 std::min(_keyPressPosY, _keyMovePosY),
+				 std::max(_keyPressPosX, _keyMovePosX),
+				 std::max(_keyPressPosY, _keyMovePosY));
+	}
+	// Single nxn tile: holding mouse button
+	else if (_keyLeftPressed) {
+	  ItemInfo itemInfo = BaseItem::getItemInfo(_buildItemType);
+	  drawCursor(std::min(_keyPressPosX, _keyMovePosX),
+				 std::min(_keyPressPosY, _keyMovePosY),
+				 std::min(_keyPressPosX, _keyMovePosX) + itemInfo.width - 1,
+				 std::min(_keyPressPosY, _keyMovePosY) + itemInfo.height - 1);
+	}
+
+	// Single nxn tile: mouse hover
+	else {
+	  ItemInfo itemInfo = BaseItem::getItemInfo(_buildItemType);
+	  drawCursor(_cursor->_x,
+				 _cursor->_y,
+				 _cursor->_x + itemInfo.width - 1,
+				 _cursor->_y + itemInfo.height - 1);
 	}
   }
+
 }
 
 void UserInterface::setBuildItem(int code, const char* text, int type) {

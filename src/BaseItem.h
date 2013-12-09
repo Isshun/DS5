@@ -84,6 +84,8 @@ class BaseItem {
 
   void			setPosition(int x, int y) { _x = x; _y = y; }
 
+  static ItemInfo getItemInfo(int type);
+
  private:
   int			_width;
   int			_height;
