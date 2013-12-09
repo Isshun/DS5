@@ -106,13 +106,24 @@ void	Game::draw_surface() {
 	  // 	}
 	  // }
 
-	  // Draw item
-	  {
-		sf::Sprite* sprite = _spriteManager->getSprite(item);
-		sprite->setPosition(UI_WIDTH + i * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE);
-		_app->draw(*sprite);
+	  if (item != NULL) {
+
+		// Draw item
+		{
+		  sf::Sprite* sprite = _spriteManager->getSprite(item);
+		  sprite->setPosition(UI_WIDTH + i * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE);
+		  _app->draw(*sprite);
+		}
+
+		// Draw battery
+		if (item->isComplete() && !item->isSupply()) {
+		  sf::Sprite* sprite = _spriteManager->getSprite(SpriteManager::IC_BATTERY);
+		  sprite->setPosition(UI_WIDTH + i * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE);
+		  _app->draw(*sprite);
+		}
+
 	  }
- 
+  
 	  // // Draw progress
 	  // if (item != NULL) {
 	  // 	for (int x = 0; x < item->getWidth(); x++) {

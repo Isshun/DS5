@@ -59,11 +59,10 @@ class UserInterface {
 	CODE_ZONE_BAR,
   };
 
-
-
   void	refresh();
   void	refreshMenu();
   void	refreshCursor();
+  void	refreshResources();
   void	drawModeBuild();
   void	setBuildItem(int code, const char* text, int type);
   void	setBuildMenu(int code);

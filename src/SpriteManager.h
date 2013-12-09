@@ -23,10 +23,16 @@ struct {
 
 class SpriteManager {
  public:
+
+  enum {
+	IC_BATTERY
+  };
+
   SpriteManager();
   ~SpriteManager();
 
   sf::Sprite*		getSprite(BaseItem* item);
+  sf::Sprite*		getSprite(int type);
 
  private:
   sf::Texture*		_texture[8];

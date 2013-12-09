@@ -63,3 +63,14 @@ sf::Sprite*		SpriteManager::getSprite(BaseItem* item) {
   sprite->setTextureRect(sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
   return sprite;
 }
+
+sf::Sprite*		SpriteManager::getSprite(int type) {
+  sf::Texture* texture = new sf::Texture();
+  texture->loadFromFile("sprites/battery.png");
+
+  sf::Sprite* sprite = new sf::Sprite();
+  sprite->setTexture(*texture);
+  sprite->setTextureRect(sf::IntRect(0, 0, 24, 24));
+
+  return sprite;
+}

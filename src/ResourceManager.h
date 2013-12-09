@@ -16,11 +16,13 @@ class	ResourceManager {
   int build(BaseItem* item);
 
   int getMatter() { return _matter; }
+  int getPower() { return _power; }
 
  private:
   static ResourceManager _self;
 
   int _matter;
+  int _power;
 };
 
 #endif

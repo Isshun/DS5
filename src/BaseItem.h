@@ -18,6 +18,7 @@ struct {
   int			width;
   int			height;
   int			matter;
+  int			power;
 } typedef		ItemInfo;
 
 class BaseItem {
@@ -87,7 +88,12 @@ class BaseItem {
 
   static ItemInfo getItemInfo(int type);
 
+  bool			isComplete() { return progress == matter; }
+  bool			isSupply() { return power == powerSupply; }
+
   int			matter;
+  int			power;
+  int			powerSupply;
 
  private:
   int			_width;

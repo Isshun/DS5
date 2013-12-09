@@ -6,7 +6,8 @@
 ResourceManager ResourceManager::_self = ResourceManager();
 
 ResourceManager::ResourceManager() {
-  _matter = 5;
+  _matter = 500;
+  _power = 10;
 }
 
 ResourceManager::~ResourceManager() {
@@ -25,6 +26,8 @@ int ResourceManager::build(BaseItem* item) {
   item->progress++;
 
   if (item->progress == item->matter) {
+	item->powerSupply = _power >= item->power ? item->power : _power;
+	_power -= item->power;
    	return BUILD_COMPLETE;
   }
 

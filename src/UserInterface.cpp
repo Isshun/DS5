@@ -8,8 +8,10 @@
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
+#include <sstream>
 #include "UserInterface.h"
 #include "BaseItem.h"
+#include "ResourceManager.h"
 
 Entry	entries_main[] = {
   {UserInterface::CODE_BUILD,	"build",		"b",	sf::Keyboard::B,		0},
@@ -199,7 +201,7 @@ void UserInterface::drawModeBuild() {
   shortcut.setCharacterSize(UI_FONT_SIZE);
   shortcut.setStyle(sf::Text::Underlined);
   shortcut.setColor(sf::Color(255, 255, 0));
-  shortcut.setPosition(UI_PADDING + 0, UI_PADDING + 0);
+  shortcut.setPosition(UI_PADDING + 0, UI_HEIGHT + UI_PADDING + 0);
   _app->draw(shortcut);
 }
 
@@ -213,7 +215,7 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
 
   for (int x = startX; x <= toX; x++) {
 	for (int y = startY; y <= toY; y++) {
-	  sprite.setPosition(UI_WIDTH + x * TILE_SIZE, y * TILE_SIZE);
+	  sprite.setPosition(UI_WIDTH + x * TILE_SIZE, UI_HEIGHT + y * TILE_SIZE);
 	  _app->draw(sprite);
 	}
   }
@@ -237,7 +239,7 @@ void	UserInterface::refreshMenu() {
 	  text.setFont(font);
 	  text.setCharacterSize(UI_FONT_SIZE);
 	  text.setStyle(sf::Text::Regular);
-	  text.setPosition(UI_PADDING + 0, UI_PADDING + i * UI_FONT_SIZE);
+	  text.setPosition(UI_PADDING + 0, UI_HEIGHT + UI_PADDING + i * UI_FONT_SIZE);
 	  _app->draw(text);
 
 	  sf::Text shortcut;
@@ -246,7 +248,7 @@ void	UserInterface::refreshMenu() {
 	  shortcut.setCharacterSize(UI_FONT_SIZE);
 	  shortcut.setStyle(sf::Text::Underlined);
 	  shortcut.setColor(sf::Color(255, 255, 0));
-	  shortcut.setPosition(UI_PADDING + 0, UI_PADDING + i * UI_FONT_SIZE);
+	  shortcut.setPosition(UI_PADDING + 0, UI_HEIGHT + UI_PADDING + i * UI_FONT_SIZE);
 	  _app->draw(shortcut);
 	}
 	break;
@@ -283,9 +285,47 @@ void	UserInterface::refreshCursor() {
   }
 }
 
+void UserInterface::refreshResources() {
+  sf::Font font;
+  if (!font.loadFromFile("snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("snap/xolonium/Xolonium-Regular.otf").c_str());
+
+  {
+	sf::Text text;
+	std::ostringstream oss;
+	oss << "Matter: " << ResourceManager::getInstance().getMatter();
+
+	sf::Text shortcut;
+	shortcut.setString(oss.str());
+	shortcut.setFont(font);
+	shortcut.setCharacterSize(UI_FONT_SIZE);
+	shortcut.setStyle(sf::Text::Underlined);
+	shortcut.setColor(sf::Color(255, 255, 0));
+	shortcut.setPosition(UI_PADDING + 0, UI_PADDING + 0);
+	_app->draw(shortcut);
+  }
+
+  {
+	sf::Text text;
+	std::ostringstream oss;
+	oss << "Power: " << ResourceManager::getInstance().getPower();
+
+	sf::Text shortcut;
+	shortcut.setString(oss.str());
+	shortcut.setFont(font);
+	shortcut.setCharacterSize(UI_FONT_SIZE);
+	shortcut.setStyle(sf::Text::Underlined);
+	shortcut.setColor(sf::Color(255, 255, 0));
+	shortcut.setPosition(UI_PADDING + 250 + 0, UI_PADDING + 0);
+	_app->draw(shortcut);
+  }
+
+}
+
 void UserInterface::refresh() {
   refreshMenu();
   refreshCursor();
+  refreshResources();
 }
 
 void UserInterface::setBuildItem(int code, const char* text, int type) {

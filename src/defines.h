@@ -49,7 +49,7 @@
 #define SHELL_BLUE	"\33[1m\33[34m"
 
 #define	UI_WIDTH 200
-#define	UI_HEIGHT 0
+#define	UI_HEIGHT 100
 #define	UI_PADDING 10
 #define UI_FONT_SIZE 32
 
