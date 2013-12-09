@@ -102,18 +102,18 @@ void	Game::draw_surface() {
 	for (int j = 0; j < h; j++) {
 	  BaseItem* item = _worldMap->getItem(i, j);
 
-	  // Draw floor
-	  if (item != NULL) {
-		for (int x = 0; x < item->getWidth(); x++) {
-		  for (int y = 0; y < item->getHeight(); y++) {
-			if (item != NULL && item->type != BaseItem::NONE) {
-			  sf::Sprite* sprite = _spriteManager->getSprite(item);
-			  sprite->setPosition(UI_WIDTH + i * TILE_SIZE + x * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE + y * TILE_SIZE);
-			  _app->draw(*sprite);
-			}
-		  }
-		}
-	  }
+	  // // Draw floor
+	  // if (item != NULL) {
+	  // 	for (int x = 0; x < item->getWidth(); x++) {
+	  // 	  for (int y = 0; y < item->getHeight(); y++) {
+	  // 		if (item != NULL && item->type != BaseItem::NONE) {
+	  // 		  sf::Sprite* sprite = _spriteManager->getSprite(item);
+	  // 		  sprite->setPosition(UI_WIDTH + i * TILE_SIZE + x * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE + y * TILE_SIZE);
+	  // 		  _app->draw(*sprite);
+	  // 		}
+	  // 	  }
+	  // 	}
+	  // }
 
 	  // Draw item
 	  {

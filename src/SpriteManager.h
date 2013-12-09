@@ -18,8 +18,6 @@ struct {
   int			type;
   int			posX;
   int			posY;
-  int			width;
-  int			height;
   int			textureIndex;
 } typedef		SpriteResource;
 

@@ -10,15 +10,15 @@
 #include "defines.h"
 
 SpriteResource	spritesRes[] = {
-  {BaseItem::STRUCTURE_HULL,	2, 8, 1, 1, 0},
-  {BaseItem::STRUCTURE_WALL,	2, 8, 1, 1, 0},
-  {BaseItem::STRUCTURE_FLOOR,	7, 7, 1, 1, 0},
-  {BaseItem::TRANSPORTATION_TRANSPORTER_SYSTEMS,	1, 8, 1, 1, 0},
-  {BaseItem::HOLODECK_GRID,	5, 6, 1, 1, 0},
-  {BaseItem::ENGINE_CONTROL_CENTER,	8, 10, 3, 2, 1},
-  {BaseItem::QUARTER_BED,	10, 7, 2, 2, 2},
-  {BaseItem::QUARTER_CHAIR,	8, 6, 1, 1, 2},
-  {BaseItem::NONE,				0, 0, 0, 0, 0},
+  {BaseItem::STRUCTURE_HULL,	2, 8, 0},
+  {BaseItem::STRUCTURE_WALL,	2, 8, 0},
+  {BaseItem::STRUCTURE_FLOOR,	7, 7, 0},
+  {BaseItem::TRANSPORTATION_TRANSPORTER_SYSTEMS,	1, 8, 0},
+  {BaseItem::HOLODECK_GRID,	5, 6, 0},
+  {BaseItem::ENGINE_CONTROL_CENTER,	8, 10, 1},
+  {BaseItem::QUARTER_BED,	10, 7, 2},
+  {BaseItem::QUARTER_CHAIR,	8, 6, 2},
+  {BaseItem::NONE,				0, 0, 0},
 };
 
 SpriteManager::SpriteManager() {
@@ -50,8 +50,8 @@ sf::Sprite*		SpriteManager::getSprite(BaseItem* item) {
 		sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
 		sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
 										   spritesRes[i].posY * TILE_SIZE,
-										   spritesRes[i].width * TILE_SIZE,
-										   spritesRes[i].height * TILE_SIZE));
+										   item->getWidth() * TILE_SIZE,
+										   item->getHeight() * TILE_SIZE));
 		return sprite;
 	  }
 	}

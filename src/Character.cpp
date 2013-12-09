@@ -99,7 +99,7 @@ void		Character::go(int toX, int toY) {
 void		Character::move()
 {
 
-  if (_astarsearch != 0) {
+  if (_astarsearch != NULL) {
 
 	// Next node
 	MapSearchNode *node = 0;
@@ -127,10 +127,11 @@ void		Character::move()
 		job = NULL;
 		std::cout << Debug() << "Character: work done" << std::endl;
 	  }
-	  // _astarsearch->FreeSolutionNodes();
-	  // _astarsearch->EnsureMemoryFreed();
-	  // delete _astarsearch;
-	  // _astarsearch = 0;
+
+	  _astarsearch->FreeSolutionNodes();
+	  //_astarsearch->EnsureMemoryFreed();
+	  delete _astarsearch;
+	  _astarsearch = 0;
 	}
   }
 }
