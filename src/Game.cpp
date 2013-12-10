@@ -224,3 +224,24 @@ void	Game::gere_quit()
 
   //std::cout << "Closing" << std::endl;
 }
+
+int main(int argc, char *argv[]) {
+  sf::RenderWindow* app = new sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), NAME);
+  app->setKeyRepeatEnabled(true);
+
+  sf::View view = app->getDefaultView();
+
+  view.setViewport(sf::FloatRect(0.f, 0.f, 1.0f, 1.0f));
+
+  // view.setCenter(400, 200);
+  // view.zoom(zoom);
+
+  app->setView(view);
+
+  // load game
+  Game	game(app);
+  game.loop();
+
+  return EXIT_SUCCESS;
+}
+

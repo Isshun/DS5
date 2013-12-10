@@ -293,6 +293,16 @@ void UserInterfaceMenu::drawModeBuild() {
 }
 
 void	UserInterfaceMenu::refreshMenu() {
+
+  sf::RectangleShape shape;
+  shape.setSize(sf::Vector2f(UI_WIDTH, WINDOW_HEIGHT));
+  shape.setFillColor(sf::Color(100, 0, 0));
+  _app->draw(shape);
+
+  shape.setSize(sf::Vector2f(WINDOW_WIDTH, UI_HEIGHT));
+  shape.setFillColor(sf::Color(100, 100, 0));
+  _app->draw(shape);
+
   sf::Font font;
   if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
 	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());

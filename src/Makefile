@@ -1,5 +1,4 @@
-SRC	=	main.cpp	\
-		Game.cpp	\
+SRC	=	Game.cpp	\
 		Log.cpp		\
 		MapSearchNode.cpp	\
 		UserInterface.cpp	\

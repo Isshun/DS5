@@ -43,30 +43,3 @@ const char				*arg1;
 void	init_timer(Game *game)
 {
 }
-
-int main(int argc, char *argv[])
-{
-  sf::RenderWindow* app = new sf::RenderWindow(sf::VideoMode(1600 / 2, 900 / 2, 32), NAME);
-  app->setKeyRepeatEnabled(true);
-
-  sf::View view = app->getDefaultView();
-
-  view.setViewport(sf::FloatRect(0.f, 0.f, 1.0f, 1.0f));
-
-  // view.setCenter(400, 200);
-
-  // view.zoom(zoom);
-
-  app->setView(view);
-
-  if (argc > 1)
-    arg1 = argv[1];
-
-  // load game
-  Game	*game = new Game(app);
-
-  game->loop();
-
-  return EXIT_SUCCESS;
-}
-
