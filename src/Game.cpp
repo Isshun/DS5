@@ -175,11 +175,11 @@ void	Game::loop()
 		  }
 \
 		  if (event.type == sf::Event::MouseButtonPressed) {
-			_ui->mousePress(event.mouseButton.x, event.mouseButton.y);
+			_ui->mousePress(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
 		  }
 
 		  if (event.type == sf::Event::MouseButtonReleased) {
-			_ui->mouseRelease(event.mouseButton.x, event.mouseButton.y);
+			_ui->mouseRelease(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
 		  }
 
 		  // GOTO

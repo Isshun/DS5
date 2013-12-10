@@ -3,6 +3,7 @@ SRC	=	main.cpp	\
 		Log.cpp		\
 		MapSearchNode.cpp	\
 		UserInterface.cpp	\
+		UserInterfaceMenu.cpp	\
 		BaseItem.cpp	\
 		SpriteManager.cpp	\
 		ResourceManager.cpp	\

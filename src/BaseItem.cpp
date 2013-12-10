@@ -8,6 +8,7 @@
 #include "BaseItem.h"
 
 ItemInfo	itemsInfo[] = {
+  {BaseItem::STRUCTURE_ROOM,							true,	1, 1, 1, 0},
   {BaseItem::STRUCTURE_HULL,							true,	1, 1, 1, 0},
   {BaseItem::STRUCTURE_WALL,							true,	1, 1, 1, 0},
   {BaseItem::STRUCTURE_FLOOR,							false,	1, 1, 1, 0},
