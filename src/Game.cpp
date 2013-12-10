@@ -89,6 +89,15 @@ void	Game::draw_surface() {
   int w = _worldMap->getWidth();
   int h = _worldMap->getHeight();
 
+  int viewPosX = _ui->getViewPosX();
+  int viewPosY = _ui->getViewPosY();
+
+  sf::RectangleShape shape;
+  shape.setSize(sf::Vector2f(w * TILE_SIZE, h * TILE_SIZE));
+  shape.setPosition(sf::Vector2f(UI_WIDTH + viewPosX, UI_HEIGHT + viewPosY));
+  shape.setFillColor(sf::Color(0, 50, 100));
+  _app->draw(shape);
+
   // Run through items
   for (int i = w-1; i >= 0; i--) {
 	for (int j = h-1; j >= 0; j--) {
@@ -173,7 +182,7 @@ void	Game::loop()
 		  if (event.type == sf::Event::MouseMoved) {
 			_ui->mouseMoved(event.mouseMove.x, event.mouseMove.y);
 		  }
-\
+
 		  if (event.type == sf::Event::MouseButtonPressed) {
 			_ui->mousePress(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
 		  }

@@ -32,11 +32,20 @@ sf::Transform  UserInterface::getViewTransform(sf::Transform transform) {
 }
 
 void	UserInterface::mouseMoved(int x, int y) {
-  if (x > UI_WIDTH && _keyLeftPressed) {
-	_keyMovePosX = (x - UI_WIDTH) / TILE_SIZE;
-	_keyMovePosY = (y - UI_HEIGHT) / TILE_SIZE;
-  } else if (x > UI_WIDTH) {
-	_cursor->setMousePos(x - UI_WIDTH, y - UI_HEIGHT);
+  if (x <= UI_WIDTH || y <= UI_HEIGHT)
+	return;
+
+  // left button pressed
+  if (_keyLeftPressed) {
+	_keyMovePosX = (x - UI_WIDTH - _viewPosX) / TILE_SIZE;
+	_keyMovePosY = (y - UI_HEIGHT - _viewPosY) / TILE_SIZE;
+  }
+
+  // no buttons pressed
+  else {
+	_keyMovePosX = (x - UI_WIDTH - _viewPosX) / TILE_SIZE;
+	_keyMovePosY = (y - UI_HEIGHT - _viewPosY) / TILE_SIZE;
+	_cursor->setMousePos(x - UI_WIDTH - _viewPosX - 1, y - UI_HEIGHT - _viewPosY - 1);
   }
 }
 
@@ -49,8 +58,8 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
 
     case sf::Mouse::Left:
       _keyLeftPressed = true;
-      _keyMovePosX = _keyPressPosX = (x - UI_WIDTH) / TILE_SIZE;
-      _keyMovePosY = _keyPressPosY = (y - UI_HEIGHT) / TILE_SIZE;
+      _keyMovePosX = _keyPressPosX = (x - UI_WIDTH - _viewPosX) / TILE_SIZE;
+      _keyMovePosY = _keyPressPosY = (y - UI_HEIGHT - _viewPosY) / TILE_SIZE;
       break;
 
     case sf::Mouse::Right:
@@ -105,9 +114,13 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
   sprite.setTexture(texture);
   sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 
+  startX = max(startX, 0);
+  startY = max(startY, 0);
+  toX = min(toX, _worldMap->getWidth());
+  toY = min(toY, _worldMap->getHeight());
   for (int x = startX; x <= toX; x++) {
 	for (int y = startY; y <= toY; y++) {
-	  sprite.setPosition(UI_WIDTH + x * TILE_SIZE, UI_HEIGHT + y * TILE_SIZE);
+	  sprite.setPosition(UI_WIDTH + x * TILE_SIZE + _viewPosX, UI_HEIGHT + y * TILE_SIZE + _viewPosY);
 	  _app->draw(sprite);
 	}
   }
@@ -135,10 +148,11 @@ void	UserInterface::refreshCursor() {
 	// Single nxn tile: mouse hover
 	else {
 	  ItemInfo itemInfo = BaseItem::getItemInfo(_menu->getBuildItemType());
-	  drawCursor(_cursor->_x,
-				 _cursor->_y,
-				 _cursor->_x + itemInfo.width - 1,
-				 _cursor->_y + itemInfo.height - 1);
+	  drawCursor(_keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY);
+	  // drawCursor(_cursor->_x,
+	  // 			 _cursor->_y,
+	  // 			 _cursor->_x + itemInfo.width - 1,
+	  // 			 _cursor->_y + itemInfo.height - 1);
 	}
   }
 }

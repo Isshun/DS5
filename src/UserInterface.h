@@ -34,6 +34,8 @@ class UserInterface {
   void	mouseMoved(int x, int y);
   void	mousePress(sf::Mouse::Button button, int x, int y);
   void	mouseRelease(sf::Mouse::Button button, int x, int y);
+  int	getViewPosX() { return _viewPosX; }
+  int	getViewPosY() { return _viewPosY; }
   sf::Transform  getViewTransform(sf::Transform transform);
 
  private:
