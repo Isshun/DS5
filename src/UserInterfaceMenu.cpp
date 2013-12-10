@@ -134,6 +134,7 @@ Entry	entries_zone[] = {
 UserInterfaceMenu::UserInterfaceMenu(sf::RenderWindow* app) {
   _entries = entries_main;
   _code = CODE_MAIN;
+  _app = app;
 }
 
 UserInterfaceMenu::~UserInterfaceMenu() {
