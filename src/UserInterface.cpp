@@ -18,8 +18,10 @@ UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap) {
   _worldMap = worldMap;
   _cursor = new Cursor();
   _keyLeftPressed = false;
+  _keyRightPressed = false;
   _viewPosX = 0;
   _viewPosY = 0;
+  _zoom = 1.0f;
   _menu = new UserInterfaceMenu(app);
 }
 
@@ -27,7 +29,8 @@ UserInterface::~UserInterface() {
 }
 
 sf::Transform  UserInterface::getViewTransform(sf::Transform transform) {
-  transform.translate(_viewPosX, _viewPosY);
+  transform.translate(UI_WIDTH + _viewPosX, UI_HEIGHT + _viewPosY);
+  transform.scale(_zoom, _zoom);
   return transform;
 }
 
@@ -39,6 +42,14 @@ void	UserInterface::mouseMoved(int x, int y) {
   if (_keyLeftPressed) {
 	_keyMovePosX = (x - UI_WIDTH - _viewPosX) / TILE_SIZE;
 	_keyMovePosY = (y - UI_HEIGHT - _viewPosY) / TILE_SIZE;
+  }
+
+  // right button pressed
+  else if (_keyRightPressed) {
+	_viewPosX -= _mouseRightPress.x - x;
+	_viewPosY -= _mouseRightPress.y - y;
+	_mouseRightPress.x = x;
+	_mouseRightPress.y = y;
   }
 
   // no buttons pressed
@@ -63,6 +74,9 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
       break;
 
     case sf::Mouse::Right:
+	  _keyRightPressed = true;
+	  _mouseRightPress.x = x;
+	  _mouseRightPress.y = y;
       break;
     }
   }
@@ -102,8 +116,18 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
     }
 
   case sf::Mouse::Right:
+	if (_keyRightPressed) {
+	  _keyRightPressed = false;
+	  _viewPosX -= _mouseRightPress.x - x;
+	  _viewPosY -= _mouseRightPress.y - y;
+	}
     break;
+
   }
+}
+
+void	UserInterface::mouseWheel(int delta, int x, int y) {
+  _zoom = min(max(_zoom + 0.1f * delta, 0.5f), 1.0f);
 }
 
 void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {

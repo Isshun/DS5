@@ -10,7 +10,7 @@ SRC	=	Game.cpp	\
 		Cursor.cpp	\
 		Character.cpp
 
-NAME	=	top_scene
+NAME	=	ds5
 
 CC	=	g++
 

@@ -49,7 +49,7 @@ void	Game::update() {
 
   // Launch build
   if (ResourceManager::getInstance().getMatter() > 0) {
-	if (character->job == NULL) {
+	if (character->getJob() == NULL) {
 	  BaseItem* item = _worldMap->getItemToBuild();
 	  if (item != NULL) {
 		std::cout << Debug() << "Game: add build job to character" << std::endl;
@@ -92,11 +92,15 @@ void	Game::draw_surface() {
   int viewPosX = _ui->getViewPosX();
   int viewPosY = _ui->getViewPosY();
 
+  // Render transformation for viewport
+  sf::Transform transform;
+  sf::RenderStates render(_ui->getViewTransform(transform));
+
+  // Draw viewport background
   sf::RectangleShape shape;
   shape.setSize(sf::Vector2f(w * TILE_SIZE, h * TILE_SIZE));
-  shape.setPosition(sf::Vector2f(UI_WIDTH + viewPosX, UI_HEIGHT + viewPosY));
   shape.setFillColor(sf::Color(0, 50, 100));
-  _app->draw(shape);
+  _app->draw(shape, render);
 
   // Run through items
   for (int i = w-1; i >= 0; i--) {
@@ -121,10 +125,8 @@ void	Game::draw_surface() {
 		// Draw item
 		{
 		  sf::Sprite* sprite = _spriteManager->getSprite(item);
-		  sprite->setPosition(UI_WIDTH + i * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE);
+		  sprite->setPosition(i * TILE_SIZE, j * TILE_SIZE);
 
-          sf::Transform transform;
-          sf::RenderStates render(_ui->getViewTransform(transform));
 		  _app->draw(*sprite, render);
 		}
 
@@ -133,9 +135,7 @@ void	Game::draw_surface() {
 		  sf::Sprite* sprite = _spriteManager->getSprite(SpriteManager::IC_BATTERY);
 		  sprite->setPosition(UI_WIDTH + i * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE);
 
-          sf::Transform transform;
-          sf::RenderStates render(_ui->getViewTransform(transform));
-		  _app->draw(*sprite);
+		  _app->draw(*sprite, render);
 		}
 
 	  }
@@ -189,6 +189,10 @@ void	Game::loop()
 
 		  if (event.type == sf::Event::MouseButtonReleased) {
 			_ui->mouseRelease(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
+		  }
+
+		  if (event.type == sf::Event::MouseWheelMoved) {
+			_ui->mouseWheel(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
 		  }
 
 		  // GOTO

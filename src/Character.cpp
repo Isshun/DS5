@@ -1,32 +1,18 @@
 #include <iostream>
-
+#include <SFML/Graphics.hpp>
 #include "defines.h"
 #include "Character.h"
 #include "ResourceManager.h"
 #include "stlastar.h"
 
-extern Scene	*scene;
-#include <SFML/Graphics.hpp>
-
-extern sf::RenderWindow	*app;
 extern WorldMap* gl_worldmap;
-
-#define Character_W	32
-#define Character_H	64
-
-// Frequence de modification du sprite par
-// rapport a l'update de la position du Character
-#define FRAME_JUMP 3
-#define STEP_Character	6
-#define FIX_PATH_SIZE 8
-
 
 Character::Character(int x, int y)
 {
-  job = NULL;
+  _astarsearch = NULL;
+  _job = NULL;
   _posY = y;
   _posX = x;
-  _astarsearch = 0;
 }
 
 // FIXME: taille du sprite en dur
@@ -34,7 +20,7 @@ Character::~Character() {
 }
 
 void	Character::build(BaseItem* item) {
-  job = item;
+  _job = item;
   item->builder = this;
   int posX = item->getX();
   int posY = item->getY();
@@ -87,8 +73,8 @@ void		Character::go(int toX, int toY) {
 	 }
 	 else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) {
 	   cout << Warning() << "Search terminated. Did not find goal state\n";
-	   gl_worldmap->buildAbort((BaseItem*)job);
-	   job = NULL;
+	   gl_worldmap->buildAbort((BaseItem*)_job);
+	   _job = NULL;
 	   _astarsearch->FreeSolutionNodes();
 	   _astarsearch->EnsureMemoryFreed();
 	   delete _astarsearch;
@@ -131,19 +117,19 @@ void		Character::move()
   }
 
   // Work
-  if (job != NULL) {
-	BaseItem* item = (BaseItem*)job;
+  if (_job != NULL) {
+	BaseItem* item = (BaseItem*)_job;
 	if (item->getX() == _posX && item->getY() == _posY) {
 	  switch (ResourceManager::getInstance().build(item)) {
 	  case ResourceManager::NO_MATTER:
 		std::cout << Debug() << "Character: not enough matter" << std::endl;
 		gl_worldmap->buildAbort(item);
-		job = NULL;
+		_job = NULL;
 		break;
 	  case ResourceManager::BUILD_COMPLETE:
 		std::cout << Debug() << "Character: build complete" << std::endl;
 		gl_worldmap->buildComplete(item);
-		job = NULL;
+		_job = NULL;
 	  case ResourceManager::BUILD_PROGRESS:
 		std::cout << Debug() << "Character: build progress" << std::endl;
 	  }
@@ -152,7 +138,6 @@ void		Character::move()
 
 }
 
-
 void Character::draw(sf::RenderWindow* app, sf::Transform transform) {
 	sf::Texture texture;
 	texture.loadFromFile("../sprites/cless.png");
@@ -160,8 +145,8 @@ void Character::draw(sf::RenderWindow* app, sf::Transform transform) {
 
 	sf::Sprite sprite;
 	sprite.setTexture(texture);
-	sprite.setTextureRect(sf::IntRect(0, 0, 30, 30));
-	sprite.setPosition(UI_WIDTH + _posX * 32, UI_HEIGHT + _posY * 32);
+	sprite.setTextureRect(sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
+	sprite.setPosition(_posX * TILE_SIZE, _posY * TILE_SIZE);
 
     sf::RenderStates render(transform);
 	app->draw(sprite, render);

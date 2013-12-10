@@ -34,6 +34,7 @@ class UserInterface {
   void	mouseMoved(int x, int y);
   void	mousePress(sf::Mouse::Button button, int x, int y);
   void	mouseRelease(sf::Mouse::Button button, int x, int y);
+  void	mouseWheel(int delta, int x, int y);
   int	getViewPosX() { return _viewPosX; }
   int	getViewPosY() { return _viewPosY; }
   sf::Transform  getViewTransform(sf::Transform transform);
@@ -42,15 +43,18 @@ class UserInterface {
   void	drawCursor(int startX, int startY, int toX, int toY);
 
   sf::RenderWindow* _app;
-  Cursor*	_cursor;
-  WorldMap* _worldMap;
-  bool		_keyLeftPressed;
-  int		_keyPressPosX;
-  int		_keyPressPosY;
-  int		_keyMovePosX;
-  int		_keyMovePosY;
-  int           _viewPosX;
+  Cursor*		_cursor;
+  WorldMap*		_worldMap;
+  bool			_keyLeftPressed;
+  bool			_keyRightPressed;
+  sf::Vector2i	_mouseRightPress;
+  int			_keyPressPosX;
+  int			_keyPressPosY;
+  int			_keyMovePosX;
+  int			_keyMovePosY;
+  int			_viewPosX;
   int           _viewPosY;
+  float			_zoom;
   UserInterfaceMenu*       _menu;
 };
 

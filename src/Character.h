@@ -39,6 +39,7 @@ class	Character
   void	set_direction(int direction);
   void	setRun(int direction, bool run);
   void	set_position(int x, int y);
+  void*	getJob() { return _job; }
 
   void	draw(int x, int y);
 
@@ -51,12 +52,12 @@ class	Character
 
   int	_posX;
   int	_posY;
-  void*	job;
 
 private:
   const char	*path;
   AStarSearch<MapSearchNode>* _astarsearch;
   int	_steps;
+  void*	_job;
 };
 
 #endif
