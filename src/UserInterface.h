@@ -38,6 +38,10 @@ class UserInterface {
   int	getViewPosX() { return _viewPosX; }
   int	getViewPosY() { return _viewPosY; }
   sf::Transform  getViewTransform(sf::Transform transform);
+  void	setRelativeMousePos(int x, int y) {
+	_keyMovePosX = (x * (1.0f / _zoom) - UI_WIDTH - _viewPosX) / TILE_SIZE;
+	_keyMovePosY = (y * (1.0f / _zoom) - UI_HEIGHT - _viewPosY) / TILE_SIZE;
+  }
 
  private:
   void	drawCursor(int startX, int startY, int toX, int toY);

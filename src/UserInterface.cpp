@@ -38,14 +38,16 @@ void	UserInterface::mouseMoved(int x, int y) {
   if (x <= UI_WIDTH || y <= UI_HEIGHT)
 	return;
 
+  setRelativeMousePos(x, y);
+
   // left button pressed
   if (_keyLeftPressed) {
-	_keyMovePosX = (x - UI_WIDTH - _viewPosX) / TILE_SIZE;
-	_keyMovePosY = (y - UI_HEIGHT - _viewPosY) / TILE_SIZE;
+	setRelativeMousePos(x, y);
   }
 
   // right button pressed
   else if (_keyRightPressed) {
+	setRelativeMousePos(x, y);
 	_viewPosX -= _mouseRightPress.x - x;
 	_viewPosY -= _mouseRightPress.y - y;
 	_mouseRightPress.x = x;
@@ -54,8 +56,7 @@ void	UserInterface::mouseMoved(int x, int y) {
 
   // no buttons pressed
   else {
-	_keyMovePosX = (x - UI_WIDTH - _viewPosX) / TILE_SIZE;
-	_keyMovePosY = (y - UI_HEIGHT - _viewPosY) / TILE_SIZE;
+	setRelativeMousePos(x, y);
 	_cursor->setMousePos(x - UI_WIDTH - _viewPosX - 1, y - UI_HEIGHT - _viewPosY - 1);
   }
 }
@@ -128,6 +129,7 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 
 void	UserInterface::mouseWheel(int delta, int x, int y) {
   _zoom = min(max(_zoom + 0.1f * delta, 0.5f), 1.0f);
+  setRelativeMousePos(x, y);
 }
 
 void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
@@ -138,6 +140,10 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
   sprite.setTexture(texture);
   sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 
+  sf::Transform transform;
+  transform.scale(_zoom, _zoom);
+  sf::RenderStates render(transform);
+
   startX = max(startX, 0);
   startY = max(startY, 0);
   toX = min(toX, _worldMap->getWidth());
@@ -145,7 +151,7 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
   for (int x = startX; x <= toX; x++) {
 	for (int y = startY; y <= toY; y++) {
 	  sprite.setPosition(UI_WIDTH + x * TILE_SIZE + _viewPosX, UI_HEIGHT + y * TILE_SIZE + _viewPosY);
-	  _app->draw(sprite);
+	  _app->draw(sprite, render);
 	}
   }
 }
@@ -187,15 +193,20 @@ void UserInterface::refreshResources() {
 	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 
   {
+	int matter = ResourceManager::getInstance().getMatter();
     std::ostringstream oss;
-    oss << "Matter: " << ResourceManager::getInstance().getMatter();
+    oss << "Matter: " << matter;
 
     sf::Text text;
     text.setString(oss.str());
     text.setFont(font);
     // text.setCharacterSize(UI_FONT_SIZE);
     // text.setStyle(sf::Text::Underlined);
-    // text.setColor(sf::Color(255, 255, 0));
+
+	if (matter == 0)
+	  text.setColor(sf::Color(255, 0, 0));
+	else if (matter < 20)
+	  text.setColor(sf::Color(255, 255, 0));
     text.setPosition(UI_PADDING + 0, UI_PADDING + 0);
     _app->draw(text);
   }
