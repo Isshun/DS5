@@ -8,6 +8,7 @@ SRC	=	Game.cpp	\
 		ResourceManager.cpp	\
 		WorldMap.cpp	\
 		Cursor.cpp	\
+		CharacterManager.cpp	\
 		Character.cpp
 
 NAME	=	ds5

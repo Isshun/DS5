@@ -25,7 +25,11 @@ Game::Game(sf::RenderWindow* app): run(true), up_to_date(false), pause(false) {
 
   _spriteManager = new SpriteManager();
 
-  character = new Character(2, 2);
+  _characterManager = new CharacterManager();
+  _characterManager->add(2, 2);
+  _characterManager->add(8, 8);
+  _characterManager->add(20, 8);
+  _characterManager->add(50, 8);
   // character->go(8, 8);
 
   // // Dump worldmap
@@ -47,14 +51,14 @@ Game::~Game() {
 
 void	Game::update() {
 
-  // Launch build
+  // assign works
   if (ResourceManager::getInstance().getMatter() > 0) {
-	if (character->getJob() == NULL) {
-	  BaseItem* item = _worldMap->getItemToBuild();
-	  if (item != NULL) {
+	Character* character = NULL;
+	BaseItem* item = NULL;
+	while ((character = _characterManager->getUnemployed()) != NULL
+		   && (item = _worldMap->getItemToBuild()) != NULL) {
 		std::cout << Debug() << "Game: add build job to character" << std::endl;
 		character->build(item);
-	  }
 	}
   }
 
@@ -72,14 +76,12 @@ void	Game::refresh() {
   draw_surface();
 
   // Character
-  if (character != 0) {
-	if (_frame % CHARACTER_MOVE_INTERVAL == 0) {
-	  character->move();
-	}
-    sf::Transform transform;
-    transform = _ui->getViewTransform(transform);
-	character->draw(_app, transform);
+  if (_frame % CHARACTER_MOVE_INTERVAL == 0) {
+	_characterManager->move();
   }
+  sf::Transform transform;
+  transform = _ui->getViewTransform(transform);
+  _characterManager->draw(_app, transform);
 
   // User interface
   _ui->refresh();

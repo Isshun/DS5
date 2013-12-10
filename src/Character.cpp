@@ -7,15 +7,13 @@
 
 extern WorldMap* gl_worldmap;
 
-Character::Character(int x, int y)
-{
+Character::Character(int x, int y) {
   _astarsearch = NULL;
   _job = NULL;
   _posY = y;
   _posX = x;
 }
 
-// FIXME: taille du sprite en dur
 Character::~Character() {
 }
 
@@ -136,18 +134,4 @@ void		Character::move()
 	}
   }
 
-}
-
-void Character::draw(sf::RenderWindow* app, sf::Transform transform) {
-	sf::Texture texture;
-	texture.loadFromFile("../sprites/cless.png");
-	texture.setSmooth(true);
-
-	sf::Sprite sprite;
-	sprite.setTexture(texture);
-	sprite.setTextureRect(sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
-	sprite.setPosition(_posX * TILE_SIZE, _posY * TILE_SIZE);
-
-    sf::RenderStates render(transform);
-	app->draw(sprite, render);
 }

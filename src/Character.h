@@ -10,19 +10,13 @@
 
 using namespace std;
 
-typedef map<int, sf::Sprite>	map_direction;
-
-//fixme: intile quand update_position clean
-class Scene;
-
 class	Character
 {
  public:
 	Character(int x, int y);
 	~Character();
 
-  void	update_position(Scene *scene);
-  void draw(sf::RenderWindow* app, sf::Transform transform);
+  void	draw(sf::RenderWindow* app, sf::Transform transform);
   void	build(BaseItem* item);
   
   // Gets
@@ -41,13 +35,10 @@ class	Character
   void	set_position(int x, int y);
   void*	getJob() { return _job; }
 
-  void	draw(int x, int y);
-
   map<int,int>	_run;
 
   int	_last_direction;
   int	current_frame;
-  map<int,map_direction>	tile;
   sf::Vector2<int>		position;
 
   int	_posX;
