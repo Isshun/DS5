@@ -88,8 +88,10 @@ void		Character::go(int toX, int toY) {
 	 }
 	 else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) {
 	   cout << Warning() << "Search terminated. Did not find goal state\n";
-	   // _astarsearch->FreeSolutionNodes();
-	   // _astarsearch->EnsureMemoryFreed();
+	   gl_worldmap->buildAbort((BaseItem*)job);
+	   job = NULL;
+	   _astarsearch->FreeSolutionNodes();
+	   //_astarsearch->EnsureMemoryFreed();
 	   delete _astarsearch;
 	   _astarsearch = 0;
 	 }

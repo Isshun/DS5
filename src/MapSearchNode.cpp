@@ -21,7 +21,7 @@ int GetMap( int x, int y )
 	return 2;
 
   // WALL
-  if (item != NULL && item->isSolid && item->progress == 100)
+  if (item != NULL && item->isSolid && item->isComplete())
 	return 9;
 
   // DEFAULT

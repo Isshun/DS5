@@ -89,8 +89,8 @@ void	Game::draw_surface() {
   int h = _worldMap->getHeight();
 
   // Run through items
-  for (int i = 0; i < w; i++) {
-	for (int j = 0; j < h; j++) {
+  for (int i = w-1; i >= 0; i--) {
+	for (int j = h-1; j >= 0; j--) {
 	  BaseItem* item = _worldMap->getItem(i, j);
 
 	  // // Draw floor
@@ -189,7 +189,7 @@ void	Game::loop()
 
       // Update & refresh
 	  _time_elapsed = display_timer.getElapsedTime();
-      if (_force_refresh || _time_elapsed.asMilliseconds() > 25)
+      if (_force_refresh || _time_elapsed.asMilliseconds() > 50)
 		{
     	  _force_refresh = false;
 		  update();
