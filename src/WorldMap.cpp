@@ -15,8 +15,8 @@
 WorldMap::WorldMap() {
   _todo = new std::list<BaseItem*>();
   _building = new std::list<BaseItem*>();
-  _width = 20;
-  _height = 10;
+  _width = 500;
+  _height = 500;
   _items = new BaseItem**[_width];
   for (int x = 0; x < _width; x++) {
 	_items[x] = new BaseItem*[_height];

@@ -150,9 +150,16 @@ UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap) {
   _entries = entries_main;
   _code = CODE_MAIN;
   _keyLeftPressed = false;
+  _viewPosX = 0;
+  _viewPosY = 0;
 }
 
 UserInterface::~UserInterface() {
+}
+
+sf::Transform  UserInterface::getViewTransform(sf::Transform transform) {
+  transform.translate(_viewPosX, _viewPosY);
+  return transform;
 }
 
 void	UserInterface::mouseMoved(int x, int y) {
@@ -165,9 +172,14 @@ void	UserInterface::mouseMoved(int x, int y) {
 }
 
 void	UserInterface::mousePress(int x, int y) {
-  _keyLeftPressed = true;
-  _keyMovePosX = _keyPressPosX = (x - UI_WIDTH) / TILE_SIZE;
-  _keyMovePosY = _keyPressPosY = (y - UI_HEIGHT) / TILE_SIZE;
+  if (x < UI_WIDTH) {
+    
+  } else if (y < UI_HEIGHT) {
+  } else {
+    _keyLeftPressed = true;
+    _keyMovePosX = _keyPressPosX = (x - UI_WIDTH) / TILE_SIZE;
+    _keyMovePosY = _keyPressPosY = (y - UI_HEIGHT) / TILE_SIZE;
+  }
 }
 
 void	UserInterface::mouseRelease(int x, int y) {
@@ -362,51 +374,53 @@ void UserInterface::setBuildMenu(int code) {
   }
 }
 
+void    UserInterface::openMenu(Entry entry) {
+  switch (_code) {
+
+  case CODE_BUILD:
+    _parent_code = _code;
+    _code = entry.code;
+    setBuildMenu(entry.code);
+    break;
+
+  case CODE_BUILD_STRUCTURE:
+  case CODE_BUILD_SICKBAY:
+  case CODE_BUILD_ENGINE:
+  case CODE_BUILD_HOLODECK:
+  case CODE_BUILD_ARBORETUM:
+  case CODE_BUILD_GYMNASIUM:
+  case CODE_BUILD_BAR:
+  case CODE_BUILD_AMPHITHEATER:
+  case CODE_BUILD_QUARTER:
+  case CODE_BUILD_ENVIRONMENT:
+  case CODE_BUILD_TRANSPORTATION:
+  case CODE_BUILD_TACTICAL:
+  case CODE_BUILD_SCIENCE:
+    _parent_code = _code;
+    _code = entry.code;
+    setBuildItem(entry.code, entry.text, entry.data);
+    break;
+
+  case CODE_MAIN:
+    _parent_code = _code;
+    _code = entry.code;
+
+    if (entry.code == CODE_BUILD)
+      _entries = entries_build;
+
+    if (entry.code == CODE_ZONE)
+      _entries = entries_zone;
+  }
+}
+
 bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, WorldMap* worldMap) {
   if (event.type == sf::Event::KeyReleased) {
 	std::cout << "checkKeyboard: " << event.key.code << std::endl;
 
 	for (int i = 0; _entries[i].code != UserInterface::CODE_NONE; i++) {
 	  if (_entries[i].key == event.key.code) {
-
-		switch (_code) {
-
-		case CODE_BUILD:
-		  _parent_code = _code;
-		  _code = _entries[i].code;
-		  setBuildMenu(_entries[i].code);
-		  break;
-
-		case CODE_BUILD_STRUCTURE:
-		case CODE_BUILD_SICKBAY:
-		case CODE_BUILD_ENGINE:
-		case CODE_BUILD_HOLODECK:
-		case CODE_BUILD_ARBORETUM:
-		case CODE_BUILD_GYMNASIUM:
-		case CODE_BUILD_BAR:
-		case CODE_BUILD_AMPHITHEATER:
-		case CODE_BUILD_QUARTER:
-		case CODE_BUILD_ENVIRONMENT:
-		case CODE_BUILD_TRANSPORTATION:
-		case CODE_BUILD_TACTICAL:
-		case CODE_BUILD_SCIENCE:
-		  _parent_code = _code;
-		  _code = _entries[i].code;
-		  setBuildItem(_entries[i].code, _entries[i].text, _entries[i].data);
-		  break;
-
-		case CODE_MAIN:
-		  _parent_code = _code;
-		  _code = _entries[i].code;
-
-		  if (_entries[i].code == CODE_BUILD)
-			_entries = entries_build;
-
-		  if (_entries[i].code == CODE_ZONE)
-			_entries = entries_zone;
-		}
-
-		return true;
+        openMenu(_entries[i]);
+        return true;
 	  }
 	}
   }
@@ -414,28 +428,36 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
 
   switch (event.key.code)
     {
+
     case sf::Keyboard::Up:
       if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
+        _viewPosY -= MOVE_VIEW_OFFSET;
 		lastInput = frame;
-  		_cursor->_y--;
+  		// _cursor->_y--;
 	  }
       break;
+
     case sf::Keyboard::Down:
       if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
+        _viewPosY += MOVE_VIEW_OFFSET;
 		lastInput = frame;
-		_cursor->_y++;
+		// _cursor->_y++;
 	  }
       break;
+
     case sf::Keyboard::Right:
       if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
+        _viewPosX += MOVE_VIEW_OFFSET;
 		lastInput = frame;
-  		_cursor->_x++;
+  		// _cursor->_x++;
 	  }
       break;
+
     case sf::Keyboard::Left:
       if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
+        _viewPosX -= MOVE_VIEW_OFFSET;
 		lastInput = frame;
-		_cursor->_x--;
+		// _cursor->_x--;
 	  }
       break;
 

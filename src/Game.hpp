@@ -4,7 +4,7 @@
 #include <SFML/Window.hpp>
 #include <utime.h>
 
-#include "Character.hpp"
+#include "Character.h"
 #include "defines.h"
 #include "WorldMap.h"
 #include "SpriteManager.h"

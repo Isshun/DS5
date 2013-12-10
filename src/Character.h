@@ -22,7 +22,7 @@ class	Character
 	~Character();
 
   void	update_position(Scene *scene);
-  void draw(sf::RenderWindow* app);
+  void draw(sf::RenderWindow* app, sf::Transform transform);
   void	build(BaseItem* item);
   
   // Gets

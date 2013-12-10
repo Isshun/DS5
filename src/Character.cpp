@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "defines.h"
-#include "Character.hpp"
+#include "Character.h"
 #include "ResourceManager.h"
 #include "stlastar.h"
 
@@ -153,7 +153,7 @@ void		Character::move()
 }
 
 
-void Character::draw(sf::RenderWindow* app) {
+void Character::draw(sf::RenderWindow* app, sf::Transform transform) {
 	sf::Texture texture;
 	texture.loadFromFile("../sprites/cless.png");
 	texture.setSmooth(true);
@@ -162,5 +162,7 @@ void Character::draw(sf::RenderWindow* app) {
 	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect(0, 0, 30, 30));
 	sprite.setPosition(UI_WIDTH + _posX * 32, UI_HEIGHT + _posY * 32);
-	app->draw(sprite);
+
+    sf::RenderStates render(transform);
+	app->draw(sprite, render);
 }

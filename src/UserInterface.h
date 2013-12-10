@@ -15,6 +15,8 @@
 #include "Cursor.h"
 #include "WorldMap.h"
 
+#define MOVE_VIEW_OFFSET        40
+
 struct {
   int			code;
   const char*	text;
@@ -64,6 +66,7 @@ class UserInterface {
   void	refreshCursor();
   void	refreshResources();
   void	drawModeBuild();
+  void  openMenu(Entry entry);
   void	setBuildItem(int code, const char* text, int type);
   void	setBuildMenu(int code);
   bool	checkKeyboard(sf::Event	event, int frame, int lastInput, WorldMap* worldMap);
@@ -73,6 +76,7 @@ class UserInterface {
   void	mouseMoved(int x, int y);
   void	mousePress(int x, int y);
   void	mouseRelease(int x, int y);
+  sf::Transform  getViewTransform(sf::Transform transform);
 
  private:
   void	drawCursor(int startX, int startY, int toX, int toY);
@@ -90,6 +94,8 @@ class UserInterface {
   int		_keyMovePosY;
   int			_buildItemType;
   const char*	_buildItemText;
+  int           _viewPosX;
+  int           _viewPosY;
 };
 
 #endif /* USERINTERFACE_H_ */

@@ -28,15 +28,15 @@ Game::Game(sf::RenderWindow* app): run(true), up_to_date(false), pause(false) {
   character = new Character(2, 2);
   // character->go(8, 8);
 
-  // Dump worldmap
-  #if DEBUG
-  for (int y = 0; y < _worldMap->getHeight(); y++) {
-	for (int x = 0; x < _worldMap->getWidth(); x++) {
-	  std::cout << (_worldMap->getItem(x, y) == 0 ? 0 : 9);
-	}
-	std::cout << std::endl;
-  }
-  #endif
+  // // Dump worldmap
+  // #if DEBUG
+  // for (int y = 0; y < _worldMap->getHeight(); y++) {
+  //   for (int x = 0; x < _worldMap->getWidth(); x++) {
+  //     std::cout << (_worldMap->getItem(x, y) == 0 ? 0 : 9);
+  //   }
+  //   std::cout << std::endl;
+  // }
+  // #endif
   
 
   std::cout << "Game:\tdone" << std::endl;
@@ -76,8 +76,9 @@ void	Game::refresh() {
 	if (_frame % CHARACTER_MOVE_INTERVAL == 0) {
 	  character->move();
 	}
-
-	character->draw(_app);
+    sf::Transform transform;
+    transform = _ui->getViewTransform(transform);
+	character->draw(_app, transform);
   }
 
   // User interface
@@ -112,13 +113,19 @@ void	Game::draw_surface() {
 		{
 		  sf::Sprite* sprite = _spriteManager->getSprite(item);
 		  sprite->setPosition(UI_WIDTH + i * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE);
-		  _app->draw(*sprite);
+
+          sf::Transform transform;
+          sf::RenderStates render(_ui->getViewTransform(transform));
+		  _app->draw(*sprite, render);
 		}
 
 		// Draw battery
 		if (item->isComplete() && !item->isSupply()) {
 		  sf::Sprite* sprite = _spriteManager->getSprite(SpriteManager::IC_BATTERY);
 		  sprite->setPosition(UI_WIDTH + i * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE);
+
+          sf::Transform transform;
+          sf::RenderStates render(_ui->getViewTransform(transform));
 		  _app->draw(*sprite);
 		}
 
