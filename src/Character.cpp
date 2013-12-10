@@ -58,7 +58,7 @@ void		Character::go(int toX, int toY) {
 
   const unsigned int NumSearches = 1;
 
-   while(SearchCount < NumSearches) {
+  while(SearchCount < NumSearches) {
 
 	 // Create a start state
 	 MapSearchNode nodeStart;
@@ -71,7 +71,6 @@ void		Character::go(int toX, int toY) {
 	 nodeEnd.y = toY;
 
 	 // Set Start and goal states
-
 	 _astarsearch->SetStartAndGoalStates( nodeStart, nodeEnd );
 
 	 unsigned int SearchState;
@@ -91,7 +90,7 @@ void		Character::go(int toX, int toY) {
 	   gl_worldmap->buildAbort((BaseItem*)job);
 	   job = NULL;
 	   _astarsearch->FreeSolutionNodes();
-	   //_astarsearch->EnsureMemoryFreed();
+	   _astarsearch->EnsureMemoryFreed();
 	   delete _astarsearch;
 	   _astarsearch = 0;
 	 }
@@ -156,7 +155,7 @@ void		Character::move()
 
 void Character::draw(sf::RenderWindow* app) {
 	sf::Texture texture;
-	texture.loadFromFile("sprites/cless.png");
+	texture.loadFromFile("../sprites/cless.png");
 	texture.setSmooth(true);
 
 	sf::Sprite sprite;

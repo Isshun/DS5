@@ -17,15 +17,14 @@ CC	=	g++
 OBJ	=	$(SRC:.cpp=.o)
 
 INC	=	-I/usr/include	\
-		-I. -I./class		\
-		`pkg-config --cflags glib-2.0`
+		-I. -I./class
 
-CFLAGS	=	-W $(INC) -g3 `pkg-config --cflags glib-2.0`
+CFLAGS	=	-W $(INC) -g3
 
 LIB	=	-L/usr/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 $(NAME)	:	$(OBJ)
-		$(CC) $(OBJ) -o ../$(NAME) $(LIB) $(CFLAGS)
+		$(CC) $(OBJ) -o $(NAME) $(LIB) $(CFLAGS)
 
 .cpp.o:
 		$(CC) -c $(CFLAGS) $< -o $@

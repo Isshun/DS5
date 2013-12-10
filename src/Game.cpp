@@ -26,7 +26,7 @@ Game::Game(sf::RenderWindow* app): run(true), up_to_date(false), pause(false) {
   _spriteManager = new SpriteManager();
 
   character = new Character(2, 2);
-  character->go(8, 8);
+  // character->go(8, 8);
 
   // Dump worldmap
   #if DEBUG

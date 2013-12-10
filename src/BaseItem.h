@@ -28,6 +28,7 @@ class BaseItem {
 
   enum {
 	NONE,
+    STRUCTURE_ROOM,
 	STRUCTURE_WALL,
 	STRUCTURE_HULL,
 	STRUCTURE_FLOOR,

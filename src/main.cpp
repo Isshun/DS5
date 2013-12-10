@@ -46,7 +46,7 @@ void	init_timer(Game *game)
 
 int main(int argc, char *argv[])
 {
-  sf::RenderWindow* app = new sf::RenderWindow(sf::VideoMode(1600, 900, 32), NAME);
+  sf::RenderWindow* app = new sf::RenderWindow(sf::VideoMode(1600 / 2, 900 / 2, 32), NAME);
   app->setKeyRepeatEnabled(true);
 
   sf::View view = app->getDefaultView();
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 
   // view.setCenter(400, 200);
 
-  // view.zoom(0.5);
+  // view.zoom(zoom);
 
   app->setView(view);
 

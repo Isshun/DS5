@@ -23,15 +23,15 @@ SpriteResource	spritesRes[] = {
 
 SpriteManager::SpriteManager() {
   _texture[0] = new sf::Texture();
-  _texture[0]->loadFromFile("res/Tilesets/Futuristic_A5.png");
+  _texture[0]->loadFromFile("../res/Tilesets/Futuristic_A5.png");
   _texture[0]->setSmooth(true);
 
   _texture[1] = new sf::Texture();
-  _texture[1]->loadFromFile("res/Tilesets/Futuristic_TileC.png");
+  _texture[1]->loadFromFile("../res/Tilesets/Futuristic_TileC.png");
   _texture[1]->setSmooth(true);
 
   _texture[2] = new sf::Texture();
-  _texture[2]->loadFromFile("res/Tilesets/Futuristic_TileB.png");
+  _texture[2]->loadFromFile("../res/Tilesets/Futuristic_TileB.png");
   _texture[2]->setSmooth(true);
 }
 
@@ -66,7 +66,7 @@ sf::Sprite*		SpriteManager::getSprite(BaseItem* item) {
 
 sf::Sprite*		SpriteManager::getSprite(int type) {
   sf::Texture* texture = new sf::Texture();
-  texture->loadFromFile("sprites/battery.png");
+  texture->loadFromFile("../sprites/battery.png");
 
   sf::Sprite* sprite = new sf::Sprite();
   sprite->setTexture(*texture);

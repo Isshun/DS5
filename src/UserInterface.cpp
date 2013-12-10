@@ -40,10 +40,11 @@ Entry	entries_build[] = {
 };
 
 Entry	entries_build_structure[] = {
-  {UserInterface::CODE_BUILD_ITEM,	"floor",		"f",	sf::Keyboard::F,		BaseItem::STRUCTURE_FLOOR},
-  {UserInterface::CODE_BUILD_ITEM,	"wall",			"w",	sf::Keyboard::W,		BaseItem::STRUCTURE_WALL},
-  {UserInterface::CODE_BUILD_ITEM,	"hull",			"h",	sf::Keyboard::H,		BaseItem::STRUCTURE_HULL},
-  {UserInterface::CODE_BUILD_ITEM,	"window",		"wi",	sf::Keyboard::I,		BaseItem::STRUCTURE_WINDOW},
+  {UserInterface::CODE_BUILD_ITEM,	"room",		"r",	sf::Keyboard::R,		BaseItem::STRUCTURE_ROOM},
+  {UserInterface::CODE_BUILD_ITEM,	"floor",	"f",	sf::Keyboard::F,		BaseItem::STRUCTURE_FLOOR},
+  {UserInterface::CODE_BUILD_ITEM,	"wall",		"w",	sf::Keyboard::W,		BaseItem::STRUCTURE_WALL},
+  {UserInterface::CODE_BUILD_ITEM,	"hull",		"h",	sf::Keyboard::H,		BaseItem::STRUCTURE_HULL},
+  {UserInterface::CODE_BUILD_ITEM,	"window",	"wi",	sf::Keyboard::I,		BaseItem::STRUCTURE_WINDOW},
   {UserInterface::CODE_NONE,	NULL,			NULL,	0,		0}
 };
 
@@ -182,7 +183,15 @@ void	UserInterface::mouseRelease(int x, int y) {
   for (int x = startX; x <= toX; x++) {
 	for (int y = startY; y <= toY; y++) {
 	  if (_code == CODE_BUILD_ITEM) {
-		_worldMap->putItem(x, y, _buildItemType);
+        if (_buildItemType == BaseItem::STRUCTURE_ROOM) {
+          if (x == startX || x == toX || y == startY || y == toY) {
+            _worldMap->putItem(x, y, BaseItem::STRUCTURE_WALL);
+          } else {
+            _worldMap->putItem(x, y, BaseItem::STRUCTURE_FLOOR);
+          }
+        } else {
+          _worldMap->putItem(x, y, _buildItemType);
+        }
 	  }
 	}
   }
@@ -192,8 +201,8 @@ void	UserInterface::mouseRelease(int x, int y) {
 
 void UserInterface::drawModeBuild() {
   sf::Font font;
-  if (!font.loadFromFile("snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("snap/xolonium/Xolonium-Regular.otf").c_str());
+  if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 
   sf::Text shortcut;
   shortcut.setString(_buildItemText);
@@ -207,7 +216,7 @@ void UserInterface::drawModeBuild() {
 
 void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
   sf::Texture texture;
-  texture.loadFromFile("sprites/cursor.png");
+  texture.loadFromFile("../sprites/cursor.png");
 
   sf::Sprite sprite;
   sprite.setTexture(texture);
@@ -223,8 +232,8 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
 
 void	UserInterface::refreshMenu() {
   sf::Font font;
-  if (!font.loadFromFile("snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("snap/xolonium/Xolonium-Regular.otf").c_str());
+  if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 
   switch (_code) {
   case CODE_BUILD_ITEM:
@@ -287,37 +296,35 @@ void	UserInterface::refreshCursor() {
 
 void UserInterface::refreshResources() {
   sf::Font font;
-  if (!font.loadFromFile("snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("snap/xolonium/Xolonium-Regular.otf").c_str());
+  if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 
   {
-	sf::Text text;
-	std::ostringstream oss;
-	oss << "Matter: " << ResourceManager::getInstance().getMatter();
+    std::ostringstream oss;
+    oss << "Matter: " << ResourceManager::getInstance().getMatter();
 
-	sf::Text shortcut;
-	shortcut.setString(oss.str());
-	shortcut.setFont(font);
-	shortcut.setCharacterSize(UI_FONT_SIZE);
-	shortcut.setStyle(sf::Text::Underlined);
-	shortcut.setColor(sf::Color(255, 255, 0));
-	shortcut.setPosition(UI_PADDING + 0, UI_PADDING + 0);
-	_app->draw(shortcut);
+    sf::Text text;
+    text.setString(oss.str());
+    text.setFont(font);
+    // text.setCharacterSize(UI_FONT_SIZE);
+    // text.setStyle(sf::Text::Underlined);
+    // text.setColor(sf::Color(255, 255, 0));
+    text.setPosition(UI_PADDING + 0, UI_PADDING + 0);
+    _app->draw(text);
   }
 
   {
-	sf::Text text;
-	std::ostringstream oss;
-	oss << "Power: " << ResourceManager::getInstance().getPower();
+    std::ostringstream oss;
+    oss << "Power: " << ResourceManager::getInstance().getPower();
 
-	sf::Text shortcut;
-	shortcut.setString(oss.str());
-	shortcut.setFont(font);
-	shortcut.setCharacterSize(UI_FONT_SIZE);
-	shortcut.setStyle(sf::Text::Underlined);
-	shortcut.setColor(sf::Color(255, 255, 0));
-	shortcut.setPosition(UI_PADDING + 250 + 0, UI_PADDING + 0);
-	_app->draw(shortcut);
+    sf::Text text;
+    text.setString(oss.str());
+    text.setFont(font);
+    // text.setCharacterSize(UI_FONT_SIZE);
+    // text.setStyle(sf::Text::Underlined);
+    // text.setColor(sf::Color(255, 255, 0));
+    text.setPosition(UI_PADDING + 250 + 0, UI_PADDING + 0);
+    _app->draw(text);
   }
 
 }
