@@ -24,6 +24,7 @@ public:
 	bool		getSolid(int x, int y);
 	void		putItem(int x, int y, int type);
 	BaseItem*	getItem(int x, int y) {return (x < 0 || x >= _width || y < 0 || y >= _height) ? NULL : _items[x][y]; }
+	int			getBuildListSize() { return _todo->size(); }
 
 private:
 	BaseItem***	_items;

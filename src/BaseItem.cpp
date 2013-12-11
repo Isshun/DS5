@@ -21,21 +21,30 @@ ItemInfo	itemsInfo[] = {
 };
 
 BaseItem::BaseItem(int t) {
-	isSolid = false;
-	type = t;
-	progress = 0;
-	builder = NULL;
+  // Init
+  isSolid = false;
+  type = t;
+  progress = 0;
+  builder = NULL;
 
-	for (int i = 0; itemsInfo[i].type != BaseItem::NONE; i++) {
-	  if (itemsInfo[i].type == t) {
-		_width = itemsInfo[i].width;
-		_height = itemsInfo[i].height;
-		matter = itemsInfo[i].matter;
-		power = itemsInfo[i].power;
-		powerSupply = 0;
-		isSolid = itemsInfo[i].solid;
-	  }
+  // Default values
+  _width = 1;
+  _height = 1;
+  matter = 10;
+  power = 0;
+  powerSupply = 0;
+  isSolid = false;
+
+  for (int i = 0; itemsInfo[i].type != BaseItem::NONE; i++) {
+	if (itemsInfo[i].type == t) {
+	  _width = itemsInfo[i].width;
+	  _height = itemsInfo[i].height;
+	  matter = itemsInfo[i].matter;
+	  power = itemsInfo[i].power;
+	  powerSupply = 0;
+	  isSolid = itemsInfo[i].solid;
 	}
+  }
 }
 
 BaseItem::~BaseItem() {

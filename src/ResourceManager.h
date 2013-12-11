@@ -17,12 +17,18 @@ class	ResourceManager {
 
   int getMatter() { return _matter; }
   int getPower() { return _power; }
+  int getO2() {
+	std::cout << "supply: " << _o2Supply << ", use: " << _o2Use << std::endl;
+	return _o2Use == 0 ? 100 : _o2Supply >= _o2Use ? 100 : _o2Supply * 100.0f / _o2Use;
+  }
 
  private:
   static ResourceManager _self;
 
-  int _matter;
-  int _power;
+  int	_o2Use;
+  int	_o2Supply;
+  int	_matter;
+  int	_power;
 };
 
 #endif

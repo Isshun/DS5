@@ -179,10 +179,6 @@ void	UserInterface::refreshCursor() {
 	else {
 	  ItemInfo itemInfo = BaseItem::getItemInfo(_menu->getBuildItemType());
 	  drawCursor(_keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY);
-	  // drawCursor(_cursor->_x,
-	  // 			 _cursor->_y,
-	  // 			 _cursor->_x + itemInfo.width - 1,
-	  // 			 _cursor->_y + itemInfo.height - 1);
 	}
   }
 }
@@ -222,6 +218,17 @@ void UserInterface::refreshResources() {
     // text.setStyle(sf::Text::Underlined);
     // text.setColor(sf::Color(255, 255, 0));
     text.setPosition(UI_PADDING + 250 + 0, UI_PADDING + 0);
+    _app->draw(text);
+  }
+
+  {
+    std::ostringstream oss;
+    oss << "O2: " << ResourceManager::getInstance().getO2();
+
+    sf::Text text;
+    text.setString(oss.str());
+    text.setFont(font);
+    text.setPosition(UI_PADDING + 500 + 0, UI_PADDING + 0);
     _app->draw(text);
   }
 

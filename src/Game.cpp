@@ -55,7 +55,10 @@ void	Game::update() {
   if (ResourceManager::getInstance().getMatter() > 0) {
 	Character* character = NULL;
 	BaseItem* item = NULL;
-	while ((character = _characterManager->getUnemployed()) != NULL
+	int length = _worldMap->getBuildListSize();
+	std::cout << Debug() << length << std::endl;
+	while (--length >= 0 &&
+		   (character = _characterManager->getUnemployed()) != NULL
 		   && (item = _worldMap->getItemToBuild()) != NULL) {
 		std::cout << Debug() << "Game: add build job to character" << std::endl;
 		character->build(item);

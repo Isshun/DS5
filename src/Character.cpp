@@ -30,6 +30,7 @@ void		Character::go(int toX, int toY) {
 
   if (_astarsearch != 0) {
 	_astarsearch->FreeSolutionNodes();
+	std::cout << Debug() << "free 1" << std::endl;
 	_astarsearch->EnsureMemoryFreed();
 	delete _astarsearch;
 	_astarsearch = 0;
@@ -69,11 +70,13 @@ void		Character::go(int toX, int toY) {
 	 if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED ) {
 	   // cout << "Search found goal state: " << SearchSteps << endl;
 	 }
+
+	 // No path found
 	 else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) {
 	   cout << Warning() << "Search terminated. Did not find goal state\n";
 	   gl_worldmap->buildAbort((BaseItem*)_job);
 	   _job = NULL;
-	   _astarsearch->FreeSolutionNodes();
+	   std::cout << Debug() << "free 2" << std::endl;
 	   _astarsearch->EnsureMemoryFreed();
 	   delete _astarsearch;
 	   _astarsearch = 0;
@@ -108,6 +111,7 @@ void		Character::move()
 	else {
 	  std::cout << Debug() << "Character: reached" << std::endl;
 	  _astarsearch->FreeSolutionNodes();
+	  std::cout << Debug() << "free 3" << std::endl;
 	  _astarsearch->EnsureMemoryFreed();
 	  delete _astarsearch;
 	  _astarsearch = 0;
