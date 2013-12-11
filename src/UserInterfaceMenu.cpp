@@ -9,20 +9,30 @@ Entry	entries_main[] = {
   {UserInterfaceMenu::CODE_NONE,	NULL,			NULL,	0,		0}
 };
 
+Entry	entries_zone[] = {
+  {UserInterfaceMenu::CODE_ZONE_SICKBAY,	"sickbay",		"s",	sf::Keyboard::S,		0},
+  {UserInterfaceMenu::CODE_ZONE_ENGINE,		"engine",		"e",	sf::Keyboard::E,		0},
+  {UserInterfaceMenu::CODE_ZONE_HOLODECK,	"holodeck",		"h",	sf::Keyboard::H,		0},
+  {UserInterfaceMenu::CODE_ZONE_QUARTER,	"quarter",		"q",	sf::Keyboard::Q,		0},
+  {UserInterfaceMenu::CODE_ZONE_BAR,		"bar",			"b",	sf::Keyboard::B,		0},
+  {UserInterfaceMenu::CODE_ZONE_OPERATION,	"operation",	"o",	sf::Keyboard::O,		0},
+  {UserInterfaceMenu::CODE_NONE,			NULL,			NULL,	0,						0}
+};
+
 Entry	entries_build[] = {
   {UserInterfaceMenu::CODE_BUILD_STRUCTURE,	"structure",		"s",	sf::Keyboard::S,		0},
   {UserInterfaceMenu::CODE_BUILD_SICKBAY,	"sickbay",			"si",	sf::Keyboard::I,		0},
   {UserInterfaceMenu::CODE_BUILD_ENGINE,	"engine",			"e",	sf::Keyboard::E,		0},
   {UserInterfaceMenu::CODE_BUILD_HOLODECK,	"holodeck",			"h",	sf::Keyboard::H,		0},
-  {UserInterfaceMenu::CODE_BUILD_ARBORETUM,	"arboretum",		"a",	sf::Keyboard::A,		0},
-  {UserInterfaceMenu::CODE_BUILD_GYMNASIUM,	"gymnasium",		"g",	sf::Keyboard::G,		0},
+  // {UserInterfaceMenu::CODE_BUILD_ARBORETUM,	"arboretum",		"a",	sf::Keyboard::A,		0},
+  // {UserInterfaceMenu::CODE_BUILD_GYMNASIUM,	"gymnasium",		"g",	sf::Keyboard::G,		0},
   // {UserInterfaceMenu::CODE_BUILD_SCHOOL,	"school",			"s",	sf::Keyboard::W,		0},
   {UserInterfaceMenu::CODE_BUILD_BAR,		"bar",				"b",	sf::Keyboard::B,		0},
-  {UserInterfaceMenu::CODE_BUILD_AMPHITHEATER,	"entertainment","en",	sf::Keyboard::N,		0},
+  // {UserInterfaceMenu::CODE_BUILD_AMPHITHEATER,	"entertainment","en",	sf::Keyboard::N,		0},
   {UserInterfaceMenu::CODE_BUILD_QUARTER,	"residence",		"r",	sf::Keyboard::R,		0},
   {UserInterfaceMenu::CODE_BUILD_ENVIRONMENT,	"environment",	"env",	sf::Keyboard::V,		0},
   {UserInterfaceMenu::CODE_BUILD_TRANSPORTATION,"transportation","t",	sf::Keyboard::T,		0},
-  {UserInterfaceMenu::CODE_BUILD_TACTICAL,	"defense",			"d",	sf::Keyboard::D,		0},
+  // {UserInterfaceMenu::CODE_BUILD_TACTICAL,	"defense",			"d",	sf::Keyboard::D,		0},
   {UserInterfaceMenu::CODE_BUILD_SCIENCE,	"science",			"sc",	sf::Keyboard::C,		0},
   {UserInterfaceMenu::CODE_NONE,	NULL,			NULL,	0,		0}
 };
@@ -124,15 +134,9 @@ Entry	entries_build_science[] = {
   {UserInterfaceMenu::CODE_NONE,	NULL,			NULL,	0,		0}
 };
 
-Entry	entries_zone[] = {
-  {UserInterfaceMenu::CODE_ZONE_ENGINE,	"engine",		"e",	sf::Keyboard::E,		0},
-  {UserInterfaceMenu::CODE_ZONE_SICKBAY,"sickbay",		"s",	sf::Keyboard::S,		0},
-  {UserInterfaceMenu::CODE_ZONE_QUARTER,"quarter",		"q",	sf::Keyboard::Q,		0},
-  {UserInterfaceMenu::CODE_ZONE_BAR,	"bar",			"b",	sf::Keyboard::B,		0},
-  {UserInterfaceMenu::CODE_NONE,	NULL,			NULL,	0,		0}
-};
-
-UserInterfaceMenu::UserInterfaceMenu(sf::RenderWindow* app) {
+UserInterfaceMenu::UserInterfaceMenu(sf::RenderWindow* app, WorldMap* worldmap, Cursor* cursor) {
+  _worldmap = worldmap;
+  _cursor = cursor;
   _entries = entries_main;
   _code = CODE_MAIN;
   _app = app;
@@ -210,6 +214,11 @@ void    UserInterfaceMenu::openBack() {
     _parent_code = CODE_MAIN;
     break;
 
+  case CODE_ZONE:
+    _entries = entries_zone;
+    _parent_code = CODE_MAIN;
+    break;
+
   case CODE_BUILD_ITEM:
     break;
   
@@ -262,15 +271,21 @@ void    UserInterfaceMenu::openMenu(Entry entry) {
 
     if (entry.code == CODE_ZONE)
       _entries = entries_zone;
+
+	break;
   }
 }
 
 bool  UserInterfaceMenu::checkKeyboard(int code) {
-  std::cout << "checkKeyboard: " << code << std::endl;
+  std::cout << Debug() << "checkKeyboard: " << code << std::endl;
 
   for (int i = 0; _entries[i].code != UserInterfaceMenu::CODE_NONE; i++) {
     if (_entries[i].key == code) {
-      openMenu(_entries[i]);
+	  if (_code == CODE_ZONE) {
+		_worldmap->setZone(_cursor->_x, _cursor->_y, _entries[i].code);
+	  } else {
+		openMenu(_entries[i]);
+	  }
       return true;
     }
   }
@@ -311,8 +326,6 @@ void	UserInterfaceMenu::refreshMenu() {
   switch (_code) {
   case CODE_BUILD_ITEM:
 	drawModeBuild();
-	break;
-  case CODE_ZONE:
 	break;
   default:
 	for (int i = 0; _entries[i].code != UserInterfaceMenu::CODE_NONE; i++) {

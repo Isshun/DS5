@@ -62,11 +62,11 @@ SpriteManager::SpriteManager() {
   }
 
   // Floors
-  {
-    _spriteFloor[0] = new sf::Sprite();
-    _spriteFloor[0]->setTexture(*_texture[spritesRes[2].textureIndex]);
-    _spriteFloor[0]->setTextureRect(sf::IntRect(spritesRes[2].posX * TILE_SIZE,
-                                                spritesRes[2].posY * TILE_SIZE,
+  for (int i = 0; i < 9; i++) {
+    _spriteFloor[i] = new sf::Sprite();
+    _spriteFloor[i]->setTexture(*_texture[spritesRes[2].textureIndex]);
+    _spriteFloor[i]->setTextureRect(sf::IntRect(i * TILE_SIZE,
+                                                0 * TILE_SIZE,
                                                 TILE_SIZE,
                                                 TILE_SIZE));
   }
@@ -79,17 +79,30 @@ SpriteManager::~SpriteManager() {
 }
 
 sf::Sprite*		SpriteManager::getSprite(BaseItem* item) {
+
   if (item != NULL) {
 	for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
 	  if (spritesRes[i].type == item->type) {
-		sf::Sprite* sprite = new sf::Sprite();
+		sf::Sprite* sprite;
+
+		// Floor
+		if (item->type == BaseItem::STRUCTURE_FLOOR) {
+		  sprite = _spriteFloor[item->room];
+		}
+
+		// Else
+		else {
+		  sprite = new sf::Sprite();
+		  sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
+		  sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
+											 spritesRes[i].posY * TILE_SIZE,
+											 item->getWidth() * TILE_SIZE,
+											 item->getHeight() * TILE_SIZE));
+		}
+
 		int alpha = 75 + 180 / item->matter * item->progress;
 		sprite->setColor(sf::Color(255,255,255,alpha));
-		sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
-		sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
-										   spritesRes[i].posY * TILE_SIZE,
-										   item->getWidth() * TILE_SIZE,
-										   item->getHeight() * TILE_SIZE));
+
 		return sprite;
 	  }
 	}

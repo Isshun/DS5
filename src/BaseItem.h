@@ -28,12 +28,14 @@ class BaseItem {
 
   enum {
 	NONE,
+    STRUCTURE_ITEM_START,
     STRUCTURE_ROOM,
 	STRUCTURE_WALL,
 	STRUCTURE_HULL,
 	STRUCTURE_FLOOR,
 	STRUCTURE_WINDOW,
 	STRUCTURE_DOOR,
+    STRUCTURE_ITEM_STOP,
 	SICKBAY_BIOBED,
 	SICKBAY_LAB,
 	SICKBAY_EMERGENCY_SHELTERS,
@@ -96,6 +98,7 @@ class BaseItem {
   int			matter;
   int			power;
   int			powerSupply;
+  int			room;
 
  private:
   int			_width;

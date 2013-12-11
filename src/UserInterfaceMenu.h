@@ -12,6 +12,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "defines.h"
+#include "Cursor.h"
+#include "WorldMap.h"
 
 struct {
   int			code;
@@ -25,6 +27,16 @@ class UserInterfaceMenu {
  public:
 
   enum { ENTRY_NONE, ENTRY_MAIN, ENTRY_BUILD, ENTRY_ZONE };
+
+  enum {
+	CODE_ZONE_NONE,
+    CODE_ZONE_ENGINE,
+    CODE_ZONE_SICKBAY,
+    CODE_ZONE_QUARTER,
+    CODE_ZONE_BAR,
+    CODE_ZONE_HOLODECK,
+    CODE_ZONE_OPERATION,
+  };
 
   enum {
     CODE_NONE,
@@ -47,14 +59,10 @@ class UserInterfaceMenu {
     CODE_BUILD_ENVIRONMENT,
     CODE_BUILD_TRANSPORTATION,
     CODE_BUILD_TACTICAL,
-    CODE_BUILD_SCIENCE,
-    CODE_ZONE_ENGINE,
-    CODE_ZONE_SICKBAY,
-    CODE_ZONE_QUARTER,
-    CODE_ZONE_BAR,
+    CODE_BUILD_SCIENCE
   };
 
-  UserInterfaceMenu(sf::RenderWindow* app);
+  UserInterfaceMenu(sf::RenderWindow* app, WorldMap* worldmap, Cursor* cursor);
   ~UserInterfaceMenu();
   void  openMenu(Entry entry);
   void  openBack();
@@ -69,12 +77,14 @@ class UserInterfaceMenu {
   void	drawModeBuild();
 
  private:
-  sf::RenderWindow* _app;
-  int		_code;
-  Entry*	_entries;
-  int		_parent_code;
-  int			_buildItemType;
-  const char*	_buildItemText;
+  sf::RenderWindow*		_app;
+  WorldMap*				_worldmap;
+  Cursor*				_cursor;
+  int					_code;
+  Entry*				_entries;
+  int					_parent_code;
+  int					_buildItemType;
+  const char*			_buildItemText;
 };
 
 #endif /* USERINTERFACEMENU_H_ */

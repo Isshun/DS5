@@ -39,6 +39,7 @@ BaseItem::BaseItem(int t) {
   type = t;
   progress = 0;
   builder = NULL;
+  room = 0;
 
   // Default values
   _width = 1;

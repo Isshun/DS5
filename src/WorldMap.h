@@ -25,6 +25,8 @@ public:
 	void		putItem(int x, int y, int type);
 	BaseItem*	getItem(int x, int y) {return (x < 0 || x >= _width || y < 0 || y >= _height) ? NULL : _items[x][y]; }
 	int			getBuildListSize() { return _todo->size(); }
+	void		setZone(int x, int y, int zoneId);
+	void		reloadAborted();
 
 private:
 	BaseItem***	_items;
@@ -32,8 +34,11 @@ private:
 	int			_height;
 	std::list<BaseItem*>*		_todo;
 	std::list<BaseItem*>*		_building;
+	std::list<BaseItem*>*		_buildingAborted;
 
 	void		init();
+
+	enum		{GO_UP, GO_DOWN, GO_LEFT, GO_RIGHT};
 };
 
 #endif /* WORLDMAP_H_ */

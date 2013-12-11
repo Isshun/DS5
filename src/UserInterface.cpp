@@ -21,9 +21,8 @@ UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport
   _keyLeftPressed = false;
   _keyRightPressed = false;
   _zoom = 1.0f;
-  _menu = new UserInterfaceMenu(app);
+  _menu = new UserInterfaceMenu(app, _worldMap, _cursor);
   _uiResource = new UserInterfaceResource(app);
-  _viewport = viewport;
 }
 
 UserInterface::~UserInterface() {
@@ -197,6 +196,10 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
 
   switch (event.key.code)
     {
+
+    case sf::Keyboard::T:
+	  worldMap->setZone(_cursor->_x, _cursor->_y, 0);
+      break;
 
     case sf::Keyboard::Up:
       if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {

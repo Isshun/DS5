@@ -43,15 +43,19 @@ void	Game::update() {
 
   // assign works
   if (ResourceManager::getInstance().getMatter() > 0) {
-	Character* character = NULL;
-	BaseItem* item = NULL;
-	int length = _worldMap->getBuildListSize();
-	std::cout << Debug() << length << std::endl;
-	while (--length >= 0 &&
-		   (character = _characterManager->getUnemployed()) != NULL
-		   && (item = _worldMap->getItemToBuild()) != NULL) {
+	if (_frame % 100 == 0) {
+	  _worldMap->reloadAborted();
+	}
+
+	if (_frame % 4 == 0) {
+	  Character* character = NULL;
+	  BaseItem* item = NULL;
+	  // int length = _worldMap->getBuildListSize();
+	  if ((character = _characterManager->getUnemployed()) != NULL
+		  && (item = _worldMap->getItemToBuild()) != NULL) {
 		std::cout << Debug() << "Game: add build job to character" << std::endl;
 		character->build(item);
+	  }
 	}
   }
 
@@ -192,7 +196,7 @@ void	Game::loop() {
 
 	// Update & refresh
     _time_elapsed = display_timer.getElapsedTime();
-	if (_time_elapsed.asMilliseconds() > 50) {
+	if (_time_elapsed.asMilliseconds() > 20) {
       display_timer.restart();
 	  _force_refresh = false;
 	  update();
@@ -206,15 +210,15 @@ void	Game::gere_quit() {
   if (this->event.type == sf::Event::Closed) {
 	_app->setKeyRepeatEnabled(true);
 	_app->close();
+	std::cout << Info() << "Bye" << std::endl;
   }
 
   if (this->event.type == sf::Event::KeyPressed &&
 	  this->event.key.code == sf::Keyboard::K) {
 	_app->setKeyRepeatEnabled(true);
 	_app->close();
+	std::cout << Info() << "Bye" << std::endl;
   }
-
-  std::cout << Info() << "Bye" << std::endl;
 }
 
 int main(int argc, char *argv[]) {

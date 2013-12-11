@@ -17,8 +17,6 @@ void    Viewport::update(int x, int y) {
 }
 
 sf::Transform  Viewport::getViewTransform(sf::Transform transform) {
-  std::cout << "scale: " << _scale << std::endl;
-
   transform.translate(UI_WIDTH + _posX, UI_HEIGHT + _posY);
   transform.scale(_scale, _scale);
   return transform;

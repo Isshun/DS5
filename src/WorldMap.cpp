@@ -15,8 +15,9 @@
 WorldMap::WorldMap() {
   _todo = new std::list<BaseItem*>();
   _building = new std::list<BaseItem*>();
-  _width = 20;
-  _height = 20;
+  _buildingAborted = new std::list<BaseItem*>();
+  _width = 200;
+  _height = 200;
   _items = new BaseItem**[_width];
   for (int x = 0; x < _width; x++) {
 	_items[x] = new BaseItem*[_height];
@@ -30,6 +31,31 @@ WorldMap::WorldMap() {
 
 WorldMap::~WorldMap() {
 	// TODO Auto-generated destructor stub
+}
+
+void	WorldMap::setZone(int x, int y, int zoneId) {
+  if (x < 0 || x >= _width || y < 0 || y >= _height) {
+	// std::cout << Error() << "getZone: Out of bound" << std::endl;
+	return;
+  }
+
+  if (_items[x][y] == NULL || _items[x][y]->type != BaseItem::STRUCTURE_FLOOR) {
+	// std::cout << Error() << "getZone: not floor items" << std::endl;
+	return;
+  }
+
+  if (_items[x][y]->room == zoneId) {
+	return;
+  }
+
+  _items[x][y]->room = zoneId;
+
+  std::cout << Debug() << "getZone: " << x << " x " << y << " in zone" << std::endl;
+  
+  setZone(x, y+1, zoneId);
+  setZone(x, y-1, zoneId);
+  setZone(x+1, y, zoneId);
+  setZone(x-1, y, zoneId);
 }
 
 void WorldMap::init() {
@@ -83,7 +109,7 @@ void		WorldMap::buildAbort(BaseItem* item) {
   std::list<BaseItem*>::iterator it;
   for (it = _building->begin(); it != _building->end(); ++it) {
 	if (*it == item) {
-	  _todo->push_back(item);
+	  _buildingAborted->push_back(item);
 	  _building->erase(it);
 	  std::cout << Info() << "WorldMap: item building abort" << std::endl;
 	  return;
@@ -102,4 +128,12 @@ void		WorldMap::buildComplete(BaseItem* item) {
 	  return;
 	}
   }
+}
+
+void		WorldMap::reloadAborted() {
+  std::list<BaseItem*>::iterator it;
+  for (it = _buildingAborted->begin(); it != _buildingAborted->end(); ++it) {
+	_todo->push_back(*it);
+  }
+  _buildingAborted->clear();
 }
