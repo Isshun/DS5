@@ -74,8 +74,10 @@ void		Character::go(int toX, int toY) {
 	 // No path found
 	 else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) {
 	   cout << Warning() << "Search terminated. Did not find goal state\n";
-	   gl_worldmap->buildAbort((BaseItem*)_job);
-	   _job = NULL;
+	   if (_job != NULL) {
+		 gl_worldmap->buildAbort((BaseItem*)_job);
+		 _job = NULL;
+	   }
 	   std::cout << Debug() << "free 2" << std::endl;
 	   _astarsearch->EnsureMemoryFreed();
 	   delete _astarsearch;
