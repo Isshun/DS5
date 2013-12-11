@@ -14,6 +14,7 @@
 #include "defines.h"
 #include "Cursor.h"
 #include "WorldMap.h"
+#include "Viewport.h"
 #include "UserInterfaceMenu.h"
 #include "UserInterfaceResource.h"
 
@@ -21,7 +22,7 @@
 
 class UserInterface {
  public:
-  UserInterface(sf::RenderWindow* app, WorldMap* worldMap);
+  UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport);
   ~UserInterface();
 
   void	refresh();
@@ -36,12 +37,10 @@ class UserInterface {
   void	mousePress(sf::Mouse::Button button, int x, int y);
   void	mouseRelease(sf::Mouse::Button button, int x, int y);
   void	mouseWheel(int delta, int x, int y);
-  int	getViewPosX() { return _viewPosX; }
-  int	getViewPosY() { return _viewPosY; }
   sf::Transform  getViewTransform(sf::Transform transform);
   void	setRelativeMousePos(int x, int y) {
-	_keyMovePosX = (x * (1.0f / _zoom) - UI_WIDTH - _viewPosX) / TILE_SIZE;
-	_keyMovePosY = (y * (1.0f / _zoom) - UI_HEIGHT - _viewPosY) / TILE_SIZE;
+	_keyMovePosX = (x * (1.0f / _viewport->getScale()) - UI_WIDTH - _viewport->getPosX()) / TILE_SIZE;
+	_keyMovePosY = (y * (1.0f / _viewport->getScale()) - UI_HEIGHT - _viewport->getPosY()) / TILE_SIZE;
   }
 
  private:
@@ -50,6 +49,7 @@ class UserInterface {
   sf::RenderWindow* _app;
   Cursor*		_cursor;
   WorldMap*		_worldMap;
+  Viewport*     _viewport;
   bool			_keyLeftPressed;
   bool			_keyRightPressed;
   sf::Vector2i	_mouseRightPress;
@@ -57,8 +57,6 @@ class UserInterface {
   int			_keyPressPosY;
   int			_keyMovePosX;
   int			_keyMovePosY;
-  int			_viewPosX;
-  int           _viewPosY;
   float			_zoom;
   UserInterfaceMenu*       _menu;
   UserInterfaceResource*   _uiResource;

@@ -19,8 +19,9 @@ Game::Game(sf::RenderWindow* app): run(true), up_to_date(false), pause(false) {
   _app = app;
   _lastInput = 0;
   _frame = 0;
+  _viewport = new Viewport(app);
   _worldMap = new WorldMap();
-  _ui = new UserInterface(app, _worldMap);
+  _ui = new UserInterface(app, _worldMap, _viewport);
   gl_worldmap = _worldMap;
 
   _spriteManager = new SpriteManager();
@@ -71,7 +72,7 @@ void	Game::refresh() {
 	_characterManager->move();
   }
   sf::Transform transform;
-  transform = _ui->getViewTransform(transform);
+  transform = _viewport->getViewTransform(transform);
   _characterManager->draw(_app, transform);
 
   // User interface
@@ -82,12 +83,9 @@ void	Game::draw_surface() {
   int w = _worldMap->getWidth();
   int h = _worldMap->getHeight();
 
-  int viewPosX = _ui->getViewPosX();
-  int viewPosY = _ui->getViewPosY();
-
   // Render transformation for viewport
   sf::Transform transform;
-  sf::RenderStates render(_ui->getViewTransform(transform));
+  sf::RenderStates render(_viewport->getViewTransform(transform));
 
   // Draw viewport background
   sf::RectangleShape shape;
@@ -115,6 +113,12 @@ void	Game::draw_surface() {
 
 	  if (item != NULL) {
 
+		// Draw floor
+		{
+		  sf::Sprite* sprite = _spriteManager->getSprite(BaseItem::STRUCTURE_FLOOR);
+		  sprite->setPosition(i * TILE_SIZE, j * TILE_SIZE);
+        }
+
 		// Draw item
 		{
 		  sf::Sprite* sprite = _spriteManager->getSprite(item);
@@ -126,7 +130,7 @@ void	Game::draw_surface() {
 		// Draw battery
 		if (item->isComplete() && item&& !item->isSupply()) {
 		  sf::Sprite* sprite = _spriteManager->getSprite(SpriteManager::IC_BATTERY);
-		  sprite->setPosition(UI_WIDTH + i * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE);
+		  sprite->setPosition(i * TILE_SIZE, j * TILE_SIZE);
 
 		  _app->draw(*sprite, render);
 		}

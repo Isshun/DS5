@@ -12,6 +12,8 @@ ItemInfo	itemsInfo[] = {
   {BaseItem::STRUCTURE_HULL,							true,	1, 1, 1, 0},
   {BaseItem::STRUCTURE_WALL,							true,	1, 1, 1, 0},
   {BaseItem::STRUCTURE_FLOOR,							false,	1, 1, 1, 0},
+  {BaseItem::STRUCTURE_DOOR,							false,	1, 1, 1, 0},
+  {BaseItem::STRUCTURE_WINDOW,							true,	1, 1, 1, 0},
   {BaseItem::TRANSPORTATION_TRANSPORTER_SYSTEMS,		false,	1, 1, 10, 10},
   {BaseItem::QUARTER_BED,								false,	2, 2, 4, 0},
   {BaseItem::QUARTER_CHAIR,								false,	1, 1, 2, 0},

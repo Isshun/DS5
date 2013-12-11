@@ -29,6 +29,7 @@ Entry	entries_build[] = {
 
 Entry	entries_build_structure[] = {
   {UserInterfaceMenu::CODE_BUILD_ITEM,	"room",		"r",	sf::Keyboard::R,		BaseItem::STRUCTURE_ROOM},
+  {UserInterfaceMenu::CODE_BUILD_ITEM,	"door",     "d",	sf::Keyboard::D,		BaseItem::STRUCTURE_DOOR},
   {UserInterfaceMenu::CODE_BUILD_ITEM,	"floor",	"f",	sf::Keyboard::F,		BaseItem::STRUCTURE_FLOOR},
   {UserInterfaceMenu::CODE_BUILD_ITEM,	"wall",		"w",	sf::Keyboard::W,		BaseItem::STRUCTURE_WALL},
   {UserInterfaceMenu::CODE_BUILD_ITEM,	"hull",		"h",	sf::Keyboard::H,		BaseItem::STRUCTURE_HULL},

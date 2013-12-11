@@ -13,28 +13,22 @@
 #include "BaseItem.h"
 #include "ResourceManager.h"
 
-UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap) {
+UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport) {
   _app = app;
+  _viewport = viewport;
   _worldMap = worldMap;
   _cursor = new Cursor();
   _keyLeftPressed = false;
   _keyRightPressed = false;
-  _viewPosX = 0;
-  _viewPosY = 0;
   _zoom = 1.0f;
   _menu = new UserInterfaceMenu(app);
   _uiResource = new UserInterfaceResource(app);
+  _viewport = viewport;
 }
 
 UserInterface::~UserInterface() {
   delete _menu;
   delete _uiResource;
-}
-
-sf::Transform  UserInterface::getViewTransform(sf::Transform transform) {
-  transform.translate(UI_WIDTH + _viewPosX, UI_HEIGHT + _viewPosY);
-  transform.scale(_zoom, _zoom);
-  return transform;
 }
 
 void	UserInterface::mouseMoved(int x, int y) {
@@ -51,8 +45,7 @@ void	UserInterface::mouseMoved(int x, int y) {
   // right button pressed
   else if (_keyRightPressed) {
 	setRelativeMousePos(x, y);
-	_viewPosX -= _mouseRightPress.x - x;
-	_viewPosY -= _mouseRightPress.y - y;
+    _viewport->update(_mouseRightPress.x - x, _mouseRightPress.y - y);
 	_mouseRightPress.x = x;
 	_mouseRightPress.y = y;
   }
@@ -60,7 +53,8 @@ void	UserInterface::mouseMoved(int x, int y) {
   // no buttons pressed
   else {
 	setRelativeMousePos(x, y);
-	_cursor->setMousePos(x - UI_WIDTH - _viewPosX - 1, y - UI_HEIGHT - _viewPosY - 1);
+	_cursor->setMousePos(x - UI_WIDTH - _viewport->getPosX() - 1,
+                         y - UI_HEIGHT - _viewport->getPosY() - 1);
   }
 }
 
@@ -73,8 +67,8 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
 
     case sf::Mouse::Left:
       _keyLeftPressed = true;
-      _keyMovePosX = _keyPressPosX = (x - UI_WIDTH - _viewPosX) / TILE_SIZE;
-      _keyMovePosY = _keyPressPosY = (y - UI_HEIGHT - _viewPosY) / TILE_SIZE;
+      _keyMovePosX = _keyPressPosX = (x - UI_WIDTH - _viewport->getPosX()) / TILE_SIZE;
+      _keyMovePosY = _keyPressPosY = (y - UI_HEIGHT - _viewport->getPosY()) / TILE_SIZE;
       break;
 
     case sf::Mouse::Right:
@@ -122,8 +116,7 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
   case sf::Mouse::Right:
 	if (_keyRightPressed) {
 	  _keyRightPressed = false;
-	  _viewPosX -= _mouseRightPress.x - x;
-	  _viewPosY -= _mouseRightPress.y - y;
+	  _viewport->update(_mouseRightPress.x - x, _mouseRightPress.y - y);
 	}
     break;
 
@@ -131,7 +124,7 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 }
 
 void	UserInterface::mouseWheel(int delta, int x, int y) {
-  _zoom = min(max(_zoom + 0.1f * delta, 0.5f), 1.5f);
+  _viewport->setScale(delta);
   setRelativeMousePos(x, y);
 }
 
@@ -153,7 +146,7 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
   toY = min(toY, _worldMap->getHeight());
   for (int x = startX; x <= toX; x++) {
 	for (int y = startY; y <= toY; y++) {
-	  sprite.setPosition(UI_WIDTH + x * TILE_SIZE + _viewPosX, UI_HEIGHT + y * TILE_SIZE + _viewPosY);
+	  sprite.setPosition(UI_WIDTH + x * TILE_SIZE + _viewport->getPosX(), UI_HEIGHT + y * TILE_SIZE + _viewport->getPosY());
 	  _app->draw(sprite, render);
 	}
   }
@@ -205,7 +198,7 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
 
     case sf::Keyboard::Up:
       if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
-        _viewPosY -= MOVE_VIEW_OFFSET;
+        _viewport->update(0, MOVE_VIEW_OFFSET);
 		lastInput = frame;
   		// _cursor->_y--;
 	  }
@@ -213,7 +206,7 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
 
     case sf::Keyboard::Down:
       if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
-        _viewPosY += MOVE_VIEW_OFFSET;
+        _viewport->update(0, -MOVE_VIEW_OFFSET);
 		lastInput = frame;
 		// _cursor->_y++;
 	  }
@@ -221,7 +214,7 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
 
     case sf::Keyboard::Right:
       if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
-        _viewPosX += MOVE_VIEW_OFFSET;
+        _viewport->update(-MOVE_VIEW_OFFSET, 0);
 		lastInput = frame;
   		// _cursor->_x++;
 	  }
@@ -229,7 +222,7 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
 
     case sf::Keyboard::Left:
       if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
-        _viewPosX -= MOVE_VIEW_OFFSET;
+        _viewport->update(MOVE_VIEW_OFFSET, 0);
 		lastInput = frame;
 		// _cursor->_x--;
 	  }

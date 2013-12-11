@@ -13,6 +13,8 @@ SpriteResource	spritesRes[] = {
   {BaseItem::STRUCTURE_HULL,					2, 8, 0},
   {BaseItem::STRUCTURE_WALL,					2, 8, 0},
   {BaseItem::STRUCTURE_FLOOR,					7, 7, 0},
+  {BaseItem::STRUCTURE_DOOR,					2, 2, 0},
+  {BaseItem::STRUCTURE_WINDOW,					2, 3, 0},
   {BaseItem::TRANSPORTATION_TRANSPORTER_SYSTEMS,1, 8, 0},
   {BaseItem::ARBORETUM_TREE_1,					2, 0, 3},
   {BaseItem::ARBORETUM_TREE_2,					3, 0, 3},

@@ -10,6 +10,7 @@
 #include "SpriteManager.h"
 #include "Cursor.h"
 #include "UserInterface.h"
+#include "Viewport.h"
 #include "CharacterManager.h"
 
 struct s_link {
@@ -55,8 +56,9 @@ private:
 
   bool	_force_refresh;
   bool		up_to_date;
-  bool		pause;
+  bool                  pause;
   CharacterManager*		_characterManager;
+  Viewport*             _viewport;
 
   unsigned int _frame;
   unsigned int _lastInput;

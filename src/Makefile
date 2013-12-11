@@ -7,6 +7,7 @@ SRC	=	Game.cpp	\
 		BaseItem.cpp	\
 		SpriteManager.cpp	\
 		ResourceManager.cpp	\
+		Viewport.cpp	\
 		WorldMap.cpp	\
 		Cursor.cpp	\
 		CharacterManager.cpp	\
