@@ -128,7 +128,7 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 }
 
 void	UserInterface::mouseWheel(int delta, int x, int y) {
-  _zoom = min(max(_zoom + 0.1f * delta, 0.5f), 1.0f);
+  _zoom = min(max(_zoom + 0.1f * delta, 0.5f), 1.5f);
   setRelativeMousePos(x, y);
 }
 

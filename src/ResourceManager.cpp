@@ -31,8 +31,10 @@ int ResourceManager::build(BaseItem* item) {
   if (item->progress == item->matter) {
 
 	// Remove power use
-	item->powerSupply = _power >= item->power ? item->power : _power;
-	_power -= item->power;
+	if (item->power > 0) {
+	  item->powerSupply = _power >= item->power ? item->power : _power;
+	  _power -= item->power;
+	}
 
 	// remove O2 use
 	if (item->type == BaseItem::STRUCTURE_FLOOR) {

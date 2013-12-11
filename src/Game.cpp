@@ -136,7 +136,7 @@ void	Game::draw_surface() {
 		}
 
 		// Draw battery
-		if (item->isComplete() && !item->isSupply()) {
+		if (item->isComplete() && item&& !item->isSupply()) {
 		  sf::Sprite* sprite = _spriteManager->getSprite(SpriteManager::IC_BATTERY);
 		  sprite->setPosition(UI_WIDTH + i * TILE_SIZE, UI_HEIGHT + j * TILE_SIZE);
 
