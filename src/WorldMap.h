@@ -27,8 +27,11 @@ public:
 	int			getBuildListSize() { return _todo->size(); }
 	void		setZone(int x, int y, int zoneId);
 	void		reloadAborted();
+	void		dump();
 
 private:
+	void		putItem(int x, int y, int type, bool free);
+
 	BaseItem***	_items;
 	int			_width;
 	int			_height;

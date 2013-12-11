@@ -65,7 +65,7 @@ SpriteManager::SpriteManager() {
   for (int i = 0; i < 9; i++) {
     _spriteFloor[i] = new sf::Sprite();
     _spriteFloor[i]->setTexture(*_texture[spritesRes[2].textureIndex]);
-    _spriteFloor[i]->setTextureRect(sf::IntRect(i * TILE_SIZE,
+    _spriteFloor[i]->setTextureRect(sf::IntRect((i+1) * TILE_SIZE,
                                                 0 * TILE_SIZE,
                                                 TILE_SIZE,
                                                 TILE_SIZE));

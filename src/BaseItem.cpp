@@ -44,7 +44,7 @@ BaseItem::BaseItem(int t) {
   // Default values
   _width = 1;
   _height = 1;
-  matter = 10;
+  matter = 1;
   power = 0;
   powerSupply = 0;
   isSolid = false;

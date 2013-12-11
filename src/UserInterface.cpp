@@ -197,6 +197,10 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
   switch (event.key.code)
     {
 
+    case sf::Keyboard::D:
+	  worldMap->dump();
+      break;
+
     case sf::Keyboard::T:
 	  worldMap->setZone(_cursor->_x, _cursor->_y, 0);
       break;
