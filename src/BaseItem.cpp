@@ -17,6 +17,17 @@ ItemInfo	itemsInfo[] = {
   {BaseItem::QUARTER_CHAIR,								false,	1, 1, 2, 0},
   {BaseItem::HOLODECK_GRID,								false,	1, 1, 6, 6},
   {BaseItem::ENGINE_CONTROL_CENTER,						false,	3, 2, 10, 5},
+  {BaseItem::ENGINE_REACTION_CHAMBER,					false,	2, 3, 50, -200},
+  {BaseItem::ARBORETUM_TREE_1,							false,	1, 2, 2, 0},
+  {BaseItem::ARBORETUM_TREE_2,							false,	1, 2, 2, 0},
+  {BaseItem::ARBORETUM_TREE_3,							false,	1, 2, 2, 0},
+  {BaseItem::ARBORETUM_TREE_4,							false,	1, 2, 2, 0},
+  {BaseItem::ARBORETUM_TREE_5,							false,	1, 1, 1, 0},
+  {BaseItem::ARBORETUM_TREE_6,							false,	1, 1, 1, 0},
+  {BaseItem::ARBORETUM_TREE_7,							false,	1, 1, 1, 0},
+  {BaseItem::ARBORETUM_TREE_8,							false,	1, 1, 1, 0},
+  {BaseItem::ARBORETUM_TREE_9,							false,	1, 1, 1, 0},
+  {BaseItem::ENVIRONMENT_O2_RECYCLER,					false,	1, 2, 10, 10},
   {BaseItem::NONE,										false,	0, 0, 0, 0},
 };
 

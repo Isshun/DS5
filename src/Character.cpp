@@ -132,6 +132,7 @@ void		Character::move()
 		std::cout << Debug() << "Character: build complete" << std::endl;
 		gl_worldmap->buildComplete(item);
 		_job = NULL;
+		go(_posX + 1, _posY);
 	  case ResourceManager::BUILD_PROGRESS:
 		std::cout << Debug() << "Character: build progress" << std::endl;
 	  }
