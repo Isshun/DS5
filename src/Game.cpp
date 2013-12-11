@@ -15,7 +15,8 @@ extern int old_time2;
 
 sf::Time _time_elapsed;
 
-Game::Game(sf::RenderWindow* app): run(true), up_to_date(false), pause(false) {
+Game::Game(sf::RenderWindow* app) {
+  _run = true;
   _app = app;
   _lastInput = 0;
   _frame = 0;
@@ -54,7 +55,6 @@ void	Game::update() {
 	}
   }
 
-  this->up_to_date = false;
   _force_refresh = false;
 }
 
@@ -167,6 +167,7 @@ void	Game::loop() {
   sf::Clock pnj_timer;
 
   while (_app->isOpen()) {
+
 	// Events
 	while (_app->pollEvent(event)) {
 	  if (event.type == sf::Event::MouseMoved) {
@@ -190,13 +191,13 @@ void	Game::loop() {
 	}
 
 	// Update & refresh
-	_time_elapsed = display_timer.getElapsedTime();
-	if (_force_refresh || _time_elapsed.asMilliseconds() > 50) {
+    _time_elapsed = display_timer.getElapsedTime();
+	if (_time_elapsed.asMilliseconds() > 50) {
+      display_timer.restart();
 	  _force_refresh = false;
 	  update();
 	  refresh();
 	  _app->display();
-	  display_timer.restart();
 	}
   }
 }

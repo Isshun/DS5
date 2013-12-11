@@ -36,6 +36,8 @@ class SpriteManager {
 
  private:
   sf::Texture*		_texture[8];
+  sf::Sprite*       _spriteBattery;
+  sf::Sprite*       _spriteFloor[8];
 };
 
 #endif /* SPRITEMANAGER_H_ */

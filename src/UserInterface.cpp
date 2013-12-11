@@ -146,7 +146,9 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
   toY = min(toY, _worldMap->getHeight());
   for (int x = startX; x <= toX; x++) {
 	for (int y = startY; y <= toY; y++) {
-	  sprite.setPosition(UI_WIDTH + x * TILE_SIZE + _viewport->getPosX(), UI_HEIGHT + y * TILE_SIZE + _viewport->getPosY());
+      sf::Transform transform;
+      sf::RenderStates render(_viewport->getViewTransform(transform));
+	  sprite.setPosition(x * TILE_SIZE, y * TILE_SIZE);
 	  _app->draw(sprite, render);
 	}
   }
@@ -248,5 +250,5 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
       break;
     }
 
-  return true;
+  return false;
 }

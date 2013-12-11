@@ -34,8 +34,7 @@ public:
   void	refresh();
   void	draw_surface();
 
-  bool	is_paused() { return this->pause; }
-  bool	is_run() { return !this->pause; }
+  bool	is_run() { return _run; }
 
   void	gere_key();
   void	gere_quit();
@@ -55,8 +54,7 @@ private:
   UserInterface*		_ui;
 
   bool	_force_refresh;
-  bool		up_to_date;
-  bool                  pause;
+  bool                  _run;
   CharacterManager*		_characterManager;
   Viewport*             _viewport;
 

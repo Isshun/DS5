@@ -50,6 +50,26 @@ SpriteManager::SpriteManager() {
   _texture[3] = new sf::Texture();
   _texture[3]->loadFromFile("../res/Tilesets/Futuristic_TileE.png");
   _texture[3]->setSmooth(true);
+
+  // IC battery
+  {
+    sf::Texture texture;
+    texture.loadFromFile("../sprites/battery.png");
+
+    _spriteBattery = new sf::Sprite();
+    _spriteBattery->setTexture(texture);
+    _spriteBattery->setTextureRect(sf::IntRect(0, 0, 24, 24));
+  }
+
+  // Floors
+  {
+    _spriteFloor[0] = new sf::Sprite();
+    _spriteFloor[0]->setTexture(*_texture[spritesRes[2].textureIndex]);
+    _spriteFloor[0]->setTextureRect(sf::IntRect(spritesRes[2].posX * TILE_SIZE,
+                                                spritesRes[2].posY * TILE_SIZE,
+                                                TILE_SIZE,
+                                                TILE_SIZE));
+  }
 }
 
 SpriteManager::~SpriteManager() {
@@ -82,12 +102,14 @@ sf::Sprite*		SpriteManager::getSprite(BaseItem* item) {
 }
 
 sf::Sprite*		SpriteManager::getSprite(int type) {
-  sf::Texture* texture = new sf::Texture();
-  texture->loadFromFile("../sprites/battery.png");
+  switch (type) {
 
-  sf::Sprite* sprite = new sf::Sprite();
-  sprite->setTexture(*texture);
-  sprite->setTextureRect(sf::IntRect(0, 0, 24, 24));
+  case BaseItem::STRUCTURE_FLOOR:
+    return _spriteFloor[0];
 
-  return sprite;
+  case SpriteManager::IC_BATTERY:
+    return _spriteBattery;
+  }
+
+  return NULL;
 }
