@@ -19,6 +19,7 @@ class	Viewport {
   float getScale() { return _scale; }
   void  update(int x, int y);
   sf::Transform  getViewTransform(sf::Transform transform);
+  sf::Transform  getViewTransformBackground(sf::Transform transform);
 
  private:
   int   _posX;

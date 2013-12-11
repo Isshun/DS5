@@ -49,6 +49,7 @@ public:
 private:
   sf::RenderWindow* _app;
   sf::Event	event;
+  sf::Sprite* _background;
 
   SpriteManager*		_spriteManager;
   UserInterface*		_ui;

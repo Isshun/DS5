@@ -78,6 +78,7 @@ class UserInterfaceMenu {
 
  private:
   sf::RenderWindow*		_app;
+  sf::Sprite* _background;
   WorldMap*				_worldmap;
   Cursor*				_cursor;
   int					_code;

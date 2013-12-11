@@ -6,6 +6,9 @@
 #include "BaseItem.h"
 #include "ResourceManager.h"
 
+#define UIRES_POSX		UI_WIDTH
+#define UIRES_POSY		0
+
 UserInterfaceResource::UserInterfaceResource(sf::RenderWindow* app) {
   _app = app;
 }
@@ -33,7 +36,7 @@ void UserInterfaceResource::refreshResources() {
 	  text.setColor(sf::Color(255, 0, 0));
 	else if (matter < 20)
 	  text.setColor(sf::Color(255, 255, 0));
-    text.setPosition(UI_PADDING + 0, UI_PADDING + 0);
+    text.setPosition(UIRES_POSX + UI_PADDING + 0, UIRES_POSY + UI_PADDING + 0);
     _app->draw(text);
   }
 
@@ -47,7 +50,7 @@ void UserInterfaceResource::refreshResources() {
     // text.setCharacterSize(UI_FONT_SIZE);
     // text.setStyle(sf::Text::Underlined);
     // text.setColor(sf::Color(255, 255, 0));
-    text.setPosition(UI_PADDING + 250 + 0, UI_PADDING + 0);
+    text.setPosition(UIRES_POSX + UI_PADDING + 250 + 0, UIRES_POSY + UI_PADDING + 0);
     _app->draw(text);
   }
 
@@ -58,7 +61,7 @@ void UserInterfaceResource::refreshResources() {
     sf::Text text;
     text.setString(oss.str());
     text.setFont(font);
-    text.setPosition(UI_PADDING + 500 + 0, UI_PADDING + 0);
+    text.setPosition(UIRES_POSX + UI_PADDING + 500 + 0, UIRES_POSY + UI_PADDING + 0);
     _app->draw(text);
   }
 

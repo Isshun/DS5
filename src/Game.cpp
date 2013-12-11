@@ -16,6 +16,8 @@ extern int old_time2;
 sf::Time _time_elapsed;
 
 Game::Game(sf::RenderWindow* app) {
+  std::cout << Debug() << "Game" << std::endl;
+
   _run = true;
   _app = app;
   _lastInput = 0;
@@ -32,6 +34,13 @@ Game::Game(sf::RenderWindow* app) {
   _characterManager->add(8, 8);
   _characterManager->add(20, 8);
   _characterManager->add(50, 8);
+
+  // Background
+  sf::Texture* texture = new sf::Texture();
+  texture->loadFromFile("../res/background.jpg");
+  _background = new sf::Sprite();
+  _background->setTexture(*texture);
+  _background->setTextureRect(sf::IntRect(0, 0, 1920, 1080));
 
   std::cout << Info() << "Game:\tdone" << std::endl;
 }
@@ -87,15 +96,20 @@ void	Game::draw_surface() {
   int w = _worldMap->getWidth();
   int h = _worldMap->getHeight();
 
+  // Background
+  sf::Transform transform2;
+  sf::RenderStates render2(_viewport->getViewTransformBackground(transform2));
+  _app->draw(*_background, render2);
+
   // Render transformation for viewport
   sf::Transform transform;
   sf::RenderStates render(_viewport->getViewTransform(transform));
 
-  // Draw viewport background
-  sf::RectangleShape shape;
-  shape.setSize(sf::Vector2f(w * TILE_SIZE, h * TILE_SIZE));
-  shape.setFillColor(sf::Color(0, 50, 100));
-  _app->draw(shape, render);
+  // // Draw viewport background
+  // sf::RectangleShape shape;
+  // shape.setSize(sf::Vector2f(w * TILE_SIZE, h * TILE_SIZE));
+  // shape.setFillColor(sf::Color(0, 50, 100));
+  // _app->draw(shape, render);
 
   // Run through items
   for (int i = w-1; i >= 0; i--) {

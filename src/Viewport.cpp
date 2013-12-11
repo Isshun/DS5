@@ -22,3 +22,10 @@ sf::Transform  Viewport::getViewTransform(sf::Transform transform) {
   return transform;
 }
 
+sf::Transform  Viewport::getViewTransformBackground(sf::Transform transform) {
+  transform.translate(_posX / 10 - 250, _posY / 10 - 50);
+  transform.scale(1+(_scale/20), 1+(_scale/20));
+  return transform;
+}
+
+

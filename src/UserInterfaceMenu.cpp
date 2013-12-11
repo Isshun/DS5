@@ -135,11 +135,20 @@ Entry	entries_build_science[] = {
 };
 
 UserInterfaceMenu::UserInterfaceMenu(sf::RenderWindow* app, WorldMap* worldmap, Cursor* cursor) {
+  std::cout << Debug() << "UserInterfaceMenu" << std::endl;
+
   _worldmap = worldmap;
   _cursor = cursor;
   _entries = entries_main;
   _code = CODE_MAIN;
   _app = app;
+
+  // Background
+  sf::Texture* texture = new sf::Texture();
+  texture->loadFromFile("../res/background_menu.png");
+  _background = new sf::Sprite();
+  _background->setTexture(*texture);
+  _background->setTextureRect(sf::IntRect(0, 0, 200, 200));
 }
 
 UserInterfaceMenu::~UserInterfaceMenu() {
@@ -304,20 +313,21 @@ void UserInterfaceMenu::drawModeBuild() {
   shortcut.setCharacterSize(UI_FONT_SIZE);
   shortcut.setStyle(sf::Text::Underlined);
   shortcut.setColor(sf::Color(255, 255, 0));
-  shortcut.setPosition(UI_PADDING + 0, UI_HEIGHT + UI_PADDING + 0);
+  shortcut.setPosition(UI_PADDING + 0, UI_PADDING + 0);
   _app->draw(shortcut);
 }
 
 void	UserInterfaceMenu::refreshMenu() {
 
-  sf::RectangleShape shape;
-  shape.setSize(sf::Vector2f(UI_WIDTH, WINDOW_HEIGHT));
-  shape.setFillColor(sf::Color(100, 0, 0));
-  _app->draw(shape);
+  // sf::RectangleShape shape;
+  // shape.setSize(sf::Vector2f(UI_WIDTH, WINDOW_HEIGHT));
+  // shape.setFillColor(sf::Color(100, 0, 0));
+  // _app->draw(shape);
+  _app->draw(*_background);
 
-  shape.setSize(sf::Vector2f(WINDOW_WIDTH, UI_HEIGHT));
-  shape.setFillColor(sf::Color(100, 100, 0));
-  _app->draw(shape);
+  // shape.setSize(sf::Vector2f(WINDOW_WIDTH, UI_HEIGHT));
+  // shape.setFillColor(sf::Color(100, 100, 0));
+  // _app->draw(shape);
 
   sf::Font font;
   if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
@@ -334,7 +344,7 @@ void	UserInterfaceMenu::refreshMenu() {
 	  text.setFont(font);
 	  text.setCharacterSize(UI_FONT_SIZE);
 	  text.setStyle(sf::Text::Regular);
-	  text.setPosition(UI_PADDING + 0, UI_HEIGHT + UI_PADDING + i * UI_FONT_SIZE);
+	  text.setPosition(UI_PADDING + 0, UI_PADDING + i * UI_FONT_SIZE);
 	  _app->draw(text);
 
 	  sf::Text shortcut;
@@ -343,7 +353,7 @@ void	UserInterfaceMenu::refreshMenu() {
 	  shortcut.setCharacterSize(UI_FONT_SIZE);
 	  shortcut.setStyle(sf::Text::Underlined);
 	  shortcut.setColor(sf::Color(255, 255, 0));
-	  shortcut.setPosition(UI_PADDING + 0, UI_HEIGHT + UI_PADDING + i * UI_FONT_SIZE);
+	  shortcut.setPosition(UI_PADDING + 0, UI_PADDING + i * UI_FONT_SIZE);
 	  _app->draw(shortcut);
 	}
 	break;
