@@ -15,6 +15,7 @@
 #include "Cursor.h"
 #include "WorldMap.h"
 #include "UserInterfaceMenu.h"
+#include "UserInterfaceResource.h"
 
 #define MOVE_VIEW_OFFSET        40
 
@@ -60,6 +61,7 @@ class UserInterface {
   int           _viewPosY;
   float			_zoom;
   UserInterfaceMenu*       _menu;
+  UserInterfaceResource*   _uiResource;
 };
 
 #endif /* USERINTERFACE_H_ */
