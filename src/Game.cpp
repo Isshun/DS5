@@ -30,20 +30,8 @@ Game::Game(sf::RenderWindow* app): run(true), up_to_date(false), pause(false) {
   _characterManager->add(8, 8);
   _characterManager->add(20, 8);
   _characterManager->add(50, 8);
-  // character->go(8, 8);
 
-  // // Dump worldmap
-  // #if DEBUG
-  // for (int y = 0; y < _worldMap->getHeight(); y++) {
-  //   for (int x = 0; x < _worldMap->getWidth(); x++) {
-  //     std::cout << (_worldMap->getItem(x, y) == 0 ? 0 : 9);
-  //   }
-  //   std::cout << std::endl;
-  // }
-  // #endif
-  
-
-  std::cout << "Game:\tdone" << std::endl;
+  std::cout << Info() << "Game:\tdone" << std::endl;
 }
 
 Game::~Game() {
@@ -168,98 +156,68 @@ void	Game::draw_surface() {
   }
 }
 
-void	Game::gere_key()
-{
-}
-
-void	Game::loop()
-{
+void	Game::loop() {
   // fixme: actuellement update et refresh se partage les meme timers
   sf::Clock display_timer;
   sf::Clock action_timer;
   sf::Clock pnj_timer;
 
-  while (_app->isOpen())
-    {
-      // Events
-      while (_app->pollEvent(event))
-		{
-		  if (event.type == sf::Event::MouseMoved) {
-			_ui->mouseMoved(event.mouseMove.x, event.mouseMove.y);
-		  }
+  while (_app->isOpen()) {
+	// Events
+	while (_app->pollEvent(event)) {
+	  if (event.type == sf::Event::MouseMoved) {
+		_ui->mouseMoved(event.mouseMove.x, event.mouseMove.y);
+	  }
 
-		  if (event.type == sf::Event::MouseButtonPressed) {
-			_ui->mousePress(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
-		  }
+	  if (event.type == sf::Event::MouseButtonPressed) {
+		_ui->mousePress(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
+	  }
 
-		  if (event.type == sf::Event::MouseButtonReleased) {
-			_ui->mouseRelease(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
-		  }
+	  if (event.type == sf::Event::MouseButtonReleased) {
+		_ui->mouseRelease(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
+	  }
 
-		  if (event.type == sf::Event::MouseWheelMoved) {
-			_ui->mouseWheel(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
-		  }
+	  if (event.type == sf::Event::MouseWheelMoved) {
+		_ui->mouseWheel(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
+	  }
 
-		  // GOTO
-// #if DEBUG
-// 		  if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::G) {
-// 			Cursor* cursor = _ui->getCursor();
-// 			character->go(cursor->_x, cursor->_y);
-// 		  }
-// #endif
+	  _force_refresh = _ui->checkKeyboard(event, _frame, _lastInput, _worldMap);
+	  gere_quit();
+	}
 
-		  _force_refresh = _ui->checkKeyboard(event, _frame, _lastInput, _worldMap);
-		  gere_quit();
-		}
-
-      // Update & refresh
-	  _time_elapsed = display_timer.getElapsedTime();
-      if (_force_refresh || _time_elapsed.asMilliseconds() > 50)
-		{
-    	  _force_refresh = false;
-		  update();
-		  refresh();
-		  _app->display();
-		  display_timer.restart();
-		}
-    }
+	// Update & refresh
+	_time_elapsed = display_timer.getElapsedTime();
+	if (_force_refresh || _time_elapsed.asMilliseconds() > 50) {
+	  _force_refresh = false;
+	  update();
+	  refresh();
+	  _app->display();
+	  display_timer.restart();
+	}
+  }
 }
 
-void	Game::gere_quit()
-{
-  if (this->event.type == sf::Event::Closed)
-    {
-      _app->setKeyRepeatEnabled(true);
-      _app->close();
-    }
+void	Game::gere_quit() {
+  if (this->event.type == sf::Event::Closed) {
+	_app->setKeyRepeatEnabled(true);
+	_app->close();
+  }
 
   if (this->event.type == sf::Event::KeyPressed &&
-	  this->event.key.code == sf::Keyboard::K)
-    {
-      _app->setKeyRepeatEnabled(true);
-      _app->close();
-    }
+	  this->event.key.code == sf::Keyboard::K) {
+	_app->setKeyRepeatEnabled(true);
+	_app->close();
+  }
 
-  //std::cout << "Closing" << std::endl;
+  std::cout << Info() << "Bye" << std::endl;
 }
 
 int main(int argc, char *argv[]) {
-  sf::RenderWindow* app = new sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), NAME);
-  app->setKeyRepeatEnabled(true);
+  sf::RenderWindow app(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), NAME);
+  Game	game(&app);
 
-  sf::View view = app->getDefaultView();
-
-  view.setViewport(sf::FloatRect(0.f, 0.f, 1.0f, 1.0f));
-
-  // view.setCenter(400, 200);
-  // view.zoom(zoom);
-
-  app->setView(view);
-
-  // load game
-  Game	game(app);
+  app.setKeyRepeatEnabled(true);
   game.loop();
 
   return EXIT_SUCCESS;
 }
-
