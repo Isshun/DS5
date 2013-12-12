@@ -6,10 +6,26 @@
 extern WorldMap* gl_worldmap;
 
 CharacterManager::CharacterManager() {
+  std::cout << Debug() << "CharacterManager" << std::endl;
+
   _characters = new std::list<Character*>();
+
+  _textures[0] = new sf::Texture();
+  _textures[0]->loadFromFile("../sprites/cless.png");
+  _textures[0]->setSmooth(true);
+
+  std::cout << Debug() << "CharacterManager done" << std::endl;
 }
 
 CharacterManager::~CharacterManager() {
+  delete _textures[0];
+
+  Character* c;
+  while ((c = _characters->front()) != NULL) {
+	delete c;
+  }
+
+  delete _characters;
 }
 
 Character*		CharacterManager::add(int x, int y) {
@@ -25,9 +41,10 @@ Character*		CharacterManager::getUnemployed() {
 
   for (it = _characters->begin(); it != _characters->end(); ++it) {
 	if ((*it)->getJob() == NULL) {
+	  Character* c = *it;
+	  _characters->push_back(c);
 	  _characters->erase(it);
-	  _characters->push_back(*it);
-	  return *it;
+	  return c;
 	}
   }
 
@@ -43,12 +60,8 @@ void	CharacterManager::move() {
 }
 
 void	CharacterManager::draw(sf::RenderWindow* app, sf::Transform transform) {
-  sf::Texture texture;
-  texture.loadFromFile("../sprites/cless.png");
-  texture.setSmooth(true);
-
   sf::Sprite sprite;
-  sprite.setTexture(texture);
+  sprite.setTexture(*_textures[0]);
   sprite.setTextureRect(sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
 
   sf::RenderStates render(transform);

@@ -16,11 +16,11 @@ int WorldMap::_roomCount = 0;
 
 WorldMap::WorldMap() {
   _roomCount = 0;
+  _width = 200;
+  _height = 200;
   _todo = new std::list<BaseItem*>();
   _building = new std::list<BaseItem*>();
   _buildingAborted = new std::list<BaseItem*>();
-  _width = 200;
-  _height = 200;
   _items = new BaseItem**[_width];
   for (int x = 0; x < _width; x++) {
 	_items[x] = new BaseItem*[_height];
@@ -33,8 +33,38 @@ WorldMap::WorldMap() {
 }
 
 WorldMap::~WorldMap() {
-	// TODO Auto-generated destructor stub
+  BaseItem* i;
+
+  // // Free todo list
+  // while ((i = _todo->front()) != NULL) {
+  // 	delete i;
+  // }
+  delete _todo;
+
+  // // Free building list
+  // while ((i = _building->front()) != NULL) {
+  // 	delete i;
+  // }
+  delete _building;
+
+  // // Free building abort list
+  // while ((i = _buildingAborted->front()) != NULL) {
+  // 	delete i;
+  // }
+  delete _buildingAborted;
+
+
+  for (int x = 0; x < _width; x++) {
+	for (int y = 0; y < _height; y++) {
+	  if(_items[x][y] != NULL) {
+		delete _items[x][y];
+	  }
+	}
+	delete _items[x];
+  }
+  delete _items;
 }
+
 void	WorldMap::setZone(int x, int y, int zoneId) {
   setZone(x, y, zoneId, _roomCount++);
 }

@@ -14,6 +14,9 @@
 
 #include "BaseItem.h"
 
+#define NB_SPRITES_ROOM 9
+#define NB_TEMPLATES 9
+
 struct {
   int			type;
   int			posX;
@@ -31,13 +34,14 @@ class SpriteManager {
   SpriteManager();
   ~SpriteManager();
 
-  sf::Sprite*		getSprite(BaseItem* item);
-  sf::Sprite*		getSprite(int type);
+  void				getSprite(BaseItem* item, sf::Sprite* sprite);
+  void				getSprite(int type, sf::Sprite* sprite);
 
  private:
-  sf::Texture*		_texture[8];
+  sf::Sprite*		_buf;
+  sf::Texture*		_texture[NB_TEMPLATES];
   sf::Sprite*       _spriteBattery;
-  sf::Sprite*       _spriteFloor[8];
+  sf::Sprite*       _spriteFloor[NB_SPRITES_ROOM];
 };
 
 #endif /* SPRITEMANAGER_H_ */

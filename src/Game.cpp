@@ -36,16 +36,24 @@ Game::Game(sf::RenderWindow* app) {
   _characterManager->add(50, 8);
 
   // Background
-  sf::Texture* texture = new sf::Texture();
-  texture->loadFromFile("../res/background.jpg");
+  std::cout << Debug() << "Game background" << std::endl;
+  _backgroundTexture = new sf::Texture();
+  _backgroundTexture->loadFromFile("../res/background.png");
   _background = new sf::Sprite();
-  _background->setTexture(*texture);
+  _background->setTexture(*_backgroundTexture);
   _background->setTextureRect(sf::IntRect(0, 0, 1920, 1080));
 
   std::cout << Info() << "Game:\tdone" << std::endl;
 }
 
 Game::~Game() {
+  // delete _viewport;
+  // delete _worldMap;
+  // delete _ui;
+  // delete _spriteManager;
+  // delete _characterManager;
+  // delete _background;
+  // delete _backgroundTexture;
 }
 
 void	Game::update() {
@@ -133,24 +141,32 @@ void	Game::draw_surface() {
 
 		// Draw floor
 		{
-		  sf::Sprite* sprite = _spriteManager->getSprite(BaseItem::STRUCTURE_FLOOR);
-		  sprite->setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		  sf::Sprite sprite;
+
+		  _spriteManager->getSprite(BaseItem::STRUCTURE_FLOOR, &sprite);
+		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+
+		  _app->draw(sprite, render);
         }
 
 		// Draw item
 		{
-		  sf::Sprite* sprite = _spriteManager->getSprite(item);
-		  sprite->setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		  sf::Sprite sprite;
 
-		  _app->draw(*sprite, render);
+		  _spriteManager->getSprite(item, &sprite);
+		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+
+		  _app->draw(sprite, render);
 		}
 
 		// Draw battery
 		if (item->isComplete() && item&& !item->isSupply()) {
-		  sf::Sprite* sprite = _spriteManager->getSprite(SpriteManager::IC_BATTERY);
-		  sprite->setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		  sf::Sprite sprite;
 
-		  _app->draw(*sprite, render);
+		  _spriteManager->getSprite(SpriteManager::IC_BATTERY, &sprite);
+		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+
+		  _app->draw(sprite, render);
 		}
 
 	  }

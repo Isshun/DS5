@@ -21,6 +21,7 @@ class	CharacterManager
 
  private:
 	std::list<Character*>*		_characters;
+	sf::Texture*				_textures[10];
 };
 
 #endif

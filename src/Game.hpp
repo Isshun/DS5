@@ -51,6 +51,8 @@ private:
   sf::Event	event;
   sf::Sprite* _background;
 
+  sf::Texture*	_backgroundTexture;
+
   SpriteManager*		_spriteManager;
   UserInterface*		_ui;
 

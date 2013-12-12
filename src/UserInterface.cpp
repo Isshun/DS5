@@ -198,68 +198,70 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
   }
 
 
-  switch (event.key.code)
-    {
+  if (event.type == sf::Event::KeyReleased) {
+	switch (event.key.code)
+	  {
 
-    case sf::Keyboard::D:
-	  worldMap->dump();
-      break;
+	  case sf::Keyboard::D:
+		worldMap->dump();
+		break;
 
-    case sf::Keyboard::T:
-	  worldMap->setZone(_cursor->_x, _cursor->_y, 0);
-      break;
+	  case sf::Keyboard::T:
+		worldMap->setZone(_cursor->_x, _cursor->_y, 0);
+		break;
 
-    case sf::Keyboard::Up:
-      if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
-        _viewport->update(0, MOVE_VIEW_OFFSET);
-		lastInput = frame;
-  		// _cursor->_y--;
-	  }
-      break;
-
-    case sf::Keyboard::Down:
-      if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
-        _viewport->update(0, -MOVE_VIEW_OFFSET);
-		lastInput = frame;
-		// _cursor->_y++;
-	  }
-      break;
-
-    case sf::Keyboard::Right:
-      if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
-        _viewport->update(-MOVE_VIEW_OFFSET, 0);
-		lastInput = frame;
-  		// _cursor->_x++;
-	  }
-      break;
-
-    case sf::Keyboard::Left:
-      if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
-        _viewport->update(MOVE_VIEW_OFFSET, 0);
-		lastInput = frame;
-		// _cursor->_x--;
-	  }
-      break;
-
-	  // PutItem
-    case sf::Keyboard::Return:
-      if (event.type == sf::Event::KeyReleased) {
-		if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
-		  worldMap->putItem(_cursor->_x, _cursor->_y, _menu->getBuildItemType());
+	  case sf::Keyboard::Up:
+		if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
+		  _viewport->update(0, MOVE_VIEW_OFFSET);
+		  lastInput = frame;
+		  // _cursor->_y--;
 		}
+		break;
+
+	  case sf::Keyboard::Down:
+		if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
+		  _viewport->update(0, -MOVE_VIEW_OFFSET);
+		  lastInput = frame;
+		  // _cursor->_y++;
+		}
+		break;
+
+	  case sf::Keyboard::Right:
+		if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
+		  _viewport->update(-MOVE_VIEW_OFFSET, 0);
+		  lastInput = frame;
+		  // _cursor->_x++;
+		}
+		break;
+
+	  case sf::Keyboard::Left:
+		if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
+		  _viewport->update(MOVE_VIEW_OFFSET, 0);
+		  lastInput = frame;
+		  // _cursor->_x--;
+		}
+		break;
+
+		// PutItem
+	  case sf::Keyboard::Return:
+		if (event.type == sf::Event::KeyReleased) {
+		  if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
+			worldMap->putItem(_cursor->_x, _cursor->_y, _menu->getBuildItemType());
+		  }
+		}
+		break;
+
+	  case sf::Keyboard::BackSpace:
+	  case sf::Keyboard::Escape:
+		if ((event.type == sf::Event::KeyReleased)) {
+		  _menu->openBack();
+		}
+		break;
+
+	  default:
+		break;
 	  }
-      break;
-
-    case sf::Keyboard::BackSpace:
-    case sf::Keyboard::Escape:
-      if ((event.type == sf::Event::KeyReleased)) {
-        _menu->openBack();
-      }
-      break;
-
-    default:
-      break;
-    }
+  }
 
   return false;
 }

@@ -8,13 +8,24 @@
 extern WorldMap* gl_worldmap;
 
 Character::Character(int x, int y) {
+  std::cout << Debug() << "Character" << std::endl;
+
   _astarsearch = NULL;
   _job = NULL;
   _posY = y;
   _posX = x;
+
+  std::cout << Debug() << "Character done" << std::endl;
 }
 
 Character::~Character() {
+  if (_astarsearch != NULL) {
+	_astarsearch->FreeSolutionNodes();
+	std::cout << Debug() << "free 1" << std::endl;
+	_astarsearch->EnsureMemoryFreed();
+	delete _astarsearch;
+	_astarsearch = NULL;
+  }
 }
 
 void	Character::build(BaseItem* item) {
@@ -28,12 +39,12 @@ void	Character::build(BaseItem* item) {
 void		Character::go(int toX, int toY) {
   cout << Debug() << "Charactere: go(" << toX << ", " << toY << ")" << endl;
 
-  if (_astarsearch != 0) {
+  if (_astarsearch != NULL) {
 	_astarsearch->FreeSolutionNodes();
 	std::cout << Debug() << "free 1" << std::endl;
 	_astarsearch->EnsureMemoryFreed();
 	delete _astarsearch;
-	_astarsearch = 0;
+	_astarsearch = NULL;
   }
 
   _steps = 0;

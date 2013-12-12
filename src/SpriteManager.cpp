@@ -60,39 +60,34 @@ SpriteManager::SpriteManager() {
     _spriteBattery->setTexture(texture);
     _spriteBattery->setTextureRect(sf::IntRect(0, 0, 24, 24));
   }
-
-  // Floors
-  for (int i = 0; i < 9; i++) {
-    _spriteFloor[i] = new sf::Sprite();
-    _spriteFloor[i]->setTexture(*_texture[spritesRes[2].textureIndex]);
-    _spriteFloor[i]->setTextureRect(sf::IntRect((i+1) * TILE_SIZE,
-                                                0 * TILE_SIZE,
-                                                TILE_SIZE,
-                                                TILE_SIZE));
-  }
 }
 
 SpriteManager::~SpriteManager() {
   delete _texture[0];
   delete _texture[1];
   delete _texture[2];
+  delete _texture[3];
+
+  delete _spriteBattery;
 }
 
-sf::Sprite*		SpriteManager::getSprite(BaseItem* item) {
+void		SpriteManager::getSprite(BaseItem* item, sf::Sprite* sprite) {
 
   if (item != NULL) {
 	for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
 	  if (spritesRes[i].type == item->type) {
-		sf::Sprite* sprite;
 
 		// Floor
 		if (item->type == BaseItem::STRUCTURE_FLOOR) {
-		  sprite = _spriteFloor[item->zone];
+		  sprite->setTexture(*_texture[spritesRes[2].textureIndex]);
+		  sprite->setTextureRect(sf::IntRect((item->zone+1) * TILE_SIZE,
+											0 * TILE_SIZE,
+											TILE_SIZE,
+											TILE_SIZE));
 		}
 
 		// Else
 		else {
-		  sprite = new sf::Sprite();
 		  sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
 		  sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
 											 spritesRes[i].posY * TILE_SIZE,
@@ -103,26 +98,22 @@ sf::Sprite*		SpriteManager::getSprite(BaseItem* item) {
 		int alpha = 75 + 180 / item->matter * item->progress;
 		sprite->setColor(sf::Color(255,255,255,alpha));
 
-		return sprite;
+		return;
 	  }
 	}
   }
 
-  sf::Sprite* sprite = new sf::Sprite();
   sprite->setTexture(*_texture[0]);
   sprite->setTextureRect(sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
-  return sprite;
 }
 
-sf::Sprite*		SpriteManager::getSprite(int type) {
+void		SpriteManager::getSprite(int type, sf::Sprite* sprite) {
   switch (type) {
 
   case BaseItem::STRUCTURE_FLOOR:
-    return _spriteFloor[0];
+    sprite = _spriteFloor[0];
 
   case SpriteManager::IC_BATTERY:
-    return _spriteBattery;
+    sprite = _spriteBattery;
   }
-
-  return NULL;
 }
