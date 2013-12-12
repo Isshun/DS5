@@ -135,9 +135,10 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
   sprite.setTexture(texture);
   sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 
-  sf::Transform transform;
-  transform.scale(_zoom, _zoom);
-  sf::RenderStates render(transform);
+  // sf::Transform transform;
+  // // transform.scale(_zoom, _zoom);
+  // transform = _viewport->getViewTransform(transform);
+  // sf::RenderStates render(transform);
 
   startX = max(startX, 0);
   startY = max(startY, 0);
@@ -146,8 +147,11 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
   for (int x = startX; x <= toX; x++) {
 	for (int y = startY; y <= toY; y++) {
       sf::Transform transform;
+      // transform.scale(_viewport->getScale(), _viewport->getScale());
+      // sf::RenderStates render(transform);
       sf::RenderStates render(_viewport->getViewTransform(transform));
-	  sprite.setPosition(x * TILE_SIZE, y * TILE_SIZE);
+	  sprite.setPosition((UI_WIDTH * (1.0f - _viewport->getScale())) + x * TILE_SIZE,
+                         (UI_HEIGHT * (1.0f - _viewport->getScale())) + y * TILE_SIZE);
 	  _app->draw(sprite, render);
 	}
   }

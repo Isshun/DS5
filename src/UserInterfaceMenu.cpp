@@ -142,6 +142,8 @@ UserInterfaceMenu::UserInterfaceMenu(sf::RenderWindow* app, WorldMap* worldmap, 
   _entries = entries_main;
   _code = CODE_MAIN;
   _app = app;
+  _posX = 0;
+  _posY = 0;
 
   // Background
   sf::Texture* texture = new sf::Texture();
@@ -155,7 +157,7 @@ UserInterfaceMenu::~UserInterfaceMenu() {
 }
 
 void	UserInterfaceMenu::mousePressed(sf::Mouse::Button button, int x, int y) {
-  int index = ((y - UI_HEIGHT + UI_PADDING) / UI_FONT_SIZE) - 1;
+  int index = ((y - _posY + UI_PADDING) / UI_FONT_SIZE) - 1;
 
   switch (button) {
       

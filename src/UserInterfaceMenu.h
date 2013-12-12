@@ -85,6 +85,8 @@ class UserInterfaceMenu {
   Entry*				_entries;
   int					_parent_code;
   int					_buildItemType;
+  int					_posX;
+  int					_posY;
   const char*			_buildItemText;
 };
 

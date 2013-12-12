@@ -98,6 +98,7 @@ class BaseItem {
   int			matter;
   int			power;
   int			powerSupply;
+  int			zone;
   int			room;
 
  private:

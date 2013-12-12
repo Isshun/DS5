@@ -12,7 +12,10 @@
 #include "WorldMap.h"
 #include "Log.hpp"
 
+int WorldMap::_roomCount = 0;
+
 WorldMap::WorldMap() {
+  _roomCount = 0;
   _todo = new std::list<BaseItem*>();
   _building = new std::list<BaseItem*>();
   _buildingAborted = new std::list<BaseItem*>();
@@ -32,8 +35,11 @@ WorldMap::WorldMap() {
 WorldMap::~WorldMap() {
 	// TODO Auto-generated destructor stub
 }
-
 void	WorldMap::setZone(int x, int y, int zoneId) {
+  setZone(x, y, zoneId, _roomCount++);
+}
+
+void	WorldMap::setZone(int x, int y, int zoneId, int roomId) {
 
   // Out of bound
   if (x < 0 || x >= _width || y < 0 || y >= _height) {
@@ -46,11 +52,12 @@ void	WorldMap::setZone(int x, int y, int zoneId) {
   }
 
   // Already tag
-  if (_items[x][y]->room == zoneId) {
+  if (_items[x][y]->zone == zoneId) {
 	return;
   }
 
-  _items[x][y]->room = zoneId;
+  _items[x][y]->zone = zoneId;
+  _items[x][y]->room = roomId;
   
   setZone(x, y+1, zoneId);
   setZone(x, y-1, zoneId);

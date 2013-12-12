@@ -39,6 +39,7 @@ BaseItem::BaseItem(int t) {
   type = t;
   progress = 0;
   builder = NULL;
+  zone = 0;
   room = 0;
 
   // Default values

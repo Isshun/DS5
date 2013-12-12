@@ -87,7 +87,7 @@ sf::Sprite*		SpriteManager::getSprite(BaseItem* item) {
 
 		// Floor
 		if (item->type == BaseItem::STRUCTURE_FLOOR) {
-		  sprite = _spriteFloor[item->room];
+		  sprite = _spriteFloor[item->zone];
 		}
 
 		// Else
