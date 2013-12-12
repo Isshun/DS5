@@ -38,10 +38,9 @@ class UserInterface {
   void	mouseRelease(sf::Mouse::Button button, int x, int y);
   void	mouseWheel(int delta, int x, int y);
   sf::Transform  getViewTransform(sf::Transform transform);
-  void	setRelativeMousePos(int x, int y) {
-	_keyMovePosX = (x * (1.0f / _viewport->getScale()) - UI_WIDTH - _viewport->getPosX()) / TILE_SIZE;
-	_keyMovePosY = (y * (1.0f / _viewport->getScale()) - UI_HEIGHT - _viewport->getPosY()) / TILE_SIZE;
-  }
+  void	setRelativeMousePos(int x, int y);
+  int	getRelativePosX(int x) { return (x - UI_WIDTH - _viewport->getPosX()) / _viewport->getScale() / TILE_SIZE; }
+  int	getRelativePosY(int y) { return (y - UI_HEIGHT - _viewport->getPosY()) / _viewport->getScale() / TILE_SIZE; }
 
  private:
   void	drawCursor(int startX, int startY, int toX, int toY);

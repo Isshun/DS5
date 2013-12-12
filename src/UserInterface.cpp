@@ -34,16 +34,15 @@ void	UserInterface::mouseMoved(int x, int y) {
   if (x <= UI_WIDTH || y <= UI_HEIGHT)
 	return;
 
-  setRelativeMousePos(x, y);
+  _keyMovePosX = getRelativePosX(x);
+  _keyMovePosY = getRelativePosY(y);
 
   // left button pressed
   if (_keyLeftPressed) {
-	setRelativeMousePos(x, y);
   }
 
   // right button pressed
   else if (_keyRightPressed) {
-	setRelativeMousePos(x, y);
     _viewport->update(_mouseRightPress.x - x, _mouseRightPress.y - y);
 	_mouseRightPress.x = x;
 	_mouseRightPress.y = y;
@@ -51,9 +50,9 @@ void	UserInterface::mouseMoved(int x, int y) {
 
   // no buttons pressed
   else {
-	setRelativeMousePos(x, y);
-	_cursor->setMousePos(x - UI_WIDTH - _viewport->getPosX() - 1,
-                         y - UI_HEIGHT - _viewport->getPosY() - 1);
+
+	// _cursor->setMousePos(x * _viewport->getScale() - UI_WIDTH - _viewport->getPosX() - 1,
+    //                      y * _viewport->getScale() - UI_HEIGHT - _viewport->getPosY() - 1);
   }
 }
 
@@ -66,8 +65,8 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
 
     case sf::Mouse::Left:
       _keyLeftPressed = true;
-      _keyMovePosX = _keyPressPosX = (x - UI_WIDTH - _viewport->getPosX()) / TILE_SIZE;
-      _keyMovePosY = _keyPressPosY = (y - UI_HEIGHT - _viewport->getPosY()) / TILE_SIZE;
+	  _keyMovePosX = _keyPressPosX = getRelativePosX(x);
+	  _keyMovePosY = _keyPressPosY = getRelativePosY(y);
       break;
 
     case sf::Mouse::Right:
@@ -124,7 +123,9 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 
 void	UserInterface::mouseWheel(int delta, int x, int y) {
   _viewport->setScale(delta);
-  setRelativeMousePos(x, y);
+
+  _keyMovePosX = getRelativePosX(x);
+  _keyMovePosY = getRelativePosY(y);
 }
 
 void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
@@ -135,11 +136,6 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
   sprite.setTexture(texture);
   sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 
-  // sf::Transform transform;
-  // // transform.scale(_zoom, _zoom);
-  // transform = _viewport->getViewTransform(transform);
-  // sf::RenderStates render(transform);
-
   startX = max(startX, 0);
   startY = max(startY, 0);
   toX = min(toX, _worldMap->getWidth());
@@ -147,11 +143,8 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
   for (int x = startX; x <= toX; x++) {
 	for (int y = startY; y <= toY; y++) {
       sf::Transform transform;
-      // transform.scale(_viewport->getScale(), _viewport->getScale());
-      // sf::RenderStates render(transform);
       sf::RenderStates render(_viewport->getViewTransform(transform));
-	  sprite.setPosition((UI_WIDTH * (1.0f - _viewport->getScale())) + x * TILE_SIZE,
-                         (UI_HEIGHT * (1.0f - _viewport->getScale())) + y * TILE_SIZE);
+	  sprite.setPosition(x * TILE_SIZE, y * TILE_SIZE);
 	  _app->draw(sprite, render);
 	}
   }
