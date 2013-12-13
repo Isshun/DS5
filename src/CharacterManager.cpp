@@ -28,6 +28,20 @@ CharacterManager::~CharacterManager() {
   delete _characters;
 }
 
+Character*        CharacterManager::getCharacterAtPos(int x, int y) {
+  std::cout << "getCharacterAtPos: " << x << "x" << y << std::endl;
+  std::list<Character*>::iterator it;
+
+  for (it = _characters->begin(); it != _characters->end(); ++it) {
+	if ((*it)->getX() == x && (*it)->getY() == y) {
+      std::cout << "found" << std::endl;
+      return *it;
+    }
+  }
+
+  return NULL;
+}
+
 Character*		CharacterManager::add(int x, int y) {
   Character* c = new Character(x, y);
 

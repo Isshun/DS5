@@ -24,16 +24,18 @@ Game::Game(sf::RenderWindow* app) {
   _frame = 0;
   _viewport = new Viewport(app);
   _worldMap = new WorldMap();
-  _ui = new UserInterface(app, _worldMap, _viewport);
-  gl_worldmap = _worldMap;
-
-  _spriteManager = new SpriteManager();
 
   _characterManager = new CharacterManager();
   _characterManager->add(2, 2);
   _characterManager->add(8, 8);
   _characterManager->add(20, 8);
   _characterManager->add(50, 8);
+
+  _ui = new UserInterface(app, _worldMap, _viewport, _characterManager);
+
+  gl_worldmap = _worldMap;
+
+  _spriteManager = new SpriteManager();
 
   // Background
   std::cout << Debug() << "Game background" << std::endl;

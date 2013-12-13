@@ -4,6 +4,7 @@ SRC	=	Game.cpp	\
 		UserInterface.cpp	\
 		UserInterfaceMenu.cpp	\
 		UserInterfaceResource.cpp	\
+		UserInterfaceMenuCharacter.cpp	\
 		BaseItem.cpp	\
 		SpriteManager.cpp	\
 		ResourceManager.cpp	\

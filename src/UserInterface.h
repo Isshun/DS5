@@ -16,13 +16,15 @@
 #include "WorldMap.h"
 #include "Viewport.h"
 #include "UserInterfaceMenu.h"
+#include "UserInterfaceMenuCharacter.h"
 #include "UserInterfaceResource.h"
+#include "CharacterManager.h"
 
 #define MOVE_VIEW_OFFSET        40
 
 class UserInterface {
  public:
-  UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport);
+  UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport, CharacterManager* characteres);
   ~UserInterface();
 
   void	refresh();
@@ -59,6 +61,9 @@ class UserInterface {
   float			_zoom;
   UserInterfaceMenu*       _menu;
   UserInterfaceResource*   _uiResource;
+  CharacterManager*        _characteres;
+  Character*               _characterSelected;
+  UserInterfaceMenuCharacter*   _menuCharacter;
 };
 
 #endif /* USERINTERFACE_H_ */

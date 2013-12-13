@@ -7,6 +7,39 @@
 
 extern WorldMap* gl_worldmap;
 
+const char* firstname[] = {
+  "Vic",
+  "Lewis",
+  "Alice",
+  "Adam",
+  "Janice",
+  "Ezri",
+  "Harcourt Fenton « ",
+  "Jadzia",
+};
+
+const char* middlename[] = {
+  "Harry",
+  "Apollo",
+  "Boomer",
+  "",
+  "",
+  "",
+  "",
+  "",
+};
+
+const char* lastname[] = {
+  "Zimmerman",
+  "Dax",
+  "Nerys",
+  "Laren",
+  "Barclay",
+  "Mudd",
+  "Rand",
+  "McCoy",
+};
+
 Character::Character(int x, int y) {
   std::cout << Debug() << "Character" << std::endl;
 
@@ -15,7 +48,14 @@ Character::Character(int x, int y) {
   _posY = y;
   _posX = x;
 
-  std::cout << Debug() << "Character done" << std::endl;
+  const char* middle = middlename[rand() % 8];
+  if (strlen(middle) == 0) {
+    sprintf(_name, "%s %s", firstname[rand() % 8], lastname[rand() % 8]);
+  } else {
+    sprintf(_name, "%s (%s) %s", firstname[rand() % 8], middle, lastname[rand() % 8]);
+  }
+
+  std::cout << Debug() << "Character done: " << _name << std::endl;
 }
 
 Character::~Character() {

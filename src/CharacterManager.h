@@ -18,6 +18,7 @@ class	CharacterManager
 	Character*	getUnemployed();
 	void		draw(sf::RenderWindow* app, sf::Transform transform);
 	void		move();
+    Character*  getCharacterAtPos(int x, int y);
 
  private:
 	std::list<Character*>*		_characters;

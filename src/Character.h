@@ -34,6 +34,9 @@ class	Character
   void	setRun(int direction, bool run);
   void	set_position(int x, int y);
   void*	getJob() { return _job; }
+  int	getX() { return _posX; }
+  int	getY() { return _posY; }
+  const char*	getName() { return _name; }
 
   map<int,int>	_run;
 
@@ -45,7 +48,7 @@ class	Character
   int	_posY;
 
 private:
-  const char	*path;
+  char	_name[32];
   AStarSearch<MapSearchNode>* _astarsearch;
   int	_steps;
   void*	_job;

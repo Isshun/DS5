@@ -13,20 +13,24 @@
 #include "BaseItem.h"
 #include "ResourceManager.h"
 
-UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport) {
+UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport, CharacterManager* characteres) {
   _app = app;
   _viewport = viewport;
   _worldMap = worldMap;
   _cursor = new Cursor();
+  _characteres = characteres;
   _keyLeftPressed = false;
   _keyRightPressed = false;
   _zoom = 1.0f;
   _menu = new UserInterfaceMenu(app, _worldMap, _cursor);
+  _menuCharacter = new UserInterfaceMenuCharacter(app);
   _uiResource = new UserInterfaceResource(app);
+  _characterSelected = NULL;
 }
 
 UserInterface::~UserInterface() {
   delete _menu;
+  delete _menuCharacter;
   delete _uiResource;
 }
 
@@ -85,16 +89,21 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
     if (_keyLeftPressed) {
       int startX = std::min(_keyPressPosX, _keyMovePosX);
       int startY = std::min(_keyPressPosY, _keyMovePosY);
-      int toX = startX;
-      int toY = startY;
-      if (_menu->getParentCode() == UserInterfaceMenu::CODE_BUILD_STRUCTURE) {
-        toX = std::max(_keyPressPosX, _keyMovePosX);
-        toY = std::max(_keyPressPosY, _keyMovePosY);
+      int toX = std::max(_keyPressPosX, _keyMovePosX);
+      int toY = std::max(_keyPressPosY, _keyMovePosY);
+
+      // Select character
+      if (_menu->getCode() == UserInterfaceMenu::CODE_MAIN) {
+        std::cout << Info() << "select character" << std::endl;
+        _characterSelected = _characteres->getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
       }
 
-      for (int x = startX; x <= toX; x++) {
-        for (int y = startY; y <= toY; y++) {
-          if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
+      // Build item
+      else if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
+        for (int x = startX; x <= toX; x++) {
+          for (int y = startY; y <= toY; y++) {
+
+            // Structure
             if (_menu->getBuildItemType() == BaseItem::STRUCTURE_ROOM) {
               if (x == startX || x == toX || y == startY || y == toY) {
                 _worldMap->putItem(x, y, BaseItem::STRUCTURE_WALL);
@@ -178,7 +187,11 @@ void	UserInterface::refreshCursor() {
 }
 
 void UserInterface::refresh() {
-  _menu->refreshMenu();
+  if (_characterSelected != NULL) {
+    _menuCharacter->refresh();
+  } else {
+    _menu->refreshMenu();
+  }
   refreshCursor();
   _uiResource->refreshResources();
 }
@@ -189,7 +202,6 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
       return true;
     }
   }
-
 
   if (event.type == sf::Event::KeyReleased) {
 	switch (event.key.code)
