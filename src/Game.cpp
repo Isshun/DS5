@@ -76,6 +76,8 @@ void	Game::update() {
 		std::cout << Debug() << "Game: add build job to character" << std::endl;
 		character->build(item);
 	  }
+
+      _characterManager->update();
 	}
   }
 

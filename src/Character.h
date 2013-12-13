@@ -10,11 +10,17 @@
 
 using namespace std;
 
-class	Character
-{
+struct {
+  int   id;
+  const char* name;
+} typedef Job;
+
+class	Character {
  public:
-	Character(int x, int y);
-	~Character();
+  Character(int x, int y);
+  ~Character();
+
+  enum {JOB_NONE, JOB_ENGINEER, JOB_MINER, JOB_DOCTOR, JOB_SCIENCE};
 
   void	draw(sf::RenderWindow* app, sf::Transform transform);
   void	build(BaseItem* item);
@@ -22,12 +28,13 @@ class	Character
   // Gets
   sf::Vector2<int>	&get_position();
   sf::Sprite	&get_sprite();
-  int		getRun();
-  int		getDirection();
+  int           getRun();
+  int           getDirection();
+  const char*   getJobName() { return _jobName; }
 
-  void		go(int toX, int toY);
+  void          go(int toX, int toY);
 
-  void		move();
+  void          move();
 
   // Sets
   void	set_direction(int direction);
@@ -40,6 +47,7 @@ class	Character
   int   getFood() { return _food; }
   int   getHapiness() { return _hapiness; }
   int   getOxygen() { return _oxygen; }
+  void  update();
 
   map<int,int>	_run;
 
@@ -50,11 +58,12 @@ class	Character
   int	_posX;
   int	_posY;
 
-private:
+ private:
   char	_name[32];
   AStarSearch<MapSearchNode>* _astarsearch;
   int	_steps;
   void*	_job;
+  const char* _jobName;
 
   int   _food;
   int   _oxygen;

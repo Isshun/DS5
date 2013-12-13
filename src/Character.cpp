@@ -40,6 +40,13 @@ const char* lastname[] = {
   "McCoy",
 };
 
+const Job jobs[] = {
+  {Character::JOB_ENGINEER, "Engineer"},
+  {Character::JOB_MINER, "Miner"},
+  {Character::JOB_DOCTOR, "Doctor"},
+  {Character::JOB_SCIENCE, "Science"}
+};
+
 Character::Character(int x, int y) {
   std::cout << Debug() << "Character" << std::endl;
 
@@ -47,6 +54,8 @@ Character::Character(int x, int y) {
   _job = NULL;
   _posY = y;
   _posX = x;
+
+  _jobName = jobs[rand() % 4].name;
 
   _food = CHARACTER_INIT_FOOD;
   _oxygen = CHARACTER_INIT_OXYGEN;
@@ -58,6 +67,7 @@ Character::Character(int x, int y) {
   } else {
     sprintf(_name, "%s (%s) %s", firstname[rand() % 8], middle, lastname[rand() % 8]);
   }
+  _name[20] = 0;
 
   std::cout << Debug() << "Character done: " << _name << std::endl;
 }
@@ -78,6 +88,12 @@ void	Character::build(BaseItem* item) {
   int posX = item->getX();
   int posY = item->getY();
   go(posX, posY);
+}
+
+void  Character::update() {
+  if (_food > 0) _food--;
+  _oxygen = 0;
+  _hapiness = 0;
 }
 
 void		Character::go(int toX, int toY) {

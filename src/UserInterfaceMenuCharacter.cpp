@@ -1,5 +1,7 @@
 #include "UserInterfaceMenuCharacter.h"
 
+#define MENU_CHARACTER_FONT_SIZE 24
+
 UserInterfaceMenuCharacter::UserInterfaceMenuCharacter(sf::RenderWindow* app) {
   _app = app;
   _character = NULL;
@@ -32,18 +34,27 @@ void	UserInterfaceMenuCharacter::refresh() {
   _app->draw(shape);
 
   if (_character != NULL) {
-    // Name
     sf::Font font;
     if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
       throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 
+    // Job
     sf::Text text;
     text.setString(_character->getName());
     text.setFont(font);
-    text.setCharacterSize(UI_FONT_SIZE);
+    text.setCharacterSize(MENU_CHARACTER_FONT_SIZE);
     text.setStyle(sf::Text::Regular);
     text.setPosition(UI_PADDING + 0, UI_PADDING);
     _app->draw(text);
+
+    // Name
+    sf::Text job;
+    job.setString(_character->getJobName());
+    job.setFont(font);
+    job.setCharacterSize(24);
+    job.setStyle(sf::Text::Regular);
+    job.setPosition(UI_PADDING + 0, UI_PADDING + MENU_CHARACTER_FONT_SIZE);
+    _app->draw(job);
 
     for (int i = 0; i < 3; i++) {
       int value;
@@ -54,7 +65,7 @@ void	UserInterfaceMenuCharacter::refresh() {
       }
 
       addGauge(UI_PADDING,
-               64 + (UI_FONT_SIZE + UI_PADDING) * i,
+               (MENU_CHARACTER_FONT_SIZE * 3) + (UI_FONT_SIZE + UI_PADDING) * i,
                UI_WIDTH - UI_PADDING * 2,
                UI_FONT_SIZE,
                value);

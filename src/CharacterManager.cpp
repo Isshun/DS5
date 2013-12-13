@@ -28,6 +28,14 @@ CharacterManager::~CharacterManager() {
   delete _characters;
 }
 
+void    CharacterManager::update() {
+  std::list<Character*>::iterator it;
+
+  for (it = _characters->begin(); it != _characters->end(); ++it) {
+    (*it)->update();
+  }
+}
+
 Character*        CharacterManager::getCharacterAtPos(int x, int y) {
   std::cout << "getCharacterAtPos: " << x << "x" << y << std::endl;
   std::list<Character*>::iterator it;
