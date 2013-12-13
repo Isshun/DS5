@@ -287,13 +287,14 @@ void    UserInterfaceMenu::openMenu(Entry entry) {
   }
 }
 
-bool  UserInterfaceMenu::checkKeyboard(int code) {
+bool  UserInterfaceMenu::checkKeyboard(int code, int posX, int posY) {
   std::cout << Debug() << "checkKeyboard: " << code << std::endl;
 
   for (int i = 0; _entries[i].code != UserInterfaceMenu::CODE_NONE; i++) {
     if (_entries[i].key == code) {
 	  if (_code == CODE_ZONE) {
-		_worldmap->setZone(_cursor->_x, _cursor->_y, _entries[i].code);
+		std::cout << Debug() << "set zone: " << _entries[i].code << std::endl;
+		_worldmap->setZone(posX, posY, _entries[i].code);
 	  } else {
 		openMenu(_entries[i]);
 	  }

@@ -22,7 +22,7 @@ class UserInterfaceMenuCharacter {
   void	refresh();
   void  setCharacter(Character* character) { _character = character; }
   Character*  getCharacter() { return _character; }
-  void  addGauge(int posX, int posY, int width, int height, int value);
+  void  addGauge(int posX, int posY, int width, int height, int value, const char* text);
 
  private:
   sf::RenderWindow*     _app;

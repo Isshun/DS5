@@ -60,6 +60,7 @@ private:
   bool                  _run;
   CharacterManager*		_characterManager;
   Viewport*             _viewport;
+  unsigned int			_update;
 
   unsigned int _frame;
   unsigned int _lastInput;

@@ -14,6 +14,8 @@
 
 int WorldMap::_roomCount = 0;
 
+WorldMap* WorldMap::_self = new WorldMap();
+
 WorldMap::WorldMap() {
   _roomCount = 0;
   _width = 200;
@@ -65,8 +67,55 @@ WorldMap::~WorldMap() {
   delete _items;
 }
 
+BaseItem*	WorldMap::find(int type, bool free) {
+  for (int x = 0; x < _width; x++) {
+	for (int y = 0; y < _height; y++) {
+	  if(_items[x][y] != NULL && _items[x][y]->type == type && _items[x][y]->isComplete()) {
+		if (free == false || _items[x][y]->isFree()) {
+		  return _items[x][y];
+		}
+		std::cout << Error() << "not free: "  << std::endl;
+	  }
+	}
+  }
+
+  return NULL;
+}
+
+//TODO: perf
+BaseItem*	WorldMap::getRandomPosInRoom(int roomId) {
+  std::cout << Debug() << "getRandomPosInRoom: " << roomId << std::endl;
+
+  int count = 0;
+  for (int x = 0; x < _width; x++) {
+	for (int y = 0; y < _height; y++) {
+	  if(_items[x][y] != NULL && _items[x][y]->room == roomId && _items[x][y]->type == BaseItem::STRUCTURE_FLOOR) {
+		count++;
+	  }
+	}
+  }
+  std::cout << Debug() << "getRandomPosInRoom found: " << count << std::endl;
+
+  if (count > 0) {
+	int goal = rand() % count;
+	for (int x = 0; x < _width; x++) {
+	  for (int y = 0; y < _height; y++) {
+		if(_items[x][y] != NULL && _items[x][y]->room == roomId && _items[x][y]->type == BaseItem::STRUCTURE_FLOOR) {
+		  if (goal-- == 0) {
+			std::cout << Debug() << "getRandomPosInRoom return: " << x << y << count << std::endl;
+			return _items[x][y];
+		  }
+		}
+	  }
+	}
+  }
+
+  std::cout << Warning() << "getRandomPosInRoom: no room found" << std::endl;
+  return  NULL;
+}
+
 void	WorldMap::setZone(int x, int y, int zoneId) {
-  setZone(x, y, zoneId, _roomCount++);
+  setZone(x, y, zoneId, ++_roomCount);
 }
 
 void	WorldMap::setZone(int x, int y, int zoneId, int roomId) {
@@ -77,7 +126,11 @@ void	WorldMap::setZone(int x, int y, int zoneId, int roomId) {
   }
 
   // Not a floor
-  if (_items[x][y] == NULL || _items[x][y]->type != BaseItem::STRUCTURE_FLOOR) {
+  if (_items[x][y] == NULL ||
+	  _items[x][y]->type == BaseItem::STRUCTURE_WALL ||
+	  _items[x][y]->type == BaseItem::STRUCTURE_HULL ||
+	  _items[x][y]->type == BaseItem::STRUCTURE_DOOR ||
+	  _items[x][y]->type == BaseItem::STRUCTURE_WINDOW) {
 	return;
   }
 
@@ -89,10 +142,10 @@ void	WorldMap::setZone(int x, int y, int zoneId, int roomId) {
   _items[x][y]->zone = zoneId;
   _items[x][y]->room = roomId;
   
-  setZone(x, y+1, zoneId);
-  setZone(x, y-1, zoneId);
-  setZone(x+1, y, zoneId);
-  setZone(x-1, y, zoneId);
+  setZone(x, y+1, zoneId, roomId);
+  setZone(x, y-1, zoneId, roomId);
+  setZone(x+1, y, zoneId, roomId);
+  setZone(x-1, y, zoneId, roomId);
 }
 
 void WorldMap::init() {
@@ -495,7 +548,7 @@ BaseItem*		WorldMap::getItemToBuild() {
 }
 
 void		WorldMap::buildAbort(BaseItem* item) {
-  item->builder = NULL;
+  item->setOwner(NULL);
 
   std::list<BaseItem*>::iterator it;
   for (it = _building->begin(); it != _building->end(); ++it) {
@@ -509,7 +562,7 @@ void		WorldMap::buildAbort(BaseItem* item) {
 }
 
 void		WorldMap::buildComplete(BaseItem* item) {
-  item->builder = NULL;
+  item->setOwner(NULL);
 
   std::list<BaseItem*>::iterator it;
   for (it = _building->begin(); it != _building->end(); ++it) {

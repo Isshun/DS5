@@ -39,6 +39,8 @@ void	UserInterface::mouseMoved(int x, int y) {
 
   _keyMovePosX = getRelativePosX(x);
   _keyMovePosY = getRelativePosY(y);
+	// _cursor->setMousePos(x * _viewport->getScale() - UI_WIDTH - _viewport->getPosX() - 1,
+    //                      y * _viewport->getScale() - UI_HEIGHT - _viewport->getPosY() - 1);
 
   // left button pressed
   if (_keyLeftPressed) {
@@ -200,7 +202,7 @@ void UserInterface::refresh() {
 
 bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, WorldMap* worldMap) {
   if (event.type == sf::Event::KeyReleased) {
-    if (_menu->checkKeyboard(event.key.code)) {
+    if (_menu->checkKeyboard(event.key.code, _keyMovePosX, _keyMovePosY)) {
       return true;
     }
   }
@@ -214,7 +216,7 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
 		break;
 
 	  case sf::Keyboard::T:
-		worldMap->setZone(_cursor->_x, _cursor->_y, 0);
+		worldMap->setZone(_keyMovePosX, _keyMovePosY, 0);
 		break;
 
 	  case sf::Keyboard::Up:
@@ -253,7 +255,7 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
 	  case sf::Keyboard::Return:
 		if (event.type == sf::Event::KeyReleased) {
 		  if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
-			worldMap->putItem(_cursor->_x, _cursor->_y, _menu->getBuildItemType());
+			worldMap->putItem(_keyMovePosX, _keyMovePosY, _menu->getBuildItemType());
 		  }
 		}
 		break;

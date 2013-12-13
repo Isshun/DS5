@@ -6,6 +6,7 @@
  */
 
 #include "BaseItem.h"
+#include "Character.h"
 
 ItemInfo	itemsInfo[] = {
   {BaseItem::STRUCTURE_ROOM,							true,	1, 1, 1, 0},
@@ -38,9 +39,9 @@ BaseItem::BaseItem(int t) {
   isSolid = false;
   type = t;
   progress = 0;
-  builder = NULL;
   zone = 0;
   room = 0;
+  _owner = NULL;
 
   // Default values
   _width = 1;
@@ -76,4 +77,17 @@ ItemInfo BaseItem::getItemInfo(int type) {
   }
 
   return itemsInfo[i];
+}
+
+void	BaseItem::setOwner(Character* character) {
+  Character* currentOwner = _owner;
+
+  _owner = character;
+
+  if (currentOwner != NULL && currentOwner->getItem() != NULL) {
+	currentOwner->setItem(NULL);
+  }
+  if (character != NULL && character->getItem() != this) {
+	character->setItem(this);
+  }
 }

@@ -3,8 +3,6 @@
 #include "defines.h"
 #include "CharacterManager.h"
 
-extern WorldMap* gl_worldmap;
-
 CharacterManager::CharacterManager() {
   std::cout << Debug() << "CharacterManager" << std::endl;
 
@@ -28,11 +26,13 @@ CharacterManager::~CharacterManager() {
   delete _characters;
 }
 
-void    CharacterManager::update() {
+void    CharacterManager::update(int count) {
   std::list<Character*>::iterator it;
 
   for (it = _characters->begin(); it != _characters->end(); ++it) {
+    (*it)->updateNeeds();
     (*it)->update();
+	(*it)->move();
   }
 }
 
@@ -71,14 +71,6 @@ Character*		CharacterManager::getUnemployed() {
   }
 
   return NULL;
-}
-
-void	CharacterManager::move() {
-  std::list<Character*>::iterator it;
-
-  for (it = _characters->begin(); it != _characters->end(); ++it) {
-	(*it)->move();
-  }
 }
 
 void	CharacterManager::draw(sf::RenderWindow* app, sf::Transform transform) {

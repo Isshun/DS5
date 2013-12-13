@@ -24,6 +24,7 @@ SpriteResource	spritesRes[] = {
   {BaseItem::ARBORETUM_TREE_6,					0, 1, 3},
   {BaseItem::ARBORETUM_TREE_7,					1, 0, 3},
   {BaseItem::ARBORETUM_TREE_8,					1, 1, 3},
+  {BaseItem::BAR_PUB,							0, 8, 3},
   // {BaseItem::ARBORETUM_TREE_9,					0, 1, 3},
   {BaseItem::ENGINE_REACTION_CHAMBER,			12, 12, 1},
   {BaseItem::ENVIRONMENT_O2_RECYCLER,			11, 16, 1},

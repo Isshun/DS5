@@ -73,7 +73,7 @@ class UserInterfaceMenu {
   int   getParentCode() { return _parent_code; }
   void	mousePressed(sf::Mouse::Button button, int x, int y);
   void	refreshMenu();
-  bool  checkKeyboard(int code);
+  bool  checkKeyboard(int code, int posX, int posY);
   void	drawModeBuild();
 
  private:

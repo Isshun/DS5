@@ -24,6 +24,7 @@ class	Character {
 
   void	draw(sf::RenderWindow* app, sf::Transform transform);
   void	build(BaseItem* item);
+  void	use(BaseItem* item);
   
   // Gets
   sf::Vector2<int>	&get_position();
@@ -39,6 +40,8 @@ class	Character {
   // Sets
   void	set_direction(int direction);
   void	setRun(int direction, bool run);
+  void	setItem(BaseItem* item);
+  BaseItem*	getItem() { return _job; }
   void	set_position(int x, int y);
   void*	getJob() { return _job; }
   int	getX() { return _posX; }
@@ -47,7 +50,10 @@ class	Character {
   int   getFood() { return _food; }
   int   getHapiness() { return _hapiness; }
   int   getOxygen() { return _oxygen; }
+  int   getEnergy() { return _energy; }
+  int   getHealth() { return _health; }
   void  update();
+  void  updateNeeds();
 
   map<int,int>	_run;
 
@@ -62,12 +68,20 @@ class	Character {
   char	_name[32];
   AStarSearch<MapSearchNode>* _astarsearch;
   int	_steps;
-  void*	_job;
+  BaseItem*	_job;
   const char* _jobName;
 
+  // Needs
   int   _food;
   int   _oxygen;
   int   _hapiness;
+  int	_health;
+  int	_energy;
+
+  // States
+  int	_sleep;
+  int	_eat;
+  int	_drink;
 };
 
 #endif

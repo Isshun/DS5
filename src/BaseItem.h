@@ -12,6 +12,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+class Character;
+
 struct {
   int			type;
   bool			solid;
@@ -81,7 +83,6 @@ class BaseItem {
   int			type;
   bool			isSolid;
   int			progress;
-  void*			builder;
 
   int			getWidth() { return _width; }
   int			getHeight() { return _height; }
@@ -89,11 +90,15 @@ class BaseItem {
   int			getY() { return _y; }
 
   void			setPosition(int x, int y) { _x = x; _y = y; }
+  void			setOwner(Character* character);
+  Character*	getOwner() { return _owner; }
 
   static ItemInfo getItemInfo(int type);
 
   bool			isComplete() { return progress == matter; }
   bool			isSupply() { return power == powerSupply; }
+  bool			isFree() { return _owner == NULL; }
+  bool			isSleepingItem() { return type == QUARTER_BED || type == QUARTER_CHAIR; }
 
   int			matter;
   int			power;
@@ -102,6 +107,7 @@ class BaseItem {
   int			room;
 
  private:
+  Character*	_owner;
   int			_width;
   int			_height;
   int			_x;

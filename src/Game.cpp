@@ -24,12 +24,13 @@ Game::Game(sf::RenderWindow* app) {
   _lastInput = 0;
   _frame = 0;
   _viewport = new Viewport(app);
-  _worldMap = new WorldMap();
+  _worldMap = WorldMap::getInstance();
+  _update = 0;
 
   _characterManager = new CharacterManager();
-  _characterManager->add(2, 2);
-  _characterManager->add(8, 8);
-  _characterManager->add(20, 8);
+  // _characterManager->add(2, 2);
+  // _characterManager->add(8, 8);
+  // _characterManager->add(20, 8);
   _characterManager->add(50, 8);
 
   _ui = new UserInterface(app, _worldMap, _viewport, _characterManager);
@@ -63,46 +64,42 @@ void	Game::update() {
 
   // assign works
   if (ResourceManager::getInstance().getMatter() > 0) {
-	if (_frame % 100 == 0) {
+	if (_update % 10 == 0) {
 	  _worldMap->reloadAborted();
 	}
 
-	if (_frame % 4 == 0) {
-	  Character* character = NULL;
-	  BaseItem* item = NULL;
-	  // int length = _worldMap->getBuildListSize();
-	  if ((character = _characterManager->getUnemployed()) != NULL
-		  && (item = _worldMap->getItemToBuild()) != NULL) {
-		std::cout << Debug() << "Game: add build job to character" << std::endl;
-		character->build(item);
-	  }
-
-      _characterManager->update();
+	Character* character = NULL;
+	BaseItem* item = NULL;
+	// int length = _worldMap->getBuildListSize();
+	if ((character = _characterManager->getUnemployed()) != NULL
+		&& (item = _worldMap->getItemToBuild()) != NULL) {
+	  std::cout << Debug() << "Game: add build job to character" << std::endl;
+	  character->build(item);
 	}
   }
 
+  // Character
+  _characterManager->update(_update);
+
   _force_refresh = false;
+  _update++;
 }
 
 void	Game::refresh() {
-  _frame++;
-
   // Flush
   _app->clear(sf::Color(0, 0, 50));
 
   // Draw scene
   draw_surface();
 
-  // Character
-  if (_frame % CHARACTER_MOVE_INTERVAL == 0) {
-	_characterManager->move();
-  }
   sf::Transform transform;
   transform = _viewport->getViewTransform(transform);
   _characterManager->draw(_app, transform);
 
   // User interface
   _ui->refresh();
+
+  _frame++;
 }
 
 void	Game::draw_surface() {
@@ -234,7 +231,10 @@ void	Game::loop() {
 	if (_time_elapsed.asMilliseconds() > 20) {
       display_timer.restart();
 	  _force_refresh = false;
-	  update();
+
+	  if (_frame % 5 == 0) {
+		update();
+	  }
 	  refresh();
 	  _app->display();
 	}
