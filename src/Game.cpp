@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sstream>
+#include <ctime>
 
 #include <SFML/Graphics.hpp>
 
@@ -255,8 +256,9 @@ void	Game::gere_quit() {
 
 int main(int argc, char *argv[]) {
   sf::RenderWindow app(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), NAME);
-  Game	game(&app);
+  srand(time(0));
 
+  Game	game(&app);
   app.setKeyRepeatEnabled(true);
   game.loop();
 

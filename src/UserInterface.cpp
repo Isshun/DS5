@@ -25,7 +25,6 @@ UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport
   _menu = new UserInterfaceMenu(app, _worldMap, _cursor);
   _menuCharacter = new UserInterfaceMenuCharacter(app);
   _uiResource = new UserInterfaceResource(app);
-  _characterSelected = NULL;
 }
 
 UserInterface::~UserInterface() {
@@ -92,10 +91,13 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
       int toX = std::max(_keyPressPosX, _keyMovePosX);
       int toY = std::max(_keyPressPosY, _keyMovePosY);
 
+      _menuCharacter->setCharacter(NULL);
+
       // Select character
       if (_menu->getCode() == UserInterfaceMenu::CODE_MAIN) {
         std::cout << Info() << "select character" << std::endl;
-        _characterSelected = _characteres->getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
+        Character* c = _characteres->getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
+        _menuCharacter->setCharacter(c);
       }
 
       // Build item
@@ -187,7 +189,7 @@ void	UserInterface::refreshCursor() {
 }
 
 void UserInterface::refresh() {
-  if (_characterSelected != NULL) {
+  if (_menuCharacter->getCharacter() != NULL) {
     _menuCharacter->refresh();
   } else {
     _menu->refreshMenu();

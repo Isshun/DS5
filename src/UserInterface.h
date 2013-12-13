@@ -62,7 +62,6 @@ class UserInterface {
   UserInterfaceMenu*       _menu;
   UserInterfaceResource*   _uiResource;
   CharacterManager*        _characteres;
-  Character*               _characterSelected;
   UserInterfaceMenuCharacter*   _menuCharacter;
 };
 

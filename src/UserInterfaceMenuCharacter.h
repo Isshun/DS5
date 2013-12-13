@@ -12,6 +12,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "defines.h"
+#include "Character.h"
 
 class UserInterfaceMenuCharacter {
  public:
@@ -19,9 +20,13 @@ class UserInterfaceMenuCharacter {
   ~UserInterfaceMenuCharacter();
 
   void	refresh();
+  void  setCharacter(Character* character) { _character = character; }
+  Character*  getCharacter() { return _character; }
+  void  addGauge(int posX, int posY, int width, int height, int value);
 
  private:
-  sf::RenderWindow* _app;
+  sf::RenderWindow*     _app;
+  Character*            _character;
 };
 
 #endif

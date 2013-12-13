@@ -48,6 +48,10 @@ Character::Character(int x, int y) {
   _posY = y;
   _posX = x;
 
+  _food = CHARACTER_INIT_FOOD;
+  _oxygen = CHARACTER_INIT_OXYGEN;
+  _hapiness = CHARACTER_INIT_HAPINESS;
+
   const char* middle = middlename[rand() % 8];
   if (strlen(middle) == 0) {
     sprintf(_name, "%s %s", firstname[rand() % 8], lastname[rand() % 8]);

@@ -37,6 +37,9 @@ class	Character
   int	getX() { return _posX; }
   int	getY() { return _posY; }
   const char*	getName() { return _name; }
+  int   getFood() { return _food; }
+  int   getHapiness() { return _hapiness; }
+  int   getOxygen() { return _oxygen; }
 
   map<int,int>	_run;
 
@@ -52,6 +55,10 @@ private:
   AStarSearch<MapSearchNode>* _astarsearch;
   int	_steps;
   void*	_job;
+
+  int   _food;
+  int   _oxygen;
+  int   _hapiness;
 };
 
 #endif
