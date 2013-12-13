@@ -41,19 +41,20 @@ class	Character {
   void	set_direction(int direction);
   void	setRun(int direction, bool run);
   void	setItem(BaseItem* item);
-  BaseItem*	getItem() { return _job; }
+  BaseItem*	getItem() { return _item; }
   void	set_position(int x, int y);
-  void*	getJob() { return _job; }
+  void*	getJob() { return _item; }
   int	getX() { return _posX; }
   int	getY() { return _posY; }
   const char*	getName() { return _name; }
   int   getFood() { return _food; }
-  int   getHapiness() { return _hapiness; }
+  int   getHapiness() { return (int)_hapiness; }
   int   getOxygen() { return _oxygen; }
   int   getEnergy() { return _energy; }
   int   getHealth() { return _health; }
   void  update();
   void  updateNeeds();
+  bool  isSleep() { return _sleep > 0; }
 
   map<int,int>	_run;
 
@@ -68,13 +69,13 @@ class	Character {
   char	_name[32];
   AStarSearch<MapSearchNode>* _astarsearch;
   int	_steps;
-  BaseItem*	_job;
+  BaseItem*	_item;
   const char* _jobName;
 
   // Needs
   int   _food;
   int   _oxygen;
-  int   _hapiness;
+  float _hapiness;
   int	_health;
   int	_energy;
 

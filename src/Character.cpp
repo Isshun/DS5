@@ -50,7 +50,7 @@ Character::Character(int x, int y) {
   std::cout << Debug() << "Character" << std::endl;
 
   _astarsearch = NULL;
-  _job = NULL;
+  _item = NULL;
   _posY = y;
   _posX = x;
   _sleep = 0;
@@ -85,7 +85,7 @@ Character::~Character() {
 }
 
 void	Character::build(BaseItem* item) {
-  _job = item;
+  _item = item;
   item->setOwner(this);
   int posX = item->getX();
   int posY = item->getY();
@@ -93,9 +93,9 @@ void	Character::build(BaseItem* item) {
 }
 
 void	Character::setItem(BaseItem* item) {
-  BaseItem* currentItem = _job;
+  BaseItem* currentItem = _item;
 
-  _job = item;
+  _item = item;
 
   if (currentItem != NULL && currentItem->getOwner() != NULL) {
 	currentItem->setOwner(NULL);
@@ -107,9 +107,9 @@ void	Character::setItem(BaseItem* item) {
 }
 
 void	Character::use(BaseItem* item) {
-  if (_job != NULL && _job->isComplete() == false) {
-	WorldMap::getInstance()->buildAbort((BaseItem*)_job);
-	_job = NULL;
+  if (_item != NULL && _item->isComplete() == false) {
+	WorldMap::getInstance()->buildAbort((BaseItem*)_item);
+	_item = NULL;
   }
   build(item);
 }
@@ -117,12 +117,26 @@ void	Character::use(BaseItem* item) {
 void  Character::updateNeeds() {
   if (_sleep > 0) {
 	_sleep--;
+
+	// Set hapiness
+	if (_item && _item->type == BaseItem::QUARTER_BED)
+	  _hapiness += 0.1;
+	else if (_item && _item->type == BaseItem::QUARTER_CHAIR)
+	  _hapiness -= 0.1;
+	else
+	  _hapiness -= 0.25;
+
+
 	// If current item is not under construction: abort
-	if (_sleep == 0 && _job != NULL && _job->isComplete()) {
-	  _job->setOwner(NULL);
-	  _job = NULL;
+	if (_sleep == 0 && _item != NULL && _item->isComplete()) {
+	  _item->setOwner(NULL);
+	  _item = NULL;
 	}
 	return;
+  }
+
+  if (_food == 0) {
+	_hapiness -= 0.1;
   }
 
   if (_food > 0) {
@@ -148,7 +162,7 @@ void  Character::update() {
 	return;
   }
 
-  if (_job != NULL && _job->isSleepingItem()) {
+  if (_item != NULL && _item->isSleepingItem()) {
 	return;
   }
 
@@ -245,9 +259,9 @@ void		Character::go(int toX, int toY) {
 	 // No path found
 	 else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) {
 	   cout << Warning() << "Search terminated. Did not find goal state\n";
-	   if (_job != NULL) {
-		 WorldMap::getInstance()->buildAbort((BaseItem*)_job);
-		 _job = NULL;
+	   if (_item != NULL) {
+		 WorldMap::getInstance()->buildAbort((BaseItem*)_item);
+		 _item = NULL;
 	   }
 	   std::cout << Debug() << "free 2" << std::endl;
 	   _astarsearch->EnsureMemoryFreed();
@@ -296,8 +310,8 @@ void		Character::move() {
   }
 
   // Work
-  if (_job != NULL) {
-	BaseItem* item = (BaseItem*)_job;
+  if (_item != NULL) {
+	BaseItem* item = (BaseItem*)_item;
 	if (item->getX() == _posX && item->getY() == _posY) {
 
 	  // Use
@@ -312,14 +326,13 @@ void		Character::move() {
 			if (goal != NULL) {
 			  go(goal->getX(), goal->getY());
 			}
-			_job = NULL;
+			_item = NULL;
 		  }
 		  break;
 
 		  // Bed
 		case BaseItem::QUARTER_BED:
 		  item->setOwner(this);
-		  _hapiness += 1;
 		  _sleep = 20;
 		  _energy = 100;
 		  if (_health > 40) {
@@ -330,7 +343,6 @@ void		Character::move() {
 		  // Chair
 		case BaseItem::QUARTER_CHAIR:
 		  item->setOwner(this);
-		  _hapiness -= 1;
 		  _sleep = 20;
 		  _energy = 100;
 		  if (_health > 40) {
@@ -347,12 +359,12 @@ void		Character::move() {
 		case ResourceManager::NO_MATTER:
 		  std::cout << Debug() << "Character: not enough matter" << std::endl;
 		  WorldMap::getInstance()->buildAbort(item);
-		  _job = NULL;
+		  _item = NULL;
 		  break;
 		case ResourceManager::BUILD_COMPLETE:
 		  std::cout << Debug() << "Character: build complete" << std::endl;
 		  WorldMap::getInstance()->buildComplete(item);
-		  _job = NULL;
+		  _item = NULL;
 		  go(_posX + 1, _posY);
 		case ResourceManager::BUILD_PROGRESS:
 		  std::cout << Debug() << "Character: build progress" << std::endl;

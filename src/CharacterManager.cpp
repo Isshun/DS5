@@ -76,13 +76,17 @@ Character*		CharacterManager::getUnemployed() {
 void	CharacterManager::draw(sf::RenderWindow* app, sf::Transform transform) {
   sf::Sprite sprite;
   sprite.setTexture(*_textures[0]);
-  sprite.setTextureRect(sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
 
   sf::RenderStates render(transform);
 
   std::list<Character*>::iterator it;
   for (it = _characters->begin(); it != _characters->end(); ++it) {
 	sprite.setPosition((*it)->_posX * TILE_SIZE, (*it)->_posY * TILE_SIZE);
+	if ((*it)->isSleep()) {
+	  sprite.setTextureRect(sf::IntRect(32, 0, TILE_SIZE, TILE_SIZE));
+	} else {
+	  sprite.setTextureRect(sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
+	}
 	app->draw(sprite, render);
   }
 }
