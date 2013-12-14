@@ -23,8 +23,8 @@ class	Character {
   enum {JOB_NONE, JOB_ENGINEER, JOB_MINER, JOB_DOCTOR, JOB_SCIENCE};
 
   void	draw(sf::RenderWindow* app, sf::Transform transform);
-  void	build(BaseItem* item);
-  void	use(BaseItem* item);
+  void	build(AStarSearch<MapSearchNode>* path, BaseItem* item);
+  void	use(AStarSearch<MapSearchNode>* path, BaseItem* item);
   
   // Gets
   sf::Vector2<int>	&get_position();
@@ -33,7 +33,7 @@ class	Character {
   int           getDirection();
   const char*   getJobName() { return _jobName; }
 
-  void          go(int toX, int toY);
+  void			go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY);
 
   void          move();
 

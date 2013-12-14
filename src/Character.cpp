@@ -6,6 +6,7 @@
 #include "stlastar.h"
 #include "WorldMap.h"
 #include "Log.h"
+#include "PathManager.h"
 
 const char* firstname[] = {
   "Vic",
@@ -87,7 +88,7 @@ Character::~Character() {
   }
 }
 
-void	Character::use(BaseItem* item) {
+void	Character::use(AStarSearch<MapSearchNode>* path, BaseItem* item) {
   Info() << "Character #" << _id <<": use item type: " << item->type;
 
   // If character currently building item: abort
@@ -97,20 +98,20 @@ void	Character::use(BaseItem* item) {
   }
 
   // Go to new item
-  int posX = item->getX();
-  int posY = item->getY();
+  int toX = item->getX();
+  int toY = item->getY();
   _item = item;
-  go(posX, posY);
+  go(path, toX, toY);
 }
 
-void	Character::build(BaseItem* item) {
+void	Character::build(AStarSearch<MapSearchNode>* path, BaseItem* item) {
   Info() << "Character #" << _id << ": build item type: " << item->type;
 
   _build = item;
   _build->setOwner(this);
-  int posX = item->getX();
-  int posY = item->getY();
-  go(posX, posY);
+  int toX = item->getX();
+  int toY = item->getY();
+  go(path, toX, toY);
 }
 
 void	Character::setItem(BaseItem* item) {
@@ -193,7 +194,8 @@ void  Character::update() {
 	{
 	  BaseItem* item = WorldMap::getInstance()->find(BaseItem::QUARTER_BED, true);
 	  if (item != NULL) {
-		use(item);
+		AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, item);
+		use(path, item);
 		return;
 	  }
 	}
@@ -202,7 +204,8 @@ void  Character::update() {
 	{
 	  BaseItem* item = WorldMap::getInstance()->find(BaseItem::QUARTER_CHAIR, true);
 	  if (item != NULL) {
-		use(item);
+		AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, item);
+		use(path, item);
 		return;
 	  }
 	}
@@ -236,14 +239,15 @@ void  Character::update() {
 	BaseItem* item = WorldMap::getInstance()->find(BaseItem::BAR_PUB, false);
 	if (item != NULL) {
 	  Debug() << "Charactere #" << _id << "Go to pub !";
-	  use(item);
+	  AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, item);
+	  use(path, item);
 	  return;
 	}
   }
 
 }
 
-void		Character::go(int toX, int toY) {
+void		Character::go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY) {
   _toX = toX;
   _toY = toY;
 
@@ -257,56 +261,8 @@ void		Character::go(int toX, int toY) {
 	_astarsearch = NULL;
   }
 
+  _astarsearch = astarsearch;
   _steps = 0;
-  _astarsearch = new AStarSearch<MapSearchNode>();
-
-  unsigned int SearchCount = 0;
-
-  const unsigned int NumSearches = 1;
-
-  while(SearchCount < NumSearches) {
-
-	 // Create a start state
-	 MapSearchNode nodeStart;
-	 nodeStart.x = _posX;
-	 nodeStart.y = _posY;
-
-	 // Define the goal state
-	 MapSearchNode nodeEnd;
-	 nodeEnd.x = toX;
-	 nodeEnd.y = toY;
-
-	 // Set Start and goal states
-	 _astarsearch->SetStartAndGoalStates( nodeStart, nodeEnd );
-
-	 unsigned int SearchState;
-	 unsigned int SearchSteps = 0;
-
-	 do {
-	   SearchState = _astarsearch->SearchStep();
-	   SearchSteps++;
-	 }
-	 while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
-
-	 if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED ) {
-	   Debug() << "Search found goal state: " << SearchSteps;
-	 }
-
-	 // No path found
-	 else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) {
-	   Warning() << "Search terminated. Did not find goal state\n";
-	   if (_item != NULL) {
-		 WorldMap::getInstance()->buildAbort((BaseItem*)_item);
-		 _item = NULL;
-	   }
-	   Debug() << "free 2";
-	   _astarsearch->EnsureMemoryFreed();
-	   delete _astarsearch;
-	   _astarsearch = NULL;
-	 }
-
-	 SearchCount ++;
-   }
 }
 
 void		Character::move() {
@@ -369,7 +325,8 @@ void		Character::actionUse() {
 	  _food = 100;
 	  BaseItem* goal = WorldMap::getInstance()->getRandomPosInRoom(_item->room);
 	  if (goal != NULL) {
-		go(goal->getX(), goal->getY());
+		AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, goal);
+		go(path, goal->getX(), goal->getY());
 	  }
 	  _item = NULL;
 	}
@@ -413,7 +370,7 @@ void		Character::actionBuild() {
 	Debug() << "Character #" << _id << ": build complete";
 	WorldMap::getInstance()->buildComplete(_build);
 	_build = NULL;
-	go(_posX + 1, _posY);
+	// go(_posX + 1, _posY);
 	break;
 
   case ResourceManager::BUILD_PROGRESS:

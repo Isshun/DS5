@@ -8,6 +8,8 @@
 
 #include "Game.hpp"
 #include "ResourceManager.h"
+#include "MapSearchNode.h"
+#include "PathManager.h"
 
 extern int old_time1;
 extern int old_time2;
@@ -69,8 +71,11 @@ void	Game::update() {
 	// int length = _worldMap->getBuildListSize();
 	if ((character = _characterManager->getUnemployed()) != NULL
 		&& (item = WorldMap::getInstance()->getItemToBuild()) != NULL) {
+
+	  AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(character, item);
+
 	  Debug() << "Game: add build job to character";
-	  character->build(item);
+	  character->build(path, item);
 	}
   }
 

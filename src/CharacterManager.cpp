@@ -32,7 +32,7 @@ void    CharacterManager::update(int count) {
 
   for (it = _characters->begin(); it != _characters->end(); ++it) {
 	(*it)->action();
-    (*it)->updateNeeds();
+	(*it)->updateNeeds();
     (*it)->update();
 	(*it)->move();
   }

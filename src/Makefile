@@ -10,6 +10,7 @@ SRC	=	Game.cpp	\
 		Viewport.cpp	\
 		WorldMap.cpp	\
 		Cursor.cpp	\
+		PathManager.cpp	\
 		CharacterManager.cpp	\
 		Character.cpp
 
