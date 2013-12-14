@@ -51,6 +51,7 @@ Character::Character(int x, int y) {
 
   _astarsearch = NULL;
   _item = NULL;
+  _build = NULL;
   _posY = y;
   _posX = x;
   _sleep = 0;
@@ -85,8 +86,8 @@ Character::~Character() {
 }
 
 void	Character::build(BaseItem* item) {
-  _item = item;
-  item->setOwner(this);
+  _build = item;
+  _build->setOwner(this);
   int posX = item->getX();
   int posY = item->getY();
   go(posX, posY);
@@ -118,6 +119,8 @@ void	Character::use(BaseItem* item) {
 }
 
 void  Character::updateNeeds() {
+
+  // Character is sleeping
   if (_sleep > 0) {
 	_sleep--;
 
@@ -128,7 +131,6 @@ void  Character::updateNeeds() {
 	  _hapiness -= 0.1;
 	else
 	  _hapiness -= 0.25;
-
 
 	// If current item is not under construction: abort
 	if (_sleep == 0 && _item != NULL && _item->isComplete()) {
@@ -205,6 +207,11 @@ void  Character::update() {
 	return;
   }
 
+  // If character have a job -> do not interrupt
+  if (_build != NULL) {
+	return;
+  }
+
   // Need food
   if (_food < 20) {
 
@@ -230,12 +237,6 @@ void  Character::update() {
 void		Character::go(int toX, int toY) {
   _toX = toX;
   _toY = toY;
-
-  if (_posX == toX && _posY == toY) {
-	cout << Debug() << "Charactere: go -> already at the right position" << endl;
-	action();
-	return;
-  }
 
   cout << Debug() << "Charactere: go(" << _posX << ", " << _posY << " to " << toX << ", " << toY << ")" << endl;
 
@@ -300,7 +301,6 @@ void		Character::go(int toX, int toY) {
 }
 
 void		Character::move() {
-  std::cout << Debug() << "Character: move" << std::endl;
 
   // Character is sleeping
   if (_sleep != 0) {
@@ -310,6 +310,7 @@ void		Character::move() {
 
   // Move
   if (_astarsearch != NULL) {
+	std::cout << Debug() << "Character: move" << std::endl;
 
 	// Next node
 	MapSearchNode *node = 0;
@@ -337,12 +338,18 @@ void		Character::move() {
 	  delete _astarsearch;
 	  _astarsearch = 0;
 
-	  action();
+	  //action();
 	}
   }
 }
 
 void		Character::actionUse() {
+  // Character is sleeping
+  if (_sleep != 0) {
+	std::cout << "use: sleeping -> use canceled" << std::endl;
+	return;
+  }
+
   std::cout << Info() << "Character: actionUse" << std::endl;
 
   switch (_item->type) {
@@ -385,41 +392,47 @@ void		Character::actionUse() {
 void		Character::actionBuild() {
   std::cout << Info() << "Character: actionBuild" << std::endl;
 
-  switch (ResourceManager::getInstance().build(_item)) {
+  switch (ResourceManager::getInstance().build(_build)) {
 
   case ResourceManager::NO_MATTER:
 	std::cout << Debug() << "Character: not enough matter" << std::endl;
-	WorldMap::getInstance()->buildAbort(_item);
-	_item = NULL;
+	WorldMap::getInstance()->buildAbort(_build);
+	_build = NULL;
 	break;
 
   case ResourceManager::BUILD_COMPLETE:
 	std::cout << Debug() << "Character: build complete" << std::endl;
-	WorldMap::getInstance()->buildComplete(_item);
-	_item = NULL;
+	WorldMap::getInstance()->buildComplete(_build);
+	_build = NULL;
 	go(_posX + 1, _posY);
+	break;
 
   case ResourceManager::BUILD_PROGRESS:
 	std::cout << Debug() << "Character: build progress" << std::endl;
+	break;
 
   }
 }
 
 void		Character::action() {
+  if (_posX != _toX || _posY != _toY) {
+	return;
+  }
+
+  std::cout << Info() << "Character: action" << std::endl;
+
+  // Build on progress
+  if (_build != NULL) {
+	  actionBuild();
+  }
 
   // If item still exists
-  if (_item != NULL && _item == WorldMap::getInstance()->getItem(_posX, _posY)) {
-
-	// Use
-	if (_item->isComplete()) {
-	  actionUse();
+  else if (_item != NULL) {
+	if (_item != WorldMap::getInstance()->getItem(_posX, _posY)) {
+	  std::cout << Error() << "Character: action on NULL or invalide item" << std::endl;
+	  return;
 	}
-	// Build
-	else {
-	  actionBuild();
-	}
-  } else {
-	std::cout << Error() << "Character: action on NULL or invalide item" << std::endl;
+	actionUse();
   }
 
 }

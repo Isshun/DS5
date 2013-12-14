@@ -52,6 +52,7 @@ class	Character {
   int   getOxygen() { return _oxygen; }
   int   getEnergy() { return _energy; }
   int   getHealth() { return _health; }
+  void	action();
   void  update();
   void  updateNeeds();
   bool  isSleep() { return _sleep > 0; }
@@ -69,7 +70,6 @@ class	Character {
   int	_toY;
 
  private:
-  void	action();
   void	actionUse();
   void	actionBuild();
 
@@ -78,6 +78,7 @@ class	Character {
   AStarSearch<MapSearchNode>* _astarsearch;
   int	_steps;
   BaseItem*	_item;
+  BaseItem*	_build;
   const char* _jobName;
 
   // Needs

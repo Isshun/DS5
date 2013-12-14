@@ -21,6 +21,7 @@ struct {
   int			height;
   int			matter;
   int			power;
+  int			zone;
 } typedef		ItemInfo;
 
 class BaseItem {
@@ -89,6 +90,7 @@ class BaseItem {
   int			getX() { return _x; }
   int			getY() { return _y; }
   int			getType() { return type; }
+  int			getZone() { return _zone; }
 
   void			setPosition(int x, int y) { _x = x; _y = y; }
   void			setOwner(Character* character);
@@ -113,6 +115,7 @@ class BaseItem {
   int			_height;
   int			_x;
   int			_y;
+  int			_zone;
 };
 
 #endif /* BASEITEM_H_ */

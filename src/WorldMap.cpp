@@ -114,15 +114,15 @@ BaseItem*	WorldMap::getRandomPosInRoom(int roomId) {
   return  NULL;
 }
 
-void	WorldMap::setZone(int x, int y, int zoneId) {
-  setZone(x, y, zoneId, ++_roomCount);
+int	WorldMap::setZone(int x, int y, int zoneId) {
+  return setZone(x, y, zoneId, ++_roomCount);
 }
 
-void	WorldMap::setZone(int x, int y, int zoneId, int roomId) {
+int	WorldMap::setZone(int x, int y, int zoneId, int roomId) {
 
   // Out of bound
   if (x < 0 || x >= _width || y < 0 || y >= _height) {
-	return;
+	return 0;
   }
 
   // Not a floor
@@ -131,12 +131,12 @@ void	WorldMap::setZone(int x, int y, int zoneId, int roomId) {
 	  _items[x][y]->type == BaseItem::STRUCTURE_HULL ||
 	  _items[x][y]->type == BaseItem::STRUCTURE_DOOR ||
 	  _items[x][y]->type == BaseItem::STRUCTURE_WINDOW) {
-	return;
+	return 0;
   }
 
   // Already tag
   if (_items[x][y]->zone == zoneId) {
-	return;
+	return 0;
   }
 
   _items[x][y]->zone = zoneId;
@@ -146,6 +146,8 @@ void	WorldMap::setZone(int x, int y, int zoneId, int roomId) {
   setZone(x, y-1, zoneId, roomId);
   setZone(x+1, y, zoneId, roomId);
   setZone(x-1, y, zoneId, roomId);
+
+  return roomId;
 }
 
 void WorldMap::init() {
@@ -579,9 +581,24 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
 	return;
   }
 
+  BaseItem *item = new BaseItem(type);
+  int zoneId = item->getZone();
+  int roomId = 0;
+
+  // If item alread exists check the zoneId
+  if (_items[x][y] != NULL && _items[x][y]->zone != 0 && zoneId != 0 && _items[x][y]->zone != zoneId) {
+	std::cout << Debug() << "this item can not be put at this position because zoneId not match" << std::endl;
+	return;
+  }
+
+  // if item is zoned set the zone
+  if (_items[x][y] != NULL && _items[x][y]->zone == 0 && zoneId != 0) {
+	roomId = setZone(x, y, zoneId);
+	item->room = roomId;
+  }
+
   // Put item
   std::cout << Debug() << "put item: " << type << std::endl;
-  BaseItem *item = new BaseItem(type);
   item->setPosition(x, y);
   _items[x][y] = item;
 

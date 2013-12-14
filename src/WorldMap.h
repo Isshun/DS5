@@ -25,8 +25,8 @@ public:
 	void		putItem(int x, int y, int type);
 	BaseItem*	getItem(int x, int y) {return (x < 0 || x >= _width || y < 0 || y >= _height) ? NULL : _items[x][y]; }
 	int			getBuildListSize() { return _todo->size(); }
-	void		setZone(int x, int y, int zoneId, int roomId);
-	void		setZone(int x, int y, int zoneId);
+	int			setZone(int x, int y, int zoneId, int roomId);
+	int			setZone(int x, int y, int zoneId);
 	void		reloadAborted();
 	void		dump();
 	BaseItem*	find(int type, bool free);
