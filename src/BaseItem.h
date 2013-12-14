@@ -26,7 +26,7 @@ struct {
 
 class BaseItem {
  public:
-  BaseItem(int type);
+  BaseItem(int type, int id);
   ~BaseItem();
 
   enum {
@@ -91,6 +91,7 @@ class BaseItem {
   int			getY() { return _y; }
   int			getType() { return type; }
   int			getZone() { return _zone; }
+  int			getId() { return _id; }
 
   void			setPosition(int x, int y) { _x = x; _y = y; }
   void			setOwner(Character* character);
@@ -116,6 +117,7 @@ class BaseItem {
   int			_x;
   int			_y;
   int			_zone;
+  int			_id;
 };
 
 #endif /* BASEITEM_H_ */

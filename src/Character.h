@@ -46,6 +46,7 @@ class	Character {
   void*	getJob() { return _item; }
   int	getX() { return _posX; }
   int	getY() { return _posY; }
+  int	getId() { return _id; }
   const char*	getName() { return _name; }
   int   getFood() { return _food; }
   int   getHapiness() { return (int)_hapiness; }

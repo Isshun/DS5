@@ -32,9 +32,12 @@ void    CharacterManager::update(int count) {
 
   for (it = _characters->begin(); it != _characters->end(); ++it) {
 	(*it)->action();
-	(*it)->updateNeeds();
     (*it)->update();
 	(*it)->move();
+
+	if (count % 10 == 0) {
+	  (*it)->updateNeeds();
+	}
   }
 }
 
@@ -53,6 +56,11 @@ Character*        CharacterManager::getCharacterAtPos(int x, int y) {
 }
 
 Character*		CharacterManager::add(int x, int y) {
+  if (_count + 1 > LIMIT_CHARACTER) {
+	Error() << "LIMIT_CHARACTER reached";
+	return NULL;
+  }
+
   Character* c = new Character(_count++, x, y);
 
   _characters->push_back(c);

@@ -1,3 +1,4 @@
+#include "defines.h"
 #include "MapSearchNode.h"
 #include "WorldMap.h"
 
@@ -9,6 +10,7 @@ int GetMap( int x, int y )
   if( x < 0 || x >= WorldMap::getInstance()->getWidth() ||
 	  y < 0 || y >= WorldMap::getInstance()->getHeight())
 	{
+	  // Error() << "MapSearchNode: out of bounds (x: " << x << ", y: " << y << ")";
 	  return 9;
 	}
 
@@ -16,7 +18,7 @@ int GetMap( int x, int y )
 
   // Space
   if (item == NULL || item->type == BaseItem::NONE)
-	return 2;
+	return 2
 
   // WALL
   if (item != NULL && item->isSolid && item->isComplete())

@@ -19,7 +19,8 @@ class	PathManager
 	static PathManager*	getInstance() { return _self; }
 
  private:
-	std::multimap<Character*, BaseItem*>*		_map;
+	/* std::multimap<int, int>*		_map; */
+	int		_map[LIMIT_CHARACTER][LIMIT_ITEMS];
 	static PathManager* _self;
 
 };

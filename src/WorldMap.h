@@ -38,6 +38,7 @@ public:
 private:
 	void		putItem(int x, int y, int type, bool free);
 	static WorldMap* _self;
+	int			_itemCout;
 
 	BaseItem***	_items;
 	int			_width;

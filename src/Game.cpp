@@ -29,9 +29,9 @@ Game::Game(sf::RenderWindow* app) {
 
   _characterManager = new CharacterManager();
   _characterManager->add(2, 2);
-  _characterManager->add(8, 8);
-  _characterManager->add(20, 8);
-  _characterManager->add(50, 8);
+  // _characterManager->add(8, 8);
+  // _characterManager->add(20, 8);
+  // _characterManager->add(50, 8);
 
   _ui = new UserInterface(app, worldMap, _viewport, _characterManager);
 
@@ -72,10 +72,17 @@ void	Game::update() {
 	if ((character = _characterManager->getUnemployed()) != NULL
 		&& (item = WorldMap::getInstance()->getItemToBuild()) != NULL) {
 
+	  Debug() << "Game: search path from char (x: " << character->getX() << ", y: " << character->getY() << ")";
+	  Debug() << "Game: search path to item (x: " << item->getX() << ", y: " << item->getY() << ")";
+
 	  AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(character, item);
 
-	  Debug() << "Game: add build job to character";
-	  character->build(path, item);
+	  if (path != NULL) {
+		Debug() << "Game: add build job to character";
+		character->build(path, item);
+	  } else {
+		WorldMap::getInstance()->buildAbort(item);
+	  }
 	}
   }
 

@@ -36,7 +36,7 @@ ItemInfo	itemsInfo[] = {
   {BaseItem::NONE,										false,	0, 0, 0, 0, 0},
 };
 
-BaseItem::BaseItem(int t) {
+BaseItem::BaseItem(int t, int id) {
   // Init
   isSolid = false;
   type = t;
@@ -44,6 +44,7 @@ BaseItem::BaseItem(int t) {
   zone = 0;
   room = 0;
   _owner = NULL;
+  _id = id;
 
   // Default values
   _width = 1;
