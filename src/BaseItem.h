@@ -88,6 +88,7 @@ class BaseItem {
   int			getHeight() { return _height; }
   int			getX() { return _x; }
   int			getY() { return _y; }
+  int			getType() { return type; }
 
   void			setPosition(int x, int y) { _x = x; _y = y; }
   void			setOwner(Character* character);

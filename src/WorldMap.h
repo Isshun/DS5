@@ -32,6 +32,7 @@ public:
 	BaseItem*	find(int type, bool free);
 	static WorldMap*	getInstance() { return _self; }
 	BaseItem*	getRandomPosInRoom(int roomId);
+	void		removeItem(int x, int y);
 
 private:
 	void		putItem(int x, int y, int type, bool free);

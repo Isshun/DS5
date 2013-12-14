@@ -230,6 +230,11 @@ void    UserInterfaceMenu::openBack() {
     _parent_code = CODE_MAIN;
     break;
 
+  case CODE_ERASE:
+	drawModeErase();
+    _parent_code = CODE_MAIN;
+    break;
+
   case CODE_BUILD_ITEM:
     break;
   
@@ -312,6 +317,21 @@ void UserInterfaceMenu::drawModeBuild() {
 
   sf::Text shortcut;
   shortcut.setString(_buildItemText);
+  shortcut.setFont(font);
+  shortcut.setCharacterSize(UI_FONT_SIZE);
+  shortcut.setStyle(sf::Text::Underlined);
+  shortcut.setColor(sf::Color(255, 255, 0));
+  shortcut.setPosition(UI_PADDING + 0, UI_PADDING + 0);
+  _app->draw(shortcut);
+}
+
+void UserInterfaceMenu::drawModeErase() {
+  sf::Font font;
+  if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
+
+  sf::Text shortcut;
+  shortcut.setString("erase");
   shortcut.setFont(font);
   shortcut.setCharacterSize(UI_FONT_SIZE);
   shortcut.setStyle(sf::Text::Underlined);

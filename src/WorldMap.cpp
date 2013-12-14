@@ -503,6 +503,64 @@ bool WorldMap::getSolid(int x, int y) {
   return false;
 }
 
+void WorldMap::removeItem(int x, int y) {
+  // Return if out of bound
+  if (x < 0 || y < 0 || x >= _width || y >= _height) {
+	std::cout << Error() << "remove item out of bound, x: " << x << ", y: " << y << ")" << std::endl;
+	return;
+  }
+
+  BaseItem *item = _items[x][y];
+  if (item == NULL) {
+	return;
+  }
+
+  // // Characters
+  // {
+  item->setOwner(NULL);
+  // 	std::list<Character*>::iterator it;
+  // 	for (it = _characteres->begin(); it != _characteres->end(); ++it) {
+  // 	  if ((*it)->getItem() == item) {
+  // 		_characteres->setItem(NULL);
+  // 	  }
+  // 	}
+  // }
+
+  // Todo
+  {
+	std::list<BaseItem*>::iterator it;
+	for (it = _todo->begin(); it != _todo->end(); ++it) {
+	  if (*it == item) {
+		_todo->erase(it);
+		break;
+	  }
+	}
+  }
+
+  // Building
+  {
+	std::list<BaseItem*>::iterator it;
+	for (it = _building->begin(); it != _building->end(); ++it) {
+	  if (*it == item) {
+		_building->erase(it);
+		break;
+	  }
+	}
+  }
+
+  // BuildingAborted
+  {
+	std::list<BaseItem*>::iterator it;
+	for (it = _buildingAborted->begin(); it != _buildingAborted->end(); ++it) {
+	  if (*it == item) {
+		_buildingAborted->erase(it);
+		break;
+	  }
+	}
+  }
+
+}
+
 void WorldMap::putItem(int x, int y, int type) {
   putItem(x, y, type, false);
 }

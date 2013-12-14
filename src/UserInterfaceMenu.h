@@ -26,7 +26,7 @@ struct {
 class UserInterfaceMenu {
  public:
 
-  enum { ENTRY_NONE, ENTRY_MAIN, ENTRY_BUILD, ENTRY_ZONE };
+  enum { ENTRY_NONE, ENTRY_MAIN, ENTRY_BUILD, ENTRY_ZONE, ENTRY_ERASE };
 
   enum {
 	CODE_ZONE_NONE,
@@ -75,6 +75,7 @@ class UserInterfaceMenu {
   void	refreshMenu();
   bool  checkKeyboard(int code, int posX, int posY);
   void	drawModeBuild();
+  void	drawModeErase();
 
  private:
   sf::RenderWindow*		_app;

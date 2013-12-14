@@ -65,7 +65,15 @@ class	Character {
   int	_posX;
   int	_posY;
 
+  int	_toX;
+  int	_toY;
+
  private:
+  void	action();
+  void	actionUse();
+  void	actionBuild();
+
+
   char	_name[32];
   AStarSearch<MapSearchNode>* _astarsearch;
   int	_steps;

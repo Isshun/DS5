@@ -121,6 +121,16 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
         }
       }
 
+      // Erase item
+      else if (_menu->getCode() == UserInterfaceMenu::CODE_ERASE) {
+        for (int x = startX; x <= toX; x++) {
+          for (int y = startY; y <= toY; y++) {
+			_worldMap->removeItem(x, y);
+          }
+        }
+      }
+
+
       _keyLeftPressed = false;
     }
 
