@@ -33,7 +33,7 @@ class UserInterface {
   void	refreshResources();
   void  openMenu(Entry entry);
   void  openMenuBack();
-  bool	checkKeyboard(sf::Event	event, int frame, int lastInput, WorldMap* worldMap);
+  bool	checkKeyboard(sf::Event	event, int frame, int lastInput);
   Cursor*	getCursor() { return _cursor; }
   void	mouseMoved(int x, int y);
   void	mousePress(sf::Mouse::Button button, int x, int y);

@@ -10,7 +10,7 @@
 #include <string.h>
 #include <list>
 #include "WorldMap.h"
-#include "Log.hpp"
+#include "Log.h"
 
 int WorldMap::_roomCount = 0;
 
@@ -74,7 +74,7 @@ BaseItem*	WorldMap::find(int type, bool free) {
 		if (free == false || _items[x][y]->isFree()) {
 		  return _items[x][y];
 		}
-		std::cout << Error() << "not free: "  << std::endl;
+		Error() << "not free: " ;
 	  }
 	}
   }
@@ -84,7 +84,7 @@ BaseItem*	WorldMap::find(int type, bool free) {
 
 //TODO: perf
 BaseItem*	WorldMap::getRandomPosInRoom(int roomId) {
-  std::cout << Debug() << "getRandomPosInRoom: " << roomId << std::endl;
+  Debug() << "getRandomPosInRoom: " << roomId;
 
   int count = 0;
   for (int x = 0; x < _width; x++) {
@@ -94,7 +94,7 @@ BaseItem*	WorldMap::getRandomPosInRoom(int roomId) {
 	  }
 	}
   }
-  std::cout << Debug() << "getRandomPosInRoom found: " << count << std::endl;
+  Debug() << "getRandomPosInRoom found: " << count;
 
   if (count > 0) {
 	int goal = rand() % count;
@@ -102,7 +102,7 @@ BaseItem*	WorldMap::getRandomPosInRoom(int roomId) {
 	  for (int y = 0; y < _height; y++) {
 		if(_items[x][y] != NULL && _items[x][y]->room == roomId && _items[x][y]->type == BaseItem::STRUCTURE_FLOOR) {
 		  if (goal-- == 0) {
-			std::cout << Debug() << "getRandomPosInRoom return: " << x << y << count << std::endl;
+			Debug() << "getRandomPosInRoom return: " << x << y << count;
 			return _items[x][y];
 		  }
 		}
@@ -110,7 +110,7 @@ BaseItem*	WorldMap::getRandomPosInRoom(int roomId) {
 	}
   }
 
-  std::cout << Warning() << "getRandomPosInRoom: no room found" << std::endl;
+  Warning() << "getRandomPosInRoom: no room found";
   return  NULL;
 }
 
@@ -495,7 +495,17 @@ void WorldMap::dump() {
   for (int x = 0; x < _width; x++) {
 	for (int y = 0; y < _height; y++) {
 	  if (_items[x][y] != NULL) {
-		std::cout << Debug() << x << " x " << y << " = " << _items[x][y]->type << std::endl;
+		Info() << x << " x " << y << " = " << _items[x][y]->type;
+	  }
+	}
+  }
+}
+
+void		WorldMap::dumpItems() {
+  for (int x = 0; x < _width; x++) {
+	for (int y = 0; y < _height; y++) {
+	  if (_items[x][y] != NULL && _items[x][y]->isStructure() == false) {
+		Info() << x << " x " << y << " = " << _items[x][y]->type;
 	  }
 	}
   }
@@ -506,11 +516,11 @@ bool WorldMap::getSolid(int x, int y) {
 }
 
 void WorldMap::removeItem(int x, int y) {
-  std::cout << Debug() << "remove item" << std::endl;
+  Debug() << "remove item";
 
   // Return if out of bound
   if (x < 0 || y < 0 || x >= _width || y >= _height) {
-	std::cout << Error() << "remove item out of bound, x: " << x << ", y: " << y << ")" << std::endl;
+	Error() << "remove item out of bound, x: " << x << ", y: " << y << ")";
 	return;
   }
 
@@ -574,14 +584,14 @@ void WorldMap::putItem(int x, int y, int type) {
 void WorldMap::putItem(int x, int y, int type, bool free) {
   // Return if out of bound
   if (x < 0 || y < 0 || x >= _width || y >= _height) {
-	std::cout << Error() << "put item out of bound (type: "
-			  << type << ", x: " << x << ", y: " << y << ")" << std::endl;
+	Error() << "put item out of bound, type: "
+			<< type << ", x: " << x << ", y: " << y << ")";
 	return;
   }
 
   // Return if item already exists
   if (_items[x][y] != NULL && _items[x][y]->type == type) {
-	std::cout << Debug() << "Same item existing for " << x << " x " << y << std::endl;
+	Debug() << "Same item existing for " << x << " x " << y;
 	return;
   }
 
@@ -591,7 +601,7 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
 
   // If item alread exists check the zoneId
   if (_items[x][y] != NULL && _items[x][y]->zone != 0 && zoneId != 0 && _items[x][y]->zone != zoneId) {
-	std::cout << Debug() << "this item can not be put at this position because zoneId not match" << std::endl;
+	Debug() << "this item can not be put at this position because zoneId not match";
 	return;
   }
 
@@ -602,7 +612,7 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
   }
 
   // Put item
-  std::cout << Debug() << "put item: " << type << std::endl;
+  Debug() << "put item: " << type;
   item->setPosition(x, y);
   _items[x][y] = item;
 
@@ -634,7 +644,7 @@ void		WorldMap::buildAbort(BaseItem* item) {
 	if (*it == item) {
 	  _buildingAborted->push_back(item);
 	  _building->erase(it);
-	  std::cout << Info() << "WorldMap: item building abort" << std::endl;
+	  Info() << "WorldMap: item building abort";
 	  return;
 	}
   }
@@ -647,7 +657,7 @@ void		WorldMap::buildComplete(BaseItem* item) {
   for (it = _building->begin(); it != _building->end(); ++it) {
 	if (*it == item) {
 	  _building->erase(it);
-	  std::cout << Info() << "WorldMap: item now complete" << std::endl;
+	  Info() << "WorldMap: item now complete";
 	  return;
 	}
   }

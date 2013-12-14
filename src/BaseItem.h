@@ -102,7 +102,7 @@ class BaseItem {
   bool			isSupply() { return power == powerSupply; }
   bool			isFree() { return _owner == NULL; }
   bool			isSleepingItem() { return type == QUARTER_BED || type == QUARTER_CHAIR; }
-
+  bool			isStructure() { return type > STRUCTURE_ITEM_START && type < STRUCTURE_ITEM_STOP; }
   int			matter;
   int			power;
   int			powerSupply;

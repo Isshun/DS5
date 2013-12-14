@@ -97,7 +97,7 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 
       // Select character
       if (_menu->getCode() == UserInterfaceMenu::CODE_MAIN) {
-        std::cout << Info() << "select character" << std::endl;
+        Info() << "select character";
         Character* c = _characteres->getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
         _menuCharacter->setCharacter(c);
       }
@@ -211,7 +211,7 @@ void UserInterface::refresh() {
   _uiResource->refreshResources();
 }
 
-bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, WorldMap* worldMap) {
+bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
   if (event.type == sf::Event::KeyReleased) {
     if (_menu->checkKeyboard(event.key.code, _keyMovePosX, _keyMovePosY)) {
       return true;
@@ -223,11 +223,15 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
 	  {
 
 	  case sf::Keyboard::D:
-		worldMap->dump();
+		WorldMap::getInstance()->dump();
+		break;
+
+	  case sf::Keyboard::I:
+		WorldMap::getInstance()->dumpItems();
 		break;
 
 	  case sf::Keyboard::T:
-		worldMap->setZone(_keyMovePosX, _keyMovePosY, 0);
+		WorldMap::getInstance()->setZone(_keyMovePosX, _keyMovePosY, 0);
 		break;
 
 	  case sf::Keyboard::Up:
@@ -266,7 +270,7 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput, Wor
 	  case sf::Keyboard::Return:
 		if (event.type == sf::Event::KeyReleased) {
 		  if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
-			worldMap->putItem(_keyMovePosX, _keyMovePosY, _menu->getBuildItemType());
+			WorldMap::getInstance()->putItem(_keyMovePosX, _keyMovePosY, _menu->getBuildItemType());
 		  }
 		}
 		break;

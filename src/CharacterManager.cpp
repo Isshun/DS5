@@ -4,15 +4,16 @@
 #include "CharacterManager.h"
 
 CharacterManager::CharacterManager() {
-  std::cout << Debug() << "CharacterManager" << std::endl;
+  Debug() << "CharacterManager";
 
   _characters = new std::list<Character*>();
+  _count = 0;
 
   _textures[0] = new sf::Texture();
   _textures[0]->loadFromFile("../sprites/cless.png");
   _textures[0]->setSmooth(true);
 
-  std::cout << Debug() << "CharacterManager done" << std::endl;
+  Debug() << "CharacterManager done";
 }
 
 CharacterManager::~CharacterManager() {
@@ -52,7 +53,7 @@ Character*        CharacterManager::getCharacterAtPos(int x, int y) {
 }
 
 Character*		CharacterManager::add(int x, int y) {
-  Character* c = new Character(x, y);
+  Character* c = new Character(_count++, x, y);
 
   _characters->push_back(c);
 

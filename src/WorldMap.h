@@ -29,6 +29,7 @@ public:
 	int			setZone(int x, int y, int zoneId);
 	void		reloadAborted();
 	void		dump();
+	void		dumpItems();
 	BaseItem*	find(int type, bool free);
 	static WorldMap*	getInstance() { return _self; }
 	BaseItem*	getRandomPosInRoom(int roomId);

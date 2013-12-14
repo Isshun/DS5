@@ -9,45 +9,41 @@
 #include "Game.hpp"
 #include "ResourceManager.h"
 
-WorldMap* gl_worldmap;
-
 extern int old_time1;
 extern int old_time2;
 
 sf::Time _time_elapsed;
 
 Game::Game(sf::RenderWindow* app) {
-  std::cout << Debug() << "Game" << std::endl;
+  Debug() << "Game";
 
   _run = true;
   _app = app;
   _lastInput = 0;
   _frame = 0;
   _viewport = new Viewport(app);
-  _worldMap = WorldMap::getInstance();
+  WorldMap* worldMap = WorldMap::getInstance();
   _update = 0;
 
   _characterManager = new CharacterManager();
-  // _characterManager->add(2, 2);
-  // _characterManager->add(8, 8);
-  // _characterManager->add(20, 8);
+  _characterManager->add(2, 2);
+  _characterManager->add(8, 8);
+  _characterManager->add(20, 8);
   _characterManager->add(50, 8);
 
-  _ui = new UserInterface(app, _worldMap, _viewport, _characterManager);
-
-  gl_worldmap = _worldMap;
+  _ui = new UserInterface(app, worldMap, _viewport, _characterManager);
 
   _spriteManager = new SpriteManager();
 
   // Background
-  std::cout << Debug() << "Game background" << std::endl;
+  Debug() << "Game background";
   _backgroundTexture = new sf::Texture();
   _backgroundTexture->loadFromFile("../res/background.png");
   _background = new sf::Sprite();
   _background->setTexture(*_backgroundTexture);
   _background->setTextureRect(sf::IntRect(0, 0, 1920, 1080));
 
-  std::cout << Info() << "Game:\tdone" << std::endl;
+  Info() << "Game:\tdone";
 }
 
 Game::~Game() {
@@ -65,15 +61,15 @@ void	Game::update() {
   // assign works
   if (ResourceManager::getInstance().getMatter() > 0) {
 	if (_update % 10 == 0) {
-	  _worldMap->reloadAborted();
+	  WorldMap::getInstance()->reloadAborted();
 	}
 
 	Character* character = NULL;
 	BaseItem* item = NULL;
 	// int length = _worldMap->getBuildListSize();
 	if ((character = _characterManager->getUnemployed()) != NULL
-		&& (item = _worldMap->getItemToBuild()) != NULL) {
-	  std::cout << Debug() << "Game: add build job to character" << std::endl;
+		&& (item = WorldMap::getInstance()->getItemToBuild()) != NULL) {
+	  Debug() << "Game: add build job to character";
 	  character->build(item);
 	}
   }
@@ -103,8 +99,8 @@ void	Game::refresh() {
 }
 
 void	Game::draw_surface() {
-  int w = _worldMap->getWidth();
-  int h = _worldMap->getHeight();
+  int w = WorldMap::getInstance()->getWidth();
+  int h = WorldMap::getInstance()->getHeight();
 
   // Background
   sf::Transform transform2;
@@ -124,7 +120,7 @@ void	Game::draw_surface() {
   // Run through items
   for (int i = w-1; i >= 0; i--) {
 	for (int j = h-1; j >= 0; j--) {
-	  BaseItem* item = _worldMap->getItem(i, j);
+	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
 
 	  // // Draw floor
 	  // if (item != NULL) {
@@ -222,7 +218,7 @@ void	Game::loop() {
 		_ui->mouseWheel(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
 	  }
 
-	  _force_refresh = _ui->checkKeyboard(event, _frame, _lastInput, _worldMap);
+	  _force_refresh = _ui->checkKeyboard(event, _frame, _lastInput);
 	  gere_quit();
 	}
 
@@ -245,14 +241,14 @@ void	Game::gere_quit() {
   if (this->event.type == sf::Event::Closed) {
 	_app->setKeyRepeatEnabled(true);
 	_app->close();
-	std::cout << Info() << "Bye" << std::endl;
+	Info() << "Bye";
   }
 
   if (this->event.type == sf::Event::KeyPressed &&
 	  this->event.key.code == sf::Keyboard::K) {
 	_app->setKeyRepeatEnabled(true);
 	_app->close();
-	std::cout << Info() << "Bye" << std::endl;
+	Info() << "Bye";
   }
 }
 

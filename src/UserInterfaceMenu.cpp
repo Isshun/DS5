@@ -135,7 +135,7 @@ Entry	entries_build_science[] = {
 };
 
 UserInterfaceMenu::UserInterfaceMenu(sf::RenderWindow* app, WorldMap* worldmap, Cursor* cursor) {
-  std::cout << Debug() << "UserInterfaceMenu" << std::endl;
+  Debug() << "UserInterfaceMenu";
 
   _worldmap = worldmap;
   _cursor = cursor;
@@ -279,7 +279,7 @@ void    UserInterfaceMenu::openMenu(Entry entry) {
     break;
 
   case CODE_ERASE:
-	std::cout << Info() << "erase"  << std::endl;
+	Info() << "erase" ;
 	drawModeErase();
     _parent_code = CODE_MAIN;
     break;
@@ -299,12 +299,12 @@ void    UserInterfaceMenu::openMenu(Entry entry) {
 }
 
 bool  UserInterfaceMenu::checkKeyboard(int code, int posX, int posY) {
-  std::cout << Debug() << "checkKeyboard: " << code << std::endl;
+  Debug() << "checkKeyboard: " << code;
 
   for (int i = 0; _entries[i].code != UserInterfaceMenu::CODE_NONE; i++) {
     if (_entries[i].key == code) {
 	  if (_code == CODE_ZONE) {
-		std::cout << Debug() << "set zone: " << _entries[i].code << std::endl;
+		Debug() << "set zone: " << _entries[i].code;
 		_worldmap->setZone(posX, posY, _entries[i].code);
 	  } else {
 		openMenu(_entries[i]);

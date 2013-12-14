@@ -27,8 +27,6 @@ public:
   Game(sf::RenderWindow* app);
   ~Game();
 
-  WorldMap	*_worldMap;
-
   void	loop();
   void	update();
   void	refresh();

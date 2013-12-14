@@ -8,13 +8,13 @@ int GetMap( int x, int y )
 {
   // std::cout << "GetMap: " << x << " x " << y << std::endl;
 
-  if( x < 0 || x >= gl_worldmap->getWidth() ||
-	  y < 0 || y >= gl_worldmap->getHeight())
+  if( x < 0 || x >= WorldMap::getInstance()->getWidth() ||
+	  y < 0 || y >= WorldMap::getInstance()->getHeight())
 	{
 	  return 9;
 	}
 
-  BaseItem* item = gl_worldmap->getItem(x, y);
+  BaseItem* item = WorldMap::getInstance()->getItem(x, y);
 
   // Space
   if (item == NULL || item->type == BaseItem::NONE)

@@ -17,7 +17,7 @@ struct {
 
 class	Character {
  public:
-  Character(int x, int y);
+  Character(int id, int x, int y);
   ~Character();
 
   enum {JOB_NONE, JOB_ENGINEER, JOB_MINER, JOB_DOCTOR, JOB_SCIENCE};
@@ -73,7 +73,7 @@ class	Character {
   void	actionUse();
   void	actionBuild();
 
-
+  int	_id;
   char	_name[32];
   AStarSearch<MapSearchNode>* _astarsearch;
   int	_steps;

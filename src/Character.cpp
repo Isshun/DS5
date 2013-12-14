@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include "stlastar.h"
 #include "WorldMap.h"
+#include "Log.h"
 
 const char* firstname[] = {
   "Vic",
@@ -46,9 +47,10 @@ const Job jobs[] = {
   {Character::JOB_SCIENCE, "Science"}
 };
 
-Character::Character(int x, int y) {
-  std::cout << Debug() << "Character" << std::endl;
+Character::Character(int id, int x, int y) {
+  Debug() << "Character #" << id;
 
+  _id = id;
   _astarsearch = NULL;
   _item = NULL;
   _build = NULL;
@@ -72,20 +74,35 @@ Character::Character(int x, int y) {
     snprintf(_name, 20, "%s (%s) %s", firstname[rand() % 8], middle, lastname[rand() % 8]);
   }
 
-  std::cout << Debug() << "Character done: " << _name << std::endl;
+  Debug() << "Character done: " << _name;
 }
 
 Character::~Character() {
   if (_astarsearch != NULL) {
 	_astarsearch->FreeSolutionNodes();
-	std::cout << Debug() << "free 1" << std::endl;
+	Debug() << "free 1";
 	_astarsearch->EnsureMemoryFreed();
 	delete _astarsearch;
 	_astarsearch = NULL;
   }
 }
 
+void	Character::use(BaseItem* item) {
+  Info() << "Character #" << _id <<": use item type: " << item->type;
+
+  if (_item != NULL && _item->isComplete() == false) {
+	WorldMap::getInstance()->buildAbort((BaseItem*)_item);
+	_item = NULL;
+  }
+  int posX = item->getX();
+  int posY = item->getY();
+  _item = item;
+  go(posX, posY);
+}
+
 void	Character::build(BaseItem* item) {
+  Info() << "Character #" << _id << ": build item type: " << item->type;
+
   _build = item;
   _build->setOwner(this);
   int posX = item->getX();
@@ -105,17 +122,6 @@ void	Character::setItem(BaseItem* item) {
   if (item != NULL && item->getOwner() != this) {
 	item->setOwner(this);
   }
-}
-
-void	Character::use(BaseItem* item) {
-  if (_item != NULL && _item->isComplete() == false) {
-	WorldMap::getInstance()->buildAbort((BaseItem*)_item);
-	_item = NULL;
-  }
-  int posX = item->getX();
-  int posY = item->getY();
-  _item = item;
-  go(posX, posY);
 }
 
 void  Character::updateNeeds() {
@@ -178,7 +184,7 @@ void  Character::update() {
 
   // Energy
   if (_energy < 20) {
-	cout << Debug() << "Charactere: need sleep: " << _energy << endl;
+	Debug() << "Charactere #" << _id << ": need sleep: " << _energy;
 
 	// Sleep in bed
 	{
@@ -223,10 +229,10 @@ void  Character::update() {
 	  }
 	}
 
-	cout << Debug() << "Charactere: need food" << endl;
+	Debug() << "Charactere #" << _id << ": need food";
 	BaseItem* item = WorldMap::getInstance()->find(BaseItem::BAR_PUB, false);
 	if (item != NULL) {
-	  std::cout << Debug() << "Go to pub !" << std::endl;
+	  Debug() << "Charactere #" << _id << "Go to pub !";
 	  use(item);
 	  return;
 	}
@@ -238,11 +244,11 @@ void		Character::go(int toX, int toY) {
   _toX = toX;
   _toY = toY;
 
-  cout << Debug() << "Charactere: go(" << _posX << ", " << _posY << " to " << toX << ", " << toY << ")" << endl;
+  Debug() << "Charactere #" << _id << ": go(" << _posX << ", " << _posY << " to " << toX << ", " << toY << ")";
 
   if (_astarsearch != NULL) {
 	_astarsearch->FreeSolutionNodes();
-	std::cout << Debug() << "free 1" << std::endl;
+	Debug() << "free 1";
 	_astarsearch->EnsureMemoryFreed();
 	delete _astarsearch;
 	_astarsearch = NULL;
@@ -280,17 +286,17 @@ void		Character::go(int toX, int toY) {
 	 while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
 
 	 if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED ) {
-	   cout << Debug() << "Search found goal state: " << SearchSteps << endl;
+	   Debug() << "Search found goal state: " << SearchSteps;
 	 }
 
 	 // No path found
 	 else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) {
-	   cout << Warning() << "Search terminated. Did not find goal state\n";
+	   Warning() << "Search terminated. Did not find goal state\n";
 	   if (_item != NULL) {
 		 WorldMap::getInstance()->buildAbort((BaseItem*)_item);
 		 _item = NULL;
 	   }
-	   std::cout << Debug() << "free 2" << std::endl;
+	   Debug() << "free 2";
 	   _astarsearch->EnsureMemoryFreed();
 	   delete _astarsearch;
 	   _astarsearch = NULL;
@@ -304,13 +310,13 @@ void		Character::move() {
 
   // Character is sleeping
   if (_sleep != 0) {
-	std::cout << "move: sleeping -> move canceled" << std::endl;
+	Debug() << "Character #" << _id << ": sleeping -> move canceled";
 	return;
   }
 
   // Move
   if (_astarsearch != NULL) {
-	std::cout << Debug() << "Character: move" << std::endl;
+	Debug() << "Character #" << _id << ": move";
 
 	// Next node
 	MapSearchNode *node = 0;
@@ -326,14 +332,14 @@ void		Character::move() {
 	  _posX = node->x;
 	  _posY = node->y;
 	  _steps++;
-	  std::cout << Debug() << "goto: " << _posX << " x " << _posY << ", step: " << _steps << std::endl;
+	  Debug() << "Charactere #" << _id << ": goto " << _posX << " x " << _posY << ", step: " << _steps;
 	}
 
 	// clear path
 	else {
-	  std::cout << Debug() << "Character: reached" << std::endl;
+	  Debug() << "Character #" << _id << ": reached";
 	  _astarsearch->FreeSolutionNodes();
-	  std::cout << Debug() << "free 3" << std::endl;
+	  Debug() << "free 3";
 	  _astarsearch->EnsureMemoryFreed();
 	  delete _astarsearch;
 	  _astarsearch = 0;
@@ -346,11 +352,11 @@ void		Character::move() {
 void		Character::actionUse() {
   // Character is sleeping
   if (_sleep != 0) {
-	std::cout << "use: sleeping -> use canceled" << std::endl;
+	Debug() << "use: sleeping -> use canceled";
 	return;
   }
 
-  std::cout << Info() << "Character: actionUse" << std::endl;
+  Debug() << "Character #" << _id << ": actionUse";
 
   switch (_item->type) {
 
@@ -390,25 +396,25 @@ void		Character::actionUse() {
 }
 
 void		Character::actionBuild() {
-  std::cout << Info() << "Character: actionBuild" << std::endl;
+  Debug() << "Character #" << _id << ": actionBuild";
 
   switch (ResourceManager::getInstance().build(_build)) {
 
   case ResourceManager::NO_MATTER:
-	std::cout << Debug() << "Character: not enough matter" << std::endl;
+	Debug() << "Character #" << _id << ": not enough matter";
 	WorldMap::getInstance()->buildAbort(_build);
 	_build = NULL;
 	break;
 
   case ResourceManager::BUILD_COMPLETE:
-	std::cout << Debug() << "Character: build complete" << std::endl;
+	Debug() << "Character #" << _id << ": build complete";
 	WorldMap::getInstance()->buildComplete(_build);
 	_build = NULL;
 	go(_posX + 1, _posY);
 	break;
 
   case ResourceManager::BUILD_PROGRESS:
-	std::cout << Debug() << "Character: build progress" << std::endl;
+	Debug() << "Character #" << _id << ": build progress";
 	break;
 
   }
@@ -419,8 +425,6 @@ void		Character::action() {
 	return;
   }
 
-  std::cout << Info() << "Character: action" << std::endl;
-
   // Build on progress
   if (_build != NULL) {
 	  actionBuild();
@@ -429,7 +433,7 @@ void		Character::action() {
   // If item still exists
   else if (_item != NULL) {
 	if (_item != WorldMap::getInstance()->getItem(_posX, _posY)) {
-	  std::cout << Error() << "Character: action on NULL or invalide item" << std::endl;
+	  Error() << "Character #" << _id << ": action on NULL or invalide item";
 	  return;
 	}
 	actionUse();

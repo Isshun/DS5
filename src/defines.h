@@ -1,9 +1,7 @@
 #ifndef _TOSNG_H
 #define _TOSNG_H_
 
-#include "Log.hpp"
-
-#define DEBUG	1
+#include "Log.h"
 
 #define CHARACTER_MOVE_INTERVAL 1
 #define KEY_REPEAT_INTERVAL 5
@@ -58,7 +56,7 @@
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 900
 
-#define RESSOURCE_MATTER_START 500
+#define RESSOURCE_MATTER_START 50000
 
 #define CHARACTER_INIT_FOOD 80
 #define CHARACTER_INIT_OXYGEN 100

@@ -31,7 +31,7 @@ int ResourceManager::build(BaseItem* item) {
   if (item->progress == item->matter) {
 
 	// Remove power use
-	if (item->power > 0) {
+	if (item->power != 0) {
 	  item->powerSupply = _power >= item->power ? item->power : _power;
 	  _power -= item->power;
 	}
