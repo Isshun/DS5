@@ -16,7 +16,7 @@ UserInterfaceResource::UserInterfaceResource(sf::RenderWindow* app) {
 UserInterfaceResource::~UserInterfaceResource() {
 }
 
-void UserInterfaceResource::refreshResources() {
+void UserInterfaceResource::refreshResources(int frame) {
   sf::Font font;
   if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
 	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());

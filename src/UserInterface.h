@@ -27,7 +27,7 @@ class UserInterface {
   UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport, CharacterManager* characteres);
   ~UserInterface();
 
-  void	refresh();
+  void	refresh(int frame);
   void	refreshMenu();
   void	refreshCursor();
   void	refreshResources();

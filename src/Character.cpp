@@ -8,6 +8,10 @@
 #include "Log.h"
 #include "PathManager.h"
 
+#define LIMITE_FOOD_OK 30
+#define LIMITE_FOOD_HUNGRY 15
+#define LIMITE_FOOD_STARVE 0
+
 const char* firstname[] = {
   "Vic",
   "Lewis",
@@ -60,6 +64,8 @@ Character::Character(int id, int x, int y) {
   _sleep = 0;
 
   _jobName = jobs[rand() % 4].name;
+
+  memset(_messages, -100, CHARACTER_MAX_MESSAGE * sizeof(int));
 
   // Needs
   _food = CHARACTER_INIT_FOOD;
@@ -128,7 +134,11 @@ void	Character::setItem(BaseItem* item) {
   }
 }
 
-void  Character::updateNeeds() {
+void  Character::addMessage(int msg, int count) {
+  _messages[msg] = count;
+}
+
+void  Character::updateNeeds(int count) {
 
   // Character is sleeping
   if (_sleep > 0) {
@@ -150,15 +160,36 @@ void  Character::updateNeeds() {
 	return;
   }
 
-  if (_food == 0) {
-	_hapiness -= 0.1;
+  // Sleep on the ground
+  if (_energy == 0 && (_item == NULL || _item->isSleepingItem() == false)) {
+	addMessage(MSG_SLEEP_ON_FLOOR, count);
+	_hapiness -= 10;
+	_sleep = 20;
+	_energy = 80;
+	return;
   }
 
-  if (_food > 0) {
-	_food -= 2;
+  // Food
+  _food -= 2;
+
+  // Food: starve
+  if (_food <= LIMITE_FOOD_STARVE) {
+	addMessage(MSG_STARVE, count);
+	_hapiness -= 0.5;
   }
+  // Food: hungry
+  else if (_food <= LIMITE_FOOD_HUNGRY) {
+	addMessage(MSG_HUNGRY, count);
+	_hapiness -= 0.2;
+  }
+
 
   if (_oxygen > 0) {
+	_oxygen = 0;
+  }
+
+  if (_oxygen == 0) {
+	addMessage(MSG_NEED_OXYGEN, count);
 	_oxygen = 0;
   }
 
@@ -212,20 +243,13 @@ void  Character::update() {
 
   }
 
-  // Sleep on the ground
-  if (_energy == 0) {
-	_sleep = 20;
-	_energy = 80;
-	return;
-  }
-
   // If character have a job -> do not interrupt
   if (_build != NULL) {
 	return;
   }
 
   // Need food
-  if (_food < 20) {
+  if (_food <= LIMITE_FOOD_OK) {
 
 	// If character already go to needed item
 	if (_astarsearch != NULL) {
@@ -238,10 +262,12 @@ void  Character::update() {
 	Debug() << "Charactere #" << _id << ": need food";
 	BaseItem* item = WorldMap::getInstance()->find(BaseItem::BAR_PUB, false);
 	if (item != NULL) {
-	  Debug() << "Charactere #" << _id << "Go to pub !";
+	  Debug() << "Charactere #" << _id << ": Go to pub !";
 	  AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, item);
 	  use(path, item);
 	  return;
+	} else {
+	  Debug() << "Charactere #" << _id << ": no pub :(";
 	}
   }
 

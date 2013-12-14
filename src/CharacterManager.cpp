@@ -10,7 +10,7 @@ CharacterManager::CharacterManager() {
   _count = 0;
 
   _textures[0] = new sf::Texture();
-  _textures[0]->loadFromFile("../sprites/cless.png");
+  _textures[0]->loadFromFile("../res/Characters/scientifique.png");
   _textures[0]->setSmooth(true);
 
   Debug() << "CharacterManager done";
@@ -36,7 +36,7 @@ void    CharacterManager::update(int count) {
 	(*it)->move();
 
 	if (count % 10 == 0) {
-	  (*it)->updateNeeds();
+	  (*it)->updateNeeds(count);
 	}
   }
 }
@@ -91,11 +91,12 @@ void	CharacterManager::draw(sf::RenderWindow* app, sf::Transform transform) {
 
   std::list<Character*>::iterator it;
   for (it = _characters->begin(); it != _characters->end(); ++it) {
-	sprite.setPosition((*it)->_posX * TILE_SIZE, (*it)->_posY * TILE_SIZE);
+	sprite.setPosition((*it)->_posX * TILE_SIZE - (CHAR_WIDTH - TILE_SIZE),
+					   (*it)->_posY * TILE_SIZE - (CHAR_HEIGHT - TILE_SIZE + TILE_SIZE / 4));
 	if ((*it)->isSleep()) {
-	  sprite.setTextureRect(sf::IntRect(32, 0, TILE_SIZE, TILE_SIZE));
+	  sprite.setTextureRect(sf::IntRect(0, CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT));
 	} else {
-	  sprite.setTextureRect(sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
+	  sprite.setTextureRect(sf::IntRect(0, 0, CHAR_WIDTH, CHAR_HEIGHT));
 	}
 	app->draw(sprite, render);
   }

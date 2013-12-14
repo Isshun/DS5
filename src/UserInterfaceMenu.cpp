@@ -346,7 +346,7 @@ void UserInterfaceMenu::drawModeErase() {
   _app->draw(shortcut);
 }
 
-void	UserInterfaceMenu::refreshMenu() {
+void	UserInterfaceMenu::refreshMenu(int frame) {
 
   // sf::RectangleShape shape;
   // shape.setSize(sf::Vector2f(UI_WIDTH, WINDOW_HEIGHT));

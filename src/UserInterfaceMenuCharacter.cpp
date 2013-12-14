@@ -11,6 +11,42 @@ UserInterfaceMenuCharacter::~UserInterfaceMenuCharacter() {
 
 }
 
+void  UserInterfaceMenuCharacter::addMessage(int posX, int posY, int width, int height, int value) {
+  sf::Font font;
+  if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
+
+  const char* msg;
+
+  switch (value) {
+  case Character::MSG_HUNGRY:
+	msg = "MSG_HUNGRY";
+	break;
+  case Character::MSG_STARVE:
+	msg = "MSG_STARVE";
+	break;
+  case Character::MSG_NEED_OXYGEN:
+	msg = "MSG_NEED_OXYGEN";
+	break;
+  case Character::MSG_SLEEP_ON_FLOOR:
+	msg = "SLEEP_ON_FLOOR";
+	break;
+  case Character::MSG_NO_WINDOW:
+	msg = "MSG_NO_WINDOW";
+	break;
+  default:
+	return;
+  }
+
+  sf::Text text;
+  text.setString(msg);
+  text.setFont(font);
+  text.setCharacterSize(MENU_CHARACTER_FONT_SIZE);
+  text.setStyle(sf::Text::Regular);
+  text.setPosition(posX, posY);
+  _app->draw(text);
+}
+
 void  UserInterfaceMenuCharacter::addGauge(int posX, int posY, int width, int height, int value, const char* label) {
     sf::Font font;
     if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
@@ -37,7 +73,7 @@ void  UserInterfaceMenuCharacter::addGauge(int posX, int posY, int width, int he
     _app->draw(shape);
 }
 
-void	UserInterfaceMenuCharacter::refresh() {
+void	UserInterfaceMenuCharacter::refresh(int frame) {
 
   // Background
   sf::RectangleShape shape;
@@ -87,5 +123,17 @@ void	UserInterfaceMenuCharacter::refresh() {
                value,
 			   texts[i]);
     }
+
+	int* messages = _character->getMessages();
+    for (int i = 0; i < CHARACTER_MAX_MESSAGE; i++) {
+	  if (messages[i] > frame - 100) {
+		addMessage(UI_PADDING,
+				   400 + (i * UI_FONT_SIZE) + UI_PADDING,
+				   UI_WIDTH - UI_PADDING * 2,
+				   UI_FONT_SIZE,
+				   i);
+	  }
+    }
+
   }
 }

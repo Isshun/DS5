@@ -19,10 +19,11 @@ class UserInterfaceMenuCharacter {
   UserInterfaceMenuCharacter(sf::RenderWindow* app);
   ~UserInterfaceMenuCharacter();
 
-  void	refresh();
+  void	refresh(int frame);
   void  setCharacter(Character* character) { _character = character; }
   Character*  getCharacter() { return _character; }
   void  addGauge(int posX, int posY, int width, int height, int value, const char* text);
+  void  addMessage(int posX, int posY, int width, int height, int value);
 
  private:
   sf::RenderWindow*     _app;

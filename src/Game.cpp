@@ -29,9 +29,9 @@ Game::Game(sf::RenderWindow* app) {
 
   _characterManager = new CharacterManager();
   _characterManager->add(2, 2);
-  // _characterManager->add(8, 8);
-  // _characterManager->add(20, 8);
-  // _characterManager->add(50, 8);
+  _characterManager->add(8, 8);
+  _characterManager->add(20, 8);
+  _characterManager->add(50, 8);
 
   _ui = new UserInterface(app, worldMap, _viewport, _characterManager);
 
@@ -105,7 +105,7 @@ void	Game::refresh() {
   _characterManager->draw(_app, transform);
 
   // User interface
-  _ui->refresh();
+  _ui->refresh(_update);
 
   _frame++;
 }

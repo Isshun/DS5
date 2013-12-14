@@ -22,6 +22,14 @@ class	Character {
 
   enum {JOB_NONE, JOB_ENGINEER, JOB_MINER, JOB_DOCTOR, JOB_SCIENCE};
 
+  enum {
+	MSG_HUNGRY,
+	MSG_STARVE,
+	MSG_NEED_OXYGEN,
+	MSG_SLEEP_ON_FLOOR,
+	MSG_NO_WINDOW
+  };
+  
   void	draw(sf::RenderWindow* app, sf::Transform transform);
   void	build(AStarSearch<MapSearchNode>* path, BaseItem* item);
   void	use(AStarSearch<MapSearchNode>* path, BaseItem* item);
@@ -33,6 +41,7 @@ class	Character {
   int           getDirection();
   const char*   getJobName() { return _jobName; }
 
+  void			addMessage(int msg, int count);
   void			go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY);
 
   void          move();
@@ -48,14 +57,16 @@ class	Character {
   int	getY() { return _posY; }
   int	getId() { return _id; }
   const char*	getName() { return _name; }
-  int   getFood() { return _food; }
+  int   getFood() { return max(_food, 0); }
   int   getHapiness() { return (int)_hapiness; }
   int   getOxygen() { return _oxygen; }
   int   getEnergy() { return _energy; }
   int   getHealth() { return _health; }
+  int*  getMessages() { return _messages; }
+
   void	action();
   void  update();
-  void  updateNeeds();
+  void  updateNeeds(int count);
   bool  isSleep() { return _sleep > 0; }
 
   map<int,int>	_run;
@@ -93,6 +104,8 @@ class	Character {
   int	_sleep;
   int	_eat;
   int	_drink;
+
+  int	_messages[CHARACTER_MAX_MESSAGE];
 };
 
 #endif
