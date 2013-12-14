@@ -8,6 +8,7 @@
 #include "SpriteManager.h"
 #include "BaseItem.h"
 #include "defines.h"
+#include "UserInterfaceMenu.h"
 
 SpriteResource	spritesRes[] = {
   {BaseItem::STRUCTURE_HULL,					2, 8, 0},
@@ -52,6 +53,10 @@ SpriteManager::SpriteManager() {
   _texture[3]->loadFromFile("../res/Tilesets/Futuristic_TileE.png");
   _texture[3]->setSmooth(true);
 
+  _texture[4] = new sf::Texture();
+  _texture[4]->loadFromFile("../res/Tilesets/zones.png");
+  _texture[4]->setSmooth(true);
+
   // IC battery
   {
     sf::Texture texture;
@@ -68,6 +73,7 @@ SpriteManager::~SpriteManager() {
   delete _texture[1];
   delete _texture[2];
   delete _texture[3];
+  delete _texture[4];
 
   delete _spriteBattery;
 }
@@ -80,11 +86,17 @@ void		SpriteManager::getSprite(BaseItem* item, sf::Sprite* sprite) {
 
 		// Floor
 		if (item->type == BaseItem::STRUCTURE_FLOOR) {
-		  sprite->setTexture(*_texture[spritesRes[2].textureIndex]);
-		  sprite->setTextureRect(sf::IntRect((item->zone+1) * TILE_SIZE,
-											0 * TILE_SIZE,
-											TILE_SIZE,
-											TILE_SIZE));
+		  int choice = 1;
+
+		  if (item->zone == UserInterfaceMenu::CODE_ZONE_HOLODECK) {
+			choice = 3;
+		  }
+
+		  sprite->setTexture(*_texture[4]);
+		  sprite->setTextureRect(sf::IntRect((item->room % choice) * TILE_SIZE,
+											 item->zone * TILE_SIZE,
+											 TILE_SIZE,
+											 TILE_SIZE));
 		}
 
 		// Else

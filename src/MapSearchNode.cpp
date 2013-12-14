@@ -1,8 +1,6 @@
 #include "MapSearchNode.h"
 #include "WorldMap.h"
 
-extern WorldMap* gl_worldmap;
-
 // map helper functions
 int GetMap( int x, int y )
 {

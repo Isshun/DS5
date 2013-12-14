@@ -90,10 +90,13 @@ Character::~Character() {
 void	Character::use(BaseItem* item) {
   Info() << "Character #" << _id <<": use item type: " << item->type;
 
-  if (_item != NULL && _item->isComplete() == false) {
-	WorldMap::getInstance()->buildAbort((BaseItem*)_item);
-	_item = NULL;
+  // If character currently building item: abort
+  if (_build != NULL && _build->isComplete() == false) {
+	WorldMap::getInstance()->buildAbort(_build);
+	_build = NULL;
   }
+
+  // Go to new item
   int posX = item->getX();
   int posY = item->getY();
   _item = item;
@@ -432,8 +435,10 @@ void		Character::action() {
 
   // If item still exists
   else if (_item != NULL) {
-	if (_item != WorldMap::getInstance()->getItem(_posX, _posY)) {
-	  Error() << "Character #" << _id << ": action on NULL or invalide item";
+	BaseItem* item = WorldMap::getInstance()->getItem(_posX, _posY);
+	if (_item != item) {
+
+	  Error() << "Character #" << _id << ": action on NULL or invalide item: " << item->type;
 	  return;
 	}
 	actionUse();
