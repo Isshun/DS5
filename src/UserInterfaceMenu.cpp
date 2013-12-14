@@ -278,6 +278,12 @@ void    UserInterfaceMenu::openMenu(Entry entry) {
     setBuildItem(entry.code, entry.text, entry.data);
     break;
 
+  case CODE_ERASE:
+	std::cout << Info() << "erase"  << std::endl;
+	drawModeErase();
+    _parent_code = CODE_MAIN;
+    break;
+
   case CODE_MAIN:
     _parent_code = _code;
     _code = entry.code;
@@ -359,6 +365,9 @@ void	UserInterfaceMenu::refreshMenu() {
   switch (_code) {
   case CODE_BUILD_ITEM:
 	drawModeBuild();
+	break;
+  case CODE_ERASE:
+	drawModeErase();
 	break;
   default:
 	for (int i = 0; _entries[i].code != UserInterfaceMenu::CODE_NONE; i++) {

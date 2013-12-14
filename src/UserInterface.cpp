@@ -174,10 +174,11 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
 }
 
 void	UserInterface::refreshCursor() {
-  if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
+  if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM ||
+	  _menu->getCode() == UserInterfaceMenu::CODE_ERASE) {
 
 	// Structure: multiple 1x1 tile
-	if (_keyLeftPressed && _menu->getParentCode() == UserInterfaceMenu::CODE_BUILD_STRUCTURE) {
+	if (_keyLeftPressed && (_menu->getParentCode() == UserInterfaceMenu::CODE_BUILD_STRUCTURE || _menu->getCode() == UserInterfaceMenu::CODE_ERASE)) {
 	  drawCursor(std::min(_keyPressPosX, _keyMovePosX),
 				 std::min(_keyPressPosY, _keyMovePosY),
 				 std::max(_keyPressPosX, _keyMovePosX),

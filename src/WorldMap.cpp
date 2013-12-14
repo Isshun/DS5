@@ -506,6 +506,8 @@ bool WorldMap::getSolid(int x, int y) {
 }
 
 void WorldMap::removeItem(int x, int y) {
+  std::cout << Debug() << "remove item" << std::endl;
+
   // Return if out of bound
   if (x < 0 || y < 0 || x >= _width || y >= _height) {
 	std::cout << Error() << "remove item out of bound, x: " << x << ", y: " << y << ")" << std::endl;
@@ -561,6 +563,8 @@ void WorldMap::removeItem(int x, int y) {
 	}
   }
 
+  delete item;
+  _items[x][y] = NULL;
 }
 
 void WorldMap::putItem(int x, int y, int type) {
