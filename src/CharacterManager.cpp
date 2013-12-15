@@ -92,7 +92,7 @@ void	CharacterManager::draw(sf::RenderWindow* app, sf::Transform transform) {
   std::list<Character*>::iterator it;
   for (it = _characters->begin(); it != _characters->end(); ++it) {
 	sprite.setPosition((*it)->_posX * TILE_SIZE - (CHAR_WIDTH - TILE_SIZE),
-					   (*it)->_posY * TILE_SIZE - (CHAR_HEIGHT - TILE_SIZE + TILE_SIZE / 4));
+					   (*it)->_posY * TILE_SIZE - (CHAR_HEIGHT - TILE_SIZE + TILE_SIZE / 2));
 	if ((*it)->isSleep()) {
 	  sprite.setTextureRect(sf::IntRect(0, CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT));
 	} else {

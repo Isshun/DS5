@@ -162,6 +162,7 @@ void	Game::draw_surface() {
 
   for (int j = h-1; j >= 0; j--) {
 	for (int i = w-1; i >= 0; i--) {
+	  int r = rand();
 	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
 	  if (item != NULL && item->type != BaseItem::STRUCTURE_FLOOR && item->isStructure()) {
 		BaseItem* bellow = WorldMap::getInstance()->getItem(i, j+1);
@@ -198,7 +199,7 @@ void	Game::draw_surface() {
 			if (bellow == NULL) {
 			  // Double wall
 			  if (doubleWall) {
-				_spriteManager->getWall(item, 4, &sprite, rand(), 0);
+				_spriteManager->getWall(item, 4, &sprite, r, 0);
 				lastSpecialX = i;
 				lastSpecialY = j;
 			  }
@@ -211,13 +212,13 @@ void	Game::draw_surface() {
 			else {
 			  // Double wall
 			  if (doubleWall) {
-				_spriteManager->getWall(item, 2, &sprite, rand(), bellow->zone);
+				_spriteManager->getWall(item, 2, &sprite, r, bellow->zone);
 				lastSpecialX = i;
 				lastSpecialY = j;
 			  }
 			  // Single wall
 			  else {
-				_spriteManager->getWall(item, 3, &sprite, rand(), bellow->zone);
+				_spriteManager->getWall(item, 3, &sprite, r, bellow->zone);
 			  }
 			}
 		  	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offset);

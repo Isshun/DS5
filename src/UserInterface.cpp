@@ -104,8 +104,8 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 
       // Build item
       else if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
-        for (int x = startX; x <= toX; x++) {
-          for (int y = startY; y <= toY; y++) {
+        for (int x = toX; x >= startX; x--) {
+          for (int y = toY; y >= startY; y--) {
 
             // Structure
             if (_menu->getBuildItemType() == BaseItem::STRUCTURE_ROOM) {
