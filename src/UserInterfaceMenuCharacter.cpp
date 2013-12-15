@@ -1,6 +1,7 @@
 #include "UserInterfaceMenuCharacter.h"
 
-#define MENU_CHARACTER_FONT_SIZE 24
+#define MENU_CHARACTER_FONT_SIZE 20
+#define MENU_CHARACTER_MESSAGE_FONT_SIZE 16
 
 UserInterfaceMenuCharacter::UserInterfaceMenuCharacter(sf::RenderWindow* app) {
   _app = app;
@@ -31,6 +32,9 @@ void  UserInterfaceMenuCharacter::addMessage(int posX, int posY, int width, int 
   case Character::MSG_SLEEP_ON_FLOOR:
 	msg = "SLEEP_ON_FLOOR";
 	break;
+  case Character::MSG_SLEEP_ON_CHAIR:
+	msg = "SLEEP_ON_CHAIR";
+	break;
   case Character::MSG_NO_WINDOW:
 	msg = "MSG_NO_WINDOW";
 	break;
@@ -41,7 +45,7 @@ void  UserInterfaceMenuCharacter::addMessage(int posX, int posY, int width, int 
   sf::Text text;
   text.setString(msg);
   text.setFont(font);
-  text.setCharacterSize(MENU_CHARACTER_FONT_SIZE);
+  text.setCharacterSize(MENU_CHARACTER_MESSAGE_FONT_SIZE);
   text.setStyle(sf::Text::Regular);
   text.setPosition(posX, posY);
   _app->draw(text);
@@ -109,11 +113,11 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
     for (int i = 0; i < 4; i++) {
       int value;
       switch (i) {
-      case 0: value = _character->getFood(); break;
-      case 1: value = _character->getOxygen(); break;
-      case 2: value = _character->getHapiness(); break;
-      case 3: value = _character->getEnergy(); break;
-      case 4: value = _character->getHealth(); break;
+      case 0: value = max(_character->getFood(), 0); break;
+      case 1: value = max(_character->getOxygen(), 0); break;
+      case 2: value = max(_character->getHapiness(), 0); break;
+      case 3: value = max(_character->getEnergy(), 0); break;
+	  case 4: value = max(_character->getHealth(), 0); break;
       }
 
       addGauge(UI_PADDING,

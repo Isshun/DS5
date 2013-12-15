@@ -27,6 +27,7 @@ class	Character {
 	MSG_STARVE,
 	MSG_NEED_OXYGEN,
 	MSG_SLEEP_ON_FLOOR,
+	MSG_SLEEP_ON_CHAIR,
 	MSG_NO_WINDOW
   };
   
@@ -42,6 +43,7 @@ class	Character {
   const char*   getJobName() { return _jobName; }
 
   void			addMessage(int msg, int count);
+  void			removeMessage(int msg);
   void			go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY);
 
   void          move();
@@ -57,7 +59,7 @@ class	Character {
   int	getY() { return _posY; }
   int	getId() { return _id; }
   const char*	getName() { return _name; }
-  int   getFood() { return max(_food, 0); }
+  int   getFood() { return _food; }
   int   getHapiness() { return (int)_hapiness; }
   int   getOxygen() { return _oxygen; }
   int   getEnergy() { return _energy; }

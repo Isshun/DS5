@@ -11,22 +11,57 @@
 #define LIMITE_FOOD_OK 30
 #define LIMITE_FOOD_HUNGRY 15
 #define LIMITE_FOOD_STARVE 0
+#define MESSAGE_COUNT_INIT -100
 
 const char* firstname[] = {
-  "Vic",
+  "Galen",
   "Lewis",
   "Alice",
-  "Adam",
+  "Michael",
   "Janice",
+  "Gaïus",
+  "Samuel",
+  "Jadzia",
+  "Jonathan",
+  "Benjamin",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+};
+
+const char* shortFirstname[] = {
+  "Vic",
+  "Ellen",
+  "Tory",
+  "Adam",
+  "Kara",
   "Ezri",
   "Tom",
-  "Jadzia",
+  "Lee",
+  "Saul",
+  "Bill",
+  "Matt",
+  "Jack",
+  "Emma",
+  "",
+  "",
 };
 
 const char* middlename[] = {
-  "Harry",
+  "Crashdown",
+  "Hardball",
   "Apollo",
   "Boomer",
+  "Doc",
+  "Starbuck",
+  "Six",
+  "Hotdog",
+  "Jammer",
+  "",
+  "",
   "",
   "",
   "",
@@ -43,6 +78,14 @@ const char* lastname[] = {
   "Mudd",
   "Rand",
   "McCoy",
+  "Archer",
+  "Thrace",
+  "Adama",
+  "Tyrol",
+  "Anders",
+  "",
+  "",
+  "",
 };
 
 const Job jobs[] = {
@@ -65,7 +108,7 @@ Character::Character(int id, int x, int y) {
 
   _jobName = jobs[rand() % 4].name;
 
-  memset(_messages, -100, CHARACTER_MAX_MESSAGE * sizeof(int));
+  memset(_messages, MESSAGE_COUNT_INIT, CHARACTER_MAX_MESSAGE * sizeof(int));
 
   // Needs
   _food = CHARACTER_INIT_FOOD;
@@ -74,11 +117,11 @@ Character::Character(int id, int x, int y) {
   _health = CHARACTER_INIT_HEALTH;
   _energy = CHARACTER_INIT_ENERGY;
 
-  const char* middle = middlename[rand() % 8];
+  const char* middle = middlename[rand() % 16];
   if (strlen(middle) == 0) {
-    snprintf(_name, 20, "%s %s", firstname[rand() % 8], lastname[rand() % 8]);
+    snprintf(_name, 24, "%s %s", shortFirstname[rand() % 16], lastname[rand() % 16]);
   } else {
-    snprintf(_name, 20, "%s (%s) %s", firstname[rand() % 8], middle, lastname[rand() % 8]);
+    snprintf(_name, 24, "%s (%s) %s", firstname[rand() % 16], middle, lastname[rand() % 16]);
   }
 
   Debug() << "Character done: " << _name;
@@ -138,6 +181,10 @@ void  Character::addMessage(int msg, int count) {
   _messages[msg] = count;
 }
 
+void  Character::removeMessage(int msg) {
+  _messages[msg] = MESSAGE_COUNT_INIT;
+}
+
 void  Character::updateNeeds(int count) {
 
   // Character is sleeping
@@ -145,12 +192,18 @@ void  Character::updateNeeds(int count) {
 	_sleep--;
 
 	// Set hapiness
-	if (_item && _item->type == BaseItem::QUARTER_BED)
+	if (_item && _item->type == BaseItem::QUARTER_BED) {
 	  _hapiness += 0.1;
-	else if (_item && _item->type == BaseItem::QUARTER_CHAIR)
+	  removeMessage(MSG_SLEEP_ON_FLOOR);
+	  removeMessage(MSG_SLEEP_ON_CHAIR);
+	} else if (_item && _item->type == BaseItem::QUARTER_CHAIR) {
 	  _hapiness -= 0.1;
-	else
+	  addMessage(MSG_SLEEP_ON_CHAIR, count);
+	  removeMessage(MSG_SLEEP_ON_FLOOR);
+	} else {
+	  addMessage(MSG_SLEEP_ON_FLOOR, count);
 	  _hapiness -= 0.25;
+	}
 
 	// If current item is not under construction: abort
 	if (_sleep == 0 && _item != NULL && _item->isComplete()) {
@@ -160,27 +213,23 @@ void  Character::updateNeeds(int count) {
 	return;
   }
 
-  // Sleep on the ground
-  if (_energy == 0 && (_item == NULL || _item->isSleepingItem() == false)) {
-	addMessage(MSG_SLEEP_ON_FLOOR, count);
-	_hapiness -= 10;
-	_sleep = 20;
-	_energy = 80;
-	return;
-  }
-
   // Food
   _food -= 2;
 
   // Food: starve
   if (_food <= LIMITE_FOOD_STARVE) {
 	addMessage(MSG_STARVE, count);
+	removeMessage(MSG_HUNGRY);
 	_hapiness -= 0.5;
+	_energy -= 1;
   }
   // Food: hungry
   else if (_food <= LIMITE_FOOD_HUNGRY) {
 	addMessage(MSG_HUNGRY, count);
 	_hapiness -= 0.2;
+  } else {
+	removeMessage(MSG_STARVE);
+	removeMessage(MSG_HUNGRY);
   }
 
 
@@ -191,11 +240,12 @@ void  Character::updateNeeds(int count) {
   if (_oxygen == 0) {
 	addMessage(MSG_NEED_OXYGEN, count);
 	_oxygen = 0;
+  } else {
+	removeMessage(MSG_NEED_OXYGEN);
   }
 
-  if (_energy > 0) {
-	_energy -= 1;
-  }
+  // Energy
+  _energy -= 1;
 
   //if (_hapiness > 0)_hapiness = 0;
   //if (_health > 0)_health = 0;
@@ -239,6 +289,13 @@ void  Character::update() {
 		use(path, item);
 		return;
 	  }
+	}
+
+	// Sleep on the ground
+	if (_energy == 0) {
+	  _sleep = 20;
+	  _energy = 80;
+	  return;
 	}
 
   }
