@@ -143,8 +143,11 @@ void		SpriteManager::getSprite(int type, sf::Sprite* sprite) {
   }
 }
 
-void				SpriteManager::getFloor(int zone, int room, sf::Sprite* sprite) {
+void				SpriteManager::getFloor(BaseItem* item, int zone, int room, sf::Sprite* sprite) {
   int choice = 1;
+
+  int alpha = 75 + 180 / item->matter * item->progress;
+  sprite->setColor(sf::Color(255,255,255,alpha));
 
   if (zone == UserInterfaceMenu::CODE_ZONE_HOLODECK) {
 	choice = 3;
@@ -157,15 +160,18 @@ void				SpriteManager::getFloor(int zone, int room, sf::Sprite* sprite) {
 									 TILE_SIZE));
 }
 
-void				SpriteManager::getWall(int special, sf::Sprite* sprite, int index) {
+void				SpriteManager::getWall(BaseItem* item, int special, sf::Sprite* sprite, int index, int zone) {
   for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
 	if (spritesRes[i].type == BaseItem::STRUCTURE_WALL) {
+	  int alpha = 75 + 180 / item->matter * item->progress;
+	  sprite->setColor(sf::Color(255,255,255,alpha));
+
 	  sprite->setTexture(*_texture[6]);
 
 	  // Normal
 	  if (special == 0) {
 		sprite->setTextureRect(sf::IntRect(0,
-										   48 * 2,
+										   48 * zone,
 										   32,
 										   48));
 	  }
@@ -173,23 +179,31 @@ void				SpriteManager::getWall(int special, sf::Sprite* sprite, int index) {
 	  // Bellow
 	  if (special == 1) {
 		sprite->setTextureRect(sf::IntRect(32,
-										   48 * 2,
+										   48 * zone,
 										   32,
 										   48));
 	  }
 
-	  // Double
-	  if (special == 2) {
-		sprite->setTextureRect(sf::IntRect(256 + 64 * (index % 4),
-										   48 * 2,
+	  // Double normal
+	  if (special == 4) {
+		sprite->setTextureRect(sf::IntRect(64,
+										   48 * zone,
 										   32 * 2,
 										   48));
 	  }
 
-	  // Single
+	  // Double special
+	  if (special == 2) {
+		sprite->setTextureRect(sf::IntRect(256 + 64 * (index % 4),
+										   48 * zone,
+										   32 * 2,
+										   48));
+	  }
+
+	  // Single special
 	  if (special == 3) {
 		sprite->setTextureRect(sf::IntRect(128 + 32 * (index % 4),
-										   48 * 2,
+										   48 * zone,
 										   32,
 										   48));
 	  }

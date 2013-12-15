@@ -19,6 +19,9 @@ sf::Time _time_elapsed;
 Game::Game(sf::RenderWindow* app) {
   Debug() << "Game";
 
+  _seed = 42;
+  srand(_seed);
+
   _run = true;
   _app = app;
   _lastInput = 0;
@@ -94,6 +97,8 @@ void	Game::update() {
 }
 
 void	Game::refresh() {
+  srand(42);
+
   // Flush
   _app->clear(sf::Color(0, 0, 50));
 
@@ -107,7 +112,7 @@ void	Game::refresh() {
   // User interface
   _ui->refresh(_update);
 
-  _frame++;
+  srand(_seed + _frame++);
 }
 
 void	Game::draw_surface() {
@@ -142,7 +147,7 @@ void	Game::draw_surface() {
 		  _spriteManager->getSprite(item, &sprite);
 		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 		} else {
-		  _spriteManager->getFloor(item->zone, item->room, &sprite);
+		  _spriteManager->getFloor(item, item->zone, item->room, &sprite);
 		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 		}
 	  
@@ -154,7 +159,7 @@ void	Game::draw_surface() {
   // Draw structure
   int lastSpecialX = -1;
   int lastSpecialY = -1;
-  srand(42);
+
   for (int j = h-1; j >= 0; j--) {
 	for (int i = w-1; i >= 0; i--) {
 	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
@@ -169,17 +174,17 @@ void	Game::draw_surface() {
 
 		  // bellow is a wall
 		  if (bellow != NULL && bellow->type == BaseItem::STRUCTURE_WALL) {
-			_spriteManager->getWall(1, &sprite, 0);
+			_spriteManager->getWall(item, 1, &sprite, 0, 0);
 			sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offset);
 		  }
 
 		  // No wall above or bellow
 		  else if ((above == NULL || above->type != BaseItem::STRUCTURE_WALL) &&
-			  (bellow == NULL || bellow->type != BaseItem::STRUCTURE_WALL)) {
+				   (bellow == NULL || bellow->type != BaseItem::STRUCTURE_WALL)) {
 
 			// Check double wall
 			bool doubleWall = false;
-			if (right != NULL && right->type == BaseItem::STRUCTURE_WALL &&
+			if (right != NULL && right->isComplete() && right->type == BaseItem::STRUCTURE_WALL &&
 				(lastSpecialY != j || lastSpecialX != i+1)) {
 			  BaseItem* aboveRight = WorldMap::getInstance()->getItem(i+1, j-1);
 			  BaseItem* bellowRight = WorldMap::getInstance()->getItem(i+1, j+1);
@@ -189,29 +194,44 @@ void	Game::draw_surface() {
 			  }
 			}
 
-			// Special double wall
-			if (doubleWall) {
-				_spriteManager->getWall(2, &sprite, rand());
+			// Normal
+			if (bellow == NULL) {
+			  // Double wall
+			  if (doubleWall) {
+				_spriteManager->getWall(item, 4, &sprite, rand(), 0);
 				lastSpecialX = i;
 				lastSpecialY = j;
+			  }
+			  // Single wall
+			  else {
+				_spriteManager->getWall(item, 0, &sprite, 0, 0);
+			  }
 			}
-
-			// Special single wall
+			// Special
 			else {
-			  _spriteManager->getWall(3, &sprite, rand());
+			  // Double wall
+			  if (doubleWall) {
+				_spriteManager->getWall(item, 2, &sprite, rand(), bellow->zone);
+				lastSpecialX = i;
+				lastSpecialY = j;
+			  }
+			  // Single wall
+			  else {
+				_spriteManager->getWall(item, 3, &sprite, rand(), bellow->zone);
+			  }
 			}
 		  	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offset);
 		  }
 
 		  // // left is a wall
 		  // else if (left != NULL && left->type == BaseItem::STRUCTURE_WALL) {
-		  // 	_spriteManager->getWall(2, &sprite);
+		  // 	_spriteManager->getWall(item, 2, &sprite);
 		  // 	sprite.setPosition(i * TILE_SIZE - TILE_SIZE, j * TILE_SIZE - offset);
 		  // }
 
 		  // single wall
 		  else {
-			_spriteManager->getWall(0, &sprite, 0);
+			_spriteManager->getWall(item, 0, &sprite, 0, 0);
 			sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offset);
 		  }
 
@@ -221,7 +241,6 @@ void	Game::draw_surface() {
 	  }
 	}
   }
-  srand(time(0));
 
   // Run through items
   for (int i = w-1; i >= 0; i--) {
@@ -355,7 +374,6 @@ void	Game::gere_quit() {
 
 int main(int argc, char *argv[]) {
   sf::RenderWindow app(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), NAME);
-  srand(time(0));
 
   Game	game(&app);
   app.setKeyRepeatEnabled(true);

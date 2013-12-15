@@ -566,8 +566,17 @@ void WorldMap::removeItem(int x, int y) {
 	}
   }
 
+  int newType = BaseItem::NONE;
+  if (_items[x][y]->type != BaseItem::STRUCTURE_FLOOR) {
+	newType = BaseItem::STRUCTURE_FLOOR;
+  }
+
   delete item;
   _items[x][y] = NULL;
+
+  if (newType != BaseItem::NONE) {
+	putItem(x, y, newType);
+  }
 }
 
 void WorldMap::putItem(int x, int y, int type) {

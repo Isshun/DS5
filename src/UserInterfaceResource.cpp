@@ -29,7 +29,7 @@ void UserInterfaceResource::refreshResources(int frame) {
     sf::Text text;
     text.setString(oss.str());
     text.setFont(font);
-    // text.setCharacterSize(UI_FONT_SIZE);
+    text.setCharacterSize(24);
     // text.setStyle(sf::Text::Underlined);
 
 	if (matter == 0)
@@ -47,10 +47,11 @@ void UserInterfaceResource::refreshResources(int frame) {
     sf::Text text;
     text.setString(oss.str());
     text.setFont(font);
+    text.setCharacterSize(24);
     // text.setCharacterSize(UI_FONT_SIZE);
     // text.setStyle(sf::Text::Underlined);
     // text.setColor(sf::Color(255, 255, 0));
-    text.setPosition(UIRES_POSX + UI_PADDING + 250 + 0, UIRES_POSY + UI_PADDING + 0);
+    text.setPosition(UIRES_POSX + UI_PADDING + 280 + 0, UIRES_POSY + UI_PADDING + 0);
     _app->draw(text);
   }
 
@@ -61,7 +62,8 @@ void UserInterfaceResource::refreshResources(int frame) {
     sf::Text text;
     text.setString(oss.str());
     text.setFont(font);
-    text.setPosition(UIRES_POSX + UI_PADDING + 500 + 0, UIRES_POSY + UI_PADDING + 0);
+    text.setCharacterSize(24);
+    text.setPosition(UIRES_POSX + UI_PADDING + 540 + 0, UIRES_POSY + UI_PADDING + 0);
     _app->draw(text);
   }
 
