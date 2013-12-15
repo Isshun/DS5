@@ -12,7 +12,8 @@
 
 SpriteResource	spritesRes[] = {
   {BaseItem::STRUCTURE_HULL,					2, 8, 0},
-  {BaseItem::STRUCTURE_WALL,					2, 8, 0},
+  {BaseItem::STRUCTURE_WALL,					0, 4, 5},
+  // {BaseItem::STRUCTURE_WALL_BELLOW,				1, 4, 5},
   {BaseItem::STRUCTURE_FLOOR,					7, 7, 0},
   {BaseItem::STRUCTURE_DOOR,					2, 2, 0},
   {BaseItem::STRUCTURE_WINDOW,					2, 3, 0},
@@ -26,6 +27,7 @@ SpriteResource	spritesRes[] = {
   {BaseItem::ARBORETUM_TREE_7,					1, 0, 3},
   {BaseItem::ARBORETUM_TREE_8,					1, 1, 3},
   {BaseItem::BAR_PUB,							0, 8, 3},
+  {BaseItem::SICKBAY_BIOBED,					11, 4, 1},
   // {BaseItem::ARBORETUM_TREE_9,					0, 1, 3},
   {BaseItem::ENGINE_REACTION_CHAMBER,			12, 12, 1},
   {BaseItem::ENVIRONMENT_O2_RECYCLER,			11, 16, 1},
@@ -57,6 +59,14 @@ SpriteManager::SpriteManager() {
   _texture[4]->loadFromFile("../res/Tilesets/zones.png");
   _texture[4]->setSmooth(true);
 
+  _texture[5] = new sf::Texture();
+  _texture[5]->loadFromFile("../res/Tilesets/Futuristic_A3.png");
+  _texture[5]->setSmooth(true);
+
+  _texture[6] = new sf::Texture();
+  _texture[6]->loadFromFile("../res/Tilesets/walls.png");
+  _texture[6]->setSmooth(true);
+
   // IC battery
   {
     sf::Texture texture;
@@ -74,6 +84,8 @@ SpriteManager::~SpriteManager() {
   delete _texture[2];
   delete _texture[3];
   delete _texture[4];
+  delete _texture[5];
+  delete _texture[6];
 
   delete _spriteBattery;
 }
@@ -128,5 +140,60 @@ void		SpriteManager::getSprite(int type, sf::Sprite* sprite) {
 
   case SpriteManager::IC_BATTERY:
     sprite = _spriteBattery;
+  }
+}
+
+void				SpriteManager::getFloor(int zone, int room, sf::Sprite* sprite) {
+  int choice = 1;
+
+  if (zone == UserInterfaceMenu::CODE_ZONE_HOLODECK) {
+	choice = 3;
+  }
+
+  sprite->setTexture(*_texture[4]);
+  sprite->setTextureRect(sf::IntRect((room % choice) * TILE_SIZE,
+									 zone * TILE_SIZE,
+									 TILE_SIZE,
+									 TILE_SIZE));
+}
+
+void				SpriteManager::getWall(int special, sf::Sprite* sprite, int index) {
+  for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
+	if (spritesRes[i].type == BaseItem::STRUCTURE_WALL) {
+	  sprite->setTexture(*_texture[6]);
+
+	  // Normal
+	  if (special == 0) {
+		sprite->setTextureRect(sf::IntRect(0,
+										   48 * 2,
+										   32,
+										   48));
+	  }
+
+	  // Bellow
+	  if (special == 1) {
+		sprite->setTextureRect(sf::IntRect(32,
+										   48 * 2,
+										   32,
+										   48));
+	  }
+
+	  // Double
+	  if (special == 2) {
+		sprite->setTextureRect(sf::IntRect(256 + 64 * (index % 4),
+										   48 * 2,
+										   32 * 2,
+										   48));
+	  }
+
+	  // Single
+	  if (special == 3) {
+		sprite->setTextureRect(sf::IntRect(128 + 32 * (index % 4),
+										   48 * 2,
+										   32,
+										   48));
+	  }
+
+	}
   }
 }

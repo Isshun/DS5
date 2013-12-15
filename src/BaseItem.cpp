@@ -9,6 +9,7 @@
 #include "Character.h"
 #include "UserInterfaceMenu.h"
 
+// type													solid	width	height	matter	power	zone
 ItemInfo	itemsInfo[] = {
   {BaseItem::STRUCTURE_ROOM,							true,	1, 1, 1, 0, 0},
   {BaseItem::STRUCTURE_HULL,							true,	1, 1, 1, 0, 0},
@@ -23,6 +24,7 @@ ItemInfo	itemsInfo[] = {
   {BaseItem::BAR_PUB,									false,	1, 1, 5, 0, UserInterfaceMenu::CODE_ZONE_BAR},
   {BaseItem::ENGINE_CONTROL_CENTER,						false,	3, 2, 10, 5, UserInterfaceMenu::CODE_ZONE_ENGINE},
   {BaseItem::ENGINE_REACTION_CHAMBER,					false,	2, 3, 50, -200, UserInterfaceMenu::CODE_ZONE_ENGINE},
+  {BaseItem::SICKBAY_BIOBED,							false,	1, 2, 10, 10, UserInterfaceMenu::CODE_ZONE_SICKBAY},
   {BaseItem::ARBORETUM_TREE_1,							false,	1, 2, 2, 0, 0},
   {BaseItem::ARBORETUM_TREE_2,							false,	1, 2, 2, 0, 0},
   {BaseItem::ARBORETUM_TREE_3,							false,	1, 2, 2, 0, 0},

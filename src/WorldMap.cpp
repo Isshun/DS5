@@ -448,6 +448,7 @@ void WorldMap::init() {
   putItem(19, 26, 3, true);
   putItem(19, 27, 3, true);
   putItem(19, 28, 3, true);
+  putItem(14, 9, 7, true);
 
   putItem(17, 8, 5, true);
   putItem(13, 18, 5, true);
@@ -458,7 +459,7 @@ void WorldMap::init() {
   putItem(17, 22, 5, true);
   putItem(17, 25, 5, true);
 
-  putItem(17, 8, 9, true);
+  putItem(18, 8, 9, true);
   putItem(13, 18, 32, true);
   putItem(12, 24, 12, true);
   putItem(13, 22, 34, true);
@@ -602,16 +603,16 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
 	return;
   }
 
+  // Put item
+  Debug() << "put item: " << type;
+  item->setPosition(x, y);
+  _items[x][y] = item;
+
   // if item is zoned set the zone
   if (_items[x][y] != NULL && _items[x][y]->zone == 0 && zoneId != 0) {
 	roomId = setZone(x, y, zoneId);
 	item->room = roomId;
   }
-
-  // Put item
-  Debug() << "put item: " << type;
-  item->setPosition(x, y);
-  _items[x][y] = item;
 
   if (free) {
 	_items[x][y]->progress = _items[x][y]->matter;
