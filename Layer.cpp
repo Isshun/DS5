@@ -1,7 +1,6 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
-#include <glib.h>
 #include <map>
 
 using namespace std;

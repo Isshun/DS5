@@ -27,7 +27,7 @@ void  UserInterfaceCrew::addCharacter(int index, Character* character) {
   _app->draw(text);
 
   // Function
-  Job function = character->getFunction();
+  Profession function = character->getProfession();
   text.setString(function.name);
   text.setPosition(100 + UI_PADDING + CHAR_WIDTH + UI_PADDING, 100 + UI_PADDING + (CREW_LINE_HEIGHT * index) + 22);
   text.setColor(function.color);

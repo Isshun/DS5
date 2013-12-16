@@ -100,7 +100,7 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
     _app->draw(text);
 
     // Name
-	Job function = _character->getFunction();
+	Profession function = _character->getProfession();
     sf::Text job;
     job.setString(function.name);
     job.setFont(font);
