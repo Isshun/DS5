@@ -100,10 +100,12 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
     _app->draw(text);
 
     // Name
+	Job function = _character->getFunction();
     sf::Text job;
-    job.setString(_character->getJobName());
+    job.setString(function.name);
     job.setFont(font);
     job.setCharacterSize(24);
+    job.setColor(function.color);
     job.setStyle(sf::Text::Regular);
     job.setPosition(UI_PADDING + 0, UI_PADDING + MENU_CHARACTER_FONT_SIZE);
     _app->draw(job);

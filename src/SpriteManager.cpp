@@ -113,6 +113,7 @@ void		SpriteManager::getSprite(BaseItem* item, sf::Sprite* sprite) {
 
 		// Else
 		else {
+		  sprite->setScale(0.8f, 0.8f);
 		  sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
 		  sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
 											 spritesRes[i].posY * TILE_SIZE,
@@ -161,53 +162,70 @@ void				SpriteManager::getFloor(BaseItem* item, int zone, int room, sf::Sprite* 
 }
 
 void				SpriteManager::getWall(BaseItem* item, int special, sf::Sprite* sprite, int index, int zone) {
-  for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
-	if (spritesRes[i].type == BaseItem::STRUCTURE_WALL) {
-	  int alpha = 75 + 180 / item->matter * item->progress;
-	  sprite->setColor(sf::Color(255,255,255,alpha));
+  int WALL_HEIGHT = 48;
+  int WALL_WIDTH = 32;
 
-	  sprite->setTexture(*_texture[6]);
+  // Door
+  if (item->type == BaseItem::STRUCTURE_DOOR) {
+		int alpha = 75 + 180 / item->matter * item->progress;
+		sprite->setColor(sf::Color(255,255,255,alpha));
+		sprite->setTexture(*_texture[6]);
+		sprite->setTextureRect(sf::IntRect(WALL_WIDTH * special,
+										   WALL_HEIGHT * 7,
+										   WALL_WIDTH,
+										   WALL_HEIGHT));
+  }
 
-	  // Normal
-	  if (special == 0) {
-		sprite->setTextureRect(sf::IntRect(0,
-										   48 * zone,
-										   32,
-										   48));
+  // Wall
+  else {
+	for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
+	  if (spritesRes[i].type == BaseItem::STRUCTURE_WALL) {
+		int alpha = 75 + 180 / item->matter * item->progress;
+		sprite->setColor(sf::Color(255,255,255,alpha));
+
+		sprite->setTexture(*_texture[6]);
+
+		// Normal
+		if (special == 0) {
+		  sprite->setTextureRect(sf::IntRect(0,
+											 WALL_HEIGHT * zone,
+											 WALL_WIDTH,
+											 WALL_HEIGHT));
+		}
+
+		// Bellow
+		if (special == 1) {
+		  sprite->setTextureRect(sf::IntRect(WALL_WIDTH,
+											 WALL_HEIGHT * zone,
+											 WALL_WIDTH,
+											 WALL_HEIGHT));
+		}
+
+		// Double normal
+		if (special == 4) {
+		  sprite->setTextureRect(sf::IntRect(64,
+											 WALL_HEIGHT * zone,
+											 WALL_WIDTH * 2,
+											 WALL_HEIGHT));
+		}
+
+		// Double special
+		if (special == 2) {
+		  sprite->setTextureRect(sf::IntRect(256 + 64 * (index % 4),
+											 WALL_HEIGHT * zone,
+											 WALL_WIDTH * 2,
+											 WALL_HEIGHT));
+		}
+
+		// Single special
+		if (special == 3) {
+		  sprite->setTextureRect(sf::IntRect(128 + WALL_WIDTH * (index % 4),
+											 WALL_HEIGHT * zone,
+											 WALL_WIDTH,
+											 WALL_HEIGHT));
+		}
+
 	  }
-
-	  // Bellow
-	  if (special == 1) {
-		sprite->setTextureRect(sf::IntRect(32,
-										   48 * zone,
-										   32,
-										   48));
-	  }
-
-	  // Double normal
-	  if (special == 4) {
-		sprite->setTextureRect(sf::IntRect(64,
-										   48 * zone,
-										   32 * 2,
-										   48));
-	  }
-
-	  // Double special
-	  if (special == 2) {
-		sprite->setTextureRect(sf::IntRect(256 + 64 * (index % 4),
-										   48 * zone,
-										   32 * 2,
-										   48));
-	  }
-
-	  // Single special
-	  if (special == 3) {
-		sprite->setTextureRect(sf::IntRect(128 + 32 * (index % 4),
-										   48 * zone,
-										   32,
-										   48));
-	  }
-
 	}
   }
 }

@@ -5,7 +5,7 @@ Entry	entries_main[] = {
   {UserInterfaceMenu::CODE_BUILD,	"build",		"b",	sf::Keyboard::B,		0},
   {UserInterfaceMenu::CODE_ZONE,	"zone",			"z",	sf::Keyboard::Z,		0},
   {UserInterfaceMenu::CODE_ERASE,	"erase",		"e",	sf::Keyboard::E,		0},
-  {UserInterfaceMenu::CODE_CREW,	"crew",			"c",	sf::Keyboard::C,		0},
+  {UserInterfaceMenu::CODE_CREW,	"crew",			"c",	-1,		0},
   {UserInterfaceMenu::CODE_NONE,	NULL,			NULL,	0,		0}
 };
 

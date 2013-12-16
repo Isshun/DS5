@@ -19,6 +19,7 @@
 #include "UserInterfaceMenuCharacter.h"
 #include "UserInterfaceResource.h"
 #include "CharacterManager.h"
+#include "UserInterfaceCrew.h"
 
 #define MOVE_VIEW_OFFSET        40
 
@@ -59,10 +60,13 @@ class UserInterface {
   int			_keyMovePosX;
   int			_keyMovePosY;
   float			_zoom;
+  bool			_crewViewOpen;
+
   UserInterfaceMenu*       _menu;
   UserInterfaceResource*   _uiResource;
   CharacterManager*        _characteres;
   UserInterfaceMenuCharacter*   _menuCharacter;
+  UserInterfaceCrew*			_uiCharacter;
 };
 
 #endif /* USERINTERFACE_H_ */

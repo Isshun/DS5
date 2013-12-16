@@ -31,10 +31,11 @@ Game::Game(sf::RenderWindow* app) {
   _update = 0;
 
   _characterManager = new CharacterManager();
-  _characterManager->add(2, 2);
-  _characterManager->add(8, 8);
-  _characterManager->add(20, 8);
-  _characterManager->add(50, 8);
+  _characterManager->add(15, 16);
+  _characterManager->add(9, 8);
+  _characterManager->add(17, 8);
+  _characterManager->add(15, 20);
+  _characterManager->add(16, 20);
 
   _ui = new UserInterface(app, worldMap, _viewport, _characterManager);
 
@@ -71,8 +72,9 @@ void	Game::update() {
 
 	Character* character = NULL;
 	BaseItem* item = NULL;
-	// int length = _worldMap->getBuildListSize();
-	if ((character = _characterManager->getUnemployed()) != NULL
+	int length = WorldMap::getInstance()->getBuildListSize();
+	if (length > 0
+		&& (character = _characterManager->getUnemployed(Character::PROFESSION_ENGINEER)) != NULL
 		&& (item = WorldMap::getInstance()->getItemToBuild()) != NULL) {
 
 	  Debug() << "Game: search path from char (x: " << character->getX() << ", y: " << character->getY() << ")";
@@ -134,7 +136,10 @@ void	Game::draw_surface() {
   // shape.setFillColor(sf::Color(0, 50, 100));
   // _app->draw(shape, render);
 
-  int offset = (TILE_SIZE / 2 * 3) - TILE_SIZE;
+  // int offset = (TILE_SIZE / 2 * 3) - TILE_SIZE;
+  int offsetY = -16;
+  int offsetX = 2;
+  int offsetWall = (TILE_SIZE / 2 * 3) - TILE_SIZE;
 
   // Draw floor
   for (int i = w-1; i >= 0; i--) {
@@ -171,12 +176,27 @@ void	Game::draw_surface() {
 		BaseItem* above = WorldMap::getInstance()->getItem(i, j-1);
 		sf::Sprite sprite;
 	  
-		if (item->type == BaseItem::STRUCTURE_WALL) {
+		// Door
+		if (item->type == BaseItem::STRUCTURE_DOOR) {
+		  if (_characterManager->getCharacterAtPos(i, j) != NULL
+			  || _characterManager->getCharacterAtPos(i+1, j) != NULL
+			  || _characterManager->getCharacterAtPos(i-1, j) != NULL
+			  || _characterManager->getCharacterAtPos(i, j+1) != NULL
+			  || _characterManager->getCharacterAtPos(i, j-1) != NULL) {
+			_spriteManager->getWall(item, 2, &sprite, 0, 0);
+		  } else {
+			_spriteManager->getWall(item, 0, &sprite, 0, 0);
+		  }
+		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
+		}
+
+		// Wall
+		else if (item->type == BaseItem::STRUCTURE_WALL) {
 
 		  // bellow is a wall
 		  if (bellow != NULL && bellow->type == BaseItem::STRUCTURE_WALL) {
 			_spriteManager->getWall(item, 1, &sprite, 0, 0);
-			sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offset);
+			sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
 		  }
 
 		  // No wall above or bellow
@@ -221,7 +241,7 @@ void	Game::draw_surface() {
 				_spriteManager->getWall(item, 3, &sprite, r, bellow->zone);
 			  }
 			}
-		  	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offset);
+		  	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
 		  }
 
 		  // // left is a wall
@@ -233,7 +253,7 @@ void	Game::draw_surface() {
 		  // single wall
 		  else {
 			_spriteManager->getWall(item, 0, &sprite, 0, 0);
-			sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offset);
+			sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
 		  }
 
 		}
@@ -272,7 +292,7 @@ void	Game::draw_surface() {
 		  if (item->isStructure()) {
 			sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 		  } else {
-			sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offset);
+			sprite.setPosition(i * TILE_SIZE + offsetX, j * TILE_SIZE + offsetY);
 		  }
 
 		  _app->draw(sprite, render);

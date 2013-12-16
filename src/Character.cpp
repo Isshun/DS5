@@ -13,41 +13,47 @@
 #define LIMITE_FOOD_STARVE 0
 #define MESSAGE_COUNT_INIT -100
 
+#define FUNCTIONS_COUNT 5
+
 const char* firstname[] = {
+  // male
   "Galen",
   "Lewis",
-  "Alice",
-  "Michael",
-  "Janice",
-  "Gaïus",
-  "Samuel",
-  "Jadzia",
-  "Jonathan",
   "Benjamin",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
+  "Michael",
+  "Jonathan",
+  "Gaius",
+  "Samuel",
+  "Wesley",
+  // female
+  "Jadzia",
+  "Janice",
+  "Alice",
+  "Kathryn",
+  "Beverly",
+  "Willow",
+  "Tasha",
+  "Samantha",
 };
 
 const char* shortFirstname[] = {
-  "Vic",
-  "Ellen",
-  "Tory",
-  "Adam",
-  "Kara",
-  "Ezri",
-  "Tom",
-  "Lee",
-  "Saul",
-  "Bill",
+  // male
   "Matt",
   "Jack",
+  "Adam",
+  "Bill",
+  "Tom",
+  "Saul",
+  "Lee",
+  // female
+  "Tory",
+  "Vic",
+  "Ezri",
+  "Ellen",
+  "Kara",
   "Emma",
-  "",
-  "",
+  "Wade",
+  "Amy",
 };
 
 const char* middlename[] = {
@@ -57,56 +63,78 @@ const char* middlename[] = {
   "Boomer",
   "Doc",
   "Starbuck",
-  "Six",
   "Hotdog",
   "Jammer",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
+  "Trip",
+  "Helo",
+  "Dee",
+  "Oz",
+  "Klaus",
+  "Mac",
+  "Six",
+};
+
+const char* shortLastname[] = {
+  "Mudd",
+  "Dax",
+  "Nerys",
+  "Laren",
+  "Rand",
+  "McCoy",
+  "Adama",
+  "Tyrol",
+  "Reed",
+  "Sisko",
+  "Riker",
+  "Wells",
+  "Quinn",
+  "Weir",
+  "Rush",
+  "Tyler",
 };
 
 const char* lastname[] = {
   "Zimmerman",
-  "Dax",
-  "Nerys",
-  "Laren",
+  "Anders",
   "Barclay",
-  "Mudd",
-  "Rand",
-  "McCoy",
   "Archer",
   "Thrace",
-  "Adama",
-  "Tyrol",
-  "Anders",
-  "",
-  "",
-  "",
+  "Summers",
+  "Holmes",
+  "Wildman",
+  "Lawton",
+  "Mallory",
+  "Beckett",
+  "Hammond",
+  "O'Neill",
+  "Sheppard",
+  "Cooper",
+  "Hartness",
 };
 
-const Job jobs[] = {
-  {Character::JOB_ENGINEER, "Engineer"},
-  {Character::JOB_MINER, "Miner"},
-  {Character::JOB_DOCTOR, "Doctor"},
-  {Character::JOB_SCIENCE, "Science"}
+const Profession professions[] = {
+  {Character::PROFESSION_ENGINEER, "Engineer", sf::Color(255, 255, 50)},
+  {Character::PROFESSION_MINER, "Miner", sf::Color(255, 150, 0)},
+  {Character::PROFESSION_DOCTOR, "Doctor", sf::Color(50, 240, 0)},
+  {Character::PROFESSION_SCIENCE, "Science", sf::Color(50, 100, 255)},
+  {Character::PROFESSION_SECURITY, "Security", sf::Color(150, 40, 60)}
 };
 
 Character::Character(int id, int x, int y) {
   Debug() << "Character #" << id;
 
   _id = id;
+  _gender = rand() % 2 ? Character::GENDER_MALE : Character::GENDER_FEMALE;
   _astarsearch = NULL;
   _item = NULL;
   _build = NULL;
-  _posY = y;
-  _posX = x;
+  _posY = _toX = y;
+  _posX = _toY = x;
   _sleep = 0;
+  _selected = false;
 
-  _jobName = jobs[rand() % 4].name;
+  // _jobName = professions[rand() % 4].name;
+  _profession = professions[id % FUNCTIONS_COUNT];
 
   memset(_messages, MESSAGE_COUNT_INIT, CHARACTER_MAX_MESSAGE * sizeof(int));
 
@@ -117,11 +145,16 @@ Character::Character(int id, int x, int y) {
   _health = CHARACTER_INIT_HEALTH;
   _energy = CHARACTER_INIT_ENERGY;
 
-  const char* middle = middlename[rand() % 16];
-  if (strlen(middle) == 0) {
-    snprintf(_name, 24, "%s %s", shortFirstname[rand() % 16], lastname[rand() % 16]);
+  int offset = (_gender == Character::GENDER_FEMALE ? 4 : 0);
+  if (rand() % 2) {
+    snprintf(_name, 24, "%s (%s) %s",
+			 shortFirstname[rand() % 8 + offset],
+			 middlename[rand() % 16],
+			 shortLastname[rand() % 16]);
   } else {
-    snprintf(_name, 24, "%s (%s) %s", firstname[rand() % 16], middle, lastname[rand() % 16]);
+    snprintf(_name, 24, "%s %s",
+			 firstname[rand() % 8 + offset],
+			 lastname[rand() % 16]);
   }
 
   Debug() << "Character done: " << _name;
@@ -337,11 +370,11 @@ void		Character::go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY) {
   Debug() << "Charactere #" << _id << ": go(" << _posX << ", " << _posY << " to " << toX << ", " << toY << ")";
 
   if (_astarsearch != NULL) {
-	_astarsearch->FreeSolutionNodes();
-	Debug() << "free 1";
-	_astarsearch->EnsureMemoryFreed();
-	delete _astarsearch;
-	_astarsearch = NULL;
+  	_astarsearch->FreeSolutionNodes();
+  	Debug() << "free 1";
+  	_astarsearch->EnsureMemoryFreed();
+  	delete _astarsearch;
+  	_astarsearch = NULL;
   }
 
   _astarsearch = astarsearch;

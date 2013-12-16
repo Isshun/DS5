@@ -2,6 +2,7 @@ SRC	=	Game.cpp	\
 		MapSearchNode.cpp	\
 		UserInterface.cpp	\
 		UserInterfaceMenu.cpp	\
+		UserInterfaceCrew.cpp	\
 		UserInterfaceResource.cpp	\
 		UserInterfaceMenuCharacter.cpp	\
 		BaseItem.cpp	\

@@ -25,6 +25,8 @@ UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport
   _menu = new UserInterfaceMenu(app, _worldMap, _cursor);
   _menuCharacter = new UserInterfaceMenuCharacter(app);
   _uiResource = new UserInterfaceResource(app);
+  _crewViewOpen = false;
+  _uiCharacter = new UserInterfaceCrew(app, characteres);
 }
 
 UserInterface::~UserInterface() {
@@ -99,7 +101,10 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
       if (_menu->getCode() == UserInterfaceMenu::CODE_MAIN) {
         Info() << "select character";
         Character* c = _characteres->getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
-        _menuCharacter->setCharacter(c);
+		if (c != NULL) {
+		  c->setSelected(true);
+		  _menuCharacter->setCharacter(c);
+		}
       }
 
       // Build item
@@ -207,6 +212,12 @@ void UserInterface::refresh(int frame) {
   } else {
     _menu->refreshMenu(frame);
   }
+
+  // Display crew view
+  if (_crewViewOpen) {
+	_uiCharacter->refresh(frame);
+  }
+
   refreshCursor();
   _uiResource->refreshResources(frame);
 }
@@ -224,6 +235,10 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 
 	  case sf::Keyboard::D:
 		WorldMap::getInstance()->dump();
+		break;
+
+	  case sf::Keyboard::C:
+		_crewViewOpen = !_crewViewOpen;
 		break;
 
 	  case sf::Keyboard::I:

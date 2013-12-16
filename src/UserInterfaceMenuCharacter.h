@@ -20,7 +20,12 @@ class UserInterfaceMenuCharacter {
   ~UserInterfaceMenuCharacter();
 
   void	refresh(int frame);
-  void  setCharacter(Character* character) { _character = character; }
+  void  setCharacter(Character* character) {
+	if (_character != NULL) {
+	  _character->setSelected(false);
+	}
+	_character = character;
+  }
   Character*  getCharacter() { return _character; }
   void  addGauge(int posX, int posY, int width, int height, int value, const char* text);
   void  addMessage(int posX, int posY, int width, int height, int value);

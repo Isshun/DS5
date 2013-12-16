@@ -11,16 +11,31 @@
 using namespace std;
 
 struct {
-  int   id;
-  const char* name;
-} typedef Job;
+  int			id;
+  const char*	name;
+  sf::Color		color;
+} typedef		Profession;
 
 class	Character {
  public:
   Character(int id, int x, int y);
   ~Character();
 
-  enum {JOB_NONE, JOB_ENGINEER, JOB_MINER, JOB_DOCTOR, JOB_SCIENCE};
+  enum {
+	PROFESSION_NONE,
+	PROFESSION_ENGINEER,
+	PROFESSION_MINER,
+	PROFESSION_DOCTOR,
+	PROFESSION_SCIENCE,
+	PROFESSION_SECURITY
+  };
+
+  enum {
+	GENDER_NONE,
+	GENDER_MALE,
+	GENDER_FEMALE,
+	GENDER_BOTH
+  };
 
   enum {
 	MSG_HUNGRY,
@@ -40,7 +55,7 @@ class	Character {
   sf::Sprite	&get_sprite();
   int           getRun();
   int           getDirection();
-  const char*   getJobName() { return _jobName; }
+  Profession	getProfession() { return _profession; }
 
   void			addMessage(int msg, int count);
   void			removeMessage(int msg);
@@ -54,6 +69,8 @@ class	Character {
   void	setItem(BaseItem* item);
   BaseItem*	getItem() { return _item; }
   void	set_position(int x, int y);
+  void	setSelected(bool selected) { _selected = selected; }
+
   void*	getJob() { return _item; }
   int	getX() { return _posX; }
   int	getY() { return _posY; }
@@ -65,6 +82,7 @@ class	Character {
   int   getEnergy() { return _energy; }
   int   getHealth() { return _health; }
   int*  getMessages() { return _messages; }
+  bool	getSelected() { return _selected; }
 
   void	action();
   void  update();
@@ -88,12 +106,14 @@ class	Character {
   void	actionBuild();
 
   int	_id;
+  int	_gender;
   char	_name[32];
   AStarSearch<MapSearchNode>* _astarsearch;
   int	_steps;
   BaseItem*	_item;
   BaseItem*	_build;
-  const char* _jobName;
+  Profession	_profession;
+  bool	_selected;
 
   // Needs
   int   _food;

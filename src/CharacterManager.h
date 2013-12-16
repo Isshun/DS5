@@ -15,10 +15,12 @@ class	CharacterManager
 	~CharacterManager();
 
 	Character*	add(int x, int y);
-	Character*	getUnemployed();
+	Character*	getUnemployed(int professionId);
 	void		draw(sf::RenderWindow* app, sf::Transform transform);
     void        update(int count);
     Character*  getCharacterAtPos(int x, int y);
+	std::list<Character*>*		getList() { return _characters; };
+	sf::Sprite*	getSprite(sf::Sprite* sprite, int functionId);
 
  private:
 	std::list<Character*>*		_characters;
