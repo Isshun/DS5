@@ -81,7 +81,6 @@ class BaseItem {
 	SCIENCE_HYDROPONICS
   };
 
-  int			type;
   bool			isSolid;
   int			progress;
 
@@ -89,12 +88,16 @@ class BaseItem {
   int			getHeight() { return _height; }
   int			getX() { return _x; }
   int			getY() { return _y; }
-  int			getType() { return type; }
-  int			getZone() { return _zone; }
+  int			getType() { return _type; }
+  int			getZoneId() { return _zoneId; }
+  int			getRoomId() { return _roomId; }
   int			getId() { return _id; }
 
   void			setPosition(int x, int y) { _x = x; _y = y; }
   void			setOwner(Character* character);
+  void			setRoomId(int roomId) { _roomId = roomId; }
+  void			setZoneId(int zoneId) { _zoneId = zoneId; }
+
   Character*	getOwner() { return _owner; }
 
   static ItemInfo getItemInfo(int type);
@@ -102,21 +105,22 @@ class BaseItem {
   bool			isComplete() { return progress == matter; }
   bool			isSupply() { return power == powerSupply; }
   bool			isFree() { return _owner == NULL; }
-  bool			isSleepingItem() { return type == QUARTER_BED || type == QUARTER_CHAIR; }
-  bool			isStructure() { return type > STRUCTURE_ITEM_START && type < STRUCTURE_ITEM_STOP; }
+  bool			isType(int type) { return _type == type; }
+  bool			isSleepingItem() { return _type == QUARTER_BED || _type == QUARTER_CHAIR; }
+  bool			isStructure() { return _type > STRUCTURE_ITEM_START && _type < STRUCTURE_ITEM_STOP; }
   int			matter;
   int			power;
   int			powerSupply;
-  int			zone;
-  int			room;
 
  private:
   Character*	_owner;
   int			_width;
   int			_height;
+  int			_roomId;
+  int			_zoneId;
+  int			_type;
   int			_x;
   int			_y;
-  int			_zone;
   int			_id;
 };
 

@@ -37,15 +37,15 @@ int ResourceManager::build(BaseItem* item) {
 	}
 
 	// remove O2 use
-	if (item->type == BaseItem::STRUCTURE_FLOOR) {
+	if (item->isType(BaseItem::STRUCTURE_FLOOR)) {
 	  _o2Use++;
 	}
 
-	if (item->type == BaseItem::ENVIRONMENT_O2_RECYCLER) {
+	if (item->isType(BaseItem::ENVIRONMENT_O2_RECYCLER)) {
 	  _o2Supply += 100;
 	}
 
-	if (item->type >= BaseItem::ARBORETUM_TREE_1 && item->type <= BaseItem::ARBORETUM_TREE_9) {
+	if (item->getType() >= BaseItem::ARBORETUM_TREE_1 && item->getType() <= BaseItem::ARBORETUM_TREE_9) {
 	  _o2Supply += 10;
 	}
 

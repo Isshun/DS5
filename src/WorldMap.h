@@ -10,6 +10,7 @@
 
 #include <list>
 #include "BaseItem.h"
+#include "Room.h"
 
 class WorldMap {
 public:
@@ -34,6 +35,10 @@ public:
 	static WorldMap*	getInstance() { return _self; }
 	BaseItem*	getRandomPosInRoom(int roomId);
 	void		removeItem(int x, int y);
+	void		init();
+	void		initMap();
+	void		initRoom();
+	void		addRoom(int x, int y);
 
 private:
 	void		putItem(int x, int y, int type, bool free);
@@ -46,10 +51,7 @@ private:
 	std::list<BaseItem*>*		_todo;
 	std::list<BaseItem*>*		_building;
 	std::list<BaseItem*>*		_buildingAborted;
-
-    static int  _roomCount;
-
-	void		init();
+	std::list<Room*>*			_rooms;
 
 	enum		{GO_UP, GO_DOWN, GO_LEFT, GO_RIGHT};
 };

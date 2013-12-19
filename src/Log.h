@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define LOG_LEVEL		LOG_ERROR
+#define LOG_LEVEL		LOG_DEBUG
 
 #define LOG_DEBUG	1
 #define LOG_VERBOSE	2

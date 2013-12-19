@@ -41,10 +41,10 @@ ItemInfo	itemsInfo[] = {
 BaseItem::BaseItem(int t, int id) {
   // Init
   isSolid = false;
-  type = t;
+  _type = t;
   progress = 0;
-  zone = 0;
-  room = 0;
+  _zoneId = 0;
+  _roomId = 0;
   _owner = NULL;
   _id = id;
 
@@ -55,13 +55,12 @@ BaseItem::BaseItem(int t, int id) {
   power = 0;
   powerSupply = 0;
   isSolid = false;
-  _zone = 0;
 
   for (int i = 0; itemsInfo[i].type != BaseItem::NONE; i++) {
 	if (itemsInfo[i].type == t) {
 	  _width = itemsInfo[i].width;
 	  _height = itemsInfo[i].height;
-	  _zone = itemsInfo[i].zone;
+	  _zoneId = itemsInfo[i].zone;
 	  matter = itemsInfo[i].matter;
 	  power = itemsInfo[i].power;
 	  powerSupply = 0;

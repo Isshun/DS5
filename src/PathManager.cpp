@@ -1,3 +1,5 @@
+#include <list>
+
 #include "defines.h"
 #include "PathManager.h"
 #include "Character.h"
@@ -6,12 +8,58 @@
 PathManager* PathManager::_self = new PathManager();
 
 PathManager::PathManager() {
-  // _map = new std::multimap<int, int>();
+  _data = new map<pair<BaseItem*, BaseItem*>, AStarSearch<MapSearchNode>*>();
   memset(_map, 0, LIMIT_CHARACTER * LIMIT_ITEMS * sizeof(int));
 }
 
 PathManager::~PathManager() {
   // delete _map;
+}
+
+void							PathManager::init() {
+  Info() << "PathManager: init";
+
+  std::list<BaseItem*> list;
+  int w = WorldMap::getInstance()->getWidth();
+  int h = WorldMap::getInstance()->getHeight();
+  for (int i = w-1; i >= 0; i--) {
+  	for (int j = h-1; j >= 0; j--) {
+	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
+	  if (item != NULL && item->getType() == BaseItem::STRUCTURE_DOOR) {
+		Debug() << "Door at pos: " << i << " x " << j;
+		list.push_back(item);
+	  }
+	}
+  }
+
+  std::list<BaseItem*>::iterator it1;
+  std::list<BaseItem*>::iterator it2;
+  for (it1 = list.begin(); it1 != list.end(); ++it1) {
+	for (it2 = list.begin(); it2 != list.end(); ++it2) {
+	  if (*it1 != *it2) {
+		MapSearchNode nodeStart;
+		nodeStart.x = (*it1)->getX();
+		nodeStart.y = (*it1)->getY();
+
+		MapSearchNode nodeEnd;
+		nodeEnd.x = (*it2)->getX();
+		nodeEnd.y = (*it2)->getY();
+
+		AStarSearch<MapSearchNode>* path = getPath(nodeStart, nodeEnd);
+		pair<BaseItem*, BaseItem*> key = std::make_pair(*it1, *it2);
+
+		_data->insert(make_pair(make_pair(*it1, *it2), path));
+
+		Info() << "PathManager: find path"
+			   << " from: " << nodeStart.x << " x " << nodeStart.y
+			   << ", to: " << nodeEnd.x << " x " << nodeEnd.y
+			   << ", cost: " << path->GetSolutionCost();
+		  // done (" << _data->size() << " path)";
+	  }
+	}
+  }
+
+  Info() << "PathManager: init done (" << _data->size() << " path)";
 }
 
 AStarSearch<MapSearchNode>*		PathManager::getPath(MapSearchNode nodeStart, MapSearchNode nodeEnd) {

@@ -10,6 +10,9 @@
 #include "ResourceManager.h"
 #include "MapSearchNode.h"
 #include "PathManager.h"
+#include "Settings.h"
+
+Settings* Settings::_self = new Settings();
 
 extern int old_time1;
 extern int old_time2;
@@ -28,14 +31,21 @@ Game::Game(sf::RenderWindow* app) {
   _frame = 0;
   _viewport = new Viewport(app);
   WorldMap* worldMap = WorldMap::getInstance();
+  worldMap->init();
+
+  // PathManager::getInstance()->init();
+
   _update = 0;
 
   _characterManager = new CharacterManager();
-  _characterManager->add(15, 16);
-  _characterManager->add(9, 8);
-  _characterManager->add(17, 8);
-  _characterManager->add(15, 20);
-  _characterManager->add(16, 20);
+  // for (int i = 0; i < 50; i++) {
+  // 	_characterManager->add(rand() % 20, rand() % 20);
+  // }
+  // _characterManager->add(15, 16);
+  // _characterManager->add(9, 8);
+  // _characterManager->add(17, 8);
+  // _characterManager->add(15, 20);
+  // _characterManager->add(16, 20);
 
   _ui = new UserInterface(app, worldMap, _viewport, _characterManager);
 
@@ -118,6 +128,10 @@ void	Game::refresh() {
 }
 
 void	Game::draw_surface() {
+  sf::Font font;
+  if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
+
   int w = WorldMap::getInstance()->getWidth();
   int h = WorldMap::getInstance()->getHeight();
 
@@ -148,11 +162,11 @@ void	Game::draw_surface() {
 	  if (item != NULL) {
 		sf::Sprite sprite;
 
-		if (item->type == BaseItem::STRUCTURE_DOOR) {
+		if (item->isType(BaseItem::STRUCTURE_DOOR)) {
 		  _spriteManager->getSprite(item, &sprite);
 		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 		} else {
-		  _spriteManager->getFloor(item, item->zone, item->room, &sprite);
+		  _spriteManager->getFloor(item, item->getZoneId(), item->getRoomId(), &sprite);
 		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 		}
 	  
@@ -169,7 +183,7 @@ void	Game::draw_surface() {
 	for (int i = w-1; i >= 0; i--) {
 	  int r = rand();
 	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
-	  if (item != NULL && item->type != BaseItem::STRUCTURE_FLOOR && item->isStructure()) {
+	  if (item != NULL && !item->isType(BaseItem::STRUCTURE_FLOOR) && item->isStructure()) {
 		BaseItem* bellow = WorldMap::getInstance()->getItem(i, j+1);
 		BaseItem* right = WorldMap::getInstance()->getItem(i+1, j);
 		BaseItem* left = WorldMap::getInstance()->getItem(i-1, j);
@@ -177,40 +191,40 @@ void	Game::draw_surface() {
 		sf::Sprite sprite;
 	  
 		// Door
-		if (item->type == BaseItem::STRUCTURE_DOOR) {
-		  if (_characterManager->getCharacterAtPos(i, j) != NULL
-			  || _characterManager->getCharacterAtPos(i+1, j) != NULL
-			  || _characterManager->getCharacterAtPos(i-1, j) != NULL
-			  || _characterManager->getCharacterAtPos(i, j+1) != NULL
-			  || _characterManager->getCharacterAtPos(i, j-1) != NULL) {
-			_spriteManager->getWall(item, 2, &sprite, 0, 0);
-		  } else {
+		if (item->isType(BaseItem::STRUCTURE_DOOR)) {
+		  // if (_characterManager->getCharacterAtPos(i, j) != NULL
+		  // 	  || _characterManager->getCharacterAtPos(i+1, j) != NULL
+		  // 	  || _characterManager->getCharacterAtPos(i-1, j) != NULL
+		  // 	  || _characterManager->getCharacterAtPos(i, j+1) != NULL
+		  // 	  || _characterManager->getCharacterAtPos(i, j-1) != NULL) {
+		  // 	_spriteManager->getWall(item, 2, &sprite, 0, 0);
+		  // } else {
 			_spriteManager->getWall(item, 0, &sprite, 0, 0);
-		  }
+		  // }
 		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
 		}
 
 		// Wall
-		else if (item->type == BaseItem::STRUCTURE_WALL) {
+		else if (item->isType(BaseItem::STRUCTURE_WALL)) {
 
 		  // bellow is a wall
-		  if (bellow != NULL && bellow->type == BaseItem::STRUCTURE_WALL) {
+		  if (bellow != NULL && bellow->isType(BaseItem::STRUCTURE_WALL)) {
 			_spriteManager->getWall(item, 1, &sprite, 0, 0);
 			sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
 		  }
 
 		  // No wall above or bellow
-		  else if ((above == NULL || above->type != BaseItem::STRUCTURE_WALL) &&
-				   (bellow == NULL || bellow->type != BaseItem::STRUCTURE_WALL)) {
+		  else if ((above == NULL || above->getType() != BaseItem::STRUCTURE_WALL) &&
+				   (bellow == NULL || bellow->getType() != BaseItem::STRUCTURE_WALL)) {
 
 			// Check double wall
 			bool doubleWall = false;
-			if (right != NULL && right->isComplete() && right->type == BaseItem::STRUCTURE_WALL &&
+			if (right != NULL && right->isComplete() && right->isType(BaseItem::STRUCTURE_WALL) &&
 				(lastSpecialY != j || lastSpecialX != i+1)) {
 			  BaseItem* aboveRight = WorldMap::getInstance()->getItem(i+1, j-1);
 			  BaseItem* bellowRight = WorldMap::getInstance()->getItem(i+1, j+1);
-			  if ((aboveRight == NULL || aboveRight->type != BaseItem::STRUCTURE_WALL) &&
-				  (bellowRight == NULL || bellowRight->type != BaseItem::STRUCTURE_WALL)) {
+			  if ((aboveRight == NULL || aboveRight->getType() != BaseItem::STRUCTURE_WALL) &&
+				  (bellowRight == NULL || bellowRight->getType() != BaseItem::STRUCTURE_WALL)) {
 				doubleWall = true;
 			  }
 			}
@@ -232,13 +246,13 @@ void	Game::draw_surface() {
 			else {
 			  // Double wall
 			  if (doubleWall) {
-				_spriteManager->getWall(item, 2, &sprite, r, bellow->zone);
+				_spriteManager->getWall(item, 2, &sprite, r, bellow->getZoneId());
 				lastSpecialX = i;
 				lastSpecialY = j;
 			  }
 			  // Single wall
 			  else {
-				_spriteManager->getWall(item, 3, &sprite, r, bellow->zone);
+				_spriteManager->getWall(item, 3, &sprite, r, bellow->getZoneId());
 			  }
 			}
 		  	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
@@ -284,7 +298,7 @@ void	Game::draw_surface() {
 	  if (item != NULL) {
 
 		// Draw item
-		if (item->type != BaseItem::STRUCTURE_FLOOR && item->isStructure() == false) {
+		if (item->getType() != BaseItem::STRUCTURE_FLOOR && item->isStructure() == false) {
 		  sf::Sprite sprite;
 
 		  _spriteManager->getSprite(item, &sprite);
@@ -306,6 +320,25 @@ void	Game::draw_surface() {
 		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 
 		  _app->draw(sprite, render);
+		}
+
+		// Draw debug
+		if (Settings::getInstance()->isDebug()) {
+		  sf::RectangleShape shape;
+		  shape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+		  shape.setFillColor(sf::Color(250, 200, 200, 100));
+		  shape.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		  _app->draw(shape, render);
+
+		  sf::Text text;
+		  text.setFont(font);
+		  text.setCharacterSize(10);
+		  text.setStyle(sf::Text::Regular);
+		  std::ostringstream oss;
+		  oss << item->getRoomId();
+		  text.setString(oss.str().c_str());
+		  text.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		  _app->draw(text, render);
 		}
 
 	  }

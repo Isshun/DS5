@@ -100,7 +100,6 @@ void	CharacterManager::draw(sf::RenderWindow* app, sf::Transform transform) {
   sf::Sprite selection;
   selection.setTexture(texture);
   selection.setTextureRect(sf::IntRect(0, 32, 32, CHAR_HEIGHT));
-  selection.setTextureRect(sf::IntRect(0, 32, 32, CHAR_HEIGHT));
 
   std::list<Character*>::iterator it;
   for (it = _characters->begin(); it != _characters->end(); ++it) {

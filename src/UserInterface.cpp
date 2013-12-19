@@ -12,6 +12,7 @@
 #include "UserInterface.h"
 #include "BaseItem.h"
 #include "ResourceManager.h"
+#include "Settings.h"
 
 UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport, CharacterManager* characteres) {
   _app = app;
@@ -27,6 +28,7 @@ UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport
   _uiResource = new UserInterfaceResource(app);
   _crewViewOpen = false;
   _uiCharacter = new UserInterfaceCrew(app, characteres);
+  _uiDebug = new UserInterfaceDebug(app, _cursor);
 }
 
 UserInterface::~UserInterface() {
@@ -41,6 +43,7 @@ void	UserInterface::mouseMoved(int x, int y) {
 
   _keyMovePosX = getRelativePosX(x);
   _keyMovePosY = getRelativePosY(y);
+  _cursor->setPos(_keyMovePosX, _keyMovePosY);
 	// _cursor->setMousePos(x * _viewport->getScale() - UI_WIDTH - _viewport->getPosX() - 1,
     //                      y * _viewport->getScale() - UI_HEIGHT - _viewport->getPosY() - 1);
 
@@ -218,6 +221,12 @@ void UserInterface::refresh(int frame) {
 	_uiCharacter->refresh(frame);
   }
 
+  // Display debug view
+  if (Settings::getInstance()->isDebug()) {
+	_uiDebug->refresh(frame);
+	drawCursor(_keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY);
+  }
+
   refreshCursor();
   _uiResource->refreshResources(frame);
 }
@@ -234,8 +243,9 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 	  {
 
 	  case sf::Keyboard::D:
-		WorldMap::getInstance()->dump();
-		break;
+		Settings::getInstance()->setDebug(!Settings::getInstance()->isDebug());
+	  // 	WorldMap::getInstance()->dump();
+	   	break;
 
 	  case sf::Keyboard::C:
 		_crewViewOpen = !_crewViewOpen;
@@ -245,9 +255,9 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 		WorldMap::getInstance()->dumpItems();
 		break;
 
-	  case sf::Keyboard::T:
-		WorldMap::getInstance()->setZone(_keyMovePosX, _keyMovePosY, 0);
-		break;
+	  // case sf::Keyboard::T:
+	  // 	WorldMap::getInstance()->setZone(_keyMovePosX, _keyMovePosY, 0);
+	  // 	break;
 
 	  case sf::Keyboard::Up:
 		if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {

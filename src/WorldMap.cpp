@@ -13,15 +13,13 @@
 #include "defines.h"
 #include "Log.h"
 
-int WorldMap::_roomCount = 0;
-
 WorldMap* WorldMap::_self = new WorldMap();
 
 WorldMap::WorldMap() {
   _itemCout = 0;
-  _roomCount = 0;
   _width = 50;
   _height = 50;
+  _rooms = new std::list<Room*>();
   _todo = new std::list<BaseItem*>();
   _building = new std::list<BaseItem*>();
   _buildingAborted = new std::list<BaseItem*>();
@@ -32,8 +30,6 @@ WorldMap::WorldMap() {
 	  _items[x][y] = NULL;
 	}
   }
-
-  init();
 }
 
 WorldMap::~WorldMap() {
@@ -69,6 +65,11 @@ WorldMap::~WorldMap() {
   delete _items;
 }
 
+void	WorldMap::init() {
+  initMap();
+  initRoom();
+}
+
 BaseItem*	WorldMap::find(int type, bool free) {
   Debug() << "WorldMap: find";
 
@@ -76,7 +77,7 @@ BaseItem*	WorldMap::find(int type, bool free) {
 
   for (int x = 0; x < _width; x++) {
 	for (int y = 0; y < _height; y++) {
-	  if(_items[x][y] != NULL && _items[x][y]->type == type && _items[x][y]->isComplete()) {
+	  if(_items[x][y] != NULL && _items[x][y]->isType(type) && _items[x][y]->isComplete()) {
 		if (free == false || _items[x][y]->isFree()) {
 		  Debug() << "item found";
 		  return _items[x][y];
@@ -98,7 +99,7 @@ BaseItem*	WorldMap::getRandomPosInRoom(int roomId) {
   int count = 0;
   for (int x = 0; x < _width; x++) {
 	for (int y = 0; y < _height; y++) {
-	  if(_items[x][y] != NULL && _items[x][y]->room == roomId && _items[x][y]->type == BaseItem::STRUCTURE_FLOOR) {
+	  if(_items[x][y] != NULL && _items[x][y]->getRoomId() == roomId && _items[x][y]->isType(BaseItem::STRUCTURE_FLOOR)) {
 		count++;
 	  }
 	}
@@ -109,7 +110,9 @@ BaseItem*	WorldMap::getRandomPosInRoom(int roomId) {
 	int goal = rand() % count;
 	for (int x = 0; x < _width; x++) {
 	  for (int y = 0; y < _height; y++) {
-		if(_items[x][y] != NULL && _items[x][y]->room == roomId && _items[x][y]->type == BaseItem::STRUCTURE_FLOOR) {
+		if(_items[x][y] != NULL
+		   && _items[x][y]->getRoomId() == roomId
+		   && _items[x][y]->isType(BaseItem::STRUCTURE_FLOOR)) {
 		  if (goal-- == 0) {
 			Debug() << "getRandomPosInRoom return: " << x << y << count;
 			return _items[x][y];
@@ -123,43 +126,20 @@ BaseItem*	WorldMap::getRandomPosInRoom(int roomId) {
   return  NULL;
 }
 
-int	WorldMap::setZone(int x, int y, int zoneId) {
-  return setZone(x, y, zoneId, ++_roomCount);
+void	WorldMap::initRoom() {
+  // for (int y = 0; y < _height; y++) {
+  // 	for (int x = 0; x < _width; x++) {
+  // 	  BaseItem* item = getItem(x, y);
+  // 	  if (item != NULL
+  // 		  && (item->isStructure() == false || item->getType() == BaseItem::STRUCTURE_FLOOR)
+  // 		  && item->getRoomId() == 0) {
+  // 		Room::createFromPos(x, y);
+  // 	  }
+  // 	}
+  // }
 }
 
-int	WorldMap::setZone(int x, int y, int zoneId, int roomId) {
-
-  // Out of bound
-  if (x < 0 || x >= _width || y < 0 || y >= _height) {
-	return 0;
-  }
-
-  // Not a floor
-  if (_items[x][y] == NULL ||
-	  _items[x][y]->type == BaseItem::STRUCTURE_WALL ||
-	  _items[x][y]->type == BaseItem::STRUCTURE_HULL ||
-	  _items[x][y]->type == BaseItem::STRUCTURE_DOOR ||
-	  _items[x][y]->type == BaseItem::STRUCTURE_WINDOW) {
-	return 0;
-  }
-
-  // Already tag
-  if (_items[x][y]->zone == zoneId) {
-	return 0;
-  }
-
-  _items[x][y]->zone = zoneId;
-  _items[x][y]->room = roomId;
-  
-  setZone(x, y+1, zoneId, roomId);
-  setZone(x, y-1, zoneId, roomId);
-  setZone(x+1, y, zoneId, roomId);
-  setZone(x-1, y, zoneId, roomId);
-
-  return roomId;
-}
-
-void WorldMap::init() {
+void WorldMap::initMap() {
   putItem(8, 7, 3, true);
   putItem(8, 8, 3, true);
   putItem(8, 9, 7, true);
@@ -459,14 +439,14 @@ void WorldMap::init() {
   putItem(17, 22, 5, true);
   putItem(17, 25, 5, true);
 
-  putItem(18, 8, 9, true);
-  putItem(13, 18, 32, true);
-  putItem(12, 24, 12, true);
-  putItem(13, 22, 34, true);
-  putItem(16, 12, 30, true);
-  putItem(16, 18, 32, true);
-  putItem(17, 22, 34, true);
-  putItem(17, 25, 13, true);
+  // putItem(18, 8, 9, true);
+  // putItem(13, 18, 32, true);
+//   putItem(12, 24, 12, true);
+//   putItem(13, 22, 34, true);
+//   putItem(16, 12, 30, true);
+//   putItem(16, 18, 32, true);
+//   putItem(17, 22, 34, true);
+//   putItem(17, 25, 13, true);
 }
 
 int GetMap(int x, int y);
@@ -498,7 +478,7 @@ void		WorldMap::dumpItems() {
   for (int x = 0; x < _width; x++) {
 	for (int y = 0; y < _height; y++) {
 	  if (_items[x][y] != NULL && _items[x][y]->isStructure() == false) {
-		Info() << x << " x " << y << " = " << _items[x][y]->type << ", zone: " << _items[x][y]->zone;
+		Info() << x << " x " << y << " = " << _items[x][y]->getType() << ", zone: " << _items[x][y]->getZoneId();
 	  }
 	}
   }
@@ -567,7 +547,7 @@ void WorldMap::removeItem(int x, int y) {
   }
 
   int newType = BaseItem::NONE;
-  if (_items[x][y]->type != BaseItem::STRUCTURE_FLOOR) {
+  if (_items[x][y]->isType(BaseItem::STRUCTURE_FLOOR)) {
 	newType = BaseItem::STRUCTURE_FLOOR;
   }
 
@@ -597,37 +577,55 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
   }
 
   // Return if item already exists
-  if (_items[x][y] != NULL && _items[x][y]->type == type) {
+  if (_items[x][y] != NULL && _items[x][y]->isType(type)) {
 	Debug() << "Same item existing for " << x << " x " << y;
 	return;
   }
 
   BaseItem *item = new BaseItem(type, _itemCout++);
-  int zoneId = item->getZone();
+  int zoneId = item->getZoneId();
   int roomId = 0;
 
   // If item alread exists check the zoneId
-  if (_items[x][y] != NULL && _items[x][y]->zone != 0 && zoneId != 0 && _items[x][y]->zone != zoneId) {
+  if (_items[x][y] != NULL
+	  && _items[x][y]->getZoneId() != 0
+	  && zoneId != 0
+	  && _items[x][y]->getZoneId() != zoneId) {
 	Debug() << "this item can not be put at this position because zoneId not match";
 	return;
+  }
+
+  // If item alread exists check the roomId
+  if (_items[x][y] != NULL)  {
+	roomId = _items[x][y]->getRoomId();
   }
 
   // Put item
   Debug() << "put item: " << type;
   item->setPosition(x, y);
+  item->setZoneId(zoneId);
+  item->setRoomId(roomId);
   _items[x][y] = item;
 
-  // if item is zoned set the zone
-  if (_items[x][y] != NULL && _items[x][y]->zone == 0 && zoneId != 0) {
-	roomId = setZone(x, y, zoneId);
-	item->room = roomId;
+  // Create new room if not exists
+  if (roomId == 0) {
+	addRoom(x, y);
   }
 
+  // add to todo list if building is required
   if (free) {
 	_items[x][y]->progress = _items[x][y]->matter;
   } else {
 	_todo->push_back(item);
   }
+}
+
+void		WorldMap::addRoom(int x, int y) {
+  Debug() << "addRoom: " << x << " x " << y;
+
+  Room* room = Room::createFromPos(x, y);
+
+  _rooms->push_back(room);
 }
 
 BaseItem*		WorldMap::getItemToBuild() {

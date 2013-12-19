@@ -3,6 +3,7 @@ SRC	=	Game.cpp	\
 		UserInterface.cpp	\
 		UserInterfaceMenu.cpp	\
 		UserInterfaceCrew.cpp	\
+		UserInterfaceDebug.cpp	\
 		UserInterfaceResource.cpp	\
 		UserInterfaceMenuCharacter.cpp	\
 		BaseItem.cpp	\
@@ -10,6 +11,7 @@ SRC	=	Game.cpp	\
 		ResourceManager.cpp	\
 		Viewport.cpp	\
 		WorldMap.cpp	\
+		Room.cpp	\
 		Cursor.cpp	\
 		PathManager.cpp	\
 		CharacterManager.cpp	\

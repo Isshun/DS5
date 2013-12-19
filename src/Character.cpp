@@ -33,7 +33,7 @@ const char* firstname[] = {
   "Beverly",
   "Willow",
   "Tasha",
-  "Samantha",
+  "Samantha"
 };
 
 const char* shortFirstname[] = {
@@ -53,7 +53,7 @@ const char* shortFirstname[] = {
   "Kara",
   "Emma",
   "Wade",
-  "Amy",
+  "Amy"
 };
 
 const char* middlename[] = {
@@ -71,7 +71,8 @@ const char* middlename[] = {
   "Oz",
   "Klaus",
   "Mac",
-  "Six",
+  "Betty",
+  "Six"
 };
 
 const char* shortLastname[] = {
@@ -90,7 +91,7 @@ const char* shortLastname[] = {
   "Quinn",
   "Weir",
   "Rush",
-  "Tyler",
+  "Tyler"
 };
 
 const char* lastname[] = {
@@ -109,7 +110,7 @@ const char* lastname[] = {
   "O'Neill",
   "Sheppard",
   "Cooper",
-  "Hartness",
+  "Hartness"
 };
 
 const Profession professions[] = {
@@ -171,7 +172,7 @@ Character::~Character() {
 }
 
 void	Character::use(AStarSearch<MapSearchNode>* path, BaseItem* item) {
-  Info() << "Character #" << _id <<": use item type: " << item->type;
+  Info() << "Character #" << _id <<": use item type: " << item->getType();
 
   // If character currently building item: abort
   if (_build != NULL && _build->isComplete() == false) {
@@ -187,7 +188,7 @@ void	Character::use(AStarSearch<MapSearchNode>* path, BaseItem* item) {
 }
 
 void	Character::build(AStarSearch<MapSearchNode>* path, BaseItem* item) {
-  Info() << "Character #" << _id << ": build item type: " << item->type;
+  Info() << "Character #" << _id << ": build item type: " << item->getType();
 
   _build = item;
   _build->setOwner(this);
@@ -225,11 +226,11 @@ void  Character::updateNeeds(int count) {
 	_sleep--;
 
 	// Set hapiness
-	if (_item && _item->type == BaseItem::QUARTER_BED) {
+	if (_item && _item->isType(BaseItem::QUARTER_BED)) {
 	  _hapiness += 0.1;
 	  removeMessage(MSG_SLEEP_ON_FLOOR);
 	  removeMessage(MSG_SLEEP_ON_CHAIR);
-	} else if (_item && _item->type == BaseItem::QUARTER_CHAIR) {
+	} else if (_item && _item->isType(BaseItem::QUARTER_CHAIR)) {
 	  _hapiness -= 0.1;
 	  addMessage(MSG_SLEEP_ON_CHAIR, count);
 	  removeMessage(MSG_SLEEP_ON_FLOOR);
@@ -433,13 +434,13 @@ void		Character::actionUse() {
 
   Debug() << "Character #" << _id << ": actionUse";
 
-  switch (_item->type) {
+  switch (_item->getType()) {
 
 	// Bar
   case BaseItem::BAR_PUB:
 	{
 	  _food = 100;
-	  BaseItem* goal = WorldMap::getInstance()->getRandomPosInRoom(_item->room);
+	  BaseItem* goal = WorldMap::getInstance()->getRandomPosInRoom(_item->getRoomId());
 	  if (goal != NULL) {
 		AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, goal);
 		go(path, goal->getX(), goal->getY());
@@ -511,7 +512,7 @@ void		Character::action() {
 	BaseItem* item = WorldMap::getInstance()->getItem(_posX, _posY);
 	if (_item != item) {
 
-	  Error() << "Character #" << _id << ": action on NULL or invalide item: " << item->type;
+	  Error() << "Character #" << _id << ": action on NULL or invalide item: " << item->getType();
 	  return;
 	}
 	actionUse();

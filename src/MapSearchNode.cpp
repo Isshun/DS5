@@ -14,8 +14,8 @@ int GetMap( int x, int y ) {
   BaseItem* item = WorldMap::getInstance()->getItem(x, y);
 
   // Space
-  if (item == NULL || item->type == BaseItem::NONE) {
-	return 2;
+  if (item == NULL || item->isType(BaseItem::NONE)) {
+	  return 2;
   }
 
   // WALL

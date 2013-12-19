@@ -305,7 +305,7 @@ bool  UserInterfaceMenu::checkKeyboard(int code, int posX, int posY) {
     if (_entries[i].key == code) {
 	  if (_code == CODE_ZONE) {
 		Debug() << "set zone: " << _entries[i].code;
-		_worldmap->setZone(posX, posY, _entries[i].code);
+		//_worldmap->setZone(posX, posY, _entries[i].code);
 	  } else {
 		openMenu(_entries[i]);
 	  }

@@ -94,19 +94,19 @@ void		SpriteManager::getSprite(BaseItem* item, sf::Sprite* sprite) {
 
   if (item != NULL) {
 	for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
-	  if (spritesRes[i].type == item->type) {
+	  if (item->isType(spritesRes[i].type)) {
 
 		// Floor
-		if (item->type == BaseItem::STRUCTURE_FLOOR) {
+		if (item->isType(BaseItem::STRUCTURE_FLOOR)) {
 		  int choice = 1;
 
-		  if (item->zone == UserInterfaceMenu::CODE_ZONE_HOLODECK) {
+		  if (item->getZoneId() == UserInterfaceMenu::CODE_ZONE_HOLODECK) {
 			choice = 3;
 		  }
 
 		  sprite->setTexture(*_texture[4]);
-		  sprite->setTextureRect(sf::IntRect((item->room % choice) * TILE_SIZE,
-											 item->zone * TILE_SIZE,
+		  sprite->setTextureRect(sf::IntRect((item->getRoomId() % choice) * TILE_SIZE,
+											 item->getZoneId() * TILE_SIZE,
 											 TILE_SIZE,
 											 TILE_SIZE));
 		}
@@ -166,7 +166,7 @@ void				SpriteManager::getWall(BaseItem* item, int special, sf::Sprite* sprite, 
   int WALL_WIDTH = 32;
 
   // Door
-  if (item->type == BaseItem::STRUCTURE_DOOR) {
+  if (item->isType(BaseItem::STRUCTURE_DOOR)) {
 		int alpha = 75 + 180 / item->matter * item->progress;
 		sprite->setColor(sf::Color(255,255,255,alpha));
 		sprite->setTexture(*_texture[6]);

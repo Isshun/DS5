@@ -15,8 +15,10 @@ public:
 	Cursor();
 	virtual ~Cursor();
 
-	void setPos(int x, int y) { _x = x; _y = y; }
-	void setMousePos(int x, int y) { _x = x / TILE_SIZE; _y = y / TILE_SIZE; }
+	void		setPos(int x, int y) { _x = x; _y = y; }
+	void		setMousePos(int x, int y) { _x = x / TILE_SIZE; _y = y / TILE_SIZE; }
+	int			getX() { return _x; }
+	int			getY() { return _y; }
 
  private:
 	int	_x;

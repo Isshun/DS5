@@ -20,6 +20,7 @@
 #include "UserInterfaceResource.h"
 #include "CharacterManager.h"
 #include "UserInterfaceCrew.h"
+#include "UserInterfaceDebug.h"
 
 #define MOVE_VIEW_OFFSET        40
 
@@ -67,6 +68,7 @@ class UserInterface {
   CharacterManager*        _characteres;
   UserInterfaceMenuCharacter*   _menuCharacter;
   UserInterfaceCrew*			_uiCharacter;
+  UserInterfaceDebug*			_uiDebug;
 };
 
 #endif /* USERINTERFACE_H_ */

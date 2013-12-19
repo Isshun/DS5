@@ -1,6 +1,7 @@
 #include "UserInterfaceCrew.h"
 
 #define CREW_LINE_HEIGHT 70
+#define CREW_LINE_WIDTH 350
 
 UserInterfaceCrew::UserInterfaceCrew(sf::RenderWindow* app, CharacterManager* characterManager) {
   _app = app;
@@ -16,6 +17,9 @@ void  UserInterfaceCrew::addCharacter(int index, Character* character) {
   if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
 	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 
+  int x = index % 4;
+  int y = index / 4;
+
   sf::Text text;
   text.setFont(font);
   text.setCharacterSize(20);
@@ -23,19 +27,22 @@ void  UserInterfaceCrew::addCharacter(int index, Character* character) {
 
   // Name
   text.setString(character->getName());
-  text.setPosition(100 + UI_PADDING + CHAR_WIDTH + UI_PADDING, 100 + UI_PADDING + 3 + (CREW_LINE_HEIGHT * index));
+  text.setPosition(100 + UI_PADDING + CHAR_WIDTH + UI_PADDING + (CREW_LINE_WIDTH * x),
+				   100 + UI_PADDING + 3 + (CREW_LINE_HEIGHT * y));
   _app->draw(text);
 
   // Function
   Profession function = character->getProfession();
   text.setString(function.name);
-  text.setPosition(100 + UI_PADDING + CHAR_WIDTH + UI_PADDING, 100 + UI_PADDING + (CREW_LINE_HEIGHT * index) + 22);
+  text.setPosition(100 + UI_PADDING + CHAR_WIDTH + UI_PADDING + (CREW_LINE_WIDTH * x),
+				   100 + UI_PADDING + (CREW_LINE_HEIGHT * y) + 22);
   text.setColor(function.color);
   _app->draw(text);
 
   sf::Sprite sprite;
   _characterManager->getSprite(&sprite, function.id);
-  sprite.setPosition(100 + UI_PADDING, 100 + UI_PADDING + (CREW_LINE_HEIGHT * index));
+  sprite.setPosition(100 + UI_PADDING + (CREW_LINE_WIDTH * x),
+					 100 + UI_PADDING + (CREW_LINE_HEIGHT * y));
   _app->draw(sprite);
 }
 
