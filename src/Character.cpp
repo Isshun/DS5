@@ -118,7 +118,8 @@ const Profession professions[] = {
   {Character::PROFESSION_MINER, "Miner", sf::Color(255, 150, 0)},
   {Character::PROFESSION_DOCTOR, "Doctor", sf::Color(50, 240, 0)},
   {Character::PROFESSION_SCIENCE, "Science", sf::Color(50, 100, 255)},
-  {Character::PROFESSION_SECURITY, "Security", sf::Color(150, 40, 60)}
+  {Character::PROFESSION_SECURITY, "Security", sf::Color(150, 40, 60)},
+  {Character::PROFESSION_NONE, NULL, sf::Color(0, 0, 0)}
 };
 
 Character::Character(int id, int x, int y) {
@@ -169,6 +170,15 @@ Character::~Character() {
 	delete _astarsearch;
 	_astarsearch = NULL;
   }
+}
+
+void	Character::setProfession(int professionId) {
+	for (int i = 0; professions[i].id != Character::PROFESSION_NONE; i++) {
+		if (professions[i].id == professionId) {
+			Debug() << "setProfession: " << professions[i].name;
+			_profession = professions[i];
+		}
+	}
 }
 
 void	Character::use(AStarSearch<MapSearchNode>* path, BaseItem* item) {

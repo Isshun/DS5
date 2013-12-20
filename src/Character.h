@@ -21,6 +21,8 @@ class	Character {
   Character(int id, int x, int y);
   ~Character();
 
+  void	setProfession(int professionId);
+
   enum {
 	PROFESSION_NONE,
 	PROFESSION_ENGINEER,

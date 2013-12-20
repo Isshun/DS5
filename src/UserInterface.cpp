@@ -209,7 +209,7 @@ void	UserInterface::refreshCursor() {
   }
 }
 
-void UserInterface::refresh(int frame) {
+void UserInterface::refresh(int frame, long interval) {
   if (_menuCharacter->getCharacter() != NULL) {
     _menuCharacter->refresh(frame);
   } else {
@@ -228,7 +228,7 @@ void UserInterface::refresh(int frame) {
   }
 
   refreshCursor();
-  _uiResource->refreshResources(frame);
+  _uiResource->refreshResources(frame, interval);
 }
 
 bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {

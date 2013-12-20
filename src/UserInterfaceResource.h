@@ -18,7 +18,7 @@ class UserInterfaceResource {
 
   UserInterfaceResource(sf::RenderWindow* app);
   ~UserInterfaceResource();
-  void refreshResources(int frame);
+  void refreshResources(int frame, long interval);
 
  private:
   sf::RenderWindow* _app;

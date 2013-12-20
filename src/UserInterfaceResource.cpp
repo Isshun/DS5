@@ -16,7 +16,7 @@ UserInterfaceResource::UserInterfaceResource(sf::RenderWindow* app) {
 UserInterfaceResource::~UserInterfaceResource() {
 }
 
-void UserInterfaceResource::refreshResources(int frame) {
+void UserInterfaceResource::refreshResources(int frame, long interval) {
   sf::Font font;
   if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
 	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
@@ -64,6 +64,19 @@ void UserInterfaceResource::refreshResources(int frame) {
     text.setFont(font);
     text.setCharacterSize(24);
     text.setPosition(UIRES_POSX + UI_PADDING + 540 + 0, UIRES_POSY + UI_PADDING + 0);
+    _app->draw(text);
+  }
+
+  if (interval > 0)
+  {
+    std::ostringstream oss;
+    oss << "FPS: " << (int)(1000 / interval);
+
+    sf::Text text;
+    text.setString(oss.str());
+    text.setFont(font);
+    text.setCharacterSize(24);
+    text.setPosition(UIRES_POSX + UI_PADDING + 800 + 0, UIRES_POSY + UI_PADDING + 0);
     _app->draw(text);
   }
 

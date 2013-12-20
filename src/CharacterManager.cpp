@@ -77,6 +77,19 @@ Character*		CharacterManager::add(int x, int y) {
   return c;
 }
 
+Character*		CharacterManager::add(int x, int y, int profession) {
+  if (_count + 1 > LIMIT_CHARACTER) {
+	Error() << "LIMIT_CHARACTER reached";
+	return NULL;
+  }
+
+  Character* c = new Character(_count++, x, y);
+  c->setProfession(profession);
+  _characters->push_back(c);
+
+  return c;
+}
+
 Character*		CharacterManager::getUnemployed(int professionId) {
   std::list<Character*>::iterator it;
 

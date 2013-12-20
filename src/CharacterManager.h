@@ -15,6 +15,7 @@ class	CharacterManager
 	~CharacterManager();
 
 	Character*	add(int x, int y);
+	Character*	add(int x, int y, int profession);
 	Character*	getUnemployed(int professionId);
 	void		draw(sf::RenderWindow* app, sf::Transform transform);
     void        update(int count);

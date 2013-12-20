@@ -29,7 +29,7 @@ class UserInterface {
   UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport, CharacterManager* characteres);
   ~UserInterface();
 
-  void	refresh(int frame);
+  void	refresh(int frame, long interval);
   void	refreshMenu();
   void	refreshCursor();
   void	refreshResources();

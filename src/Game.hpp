@@ -7,6 +7,7 @@
 #include "Character.h"
 #include "defines.h"
 #include "WorldMap.h"
+#include "WorldRenderer.h"
 #include "SpriteManager.h"
 #include "Cursor.h"
 #include "UserInterface.h"
@@ -24,45 +25,46 @@ struct s_link {
 
 class	Game {
 public:
-  Game(sf::RenderWindow* app);
-  ~Game();
+	Game(sf::RenderWindow* app);
+	~Game();
 
-  void	loop();
-  void	update();
-  void	refresh();
-  void	draw_surface();
+	void	loop();
+	void	update();
+	void	refresh();
+	void	draw_surface();
 
-  bool	is_run() { return _run; }
+	bool	is_run() { return _run; }
 
-  void	gere_key();
-  void	gere_quit();
+	void	gere_key();
+	void	gere_quit();
 
-  bool	run;
+	bool	run;
 
-  bool	get_physique(int x, int y);
+	bool	get_physique(int x, int y);
 
-  void	checkJump();
-  void	jump(s_link link);
+	void	checkJump();
+	void	jump(s_link link);
 
 private:
-  sf::RenderWindow* _app;
-  sf::Event	event;
-  sf::Sprite* _background;
+	sf::RenderWindow*	_app;
+	sf::Event			event;
+	sf::Sprite*			_background;
+	sf::Texture*		_backgroundTexture;
 
-  sf::Texture*	_backgroundTexture;
+	WorldRenderer*		_worldRenderer;
+	SpriteManager*		_spriteManager;
+	UserInterface*		_ui;
 
-  SpriteManager*		_spriteManager;
-  UserInterface*		_ui;
+	bool				_force_refresh;
+	bool                _run;
+	CharacterManager*	_characterManager;
+	Viewport*           _viewport;
+	unsigned int		_update;
 
-  bool	_force_refresh;
-  bool                  _run;
-  CharacterManager*		_characterManager;
-  Viewport*             _viewport;
-  unsigned int			_update;
-
-  unsigned int _seed;
-  unsigned int _frame;
-  unsigned int _lastInput;
+	unsigned int		_seed;
+	unsigned int		_frame;
+	unsigned int		_lastInput;
+	long				_renderTime;
 };
 
 #endif

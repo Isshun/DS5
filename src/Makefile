@@ -11,6 +11,7 @@ SRC	=	Game.cpp	\
 		ResourceManager.cpp	\
 		Viewport.cpp	\
 		WorldMap.cpp	\
+		WorldRenderer.cpp	\
 		Room.cpp	\
 		Cursor.cpp	\
 		PathManager.cpp	\
