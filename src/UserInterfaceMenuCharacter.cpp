@@ -6,6 +6,9 @@
 UserInterfaceMenuCharacter::UserInterfaceMenuCharacter(sf::RenderWindow* app) {
   _app = app;
   _character = NULL;
+
+  if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 }
 
 UserInterfaceMenuCharacter::~UserInterfaceMenuCharacter() {
@@ -13,10 +16,6 @@ UserInterfaceMenuCharacter::~UserInterfaceMenuCharacter() {
 }
 
 void  UserInterfaceMenuCharacter::addMessage(int posX, int posY, int width, int height, int value) {
-  sf::Font font;
-  if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
-
   const char* msg;
 
   switch (value) {
@@ -44,7 +43,7 @@ void  UserInterfaceMenuCharacter::addMessage(int posX, int posY, int width, int 
 
   sf::Text text;
   text.setString(msg);
-  text.setFont(font);
+  text.setFont(_font);
   text.setCharacterSize(MENU_CHARACTER_MESSAGE_FONT_SIZE);
   text.setStyle(sf::Text::Regular);
   text.setPosition(posX, posY);
@@ -52,13 +51,9 @@ void  UserInterfaceMenuCharacter::addMessage(int posX, int posY, int width, int 
 }
 
 void  UserInterfaceMenuCharacter::addGauge(int posX, int posY, int width, int height, int value, const char* label) {
-    sf::Font font;
-    if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
-      throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
-
     sf::Text text;
     text.setString(label);
-    text.setFont(font);
+    text.setFont(_font);
     text.setCharacterSize(MENU_CHARACTER_FONT_SIZE);
     text.setStyle(sf::Text::Regular);
     text.setPosition(posX, posY);

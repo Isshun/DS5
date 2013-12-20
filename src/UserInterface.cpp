@@ -210,24 +210,24 @@ void	UserInterface::refreshCursor() {
 }
 
 void UserInterface::refresh(int frame, long interval) {
-  if (_menuCharacter->getCharacter() != NULL) {
-    _menuCharacter->refresh(frame);
-  } else {
-    _menu->refreshMenu(frame);
-  }
+  // if (_menuCharacter->getCharacter() != NULL) {
+  //   _menuCharacter->refresh(frame);
+  // } else {
+  //   _menu->refreshMenu(frame);
+  // }
 
-  // Display crew view
-  if (_crewViewOpen) {
-	_uiCharacter->refresh(frame);
-  }
+  // // Display crew view
+  // if (_crewViewOpen) {
+  // 	_uiCharacter->refresh(frame);
+  // }
 
-  // Display debug view
-  if (Settings::getInstance()->isDebug()) {
-	_uiDebug->refresh(frame);
-	drawCursor(_keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY);
-  }
+  // // Display debug view
+  // if (Settings::getInstance()->isDebug()) {
+  // 	_uiDebug->refresh(frame);
+  // 	drawCursor(_keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY);
+  // }
 
-  refreshCursor();
+  // refreshCursor();
   _uiResource->refreshResources(frame, interval);
 }
 

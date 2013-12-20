@@ -32,6 +32,7 @@ class UserInterfaceMenuCharacter {
 
  private:
   sf::RenderWindow*     _app;
+  sf::Font				_font;
   Character*            _character;
 };
 

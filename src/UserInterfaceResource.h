@@ -22,6 +22,7 @@ class UserInterfaceResource {
 
  private:
   sf::RenderWindow* _app;
+  sf::Font			_font;
 };
 
 #endif /* USERINTERFACERESOURCE_H_ */

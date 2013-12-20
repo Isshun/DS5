@@ -11,16 +11,15 @@
 
 UserInterfaceResource::UserInterfaceResource(sf::RenderWindow* app) {
   _app = app;
+
+  if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 }
 
 UserInterfaceResource::~UserInterfaceResource() {
 }
 
 void UserInterfaceResource::refreshResources(int frame, long interval) {
-  sf::Font font;
-  if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
-
   {
 	int matter = ResourceManager::getInstance().getMatter();
     std::ostringstream oss;
@@ -28,7 +27,7 @@ void UserInterfaceResource::refreshResources(int frame, long interval) {
 
     sf::Text text;
     text.setString(oss.str());
-    text.setFont(font);
+    text.setFont(_font);
     text.setCharacterSize(24);
     // text.setStyle(sf::Text::Underlined);
 
@@ -46,7 +45,7 @@ void UserInterfaceResource::refreshResources(int frame, long interval) {
 
     sf::Text text;
     text.setString(oss.str());
-    text.setFont(font);
+    text.setFont(_font);
     text.setCharacterSize(24);
     // text.setCharacterSize(UI_FONT_SIZE);
     // text.setStyle(sf::Text::Underlined);
@@ -61,7 +60,7 @@ void UserInterfaceResource::refreshResources(int frame, long interval) {
 
     sf::Text text;
     text.setString(oss.str());
-    text.setFont(font);
+    text.setFont(_font);
     text.setCharacterSize(24);
     text.setPosition(UIRES_POSX + UI_PADDING + 540 + 0, UIRES_POSY + UI_PADDING + 0);
     _app->draw(text);
@@ -74,7 +73,7 @@ void UserInterfaceResource::refreshResources(int frame, long interval) {
 
     sf::Text text;
     text.setString(oss.str());
-    text.setFont(font);
+    text.setFont(_font);
     text.setCharacterSize(24);
     text.setPosition(UIRES_POSX + UI_PADDING + 800 + 0, UIRES_POSY + UI_PADDING + 0);
     _app->draw(text);

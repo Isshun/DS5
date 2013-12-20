@@ -117,7 +117,7 @@ void	Game::refresh() {
   _app->clear(sf::Color(0, 0, 50));
 
   // Draw scene
-  draw_surface();
+  // draw_surface();
 
   sf::Transform transform;
   transform = _viewport->getViewTransform(transform);
@@ -184,17 +184,17 @@ void	Game::loop() {
 			}
 			refresh();
 			_app->display();
-		}
 
-		if (_renderTime == 0) {
-			_renderTime = timer.getElapsedTime().asMilliseconds();
-		} else {
-			_renderTime = (_renderTime * 10 + timer.getElapsedTime().asMilliseconds()) / 11;
-		}
-
-		// Info() << "Render: " << _renderTime << "ms";
-		if (_renderTime > 0) {
-			Info() << "FPS: " << (int)(1000 / _renderTime);
+			if (_renderTime == 0) {
+				_renderTime = timer.getElapsedTime().asMilliseconds();
+			} else {
+				_renderTime = (_renderTime * 10 + timer.getElapsedTime().asMilliseconds()) / 11;
+			}
+			
+			Info() << "Render: " << _renderTime << "ms";
+			if (_renderTime > 0) {
+				//Info() << "FPS: " << (int)(1000 / _renderTime);
+			}
 		}
 	}
 }
