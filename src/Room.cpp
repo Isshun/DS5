@@ -6,6 +6,7 @@ int Room::_roomTmpId = 0;
 
 Room::Room() {
   _id = -1;
+  _zoneId = 0;
   _doors = new list<BaseItem*>();
 }
 
@@ -16,30 +17,44 @@ Room*	Room::createFromPos(int x, int y) {
   int ret = Room::checkZone(x, y, --_roomTmpId);
 
   if (ret == 0) {
-	Room::setZone(x, y, ++_roomCount);
+	Room* room = new Room();
+	room->setId(++_roomCount);
+	Room::setZone(x, y, _roomCount, 0);
 	Info() << "Room create: " << _roomCount;
+	return room;
   }
 
   else if (ret > 0) {
-	Room::setZone(x, y, ret);
-	Info() << "Room set: " << ret;
+	Room* room = WorldMap::getInstance()->getRoom(ret);
+	if (room != NULL) {
+	  Room::setZone(x, y, ret, room->getZoneId());
+	  Info() << "Room set: " << ret;
+	  return room;
+	} else {
+	  Error() << "Room #" << ret << " not exists";
+	}
   }
 
   else {
 	Info() << "Room not complete";
   }
-  // Room* room = new Room();
-
-  // int roomId = room->setZone(x, y);
-  // if (roomId == -1) {
-  // 	roomId = ++_roomCount;
-  // }
-  // room->setId(roomId);
-  // room->setZone(x, y);
-
-  // Info() << "Create room: " << roomId;
 
   return NULL;
+}
+
+void			Room::setZoneId(int zoneId) {
+  _zoneId = zoneId;
+
+  int w = WorldMap::getInstance()->getWidth();
+  int h = WorldMap::getInstance()->getHeight();
+  for (int i = 0; i < w; i++) {
+	for (int j = 0; j < h; j++) {
+	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
+	  if (item != NULL && item->getRoomId() == _id) {
+		item->setZoneId(zoneId);
+	  }
+	}
+  }
 }
 
 int	Room::checkZone(int x, int y, int id) {
@@ -47,7 +62,7 @@ int	Room::checkZone(int x, int y, int id) {
 
   // Out of bound or empty
   if (item == NULL) {
-	return -2;
+	return -1;
   }
 
   // Add to doors list
@@ -91,7 +106,7 @@ int	Room::checkZone(int x, int y, int id) {
   return 0;
 }
 
-void	Room::setZone(int x, int y, int id) {
+void	Room::setZone(int x, int y, int roomId, int zoneId) {
   BaseItem* item = WorldMap::getInstance()->getItem(x, y);
 
   // Out of bound or empty
@@ -113,59 +128,15 @@ void	Room::setZone(int x, int y, int id) {
   }
 
   // Already tag
-  if (item->getRoomId() == id) {
+  if (item->getRoomId() == roomId) {
 	return;
   }
 
-  // if (item->getRoomId() != id && item->getRoomId() > 0) {
-  // 	return;
-  // }
-
-  item->setRoomId(id);
+  item->setRoomId(roomId);
+  item->setZoneId(zoneId);
   
-  setZone(x, y+1, id);
-  setZone(x, y-1, id);
-  setZone(x+1, y, id);
-  setZone(x-1, y, id);
+  setZone(x, y+1, roomId, zoneId);
+  setZone(x, y-1, roomId, zoneId);
+  setZone(x+1, y, roomId, zoneId);
+  setZone(x-1, y, roomId, zoneId);
 }
-
-// int	Room::setZone(int x, int y) {
-//   BaseItem* item = WorldMap::getInstance()->getItem(x, y);
-
-//   // Out of bound or empty
-//   if (item == NULL) {
-// 	return _id;
-//   }
-
-//   // Add to doors list
-//   if (item->isType(BaseItem::STRUCTURE_DOOR)) {
-// 	_doors->push_back(item);
-// 	return _id;
-//   }
-
-//   // Room limit
-//   if (item->isType(BaseItem::STRUCTURE_WALL) ||
-// 	  item->isType(BaseItem::STRUCTURE_HULL) ||
-// 	  item->isType(BaseItem::STRUCTURE_WINDOW)) {
-// 	return _id;
-//   }
-
-//   // Already tag
-//   if (item->getRoomId() == _id) {
-// 	return _id;
-//   }
-
-//   if (item->getRoomId() != _id && item->getRoomId() > 0) {
-// 	_id = item->getRoomId();
-// 	return _id;
-//   }
-
-//   item->setRoomId(_id);
-  
-//   setZone(x, y+1);
-//   setZone(x, y-1);
-//   setZone(x+1, y);
-//   setZone(x-1, y);
-
-//   return _id;
-// }

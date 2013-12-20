@@ -13,6 +13,7 @@ SRC	=	Game.cpp	\
 		WorldMap.cpp	\
 		WorldRenderer.cpp	\
 		Room.cpp	\
+		Settings.cpp	\
 		Cursor.cpp	\
 		PathManager.cpp	\
 		CharacterManager.cpp	\

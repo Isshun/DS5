@@ -49,19 +49,20 @@ class UserInterface {
  private:
   void	drawCursor(int startX, int startY, int toX, int toY);
 
-  sf::RenderWindow* _app;
-  Cursor*		_cursor;
-  WorldMap*		_worldMap;
-  Viewport*     _viewport;
-  bool			_keyLeftPressed;
-  bool			_keyRightPressed;
-  sf::Vector2i	_mouseRightPress;
-  int			_keyPressPosX;
-  int			_keyPressPosY;
-  int			_keyMovePosX;
-  int			_keyMovePosY;
-  float			_zoom;
-  bool			_crewViewOpen;
+  sf::RenderWindow*		_app;
+  sf::Texture			_cursorTexture;
+  Cursor*				_cursor;
+  WorldMap*				_worldMap;
+  Viewport*				_viewport;
+  bool					_keyLeftPressed;
+  bool					_keyRightPressed;
+  sf::Vector2i			_mouseRightPress;
+  int					_keyPressPosX;
+  int					_keyPressPosY;
+  int					_keyMovePosX;
+  int					_keyMovePosY;
+  float					_zoom;
+  bool					_crewViewOpen;
 
   UserInterfaceMenu*       _menu;
   UserInterfaceResource*   _uiResource;

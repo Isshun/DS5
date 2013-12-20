@@ -8,6 +8,7 @@
 #ifndef WORLDMAP_H_
 #define WORLDMAP_H_
 
+#include <map>
 #include <list>
 #include "BaseItem.h"
 #include "Room.h"
@@ -26,6 +27,8 @@ public:
 	void		putItem(int x, int y, int type);
 	BaseItem*	getItem(int x, int y) {return (x < 0 || x >= _width || y < 0 || y >= _height) ? NULL : _items[x][y]; }
 	int			getBuildListSize() { return _todo->size(); }
+	Room*		getRoom(int id) { return _rooms[id]; }
+
 	int			setZone(int x, int y, int zoneId, int roomId);
 	int			setZone(int x, int y, int zoneId);
 	void		reloadAborted();
@@ -45,13 +48,14 @@ private:
 	static WorldMap* _self;
 	int			_itemCout;
 
+	std::map<int, Room*>	_rooms;
 	BaseItem***	_items;
 	int			_width;
 	int			_height;
 	std::list<BaseItem*>*		_todo;
 	std::list<BaseItem*>*		_building;
 	std::list<BaseItem*>*		_buildingAborted;
-	std::list<Room*>*			_rooms;
+	/* std::list<Room*>*			_rooms; */
 
 	enum		{GO_UP, GO_DOWN, GO_LEFT, GO_RIGHT};
 };

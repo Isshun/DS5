@@ -44,6 +44,7 @@ BaseItem::BaseItem(int t, int id) {
   _type = t;
   progress = 0;
   _zoneId = 0;
+  _zoneIdRequired = 0;
   _roomId = 0;
   _owner = NULL;
   _id = id;
@@ -61,6 +62,7 @@ BaseItem::BaseItem(int t, int id) {
 	  _width = itemsInfo[i].width;
 	  _height = itemsInfo[i].height;
 	  _zoneId = itemsInfo[i].zone;
+	  _zoneIdRequired = itemsInfo[i].zone;
 	  matter = itemsInfo[i].matter;
 	  power = itemsInfo[i].power;
 	  powerSupply = 0;

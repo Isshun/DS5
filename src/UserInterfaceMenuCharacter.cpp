@@ -37,6 +37,9 @@ void  UserInterfaceMenuCharacter::addMessage(int posX, int posY, int width, int 
   case Character::MSG_NO_WINDOW:
 	msg = "MSG_NO_WINDOW";
 	break;
+  case Character::MSG_BLOCKED:
+	msg = "MSG_BLOCKED";
+	break;
   default:
 	return;
   }
@@ -81,14 +84,10 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
   _app->draw(shape);
 
   if (_character != NULL) {
-    sf::Font font;
-    if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
-      throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
-
     // Job
     sf::Text text;
     text.setString(_character->getName());
-    text.setFont(font);
+    text.setFont(_font);
     text.setCharacterSize(MENU_CHARACTER_FONT_SIZE);
     text.setStyle(sf::Text::Regular);
     text.setPosition(UI_PADDING + 0, UI_PADDING);
@@ -98,7 +97,7 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
 	Profession function = _character->getProfession();
     sf::Text job;
     job.setString(function.name);
-    job.setFont(font);
+    job.setFont(_font);
     job.setCharacterSize(24);
     job.setColor(function.color);
     job.setStyle(sf::Text::Regular);
@@ -127,7 +126,7 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
 
 	int* messages = _character->getMessages();
     for (int i = 0; i < CHARACTER_MAX_MESSAGE; i++) {
-	  if (messages[i] > frame - 100) {
+	  if (messages[i] == -1 || messages[i] > frame - 100) {
 		addMessage(UI_PADDING,
 				   400 + (i * UI_FONT_SIZE) + UI_PADDING,
 				   UI_WIDTH - UI_PADDING * 2,

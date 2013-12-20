@@ -112,9 +112,10 @@ AStarSearch<MapSearchNode>*		PathManager::getPath(MapSearchNode nodeStart, MapSe
 
 AStarSearch<MapSearchNode>*		PathManager::getPath(Character* character, BaseItem* item) {
 
-  if (_map[character->getId()][item->getId()]) {
-	Error() << "PathManager: this path is already know and cannot be resolve";
-  }
+  // if (_map[character->getId()][item->getId()]) {
+  // 	Error() << "PathManager: this path is already know and cannot be resolve";
+  // 	return NULL;
+  // }
 
   MapSearchNode nodeStart;
   nodeStart.x = character->getX();

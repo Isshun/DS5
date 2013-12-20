@@ -66,10 +66,9 @@ void UserInterfaceResource::refreshResources(int frame, long interval) {
     _app->draw(text);
   }
 
-  if (interval > 0)
   {
     std::ostringstream oss;
-    oss << "FPS: " << (int)(1000 / interval);
+    oss << "FPS: " << (interval > 0 ? (int)(1000 / interval) : 1000);
 
     sf::Text text;
     text.setString(oss.str());

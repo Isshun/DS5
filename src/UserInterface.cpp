@@ -29,6 +29,7 @@ UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport
   _crewViewOpen = false;
   _uiCharacter = new UserInterfaceCrew(app, characteres);
   _uiDebug = new UserInterfaceDebug(app, _cursor);
+  _cursorTexture.loadFromFile("../sprites/cursor.png");
 }
 
 UserInterface::~UserInterface() {
@@ -160,11 +161,8 @@ void	UserInterface::mouseWheel(int delta, int x, int y) {
 }
 
 void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
-  sf::Texture texture;
-  texture.loadFromFile("../sprites/cursor.png");
-
   sf::Sprite sprite;
-  sprite.setTexture(texture);
+  sprite.setTexture(_cursorTexture);
   sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 
   startX = max(startX, 0);
@@ -210,24 +208,24 @@ void	UserInterface::refreshCursor() {
 }
 
 void UserInterface::refresh(int frame, long interval) {
-  // if (_menuCharacter->getCharacter() != NULL) {
-  //   _menuCharacter->refresh(frame);
-  // } else {
-  //   _menu->refreshMenu(frame);
-  // }
+  if (_menuCharacter->getCharacter() != NULL) {
+    _menuCharacter->refresh(frame);
+  } else {
+    _menu->refreshMenu(frame);
+  }
 
-  // // Display crew view
-  // if (_crewViewOpen) {
-  // 	_uiCharacter->refresh(frame);
-  // }
+  // Display crew view
+  if (_crewViewOpen) {
+  	_uiCharacter->refresh(frame);
+  }
 
-  // // Display debug view
-  // if (Settings::getInstance()->isDebug()) {
-  // 	_uiDebug->refresh(frame);
-  // 	drawCursor(_keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY);
-  // }
+  // Display debug view
+  if (Settings::getInstance()->isDebug()) {
+  	_uiDebug->refresh(frame);
+  	drawCursor(_keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY);
+  }
 
-  // refreshCursor();
+  refreshCursor();
   _uiResource->refreshResources(frame, interval);
 }
 
@@ -300,8 +298,13 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 		}
 		break;
 
-	  case sf::Keyboard::BackSpace:
 	  case sf::Keyboard::Escape:
+		if ((event.type == sf::Event::KeyReleased)) {
+		  _menu->openRoot();
+		}
+		break;
+
+	  case sf::Keyboard::BackSpace:
 		if ((event.type == sf::Event::KeyReleased)) {
 		  _menu->openBack();
 		}

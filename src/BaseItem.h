@@ -90,6 +90,7 @@ class BaseItem {
   int			getY() { return _y; }
   int			getType() { return _type; }
   int			getZoneId() { return _zoneId; }
+  int			getZoneIdRequired() { return _zoneIdRequired; }
   int			getRoomId() { return _roomId; }
   int			getId() { return _id; }
 
@@ -106,6 +107,7 @@ class BaseItem {
   bool			isSupply() { return power == powerSupply; }
   bool			isFree() { return _owner == NULL; }
   bool			isType(int type) { return _type == type; }
+  bool			isZoneMatch() { return _zoneId == _zoneIdRequired; }
   bool			isSleepingItem() { return _type == QUARTER_BED || _type == QUARTER_CHAIR; }
   bool			isStructure() { return _type > STRUCTURE_ITEM_START && _type < STRUCTURE_ITEM_STOP; }
   int			matter;
@@ -118,6 +120,7 @@ class BaseItem {
   int			_height;
   int			_roomId;
   int			_zoneId;
+  int			_zoneIdRequired;
   int			_type;
   int			_x;
   int			_y;

@@ -45,7 +45,8 @@ class	Character {
 	MSG_NEED_OXYGEN,
 	MSG_SLEEP_ON_FLOOR,
 	MSG_SLEEP_ON_CHAIR,
-	MSG_NO_WINDOW
+	MSG_NO_WINDOW,
+	MSG_BLOCKED
   };
   
   void	draw(sf::RenderWindow* app, sf::Transform transform);
@@ -59,6 +60,7 @@ class	Character {
   int           getDirection();
   Profession	getProfession() { return _profession; }
 
+  void			sendEvent(int event);
   void			addMessage(int msg, int count);
   void			removeMessage(int msg);
   void			go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY);
@@ -116,6 +118,7 @@ class	Character {
   BaseItem*	_build;
   Profession	_profession;
   bool	_selected;
+  int	_blocked;
 
   // Needs
   int   _food;

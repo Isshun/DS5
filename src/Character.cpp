@@ -14,6 +14,7 @@
 #define MESSAGE_COUNT_INIT -100
 
 #define FUNCTIONS_COUNT 5
+#define BLOCKED_COUNT_BEFORE_MESSAGE 5
 
 const char* firstname[] = {
   // male
@@ -134,6 +135,7 @@ Character::Character(int id, int x, int y) {
   _posX = _toY = x;
   _sleep = 0;
   _selected = false;
+  _blocked = 0;
 
   // _jobName = professions[rand() % 4].name;
   _profession = professions[id % FUNCTIONS_COUNT];
@@ -295,6 +297,15 @@ void  Character::updateNeeds(int count) {
   //if (_health > 0)_health = 0;
 }
 
+void	Character::sendEvent(int event) {
+  switch (event) {
+  case MSG_BLOCKED:
+	if (++_blocked >= BLOCKED_COUNT_BEFORE_MESSAGE) {
+	  addMessage(MSG_BLOCKED, -1);
+	}
+  }
+}
+
 void  Character::update() {
 
   // Character is sleeping
@@ -320,8 +331,12 @@ void  Character::update() {
 	  BaseItem* item = WorldMap::getInstance()->find(BaseItem::QUARTER_BED, true);
 	  if (item != NULL) {
 		AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, item);
-		use(path, item);
-		return;
+		if (path != NULL) {
+		  use(path, item);
+		  return;
+		} else {
+		  sendEvent(MSG_BLOCKED);
+		}
 	  }
 	}
 
@@ -330,8 +345,12 @@ void  Character::update() {
 	  BaseItem* item = WorldMap::getInstance()->find(BaseItem::QUARTER_CHAIR, true);
 	  if (item != NULL) {
 		AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, item);
-		use(path, item);
-		return;
+		if (path != NULL) {
+		  use(path, item);
+		  return;
+		} else {
+		  sendEvent(MSG_BLOCKED);
+		}
 	  }
 	}
 
@@ -365,8 +384,12 @@ void  Character::update() {
 	if (item != NULL) {
 	  Debug() << "Charactere #" << _id << ": Go to pub !";
 	  AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, item);
-	  use(path, item);
-	  return;
+	  if (path != NULL) {
+		use(path, item);
+		return;
+	  } else {
+		sendEvent(MSG_BLOCKED);
+	  }
 	} else {
 	  Debug() << "Charactere #" << _id << ": no pub :(";
 	}
@@ -375,6 +398,13 @@ void  Character::update() {
 }
 
 void		Character::go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY) {
+  if (astarsearch == NULL) {
+	sendEvent(MSG_BLOCKED);
+	return;
+  }
+
+  _blocked = 0;
+
   _toX = toX;
   _toY = toY;
 
@@ -453,7 +483,11 @@ void		Character::actionUse() {
 	  BaseItem* goal = WorldMap::getInstance()->getRandomPosInRoom(_item->getRoomId());
 	  if (goal != NULL) {
 		AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, goal);
-		go(path, goal->getX(), goal->getY());
+		if (path != NULL) {
+		  go(path, goal->getX(), goal->getY());
+		} else {
+		  sendEvent(MSG_BLOCKED);
+		}
 	  }
 	  _item = NULL;
 	}

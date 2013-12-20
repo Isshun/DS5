@@ -19,7 +19,8 @@ WorldMap::WorldMap() {
   _itemCout = 0;
   _width = 50;
   _height = 50;
-  _rooms = new std::list<Room*>();
+
+  _rooms = std::map<int, Room*>();
   _todo = new std::list<BaseItem*>();
   _building = new std::list<BaseItem*>();
   _buildingAborted = new std::list<BaseItem*>();
@@ -439,14 +440,14 @@ void WorldMap::initMap() {
   putItem(17, 22, 5, true);
   putItem(17, 25, 5, true);
 
-  // putItem(18, 8, 9, true);
-  // putItem(13, 18, 32, true);
-//   putItem(12, 24, 12, true);
-//   putItem(13, 22, 34, true);
-//   putItem(16, 12, 30, true);
-//   putItem(16, 18, 32, true);
-//   putItem(17, 22, 34, true);
-//   putItem(17, 25, 13, true);
+  putItem(18, 8, 9, true);
+  putItem(13, 18, 32, true);
+  putItem(12, 24, 12, true);
+  putItem(13, 22, 34, true);
+  putItem(16, 12, 30, true);
+  putItem(16, 18, 32, true);
+  putItem(17, 22, 34, true);
+  putItem(17, 25, 13, true);
 }
 
 int GetMap(int x, int y);
@@ -586,18 +587,39 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
   int zoneId = item->getZoneId();
   int roomId = 0;
 
-  // If item alread exists check the zoneId
-  if (_items[x][y] != NULL
-	  && _items[x][y]->getZoneId() != 0
-	  && zoneId != 0
-	  && _items[x][y]->getZoneId() != zoneId) {
-	Debug() << "this item can not be put at this position because zoneId not match";
-	return;
-  }
-
   // If item alread exists check the roomId
   if (_items[x][y] != NULL)  {
 	roomId = _items[x][y]->getRoomId();
+  }
+
+  // Get the room
+  if (roomId > 0) {
+	Room* room = getRoom(roomId);
+	if (room != NULL) {
+
+	  // Room have no zoneId
+	  if (room->getZoneId() == 0) {
+		Info() << "Set room to new zoneId: " << item->getZoneId();
+		room->setZoneId(item->getZoneId());
+	  }
+
+	  // Item have no zoneId
+	  if (item->getZoneId() == 0) {
+		zoneId = room->getZoneId();
+	  }
+
+	  // Room and item zoneId match
+	  else if (room->getZoneId() == item->getZoneId()) {
+		Info() << "Room zoneId match with item";
+	  }
+
+	  // Room and item zoneId don't match
+	  else {
+		Info() << "this item can not be put at this position because zoneId not match (item: "
+			   << item->getZoneId() << ", room: " << room->getZoneId() << ")";
+		return;
+	  }
+	}
   }
 
   // Put item
@@ -625,7 +647,10 @@ void		WorldMap::addRoom(int x, int y) {
 
   Room* room = Room::createFromPos(x, y);
 
-  _rooms->push_back(room);
+  if (room != NULL) {
+	_rooms[room->getId()] = room;
+  }
+  // _rooms->push_back(room);
 }
 
 BaseItem*		WorldMap::getItemToBuild() {

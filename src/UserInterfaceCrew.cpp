@@ -6,6 +6,9 @@
 UserInterfaceCrew::UserInterfaceCrew(sf::RenderWindow* app, CharacterManager* characterManager) {
   _app = app;
   _characterManager = characterManager;
+
+  if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 }
 
 UserInterfaceCrew::~UserInterfaceCrew() {
@@ -13,15 +16,11 @@ UserInterfaceCrew::~UserInterfaceCrew() {
 }
 
 void  UserInterfaceCrew::addCharacter(int index, Character* character) {
-  sf::Font font;
-  if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
-
   int x = index % 4;
   int y = index / 4;
 
   sf::Text text;
-  text.setFont(font);
+  text.setFont(_font);
   text.setCharacterSize(20);
   text.setStyle(sf::Text::Regular);
 

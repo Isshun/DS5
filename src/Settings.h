@@ -6,8 +6,8 @@
 class	Settings
 {
  public:
-  Settings() {}
-  ~Settings() {}
+  Settings();
+  ~Settings();
   
   void				setDebug(bool debug) { _debug = debug; }
   

@@ -66,6 +66,7 @@ class UserInterfaceMenu {
   ~UserInterfaceMenu();
   void  openMenu(Entry entry);
   void  openBack();
+  void	openRoot();
   void	setBuildMenu(int code);
   void	setBuildItem(int code, const char* text, int type);
   int	getBuildItemType() { return _buildItemType; }
@@ -79,7 +80,8 @@ class UserInterfaceMenu {
 
  private:
   sf::RenderWindow*		_app;
-  sf::Sprite* _background;
+  sf::Sprite*			_background;
+  sf::Font				_font;
   WorldMap*				_worldmap;
   Cursor*				_cursor;
   int					_code;

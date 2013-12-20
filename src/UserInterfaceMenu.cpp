@@ -151,6 +151,9 @@ UserInterfaceMenu::UserInterfaceMenu(sf::RenderWindow* app, WorldMap* worldmap, 
   _background = new sf::Sprite();
   _background->setTexture(*texture);
   _background->setTextureRect(sf::IntRect(0, 0, 200, 200));
+
+  if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 }
 
 UserInterfaceMenu::~UserInterfaceMenu() {
@@ -195,6 +198,13 @@ void UserInterfaceMenu::setBuildMenu(int code) {
   case CODE_BUILD_SCIENCE:		_entries = entries_build_science; break;
   }
 }
+
+void	UserInterfaceMenu::openRoot() {
+  _entries = entries_main;
+  _code = CODE_MAIN;
+  _parent_code = CODE_MAIN;
+}
+
 
 void    UserInterfaceMenu::openBack() {  
   std::cout << "CODE BACK: " << _parent_code << std::endl;
@@ -317,13 +327,9 @@ bool  UserInterfaceMenu::checkKeyboard(int code, int posX, int posY) {
 }
 
 void UserInterfaceMenu::drawModeBuild() {
-  sf::Font font;
-  if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
-
   sf::Text shortcut;
   shortcut.setString(_buildItemText);
-  shortcut.setFont(font);
+  shortcut.setFont(_font);
   shortcut.setCharacterSize(UI_FONT_SIZE);
   shortcut.setStyle(sf::Text::Underlined);
   shortcut.setColor(sf::Color(255, 255, 0));
@@ -332,13 +338,9 @@ void UserInterfaceMenu::drawModeBuild() {
 }
 
 void UserInterfaceMenu::drawModeErase() {
-  sf::Font font;
-  if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
-
   sf::Text shortcut;
   shortcut.setString("erase");
-  shortcut.setFont(font);
+  shortcut.setFont(_font);
   shortcut.setCharacterSize(UI_FONT_SIZE);
   shortcut.setStyle(sf::Text::Underlined);
   shortcut.setColor(sf::Color(255, 255, 0));
@@ -348,19 +350,7 @@ void UserInterfaceMenu::drawModeErase() {
 
 void	UserInterfaceMenu::refreshMenu(int frame) {
 
-  // sf::RectangleShape shape;
-  // shape.setSize(sf::Vector2f(UI_WIDTH, WINDOW_HEIGHT));
-  // shape.setFillColor(sf::Color(100, 0, 0));
-  // _app->draw(shape);
   _app->draw(*_background);
-
-  // shape.setSize(sf::Vector2f(WINDOW_WIDTH, UI_HEIGHT));
-  // shape.setFillColor(sf::Color(100, 100, 0));
-  // _app->draw(shape);
-
-  sf::Font font;
-  if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 
   switch (_code) {
   case CODE_BUILD_ITEM:
@@ -373,7 +363,7 @@ void	UserInterfaceMenu::refreshMenu(int frame) {
 	for (int i = 0; _entries[i].code != UserInterfaceMenu::CODE_NONE; i++) {
 	  sf::Text text;
 	  text.setString(_entries[i].text);
-	  text.setFont(font);
+	  text.setFont(_font);
 	  text.setCharacterSize(UI_FONT_SIZE);
 	  text.setStyle(sf::Text::Regular);
 	  text.setPosition(UI_PADDING + 0, UI_PADDING + i * UI_FONT_SIZE);
@@ -381,7 +371,7 @@ void	UserInterfaceMenu::refreshMenu(int frame) {
 
 	  sf::Text shortcut;
 	  shortcut.setString(_entries[i].shortcut);
-	  shortcut.setFont(font);
+	  shortcut.setFont(_font);
 	  shortcut.setCharacterSize(UI_FONT_SIZE);
 	  shortcut.setStyle(sf::Text::Underlined);
 	  shortcut.setColor(sf::Color(255, 255, 0));

@@ -14,34 +14,35 @@ void	WorldRenderer::draw(sf::RenderStates render) {
 	int w = WorldMap::getInstance()->getWidth();
 	int h = WorldMap::getInstance()->getHeight();
 
-	// // Draw floor
-	// for (int i = w-1; i >= 0; i--) {
-	// 	for (int j = h-1; j >= 0; j--) {
-	// 		BaseItem* item = WorldMap::getInstance()->getItem(i, j);
-	// 		if (item != NULL) {
-	// 			sf::Sprite sprite;
-
-	// 			if (item->isType(BaseItem::STRUCTURE_DOOR)) {
-	// 				_spriteManager->getSprite(item, &sprite);
-	// 				sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-	// 			} else {
-	// 				_spriteManager->getFloor(item, item->getZoneId(), item->getRoomId(), &sprite);
-	// 				sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-	// 			}
-	  
-	// 			_app->draw(sprite, render);
-	// 		}
-	// 	}
-	// }
-
-	// drawFloor(render, 0, 0, w, h);
+	drawFloor(render, 0, 0, w, h);
 	drawStructure(render, 0, 0, w, h);
-	//drawItems(render, 0, 0, w, h);
+	drawItems(render, 0, 0, w, h);
 
 	// Draw debug
 	if (Settings::getInstance()->isDebug()) {
-		drawDebug(render, 0, 0, w, h);
+	  drawDebug(render, 0, 0, w, h);
 	}
+}
+
+void	WorldRenderer::drawFloor(sf::RenderStates render, int fromX, int fromY, int toX, int toY) {
+  for (int i = toX-1; i >= fromX; i--) {
+	for (int j = toY-1; j >= fromY; j--) {
+	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
+	  if (item != NULL) {
+		sf::Sprite sprite;
+
+		if (item->isType(BaseItem::STRUCTURE_DOOR)) {
+		  _spriteManager->getSprite(item, &sprite);
+		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		} else {
+		  _spriteManager->getFloor(item, item->getZoneId(), item->getRoomId(), &sprite);
+		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		}
+	  
+		_app->draw(sprite, render);
+	  }
+	}
+  }
 }
 
 void	WorldRenderer::drawStructure(sf::RenderStates render, int fromX, int fromY, int toX, int toY) {
@@ -147,11 +148,11 @@ void	WorldRenderer::drawStructure(sf::RenderStates render, int fromX, int fromY,
 					}	  
 				}
 
-				// floor
-				else {
-					_spriteManager->getFloor(item, item->getZoneId(), item->getRoomId(), &sprite);
-					sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-				}
+				// // floor
+				// else {
+				// 	_spriteManager->getFloor(item, item->getZoneId(), item->getRoomId(), &sprite);
+				// 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+				// }
 
 				_app->draw(sprite, render);
 			}
@@ -199,30 +200,32 @@ void	WorldRenderer::drawItems(sf::RenderStates render, int fromX, int fromY, int
 }
 
 void	WorldRenderer::drawDebug(sf::RenderStates render, int fromX, int fromY, int toX, int toY) {
-	int offsetY = -16;
-	int offsetX = 2;
+  int offsetY = -16;
+  int offsetX = 2;
 
-	for (int i = toX-1; i >= fromX; i--) {
-		for (int j = toY-1; j >= fromY; j--) {
-			BaseItem* item = WorldMap::getInstance()->getItem(i, j);
+  for (int i = toX-1; i >= fromX; i--) {
+	for (int j = toY-1; j >= fromY; j--) {
+	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
 
-			if (item != NULL) {
-					sf::RectangleShape shape;
-					shape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-					shape.setFillColor(sf::Color(250, 200, 200, 100));
-					shape.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-					_app->draw(shape, render);
+	  if (item != NULL) {
+		sf::RectangleShape shape;
+		shape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+		shape.setFillColor(sf::Color(250, 200, 200, 100));
+		shape.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		_app->draw(shape, render);
 
-					sf::Text text;
-					text.setFont(_font);
-					text.setCharacterSize(10);
-					text.setStyle(sf::Text::Regular);
-					std::ostringstream oss;
-					oss << item->getRoomId();
-					text.setString(oss.str().c_str());
-					text.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-					_app->draw(text, render);
-			}
-		}
+		sf::Text text;
+		text.setFont(_font);
+		text.setCharacterSize(10);
+		text.setColor(sf::Color(0, 0, 0));
+		text.setStyle(sf::Text::Regular);
+		std::ostringstream oss;
+		// oss << item->getRoomId();
+		oss << item->getZoneId();
+		text.setString(oss.str().c_str());
+		text.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		_app->draw(text, render);
+	  }
 	}
+  }
 }

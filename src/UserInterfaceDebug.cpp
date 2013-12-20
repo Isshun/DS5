@@ -7,21 +7,20 @@
 UserInterfaceDebug::UserInterfaceDebug(sf::RenderWindow* app, Cursor* cursor) {
   _app = app;
   _cursor = cursor;
+
+  if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 }
 
 UserInterfaceDebug::~UserInterfaceDebug() {
 }
 
 void  UserInterfaceDebug::addDebug(const char* key, std::string value) {
-  sf::Font font;
-  if (!font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
-
   int y = _index * 32;
 
   {
 	sf::Text text;
-	text.setFont(font);
+	text.setFont(_font);
 	text.setCharacterSize(20);
 	text.setStyle(sf::Text::Regular);
 	text.setString(key);
@@ -32,11 +31,11 @@ void  UserInterfaceDebug::addDebug(const char* key, std::string value) {
 
   {
 	sf::Text text;
-	text.setFont(font);
+	text.setFont(_font);
 	text.setCharacterSize(20);
 	text.setStyle(sf::Text::Regular);
 	text.setString(value.c_str());
-	text.setPosition(WINDOW_WIDTH - 320 + UI_PADDING + 80,
+	text.setPosition(WINDOW_WIDTH - 320 + UI_PADDING + 160,
 					 UI_PADDING + y);
 	_app->draw(text);
   }
@@ -70,6 +69,10 @@ void	UserInterfaceDebug::refresh(int frame) {
 	oss.str("");
 	oss << item->getX() << " x " << item->getY();
 	addDebug("pos", oss.str());
+
+	oss.str("");
+	oss << item->getZoneIdRequired();
+	addDebug("zone req.", oss.str());
 
 	oss.str("");
 	oss << item->getZoneId();

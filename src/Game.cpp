@@ -42,10 +42,10 @@ Game::Game(sf::RenderWindow* app) {
   _update = 0;
 
   _characterManager = new CharacterManager();
-  // for (int i = 0; i < 50; i++) {
-  // 	_characterManager->add(rand() % 20, rand() % 20);
-  // }
-  _characterManager->add(15, 16, Character::PROFESSION_ENGINEER);
+  for (int i = 0; i < 22; i++) {
+  	_characterManager->add(rand() % 20, rand() % 20);
+  }
+  //_characterManager->add(15, 16, Character::PROFESSION_ENGINEER);
   // _characterManager->add(9, 8);
   // _characterManager->add(17, 8);
   // _characterManager->add(15, 20);
@@ -75,6 +75,27 @@ Game::~Game() {
 }
 
 void	Game::update() {
+
+  // Update item
+  int w = WorldMap::getInstance()->getWidth();
+  int h = WorldMap::getInstance()->getHeight();
+
+  for (int i = 0; i < w; i++) {
+	for (int j = 0; j < h; j++) {
+	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
+	  if (item != NULL) {
+		  
+		// Check zone match
+		if (!item->isZoneMatch() && item->getZoneId() == 0) {
+		  Room* room = WorldMap::getInstance()->getRoom(item->getRoomId());
+		  if (room != NULL) {
+			room->setZoneId(item->getZoneIdRequired());
+		  }
+		}
+	  }
+	}
+  }
+
 
   // assign works
   if (ResourceManager::getInstance().getMatter() > 0) {
@@ -117,7 +138,7 @@ void	Game::refresh() {
   _app->clear(sf::Color(0, 0, 50));
 
   // Draw scene
-  // draw_surface();
+  draw_surface();
 
   sf::Transform transform;
   transform = _viewport->getViewTransform(transform);
@@ -175,7 +196,7 @@ void	Game::loop() {
 
 		// Update & refresh: 50fps
 		_time_elapsed = display_timer.getElapsedTime();
-		if (_time_elapsed.asMilliseconds() > 20) {
+		if (_time_elapsed.asMilliseconds() > 5) {
 			display_timer.restart();
 			_force_refresh = false;
 
@@ -191,7 +212,7 @@ void	Game::loop() {
 				_renderTime = (_renderTime * 10 + timer.getElapsedTime().asMilliseconds()) / 11;
 			}
 			
-			Info() << "Render: " << _renderTime << "ms";
+			// Info() << "Render: " << _renderTime << "ms";
 			if (_renderTime > 0) {
 				//Info() << "FPS: " << (int)(1000 / _renderTime);
 			}

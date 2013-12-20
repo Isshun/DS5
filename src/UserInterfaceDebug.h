@@ -24,6 +24,7 @@ class UserInterfaceDebug {
 
  private:
   sf::RenderWindow*     _app;
+  sf::Font				_font;
   Cursor*				_cursor;
   int					_index;
 };

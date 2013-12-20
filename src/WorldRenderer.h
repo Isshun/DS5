@@ -13,6 +13,7 @@ class WorldRenderer {
 	void	draw(sf::RenderStates render);
 	void	drawStructure(sf::RenderStates render, int fromX, int fromY, int toX, int toY);
 	void	drawItems(sf::RenderStates render, int fromX, int fromY, int toX, int toY);
+	void	drawFloor(sf::RenderStates render, int fromX, int fromY, int toX, int toY);
 	void	drawDebug(sf::RenderStates render, int fromX, int fromY, int toX, int toY);
 
   private:
