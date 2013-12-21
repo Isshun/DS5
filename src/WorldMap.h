@@ -28,6 +28,7 @@ public:
 	BaseItem*	getItem(int x, int y) {return (x < 0 || x >= _width || y < 0 || y >= _height) ? NULL : _items[x][y]; }
 	int			getBuildListSize() { return _todo->size(); }
 	Room*		getRoom(int id) { return _rooms[id]; }
+	int			getRoomCount() { return _rooms.size(); }
 
 	int			setZone(int x, int y, int zoneId, int roomId);
 	int			setZone(int x, int y, int zoneId);

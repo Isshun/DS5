@@ -14,12 +14,12 @@
 #include "ResourceManager.h"
 #include "Settings.h"
 
-UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport, CharacterManager* characteres) {
+UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport) {
   _app = app;
   _viewport = viewport;
   _worldMap = worldMap;
   _cursor = new Cursor();
-  _characteres = characteres;
+  _characteres = CharacterManager::getInstance();
   _keyLeftPressed = false;
   _keyRightPressed = false;
   _zoom = 1.0f;
@@ -27,8 +27,9 @@ UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport
   _menuCharacter = new UserInterfaceMenuCharacter(app);
   _uiResource = new UserInterfaceResource(app);
   _crewViewOpen = false;
-  _uiCharacter = new UserInterfaceCrew(app, characteres);
+  _uiCharacter = new UserInterfaceCrew(app);
   _uiDebug = new UserInterfaceDebug(app, _cursor);
+  _uiBase = new UserInterfaceMenuBase(app);
   _cursorTexture.loadFromFile("../sprites/cursor.png");
 }
 
@@ -208,6 +209,7 @@ void	UserInterface::refreshCursor() {
 }
 
 void UserInterface::refresh(int frame, long interval) {
+
   if (_menuCharacter->getCharacter() != NULL) {
     _menuCharacter->refresh(frame);
   } else {
@@ -227,6 +229,10 @@ void UserInterface::refresh(int frame, long interval) {
 
   refreshCursor();
   _uiResource->refreshResources(frame, interval);
+
+  _uiCharacter->drawTile(0);
+  _uiResource->drawTile(1);
+  _uiBase->drawTile(2);
 }
 
 bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {

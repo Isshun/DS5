@@ -5,20 +5,19 @@
  *      Author: alex
  */
 
-#ifndef USERINTERFACERESOURCE_H_
-#define USERINTERFACERESOURCE_H_
+#ifndef USERINTERFACEMENUBASE_H_
+#define USERINTERFACEMENUBASE_H_
 
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "defines.h"
 
-class UserInterfaceResource {
+class UserInterfaceMenuBase {
  public:
 
-  UserInterfaceResource(sf::RenderWindow* app);
-  ~UserInterfaceResource();
-  void refreshResources(int frame, long interval);
+  UserInterfaceMenuBase(sf::RenderWindow* app);
+  ~UserInterfaceMenuBase();
   void	drawTile(int index);
 
  private:

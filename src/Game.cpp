@@ -41,7 +41,7 @@ Game::Game(sf::RenderWindow* app) {
 
   _update = 0;
 
-  _characterManager = new CharacterManager();
+  _characterManager = CharacterManager::getInstance();
   for (int i = 0; i < 22; i++) {
   	_characterManager->add(rand() % 20, rand() % 20);
   }
@@ -51,7 +51,7 @@ Game::Game(sf::RenderWindow* app) {
   // _characterManager->add(15, 20);
   // _characterManager->add(16, 20);
 
-  _ui = new UserInterface(app, worldMap, _viewport, _characterManager);
+  _ui = new UserInterface(app, worldMap, _viewport);
 
   // Background
   Debug() << "Game background";

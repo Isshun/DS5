@@ -1,11 +1,17 @@
+#include <sstream>
 #include "UserInterfaceCrew.h"
+#include "ResourceManager.h"
 
 #define CREW_LINE_HEIGHT 70
 #define CREW_LINE_WIDTH 350
 
-UserInterfaceCrew::UserInterfaceCrew(sf::RenderWindow* app, CharacterManager* characterManager) {
+#define	FONT_SIZE		16
+#define LINE_HEIGHT		24
+#define TITLE_SIZE		FONT_SIZE + 8
+
+UserInterfaceCrew::UserInterfaceCrew(sf::RenderWindow* app) {
   _app = app;
-  _characterManager = characterManager;
+  _characterManager = CharacterManager::getInstance();
 
   if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
 	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
@@ -39,7 +45,7 @@ void  UserInterfaceCrew::addCharacter(int index, Character* character) {
   _app->draw(text);
 
   sf::Sprite sprite;
-  _characterManager->getSprite(&sprite, function.id);
+  _characterManager->getSprite(&sprite, function.id, 0);
   sprite.setPosition(100 + UI_PADDING + (CREW_LINE_WIDTH * x),
 					 100 + UI_PADDING + (CREW_LINE_HEIGHT * y));
   _app->draw(sprite);
@@ -60,5 +66,73 @@ void	UserInterfaceCrew::refresh(int frame) {
   for (it = characters->begin(); it != characters->end(); ++it) {
 	addCharacter(i++, *it);
   }
+
+}
+
+void	UserInterfaceCrew::drawTile(int index) {
+
+  int posX = MENU_TILE_WIDTH * index;
+  std::ostringstream oss;
+
+  // Background
+  sf::RectangleShape shape;
+  shape.setSize(sf::Vector2f(MENU_TILE_WIDTH, MENU_TILE_HEIGHT));
+  shape.setFillColor(sf::Color(100, 0, 0));
+  shape.setPosition(posX, 0);
+  _app->draw(shape);
+
+  sf::Text text;
+  text.setFont(_font);
+
+  text.setString("Crew");
+  text.setCharacterSize(TITLE_SIZE);
+  text.setPosition(posX + UI_PADDING, UI_PADDING);
+  _app->draw(text);
+
+  text.setCharacterSize(FONT_SIZE);
+
+  {
+	int matter = ResourceManager::getInstance().getMatter();
+    oss << "Total: " << CharacterManager::getInstance()->getCount();
+
+	text.setString(oss.str());
+    text.setPosition(posX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING);
+    _app->draw(text);
+  }
+
+  const Profession* professions = CharacterManager::getInstance()->getProfessions();
+  for (int i = 0; professions[i].id != Character::PROFESSION_NONE; i++) {
+	shape.setSize(sf::Vector2f(24, 24));
+	shape.setFillColor(professions[i].color);
+	shape.setPosition(UI_PADDING + (i * 28), TITLE_SIZE + UI_PADDING + UI_PADDING + 32);
+	_app->draw(shape);
+
+	oss.str("");
+	int count = CharacterManager::getInstance()->getCount(professions[i].id);
+	oss << count;
+	text.setString(oss.str());
+	text.setColor(professions[i].textColor);
+	text.setCharacterSize(10);
+	text.setPosition(UI_PADDING + (i * 28) + (count < 10 ? 6 : 2), TITLE_SIZE + UI_PADDING + UI_PADDING + 32 + 5);
+    _app->draw(text);
+  }
+
+  // {
+  //   std::ostringstream oss;
+  //   oss << "Power: " << ResourceManager::getInstance().getPower();
+
+  //   text.setString(oss.str());
+  //   text.setPosition(posX + UI_PADDING, UI_PADDING + LINE_HEIGHT);
+  //   _app->draw(text);
+  // }
+
+  // {
+  //   std::ostringstream oss;
+  //   oss << "O2: " << ResourceManager::getInstance().getO2();
+
+  //   text.setString(oss.str());
+  //   text.setPosition(posX + UI_PADDING, UI_PADDING + LINE_HEIGHT * 2);
+  //   _app->draw(text);
+  // }
 
 }

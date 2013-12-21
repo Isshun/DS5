@@ -28,8 +28,8 @@ void	WorldRenderer::drawFloor(sf::RenderStates render, int fromX, int fromY, int
   for (int i = toX-1; i >= fromX; i--) {
 	for (int j = toY-1; j >= fromY; j--) {
 	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
+	  sf::Sprite sprite;
 	  if (item != NULL) {
-		sf::Sprite sprite;
 
 		if (item->isType(BaseItem::STRUCTURE_DOOR)) {
 		  _spriteManager->getSprite(item, &sprite);
@@ -39,8 +39,14 @@ void	WorldRenderer::drawFloor(sf::RenderStates render, int fromX, int fromY, int
 		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 		}
 	  
-		_app->draw(sprite, render);
 	  }
+
+	  else {
+		_spriteManager->getExterior(&sprite);
+		sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+	  }
+	  _app->draw(sprite, render);
+
 	}
   }
 }

@@ -21,12 +21,18 @@ class	CharacterManager
     void        update(int count);
     Character*  getCharacterAtPos(int x, int y);
 	std::list<Character*>*		getList() { return _characters; };
-	sf::Sprite*	getSprite(sf::Sprite* sprite, int functionId);
+	sf::Sprite*	getSprite(sf::Sprite* sprite, int functionId, int index);
+	static CharacterManager*	getInstance() { return _self; }
+	const Profession*	getProfessions();
+
+	int			getCount() { return _count; }
+	int			getCount(int professionId);
 
  private:
 	std::list<Character*>*		_characters;
 	sf::Texture*				_textures[10];
 	int							_count;
+	static CharacterManager*	_self;
 };
 
 #endif

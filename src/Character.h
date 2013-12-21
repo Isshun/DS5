@@ -14,6 +14,7 @@ struct {
   int			id;
   const char*	name;
   sf::Color		color;
+  sf::Color		textColor;
 } typedef		Profession;
 
 class	Character {
@@ -22,6 +23,7 @@ class	Character {
   ~Character();
 
   void	setProfession(int professionId);
+  void	setProfession(Profession profession) { _profession = profession; }
 
   enum {
 	PROFESSION_NONE,
@@ -87,6 +89,7 @@ class	Character {
   int   getHealth() { return _health; }
   int*  getMessages() { return _messages; }
   bool	getSelected() { return _selected; }
+  int	getFrameIndex() { return _frameIndex++; }
 
   void	action();
   void  update();
@@ -110,6 +113,7 @@ class	Character {
   void	actionBuild();
 
   int	_id;
+  int	_frameIndex;
   int	_gender;
   char	_name[32];
   AStarSearch<MapSearchNode>* _astarsearch;

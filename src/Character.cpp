@@ -7,13 +7,13 @@
 #include "WorldMap.h"
 #include "Log.h"
 #include "PathManager.h"
+#include "CharacterManager.h"
 
 #define LIMITE_FOOD_OK 30
 #define LIMITE_FOOD_HUNGRY 15
 #define LIMITE_FOOD_STARVE 0
 #define MESSAGE_COUNT_INIT -100
 
-#define FUNCTIONS_COUNT 5
 #define BLOCKED_COUNT_BEFORE_MESSAGE 5
 
 const char* firstname[] = {
@@ -114,15 +114,6 @@ const char* lastname[] = {
   "Hartness"
 };
 
-const Profession professions[] = {
-  {Character::PROFESSION_ENGINEER, "Engineer", sf::Color(255, 255, 50)},
-  {Character::PROFESSION_MINER, "Miner", sf::Color(255, 150, 0)},
-  {Character::PROFESSION_DOCTOR, "Doctor", sf::Color(50, 240, 0)},
-  {Character::PROFESSION_SCIENCE, "Science", sf::Color(50, 100, 255)},
-  {Character::PROFESSION_SECURITY, "Security", sf::Color(150, 40, 60)},
-  {Character::PROFESSION_NONE, NULL, sf::Color(0, 0, 0)}
-};
-
 Character::Character(int id, int x, int y) {
   Debug() << "Character #" << id;
 
@@ -136,18 +127,16 @@ Character::Character(int id, int x, int y) {
   _sleep = 0;
   _selected = false;
   _blocked = 0;
-
-  // _jobName = professions[rand() % 4].name;
-  _profession = professions[id % FUNCTIONS_COUNT];
+  _frameIndex = rand() % 20;
 
   memset(_messages, MESSAGE_COUNT_INIT, CHARACTER_MAX_MESSAGE * sizeof(int));
 
   // Needs
-  _food = CHARACTER_INIT_FOOD;
-  _oxygen = CHARACTER_INIT_OXYGEN;
-  _hapiness = CHARACTER_INIT_HAPINESS;
-  _health = CHARACTER_INIT_HEALTH;
-  _energy = CHARACTER_INIT_ENERGY;
+  _food = CHARACTER_INIT_FOOD + rand() % 20 - 10;
+  _oxygen = CHARACTER_INIT_OXYGEN + rand() % 20 - 10;
+  _hapiness = CHARACTER_INIT_HAPINESS + rand() % 20 - 10;
+  _health = CHARACTER_INIT_HEALTH + rand() % 20 - 10;
+  _energy = CHARACTER_INIT_ENERGY + rand() % 20 - 10;
 
   int offset = (_gender == Character::GENDER_FEMALE ? 4 : 0);
   if (rand() % 2) {
@@ -175,6 +164,8 @@ Character::~Character() {
 }
 
 void	Character::setProfession(int professionId) {
+  const Profession* professions = CharacterManager::getInstance()->getProfessions();
+
 	for (int i = 0; professions[i].id != Character::PROFESSION_NONE; i++) {
 		if (professions[i].id == professionId) {
 			Debug() << "setProfession: " << professions[i].name;

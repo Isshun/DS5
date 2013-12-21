@@ -22,6 +22,9 @@
 #define CHAR_WIDTH		32
 #define SPRITE_WIDTH	16
 
+#define MENU_TILE_WIDTH		240
+#define MENU_TILE_HEIGHT	120
+
 #define DEC_X	(VIDEO_WINDOW_W / VIDEO_ZOOM - (TILE_SIZE/2))
 #define DEC_Y	(VIDEO_WINDOW_H / VIDEO_ZOOM - TILE_SIZE)
 // avant: 8, 16

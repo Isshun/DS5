@@ -17,11 +17,12 @@
 
 class UserInterfaceCrew {
  public:
-  UserInterfaceCrew(sf::RenderWindow* app, CharacterManager* characterManager);
+  UserInterfaceCrew(sf::RenderWindow* app);
   ~UserInterfaceCrew();
 
   void	refresh(int frame);
   void  addCharacter(int index, Character* character);
+  void	drawTile(int index);
 
  private:
   sf::RenderWindow*     _app;

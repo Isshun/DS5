@@ -144,6 +144,14 @@ void		SpriteManager::getSprite(int type, sf::Sprite* sprite) {
   }
 }
 
+void				SpriteManager::getExterior(sf::Sprite* sprite) {
+  sprite->setTexture(*_texture[4]);
+  sprite->setTextureRect(sf::IntRect(0 * TILE_SIZE,
+									 7 * TILE_SIZE,
+									 TILE_SIZE,
+									 TILE_SIZE));
+}
+
 void				SpriteManager::getFloor(BaseItem* item, int zone, int room, sf::Sprite* sprite) {
   int choice = 1;
 

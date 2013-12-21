@@ -21,12 +21,13 @@
 #include "CharacterManager.h"
 #include "UserInterfaceCrew.h"
 #include "UserInterfaceDebug.h"
+#include "UserInterfaceMenuBase.h"
 
 #define MOVE_VIEW_OFFSET        40
 
 class UserInterface {
  public:
-  UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport, CharacterManager* characteres);
+  UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport);
   ~UserInterface();
 
   void	refresh(int frame, long interval);
@@ -70,6 +71,7 @@ class UserInterface {
   UserInterfaceMenuCharacter*   _menuCharacter;
   UserInterfaceCrew*			_uiCharacter;
   UserInterfaceDebug*			_uiDebug;
+  UserInterfaceMenuBase*		_uiBase;
 };
 
 #endif /* USERINTERFACE_H_ */

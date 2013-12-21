@@ -9,6 +9,10 @@
 #define UIRES_POSX		UI_WIDTH
 #define UIRES_POSY		0
 
+#define	FONT_SIZE		16
+#define LINE_HEIGHT		24
+#define TITLE_SIZE		FONT_SIZE + 8
+
 UserInterfaceResource::UserInterfaceResource(sf::RenderWindow* app) {
   _app = app;
 
@@ -75,6 +79,63 @@ void UserInterfaceResource::refreshResources(int frame, long interval) {
     text.setFont(_font);
     text.setCharacterSize(24);
     text.setPosition(UIRES_POSX + UI_PADDING + 800 + 0, UIRES_POSY + UI_PADDING + 0);
+    _app->draw(text);
+  }
+
+}
+
+void	UserInterfaceResource::drawTile(int index) {
+
+  int posX = MENU_TILE_WIDTH * index;
+
+  // Background
+  sf::RectangleShape shape;
+  shape.setSize(sf::Vector2f(MENU_TILE_WIDTH, MENU_TILE_HEIGHT));
+  shape.setFillColor(sf::Color(0, 100, 0));
+  shape.setPosition(posX, 0);
+  _app->draw(shape);
+
+  sf::Text text;
+  text.setFont(_font);
+
+  text.setString("Resources");
+  text.setCharacterSize(TITLE_SIZE);
+  text.setPosition(posX + UI_PADDING, UI_PADDING);
+  _app->draw(text);
+
+  text.setCharacterSize(FONT_SIZE);
+
+  {
+	int matter = ResourceManager::getInstance().getMatter();
+    std::ostringstream oss;
+    oss << "Matter: " << matter;
+
+	text.setString(oss.str());
+
+	if (matter == 0)
+	  text.setColor(sf::Color(255, 0, 0));
+	else if (matter < 20)
+	  text.setColor(sf::Color(255, 255, 0));
+    text.setPosition(posX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING);
+    _app->draw(text);
+	text.setColor(sf::Color(255, 255, 255));
+  }
+
+  {
+    std::ostringstream oss;
+    oss << "Power: " << ResourceManager::getInstance().getPower();
+
+    text.setString(oss.str());
+    text.setPosition(posX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT);
+    _app->draw(text);
+  }
+
+  {
+    std::ostringstream oss;
+    oss << "O2: " << ResourceManager::getInstance().getO2();
+
+    text.setString(oss.str());
+    text.setPosition(posX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT * 2);
     _app->draw(text);
   }
 

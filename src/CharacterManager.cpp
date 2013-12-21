@@ -3,6 +3,19 @@
 #include "defines.h"
 #include "CharacterManager.h"
 
+CharacterManager* CharacterManager::_self = new CharacterManager();
+
+#define FUNCTIONS_COUNT 5
+
+const Profession professions[] = {
+  {Character::PROFESSION_ENGINEER, "Engineer", sf::Color(255, 255, 50), sf::Color(50, 50, 50)},
+  {Character::PROFESSION_MINER, "Miner", sf::Color(255, 150, 0), sf::Color(255, 255, 255)},
+  {Character::PROFESSION_DOCTOR, "Doctor", sf::Color(50, 240, 0), sf::Color(255, 255, 255)},
+  {Character::PROFESSION_SCIENCE, "Science", sf::Color(50, 100, 255), sf::Color(255, 255, 255)},
+  {Character::PROFESSION_SECURITY, "Security", sf::Color(150, 40, 60), sf::Color(255, 255, 255)},
+  {Character::PROFESSION_NONE, NULL, sf::Color(0, 0, 0), sf::Color(0, 0, 0)}
+};
+
 CharacterManager::CharacterManager() {
   Debug() << "CharacterManager";
 
@@ -34,6 +47,23 @@ CharacterManager::~CharacterManager() {
   }
 
   delete _characters;
+}
+
+int			CharacterManager::getCount(int professionId) {
+  std::list<Character*>::iterator it;
+  int count = 0;
+
+  for (it = _characters->begin(); it != _characters->end(); ++it) {
+	if ((*it)->getProfession().id == professionId) {
+	  count++;
+	}
+  }
+
+  return count;
+}
+
+const Profession*	CharacterManager::getProfessions() {
+  return professions;
 }
 
 void    CharacterManager::update(int count) {
@@ -71,7 +101,8 @@ Character*		CharacterManager::add(int x, int y) {
   }
 
   Character* c = new Character(_count++, x, y);
-
+  Profession profession = professions[_count % FUNCTIONS_COUNT];
+  c->setProfession(profession);
   _characters->push_back(c);
 
   return c;
@@ -121,10 +152,11 @@ void	CharacterManager::draw(sf::RenderWindow* app, sf::Transform transform) {
 
 	// Sprite
 	sprite.setPosition(posX, posY);
+	int index = (*it)->getFrameIndex() / 20 % 4;
 	if ((*it)->isSleep()) {
 	  sprite.setTextureRect(sf::IntRect(0, CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT));
 	} else {
-	  sprite.setTextureRect(sf::IntRect(0, 0, CHAR_WIDTH, CHAR_HEIGHT));
+	  sprite.setTextureRect(sf::IntRect(CHAR_WIDTH * index, 0, CHAR_WIDTH, CHAR_HEIGHT));
 	}
 	sprite.setScale(0.8f, 0.8f);
 
@@ -153,7 +185,7 @@ void	CharacterManager::draw(sf::RenderWindow* app, sf::Transform transform) {
   }
 }
 
-sf::Sprite*	CharacterManager::getSprite(sf::Sprite* sprite, int functionId) {
+sf::Sprite*	CharacterManager::getSprite(sf::Sprite* sprite, int functionId, int index) {
 
   switch (functionId) {
   case Character::PROFESSION_SECURITY:
@@ -174,7 +206,7 @@ sf::Sprite*	CharacterManager::getSprite(sf::Sprite* sprite, int functionId) {
 	if ((*it)->isSleep()) {
 	  sprite->setTextureRect(sf::IntRect(0, CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT));
 	} else {
-	  sprite->setTextureRect(sf::IntRect(0, 0, CHAR_WIDTH, CHAR_HEIGHT));
+	  sprite->setTextureRect(sf::IntRect(CHAR_WIDTH * (index % 4), 0, CHAR_WIDTH, CHAR_HEIGHT));
 	}
 
 	return sprite;

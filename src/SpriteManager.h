@@ -38,6 +38,7 @@ class SpriteManager {
   void				getSprite(int type, sf::Sprite* sprite);
   void				getFloor(BaseItem* item, int zone, int room, sf::Sprite* sprite);
   void				getWall(BaseItem* item, int special, sf::Sprite* sprite, int index, int zone);
+  void				getExterior(sf::Sprite* sprite);
 
  private:
   sf::Sprite*		_buf;
