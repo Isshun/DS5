@@ -143,7 +143,7 @@ UserInterfaceMenu::UserInterfaceMenu(sf::RenderWindow* app, WorldMap* worldmap, 
   _code = CODE_MAIN;
   _app = app;
   _posX = 0;
-  _posY = 0;
+  _posY = 200;
 
   // Background
   sf::Texture* texture = new sf::Texture();
@@ -333,7 +333,7 @@ void UserInterfaceMenu::drawModeBuild() {
   shortcut.setCharacterSize(UI_FONT_SIZE);
   shortcut.setStyle(sf::Text::Underlined);
   shortcut.setColor(sf::Color(255, 255, 0));
-  shortcut.setPosition(UI_PADDING + 0, UI_PADDING + 0);
+  shortcut.setPosition(_posX + UI_PADDING + 0, _posY + UI_PADDING + 0);
   _app->draw(shortcut);
 }
 
@@ -344,7 +344,7 @@ void UserInterfaceMenu::drawModeErase() {
   shortcut.setCharacterSize(UI_FONT_SIZE);
   shortcut.setStyle(sf::Text::Underlined);
   shortcut.setColor(sf::Color(255, 255, 0));
-  shortcut.setPosition(UI_PADDING + 0, UI_PADDING + 0);
+  shortcut.setPosition(_posX + UI_PADDING + 0, _posY + UI_PADDING + 0);
   _app->draw(shortcut);
 }
 
@@ -366,7 +366,7 @@ void	UserInterfaceMenu::refreshMenu(int frame) {
 	  text.setFont(_font);
 	  text.setCharacterSize(UI_FONT_SIZE);
 	  text.setStyle(sf::Text::Regular);
-	  text.setPosition(UI_PADDING + 0, UI_PADDING + i * UI_FONT_SIZE);
+	  text.setPosition(_posX + UI_PADDING + 0, _posY + UI_PADDING + i * UI_FONT_SIZE);
 	  _app->draw(text);
 
 	  sf::Text shortcut;
@@ -375,7 +375,7 @@ void	UserInterfaceMenu::refreshMenu(int frame) {
 	  shortcut.setCharacterSize(UI_FONT_SIZE);
 	  shortcut.setStyle(sf::Text::Underlined);
 	  shortcut.setColor(sf::Color(255, 255, 0));
-	  shortcut.setPosition(UI_PADDING + 0, UI_PADDING + i * UI_FONT_SIZE);
+	  shortcut.setPosition(_posX + UI_PADDING + 0, _posY + UI_PADDING + i * UI_FONT_SIZE);
 	  _app->draw(shortcut);
 	}
 	break;

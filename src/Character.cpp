@@ -128,6 +128,7 @@ Character::Character(int id, int x, int y) {
   _selected = false;
   _blocked = 0;
   _frameIndex = rand() % 20;
+  _direction = DIRECTION_NONE;
 
   memset(_messages, MESSAGE_COUNT_INIT, CHARACTER_MAX_MESSAGE * sizeof(int));
 
@@ -414,6 +415,7 @@ void		Character::go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY) {
 }
 
 void		Character::move() {
+  _direction = DIRECTION_NONE;
 
   // Character is sleeping
   if (_sleep != 0) {
@@ -436,6 +438,13 @@ void		Character::move() {
 	// Goto node
 	if (node != NULL) {
 	  node->PrintNodeInfo();
+
+	  // Set direction
+	  if (node->x > _posX) _direction = DIRECTION_RIGHT;
+	  else if (node->x < _posX) _direction = DIRECTION_LEFT;
+	  else if (node->y > _posY) _direction = DIRECTION_BOTTOM;
+	  else if (node->y < _posY) _direction = DIRECTION_TOP;
+
 	  _posX = node->x;
 	  _posY = node->y;
 	  _steps++;

@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <cstdlib>
 #include <stdio.h>
 #include <string.h>
 #include <list>
@@ -17,8 +18,18 @@ WorldMap* WorldMap::_self = new WorldMap();
 
 WorldMap::WorldMap() {
   _itemCout = 0;
-  _width = 50;
+  _width = 120;
   _height = 50;
+
+  // memset(_tmp, 0, 250 * 250 * 4);
+
+  for (int y = 0; y < _height; y++) {
+	for (int x = 0; x < _width; x++) {
+	  _tmp[x][y] = 0;
+	}
+  }
+
+  dump();
 
   _rooms = std::map<int, Room*>();
   _todo = new std::list<BaseItem*>();
@@ -461,11 +472,14 @@ void WorldMap::dump() {
   // 	}
   // }
 
-  std::cout << std::endl;
+  // std::cout << std::endl << "\r";
+
+  system("clear");
 
   for (int y = 0; y < _height; y++) {
 	for (int x = 0; x < _width; x++) {
-	  std::cout << GetMap(x, y);
+	  std::cout << _tmp[x][y];
+	  // std::cout << GetMap(x, y);
 	  // if (_items[x][y] != NULL) {
 	  // 	Info() << x << " x " << y << " = " << _items[x][y]->type;
 	  // }
@@ -560,6 +574,37 @@ void WorldMap::removeItem(int x, int y) {
   }
 }
 
+void	WorldMap::destroyRoom(int roomId) {
+  if (roomId == 0) {
+	return;
+  }
+
+  // TODO: destroy room
+
+  bool found = true;
+  int count = 0;
+
+  while (found) {
+	found = false;
+	for (int x = 0; x < _width; x++) {
+	  for (int y = 0; y < _height; y++) {
+		if (_items[x][y] != NULL && _items[x][y]->getRoomId() == roomId) {
+		  found = true;
+		  int newRoomId = Room::getNewId();
+		  Room* room = new Room();
+		  room->setId(newRoomId);
+		  Room::setZone(x, y, newRoomId, _items[x][y]->getZoneId());
+		  _rooms[newRoomId] = room;
+		  Info() << "Room create: " << newRoomId << ", old: " << roomId;
+		  count++;
+		}
+	  }
+	}
+  }
+
+  Info() << "DestroyRoom: " << count << " rooms added";
+}
+
 void WorldMap::putItem(int x, int y, int type) {
   if (_itemCout + 1 > LIMIT_ITEMS) {
 	Error() << "LIMIT_ITEMS reached";
@@ -592,47 +637,62 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
 	roomId = _items[x][y]->getRoomId();
   }
 
-  // Get the room
-  if (roomId > 0) {
-	Room* room = getRoom(roomId);
-	if (room != NULL) {
+  // Wall
+  if (item->isStructure() && item->isType(BaseItem::STRUCTURE_FLOOR) == false) {
+	_items[x][y] = item;
+	// _items[x][y]->setRoomId(roomId);
+	// _items[x][y]->setZoneId(0);
+	destroyRoom(roomId);
+  }
 
-	  // Room have no zoneId
-	  if (room->getZoneId() == 0) {
-		Info() << "Set room to new zoneId: " << item->getZoneId();
-		room->setZoneId(item->getZoneId());
+  // Object or floor
+  else {
+
+	// Room already exists
+	if (roomId > 0 && getRoom(roomId) != NULL) {
+	  Room* room = getRoom(roomId);
+	  if (room != NULL) {
+
+		// Room have no zoneId
+		if (room->getZoneId() == 0) {
+		  Info() << "Set room to new zoneId: " << item->getZoneId();
+		  room->setZoneId(item->getZoneId());
+		}
+
+		// Item have no zoneId
+		if (item->getZoneId() == 0) {
+		  zoneId = room->getZoneId();
+		}
+
+		// Room and item zoneId match
+		else if (room->getZoneId() == item->getZoneId()) {
+		  Info() << "Room zoneId match with item";
+		}
+
+		// Room and item zoneId don't match
+		else {
+		  Info() << "this item can not be put at this position because zoneId not match (item: "
+				 << item->getZoneId() << ", room: " << room->getZoneId() << ")";
+		  return;
+		}
 	  }
 
-	  // Item have no zoneId
-	  if (item->getZoneId() == 0) {
-		zoneId = room->getZoneId();
-	  }
-
-	  // Room and item zoneId match
-	  else if (room->getZoneId() == item->getZoneId()) {
-		Info() << "Room zoneId match with item";
-	  }
-
-	  // Room and item zoneId don't match
-	  else {
-		Info() << "this item can not be put at this position because zoneId not match (item: "
-			   << item->getZoneId() << ", room: " << room->getZoneId() << ")";
-		return;
-	  }
+	  _items[x][y] = item;
 	}
+
+	// Create new room if not exists
+	else {
+	  _items[x][y] = item;
+	  roomId = addRoom(x, y);
+	}
+
+	item->setZoneId(zoneId);
+	item->setRoomId(roomId);
   }
 
   // Put item
   Debug() << "put item: " << type;
   item->setPosition(x, y);
-  item->setZoneId(zoneId);
-  item->setRoomId(roomId);
-  _items[x][y] = item;
-
-  // Create new room if not exists
-  if (roomId == 0) {
-	addRoom(x, y);
-  }
 
   // add to todo list if building is required
   if (free) {
@@ -642,7 +702,7 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
   }
 }
 
-void		WorldMap::addRoom(int x, int y) {
+int		WorldMap::addRoom(int x, int y) {
   Debug() << "addRoom: " << x << " x " << y;
 
   Room* room = Room::createFromPos(x, y);
@@ -650,7 +710,8 @@ void		WorldMap::addRoom(int x, int y) {
   if (room != NULL) {
 	_rooms[room->getId()] = room;
   }
-  // _rooms->push_back(room);
+
+  return room->getId();
 }
 
 BaseItem*		WorldMap::getItemToBuild() {

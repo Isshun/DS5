@@ -19,6 +19,7 @@ class	Room
 
 	int				getId() { return _id; }
 	int				getZoneId() { return _zoneId; }
+	static int		getNewId() { return ++_roomCount; }
 
  private:
 	int					_id;

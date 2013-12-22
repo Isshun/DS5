@@ -37,12 +37,6 @@ void	UserInterfaceMenuBase::drawTile(int index) {
 
   sf::Text text;
   text.setFont(_font);
-
-  text.setString("Base");
-  text.setCharacterSize(TITLE_SIZE);
-  text.setPosition(posX + UI_PADDING, UI_PADDING);
-  _app->draw(text);
-
   text.setCharacterSize(FONT_SIZE);
 
   {
@@ -54,4 +48,12 @@ void	UserInterfaceMenuBase::drawTile(int index) {
     _app->draw(text);
   }
 
+  text.setString("Build");
+  text.setCharacterSize(TITLE_SIZE);
+  text.setPosition(posX + UI_PADDING, UI_PADDING);
+  _app->draw(text);
+  text.setString("B");
+  text.setStyle(sf::Text::Underlined);
+  text.setColor(sf::Color(255, 255, 0));
+  _app->draw(text);
 }

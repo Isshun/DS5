@@ -6,7 +6,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Game.hpp"
+#include "Game.h"
 #include "ResourceManager.h"
 #include "MapSearchNode.h"
 #include "PathManager.h"
@@ -14,10 +14,9 @@
 
 Settings* Settings::_self = new Settings();
 
-extern int old_time1;
-extern int old_time2;
-
 sf::Time _time_elapsed;
+
+#define REFRESH_INTERVAL		250
 
 Game::Game(sf::RenderWindow* app) {
   Debug() << "Game";
@@ -34,24 +33,20 @@ Game::Game(sf::RenderWindow* app) {
   WorldMap* worldMap = WorldMap::getInstance();
   worldMap->init();
 
+  _ui = new UserInterface(app, worldMap, _viewport);
+
   _spriteManager = new SpriteManager();
-  _worldRenderer = new WorldRenderer(app, _spriteManager);
+  _worldRenderer = new WorldRenderer(app, _spriteManager, _ui);
 
   // PathManager::getInstance()->init();
 
   _update = 0;
 
   _characterManager = CharacterManager::getInstance();
-  for (int i = 0; i < 22; i++) {
-  	_characterManager->add(rand() % 20, rand() % 20);
-  }
-  //_characterManager->add(15, 16, Character::PROFESSION_ENGINEER);
-  // _characterManager->add(9, 8);
-  // _characterManager->add(17, 8);
-  // _characterManager->add(15, 20);
-  // _characterManager->add(16, 20);
-
-  _ui = new UserInterface(app, worldMap, _viewport);
+  _characterManager->add(0, 0, Character::PROFESSION_ENGINEER);
+  // for (int i = 0; i < 22; i++) {
+  // 	_characterManager->add(rand() % 20, rand() % 20);
+  // }
 
   // Background
   Debug() << "Game background";
@@ -191,12 +186,13 @@ void	Game::loop() {
 			}
 
 			_force_refresh = _ui->checkKeyboard(event, _frame, _lastInput);
-			gere_quit();
+			
+			checkQuit();
 		}
 
 		// Update & refresh: 50fps
 		_time_elapsed = display_timer.getElapsedTime();
-		if (_time_elapsed.asMilliseconds() > 5) {
+		if (_time_elapsed.asMilliseconds() > REFRESH_INTERVAL) {
 			display_timer.restart();
 			_force_refresh = false;
 
@@ -220,7 +216,7 @@ void	Game::loop() {
 	}
 }
 
-void	Game::gere_quit() {
+void	Game::checkQuit() {
   if (this->event.type == sf::Event::Closed) {
 	_app->setKeyRepeatEnabled(true);
 	_app->close();

@@ -3,7 +3,8 @@
 #include "WorldMap.h"
 #include "WorldRenderer.h"
 
-WorldRenderer::WorldRenderer(sf::RenderWindow* app, SpriteManager* spriteManager) {
+WorldRenderer::WorldRenderer(sf::RenderWindow* app, SpriteManager* spriteManager, UserInterface* ui) {
+	_ui = ui;
 	_app = app;
 	_spriteManager = spriteManager;
 	if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
@@ -11,16 +12,22 @@ WorldRenderer::WorldRenderer(sf::RenderWindow* app, SpriteManager* spriteManager
 }
 
 void	WorldRenderer::draw(sf::RenderStates render) {
-	int w = WorldMap::getInstance()->getWidth();
-	int h = WorldMap::getInstance()->getHeight();
+  int fromX = max(_ui->getRelativePosX(0)-1, 0);
+  int fromY = max(_ui->getRelativePosY(0)-1, 0);
+	// int toX = _ui->getRelativePosX(WorldMap::getInstance()->getWidth());
+	// int toY = _ui->getRelativePosY(WorldMap::getInstance()->getHeight());
+  int toX = min(_ui->getRelativePosX(WINDOW_WIDTH)+1, WorldMap::getInstance()->getWidth());
+  int toY = min(_ui->getRelativePosY(WINDOW_HEIGHT)+1, WorldMap::getInstance()->getHeight());
 
-	drawFloor(render, 0, 0, w, h);
-	drawStructure(render, 0, 0, w, h);
-	drawItems(render, 0, 0, w, h);
+	Info() << "Renderer: " << fromX << " to: " << toX;
+
+	drawFloor(render, fromX, fromY, toX, toY);
+	drawStructure(render, fromX, fromY, toX, toY);
+	drawItems(render, fromX, fromY, toX, toY);
 
 	// Draw debug
 	if (Settings::getInstance()->isDebug()) {
-	  drawDebug(render, 0, 0, w, h);
+	  drawDebug(render, fromX, fromY, toX, toY);
 	}
 }
 
@@ -226,8 +233,8 @@ void	WorldRenderer::drawDebug(sf::RenderStates render, int fromX, int fromY, int
 		text.setColor(sf::Color(0, 0, 0));
 		text.setStyle(sf::Text::Regular);
 		std::ostringstream oss;
-		// oss << item->getRoomId();
-		oss << item->getZoneId();
+		oss << item->getRoomId();
+		 //oss << item->getZoneId();
 		text.setString(oss.str().c_str());
 		text.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 		_app->draw(text, render);

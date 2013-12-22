@@ -82,11 +82,16 @@ AStarSearch<MapSearchNode>*		PathManager::getPath(MapSearchNode nodeStart, MapSe
 	 unsigned int SearchState;
 	 unsigned int SearchSteps = 0;
 
+	 Debug() << "PathManager: searching...";
 	 do {
 	   SearchState = astarsearch->SearchStep();
 	   SearchSteps++;
+	   WorldMap::getInstance()->dump();
+	   // if (SearchSteps > 10000 && SearchSteps % 100 == 0)
+	   // 	 Debug() << "PathManager: step " << SearchSteps;
 	 }
 	 while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
+	 Debug() << "PathManager: search complete";
 
 	 // Path found
 	 if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED ) {
