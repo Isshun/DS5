@@ -11,6 +11,7 @@ int GetMap( int x, int y ) {
 	return 9;
   }
 
+  WorldMap::getInstance()->debugAstar(x, y);
   BaseItem* item = WorldMap::getInstance()->getItem(x, y);
 
   // Space

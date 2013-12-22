@@ -14,15 +14,6 @@
 #include "Viewport.h"
 #include "CharacterManager.h"
 
-struct s_link {
-  const char	*name;
-  int		x;
-  int		y;
-  const char	*jump_map;
-  int		jump_x;
-  int		jump_y;
-};
-
 class	Game {
 public:
 	Game(sf::RenderWindow* app);
@@ -32,18 +23,7 @@ public:
 	void	update();
 	void	refresh();
 	void	draw_surface();
-
-	bool	is_run() { return _run; }
-
-	void	gere_key();
-	void	gere_quit();
-
-	bool	run;
-
-	bool	get_physique(int x, int y);
-
-	void	checkJump();
-	void	jump(s_link link);
+	void	checkQuit();
 
 private:
 	sf::RenderWindow*	_app;

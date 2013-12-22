@@ -4,10 +4,11 @@
 #include <SFML/Graphics.hpp>
 #include "defines.h"
 #include "SpriteManager.h"
+#include "UserInterface.h"
 
 class WorldRenderer {
   public:
-	WorldRenderer(sf::RenderWindow* app, SpriteManager* spriteManager);
+  WorldRenderer(sf::RenderWindow* app, SpriteManager* spriteManager, UserInterface* ui);
 	~WorldRenderer() {}
 
 	void	draw(sf::RenderStates render);
@@ -20,6 +21,7 @@ class WorldRenderer {
 	sf::RenderWindow*	_app;
 	SpriteManager*		_spriteManager;
 	sf::Font			_font;
+	UserInterface*		_ui;
 };
 
 #endif

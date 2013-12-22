@@ -81,38 +81,39 @@ class BaseItem {
 	SCIENCE_HYDROPONICS
   };
 
-  bool			isSolid;
-  int			progress;
+  // Sets
+  void				setPosition(int x, int y) { _x = x; _y = y; }
+  void				setOwner(Character* character);
+  void				setRoomId(int roomId) { _roomId = roomId; }
+  void				setZoneId(int zoneId) { _zoneId = zoneId; }
 
-  int			getWidth() { return _width; }
-  int			getHeight() { return _height; }
-  int			getX() { return _x; }
-  int			getY() { return _y; }
-  int			getType() { return _type; }
-  int			getZoneId() { return _zoneId; }
-  int			getZoneIdRequired() { return _zoneIdRequired; }
-  int			getRoomId() { return _roomId; }
-  int			getId() { return _id; }
+  // Gets
+  Character*		getOwner() { return _owner; }
+  static ItemInfo 	getItemInfo(int type);
+  int				getWidth() { return _width; }
+  int				getHeight() { return _height; }
+  int				getX() { return _x; }
+  int				getY() { return _y; }
+  int				getType() { return _type; }
+  int				getZoneId() { return _zoneId; }
+  int				getZoneIdRequired() { return _zoneIdRequired; }
+  int				getRoomId() { return _roomId; }
+  int				getId() { return _id; }
 
-  void			setPosition(int x, int y) { _x = x; _y = y; }
-  void			setOwner(Character* character);
-  void			setRoomId(int roomId) { _roomId = roomId; }
-  void			setZoneId(int zoneId) { _zoneId = zoneId; }
+  // Bools
+  bool				isComplete() { return progress == matter; }
+  bool				isSupply() { return power == powerSupply; }
+  bool				isFree() { return _owner == NULL; }
+  bool				isType(int type) { return _type == type; }
+  bool				isZoneMatch() { return _zoneId == _zoneIdRequired; }
+  bool				isSleepingItem() { return _type == QUARTER_BED || _type == QUARTER_CHAIR; }
+  bool				isStructure() { return _type > STRUCTURE_ITEM_START && _type < STRUCTURE_ITEM_STOP; }
 
-  Character*	getOwner() { return _owner; }
-
-  static ItemInfo getItemInfo(int type);
-
-  bool			isComplete() { return progress == matter; }
-  bool			isSupply() { return power == powerSupply; }
-  bool			isFree() { return _owner == NULL; }
-  bool			isType(int type) { return _type == type; }
-  bool			isZoneMatch() { return _zoneId == _zoneIdRequired; }
-  bool			isSleepingItem() { return _type == QUARTER_BED || _type == QUARTER_CHAIR; }
-  bool			isStructure() { return _type > STRUCTURE_ITEM_START && _type < STRUCTURE_ITEM_STOP; }
-  int			matter;
-  int			power;
-  int			powerSupply;
+  bool				isSolid;
+  int				progress;
+  int				matter;
+  int				power;
+  int				powerSupply;
 
  private:
   Character*	_owner;

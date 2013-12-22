@@ -14,25 +14,26 @@ class	CharacterManager
 	CharacterManager();
 	~CharacterManager();
 
-	Character*	add(int x, int y);
-	Character*	add(int x, int y, int profession);
-	Character*	getUnemployed(int professionId);
-	void		draw(sf::RenderWindow* app, sf::Transform transform);
-    void        update(int count);
-    Character*  getCharacterAtPos(int x, int y);
-	std::list<Character*>*		getList() { return _characters; };
-	sf::Sprite*	getSprite(sf::Sprite* sprite, int functionId, int index);
-	static CharacterManager*	getInstance() { return _self; }
-	const Profession*	getProfessions();
+	Character*					add(int x, int y);
+	Character*					add(int x, int y, int profession);
+	void						draw(sf::RenderWindow* app, sf::Transform transform);
+    void        				update(int count);
 
-	int			getCount() { return _count; }
-	int			getCount(int professionId);
+	// Gets
+	Character*					getUnemployed(int professionId);
+    Character*  				getCharacterAtPos(int x, int y);
+	std::list<Character*>*		getList() { return _characters; };
+	sf::Sprite*					getSprite(sf::Sprite* sprite, int functionId, int index);
+	static CharacterManager*	getInstance() { return _self; }
+	const Profession*			getProfessions();
+	int							getCount() { return _count; }
+	int							getCount(int professionId);
 
  private:
+	static CharacterManager*	_self;
 	std::list<Character*>*		_characters;
 	sf::Texture*				_textures[10];
 	int							_count;
-	static CharacterManager*	_self;
 };
 
 #endif

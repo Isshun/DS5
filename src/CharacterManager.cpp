@@ -147,16 +147,19 @@ void	CharacterManager::draw(sf::RenderWindow* app, sf::Transform transform) {
 
   std::list<Character*>::iterator it;
   for (it = _characters->begin(); it != _characters->end(); ++it) {
-	int posX = (*it)->_posX * TILE_SIZE - (CHAR_WIDTH - TILE_SIZE) + 2;
-	int posY = (*it)->_posY * TILE_SIZE - (CHAR_HEIGHT - TILE_SIZE) + 0;
+	int posX = (*it)->getX() * TILE_SIZE - (CHAR_WIDTH - TILE_SIZE) + 2;
+	int posY = (*it)->getY() * TILE_SIZE - (CHAR_HEIGHT - TILE_SIZE) + 0;
 
 	// Sprite
 	sprite.setPosition(posX, posY);
 	int index = (*it)->getFrameIndex() / 20 % 4;
+	int direction = (*it)->getDirection();
 	if ((*it)->isSleep()) {
 	  sprite.setTextureRect(sf::IntRect(0, CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT));
+ 	} else if (direction == Character::DIRECTION_NONE) {
+	  sprite.setTextureRect(sf::IntRect(0, 0, CHAR_WIDTH, CHAR_HEIGHT));
 	} else {
-	  sprite.setTextureRect(sf::IntRect(CHAR_WIDTH * index, 0, CHAR_WIDTH, CHAR_HEIGHT));
+	  sprite.setTextureRect(sf::IntRect(CHAR_WIDTH * index, CHAR_HEIGHT * direction, CHAR_WIDTH, CHAR_HEIGHT));
 	}
 	sprite.setScale(0.8f, 0.8f);
 
@@ -198,8 +201,8 @@ sf::Sprite*	CharacterManager::getSprite(sf::Sprite* sprite, int functionId, int 
 
   std::list<Character*>::iterator it;
   for (it = _characters->begin(); it != _characters->end(); ++it) {
-	int posX = (*it)->_posX * TILE_SIZE - (CHAR_WIDTH - TILE_SIZE);
-	int posY = (*it)->_posY * TILE_SIZE - (CHAR_HEIGHT - TILE_SIZE + TILE_SIZE / 2);
+	int posX = (*it)->getX() * TILE_SIZE - (CHAR_WIDTH - TILE_SIZE);
+	int posY = (*it)->getY() * TILE_SIZE - (CHAR_HEIGHT - TILE_SIZE + TILE_SIZE / 2);
 
 	// Sprite
 	sprite->setPosition(posX, posY);
