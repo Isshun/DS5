@@ -24,15 +24,19 @@ class UserInterfaceMenuCharacter {
 	if (_character != NULL) {
 	  _character->setSelected(false);
 	}
+	if (character != NULL) {
+	  character->setSelected(true);
+	}
 	_character = character;
   }
   Character*  getCharacter() { return _character; }
-  void  addGauge(int posX, int posY, int width, int height, int value, const char* text);
-  void  addMessage(int posX, int posY, int width, int height, int value);
+  void  addGauge(int posX, int posY, int width, int height, int value, const char* text, sf::RenderStates render);
+  void  addMessage(int posX, int posY, int width, int height, int value, sf::RenderStates render);
 
  private:
   sf::RenderWindow*     _app;
   sf::Font				_font;
+  sf::Texture			_backgroundTexture;
   Character*            _character;
 };
 

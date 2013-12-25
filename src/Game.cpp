@@ -16,7 +16,7 @@ Settings* Settings::_self = new Settings();
 
 sf::Time _time_elapsed;
 
-#define REFRESH_INTERVAL		250
+#define REFRESH_INTERVAL		20
 
 Game::Game(sf::RenderWindow* app) {
   Debug() << "Game";
@@ -44,9 +44,9 @@ Game::Game(sf::RenderWindow* app) {
 
   _characterManager = CharacterManager::getInstance();
   _characterManager->add(0, 0, Character::PROFESSION_ENGINEER);
-  // for (int i = 0; i < 22; i++) {
-  // 	_characterManager->add(rand() % 20, rand() % 20);
-  // }
+  for (int i = 0; i < 22; i++) {
+  	_characterManager->add(rand() % 20, rand() % 20);
+  }
 
   // Background
   Debug() << "Game background";

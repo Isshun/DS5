@@ -464,28 +464,28 @@ void WorldMap::initMap() {
 int GetMap(int x, int y);
 
 void WorldMap::dump() {
-  // for (int x = 0; x < _width; x++) {
-  // 	for (int y = 0; y < _height; y++) {
-  // 	  if (_items[x][y] != NULL) {
-  // 		Info() << x << " x " << y << " = " << _items[x][y]->type;
-  // 	  }
+  // // for (int x = 0; x < _width; x++) {
+  // // 	for (int y = 0; y < _height; y++) {
+  // // 	  if (_items[x][y] != NULL) {
+  // // 		Info() << x << " x " << y << " = " << _items[x][y]->type;
+  // // 	  }
+  // // 	}
+  // // }
+
+  // // std::cout << std::endl << "\r";
+
+  // system("clear");
+
+  // for (int y = 0; y < _height; y++) {
+  // 	for (int x = 0; x < _width; x++) {
+  // 	  std::cout << _tmp[x][y];
+  // 	  // std::cout << GetMap(x, y);
+  // 	  // if (_items[x][y] != NULL) {
+  // 	  // 	Info() << x << " x " << y << " = " << _items[x][y]->type;
+  // 	  // }
   // 	}
+  // 	std::cout << std::endl;
   // }
-
-  // std::cout << std::endl << "\r";
-
-  system("clear");
-
-  for (int y = 0; y < _height; y++) {
-	for (int x = 0; x < _width; x++) {
-	  std::cout << _tmp[x][y];
-	  // std::cout << GetMap(x, y);
-	  // if (_items[x][y] != NULL) {
-	  // 	Info() << x << " x " << y << " = " << _items[x][y]->type;
-	  // }
-	}
-	std::cout << std::endl;
-  }
 
 }
 

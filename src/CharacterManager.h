@@ -22,6 +22,7 @@ class	CharacterManager
 	// Gets
 	Character*					getUnemployed(int professionId);
     Character*  				getCharacterAtPos(int x, int y);
+	Character*					getNext(Character* character);
 	std::list<Character*>*		getList() { return _characters; };
 	sf::Sprite*					getSprite(sf::Sprite* sprite, int functionId, int index);
 	static CharacterManager*	getInstance() { return _self; }

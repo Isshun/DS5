@@ -3,9 +3,13 @@
 #define MENU_CHARACTER_FONT_SIZE 20
 #define MENU_CHARACTER_MESSAGE_FONT_SIZE 16
 
+#define MENU_PADDING 32
+
 UserInterfaceMenuCharacter::UserInterfaceMenuCharacter(sf::RenderWindow* app) {
   _app = app;
   _character = NULL;
+
+  _backgroundTexture.loadFromFile("../res/menu1.png");
 
   if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
 	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
@@ -15,7 +19,7 @@ UserInterfaceMenuCharacter::~UserInterfaceMenuCharacter() {
 
 }
 
-void  UserInterfaceMenuCharacter::addMessage(int posX, int posY, int width, int height, int value) {
+void  UserInterfaceMenuCharacter::addMessage(int posX, int posY, int width, int height, int value, sf::RenderStates render) {
   const char* msg;
 
   switch (value) {
@@ -50,38 +54,49 @@ void  UserInterfaceMenuCharacter::addMessage(int posX, int posY, int width, int 
   text.setCharacterSize(MENU_CHARACTER_MESSAGE_FONT_SIZE);
   text.setStyle(sf::Text::Regular);
   text.setPosition(posX, posY);
-  _app->draw(text);
+  _app->draw(text, render);
 }
 
-void  UserInterfaceMenuCharacter::addGauge(int posX, int posY, int width, int height, int value, const char* label) {
+void  UserInterfaceMenuCharacter::addGauge(int posX, int posY, int width, int height, int value, const char* label, sf::RenderStates render) {
     sf::Text text;
     text.setString(label);
     text.setFont(_font);
     text.setCharacterSize(MENU_CHARACTER_FONT_SIZE);
     text.setStyle(sf::Text::Regular);
     text.setPosition(posX, posY);
-    _app->draw(text);
+    _app->draw(text, render);
 
     sf::RectangleShape shapeBg;
     shapeBg.setSize(sf::Vector2f(width, height));
     shapeBg.setFillColor(sf::Color(100, 200, 0));
-    shapeBg.setPosition(posX, posY + MENU_CHARACTER_FONT_SIZE + UI_PADDING);
-    _app->draw(shapeBg);
+    shapeBg.setPosition(posX, posY + MENU_CHARACTER_FONT_SIZE + 8);
+    _app->draw(shapeBg, render);
 
     sf::RectangleShape shape;
     shape.setSize(sf::Vector2f(width * value / 100, height));
     shape.setFillColor(sf::Color(200, 255, 0));
-    shape.setPosition(posX, posY + MENU_CHARACTER_FONT_SIZE + UI_PADDING);
-    _app->draw(shape);
+    shape.setPosition(posX, posY + MENU_CHARACTER_FONT_SIZE + 8);
+    _app->draw(shape, render);
 }
 
 void	UserInterfaceMenuCharacter::refresh(int frame) {
 
+  sf::Transform			transform;
+  transform.translate(WINDOW_WIDTH - 380 - 64, 250);
+  sf::RenderStates		render(transform);
+
   // Background
   sf::RectangleShape shape;
-  shape.setSize(sf::Vector2f(UI_WIDTH, WINDOW_HEIGHT));
-  shape.setFillColor(sf::Color(100, 0, 0));
-  _app->draw(shape);
+  shape.setSize(sf::Vector2f(380, 420));
+  shape.setFillColor(sf::Color(6, 16, 185, 100));
+  _app->draw(shape, render);
+
+  // Background
+  Debug() << "Game background";
+  sf::Sprite background;
+  background.setTexture(_backgroundTexture);
+  background.setTextureRect(sf::IntRect(0, 0, 380, 420));
+  _app->draw(background, render);
 
   if (_character != NULL) {
     // Job
@@ -90,8 +105,8 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
     text.setFont(_font);
     text.setCharacterSize(MENU_CHARACTER_FONT_SIZE);
     text.setStyle(sf::Text::Regular);
-    text.setPosition(UI_PADDING + 0, UI_PADDING);
-    _app->draw(text);
+    text.setPosition(MENU_PADDING + 0, MENU_PADDING);
+    _app->draw(text, render);
 
     // Name
 	Profession function = _character->getProfession();
@@ -101,8 +116,8 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
     job.setCharacterSize(24);
     job.setColor(function.color);
     job.setStyle(sf::Text::Regular);
-    job.setPosition(UI_PADDING + 0, UI_PADDING + MENU_CHARACTER_FONT_SIZE);
-    _app->draw(job);
+    job.setPosition(MENU_PADDING + 0, MENU_PADDING + MENU_CHARACTER_FONT_SIZE);
+    _app->draw(job, render);
 
 	const char* texts[5] = {"Food", "Oxygen", "Hapiness", "Energy", "Health"};
 
@@ -116,22 +131,24 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
 	  case 4: value = max(_character->getHealth(), 0); break;
       }
 
-      addGauge(UI_PADDING,
-               80 * i + (UI_FONT_SIZE * 2) + UI_PADDING,
-               UI_WIDTH - UI_PADDING * 2,
-               UI_FONT_SIZE,
+      addGauge(MENU_PADDING,
+               60 * i + (UI_FONT_SIZE + 16) + MENU_PADDING,
+               UI_WIDTH - MENU_PADDING * 2,
+               16,
                value,
-			   texts[i]);
+			   texts[i],
+			   render);
     }
 
 	int* messages = _character->getMessages();
     for (int i = 0; i < CHARACTER_MAX_MESSAGE; i++) {
 	  if (messages[i] == -1 || messages[i] > frame - 100) {
-		addMessage(UI_PADDING,
-				   400 + (i * UI_FONT_SIZE) + UI_PADDING,
-				   UI_WIDTH - UI_PADDING * 2,
+		addMessage(MENU_PADDING,
+				   280 + (i * UI_FONT_SIZE) + MENU_PADDING,
+				   UI_WIDTH - MENU_PADDING * 2,
 				   UI_FONT_SIZE,
-				   i);
+				   i,
+				   render);
 	  }
     }
 

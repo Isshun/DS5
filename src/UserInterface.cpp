@@ -107,7 +107,6 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
         Info() << "select character";
         Character* c = _characteres->getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
 		if (c != NULL) {
-		  c->setSelected(true);
 		  _menuCharacter->setCharacter(c);
 		}
       }
@@ -245,6 +244,14 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
   if (event.type == sf::Event::KeyReleased) {
 	switch (event.key.code)
 	  {
+
+	  case sf::Keyboard::Tab:
+		if ((event.type == sf::Event::KeyReleased)) {
+		  if (_menuCharacter->getCharacter() != NULL) {
+			_menuCharacter->setCharacter(_characteres->getNext(_menuCharacter->getCharacter()));
+		  }
+		}
+		break;
 
 	  case sf::Keyboard::D:
 		Settings::getInstance()->setDebug(!Settings::getInstance()->isDebug());

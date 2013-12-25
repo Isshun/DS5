@@ -49,6 +49,18 @@ CharacterManager::~CharacterManager() {
   delete _characters;
 }
 
+Character*	CharacterManager::getNext(Character* character) {
+  std::list<Character*>::iterator it = _characters->begin();
+
+  for (int count = _characters->size(); count >= 0; count--, ++it) {
+	if ((*it) == character) {
+	  return ++it == _characters->end() ? *(_characters->begin()) : *it;
+	}
+  }
+
+  return NULL;
+}
+
 int			CharacterManager::getCount(int professionId) {
   std::list<Character*>::iterator it;
   int count = 0;
