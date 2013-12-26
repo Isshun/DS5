@@ -34,7 +34,7 @@ void	WorldRenderer::draw(sf::RenderStates render) {
 void	WorldRenderer::drawFloor(sf::RenderStates render, int fromX, int fromY, int toX, int toY) {
   for (int i = toX-1; i >= fromX; i--) {
 	for (int j = toY-1; j >= fromY; j--) {
-	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
+	  WorldArea* item = WorldMap::getInstance()->getArea(i, j);
 	  sf::Sprite sprite;
 	  if (item != NULL) {
 
@@ -66,17 +66,17 @@ void	WorldRenderer::drawStructure(sf::RenderStates render, int fromX, int fromY,
 	for (int j = toY-1; j >= fromY; j--) {
 		for (int i = toX-1; i >= fromX; i--) {
 			int r = rand();
-			BaseItem* item = WorldMap::getInstance()->getItem(i, j);
+			WorldArea* item = WorldMap::getInstance()->getArea(i, j);
 			if (item != NULL) {
 				sf::Sprite sprite;
 
 				// Structure except floor
 				if (item->isStructure() && !item->isType(BaseItem::STRUCTURE_FLOOR)) {
 
-					BaseItem* bellow = WorldMap::getInstance()->getItem(i, j+1);
-					BaseItem* right = WorldMap::getInstance()->getItem(i+1, j);
-					BaseItem* left = WorldMap::getInstance()->getItem(i-1, j);
-					BaseItem* above = WorldMap::getInstance()->getItem(i, j-1);
+					WorldArea* bellow = WorldMap::getInstance()->getArea(i, j+1);
+					WorldArea* right = WorldMap::getInstance()->getArea(i+1, j);
+					WorldArea* left = WorldMap::getInstance()->getArea(i-1, j);
+					WorldArea* above = WorldMap::getInstance()->getArea(i, j-1);
 	  
 					// Door
 					if (item->isType(BaseItem::STRUCTURE_DOOR)) {
@@ -109,8 +109,8 @@ void	WorldRenderer::drawStructure(sf::RenderStates render, int fromX, int fromY,
 							bool doubleWall = false;
 							if (right != NULL && right->isComplete() && right->isType(BaseItem::STRUCTURE_WALL) &&
 								(lastSpecialY != j || lastSpecialX != i+1)) {
-								BaseItem* aboveRight = WorldMap::getInstance()->getItem(i+1, j-1);
-								BaseItem* bellowRight = WorldMap::getInstance()->getItem(i+1, j+1);
+								WorldArea* aboveRight = WorldMap::getInstance()->getArea(i+1, j-1);
+								WorldArea* bellowRight = WorldMap::getInstance()->getArea(i+1, j+1);
 								if ((aboveRight == NULL || aboveRight->getType() != BaseItem::STRUCTURE_WALL) &&
 									(bellowRight == NULL || bellowRight->getType() != BaseItem::STRUCTURE_WALL)) {
 									doubleWall = true;
@@ -219,6 +219,10 @@ void	WorldRenderer::drawDebug(sf::RenderStates render, int fromX, int fromY, int
   for (int i = toX-1; i >= fromX; i--) {
 	for (int j = toY-1; j >= fromY; j--) {
 	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
+
+	  if (item == NULL) {
+		item = WorldMap::getInstance()->getArea(i, j);
+	  }
 
 	  if (item != NULL) {
 		sf::RectangleShape shape;

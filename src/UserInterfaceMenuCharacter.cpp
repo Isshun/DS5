@@ -3,7 +3,8 @@
 #define MENU_CHARACTER_FONT_SIZE 20
 #define MENU_CHARACTER_MESSAGE_FONT_SIZE 16
 
-#define MENU_PADDING 32
+#define MENU_PADDING_TOP 34
+#define MENU_PADDING_LEFT 16
 
 UserInterfaceMenuCharacter::UserInterfaceMenuCharacter(sf::RenderWindow* app) {
   _app = app;
@@ -86,12 +87,6 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
   sf::RenderStates		render(transform);
 
   // Background
-  sf::RectangleShape shape;
-  shape.setSize(sf::Vector2f(380, 420));
-  shape.setFillColor(sf::Color(6, 16, 185, 100));
-  _app->draw(shape, render);
-
-  // Background
   Debug() << "Game background";
   sf::Sprite background;
   background.setTexture(_backgroundTexture);
@@ -99,16 +94,17 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
   _app->draw(background, render);
 
   if (_character != NULL) {
-    // Job
+
+    // Name
     sf::Text text;
     text.setString(_character->getName());
     text.setFont(_font);
     text.setCharacterSize(MENU_CHARACTER_FONT_SIZE);
     text.setStyle(sf::Text::Regular);
-    text.setPosition(MENU_PADDING + 0, MENU_PADDING);
+    text.setPosition(MENU_PADDING_LEFT + 0, MENU_PADDING_TOP);
     _app->draw(text, render);
 
-    // Name
+    // Job
 	Profession function = _character->getProfession();
     sf::Text job;
     job.setString(function.name);
@@ -116,7 +112,7 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
     job.setCharacterSize(24);
     job.setColor(function.color);
     job.setStyle(sf::Text::Regular);
-    job.setPosition(MENU_PADDING + 0, MENU_PADDING + MENU_CHARACTER_FONT_SIZE);
+    job.setPosition(MENU_PADDING_LEFT + 0, MENU_PADDING_TOP + MENU_CHARACTER_FONT_SIZE);
     _app->draw(job, render);
 
 	const char* texts[5] = {"Food", "Oxygen", "Hapiness", "Energy", "Health"};
@@ -131,9 +127,9 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
 	  case 4: value = max(_character->getHealth(), 0); break;
       }
 
-      addGauge(MENU_PADDING,
-               60 * i + (UI_FONT_SIZE + 16) + MENU_PADDING,
-               UI_WIDTH - MENU_PADDING * 2,
+      addGauge(MENU_PADDING_LEFT,
+               60 * i + (UI_FONT_SIZE + 16) + MENU_PADDING_TOP,
+               UI_WIDTH - MENU_PADDING_TOP * 2,
                16,
                value,
 			   texts[i],
@@ -143,9 +139,9 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
 	int* messages = _character->getMessages();
     for (int i = 0; i < CHARACTER_MAX_MESSAGE; i++) {
 	  if (messages[i] == -1 || messages[i] > frame - 100) {
-		addMessage(MENU_PADDING,
-				   280 + (i * UI_FONT_SIZE) + MENU_PADDING,
-				   UI_WIDTH - MENU_PADDING * 2,
+		addMessage(MENU_PADDING_LEFT,
+				   280 + (i * UI_FONT_SIZE) + MENU_PADDING_TOP,
+				   UI_WIDTH - MENU_PADDING_TOP * 2,
 				   UI_FONT_SIZE,
 				   i,
 				   render);

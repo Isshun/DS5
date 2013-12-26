@@ -13,6 +13,22 @@
 #include "BaseItem.h"
 #include "Room.h"
 
+class WorldArea : public BaseItem {
+ public:
+ WorldArea(int type, int id) : BaseItem(type, id) {
+	_item = NULL;
+  }
+  ~WorldArea() {}
+
+  void			setItem(BaseItem* item) { _item = item; }
+  BaseItem*		getItem() { return _item; }
+  bool			isType(int type) { return _type == type; }
+
+ private:
+  int			_oxygen;
+  BaseItem*		_item;
+};
+
 class WorldMap {
  public:
   WorldMap();
@@ -40,6 +56,9 @@ class WorldMap {
   BaseItem*				getItemToBuild();
   bool					getSolid(int x, int y);
   BaseItem*				getItem(int x, int y) {
+	return (x < 0 || x >= _width || y < 0 || y >= _height) || _items[x][y] == NULL ? NULL : _items[x][y]->getItem();
+  }
+  WorldArea*			getArea(int x, int y) {
 	return (x < 0 || x >= _width || y < 0 || y >= _height) ? NULL : _items[x][y];
   }
   void					debugAstar(int x, int y) { _tmp[x][y] = 1; }
@@ -61,7 +80,7 @@ class WorldMap {
   std::map<int, Room*>	_rooms;
   static WorldMap* 		_self;
   int					_itemCout;
-  BaseItem***			_items;
+  WorldArea***			_items;
   int					_width;
   int					_height;
   int					_tmp[250][250];

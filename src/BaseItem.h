@@ -122,6 +122,8 @@ class BaseItem {
   int			_roomId;
   int			_zoneId;
   int			_zoneIdRequired;
+
+ protected:
   int			_type;
   int			_x;
   int			_y;

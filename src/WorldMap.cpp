@@ -35,9 +35,9 @@ WorldMap::WorldMap() {
   _todo = new std::list<BaseItem*>();
   _building = new std::list<BaseItem*>();
   _buildingAborted = new std::list<BaseItem*>();
-  _items = new BaseItem**[_width];
+  _items = new WorldArea**[_width];
   for (int x = 0; x < _width; x++) {
-	_items[x] = new BaseItem*[_height];
+	_items[x] = new WorldArea*[_height];
 	for (int y = 0; y < _height; y++) {
 	  _items[x][y] = NULL;
 	}
@@ -89,12 +89,27 @@ BaseItem*	WorldMap::find(int type, bool free) {
 
   for (int x = 0; x < _width; x++) {
 	for (int y = 0; y < _height; y++) {
-	  if(_items[x][y] != NULL && _items[x][y]->isType(type) && _items[x][y]->isComplete()) {
-		if (free == false || _items[x][y]->isFree()) {
-		  Debug() << "item found";
-		  return _items[x][y];
+	  WorldArea* area = _items[x][y];
+	  if (area != NULL) {
+
+		// item
+		BaseItem* item = area->getItem();
+		if (item != NULL && item->isType(type) && _items[x][y]->isComplete()) {
+		  if (free == false || item->isFree()) {
+			Debug() << "item found";
+			return item;
+		  }
+		  notFree++;
 		}
-		notFree++;
+
+		// Area
+		if(area->isType(type) && area->isComplete()) {
+		  if (free == false || area->isFree()) {
+			Debug() << "item found";
+			return area;
+		  }
+		  notFree++;
+		}
 	  }
 	}
   }
@@ -451,7 +466,7 @@ void WorldMap::initMap() {
   putItem(17, 22, 5, true);
   putItem(17, 25, 5, true);
 
-  putItem(18, 8, 9, true);
+  putItem(17, 8, 9, true);
   putItem(13, 18, 32, true);
   putItem(12, 24, 12, true);
   putItem(13, 22, 34, true);
@@ -628,18 +643,24 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
 	return;
   }
 
-  BaseItem *item = new BaseItem(type, _itemCout++);
-  int zoneId = item->getZoneId();
-  int roomId = 0;
-
   // If item alread exists check the roomId
+  int roomId = 0;
   if (_items[x][y] != NULL)  {
 	roomId = _items[x][y]->getRoomId();
   }
 
+  BaseItem *item = NULL;
+
+  if (type > BaseItem::STRUCTURE_ITEM_START && type < BaseItem::STRUCTURE_ITEM_STOP) {
+	item = new WorldArea(type, _itemCout++);
+  } else {
+	item = new BaseItem(type, _itemCout++);
+  }
+  int zoneId = item->getZoneId();
+
   // Wall
   if (item->isStructure() && item->isType(BaseItem::STRUCTURE_FLOOR) == false) {
-	_items[x][y] = item;
+	_items[x][y] = (WorldArea*)item;
 	// _items[x][y]->setRoomId(roomId);
 	// _items[x][y]->setZoneId(0);
 	destroyRoom(roomId);
@@ -676,14 +697,21 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
 		  return;
 		}
 	  }
-
-	  _items[x][y] = item;
 	}
 
 	// Create new room if not exists
 	else {
-	  _items[x][y] = item;
 	  roomId = addRoom(x, y);
+	}
+
+	if (type == BaseItem::STRUCTURE_FLOOR) {
+	  _items[x][y] = (WorldArea*)item;
+	} else {
+	  if (_items[x][y] != NULL) {
+		_items[x][y]->setItem(item);
+	  } else {
+		Error() << "Put item on NULL WorldArea";
+	  }
 	}
 
 	item->setZoneId(zoneId);
@@ -696,7 +724,7 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
 
   // add to todo list if building is required
   if (free) {
-	_items[x][y]->progress = _items[x][y]->matter;
+	item->progress = item->matter;
   } else {
 	_todo->push_back(item);
   }
@@ -709,9 +737,11 @@ int		WorldMap::addRoom(int x, int y) {
 
   if (room != NULL) {
 	_rooms[room->getId()] = room;
+	return room->getId();
+  } else {
+	Error() << "Unable to create Room at position: " << x << " x " << y;
   }
-
-  return room->getId();
+  return  -1;
 }
 
 BaseItem*		WorldMap::getItemToBuild() {

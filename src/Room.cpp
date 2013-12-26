@@ -49,7 +49,7 @@ void			Room::setZoneId(int zoneId) {
   int h = WorldMap::getInstance()->getHeight();
   for (int i = 0; i < w; i++) {
 	for (int j = 0; j < h; j++) {
-	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
+	  WorldArea* item = WorldMap::getInstance()->getArea(i, j);
 	  if (item != NULL && item->getRoomId() == _id) {
 		item->setZoneId(zoneId);
 	  }
@@ -58,16 +58,18 @@ void			Room::setZoneId(int zoneId) {
 }
 
 int	Room::checkZone(int x, int y, int id) {
-  BaseItem* item = WorldMap::getInstance()->getItem(x, y);
+  WorldArea* item = WorldMap::getInstance()->getArea(x, y);
 
   // Out of bound or empty
   if (item == NULL) {
+	Debug() << "Room: out of bound";
 	return -1;
   }
 
   // Add to doors list
   if (item->isType(BaseItem::STRUCTURE_DOOR)) {
 	// _doors->push_back(item);
+	Debug() << "Room: door";
 	return -1;
   }
 
@@ -75,6 +77,7 @@ int	Room::checkZone(int x, int y, int id) {
   if (item->isType(BaseItem::STRUCTURE_WALL) ||
 	  item->isType(BaseItem::STRUCTURE_HULL) ||
 	  item->isType(BaseItem::STRUCTURE_WINDOW)) {
+	Debug() << "Room: wall / hull / window";
 	return -1;
   }
 
@@ -107,7 +110,7 @@ int	Room::checkZone(int x, int y, int id) {
 }
 
 void	Room::setZone(int x, int y, int roomId, int zoneId) {
-  BaseItem* item = WorldMap::getInstance()->getItem(x, y);
+  WorldArea* item = WorldMap::getInstance()->getArea(x, y);
 
   // Out of bound or empty
   if (item == NULL) {
