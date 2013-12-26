@@ -17,6 +17,7 @@
 #include "Viewport.h"
 #include "UserInterfaceMenu.h"
 #include "UserInterfaceMenuCharacter.h"
+#include "UserInterfaceMenuInfo.h"
 #include "UserInterfaceResource.h"
 #include "CharacterManager.h"
 #include "UserInterfaceCrew.h"
@@ -73,6 +74,7 @@ class UserInterface {
   UserInterfaceResource*   		_uiResource;
   CharacterManager*        		_characteres;
   UserInterfaceMenuCharacter*   _menuCharacter;
+  UserInterfaceMenuInfo*		_menuInfo;
   UserInterfaceCrew*			_uiCharacter;
   UserInterfaceDebug*			_uiDebug;
   UserInterfaceMenuBase*		_uiBase;

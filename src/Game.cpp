@@ -77,6 +77,75 @@ void	Game::update() {
 
   for (int i = 0; i < w; i++) {
 	for (int j = 0; j < h; j++) {
+
+
+	  // Update oxygen
+	  if (_frame % 6 == 0) {
+		WorldArea* area = WorldMap::getInstance()->getArea(i, j);
+		if (area != NULL && area->isType(BaseItem::STRUCTURE_FLOOR)) {
+		  int oxygen = area->getOxygen();
+		  int count = 1;
+
+		  WorldArea* a1 = WorldMap::getInstance()->getArea(i+1, j);
+		  if (a1 == NULL) {
+			count++;
+		  }
+		  else if (a1->isType(BaseItem::STRUCTURE_FLOOR)) {
+			oxygen += a1->getOxygen();
+			count++;
+		  }
+
+		  WorldArea* a2 = WorldMap::getInstance()->getArea(i-1, j);
+		  if (a2 == NULL) {
+			count++;
+		  }
+		  else if (a2->isType(BaseItem::STRUCTURE_FLOOR)) {
+			oxygen += a2->getOxygen();
+			count++;
+		  }
+
+		  WorldArea* a3 = WorldMap::getInstance()->getArea(i, j+1);
+		  if (a3 == NULL) {
+			count++;
+		  }
+		  else if (a3->isType(BaseItem::STRUCTURE_FLOOR)) {
+			oxygen += a3->getOxygen();
+			count++;
+		  }
+
+		  WorldArea* a4 = WorldMap::getInstance()->getArea(i, j-1);
+		  if (a4 == NULL) {
+			count++;
+		  }
+		  else if (a4->isType(BaseItem::STRUCTURE_FLOOR)) {
+			oxygen += a4->getOxygen();
+			count++;
+		  }
+
+		  int value = ceil((double)oxygen / count);
+
+		  // if (a1 != NULL && a1->isType(BaseItem::STRUCTURE_FLOOR)) {
+		  // 	a1->setOxygen(value);
+		  // }
+
+		  // if (a2 != NULL && a2->isType(BaseItem::STRUCTURE_FLOOR)) {
+		  // 	a2->setOxygen(value);
+		  // }
+
+		  // if (a3 != NULL && a3->isType(BaseItem::STRUCTURE_FLOOR)) {
+		  // 	a3->setOxygen(value);
+		  // }
+
+		  // if (a4 != NULL && a4->isType(BaseItem::STRUCTURE_FLOOR)) {
+		  // 	a4->setOxygen(value);
+		  // }
+
+		  area->setOxygen(value);
+		}
+	  }
+
+
+
 	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
 	  if (item != NULL) {
 		  

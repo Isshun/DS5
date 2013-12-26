@@ -24,7 +24,7 @@ void							PathManager::init() {
   int h = WorldMap::getInstance()->getHeight();
   for (int i = w-1; i >= 0; i--) {
   	for (int j = h-1; j >= 0; j--) {
-	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
+	  BaseItem* item = WorldMap::getInstance()->getArea(i, j);
 	  if (item != NULL && item->getType() == BaseItem::STRUCTURE_DOOR) {
 		Debug() << "Door at pos: " << i << " x " << j;
 		list.push_back(item);

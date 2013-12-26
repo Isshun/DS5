@@ -13,6 +13,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "BaseItem.h"
+#include "WorldMap.h"
 
 #define NB_SPRITES_ROOM 9
 #define NB_TEMPLATES 9
@@ -36,7 +37,8 @@ class SpriteManager {
 
   void				getSprite(BaseItem* item, sf::Sprite* sprite);
   void				getSprite(int type, sf::Sprite* sprite);
-  void				getFloor(BaseItem* item, int zone, int room, sf::Sprite* sprite);
+  void				getNoOxygen(sf::Sprite* sprite);
+  void				getFloor(WorldArea* item, int zone, int room, sf::Sprite* sprite);
   void				getWall(BaseItem* item, int special, sf::Sprite* sprite, int index, int zone);
   void				getExterior(sf::Sprite* sprite);
 

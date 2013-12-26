@@ -25,6 +25,7 @@ UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport
   _zoom = 1.0f;
   _menu = new UserInterfaceMenu(app, _worldMap, _cursor);
   _menuCharacter = new UserInterfaceMenuCharacter(app);
+  _menuInfo = new UserInterfaceMenuInfo(app);
   _uiResource = new UserInterfaceResource(app);
   _crewViewOpen = false;
   _uiCharacter = new UserInterfaceCrew(app);
@@ -108,6 +109,11 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
         Character* c = _characteres->getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
 		if (c != NULL) {
 		  _menuCharacter->setCharacter(c);
+		} else {
+		  WorldArea* a = WorldMap::getInstance()->getArea(getRelativePosX(x), getRelativePosY(y));
+		  if (a != NULL) {
+			_menuInfo->setArea(a);
+		  }
 		}
       }
 
@@ -209,9 +215,18 @@ void	UserInterface::refreshCursor() {
 
 void UserInterface::refresh(int frame, long interval) {
 
+  // Display character frame
   if (_menuCharacter->getCharacter() != NULL) {
     _menuCharacter->refresh(frame);
-  } else {
+  }
+
+  // Display info frame
+  else if (_menuInfo->getArea() != NULL) {
+    _menuInfo->refresh(frame);
+  }
+
+  // Display regular menu
+  else {
     _menu->refreshMenu(frame);
   }
 

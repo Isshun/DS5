@@ -32,6 +32,9 @@ void	WorldRenderer::draw(sf::RenderStates render) {
 }
 
 void	WorldRenderer::drawFloor(sf::RenderStates render, int fromX, int fromY, int toX, int toY) {
+  sf::RectangleShape shape;
+  shape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+
   for (int i = toX-1; i >= fromX; i--) {
 	for (int j = toY-1; j >= fromY; j--) {
 	  WorldArea* item = WorldMap::getInstance()->getArea(i, j);
@@ -41,18 +44,30 @@ void	WorldRenderer::drawFloor(sf::RenderStates render, int fromX, int fromY, int
 		if (item->isType(BaseItem::STRUCTURE_DOOR)) {
 		  _spriteManager->getSprite(item, &sprite);
 		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		  _app->draw(sprite, render);
 		} else {
 		  _spriteManager->getFloor(item, item->getZoneId(), item->getRoomId(), &sprite);
 		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		  _app->draw(sprite, render);
+
+		  // Oxygen
+		  if (item->getOxygen() < 25) {
+			_spriteManager->getNoOxygen(&sprite);
+			_app->draw(sprite, render);
+		  } else if (item->getOxygen() < 100) {
+			shape.setFillColor(sf::Color(255, 0, 0, item->getOxygen() * 125 / 100));
+			shape.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+			_app->draw(shape, render);
+		  }
 		}
-	  
+  
 	  }
 
 	  else {
 		_spriteManager->getExterior(&sprite);
 		sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		_app->draw(sprite, render);
 	  }
-	  _app->draw(sprite, render);
 
 	}
   }
@@ -218,7 +233,8 @@ void	WorldRenderer::drawDebug(sf::RenderStates render, int fromX, int fromY, int
 
   for (int i = toX-1; i >= fromX; i--) {
 	for (int j = toY-1; j >= fromY; j--) {
-	  BaseItem* item = WorldMap::getInstance()->getItem(i, j);
+	  // BaseItem* item = WorldMap::getInstance()->getItem(i, j);
+	  WorldArea* item = WorldMap::getInstance()->getArea(i, j);
 
 	  if (item == NULL) {
 		item = WorldMap::getInstance()->getArea(i, j);
@@ -237,7 +253,7 @@ void	WorldRenderer::drawDebug(sf::RenderStates render, int fromX, int fromY, int
 		text.setColor(sf::Color(0, 0, 0));
 		text.setStyle(sf::Text::Regular);
 		std::ostringstream oss;
-		oss << item->getRoomId();
+		oss << item->getOxygen();
 		 //oss << item->getZoneId();
 		text.setString(oss.str().c_str());
 		text.setPosition(i * TILE_SIZE, j * TILE_SIZE);

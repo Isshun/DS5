@@ -6,6 +6,7 @@ SRC	=	Game.cpp	\
 		UserInterfaceDebug.cpp	\
 		UserInterfaceResource.cpp	\
 		UserInterfaceMenuCharacter.cpp	\
+		UserInterfaceMenuInfo.cpp	\
 		UserInterfaceMenuBase.cpp	\
 		BaseItem.cpp	\
 		SpriteManager.cpp	\

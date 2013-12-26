@@ -17,11 +17,14 @@ class WorldArea : public BaseItem {
  public:
  WorldArea(int type, int id) : BaseItem(type, id) {
 	_item = NULL;
+	_oxygen = rand() % 100;
   }
   ~WorldArea() {}
 
   void			setItem(BaseItem* item) { _item = item; }
+  void			setOxygen(int oxygen) { _oxygen = oxygen; }
   BaseItem*		getItem() { return _item; }
+  int			getOxygen() { return _oxygen; }
   bool			isType(int type) { return _type == type; }
 
  private:

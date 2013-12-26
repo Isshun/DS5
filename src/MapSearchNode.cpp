@@ -12,7 +12,7 @@ int GetMap( int x, int y ) {
   }
 
   WorldMap::getInstance()->debugAstar(x, y);
-  BaseItem* item = WorldMap::getInstance()->getItem(x, y);
+  BaseItem* item = WorldMap::getInstance()->getArea(x, y);
 
   // Space
   if (item == NULL || item->isType(BaseItem::NONE)) {

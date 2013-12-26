@@ -15,8 +15,8 @@ class	Viewport {
   int   getPosY() { return _posY; }
   int   getWidth() { return _posX; }
   int   getHeight() { return _height; }
-  void  setScale(float delta) { _scale = min(max(_scale + 0.1f * delta, 0.5f), 1.5f); }
-  float getScale() { return _scale; }
+  void  setScale(int delta) { _scaleIndex = min(max(_scaleIndex + delta, -4), 4); }
+  float getScale();
   void  update(int x, int y);
   sf::Transform  getViewTransform(sf::Transform transform);
   sf::Transform  getViewTransformBackground(sf::Transform transform);
@@ -26,7 +26,7 @@ class	Viewport {
   int   _posY;
   int   _width;
   int   _height;
-  float _scale;
+  int	_scaleIndex;
 };
 
 #endif //_C_VIEWPORT_

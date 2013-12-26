@@ -152,7 +152,7 @@ void				SpriteManager::getExterior(sf::Sprite* sprite) {
 									 TILE_SIZE));
 }
 
-void				SpriteManager::getFloor(BaseItem* item, int zone, int room, sf::Sprite* sprite) {
+void				SpriteManager::getFloor(WorldArea* item, int zone, int room, sf::Sprite* sprite) {
   int choice = 1;
 
   int alpha = 75 + 180 / item->matter * item->progress;
@@ -165,6 +165,14 @@ void				SpriteManager::getFloor(BaseItem* item, int zone, int room, sf::Sprite* 
   sprite->setTexture(*_texture[4]);
   sprite->setTextureRect(sf::IntRect((room % choice) * TILE_SIZE,
 									 zone * TILE_SIZE,
+									 TILE_SIZE,
+									 TILE_SIZE));
+}
+
+void				SpriteManager::getNoOxygen(sf::Sprite* sprite) {
+  sprite->setTexture(*_texture[4]);
+  sprite->setTextureRect(sf::IntRect(0,
+									 8 * TILE_SIZE,
 									 TILE_SIZE,
 									 TILE_SIZE));
 }

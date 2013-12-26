@@ -16,6 +16,7 @@ class Character;
 
 struct {
   int			type;
+  const char*	name;
   bool			solid;
   int			width;
   int			height;
@@ -99,6 +100,7 @@ class BaseItem {
   int				getZoneIdRequired() { return _zoneIdRequired; }
   int				getRoomId() { return _roomId; }
   int				getId() { return _id; }
+  const char*		getName() { return _name; }
 
   // Bools
   bool				isComplete() { return progress == matter; }
@@ -117,6 +119,7 @@ class BaseItem {
 
  private:
   Character*	_owner;
+  const char*	_name;
   int			_width;
   int			_height;
   int			_roomId;

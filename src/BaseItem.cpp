@@ -9,33 +9,33 @@
 #include "Character.h"
 #include "UserInterfaceMenu.h"
 
-// type													solid	width	height	matter	power	zone
+// type													name, solid	width	height	matter	power	zone
 ItemInfo	itemsInfo[] = {
-  {BaseItem::STRUCTURE_ROOM,							true,	1, 1, 1, 0, 0},
-  {BaseItem::STRUCTURE_HULL,							true,	1, 1, 1, 0, 0},
-  {BaseItem::STRUCTURE_WALL,							true,	1, 1, 1, 0, 0},
-  {BaseItem::STRUCTURE_FLOOR,							false,	1, 1, 1, 0, 0},
-  {BaseItem::STRUCTURE_DOOR,							false,	1, 1, 1, 0, 0},
-  {BaseItem::STRUCTURE_WINDOW,							true,	1, 1, 1, 0, 0},
-  {BaseItem::TRANSPORTATION_TRANSPORTER_SYSTEMS,		false,	1, 1, 10, 10, UserInterfaceMenu::CODE_ZONE_OPERATION},
-  {BaseItem::QUARTER_BED,								false,	2, 2, 4, 0, UserInterfaceMenu::CODE_ZONE_QUARTER},
-  {BaseItem::QUARTER_CHAIR,								false,	1, 1, 2, 0, UserInterfaceMenu::CODE_ZONE_QUARTER},
-  {BaseItem::HOLODECK_GRID,								false,	1, 1, 6, 6, UserInterfaceMenu::CODE_ZONE_HOLODECK},
-  {BaseItem::BAR_PUB,									false,	1, 1, 5, 0, UserInterfaceMenu::CODE_ZONE_BAR},
-  {BaseItem::ENGINE_CONTROL_CENTER,						false,	3, 2, 10, 5, UserInterfaceMenu::CODE_ZONE_ENGINE},
-  {BaseItem::ENGINE_REACTION_CHAMBER,					false,	2, 3, 50, -200, UserInterfaceMenu::CODE_ZONE_ENGINE},
-  {BaseItem::SICKBAY_BIOBED,							false,	1, 2, 10, 10, UserInterfaceMenu::CODE_ZONE_SICKBAY},
-  {BaseItem::ARBORETUM_TREE_1,							false,	1, 2, 2, 0, 0},
-  {BaseItem::ARBORETUM_TREE_2,							false,	1, 2, 2, 0, 0},
-  {BaseItem::ARBORETUM_TREE_3,							false,	1, 2, 2, 0, 0},
-  {BaseItem::ARBORETUM_TREE_4,							false,	1, 2, 2, 0, 0},
-  {BaseItem::ARBORETUM_TREE_5,							false,	1, 1, 1, 0, 0},
-  {BaseItem::ARBORETUM_TREE_6,							false,	1, 1, 1, 0, 0},
-  {BaseItem::ARBORETUM_TREE_7,							false,	1, 1, 1, 0, 0},
-  {BaseItem::ARBORETUM_TREE_8,							false,	1, 1, 1, 0, 0},
-  {BaseItem::ARBORETUM_TREE_9,							false,	1, 1, 1, 0, 0},
-  {BaseItem::ENVIRONMENT_O2_RECYCLER,					false,	1, 2, 10, 10, UserInterfaceMenu::CODE_ZONE_OPERATION},
-  {BaseItem::NONE,										false,	0, 0, 0, 0, 0},
+  {BaseItem::STRUCTURE_ROOM,							"ROOM", true,	1, 1, 1, 0, 0},
+  {BaseItem::STRUCTURE_HULL,							"HULL", true,	1, 1, 1, 0, 0},
+  {BaseItem::STRUCTURE_WALL,							"WALL", true,	1, 1, 1, 0, 0},
+  {BaseItem::STRUCTURE_FLOOR,							"FLOOR", false,	1, 1, 1, 0, 0},
+  {BaseItem::STRUCTURE_DOOR,							"DOOR", false,	1, 1, 1, 0, 0},
+  {BaseItem::STRUCTURE_WINDOW,							"WINDOW", true,	1, 1, 1, 0, 0},
+  {BaseItem::TRANSPORTATION_TRANSPORTER_SYSTEMS,		"SYSTEMS", false,	1, 1, 10, 10, UserInterfaceMenu::CODE_ZONE_OPERATION},
+  {BaseItem::QUARTER_BED,								"BED", false,	2, 2, 4, 0, UserInterfaceMenu::CODE_ZONE_QUARTER},
+  {BaseItem::QUARTER_CHAIR,								"CHAIR", false,	1, 1, 2, 0, UserInterfaceMenu::CODE_ZONE_QUARTER},
+  {BaseItem::HOLODECK_GRID,								"GRID", false,	1, 1, 6, 6, UserInterfaceMenu::CODE_ZONE_HOLODECK},
+  {BaseItem::BAR_PUB,									"PUB", false,	1, 1, 5, 0, UserInterfaceMenu::CODE_ZONE_BAR},
+  {BaseItem::ENGINE_CONTROL_CENTER,						"CENTER", false,	3, 2, 10, 5, UserInterfaceMenu::CODE_ZONE_ENGINE},
+  {BaseItem::ENGINE_REACTION_CHAMBER,					"CHAMBER", false,	2, 3, 50, -200, UserInterfaceMenu::CODE_ZONE_ENGINE},
+  {BaseItem::SICKBAY_BIOBED,							"BIOBED", false,	1, 2, 10, 10, UserInterfaceMenu::CODE_ZONE_SICKBAY},
+  {BaseItem::ARBORETUM_TREE_1,							"1", false,	1, 2, 2, 0, 0},
+  {BaseItem::ARBORETUM_TREE_2,							"2", false,	1, 2, 2, 0, 0},
+  {BaseItem::ARBORETUM_TREE_3,							"3", false,	1, 2, 2, 0, 0},
+  {BaseItem::ARBORETUM_TREE_4,							"4", false,	1, 2, 2, 0, 0},
+  {BaseItem::ARBORETUM_TREE_5,							"5", false,	1, 1, 1, 0, 0},
+  {BaseItem::ARBORETUM_TREE_6,							"6", false,	1, 1, 1, 0, 0},
+  {BaseItem::ARBORETUM_TREE_7,							"7", false,	1, 1, 1, 0, 0},
+  {BaseItem::ARBORETUM_TREE_8,							"8", false,	1, 1, 1, 0, 0},
+  {BaseItem::ARBORETUM_TREE_9,							"9", false,	1, 1, 1, 0, 0},
+  {BaseItem::ENVIRONMENT_O2_RECYCLER,					"RECYCLER", false,	1, 2, 10, 10, UserInterfaceMenu::CODE_ZONE_OPERATION},
+  {BaseItem::NONE,										"NONE", false,	0, 0, 0, 0, 0},
 };
 
 BaseItem::BaseItem(int t, int id) {
@@ -48,6 +48,7 @@ BaseItem::BaseItem(int t, int id) {
   _roomId = 0;
   _owner = NULL;
   _id = id;
+  _name = NULL;
 
   // Default values
   _width = 1;
@@ -59,6 +60,7 @@ BaseItem::BaseItem(int t, int id) {
 
   for (int i = 0; itemsInfo[i].type != BaseItem::NONE; i++) {
 	if (itemsInfo[i].type == t) {
+	  _name = itemsInfo[i].name;
 	  _width = itemsInfo[i].width;
 	  _height = itemsInfo[i].height;
 	  _zoneId = itemsInfo[i].zone;
