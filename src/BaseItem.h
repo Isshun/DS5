@@ -103,7 +103,7 @@ class BaseItem {
   const char*		getName() { return _name; }
 
   // Bools
-  bool				isComplete() { return progress == matter; }
+  bool				isComplete() { return _matterSupply == matter; }
   bool				isSupply() { return power == powerSupply; }
   bool				isFree() { return _owner == NULL; }
   bool				isType(int type) { return _type == type; }
@@ -112,8 +112,8 @@ class BaseItem {
   bool				isStructure() { return _type > STRUCTURE_ITEM_START && _type < STRUCTURE_ITEM_STOP; }
 
   bool				isSolid;
-  int				progress;
   int				matter;
+  int				_matterSupply;
   int				power;
   int				powerSupply;
 

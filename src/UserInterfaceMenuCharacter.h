@@ -19,6 +19,7 @@ class UserInterfaceMenuCharacter {
   UserInterfaceMenuCharacter(sf::RenderWindow* app);
   ~UserInterfaceMenuCharacter();
 
+  void	init();
   void	refresh(int frame);
   void  setCharacter(Character* character) {
 	if (_character != NULL) {
@@ -36,6 +37,7 @@ class UserInterfaceMenuCharacter {
  private:
   sf::RenderWindow*     _app;
   sf::Font				_font;
+  sf::Sprite			_background;
   sf::Texture			_backgroundTexture;
   Character*            _character;
 };

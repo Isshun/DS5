@@ -271,8 +271,16 @@ void  Character::updateNeeds(int count) {
   }
 
 
-  if (_oxygen > 0) {
-	_oxygen = 0;
+  // Oxygen
+  WorldArea* area = WorldMap::getInstance()->getArea(_posX, _posY);
+  if (area != NULL) {
+	if (area->getOxygen() > _oxygen) {
+	  _oxygen = min(area->getOxygen(), _oxygen + 5);
+	} else {
+	  _oxygen = max(area->getOxygen(), _oxygen - 5);
+	}
+  } else {
+	_oxygen = max(0, _oxygen - 5);
   }
 
   if (_oxygen == 0) {

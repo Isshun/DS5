@@ -14,21 +14,21 @@ WorldRenderer::WorldRenderer(sf::RenderWindow* app, SpriteManager* spriteManager
 void	WorldRenderer::draw(sf::RenderStates render) {
   int fromX = max(_ui->getRelativePosX(0)-1, 0);
   int fromY = max(_ui->getRelativePosY(0)-1, 0);
-	// int toX = _ui->getRelativePosX(WorldMap::getInstance()->getWidth());
-	// int toY = _ui->getRelativePosY(WorldMap::getInstance()->getHeight());
+  // int toX = _ui->getRelativePosX(WorldMap::getInstance()->getWidth());
+  // int toY = _ui->getRelativePosY(WorldMap::getInstance()->getHeight());
   int toX = min(_ui->getRelativePosX(WINDOW_WIDTH)+1, WorldMap::getInstance()->getWidth());
   int toY = min(_ui->getRelativePosY(WINDOW_HEIGHT)+1, WorldMap::getInstance()->getHeight());
 
-	Info() << "Renderer: " << fromX << " to: " << toX;
+  Debug() << "Renderer: " << fromX << " to: " << toX;
 
-	drawFloor(render, fromX, fromY, toX, toY);
-	drawStructure(render, fromX, fromY, toX, toY);
-	drawItems(render, fromX, fromY, toX, toY);
+  drawFloor(render, fromX, fromY, toX, toY);
+  drawStructure(render, fromX, fromY, toX, toY);
+  drawItems(render, fromX, fromY, toX, toY);
 
-	// Draw debug
-	if (Settings::getInstance()->isDebug()) {
-	  drawDebug(render, fromX, fromY, toX, toY);
-	}
+  // Draw debug
+  if (Settings::getInstance()->isDebug()) {
+	drawDebug(render, fromX, fromY, toX, toY);
+  }
 }
 
 void	WorldRenderer::drawFloor(sf::RenderStates render, int fromX, int fromY, int toX, int toY) {
@@ -37,6 +37,7 @@ void	WorldRenderer::drawFloor(sf::RenderStates render, int fromX, int fromY, int
 
   for (int i = toX-1; i >= fromX; i--) {
 	for (int j = toY-1; j >= fromY; j--) {
+	  srand(i * j);
 	  WorldArea* item = WorldMap::getInstance()->getArea(i, j);
 	  sf::Sprite sprite;
 	  if (item != NULL) {
@@ -74,118 +75,119 @@ void	WorldRenderer::drawFloor(sf::RenderStates render, int fromX, int fromY, int
 }
 
 void	WorldRenderer::drawStructure(sf::RenderStates render, int fromX, int fromY, int toX, int toY) {
-	int lastSpecialX = -1;
-	int lastSpecialY = -1;
-	int offsetWall = (TILE_SIZE / 2 * 3) - TILE_SIZE;
+  int lastSpecialX = -1;
+  int lastSpecialY = -1;
+  int offsetWall = (TILE_SIZE / 2 * 3) - TILE_SIZE;
 
-	for (int j = toY-1; j >= fromY; j--) {
-		for (int i = toX-1; i >= fromX; i--) {
-			int r = rand();
-			WorldArea* item = WorldMap::getInstance()->getArea(i, j);
-			if (item != NULL) {
-				sf::Sprite sprite;
+  for (int j = toY-1; j >= fromY; j--) {
+	for (int i = toX-1; i >= fromX; i--) {
+	  srand(i * j);
+	  int r = rand();
+	  WorldArea* item = WorldMap::getInstance()->getArea(i, j);
+	  if (item != NULL) {
+		sf::Sprite sprite;
 
-				// Structure except floor
-				if (item->isStructure() && !item->isType(BaseItem::STRUCTURE_FLOOR)) {
+		// Structure except floor
+		if (item->isStructure() && !item->isType(BaseItem::STRUCTURE_FLOOR)) {
 
-					WorldArea* bellow = WorldMap::getInstance()->getArea(i, j+1);
-					WorldArea* right = WorldMap::getInstance()->getArea(i+1, j);
-					WorldArea* left = WorldMap::getInstance()->getArea(i-1, j);
-					WorldArea* above = WorldMap::getInstance()->getArea(i, j-1);
+		  WorldArea* bellow = WorldMap::getInstance()->getArea(i, j+1);
+		  WorldArea* right = WorldMap::getInstance()->getArea(i+1, j);
+		  WorldArea* left = WorldMap::getInstance()->getArea(i-1, j);
+		  WorldArea* above = WorldMap::getInstance()->getArea(i, j-1);
 	  
-					// Door
-					if (item->isType(BaseItem::STRUCTURE_DOOR)) {
-						// if (_characterManager->getCharacterAtPos(i, j) != NULL
-						// 	  || _characterManager->getCharacterAtPos(i+1, j) != NULL
-						// 	  || _characterManager->getCharacterAtPos(i-1, j) != NULL
-						// 	  || _characterManager->getCharacterAtPos(i, j+1) != NULL
-						// 	  || _characterManager->getCharacterAtPos(i, j-1) != NULL) {
-						// 	_spriteManager->getWall(item, 2, &sprite, 0, 0);
-						// } else {
-						_spriteManager->getWall(item, 0, &sprite, 0, 0);
-						// }
-						sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
-					}
+		  // Door
+		  if (item->isType(BaseItem::STRUCTURE_DOOR)) {
+			// if (_characterManager->getCharacterAtPos(i, j) != NULL
+			// 	  || _characterManager->getCharacterAtPos(i+1, j) != NULL
+			// 	  || _characterManager->getCharacterAtPos(i-1, j) != NULL
+			// 	  || _characterManager->getCharacterAtPos(i, j+1) != NULL
+			// 	  || _characterManager->getCharacterAtPos(i, j-1) != NULL) {
+			// 	_spriteManager->getWall(item, 2, &sprite, 0, 0);
+			// } else {
+			_spriteManager->getWall(item, 0, &sprite, 0, 0);
+			// }
+			sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
+		  }
 
-					// Wall
-					else if (item->isType(BaseItem::STRUCTURE_WALL)) {
+		  // Wall
+		  else if (item->isType(BaseItem::STRUCTURE_WALL)) {
 
-						// bellow is a wall
-						if (bellow != NULL && bellow->isType(BaseItem::STRUCTURE_WALL)) {
-							_spriteManager->getWall(item, 1, &sprite, 0, 0);
-							sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
-						}
-
-						// No wall above or bellow
-						else if ((above == NULL || above->getType() != BaseItem::STRUCTURE_WALL) &&
-								 (bellow == NULL || bellow->getType() != BaseItem::STRUCTURE_WALL)) {
-
-							// Check double wall
-							bool doubleWall = false;
-							if (right != NULL && right->isComplete() && right->isType(BaseItem::STRUCTURE_WALL) &&
-								(lastSpecialY != j || lastSpecialX != i+1)) {
-								WorldArea* aboveRight = WorldMap::getInstance()->getArea(i+1, j-1);
-								WorldArea* bellowRight = WorldMap::getInstance()->getArea(i+1, j+1);
-								if ((aboveRight == NULL || aboveRight->getType() != BaseItem::STRUCTURE_WALL) &&
-									(bellowRight == NULL || bellowRight->getType() != BaseItem::STRUCTURE_WALL)) {
-									doubleWall = true;
-								}
-							}
-
-							// Normal
-							if (bellow == NULL) {
-								// Double wall
-								if (doubleWall) {
-									_spriteManager->getWall(item, 4, &sprite, r, 0);
-									lastSpecialX = i;
-									lastSpecialY = j;
-								}
-								// Single wall
-								else {
-									_spriteManager->getWall(item, 0, &sprite, 0, 0);
-								}
-							}
-							// Special
-							else {
-								// Double wall
-								if (doubleWall) {
-									_spriteManager->getWall(item, 2, &sprite, r, bellow->getZoneId());
-									lastSpecialX = i;
-									lastSpecialY = j;
-								}
-								// Single wall
-								else {
-									_spriteManager->getWall(item, 3, &sprite, r, bellow->getZoneId());
-								}
-							}
-							sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
-						}
-
-						// // left is a wall
-						// else if (left != NULL && left->type == BaseItem::STRUCTURE_WALL) {
-						// 	_spriteManager->getWall(item, 2, &sprite);
-						// 	sprite.setPosition(i * TILE_SIZE - TILE_SIZE, j * TILE_SIZE - offset);
-						// }
-
-						// single wall
-						else {
-							_spriteManager->getWall(item, 0, &sprite, 0, 0);
-							sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
-						}
-
-					}	  
-				}
-
-				// // floor
-				// else {
-				// 	_spriteManager->getFloor(item, item->getZoneId(), item->getRoomId(), &sprite);
-				// 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-				// }
-
-				_app->draw(sprite, render);
+			// bellow is a wall
+			if (bellow != NULL && bellow->isType(BaseItem::STRUCTURE_WALL)) {
+			  _spriteManager->getWall(item, 1, &sprite, 0, 0);
+			  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
 			}
+
+			// No wall above or bellow
+			else if ((above == NULL || above->getType() != BaseItem::STRUCTURE_WALL) &&
+					 (bellow == NULL || bellow->getType() != BaseItem::STRUCTURE_WALL)) {
+
+			  // Check double wall
+			  bool doubleWall = false;
+			  if (right != NULL && right->isComplete() && right->isType(BaseItem::STRUCTURE_WALL) &&
+				  (lastSpecialY != j || lastSpecialX != i+1)) {
+				WorldArea* aboveRight = WorldMap::getInstance()->getArea(i+1, j-1);
+				WorldArea* bellowRight = WorldMap::getInstance()->getArea(i+1, j+1);
+				if ((aboveRight == NULL || aboveRight->getType() != BaseItem::STRUCTURE_WALL) &&
+					(bellowRight == NULL || bellowRight->getType() != BaseItem::STRUCTURE_WALL)) {
+				  doubleWall = true;
+				}
+			  }
+
+			  // Normal
+			  if (bellow == NULL) {
+				// Double wall
+				if (doubleWall) {
+				  _spriteManager->getWall(item, 4, &sprite, r, 0);
+				  lastSpecialX = i;
+				  lastSpecialY = j;
+				}
+				// Single wall
+				else {
+				  _spriteManager->getWall(item, 0, &sprite, 0, 0);
+				}
+			  }
+			  // Special
+			  else {
+				// Double wall
+				if (doubleWall) {
+				  _spriteManager->getWall(item, 2, &sprite, r, bellow->getZoneId());
+				  lastSpecialX = i;
+				  lastSpecialY = j;
+				}
+				// Single wall
+				else {
+				  _spriteManager->getWall(item, 3, &sprite, r, bellow->getZoneId());
+				}
+			  }
+			  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
+			}
+
+			// // left is a wall
+			// else if (left != NULL && left->type == BaseItem::STRUCTURE_WALL) {
+			// 	_spriteManager->getWall(item, 2, &sprite);
+			// 	sprite.setPosition(i * TILE_SIZE - TILE_SIZE, j * TILE_SIZE - offset);
+			// }
+
+			// single wall
+			else {
+			  _spriteManager->getWall(item, 0, &sprite, 0, 0);
+			  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE - offsetWall);
+			}
+
+		  }	  
 		}
+
+		// // floor
+		// else {
+		// 	_spriteManager->getFloor(item, item->getZoneId(), item->getRoomId(), &sprite);
+		// 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		// }
+
+		_app->draw(sprite, render);
+	  }
 	}
+  }
 }
 
 void	WorldRenderer::drawItems(sf::RenderStates render, int fromX, int fromY, int toX, int toY) {

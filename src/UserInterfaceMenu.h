@@ -64,6 +64,8 @@ class UserInterfaceMenu {
 
   UserInterfaceMenu(sf::RenderWindow* app, WorldMap* worldmap, Cursor* cursor);
   ~UserInterfaceMenu();
+
+  void	init();
   void  openMenu(Entry entry);
   void  openBack();
   void	openRoot();
@@ -80,7 +82,8 @@ class UserInterfaceMenu {
 
  private:
   sf::RenderWindow*		_app;
-  sf::Sprite*			_background;
+  sf::Sprite			_background;
+  sf::Texture			_backgroundTexture;
   sf::Font				_font;
   WorldMap*				_worldmap;
   Cursor*				_cursor;

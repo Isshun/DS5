@@ -196,8 +196,6 @@ void	Game::update() {
 }
 
 void	Game::refresh() {
-  srand(42);
-
   // Flush
   _app->clear(sf::Color(0, 0, 50));
 

@@ -121,7 +121,7 @@ void		SpriteManager::getSprite(BaseItem* item, sf::Sprite* sprite) {
 											 item->getHeight() * TILE_SIZE));
 		}
 
-		int alpha = 75 + 180 / item->matter * item->progress;
+		int alpha = 75 + 180 / item->matter * item->_matterSupply;
 		sprite->setColor(sf::Color(255,255,255,alpha));
 
 		return;
@@ -146,8 +146,8 @@ void		SpriteManager::getSprite(int type, sf::Sprite* sprite) {
 
 void				SpriteManager::getExterior(sf::Sprite* sprite) {
   sprite->setTexture(*_texture[4]);
-  sprite->setTextureRect(sf::IntRect(0 * TILE_SIZE,
-									 7 * TILE_SIZE,
+  sprite->setTextureRect(sf::IntRect(rand() % 8 * TILE_SIZE,
+									 7 * (TILE_SIZE + 2) + 1,
 									 TILE_SIZE,
 									 TILE_SIZE));
 }
@@ -155,7 +155,7 @@ void				SpriteManager::getExterior(sf::Sprite* sprite) {
 void				SpriteManager::getFloor(WorldArea* item, int zone, int room, sf::Sprite* sprite) {
   int choice = 1;
 
-  int alpha = 75 + 180 / item->matter * item->progress;
+  int alpha = 75 + 180 / item->matter * item->_matterSupply;
   sprite->setColor(sf::Color(255,255,255,alpha));
 
   if (zone == UserInterfaceMenu::CODE_ZONE_HOLODECK) {
@@ -164,7 +164,7 @@ void				SpriteManager::getFloor(WorldArea* item, int zone, int room, sf::Sprite*
 
   sprite->setTexture(*_texture[4]);
   sprite->setTextureRect(sf::IntRect((room % choice) * TILE_SIZE,
-									 zone * TILE_SIZE,
+									 zone * (TILE_SIZE + 2) + 1,
 									 TILE_SIZE,
 									 TILE_SIZE));
 }
@@ -172,7 +172,7 @@ void				SpriteManager::getFloor(WorldArea* item, int zone, int room, sf::Sprite*
 void				SpriteManager::getNoOxygen(sf::Sprite* sprite) {
   sprite->setTexture(*_texture[4]);
   sprite->setTextureRect(sf::IntRect(0,
-									 8 * TILE_SIZE,
+									 8 * (TILE_SIZE + 2) + 1,
 									 TILE_SIZE,
 									 TILE_SIZE));
 }
@@ -183,7 +183,7 @@ void				SpriteManager::getWall(BaseItem* item, int special, sf::Sprite* sprite, 
 
   // Door
   if (item->isType(BaseItem::STRUCTURE_DOOR)) {
-		int alpha = 75 + 180 / item->matter * item->progress;
+		int alpha = 75 + 180 / item->matter * item->_matterSupply;
 		sprite->setColor(sf::Color(255,255,255,alpha));
 		sprite->setTexture(*_texture[6]);
 		sprite->setTextureRect(sf::IntRect(WALL_WIDTH * special,
@@ -196,7 +196,7 @@ void				SpriteManager::getWall(BaseItem* item, int special, sf::Sprite* sprite, 
   else {
 	for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
 	  if (spritesRes[i].type == BaseItem::STRUCTURE_WALL) {
-		int alpha = 75 + 180 / item->matter * item->progress;
+		int alpha = 75 + 180 / item->matter * item->_matterSupply;
 		sprite->setColor(sf::Color(255,255,255,alpha));
 
 		sprite->setTexture(*_texture[6]);

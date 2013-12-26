@@ -23,9 +23,16 @@ UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport
   _keyLeftPressed = false;
   _keyRightPressed = false;
   _zoom = 1.0f;
+
   _menu = new UserInterfaceMenu(app, _worldMap, _cursor);
+  _menu->init();
+
   _menuCharacter = new UserInterfaceMenuCharacter(app);
+  _menuCharacter->init();
+
   _menuInfo = new UserInterfaceMenuInfo(app);
+  _menuInfo->init();
+
   _uiResource = new UserInterfaceResource(app);
   _crewViewOpen = false;
   _uiCharacter = new UserInterfaceCrew(app);
@@ -41,8 +48,8 @@ UserInterface::~UserInterface() {
 }
 
 void	UserInterface::mouseMoved(int x, int y) {
-  if (x <= UI_WIDTH || y <= UI_HEIGHT)
-	return;
+  // if (x <= UI_WIDTH || y <= UI_HEIGHT)
+  // 	return;
 
   _keyMovePosX = getRelativePosX(x);
   _keyMovePosY = getRelativePosY(y);
@@ -70,10 +77,10 @@ void	UserInterface::mouseMoved(int x, int y) {
 }
 
 void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
-  if (x < UI_WIDTH) {
-    _menu->mousePressed(button, x, y);
-  } else if (y < UI_HEIGHT) {
-  } else {
+  // if (x < UI_WIDTH) {
+  //   _menu->mousePressed(button, x, y);
+  // } else if (y < UI_HEIGHT) {
+  // } else {
     switch (button) {
 
     case sf::Mouse::Left:
@@ -88,7 +95,7 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
 	  _mouseRightPress.y = y;
       break;
     }
-  }
+  // }
 }
 
 void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
@@ -112,7 +119,12 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 		} else {
 		  WorldArea* a = WorldMap::getInstance()->getArea(getRelativePosX(x), getRelativePosY(y));
 		  if (a != NULL) {
-			_menuInfo->setArea(a);
+			if (_menuInfo->getArea() == a && _menuInfo->getItem() == NULL && a->getItem() != NULL) {
+			  _menuInfo->setItem(a->getItem());
+			} else {
+			  _menuInfo->setArea(a);
+			  _menuInfo->setItem(NULL);
+			}
 		  }
 		}
       }
@@ -221,7 +233,7 @@ void UserInterface::refresh(int frame, long interval) {
   }
 
   // Display info frame
-  else if (_menuInfo->getArea() != NULL) {
+  else if (_menuInfo->getArea() != NULL || _menuInfo->getItem() != NULL) {
     _menuInfo->refresh(frame);
   }
 
@@ -329,6 +341,8 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 	  case sf::Keyboard::Escape:
 		if ((event.type == sf::Event::KeyReleased)) {
 		  _menu->openRoot();
+		  _menuCharacter->setCharacter(NULL);
+		  _menuInfo->setArea(NULL);
 		}
 		break;
 

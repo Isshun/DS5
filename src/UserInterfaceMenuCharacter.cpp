@@ -9,18 +9,22 @@
 UserInterfaceMenuCharacter::UserInterfaceMenuCharacter(sf::RenderWindow* app) {
   _app = app;
   _character = NULL;
-
-  _backgroundTexture.loadFromFile("../res/menu1.png");
-
-  if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 }
 
 UserInterfaceMenuCharacter::~UserInterfaceMenuCharacter() {
 
 }
 
-void  UserInterfaceMenuCharacter::addMessage(int posX, int posY, int width, int height, int value, sf::RenderStates render) {
+void	UserInterfaceMenuCharacter::init() {
+  _backgroundTexture.loadFromFile("../res/menu1.png");
+  _background.setTexture(_backgroundTexture);
+  _background.setTextureRect(sf::IntRect(0, 0, 380, 420));
+
+  if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
+}
+
+void	UserInterfaceMenuCharacter::addMessage(int posX, int posY, int width, int height, int value, sf::RenderStates render) {
   const char* msg;
 
   switch (value) {
@@ -87,11 +91,7 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
   sf::RenderStates		render(transform);
 
   // Background
-  Debug() << "Game background";
-  sf::Sprite background;
-  background.setTexture(_backgroundTexture);
-  background.setTextureRect(sf::IntRect(0, 0, 380, 420));
-  _app->draw(background, render);
+  _app->draw(_background, render);
 
   if (_character != NULL) {
 

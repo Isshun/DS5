@@ -724,7 +724,7 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
 
   // add to todo list if building is required
   if (free) {
-	item->progress = item->matter;
+	item->_matterSupply = item->matter;
   } else {
 	_todo->push_back(item);
   }

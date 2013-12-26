@@ -42,7 +42,7 @@ BaseItem::BaseItem(int t, int id) {
   // Init
   isSolid = false;
   _type = t;
-  progress = 0;
+  _matterSupply = 0;
   _zoneId = 0;
   _zoneIdRequired = 0;
   _roomId = 0;

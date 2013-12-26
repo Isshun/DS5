@@ -144,19 +144,18 @@ UserInterfaceMenu::UserInterfaceMenu(sf::RenderWindow* app, WorldMap* worldmap, 
   _app = app;
   _posX = 0;
   _posY = 200;
-
-  // Background
-  sf::Texture* texture = new sf::Texture();
-  texture->loadFromFile("../res/background_menu.png");
-  _background = new sf::Sprite();
-  _background->setTexture(*texture);
-  _background->setTextureRect(sf::IntRect(0, 0, 200, 200));
-
-  if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 }
 
 UserInterfaceMenu::~UserInterfaceMenu() {
+}
+
+void	UserInterfaceMenu::init() {
+  _backgroundTexture.loadFromFile("../res/background_menu.png");
+  _background.setTexture(_backgroundTexture);
+  _background.setTextureRect(sf::IntRect(0, 0, 200, 200));
+
+  if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 }
 
 void	UserInterfaceMenu::mousePressed(sf::Mouse::Button button, int x, int y) {
@@ -350,7 +349,7 @@ void UserInterfaceMenu::drawModeErase() {
 
 void	UserInterfaceMenu::refreshMenu(int frame) {
 
-  _app->draw(*_background);
+  _app->draw(_background);
 
   switch (_code) {
   case CODE_BUILD_ITEM:

@@ -25,10 +25,10 @@ int ResourceManager::build(BaseItem* item) {
   }
 
   _matter--;
-  item->progress++;
+  item->_matterSupply++;
 
   // BUILD_COMPLETE
-  if (item->progress >= item->matter) {
+  if (item->_matterSupply >= item->matter) {
 
 	// Remove power use
 	if (item->power != 0) {
