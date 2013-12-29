@@ -7,6 +7,7 @@
 #include "defines.h"
 #include "WorldMap.h"
 #include "MapSearchNode.h"
+#include "PathManager.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ struct {
   sf::Color		textColor;
 } typedef		Profession;
 
-class	Character {
+class	Character : public IPathManagerCallback {
  public:
   Character(int id, int x, int y);
   ~Character();
@@ -56,6 +57,13 @@ class	Character {
 	MSG_BLOCKED
   };
 
+  enum {
+	GOAL_NONE,
+	GOAL_USE,
+	GOAL_BUILD,
+	GOAL_MOVE
+  };
+
   // Actions
   void			action();
   void          move();
@@ -69,6 +77,10 @@ class	Character {
   void			addMessage(int msg, int count);
   void			removeMessage(int msg);
   void			go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY);
+
+  virtual void	onPathSearch(Path* path, BaseItem* item);
+  virtual void	onPathComplete(Path* path, BaseItem* item);
+  virtual void	onPathFailed(BaseItem* item);
   
   // Sets
   void			setProfession(int professionId);
@@ -79,6 +91,7 @@ class	Character {
   BaseItem*		getItem() { return _item; }
   void			setDosition(int x, int y);
   void			setSelected(bool selected) { _selected = selected; }
+  void			setBuild(BaseItem* item) { _build = item; }
 
   // Gets
   sf::Vector2<int>	&get_position();
@@ -132,6 +145,9 @@ class	Character {
   int			_sleep;
   int			_eat;
   int			_drink;
+
+  int			_goal;
+  bool			_resolvePath;
 
   int			_messages[CHARACTER_MAX_MESSAGE];
 };

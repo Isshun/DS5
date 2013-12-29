@@ -19,7 +19,7 @@ void	WorldRenderer::draw(sf::RenderStates render) {
   int toX = min(_ui->getRelativePosX(WINDOW_WIDTH)+1, WorldMap::getInstance()->getWidth());
   int toY = min(_ui->getRelativePosY(WINDOW_HEIGHT)+1, WorldMap::getInstance()->getHeight());
 
-  Debug() << "Renderer: " << fromX << " to: " << toX;
+  // Debug() << "Renderer: " << fromX << " to: " << toX;
 
   drawFloor(render, fromX, fromY, toX, toY);
   drawStructure(render, fromX, fromY, toX, toY);

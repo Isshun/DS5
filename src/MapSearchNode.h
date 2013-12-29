@@ -17,7 +17,6 @@
 
 using namespace std;
 
-
 class MapSearchNode
 {
  public:
@@ -34,8 +33,8 @@ class MapSearchNode
   bool IsSameState( MapSearchNode &rhs );
 
   void PrintNodeInfo();
-
-
 };
+
+typedef AStarSearch<MapSearchNode>		Path;
 
 #endif /* MAPSEARCHNODE_H_ */

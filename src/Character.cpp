@@ -129,11 +129,14 @@ Character::Character(int id, int x, int y) {
   _blocked = 0;
   _frameIndex = rand() % 20;
   _direction = DIRECTION_NONE;
+  _goal = GOAL_NONE;
+  _resolvePath = false;
 
   memset(_messages, MESSAGE_COUNT_INIT, CHARACTER_MAX_MESSAGE * sizeof(int));
 
   // Needs
-  _food = CHARACTER_INIT_FOOD + rand() % 20 - 10;
+   _food = CHARACTER_INIT_FOOD + rand() % 40 - 20;
+   //_food = 0;
   _oxygen = CHARACTER_INIT_OXYGEN + rand() % 20 - 10;
   _hapiness = CHARACTER_INIT_HAPINESS + rand() % 20 - 10;
   _health = CHARACTER_INIT_HEALTH + rand() % 20 - 10;
@@ -162,6 +165,46 @@ Character::~Character() {
 	delete _astarsearch;
 	_astarsearch = NULL;
   }
+}
+
+void	Character::onPathSearch(Path* path, BaseItem* item) {
+  _resolvePath = true;
+}
+
+void	Character::onPathComplete(Path* path, BaseItem* item) {
+  switch (_goal) {
+  case GOAL_MOVE:
+	_goal = GOAL_MOVE;
+	go(path, item->getX(), item->getY());
+	break;
+  case GOAL_USE:
+	_goal = GOAL_USE;
+	use(path, item);
+	break;
+  case GOAL_BUILD:
+	_goal = GOAL_BUILD;
+	build(path, item);
+	break;
+  }
+}
+
+void	Character::onPathFailed(BaseItem* item) {
+  switch (_goal) {
+  case GOAL_MOVE:
+	_goal = GOAL_NONE;
+	Warning() << "Move failed (no path)";
+	break;
+  case GOAL_USE:
+	_goal = GOAL_NONE;
+	Warning() << "Use failed (no path)";
+	break;
+  case GOAL_BUILD:
+	_goal = GOAL_NONE;
+	Warning() << "Build failed (no path)";
+	WorldMap::getInstance()->buildAbort(item);
+	break;
+  }
+  sendEvent(MSG_BLOCKED);
 }
 
 void	Character::setProfession(int professionId) {
@@ -247,6 +290,7 @@ void  Character::updateNeeds(int count) {
 	if (_sleep == 0 && _item != NULL && _item->isComplete()) {
 	  _item->setOwner(NULL);
 	  _item = NULL;
+	  _goal = GOAL_NONE;
 	}
 	return;
   }
@@ -308,6 +352,11 @@ void	Character::sendEvent(int event) {
 
 void  Character::update() {
 
+  // Character is busy
+  if (_goal != GOAL_NONE) {
+	return;
+  }
+
   // Character is sleeping
   if (_sleep > 0) {
 	return;
@@ -330,13 +379,9 @@ void  Character::update() {
 	{
 	  BaseItem* item = WorldMap::getInstance()->find(BaseItem::QUARTER_BED, true);
 	  if (item != NULL) {
-		AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, item);
-		if (path != NULL) {
-		  use(path, item);
-		  return;
-		} else {
-		  sendEvent(MSG_BLOCKED);
-		}
+		PathManager::getInstance()->getPathAsync(this, item);
+		_goal = GOAL_USE;
+		return;
 	  }
 	}
 
@@ -344,13 +389,9 @@ void  Character::update() {
 	{
 	  BaseItem* item = WorldMap::getInstance()->find(BaseItem::QUARTER_CHAIR, true);
 	  if (item != NULL) {
-		AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, item);
-		if (path != NULL) {
-		  use(path, item);
-		  return;
-		} else {
-		  sendEvent(MSG_BLOCKED);
-		}
+		PathManager::getInstance()->getPathAsync(this, item);
+		_goal = GOAL_USE;
+		return;
 	  }
 	}
 
@@ -365,6 +406,8 @@ void  Character::update() {
 
   // If character have a job -> do not interrupt
   if (_build != NULL) {
+	PathManager::getInstance()->getPathAsync(this, _build);
+	_goal = GOAL_BUILD;
 	return;
   }
 
@@ -383,13 +426,16 @@ void  Character::update() {
 	BaseItem* item = WorldMap::getInstance()->find(BaseItem::BAR_PUB, false);
 	if (item != NULL) {
 	  Debug() << "Charactere #" << _id << ": Go to pub !";
-	  AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, item);
-	  if (path != NULL) {
-		use(path, item);
-		return;
-	  } else {
-		sendEvent(MSG_BLOCKED);
-	  }
+
+	  PathManager::getInstance()->getPathAsync(this, item);
+	  _goal = GOAL_USE;
+
+	  // if (path != NULL) {
+	  // 	use(path, item);
+	  // 	return;
+	  // } else {
+	  // 	sendEvent(MSG_BLOCKED);
+	  // }
 	} else {
 	  Debug() << "Charactere #" << _id << ": no pub :(";
 	}
@@ -487,15 +533,12 @@ void		Character::actionUse() {
 	// Bar
   case BaseItem::BAR_PUB:
 	{
+	  _goal = GOAL_NONE;
 	  _food = 100;
-	  BaseItem* goal = WorldMap::getInstance()->getRandomPosInRoom(_item->getRoomId());
-	  if (goal != NULL) {
-		AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(this, goal);
-		if (path != NULL) {
-		  go(path, goal->getX(), goal->getY());
-		} else {
-		  sendEvent(MSG_BLOCKED);
-		}
+	  BaseItem* item = WorldMap::getInstance()->getRandomPosInRoom(_item->getRoomId());
+	  if (item != NULL) {
+		PathManager::getInstance()->getPathAsync(this, item);
+		_goal = GOAL_MOVE;
 	  }
 	  _item = NULL;
 	}
@@ -503,6 +546,7 @@ void		Character::actionUse() {
 
 	// Bed
   case BaseItem::QUARTER_BED:
+	_goal = GOAL_NONE;
 	_item->setOwner(this);
 	_sleep = 20;
 	_energy = 100;
@@ -513,12 +557,17 @@ void		Character::actionUse() {
 
 	// Chair
   case BaseItem::QUARTER_CHAIR:
+	_goal = GOAL_NONE;
 	_item->setOwner(this);
 	_sleep = 20;
 	_energy = 100;
 	if (_health > 40) {
 	  _health += 1;
 	}
+	break;
+
+  default:
+	_goal = GOAL_NONE;
 	break;
 
   }
@@ -533,12 +582,14 @@ void		Character::actionBuild() {
 	Debug() << "Character #" << _id << ": not enough matter";
 	WorldMap::getInstance()->buildAbort(_build);
 	_build = NULL;
+	_goal = GOAL_NONE;
 	break;
 
   case ResourceManager::BUILD_COMPLETE:
 	Debug() << "Character #" << _id << ": build complete";
 	WorldMap::getInstance()->buildComplete(_build);
 	_build = NULL;
+	_goal = GOAL_NONE;
 	// go(_posX + 1, _posY);
 	break;
 
@@ -554,20 +605,41 @@ void		Character::action() {
 	return;
   }
 
-  // Build on progress
-  if (_build != NULL) {
-	  actionBuild();
+  switch (_goal) {
+
+  case GOAL_MOVE: {
+	_goal = GOAL_NONE;
+	break;
   }
 
-  // If item still exists
-  else if (_item != NULL) {
+  case GOAL_USE: {
 	BaseItem* item = WorldMap::getInstance()->getItem(_posX, _posY);
-	if (_item != item) {
-
-	  Error() << "Character #" << _id << ": action on NULL or invalide item: " << item->getType();
+	if (_item == NULL) {
+	  Error() << "Character #" << _id << ": actionUse on NULL item";
+	  return;
+	} if (_item != item) {
+	  Error() << "Character #" << _id << ": actionUse on invalide item";
 	  return;
 	}
 	actionUse();
+	break;
   }
 
+  case GOAL_BUILD: {
+	WorldArea* area = WorldMap::getInstance()->getArea(_posX, _posY);
+	BaseItem* item = WorldMap::getInstance()->getItem(_posX, _posY);
+	if (_build == NULL || (_build != area && _build != item)) {
+	  if (_build == NULL) {
+		Error() << "Character #" << _id << ": actionBuild on NULL item";
+	  } else if (_build != area) {
+		Error() << "Character #" << _id << ": actionBuild on invalide area";
+	  } else if (_build != item) {
+		Error() << "Character #" << _id << ": actionBuild on invalide item";
+	  }
+	}
+	actionBuild();
+	break;
+  }
+
+  }
 }

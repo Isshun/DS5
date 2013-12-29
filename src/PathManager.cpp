@@ -5,15 +5,19 @@
 #include "Character.h"
 #include "BaseItem.h"
 
+#include "ThreadPool.h"
+
 PathManager* PathManager::_self = new PathManager();
 
 PathManager::PathManager() {
+  _pool = new ThreadPool(4);
   _data = new map<pair<BaseItem*, BaseItem*>, AStarSearch<MapSearchNode>*>();
   memset(_map, 0, LIMIT_CHARACTER * LIMIT_ITEMS * sizeof(int));
 }
 
 PathManager::~PathManager() {
   // delete _map;
+  delete		_pool;
 }
 
 void							PathManager::init() {
@@ -101,8 +105,7 @@ AStarSearch<MapSearchNode>*		PathManager::getPath(MapSearchNode nodeStart, MapSe
 
 	 // No path found
 	 else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) {
-	   Warning() << "Search terminated. Did not find goal state\n";
-	   Debug() << "free 2";
+	   Debug() << "Search terminated. Did not find goal state";
 	   astarsearch->EnsureMemoryFreed();
 	   delete astarsearch;
 	   // _map->insert(std::pair<int, int>(nodeStart.x + nodeStart.y * WORLD_MAX_SIZE,
@@ -139,4 +142,19 @@ AStarSearch<MapSearchNode>*		PathManager::getPath(Character* character, BaseItem
   }
 
   return path;
+}
+
+void	PathManager::getPathAsync(Character* character, BaseItem* item) {
+
+  _pool->enqueue([this, character, item] {
+
+	  AStarSearch<MapSearchNode>* path = this->getPath(character, item);
+
+	  if (path != NULL) {
+		character->onPathComplete(path, item);
+	  } else {
+		character->onPathFailed(item);
+	  }
+
+	});
 }

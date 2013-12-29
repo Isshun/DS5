@@ -1,4 +1,7 @@
+#define _GLIBCXX_USE_NANOSLEEP
 #include <iostream>
+#include <string>
+#include <thread>
 #include <stdio.h>
 #include <string.h>
 #include <sstream>
@@ -44,8 +47,8 @@ Game::Game(sf::RenderWindow* app) {
 
   _characterManager = CharacterManager::getInstance();
   _characterManager->add(0, 0, Character::PROFESSION_ENGINEER);
-  for (int i = 0; i < 22; i++) {
-  	_characterManager->add(rand() % 20, rand() % 20);
+  for (int i = 0; i < 55; i++) {
+	_characterManager->add(rand() % 20, rand() % 20);
   }
 
   // Background
@@ -177,14 +180,7 @@ void	Game::update() {
 	  Debug() << "Game: search path from char (x: " << character->getX() << ", y: " << character->getY() << ")";
 	  Debug() << "Game: search path to item (x: " << item->getX() << ", y: " << item->getY() << ")";
 
-	  AStarSearch<MapSearchNode>* path = PathManager::getInstance()->getPath(character, item);
-
-	  if (path != NULL) {
-		Debug() << "Game: add build job to character";
-		character->build(path, item);
-	  } else {
-		WorldMap::getInstance()->buildAbort(item);
-	  }
+	  character->setBuild(item);
 	}
   }
 
