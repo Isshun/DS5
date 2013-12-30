@@ -13,7 +13,6 @@
 #include <SFML/Graphics.hpp>
 #include "defines.h"
 #include "Cursor.h"
-#include "WorldMap.h"
 
 struct {
   int			code;
@@ -62,7 +61,7 @@ class UserInterfaceMenu {
     CODE_BUILD_SCIENCE
   };
 
-  UserInterfaceMenu(sf::RenderWindow* app, WorldMap* worldmap, Cursor* cursor);
+  UserInterfaceMenu(sf::RenderWindow* app, Cursor* cursor);
   ~UserInterfaceMenu();
 
   void	init();
@@ -85,7 +84,6 @@ class UserInterfaceMenu {
   sf::Sprite			_background;
   sf::Texture			_backgroundTexture;
   sf::Font				_font;
-  WorldMap*				_worldmap;
   Cursor*				_cursor;
   int					_code;
   Entry*				_entries;

@@ -17,7 +17,8 @@
 
 Settings* Settings::_self = new Settings();
 
-sf::Time _time_elapsed;
+#define REFRESH_INTERVAL		(1000/60)
+#define UPDATE_INTERVAL			200
 
 Game::Game(sf::RenderWindow* app) {
   Debug() << "Game";
@@ -30,9 +31,7 @@ Game::Game(sf::RenderWindow* app) {
   _lastInput = 0;
   _frame = 0;
   _viewport = new Viewport(app);
-  WorldMap* worldMap = WorldMap::getInstance();
-
-  _ui = new UserInterface(app, worldMap, _viewport);
+  _ui = new UserInterface(app, _viewport);
 
   _spriteManager = new SpriteManager();
   _worldRenderer = new WorldRenderer(app, _spriteManager, _ui);
@@ -40,11 +39,7 @@ Game::Game(sf::RenderWindow* app) {
   // PathManager::getInstance()->init();
 
   _update = 0;
-
   _characterManager = CharacterManager::getInstance();
-  // for (int i = 0; i < 55; i++) {
-  // 	_characterManager->add(rand() % 20, rand() % 20);
-  // }
 
   // Background
   Debug() << "Game background";
@@ -184,7 +179,6 @@ void	Game::update() {
   // Character
   _characterManager->update(_update);
 
-  _force_refresh = false;
   _update++;
 }
 
@@ -225,6 +219,8 @@ void	Game::loop() {
 	sf::Clock timer;
 
 	_run = true;
+	_last_refresh = display_timer.getElapsedTime();
+	_last_update = display_timer.getElapsedTime();
 
 	while (_run && _app->isOpen()) {
 		timer.restart();
@@ -247,33 +243,28 @@ void	Game::loop() {
 				_ui->mouseWheel(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
 			}
 
-			_force_refresh = _ui->checkKeyboard(event, _frame, _lastInput);
-			
 			checkQuit();
 		}
 
-		// Update & refresh: 50fps
-		_time_elapsed = display_timer.getElapsedTime();
-		if (_time_elapsed.asMilliseconds() > REFRESH_INTERVAL) {
-			display_timer.restart();
-			_force_refresh = false;
+		sf::Time elapsed = display_timer.getElapsedTime();
 
-			if (_frame % 5 == 0) {
-				update();
-			}
-			refresh();
-			_app->display();
+		long nextUpdate = _last_update.asMilliseconds() + UPDATE_INTERVAL - elapsed.asMilliseconds();
+		long nextRefresh = _last_refresh.asMilliseconds() + REFRESH_INTERVAL - elapsed.asMilliseconds();
 
-			if (_renderTime == 0) {
-				_renderTime = timer.getElapsedTime().asMilliseconds();
-			} else {
-				_renderTime = (_renderTime * 10 + timer.getElapsedTime().asMilliseconds()) / 11;
-			}
-			
-			// Info() << "Render: " << _renderTime << "ms";
-			if (_renderTime > 0) {
-				//Info() << "FPS: " << (int)(1000 / _renderTime);
-			}
+		// Update
+		if (nextUpdate <= 0) {
+		  _last_update = elapsed;
+		  update();
+		}
+
+		// Refresh
+		if (nextRefresh <= 0) {
+		  _renderTime = elapsed.asMilliseconds() - _last_refresh.asMilliseconds();
+		  _last_refresh = elapsed;
+		  refresh();
+		  _app->display();
+		} else {
+		  sf::sleep(sf::milliseconds(nextRefresh));
 		}
 	}
 }

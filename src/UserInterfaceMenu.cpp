@@ -4,7 +4,7 @@
 Entry	entries_main[] = {
   {UserInterfaceMenu::CODE_BUILD,	"build",		"b",	sf::Keyboard::B,		0},
   {UserInterfaceMenu::CODE_ZONE,	"zone",			"z",	sf::Keyboard::Z,		0},
-  {UserInterfaceMenu::CODE_ERASE,	"erase",		"e",	sf::Keyboard::E,		0},
+  {UserInterfaceMenu::CODE_ERASE,	"erase",		"e",	-1,		0},
   {UserInterfaceMenu::CODE_CREW,	"crew",			"c",	-1,		0},
   {UserInterfaceMenu::CODE_NONE,	NULL,			NULL,	0,		0}
 };
@@ -134,10 +134,9 @@ Entry	entries_build_science[] = {
   {UserInterfaceMenu::CODE_NONE,	NULL,			NULL,	0,		0}
 };
 
-UserInterfaceMenu::UserInterfaceMenu(sf::RenderWindow* app, WorldMap* worldmap, Cursor* cursor) {
+UserInterfaceMenu::UserInterfaceMenu(sf::RenderWindow* app, Cursor* cursor) {
   Debug() << "UserInterfaceMenu";
 
-  _worldmap = worldmap;
   _cursor = cursor;
   _entries = entries_main;
   _code = CODE_MAIN;

@@ -23,12 +23,13 @@
 #include "UserInterfaceCrew.h"
 #include "UserInterfaceDebug.h"
 #include "UserInterfaceMenuBase.h"
+#include "UserInterfaceEngineering.h"
 
 #define MOVE_VIEW_OFFSET        40
 
 class UserInterface {
  public:
-  UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport);
+  UserInterface(sf::RenderWindow* app, Viewport* viewport);
   ~UserInterface();
 
   void							refresh(int frame, long interval);
@@ -58,7 +59,6 @@ class UserInterface {
   sf::RenderWindow*				_app;
   sf::Texture					_cursorTexture;
   Cursor*						_cursor;
-  WorldMap*						_worldMap;
   Viewport*						_viewport;
   bool							_keyLeftPressed;
   bool							_keyRightPressed;
@@ -76,6 +76,7 @@ class UserInterface {
   UserInterfaceMenuCharacter*   _menuCharacter;
   UserInterfaceMenuInfo*		_menuInfo;
   UserInterfaceCrew*			_uiCharacter;
+  UserInterfaceEngineering*		_uiEngeneering;
   UserInterfaceDebug*			_uiDebug;
   UserInterfaceMenuBase*		_uiBase;
 };

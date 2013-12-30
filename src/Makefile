@@ -9,6 +9,7 @@ SRC	=	Main.cpp		\
 		UserInterfaceResource.cpp	\
 		UserInterfaceMenuCharacter.cpp	\
 		UserInterfaceMenuInfo.cpp	\
+		UserInterfaceEngineering.cpp	\
 		UserInterfaceMenuBase.cpp	\
 		BaseItem.cpp	\
 		SpriteManager.cpp	\

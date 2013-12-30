@@ -14,17 +14,16 @@
 #include "ResourceManager.h"
 #include "Settings.h"
 
-UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport* viewport) {
+UserInterface::UserInterface(sf::RenderWindow* app, Viewport* viewport) {
   _app = app;
   _viewport = viewport;
-  _worldMap = worldMap;
   _cursor = new Cursor();
   _characteres = CharacterManager::getInstance();
   _keyLeftPressed = false;
   _keyRightPressed = false;
   _zoom = 1.0f;
 
-  _menu = new UserInterfaceMenu(app, _worldMap, _cursor);
+  _menu = new UserInterfaceMenu(app, _cursor);
   _menu->init();
 
   _menuCharacter = new UserInterfaceMenuCharacter(app);
@@ -33,6 +32,7 @@ UserInterface::UserInterface(sf::RenderWindow* app, WorldMap* worldMap, Viewport
   _menuInfo = new UserInterfaceMenuInfo(app);
   _menuInfo->init();
 
+  _uiEngeneering = new UserInterfaceEngineering(app);
   _uiResource = new UserInterfaceResource(app);
   _crewViewOpen = false;
   _uiCharacter = new UserInterfaceCrew(app);
@@ -45,6 +45,7 @@ UserInterface::~UserInterface() {
   delete _menu;
   delete _menuCharacter;
   delete _uiResource;
+  delete _uiEngeneering;
 }
 
 void	UserInterface::mouseMoved(int x, int y) {
@@ -137,12 +138,12 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
             // Structure
             if (_menu->getBuildItemType() == BaseItem::STRUCTURE_ROOM) {
               if (x == startX || x == toX || y == startY || y == toY) {
-                _worldMap->putItem(x, y, BaseItem::STRUCTURE_WALL);
+				WorldMap::getInstance()->putItem(x, y, BaseItem::STRUCTURE_WALL);
               } else {
-                _worldMap->putItem(x, y, BaseItem::STRUCTURE_FLOOR);
+				WorldMap::getInstance()->putItem(x, y, BaseItem::STRUCTURE_FLOOR);
               }
             } else {
-              _worldMap->putItem(x, y, _menu->getBuildItemType());
+              WorldMap::getInstance()->putItem(x, y, _menu->getBuildItemType());
             }
           }
         }
@@ -152,7 +153,7 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
       else if (_menu->getCode() == UserInterfaceMenu::CODE_ERASE) {
         for (int x = startX; x <= toX; x++) {
           for (int y = startY; y <= toY; y++) {
-			_worldMap->removeItem(x, y);
+			WorldMap::getInstance()->removeItem(x, y);
           }
         }
       }
@@ -185,8 +186,8 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
 
   startX = max(startX, 0);
   startY = max(startY, 0);
-  toX = min(toX, _worldMap->getWidth());
-  toY = min(toY, _worldMap->getHeight());
+  toX = min(toX, WorldMap::getInstance()->getWidth());
+  toY = min(toY, WorldMap::getInstance()->getHeight());
   for (int x = startX; x <= toX; x++) {
 	for (int y = startY; y <= toY; y++) {
       sf::Transform transform;
@@ -259,6 +260,7 @@ void UserInterface::refresh(int frame, long interval) {
   _uiCharacter->drawTile(0);
   _uiResource->drawTile(1);
   _uiBase->drawTile(2);
+  _uiEngeneering->drawTile(3);
 }
 
 bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
@@ -287,6 +289,10 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 
 	  case sf::Keyboard::C:
 		_crewViewOpen = !_crewViewOpen;
+		break;
+
+	  case sf::Keyboard::E:
+		_uiEngeneering->toogleTile();
 		break;
 
 	  case sf::Keyboard::I:

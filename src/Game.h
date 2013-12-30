@@ -32,12 +32,13 @@ private:
 	sf::Event			event;
 	sf::Sprite*			_background;
 	sf::Texture*		_backgroundTexture;
+	sf::Time			_last_refresh;
+	sf::Time			_last_update;
 
 	WorldRenderer*		_worldRenderer;
 	SpriteManager*		_spriteManager;
 	UserInterface*		_ui;
 
-	bool				_force_refresh;
 	bool                _run;
 	CharacterManager*	_characterManager;
 	Viewport*           _viewport;

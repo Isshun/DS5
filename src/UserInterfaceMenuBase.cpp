@@ -40,19 +40,28 @@ void	UserInterfaceMenuBase::drawTile(int index) {
   text.setCharacterSize(FONT_SIZE);
 
   {
-	int matter = ResourceManager::getInstance().getMatter();
-    oss << "Rooms: " << WorldMap::getInstance()->getRoomCount();
+    std::ostringstream oss;
+    oss << "Power: " << ResourceManager::getInstance().getPower();
 
-	text.setString(oss.str());
-    text.setPosition(posX + UI_PADDING, UI_PADDING + TITLE_SIZE + UI_PADDING);
+    text.setString(oss.str());
+    text.setPosition(posX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT * 0);
     _app->draw(text);
   }
 
-  text.setString("Build");
+  {
+    std::ostringstream oss;
+    oss << "O2: " << ResourceManager::getInstance().getO2();
+
+    text.setString(oss.str());
+    text.setPosition(posX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT * 1);
+    _app->draw(text);
+  }
+
+  text.setString("Operation");
   text.setCharacterSize(TITLE_SIZE);
   text.setPosition(posX + UI_PADDING, UI_PADDING);
   _app->draw(text);
-  text.setString("B");
+  text.setString("O");
   text.setStyle(sf::Text::Underlined);
   text.setColor(sf::Color(255, 255, 0));
   _app->draw(text);

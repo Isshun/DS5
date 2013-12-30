@@ -3,6 +3,8 @@
 #include "Game.h"
 #include "defines.h"
 
+#define REFRESH_INTERVAL		20
+
 int main(int argc, char *argv[]) {
   sf::RenderWindow app(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), NAME);
 
