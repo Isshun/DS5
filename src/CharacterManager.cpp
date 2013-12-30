@@ -1,4 +1,8 @@
 #include <iostream>
+#include <cstdlib>
+#include <stdio.h>
+#include <sstream>
+#include <string.h>
 #include <SFML/Graphics.hpp>
 #include "defines.h"
 #include "CharacterManager.h"
@@ -47,6 +51,70 @@ CharacterManager::~CharacterManager() {
   }
 
   delete _characters;
+}
+
+void	CharacterManager::load(const char* filePath) {
+  ifstream ifs(filePath);
+  string line;
+  std::vector<std::string> vector;
+  int x, y, professionId;
+  bool	inBlock = false;
+
+  if (ifs.is_open()) {
+    while (getline(ifs, line)) {
+
+	  // Start block
+	  if (line.compare("BEGIN CHARACTERS") == 0) {
+		inBlock = true;
+	  }
+
+	  // End block
+	  else if (line.compare("END CHARACTERS") == 0) {
+		inBlock = false;
+	  }
+
+	  // Items
+	  else if (inBlock) {
+		vector.clear();
+		FileManager::split(line, '\t', vector);
+		if (vector.size() == 4) {
+		  std::istringstream issX(vector[0]);
+		  std::istringstream issY(vector[1]);
+		  std::istringstream issProfessionId(vector[2]);
+		  issX >> x;
+		  issY >> y;
+		  issProfessionId >> professionId;
+		  Character* c = add(x, y, professionId);
+		  c->setName(vector[3].c_str());
+		}
+	  }
+	}
+    ifs.close();
+  } else {
+	Error() << "Unable to open save file: " << filePath;
+  }
+}
+
+void	CharacterManager::save(const char* filePath) {
+  ofstream ofs(filePath, ios_base::app);
+  std::list<Character*>::iterator it;
+
+  if (ofs.is_open()) {
+	ofs << "BEGIN CHARACTERS\n";
+
+	for (it = _characters->begin(); it != _characters->end(); ++it) {
+	  Character* c = *it;
+	  ofs << c->getX() << "\t"
+		  << c->getY() << "\t"
+ 		  << c->getProfessionId() << "\t"
+ 		  << c->getName() << "\n";
+	}
+	ofs << "END CHARACTERS\n";
+
+	ofs.close();
+  } else {
+	Error() << "Unable to open save file: " << filePath;
+  }
 }
 
 Character*	CharacterManager::getNext(Character* character) {

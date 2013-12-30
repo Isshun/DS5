@@ -8,6 +8,7 @@
 #include "WorldMap.h"
 #include "MapSearchNode.h"
 #include "PathManager.h"
+#include "FileManager.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ struct {
   sf::Color		textColor;
 } typedef		Profession;
 
-class	Character : public IPathManagerCallback {
+class	Character : public IPathManagerCallback, public Serializable {
  public:
   Character(int id, int x, int y);
   ~Character();
@@ -78,6 +79,9 @@ class	Character : public IPathManagerCallback {
   void			removeMessage(int msg);
   void			go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY);
 
+  virtual void	load(const char* filePath);
+  virtual void	save(const char* filePath);
+
   virtual void	onPathSearch(Path* path, BaseItem* item);
   virtual void	onPathComplete(Path* path, BaseItem* item);
   virtual void	onPathFailed(BaseItem* item);
@@ -92,6 +96,7 @@ class	Character : public IPathManagerCallback {
   void			setDosition(int x, int y);
   void			setSelected(bool selected) { _selected = selected; }
   void			setBuild(BaseItem* item) { _build = item; }
+  void			setName(const char* name) { strcpy(_name, name); }
 
   // Gets
   sf::Vector2<int>	&get_position();
@@ -99,6 +104,7 @@ class	Character : public IPathManagerCallback {
   int           getRun();
   int           getDirection() { return _direction; }
   Profession	getProfession() { return _profession; }
+  int			getProfessionId() { return _profession.id; }
   void*			getJob() { return _item; }
   int			getX() { return _posX; }
   int			getY() { return _posY; }

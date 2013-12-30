@@ -12,6 +12,7 @@
 #include <list>
 #include "BaseItem.h"
 #include "Room.h"
+#include "FileManager.h"
 
 class WorldArea : public BaseItem {
  public:
@@ -32,10 +33,13 @@ class WorldArea : public BaseItem {
   BaseItem*		_item;
 };
 
-class WorldMap {
+class WorldMap : public Serializable {
  public:
   WorldMap();
   ~WorldMap();
+
+  void					load(const char* filePath);
+  void					save(const char* filePath);
 
   // Actions
   void					putItem(int x, int y, int type);
@@ -46,8 +50,6 @@ class WorldMap {
   void					dumpItems();
   BaseItem*				find(int type, bool free);
   void					removeItem(int x, int y);
-  void					init();
-  void					initMap();
   void					initRoom();
   int					addRoom(int x, int y);
   void					destroyRoom(int roomId);

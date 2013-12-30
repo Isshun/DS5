@@ -19,8 +19,6 @@ Settings* Settings::_self = new Settings();
 
 sf::Time _time_elapsed;
 
-#define REFRESH_INTERVAL		20
-
 Game::Game(sf::RenderWindow* app) {
   Debug() << "Game";
 
@@ -28,13 +26,11 @@ Game::Game(sf::RenderWindow* app) {
   srand(_seed);
   _renderTime = 0;
 
-  _run = true;
   _app = app;
   _lastInput = 0;
   _frame = 0;
   _viewport = new Viewport(app);
   WorldMap* worldMap = WorldMap::getInstance();
-  worldMap->init();
 
   _ui = new UserInterface(app, worldMap, _viewport);
 
@@ -46,10 +42,9 @@ Game::Game(sf::RenderWindow* app) {
   _update = 0;
 
   _characterManager = CharacterManager::getInstance();
-  _characterManager->add(0, 0, Character::PROFESSION_ENGINEER);
-  for (int i = 0; i < 55; i++) {
-	_characterManager->add(rand() % 20, rand() % 20);
-  }
+  // for (int i = 0; i < 55; i++) {
+  // 	_characterManager->add(rand() % 20, rand() % 20);
+  // }
 
   // Background
   Debug() << "Game background";
@@ -58,6 +53,8 @@ Game::Game(sf::RenderWindow* app) {
   _background = new sf::Sprite();
   _background->setTexture(*_backgroundTexture);
   _background->setTextureRect(sf::IntRect(0, 0, 1920, 1080));
+
+  app->setKeyRepeatEnabled(true);
 
   Info() << "Game:\tdone";
 }
@@ -227,7 +224,9 @@ void	Game::loop() {
 	sf::Clock pnj_timer;
 	sf::Clock timer;
 
-	while (_app->isOpen()) {
+	_run = true;
+
+	while (_run && _app->isOpen()) {
 		timer.restart();
 
 		// Events
@@ -279,27 +278,87 @@ void	Game::loop() {
 	}
 }
 
-void	Game::checkQuit() {
-  if (this->event.type == sf::Event::Closed) {
-	_app->setKeyRepeatEnabled(true);
-	_app->close();
-	Info() << "Bye";
+void	Game::load(const char* filePath) {
+  Info() << "Game load";
+
+  ifstream ifs(filePath);
+  string line;
+  std::vector<std::string> vector;
+  int value;
+  bool	inBlock = false;
+
+  if (ifs.is_open()) {
+    while (getline(ifs, line)) {
+
+	  // Start block
+	  if (line.compare("BEGIN GAME") == 0) {
+		inBlock = true;
+	  }
+
+	  // End block
+	  else if (line.compare("END GAME") == 0) {
+		inBlock = false;
+	  }
+
+	  // Items
+	  else if (inBlock) {
+		std::cout << "line: " << line << std::endl;
+		vector.clear();
+		FileManager::split(line, '\t', vector);
+		if (vector[0].compare("matter") == 0) {
+		  std::istringstream issValue(vector[1]);
+		  issValue >> value;
+		  ResourceManager::getInstance().setMatter(value);
+		}
+	  }
+	}
+    ifs.close();
+  } else {
+	Error() << "Unable to open save file: " << filePath;
   }
 
-  if (this->event.type == sf::Event::KeyPressed &&
-	  this->event.key.code == sf::Keyboard::K) {
-	_app->setKeyRepeatEnabled(true);
-	_app->close();
-	Info() << "Bye";
-  }
+  WorldMap::getInstance()->load(filePath);
+  CharacterManager::getInstance()->load(filePath);
 }
 
-int main(int argc, char *argv[]) {
-  sf::RenderWindow app(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), NAME);
+void	Game::save(const char* filePath) {
+  Info() << "Game save";
 
-  Game	game(&app);
-  app.setKeyRepeatEnabled(true);
-  game.loop();
+  ofstream ofs(filePath);
 
-  return EXIT_SUCCESS;
+  if (ofs.is_open()) {
+	ofs << "BEGIN GAME\n";
+	ofs << "matter\t" << ResourceManager::getInstance().getMatter() << "\n";
+	ofs << "END GAME\n";
+	ofs.close();
+  } else {
+	Error() << "Unable to open save file: " << filePath;
+  }
+
+  // ofstream ofs(filePath);
+  // ofs.close();
+
+  WorldMap::getInstance()->save(filePath);
+  CharacterManager::getInstance()->save(filePath);
+}
+
+
+
+void	Game::checkQuit() {
+  if (this->event.type == sf::Event::Closed) {
+	_app->setKeyRepeatEnabled(false);
+	_app->close();
+	Info() << "Bye";
+  }
+
+  // if (this->event.type == sf::Event::KeyReleased &&
+  // 	  this->event.key.code == sf::Keyboard::Escape) {
+	
+  // }
+
+  if (this->event.type == sf::Event::KeyReleased && this->event.key.code == sf::Keyboard::K) {
+	_run = false;
+	// _app->setKeyRepeatEnabled(false);
+	Info() << "Bye";
+  }
 }

@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <stdio.h>
+#include <sstream>
 #include <string.h>
 #include <list>
 #include "WorldMap.h"
@@ -77,9 +78,71 @@ WorldMap::~WorldMap() {
   delete _items;
 }
 
-void	WorldMap::init() {
-  initMap();
-  initRoom();
+void	WorldMap::load(const char* filePath) {
+  ifstream ifs(filePath);
+  string line;
+  std::vector<std::string> vector;
+  int x, y, type;
+  bool	inBlock = false;
+
+  if (ifs.is_open()) {
+    while (getline(ifs, line)) {
+
+	  // Start block
+	  if (line.compare("BEGIN WORLDMAP") == 0) {
+		inBlock = true;
+	  }
+
+	  // End block
+	  else if (line.compare("END WORLDMAP") == 0) {
+		inBlock = false;
+	  }
+
+	  // Items
+	  else if (inBlock) {
+		vector.clear();
+		FileManager::split(line, '\t', vector);
+		if (vector.size() == 3) {
+		  std::istringstream issX(vector[0]);
+		  std::istringstream issY(vector[1]);
+		  std::istringstream issType(vector[2]);
+		  issX >> x;
+		  issY >> y;
+		  issType >> type;
+		  putItem(x, y, type, true);
+		}
+	  }
+	}
+    ifs.close();
+  } else {
+	Error() << "Unable to open save file: " << filePath;
+  }
+}
+
+void	WorldMap::save(const char* filePath) {
+  ofstream ofs(filePath, ios_base::app);
+
+  if (ofs.is_open()) {
+	ofs << "BEGIN WORLDMAP\n";
+	for (int x = 0; x < _width; x++) {
+	  for (int y = 0; y < _height; y++) {
+		if (_items[x][y] != NULL) {
+		  WorldArea* area = _items[x][y];
+		  ofs << x << "\t" << y << "\t" << area->getType() << "\n";
+
+		  if (area->getItem() != NULL) {
+			BaseItem* item = area->getItem();
+			ofs << x << "\t" << y << "\t" << item->getType() << "\n";
+		  }
+		}
+	  }
+	}
+	ofs << "END WORLDMAP\n";
+
+	ofs.close();
+  } else {
+	Error() << "Unable to open save file: " << filePath;
+  }
 }
 
 BaseItem*	WorldMap::find(int type, bool free) {
@@ -164,316 +227,6 @@ void	WorldMap::initRoom() {
   // 	  }
   // 	}
   // }
-}
-
-void WorldMap::initMap() {
-  putItem(8, 7, 3, true);
-  putItem(8, 8, 3, true);
-  putItem(8, 9, 7, true);
-  putItem(8, 10, 3, true);
-  putItem(8, 11, 3, true);
-  putItem(8, 12, 3, true);
-  putItem(8, 13, 3, true);
-  putItem(8, 14, 3, true);
-  putItem(8, 15, 3, true);
-  putItem(8, 16, 3, true);
-  putItem(8, 17, 3, true);
-  putItem(8, 18, 3, true);
-  putItem(8, 19, 3, true);
-  putItem(8, 20, 3, true);
-  putItem(8, 21, 3, true);
-  putItem(8, 22, 3, true);
-  putItem(8, 23, 3, true);
-  putItem(8, 24, 3, true);
-  putItem(8, 25, 3, true);
-  putItem(8, 26, 3, true);
-  putItem(8, 27, 3, true);
-  putItem(8, 28, 3, true);
-  putItem(9, 7, 3, true);
-  putItem(9, 8, 5, true);
-  putItem(9, 9, 5, true);
-  putItem(9, 10, 5, true);
-  putItem(9, 11, 5, true);
-  putItem(9, 12, 5, true);
-  putItem(9, 13, 5, true);
-  putItem(9, 14, 5, true);
-  putItem(9, 15, 5, true);
-  putItem(9, 16, 5, true);
-  putItem(9, 17, 5, true);
-  putItem(9, 18, 5, true);
-  putItem(9, 19, 5, true);
-  putItem(9, 20, 5, true);
-  putItem(9, 21, 5, true);
-  putItem(9, 22, 5, true);
-  putItem(9, 23, 3, true);
-  putItem(9, 24, 5, true);
-  putItem(9, 25, 5, true);
-  putItem(9, 26, 5, true);
-  putItem(9, 27, 5, true);
-  putItem(9, 28, 3, true);
-  putItem(10, 3, 3, true);
-  putItem(10, 4, 3, true);
-  putItem(10, 5, 3, true);
-  putItem(10, 6, 3, true);
-  putItem(10, 7, 3, true);
-  putItem(10, 8, 5, true);
-  putItem(10, 9, 5, true);
-  putItem(10, 10, 5, true);
-  putItem(10, 11, 5, true);
-  putItem(10, 12, 5, true);
-  putItem(10, 13, 5, true);
-  putItem(10, 14, 5, true);
-  putItem(10, 15, 5, true);
-  putItem(10, 16, 5, true);
-  putItem(10, 17, 5, true);
-  putItem(10, 18, 5, true);
-  putItem(10, 19, 5, true);
-  putItem(10, 20, 5, true);
-  putItem(10, 21, 5, true);
-  putItem(10, 22, 5, true);
-  putItem(10, 23, 7, true);
-  putItem(10, 24, 5, true);
-  putItem(10, 25, 5, true);
-  putItem(10, 26, 5, true);
-  putItem(10, 27, 5, true);
-  putItem(10, 28, 3, true);
-  putItem(11, 3, 3, true);
-  putItem(11, 4, 5, true);
-  putItem(11, 5, 5, true);
-  putItem(11, 6, 5, true);
-  putItem(11, 7, 3, true);
-  putItem(11, 8, 5, true);
-  putItem(11, 9, 5, true);
-  putItem(11, 10, 5, true);
-  putItem(11, 11, 5, true);
-  putItem(11, 12, 5, true);
-  putItem(11, 13, 5, true);
-  putItem(11, 14, 5, true);
-  putItem(11, 15, 5, true);
-  putItem(11, 16, 5, true);
-  putItem(11, 17, 5, true);
-  putItem(11, 18, 5, true);
-  putItem(11, 19, 5, true);
-  putItem(11, 20, 5, true);
-  putItem(11, 21, 5, true);
-  putItem(11, 22, 5, true);
-  putItem(11, 23, 3, true);
-  putItem(11, 24, 5, true);
-  putItem(11, 25, 5, true);
-  putItem(11, 26, 5, true);
-  putItem(11, 27, 5, true);
-  putItem(11, 28, 3, true);
-  putItem(12, 3, 3, true);
-  putItem(12, 4, 5, true);
-  putItem(12, 5, 5, true);
-  putItem(12, 6, 5, true);
-  putItem(12, 7, 7, true);
-  putItem(12, 8, 5, true);
-  putItem(12, 9, 5, true);
-  putItem(12, 10, 5, true);
-  putItem(12, 11, 3, true);
-  putItem(12, 12, 3, true);
-  putItem(12, 13, 3, true);
-  putItem(12, 14, 7, true);
-  putItem(12, 15, 3, true);
-  putItem(12, 16, 3, true);
-  putItem(12, 17, 3, true);
-  putItem(12, 18, 3, true);
-  putItem(12, 19, 3, true);
-  putItem(12, 20, 7, true);
-  putItem(12, 21, 3, true);
-  putItem(12, 22, 3, true);
-  putItem(12, 23, 3, true);
-  putItem(12, 25, 5, true);
-  putItem(12, 26, 5, true);
-  putItem(12, 27, 5, true);
-  putItem(12, 28, 3, true);
-  putItem(13, 3, 3, true);
-  putItem(13, 4, 5, true);
-  putItem(13, 5, 5, true);
-  putItem(13, 6, 5, true);
-  putItem(13, 7, 3, true);
-  putItem(13, 8, 5, true);
-  putItem(13, 9, 5, true);
-  putItem(13, 10, 5, true);
-  putItem(13, 11, 3, true);
-  putItem(13, 12, 5, true);
-  putItem(13, 13, 5, true);
-  putItem(13, 14, 5, true);
-  putItem(13, 15, 5, true);
-  putItem(13, 16, 5, true);
-  putItem(13, 17, 3, true);
-  putItem(13, 19, 5, true);
-  putItem(13, 20, 5, true);
-  putItem(13, 21, 5, true);
-  putItem(13, 23, 3, true);
-  putItem(13, 24, 5, true);
-  putItem(13, 25, 5, true);
-  putItem(13, 26, 5, true);
-  putItem(13, 27, 5, true);
-  putItem(13, 28, 3, true);
-  putItem(14, 3, 3, true);
-  putItem(14, 4, 5, true);
-  putItem(14, 5, 5, true);
-  putItem(14, 6, 5, true);
-  putItem(14, 7, 3, true);
-  putItem(14, 8, 3, true);
-  putItem(14, 9, 3, true);
-  putItem(14, 10, 3, true);
-  putItem(14, 11, 3, true);
-  putItem(14, 12, 5, true);
-  putItem(14, 13, 5, true);
-  putItem(14, 14, 5, true);
-  putItem(14, 15, 5, true);
-  putItem(14, 16, 5, true);
-  putItem(14, 17, 3, true);
-  putItem(14, 18, 5, true);
-  putItem(14, 19, 5, true);
-  putItem(14, 20, 5, true);
-  putItem(14, 21, 5, true);
-  putItem(14, 22, 5, true);
-  putItem(14, 23, 3, true);
-  putItem(14, 24, 5, true);
-  putItem(14, 25, 5, true);
-  putItem(14, 26, 5, true);
-  putItem(14, 27, 5, true);
-  putItem(14, 28, 3, true);
-  putItem(15, 3, 3, true);
-  putItem(15, 4, 5, true);
-  putItem(15, 5, 5, true);
-  putItem(15, 6, 5, true);
-  putItem(15, 7, 3, true);
-  putItem(15, 8, 5, true);
-  putItem(15, 9, 5, true);
-  putItem(15, 10, 5, true);
-  putItem(15, 11, 3, true);
-  putItem(15, 12, 5, true);
-  putItem(15, 13, 5, true);
-  putItem(15, 14, 5, true);
-  putItem(15, 15, 5, true);
-  putItem(15, 16, 5, true);
-  putItem(15, 17, 3, true);
-  putItem(15, 18, 5, true);
-  putItem(15, 19, 5, true);
-  putItem(15, 20, 5, true);
-  putItem(15, 21, 5, true);
-  putItem(15, 22, 5, true);
-  putItem(15, 23, 3, true);
-  putItem(15, 24, 5, true);
-  putItem(15, 25, 5, true);
-  putItem(15, 26, 5, true);
-  putItem(15, 27, 5, true);
-  putItem(15, 28, 3, true);
-  putItem(16, 3, 3, true);
-  putItem(16, 4, 5, true);
-  putItem(16, 5, 5, true);
-  putItem(16, 6, 5, true);
-  putItem(16, 7, 3, true);
-  putItem(16, 8, 5, true);
-  putItem(16, 9, 5, true);
-  putItem(16, 10, 5, true);
-  putItem(16, 11, 3, true);
-  putItem(16, 13, 5, true);
-  putItem(16, 14, 5, true);
-  putItem(16, 15, 5, true);
-  putItem(16, 16, 5, true);
-  putItem(16, 17, 3, true);
-  putItem(16, 19, 5, true);
-  putItem(16, 20, 5, true);
-  putItem(16, 21, 5, true);
-  putItem(16, 22, 5, true);
-  putItem(16, 23, 3, true);
-  putItem(16, 24, 5, true);
-  putItem(16, 25, 5, true);
-  putItem(16, 26, 5, true);
-  putItem(16, 27, 5, true);
-  putItem(16, 28, 3, true);
-  putItem(17, 3, 3, true);
-  putItem(17, 4, 3, true);
-  putItem(17, 5, 3, true);
-  putItem(17, 6, 3, true);
-  putItem(17, 7, 3, true);
-  putItem(17, 9, 5, true);
-  putItem(17, 10, 5, true);
-  putItem(17, 11, 3, true);
-  putItem(17, 12, 5, true);
-  putItem(17, 13, 5, true);
-  putItem(17, 14, 5, true);
-  putItem(17, 15, 5, true);
-  putItem(17, 16, 5, true);
-  putItem(17, 17, 3, true);
-  putItem(17, 18, 5, true);
-  putItem(17, 19, 5, true);
-  putItem(17, 20, 5, true);
-  putItem(17, 21, 5, true);
-  putItem(17, 23, 3, true);
-  putItem(17, 24, 5, true);
-  putItem(17, 26, 5, true);
-  putItem(17, 27, 5, true);
-  putItem(17, 28, 3, true);
-  putItem(18, 7, 3, true);
-  putItem(18, 8, 5, true);
-  putItem(18, 9, 5, true);
-  putItem(18, 10, 5, true);
-  putItem(18, 11, 3, true);
-  putItem(18, 12, 5, true);
-  putItem(18, 13, 5, true);
-  putItem(18, 14, 5, true);
-  putItem(18, 15, 5, true);
-  putItem(18, 16, 5, true);
-  putItem(18, 17, 3, true);
-  putItem(18, 18, 5, true);
-  putItem(18, 19, 5, true);
-  putItem(18, 20, 5, true);
-  putItem(18, 21, 5, true);
-  putItem(18, 22, 5, true);
-  putItem(18, 23, 3, true);
-  putItem(18, 24, 5, true);
-  putItem(18, 25, 5, true);
-  putItem(18, 26, 5, true);
-  putItem(18, 27, 5, true);
-  putItem(18, 28, 3, true);
-  putItem(19, 7, 3, true);
-  putItem(19, 8, 3, true);
-  putItem(19, 9, 3, true);
-  putItem(19, 10, 3, true);
-  putItem(19, 11, 3, true);
-  putItem(19, 12, 3, true);
-  putItem(19, 13, 3, true);
-  putItem(19, 14, 3, true);
-  putItem(19, 15, 3, true);
-  putItem(19, 16, 3, true);
-  putItem(19, 17, 3, true);
-  putItem(19, 18, 3, true);
-  putItem(19, 19, 3, true);
-  putItem(19, 20, 3, true);
-  putItem(19, 21, 3, true);
-  putItem(19, 22, 3, true);
-  putItem(19, 23, 3, true);
-  putItem(19, 24, 3, true);
-  putItem(19, 25, 3, true);
-  putItem(19, 26, 3, true);
-  putItem(19, 27, 3, true);
-  putItem(19, 28, 3, true);
-  putItem(14, 9, 7, true);
-
-  putItem(17, 8, 5, true);
-  putItem(13, 18, 5, true);
-  putItem(12, 24, 5, true);
-  putItem(13, 22, 5, true);
-  putItem(16, 12, 5, true);
-  putItem(16, 18, 5, true);
-  putItem(17, 22, 5, true);
-  putItem(17, 25, 5, true);
-
-  putItem(17, 8, 9, true);
-  putItem(13, 18, 32, true);
-  putItem(12, 24, 12, true);
-  putItem(13, 22, 34, true);
-  putItem(16, 12, 30, true);
-  putItem(16, 18, 32, true);
-  putItem(17, 22, 34, true);
-  putItem(17, 25, 13, true);
 }
 
 int GetMap(int x, int y);

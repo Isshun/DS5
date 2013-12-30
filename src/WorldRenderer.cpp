@@ -255,8 +255,8 @@ void	WorldRenderer::drawDebug(sf::RenderStates render, int fromX, int fromY, int
 		text.setColor(sf::Color(0, 0, 0));
 		text.setStyle(sf::Text::Regular);
 		std::ostringstream oss;
-		oss << item->getOxygen();
-		 //oss << item->getZoneId();
+		//oss << item->getOxygen();
+		oss << item->getRoomId();
 		text.setString(oss.str().c_str());
 		text.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 		_app->draw(text, render);

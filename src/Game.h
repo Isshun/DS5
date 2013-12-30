@@ -14,12 +14,14 @@
 #include "Viewport.h"
 #include "CharacterManager.h"
 
-class	Game {
+class	Game : public Serializable {
 public:
 	Game(sf::RenderWindow* app);
 	~Game();
 
 	void	loop();
+	virtual void	load(const char* filePath);
+	virtual void	save(const char* filePath);
 	void	update();
 	void	refresh();
 	void	draw_surface();

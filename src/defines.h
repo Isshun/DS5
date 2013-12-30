@@ -5,6 +5,8 @@
 
 #define NAME	"DS5"
 
+#define REFRESH_INTERVAL		20
+
 #define WINDOW_WIDTH			1600
 #define WINDOW_HEIGHT			900
 

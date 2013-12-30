@@ -167,6 +167,13 @@ Character::~Character() {
   }
 }
 
+void	Character::load(const char* filePath) {
+}
+
+void	Character::save(const char* filePath) {
+
+}
+
 void	Character::onPathSearch(Path* path, BaseItem* item) {
   _resolvePath = true;
 }

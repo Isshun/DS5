@@ -7,12 +7,15 @@
 #include "defines.h"
 #include "WorldMap.h"
 #include "Character.h"
+#include "FileManager.h"
 
-class	CharacterManager
-{
+class	CharacterManager : public Serializable {
  public:
 	CharacterManager();
 	~CharacterManager();
+
+	virtual void				load(const char* filePath);
+	virtual void				save(const char* filePath);
 
 	Character*					add(int x, int y);
 	Character*					add(int x, int y, int profession);

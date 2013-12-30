@@ -1,4 +1,6 @@
-SRC	=	Game.cpp	\
+SRC	=	Main.cpp		\
+		Game.cpp	\
+		FileManager.cpp	\
 		MapSearchNode.cpp	\
 		UserInterface.cpp	\
 		UserInterfaceMenu.cpp	\
