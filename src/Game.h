@@ -20,6 +20,7 @@ public:
 	~Game();
 
 	void	loop();
+	virtual void	create();
 	virtual void	load(const char* filePath);
 	virtual void	save(const char* filePath);
 	void	update();

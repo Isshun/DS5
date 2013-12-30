@@ -136,15 +136,20 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
           for (int y = toY; y >= startY; y--) {
 
             // Structure
+			BaseItem* item = NULL;
             if (_menu->getBuildItemType() == BaseItem::STRUCTURE_ROOM) {
               if (x == startX || x == toX || y == startY || y == toY) {
-				WorldMap::getInstance()->putItem(x, y, BaseItem::STRUCTURE_WALL);
+				item = WorldMap::getInstance()->putItem(x, y, BaseItem::STRUCTURE_WALL);
               } else {
-				WorldMap::getInstance()->putItem(x, y, BaseItem::STRUCTURE_FLOOR);
+				item = WorldMap::getInstance()->putItem(x, y, BaseItem::STRUCTURE_FLOOR);
               }
             } else {
-              WorldMap::getInstance()->putItem(x, y, _menu->getBuildItemType());
+              item = WorldMap::getInstance()->putItem(x, y, _menu->getBuildItemType());
             }
+
+			if (item != NULL) {
+			  JobManager::getInstance()->build(item);
+			}
           }
         }
       }
@@ -259,7 +264,7 @@ void UserInterface::refresh(int frame, long interval) {
 
   _uiCharacter->drawTile(0);
   _uiResource->drawTile(1);
-  _uiBase->drawTile(2);
+  _uiBase->draw(2);
   _uiEngeneering->drawTile(3);
 }
 
@@ -293,6 +298,14 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 
 	  case sf::Keyboard::E:
 		_uiEngeneering->toogleTile();
+		break;
+
+	  case sf::Keyboard::O:
+		_uiBase->toogleTile();
+		break;
+
+	  case sf::Keyboard::J:
+		_uiBase->toogleJobs();
 		break;
 
 	  case sf::Keyboard::G: {
@@ -347,7 +360,10 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 	  case sf::Keyboard::Return:
 		if (event.type == sf::Event::KeyReleased) {
 		  if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
-			WorldMap::getInstance()->putItem(_keyMovePosX, _keyMovePosY, _menu->getBuildItemType());
+			BaseItem* item = WorldMap::getInstance()->putItem(_keyMovePosX, _keyMovePosY, _menu->getBuildItemType());
+			if (item != NULL) {
+			  JobManager::getInstance()->build(item);
+			}
 		  }
 		}
 		break;

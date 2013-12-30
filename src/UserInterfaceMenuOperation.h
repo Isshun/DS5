@@ -18,13 +18,19 @@ class UserInterfaceMenuOperation {
 
   UserInterfaceMenuOperation(sf::RenderWindow* app);
   ~UserInterfaceMenuOperation();
+  void	draw(int index);
   void	drawTile(int index);
+  void	drawJobs();
+  void	toogleJobs() { _isJobsOpen = !_isJobsOpen; }
+  void	toogleTile() { _isTileOpen = !_isTileOpen; }
 
  private:
   sf::RenderWindow* _app;
   sf::Font			_font;
   sf::Sprite		_background;
   sf::Texture		_backgroundTexture;
+  bool				_isTileOpen;
+  bool				_isJobsOpen;
 };
 
 #endif /* USERINTERFACERESOURCE_H_ */

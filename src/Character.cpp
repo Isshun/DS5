@@ -133,6 +133,7 @@ Character::Character(int id, int x, int y) {
   _resolvePath = false;
   _offset = 0;
   _node = NULL;
+  _job = NULL;
 
   memset(_messages, MESSAGE_COUNT_INIT, CHARACTER_MAX_MESSAGE * sizeof(int));
 
@@ -169,6 +170,10 @@ Character::~Character() {
 	delete _astarsearch;
 	_astarsearch = NULL;
   }
+}
+
+void	Character::create() {
+
 }
 
 void	Character::load(const char* filePath) {
@@ -216,6 +221,8 @@ void	Character::onPathFailed(BaseItem* item) {
 	_goal = GOAL_NONE;
 	Warning() << "Build failed (no path)";
 	WorldMap::getInstance()->buildAbort(item);
+	JobManager::getInstance()->abort(_job);
+	_job = NULL;
 	break;
   }
   sendEvent(MSG_BLOCKED);
@@ -226,6 +233,13 @@ void	Character::setDirection(int direction) {
 	_direction = direction;
 	_offset = 0;
   }
+}
+
+void	Character::setJob(Job* job) {
+  if (_job != NULL) {
+	JobManager::getInstance()->abort(_job);
+  }
+  _job = job;
 }
 
 void	Character::setProfession(int professionId) {
@@ -614,6 +628,7 @@ void		Character::actionBuild() {
   case ResourceManager::BUILD_COMPLETE:
 	Debug() << "Character #" << _id << ": build complete";
 	WorldMap::getInstance()->buildComplete(_build);
+	JobManager::getInstance()->complete(_job);
 	_build = NULL;
 	_goal = GOAL_NONE;
 	// go(_posX + 1, _posY);

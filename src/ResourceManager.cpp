@@ -6,7 +6,7 @@
 ResourceManager ResourceManager::_self = ResourceManager();
 
 ResourceManager::ResourceManager() {
-  _matter = RESSOURCE_MATTER_START;
+  _matter = 0;
   _power = 0;
   _o2Use = 0;
   _o2Supply = 0;

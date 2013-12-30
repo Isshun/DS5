@@ -8,12 +8,14 @@
 #include "WorldMap.h"
 #include "Character.h"
 #include "FileManager.h"
+#include "Job.h"
 
 class	CharacterManager : public Serializable {
  public:
 	CharacterManager();
 	~CharacterManager();
 
+	virtual void				create();
 	virtual void				load(const char* filePath);
 	virtual void				save(const char* filePath);
 
@@ -21,6 +23,7 @@ class	CharacterManager : public Serializable {
 	Character*					add(int x, int y, int profession);
 	void						refresh(sf::RenderWindow* app, sf::Transform transform, double animProgress);
     void        				update(int count);
+	Character*					assignJob(Job* job);
 
 	// Gets
 	Character*					getUnemployed(int professionId);

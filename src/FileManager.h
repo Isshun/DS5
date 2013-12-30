@@ -6,6 +6,7 @@
 
 class	Serializable
 {
+  virtual void	create() = 0;
   virtual void	load(const char* filePath) = 0;
   virtual void	save(const char* filePath) = 0;
 };

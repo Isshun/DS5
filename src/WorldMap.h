@@ -38,11 +38,12 @@ class WorldMap : public Serializable {
   WorldMap();
   ~WorldMap();
 
+  void					create();
   void					load(const char* filePath);
   void					save(const char* filePath);
 
   // Actions
-  void					putItem(int x, int y, int type);
+  BaseItem*				putItem(int x, int y, int type);
   void					buildComplete(BaseItem* item);
   void					buildAbort(BaseItem* item);
   void					reloadAborted();
@@ -77,7 +78,7 @@ class WorldMap : public Serializable {
   int					setZone(int x, int y, int zoneId);
 
  private:
-  void					putItem(int x, int y, int type, bool free);
+  BaseItem*				putItem(int x, int y, int type, bool free);
 
   std::list<BaseItem*>*	_todo;
   std::list<BaseItem*>*	_building;

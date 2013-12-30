@@ -13,6 +13,8 @@ SRC	=	Main.cpp		\
 		UserInterfaceMenuOperation.cpp	\
 		BaseItem.cpp	\
 		SpriteManager.cpp	\
+		JobManager.cpp	\
+		Job.cpp	\
 		ResourceManager.cpp	\
 		Viewport.cpp	\
 		WorldMap.cpp	\

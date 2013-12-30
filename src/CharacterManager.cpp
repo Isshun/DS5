@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include "defines.h"
 #include "CharacterManager.h"
+#include "JobManager.h"
 
 CharacterManager* CharacterManager::_self = new CharacterManager();
 
@@ -51,6 +52,14 @@ CharacterManager::~CharacterManager() {
   }
 
   delete _characters;
+}
+
+void	CharacterManager::create() {
+  add(0, 0, Character::PROFESSION_ENGINEER);
+  add(1, 0, Character::PROFESSION_MINER);
+  add(2, 0, Character::PROFESSION_DOCTOR);
+  add(3, 0, Character::PROFESSION_SCIENCE);
+  add(4, 0, Character::PROFESSION_SECURITY);
 }
 
 void	CharacterManager::load(const char* filePath) {
@@ -174,6 +183,60 @@ Character*        CharacterManager::getCharacterAtPos(int x, int y) {
   return NULL;
 }
 
+Character*		CharacterManager::assignJob(Job* job) {
+  if (job == NULL) {
+	Error() << "CharacterManager:: try to assign NULL job";
+	return NULL;
+  }
+
+  std::list<Character*>::iterator it;
+  Character* bestCharacter = NULL;
+
+  int jobAction = job->getAction();
+
+  for (it = _characters->begin(); it != _characters->end(); ++it) {
+
+	// build action -> only engineer
+	if (jobAction == JobManager::ACTION_BUILD && (*it)->getProfession().id == Character::PROFESSION_ENGINEER) {
+	  if ((*it)->getJob() == NULL) {
+		if (bestCharacter == NULL || (*it)->getProfessionScore(Character::PROFESSION_ENGINEER) > bestCharacter->getProfessionScore(Character::PROFESSION_ENGINEER)) {
+		  bestCharacter = *it;
+		}
+	  }
+	}
+  }
+
+  if (bestCharacter != NULL) {
+
+	// TODO: remove
+	if (job->getAction() == JobManager::ACTION_BUILD) {
+	  BaseItem* jobItem = job->getItem();
+	  BaseItem* item = WorldMap::getInstance()->getItem(job->getX(), job->getY());
+	  WorldArea* area = WorldMap::getInstance()->getArea(job->getX(), job->getY());
+	  if (item != NULL && item->isComplete() && area != NULL && area->isComplete()) {
+		Error() << "CharacterManager: Job ACTION_BUILD on complete item";
+		return NULL;
+	  }
+	  if (jobItem == NULL && item != NULL) {
+		jobItem = item;
+	  }
+	  if (jobItem == NULL && area != NULL) {
+		jobItem = area;
+	  }
+	  if (jobItem == NULL) {
+		jobItem = WorldMap::getInstance()->putItem(job->getX(), job->getY(), job->getItemType());
+	  }
+	  bestCharacter->setBuild(jobItem);
+	}
+
+	Info() << "assign " << job->getId() << " to " << bestCharacter;
+  	job->setCharacter(bestCharacter);
+	bestCharacter->setJob(job);
+  }
+
+  return bestCharacter;
+}
+
 Character*		CharacterManager::add(int x, int y) {
   if (_count + 1 > LIMIT_CHARACTER) {
 	Error() << "LIMIT_CHARACTER reached";
@@ -245,9 +308,6 @@ void	CharacterManager::refresh(sf::RenderWindow* app, sf::Transform transform, d
 		direction == Character::DIRECTION_BOTTOM_RIGHT ||
 		direction == Character::DIRECTION_BOTTOM_LEFT)
 	  offset = (1-animProgress) * TILE_SIZE;
-
-	if ((*it)->getId() == 1)
-	  Info() << offset;
 
 	switch (direction) {
 	case Character::DIRECTION_BOTTOM: posY -= offset; break;

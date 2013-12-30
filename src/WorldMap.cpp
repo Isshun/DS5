@@ -14,6 +14,7 @@
 #include "WorldMap.h"
 #include "defines.h"
 #include "Log.h"
+#include "JobManager.h"
 
 WorldMap* WorldMap::_self = new WorldMap();
 
@@ -76,6 +77,9 @@ WorldMap::~WorldMap() {
 	delete _items[x];
   }
   delete _items;
+}
+
+void	WorldMap::create() {
 }
 
 void	WorldMap::load(const char* filePath) {
@@ -373,27 +377,27 @@ void	WorldMap::destroyRoom(int roomId) {
   Info() << "DestroyRoom: " << count << " rooms added";
 }
 
-void WorldMap::putItem(int x, int y, int type) {
+BaseItem* WorldMap::putItem(int x, int y, int type) {
   if (_itemCout + 1 > LIMIT_ITEMS) {
 	Error() << "LIMIT_ITEMS reached";
-	return;
+	return NULL;
   }
 
-  putItem(x, y, type, false);
+  return putItem(x, y, type, false);
 }
 
-void WorldMap::putItem(int x, int y, int type, bool free) {
+BaseItem* WorldMap::putItem(int x, int y, int type, bool free) {
   // Return if out of bound
   if (x < 0 || y < 0 || x >= _width || y >= _height) {
 	Error() << "put item out of bound, type: "
 			<< type << ", x: " << x << ", y: " << y << ")";
-	return;
+	return NULL;
   }
 
   // Return if item already exists
   if (_items[x][y] != NULL && _items[x][y]->isType(type)) {
 	Debug() << "Same item existing for " << x << " x " << y;
-	return;
+	return NULL;
   }
 
   // If item alread exists check the roomId
@@ -447,7 +451,7 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
 		else {
 		  Info() << "this item can not be put at this position because zoneId not match (item: "
 				 << item->getZoneId() << ", room: " << room->getZoneId() << ")";
-		  return;
+		  return NULL;
 		}
 	  }
 	}
@@ -481,6 +485,8 @@ void WorldMap::putItem(int x, int y, int type, bool free) {
   } else {
 	_todo->push_back(item);
   }
+
+  return item;
 }
 
 int		WorldMap::addRoom(int x, int y) {

@@ -9,6 +9,8 @@
 #include "MapSearchNode.h"
 #include "PathManager.h"
 #include "FileManager.h"
+#include "JobManager.h"
+#include "Job.h"
 
 using namespace std;
 
@@ -84,6 +86,7 @@ class	Character : public IPathManagerCallback, public Serializable {
   void			go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY);
   void			go(int toX, int toY);
 
+  virtual void	create();
   virtual void	load(const char* filePath);
   virtual void	save(const char* filePath);
 
@@ -103,6 +106,7 @@ class	Character : public IPathManagerCallback, public Serializable {
   void			setBuild(BaseItem* item) { _build = item; }
   void			setName(const char* name) { strcpy(_name, name); }
   void			setOffset(int offset) { _offset = offset; }
+  void			setJob(Job* job);
 
   // Gets
   sf::Vector2<int>	&get_position();
@@ -125,6 +129,7 @@ class	Character : public IPathManagerCallback, public Serializable {
   bool			getSelected() { return _selected; }
   int			getFrameIndex() { return _frameIndex++; }
   int			getOffset() { return _offset; }
+  int			getProfessionScore(int professionId) { return 42; }
 
  private:
   void			actionUse();
@@ -149,6 +154,7 @@ class	Character : public IPathManagerCallback, public Serializable {
   int			_blocked;
   int			_direction;
   int			_offset;
+  Job*			_job;
 
   // Needs
   int   		_food;

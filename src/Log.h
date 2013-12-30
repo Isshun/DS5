@@ -18,6 +18,8 @@ using namespace std;
 #define LOG_WARNING	4
 #define LOG_ERROR	5
 
+static bool sToFlush = false;
+
 class Log
 {
   int	_count;
@@ -28,7 +30,15 @@ class Log
       {
 		_count = 0;
 		_type = type;
+		sToFlush = true;
       }
+
+	  static void flush() {
+		if (sToFlush) {
+		  std::cout << std::endl;
+		  sToFlush = false;
+		}
+	  }
 
 	  void header() const {
 		switch (_type)
@@ -70,27 +80,27 @@ class Log
 
 class Error : public Log {
 public:
-  Error():Log(LOG_ERROR) {}
+  Error():Log(LOG_ERROR) {sToFlush = true;}
 };
 
 class Info : public Log {
 public:
-  Info():Log(LOG_INFO) {}
+  Info():Log(LOG_INFO) {sToFlush = true;}
 };
 
 class Warning : public Log {
 public:
-  Warning():Log(LOG_WARNING) {}
+  Warning():Log(LOG_WARNING) {sToFlush = true;}
 };
 
 class Debug : public Log {
 public:
-  Debug():Log(LOG_DEBUG) {}
+  Debug():Log(LOG_DEBUG) {sToFlush = true;}
 };
 
 class Verbose : public Log {
 public:
-  Verbose():Log(LOG_VERBOSE) {}
+  Verbose():Log(LOG_VERBOSE) {sToFlush = true;}
 };
 
 #endif //__LOG_H__

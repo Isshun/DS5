@@ -13,6 +13,7 @@
 #include "ResourceManager.h"
 #include "MapSearchNode.h"
 #include "PathManager.h"
+#include "JobManager.h"
 #include "Settings.h"
 
 Settings* Settings::_self = new Settings();
@@ -65,7 +66,6 @@ Game::~Game() {
 }
 
 void	Game::update() {
-
   // Update item
   int w = WorldMap::getInstance()->getWidth();
   int h = WorldMap::getInstance()->getHeight();
@@ -162,24 +162,34 @@ void	Game::update() {
 	  WorldMap::getInstance()->reloadAborted();
 	}
 
-	Character* character = NULL;
-	BaseItem* item = NULL;
-	int length = WorldMap::getInstance()->getBuildListSize();
-	if (length > 0
-		&& (character = _characterManager->getUnemployed(Character::PROFESSION_ENGINEER)) != NULL
-		&& (item = WorldMap::getInstance()->getItemToBuild()) != NULL) {
-
-	  Debug() << "Game: search path from char (x: " << character->getX() << ", y: " << character->getY() << ")";
-	  Debug() << "Game: search path to item (x: " << item->getX() << ", y: " << item->getY() << ")";
-
-	  character->setBuild(item);
+	// Character* character = NULL;
+	// BaseItem* item = NULL;
+	int jobsCount = JobManager::getInstance()->getCount();
+	if (jobsCount > 0) {
+	  Job* job = JobManager::getInstance()->getJob();
+	  if (job != NULL && _characterManager->assignJob(job) == NULL) {
+		JobManager::getInstance()->abort(job);
+	  }
 	}
+
+	// int length = WorldMap::getInstance()->getBuildListSize();
+	// if (length > 0
+	// 	&& (character = _characterManager->getUnemployed(Character::PROFESSION_ENGINEER)) != NULL
+	// 	&& (item = WorldMap::getInstance()->getItemToBuild()) != NULL) {
+
+	//   Debug() << "Game: search path from char (x: " << character->getX() << ", y: " << character->getY() << ")";
+	//   Debug() << "Game: search path to item (x: " << item->getX() << ", y: " << item->getY() << ")";
+
+	//   character->setBuild(item);
+	// }
   }
 
   // Character
   _characterManager->update(_update);
 
   _update++;
+
+  Log::flush();
 }
 
 void	Game::refresh(double animProgress) {
@@ -273,8 +283,17 @@ void	Game::loop() {
 	}
 }
 
+void	Game::create() {
+  Info() << "Game: create";
+
+  ResourceManager::getInstance().setMatter(RESSOURCE_MATTER_START);
+
+  WorldMap::getInstance()->create();
+  CharacterManager::getInstance()->create();
+}
+
 void	Game::load(const char* filePath) {
-  Info() << "Game load";
+  Info() << "Game: load";
 
   ifstream ifs(filePath);
   string line;
@@ -356,4 +375,11 @@ void	Game::checkQuit() {
 	// _app->setKeyRepeatEnabled(false);
 	Info() << "Bye";
   }
+
+  if (this->event.type == sf::Event::KeyReleased && this->event.key.code == sf::Keyboard::Escape) {
+	_run = false;
+	// _app->setKeyRepeatEnabled(false);
+	Info() << "Bye";
+  }
+
 }
