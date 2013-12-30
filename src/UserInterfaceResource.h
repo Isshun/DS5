@@ -24,6 +24,8 @@ class UserInterfaceResource {
  private:
   sf::RenderWindow* _app;
   sf::Font			_font;
+  sf::Sprite		_background;
+  sf::Texture		_backgroundTexture;
 };
 
 #endif /* USERINTERFACERESOURCE_H_ */

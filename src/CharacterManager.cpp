@@ -213,7 +213,7 @@ Character*		CharacterManager::getUnemployed(int professionId) {
   return NULL;
 }
 
-void	CharacterManager::draw(sf::RenderWindow* app, sf::Transform transform) {
+void	CharacterManager::refresh(sf::RenderWindow* app, sf::Transform transform, double animProgress) {
   sf::Sprite sprite;
 
   sf::RenderStates render(transform);
@@ -229,11 +229,51 @@ void	CharacterManager::draw(sf::RenderWindow* app, sf::Transform transform) {
   for (it = _characters->begin(); it != _characters->end(); ++it) {
 	int posX = (*it)->getX() * TILE_SIZE - (CHAR_WIDTH - TILE_SIZE) + 2;
 	int posY = (*it)->getY() * TILE_SIZE - (CHAR_HEIGHT - TILE_SIZE) + 0;
+	int direction = (*it)->getDirection();
 
-	// Sprite
+	// TODO: ugly
+	int offset = 0;
+
+	if (direction == Character::DIRECTION_TOP ||
+		direction == Character::DIRECTION_BOTTOM ||
+		direction == Character::DIRECTION_RIGHT ||
+		direction == Character::DIRECTION_LEFT)
+	  offset = (1-animProgress) * TILE_SIZE;
+
+	if (direction == Character::DIRECTION_TOP_RIGHT ||
+		direction == Character::DIRECTION_TOP_LEFT  ||
+		direction == Character::DIRECTION_BOTTOM_RIGHT ||
+		direction == Character::DIRECTION_BOTTOM_LEFT)
+	  offset = (1-animProgress) * TILE_SIZE;
+
+	if ((*it)->getId() == 1)
+	  Info() << offset;
+
+	switch (direction) {
+	case Character::DIRECTION_BOTTOM: posY -= offset; break;
+	case Character::DIRECTION_TOP: posY += offset; break;
+	case Character::DIRECTION_RIGHT: posX -= offset; break;
+	case Character::DIRECTION_LEFT: posX += offset; break;
+	case Character::DIRECTION_BOTTOM_RIGHT: posY -= offset; posX -= offset; break;
+	case Character::DIRECTION_BOTTOM_LEFT: posY -= offset; posX += offset; break;
+	case Character::DIRECTION_TOP_RIGHT: posY += offset; posX -= offset; break;
+	case Character::DIRECTION_TOP_LEFT: posY += offset; posX += offset; break;
+	}
+	
+	if (direction == Character::DIRECTION_TOP_RIGHT)
+	  direction = Character::DIRECTION_RIGHT;
+	if (direction == Character::DIRECTION_TOP_LEFT)
+	  direction = Character::DIRECTION_LEFT;
+	if (direction == Character::DIRECTION_BOTTOM_RIGHT)
+	  direction = Character::DIRECTION_RIGHT;
+	if (direction == Character::DIRECTION_BOTTOM_LEFT)
+	  direction = Character::DIRECTION_LEFT;
+
+	// end ugly
+
+
 	sprite.setPosition(posX, posY);
 	int index = (*it)->getFrameIndex() / 20 % 4;
-	int direction = (*it)->getDirection();
 	if ((*it)->isSleep()) {
 	  sprite.setTextureRect(sf::IntRect(0, CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT));
  	} else if (direction == Character::DIRECTION_NONE) {

@@ -37,7 +37,7 @@ UserInterface::UserInterface(sf::RenderWindow* app, Viewport* viewport) {
   _crewViewOpen = false;
   _uiCharacter = new UserInterfaceCrew(app);
   _uiDebug = new UserInterfaceDebug(app, _cursor);
-  _uiBase = new UserInterfaceMenuBase(app);
+  _uiBase = new UserInterfaceMenuOperation(app);
   _cursorTexture.loadFromFile("../sprites/cursor.png");
 }
 
@@ -294,6 +294,14 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 	  case sf::Keyboard::E:
 		_uiEngeneering->toogleTile();
 		break;
+
+	  case sf::Keyboard::G: {
+		Character* c = _menuCharacter->getCharacter();
+		if (c != NULL) {
+		  c->go(_cursor->getX(), _cursor->getY());
+		}
+		break;
+	  }
 
 	  case sf::Keyboard::I:
 		WorldMap::getInstance()->dumpItems();

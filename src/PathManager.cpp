@@ -144,6 +144,30 @@ AStarSearch<MapSearchNode>*		PathManager::getPath(Character* character, BaseItem
   return path;
 }
 
+void	PathManager::getPathAsync(Character* character, int x, int y) {
+
+  _pool->enqueue([this, character, x, y] {
+
+	  MapSearchNode nodeStart;
+	  nodeStart.x = character->getX();
+	  nodeStart.y = character->getY();
+
+	  MapSearchNode nodeEnd;
+	  nodeEnd.x = x;
+	  nodeEnd.y = y;
+
+	  AStarSearch<MapSearchNode>* path = getPath(nodeStart, nodeEnd);
+
+	  if (path != NULL) {
+		character->onPathComplete(path, NULL);
+	  } else {
+		character->onPathFailed(NULL);
+	  }
+
+	});
+
+}
+
 void	PathManager::getPathAsync(Character* character, BaseItem* item) {
 
   _pool->enqueue([this, character, item] {

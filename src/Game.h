@@ -23,7 +23,7 @@ public:
 	virtual void	load(const char* filePath);
 	virtual void	save(const char* filePath);
 	void	update();
-	void	refresh();
+	void	refresh(double animProgress);
 	void	draw_surface();
 	void	checkQuit();
 

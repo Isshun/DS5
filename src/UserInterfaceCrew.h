@@ -27,6 +27,8 @@ class UserInterfaceCrew {
  private:
   sf::RenderWindow*     _app;
   sf::Font				_font;
+  sf::Sprite			_background;
+  sf::Texture			_backgroundTexture;
   CharacterManager*     _characterManager;
 };
 

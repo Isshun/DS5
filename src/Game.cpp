@@ -18,7 +18,7 @@
 Settings* Settings::_self = new Settings();
 
 #define REFRESH_INTERVAL		(1000/60)
-#define UPDATE_INTERVAL			200
+#define UPDATE_INTERVAL			100
 
 Game::Game(sf::RenderWindow* app) {
   Debug() << "Game";
@@ -182,7 +182,7 @@ void	Game::update() {
   _update++;
 }
 
-void	Game::refresh() {
+void	Game::refresh(double animProgress) {
   // Flush
   _app->clear(sf::Color(0, 0, 50));
 
@@ -191,7 +191,7 @@ void	Game::refresh() {
 
   sf::Transform transform;
   transform = _viewport->getViewTransform(transform);
-  _characterManager->draw(_app, transform);
+  _characterManager->refresh(_app, transform, animProgress);
 
   // User interface
   _ui->refresh(_update, _renderTime);
@@ -243,6 +243,8 @@ void	Game::loop() {
 				_ui->mouseWheel(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
 			}
 
+			_ui->checkKeyboard(event, _frame, _lastInput);
+
 			checkQuit();
 		}
 
@@ -251,21 +253,23 @@ void	Game::loop() {
 		long nextUpdate = _last_update.asMilliseconds() + UPDATE_INTERVAL - elapsed.asMilliseconds();
 		long nextRefresh = _last_refresh.asMilliseconds() + REFRESH_INTERVAL - elapsed.asMilliseconds();
 
+		// Refresh
+		if (nextRefresh <= 0) {
+		  _renderTime = elapsed.asMilliseconds() - _last_refresh.asMilliseconds();
+		  _last_refresh = elapsed;
+		  double animProgress = 1 - (double)nextUpdate / UPDATE_INTERVAL;
+		  refresh(animProgress);
+		  _app->display();
+		} else {
+		  sf::sleep(sf::milliseconds(nextRefresh));
+		}
+
 		// Update
 		if (nextUpdate <= 0) {
 		  _last_update = elapsed;
 		  update();
 		}
 
-		// Refresh
-		if (nextRefresh <= 0) {
-		  _renderTime = elapsed.asMilliseconds() - _last_refresh.asMilliseconds();
-		  _last_refresh = elapsed;
-		  refresh();
-		  _app->display();
-		} else {
-		  sf::sleep(sf::milliseconds(nextRefresh));
-		}
 	}
 }
 

@@ -38,6 +38,10 @@ class	Character : public IPathManagerCallback, public Serializable {
 	DIRECTION_LEFT,
 	DIRECTION_RIGHT,
 	DIRECTION_TOP,
+	DIRECTION_BOTTOM_RIGHT,
+	DIRECTION_BOTTOM_LEFT,
+	DIRECTION_TOP_RIGHT,
+	DIRECTION_TOP_LEFT,
 	DIRECTION_NONE
   };
 
@@ -78,6 +82,7 @@ class	Character : public IPathManagerCallback, public Serializable {
   void			addMessage(int msg, int count);
   void			removeMessage(int msg);
   void			go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY);
+  void			go(int toX, int toY);
 
   virtual void	load(const char* filePath);
   virtual void	save(const char* filePath);
@@ -97,6 +102,7 @@ class	Character : public IPathManagerCallback, public Serializable {
   void			setSelected(bool selected) { _selected = selected; }
   void			setBuild(BaseItem* item) { _build = item; }
   void			setName(const char* name) { strcpy(_name, name); }
+  void			setOffset(int offset) { _offset = offset; }
 
   // Gets
   sf::Vector2<int>	&get_position();
@@ -118,10 +124,13 @@ class	Character : public IPathManagerCallback, public Serializable {
   int*  		getMessages() { return _messages; }
   bool			getSelected() { return _selected; }
   int			getFrameIndex() { return _frameIndex++; }
+  int			getOffset() { return _offset; }
 
  private:
   void			actionUse();
   void			actionBuild();
+
+  MapSearchNode*		_node;
 
   int			_posX;
   int			_posY;
@@ -139,6 +148,7 @@ class	Character : public IPathManagerCallback, public Serializable {
   bool			_selected;
   int			_blocked;
   int			_direction;
+  int			_offset;
 
   // Needs
   int   		_food;

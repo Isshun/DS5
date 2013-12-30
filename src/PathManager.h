@@ -29,6 +29,7 @@ class	PathManager
 	PathManager();
 	~PathManager();
 	void							getPathAsync(Character* character, BaseItem* item);
+	void							getPathAsync(Character* character, int x, int y);
 	void							init();
 
 	static PathManager*	getInstance() { return _self; }

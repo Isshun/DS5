@@ -131,11 +131,15 @@ Character::Character(int id, int x, int y) {
   _direction = DIRECTION_NONE;
   _goal = GOAL_NONE;
   _resolvePath = false;
+  _offset = 0;
+  _node = NULL;
 
   memset(_messages, MESSAGE_COUNT_INIT, CHARACTER_MAX_MESSAGE * sizeof(int));
 
   // Needs
    _food = CHARACTER_INIT_FOOD + rand() % 40 - 20;
+   if (_id == 1)
+	 _food = 0;
    //_food = 0;
   _oxygen = CHARACTER_INIT_OXYGEN + rand() % 20 - 10;
   _hapiness = CHARACTER_INIT_HAPINESS + rand() % 20 - 10;
@@ -180,10 +184,13 @@ void	Character::onPathSearch(Path* path, BaseItem* item) {
 
 void	Character::onPathComplete(Path* path, BaseItem* item) {
   switch (_goal) {
-  case GOAL_MOVE:
+  case GOAL_MOVE: {
 	_goal = GOAL_MOVE;
+	// MapSearchNode* node = path->GetSolutionEnd();
+	// path->GetSolutionStart();
 	go(path, item->getX(), item->getY());
 	break;
+  }
   case GOAL_USE:
 	_goal = GOAL_USE;
 	use(path, item);
@@ -212,6 +219,13 @@ void	Character::onPathFailed(BaseItem* item) {
 	break;
   }
   sendEvent(MSG_BLOCKED);
+}
+
+void	Character::setDirection(int direction) {
+  if (_direction != direction) {
+	_direction = direction;
+	_offset = 0;
+  }
 }
 
 void	Character::setProfession(int professionId) {
@@ -450,6 +464,11 @@ void  Character::update() {
 
 }
 
+void	Character::go(int toX, int toY) {
+  PathManager::getInstance()->getPathAsync(this, toX, toY);
+  _goal = GOAL_MOVE;
+}
+
 void		Character::go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY) {
   if (astarsearch == NULL) {
 	sendEvent(MSG_BLOCKED);
@@ -484,44 +503,44 @@ void		Character::move() {
 	return;
   }
 
-  // Move
+  // Goto node
+  if (_node != NULL) {
+	_node->PrintNodeInfo();
+
+	// Set direction
+	if (_node->x > _posX && _node->y > _posY) setDirection(DIRECTION_BOTTOM_RIGHT);
+	else if (_node->x < _posX && _node->y > _posY) setDirection(DIRECTION_BOTTOM_LEFT);
+	else if (_node->x > _posX && _node->y < _posY) setDirection(DIRECTION_TOP_RIGHT);
+	else if (_node->x < _posX && _node->y < _posY) setDirection(DIRECTION_TOP_LEFT);
+	else if (_node->x > _posX) setDirection(DIRECTION_RIGHT);
+	else if (_node->x < _posX) setDirection(DIRECTION_LEFT);
+	else if (_node->y > _posY) setDirection(DIRECTION_BOTTOM);
+	else if (_node->y < _posY) setDirection(DIRECTION_TOP);
+
+	_posX = _node->x;
+	_posY = _node->y;
+	_steps++;
+	Debug() << "Charactere #" << _id << ": goto " << _posX << " x " << _posY << ", step: " << _steps;
+  }
+
+  // Next node
   if (_astarsearch != NULL) {
 	Debug() << "Character #" << _id << ": move";
 
-	// Next node
-	MapSearchNode *node = 0;
 	if (_steps == 0) {
-	  node = _astarsearch->GetSolutionStart();
+	  _node = _astarsearch->GetSolutionStart();
 	} else {
-	  node = _astarsearch->GetSolutionNext();
-	}
-
-	// Goto node
-	if (node != NULL) {
-	  node->PrintNodeInfo();
-
-	  // Set direction
-	  if (node->x > _posX) _direction = DIRECTION_RIGHT;
-	  else if (node->x < _posX) _direction = DIRECTION_LEFT;
-	  else if (node->y > _posY) _direction = DIRECTION_BOTTOM;
-	  else if (node->y < _posY) _direction = DIRECTION_TOP;
-
-	  _posX = node->x;
-	  _posY = node->y;
-	  _steps++;
-	  Debug() << "Charactere #" << _id << ": goto " << _posX << " x " << _posY << ", step: " << _steps;
+	  _node = _astarsearch->GetSolutionNext();
 	}
 
 	// clear path
-	else {
+	if (_node == NULL) {
 	  Debug() << "Character #" << _id << ": reached";
 	  _astarsearch->FreeSolutionNodes();
 	  Debug() << "free 3";
 	  _astarsearch->EnsureMemoryFreed();
 	  delete _astarsearch;
-	  _astarsearch = 0;
-
-	  //action();
+	  _astarsearch = NULL;
 	}
   }
 }

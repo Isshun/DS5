@@ -21,7 +21,9 @@ class UserInterfaceEngineering {
  private:
   sf::RenderWindow* _app;
   sf::Font			_font;
-  bool				_tileOpened;
+  sf::Sprite		_background;
+  sf::Texture		_backgroundTexture;
+  bool				_tileActive;
 };
 
 #endif /* USERINTERFACEENGENEERING_H_ */

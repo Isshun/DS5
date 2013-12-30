@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sstream>
-#include "UserInterfaceMenuBase.h"
+#include "UserInterfaceMenuOperation.h"
 #include "BaseItem.h"
 #include "ResourceManager.h"
 #include "WorldMap.h"
@@ -14,26 +14,38 @@
 #define LINE_HEIGHT		24
 #define TITLE_SIZE		FONT_SIZE + 8
 
-UserInterfaceMenuBase::UserInterfaceMenuBase(sf::RenderWindow* app) {
+#define MENU_COLOR		sf::Color(80, 255, 200)
+
+UserInterfaceMenuOperation::UserInterfaceMenuOperation(sf::RenderWindow* app) {
   _app = app;
+
+  _backgroundTexture.loadFromFile("../res/bg_tile.png");
+  _background.setTexture(_backgroundTexture);
+  _background.setTextureRect(sf::IntRect(0, 0, 240, 120));
 
   if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
 	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 }
 
-UserInterfaceMenuBase::~UserInterfaceMenuBase() {
+UserInterfaceMenuOperation::~UserInterfaceMenuOperation() {
 }
 
-void	UserInterfaceMenuBase::drawTile(int index) {
-  int posX = MENU_TILE_WIDTH * index;
+void	UserInterfaceMenuOperation::drawTile(int index) {
+  int posX = (MENU_TILE_WIDTH + UI_PADDING + UI_PADDING) * index + UI_PADDING;
+  int posY = UI_PADDING;
+
   std::ostringstream oss;
 
-  // Background
-  sf::RectangleShape shape;
-  shape.setSize(sf::Vector2f(MENU_TILE_WIDTH, MENU_TILE_HEIGHT));
-  shape.setFillColor(sf::Color(0, 0, 100));
-  shape.setPosition(MENU_TILE_WIDTH * index, 0);
-  _app->draw(shape);
+  _background.setPosition(posX, UI_PADDING);
+  _background.setColor(MENU_COLOR);
+  _app->draw(_background);
+
+  // // Background
+  // sf::RectangleShape shape;
+  // shape.setSize(sf::Vector2f(MENU_TILE_WIDTH, MENU_TILE_HEIGHT));
+  // shape.setFillColor(sf::Color(0, 0, 100));
+  // shape.setPosition(posX, posY);
+  // _app->draw(shape);
 
   sf::Text text;
   text.setFont(_font);

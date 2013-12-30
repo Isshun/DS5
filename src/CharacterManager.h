@@ -19,7 +19,7 @@ class	CharacterManager : public Serializable {
 
 	Character*					add(int x, int y);
 	Character*					add(int x, int y, int profession);
-	void						draw(sf::RenderWindow* app, sf::Transform transform);
+	void						refresh(sf::RenderWindow* app, sf::Transform transform, double animProgress);
     void        				update(int count);
 
 	// Gets

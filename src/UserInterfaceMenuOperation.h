@@ -13,16 +13,18 @@
 #include <SFML/Graphics.hpp>
 #include "defines.h"
 
-class UserInterfaceMenuBase {
+class UserInterfaceMenuOperation {
  public:
 
-  UserInterfaceMenuBase(sf::RenderWindow* app);
-  ~UserInterfaceMenuBase();
+  UserInterfaceMenuOperation(sf::RenderWindow* app);
+  ~UserInterfaceMenuOperation();
   void	drawTile(int index);
 
  private:
   sf::RenderWindow* _app;
   sf::Font			_font;
+  sf::Sprite		_background;
+  sf::Texture		_backgroundTexture;
 };
 
 #endif /* USERINTERFACERESOURCE_H_ */
