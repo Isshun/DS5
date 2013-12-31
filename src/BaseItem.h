@@ -32,14 +32,15 @@ class BaseItem {
 
   enum {
 	NONE,
-    STRUCTURE_ITEM_START,
+    STRUCTURE_START,
     STRUCTURE_ROOM,
 	STRUCTURE_WALL,
 	STRUCTURE_HULL,
 	STRUCTURE_FLOOR,
 	STRUCTURE_WINDOW,
 	STRUCTURE_DOOR,
-    STRUCTURE_ITEM_STOP,
+    STRUCTURE_STOP,
+    ITEM_START,
 	SICKBAY_BIOBED,
 	SICKBAY_LAB,
 	SICKBAY_EMERGENCY_SHELTERS,
@@ -79,7 +80,8 @@ class BaseItem {
 	TACTICAL_PHASER,
 	TACTICAL_SHIELD_GRID,
 	TACTICAL_CLOAKING_DEVICE,
-	SCIENCE_HYDROPONICS
+	SCIENCE_HYDROPONICS,
+    ITEM_STOP,
   };
 
   // Sets
@@ -104,14 +106,12 @@ class BaseItem {
   static const char* getItemName(int type) {
 	switch(type) {
 	case NONE: return "NONE";
-	case STRUCTURE_ITEM_START: return "item start";
 	case STRUCTURE_ROOM: return "room";
 	case STRUCTURE_WALL: return "wall";
 	case STRUCTURE_HULL: return "hull";
 	case STRUCTURE_FLOOR: return "floor";
 	case STRUCTURE_WINDOW: return "window";
 	case STRUCTURE_DOOR: return "door";
-	case STRUCTURE_ITEM_STOP: return "item stop";
 	case SICKBAY_BIOBED: return "biobed";
 	case SICKBAY_LAB: return "lab";
 	case SICKBAY_EMERGENCY_SHELTERS: return "emergency shelters";
@@ -163,7 +163,7 @@ class BaseItem {
   bool				isType(int type) { return _type == type; }
   bool				isZoneMatch() { return _zoneId == _zoneIdRequired; }
   bool				isSleepingItem() { return _type == QUARTER_BED || _type == QUARTER_CHAIR; }
-  bool				isStructure() { return _type > STRUCTURE_ITEM_START && _type < STRUCTURE_ITEM_STOP; }
+  bool				isStructure() { return _type > STRUCTURE_START && _type < STRUCTURE_STOP; }
 
   bool				isSolid;
   int				matter;

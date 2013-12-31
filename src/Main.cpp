@@ -134,42 +134,62 @@ int main(int argc, char *argv[]) {
 
 	  // New
 	  text.setString("New");
+	  text.setStyle(sf::Text::Regular);
 	  text.setColor(sf::Color(255, 255, 255));
 	  text.setPosition(posX + 22, posY + 36 + 50 * 0);
+	  text.setCharacterSize(38);
 	  app.draw(text);
 	  text.setString("N");
+	  text.setStyle(sf::Text::Underlined);
 	  text.setColor(sf::Color(255, 255, 0));
 	  text.setPosition(posX + 22, posY + 36 + 50 * 0);
 	  app.draw(text);
 
 	  // Load
 	  text.setString("Load");
+	  text.setStyle(sf::Text::Regular);
 	  text.setColor(sf::Color(255, 255, 255));
 	  text.setPosition(posX + 22, posY + 36 + 50 * 1);
+	  text.setCharacterSize(38);
 	  app.draw(text);
 	  text.setString("L");
+	  text.setStyle(sf::Text::Underlined);
 	  text.setColor(sf::Color(255, 255, 0));
 	  text.setPosition(posX + 22, posY + 36 + 50 * 1);
 	  app.draw(text);
 
 	  // Save
 	  text.setString("Save");
+	  text.setStyle(sf::Text::Regular);
 	  text.setColor(game != NULL ? sf::Color(255, 255, 255) : sf::Color(255, 255, 255, 50));
 	  text.setPosition(posX + 22, posY + 36 + 50 * 2);
+	  text.setCharacterSize(38);
 	  app.draw(text);
 	  text.setString("S");
+	  text.setStyle(sf::Text::Underlined);
 	  text.setColor(game != NULL ? sf::Color(255, 255, 0) : sf::Color(255, 255, 0, 50));
 	  text.setPosition(posX + 22, posY + 36 + 50 * 2);
 	  app.draw(text);
 
 	  // Quit
 	  text.setString("Quit");
+	  text.setStyle(sf::Text::Regular);
 	  text.setColor(sf::Color(255, 255, 255));
 	  text.setPosition(posX + 22, posY + 36 + 50 * 3);
+	  text.setCharacterSize(38);
 	  app.draw(text);
 	  text.setString("Q");
+	  text.setStyle(sf::Text::Underlined);
 	  text.setColor(sf::Color(255, 255, 0));
 	  text.setPosition(posX + 22, posY + 36 + 50 * 3);
+	  app.draw(text);
+
+	  // Name
+	  text.setString(NAME " - " VERSION);
+	  text.setStyle(sf::Text::Regular);
+	  text.setColor(sf::Color(255, 255, 255));
+	  text.setPosition(WINDOW_WIDTH - 90 - (strlen(VERSION) * 11), WINDOW_HEIGHT - 24);
+	  text.setCharacterSize(16);
 	  app.draw(text);
 
 	  anim++;

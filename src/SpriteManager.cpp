@@ -38,6 +38,8 @@ SpriteResource	spritesRes[] = {
   {BaseItem::NONE,								0, 0, 0},
 };
 
+SpriteManager* SpriteManager::_self = NULL;
+
 SpriteManager::SpriteManager() {
   _texture[0] = new sf::Texture();
   _texture[0]->loadFromFile("../res/Tilesets/Futuristic_A5.png");
@@ -90,6 +92,13 @@ SpriteManager::~SpriteManager() {
   delete _spriteBattery;
 }
 
+SpriteManager* SpriteManager::getInstance() {
+  if (_self == NULL) {
+	_self = new SpriteManager();
+  }
+  return _self;
+}
+
 void		SpriteManager::getSprite(BaseItem* item, sf::Sprite* sprite) {
 
   if (item != NULL) {
@@ -138,9 +147,29 @@ void		SpriteManager::getSprite(int type, sf::Sprite* sprite) {
 
   case BaseItem::STRUCTURE_FLOOR:
     sprite = _spriteFloor[0];
+	return;
 
   case SpriteManager::IC_BATTERY:
     sprite = _spriteBattery;
+	return;
+  }
+
+  for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
+	if (spritesRes[i].type == type) {
+	  ItemInfo info = BaseItem::getItemInfo(type);
+	  int size = max(info.width, info.height);
+	  if (size == 2)
+		sprite->setScale(0.75f, 0.75f);
+	  if (size == 3)
+		sprite->setScale(0.5f, 0.5f);
+
+	  sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
+	  sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
+										 spritesRes[i].posY * TILE_SIZE,
+										 info.width * TILE_SIZE,
+										 info.height * TILE_SIZE));
+	  return;
+	}
   }
 }
 

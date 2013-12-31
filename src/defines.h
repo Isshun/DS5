@@ -3,7 +3,8 @@
 
 #include "Log.h"
 
-#define NAME	"DS5"
+#define NAME	"Exodus"
+#define VERSION	"0.1"
 
 #define WINDOW_WIDTH			1600
 #define WINDOW_HEIGHT			900

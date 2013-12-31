@@ -265,126 +265,126 @@ void UserInterface::refresh(int frame, long interval) {
   _uiCharacter->drawTile(0);
   _uiResource->drawTile(1);
   _uiBase->draw(2);
-  _uiEngeneering->drawTile(3);
+  _uiEngeneering->draw(3);
 }
 
 bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
-  if (event.type == sf::Event::KeyReleased) {
-    if (_menu->checkKeyboard(event.key.code, _keyMovePosX, _keyMovePosY)) {
-      return true;
-    }
+
+  if (_menu->checkKeyboard(event.key.code, _keyMovePosX, _keyMovePosY)) {
+	return true;
   }
 
-  if (event.type == sf::Event::KeyReleased) {
-	switch (event.key.code)
-	  {
+  if (_uiEngeneering->checkKey(event.key.code)) {
+	return true;
+  }
 
-	  case sf::Keyboard::Tab:
-		if ((event.type == sf::Event::KeyReleased)) {
-		  if (_menuCharacter->getCharacter() != NULL) {
-			_menuCharacter->setCharacter(_characteres->getNext(_menuCharacter->getCharacter()));
-		  }
-		}
-		break;
+  switch (event.key.code) {
 
-	  case sf::Keyboard::D:
-		Settings::getInstance()->setDebug(!Settings::getInstance()->isDebug());
-	  // 	WorldMap::getInstance()->dump();
-	   	break;
-
-	  case sf::Keyboard::C:
-		_crewViewOpen = !_crewViewOpen;
-		break;
-
-	  case sf::Keyboard::E:
-		_uiEngeneering->toogleTile();
-		break;
-
-	  case sf::Keyboard::O:
-		_uiBase->toogleTile();
-		break;
-
-	  case sf::Keyboard::J:
-		_uiBase->toogleJobs();
-		break;
-
-	  case sf::Keyboard::G: {
-		Character* c = _menuCharacter->getCharacter();
-		if (c != NULL) {
-		  c->go(_cursor->getX(), _cursor->getY());
-		}
-		break;
+  case sf::Keyboard::Tab:
+	if ((event.type == sf::Event::KeyReleased)) {
+	  if (_menuCharacter->getCharacter() != NULL) {
+		_menuCharacter->setCharacter(_characteres->getNext(_menuCharacter->getCharacter()));
 	  }
+	}
+	break;
 
-	  case sf::Keyboard::I:
-		WorldMap::getInstance()->dumpItems();
-		break;
+  case sf::Keyboard::D:
+	Settings::getInstance()->setDebug(!Settings::getInstance()->isDebug());
+	// 	WorldMap::getInstance()->dump();
+	break;
 
-	  // case sf::Keyboard::T:
-	  // 	WorldMap::getInstance()->setZone(_keyMovePosX, _keyMovePosY, 0);
-	  // 	break;
+  case sf::Keyboard::C:
+	_crewViewOpen = !_crewViewOpen;
+	break;
 
-	  case sf::Keyboard::Up:
-		if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
-		  _viewport->update(0, MOVE_VIEW_OFFSET);
-		  lastInput = frame;
-		  // _cursor->_y--;
+  case sf::Keyboard::E:
+	_uiEngeneering->open();
+	break;
+
+  case sf::Keyboard::O:
+	_uiBase->toogleTile();
+	break;
+
+  case sf::Keyboard::J:
+	_uiBase->toogleJobs();
+	break;
+
+  case sf::Keyboard::G: {
+	Character* c = _menuCharacter->getCharacter();
+	if (c != NULL) {
+	  c->go(_cursor->getX(), _cursor->getY());
+	}
+	break;
+  }
+
+  case sf::Keyboard::I:
+	WorldMap::getInstance()->dumpItems();
+	break;
+
+	// case sf::Keyboard::T:
+	// 	WorldMap::getInstance()->setZone(_keyMovePosX, _keyMovePosY, 0);
+	// 	break;
+
+  case sf::Keyboard::Up:
+	if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
+	  _viewport->update(0, MOVE_VIEW_OFFSET);
+	  lastInput = frame;
+	  // _cursor->_y--;
+	}
+	break;
+
+  case sf::Keyboard::Down:
+	if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
+	  _viewport->update(0, -MOVE_VIEW_OFFSET);
+	  lastInput = frame;
+	  // _cursor->_y++;
+	}
+	break;
+
+  case sf::Keyboard::Right:
+	if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
+	  _viewport->update(-MOVE_VIEW_OFFSET, 0);
+	  lastInput = frame;
+	  // _cursor->_x++;
+	}
+	break;
+
+  case sf::Keyboard::Left:
+	if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
+	  _viewport->update(MOVE_VIEW_OFFSET, 0);
+	  lastInput = frame;
+	  // _cursor->_x--;
+	}
+	break;
+
+	// PutItem
+  case sf::Keyboard::Return:
+	if (event.type == sf::Event::KeyReleased) {
+	  if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
+		BaseItem* item = WorldMap::getInstance()->putItem(_keyMovePosX, _keyMovePosY, _menu->getBuildItemType());
+		if (item != NULL) {
+		  JobManager::getInstance()->build(item);
 		}
-		break;
-
-	  case sf::Keyboard::Down:
-		if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
-		  _viewport->update(0, -MOVE_VIEW_OFFSET);
-		  lastInput = frame;
-		  // _cursor->_y++;
-		}
-		break;
-
-	  case sf::Keyboard::Right:
-		if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
-		  _viewport->update(-MOVE_VIEW_OFFSET, 0);
-		  lastInput = frame;
-		  // _cursor->_x++;
-		}
-		break;
-
-	  case sf::Keyboard::Left:
-		if (frame > lastInput + KEY_REPEAT_INTERVAL && (event.type == sf::Event::KeyPressed)) {
-		  _viewport->update(MOVE_VIEW_OFFSET, 0);
-		  lastInput = frame;
-		  // _cursor->_x--;
-		}
-		break;
-
-		// PutItem
-	  case sf::Keyboard::Return:
-		if (event.type == sf::Event::KeyReleased) {
-		  if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
-			BaseItem* item = WorldMap::getInstance()->putItem(_keyMovePosX, _keyMovePosY, _menu->getBuildItemType());
-			if (item != NULL) {
-			  JobManager::getInstance()->build(item);
-			}
-		  }
-		}
-		break;
-
-	  case sf::Keyboard::Escape:
-		if ((event.type == sf::Event::KeyReleased)) {
-		  _menu->openRoot();
-		  _menuCharacter->setCharacter(NULL);
-		  _menuInfo->setArea(NULL);
-		}
-		break;
-
-	  case sf::Keyboard::BackSpace:
-		if ((event.type == sf::Event::KeyReleased)) {
-		  _menu->openBack();
-		}
-		break;
-
-	  default:
-		break;
 	  }
+	}
+	break;
+
+  // case sf::Keyboard::Escape:
+  // 	if ((event.type == sf::Event::KeyReleased)) {
+  // 	  _menu->openRoot();
+  // 	  _menuCharacter->setCharacter(NULL);
+  // 	  _menuInfo->setArea(NULL);
+  // 	}
+  // 	break;
+
+  case sf::Keyboard::BackSpace:
+	if ((event.type == sf::Event::KeyReleased)) {
+	  _menu->openBack();
+	}
+	break;
+
+  default:
+	break;
   }
 
   return false;

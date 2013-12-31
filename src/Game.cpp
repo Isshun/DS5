@@ -34,7 +34,7 @@ Game::Game(sf::RenderWindow* app) {
   _viewport = new Viewport(app);
   _ui = new UserInterface(app, _viewport);
 
-  _spriteManager = new SpriteManager();
+  _spriteManager = SpriteManager::getInstance();
   _worldRenderer = new WorldRenderer(app, _spriteManager, _ui);
 
   // PathManager::getInstance()->init();
@@ -253,7 +253,19 @@ void	Game::loop() {
 				_ui->mouseWheel(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
 			}
 
-			_ui->checkKeyboard(event, _frame, _lastInput);
+			// Check key code
+			if (this->event.type == sf::Event::KeyReleased) {
+
+			  // If not consumes by UI
+			  if (_ui->checkKeyboard(event, _frame, _lastInput) == false) {
+				  Info() << "Game: suspend";
+
+				if (this->event.key.code == sf::Keyboard::Escape) {
+				  _run = false;
+				  Info() << "Game: suspend";
+				}
+			  }
+			}
 
 			checkQuit();
 		}
@@ -376,10 +388,5 @@ void	Game::checkQuit() {
 	Info() << "Bye";
   }
 
-  if (this->event.type == sf::Event::KeyReleased && this->event.key.code == sf::Keyboard::Escape) {
-	_run = false;
-	// _app->setKeyRepeatEnabled(false);
-	Info() << "Bye";
-  }
 
 }

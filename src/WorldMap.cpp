@@ -408,7 +408,7 @@ BaseItem* WorldMap::putItem(int x, int y, int type, bool free) {
 
   BaseItem *item = NULL;
 
-  if (type > BaseItem::STRUCTURE_ITEM_START && type < BaseItem::STRUCTURE_ITEM_STOP) {
+  if (type > BaseItem::STRUCTURE_START && type < BaseItem::STRUCTURE_STOP) {
 	item = new WorldArea(type, _itemCout++);
   } else {
 	item = new BaseItem(type, _itemCout++);

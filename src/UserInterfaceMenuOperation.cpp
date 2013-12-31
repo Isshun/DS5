@@ -26,9 +26,9 @@ UserInterfaceMenuOperation::UserInterfaceMenuOperation(sf::RenderWindow* app) {
   _isTileOpen = false;
   _isJobsOpen = false;
 
-  _backgroundTexture.loadFromFile("../res/bg_tile.png");
-  _background.setTexture(_backgroundTexture);
-  _background.setTextureRect(sf::IntRect(0, 0, 240, 120));
+  _textureTile.loadFromFile("../res/bg_tile.png");
+  _bgTile.setTexture(_textureTile);
+  _bgTile.setTextureRect(sf::IntRect(0, 0, 240, 120));
 
   if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
 	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
@@ -51,9 +51,9 @@ void	UserInterfaceMenuOperation::drawTile(int index) {
 
   std::ostringstream oss;
 
-  _background.setPosition(posX, UI_PADDING);
-  _background.setColor(_isTileOpen ? MENU_COLOR_OPEN : MENU_COLOR);
-  _app->draw(_background);
+  _bgTile.setPosition(posX, UI_PADDING);
+  _bgTile.setColor(_isTileOpen ? MENU_COLOR_OPEN : MENU_COLOR);
+  _app->draw(_bgTile);
 
   // // Background
   // sf::RectangleShape shape;

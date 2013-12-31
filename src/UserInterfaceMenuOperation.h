@@ -27,8 +27,10 @@ class UserInterfaceMenuOperation {
  private:
   sf::RenderWindow* _app;
   sf::Font			_font;
-  sf::Sprite		_background;
-  sf::Texture		_backgroundTexture;
+  sf::Sprite		_bgPanel;
+  sf::Sprite		_bgTile;
+  sf::Texture		_texturePanel;
+  sf::Texture		_textureTile;
   bool				_isTileOpen;
   bool				_isJobsOpen;
 };

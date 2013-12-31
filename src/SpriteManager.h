@@ -32,8 +32,7 @@ class SpriteManager {
 	IC_BATTERY
   };
 
-  SpriteManager();
-  ~SpriteManager();
+  static SpriteManager* getInstance();
 
   void				getSprite(BaseItem* item, sf::Sprite* sprite);
   void				getSprite(int type, sf::Sprite* sprite);
@@ -43,6 +42,9 @@ class SpriteManager {
   void				getExterior(sf::Sprite* sprite);
 
  private:
+  SpriteManager();
+  ~SpriteManager();
+  static SpriteManager* _self;
   sf::Sprite*		_buf;
   sf::Texture*		_texture[NB_TEMPLATES];
   sf::Sprite*       _spriteBattery;
