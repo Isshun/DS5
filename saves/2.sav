@@ -1,5 +1,5 @@
 BEGIN GAME
-matter	49956
+matter	49955
 END GAME
 BEGIN WORLDMAP
 8	6	3
@@ -118,7 +118,7 @@ BEGIN WORLDMAP
 16	15	5
 16	16	5
 16	17	5
-16	18	3
+16	18	7
 17	6	3
 17	7	5
 17	8	5
@@ -238,7 +238,7 @@ BEGIN WORLDMAP
 25	18	3
 END WORLDMAP
 BEGIN CHARACTERS
-32	9	1	Kathryn Wildman
+16	18	1	Kathryn Wildman
 1	0	2	Wesley Beckett
 2	0	3	Galen Sheppard
 3	0	4	Jack (Crashdown) McCoy

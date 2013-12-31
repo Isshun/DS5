@@ -18,7 +18,8 @@
 #include "UserInterfaceMenu.h"
 #include "UserInterfaceMenuCharacter.h"
 #include "UserInterfaceMenuInfo.h"
-#include "UserInterfaceResource.h"
+#include "UserInterfaceSecurity.h"
+#include "UserInterfaceScience.h"
 #include "CharacterManager.h"
 #include "UserInterfaceCrew.h"
 #include "UserInterfaceDebug.h"
@@ -71,7 +72,8 @@ class UserInterface {
   bool							_crewViewOpen;
 
   UserInterfaceMenu*       		_menu;
-  UserInterfaceResource*   		_uiResource;
+  UserInterfaceScience*			_uiScience;
+  UserInterfaceSecurity*		_uiSecurity;
   CharacterManager*        		_characteres;
   UserInterfaceMenuCharacter*   _menuCharacter;
   UserInterfaceMenuInfo*		_menuInfo;

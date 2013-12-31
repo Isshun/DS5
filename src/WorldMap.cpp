@@ -113,7 +113,7 @@ void	WorldMap::load(const char* filePath) {
 		  issX >> x;
 		  issY >> y;
 		  issType >> type;
-		  putItem(x, y, type, true);
+		  putItem(type, x, y, true);
 		}
 	  }
 	}
@@ -342,7 +342,7 @@ void WorldMap::removeItem(int x, int y) {
   _items[x][y] = NULL;
 
   if (newType != BaseItem::NONE) {
-	putItem(x, y, newType);
+	putItem(newType, x, y);
   }
 }
 
@@ -377,16 +377,16 @@ void	WorldMap::destroyRoom(int roomId) {
   Info() << "DestroyRoom: " << count << " rooms added";
 }
 
-BaseItem* WorldMap::putItem(int x, int y, int type) {
+BaseItem* WorldMap::putItem(int type, int x, int y) {
   if (_itemCout + 1 > LIMIT_ITEMS) {
 	Error() << "LIMIT_ITEMS reached";
 	return NULL;
   }
 
-  return putItem(x, y, type, false);
+  return putItem(type, x, y, false);
 }
 
-BaseItem* WorldMap::putItem(int x, int y, int type, bool free) {
+BaseItem* WorldMap::putItem(int type, int x, int y, bool free) {
   // Return if out of bound
   if (x < 0 || y < 0 || x >= _width || y >= _height) {
 	Error() << "put item out of bound, type: "

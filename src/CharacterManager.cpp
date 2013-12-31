@@ -14,10 +14,10 @@ CharacterManager* CharacterManager::_self = new CharacterManager();
 
 const Profession professions[] = {
   {Character::PROFESSION_ENGINEER, "Engineer", sf::Color(255, 255, 50), sf::Color(50, 50, 50)},
-  {Character::PROFESSION_MINER, "Miner", sf::Color(255, 150, 0), sf::Color(255, 255, 255)},
-  {Character::PROFESSION_DOCTOR, "Doctor", sf::Color(50, 240, 0), sf::Color(255, 255, 255)},
+  {Character::PROFESSION_OPERATION, "Technician", sf::Color(128, 0, 0), sf::Color(255, 255, 255)},
+  {Character::PROFESSION_DOCTOR, "Doctor", sf::Color(50, 200, 0), sf::Color(255, 255, 255)},
   {Character::PROFESSION_SCIENCE, "Science", sf::Color(50, 100, 255), sf::Color(255, 255, 255)},
-  {Character::PROFESSION_SECURITY, "Security", sf::Color(150, 40, 60), sf::Color(255, 255, 255)},
+  {Character::PROFESSION_SECURITY, "Security", sf::Color(42, 42, 42), sf::Color(255, 255, 255)},
   {Character::PROFESSION_NONE, NULL, sf::Color(0, 0, 0), sf::Color(0, 0, 0)}
 };
 
@@ -56,7 +56,7 @@ CharacterManager::~CharacterManager() {
 
 void	CharacterManager::create() {
   add(0, 0, Character::PROFESSION_ENGINEER);
-  add(1, 0, Character::PROFESSION_MINER);
+  add(1, 0, Character::PROFESSION_OPERATION);
   add(2, 0, Character::PROFESSION_DOCTOR);
   add(3, 0, Character::PROFESSION_SCIENCE);
   add(4, 0, Character::PROFESSION_SECURITY);
@@ -224,7 +224,7 @@ Character*		CharacterManager::assignJob(Job* job) {
 		jobItem = area;
 	  }
 	  if (jobItem == NULL) {
-		jobItem = WorldMap::getInstance()->putItem(job->getX(), job->getY(), job->getItemType());
+		jobItem = WorldMap::getInstance()->putItem(job->getItemType(), job->getX(), job->getY());
 	  }
 	  bestCharacter->setBuild(jobItem);
 	}

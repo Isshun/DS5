@@ -171,6 +171,9 @@ class BaseItem {
   int				power;
   int				powerSupply;
 
+  static bool		isStructure(int type) { return type > STRUCTURE_START && type < STRUCTURE_STOP; }
+  static bool		isItem(int type) { return type > ITEM_START && type < ITEM_STOP; }
+
  private:
   Character*	_owner;
   const char*	_name;

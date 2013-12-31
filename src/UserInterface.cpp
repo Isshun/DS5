@@ -33,7 +33,8 @@ UserInterface::UserInterface(sf::RenderWindow* app, Viewport* viewport) {
   _menuInfo->init();
 
   _uiEngeneering = new UserInterfaceEngineering(app, 3);
-  _uiResource = new UserInterfaceResource(app, 2);
+  _uiScience = new UserInterfaceScience(app, 2);
+  _uiSecurity = new UserInterfaceSecurity(app, 4);
   _crewViewOpen = false;
   _uiCharacter = new UserInterfaceCrew(app, 0);
   _uiDebug = new UserInterfaceDebug(app, _cursor);
@@ -44,7 +45,8 @@ UserInterface::UserInterface(sf::RenderWindow* app, Viewport* viewport) {
 UserInterface::~UserInterface() {
   delete _menu;
   delete _menuCharacter;
-  delete _uiResource;
+  delete _uiSecurity;
+  delete _uiScience;
   delete _uiEngeneering;
 }
 
@@ -60,7 +62,11 @@ void	UserInterface::mouseMoved(int x, int y) {
 	return;
   }
 
-  if (_uiResource->onMouseMove(x, y)) {
+  if (_uiSecurity->onMouseMove(x, y)) {
+	return;
+  }
+
+  if (_uiScience->onMouseMove(x, y)) {
 	return;
   }
 
@@ -107,7 +113,11 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
 	return;
   }
 
-  if (_uiResource->mousePress(button, x, y)) {
+  if (_uiScience->mousePress(button, x, y)) {
+	return;
+  }
+
+  if (_uiSecurity->mousePress(button, x, y)) {
 	return;
   }
 
@@ -135,27 +145,39 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
 void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 
   if (_uiEngeneering->mouseRelease(button, x, y)) {
+	_uiSecurity->close();
+	_uiScience->close();
 	_uiCharacter->close();
-	_uiResource->close();
 	_uiBase->close();
 	return;
   }
 
   if (_uiCharacter->mouseRelease(button, x, y)) {
+	_uiSecurity->close();
+	_uiScience->close();
 	_uiEngeneering->close();
-	_uiResource->close();
 	_uiBase->close();
 	return;
   }
 
   if (_uiBase->mouseRelease(button, x, y)) {
+	_uiSecurity->close();
+	_uiScience->close();
 	_uiCharacter->close();
 	_uiEngeneering->close();
-	_uiResource->close();
 	return;
   }
 
-  if (_uiResource->mouseRelease(button, x, y)) {
+  if (_uiScience->mouseRelease(button, x, y)) {
+	_uiSecurity->close();
+	_uiCharacter->close();
+	_uiEngeneering->close();
+	_uiBase->close();
+	return;
+  }
+
+  if (_uiSecurity->mouseRelease(button, x, y)) {
+	_uiScience->close();
 	_uiCharacter->close();
 	_uiEngeneering->close();
 	_uiBase->close();
@@ -199,27 +221,33 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 
             // Structure
 			BaseItem* item = NULL;
-            if (_menu->getBuildItemType() == BaseItem::STRUCTURE_ROOM) {
+			int type = _uiEngeneering->getBuildItemType();
+            if (type == BaseItem::STRUCTURE_ROOM) {
               if (x == startX || x == toX || y == startY || y == toY) {
-				item = WorldMap::getInstance()->putItem(x, y, BaseItem::STRUCTURE_WALL);
+				Warning() << "1";
+				JobManager::getInstance()->build(BaseItem::STRUCTURE_WALL, x, y);
+				// item = WorldMap::getInstance()->putItem(x, y, BaseItem::STRUCTURE_WALL);
               } else {
-				item = WorldMap::getInstance()->putItem(x, y, BaseItem::STRUCTURE_FLOOR);
+				Warning() << "2";
+				JobManager::getInstance()->build(BaseItem::STRUCTURE_FLOOR, x, y);
+				// item = WorldMap::getInstance()->putItem(x, y, BaseItem::STRUCTURE_FLOOR);
               }
             } else {
               // item = WorldMap::getInstance()->putItem(x, y, _menu->getBuildItemType());
-			  int type = _uiEngeneering->getBuildItemType();
 			  if (type != -1) {
-				item = WorldMap::getInstance()->putItem(x, y, type);
+				Warning() << "3 " << type << " " << BaseItem::getItemName(type);
+				JobManager::getInstance()->build(type, x, y);
+				// item = WorldMap::getInstance()->putItem(x, y, type);
 			  }
             }
 
-			if (item != NULL) {
-			  JobManager::getInstance()->build(item);
-			}
+			// if (item != NULL) {
+			// }
           }
         }
       }
 
+	  // TODO: job manager
       // Erase item
       else if (_menu->getCode() == UserInterfaceMenu::CODE_ERASE) {
         for (int x = startX; x <= toX; x++) {
@@ -310,11 +338,6 @@ void UserInterface::refresh(int frame, long interval) {
     _menuInfo->refresh(frame);
   }
 
-  // Display regular menu
-  else {
-    _menu->refreshMenu(frame);
-  }
-
   // Display debug view
   if (Settings::getInstance()->isDebug()) {
   	_uiDebug->refresh(frame);
@@ -322,10 +345,11 @@ void UserInterface::refresh(int frame, long interval) {
   }
 
   refreshCursor();
-  _uiResource->refreshResources(frame, interval);
+  // _uiResource->refreshResources(frame, interval);
 
   _uiCharacter->draw(frame);
-  _uiResource->draw(frame);
+  _uiScience->draw(frame);
+  _uiSecurity->draw(frame);
   _uiBase->draw(frame);
   _uiEngeneering->draw(frame);
 }
@@ -348,7 +372,11 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 	return true;
   }
 
-  if (_uiResource->checkKey(event.key.code)) {
+  if (_uiSecurity->checkKey(event.key.code)) {
+	return true;
+  }
+
+  if (_uiScience->checkKey(event.key.code)) {
 	return true;
   }
 
@@ -442,7 +470,7 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
   case sf::Keyboard::Return:
 	if (event.type == sf::Event::KeyReleased) {
 	  if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
-		BaseItem* item = WorldMap::getInstance()->putItem(_keyMovePosX, _keyMovePosY, _menu->getBuildItemType());
+		BaseItem* item = WorldMap::getInstance()->putItem(_menu->getBuildItemType(), _keyMovePosX, _keyMovePosY);
 		if (item != NULL) {
 		  JobManager::getInstance()->build(item);
 		}

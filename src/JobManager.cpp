@@ -59,10 +59,38 @@ Job*	JobManager::build(BaseItem* item) {
   return job;
 }
 
-Job*	JobManager::build(int type, int posX, int posY) {
-  Job* job = new Job(++_id, posX, posY);
+Job*	JobManager::build(int type, int x, int y) {
+
+  BaseItem* item = NULL;
+
+  // Structure
+  if (BaseItem::isStructure(type)) {
+	if (WorldMap::getInstance()->getArea(x, y) == NULL) {
+	  item = WorldMap::getInstance()->putItem(type, x, y);
+	} else {
+	  Error() << "JobManager: add build on non NULL area";
+	  return NULL;
+	}
+  }
+
+  // Item
+  else if (BaseItem::isItem(type)) {
+	if (WorldMap::getInstance()->getItem(x, y) != NULL) {
+	  Error() << "JobManager: add build on non NULL item";
+	  return NULL;
+	} else if (WorldMap::getInstance()->getArea(x, y) == NULL
+			   || WorldMap::getInstance()->getArea(x, y)->isType(BaseItem::STRUCTURE_FLOOR) == false) {
+	  Error() << "JobManager: add build on non invalid area (NULL or not STRUCTURE_FLOOR)";
+	  return NULL;
+	} else {
+	  item = WorldMap::getInstance()->putItem(type, x, y);
+	}
+  }
+
+  Job* job = new Job(++_id, x, y);
   job->setAction(ACTION_BUILD);
   job->setItemType(type);
+  job->setItem(item);
 
   _jobs->push_back(job);
   _count++;

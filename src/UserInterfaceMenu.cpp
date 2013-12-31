@@ -348,8 +348,6 @@ void UserInterfaceMenu::drawModeErase() {
 
 void	UserInterfaceMenu::refreshMenu(int frame) {
 
-  _app->draw(_background);
-
   switch (_code) {
   case CODE_BUILD_ITEM:
 	drawModeBuild();

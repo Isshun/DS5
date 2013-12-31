@@ -115,7 +115,7 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
     job.setPosition(MENU_PADDING_LEFT + 0, MENU_PADDING_TOP + MENU_CHARACTER_FONT_SIZE);
     _app->draw(job, render);
 
-	const char* texts[5] = {"Food", "Oxygen", "Hapiness", "Energy", "Health"};
+	const char* texts[5] = {"Food", "Oxygen", "Happiness", "Energy", "Health"};
 
     for (int i = 0; i < 4; i++) {
       int value;

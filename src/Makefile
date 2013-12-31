@@ -7,7 +7,8 @@ SRC	=	Main.cpp		\
 		UserInterfaceMenu.cpp	\
 		UserInterfaceCrew.cpp	\
 		UserInterfaceDebug.cpp	\
-		UserInterfaceResource.cpp	\
+		UserInterfaceScience.cpp	\
+		UserInterfaceSecurity.cpp	\
 		UserInterfaceMenuCharacter.cpp	\
 		UserInterfaceMenuInfo.cpp	\
 		UserInterfaceEngineering.cpp	\

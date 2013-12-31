@@ -52,13 +52,15 @@ void	WorldRenderer::drawFloor(sf::RenderStates render, int fromX, int fromY, int
 		  _app->draw(sprite, render);
 
 		  // Oxygen
-		  if (item->getOxygen() < 25) {
-			_spriteManager->getNoOxygen(&sprite);
-			_app->draw(sprite, render);
-		  } else if (item->getOxygen() < 100) {
-			shape.setFillColor(sf::Color(255, 0, 0, item->getOxygen() * 125 / 100));
-			shape.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-			_app->draw(shape, render);
+		  if (item->isType(BaseItem::STRUCTURE_FLOOR)) {
+			if (item->getOxygen() < 25) {
+			  _spriteManager->getNoOxygen(&sprite);
+			  _app->draw(sprite, render);
+			} else if (item->getOxygen() < 100) {
+			  shape.setFillColor(sf::Color(255, 0, 0, item->getOxygen() * 125 / 100));
+			  shape.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+			  _app->draw(shape, render);
+			}
 		  }
 		}
   
