@@ -52,18 +52,22 @@ void	UserInterface::mouseMoved(int x, int y) {
   // if (x <= UI_WIDTH || y <= UI_HEIGHT)
   // 	return;
 
+  if (_uiEngeneering->onMouseMove(x, y)) {
+	return;
+  }
+
   _keyMovePosX = getRelativePosX(x);
   _keyMovePosY = getRelativePosY(y);
   _cursor->setPos(_keyMovePosX, _keyMovePosY);
 	// _cursor->setMousePos(x * _viewport->getScale() - UI_WIDTH - _viewport->getPosX() - 1,
     //                      y * _viewport->getScale() - UI_HEIGHT - _viewport->getPosY() - 1);
 
-  // left button pressed
-  if (_keyLeftPressed) {
-  }
+  // // left button pressed
+  // if (_keyLeftPressed) {
+  // }
 
   // right button pressed
-  else if (_keyRightPressed) {
+  if (_keyRightPressed) {
     _viewport->update(_mouseRightPress.x - x, _mouseRightPress.y - y);
 	_mouseRightPress.x = x;
 	_mouseRightPress.y = y;
@@ -82,24 +86,33 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
   //   _menu->mousePressed(button, x, y);
   // } else if (y < UI_HEIGHT) {
   // } else {
-    switch (button) {
 
-    case sf::Mouse::Left:
-      _keyLeftPressed = true;
-	  _keyMovePosX = _keyPressPosX = getRelativePosX(x);
-	  _keyMovePosY = _keyPressPosY = getRelativePosY(y);
-      break;
+  if (_uiEngeneering->mousePress(button, x, y)) {
+	return;
+  }
 
-    case sf::Mouse::Right:
-	  _keyRightPressed = true;
-	  _mouseRightPress.x = x;
-	  _mouseRightPress.y = y;
-      break;
-    }
+  switch (button) {
+
+  case sf::Mouse::Left:
+	_keyLeftPressed = true;
+	_keyMovePosX = _keyPressPosX = getRelativePosX(x);
+	_keyMovePosY = _keyPressPosY = getRelativePosY(y);
+	break;
+
+  case sf::Mouse::Right:
+	_keyRightPressed = true;
+	_mouseRightPress.x = x;
+	_mouseRightPress.y = y;
+	break;
+  }
   // }
 }
 
 void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
+  if (_uiEngeneering->mouseRelease(button, x, y)) {
+	return;
+  }
+
   switch (button) {
 
   case sf::Mouse::Left:
@@ -112,7 +125,7 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
       _menuCharacter->setCharacter(NULL);
 
       // Select character
-      if (_menu->getCode() == UserInterfaceMenu::CODE_MAIN) {
+      if (_uiEngeneering->getBuildItemType() == -1 && _menu->getCode() == UserInterfaceMenu::CODE_MAIN) {
         Info() << "select character";
         Character* c = _characteres->getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
 		if (c != NULL) {
@@ -131,7 +144,7 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
       }
 
       // Build item
-      else if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
+      else if (_uiEngeneering->getBuildItemType() != -1 || _menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
         for (int x = toX; x >= startX; x--) {
           for (int y = toY; y >= startY; y--) {
 
@@ -144,7 +157,11 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 				item = WorldMap::getInstance()->putItem(x, y, BaseItem::STRUCTURE_FLOOR);
               }
             } else {
-              item = WorldMap::getInstance()->putItem(x, y, _menu->getBuildItemType());
+              // item = WorldMap::getInstance()->putItem(x, y, _menu->getBuildItemType());
+			  int type = _uiEngeneering->getBuildItemType();
+			  if (type != -1) {
+				item = WorldMap::getInstance()->putItem(x, y, type);
+			  }
             }
 
 			if (item != NULL) {
@@ -204,7 +221,8 @@ void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
 }
 
 void	UserInterface::refreshCursor() {
-  if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM ||
+  if (_uiEngeneering->getBuildItemType() != -1 ||
+	  _menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM ||
 	  _menu->getCode() == UserInterfaceMenu::CODE_ERASE) {
 
 	// Structure: multiple 1x1 tile
@@ -276,6 +294,13 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 
   if (_uiEngeneering->checkKey(event.key.code)) {
 	return true;
+  }
+
+  if (_uiEngeneering->getBuildItemType() != -1) {
+	if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape) {
+	  _uiEngeneering->setBuildItemType(-1);
+	  return true;
+	}
   }
 
   switch (event.key.code) {
