@@ -14,21 +14,20 @@
 #include "defines.h"
 #include "CharacterManager.h"
 #include "Character.h"
+#include "UserInterfaceBase.h"
 
-class UserInterfaceCrew {
+class UserInterfaceCrew : public UserInterfaceBase {
  public:
-  UserInterfaceCrew(sf::RenderWindow* app);
+  UserInterfaceCrew(sf::RenderWindow* app, int tileIndex);
   ~UserInterfaceCrew();
 
-  void	refresh(int frame);
-  void  addCharacter(int index, Character* character);
-  void	drawTile(int index);
+  void	draw(int frame);
+  void	drawTile();
+  void	drawPanel(int frame);
+  bool	checkKey(sf::Keyboard::Key key);
+  void  addCharacter(int frame, Character* character);
 
  private:
-  sf::RenderWindow*     _app;
-  sf::Font				_font;
-  sf::Sprite			_background;
-  sf::Texture			_backgroundTexture;
   CharacterManager*     _characterManager;
 };
 

@@ -17,51 +17,33 @@
 #define MENU_TILE_OPEN_WIDTH	300
 #define MENU_TILE_OPEN_HEIGHT	160
 
-#define MENU_COLOR		sf::Color(249, 195, 63)
-
-UserInterfaceEngineering::UserInterfaceEngineering(sf::RenderWindow* app) {
-  _app = app;
-
-  _posX = 200;
-  _posY = 200;
-
-  _isTileActive = false;
-  _isOpen = false;
+UserInterfaceEngineering::UserInterfaceEngineering(sf::RenderWindow* app, int tileIndex)
+  : UserInterfaceBase(app, tileIndex) {
   _panelMode = MODE_NONE;
   _panelModeHover = MODE_NONE;
   _itemHover = -1;
   _itemSelected = -1;
 
   _textureTile.loadFromFile("../res/bg_tile_engineering.png");
-  _bgTile.setTexture(_textureTile);
-  _bgTile.setTextureRect(sf::IntRect(0, 0, 240, 120));
-
   _texturePanel.loadFromFile("../res/bg_panel_engineering.png");
-  _bgPanel.setTexture(_texturePanel);
-  _bgPanel.setTextureRect(sf::IntRect(0, 0, 800, 600));
-
-  if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
 }
 
 UserInterfaceEngineering::~UserInterfaceEngineering() {
 }
 
-void	UserInterfaceEngineering::draw(int index) {
-  if (_isOpen) {
+void	UserInterfaceEngineering::draw(int frame) {
+  if (isOpen()) {
 	drawPanel();
   }
 
-  drawTile(index);
+  drawTile();
 }
 
 void	UserInterfaceEngineering::drawPanel() {
-  _bgPanel.setPosition(_posX, _posY);
-  // _bgPanel.setColor(MENU_COLOR);
-  _app->draw(_bgPanel);
+  UserInterfaceBase::drawPanel();
 
   sf::Text text;
-  text.setFont(_font);
+  text.setFont(SpriteManager::getInstance()->getFont());
 
   // Header structure
   text.setString("Structure");
@@ -139,7 +121,7 @@ void	UserInterfaceEngineering::drawIcon(int index, int type) {
   // Name
   sf::Text text;
   text.setString(BaseItem::getItemName(type));
-  text.setFont(_font);
+  text.setFont(SpriteManager::getInstance()->getFont());
   text.setCharacterSize(12);
   text.setColor(sf::Color(0, 0, 0));
   text.setStyle(sf::Text::Regular);
@@ -147,18 +129,11 @@ void	UserInterfaceEngineering::drawIcon(int index, int type) {
   _app->draw(text);
 }
 
-void	UserInterfaceEngineering::drawTile(int index) {
-
-  _posTileX = (MENU_TILE_WIDTH + UI_PADDING + UI_PADDING) * index + UI_PADDING;
-  _posTileY = UI_PADDING;
-
-  _bgTile.setPosition(_posTileX, _posTileY);
-
-  _bgTile.setColor(_isTileActive || _isOpen ? MENU_COLOR : sf::Color(255, 255, 255));
-  _app->draw(_bgTile);
-  
+void	UserInterfaceEngineering::drawTile() {
+  UserInterfaceBase::drawTile(sf::Color(249, 195, 63));
+ 
   sf::Text text;
-  text.setFont(_font);
+  text.setFont(SpriteManager::getInstance()->getFont());
   text.setCharacterSize(FONT_SIZE);
 
   {
@@ -187,32 +162,10 @@ void	UserInterfaceEngineering::drawTile(int index) {
   _app->draw(text);
 }
 
-void	UserInterfaceEngineering::openTile() {
-  _isTileActive = true;
-}
-
-void	UserInterfaceEngineering::closeTile() {
-  _isTileActive = false;
-}
-
-void	UserInterfaceEngineering::toogleTile() {
-  _isTileActive = !_isTileActive;
-}
-
-void	UserInterfaceEngineering::toogle() {
-  _isOpen = !_isOpen;
-}
-
-void	UserInterfaceEngineering::open() {
-  _isOpen = true;
-}
-
-void	UserInterfaceEngineering::close() {
-  _isOpen = false;
-}
-
 bool	UserInterfaceEngineering::checkKey(sf::Keyboard::Key key) {
-  if (_isOpen) {
+  UserInterfaceBase::checkKey(key);
+
+  if (isOpen()) {
 	switch (key) {
 	case sf::Keyboard::S:
 	  _panelMode = MODE_STRUCTURE;
@@ -221,8 +174,7 @@ bool	UserInterfaceEngineering::checkKey(sf::Keyboard::Key key) {
 	  _panelMode = MODE_ITEM;
 	  return true;
 	case sf::Keyboard::E:
-	case sf::Keyboard::Escape:
-	  _isOpen = false;
+	  close();
 	  return true;
 	}
   }
@@ -234,7 +186,7 @@ bool	UserInterfaceEngineering::onMouseMove(int x, int y) {
   _isTileActive = false;
   _panelModeHover = MODE_NONE;
 
-  if (_isOpen) {
+  if (isOpen()) {
 	_itemHover = -1;
 
 	if (x > _posX && x < _posX + 800 && y > _posY && y < _posY + 600) {
@@ -260,8 +212,8 @@ bool	UserInterfaceEngineering::onMouseMove(int x, int y) {
 		  }
 		}
 	  }
+	  return true;
 	}
-	return true;
   }
 
   else if (x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120) {
@@ -282,21 +234,15 @@ bool	UserInterfaceEngineering::mousePress(sf::Mouse::Button button, int x, int y
 bool	UserInterfaceEngineering::mouseRelease(sf::Mouse::Button button, int x, int y) {
 
   // Panel open
-  if (_isOpen) {
+  if (_isOpen && x > _posX && x < _posX + 800 && y > _posY && y < _posY + 600) {
 	Info() << "UI Engineering: select item #" << _itemHover;
 
-	if (x > _posX && x < _posX + 800 && y > _posY && y < _posY + 600) {
+	if (y < _posY + 50) {
+	  _panelMode = _panelModeHover;
+	}
 
-	  if (y < _posY + 50) {
-		_panelMode = _panelModeHover;
-	  }
-
-	  if (_itemHover != -1) {
-		_itemSelected = _itemHover;
-		_isOpen = false;
-		onMouseMove(x, y);
-	  }
-	} else {
+	if (_itemHover != -1) {
+	  _itemSelected = _itemHover;
 	  _isOpen = false;
 	  onMouseMove(x, y);
 	}
@@ -306,7 +252,8 @@ bool	UserInterfaceEngineering::mouseRelease(sf::Mouse::Button button, int x, int
 
   // On tile
   else if (x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120) {
-	_isOpen = true;
+	_isOpen = !_isOpen;
+	_isTileActive = true;
 	return true;
   }
 

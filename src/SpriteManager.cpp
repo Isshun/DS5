@@ -69,6 +69,10 @@ SpriteManager::SpriteManager() {
   _texture[6]->loadFromFile("../res/Tilesets/walls.png");
   _texture[6]->setSmooth(true);
 
+  // Font
+  if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
+	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
+
   // IC battery
   {
     sf::Texture texture;

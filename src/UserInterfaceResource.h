@@ -12,20 +12,18 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "defines.h"
+#include "UserInterfaceBase.h"
 
-class UserInterfaceResource {
+class UserInterfaceResource : public UserInterfaceBase {
  public:
 
-  UserInterfaceResource(sf::RenderWindow* app);
+  UserInterfaceResource(sf::RenderWindow* app, int tileIndex);
   ~UserInterfaceResource();
   void refreshResources(int frame, long interval);
-  void	drawTile(int index);
-
- private:
-  sf::RenderWindow* _app;
-  sf::Font			_font;
-  sf::Sprite		_background;
-  sf::Texture		_backgroundTexture;
+  void	draw(int frame);
+  void	drawTile();
+  void	drawPanel(int frame);
+  bool	checkKey(sf::Keyboard::Key key);
 };
 
 #endif /* USERINTERFACERESOURCE_H_ */

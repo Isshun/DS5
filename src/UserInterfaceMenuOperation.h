@@ -12,26 +12,21 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "defines.h"
+#include "UserInterfaceBase.h"
 
-class UserInterfaceMenuOperation {
+class UserInterfaceMenuOperation : public UserInterfaceBase {
  public:
 
-  UserInterfaceMenuOperation(sf::RenderWindow* app);
+  UserInterfaceMenuOperation(sf::RenderWindow* app, int tileIndex);
   ~UserInterfaceMenuOperation();
-  void	draw(int index);
-  void	drawTile(int index);
+  void	draw(int frame);
+  void	drawTile();
+  void	drawPanel(int frame);
+  bool	checkKey(sf::Keyboard::Key key);
   void	drawJobs();
   void	toogleJobs() { _isJobsOpen = !_isJobsOpen; }
-  void	toogleTile() { _isTileOpen = !_isTileOpen; }
 
  private:
-  sf::RenderWindow* _app;
-  sf::Font			_font;
-  sf::Sprite		_bgPanel;
-  sf::Sprite		_bgTile;
-  sf::Texture		_texturePanel;
-  sf::Texture		_textureTile;
-  bool				_isTileOpen;
   bool				_isJobsOpen;
 };
 

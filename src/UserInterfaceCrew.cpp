@@ -1,6 +1,7 @@
 #include <sstream>
 #include "UserInterfaceCrew.h"
 #include "ResourceManager.h"
+#include "SpriteManager.h"
 
 #define CREW_LINE_HEIGHT 70
 #define CREW_LINE_WIDTH 350
@@ -9,18 +10,12 @@
 #define LINE_HEIGHT		24
 #define TITLE_SIZE		FONT_SIZE + 8
 
-#define MENU_COLOR		sf::Color(255, 25, 25)
-
-UserInterfaceCrew::UserInterfaceCrew(sf::RenderWindow* app) {
-  _app = app;
+UserInterfaceCrew::UserInterfaceCrew(sf::RenderWindow* app, int tileIndex)
+  : UserInterfaceBase(app, tileIndex) {
   _characterManager = CharacterManager::getInstance();
 
-  _backgroundTexture.loadFromFile("../res/bg_tile.png");
-  _background.setTexture(_backgroundTexture);
-  _background.setTextureRect(sf::IntRect(0, 0, 240, 120));
-
-  if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
-	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
+  _textureTile.loadFromFile("../res/bg_tile_crew.png");
+  _texturePanel.loadFromFile("../res/bg_panel_crew.png");
 }
 
 UserInterfaceCrew::~UserInterfaceCrew() {
@@ -32,7 +27,7 @@ void  UserInterfaceCrew::addCharacter(int index, Character* character) {
   int y = index / 4;
 
   sf::Text text;
-  text.setFont(_font);
+  text.setFont(SpriteManager::getInstance()->getFont());
   text.setCharacterSize(20);
   text.setStyle(sf::Text::Regular);
 
@@ -57,7 +52,15 @@ void  UserInterfaceCrew::addCharacter(int index, Character* character) {
   _app->draw(sprite);
 }
 
-void	UserInterfaceCrew::refresh(int frame) {
+void	UserInterfaceCrew::draw(int frame) {
+  if (_isOpen) {
+	drawPanel(frame);
+  }
+  drawTile();
+}
+
+void	UserInterfaceCrew::drawPanel(int frame) {
+  UserInterfaceBase::drawPanel();
 
   // Background
   sf::RectangleShape shape;
@@ -72,28 +75,15 @@ void	UserInterfaceCrew::refresh(int frame) {
   for (it = characters->begin(); it != characters->end(); ++it) {
 	addCharacter(i++, *it);
   }
-
 }
 
-void	UserInterfaceCrew::drawTile(int index) {
-  int posX = (MENU_TILE_WIDTH + UI_PADDING + UI_PADDING) * index + UI_PADDING;
-  int posY = UI_PADDING;
+void	UserInterfaceCrew::drawTile() {
+  UserInterfaceBase::drawTile(sf::Color(255, 25, 25));
 
   std::ostringstream oss;
 
-  _background.setPosition(posX, UI_PADDING);
-  _background.setColor(MENU_COLOR);
-  _app->draw(_background);
-
-  // // Background
-  // sf::RectangleShape shape;
-  // shape.setSize(sf::Vector2f(MENU_TILE_WIDTH, MENU_TILE_HEIGHT));
-  // shape.setFillColor(sf::Color(100, 0, 0));
-  // shape.setPosition(posX, posY);
-  // _app->draw(shape);
-
   sf::Text text;
-  text.setFont(_font);
+  text.setFont(SpriteManager::getInstance()->getFont());
   text.setCharacterSize(FONT_SIZE);
 
   {
@@ -101,7 +91,7 @@ void	UserInterfaceCrew::drawTile(int index) {
     oss << "Total: " << CharacterManager::getInstance()->getCount();
 
 	text.setString(oss.str());
-    text.setPosition(posX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING);
+    text.setPosition(_posTileX, TITLE_SIZE + UI_PADDING + UI_PADDING);
     _app->draw(text);
   }
 
@@ -143,10 +133,21 @@ void	UserInterfaceCrew::drawTile(int index) {
 
   text.setString("Crew");
   text.setCharacterSize(TITLE_SIZE);
-  text.setPosition(posX + UI_PADDING, UI_PADDING);
+  text.setPosition(_posTileX + UI_PADDING, UI_PADDING);
   _app->draw(text);
   text.setString("C");
   text.setStyle(sf::Text::Underlined);
   text.setColor(sf::Color(255, 255, 0));
   _app->draw(text);
+}
+
+bool	UserInterfaceCrew::checkKey(sf::Keyboard::Key key) {
+  UserInterfaceBase::checkKey(key);
+
+  if (key == sf::Keyboard::C) {
+	toogle();
+	return true;
+  }
+
+  return false;
 }

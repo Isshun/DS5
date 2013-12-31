@@ -40,6 +40,7 @@ class SpriteManager {
   void				getFloor(WorldArea* item, int zone, int room, sf::Sprite* sprite);
   void				getWall(BaseItem* item, int special, sf::Sprite* sprite, int index, int zone);
   void				getExterior(sf::Sprite* sprite);
+  sf::Font&			getFont() { return _font; }
 
  private:
   SpriteManager();
@@ -49,6 +50,7 @@ class SpriteManager {
   sf::Texture*		_texture[NB_TEMPLATES];
   sf::Sprite*       _spriteBattery;
   sf::Sprite*       _spriteFloor[NB_SPRITES_ROOM];
+  sf::Font			_font;
 };
 
 #endif /* SPRITEMANAGER_H_ */

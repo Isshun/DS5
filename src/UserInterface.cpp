@@ -32,12 +32,12 @@ UserInterface::UserInterface(sf::RenderWindow* app, Viewport* viewport) {
   _menuInfo = new UserInterfaceMenuInfo(app);
   _menuInfo->init();
 
-  _uiEngeneering = new UserInterfaceEngineering(app);
-  _uiResource = new UserInterfaceResource(app);
+  _uiEngeneering = new UserInterfaceEngineering(app, 3);
+  _uiResource = new UserInterfaceResource(app, 2);
   _crewViewOpen = false;
-  _uiCharacter = new UserInterfaceCrew(app);
+  _uiCharacter = new UserInterfaceCrew(app, 0);
   _uiDebug = new UserInterfaceDebug(app, _cursor);
-  _uiBase = new UserInterfaceMenuOperation(app);
+  _uiBase = new UserInterfaceMenuOperation(app, 1);
   _cursorTexture.loadFromFile("../sprites/cursor.png");
 }
 
@@ -53,6 +53,18 @@ void	UserInterface::mouseMoved(int x, int y) {
   // 	return;
 
   if (_uiEngeneering->onMouseMove(x, y)) {
+	return;
+  }
+
+  if (_uiCharacter->onMouseMove(x, y)) {
+	return;
+  }
+
+  if (_uiResource->onMouseMove(x, y)) {
+	return;
+  }
+
+  if (_uiBase->onMouseMove(x, y)) {
 	return;
   }
 
@@ -91,6 +103,18 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
 	return;
   }
 
+  if (_uiCharacter->mousePress(button, x, y)) {
+	return;
+  }
+
+  if (_uiResource->mousePress(button, x, y)) {
+	return;
+  }
+
+  if (_uiBase->mousePress(button, x, y)) {
+	return;
+  }
+
   switch (button) {
 
   case sf::Mouse::Left:
@@ -109,7 +133,32 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
 }
 
 void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
+
   if (_uiEngeneering->mouseRelease(button, x, y)) {
+	_uiCharacter->close();
+	_uiResource->close();
+	_uiBase->close();
+	return;
+  }
+
+  if (_uiCharacter->mouseRelease(button, x, y)) {
+	_uiEngeneering->close();
+	_uiResource->close();
+	_uiBase->close();
+	return;
+  }
+
+  if (_uiBase->mouseRelease(button, x, y)) {
+	_uiCharacter->close();
+	_uiEngeneering->close();
+	_uiResource->close();
+	return;
+  }
+
+  if (_uiResource->mouseRelease(button, x, y)) {
+	_uiCharacter->close();
+	_uiEngeneering->close();
+	_uiBase->close();
 	return;
   }
 
@@ -266,11 +315,6 @@ void UserInterface::refresh(int frame, long interval) {
     _menu->refreshMenu(frame);
   }
 
-  // Display crew view
-  if (_crewViewOpen) {
-  	_uiCharacter->refresh(frame);
-  }
-
   // Display debug view
   if (Settings::getInstance()->isDebug()) {
   	_uiDebug->refresh(frame);
@@ -280,10 +324,10 @@ void UserInterface::refresh(int frame, long interval) {
   refreshCursor();
   _uiResource->refreshResources(frame, interval);
 
-  _uiCharacter->drawTile(0);
-  _uiResource->drawTile(1);
-  _uiBase->draw(2);
-  _uiEngeneering->draw(3);
+  _uiCharacter->draw(frame);
+  _uiResource->draw(frame);
+  _uiBase->draw(frame);
+  _uiEngeneering->draw(frame);
 }
 
 bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
@@ -293,6 +337,18 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
   }
 
   if (_uiEngeneering->checkKey(event.key.code)) {
+	return true;
+  }
+
+  if (_uiCharacter->checkKey(event.key.code)) {
+	return true;
+  }
+
+  if (_uiBase->checkKey(event.key.code)) {
+	return true;
+  }
+
+  if (_uiResource->checkKey(event.key.code)) {
 	return true;
   }
 

@@ -3,6 +3,7 @@ SRC	=	Main.cpp		\
 		FileManager.cpp	\
 		MapSearchNode.cpp	\
 		UserInterface.cpp	\
+		UserInterfaceBase.cpp	\
 		UserInterfaceMenu.cpp	\
 		UserInterfaceCrew.cpp	\
 		UserInterfaceDebug.cpp	\
