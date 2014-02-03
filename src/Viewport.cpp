@@ -3,6 +3,8 @@
 Viewport::Viewport(sf::RenderWindow* app) {
   _posX = 0;
   _posY = 0;
+  _lastPosX = 0;
+  _lastPosY = 0;
   _width = WINDOW_WIDTH - UI_WIDTH;
   _height = WINDOW_HEIGHT - UI_HEIGHT;
   _scaleIndex = 0;
@@ -11,9 +13,16 @@ Viewport::Viewport(sf::RenderWindow* app) {
 Viewport::~Viewport() {
 }
 
+void    Viewport::startMove(int x, int y) {
+  _lastPosX = x;
+  _lastPosY = y;
+}
+
 void    Viewport::update(int x, int y) {
-  _posX -= x;
-  _posY -= y;
+  _posX -= (_lastPosX - x);
+  _posY -= (_lastPosY - y);
+  _lastPosX = x;
+  _lastPosY = y;
 }
 
 sf::Transform  Viewport::getViewTransform(sf::Transform transform) {

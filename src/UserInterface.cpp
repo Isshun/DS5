@@ -45,9 +45,13 @@ UserInterface::UserInterface(sf::RenderWindow* app, Viewport* viewport) {
 UserInterface::~UserInterface() {
   delete _menu;
   delete _menuCharacter;
-  delete _uiSecurity;
-  delete _uiScience;
+  delete _menuInfo;
   delete _uiEngeneering;
+  delete _uiScience;
+  delete _uiSecurity;
+  delete _uiCharacter;
+  delete _uiDebug;
+  delete _uiBase;
 }
 
 void	UserInterface::mouseMoved(int x, int y) {
@@ -77,23 +81,14 @@ void	UserInterface::mouseMoved(int x, int y) {
   _keyMovePosX = getRelativePosX(x);
   _keyMovePosY = getRelativePosY(y);
   _cursor->setPos(_keyMovePosX, _keyMovePosY);
-	// _cursor->setMousePos(x * _viewport->getScale() - UI_WIDTH - _viewport->getPosX() - 1,
-    //                      y * _viewport->getScale() - UI_HEIGHT - _viewport->getPosY() - 1);
-
-  // // left button pressed
-  // if (_keyLeftPressed) {
-  // }
 
   // right button pressed
   if (_keyRightPressed) {
-    _viewport->update(_mouseRightPress.x - x, _mouseRightPress.y - y);
-	_mouseRightPress.x = x;
-	_mouseRightPress.y = y;
+    _viewport->update(x, y);
   }
 
   // no buttons pressed
   else {
-
 	// _cursor->setMousePos(x * _viewport->getScale() - UI_WIDTH - _viewport->getPosX() - 1,
     //                      y * _viewport->getScale() - UI_HEIGHT - _viewport->getPosY() - 1);
   }
@@ -106,22 +101,27 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
   // } else {
 
   if (_uiEngeneering->mousePress(button, x, y)) {
+	_keyLeftPressed = false;
 	return;
   }
 
   if (_uiCharacter->mousePress(button, x, y)) {
+	_keyLeftPressed = false;
 	return;
   }
 
   if (_uiScience->mousePress(button, x, y)) {
+	_keyLeftPressed = false;
 	return;
   }
 
   if (_uiSecurity->mousePress(button, x, y)) {
+	_keyLeftPressed = false;
 	return;
   }
 
   if (_uiBase->mousePress(button, x, y)) {
+	_keyLeftPressed = false;
 	return;
   }
 
@@ -137,6 +137,7 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
 	_keyRightPressed = true;
 	_mouseRightPress.x = x;
 	_mouseRightPress.y = y;
+    _viewport->startMove(x, y);
 	break;
   }
   // }
@@ -197,7 +198,7 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 
       // Select character
       if (_uiEngeneering->getBuildItemType() == -1 && _menu->getCode() == UserInterfaceMenu::CODE_MAIN) {
-        Info() << "select character";
+		Info() << "select character";
         Character* c = _characteres->getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
 		if (c != NULL) {
 		  _menuCharacter->setCharacter(c);
@@ -264,7 +265,14 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
   case sf::Mouse::Right:
 	if (_keyRightPressed) {
 	  _keyRightPressed = false;
-	  _viewport->update(_mouseRightPress.x - x, _mouseRightPress.y - y);
+
+	  if (abs(_mouseRightPress.x - x) > 5 || abs(_mouseRightPress.y - y) > 5) {
+		_viewport->update(x, y);
+		// _viewport->update(_mouseRightPress.x - x, _mouseRightPress.y - y);
+	  } else {
+		_uiEngeneering->setBuildItemType(-1);
+	  }
+
 	}
     break;
 
@@ -301,9 +309,10 @@ void	UserInterface::refreshCursor() {
   if (_uiEngeneering->getBuildItemType() != -1 ||
 	  _menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM ||
 	  _menu->getCode() == UserInterfaceMenu::CODE_ERASE) {
+	ItemInfo itemInfo = BaseItem::getItemInfo(_uiEngeneering->getBuildItemType());
 
 	// Structure: multiple 1x1 tile
-	if (_keyLeftPressed && (_menu->getParentCode() == UserInterfaceMenu::CODE_BUILD_STRUCTURE || _menu->getCode() == UserInterfaceMenu::CODE_ERASE)) {
+	if (_keyLeftPressed && itemInfo.type > BaseItem::STRUCTURE_START && itemInfo.type < BaseItem::STRUCTURE_STOP) {
 	  drawCursor(std::min(_keyPressPosX, _keyMovePosX),
 				 std::min(_keyPressPosY, _keyMovePosY),
 				 std::max(_keyPressPosX, _keyMovePosX),
@@ -318,9 +327,8 @@ void	UserInterface::refreshCursor() {
 				 std::min(_keyPressPosY, _keyMovePosY) + itemInfo.height - 1);
 	}
 
-	// Single nxn tile: mouse hover
+	// Single 1x1 tile: mouse hover
 	else {
-	  ItemInfo itemInfo = BaseItem::getItemInfo(_menu->getBuildItemType());
 	  drawCursor(_keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY);
 	}
   }
@@ -477,14 +485,6 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 	  }
 	}
 	break;
-
-  // case sf::Keyboard::Escape:
-  // 	if ((event.type == sf::Event::KeyReleased)) {
-  // 	  _menu->openRoot();
-  // 	  _menuCharacter->setCharacter(NULL);
-  // 	  _menuInfo->setArea(NULL);
-  // 	}
-  // 	break;
 
   case sf::Keyboard::BackSpace:
 	if ((event.type == sf::Event::KeyReleased)) {

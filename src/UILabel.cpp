@@ -4,7 +4,7 @@
 bool	UILabel::isHover(int x, int y) {
   sf::Rect<float> local = _text.getLocalBounds();
   sf::Rect<float> global = _text.getGlobalBounds();
-  sf::Rect<int> rect = sf::Rect<int>(global.left - local.left, global.top - local.top, local.width, local.height);
+  sf::Rect<int> rect = sf::Rect<int>(global.left, global.top - 12, local.width, local.height + 4);
 
   // std::cout << "size: "
   // 			<< rect.width << " "

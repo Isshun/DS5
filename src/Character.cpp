@@ -139,9 +139,6 @@ Character::Character(int id, int x, int y) {
 
   // Needs
    _food = CHARACTER_INIT_FOOD + rand() % 40 - 20;
-   if (_id == 1)
-	 _food = 0;
-   //_food = 0;
   _oxygen = CHARACTER_INIT_OXYGEN + rand() % 20 - 10;
   _hapiness = CHARACTER_INIT_HAPINESS + rand() % 20 - 10;
   _health = CHARACTER_INIT_HEALTH + rand() % 20 - 10;
@@ -559,6 +556,7 @@ void		Character::move() {
   }
 }
 
+// TODO: make objects stats table instead switch
 void		Character::actionUse() {
   // Character is sleeping
   if (_sleep != 0) {

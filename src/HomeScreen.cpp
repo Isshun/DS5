@@ -9,7 +9,7 @@ void	HomeScreen::actionNew() {
   game = new Game(app);
   game->create();
   game->loop();
-  // anim = 0;
+  anim = 0;
 }
 
 void	HomeScreen::actionSave() {
@@ -31,7 +31,7 @@ void	HomeScreen::actionLoad() {
   game = new Game(app);
   game->load(filePath.c_str());
   game->loop();
-  // anim = 0;
+  anim = 0;
 }
 
 void	HomeScreen::actionQuit() {
@@ -41,7 +41,7 @@ void	HomeScreen::actionQuit() {
 void	HomeScreen::actionResume() {
   if (game != NULL) {
 	game->loop();
-	// anim = 0;
+	anim = 0;
   }
 }
 
@@ -78,7 +78,7 @@ void	HomeScreen::run() {
 
   UIViewGroup group = UIViewGroup();
 
-  int anim = 0;
+  anim = 0;
 
   // Resume
   UILabel lbResume = UILabel("Resume");

@@ -368,8 +368,6 @@ void	Game::save(const char* filePath) {
   CharacterManager::getInstance()->save(filePath);
 }
 
-
-
 void	Game::checkQuit() {
   if (this->event.type == sf::Event::Closed) {
 	_app->setKeyRepeatEnabled(false);

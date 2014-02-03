@@ -45,6 +45,7 @@ CharacterManager::CharacterManager() {
 CharacterManager::~CharacterManager() {
   delete _textures[0];
   delete _textures[1];
+  delete _textures[2];
 
   Character* c;
   while ((c = _characters->front()) != NULL) {
@@ -63,11 +64,11 @@ void	CharacterManager::create() {
 }
 
 void	CharacterManager::load(const char* filePath) {
-  ifstream ifs(filePath);
-  string line;
-  std::vector<std::string> vector;
-  int x, y, professionId;
-  bool	inBlock = false;
+  std::vector<std::string>		vector;
+  ifstream						ifs(filePath);
+  string						line;
+  int							x, y, professionId;
+  bool							inBlock = false;
 
   if (ifs.is_open()) {
     while (getline(ifs, line)) {
@@ -138,6 +139,7 @@ Character*	CharacterManager::getNext(Character* character) {
   return NULL;
 }
 
+// TODO: heavy
 int			CharacterManager::getCount(int professionId) {
   std::list<Character*>::iterator it;
   int count = 0;
@@ -169,6 +171,7 @@ void    CharacterManager::update(int count) {
   }
 }
 
+// TODO: heavy
 Character*        CharacterManager::getCharacterAtPos(int x, int y) {
   Debug() << "getCharacterAtPos: " << x << "x" << y;
   std::list<Character*>::iterator it;

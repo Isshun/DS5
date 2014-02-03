@@ -29,6 +29,7 @@ class HomeScreen {
   void	actionResume();
 
   Game* game;
+  int	anim;
   sf::RenderWindow *app;
 };
 

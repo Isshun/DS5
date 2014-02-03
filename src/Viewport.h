@@ -18,12 +18,16 @@ class	Viewport {
   void  setScale(int delta) { _scaleIndex = min(max(_scaleIndex + delta, -4), 4); }
   float getScale();
   void  update(int x, int y);
+  void  startMove(int x, int y);
+
   sf::Transform  getViewTransform(sf::Transform transform);
   sf::Transform  getViewTransformBackground(sf::Transform transform);
 
  private:
   int   _posX;
   int   _posY;
+  int   _lastPosX;
+  int   _lastPosY;
   int   _width;
   int   _height;
   int	_scaleIndex;
