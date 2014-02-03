@@ -1,7 +1,11 @@
 SRC	=	Main.cpp		\
+		HomeScreen.cpp	\
+		Options.cpp	\
 		Game.cpp	\
 		FileManager.cpp	\
 		MapSearchNode.cpp	\
+		UIViewGroup.cpp		\
+		UILabel.cpp		\
 		UserInterface.cpp	\
 		UserInterfaceBase.cpp	\
 		UserInterfaceMenu.cpp	\

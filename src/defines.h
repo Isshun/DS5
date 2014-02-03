@@ -6,8 +6,8 @@
 #define NAME	"Exodus"
 #define VERSION	"0.1"
 
-#define WINDOW_WIDTH			1600
-#define WINDOW_HEIGHT			900
+#define WINDOW_WIDTH			1920
+#define WINDOW_HEIGHT			1200
 
 #define KEY_REPEAT_INTERVAL		5
 

@@ -101,39 +101,39 @@ void	UserInterfaceScience::drawTile() {
   text.setFont(SpriteManager::getInstance()->getFont());
   text.setCharacterSize(FONT_SIZE);
 
-  {
-	int matter = ResourceManager::getInstance().getMatter();
-    std::ostringstream oss;
-    oss << "Matter: " << matter;
+  // {
+  // 	int matter = ResourceManager::getInstance().getMatter();
+  //   std::ostringstream oss;
+  //   oss << "Matter: " << matter;
 
-	text.setString(oss.str());
+  // 	text.setString(oss.str());
 
-	if (matter == 0)
-	  text.setColor(sf::Color(255, 0, 0));
-	else if (matter < 20)
-	  text.setColor(sf::Color(255, 255, 0));
-    text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING);
-    _app->draw(text);
-	text.setColor(sf::Color(255, 255, 255));
-  }
+  // 	if (matter == 0)
+  // 	  text.setColor(sf::Color(255, 0, 0));
+  // 	else if (matter < 20)
+  // 	  text.setColor(sf::Color(255, 255, 0));
+  //   text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING);
+  //   _app->draw(text);
+  // 	text.setColor(sf::Color(255, 255, 255));
+  // }
 
-  {
-    std::ostringstream oss;
-    oss << "Power: " << ResourceManager::getInstance().getPower();
+  // {
+  //   std::ostringstream oss;
+  //   oss << "Power: " << ResourceManager::getInstance().getPower();
 
-    text.setString(oss.str());
-    text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT);
-    _app->draw(text);
-  }
+  //   text.setString(oss.str());
+  //   text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT);
+  //   _app->draw(text);
+  // }
 
-  {
-    std::ostringstream oss;
-    oss << "O2: " << ResourceManager::getInstance().getO2();
+  // {
+  //   std::ostringstream oss;
+  //   oss << "O2: " << ResourceManager::getInstance().getO2();
 
-    text.setString(oss.str());
-    text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT * 2);
-    _app->draw(text);
-  }
+  //   text.setString(oss.str());
+  //   text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT * 2);
+  //   _app->draw(text);
+  // }
 
   text.setString("Research");
   text.setCharacterSize(TITLE_SIZE);
