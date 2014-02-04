@@ -9,9 +9,6 @@
 #include "PathManager.h"
 #include "CharacterManager.h"
 
-#define LIMITE_FOOD_OK 30
-#define LIMITE_FOOD_HUNGRY 15
-#define LIMITE_FOOD_STARVE 0
 #define MESSAGE_COUNT_INIT -100
 
 #define BLOCKED_COUNT_BEFORE_MESSAGE 5
@@ -122,7 +119,6 @@ Character::Character(int id, int x, int y) {
   _path = NULL;
   _posY = _toX = y;
   _posX = _toY = x;
-  _sleep = 0;
   _selected = false;
   _blocked = 0;
   _frameIndex = rand() % 20;
@@ -131,15 +127,9 @@ Character::Character(int id, int x, int y) {
   _offset = 0;
   _node = NULL;
   _job = NULL;
+  _needs = new CharacterNeeds();
 
   memset(_messages, MESSAGE_COUNT_INIT, CHARACTER_MAX_MESSAGE * sizeof(int));
-
-  // Needs
-   _food = CHARACTER_INIT_FOOD + rand() % 40 - 20;
-  _oxygen = CHARACTER_INIT_OXYGEN + rand() % 20 - 10;
-  _hapiness = CHARACTER_INIT_HAPINESS + rand() % 20 - 10;
-  _health = CHARACTER_INIT_HEALTH + rand() % 20 - 10;
-  _energy = CHARACTER_INIT_ENERGY + rand() % 20 - 10;
 
   int offset = (_gender == Character::GENDER_FEMALE ? 4 : 0);
   if (rand() % 2) {
@@ -333,78 +323,7 @@ void  Character::removeMessage(int msg) {
 }
 
 void  Character::updateNeeds(int count) {
-
-//   // Character is sleeping
-//   if (_sleep > 0) {
-// 	_sleep--;
-
-// 	// Set hapiness
-// 	if (_item && _item->isType(BaseItem::QUARTER_BED)) {
-// 	  _hapiness += 0.1;
-// 	  removeMessage(MSG_SLEEP_ON_FLOOR);
-// 	  removeMessage(MSG_SLEEP_ON_CHAIR);
-// 	} else if (_item && _item->isType(BaseItem::QUARTER_CHAIR)) {
-// 	  _hapiness -= 0.1;
-// 	  addMessage(MSG_SLEEP_ON_CHAIR, count);
-// 	  removeMessage(MSG_SLEEP_ON_FLOOR);
-// 	} else {
-// 	  addMessage(MSG_SLEEP_ON_FLOOR, count);
-// 	  _hapiness -= 0.25;
-// 	}
-
-// 	// If current item is not under construction: abort
-// 	if (_sleep == 0 && _item != NULL && _item->isComplete()) {
-// 	  _item->setOwner(NULL);
-// 	  _item = NULL;
-// 	  _job = NULL;
-// 	}
-// 	return;
-//   }
-
-//   // Food
-//   _food -= 2;
-
-//   // Food: starve
-//   if (_food <= LIMITE_FOOD_STARVE) {
-// 	addMessage(MSG_STARVE, count);
-// 	removeMessage(MSG_HUNGRY);
-// 	_hapiness -= 0.5;
-// 	_energy -= 1;
-//   }
-//   // Food: hungry
-//   else if (_food <= LIMITE_FOOD_HUNGRY) {
-// 	addMessage(MSG_HUNGRY, count);
-// 	_hapiness -= 0.2;
-//   } else {
-// 	removeMessage(MSG_STARVE);
-// 	removeMessage(MSG_HUNGRY);
-//   }
-
-
-//   // Oxygen
-//   WorldArea* area = WorldMap::getInstance()->getArea(_posX, _posY);
-//   if (area != NULL) {
-// 	if (area->getOxygen() > _oxygen) {
-// 	  _oxygen = min(area->getOxygen(), _oxygen + 5);
-// 	} else {
-// 	  _oxygen = max(area->getOxygen(), _oxygen - 5);
-// 	}
-//   } else {
-// 	_oxygen = max(0, _oxygen - 5);
-//   }
-
-//   if (_oxygen == 0) {
-// 	addMessage(MSG_NEED_OXYGEN, count);
-// 	_oxygen = 0;
-//   } else {
-// 	removeMessage(MSG_NEED_OXYGEN);
-//   }
-
-//   // Energy
-//   _energy -= 1;
-
-//   //if (_hapiness > 0)_hapiness = 0;
-//   //if (_health > 0)_health = 0;
+  _needs->update();
 }
 
 void	Character::sendEvent(int event) {
@@ -424,7 +343,7 @@ void  Character::update() {
   }
 
   // Character is sleeping
-  if (_sleep > 0) {
+  if (_needs->isSleeping()) {
 	return;
   }
 
@@ -437,9 +356,10 @@ void  Character::update() {
 	return;
   }
 
+  // TODO
   // Energy
-  if (_energy < 20) {
-	Debug() << "Charactere #" << _id << ": need sleep: " << _energy;
+  if (_needs->getEnergy() < 20) {
+	Debug() << "Charactere #" << _id << ": need sleep: " << _needs->getEnergy();
 
 	// Need sleep
 	JobManager::getInstance()->need(this, BaseItem::QUARTER_BED);
@@ -454,12 +374,12 @@ void  Character::update() {
 	//   }
 	// }
 
-	// Sleep on the ground
-	if (_energy == 0) {
-	  _sleep = 20;
-	  _energy = 80;
-	  return;
-	}
+	// // Sleep on the ground
+	// if (_needs->getEnergy() == 0) {
+	//   _sleep = 20;
+	//   _energy = 80;
+	//   return;
+	// }
 
   }
 
@@ -469,34 +389,34 @@ void  Character::update() {
 	return;
   }
 
-  // Need food
-  if (_food <= LIMITE_FOOD_OK) {
+  // // Need food
+  // if (_food <= LIMITE_FOOD_OK) {
 
-	// If character already go to needed item
-	if (_path != NULL) {
-	  BaseItem* item = WorldMap::getInstance()->getItem(_toX, _toY);
-	  if (item != NULL && item->getType() == BaseItem::BAR_PUB) {
-		return;
-	  }
-	}
+  // 	// If character already go to needed item
+  // 	if (_path != NULL) {
+  // 	  BaseItem* item = WorldMap::getInstance()->getItem(_toX, _toY);
+  // 	  if (item != NULL && item->getType() == BaseItem::BAR_PUB) {
+  // 		return;
+  // 	  }
+  // 	}
 
-	Debug() << "Charactere #" << _id << ": need food";
-	BaseItem* item = WorldMap::getInstance()->find(BaseItem::BAR_PUB, false);
-	if (item != NULL) {
-	  Debug() << "Charactere #" << _id << ": Go to pub !";
+  // 	Debug() << "Charactere #" << _id << ": need food";
+  // 	BaseItem* item = WorldMap::getInstance()->find(BaseItem::BAR_PUB, false);
+  // 	if (item != NULL) {
+  // 	  Debug() << "Charactere #" << _id << ": Go to pub !";
 
-	  PathManager::getInstance()->getPathAsync(this, _job);
+  // 	  PathManager::getInstance()->getPathAsync(this, _job);
 	
-	  // if (path != NULL) {
-	  // 	use(path, item);
-	  // 	return;
-	  // } else {
-	  // 	sendEvent(MSG_BLOCKED);
-	  // }
-	} else {
-	  Debug() << "Charactere #" << _id << ": no pub :(";
-	}
-  }
+  // 	  // if (path != NULL) {
+  // 	  // 	use(path, item);
+  // 	  // 	return;
+  // 	  // } else {
+  // 	  // 	sendEvent(MSG_BLOCKED);
+  // 	  // }
+  // 	} else {
+  // 	  Debug() << "Charactere #" << _id << ": no pub :(";
+  // 	}
+  // }
 
 }
 
@@ -504,7 +424,7 @@ void		Character::move() {
   _direction = DIRECTION_NONE;
 
   // Character is sleeping
-  if (_sleep != 0) {
+  if (_needs->isSleeping()) {
 	Debug() << "Character #" << _id << ": sleeping -> move canceled";
 	return;
   }
@@ -551,20 +471,6 @@ void		Character::move() {
   }
 }
 
-void		Character::setStat(int key, int value) {
-  switch (key) {
-  case STAT_FOOD:
-	_food = value;
-	break;
-  case STAT_SLEEP:
-	_sleep = value;
-	break;
-  case STAT_ENERGY:
-	_energy = value;
-	break;
-  }  
-}
-
 // TODO: make objects stats table instead switch
 void		Character::actionUse() {
   // Wrong call
@@ -580,7 +486,7 @@ void		Character::actionUse() {
   }
 
   // Character is sleeping
-  if (_sleep != 0) {
+  if (_needs->isSleeping()) {
 	Debug() << "use: sleeping -> use canceled";
 	return;
   }
@@ -593,34 +499,24 @@ void		Character::actionUse() {
 
 	// Bar
   case BaseItem::BAR_PUB:
-	{
-	  _food = 100;
+	_needs->eat();
 	  // BaseItem* item = WorldMap::getInstance()->getRandomPosInRoom(item->getRoomId());
 	  // if (item != NULL) {
 	  // 	PathManager::getInstance()->getPathAsync(this, item);
 	  // 	_goal = GOAL_MOVE;
 	  // }
-	}
 	break;
 
 	// Bed
   case BaseItem::QUARTER_BED:
+	_needs->sleep(BaseItem::QUARTER_BED);
 	item->setOwner(this);
-	setStat(STAT_SLEEP, 20);
-	setStat(STAT_ENERGY, 100);
-	if (_health > 40) {
-	  _health += 2;
-	}
 	break;
 
 	// Chair
   case BaseItem::QUARTER_CHAIR:
+	_needs->sleep(BaseItem::QUARTER_CHAIR);
 	item->setOwner(this);
-	_sleep = 20;
-	_energy = 100;
-	if (_health > 40) {
-	  _health += 1;
-	}
 	break;
   }
 
