@@ -135,10 +135,10 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
 	  case 10: value = min(max(needs->getSleeping(), 0), 100); break;
       }
 
-      addGauge(MENU_PADDING_LEFT,
-               60 * i + (UI_FONT_SIZE + 16) + MENU_PADDING_TOP,
-               UI_WIDTH - MENU_PADDING_TOP * 2,
-               16,
+      addGauge(MENU_PADDING_LEFT + 180 * (i % 2),
+               10 + 50 * (i / 2) + (UI_FONT_SIZE + 16) + MENU_PADDING_TOP,
+               160,
+               12,
                value,
 			   texts[i],
 			   render);

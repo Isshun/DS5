@@ -174,7 +174,7 @@ void	Character::onPathSearch(Path* path, Job* job) {
 // TODO
 void	Character::onPathComplete(Path* path, Job* job) {
   if (path == NULL) {
-	sendEvent(MSG_BLOCKED);
+	sendEvent(CharacterNeeds::MSG_BLOCKED);
 	return;
   }
 
@@ -209,7 +209,7 @@ void	Character::onPathFailed(Job* job) {
 	Warning() << "Build failed (no path)";
 	break;
   }
-  sendEvent(MSG_BLOCKED);
+  sendEvent(CharacterNeeds::MSG_BLOCKED);
 
   // Give up job
   // WorldMap::getInstance()->buildAbort(job->getItem());
@@ -328,9 +328,9 @@ void  Character::updateNeeds(int count) {
 
 void	Character::sendEvent(int event) {
   switch (event) {
-  case MSG_BLOCKED:
+  case CharacterNeeds::MSG_BLOCKED:
 	if (++_blocked >= BLOCKED_COUNT_BEFORE_MESSAGE) {
-	  addMessage(MSG_BLOCKED, -1);
+	  addMessage(CharacterNeeds::MSG_BLOCKED, -1);
 	}
   }
 }
@@ -372,13 +372,6 @@ void  Character::update() {
 	// 	_goal = GOAL_USE;
 	// 	return;
 	//   }
-	// }
-
-	// // Sleep on the ground
-	// if (_needs->getEnergy() == 0) {
-	//   _sleep = 20;
-	//   _energy = 80;
-	//   return;
 	// }
 
   }

@@ -53,8 +53,10 @@ void	CharacterNeeds::update() {
 	// addMessage(MSG_STARVE, count);
 	// removeMessage(MSG_HUNGRY);
 	_happiness = max(_happiness - 0.5f, 0.0f);
-	_energy = max(_energy - 1.0f, 0.0f);
 	_health = max(_health - 0.1f, 0.0f);
+	if (_sleeping <= 0) {
+	  _energy = max(_energy - 1.0f, 0.0f);
+	}
   }
 
   // Food: hungry
@@ -92,6 +94,11 @@ void	CharacterNeeds::update() {
   } else {
 	updateAwakening();
   }
+
+  // Sleep on the ground
+  if (_energy <= 0) {
+	sleep(BaseItem::NONE);
+  }
 }
 
 void	CharacterNeeds::updateAwakening() {
@@ -100,32 +107,37 @@ void	CharacterNeeds::updateAwakening() {
 }
 
 void	CharacterNeeds::updateSleeping() {
-  _sleeping--;
+  _sleeping -= 6;
 
   // Strong heal if character in sickbay
   switch (_sleepItem) {
   case BaseItem::QUARTER_BED:
+	_energy = min(_energy + 6, 100);
 	_happiness += 0.1;
 	break;
   case BaseItem::QUARTER_CHAIR:
+	_energy = min(_energy + 5, 100);
 	_happiness -= 0.1;
 	break;
   case BaseItem::SICKBAY_BIOBED:
+	_energy = min(_energy + 6, 100);
 	if (_health > 20) {
 	  _health = max(_health + 2, 100.0f);
 	}
 	break;
   case BaseItem::SICKBAY_EMERGENCY_SHELTERS:
-	_health = max(_health + 4, 100.0f);
+	_energy = min(_energy + 6, 100);
+	_health = min(_health + 4, 100.0f);
 	break;
   default:
+	_energy = min(_energy + 5, 100);
 	_happiness -= 0.1;
 	break;
   }
 
   // Minor health gain
   if (_health > 40) {
-	_health = max(_health + 1, 100.0f);
+	_health = min(_health + 1, 100.0f);
   }
 
 }
@@ -143,32 +155,33 @@ void	CharacterNeeds::sleep(int itemType) {
 
   switch (itemType) {
   case BaseItem::QUARTER_BED:
-	_sleeping = 20;
-	_energy = 100;
+	// _energy = 100;
 	break;
   case BaseItem::SICKBAY_BIOBED:
-	_sleeping = 20;
-	_energy = 100;
+	// _sleeping = 20;
+	// _energy = 100;
 	if (_health > 20) {
 	  _health += 4;
 	}
 	break;
   case BaseItem::QUARTER_CHAIR:
-	_sleeping = 20;
-	_energy = 90;
+	// _sleeping = 100;
+	// _energy = 90;
 	break;
   case BaseItem::SICKBAY_EMERGENCY_SHELTERS:
-	_sleeping = 20;
-	_energy = 100;
+	// _sleeping = 100;
+	// _energy = 100;
 	_health += 8;
 	break;
   case BaseItem::SCHOOL_DESK:
-	_sleeping = 20;
-	_energy = 100;
+	// _sleeping = 100;
+	// _energy = 100;
 	break;
   default:
-	_sleeping = 20;
-	_energy = 80;
+	// _sleeping = 100;
+	// _energy = 80;
 	break;
   }
+
+  _sleeping = 100;
 }
