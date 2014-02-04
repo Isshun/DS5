@@ -50,7 +50,7 @@ void	UserInterfaceMenuOperation::drawTile() {
     oss << "Power: " << ResourceManager::getInstance().getPower();
 
     text.setString(oss.str());
-    text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT * 0);
+    text.setPosition(_posTileX + UI_PADDING, _posTileY + TITLE_SIZE + UI_PADDING + LINE_HEIGHT * 0);
     _app->draw(text);
   }
 
@@ -59,13 +59,13 @@ void	UserInterfaceMenuOperation::drawTile() {
     oss << "O2: " << ResourceManager::getInstance().getO2();
 
     text.setString(oss.str());
-    text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT * 1);
+    text.setPosition(_posTileX + UI_PADDING, _posTileY + TITLE_SIZE + UI_PADDING + LINE_HEIGHT * 1);
     _app->draw(text);
   }
 
   text.setString("Operation");
   text.setCharacterSize(TITLE_SIZE);
-  text.setPosition(_posTileX + UI_PADDING, UI_PADDING);
+  text.setPosition(_posTileX + UI_PADDING, _posTileY + UI_PADDING);
   _app->draw(text);
   text.setString("O");
   text.setStyle(sf::Text::Underlined);
@@ -98,20 +98,22 @@ void	UserInterfaceMenuOperation::drawJobs() {
 
   int i = 0;
   for (it = jobs->begin(); it != jobs->end(); ++it) {
-    std::ostringstream oss;
-    oss << "Job # " << (*it)->getId()
-		<< ": " << JobManager::getActionName((*it)->getAction())
-		<< " " << BaseItem::getItemName((*it)->getItemType());
-	if ((*it)->getCharacter() != NULL) {
-	  text.setColor(sf::Color(255, 255, 255));
-	  oss << " (" << (*it)->getCharacter()->getName() << ")";
-	} else {
-	  text.setColor(sf::Color(255, 255, 0));
-	  oss << " (on queue)";
+	if (i < 18) {
+	  std::ostringstream oss;
+	  oss << "Job # " << (*it)->getId()
+		  << ": " << JobManager::getActionName((*it)->getAction())
+		  << " " << BaseItem::getItemName((*it)->getItemType());
+	  if ((*it)->getCharacter() != NULL) {
+		text.setColor(sf::Color(255, 255, 255));
+		oss << " (" << (*it)->getCharacter()->getName() << ")";
+	  } else {
+		text.setColor(sf::Color(255, 255, 0));
+		oss << " (on queue)";
+	  }
+	  text.setString(oss.str());
+	  text.setPosition(posX + UI_PADDING, posY + UI_PADDING + (32 * i++));
+	  _app->draw(text);
 	}
-    text.setString(oss.str());
-    text.setPosition(posX + UI_PADDING, posY + UI_PADDING + (32 * i++));
-    _app->draw(text);
   }
 
   // for (int i = 0; i < 20; i++) {

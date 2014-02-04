@@ -158,9 +158,9 @@ void	Game::update() {
 
   // assign works
   if (ResourceManager::getInstance().getMatter() > 0) {
-	if (_update % 10 == 0) {
-	  WorldMap::getInstance()->reloadAborted();
-	}
+	// if (_update % 10 == 0) {
+	//   WorldMap::getInstance()->reloadAborted();
+	// }
 
 	// Character* character = NULL;
 	// BaseItem* item = NULL;
@@ -246,7 +246,7 @@ void	Game::loop() {
 			}
 
 			if (event.type == sf::Event::MouseButtonReleased) {
-				_ui->mouseRelease(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
+			  _ui->mouseRelease(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
 			}
 
 			if (event.type == sf::Event::MouseWheelMoved) {

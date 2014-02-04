@@ -18,6 +18,11 @@ class UIFrame : public UIClickListener {
   virtual void	draw(sf::RenderWindow* app) = 0;
   virtual bool	isHover(int x, int y) = 0;
 
+ protected:
+  int	_posX;
+  int	_posY;
+
+
  /* public: */
  /*  UIFrame() { _drawable = NULL; } */
 

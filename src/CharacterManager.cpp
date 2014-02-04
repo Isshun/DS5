@@ -229,7 +229,6 @@ Character*		CharacterManager::assignJob(Job* job) {
 	  if (jobItem == NULL) {
 		jobItem = WorldMap::getInstance()->putItem(job->getItemType(), job->getX(), job->getY());
 	  }
-	  bestCharacter->setBuild(jobItem);
 	}
 
 	Info() << "assign " << job->getId() << " to " << bestCharacter;

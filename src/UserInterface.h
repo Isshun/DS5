@@ -12,9 +12,9 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "defines.h"
-#include "Cursor.h"
 #include "WorldMap.h"
 #include "Viewport.h"
+#include "UserInteraction.h"
 #include "UserInterfaceMenu.h"
 #include "UserInterfaceMenuCharacter.h"
 #include "UserInterfaceMenuInfo.h"
@@ -35,12 +35,10 @@ class UserInterface {
 
   void							refresh(int frame, long interval);
   void							refreshMenu();
-  void							refreshCursor();
   void							refreshResources();
   void  						openMenu(Entry entry);
   void  						openMenuBack();
   bool							checkKeyboard(sf::Event	event, int frame, int lastInput);
-  Cursor*						getCursor() { return _cursor; }
   void							mouseMoved(int x, int y);
   void							mousePress(sf::Mouse::Button button, int x, int y);
   void							mouseRelease(sf::Mouse::Button button, int x, int y);
@@ -55,11 +53,7 @@ class UserInterface {
   }
 
  private:
-  void							drawCursor(int startX, int startY, int toX, int toY);
-	
   sf::RenderWindow*				_app;
-  sf::Texture					_cursorTexture;
-  Cursor*						_cursor;
   Viewport*						_viewport;
   bool							_keyLeftPressed;
   bool							_keyRightPressed;
@@ -70,8 +64,7 @@ class UserInterface {
   int							_keyMovePosY;
   float							_zoom;
   bool							_crewViewOpen;
-
-  UserInterfaceMenu*       		_menu;
+  UserInteraction*				_interaction;
   UserInterfaceScience*			_uiScience;
   UserInterfaceSecurity*		_uiSecurity;
   CharacterManager*        		_characteres;

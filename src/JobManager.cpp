@@ -136,3 +136,23 @@ void	JobManager::complete(Job* job) {
   _count--;
   _start--;
 }
+
+void	JobManager::need(Character* character, int itemType) {
+  Info() << "JobManager: Character '" << character->getName() << "' need item #" << itemType;
+
+  BaseItem* item = WorldMap::getInstance()->find(itemType, true);
+  if (item != NULL) {
+
+	Job* job = new Job(++_id, item->getX(), item->getY());
+	job->setAction(ACTION_USE);
+	job->setCharacterRequire(character);
+	job->setItemType(item->getType());
+	job->setItem(item);
+
+	_jobs->push_back(job);
+	_count++;
+
+	// PathManager::getInstance()->getPathAsync(character, item);
+	return;
+  }
+}

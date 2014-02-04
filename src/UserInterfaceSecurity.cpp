@@ -112,7 +112,8 @@ void	UserInterfaceSecurity::drawTile() {
 	  text.setColor(sf::Color(255, 0, 0));
 	else if (matter < 20)
 	  text.setColor(sf::Color(255, 255, 0));
-    text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING);
+    text.setPosition(_posTileX + UI_PADDING,
+					 _posTileY + TITLE_SIZE + UI_PADDING);
     _app->draw(text);
 	text.setColor(sf::Color(255, 255, 255));
   }
@@ -122,7 +123,8 @@ void	UserInterfaceSecurity::drawTile() {
     oss << "Power: " << ResourceManager::getInstance().getPower();
 
     text.setString(oss.str());
-    text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT);
+    text.setPosition(_posTileX + UI_PADDING,
+					 _posTileY + TITLE_SIZE + UI_PADDING + LINE_HEIGHT);
     _app->draw(text);
   }
 
@@ -131,13 +133,14 @@ void	UserInterfaceSecurity::drawTile() {
     oss << "O2: " << ResourceManager::getInstance().getO2();
 
     text.setString(oss.str());
-    text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT * 2);
+    text.setPosition(_posTileX + UI_PADDING,
+					 _posTileY + TITLE_SIZE + UI_PADDING + LINE_HEIGHT * 2);
     _app->draw(text);
   }
 
   text.setString("Security");
   text.setCharacterSize(TITLE_SIZE);
-  text.setPosition(_posTileX + UI_PADDING, UI_PADDING);
+  text.setPosition(_posTileX + UI_PADDING, _posTileY + UI_PADDING);
   _app->draw(text);
   text.setString("S");
   text.setStyle(sf::Text::Underlined);

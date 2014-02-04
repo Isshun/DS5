@@ -137,7 +137,7 @@ void	UserInterfaceScience::drawTile() {
 
   text.setString("Research");
   text.setCharacterSize(TITLE_SIZE);
-  text.setPosition(_posTileX + UI_PADDING, UI_PADDING);
+  text.setPosition(_posTileX + UI_PADDING, _posTileY + UI_PADDING);
   _app->draw(text);
   text.setString("R");
   text.setStyle(sf::Text::Underlined);

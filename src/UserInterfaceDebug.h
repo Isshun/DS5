@@ -16,16 +16,15 @@
 
 class UserInterfaceDebug {
  public:
-  UserInterfaceDebug(sf::RenderWindow* app, Cursor* cursor);
+  UserInterfaceDebug(sf::RenderWindow* app);
   ~UserInterfaceDebug();
 
-  void	refresh(int frame);
+  void	refresh(int frame, int x, int y);
   void  addDebug(const char* key, std::string value);
 
  private:
   sf::RenderWindow*     _app;
   sf::Font				_font;
-  Cursor*				_cursor;
   int					_index;
 };
 

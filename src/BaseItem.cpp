@@ -94,10 +94,10 @@ void	BaseItem::setOwner(Character* character) {
 
   _owner = character;
 
-  if (currentOwner != NULL && currentOwner->getItem() != NULL) {
-	currentOwner->setItem(NULL);
-  }
-  if (character != NULL && character->getItem() != this) {
-	character->setItem(this);
-  }
+  // if (currentOwner != NULL && currentOwner->getItem() != NULL) {
+  // 	currentOwner->setItem(NULL);
+  // }
+  // if (character != NULL && character->getItem() != this) {
+  // 	character->setItem(this);
+  // }
 }

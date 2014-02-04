@@ -65,10 +65,9 @@ class	Character : public IPathManagerCallback, public Serializable {
   };
 
   enum {
-	GOAL_NONE,
-	GOAL_USE,
-	GOAL_BUILD,
-	GOAL_MOVE
+	STAT_FOOD,
+	STAT_SLEEP,
+	STAT_ENERGY
   };
 
   // Actions
@@ -77,33 +76,30 @@ class	Character : public IPathManagerCallback, public Serializable {
   void  		update();
   void  		updateNeeds(int count);
   void			draw(sf::RenderWindow* app, sf::Transform transform);
-  void			build(AStarSearch<MapSearchNode>* path, BaseItem* item);
-  void			use(AStarSearch<MapSearchNode>* path, BaseItem* item);
+  /* void			go(AStarSearch<MapSearchNode>* astarsearch, Job* job); */
+  /* void			build(AStarSearch<MapSearchNode>* path, Job* job); */
+  /* void			use(AStarSearch<MapSearchNode>* path, Job* job); */
   bool  		isSleep() { return _sleep > 0; }
   void			sendEvent(int event);
   void			addMessage(int msg, int count);
   void			removeMessage(int msg);
-  void			go(AStarSearch<MapSearchNode>* astarsearch, int toX, int toY);
-  void			go(int toX, int toY);
+  void			setStat(int key, int value);
 
   virtual void	create();
   virtual void	load(const char* filePath);
   virtual void	save(const char* filePath);
 
-  virtual void	onPathSearch(Path* path, BaseItem* item);
-  virtual void	onPathComplete(Path* path, BaseItem* item);
-  virtual void	onPathFailed(BaseItem* item);
+  virtual void	onPathSearch(Path* path, Job* job);
+  virtual void	onPathComplete(Path* path, Job* job);
+  virtual void	onPathFailed(Job* job);
   
   // Sets
   void			setProfession(int professionId);
   void			setProfession(Profession profession) { _profession = profession; }
   void			setDirection(int direction);
   void			setRun(int direction, bool run);
-  void			setItem(BaseItem* item);
-  BaseItem*		getItem() { return _item; }
   void			setDosition(int x, int y);
   void			setSelected(bool selected) { _selected = selected; }
-  void			setBuild(BaseItem* item) { _build = item; }
   void			setName(const char* name) { strcpy(_name, name); }
   void			setOffset(int offset) { _offset = offset; }
   void			setJob(Job* job);
@@ -115,7 +111,7 @@ class	Character : public IPathManagerCallback, public Serializable {
   int           getDirection() { return _direction; }
   Profession	getProfession() { return _profession; }
   int			getProfessionId() { return _profession.id; }
-  void*			getJob() { return _item; }
+  Job*			getJob() { return _job; }
   int			getX() { return _posX; }
   int			getY() { return _posY; }
   int			getId() { return _id; }
@@ -145,10 +141,8 @@ class	Character : public IPathManagerCallback, public Serializable {
   int			_frameIndex;
   int			_gender;
   char			_name[32];
-  AStarSearch<MapSearchNode>* _astarsearch;
+  Path*			_path;
   int			_steps;
-  BaseItem*		_item;
-  BaseItem*		_build;
   Profession	_profession;
   bool			_selected;
   int			_blocked;
@@ -168,7 +162,6 @@ class	Character : public IPathManagerCallback, public Serializable {
   int			_eat;
   int			_drink;
 
-  int			_goal;
   bool			_resolvePath;
 
   int			_messages[CHARACTER_MAX_MESSAGE];

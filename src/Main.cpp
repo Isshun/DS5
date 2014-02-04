@@ -4,10 +4,13 @@
 #include "defines.h"
 #include "Options.h"
 #include "Settings.h"
+#include "MainRenderer.h"
 #include "HomeScreen.h"
 
 int main(int argc, char *argv[]) {
   sf::RenderWindow app(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), NAME);
+
+  MainRenderer::getInstance()->setWindow(&app);
 
   // app.setSize(sf::Vector2u(Settings::getInstance()->getResX(), Settings::getInstance()->getResY()));
 

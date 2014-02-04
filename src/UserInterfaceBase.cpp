@@ -26,7 +26,7 @@ UserInterfaceBase::UserInterfaceBase(sf::RenderWindow* app, int tileIndex) {
   _posY = 200;
 
   _posTileX = (MENU_TILE_WIDTH + UI_PADDING + UI_PADDING) * tileIndex + UI_PADDING;
-  _posTileY = UI_PADDING;
+  _posTileY = WINDOW_HEIGHT - 180 - UI_PADDING;
   _tileIndex = tileIndex;
   _isTileActive = false;
   _isOpen = false;

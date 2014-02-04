@@ -23,6 +23,9 @@ class UILabel : public UIFrame {
 	_text.setColor(sf::Color(255, 255, 255));
 	_text.setCharacterSize(38);
 
+	_posX = 0;
+	_posY = 0;
+
 	setOnMouseEnterListener([](UILabel* lbNew) {
 		lbNew->setColor(sf::Color(255, 255, 0));
 	  });
@@ -48,6 +51,8 @@ class UILabel : public UIFrame {
   }
 
   void	setPosition(int x, int y) {
+	_posX = x;
+	_posY = y;
 	_text.setPosition(x, y);
   }
 

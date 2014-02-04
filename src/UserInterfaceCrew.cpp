@@ -86,7 +86,8 @@ void	UserInterfaceCrew::drawTile() {
     oss << "Total: " << CharacterManager::getInstance()->getCount();
 
 	text.setString(oss.str());
-    text.setPosition(_posTileX, TITLE_SIZE + UI_PADDING + UI_PADDING);
+    text.setPosition(_posTileX,
+					 _posTileY + TITLE_SIZE + UI_PADDING);
     _app->draw(text);
   }
 
@@ -95,7 +96,8 @@ void	UserInterfaceCrew::drawTile() {
 	sf::RectangleShape shape;
 	shape.setSize(sf::Vector2f(24, 24));
 	shape.setFillColor(professions[i].color);
-	shape.setPosition(UI_PADDING + (i * 28), TITLE_SIZE + UI_PADDING + UI_PADDING + 32);
+	shape.setPosition(UI_PADDING + (i * 28),
+					  _posTileY + TITLE_SIZE + UI_PADDING + 32);
 	_app->draw(shape);
 
 	oss.str("");
@@ -104,7 +106,8 @@ void	UserInterfaceCrew::drawTile() {
 	text.setString(oss.str());
 	text.setColor(professions[i].textColor);
 	text.setCharacterSize(10);
-	text.setPosition(UI_PADDING + (i * 28) + (count < 10 ? 6 : 2), TITLE_SIZE + UI_PADDING + UI_PADDING + 32 + 5);
+	text.setPosition(UI_PADDING + (i * 28) + (count < 10 ? 6 : 2),
+					 _posTileY + TITLE_SIZE + UI_PADDING + 32 + 5);
     _app->draw(text);
   }
 
@@ -128,7 +131,7 @@ void	UserInterfaceCrew::drawTile() {
 
   text.setString("Crew");
   text.setCharacterSize(TITLE_SIZE);
-  text.setPosition(_posTileX + UI_PADDING, UI_PADDING);
+  text.setPosition(_posTileX + UI_PADDING, _posTileY + UI_PADDING);
   _app->draw(text);
   text.setString("C");
   text.setStyle(sf::Text::Underlined);

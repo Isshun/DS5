@@ -11,16 +11,15 @@
 
 #include "defines.h"
 #include "MapSearchNode.h"
-#include "BaseItem.h"
+#include "Job.h"
 
 class	Character;
-class	BaseItem;
 
 class IPathManagerCallback {
  public:
-  virtual void	onPathSearch(Path* path, BaseItem* item) = 0;
-  virtual void	onPathComplete(Path* path, BaseItem* item) = 0;
-  virtual void	onPathFailed(BaseItem* item) = 0;
+  virtual void	onPathSearch(Path* path, Job* item) = 0;
+  virtual void	onPathComplete(Path* path, Job* item) = 0;
+  virtual void	onPathFailed(Job* item) = 0;
 };
 
 class	PathManager
@@ -28,17 +27,17 @@ class	PathManager
  public:
 	PathManager();
 	~PathManager();
-	void							getPathAsync(Character* character, BaseItem* item);
-	void							getPathAsync(Character* character, int x, int y);
+	void							getPathAsync(Character* character, Job* item);
+	/* void							getPathAsync(Character* character, int x, int y); */
 	void							init();
 
 	static PathManager*	getInstance() { return _self; }
 
  private:
 	AStarSearch<MapSearchNode>*		getPath(MapSearchNode nodeStart, MapSearchNode nodeEnd);
-	AStarSearch<MapSearchNode>*		getPath(Character* character, BaseItem* item);
+	AStarSearch<MapSearchNode>*		getPath(Character* character, Job* item);
 
-	map<pair<BaseItem*, BaseItem*>, AStarSearch<MapSearchNode>*>*	_data;
+	map<pair<Job*, Job*>, AStarSearch<MapSearchNode>*>*	_data;
 
 	/* std::multimap<int, int>*		_map; */
 	int		_map[LIMIT_CHARACTER][LIMIT_ITEMS];

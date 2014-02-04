@@ -4,9 +4,8 @@
 #include "WorldMap.h"
 #include "BaseItem.h"
 
-UserInterfaceDebug::UserInterfaceDebug(sf::RenderWindow* app, Cursor* cursor) {
+UserInterfaceDebug::UserInterfaceDebug(sf::RenderWindow* app) {
   _app = app;
-  _cursor = cursor;
 
   if (!_font.loadFromFile("../snap/xolonium/Xolonium-Regular.otf"))
 	throw(std::string("failed to load: ").append("../snap/xolonium/Xolonium-Regular.otf").c_str());
@@ -43,7 +42,7 @@ void  UserInterfaceDebug::addDebug(const char* key, std::string value) {
   _index++;
 }
 
-void	UserInterfaceDebug::refresh(int frame) {
+void	UserInterfaceDebug::refresh(int frame, int x, int y) {
   _index = 0;
 
   // Background
@@ -53,8 +52,6 @@ void	UserInterfaceDebug::refresh(int frame) {
   shape.setPosition(sf::Vector2f(WINDOW_WIDTH - 320, 0));
   _app->draw(shape);
 
-  int x = _cursor->getX();
-  int y = _cursor->getY();
   BaseItem* item = WorldMap::getInstance()->getItem(x, y);
   std::ostringstream oss;
 

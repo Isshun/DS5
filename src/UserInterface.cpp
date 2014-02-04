@@ -17,14 +17,13 @@
 UserInterface::UserInterface(sf::RenderWindow* app, Viewport* viewport) {
   _app = app;
   _viewport = viewport;
-  _cursor = new Cursor();
   _characteres = CharacterManager::getInstance();
   _keyLeftPressed = false;
   _keyRightPressed = false;
   _zoom = 1.0f;
 
-  _menu = new UserInterfaceMenu(app, _cursor);
-  _menu->init();
+  // _menu = new UserInterfaceMenu(app);
+  // _menu->init();
 
   _menuCharacter = new UserInterfaceMenuCharacter(app);
   _menuCharacter->init();
@@ -32,18 +31,19 @@ UserInterface::UserInterface(sf::RenderWindow* app, Viewport* viewport) {
   _menuInfo = new UserInterfaceMenuInfo(app);
   _menuInfo->init();
 
-  _uiEngeneering = new UserInterfaceEngineering(app, 3);
+  _interaction = new UserInteraction(_viewport);
+
+  _uiEngeneering = new UserInterfaceEngineering(app, 3, _interaction);
   _uiScience = new UserInterfaceScience(app, 2);
   _uiSecurity = new UserInterfaceSecurity(app, 4);
   _crewViewOpen = false;
   _uiCharacter = new UserInterfaceCrew(app, 0);
-  _uiDebug = new UserInterfaceDebug(app, _cursor);
+  _uiDebug = new UserInterfaceDebug(app);
   _uiBase = new UserInterfaceMenuOperation(app, 1);
-  _cursorTexture.loadFromFile("../sprites/cursor.png");
 }
 
 UserInterface::~UserInterface() {
-  delete _menu;
+  delete _interaction;
   delete _menuCharacter;
   delete _menuInfo;
   delete _uiEngeneering;
@@ -80,7 +80,8 @@ void	UserInterface::mouseMoved(int x, int y) {
 
   _keyMovePosX = getRelativePosX(x);
   _keyMovePosY = getRelativePosY(y);
-  _cursor->setPos(_keyMovePosX, _keyMovePosY);
+  _interaction->mouseMove(_keyMovePosX, _keyMovePosY);
+  // _cursor->setPos(_keyMovePosX, _keyMovePosY);
 
   // right button pressed
   if (_keyRightPressed) {
@@ -95,11 +96,6 @@ void	UserInterface::mouseMoved(int x, int y) {
 }
 
 void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
-  // if (x < UI_WIDTH) {
-  //   _menu->mousePressed(button, x, y);
-  // } else if (y < UI_HEIGHT) {
-  // } else {
-
   if (_uiEngeneering->mousePress(button, x, y)) {
 	_keyLeftPressed = false;
 	return;
@@ -125,6 +121,9 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
 	return;
   }
 
+  _interaction->mousePress(button, getRelativePosX(x), getRelativePosY(y));
+  _interaction->mouseMove(getRelativePosX(x), getRelativePosY(y));
+
   switch (button) {
 
   case sf::Mouse::Left:
@@ -144,7 +143,6 @@ void	UserInterface::mousePress(sf::Mouse::Button button, int x, int y) {
 }
 
 void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
-
   if (_uiEngeneering->mouseRelease(button, x, y)) {
 	_uiSecurity->close();
 	_uiScience->close();
@@ -185,19 +183,21 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 	return;
   }
 
+  if (_interaction->mouseRelease(button, x, y)) {
+	return;
+  }
+
+  _interaction->cancel();
+
   switch (button) {
 
   case sf::Mouse::Left:
-    if (_keyLeftPressed) {
-      int startX = std::min(_keyPressPosX, _keyMovePosX);
-      int startY = std::min(_keyPressPosY, _keyMovePosY);
-      int toX = std::max(_keyPressPosX, _keyMovePosX);
-      int toY = std::max(_keyPressPosY, _keyMovePosY);
+    if (true) {
 
       _menuCharacter->setCharacter(NULL);
 
       // Select character
-      if (_uiEngeneering->getBuildItemType() == -1 && _menu->getCode() == UserInterfaceMenu::CODE_MAIN) {
+      if (_interaction->getMode() == UserInteraction::MODE_NONE) {// && _menu->getCode() == UserInterfaceMenu::CODE_MAIN) {
 		Info() << "select character";
         Character* c = _characteres->getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
 		if (c != NULL) {
@@ -215,50 +215,6 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 		}
       }
 
-      // Build item
-      else if (_uiEngeneering->getBuildItemType() != -1 || _menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
-        for (int x = toX; x >= startX; x--) {
-          for (int y = toY; y >= startY; y--) {
-
-            // Structure
-			BaseItem* item = NULL;
-			int type = _uiEngeneering->getBuildItemType();
-            if (type == BaseItem::STRUCTURE_ROOM) {
-              if (x == startX || x == toX || y == startY || y == toY) {
-				Warning() << "1";
-				JobManager::getInstance()->build(BaseItem::STRUCTURE_WALL, x, y);
-				// item = WorldMap::getInstance()->putItem(x, y, BaseItem::STRUCTURE_WALL);
-              } else {
-				Warning() << "2";
-				JobManager::getInstance()->build(BaseItem::STRUCTURE_FLOOR, x, y);
-				// item = WorldMap::getInstance()->putItem(x, y, BaseItem::STRUCTURE_FLOOR);
-              }
-            } else {
-              // item = WorldMap::getInstance()->putItem(x, y, _menu->getBuildItemType());
-			  if (type != -1) {
-				Warning() << "3 " << type << " " << BaseItem::getItemName(type);
-				JobManager::getInstance()->build(type, x, y);
-				// item = WorldMap::getInstance()->putItem(x, y, type);
-			  }
-            }
-
-			// if (item != NULL) {
-			// }
-          }
-        }
-      }
-
-	  // TODO: job manager
-      // Erase item
-      else if (_menu->getCode() == UserInterfaceMenu::CODE_ERASE) {
-        for (int x = startX; x <= toX; x++) {
-          for (int y = startY; y <= toY; y++) {
-			WorldMap::getInstance()->removeItem(x, y);
-          }
-        }
-      }
-
-
       _keyLeftPressed = false;
     }
 
@@ -270,7 +226,7 @@ void	UserInterface::mouseRelease(sf::Mouse::Button button, int x, int y) {
 		_viewport->update(x, y);
 		// _viewport->update(_mouseRightPress.x - x, _mouseRightPress.y - y);
 	  } else {
-		_uiEngeneering->setBuildItemType(-1);
+		_interaction->cancel();
 	  }
 
 	}
@@ -284,54 +240,6 @@ void	UserInterface::mouseWheel(int delta, int x, int y) {
 
   _keyMovePosX = getRelativePosX(x);
   _keyMovePosY = getRelativePosY(y);
-}
-
-void	UserInterface::drawCursor(int startX, int startY, int toX, int toY) {
-  sf::Sprite sprite;
-  sprite.setTexture(_cursorTexture);
-  sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
-
-  startX = max(startX, 0);
-  startY = max(startY, 0);
-  toX = min(toX, WorldMap::getInstance()->getWidth());
-  toY = min(toY, WorldMap::getInstance()->getHeight());
-  for (int x = startX; x <= toX; x++) {
-	for (int y = startY; y <= toY; y++) {
-      sf::Transform transform;
-      sf::RenderStates render(_viewport->getViewTransform(transform));
-	  sprite.setPosition(x * TILE_SIZE, y * TILE_SIZE);
-	  _app->draw(sprite, render);
-	}
-  }
-}
-
-void	UserInterface::refreshCursor() {
-  if (_uiEngeneering->getBuildItemType() != -1 ||
-	  _menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM ||
-	  _menu->getCode() == UserInterfaceMenu::CODE_ERASE) {
-	ItemInfo itemInfo = BaseItem::getItemInfo(_uiEngeneering->getBuildItemType());
-
-	// Structure: multiple 1x1 tile
-	if (_keyLeftPressed && itemInfo.type > BaseItem::STRUCTURE_START && itemInfo.type < BaseItem::STRUCTURE_STOP) {
-	  drawCursor(std::min(_keyPressPosX, _keyMovePosX),
-				 std::min(_keyPressPosY, _keyMovePosY),
-				 std::max(_keyPressPosX, _keyMovePosX),
-				 std::max(_keyPressPosY, _keyMovePosY));
-	}
-	// Single nxn tile: holding mouse button
-	else if (_keyLeftPressed) {
-	  ItemInfo itemInfo = BaseItem::getItemInfo(_menu->getBuildItemType());
-	  drawCursor(std::min(_keyPressPosX, _keyMovePosX),
-				 std::min(_keyPressPosY, _keyMovePosY),
-				 std::min(_keyPressPosX, _keyMovePosX) + itemInfo.width - 1,
-				 std::min(_keyPressPosY, _keyMovePosY) + itemInfo.height - 1);
-	}
-
-	// Single 1x1 tile: mouse hover
-	else {
-	  drawCursor(_keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY);
-	}
-  }
 }
 
 void UserInterface::refresh(int frame, long interval) {
@@ -348,11 +256,11 @@ void UserInterface::refresh(int frame, long interval) {
 
   // Display debug view
   if (Settings::getInstance()->isDebug()) {
-  	_uiDebug->refresh(frame);
-  	drawCursor(_keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY);
+  	_uiDebug->refresh(frame, _interaction->getCursor()->getX(), _interaction->getCursor()->getY());
+  	//drawCursor(_keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY);
   }
 
-  refreshCursor();
+  _interaction->refreshCursor();
   // _uiResource->refreshResources(frame, interval);
 
   _uiCharacter->draw(frame);
@@ -363,10 +271,6 @@ void UserInterface::refresh(int frame, long interval) {
 }
 
 bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
-
-  if (_menu->checkKeyboard(event.key.code, _keyMovePosX, _keyMovePosY)) {
-	return true;
-  }
 
   if (_uiEngeneering->checkKey(event.key.code)) {
 	return true;
@@ -388,9 +292,9 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 	return true;
   }
 
-  if (_uiEngeneering->getBuildItemType() != -1) {
+  if (_interaction->getMode() != UserInteraction::MODE_NONE) {
 	if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape) {
-	  _uiEngeneering->setBuildItemType(-1);
+	  _interaction->cancel();
 	  return true;
 	}
   }
@@ -426,13 +330,13 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 	_uiBase->toogleJobs();
 	break;
 
-  case sf::Keyboard::G: {
-	Character* c = _menuCharacter->getCharacter();
-	if (c != NULL) {
-	  c->go(_cursor->getX(), _cursor->getY());
-	}
-	break;
-  }
+  // case sf::Keyboard::G: {
+  // 	Character* c = _menuCharacter->getCharacter();
+  // 	if (c != NULL) {
+  // 	  c->go(_interaction->getCursor()->getX(), _interaction->getCursor()->getY());
+  // 	}
+  // 	break;
+  // }
 
   case sf::Keyboard::I:
 	WorldMap::getInstance()->dumpItems();
@@ -474,23 +378,23 @@ bool UserInterface::checkKeyboard(sf::Event	event, int frame, int lastInput) {
 	}
 	break;
 
-	// PutItem
-  case sf::Keyboard::Return:
-	if (event.type == sf::Event::KeyReleased) {
-	  if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
-		BaseItem* item = WorldMap::getInstance()->putItem(_menu->getBuildItemType(), _keyMovePosX, _keyMovePosY);
-		if (item != NULL) {
-		  JobManager::getInstance()->build(item);
-		}
-	  }
-	}
-	break;
+  // 	// PutItem
+  // case sf::Keyboard::Return:
+  // 	if (event.type == sf::Event::KeyReleased) {
+  // 	  if (_menu->getCode() == UserInterfaceMenu::CODE_BUILD_ITEM) {
+  // 		BaseItem* item = WorldMap::getInstance()->putItem(_menu->getBuildItemType(), _keyMovePosX, _keyMovePosY);
+  // 		if (item != NULL) {
+  // 		  JobManager::getInstance()->build(item);
+  // 		}
+  // 	  }
+  // 	}
+  // 	break;
 
-  case sf::Keyboard::BackSpace:
-	if ((event.type == sf::Event::KeyReleased)) {
-	  _menu->openBack();
-	}
-	break;
+  // case sf::Keyboard::BackSpace:
+  // 	if ((event.type == sf::Event::KeyReleased)) {
+  // 	  _menu->openBack();
+  // 	}
+  // 	break;
 
   default:
 	break;

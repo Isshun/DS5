@@ -3,7 +3,7 @@
 #include "defines.h"
 #include "PathManager.h"
 #include "Character.h"
-#include "BaseItem.h"
+#include "Job.h"
 
 #include "ThreadPool.h"
 
@@ -11,7 +11,7 @@ PathManager* PathManager::_self = new PathManager();
 
 PathManager::PathManager() {
   _pool = new ThreadPool(4);
-  _data = new map<pair<BaseItem*, BaseItem*>, AStarSearch<MapSearchNode>*>();
+  _data = new map<pair<Job*, Job*>, AStarSearch<MapSearchNode>*>();
   memset(_map, 0, LIMIT_CHARACTER * LIMIT_ITEMS * sizeof(int));
 }
 
@@ -23,45 +23,45 @@ PathManager::~PathManager() {
 void							PathManager::init() {
   Info() << "PathManager: init";
 
-  std::list<BaseItem*> list;
-  int w = WorldMap::getInstance()->getWidth();
-  int h = WorldMap::getInstance()->getHeight();
-  for (int i = w-1; i >= 0; i--) {
-  	for (int j = h-1; j >= 0; j--) {
-	  BaseItem* item = WorldMap::getInstance()->getArea(i, j);
-	  if (item != NULL && item->getType() == BaseItem::STRUCTURE_DOOR) {
-		Debug() << "Door at pos: " << i << " x " << j;
-		list.push_back(item);
-	  }
-	}
-  }
+  // std::list<Job*> list;
+  // int w = WorldMap::getInstance()->getWidth();
+  // int h = WorldMap::getInstance()->getHeight();
+  // for (int i = w-1; i >= 0; i--) {
+  // 	for (int j = h-1; j >= 0; j--) {
+  // 	  Job* item = WorldMap::getInstance()->getArea(i, j);
+  // 	  if (item != NULL && item->getType() == Job::STRUCTURE_DOOR) {
+  // 		Debug() << "Door at pos: " << i << " x " << j;
+  // 		list.push_back(item);
+  // 	  }
+  // 	}
+  // }
 
-  std::list<BaseItem*>::iterator it1;
-  std::list<BaseItem*>::iterator it2;
-  for (it1 = list.begin(); it1 != list.end(); ++it1) {
-	for (it2 = list.begin(); it2 != list.end(); ++it2) {
-	  if (*it1 != *it2) {
-		MapSearchNode nodeStart;
-		nodeStart.x = (*it1)->getX();
-		nodeStart.y = (*it1)->getY();
+  // std::list<Job*>::iterator it1;
+  // std::list<Job*>::iterator it2;
+  // for (it1 = list.begin(); it1 != list.end(); ++it1) {
+  // 	for (it2 = list.begin(); it2 != list.end(); ++it2) {
+  // 	  if (*it1 != *it2) {
+  // 		MapSearchNode nodeStart;
+  // 		nodeStart.x = (*it1)->getX();
+  // 		nodeStart.y = (*it1)->getY();
 
-		MapSearchNode nodeEnd;
-		nodeEnd.x = (*it2)->getX();
-		nodeEnd.y = (*it2)->getY();
+  // 		MapSearchNode nodeEnd;
+  // 		nodeEnd.x = (*it2)->getX();
+  // 		nodeEnd.y = (*it2)->getY();
 
-		AStarSearch<MapSearchNode>* path = getPath(nodeStart, nodeEnd);
-		pair<BaseItem*, BaseItem*> key = std::make_pair(*it1, *it2);
+  // 		AStarSearch<MapSearchNode>* path = getPath(nodeStart, nodeEnd);
+  // 		pair<Job*, Job*> key = std::make_pair(*it1, *it2);
 
-		_data->insert(make_pair(make_pair(*it1, *it2), path));
+  // 		_data->insert(make_pair(make_pair(*it1, *it2), path));
 
-		Info() << "PathManager: find path"
-			   << " from: " << nodeStart.x << " x " << nodeStart.y
-			   << ", to: " << nodeEnd.x << " x " << nodeEnd.y
-			   << ", cost: " << path->GetSolutionCost();
-		  // done (" << _data->size() << " path)";
-	  }
-	}
-  }
+  // 		Info() << "PathManager: find path"
+  // 			   << " from: " << nodeStart.x << " x " << nodeStart.y
+  // 			   << ", to: " << nodeEnd.x << " x " << nodeEnd.y
+  // 			   << ", cost: " << path->GetSolutionCost();
+  // 		  // done (" << _data->size() << " path)";
+  // 	  }
+  // 	}
+  // }
 
   Info() << "PathManager: init done (" << _data->size() << " path)";
 }
@@ -112,13 +112,13 @@ AStarSearch<MapSearchNode>*		PathManager::getPath(MapSearchNode nodeStart, MapSe
 	   // 									nodeEnd.x + nodeEnd.y * WORLD_MAX_SIZE));
 	 }
 
-	 SearchCount ++;
+	 SearchCount++;
    }
 
   return NULL;
 }
 
-AStarSearch<MapSearchNode>*		PathManager::getPath(Character* character, BaseItem* item) {
+AStarSearch<MapSearchNode>*		PathManager::getPath(Character* character, Job* item) {
 
   // if (_map[character->getId()][item->getId()]) {
   // 	Error() << "PathManager: this path is already know and cannot be resolve";
@@ -144,40 +144,39 @@ AStarSearch<MapSearchNode>*		PathManager::getPath(Character* character, BaseItem
   return path;
 }
 
-void	PathManager::getPathAsync(Character* character, int x, int y) {
+// void	PathManager::getPathAsync(Character* character, int x, int y) {
 
-  _pool->enqueue([this, character, x, y] {
+//   _pool->enqueue([this, character, x, y] {
 
-	  MapSearchNode nodeStart;
-	  nodeStart.x = character->getX();
-	  nodeStart.y = character->getY();
+// 	  MapSearchNode nodeStart;
+// 	  nodeStart.x = character->getX();
+// 	  nodeStart.y = character->getY();
 
-	  MapSearchNode nodeEnd;
-	  nodeEnd.x = x;
-	  nodeEnd.y = y;
+// 	  MapSearchNode nodeEnd;
+// 	  nodeEnd.x = x;
+// 	  nodeEnd.y = y;
 
-	  AStarSearch<MapSearchNode>* path = getPath(nodeStart, nodeEnd);
+// 	  AStarSearch<MapSearchNode>* path = getPath(nodeStart, nodeEnd);
+
+// 	  if (path != NULL) {
+// 		character->onPathComplete(path, NULL);
+// 	  } else {
+// 		character->onPathFailed(NULL);
+// 	  }
+
+// 	});
+// }
+
+void	PathManager::getPathAsync(Character* character, Job* job) {
+
+  _pool->enqueue([this, character, job] {
+
+	  AStarSearch<MapSearchNode>* path = this->getPath(character, job);
 
 	  if (path != NULL) {
-		character->onPathComplete(path, NULL);
+		character->onPathComplete(path, job);
 	  } else {
-		character->onPathFailed(NULL);
-	  }
-
-	});
-
-}
-
-void	PathManager::getPathAsync(Character* character, BaseItem* item) {
-
-  _pool->enqueue([this, character, item] {
-
-	  AStarSearch<MapSearchNode>* path = this->getPath(character, item);
-
-	  if (path != NULL) {
-		character->onPathComplete(path, item);
-	  } else {
-		character->onPathFailed(item);
+		character->onPathFailed(job);
 	  }
 
 	});

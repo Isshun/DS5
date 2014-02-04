@@ -28,6 +28,9 @@ class UserInterfaceBase {
  protected:
   void	drawTile(sf::Color color);
   void	drawPanel();
+  bool	isOnTile(int x, int y) {
+	return x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120;
+  }
 
   sf::RenderWindow* _app;
   sf::Texture		_texturePanel;

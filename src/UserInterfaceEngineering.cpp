@@ -17,12 +17,12 @@
 #define MENU_TILE_OPEN_WIDTH	300
 #define MENU_TILE_OPEN_HEIGHT	160
 
-UserInterfaceEngineering::UserInterfaceEngineering(sf::RenderWindow* app, int tileIndex)
+UserInterfaceEngineering::UserInterfaceEngineering(sf::RenderWindow* app, int tileIndex, UserInteraction* interaction)
   : UserInterfaceBase(app, tileIndex) {
   _panelMode = MODE_NONE;
   _panelModeHover = MODE_NONE;
   _itemHover = -1;
-  _itemSelected = -1;
+  _interaction = interaction;
 
   _textureTile.loadFromFile("../res/bg_tile_engineering.png");
   _texturePanel.loadFromFile("../res/bg_panel_engineering.png");
@@ -147,14 +147,14 @@ void	UserInterfaceEngineering::drawTile() {
 	  text.setColor(sf::Color(255, 0, 0));
 	else if (matter < 20)
 	  text.setColor(sf::Color(255, 255, 0));
-    text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING);
+    text.setPosition(_posTileX + UI_PADDING, _posTileY + TITLE_SIZE + UI_PADDING);
     _app->draw(text);
 	text.setColor(sf::Color(255, 255, 255));
   }
 
   text.setString("Engineering");
   text.setCharacterSize(TITLE_SIZE);
-  text.setPosition(_posTileX + UI_PADDING, UI_PADDING);
+  text.setPosition(_posTileX + UI_PADDING, _posTileY + UI_PADDING);
   _app->draw(text);
   text.setString("E");
   text.setStyle(sf::Text::Underlined);
@@ -216,7 +216,7 @@ bool	UserInterfaceEngineering::onMouseMove(int x, int y) {
 	}
   }
 
-  else if (x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120) {
+  else if (isOnTile(x, y)) {
 	_isTileActive = true;
 	return true;
   }
@@ -226,6 +226,9 @@ bool	UserInterfaceEngineering::onMouseMove(int x, int y) {
 
 bool	UserInterfaceEngineering::mousePress(sf::Mouse::Button button, int x, int y) {
   if (_isOpen) {
+	return true;
+  }
+  else if (isOnTile(x, y)) {
 	return true;
   }
   return false;
@@ -242,7 +245,7 @@ bool	UserInterfaceEngineering::mouseRelease(sf::Mouse::Button button, int x, int
 	}
 
 	if (_itemHover != -1) {
-	  _itemSelected = _itemHover;
+	  _interaction->selectBuildItem(_itemHover);
 	  _isOpen = false;
 	  onMouseMove(x, y);
 	}
@@ -251,7 +254,7 @@ bool	UserInterfaceEngineering::mouseRelease(sf::Mouse::Button button, int x, int
   }
 
   // On tile
-  else if (x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120) {
+  else if (isOnTile(x, y)) {
 	_isOpen = !_isOpen;
 	_isTileActive = true;
 	return true;
