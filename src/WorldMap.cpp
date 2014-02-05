@@ -23,6 +23,7 @@ WorldMap::WorldMap() {
   _itemCout = 0;
   _width = 120;
   _height = 50;
+  _count = 0;
 
   // memset(_tmp, 0, 250 * 250 * 4);
 
@@ -132,8 +133,12 @@ void	WorldMap::addRandomSeed() {
 	for (int y = 0; y < _height; y++) {
 	  int realX = (x + startX) % _width;
 	  int realY = (y + startY) % _height;
-	  if (_items[realX][realY] == NULL) {
-		WorldArea* area = (WorldArea*)putItem(BaseItem::RES_1, realX, realY);
+	  if (_items[realX][realY] == NULL || _items[realX][realY]->getType() == BaseItem::RES_1) {
+		WorldArea* area = _items[realX][realY];
+		if (area == NULL) {
+		  area = (WorldArea*)putItem(BaseItem::RES_1, realX, realY);
+		}
+		area->addMatter(10);
 		JobManager::getInstance()->gather(area);
 		return;
 	  }
@@ -152,14 +157,19 @@ int	WorldMap::gather(BaseItem* item, int maxValue) {
   int x = item->getX();
   int y = item->getY();
   if (item->getMatterSupply() == 0 && _items[x][y] == item) {
-	delete item;
-	_items[x][y] = NULL;
+	// delete item;
+	// _items[x][y] = NULL;
   }
   return value;
 }
 
 void	WorldMap::update() {
-  addRandomSeed();
+  _count++;
+
+  // Add random seed each 10 update
+  if (_count % 10 == 0) {
+	addRandomSeed();
+  }
 }
 
 void	WorldMap::save(const char* filePath) {

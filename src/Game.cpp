@@ -164,15 +164,26 @@ void	Game::update() {
 	//   WorldMap::getInstance()->reloadAborted();
 	// }
 
+	// int jobsCount = JobManager::getInstance()->getCount();
+	// if (jobsCount > 0) {
+	//   Job* job = JobManager::getInstance()->getJob();
+	//   if (job != NULL && _characterManager->assignJob(job) == NULL) {
+	// 	JobManager::getInstance()->abort(job);
+	//   }
+	// }
+
+	_characterManager->assignJobs();
+
 	// Character* character = NULL;
-	// BaseItem* item = NULL;
-	int jobsCount = JobManager::getInstance()->getCount();
-	if (jobsCount > 0) {
-	  Job* job = JobManager::getInstance()->getJob();
-	  if (job != NULL && _characterManager->assignJob(job) == NULL) {
-		JobManager::getInstance()->abort(job);
-	  }
-	}
+	// int charactersCount = _characterManager->getCount();
+	// for (int i = 0; (character = _characterManager->getInactive()) != NULL) {
+	//   if (character != NULL) {
+	// 	Job* job = JobManager::getInstance()->getJob(character);
+	// 	if (job != NULL) {
+	// 	  character->setJob(job);
+	// 	}
+	//   }
+	// }
 
 	// int length = WorldMap::getInstance()->getBuildListSize();
 	// if (length > 0

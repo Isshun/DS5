@@ -87,6 +87,7 @@ class BaseItem {
 
   // Actions
   int				gatherMatter(int maxValue);
+  void				addMatter(int value) { _matterSupply += matter; }
 
   // Sets
   void				setPosition(int x, int y) { _x = x; _y = y; }

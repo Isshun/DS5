@@ -55,6 +55,33 @@ CharacterManager::~CharacterManager() {
   delete _characters;
 }
 
+Character*	CharacterManager::getInactive() {
+  Debug() << "CharacterManager::getInactive";
+
+  std::list<Character*>::iterator it;
+  for (it = _characters->begin(); it != _characters->end(); ++it) {
+	if ((*it)->getJob() == NULL) {
+	  return *it;
+	}
+  }
+  return NULL;
+}
+
+void	CharacterManager::assignJobs() {
+  Debug() << "CharacterManager::assignJobs";
+
+  std::list<Character*>::iterator it;
+  for (it = _characters->begin(); it != _characters->end(); ++it) {
+	if ((*it)->getJob() == NULL) {
+		Job* job = JobManager::getInstance()->getJob(*it);
+		if (job != NULL) {
+		  job->setCharacter(*it);
+		  (*it)->setJob(job);
+		}
+	}
+  }
+}
+
 void	CharacterManager::create() {
   add(0, 0, Character::PROFESSION_ENGINEER);
   add(1, 0, Character::PROFESSION_OPERATION);

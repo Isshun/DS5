@@ -39,6 +39,7 @@ class	JobManager : public Serializable {
 	static JobManager*	getInstance() { return _self; }
 	int					getCount() { return _count; }
 	Job*				getJob();
+	Job*				getJob(Character* character);
 
 	static const char*	getActionName(int action) {
 	  switch(action) {

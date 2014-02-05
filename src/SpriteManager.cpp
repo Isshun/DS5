@@ -203,11 +203,15 @@ void				SpriteManager::getExterior(sf::Sprite* sprite) {
 }
 
 void				SpriteManager::getRessource(WorldArea* item, sf::Sprite* sprite) {
-  sprite->setTexture(*_texture[4]);
-  sprite->setTextureRect(sf::IntRect(TILE_SIZE,
-									 8 * (TILE_SIZE + 2) + 1,
-									 TILE_SIZE + 1,
-									 TILE_SIZE));
+  if (item->getMatterSupply() == 0) {
+	getExterior(sprite);
+  } else {
+	sprite->setTexture(*_texture[4]);
+	sprite->setTextureRect(sf::IntRect(TILE_SIZE,
+									   8 * (TILE_SIZE + 2) + 1,
+									   TILE_SIZE + 1,
+									   TILE_SIZE));
+  }
 }
 
 void				SpriteManager::getFloor(WorldArea* item, int zone, int room, sf::Sprite* sprite) {

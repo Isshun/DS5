@@ -93,6 +93,7 @@ class WorldMap : public Serializable {
   int					_width;
   int					_height;
   int					_tmp[250][250];
+  int					_count;
 };
 
 #endif /* WORLDMAP_H_ */

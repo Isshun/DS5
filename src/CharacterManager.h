@@ -24,6 +24,8 @@ class	CharacterManager : public Serializable {
 	void						refresh(sf::RenderWindow* app, sf::Transform transform, double animProgress);
     void        				update(int count);
 	Character*					assignJob(Job* job);
+	Character*					getInactive();
+	void						assignJobs();
 
 	// Gets
 	Character*					getUnemployed(int professionId);

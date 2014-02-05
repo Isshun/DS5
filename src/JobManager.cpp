@@ -115,6 +115,48 @@ Job*	JobManager::build(int type, int x, int y) {
   return job;
 }
 
+// TODO: one pass + check profession
+Job*	JobManager::getJob(Character* character) {
+  if (_count == 0) {
+	return NULL;
+  }
+
+  Job* bestJob = NULL;
+  int bestDistance = -1;
+
+  {
+	std::list<Job*>::iterator it;
+	int x = character->getX();
+	int y = character->getY();
+	for (it = _jobs->begin(); it != _jobs->end(); ++it) {
+	  if ((*it)->getCharacter() == NULL && (*it)->getAction() != JobManager::ACTION_GATHER) {
+	  int distance = abs(x - (*it)->getX()) + abs(y - (*it)->getY());
+	  if (distance < bestDistance || bestDistance == -1) {
+		bestJob = *it;
+		bestDistance = distance;
+	  }
+	  }
+	}
+  }
+
+  if (bestJob == NULL) {
+	std::list<Job*>::iterator it;
+	int x = character->getX();
+	int y = character->getY();
+	for (it = _jobs->begin(); it != _jobs->end(); ++it) {
+	  if ((*it)->getCharacter() == NULL) {
+		int distance = abs(x - (*it)->getX()) + abs(y - (*it)->getY());
+		if (distance < bestDistance || bestDistance == -1) {
+		  bestJob = *it;
+		  bestDistance = distance;
+		}
+	  }
+	}
+  }
+
+  return bestJob;
+}
+
 // TODO: ugly
 Job*	JobManager::getJob() {
   if (_count == 0) {
