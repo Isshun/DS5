@@ -11,6 +11,7 @@
 #include "FileManager.h"
 #include "JobManager.h"
 #include "Job.h"
+#include "CharacterNeeds.h"
 
 using namespace std;
 
@@ -54,117 +55,80 @@ class	Character : public IPathManagerCallback, public Serializable {
 	GENDER_BOTH
   };
 
-  enum {
-	MSG_HUNGRY,
-	MSG_STARVE,
-	MSG_NEED_OXYGEN,
-	MSG_SLEEP_ON_FLOOR,
-	MSG_SLEEP_ON_CHAIR,
-	MSG_NO_WINDOW,
-	MSG_BLOCKED
-  };
-
-  enum {
-	STAT_FOOD,
-	STAT_SLEEP,
-	STAT_ENERGY
-  };
-
   // Actions
-  void			action();
-  void          move();
-  void  		update();
-  void  		updateNeeds(int count);
-  void			draw(sf::RenderWindow* app, sf::Transform transform);
-  /* void			go(AStarSearch<MapSearchNode>* astarsearch, Job* job); */
-  /* void			build(AStarSearch<MapSearchNode>* path, Job* job); */
-  /* void			use(AStarSearch<MapSearchNode>* path, Job* job); */
-  bool  		isSleep() { return _sleep > 0; }
-  void			sendEvent(int event);
-  void			addMessage(int msg, int count);
-  void			removeMessage(int msg);
-  void			setStat(int key, int value);
+  void				action();
+  void				move();
+  void				update();
+  void				updateNeeds(int count);
+  void				draw(sf::RenderWindow* app, sf::Transform transform);
+  void				sendEvent(int event);
+  void				addMessage(int msg, int count);
+  void				removeMessage(int msg);
 
-  virtual void	create();
-  virtual void	load(const char* filePath);
-  virtual void	save(const char* filePath);
+  virtual void		create();
+  virtual void		load(const char* filePath);
+  virtual void		save(const char* filePath);
 
-  virtual void	onPathSearch(Path* path, Job* job);
-  virtual void	onPathComplete(Path* path, Job* job);
-  virtual void	onPathFailed(Job* job);
+  virtual void		onPathSearch(Path* path, Job* job);
+  virtual void		onPathComplete(Path* path, Job* job);
+  virtual void		onPathFailed(Job* job);
   
   // Sets
-  void			setProfession(int professionId);
-  void			setProfession(Profession profession) { _profession = profession; }
-  void			setDirection(int direction);
-  void			setRun(int direction, bool run);
-  void			setDosition(int x, int y);
-  void			setSelected(bool selected) { _selected = selected; }
-  void			setName(const char* name) { strcpy(_name, name); }
-  void			setOffset(int offset) { _offset = offset; }
-  void			setJob(Job* job);
+  void				setProfession(int professionId);
+  void				setProfession(Profession profession) { _profession = profession; }
+  void				setDirection(int direction);
+  void				setRun(int direction, bool run);
+  void				setDosition(int x, int y);
+  void				setSelected(bool selected) { _selected = selected; }
+  void				setName(const char* name) { strcpy(_name, name); }
+  void				setOffset(int offset) { _offset = offset; }
+  void				setJob(Job* job);
 
   // Gets
   sf::Vector2<int>	&get_position();
-  sf::Sprite	&get_sprite();
-  int           getRun();
-  int           getDirection() { return _direction; }
-  Profession	getProfession() { return _profession; }
-  int			getProfessionId() { return _profession.id; }
-  Job*			getJob() { return _job; }
-  int			getX() { return _posX; }
-  int			getY() { return _posY; }
-  int			getId() { return _id; }
-  const char*	getName() { return _name; }
-  int   		getFood() { return _food; }
-  int   		getHapiness() { return (int)_hapiness; }
-  int   		getOxygen() { return _oxygen; }
-  int   		getEnergy() { return _energy; }
-  int   		getHealth() { return _health; }
-  int*  		getMessages() { return _messages; }
-  bool			getSelected() { return _selected; }
-  int			getFrameIndex() { return _frameIndex++; }
-  int			getOffset() { return _offset; }
-  int			getProfessionScore(int professionId) { return 42; }
+  sf::Sprite		&get_sprite();
+  int				getRun();
+  int				getDirection() { return _direction; }
+  Profession		getProfession() { return _profession; }
+  int				getProfessionId() { return _profession.id; }
+  Job*				getJob() { return _job; }
+  int				getX() { return _posX; }
+  int				getY() { return _posY; }
+  int				getId() { return _id; }
+  const char*		getName() { return _name; }
+  CharacterNeeds*	getNeeds() { return _needs; }
+  int*				getMessages() { return _messages; }
+  bool				getSelected() { return _selected; }
+  int				getFrameIndex() { return _frameIndex++; }
+  int				getOffset() { return _offset; }
+  int				getProfessionScore(int professionId) { return 42; }
 
  private:
-  void			actionUse();
-  void			actionBuild();
+  void				actionUse();
+  void				actionBuild();
 
-  MapSearchNode*		_node;
+  MapSearchNode*	_node;
+  CharacterNeeds*	_needs;
+  int				_posX;
+  int				_posY;
+  int				_toX;
+  int				_toY;
+  int				_id;
+  int				_frameIndex;
+  int				_gender;
+  char				_name[32];
+  Path*				_path;
+  int				_steps;
+  Profession		_profession;
+  bool				_selected;
+  int				_blocked;
+  int				_direction;
+  int				_offset;
+  Job*				_job;
 
-  int			_posX;
-  int			_posY;
-  int			_toX;
-  int			_toY;
-  int			_id;
-  int			_frameIndex;
-  int			_gender;
-  char			_name[32];
-  Path*			_path;
-  int			_steps;
-  Profession	_profession;
-  bool			_selected;
-  int			_blocked;
-  int			_direction;
-  int			_offset;
-  Job*			_job;
+  bool				_resolvePath;
 
-  // Needs
-  int   		_food;
-  int   		_oxygen;
-  float 		_hapiness;
-  int			_health;
-  int			_energy;
-
-  // States
-  int			_sleep;
-  int			_eat;
-  int			_drink;
-
-  bool			_resolvePath;
-
-  int			_messages[CHARACTER_MAX_MESSAGE];
+  int				_messages[CHARACTER_MAX_MESSAGE];
 };
 
 #endif

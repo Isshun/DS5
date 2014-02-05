@@ -336,7 +336,7 @@ void	CharacterManager::refresh(sf::RenderWindow* app, sf::Transform transform, d
 
 	sprite.setPosition(posX, posY);
 	int index = (*it)->getFrameIndex() / 20 % 4;
-	if ((*it)->isSleep()) {
+	if ((*it)->getNeeds()->isSleeping()) {
 	  sprite.setTextureRect(sf::IntRect(0, CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT));
  	} else if (direction == Character::DIRECTION_NONE) {
 	  sprite.setTextureRect(sf::IntRect(0, 0, CHAR_WIDTH, CHAR_HEIGHT));
@@ -388,7 +388,7 @@ sf::Sprite*	CharacterManager::getSprite(sf::Sprite* sprite, int functionId, int 
 
 	// Sprite
 	sprite->setPosition(posX, posY);
-	if ((*it)->isSleep()) {
+	if ((*it)->getNeeds()->isSleeping()) {
 	  sprite->setTextureRect(sf::IntRect(0, CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT));
 	} else {
 	  sprite->setTextureRect(sf::IntRect(CHAR_WIDTH * (index % 4), 0, CHAR_WIDTH, CHAR_HEIGHT));

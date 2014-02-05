@@ -19,7 +19,7 @@
 Settings* Settings::_self = new Settings();
 
 #define REFRESH_INTERVAL		(1000/60)
-#define UPDATE_INTERVAL			100
+#define UPDATE_INTERVAL			10
 
 Game::Game(sf::RenderWindow* app) {
   Debug() << "Game";

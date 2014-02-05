@@ -1,4 +1,5 @@
 #include "UserInterfaceMenuCharacter.h"
+#include "CharacterNeeds.h"
 
 #define MENU_CHARACTER_FONT_SIZE 20
 #define MENU_CHARACTER_MESSAGE_FONT_SIZE 16
@@ -28,25 +29,25 @@ void	UserInterfaceMenuCharacter::addMessage(int posX, int posY, int width, int h
   const char* msg;
 
   switch (value) {
-  case Character::MSG_HUNGRY:
+  case CharacterNeeds::MSG_HUNGRY:
 	msg = "MSG_HUNGRY";
 	break;
-  case Character::MSG_STARVE:
+  case CharacterNeeds::MSG_STARVE:
 	msg = "MSG_STARVE";
 	break;
-  case Character::MSG_NEED_OXYGEN:
+  case CharacterNeeds::MSG_NEED_OXYGEN:
 	msg = "MSG_NEED_OXYGEN";
 	break;
-  case Character::MSG_SLEEP_ON_FLOOR:
+  case CharacterNeeds::MSG_SLEEP_ON_FLOOR:
 	msg = "SLEEP_ON_FLOOR";
 	break;
-  case Character::MSG_SLEEP_ON_CHAIR:
+  case CharacterNeeds::MSG_SLEEP_ON_CHAIR:
 	msg = "SLEEP_ON_CHAIR";
 	break;
-  case Character::MSG_NO_WINDOW:
+  case CharacterNeeds::MSG_NO_WINDOW:
 	msg = "MSG_NO_WINDOW";
 	break;
-  case Character::MSG_BLOCKED:
+  case CharacterNeeds::MSG_BLOCKED:
 	msg = "MSG_BLOCKED";
 	break;
   default:
@@ -115,22 +116,29 @@ void	UserInterfaceMenuCharacter::refresh(int frame) {
     job.setPosition(MENU_PADDING_LEFT + 0, MENU_PADDING_TOP + MENU_CHARACTER_FONT_SIZE);
     _app->draw(job, render);
 
-	const char* texts[5] = {"Food", "Oxygen", "Happiness", "Energy", "Health"};
+	const char* texts[11] = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "Sleep"};
 
-    for (int i = 0; i < 4; i++) {
+	CharacterNeeds* needs = _character->getNeeds();
+    for (int i = 0; i < 11; i++) {
       int value;
       switch (i) {
-      case 0: value = max(_character->getFood(), 0); break;
-      case 1: value = max(_character->getOxygen(), 0); break;
-      case 2: value = max(_character->getHapiness(), 0); break;
-      case 3: value = max(_character->getEnergy(), 0); break;
-	  case 4: value = max(_character->getHealth(), 0); break;
+      case 0: value = min(max(needs->getFood(), 0), 100); break;
+      case 1: value = min(max(needs->getOxygen(), 0), 100); break;
+      case 2: value = min(max(needs->getHappiness(), 0), 100); break;
+      case 3: value = min(max(needs->getEnergy(), 0), 100); break;
+	  case 4: value = min(max(needs->getRelation(), 0), 100); break;
+	  case 5: value = min(max(needs->getSecurity(), 0), 100); break;
+	  case 6: value = min(max(needs->getHealth(), 0), 100); break;
+	  case 7: value = min(max(needs->getSickness(), 0), 100); break;
+	  case 8: value = min(max(needs->getInjuries(), 0), 100); break;
+	  case 9: value = min(max(needs->getSatiety(), 0), 100); break;
+	  case 10: value = min(max(needs->getSleeping(), 0), 100); break;
       }
 
-      addGauge(MENU_PADDING_LEFT,
-               60 * i + (UI_FONT_SIZE + 16) + MENU_PADDING_TOP,
-               UI_WIDTH - MENU_PADDING_TOP * 2,
-               16,
+      addGauge(MENU_PADDING_LEFT + 180 * (i % 2),
+               10 + 50 * (i / 2) + (UI_FONT_SIZE + 16) + MENU_PADDING_TOP,
+               160,
+               12,
                value,
 			   texts[i],
 			   render);

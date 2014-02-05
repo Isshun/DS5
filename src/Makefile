@@ -32,6 +32,7 @@ SRC	=	Main.cpp				\
 		Cursor.cpp	\
 		PathManager.cpp	\
 		CharacterManager.cpp	\
+		CharacterNeeds.cpp	\
 		Character.cpp
 
 NAME	=	ds5
