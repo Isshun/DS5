@@ -66,6 +66,8 @@ Game::~Game() {
 }
 
 void	Game::update() {
+  WorldMap::getInstance()->update();
+
   // Update item
   int w = WorldMap::getInstance()->getWidth();
   int h = WorldMap::getInstance()->getHeight();

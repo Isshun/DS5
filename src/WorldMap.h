@@ -49,11 +49,13 @@ class WorldMap : public Serializable {
   /* void					reloadAborted(); */
   void					dump();
   void					dumpItems();
+  void					update();
   BaseItem*				find(int type, bool free);
   void					removeItem(int x, int y);
   void					initRoom();
   int					addRoom(int x, int y);
   void					destroyRoom(int roomId);
+  int					gather(BaseItem* item, int maxValue);
 
   // Gets
   static WorldMap*		getInstance() { return _self; }
@@ -72,6 +74,7 @@ class WorldMap : public Serializable {
   Room*					getRoom(int id) { return _rooms[id]; }
   int					getRoomCount() { return _rooms.size(); }
   BaseItem*				getRandomPosInRoom(int roomId);
+  void					addRandomSeed();
 
   // Sets
   int					setZone(int x, int y, int zoneId, int roomId);

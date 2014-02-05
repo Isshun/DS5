@@ -15,6 +15,7 @@
 #include "defines.h"
 #include "Log.h"
 #include "JobManager.h"
+#include "ResourceManager.h"
 
 WorldMap* WorldMap::_self = new WorldMap();
 
@@ -121,6 +122,44 @@ void	WorldMap::load(const char* filePath) {
   } else {
 	Error() << "Unable to open save file: " << filePath;
   }
+}
+
+void	WorldMap::addRandomSeed() {
+  int startX = rand();
+  int startY = rand();
+
+  for (int x = 0; x < _width; x++) {
+	for (int y = 0; y < _height; y++) {
+	  int realX = (x + startX) % _width;
+	  int realY = (y + startY) % _height;
+	  if (_items[realX][realY] == NULL) {
+		WorldArea* area = (WorldArea*)putItem(BaseItem::RES_1, realX, realY);
+		JobManager::getInstance()->gather(area);
+		return;
+	  }
+	}
+  }
+}
+
+int	WorldMap::gather(BaseItem* item, int maxValue) {
+  if (item == NULL || maxValue == 0) {
+	Error() << "WorldMap::gather: wrong call";
+	return 0;
+  }
+
+  int value = item->gatherMatter(maxValue);
+  ResourceManager::getInstance().addMatter(value);
+  int x = item->getX();
+  int y = item->getY();
+  if (item->getMatterSupply() == 0 && _items[x][y] == item) {
+	delete item;
+	_items[x][y] = NULL;
+  }
+  return value;
+}
+
+void	WorldMap::update() {
+  addRandomSeed();
 }
 
 void	WorldMap::save(const char* filePath) {
@@ -408,15 +447,20 @@ BaseItem* WorldMap::putItem(int type, int x, int y, bool free) {
 
   BaseItem *item = NULL;
 
-  if (type > BaseItem::STRUCTURE_START && type < BaseItem::STRUCTURE_STOP) {
+  if (type > BaseItem::STRUCTURE_START && type < BaseItem::STRUCTURE_STOP || type == BaseItem::RES_1) {
 	item = new WorldArea(type, _itemCout++);
   } else {
 	item = new BaseItem(type, _itemCout++);
   }
   int zoneId = item->getZoneId();
 
+  // Ressource
+  if (item->isRessource()) {
+	_items[x][y] = (WorldArea*)item;
+  }
+
   // Wall
-  if (item->isStructure() && item->isType(BaseItem::STRUCTURE_FLOOR) == false) {
+  else if (item->isStructure() && item->isType(BaseItem::STRUCTURE_FLOOR) == false) {
 	_items[x][y] = (WorldArea*)item;
 	// _items[x][y]->setRoomId(roomId);
 	// _items[x][y]->setZoneId(0);

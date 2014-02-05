@@ -41,6 +41,7 @@ class SpriteManager {
   void				getWall(BaseItem* item, int special, sf::Sprite* sprite, int index, int zone);
   void				getExterior(sf::Sprite* sprite);
   sf::Font&			getFont() { return _font; }
+  void				getRessource(WorldArea* item, sf::Sprite* sprite);
 
  private:
   SpriteManager();

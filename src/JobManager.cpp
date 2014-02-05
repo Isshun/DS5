@@ -59,6 +59,23 @@ Job*	JobManager::build(BaseItem* item) {
   return job;
 }
 
+Job*	JobManager::gather(WorldArea* area) {
+  if (area == NULL) {
+	Error() << "JobManager: gather on NULL area";
+	return NULL;
+  }
+
+  Job* job = new Job(++_id, area->getX(), area->getY());
+  job->setAction(ACTION_GATHER);
+  job->setItemType(area->getType());
+  job->setItem(area);
+
+  _jobs->push_back(job);
+  _count++;
+
+  return job;
+}
+
 Job*	JobManager::build(int type, int x, int y) {
 
   BaseItem* item = NULL;
@@ -118,6 +135,8 @@ Job*	JobManager::getJob() {
 	if ((*it)->getCharacter() == NULL) {
 	  return *it;
 	}
+
+	it++;
   }
 
   return NULL;

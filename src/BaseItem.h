@@ -81,8 +81,12 @@ class BaseItem {
 	TACTICAL_SHIELD_GRID,
 	TACTICAL_CLOAKING_DEVICE,
 	SCIENCE_HYDROPONICS,
+	RES_1,
     ITEM_STOP,
   };
+
+  // Actions
+  int				gatherMatter(int maxValue);
 
   // Sets
   void				setPosition(int x, int y) { _x = x; _y = y; }
@@ -91,6 +95,7 @@ class BaseItem {
   void				setZoneId(int zoneId) { _zoneId = zoneId; }
 
   // Gets
+  int				getMatterSupply() { return _matterSupply; }
   Character*		getOwner() { return _owner; }
   static ItemInfo 	getItemInfo(int type);
   int				getWidth() { return _width; }
@@ -152,6 +157,8 @@ class BaseItem {
 	case TACTICAL_SHIELD_GRID: return "shield grid";
 	case TACTICAL_CLOAKING_DEVICE: return "cloaking device";
 	case SCIENCE_HYDROPONICS: return "hydroponics";
+	case RES_1: return "res 1";
+	default: return "unknow_item";
 	}
   }
 
@@ -164,6 +171,7 @@ class BaseItem {
   bool				isZoneMatch() { return _zoneId == _zoneIdRequired; }
   bool				isSleepingItem() { return _type == QUARTER_BED || _type == QUARTER_CHAIR; }
   bool				isStructure() { return _type > STRUCTURE_START && _type < STRUCTURE_STOP; }
+  bool				isRessource() { return _type == RES_1; }
 
   bool				isSolid;
   int				matter;

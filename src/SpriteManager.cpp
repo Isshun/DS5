@@ -35,6 +35,7 @@ SpriteResource	spritesRes[] = {
   {BaseItem::ENGINE_CONTROL_CENTER,				8, 10, 1},
   {BaseItem::QUARTER_BED,						10, 7, 2},
   {BaseItem::QUARTER_CHAIR,						8, 6, 2},
+  {BaseItem::RES_1,								8, 1, 4},
   {BaseItem::NONE,								0, 0, 0},
 };
 
@@ -105,76 +106,92 @@ SpriteManager* SpriteManager::getInstance() {
 
 void		SpriteManager::getSprite(BaseItem* item, sf::Sprite* sprite) {
 
-  if (item != NULL) {
-	for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
-	  if (item->isType(spritesRes[i].type)) {
+  // if (item != NULL) {
+  // 	for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
+  // 	  if (item->isType(spritesRes[i].type)) {
 
-		// Floor
-		if (item->isType(BaseItem::STRUCTURE_FLOOR)) {
-		  int choice = 1;
+  // 		// Floor
+  // 		if (item->isType(BaseItem::STRUCTURE_FLOOR)) {
+  // 		  // int choice = 1;
 
-		  if (item->getZoneId() == UserInterfaceMenu::CODE_ZONE_HOLODECK) {
-			choice = 3;
-		  }
+  // 		  // if (item->getZoneId() == UserInterfaceMenu::CODE_ZONE_HOLODECK) {
+  // 		  // 	choice = 3;
+  // 		  // }
 
-		  sprite->setTexture(*_texture[4]);
-		  sprite->setTextureRect(sf::IntRect((item->getRoomId() % choice) * TILE_SIZE,
-											 item->getZoneId() * TILE_SIZE,
-											 TILE_SIZE,
-											 TILE_SIZE));
-		}
+  // 		  // sprite->setTexture(*_texture[4]);
+  // 		  // sprite->setTextureRect(sf::IntRect((item->getRoomId() % choice) * TILE_SIZE,
+  // 		  // 									 item->getZoneId() * TILE_SIZE,
+  // 		  // 									 TILE_SIZE,
+  // 		  // 									 TILE_SIZE));
+  // 		}
 
-		// Else
-		else {
-		  sprite->setScale(0.8f, 0.8f);
-		  sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
-		  sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
-											 spritesRes[i].posY * TILE_SIZE,
-											 item->getWidth() * TILE_SIZE,
-											 item->getHeight() * TILE_SIZE));
-		}
+  // 		// Ressource
+  // 		else if (item->isRessource()) {
+  // 		  sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
+  // 		  sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
+  // 											 spritesRes[i].posY * TILE_SIZE,
+  // 											 item->getWidth() * TILE_SIZE,
+  // 											 item->getHeight() * TILE_SIZE));
+  // 		}
 
-		int alpha = 75 + 180 / item->matter * item->_matterSupply;
-		sprite->setColor(sf::Color(255,255,255,alpha));
+  // 		// Else
+  // 		else {
+  // 		  sprite->setScale(0.8f, 0.8f);
+  // 		  sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
+  // 		  sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
+  // 											 spritesRes[i].posY * TILE_SIZE,
+  // 											 item->getWidth() * TILE_SIZE,
+  // 											 item->getHeight() * TILE_SIZE));
+  // 		  int alpha = 75 + 180 / item->matter * item->_matterSupply;
+  // 		  sprite->setColor(sf::Color(255,255,255,alpha));
+  // 		}
 
-		return;
-	  }
-	}
-  }
+  // 		return;
+  // 	  }
+  // 	}
+  // }
 
-  sprite->setTexture(*_texture[0]);
-  sprite->setTextureRect(sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
+  // sprite->setTexture(*_texture[0]);
+  // sprite->setTextureRect(sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
 }
 
 void		SpriteManager::getSprite(int type, sf::Sprite* sprite) {
-  switch (type) {
+  // switch (type) {
 
-  case BaseItem::STRUCTURE_FLOOR:
-    sprite = _spriteFloor[0];
-	return;
+  // case BaseItem::STRUCTURE_FLOOR:
+  //   sprite = _spriteFloor[0];
+  // 	return;
 
-  case SpriteManager::IC_BATTERY:
-    sprite = _spriteBattery;
-	return;
-  }
+  // case SpriteManager::IC_BATTERY:
+  //   sprite = _spriteBattery;
+  // 	return;
+  // }
 
-  for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
-	if (spritesRes[i].type == type) {
-	  ItemInfo info = BaseItem::getItemInfo(type);
-	  int size = max(info.width, info.height);
-	  if (size == 2)
-		sprite->setScale(0.75f, 0.75f);
-	  if (size == 3)
-		sprite->setScale(0.5f, 0.5f);
+  // for (int i = 0; spritesRes[i].type != BaseItem::NONE; i++) {
+  // 	if (spritesRes[i].type == type) {
+  // 	  if (type == BaseItem::RES_1) {
+  // 		// sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
+  // 		// sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
+  // 		// 								   spritesRes[i].posY * TILE_SIZE,
+  // 		// 								   info.width * TILE_SIZE,
+  // 		// 								   info.height * TILE_SIZE));
+  // 	  } else {
+  // 		ItemInfo info = BaseItem::getItemInfo(type);
+  // 		int size = max(info.width, info.height);
+  // 		if (size == 2)
+  // 		  sprite->setScale(0.75f, 0.75f);
+  // 		if (size == 3)
+  // 		  sprite->setScale(0.5f, 0.5f);
 
-	  sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
-	  sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
-										 spritesRes[i].posY * TILE_SIZE,
-										 info.width * TILE_SIZE,
-										 info.height * TILE_SIZE));
-	  return;
-	}
-  }
+  // 		sprite->setTexture(*_texture[spritesRes[i].textureIndex]);
+  // 		sprite->setTextureRect(sf::IntRect(spritesRes[i].posX * TILE_SIZE,
+  // 										   spritesRes[i].posY * TILE_SIZE,
+  // 										   info.width * TILE_SIZE,
+  // 										   info.height * TILE_SIZE));
+  // 	  }
+  // 	  return;
+  // 	}
+  // }
 }
 
 void				SpriteManager::getExterior(sf::Sprite* sprite) {
@@ -185,6 +202,14 @@ void				SpriteManager::getExterior(sf::Sprite* sprite) {
 									 TILE_SIZE));
 }
 
+void				SpriteManager::getRessource(WorldArea* item, sf::Sprite* sprite) {
+  sprite->setTexture(*_texture[4]);
+  sprite->setTextureRect(sf::IntRect(TILE_SIZE,
+									 8 * (TILE_SIZE + 2) + 1,
+									 TILE_SIZE + 1,
+									 TILE_SIZE));
+}
+
 void				SpriteManager::getFloor(WorldArea* item, int zone, int room, sf::Sprite* sprite) {
   int choice = 1;
 
@@ -192,14 +217,14 @@ void				SpriteManager::getFloor(WorldArea* item, int zone, int room, sf::Sprite*
   sprite->setColor(sf::Color(255,255,255,alpha));
 
   if (zone == UserInterfaceMenu::CODE_ZONE_HOLODECK) {
-	choice = 3;
+  	choice = 3;
   }
 
   sprite->setTexture(*_texture[4]);
   sprite->setTextureRect(sf::IntRect((room % choice) * TILE_SIZE,
-									 zone * (TILE_SIZE + 2) + 1,
-									 TILE_SIZE,
-									 TILE_SIZE));
+  									 zone * (TILE_SIZE + 2) + 1,
+  									 TILE_SIZE,
+  									 TILE_SIZE));
 }
 
 void				SpriteManager::getNoOxygen(sf::Sprite* sprite) {

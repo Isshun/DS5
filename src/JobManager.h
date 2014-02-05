@@ -17,6 +17,7 @@ class	JobManager : public Serializable {
 	enum {
 	  ACTION_NONE,
 	  ACTION_BUILD,
+	  ACTION_GATHER,
 	  ACTION_USE,
 	  ACTION_MOVE
 	};
@@ -28,6 +29,7 @@ class	JobManager : public Serializable {
 	// Actions
 	Job*				build(int type, int posX, int posY);
 	Job*				build(BaseItem* item);
+	Job*				gather(WorldArea* area);
 	void				abort(Job* job);
 	void				complete(Job* job);
 	void				need(Character* character, int itemType);
@@ -42,8 +44,10 @@ class	JobManager : public Serializable {
 	  switch(action) {
 	  case ACTION_NONE:	 return "NONE";
 	  case ACTION_BUILD: return "Build";
+	  case ACTION_GATHER: return "Gather";
 	  case ACTION_USE:   return "Use";
 	  case ACTION_MOVE:  return "Move to";
+	  default: return "unknow_action";
 	  }
 	}
 

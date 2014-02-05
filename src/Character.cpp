@@ -560,6 +560,19 @@ void		Character::actionBuild() {
   }
 }
 
+void		Character::actionGather() {
+  // Wrong call
+  if (_job == NULL || _job->getItem() == NULL) {
+	Error() << "Character: actionGather on NULL job or NULL job's item";
+	return;
+  }
+
+  if (WorldMap::getInstance()->gather(_job->getItem(), getProfessionScore(0)) == 0) {
+	JobManager::getInstance()->complete(_job);
+	_job = NULL;
+  }
+}
+
 void		Character::action() {
   if (_job == NULL || _posX != _toX || _posY != _toY) {
 	return;
@@ -575,6 +588,11 @@ void		Character::action() {
 
   case JobManager::ACTION_USE: {
 	actionUse();
+	break;
+  }
+
+  case JobManager::ACTION_GATHER: {
+	actionGather();
 	break;
   }
 

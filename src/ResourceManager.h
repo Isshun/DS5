@@ -16,6 +16,7 @@ class	ResourceManager {
   int build(BaseItem* item);
 
   void setMatter(int matter) { _matter = matter; }
+  void addMatter(int value) { _matter += value; }
 
   int getMatter() { return _matter; }
   int getPower() { return _power; }
