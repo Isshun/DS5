@@ -33,6 +33,7 @@ class	JobManager : public Serializable {
 	void				abort(Job* job);
 	void				complete(Job* job);
 	void				need(Character* character, int itemType);
+	void				removeJob(BaseItem* item);
 
 	// Gets
 	std::list<Job*>*	getJobs() { return _jobs; };

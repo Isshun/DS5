@@ -338,49 +338,7 @@ void WorldMap::removeItem(int x, int y) {
 	return;
   }
 
-  // // Characters
-  // {
   item->setOwner(NULL);
-  // 	std::list<Character*>::iterator it;
-  // 	for (it = _characteres->begin(); it != _characteres->end(); ++it) {
-  // 	  if ((*it)->getItem() == item) {
-  // 		_characteres->setItem(NULL);
-  // 	  }
-  // 	}
-  // }
-
-  // // Todo
-  // {
-  // 	std::list<BaseItem*>::iterator it;
-  // 	for (it = _todo->begin(); it != _todo->end(); ++it) {
-  // 	  if (*it == item) {
-  // 		_todo->erase(it);
-  // 		break;
-  // 	  }
-  // 	}
-  // }
-
-  // // Building
-  // {
-  // 	std::list<BaseItem*>::iterator it;
-  // 	for (it = _building->begin(); it != _building->end(); ++it) {
-  // 	  if (*it == item) {
-  // 		_building->erase(it);
-  // 		break;
-  // 	  }
-  // 	}
-  // }
-
-  // // BuildingAborted
-  // {
-  // 	std::list<BaseItem*>::iterator it;
-  // 	for (it = _buildingAborted->begin(); it != _buildingAborted->end(); ++it) {
-  // 	  if (*it == item) {
-  // 		_buildingAborted->erase(it);
-  // 		break;
-  // 	  }
-  // 	}
-  // }
 
   int newType = BaseItem::NONE;
   if (_items[x][y]->isType(BaseItem::STRUCTURE_FLOOR)) {
@@ -447,6 +405,11 @@ BaseItem* WorldMap::putItem(int type, int x, int y, bool free) {
   if (_items[x][y] != NULL && _items[x][y]->isType(type)) {
 	Debug() << "Same item existing for " << x << " x " << y;
 	return NULL;
+  }
+
+  // If item alread exists and different type, remove any job on this item
+  if (_items[x][y] != NULL)  {
+	JobManager::getInstance()->removeJob(_items[x][y]);
   }
 
   // If item alread exists check the roomId
@@ -556,51 +519,3 @@ int		WorldMap::addRoom(int x, int y) {
   }
   return  -1;
 }
-
-// BaseItem*		WorldMap::getItemToBuild() {
-//   if (_todo->size() == 0) {
-// 	//std::cout << Debug() << "WorldMap: todo list is empty" << std::endl;
-// 	return NULL;
-//   }
-
-//   BaseItem* item = _todo->front();
-//   _todo->pop_front();
-//   _building->push_back(item);
-
-//   return item;
-// }
-
-// void		WorldMap::buildAbort(BaseItem* item) {
-//   item->setOwner(NULL);
-
-//   std::list<BaseItem*>::iterator it;
-//   for (it = _building->begin(); it != _building->end(); ++it) {
-// 	if (*it == item) {
-// 	  _buildingAborted->push_back(item);
-// 	  _building->erase(it);
-// 	  Info() << "WorldMap: item building abort";
-// 	  return;
-// 	}
-//   }
-// }
-
-// void		WorldMap::buildComplete(BaseItem* item) {
-//   item->setOwner(NULL);
-
-//   std::list<BaseItem*>::iterator it;
-//   for (it = _building->begin(); it != _building->end(); ++it) {
-// 	if (*it == item) {
-// 	  _building->erase(it);
-// 	  Info() << "WorldMap: item now complete";
-// 	  return;
-// 	}
-//   }
-// }
-
-// void		WorldMap::reloadAborted() {
-//   std::list<BaseItem*>::iterator it;
-//   for (it = _buildingAborted->begin(); it != _buildingAborted->end(); ++it) {
-// 	_todo->push_back(*it);
-//   }
-//   _buildingAborted->clear();
-// }

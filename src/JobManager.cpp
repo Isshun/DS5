@@ -76,18 +76,32 @@ Job*	JobManager::gather(WorldArea* area) {
   return job;
 }
 
-Job*	JobManager::build(int type, int x, int y) {
+void	JobManager::removeJob(BaseItem* item) {
+  std::list<Job*> toRemove = std::list<Job*>();
 
+  std::list<Job*>::iterator it;
+  for (it = _jobs->begin(); it != _jobs->end(); ++it) {
+	if ((*it)->getItem() == item) {
+	  toRemove.push_back(*it);
+	}
+  }
+
+  for (it = toRemove.begin(); it != toRemove.end(); ++it) {
+	_jobs->remove(*it);
+  }
+}
+
+Job*	JobManager::build(int type, int x, int y) {
   BaseItem* item = NULL;
 
   // Structure
   if (BaseItem::isStructure(type)) {
-	if (WorldMap::getInstance()->getArea(x, y) == NULL) {
+	// if (WorldMap::getInstance()->getArea(x, y) == NULL) {
 	  item = WorldMap::getInstance()->putItem(type, x, y);
-	} else {
-	  Error() << "JobManager: add build on non NULL area";
-	  return NULL;
-	}
+	// } else {
+	//   Error() << "JobManager: add build on non NULL area";
+	//   return NULL;
+	// }
   }
 
   // Item
