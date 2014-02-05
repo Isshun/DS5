@@ -101,3 +101,10 @@ void	BaseItem::setOwner(Character* character) {
   // 	character->setItem(this);
   // }
 }
+
+int		BaseItem::gatherMatter(int maxValue) {
+  int value = min(maxValue, _matterSupply);
+  _matterSupply -= value;
+  return _matterSupply;
+}
+

@@ -46,6 +46,10 @@ void	WorldRenderer::drawFloor(sf::RenderStates render, int fromX, int fromY, int
 		  _spriteManager->getSprite(item, &sprite);
 		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 		  _app->draw(sprite, render);
+		} else if (item->isRessource()) {
+		  _spriteManager->getRessource(item, &sprite);
+		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		  _app->draw(sprite, render);
 		} else {
 		  _spriteManager->getFloor(item, item->getZoneId(), item->getRoomId(), &sprite);
 		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);

@@ -74,8 +74,8 @@ void	UserInterfaceMenuOperation::drawTile() {
 }
 
 void	UserInterfaceMenuOperation::drawJobs() {
-  int posX = 200;
-  int posY = 100;
+  int posX = 20;
+  int posY = 20;
 
   // _background.setPosition(posX, UI_PADDING);
   // _background.setColor(MENU_COLOR);
@@ -83,14 +83,14 @@ void	UserInterfaceMenuOperation::drawJobs() {
 
   // Background
   sf::RectangleShape shape;
-  shape.setSize(sf::Vector2f(800, 600));
+  shape.setSize(sf::Vector2f(300, 800));
   shape.setFillColor(sf::Color(0, 0, 100, 100));
   shape.setPosition(posX, posY);
   _app->draw(shape);
 
   sf::Text text;
   text.setFont(SpriteManager::getInstance()->getFont());
-  text.setCharacterSize(16);
+  text.setCharacterSize(12);
 
   // Display jobs
   std::list<Job*>::iterator it;
@@ -98,7 +98,7 @@ void	UserInterfaceMenuOperation::drawJobs() {
 
   int i = 0;
   for (it = jobs->begin(); it != jobs->end(); ++it) {
-	if (i < 18) {
+	if (i < 50) {
 	  std::ostringstream oss;
 	  oss << "Job # " << (*it)->getId()
 		  << ": " << JobManager::getActionName((*it)->getAction())
@@ -111,7 +111,7 @@ void	UserInterfaceMenuOperation::drawJobs() {
 		oss << " (on queue)";
 	  }
 	  text.setString(oss.str());
-	  text.setPosition(posX + UI_PADDING, posY + UI_PADDING + (32 * i++));
+	  text.setPosition(posX + UI_PADDING, posY + UI_PADDING + (14 * i++));
 	  _app->draw(text);
 	}
   }

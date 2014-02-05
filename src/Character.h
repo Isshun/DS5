@@ -106,6 +106,7 @@ class	Character : public IPathManagerCallback, public Serializable {
  private:
   void				actionUse();
   void				actionBuild();
+  void				actionGather();
 
   MapSearchNode*	_node;
   CharacterNeeds*	_needs;

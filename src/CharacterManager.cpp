@@ -55,6 +55,33 @@ CharacterManager::~CharacterManager() {
   delete _characters;
 }
 
+Character*	CharacterManager::getInactive() {
+  Debug() << "CharacterManager::getInactive";
+
+  std::list<Character*>::iterator it;
+  for (it = _characters->begin(); it != _characters->end(); ++it) {
+	if ((*it)->getJob() == NULL) {
+	  return *it;
+	}
+  }
+  return NULL;
+}
+
+void	CharacterManager::assignJobs() {
+  Debug() << "CharacterManager::assignJobs";
+
+  std::list<Character*>::iterator it;
+  for (it = _characters->begin(); it != _characters->end(); ++it) {
+	if ((*it)->getJob() == NULL) {
+		Job* job = JobManager::getInstance()->getJob(*it);
+		if (job != NULL) {
+		  job->setCharacter(*it);
+		  (*it)->setJob(job);
+		}
+	}
+  }
+}
+
 void	CharacterManager::create() {
   add(0, 0, Character::PROFESSION_ENGINEER);
   add(1, 0, Character::PROFESSION_OPERATION);
@@ -198,10 +225,14 @@ Character*		CharacterManager::assignJob(Job* job) {
   int jobAction = job->getAction();
 
   for (it = _characters->begin(); it != _characters->end(); ++it) {
+	if ((*it)->getJob() == NULL) {
 
-	// build action -> only engineer
-	if (jobAction == JobManager::ACTION_BUILD && (*it)->getProfession().id == Character::PROFESSION_ENGINEER) {
-	  if ((*it)->getJob() == NULL) {
+	  if (bestCharacter == NULL) {
+		bestCharacter = *it;
+	  }
+
+	  // build action -> only engineer
+	  if (jobAction == JobManager::ACTION_BUILD && (*it)->getProfession().id == Character::PROFESSION_ENGINEER) {
 		if (bestCharacter == NULL || (*it)->getProfessionScore(Character::PROFESSION_ENGINEER) > bestCharacter->getProfessionScore(Character::PROFESSION_ENGINEER)) {
 		  bestCharacter = *it;
 		}
@@ -211,7 +242,9 @@ Character*		CharacterManager::assignJob(Job* job) {
 
   if (bestCharacter != NULL) {
 
-	// TODO: remove
+	// TODO: remove if invalid
+
+	// Action build
 	if (job->getAction() == JobManager::ACTION_BUILD) {
 	  BaseItem* jobItem = job->getItem();
 	  BaseItem* item = WorldMap::getInstance()->getItem(job->getX(), job->getY());
@@ -228,6 +261,15 @@ Character*		CharacterManager::assignJob(Job* job) {
 	  }
 	  if (jobItem == NULL) {
 		jobItem = WorldMap::getInstance()->putItem(job->getItemType(), job->getX(), job->getY());
+	  }
+	}
+
+	// Action gather
+	else if (job->getAction() == JobManager::ACTION_GATHER) {
+	  BaseItem* jobItem = job->getItem();
+	  if (jobItem == NULL) {
+		Error() << "CharacterManager: Job ACTION_GATHER on missing item";
+		return NULL;
 	  }
 	}
 
