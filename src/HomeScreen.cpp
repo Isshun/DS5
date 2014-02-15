@@ -17,6 +17,7 @@ void	HomeScreen::actionSave() {
 	string filePath(FileManager::SAVE_DIRECTORY);
 	filePath.append("2.sav");
 	game->save(filePath.c_str());
+	Error() << "Save to " << filePath;
   } else {
 	Error() << "Save failed: no game running";
   }

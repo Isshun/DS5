@@ -206,9 +206,10 @@ void				SpriteManager::getRessource(WorldArea* item, sf::Sprite* sprite) {
   if (item->getMatterSupply() == 0) {
 	getExterior(sprite);
   } else {
+	int value = min(item->getMatterSupply(), 7);
 	sprite->setTexture(*_texture[4]);
-	sprite->setTextureRect(sf::IntRect(TILE_SIZE,
-									   8 * (TILE_SIZE + 2) + 1,
+	sprite->setTextureRect(sf::IntRect(value * TILE_SIZE,
+									   9 * (TILE_SIZE + 2) + 1,
 									   TILE_SIZE + 1,
 									   TILE_SIZE));
   }

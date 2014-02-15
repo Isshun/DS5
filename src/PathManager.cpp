@@ -11,7 +11,7 @@ PathManager* PathManager::_self = new PathManager();
 
 PathManager::PathManager() {
   _pool = new ThreadPool(4);
-  _data = new map<pair<Job*, Job*>, AStarSearch<MapSearchNode>*>();
+  _data = new map<int, AStarSearch<MapSearchNode>*>();
   memset(_map, 0, LIMIT_CHARACTER * LIMIT_ITEMS * sizeof(int));
 }
 
@@ -20,8 +20,49 @@ PathManager::~PathManager() {
   delete		_pool;
 }
 
+int								PathManager::getSum(int fromX, int fromY, int toX, int toY) {
+  int sum = 0;
+  sum += fromX;
+  sum = sum << 16;
+  sum += fromY;
+  sum = sum << 16;
+  sum += toX;
+  sum = sum << 16;
+  sum += toY;
+
+  Info() << "sum: " << sum;
+
+  // int y = sum & 0xFFFF;
+  // int x = sum >> 12;
+
+  // Info() << "after: " << x << ", " << y;
+}
+
 void							PathManager::init() {
   Info() << "PathManager: init";
+
+  _storage = new list<AStarSearch<MapSearchNode>*>();
+
+
+
+  int max = 2;
+
+  for (int fromX = 0; fromX < max; fromX++) {
+  	for (int fromY = 0; fromY < max; fromY++) {
+  	  for (int toX = 0; toX < max; toX++) {
+  		for (int toY = 0; toY < max; toY++) {
+  		  AStarSearch<MapSearchNode>* path = getPath(fromX, fromY, toX, toY);
+  		  // _storage->push_back(path);
+		  _data->insert(make_pair(getSum(fromX, fromY, toX, toY), path));
+
+  		  // Info() << "size: " << _storage->size();
+  		}
+  	  }
+  	}
+  }
+
+
+  // exit(0);
 
   // std::list<Job*> list;
   // int w = WorldMap::getInstance()->getWidth();
@@ -116,6 +157,21 @@ AStarSearch<MapSearchNode>*		PathManager::getPath(MapSearchNode nodeStart, MapSe
    }
 
   return NULL;
+}
+
+AStarSearch<MapSearchNode>*		PathManager::getPath(int fromX, int fromY, int toX, int toY) {
+
+  MapSearchNode nodeStart;
+  nodeStart.x = fromX;
+  nodeStart.y = fromY;
+
+  MapSearchNode nodeEnd;
+  nodeEnd.x = toX;
+  nodeEnd.y = toY;
+
+  AStarSearch<MapSearchNode>* path = getPath(nodeStart, nodeEnd);
+
+  return path;
 }
 
 AStarSearch<MapSearchNode>*		PathManager::getPath(Character* character, Job* item) {

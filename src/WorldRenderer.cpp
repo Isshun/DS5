@@ -40,42 +40,35 @@ void	WorldRenderer::drawFloor(sf::RenderStates render, int fromX, int fromY, int
 	  srand(i * j);
 	  WorldArea* item = WorldMap::getInstance()->getArea(i, j);
 	  sf::Sprite sprite;
-	  if (item != NULL) {
-
-		if (item->isType(BaseItem::STRUCTURE_DOOR)) {
-		  _spriteManager->getSprite(item, &sprite);
-		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-		  _app->draw(sprite, render);
-		} else if (item->isRessource()) {
-		  _spriteManager->getRessource(item, &sprite);
-		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-		  _app->draw(sprite, render);
-		} else {
-		  _spriteManager->getFloor(item, item->getZoneId(), item->getRoomId(), &sprite);
-		  sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-		  _app->draw(sprite, render);
-
-		  // Oxygen
-		  if (item->isType(BaseItem::STRUCTURE_FLOOR)) {
-			if (item->getOxygen() < 25) {
-			  _spriteManager->getNoOxygen(&sprite);
-			  _app->draw(sprite, render);
-			} else if (item->getOxygen() < 100) {
-			  shape.setFillColor(sf::Color(255, 0, 0, item->getOxygen() * 125 / 100));
-			  shape.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-			  _app->draw(shape, render);
-			}
-		  }
-		}
-  
-	  }
-
-	  else {
+	  if (item->isType(0)) {
 		_spriteManager->getExterior(&sprite);
 		sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 		_app->draw(sprite, render);
-	  }
+	  } else if (item->isType(BaseItem::STRUCTURE_DOOR)) {
+		_spriteManager->getSprite(item, &sprite);
+		sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		_app->draw(sprite, render);
+	  } else if (item->isRessource()) {
+		_spriteManager->getRessource(item, &sprite);
+		sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		_app->draw(sprite, render);
+	  } else {
+		_spriteManager->getFloor(item, item->getZoneId(), item->getRoomId(), &sprite);
+		sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+		_app->draw(sprite, render);
 
+		// Oxygen
+		if (item->isType(BaseItem::STRUCTURE_FLOOR)) {
+		  if (item->getOxygen() < 25) {
+			_spriteManager->getNoOxygen(&sprite);
+			_app->draw(sprite, render);
+		  } else if (item->getOxygen() < 100) {
+			shape.setFillColor(sf::Color(255, 0, 0, item->getOxygen() * 125 / 100));
+			shape.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+			_app->draw(shape, render);
+		  }
+		}
+	  }
 	}
   }
 }

@@ -540,7 +540,7 @@ void		Character::actionBuild() {
   Debug() << "Character #" << _id << ": actionBuild";
 
   // Build
-  switch (ResourceManager::getInstance().build(item)) {
+  switch (ResourceManager::getInstance()->build(item)) {
 
   case ResourceManager::NO_MATTER:
 	Debug() << "Character #" << _id << ": not enough matter";
@@ -567,7 +567,13 @@ void		Character::actionGather() {
 	return;
   }
 
-  if (WorldMap::getInstance()->gather(_job->getItem(), getProfessionScore(0)) == 0) {
+  int value = WorldMap::getInstance()->gather(_job->getItem(), getProfessionScore(0));
+
+  Error() << "value: " << value;
+
+  ResourceManager::getInstance()->addMatter(value);
+
+  if (_job->getItem()->getMatterSupply() == 0) {
 	JobManager::getInstance()->complete(_job);
 	_job = NULL;
   }

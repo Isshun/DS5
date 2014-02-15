@@ -47,7 +47,7 @@ void	UserInterfaceMenuOperation::drawTile() {
 
   {
     std::ostringstream oss;
-    oss << "Power: " << ResourceManager::getInstance().getPower();
+    oss << "Power: " << ResourceManager::getInstance()->getPower();
 
     text.setString(oss.str());
     text.setPosition(_posTileX + UI_PADDING, _posTileY + TITLE_SIZE + UI_PADDING + LINE_HEIGHT * 0);
@@ -56,7 +56,7 @@ void	UserInterfaceMenuOperation::drawTile() {
 
   {
     std::ostringstream oss;
-    oss << "O2: " << ResourceManager::getInstance().getO2();
+    oss << "O2: " << ResourceManager::getInstance()->getO2();
 
     text.setString(oss.str());
     text.setPosition(_posTileX + UI_PADDING, _posTileY + TITLE_SIZE + UI_PADDING + LINE_HEIGHT * 1);

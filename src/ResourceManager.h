@@ -11,7 +11,7 @@ class	ResourceManager {
 
   ResourceManager();
   ~ResourceManager();
-  static ResourceManager& getInstance();
+  static ResourceManager* getInstance();
 
   int build(BaseItem* item);
 
@@ -23,7 +23,7 @@ class	ResourceManager {
   int getO2() { return _o2Use == 0 ? 100 : _o2Supply >= _o2Use ? 100 : _o2Supply * 100.0f / _o2Use; }
 
  private:
-  static ResourceManager _self;
+  static ResourceManager* _self;
 
   int	_o2Use;
   int	_o2Supply;

@@ -19,7 +19,7 @@
 Settings* Settings::_self = new Settings();
 
 #define REFRESH_INTERVAL		(1000/60)
-#define UPDATE_INTERVAL			10
+#define UPDATE_INTERVAL			100
 
 Game::Game(sf::RenderWindow* app) {
   Debug() << "Game";
@@ -37,7 +37,7 @@ Game::Game(sf::RenderWindow* app) {
   _spriteManager = SpriteManager::getInstance();
   _worldRenderer = new WorldRenderer(app, _spriteManager, _ui);
 
-  // PathManager::getInstance()->init();
+  PathManager::getInstance()->init();
 
   _update = 0;
   _characterManager = CharacterManager::getInstance();
@@ -159,7 +159,7 @@ void	Game::update() {
 
 
   // assign works
-  if (ResourceManager::getInstance().getMatter() > 0) {
+  if (ResourceManager::getInstance()->getMatter() > 0) {
 	// if (_update % 10 == 0) {
 	//   WorldMap::getInstance()->reloadAborted();
 	// }
@@ -311,7 +311,7 @@ void	Game::loop() {
 void	Game::create() {
   Info() << "Game: create";
 
-  ResourceManager::getInstance().setMatter(RESSOURCE_MATTER_START);
+  ResourceManager::getInstance()->setMatter(RESSOURCE_MATTER_START);
 
   WorldMap::getInstance()->create();
   CharacterManager::getInstance()->create();
@@ -347,7 +347,7 @@ void	Game::load(const char* filePath) {
 		if (vector[0].compare("matter") == 0) {
 		  std::istringstream issValue(vector[1]);
 		  issValue >> value;
-		  ResourceManager::getInstance().setMatter(value);
+		  ResourceManager::getInstance()->setMatter(value);
 		}
 	  }
 	}
@@ -367,7 +367,7 @@ void	Game::save(const char* filePath) {
 
   if (ofs.is_open()) {
 	ofs << "BEGIN GAME\n";
-	ofs << "matter\t" << ResourceManager::getInstance().getMatter() << "\n";
+	ofs << "matter\t" << ResourceManager::getInstance()->getMatter() << "\n";
 	ofs << "END GAME\n";
 	ofs.close();
   } else {

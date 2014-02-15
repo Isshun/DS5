@@ -68,16 +68,18 @@ Character*	CharacterManager::getInactive() {
 }
 
 void	CharacterManager::assignJobs() {
-  Debug() << "CharacterManager::assignJobs";
 
-  std::list<Character*>::iterator it;
-  for (it = _characters->begin(); it != _characters->end(); ++it) {
-	if ((*it)->getJob() == NULL) {
+  if (JobManager::getInstance()->getCountFree() > 0) {
+	std::list<Character*>::iterator it;
+	for (it = _characters->begin(); it != _characters->end(); ++it) {
+	  if ((*it)->getJob() == NULL) {
 		Job* job = JobManager::getInstance()->getJob(*it);
 		if (job != NULL) {
+		  Debug() << "CharacterManager::assignJobs to " << (*it)->getName();
 		  job->setCharacter(*it);
 		  (*it)->setJob(job);
 		}
+	  }
 	}
   }
 }

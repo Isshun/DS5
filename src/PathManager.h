@@ -27,7 +27,9 @@ class	PathManager
  public:
 	PathManager();
 	~PathManager();
+	int								getSum(int fromX, int fromY, int toX, int toY);
 	void							getPathAsync(Character* character, Job* item);
+	AStarSearch<MapSearchNode>*		getPath(int fromX, int fromY, int toX, int toY);
 	/* void							getPathAsync(Character* character, int x, int y); */
 	void							init();
 
@@ -37,7 +39,9 @@ class	PathManager
 	AStarSearch<MapSearchNode>*		getPath(MapSearchNode nodeStart, MapSearchNode nodeEnd);
 	AStarSearch<MapSearchNode>*		getPath(Character* character, Job* item);
 
-	map<pair<Job*, Job*>, AStarSearch<MapSearchNode>*>*	_data;
+	map<int, AStarSearch<MapSearchNode>*>*	_data;
+
+	list<AStarSearch<MapSearchNode>*>*	_storage;
 
 	/* std::multimap<int, int>*		_map; */
 	int		_map[LIMIT_CHARACTER][LIMIT_ITEMS];

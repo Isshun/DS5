@@ -27,11 +27,11 @@ WorldMap::WorldMap() {
 
   // memset(_tmp, 0, 250 * 250 * 4);
 
-  for (int y = 0; y < _height; y++) {
-	for (int x = 0; x < _width; x++) {
-	  _tmp[x][y] = 0;
-	}
-  }
+  // for (int y = 0; y < _height; y++) {
+  // 	for (int x = 0; x < _width; x++) {
+  // 	  _tmp[x][y] = new WorldArea(0, 0);
+  // 	}
+  // }
 
   dump();
 
@@ -43,7 +43,7 @@ WorldMap::WorldMap() {
   for (int x = 0; x < _width; x++) {
 	_items[x] = new WorldArea*[_height];
 	for (int y = 0; y < _height; y++) {
-	  _items[x][y] = NULL;
+	  _items[x][y] = new WorldArea(0, 0);
 	}
   }
 }
@@ -88,7 +88,7 @@ void	WorldMap::load(const char* filePath) {
   ifstream ifs(filePath);
   string line;
   std::vector<std::string> vector;
-  int x, y, type;
+  int x, y, type, matter;
   bool	inBlock = false;
 
   if (ifs.is_open()) {
@@ -108,14 +108,16 @@ void	WorldMap::load(const char* filePath) {
 	  else if (inBlock) {
 		vector.clear();
 		FileManager::split(line, '\t', vector);
-		if (vector.size() == 3) {
+		if (vector.size() == 4) {
 		  std::istringstream issX(vector[0]);
 		  std::istringstream issY(vector[1]);
 		  std::istringstream issType(vector[2]);
+		  std::istringstream issMatter(vector[3]);
 		  issX >> x;
 		  issY >> y;
 		  issType >> type;
-		  putItem(type, x, y, true);
+		  issMatter >> matter;
+		  putItem(type, x, y, matter);
 		}
 	  }
 	}
@@ -126,24 +128,24 @@ void	WorldMap::load(const char* filePath) {
 }
 
 void	WorldMap::addRandomSeed() {
-  int startX = rand();
-  int startY = rand();
+  // int startX = rand();
+  // int startY = rand();
 
-  for (int x = 0; x < _width; x++) {
-	for (int y = 0; y < _height; y++) {
-	  int realX = (x + startX) % _width;
-	  int realY = (y + startY) % _height;
-	  if (_items[realX][realY] == NULL || _items[realX][realY]->getType() == BaseItem::RES_1) {
-		WorldArea* area = _items[realX][realY];
-		if (area == NULL) {
-		  area = (WorldArea*)putItem(BaseItem::RES_1, realX, realY);
-		}
-		area->addMatter(10);
-		JobManager::getInstance()->gather(area);
-		return;
-	  }
-	}
-  }
+  // for (int x = 0; x < _width; x++) {
+  // 	for (int y = 0; y < _height; y++) {
+  // 	  int realX = (x + startX) % _width;
+  // 	  int realY = (y + startY) % _height;
+  // 	  if (_items[realX][realY] == NULL || _items[realX][realY]->getType() == BaseItem::RES_1) {
+  // 		WorldArea* area = _items[realX][realY];
+  // 		if (area == NULL) {
+  // 		  area = (WorldArea*)putItem(BaseItem::RES_1, realX, realY);
+  // 		}
+  // 		area->addMatter(10);
+  // 		JobManager::getInstance()->gather(area);
+  // 		return;
+  // 	  }
+  // 	}
+  // }
 }
 
 int	WorldMap::gather(BaseItem* item, int maxValue) {
@@ -153,7 +155,6 @@ int	WorldMap::gather(BaseItem* item, int maxValue) {
   }
 
   int value = item->gatherMatter(maxValue);
-  ResourceManager::getInstance().addMatter(value);
   int x = item->getX();
   int y = item->getY();
   if (item->getMatterSupply() == 0 && _items[x][y] == item) {
@@ -181,11 +182,11 @@ void	WorldMap::save(const char* filePath) {
 	  for (int y = 0; y < _height; y++) {
 		if (_items[x][y] != NULL) {
 		  WorldArea* area = _items[x][y];
-		  ofs << x << "\t" << y << "\t" << area->getType() << "\n";
+		  ofs << x << "\t" << y << "\t" << area->getType() << "\t" << area->getMatterSupply() << "\n";
 
 		  if (area->getItem() != NULL) {
 			BaseItem* item = area->getItem();
-			ofs << x << "\t" << y << "\t" << item->getType() << "\n";
+			ofs << x << "\t" << y << "\t" << item->getType() << "\t" << area->getMatterSupply() << "\n";
 		  }
 		}
 	  }
@@ -384,6 +385,15 @@ void	WorldMap::destroyRoom(int roomId) {
   Info() << "DestroyRoom: " << count << " rooms added";
 }
 
+BaseItem* WorldMap::putItem(int type, int x, int y, bool free) {
+  if (_itemCout + 1 > LIMIT_ITEMS) {
+	Error() << "LIMIT_ITEMS reached";
+	return NULL;
+  }
+
+  return putItem(type, x, y, 999);
+}
+
 BaseItem* WorldMap::putItem(int type, int x, int y) {
   if (_itemCout + 1 > LIMIT_ITEMS) {
 	Error() << "LIMIT_ITEMS reached";
@@ -393,7 +403,7 @@ BaseItem* WorldMap::putItem(int type, int x, int y) {
   return putItem(type, x, y, false);
 }
 
-BaseItem* WorldMap::putItem(int type, int x, int y, bool free) {
+BaseItem* WorldMap::putItem(int type, int x, int y, int matterSupply) {
   // Return if out of bound
   if (x < 0 || y < 0 || x >= _width || y >= _height) {
 	Error() << "put item out of bound, type: "
@@ -425,11 +435,13 @@ BaseItem* WorldMap::putItem(int type, int x, int y, bool free) {
   } else {
 	item = new BaseItem(type, _itemCout++);
   }
+  item->setPosition(x, y);
   int zoneId = item->getZoneId();
 
   // Ressource
-  if (item->isRessource()) {
+  if (item->isRessource() && item->getMatterSupply() > 0) {
 	_items[x][y] = (WorldArea*)item;
+	JobManager::getInstance()->gather(_items[x][y]);
   }
 
   // Wall
@@ -494,11 +506,10 @@ BaseItem* WorldMap::putItem(int type, int x, int y, bool free) {
 
   // Put item
   Debug() << "put item: " << type;
-  item->setPosition(x, y);
 
   // add to todo list if building is required
-  if (free) {
-	item->_matterSupply = item->matter;
+  item->_matterSupply = matterSupply;
+  if (matterSupply == item->matter) {
   } else {
 	_todo->push_back(item);
   }

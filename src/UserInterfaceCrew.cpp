@@ -82,7 +82,7 @@ void	UserInterfaceCrew::drawTile() {
   text.setCharacterSize(FONT_SIZE);
 
   {
-	int matter = ResourceManager::getInstance().getMatter();
+	int matter = ResourceManager::getInstance()->getMatter();
     oss << "Total: " << CharacterManager::getInstance()->getCount();
 
 	text.setString(oss.str());

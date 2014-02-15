@@ -39,6 +39,7 @@ class	JobManager : public Serializable {
 	std::list<Job*>*	getJobs() { return _jobs; };
 	static JobManager*	getInstance() { return _self; }
 	int					getCount() { return _count; }
+	int					getCountFree() { return _countFree; }
 	Job*				getJob();
 	Job*				getJob(Character* character);
 
@@ -54,9 +55,12 @@ class	JobManager : public Serializable {
 	}
 
  private:
+	void				addJob(Job* job);
+
 	static JobManager*	_self;
 	std::list<Job*>*	_jobs;
 	int					_count;
+	int					_countFree;
 	int					_id;
 	int					_start;
 };

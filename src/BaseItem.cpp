@@ -105,6 +105,6 @@ void	BaseItem::setOwner(Character* character) {
 int		BaseItem::gatherMatter(int maxValue) {
   int value = min(maxValue, _matterSupply);
   _matterSupply -= value;
-  return _matterSupply;
+  return value;
 }
 

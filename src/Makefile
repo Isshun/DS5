@@ -44,7 +44,7 @@ OBJ	=	$(SRC:.cpp=.o)
 INC	=	-I/usr/include	\
 		-I. -I./class
 
-CFLAGS	=	-W $(INC) -g3 -std=c++11
+CFLAGS	=	-W $(INC) -g -std=c++11
 
 LIB	=	-L/usr/lib -lsfml-graphics -lsfml-window -lsfml-system
 

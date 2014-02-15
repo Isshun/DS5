@@ -14,23 +14,44 @@
 #include "Room.h"
 #include "FileManager.h"
 
+class WorldRessource {
+ public:
+  int	addValue(int value) {_value += value;}
+
+  void	setType(int type) {_type = type;}
+  void	setValue(int value) {_value = value;}
+
+  int	getType() {return _type;}
+  int	getValue(int max) {return min(_value, max);}
+
+ private:
+  int	_type;
+  int	_value;
+};
+
 class WorldArea : public BaseItem {
  public:
  WorldArea(int type, int id) : BaseItem(type, id) {
 	_item = NULL;
+	_ressource = NULL;
 	_oxygen = rand() % 100;
   }
   ~WorldArea() {}
 
-  void			setItem(BaseItem* item) { _item = item; }
-  void			setOxygen(int oxygen) { _oxygen = oxygen; }
-  BaseItem*		getItem() { return _item; }
-  int			getOxygen() { return _oxygen; }
-  bool			isType(int type) { return _type == type; }
+  void				setItem(BaseItem* item) { _item = item; }
+  void				setRessource(WorldRessource* ressource) { _ressource = ressource; }
+  void				setOxygen(int oxygen) { _oxygen = oxygen; }
+
+  BaseItem*			getItem() { return _item; }
+  WorldRessource*	getRessource() { return _ressource; }
+  int				getOxygen() { return _oxygen; }
+
+  bool				isType(int type) { return _type == type; }
 
  private:
-  int			_oxygen;
-  BaseItem*		_item;
+  int				_oxygen;
+  BaseItem*			_item;
+  WorldRessource*	_ressource;
 };
 
 class WorldMap : public Serializable {
@@ -44,6 +65,7 @@ class WorldMap : public Serializable {
 
   // Actions
   BaseItem*				putItem(int type, int x, int y);
+  BaseItem*				putItem(int type, int x, int y, int matter);
   /* void					buildComplete(BaseItem* item); */
   /* void					buildAbort(BaseItem* item); */
   /* void					reloadAborted(); */

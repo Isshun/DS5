@@ -102,7 +102,7 @@ void	UserInterfaceSecurity::drawTile() {
   text.setCharacterSize(FONT_SIZE);
 
   {
-	int matter = ResourceManager::getInstance().getMatter();
+	int matter = ResourceManager::getInstance()->getMatter();
     std::ostringstream oss;
     oss << "Matter: " << matter;
 
@@ -120,7 +120,7 @@ void	UserInterfaceSecurity::drawTile() {
 
   {
     std::ostringstream oss;
-    oss << "Power: " << ResourceManager::getInstance().getPower();
+    oss << "Power: " << ResourceManager::getInstance()->getPower();
 
     text.setString(oss.str());
     text.setPosition(_posTileX + UI_PADDING,
@@ -130,7 +130,7 @@ void	UserInterfaceSecurity::drawTile() {
 
   {
     std::ostringstream oss;
-    oss << "O2: " << ResourceManager::getInstance().getO2();
+    oss << "O2: " << ResourceManager::getInstance()->getO2();
 
     text.setString(oss.str());
     text.setPosition(_posTileX + UI_PADDING,

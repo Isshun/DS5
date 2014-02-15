@@ -137,7 +137,7 @@ void	UserInterfaceEngineering::drawTile() {
   text.setCharacterSize(FONT_SIZE);
 
   {
-	int matter = ResourceManager::getInstance().getMatter();
+	int matter = ResourceManager::getInstance()->getMatter();
     std::ostringstream oss;
     oss << "Matter: " << matter;
 

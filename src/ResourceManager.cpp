@@ -3,7 +3,7 @@
 #include "defines.h"
 #include "ResourceManager.h"
 
-ResourceManager ResourceManager::_self = ResourceManager();
+ResourceManager* ResourceManager::_self = new ResourceManager();
 
 ResourceManager::ResourceManager() {
   _matter = 0;
@@ -15,7 +15,7 @@ ResourceManager::ResourceManager() {
 ResourceManager::~ResourceManager() {
 }
 
-ResourceManager&	ResourceManager::getInstance() {
+ResourceManager*	ResourceManager::getInstance() {
   return _self;
 }
 

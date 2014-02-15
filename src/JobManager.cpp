@@ -17,6 +17,7 @@ JobManager::JobManager() {
   _count = 0;
   _id = 0;
   _start = 0;
+  _countFree = 0;
 
   Debug() << "JobManager done";
 }
@@ -53,8 +54,7 @@ Job*	JobManager::build(BaseItem* item) {
   job->setItemType(item->getType());
   job->setItem(item);
 
-  _jobs->push_back(job);
-  _count++;
+  addJob(job);
 
   return job;
 }
@@ -65,13 +65,20 @@ Job*	JobManager::gather(WorldArea* area) {
 	return NULL;
   }
 
+  // return if job already exist for this item
+  std::list<Job*>::iterator it;
+  for (it = _jobs->begin(); it != _jobs->end(); ++it) {
+	if ((*it)->getItem() == area) {
+	  return NULL;
+	}
+  }
+
   Job* job = new Job(++_id, area->getX(), area->getY());
   job->setAction(ACTION_GATHER);
   job->setItemType(area->getType());
   job->setItem(area);
 
-  _jobs->push_back(job);
-  _count++;
+  addJob(job);
 
   return job;
 }
@@ -123,17 +130,18 @@ Job*	JobManager::build(int type, int x, int y) {
   job->setItemType(type);
   job->setItem(item);
 
-  _jobs->push_back(job);
-  _count++;
+  addJob(job);
 
   return job;
 }
 
 // TODO: one pass + check profession
 Job*	JobManager::getJob(Character* character) {
-  if (_count == 0) {
+  if (_countFree == 0) {
 	return NULL;
   }
+
+  Info() << "bestJob: start";
 
   Job* bestJob = NULL;
   int bestDistance = -1;
@@ -144,11 +152,11 @@ Job*	JobManager::getJob(Character* character) {
 	int y = character->getY();
 	for (it = _jobs->begin(); it != _jobs->end(); ++it) {
 	  if ((*it)->getCharacter() == NULL && (*it)->getAction() != JobManager::ACTION_GATHER) {
-	  int distance = abs(x - (*it)->getX()) + abs(y - (*it)->getY());
-	  if (distance < bestDistance || bestDistance == -1) {
-		bestJob = *it;
-		bestDistance = distance;
-	  }
+		int distance = abs(x - (*it)->getX()) + abs(y - (*it)->getY());
+		if (distance < bestDistance || bestDistance == -1) {
+		  bestJob = *it;
+		  bestDistance = distance;
+		}
 	  }
 	}
   }
@@ -166,6 +174,13 @@ Job*	JobManager::getJob(Character* character) {
 		}
 	  }
 	}
+  }
+
+  if (bestJob != NULL) {
+	Info() << "bestjob: " << bestDistance << " (" << bestJob->getX() << ", " << bestJob->getY() << ")";
+	_countFree--;
+  } else {
+	Info() << "bestjob: NULL";
   }
 
   return bestJob;
@@ -201,6 +216,7 @@ Job*	JobManager::getJob() {
 void	JobManager::abort(Job* job) {
   Info() << "Job abort: " << job->getId();
   _start++;
+  _countFree++;
   job->setCharacter(NULL);
 }
 
@@ -224,10 +240,14 @@ void	JobManager::need(Character* character, int itemType) {
 	job->setItemType(item->getType());
 	job->setItem(item);
 
-	_jobs->push_back(job);
-	_count++;
-
+	addJob(job);
 	// PathManager::getInstance()->getPathAsync(character, item);
 	return;
   }
+}
+
+void	JobManager::addJob(Job* job) {
+  _jobs->push_back(job);
+  _count++;
+  _countFree++;
 }
