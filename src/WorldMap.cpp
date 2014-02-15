@@ -16,6 +16,7 @@
 #include "Log.h"
 #include "JobManager.h"
 #include "ResourceManager.h"
+#include "PathManager.h"
 
 WorldMap* WorldMap::_self = new WorldMap();
 
@@ -46,6 +47,9 @@ WorldMap::WorldMap() {
 	  _items[x][y] = new WorldArea(0, 0);
 	}
   }
+
+	  // PathManager::getInstance()->addObject(x, y, true);
+
 }
 
 WorldMap::~WorldMap() {
@@ -125,6 +129,19 @@ void	WorldMap::load(const char* filePath) {
   } else {
 	Error() << "Unable to open save file: " << filePath;
   }
+
+  for (int x = 0; x < _width; x++) {
+	for (int y = 0; y < _height; y++) {
+	  if (_items[x][y] == NULL) {
+		PathManager::getInstance()->addObject(x, y, true);
+	  } else {
+		PathManager::getInstance()->addObject(x, y, _items[x][y]->isWalkable());
+	  }
+	}
+  }
+
+  PathManager::getInstance()->init();
+
 }
 
 void	WorldMap::addRandomSeed() {
@@ -513,6 +530,8 @@ BaseItem* WorldMap::putItem(int type, int x, int y, int matterSupply) {
   } else {
 	_todo->push_back(item);
   }
+
+  PathManager::getInstance()->addObject(x, y, false);
 
   return item;
 }

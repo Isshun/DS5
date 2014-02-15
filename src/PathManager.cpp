@@ -15,6 +15,11 @@ PathManager::PathManager() {
   memset(_map, 0, LIMIT_CHARACTER * LIMIT_ITEMS * sizeof(int));
 }
 
+void								PathManager::addObject(int x, int y, bool walkable) {
+  _pathfinder.addObject(x, y, true);
+}
+
+
 PathManager::~PathManager() {
   // delete _map;
   delete		_pool;
@@ -41,26 +46,37 @@ int								PathManager::getSum(int fromX, int fromY, int toX, int toY) {
 void							PathManager::init() {
   Info() << "PathManager: init";
 
-  _storage = new list<AStarSearch<MapSearchNode>*>();
+  // _storage = new list<AStarSearch<MapSearchNode>*>();
 
 
+  Info() << _pathfinder.getPoint(0, 0)->closed;
 
-  int max = 2;
+	// exit(0);
 
-  for (int fromX = 0; fromX < max; fromX++) {
-  	for (int fromY = 0; fromY < max; fromY++) {
-  	  for (int toX = 0; toX < max; toX++) {
-  		for (int toY = 0; toY < max; toY++) {
-  		  AStarSearch<MapSearchNode>* path = getPath(fromX, fromY, toX, toY);
-  		  // _storage->push_back(path);
-		  _data->insert(make_pair(getSum(fromX, fromY, toX, toY), path));
 
-  		  // Info() << "size: " << _storage->size();
-  		}
-  	  }
-  	}
-  }
+  // int max = 10;
 
+  // Info() << time(0);
+
+  // for (int fromX = 0; fromX < max; fromX++) {
+  // 	for (int fromY = 0; fromY < max; fromY++) {
+  // 	  for (int toX = 0; toX < max; toX++) {
+  // 		for (int toY = 0; toY < max; toY++) {
+
+  // 		  // std::vector<Position*> path = _pathfinder.getPath((float)fromX, (float)fromY, (float)toX, (float)toY, 1.0f);
+
+
+  // 		  // AStarSearch<MapSearchNode>* path = getPath(fromX, fromY, toX, toY);
+  // 		  // _storage->push_back(path);
+  // 		  // _data->insert(make_pair(getSum(fromX, fromY, toX, toY), path));
+
+  // 		  // Info() << "size: " << _storage->size();
+  // 		}
+  // 	  }
+  // 	}
+  // }
+
+  // Info() << time(0);
 
   // exit(0);
 
@@ -107,59 +123,73 @@ void							PathManager::init() {
   Info() << "PathManager: init done (" << _data->size() << " path)";
 }
 
-AStarSearch<MapSearchNode>*		PathManager::getPath(MapSearchNode nodeStart, MapSearchNode nodeEnd) {
-  // std::multimap<int,int>::iterator it;
-  // it = _map->find(std::pair<int, int>(nodeStart.x + nodeStart.y * WORLD_MAX_SIZE,
+vector<Position*>		PathManager::getPath(MapSearchNode nodeStart, MapSearchNode nodeEnd) {
 
-  // if (it != multimap::end) {
-  // 	Error() << "PathManager: this path is already know and cannot be resolve";
-  // }
 
   AStarSearch<MapSearchNode>* astarsearch = new AStarSearch<MapSearchNode>();
-  unsigned int SearchCount = 0;
-  const unsigned int NumSearches = 1;
 
-  while(SearchCount < NumSearches) {
+  std::vector<Position*> path = _pathfinder.getPath((float)nodeStart.x, (float)nodeStart.y, (float)nodeEnd.x, (float)nodeEnd.y, 100.0f);
 
-	 // Set Start and goal states
-	 astarsearch->SetStartAndGoalStates( nodeStart, nodeEnd );
+  return path;
+  // for(vector<Position*>::size_type i = 0; i < path.size(); i++) {
+  // 	astarsearch
+  // } 
 
-	 unsigned int SearchState;
-	 unsigned int SearchSteps = 0;
+  
 
-	 Debug() << "PathManager: searching...";
-	 do {
-	   SearchState = astarsearch->SearchStep();
-	   SearchSteps++;
-	   WorldMap::getInstance()->dump();
-	   // if (SearchSteps > 10000 && SearchSteps % 100 == 0)
-	   // 	 Debug() << "PathManager: step " << SearchSteps;
-	 }
-	 while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
-	 Debug() << "PathManager: search complete";
 
-	 // Path found
-	 if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED ) {
-	   Debug() << "Search found goal state: " << SearchSteps;
-	   return astarsearch;
-	 }
+  // // std::multimap<int,int>::iterator it;
+  // // it = _map->find(std::pair<int, int>(nodeStart.x + nodeStart.y * WORLD_MAX_SIZE,
 
-	 // No path found
-	 else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) {
-	   Debug() << "Search terminated. Did not find goal state";
-	   astarsearch->EnsureMemoryFreed();
-	   delete astarsearch;
-	   // _map->insert(std::pair<int, int>(nodeStart.x + nodeStart.y * WORLD_MAX_SIZE,
-	   // 									nodeEnd.x + nodeEnd.y * WORLD_MAX_SIZE));
-	 }
+  // // if (it != multimap::end) {
+  // // 	Error() << "PathManager: this path is already know and cannot be resolve";
+  // // }
 
-	 SearchCount++;
-   }
+  // AStarSearch<MapSearchNode>* astarsearch = new AStarSearch<MapSearchNode>();
+  // unsigned int SearchCount = 0;
+  // const unsigned int NumSearches = 1;
 
-  return NULL;
+  // while(SearchCount < NumSearches) {
+
+  // 	 // Set Start and goal states
+  // 	 astarsearch->SetStartAndGoalStates( nodeStart, nodeEnd );
+
+  // 	 unsigned int SearchState;
+  // 	 unsigned int SearchSteps = 0;
+
+  // 	 Debug() << "PathManager: searching...";
+  // 	 do {
+  // 	   SearchState = astarsearch->SearchStep();
+  // 	   SearchSteps++;
+  // 	   WorldMap::getInstance()->dump();
+  // 	   // if (SearchSteps > 10000 && SearchSteps % 100 == 0)
+  // 	   // 	 Debug() << "PathManager: step " << SearchSteps;
+  // 	 }
+  // 	 while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
+  // 	 Debug() << "PathManager: search complete";
+
+  // 	 // Path found
+  // 	 if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED ) {
+  // 	   Debug() << "Search found goal state: " << SearchSteps;
+  // 	   return astarsearch;
+  // 	 }
+
+  // 	 // No path found
+  // 	 else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) {
+  // 	   Debug() << "Search terminated. Did not find goal state";
+  // 	   astarsearch->EnsureMemoryFreed();
+  // 	   delete astarsearch;
+  // 	   // _map->insert(std::pair<int, int>(nodeStart.x + nodeStart.y * WORLD_MAX_SIZE,
+  // 	   // 									nodeEnd.x + nodeEnd.y * WORLD_MAX_SIZE));
+  // 	 }
+
+  // 	 SearchCount++;
+  //  }
+
+  // return NULL;
 }
 
-AStarSearch<MapSearchNode>*		PathManager::getPath(int fromX, int fromY, int toX, int toY) {
+vector<Position*>		PathManager::getPath(int fromX, int fromY, int toX, int toY) {
 
   MapSearchNode nodeStart;
   nodeStart.x = fromX;
@@ -169,12 +199,12 @@ AStarSearch<MapSearchNode>*		PathManager::getPath(int fromX, int fromY, int toX,
   nodeEnd.x = toX;
   nodeEnd.y = toY;
 
-  AStarSearch<MapSearchNode>* path = getPath(nodeStart, nodeEnd);
+  vector<Position*> path = getPath(nodeStart, nodeEnd);
 
   return path;
 }
 
-AStarSearch<MapSearchNode>*		PathManager::getPath(Character* character, Job* item) {
+vector<Position*>		PathManager::getPath(Character* character, Job* item) {
 
   // if (_map[character->getId()][item->getId()]) {
   // 	Error() << "PathManager: this path is already know and cannot be resolve";
@@ -189,13 +219,13 @@ AStarSearch<MapSearchNode>*		PathManager::getPath(Character* character, Job* ite
   nodeEnd.x = item->getX();
   nodeEnd.y = item->getY();
 
-  AStarSearch<MapSearchNode>* path = getPath(nodeStart, nodeEnd);
+  vector<Position*> path = getPath(nodeStart, nodeEnd);
 
-  if (path == NULL) {
-	_map[character->getId()][item->getId()] = 1;
-  } else {
-	_map[character->getId()][item->getId()] = 0;
-  }
+  // if (path == NULL) {
+  // 	_map[character->getId()][item->getId()] = 1;
+  // } else {
+  // 	_map[character->getId()][item->getId()] = 0;
+  // }
 
   return path;
 }
@@ -224,12 +254,16 @@ AStarSearch<MapSearchNode>*		PathManager::getPath(Character* character, Job* ite
 // }
 
 void	PathManager::getPathAsync(Character* character, Job* job) {
+  Info() << "getPathAsync";
 
   _pool->enqueue([this, character, job] {
 
-	  AStarSearch<MapSearchNode>* path = this->getPath(character, job);
+	  vector<Position*> path = this->getPath(character, job);
 
-	  if (path != NULL) {
+	  // Info() << "getPathAsync: " << path.size();
+	  // Position* pos = path.at(pos);
+
+	  if (path.size() > 0) {
 		character->onPathComplete(path, job);
 	  } else {
 		character->onPathFailed(job);

@@ -35,6 +35,4 @@ class MapSearchNode
   void PrintNodeInfo();
 };
 
-typedef AStarSearch<MapSearchNode>		Path;
-
 #endif /* MAPSEARCHNODE_H_ */

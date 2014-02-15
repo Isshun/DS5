@@ -173,6 +173,7 @@ class BaseItem {
   bool				isSleepingItem() { return _type == QUARTER_BED || _type == QUARTER_CHAIR; }
   bool				isStructure() { return _type > STRUCTURE_START && _type < STRUCTURE_STOP; }
   bool				isRessource() { return _type == RES_1; }
+  bool				isWalkable() { return _type != STRUCTURE_WALL; }
 
   bool				isSolid;
   int				matter;

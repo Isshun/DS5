@@ -69,8 +69,8 @@ class	Character : public IPathManagerCallback, public Serializable {
   virtual void		load(const char* filePath);
   virtual void		save(const char* filePath);
 
-  virtual void		onPathSearch(Path* path, Job* job);
-  virtual void		onPathComplete(Path* path, Job* job);
+  virtual void		onPathSearch(Path path, Job* job);
+  virtual void		onPathComplete(Path path, Job* job);
   virtual void		onPathFailed(Job* job);
   
   // Sets
@@ -108,7 +108,7 @@ class	Character : public IPathManagerCallback, public Serializable {
   void				actionBuild();
   void				actionGather();
 
-  MapSearchNode*	_node;
+  Position*	_node;
   CharacterNeeds*	_needs;
   int				_posX;
   int				_posY;
@@ -118,7 +118,7 @@ class	Character : public IPathManagerCallback, public Serializable {
   int				_frameIndex;
   int				_gender;
   char				_name[32];
-  Path*				_path;
+  Path				_path;
   int				_steps;
   Profession		_profession;
   bool				_selected;

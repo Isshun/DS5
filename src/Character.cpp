@@ -116,7 +116,7 @@ Character::Character(int id, int x, int y) {
 
   _id = id;
   _gender = rand() % 2 ? Character::GENDER_MALE : Character::GENDER_FEMALE;
-  _path = NULL;
+  // _path = NULL;
   _posY = _toX = y;
   _posX = _toY = x;
   _selected = false;
@@ -128,6 +128,7 @@ Character::Character(int id, int x, int y) {
   _node = NULL;
   _job = NULL;
   _needs = new CharacterNeeds();
+  _steps = 0;
 
   memset(_messages, MESSAGE_COUNT_INIT, CHARACTER_MAX_MESSAGE * sizeof(int));
 
@@ -147,13 +148,13 @@ Character::Character(int id, int x, int y) {
 }
 
 Character::~Character() {
-  if (_path != NULL) {
-	_path->FreeSolutionNodes();
-	Debug() << "free 1";
-	_path->EnsureMemoryFreed();
-	delete _path;
-	_path = NULL;
-  }
+  // if (_path != NULL) {
+  // 	_path->FreeSolutionNodes();
+  // 	Debug() << "free 1";
+  // 	_path->EnsureMemoryFreed();
+  // 	delete _path;
+  // 	_path = NULL;
+  // }
 }
 
 void	Character::create() {
@@ -167,13 +168,15 @@ void	Character::save(const char* filePath) {
 
 }
 
-void	Character::onPathSearch(Path* path, Job* job) {
+void	Character::onPathSearch(Path path, Job* job) {
   _resolvePath = true;
 }
 
 // TODO
-void	Character::onPathComplete(Path* path, Job* job) {
-  if (path == NULL) {
+void	Character::onPathComplete(Path path, Job* job) {
+  Debug() << "Charactere #" << _id << ": go(" << _posX << ", " << _posY << " to " << _toX << ", " << _toY << ")";
+
+  if (path.size() == 0) {
 	sendEvent(CharacterNeeds::MSG_BLOCKED);
 	return;
   }
@@ -185,15 +188,15 @@ void	Character::onPathComplete(Path* path, Job* job) {
 
   Debug() << "Charactere #" << _id << ": go(" << _posX << ", " << _posY << " to " << _toX << ", " << _toY << ")";
 
-  if (_path != NULL) {
-  	_path->FreeSolutionNodes();
-  	Debug() << "free 1";
-  	_path->EnsureMemoryFreed();
-  	delete _path;
-  	_path = NULL;
-  }
+  // if (_path != NULL) {
+  // 	_path->FreeSolutionNodes();
+  // 	Debug() << "free 1";
+  // 	_path->EnsureMemoryFreed();
+  // 	delete _path;
+  // 	_path = NULL;
+  // }
 
-  _path = path;
+  // _path = path;
   _steps = 0;
 }
 
@@ -424,7 +427,7 @@ void		Character::move() {
 
   // Goto node
   if (_node != NULL) {
-	_node->PrintNodeInfo();
+	// _node->PrintNodeInfo();
 
 	// Set direction
 	if (_node->x > _posX && _node->y > _posY) setDirection(DIRECTION_BOTTOM_RIGHT);
@@ -443,24 +446,24 @@ void		Character::move() {
   }
 
   // Next node
-  if (_path != NULL) {
+  if ((int)_path.size() > _steps) {
 	Debug() << "Character #" << _id << ": move";
 
-	if (_steps == 0) {
-	  _node = _path->GetSolutionStart();
-	} else {
-	  _node = _path->GetSolutionNext();
-	}
+	_node = _path.at(_steps);
+	// if (_steps == 0) {
+	// } else {
+	//   _node = _path->GetSolutionNext();
+	// }
 
-	// clear path
-	if (_node == NULL) {
-	  Debug() << "Character #" << _id << ": reached";
-	  _path->FreeSolutionNodes();
-	  Debug() << "free 3";
-	  _path->EnsureMemoryFreed();
-	  delete _path;
-	  _path = NULL;
-	}
+	// // clear path
+	// if (_node == NULL) {
+	//   Debug() << "Character #" << _id << ": reached";
+	//   _path->FreeSolutionNodes();
+	//   Debug() << "free 3";
+	//   _path->EnsureMemoryFreed();
+	//   delete _path;
+	//   _path = NULL;
+	// }
   }
 }
 

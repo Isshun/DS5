@@ -37,8 +37,6 @@ Game::Game(sf::RenderWindow* app) {
   _spriteManager = SpriteManager::getInstance();
   _worldRenderer = new WorldRenderer(app, _spriteManager, _ui);
 
-  PathManager::getInstance()->init();
-
   _update = 0;
   _characterManager = CharacterManager::getInstance();
 

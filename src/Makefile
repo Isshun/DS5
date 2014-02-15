@@ -3,6 +3,10 @@ SRC	=	Main.cpp				\
 		Options.cpp				\
 		Game.cpp				\
 		FileManager.cpp			\
+		Point.cpp				\
+		Position.cpp			\
+		Direction.cpp			\
+		Pathfinder.cpp			\
 		MainRenderer.cpp		\
 		MapSearchNode.cpp		\
 		UIViewGroup.cpp			\
