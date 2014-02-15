@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.DeepSpace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
@@ -9,14 +9,14 @@ import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 import org.jsfml.window.event.Event;
 
-import alone.in.deepspace.Character;
-import alone.in.deepspace.CharacterManager;
-import alone.in.deepspace.Constant;
-import alone.in.deepspace.Log;
-import alone.in.deepspace.Settings;
-import alone.in.deepspace.Viewport;
-import alone.in.deepspace.WorldArea;
-import alone.in.deepspace.WorldMap;
+import alone.in.DeepSpace.CharacterManager;
+import alone.in.DeepSpace.Viewport;
+import alone.in.DeepSpace.Models.Character;
+import alone.in.DeepSpace.Utils.Constant;
+import alone.in.DeepSpace.Utils.Log;
+import alone.in.DeepSpace.Utils.Settings;
+import alone.in.DeepSpace.World.WorldArea;
+import alone.in.DeepSpace.World.WorldMap;
 
 public class UserInterface {
 

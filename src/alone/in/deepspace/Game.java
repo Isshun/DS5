@@ -1,4 +1,4 @@
-package alone.in.deepspace;
+package alone.in.DeepSpace;
 import java.io.File;
 import java.io.IOException;
 
@@ -14,7 +14,14 @@ import org.jsfml.system.Time;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
-import alone.in.deepspace.UserInterface.UserInterface;
+import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.DeepSpace.Models.Room;
+import alone.in.DeepSpace.UserInterface.UserInterface;
+import alone.in.DeepSpace.Utils.Constant;
+import alone.in.DeepSpace.Utils.Log;
+import alone.in.DeepSpace.World.WorldArea;
+import alone.in.DeepSpace.World.WorldMap;
+import alone.in.DeepSpace.World.WorldRenderer;
 
 
 public class Game {
@@ -163,7 +170,6 @@ public class Game {
 
 
 	  // assign works
-	  if (ResourceManager.getInstance().getMatter() > 0) {
 		// if (_update % 10 == 0) {
 		//   WorldMap.getInstance().reloadAborted();
 		// }
@@ -199,7 +205,6 @@ public class Game {
 
 		//   character.setBuild(item);
 		// }
-	  }
 
 	  // Character
 	  _characterManager.update(_update);

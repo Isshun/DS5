@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.DeepSpace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -10,16 +10,13 @@ import org.jsfml.graphics.Text;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
-import org.jsfml.window.Keyboard.Key;
-import org.jsfml.window.Mouse.Button;
 
-import alone.in.deepspace.BaseItem;
-import alone.in.deepspace.Constant;
-import alone.in.deepspace.Job;
-import alone.in.deepspace.JobManager;
-import alone.in.deepspace.ResourceManager;
-import alone.in.deepspace.SpriteManager;
-import alone.in.deepspace.UserSubInterface;
+import alone.in.DeepSpace.JobManager;
+import alone.in.DeepSpace.ResourceManager;
+import alone.in.DeepSpace.SpriteManager;
+import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.DeepSpace.Models.Job;
+import alone.in.DeepSpace.Utils.Constant;
 
 
 public class UserInterfaceMenuOperation extends UserSubInterface {

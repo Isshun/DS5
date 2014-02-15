@@ -1,4 +1,7 @@
-package alone.in.deepspace;
+package alone.in.DeepSpace;
+
+import alone.in.DeepSpace.Models.BaseItem;
+
 public class SpriteResource {
 
 	public BaseItem.Type	type;

@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.DeepSpace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -12,13 +12,12 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
-import alone.in.deepspace.Character;
-import alone.in.deepspace.CharacterManager;
-import alone.in.deepspace.Constant;
-import alone.in.deepspace.Profession;
-import alone.in.deepspace.ResourceManager;
-import alone.in.deepspace.SpriteManager;
-import alone.in.deepspace.UserSubInterface;
+import alone.in.DeepSpace.CharacterManager;
+import alone.in.DeepSpace.ResourceManager;
+import alone.in.DeepSpace.SpriteManager;
+import alone.in.DeepSpace.Models.Character;
+import alone.in.DeepSpace.Models.Profession;
+import alone.in.DeepSpace.Utils.Constant;
 
 
 public class UserInterfaceCrew extends UserSubInterface {

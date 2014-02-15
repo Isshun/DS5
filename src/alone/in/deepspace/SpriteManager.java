@@ -1,13 +1,19 @@
-package alone.in.deepspace;
+package alone.in.DeepSpace;
 import java.io.File;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.ConstFont;
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
+
+import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.DeepSpace.Utils.Constant;
+import alone.in.DeepSpace.Utils.ObjectPool;
+import alone.in.DeepSpace.World.StructureItem;
+import alone.in.DeepSpace.World.WorldArea;
+import alone.in.DeepSpace.World.WorldRessource;
 
 public class SpriteManager {
 	SpriteResource[] spritesRes = {
@@ -111,7 +117,7 @@ public class SpriteManager {
 	  return _self;
 	}
 
-	void		getSprite(BaseItem item, Sprite sprite) {
+	public void		getSprite(BaseItem item, Sprite sprite) {
 
 	  // if (item != NULL) {
 	  // 	for (int i = 0; spritesRes[i].type != BaseItem.Type.NONE; i++) {
@@ -201,61 +207,62 @@ public class SpriteManager {
 	  // }
 	}
 
-	void				getExterior(Sprite sprite) {
+	public void	getExterior(Sprite sprite) {
 		random = 0;
-	  sprite.setTexture(_texture[4]);
-	  sprite.setTextureRect(ObjectPool.getIntRect((int) (random % 8 * Constant.TILE_SIZE),
-										 7 * (Constant.TILE_SIZE + 2) + 1,
-										 Constant.TILE_SIZE,
-										 Constant.TILE_SIZE));
-	}
-
-	void				getRessource(WorldArea item, Sprite sprite) {
-	  if (item.getMatterSupply() == 0) {
-		getExterior(sprite);
-	  } else {
-		int value = Math.min(item.getMatterSupply(), 7);
+		sprite.setColor(Color.WHITE);
 		sprite.setTexture(_texture[4]);
-		sprite.setTextureRect(ObjectPool.getIntRect(value * Constant.TILE_SIZE,
-										   9 * (Constant.TILE_SIZE + 2) + 1,
-										   Constant.TILE_SIZE + 1,
-										   Constant.TILE_SIZE));
-	  }
+		sprite.setTextureRect(ObjectPool.getIntRect((int) (random % 8 * Constant.TILE_SIZE),
+				7 * (Constant.TILE_SIZE + 2) + 1,
+				Constant.TILE_SIZE,
+				Constant.TILE_SIZE));
 	}
 
-	void				getFloor(WorldArea item, int zone, int room, Sprite sprite) {
-	  int choice = 1;
+	public void getRessource(WorldRessource item, Sprite sprite) {
+		if (item.getMatterSupply() == 0) {
+			getExterior(sprite);
+		} else {
+			int value = Math.min(item.getMatterSupply(), 7);
+			sprite.setTexture(_texture[4]);
+			sprite.setTextureRect(ObjectPool.getIntRect(value * Constant.TILE_SIZE,
+					9 * (Constant.TILE_SIZE + 2) + 1,
+					Constant.TILE_SIZE + 1,
+					Constant.TILE_SIZE));
+		}
+	}
 
-	  int alpha = 75 + 180 / item.getMatter() * item._matterSupply;
-	  sprite.setColor(new Color(255,255,255,alpha));
+	public void				getFloor(StructureItem item, int zone, int room, Sprite sprite) {
+		int choice = 1;
+
+		int alpha = 75 + 180 / item.getMatter() * item._matterSupply;
+		sprite.setColor(new Color(255,255,255,alpha));
 
 // TODO
 	  //	  if (zone == UserInterfaceMenu::CODE_ZONE_HOLODECK) {
 //	  	choice = 3;
 //	  }
 
-	  sprite.setTexture(_texture[4]);
-	  sprite.setTextureRect(ObjectPool.getIntRect((room % choice) * Constant.TILE_SIZE,
-	  									 zone * (Constant.TILE_SIZE + 2) + 1,
-	  									Constant.TILE_SIZE,
-	  									Constant.TILE_SIZE));
+		sprite.setTexture(_texture[4]);
+		sprite.setTextureRect(ObjectPool.getIntRect((room % choice) * Constant.TILE_SIZE,
+				zone * (Constant.TILE_SIZE + 2) + 1,
+				Constant.TILE_SIZE,
+				Constant.TILE_SIZE));
 	}
 
-	void				getNoOxygen(Sprite sprite) {
-	  sprite.setTexture(_texture[4]);
-	  sprite.setTextureRect(ObjectPool.getIntRect(0,
-										 8 * (Constant.TILE_SIZE + 2) + 1,
-										 Constant.TILE_SIZE,
-										 Constant.TILE_SIZE));
+	public void				getNoOxygen(Sprite sprite) {
+		sprite.setTexture(_texture[4]);
+		sprite.setTextureRect(ObjectPool.getIntRect(0,
+				8 * (Constant.TILE_SIZE + 2) + 1,
+				Constant.TILE_SIZE,
+				Constant.TILE_SIZE));
 	}
 
-	void				getWall(BaseItem item, int special, Sprite sprite, int index, int zone) {
+	public void				getWall(BaseItem item, int special, Sprite sprite, int index, int zone) {
 	  int WALL_HEIGHT = 48;
 	  int WALL_WIDTH = 32;
 
 	  // Door
 	  if (item.isType(BaseItem.Type.STRUCTURE_DOOR)) {
-			int alpha = 75 + 180 / item.getMatter() * item._matterSupply;
+			int alpha = 75 + 180 / item.getMatter() * item.getMatterSupply();
 			sprite.setColor(new Color(255,255,255,alpha));
 			sprite.setTexture(_texture[6]);
 			sprite.setTextureRect(ObjectPool.getIntRect(WALL_WIDTH * special,
@@ -268,7 +275,7 @@ public class SpriteManager {
 	  else {
 		for (int i = 0; spritesRes[i].type != BaseItem.Type.NONE; i++) {
 		  if (spritesRes[i].type == BaseItem.Type.STRUCTURE_WALL) {
-			int alpha = 75 + 180 / item.getMatter() * item._matterSupply;
+			int alpha = 75 + 180 / item.getMatter() * item.getMatterSupply();
 			sprite.setColor(new Color(255,255,255,alpha));
 
 			sprite.setTexture(_texture[6]);

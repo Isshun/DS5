@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.DeepSpace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
@@ -13,13 +13,11 @@ import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
-import alone.in.deepspace.BaseItem;
-import alone.in.deepspace.Constant;
-import alone.in.deepspace.Log;
-import alone.in.deepspace.ResourceManager;
-import alone.in.deepspace.SpriteManager;
-import alone.in.deepspace.UserSubInterface;
-import alone.in.deepspace.BaseItem.Type;
+import alone.in.DeepSpace.ResourceManager;
+import alone.in.DeepSpace.SpriteManager;
+import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.DeepSpace.Utils.Constant;
+import alone.in.DeepSpace.Utils.Log;
 
 
 public class UserInterfaceEngineering extends UserSubInterface {
@@ -135,7 +133,7 @@ public class UserInterfaceEngineering extends UserSubInterface {
 	  // shape.setFillColor(Color(0, 80, 140));
 
 	  Texture texture = new Texture();
-	  texture.loadFromFile((new File("../res/bg_none.png")).toPath());
+	  texture.loadFromFile((new File("res/bg_none.png")).toPath());
 	  texture.setRepeated(true);
 	  Sprite sprite = new Sprite();
 	  sprite.setTexture(texture);

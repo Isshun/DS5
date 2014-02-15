@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.DeepSpace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
@@ -14,12 +14,10 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.Transform;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Character;
-import alone.in.deepspace.CharacterNeeds;
-import alone.in.deepspace.Constant;
-import alone.in.deepspace.Profession;
-import alone.in.deepspace.UserSubInterface;
-import alone.in.deepspace.CharacterNeeds.Message;
+import alone.in.DeepSpace.Models.Character;
+import alone.in.DeepSpace.Models.CharacterNeeds;
+import alone.in.DeepSpace.Models.Profession;
+import alone.in.DeepSpace.Utils.Constant;
 
 
 public class UserInterfaceMenuCharacter extends UserSubInterface {

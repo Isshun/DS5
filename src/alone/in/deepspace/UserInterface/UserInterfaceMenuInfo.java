@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.DeepSpace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
@@ -11,10 +11,9 @@ import org.jsfml.graphics.Text;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.Transform;
 
-import alone.in.deepspace.BaseItem;
-import alone.in.deepspace.Constant;
-import alone.in.deepspace.UserSubInterface;
-import alone.in.deepspace.WorldArea;
+import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.DeepSpace.Utils.Constant;
+import alone.in.DeepSpace.World.WorldArea;
 
 
 public class UserInterfaceMenuInfo extends UserSubInterface {

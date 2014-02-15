@@ -1,4 +1,4 @@
-package alone.in.deepspace;
+package alone.in.DeepSpace;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,6 +14,15 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.Transform;
+
+import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.DeepSpace.Models.Character;
+import alone.in.DeepSpace.Models.Job;
+import alone.in.DeepSpace.Models.Profession;
+import alone.in.DeepSpace.Utils.Constant;
+import alone.in.DeepSpace.Utils.Log;
+import alone.in.DeepSpace.World.WorldArea;
+import alone.in.DeepSpace.World.WorldMap;
 
 
 public class CharacterManager {

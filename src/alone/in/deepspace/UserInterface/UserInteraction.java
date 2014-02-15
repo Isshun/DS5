@@ -1,5 +1,4 @@
-package alone.in.deepspace.UserInterface;
-import java.awt.Component.BaselineResizeBehavior;
+package alone.in.DeepSpace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
@@ -10,16 +9,15 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.Transform;
 import org.jsfml.window.Mouse;
 
-import alone.in.deepspace.BaseItem;
-import alone.in.deepspace.Constant;
-import alone.in.deepspace.Cursor;
-import alone.in.deepspace.ItemInfo;
-import alone.in.deepspace.JobManager;
-import alone.in.deepspace.Log;
-import alone.in.deepspace.MainRenderer;
-import alone.in.deepspace.Viewport;
-import alone.in.deepspace.WorldMap;
-import alone.in.deepspace.BaseItem.Type;
+import alone.in.DeepSpace.JobManager;
+import alone.in.DeepSpace.MainRenderer;
+import alone.in.DeepSpace.Viewport;
+import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.DeepSpace.Models.Cursor;
+import alone.in.DeepSpace.Models.ItemInfo;
+import alone.in.DeepSpace.Utils.Constant;
+import alone.in.DeepSpace.Utils.Log;
+import alone.in.DeepSpace.World.WorldMap;
 
 
 public class UserInteraction {

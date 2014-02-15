@@ -1,5 +1,10 @@
-package alone.in.deepspace;
+package alone.in.DeepSpace;
 import java.util.Vector;
+
+import alone.in.DeepSpace.Models.Character;
+import alone.in.DeepSpace.Models.Job;
+import alone.in.DeepSpace.Models.Position;
+import alone.in.DeepSpace.Utils.Log;
 
 
 public class PathManager {
@@ -248,6 +253,18 @@ public class PathManager {
 
 		public void getPathAsync(Character character, Job job) {
 		  Log.info("getPathAsync");
+		  
+		  Vector<Position> path = new Vector<Position>();
+		  
+		  int x = character.getX();
+		  int y = character.getY();
+		  while (x != job.getX() || y != job.getY()) {
+			  x += (x == job.getX() ? 0 : x > job.getX() ? -1 : 1);
+			  y += (y == job.getY() ? 0 : y > job.getY() ? -1 : 1);
+			  path.add(new Position(x, y));
+		  }
+		  
+		  character.onPathComplete(path, job);
 
 //		  _poolenqueue([this, character, job] {
 //

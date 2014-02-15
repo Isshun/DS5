@@ -1,6 +1,14 @@
-package alone.in.deepspace;
+package alone.in.DeepSpace;
 import java.util.ArrayList;
 import java.util.List;
+
+import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.DeepSpace.Models.Character;
+import alone.in.DeepSpace.Models.Job;
+import alone.in.DeepSpace.Utils.Log;
+import alone.in.DeepSpace.World.WorldArea;
+import alone.in.DeepSpace.World.WorldMap;
+import alone.in.DeepSpace.World.WorldRessource;
 
 
 public class JobManager {
@@ -56,30 +64,30 @@ public class JobManager {
 	  return job;
 	}
 
-	Job	gather(WorldArea area) {
-	  if (area == null) {
+	public Job	gather(WorldRessource ressource) {
+	  if (ressource == null) {
 		Log.error("JobManager: gather on null area");
 		return null;
 	  }
 
 	  // return if job already exist for this item
 	  for (Job job: _jobs) {
-		if (job.getItem() == area) {
+		if (job.getItem() == ressource) {
 		  return null;
 		}
 	  }
 
-	  Job job = new Job(++_id, area.getX(), area.getY());
+	  Job job = new Job(++_id, ressource.getX(), ressource.getY());
 	  job.setAction(Action.GATHER);
-	  job.setItemType(area.getType());
-	  job.setItem(area);
+	  job.setItemType(ressource.getType());
+	  job.setItem(ressource);
 
 	  addJob(job);
 
 	  return job;
 	}
 
-	void	removeJob(BaseItem item) {
+	public void	removeJob(BaseItem item) {
 	  List<Job> toRemove = new ArrayList<Job>();
 
 	  for (Job job: _jobs) {
@@ -135,6 +143,10 @@ public class JobManager {
 	  if (_countFree == 0) {
 		return null;
 	  }
+	  
+	  if (character.getJob() != null) {
+		  return null;
+	  }
 
 	  Log.info("bestJob: start");
 
@@ -148,8 +160,11 @@ public class JobManager {
 		  if (job.getCharacter() == null && job.getAction() != Action.GATHER) {
 			int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
 			if (distance < bestDistance || bestDistance == -1) {
-			  bestJob = job;
-			  bestDistance = distance;
+				if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter() == 0) {
+					continue;
+				}
+				bestJob = job;
+				bestDistance = distance;
 			}
 		  }
 		}
@@ -210,14 +225,14 @@ public class JobManager {
 //	  return null;
 //	}
 
-	void	abort(Job job) {
+	public void	abort(Job job) {
 	  Log.info("Job abort: " + job.getId());
 	  _start++;
 	  _countFree++;
 	  job.setCharacter(null);
 	}
 
-	void	complete(Job job) {
+	public void	complete(Job job) {
 	  Log.info("Job complete: " + job.getId());
 
 	  _jobs.remove(job);
@@ -225,7 +240,7 @@ public class JobManager {
 	  _start--;
 	}
 
-	void	need(Character character, BaseItem.Type itemType) {
+	public void	need(Character character, BaseItem.Type itemType) {
 	  Log.info("JobManager: Character '" + character.getName() + "' need item #" + itemType);
 
 	  BaseItem item = WorldMap.getInstance().find(itemType, true);
@@ -265,6 +280,14 @@ public class JobManager {
 		case USE: return "use";
 		}
 		return null;
+	}
+
+	public void cancel(Job job) {
+		Log.info("Job cancel: " + job.getId());
+		job.setCharacter(null);
+		_jobs.remove(job);
+		_count--;
+		_start--;
 	}
 
 }

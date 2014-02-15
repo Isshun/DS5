@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.DeepSpace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
@@ -9,10 +9,10 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.BaseItem;
-import alone.in.deepspace.Constant;
-import alone.in.deepspace.Log;
-import alone.in.deepspace.WorldMap;
+import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.DeepSpace.Utils.Constant;
+import alone.in.DeepSpace.Utils.Log;
+import alone.in.DeepSpace.World.WorldMap;
 
 
 public class UserInterfaceDebug {

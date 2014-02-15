@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.DeepSpace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
@@ -7,12 +7,9 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.graphics.Texture;
 import org.jsfml.window.Keyboard;
-import org.jsfml.window.Keyboard.Key;
-import org.jsfml.window.Mouse.Button;
 
-import alone.in.deepspace.Constant;
-import alone.in.deepspace.SpriteManager;
-import alone.in.deepspace.UserSubInterface;
+import alone.in.DeepSpace.SpriteManager;
+import alone.in.DeepSpace.Utils.Constant;
 
 
 public class UserInterfaceScience extends UserSubInterface {

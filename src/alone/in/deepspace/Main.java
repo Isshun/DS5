@@ -1,10 +1,10 @@
-package alone.in.deepspace;
+package alone.in.DeepSpace;
 import java.io.IOException;
 
-import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
-import org.jsfml.window.event.Event;
+
+import alone.in.DeepSpace.Utils.Constant;
 
 
 public class Main {
@@ -17,6 +17,8 @@ public class Main {
 		RenderWindow window = new RenderWindow();
 		window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5");
 
+		MainRenderer.getInstance().setWindow(window);
+		
 		try {
 			Game game = new Game(window);
 			game.load("saves/2.sav");
