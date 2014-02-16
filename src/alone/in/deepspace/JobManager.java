@@ -1,4 +1,5 @@
 package alone.in.DeepSpace;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,10 +7,8 @@ import alone.in.DeepSpace.Models.BaseItem;
 import alone.in.DeepSpace.Models.Character;
 import alone.in.DeepSpace.Models.Job;
 import alone.in.DeepSpace.Utils.Log;
-import alone.in.DeepSpace.World.WorldArea;
 import alone.in.DeepSpace.World.WorldMap;
 import alone.in.DeepSpace.World.WorldRessource;
-
 
 public class JobManager {
 	public enum Action {
@@ -120,7 +119,7 @@ public class JobManager {
 		  Log.error("JobManager: add build on non null item");
 		  return null;
 		} else if (WorldMap.getInstance().getArea(x, y) == null
-				   || WorldMap.getInstance().getArea(x, y).isType(BaseItem.Type.STRUCTURE_FLOOR) == false) {
+				   || WorldMap.getInstance().getStructure(x, y).isType(BaseItem.Type.STRUCTURE_FLOOR) == false) {
 			Log.error("JobManager: add build on non invalid area (null or not STRUCTURE_FLOOR)");
 		  return null;
 		} else {

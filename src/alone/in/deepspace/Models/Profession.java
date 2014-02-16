@@ -3,17 +3,16 @@ import org.jsfml.graphics.Color;
 
 public class Profession {
 
-	private Type mType;
-	private String mName;
-	private Color mColor;
-	private Color mColorText;
-	private int mId;
+	private Type 	_type;
+	private String 	_name;
+	private Color 	_color;
+	private Color 	_colorText;
 
 	public Profession(Type type, String name, Color color, Color colorText) {
-		mType = type;
-		mName = name;
-		mColor = color;
-		mColorText = colorText;
+		_type = type;
+		_name = name;
+		_color = color;
+		_colorText = colorText;
 	}
 
 	public enum Type {
@@ -22,19 +21,19 @@ public class Profession {
 	}
 
 	public Type getType() {
-		return mType;
+		return _type;
 	}
 
 	public String getName() {
-		return mName;
+		return _name;
 	}
 
 	public Color getColor() {
-		return mColor;
+		return _color;
 	}
 
 	public Color getTextColor() {
-		return mColorText;
+		return _colorText;
 	}
 
 }

@@ -5,7 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.IntRect;
@@ -27,41 +29,31 @@ import alone.in.DeepSpace.World.WorldMap;
 
 public class CharacterManager {
 	public static final Profession professions[] = {
-			  new Profession(Profession.Type.ENGINEER, "Engineer", new Color(255, 255, 50), new Color(50, 50, 50)),
-			  new Profession(Profession.Type.OPERATION, "Technician", new Color(128, 0, 0), new Color(255, 255, 255)),
-			  new Profession(Profession.Type.DOCTOR, "Doctor", new Color(50, 200, 0), new Color(255, 255, 255)),
-			  new Profession(Profession.Type.SCIENCE, "Science", new Color(50, 100, 255), new Color(255, 255, 255)),
-			  new Profession(Profession.Type.SECURITY, "Security", new Color(42, 42, 42), new Color(255, 255, 255)),
-			  new Profession(Profession.Type.NONE, "", new Color(0, 0, 0), new Color(0, 0, 0))
-			};
+		new Profession(Profession.Type.ENGINEER, "Engineer", new Color(255, 255, 50), new Color(50, 50, 50)),
+		new Profession(Profession.Type.OPERATION, "Technician", new Color(128, 0, 0), new Color(255, 255, 255)),
+		new Profession(Profession.Type.DOCTOR, "Doctor", new Color(50, 200, 0), new Color(255, 255, 255)),
+		new Profession(Profession.Type.SCIENCE, "Science", new Color(50, 100, 255), new Color(255, 255, 255)),
+		new Profession(Profession.Type.SECURITY, "Security", new Color(42, 42, 42), new Color(255, 255, 255)),
+		new Profession(Profession.Type.NONE, "", new Color(0, 0, 0), new Color(0, 0, 0))
+	};
 
-	private static CharacterManager sSelf;
-
-	private ArrayList<Character> _characters;
-
-	private int _count;
-
-	private Texture[] _textures;
+	private static CharacterManager	_self;
+	private ArrayList<Character> 	_characters;
+	private int 					_count;
+	private Sprite 					_selection;
 
 	public CharacterManager() throws IOException {
 	  Log.debug("CharacterManager");
-
+	  
+	  // Selection
+	  Texture texture = new Texture();
+	  texture.loadFromFile((new File("res/cursor.png").toPath()));
+	  _selection = new Sprite();
+	  _selection.setTexture(texture);
+	  _selection.setTextureRect(new IntRect(0, 32, 32, Constant.CHAR_HEIGHT));
+	  
 	  _characters = new ArrayList<Character>();
 	  _count = 0;
-
-	  _textures = new Texture[4];
-
-	  _textures[0] = new Texture();
-	  _textures[0].loadFromFile((new File("res/Characters/scientifique.png")).toPath());
-	  _textures[0].setSmooth(true);
-
-	  _textures[1] = new Texture();
-	  _textures[1].loadFromFile((new File("res/Characters/soldat3.png")).toPath());
-	  _textures[1].setSmooth(true);
-
-	  _textures[2] = new Texture();
-	  _textures[2].loadFromFile((new File("res/Characters/Spacecharas.png")).toPath());
-	  _textures[2].setSmooth(true);
 
 	  Log.debug("CharacterManager done");
 	}
@@ -295,14 +287,14 @@ public class CharacterManager {
 	  }
 
 	  Character c = new Character(_count++, x, y, null);
-	  //Profession profession = professions[_count % FUNCTIONS_COUNT];
-	  c.setProfession(Profession.Type.ENGINEER);
+	  Profession profession = professions[_count % professions.length];
+	  c.setProfession(profession.getType());
 	  _characters.add(c);
 
 	  return c;
 	}
 
-	Character		add(int x, int y, Profession.Type profession) {
+	public Character		add(int x, int y, Profession.Type profession) {
 	  if (_count + 1 > Constant.LIMIT_CHARACTER) {
 		Log.error("LIMIT_CHARACTER reached");
 		return null;
@@ -325,13 +317,7 @@ public class CharacterManager {
 	  return null;
 	}
 
-	void	refresh(RenderWindow app, Transform transform, double animProgress) throws IOException {
-	  // Selection
-	  Texture texture = new Texture();
-	  texture.loadFromFile((new File("res/cursor.png").toPath()));
-	  Sprite selection = new Sprite();
-	  selection.setTexture(texture);
-	  selection.setTextureRect(new IntRect(0, 32, 32, Constant.CHAR_HEIGHT));
+	void	refresh(RenderWindow app, RenderStates render, double animProgress) throws IOException {
 
 	  for (Character c: _characters) {
 		int posX = c.getX() * Constant.TILE_SIZE - (Constant.CHAR_WIDTH - Constant.TILE_SIZE) + 2;
@@ -374,78 +360,67 @@ public class CharacterManager {
 
 		// end ugly
 
+		int frame = c.getFrameIndex() / 20 % 4;
 
-		Sprite sprite = new Sprite();
-		sprite.setPosition(posX, posY);
-		int index = c.getFrameIndex() / 20 % 4;
-		if (c.getNeeds().isSleeping()) {
-		  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-	 	} else if (direction == Character.Direction.DIRECTION_NONE) {
-		  sprite.setTextureRect(new IntRect(0, 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-		} else {
-		  sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * index, Constant.CHAR_HEIGHT * dirIndex, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-		}
-		sprite.setScale(0.8f, 0.8f);
-
-		Profession.Type functionId = c.getProfession().getType();
-		if (functionId == Profession.Type.SECURITY) {
-			  sprite.setTexture(_textures[1]);
-		} else if (functionId == Profession.Type.ENGINEER) {
-		  sprite.setTexture(_textures[2]);
-		  sprite.setTextureRect(new IntRect(0, 0, Constant.CHAR_WIDTH, 32));
-		  sprite.setScale(1.0f, 1.0f);
-		} else {
-		  sprite.setTexture(_textures[0]);
-		}
+		Profession profession = c.getProfession();
 		
-		RenderStates render = new RenderStates(transform);
-
+		Sprite sprite = SpriteManager.getInstance().getCharacter(profession, dirIndex, frame);
+		
+		sprite.setPosition(posX, posY);
+//		if (c.getNeeds().isSleeping()) {
+//		  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+//	 	} else if (direction == Character.Direction.DIRECTION_NONE) {
+//		  sprite.setTextureRect(new IntRect(0, 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+//		} else {
+//		  sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * frame, Constant.CHAR_HEIGHT * dirIndex, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+//		}
+		
 		app.draw(sprite, render);
 
 		// Selection
 		if (c.getSelected()) {
-		  selection.setPosition(posX, posY);
-		  app.draw(selection, render);
+		  _selection.setPosition(posX, posY);
+		  app.draw(_selection, render);
 		}
 	  }
 	}
 
-	public Sprite	getSprite(Sprite sprite, Profession.Type functionId, int index) {
-
-	  if (functionId == Profession.Type.SECURITY) {
-		sprite.setTexture(_textures[1]);
-	  } else {
-		sprite.setTexture(_textures[0]);
-	  }
-
-	  for (Character c: _characters) {
-		int posX = c.getX() * Constant.TILE_SIZE - (Constant.CHAR_WIDTH - Constant.TILE_SIZE);
-		int posY = c.getY() * Constant.TILE_SIZE - (Constant.CHAR_HEIGHT - Constant.TILE_SIZE + Constant.TILE_SIZE / 2);
-
-		// Sprite
-		sprite.setPosition(posX, posY);
-		if (c.getNeeds().isSleeping()) {
-		  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-		} else {
-		  sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * (index % 4), 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-		}
-
-	  }
-
-	  return sprite;
-	}
+//	public Sprite	getSprite(Sprite sprite, Profession.Type functionId, int index) {
+//
+//	  if (functionId == Profession.Type.SECURITY) {
+//		sprite.setTexture(_textures[1]);
+//	  } else {
+//		sprite.setTexture(_textures[0]);
+//	  }
+//
+//	  for (Character c: _characters) {
+//		int posX = c.getX() * Constant.TILE_SIZE - (Constant.CHAR_WIDTH - Constant.TILE_SIZE);
+//		int posY = c.getY() * Constant.TILE_SIZE - (Constant.CHAR_HEIGHT - Constant.TILE_SIZE + Constant.TILE_SIZE / 2);
+//
+//		// Sprite
+//		sprite.setPosition(posX, posY);
+//		if (c.getNeeds().isSleeping()) {
+//		  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+//		} else {
+//		  sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * (index % 4), 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+//		}
+//
+//	  }
+//
+//	  return sprite;
+//	}
 
 
 	public static CharacterManager getInstance() {
-		if (sSelf == null) {
+		if (_self == null) {
 			try {
-				sSelf = new CharacterManager();
+				_self = new CharacterManager();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		return sSelf;
+		return _self;
 	}
 
 

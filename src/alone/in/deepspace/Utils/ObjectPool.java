@@ -1,20 +1,27 @@
 package alone.in.DeepSpace.Utils;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.IntRect;
+import org.jsfml.graphics.RectangleShape;
+import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
 
 public class ObjectPool {
 
-	
-	private static Map<Integer, Color> mColors = new HashMap<Integer, Color>();
+	private static List<Text> 				mTexts = new ArrayList<Text>();
+	private static List<RectangleShape> 	mRectanglesShape = new ArrayList<RectangleShape>();
+
+	private static Map<Integer, Color> 		mColors = new HashMap<Integer, Color>();
 
 	private static Vector2f mVector2f = new Vector2f(0,  0);
 
 	private static Map<Integer, IntRect> mIntRect = new HashMap<Integer, IntRect>();
+
 	
 	public static Color getColor(int r, int g, int b, int a) {
 		int sum = 0;
@@ -59,5 +66,25 @@ public class ObjectPool {
 		
 		return new IntRect(i, j, k, l);
 	}
+
+
+	public static Text getText() {
+		if (mTexts.size() > 0) {
+			return mTexts.remove(0);
+		}
+		return new Text();
+	}
+
+	public static RectangleShape getRectangleShape() {
+		if (mRectanglesShape.size() > 0) {
+			return mRectanglesShape.remove(0);
+		}
+		return new RectangleShape();
+	}
+	
+
+	public static void release(Text text) { mTexts.add(text); }
+
+	public static void release(RectangleShape text) { mRectanglesShape.add(text); }
 
 }

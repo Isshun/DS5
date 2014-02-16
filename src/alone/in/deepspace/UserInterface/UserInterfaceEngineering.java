@@ -42,7 +42,7 @@ public class UserInterfaceEngineering extends UserSubInterface {
 	private UserInteraction 	_interaction;
 
 	UserInterfaceEngineering(RenderWindow app, int tileIndex, UserInteraction interaction) throws IOException {
-	  super(app, tileIndex);
+		  super(app, tileIndex, new Vector2f(0, 0), new Vector2f(200, 200));
 	  
 	  _panelMode = Mode.MODE_NONE;
 	  _panelModeHover = Mode.MODE_NONE;
@@ -142,8 +142,7 @@ public class UserInterfaceEngineering extends UserSubInterface {
 	  _app.draw(sprite);
 		  
 	  // Icon
-	  Sprite icon = new Sprite();
-	  SpriteManager.getInstance().getSprite(type, icon);
+	  Sprite icon = SpriteManager.getInstance().getSprite(type);
 	  icon.setPosition(posX + 23, posY + 63);
 	  _app.draw(icon);
 		  

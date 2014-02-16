@@ -1,4 +1,5 @@
 package alone.in.DeepSpace;
+import org.jsfml.graphics.Drawable;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
@@ -7,7 +8,14 @@ import org.jsfml.graphics.Sprite;
 public class MainRenderer {
 	void setWindow(RenderWindow app) { _app = app; }
 	  RenderWindow getWindow() { return _app; }
-	  public void draw(Sprite sprite, RenderStates render) { _app.draw(sprite, render); }
+
+	  public void draw(Drawable sprite, RenderStates render) {
+		  if (render != null) {
+			  _app.draw(sprite, render);
+		  } else {
+			  _app.draw(sprite);
+		  }
+	  }
 
 	  static MainRenderer 	_self;
 	  RenderWindow			_app;

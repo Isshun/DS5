@@ -6,6 +6,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.graphics.Texture;
+import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
 import alone.in.DeepSpace.ResourceManager;
@@ -24,7 +25,7 @@ public class UserInterfaceSecurity extends UserSubInterface {
 	private static final Color TILE_ACTIVE_COLOR	= Color.BLACK;
 
 	UserInterfaceSecurity(RenderWindow app, int tileIndex) throws IOException {
-	  super(app, tileIndex);
+		  super(app, tileIndex, new Vector2f(0, 0), new Vector2f(200, 200));
 	  
 	  _textureTile = new Texture();
 	  _textureTile.loadFromFile((new File("res/bg_tile_security.png")).toPath());

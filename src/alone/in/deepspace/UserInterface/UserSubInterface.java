@@ -7,13 +7,15 @@ import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
+import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
+import alone.in.DeepSpace.UserInterface.Utils.UIFrame;
 import alone.in.DeepSpace.Utils.Constant;
 
 
-public class UserSubInterface {
+public class UserSubInterface extends UIFrame {
 	  protected boolean	isOnTile(int x, int y) {
 			return x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120;
 		  }
@@ -40,7 +42,11 @@ public class UserSubInterface {
 		  protected boolean	isOpen() { return _isOpen; }
 		  boolean	isTileActive() { return _isTileActive; }
 
-	public UserSubInterface(RenderWindow app, int tileIndex) throws IOException {
+	public UserSubInterface(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size) throws IOException {
+		super(size);
+		
+		setPosition(pos);
+		
 		_app = app;
 
 		_posX = 200;

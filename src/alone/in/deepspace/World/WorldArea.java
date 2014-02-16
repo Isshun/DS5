@@ -15,7 +15,7 @@ public class WorldArea extends BaseItem {
 		_oxygen = (int) (Math.random() % 100);
 	  }
 	
-	public void				setItem(UserItem item) { item = item; }
+	public void				setItem(UserItem item) { _item = item; }
 	public void				setStructure(StructureItem item) { _structure = item; }
 	public void				setRessource(WorldRessource ressource) { _ressource = ressource; }
 	public void				setOxygen(int oxygen) { _oxygen = oxygen; }

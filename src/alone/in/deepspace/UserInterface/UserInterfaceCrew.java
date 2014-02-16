@@ -34,7 +34,8 @@ public class UserInterfaceCrew extends UserSubInterface {
 	private CharacterManager     _characterManager;
 
 	public UserInterfaceCrew(RenderWindow app, int tileIndex) throws IOException {
-		super(app, tileIndex);
+		  super(app, tileIndex, new Vector2f(0, 0), new Vector2f(200, 200));
+		  
 		_characterManager = CharacterManager.getInstance();
 
 		_textureTile = new Texture();
@@ -66,8 +67,7 @@ public class UserInterfaceCrew extends UserSubInterface {
 	  text.setColor(function.getColor());
 	  _app.draw(text);
 	
-	  Sprite sprite = new Sprite();
-	  _characterManager.getSprite(sprite, function.getType(), 0);
+	  Sprite sprite = SpriteManager.getInstance().getCharacter(function, 0, 0);
 	  sprite.setPosition(_posX + Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
 						 _posY + Constant.UI_PADDING + (CREW_LINE_HEIGHT * y));
 	  _app.draw(sprite);

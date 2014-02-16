@@ -1,4 +1,5 @@
 package alone.in.DeepSpace.World;
+
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
@@ -17,20 +18,17 @@ import alone.in.DeepSpace.Utils.Constant;
 import alone.in.DeepSpace.Utils.ObjectPool;
 import alone.in.DeepSpace.Utils.Settings;
 
-
 public class WorldRenderer {
 	RenderWindow	_app;
 	SpriteManager		_spriteManager;
 	Font			_font;
 	UserInterface		_ui;
-	private Sprite _sprite;
 	private RectangleShape _shape;
 	private RectangleShape _shapeDebug;
 	public WorldRenderer(RenderWindow app, SpriteManager spriteManager, UserInterface ui) throws IOException {
 		_ui = ui;
 		_app = app;
 		_spriteManager = spriteManager;
-		_sprite = new Sprite();
 		_shape = new RectangleShape();
 		_shape.setSize(new Vector2f(Constant.TILE_SIZE, Constant.TILE_SIZE));
 		_shapeDebug = new RectangleShape();
@@ -73,14 +71,14 @@ public class WorldRenderer {
 			// Oxygen
 			WorldArea area = WorldMap.getInstance().getArea(i, j);
 			if (area != null) {
-				_spriteManager.getExterior(_sprite);
-				_sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-				_app.draw(_sprite, render);
+				Sprite sprite = _spriteManager.getExterior();
+				sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+				_app.draw(sprite, render);
 	
 				if (area.getStructure() != null && area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
 					if (area.getOxygen() < 25) {
-						_spriteManager.getNoOxygen(_sprite);
-						_app.draw(_sprite, render);
+						sprite = _spriteManager.getNoOxygen();
+						_app.draw(sprite, render);
 					} else if (area.getOxygen() < 100) {
 						_shape.setFillColor(ObjectPool.getColor(255, 0, 0, area.getOxygen() * 125 / 100));
 						_shape.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
@@ -93,13 +91,13 @@ public class WorldRenderer {
 			StructureItem item = WorldMap.getInstance().getStructure(i, j);
 			if (item != null) {
 				if (item.isType(BaseItem.Type.STRUCTURE_DOOR)) {
-					_spriteManager.getSprite(item, _sprite);
-					_sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-					_app.draw(_sprite, render);
+					Sprite sprite = _spriteManager.getSprite(item);
+					sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+					_app.draw(sprite, render);
 				} else {
-					_spriteManager.getFloor(item, item.getZoneId(), item.getRoomId(), _sprite);
-					_sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-					_app.draw(_sprite, render);
+					Sprite sprite = _spriteManager.getFloor(item, item.getZoneId(), item.getRoomId());
+					sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+					_app.draw(sprite, render);
 				}
 			}
 		  
@@ -107,9 +105,9 @@ public class WorldRenderer {
 			if (item == null) {
 				WorldRessource ressource = WorldMap.getInstance().getRessource(i, j);
 				if (ressource != null) {
-					_spriteManager.getRessource(ressource, _sprite);
-					_sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-					_app.draw(_sprite, render);
+					Sprite sprite = _spriteManager.getRessource(ressource);
+					sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+					_app.draw(sprite, render);
 				}
 			}
 		}
@@ -122,6 +120,8 @@ public class WorldRenderer {
 	  int lastSpecialY = -1;
 	  int offsetWall = (Constant.TILE_SIZE / 2 * 3) - Constant.TILE_SIZE;
 
+	  Sprite sprite = null;
+	  
 	  for (int j = toY-1; j >= fromY; j--) {
 		for (int i = toX-1; i >= fromX; i--) {
 		  int r = (int) Math.random();
@@ -145,9 +145,9 @@ public class WorldRenderer {
 				// 	  || _characterManager.getCharacterAtPos(i, j-1) != null) {
 				// 	_spriteManager.getWall(item, 2, &sprite, 0, 0);
 				// } else {
-				_spriteManager.getWall(item, 0, _sprite, 0, 0);
+				  sprite = _spriteManager.getWall(item, 0, 0, 0);
 				// }
-				_sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
+				sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
 			  }
 
 			  // Wall
@@ -155,8 +155,8 @@ public class WorldRenderer {
 
 				// bellow is a wall
 				if (bellow != null && bellow.isType(BaseItem.Type.STRUCTURE_WALL)) {
-				  _spriteManager.getWall(item, 1, _sprite, 0, 0);
-				  _sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
+					sprite = _spriteManager.getWall(item, 1, 0, 0);
+					sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
 				}
 
 				// No wall above or bellow
@@ -179,29 +179,29 @@ public class WorldRenderer {
 				  if (bellow == null) {
 					// Double wall
 					if (doubleWall) {
-					  _spriteManager.getWall(item, 4, _sprite, r, 0);
+						sprite = _spriteManager.getWall(item, 4, r, 0);
 					  lastSpecialX = i;
 					  lastSpecialY = j;
 					}
 					// Single wall
 					else {
-					  _spriteManager.getWall(item, 0, _sprite, 0, 0);
+						sprite = _spriteManager.getWall(item, 0, 0, 0);
 					}
 				  }
 				  // Special
 				  else {
 					// Double wall
 					if (doubleWall) {
-					  _spriteManager.getWall(item, 2, _sprite, r, bellow.getZoneId());
+						sprite = _spriteManager.getWall(item, 2, r, bellow.getZoneId());
 					  lastSpecialX = i;
 					  lastSpecialY = j;
 					}
 					// Single wall
 					else {
-					  _spriteManager.getWall(item, 3, _sprite, r, bellow.getZoneId());
+						sprite = _spriteManager.getWall(item, 3, r, bellow.getZoneId());
 					}
 				  }
-				  _sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
+				  sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
 				}
 
 				// // left is a wall
@@ -212,8 +212,8 @@ public class WorldRenderer {
 
 				// single wall
 				else {
-				  _spriteManager.getWall(item, 0, _sprite, 0, 0);
-				  _sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
+					sprite = _spriteManager.getWall(item, 0, 0, 0);
+					sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
 				}
 
 			  }	  
@@ -225,7 +225,7 @@ public class WorldRenderer {
 			// 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 			// }
 
-			_app.draw(_sprite, render);
+			_app.draw(sprite, render);
 		  }
 		}
 	  }
@@ -243,18 +243,17 @@ public class WorldRenderer {
 
 					// Draw item
 					if (item.getType() != BaseItem.Type.STRUCTURE_FLOOR && item.isStructure() == false) {
-						_spriteManager.getSprite(item, _sprite);
+						Sprite sprite = _spriteManager.getSprite(item);
 
 						if (item.isStructure()) {
-							_sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+							sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
 						} else {
-							_sprite.setPosition(i * Constant.TILE_SIZE + offsetX, j * Constant.TILE_SIZE + offsetY);
+							sprite.setPosition(i * Constant.TILE_SIZE + offsetX, j * Constant.TILE_SIZE + offsetY);
 						}
 
-						_app.draw(_sprite, render);
+						_app.draw(sprite, render);
 					}
 
-					// TODO
 //					// Draw battery
 //					if (item.isComplete() && !item.isSupply()) {
 //						Sprite sprite;
@@ -270,35 +269,35 @@ public class WorldRenderer {
 	}
 
 	void	drawDebug(RenderStates render, int fromX, int fromY, int toX, int toY) {
-	  int offsetY = -16;
-	  int offsetX = 2;
+		Color color = new Color(0, 0, 0);
+		_shapeDebug.setSize(ObjectPool.getVector2f(Constant.TILE_SIZE, Constant.TILE_SIZE));
+		_shapeDebug.setFillColor(new Color(250, 200, 200, 100));
 
-	  for (int i = toX-1; i >= fromX; i--) {
+		Text text = ObjectPool.getText();
+		text.setFont(SpriteManager.getInstance().getFont());
+		text.setCharacterSize(10);
+		text.setColor(color);
+		text.setString("gg");
+
+		for (int i = toX-1; i >= fromX; i--) {
 		for (int j = toY-1; j >= fromY; j--) {
-		  // BaseItem* item = WorldMap.getInstance().getItem(i, j);
 		  WorldArea item = WorldMap.getInstance().getArea(i, j);
-
+//
 		  if (item == null) {
 			item = WorldMap.getInstance().getArea(i, j);
 		  }
 
 		  if (item != null) {
-			_shapeDebug.setSize(ObjectPool.getVector2f(Constant.TILE_SIZE, Constant.TILE_SIZE));
-			_shapeDebug.setFillColor(new Color(250, 200, 200, 100));
 			_shapeDebug.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
 			_app.draw(_shapeDebug, render);
-
-			Text text = new Text();
-			text.setFont(_font);
-			text.setCharacterSize(10);
-			text.setColor(new Color(0, 0, 0));
-			text.setStyle(Text.REGULAR);
-			text.setString(String.valueOf(item.getRoomId()));
-			text.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-			_app.draw(text, render);
 		  }
+//
+			text.setStyle(Text.REGULAR);
+			text.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+//			_app.draw(text, render);
 		}
 	  }
+		ObjectPool.release(text);
 	}
 
 }

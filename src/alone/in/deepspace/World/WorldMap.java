@@ -3,9 +3,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import alone.in.DeepSpace.JobManager;
@@ -18,9 +16,6 @@ public class WorldMap {
 	private static final int LIMIT_ITEMS = 42000;
 	private static WorldMap 		_self;
 
-	private List<BaseItem>		_todo;
-	private List<BaseItem>		_building;
-	private List<BaseItem>		_buildingAborted;
 	private Map<Integer, Room>	_rooms;
 	private int					_itemCout;
 	private WorldArea[][]		_items;
@@ -37,9 +32,6 @@ public class WorldMap {
 		  dump();
 
 		  _rooms = new HashMap<Integer, Room>();
-		  _todo = new ArrayList<BaseItem>();
-		  _building = new ArrayList<BaseItem>();
-		  _buildingAborted = new ArrayList<BaseItem>();
 		  _items = new WorldArea[_width][_height];
 		  for (int x = 0; x < _width; x++) {
 			_items[x] = new WorldArea[_height];
@@ -112,24 +104,21 @@ public class WorldMap {
 		}
 
 		void	addRandomSeed() {
-		  // int startX = rand();
-		  // int startY = rand();
+		   int startX = (int)(Math.random() * 1000) % _width;
+		   int startY = (int)(Math.random() * 1000) % _height;
 
-		  // for (int x = 0; x < _width; x++) {
-		  // 	for (int y = 0; y < _height; y++) {
-		  // 	  int realX = (x + startX) % _width;
-		  // 	  int realY = (y + startY) % _height;
-		  // 	  if (_items[realX][realY] == null || _items[realX][realY].getType() == BaseItem.RES_1) {
-		  // 		WorldArea area = _items[realX][realY];
-		  // 		if (area == null) {
-		  // 		  area = (WorldArea)putItem(BaseItem.RES_1, realX, realY);
-		  // 		}
-		  // 		area.addMatter(10);
-		  // 		JobManager.getInstance().gather(area);
-		  // 		return;
-		  // 	  }
-		  // 	}
-		  // }
+		   for (int x = 0; x < _width; x++) {
+		   	for (int y = 0; y < _height; y++) {
+		   	  int realX = (x + startX) % _width;
+		   	  int realY = (y + startY) % _height;
+		   	  if (_items[realX][realY] != null) {// || _items[realX][realY].getType() == BaseItem.Type.RES_1) {
+//		   		WorldArea area = _items[realX][realY];
+		   		WorldRessource ressource = (WorldRessource)putItem(BaseItem.Type.RES_1, realX, realY, 10);
+		   		JobManager.getInstance().gather(ressource);
+		   		return;
+		   	  }
+		   	}
+		   }
 		}
 
 		public int	gather(BaseItem item, int maxValue) {
@@ -149,12 +138,12 @@ public class WorldMap {
 		}
 
 		public void	update() {
-		  _count++;
+			_count++;
 
-		  // Add random seed each 10 update
-		  if (_count % 10 == 0) {
-			addRandomSeed();
-		  }
+			// Add random seed each 10 update
+			//if (_count % 10 == 0) {
+				addRandomSeed();
+			//}
 		}
 
 		void	save(final String filePath) {
@@ -417,7 +406,7 @@ public class WorldMap {
 				  return null;
 			  }
 		  }
-		  		  
+
 		  // Get new item
 		  BaseItem item = null;
 		  if (BaseItem.isResource(type)) {
@@ -502,12 +491,7 @@ public class WorldMap {
 		  // Put item
 		  Log.debug("put item: " + type);
 
-		  // add to todo list if building is required
 		  item._matterSupply = matterSupply;
-		  if (matterSupply == item.getMatter()) {
-		  } else {
-			_todo.add(item);
-		  }
 
 		  // TODO
 		  //PathManager.getInstance().addObject(x, y, false);

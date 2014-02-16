@@ -1,4 +1,5 @@
 package alone.in.DeepSpace;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -22,7 +23,6 @@ import alone.in.DeepSpace.Utils.Log;
 import alone.in.DeepSpace.World.WorldArea;
 import alone.in.DeepSpace.World.WorldMap;
 import alone.in.DeepSpace.World.WorldRenderer;
-
 
 public class Game {
 
@@ -72,6 +72,10 @@ public class Game {
 	  _background.setTextureRect(new IntRect(0, 0, 1920, 1080));
 
 	  app.setKeyRepeatEnabled(true);
+	  
+	  for (int i = 0; i < 100; i++) {
+		  CharacterManager.getInstance().add(i, 0);
+	  }
 
 	  Log.info("Game:\tdone");
 	}
@@ -222,7 +226,9 @@ public class Game {
 
 	  Transform transform = new Transform();
 	  transform = _viewport.getViewTransform(transform);
-	  _characterManager.refresh(_app, transform, animProgress);
+	  RenderStates render = new RenderStates(transform);
+	  
+	  _characterManager.refresh(_app, render, animProgress);
 
 	  // User interface
 	  _ui.refresh(_frame, _update, _renderTime);
@@ -315,12 +321,14 @@ public class Game {
 
 			// Refresh
 			if (nextRefresh <= 0) {
-			  _renderTime = (int) (elapsed.asMilliseconds() - _last_refresh.asMilliseconds());
+			  //_renderTime = (int) (elapsed.asMilliseconds() - _last_refresh.asMilliseconds());
 			  _last_refresh = elapsed;
 			  double animProgress = 1 - (double)nextUpdate / UPDATE_INTERVAL;
 			  refresh(animProgress);
 			  _app.display();
 			} else {
+				int currentRenderTime = (int) (elapsed.asMilliseconds() - _last_refresh.asMilliseconds());
+				_renderTime = (_renderTime * 7 + currentRenderTime) / 8;
 			  Thread.sleep(nextRefresh);
 			}
 

@@ -3,6 +3,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javax.crypto.spec.PSource;
+
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderWindow;
@@ -33,7 +35,7 @@ public class UserInterfaceMenuOperation extends UserSubInterface {
 	
 	
 	UserInterfaceMenuOperation(RenderWindow app, int tileIndex) throws IOException {
-		super(app, tileIndex);
+		  super(app, tileIndex, new Vector2f(0, 0), new Vector2f(200, 200));
 
 		_textureTile = new Texture();
 		_textureTile.loadFromFile((new File("res/bg_tile_operation.png")).toPath());
@@ -99,6 +101,24 @@ public class UserInterfaceMenuOperation extends UserSubInterface {
 	  // Display jobs
 	  List<Job> jobs = JobManager.getInstance().getJobs();
 
+	  text.setColor(Color.WHITE);
+	  text.setString("Operation");
+	  text.setCharacterSize(28);
+	  text.setPosition(posX, posY);
+	  _app.draw(text);
+	  text.setColor(Color.YELLOW);
+	  text.setStyle(Text.UNDERLINED);
+	  text.setString("O");
+	  _app.draw(text);
+
+	  text.setStyle(Text.REGULAR);
+	  text.setColor(Color.WHITE);
+	  text.setCharacterSize(16);
+	  text.setString("jobs: " + jobs.size());
+	  text.setPosition(posX, posY + 38);
+	  _app.draw(text);
+	  
+	  text.setCharacterSize(12);
 	  int i = 0;
 	  for (Job job: jobs) {
 		if (i < 50) {
@@ -113,7 +133,7 @@ public class UserInterfaceMenuOperation extends UserSubInterface {
 			oss += " (on queue)";
 		  }
 		  text.setString(oss);
-		  text.setPosition(posX + Constant.UI_PADDING, posY + Constant.UI_PADDING + (14 * i++));
+		  text.setPosition(posX + Constant.UI_PADDING, posY + 52 + Constant.UI_PADDING + (14 * i++));
 		  _app.draw(text);
 		}
 	  }

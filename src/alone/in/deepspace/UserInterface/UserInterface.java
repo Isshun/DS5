@@ -7,6 +7,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
+import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.event.Event;
 
 import alone.in.DeepSpace.CharacterManager;
@@ -36,13 +37,22 @@ public class UserInterface {
 	UserInterfaceScience		_uiScience;
 	UserInterfaceSecurity		_uiSecurity;
 	CharacterManager        	_characteres;
-	UserInterfaceMenuCharacter  _menuCharacter;
-	UserInterfaceMenuInfo		_menuInfo;
+	PanelCharacter  _panelCharacter;
+	PanelInfo		_panelInfo;
 	UserInterfaceCrew			_uiCharacter;
 	UserInterfaceEngineering	_uiEngeneering;
-	UserInterfaceDebug			_uiDebug;
+	PanelDebug			_panelDebug;
 	UserInterfaceMenuOperation	_uiBase;
 	private Font 				_font;
+	private PanelBase _panelBase;
+	private PanelSystem _panelSystem;
+	
+	private enum Mode {
+		BASE,
+		INFO,
+		DEBUG,
+		CHARACTER
+	}
 	
 	public UserInterface(RenderWindow app, Viewport viewport) throws IOException {
 	  _app = app;
@@ -54,24 +64,22 @@ public class UserInterface {
 	  _font = new Font();
 	  _font.loadFromFile((new File("res/fonts/xolonium_regular.otf")).toPath());
 	
-	  // _menu = new UserInterfaceMenu(app);
-	  // _menu.init();
-	
-	  _menuCharacter = new UserInterfaceMenuCharacter(app);
-	  _menuCharacter.init();
-	
-	  _menuInfo = new UserInterfaceMenuInfo(app);
-	  _menuInfo.init();
-	
+	  _panelBase = new PanelBase(app);
+	  _panelCharacter = new PanelCharacter(app);
+	  _panelInfo = new PanelInfo(app);
+	  _panelDebug = new PanelDebug(app);
+	  _panelSystem = new PanelSystem(app);
+	  _panelSystem.setVisible(true);
+
 	  _interaction = new UserInteraction(_viewport);
-	
 	  _uiEngeneering = new UserInterfaceEngineering(app, 3, _interaction);
 	  _uiScience = new UserInterfaceScience(app, 2);
 	  _uiSecurity = new UserInterfaceSecurity(app, 4);
 	  _crewViewOpen = false;
 	  _uiCharacter = new UserInterfaceCrew(app, 0);
-	  _uiDebug = new UserInterfaceDebug(app);
 	  _uiBase = new UserInterfaceMenuOperation(app, 1);
+	  
+	  setMode(Mode.BASE);
 	}
 	
 	public void	mouseMoved(int x, int y) {
@@ -165,6 +173,11 @@ public class UserInterface {
 	}
 
 	public void	mouseRelease(Mouse.Button button, int x, int y) {
+		
+		if (button == Button.LEFT && EventManager.getInstance().rightClick(x, y)) {
+			return;
+		}
+		
 	  if (_uiEngeneering.mouseRelease(button, x, y)) {
 		_uiSecurity.close();
 		_uiScience.close();
@@ -214,24 +227,27 @@ public class UserInterface {
 	  if (button == Mouse.Button.LEFT) {
 	    if (true) {
 	
-	      _menuCharacter.setCharacter(null);
+	      _panelCharacter.setCharacter(null);
+	      setMode(Mode.BASE);
 	
 	      // Select character
 	      if (_interaction.getMode() == UserInteraction.Mode.MODE_NONE) {// && _menu.getCode() == UserInterfaceMenu.CODE_MAIN) {
 			Log.info("select character");
 	        Character c = _characteres.getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
 			if (c != null) {
-			  _menuCharacter.setCharacter(c);
+			  _panelCharacter.setCharacter(c);
+			  setMode(Mode.CHARACTER);
 			} else {
 			  WorldArea a = WorldMap.getInstance().getArea(getRelativePosX(x), getRelativePosY(y));
 			  if (a != null) {
-				if (_menuInfo.getArea() == a && _menuInfo.getItem() == null && a.getItem() != null) {
-				  _menuInfo.setItem(a.getItem());
+				if (_panelInfo.getArea() == a && _panelInfo.getItem() == null && a.getItem() != null) {
+				  _panelInfo.setItem(a.getItem());
 				} else {
-				  _menuInfo.setArea(a);
-				  _menuInfo.setItem(null);
+				  _panelInfo.setArea(a);
+				  _panelInfo.setItem(null);
 				}
 			  }
+		      setMode(Mode.INFO);
 			}
 	      }
 	
@@ -253,6 +269,20 @@ public class UserInterface {
 	  }
 	}
 	
+	private void setMode(Mode info) {
+		_panelCharacter.setVisible(false);
+		_panelInfo.setVisible(false);
+		_panelDebug.setVisible(false);
+		_panelBase.setVisible(false);
+		
+		switch (info) {
+		case INFO: _panelInfo.setVisible(true); break;
+		case DEBUG: _panelDebug.setVisible(true); break;
+		case CHARACTER: _panelCharacter.setVisible(true); break;
+		case BASE: _panelBase.setVisible(true); break;
+		}
+	}
+
 	public void	mouseWheel(int delta, int x, int y) {
 	  _viewport.setScale(delta);
 	
@@ -261,39 +291,19 @@ public class UserInterface {
 	}
 	
 	public void refresh(int frame, int update, int renderTime) {
-	  // Display character frame
-	  if (_menuCharacter.getCharacter() != null) {
-	    _menuCharacter.refresh(frame);
-	  }
+		_panelCharacter.refresh(frame);
+		_panelBase.refresh();
+	    _panelInfo.refresh(frame);
+	  	_panelDebug.refresh(frame, _interaction.getCursor().getX(), _interaction.getCursor().getY());
+	  	_panelSystem.refresh(renderTime);
 	
-	  // Display info frame
-	  else if (_menuInfo.getArea() != null || _menuInfo.getItem() != null) {
-	    _menuInfo.refresh(frame);
-	  }
+	  	_interaction.refreshCursor();
 	
-	  // Display debug view
-	  if (Settings.getInstance().isDebug()) {
-	  	_uiDebug.refresh(frame, _interaction.getCursor().getX(), _interaction.getCursor().getY());
-	  	//drawCursor(_keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY);
-	  }
-	
-	  _interaction.refreshCursor();
-	  // _uiResource.refreshResources(frame, interval);
-	
-	  _uiCharacter.draw(frame);
-	  _uiScience.draw(frame);
-	  _uiSecurity.draw(frame);
-	  _uiBase.draw(frame);
-	  _uiEngeneering.draw(frame);
-	  
-		Text text = new Text();
-		text.setFont(_font);
-		text.setCharacterSize(20);
-		text.setStyle(Text.REGULAR);
-		text.setString("#" + frame + " (" + renderTime + "ms)");
-		text.setPosition(Constant.WINDOW_WIDTH - 200 + Constant.UI_PADDING, Constant.UI_PADDING);
-		_app.draw(text);
-
+	  	_uiCharacter.draw(frame);
+	  	_uiScience.draw(frame);
+	  	_uiSecurity.draw(frame);
+	  	_uiBase.draw(frame);
+	  	_uiEngeneering.draw(frame);
 	}
 	
 	public boolean checkKeyboard(Event	event, int frame, int lastInput) {
@@ -327,8 +337,8 @@ public class UserInterface {
 	
 	  if (event.asKeyEvent().key == Keyboard.Key.TAB) {
 		if ((event.type == Event.Type.KEY_RELEASED)) {
-		  if (_menuCharacter.getCharacter() != null) {
-			_menuCharacter.setCharacter(_characteres.getNext(_menuCharacter.getCharacter()));
+		  if (_panelCharacter.getCharacter() != null) {
+			_panelCharacter.setCharacter(_characteres.getNext(_panelCharacter.getCharacter()));
 		  }
 		}
 		return true;
@@ -336,6 +346,11 @@ public class UserInterface {
 	
 	  if (event.asKeyEvent().key == Keyboard.Key.D) {
 		Settings.getInstance().setDebug(!Settings.getInstance().isDebug());
+		if (Settings.getInstance().isDebug()) {
+			setMode(Mode.DEBUG);
+		} else {
+			setMode(_panelCharacter.getCharacter() != null ? Mode.CHARACTER : Mode.INFO);
+		}
 		// 	WorldMap.getInstance().dump();
 	  }	
 	  else if (event.asKeyEvent().key == Keyboard.Key.C) {
@@ -343,7 +358,7 @@ public class UserInterface {
 	  }
 	  else if (event.asKeyEvent().key == Keyboard.Key.E) {
 		_uiEngeneering.open();
-	  }	
+	  }
 	  else if (event.asKeyEvent().key == Keyboard.Key.O) {
 		_uiBase.toogleTile();
 	  }
@@ -380,7 +395,7 @@ public class UserInterface {
 		  lastInput = frame;
 		  // _cursor._x--;
 		}
-	  }	
+	  }
 
 	  return false;
 	}

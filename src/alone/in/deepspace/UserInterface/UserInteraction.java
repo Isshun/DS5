@@ -77,6 +77,14 @@ public class UserInteraction {
 	  if (_mode == Mode.MODE_BUILD || _mode == Mode.MODE_EREASE) {
 		ItemInfo itemInfo = BaseItem.getItemInfo(_itemType);
 
+		int width = 1;
+		int height = 1;
+		if (itemInfo != null) {
+			width = itemInfo.mWidth;
+			height = itemInfo.mHeight;
+		}
+			
+		
 		// Structure: multiple 1x1 tile
 		if (_button == Mouse.Button.LEFT) {
 		  if (BaseItem.isStructure(_itemType)) {
@@ -90,8 +98,8 @@ public class UserInteraction {
 		  else {
 			drawCursor(Math.min(_startPressX, _mouseMoveX),
 					   Math.min(_startPressY, _mouseMoveY),
-					   Math.min(_startPressX, _mouseMoveX) + itemInfo.mWidth - 1,
-					   Math.min(_startPressY, _mouseMoveY) + itemInfo.mHeight - 1);
+					   Math.min(_startPressX, _mouseMoveX) + width - 1,
+					   Math.min(_startPressY, _mouseMoveY) + height - 1);
 		  }
 		}
 

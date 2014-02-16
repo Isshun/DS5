@@ -1,9 +1,9 @@
 package alone.in.DeepSpace;
+
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
 
 import alone.in.DeepSpace.Utils.Constant;
-
 
 public class Viewport {
 

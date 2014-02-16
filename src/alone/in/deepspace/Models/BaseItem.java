@@ -1,8 +1,5 @@
 package alone.in.DeepSpace.Models;
 
-import alone.in.DeepSpace.Models.BaseItem.Type;
-
-
 public class BaseItem {
 	
 	private static ItemInfo[] _itemInfo  = {
@@ -20,6 +17,12 @@ public class BaseItem {
 //		new ItemInfo(Type.ENGINE_CONTROL_CENTER,						"CENTER", false,	3, 2, 10, 5, UserInterfaceMenu.CODE_ZONE_ENGINE),
 //		new ItemInfo(Type.ENGINE_REACTION_CHAMBER,					"CHAMBER", false,	2, 3, 50, -200, UserInterfaceMenu.CODE_ZONE_ENGINE),
 //		new ItemInfo(Type.SICKBAY_BIOBED,							"BIOBED", false,	1, 2, 10, 10, UserInterfaceMenu.CODE_ZONE_SICKBAY),
+		new ItemInfo(Type.QUARTER_BED,								"1", false,	1, 2, 2, 0, 0),
+		new ItemInfo(Type.QUARTER_DESK,								"1", false,	1, 2, 2, 0, 0),
+		new ItemInfo(Type.QUARTER_CHAIR,							"1", false,	1, 2, 2, 0, 0),
+		new ItemInfo(Type.QUARTER_WARDROBE,							"1", false,	1, 2, 2, 0, 0),
+		new ItemInfo(Type.QUARTER_CHEST,							"1", false,	1, 2, 2, 0, 0),
+		new ItemInfo(Type.QUARTER_BEDSIDE_TABLE,					"1", false,	1, 2, 2, 0, 0),
 		new ItemInfo(Type.ARBORETUM_TREE_1,							"1", false,	1, 2, 2, 0, 0),
 		new ItemInfo(Type.ARBORETUM_TREE_2,							"2", false,	1, 2, 2, 0, 0),
 		new ItemInfo(Type.ARBORETUM_TREE_3,							"3", false,	1, 2, 2, 0, 0),
@@ -142,37 +145,26 @@ public class BaseItem {
 	}
 
 	public static ItemInfo getItemInfo(Type type) {
-	  int i = 0;
-
-	  for (ItemInfo info: _itemInfo) {
-		if (info.mType == type) {
-		  return info;
+		for (ItemInfo info: _itemInfo) {
+			if (info.mType == type) {
+				return info;
+			}
 		}
-	  }
 
-	  return null;
+		return null;
 	}
 
 	public void	setOwner(Character character) {
-	  Character currentOwner = _owner;
-
-	  _owner = character;
-
-	  // if (currentOwner != NULL && currentOwner.getItem() != NULL) {
-	  // 	currentOwner.setItem(NULL);
-	  // }
-	  // if (character != NULL && character.getItem() != this) {
-	  // 	character.setItem(this);
-	  // }
+		_owner = character;
 	}
 
 	public int		gatherMatter(int maxValue) {
-	  int value = Math.min(maxValue, _matterSupply);
-	  _matterSupply -= value;
-	  return value;
+		int value = Math.min(maxValue, _matterSupply);
+		_matterSupply -= value;
+		return value;
 	}
 
-	  void				addMatter(int value) { _matterSupply += matter; }
+	void				addMatter(int value) { _matterSupply += matter; }
 
 	  // Sets
 	  public void				setPosition(int x, int y) { _x = x; _y = y; }

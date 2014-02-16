@@ -8,7 +8,6 @@ import alone.in.DeepSpace.ResourceManager;
 import alone.in.DeepSpace.Utils.Constant;
 import alone.in.DeepSpace.Utils.Log;
 import alone.in.DeepSpace.World.StructureItem;
-import alone.in.DeepSpace.World.WorldArea;
 import alone.in.DeepSpace.World.WorldMap;
 
 public class Character implements PathManagerCallback {
@@ -149,23 +148,20 @@ public class Character implements PathManagerCallback {
 	  private int				_offset;
 	  private Job				_job;
 
-	  private boolean			_resolvePath;
-
 //	  private int				_messages[32];
 
 	  public Character(int id, int x, int y, String name) {
 		  Log.debug("Character #" + id);
 
 		  _id = id;
-		  _gender = Math.random() % 2 == 0 ? Character.Gender.GENDER_MALE : Character.Gender.GENDER_FEMALE;
+		  _gender = Math.random() * 1000 % 2 == 0 ? Character.Gender.GENDER_MALE : Character.Gender.GENDER_FEMALE;
 		  // _path = null;
 		  _posY = _toX = y;
 		  _posX = _toY = x;
 		  _selected = false;
 		  _blocked = 0;
-		  _frameIndex = (int) (Math.random() % 20);
+		  _frameIndex = (int) (Math.random() * 1000 % 20);
 		  _direction = Direction.DIRECTION_NONE;
-		  _resolvePath = false;
 		  _offset = 0;
 		  _node = null;
 		  _job = null;
@@ -177,16 +173,16 @@ public class Character implements PathManagerCallback {
 
 		  int offset = (_gender == Character.Gender.GENDER_FEMALE ? 4 : 0);
 		  if (name == null) {
-			  if (Math.random() % 2 == 0) {
-				  _name = shortFirstname[(int) (Math.random() % 8 + offset)]
+			  if ((Math.random() * 1000) % 2 == 0) {
+				  _name = shortFirstname[(int) ((Math.random() * 1000) % 8 + offset)]
 						  + " ("
-						  + middlename[(int) (Math.random() % 16)]
+						  + middlename[(int) ((Math.random() * 1000) % 16)]
 						  + ") "
-						  + shortLastname[(int) (Math.random() % 16)];
+						  + shortLastname[(int) ((Math.random() * 1000) % 16)];
 			  } else {
-			    _name = firstname[(int) (Math.random() % 8 + offset)]
+			    _name = firstname[(int) ((Math.random() * 1000) % 8 + offset)]
 						+ " "
-			    		+ lastname[(int) (Math.random() % 16)];
+			    		+ lastname[(int) ((Math.random() * 1000) % 16)];
 			  }
 		  }
 
@@ -212,11 +208,6 @@ public class Character implements PathManagerCallback {
 	public int				getOffset() { return _offset; }
 	public int				getProfessionScore(Profession.Type professionEngineer) { return 42; }
 	
-	
-	void	onPathSearch(Vector<Position> path, Job job) {
-	  _resolvePath = true;
-	}
-
 	@Override
 	public void	onPathComplete(Vector<Position> path, Job job) {
 	  Log.debug("Charactere #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
