@@ -1,12 +1,14 @@
-package alone.in.DeepSpace;
+package alone.in.DeepSpace.Managers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.DeepSpace.Models.BaseItem;
 import alone.in.DeepSpace.Models.Character;
+import alone.in.DeepSpace.Models.CharacterNeeds;
 import alone.in.DeepSpace.Models.Job;
 import alone.in.DeepSpace.Utils.Log;
+import alone.in.DeepSpace.World.UserItem;
 import alone.in.DeepSpace.World.WorldMap;
 import alone.in.DeepSpace.World.WorldRessource;
 
@@ -138,61 +140,84 @@ public class JobManager {
 	}
 
 	// TODO: one pass + check profession
-	Job	getJob(Character character) {
-	  if (_countFree == 0) {
-		return null;
-	  }
+	public Job getJob(Character character) {
+		if (_countFree == 0) {
+			return null;
+		}
 	  
-	  if (character.getJob() != null) {
-		  return null;
-	  }
+		if (character.getJob() != null) {
+			return null;
+		}
+	  
+		Log.info("bestJob: start");
 
-	  Log.info("bestJob: start");
+		Job bestJob = getJobForCharacterNeed(character);
+		if (bestJob != null) {
+			return bestJob;  
+		}
+	  	  
+		int bestDistance = -1;
 
-	  Job bestJob = null;
-	  int bestDistance = -1;
-
-	  {
-		int x = character.getX();
-		int y = character.getY();
-		for (Job job: _jobs) {
-		  if (job.getCharacter() == null && job.getAction() != Action.GATHER) {
-			int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
-			if (distance < bestDistance || bestDistance == -1) {
-				if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter() == 0) {
-					continue;
+		{
+			int x = character.getX();
+			int y = character.getY();
+			for (Job job: _jobs) {
+				if (job.getCharacter() == null && job.getAction() != Action.GATHER) {
+					int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
+					if (distance < bestDistance || bestDistance == -1) {
+						if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter() == 0) {
+							continue;
+						}
+						bestJob = job;
+						bestDistance = distance;
+					}
 				}
-				bestJob = job;
-				bestDistance = distance;
 			}
-		  }
 		}
-	  }
 
-	  if (bestJob == null) {
-		int x = character.getX();
-		int y = character.getY();
-		for (Job job: _jobs) {
-		  if (job.getCharacter() == null) {
-			int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
-			if (distance < bestDistance || bestDistance == -1) {
-			  bestJob = job;
-			  bestDistance = distance;
+		if (bestJob == null) {
+			int x = character.getX();
+			int y = character.getY();
+			for (Job job: _jobs) {
+				if (job.getCharacter() == null) {
+					int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
+					if (distance < bestDistance || bestDistance == -1) {
+						bestJob = job;
+						bestDistance = distance;
+					}
+				}
 			}
-		  }
 		}
-	  }
 
-	  if (bestJob != null) {
-		Log.info("bestjob: " + bestDistance + " (" + bestJob.getX() + ", " + bestJob.getY() + ")");
-		_countFree--;
-	  } else {
-		Log.info("bestjob: null");
-	  }
+		if (bestJob != null) {
+			Log.info("bestjob: " + bestDistance + " (" + bestJob.getX() + ", " + bestJob.getY() + ")");
+			_countFree--;
+		} else {
+			Log.info("bestjob: null");
+		}
 
-	  return bestJob;
+		return bestJob;
 	}
 	
+	private Job getJobForCharacterNeed(Character character) {
+		CharacterNeeds needs = character.getNeeds();
+		if (needs.getFood() < 20) {
+			UserItem item = WorldMap.getInstance().getNearest(BaseItem.Type.BAR_PUB, character.getPosX(), character.getPosY());
+			if (item != null) {
+				Job job = new Job(++_id, item.getX(), item.getY());
+				job.setAction(JobManager.Action.USE);
+				job.setItemType(item.getType());
+				job.setItem(item);
+				job.setCharacterRequire(character);
+				addJob(job);
+				_countFree--;
+				return job;
+			}
+		}
+		
+		return null;
+	}
+
 	public List<Job>			getJobs() { return _jobs; };
 	int					getCount() { return _count; }
 	int					getCountFree() { return _countFree; }

@@ -9,7 +9,7 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
-import alone.in.DeepSpace.SpriteManager;
+import alone.in.DeepSpace.Managers.SpriteManager;
 import alone.in.DeepSpace.Utils.Constant;
 
 
@@ -100,54 +100,54 @@ void	draw(int frame) {
 }
 
 void	drawTile() {
-  super.drawTile(TILE_ACTIVE_COLOR);
-
-  Text text = new Text();
-  text.setFont(SpriteManager.getInstance().getFont());
-  text.setCharacterSize(FONT_SIZE);
-
-  // {
-  // 	int matter = ResourceManager.getInstance().getMatter();
-  //   std.ostringstream oss;
-  //   oss + "Matter: " + matter;
-
-  // 	text.setString(oss.str());
-
-  // 	if (matter == 0)
-  // 	  text.setColor(Color(255, 0, 0));
-  // 	else if (matter < 20)
-  // 	  text.setColor(Color(255, 255, 0));
-  //   text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING);
-  //   _app.draw(text);
-  // 	text.setColor(Color(255, 255, 255));
-  // }
-
-  // {
-  //   std.ostringstream oss;
-  //   oss + "Power: " + ResourceManager.getInstance().getPower();
-
-  //   text.setString(oss.str());
-  //   text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT);
-  //   _app.draw(text);
-  // }
-
-  // {
-  //   std.ostringstream oss;
-  //   oss + "O2: " + ResourceManager.getInstance().getO2();
-
-  //   text.setString(oss.str());
-  //   text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT * 2);
-  //   _app.draw(text);
-  // }
-
-  text.setString("Research");
-  text.setCharacterSize(TITLE_SIZE);
-  text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + Constant.UI_PADDING);
-  _app.draw(text);
-  text.setString("R");
-  text.setStyle(Text.UNDERLINED);
-  text.setColor(Color.YELLOW);
-  _app.draw(text);
+//  super.drawTile(TILE_ACTIVE_COLOR);
+//
+//  Text text = new Text();
+//  text.setFont(SpriteManager.getInstance().getFont());
+//  text.setCharacterSize(FONT_SIZE);
+//
+//  // {
+//  // 	int matter = ResourceManager.getInstance().getMatter();
+//  //   std.ostringstream oss;
+//  //   oss + "Matter: " + matter;
+//
+//  // 	text.setString(oss.str());
+//
+//  // 	if (matter == 0)
+//  // 	  text.setColor(Color(255, 0, 0));
+//  // 	else if (matter < 20)
+//  // 	  text.setColor(Color(255, 255, 0));
+//  //   text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING);
+//  //   _app.draw(text);
+//  // 	text.setColor(Color(255, 255, 255));
+//  // }
+//
+//  // {
+//  //   std.ostringstream oss;
+//  //   oss + "Power: " + ResourceManager.getInstance().getPower();
+//
+//  //   text.setString(oss.str());
+//  //   text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT);
+//  //   _app.draw(text);
+//  // }
+//
+//  // {
+//  //   std.ostringstream oss;
+//  //   oss + "O2: " + ResourceManager.getInstance().getO2();
+//
+//  //   text.setString(oss.str());
+//  //   text.setPosition(_posTileX + UI_PADDING, TITLE_SIZE + UI_PADDING + UI_PADDING + LINE_HEIGHT * 2);
+//  //   _app.draw(text);
+//  // }
+//
+//  text.setString("Research");
+//  text.setCharacterSize(TITLE_SIZE);
+//  text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + Constant.UI_PADDING);
+//  _app.draw(text);
+//  text.setString("R");
+//  text.setStyle(Text.UNDERLINED);
+//  text.setColor(Color.YELLOW);
+//  _app.draw(text);
 }
 
 protected boolean	checkKey(Keyboard.Key key) {

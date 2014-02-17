@@ -6,7 +6,7 @@ import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
 import alone.in.DeepSpace.MainRenderer;
-import alone.in.DeepSpace.SpriteManager;
+import alone.in.DeepSpace.Managers.SpriteManager;
 
 public class UIText extends UIView {
 

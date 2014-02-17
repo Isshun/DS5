@@ -1,4 +1,4 @@
-package alone.in.DeepSpace;
+package alone.in.DeepSpace.Managers;
 import java.util.Vector;
 
 import alone.in.DeepSpace.Models.Character;

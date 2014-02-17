@@ -9,9 +9,9 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.Transform;
 import org.jsfml.window.Mouse;
 
-import alone.in.DeepSpace.JobManager;
 import alone.in.DeepSpace.MainRenderer;
 import alone.in.DeepSpace.Viewport;
+import alone.in.DeepSpace.Managers.JobManager;
 import alone.in.DeepSpace.Models.BaseItem;
 import alone.in.DeepSpace.Models.Cursor;
 import alone.in.DeepSpace.Models.ItemInfo;
@@ -80,8 +80,8 @@ public class UserInteraction {
 		int width = 1;
 		int height = 1;
 		if (itemInfo != null) {
-			width = itemInfo.mWidth;
-			height = itemInfo.mHeight;
+			width = itemInfo.width;
+			height = itemInfo.height;
 		}
 			
 		

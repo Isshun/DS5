@@ -4,14 +4,9 @@ import java.io.IOException;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
-import alone.in.DeepSpace.CharacterManager;
-import alone.in.DeepSpace.Models.Profession;
-import alone.in.DeepSpace.UserInterface.Utils.OnClickListener;
 import alone.in.DeepSpace.UserInterface.Utils.UIText;
-import alone.in.DeepSpace.UserInterface.Utils.UIView;
 import alone.in.DeepSpace.Utils.Constant;
 
 public class PanelSystem extends UserSubInterface {
@@ -20,6 +15,7 @@ public class PanelSystem extends UserSubInterface {
 	private UIText _lbRenderTime;
 	private UIText _lbMemoryUsed;
 	private UIText _lbMemoryTotal;
+	private int _used;
 	
 	public PanelSystem(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
@@ -54,8 +50,10 @@ public class PanelSystem extends UserSubInterface {
         int total = (int) (runtime.totalMemory() / mb);
         int max = (int) (runtime.maxMemory() / mb);
         
+        _used = (_used * 7 + used) / 8;
+
         _lbRenderTime.setString(renderTime + "ms");
-        _lbMemoryUsed.setString(String.valueOf(used));
+        _lbMemoryUsed.setString(String.valueOf(_used));
         _lbMemoryTotal.setString(String.valueOf(total));
 	}
 }

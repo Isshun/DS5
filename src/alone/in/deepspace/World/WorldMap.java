@@ -1,13 +1,16 @@
 package alone.in.DeepSpace.World;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import alone.in.DeepSpace.JobManager;
+import alone.in.DeepSpace.Managers.JobManager;
 import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.DeepSpace.Models.BaseItem.Type;
 import alone.in.DeepSpace.Models.Room;
 import alone.in.DeepSpace.Utils.Log;
 
@@ -45,6 +48,44 @@ public class WorldMap {
 		}
 
 		public void	create() {
+		}
+
+		public void	save(final String filePath) {
+			Log.info("Save worldmap: " + filePath);
+
+			try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+				bw.write("BEGIN WORLDMAP\n");
+				for (int x = 0; x < _width; x++) {
+					for (int y = 0; y < _height; y++) {
+						if (_items[x][y] != null) {
+							WorldArea area = _items[x][y];
+							StructureItem structureItem = area.getStructure();
+							UserItem userItem = area.getItem();
+							WorldRessource ressource = area.getRessource();
+							
+							if (structureItem != null) {
+								bw.write(x + "\t" + y + "\t" + structureItem.getType().ordinal() + "\t" + structureItem.getMatterSupply() + "\n");
+							}
+		
+							if (userItem != null) {
+								bw.write(x + "\t" + y + "\t" + userItem.getType().ordinal() + "\t" + userItem.getMatterSupply() + "\n");
+							}
+		
+							if (ressource != null) {
+								bw.write(x + "\t" + y + "\t" + ressource.getType().ordinal() + "\t" + ressource.getMatterSupply() + "\n");
+							}
+						}
+					}
+				}
+				bw.write("END WORLDMAP\n");
+			} catch (FileNotFoundException e) {
+				Log.error("Unable to open save file: " + filePath);
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			Log.info("Save worldmap: " + filePath + " done");
 		}
 
 		public void	load(final String filePath) {
@@ -144,32 +185,6 @@ public class WorldMap {
 			//if (_count % 10 == 0) {
 				addRandomSeed();
 			//}
-		}
-
-		void	save(final String filePath) {
-//		  ofstream ofs(filePath, ios_base.app);
-//
-//		  if (ofs.is_open()) {
-//			ofs + "BEGIN WORLDMAP\n";
-//			for (int x = 0; x < _width; x++) {
-//			  for (int y = 0; y < _height; y++) {
-//				if (_items[x][y] != null) {
-//				  WorldArea area = _items[x][y];
-//				  ofs + x + "\t" + y + "\t" + area.getType() + "\t" + area.getMatterSupply() + "\n";
-//
-//				  if (area.getItem() != null) {
-//					BaseItem item = area.getItem();
-//					ofs + x + "\t" + y + "\t" + item.getType() + "\t" + area.getMatterSupply() + "\n";
-//				  }
-//				}
-//			  }
-//			}
-//			ofs + "END WORLDMAP\n";
-//
-//			ofs.close();
-//		  } else {
-//			Error() + "Unable to open save file: " + filePath;
-//		  }
 		}
 
 		public BaseItem	find(BaseItem.Type type, boolean free) {
@@ -513,7 +528,7 @@ public class WorldMap {
 		  return  -1;
 		}
 
-		public BaseItem 			getItem(int x, int y) {
+		public UserItem 			getItem(int x, int y) {
 			return (x < 0 || x >= _width || y < 0 || y >= _height) || _items[x][y] == null ? null : _items[x][y].getItem();
 		}
 		
@@ -541,6 +556,33 @@ public class WorldMap {
 			
 		public int					getWidth() { return _width; }
 		public int					getHeight() { return _height; }
+
+		public UserItem getNearest(Type type, int startX, int startY) {
+			int maxX = Math.max(startX, _width - startX);
+			int maxY = Math.max(startY, _height - startY);
+			for (int offsetX = 0; offsetX < maxX; offsetX++) {
+				for (int offsetY = 0; offsetY < maxY; offsetY++) {
+					if (isItemTypeAtPos(startX + offsetX, startY + offsetY, type)) {
+						return getItem(startX + offsetX, startY + offsetY);
+					}
+					if (isItemTypeAtPos(startX - offsetX, startY - offsetY, type)) {
+						return getItem(startX - offsetX, startY - offsetY);
+					}
+					if (isItemTypeAtPos(startX + offsetX, startY - offsetY, type)) {
+						return getItem(startX + offsetX, startY - offsetY);
+					}
+					if (isItemTypeAtPos(startX - offsetX, startY + offsetY, type)) {
+						return getItem(startX - offsetX, startY + offsetY);
+					}
+				}
+			}
+			return null;
+		}
+
+		private boolean isItemTypeAtPos(int x, int y, Type type) {
+			UserItem item = getItem(x, y);
+			return (item != null && item.isType(type));
+		}
 
 
 }

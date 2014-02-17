@@ -4,14 +4,13 @@ import java.io.IOException;
 
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Text;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.event.Event;
 
-import alone.in.DeepSpace.CharacterManager;
 import alone.in.DeepSpace.Viewport;
+import alone.in.DeepSpace.Managers.CharacterManager;
 import alone.in.DeepSpace.Models.Character;
 import alone.in.DeepSpace.Utils.Constant;
 import alone.in.DeepSpace.Utils.Log;
@@ -46,11 +45,15 @@ public class UserInterface {
 	private Font 				_font;
 	private PanelBase _panelBase;
 	private PanelSystem _panelSystem;
+	private PanelShortcut _panelShortcut;
 	
-	private enum Mode {
+	public enum Mode {
 		BASE,
 		INFO,
 		DEBUG,
+		BUILD,
+		CREW,
+		JOBS,
 		CHARACTER
 	}
 	
@@ -70,6 +73,8 @@ public class UserInterface {
 	  _panelDebug = new PanelDebug(app);
 	  _panelSystem = new PanelSystem(app);
 	  _panelSystem.setVisible(true);
+	  _panelShortcut = new PanelShortcut(app, this);
+	  _panelShortcut.setVisible(true);
 
 	  _interaction = new UserInteraction(_viewport);
 	  _uiEngeneering = new UserInterfaceEngineering(app, 3, _interaction);
@@ -178,45 +183,46 @@ public class UserInterface {
 			return;
 		}
 		
-	  if (_uiEngeneering.mouseRelease(button, x, y)) {
-		_uiSecurity.close();
-		_uiScience.close();
-		_uiCharacter.close();
-		_uiBase.close();
-		return;
-	  }
-	
-	  if (_uiCharacter.mouseRelease(button, x, y)) {
-		_uiSecurity.close();
-		_uiScience.close();
-		_uiEngeneering.close();
-		_uiBase.close();
-		return;
-	  }
-	
-	  if (_uiBase.mouseRelease(button, x, y)) {
-		_uiSecurity.close();
-		_uiScience.close();
-		_uiCharacter.close();
-		_uiEngeneering.close();
-		return;
-	  }
-	
-	  if (_uiScience.mouseRelease(button, x, y)) {
-		_uiSecurity.close();
-		_uiCharacter.close();
-		_uiEngeneering.close();
-		_uiBase.close();
-		return;
-	  }
-	
-	  if (_uiSecurity.mouseRelease(button, x, y)) {
-		_uiScience.close();
-		_uiCharacter.close();
-		_uiEngeneering.close();
-		_uiBase.close();
-		return;
-	  }
+//	  if (_uiEngeneering.mouseRelease(button, x, y)) {
+//		  setMode(Mode.BUILD);
+//		_uiSecurity.close();
+//		_uiScience.close();
+//		_uiCharacter.close();
+//		_uiBase.close();
+//		return;
+//	  }
+//	
+//	  if (_uiCharacter.mouseRelease(button, x, y)) {
+//		_uiSecurity.close();
+//		_uiScience.close();
+//		_uiEngeneering.close();
+//		_uiBase.close();
+//		return;
+//	  }
+//	
+//	  if (_uiBase.mouseRelease(button, x, y)) {
+//		_uiSecurity.close();
+//		_uiScience.close();
+//		_uiCharacter.close();
+//		_uiEngeneering.close();
+//		return;
+//	  }
+//	
+//	  if (_uiScience.mouseRelease(button, x, y)) {
+//		_uiSecurity.close();
+//		_uiCharacter.close();
+//		_uiEngeneering.close();
+//		_uiBase.close();
+//		return;
+//	  }
+//	
+//	  if (_uiSecurity.mouseRelease(button, x, y)) {
+//		_uiScience.close();
+//		_uiCharacter.close();
+//		_uiEngeneering.close();
+//		_uiBase.close();
+//		return;
+//	  }
 	
 	  if (_interaction.mouseRelease(button, x, y)) {
 		return;
@@ -269,13 +275,15 @@ public class UserInterface {
 	  }
 	}
 	
-	private void setMode(Mode info) {
+	public void setMode(Mode info) {
 		_panelCharacter.setVisible(false);
 		_panelInfo.setVisible(false);
 		_panelDebug.setVisible(false);
 		_panelBase.setVisible(false);
+		_uiEngeneering.setVisible(false);
 		
 		switch (info) {
+		case BUILD: _uiEngeneering.setVisible(true); break;
 		case INFO: _panelInfo.setVisible(true); break;
 		case DEBUG: _panelDebug.setVisible(true); break;
 		case CHARACTER: _panelCharacter.setVisible(true); break;
@@ -296,7 +304,8 @@ public class UserInterface {
 	    _panelInfo.refresh(frame);
 	  	_panelDebug.refresh(frame, _interaction.getCursor().getX(), _interaction.getCursor().getY());
 	  	_panelSystem.refresh(renderTime);
-	
+	  	_panelShortcut.refresh();
+	  	
 	  	_interaction.refreshCursor();
 	
 	  	_uiCharacter.draw(frame);
@@ -304,10 +313,10 @@ public class UserInterface {
 	  	_uiSecurity.draw(frame);
 	  	_uiBase.draw(frame);
 	  	_uiEngeneering.draw(frame);
+	  	_uiEngeneering.refresh();
 	}
 	
 	public boolean checkKeyboard(Event	event, int frame, int lastInput) {
-	
 	  if (_uiEngeneering.checkKey(event.asKeyEvent().key)) {
 		return true;
 	  }
@@ -358,6 +367,7 @@ public class UserInterface {
 	  }
 	  else if (event.asKeyEvent().key == Keyboard.Key.E) {
 		_uiEngeneering.open();
+		_uiEngeneering.setVisible(true);
 	  }
 	  else if (event.asKeyEvent().key == Keyboard.Key.O) {
 		_uiBase.toogleTile();

@@ -1,4 +1,4 @@
-package alone.in.DeepSpace;
+package alone.in.DeepSpace.Managers;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -59,7 +59,7 @@ public class CharacterManager {
 	}
 
 
-	void	assignJobs() {
+	public void	assignJobs() {
 
 	  if (JobManager.getInstance().getCountFree() > 0) {
 		for (Character c: _characters) {
@@ -75,7 +75,7 @@ public class CharacterManager {
 	  }
 	}
 
-	void	create() {
+	public void	create() {
 	  add(0, 0, Profession.Type.ENGINEER);
 	  add(1, 0, Profession.Type.OPERATION);
 	  add(2, 0, Profession.Type.DOCTOR);
@@ -83,7 +83,7 @@ public class CharacterManager {
 	  add(4, 0, Profession.Type.SECURITY);
 	}
 
-	void	load(final String filePath) {
+	public void	load(final String filePath) {
 		Log.error("Load characters: " + filePath);
 
 		int x, y, professionType;
@@ -187,7 +187,7 @@ public class CharacterManager {
 	  return professions;
 	}
 
-	void    update(int count) {
+	public void    update(int count) {
 	  for (Character c: _characters) {
 		c.action();
 	    c.update();
@@ -280,7 +280,7 @@ public class CharacterManager {
 	  return bestCharacter;
 	}
 
-	Character		add(int x, int y) {
+	public Character		add(int x, int y) {
 	  if (_count + 1 > Constant.LIMIT_CHARACTER) {
 		Log.error("LIMIT_CHARACTER reached");
 		return null;
@@ -317,7 +317,7 @@ public class CharacterManager {
 	  return null;
 	}
 
-	void	refresh(RenderWindow app, RenderStates render, double animProgress) throws IOException {
+	public void	refresh(RenderWindow app, RenderStates render, double animProgress) throws IOException {
 
 	  for (Character c: _characters) {
 		int posX = c.getX() * Constant.TILE_SIZE - (Constant.CHAR_WIDTH - Constant.TILE_SIZE) + 2;

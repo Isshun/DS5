@@ -11,7 +11,7 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
-import alone.in.DeepSpace.SpriteManager;
+import alone.in.DeepSpace.Managers.SpriteManager;
 import alone.in.DeepSpace.Models.BaseItem;
 import alone.in.DeepSpace.UserInterface.UserInterface;
 import alone.in.DeepSpace.Utils.Constant;
@@ -91,7 +91,7 @@ public class WorldRenderer {
 			StructureItem item = WorldMap.getInstance().getStructure(i, j);
 			if (item != null) {
 				if (item.isType(BaseItem.Type.STRUCTURE_DOOR)) {
-					Sprite sprite = _spriteManager.getSprite(item);
+					Sprite sprite = _spriteManager.getItem(item);
 					sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
 					_app.draw(sprite, render);
 				} else {
@@ -243,7 +243,7 @@ public class WorldRenderer {
 
 					// Draw item
 					if (item.getType() != BaseItem.Type.STRUCTURE_FLOOR && item.isStructure() == false) {
-						Sprite sprite = _spriteManager.getSprite(item);
+						Sprite sprite = _spriteManager.getItem(item);
 
 						if (item.isStructure()) {
 							sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);

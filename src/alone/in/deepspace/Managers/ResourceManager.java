@@ -1,4 +1,4 @@
-package alone.in.DeepSpace;
+package alone.in.DeepSpace.Managers;
 
 import alone.in.DeepSpace.Models.BaseItem;
 
@@ -66,7 +66,7 @@ public class ResourceManager {
 		  }
 		}
 
-		void setMatter(int matter) { _matter = matter; }
+		public void setMatter(int matter) { _matter = matter; }
 		  public void addMatter(int value) { _matter += value; }
 
 		  public int getO2() { return (int) (_o2Use == 0 ? 100 : _o2Supply >= _o2Use ? 100 : _o2Supply * 100.0f / _o2Use); }

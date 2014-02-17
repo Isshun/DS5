@@ -13,8 +13,12 @@ import org.jsfml.graphics.Transform;
 import org.jsfml.system.Clock;
 import org.jsfml.system.Time;
 import org.jsfml.window.Keyboard;
+import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.event.Event;
 
+import alone.in.DeepSpace.Managers.CharacterManager;
+import alone.in.DeepSpace.Managers.ResourceManager;
+import alone.in.DeepSpace.Managers.SpriteManager;
 import alone.in.DeepSpace.Models.BaseItem;
 import alone.in.DeepSpace.Models.Room;
 import alone.in.DeepSpace.UserInterface.UserInterface;
@@ -285,6 +289,11 @@ public class Game {
 				// Check key code
 				if (event.type == Event.Type.KEY_RELEASED) {
 
+					if (event.asKeyEvent().control && event.asKeyEvent().key == Key.S) {
+						save("saves/2.sav");
+						continue;
+					}
+					
 					// If not consumes by UI
 					if (_ui.checkKeyboard(event, _frame, _lastInput) == false) {
 						Log.info("Game: suspend");
@@ -410,7 +419,7 @@ public class Game {
 //	  // ofstream ofs(filePath);
 //	  // ofs.close();
 //
-//	  WorldMap.getInstance().save(filePath);
+	  WorldMap.getInstance().save(filePath);
 //	  CharacterManager.getInstance().save(filePath);
 	}
 

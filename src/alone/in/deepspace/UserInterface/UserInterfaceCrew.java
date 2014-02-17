@@ -12,9 +12,9 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
-import alone.in.DeepSpace.CharacterManager;
-import alone.in.DeepSpace.ResourceManager;
-import alone.in.DeepSpace.SpriteManager;
+import alone.in.DeepSpace.Managers.CharacterManager;
+import alone.in.DeepSpace.Managers.ResourceManager;
+import alone.in.DeepSpace.Managers.SpriteManager;
 import alone.in.DeepSpace.Models.Character;
 import alone.in.DeepSpace.Models.Profession;
 import alone.in.DeepSpace.Utils.Constant;
@@ -74,7 +74,7 @@ public class UserInterfaceCrew extends UserSubInterface {
 	}
 	
 	void	draw(int frame) {
-	  if (_isOpen) {
+	  if (_isVisible) {
 		drawPanel(frame);
 	  }
 	  drawTile();
@@ -91,46 +91,46 @@ public class UserInterfaceCrew extends UserSubInterface {
 	}
 	
 	void	drawTile() {
-	  super.drawTile(COLOR_TILE_ACTIVE);
-	
-	  Text text = new Text();
-	  text.setFont(SpriteManager.getInstance().getFont());
-	  text.setCharacterSize(FONT_SIZE);
-	
-	  {
-		int matter = ResourceManager.getInstance().getMatter();
-		text.setString("Total: " + CharacterManager.getInstance().getCount());
-	    text.setPosition(_posTileX,
-						 _posTileY + TITLE_SIZE + Constant.UI_PADDING);
-	    _app.draw(text);
-	  }
-	
-	  Profession[] professions = CharacterManager.getInstance().getProfessions();
-	  for (int i = 0; i < professions.length; i++) {
-		RectangleShape shape = new RectangleShape();
-		shape.setSize(new Vector2f(24, 24));
-		shape.setFillColor(professions[i].getColor());
-		shape.setPosition(Constant.UI_PADDING + (i * 28),
-						  _posTileY + TITLE_SIZE + Constant.UI_PADDING + 32);
-		_app.draw(shape);
-	
-		int count = CharacterManager.getInstance().getCount(professions[i].getType());
-		text.setString(String.valueOf(count));
-		text.setColor(professions[i].getTextColor());
-		text.setCharacterSize(10);
-		text.setPosition(Constant.UI_PADDING + (i * 28) + (count < 10 ? 6 : 2),
-						 _posTileY + TITLE_SIZE + Constant.UI_PADDING + 32 + 5);
-	    _app.draw(text);
-	  }
-	
-	  text.setString("Crew");
-	  text.setCharacterSize(TITLE_SIZE);
-	  text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + Constant.UI_PADDING);
-	  _app.draw(text);
-	  text.setString("C");
-	  text.setStyle(Text.UNDERLINED);
-	  text.setColor(Color.YELLOW);
-	  _app.draw(text);
+//	  super.drawTile(COLOR_TILE_ACTIVE);
+//	
+//	  Text text = new Text();
+//	  text.setFont(SpriteManager.getInstance().getFont());
+//	  text.setCharacterSize(FONT_SIZE);
+//	
+//	  {
+//		int matter = ResourceManager.getInstance().getMatter();
+//		text.setString("Total: " + CharacterManager.getInstance().getCount());
+//	    text.setPosition(_posTileX,
+//						 _posTileY + TITLE_SIZE + Constant.UI_PADDING);
+//	    _app.draw(text);
+//	  }
+//	
+//	  Profession[] professions = CharacterManager.getInstance().getProfessions();
+//	  for (int i = 0; i < professions.length; i++) {
+//		RectangleShape shape = new RectangleShape();
+//		shape.setSize(new Vector2f(24, 24));
+//		shape.setFillColor(professions[i].getColor());
+//		shape.setPosition(Constant.UI_PADDING + (i * 28),
+//						  _posTileY + TITLE_SIZE + Constant.UI_PADDING + 32);
+//		_app.draw(shape);
+//	
+//		int count = CharacterManager.getInstance().getCount(professions[i].getType());
+//		text.setString(String.valueOf(count));
+//		text.setColor(professions[i].getTextColor());
+//		text.setCharacterSize(10);
+//		text.setPosition(Constant.UI_PADDING + (i * 28) + (count < 10 ? 6 : 2),
+//						 _posTileY + TITLE_SIZE + Constant.UI_PADDING + 32 + 5);
+//	    _app.draw(text);
+//	  }
+//	
+//	  text.setString("Crew");
+//	  text.setCharacterSize(TITLE_SIZE);
+//	  text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + Constant.UI_PADDING);
+//	  _app.draw(text);
+//	  text.setString("C");
+//	  text.setStyle(Text.UNDERLINED);
+//	  text.setColor(Color.YELLOW);
+//	  _app.draw(text);
 	}
 	
 	protected boolean	checkKey(Keyboard.Key key) {

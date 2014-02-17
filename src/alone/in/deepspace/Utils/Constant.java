@@ -43,6 +43,8 @@ public class Constant {
 	public static final int BLOCKED_COUNT_BEFORE_MESSAGE = 2;
 	public static final int MOVE_VIEW_OFFSET = 10;
 	public static final int FONT_SIZE = 20;
+	public static final int PANEL_WIDTH = 380;
+	public static final int PANEL_HEIGHT = WINDOW_HEIGHT;
 
 	
 }

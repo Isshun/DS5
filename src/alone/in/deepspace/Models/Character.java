@@ -1,10 +1,10 @@
 package alone.in.DeepSpace.Models;
 import java.util.Vector;
 
-import alone.in.DeepSpace.CharacterManager;
-import alone.in.DeepSpace.JobManager;
-import alone.in.DeepSpace.PathManager;
-import alone.in.DeepSpace.ResourceManager;
+import alone.in.DeepSpace.Managers.CharacterManager;
+import alone.in.DeepSpace.Managers.JobManager;
+import alone.in.DeepSpace.Managers.PathManager;
+import alone.in.DeepSpace.Managers.ResourceManager;
 import alone.in.DeepSpace.Utils.Constant;
 import alone.in.DeepSpace.Utils.Log;
 import alone.in.DeepSpace.World.StructureItem;
@@ -206,6 +206,8 @@ public class Character implements PathManagerCallback {
 	public boolean			getSelected() { return _selected; }
 	public int				getFrameIndex() { return _frameIndex++; }
 	public int				getOffset() { return _offset; }
+	public int 				getPosX() { return _posX; }
+	public int 				getPosY() { return _posY; }
 	public int				getProfessionScore(Profession.Type professionEngineer) { return 42; }
 	
 	@Override
@@ -554,6 +556,7 @@ void		actionUse() {
 	item.setOwner(this);
   }
 
+  JobManager.getInstance().complete(_job);
   _job = null;
 }
 

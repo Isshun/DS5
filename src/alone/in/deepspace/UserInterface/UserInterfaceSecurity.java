@@ -9,8 +9,8 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
-import alone.in.DeepSpace.ResourceManager;
-import alone.in.DeepSpace.SpriteManager;
+import alone.in.DeepSpace.Managers.ResourceManager;
+import alone.in.DeepSpace.Managers.SpriteManager;
 import alone.in.DeepSpace.Utils.Constant;
 
 
@@ -101,48 +101,48 @@ public class UserInterfaceSecurity extends UserSubInterface {
 	}
 
 	void	drawTile() {
-	  super.drawTile(TILE_ACTIVE_COLOR);
-
-	  Text text = new Text();
-	  text.setFont(SpriteManager.getInstance().getFont());
-	  text.setCharacterSize(FONT_SIZE);
-
-	  {
-		int matter = ResourceManager.getInstance().getMatter();
-		text.setString("Matter: " + matter);
-
-		if (matter == 0)
-		  text.setColor(Color.RED);
-		else if (matter < 20)
-		  text.setColor(Color.YELLOW);
-	    text.setPosition(_posTileX + Constant.UI_PADDING,
-						 _posTileY + TITLE_SIZE + Constant.UI_PADDING);
-	    _app.draw(text);
-		text.setColor(Color.WHITE);
-	  }
-
-	  {
-	    text.setString("Power: " + ResourceManager.getInstance().getPower());
-	    text.setPosition(_posTileX + Constant.UI_PADDING,
-						 _posTileY + TITLE_SIZE + Constant.UI_PADDING + LINE_HEIGHT);
-	    _app.draw(text);
-	  }
-
-	  {
-	    text.setString("O2: " + ResourceManager.getInstance().getO2());
-	    text.setPosition(_posTileX + Constant.UI_PADDING,
-						 _posTileY + TITLE_SIZE + Constant.UI_PADDING + LINE_HEIGHT * 2);
-	    _app.draw(text);
-	  }
-
-	  text.setString("Security");
-	  text.setCharacterSize(TITLE_SIZE);
-	  text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + Constant.UI_PADDING);
-	  _app.draw(text);
-	  text.setString("S");
-	  text.setStyle(Text.UNDERLINED);
-	  text.setColor(Color.YELLOW);
-	  _app.draw(text);
+//	  super.drawTile(TILE_ACTIVE_COLOR);
+//
+//	  Text text = new Text();
+//	  text.setFont(SpriteManager.getInstance().getFont());
+//	  text.setCharacterSize(FONT_SIZE);
+//
+//	  {
+//		int matter = ResourceManager.getInstance().getMatter();
+//		text.setString("Matter: " + matter);
+//
+//		if (matter == 0)
+//		  text.setColor(Color.RED);
+//		else if (matter < 20)
+//		  text.setColor(Color.YELLOW);
+//	    text.setPosition(_posTileX + Constant.UI_PADDING,
+//						 _posTileY + TITLE_SIZE + Constant.UI_PADDING);
+//	    _app.draw(text);
+//		text.setColor(Color.WHITE);
+//	  }
+//
+//	  {
+//	    text.setString("Power: " + ResourceManager.getInstance().getPower());
+//	    text.setPosition(_posTileX + Constant.UI_PADDING,
+//						 _posTileY + TITLE_SIZE + Constant.UI_PADDING + LINE_HEIGHT);
+//	    _app.draw(text);
+//	  }
+//
+//	  {
+//	    text.setString("O2: " + ResourceManager.getInstance().getO2());
+//	    text.setPosition(_posTileX + Constant.UI_PADDING,
+//						 _posTileY + TITLE_SIZE + Constant.UI_PADDING + LINE_HEIGHT * 2);
+//	    _app.draw(text);
+//	  }
+//
+//	  text.setString("Security");
+//	  text.setCharacterSize(TITLE_SIZE);
+//	  text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + Constant.UI_PADDING);
+//	  _app.draw(text);
+//	  text.setString("S");
+//	  text.setStyle(Text.UNDERLINED);
+//	  text.setColor(Color.YELLOW);
+//	  _app.draw(text);
 	}
 
 	protected boolean	checkKey(Keyboard.Key key) {

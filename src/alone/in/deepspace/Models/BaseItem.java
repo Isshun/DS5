@@ -10,16 +10,14 @@ public class BaseItem {
 		new ItemInfo(Type.STRUCTURE_DOOR,							"DOOR", false,	1, 1, 1, 0, 0),
 		new ItemInfo(Type.STRUCTURE_WINDOW,							"WINDOW", true,	1, 1, 1, 0, 0),
 //		new ItemInfo(Type.TRANSPORTATION_TRANSPORTER_SYSTEMS,		"SYSTEMS", false,	1, 1, 10, 10, UserInterfaceMenu.CODE_ZONE_OPERATION),
-//		new ItemInfo(Type.QUARTER_BED,								"BED", false,	2, 2, 4, 0, UserInterfaceMenu.CODE_ZONE_QUARTER),
-//		new ItemInfo(Type.QUARTER_CHAIR,								"CHAIR", false,	1, 1, 2, 0, UserInterfaceMenu.CODE_ZONE_QUARTER),
+		new ItemInfo(Type.QUARTER_BED,								"BED", false,	2, 2, 4, 0, 0),
+		new ItemInfo(Type.QUARTER_CHAIR,								"CHAIR", false,	1, 1, 2, 0, 0),
 //		new ItemInfo(Type.HOLODECK_GRID,								"GRID", false,	1, 1, 6, 6, UserInterfaceMenu.CODE_ZONE_HOLODECK),
 //		new ItemInfo(Type.BAR_PUB,									"PUB", false,	1, 1, 5, 0, UserInterfaceMenu.CODE_ZONE_BAR),
 //		new ItemInfo(Type.ENGINE_CONTROL_CENTER,						"CENTER", false,	3, 2, 10, 5, UserInterfaceMenu.CODE_ZONE_ENGINE),
 //		new ItemInfo(Type.ENGINE_REACTION_CHAMBER,					"CHAMBER", false,	2, 3, 50, -200, UserInterfaceMenu.CODE_ZONE_ENGINE),
-//		new ItemInfo(Type.SICKBAY_BIOBED,							"BIOBED", false,	1, 2, 10, 10, UserInterfaceMenu.CODE_ZONE_SICKBAY),
-		new ItemInfo(Type.QUARTER_BED,								"1", false,	1, 2, 2, 0, 0),
+		new ItemInfo(Type.SICKBAY_BIOBED,							"BIOBED", false,	1, 2, 10, 10, 0),
 		new ItemInfo(Type.QUARTER_DESK,								"1", false,	1, 2, 2, 0, 0),
-		new ItemInfo(Type.QUARTER_CHAIR,							"1", false,	1, 2, 2, 0, 0),
 		new ItemInfo(Type.QUARTER_WARDROBE,							"1", false,	1, 2, 2, 0, 0),
 		new ItemInfo(Type.QUARTER_CHEST,							"1", false,	1, 2, 2, 0, 0),
 		new ItemInfo(Type.QUARTER_BEDSIDE_TABLE,					"1", false,	1, 2, 2, 0, 0),
@@ -130,28 +128,28 @@ public class BaseItem {
 	  isSolid = false;
 
 	  for (ItemInfo info: _itemInfo) {
-		if (info.mType == t) {
-		  _name = info.mName;
-		  _width = info.mWidth;
-		  _height = info.mHeight;
-		  _zoneId = info.mZone;
-		  _zoneIdRequired = info.mZone;
-		  matter = info.mMatter;
-		  power = info.mPower;
+		if (info.type == t) {
+		  _name = info.name;
+		  _width = info.width;
+		  _height = info.height;
+		  _zoneId = info.zone;
+		  _zoneIdRequired = info.zone;
+		  matter = info.matter;
+		  power = info.power;
 		  powerSupply = 0;
-		  isSolid = info.mSolid;
+		  isSolid = info.solid;
 		}
 	  }
 	}
 
 	public static ItemInfo getItemInfo(Type type) {
 		for (ItemInfo info: _itemInfo) {
-			if (info.mType == type) {
+			if (info.type == type) {
 				return info;
 			}
 		}
 
-		return null;
+		return _itemInfo[_itemInfo.length-1];
 	}
 
 	public void	setOwner(Character character) {

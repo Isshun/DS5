@@ -30,16 +30,15 @@ public class UserSubInterface extends UIFrame {
 		  protected int				_posTileX;
 		  protected int				_posTileY;
 		  protected boolean			_isTileActive;
-		  protected boolean			_isOpen;
 		  int				_tileIndex;
 		  
 		  void	openTile() { _isTileActive = true; }
 		  void	closeTile() { _isTileActive = false; }
 		  public void	toogleTile() { _isTileActive = !_isTileActive; }
-		  protected void	toogle() { _isOpen = !_isOpen; }
-		  public void	open() { _isOpen = true; }
-		  public void	close() { _isOpen = false; }
-		  protected boolean	isOpen() { return _isOpen; }
+		  protected void	toogle() { _isVisible = !_isVisible; }
+		  public void	open() { _isVisible = true; }
+		  public void	close() { _isVisible = false; }
+		  protected boolean	isOpen() { return _isVisible; }
 		  boolean	isTileActive() { return _isTileActive; }
 
 	public UserSubInterface(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size) throws IOException {
@@ -49,14 +48,14 @@ public class UserSubInterface extends UIFrame {
 		
 		_app = app;
 
-		_posX = 200;
-		_posY = 200;
+		_posX = (int) pos.x;
+		_posY = (int) pos.y;
 
 		_posTileX = (Constant.MENU_TILE_WIDTH + Constant.UI_PADDING + Constant.UI_PADDING) * tileIndex + Constant.UI_PADDING;
 		_posTileY = Constant.WINDOW_HEIGHT - 180 - Constant.UI_PADDING;
 		_tileIndex = tileIndex;
 		_isTileActive = false;
-		_isOpen = false;
+		_isVisible = false;
 
 		_textureTile = new Texture();
 		_textureTile.loadFromFile((new File("res/bg_tile_base.png")).toPath());
@@ -72,9 +71,9 @@ public class UserSubInterface extends UIFrame {
 	}
 
 	protected boolean	checkKey(Keyboard.Key key) {
-		if (_isOpen) {
+		if (_isVisible) {
 			if (key == Keyboard.Key.ESCAPE) {
-				_isOpen = false;
+				_isVisible = false;
 				return true;
 			}
 		}
@@ -84,7 +83,7 @@ public class UserSubInterface extends UIFrame {
 	public boolean	onMouseMove(int x, int y) {
 		_isTileActive = false;
 		
-		if (_isOpen && x > _posX && x < _posX + 800 && y > _posY && y < _posY + 600) {
+		if (_isVisible && x > _posX && x < _posX + 800 && y > _posY && y < _posY + 600) {
 			return true;
 		}
 
@@ -97,7 +96,7 @@ public class UserSubInterface extends UIFrame {
 	}
 
 	public boolean	mousePress(Mouse.Button button, int x, int y) {
-		if (_isOpen) {
+		if (_isVisible) {
 			return true;
 		}
 		return false;
@@ -107,13 +106,13 @@ public class UserSubInterface extends UIFrame {
 
 		// On tile
 		if (x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120) {
-			_isOpen = !_isOpen;
+			_isVisible = !_isVisible;
 			_isTileActive = true;
 			return true;
 		}
 
 		// Panel open
-		else if (_isOpen) {
+		else if (_isVisible) {
 			return true;
 		}
 

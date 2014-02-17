@@ -3,8 +3,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import javax.crypto.spec.PSource;
-
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderWindow;
@@ -13,9 +11,9 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
-import alone.in.DeepSpace.JobManager;
-import alone.in.DeepSpace.ResourceManager;
-import alone.in.DeepSpace.SpriteManager;
+import alone.in.DeepSpace.Managers.JobManager;
+import alone.in.DeepSpace.Managers.ResourceManager;
+import alone.in.DeepSpace.Managers.SpriteManager;
 import alone.in.DeepSpace.Models.BaseItem;
 import alone.in.DeepSpace.Models.Job;
 import alone.in.DeepSpace.Utils.Constant;
@@ -44,39 +42,39 @@ public class UserInterfaceMenuOperation extends UserSubInterface {
 	}
 
 	void	draw(int frame) {
-	  if (_isOpen) {
+	  if (_isVisible) {
 		drawJobs();
 	  }
 	  drawTile();
 	}
 
 	void	drawTile() {
-	  super.drawTile(COLOR_TILE_ACTIVE);
-
-	  Text text = new Text();
-	  text.setFont(SpriteManager.getInstance().getFont());
-	  text.setCharacterSize(FONT_SIZE);
-
-	  {
-	    text.setString("Power: " + ResourceManager.getInstance().getPower());
-	    text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + TITLE_SIZE + Constant.UI_PADDING + LINE_HEIGHT * 0);
-	    _app.draw(text);
-	  }
-
-	  {
-	    text.setString("O2: " + ResourceManager.getInstance().getO2());
-	    text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + TITLE_SIZE + Constant.UI_PADDING + LINE_HEIGHT * 1);
-	    _app.draw(text);
-	  }
-
-	  text.setString("Operation");
-	  text.setCharacterSize(TITLE_SIZE);
-	  text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + Constant.UI_PADDING);
-	  _app.draw(text);
-	  text.setString("O");
-	  text.setStyle(Text.UNDERLINED);
-	  text.setColor(Color.YELLOW);
-	  _app.draw(text);
+//	  super.drawTile(COLOR_TILE_ACTIVE);
+//
+//	  Text text = new Text();
+//	  text.setFont(SpriteManager.getInstance().getFont());
+//	  text.setCharacterSize(FONT_SIZE);
+//
+//	  {
+//	    text.setString("Power: " + ResourceManager.getInstance().getPower());
+//	    text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + TITLE_SIZE + Constant.UI_PADDING + LINE_HEIGHT * 0);
+//	    _app.draw(text);
+//	  }
+//
+//	  {
+//	    text.setString("O2: " + ResourceManager.getInstance().getO2());
+//	    text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + TITLE_SIZE + Constant.UI_PADDING + LINE_HEIGHT * 1);
+//	    _app.draw(text);
+//	  }
+//
+//	  text.setString("Operation");
+//	  text.setCharacterSize(TITLE_SIZE);
+//	  text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + Constant.UI_PADDING);
+//	  _app.draw(text);
+//	  text.setString("O");
+//	  text.setStyle(Text.UNDERLINED);
+//	  text.setColor(Color.YELLOW);
+//	  _app.draw(text);
 	}
 
 	void	drawJobs() {
@@ -126,10 +124,16 @@ public class UserInterfaceMenuOperation extends UserSubInterface {
 			  + ": " + JobManager.getActionName(job.getAction())
 			  + " " + BaseItem.getItemName(job.getItemType());
 		  if (job.getCharacter() != null) {
-			text.setColor(Color.WHITE);
+			  switch (job.getAction()) {
+			  case BUILD: text.setColor(Color.YELLOW); break;
+			  case MOVE: text.setColor(Color.CYAN); break;
+			  case GATHER: text.setColor(Color.GREEN); break;
+			  case NONE: text.setColor(Color.BLACK); break;
+			  case USE: text.setColor(Color.BLUE); break;
+			  }
 			oss += " (" + job.getCharacter().getName() + ")";
 		  } else {
-			text.setColor(Color.YELLOW);
+			text.setColor(Color.RED);
 			oss += " (on queue)";
 		  }
 		  text.setString(oss);
