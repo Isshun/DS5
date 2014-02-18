@@ -75,6 +75,14 @@ public class Viewport {
 		return getScale(_toScale);
 	}
 
+	public float  getMinScale() {
+		return getScale(Math.min(_toScale, _fromScale));
+	}
+
+	public float  getMaxScale() {
+		return getScale(Math.max(_toScale, _fromScale));
+	}
+
 	public float  getScale(int scale) {
 	  switch (scale) {
 	  case -4: return 0.5f;

@@ -39,10 +39,10 @@ public class WorldRenderer {
 
 	public void	draw(RenderStates render) {
 
-		int fromX = Math.max(_ui.getRelativePosX(0)-1, 0);
-		int fromY = Math.max(_ui.getRelativePosY(0)-1, 0);
-		int toX = Math.min(_ui.getRelativePosX(Constant.WINDOW_WIDTH)+1, WorldMap.getInstance().getWidth());
-		int toY = Math.min(_ui.getRelativePosY(Constant.WINDOW_HEIGHT)+1, WorldMap.getInstance().getHeight());
+		int fromX = Math.max(_ui.getRelativePosXMin(0)-1, 0);
+		int fromY = Math.max(_ui.getRelativePosYMin(0)-1, 0);
+		int toX = Math.min(_ui.getRelativePosXMax(Constant.WINDOW_WIDTH)+1, WorldMap.getInstance().getWidth());
+		int toY = Math.min(_ui.getRelativePosYMax(Constant.WINDOW_HEIGHT)+1, WorldMap.getInstance().getHeight());
 
 	  // Debug() << "Renderer: " << fromX << " to: " << toX;
 

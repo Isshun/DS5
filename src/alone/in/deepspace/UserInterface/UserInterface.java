@@ -91,6 +91,7 @@ public class UserInterface {
 	}
 	
 	public void	mouseMoved(int x, int y) {
+//		_viewport.setMousePos(x, y);
 		// if (x <= UI_WIDTH || y <= UI_HEIGHT)
 		// 	return;
 	
@@ -179,6 +180,22 @@ public class UserInterface {
 	
 	public int getRelativePosY(int y) {
 		return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_SIZE);
+	}
+
+	public int getRelativePosXMax(int x) {
+		return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMinScale() / Constant.TILE_SIZE);
+	}
+	
+	public int getRelativePosYMax(int y) {
+		return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMinScale() / Constant.TILE_SIZE);
+	}
+
+	public int getRelativePosXMin(int x) {
+		return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_SIZE);
+	}
+	
+	public int getRelativePosYMin(int y) {
+		return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_SIZE);
 	}
 
 	public void	mouseRelease(Mouse.Button button, int x, int y) {
