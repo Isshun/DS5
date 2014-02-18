@@ -47,6 +47,9 @@ public class SpriteManager {
 	  new SpriteResource(BaseItem.Type.ENGINE_CONTROL_CENTER,				8, 10, 1),
 	  new SpriteResource(BaseItem.Type.QUARTER_BED,						10, 7, 2),
 	  new SpriteResource(BaseItem.Type.QUARTER_CHAIR,						8, 6, 2),
+	  new SpriteResource(BaseItem.Type.SPECIAL_ROBOT_MAKER,					12, 7, 2),
+	  new SpriteResource(BaseItem.Type.SPECIAL_ZYGOTE,						12, 9, 2),
+	  new SpriteResource(BaseItem.Type.TACTICAL_PHASER,						12, 6, 2),
 	  new SpriteResource(BaseItem.Type.RES_1,								8, 1, 4),
 	  new SpriteResource(BaseItem.Type.NONE,								0, 0, 0),
 	};
@@ -64,6 +67,13 @@ public class SpriteManager {
 	private Texture[] _textureCharacters;
 
 	private Map<Long, Sprite> _sprites;
+
+	private int[] _random = {
+			0, 0, 1, 3, 2, 3, 1, 3, 0, 1,
+			0, 2, 1, 3, 1, 0, 1, 3, 0, 1,
+			0, 1, 2, 1, 3, 0, 1, 3, 0, 1,
+			0, 0, 1, 3, 2, 2, 1, 3, 2, 1,
+			3, 1, 1, 0, 3, 2, 0, 1, 0, 1};
 
 	private static SpriteManager _self;
 
@@ -84,6 +94,10 @@ public class SpriteManager {
 		_textureCharacters[2] = new Texture();
 		_textureCharacters[2].loadFromFile((new File("res/Characters/Spacecharas.png")).toPath());
 		_textureCharacters[2].setSmooth(true);
+		
+		_textureCharacters[3] = new Texture();
+		_textureCharacters[3].loadFromFile((new File("res/Characters/NuChara01.png")).toPath());
+		_textureCharacters[3].setSmooth(true);
 		
 		_texture = new Texture[8];
 		
@@ -214,9 +228,10 @@ public class SpriteManager {
 		return null;
 	}
 
-	public Sprite getExterior() {
+	public Sprite getExterior(int index) {
 		int texture = 4;
-		int x = (int) (0 % 8 * Constant.TILE_SIZE);
+		int offset = _random[index % 50];
+		int x = (int) (offset * Constant.TILE_SIZE);
 		int y = (int) (7 * (Constant.TILE_SIZE + 2) + 1);
 		
 		return getSprite(texture, x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
@@ -262,7 +277,7 @@ public class SpriteManager {
 
 	public Sprite getRessource(WorldRessource item) {
 		if (item.getMatterSupply() == 0) {
-			return getExterior();
+			return getExterior(item.getWidth() + item.getHeight() * 42);
 		} else {
 			int value = Math.min(item.getMatterSupply(), 7);
 			return getSprite(4,
@@ -370,7 +385,10 @@ public class SpriteManager {
 		Sprite sprite = _spritesCharacters.get(sum);
 		if (sprite == null) {
 			sprite = new Sprite();
-			sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * frame, Constant.CHAR_HEIGHT * direction, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+			sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * frame,
+					Constant.CHAR_HEIGHT * direction,
+					Constant.CHAR_WIDTH,
+					Constant.CHAR_HEIGHT));
 
 			switch (profession.getType()) {
 			case ENGINEER:
@@ -389,6 +407,22 @@ public class SpriteManager {
 			_spritesCharacters.put(sum, sprite);
 		}
 
+		return sprite;
+	}
+
+	public Sprite getFoe(Object object, int direction, int frame) {
+		Sprite sprite = _spritesCharacters.get(9999);
+		if (sprite == null) {
+			sprite = new Sprite();
+			sprite.setTexture(_textureCharacters[3]);
+//			sprite.setScale(0.8f, 0.8f);
+			sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * frame,
+					Constant.CHAR_HEIGHT * direction,
+					Constant.CHAR_WIDTH,
+					Constant.CHAR_HEIGHT));
+			_spritesCharacters.put(9999, sprite);
+			
+		}
 		return sprite;
 	}
 

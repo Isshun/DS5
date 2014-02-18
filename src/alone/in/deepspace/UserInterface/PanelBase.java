@@ -19,7 +19,7 @@ public class PanelBase extends UserSubInterface {
 	}
 
 	@Override
-	public void onRefresh() {
+	public void onRefresh(RenderWindow app) {
 	}
 
 }

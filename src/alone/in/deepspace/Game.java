@@ -17,6 +17,7 @@ import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.event.Event;
 
 import alone.in.deepspace.Managers.CharacterManager;
+import alone.in.deepspace.Managers.FoeManager;
 import alone.in.deepspace.Managers.ResourceManager;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.BaseItem;
@@ -49,6 +50,7 @@ public class Game {
 	private boolean _run;
 	private Time _last_refresh;
 	private Time _last_update;
+	private FoeManager _FoeManager;
 
 	public Game(RenderWindow app) throws IOException {
 	  Log.debug("Game");
@@ -67,6 +69,7 @@ public class Game {
 
 	  _update = 0;
 	  _characterManager = CharacterManager.getInstance();
+	  _FoeManager = FoeManager.getInstance();
 
 	  // Background
 	  Log.debug("Game background");
@@ -78,10 +81,6 @@ public class Game {
 
 	  app.setKeyRepeatEnabled(true);
 	  
-	  for (int i = 0; i < 100; i++) {
-		  CharacterManager.getInstance().add(i, 0);
-	  }
-
 	  Log.info("Game:\tdone");
 	}
 
@@ -191,32 +190,12 @@ public class Game {
 		//   }
 		// }
 
-		_characterManager.assignJobs();
-
-		// Character character = null;
-		// int charactersCount = _characterManager.getCount();
-		// for (int i = 0; (character = _characterManager.getInactive()) != null) {
-		//   if (character != null) {
-		// 	Job job = JobManager.getInstance().getJob(character);
-		// 	if (job != null) {
-		// 	  character.setJob(job);
-		// 	}
-		//   }
-		// }
-
-		// int length = WorldMap.getInstance().getBuildListSize();
-		// if (length > 0
-		// 	&& (character = _characterManager.getUnemployed(Character.PROFESSION_ENGINEER)) != null
-		// 	&& (item = WorldMap.getInstance().getItemToBuild()) != null) {
-
-		//   Debug() + "Game: search path from char (x: " + character.getX() + ", y: " + character.getY() + ")";
-		//   Debug() + "Game: search path to item (x: " + item.getX() + ", y: " + item.getY() + ")";
-
-		//   character.setBuild(item);
-		// }
-
-	  // Character
+	  // Characters
+	  _characterManager.assignJobs();
 	  _characterManager.update(_update);
+
+	  // Foes
+	  _FoeManager.checkSurroundings();
 
 	  _update++;
 	}
@@ -234,6 +213,7 @@ public class Game {
 	  RenderStates render = new RenderStates(transform);
 	  
 	  _characterManager.refresh(_app, render, animProgress);
+	  _FoeManager.refresh(_app, render, animProgress);
 
 	  // User interface
 	  _ui.refresh(_frame, _update, _renderTime);
@@ -422,7 +402,7 @@ public class Game {
 //	  // ofs.close();
 //
 	  WorldMap.getInstance().save(filePath);
-//	  CharacterManager.getInstance().save(filePath);
+	  CharacterManager.getInstance().save(filePath);
 	}
 
 }

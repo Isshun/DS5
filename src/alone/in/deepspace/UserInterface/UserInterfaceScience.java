@@ -34,7 +34,7 @@ public class UserInterfaceScience extends UserSubInterface {
 	}
 
 	@Override
-	public void onRefresh() {
+	public void onRefresh(RenderWindow app) {
 
   // {
   // 	int matter = ResourceManager.getInstance().getMatter();

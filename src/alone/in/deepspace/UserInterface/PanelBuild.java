@@ -19,7 +19,7 @@ import alone.in.deepspace.UserInterface.Utils.UIView;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 
-public class UserInterfaceEngineering extends UserSubInterface {
+public class PanelBuild extends UserSubInterface {
 
 	private static final Color COLOR_YELLOW = new Color(236, 201, 37);
 	private static int 	FONT_SIZE		= 16;
@@ -44,10 +44,10 @@ public class UserInterfaceEngineering extends UserSubInterface {
 	private UIText _lbStructure;
 	protected Type _currentSelected;
 
-	UserInterfaceEngineering(RenderWindow app, int tileIndex, UserInteraction interaction) throws IOException {
+	PanelBuild(RenderWindow app, int tileIndex, UserInteraction interaction) throws IOException {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		
-		setBackgroundColor(new Color(255, 255, 0, 40));
+		setBackgroundColor(new Color(200, 200, 50, 140));
 		  
 		_icons = new HashMap<Integer, UIIcon>();
 		_panelMode = Mode.MODE_STRUCTURE;
@@ -73,11 +73,17 @@ public class UserInterfaceEngineering extends UserSubInterface {
 		lbEngineering.setPosition(new Vector2f(20, 520));
 		addView(lbEngineering);
 
+		UIText lbSickbay = new UIText(new Vector2f(140, 32));
+		lbSickbay.setString("Sickbay");
+		lbSickbay.setCharacterSize(20);
+		lbSickbay.setPosition(new Vector2f(20, 670));
+		addView(lbSickbay);
+
 		drawPanel();
 	}
 
 	@Override
-	public void onRefresh() {
+	public void onRefresh(RenderWindow app) {
 	}
 
 	protected void	drawPanel() {
@@ -120,6 +126,8 @@ public class UserInterfaceEngineering extends UserSubInterface {
 //	  _app.draw(text);
 
 		try {
+			
+			// Structure
 			drawIcon(0, 0, BaseItem.Type.STRUCTURE_ROOM.ordinal());
 			drawIcon(0, 1, BaseItem.Type.STRUCTURE_DOOR.ordinal());
 			drawIcon(0, 2, BaseItem.Type.STRUCTURE_FLOOR.ordinal());
@@ -127,6 +135,7 @@ public class UserInterfaceEngineering extends UserSubInterface {
 			drawIcon(0, 4, BaseItem.Type.STRUCTURE_WALL.ordinal());
 			drawIcon(0, 5, BaseItem.Type.STRUCTURE_WINDOW.ordinal());
 
+			// Quarter
 			drawIcon(250, 0, BaseItem.Type.QUARTER_BED.ordinal());
 			drawIcon(250, 1, BaseItem.Type.QUARTER_BEDSIDE_TABLE.ordinal());
 			drawIcon(250, 2, BaseItem.Type.QUARTER_CHAIR.ordinal());
@@ -134,6 +143,19 @@ public class UserInterfaceEngineering extends UserSubInterface {
 			drawIcon(250, 4, BaseItem.Type.QUARTER_DESK.ordinal());
 			drawIcon(250, 5, BaseItem.Type.QUARTER_WARDROBE.ordinal());
 
+			// Engineering
+			drawIcon(500, 0, BaseItem.Type.ENGINE_CONTROL_CENTER.ordinal());
+			drawIcon(500, 1, BaseItem.Type.ENGINE_REACTION_CHAMBER.ordinal());
+			drawIcon(500, 2, BaseItem.Type.ENVIRONMENT_O2_RECYCLER.ordinal());
+			drawIcon(500, 3, BaseItem.Type.ENVIRONMENT_TEMPERATURE_REGULATION.ordinal());
+
+			// Special
+			drawIcon(650, 0, BaseItem.Type.SPECIAL_ZYGOTE.ordinal());
+			drawIcon(650, 1, BaseItem.Type.SPECIAL_ROBOT_MAKER.ordinal());
+
+			// Tactical
+			drawIcon(750, 0, BaseItem.Type.TACTICAL_PHASER.ordinal());
+			drawIcon(750, 1, BaseItem.Type.TACTICAL_SHIELD_GRID.ordinal());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -166,9 +188,8 @@ public class UserInterfaceEngineering extends UserSubInterface {
 			icon.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(UIView view) {
-					if (_currentSelected != null) {
-						UIIcon current = _icons.get(_currentSelected.ordinal());
-						current.setBackground(COLOR_YELLOW);
+					for (UIIcon icon: _icons.values()) {
+						icon.setBackground(COLOR_YELLOW);
 					}
 					_currentSelected = BaseItem.getTypeIndex(type);
 					((UIIcon) view).setBackground(Color.RED);
@@ -336,6 +357,10 @@ public class UserInterfaceEngineering extends UserSubInterface {
 
 	public Type getSelectedItem() {
 		return _currentSelected;
+	}
+
+	public void setSelectedItem(Type type) {
+		_currentSelected = type;		
 	}
 
 

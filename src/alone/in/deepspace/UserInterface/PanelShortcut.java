@@ -69,6 +69,6 @@ public class PanelShortcut extends UserSubInterface {
 	}
 
 	@Override
-	public void onRefresh() {
+	public void onRefresh(RenderWindow app) {
 	}
 }

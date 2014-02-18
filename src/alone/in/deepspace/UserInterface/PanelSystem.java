@@ -43,12 +43,11 @@ public class PanelSystem extends UserSubInterface {
 	}
 	
 	@Override
-	public void onRefresh() {
+	public void onRefresh(RenderWindow app) {
 		int mb = 1024 * 1024;
         Runtime runtime = Runtime.getRuntime();
         int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
         int total = (int) (runtime.totalMemory() / mb);
-        int max = (int) (runtime.maxMemory() / mb);
         
         _used = (_used * 7 + used) / 8;
 

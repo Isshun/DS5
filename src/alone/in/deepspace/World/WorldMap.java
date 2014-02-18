@@ -15,7 +15,7 @@ import alone.in.deepspace.Models.BaseItem.Type;
 import alone.in.deepspace.Utils.Log;
 
 
-public class WorldMap {
+public class WorldMap implements ISavable {
 	private static final int LIMIT_ITEMS = 42000;
 	private static WorldMap 		_self;
 

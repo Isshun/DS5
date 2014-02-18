@@ -37,7 +37,7 @@ public class UIText extends UIView {
 
 	public void setPosition(Vector2f pos) {
 		super.setPosition(pos);
-		_text.setPosition(new Vector2f(_pos.x + _paddingLeft, _pos.y + _paddingTop));
+		_text.setPosition(new Vector2f(pos.x + _paddingLeft, pos.y + _paddingTop));
 	}
 
 	@Override
@@ -51,5 +51,9 @@ public class UIText extends UIView {
 	@Override
 	public void onRefresh(RenderWindow app, RenderStates render) {
 		app.draw(_text, render);
+	}
+
+	public void setPosition(int i, int j) {
+		setPosition(new Vector2f(i, j));
 	}
 }

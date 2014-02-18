@@ -45,6 +45,11 @@ public abstract class UIFrame {
 		_views.add(view);
 	}
 
+	public void removeView(UIView view) {
+		view.setParentPosition(_posX, _posY);
+		_views.remove(view);
+	}
+
 	public void setPosition(int x, int y) {
 		for (UIView view: _views) {
 			view.setParentPosition(x, y);
@@ -62,13 +67,13 @@ public abstract class UIFrame {
 			view.refresh(app, _render);
 		}
 		
-		onRefresh();
+		onRefresh(app);
 	}
 	
 	public void setVisible(boolean visible) {
 		_isVisible = visible;
 	}
 
-	public abstract void onRefresh();
+	public abstract void onRefresh(RenderWindow app);
 
 }

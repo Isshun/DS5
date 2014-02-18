@@ -1,6 +1,7 @@
 package alone.in.deepspace.UserInterface.Utils;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.FloatRect;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
@@ -18,14 +19,33 @@ public class UIIcon extends UIView {
 	private Sprite			_icon;
 	private Text _text;
 	private Type _type;
+	private Text _text2;
+	private boolean _multiline;
 
 	public UIIcon(Vector2f size, int typeIndex) {
 		super(size);
 		_type = BaseItem.getTypeIndex(typeIndex);
 		_icon = SpriteManager.getInstance().getIcon(_type);
-		
 		_text = new Text();
-		_text.setString(BaseItem.getItemName(_type));
+		
+		String name = BaseItem.getItemName(_type);
+		int cut = name.indexOf(' ');
+		if (cut != -1) {
+			_multiline = true;
+			String s1 = name.substring(0, cut);
+			String s2 = name.substring(cut, name.length());
+			
+			_text.setString(s1);
+
+			_text2 = new Text();
+			_text2.setString(s2);
+			_text2.setFont(SpriteManager.getInstance().getFont());
+			_text2.setCharacterSize(12);
+			_text2.setColor(Color.BLACK);
+			_text2.setStyle(Text.REGULAR);
+		} else {
+			_text.setString(name);
+		}
 		_text.setFont(SpriteManager.getInstance().getFont());
 		_text.setCharacterSize(12);
 		_text.setColor(Color.BLACK);
@@ -42,7 +62,13 @@ public class UIIcon extends UIView {
 			_background.setPosition(x, y);
 		}
 		if (_text != null) {
-			_text.setPosition(x + 6, y + 57);
+			FloatRect rect = _text.getGlobalBounds();
+			_text.setPosition(x + 30 - rect.width / 2, y + (_multiline ? 54 : 58));
+
+			if (_text2 != null) {
+				FloatRect rect2 = _text2.getGlobalBounds();
+				_text2.setPosition(x + 30 - rect2.width / 2, y + 64);
+			}
 		}
 	}
 
@@ -65,6 +91,9 @@ public class UIIcon extends UIView {
 		}
 		if (_text != null) {
 			app.draw(_text, states);
+		}
+		if (_text2 != null) {
+			app.draw(_text2, states);
 		}
 	}
 

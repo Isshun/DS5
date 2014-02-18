@@ -76,7 +76,7 @@ public abstract class UIView {
 		if (x != _parentPosX || y != _parentPosY) {
 			_parentPosX = x;
 			_parentPosY = y;
-			_rect = new Rectangle(_parentPosX + _posX, _parentPosY + _posY, (int)_size.x, (int)_size.y);
+			_rect = new Rectangle(_parentPosX + _posX, _parentPosY + _posY, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
 		}
 	}
 	
@@ -95,7 +95,7 @@ public abstract class UIView {
 			_pos = pos;
 			_posX = (int) pos.x;
 			_posY = (int) pos.y;
-			_rect = new Rectangle(_parentPosX + _posX, _parentPosY + _posY, (int)_size.x, (int)_size.y);
+			_rect = new Rectangle(_parentPosX + _posX, _parentPosY + _posY, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
 		}
 		if (_background != null) {
 			_background.setPosition(_pos);

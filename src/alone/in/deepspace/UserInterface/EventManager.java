@@ -22,7 +22,11 @@ public class EventManager {
 	}
 
 	public void setOnClickListener(UIView view, OnClickListener onClickListener) {
-		_onClickListeners.put(view, onClickListener);
+		if (onClickListener == null) {
+			_onClickListeners.remove(view);
+		} else {
+			_onClickListeners.put(view, onClickListener);
+		}
 	}
 	
 	public boolean rightClick(int x, int y) {

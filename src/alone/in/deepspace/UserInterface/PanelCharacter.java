@@ -146,7 +146,7 @@ public class PanelCharacter extends UserSubInterface {
 	}
 
 	@Override
-	public void onRefresh() {
+	public void onRefresh(RenderWindow app) {
 	  if (_character != null) {
 
 		  CharacterNeeds needs = _character.getNeeds();
@@ -168,7 +168,7 @@ public class PanelCharacter extends UserSubInterface {
 		      }
 		      _shapes[i].setSize(new Vector2f(160.0f / 100 * value, 12));
 		      
-			  _app.draw(_shapes[i], _render);
+			  app.draw(_shapes[i], _render);
 		  }
 
 

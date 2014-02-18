@@ -64,7 +64,7 @@ public class WorldRenderer {
 			// Oxygen
 			WorldArea area = WorldMap.getInstance().getArea(i, j);
 			if (area != null) {
-				Sprite sprite = _spriteManager.getExterior();
+				Sprite sprite = _spriteManager.getExterior(i + j * 42);
 				sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
 				_app.draw(sprite, render);
 	
@@ -173,8 +173,8 @@ public class WorldRenderer {
 					// Double wall
 					if (doubleWall) {
 						sprite = _spriteManager.getWall(item, 4, r, 0);
-					  lastSpecialX = i;
-					  lastSpecialY = j;
+						lastSpecialX = i;
+						lastSpecialY = j;
 					}
 					// Single wall
 					else {
@@ -186,8 +186,8 @@ public class WorldRenderer {
 					// Double wall
 					if (doubleWall) {
 						sprite = _spriteManager.getWall(item, 2, r, bellow.getZoneId());
-					  lastSpecialX = i;
-					  lastSpecialY = j;
+						lastSpecialX = i;
+						lastSpecialY = j;
 					}
 					// Single wall
 					else {
@@ -219,7 +219,7 @@ public class WorldRenderer {
 			// }
 
 			if (sprite != null) {
-			_app.draw(sprite, render);
+				_app.draw(sprite, render);
 			}
 		  }
 		}
@@ -230,8 +230,8 @@ public class WorldRenderer {
 		int offsetY = -16;
 		int offsetX = 2;
 
-		for (int i = toX-1; i >= fromX; i--) {
-			for (int j = toY-1; j >= fromY; j--) {
+		for (int i = fromX-1; i <= toX; i++) {
+			for (int j = fromY-1; j <= toY; j++) {
 				BaseItem item = WorldMap.getInstance().getItem(i, j);
 
 				if (item != null) {

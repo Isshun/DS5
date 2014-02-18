@@ -25,7 +25,7 @@ public class PanelJobs extends UserSubInterface {
 	}
 	
 	@Override
-	public void onRefresh() {
+	public void onRefresh(RenderWindow app) {
 		if (_isVisible == false) {
 			return;
 		}
@@ -44,18 +44,18 @@ public class PanelJobs extends UserSubInterface {
 		  text.setString("Operation");
 		  text.setCharacterSize(28);
 		  text.setPosition(posX, posY);
-		  _app.draw(text, _render);
+		  app.draw(text, _render);
 		  text.setColor(Color.YELLOW);
 		  text.setStyle(Text.UNDERLINED);
 		  text.setString("O");
-		  _app.draw(text, _render);
+		  app.draw(text, _render);
 
 		  text.setStyle(Text.REGULAR);
 		  text.setColor(Color.WHITE);
 		  text.setCharacterSize(16);
 		  text.setString("jobs: " + jobs.size());
 		  text.setPosition(posX, posY + 38);
-		  _app.draw(text, _render);
+		  app.draw(text, _render);
 		  
 		  text.setCharacterSize(12);
 		  int i = 0;
@@ -79,7 +79,7 @@ public class PanelJobs extends UserSubInterface {
 			  }
 			  text.setString(oss);
 			  text.setPosition(posX + Constant.UI_PADDING, posY + 52 + Constant.UI_PADDING + (14 * i++));
-			  _app.draw(text, _render);
+			  app.draw(text, _render);
 			}
 		  }
 

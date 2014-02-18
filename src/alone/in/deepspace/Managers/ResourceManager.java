@@ -79,4 +79,8 @@ public class ResourceManager {
 			return _power;
 		}
 
+		public int getSpice() {
+			return 42;
+		}
+
 }

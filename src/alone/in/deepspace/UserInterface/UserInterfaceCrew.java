@@ -1,25 +1,19 @@
 package alone.in.deepspace.UserInterface;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
-import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
 import alone.in.deepspace.Managers.CharacterManager;
-import alone.in.deepspace.Managers.ResourceManager;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.Character;
-import alone.in.deepspace.Models.Profession;
 import alone.in.deepspace.Utils.Constant;
-
 
 public class UserInterfaceCrew extends UserSubInterface {
 
@@ -34,12 +28,6 @@ public class UserInterfaceCrew extends UserSubInterface {
 	private static int CREW_LINE_HEIGHT = 42;
 	private static int CREW_LINE_WIDTH  = 350;
 
-	private static int FONT_SIZE		= 16;
-	private static int LINE_HEIGHT		= 24;
-	private static int TITLE_SIZE		= Constant.FONT_SIZE + 8;
-
-	private static Color COLOR_TILE_ACTIVE = new Color(50, 200, 0);
-
 	private CharacterManager     _characterManager;
 	private List<ViewHolder> _viewHolderList;
 
@@ -52,7 +40,7 @@ public class UserInterfaceCrew extends UserSubInterface {
 		_characterManager = CharacterManager.getInstance();
 	}
 
-	void  addCharacter(int index, Character character) {
+	void  addCharacter(RenderWindow app, int index, Character character) {
 		int x = 0;
 		int y = index;
 
@@ -87,20 +75,20 @@ public class UserInterfaceCrew extends UserSubInterface {
 			view = _viewHolderList.get(index);
 		}
 		
-		_app.draw(view.lbName, _render);
-		_app.draw(view.lbProfession, _render);
+		app.draw(view.lbName, _render);
+		app.draw(view.lbProfession, _render);
 		view.thumb = SpriteManager.getInstance().getCharacter(character.getProfession(), 0, 0);
 		view.thumb.setPosition(Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
 				Constant.UI_PADDING + (CREW_LINE_HEIGHT * y));
-		_app.draw(view.thumb, _render);
+		app.draw(view.thumb, _render);
 	}
 	
 	@Override
-	public void onRefresh() {
+	public void onRefresh(RenderWindow app) {
 		List<Character> characters = _characterManager.getList();
 		int i = 0;
 		for (Character c: characters) {
-			addCharacter(i++, c);
+			addCharacter(app, i++, c);
 		}
 	}
 	

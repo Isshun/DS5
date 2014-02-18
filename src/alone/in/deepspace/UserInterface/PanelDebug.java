@@ -42,49 +42,49 @@ public class PanelDebug extends UserSubInterface {
 		addView(txtAddCharacter);
 	}
 
-	void  addDebug(final String key, String value) {
-		int y = _index * 32;
-
-		Text text = ObjectPool.getText();
-		
-		text.setFont(SpriteManager.getInstance().getFont());
-		text.setCharacterSize(20);
-		text.setStyle(Text.REGULAR);
-		
-		text.setString(key);
-		text.setPosition(Constant.WINDOW_WIDTH - 320 + Constant.UI_PADDING, Constant.UI_PADDING + y);
-		_app.draw(text);
-
-		text.setString(value);
-		text.setPosition(Constant.WINDOW_WIDTH - 320 + Constant.UI_PADDING + 160, Constant.UI_PADDING + y);
-		_app.draw(text);
-
-		ObjectPool.release(text);
-
-		_index++;
-	}
-	
-	void  addDebug(final String str) {
-		int y = _index * 32;
-
-		Text text = ObjectPool.getText();
-		
-		text.setFont(SpriteManager.getInstance().getFont());
-		text.setCharacterSize(20);
-		text.setStyle(Text.REGULAR);
-		text.setColor(Color.WHITE);
-		
-		text.setString(str);
-		text.setPosition(0, 0);
-		_app.draw(text, _render);
-
-		ObjectPool.release(text);
-
-		_index++;
-	}
+//	void  addDebug(final String key, String value) {
+//		int y = _index * 32;
+//
+//		Text text = ObjectPool.getText();
+//		
+//		text.setFont(SpriteManager.getInstance().getFont());
+//		text.setCharacterSize(20);
+//		text.setStyle(Text.REGULAR);
+//		
+//		text.setString(key);
+//		text.setPosition(Constant.WINDOW_WIDTH - 320 + Constant.UI_PADDING, Constant.UI_PADDING + y);
+//		_app.draw(text);
+//
+//		text.setString(value);
+//		text.setPosition(Constant.WINDOW_WIDTH - 320 + Constant.UI_PADDING + 160, Constant.UI_PADDING + y);
+//		_app.draw(text);
+//
+//		ObjectPool.release(text);
+//
+//		_index++;
+//	}
+//	
+//	void  addDebug(final String str) {
+//		int y = _index * 32;
+//
+//		Text text = ObjectPool.getText();
+//		
+//		text.setFont(SpriteManager.getInstance().getFont());
+//		text.setCharacterSize(20);
+//		text.setStyle(Text.REGULAR);
+//		text.setColor(Color.WHITE);
+//		
+//		text.setString(str);
+//		text.setPosition(0, 0);
+//		_app.draw(text, _render);
+//
+//		ObjectPool.release(text);
+//
+//		_index++;
+//	}
 
 	@Override
-	public void onRefresh() {
+	public void onRefresh(RenderWindow app) {
 //		_index = 0;
 //
 ////		addDebug("add character");

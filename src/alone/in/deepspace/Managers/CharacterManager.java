@@ -1,8 +1,10 @@
 package alone.in.deepspace.Managers;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +25,11 @@ import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Models.Profession;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.StructureItem;
+import alone.in.deepspace.World.UserItem;
 import alone.in.deepspace.World.WorldArea;
 import alone.in.deepspace.World.WorldMap;
+import alone.in.deepspace.World.WorldRessource;
 
 
 public class CharacterManager {
@@ -137,26 +142,23 @@ public class CharacterManager {
 	}
 
 
-	void	save(final String filePath) {
-//	  ofstream ofs(filePath, ios_base.app);
-//	  std.list<Character>.iterator it;
-//
-//	  if (ofs.is_open()) {
-//		ofs + "BEGIN CHARACTERS\n";
-//
-//		for (it = _characters.begin(); it != _characters.end(); ++it) {
-//		  Character c = it;
-//		  ofs + c.getX() + "\t"
-//			  + c.getY() + "\t"
-//	 		  + c.getProfessionId() + "\t"
-//	 		  + c.getName() + "\n";
-//		}
-//		ofs + "END CHARACTERS\n";
-//
-//		ofs.close();
-//	  } else {
-//		Error() + "Unable to open save file: " + filePath;
-//	  }
+	public void	save(final String filePath) {
+		Log.info("Save characters: " + filePath);
+
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
+			bw.write("BEGIN CHARACTERS\n");
+			for (Character c: _characters) {
+				bw.write(c.getX() + "\t" + c.getY() + "\t" + c.getProfession().getType().ordinal() + "\t" + c.getName() + "\n");
+			}
+			bw.write("END CHARACTERS\n");
+		} catch (FileNotFoundException e) {
+			Log.error("Unable to open save file: " + filePath);
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Log.info("Save characters: " + filePath + " done");
 	}
 
 	// TODO
@@ -341,13 +343,13 @@ public class CharacterManager {
 
 		int dirIndex = 0;
 		if (direction == Character.Direction.DIRECTION_BOTTOM) { posY -= offset; dirIndex = 0; }
-		if (direction == Character.Direction.DIRECTION_TOP) { posY += offset; dirIndex = 1; }
+		if (direction == Character.Direction.DIRECTION_TOP) { posY += offset; dirIndex = 3; }
 		if (direction == Character.Direction.DIRECTION_RIGHT) { posX -= offset; dirIndex = 2; }
-		if (direction == Character.Direction.DIRECTION_LEFT) { posX += offset; dirIndex = 3; }
-		if (direction == Character.Direction.DIRECTION_BOTTOM_RIGHT) { posY -= offset; posX -= offset; dirIndex = 4; }
-		if (direction == Character.Direction.DIRECTION_BOTTOM_LEFT) { posY -= offset; posX += offset; dirIndex = 5; }
-		if (direction == Character.Direction.DIRECTION_TOP_RIGHT) { posY += offset; posX -= offset; dirIndex = 6; }
-		if (direction == Character.Direction.DIRECTION_TOP_LEFT) { posY += offset; posX += offset; dirIndex = 7; }
+		if (direction == Character.Direction.DIRECTION_LEFT) { posX += offset; dirIndex = 1; }
+		if (direction == Character.Direction.DIRECTION_BOTTOM_RIGHT) { posY -= offset; posX -= offset; dirIndex = 2; }
+		if (direction == Character.Direction.DIRECTION_BOTTOM_LEFT) { posY -= offset; posX += offset; dirIndex = 1; }
+		if (direction == Character.Direction.DIRECTION_TOP_RIGHT) { posY += offset; posX -= offset; dirIndex = 2; }
+		if (direction == Character.Direction.DIRECTION_TOP_LEFT) { posY += offset; posX += offset; dirIndex = 1; }
 	
 		if (direction == Character.Direction.DIRECTION_TOP_RIGHT)
 		  direction = Character.Direction.DIRECTION_RIGHT;
@@ -431,6 +433,12 @@ public class CharacterManager {
 
 	public int getCount() {
 		return _count;
+	}
+
+
+	public void clear() {
+		_characters.clear();
+		JobManager.getInstance().clear();
 	}
 
 }

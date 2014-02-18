@@ -20,7 +20,6 @@ public abstract class UserSubInterface extends UIFrame {
 			return x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120;
 		  }
 
-		  protected RenderWindow 		_app;
 		  protected Texture			_texturePanel;
 		  protected Texture			_textureTile;
 		  Sprite			_bgPanel;
@@ -46,8 +45,6 @@ public abstract class UserSubInterface extends UIFrame {
 		
 		setPosition(pos);
 		
-		_app = app;
-
 		_posX = (int) pos.x;
 		_posY = (int) pos.y;
 
@@ -117,17 +114,6 @@ public abstract class UserSubInterface extends UIFrame {
 		}
 
 		return false;
-	}
-
-	protected void	drawPanel() {
-		_bgPanel.setPosition(_posX, _posY);
-		_app.draw(_bgPanel);
-	}
-
-	protected void	drawTile(Color color) {
-		_bgTile.setPosition(_posTileX, _posTileY);
-		_bgTile.setColor(isTileActive() || isOpen() ? color : Color.WHITE);
-		_app.draw(_bgTile);
 	}
 
 }

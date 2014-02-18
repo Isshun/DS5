@@ -314,4 +314,8 @@ public class JobManager {
 		_start--;
 	}
 
+	public void clear() {
+		_jobs.clear();
+	}
+
 }

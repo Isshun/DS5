@@ -14,8 +14,8 @@ public class BaseItem {
 		new ItemInfo(Type.QUARTER_CHAIR,								"CHAIR", false,	1, 1, 2, 0, 0),
 //		new ItemInfo(Type.HOLODECK_GRID,								"GRID", false,	1, 1, 6, 6, UserInterfaceMenu.CODE_ZONE_HOLODECK),
 //		new ItemInfo(Type.BAR_PUB,									"PUB", false,	1, 1, 5, 0, UserInterfaceMenu.CODE_ZONE_BAR),
-//		new ItemInfo(Type.ENGINE_CONTROL_CENTER,						"CENTER", false,	3, 2, 10, 5, UserInterfaceMenu.CODE_ZONE_ENGINE),
-//		new ItemInfo(Type.ENGINE_REACTION_CHAMBER,					"CHAMBER", false,	2, 3, 50, -200, UserInterfaceMenu.CODE_ZONE_ENGINE),
+		new ItemInfo(Type.ENGINE_CONTROL_CENTER,					"CENTER", false,	3, 2, 10, 5, 0),
+		new ItemInfo(Type.ENGINE_REACTION_CHAMBER,					"CHAMBER", false,	2, 3, 50, -200, 0),
 		new ItemInfo(Type.SICKBAY_BIOBED,							"BIOBED", false,	1, 2, 10, 10, 0),
 		new ItemInfo(Type.QUARTER_DESK,								"1", false,	1, 2, 2, 0, 0),
 		new ItemInfo(Type.QUARTER_WARDROBE,							"1", false,	1, 2, 2, 0, 0),
@@ -30,7 +30,9 @@ public class BaseItem {
 		new ItemInfo(Type.ARBORETUM_TREE_7,							"7", false,	1, 1, 1, 0, 0),
 		new ItemInfo(Type.ARBORETUM_TREE_8,							"8", false,	1, 1, 1, 0, 0),
 		new ItemInfo(Type.ARBORETUM_TREE_9,							"9", false,	1, 1, 1, 0, 0),
-//		new ItemInfo(Type.ENVIRONMENT_O2_RECYCLER,					"RECYCLER", false,	1, 2, 10, 10, UserInterfaceMenu.CODE_ZONE_OPERATION),
+		new ItemInfo(Type.SPECIAL_ZYGOTE,							"ZYGOTE", false,	1, 1, 1, 0, 0),
+		new ItemInfo(Type.SPECIAL_ROBOT_MAKER,						"ROBOT MAKER", false,	1, 1, 1, 0, 0),
+		new ItemInfo(Type.ENVIRONMENT_O2_RECYCLER,					"RECYCLER", false,	1, 2, 10, 10, 0),
 		new ItemInfo(Type.NONE,										"NONE", false,	0, 0, 0, 0, 0)
 	};
 	
@@ -86,6 +88,8 @@ public class BaseItem {
 		TACTICAL_CLOAKING_DEVICE,
 		SCIENCE_HYDROPONICS,
 		RES_1,
+		SPECIAL_ZYGOTE,
+		SPECIAL_ROBOT_MAKER,
 	    ITEM_STOP,
 	  };
 		  
@@ -233,6 +237,8 @@ public class BaseItem {
 			case TACTICAL_CLOAKING_DEVICE: return "cloaking device";
 			case SCIENCE_HYDROPONICS: return "hydroponics";
 			case RES_1: return "res 1";
+			case SPECIAL_ROBOT_MAKER: return "Robot maker";
+			case SPECIAL_ZYGOTE: return "Zygote";
 			default: return "unknow_item";
 			}
 		  }
@@ -311,7 +317,9 @@ public class BaseItem {
 		if (type == 48) { return Type.TACTICAL_CLOAKING_DEVICE; }
 		if (type == 49) { return Type.SCIENCE_HYDROPONICS; }
 		if (type == 50) { return Type.RES_1; }
-		if (type == 51) { return Type.ITEM_STOP; }
+		if (type == 51) { return Type.SPECIAL_ZYGOTE; }
+		if (type == 52) { return Type.SPECIAL_ROBOT_MAKER; }
+		if (type == 53) { return Type.ITEM_STOP; }
 		return Type.NONE;
 	}
 
