@@ -160,8 +160,7 @@ public class SpriteManager {
 						res.posX * Constant.TILE_SIZE,
 						res.posY * Constant.TILE_SIZE,
 						item.getWidth() * Constant.TILE_SIZE,
-						item.getHeight() * Constant.TILE_SIZE,
-						0.8f);
+						item.getHeight() * Constant.TILE_SIZE);
 			}
 //		   		  int alpha = 75 + 180 / item.getMatter() * item.getMatterSupply();
 //		   		  sprite.setColor(new Color(255, 255, 255, alpha));
@@ -224,15 +223,15 @@ public class SpriteManager {
 	}
 	
 	private Sprite getSprite(int textureIndex, int i, int j, int k, int l) {
-		return getSprite(textureIndex, i, j, k, l, 1);
+		return getSprite(textureIndex, i, j, k, l, 255);
 	}
 
-	private Sprite getSprite(int texture, int x, int y, int width, int height, float f) {
-		long sum = getSum(texture, x, y, width, height);
+	private Sprite getSprite(int texture, int x, int y, int width, int height, int alpha) {
+		long sum = getSum(texture, x, y, width, height, alpha);
 		Sprite sprite = _sprites.get(sum);
 		if (sprite == null) {
 			sprite = new Sprite();
-			sprite.setColor(Color.WHITE);
+			sprite.setColor(new Color(255, 255, 255, alpha));
 			sprite.setTexture(_texture[texture]);
 			sprite.setTextureRect(ObjectPool.getIntRect(x, y, width, height));
 			_sprites.put(sum, sprite);
@@ -240,21 +239,24 @@ public class SpriteManager {
 		return sprite;
 	}
 
-	private long getSum(int texture, int x, int y, int extra1, int extra2) {
-		if (texture > 4096 || x > 4096 || y > 4096 || extra1 > 4096 || extra2 > 4096) {
+	private long getSum(int texture, int x, int y, int extra1, int extra2, int alpha) {
+		if (texture > 64 || x > 4096 || y > 4096 || extra1 > 1024 || extra2 > 1024 || alpha > 255) {
 			//throw new Exception("SpriteManager.getSum -> out of bounds values");
 			Log.error("SpriteManager.getSum -> out of bounds values");
 		}
 		
 		long sum = texture;
-		sum = sum << 12;
+		sum = sum << 6;		// 6
 		sum += x;
-		sum = sum << 12;
-		sum += y;
-		sum = sum << 12;
+		sum = sum << 12;	// 6 + 12 = 18
+		sum += y;			
+		sum = sum << 12;	// 18 + 12 = 30
 		sum += extra1;
-		sum = sum << 12;
+		sum = sum << 10;	// 30 + 10 = 40
 		sum += extra2;
+		sum = sum << 10;	// 40 + 10 = 50
+		sum += alpha;
+		sum = sum << 8;		// 50 + 8 = 58
 		return sum;
 	}
 
@@ -276,10 +278,8 @@ public class SpriteManager {
 		int texture = 4;
 		int x = (room % choice) * Constant.TILE_SIZE;
 		int y = zone * (Constant.TILE_SIZE + 2) + 1;
-		return getSprite(texture, x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
-		
-//		int alpha = 75 + 180 / item.getMatter() * item._matterSupply;
-//		sprite.setColor(new Color(255,255,255,alpha));
+		int alpha = 75 + 180 / item.getMatter() * item._matterSupply;
+		return getSprite(texture, x, y, Constant.TILE_SIZE, Constant.TILE_SIZE, alpha);
 	}
 
 	public Sprite				getNoOxygen() {
@@ -300,14 +300,14 @@ public class SpriteManager {
 					WALL_WIDTH * special,
 					WALL_HEIGHT * 7,
 					WALL_WIDTH,
-					WALL_HEIGHT);
+					WALL_HEIGHT,
+					alpha);
 	  }
 
 	  // Wall
 	  else {
 		  if (item.isType(BaseItem.Type.STRUCTURE_WALL)) {
 			  int alpha = 75 + 180 / item.getMatter() * item.getMatterSupply();
-
 			  int texture = 6;
 			  int x = 0;
 			  int y = 0;
@@ -354,7 +354,7 @@ public class SpriteManager {
 				  height = WALL_HEIGHT;
 			  }
 			  
-			  return getSprite(texture, x, y, width, height);
+			  return getSprite(texture, x, y, width, height, alpha);
 		  }
 	  }
 	  return null;	  

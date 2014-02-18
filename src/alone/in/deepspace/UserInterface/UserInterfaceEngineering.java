@@ -1,36 +1,31 @@
 package alone.in.DeepSpace.UserInterface;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.IntRect;
-import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
-import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
-import alone.in.DeepSpace.Managers.ResourceManager;
-import alone.in.DeepSpace.Managers.SpriteManager;
 import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.DeepSpace.Models.BaseItem.Type;
+import alone.in.DeepSpace.UserInterface.Utils.OnClickListener;
+import alone.in.DeepSpace.UserInterface.Utils.UIIcon;
+import alone.in.DeepSpace.UserInterface.Utils.UIText;
+import alone.in.DeepSpace.UserInterface.Utils.UIView;
 import alone.in.DeepSpace.Utils.Constant;
 import alone.in.DeepSpace.Utils.Log;
 
-
 public class UserInterfaceEngineering extends UserSubInterface {
 
+	private static final Color COLOR_YELLOW = new Color(236, 201, 37);
 	private static int 	FONT_SIZE		= 16;
 	private static int 	LINE_HEIGHT		= 24;
 	private static int 	TITLE_SIZE		= FONT_SIZE + 8;
 
-	private static int 	MENU_TILE_OPEN_WIDTH	 = 300;
-	private static int 	MENU_TILE_OPEN_HEIGHT = 160;
-	
 	private static int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static int 	FRAME_HEIGHT = Constant.PANEL_HEIGHT;
 	
@@ -46,6 +41,8 @@ public class UserInterfaceEngineering extends UserSubInterface {
 
 	private UserInteraction 	_interaction;
 	private Map<Integer, UIIcon> _icons;
+	private UIText _lbStructure;
+	protected Type _currentSelected;
 
 	UserInterfaceEngineering(RenderWindow app, int tileIndex, UserInteraction interaction) throws IOException {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
@@ -53,22 +50,37 @@ public class UserInterfaceEngineering extends UserSubInterface {
 		setBackgroundColor(new Color(255, 255, 0, 40));
 		  
 		_icons = new HashMap<Integer, UIIcon>();
-		_panelMode = Mode.MODE_NONE;
-		_panelModeHover = Mode.MODE_NONE;
+		_panelMode = Mode.MODE_STRUCTURE;
+		_panelModeHover = Mode.MODE_STRUCTURE;
 		_itemHover = -1;
 		_interaction = interaction;
+		
+		_lbStructure = new UIText(new Vector2f(140, 32));
+		_lbStructure.setString("Structure");
+		_lbStructure.setCharacterSize(20);
+		_lbStructure.setPosition(new Vector2f(20, 20));
+		addView(_lbStructure);
+
+		UIText lbQuarter = new UIText(new Vector2f(140, 32));
+		lbQuarter.setString("Quarter");
+		lbQuarter.setCharacterSize(20);
+		lbQuarter.setPosition(new Vector2f(20, 270));
+		addView(lbQuarter);
+
+		UIText lbEngineering = new UIText(new Vector2f(140, 32));
+		lbEngineering.setString("Engineering");
+		lbEngineering.setCharacterSize(20);
+		lbEngineering.setPosition(new Vector2f(20, 520));
+		addView(lbEngineering);
+
+		drawPanel();
 	}
 
-	void	draw(int frame) {
-		if (isOpen()) {
-			drawPanel();
-		}
-
-		drawTile();
+	@Override
+	public void onRefresh() {
 	}
 
 	protected void	drawPanel() {
-		super.drawPanel();
 
 //	  Text text = new Text();
 //	  text.setFont(SpriteManager.getInstance().getFont());
@@ -107,29 +119,62 @@ public class UserInterfaceEngineering extends UserSubInterface {
 //	  text.setColor(Color.YELLOW);
 //	  _app.draw(text);
 
-	  try {
-		  if (_panelMode == Mode.MODE_STRUCTURE) {
-			for (int index = 0, i = BaseItem.Type.STRUCTURE_START.ordinal() + 1; i < BaseItem.Type.STRUCTURE_STOP.ordinal(); index++, i++) {
-				drawIcon(index, i);
-			}
-		  } else if (_panelMode == Mode.MODE_ITEM) {
-			for (int index = 0, i = BaseItem.Type.ITEM_START.ordinal() + 1; i < BaseItem.Type.ITEM_STOP.ordinal(); index++, i++) {
-			  drawIcon(index, i);
-			}
-		  }
-	  } catch (IOException e) {
-		  // TODO Auto-generated catch block
-		  e.printStackTrace();
-	  }
+		try {
+			drawIcon(0, 0, BaseItem.Type.STRUCTURE_ROOM.ordinal());
+			drawIcon(0, 1, BaseItem.Type.STRUCTURE_DOOR.ordinal());
+			drawIcon(0, 2, BaseItem.Type.STRUCTURE_FLOOR.ordinal());
+			drawIcon(0, 3, BaseItem.Type.STRUCTURE_HULL.ordinal());
+			drawIcon(0, 4, BaseItem.Type.STRUCTURE_WALL.ordinal());
+			drawIcon(0, 5, BaseItem.Type.STRUCTURE_WINDOW.ordinal());
+
+			drawIcon(250, 0, BaseItem.Type.QUARTER_BED.ordinal());
+			drawIcon(250, 1, BaseItem.Type.QUARTER_BEDSIDE_TABLE.ordinal());
+			drawIcon(250, 2, BaseItem.Type.QUARTER_CHAIR.ordinal());
+			drawIcon(250, 3, BaseItem.Type.QUARTER_CHEST.ordinal());
+			drawIcon(250, 4, BaseItem.Type.QUARTER_DESK.ordinal());
+			drawIcon(250, 5, BaseItem.Type.QUARTER_WARDROBE.ordinal());
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+//	  try {
+//		  if (_panelMode == Mode.MODE_STRUCTURE) {
+//			for (int index = 0, i = BaseItem.Type.STRUCTURE_START.ordinal() + 1; i < BaseItem.Type.STRUCTURE_STOP.ordinal(); index++, i++) {
+//				drawIcon(index, i);
+//			}
+//		  } else if (_panelMode == Mode.MODE_ITEM) {
+//			for (int index = 0, i = BaseItem.Type.ITEM_START.ordinal() + 1; i < BaseItem.Type.ITEM_STOP.ordinal(); index++, i++) {
+//			  drawIcon(index, i);
+//			}
+//		  }
+//	  } catch (IOException e) {
+//		  // TODO Auto-generated catch block
+//		  e.printStackTrace();
+//	  }
 	}
 
-	void	drawIcon(int index, int type) throws IOException {
+	void	drawIcon(int offset, int index, final int type) throws IOException {
 		
 		UIIcon icon = _icons.get(type);
 		if (icon == null) {
-			icon = new UIIcon(type);
-			icon.setPosition(_posX + (index % 9) * 80, _posY + (int)(index / 9) * 100);
-			icon.setBackground(_itemHover == type ? Color.WHITE : new Color(236, 201, 37));
+			icon = new UIIcon(new Vector2f(62, 80), type);
+			icon.setPosition(20 + (index % 4) * 80, 60 + offset + (int)(index / 4) * 100);
+			icon.setBackground(_itemHover == type ? Color.WHITE : COLOR_YELLOW);
+			icon.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(UIView view) {
+					if (_currentSelected != null) {
+						UIIcon current = _icons.get(_currentSelected.ordinal());
+						current.setBackground(COLOR_YELLOW);
+					}
+					_currentSelected = BaseItem.getTypeIndex(type);
+					((UIIcon) view).setBackground(Color.RED);
+				}
+			});
+			addView(icon);
 
 //			  shape.setPosition(posX + 20, posY + 60);
 //			  _app.draw(shape);
@@ -148,10 +193,10 @@ public class UserInterfaceEngineering extends UserSubInterface {
 //			  // Icon
 //				  
 			  
-			  _icons.put(type, icon);
+			 _icons.put(type, icon);
 		}
 		
-		icon.refresh(_app);
+		//icon.refresh(_app);
 	}
 
 	void	drawTile() {
@@ -271,7 +316,7 @@ public class UserInterfaceEngineering extends UserSubInterface {
 		}
 
 		if (_itemHover != -1) {
-		  _interaction.selectBuildItem(BaseItem.getTypeIndex(_itemHover));
+		  //_interaction.selectBuildItem(BaseItem.getTypeIndex(_itemHover));
 //		  _isOpen = false;
 		  onMouseMove(x, y);
 		}
@@ -287,6 +332,10 @@ public class UserInterfaceEngineering extends UserSubInterface {
 	  }
 
 	  return false;
+	}
+
+	public Type getSelectedItem() {
+		return _currentSelected;
 	}
 
 

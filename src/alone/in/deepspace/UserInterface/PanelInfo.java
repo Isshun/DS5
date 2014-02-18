@@ -64,19 +64,14 @@ public class PanelInfo extends UserSubInterface {
 	    ObjectPool.release(text);
 	  }
 
-	  void	refresh(int frame) {
-		  super.refresh();
-		  
-		  if (_isVisible == false) {
-			  return;
-		  }
-
+	  @Override
+	  public void onRefresh() {
 		  BaseItem item = _item != null ? _item : _area;
 
-	    if (item != null) {
+		  if (item != null) {
 
-	      // Name
-	  	final String name = item.getName();
+			  // Name
+			  final String name = item.getName();
 	  	if (name != null) {
 	  	  Text text = new Text();
 	  	  // oss + item.getType();

@@ -252,7 +252,7 @@ public class PathManager {
 		// }
 
 		public void getPathAsync(Character character, Job job) {
-		  Log.info("getPathAsync");
+		  Log.debug("getPathAsync");
 		  
 		  Vector<Position> path = new Vector<Position>();
 		  

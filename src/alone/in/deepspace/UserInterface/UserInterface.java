@@ -11,6 +11,7 @@ import org.jsfml.window.event.Event;
 
 import alone.in.DeepSpace.Viewport;
 import alone.in.DeepSpace.Managers.CharacterManager;
+import alone.in.DeepSpace.Models.BaseItem;
 import alone.in.DeepSpace.Models.Character;
 import alone.in.DeepSpace.Utils.Constant;
 import alone.in.DeepSpace.Utils.Log;
@@ -46,6 +47,7 @@ public class UserInterface {
 	private PanelBase _panelBase;
 	private PanelSystem _panelSystem;
 	private PanelShortcut _panelShortcut;
+	private PanelJobs		_uiJobs;
 	
 	public enum Mode {
 		BASE,
@@ -54,7 +56,7 @@ public class UserInterface {
 		BUILD,
 		CREW,
 		JOBS,
-		CHARACTER
+		CHARACTER, SCIENCE, SECURITY
 	}
 	
 	public UserInterface(RenderWindow app, Viewport viewport) throws IOException {
@@ -83,37 +85,38 @@ public class UserInterface {
 	  _crewViewOpen = false;
 	  _uiCharacter = new UserInterfaceCrew(app, 0);
 	  _uiBase = new UserInterfaceMenuOperation(app, 1);
+	  _uiJobs = new PanelJobs(app);
 	  
 	  setMode(Mode.BASE);
 	}
 	
 	public void	mouseMoved(int x, int y) {
-	  // if (x <= UI_WIDTH || y <= UI_HEIGHT)
-	  // 	return;
+		// if (x <= UI_WIDTH || y <= UI_HEIGHT)
+		// 	return;
 	
-	  if (_uiEngeneering.onMouseMove(x, y)) {
-		return;
-	  }
-	
-	  if (_uiCharacter.onMouseMove(x, y)) {
-		return;
-	  }
-	
-	  if (_uiSecurity.onMouseMove(x, y)) {
-		return;
-	  }
-	
-	  if (_uiScience.onMouseMove(x, y)) {
-		return;
-	  }
-	
-	  if (_uiBase.onMouseMove(x, y)) {
-		return;
-	  }
+//	  if (_uiEngeneering.onMouseMove(x, y)) {
+//		return;
+//	  }
+//	
+//	  if (_uiCharacter.onMouseMove(x, y)) {
+//		return;
+//	  }
+//	
+//	  if (_uiSecurity.onMouseMove(x, y)) {
+//		return;
+//	  }
+//	
+//	  if (_uiScience.onMouseMove(x, y)) {
+//		return;
+//	  }
+//	
+//	  if (_uiBase.onMouseMove(x, y)) {
+//		return;
+//	  }
 	
 	  _keyMovePosX = getRelativePosX(x);
 	  _keyMovePosY = getRelativePosY(y);
-	  _interaction.mouseMove(_keyMovePosX, _keyMovePosY);
+//	  _interaction.mouseMove(_keyMovePosX, _keyMovePosY);
 	  // _cursor.setPos(_keyMovePosX, _keyMovePosY);
 	
 	  // right button pressed
@@ -153,10 +156,10 @@ public class UserInterface {
 		_keyLeftPressed = false;
 		return;
 	  }
-	
-	  _interaction.mousePress(button, getRelativePosX(x), getRelativePosY(y));
-	  _interaction.mouseMove(getRelativePosX(x), getRelativePosY(y));
-	
+//	
+//	  _interaction.mousePress(button, getRelativePosX(x), getRelativePosY(y));
+//	  _interaction.mouseMove(getRelativePosX(x), getRelativePosY(y));
+//	
 	  if (button == Mouse.Button.LEFT) {
 		_keyLeftPressed = true;
 		_keyMovePosX = _keyPressPosX = getRelativePosX(x);
@@ -170,10 +173,11 @@ public class UserInterface {
 	  }
 	}
 	
-	int getRelativePosX(int x) {
+	public int getRelativePosX(int x) {
 		return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_SIZE);
 	}
-	int getRelativePosY(int y) {
+	
+	public int getRelativePosY(int y) {
 		return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_SIZE);
 	}
 
@@ -223,12 +227,21 @@ public class UserInterface {
 //		_uiBase.close();
 //		return;
 //	  }
+		
+		if (button == Button.LEFT && _uiEngeneering.getSelectedItem() != null) {
+			_interaction.build(_uiEngeneering.getSelectedItem(),
+					Math.min(_keyPressPosX, _keyMovePosX),
+					Math.min(_keyPressPosY, _keyMovePosY),
+					Math.max(_keyPressPosX, _keyMovePosX),
+					Math.max(_keyPressPosY, _keyMovePosY));
+		}
+
 	
-	  if (_interaction.mouseRelease(button, x, y)) {
-		return;
-	  }
+//	  if (_interaction.mouseRelease(button, x, y)) {
+//		return;
+//	  }
 	
-	  _interaction.cancel();
+//	  _interaction.cancel();
 	
 	  if (button == Mouse.Button.LEFT) {
 	    if (true) {
@@ -268,7 +281,7 @@ public class UserInterface {
 			_viewport.update(x, y);
 			// _viewport.update(_mouseRightPress.x - x, _mouseRightPress.y - y);
 		  } else {
-			_interaction.cancel();
+//			_interaction.cancel();
 		  }
 	
 		}
@@ -276,18 +289,25 @@ public class UserInterface {
 	}
 	
 	public void setMode(Mode info) {
-		_panelCharacter.setVisible(false);
-		_panelInfo.setVisible(false);
-		_panelDebug.setVisible(false);
-		_panelBase.setVisible(false);
-		_uiEngeneering.setVisible(false);
+		if (info != Mode.CHARACTER) _panelCharacter.setVisible(false);
+		if (info != Mode.INFO) 		_panelInfo.setVisible(false);
+		if (info != Mode.DEBUG) 	_panelDebug.setVisible(false);
+		if (info != Mode.BASE) 		_panelBase.setVisible(false);
+		if (info != Mode.BUILD) 	_uiEngeneering.setVisible(false);
+		if (info != Mode.CREW) 		_uiCharacter.setVisible(false);
+		if (info != Mode.BASE) 		_uiBase.setVisible(false);
+		if (info != Mode.SCIENCE) 	_uiScience.setVisible(false);
+		if (info != Mode.SECURITY)	_uiSecurity.setVisible(false);
+		if (info != Mode.JOBS)		_uiJobs.setVisible(false);
 		
 		switch (info) {
-		case BUILD: _uiEngeneering.setVisible(true); break;
-		case INFO: _panelInfo.setVisible(true); break;
-		case DEBUG: _panelDebug.setVisible(true); break;
-		case CHARACTER: _panelCharacter.setVisible(true); break;
-		case BASE: _panelBase.setVisible(true); break;
+		case BUILD: _uiEngeneering.toogle(); break;
+		case INFO: _panelInfo.toogle(); break;
+		case DEBUG: _panelDebug.toogle(); break;
+		case CHARACTER: _panelCharacter.toogle(); break;
+		case BASE: _panelBase.toogle(); break;
+		case JOBS: _uiJobs.toogle(); break;
+		case CREW: _uiCharacter.toogle(); break;
 		}
 	}
 
@@ -299,21 +319,38 @@ public class UserInterface {
 	}
 	
 	public void refresh(int frame, int update, int renderTime) {
-		_panelCharacter.refresh(frame);
-		_panelBase.refresh();
-	    _panelInfo.refresh(frame);
-	  	_panelDebug.refresh(frame, _interaction.getCursor().getX(), _interaction.getCursor().getY());
-	  	_panelSystem.refresh(renderTime);
-	  	_panelShortcut.refresh();
+		_panelCharacter.refresh(_app);
+		_panelBase.refresh(_app);
+	    _panelInfo.refresh(_app);
+//	  	_panelDebug.refresh(, _interaction.getCursor().getX(), _interaction.getCursor().getY());
+	  	_panelDebug.refresh(_app);
+	  	_panelSystem.refresh(_app);
+	  	_panelShortcut.refresh(_app);
 	  	
-	  	_interaction.refreshCursor();
+//	  	_interaction.refreshCursor();
 	
-	  	_uiCharacter.draw(frame);
-	  	_uiScience.draw(frame);
-	  	_uiSecurity.draw(frame);
-	  	_uiBase.draw(frame);
-	  	_uiEngeneering.draw(frame);
-	  	_uiEngeneering.refresh();
+	  	_uiCharacter.refresh(_app);
+	  	_uiScience.refresh(_app);
+	  	_uiSecurity.refresh(_app);
+	  	_uiBase.refresh(_app);
+	  	_uiEngeneering.refresh(_app);
+	  	_uiEngeneering.refresh(_app);
+	  	_uiJobs.refresh(_app);
+	  	
+		BaseItem.Type type = _uiEngeneering.getSelectedItem();
+		if (type != null) {
+		  	if (_keyLeftPressed) {
+				  _interaction.drawCursor(Math.min(_keyPressPosX, _keyMovePosX),
+						Math.min(_keyPressPosY, _keyMovePosY),
+						Math.max(_keyPressPosX, _keyMovePosX),
+						Math.max(_keyPressPosY, _keyMovePosY));
+		  	} else {
+				  _interaction.drawCursor(Math.min(_keyMovePosX, _keyMovePosX),
+						Math.min(_keyMovePosY, _keyMovePosY),
+						Math.max(_keyMovePosX, _keyMovePosX),
+						Math.max(_keyMovePosY, _keyMovePosY));
+		  	}
+		}
 	}
 	
 	public boolean checkKeyboard(Event	event, int frame, int lastInput) {
@@ -339,7 +376,7 @@ public class UserInterface {
 	
 	  if (_interaction.getMode() != UserInteraction.Mode.MODE_NONE) {
 		if (event.type == Event.Type.KEY_RELEASED && event.asKeyEvent().key == Keyboard.Key.ESCAPE) {
-		  _interaction.cancel();
+//		  _interaction.cancel();
 		  return true;
 		}
 	  }
@@ -366,14 +403,13 @@ public class UserInterface {
 		_crewViewOpen = !_crewViewOpen;
 	  }
 	  else if (event.asKeyEvent().key == Keyboard.Key.E) {
-		_uiEngeneering.open();
-		_uiEngeneering.setVisible(true);
+		  setMode(Mode.BUILD);
 	  }
 	  else if (event.asKeyEvent().key == Keyboard.Key.O) {
 		_uiBase.toogleTile();
 	  }
 	  else if (event.asKeyEvent().key == Keyboard.Key.J) {
-		_uiBase.toogleJobs();
+		  setMode(Mode.JOBS);
 	  }
 	  else if (event.asKeyEvent().key == Keyboard.Key.I) {
 		WorldMap.getInstance().dumpItems();

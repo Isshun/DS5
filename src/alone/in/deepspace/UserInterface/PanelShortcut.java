@@ -22,10 +22,12 @@ public class PanelShortcut extends UserSubInterface {
 		
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		
-		UIText lbEngineering = new UIText(new Vector2f(200, 32));
+		UIText lbEngineering = new UIText(new Vector2f(140, 36));
 		lbEngineering.setCharacterSize(14);
 		lbEngineering.setColor(Color.WHITE);
-		lbEngineering.setString("Engineering");
+		lbEngineering.setString("Build");
+		lbEngineering.setPadding(8, 20, 10, 50);
+		lbEngineering.setBackgroundColor(new Color(0, 0, 255, 180));
 		lbEngineering.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(UIView view) {
@@ -35,11 +37,13 @@ public class PanelShortcut extends UserSubInterface {
 		lbEngineering.setPosition(new Vector2f(10, 6));
 		addView(lbEngineering);
 		
-		UIText lbOperation = new UIText(new Vector2f(10, 10));
+		UIText lbOperation = new UIText(new Vector2f(140, 36));
 		lbOperation.setCharacterSize(14);
 		lbOperation.setColor(Color.WHITE);
-		lbOperation.setPosition(new Vector2f(100, 6));
-		lbOperation.setString("Operation");
+		lbOperation.setPosition(new Vector2f(160, 6));
+		lbOperation.setPadding(8, 20, 10, 50);
+		lbOperation.setBackgroundColor(new Color(0, 255, 0, 180));
+		lbOperation.setString("Jobs");
 		lbOperation.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(UIView view) {
@@ -48,10 +52,12 @@ public class PanelShortcut extends UserSubInterface {
 		});
 		addView(lbOperation);
 		
-		UIText lbCrew = new UIText(new Vector2f(10, 10));
+		UIText lbCrew = new UIText(new Vector2f(140, 36));
 		lbCrew.setCharacterSize(14);
 		lbCrew.setColor(Color.WHITE);
-		lbCrew.setPosition(new Vector2f(200, 6));
+		lbCrew.setPadding(8, 20, 10, 50);
+		lbCrew.setBackgroundColor(new Color(0, 255, 255, 180));
+		lbCrew.setPosition(new Vector2f(310, 6));
 		lbCrew.setString("Crew");
 		lbCrew.setOnClickListener(new OnClickListener() {
 			@Override
@@ -60,5 +66,9 @@ public class PanelShortcut extends UserSubInterface {
 			}
 		});
 		addView(lbCrew);
+	}
+
+	@Override
+	public void onRefresh() {
 	}
 }

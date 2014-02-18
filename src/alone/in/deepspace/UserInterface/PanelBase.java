@@ -17,9 +17,9 @@ public class PanelBase extends UserSubInterface {
 		
 		setBackgroundColor(new Color(0, 0, 0, 150));
 	}
-	
-//	public void refresh() {
-//		
-//	}
+
+	@Override
+	public void onRefresh() {
+	}
 
 }

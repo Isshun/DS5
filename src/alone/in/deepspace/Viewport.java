@@ -7,13 +7,16 @@ import alone.in.DeepSpace.Utils.Constant;
 
 public class Viewport {
 
+	private static final int ANIM_FRAME = 10;
 	private int _posX;
 	private int _posY;
 	private int _lastPosX;
 	private int _lastPosY;
 	private int _width;
-	private int _scaleIndex;
+	private int _toScale;
 	private int _height;
+	private int _fromScale;
+	private int _scaleAnim;
 
 	Viewport(RenderWindow app) {
 	  _posX = 0;
@@ -22,14 +25,18 @@ public class Viewport {
 	  _lastPosY = 0;
 	  _width = Constant.WINDOW_WIDTH - Constant.UI_WIDTH;
 	  _height = Constant.WINDOW_HEIGHT - Constant.UI_HEIGHT;
-	  _scaleIndex = 0;
+	  _toScale = 0;
 	}
 
 	public int   getPosX() { return _posX; }
 	public int   getPosY() { return _posY; }
 	public int   getWidth() { return _posX; }
 	public int   getHeight() { return _height; }
-	public void  setScale(int delta) { _scaleIndex = Math.min(Math.max(_scaleIndex + delta, -4), 4); }
+	public void  setScale(int delta) {
+		_scaleAnim = 0;
+		_fromScale = _toScale;
+		_toScale = Math.min(Math.max(_toScale + delta, -4), 4);
+	}
 
 	public void    startMove(int x, int y) {
 	  _lastPosX = x;
@@ -44,21 +51,32 @@ public class Viewport {
 	}
 
 	public Transform  getViewTransform(Transform transform) {
-	  float scale = getScale();
-	  transform = Transform.translate(transform, Constant.UI_WIDTH + _posX, Constant.UI_HEIGHT + _posY);
-	  transform = Transform.scale(transform, scale, scale);
-	  return transform;
+		float fromValue = getScale(_fromScale);
+		float toValue = getScale(_toScale);
+		if (_scaleAnim < ANIM_FRAME) {
+			_scaleAnim++;
+		}
+		float scale = fromValue + ((toValue - fromValue) / ANIM_FRAME * _scaleAnim);
+	
+		transform = Transform.translate(transform, Constant.UI_WIDTH + _posX, Constant.UI_HEIGHT + _posY);
+		transform = Transform.scale(transform, scale, scale);
+		
+		return transform;
 	}
 
 	public Transform  getViewTransformBackground(Transform transform) {
-	  float scale = getScale();
+	  float scale = getScale(_toScale);
 	  transform = Transform.translate(transform, _posX / 10 - 250, _posY / 10 - 50);
 	  transform = Transform.scale(transform, 1+(scale/20), 1+(scale/20));
 	  return transform;
 	}
 
 	public float  getScale() {
-	  switch (_scaleIndex) {
+		return getScale(_toScale);
+	}
+
+	public float  getScale(int scale) {
+	  switch (scale) {
 	  case -4: return 0.5f;
 	  case -3: return 0.625f;
 	  case -2: return 0.75f;

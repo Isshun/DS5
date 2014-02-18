@@ -1,6 +1,7 @@
 package alone.in.DeepSpace.UserInterface;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
@@ -22,7 +23,15 @@ import alone.in.DeepSpace.Utils.Constant;
 
 public class UserInterfaceCrew extends UserSubInterface {
 
-	private static int CREW_LINE_HEIGHT = 70;
+	private static class ViewHolder {
+		public Text 	lbName;
+		public Text 	lbProfession;
+		public Sprite	thumb;
+	}
+	private static final int 	FRAME_WIDTH = 380;
+	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
+
+	private static int CREW_LINE_HEIGHT = 42;
 	private static int CREW_LINE_WIDTH  = 350;
 
 	private static int FONT_SIZE		= 16;
@@ -32,62 +41,67 @@ public class UserInterfaceCrew extends UserSubInterface {
 	private static Color COLOR_TILE_ACTIVE = new Color(50, 200, 0);
 
 	private CharacterManager     _characterManager;
+	private List<ViewHolder> _viewHolderList;
 
 	public UserInterfaceCrew(RenderWindow app, int tileIndex) throws IOException {
-		  super(app, tileIndex, new Vector2f(0, 0), new Vector2f(200, 200));
+		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		  
+		setBackgroundColor(new Color(100, 0, 0, 180));
+		
+		_viewHolderList = new ArrayList<ViewHolder>();
 		_characterManager = CharacterManager.getInstance();
-
-		_textureTile = new Texture();
-		_textureTile.loadFromFile((new File("res/bg_tile_crew.png")).toPath());
-		_texturePanel = new Texture();
-		_texturePanel.loadFromFile((new File("res/bg_panel_crew.png")).toPath());
 	}
 
 	void  addCharacter(int index, Character character) {
-	  int x = index % 4;
-	  int y = index / 4;
-	
-	  Text text = new Text();
-	  text.setFont(SpriteManager.getInstance().getFont());
-	  text.setCharacterSize(20);
-	  text.setStyle(Text.REGULAR);
-	
-	  // Name
-	  text.setString(character.getName());
-	  text.setPosition(_posX + Constant.UI_PADDING + Constant.CHAR_WIDTH + Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
-					   _posY + Constant.UI_PADDING + 3 + (CREW_LINE_HEIGHT * y));
-	  _app.draw(text);
-	
-	  // Function
-	  Profession function = character.getProfession();
-	  text.setString(function.getName());
-	  text.setPosition(_posX + Constant.UI_PADDING + Constant.CHAR_WIDTH + Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
-					   _posY + Constant.UI_PADDING + (CREW_LINE_HEIGHT * y) + 22);
-	  text.setColor(function.getColor());
-	  _app.draw(text);
-	
-	  Sprite sprite = SpriteManager.getInstance().getCharacter(function, 0, 0);
-	  sprite.setPosition(_posX + Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
-						 _posY + Constant.UI_PADDING + (CREW_LINE_HEIGHT * y));
-	  _app.draw(sprite);
+		int x = 0;
+		int y = index;
+
+		ViewHolder view = null;
+		if (index >= _viewHolderList.size()) {
+			view = new ViewHolder();
+			
+			// Name
+			view.lbName = new Text();
+			view.lbName.setFont(SpriteManager.getInstance().getFont());
+			view.lbName.setCharacterSize(14);
+			view.lbName.setString(character.getName());
+			view.lbName.setStyle(Text.REGULAR);
+			view.lbName.setPosition(Constant.UI_PADDING + 42,
+					   Constant.UI_PADDING + (CREW_LINE_HEIGHT * y));
+		
+			view.lbProfession = new Text();
+			view.lbProfession.setString(character.getName());
+			view.lbProfession.setPosition(_posX + Constant.UI_PADDING + Constant.CHAR_WIDTH + Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
+						   _posY + Constant.UI_PADDING + 3 + (CREW_LINE_HEIGHT * y));
+
+//		  // Function
+//		  Profession function = character.getProfession();
+//		  text.setString(function.getName());
+//		  text.setPosition(_posX + Constant.UI_PADDING + Constant.CHAR_WIDTH + Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
+//						   _posY + Constant.UI_PADDING + (CREW_LINE_HEIGHT * y) + 22);
+//		  text.setColor(function.getColor());
+//		  _app.draw(text, _render);
+		
+			_viewHolderList.add(view);
+		} else {
+			view = _viewHolderList.get(index);
+		}
+		
+		_app.draw(view.lbName, _render);
+		_app.draw(view.lbProfession, _render);
+		view.thumb = SpriteManager.getInstance().getCharacter(character.getProfession(), 0, 0);
+		view.thumb.setPosition(Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
+				Constant.UI_PADDING + (CREW_LINE_HEIGHT * y));
+		_app.draw(view.thumb, _render);
 	}
 	
-	void	draw(int frame) {
-	  if (_isVisible) {
-		drawPanel(frame);
-	  }
-	  drawTile();
-	}
-	
-	void	drawPanel(int frame) {
-	  super.drawPanel();
-	
-	  List<Character> characters = _characterManager.getList();
-	  int i = 0;
-	  for (Character c: characters) {
-		addCharacter(i++, c);
-	  }
+	@Override
+	public void onRefresh() {
+		List<Character> characters = _characterManager.getList();
+		int i = 0;
+		for (Character c: characters) {
+			addCharacter(i++, c);
+		}
 	}
 	
 	void	drawTile() {

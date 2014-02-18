@@ -6,6 +6,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
+import alone.in.DeepSpace.Game;
 import alone.in.DeepSpace.UserInterface.Utils.UIText;
 import alone.in.DeepSpace.Utils.Constant;
 
@@ -41,9 +42,8 @@ public class PanelSystem extends UserSubInterface {
 		addView(_lbMemoryTotal);
 	}
 	
-	public void refresh(int renderTime) {
-		super.refresh();
-		
+	@Override
+	public void onRefresh() {
 		int mb = 1024 * 1024;
         Runtime runtime = Runtime.getRuntime();
         int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
@@ -52,7 +52,7 @@ public class PanelSystem extends UserSubInterface {
         
         _used = (_used * 7 + used) / 8;
 
-        _lbRenderTime.setString(renderTime + "ms");
+        _lbRenderTime.setString(Game.renderTime + "ms");
         _lbMemoryUsed.setString(String.valueOf(_used));
         _lbMemoryTotal.setString(String.valueOf(total));
 	}

@@ -620,7 +620,7 @@ void		actionUse() {
 	
 	  int value = WorldMap.getInstance().gather(_job.getItem(), getProfessionScore(Profession.Type.NONE));
 	
-	  Log.error("value: " + value);
+	  Log.debug("gather: " + value);
 	
 	  ResourceManager.getInstance().addMatter(value);
 	

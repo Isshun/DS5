@@ -15,7 +15,7 @@ import alone.in.DeepSpace.UserInterface.Utils.UIFrame;
 import alone.in.DeepSpace.Utils.Constant;
 
 
-public class UserSubInterface extends UIFrame {
+public abstract class UserSubInterface extends UIFrame {
 	  protected boolean	isOnTile(int x, int y) {
 			return x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120;
 		  }
@@ -129,4 +129,5 @@ public class UserSubInterface extends UIFrame {
 		_bgTile.setColor(isTileActive() || isOpen() ? color : Color.WHITE);
 		_app.draw(_bgTile);
 	}
+
 }

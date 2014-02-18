@@ -18,8 +18,8 @@ import alone.in.DeepSpace.Utils.ObjectPool;
 
 public class PanelDebug extends UserSubInterface {
 
-	private static final int FRAME_WIDTH = 380;
-	private static final float FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
+	private static final int 	FRAME_WIDTH = 380;
+	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	private int				_index;
 
 	public PanelDebug(RenderWindow app) throws IOException {
@@ -83,13 +83,8 @@ public class PanelDebug extends UserSubInterface {
 		_index++;
 	}
 
-	void	refresh(int frame, int x, int y) {
-		super.refresh();
-//		
-//		if (_isVisible == false) {
-//			return;
-//		}
-//		
+	@Override
+	public void onRefresh() {
 //		_index = 0;
 //
 ////		addDebug("add character");

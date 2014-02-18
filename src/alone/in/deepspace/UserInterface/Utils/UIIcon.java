@@ -1,7 +1,8 @@
-package alone.in.DeepSpace.UserInterface;
+package alone.in.DeepSpace.UserInterface.Utils;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
@@ -11,17 +12,15 @@ import alone.in.DeepSpace.Managers.SpriteManager;
 import alone.in.DeepSpace.Models.BaseItem;
 import alone.in.DeepSpace.Models.BaseItem.Type;
 
-public class UIIcon {
+public class UIIcon extends UIView {
 
 	private RectangleShape 	_background;
-	private Vector2f		_pos;
-	private int 			_posX;
-	private int 			_posY;
 	private Sprite			_icon;
 	private Text _text;
 	private Type _type;
 
-	public UIIcon(int typeIndex) {
+	public UIIcon(Vector2f size, int typeIndex) {
+		super(size);
 		_type = BaseItem.getTypeIndex(typeIndex);
 		_icon = SpriteManager.getInstance().getIcon(_type);
 		
@@ -34,18 +33,16 @@ public class UIIcon {
 	}
 	
 	public void setPosition(int x, int y) {
-		_pos = new Vector2f(x, y);
-		_posX = x;
-		_posY = y;
+		super.setPosition(new Vector2f(x, y));
 		
 		if (_icon != null) {
-			_icon.setPosition(x + 23, y + 63);
+			_icon.setPosition(x + 3, y + 3);
 		}
 		if (_background != null) {
-			_background.setPosition(x + 20, y + 60);
+			_background.setPosition(x, y);
 		}
 		if (_text != null) {
-			_text.setPosition(x + 26, y + 117);
+			_text.setPosition(x + 6, y + 57);
 		}
 	}
 
@@ -54,20 +51,20 @@ public class UIIcon {
 		_background.setSize(new Vector2f(62, 80));
 		_background.setFillColor(color);
 		if (_pos != null) {
-			_background.setPosition(_posX + 20, _posY + 60);
+			_background.setPosition(_posX, _posY);
 		}
 	}
 
-
-	public void refresh(RenderWindow _app) {
+	@Override
+	public void onRefresh(RenderWindow app, RenderStates states) {
 		if (_background != null) {
-			_app.draw(_background);
+			app.draw(_background, states);
 		}
 		if (_icon != null) {
-			_app.draw(_icon);
+			app.draw(_icon, states);
 		}
 		if (_text != null) {
-			_app.draw(_text);
+			app.draw(_text, states);
 		}
 	}
 

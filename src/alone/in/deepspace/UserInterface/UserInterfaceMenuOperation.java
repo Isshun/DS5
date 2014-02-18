@@ -41,11 +41,8 @@ public class UserInterfaceMenuOperation extends UserSubInterface {
 		_texturePanel.loadFromFile((new File("res/bg_panel_operation.png")).toPath());
 	}
 
-	void	draw(int frame) {
-	  if (_isVisible) {
-		drawJobs();
-	  }
-	  drawTile();
+	@Override
+	public void onRefresh() {
 	}
 
 	void	drawTile() {
@@ -78,69 +75,6 @@ public class UserInterfaceMenuOperation extends UserSubInterface {
 	}
 
 	void	drawJobs() {
-	  int posX = 20;
-	  int posY = 20;
-
-	  // _background.setPosition(posX, UI_PADDING);
-	  // _background.setColor(MENU_COLOR);
-	  // _app.draw(_background);
-
-	  // Background
-	  RectangleShape shape = new RectangleShape();
-	  shape.setSize(new Vector2f(300, 800));
-	  shape.setFillColor(new Color(0, 0, 100, 100));
-	  shape.setPosition(posX, posY);
-	  _app.draw(shape);
-
-	  Text text = new Text();
-	  text.setFont(SpriteManager.getInstance().getFont());
-	  text.setCharacterSize(12);
-
-	  // Display jobs
-	  List<Job> jobs = JobManager.getInstance().getJobs();
-
-	  text.setColor(Color.WHITE);
-	  text.setString("Operation");
-	  text.setCharacterSize(28);
-	  text.setPosition(posX, posY);
-	  _app.draw(text);
-	  text.setColor(Color.YELLOW);
-	  text.setStyle(Text.UNDERLINED);
-	  text.setString("O");
-	  _app.draw(text);
-
-	  text.setStyle(Text.REGULAR);
-	  text.setColor(Color.WHITE);
-	  text.setCharacterSize(16);
-	  text.setString("jobs: " + jobs.size());
-	  text.setPosition(posX, posY + 38);
-	  _app.draw(text);
-	  
-	  text.setCharacterSize(12);
-	  int i = 0;
-	  for (Job job: jobs) {
-		if (i < 50) {
-		  String oss = "Job # " + job.getId()
-			  + ": " + JobManager.getActionName(job.getAction())
-			  + " " + BaseItem.getItemName(job.getItemType());
-		  if (job.getCharacter() != null) {
-			  switch (job.getAction()) {
-			  case BUILD: text.setColor(Color.YELLOW); break;
-			  case MOVE: text.setColor(Color.CYAN); break;
-			  case GATHER: text.setColor(Color.GREEN); break;
-			  case NONE: text.setColor(Color.BLACK); break;
-			  case USE: text.setColor(Color.BLUE); break;
-			  }
-			oss += " (" + job.getCharacter().getName() + ")";
-		  } else {
-			text.setColor(Color.RED);
-			oss += " (on queue)";
-		  }
-		  text.setString(oss);
-		  text.setPosition(posX + Constant.UI_PADDING, posY + 52 + Constant.UI_PADDING + (14 * i++));
-		  _app.draw(text);
-		}
-	  }
 
 	  // for (int i = 0; i < 20; i++) {
 	  //   std.ostringstream oss;

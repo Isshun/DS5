@@ -28,8 +28,8 @@ public class WorldMap {
 
 	public WorldMap() {
 		  _itemCout = 0;
-		  _width = 120;
-		  _height = 50;
+		  _width = 250;
+		  _height = 150;
 		  _count = 0;
 
 		  dump();
@@ -486,7 +486,7 @@ public class WorldMap {
 
 			// Create new room if not exists
 			else {
-			  roomId = addRoom(x, y);
+			  //roomId = addRoom(x, y);
 			}
 
 			if (type == BaseItem.Type.STRUCTURE_FLOOR) {

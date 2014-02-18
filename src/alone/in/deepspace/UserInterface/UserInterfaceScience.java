@@ -33,7 +33,8 @@ public class UserInterfaceScience extends UserSubInterface {
 		_texturePanel.loadFromFile((new File("res/bg_panel_science.png")).toPath());
 	}
 
-	void refreshSciences(int frame, long interval) {
+	@Override
+	public void onRefresh() {
 
   // {
   // 	int matter = ResourceManager.getInstance().getMatter();
@@ -80,15 +81,6 @@ public class UserInterfaceScience extends UserSubInterface {
   //   text.setPosition(UIRES_POSX + UI_PADDING + 540 + 0, UIRES_POSY + UI_PADDING + 0);
   //   _app.draw(text);
   // }
-
-  {
-    Text text = new Text();
-    text.setString("FPS: " + (interval > 0 ? (int)(1000 / interval) : 1000));
-    text.setFont(SpriteManager.getInstance().getFont());
-    text.setCharacterSize(24);
-    text.setPosition(UIRES_POSX + Constant.UI_PADDING + 800 + 0, UIRES_POSY + Constant.UI_PADDING + 0);
-    _app.draw(text);
-  }
 
 }
 

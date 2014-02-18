@@ -1,9 +1,13 @@
 package alone.in.DeepSpace.UserInterface.Utils;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.FloatRect;
+import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
+import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
+import org.omg.CORBA._PolicyStub;
 
 import alone.in.DeepSpace.MainRenderer;
 import alone.in.DeepSpace.Managers.SpriteManager;
@@ -33,16 +37,19 @@ public class UIText extends UIView {
 
 	public void setPosition(Vector2f pos) {
 		super.setPosition(pos);
-		_text.setPosition(pos);
+		_text.setPosition(new Vector2f(_pos.x + _paddingLeft, _pos.y + _paddingTop));
 	}
 
 	@Override
-	public void refresh(RenderStates render) {
-		if (_isVisible == false) {
-			return;
+	public void setPadding(int t, int r, int b, int l) {
+		super.setPadding(t, r, b, l);
+		if (_pos != null) {
+			_text.setPosition(new Vector2f(_pos.x + _paddingLeft, _pos.y + _paddingTop));
 		}
-		
-		MainRenderer.getInstance().draw(_text, render);
 	}
 
+	@Override
+	public void onRefresh(RenderWindow app, RenderStates render) {
+		app.draw(_text, render);
+	}
 }

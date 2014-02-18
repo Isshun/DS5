@@ -61,18 +61,18 @@ public class CharacterManager {
 
 	public void	assignJobs() {
 
-	  if (JobManager.getInstance().getCountFree() > 0) {
-		for (Character c: _characters) {
-		  if (c.getJob() == null) {
-			Job job = JobManager.getInstance().getJob(c);
-			if (job != null) {
-			  Log.debug("assignJobs to " + c.getName());
-			  job.setCharacter(c);
-			  c.setJob(job);
+		if (JobManager.getInstance().getCountFree() > 0) {
+			for (Character c: _characters) {
+				if (c.getJob() == null) {
+					Job job = JobManager.getInstance().getJob(c);
+					if (job != null) {
+						Log.debug("assignJobs to " + c.getName());
+						job.setCharacter(c);
+						c.setJob(job);
+					}
+				}
 			}
-		  }
 		}
-	  }
 	}
 
 	public void	create() {

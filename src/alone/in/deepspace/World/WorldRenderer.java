@@ -39,17 +39,10 @@ public class WorldRenderer {
 
 	public void	draw(RenderStates render) {
 
-		// TODO
-//		int fromX = max(_ui.getRelativePosX(0)-1, 0);
-//	  int fromY = max(_ui.getRelativePosY(0)-1, 0);
-//	  // int toX = _ui.getRelativePosX(WorldMap.getInstance().getWidth());
-//	  // int toY = _ui.getRelativePosY(WorldMap.getInstance().getHeight());
-//	  int toX = min(_ui.getRelativePosX(Constant.WINDOW_WIDTH)+1, WorldMap.getInstance().getWidth());
-//	  int toY = min(_ui.getRelativePosY(Constant.WINDOW_HEIGHT)+1, WorldMap.getInstance().getHeight());
-		int fromX = 0;
-		int fromY = 0;
-		int toX = 100;
-		int toY = 50;
+		int fromX = Math.max(_ui.getRelativePosX(0)-1, 0);
+		int fromY = Math.max(_ui.getRelativePosY(0)-1, 0);
+		int toX = Math.min(_ui.getRelativePosX(Constant.WINDOW_WIDTH)+1, WorldMap.getInstance().getWidth());
+		int toY = Math.min(_ui.getRelativePosY(Constant.WINDOW_HEIGHT)+1, WorldMap.getInstance().getHeight());
 
 	  // Debug() << "Renderer: " << fromX << " to: " << toX;
 
@@ -225,7 +218,9 @@ public class WorldRenderer {
 			// 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 			// }
 
+			if (sprite != null) {
 			_app.draw(sprite, render);
+			}
 		  }
 		}
 	  }

@@ -145,10 +145,8 @@ public class PanelCharacter extends UserSubInterface {
 //	    _app.draw(shape, render);
 	}
 
-	void	refresh(int frame) {
-		super.refresh();
-
-	  // Background
+	@Override
+	public void onRefresh() {
 	  if (_character != null) {
 
 		  CharacterNeeds needs = _character.getNeeds();

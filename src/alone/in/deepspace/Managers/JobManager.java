@@ -149,7 +149,7 @@ public class JobManager {
 			return null;
 		}
 	  
-		Log.info("bestJob: start");
+		Log.debug("bestJob: start");
 
 		Job bestJob = getJobForCharacterNeed(character);
 		if (bestJob != null) {
@@ -190,10 +190,10 @@ public class JobManager {
 		}
 
 		if (bestJob != null) {
-			Log.info("bestjob: " + bestDistance + " (" + bestJob.getX() + ", " + bestJob.getY() + ")");
+			Log.debug("bestjob: " + bestDistance + " (" + bestJob.getX() + ", " + bestJob.getY() + ")");
 			_countFree--;
 		} else {
-			Log.info("bestjob: null");
+			Log.debug("bestjob: null");
 		}
 
 		return bestJob;
@@ -250,14 +250,14 @@ public class JobManager {
 //	}
 
 	public void	abort(Job job) {
-	  Log.info("Job abort: " + job.getId());
+	  Log.debug("Job abort: " + job.getId());
 	  _start++;
 	  _countFree++;
 	  job.setCharacter(null);
 	}
 
 	public void	complete(Job job) {
-	  Log.info("Job complete: " + job.getId());
+	  Log.debug("Job complete: " + job.getId());
 
 	  _jobs.remove(job);
 	  _count--;
@@ -265,7 +265,7 @@ public class JobManager {
 	}
 
 	public void	need(Character character, BaseItem.Type itemType) {
-	  Log.info("JobManager: Character '" + character.getName() + "' need item #" + itemType);
+	  Log.debug("JobManager: Character '" + character.getName() + "' need item #" + itemType);
 
 	  BaseItem item = WorldMap.getInstance().find(itemType, true);
 	  if (item != null) {

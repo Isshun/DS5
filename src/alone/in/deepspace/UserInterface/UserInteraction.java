@@ -13,6 +13,7 @@ import alone.in.DeepSpace.MainRenderer;
 import alone.in.DeepSpace.Viewport;
 import alone.in.DeepSpace.Managers.JobManager;
 import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.DeepSpace.Models.BaseItem.Type;
 import alone.in.DeepSpace.Models.Cursor;
 import alone.in.DeepSpace.Models.ItemInfo;
 import alone.in.DeepSpace.Utils.Constant;
@@ -33,7 +34,6 @@ public class UserInteraction {
 	 Viewport				_viewport;
 	 Cursor					_cursor;
 	 Mode					_mode;
-	 BaseItem.Type			_itemType;
 	 int					_startPressX;
 	 int					_startPressY;
 	 int					_mouseMoveX;
@@ -73,96 +73,95 @@ public class UserInteraction {
 	  }
 	}
 
-	void	refreshCursor() {
-	  if (_mode == Mode.MODE_BUILD || _mode == Mode.MODE_EREASE) {
-		ItemInfo itemInfo = BaseItem.getItemInfo(_itemType);
+//	void	refreshCursor() {
+//	  if (_mode == Mode.MODE_BUILD || _mode == Mode.MODE_EREASE) {
+//		ItemInfo itemInfo = BaseItem.getItemInfo(_itemType);
+//
+//		int width = 1;
+//		int height = 1;
+//		if (itemInfo != null) {
+//			width = itemInfo.width;
+//			height = itemInfo.height;
+//		}
+//			
+//		
+//		// Structure: multiple 1x1 tile
+//		if (_button == Mouse.Button.LEFT) {
+//		  if (BaseItem.isStructure(_itemType)) {
+//			drawCursor(Math.min(_startPressX, _mouseMoveX),
+//					   Math.min(_startPressY, _mouseMoveY),
+//					   Math.max(_startPressX, _mouseMoveX),
+//					   Math.max(_startPressY, _mouseMoveY));
+//		  }
+//
+//		  // Single nxn tile: holding mouse button
+//		  else {
+//			drawCursor(Math.min(_startPressX, _mouseMoveX),
+//					   Math.min(_startPressY, _mouseMoveY),
+//					   Math.min(_startPressX, _mouseMoveX) + width - 1,
+//					   Math.min(_startPressY, _mouseMoveY) + height - 1);
+//		  }
+//		}
+//
+//		// Single 1x1 tile: mouse hover
+//		else {
+//		  drawCursor(_mouseMoveX, _mouseMoveY, _mouseMoveX, _mouseMoveY);
+//		}
+//	  }
+//	}
+//
+//	void	mouseMove(int x, int y) {
+//	  _mouseMoveX = x;
+//	  _mouseMoveY = y;
+//	}
+//
+//	void	mousePress(Mouse.Button button, int x, int y) {
+//	  Log.error("Press: " + y);
+//
+//	  if (button == Mouse.Button.LEFT) {
+//		_button = button;
+//		_startPressX = x;
+//		_startPressY = y;
+//	  }
+//	}
+//
+//	boolean	mouseRelease(Mouse.Button button, int x, int y) {
+//	  if (_mode != Mode.MODE_NONE && button == Mouse.Button.LEFT) {
+//		Log.error("Release: " + y);
+//
+//		int startX = Math.min(_startPressX, _mouseMoveX);
+//		int startY = Math.min(_startPressY, _mouseMoveY);
+//		int toX = Math.max(_startPressX, _mouseMoveX);
+//		int toY = Math.max(_startPressY, _mouseMoveY);
+//
+//		switch (_mode) {
+//		case MODE_BUILD:
+//		  build(startX, startY, toX, toY);
+//		  break;
+//		case MODE_EREASE:
+//		  erease(startX, startY, toX, toY);
+//		  break;
+//		case MODE_SELECT:
+//			break;
+//		case MODE_NONE:
+//			break;
+//		}
+//
+//		_button = null;
+//		_startPressX = -1;
+//		_startPressY = -1;
+//
+//		return true;
+//	  }
+//	  return false;
+//	}
 
-		int width = 1;
-		int height = 1;
-		if (itemInfo != null) {
-			width = itemInfo.width;
-			height = itemInfo.height;
-		}
-			
-		
-		// Structure: multiple 1x1 tile
-		if (_button == Mouse.Button.LEFT) {
-		  if (BaseItem.isStructure(_itemType)) {
-			drawCursor(Math.min(_startPressX, _mouseMoveX),
-					   Math.min(_startPressY, _mouseMoveY),
-					   Math.max(_startPressX, _mouseMoveX),
-					   Math.max(_startPressY, _mouseMoveY));
-		  }
-
-		  // Single nxn tile: holding mouse button
-		  else {
-			drawCursor(Math.min(_startPressX, _mouseMoveX),
-					   Math.min(_startPressY, _mouseMoveY),
-					   Math.min(_startPressX, _mouseMoveX) + width - 1,
-					   Math.min(_startPressY, _mouseMoveY) + height - 1);
-		  }
-		}
-
-		// Single 1x1 tile: mouse hover
-		else {
-		  drawCursor(_mouseMoveX, _mouseMoveY, _mouseMoveX, _mouseMoveY);
-		}
-	  }
-	}
-
-	void	mouseMove(int x, int y) {
-	  _mouseMoveX = x;
-	  _mouseMoveY = y;
-	}
-
-	void	mousePress(Mouse.Button button, int x, int y) {
-	  Log.error("Press: " + y);
-
-	  if (button == Mouse.Button.LEFT) {
-		_button = button;
-		_startPressX = x;
-		_startPressY = y;
-	  }
-	}
-
-	boolean	mouseRelease(Mouse.Button button, int x, int y) {
-	  if (_mode != Mode.MODE_NONE && button == Mouse.Button.LEFT) {
-		Log.error("Release: " + y);
-
-		int startX = Math.min(_startPressX, _mouseMoveX);
-		int startY = Math.min(_startPressY, _mouseMoveY);
-		int toX = Math.max(_startPressX, _mouseMoveX);
-		int toY = Math.max(_startPressY, _mouseMoveY);
-
-		switch (_mode) {
-		case MODE_BUILD:
-		  build(startX, startY, toX, toY);
-		  break;
-		case MODE_EREASE:
-		  erease(startX, startY, toX, toY);
-		  break;
-		case MODE_SELECT:
-			break;
-		case MODE_NONE:
-			break;
-		}
-
-		_button = null;
-		_startPressX = -1;
-		_startPressY = -1;
-
-		return true;
-	  }
-	  return false;
-	}
-
-	void	build(int startX, int startY, int toX, int toY) {
+	void	build(Type type, int startX, int startY, int toX, int toY) {
 	  for (int x = toX; x >= startX; x--) {
 		for (int y = toY; y >= startY; y--) {
 
 		  // Structure
-		  BaseItem item = null;
-		  if (_itemType == BaseItem.Type.STRUCTURE_ROOM) {
+		  if (type == BaseItem.Type.STRUCTURE_ROOM) {
 			if (x == startX || x == toX || y == startY || y == toY) {
 			  Log.warning("1");
 			  JobManager.getInstance().build(BaseItem.Type.STRUCTURE_WALL, x, y);
@@ -174,9 +173,9 @@ public class UserInteraction {
 			}
 		  } else {
 			// item = WorldMap.getInstance().putItem(x, y, _menu.getBuildItemType());
-			if (_itemType != BaseItem.Type.NONE) {
-			  Log.warning("3 " + _itemType + " " + BaseItem.getItemName(_itemType));
-			  JobManager.getInstance().build(_itemType, x, y);
+			if (type != BaseItem.Type.NONE) {
+			  Log.warning("3 " + type + " " + BaseItem.getItemName(type));
+			  JobManager.getInstance().build(type, x, y);
 			  // item = WorldMap.getInstance().putItem(x, y, type);
 			}
 		  }
@@ -197,9 +196,9 @@ public class UserInteraction {
 
 	Mode getMode() { return _mode; }
 	void setMode(Mode mode) { _mode = mode; }
-	void selectBuildItem(BaseItem.Type type) { _mode = Mode.MODE_BUILD; _itemType = type; }
-	void cancel() { _mode = Mode.MODE_NONE; _itemType = BaseItem.Type.NONE; }
-	BaseItem.Type getBuildItem() { return _itemType; }
+//	void selectBuildItem(BaseItem.Type type) { _mode = Mode.MODE_BUILD; _itemType = type; }
+//	void cancel() { _mode = Mode.MODE_NONE; _itemType = BaseItem.Type.NONE; }
+//	BaseItem.Type getBuildItem() { return _itemType; }
 
 	public Cursor getCursor() {
 		return _cursor;

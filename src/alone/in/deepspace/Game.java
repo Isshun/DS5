@@ -32,6 +32,7 @@ public class Game {
 
 	static final int REFRESH_INTERVAL = (1000/60);
 	static final int UPDATE_INTERVAL = 100;
+	public static int renderTime;
 	private int _seed;
 	private int _renderTime;
 	private RenderWindow _app;
@@ -338,6 +339,7 @@ public class Game {
 			} else {
 				int currentRenderTime = (int) (elapsed.asMilliseconds() - _last_refresh.asMilliseconds());
 				_renderTime = (_renderTime * 7 + currentRenderTime) / 8;
+				renderTime = _renderTime;
 			  Thread.sleep(nextRefresh);
 			}
 

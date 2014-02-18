@@ -6,12 +6,13 @@ import java.util.List;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
+import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
 import org.jsfml.system.Vector2f;
 
 import alone.in.DeepSpace.MainRenderer;
 
-public class UIFrame {
+public abstract class UIFrame {
 	protected RenderStates 	_render;
 	private RectangleShape 	_background;
 	private int _posX;
@@ -50,7 +51,7 @@ public class UIFrame {
 		}
 	}
 	
-	public void refresh() {
+	public void refresh(RenderWindow app) {
 		if (_isVisible == false) {
 			return;
 		}
@@ -58,12 +59,16 @@ public class UIFrame {
 		MainRenderer.getInstance().draw(_background, _render);
 
 		for (UIView view: _views) {
-			view.refresh(_render);
+			view.refresh(app, _render);
 		}
+		
+		onRefresh();
 	}
 	
 	public void setVisible(boolean visible) {
 		_isVisible = visible;
 	}
+
+	public abstract void onRefresh();
 
 }
