@@ -1,14 +1,14 @@
-package alone.in.DeepSpace.Models;
+package alone.in.deepspace.Models;
 import java.util.Vector;
 
-import alone.in.DeepSpace.Managers.CharacterManager;
-import alone.in.DeepSpace.Managers.JobManager;
-import alone.in.DeepSpace.Managers.PathManager;
-import alone.in.DeepSpace.Managers.ResourceManager;
-import alone.in.DeepSpace.Utils.Constant;
-import alone.in.DeepSpace.Utils.Log;
-import alone.in.DeepSpace.World.StructureItem;
-import alone.in.DeepSpace.World.WorldMap;
+import alone.in.deepspace.Managers.CharacterManager;
+import alone.in.deepspace.Managers.JobManager;
+import alone.in.deepspace.Managers.PathManager;
+import alone.in.deepspace.Managers.ResourceManager;
+import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.StructureItem;
+import alone.in.deepspace.World.WorldMap;
 
 public class Character implements PathManagerCallback {
 	

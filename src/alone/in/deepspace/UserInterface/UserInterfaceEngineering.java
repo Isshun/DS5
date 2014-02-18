@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.UserInterface;
+package alone.in.deepspace.UserInterface;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,14 +10,14 @@ import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
-import alone.in.DeepSpace.Models.BaseItem;
-import alone.in.DeepSpace.Models.BaseItem.Type;
-import alone.in.DeepSpace.UserInterface.Utils.OnClickListener;
-import alone.in.DeepSpace.UserInterface.Utils.UIIcon;
-import alone.in.DeepSpace.UserInterface.Utils.UIText;
-import alone.in.DeepSpace.UserInterface.Utils.UIView;
-import alone.in.DeepSpace.Utils.Constant;
-import alone.in.DeepSpace.Utils.Log;
+import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.Models.BaseItem.Type;
+import alone.in.deepspace.UserInterface.Utils.OnClickListener;
+import alone.in.deepspace.UserInterface.Utils.UIIcon;
+import alone.in.deepspace.UserInterface.Utils.UIText;
+import alone.in.deepspace.UserInterface.Utils.UIView;
+import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.Utils.Log;
 
 public class UserInterfaceEngineering extends UserSubInterface {
 

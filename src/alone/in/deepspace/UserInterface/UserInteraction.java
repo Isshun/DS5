@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.UserInterface;
+package alone.in.deepspace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
@@ -9,16 +9,16 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.Transform;
 import org.jsfml.window.Mouse;
 
-import alone.in.DeepSpace.MainRenderer;
-import alone.in.DeepSpace.Viewport;
-import alone.in.DeepSpace.Managers.JobManager;
-import alone.in.DeepSpace.Models.BaseItem;
-import alone.in.DeepSpace.Models.BaseItem.Type;
-import alone.in.DeepSpace.Models.Cursor;
-import alone.in.DeepSpace.Models.ItemInfo;
-import alone.in.DeepSpace.Utils.Constant;
-import alone.in.DeepSpace.Utils.Log;
-import alone.in.DeepSpace.World.WorldMap;
+import alone.in.deepspace.MainRenderer;
+import alone.in.deepspace.Viewport;
+import alone.in.deepspace.Managers.JobManager;
+import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.Models.Cursor;
+import alone.in.deepspace.Models.ItemInfo;
+import alone.in.deepspace.Models.BaseItem.Type;
+import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.WorldMap;
 
 
 public class UserInteraction {

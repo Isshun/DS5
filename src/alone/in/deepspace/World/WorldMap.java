@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.World;
+package alone.in.deepspace.World;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import alone.in.DeepSpace.Managers.JobManager;
-import alone.in.DeepSpace.Models.BaseItem;
-import alone.in.DeepSpace.Models.BaseItem.Type;
-import alone.in.DeepSpace.Models.Room;
-import alone.in.DeepSpace.Utils.Log;
+import alone.in.deepspace.Managers.JobManager;
+import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.Models.Room;
+import alone.in.deepspace.Models.BaseItem.Type;
+import alone.in.deepspace.Utils.Log;
 
 
 public class WorldMap {

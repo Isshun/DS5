@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.Utils;
+package alone.in.deepspace.Utils;
 
 public class Constant {
 

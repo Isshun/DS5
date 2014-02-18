@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.UserInterface.Utils;
+package alone.in.deepspace.UserInterface.Utils;
 
 import java.awt.Rectangle;
 
@@ -8,8 +8,8 @@ import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.DeepSpace.MainRenderer;
-import alone.in.DeepSpace.UserInterface.EventManager;
+import alone.in.deepspace.MainRenderer;
+import alone.in.deepspace.UserInterface.EventManager;
 
 public abstract class UIView {
 	protected Vector2f 		_pos;

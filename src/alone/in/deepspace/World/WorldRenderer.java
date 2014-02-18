@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.World;
+package alone.in.deepspace.World;
 
 import java.io.IOException;
 
@@ -11,12 +11,12 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
-import alone.in.DeepSpace.Managers.SpriteManager;
-import alone.in.DeepSpace.Models.BaseItem;
-import alone.in.DeepSpace.UserInterface.UserInterface;
-import alone.in.DeepSpace.Utils.Constant;
-import alone.in.DeepSpace.Utils.ObjectPool;
-import alone.in.DeepSpace.Utils.Settings;
+import alone.in.deepspace.Managers.SpriteManager;
+import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.UserInterface.UserInterface;
+import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.Utils.ObjectPool;
+import alone.in.deepspace.Utils.Settings;
 
 public class WorldRenderer {
 	RenderWindow	_app;

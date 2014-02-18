@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.UserInterface.Utils;
+package alone.in.deepspace.UserInterface.Utils;
 
 
 public interface OnClickListener {

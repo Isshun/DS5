@@ -1,6 +1,6 @@
-package alone.in.DeepSpace.Models;
+package alone.in.deepspace.Models;
 
-import alone.in.DeepSpace.Utils.Constant;
+import alone.in.deepspace.Utils.Constant;
 
 public class Cursor {
 

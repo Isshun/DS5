@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.UserInterface;
+package alone.in.deepspace.UserInterface;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
@@ -6,11 +6,11 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
-import alone.in.DeepSpace.Managers.SpriteManager;
-import alone.in.DeepSpace.Models.BaseItem;
-import alone.in.DeepSpace.Utils.Constant;
-import alone.in.DeepSpace.Utils.ObjectPool;
-import alone.in.DeepSpace.World.WorldArea;
+import alone.in.deepspace.Managers.SpriteManager;
+import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.Utils.ObjectPool;
+import alone.in.deepspace.World.WorldArea;
 
 
 public class PanelInfo extends UserSubInterface {

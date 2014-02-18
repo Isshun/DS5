@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.UserInterface.Utils;
+package alone.in.deepspace.UserInterface.Utils;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.FloatRect;
@@ -9,8 +9,8 @@ import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 import org.omg.CORBA._PolicyStub;
 
-import alone.in.DeepSpace.MainRenderer;
-import alone.in.DeepSpace.Managers.SpriteManager;
+import alone.in.deepspace.MainRenderer;
+import alone.in.deepspace.Managers.SpriteManager;
 
 public class UIText extends UIView {
 

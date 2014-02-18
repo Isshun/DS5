@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.UserInterface;
+package alone.in.deepspace.UserInterface;
 
 import java.io.IOException;
 
@@ -6,7 +6,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.DeepSpace.Utils.Constant;
+import alone.in.deepspace.Utils.Constant;
 
 public class PanelBase extends UserSubInterface {
 	private static final int FRAME_WIDTH = 380;

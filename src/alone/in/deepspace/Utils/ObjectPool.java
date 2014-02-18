@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.Utils;
+package alone.in.deepspace.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

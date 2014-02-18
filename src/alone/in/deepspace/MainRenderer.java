@@ -1,4 +1,4 @@
-package alone.in.DeepSpace;
+package alone.in.deepspace;
 import org.jsfml.graphics.Drawable;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;

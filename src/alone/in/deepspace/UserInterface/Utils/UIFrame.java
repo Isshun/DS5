@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.UserInterface.Utils;
+package alone.in.deepspace.UserInterface.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
 import org.jsfml.system.Vector2f;
 
-import alone.in.DeepSpace.MainRenderer;
+import alone.in.deepspace.MainRenderer;
 
 public abstract class UIFrame {
 	protected RenderStates 	_render;

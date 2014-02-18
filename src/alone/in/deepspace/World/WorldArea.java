@@ -1,6 +1,6 @@
-package alone.in.DeepSpace.World;
+package alone.in.deepspace.World;
 
-import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.deepspace.Models.BaseItem;
 
 public class WorldArea extends BaseItem {
 

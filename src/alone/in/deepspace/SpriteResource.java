@@ -1,6 +1,6 @@
-package alone.in.DeepSpace;
+package alone.in.deepspace;
 
-import alone.in.DeepSpace.Models.BaseItem;
+import alone.in.deepspace.Models.BaseItem;
 
 public class SpriteResource {
 

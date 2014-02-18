@@ -1,10 +1,10 @@
-package alone.in.DeepSpace.UserInterface;
+package alone.in.deepspace.UserInterface;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import alone.in.DeepSpace.UserInterface.Utils.OnClickListener;
-import alone.in.DeepSpace.UserInterface.Utils.UIView;
+import alone.in.deepspace.UserInterface.Utils.OnClickListener;
+import alone.in.deepspace.UserInterface.Utils.UIView;
 
 public class EventManager {
 	private static EventManager _self;

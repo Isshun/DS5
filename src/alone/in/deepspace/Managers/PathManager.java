@@ -1,10 +1,10 @@
-package alone.in.DeepSpace.Managers;
+package alone.in.deepspace.Managers;
 import java.util.Vector;
 
-import alone.in.DeepSpace.Models.Character;
-import alone.in.DeepSpace.Models.Job;
-import alone.in.DeepSpace.Models.Position;
-import alone.in.DeepSpace.Utils.Log;
+import alone.in.deepspace.Models.Character;
+import alone.in.deepspace.Models.Job;
+import alone.in.deepspace.Models.Position;
+import alone.in.deepspace.Utils.Log;
 
 
 public class PathManager {

@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.UserInterface;
+package alone.in.deepspace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
@@ -11,8 +11,8 @@ import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
-import alone.in.DeepSpace.UserInterface.Utils.UIFrame;
-import alone.in.DeepSpace.Utils.Constant;
+import alone.in.deepspace.UserInterface.Utils.UIFrame;
+import alone.in.deepspace.Utils.Constant;
 
 
 public abstract class UserSubInterface extends UIFrame {

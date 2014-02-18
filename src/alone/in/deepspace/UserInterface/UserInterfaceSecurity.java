@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.UserInterface;
+package alone.in.deepspace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
@@ -9,9 +9,9 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
-import alone.in.DeepSpace.Managers.ResourceManager;
-import alone.in.DeepSpace.Managers.SpriteManager;
-import alone.in.DeepSpace.Utils.Constant;
+import alone.in.deepspace.Managers.ResourceManager;
+import alone.in.deepspace.Managers.SpriteManager;
+import alone.in.deepspace.Utils.Constant;
 
 
 public class UserInterfaceSecurity extends UserSubInterface {

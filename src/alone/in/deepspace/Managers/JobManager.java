@@ -1,16 +1,16 @@
-package alone.in.DeepSpace.Managers;
+package alone.in.deepspace.Managers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import alone.in.DeepSpace.Models.BaseItem;
-import alone.in.DeepSpace.Models.Character;
-import alone.in.DeepSpace.Models.CharacterNeeds;
-import alone.in.DeepSpace.Models.Job;
-import alone.in.DeepSpace.Utils.Log;
-import alone.in.DeepSpace.World.UserItem;
-import alone.in.DeepSpace.World.WorldMap;
-import alone.in.DeepSpace.World.WorldRessource;
+import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.Models.Character;
+import alone.in.deepspace.Models.CharacterNeeds;
+import alone.in.deepspace.Models.Job;
+import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.UserItem;
+import alone.in.deepspace.World.WorldMap;
+import alone.in.deepspace.World.WorldRessource;
 
 public class JobManager {
 	public enum Action {

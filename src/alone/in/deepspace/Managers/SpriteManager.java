@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.Managers;
+package alone.in.deepspace.Managers;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,15 +11,15 @@ import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
-import alone.in.DeepSpace.SpriteResource;
-import alone.in.DeepSpace.Models.BaseItem;
-import alone.in.DeepSpace.Models.ItemInfo;
-import alone.in.DeepSpace.Models.Profession;
-import alone.in.DeepSpace.Utils.Constant;
-import alone.in.DeepSpace.Utils.Log;
-import alone.in.DeepSpace.Utils.ObjectPool;
-import alone.in.DeepSpace.World.StructureItem;
-import alone.in.DeepSpace.World.WorldRessource;
+import alone.in.deepspace.SpriteResource;
+import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.Models.ItemInfo;
+import alone.in.deepspace.Models.Profession;
+import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.Utils.ObjectPool;
+import alone.in.deepspace.World.StructureItem;
+import alone.in.deepspace.World.WorldRessource;
 
 public class SpriteManager {
 	SpriteResource[] spritesRes = {

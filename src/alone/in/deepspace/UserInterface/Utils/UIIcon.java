@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.UserInterface.Utils;
+package alone.in.deepspace.UserInterface.Utils;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
@@ -8,9 +8,9 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
-import alone.in.DeepSpace.Managers.SpriteManager;
-import alone.in.DeepSpace.Models.BaseItem;
-import alone.in.DeepSpace.Models.BaseItem.Type;
+import alone.in.deepspace.Managers.SpriteManager;
+import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.Models.BaseItem.Type;
 
 public class UIIcon extends UIView {
 

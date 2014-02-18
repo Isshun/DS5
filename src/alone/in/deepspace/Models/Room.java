@@ -1,10 +1,10 @@
-package alone.in.DeepSpace.Models;
+package alone.in.deepspace.Models;
 import java.util.ArrayList;
 import java.util.List;
 
-import alone.in.DeepSpace.Utils.Log;
-import alone.in.DeepSpace.World.WorldArea;
-import alone.in.DeepSpace.World.WorldMap;
+import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.WorldArea;
+import alone.in.deepspace.World.WorldMap;
 
 
 public class Room {

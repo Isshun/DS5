@@ -1,7 +1,7 @@
-package alone.in.DeepSpace.Models;
+package alone.in.deepspace.Models;
 
-import alone.in.DeepSpace.Managers.JobManager;
-import alone.in.DeepSpace.Utils.Log;
+import alone.in.deepspace.Managers.JobManager;
+import alone.in.deepspace.Utils.Log;
 
 public class Job {
 

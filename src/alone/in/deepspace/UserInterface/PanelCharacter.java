@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.UserInterface;
+package alone.in.deepspace.UserInterface;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
@@ -6,10 +6,10 @@ import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.DeepSpace.Models.Character;
-import alone.in.DeepSpace.Models.CharacterNeeds;
-import alone.in.DeepSpace.UserInterface.Utils.UIText;
-import alone.in.DeepSpace.Utils.Constant;
+import alone.in.deepspace.Models.Character;
+import alone.in.deepspace.Models.CharacterNeeds;
+import alone.in.deepspace.UserInterface.Utils.UIText;
+import alone.in.deepspace.Utils.Constant;
 
 
 public class PanelCharacter extends UserSubInterface {

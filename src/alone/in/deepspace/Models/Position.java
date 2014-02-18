@@ -1,4 +1,4 @@
-package alone.in.DeepSpace.Models;
+package alone.in.deepspace.Models;
 
 public class Position {
 	Position()

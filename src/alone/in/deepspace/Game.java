@@ -1,4 +1,4 @@
-package alone.in.DeepSpace;
+package alone.in.deepspace;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,17 +16,17 @@ import org.jsfml.window.Keyboard;
 import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.event.Event;
 
-import alone.in.DeepSpace.Managers.CharacterManager;
-import alone.in.DeepSpace.Managers.ResourceManager;
-import alone.in.DeepSpace.Managers.SpriteManager;
-import alone.in.DeepSpace.Models.BaseItem;
-import alone.in.DeepSpace.Models.Room;
-import alone.in.DeepSpace.UserInterface.UserInterface;
-import alone.in.DeepSpace.Utils.Constant;
-import alone.in.DeepSpace.Utils.Log;
-import alone.in.DeepSpace.World.WorldArea;
-import alone.in.DeepSpace.World.WorldMap;
-import alone.in.DeepSpace.World.WorldRenderer;
+import alone.in.deepspace.Managers.CharacterManager;
+import alone.in.deepspace.Managers.ResourceManager;
+import alone.in.deepspace.Managers.SpriteManager;
+import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.Models.Room;
+import alone.in.deepspace.UserInterface.UserInterface;
+import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.WorldArea;
+import alone.in.deepspace.World.WorldMap;
+import alone.in.deepspace.World.WorldRenderer;
 
 public class Game {
 
