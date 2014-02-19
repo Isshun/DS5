@@ -1,5 +1,8 @@
 package alone.in.deepspace.Utils;
 
+import alone.in.deepspace.Game;
+import alone.in.deepspace.UserInterface.UserInterface;
+
 
 @SuppressWarnings("unused")
 public class Log {
@@ -24,6 +27,8 @@ public class Log {
 		if (str != null) {
 			System.out.println(str);
 		}
+		
+		UserInterface.getInstance().displayMessage(str);
 	}
 
 	public static void info(String str) {

@@ -145,10 +145,10 @@ void	drawTile() {
 protected boolean	checkKey(Keyboard.Key key) {
   super.checkKey(key);
 
-  if (key == Keyboard.Key.R) {
-	toogle();
-	return true;
-  }
+//  if (key == Keyboard.Key.R) {
+//	toogle();
+//	return true;
+//  }
 
   return false;
 }

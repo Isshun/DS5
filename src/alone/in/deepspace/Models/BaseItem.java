@@ -181,8 +181,8 @@ public class BaseItem {
 	  public int		getX() { return _x; }
 	  public int		getY() { return _y; }
 	  public Type		getType() { return _type; }
-	  public int		getZoneId() { return _zoneId; }
-	  public int		getZoneIdRequired() { return _zoneIdRequired; }
+//	  public int		getZoneId() { return _zoneId; }
+//	  public int		getZoneIdRequired() { return _zoneIdRequired; }
 	  public int		getRoomId() { return _roomId; }
 	  public int		getId() { return _id; }
 	  public String		getName() { return _name; }

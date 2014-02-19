@@ -15,6 +15,9 @@ import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Utils.Constant;
 
 public class PanelJobs extends UserSubInterface {
+	private static final Color 	COLOR_BUILD = new Color(170, 128, 64);
+	private static final Color 	COLOR_BLOCKED = new Color(255, 20, 20);
+	private static final Color 	COLOR_QUEUE = new Color(255, 255, 20);
 	private static final int 	FRAME_WIDTH = 380;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 
@@ -66,16 +69,19 @@ public class PanelJobs extends UserSubInterface {
 				  + " " + BaseItem.getItemName(job.getItemType());
 			  if (job.getCharacter() != null) {
 				  switch (job.getAction()) {
-				  case BUILD: text.setColor(Color.YELLOW); break;
+				  case BUILD: text.setColor(COLOR_BUILD); break;
 				  case MOVE: text.setColor(Color.CYAN); break;
 				  case GATHER: text.setColor(Color.GREEN); break;
 				  case NONE: text.setColor(Color.BLACK); break;
 				  case USE: text.setColor(Color.BLUE); break;
 				  }
 				oss += " (" + job.getCharacter().getName() + ")";
+			  } else if (job.getFail() > 0) {
+				  text.setColor(COLOR_BLOCKED);
+				  oss += " (blocked: " + job.getFail() + " try)";
 			  } else {
-				text.setColor(Color.RED);
-				oss += " (on queue)";
+				  text.setColor(COLOR_QUEUE);
+				  oss += " (on queue)";
 			  }
 			  text.setString(oss);
 			  text.setPosition(posX + Constant.UI_PADDING, posY + 52 + Constant.UI_PADDING + (14 * i++));

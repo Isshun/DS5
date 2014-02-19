@@ -13,18 +13,23 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.Models.Room;
+import alone.in.deepspace.UserInterface.RoomManager;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.ObjectPool;
 import alone.in.deepspace.Utils.Settings;
 
 public class WorldRenderer {
-	RenderWindow	_app;
-	SpriteManager		_spriteManager;
-	Font			_font;
-	UserInterface		_ui;
-	private RectangleShape _shape;
-	private RectangleShape _shapeDebug;
+	RenderWindow			_app;
+	SpriteManager			_spriteManager;
+	Font					_font;
+	UserInterface			_ui;
+	private RectangleShape 	_shape;
+	private RectangleShape 	_shapeDebug;
+	private int 			_lastSpecialY;
+	private int 			_lastSpecialX;
+	
 	public WorldRenderer(RenderWindow app, SpriteManager spriteManager, UserInterface ui) throws IOException {
 		_ui = ui;
 		_app = app;
@@ -37,7 +42,7 @@ public class WorldRenderer {
 		//_font.loadFromFile((new File("res/xolonium/Xolonium-Regular.otf")).toPath());
 	}
 
-	public void	draw(RenderStates render) {
+	public void	refresh(RenderStates render) {
 
 		int fromX = Math.max(_ui.getRelativePosXMin(0)-1, 0);
 		int fromY = Math.max(_ui.getRelativePosYMin(0)-1, 0);
@@ -46,9 +51,9 @@ public class WorldRenderer {
 
 	  // Debug() << "Renderer: " << fromX << " to: " << toX;
 
-	  drawFloor(render, fromX, fromY, toX, toY);
-	  drawStructure(render, fromX, fromY, toX, toY);
-	  drawItems(render, fromX, fromY, toX, toY);
+		refreshFloor(render, fromX, fromY, toX, toY);
+		refreshStructure(render, fromX, fromY, toX, toY);
+		refreshItems(render, fromX, fromY, toX, toY);
 
 	  // Draw debug
 	  if (Settings.getInstance().isDebug()) {
@@ -57,7 +62,7 @@ public class WorldRenderer {
 	}
 
 	// TODO: random
-	void	drawFloor(RenderStates render, int fromX, int fromY, int toX, int toY) {
+	void	refreshFloor(RenderStates render, int fromX, int fromY, int toX, int toY) {
 	  for (int i = toX-1; i >= fromX; i--) {
 		for (int j = toY-1; j >= fromY; j--) {
 
@@ -88,7 +93,10 @@ public class WorldRenderer {
 					sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
 					_app.draw(sprite, render);
 				} else {
-					Sprite sprite = _spriteManager.getFloor(item, item.getZoneId(), item.getRoomId());
+					Room room = RoomManager.getInstance().get(i, j);
+					int roomId = room != null ? room.getType().ordinal() : 0;
+
+					Sprite sprite = _spriteManager.getFloor(item, roomId, 0);
 					sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
 					_app.draw(sprite, render);
 				}
@@ -103,14 +111,21 @@ public class WorldRenderer {
 					_app.draw(sprite, render);
 				}
 			}
+			
+//			Room room = RoomManager.getInstance().get(i, j);
+//			if (room != null) {
+//				Sprite sprite = _spriteManager.getNoOxygen();
+//				sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+//				_app.draw(sprite, render);
+//			}
 		}
 	  }
 	}
 
 	//TODO: random
-	void	drawStructure(RenderStates render, int fromX, int fromY, int toX, int toY) {
-	  int lastSpecialX = -1;
-	  int lastSpecialY = -1;
+	void	refreshStructure(RenderStates render, int fromX, int fromY, int toX, int toY) {
+	  _lastSpecialX = -1;
+	  _lastSpecialY = -1;
 	  int offsetWall = (Constant.TILE_SIZE / 2 * 3) - Constant.TILE_SIZE;
 
 	  Sprite sprite = null;
@@ -124,11 +139,6 @@ public class WorldRenderer {
 			// Structure except floor
 			if (item.isStructure() && !item.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
 
-				StructureItem bellow = WorldMap.getInstance().getStructure(i, j+1);
-				StructureItem right = WorldMap.getInstance().getStructure(i+1, j);
-				StructureItem left = WorldMap.getInstance().getStructure(i-1, j);
-				StructureItem above = WorldMap.getInstance().getStructure(i, j-1);
-		  
 			  // Door
 			  if (item.isType(BaseItem.Type.STRUCTURE_DOOR)) {
 				// if (_characterManager.getCharacterAtPos(i, j) != null
@@ -145,70 +155,7 @@ public class WorldRenderer {
 
 			  // Wall
 			  else if (item.isType(BaseItem.Type.STRUCTURE_WALL)) {
-
-				// bellow is a wall
-				if (bellow != null && bellow.isType(BaseItem.Type.STRUCTURE_WALL)) {
-					sprite = _spriteManager.getWall(item, 1, 0, 0);
-					sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
-				}
-
-				// No wall above or bellow
-				else if ((above == null || above.getType() != BaseItem.Type.STRUCTURE_WALL) &&
-						 (bellow == null || bellow.getType() != BaseItem.Type.STRUCTURE_WALL)) {
-
-				  // Check double wall
-				  boolean doubleWall = false;
-				  if (right != null && right.isComplete() && right.isType(BaseItem.Type.STRUCTURE_WALL) &&
-					  (lastSpecialY != j || lastSpecialX != i+1)) {
-					WorldArea aboveRight = WorldMap.getInstance().getArea(i+1, j-1);
-					WorldArea bellowRight = WorldMap.getInstance().getArea(i+1, j+1);
-					if ((aboveRight == null || aboveRight.getType() != BaseItem.Type.STRUCTURE_WALL) &&
-						(bellowRight == null || bellowRight.getType() != BaseItem.Type.STRUCTURE_WALL)) {
-					  doubleWall = true;
-					}
-				  }
-
-				  // Normal
-				  if (bellow == null) {
-					// Double wall
-					if (doubleWall) {
-						sprite = _spriteManager.getWall(item, 4, r, 0);
-						lastSpecialX = i;
-						lastSpecialY = j;
-					}
-					// Single wall
-					else {
-						sprite = _spriteManager.getWall(item, 0, 0, 0);
-					}
-				  }
-				  // Special
-				  else {
-					// Double wall
-					if (doubleWall) {
-						sprite = _spriteManager.getWall(item, 2, r, bellow.getZoneId());
-						lastSpecialX = i;
-						lastSpecialY = j;
-					}
-					// Single wall
-					else {
-						sprite = _spriteManager.getWall(item, 3, r, bellow.getZoneId());
-					}
-				  }
-				  sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
-				}
-
-				// // left is a wall
-				// else if (left != null && left.type == BaseItem.STRUCTURE_WALL) {
-				// 	_spriteManager.getWall(item, 2, &sprite);
-				// 	sprite.setPosition(i * TILE_SIZE - TILE_SIZE, j * TILE_SIZE - offset);
-				// }
-
-				// single wall
-				else {
-					sprite = _spriteManager.getWall(item, 0, 0, 0);
-					sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
-				}
-
+				  sprite = drawWall(item, i, j, offsetWall);
 			  }	  
 			}
 
@@ -226,7 +173,83 @@ public class WorldRenderer {
 	  }
 	}
 
-	void	drawItems(RenderStates render, int fromX, int fromY, int toX, int toY) {
+	private Sprite drawWall(StructureItem item, int i, int j, int offsetWall) {
+		Sprite sprite = null;
+		
+		StructureItem bellow = WorldMap.getInstance().getStructure(i, j+1);
+		StructureItem right = WorldMap.getInstance().getStructure(i+1, j);
+		StructureItem above = WorldMap.getInstance().getStructure(i, j-1);
+
+		  Room room = RoomManager.getInstance().get(i, j + 1);
+		  int zone = room != null ? room.getType().ordinal() : 0;
+
+		// bellow is a wall
+		if (bellow != null && bellow.isType(BaseItem.Type.STRUCTURE_WALL)) {
+			sprite = _spriteManager.getWall(item, 1, 0, 0);
+			sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
+		}
+
+		// No wall above or bellow
+		else if ((above == null || above.getType() != BaseItem.Type.STRUCTURE_WALL) &&
+				 (bellow == null || bellow.getType() != BaseItem.Type.STRUCTURE_WALL)) {
+
+		  // Check double wall
+		  boolean doubleWall = false;
+		  if (right != null && right.isComplete() && right.isType(BaseItem.Type.STRUCTURE_WALL) &&
+			  (_lastSpecialY != j || _lastSpecialX != i+1)) {
+			StructureItem aboveRight = WorldMap.getInstance().getStructure(i+1, j-1);
+			StructureItem bellowRight = WorldMap.getInstance().getStructure(i+1, j+1);
+			if ((aboveRight == null || aboveRight.getType() != BaseItem.Type.STRUCTURE_WALL) &&
+				(bellowRight == null || bellowRight.getType() != BaseItem.Type.STRUCTURE_WALL)) {
+			  doubleWall = true;
+			}
+		  }
+
+		  // Normal
+		  if (bellow == null) {
+			// Double wall
+			if (doubleWall) {
+				sprite = _spriteManager.getWall(item, 4, i+j, zone);
+				_lastSpecialX = i;
+				_lastSpecialY = j;
+			}
+			// Single wall
+			else {
+				sprite = _spriteManager.getWall(item, 0, 0, zone);
+			}
+		  }
+		  // Special
+		  else {
+			// Double wall
+			if (doubleWall) {
+				sprite = _spriteManager.getWall(item, 2, i+j, zone);
+				_lastSpecialX = i;
+				_lastSpecialY = j;
+			}
+			// Single wall
+			else {
+				sprite = _spriteManager.getWall(item, 3, i+j, zone);
+			}
+		  }
+		  sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
+		}
+
+		// // left is a wall
+		// else if (left != null && left.type == BaseItem.STRUCTURE_WALL) {
+		// 	_spriteManager.getWall(item, 2, &sprite);
+		// 	sprite.setPosition(i * TILE_SIZE - TILE_SIZE, j * TILE_SIZE - offset);
+		// }
+
+		// single wall
+		else {
+			sprite = _spriteManager.getWall(item, 0, 0, 0);
+			sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
+		}
+		
+		return sprite;
+	}
+
+	void	refreshItems(RenderStates render, int fromX, int fromY, int toX, int toY) {
 		int offsetY = -16;
 		int offsetX = 2;
 

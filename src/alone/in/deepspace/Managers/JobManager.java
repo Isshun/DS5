@@ -14,7 +14,7 @@ import alone.in.deepspace.World.WorldRessource;
 
 public class JobManager {
 	public enum Action {
-		NONE, BUILD, GATHER, USE, MOVE
+		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY
 	}
 
 	private static JobManager sSelf;
@@ -120,9 +120,9 @@ public class JobManager {
 		if (WorldMap.getInstance().getItem(x, y) != null) {
 		  Log.error("JobManager: add build on non null item");
 		  return null;
-		} else if (WorldMap.getInstance().getArea(x, y) == null
+		} else if (WorldMap.getInstance().getStructure(x, y) == null
 				   || WorldMap.getInstance().getStructure(x, y).isType(BaseItem.Type.STRUCTURE_FLOOR) == false) {
-			Log.error("JobManager: add build on non invalid area (null or not STRUCTURE_FLOOR)");
+			Log.error("JobManager: add build on non invalid structure (null or not STRUCTURE_FLOOR)");
 		  return null;
 		} else {
 		  item = WorldMap.getInstance().putItem(type, x, y);
@@ -302,6 +302,8 @@ public class JobManager {
 		case GATHER: return "gather";
 		case MOVE: return "move";
 		case USE: return "use";
+		case STORE: return "store";
+		case DESTROY: return "destroy";
 		}
 		return null;
 	}
@@ -316,6 +318,22 @@ public class JobManager {
 
 	public void clear() {
 		_jobs.clear();
+	}
+
+	public void storeItem(UserItem item) {
+		Job job = new Job(++_id, item.getX(), item.getY());
+		job.setAction(JobManager.Action.STORE);
+		job.setItemType(item.getType());
+		job.setItem(item);
+		addJob(job);
+	}
+
+	public void destroyItem(UserItem item) {
+		Job job = new Job(++_id, item.getX(), item.getY());
+		job.setAction(JobManager.Action.DESTROY);
+		job.setItemType(item.getType());
+		job.setItem(item);
+		addJob(job);
 	}
 
 }

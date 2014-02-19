@@ -8,11 +8,13 @@ import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.event.Event;
+import org.omg.stub.java.rmi._Remote_Stub;
 
 import alone.in.deepspace.Viewport;
 import alone.in.deepspace.Managers.CharacterManager;
 import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Character;
+import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.Utils.Settings;
@@ -21,6 +23,7 @@ import alone.in.deepspace.World.WorldMap;
 
 public class UserInterface {
 
+	private static UserInterface _self;
 	RenderWindow				_app;
 	Viewport					_viewport;
 	boolean						_keyLeftPressed;
@@ -50,6 +53,10 @@ public class UserInterface {
 	private PanelJobs			_uiJobs;
 	private PanelResource 		_panelResource;
 	private UserInterfaceMessage _panelMessage;
+	private PanelRoom 			_panelRoom;
+	private UIMessage 			_message;
+	private int 				_mouseRealPosX;
+	private int 				_mouseRealPosY;
 	
 	public enum Mode {
 		BASE,
@@ -58,43 +65,7 @@ public class UserInterface {
 		BUILD,
 		CREW,
 		JOBS,
-		CHARACTER, SCIENCE, SECURITY
-	}
-	
-	public UserInterface(RenderWindow app, Viewport viewport) throws IOException {
-	  _app = app;
-	  _viewport = viewport;
-	  _characteres = CharacterManager.getInstance();
-	  _keyLeftPressed = false;
-	  _keyRightPressed = false;
-	  _zoom = 1.0f;
-	  _font = new Font();
-	  _font.loadFromFile((new File("res/fonts/xolonium_regular.otf")).toPath());
-	
-	  _panelBase = new PanelBase(app);
-	  _panelCharacter = new PanelCharacter(app);
-	  _panelInfo = new PanelInfo(app);
-	  _panelDebug = new PanelDebug(app);
-	  _panelSystem = new PanelSystem(app);
-	  _panelSystem.setVisible(true);
-	  _panelShortcut = new PanelShortcut(app, this);
-	  _panelShortcut.setVisible(true);
-	  _panelResource = new PanelResource(app);
-	  _panelResource.setVisible(true);
-	  _panelMessage = new UserInterfaceMessage(app);
-	  _panelMessage.setVisible(true);
-	  
-	  _interaction = new UserInteraction(_viewport);
-	  _panelBuild = new PanelBuild(app, 3, _interaction);
-	  _uiScience = new UserInterfaceScience(app, 2);
-	  _uiSecurity = new UserInterfaceSecurity(app, 4);
-	  _crewViewOpen = false;
-	  _uiCharacter = new UserInterfaceCrew(app, 0);
-	  _uiBase = new UserInterfaceMenuOperation(app, 1);
-	  _uiJobs = new PanelJobs(app);
-	  _panelMessage.setStart(0);
-
-	  setMode(Mode.BASE);
+		CHARACTER, SCIENCE, SECURITY, ROOM
 	}
 	
 	public void	mouseMoved(int x, int y) {
@@ -122,6 +93,8 @@ public class UserInterface {
 //		return;
 //	  }
 	
+		_mouseRealPosX = x;
+		_mouseRealPosY = y;
 	  _keyMovePosX = getRelativePosX(x);
 	  _keyMovePosY = getRelativePosY(y);
 //	  _interaction.mouseMove(_keyMovePosX, _keyMovePosY);
@@ -140,6 +113,10 @@ public class UserInterface {
 	}
 	
 	public void	mousePress(Mouse.Button button, int x, int y) {
+		if (EventManager.getInstance().has(x, y)) {
+			return;
+		}
+		
 	  if (_panelBuild.mousePress(button, x, y)) {
 		_keyLeftPressed = false;
 		return;
@@ -259,11 +236,20 @@ public class UserInterface {
 					Math.max(_keyPressPosX, _keyMovePosX),
 					Math.max(_keyPressPosY, _keyMovePosY));
 		}
+		
+		Room.Type roomType = _panelRoom.getSelectedRoom();
+		if (button == Button.LEFT && roomType != null) {
+			int fromX = _keyLeftPressed ? Math.min(_keyPressPosX, _keyMovePosX) : _keyMovePosX;
+			int fromY = _keyLeftPressed ? Math.min(_keyPressPosY, _keyMovePosY) : _keyMovePosY;
+			int toX = _keyLeftPressed ? Math.max(_keyPressPosX, _keyMovePosX) : _keyMovePosX;
+			int toY = _keyLeftPressed ? Math.max(_keyPressPosY, _keyMovePosY) : _keyMovePosY;
+			RoomManager.getInstance().putRoom(fromX, fromY, toX, toY, roomType, 0);
+		}
 
 		if (button == Button.RIGHT && _mouseRightPressX >= x-1 && _mouseRightPressX <= x+1 && _mouseRightPressY >= y-1 && _mouseRightPressY <= y+1) {
 			_panelBuild.setSelectedItem(null);
+			_panelRoom.setSelected(null);
 		}
-
 	
 //	  if (_interaction.mouseRelease(button, x, y)) {
 //		return;
@@ -327,6 +313,7 @@ public class UserInterface {
 		if (info != Mode.SCIENCE) 	_uiScience.setVisible(false);
 		if (info != Mode.SECURITY)	_uiSecurity.setVisible(false);
 		if (info != Mode.JOBS)		_uiJobs.setVisible(false);
+		if (info != Mode.ROOM)		_panelRoom.setVisible(false);
 		
 		switch (info) {
 		case BUILD: _panelBuild.toogle(); break;
@@ -336,6 +323,7 @@ public class UserInterface {
 		case BASE: _panelBase.toogle(); break;
 		case JOBS: _uiJobs.toogle(); break;
 		case CREW: _uiCharacter.toogle(); break;
+		case ROOM: _panelRoom.toogle(); break;
 		}
 	}
 
@@ -355,6 +343,7 @@ public class UserInterface {
 	  	_panelSystem.refresh(_app);
 	  	_panelShortcut.refresh(_app);
 	  	_panelResource.refresh(_app);
+	  	_panelRoom.refresh(_app);
 	  	
 	  	_panelMessage.setFrame(frame);
 //	  	_panelMessage.refresh(_app);
@@ -382,6 +371,27 @@ public class UserInterface {
 						Math.max(_keyMovePosY, _keyMovePosY));
 		  	}
 		}
+		
+		Room.Type roomType = _panelRoom.getSelectedRoom();
+		if (roomType != null) {
+			int fromX = _keyLeftPressed ? Math.min(_keyPressPosX, _keyMovePosX) : _keyMovePosX;
+			int fromY = _keyLeftPressed ? Math.min(_keyPressPosY, _keyMovePosY) : _keyMovePosY;
+			int toX = _keyLeftPressed ? Math.max(_keyPressPosX, _keyMovePosX) : _keyMovePosX;
+			int toY = _keyLeftPressed ? Math.max(_keyPressPosY, _keyMovePosY) : _keyMovePosY;
+			_interaction.drawCursor(fromX, fromY, toX, toY);
+//			RoomManager.getInstance().putRoom(fromX, fromY, toX, toY, roomType);
+		}
+		
+		if (_message != null) {
+			_app.draw(_message.border);
+			_app.draw(_message.shape);
+			_app.draw(_message.text);
+			if (--_message.frame < 0) {
+				_message = null;
+			}
+			
+		}
+
 	}
 	
 	public boolean checkKeyboard(Event	event, int frame, int lastInput) {
@@ -439,12 +449,15 @@ public class UserInterface {
 	  else if (event.asKeyEvent().key == Keyboard.Key.O) {
 		_uiBase.toogleTile();
 	  }
+	  else if (event.asKeyEvent().key == Keyboard.Key.R) {
+		_panelRoom.toogle();
+	  }
 	  else if (event.asKeyEvent().key == Keyboard.Key.J) {
 		  setMode(Mode.JOBS);
 	  }
-	  else if (event.asKeyEvent().key == Keyboard.Key.I) {
-		WorldMap.getInstance().dumpItems();
-	  }
+//	  else if (event.asKeyEvent().key == Keyboard.Key.I) {
+//		WorldMap.getInstance().dumpItems();
+//	  }
 	  else if (event.asKeyEvent().key == Keyboard.Key.UP) {
 		if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
 		  _viewport.update(0, Constant.MOVE_VIEW_OFFSET);
@@ -475,5 +488,53 @@ public class UserInterface {
 	  }
 
 	  return false;
+	}
+
+	public static UserInterface getInstance() {
+		if (_self == null) {
+			_self = new UserInterface();
+		}
+		return _self;
+	}
+
+	public void init(RenderWindow app, Viewport viewport) throws IOException {
+		_viewport = viewport;
+		_app = app;
+		_characteres = CharacterManager.getInstance();
+		_keyLeftPressed = false;
+		_keyRightPressed = false;
+		_zoom = 1.0f;
+		_font = new Font();
+		_font.loadFromFile((new File("res/fonts/xolonium_regular.otf")).toPath());
+	
+		_panelBase = new PanelBase(app);
+		_panelCharacter = new PanelCharacter(app);
+		_panelInfo = new PanelInfo(app);
+		_panelDebug = new PanelDebug(app);
+		_panelSystem = new PanelSystem(app);
+		_panelSystem.setVisible(true);
+		_panelShortcut = new PanelShortcut(app, this);
+		_panelShortcut.setVisible(true);
+		_panelResource = new PanelResource(app);
+		_panelResource.setVisible(true);
+		_panelMessage = new UserInterfaceMessage(app);
+		_panelMessage.setVisible(true);
+		_panelRoom = new PanelRoom(app);
+	  
+		_interaction = new UserInteraction(_viewport);
+		_panelBuild = new PanelBuild(app, 3, _interaction);
+		_uiScience = new UserInterfaceScience(app, 2);
+		_uiSecurity = new UserInterfaceSecurity(app, 4);
+		_crewViewOpen = false;
+		_uiCharacter = new UserInterfaceCrew(app, 0);
+		_uiBase = new UserInterfaceMenuOperation(app, 1);
+		_uiJobs = new PanelJobs(app);
+		_panelMessage.setStart(0);
+
+		setMode(Mode.BASE);
+	}
+
+	public void displayMessage(String msg) {
+		_message = new UIMessage(msg, _mouseRealPosX, _mouseRealPosY);
 	}
 }

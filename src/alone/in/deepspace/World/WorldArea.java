@@ -16,7 +16,7 @@ public class WorldArea extends BaseItem {
 	  }
 	
 	public void				setItem(UserItem item) { _item = item; }
-	public void				setStructure(StructureItem item) { _structure = item; }
+	public void				setStructure(StructureItem structure) { _structure = structure; }
 	public void				setRessource(WorldRessource ressource) { _ressource = ressource; }
 	public void				setOxygen(int oxygen) { _oxygen = oxygen; }
 

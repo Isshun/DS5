@@ -13,6 +13,7 @@ public class Job {
 	private JobManager.Action 	_action;
 	private Character 			_character;
 	private Character 			_characterRequire;
+	private int _fail;
 
 	public Job(int id, int x, int y) {
 	  Log.debug("Job #" + id);
@@ -42,4 +43,5 @@ public class Job {
 	public BaseItem				getItem() { return _item; }
 	public Character			getCharacter() { return _character; }
 	public Character			getCharacterRequire() { return _characterRequire; }
+	public int 					getFail() { return _fail; }
 }

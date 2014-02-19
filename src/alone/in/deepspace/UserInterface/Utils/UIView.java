@@ -25,6 +25,7 @@ public abstract class UIView {
 	protected int			_paddingBottom;
 	protected int 			_paddingRight;
 	protected int 			_paddingTop;
+	private UIFrame _parent;
 
 	public UIView(Vector2f size) {
 		_size = size;
@@ -103,6 +104,14 @@ public abstract class UIView {
 	}
 
 	public void onRefresh(RenderWindow app, RenderStates states) {
+	}
+
+	public void setParent(UIFrame parent) {
+		_parent = parent;
+	}
+
+	public UIFrame getParent() {
+		return _parent;
 	}
 
 }

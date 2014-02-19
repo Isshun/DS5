@@ -12,6 +12,7 @@ import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Models.BaseItem.Type;
+import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 
 
@@ -28,8 +29,8 @@ public class WorldMap implements ISavable {
 
 	public WorldMap() {
 		  _itemCout = 0;
-		  _width = 250;
-		  _height = 150;
+		  _width = Constant.WORLD_WIDTH;
+		  _height = Constant.WORLD_HEIGHT;
 		  _count = 0;
 
 		  dump();
@@ -145,21 +146,28 @@ public class WorldMap implements ISavable {
 		}
 
 		void	addRandomSeed() {
-		   int startX = (int)(Math.random() * 1000) % _width;
-		   int startY = (int)(Math.random() * 1000) % _height;
+			int startX = (int)(Math.random() * 1000) % _width;
+			int startY = (int)(Math.random() * 1000) % _height;
 
-		   for (int x = 0; x < _width; x++) {
-		   	for (int y = 0; y < _height; y++) {
-		   	  int realX = (x + startX) % _width;
-		   	  int realY = (y + startY) % _height;
-		   	  if (_items[realX][realY] != null) {// || _items[realX][realY].getType() == BaseItem.Type.RES_1) {
-//		   		WorldArea area = _items[realX][realY];
-		   		WorldRessource ressource = (WorldRessource)putItem(BaseItem.Type.RES_1, realX, realY, 10);
-		   		JobManager.getInstance().gather(ressource);
-		   		return;
-		   	  }
-		   	}
-		   }
+			for (int x = 0; x < 5; x++) {
+				for (int y = 0; y < 5; y++) {
+					if (addRandomSeed(startX + x, startY + y)) return;
+					if (addRandomSeed(startX - x, startY - y)) return;
+					if (addRandomSeed(startX + x, startY - y)) return;
+					if (addRandomSeed(startX - x, startY + y)) return;
+				}
+			}
+		}
+
+		private boolean addRandomSeed(int i, int j) {
+			int realX = i % _width;
+			int realY = j % _height;
+			if (_items[realX][realY].getStructure() == null) {
+				WorldRessource ressource = (WorldRessource)putItem(BaseItem.Type.RES_1, realX, realY, 10);
+				JobManager.getInstance().gather(ressource);
+				return true;
+			}
+			return false;
 		}
 
 		public int	gather(BaseItem item, int maxValue) {
@@ -297,15 +305,15 @@ public class WorldMap implements ISavable {
 
 		}
 
-		public void		dumpItems() {
-		  for (int x = 0; x < _width; x++) {
-			for (int y = 0; y < _height; y++) {
-			  if (_items[x][y] != null && _items[x][y].isStructure() == false) {
-				Log.info("" + x + " x " + y + " = " + _items[x][y].getType() + ", zone: " + _items[x][y].getZoneId());
-			  }
-			}
-		  }
-		}
+//		public void		dumpItems() {
+//		  for (int x = 0; x < _width; x++) {
+//			for (int y = 0; y < _height; y++) {
+//			  if (_items[x][y] != null && _items[x][y].isStructure() == false) {
+//				Log.info("" + x + " x " + y + " = " + _items[x][y].getType() + ", zone: " + _items[x][y].getZoneId());
+//			  }
+//			}
+//		  }
+//		}
 
 		boolean getSolid(int x, int y) {
 		  return false;
@@ -321,55 +329,9 @@ public class WorldMap implements ISavable {
 		  }
 
 		  BaseItem item = _items[x][y];
-		  if (item == null) {
-			return;
-		  }
-
-		  item.setOwner(null);
-
-		  BaseItem.Type newType = BaseItem.Type.NONE;
-		  if (_items[x][y].isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-			newType = BaseItem.Type.STRUCTURE_FLOOR;
-		  }
-
-		  _items[x][y] = null;
-
-		  if (newType != BaseItem.Type.NONE) {
-			putItem(newType, x, y);
-		  }
+		  removeItem(item);
 		}
-
-		void	destroyRoom(int roomId) {
-		  if (roomId == 0) {
-			return;
-		  }
-
-		  // TODO: destroy room
-
-		  boolean found = true;
-		  int count = 0;
-
-		  while (found) {
-			found = false;
-			for (int x = 0; x < _width; x++) {
-			  for (int y = 0; y < _height; y++) {
-				if (_items[x][y] != null && _items[x][y].getRoomId() == roomId) {
-				  found = true;
-				  int newRoomId = Room.getNewId();
-				  Room room = new Room();
-				  room.setId(newRoomId);
-				  Room.setZone(x, y, newRoomId, _items[x][y].getZoneId());
-				  _rooms.put(newRoomId, room);
-				  Log.info("Room create: " + newRoomId + ", old: " + roomId);
-				  count++;
-				}
-			  }
-			}
-		  }
-
-		  Log.info("DestroyRoom: " + count + " rooms added");
-		}
-
+		
 		BaseItem putItem(BaseItem.Type type, int x, int y, boolean free) {
 		  if (_itemCout + 1 > LIMIT_ITEMS) {
 			Log.error("LIMIT_ITEMS reached");
@@ -433,7 +395,7 @@ public class WorldMap implements ISavable {
 			  item = new UserItem(type, _itemCout++);
 		  }
 		  item.setPosition(x, y);
-		  int zoneId = item.getZoneId();
+//		  int zoneId = item.getZoneId();
 
 		  // Ressource
 		  if (item.isRessource()) {
@@ -448,46 +410,46 @@ public class WorldMap implements ISavable {
 			_items[x][y].setStructure((StructureItem) item);
 			// _items[x][y].setRoomId(roomId);
 			// _items[x][y].setZoneId(0);
-			destroyRoom(roomId);
+			//destroyRoom(roomId);
 		  }
 
 		  // Object or floor
 		  else {
 
-			// Room already exists
-			if (roomId > 0 && getRoom(roomId) != null) {
-			  Room room = getRoom(roomId);
-			  if (room != null) {
-
-				// Room have no zoneId
-				if (room.getZoneId() == 0) {
-				  Log.info("Set room to new zoneId: " + item.getZoneId());
-				  room.setZoneId(item.getZoneId());
-				}
-
-				// Item have no zoneId
-				if (item.getZoneId() == 0) {
-				  zoneId = room.getZoneId();
-				}
-
-				// Room and item zoneId match
-				else if (room.getZoneId() == item.getZoneId()) {
-				  Log.info("Room zoneId match with item");
-				}
-
-				// Room and item zoneId don't match
-				else {
-				  Log.info("this item can not be put at this position because zoneId not match (item: "
-						 + item.getZoneId() + ", room: " + room.getZoneId() + ")");
-				  return null;
-				}
-			  }
-			}
-
-			// Create new room if not exists
-			else {
-			  //roomId = addRoom(x, y);
-			}
+//			// Room already exists
+//			if (roomId > 0 && getRoom(roomId) != null) {
+//			  Room room = getRoom(roomId);
+//			  if (room != null) {
+//
+//				// Room have no zoneId
+//				if (room.getZoneId() == 0) {
+//				  Log.info("Set room to new zoneId: " + item.getZoneId());
+//				  room.setZoneId(item.getZoneId());
+//				}
+//
+//				// Item have no zoneId
+//				if (item.getZoneId() == 0) {
+//				  zoneId = room.getZoneId();
+//				}
+//
+//				// Room and item zoneId match
+//				else if (room.getZoneId() == item.getZoneId()) {
+//				  Log.info("Room zoneId match with item");
+//				}
+//
+//				// Room and item zoneId don't match
+//				else {
+//				  Log.info("this item can not be put at this position because zoneId not match (item: "
+//						 + item.getZoneId() + ", room: " + room.getZoneId() + ")");
+//				  return null;
+//				}
+//			  }
+//			}
+//
+//			// Create new room if not exists
+//			else {
+//			  //roomId = addRoom(x, y);
+//			}
 
 			if (type == BaseItem.Type.STRUCTURE_FLOOR) {
 				_items[x][y].setStructure((StructureItem) item);
@@ -499,8 +461,8 @@ public class WorldMap implements ISavable {
 			  }
 			}
 
-			item.setZoneId(zoneId);
-			item.setRoomId(roomId);
+//			item.setZoneId(zoneId);
+//			item.setRoomId(roomId);
 		  }
 
 		  // Put item
@@ -514,19 +476,19 @@ public class WorldMap implements ISavable {
 		  return item;
 		}
 
-		int		addRoom(int x, int y) {
-		  Log.debug("addRoom: " + x + " x " + y);
-
-		  Room room = Room.createFromPos(x, y);
-
-		  if (room != null) {
-			_rooms.put(room.getId(), room);
-			return room.getId();
-		  } else {
-			Log.error("Unable to create Room at position: " + x + " x " + y);
-		  }
-		  return  -1;
-		}
+//		int		addRoom(int x, int y) {
+//		  Log.debug("addRoom: " + x + " x " + y);
+//
+//		  Room room = Room.createFromPos(x, y);
+//
+//		  if (room != null) {
+//			_rooms.put(room.getId(), room);
+//			return room.getId();
+//		  } else {
+//			Log.error("Unable to create Room at position: " + x + " x " + y);
+//		  }
+//		  return  -1;
+//		}
 
 		public UserItem 			getItem(int x, int y) {
 			return (x < 0 || x >= _width || y < 0 || y >= _height) || _items[x][y] == null ? null : _items[x][y].getItem();
@@ -584,5 +546,12 @@ public class WorldMap implements ISavable {
 			return (item != null && item.isType(type));
 		}
 
-
-}
+		public void removeItem(BaseItem item) {
+			if (item != null) {
+				int x = item.getX();
+				int y = item.getY();
+				item.setOwner(null);
+				_items[x][y].setItem(null);
+			}
+		}
+	}

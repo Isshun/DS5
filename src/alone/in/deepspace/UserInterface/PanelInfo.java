@@ -8,6 +8,7 @@ import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Managers.CharacterManager;
+import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.UserInterface.Utils.OnClickListener;
@@ -115,6 +116,18 @@ public class PanelInfo extends UserSubInterface {
 		  // Configure new item
 		  _itemName.setString(item.getName() != null ? item.getName() : "?");
 		  _itemOptions = new PanelInfoItemOptions(20, 280);
+		  addView(_itemOptions.add("Remove", new OnClickListener() {
+			  @Override
+			  public void onClick(UIView view) {
+				  JobManager.getInstance().storeItem(item);
+			  }
+		  }));
+		  addView(_itemOptions.add("Destroy", new OnClickListener() {
+			  @Override
+			  public void onClick(UIView view) {
+				  JobManager.getInstance().destroyItem(item);
+			  }
+		  }));
 		  addView(_itemOptions.add("Add character", new OnClickListener() {
 			  @Override
 			  public void onClick(UIView view) {

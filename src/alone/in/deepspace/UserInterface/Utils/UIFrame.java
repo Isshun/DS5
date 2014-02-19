@@ -42,6 +42,7 @@ public abstract class UIFrame {
 
 	public void addView(UIView view) {
 		view.setParentPosition(_posX, _posY);
+		view.setParent(this);
 		_views.add(view);
 	}
 
@@ -75,5 +76,9 @@ public abstract class UIFrame {
 	}
 
 	public abstract void onRefresh(RenderWindow app);
+
+	public boolean getVisible() {
+		return _isVisible;
+	}
 
 }

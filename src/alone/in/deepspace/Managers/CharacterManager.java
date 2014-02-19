@@ -68,7 +68,7 @@ public class CharacterManager {
 
 		if (JobManager.getInstance().getCountFree() > 0) {
 			for (Character c: _characters) {
-				if (c.getJob() == null) {
+				if (c.isSleeping() == false && c.getJob() == null) {
 					Job job = JobManager.getInstance().getJob(c);
 					if (job != null) {
 						Log.debug("assignJobs to " + c.getName());

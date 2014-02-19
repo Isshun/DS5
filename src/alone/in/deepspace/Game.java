@@ -22,6 +22,7 @@ import alone.in.deepspace.Managers.ResourceManager;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Room;
+import alone.in.deepspace.UserInterface.RoomManager;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
@@ -62,7 +63,8 @@ public class Game {
 	  _lastInput = 0;
 	  _frame = 0;
 	  _viewport = new Viewport(app);
-	  _ui = new UserInterface(app, _viewport);
+	  _ui = UserInterface.getInstance();
+	  _ui.init(app, _viewport);
 
 	  _spriteManager = SpriteManager.getInstance();
 	  _worldRenderer = new WorldRenderer(app, _spriteManager, _ui);
@@ -85,96 +87,82 @@ public class Game {
 	}
 
 	void	update() {
-	  WorldMap.getInstance().update();
+		WorldMap.getInstance().update();
 
-	  // Update item
-	  int w = WorldMap.getInstance().getWidth();
-	  int h = WorldMap.getInstance().getHeight();
+		// Update item
+		int w = WorldMap.getInstance().getWidth();
+		int h = WorldMap.getInstance().getHeight();
 
-	  for (int i = 0; i < w; i++) {
-		for (int j = 0; j < h; j++) {
+		for (int i = 0; i < w; i++) {
+			for (int j = 0; j < h; j++) {
 
 
-		  // Update oxygen
-		  if (_frame % 6 == 0) {
-			WorldArea area = WorldMap.getInstance().getArea(i, j);
-			if (area != null && area.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-			  int oxygen = area.getOxygen();
-			  int count = 1;
+				// Update oxygen
+				if (_frame % 6 == 0) {
+					WorldArea area = WorldMap.getInstance().getArea(i, j);
+					if (area != null && area.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+						int oxygen = area.getOxygen();
+						int count = 1;
 
-			  WorldArea a1 = WorldMap.getInstance().getArea(i+1, j);
-			  if (a1 == null) {
-				count++;
-			  }
-			  else if (a1.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				oxygen += a1.getOxygen();
-				count++;
-			  }
+						WorldArea a1 = WorldMap.getInstance().getArea(i+1, j);
+						if (a1 == null) {
+							count++;
+						}
+						else if (a1.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+							oxygen += a1.getOxygen();
+							count++;
+						}
 
-			  WorldArea a2 = WorldMap.getInstance().getArea(i-1, j);
-			  if (a2 == null) {
-				count++;
-			  }
-			  else if (a2.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				oxygen += a2.getOxygen();
-				count++;
-			  }
+						WorldArea a2 = WorldMap.getInstance().getArea(i-1, j);
+						if (a2 == null) {
+							count++;
+						}
+						else if (a2.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+							oxygen += a2.getOxygen();
+							count++;
+						}
 
-			  WorldArea a3 = WorldMap.getInstance().getArea(i, j+1);
-			  if (a3 == null) {
-				count++;
-			  }
-			  else if (a3.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				oxygen += a3.getOxygen();
-				count++;
-			  }
-
-			  WorldArea a4 = WorldMap.getInstance().getArea(i, j-1);
-			  if (a4 == null) {
-				count++;
-			  }
-			  else if (a4.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				oxygen += a4.getOxygen();
-				count++;
-			  }
-
-			  int value = (int) Math.ceil((double)oxygen / count);
-
-			  // if (a1 != null && a1.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-			  // 	a1.setOxygen(value);
-			  // }
-
-			  // if (a2 != null && a2.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-			  // 	a2.setOxygen(value);
-			  // }
-
-			  // if (a3 != null && a3.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-			  // 	a3.setOxygen(value);
-			  // }
-
-			  // if (a4 != null && a4.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-			  // 	a4.setOxygen(value);
-			  // }
-
-			  area.setOxygen(value);
+						WorldArea a3 = WorldMap.getInstance().getArea(i, j+1);
+						if (a3 == null) {
+							count++;
+						}
+						else if (a3.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+							oxygen += a3.getOxygen();
+							count++;
+						}
+			
+						WorldArea a4 = WorldMap.getInstance().getArea(i, j-1);
+						if (a4 == null) {
+							count++;
+						}
+						else if (a4.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+							oxygen += a4.getOxygen();
+							count++;
+						}
+			
+						int value = (int) Math.ceil((double)oxygen / count);
+			
+						  // if (a1 != null && a1.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+						  // 	a1.setOxygen(value);
+						  // }
+			
+						  // if (a2 != null && a2.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+						  // 	a2.setOxygen(value);
+						  // }
+			
+						  // if (a3 != null && a3.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+						  // 	a3.setOxygen(value);
+						  // }
+			
+						  // if (a4 != null && a4.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+						  // 	a4.setOxygen(value);
+						  // }
+			
+						area.setOxygen(value);
+					}
+				}
 			}
-		  }
-
-
-
-		  BaseItem item = WorldMap.getInstance().getItem(i, j);
-		  if (item != null) {
-			  
-			// Check zone match
-			if (!item.isZoneMatch() && item.getZoneId() == 0) {
-			  Room room = WorldMap.getInstance().getRoom(item.getRoomId());
-			  if (room != null) {
-				room.setZoneId(item.getZoneIdRequired());
-			  }
-			}
-		  }
 		}
-	  }
 
 
 	  // assign works
@@ -231,7 +219,7 @@ public class Game {
 	  // Render transformation for viewport
 	  Transform transform = new Transform();
 	  RenderStates render = new RenderStates(_viewport.getViewTransform(transform));
-	  _worldRenderer.draw(render);
+	  _worldRenderer.refresh(render);
 	}
 
 	void	loop() throws IOException, InterruptedException {
@@ -382,6 +370,7 @@ public class Game {
 //
 	  WorldMap.getInstance().load(filePath);
 	  CharacterManager.getInstance().load(filePath);
+	  RoomManager.getInstance().load(filePath);
 	}
 
 	void	save(final String filePath) {
@@ -403,6 +392,7 @@ public class Game {
 //
 	  WorldMap.getInstance().save(filePath);
 	  CharacterManager.getInstance().save(filePath);
+	  RoomManager.getInstance().save(filePath);
 	}
 
 }

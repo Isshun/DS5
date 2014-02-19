@@ -66,7 +66,37 @@ public class PanelShortcut extends UserSubInterface {
 			}
 		});
 		addView(lbCrew);
-	}
+		
+		UIText lbRoom = new UIText(new Vector2f(140, 36));
+		lbRoom.setCharacterSize(14);
+		lbRoom.setColor(Color.WHITE);
+		lbRoom.setPadding(8, 20, 10, 50);
+		lbRoom.setBackgroundColor(new Color(0, 150, 180, 255));
+		lbRoom.setPosition(new Vector2f(460, 6));
+		lbRoom.setString("Room");
+		lbRoom.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(UIView view) {
+				userInterface.setMode(UserInterface.Mode.ROOM);
+			}
+		});
+		addView(lbRoom);
+
+		UIText lbDebug = new UIText(new Vector2f(140, 36));
+		lbDebug.setCharacterSize(14);
+		lbDebug.setColor(Color.WHITE);
+		lbDebug.setPadding(8, 20, 10, 45);
+		lbDebug.setBackgroundColor(new Color(150, 200, 180, 255));
+		lbDebug.setPosition(new Vector2f(610, 6));
+		lbDebug.setString("Debug");
+		lbDebug.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(UIView view) {
+				userInterface.setMode(UserInterface.Mode.DEBUG);
+			}
+		});
+		addView(lbDebug);
+}
 
 	@Override
 	public void onRefresh(RenderWindow app) {

@@ -532,6 +532,12 @@ void		actionUse() {
 		_job = null;
 	  }
 	}
+	
+	void		actionDestroy() {
+		ResourceManager.getInstance().addMatter(1);
+		WorldMap.getInstance().removeItem(_job.getItem());
+		JobManager.getInstance().complete(_job);
+	}
 
 public void		action() {
   if (_job == null || _posX != _toX || _posY != _toY) {
@@ -551,6 +557,10 @@ public void		action() {
 
 	if (action == JobManager.Action.GATHER) {
 	actionGather();
+  }	
+	
+	if (action == JobManager.Action.DESTROY) {
+		actionDestroy();
   }
 
 	if (action == JobManager.Action.BUILD) {
@@ -558,5 +568,9 @@ public void		action() {
   }
 
   }
+
+public boolean isSleeping() {
+	return _needs._sleeping > 0;
+}
 
 }

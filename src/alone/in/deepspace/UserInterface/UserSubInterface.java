@@ -65,6 +65,8 @@ public abstract class UserSubInterface extends UIFrame {
 		_bgPanel = new Sprite();
 		_bgPanel.setTexture(_texturePanel);
 		_bgPanel.setTextureRect(new IntRect(0, 0, 800, 600));
+		
+		setBackgroundColor(new Color(0, 0, 0, 180));
 	}
 
 	protected boolean	checkKey(Keyboard.Key key) {

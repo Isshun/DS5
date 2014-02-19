@@ -18,17 +18,14 @@ public class UIIcon extends UIView {
 	private RectangleShape 	_background;
 	private Sprite			_icon;
 	private Text _text;
-	private Type _type;
 	private Text _text2;
 	private boolean _multiline;
 
-	public UIIcon(Vector2f size, int typeIndex) {
+	public UIIcon(Vector2f size, String name, Sprite sprite) {
 		super(size);
-		_type = BaseItem.getTypeIndex(typeIndex);
-		_icon = SpriteManager.getInstance().getIcon(_type);
+		_icon = sprite;
 		_text = new Text();
 		
-		String name = BaseItem.getItemName(_type);
 		int cut = name.indexOf(' ');
 		if (cut != -1) {
 			_multiline = true;

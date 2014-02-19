@@ -10,6 +10,7 @@ import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
+import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.BaseItem.Type;
 import alone.in.deepspace.UserInterface.Utils.OnClickListener;
@@ -39,7 +40,6 @@ public class PanelBuild extends UserSubInterface {
 		MODE_ITEM
 	};
 
-	private UserInteraction 	_interaction;
 	private Map<Integer, UIIcon> _icons;
 	private UIText _lbStructure;
 	protected Type _currentSelected;
@@ -53,7 +53,6 @@ public class PanelBuild extends UserSubInterface {
 		_panelMode = Mode.MODE_STRUCTURE;
 		_panelModeHover = Mode.MODE_STRUCTURE;
 		_itemHover = -1;
-		_interaction = interaction;
 		
 		_lbStructure = new UIText(new Vector2f(140, 32));
 		_lbStructure.setString("Structure");
@@ -179,10 +178,10 @@ public class PanelBuild extends UserSubInterface {
 	}
 
 	void	drawIcon(int offset, int index, final int type) throws IOException {
-		
 		UIIcon icon = _icons.get(type);
 		if (icon == null) {
-			icon = new UIIcon(new Vector2f(62, 80), type);
+			Type t = BaseItem.getTypeIndex(type);
+			icon = new UIIcon(new Vector2f(62, 80), BaseItem.getItemName(t), SpriteManager.getInstance().getIcon(t));
 			icon.setPosition(20 + (index % 4) * 80, 60 + offset + (int)(index / 4) * 100);
 			icon.setBackground(_itemHover == type ? Color.WHITE : COLOR_YELLOW);
 			icon.setOnClickListener(new OnClickListener() {
@@ -197,27 +196,8 @@ public class PanelBuild extends UserSubInterface {
 			});
 			addView(icon);
 
-//			  shape.setPosition(posX + 20, posY + 60);
-//			  _app.draw(shape);
-			  // shape.setSize(Vector2f(54, 54));
-			  // shape.setFillColor(Color(0, 80, 140));
-
-//			  Texture texture = new Texture();
-//			  texture.loadFromFile((new File("res/bg_none.png")).toPath());
-//			  texture.setRepeated(true);
-//			  Sprite sprite = new Sprite();
-//			  sprite.setTexture(texture);
-//			  sprite.setTextureRect(new IntRect(0, 0, 56, 56));
-//			  sprite.setPosition(posX + 23, posY + 63);
-//			  _app.draw(sprite);
-//				  
-//			  // Icon
-//				  
-			  
 			 _icons.put(type, icon);
 		}
-		
-		//icon.refresh(_app);
 	}
 
 	void	drawTile() {

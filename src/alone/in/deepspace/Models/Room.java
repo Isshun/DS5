@@ -8,47 +8,59 @@ import alone.in.deepspace.World.WorldMap;
 
 
 public class Room {
+	public enum Type {
+		NONE,
+		QUARTER,
+		SICKBAY,
+		ENGINEERING,
+		PUB,
+		HOLODECK
+	}
+
 	static int _roomCount = 0;
 	static int _roomTmpId = 0;
 
 	int					_id;
 	int					_zoneId;
 	List<BaseItem>		_doors;
+	private Type _type;
+	private int _owner;
 
-	public Room() {
+	public Room(Type type) {
 	  _id = -1;
 	  _zoneId = 0;
+	  _type = type;
 	  _doors = new ArrayList<BaseItem>();
 	}
 
-	public static Room	createFromPos(int x, int y) {
-	  int ret = checkZone(x, y, --_roomTmpId);
-
-	  if (ret == 0) {
-		Room room = new Room();
-		room.setId(++_roomCount);
-		setZone(x, y, _roomCount, 0);
-		Log.info("Room create: " + _roomCount);
-		return room;
-	  }
-
-	  else if (ret > 0) {
-		Room room = WorldMap.getInstance().getRoom(ret);
-		if (room != null) {
-		  setZone(x, y, ret, room.getZoneId());
-		  Log.info("Room set: " + ret);
-		  return room;
-		} else {
-		  Log.error("Room #" + ret + " not exists");
-		}
-	  }
-
-	  else {
-		Log.info("Room not complete");
-	  }
-
-	  return null;
-	}
+//	public static Room	createFromPos(int x, int y) {
+//	  int ret = checkZone(x, y, --_roomTmpId);
+//
+//	  if (ret == 0) {
+//		Room room = new Room();
+//		room.setId(++_roomCount);
+//		setZone(x, y, _roomCount, 0);
+//		Log.info("Room create: " + _roomCount);
+//		return room;
+//	  }
+//
+//	  else if (ret > 0) {
+//		Room room = WorldMap.getInstance().getRoom(ret);
+//		if (room != null) {
+//		  setZone(x, y, ret, room.getZoneId());
+//		  Log.info("Room set: " + ret);
+//		  return room;
+//		} else {
+//		  Log.error("Room #" + ret + " not exists");
+//		}
+//	  }
+//
+//	  else {
+//		Log.info("Room not complete");
+//	  }
+//
+//	  return null;
+//	}
 	
 	public int				getId() { return _id; }
 	public int				getZoneId() { return _zoneId; }
@@ -133,7 +145,7 @@ public class Room {
 		return;
 	  }
 
-	  // Add to doors list
+	  // Add tro doors list
 	  if (item.isType(BaseItem.Type.STRUCTURE_DOOR)) {
 		// _doorspush_back(item);
 		return;
@@ -158,6 +170,29 @@ public class Room {
 	  setZone(x, y-1, roomId, zoneId);
 	  setZone(x+1, y, roomId, zoneId);
 	  setZone(x-1, y, roomId, zoneId);
+	}
+
+	public Type getType() {
+		return _type;
+	}
+
+	public static Type getType(int type) {
+		switch (type) {
+		case 1: return Type.QUARTER;
+		case 2: return Type.SICKBAY;
+		case 3: return Type.ENGINEERING;
+		case 4: return Type.PUB;
+		case 5: return Type.HOLODECK;
+		};
+		return null;
+	}
+
+	public void setOwner(int owner) {
+		_owner = owner;
+	}
+
+	public int getOwner() {
+		return _owner;
 	}
 
 }
