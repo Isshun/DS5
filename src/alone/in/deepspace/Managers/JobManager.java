@@ -3,10 +3,12 @@ package alone.in.deepspace.Managers;
 import java.util.ArrayList;
 import java.util.List;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Character;
 import alone.in.deepspace.Models.CharacterNeeds;
 import alone.in.deepspace.Models.Job;
+import alone.in.deepspace.Models.Job.Abort;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.UserItem;
 import alone.in.deepspace.World.WorldMap;
@@ -141,9 +143,9 @@ public class JobManager {
 
 	// TODO: one pass + check profession
 	public Job getJob(Character character) {
-		if (_countFree == 0) {
-			return null;
-		}
+//		if (_countFree == 0) {
+//			return null;
+//		}
 	  
 		if (character.getJob() != null) {
 			return null;
@@ -162,7 +164,8 @@ public class JobManager {
 			int x = character.getX();
 			int y = character.getY();
 			for (Job job: _jobs) {
-				if (job.getCharacter() == null && job.getAction() != Action.GATHER) {
+				// TODO: restart job after fail
+				if (job.getCharacter() == null && job.getFail() <= 0 && job.getAction() != Action.GATHER) {
 					int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
 					if (distance < bestDistance || bestDistance == -1) {
 						if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter() == 0) {
@@ -179,7 +182,8 @@ public class JobManager {
 			int x = character.getX();
 			int y = character.getY();
 			for (Job job: _jobs) {
-				if (job.getCharacter() == null) {
+				// TODO: restart job after fail
+				if (job.getCharacter() == null && job.getFail() <= 0) {
 					int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
 					if (distance < bestDistance || bestDistance == -1) {
 						bestJob = job;
@@ -249,10 +253,11 @@ public class JobManager {
 //	  return null;
 //	}
 
-	public void	abort(Job job) {
+	public void	abort(Job job, Abort reason) {
 	  Log.debug("Job abort: " + job.getId());
 	  _start++;
 	  _countFree++;
+	  job.setFail(reason, Game.getFrame());
 	  job.setCharacter(null);
 	}
 

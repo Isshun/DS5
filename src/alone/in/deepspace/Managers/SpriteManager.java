@@ -162,6 +162,7 @@ public class SpriteManager {
 
 	public Sprite	getItem(BaseItem item) {
 		if (item != null) {
+			int alpha = 75 + 180 / item.getMatter() * item.getMatterSupply();
 			SpriteResource res = null;
 			for (int i = 0; spritesRes[i].type != BaseItem.Type.NONE; i++) {
 				if (item.isType(spritesRes[i].type)) {
@@ -174,10 +175,9 @@ public class SpriteManager {
 						res.posX * Constant.TILE_SIZE,
 						res.posY * Constant.TILE_SIZE,
 						item.getWidth() * Constant.TILE_SIZE,
-						item.getHeight() * Constant.TILE_SIZE);
+						item.getHeight() * Constant.TILE_SIZE,
+						alpha);
 			}
-//		   		  int alpha = 75 + 180 / item.getMatter() * item.getMatterSupply();
-//		   		  sprite.setColor(new Color(255, 255, 255, alpha));
 		}
 
 		return null;

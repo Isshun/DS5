@@ -36,7 +36,8 @@ public class CharacterNeeds {
 		  public CharacterNeeds() {
 		  _sleepItem = BaseItem.Type.NONE;
 		  _sleeping = 0;
-		  _food = (int) (Constant.CHARACTER_INIT_FOOD + Math.random() % 40 - 20);
+//		  _food = (int) (Constant.CHARACTER_INIT_FOOD + Math.random() % 40 - 20);
+		  _food = 10;
 		  _oxygen = (int) (Constant.CHARACTER_INIT_OXYGEN + Math.random() % 20 - 10);
 		  _happiness = (float) (Constant.CHARACTER_INIT_HAPPINESS + Math.random() % 20 - 10);
 		  _health = (float) (Constant.CHARACTER_INIT_HEALTH + Math.random() % 20 - 10);

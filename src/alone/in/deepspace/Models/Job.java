@@ -1,9 +1,15 @@
 package alone.in.deepspace.Models;
 
+import org.omg.stub.java.rmi._Remote_Stub;
+
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Utils.Log;
 
 public class Job {
+
+	public static enum Abort {
+		NO_MATTER, INTERRUPTE, BLOCKED
+	};
 
 	private int 				_id;
 	private int					_posY;
@@ -13,7 +19,9 @@ public class Job {
 	private JobManager.Action 	_action;
 	private Character 			_character;
 	private Character 			_characterRequire;
-	private int _fail;
+	private int 				_fail;
+	public int 					_blocked;
+	private Abort 				_reason;
 
 	public Job(int id, int x, int y) {
 	  Log.debug("Job #" + id);
@@ -44,4 +52,9 @@ public class Job {
 	public Character			getCharacter() { return _character; }
 	public Character			getCharacterRequire() { return _characterRequire; }
 	public int 					getFail() { return _fail; }
+	public int 					getBlocked() { return _blocked; }
+	public Abort				getReason() { return _reason; }
+	
+	public void					setFail(Abort reason, int frame) { _reason = reason; _fail = frame; }
+	public void					setBlocked(int frame) { _blocked = frame; }
 }

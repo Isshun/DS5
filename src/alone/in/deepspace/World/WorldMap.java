@@ -9,8 +9,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.newdawn.slick.util.pathfinding.Mover;
+import org.newdawn.slick.util.pathfinding.TileBasedMap;
+
 import alone.in.deepspace.Managers.DynamicObjectManager;
 import alone.in.deepspace.Managers.JobManager;
+import alone.in.deepspace.Managers.PathManager;
 import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Models.BaseItem.Type;
@@ -18,7 +22,7 @@ import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 
 
-public class WorldMap implements ISavable {
+public class WorldMap implements ISavable, TileBasedMap {
 	private static final int LIMIT_ITEMS = 42000;
 	private static WorldMap 		_self;
 
@@ -148,17 +152,17 @@ public class WorldMap implements ISavable {
 		}
 
 		void	addRandomSeed() {
-			int startX = (int)(Math.random() * 1000) % _width;
-			int startY = (int)(Math.random() * 1000) % _height;
-
-			for (int x = 0; x < 5; x++) {
-				for (int y = 0; y < 5; y++) {
-					if (addRandomSeed(startX + x, startY + y)) return;
-					if (addRandomSeed(startX - x, startY - y)) return;
-					if (addRandomSeed(startX + x, startY - y)) return;
-					if (addRandomSeed(startX - x, startY + y)) return;
-				}
-			}
+//			int startX = (int)(Math.random() * 1000) % _width;
+//			int startY = (int)(Math.random() * 1000) % _height;
+//
+//			for (int x = 0; x < 5; x++) {
+//				for (int y = 0; y < 5; y++) {
+//					if (addRandomSeed(startX + x, startY + y)) return;
+//					if (addRandomSeed(startX - x, startY - y)) return;
+//					if (addRandomSeed(startX + x, startY - y)) return;
+//					if (addRandomSeed(startX - x, startY + y)) return;
+//				}
+//			}
 		}
 
 		private boolean addRandomSeed(int i, int j) {
@@ -525,20 +529,21 @@ public class WorldMap implements ISavable {
 		public int					getHeight() { return _height; }
 
 		public UserItem getNearest(Type type, int startX, int startY) {
+			PathManager pathManager = PathManager.getInstance();
 			int maxX = Math.max(startX, _width - startX);
 			int maxY = Math.max(startY, _height - startY);
 			for (int offsetX = 0; offsetX < maxX; offsetX++) {
 				for (int offsetY = 0; offsetY < maxY; offsetY++) {
-					if (isItemTypeAtPos(startX + offsetX, startY + offsetY, type)) {
+					if (isItemTypeAtPos(startX + offsetX, startY + offsetY, type) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
 						return getItem(startX + offsetX, startY + offsetY);
 					}
-					if (isItemTypeAtPos(startX - offsetX, startY - offsetY, type)) {
+					if (isItemTypeAtPos(startX - offsetX, startY - offsetY, type) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
 						return getItem(startX - offsetX, startY - offsetY);
 					}
-					if (isItemTypeAtPos(startX + offsetX, startY - offsetY, type)) {
+					if (isItemTypeAtPos(startX + offsetX, startY - offsetY, type) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
 						return getItem(startX + offsetX, startY - offsetY);
 					}
-					if (isItemTypeAtPos(startX - offsetX, startY + offsetY, type)) {
+					if (isItemTypeAtPos(startX - offsetX, startY + offsetY, type) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
 						return getItem(startX - offsetX, startY + offsetY);
 					}
 				}
@@ -558,5 +563,33 @@ public class WorldMap implements ISavable {
 				item.setOwner(null);
 				_items[x][y].setItem(null);
 			}
+		}
+
+		@Override
+		public int getWidthInTiles() {
+			return _width;
+		}
+
+		@Override
+		public int getHeightInTiles() {
+			return _height;
+		}
+
+		@Override
+		public void pathFinderVisited(int x, int y) {
+			//Log.info("visite: " + x + ", " + y);
+		}
+
+		@Override
+		public boolean blocked(Mover mover, int x, int y) {
+			return _items[x][y].getStructure() != null && _items[x][y].getStructure().isType(BaseItem.Type.STRUCTURE_WALL);
+		}
+
+		@Override
+		public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
+			float cost = _items[tx][ty].getStructure() != null && _items[tx][ty].getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR) ? 1 : 2;
+			if (sx != tx && sy != ty)
+				cost += 0.4;
+			return cost;
 		}
 	}

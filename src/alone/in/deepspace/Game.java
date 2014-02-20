@@ -15,6 +15,10 @@ import org.jsfml.system.Time;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.event.Event;
+import org.newdawn.slick.util.pathfinding.AStarPathFinder;
+import org.newdawn.slick.util.pathfinding.Mover;
+import org.newdawn.slick.util.pathfinding.Path;
+import org.newdawn.slick.util.pathfinding.PathFinder;
 
 import alone.in.deepspace.Managers.CharacterManager;
 import alone.in.deepspace.Managers.DynamicObjectManager;
@@ -40,7 +44,7 @@ public class Game {
 	private int _renderTime;
 	private RenderWindow _app;
 	private int _lastInput;
-	private int _frame;
+	private static int _frame;
 	private Viewport _viewport;
 	private UserInterface _ui;
 	private SpriteManager _spriteManager;
@@ -54,6 +58,8 @@ public class Game {
 	private Time _last_update;
 	private FoeManager _FoeManager;
 	private DynamicObjectManager _dynamicObjectManager;
+	
+	public static int getFrame() { return _frame; }
 
 	public Game(RenderWindow app) throws IOException {
 	  Log.debug("Game");

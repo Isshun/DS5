@@ -1,17 +1,36 @@
 package alone.in.deepspace.Managers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
+import org.newdawn.slick.util.pathfinding.AStarPathFinder;
+import org.newdawn.slick.util.pathfinding.Mover;
+import org.newdawn.slick.util.pathfinding.Path;
+import org.newdawn.slick.util.pathfinding.PathFinder;
+
+import alone.in.deepspace.Game;
 import alone.in.deepspace.Models.Character;
 import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Models.Position;
 import alone.in.deepspace.Utils.Log;
-
+import alone.in.deepspace.World.WorldMap;
 
 public class PathManager {
+	private static class OldPath {
+		public boolean			blocked;
+		public Vector<Position>	path;
+
+		public OldPath(Vector<Position> path) {
+			this.path = path;
+			this.blocked = path == null;
+		}
+	}
+	
 	private static PathManager sSelf;
+	private Map<Long, OldPath> _pool;
 
 	public PathManager() {
-//		  _pool = new ThreadPool(4);
+		  _pool = new HashMap<Long, OldPath>();
 //		  _data = new map<int, AStarSearch<MapSearchNode>*>();
 //		  memset(_map, 0, LIMIT_CHARACTER * LIMIT_ITEMS * sizeof(int));
 		}
@@ -21,28 +40,19 @@ public class PathManager {
 //		}
 
 
-		int	getSum(int fromX, int fromY, int toX, int toY) {
-		  int sum = 0;
-		  sum += fromX;
-		  sum = sum << 16;
-		  sum += fromY;
-		  sum = sum << 16;
-		  sum += toX;
-		  sum = sum << 16;
-		  sum += toY;
+	long	getSum(int fromX, int fromY, int toX, int toY) {
+		long sum = fromX;
+		sum = sum << 16;
+		sum += fromY;
+		sum = sum << 16;
+		sum += toX;
+		sum = sum << 16;
+		sum += toY;
+		return sum;
+	}
 
-		  Log.info("sum: " + sum);
-		
-		  return sum;
-
-		  // int y = sum & 0xFFFF;
-		  // int x = sum >> 12;
-
-		  // Info() << "after: " << x << ", " << y;
-		}
-
-		void							init() {
-		  Log.info("PathManager: init");
+	void							init() {
+		Log.info("PathManager: init");
 
 		  // _storage = new list<AStarSearch<MapSearchNode>*>();
 
@@ -252,19 +262,38 @@ public class PathManager {
 		// }
 
 		public void getPathAsync(Character character, Job job) {
-		  Log.debug("getPathAsync");
+			  Log.info("getPathAsync: " + character.getX() + ", " + character.getY() + ", " + job.getX() + ", " + job.getY());
+			  Log.debug("getPathAsync");
 		  
 		  Vector<Position> path = new Vector<Position>();
 		  
-		  int x = character.getX();
-		  int y = character.getY();
-		  while (x != job.getX() || y != job.getY()) {
-			  x += (x == job.getX() ? 0 : x > job.getX() ? -1 : 1);
-			  y += (y == job.getY() ? 0 : y > job.getY() ? -1 : 1);
-			  path.add(new Position(x, y));
+//		  int x = character.getX();
+//		  int y = character.getY();
+//		  while (x != job.getX() || y != job.getY()) {
+//			  x += (x == job.getX() ? 0 : x > job.getX() ? -1 : 1);
+//			  y += (y == job.getY() ? 0 : y > job.getY() ? -1 : 1);
+//			  path.add(new Position(x, y));
+//		  }
+//		  
+//		  character.onPathComplete(path, job);
+		  
+		  long sum = getSum(character.getPosX(), character.getPosY(), job.getX(), job.getY());
+		  
+		  PathFinder finder = new AStarPathFinder(WorldMap.getInstance(), 500, true);
+		  Path rawpath = finder.findPath(new Mover() {}, character.getPosX(), character.getPosY(), job.getX(), job.getY());
+		  if (rawpath != null) {
+			  for (int i = 0; i < rawpath.getLength(); i++) {
+				  path.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
+			  }
+			  _pool.put(sum, new OldPath(path));
+			  character.onPathComplete(path, job);
+		  } else {
+			  _pool.put(sum, new OldPath(null));
+			  job.setBlocked(Game.getFrame());
+			  character.onPathFailed(job);
 		  }
 		  
-		  character.onPathComplete(path, job);
+
 
 //		  _poolenqueue([this, character, job] {
 //
@@ -289,6 +318,12 @@ public class PathManager {
 				sSelf = new PathManager();
 			}
 			return sSelf;
+		}
+
+		public boolean isBlocked(int startX, int startY, int toX, int toY) {
+			long sum = getSum(startX, startY, toX, toY);
+			Log.info("blocked: " + (_pool.get(sum) != null && _pool.get(sum).blocked));
+			return _pool.get(sum) != null && _pool.get(sum).blocked;
 		}
 
 			// TODO Auto-generated method stub

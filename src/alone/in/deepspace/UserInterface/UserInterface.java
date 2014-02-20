@@ -536,4 +536,8 @@ public class UserInterface {
 	public void displayMessage(String msg) {
 		_message = new UIMessage(msg, _mouseRealPosX, _mouseRealPosY);
 	}
+
+	public void displayMessage(String msg, int x, int y) {
+		_message = new UIMessage(msg, _viewport.getRealPosX(x) + 20, _viewport.getRealPosY(y) + 12);
+	}
 }

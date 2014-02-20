@@ -79,7 +79,7 @@ public class Movable implements PathManagerCallback {
 		sendEvent(CharacterNeeds.Message.MSG_BLOCKED);
 	
 		// Give up job
-		JobManager.getInstance().abort(job);
+		JobManager.getInstance().abort(job, Job.Abort.BLOCKED);
 		_job = null;
 	}
 	

@@ -60,7 +60,7 @@ public class CharacterManager {
 
 	public void	assignJobs() {
 
-		if (JobManager.getInstance().getCountFree() > 0) {
+		//if (JobManager.getInstance().getCountFree() > 0) {
 			for (Character c: _characters) {
 				if (c.isSleeping() == false && c.getJob() == null) {
 					Job job = JobManager.getInstance().getJob(c);
@@ -71,7 +71,7 @@ public class CharacterManager {
 					}
 				}
 			}
-		}
+		//}
 	}
 
 	public void	create() {

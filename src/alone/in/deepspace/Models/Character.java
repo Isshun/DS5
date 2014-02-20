@@ -5,6 +5,7 @@ import alone.in.deepspace.Managers.CharacterManager;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.PathManager;
 import alone.in.deepspace.Managers.ResourceManager;
+import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.StructureItem;
@@ -187,7 +188,7 @@ public class Character extends Movable {
 		Log.debug("set new job");
 
 		if (_job != null) {
-			JobManager.getInstance().abort(_job);
+			JobManager.getInstance().abort(_job, Job.Abort.INTERRUPTE);
 		}
 		_job = job;
 		_toX = job.getX();
@@ -320,11 +321,11 @@ public class Character extends Movable {
 	
 	  }
 	
-	  // If character have a job . do not interrupt
-	  if (_job != null) {
-		PathManager.getInstance().getPathAsync(this, _job);
-		return;
-	  }
+//	  // If character have a job . do not interrupt
+//	  if (_job != null) {
+//		PathManager.getInstance().getPathAsync(this, _job);
+//		return;
+//	  }
 
   // // Need food
   // if (_food <= LIMITE_FOOD_OK) {
@@ -447,7 +448,7 @@ void		actionUse() {
 	  // }
   }
 
-	// Bed
+  // Bed
   if (type == BaseItem.Type.QUARTER_BED) {
 	_needs.sleep(BaseItem.Type.QUARTER_BED);
 	item.setOwner(this);
@@ -463,7 +464,7 @@ void		actionUse() {
   _job = null;
 }
 
-	void		actionBuild() {
+	private void		actionBuild() {
 	  // Wrong call
 	  if (_job == null || _job.getItem() == null) {
 		  Log.error("Character: actionBuild on null job or null job's item");
@@ -496,8 +497,9 @@ void		actionUse() {
 	  ResourceManager.Message result = ResourceManager.getInstance().build(item);
 	
 	  if (result == ResourceManager.Message.NO_MATTER) {
+		  UserInterface.getInstance().displayMessage("not enough matter", _job.getX(), _job.getY());
 		  Log.debug("Character #" + _id + ": not enough matter");
-		  JobManager.getInstance().abort(_job);
+		  JobManager.getInstance().abort(_job, Job.Abort.NO_MATTER);
 		  _job = null;
 	  }
 	
@@ -512,65 +514,65 @@ void		actionUse() {
 		}
 	}
 
-	void		actionGather() {
-	  // Wrong call
-	  if (_job == null || _job.getItem() == null) {
-		Log.error("Character: actionGather on null job or null job's item");
-		JobManager.getInstance().cancel(_job);
-		_job = null;
-		return;
-	  }
+	private void		actionGather() {
+		// Wrong call
+		if (_job == null || _job.getItem() == null) {
+			Log.error("Character: actionGather on null job or null job's item");
+			JobManager.getInstance().cancel(_job);
+			_job = null;
+			return;
+		}
 	
-	  int value = WorldMap.getInstance().gather(_job.getItem(), getProfessionScore(Profession.Type.NONE));
+		int value = WorldMap.getInstance().gather(_job.getItem(), getProfessionScore(Profession.Type.NONE));
 	
-	  Log.debug("gather: " + value);
+		Log.debug("gather: " + value);
 	
-	  ResourceManager.getInstance().addMatter(value);
+		ResourceManager.getInstance().addMatter(value);
 	
-	  if (_job.getItem().getMatterSupply() == 0) {
-		JobManager.getInstance().complete(_job);
-		_job = null;
-	  }
+		if (_job.getItem().getMatterSupply() == 0) {
+			JobManager.getInstance().complete(_job);
+			_job = null;
+		}
 	}
 	
-	void		actionDestroy() {
+	private void		actionDestroy() {
 		ResourceManager.getInstance().addMatter(1);
 		WorldMap.getInstance().removeItem(_job.getItem());
 		JobManager.getInstance().complete(_job);
+		_job = null;
 	}
 
-public void		action() {
-  if (_job == null || _posX != _toX || _posY != _toY) {
-	return;
-  }
+	public void			action() {
+		if (_job == null || _posX != _toX || _posY != _toY) {
+			return;
+		}
 
-  JobManager.Action action = _job.getAction();
+		JobManager.Action action = _job.getAction();
   
-	if (action == JobManager.Action.MOVE) {
-	JobManager.getInstance().complete(_job);
-	_job = null;
-  }
+		if (action == JobManager.Action.MOVE) {
+			JobManager.getInstance().complete(_job);
+			_job = null;
+		}
 
-	if (action == JobManager.Action.USE) {
-	actionUse();
-  }
+		if (action == JobManager.Action.USE) {
+			actionUse();
+		}
 
-	if (action == JobManager.Action.GATHER) {
-	actionGather();
-  }	
+		if (action == JobManager.Action.GATHER) {
+			actionGather();
+		}
 	
-	if (action == JobManager.Action.DESTROY) {
-		actionDestroy();
-  }
+		if (action == JobManager.Action.DESTROY) {
+			actionDestroy();
+		}
 
-	if (action == JobManager.Action.BUILD) {
-	actionBuild();
-  }
+		if (action == JobManager.Action.BUILD) {
+			actionBuild();
+		}
+	}
 
-  }
-
-public boolean isSleeping() {
-	return _needs._sleeping > 0;
-}
+	public boolean isSleeping() {
+		return _needs._sleeping > 0;
+	}
 
 }
