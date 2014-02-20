@@ -1,22 +1,12 @@
 package alone.in.deepspace.UserInterface;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Text;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
-
-import alone.in.deepspace.Managers.JobManager;
-import alone.in.deepspace.Managers.ResourceManager;
-import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.Job;
-import alone.in.deepspace.Utils.Constant;
 
 
 public class UserInterfaceMenuOperation extends UserSubInterface {

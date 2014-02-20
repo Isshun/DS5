@@ -4,12 +4,10 @@ import java.io.IOException;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Text;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
-import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Utils.Constant;
 
 

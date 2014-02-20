@@ -1,36 +1,18 @@
 package alone.in.deepspace.Managers;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.jsfml.graphics.Color;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
-import org.jsfml.graphics.Transform;
 
-import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Character;
 import alone.in.deepspace.Models.Foe;
-import alone.in.deepspace.Models.Job;
-import alone.in.deepspace.Models.Profession;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.StructureItem;
-import alone.in.deepspace.World.UserItem;
-import alone.in.deepspace.World.WorldArea;
-import alone.in.deepspace.World.WorldMap;
-import alone.in.deepspace.World.WorldRessource;
 
 
 public class FoeManager {

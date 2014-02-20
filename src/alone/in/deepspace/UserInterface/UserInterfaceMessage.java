@@ -1,20 +1,13 @@
 package alone.in.deepspace.UserInterface;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
-import org.jsfml.window.Keyboard;
 
-import alone.in.deepspace.Managers.CharacterManager;
-import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.Models.Character;
 import alone.in.deepspace.UserInterface.Utils.UIText;
-import alone.in.deepspace.Utils.Constant;
 
 public class UserInterfaceMessage extends UserSubInterface {
 

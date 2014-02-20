@@ -8,7 +8,6 @@ import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.event.Event;
-import org.omg.stub.java.rmi._Remote_Stub;
 
 import alone.in.deepspace.Viewport;
 import alone.in.deepspace.Managers.CharacterManager;

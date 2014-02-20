@@ -1,15 +1,11 @@
 package alone.in.deepspace.UserInterface.Utils;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.FloatRect;
-import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
-import org.omg.CORBA._PolicyStub;
 
-import alone.in.deepspace.MainRenderer;
 import alone.in.deepspace.Managers.SpriteManager;
 
 public class UIText extends UIView {

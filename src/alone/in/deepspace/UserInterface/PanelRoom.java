@@ -3,14 +3,12 @@ package alone.in.deepspace.UserInterface;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Models.Room.Type;
 import alone.in.deepspace.UserInterface.Utils.OnClickListener;

@@ -2,35 +2,20 @@ package alone.in.deepspace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
-import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Text;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
-import alone.in.deepspace.Managers.ResourceManager;
-import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.Utils.Constant;
-
 
 public class UserInterfaceSecurity extends UserSubInterface {
-	private static final int UIRES_POSX		= Constant.UI_WIDTH;
-	private static final int UIRES_POSY		= 0;
-
-	private static final int FONT_SIZE		= 16;
-	private static final int LINE_HEIGHT	= 24;
-	private static final int TITLE_SIZE		= FONT_SIZE + 8;
-
-	private static final Color TILE_ACTIVE_COLOR	= Color.BLACK;
-
 	UserInterfaceSecurity(RenderWindow app, int tileIndex) throws IOException {
-		  super(app, tileIndex, new Vector2f(0, 0), new Vector2f(200, 200));
+		super(app, tileIndex, new Vector2f(0, 0), new Vector2f(200, 200));
 	  
-	  _textureTile = new Texture();
-	  _textureTile.loadFromFile((new File("res/bg_tile_security.png")).toPath());
-	  _texturePanel = new Texture();
-	  _texturePanel.loadFromFile((new File("res/bg_panel_security.png")).toPath());
+		_textureTile = new Texture();
+		_textureTile.loadFromFile((new File("res/bg_tile_security.png")).toPath());
+		_texturePanel = new Texture();
+		_texturePanel.loadFromFile((new File("res/bg_panel_security.png")).toPath());
 	}
 
 

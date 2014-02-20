@@ -1,4 +1,5 @@
 package alone.in.deepspace.World;
+import java.awt.Component.BaselineResizeBehavior;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import alone.in.deepspace.Managers.DynamicObjectManager;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Room;
@@ -456,6 +458,9 @@ public class WorldMap implements ISavable {
 			} else if (BaseItem.isResource(type) == false) {
 			  if (_items[x][y] != null) {
 				_items[x][y].setItem((UserItem) item);
+				if (item.isType(BaseItem.Type.TACTICAL_PHASER)) {
+					DynamicObjectManager.getInstance().add((UserItem)item);
+				}
 			  } else {
 				Log.error("Put item on null WorldArea");
 			  }

@@ -10,8 +10,6 @@ import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.BaseItem.Type;
 
 public class UIIcon extends UIView {
 

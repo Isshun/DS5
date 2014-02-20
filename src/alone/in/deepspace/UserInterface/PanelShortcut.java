@@ -14,8 +14,6 @@ import alone.in.deepspace.Utils.Constant;
 public class PanelShortcut extends UserSubInterface {
 	private static final int FRAME_WIDTH = Constant.WINDOW_WIDTH;
 	private static final int FRAME_HEIGHT = 120;
-	private int _used;
-	private UserInterface _userInterface;
 	
 	public PanelShortcut(RenderWindow app, final UserInterface userInterface) throws IOException {
 		super(app, 0, new Vector2f(0, Constant.WINDOW_HEIGHT - FRAME_HEIGHT), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));

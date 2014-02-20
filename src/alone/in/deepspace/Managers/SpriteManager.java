@@ -427,4 +427,12 @@ public class SpriteManager {
 		return sprite;
 	}
 
+	public Sprite getBullet(int i) {
+		return getSprite(1,
+				i * Constant.TILE_SIZE,
+				17 * Constant.TILE_SIZE,
+				Constant.TILE_SIZE,
+				Constant.TILE_SIZE);
+	}
+
 }

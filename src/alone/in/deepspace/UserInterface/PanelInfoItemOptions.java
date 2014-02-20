@@ -3,10 +3,8 @@ package alone.in.deepspace.UserInterface;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.UserInterface.Utils.OnClickListener;
 import alone.in.deepspace.UserInterface.Utils.UIText;
 

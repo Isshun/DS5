@@ -17,6 +17,7 @@ import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.event.Event;
 
 import alone.in.deepspace.Managers.CharacterManager;
+import alone.in.deepspace.Managers.DynamicObjectManager;
 import alone.in.deepspace.Managers.FoeManager;
 import alone.in.deepspace.Managers.ResourceManager;
 import alone.in.deepspace.Managers.SpriteManager;
@@ -52,6 +53,7 @@ public class Game {
 	private Time _last_refresh;
 	private Time _last_update;
 	private FoeManager _FoeManager;
+	private DynamicObjectManager _dynamicObjectManager;
 
 	public Game(RenderWindow app) throws IOException {
 	  Log.debug("Game");
@@ -68,6 +70,7 @@ public class Game {
 
 	  _spriteManager = SpriteManager.getInstance();
 	  _worldRenderer = new WorldRenderer(app, _spriteManager, _ui);
+	  _dynamicObjectManager = DynamicObjectManager.getInstance();
 
 	  _update = 0;
 	  _characterManager = CharacterManager.getInstance();
@@ -87,6 +90,8 @@ public class Game {
 	}
 
 	void	update() {
+		_dynamicObjectManager.update();
+		
 		WorldMap.getInstance().update();
 
 		// Update item
@@ -203,6 +208,8 @@ public class Game {
 	  _characterManager.refresh(_app, render, animProgress);
 	  _FoeManager.refresh(_app, render, animProgress);
 
+		_dynamicObjectManager.refresh(_app, render, animProgress);
+	  
 	  // User interface
 	  _ui.refresh(_frame, _update, _renderTime);
 
