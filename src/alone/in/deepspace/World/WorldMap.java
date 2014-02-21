@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
@@ -16,15 +17,20 @@ import alone.in.deepspace.Managers.DynamicObjectManager;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.PathManager;
 import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.Models.Position;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Models.BaseItem.Type;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-
+import alone.in.deepspace.World.WorldMap.DebugPos;
 
 public class WorldMap implements ISavable, TileBasedMap {
 	private static final int LIMIT_ITEMS = 42000;
 	private static WorldMap 		_self;
+	public static class DebugPos {
+		int x;
+		int y;
+	}
 
 	private Map<Integer, Room>	_rooms;
 	private int					_itemCout;
@@ -32,6 +38,9 @@ public class WorldMap implements ISavable, TileBasedMap {
 	private int					_width;
 	private int					_height;
 	private int					_count;
+	private Vector<DebugPos> _debugPath;
+	private DebugPos _startDebug;
+	private DebugPos _stopDebug;
 
 	public WorldMap() {
 		  _itemCout = 0;
@@ -577,6 +586,10 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 		@Override
 		public void pathFinderVisited(int x, int y) {
+			DebugPos pos = new DebugPos();
+			pos.x = x;
+			pos.y = y;
+			_debugPath.add(pos);
 			//Log.info("visite: " + x + ", " + y);
 		}
 
@@ -587,9 +600,39 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 		@Override
 		public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
-			float cost = _items[tx][ty].getStructure() != null && _items[tx][ty].getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR) ? 1 : 2;
-			if (sx != tx && sy != ty)
-				cost += 0.4;
-			return cost;
+			WorldArea a1 = _items[sx][sy];
+			WorldArea a2 = _items[tx][ty];
+			
+			if (a1.getStructure() != null && a2.getStructure() == null ||
+					a2.getStructure() != null && a1.getStructure() == null) {
+				return 10;
+			}
+			
+			return 0;
+		}
+
+		public Vector<DebugPos> getDebug() {
+			return _debugPath;
+		}
+
+		public DebugPos getStartDebug() {
+			return _startDebug;
+		}
+
+		public DebugPos getStopDebug() {
+			return _stopDebug;
+		}
+
+		public void stopDebug(int x, int y) {
+			_stopDebug = new DebugPos();
+			_stopDebug.x = x;
+			_stopDebug.y = y;
+		}
+
+		public void startDebug(int posX, int posY) {
+			_debugPath = new Vector<DebugPos>();
+			_startDebug = new DebugPos();
+			_startDebug.x = posX;
+			_startDebug.y = posY;
 		}
 	}

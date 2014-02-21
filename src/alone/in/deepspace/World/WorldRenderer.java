@@ -1,6 +1,7 @@
 package alone.in.deepspace.World;
 
 import java.io.IOException;
+import java.util.Vector;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Font;
@@ -19,6 +20,7 @@ import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.ObjectPool;
 import alone.in.deepspace.Utils.Settings;
+import alone.in.deepspace.World.WorldMap.DebugPos;
 
 public class WorldRenderer {
 	RenderWindow			_app;
@@ -54,6 +56,27 @@ public class WorldRenderer {
 		refreshFloor(render, fromX, fromY, toX, toY);
 		refreshStructure(render, fromX, fromY, toX, toY);
 		refreshItems(render, fromX, fromY, toX, toY);
+
+		Vector<DebugPos> debugPath = WorldMap.getInstance().getDebug();
+		DebugPos startDebugPath = WorldMap.getInstance().getStartDebug();
+		DebugPos stopDebugPath = WorldMap.getInstance().getStopDebug();
+		Sprite sprite = SpriteManager.getInstance().getBullet(0);
+		if (debugPath != null) {
+			for (DebugPos pos: debugPath) {
+				sprite.setPosition(pos.x * Constant.TILE_SIZE, pos.y * Constant.TILE_SIZE);
+				_app.draw(sprite, render);
+			}
+		}
+		if (startDebugPath != null) {
+			sprite = SpriteManager.getInstance().getBullet(2);
+			sprite.setPosition(startDebugPath.x * Constant.TILE_SIZE, startDebugPath.y * Constant.TILE_SIZE);
+			_app.draw(sprite, render);
+		}
+		if (stopDebugPath != null) {
+			sprite = SpriteManager.getInstance().getBullet(3);
+			sprite.setPosition(stopDebugPath.x * Constant.TILE_SIZE, stopDebugPath.y * Constant.TILE_SIZE);
+			_app.draw(sprite, render);
+		}
 
 	  // Draw debug
 	  if (Settings.getInstance().isDebug()) {

@@ -114,7 +114,7 @@ public class DynamicObjectManager {
 					TempItem t = new TempItem(0, 0, 5);
 					t.offsetX = (int)velocityX;
 					t.offsetY = (int)velocityY;
-					_tempItems.add(t);
+					//_tempItems.add(t);
 
 					return;
 				}
