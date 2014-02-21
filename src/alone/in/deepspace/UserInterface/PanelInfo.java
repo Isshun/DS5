@@ -1,4 +1,5 @@
 package alone.in.deepspace.UserInterface;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -19,28 +20,25 @@ import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.UserItem;
 import alone.in.deepspace.World.WorldArea;
 
-
 public class PanelInfo extends UserSubInterface {
 
-//	  void  setItem(BaseItem item) { _item = item; }
-	  WorldArea	getArea() { return _area; }
-	  BaseItem		getItem() { return _item; }
+	public WorldArea				getArea() { return _area; }
+	public BaseItem					getItem() { return _item; }
 
-	  WorldArea			_area;
-	  BaseItem			_item;
-	  int				_line;
-	private UIText _primaryName;
-	private UIText _itemName;
-	private PanelInfoItemOptions _itemOptions;
+	private WorldArea				_area;
+	private BaseItem				_item;
+	private int						_line;
+	private UIText 					_primaryName;
+	private UIText 					_itemName;
+	private PanelInfoItemOptions	_itemOptions;
 
-	  private static final int MENU_AREA_FONT_SIZE = 20;
-	  private static final int MENU_AREA_CONTENT_FONT_SIZE = 16;
+	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;
 
-	  private static final int MENU_PADDING_TOP = 34;
-	  private static final int MENU_PADDING_LEFT = 16;
+	private static final int 		MENU_PADDING_TOP = 34;
+	private static final int 		MENU_PADDING_LEFT = 16;
 	  
-	  private static final int FRAME_WIDTH = 380;
-	  private static final int FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
+	private static final int 		FRAME_WIDTH = 380;
+	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	  
 	  PanelInfo(RenderWindow app) throws IOException {
 		  super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
@@ -64,7 +62,6 @@ public class PanelInfo extends UserSubInterface {
 		  sep.setCharacterSize(22);
 		  sep.setString("----------------------------------");
 		  addView(sep);
-
 	  }
 
 	  void	addLine(final RenderWindow app, final String label, final String value) {
@@ -72,18 +69,18 @@ public class PanelInfo extends UserSubInterface {
 	  }
 
 	  void	addLine(final RenderWindow app, final String label, int value) {
-	    addLine(app, label + ": " + value);
+		  addLine(app, label + ": " + value);
 	  }
 
 	  void	addLine(final RenderWindow app, final String str) {
-	    Text text = ObjectPool.getText();
-	    text.setString(str);
-	    text.setFont(SpriteManager.getInstance().getFont());
-	    text.setCharacterSize(MENU_AREA_CONTENT_FONT_SIZE);
-	    text.setStyle(Text.REGULAR);
-	    text.setPosition(MENU_PADDING_LEFT + 0, MENU_PADDING_TOP + 32 + (_line++ * 24));
-	    app.draw(text, _render);
-	    ObjectPool.release(text);
+		  Text text = ObjectPool.getText();
+		  text.setString(str);
+		  text.setFont(SpriteManager.getInstance().getFont());
+		  text.setCharacterSize(MENU_AREA_CONTENT_FONT_SIZE);
+		  text.setStyle(Text.REGULAR);
+		  text.setPosition(MENU_PADDING_LEFT + 0, MENU_PADDING_TOP + 32 + (_line++ * 24));
+		  app.draw(text, _render);
+		  ObjectPool.release(text);
 	  }
 
 	  void  setArea(WorldArea area) {
@@ -147,19 +144,6 @@ public class PanelInfo extends UserSubInterface {
 		  BaseItem item = _area != null ? _area.getItem() : null;
 
 		  if (item != null) {
-
-//			  // Name
-//			  final String name = item.getName();
-//	  	if (name != null) {
-//	  	  Text text = new Text();
-//	  	  // oss + item.getType();
-//	  	  text.setString(name);
-//	  	  text.setFont(SpriteManager.getInstance().getFont());
-//	  	  text.setCharacterSize(MENU_AREA_FONT_SIZE);
-//	  	  text.setStyle(Text.REGULAR);
-//	  	  text.setPosition(MENU_PADDING_LEFT + 0, MENU_PADDING_TOP);
-//	  	app.draw(text, _render);
-//	  	}
 
 //	  	_line = 0;
 //	  	addLine(app, "Pos: " + item.getX() + " x " + item.getY());

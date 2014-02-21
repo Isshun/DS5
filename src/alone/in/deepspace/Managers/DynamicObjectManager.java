@@ -18,14 +18,15 @@ import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.UserItem;
 
 public class DynamicObjectManager {
-	private static int ID_START = 2000000;
-	private static DynamicObjectManager		_self;
-	private ArrayList<BaseItem>	 	_objects;
-	private ArrayList<TempItem>	 	_tempItems;
-	private int 					_count;
-	private Sprite 					_selection;
-	private int 					_countFire;
-	private ArrayList<TempItem> 	_toTempItemDestroy;
+	private static int 					ID_START = 2000000;
+	private static DynamicObjectManager	_self;
+
+	private ArrayList<BaseItem>	 		_objects;
+	private ArrayList<TempItem>	 		_tempItems;
+	private int 						_count;
+	private Sprite 						_selection;
+	private int 						_countFire;
+	private ArrayList<TempItem> 		_toTempItemDestroy;
 
 	public DynamicObjectManager() throws IOException {
 	  Log.debug("FoeManager");

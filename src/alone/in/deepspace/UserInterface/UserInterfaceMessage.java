@@ -1,10 +1,9 @@
 package alone.in.deepspace.UserInterface;
+
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Sprite;
-import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.UserInterface.Utils.UIText;
@@ -18,12 +17,6 @@ public class UserInterfaceMessage extends UserSubInterface {
 		"Je ne peux vous parlez que 10min par période",
 		"de rotation alors ne perdons pas de temps"
 	};
-	
-	private static class ViewHolder {
-		public Text 	lbName;
-		public Text 	lbProfession;
-		public Sprite	thumb;
-	}
 	
 	private static final int 	FRAME_WIDTH = 380;
 	private static final int	FRAME_HEIGHT = 200;

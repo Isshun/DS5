@@ -21,13 +21,9 @@ import alone.in.deepspace.World.BaseItem.Type;
 
 public class PanelBuild extends UserSubInterface {
 
-	private static final Color COLOR_YELLOW = new Color(236, 201, 37);
-	private static int 	FONT_SIZE		= 16;
-	private static int 	LINE_HEIGHT		= 24;
-	private static int 	TITLE_SIZE		= FONT_SIZE + 8;
-
-	private static int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
-	private static int 	FRAME_HEIGHT = Constant.PANEL_HEIGHT;
+	private static final Color 	COLOR_YELLOW = new Color(236, 201, 37);
+	private static int 			FRAME_WIDTH = Constant.PANEL_WIDTH;
+	private static int 			FRAME_HEIGHT = Constant.PANEL_HEIGHT;
 	
 	Mode				_panelMode;
 	Mode				_panelModeHover;
@@ -295,7 +291,7 @@ public class PanelBuild extends UserSubInterface {
 	  return false;
 	}
 
-	public boolean	mousePress(Mouse.Button button, int x, int y) {
+	public boolean	catchClick(int x, int y) {
 	  if (_isVisible && x > _posX) {
 		return true;
 	  }

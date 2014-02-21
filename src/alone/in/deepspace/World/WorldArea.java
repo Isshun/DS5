@@ -16,8 +16,8 @@ public class WorldArea {
 	public WorldArea(BaseItem.Type type, int id) {
 		_oxygen = (int) (Math.random() % 100);
 		_name = "area";
-	  }
-	
+	}
+
 	public void				setItem(UserItem item) { _item = item; }
 	public void				setStructure(StructureItem structure) { _structure = structure; }
 	public void				setRessource(WorldRessource ressource) { _ressource = ressource; }
@@ -29,7 +29,7 @@ public class WorldArea {
 	public StructureItem	getStructure() { return _structure; }
 	public WorldRessource	getRessource() { return _ressource; }
 	public int				getOxygen() { return _oxygen; }
-//	  public int		getZoneId() { return _zoneId; }
+	//	  public int		getZoneId() { return _zoneId; }
 	public int				getRoomId() { return _roomId; }
 	public int				getX() { return _x; }
 	public int				getY() { return _y; }

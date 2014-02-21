@@ -37,15 +37,15 @@ public class JobManager implements ISavable {
 	private int 				_countFree;
 
 	JobManager() {
-	  Log.debug("JobManager");
+		Log.debug("JobManager");
 
-	  _jobs = new ArrayList<Job>();
-	  _count = 0;
-	  _id = 0;
-	  _start = 0;
-	  _countFree = 0;
+		_jobs = new ArrayList<Job>();
+		_count = 0;
+		_id = 0;
+		_start = 0;
+		_countFree = 0;
 
-	  Log.debug("JobManager done");
+		Log.debug("JobManager done");
 	}
 
 	public List<Job>	getJobs() { return _jobs; };
@@ -65,7 +65,7 @@ public class JobManager implements ISavable {
 				if ("BEGIN JOBS".equals(line)) {
 					inBlock = true;
 				}
-				
+
 				// End block
 				else if ("END JOBS".equals(line)) {
 					inBlock = false;
@@ -108,12 +108,12 @@ public class JobManager implements ISavable {
 						addJob(job);
 					}
 				}
-				
+
 			}
 		}
-		 catch (FileNotFoundException e) {
-			 Log.error("Unable to open save file: " + filePath);
-			 e.printStackTrace();
+		catch (FileNotFoundException e) {
+			Log.error("Unable to open save file: " + filePath);
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -154,113 +154,106 @@ public class JobManager implements ISavable {
 		Log.info("Save jobs: " + filePath + " done");
 	}
 
-	Job	build(BaseItem item) {
-	  if (item == null) {
-		Log.error("JobManager: build on null item");
-		return null;
-	  }
+	public Job	build(BaseItem item) {
+		if (item == null) {
+			Log.error("JobManager: build on null item");
+			return null;
+		}
 
-	  Job job = new Job(++_id, item.getX(), item.getY());
-	  job.setAction(JobManager.Action.BUILD);
-	  job.setItemType(item.getType());
-	  job.setItem(item);
+		Job job = new Job(++_id, item.getX(), item.getY());
+		job.setAction(JobManager.Action.BUILD);
+		job.setItemType(item.getType());
+		job.setItem(item);
 
-	  addJob(job);
+		addJob(job);
 
-	  return job;
+		return job;
 	}
 
 	public Job	gather(WorldRessource ressource) {
-	  if (ressource == null) {
-		Log.error("JobManager: gather on null area");
-		return null;
-	  }
-
-	  // return if job already exist for this item
-	  for (Job job: _jobs) {
-		if (job.getItem() == ressource) {
-		  return null;
+		if (ressource == null) {
+			Log.error("JobManager: gather on null area");
+			return null;
 		}
-	  }
 
-	  Job job = new Job(++_id, ressource.getX(), ressource.getY());
-	  job.setAction(Action.GATHER);
-	  job.setItemType(ressource.getType());
-	  job.setItem(ressource);
+		// return if job already exist for this item
+		for (Job job: _jobs) {
+			if (job.getItem() == ressource) {
+				return null;
+			}
+		}
 
-	  addJob(job);
+		Job job = new Job(++_id, ressource.getX(), ressource.getY());
+		job.setAction(Action.GATHER);
+		job.setItemType(ressource.getType());
+		job.setItem(ressource);
 
-	  return job;
+		addJob(job);
+
+		return job;
 	}
 
 	public void	removeJob(BaseItem item) {
-	  List<Job> toRemove = new ArrayList<Job>();
+		List<Job> toRemove = new ArrayList<Job>();
 
-	  for (Job job: _jobs) {
-		if (job.getItem() == item) {
-		  toRemove.add(job);
+		for (Job job: _jobs) {
+			if (job.getItem() == item) {
+				toRemove.add(job);
+			}
 		}
-	  }
 
-	  for (Job job: toRemove) {
-		_jobs.remove(job);
-	  }
+		for (Job job: toRemove) {
+			_jobs.remove(job);
+		}
 	}
 
 	public Job	build(BaseItem.Type type, int x, int y) {
-	  BaseItem item = null;
+		BaseItem item = null;
 
-	  // Structure
-	  if (BaseItem.isStructure(type)) {
-		// if (WorldMap.getInstance().getArea(x, y) == null) {
-		  item = WorldMap.getInstance().putItem(type, x, y);
-		// } else {
-		//   Error() + "JobManager: add build on non null area";
-		//   return null;
-		// }
-	  }
-
-	  // Item
-	  else if (BaseItem.isItem(type)) {
-		if (WorldMap.getInstance().getItem(x, y) != null) {
-		  Log.error("JobManager: add build on non null item");
-		  return null;
-		} else if (WorldMap.getInstance().getStructure(x, y) == null
-				   || WorldMap.getInstance().getStructure(x, y).isType(BaseItem.Type.STRUCTURE_FLOOR) == false) {
-			Log.error("JobManager: add build on non invalid structure (null or not STRUCTURE_FLOOR)");
-		  return null;
-		} else {
-		  item = WorldMap.getInstance().putItem(type, x, y);
+		// Structure
+		if (BaseItem.isStructure(type)) {
+			// if (WorldMap.getInstance().getArea(x, y) == null) {
+			item = WorldMap.getInstance().putItem(type, x, y);
+			// } else {
+			//   Error() + "JobManager: add build on non null area";
+			//   return null;
+			// }
 		}
-	  }
 
-	  Job job = new Job(++_id, x, y);
-	  job.setAction(Action.BUILD);
-	  job.setItemType(type);
-	  job.setItem(item);
+		// Item
+		else if (BaseItem.isItem(type)) {
+			if (WorldMap.getInstance().getItem(x, y) != null) {
+				Log.error("JobManager: add build on non null item");
+				return null;
+			} else if (WorldMap.getInstance().getStructure(x, y) == null
+					|| WorldMap.getInstance().getStructure(x, y).isType(BaseItem.Type.STRUCTURE_FLOOR) == false) {
+				Log.error("JobManager: add build on non invalid structure (null or not STRUCTURE_FLOOR)");
+				return null;
+			} else {
+				item = WorldMap.getInstance().putItem(type, x, y);
+			}
+		}
 
-	  addJob(job);
-
-	  return job;
+		return build(item);
 	}
 
 	// TODO: one pass + check profession
 	public Job getJob(Character character) {
-//		if (_countFree == 0) {
-//			return null;
-//		}
-	  
+		//		if (_countFree == 0) {
+		//			return null;
+		//		}
+
 		if (character.getJob() != null) {
 			return null;
 		}
-	  
+
 		Log.debug("bestJob: start");
 
 		Job bestJob = getJobForCharacterNeed(character);
 		if (bestJob != null) {
 			return bestJob;  
 		}
-	  	  
+
 		int bestDistance = -1;
 
 		{
@@ -305,7 +298,7 @@ public class JobManager implements ISavable {
 
 		return bestJob;
 	}
-	
+
 	private Job getJobForCharacterNeed(Character character) {
 		CharacterNeeds needs = character.getNeeds();
 		if (needs.getFood() < 20) {
@@ -321,36 +314,36 @@ public class JobManager implements ISavable {
 				return job;
 			}
 		}
-		
+
 		return null;
 	}
 
-//	// TODO: ugly
-//	Job	getJob() {
-//	  if (_count == 0) {
-//		return null;
-//	  }
-//
-//	  int i = 0;
-//	  std.list<Job>.iterator it = _jobs.begin();
-//	  while (i++ < _start % _count) {
-//		it++;
-//	  }
-//
-//	  for (i = 0; i < _count; i++) {
-//		if (it == _jobs.end()) {
-//		  it = _jobs.begin();
-//		}
-//
-//		if ((it).getCharacter() == null) {
-//		  return it;
-//		}
-//
-//		it++;
-//	  }
-//
-//	  return null;
-//	}
+	//	// TODO: ugly
+	//	Job	getJob() {
+	//	  if (_count == 0) {
+	//		return null;
+	//	  }
+	//
+	//	  int i = 0;
+	//	  std.list<Job>.iterator it = _jobs.begin();
+	//	  while (i++ < _start % _count) {
+	//		it++;
+	//	  }
+	//
+	//	  for (i = 0; i < _count; i++) {
+	//		if (it == _jobs.end()) {
+	//		  it = _jobs.begin();
+	//		}
+	//
+	//		if ((it).getCharacter() == null) {
+	//		  return it;
+	//		}
+	//
+	//		it++;
+	//	  }
+	//
+	//	  return null;
+	//	}
 
 	public void	abort(Job job, Abort reason) {
 		Log.debug("Job abort: " + job.getId());
@@ -379,7 +372,7 @@ public class JobManager implements ISavable {
 			job.setCharacterRequire(character);
 			job.setItemType(item.getType());
 			job.setItem(item);
-	
+
 			addJob(job);
 			// PathManager.getInstance().getPathAsync(character, item);
 			return;

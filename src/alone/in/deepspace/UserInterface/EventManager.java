@@ -29,7 +29,7 @@ public class EventManager {
 		}
 	}
 	
-	public boolean rightClick(int x, int y) {
+	public boolean leftClick(int x, int y) {
 		for (UIView view: _onClickListeners.keySet()) {
 			if (view.getRect().contains(x, y) && (view.getParent() == null || view.getParent().getVisible())) {
 				_onClickListeners.get(view).onClick(view);

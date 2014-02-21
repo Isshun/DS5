@@ -16,29 +16,26 @@ import alone.in.deepspace.Utils.Constant;
 
 
 public abstract class UserSubInterface extends UIFrame {
-	  protected boolean	isOnTile(int x, int y) {
-			return x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120;
-		  }
-
-		  protected Texture			_texturePanel;
-		  protected Texture			_textureTile;
-		  Sprite			_bgPanel;
-		  Sprite			_bgTile;
-		  protected int				_posX;
-		  protected int				_posY;
-		  protected int				_posTileX;
-		  protected int				_posTileY;
-		  protected boolean			_isTileActive;
-		  int				_tileIndex;
+	protected Texture	_texturePanel;
+	protected Texture	_textureTile;
+	protected Sprite	_bgPanel;
+	protected Sprite	_bgTile;
+	protected int		_posX;
+	protected int		_posY;
+	protected int		_posTileX;
+	protected int		_posTileY;
+	protected boolean	_isTileActive;
+	protected int		_tileIndex;
 		  
-		  void	openTile() { _isTileActive = true; }
-		  void	closeTile() { _isTileActive = false; }
-		  public void	toogleTile() { _isTileActive = !_isTileActive; }
-		  protected void	toogle() { _isVisible = !_isVisible; }
-		  public void	open() { _isVisible = true; }
-		  public void	close() { _isVisible = false; }
-		  protected boolean	isOpen() { return _isVisible; }
-		  boolean	isTileActive() { return _isTileActive; }
+	public void			openTile() { _isTileActive = true; }
+	public void			closeTile() { _isTileActive = false; }
+	public void			toogleTile() { _isTileActive = !_isTileActive; }
+	public void			toogle() { _isVisible = !_isVisible; }
+	public void			open() { _isVisible = true; }
+	public void			close() { _isVisible = false; }
+	public boolean		isOpen() { return _isVisible; }
+	public boolean		isTileActive() { return _isTileActive; }
+	public boolean		isOnTile(int x, int y) { return x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120; }
 
 	public UserSubInterface(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size) throws IOException {
 		super(size);
@@ -94,7 +91,7 @@ public abstract class UserSubInterface extends UIFrame {
 		return false;
 	}
 
-	public boolean	mousePress(Mouse.Button button, int x, int y) {
+	public boolean	catchClick(int x, int y) {
 		if (_isVisible) {
 			return true;
 		}

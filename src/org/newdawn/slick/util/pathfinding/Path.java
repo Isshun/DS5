@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * 
  * @author Kevin Glass
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class Path {
 	/** The list of steps building up this path */
 	private ArrayList steps = new ArrayList();

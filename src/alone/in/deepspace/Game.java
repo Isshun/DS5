@@ -14,7 +14,9 @@ import org.jsfml.system.Clock;
 import org.jsfml.system.Time;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Keyboard.Key;
+import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.event.Event;
+import org.jsfml.window.event.MouseButtonEvent;
 
 import alone.in.deepspace.Character.CharacterManager;
 import alone.in.deepspace.Engine.ISavable;
@@ -248,19 +250,29 @@ public class Game implements ISavable {
 			Event event = null;
 			while ((event = _app.pollEvent()) != null) {
 				if (event.type == Event.Type.MOUSE_MOVED) {
-					_ui.mouseMoved(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
+					_ui.onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
 				}
 
-				if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
-					_ui.mousePress(event.asMouseButtonEvent().button, event.asMouseButtonEvent().position.x, event.asMouseButtonEvent().position.y);
-				}
-
-				if (event.type == Event.Type.MOUSE_BUTTON_RELEASED) {
-					_ui.mouseRelease(event.asMouseButtonEvent().button, event.asMouseButtonEvent().position.x, event.asMouseButtonEvent().position.y);
+				if (event.type == Event.Type.MOUSE_BUTTON_PRESSED || event.type == Event.Type.MOUSE_BUTTON_RELEASED) {
+					MouseButtonEvent mouseButtonEvent = event.asMouseButtonEvent();
+					if (mouseButtonEvent.button == Button.LEFT) {
+						if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
+							_ui.onLeftPress(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+						} else {
+							_ui.onLeftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+						}
+					} else if (mouseButtonEvent.button == Button.RIGHT) {
+						if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
+							_ui.onRightPress(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+						} else {
+							_ui.onRightClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+						}
+					}
+					//_ui.mouseRelease(event.asMouseButtonEvent().button, event.asMouseButtonEvent().position.x, event.asMouseButtonEvent().position.y);
 				}
 
 				if (event.type == Event.Type.MOUSE_WHEEL_MOVED) {
-					_ui.mouseWheel(event.asMouseWheelEvent().delta, event.asMouseWheelEvent().position.x, event.asMouseWheelEvent().position.y);
+					_ui.onMouseWheel(event.asMouseWheelEvent().delta, event.asMouseWheelEvent().position.x, event.asMouseWheelEvent().position.y);
 				}
 
 				// Check key code

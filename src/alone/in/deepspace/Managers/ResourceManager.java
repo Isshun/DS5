@@ -32,15 +32,15 @@ public class ResourceManager {
 		  }
 
 		  _matter--;
-		  item._matterSupply++;
+		  item.setMatterSupply(item.getMatterSupply() + 1);
 
 		  // BUILD_COMPLETE
-		  if (item._matterSupply >= item.getMatter()) {
+		  if (item.isComplete()) {
 
 			// Remove power use
-			if (item.power != 0) {
-			  item.powerSupply = _power >= item.power ? item.power : _power;
-			  _power -= item.power;
+			if (item.getPower() != 0) {
+			  item.setPowerSupply(_power >= item.getPower() ? item.getPower() : _power);
+			  _power -= item.getPower();
 			}
 
 			// remove O2 use

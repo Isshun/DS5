@@ -11,6 +11,8 @@ import org.newdawn.slick.util.pathfinding.heuristics.ClosestHeuristic;
  * 
  * @author Kevin Glass
  */
+
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class AStarPathFinder implements PathFinder {
 	/** The set of nodes that have been searched through */
 	private ArrayList closed = new ArrayList();
