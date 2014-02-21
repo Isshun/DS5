@@ -1,5 +1,11 @@
 package alone.in.deepspace.Managers;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +16,13 @@ import alone.in.deepspace.Models.CharacterNeeds;
 import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Models.Job.Abort;
 import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.ISavable;
+import alone.in.deepspace.World.StructureItem;
 import alone.in.deepspace.World.UserItem;
 import alone.in.deepspace.World.WorldMap;
 import alone.in.deepspace.World.WorldRessource;
 
-public class JobManager {
+public class JobManager implements ISavable {
 	public enum Action {
 		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY
 	}
@@ -43,12 +51,106 @@ public class JobManager {
 
 	}
 
-	void	load(final char filePath) {
+	public void	load(final String filePath) {
+		Log.error("Load jobs: " + filePath);
 
+		boolean	inBlock = false;
+		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+			String line = null;
+
+			while ((line = br.readLine()) != null) {
+
+				// Start block
+				if ("BEGIN JOBS".equals(line)) {
+					inBlock = true;
+				}
+				
+				// End block
+				else if ("END JOBS".equals(line)) {
+					inBlock = false;
+				}
+
+				// Item
+				else if (inBlock) {
+					String[] values = line.split("\t");
+					if (values.length == 6) {
+						int x = Integer.valueOf(values[0]);
+						int y = Integer.valueOf(values[1]);
+						int action = Integer.valueOf(values[2]);
+						int characterId = Integer.valueOf(values[3]);
+						int characterRequireId = Integer.valueOf(values[4]);
+						int itemType = Integer.valueOf(values[5]);
+						Job job = new Job(++_id, x, y);
+						job.setAction(JobManager.getActionFromIndex(action));
+						if (characterId > 0) {
+							Character c = CharacterManager.getInstance().getCharacter(characterId);
+							job.setCharacter(c);
+						}
+						if (characterRequireId > 0) {
+							Character c = CharacterManager.getInstance().getCharacter(characterId);
+							job.setCharacterRequire(c);
+						}
+						if (itemType > 0) {
+							BaseItem.Type type = BaseItem.getTypeIndex(itemType);
+							job.setItemType(type);
+
+							// Add item
+							UserItem item = WorldMap.getInstance().getItem(x, y);
+							StructureItem structure = WorldMap.getInstance().getStructure(x, y);
+							if (item != null && item.isType(type)) {
+								job.setItem(item);
+							}
+							if (structure != null && structure.isType(type)) {
+								job.setItem(structure);
+							}
+						}
+						addJob(job);
+					}
+				}
+				
+			}
+		}
+		 catch (FileNotFoundException e) {
+			 Log.error("Unable to open save file: " + filePath);
+			 e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	void	save(final char filePath) {
+	private static Action getActionFromIndex(int action) {
+		switch(action) {
+		case 0: return Action.NONE;
+		case 1: return Action.BUILD;
+		case 2: return Action.GATHER;
+		case 3: return Action.USE;
+		case 4: return Action.MOVE;
+		case 5: return Action.STORE;
+		case 6: return Action.DESTROY;
+		}
+		return null;
+	}
 
+	public void	save(final String filePath) {
+		Log.info("Save jobs: " + filePath);
+
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
+			bw.write("BEGIN JOBS\n");
+			for (Job j: _jobs) {
+				int currentCharacterId = j.getCharacter() != null ? j.getCharacter().getId() : 0;
+				int requireCharacterId = j.getCharacterRequire() != null ? j.getCharacterRequire().getId() : 0;
+				int itemType = j.getItem() != null ? j.getItem().getType().ordinal() : 0;
+				bw.write(j.getX() + "\t" + j.getY() + "\t" + j.getAction().ordinal() + "\t" + currentCharacterId + "\t" + requireCharacterId + "\t" + itemType + "\n");
+			}
+			bw.write("END JOBS\n");
+		} catch (FileNotFoundException e) {
+			Log.error("Unable to open save file: " + filePath);
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Log.info("Save jobs: " + filePath + " done");
 	}
 
 	Job	build(BaseItem item) {

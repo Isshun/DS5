@@ -1,5 +1,4 @@
 package alone.in.deepspace.World;
-import java.awt.Component.BaselineResizeBehavior;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -17,12 +16,10 @@ import alone.in.deepspace.Managers.DynamicObjectManager;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.PathManager;
 import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.Position;
-import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Models.BaseItem.Type;
+import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.WorldMap.DebugPos;
 
 public class WorldMap implements ISavable, TileBasedMap {
 	private static final int LIMIT_ITEMS = 42000;
@@ -34,13 +31,14 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 	private Map<Integer, Room>	_rooms;
 	private int					_itemCout;
-	private WorldArea[][]		_items;
+	private WorldArea[][]		_areas;
 	private int					_width;
 	private int					_height;
 	private int					_count;
-	private Vector<DebugPos> _debugPath;
-	private DebugPos _startDebug;
-	private DebugPos _stopDebug;
+
+	private Vector<DebugPos> 	_debugPath;
+	private DebugPos 			_debugPathStart;
+	private DebugPos 			_debugPathStop;
 
 	public WorldMap() {
 		  _itemCout = 0;
@@ -51,11 +49,11 @@ public class WorldMap implements ISavable, TileBasedMap {
 		  dump();
 
 		  _rooms = new HashMap<Integer, Room>();
-		  _items = new WorldArea[_width][_height];
+		  _areas = new WorldArea[_width][_height];
 		  for (int x = 0; x < _width; x++) {
-			_items[x] = new WorldArea[_height];
+			_areas[x] = new WorldArea[_height];
 			for (int y = 0; y < _height; y++) {
-			  _items[x][y] = new WorldArea(BaseItem.Type.NONE, 0);
+			  _areas[x][y] = new WorldArea(BaseItem.Type.NONE, 0);
 			}
 		  }
 
@@ -73,8 +71,8 @@ public class WorldMap implements ISavable, TileBasedMap {
 				bw.write("BEGIN WORLDMAP\n");
 				for (int x = 0; x < _width; x++) {
 					for (int y = 0; y < _height; y++) {
-						if (_items[x][y] != null) {
-							WorldArea area = _items[x][y];
+						if (_areas[x][y] != null) {
+							WorldArea area = _areas[x][y];
 							StructureItem structureItem = area.getStructure();
 							UserItem userItem = area.getItem();
 							WorldRessource ressource = area.getRessource();
@@ -177,7 +175,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 		private boolean addRandomSeed(int i, int j) {
 			int realX = i % _width;
 			int realY = j % _height;
-			if (_items[realX][realY].getStructure() == null) {
+			if (_areas[realX][realY].getStructure() == null) {
 				WorldRessource ressource = (WorldRessource)putItem(BaseItem.Type.RES_1, realX, realY, 10);
 				JobManager.getInstance().gather(ressource);
 				return true;
@@ -194,7 +192,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 		  int value = item.gatherMatter(maxValue);
 		  int x = item.getX();
 		  int y = item.getY();
-		  if (item.getMatterSupply() == 0 && _items[x][y] == item) {
+		  if (item.getMatterSupply() == 0 && _areas[x][y] == item) {
 			// delete item;
 			// _items[x][y] = null;
 		  }
@@ -217,12 +215,12 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 		  for (int x = 0; x < _width; x++) {
 			for (int y = 0; y < _height; y++) {
-			  WorldArea area = _items[x][y];
+			  WorldArea area = _areas[x][y];
 			  if (area != null) {
 
 				// item
 				BaseItem item = area.getItem();
-				if (item != null && item.isType(type) && _items[x][y].isComplete()) {
+				if (item != null && item.isType(type) && _areas[x][y].isComplete()) {
 				  if (free == false || item.isFree()) {
 					  Log.debug("item found");
 					return item;
@@ -254,7 +252,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 		  int count = 0;
 		  for (int x = 0; x < _width; x++) {
 			for (int y = 0; y < _height; y++) {
-			  if(_items[x][y] != null && _items[x][y].getRoomId() == roomId && _items[x][y].isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+			  if(_areas[x][y] != null && _areas[x][y].getRoomId() == roomId && _areas[x][y].isType(BaseItem.Type.STRUCTURE_FLOOR)) {
 				count++;
 			  }
 			}
@@ -265,12 +263,12 @@ public class WorldMap implements ISavable, TileBasedMap {
 			int goal = (int) (Math.random() % count);
 			for (int x = 0; x < _width; x++) {
 			  for (int y = 0; y < _height; y++) {
-				if(_items[x][y] != null
-				   && _items[x][y].getRoomId() == roomId
-				   && _items[x][y].isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+				if(_areas[x][y] != null
+				   && _areas[x][y].getRoomId() == roomId
+				   && _areas[x][y].isType(BaseItem.Type.STRUCTURE_FLOOR)) {
 				  if (goal-- == 0) {
 					  Log.debug("getRandomPosInRoom return: " + x + " " + y + " " + count);
-					return _items[x][y];
+					return _areas[x][y];
 				  }
 				}
 			  }
@@ -343,7 +341,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 			return;
 		  }
 
-		  BaseItem item = _items[x][y];
+		  BaseItem item = _areas[x][y];
 		  removeItem(item);
 		}
 		
@@ -374,24 +372,24 @@ public class WorldMap implements ISavable, TileBasedMap {
 		  }
 
 		  // Return if item already exists
-		  if (_items[x][y] != null && _items[x][y].isType(type)) {
+		  if (_areas[x][y] != null && _areas[x][y].isType(type)) {
 			Log.debug("Same item existing for " + x + " x " + y);
 			return null;
 		  }
 
 		  // If item alread exists and different type, remove any job on this item
-		  if (_items[x][y] != null)  {
-			JobManager.getInstance().removeJob(_items[x][y]);
+		  if (_areas[x][y] != null)  {
+			JobManager.getInstance().removeJob(_areas[x][y]);
 		  }
 
 		  // If item alread exists check the roomId
 		  int roomId = 0;
-		  if (_items[x][y] != null)  {
-			roomId = _items[x][y].getRoomId();
+		  if (_areas[x][y] != null)  {
+			roomId = _areas[x][y].getRoomId();
 		  }
 
 		  // Return if same item already exists at this position
-		  WorldArea area = _items[x][y];
+		  WorldArea area = _areas[x][y];
 		  if (area != null) {
 			  if (area.getItem() != null && area.getItem().getType() == type ||
 					  area.getStructure() != null && area.getStructure().getType() == type) {
@@ -414,7 +412,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 		  // Ressource
 		  if (item.isRessource()) {
-			_items[x][y].setRessource((WorldRessource) item);
+			_areas[x][y].setRessource((WorldRessource) item);
 			if (((WorldRessource)item).getValue() > 0) {
 				JobManager.getInstance().gather((WorldRessource) item);
 			}
@@ -422,7 +420,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 		  // Wall
 		  else if (item.isStructure() && item.isType(BaseItem.Type.STRUCTURE_FLOOR) == false) {
-			_items[x][y].setStructure((StructureItem) item);
+			_areas[x][y].setStructure((StructureItem) item);
 			// _items[x][y].setRoomId(roomId);
 			// _items[x][y].setZoneId(0);
 			//destroyRoom(roomId);
@@ -467,10 +465,10 @@ public class WorldMap implements ISavable, TileBasedMap {
 //			}
 
 			if (type == BaseItem.Type.STRUCTURE_FLOOR) {
-				_items[x][y].setStructure((StructureItem) item);
+				_areas[x][y].setStructure((StructureItem) item);
 			} else if (BaseItem.isResource(type) == false) {
-			  if (_items[x][y] != null) {
-				_items[x][y].setItem((UserItem) item);
+			  if (_areas[x][y] != null) {
+				_areas[x][y].setItem((UserItem) item);
 				if (item.isType(BaseItem.Type.TACTICAL_PHASER)) {
 					DynamicObjectManager.getInstance().add((UserItem)item);
 				}
@@ -509,19 +507,19 @@ public class WorldMap implements ISavable, TileBasedMap {
 //		}
 
 		public UserItem 			getItem(int x, int y) {
-			return (x < 0 || x >= _width || y < 0 || y >= _height) || _items[x][y] == null ? null : _items[x][y].getItem();
+			return (x < 0 || x >= _width || y < 0 || y >= _height) || _areas[x][y] == null ? null : _areas[x][y].getItem();
 		}
 		
 		public StructureItem 		getStructure(int x, int y) {
-			return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _items[x][y].getStructure();
+			return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y].getStructure();
 		}
 		
 		public WorldRessource   	getRessource(int x, int y) {
-			return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _items[x][y].getRessource();
+			return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y].getRessource();
 		}
 		
 		public WorldArea			getArea(int x, int y) {
-			return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _items[x][y];
+			return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y];
 		}
 		
 		public Room					getRoom(int id) { return _rooms.get(id); }
@@ -570,7 +568,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 				int x = item.getX();
 				int y = item.getY();
 				item.setOwner(null);
-				_items[x][y].setItem(null);
+				_areas[x][y].setItem(null);
 			}
 		}
 
@@ -595,17 +593,17 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 		@Override
 		public boolean blocked(Mover mover, int x, int y) {
-			return _items[x][y].getStructure() != null && _items[x][y].getStructure().isType(BaseItem.Type.STRUCTURE_WALL);
+			return _areas[x][y].getStructure() != null && _areas[x][y].getStructure().isType(BaseItem.Type.STRUCTURE_WALL);
 		}
 
 		@Override
 		public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
-			WorldArea a1 = _items[sx][sy];
-			WorldArea a2 = _items[tx][ty];
+			WorldArea a1 = _areas[sx][sy];
+			WorldArea a2 = _areas[tx][ty];
 			
-			if (a1.getStructure() != null && a2.getStructure() == null ||
-					a2.getStructure() != null && a1.getStructure() == null) {
-				return 10;
+			if (a1.getStructure() != null && a1.getStructure().isComplete() && a2.getStructure() == null ||
+					a2.getStructure() != null && a2.getStructure().isComplete() && a1.getStructure() == null) {
+				return 5;
 			}
 			
 			return 0;
@@ -616,23 +614,23 @@ public class WorldMap implements ISavable, TileBasedMap {
 		}
 
 		public DebugPos getStartDebug() {
-			return _startDebug;
+			return _debugPathStart;
 		}
 
 		public DebugPos getStopDebug() {
-			return _stopDebug;
+			return _debugPathStop;
 		}
 
 		public void stopDebug(int x, int y) {
-			_stopDebug = new DebugPos();
-			_stopDebug.x = x;
-			_stopDebug.y = y;
+			_debugPathStop = new DebugPos();
+			_debugPathStop.x = x;
+			_debugPathStop.y = y;
 		}
 
 		public void startDebug(int posX, int posY) {
 			_debugPath = new Vector<DebugPos>();
-			_startDebug = new DebugPos();
-			_startDebug.x = posX;
-			_startDebug.y = posY;
+			_debugPathStart = new DebugPos();
+			_debugPathStart.x = posX;
+			_debugPathStart.y = posY;
 		}
 	}

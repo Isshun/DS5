@@ -23,6 +23,7 @@ import org.newdawn.slick.util.pathfinding.PathFinder;
 import alone.in.deepspace.Managers.CharacterManager;
 import alone.in.deepspace.Managers.DynamicObjectManager;
 import alone.in.deepspace.Managers.FoeManager;
+import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.ResourceManager;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.BaseItem;
@@ -31,11 +32,12 @@ import alone.in.deepspace.UserInterface.RoomManager;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.ISavable;
 import alone.in.deepspace.World.WorldArea;
 import alone.in.deepspace.World.WorldMap;
 import alone.in.deepspace.World.WorldRenderer;
 
-public class Game {
+public class Game implements ISavable {
 
 	static final int REFRESH_INTERVAL = (1000/60);
 	static final int UPDATE_INTERVAL = 100;
@@ -342,7 +344,7 @@ public class Game {
 	  CharacterManager.getInstance().create();
 	}
 
-	void	load(final String filePath) {
+	public void	load(final String filePath) {
 //	  Log.info("Game: load");
 //
 //	  ifstream ifs(filePath);
@@ -384,9 +386,10 @@ public class Game {
 	  WorldMap.getInstance().load(filePath);
 	  CharacterManager.getInstance().load(filePath);
 	  RoomManager.getInstance().load(filePath);
+	  JobManager.getInstance().load(filePath);
 	}
 
-	void	save(final String filePath) {
+	public void	save(final String filePath) {
 //	  Info() + "Game save";
 //
 //	  ofstream ofs(filePath);
@@ -406,6 +409,7 @@ public class Game {
 	  WorldMap.getInstance().save(filePath);
 	  CharacterManager.getInstance().save(filePath);
 	  RoomManager.getInstance().save(filePath);
+	  JobManager.getInstance().save(filePath);
 	}
 
 }

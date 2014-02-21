@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +23,12 @@ import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Models.Profession;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.ISavable;
 import alone.in.deepspace.World.WorldArea;
 import alone.in.deepspace.World.WorldMap;
 
 
-public class CharacterManager {
+public class CharacterManager implements ISavable {
 	public static final Profession professions[] = {
 		new Profession(Profession.Type.ENGINEER, "Engineer", new Color(255, 255, 50), new Color(50, 50, 50)),
 		new Profession(Profession.Type.OPERATION, "Technician", new Color(128, 0, 0), new Color(255, 255, 255)),
@@ -433,6 +435,16 @@ public class CharacterManager {
 	public void clear() {
 		_characters.clear();
 		JobManager.getInstance().clear();
+	}
+
+	// TODO: heavy
+	public Character getCharacter(int characterId) {
+		for (Character c: _characters) {
+			if (c.getId() == characterId) {
+				return c;
+			}
+		}
+		return null;
 	}
 
 }
