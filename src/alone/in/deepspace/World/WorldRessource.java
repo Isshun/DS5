@@ -1,6 +1,5 @@
 package alone.in.deepspace.World;
 
-import alone.in.deepspace.Models.BaseItem;
 
 public class WorldRessource extends BaseItem {
 	public WorldRessource(Type type, int id) {

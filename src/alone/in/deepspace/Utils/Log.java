@@ -1,6 +1,5 @@
 package alone.in.deepspace.Utils;
 
-import alone.in.deepspace.Game;
 import alone.in.deepspace.UserInterface.UserInterface;
 
 

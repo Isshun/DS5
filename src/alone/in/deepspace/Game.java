@@ -15,58 +15,53 @@ import org.jsfml.system.Time;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.event.Event;
-import org.newdawn.slick.util.pathfinding.AStarPathFinder;
-import org.newdawn.slick.util.pathfinding.Mover;
-import org.newdawn.slick.util.pathfinding.Path;
-import org.newdawn.slick.util.pathfinding.PathFinder;
 
-import alone.in.deepspace.Managers.CharacterManager;
+import alone.in.deepspace.Character.CharacterManager;
+import alone.in.deepspace.Engine.ISavable;
+import alone.in.deepspace.Engine.Viewport;
 import alone.in.deepspace.Managers.DynamicObjectManager;
 import alone.in.deepspace.Managers.FoeManager;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.ResourceManager;
 import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.UserInterface.RoomManager;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.ISavable;
+import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.WorldArea;
 import alone.in.deepspace.World.WorldMap;
 import alone.in.deepspace.World.WorldRenderer;
 
 public class Game implements ISavable {
 
-	static final int REFRESH_INTERVAL = (1000/60);
-	static final int UPDATE_INTERVAL = 100;
-	public static int renderTime;
-	private int _seed;
-	private int _renderTime;
-	private RenderWindow _app;
-	private int _lastInput;
-	private static int _frame;
-	private Viewport _viewport;
-	private UserInterface _ui;
-	private SpriteManager _spriteManager;
-	private WorldRenderer _worldRenderer;
-	private int _update;
-	private CharacterManager _characterManager;
-	private Texture _backgroundTexture;
-	private Sprite _background;
-	private boolean _run;
-	private Time _last_refresh;
-	private Time _last_update;
-	private FoeManager _FoeManager;
-	private DynamicObjectManager _dynamicObjectManager;
+	static final int 				REFRESH_INTERVAL = (1000/60);
+	static final int 				UPDATE_INTERVAL = 100;
+	
+	public static int 				renderTime;
+	private int 					_renderTime;
+	private RenderWindow			_app;
+	private int 					_lastInput;
+	private static int 				_frame;
+	private Viewport 				_viewport;
+	private UserInterface 			_ui;
+	private SpriteManager 			_spriteManager;
+	private WorldRenderer 			_worldRenderer;
+	private int 					_update;
+	private CharacterManager		_characterManager;
+	private Texture 				_backgroundTexture;
+	private Sprite 					_background;
+	private boolean 				_run;
+	private Time 					_last_refresh;
+	private Time 					_last_update;
+	private FoeManager 				_FoeManager;
+	private DynamicObjectManager	_dynamicObjectManager;
 	
 	public static int getFrame() { return _frame; }
 
 	public Game(RenderWindow app) throws IOException {
 	  Log.debug("Game");
 
-	  _seed = 42;
 	  _renderTime = 0;
 
 	  _app = app;
@@ -113,42 +108,42 @@ public class Game implements ISavable {
 				// Update oxygen
 				if (_frame % 6 == 0) {
 					WorldArea area = WorldMap.getInstance().getArea(i, j);
-					if (area != null && area.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+					if (area.getStructure() != null && area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
 						int oxygen = area.getOxygen();
 						int count = 1;
 
 						WorldArea a1 = WorldMap.getInstance().getArea(i+1, j);
-						if (a1 == null) {
+						if (a1.getStructure() == null) {
 							count++;
 						}
-						else if (a1.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+						else if (area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
 							oxygen += a1.getOxygen();
 							count++;
 						}
 
 						WorldArea a2 = WorldMap.getInstance().getArea(i-1, j);
-						if (a2 == null) {
+						if (a2.getStructure() == null) {
 							count++;
 						}
-						else if (a2.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+						else if (a2.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
 							oxygen += a2.getOxygen();
 							count++;
 						}
 
 						WorldArea a3 = WorldMap.getInstance().getArea(i, j+1);
-						if (a3 == null) {
+						if (a3.getStructure() == null) {
 							count++;
 						}
-						else if (a3.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+						else if (a3.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
 							oxygen += a3.getOxygen();
 							count++;
 						}
 			
 						WorldArea a4 = WorldMap.getInstance().getArea(i, j-1);
-						if (a4 == null) {
+						if (a4.getStructure() == null) {
 							count++;
 						}
-						else if (a4.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+						else if (a4.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
 							oxygen += a4.getOxygen();
 							count++;
 						}
@@ -240,8 +235,6 @@ public class Game implements ISavable {
 	void	loop() throws IOException, InterruptedException {
 		// fixme: actuellement update et refresh se partage les meme timers
 		Clock display_timer = new Clock();
-		Clock action_timer;
-		Clock pnj_timer;
 		Clock timer = new Clock();
 
 		_run = true;

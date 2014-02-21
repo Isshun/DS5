@@ -9,14 +9,14 @@ import org.jsfml.window.Mouse;
 import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.event.Event;
 
-import alone.in.deepspace.Viewport;
-import alone.in.deepspace.Managers.CharacterManager;
-import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.Character;
+import alone.in.deepspace.Character.Character;
+import alone.in.deepspace.Character.CharacterManager;
+import alone.in.deepspace.Engine.Viewport;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.Utils.Settings;
+import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.WorldArea;
 import alone.in.deepspace.World.WorldMap;
 

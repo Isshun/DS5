@@ -1,4 +1,6 @@
-package alone.in.deepspace.Models;
+package alone.in.deepspace.World;
+
+import alone.in.deepspace.Character.Character;
 
 public class BaseItem {
 	
@@ -100,9 +102,7 @@ public class BaseItem {
 
 	  public boolean isSolid;
 	  public int _matterSupply;
-	  private int _zoneId;
 	  private int _zoneIdRequired;
-	  private int _roomId;
 	  private Character _owner;
 	  private String _name;
 	  private int _width;
@@ -116,9 +116,7 @@ public class BaseItem {
 	  isSolid = false;
 	  _type = t;
 	  _matterSupply = 0;
-	  _zoneId = 0;
 	  _zoneIdRequired = 0;
-	  _roomId = 0;
 	  _owner = null;
 	  _id = id;
 	  _name = null;
@@ -136,7 +134,6 @@ public class BaseItem {
 		  _name = info.name;
 		  _width = info.width;
 		  _height = info.height;
-		  _zoneId = info.zone;
 		  _zoneIdRequired = info.zone;
 		  matter = info.matter;
 		  power = info.power;
@@ -170,8 +167,6 @@ public class BaseItem {
 
 	  // Sets
 	  public void				setPosition(int x, int y) { _x = x; _y = y; }
-	  public void				setRoomId(int roomId) { _roomId = roomId; }
-	  public void				setZoneId(int zoneId) { _zoneId = zoneId; }
 
 	  // Gets
 	  public int		getMatterSupply() { return _matterSupply; }
@@ -181,9 +176,7 @@ public class BaseItem {
 	  public int		getX() { return _x; }
 	  public int		getY() { return _y; }
 	  public Type		getType() { return _type; }
-//	  public int		getZoneId() { return _zoneId; }
 //	  public int		getZoneIdRequired() { return _zoneIdRequired; }
-	  public int		getRoomId() { return _roomId; }
 	  public int		getId() { return _id; }
 	  public String		getName() { return _name; }
 	  
@@ -247,7 +240,6 @@ public class BaseItem {
 	  public boolean		isSupply() { return power == powerSupply; }
 	  public boolean		isFree() { return _owner == null; }
 	  public boolean		isType(Type type) { return _type == type; }
-	  public boolean		isZoneMatch() { return _zoneId == _zoneIdRequired; }
 	  public boolean		isSleepingItem() { return _type == Type.QUARTER_BED || _type == Type.QUARTER_CHAIR; }
 	  public boolean		isStructure() { return BaseItem.isStructure(_type); }
 	  public boolean		isRessource() { return _type == Type.RES_1; }

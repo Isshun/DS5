@@ -13,7 +13,6 @@ import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.UserInterface.RoomManager;
 import alone.in.deepspace.UserInterface.UserInterface;
@@ -147,53 +146,52 @@ public class WorldRenderer {
 
 	//TODO: random
 	void	refreshStructure(RenderStates render, int fromX, int fromY, int toX, int toY) {
-	  _lastSpecialX = -1;
-	  _lastSpecialY = -1;
-	  int offsetWall = (Constant.TILE_SIZE / 2 * 3) - Constant.TILE_SIZE;
+		_lastSpecialX = -1;
+		_lastSpecialY = -1;
+		int offsetWall = (Constant.TILE_SIZE / 2 * 3) - Constant.TILE_SIZE;
 
-	  Sprite sprite = null;
-	  
-	  for (int j = toY-1; j >= fromY; j--) {
-		for (int i = toX-1; i >= fromX; i--) {
-		  int r = (int) Math.random();
-		  StructureItem item = WorldMap.getInstance().getStructure(i, j);
-		  if (item != null) {
+		Sprite sprite = null;
+		for (int j = toY-1; j >= fromY; j--) {
+			for (int i = toX-1; i >= fromX; i--) {
+				int r = (int) Math.random();
+				StructureItem item = WorldMap.getInstance().getStructure(i, j);
+				if (item != null) {
 
-			// Structure except floor
-			if (item.isStructure() && !item.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+					// Structure except floor
+					if (item.isStructure() && !item.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
 
-			  // Door
-			  if (item.isType(BaseItem.Type.STRUCTURE_DOOR)) {
-				// if (_characterManager.getCharacterAtPos(i, j) != null
-				// 	  || _characterManager.getCharacterAtPos(i+1, j) != null
-				// 	  || _characterManager.getCharacterAtPos(i-1, j) != null
-				// 	  || _characterManager.getCharacterAtPos(i, j+1) != null
-				// 	  || _characterManager.getCharacterAtPos(i, j-1) != null) {
-				// 	_spriteManager.getWall(item, 2, &sprite, 0, 0);
-				// } else {
-				  sprite = _spriteManager.getWall(item, 0, 0, 0);
-				// }
-				sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
-			  }
+						// Door
+						if (item.isType(BaseItem.Type.STRUCTURE_DOOR)) {
+						// if (_characterManager.getCharacterAtPos(i, j) != null
+						// 	  || _characterManager.getCharacterAtPos(i+1, j) != null
+						// 	  || _characterManager.getCharacterAtPos(i-1, j) != null
+						// 	  || _characterManager.getCharacterAtPos(i, j+1) != null
+						// 	  || _characterManager.getCharacterAtPos(i, j-1) != null) {
+						// 	_spriteManager.getWall(item, 2, &sprite, 0, 0);
+						// } else {
+							sprite = _spriteManager.getWall(item, 0, 0, 0);
+							// }
+							sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
+						}
+	
+						// Wall
+						else if (item.isType(BaseItem.Type.STRUCTURE_WALL)) {
+							sprite = drawWall(item, i, j, offsetWall);
+						}	  
+					}
 
-			  // Wall
-			  else if (item.isType(BaseItem.Type.STRUCTURE_WALL)) {
-				  sprite = drawWall(item, i, j, offsetWall);
-			  }	  
+					// // floor
+					// else {
+					// 	_spriteManager.getFloor(item, item.getZoneId(), item.getRoomId(), &sprite);
+					// 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+					// }
+
+					if (sprite != null) {
+						_app.draw(sprite, render);
+					}
+				}
 			}
-
-			// // floor
-			// else {
-			// 	_spriteManager.getFloor(item, item.getZoneId(), item.getRoomId(), &sprite);
-			// 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-			// }
-
-			if (sprite != null) {
-				_app.draw(sprite, render);
-			}
-		  }
 		}
-	  }
 	}
 
 	private Sprite drawWall(StructureItem item, int i, int j, int offsetWall) {

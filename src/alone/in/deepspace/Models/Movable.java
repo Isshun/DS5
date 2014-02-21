@@ -2,8 +2,10 @@ package alone.in.deepspace.Models;
 
 import java.util.Vector;
 
+import alone.in.deepspace.Character.CharacterNeeds;
+import alone.in.deepspace.Character.PathManagerCallback;
+import alone.in.deepspace.Character.Character.Direction;
 import alone.in.deepspace.Managers.JobManager;
-import alone.in.deepspace.Models.Character.Direction;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 
@@ -83,7 +85,7 @@ public class Movable implements PathManagerCallback {
 		_job = null;
 	}
 	
-	void	setDirection(Direction direction) {
+	protected void	setDirection(Direction direction) {
 		if (_direction != direction) {
 			_direction = direction;
 		}

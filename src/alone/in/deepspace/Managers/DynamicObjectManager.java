@@ -10,10 +10,11 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
-import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.Character;
+import alone.in.deepspace.Character.Character;
+import alone.in.deepspace.Character.CharacterManager;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.UserItem;
 
 public class DynamicObjectManager {

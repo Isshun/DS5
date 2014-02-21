@@ -9,7 +9,7 @@ import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
 
 import alone.in.deepspace.Game;
-import alone.in.deepspace.Models.Character;
+import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Models.Position;
 import alone.in.deepspace.Utils.Log;
@@ -40,7 +40,7 @@ public class PathManager {
 //		}
 
 
-	long	getSum(int fromX, int fromY, int toX, int toY) {
+	private long	getSum(int fromX, int fromY, int toX, int toY) {
 		long sum = fromX;
 		sum = sum << 16;
 		sum += fromY;
@@ -51,7 +51,7 @@ public class PathManager {
 		return sum;
 	}
 
-	void							init() {
+	private void							init() {
 		Log.info("PathManager: init");
 
 		  // _storage = new list<AStarSearch<MapSearchNode>*>();
@@ -197,7 +197,7 @@ public class PathManager {
 //		  // return NULL;
 //		}
 
-		Vector<Position>		getPath(int fromX, int fromY, int toX, int toY) {
+	private Vector<Position>		getPath(int fromX, int fromY, int toX, int toY) {
 
 //		  MapSearchNode nodeStart;
 //		  nodeStart.x = fromX;
@@ -212,7 +212,7 @@ public class PathManager {
 		  return null;
 		}
 
-		Vector<Position>		getPath(Character character, Job item) {
+	private Vector<Position>		getPath(Character character, Job item) {
 
 		  // if (_map[charactergetId()][itemgetId()]) {
 		  // 	Error() << "PathManager: this path is already know and cannot be resolve";

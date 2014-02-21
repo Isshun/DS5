@@ -1,4 +1,5 @@
-package alone.in.deepspace.Models;
+package alone.in.deepspace.World;
+
 
 
 public class ItemInfo {

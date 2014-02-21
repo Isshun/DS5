@@ -12,14 +12,14 @@ import java.util.Vector;
 import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
+import alone.in.deepspace.Engine.ISavable;
 import alone.in.deepspace.Managers.DynamicObjectManager;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.PathManager;
-import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.BaseItem.Type;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.BaseItem.Type;
 
 public class WorldMap implements ISavable, TileBasedMap {
 	private static final int LIMIT_ITEMS = 42000;
@@ -192,10 +192,6 @@ public class WorldMap implements ISavable, TileBasedMap {
 		  int value = item.gatherMatter(maxValue);
 		  int x = item.getX();
 		  int y = item.getY();
-		  if (item.getMatterSupply() == 0 && _areas[x][y] == item) {
-			// delete item;
-			// _items[x][y] = null;
-		  }
 		  return value;
 		}
 
@@ -220,7 +216,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 				// item
 				BaseItem item = area.getItem();
-				if (item != null && item.isType(type) && _areas[x][y].isComplete()) {
+				if (item != null && item.isType(type) && item.isComplete()) {
 				  if (free == false || item.isFree()) {
 					  Log.debug("item found");
 					return item;
@@ -228,11 +224,12 @@ public class WorldMap implements ISavable, TileBasedMap {
 				  notFree++;
 				}
 
-				// Area
-				if(area.isType(type) && area.isComplete()) {
-				  if (free == false || area.isFree()) {
+				// Structure
+				StructureItem structure = area.getStructure();
+				if(structure != null && structure.isType(type) && structure.isComplete()) {
+				  if (free == false || structure.isFree()) {
 					  Log.debug("item found");
-					return area;
+					return structure;
 				  }
 				  notFree++;
 				}
@@ -245,39 +242,39 @@ public class WorldMap implements ISavable, TileBasedMap {
 		  return null;
 		}
 
-		//TODO: perf
-		BaseItem	getRandomPosInRoom(int roomId) {
-			Log.debug("getRandomPosInRoom: " + roomId);
-
-		  int count = 0;
-		  for (int x = 0; x < _width; x++) {
-			for (int y = 0; y < _height; y++) {
-			  if(_areas[x][y] != null && _areas[x][y].getRoomId() == roomId && _areas[x][y].isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				count++;
-			  }
-			}
-		  }
-		  Log.debug("getRandomPosInRoom found: " + count);
-
-		  if (count > 0) {
-			int goal = (int) (Math.random() % count);
-			for (int x = 0; x < _width; x++) {
-			  for (int y = 0; y < _height; y++) {
-				if(_areas[x][y] != null
-				   && _areas[x][y].getRoomId() == roomId
-				   && _areas[x][y].isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				  if (goal-- == 0) {
-					  Log.debug("getRandomPosInRoom return: " + x + " " + y + " " + count);
-					return _areas[x][y];
-				  }
-				}
-			  }
-			}
-		  }
-
-		  Log.warning("getRandomPosInRoom: no room found");
-		  return  null;
-		}
+//		//TODO: perf
+//		BaseItem	getRandomPosInRoom(int roomId) {
+//			Log.debug("getRandomPosInRoom: " + roomId);
+//
+//		  int count = 0;
+//		  for (int x = 0; x < _width; x++) {
+//			for (int y = 0; y < _height; y++) {
+//			  if(_areas[x][y] != null && _areas[x][y].getRoomId() == roomId && _areas[x][y].isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+//				count++;
+//			  }
+//			}
+//		  }
+//		  Log.debug("getRandomPosInRoom found: " + count);
+//
+//		  if (count > 0) {
+//			int goal = (int) (Math.random() % count);
+//			for (int x = 0; x < _width; x++) {
+//			  for (int y = 0; y < _height; y++) {
+//				if(_areas[x][y] != null
+//				   && _areas[x][y].getRoomId() == roomId
+//				   && _areas[x][y].isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+//				  if (goal-- == 0) {
+//					  Log.debug("getRandomPosInRoom return: " + x + " " + y + " " + count);
+//					return _areas[x][y];
+//				  }
+//				}
+//			  }
+//			}
+//		  }
+//
+//		  Log.warning("getRandomPosInRoom: no room found");
+//		  return  null;
+//		}
 
 		void	initRoom() {
 		  // for (int y = 0; y < _height; y++) {
@@ -332,6 +329,21 @@ public class WorldMap implements ISavable, TileBasedMap {
 		  return false;
 		}
 
+		public void removeItem(BaseItem item) {
+			if (item != null) {
+				int x = item.getX();
+				int y = item.getY();
+				item.setOwner(null);
+				_areas[x][y].setItem(null);
+			}
+		}
+		
+		public void removeItem(WorldArea area) {
+			if (area != null) {
+				removeItem(area.getItem());
+			}
+		}
+
 		public void removeItem(int x, int y) {
 		  Log.debug("remove item");
 
@@ -341,7 +353,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 			return;
 		  }
 
-		  BaseItem item = _areas[x][y];
+		  WorldArea item = _areas[x][y];
 		  removeItem(item);
 		}
 		
@@ -371,16 +383,17 @@ public class WorldMap implements ISavable, TileBasedMap {
 			return null;
 		  }
 
-		  // Return if item already exists
-		  if (_areas[x][y] != null && _areas[x][y].isType(type)) {
-			Log.debug("Same item existing for " + x + " x " + y);
-			return null;
-		  }
-
-		  // If item alread exists and different type, remove any job on this item
-		  if (_areas[x][y] != null)  {
-			JobManager.getInstance().removeJob(_areas[x][y]);
-		  }
+		  // TODO
+//		  // Return if item already exists
+//		  if (_areas[x][y] != null && _areas[x][y].isType(type)) {
+//			Log.debug("Same item existing for " + x + " x " + y);
+//			return null;
+//		  }
+//
+//		  // If item alread exists and different type, remove any job on this item
+//		  if (_areas[x][y] != null)  {
+//			JobManager.getInstance().removeJob(_areas[x][y]);
+//		  }
 
 		  // If item alread exists check the roomId
 		  int roomId = 0;
@@ -561,15 +574,6 @@ public class WorldMap implements ISavable, TileBasedMap {
 		private boolean isItemTypeAtPos(int x, int y, Type type) {
 			UserItem item = getItem(x, y);
 			return (item != null && item.isType(type));
-		}
-
-		public void removeItem(BaseItem item) {
-			if (item != null) {
-				int x = item.getX();
-				int y = item.getY();
-				item.setOwner(null);
-				_areas[x][y].setItem(null);
-			}
 		}
 
 		@Override

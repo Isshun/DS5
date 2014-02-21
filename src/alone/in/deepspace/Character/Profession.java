@@ -1,4 +1,4 @@
-package alone.in.deepspace.Models;
+package alone.in.deepspace.Character;
 import org.jsfml.graphics.Color;
 
 public class Profession {

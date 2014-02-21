@@ -18,11 +18,6 @@ public class ObjectPool {
 
 	private static Map<Integer, Color> 		mColors = new HashMap<Integer, Color>();
 
-	private static Vector2f mVector2f = new Vector2f(0,  0);
-
-	private static Map<Integer, IntRect> mIntRect = new HashMap<Integer, IntRect>();
-
-	
 	public static Color getColor(int r, int g, int b, int a) {
 		int sum = 0;
 		sum += r;

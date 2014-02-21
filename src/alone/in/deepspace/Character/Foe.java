@@ -1,4 +1,6 @@
-package alone.in.deepspace.Models;
+package alone.in.deepspace.Character;
+
+import alone.in.deepspace.Models.Movable;
 
 
 public class Foe extends Movable {

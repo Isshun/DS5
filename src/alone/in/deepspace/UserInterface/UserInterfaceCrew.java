@@ -10,9 +10,9 @@ import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
-import alone.in.deepspace.Managers.CharacterManager;
+import alone.in.deepspace.Character.Character;
+import alone.in.deepspace.Character.CharacterManager;
 import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.Models.Character;
 import alone.in.deepspace.Utils.Constant;
 
 public class UserInterfaceCrew extends UserSubInterface {

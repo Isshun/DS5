@@ -1,4 +1,4 @@
-package alone.in.deepspace.Managers;
+package alone.in.deepspace.Character;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +16,12 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
-import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.Character;
+import alone.in.deepspace.Engine.ISavable;
+import alone.in.deepspace.Managers.JobManager;
+import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.Job;
-import alone.in.deepspace.Models.Profession;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.ISavable;
-import alone.in.deepspace.World.WorldArea;
-import alone.in.deepspace.World.WorldMap;
 
 
 public class CharacterManager implements ISavable {
@@ -210,73 +206,73 @@ public class CharacterManager implements ISavable {
 
 	  return null;
 	}
-
-	Character		assignJob(Job job) {
-	  if (job == null) {
-		Log.error(" try to assign null job");
-		return null;
-	  }
-
-	  Character bestCharacter = null;
-
-	  JobManager.Action jobAction = job.getAction();
-
-	  for (Character c: _characters) {
-		if (c.getJob() == null) {
-
-		  if (bestCharacter == null) {
-			bestCharacter = c;
-		  }
-
-		  // build action . only engineer
-		  if (jobAction == JobManager.Action.BUILD && c.getProfession().getType() == Profession.Type.ENGINEER) {
-			if (bestCharacter == null || c.getProfessionScore(Profession.Type.ENGINEER) > bestCharacter.getProfessionScore(Profession.Type.ENGINEER)) {
-			  bestCharacter = c;
-			}
-		  }
-		}
-	  }
-
-	  if (bestCharacter != null) {
-
-		// TODO: remove if invalid
-
-		// Action build
-		if (job.getAction() == JobManager.Action.BUILD) {
-		  BaseItem jobItem = job.getItem();
-		  BaseItem item = WorldMap.getInstance().getItem(job.getX(), job.getY());
-		  WorldArea area = WorldMap.getInstance().getArea(job.getX(), job.getY());
-		  if (item != null && item.isComplete() && area != null && area.isComplete()) {
-			Log.error("CharacterManager: Job ACTION_BUILD on complete item");
-			return null;
-		  }
-		  if (jobItem == null && item != null) {
-			jobItem = item;
-		  }
-		  if (jobItem == null && area != null) {
-			jobItem = area;
-		  }
-		  if (jobItem == null) {
-			jobItem = WorldMap.getInstance().putItem(job.getItemType(), job.getX(), job.getY());
-		  }
-		}
-
-		// Action gather
-		else if (job.getAction() == JobManager.Action.GATHER) {
-		  BaseItem jobItem = job.getItem();
-		  if (jobItem == null) {
-			Log.error("CharacterManager: Job ACTION_GATHER on missing item");
-			return null;
-		  }
-		}
-
-		Log.info("assign " + job.getId() + " to " + bestCharacter);
-	  	job.setCharacter(bestCharacter);
-		bestCharacter.setJob(job);
-	  }
-
-	  return bestCharacter;
-	}
+//
+//	Character		assignJob(Job job) {
+//	  if (job == null) {
+//		Log.error(" try to assign null job");
+//		return null;
+//	  }
+//
+//	  Character bestCharacter = null;
+//
+//	  JobManager.Action jobAction = job.getAction();
+//
+//	  for (Character c: _characters) {
+//		if (c.getJob() == null) {
+//
+//		  if (bestCharacter == null) {
+//			bestCharacter = c;
+//		  }
+//
+//		  // build action . only engineer
+//		  if (jobAction == JobManager.Action.BUILD && c.getProfession().getType() == Profession.Type.ENGINEER) {
+//			if (bestCharacter == null || c.getProfessionScore(Profession.Type.ENGINEER) > bestCharacter.getProfessionScore(Profession.Type.ENGINEER)) {
+//			  bestCharacter = c;
+//			}
+//		  }
+//		}
+//	  }
+//
+//	  if (bestCharacter != null) {
+//
+//		// TODO: remove if invalid
+//
+//		// Action build
+//		if (job.getAction() == JobManager.Action.BUILD) {
+//		  BaseItem jobItem = job.getItem();
+//		  BaseItem item = WorldMap.getInstance().getItem(job.getX(), job.getY());
+//		  WorldArea area = WorldMap.getInstance().getArea(job.getX(), job.getY());
+//		  if (item != null && item.isComplete() && area != null && area.isComplete()) {
+//			Log.error("CharacterManager: Job ACTION_BUILD on complete item");
+//			return null;
+//		  }
+//		  if (jobItem == null && item != null) {
+//			jobItem = item;
+//		  }
+//		  if (jobItem == null && area != null) {
+//			jobItem = area;
+//		  }
+//		  if (jobItem == null) {
+//			jobItem = WorldMap.getInstance().putItem(job.getItemType(), job.getX(), job.getY());
+//		  }
+//		}
+//
+//		// Action gather
+//		else if (job.getAction() == JobManager.Action.GATHER) {
+//		  BaseItem jobItem = job.getItem();
+//		  if (jobItem == null) {
+//			Log.error("CharacterManager: Job ACTION_GATHER on missing item");
+//			return null;
+//		  }
+//		}
+//
+//		Log.info("assign " + job.getId() + " to " + bestCharacter);
+//	  	job.setCharacter(bestCharacter);
+//		bestCharacter.setJob(job);
+//	  }
+//
+//	  return bestCharacter;
+//	}
 
 	public Character		add(int x, int y) {
 	  if (_count + 1 > Constant.LIMIT_CHARACTER) {

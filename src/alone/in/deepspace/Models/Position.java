@@ -44,8 +44,8 @@ public class Position {
 	    return (int) Math.floor((y + 32.f) / 64.f);
 	}
 
-	float x;
-    float y;
+	public float x;
+    public float y;
     float z;
 
     int f;

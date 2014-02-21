@@ -1,6 +1,6 @@
 package alone.in.deepspace.Managers;
 
-import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.World.BaseItem;
 
 public class ResourceManager {
 

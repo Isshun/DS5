@@ -10,9 +10,9 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.World.BaseItem;
 
 public class PanelJobs extends UserSubInterface {
 	private static final Color 	COLOR_BUILD = new Color(170, 128, 64);

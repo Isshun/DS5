@@ -6,8 +6,8 @@ import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Models.Character;
-import alone.in.deepspace.Models.CharacterNeeds;
+import alone.in.deepspace.Character.Character;
+import alone.in.deepspace.Character.CharacterNeeds;
 import alone.in.deepspace.UserInterface.Utils.UIText;
 import alone.in.deepspace.Utils.Constant;
 

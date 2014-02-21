@@ -10,14 +10,14 @@ import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
 import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.BaseItem.Type;
 import alone.in.deepspace.UserInterface.Utils.OnClickListener;
 import alone.in.deepspace.UserInterface.Utils.UIIcon;
 import alone.in.deepspace.UserInterface.Utils.UIText;
 import alone.in.deepspace.UserInterface.Utils.UIView;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.BaseItem;
+import alone.in.deepspace.World.BaseItem.Type;
 
 public class PanelBuild extends UserSubInterface {
 

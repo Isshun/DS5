@@ -9,8 +9,8 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
-import alone.in.deepspace.Models.Character;
-import alone.in.deepspace.Models.Foe;
+import alone.in.deepspace.Character.Character;
+import alone.in.deepspace.Character.Foe;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 

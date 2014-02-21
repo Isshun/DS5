@@ -1,4 +1,4 @@
-package alone.in.deepspace;
+package alone.in.deepspace.Engine;
 
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
@@ -18,7 +18,7 @@ public class Viewport {
 	private int _fromScale;
 	private int _scaleAnim;
 
-	Viewport(RenderWindow app) {
+	public Viewport(RenderWindow app) {
 	  _posX = 0;
 	  _posY = 0;
 	  _lastPosX = 0;

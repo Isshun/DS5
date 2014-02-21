@@ -10,13 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.Game;
-import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.Character;
-import alone.in.deepspace.Models.CharacterNeeds;
+import alone.in.deepspace.Character.Character;
+import alone.in.deepspace.Character.CharacterManager;
+import alone.in.deepspace.Character.CharacterNeeds;
+import alone.in.deepspace.Engine.ISavable;
 import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Models.Job.Abort;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.ISavable;
+import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.StructureItem;
 import alone.in.deepspace.World.UserItem;
 import alone.in.deepspace.World.WorldMap;
@@ -27,13 +28,13 @@ public class JobManager implements ISavable {
 		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY
 	}
 
-	private static JobManager sSelf;
+	private static JobManager	sSelf;
 
-	private ArrayList<Job> _jobs;
-	private int _count;
-	private int _id;
-	private int _start;
-	private int _countFree;
+	private ArrayList<Job> 		_jobs;
+	private int 				_count;
+	private int 				_id;
+	private int 				_start;
+	private int 				_countFree;
 
 	JobManager() {
 	  Log.debug("JobManager");
@@ -47,9 +48,9 @@ public class JobManager implements ISavable {
 	  Log.debug("JobManager done");
 	}
 
-	void	create() {
-
-	}
+	public List<Job>	getJobs() { return _jobs; };
+	int					getCount() { return _count; }
+	int					getCountFree() { return _countFree; }
 
 	public void	load(final String filePath) {
 		Log.error("Load jobs: " + filePath);
@@ -324,10 +325,6 @@ public class JobManager implements ISavable {
 		return null;
 	}
 
-	public List<Job>			getJobs() { return _jobs; };
-	int					getCount() { return _count; }
-	int					getCountFree() { return _countFree; }
-
 //	// TODO: ugly
 //	Job	getJob() {
 //	  if (_count == 0) {
@@ -356,43 +353,43 @@ public class JobManager implements ISavable {
 //	}
 
 	public void	abort(Job job, Abort reason) {
-	  Log.debug("Job abort: " + job.getId());
-	  _start++;
-	  _countFree++;
-	  job.setFail(reason, Game.getFrame());
-	  job.setCharacter(null);
+		Log.debug("Job abort: " + job.getId());
+		_start++;
+		_countFree++;
+		job.setFail(reason, Game.getFrame());
+		job.setCharacter(null);
 	}
 
 	public void	complete(Job job) {
-	  Log.debug("Job complete: " + job.getId());
+		Log.debug("Job complete: " + job.getId());
 
-	  _jobs.remove(job);
-	  _count--;
-	  _start--;
+		_jobs.remove(job);
+		_count--;
+		_start--;
 	}
 
 	public void	need(Character character, BaseItem.Type itemType) {
-	  Log.debug("JobManager: Character '" + character.getName() + "' need item #" + itemType);
+		Log.debug("JobManager: Character '" + character.getName() + "' need item #" + itemType);
 
-	  BaseItem item = WorldMap.getInstance().find(itemType, true);
-	  if (item != null) {
+		BaseItem item = WorldMap.getInstance().find(itemType, true);
+		if (item != null) {
 
-		Job job = new Job(++_id, item.getX(), item.getY());
-		job.setAction(JobManager.Action.USE);
-		job.setCharacterRequire(character);
-		job.setItemType(item.getType());
-		job.setItem(item);
-
-		addJob(job);
-		// PathManager.getInstance().getPathAsync(character, item);
-		return;
-	  }
+			Job job = new Job(++_id, item.getX(), item.getY());
+			job.setAction(JobManager.Action.USE);
+			job.setCharacterRequire(character);
+			job.setItemType(item.getType());
+			job.setItem(item);
+	
+			addJob(job);
+			// PathManager.getInstance().getPathAsync(character, item);
+			return;
+		}
 	}
 
 	void	addJob(Job job) {
-	  _jobs.add(job);
-	  _count++;
-	  _countFree++;
+		_jobs.add(job);
+		_count++;
+		_countFree++;
 	}
 
 	public static JobManager getInstance() {
@@ -404,13 +401,13 @@ public class JobManager implements ISavable {
 
 	public static String getActionName(Action action) {
 		switch (action) {
-		case NONE: return "none";
-		case BUILD: return "build";
-		case GATHER: return "gather";
-		case MOVE: return "move";
-		case USE: return "use";
-		case STORE: return "store";
-		case DESTROY: return "destroy";
+		case NONE: 		return "none";
+		case BUILD: 	return "build";
+		case GATHER: 	return "gather";
+		case MOVE: 		return "move";
+		case USE: 		return "use";
+		case STORE: 	return "store";
+		case DESTROY:	return "destroy";
 		}
 		return null;
 	}

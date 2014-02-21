@@ -9,15 +9,15 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.Transform;
 import org.jsfml.window.Mouse;
 
-import alone.in.deepspace.MainRenderer;
-import alone.in.deepspace.Viewport;
+import alone.in.deepspace.Engine.MainRenderer;
+import alone.in.deepspace.Engine.Viewport;
 import alone.in.deepspace.Managers.JobManager;
-import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.BaseItem.Type;
 import alone.in.deepspace.Models.Cursor;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.WorldMap;
+import alone.in.deepspace.World.BaseItem.Type;
 
 
 public class UserInteraction {

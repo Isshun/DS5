@@ -1,9 +1,9 @@
 package alone.in.deepspace.Models;
 
-import org.omg.stub.java.rmi._Remote_Stub;
-
+import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.BaseItem;
 
 public class Job {
 

@@ -10,7 +10,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.MainRenderer;
+import alone.in.deepspace.Engine.MainRenderer;
 
 public abstract class UIFrame {
 	protected RenderStates 	_render;

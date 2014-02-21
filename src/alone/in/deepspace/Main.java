@@ -4,6 +4,7 @@ import java.io.IOException;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
 
+import alone.in.deepspace.Engine.MainRenderer;
 import alone.in.deepspace.Utils.Constant;
 
 

@@ -5,8 +5,8 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Managers.CharacterManager;
-import alone.in.deepspace.Models.Profession;
+import alone.in.deepspace.Character.CharacterManager;
+import alone.in.deepspace.Character.Profession;
 import alone.in.deepspace.UserInterface.Utils.OnClickListener;
 import alone.in.deepspace.UserInterface.Utils.UIText;
 import alone.in.deepspace.UserInterface.Utils.UIView;
