@@ -85,8 +85,8 @@ public class WorldRenderer {
 			} else {
 				for (Vector2i vector: _changed) {
 					refreshFloor(render, vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
-					refreshStructure(render, vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
 				}
+				refreshStructure(render, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 			}
 			_changed.clear();
 			_hasChanged = false;

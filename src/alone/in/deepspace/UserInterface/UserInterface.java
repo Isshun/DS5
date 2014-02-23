@@ -383,6 +383,8 @@ public class UserInterface {
 	}
 
 	public void onDoubleClick(int x, int y) {
+		_keyLeftPressed = false;
+
 		WorldArea area = WorldMap.getInstance().getArea(getRelativePosX(x), getRelativePosY(y));
 		if (area != null) {
 			BaseItem item = area.getItem();
