@@ -3,6 +3,7 @@ package alone.in.deepspace.Managers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.Executors;
 
 import org.jsfml.graphics.Sprite;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
@@ -265,70 +266,56 @@ public class PathManager {
 	//		 	});
 	// }
 
-	public void getPathAsync(Character character, Job job) {
-		WorldMap.getInstance().startDebug(character.getPosX(), character.getPosY());
-		WorldMap.getInstance().stopDebug(job.getX(), job.getY());
+	public void getPathAsync(final Character character, final Job job) {
+		Executors.newSingleThreadExecutor().execute(new Runnable() {
+			@Override
+			public void run() {
+				WorldMap.getInstance().startDebug(character.getPosX(), character.getPosY());
+				WorldMap.getInstance().stopDebug(job.getX(), job.getY());
 
-		//Log.info("getPathAsync: " + character.getX() + ", " + character.getY() + ", " + job.getX() + ", " + job.getY());
-		Log.debug("getPathAsync");
+				//Log.info("getPathAsync: " + character.getX() + ", " + character.getY() + ", " + job.getX() + ", " + job.getY());
+				Log.debug("getPathAsync");
 
-		Vector<Position> path = new Vector<Position>();
+				Vector<Position> path = new Vector<Position>();
 
-		//		  int x = character.getX();
-		//		  int y = character.getY();
-		//		  while (x != job.getX() || y != job.getY()) {
-		//			  x += (x == job.getX() ? 0 : x > job.getX() ? -1 : 1);
-		//			  y += (y == job.getY() ? 0 : y > job.getY() ? -1 : 1);
-		//			  path.add(new Position(x, y));
-		//		  }
-		//		  
-		//		  character.onPathComplete(path, job);
+				//		  int x = character.getX();
+				//		  int y = character.getY();
+				//		  while (x != job.getX() || y != job.getY()) {
+				//			  x += (x == job.getX() ? 0 : x > job.getX() ? -1 : 1);
+				//			  y += (y == job.getY() ? 0 : y > job.getY() ? -1 : 1);
+				//			  path.add(new Position(x, y));
+				//		  }
+				//		  
+				//		  character.onPathComplete(path, job);
 
-		long sum = getSum(character.getPosX(), character.getPosY(), job.getX(), job.getY());
+				long sum = getSum(character.getPosX(), character.getPosY(), job.getX(), job.getY());
 
-		PathFinder finder = new AStarPathFinder(WorldMap.getInstance(), 500, true);
-		Path rawpath = finder.findPath(new Mover() {}, character.getPosX(), character.getPosY(), job.getX(), job.getY());
-		if (rawpath != null) {
-			for (int i = 0; i < rawpath.getLength(); i++) {
-				path.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
-			}
-			_pool.put(sum, new OldPath(path));
-
-			Vector<DebugPos> debugPath = WorldMap.getInstance().getDebug();
-			if (debugPath != null) {
-				for (DebugPos pos: debugPath) {
-					if (inCompletePath(path, pos.x, pos.y)) {
-						pos.inPath = true;
+				PathFinder finder = new AStarPathFinder(WorldMap.getInstance(), 500, true);
+				Path rawpath = finder.findPath(new Mover() {}, character.getPosX(), character.getPosY(), job.getX(), job.getY());
+				if (rawpath != null) {
+					for (int i = 0; i < rawpath.getLength(); i++) {
+						path.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
 					}
+					_pool.put(sum, new OldPath(path));
+
+					Vector<DebugPos> debugPath = WorldMap.getInstance().getDebug();
+					if (debugPath != null) {
+						for (DebugPos pos: debugPath) {
+							if (inCompletePath(path, pos.x, pos.y)) {
+								pos.inPath = true;
+							}
+						}
+					}
+
+
+					character.onPathComplete(path, job);
+				} else {
+					_pool.put(sum, new OldPath(null));
+					job.setBlocked(Game.getFrame());
+					character.onPathFailed(job);
 				}
 			}
-
-
-			character.onPathComplete(path, job);
-		} else {
-			_pool.put(sum, new OldPath(null));
-			job.setBlocked(Game.getFrame());
-			character.onPathFailed(job);
-		}
-
-
-
-		//		  _poolenqueue([this, character, job] {
-			//
-		//			  vector<Position*> path = thisgetPath(character, job);
-		//
-		//			  // Info() << "getPathAsync: " << path.size();
-		//			  // Position* pos = path.at(pos);
-		//
-		//			  if (path.size() > 0) {
-		//				characteronPathComplete(path, job);
-		//			  } else {
-		//				characteronPathFailed(job);
-		//			  }
-		//
-		//			});
-		//		}
-
+		});
 	}
 
 	private boolean inCompletePath(Vector<Position> path, int x, int y) {

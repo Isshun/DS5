@@ -60,17 +60,22 @@ public class RoomManager implements ISavable {
 		// Set room for each area
 		for (int x = fromX; x <= toX; x++) {
 			for (int y = fromY; y <= toY; y++) {
-				StructureItem struct = WorldMap.getInstance().getStructure(x, y);
-				if (struct == null || struct.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-					_rooms[x][y] = room;
-					WorldRenderer.getInstance().invalidate(x, y);
+				if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
+					StructureItem struct = WorldMap.getInstance().getStructure(x, y);
+					if (struct == null || struct.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+						_rooms[x][y] = room;
+						WorldRenderer.getInstance().invalidate(x, y);
+					}
 				}
 			}
 		}
 	}
 
 	public Room get(int x, int y) {
-		return _rooms[x][y];
+		if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
+			return _rooms[x][y];
+		}
+		return null;
 	}
 
 	public void	save(final String filePath) {

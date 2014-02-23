@@ -592,10 +592,10 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 	@Override
 	public void pathFinderVisited(int x, int y) {
-		DebugPos pos = new DebugPos();
-		pos.x = x;
-		pos.y = y;
-		_debugPath.add(pos);
+//		DebugPos pos = new DebugPos();
+//		pos.x = x;
+//		pos.y = y;
+//		_debugPath.add(pos);
 		//Log.info("visite: " + x + ", " + y);
 	}
 

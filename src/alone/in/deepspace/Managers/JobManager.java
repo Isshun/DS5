@@ -290,7 +290,7 @@ public class JobManager implements ISavable {
 			int y = character.getY();
 			for (Job job: _jobs) {
 				// TODO: restart job after fail
-				if (job.getCharacter() == null && job.getFail() <= 0 && job.getAction() != Action.GATHER) {
+				if ((job.getCharacter() == null || job.getCharacter().getJob() == null) && job.getFail() <= 0 && job.getAction() != Action.GATHER) {
 					int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
 					if (distance < bestDistance || bestDistance == -1) {
 						if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter() == 0) {
@@ -376,10 +376,17 @@ public class JobManager implements ISavable {
 
 	public void	abort(Job job, Abort reason) {
 		Log.debug("Job abort: " + job.getId());
-		_start++;
-		_countFree++;
-		job.setFail(reason, Game.getFrame());
-		job.setCharacter(null);
+
+		if (reason == Job.Abort.INVALIDE) {
+			_jobs.remove(job);
+			_count--;
+			_start--;
+		} else {
+			_start++;
+			_countFree++;
+			job.setFail(reason, Game.getFrame());
+			job.setCharacter(null);
+		}
 	}
 
 	public void	complete(Job job) {

@@ -41,6 +41,7 @@ public class WorldRenderer {
 	private Sprite 					_sprite;
 	private RenderTexture 			_texture;
 	private boolean 				_hasChanged;
+	private int						_pass;
 
 	private Set<Vector2i> 			_changed;
 
@@ -78,11 +79,14 @@ public class WorldRenderer {
 		// Debug() << "Renderer: " << fromX << " to: " << toX;
 
 		Clock display_timer = new Clock();
-		if (_hasChanged || _changed.size() > 0) {
+		if (_pass > 0 || _hasChanged || _changed.size() > 0) {
 			if (_hasChanged) {
 				refreshFloor(render, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 				refreshStructure(render, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 			} else {
+				if (_pass == 0) {
+					_pass = 4;
+				}
 				for (Vector2i vector: _changed) {
 					refreshFloor(render, vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
 				}
@@ -196,6 +200,15 @@ public class WorldRenderer {
 		_lastSpecialY = -1;
 		int offsetWall = (Constant.TILE_SIZE / 2 * 3) - Constant.TILE_SIZE;
 
+		switch (_pass) {
+		case 1: toX /= 2; toY /= 2; break;
+		case 2: fromX = toX / 2; toY /= 2; break;
+		case 3: toX /= 2; fromY = toY / 2; break;
+		case 4: fromX = toX / 2; fromY = toY / 2; break;
+		}
+		
+		_pass--;
+		
 		Sprite sprite = null;
 		for (int j = toY-1; j >= fromY; j--) {
 			for (int i = toX-1; i >= fromX; i--) {
