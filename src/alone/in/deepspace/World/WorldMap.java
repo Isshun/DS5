@@ -183,6 +183,9 @@ public class WorldMap implements ISavable, TileBasedMap {
 		int value = item.gatherMatter(maxValue);
 		int x = item.getX();
 		int y = item.getY();
+		
+		WorldRenderer.getInstance().invalidate(x, y);
+		
 		return value;
 	}
 
@@ -359,13 +362,13 @@ public class WorldMap implements ISavable, TileBasedMap {
 		removeItem(item);
 	}
 
-	BaseItem putItem(BaseItem.Type type, int x, int y, boolean free) {
+	public BaseItem putItem(BaseItem.Type type, int x, int y, boolean isFree) {
 		if (_itemCout + 1 > LIMIT_ITEMS) {
 			Log.error("LIMIT_ITEMS reached");
 			return null;
 		}
 
-		return putItem(type, x, y, free ? 999 : 0);
+		return putItem(type, x, y, isFree ? 999 : 0);
 	}
 
 	public BaseItem putItem(BaseItem.Type type, int x, int y) {
@@ -377,7 +380,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 		return putItem(type, x, y, false);
 	}
 
-	BaseItem putItem(BaseItem.Type type, int x, int y, int matterSupply) {
+	public BaseItem putItem(BaseItem.Type type, int x, int y, int matterSupply) {
 		// Return if out of bound
 		if (x < 0 || y < 0 || x >= _width || y >= _height) {
 			Log.error("put item out of bound, type: "

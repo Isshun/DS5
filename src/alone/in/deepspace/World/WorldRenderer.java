@@ -151,17 +151,35 @@ public class WorldRenderer {
 					StructureItem structure = WorldMap.getInstance().getStructure(i, j);
 					
 					Room room = RoomManager.getInstance().get(i, j);
-					if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_FLOOR) == false) {
+					if (structure != null && structure.roomCanBeSet() == false) {
 						structure = WorldMap.getInstance().getStructure(i, j-1);
 						room = RoomManager.getInstance().get(i, j-1);
 					}
 	
 					if (structure != null) {
-						int roomId = room != null ? room.getType().ordinal() : 0;
-	
-						Sprite sprite = _spriteManager.getFloor(structure, roomId, 0);
-						sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-						_texture.draw(sprite);
+						
+						// Greenhouse
+						if (structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE)) {
+							int index = room != null && room.isType(Room.Type.GARDEN) ? 0 : 2;
+							Sprite sprite = _spriteManager.getGreenHouse(index + (structure.isWorking() ? 1 : 0));
+							sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+							_texture.draw(sprite);
+							
+							WorldRessource ressource = WorldMap.getInstance().getRessource(i, j);
+							if (ressource != null && ressource.getMatterSupply() > 0) {
+								sprite = _spriteManager.getRessource(ressource);
+								sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+								_texture.draw(sprite);
+							}
+						}
+						
+						// Floor
+						else {
+							int roomId = room != null ? room.getType().ordinal() : 0;
+							Sprite sprite = _spriteManager.getFloor(structure, roomId, 0);
+							sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+							_texture.draw(sprite);
+						}
 					}
 					// Ressource
 					else {

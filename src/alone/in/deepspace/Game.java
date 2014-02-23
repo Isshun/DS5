@@ -34,6 +34,8 @@ import alone.in.deepspace.Managers.ResourceManager;
 import alone.in.deepspace.Managers.RoomManager;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.UserInterface.EventManager;
+import alone.in.deepspace.UserInterface.MenuBase;
+import alone.in.deepspace.UserInterface.MenuSave;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
@@ -65,7 +67,8 @@ public class Game implements ISavable {
 	private Time 					_last_update;
 	private FoeManager 				_FoeManager;
 	private DynamicObjectManager	_dynamicObjectManager;
-	private int _lastLeftClick;
+	private int 					_lastLeftClick;
+	private MenuBase 				_menu;
 	
 	public static int getFrame() { return _frame; }
 
@@ -204,6 +207,10 @@ public class Game implements ISavable {
 	  _FoeManager.checkSurroundings();
 
 	  _update++;
+	  
+	  if (_update % 600 == 0) {
+		  ResourceManager.getInstance().update();
+	  }
 	}
 
 	void	refresh(double animProgress) throws IOException {
@@ -226,6 +233,10 @@ public class Game implements ISavable {
 	  // User interface
 	  _ui.refresh(_frame, _update, _renderTime);
 
+	  if (_menu != null) {
+		  _menu.refresh(_app);
+	  }
+	  
 	  //TODO
 	  //srand(_seed + _frame++);
 	}
@@ -299,7 +310,29 @@ public class Game implements ISavable {
 				if (event.type == Event.Type.KEY_RELEASED) {
 
 					if (event.asKeyEvent().control && event.asKeyEvent().key == Key.S) {
-						save("saves/2.sav");
+						//save("saves/2.sav");
+						_menu = new MenuSave(this);
+						continue;
+					}
+					
+					if (event.asKeyEvent().key == Key.DOWN) {
+						if (_menu != null) {
+							_menu.onKeyDown();
+						}
+						continue;
+					}
+					
+					if (event.asKeyEvent().key == Key.UP) {
+						if (_menu != null) {
+							_menu.onKeyUp();
+						}
+						continue;
+					}
+					
+					if (event.asKeyEvent().key == Key.RETURN) {
+						if (_menu != null) {
+							_menu.onKeyEnter();
+						}
 						continue;
 					}
 					
@@ -397,6 +430,9 @@ public class Game implements ISavable {
 						if ("SPICE".equals(values[0])) {
 							ResourceManager.getInstance().setSpice(Integer.valueOf(values[1]));
 						}
+						if ("WATER".equals(values[0])) {
+							ResourceManager.getInstance().setWater(Integer.valueOf(values[1]));
+						}
 					}
 				}
 
@@ -411,6 +447,8 @@ public class Game implements ISavable {
 		}
 
 	  WorldMap.getInstance().load(filePath);
+	  ResourceManager.getInstance().refreshWater();
+	  
 	  CharacterManager.getInstance().load(filePath);
 	  RoomManager.getInstance().load(filePath);
 	  JobManager.getInstance().load(filePath);
@@ -423,6 +461,7 @@ public class Game implements ISavable {
 			bw.write("BEGIN GAME\n");
 			bw.write("MATTER\t" + ResourceManager.getInstance().getMatter() + "\n");
 			bw.write("SPICE\t" + ResourceManager.getInstance().getSpice() + "\n");
+			bw.write("WATER\t" + ResourceManager.getInstance().getWater() + "\n");
 			bw.write("END GAME\n");
 		} catch (FileNotFoundException e) {
 			Log.error("Unable to open save file: " + filePath);

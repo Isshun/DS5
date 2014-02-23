@@ -62,12 +62,16 @@ public class RoomManager implements ISavable {
 			for (int y = fromY; y <= toY; y++) {
 				if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
 					StructureItem struct = WorldMap.getInstance().getStructure(x, y);
-					if (struct == null || struct.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+					if (struct == null || struct.roomCanBeSet()) {
 						_rooms[x][y] = room;
 						WorldRenderer.getInstance().invalidate(x, y);
 					}
 				}
 			}
+		}
+		
+		if (type == Room.Type.GARDEN) {
+			ResourceManager.getInstance().refreshWater();
 		}
 	}
 

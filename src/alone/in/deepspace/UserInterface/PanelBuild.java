@@ -133,6 +133,7 @@ public class PanelBuild extends UserSubInterface {
 			drawIcon(0, 4, BaseItem.Type.STRUCTURE_HULL.ordinal());
 			drawIcon(0, 5, BaseItem.Type.STRUCTURE_WALL.ordinal());
 			drawIcon(0, 6, BaseItem.Type.STRUCTURE_WINDOW.ordinal());
+			drawIcon(0, 7, BaseItem.Type.STRUCTURE_GREENHOUSE.ordinal());
 
 			// Quarter
 			drawIcon(250, 0, -3);

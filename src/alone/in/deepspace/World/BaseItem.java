@@ -9,6 +9,7 @@ public class BaseItem {
 		new ItemInfo(Type.STRUCTURE_HULL,							"HULL", true,	1, 1, 1, 0, 0),
 		new ItemInfo(Type.STRUCTURE_WALL,							"WALL", true,	1, 1, 1, 0, 0),
 		new ItemInfo(Type.STRUCTURE_FLOOR,							"FLOOR", false,	1, 1, 1, 0, 0),
+		new ItemInfo(Type.STRUCTURE_GREENHOUSE,						"GREENHOUSE", false,	1, 1, 1, 0, 0),
 		new ItemInfo(Type.STRUCTURE_DOOR,							"DOOR", false,	1, 1, 1, 0, 0),
 		new ItemInfo(Type.STRUCTURE_WINDOW,							"WINDOW", true,	1, 1, 1, 0, 0),
 		//		new ItemInfo(Type.TRANSPORTATION_TRANSPORTER_SYSTEMS,		"SYSTEMS", false,	1, 1, 10, 10, UserInterfaceMenu.CODE_ZONE_OPERATION),
@@ -47,6 +48,7 @@ public class BaseItem {
 		STRUCTURE_FLOOR,
 		STRUCTURE_WINDOW,
 		STRUCTURE_DOOR,
+		STRUCTURE_GREENHOUSE,
 		STRUCTURE_STOP,
 		ITEM_START,
 		SICKBAY_BIOBED,
@@ -109,9 +111,10 @@ public class BaseItem {
 	private int 			_matter;
 	private int 			_power;
 	private int 			_powerSupply;
-	private int 	_mode;
-	private int 	_nbMode;
-	private int 	_maxId;
+	private int 		_mode;
+	private int 		_nbMode;
+	private int 		_maxId;
+	private boolean		_isWorking;
 
 	public BaseItem(Type type) {
 		init(type, ++_maxId);
@@ -189,6 +192,7 @@ public class BaseItem {
 	public void 		setPowerSupply(int i) { _powerSupply = i; }
 	public void 		setSolid(boolean isSolid) { _isSolid = isSolid; }
 	public void 		setMode(int mode) { _mode = mode; }
+	public void 		setWorking(boolean working) { _isWorking = working; }
 
 	// Gets
 	public int			getMatterSupply() { return _matterSupply; }
@@ -205,7 +209,8 @@ public class BaseItem {
 	public int 			getMode() { return _mode; }
 
 	// Boolean
-	public boolean	isSolid() { return _isSolid; }
+	public boolean		isSolid() { return _isSolid; }
+	public boolean		isWorking() { return _isWorking; }
 
 	public static String getItemName(Type type) {
 		switch(type) {
@@ -216,6 +221,7 @@ public class BaseItem {
 		case STRUCTURE_FLOOR: return "floor";
 		case STRUCTURE_WINDOW: return "window";
 		case STRUCTURE_DOOR: return "door";
+		case STRUCTURE_GREENHOUSE: return "greenhouse";
 		case SICKBAY_BIOBED: return "biobed";
 		case SICKBAY_LAB: return "lab";
 		case SICKBAY_EMERGENCY_SHELTERS: return "emergency shelters";
@@ -273,7 +279,7 @@ public class BaseItem {
 	public boolean		isWalkable() { return _type != Type.STRUCTURE_WALL; }
 
 	public static boolean isStructure(Type type) {
-		return type == Type.STRUCTURE_START || type == Type.STRUCTURE_WALL || type == Type.STRUCTURE_HULL || type == Type.STRUCTURE_FLOOR || type == Type.STRUCTURE_WINDOW || type == Type.STRUCTURE_DOOR;
+		return type.ordinal() > Type.STRUCTURE_START.ordinal() && type.ordinal() < Type.STRUCTURE_STOP.ordinal();
 	}
 
 	public int getMatter() {
@@ -293,52 +299,53 @@ public class BaseItem {
 		if (type == 5) { return Type.STRUCTURE_FLOOR; }
 		if (type == 6) { return Type.STRUCTURE_WINDOW; }
 		if (type == 7) { return Type.STRUCTURE_DOOR; }
-		if (type == 8) { return Type.STRUCTURE_STOP; }
-		if (type == 9) { return Type.ITEM_START; }
-		if (type == 10) { return Type.SICKBAY_BIOBED; }
-		if (type == 11) { return Type.SICKBAY_LAB; }
-		if (type == 12) { return Type.SICKBAY_EMERGENCY_SHELTERS; }
-		if (type == 13) { return Type.ENGINE_CONTROL_CENTER; }
-		if (type == 14) { return Type.ENGINE_REACTION_CHAMBER; }
-		if (type == 15) { return Type.HOLODECK_GRID; }
-		if (type == 16) { return Type.ARBORETUM_TREE_1; }
-		if (type == 17) { return Type.ARBORETUM_TREE_2; }
-		if (type == 18) { return Type.ARBORETUM_TREE_3; }
-		if (type == 19) { return Type.ARBORETUM_TREE_4; }
-		if (type == 20) { return Type.ARBORETUM_TREE_5; }
-		if (type == 21) { return Type.ARBORETUM_TREE_6; }
-		if (type == 22) { return Type.ARBORETUM_TREE_7; }
-		if (type == 23) { return Type.ARBORETUM_TREE_8; }
-		if (type == 24) { return Type.ARBORETUM_TREE_9; }
-		if (type == 25) { return Type.GYMNASIUM_STUFF_1; }
-		if (type == 26) { return Type.GYMNASIUM_STUFF_2; }
-		if (type == 27) { return Type.GYMNASIUM_STUFF_3; }
-		if (type == 28) { return Type.GYMNASIUM_STUFF_4; }
-		if (type == 29) { return Type.GYMNASIUM_STUFF_5; }
-		if (type == 30) { return Type.SCHOOL_DESK; }
-		if (type == 31) { return Type.BAR_PUB; }
-		if (type == 32) { return Type.AMPHITHEATER_STAGE; }
-		if (type == 33) { return Type.QUARTER_BED; }
-		if (type == 34) { return Type.QUARTER_DESK; }
-		if (type == 35) { return Type.QUARTER_CHAIR; }
-		if (type == 36) { return Type.QUARTER_WARDROBE; }
-		if (type == 37) { return Type.QUARTER_CHEST; }
-		if (type == 38) { return Type.QUARTER_BEDSIDE_TABLE; }
-		if (type == 39) { return Type.ENVIRONMENT_O2_RECYCLER; }
-		if (type == 40) { return Type.ENVIRONMENT_TEMPERATURE_REGULATION; }
-		if (type == 41) { return Type.TRANSPORTATION_SHUTTLECRAFT; }
-		if (type == 42) { return Type.TRANSPORTATION_CARGO; }
-		if (type == 43) { return Type.TRANSPORTATION_CONTAINER; }
-		if (type == 44) { return Type.TRANSPORTATION_TRANSPORTER_SYSTEMS; }
-		if (type == 45) { return Type.TACTICAL_PHOTON_TORPEDO; }
-		if (type == 46) { return Type.TACTICAL_PHASER; }
-		if (type == 47) { return Type.TACTICAL_SHIELD_GRID; }
-		if (type == 48) { return Type.TACTICAL_CLOAKING_DEVICE; }
-		if (type == 49) { return Type.SCIENCE_HYDROPONICS; }
-		if (type == 50) { return Type.RES_1; }
-		if (type == 51) { return Type.SPECIAL_ZYGOTE; }
-		if (type == 52) { return Type.SPECIAL_ROBOT_MAKER; }
-		if (type == 53) { return Type.ITEM_STOP; }
+		if (type == 8) { return Type.STRUCTURE_GREENHOUSE; }
+		if (type == 9) { return Type.STRUCTURE_STOP; }
+		if (type == 10) { return Type.ITEM_START; }
+		if (type == 11) { return Type.SICKBAY_BIOBED; }
+		if (type == 12) { return Type.SICKBAY_LAB; }
+		if (type == 13) { return Type.SICKBAY_EMERGENCY_SHELTERS; }
+		if (type == 14) { return Type.ENGINE_CONTROL_CENTER; }
+		if (type == 15) { return Type.ENGINE_REACTION_CHAMBER; }
+		if (type == 16) { return Type.HOLODECK_GRID; }
+		if (type == 17) { return Type.ARBORETUM_TREE_1; }
+		if (type == 18) { return Type.ARBORETUM_TREE_2; }
+		if (type == 19) { return Type.ARBORETUM_TREE_3; }
+		if (type == 20) { return Type.ARBORETUM_TREE_4; }
+		if (type == 21) { return Type.ARBORETUM_TREE_5; }
+		if (type == 22) { return Type.ARBORETUM_TREE_6; }
+		if (type == 23) { return Type.ARBORETUM_TREE_7; }
+		if (type == 24) { return Type.ARBORETUM_TREE_8; }
+		if (type == 25) { return Type.ARBORETUM_TREE_9; }
+		if (type == 26) { return Type.GYMNASIUM_STUFF_1; }
+		if (type == 27) { return Type.GYMNASIUM_STUFF_2; }
+		if (type == 28) { return Type.GYMNASIUM_STUFF_3; }
+		if (type == 29) { return Type.GYMNASIUM_STUFF_4; }
+		if (type == 30) { return Type.GYMNASIUM_STUFF_5; }
+		if (type == 31) { return Type.SCHOOL_DESK; }
+		if (type == 32) { return Type.BAR_PUB; }
+		if (type == 33) { return Type.AMPHITHEATER_STAGE; }
+		if (type == 34) { return Type.QUARTER_BED; }
+		if (type == 35) { return Type.QUARTER_DESK; }
+		if (type == 36) { return Type.QUARTER_CHAIR; }
+		if (type == 37) { return Type.QUARTER_WARDROBE; }
+		if (type == 38) { return Type.QUARTER_CHEST; }
+		if (type == 39) { return Type.QUARTER_BEDSIDE_TABLE; }
+		if (type == 40) { return Type.ENVIRONMENT_O2_RECYCLER; }
+		if (type == 41) { return Type.ENVIRONMENT_TEMPERATURE_REGULATION; }
+		if (type == 42) { return Type.TRANSPORTATION_SHUTTLECRAFT; }
+		if (type == 43) { return Type.TRANSPORTATION_CARGO; }
+		if (type == 44) { return Type.TRANSPORTATION_CONTAINER; }
+		if (type == 45) { return Type.TRANSPORTATION_TRANSPORTER_SYSTEMS; }
+		if (type == 46) { return Type.TACTICAL_PHOTON_TORPEDO; }
+		if (type == 47) { return Type.TACTICAL_PHASER; }
+		if (type == 48) { return Type.TACTICAL_SHIELD_GRID; }
+		if (type == 49) { return Type.TACTICAL_CLOAKING_DEVICE; }
+		if (type == 50) { return Type.SCIENCE_HYDROPONICS; }
+		if (type == 51) { return Type.RES_1; }
+		if (type == 52) { return Type.SPECIAL_ZYGOTE; }
+		if (type == 53) { return Type.SPECIAL_ROBOT_MAKER; }
+		if (type == 54) { return Type.ITEM_STOP; }
 		return Type.NONE;
 	}
 

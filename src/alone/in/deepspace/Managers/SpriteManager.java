@@ -27,6 +27,7 @@ public class SpriteManager {
 			new SpriteResource(BaseItem.Type.STRUCTURE_WALL,						0, 4, 5),
 			// new SpriteResource(BaseItem.Type.STRUCTURE_WALL_BELLOW,				1, 4, 5),
 			new SpriteResource(BaseItem.Type.STRUCTURE_FLOOR,						7, 7, 0),
+			new SpriteResource(BaseItem.Type.STRUCTURE_GREENHOUSE,					7, 7, 0),
 			new SpriteResource(BaseItem.Type.STRUCTURE_DOOR,						2, 2, 0),
 			new SpriteResource(BaseItem.Type.STRUCTURE_WINDOW,					2, 3, 0),
 			new SpriteResource(BaseItem.Type.TRANSPORTATION_TRANSPORTER_SYSTEMS,	1, 8, 0),
@@ -218,6 +219,15 @@ public class SpriteManager {
 		}
 
 		return null;
+	}
+
+	public Sprite getGreenHouse(int index) {
+		int texture = 4;
+//		int offset = _random[index % 50];
+		int x = (int) (index * (Constant.TILE_SIZE + 2) + 1);
+		int y = (int) (10 * (Constant.TILE_SIZE + 2) + 1);
+
+		return getSprite(texture, x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
 	}
 
 	public Sprite getExterior(int index) {

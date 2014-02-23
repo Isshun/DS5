@@ -83,7 +83,7 @@ public class PanelDebug extends UserSubInterface {
 		lbReLaunchJob.setPosition(new Vector2f(20, 100));
 		addView(lbReLaunchJob);
 
-		// Re-launch jobs 
+		// Clear jobs 
 		UIText lbClearJob = new UIText(new Vector2f(200, 32));
 		lbClearJob.setOnClickListener(new OnClickListener() {
 			@Override
@@ -97,7 +97,7 @@ public class PanelDebug extends UserSubInterface {
 		lbClearJob.setPosition(new Vector2f(20, 140));
 		addView(lbClearJob);
 
-		// Re-launch jobs 
+		// Add seed 
 		UIText lbAddSeed = new UIText(new Vector2f(200, 32));
 		lbAddSeed.setOnClickListener(new OnClickListener() {
 			@Override
@@ -122,6 +122,34 @@ public class PanelDebug extends UserSubInterface {
 		lbAddSeed.setPosition(new Vector2f(20, 180));
 		addView(lbAddSeed);
 
+		// Add water 
+		UIText lbAddWater = new UIText(new Vector2f(200, 32));
+		lbAddWater.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(UIView view) {
+				ResourceManager.getInstance().addWater(20);
+			}
+		});
+		lbAddWater.setString("Add water");
+		lbAddWater.setCharacterSize(20);
+		lbAddWater.setColor(Color.WHITE);
+		lbAddWater.setPosition(new Vector2f(20, 220));
+		addView(lbAddWater);
+
+		// Kill everyone 
+		UIText lbKillEveryone = new UIText(new Vector2f(200, 32));
+		lbKillEveryone.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(UIView view) {
+				CharacterManager.getInstance().clear();
+				JobManager.getInstance().clear();
+			}
+		});
+		lbKillEveryone.setString("Kill everyone");
+		lbKillEveryone.setCharacterSize(20);
+		lbKillEveryone.setColor(Color.WHITE);
+		lbKillEveryone.setPosition(new Vector2f(20, 260));
+		addView(lbKillEveryone);
 	}
 
 //	void  addDebug(final String key, String value) {

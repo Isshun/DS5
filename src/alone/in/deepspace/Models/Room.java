@@ -2,6 +2,7 @@ package alone.in.deepspace.Models;
 import java.util.ArrayList;
 import java.util.List;
 
+import alone.in.deepspace.Models.Room.Type;
 import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.WorldArea;
 import alone.in.deepspace.World.WorldMap;
@@ -15,7 +16,8 @@ public class Room {
 		ENGINEERING,
 		PUB,
 		HOLODECK,
-		STORAGE
+		STORAGE,
+		GARDEN
 	}
 
 	static int _roomCount = 0;
@@ -189,6 +191,7 @@ public class Room {
 		case 4: return Type.PUB;
 		case 5: return Type.HOLODECK;
 		case 6: return Type.STORAGE;
+		case 7: return Type.GARDEN;
 		};
 		return null;
 	}
@@ -201,6 +204,7 @@ public class Room {
 		case PUB: 			return "Pub";
 		case HOLODECK: 		return "Holodeck";
 		case STORAGE: 		return "Storage";
+		case GARDEN: 		return "Garden";
 		default: 			return "";
 		}
 	}
@@ -215,5 +219,7 @@ public class Room {
 
 	public int getX() { return _x; }
 	public int getY() { return _y; }
+
+	public boolean isType(Type type) { return _type == type; }
 
 }
