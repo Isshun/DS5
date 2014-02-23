@@ -269,7 +269,7 @@ public class PathManager {
 		WorldMap.getInstance().startDebug(character.getPosX(), character.getPosY());
 		WorldMap.getInstance().stopDebug(job.getX(), job.getY());
 
-		Log.info("getPathAsync: " + character.getX() + ", " + character.getY() + ", " + job.getX() + ", " + job.getY());
+		//Log.info("getPathAsync: " + character.getX() + ", " + character.getY() + ", " + job.getX() + ", " + job.getY());
 		Log.debug("getPathAsync");
 
 		Vector<Position> path = new Vector<Position>();

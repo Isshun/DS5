@@ -5,6 +5,7 @@ import alone.in.deepspace.Managers.ResourceManager;
 import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Models.Movable;
 import alone.in.deepspace.UserInterface.UserInterface;
+import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.StructureItem;
@@ -135,6 +136,8 @@ public class Character extends Movable {
 	  private Profession		_profession;
 	  private boolean			_selected;
 
+	private int _carry;
+
 //	  private int				_messages[32];
 
 	  public Character(int id, int x, int y, String name) {
@@ -182,6 +185,8 @@ public class Character extends Movable {
 //	  int[]				getMessages() { return _messages; }
 	public boolean			getSelected() { return _selected; }
 	public int				getProfessionScore(Profession.Type professionEngineer) { return 42; }
+
+	public boolean			isFull() { return _carry == Constant.CHARACTER_CARRY_CAPACITY; }
 
 	public void	setJob(Job job) {
 		Log.debug("set new job");
@@ -463,6 +468,13 @@ void		actionUse() {
   _job = null;
 }
 
+	private void		actionStore() {
+		WorldMap.getInstance().storeItem(BaseItem.Type.RES_1, _job.getX(), _job.getY());
+		JobManager.getInstance().complete(_job);
+		_job = null;
+		_carry = 0;
+	}
+
 	private void		actionBuild() {
 	  // Wrong call
 	  if (_job == null || _job.getItem() == null) {
@@ -521,7 +533,15 @@ void		actionUse() {
 			_job = null;
 			return;
 		}
-	
+
+		// Character is full: cancel current job
+		if (_carry + 1 >= Constant.CHARACTER_CARRY_CAPACITY && _job != null) {
+			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
+			_job = null;
+			return;
+		}
+
+		
 		int value = WorldMap.getInstance().gather(_job.getItem(), getProfessionScore(Profession.Type.NONE));
 	
 		Log.debug("gather: " + value);
@@ -532,6 +552,8 @@ void		actionUse() {
 			JobManager.getInstance().complete(_job);
 			_job = null;
 		}
+
+		_carry += value;
 	}
 	
 	private void		actionDestroy() {
@@ -548,26 +570,20 @@ void		actionUse() {
 
 		JobManager.Action action = _job.getAction();
   
-		if (action == JobManager.Action.MOVE) {
-			JobManager.getInstance().complete(_job);
-			_job = null;
+		switch (action) {
+		case MOVE: actionMove(); break;
+		case USE: actionUse(); break;
+		case GATHER: actionGather(); break;
+		case DESTROY: actionDestroy(); break;
+		case BUILD: actionBuild(); break;
+		case STORE: actionStore(); break;
+		case NONE: break;
 		}
+	}
 
-		if (action == JobManager.Action.USE) {
-			actionUse();
-		}
-
-		if (action == JobManager.Action.GATHER) {
-			actionGather();
-		}
-	
-		if (action == JobManager.Action.DESTROY) {
-			actionDestroy();
-		}
-
-		if (action == JobManager.Action.BUILD) {
-			actionBuild();
-		}
+	private void actionMove() {
+		JobManager.getInstance().complete(_job);
+		_job = null;
 	}
 
 	public boolean isSleeping() {

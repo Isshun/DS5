@@ -20,7 +20,7 @@ public class PanelRoom extends UserSubInterface {
 	private static final Color COLOR_YELLOW = new Color(236, 201, 37);
 	private static final int 		FRAME_WIDTH = 380;
 	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
-	private static final String[]	TEXTS = {"Remove", "Quarter", "Sickbay", "Pub", "Holodeck"};
+	private static final String[]	TEXTS = {"Remove", "Quarter", "Sickbay", "Engineering", "Pub", "Holodeck", "Store"};
 	
 	private Type 					_selected;
 	private Map<Integer, UIIcon> 	_icons;
@@ -63,6 +63,7 @@ public class PanelRoom extends UserSubInterface {
 					case 3: _selected = Room.Type.ENGINEERING; break;
 					case 4: _selected = Room.Type.PUB; break;
 					case 5: _selected = Room.Type.HOLODECK; break;
+					case 6: _selected = Room.Type.STORAGE; break;
 					}
 					((UIIcon) view).setBackground(Color.RED);
 				}

@@ -8,7 +8,7 @@ import alone.in.deepspace.World.BaseItem;
 public class Job {
 
 	public static enum Abort {
-		NO_MATTER, INTERRUPTE, BLOCKED
+		NO_MATTER, INTERRUPTE, BLOCKED, NO_LEFT_CARRY
 	};
 
 	private int 				_id;

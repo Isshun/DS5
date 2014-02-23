@@ -10,13 +10,16 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Character.CharacterManager;
 import alone.in.deepspace.Managers.JobManager;
+import alone.in.deepspace.Managers.RoomManager;
 import alone.in.deepspace.Managers.SpriteManager;
+import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.UserInterface.Utils.OnClickListener;
 import alone.in.deepspace.UserInterface.Utils.UIText;
 import alone.in.deepspace.UserInterface.Utils.UIView;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.ObjectPool;
 import alone.in.deepspace.World.BaseItem;
+import alone.in.deepspace.World.StructureItem;
 import alone.in.deepspace.World.UserItem;
 import alone.in.deepspace.World.WorldArea;
 
@@ -31,6 +34,10 @@ public class PanelInfo extends UserSubInterface {
 	private UIText 					_primaryName;
 	private UIText 					_itemName;
 	private PanelInfoItemOptions	_itemOptions;
+	private UIText _itemMatter;
+	private StructureItem 	_structure;
+	private PanelInfoItemOptions _structureOptions;
+	private UIText _lbRoom;
 
 	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;
 
@@ -50,12 +57,22 @@ public class PanelInfo extends UserSubInterface {
 		  _primaryName.setCharacterSize(22);
 		  addView(_primaryName);
 		  
+		  _lbRoom = new UIText(null);
+		  _lbRoom.setPosition(200, 40);
+		  _lbRoom.setCharacterSize(22);
+		  addView(_lbRoom);
+		  
 		  int itemOffset = 200;
 		  
 		  _itemName = new UIText(null);
 		  _itemName.setPosition(10, itemOffset + 40);
 		  _itemName.setCharacterSize(22);
 		  addView(_itemName);
+		  
+		  _itemMatter = new UIText(null);
+		  _itemMatter.setPosition(10, itemOffset + 60);
+		  _itemMatter.setCharacterSize(14);
+		  addView(_itemMatter);
 		  
 		  UIText sep = new UIText(null);
 		  sep.setPosition(0, 200);
@@ -87,10 +104,57 @@ public class PanelInfo extends UserSubInterface {
 		  _area = area;
 		  
 		  if (area != null) {
+			  Room room = RoomManager.getInstance().get(area.getX(), area.getY());
+			  _lbRoom.setString(room != null ? room.getName() : "");
 			  setItem(area.getItem());
-			  _primaryName.setString(area.getName());
+			  if (area.getStructure() != null) {
+				  setStructure(area.getStructure());
+			  } else {
+				  _primaryName.setString(area.getName());
+			  }
 		  } else {
 			  setItem(null);
+		  }
+	  }
+	  
+	  private void  setStructure(final StructureItem structure) {
+		  _structure = structure;
+		  
+		  if (_structureOptions != null) {
+			  List<UIText> texts = _structureOptions.getOptions();
+			  for (UIText text: texts) {
+				  text.setOnClickListener(null);
+				  removeView(text);
+			  }
+		  }
+
+		  if (structure != null) {
+			  _primaryName.setString(structure.getName());
+			  
+			  if (structure.isType(BaseItem.Type.STRUCTURE_DOOR)) {
+				  _structureOptions = new PanelInfoItemOptions(20, 100);
+				  addView(_structureOptions.add("Automatic opening", new OnClickListener() {
+					  @Override
+					  public void onClick(UIView view) {
+						  structure.setMode(0);
+						  structure.setSolid(false);
+					  }
+				  }));
+				  addView(_structureOptions.add("Still open", new OnClickListener() {
+					  @Override
+					  public void onClick(UIView view) {
+						  structure.setMode(2);
+						  structure.setSolid(false);
+					  }
+				  }));
+				  addView(_structureOptions.add("Locked", new OnClickListener() {
+					  @Override
+					  public void onClick(UIView view) {
+						  structure.setMode(1);
+						  structure.setSolid(true);
+					  }
+				  }));
+			  }
 		  }
 	  }
 	  
@@ -107,11 +171,13 @@ public class PanelInfo extends UserSubInterface {
 		  
 		  if (item == null) {
 			  _itemName.setString("");
+			  _itemMatter.setString("");
 			  return;
 		  }
 
 		  // Configure new item
 		  _itemName.setString(item.getName() != null ? item.getName() : "?");
+		  _itemMatter.setString(String.valueOf(item.getMatterSupply()));
 		  _itemOptions = new PanelInfoItemOptions(20, 280);
 		  addView(_itemOptions.add("Remove", new OnClickListener() {
 			  @Override

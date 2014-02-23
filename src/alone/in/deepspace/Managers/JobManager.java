@@ -16,6 +16,7 @@ import alone.in.deepspace.Character.CharacterNeeds;
 import alone.in.deepspace.Engine.ISavable;
 import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Models.Job.Abort;
+import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.StructureItem;
@@ -105,7 +106,13 @@ public class JobManager implements ISavable {
 								job.setItem(structure);
 							}
 						}
-						addJob(job);
+
+						// Not restart already completed jobs
+						if (job.getAction() == Action.BUILD && job.getItem() != null && job.getItem().isComplete()) {
+							Log.warning("job already complete, abort");
+						} else {
+							addJob(job);
+						}
 					}
 				}
 
@@ -159,7 +166,12 @@ public class JobManager implements ISavable {
 			Log.error("JobManager: build on null item");
 			return null;
 		}
-
+		
+		if (item.isComplete()) {
+			Log.error("Build item: already complete, nothing to do");
+			return null;
+		}
+		
 		Job job = new Job(++_id, item.getX(), item.getY());
 		job.setAction(JobManager.Action.BUILD);
 		job.setItemType(item.getType());
@@ -212,17 +224,21 @@ public class JobManager implements ISavable {
 
 		// Structure
 		if (BaseItem.isStructure(type)) {
-			// if (WorldMap.getInstance().getArea(x, y) == null) {
+			BaseItem current = WorldMap.getInstance().getStructure(x, y);
+			if (current != null && current.isType(type)) {
+				Log.error("Build structure: already exist on this area");
+				return null;
+			}
 			item = WorldMap.getInstance().putItem(type, x, y);
-			// } else {
-			//   Error() + "JobManager: add build on non null area";
-			//   return null;
-			// }
 		}
 
 		// Item
 		else if (BaseItem.isItem(type)) {
-			if (WorldMap.getInstance().getItem(x, y) != null) {
+			BaseItem current = WorldMap.getInstance().getItem(x, y);
+			if (current != null && current.isType(type)) {
+				Log.error("Build item: already exist on this area");
+				return null;
+			} else if (current != null) {
 				Log.error("JobManager: add build on non null item");
 				return null;
 			} else if (WorldMap.getInstance().getStructure(x, y) == null
@@ -255,6 +271,19 @@ public class JobManager implements ISavable {
 		}
 
 		int bestDistance = -1;
+		
+		// Character is full: go back to storage area
+		if (character.isFull()) {
+			Room room = RoomManager.getInstance().getNearFreeStorage(character.getPosX(), character.getPosY());
+			if (room != null) {
+				Job job = new Job(++_id, room.getX(), room.getY());
+				job.setAction(JobManager.Action.STORE);
+				job.setCharacterRequire(character);
+				addJob(job);
+				_countFree--;
+				return job;
+			}
+		}
 
 		{
 			int x = character.getX();
@@ -431,6 +460,11 @@ public class JobManager implements ISavable {
 		job.setItemType(item.getType());
 		job.setItem(item);
 		addJob(job);
+	}
+
+	public void askStoreCarry() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

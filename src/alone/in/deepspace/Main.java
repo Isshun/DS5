@@ -2,6 +2,7 @@ package alone.in.deepspace;
 import java.io.IOException;
 
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.window.VideoMode;
 
 import alone.in.deepspace.Engine.MainRenderer;
@@ -27,6 +28,8 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (TextureCreationException e) {
 			e.printStackTrace();
 		}
 		

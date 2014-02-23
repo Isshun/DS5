@@ -1,5 +1,7 @@
 package alone.in.deepspace.World;
 
+import alone.in.deepspace.World.BaseItem.Type;
+
 
 public class WorldRessource extends BaseItem {
 	private int		_type;
@@ -7,6 +9,10 @@ public class WorldRessource extends BaseItem {
 
 	public WorldRessource(Type type, int id) {
 		super(type, id);
+	}
+
+	public WorldRessource(Type type) {
+		super(type);
 	}
 
 	public void addValue(int value) {_value += value;}

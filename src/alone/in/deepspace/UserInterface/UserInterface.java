@@ -11,12 +11,14 @@ import org.jsfml.window.event.Event;
 import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Character.CharacterManager;
 import alone.in.deepspace.Engine.Viewport;
+import alone.in.deepspace.Managers.RoomManager;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.WorldArea;
 import alone.in.deepspace.World.WorldMap;
+import alone.in.deepspace.World.WorldRenderer;
 
 public class UserInterface {
 
@@ -195,8 +197,8 @@ public class UserInterface {
 	  	_panelBuild.refresh(_app);
 	  	_uiJobs.refresh(_app);
 	  	
-		BaseItem.Type type = _panelBuild.getSelectedItem();
-		if (type != null) {
+		PanelBuild.Mode mode = _panelBuild.getMode();
+		if (mode != PanelBuild.Mode.NONE) {
 		  	if (_keyLeftPressed) {
 				  _interaction.drawCursor(Math.min(_keyPressPosX, _keyMovePosX),
 						Math.min(_keyPressPosY, _keyMovePosY),
@@ -372,18 +374,49 @@ public class UserInterface {
 	}
 
 	public void displayMessage(String msg) {
-		_message = new UIMessage(msg, _mouseRealPosX, _mouseRealPosY);
+//		_message = new UIMessage(msg, _mouseRealPosX, _mouseRealPosY);
+		_message = new UIMessage(msg, 10, 30);
 	}
 
 	public void displayMessage(String msg, int x, int y) {
 		_message = new UIMessage(msg, _viewport.getRealPosX(x) + 20, _viewport.getRealPosY(y) + 12);
 	}
 
+	public void onDoubleClick(int x, int y) {
+		WorldArea area = WorldMap.getInstance().getArea(getRelativePosX(x), getRelativePosY(y));
+		if (area != null) {
+			BaseItem item = area.getItem();
+			BaseItem structure = area.getStructure();
+			
+			if (item != null) {
+				item.nextMode();
+				WorldRenderer.getInstance().invalidate(item.getX(), item.getY());
+			}
+			else if (structure != null) {
+				structure.nextMode();
+				WorldRenderer.getInstance().invalidate(structure.getX(), structure.getY());
+			}
+		}
+	}
+
 	public void onLeftClick(int x, int y) {
 
-		// Check if consume by EventManager
-		if (EventManager.getInstance().leftClick(x, y)) {
-			return;
+		// Remove item
+		if (_panelBuild.getMode() == PanelBuild.Mode.REMOVE_ITEM) {
+			_interaction.removeItem(
+					Math.min(_keyPressPosX, _keyMovePosX),
+					Math.min(_keyPressPosY, _keyMovePosY),
+					Math.max(_keyPressPosX, _keyMovePosX),
+					Math.max(_keyPressPosY, _keyMovePosY));
+		}
+
+		// Remove structure
+		if (_panelBuild.getMode() == PanelBuild.Mode.REMOVE_STRUCTURE) {
+			_interaction.removeStructure(
+					Math.min(_keyPressPosX, _keyMovePosX),
+					Math.min(_keyPressPosY, _keyMovePosY),
+					Math.max(_keyPressPosX, _keyMovePosX),
+					Math.max(_keyPressPosY, _keyMovePosY));
 		}
 		
 		// Build item

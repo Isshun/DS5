@@ -65,10 +65,12 @@ public class PanelJobs extends UserSubInterface {
 		  text.setCharacterSize(12);
 		  int i = 0;
 		  for (Job job: jobs) {
-			if (i < 50) {
-			  String oss = "Job # " + job.getId()
-				  + ": " + JobManager.getActionName(job.getAction())
-				  + " " + BaseItem.getItemName(job.getItemType());
+			if (i < 75) {
+			  String oss = (job.getId()  < 10 ? "#0" : "#") + job.getId()
+				  + " - " + JobManager.getActionName(job.getAction());
+				  if (job.getItem() != null) {
+					  oss += " " + BaseItem.getItemName(job.getItemType());
+				  }
 			  if (job.getCharacter() != null) {
 				  switch (job.getAction()) {
 				  case BUILD: text.setColor(COLOR_BUILD); break;
@@ -77,7 +79,7 @@ public class PanelJobs extends UserSubInterface {
 				  case NONE: text.setColor(Color.BLACK); break;
 				  case USE: text.setColor(Color.BLUE); break;
 				  case DESTROY: text.setColor(COLOR_DESTROY); break;
-				  case STORE: text.setColor(COLOR_STORE);
+				  case STORE: text.setColor(COLOR_STORE); break;
 				  }
 				oss += " (" + job.getCharacter().getName() + ")";
 			  } else if (job.getFail() > 0) {

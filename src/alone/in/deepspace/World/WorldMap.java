@@ -56,7 +56,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 		for (int x = 0; x < _width; x++) {
 			_areas[x] = new WorldArea[_height];
 			for (int y = 0; y < _height; y++) {
-				_areas[x][y] = new WorldArea(BaseItem.Type.NONE, 0);
+				_areas[x][y] = new WorldArea(BaseItem.Type.NONE, x, y);
 			}
 		}
 
@@ -70,7 +70,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 	public void	save(final String filePath) {
 		Log.info("Save worldmap: " + filePath);
 
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
 			bw.write("BEGIN WORLDMAP\n");
 			for (int x = 0; x < _width; x++) {
 				for (int y = 0; y < _height; y++) {
@@ -147,32 +147,20 @@ public class WorldMap implements ISavable, TileBasedMap {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		//		  for (int x = 0; x < _width; x++) {
-		//			for (int y = 0; y < _height; y++) {
-		//			  if (_items[x][y] == null) {
-		//				PathManager.getInstance().addObject(x, y, true);
-		//			  } else {
-		//				PathManager.getInstance().addObject(x, y, _items[x][y].isWalkable());
-		//			  }
-		//			}
-		//		  }
-		//
-		//		  PathManager.getInstance().init();
 	}
 
-	void	addRandomSeed() {
-		//			int startX = (int)(Math.random() * 1000) % _width;
-		//			int startY = (int)(Math.random() * 1000) % _height;
-		//
-		//			for (int x = 0; x < 5; x++) {
-		//				for (int y = 0; y < 5; y++) {
-		//					if (addRandomSeed(startX + x, startY + y)) return;
-		//					if (addRandomSeed(startX - x, startY - y)) return;
-		//					if (addRandomSeed(startX + x, startY - y)) return;
-		//					if (addRandomSeed(startX - x, startY + y)) return;
-		//				}
-		//			}
+	public void	addRandomSeed() {
+		int startX = (int)(Math.random() * 1000) % _width;
+		int startY = (int)(Math.random() * 1000) % _height;
+
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 5; y++) {
+				if (addRandomSeed(startX + x, startY + y)) return;
+				if (addRandomSeed(startX - x, startY - y)) return;
+				if (addRandomSeed(startX + x, startY - y)) return;
+				if (addRandomSeed(startX - x, startY + y)) return;
+			}
+		}
 	}
 
 	private boolean addRandomSeed(int i, int j) {
@@ -203,7 +191,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 		// Add random seed each 10 update
 		//if (_count % 10 == 0) {
-		addRandomSeed();
+//		addRandomSeed();
 		//}
 	}
 
@@ -332,12 +320,23 @@ public class WorldMap implements ISavable, TileBasedMap {
 		return false;
 	}
 
+	// TODO: call job listener
+	public void removeStructure(int x, int y) {
+		if (_areas[x][y].getItem() != null) {
+			_areas[x][y].setItem(null);
+		}
+		_areas[x][y].setStructure(null);
+		WorldRenderer.getInstance().invalidate(x, y);
+	}
+
+	// TODO: call job listener
 	public void removeItem(BaseItem item) {
 		if (item != null) {
 			int x = item.getX();
 			int y = item.getY();
 			item.setOwner(null);
 			_areas[x][y].setItem(null);
+			WorldRenderer.getInstance().invalidate(x, y);
 		}
 	}
 
@@ -416,12 +415,12 @@ public class WorldMap implements ISavable, TileBasedMap {
 		// Get new item
 		BaseItem item = null;
 		if (BaseItem.isResource(type)) {
-			item = new WorldRessource(type, _itemCout++);
+			item = new WorldRessource(type);
 			((WorldRessource)item).setValue(matterSupply);
 		} else if (BaseItem.isStructure(type)) {
-			item = new StructureItem(type, _itemCout++);
+			item = new StructureItem(type);
 		} else {
-			item = new UserItem(type, _itemCout++);
+			item = new UserItem(type);
 		}
 		item.setPosition(x, y);
 		//		  int zoneId = item.getZoneId();
@@ -505,6 +504,8 @@ public class WorldMap implements ISavable, TileBasedMap {
 		// TODO
 		//PathManager.getInstance().addObject(x, y, false);
 
+		WorldRenderer.getInstance().invalidate(item.getX(), item.getY());
+		
 		return item;
 	}
 
@@ -600,7 +601,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 	@Override
 	public boolean blocked(Mover mover, int x, int y) {
-		return _areas[x][y].getStructure() != null && _areas[x][y].getStructure().isType(BaseItem.Type.STRUCTURE_WALL) && _areas[x][y].getStructure().isComplete();
+		return _areas[x][y].getStructure() != null && _areas[x][y].getStructure().isComplete() && _areas[x][y].getStructure().isSolid();
 	}
 
 	@Override
@@ -639,5 +640,11 @@ public class WorldMap implements ISavable, TileBasedMap {
 		_debugPathStart = new DebugPos();
 		_debugPathStart.x = posX;
 		_debugPathStart.y = posY;
+	}
+
+	public void storeItem(Type res1, int x, int y) {
+		if (_areas[x][y].getItem() == null) {
+			_areas[x][y].setItem(new UserItem(Type.QUARTER_CHAIR));
+		}
 	}
 }

@@ -47,6 +47,7 @@ public class Constant {
 	public static final int PANEL_HEIGHT = WINDOW_HEIGHT;
 	public static final int WORLD_WIDTH = 100;
 	public static final int WORLD_HEIGHT = 50;
+	public static final int CHARACTER_CARRY_CAPACITY = 10;
 
 	
 }

@@ -80,8 +80,47 @@ public class PanelDebug extends UserSubInterface {
 		lbReLaunchJob.setString("Re-launch jobs");
 		lbReLaunchJob.setCharacterSize(20);
 		lbReLaunchJob.setColor(Color.WHITE);
-		lbReLaunchJob.setPosition(new Vector2f(20, 80));
+		lbReLaunchJob.setPosition(new Vector2f(20, 100));
 		addView(lbReLaunchJob);
+
+		// Re-launch jobs 
+		UIText lbClearJob = new UIText(new Vector2f(200, 32));
+		lbClearJob.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(UIView view) {
+				JobManager.getInstance().clear();
+			}
+		});
+		lbClearJob.setString("Clear jobs");
+		lbClearJob.setCharacterSize(20);
+		lbClearJob.setColor(Color.WHITE);
+		lbClearJob.setPosition(new Vector2f(20, 140));
+		addView(lbClearJob);
+
+		// Re-launch jobs 
+		UIText lbAddSeed = new UIText(new Vector2f(200, 32));
+		lbAddSeed.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(UIView view) {
+				WorldMap.getInstance().addRandomSeed();
+				WorldMap.getInstance().addRandomSeed();
+				WorldMap.getInstance().addRandomSeed();
+				WorldMap.getInstance().addRandomSeed();
+				WorldMap.getInstance().addRandomSeed();
+				WorldMap.getInstance().addRandomSeed();
+				WorldMap.getInstance().addRandomSeed();
+				WorldMap.getInstance().addRandomSeed();
+				WorldMap.getInstance().addRandomSeed();
+				WorldMap.getInstance().addRandomSeed();
+				WorldMap.getInstance().addRandomSeed();
+				WorldMap.getInstance().addRandomSeed();
+			}
+		});
+		lbAddSeed.setString("Add seed");
+		lbAddSeed.setCharacterSize(20);
+		lbAddSeed.setColor(Color.WHITE);
+		lbAddSeed.setPosition(new Vector2f(20, 180));
+		addView(lbAddSeed);
 
 	}
 

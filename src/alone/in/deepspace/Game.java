@@ -1,6 +1,11 @@
 package alone.in.deepspace;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
@@ -9,6 +14,7 @@ import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
+import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.graphics.Transform;
 import org.jsfml.system.Clock;
 import org.jsfml.system.Time;
@@ -25,8 +31,9 @@ import alone.in.deepspace.Managers.DynamicObjectManager;
 import alone.in.deepspace.Managers.FoeManager;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.ResourceManager;
+import alone.in.deepspace.Managers.RoomManager;
 import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.UserInterface.RoomManager;
+import alone.in.deepspace.UserInterface.EventManager;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
@@ -58,10 +65,11 @@ public class Game implements ISavable {
 	private Time 					_last_update;
 	private FoeManager 				_FoeManager;
 	private DynamicObjectManager	_dynamicObjectManager;
+	private int _lastLeftClick;
 	
 	public static int getFrame() { return _frame; }
 
-	public Game(RenderWindow app) throws IOException {
+	public Game(RenderWindow app) throws IOException, TextureCreationException {
 	  Log.debug("Game");
 
 	  _renderTime = 0;
@@ -107,70 +115,70 @@ public class Game implements ISavable {
 			for (int j = 0; j < h; j++) {
 
 
-				// Update oxygen
-				if (_frame % 6 == 0) {
-					WorldArea area = WorldMap.getInstance().getArea(i, j);
-					if (area.getStructure() != null && area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-						int oxygen = area.getOxygen();
-						int count = 1;
-
-						WorldArea a1 = WorldMap.getInstance().getArea(i+1, j);
-						if (a1.getStructure() == null) {
-							count++;
-						}
-						else if (area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-							oxygen += a1.getOxygen();
-							count++;
-						}
-
-						WorldArea a2 = WorldMap.getInstance().getArea(i-1, j);
-						if (a2.getStructure() == null) {
-							count++;
-						}
-						else if (a2.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-							oxygen += a2.getOxygen();
-							count++;
-						}
-
-						WorldArea a3 = WorldMap.getInstance().getArea(i, j+1);
-						if (a3.getStructure() == null) {
-							count++;
-						}
-						else if (a3.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-							oxygen += a3.getOxygen();
-							count++;
-						}
-			
-						WorldArea a4 = WorldMap.getInstance().getArea(i, j-1);
-						if (a4.getStructure() == null) {
-							count++;
-						}
-						else if (a4.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-							oxygen += a4.getOxygen();
-							count++;
-						}
-			
-						int value = (int) Math.ceil((double)oxygen / count);
-			
-						  // if (a1 != null && a1.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-						  // 	a1.setOxygen(value);
-						  // }
-			
-						  // if (a2 != null && a2.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-						  // 	a2.setOxygen(value);
-						  // }
-			
-						  // if (a3 != null && a3.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-						  // 	a3.setOxygen(value);
-						  // }
-			
-						  // if (a4 != null && a4.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-						  // 	a4.setOxygen(value);
-						  // }
-			
-						area.setOxygen(value);
-					}
-				}
+//				// Update oxygen
+//				if (_frame % 6 == 0) {
+//					WorldArea area = WorldMap.getInstance().getArea(i, j);
+//					if (area.getStructure() != null && area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+//						int oxygen = area.getOxygen();
+//						int count = 1;
+//
+//						WorldArea a1 = WorldMap.getInstance().getArea(i+1, j);
+//						if (a1.getStructure() == null) {
+//							count++;
+//						}
+//						else if (area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+//							oxygen += a1.getOxygen();
+//							count++;
+//						}
+//
+//						WorldArea a2 = WorldMap.getInstance().getArea(i-1, j);
+//						if (a2.getStructure() == null) {
+//							count++;
+//						}
+//						else if (a2.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+//							oxygen += a2.getOxygen();
+//							count++;
+//						}
+//
+//						WorldArea a3 = WorldMap.getInstance().getArea(i, j+1);
+//						if (a3.getStructure() == null) {
+//							count++;
+//						}
+//						else if (a3.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+//							oxygen += a3.getOxygen();
+//							count++;
+//						}
+//			
+//						WorldArea a4 = WorldMap.getInstance().getArea(i, j-1);
+//						if (a4.getStructure() == null) {
+//							count++;
+//						}
+//						else if (a4.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+//							oxygen += a4.getOxygen();
+//							count++;
+//						}
+//			
+//						int value = (int) Math.ceil((double)oxygen / count);
+//			
+//						  // if (a1 != null && a1.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+//						  // 	a1.setOxygen(value);
+//						  // }
+//			
+//						  // if (a2 != null && a2.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+//						  // 	a2.setOxygen(value);
+//						  // }
+//			
+//						  // if (a3 != null && a3.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+//						  // 	a3.setOxygen(value);
+//						  // }
+//			
+//						  // if (a4 != null && a4.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+//						  // 	a4.setOxygen(value);
+//						  // }
+//			
+//						area.setOxygen(value);
+//					}
+//				}
 			}
 		}
 
@@ -259,7 +267,19 @@ public class Game implements ISavable {
 						if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
 							_ui.onLeftPress(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
 						} else {
-							_ui.onLeftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+							// Is consume by EventManager
+							if (EventManager.getInstance().leftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y)) {
+								// Nothing to do !
+							}
+							// Is double click
+							else if (_lastLeftClick + 20 > _frame) {
+								_ui.onDoubleClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+							}
+							// Is simple click
+							else {
+								_ui.onLeftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+							}
+							_lastLeftClick = _frame;
 						}
 					} else if (mouseButtonEvent.button == Button.RIGHT) {
 						if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
@@ -350,44 +370,46 @@ public class Game implements ISavable {
 	}
 
 	public void	load(final String filePath) {
-//	  Log.info("Game: load");
-//
-//	  ifstream ifs(filePath);
-//	  string line;
-//	  std.vector<std.string> vector;
-//	  int value;
-//	  bool	inBlock = false;
-//
-//	  if (ifs.is_open()) {
-//	    while (getline(ifs, line)) {
-//
-//		  // Start block
-//		  if (line.compare("BEGIN GAME") == 0) {
-//			inBlock = true;
-//		  }
-//
-//		  // End block
-//		  else if (line.compare("END GAME") == 0) {
-//			inBlock = false;
-//		  }
-//
-//		  // Items
-//		  else if (inBlock) {
-//			std.cout + "line: " + line + std.endl;
-//			vector.clear();
-//			FileManager.split(line, '\t', vector);
-//			if (vector[0].compare("matter") == 0) {
-//			  std.istringstream issValue(vector[1]);
-//			  issValue >> value;
-//			  ResourceManager.getInstance().setMatter(value);
-//			}
-//		  }
-//		}
-//	    ifs.close();
-//	  } else {
-//		Error() + "Unable to open save file: " + filePath;
-//	  }
-//
+		Log.error("Load game: " + filePath);
+
+		boolean	inBlock = false;
+		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+			String line = null;
+
+			while ((line = br.readLine()) != null) {
+
+				// Start block
+				if ("BEGIN GAME".equals(line)) {
+					inBlock = true;
+				}
+
+				// End block
+				else if ("END GAME".equals(line)) {
+					inBlock = false;
+				}
+
+				else if (inBlock) {
+					String[] values = line.split("\t");
+					if (values.length == 2) {
+						if ("MATTER".equals(values[0])) {
+							ResourceManager.getInstance().setMatter(Integer.valueOf(values[1]));
+						}
+						if ("SPICE".equals(values[0])) {
+							ResourceManager.getInstance().setSpice(Integer.valueOf(values[1]));
+						}
+					}
+				}
+
+			}
+		}
+		catch (FileNotFoundException e) {
+			Log.error("Unable to open save file: " + filePath);
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	  WorldMap.getInstance().load(filePath);
 	  CharacterManager.getInstance().load(filePath);
 	  RoomManager.getInstance().load(filePath);
@@ -395,22 +417,22 @@ public class Game implements ISavable {
 	}
 
 	public void	save(final String filePath) {
-//	  Info() + "Game save";
-//
-//	  ofstream ofs(filePath);
-//
-//	  if (ofs.is_open()) {
-//		ofs + "BEGIN GAME\n";
-//		ofs + "matter\t" + ResourceManager.getInstance().getMatter() + "\n";
-//		ofs + "END GAME\n";
-//		ofs.close();
-//	  } else {
-//		Error() + "Unable to open save file: " + filePath;
-//	  }
-//
-//	  // ofstream ofs(filePath);
-//	  // ofs.close();
-//
+		Log.info("Save game: " + filePath);
+
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+			bw.write("BEGIN GAME\n");
+			bw.write("MATTER\t" + ResourceManager.getInstance().getMatter() + "\n");
+			bw.write("SPICE\t" + ResourceManager.getInstance().getSpice() + "\n");
+			bw.write("END GAME\n");
+		} catch (FileNotFoundException e) {
+			Log.error("Unable to open save file: " + filePath);
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Log.info("Save game: " + filePath + " done");
+
 	  WorldMap.getInstance().save(filePath);
 	  CharacterManager.getInstance().save(filePath);
 	  RoomManager.getInstance().save(filePath);

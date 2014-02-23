@@ -109,8 +109,22 @@ public class BaseItem {
 	private int 			_matter;
 	private int 			_power;
 	private int 			_powerSupply;
+	private int 	_mode;
+	private int 	_nbMode;
+	private int 	_maxId;
+
+	public BaseItem(Type type) {
+		init(type, ++_maxId);
+	}
 
 	public BaseItem(Type t, int id) {
+		if (_maxId < id) {
+			_maxId = id;
+		}
+		init(t, id);
+	}
+
+	private void init(Type t, int id) {
 		// Init
 		_isSolid = false;
 		_type = t;
@@ -119,6 +133,11 @@ public class BaseItem {
 		_owner = null;
 		_id = id;
 		_name = null;
+		_nbMode = 1;
+		
+		if (t == Type.STRUCTURE_DOOR) {
+			_nbMode = 3;
+		}
 
 		// Default values
 		_width = 1;
@@ -168,6 +187,8 @@ public class BaseItem {
 	public void			setPosition(int x, int y) { _x = x; _y = y; }
 	public void 		setMatterSupply(int matterSupply) { _matterSupply = matterSupply; }
 	public void 		setPowerSupply(int i) { _powerSupply = i; }
+	public void 		setSolid(boolean isSolid) { _isSolid = isSolid; }
+	public void 		setMode(int mode) { _mode = mode; }
 
 	// Gets
 	public int			getMatterSupply() { return _matterSupply; }
@@ -181,6 +202,7 @@ public class BaseItem {
 	public int			getId() { return _id; }
 	public String		getName() { return _name; }
 	public int 			getPower() { return _power; }
+	public int 			getMode() { return _mode; }
 
 	// Boolean
 	public boolean	isSolid() { return _isSolid; }
@@ -325,6 +347,10 @@ public class BaseItem {
 			return true;
 		}
 		return false;
+	}
+
+	public void nextMode() {
+		_mode = (_mode + 1) % _nbMode;
 	}
 
 }

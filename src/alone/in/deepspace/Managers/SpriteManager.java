@@ -297,7 +297,6 @@ public class SpriteManager {
 	}
 
 	public Sprite		getWall(BaseItem item, int special, int index, int zone) {
-		index = _random[index % 20];
 		int WALL_HEIGHT = 48;
 		int WALL_WIDTH = 32;
 
@@ -305,7 +304,7 @@ public class SpriteManager {
 		if (item.isType(BaseItem.Type.STRUCTURE_DOOR)) {
 			int alpha = 75 + 180 / item.getMatter() * item.getMatterSupply();
 			return getSprite(6,
-					WALL_WIDTH * special,
+					WALL_WIDTH * item.getMode(),
 					WALL_HEIGHT * 7,
 					WALL_WIDTH,
 					WALL_HEIGHT,
@@ -330,10 +329,10 @@ public class SpriteManager {
 					height = WALL_HEIGHT;
 				}
 
-				// Bellow
+				// Wall bellow
 				if (special == 1) {
-					x = WALL_WIDTH;
-					y = WALL_HEIGHT * zone;
+					x = (WALL_WIDTH + 2) * index + 1;
+					y = (WALL_HEIGHT + 2) * 8 + 1;
 					width = WALL_WIDTH;
 					height = WALL_HEIGHT;
 				}
@@ -348,6 +347,7 @@ public class SpriteManager {
 
 				// Double special
 				if (special == 2) {
+					index = _random[index % 20];
 					x = 256 + 64 * (index % 4);
 					y = WALL_HEIGHT * zone;
 					width = WALL_WIDTH * 2;
@@ -356,10 +356,23 @@ public class SpriteManager {
 
 				// Single special
 				if (special == 3) {
+					index = _random[index % 20];
 					x = 128 + WALL_WIDTH * (index % 4);
 					y = WALL_HEIGHT * zone;
 					width = WALL_WIDTH;
 					height = WALL_HEIGHT;
+				}
+
+				// Wall above
+				if (special == 5) {
+					x = (WALL_WIDTH + 2) * index + 1;
+					y = (WALL_HEIGHT + 2) * 9 + 1;
+					width = WALL_WIDTH;
+					if (index == 0) {
+						height = WALL_HEIGHT - 6;
+					} else {
+						height = WALL_HEIGHT;
+					}
 				}
 
 				return getSprite(texture, x, y, width, height, alpha);

@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.deepspace.Managers;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,6 +15,7 @@ import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.StructureItem;
 import alone.in.deepspace.World.WorldMap;
+import alone.in.deepspace.World.WorldRenderer;
 
 public class RoomManager implements ISavable {
 
@@ -52,7 +53,7 @@ public class RoomManager implements ISavable {
 		
 		// Create new room if not exist
 		if (room == null) {
-			room = new Room(type);
+			room = new Room(type, fromX, fromY);
 			room.setOwner(owner);
 		}
 		
@@ -60,8 +61,9 @@ public class RoomManager implements ISavable {
 		for (int x = fromX; x <= toX; x++) {
 			for (int y = fromY; y <= toY; y++) {
 				StructureItem struct = WorldMap.getInstance().getStructure(x, y);
-				if (struct != null && struct.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+				if (struct == null || struct.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
 					_rooms[x][y] = room;
+					WorldRenderer.getInstance().invalidate(x, y);
 				}
 			}
 		}
@@ -138,4 +140,27 @@ public class RoomManager implements ISavable {
 			e.printStackTrace();
 		}
 	}
+
+	public Room getNearFreeStorage(int fromX, int fromY) {
+		for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
+			for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
+				if (hasRoomTypeAtPos(Type.STORAGE, fromX + i, fromY + j)) return _rooms[fromX + i][fromY + j];
+				if (hasRoomTypeAtPos(Type.STORAGE, fromX - i, fromY + j)) return _rooms[fromX - i][fromY + j];
+				if (hasRoomTypeAtPos(Type.STORAGE, fromX + i, fromY - j)) return _rooms[fromX + i][fromY - j];
+				if (hasRoomTypeAtPos(Type.STORAGE, fromX - i, fromY - j)) return _rooms[fromX - i][fromY - j];
+			}
+		}
+		return null;
+	}
+
+	private boolean hasRoomTypeAtPos(Type storage, int x, int y) {
+		if (x < 0 || x >= Constant.WORLD_WIDTH || y < 0 || y >= Constant.WORLD_HEIGHT) {
+			return false;
+		}
+		if (_rooms[x][y] == null || _rooms[x][y].getType() != storage) {
+			return false;
+		}
+		return true;
+	}
+
 }
