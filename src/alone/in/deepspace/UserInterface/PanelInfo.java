@@ -8,7 +8,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Character.CharacterManager;
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.RoomManager;
 import alone.in.deepspace.Managers.SpriteManager;
@@ -194,13 +194,13 @@ public class PanelInfo extends UserSubInterface {
 		  addView(_itemOptions.add("Add character", new OnClickListener() {
 			  @Override
 			  public void onClick(UIView view) {
-				  CharacterManager.getInstance().add(item.getX(), item.getY());
+				  ServiceManager.getCharacterManager().add(item.getX(), item.getY());
 			  }
 		  }));
 		  addView(_itemOptions.add("kill everyone", new OnClickListener() {
 			  @Override
 			  public void onClick(UIView view) {
-				  CharacterManager.getInstance().clear();
+				  ServiceManager.getCharacterManager().clear();
 			  }
 		  }));
 	  }

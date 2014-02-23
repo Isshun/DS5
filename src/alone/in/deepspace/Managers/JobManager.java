@@ -11,8 +11,8 @@ import java.util.List;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.Character.Character;
-import alone.in.deepspace.Character.CharacterManager;
 import alone.in.deepspace.Character.CharacterNeeds;
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Engine.ISavable;
 import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Models.Job.Abort;
@@ -21,7 +21,6 @@ import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.StructureItem;
 import alone.in.deepspace.World.UserItem;
-import alone.in.deepspace.World.WorldMap;
 import alone.in.deepspace.World.WorldRessource;
 
 public class JobManager implements ISavable {
@@ -85,11 +84,11 @@ public class JobManager implements ISavable {
 						Job job = new Job(++_id, x, y);
 						job.setAction(JobManager.getActionFromIndex(action));
 						if (characterId > 0) {
-							Character c = CharacterManager.getInstance().getCharacter(characterId);
+							Character c = ServiceManager.getCharacterManager().getCharacter(characterId);
 							job.setCharacter(c);
 						}
 						if (characterRequireId > 0) {
-							Character c = CharacterManager.getInstance().getCharacter(characterId);
+							Character c = ServiceManager.getCharacterManager().getCharacter(characterId);
 							job.setCharacterRequire(c);
 						}
 						if (itemType > 0) {
@@ -97,8 +96,8 @@ public class JobManager implements ISavable {
 							job.setItemType(type);
 
 							// Add item
-							UserItem item = WorldMap.getInstance().getItem(x, y);
-							StructureItem structure = WorldMap.getInstance().getStructure(x, y);
+							UserItem item = ServiceManager.getWorldMap().getItem(x, y);
+							StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
 							if (item != null && item.isType(type)) {
 								job.setItem(item);
 							}
@@ -224,29 +223,29 @@ public class JobManager implements ISavable {
 
 		// Structure
 		if (BaseItem.isStructure(type)) {
-			BaseItem current = WorldMap.getInstance().getStructure(x, y);
+			BaseItem current = ServiceManager.getWorldMap().getStructure(x, y);
 			if (current != null && current.isType(type)) {
 				Log.error("Build structure: already exist on this area");
 				return null;
 			}
-			item = WorldMap.getInstance().putItem(type, x, y);
+			item = ServiceManager.getWorldMap().putItem(type, x, y);
 		}
 
 		// Item
 		else if (BaseItem.isItem(type)) {
-			BaseItem current = WorldMap.getInstance().getItem(x, y);
+			BaseItem current = ServiceManager.getWorldMap().getItem(x, y);
 			if (current != null && current.isType(type)) {
 				Log.error("Build item: already exist on this area");
 				return null;
 			} else if (current != null) {
 				Log.error("JobManager: add build on non null item");
 				return null;
-			} else if (WorldMap.getInstance().getStructure(x, y) == null
-					|| WorldMap.getInstance().getStructure(x, y).isType(BaseItem.Type.STRUCTURE_FLOOR) == false) {
+			} else if (ServiceManager.getWorldMap().getStructure(x, y) == null
+					|| ServiceManager.getWorldMap().getStructure(x, y).isType(BaseItem.Type.STRUCTURE_FLOOR) == false) {
 				Log.error("JobManager: add build on non invalid structure (null or not STRUCTURE_FLOOR)");
 				return null;
 			} else {
-				item = WorldMap.getInstance().putItem(type, x, y);
+				item = ServiceManager.getWorldMap().putItem(type, x, y);
 			}
 		}
 
@@ -331,7 +330,7 @@ public class JobManager implements ISavable {
 	private Job getJobForCharacterNeed(Character character) {
 		CharacterNeeds needs = character.getNeeds();
 		if (needs.getFood() < 20) {
-			UserItem item = WorldMap.getInstance().getNearest(BaseItem.Type.BAR_PUB, character.getPosX(), character.getPosY());
+			UserItem item = ServiceManager.getWorldMap().getNearest(BaseItem.Type.BAR_PUB, character.getPosX(), character.getPosY());
 			if (item != null) {
 				Job job = new Job(++_id, item.getX(), item.getY());
 				job.setAction(JobManager.Action.USE);
@@ -400,7 +399,7 @@ public class JobManager implements ISavable {
 	public void	need(Character character, BaseItem.Type itemType) {
 		Log.debug("JobManager: Character '" + character.getName() + "' need item #" + itemType);
 
-		BaseItem item = WorldMap.getInstance().find(itemType, true);
+		BaseItem item = ServiceManager.getWorldMap().find(itemType, true);
 		if (item != null) {
 
 			Job job = new Job(++_id, item.getX(), item.getY());

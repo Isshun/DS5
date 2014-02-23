@@ -13,6 +13,7 @@ import java.util.Vector;
 import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Engine.ISavable;
 import alone.in.deepspace.Managers.DynamicObjectManager;
 import alone.in.deepspace.Managers.JobManager;
@@ -30,7 +31,6 @@ public class WorldMap implements ISavable, TileBasedMap {
 	}
 
 	private static final int 	LIMIT_ITEMS = 42000;
-	private static WorldMap 	_self;
 
 	private Map<Integer, Room>	_rooms;
 	private int					_itemCout;
@@ -184,7 +184,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 		int x = item.getX();
 		int y = item.getY();
 		
-		WorldRenderer.getInstance().invalidate(x, y);
+		ServiceManager.getWorldRenderer().invalidate(x, y);
 		
 		return value;
 	}
@@ -329,7 +329,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 			_areas[x][y].setItem(null);
 		}
 		_areas[x][y].setStructure(null);
-		WorldRenderer.getInstance().invalidate(x, y);
+		ServiceManager.getWorldRenderer().invalidate(x, y);
 	}
 
 	// TODO: call job listener
@@ -339,7 +339,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 			int y = item.getY();
 			item.setOwner(null);
 			_areas[x][y].setItem(null);
-			WorldRenderer.getInstance().invalidate(x, y);
+			ServiceManager.getWorldRenderer().invalidate(x, y);
 		}
 	}
 
@@ -507,7 +507,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 		// TODO
 		//PathManager.getInstance().addObject(x, y, false);
 
-		WorldRenderer.getInstance().invalidate(item.getX(), item.getY());
+		ServiceManager.getWorldRenderer().invalidate(item.getX(), item.getY());
 		
 		return item;
 	}
@@ -544,13 +544,6 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 	public Room					getRoom(int id) { return _rooms.get(id); }
 	public int					getRoomCount() { return _rooms.size(); }
-
-	public static WorldMap getInstance() {
-		if (_self == null) {
-			_self = new WorldMap();
-		}
-		return _self;
-	}
 
 	public int					getWidth() { return _width; }
 	public int					getHeight() { return _height; }

@@ -7,15 +7,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Engine.ISavable;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Models.Room.Type;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.StructureItem;
-import alone.in.deepspace.World.WorldMap;
-import alone.in.deepspace.World.WorldRenderer;
 
 public class RoomManager implements ISavable {
 
@@ -61,10 +59,10 @@ public class RoomManager implements ISavable {
 		for (int x = fromX; x <= toX; x++) {
 			for (int y = fromY; y <= toY; y++) {
 				if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
-					StructureItem struct = WorldMap.getInstance().getStructure(x, y);
+					StructureItem struct = ServiceManager.getWorldMap().getStructure(x, y);
 					if (struct == null || struct.roomCanBeSet()) {
 						_rooms[x][y] = room;
-						WorldRenderer.getInstance().invalidate(x, y);
+						ServiceManager.getWorldRenderer().invalidate(x, y);
 					}
 				}
 			}
@@ -170,6 +168,27 @@ public class RoomManager implements ISavable {
 			return false;
 		}
 		return true;
+	}
+
+	public void removeRoom(int fromX, int fromY, int toX, int toY, Type roomType) {
+		boolean hasGarden = false;
+		
+		// Set room for each area
+		for (int x = fromX; x <= toX; x++) {
+			for (int y = fromY; y <= toY; y++) {
+				if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
+					if (_rooms[x][y] != null && _rooms[x][y].isType(Room.Type.GARDEN)) {
+						hasGarden = true;
+					}
+					_rooms[x][y] = null;
+					ServiceManager.getWorldRenderer().invalidate(x, y);
+				}
+			}
+		}
+		
+		if (hasGarden) {
+			ResourceManager.getInstance().refreshWater();
+		}
 	}
 
 }

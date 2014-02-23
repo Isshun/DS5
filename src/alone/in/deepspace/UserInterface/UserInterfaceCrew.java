@@ -12,6 +12,7 @@ import org.jsfml.window.Keyboard;
 
 import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Character.CharacterManager;
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Utils.Constant;
 
@@ -37,7 +38,7 @@ public class UserInterfaceCrew extends UserSubInterface {
 		setBackgroundColor(new Color(100, 0, 0, 180));
 		
 		_viewHolderList = new ArrayList<ViewHolder>();
-		_characterManager = CharacterManager.getInstance();
+		_characterManager = ServiceManager.getCharacterManager();
 	}
 
 	void  addCharacter(RenderWindow app, int index, Character character) {
@@ -101,13 +102,13 @@ public class UserInterfaceCrew extends UserSubInterface {
 //	
 //	  {
 //		int matter = ResourceManager.getInstance().getMatter();
-//		text.setString("Total: " + CharacterManager.getInstance().getCount());
+//		text.setString("Total: " + ServiceManager.getCharacterManager().getCount());
 //	    text.setPosition(_posTileX,
 //						 _posTileY + TITLE_SIZE + Constant.UI_PADDING);
 //	    _app.draw(text);
 //	  }
 //	
-//	  Profession[] professions = CharacterManager.getInstance().getProfessions();
+//	  Profession[] professions = ServiceManager.getCharacterManager().getProfessions();
 //	  for (int i = 0; i < professions.length; i++) {
 //		RectangleShape shape = new RectangleShape();
 //		shape.setSize(new Vector2f(24, 24));
@@ -116,7 +117,7 @@ public class UserInterfaceCrew extends UserSubInterface {
 //						  _posTileY + TITLE_SIZE + Constant.UI_PADDING + 32);
 //		_app.draw(shape);
 //	
-//		int count = CharacterManager.getInstance().getCount(professions[i].getType());
+//		int count = ServiceManager.getCharacterManager().getCount(professions[i].getType());
 //		text.setString(String.valueOf(count));
 //		text.setColor(professions[i].getTextColor());
 //		text.setCharacterSize(10);

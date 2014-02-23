@@ -10,6 +10,7 @@ import org.jsfml.window.event.Event;
 
 import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Character.CharacterManager;
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Engine.Viewport;
 import alone.in.deepspace.Managers.RoomManager;
 import alone.in.deepspace.Models.Room;
@@ -17,8 +18,6 @@ import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.WorldArea;
-import alone.in.deepspace.World.WorldMap;
-import alone.in.deepspace.World.WorldRenderer;
 
 public class UserInterface {
 
@@ -278,7 +277,7 @@ public class UserInterface {
 		} else {
 			setMode(_panelCharacter.getCharacter() != null ? Mode.CHARACTER : Mode.INFO);
 		}
-		// 	WorldMap.getInstance().dump();
+		// 	ServiceManager.getWorldMap().dump();
 	  }	
 	  else if (event.asKeyEvent().key == Keyboard.Key.C) {
 		_crewViewOpen = !_crewViewOpen;
@@ -296,7 +295,7 @@ public class UserInterface {
 		  setMode(Mode.JOBS);
 	  }
 //	  else if (event.asKeyEvent().key == Keyboard.Key.I) {
-//		WorldMap.getInstance().dumpItems();
+//		ServiceManager.getWorldMap().dumpItems();
 //	  }
 	  else if (event.asKeyEvent().key == Keyboard.Key.UP) {
 		if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
@@ -340,7 +339,7 @@ public class UserInterface {
 	public void init(RenderWindow app, Viewport viewport) throws IOException {
 		_viewport = viewport;
 		_app = app;
-		_characteres = CharacterManager.getInstance();
+		_characteres = ServiceManager.getCharacterManager();
 		_keyLeftPressed = false;
 		_keyRightPressed = false;
 		_font = new Font();
@@ -385,18 +384,18 @@ public class UserInterface {
 	public void onDoubleClick(int x, int y) {
 		_keyLeftPressed = false;
 
-		WorldArea area = WorldMap.getInstance().getArea(getRelativePosX(x), getRelativePosY(y));
+		WorldArea area = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
 		if (area != null) {
 			BaseItem item = area.getItem();
 			BaseItem structure = area.getStructure();
 			
 			if (item != null) {
 				item.nextMode();
-				WorldRenderer.getInstance().invalidate(item.getX(), item.getY());
+				ServiceManager.getWorldRenderer().invalidate(item.getX(), item.getY());
 			}
 			else if (structure != null) {
 				structure.nextMode();
-				WorldRenderer.getInstance().invalidate(structure.getX(), structure.getY());
+				ServiceManager.getWorldRenderer().invalidate(structure.getX(), structure.getY());
 			}
 		}
 	}
@@ -437,7 +436,11 @@ public class UserInterface {
 			int fromY = _keyLeftPressed ? Math.min(_keyPressPosY, _keyMovePosY) : _keyMovePosY;
 			int toX = _keyLeftPressed ? Math.max(_keyPressPosX, _keyMovePosX) : _keyMovePosX;
 			int toY = _keyLeftPressed ? Math.max(_keyPressPosY, _keyMovePosY) : _keyMovePosY;
-			RoomManager.getInstance().putRoom(fromX, fromY, toX, toY, roomType, 0);
+			if (roomType == Room.Type.NONE) {
+				RoomManager.getInstance().removeRoom(fromX, fromY, toX, toY, roomType);
+			} else {
+				RoomManager.getInstance().putRoom(fromX, fromY, toX, toY, roomType, 0);
+			}
 		}
 
 		_panelCharacter.setCharacter(null);
@@ -450,7 +453,7 @@ public class UserInterface {
 				_panelCharacter.setCharacter(c);
 				setMode(Mode.CHARACTER);
 			} else {
-				WorldArea a = WorldMap.getInstance().getArea(getRelativePosX(x), getRelativePosY(y));
+				WorldArea a = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
 				_panelInfo.setArea(a);
 				if (a != null) {
 //				if (_panelInfo.getArea() == a && _panelInfo.getItem() == null && a.getItem() != null) {

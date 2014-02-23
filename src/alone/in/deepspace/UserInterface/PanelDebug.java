@@ -6,8 +6,8 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Character.CharacterManager;
 import alone.in.deepspace.Character.Profession;
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.ResourceManager;
 import alone.in.deepspace.UserInterface.Utils.OnClickListener;
@@ -16,7 +16,6 @@ import alone.in.deepspace.UserInterface.Utils.UIView;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.World.StructureItem;
 import alone.in.deepspace.World.UserItem;
-import alone.in.deepspace.World.WorldMap;
 
 public class PanelDebug extends UserSubInterface {
 
@@ -33,7 +32,7 @@ public class PanelDebug extends UserSubInterface {
 		txtAddCharacter.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(UIView view) {
-				CharacterManager.getInstance().add(0, 0, Profession.Type.ENGINEER);
+				ServiceManager.getCharacterManager().add(0, 0, Profession.Type.ENGINEER);
 			}
 		});
 		txtAddCharacter.setString("Add character");
@@ -61,15 +60,15 @@ public class PanelDebug extends UserSubInterface {
 		lbReLaunchJob.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(UIView view) {
-				int width = WorldMap.getInstance().getWidth();
-				int height = WorldMap.getInstance().getHeight();
+				int width = ServiceManager.getWorldMap().getWidth();
+				int height = ServiceManager.getWorldMap().getHeight();
 				for (int x = 0; x < width; x++) {
 					for (int y = 0; y < height; y++) {
-						StructureItem structure = WorldMap.getInstance().getStructure(x, y);
+						StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
 						if (structure != null && structure.isComplete() == false) {
 							JobManager.getInstance().build(structure);
 						}
-						UserItem item = WorldMap.getInstance().getItem(x, y);
+						UserItem item = ServiceManager.getWorldMap().getItem(x, y);
 						if (item != null && item.isComplete() == false) {
 							JobManager.getInstance().build(item);
 						}
@@ -102,18 +101,18 @@ public class PanelDebug extends UserSubInterface {
 		lbAddSeed.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(UIView view) {
-				WorldMap.getInstance().addRandomSeed();
-				WorldMap.getInstance().addRandomSeed();
-				WorldMap.getInstance().addRandomSeed();
-				WorldMap.getInstance().addRandomSeed();
-				WorldMap.getInstance().addRandomSeed();
-				WorldMap.getInstance().addRandomSeed();
-				WorldMap.getInstance().addRandomSeed();
-				WorldMap.getInstance().addRandomSeed();
-				WorldMap.getInstance().addRandomSeed();
-				WorldMap.getInstance().addRandomSeed();
-				WorldMap.getInstance().addRandomSeed();
-				WorldMap.getInstance().addRandomSeed();
+				ServiceManager.getWorldMap().addRandomSeed();
+				ServiceManager.getWorldMap().addRandomSeed();
+				ServiceManager.getWorldMap().addRandomSeed();
+				ServiceManager.getWorldMap().addRandomSeed();
+				ServiceManager.getWorldMap().addRandomSeed();
+				ServiceManager.getWorldMap().addRandomSeed();
+				ServiceManager.getWorldMap().addRandomSeed();
+				ServiceManager.getWorldMap().addRandomSeed();
+				ServiceManager.getWorldMap().addRandomSeed();
+				ServiceManager.getWorldMap().addRandomSeed();
+				ServiceManager.getWorldMap().addRandomSeed();
+				ServiceManager.getWorldMap().addRandomSeed();
 			}
 		});
 		lbAddSeed.setString("Add seed");
@@ -141,7 +140,7 @@ public class PanelDebug extends UserSubInterface {
 		lbKillEveryone.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(UIView view) {
-				CharacterManager.getInstance().clear();
+				ServiceManager.getCharacterManager().clear();
 				JobManager.getInstance().clear();
 			}
 		});
@@ -199,7 +198,7 @@ public class PanelDebug extends UserSubInterface {
 //
 ////		addDebug("add character");
 //		
-//	  BaseItem item = WorldMap.getInstance().getItem(x, y);
+//	  BaseItem item = ServiceManager.getWorldMap().getItem(x, y);
 //
 //	  Log.debug("pos: " + x + " x " + y);
 //	  Log.debug("item: " + item);

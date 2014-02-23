@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Font;
-import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderTexture;
@@ -18,6 +17,7 @@ import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Managers.RoomManager;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.Room;
@@ -28,8 +28,6 @@ import alone.in.deepspace.Utils.ObjectPool;
 import alone.in.deepspace.Utils.Settings;
 
 public class WorldRenderer {
-	private static WorldRenderer	_self;
-
 	private RenderWindow			_app;
 	private SpriteManager			_spriteManager;
 	private Font					_font;
@@ -46,7 +44,6 @@ public class WorldRenderer {
 	private Set<Vector2i> 			_changed;
 
 	public WorldRenderer(RenderWindow app, SpriteManager spriteManager, UserInterface ui) throws IOException, TextureCreationException {
-		_self = this;
 		_ui = ui;
 		_app = app;
 		_spriteManager = spriteManager;
@@ -73,8 +70,8 @@ public class WorldRenderer {
 
 		int fromX = Math.max(_ui.getRelativePosXMin(0)-1, 0);
 		int fromY = Math.max(_ui.getRelativePosYMin(0)-1, 0);
-		int toX = Math.min(_ui.getRelativePosXMax(Constant.WINDOW_WIDTH)+1, WorldMap.getInstance().getWidth());
-		int toY = Math.min(_ui.getRelativePosYMax(Constant.WINDOW_HEIGHT)+1, WorldMap.getInstance().getHeight());
+		int toX = Math.min(_ui.getRelativePosXMax(Constant.WINDOW_WIDTH)+1, ServiceManager.getWorldMap().getWidth());
+		int toY = Math.min(_ui.getRelativePosYMax(Constant.WINDOW_HEIGHT)+1, ServiceManager.getWorldMap().getHeight());
 
 		// Debug() << "Renderer: " << fromX << " to: " << toX;
 
@@ -107,9 +104,9 @@ public class WorldRenderer {
 		refreshItems(render, fromX, fromY, toX, toY);
 //		Log.info("display items: " + display_timer.getElapsedTime().asMicroseconds());
 
-//		Vector<DebugPos> debugPath = WorldMap.getInstance().getDebug();
-//		DebugPos startDebugPath = WorldMap.getInstance().getStartDebug();
-//		DebugPos stopDebugPath = WorldMap.getInstance().getStopDebug();
+//		Vector<DebugPos> debugPath = ServiceManager.getWorldMap().getDebug();
+//		DebugPos startDebugPath = ServiceManager.getWorldMap().getStartDebug();
+//		DebugPos stopDebugPath = ServiceManager.getWorldMap().getStopDebug();
 //		Sprite sprite = null;
 //		if (debugPath != null) {
 //			for (DebugPos pos: debugPath) {
@@ -145,14 +142,14 @@ public class WorldRenderer {
 			for (int j = toY-1; j >= fromY; j--) {
 				if (i >= 0 && j >= 0 && i < Constant.WORLD_WIDTH && j < Constant.WORLD_HEIGHT) {
 					// Oxygen
-					WorldArea area = WorldMap.getInstance().getArea(i, j);
+					WorldArea area = ServiceManager.getWorldMap().getArea(i, j);
 	
 					// Structure
-					StructureItem structure = WorldMap.getInstance().getStructure(i, j);
+					StructureItem structure = ServiceManager.getWorldMap().getStructure(i, j);
 					
 					Room room = RoomManager.getInstance().get(i, j);
 					if (structure != null && structure.roomCanBeSet() == false) {
-						structure = WorldMap.getInstance().getStructure(i, j-1);
+						structure = ServiceManager.getWorldMap().getStructure(i, j-1);
 						room = RoomManager.getInstance().get(i, j-1);
 					}
 	
@@ -165,7 +162,7 @@ public class WorldRenderer {
 							sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
 							_texture.draw(sprite);
 							
-							WorldRessource ressource = WorldMap.getInstance().getRessource(i, j);
+							WorldRessource ressource = ServiceManager.getWorldMap().getRessource(i, j);
 							if (ressource != null && ressource.getMatterSupply() > 0) {
 								sprite = _spriteManager.getRessource(ressource);
 								sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
@@ -198,7 +195,7 @@ public class WorldRenderer {
 	//						}
 	//					}
 						
-						WorldRessource ressource = WorldMap.getInstance().getRessource(i, j);
+						WorldRessource ressource = ServiceManager.getWorldMap().getRessource(i, j);
 						if (ressource != null) {
 							sprite = _spriteManager.getRessource(ressource);
 							sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
@@ -231,7 +228,7 @@ public class WorldRenderer {
 		for (int j = toY-1; j >= fromY; j--) {
 			for (int i = toX-1; i >= fromX; i--) {
 				if (i >= 0 && j >= 0 && i < Constant.WORLD_WIDTH && j < Constant.WORLD_HEIGHT) {
-					StructureItem item = WorldMap.getInstance().getStructure(i, j);
+					StructureItem item = ServiceManager.getWorldMap().getStructure(i, j);
 					if (item != null) {
 	
 						// Structure except floor
@@ -275,21 +272,21 @@ public class WorldRenderer {
 	private Sprite drawWall(StructureItem item, int i, int j, int offsetWall) {
 		Sprite sprite = null;
 
-		StructureItem bellow = WorldMap.getInstance().getStructure(i, j+1);
-		StructureItem right = WorldMap.getInstance().getStructure(i+1, j);
-		StructureItem left = WorldMap.getInstance().getStructure(i-1, j);
-		StructureItem above = WorldMap.getInstance().getStructure(i, j-1);
+		StructureItem bellow = ServiceManager.getWorldMap().getStructure(i, j+1);
+		StructureItem right = ServiceManager.getWorldMap().getStructure(i+1, j);
+		StructureItem left = ServiceManager.getWorldMap().getStructure(i-1, j);
+		StructureItem above = ServiceManager.getWorldMap().getStructure(i, j-1);
 
 		Room room = RoomManager.getInstance().get(i, j + 1);
 		int zone = room != null ? room.getType().ordinal() : 0;
 
 		// bellow is a wall
 		if (bellow != null && (bellow.isType(BaseItem.Type.STRUCTURE_WALL) || bellow.isType(BaseItem.Type.STRUCTURE_DOOR))) {
-			StructureItem bellowBellow = WorldMap.getInstance().getStructure(i, j+2);
+			StructureItem bellowBellow = ServiceManager.getWorldMap().getStructure(i, j+2);
 			if (bellow.isType(BaseItem.Type.STRUCTURE_DOOR) ||
 					bellowBellow == null || (!bellowBellow.isType(BaseItem.Type.STRUCTURE_WALL) && !bellowBellow.isType(BaseItem.Type.STRUCTURE_DOOR))) {
-				StructureItem bellowRight = WorldMap.getInstance().getStructure(i+1, j+1);
-				StructureItem bellowLeft = WorldMap.getInstance().getStructure(i-1, j+1);
+				StructureItem bellowRight = ServiceManager.getWorldMap().getStructure(i+1, j+1);
+				StructureItem bellowLeft = ServiceManager.getWorldMap().getStructure(i-1, j+1);
 				boolean wallOnRight = bellowRight != null && (bellowRight.isType(BaseItem.Type.STRUCTURE_WALL) || bellowRight.isType(BaseItem.Type.STRUCTURE_DOOR));
 				boolean wallOnLeft = bellowLeft != null && (bellowLeft.isType(BaseItem.Type.STRUCTURE_WALL) || bellowLeft.isType(BaseItem.Type.STRUCTURE_DOOR));
 				
@@ -331,8 +328,8 @@ public class WorldRenderer {
 			boolean doubleWall = false;
 			if (right != null && right.isComplete() && right.isType(BaseItem.Type.STRUCTURE_WALL) &&
 					(_lastSpecialY != j || _lastSpecialX != i+1)) {
-				StructureItem aboveRight = WorldMap.getInstance().getStructure(i+1, j-1);
-				StructureItem bellowRight = WorldMap.getInstance().getStructure(i+1, j+1);
+				StructureItem aboveRight = ServiceManager.getWorldMap().getStructure(i+1, j-1);
+				StructureItem bellowRight = ServiceManager.getWorldMap().getStructure(i+1, j+1);
 				if ((aboveRight == null || aboveRight.getType() != BaseItem.Type.STRUCTURE_WALL) &&
 						(bellowRight == null || bellowRight.getType() != BaseItem.Type.STRUCTURE_WALL)) {
 					doubleWall = true;
@@ -389,7 +386,7 @@ public class WorldRenderer {
 
 		for (int i = fromX-1; i <= toX; i++) {
 			for (int j = fromY-1; j <= toY; j++) {
-				BaseItem item = WorldMap.getInstance().getItem(i, j);
+				BaseItem item = ServiceManager.getWorldMap().getItem(i, j);
 
 				if (item != null) {
 
@@ -433,10 +430,10 @@ public class WorldRenderer {
 
 		for (int i = toX-1; i >= fromX; i--) {
 			for (int j = toY-1; j >= fromY; j--) {
-				WorldArea item = WorldMap.getInstance().getArea(i, j);
+				WorldArea item = ServiceManager.getWorldMap().getArea(i, j);
 				//
 				if (item == null) {
-					item = WorldMap.getInstance().getArea(i, j);
+					item = ServiceManager.getWorldMap().getArea(i, j);
 				}
 
 				if (item != null) {
@@ -450,10 +447,6 @@ public class WorldRenderer {
 			}
 		}
 		ObjectPool.release(text);
-	}
-
-	public static WorldRenderer getInstance() {
-		return _self;
 	}
 
 	public void invalidate(int x, int y) {

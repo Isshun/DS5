@@ -1,11 +1,11 @@
 package alone.in.deepspace.Managers;
 
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Models.Room.Type;
 import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.StructureItem;
 import alone.in.deepspace.World.WorldMap;
-import alone.in.deepspace.World.WorldRenderer;
 
 public class ResourceManager {
 
@@ -41,7 +41,7 @@ public class ResourceManager {
 			return Message.NO_MATTER;
 		}
 
-		WorldRenderer.getInstance().invalidate(item.getX(), item.getY());
+		ServiceManager.getWorldRenderer().invalidate(item.getX(), item.getY());
 
 		if (item.isComplete() == false) {
 			_matter--;
@@ -81,9 +81,9 @@ public class ResourceManager {
 	}
 
 	public void update() {
-		WorldMap worldmap = WorldMap.getInstance();
+		WorldMap worldmap = ServiceManager.getWorldMap();
 		int width = worldmap.getWidth();
-		int height = WorldMap.getInstance().getWidth();
+		int height = ServiceManager.getWorldMap().getWidth();
 
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
@@ -91,16 +91,16 @@ public class ResourceManager {
 				Room room = RoomManager.getInstance().get(x, y);
 				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() && room != null && room.isType(Type.GARDEN)) {
 					worldmap.putItem(BaseItem.Type.RES_1, x, y, 10);
-//					WorldRenderer.getInstance().invalidate(x, y);
+//					ServiceManager.getWorldRenderer().invalidate(x, y);
 				}
 			}
 		}
 	}
 	
 	public void refreshWater() {
-		WorldMap worldmap = WorldMap.getInstance();
+		WorldMap worldmap = ServiceManager.getWorldMap();
 		int width = worldmap.getWidth();
-		int height = WorldMap.getInstance().getWidth();
+		int height = ServiceManager.getWorldMap().getWidth();
 		int water = _water;
 
 		// Re-active working garden
@@ -110,7 +110,7 @@ public class ResourceManager {
 				Room room = RoomManager.getInstance().get(x, y);
 				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() && room != null && room.isType(Type.GARDEN)) {
 					structure.setWorking(water-- > 0);
-					WorldRenderer.getInstance().invalidate(x, y);
+					ServiceManager.getWorldRenderer().invalidate(x, y);
 				}
 			}
 		}
@@ -122,7 +122,7 @@ public class ResourceManager {
 				Room room = RoomManager.getInstance().get(x, y);
 				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() == false && room != null && room.isType(Type.GARDEN)) {
 					structure.setWorking(water-- > 0);
-					WorldRenderer.getInstance().invalidate(x, y);
+					ServiceManager.getWorldRenderer().invalidate(x, y);
 				}
 			}
 		}
@@ -134,7 +134,7 @@ public class ResourceManager {
 				Room room = RoomManager.getInstance().get(x, y);
 				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && (room == null || room.isType(Type.GARDEN) == false)) {
 					structure.setWorking(water-- > 0);
-					WorldRenderer.getInstance().invalidate(x, y);
+					ServiceManager.getWorldRenderer().invalidate(x, y);
 				}
 			}
 		}

@@ -11,7 +11,7 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
 import alone.in.deepspace.Character.Character;
-import alone.in.deepspace.Character.CharacterManager;
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.BaseItem;
@@ -103,7 +103,7 @@ public class DynamicObjectManager {
 		int range = 20;
 
 		if (_countFire++ % 4 != 0) {
-			List<Character> characters = CharacterManager.getInstance().getList();
+			List<Character> characters = ServiceManager.getCharacterManager().getList();
 			for (Character c: characters) {
 				if (c.getX() > x - range && c.getX() < x + range && c.getY() > y - range && c.getY() < y + range ) {
 					int offsetX = Math.abs(c.getX() - x);

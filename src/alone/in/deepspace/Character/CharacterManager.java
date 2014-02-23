@@ -34,7 +34,6 @@ public class CharacterManager implements ISavable {
 		new Profession(Profession.Type.NONE, "", new Color(0, 0, 0), new Color(0, 0, 0))
 	};
 
-	private static CharacterManager	_self;
 	private ArrayList<Character> 	_characters;
 	private int 					_count;
 	private Sprite 					_selection;
@@ -240,8 +239,8 @@ public class CharacterManager implements ISavable {
 //		// Action build
 //		if (job.getAction() == JobManager.Action.BUILD) {
 //		  BaseItem jobItem = job.getItem();
-//		  BaseItem item = WorldMap.getInstance().getItem(job.getX(), job.getY());
-//		  WorldArea area = WorldMap.getInstance().getArea(job.getX(), job.getY());
+//		  BaseItem item = ServiceManager.getWorldMap().getItem(job.getX(), job.getY());
+//		  WorldArea area = ServiceManager.getWorldMap().getArea(job.getX(), job.getY());
 //		  if (item != null && item.isComplete() && area != null && area.isComplete()) {
 //			Log.error("CharacterManager: Job ACTION_BUILD on complete item");
 //			return null;
@@ -253,7 +252,7 @@ public class CharacterManager implements ISavable {
 //			jobItem = area;
 //		  }
 //		  if (jobItem == null) {
-//			jobItem = WorldMap.getInstance().putItem(job.getItemType(), job.getX(), job.getY());
+//			jobItem = ServiceManager.getWorldMap().putItem(job.getItemType(), job.getX(), job.getY());
 //		  }
 //		}
 //
@@ -403,19 +402,6 @@ public class CharacterManager implements ISavable {
 //
 //	  return sprite;
 //	}
-
-
-	public static CharacterManager getInstance() {
-		if (_self == null) {
-			try {
-				_self = new CharacterManager();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return _self;
-	}
 
 
 	public List<Character> getList() {

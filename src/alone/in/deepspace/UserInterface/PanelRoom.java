@@ -34,7 +34,7 @@ public class PanelRoom extends UserSubInterface {
 	public void onRefresh(RenderWindow app) {
 		try {
 			for (int i = 0; i < TEXTS.length; i++) {
-				drawIcon(0, i, i);
+				drawIcon(0, i);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -45,7 +45,7 @@ public class PanelRoom extends UserSubInterface {
 		return _selected;
 	}
 	
-	void	drawIcon(int offset, int index, final int type) throws IOException {
+	void	drawIcon(int offset, final int index) throws IOException {
 		UIIcon icon = _icons.get(index);
 		if (icon == null) {
 			icon = new UIIcon(new Vector2f(62, 80), TEXTS[index], SpriteManager.getInstance().getFloor(null, index, 0));
@@ -57,7 +57,8 @@ public class PanelRoom extends UserSubInterface {
 					for (UIIcon icon: _icons.values()) {
 						icon.setBackground(COLOR_YELLOW);
 					}
-					switch (type) {
+					switch (index) {
+					case 0: _selected = Room.Type.NONE; break;
 					case 1: _selected = Room.Type.QUARTER; break;
 					case 2: _selected = Room.Type.SICKBAY; break;
 					case 3: _selected = Room.Type.ENGINEERING; break;
@@ -71,7 +72,7 @@ public class PanelRoom extends UserSubInterface {
 			});
 			addView(icon);
 
-			_icons.put(type, icon);
+			_icons.put(index, icon);
 		}
 	}
 

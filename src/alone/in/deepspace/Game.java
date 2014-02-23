@@ -16,15 +16,14 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.graphics.Transform;
-import org.jsfml.system.Clock;
 import org.jsfml.system.Time;
 import org.jsfml.window.Keyboard;
-import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.event.Event;
 import org.jsfml.window.event.MouseButtonEvent;
 
 import alone.in.deepspace.Character.CharacterManager;
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Engine.ISavable;
 import alone.in.deepspace.Engine.Viewport;
 import alone.in.deepspace.Managers.DynamicObjectManager;
@@ -35,20 +34,12 @@ import alone.in.deepspace.Managers.RoomManager;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.UserInterface.EventManager;
 import alone.in.deepspace.UserInterface.MenuBase;
-import alone.in.deepspace.UserInterface.MenuSave;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.BaseItem;
-import alone.in.deepspace.World.WorldArea;
-import alone.in.deepspace.World.WorldMap;
 import alone.in.deepspace.World.WorldRenderer;
 
 public class Game implements ISavable {
-
-	static final int 				REFRESH_INTERVAL = (1000/60);
-	static final int 				UPDATE_INTERVAL = 100;
-	
 	public static int 				renderTime;
 	private int 					_renderTime;
 	private RenderWindow			_app;
@@ -69,126 +60,127 @@ public class Game implements ISavable {
 	private DynamicObjectManager	_dynamicObjectManager;
 	private int 					_lastLeftClick;
 	private MenuBase 				_menu;
-	
+
 	public static int getFrame() { return _frame; }
 
 	public Game(RenderWindow app) throws IOException, TextureCreationException {
-	  Log.debug("Game");
+		Log.debug("Game");
 
-	  _renderTime = 0;
+		_renderTime = 0;
 
-	  _app = app;
-	  _lastInput = 0;
-	  _frame = 0;
-	  _viewport = new Viewport(app);
-	  _ui = UserInterface.getInstance();
-	  _ui.init(app, _viewport);
+		_app = app;
+		_lastInput = 0;
+		_frame = 0;
+		_viewport = new Viewport(app);
+		_ui = UserInterface.getInstance();
+		_ui.init(app, _viewport);
 
-	  _spriteManager = SpriteManager.getInstance();
-	  _worldRenderer = new WorldRenderer(app, _spriteManager, _ui);
-	  _dynamicObjectManager = DynamicObjectManager.getInstance();
+		_spriteManager = SpriteManager.getInstance();
+		_worldRenderer = new WorldRenderer(app, _spriteManager, _ui);
+		ServiceManager.setWorldRenderer(_worldRenderer);
+		_dynamicObjectManager = DynamicObjectManager.getInstance();
 
-	  _update = 0;
-	  _characterManager = CharacterManager.getInstance();
-	  _FoeManager = FoeManager.getInstance();
+		_update = 0;
+		_characterManager = ServiceManager.getCharacterManager();
+		_FoeManager = FoeManager.getInstance();
 
-	  // Background
-	  Log.debug("Game background");
-	  _backgroundTexture = new Texture();
-	  _backgroundTexture.loadFromFile((new File("res/background.png")).toPath());
-	  _background = new Sprite();
-	  _background.setTexture(_backgroundTexture);
-	  _background.setTextureRect(new IntRect(0, 0, 1920, 1080));
+		// Background
+		Log.debug("Game background");
+		_backgroundTexture = new Texture();
+		_backgroundTexture.loadFromFile((new File("res/background.png")).toPath());
+		_background = new Sprite();
+		_background.setTexture(_backgroundTexture);
+		_background.setTextureRect(new IntRect(0, 0, 1920, 1080));
 
-	  app.setKeyRepeatEnabled(true);
-	  
-	  Log.info("Game:\tdone");
+		app.setKeyRepeatEnabled(true);
+
+		Log.info("Game:\tdone");
 	}
 
-	void	update() {
+	void	onUpdate() {
 		_dynamicObjectManager.update();
-		
-		WorldMap.getInstance().update();
+
+		ServiceManager.getWorldMap().update();
 
 		// Update item
-		int w = WorldMap.getInstance().getWidth();
-		int h = WorldMap.getInstance().getHeight();
+		int w = ServiceManager.getWorldMap().getWidth();
+		int h = ServiceManager.getWorldMap().getHeight();
 
 		for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
 
 
-//				// Update oxygen
-//				if (_frame % 6 == 0) {
-//					WorldArea area = WorldMap.getInstance().getArea(i, j);
-//					if (area.getStructure() != null && area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-//						int oxygen = area.getOxygen();
-//						int count = 1;
-//
-//						WorldArea a1 = WorldMap.getInstance().getArea(i+1, j);
-//						if (a1.getStructure() == null) {
-//							count++;
-//						}
-//						else if (area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-//							oxygen += a1.getOxygen();
-//							count++;
-//						}
-//
-//						WorldArea a2 = WorldMap.getInstance().getArea(i-1, j);
-//						if (a2.getStructure() == null) {
-//							count++;
-//						}
-//						else if (a2.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-//							oxygen += a2.getOxygen();
-//							count++;
-//						}
-//
-//						WorldArea a3 = WorldMap.getInstance().getArea(i, j+1);
-//						if (a3.getStructure() == null) {
-//							count++;
-//						}
-//						else if (a3.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-//							oxygen += a3.getOxygen();
-//							count++;
-//						}
-//			
-//						WorldArea a4 = WorldMap.getInstance().getArea(i, j-1);
-//						if (a4.getStructure() == null) {
-//							count++;
-//						}
-//						else if (a4.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-//							oxygen += a4.getOxygen();
-//							count++;
-//						}
-//			
-//						int value = (int) Math.ceil((double)oxygen / count);
-//			
-//						  // if (a1 != null && a1.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-//						  // 	a1.setOxygen(value);
-//						  // }
-//			
-//						  // if (a2 != null && a2.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-//						  // 	a2.setOxygen(value);
-//						  // }
-//			
-//						  // if (a3 != null && a3.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-//						  // 	a3.setOxygen(value);
-//						  // }
-//			
-//						  // if (a4 != null && a4.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-//						  // 	a4.setOxygen(value);
-//						  // }
-//			
-//						area.setOxygen(value);
-//					}
-//				}
+				//				// Update oxygen
+				//				if (_frame % 6 == 0) {
+				//					WorldArea area = ServiceManager.getWorldMap().getArea(i, j);
+				//					if (area.getStructure() != null && area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+				//						int oxygen = area.getOxygen();
+				//						int count = 1;
+				//
+				//						WorldArea a1 = ServiceManager.getWorldMap().getArea(i+1, j);
+				//						if (a1.getStructure() == null) {
+				//							count++;
+				//						}
+				//						else if (area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+				//							oxygen += a1.getOxygen();
+				//							count++;
+				//						}
+				//
+				//						WorldArea a2 = ServiceManager.getWorldMap().getArea(i-1, j);
+				//						if (a2.getStructure() == null) {
+				//							count++;
+				//						}
+				//						else if (a2.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+				//							oxygen += a2.getOxygen();
+				//							count++;
+				//						}
+				//
+				//						WorldArea a3 = ServiceManager.getWorldMap().getArea(i, j+1);
+				//						if (a3.getStructure() == null) {
+				//							count++;
+				//						}
+				//						else if (a3.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+				//							oxygen += a3.getOxygen();
+				//							count++;
+				//						}
+				//			
+				//						WorldArea a4 = ServiceManager.getWorldMap().getArea(i, j-1);
+				//						if (a4.getStructure() == null) {
+				//							count++;
+				//						}
+				//						else if (a4.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+				//							oxygen += a4.getOxygen();
+				//							count++;
+				//						}
+				//			
+				//						int value = (int) Math.ceil((double)oxygen / count);
+				//			
+				//						  // if (a1 != null && a1.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+				//						  // 	a1.setOxygen(value);
+				//						  // }
+				//			
+				//						  // if (a2 != null && a2.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+				//						  // 	a2.setOxygen(value);
+				//						  // }
+				//			
+				//						  // if (a3 != null && a3.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+				//						  // 	a3.setOxygen(value);
+				//						  // }
+				//			
+				//						  // if (a4 != null && a4.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+				//						  // 	a4.setOxygen(value);
+				//						  // }
+				//			
+				//						area.setOxygen(value);
+				//					}
+				//				}
 			}
 		}
 
 
-	  // assign works
+		// assign works
 		// if (_update % 10 == 0) {
-		//   WorldMap.getInstance().reloadAborted();
+		//   ServiceManager.getWorldMap().reloadAborted();
 		// }
 
 		// int jobsCount = JobManager.getInstance().getCount();
@@ -199,207 +191,137 @@ public class Game implements ISavable {
 		//   }
 		// }
 
-	  // Characters
-	  _characterManager.assignJobs();
-	  _characterManager.update(_update);
+		// Characters
+		_characterManager.assignJobs();
+		_characterManager.update(_update);
 
-	  // Foes
-	  _FoeManager.checkSurroundings();
+		// Foes
+		_FoeManager.checkSurroundings();
 
-	  _update++;
-	  
-	  if (_update % 600 == 0) {
-		  ResourceManager.getInstance().update();
-	  }
+		_update++;
+
+		if (_update % 600 == 0) {
+			ResourceManager.getInstance().update();
+		}
 	}
 
-	void	refresh(double animProgress) throws IOException {
-	  // Flush
-	  _app.clear(new Color(0, 0, 50));
-	  _frame++;
+	void	onRefresh(double animProgress) throws IOException {
+		// Flush
+		_app.clear(new Color(0, 0, 50));
+		_frame++;
 
-	  // Draw scene
-	  draw_surface();
+		// Draw scene
+		draw_surface();
 
-	  Transform transform = new Transform();
-	  transform = _viewport.getViewTransform(transform);
-	  RenderStates render = new RenderStates(transform);
-	  
-	  _characterManager.refresh(_app, render, animProgress);
-	  _FoeManager.refresh(_app, render, animProgress);
+		Transform transform = new Transform();
+		transform = _viewport.getViewTransform(transform);
+		RenderStates render = new RenderStates(transform);
+
+		_characterManager.refresh(_app, render, animProgress);
+		_FoeManager.refresh(_app, render, animProgress);
 
 		_dynamicObjectManager.refresh(_app, render, animProgress);
-	  
-	  // User interface
-	  _ui.refresh(_frame, _update, _renderTime);
 
-	  if (_menu != null) {
-		  _menu.refresh(_app);
-	  }
-	  
-	  //TODO
-	  //srand(_seed + _frame++);
+		// User interface
+		_ui.refresh(_frame, _update, _renderTime);
+
+		if (_menu != null) {
+			_menu.refresh(_app);
+		}
+
+		//TODO
+		//srand(_seed + _frame++);
 	}
 
 	void	draw_surface() {
-	  // Background
-	  Transform transform2 = new Transform();
-	  RenderStates render2 = new RenderStates(_viewport.getViewTransformBackground(transform2));
-	  _app.draw(_background, render2);
+		// Background
+		Transform transform2 = new Transform();
+		RenderStates render2 = new RenderStates(_viewport.getViewTransformBackground(transform2));
+		_app.draw(_background, render2);
 
-	  // Render transformation for viewport
-	  Transform transform = new Transform();
-	  RenderStates render = new RenderStates(_viewport.getViewTransform(transform));
-	  _worldRenderer.refresh(render);
+		// Render transformation for viewport
+		Transform transform = new Transform();
+		RenderStates render = new RenderStates(_viewport.getViewTransform(transform));
+		_worldRenderer.refresh(render);
 	}
 
-	void	loop() throws IOException, InterruptedException {
-		// fixme: actuellement update et refresh se partage les meme timers
-		Clock display_timer = new Clock();
-		Clock timer = new Clock();
+	public void onEvent(Event event) throws IOException {
+		if (event.type == Event.Type.MOUSE_MOVED) {
+			_ui.onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
+		}
 
-		_run = true;
-		_last_refresh = display_timer.getElapsedTime();
-		_last_update = display_timer.getElapsedTime();
-
-		while (_run && _app.isOpen()) {
-			timer.restart();
-
-			// Events
-			Event event = null;
-			while ((event = _app.pollEvent()) != null) {
-				if (event.type == Event.Type.MOUSE_MOVED) {
-					_ui.onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
+		if (event.type == Event.Type.MOUSE_BUTTON_PRESSED || event.type == Event.Type.MOUSE_BUTTON_RELEASED) {
+			MouseButtonEvent mouseButtonEvent = event.asMouseButtonEvent();
+			if (mouseButtonEvent.button == Button.LEFT) {
+				if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
+					_ui.onLeftPress(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+				} else {
+					// Is consume by EventManager
+					if (EventManager.getInstance().leftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y)) {
+						// Nothing to do !
+					}
+					// Is double click
+					else if (_lastLeftClick + 20 > _frame) {
+						_ui.onDoubleClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+					}
+					// Is simple click
+					else {
+						_ui.onLeftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+					}
+					_lastLeftClick = _frame;
 				}
-
-				if (event.type == Event.Type.MOUSE_BUTTON_PRESSED || event.type == Event.Type.MOUSE_BUTTON_RELEASED) {
-					MouseButtonEvent mouseButtonEvent = event.asMouseButtonEvent();
-					if (mouseButtonEvent.button == Button.LEFT) {
-						if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
-							_ui.onLeftPress(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
-						} else {
-							// Is consume by EventManager
-							if (EventManager.getInstance().leftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y)) {
-								// Nothing to do !
-							}
-							// Is double click
-							else if (_lastLeftClick + 20 > _frame) {
-								_ui.onDoubleClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
-							}
-							// Is simple click
-							else {
-								_ui.onLeftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
-							}
-							_lastLeftClick = _frame;
-						}
-					} else if (mouseButtonEvent.button == Button.RIGHT) {
-						if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
-							_ui.onRightPress(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
-						} else {
-							_ui.onRightClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
-						}
-					}
-					//_ui.mouseRelease(event.asMouseButtonEvent().button, event.asMouseButtonEvent().position.x, event.asMouseButtonEvent().position.y);
+			} else if (mouseButtonEvent.button == Button.RIGHT) {
+				if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
+					_ui.onRightPress(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+				} else {
+					_ui.onRightClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
 				}
+			}
+			//_ui.mouseRelease(event.asMouseButtonEvent().button, event.asMouseButtonEvent().position.x, event.asMouseButtonEvent().position.y);
+		}
 
-				if (event.type == Event.Type.MOUSE_WHEEL_MOVED) {
-					_ui.onMouseWheel(event.asMouseWheelEvent().delta, event.asMouseWheelEvent().position.x, event.asMouseWheelEvent().position.y);
-				}
+		if (event.type == Event.Type.MOUSE_WHEEL_MOVED) {
+			_ui.onMouseWheel(event.asMouseWheelEvent().delta, event.asMouseWheelEvent().position.x, event.asMouseWheelEvent().position.y);
+		}
 
-				// Check key code
-				if (event.type == Event.Type.KEY_RELEASED) {
+		// Check key code
+		if (event.type == Event.Type.KEY_RELEASED) {
+			// If not consumes by UI
+			if (_ui.checkKeyboard(event, _frame, _lastInput) == false) {
+				Log.info("Game: suspend");
 
-					if (event.asKeyEvent().control && event.asKeyEvent().key == Key.S) {
-						//save("saves/2.sav");
-						_menu = new MenuSave(this);
-						continue;
-					}
-					
-					if (event.asKeyEvent().key == Key.DOWN) {
-						if (_menu != null) {
-							_menu.onKeyDown();
-						}
-						continue;
-					}
-					
-					if (event.asKeyEvent().key == Key.UP) {
-						if (_menu != null) {
-							_menu.onKeyUp();
-						}
-						continue;
-					}
-					
-					if (event.asKeyEvent().key == Key.RETURN) {
-						if (_menu != null) {
-							_menu.onKeyEnter();
-						}
-						continue;
-					}
-					
-					// If not consumes by UI
-					if (_ui.checkKeyboard(event, _frame, _lastInput) == false) {
-						Log.info("Game: suspend");
-
-					if (event.asKeyEvent().key == Keyboard.Key.ESCAPE) {
-						_run = false;
-						Log.info("Game: suspend");
-						}
-					}
-				}
-
-			  if (event.type == Event.Type.CLOSED) {
-					_app.setKeyRepeatEnabled(false);
-					_app.close();
-					Log.info("Bye");
-				  }
-
-				  // if (this.event.type == Event.KeyReleased &&
-				  // 	  this.event.key.code == Keyboard.Escape) {
-					
-				  // }
-
-				  if (event.type == Event.Type.KEY_RELEASED && event.asKeyEvent().key == Keyboard.Key.K) {
+				if (event.asKeyEvent().key == Keyboard.Key.ESCAPE) {
 					_run = false;
-					// _app.setKeyRepeatEnabled(false);
-					Log.info("Bye");
-				  }
+					Log.info("Game: suspend");
+				}
 			}
+		}
 
-			Time elapsed = display_timer.getElapsedTime();
+		if (event.type == Event.Type.CLOSED) {
+			_app.setKeyRepeatEnabled(false);
+			_app.close();
+			Log.info("Bye");
+		}
 
-			long nextUpdate = _last_update.asMilliseconds() + UPDATE_INTERVAL - elapsed.asMilliseconds();
-			long nextRefresh = _last_refresh.asMilliseconds() + REFRESH_INTERVAL - elapsed.asMilliseconds();
+		// if (this.event.type == Event.KeyReleased &&
+		// 	  this.event.key.code == Keyboard.Escape) {
 
-			// Refresh
-			if (nextRefresh <= 0) {
-			  //_renderTime = (int) (elapsed.asMilliseconds() - _last_refresh.asMilliseconds());
-			  _last_refresh = elapsed;
-			  double animProgress = 1 - (double)nextUpdate / UPDATE_INTERVAL;
-			  refresh(animProgress);
-			  _app.display();
-			} else {
-				int currentRenderTime = (int) (elapsed.asMilliseconds() - _last_refresh.asMilliseconds());
-				_renderTime = (_renderTime * 7 + currentRenderTime) / 8;
-				renderTime = _renderTime;
-			  Thread.sleep(nextRefresh);
-			}
+		// }
 
-			// Update
-			if (nextUpdate <= 0) {
-			  _last_update = elapsed;
-			  update();
-			}
-
+		if (event.type == Event.Type.KEY_RELEASED && event.asKeyEvent().key == Keyboard.Key.K) {
+			_run = false;
+			// _app.setKeyRepeatEnabled(false);
+			Log.info("Bye");
 		}
 	}
 
 	void	create() {
-	  Log.info("Game: create");
+		Log.info("Game: create");
 
-	  ResourceManager.getInstance().setMatter(Constant.RESSOURCE_MATTER_START);
+		ResourceManager.getInstance().setMatter(Constant.RESSOURCE_MATTER_START);
 
-	  WorldMap.getInstance().create();
-	  CharacterManager.getInstance().create();
+		ServiceManager.getWorldMap().create();
+		ServiceManager.getCharacterManager().create();
 	}
 
 	public void	load(final String filePath) {
@@ -446,12 +368,12 @@ public class Game implements ISavable {
 			e.printStackTrace();
 		}
 
-	  WorldMap.getInstance().load(filePath);
-	  ResourceManager.getInstance().refreshWater();
-	  
-	  CharacterManager.getInstance().load(filePath);
-	  RoomManager.getInstance().load(filePath);
-	  JobManager.getInstance().load(filePath);
+		ServiceManager.getWorldMap().load(filePath);
+		ResourceManager.getInstance().refreshWater();
+
+		ServiceManager.getCharacterManager().load(filePath);
+		RoomManager.getInstance().load(filePath);
+		JobManager.getInstance().load(filePath);
 	}
 
 	public void	save(final String filePath) {
@@ -472,10 +394,10 @@ public class Game implements ISavable {
 
 		Log.info("Save game: " + filePath + " done");
 
-	  WorldMap.getInstance().save(filePath);
-	  CharacterManager.getInstance().save(filePath);
-	  RoomManager.getInstance().save(filePath);
-	  JobManager.getInstance().save(filePath);
+		ServiceManager.getWorldMap().save(filePath);
+		ServiceManager.getCharacterManager().save(filePath);
+		RoomManager.getInstance().save(filePath);
+		JobManager.getInstance().save(filePath);
 	}
 
 }

@@ -26,6 +26,7 @@ public abstract class UIView {
 	protected int 			_paddingRight;
 	protected int 			_paddingTop;
 	private UIFrame _parent;
+	private OnClickListener _onClickListener;
 
 	public UIView(Vector2f size) {
 		_size = size;
@@ -53,7 +54,14 @@ public abstract class UIView {
 	}
 	
 	public void setOnClickListener(OnClickListener onClickListener) {
+		_onClickListener = onClickListener;
 		EventManager.getInstance().setOnClickListener(this, onClickListener);
+	}
+
+	public void click() {
+		if (_onClickListener != null) {
+			_onClickListener.onClick(this);
+		}
 	}
 
 	public Rectangle getRect() {

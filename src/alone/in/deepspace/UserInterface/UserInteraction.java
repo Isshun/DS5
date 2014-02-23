@@ -9,6 +9,7 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.Transform;
 import org.jsfml.window.Mouse;
 
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Engine.MainRenderer;
 import alone.in.deepspace.Engine.Viewport;
 import alone.in.deepspace.Managers.JobManager;
@@ -16,7 +17,6 @@ import alone.in.deepspace.Models.Cursor;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.BaseItem;
-import alone.in.deepspace.World.WorldMap;
 import alone.in.deepspace.World.BaseItem.Type;
 
 
@@ -60,8 +60,8 @@ public class UserInteraction {
 	void	drawCursor(int startX, int startY, int toX, int toY) {
 		startX = Math.max(startX, 0);
 		startY = Math.max(startY, 0);
-		toX = Math.min(toX, WorldMap.getInstance().getWidth());
-		toY = Math.min(toY, WorldMap.getInstance().getHeight());
+		toX = Math.min(toX, ServiceManager.getWorldMap().getWidth());
+		toY = Math.min(toY, ServiceManager.getWorldMap().getHeight());
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
 				Transform transform = new Transform();
@@ -164,18 +164,18 @@ public class UserInteraction {
 					if (x == startX || x == toX || y == startY || y == toY) {
 						Log.warning("1");
 						JobManager.getInstance().build(BaseItem.Type.STRUCTURE_WALL, x, y);
-						// item = WorldMap.getInstance().putItem(x, y, BaseItem.STRUCTURE_WALL);
+						// item = ServiceManager.getWorldMap().putItem(x, y, BaseItem.STRUCTURE_WALL);
 					} else {
 						Log.warning("2");
 						JobManager.getInstance().build(BaseItem.Type.STRUCTURE_FLOOR, x, y);
-						// item = WorldMap.getInstance().putItem(x, y, BaseItem.STRUCTURE_FLOOR);
+						// item = ServiceManager.getWorldMap().putItem(x, y, BaseItem.STRUCTURE_FLOOR);
 					}
 				} else {
-					// item = WorldMap.getInstance().putItem(x, y, _menu.getBuildItemType());
+					// item = ServiceManager.getWorldMap().putItem(x, y, _menu.getBuildItemType());
 					if (type != BaseItem.Type.NONE) {
 						Log.warning("3 " + type + " " + BaseItem.getItemName(type));
 						JobManager.getInstance().build(type, x, y);
-						// item = WorldMap.getInstance().putItem(x, y, type);
+						// item = ServiceManager.getWorldMap().putItem(x, y, type);
 					}
 				}
 
@@ -188,7 +188,7 @@ public class UserInteraction {
 	public void removeItem(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				WorldMap.getInstance().removeItem(x, y);
+				ServiceManager.getWorldMap().removeItem(x, y);
 			}
 		}
 	}
@@ -206,7 +206,7 @@ public class UserInteraction {
 	public void removeStructure(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				WorldMap.getInstance().removeStructure(x, y);
+				ServiceManager.getWorldMap().removeStructure(x, y);
 			}
 		}
 	}

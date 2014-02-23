@@ -2,10 +2,7 @@ package alone.in.deepspace.Models;
 import java.util.ArrayList;
 import java.util.List;
 
-import alone.in.deepspace.Models.Room.Type;
 import alone.in.deepspace.World.BaseItem;
-import alone.in.deepspace.World.WorldArea;
-import alone.in.deepspace.World.WorldMap;
 
 
 public class Room {
@@ -52,7 +49,7 @@ public class Room {
 	//	  }
 	//
 	//	  else if (ret > 0) {
-	//		Room room = WorldMap.getInstance().getRoom(ret);
+	//		Room room = ServiceManager.getWorldMap().getRoom(ret);
 	//		if (room != null) {
 	//		  setZone(x, y, ret, room.getZoneId());
 	//		  Log.info("Room set: " + ret);
@@ -80,11 +77,11 @@ public class Room {
 //	public void			setZoneId(int zoneId) {
 //		_zoneId = zoneId;
 //
-//		int w = WorldMap.getInstance().getWidth();
-//		int h = WorldMap.getInstance().getHeight();
+//		int w = ServiceManager.getWorldMap().getWidth();
+//		int h = ServiceManager.getWorldMap().getHeight();
 //		for (int i = 0; i < w; i++) {
 //			for (int j = 0; j < h; j++) {
-//				WorldArea item = WorldMap.getInstance().getArea(i, j);
+//				WorldArea item = ServiceManager.getWorldMap().getArea(i, j);
 //				if (item != null && item.getRoomId() == _id) {
 //					item.setZoneId(zoneId);
 //				}
@@ -93,7 +90,7 @@ public class Room {
 //	}
 
 	//	static int	checkZone(int x, int y, int id) {
-	//	  WorldArea item = WorldMap.getInstance().getArea(x, y);
+	//	  WorldArea item = ServiceManager.getWorldMap().getArea(x, y);
 	//
 	//	  // Out of bound or empty
 	//	  if (item == null) {
@@ -145,7 +142,7 @@ public class Room {
 	//	}
 
 	//	public static void	setZone(int x, int y, int roomId, int zoneId) {
-	//	  WorldArea item = WorldMap.getInstance().getArea(x, y);
+	//	  WorldArea item = ServiceManager.getWorldMap().getArea(x, y);
 	//
 	//	  // Out of bound or empty
 	//	  if (item == null) {

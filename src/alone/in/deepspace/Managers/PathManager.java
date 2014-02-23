@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.Executors;
 
-import org.jsfml.graphics.Sprite;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.Path;
@@ -13,11 +12,10 @@ import org.newdawn.slick.util.pathfinding.PathFinder;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.Character.Character;
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Models.Position;
-import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.WorldMap;
 import alone.in.deepspace.World.WorldMap.DebugPos;
 
 public class PathManager {
@@ -94,11 +92,11 @@ public class PathManager {
 		// exit(0);
 
 		// std.list<Job*> list;
-		// int w = WorldMap.getInstance()getWidth();
-		// int h = WorldMap.getInstance()getHeight();
+		// int w = ServiceManager.getWorldMap()getWidth();
+		// int h = ServiceManager.getWorldMap()getHeight();
 		// for (int i = w-1; i >= 0; i--) {
 		// 	for (int j = h-1; j >= 0; j--) {
-		// 	  Job* item = WorldMap.getInstance()getArea(i, j);
+		// 	  Job* item = ServiceManager.getWorldMap()getArea(i, j);
 		// 	  if (item != NULL && itemgetType() == Job.STRUCTURE_DOOR) {
 		// 		Debug() << "Door at pos: " << i << " x " << j;
 		// 		list.push_back(item);
@@ -174,7 +172,7 @@ public class PathManager {
 	//		  // 	 do {
 	//		  // 	   SearchState = astarsearchSearchStep();
 	//		  // 	   SearchSteps++;
-	//		  // 	   WorldMap.getInstance()dump();
+	//		  // 	   ServiceManager.getWorldMap()dump();
 	//		  // 	   // if (SearchSteps > 10000 && SearchSteps % 100 == 0)
 	//		  // 	   // 	 Debug() << "PathManager: step " << SearchSteps;
 	//		  // 	 }
@@ -270,8 +268,8 @@ public class PathManager {
 		Executors.newSingleThreadExecutor().execute(new Runnable() {
 			@Override
 			public void run() {
-				WorldMap.getInstance().startDebug(character.getPosX(), character.getPosY());
-				WorldMap.getInstance().stopDebug(job.getX(), job.getY());
+				ServiceManager.getWorldMap().startDebug(character.getPosX(), character.getPosY());
+				ServiceManager.getWorldMap().stopDebug(job.getX(), job.getY());
 
 				//Log.info("getPathAsync: " + character.getX() + ", " + character.getY() + ", " + job.getX() + ", " + job.getY());
 				Log.debug("getPathAsync");
@@ -290,7 +288,7 @@ public class PathManager {
 
 				long sum = getSum(character.getPosX(), character.getPosY(), job.getX(), job.getY());
 
-				PathFinder finder = new AStarPathFinder(WorldMap.getInstance(), 500, true);
+				PathFinder finder = new AStarPathFinder(ServiceManager.getWorldMap(), 500, true);
 				Path rawpath = finder.findPath(new Mover() {}, character.getPosX(), character.getPosY(), job.getX(), job.getY());
 				if (rawpath != null) {
 					for (int i = 0; i < rawpath.getLength(); i++) {
@@ -298,7 +296,7 @@ public class PathManager {
 					}
 					_pool.put(sum, new OldPath(path));
 
-					Vector<DebugPos> debugPath = WorldMap.getInstance().getDebug();
+					Vector<DebugPos> debugPath = ServiceManager.getWorldMap().getDebug();
 					if (debugPath != null) {
 						for (DebugPos pos: debugPath) {
 							if (inCompletePath(path, pos.x, pos.y)) {

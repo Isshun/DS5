@@ -9,7 +9,6 @@ import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.StructureItem;
-import alone.in.deepspace.World.WorldMap;
 
 public class Character extends Movable {
 
@@ -203,7 +202,7 @@ public class Character extends Movable {
 	}
 
 	public void	setProfession(Profession.Type professionId) {
-		Profession[] professions = CharacterManager.getInstance().getProfessions();
+		Profession[] professions = ServiceManager.getCharacterManager().getProfessions();
 
 		for (int i = 0; i < professions.length; i++) {
 			Profession profession = professions[i];
@@ -244,7 +243,7 @@ public class Character extends Movable {
 
 	//   // If character currently building item: abort
 	//   if (_job != null && _job.getItem() != null && _job.getItem().isComplete() == false) {
-	// 	WorldMap.getInstance().buildAbort(_job.getItem());
+	// 	ServiceManager.getWorldMap().buildAbort(_job.getItem());
 	// 	_job = null;
 	//   }
 
@@ -315,7 +314,7 @@ public class Character extends Movable {
 
 			// // Sleep in chair
 			// {
-			//   BaseItem item = WorldMap.getInstance().find(BaseItem.QUARTER_CHAIR, true);
+			//   BaseItem item = ServiceManager.getWorldMap().find(BaseItem.QUARTER_CHAIR, true);
 			//   if (item != null) {
 			// 	PathManager.getInstance().getPathAsync(this, item);
 			// 	_goal = GOAL_USE;
@@ -336,14 +335,14 @@ public class Character extends Movable {
 
 		// 	// If character already go to needed item
 		// 	if (_path != null) {
-		// 	  BaseItem item = WorldMap.getInstance().getItem(_toX, _toY);
+		// 	  BaseItem item = ServiceManager.getWorldMap().getItem(_toX, _toY);
 		// 	  if (item != null && item.getType() == BaseItem.BAR_PUB) {
 		// 		return;
 		// 	  }
 		// 	}
 
 		// 	Debug() + "Charactere #" + _id + ": need food";
-		// 	BaseItem item = WorldMap.getInstance().find(BaseItem.BAR_PUB, false);
+		// 	BaseItem item = ServiceManager.getWorldMap().find(BaseItem.BAR_PUB, false);
 		// 	if (item != null) {
 		// 	  Debug() + "Charactere #" + _id + ": Go to pub !";
 
@@ -428,7 +427,7 @@ public class Character extends Movable {
 		}
 
 		// Item is no longer exists
-		if (_job.getItem() != WorldMap.getInstance().getItem(_job.getX(), _job.getY())) {
+		if (_job.getItem() != ServiceManager.getWorldMap().getItem(_job.getX(), _job.getY())) {
 			Log.warning("Character #" + _id + ": actionUse on invalide item");
 			JobManager.getInstance().abort(_job, Job.Abort.INVALIDE);
 			_job = null;
@@ -449,7 +448,7 @@ public class Character extends Movable {
 		// Bar
 		if (type == BaseItem.Type.BAR_PUB) {
 			_needs.eat();
-			// BaseItem item = WorldMap.getInstance().getRandomPosInRoom(item.getRoomId());
+			// BaseItem item = ServiceManager.getWorldMap().getRandomPosInRoom(item.getRoomId());
 			// if (item != null) {
 			// 	PathManager.getInstance().getPathAsync(this, item);
 			// 	_goal = GOAL_MOVE;
@@ -473,7 +472,7 @@ public class Character extends Movable {
 	}
 
 	private void		actionStore() {
-		WorldMap.getInstance().storeItem(BaseItem.Type.RES_1, _job.getX(), _job.getY());
+		ServiceManager.getWorldMap().storeItem(BaseItem.Type.RES_1, _job.getX(), _job.getY());
 		JobManager.getInstance().complete(_job);
 		_job = null;
 		_carry = 0;
@@ -490,8 +489,8 @@ public class Character extends Movable {
 
 		// Item is no longer exists
 		BaseItem item = _job.getItem();
-		StructureItem currentStructure = WorldMap.getInstance().getStructure(_job.getX(), _job.getY());
-		BaseItem currentItem = WorldMap.getInstance().getItem(_job.getX(), _job.getY());
+		StructureItem currentStructure = ServiceManager.getWorldMap().getStructure(_job.getX(), _job.getY());
+		BaseItem currentItem = ServiceManager.getWorldMap().getItem(_job.getX(), _job.getY());
 		if (item != currentStructure && item != currentItem) {
 			if (item != currentStructure) {
 				Log.warning("Character #" + _id + ": actionBuild on invalide structure");
@@ -546,7 +545,7 @@ public class Character extends Movable {
 		}
 
 
-		int value = WorldMap.getInstance().gather(_job.getItem(), getProfessionScore(Profession.Type.NONE));
+		int value = ServiceManager.getWorldMap().gather(_job.getItem(), getProfessionScore(Profession.Type.NONE));
 
 		Log.debug("gather: " + value);
 
@@ -562,7 +561,7 @@ public class Character extends Movable {
 
 	private void		actionDestroy() {
 		ResourceManager.getInstance().addMatter(1);
-		WorldMap.getInstance().removeItem(_job.getItem());
+		ServiceManager.getWorldMap().removeItem(_job.getItem());
 		JobManager.getInstance().complete(_job);
 		_job = null;
 	}
