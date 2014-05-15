@@ -34,7 +34,7 @@ public class Constant {
 	public static final int CHARACTER_INIT_OXYGEN = 100;
 	public static final int CHARACTER_INIT_HAPPINESS =80;
 	public static final int CHARACTER_INIT_HEALTH = 80;
-	public static final int CHARACTER_INIT_ENERGY = 100;
+	public static final int CHARACTER_INIT_ENERGY = 0;
 
 	public static final int CHARACTER_MAX_MESSAGE = 10;
 
@@ -43,10 +43,10 @@ public class Constant {
 	public static final int BLOCKED_COUNT_BEFORE_MESSAGE = 2;
 	public static final int MOVE_VIEW_OFFSET = 10;
 	public static final int FONT_SIZE = 20;
-	public static final int PANEL_WIDTH = 380;
+	public static final int PANEL_WIDTH = 420;
 	public static final int PANEL_HEIGHT = WINDOW_HEIGHT;
-	public static final int WORLD_WIDTH = 200;
-	public static final int WORLD_HEIGHT = 100;
+	public static final int WORLD_WIDTH = 50;
+	public static final int WORLD_HEIGHT = 50;
 	public static final int CHARACTER_CARRY_CAPACITY = 10;
 
 	

@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.deepspace.UserInterface.Panels;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +10,8 @@ import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
 import alone.in.deepspace.Managers.SpriteManager;
+import alone.in.deepspace.UserInterface.UserInteraction;
+import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.UserInterface.Utils.OnClickListener;
 import alone.in.deepspace.UserInterface.Utils.UIIcon;
 import alone.in.deepspace.UserInterface.Utils.UIText;
@@ -42,7 +44,7 @@ public class PanelBuild extends UserSubInterface {
 	protected Type _currentSelected;
 	protected Mode _mode;
 
-	PanelBuild(RenderWindow app, int tileIndex, UserInteraction interaction) throws IOException {
+	public PanelBuild(RenderWindow app, int tileIndex, UserInteraction interaction) throws IOException {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 
 		setBackgroundColor(new Color(200, 200, 50, 140));
@@ -151,8 +153,8 @@ public class PanelBuild extends UserSubInterface {
 			drawIcon(500, 3, BaseItem.Type.ENVIRONMENT_TEMPERATURE_REGULATION.ordinal());
 
 			// Special
-			drawIcon(650, 0, BaseItem.Type.SPECIAL_ZYGOTE.ordinal());
-			drawIcon(650, 1, BaseItem.Type.SPECIAL_ROBOT_MAKER.ordinal());
+			drawIcon(650, 0, BaseItem.Type.SCIENCE_ZYGOTE.ordinal());
+			drawIcon(650, 1, BaseItem.Type.SCIENCE_ROBOT_MAKER.ordinal());
 
 			// Tactical
 			drawIcon(750, 0, BaseItem.Type.TACTICAL_PHASER.ordinal());
@@ -244,7 +246,7 @@ public class PanelBuild extends UserSubInterface {
 		//	  _app.draw(text);
 	}
 
-	protected boolean	checkKey(Keyboard.Key key) {
+	public boolean	checkKey(Keyboard.Key key) {
 		super.checkKey(key);
 
 		if (isOpen()) {

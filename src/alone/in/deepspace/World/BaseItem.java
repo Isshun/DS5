@@ -33,9 +33,11 @@ public class BaseItem {
 		new ItemInfo(Type.ARBORETUM_TREE_7,							"7", false,	1, 1, 1, 0, 0),
 		new ItemInfo(Type.ARBORETUM_TREE_8,							"8", false,	1, 1, 1, 0, 0),
 		new ItemInfo(Type.ARBORETUM_TREE_9,							"9", false,	1, 1, 1, 0, 0),
-		new ItemInfo(Type.SPECIAL_ZYGOTE,							"ZYGOTE", false,	1, 1, 1, 0, 0),
-		new ItemInfo(Type.SPECIAL_ROBOT_MAKER,						"ROBOT MAKER", false,	1, 1, 1, 0, 0),
+		new ItemInfo(Type.SCIENCE_ZYGOTE,							"ZYGOTE", false,	1, 1, 1, 0, 0),
+		new ItemInfo(Type.SCIENCE_ROBOT_MAKER,						"ROBOT MAKER", false,	1, 1, 1, 0, 0),
 		new ItemInfo(Type.ENVIRONMENT_O2_RECYCLER,					"RECYCLER", false,	1, 2, 10, 10, 0),
+		new ItemInfo(Type.RES_1,									"RES_1", false,	1, 1, 0, 0, 0),
+		new ItemInfo(Type.SPECIAL_STORAGE,							"STORAGE", false,	1, 1, 0, 0, 0),
 		new ItemInfo(Type.NONE,										"NONE", false,	0, 0, 0, 0, 0)
 	};
 
@@ -92,8 +94,9 @@ public class BaseItem {
 		TACTICAL_CLOAKING_DEVICE,
 		SCIENCE_HYDROPONICS,
 		RES_1,
-		SPECIAL_ZYGOTE,
-		SPECIAL_ROBOT_MAKER,
+		SCIENCE_ZYGOTE,
+		SCIENCE_ROBOT_MAKER,
+		SPECIAL_STORAGE,
 		ITEM_STOP,
 	};
 
@@ -101,16 +104,16 @@ public class BaseItem {
 	private int			_x;
 	private int			_y;
 	private int			_id;
-	private boolean 		_isSolid;
-	private int 			_matterSupply;
-	private int 			_zoneIdRequired;
+	private boolean 	_isSolid;
+	private int 		_matterSupply;
+	private int 		_zoneIdRequired;
 	private Character 	_owner;
 	private String 		_name;
-	private int 			_width;
-	private int 			_height;
-	private int 			_matter;
-	private int 			_power;
-	private int 			_powerSupply;
+	private int 		_width;
+	private int 		_height;
+	private int 		_matter;
+	private int 		_power;
+	private int 		_powerSupply;
 	private int 		_mode;
 	private int 		_nbMode;
 	private int 		_maxId;
@@ -263,8 +266,9 @@ public class BaseItem {
 		case TACTICAL_CLOAKING_DEVICE: return "cloaking device";
 		case SCIENCE_HYDROPONICS: return "hydroponics";
 		case RES_1: return "res 1";
-		case SPECIAL_ROBOT_MAKER: return "Robot maker";
-		case SPECIAL_ZYGOTE: return "Zygote";
+		case SCIENCE_ROBOT_MAKER: return "Robot maker";
+		case SCIENCE_ZYGOTE: return "Zygote";
+		case SPECIAL_STORAGE: return "Storage";
 		default: return "unknow_item";
 		}
 	}
@@ -343,9 +347,10 @@ public class BaseItem {
 		if (type == 49) { return Type.TACTICAL_CLOAKING_DEVICE; }
 		if (type == 50) { return Type.SCIENCE_HYDROPONICS; }
 		if (type == 51) { return Type.RES_1; }
-		if (type == 52) { return Type.SPECIAL_ZYGOTE; }
-		if (type == 53) { return Type.SPECIAL_ROBOT_MAKER; }
-		if (type == 54) { return Type.ITEM_STOP; }
+		if (type == 52) { return Type.SCIENCE_ZYGOTE; }
+		if (type == 53) { return Type.SCIENCE_ROBOT_MAKER; }
+		if (type == 54) { return Type.SPECIAL_STORAGE; }
+		if (type == 55) { return Type.ITEM_STOP; }
 		return Type.NONE;
 	}
 

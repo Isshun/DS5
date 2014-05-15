@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.deepspace.UserInterface.Panels;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.jsfml.system.Vector2f;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.Job;
+import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.World.BaseItem;
 
@@ -20,11 +21,11 @@ public class PanelJobs extends UserSubInterface {
 	private static final Color 	COLOR_DESTROY = new Color(200, 20, 20);
 	private static final Color 	COLOR_STORE = new Color(180, 100, 255);
 	private static final Color 	COLOR_QUEUE = new Color(255, 255, 20);
-	private static final int 	FRAME_WIDTH = 380;
+	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 
 	public PanelJobs(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		
 		setBackgroundColor(new Color(0, 0, 0, 180));
 	}
@@ -93,6 +94,14 @@ public class PanelJobs extends UserSubInterface {
 				  case NO_MATTER:
 					  text.setColor(COLOR_BLOCKED);
 					  oss += " (no matter)";
+				case INVALIDE:
+					  oss += " (invalide)";
+					break;
+				case NO_LEFT_CARRY:
+					  oss += " (no left carry)";
+					break;
+				default:
+					break;
 				  }
 			  } else {
 				  text.setColor(COLOR_QUEUE);

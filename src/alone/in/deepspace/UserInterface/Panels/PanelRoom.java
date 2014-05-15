@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.deepspace.UserInterface.Panels;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,6 +11,7 @@ import org.jsfml.system.Vector2f;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Models.Room.Type;
+import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.UserInterface.Utils.OnClickListener;
 import alone.in.deepspace.UserInterface.Utils.UIIcon;
 import alone.in.deepspace.UserInterface.Utils.UIView;
@@ -18,7 +19,7 @@ import alone.in.deepspace.Utils.Constant;
 
 public class PanelRoom extends UserSubInterface {
 	private static final Color COLOR_YELLOW = new Color(236, 201, 37);
-	private static final int 		FRAME_WIDTH = 380;
+	private static final int 		FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	private static final String[]	TEXTS = {"Remove", "Quarter", "Sickbay", "Engineering", "Pub", "Holodeck", "Store", "Garden"};
 	

@@ -1,7 +1,10 @@
 package alone.in.deepspace.World;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jsfml.graphics.Color;
@@ -18,6 +21,9 @@ import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
 import alone.in.deepspace.Character.ServiceManager;
+import alone.in.deepspace.Managers.PathManager;
+import alone.in.deepspace.Managers.Region;
+import alone.in.deepspace.Managers.Region.Door;
 import alone.in.deepspace.Managers.RoomManager;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.Room;
@@ -93,10 +99,12 @@ public class WorldRenderer {
 			_hasChanged = false;
 		}
 		_app.draw(_sprite, render);
-		long elapsed = display_timer.getElapsedTime().asMicroseconds();
-		if (elapsed > 4000)
-			Log.info("display floor: " + elapsed);
+		long elapsed = display_timer.getElapsedTime().asMilliseconds();
+		if (elapsed > 3)
+			Log.info("display floor: " + elapsed + "ms");
 
+		drawDebug(render, fromX, fromY, toX, toY);
+		
 //		display_timer.restart();
 //		Log.info("display structure: " + display_timer.getElapsedTime().asMicroseconds());
 
@@ -293,9 +301,19 @@ public class WorldRenderer {
 				if (wallOnRight && wallOnLeft) {
 					sprite = _spriteManager.getWall(item, 5, 0, 0);
 				} else if (wallOnLeft) {
-					sprite = _spriteManager.getWall(item, 5, 2, 0);
+					boolean wallOnSupRight = right != null && (right.isType(BaseItem.Type.STRUCTURE_WALL) || right.isType(BaseItem.Type.STRUCTURE_DOOR));
+					if (wallOnSupRight) {
+						sprite = _spriteManager.getWall(item, 1, 5, 0);
+					} else {
+						sprite = _spriteManager.getWall(item, 5, 2, 0);
+					}
 				} else if (wallOnRight) {
-					sprite = _spriteManager.getWall(item, 5, 1, 0);
+					boolean wallOnSupLeft = left != null && (left.isType(BaseItem.Type.STRUCTURE_WALL) || left.isType(BaseItem.Type.STRUCTURE_DOOR));
+					if (wallOnSupLeft) {
+						sprite = _spriteManager.getWall(item, 1, 4, 0);
+					} else {
+						sprite = _spriteManager.getWall(item, 5, 1, 0);
+					}
 				} else {
 					sprite = _spriteManager.getWall(item, 5, 3, 0);
 				}
@@ -312,7 +330,9 @@ public class WorldRenderer {
 					sprite = _spriteManager.getWall(item, 1, 3, 0);
 				}
 			}
-			sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
+			if (sprite != null) {
+				sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
+			}
 		}
 
 //		// above is a wall
@@ -362,7 +382,9 @@ public class WorldRenderer {
 					sprite = _spriteManager.getWall(item, 3, i+j, zone);
 				}
 			}
-			sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
+			if (sprite != null) {
+				sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
+			}
 		}
 
 		// // left is a wall
@@ -418,35 +440,58 @@ public class WorldRenderer {
 	}
 
 	void	drawDebug(RenderStates render, int fromX, int fromY, int toX, int toY) {
-		Color color = new Color(0, 0, 0);
-		_shapeDebug.setSize(ObjectPool.getVector2f(Constant.TILE_SIZE, Constant.TILE_SIZE));
-		_shapeDebug.setFillColor(new Color(250, 200, 200, 100));
+//		Color color = new Color(0, 0, 0);
+//		_shapeDebug.setSize(ObjectPool.getVector2f(Constant.TILE_SIZE, Constant.TILE_SIZE));
+//		_shapeDebug.setFillColor(new Color(250, 200, 200, 100));
+//
+//		Text text = ObjectPool.getText();
+//		text.setFont(SpriteManager.getInstance().getFont());
+//		text.setCharacterSize(10);
+//		text.setColor(color);
+//		text.setString("gg");
+//		
+//		Map<Integer, Boolean> visited = new HashMap<Integer, Boolean>();
+//		
+//		List<Door> doors = PathManager.getInstance()._doors;
+//		for (Door door : doors) {
+//			text.setString(String.valueOf(door.id));
+//			boolean flag = visited.containsKey(door.x  << 16 + door.y) && visited.get(door.x  << 16 + door.y);
+//			text.setPosition(door.x * Constant.TILE_SIZE, door.y * Constant.TILE_SIZE + (flag ? Constant.TILE_SIZE / 2 : 0));
+//			visited.put(door.x  << 16 + door.y, true);
+//			_app.draw(text, render);
+//		}
 
-		Text text = ObjectPool.getText();
-		text.setFont(SpriteManager.getInstance().getFont());
-		text.setCharacterSize(10);
-		text.setColor(color);
-		text.setString("gg");
-
-		for (int i = toX-1; i >= fromX; i--) {
-			for (int j = toY-1; j >= fromY; j--) {
-				WorldArea item = ServiceManager.getWorldMap().getArea(i, j);
-				//
-				if (item == null) {
-					item = ServiceManager.getWorldMap().getArea(i, j);
-				}
-
-				if (item != null) {
-					_shapeDebug.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-					_app.draw(_shapeDebug, render);
-				}
-				//
-				text.setStyle(Text.REGULAR);
-				text.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-				//			_app.draw(text, render);
-			}
-		}
-		ObjectPool.release(text);
+//		List<Region> regions = PathManager.getInstance().getRegions();
+//		for (Region region : regions) {
+//			for (int i = region.fromX; i <= region.toX; i++) {
+//				for (int j = region.fromY; j <= region.toY; j++) {
+//					if (i == region.fromX || i == region.toX || j == region.fromY || j == region.toY) {
+//						_shapeDebug.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+//						_app.draw(_shapeDebug, render);
+//					}
+//				}
+//			}
+//		}
+		
+//		for (int i = toX-1; i >= fromX; i--) {
+//			for (int j = toY-1; j >= fromY; j--) {
+//				WorldArea item = ServiceManager.getWorldMap().getArea(i, j);
+//				//
+//				if (item == null) {
+//					item = ServiceManager.getWorldMap().getArea(i, j);
+//				}
+//
+//				if (item != null) {
+//					_shapeDebug.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+//					_app.draw(_shapeDebug, render);
+//				}
+//				//
+//				text.setStyle(Text.REGULAR);
+//				text.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+//				//			_app.draw(text, render);
+//			}
+//		}
+//		ObjectPool.release(text);
 	}
 
 	public void invalidate(int x, int y) {

@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.deepspace.UserInterface.Panels;
 
 import java.io.IOException;
 
@@ -10,6 +10,7 @@ import alone.in.deepspace.Character.Profession;
 import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.ResourceManager;
+import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.UserInterface.Utils.OnClickListener;
 import alone.in.deepspace.UserInterface.Utils.UIText;
 import alone.in.deepspace.UserInterface.Utils.UIView;
@@ -19,7 +20,7 @@ import alone.in.deepspace.World.UserItem;
 
 public class PanelDebug extends UserSubInterface {
 
-	private static final int 	FRAME_WIDTH = 380;
+	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	
 	public PanelDebug(RenderWindow app) throws IOException {

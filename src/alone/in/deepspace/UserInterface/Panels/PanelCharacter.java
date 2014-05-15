@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.deepspace.UserInterface.Panels;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
@@ -8,6 +8,7 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Character.CharacterNeeds;
+import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.UserInterface.Utils.UIText;
 import alone.in.deepspace.Utils.Constant;
 
@@ -24,12 +25,12 @@ public class PanelCharacter extends UserSubInterface {
 	private UIText _lbName;
 	private UIText _lbProfession;
 
-	private static final int FRAME_WIDTH = 380;
+	private static final int FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	
 	private RectangleShape[] _shapes = new RectangleShape[11];
 	
-	PanelCharacter(RenderWindow app) throws IOException {
+	public PanelCharacter(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		
 		setBackgroundColor(new Color(0, 0, 0, 150));
@@ -57,7 +58,7 @@ public class PanelCharacter extends UserSubInterface {
 	    }
 	}
 
-	void  setCharacter(Character character) {
+	public void  setCharacter(Character character) {
 		if (_character != null) {
 			_character.setSelected(false);
 		}

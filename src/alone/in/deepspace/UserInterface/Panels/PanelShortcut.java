@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.deepspace.UserInterface.Panels;
 
 import java.io.IOException;
 
@@ -6,6 +6,9 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.UserInterface.UserInterface;
+import alone.in.deepspace.UserInterface.UserSubInterface;
+import alone.in.deepspace.UserInterface.UserInterface.Mode;
 import alone.in.deepspace.UserInterface.Utils.OnClickListener;
 import alone.in.deepspace.UserInterface.Utils.UIText;
 import alone.in.deepspace.UserInterface.Utils.UIView;

@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.deepspace.UserInterface.Panels;
 
 import java.io.IOException;
 
@@ -7,11 +7,12 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Managers.ResourceManager;
+import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.UserInterface.Utils.UIText;
 import alone.in.deepspace.Utils.Constant;
 
 public class PanelResource extends UserSubInterface {
-	private static final int FRAME_WIDTH = 380;
+	private static final int FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int FRAME_HEIGHT = 32;
 	private UIText _spice;
 	private UIText _energy;
@@ -32,19 +33,19 @@ public class PanelResource extends UserSubInterface {
 		_energy = new UIText(new Vector2f(10, 10));
 		_energy.setCharacterSize(14);
 		_energy.setColor(Color.WHITE);
-		_energy.setPosition(new Vector2f(90, 6));
+		_energy.setPosition(new Vector2f(110, 6));
 		addView(_energy);
 
 		_matter = new UIText(new Vector2f(10, 10));
 		_matter.setCharacterSize(14);
 		_matter.setColor(Color.WHITE);
-		_matter.setPosition(new Vector2f(170, 6));
+		_matter.setPosition(new Vector2f(210, 6));
 		addView(_matter);
 
 		_o2 = new UIText(new Vector2f(10, 10));
 		_o2.setCharacterSize(14);
 		_o2.setColor(Color.WHITE);
-		_o2.setPosition(new Vector2f(250, 6));
+		_o2.setPosition(new Vector2f(332, 6));
 		addView(_o2);
 	}
 	

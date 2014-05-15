@@ -387,7 +387,7 @@ public class Character extends Movable {
 			_posX = (int) _node.x;
 			_posY = (int) _node.y;
 			_steps++;
-			Log.debug("Charactere #" + _id + ": goto " + _posX + " x " + _posY + ", step: " + _steps);
+			Log.debug("Character #" + _id + ": goto " + _posX + " x " + _posY + ", step: " + _steps);
 		}
 
 		// Next node
@@ -411,6 +411,8 @@ public class Character extends Movable {
 			//   _path = null;
 			// }
 		} else {
+			Log.debug("Character #" + _id + ": reached");
+			
 			_path = null;
 			_node = null;
 		}

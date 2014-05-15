@@ -17,8 +17,11 @@ import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.Utils.ObjectPool;
 import alone.in.deepspace.World.BaseItem;
+import alone.in.deepspace.World.BaseItem.Type;
 import alone.in.deepspace.World.ItemInfo;
+import alone.in.deepspace.World.StorageItem;
 import alone.in.deepspace.World.StructureItem;
+import alone.in.deepspace.World.UserItem;
 import alone.in.deepspace.World.WorldRessource;
 
 public class SpriteManager {
@@ -48,8 +51,8 @@ public class SpriteManager {
 			new SpriteResource(BaseItem.Type.ENGINE_CONTROL_CENTER,				8, 10, 1),
 			new SpriteResource(BaseItem.Type.QUARTER_BED,							10, 7, 2),
 			new SpriteResource(BaseItem.Type.QUARTER_CHAIR,						8, 6, 2),
-			new SpriteResource(BaseItem.Type.SPECIAL_ROBOT_MAKER,					12, 7, 2),
-			new SpriteResource(BaseItem.Type.SPECIAL_ZYGOTE,						12, 9, 2),
+			new SpriteResource(BaseItem.Type.SCIENCE_ROBOT_MAKER,					12, 7, 2),
+			new SpriteResource(BaseItem.Type.SCIENCE_ZYGOTE,						12, 9, 2),
 			new SpriteResource(BaseItem.Type.TACTICAL_PHASER,						12, 6, 2),
 			new SpriteResource(BaseItem.Type.RES_1,								8, 1, 4),
 			new SpriteResource(BaseItem.Type.NONE,								0, 0, 0),
@@ -155,7 +158,18 @@ public class SpriteManager {
 
 	public Sprite	getItem(BaseItem item) {
 		if (item != null) {
-			int alpha = 75 + 180 / item.getMatter() * item.getMatterSupply();
+			if (item.isType(Type.SPECIAL_STORAGE)) {
+				UserItem subItem = ((StorageItem)item).getFirst();
+				if (subItem != null && !subItem.isType(Type.SPECIAL_STORAGE)) {
+					return getItem(subItem);
+				}
+			}
+			
+			if (item.isType(Type.RES_1)) {
+				return getRessource(item);
+			}
+
+			int alpha = item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * item.getMatterSupply();
 			SpriteResource res = null;
 			for (int i = 0; spritesRes[i].type != BaseItem.Type.NONE; i++) {
 				if (item.isType(spritesRes[i].type)) {
@@ -277,17 +291,17 @@ public class SpriteManager {
 		return sum;
 	}
 
-	public Sprite 				getRessource(WorldRessource item) {
-		if (item.getMatterSupply() == 0) {
-			return getExterior(item.getWidth() + item.getHeight() * 42);
-		} else {
+	public Sprite 				getRessource(BaseItem item) {
+//		if (item.getMatterSupply() == 0) {
+//			return null;//getExterior(item.getWidth() + item.getHeight() * 42);
+//		} else {
 			int value = Math.min(item.getMatterSupply(), 7);
 			return getSprite(4,
 					value * Constant.TILE_SIZE,
 					9 * (Constant.TILE_SIZE + 2) + 1,
 					Constant.TILE_SIZE + 1,
 					Constant.TILE_SIZE);
-		}
+//		}
 	}
 
 	public Sprite				getFloor(StructureItem item, int zone, int room) {

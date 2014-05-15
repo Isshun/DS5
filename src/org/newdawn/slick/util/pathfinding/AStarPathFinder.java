@@ -2,8 +2,11 @@ package org.newdawn.slick.util.pathfinding;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.newdawn.slick.util.pathfinding.heuristics.ClosestHeuristic;
+
+import alone.in.deepspace.Utils.Log;
 
 /**
  * A path finder implementation that uses the AStar heuristic based algorithm
@@ -38,8 +41,8 @@ public class AStarPathFinder implements PathFinder {
 	 * @param maxSearchDistance The maximum depth we'll search before giving up
 	 * @param allowDiagMovement True if the search should try diaganol movement
 	 */
-	public AStarPathFinder(TileBasedMap map, int maxSearchDistance, boolean allowDiagMovement) {
-		this(map, maxSearchDistance, allowDiagMovement, new ClosestHeuristic());
+	public AStarPathFinder(TileBasedMap map, int maxSearchDistance, boolean allowDiagMovement, Node[][] nodes) {
+		this(map, maxSearchDistance, allowDiagMovement, new ClosestHeuristic(), nodes);
 	}
 
 	/**
@@ -49,27 +52,21 @@ public class AStarPathFinder implements PathFinder {
 	 * @param map The map to be searched
 	 * @param maxSearchDistance The maximum depth we'll search before giving up
 	 * @param allowDiagMovement True if the search should try diaganol movement
+	 * @param nodes 
 	 */
-	public AStarPathFinder(TileBasedMap map, int maxSearchDistance, 
-						   boolean allowDiagMovement, AStarHeuristic heuristic) {
+	public AStarPathFinder(TileBasedMap map, int maxSearchDistance, boolean allowDiagMovement, AStarHeuristic heuristic, Node[][] nodes) {
 		this.heuristic = heuristic;
 		this.map = map;
 		this.maxSearchDistance = maxSearchDistance;
 		this.allowDiagMovement = allowDiagMovement;
-		
-		nodes = new Node[map.getWidthInTiles()][map.getHeightInTiles()];
-		for (int x=0;x<map.getWidthInTiles();x++) {
-			for (int y=0;y<map.getHeightInTiles();y++) {
-				nodes[x][y] = new Node(x,y);
-			}
-		}
+		this.nodes = nodes;
 	}
 	
 	/**
 	 * @see PathFinder#findPath(Mover, int, int, int, int)
 	 */
 	public Path findPath(Mover mover, int sx, int sy, int tx, int ty) {
-		// easy first check, if the destination is blocked, we can't get there
+        // easy first check, if the destination is blocked, we can't get there
 		if (map.blocked(mover, tx, ty)) {
 			return null;
 		}
@@ -353,63 +350,5 @@ public class AStarPathFinder implements PathFinder {
 		}
 	}
 	
-	/**
-	 * A single node in the search graph
-	 */
-	private class Node implements Comparable {
-		/** The x coordinate of the node */
-		private int x;
-		/** The y coordinate of the node */
-		private int y;
-		/** The path cost for this node */
-		private float cost;
-		/** The parent of this node, how we reached it in the search */
-		private Node parent;
-		/** The heuristic cost of this node */
-		private float heuristic;
-		/** The search depth of this node */
-		private int depth;
-		
-		/**
-		 * Create a new node
-		 * 
-		 * @param x The x coordinate of the node
-		 * @param y The y coordinate of the node
-		 */
-		public Node(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-		
-		/**
-		 * Set the parent of this node
-		 * 
-		 * @param parent The parent node which lead us to this node
-		 * @return The depth we have no reached in searching
-		 */
-		public int setParent(Node parent) {
-			depth = parent.depth + 1;
-			this.parent = parent;
-			
-			return depth;
-		}
-		
-		/**
-		 * @see Comparable#compareTo(Object)
-		 */
-		public int compareTo(Object other) {
-			Node o = (Node) other;
-			
-			float f = heuristic + cost;
-			float of = o.heuristic + o.cost;
-			
-			if (f < of) {
-				return -1;
-			} else if (f > of) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
-	}
+
 }

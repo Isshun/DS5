@@ -1,24 +1,63 @@
 package alone.in.deepspace.Managers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.Mover;
+import org.newdawn.slick.util.pathfinding.Node;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
+import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Character.ServiceManager;
+import alone.in.deepspace.Managers.Region.Door;
 import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Models.Position;
+import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.WorldMap.DebugPos;
 
 public class PathManager {
+
+	public static class NodesPool {
+		private static List<Node[][]> nodesList;
+
+		public static void init() {
+			nodesList = new ArrayList<Node[][]>();
+		}
+
+		public static Node[][] getNodes(TileBasedMap map) {
+//			synchronized(nodesList) {
+//				if (nodesList.size() > 0) {
+//					return nodesList.remove(0);
+//				}
+//			}
+//			Log.error("empty pool");
+			Node[][] nodes = new Node[map.getWidthInTiles()][map.getHeightInTiles()];
+			for (int x=0;x<map.getWidthInTiles();x++) {
+				for (int y=0;y<map.getHeightInTiles();y++) {
+					nodes[x][y] = new Node(x,y);
+				}
+			}
+			return nodes;
+		}
+
+		public static void recycle(Node[][] nodes) {
+//			synchronized(nodesList) {
+//				nodesList.add(nodes);
+//			}
+		}
+	}
+
 	private static class OldPath {
 		public boolean			blocked;
 		public Vector<Position>	path;
@@ -29,19 +68,131 @@ public class PathManager {
 		}
 	}
 
+	private static final int THREAD_POOL_SIZE = 4;
+
+	protected static final int REGION_SIZE = 10;
+
 	private static PathManager sSelf;
 	private Map<Long, OldPath> _pool;
+	private ExecutorService _threadPool;
+	private Map<Integer, Boolean>	_bridges;
+	public List<Door>				_doors;
+
+	protected Region[][] _regions;
 
 	public PathManager() {
+		_threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 		_pool = new HashMap<Long, OldPath>();
+		_bridges = new HashMap<Integer, Boolean>();
+		_doors = new ArrayList<Door>();
+		NodesPool.init();
+		
 		//		  _data = new map<int, AStarSearch<MapSearchNode>*>();
 		//		  memset(_map, 0, LIMIT_CHARACTER * LIMIT_ITEMS * sizeof(int));
+	}
+	
+	public void init() {
+		int columns = Constant.WORLD_WIDTH / REGION_SIZE;
+		int lines = Constant.WORLD_HEIGHT / REGION_SIZE;
+
+		_regions = new Region[lines][columns];
+		for (int j = 0; j < lines; j++) {
+			for (int i = 0; i < columns; i++) {
+				_regions[j][i] = new Region(i + (j * columns),
+						i * REGION_SIZE,
+						j * REGION_SIZE,
+						(i + 1) * REGION_SIZE,
+						(j + 1) * REGION_SIZE);
+				_doors.addAll(_regions[j][i]._doors);
+			}
+		}
+		
+		for (int j = 0; j < lines; j++) {
+			for (int i = 0; i < columns; i++) {
+				if (j < lines-1) { getBridges(_regions[j][i], _regions[j+1][i]); }
+				if (j > 0) { getBridges(_regions[j][i], _regions[j-1][i]); }
+				if (i < columns-1) { getBridges(_regions[j][i], _regions[j][i+1]); }
+				if (i > 0) { getBridges(_regions[j][i], _regions[j][i-1]); }
+			}
+		}
+
+//		for (Door d1: _doors) {
+//			for (Door d2: _doors) {
+//				if (_bridges.get(d1.id << 16 + d2.id) != null && _bridges.get(d1.id << 16 + d2.id)) { 
+//					Log.info(d1.id + "x" + d2.id + " -> " + _bridges.get(d1.id << 16 + d2.id));
+//				}
+//			}
+//		}
+		
+		List<Door> visited = new ArrayList<Door>();
+		dumpLinks(visited, _doors.get(0), 0);
+		
+		visited.clear();
+		getPath(visited, _doors.get(0), _doors.get(10));
 	}
 
 	//		void	addObject(int x, int y, boolean walkable) {
 	//		  _pathfinder.addObject(x, y, true);
 	//		}
 
+
+	private int getPath(List<Door> visited, Door d1, Door d2) {
+		visited.add(d1);
+		
+		for (Door d: d1.doors) {
+			if (d == d2) {
+				Log.info("in path: " + d.id);
+				return 1;
+			} else if (!visited.contains(d)) {
+				int ret = getPath(visited, d, d2);
+				if (ret == 1) {
+					Log.info("in path: " + d.id);
+				}
+				return ret;
+			}
+		}
+		return 0;
+	}
+
+	private void dumpLinks(List<Door> visited, Door d, int level) {
+		
+		visited.add(d);
+		
+//		for (int i = 0; i < level - 1; i++) {
+//			System.out.print("-");
+//		}
+		System.out.print(String.valueOf(d.id));
+		System.out.print("\n");
+		
+		for (Door d2: d.doors) {
+			System.out.print("-");
+			System.out.print(String.valueOf(d2.id));
+			System.out.print("\n");
+		}
+		
+		System.out.print("\n\n");
+		for (Door d2: d.doors) {
+			if (!visited.contains(d2)) {
+				dumpLinks(visited, d2, level + 1);
+			}
+		}
+
+	}
+
+	private void getBridges(Region r1, Region r2) {
+		Log.info("get bridges between #" + r1.id + " and #" + r2.id);
+		
+		for (Door d1: r1._doors) {
+			for (Door d2: r2._doors) {
+				if (d1.x == d2.x && d1.y == d2.y) {
+					Log.info(d1.id + "x" + d2.id);
+					d1.addBridge(d2);
+					d2.addBridge(d1);
+					_bridges.put(d1.id << 16 + d2.id, true);
+				}
+			}
+		}
+	}
 
 	private long	getSum(int fromX, int fromY, int toX, int toY) {
 		long sum = fromX;
@@ -52,86 +203,6 @@ public class PathManager {
 		sum = sum << 16;
 		sum += toY;
 		return sum;
-	}
-
-	private void							init() {
-		Log.info("PathManager: init");
-
-		// _storage = new list<AStarSearch<MapSearchNode>*>();
-
-
-		//		  Info() << _pathfinder.getPoint(0, 0)closed;
-
-		// exit(0);
-
-
-		// int max = 10;
-
-		// Info() << time(0);
-
-		// for (int fromX = 0; fromX < max; fromX++) {
-		// 	for (int fromY = 0; fromY < max; fromY++) {
-		// 	  for (int toX = 0; toX < max; toX++) {
-		// 		for (int toY = 0; toY < max; toY++) {
-
-		// 		  // std.vector<Position*> path = _pathfinder.getPath((float)fromX, (float)fromY, (float)toX, (float)toY, 1.0f);
-
-
-		// 		  // AStarSearch<MapSearchNode>* path = getPath(fromX, fromY, toX, toY);
-		// 		  // _storagepush_back(path);
-		// 		  // _datainsert(make_pair(getSum(fromX, fromY, toX, toY), path));
-
-		// 		  // Info() << "size: " << _storagesize();
-		// 		}
-		// 	  }
-		// 	}
-		// }
-
-		// Info() << time(0);
-
-		// exit(0);
-
-		// std.list<Job*> list;
-		// int w = ServiceManager.getWorldMap()getWidth();
-		// int h = ServiceManager.getWorldMap()getHeight();
-		// for (int i = w-1; i >= 0; i--) {
-		// 	for (int j = h-1; j >= 0; j--) {
-		// 	  Job* item = ServiceManager.getWorldMap()getArea(i, j);
-		// 	  if (item != NULL && itemgetType() == Job.STRUCTURE_DOOR) {
-		// 		Debug() << "Door at pos: " << i << " x " << j;
-		// 		list.push_back(item);
-		// 	  }
-		// 	}
-		// }
-
-		// std.list<Job*>.iterator it1;
-		// std.list<Job*>.iterator it2;
-		// for (it1 = list.begin(); it1 != list.end(); ++it1) {
-		// 	for (it2 = list.begin(); it2 != list.end(); ++it2) {
-		// 	  if (*it1 != *it2) {
-		// 		MapSearchNode nodeStart;
-		// 		nodeStart.x = (*it1)getX();
-		// 		nodeStart.y = (*it1)getY();
-
-		// 		MapSearchNode nodeEnd;
-		// 		nodeEnd.x = (*it2)getX();
-		// 		nodeEnd.y = (*it2)getY();
-
-		// 		AStarSearch<MapSearchNode>* path = getPath(nodeStart, nodeEnd);
-		// 		pair<Job*, Job*> key = std.make_pair(*it1, *it2);
-
-		// 		_datainsert(make_pair(make_pair(*it1, *it2), path));
-
-		// 		Info() << "PathManager: find path"
-		// 			   << " from: " << nodeStart.x << " x " << nodeStart.y
-		// 			   << ", to: " << nodeEnd.x << " x " << nodeEnd.y
-		// 			   << ", cost: " << pathGetSolutionCost();
-		// 		  // done (" << _datasize() << " path)";
-		// 	  }
-		// 	}
-		// }
-
-		//		  Log.info("PathManager: init done (" + _datasize() + " path)");
 	}
 
 	//		private Vector<Position>		getPath(MapSearchNode nodeStart, MapSearchNode nodeEnd) {
@@ -200,46 +271,48 @@ public class PathManager {
 	//		  // return NULL;
 	//		}
 
-	private Vector<Position>		getPath(int fromX, int fromY, int toX, int toY) {
-
-		//		  MapSearchNode nodeStart;
-		//		  nodeStart.x = fromX;
-		//		  nodeStart.y = fromY;
-		//
-		//		  MapSearchNode nodeEnd;
-		//		  nodeEnd.x = toX;
-		//		  nodeEnd.y = toY;
-		//
-		//		  Vector<Position*> path = getPath(nodeStart, nodeEnd);
-
-		return null;
-	}
-
-	private Vector<Position>		getPath(Character character, Job item) {
-
-		// if (_map[charactergetId()][itemgetId()]) {
-		// 	Error() << "PathManager: this path is already know and cannot be resolve";
-		// 	return NULL;
-		// }
-
-		//		  MapSearchNode nodeStart;
-		//		  nodeStart.x = charactergetX();
-		//		  nodeStart.y = charactergetY();
-		//
-		//		  MapSearchNode nodeEnd;
-		//		  nodeEnd.x = itemgetX();
-		//		  nodeEnd.y = itemgetY();
-		//
-		//		  vector<Position*> path = getPath(nodeStart, nodeEnd);
-
-		// if (path == NULL) {
-		// 	_map[charactergetId()][itemgetId()] = 1;
-		// } else {
-		// 	_map[charactergetId()][itemgetId()] = 0;
-		// }
-
-		return null;
-	}
+//	private Vector<Position>		getPath(int fromX, int fromY, int toX, int toY) {
+//
+//		//		  MapSearchNode nodeStart;
+//		//		  nodeStart.x = fromX;
+//		//		  nodeStart.y = fromY;
+//		//
+//		//		  MapSearchNode nodeEnd;
+//		//		  nodeEnd.x = toX;
+//		//		  nodeEnd.y = toY;
+//		//
+//		//		  Vector<Position*> path = getPath(nodeStart, nodeEnd);
+//
+//		return null;
+//	}
+//
+//	public List<Region>				getRegions() { return _regions; }
+//	
+//	private Vector<Position>		getPath(Character character, Job item) {
+//
+//		// if (_map[charactergetId()][itemgetId()]) {
+//		// 	Error() << "PathManager: this path is already know and cannot be resolve";
+//		// 	return NULL;
+//		// }
+//
+//		//		  MapSearchNode nodeStart;
+//		//		  nodeStart.x = charactergetX();
+//		//		  nodeStart.y = charactergetY();
+//		//
+//		//		  MapSearchNode nodeEnd;
+//		//		  nodeEnd.x = itemgetX();
+//		//		  nodeEnd.y = itemgetY();
+//		//
+//		//		  vector<Position*> path = getPath(nodeStart, nodeEnd);
+//
+//		// if (path == NULL) {
+//		// 	_map[charactergetId()][itemgetId()] = 1;
+//		// } else {
+//		// 	_map[charactergetId()][itemgetId()] = 0;
+//		// }
+//
+//		return null;
+//	}
 
 	// void	getPathAsync(Character* character, int x, int y) {
 
@@ -265,69 +338,161 @@ public class PathManager {
 	// }
 
 	public void getPathAsync(final Character character, final Job job) {
-		Executors.newSingleThreadExecutor().execute(new Runnable() {
+		final int fromX = character.getX();
+		final int fromY = character.getY();
+		final int toX = job.getX();
+		final int toY = job.getY();
+
+		_threadPool.execute(new Runnable() {
 			@Override
 			public void run() {
-				ServiceManager.getWorldMap().startDebug(character.getPosX(), character.getPosY());
-				ServiceManager.getWorldMap().stopDebug(job.getX(), job.getY());
+				int regionByLine = (Constant.WORLD_WIDTH / REGION_SIZE);
+				
+				//Region r1 = _regions.get((fromX / REGION_SIZE) % regionByLine + (fromY / REGION_SIZE) * regionByLine);
+				//Region r2 = _regions.get((toX / REGION_SIZE) % regionByLine + (fromY / REGION_SIZE) * regionByLine);
+				
+				//Log.info("Go from " + fromX + "x" + fromY + " to " + toX + "x" + toY + " -> region #" + r1 + " to #" + r2);
+				
+				ServiceManager.getWorldMap().startDebug(fromX, fromY);
+				ServiceManager.getWorldMap().stopDebug(toX, toY);
 
-				//Log.info("getPathAsync: " + character.getX() + ", " + character.getY() + ", " + job.getX() + ", " + job.getY());
+				//Log.info("getPathAsync: " + character.getX() + ", " + character.getY() + ", " + toX + ", " + toY);
 				Log.debug("getPathAsync");
 
-				Vector<Position> path = new Vector<Position>();
+				// Get in cache
+				long sum1 = getSum(fromX, fromY, toX, toY);
+				if (_pool.get(sum1) != null) {
+					Log.info("character: path in cache");
+					character.onPathComplete(_pool.get(sum1).path, job);
+					return;
+				}
 
-				//		  int x = character.getX();
-				//		  int y = character.getY();
-				//		  while (x != job.getX() || y != job.getY()) {
-				//			  x += (x == job.getX() ? 0 : x > job.getX() ? -1 : 1);
-				//			  y += (y == job.getY() ? 0 : y > job.getY() ? -1 : 1);
-				//			  path.add(new Position(x, y));
-				//		  }
-				//		  
-				//		  character.onPathComplete(path, job);
-
-				long sum = getSum(character.getPosX(), character.getPosY(), job.getX(), job.getY());
-
-				PathFinder finder = new AStarPathFinder(ServiceManager.getWorldMap(), 500, true);
-				Path rawpath = finder.findPath(new Mover() {}, character.getPosX(), character.getPosY(), job.getX(), job.getY());
+				// Get in cache
+				long sum2 = getSum(toX, toY, fromX, fromY);
+				if (_pool.get(sum2) != null) {
+					Log.info("character: path in cache");
+					character.onPathComplete(_pool.get(sum2).path, job);
+					return;
+				}
+				
+				Node[][] nodes = NodesPool.getNodes(ServiceManager.getWorldMap());
+				PathFinder finder = new AStarPathFinder(ServiceManager.getWorldMap(), 500, true, nodes);
+				Path rawpath = finder.findPath(new Mover() {}, fromX, fromY, toX, toY);
 				if (rawpath != null) {
+
+					// Cache
+					Vector<Position> path = new Vector<Position>();
 					for (int i = 0; i < rawpath.getLength(); i++) {
 						path.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
 					}
-					_pool.put(sum, new OldPath(path));
+					_pool.put(sum1, new OldPath(path));
 
-					Vector<DebugPos> debugPath = ServiceManager.getWorldMap().getDebug();
-					if (debugPath != null) {
-						for (DebugPos pos: debugPath) {
-							if (inCompletePath(path, pos.x, pos.y)) {
-								pos.inPath = true;
-							}
-						}
+					// Cache
+					Vector<Position> reversedPath = new Vector<Position>();
+					for (int i = rawpath.getLength() - 1; i >= 0; i--) {
+						reversedPath.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
 					}
+					_pool.put(sum2, new OldPath(reversedPath));
 
-
+					Log.info("character: path complete");
 					character.onPathComplete(path, job);
 				} else {
-					_pool.put(sum, new OldPath(null));
+					_pool.put(sum1, new OldPath(null));
+					_pool.put(sum2, new OldPath(null));
+
+					Log.info("character: path fail");
 					job.setBlocked(Game.getFrame());
 					character.onPathFailed(job);
 				}
+				NodesPool.recycle(nodes);
 			}
 		});
 	}
+	
+	public void getInnerPath(final Door d1, final Door d2) {
+		final int fromX = d1.x;
+		final int fromY = d1.y;
+		final int toX = d2.x;
+		final int toY = d2.y;
 
-	private boolean inCompletePath(Vector<Position> path, int x, int y) {
-		for (Position position : path) {
-			if (position.x == x && position.y == y) {
-				return true;
-			}
-		}
-		return false;
+//		_threadPool.execute(new Runnable() {
+//			@Override
+//			public void run() {
+				//Log.info("Go from " + fromX + "x" + fromY + " to " + toX + "x" + toY + " -> region #" + r1 + " to #" + r2);
+				//Log.info("getPathAsync: " + character.getX() + ", " + character.getY() + ", " + toX + ", " + toY);
+
+				long sum1 = getSum(fromX, fromY, toX, toY);
+				long sum2 = getSum(toX, toY, fromX, fromY);
+
+				if (_pool.get(sum1) != null) {
+					Log.info("region: path in cache");
+					if (_pool.get(sum1).path != null) {
+						d1.addBridge(d2);
+						d2.addBridge(d1);
+					}
+					_bridges.put(d1.id << 16 + d2.id, _pool.get(sum1).path != null); 
+					_bridges.put(d2.id << 16 + d1.id, _pool.get(sum1).path != null); 
+					return;
+				}
+
+//				if (_pool.get(sum2) != null) {
+//					Log.info("region: path in cache");
+//					_bridges.put(d1.id << 16 + d2.id, _pool.get(sum1).path != null); 
+//					return;
+//				}
+				
+				Node[][] nodes = NodesPool.getNodes(ServiceManager.getWorldMap());
+				PathFinder finder = new AStarPathFinder(ServiceManager.getWorldMap(), 500, true, nodes);
+				Path rawpath = finder.findPath(new Mover() {}, fromX, fromY, toX, toY);
+				if (rawpath != null) {
+
+					// Cache
+					Vector<Position> path = new Vector<Position>();
+					for (int i = 0; i < rawpath.getLength(); i++) {
+						path.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
+					}
+					_pool.put(sum1, new OldPath(path));
+
+					// Cache
+					Vector<Position> reversedPath = new Vector<Position>();
+					for (int i = rawpath.getLength() - 1; i >= 0; i--) {
+						reversedPath.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
+					}
+					_pool.put(sum2, new OldPath(reversedPath));
+
+					d1.addBridge(d2);
+					d2.addBridge(d1);
+					_bridges.put(d1.id << 16 + d2.id, true); 
+					_bridges.put(d2.id << 16 + d1.id, true); 
+
+					Log.info("region: path complete");
+				} else {
+					_pool.put(sum1, new OldPath(null));
+					_pool.put(sum2, new OldPath(null));
+
+					_bridges.put(d1.id << 16 + d2.id, false); 
+					_bridges.put(d2.id << 16 + d1.id, false); 
+
+					Log.info("region: path fail");
+				}
+				NodesPool.recycle(nodes);
+//			}
+//		});
 	}
+
+//	private boolean inCompletePath(Vector<Position> path, int x, int y) {
+//		for (Position position : path) {
+//			if (position.x == x && position.y == y) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	public static PathManager getInstance() {
 		if (sSelf == null) {
 			sSelf = new PathManager();
+			sSelf.init();
 		}
 		return sSelf;
 	}

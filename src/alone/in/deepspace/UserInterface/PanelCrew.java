@@ -14,16 +14,17 @@ import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Character.CharacterManager;
 import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Managers.SpriteManager;
+import alone.in.deepspace.UserInterface.Utils.UIText;
 import alone.in.deepspace.Utils.Constant;
 
-public class UserInterfaceCrew extends UserSubInterface {
+public class PanelCrew extends UserSubInterface {
 
 	private static class ViewHolder {
 		public Text 	lbName;
 		public Text 	lbProfession;
 		public Sprite	thumb;
 	}
-	private static final int 	FRAME_WIDTH = 380;
+	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 
 	private static int CREW_LINE_HEIGHT = 42;
@@ -31,14 +32,22 @@ public class UserInterfaceCrew extends UserSubInterface {
 
 	private CharacterManager     _characterManager;
 	private List<ViewHolder> _viewHolderList;
+	private UIText _lbCount;
 
-	public UserInterfaceCrew(RenderWindow app, int tileIndex) throws IOException {
+	public PanelCrew(RenderWindow app, int tileIndex) throws IOException {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		  
 		setBackgroundColor(new Color(100, 0, 0, 180));
 		
 		_viewHolderList = new ArrayList<ViewHolder>();
 		_characterManager = ServiceManager.getCharacterManager();
+		
+		// Name
+		_lbCount = new UIText(new Vector2f(10, 10));
+		_lbCount.setCharacterSize(20);
+		_lbCount.setColor(Color.WHITE);
+		_lbCount.setPosition(new Vector2f(10, 10));
+		addView(_lbCount);
 	}
 
 	void  addCharacter(RenderWindow app, int index, Character character) {
@@ -56,12 +65,12 @@ public class UserInterfaceCrew extends UserSubInterface {
 			view.lbName.setString(character.getName());
 			view.lbName.setStyle(Text.REGULAR);
 			view.lbName.setPosition(Constant.UI_PADDING + 42,
-					   Constant.UI_PADDING + (CREW_LINE_HEIGHT * y));
+					32 + Constant.UI_PADDING + (CREW_LINE_HEIGHT * y));
 		
 			view.lbProfession = new Text();
 			view.lbProfession.setString(character.getName());
 			view.lbProfession.setPosition(_posX + Constant.UI_PADDING + Constant.CHAR_WIDTH + Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
-						   _posY + Constant.UI_PADDING + 3 + (CREW_LINE_HEIGHT * y));
+					_posY + 32 + Constant.UI_PADDING + 3 + (CREW_LINE_HEIGHT * y));
 
 //		  // Function
 //		  Profession function = character.getProfession();
@@ -80,7 +89,7 @@ public class UserInterfaceCrew extends UserSubInterface {
 		app.draw(view.lbProfession, _render);
 		view.thumb = SpriteManager.getInstance().getCharacter(character.getProfession(), 0, 0);
 		view.thumb.setPosition(Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
-				Constant.UI_PADDING + (CREW_LINE_HEIGHT * y));
+				32 + Constant.UI_PADDING + (CREW_LINE_HEIGHT * y));
 		app.draw(view.thumb, _render);
 	}
 	
@@ -91,6 +100,8 @@ public class UserInterfaceCrew extends UserSubInterface {
 		for (Character c: characters) {
 			addCharacter(app, i++, c);
 		}
+		
+		_lbCount.setString("Count: " + characters.size());
 	}
 	
 	void	drawTile() {

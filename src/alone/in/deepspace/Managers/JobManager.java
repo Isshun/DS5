@@ -181,7 +181,7 @@ public class JobManager implements ISavable {
 		return job;
 	}
 
-	public Job	gather(WorldRessource ressource) {
+	public Job	gather(BaseItem ressource) {
 		if (ressource == null) {
 			Log.error("JobManager: gather on null area");
 			return null;
@@ -471,6 +471,13 @@ public class JobManager implements ISavable {
 	public void askStoreCarry() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void move(Character character, int x, int y) {
+		Job job = new Job(++_id, x, y);
+		job.setAction(JobManager.Action.MOVE);
+		job.setCharacterRequire(character);
+		addJob(job);
 	}
 
 }

@@ -184,6 +184,10 @@ public class WorldMap implements ISavable, TileBasedMap {
 		int x = item.getX();
 		int y = item.getY();
 		
+		if (item.getMatterSupply() <= 0) {
+			_areas[x][y].setItem(null);
+		}
+		
 		ServiceManager.getWorldRenderer().invalidate(x, y);
 		
 		return value;
@@ -325,11 +329,13 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 	// TODO: call job listener
 	public void removeStructure(int x, int y) {
-		if (_areas[x][y].getItem() != null) {
-			_areas[x][y].setItem(null);
+		if (x >= 0 && y >= 0 && x < _width && y < _height) {
+			if (_areas[x][y].getItem() != null) {
+				_areas[x][y].setItem(null);
+			}
+			_areas[x][y].setStructure(null);
+			ServiceManager.getWorldRenderer().invalidate(x, y);
 		}
-		_areas[x][y].setStructure(null);
-		ServiceManager.getWorldRenderer().invalidate(x, y);
 	}
 
 	// TODO: call job listener
@@ -417,10 +423,15 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 		// Get new item
 		BaseItem item = null;
-		if (BaseItem.isResource(type)) {
-			item = new WorldRessource(type);
-			((WorldRessource)item).setValue(matterSupply);
-		} else if (BaseItem.isStructure(type)) {
+//		if (BaseItem.isResource(type)) {
+//			item = new WorldRessource(type);
+//			((WorldRessource)item).setValue(matterSupply);
+//		} else
+		if (type == Type.SPECIAL_STORAGE) {
+			item = new StorageItem();
+			_areas[x][y].setItem((UserItem) item);
+			return item;
+		} if (BaseItem.isStructure(type)) {
 			item = new StructureItem(type);
 		} else {
 			item = new UserItem(type);
@@ -430,10 +441,13 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 		// Ressource
 		if (item.isRessource()) {
-			_areas[x][y].setRessource((WorldRessource) item);
-			if (((WorldRessource)item).getValue() > 0) {
-				JobManager.getInstance().gather((WorldRessource) item);
-			}
+			_areas[x][y].setItem((UserItem) item);
+//			if ((item).getValue() > 0) {
+				item.setMatterSupply(10);
+				JobManager.getInstance().gather(item);
+				ServiceManager.getWorldRenderer().invalidate(item.getX(), item.getY());
+				return item;
+//			}
 		}
 
 		// Wall
@@ -446,42 +460,6 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 		// Object or floor
 		else {
-
-			//			// Room already exists
-			//			if (roomId > 0 && getRoom(roomId) != null) {
-			//			  Room room = getRoom(roomId);
-			//			  if (room != null) {
-			//
-			//				// Room have no zoneId
-			//				if (room.getZoneId() == 0) {
-			//				  Log.info("Set room to new zoneId: " + item.getZoneId());
-			//				  room.setZoneId(item.getZoneId());
-			//				}
-			//
-			//				// Item have no zoneId
-			//				if (item.getZoneId() == 0) {
-			//				  zoneId = room.getZoneId();
-			//				}
-			//
-			//				// Room and item zoneId match
-			//				else if (room.getZoneId() == item.getZoneId()) {
-			//				  Log.info("Room zoneId match with item");
-			//				}
-			//
-			//				// Room and item zoneId don't match
-			//				else {
-			//				  Log.info("this item can not be put at this position because zoneId not match (item: "
-			//						 + item.getZoneId() + ", room: " + room.getZoneId() + ")");
-			//				  return null;
-			//				}
-			//			  }
-			//			}
-			//
-			//			// Create new room if not exists
-			//			else {
-			//			  //roomId = addRoom(x, y);
-			//			}
-
 			if (type == BaseItem.Type.STRUCTURE_FLOOR) {
 				_areas[x][y].setStructure((StructureItem) item);
 			} else if (BaseItem.isResource(type) == false) {
@@ -494,9 +472,6 @@ public class WorldMap implements ISavable, TileBasedMap {
 					Log.error("Put item on null WorldArea");
 				}
 			}
-
-			//			item.setZoneId(zoneId);
-			//			item.setRoomId(roomId);
 		}
 
 		// Put item
@@ -504,27 +479,10 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 		item.setMatterSupply(matterSupply);
 
-		// TODO
-		//PathManager.getInstance().addObject(x, y, false);
-
 		ServiceManager.getWorldRenderer().invalidate(item.getX(), item.getY());
 		
 		return item;
 	}
-
-	//		int		addRoom(int x, int y) {
-	//		  Log.debug("addRoom: " + x + " x " + y);
-	//
-	//		  Room room = Room.createFromPos(x, y);
-	//
-	//		  if (room != null) {
-	//			_rooms.put(room.getId(), room);
-	//			return room.getId();
-	//		  } else {
-	//			Log.error("Unable to create Room at position: " + x + " x " + y);
-	//		  }
-	//		  return  -1;
-	//		}
 
 	public UserItem 			getItem(int x, int y) {
 		return (x < 0 || x >= _width || y < 0 || y >= _height) || _areas[x][y] == null ? null : _areas[x][y].getItem();
@@ -597,20 +555,31 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 	@Override
 	public boolean blocked(Mover mover, int x, int y) {
-		return _areas[x][y].getStructure() != null && _areas[x][y].getStructure().isComplete() && _areas[x][y].getStructure().isSolid();
+		if (x >= 0 && y >= 0 && x < _width && y < _height) {
+			return _areas[x][y].getStructure() != null && _areas[x][y].getStructure().isComplete() && _areas[x][y].getStructure().isSolid();
+		}
+		return true;
 	}
 
 	@Override
 	public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
-		WorldArea a1 = _areas[sx][sy];
-		WorldArea a2 = _areas[tx][ty];
-
-		if (a1.getStructure() != null && a1.getStructure().isComplete() && a2.getStructure() == null ||
-				a2.getStructure() != null && a2.getStructure().isComplete() && a1.getStructure() == null) {
-			return 5;
-		}
-
-		return sx != tx && sy != ty ? 0.6f : 0.5f;
+		
+		 int dx = Math.abs(sx - tx);
+		 int dy = Math.abs(sy - ty);
+		 return Math.max(dx, dy);
+				    		
+//		WorldArea a1 = _areas[sx][sy];
+//		WorldArea a2 = _areas[tx][ty];
+//
+//		if (a1.getStructure() != null && a1.getStructure().isComplete() && a2.getStructure() == null ||
+//				a2.getStructure() != null && a2.getStructure().isComplete() && a1.getStructure() == null) {
+//			return 5;
+//		}
+//
+////		boolean r = Math.random() * 10 % 2 == 0;
+////		return sx != tx ? (r ? 10f : 1f) : (r ? 1f : 10f);
+//		
+//		return sx != tx && sy != ty ? 1f : 0.8f;
 	}
 
 	public Vector<DebugPos> getDebug() {
@@ -638,9 +607,18 @@ public class WorldMap implements ISavable, TileBasedMap {
 		_debugPathStart.y = posY;
 	}
 
-	public void storeItem(Type res1, int x, int y) {
-		if (_areas[x][y].getItem() == null) {
-			_areas[x][y].setItem(new UserItem(Type.QUARTER_CHAIR));
+	public void storeItem(Type type, int x, int y) {
+		UserItem item = _areas[x][y].getItem();
+		
+		if (item == null) {
+			item = new StorageItem();
+			((StorageItem)item).addItem(new UserItem(type));
+			_areas[x][y].setItem(item);
+		} else if (item.isType(Type.SPECIAL_STORAGE)) {
+			((StorageItem)item).addItem(new UserItem(type));
+		} else {
+			// TODO: not implemented
+			Log.error("Storage area is used by non storage item");
 		}
 	}
 }

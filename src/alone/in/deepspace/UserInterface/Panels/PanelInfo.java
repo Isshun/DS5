@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.deepspace.UserInterface.Panels;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,15 +13,18 @@ import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.RoomManager;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.Room;
+import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.UserInterface.Utils.OnClickListener;
 import alone.in.deepspace.UserInterface.Utils.UIText;
 import alone.in.deepspace.UserInterface.Utils.UIView;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.ObjectPool;
 import alone.in.deepspace.World.BaseItem;
+import alone.in.deepspace.World.StorageItem;
 import alone.in.deepspace.World.StructureItem;
 import alone.in.deepspace.World.UserItem;
 import alone.in.deepspace.World.WorldArea;
+import alone.in.deepspace.World.BaseItem.Type;
 
 public class PanelInfo extends UserSubInterface {
 
@@ -38,16 +41,17 @@ public class PanelInfo extends UserSubInterface {
 	private StructureItem 	_structure;
 	private PanelInfoItemOptions _structureOptions;
 	private UIText _lbRoom;
+	private UIText _itemStorage;
 
 	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;
 
 	private static final int 		MENU_PADDING_TOP = 34;
 	private static final int 		MENU_PADDING_LEFT = 16;
 	  
-	private static final int 		FRAME_WIDTH = 380;
+	private static final int 		FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	  
-	  PanelInfo(RenderWindow app) throws IOException {
+	  public PanelInfo(RenderWindow app) throws IOException {
 		  super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		  
 		  setBackgroundColor(new Color(0, 0, 0, 150));
@@ -73,6 +77,11 @@ public class PanelInfo extends UserSubInterface {
 		  _itemMatter.setPosition(10, itemOffset + 60);
 		  _itemMatter.setCharacterSize(14);
 		  addView(_itemMatter);
+
+		  _itemStorage = new UIText(null);
+		  _itemStorage.setPosition(10, itemOffset + 200);
+		  _itemStorage.setCharacterSize(14);
+		  addView(_itemStorage);
 		  
 		  UIText sep = new UIText(null);
 		  sep.setPosition(0, 200);
@@ -100,7 +109,7 @@ public class PanelInfo extends UserSubInterface {
 		  ObjectPool.release(text);
 	  }
 
-	  void  setArea(WorldArea area) {
+	  public void  setArea(WorldArea area) {
 		  _area = area;
 		  
 		  if (area != null) {
@@ -110,7 +119,7 @@ public class PanelInfo extends UserSubInterface {
 			  if (area.getStructure() != null) {
 				  setStructure(area.getStructure());
 			  } else {
-				  _primaryName.setString(area.getName());
+				  _primaryName.setString(area.getName() + " (" + area.getX() + "x" + area.getY() + ")");
 			  }
 		  } else {
 			  setItem(null);
@@ -129,7 +138,7 @@ public class PanelInfo extends UserSubInterface {
 		  }
 
 		  if (structure != null) {
-			  _primaryName.setString(structure.getName());
+			  _primaryName.setString(structure.getName() + " (" + structure.getX() + "x" + structure.getY() + ")");
 			  
 			  if (structure.isType(BaseItem.Type.STRUCTURE_DOOR)) {
 				  _structureOptions = new PanelInfoItemOptions(20, 100);
@@ -172,6 +181,7 @@ public class PanelInfo extends UserSubInterface {
 		  if (item == null) {
 			  _itemName.setString("");
 			  _itemMatter.setString("");
+			  _itemStorage.setString("");
 			  return;
 		  }
 
@@ -210,7 +220,17 @@ public class PanelInfo extends UserSubInterface {
 		  BaseItem item = _area != null ? _area.getItem() : null;
 
 		  if (item != null) {
-
+			  
+			  if (item.isType(Type.SPECIAL_STORAGE)) {
+				  int count = ((StorageItem)item).getNbItems();
+				  UserItem subItem = ((StorageItem)item).getFirst();
+				  if (subItem != null) {
+					  _itemStorage.setString("Storage: " + subItem.getName() + " x" + count);
+				  } else {
+					  _itemStorage.setString("Storage: empty");
+				  }
+			  }
+			  
 //	  	_line = 0;
 //	  	addLine(app, "Pos: " + item.getX() + " x " + item.getY());
 //	  	addLine(app, "Oxygen", _area.getOxygen());

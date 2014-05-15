@@ -43,23 +43,8 @@ public class Main {
 
 		//		//Limit the framerate
 		//		window.setFramerateLimit(30);
-		//
-		//		//Main loop
-		//		while(window.isOpen()) {
-		//		    //Fill the window with red
-		//		    window.clear(Color.RED);
-		//
-		//		    //Display what was drawn (... the red color!)
-		//		    window.display();
-		//
-		//		    //Handle events
-		//		    for(Event event : window.pollEvents()) {
-		//		        if(event.type == Event.Type.CLOSED) {
-		//		            //The user pressed the close button
-		//		            window.close();
-		//		        }
-		//		    }
-		//		}
+
+		window.close();
 	}
 
 	private static void loop(final RenderWindow window) throws IOException, InterruptedException {
@@ -70,19 +55,21 @@ public class Main {
 		
 		MenuBase menu = null;
 
-		boolean run = true;
 		Time last_refresh = display_timer.getElapsedTime();
 		Time last_update = display_timer.getElapsedTime();
 
-		while (run && window.isOpen()) {
+		while (window.isOpen()) {
 			timer.restart();
 
 			// Events
 			Event event = null;
 			while ((event = window.pollEvent()) != null) {
+				if (event.type == Event.Type.CLOSED) {
+					return;
+				}
 				if (event.type == Event.Type.KEY_RELEASED) {
 					if (event.asKeyEvent().key == Key.ESCAPE) {
-						run = false;
+						return;
 					}
 					if (event.asKeyEvent().control && event.asKeyEvent().key == Key.S) {
 						game.save("saves/2.sav");
@@ -138,7 +125,7 @@ public class Main {
 				//_renderTime = (int) (elapsed.asMilliseconds() - _last_refresh.asMilliseconds());
 				last_refresh = elapsed;
 				double animProgress = 1 - (double)nextUpdate / UPDATE_INTERVAL;
-				game.onRefresh(animProgress);
+				game.onRefresh(animProgress, renderTime);
 				if (menu != null) {
 					menu.refresh(window);
 				}

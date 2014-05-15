@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.deepspace.UserInterface.Panels;
 
 import java.io.IOException;
 
@@ -7,6 +7,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Game;
+import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.UserInterface.Utils.UIText;
 import alone.in.deepspace.Utils.Constant;
 
@@ -15,7 +16,6 @@ public class PanelSystem extends UserSubInterface {
 	private static final int FRAME_HEIGHT = 32;
 	private UIText _lbRenderTime;
 	private UIText _lbMemoryUsed;
-	private UIText _lbMemoryTotal;
 	private int _used;
 	
 	public PanelSystem(RenderWindow app) throws IOException {
@@ -32,14 +32,8 @@ public class PanelSystem extends UserSubInterface {
 		_lbMemoryUsed = new UIText(new Vector2f(10, 10));
 		_lbMemoryUsed.setCharacterSize(14);
 		_lbMemoryUsed.setColor(Color.WHITE);
-		_lbMemoryUsed.setPosition(new Vector2f(100, 6));
+		_lbMemoryUsed.setPosition(new Vector2f(200, 6));
 		addView(_lbMemoryUsed);
-		
-		_lbMemoryTotal = new UIText(new Vector2f(10, 10));
-		_lbMemoryTotal.setCharacterSize(14);
-		_lbMemoryTotal.setColor(Color.WHITE);
-		_lbMemoryTotal.setPosition(new Vector2f(200, 6));
-		addView(_lbMemoryTotal);
 	}
 	
 	@Override
@@ -51,8 +45,7 @@ public class PanelSystem extends UserSubInterface {
         
         _used = (_used * 7 + used) / 8;
 
-        _lbRenderTime.setString(Game.renderTime + "ms");
-        _lbMemoryUsed.setString(String.valueOf(_used));
-        _lbMemoryTotal.setString(String.valueOf(total));
+        _lbRenderTime.setString("Rendering: " + Game.renderTime + "ms");
+        _lbMemoryUsed.setString("Heap: " + String.valueOf(_used) + " / " + String.valueOf(total) + " Mo");
 	}
 }

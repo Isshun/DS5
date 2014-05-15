@@ -16,8 +16,6 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.graphics.Transform;
-import org.jsfml.system.Time;
-import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.event.Event;
 import org.jsfml.window.event.MouseButtonEvent;
@@ -41,7 +39,6 @@ import alone.in.deepspace.World.WorldRenderer;
 
 public class Game implements ISavable {
 	public static int 				renderTime;
-	private int 					_renderTime;
 	private RenderWindow			_app;
 	private int 					_lastInput;
 	private static int 				_frame;
@@ -53,9 +50,6 @@ public class Game implements ISavable {
 	private CharacterManager		_characterManager;
 	private Texture 				_backgroundTexture;
 	private Sprite 					_background;
-	private boolean 				_run;
-	private Time 					_last_refresh;
-	private Time 					_last_update;
 	private FoeManager 				_FoeManager;
 	private DynamicObjectManager	_dynamicObjectManager;
 	private int 					_lastLeftClick;
@@ -65,8 +59,6 @@ public class Game implements ISavable {
 
 	public Game(RenderWindow app) throws IOException, TextureCreationException {
 		Log.debug("Game");
-
-		_renderTime = 0;
 
 		_app = app;
 		_lastInput = 0;
@@ -93,7 +85,7 @@ public class Game implements ISavable {
 		_background.setTextureRect(new IntRect(0, 0, 1920, 1080));
 
 		app.setKeyRepeatEnabled(true);
-
+		
 		Log.info("Game:\tdone");
 	}
 
@@ -200,15 +192,16 @@ public class Game implements ISavable {
 
 		_update++;
 
-		if (_update % 600 == 0) {
+		if (_update % 50 == 0) {
 			ResourceManager.getInstance().update();
 		}
 	}
 
-	void	onRefresh(double animProgress) throws IOException {
+	void	onRefresh(double animProgress, int rTime) throws IOException {
 		// Flush
 		_app.clear(new Color(0, 0, 50));
 		_frame++;
+		renderTime = rTime;
 
 		// Draw scene
 		draw_surface();
@@ -223,7 +216,7 @@ public class Game implements ISavable {
 		_dynamicObjectManager.refresh(_app, render, animProgress);
 
 		// User interface
-		_ui.refresh(_frame, _update, _renderTime);
+		_ui.refresh(_frame, _update, rTime);
 
 		if (_menu != null) {
 			_menu.refresh(_app);
@@ -286,32 +279,7 @@ public class Game implements ISavable {
 
 		// Check key code
 		if (event.type == Event.Type.KEY_RELEASED) {
-			// If not consumes by UI
-			if (_ui.checkKeyboard(event, _frame, _lastInput) == false) {
-				Log.info("Game: suspend");
-
-				if (event.asKeyEvent().key == Keyboard.Key.ESCAPE) {
-					_run = false;
-					Log.info("Game: suspend");
-				}
-			}
-		}
-
-		if (event.type == Event.Type.CLOSED) {
-			_app.setKeyRepeatEnabled(false);
-			_app.close();
-			Log.info("Bye");
-		}
-
-		// if (this.event.type == Event.KeyReleased &&
-		// 	  this.event.key.code == Keyboard.Escape) {
-
-		// }
-
-		if (event.type == Event.Type.KEY_RELEASED && event.asKeyEvent().key == Keyboard.Key.K) {
-			_run = false;
-			// _app.setKeyRepeatEnabled(false);
-			Log.info("Bye");
+			_ui.checkKeyboard(event, _frame, _lastInput);
 		}
 	}
 
@@ -374,6 +342,8 @@ public class Game implements ISavable {
 		ServiceManager.getCharacterManager().load(filePath);
 		RoomManager.getInstance().load(filePath);
 		JobManager.getInstance().load(filePath);
+		
+		//JobManager.getInstance().move(ServiceManager.getCharacterManager().getList().get(0), 25, 14);
 	}
 
 	public void	save(final String filePath) {

@@ -52,8 +52,6 @@ public class Movable implements PathManagerCallback {
 	  _toX = job.getX();
 	  _toY = job.getY();
 	
-	  Log.debug("Charactere #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
-	
 	  // if (_path != null) {
 	  // 	_path.FreeSolutionNodes();
 	  // 	Debug() + "free 1";
