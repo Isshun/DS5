@@ -2,9 +2,9 @@ package alone.in.deepspace.UserInterface;
 
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.UserInterface.Utils.UIFrame;
+import alone.in.deepspace.Engine.ui.RectangleView;
 
-public abstract class MenuBase extends UIFrame {
+public abstract class MenuBase extends RectangleView {
 	public MenuBase(Vector2f size) {
 		super(size);
 	}

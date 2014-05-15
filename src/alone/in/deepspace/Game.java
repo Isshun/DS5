@@ -241,6 +241,7 @@ public class Game implements ISavable {
 	public void onEvent(Event event) throws IOException {
 		if (event.type == Event.Type.MOUSE_MOVED) {
 			_ui.onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
+			EventManager.getInstance().onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
 		}
 
 		if (event.type == Event.Type.MOUSE_BUTTON_PRESSED || event.type == Event.Type.MOUSE_BUTTON_RELEASED) {

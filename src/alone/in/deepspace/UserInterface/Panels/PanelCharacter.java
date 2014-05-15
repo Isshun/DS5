@@ -8,8 +8,8 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Character.CharacterNeeds;
+import alone.in.deepspace.Engine.ui.TextView;
 import alone.in.deepspace.UserInterface.UserSubInterface;
-import alone.in.deepspace.UserInterface.Utils.UIText;
 import alone.in.deepspace.Utils.Constant;
 
 
@@ -22,8 +22,8 @@ public class PanelCharacter extends UserSubInterface {
 	private static final int LINE_HEIGHT = 28;
 	
 	private Character        _character;
-	private UIText _lbName;
-	private UIText _lbProfession;
+	private TextView _lbName;
+	private TextView _lbProfession;
 
 	private static final int FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
@@ -36,14 +36,14 @@ public class PanelCharacter extends UserSubInterface {
 		setBackgroundColor(new Color(0, 0, 0, 150));
 
 		// Name
-		_lbName = new UIText(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
+		_lbName = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbName.setCharacterSize(FONT_SIZE);
 		_lbName.setColor(Color.WHITE);
 		_lbName.setPosition(new Vector2f(PADDING_H, PADDING_V));
 		addView(_lbName);
 
 		// Profession
-		_lbProfession = new UIText(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
+		_lbProfession = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbProfession.setCharacterSize(FONT_SIZE);
 		_lbProfession.setColor(Color.WHITE);
 		_lbProfession.setPosition(new Vector2f(PADDING_H, PADDING_V + LINE_HEIGHT));
@@ -113,7 +113,7 @@ public class PanelCharacter extends UserSubInterface {
 	void  addGauge(int posX, int posY, int width, int height, int index) {
 
 		// Name
-		UIText text = new UIText(new Vector2f(width, height));
+		TextView text = new TextView(new Vector2f(width, height));
 		text.setCharacterSize(FONT_SIZE);
 		text.setColor(Color.WHITE);
 		text.setString(texts[index]);

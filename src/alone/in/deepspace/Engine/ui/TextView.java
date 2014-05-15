@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface.Utils;
+package alone.in.deepspace.Engine.ui;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderStates;
@@ -8,11 +8,11 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Managers.SpriteManager;
 
-public class UIText extends UIView {
+public class TextView extends View {
 
 	private Text _text;
 
-	public UIText(Vector2f size) {
+	public TextView(Vector2f size) {
 		super(size);
 		
 		_text = new Text();

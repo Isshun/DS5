@@ -8,12 +8,12 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Character.Profession;
 import alone.in.deepspace.Character.ServiceManager;
+import alone.in.deepspace.Engine.ui.OnClickListener;
+import alone.in.deepspace.Engine.ui.TextView;
+import alone.in.deepspace.Engine.ui.View;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.ResourceManager;
 import alone.in.deepspace.UserInterface.UserSubInterface;
-import alone.in.deepspace.UserInterface.Utils.OnClickListener;
-import alone.in.deepspace.UserInterface.Utils.UIText;
-import alone.in.deepspace.UserInterface.Utils.UIView;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.World.StructureItem;
 import alone.in.deepspace.World.UserItem;
@@ -29,10 +29,10 @@ public class PanelDebug extends UserSubInterface {
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		
 		// Add character
-		UIText txtAddCharacter = new UIText(new Vector2f(200, 32));
+		TextView txtAddCharacter = new TextView(new Vector2f(200, 32));
 		txtAddCharacter.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(UIView view) {
+			public void onClick(View view) {
 				ServiceManager.getCharacterManager().add(0, 0, Profession.Type.ENGINEER);
 			}
 		});
@@ -43,10 +43,10 @@ public class PanelDebug extends UserSubInterface {
 		addView(txtAddCharacter);
 
 		// Add Ressource
-		UIText lbAddMatter = new UIText(new Vector2f(200, 32));
+		TextView lbAddMatter = new TextView(new Vector2f(200, 32));
 		lbAddMatter.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(UIView view) {
+			public void onClick(View view) {
 				ResourceManager.getInstance().addMatter(500);
 			}
 		});
@@ -57,10 +57,10 @@ public class PanelDebug extends UserSubInterface {
 		addView(lbAddMatter);
 
 		// Re-launch jobs 
-		UIText lbReLaunchJob = new UIText(new Vector2f(200, 32));
+		TextView lbReLaunchJob = new TextView(new Vector2f(200, 32));
 		lbReLaunchJob.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(UIView view) {
+			public void onClick(View view) {
 				int width = ServiceManager.getWorldMap().getWidth();
 				int height = ServiceManager.getWorldMap().getHeight();
 				for (int x = 0; x < width; x++) {
@@ -84,10 +84,10 @@ public class PanelDebug extends UserSubInterface {
 		addView(lbReLaunchJob);
 
 		// Clear jobs 
-		UIText lbClearJob = new UIText(new Vector2f(200, 32));
+		TextView lbClearJob = new TextView(new Vector2f(200, 32));
 		lbClearJob.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(UIView view) {
+			public void onClick(View view) {
 				JobManager.getInstance().clear();
 			}
 		});
@@ -98,10 +98,10 @@ public class PanelDebug extends UserSubInterface {
 		addView(lbClearJob);
 
 		// Add seed 
-		UIText lbAddSeed = new UIText(new Vector2f(200, 32));
+		TextView lbAddSeed = new TextView(new Vector2f(200, 32));
 		lbAddSeed.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(UIView view) {
+			public void onClick(View view) {
 				ServiceManager.getWorldMap().addRandomSeed();
 				ServiceManager.getWorldMap().addRandomSeed();
 				ServiceManager.getWorldMap().addRandomSeed();
@@ -123,10 +123,10 @@ public class PanelDebug extends UserSubInterface {
 		addView(lbAddSeed);
 
 		// Add water 
-		UIText lbAddWater = new UIText(new Vector2f(200, 32));
+		TextView lbAddWater = new TextView(new Vector2f(200, 32));
 		lbAddWater.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(UIView view) {
+			public void onClick(View view) {
 				ResourceManager.getInstance().addWater(20);
 			}
 		});
@@ -137,10 +137,10 @@ public class PanelDebug extends UserSubInterface {
 		addView(lbAddWater);
 
 		// Kill everyone 
-		UIText lbKillEveryone = new UIText(new Vector2f(200, 32));
+		TextView lbKillEveryone = new TextView(new Vector2f(200, 32));
 		lbKillEveryone.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(UIView view) {
+			public void onClick(View view) {
 				ServiceManager.getCharacterManager().clear();
 				JobManager.getInstance().clear();
 			}

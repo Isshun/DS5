@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface;
+package alone.in.deepspace.UserInterface.Panels;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +13,9 @@ import org.jsfml.window.Keyboard;
 import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Character.CharacterManager;
 import alone.in.deepspace.Character.ServiceManager;
+import alone.in.deepspace.Engine.ui.TextView;
 import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.UserInterface.Utils.UIText;
+import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 
 public class PanelCrew extends UserSubInterface {
@@ -32,7 +33,7 @@ public class PanelCrew extends UserSubInterface {
 
 	private CharacterManager     _characterManager;
 	private List<ViewHolder> _viewHolderList;
-	private UIText _lbCount;
+	private TextView _lbCount;
 
 	public PanelCrew(RenderWindow app, int tileIndex) throws IOException {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
@@ -43,7 +44,7 @@ public class PanelCrew extends UserSubInterface {
 		_characterManager = ServiceManager.getCharacterManager();
 		
 		// Name
-		_lbCount = new UIText(new Vector2f(10, 10));
+		_lbCount = new TextView(new Vector2f(10, 10));
 		_lbCount.setCharacterSize(20);
 		_lbCount.setColor(Color.WHITE);
 		_lbCount.setPosition(new Vector2f(10, 10));
@@ -147,7 +148,7 @@ public class PanelCrew extends UserSubInterface {
 //	  _app.draw(text);
 	}
 	
-	protected boolean	checkKey(Keyboard.Key key) {
+	public boolean	checkKey(Keyboard.Key key) {
 	  super.checkKey(key);
 	
 	  if (key == Keyboard.Key.C) {

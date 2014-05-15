@@ -11,11 +11,11 @@ import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
-import alone.in.deepspace.UserInterface.Utils.UIFrame;
+import alone.in.deepspace.Engine.ui.RectangleView;
 import alone.in.deepspace.Utils.Constant;
 
 
-public abstract class UserSubInterface extends UIFrame {
+public abstract class UserSubInterface extends RectangleView {
 	protected Texture	_texturePanel;
 	protected Texture	_textureTile;
 	protected Sprite	_bgPanel;

@@ -7,15 +7,15 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Game;
+import alone.in.deepspace.Engine.ui.TextView;
 import alone.in.deepspace.UserInterface.UserSubInterface;
-import alone.in.deepspace.UserInterface.Utils.UIText;
 import alone.in.deepspace.Utils.Constant;
 
 public class PanelSystem extends UserSubInterface {
 	private static final int FRAME_WIDTH = Constant.WINDOW_WIDTH;
 	private static final int FRAME_HEIGHT = 32;
-	private UIText _lbRenderTime;
-	private UIText _lbMemoryUsed;
+	private TextView _lbRenderTime;
+	private TextView _lbMemoryUsed;
 	private int _used;
 	
 	public PanelSystem(RenderWindow app) throws IOException {
@@ -23,13 +23,13 @@ public class PanelSystem extends UserSubInterface {
 		
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		
-		_lbRenderTime = new UIText(new Vector2f(10, 10));
+		_lbRenderTime = new TextView(new Vector2f(10, 10));
 		_lbRenderTime.setCharacterSize(14);
 		_lbRenderTime.setColor(Color.WHITE);
 		_lbRenderTime.setPosition(new Vector2f(10, 6));
 		addView(_lbRenderTime);
 		
-		_lbMemoryUsed = new UIText(new Vector2f(10, 10));
+		_lbMemoryUsed = new TextView(new Vector2f(10, 10));
 		_lbMemoryUsed.setCharacterSize(14);
 		_lbMemoryUsed.setColor(Color.WHITE);
 		_lbMemoryUsed.setPosition(new Vector2f(200, 6));

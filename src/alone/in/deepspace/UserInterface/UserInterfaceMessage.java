@@ -6,7 +6,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.UserInterface.Utils.UIText;
+import alone.in.deepspace.Engine.ui.TextView;
 import alone.in.deepspace.Utils.Constant;
 
 public class UserInterfaceMessage extends UserSubInterface {
@@ -22,15 +22,15 @@ public class UserInterfaceMessage extends UserSubInterface {
 	private static final int 	FRAME_WIDTH = 380;
 	private static final int	FRAME_HEIGHT = 200;
 	private int 		_frame;
-	private UIText[] 	_texts;
+	private TextView[] 	_texts;
 	private int _start;
 
 	public UserInterfaceMessage(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(20, 20), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		  
-		_texts = new UIText[10];
+		_texts = new TextView[10];
 		for (int i = 0; i < 10; i++) {
-			_texts[i] = new UIText(null);
+			_texts[i] = new TextView(null);
 			_texts[i].setCharacterSize(14);
 			_texts[i].setPosition(10, 20 * i);
 			addView(_texts[i]);

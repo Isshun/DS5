@@ -6,12 +6,14 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.Engine.ui.ButtonView;
+import alone.in.deepspace.Engine.ui.OnClickListener;
+import alone.in.deepspace.Engine.ui.TextView;
+import alone.in.deepspace.Engine.ui.View;
+import alone.in.deepspace.UserInterface.OnFocusListener;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.UserInterface.UserInterface.Mode;
-import alone.in.deepspace.UserInterface.Utils.OnClickListener;
-import alone.in.deepspace.UserInterface.Utils.UIText;
-import alone.in.deepspace.UserInterface.Utils.UIView;
 import alone.in.deepspace.Utils.Constant;
 
 public class PanelShortcut extends UserSubInterface {
@@ -23,7 +25,7 @@ public class PanelShortcut extends UserSubInterface {
 		
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		
-		UIText lbEngineering = new UIText(new Vector2f(140, 36));
+		TextView lbEngineering = new TextView(new Vector2f(140, 36));
 		lbEngineering.setCharacterSize(14);
 		lbEngineering.setColor(Color.WHITE);
 		lbEngineering.setString("Build");
@@ -31,29 +33,39 @@ public class PanelShortcut extends UserSubInterface {
 		lbEngineering.setBackgroundColor(new Color(0, 0, 255, 180));
 		lbEngineering.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(UIView view) {
+			public void onClick(View view) {
 				userInterface.setMode(UserInterface.Mode.BUILD);
 			}
 		});
 		lbEngineering.setPosition(new Vector2f(10, 6));
 		addView(lbEngineering);
 		
-		UIText lbOperation = new UIText(new Vector2f(140, 36));
-		lbOperation.setCharacterSize(14);
-		lbOperation.setColor(Color.WHITE);
-		lbOperation.setPosition(new Vector2f(160, 6));
-		lbOperation.setPadding(8, 20, 10, 50);
+		ButtonView lbOperation = new ButtonView(new Vector2f(140, 36), "Jobs");
+		lbOperation.setOnFocusListener(new OnFocusListener() {			
+			@Override
+			public void onExit(View view) {
+				view.setBackgroundColor(new Color(0, 255, 0, 180));
+			}
+			
+			@Override
+			public void onEnter(View view) {
+				view.setBackgroundColor(Color.RED);
+			}
+		});
+//		lbOperation.setCharacterSize(14);
+//		lbOperation.setColor(Color.WHITE);
 		lbOperation.setBackgroundColor(new Color(0, 255, 0, 180));
-		lbOperation.setString("Jobs");
+		lbOperation.setPosition(new Vector2f(160, 6));
+	//	lbOperation.setPadding(8, 20, 10, 50);
 		lbOperation.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(UIView view) {
+			public void onClick(View view) {
 				userInterface.setMode(UserInterface.Mode.JOBS);
 			}
 		});
 		addView(lbOperation);
 		
-		UIText lbCrew = new UIText(new Vector2f(140, 36));
+		TextView lbCrew = new TextView(new Vector2f(140, 36));
 		lbCrew.setCharacterSize(14);
 		lbCrew.setColor(Color.WHITE);
 		lbCrew.setPadding(8, 20, 10, 50);
@@ -62,13 +74,13 @@ public class PanelShortcut extends UserSubInterface {
 		lbCrew.setString("Crew");
 		lbCrew.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(UIView view) {
+			public void onClick(View view) {
 				userInterface.setMode(UserInterface.Mode.CREW);
 			}
 		});
 		addView(lbCrew);
 		
-		UIText lbRoom = new UIText(new Vector2f(140, 36));
+		TextView lbRoom = new TextView(new Vector2f(140, 36));
 		lbRoom.setCharacterSize(14);
 		lbRoom.setColor(Color.WHITE);
 		lbRoom.setPadding(8, 20, 10, 50);
@@ -77,13 +89,13 @@ public class PanelShortcut extends UserSubInterface {
 		lbRoom.setString("Room");
 		lbRoom.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(UIView view) {
+			public void onClick(View view) {
 				userInterface.setMode(UserInterface.Mode.ROOM);
 			}
 		});
 		addView(lbRoom);
 
-		UIText lbDebug = new UIText(new Vector2f(140, 36));
+		TextView lbDebug = new TextView(new Vector2f(140, 36));
 		lbDebug.setCharacterSize(14);
 		lbDebug.setColor(Color.WHITE);
 		lbDebug.setPadding(8, 20, 10, 45);
@@ -92,7 +104,7 @@ public class PanelShortcut extends UserSubInterface {
 		lbDebug.setString("Debug");
 		lbDebug.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(UIView view) {
+			public void onClick(View view) {
 				userInterface.setMode(UserInterface.Mode.DEBUG);
 			}
 		});

@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface.Utils;
+package alone.in.deepspace.Engine.ui;
 
 import java.awt.Rectangle;
 
@@ -10,8 +10,9 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Engine.MainRenderer;
 import alone.in.deepspace.UserInterface.EventManager;
+import alone.in.deepspace.UserInterface.OnFocusListener;
 
-public abstract class UIView {
+public abstract class View {
 	protected Vector2f 		_pos;
 	private Vector2f 		_size;
 	protected boolean		_isVisible;
@@ -25,10 +26,12 @@ public abstract class UIView {
 	protected int			_paddingBottom;
 	protected int 			_paddingRight;
 	protected int 			_paddingTop;
-	private UIFrame _parent;
+	private RectangleView _parent;
 	private OnClickListener _onClickListener;
+	private OnFocusListener _onFocusListener;
+	private boolean mIsActive;
 
-	public UIView(Vector2f size) {
+	public View(Vector2f size) {
 		_size = size;
 		_isVisible = true;
 	}
@@ -56,6 +59,11 @@ public abstract class UIView {
 	public void setOnClickListener(OnClickListener onClickListener) {
 		_onClickListener = onClickListener;
 		EventManager.getInstance().setOnClickListener(this, onClickListener);
+	}
+
+	public void setOnFocusListener(OnFocusListener onFocusListener) {
+		_onFocusListener = onFocusListener;
+		EventManager.getInstance().setOnFocusListener(this, onFocusListener);
 	}
 
 	public void click() {
@@ -114,12 +122,20 @@ public abstract class UIView {
 	public void onRefresh(RenderWindow app, RenderStates states) {
 	}
 
-	public void setParent(UIFrame parent) {
+	public void setParent(RectangleView parent) {
 		_parent = parent;
 	}
 
-	public UIFrame getParent() {
+	public RectangleView getParent() {
 		return _parent;
+	}
+
+	public boolean isActive() {
+		return mIsActive;
+	}
+
+	public void setActive(boolean active) {
+		mIsActive = active;
 	}
 
 }

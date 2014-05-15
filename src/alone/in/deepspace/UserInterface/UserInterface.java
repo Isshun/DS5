@@ -17,6 +17,7 @@ import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.UserInterface.Panels.PanelBase;
 import alone.in.deepspace.UserInterface.Panels.PanelBuild;
 import alone.in.deepspace.UserInterface.Panels.PanelCharacter;
+import alone.in.deepspace.UserInterface.Panels.PanelCrew;
 import alone.in.deepspace.UserInterface.Panels.PanelDebug;
 import alone.in.deepspace.UserInterface.Panels.PanelInfo;
 import alone.in.deepspace.UserInterface.Panels.PanelJobs;
@@ -49,7 +50,7 @@ public class UserInterface {
 	private CharacterManager        	_characteres;
 	private PanelCharacter  			_panelCharacter;
 	private PanelInfo					_panelInfo;
-	private PanelCrew			_uiCharacter;
+	private PanelCrew					_uiCharacter;
 	private PanelBuild					_panelBuild;
 	private PanelDebug					_panelDebug;
 	private UserInterfaceMenuOperation	_uiBase;

@@ -9,14 +9,14 @@ import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Character.ServiceManager;
+import alone.in.deepspace.Engine.ui.OnClickListener;
+import alone.in.deepspace.Engine.ui.TextView;
+import alone.in.deepspace.Engine.ui.View;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.RoomManager;
 import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.UserInterface.UserSubInterface;
-import alone.in.deepspace.UserInterface.Utils.OnClickListener;
-import alone.in.deepspace.UserInterface.Utils.UIText;
-import alone.in.deepspace.UserInterface.Utils.UIView;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.ObjectPool;
 import alone.in.deepspace.World.BaseItem;
@@ -34,14 +34,14 @@ public class PanelInfo extends UserSubInterface {
 	private WorldArea				_area;
 	private BaseItem				_item;
 	private int						_line;
-	private UIText 					_primaryName;
-	private UIText 					_itemName;
+	private TextView 					_primaryName;
+	private TextView 					_itemName;
 	private PanelInfoItemOptions	_itemOptions;
-	private UIText _itemMatter;
+	private TextView _itemMatter;
 	private StructureItem 	_structure;
 	private PanelInfoItemOptions _structureOptions;
-	private UIText _lbRoom;
-	private UIText _itemStorage;
+	private TextView _lbRoom;
+	private TextView _itemStorage;
 
 	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;
 
@@ -56,34 +56,34 @@ public class PanelInfo extends UserSubInterface {
 		  
 		  setBackgroundColor(new Color(0, 0, 0, 150));
 		  
-		  _primaryName = new UIText(null);
+		  _primaryName = new TextView(null);
 		  _primaryName.setPosition(10, 40);
 		  _primaryName.setCharacterSize(22);
 		  addView(_primaryName);
 		  
-		  _lbRoom = new UIText(null);
+		  _lbRoom = new TextView(null);
 		  _lbRoom.setPosition(200, 40);
 		  _lbRoom.setCharacterSize(22);
 		  addView(_lbRoom);
 		  
 		  int itemOffset = 200;
 		  
-		  _itemName = new UIText(null);
+		  _itemName = new TextView(null);
 		  _itemName.setPosition(10, itemOffset + 40);
 		  _itemName.setCharacterSize(22);
 		  addView(_itemName);
 		  
-		  _itemMatter = new UIText(null);
+		  _itemMatter = new TextView(null);
 		  _itemMatter.setPosition(10, itemOffset + 60);
 		  _itemMatter.setCharacterSize(14);
 		  addView(_itemMatter);
 
-		  _itemStorage = new UIText(null);
+		  _itemStorage = new TextView(null);
 		  _itemStorage.setPosition(10, itemOffset + 200);
 		  _itemStorage.setCharacterSize(14);
 		  addView(_itemStorage);
 		  
-		  UIText sep = new UIText(null);
+		  TextView sep = new TextView(null);
 		  sep.setPosition(0, 200);
 		  sep.setCharacterSize(22);
 		  sep.setString("----------------------------------");
@@ -130,8 +130,8 @@ public class PanelInfo extends UserSubInterface {
 		  _structure = structure;
 		  
 		  if (_structureOptions != null) {
-			  List<UIText> texts = _structureOptions.getOptions();
-			  for (UIText text: texts) {
+			  List<TextView> texts = _structureOptions.getOptions();
+			  for (TextView text: texts) {
 				  text.setOnClickListener(null);
 				  removeView(text);
 			  }
@@ -144,21 +144,21 @@ public class PanelInfo extends UserSubInterface {
 				  _structureOptions = new PanelInfoItemOptions(20, 100);
 				  addView(_structureOptions.add("Automatic opening", new OnClickListener() {
 					  @Override
-					  public void onClick(UIView view) {
+					  public void onClick(View view) {
 						  structure.setMode(0);
 						  structure.setSolid(false);
 					  }
 				  }));
 				  addView(_structureOptions.add("Still open", new OnClickListener() {
 					  @Override
-					  public void onClick(UIView view) {
+					  public void onClick(View view) {
 						  structure.setMode(2);
 						  structure.setSolid(false);
 					  }
 				  }));
 				  addView(_structureOptions.add("Locked", new OnClickListener() {
 					  @Override
-					  public void onClick(UIView view) {
+					  public void onClick(View view) {
 						  structure.setMode(1);
 						  structure.setSolid(true);
 					  }
@@ -171,8 +171,8 @@ public class PanelInfo extends UserSubInterface {
 		  _item = item;
 		  
 		  if (_itemOptions != null) {
-			  List<UIText> texts = _itemOptions.getOptions();
-			  for (UIText text: texts) {
+			  List<TextView> texts = _itemOptions.getOptions();
+			  for (TextView text: texts) {
 				  text.setOnClickListener(null);
 				  removeView(text);
 			  }
@@ -191,25 +191,25 @@ public class PanelInfo extends UserSubInterface {
 		  _itemOptions = new PanelInfoItemOptions(20, 280);
 		  addView(_itemOptions.add("Remove", new OnClickListener() {
 			  @Override
-			  public void onClick(UIView view) {
+			  public void onClick(View view) {
 				  JobManager.getInstance().storeItem(item);
 			  }
 		  }));
 		  addView(_itemOptions.add("Destroy", new OnClickListener() {
 			  @Override
-			  public void onClick(UIView view) {
+			  public void onClick(View view) {
 				  JobManager.getInstance().destroyItem(item);
 			  }
 		  }));
 		  addView(_itemOptions.add("Add character", new OnClickListener() {
 			  @Override
-			  public void onClick(UIView view) {
+			  public void onClick(View view) {
 				  ServiceManager.getCharacterManager().add(item.getX(), item.getY());
 			  }
 		  }));
 		  addView(_itemOptions.add("kill everyone", new OnClickListener() {
 			  @Override
-			  public void onClick(UIView view) {
+			  public void onClick(View view) {
 				  ServiceManager.getCharacterManager().clear();
 			  }
 		  }));

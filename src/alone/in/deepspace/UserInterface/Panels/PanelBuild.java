@@ -9,13 +9,14 @@ import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
+import alone.in.deepspace.Engine.ui.OnClickListener;
+import alone.in.deepspace.Engine.ui.ButtonView;
+import alone.in.deepspace.Engine.ui.TextView;
+import alone.in.deepspace.Engine.ui.View;
 import alone.in.deepspace.Managers.SpriteManager;
+import alone.in.deepspace.UserInterface.OnFocusListener;
 import alone.in.deepspace.UserInterface.UserInteraction;
 import alone.in.deepspace.UserInterface.UserSubInterface;
-import alone.in.deepspace.UserInterface.Utils.OnClickListener;
-import alone.in.deepspace.UserInterface.Utils.UIIcon;
-import alone.in.deepspace.UserInterface.Utils.UIText;
-import alone.in.deepspace.UserInterface.Utils.UIView;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.BaseItem;
@@ -39,8 +40,8 @@ public class PanelBuild extends UserSubInterface {
 		REMOVE_ITEM
 	};
 
-	private Map<Integer, UIIcon> _icons;
-	private UIText _lbStructure;
+	private Map<Integer, ButtonView> _icons;
+	private TextView _lbStructure;
 	protected Type _currentSelected;
 	protected Mode _mode;
 
@@ -49,31 +50,31 @@ public class PanelBuild extends UserSubInterface {
 
 		setBackgroundColor(new Color(200, 200, 50, 140));
 
-		_icons = new HashMap<Integer, UIIcon>();
+		_icons = new HashMap<Integer, ButtonView>();
 		_panelMode = Mode.BUILD_STRUCTURE;
 		_panelModeHover = Mode.BUILD_STRUCTURE;
 		_itemHover = -1;
 		_mode = Mode.NONE;
 
-		_lbStructure = new UIText(new Vector2f(140, 32));
+		_lbStructure = new TextView(new Vector2f(140, 32));
 		_lbStructure.setString("Structure");
 		_lbStructure.setCharacterSize(20);
 		_lbStructure.setPosition(new Vector2f(20, 20));
 		addView(_lbStructure);
 
-		UIText lbQuarter = new UIText(new Vector2f(140, 32));
+		TextView lbQuarter = new TextView(new Vector2f(140, 32));
 		lbQuarter.setString("Quarter");
 		lbQuarter.setCharacterSize(20);
 		lbQuarter.setPosition(new Vector2f(20, 270));
 		addView(lbQuarter);
 
-		UIText lbEngineering = new UIText(new Vector2f(140, 32));
+		TextView lbEngineering = new TextView(new Vector2f(140, 32));
 		lbEngineering.setString("Engineering");
 		lbEngineering.setCharacterSize(20);
 		lbEngineering.setPosition(new Vector2f(20, 520));
 		addView(lbEngineering);
 
-		UIText lbSickbay = new UIText(new Vector2f(140, 32));
+		TextView lbSickbay = new TextView(new Vector2f(140, 32));
 		lbSickbay.setString("Sickbay");
 		lbSickbay.setCharacterSize(20);
 		lbSickbay.setPosition(new Vector2f(20, 670));
@@ -182,21 +183,34 @@ public class PanelBuild extends UserSubInterface {
 	}
 
 	void	drawIcon(int offset, int index, final int type) throws IOException {
-		UIIcon icon = _icons.get(type);
+		ButtonView icon = _icons.get(type);
 		if (icon == null) {
 			if (type < 0) {
-				icon = new UIIcon(new Vector2f(62, 80), "remove", SpriteManager.getInstance().getBullet(3));
+				icon = new ButtonView(new Vector2f(62, 80), "remove");
+				icon.setIcon(SpriteManager.getInstance().getBullet(3));
 			} else {
 				Type t = BaseItem.getTypeIndex(type);
-				icon = new UIIcon(new Vector2f(62, 80), BaseItem.getItemName(t), SpriteManager.getInstance().getIcon(t));
+				icon = new ButtonView(new Vector2f(62, 80), BaseItem.getItemName(t));
+				icon.setIcon(SpriteManager.getInstance().getIcon(t));
 			}
 			icon.setPosition(20 + (index % 4) * 80, 60 + offset + (int)(index / 4) * 100);
-			icon.setBackground(_itemHover == type ? Color.WHITE : COLOR_YELLOW);
+			icon.setBackgroundColor(_itemHover == type ? Color.WHITE : COLOR_YELLOW);
+			icon.setOnFocusListener(new OnFocusListener() {
+				@Override
+				public void onEnter(View view) {
+					view.setBackgroundColor(Color.CYAN);
+				}
+
+				@Override
+				public void onExit(View view) {
+					view.setBackgroundColor(_currentSelected == BaseItem.getTypeIndex(type) ? Color.RED : COLOR_YELLOW);
+				}
+			});
 			icon.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(UIView view) {
-					for (UIIcon icon: _icons.values()) {
-						icon.setBackground(COLOR_YELLOW);
+				public void onClick(View view) {
+					for (ButtonView icon: _icons.values()) {
+						icon.setBackgroundColor(COLOR_YELLOW);
 					}
 					if (type == -2) {
 						_mode = Mode.REMOVE_STRUCTURE;
@@ -206,7 +220,7 @@ public class PanelBuild extends UserSubInterface {
 						_mode = Mode.BUILD_ITEM;
 						_currentSelected = BaseItem.getTypeIndex(type);
 					}
-					((UIIcon) view).setBackground(Color.RED);
+					((ButtonView) view).setBackgroundColor(Color.RED);
 				}
 			});
 			addView(icon);
