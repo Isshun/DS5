@@ -14,8 +14,6 @@ public class CharacterNeeds {
 			MSG_BLOCKED
 		  }
 
-		  BaseItem.Type	_sleepItem;
-
 		  // Actions
 		  int	_sleeping;
 		  int	_eating;
@@ -34,8 +32,10 @@ public class CharacterNeeds {
 		  int	_injuries;
 		  int	_satiety;
 
+		private BaseItem _sleepItem;
+
 		  public CharacterNeeds() {
-		  _sleepItem = BaseItem.Type.NONE;
+		  _sleepItem = null;
 		  _sleeping = 0;
 		  _food = (int) (Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);
 		  _oxygen = (int) (Constant.CHARACTER_INIT_OXYGEN + (Math.random() * 100) % 20 - 10);
@@ -142,7 +142,7 @@ public class CharacterNeeds {
 
 		  // Sleep on the ground
 		  if (_energy <= 0) {
-			sleep(BaseItem.Type.NONE);
+			sleep(null);
 		  }
 		}
 
@@ -155,20 +155,24 @@ public class CharacterNeeds {
 		  _sleeping -= 6;
 
 		  // Strong heal if character in sickbay
-		  if (_sleepItem == BaseItem.Type.QUARTER_BED) {
-			_energy = Math.min(_energy + 6, 100);
-			_happiness += 0.1;
-		  } else if (_sleepItem == BaseItem.Type.QUARTER_CHAIR) {
-			_energy = Math.min(_energy + 5, 100);
-			_happiness -= 0.1;
-		  } else if (_sleepItem == BaseItem.Type.SICKBAY_BIOBED) {
-			_energy = Math.min(_energy + 6, 100);
-			if (_health > 20) {
-			  _health = Math.max(_health + 2, 100.0f);
-			}
-		  } else if (_sleepItem == BaseItem.Type.SICKBAY_EMERGENCY_SHELTERS) {
-			_energy = Math.min(_energy + 6, 100);
-			_health = Math.min(_health + 4, 100.0f);
+		  
+		  // TODO
+		  if (_sleepItem != null) {
+			  if (_sleepItem.getName().equals("base.bed")) {
+				_energy = Math.min(_energy + 6, 100);
+				_happiness += 0.1;
+			  } else if (_sleepItem.getName().equals("base.chair")) {
+				_energy = Math.min(_energy + 5, 100);
+				_happiness -= 0.1;
+			  } else if (_sleepItem.getName().equals("base.biobed")) {
+				_energy = Math.min(_energy + 6, 100);
+				if (_health > 20) {
+				  _health = Math.max(_health + 2, 100.0f);
+				}
+			  } else if (_sleepItem.getName().equals("base.emergency_shelters")) {
+				_energy = Math.min(_energy + 6, 100);
+				_health = Math.min(_health + 4, 100.0f);
+			  }
 		  } else {
 			_energy = Math.min(_energy + 5, 100);
 			_happiness -= 0.1;
@@ -189,20 +193,8 @@ public class CharacterNeeds {
 			_satiety = 100;
 		}
 
-		public void	sleep(BaseItem.Type itemType) {
-		  _sleepItem = itemType;
-
-		  if (itemType == BaseItem.Type.QUARTER_BED) {
-		  } else if (itemType == BaseItem.Type.SICKBAY_BIOBED) {
-			if (_health > 20) {
-			  _health += 4;
-			}
-		  } else if (itemType == BaseItem.Type.QUARTER_CHAIR) {
-		  } else if (itemType == BaseItem.Type.SICKBAY_EMERGENCY_SHELTERS) {
-			  _health += 8;
-		  } else if (itemType == BaseItem.Type.SCHOOL_DESK) {
-		  }
-
+		public void	sleep(BaseItem item) {
+		  _sleepItem = item;
 		  _sleeping = 100;
 		}
 

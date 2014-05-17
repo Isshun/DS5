@@ -9,6 +9,7 @@ import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
+import alone.in.deepspace.Character.GameData;
 import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Engine.MainRenderer;
 import alone.in.deepspace.UserInterface.MenuBase;
@@ -32,6 +33,7 @@ public class Main {
 
 		MainRenderer.getInstance().setWindow(window);
 
+		ServiceManager.setData(new GameData());
 		ItemLoader.load("base");
 		
 		try {

@@ -24,7 +24,6 @@ import alone.in.deepspace.World.StorageItem;
 import alone.in.deepspace.World.StructureItem;
 import alone.in.deepspace.World.UserItem;
 import alone.in.deepspace.World.WorldArea;
-import alone.in.deepspace.World.BaseItem.Type;
 
 public class PanelInfo extends UserSubInterface {
 
@@ -140,7 +139,8 @@ public class PanelInfo extends UserSubInterface {
 		  if (structure != null) {
 			  _primaryName.setString(structure.getName() + " (" + structure.getX() + "x" + structure.getY() + ")");
 			  
-			  if (structure.isType(BaseItem.Type.STRUCTURE_DOOR)) {
+			  // TODO
+			  if (structure.getName().equals("base.door")) {
 				  _structureOptions = new PanelInfoItemOptions(20, 100);
 				  addView(_structureOptions.add("Automatic opening", new OnClickListener() {
 					  @Override
@@ -221,9 +221,9 @@ public class PanelInfo extends UserSubInterface {
 
 		  if (item != null) {
 			  
-			  if (item.isType(Type.SPECIAL_STORAGE)) {
+			  if (item.isStorage()) {
 				  int count = ((StorageItem)item).getNbItems();
-				  UserItem subItem = ((StorageItem)item).getFirst();
+				  BaseItem subItem = ((StorageItem)item).getFirst();
 				  if (subItem != null) {
 					  _itemStorage.setString("Storage: " + subItem.getName() + " x" + count);
 				  } else {

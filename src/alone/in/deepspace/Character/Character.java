@@ -310,7 +310,7 @@ public class Character extends Movable {
 			Log.debug("Charactere #" + _id + ": need sleep: " + _needs.getEnergy());
 
 			// Need sleep
-			JobManager.getInstance().need(this, BaseItem.Type.QUARTER_BED);
+			JobManager.getInstance().need(this, "base.bed");
 
 			// // Sleep in chair
 			// {
@@ -445,10 +445,12 @@ public class Character extends Movable {
 		Log.debug("Character #" + _id + ": actionUse");
 
 		BaseItem item = _job.getItem();
-		BaseItem.Type type = item.getType();
 
+		
+		// TODO: item name
+		
 		// Bar
-		if (type == BaseItem.Type.BAR_PUB) {
+		if (item.getName().equals("base.pub")) {
 			_needs.eat();
 			// BaseItem item = ServiceManager.getWorldMap().getRandomPosInRoom(item.getRoomId());
 			// if (item != null) {
@@ -458,14 +460,14 @@ public class Character extends Movable {
 		}
 
 		// Bed
-		if (type == BaseItem.Type.QUARTER_BED) {
-			_needs.sleep(BaseItem.Type.QUARTER_BED);
+		if (item.getName().equals("base.bed")) {
+			_needs.sleep(item);
 			item.setOwner(this);
 		}
 
 		// Chair
-		if (type == BaseItem.Type.QUARTER_CHAIR) {
-			_needs.sleep(BaseItem.Type.QUARTER_CHAIR);
+		if (item.getName().equals("base.chair")) {
+			_needs.sleep(item);
 			item.setOwner(this);
 		}
 
@@ -474,7 +476,7 @@ public class Character extends Movable {
 	}
 
 	private void		actionStore() {
-		ServiceManager.getWorldMap().storeItem(BaseItem.Type.RES_1, _job.getX(), _job.getY());
+		ServiceManager.getWorldMap().storeItem(_job.getItem(), _job.getX(), _job.getY());
 		JobManager.getInstance().complete(_job);
 		_job = null;
 		_carry = 0;

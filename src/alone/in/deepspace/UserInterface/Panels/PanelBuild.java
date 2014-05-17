@@ -9,6 +9,7 @@ import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
+import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Engine.ui.OnClickListener;
 import alone.in.deepspace.Engine.ui.ButtonView;
 import alone.in.deepspace.Engine.ui.TextView;
@@ -20,7 +21,7 @@ import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.BaseItem;
-import alone.in.deepspace.World.BaseItem.Type;
+import alone.in.deepspace.World.ItemInfo;
 
 public class PanelBuild extends UserSubInterface {
 
@@ -30,7 +31,7 @@ public class PanelBuild extends UserSubInterface {
 
 	Mode				_panelMode;
 	Mode				_panelModeHover;
-	int					_itemHover;
+	ItemInfo			_itemHover;
 
 	public enum Mode {
 		NONE,
@@ -40,20 +41,19 @@ public class PanelBuild extends UserSubInterface {
 		REMOVE_ITEM
 	};
 
-	private Map<Integer, ButtonView> _icons;
-	private TextView _lbStructure;
-	protected Type _currentSelected;
-	protected Mode _mode;
+	private Map<ItemInfo, ButtonView> 	_icons;
+	private TextView 					_lbStructure;
+	protected ItemInfo 					_currentSelected;
+	protected Mode 						_mode;
 
 	public PanelBuild(RenderWindow app, int tileIndex, UserInteraction interaction) throws IOException {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 
 		setBackgroundColor(new Color(200, 200, 50, 140));
 
-		_icons = new HashMap<Integer, ButtonView>();
+		_icons = new HashMap<ItemInfo, ButtonView>();
 		_panelMode = Mode.BUILD_STRUCTURE;
 		_panelModeHover = Mode.BUILD_STRUCTURE;
-		_itemHover = -1;
 		_mode = Mode.NONE;
 
 		_lbStructure = new TextView(new Vector2f(140, 32));
@@ -134,41 +134,47 @@ public class PanelBuild extends UserSubInterface {
 
 		try {
 
-			// Structure
-			drawIcon(0, 0, -2);
-			drawIcon(0, 1, BaseItem.Type.STRUCTURE_ROOM.ordinal());
-			drawIcon(0, 2, BaseItem.Type.STRUCTURE_DOOR.ordinal());
-			drawIcon(0, 3, BaseItem.Type.STRUCTURE_FLOOR.ordinal());
-			drawIcon(0, 4, BaseItem.Type.STRUCTURE_HULL.ordinal());
-			drawIcon(0, 5, BaseItem.Type.STRUCTURE_WALL.ordinal());
-			drawIcon(0, 6, BaseItem.Type.STRUCTURE_WINDOW.ordinal());
-			drawIcon(0, 7, BaseItem.Type.STRUCTURE_GREENHOUSE.ordinal());
-
-			// Quarter
-			drawIcon(250, 0, -3);
-			drawIcon(250, 1, BaseItem.Type.QUARTER_BED.ordinal());
-			drawIcon(250, 2, BaseItem.Type.QUARTER_BEDSIDE_TABLE.ordinal());
-			drawIcon(250, 3, BaseItem.Type.QUARTER_CHAIR.ordinal());
-			drawIcon(250, 4, BaseItem.Type.QUARTER_CHEST.ordinal());
-			drawIcon(250, 5, BaseItem.Type.QUARTER_DESK.ordinal());
-			drawIcon(250, 6, BaseItem.Type.QUARTER_WARDROBE.ordinal());
-
-			// Engineering
-			drawIcon(500, 0, BaseItem.Type.ENGINE_CONTROL_CENTER.ordinal());
-			drawIcon(500, 1, BaseItem.Type.ENGINE_REACTION_CHAMBER.ordinal());
-			drawIcon(500, 2, BaseItem.Type.ENVIRONMENT_O2_RECYCLER.ordinal());
-			drawIcon(500, 3, BaseItem.Type.ENVIRONMENT_TEMPERATURE_REGULATION.ordinal());
-
-			// Special
-			drawIcon(650, 0, BaseItem.Type.SCIENCE_ZYGOTE.ordinal());
-			drawIcon(650, 1, BaseItem.Type.SCIENCE_ROBOT_MAKER.ordinal());
-
-			// Tactical
-			drawIcon(750, 0, BaseItem.Type.TACTICAL_PHASER.ordinal());
-			drawIcon(750, 1, BaseItem.Type.TACTICAL_SHIELD_GRID.ordinal());
-
-			// Common
-			drawIcon(900, 0, BaseItem.Type.BAR_PUB.ordinal());
+			// TODO
+			int i = 0;
+			for (ItemInfo info: ServiceManager.getData().items) {
+				drawIcon(0, ++i, info);
+			}
+			
+//			// Structure
+//			drawIcon(0, 0, -2);
+//			drawIcon(0, 1, BaseItem.Type.STRUCTURE_ROOM.ordinal());
+//			drawIcon(0, 2, BaseItem.Type.STRUCTURE_DOOR.ordinal());
+//			drawIcon(0, 3, BaseItem.Type.STRUCTURE_FLOOR.ordinal());
+//			drawIcon(0, 4, BaseItem.Type.STRUCTURE_HULL.ordinal());
+//			drawIcon(0, 5, BaseItem.Type.STRUCTURE_WALL.ordinal());
+//			drawIcon(0, 6, BaseItem.Type.STRUCTURE_WINDOW.ordinal());
+//			drawIcon(0, 7, BaseItem.Type.STRUCTURE_GREENHOUSE.ordinal());
+//
+//			// Quarter
+//			drawIcon(250, 0, -3);
+//			drawIcon(250, 1, BaseItem.Type.QUARTER_BED.ordinal());
+//			drawIcon(250, 2, BaseItem.Type.QUARTER_BEDSIDE_TABLE.ordinal());
+//			drawIcon(250, 3, BaseItem.Type.QUARTER_CHAIR.ordinal());
+//			drawIcon(250, 4, BaseItem.Type.QUARTER_CHEST.ordinal());
+//			drawIcon(250, 5, BaseItem.Type.QUARTER_DESK.ordinal());
+//			drawIcon(250, 6, BaseItem.Type.QUARTER_WARDROBE.ordinal());
+//
+//			// Engineering
+//			drawIcon(500, 0, BaseItem.Type.ENGINE_CONTROL_CENTER.ordinal());
+//			drawIcon(500, 1, BaseItem.Type.ENGINE_REACTION_CHAMBER.ordinal());
+//			drawIcon(500, 2, BaseItem.Type.ENVIRONMENT_O2_RECYCLER.ordinal());
+//			drawIcon(500, 3, BaseItem.Type.ENVIRONMENT_TEMPERATURE_REGULATION.ordinal());
+//
+//			// Special
+//			drawIcon(650, 0, BaseItem.Type.SCIENCE_ZYGOTE.ordinal());
+//			drawIcon(650, 1, BaseItem.Type.SCIENCE_ROBOT_MAKER.ordinal());
+//
+//			// Tactical
+//			drawIcon(750, 0, BaseItem.Type.TACTICAL_PHASER.ordinal());
+//			drawIcon(750, 1, BaseItem.Type.TACTICAL_SHIELD_GRID.ordinal());
+//
+//			// Common
+//			drawIcon(900, 0, BaseItem.Type.BAR_PUB.ordinal());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -191,19 +197,20 @@ public class PanelBuild extends UserSubInterface {
 		//	  }
 	}
 
-	void	drawIcon(int offset, int index, final int type) throws IOException {
-		ButtonView icon = _icons.get(type);
+	void	drawIcon(int offset, int index, final ItemInfo info) throws IOException {
+		ButtonView icon = _icons.get(info);
 		if (icon == null) {
-			if (type < 0) {
-				icon = new ButtonView(new Vector2f(62, 80), "remove");
-				icon.setIcon(SpriteManager.getInstance().getBullet(3));
-			} else {
-				Type t = BaseItem.getTypeIndex(type);
-				icon = new ButtonView(new Vector2f(62, 80), BaseItem.getItemName(t));
-				icon.setIcon(SpriteManager.getInstance().getIcon(t));
-			}
+			
+			// TODO
+//			if (type < 0) {
+//				icon = new ButtonView(new Vector2f(62, 80), "remove");
+//				icon.setIcon(SpriteManager.getInstance().getBullet(3));
+//			} else {
+				icon = new ButtonView(new Vector2f(62, 80), info.name);
+				icon.setIcon(SpriteManager.getInstance().getIcon(info));
+//			}
 			icon.setPosition(20 + (index % 4) * 80, 60 + offset + (int)(index / 4) * 100);
-			icon.setBackgroundColor(_itemHover == type ? Color.WHITE : COLOR_YELLOW);
+			icon.setBackgroundColor(info.equals(_itemHover) ? Color.WHITE : COLOR_YELLOW);
 			icon.setOnFocusListener(new OnFocusListener() {
 				@Override
 				public void onEnter(View view) {
@@ -212,7 +219,7 @@ public class PanelBuild extends UserSubInterface {
 
 				@Override
 				public void onExit(View view) {
-					view.setBackgroundColor(_currentSelected == BaseItem.getTypeIndex(type) ? Color.RED : COLOR_YELLOW);
+					view.setBackgroundColor(info.equals(_currentSelected) ? Color.RED : COLOR_YELLOW);
 				}
 			});
 			icon.setOnClickListener(new OnClickListener() {
@@ -221,20 +228,23 @@ public class PanelBuild extends UserSubInterface {
 					for (ButtonView icon: _icons.values()) {
 						icon.setBackgroundColor(COLOR_YELLOW);
 					}
-					if (type == -2) {
-						_mode = Mode.REMOVE_STRUCTURE;
-					} else if (type == -3) {
-						_mode = Mode.REMOVE_ITEM;
-					} else {
-						_mode = Mode.BUILD_ITEM;
-						_currentSelected = BaseItem.getTypeIndex(type);
-					}
+// TODO
+					//					if (type == -2) {
+//						_mode = Mode.REMOVE_STRUCTURE;
+//					} else if (type == -3) {
+//						_mode = Mode.REMOVE_ITEM;
+//					} else {
+//						_mode = Mode.BUILD_ITEM;
+//						_currentSelected = BaseItem.getTypeIndex(type);
+//					}
+					_currentSelected = info;
+
 					((ButtonView) view).setBackgroundColor(Color.RED);
 				}
 			});
 			addView(icon);
 
-			_icons.put(type, icon);
+			_icons.put(info, icon);
 		}
 	}
 
@@ -297,7 +307,7 @@ public class PanelBuild extends UserSubInterface {
 		_panelModeHover = Mode.NONE;
 
 		if (isOpen()) {
-			_itemHover = -1;
+			_itemHover = null;
 
 			if (x > _posX && x < _posX + 800 && y > _posY && y < _posY + 600) {
 
@@ -312,15 +322,17 @@ public class PanelBuild extends UserSubInterface {
 					int col = (x - _posX - 10) / 80;
 					int index = row * 9 + col;
 
-					if (_panelMode == Mode.BUILD_STRUCTURE) {
-						if (index + BaseItem.Type.STRUCTURE_START.ordinal() + 1 < BaseItem.Type.STRUCTURE_STOP.ordinal()) {
-							_itemHover = index + BaseItem.Type.STRUCTURE_START.ordinal() + 1;
-						}
-					} else if (_panelMode == Mode.BUILD_ITEM) {
-						if (index + BaseItem.Type.ITEM_START.ordinal() + 1 < BaseItem.Type.ITEM_STOP.ordinal()) {
-							_itemHover = index + BaseItem.Type.ITEM_START.ordinal() + 1;
-						}
-					}
+					// TODO
+					_itemHover = ServiceManager.getData().items.get(0);
+//					if (_panelMode == Mode.BUILD_STRUCTURE) {
+//						if (index + BaseItem.Type.STRUCTURE_START.ordinal() + 1 < BaseItem.Type.STRUCTURE_STOP.ordinal()) {
+//							_itemHover = index + BaseItem.Type.STRUCTURE_START.ordinal() + 1;
+//						}
+//					} else if (_panelMode == Mode.BUILD_ITEM) {
+//						if (index + BaseItem.Type.ITEM_START.ordinal() + 1 < BaseItem.Type.ITEM_STOP.ordinal()) {
+//							_itemHover = index + BaseItem.Type.ITEM_START.ordinal() + 1;
+//						}
+//					}
 				}
 				return true;
 			}
@@ -354,7 +366,7 @@ public class PanelBuild extends UserSubInterface {
 				_panelMode = _panelModeHover;
 			}
 
-			if (_itemHover != -1) {
+			if (_itemHover != null) {
 				//_interaction.selectBuildItem(BaseItem.getTypeIndex(_itemHover));
 				//		  _isOpen = false;
 				onMouseMove(x, y);
@@ -373,13 +385,13 @@ public class PanelBuild extends UserSubInterface {
 		return false;
 	}
 
-	public Type getSelectedItem() {
+	public ItemInfo getSelectedItem() {
 		return _currentSelected;
 	}
 
-	public void setSelectedItem(Type type) {
-		_mode = type == null ? Mode.NONE : Mode.BUILD_ITEM;
-		_currentSelected = type;		
+	public void setSelectedItem(ItemInfo info) {
+		_mode = info == null ? Mode.NONE : Mode.BUILD_ITEM;
+		_currentSelected = info;
 	}
 
 	public Mode getMode() {

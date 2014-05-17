@@ -2,19 +2,18 @@ package alone.in.deepspace.World;
 
 public class StructureItem extends BaseItem {
 
-	public StructureItem(Type type, int id) {
-		super(type, id);
+	public StructureItem(ItemInfo info, int id) {
+		super(info, id);
 		// TODO Auto-generated constructor stub
 	}
 
-	public StructureItem(Type type) {
-		super(type);
+	public StructureItem(ItemInfo info) {
+		super(info);
 	}
 
+	// TODO: item
 	public boolean roomCanBeSet() {
-		return _type == BaseItem.Type.STRUCTURE_FLOOR || _type == BaseItem.Type.STRUCTURE_GREENHOUSE;
+		return getName().equals("base.floor");// == BaseItem.Type.STRUCTURE_FLOOR || _type == BaseItem.Type.STRUCTURE_GREENHOUSE;
 	}
-
-	public boolean isFloor() { return _type == BaseItem.Type.STRUCTURE_FLOOR; }
 
 }

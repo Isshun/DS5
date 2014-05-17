@@ -10,28 +10,15 @@ import java.util.List;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
+import alone.in.deepspace.Character.ServiceManager;
+import alone.in.deepspace.World.ItemInfo;
+
 public class ItemLoader {
-
-	public static class TestItemCost {
-		public int matter;
-		public int power;
-		public int o2;
-	}
-
-	public static class TestItem {
-		public String 		name;
-		public String 		label;
-		public boolean 		solid;
-		public int 			width;
-		public int 			height;
-		public int 			light;
-		public TestItemCost cost;
-	}
 	
 	public static void load(String packageName) {
 	    System.out.println("load item...");
 
-	    List<TestItem> items = new ArrayList<TestItem>();
+	    List<ItemInfo> items = new ArrayList<ItemInfo>();
 
 	    // List files
 		File itemFiles[] = (new File("data/items/")).listFiles(new FilenameFilter() {
@@ -45,9 +32,13 @@ public class ItemLoader {
 		for (File itemFile: itemFiles) {
 			try {
 				InputStream input = new FileInputStream(itemFile);
-			    Yaml yaml = new Yaml(new Constructor(TestItem.class));
-			    TestItem test = (TestItem)yaml.load(input);
+			    Yaml yaml = new Yaml(new Constructor(ItemInfo.class));
+			    ItemInfo test = (ItemInfo)yaml.load(input);
 			    test.name = packageName +  '.' + test.name;
+			    test.isWalkable = true;
+			    if (!test.isStructure && !test.isRessource) {
+			    	test.isUserItem = true;
+			    }
 			    items.add(test);
 			    System.out.println(" - load: " + test.name);
 			} catch (FileNotFoundException e) {
@@ -57,8 +48,10 @@ public class ItemLoader {
 
 	    System.out.println("items loaded: " + items.size());
 	    
-	    System.exit(0);
-
+	    ServiceManager.getData().items = items;
+//	    	    
+//	    System.exit(0);
+//
 	}
 
 }

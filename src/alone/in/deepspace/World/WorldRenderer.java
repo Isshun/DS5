@@ -173,9 +173,10 @@ public class WorldRenderer {
 					}
 	
 					if (structure != null) {
-						
-						// Greenhouse
-						if (structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE)) {
+
+						// TODO
+//						// Greenhouse
+						if (structure.getName().equals("base.greenhouse")) {
 							int index = room != null && room.isType(Room.Type.GARDEN) ? 0 : 2;
 							Sprite sprite = _spriteManager.getGreenHouse(index + (structure.isWorking() ? 1 : 0));
 							sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
@@ -256,10 +257,10 @@ public class WorldRenderer {
 					if (item != null) {
 	
 						// Structure except floor
-						if (item.isStructure() && !item.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
+						if (item.isStructure() && !item.isFloor()) {
 	
 							// Door
-							if (item.isType(BaseItem.Type.STRUCTURE_DOOR)) {
+							if (item.isDoor()) {
 								// if (_characterManager.getCharacterAtPos(i, j) != null
 								// 	  || _characterManager.getCharacterAtPos(i+1, j) != null
 								// 	  || _characterManager.getCharacterAtPos(i-1, j) != null
@@ -273,7 +274,7 @@ public class WorldRenderer {
 							}
 	
 							// Wall
-							else if (item.isType(BaseItem.Type.STRUCTURE_WALL)) {
+							else if (item.isWall()) {
 								sprite = drawWall(item, i, j, offsetWall);
 							}	  
 						}
@@ -305,26 +306,26 @@ public class WorldRenderer {
 		int zone = room != null ? room.getType().ordinal() : 0;
 
 		// bellow is a wall
-		if (bellow != null && (bellow.isType(BaseItem.Type.STRUCTURE_WALL) || bellow.isType(BaseItem.Type.STRUCTURE_DOOR))) {
+		if (bellow != null && (bellow.isWall() || bellow.isDoor())) {
 			StructureItem bellowBellow = ServiceManager.getWorldMap().getStructure(i, j+2);
-			if (bellow.isType(BaseItem.Type.STRUCTURE_DOOR) ||
-					bellowBellow == null || (!bellowBellow.isType(BaseItem.Type.STRUCTURE_WALL) && !bellowBellow.isType(BaseItem.Type.STRUCTURE_DOOR))) {
+			if (bellow.isDoor() ||
+					bellowBellow == null || (!bellowBellow.isWall() && !bellowBellow.isDoor())) {
 				StructureItem bellowRight = ServiceManager.getWorldMap().getStructure(i+1, j+1);
 				StructureItem bellowLeft = ServiceManager.getWorldMap().getStructure(i-1, j+1);
-				boolean wallOnRight = bellowRight != null && (bellowRight.isType(BaseItem.Type.STRUCTURE_WALL) || bellowRight.isType(BaseItem.Type.STRUCTURE_DOOR));
-				boolean wallOnLeft = bellowLeft != null && (bellowLeft.isType(BaseItem.Type.STRUCTURE_WALL) || bellowLeft.isType(BaseItem.Type.STRUCTURE_DOOR));
+				boolean wallOnRight = bellowRight != null && (bellowRight.isWall() || bellowRight.isDoor());
+				boolean wallOnLeft = bellowLeft != null && (bellowLeft.isWall() || bellowLeft.isDoor());
 				
 				if (wallOnRight && wallOnLeft) {
 					sprite = _spriteManager.getWall(item, 5, 0, 0);
 				} else if (wallOnLeft) {
-					boolean wallOnSupRight = right != null && (right.isType(BaseItem.Type.STRUCTURE_WALL) || right.isType(BaseItem.Type.STRUCTURE_DOOR));
+					boolean wallOnSupRight = right != null && (right.isWall() || right.isDoor());
 					if (wallOnSupRight) {
 						sprite = _spriteManager.getWall(item, 1, 5, 0);
 					} else {
 						sprite = _spriteManager.getWall(item, 5, 2, 0);
 					}
 				} else if (wallOnRight) {
-					boolean wallOnSupLeft = left != null && (left.isType(BaseItem.Type.STRUCTURE_WALL) || left.isType(BaseItem.Type.STRUCTURE_DOOR));
+					boolean wallOnSupLeft = left != null && (left.isWall() || left.isDoor());
 					if (wallOnSupLeft) {
 						sprite = _spriteManager.getWall(item, 1, 4, 0);
 					} else {
@@ -334,8 +335,8 @@ public class WorldRenderer {
 					sprite = _spriteManager.getWall(item, 5, 3, 0);
 				}
 			} else {
-				boolean wallOnRight = right != null && (right.isType(BaseItem.Type.STRUCTURE_WALL) || right.isType(BaseItem.Type.STRUCTURE_DOOR));
-				boolean wallOnLeft = left != null && (left.isType(BaseItem.Type.STRUCTURE_WALL) || left.isType(BaseItem.Type.STRUCTURE_DOOR));
+				boolean wallOnRight = right != null && (right.isWall() || right.isDoor());
+				boolean wallOnLeft = left != null && (left.isWall() || left.isDoor());
 				if (wallOnRight && wallOnLeft) {
 					sprite = _spriteManager.getWall(item, 1, 0, 0);
 				} else if (wallOnLeft) {
@@ -352,22 +353,22 @@ public class WorldRenderer {
 		}
 
 //		// above is a wall
-//		else if (above != null && above.isType(BaseItem.Type.STRUCTURE_WALL)) {
+//		else if (above != null && above.isWall()) {
 //			sprite = _spriteManager.getWall(item, 5, 0, 0);
 //			sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE - offsetWall);
 //		}
 
 		// No wall above or bellow
-		else if ((bellow == null || bellow.getType() != BaseItem.Type.STRUCTURE_WALL)) {
+		else if (bellow == null || bellow.isWall() == false) {
 
 			// Check double wall
 			boolean doubleWall = false;
-			if (right != null && right.isComplete() && right.isType(BaseItem.Type.STRUCTURE_WALL) &&
+			if (right != null && right.isComplete() && right.isWall() &&
 					(_lastSpecialY != j || _lastSpecialX != i+1)) {
 				StructureItem aboveRight = ServiceManager.getWorldMap().getStructure(i+1, j-1);
 				StructureItem bellowRight = ServiceManager.getWorldMap().getStructure(i+1, j+1);
-				if ((aboveRight == null || aboveRight.getType() != BaseItem.Type.STRUCTURE_WALL) &&
-						(bellowRight == null || bellowRight.getType() != BaseItem.Type.STRUCTURE_WALL)) {
+				if ((aboveRight == null || aboveRight.isWall() == false) &&
+						(bellowRight == null || bellowRight.isWall() == false)) {
 					doubleWall = true;
 				}
 			}
@@ -429,7 +430,7 @@ public class WorldRenderer {
 				if (item != null) {
 
 					// Draw item
-					if (item.getType() != BaseItem.Type.STRUCTURE_FLOOR && item.isStructure() == false) {
+					if (item.isDoor() == false && item.isStructure() == false) {
 						Sprite sprite = _spriteManager.getItem(item);
 						if (sprite != null) {
 							if (item.isStructure()) {

@@ -16,7 +16,7 @@ public class WorldArea {
 	private String			_name;
 	private int 			_light;
 
-	public WorldArea(BaseItem.Type type, int x, int y) {
+	public WorldArea(int x, int y) {
 		_oxygen = (int) (Math.random() % 100);
 		_x = x;
 		_y = y;

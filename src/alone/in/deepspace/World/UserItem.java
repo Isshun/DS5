@@ -1,15 +1,13 @@
 package alone.in.deepspace.World;
 
-
-
 public class UserItem extends BaseItem {
 
-	public UserItem(Type type, int id) {
-		super(type, id);
+	public UserItem(ItemInfo info, int id) {
+		super(info, id);
 	}
 
-	public UserItem(Type type) {
-		super(type);
+	public UserItem(ItemInfo info) {
+		super(info);
 	}
 
 }

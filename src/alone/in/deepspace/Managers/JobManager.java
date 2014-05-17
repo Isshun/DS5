@@ -19,6 +19,7 @@ import alone.in.deepspace.Models.Job.Abort;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.BaseItem;
+import alone.in.deepspace.World.ItemInfo;
 import alone.in.deepspace.World.StructureItem;
 import alone.in.deepspace.World.UserItem;
 import alone.in.deepspace.World.WorldRessource;
@@ -52,77 +53,78 @@ public class JobManager implements ISavable {
 	int					getCount() { return _count; }
 	int					getCountFree() { return _countFree; }
 
+	// TODO
 	public void	load(final String filePath) {
-		Log.error("Load jobs: " + filePath);
-
-		boolean	inBlock = false;
-		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-			String line = null;
-
-			while ((line = br.readLine()) != null) {
-
-				// Start block
-				if ("BEGIN JOBS".equals(line)) {
-					inBlock = true;
-				}
-
-				// End block
-				else if ("END JOBS".equals(line)) {
-					inBlock = false;
-				}
-
-				// Item
-				else if (inBlock) {
-					String[] values = line.split("\t");
-					if (values.length == 6) {
-						int x = Integer.valueOf(values[0]);
-						int y = Integer.valueOf(values[1]);
-						int action = Integer.valueOf(values[2]);
-						int characterId = Integer.valueOf(values[3]);
-						int characterRequireId = Integer.valueOf(values[4]);
-						int itemType = Integer.valueOf(values[5]);
-						Job job = new Job(++_id, x, y);
-						job.setAction(JobManager.getActionFromIndex(action));
-						if (characterId > 0) {
-							Character c = ServiceManager.getCharacterManager().getCharacter(characterId);
-							job.setCharacter(c);
-						}
-						if (characterRequireId > 0) {
-							Character c = ServiceManager.getCharacterManager().getCharacter(characterId);
-							job.setCharacterRequire(c);
-						}
-						if (itemType > 0) {
-							BaseItem.Type type = BaseItem.getTypeIndex(itemType);
-							job.setItemType(type);
-
-							// Add item
-							UserItem item = ServiceManager.getWorldMap().getItem(x, y);
-							StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
-							if (item != null && item.isType(type)) {
-								job.setItem(item);
-							}
-							if (structure != null && structure.isType(type)) {
-								job.setItem(structure);
-							}
-						}
-
-						// Not restart already completed jobs
-						if (job.getAction() == Action.BUILD && job.getItem() != null && job.getItem().isComplete()) {
-							Log.warning("job already complete, abort");
-						} else {
-							addJob(job);
-						}
-					}
-				}
-
-			}
-		}
-		catch (FileNotFoundException e) {
-			Log.error("Unable to open save file: " + filePath);
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		Log.error("Load jobs: " + filePath);
+//
+//		boolean	inBlock = false;
+//		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+//			String line = null;
+//
+//			while ((line = br.readLine()) != null) {
+//
+//				// Start block
+//				if ("BEGIN JOBS".equals(line)) {
+//					inBlock = true;
+//				}
+//
+//				// End block
+//				else if ("END JOBS".equals(line)) {
+//					inBlock = false;
+//				}
+//
+//				// Item
+//				else if (inBlock) {
+//					String[] values = line.split("\t");
+//					if (values.length == 6) {
+//						int x = Integer.valueOf(values[0]);
+//						int y = Integer.valueOf(values[1]);
+//						int action = Integer.valueOf(values[2]);
+//						int characterId = Integer.valueOf(values[3]);
+//						int characterRequireId = Integer.valueOf(values[4]);
+//						int itemType = Integer.valueOf(values[5]);
+//						Job job = new Job(++_id, x, y);
+//						job.setAction(JobManager.getActionFromIndex(action));
+//						if (characterId > 0) {
+//							Character c = ServiceManager.getCharacterManager().getCharacter(characterId);
+//							job.setCharacter(c);
+//						}
+//						if (characterRequireId > 0) {
+//							Character c = ServiceManager.getCharacterManager().getCharacter(characterId);
+//							job.setCharacterRequire(c);
+//						}
+//						if (itemType > 0) {
+//							BaseItem.Type type = BaseItem.getTypeIndex(itemType);
+//							job.setItemType(type);
+//
+//							// Add item
+//							UserItem item = ServiceManager.getWorldMap().getItem(x, y);
+//							StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
+//							if (item != null && item.isType(type)) {
+//								job.setItem(item);
+//							}
+//							if (structure != null && structure.isType(type)) {
+//								job.setItem(structure);
+//							}
+//						}
+//
+//						// Not restart already completed jobs
+//						if (job.getAction() == Action.BUILD && job.getItem() != null && job.getItem().isComplete()) {
+//							Log.warning("job already complete, abort");
+//						} else {
+//							addJob(job);
+//						}
+//					}
+//				}
+//
+//			}
+//		}
+//		catch (FileNotFoundException e) {
+//			Log.error("Unable to open save file: " + filePath);
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	private static Action getActionFromIndex(int action) {
@@ -138,26 +140,27 @@ public class JobManager implements ISavable {
 		return null;
 	}
 
+	// TODO
 	public void	save(final String filePath) {
-		Log.info("Save jobs: " + filePath);
-
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
-			bw.write("BEGIN JOBS\n");
-			for (Job j: _jobs) {
-				int currentCharacterId = j.getCharacter() != null ? j.getCharacter().getId() : 0;
-				int requireCharacterId = j.getCharacterRequire() != null ? j.getCharacterRequire().getId() : 0;
-				int itemType = j.getItem() != null ? j.getItem().getType().ordinal() : 0;
-				bw.write(j.getX() + "\t" + j.getY() + "\t" + j.getAction().ordinal() + "\t" + currentCharacterId + "\t" + requireCharacterId + "\t" + itemType + "\n");
-			}
-			bw.write("END JOBS\n");
-		} catch (FileNotFoundException e) {
-			Log.error("Unable to open save file: " + filePath);
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		Log.info("Save jobs: " + filePath + " done");
+//		Log.info("Save jobs: " + filePath);
+//
+//		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
+//			bw.write("BEGIN JOBS\n");
+//			for (Job j: _jobs) {
+//				int currentCharacterId = j.getCharacter() != null ? j.getCharacter().getId() : 0;
+//				int requireCharacterId = j.getCharacterRequire() != null ? j.getCharacterRequire().getId() : 0;
+//				int itemType = j.getItem() != null ? j.getItem().getType().ordinal() : 0;
+//				bw.write(j.getX() + "\t" + j.getY() + "\t" + j.getAction().ordinal() + "\t" + currentCharacterId + "\t" + requireCharacterId + "\t" + itemType + "\n");
+//			}
+//			bw.write("END JOBS\n");
+//		} catch (FileNotFoundException e) {
+//			Log.error("Unable to open save file: " + filePath);
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		Log.info("Save jobs: " + filePath + " done");
 	}
 
 	public Job	build(BaseItem item) {
@@ -173,7 +176,6 @@ public class JobManager implements ISavable {
 		
 		Job job = new Job(++_id, item.getX(), item.getY());
 		job.setAction(JobManager.Action.BUILD);
-		job.setItemType(item.getType());
 		job.setItem(item);
 
 		addJob(job);
@@ -196,7 +198,6 @@ public class JobManager implements ISavable {
 
 		Job job = new Job(++_id, ressource.getX(), ressource.getY());
 		job.setAction(Action.GATHER);
-		job.setItemType(ressource.getType());
 		job.setItem(ressource);
 
 		addJob(job);
@@ -218,34 +219,34 @@ public class JobManager implements ISavable {
 		}
 	}
 
-	public Job	build(BaseItem.Type type, int x, int y) {
+	public Job	build(ItemInfo info, int x, int y) {
 		BaseItem item = null;
 
 		// Structure
-		if (BaseItem.isStructure(type)) {
+		if (info.isStructure) {
 			BaseItem current = ServiceManager.getWorldMap().getStructure(x, y);
-			if (current != null && current.isType(type)) {
+			if (current != null && current.getInfo().equals(info)) {
 				Log.error("Build structure: already exist on this area");
 				return null;
 			}
-			item = ServiceManager.getWorldMap().putItem(type, x, y);
+			item = ServiceManager.getWorldMap().putItem(info, x, y);
 		}
 
 		// Item
-		else if (BaseItem.isItem(type)) {
+		else if (info.isUserItem) {
 			BaseItem current = ServiceManager.getWorldMap().getItem(x, y);
-			if (current != null && current.isType(type)) {
+			if (current != null && current.getInfo().equals(info)) {
 				Log.error("Build item: already exist on this area");
 				return null;
 			} else if (current != null) {
 				Log.error("JobManager: add build on non null item");
 				return null;
 			} else if (ServiceManager.getWorldMap().getStructure(x, y) == null
-					|| ServiceManager.getWorldMap().getStructure(x, y).isType(BaseItem.Type.STRUCTURE_FLOOR) == false) {
+					|| ServiceManager.getWorldMap().getStructure(x, y).isFloor() == false) {
 				Log.error("JobManager: add build on non invalid structure (null or not STRUCTURE_FLOOR)");
 				return null;
 			} else {
-				item = ServiceManager.getWorldMap().putItem(type, x, y);
+				item = ServiceManager.getWorldMap().putItem(info, x, y);
 			}
 		}
 
@@ -330,11 +331,11 @@ public class JobManager implements ISavable {
 	private Job getJobForCharacterNeed(Character character) {
 		CharacterNeeds needs = character.getNeeds();
 		if (needs.getFood() < 20) {
-			UserItem item = ServiceManager.getWorldMap().getNearest(BaseItem.Type.BAR_PUB, character.getPosX(), character.getPosY());
+			// TODO
+			UserItem item = ServiceManager.getWorldMap().getNearest(ServiceManager.getData().getItemInfo("base.pub"), character.getPosX(), character.getPosY());
 			if (item != null) {
 				Job job = new Job(++_id, item.getX(), item.getY());
 				job.setAction(JobManager.Action.USE);
-				job.setItemType(item.getType());
 				job.setItem(item);
 				job.setCharacterRequire(character);
 				addJob(job);
@@ -396,16 +397,16 @@ public class JobManager implements ISavable {
 		_start--;
 	}
 
-	public void	need(Character character, BaseItem.Type itemType) {
-		Log.debug("JobManager: Character '" + character.getName() + "' need item #" + itemType);
+	// TODO: change name by filter
+	public void	need(Character character, String itemName) {
+		Log.debug("JobManager: Character '" + character.getName() + "' need item #" + itemName);
 
-		BaseItem item = ServiceManager.getWorldMap().find(itemType, true);
+		BaseItem item = ServiceManager.getWorldMap().find(itemName, true);
 		if (item != null) {
 
 			Job job = new Job(++_id, item.getX(), item.getY());
 			job.setAction(JobManager.Action.USE);
 			job.setCharacterRequire(character);
-			job.setItemType(item.getType());
 			job.setItem(item);
 
 			addJob(job);
@@ -455,7 +456,6 @@ public class JobManager implements ISavable {
 	public void storeItem(UserItem item) {
 		Job job = new Job(++_id, item.getX(), item.getY());
 		job.setAction(JobManager.Action.STORE);
-		job.setItemType(item.getType());
 		job.setItem(item);
 		addJob(job);
 	}
@@ -463,7 +463,6 @@ public class JobManager implements ISavable {
 	public void destroyItem(UserItem item) {
 		Job job = new Job(++_id, item.getX(), item.getY());
 		job.setAction(JobManager.Action.DESTROY);
-		job.setItemType(item.getType());
 		job.setItem(item);
 		addJob(job);
 	}

@@ -57,19 +57,8 @@ public class ResourceManager {
 				_power -= item.getPower();
 			}
 
-			// remove O2 use
-			if (item.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				_o2Use++;
-			}
-
-			if (item.isType(BaseItem.Type.ENVIRONMENT_O2_RECYCLER)) {
-				_o2Supply += 100;
-			}
-
-			// TODO
-			if (item.getType() == BaseItem.Type.ARBORETUM_TREE_1 || item.getType() == BaseItem.Type.ARBORETUM_TREE_9) {
-				_o2Supply += 10;
-			}
+			// O2
+			_o2Supply -= item.getInfo().cost.o2;
 
 			return Message.BUILD_COMPLETE;
 		}
@@ -89,55 +78,58 @@ public class ResourceManager {
 			for (int y = 0; y < height; y++) {
 				StructureItem structure = worldmap.getStructure(x, y);
 				Room room = RoomManager.getInstance().get(x, y);
-				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() && room != null && room.isType(Type.GARDEN)) {
-					worldmap.putItem(BaseItem.Type.RES_1, x, y, 10);
-//					ServiceManager.getWorldRenderer().invalidate(x, y);
-				}
+				// TODO
+//				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() && room != null && room.isType(Type.GARDEN)) {
+//					worldmap.putItem(BaseItem.Type.RES_1, x, y, 10);
+////					ServiceManager.getWorldRenderer().invalidate(x, y);
+//				}
 			}
 		}
 	}
 	
+	
+	// TODO
 	public void refreshWater() {
-		WorldMap worldmap = ServiceManager.getWorldMap();
-		int width = worldmap.getWidth();
-		int height = ServiceManager.getWorldMap().getWidth();
-		int water = _water;
-
-		// Re-active working garden
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				StructureItem structure = worldmap.getStructure(x, y);
-				Room room = RoomManager.getInstance().get(x, y);
-				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() && room != null && room.isType(Type.GARDEN)) {
-					structure.setWorking(water-- > 0);
-					ServiceManager.getWorldRenderer().invalidate(x, y);
-				}
-			}
-		}
-
-		// Active non-working garden
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				StructureItem structure = worldmap.getStructure(x, y);
-				Room room = RoomManager.getInstance().get(x, y);
-				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() == false && room != null && room.isType(Type.GARDEN)) {
-					structure.setWorking(water-- > 0);
-					ServiceManager.getWorldRenderer().invalidate(x, y);
-				}
-			}
-		}
-
-		// Active other areas
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				StructureItem structure = worldmap.getStructure(x, y);
-				Room room = RoomManager.getInstance().get(x, y);
-				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && (room == null || room.isType(Type.GARDEN) == false)) {
-					structure.setWorking(water-- > 0);
-					ServiceManager.getWorldRenderer().invalidate(x, y);
-				}
-			}
-		}
+//		WorldMap worldmap = ServiceManager.getWorldMap();
+//		int width = worldmap.getWidth();
+//		int height = ServiceManager.getWorldMap().getWidth();
+//		int water = _water;
+//
+//		// Re-active working garden
+//		for (int x = 0; x < width; x++) {
+//			for (int y = 0; y < height; y++) {
+//				StructureItem structure = worldmap.getStructure(x, y);
+//				Room room = RoomManager.getInstance().get(x, y);
+//				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() && room != null && room.isType(Type.GARDEN)) {
+//					structure.setWorking(water-- > 0);
+//					ServiceManager.getWorldRenderer().invalidate(x, y);
+//				}
+//			}
+//		}
+//
+//		// Active non-working garden
+//		for (int x = 0; x < width; x++) {
+//			for (int y = 0; y < height; y++) {
+//				StructureItem structure = worldmap.getStructure(x, y);
+//				Room room = RoomManager.getInstance().get(x, y);
+//				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() == false && room != null && room.isType(Type.GARDEN)) {
+//					structure.setWorking(water-- > 0);
+//					ServiceManager.getWorldRenderer().invalidate(x, y);
+//				}
+//			}
+//		}
+//
+//		// Active other areas
+//		for (int x = 0; x < width; x++) {
+//			for (int y = 0; y < height; y++) {
+//				StructureItem structure = worldmap.getStructure(x, y);
+//				Room room = RoomManager.getInstance().get(x, y);
+//				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && (room == null || room.isType(Type.GARDEN) == false)) {
+//					structure.setWorking(water-- > 0);
+//					ServiceManager.getWorldRenderer().invalidate(x, y);
+//				}
+//			}
+//		}
 	}
 
 	public int 	getO2() { return (int) (_o2Use == 0 ? 100 : _o2Supply >= _o2Use ? 100 : _o2Supply * 100.0f / _o2Use); }

@@ -124,11 +124,11 @@ public class PathManager {
 //			}
 //		}
 		
-		List<Door> visited = new ArrayList<Door>();
-		dumpLinks(visited, _doors.get(0), 0);
-		
-		visited.clear();
-		getPath(visited, _doors.get(0), _doors.get(10));
+//		List<Door> visited = new ArrayList<Door>();
+//		dumpLinks(visited, _doors.get(0), 0);
+//		
+//		visited.clear();
+//		getPath(visited, _doors.get(0), _doors.get(10));
 	}
 
 	//		void	addObject(int x, int y, boolean walkable) {

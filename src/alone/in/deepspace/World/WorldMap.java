@@ -21,7 +21,6 @@ import alone.in.deepspace.Managers.PathManager;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.BaseItem.Type;
 
 public class WorldMap implements ISavable, TileBasedMap {
 	public static class DebugPos {
@@ -56,7 +55,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 		for (int x = 0; x < _width; x++) {
 			_areas[x] = new WorldArea[_height];
 			for (int y = 0; y < _height; y++) {
-				_areas[x][y] = new WorldArea(BaseItem.Type.NONE, x, y);
+				_areas[x][y] = new WorldArea(x, y);
 			}
 		}
 
@@ -81,15 +80,15 @@ public class WorldMap implements ISavable, TileBasedMap {
 						WorldRessource ressource = area.getRessource();
 
 						if (structureItem != null) {
-							bw.write(x + "\t" + y + "\t" + structureItem.getType().ordinal() + "\t" + structureItem.getMatterSupply() + "\n");
+							bw.write(x + "\t" + y + "\t" + structureItem.getName() + "\t" + structureItem.getMatterSupply() + "\n");
 						}
 
 						if (userItem != null) {
-							bw.write(x + "\t" + y + "\t" + userItem.getType().ordinal() + "\t" + userItem.getMatterSupply() + "\n");
+							bw.write(x + "\t" + y + "\t" + userItem.getName() + "\t" + userItem.getMatterSupply() + "\n");
 						}
 
 						if (ressource != null) {
-							bw.write(x + "\t" + y + "\t" + ressource.getType().ordinal() + "\t" + ressource.getMatterSupply() + "\n");
+							bw.write(x + "\t" + y + "\t" + ressource.getName() + "\t" + ressource.getMatterSupply() + "\n");
 						}
 					}
 				}
@@ -108,7 +107,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 	public void	load(final String filePath) {
 		Log.error("Load worldmap: " + filePath);
 
-		int x, y, type, matter;
+		int x, y, matter;
 		boolean	inBlock = false;
 
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -132,9 +131,9 @@ public class WorldMap implements ISavable, TileBasedMap {
 					if (values.length == 4) {
 						x = Integer.valueOf(values[0]);
 						y = Integer.valueOf(values[1]);
-						type = Integer.valueOf(values[2]);
 						matter = Integer.valueOf(values[3]);
-						putItem(BaseItem.getTypeIndex(type), x, y, matter);
+						ItemInfo info = ServiceManager.getData().getItemInfo(values[2]);
+						putItem(info, x, y, matter);
 					}
 				}
 
@@ -150,9 +149,13 @@ public class WorldMap implements ISavable, TileBasedMap {
 		
 		for (int x2 = 4; x2 < 10; x2++) {
 			for (int y2 = 20; y2 < 30; y2++) {
-				putItem(BaseItem.Type.RES_1, x2, y2, 10);
+				putItem("base.res", x2, y2, 10);
 			}
 		}
+	}
+
+	private BaseItem putItem(String name, int x2, int y2, int i) {
+		return putItem(ServiceManager.getData().getItemInfo(name), x2, y2, i);
 	}
 
 	public void	addRandomSeed() {
@@ -173,7 +176,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 		int realX = i % _width;
 		int realY = j % _height;
 		if (_areas[realX][realY].getStructure() == null) {
-			WorldRessource ressource = (WorldRessource)putItem(BaseItem.Type.RES_1, realX, realY, 10);
+			WorldRessource ressource = (WorldRessource)putItem("base.res", realX, realY, 10);
 			JobManager.getInstance().gather(ressource);
 			return true;
 		}
@@ -214,7 +217,8 @@ public class WorldMap implements ISavable, TileBasedMap {
 				WorldArea area = _areas[x][y];
 
 				if (area.getItem() != null && area.getItem().getLight() > 0) {
-					diffuseLight(x, y, area.getItem().getLight());
+					// TODO
+					//diffuseLight(x, y, area.getItem().getLight());
 				}
 			}
 		}
@@ -265,7 +269,8 @@ public class WorldMap implements ISavable, TileBasedMap {
 		return true;
 	}
 
-	public BaseItem	find(BaseItem.Type type, boolean free) {
+	// TODO: itemName
+	public BaseItem	find(String itemName, boolean free) {
 		Log.debug("WorldMap: find");
 
 		int notFree = 0;
@@ -277,7 +282,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 					// item
 					BaseItem item = area.getItem();
-					if (item != null && item.isType(type) && item.isComplete()) {
+					if (item != null && item.getName().equals(itemName) && item.isComplete()) {
 						if (free == false || item.isFree()) {
 							Log.debug("item found");
 							return item;
@@ -287,7 +292,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 					// Structure
 					StructureItem structure = area.getStructure();
-					if(structure != null && structure.isType(type) && structure.isComplete()) {
+					if(structure != null && structure.getName().equals(itemName) && structure.isComplete()) {
 						if (free == false || structure.isFree()) {
 							Log.debug("item found");
 							return structure;
@@ -431,29 +436,29 @@ public class WorldMap implements ISavable, TileBasedMap {
 		removeItem(item);
 	}
 
-	public BaseItem putItem(BaseItem.Type type, int x, int y, boolean isFree) {
+	public BaseItem putItem(String name, int x, int y, boolean isFree) {
 		if (_itemCout + 1 > LIMIT_ITEMS) {
 			Log.error("LIMIT_ITEMS reached");
 			return null;
 		}
 
-		return putItem(type, x, y, isFree ? 999 : 0);
+		return putItem(ServiceManager.getData().getItemInfo(name), x, y, isFree ? 999 : 0);
 	}
 
-	public BaseItem putItem(BaseItem.Type type, int x, int y) {
+	public BaseItem putItem(String name, int x, int y) {
 		if (_itemCout + 1 > LIMIT_ITEMS) {
 			Log.error("LIMIT_ITEMS reached");
 			return null;
 		}
 
-		return putItem(type, x, y, false);
+		return putItem(name, x, y, false);
 	}
 
-	public BaseItem putItem(BaseItem.Type type, int x, int y, int matterSupply) {
+	public BaseItem putItem(ItemInfo info, int x, int y, int matterSupply) {
 		// Return if out of bound
 		if (x < 0 || y < 0 || x >= _width || y >= _height) {
 			Log.error("put item out of bound, type: "
-					+ type + ", x: " + x + ", y: " + y + ")");
+					+ info.name + ", x: " + x + ", y: " + y + ")");
 			return null;
 		}
 
@@ -478,8 +483,8 @@ public class WorldMap implements ISavable, TileBasedMap {
 		// Return if same item already exists at this position
 		WorldArea area = _areas[x][y];
 		if (area != null) {
-			if (area.getItem() != null && area.getItem().getType() == type ||
-					area.getStructure() != null && area.getStructure().getType() == type) {
+			if (area.getItem() != null && area.getItem().getName().equals(info.name) ||
+					area.getStructure() != null && area.getStructure().getName().equals(info.name)) {
 				return null;
 			}
 		}
@@ -490,14 +495,16 @@ public class WorldMap implements ISavable, TileBasedMap {
 //			item = new WorldRessource(type);
 //			((WorldRessource)item).setValue(matterSupply);
 //		} else
-		if (type == Type.SPECIAL_STORAGE) {
+		
+		// TODO: filter
+		if ("base.storage".equals(info.name)) {
 			item = new StorageItem();
 			_areas[x][y].setItem((UserItem) item);
 			return item;
-		} if (BaseItem.isStructure(type)) {
-			item = new StructureItem(type);
+		} if (info.isStructure) {
+			item = new StructureItem(info);
 		} else {
-			item = new UserItem(type);
+			item = new UserItem(info);
 		}
 		item.setPosition(x, y);
 		//		  int zoneId = item.getZoneId();
@@ -514,7 +521,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 		}
 
 		// Wall
-		else if (item.isStructure() && item.isType(BaseItem.Type.STRUCTURE_FLOOR) == false) {
+		else if (item.isStructure() && item.isFloor() == false) {
 			_areas[x][y].setStructure((StructureItem) item);
 			// _items[x][y].setRoomId(roomId);
 			// _items[x][y].setZoneId(0);
@@ -523,14 +530,16 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 		// Object or floor
 		else {
-			if (type == BaseItem.Type.STRUCTURE_FLOOR) {
+			if (item.isFloor()) {
 				_areas[x][y].setStructure((StructureItem) item);
-			} else if (BaseItem.isResource(type) == false) {
+			} else if (item.isRessource() == false) {
 				if (_areas[x][y] != null) {
 					_areas[x][y].setItem((UserItem) item);
-					if (item.isType(BaseItem.Type.TACTICAL_PHASER)) {
-						DynamicObjectManager.getInstance().add((UserItem)item);
-					}
+
+					// TODO: dynamic
+//					if (item.isType(BaseItem.Type.TACTICAL_PHASER)) {
+//						DynamicObjectManager.getInstance().add((UserItem)item);
+//					}
 				} else {
 					Log.error("Put item on null WorldArea");
 				}
@@ -538,7 +547,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 		}
 
 		// Put item
-		Log.debug("put item: " + type);
+		Log.debug("put item: " + item.getName());
 
 		item.setMatterSupply(matterSupply);
 
@@ -569,22 +578,22 @@ public class WorldMap implements ISavable, TileBasedMap {
 	public int					getWidth() { return _width; }
 	public int					getHeight() { return _height; }
 
-	public UserItem getNearest(Type type, int startX, int startY) {
+	public UserItem getNearest(ItemInfo info, int startX, int startY) {
 		PathManager pathManager = PathManager.getInstance();
 		int maxX = Math.max(startX, _width - startX);
 		int maxY = Math.max(startY, _height - startY);
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
-				if (isItemTypeAtPos(startX + offsetX, startY + offsetY, type) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
+				if (isItemTypeAtPos(startX + offsetX, startY + offsetY, info) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
 					return getItem(startX + offsetX, startY + offsetY);
 				}
-				if (isItemTypeAtPos(startX - offsetX, startY - offsetY, type) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
+				if (isItemTypeAtPos(startX - offsetX, startY - offsetY, info) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
 					return getItem(startX - offsetX, startY - offsetY);
 				}
-				if (isItemTypeAtPos(startX + offsetX, startY - offsetY, type) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
+				if (isItemTypeAtPos(startX + offsetX, startY - offsetY, info) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
 					return getItem(startX + offsetX, startY - offsetY);
 				}
-				if (isItemTypeAtPos(startX - offsetX, startY + offsetY, type) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
+				if (isItemTypeAtPos(startX - offsetX, startY + offsetY, info) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
 					return getItem(startX - offsetX, startY + offsetY);
 				}
 			}
@@ -592,9 +601,9 @@ public class WorldMap implements ISavable, TileBasedMap {
 		return null;
 	}
 
-	private boolean isItemTypeAtPos(int x, int y, Type type) {
+	private boolean isItemTypeAtPos(int x, int y, ItemInfo info) {
 		UserItem item = getItem(x, y);
-		return (item != null && item.isType(type));
+		return (item != null && item.getInfo().equals(info));
 	}
 
 	@Override
@@ -670,18 +679,22 @@ public class WorldMap implements ISavable, TileBasedMap {
 		_debugPathStart.y = posY;
 	}
 
-	public void storeItem(Type type, int x, int y) {
-		UserItem item = _areas[x][y].getItem();
+	public void storeItem(BaseItem carriedItem, int x, int y) {
+		UserItem onAreaItem = _areas[x][y].getItem();
 		
-		if (item == null) {
-			item = new StorageItem();
-			((StorageItem)item).addItem(new UserItem(type));
-			_areas[x][y].setItem(item);
-		} else if (item.isType(Type.SPECIAL_STORAGE)) {
-			((StorageItem)item).addItem(new UserItem(type));
+		if (onAreaItem == null) {
+			onAreaItem = new StorageItem();
+			((StorageItem)carriedItem).addItem(carriedItem);
+			_areas[x][y].setItem(onAreaItem);
+		} else if (carriedItem.isStorage()) {
+			((StorageItem)onAreaItem).addItem(carriedItem);
 		} else {
 			// TODO: not implemented
 			Log.error("Storage area is used by non storage item");
 		}
+	}
+
+	public BaseItem putItem(ItemInfo info, int x, int y) {
+		return putItem(info, x, y, 0);
 	}
 }

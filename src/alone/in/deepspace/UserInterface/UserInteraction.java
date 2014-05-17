@@ -1,4 +1,5 @@
 package alone.in.deepspace.UserInterface;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -17,8 +18,7 @@ import alone.in.deepspace.Models.Cursor;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.BaseItem;
-import alone.in.deepspace.World.BaseItem.Type;
-
+import alone.in.deepspace.World.ItemInfo;
 
 public class UserInteraction {
 
@@ -155,26 +155,30 @@ public class UserInteraction {
 	//	  return false;
 	//	}
 
-	void	build(Type type, int startX, int startY, int toX, int toY) {
+	void	build(ItemInfo info, int startX, int startY, int toX, int toY) {
 		for (int x = toX; x >= startX; x--) {
 			for (int y = toY; y >= startY; y--) {
 
+				//TODO
 				// Structure
-				if (type == BaseItem.Type.STRUCTURE_ROOM) {
+				if (info.name.equals("base.room")) {
 					if (x == startX || x == toX || y == startY || y == toY) {
 						Log.warning("1");
-						JobManager.getInstance().build(BaseItem.Type.STRUCTURE_WALL, x, y);
+						// TODO
+						JobManager.getInstance().build(ServiceManager.getData().getItemInfo("base.wall"), x, y);
 						// item = ServiceManager.getWorldMap().putItem(x, y, BaseItem.STRUCTURE_WALL);
 					} else {
 						Log.warning("2");
-						JobManager.getInstance().build(BaseItem.Type.STRUCTURE_FLOOR, x, y);
+						// TODO
+						JobManager.getInstance().build(ServiceManager.getData().getItemInfo("base.floor"), x, y);
 						// item = ServiceManager.getWorldMap().putItem(x, y, BaseItem.STRUCTURE_FLOOR);
 					}
 				} else {
 					// item = ServiceManager.getWorldMap().putItem(x, y, _menu.getBuildItemType());
-					if (type != BaseItem.Type.NONE) {
-						Log.warning("3 " + type + " " + BaseItem.getItemName(type));
-						JobManager.getInstance().build(type, x, y);
+					if (info != null) {
+						Log.warning("3 " + info.name);
+						// TODO
+						JobManager.getInstance().build(info, x, y);
 						// item = ServiceManager.getWorldMap().putItem(x, y, type);
 					}
 				}

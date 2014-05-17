@@ -7,7 +7,6 @@ import java.util.Set;
 
 import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.BaseItem.Type;
 import alone.in.deepspace.World.StructureItem;
 import alone.in.deepspace.World.WorldMap;
 
@@ -56,7 +55,7 @@ public class Region {
 			for (int y = fromY; y <= toY; y++) {
 				if (x == fromX || x == toX || y == fromY || y == toY) {
 					StructureItem structure = worldMap.getStructure(x, y);
-					if (structure != null && structure.isType(Type.STRUCTURE_FLOOR)) {
+					if (structure != null && structure.isFloor()) {
 						Log.debug("Region #" + id + ": door at pos " + x + "x" + y);
 						_doors.add(new Door(x, y));
 					}

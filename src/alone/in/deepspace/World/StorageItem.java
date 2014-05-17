@@ -5,23 +5,25 @@ import java.util.List;
 
 public class StorageItem extends UserItem {
 
-	private List<UserItem>	_items;
+	private List<BaseItem>	_items;
 	
 	public StorageItem() {
-		super(Type.SPECIAL_STORAGE);
 		
-		_items = new ArrayList<UserItem>();
+		// TODO
+		super(new ItemInfo());
+		
+		_items = new ArrayList<BaseItem>();
 	}
 	
-	public List<UserItem>	getItems() {
+	public List<BaseItem>	getItems() {
 		return _items;
 	}
 	
-	public void				addItem(UserItem item) {
+	public void				addItem(BaseItem item) {
 		_items.add(item);
 	}
 
-	public UserItem getFirst() {
+	public BaseItem getFirst() {
 		if (_items.size() > 0) {
 			return _items.get(0);
 		}

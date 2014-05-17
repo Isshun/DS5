@@ -70,7 +70,7 @@ public class PanelJobs extends UserSubInterface {
 			  String oss = (job.getId()  < 10 ? "#0" : "#") + job.getId()
 				  + " - " + JobManager.getActionName(job.getAction());
 				  if (job.getItem() != null) {
-					  oss += " " + BaseItem.getItemName(job.getItemType());
+					  oss += " " + job.getItem().getName();
 				  }
 			  if (job.getCharacter() != null) {
 				  switch (job.getAction()) {

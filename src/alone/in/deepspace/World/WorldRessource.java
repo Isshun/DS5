@@ -1,17 +1,15 @@
 package alone.in.deepspace.World;
 
-
-
 public class WorldRessource extends BaseItem {
 	private int		_type;
 	private int		_value;
 
-	public WorldRessource(Type type, int id) {
-		super(type, id);
+	public WorldRessource(ItemInfo info, int id) {
+		super(info, id);
 	}
 
-	public WorldRessource(Type type) {
-		super(type);
+	public WorldRessource(ItemInfo info) {
+		super(info);
 	}
 
 	public void addValue(int value) {_value += value;}

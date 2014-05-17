@@ -10,6 +10,7 @@ public class ServiceManager {
 	private static WorldMap 		_worldMap;
 	private static CharacterManager _charactersManager;
 	private static WorldRenderer 	_worldRenderer;
+	private static GameData 		_data;
 
 	public static void reset() {
 		_worldMap = null;
@@ -41,5 +42,13 @@ public class ServiceManager {
 
 	public static void setWorldRenderer(WorldRenderer renderer) {
 		_worldRenderer = renderer;
+	}
+
+	public static GameData getData() {
+		return _data;
+	}
+
+	public static void setData(GameData data) {
+		_data = data;
 	}
 }
