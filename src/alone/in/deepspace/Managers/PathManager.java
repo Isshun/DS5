@@ -363,7 +363,12 @@ public class PathManager {
 				long sum1 = getSum(fromX, fromY, toX, toY);
 				if (_pool.get(sum1) != null) {
 					Log.info("character: path in cache");
-					character.onPathComplete(_pool.get(sum1).path, job);
+					Vector<Position> path = _pool.get(sum1).path;
+					if (path != null) {
+						character.onPathComplete(path, job);
+					} else {
+						character.onPathFailed(job);
+					}
 					return;
 				}
 

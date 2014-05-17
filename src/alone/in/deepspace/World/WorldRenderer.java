@@ -109,7 +109,7 @@ public class WorldRenderer {
 		Sprite sp = new Sprite(_textureCache.getTexture());
 		_app.draw(sp, render);
 
-		drawDebug(render, fromX, fromY, toX, toY, 0);
+//		drawDebug(render, fromX, fromY, toX, toY, 0);
 		
 		long elapsed = display_timer.getElapsedTime().asMilliseconds();
 		if (elapsed > 3)

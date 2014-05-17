@@ -56,35 +56,35 @@ public class PanelBuild extends UserSubInterface {
 		_panelModeHover = Mode.BUILD_STRUCTURE;
 		_mode = Mode.NONE;
 
-		_lbStructure = new TextView(new Vector2f(140, 32));
-		_lbStructure.setString("Structure");
-		_lbStructure.setCharacterSize(20);
-		_lbStructure.setPosition(new Vector2f(20, 20));
-		addView(_lbStructure);
-
-		TextView lbQuarter = new TextView(new Vector2f(140, 32));
-		lbQuarter.setString("Quarter");
-		lbQuarter.setCharacterSize(20);
-		lbQuarter.setPosition(new Vector2f(20, 270));
-		addView(lbQuarter);
-
-		TextView lbEngineering = new TextView(new Vector2f(140, 32));
-		lbEngineering.setString("Engineering");
-		lbEngineering.setCharacterSize(20);
-		lbEngineering.setPosition(new Vector2f(20, 520));
-		addView(lbEngineering);
-
-		TextView lbSickbay = new TextView(new Vector2f(140, 32));
-		lbSickbay.setString("Sickbay");
-		lbSickbay.setCharacterSize(20);
-		lbSickbay.setPosition(new Vector2f(20, 670));
-		addView(lbSickbay);
-
-		TextView lbCommon = new TextView(new Vector2f(140, 32));
-		lbCommon.setString("Common");
-		lbCommon.setCharacterSize(20);
-		lbCommon.setPosition(new Vector2f(20, 920));
-		addView(lbCommon);
+//		_lbStructure = new TextView(new Vector2f(140, 32));
+//		_lbStructure.setString("Structure");
+//		_lbStructure.setCharacterSize(20);
+//		_lbStructure.setPosition(new Vector2f(20, 20));
+//		addView(_lbStructure);
+//
+//		TextView lbQuarter = new TextView(new Vector2f(140, 32));
+//		lbQuarter.setString("Quarter");
+//		lbQuarter.setCharacterSize(20);
+//		lbQuarter.setPosition(new Vector2f(20, 270));
+//		addView(lbQuarter);
+//
+//		TextView lbEngineering = new TextView(new Vector2f(140, 32));
+//		lbEngineering.setString("Engineering");
+//		lbEngineering.setCharacterSize(20);
+//		lbEngineering.setPosition(new Vector2f(20, 520));
+//		addView(lbEngineering);
+//
+//		TextView lbSickbay = new TextView(new Vector2f(140, 32));
+//		lbSickbay.setString("Sickbay");
+//		lbSickbay.setCharacterSize(20);
+//		lbSickbay.setPosition(new Vector2f(20, 670));
+//		addView(lbSickbay);
+//
+//		TextView lbCommon = new TextView(new Vector2f(140, 32));
+//		lbCommon.setString("Common");
+//		lbCommon.setCharacterSize(20);
+//		lbCommon.setPosition(new Vector2f(20, 920));
+//		addView(lbCommon);
 
 		drawPanel();
 	}
@@ -206,7 +206,7 @@ public class PanelBuild extends UserSubInterface {
 //				icon = new ButtonView(new Vector2f(62, 80), "remove");
 //				icon.setIcon(SpriteManager.getInstance().getBullet(3));
 //			} else {
-				icon = new ButtonView(new Vector2f(62, 80), info.name);
+				icon = new ButtonView(new Vector2f(62, 80), info.label);
 				icon.setIcon(SpriteManager.getInstance().getIcon(info));
 //			}
 			icon.setPosition(20 + (index % 4) * 80, 60 + offset + (int)(index / 4) * 100);
@@ -237,7 +237,7 @@ public class PanelBuild extends UserSubInterface {
 //						_mode = Mode.BUILD_ITEM;
 //						_currentSelected = BaseItem.getTypeIndex(type);
 //					}
-					_currentSelected = info;
+					setSelectedItem(info);
 
 					((ButtonView) view).setBackgroundColor(Color.RED);
 				}

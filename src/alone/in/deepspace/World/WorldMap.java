@@ -630,7 +630,7 @@ public class WorldMap implements ISavable, TileBasedMap {
 		if (x >= 0 && y >= 0 && x < _width && y < _height) {
 			return _areas[x][y].getStructure() != null && _areas[x][y].getStructure().isComplete() && _areas[x][y].getStructure().isSolid();
 		}
-		return true;
+		return false;
 	}
 
 	@Override

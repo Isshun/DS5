@@ -166,9 +166,12 @@ public class BaseItem {
 			
 			// TODO: zone
 			//_zoneIdRequired = info.zone;
-			_matter = info.cost.matter;
-			_power = info.cost.power;
-			_isSolid = info.isWalkable;
+			if (info.cost != null) {
+				_matter = info.cost.matter;
+				_power = info.cost.power;
+			}
+			
+			_isSolid = !info.isWalkable;
 		}
 	}
 

@@ -1,0 +1,7 @@
+name: hull
+label: Hull
+width: 1
+height: 1
+isStructure: true
+cost:
+  matter: 42

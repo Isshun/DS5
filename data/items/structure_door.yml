@@ -1,0 +1,8 @@
+name: door
+label: Door
+width: 1
+height: 1
+isWalkable: true
+isStructure: true
+cost:
+  matter: 42

@@ -1,0 +1,6 @@
+name: pub
+label: Pub
+width: 1
+height: 1
+cost:
+  matter: 42

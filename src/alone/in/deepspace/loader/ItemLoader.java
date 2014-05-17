@@ -19,6 +19,11 @@ public class ItemLoader {
 	    System.out.println("load item...");
 
 	    List<ItemInfo> items = new ArrayList<ItemInfo>();
+	    
+	    ItemInfo roomInfo = new ItemInfo();
+	    roomInfo.name = "base.room";
+	    roomInfo.label = "Room";
+	    items.add(roomInfo);
 
 	    // List files
 		File itemFiles[] = (new File("data/items/")).listFiles(new FilenameFilter() {

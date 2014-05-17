@@ -1,0 +1,6 @@
+name: main_engine
+label: Main Engine
+width: 1
+height: 1
+cost:
+  matter: 42

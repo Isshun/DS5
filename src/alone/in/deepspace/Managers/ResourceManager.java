@@ -58,7 +58,9 @@ public class ResourceManager {
 			}
 
 			// O2
-			_o2Supply -= item.getInfo().cost.o2;
+			if (item.getInfo().cost != null) {
+				_o2Supply -= item.getInfo().cost.o2;
+			}
 
 			return Message.BUILD_COMPLETE;
 		}

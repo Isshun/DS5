@@ -12,7 +12,6 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
 import alone.in.deepspace.Character.Profession;
-import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Engine.SpriteResource;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
@@ -21,20 +20,18 @@ import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.ItemInfo;
 import alone.in.deepspace.World.StorageItem;
 import alone.in.deepspace.World.StructureItem;
-import alone.in.deepspace.World.UserItem;
-import alone.in.deepspace.World.WorldRessource;
 
 public class SpriteManager {
 	
 	//TODO
-//	SpriteResource[] spritesRes = {
-//			new SpriteResource(BaseItem.Type.STRUCTURE_HULL,						2, 8, 0),
-//			new SpriteResource(BaseItem.Type.STRUCTURE_WALL,						0, 4, 5),
-//			// new SpriteResource(BaseItem.Type.STRUCTURE_WALL_BELLOW,				1, 4, 5),
-//			new SpriteResource(BaseItem.Type.STRUCTURE_FLOOR,						7, 7, 0),
+	SpriteResource[] spritesRes = {
+			new SpriteResource("base.hull",						2, 8, 0),
+			new SpriteResource("base.wall",						0, 4, 5),
+			// new SpriteResource(BaseItem.Type.STRUCTURE_WALL_BELLOW,				1, 4, 5),
+			new SpriteResource("base.floor",						7, 7, 0),
 //			new SpriteResource(BaseItem.Type.STRUCTURE_GREENHOUSE,					7, 7, 0),
-//			new SpriteResource(BaseItem.Type.STRUCTURE_DOOR,						2, 2, 0),
-//			new SpriteResource(BaseItem.Type.STRUCTURE_WINDOW,					2, 3, 0),
+			new SpriteResource("base.door",						2, 2, 0),
+			new SpriteResource("base.window",					2, 3, 0),
 //			new SpriteResource(BaseItem.Type.TRANSPORTATION_TRANSPORTER_SYSTEMS,	1, 8, 0),
 //			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_1,					2, 0, 3),
 //			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_2,					3, 0, 3),
@@ -44,21 +41,21 @@ public class SpriteManager {
 //			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_6,					0, 1, 3),
 //			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_7,					1, 0, 3),
 //			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_8,					1, 1, 3),
-//			new SpriteResource(BaseItem.Type.BAR_PUB,								0, 8, 3),
-//			new SpriteResource(BaseItem.Type.SICKBAY_BIOBED,						11, 4, 1),
-//			// new SpriteResource(BaseItem.Type.ARBORETUM_TREE_9,					0, 1, 3),
-//			new SpriteResource(BaseItem.Type.ENGINE_REACTION_CHAMBER,				12, 12, 1),
-//			new SpriteResource(BaseItem.Type.ENVIRONMENT_O2_RECYCLER,				11, 16, 1),
-//			new SpriteResource(BaseItem.Type.HOLODECK_GRID,						5, 6, 0),
-//			new SpriteResource(BaseItem.Type.ENGINE_CONTROL_CENTER,				8, 10, 1),
-//			new SpriteResource(BaseItem.Type.QUARTER_BED,							10, 7, 2),
-//			new SpriteResource(BaseItem.Type.QUARTER_CHAIR,						8, 6, 2),
-//			new SpriteResource(BaseItem.Type.SCIENCE_ROBOT_MAKER,					12, 7, 2),
-//			new SpriteResource(BaseItem.Type.SCIENCE_ZYGOTE,						12, 9, 2),
-//			new SpriteResource(BaseItem.Type.TACTICAL_PHASER,						12, 6, 2),
-//			new SpriteResource(BaseItem.Type.RES_1,								8, 1, 4),
+			new SpriteResource("base.pub",								0, 8, 3),
+			new SpriteResource("base.biobed",					11, 4, 1),
+			new SpriteResource("base.tree",						0, 1, 3),
+			new SpriteResource("base.main_engine",				12, 12, 1),
+			new SpriteResource("base.o2_recycler",				11, 16, 1),
+			new SpriteResource("base.holodeck_grid",						5, 6, 0),
+			new SpriteResource("base.control_center",				8, 10, 1),
+			new SpriteResource("base.bed",							10, 7, 2),
+			new SpriteResource("base.chair",						8, 6, 2),
+			new SpriteResource("base.robot_maker",					12, 7, 2),
+			new SpriteResource("base.zygote",						12, 9, 2),
+			new SpriteResource("base.phaser",						12, 6, 2),
+			new SpriteResource("base.res",								8, 1, 4),
 //			new SpriteResource(BaseItem.Type.NONE,								0, 0, 0),
-//	};
+	};
 
 	private static SpriteManager 	_self;
 
@@ -172,17 +169,9 @@ public class SpriteManager {
 				return getRessource(item);
 			}
 
-			int alpha = item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * item.getMatterSupply();
-			SpriteResource res = null;
-//			for (int i = 0; spritesRes[i].type != BaseItem.Type.NONE; i++) {
-//				if (item.isType(spritesRes[i].type)) {
-//					res = spritesRes[i];
-//				}
-//			}
+			int alpha = Math.min(item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * item.getMatterSupply(), 255);
+			SpriteResource res = getRessourceForItemInfo(item.getInfo());
 			
-			// TODO
-			res = new SpriteResource(ServiceManager.getData().getItemInfo("base.bed"), 2, 0, 3);
-
 			if (res != null) {
 				return getSprite(res.textureIndex,
 						res.posX * Constant.TILE_SIZE,
@@ -196,6 +185,17 @@ public class SpriteManager {
 		return null;
 	}
 
+	private SpriteResource getRessourceForItemInfo(ItemInfo info) {
+		for (SpriteResource res: spritesRes) {
+			if (info.equals(res.info)) {
+				return res;
+			}
+		}
+		
+		//TODO
+		return new SpriteResource(info.name, 7, 7, 0);
+	}
+
 	public Sprite		getIcon(ItemInfo info) {
 		//		switch (type) {
 		//
@@ -206,7 +206,7 @@ public class SpriteManager {
 		//			return _spriteBattery;
 		//		}
 
-		SpriteResource res = null;
+		SpriteResource res = getRessourceForItemInfo(info);
 
 //		for (int i = 0; spritesRes[i].type != BaseItem.Type.NONE; i++) {
 //			if (spritesRes[i].type == type) {
@@ -214,9 +214,6 @@ public class SpriteManager {
 //			}
 //		}
 		
-		// TODO
-		res = new SpriteResource(ServiceManager.getData().getItemInfo("base.bed"), 2, 0, 3);
-
 		if (res != null) {
 			if (info.isRessource) {
 				return getSprite(res.textureIndex,
@@ -317,7 +314,7 @@ public class SpriteManager {
 		int texture = 4;
 		int x = (room % choice) * Constant.TILE_SIZE;
 		int y = zone * (Constant.TILE_SIZE + 2) + 1;
-		int alpha = item != null ? 75 + 180 / item.getMatter() * item.getMatterSupply() : 255;
+		int alpha = Math.min(item != null ? 75 + 180 / item.getMatter() * item.getMatterSupply() : 255, 255);
 		return getSprite(texture, x, y, Constant.TILE_SIZE, Constant.TILE_SIZE, alpha);
 	}
 

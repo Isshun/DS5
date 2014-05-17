@@ -72,10 +72,14 @@ public class Main {
 			Event event = null;
 			while ((event = window.pollEvent()) != null) {
 				if (event.type == Event.Type.CLOSED) {
+					window.close();
+
 					return;
 				}
 				if (event.type == Event.Type.KEY_RELEASED) {
 					if (event.asKeyEvent().key == Key.ESCAPE) {
+						window.close();
+
 						return;
 					}
 					if (event.asKeyEvent().control && event.asKeyEvent().key == Key.S) {
