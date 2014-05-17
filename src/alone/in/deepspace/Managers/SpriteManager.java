@@ -28,32 +28,33 @@ public class SpriteManager {
 			new SpriteResource("base.hull",						2, 8, 0),
 			new SpriteResource("base.wall",						0, 4, 5),
 			// new SpriteResource(BaseItem.Type.STRUCTURE_WALL_BELLOW,				1, 4, 5),
-			new SpriteResource("base.floor",						7, 7, 0),
+			new SpriteResource("base.floor",					7, 7, 0),
 //			new SpriteResource(BaseItem.Type.STRUCTURE_GREENHOUSE,					7, 7, 0),
 			new SpriteResource("base.door",						2, 2, 0),
 			new SpriteResource("base.window",					2, 3, 0),
 //			new SpriteResource(BaseItem.Type.TRANSPORTATION_TRANSPORTER_SYSTEMS,	1, 8, 0),
 //			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_1,					2, 0, 3),
-//			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_2,					3, 0, 3),
-//			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_3,					4, 0, 3),
-//			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_4,					5, 0, 3),
-//			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_5,					0, 0, 3),
-//			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_6,					0, 1, 3),
+			new SpriteResource("garden.tree_1",					3, 0, 3),
+			new SpriteResource("garden.tree_2",					4, 0, 3),
+			new SpriteResource("garden.tree_3",					5, 0, 3),
+			new SpriteResource("garden.tree_4",					0, 0, 3),
+			new SpriteResource("garden.tree_5",					0, 1, 3),
 //			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_7,					1, 0, 3),
 //			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_8,					1, 1, 3),
-			new SpriteResource("base.pub",								0, 8, 3),
+			new SpriteResource("base.pub",						0, 8, 3),
 			new SpriteResource("base.biobed",					11, 4, 1),
 			new SpriteResource("base.tree",						0, 1, 3),
 			new SpriteResource("base.main_engine",				12, 12, 1),
 			new SpriteResource("base.o2_recycler",				11, 16, 1),
-			new SpriteResource("base.holodeck_grid",						5, 6, 0),
-			new SpriteResource("base.control_center",				8, 10, 1),
-			new SpriteResource("base.bed",							10, 7, 2),
-			new SpriteResource("base.chair",						8, 6, 2),
-			new SpriteResource("base.robot_maker",					12, 7, 2),
-			new SpriteResource("base.zygote",						12, 9, 2),
-			new SpriteResource("base.phaser",						12, 6, 2),
-			new SpriteResource("base.res",								8, 1, 4),
+			new SpriteResource("base.holodeck_grid",			5, 6, 0),
+			new SpriteResource("base.control_center",			8, 10, 1),
+			new SpriteResource("base.bed",						10, 7, 2),
+			new SpriteResource("base.bedside_table",			8, 6, 2),
+			//new SpriteResource("base.chair",					8, 6, 2),
+			new SpriteResource("base.robot_maker",				12, 7, 2),
+			new SpriteResource("base.zygote",					12, 9, 2),
+			new SpriteResource("base.phaser",					12, 6, 2),
+			new SpriteResource("base.res",						8, 1, 4),
 //			new SpriteResource(BaseItem.Type.NONE,								0, 0, 0),
 	};
 
@@ -193,7 +194,7 @@ public class SpriteManager {
 		}
 		
 		//TODO
-		return new SpriteResource(info.name, 7, 7, 0);
+		return new SpriteResource(info.name, 1, 0, 4);
 	}
 
 	public Sprite		getIcon(ItemInfo info) {

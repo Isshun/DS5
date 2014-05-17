@@ -8,6 +8,7 @@ public class ItemInfo {
 	}
 
 	public String 		name;
+	public String 		inherits;
 	public String 		label;
 	public boolean 		isWalkable;
 	public int 			width;

@@ -1,5 +1,7 @@
 package alone.in.deepspace;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;
@@ -15,6 +17,7 @@ import alone.in.deepspace.Engine.MainRenderer;
 import alone.in.deepspace.UserInterface.MenuBase;
 import alone.in.deepspace.UserInterface.MenuLoad;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.World.ItemInfo;
 import alone.in.deepspace.loader.ItemLoader;
 
 
@@ -34,7 +37,16 @@ public class Main {
 		MainRenderer.getInstance().setWindow(window);
 
 		ServiceManager.setData(new GameData());
-		ItemLoader.load("base");
+		
+		ServiceManager.getData().items = new ArrayList<ItemInfo>();
+	    
+	    ItemInfo roomInfo = new ItemInfo();
+	    roomInfo.name = "base.room";
+	    roomInfo.label = "Room";
+	    ServiceManager.getData().items.add(roomInfo);
+
+		ItemLoader.load("data/items/", "base");
+		ItemLoader.load("mods/garden/items/", "garden");
 		
 		try {
 			game = new Game(window);

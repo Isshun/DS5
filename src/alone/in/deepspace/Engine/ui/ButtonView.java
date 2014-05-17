@@ -72,6 +72,7 @@ public class ButtonView extends View {
 		}
 
 		if (_icon != null) {
+			_icon.setPosition(_pos);
 			app.draw(_icon, render);
 		}
 
@@ -86,9 +87,6 @@ public class ButtonView extends View {
 
 	public void setIcon(Sprite icon) {
 		_icon = icon;
-		if (_pos != null && _icon != null) {
-			_icon.setPosition(_pos);
-		}
 	}
 }
 

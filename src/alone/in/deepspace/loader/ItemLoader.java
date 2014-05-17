@@ -15,18 +15,13 @@ import alone.in.deepspace.World.ItemInfo;
 
 public class ItemLoader {
 	
-	public static void load(String packageName) {
-	    System.out.println("load item...");
+	public static void load(String path, String packageName) {
+	    System.out.println("load items...");
 
 	    List<ItemInfo> items = new ArrayList<ItemInfo>();
 	    
-	    ItemInfo roomInfo = new ItemInfo();
-	    roomInfo.name = "base.room";
-	    roomInfo.label = "Room";
-	    items.add(roomInfo);
-
 	    // List files
-		File itemFiles[] = (new File("data/items/")).listFiles(new FilenameFilter() {
+		File itemFiles[] = (new File(path)).listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File file, String name) {
 				return name.contains(".yml");
@@ -53,10 +48,7 @@ public class ItemLoader {
 
 	    System.out.println("items loaded: " + items.size());
 	    
-	    ServiceManager.getData().items = items;
-//	    	    
-//	    System.exit(0);
-//
+	    ServiceManager.getData().items.addAll(items);
 	}
 
 }

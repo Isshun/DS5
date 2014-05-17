@@ -1,0 +1,5 @@
+name: tree_1
+label: Tree 1
+inherits: base.tree
+width: 1
+height: 2
