@@ -15,4 +15,6 @@ public class StructureItem extends BaseItem {
 		return _type == BaseItem.Type.STRUCTURE_FLOOR || _type == BaseItem.Type.STRUCTURE_GREENHOUSE;
 	}
 
+	public boolean isFloor() { return _type == BaseItem.Type.STRUCTURE_FLOOR; }
+
 }

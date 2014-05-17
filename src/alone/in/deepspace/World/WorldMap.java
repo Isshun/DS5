@@ -147,6 +147,12 @@ public class WorldMap implements ISavable, TileBasedMap {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		for (int x2 = 4; x2 < 10; x2++) {
+			for (int y2 = 20; y2 < 30; y2++) {
+				putItem(BaseItem.Type.RES_1, x2, y2, 10);
+			}
+		}
 	}
 
 	public void	addRandomSeed() {
@@ -195,11 +201,68 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 	public void	update() {
 		_count++;
+		
+		for (int x = 0; x < _width; x++) {
+			for (int y = 0; y < _height; y++) {
+				WorldArea area = _areas[x][y];
+				_areas[x][y].setLight(0);
+			}
+		}
+		
+		for (int x = 0; x < _width; x++) {
+			for (int y = 0; y < _height; y++) {
+				WorldArea area = _areas[x][y];
+
+				if (area.getItem() != null && area.getItem().getLight() > 0) {
+					diffuseLight(x, y, area.getItem().getLight());
+				}
+			}
+		}
 
 		// Add random seed each 10 update
 		//if (_count % 10 == 0) {
 //		addRandomSeed();
 		//}
+	}
+
+	private void diffuseLight(int x, int y, int light) {
+		for (int j = 0; j < light; j++) {
+			for (double i = -Math.PI; i < Math.PI; i += 0.1) {
+				int x2 = (int)Math.round(Math.cos(i) * j);
+				int y2 = (int)Math.round(Math.sin(i) * j);
+//				double value = Math.sqrt(Math.pow(Math.cos(i) * j, 2) + Math.pow(Math.sin(i) * j, 2));
+				double value = Math.sqrt(Math.pow(x2, 2) + Math.pow(y2, 2));
+				if (isFree(x, y, x+x2, y+y2)) {
+					_areas[x+x2][y+y2].addLight((int)(light*2-value*2));
+				}
+			}
+		}
+			
+//		for (int i = 0; i < light; i++) {
+//			for (int j = 0; j < light; j++) {
+//			int value = light - i * 10 - j * 10;
+//				_areas[x-i][y-j].setLight(value);
+//				_areas[x+i][y-j].setLight(value);
+//				_areas[x-i][y+j].setLight(value);
+//				_areas[x+i][y+j].setLight(value);
+//			}
+//		}
+	}
+
+	private boolean isFree(int x, int y, int x2, int y2) {
+		int fromX = Math.min(x, x2);
+		int fromY = Math.min(y, y2);
+		int toX = Math.max(x, x2);
+		int toY = Math.max(y, y2);
+		for (int i = fromX; i <= toX; i++) {
+			for (int j = fromY; j <= toY; j++) {
+				StructureItem structure = _areas[i][j].getStructure();
+				if (structure != null && structure.isFloor() == false) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	public BaseItem	find(BaseItem.Type type, boolean free) {
@@ -563,23 +626,23 @@ public class WorldMap implements ISavable, TileBasedMap {
 
 	@Override
 	public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
-		
-		 int dx = Math.abs(sx - tx);
-		 int dy = Math.abs(sy - ty);
-		 return Math.max(dx, dy);
+
+//		 int dx = Math.abs(sx - tx);
+//		 int dy = Math.abs(sy - ty);
+//		 return Math.max(dx, dy);
 				    		
-//		WorldArea a1 = _areas[sx][sy];
-//		WorldArea a2 = _areas[tx][ty];
-//
-//		if (a1.getStructure() != null && a1.getStructure().isComplete() && a2.getStructure() == null ||
-//				a2.getStructure() != null && a2.getStructure().isComplete() && a1.getStructure() == null) {
-//			return 5;
-//		}
-//
-////		boolean r = Math.random() * 10 % 2 == 0;
-////		return sx != tx ? (r ? 10f : 1f) : (r ? 1f : 10f);
-//		
-//		return sx != tx && sy != ty ? 1f : 0.8f;
+		WorldArea a1 = _areas[sx][sy];
+		WorldArea a2 = _areas[tx][ty];
+
+		if (a1.getStructure() != null && a1.getStructure().isComplete() && a2.getStructure() == null ||
+				a2.getStructure() != null && a2.getStructure().isComplete() && a1.getStructure() == null) {
+			return 5;
+		}
+
+//		boolean r = Math.random() * 10 % 2 == 0;
+//		return sx != tx ? (r ? 10f : 1f) : (r ? 1f : 10f);
+		
+		return sx != tx && sy != ty ? 1f : 0.8f;
 	}
 
 	public Vector<DebugPos> getDebug() {

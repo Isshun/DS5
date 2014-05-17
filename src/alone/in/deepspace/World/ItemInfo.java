@@ -1,6 +1,6 @@
 package alone.in.deepspace.World;
 
-
+import alone.in.deepspace.World.BaseItem.Type;
 
 public class ItemInfo {
 	public BaseItem.Type	type;
@@ -11,9 +11,11 @@ public class ItemInfo {
 	public int				matter;
 	public int				power;
 	public int				zone;
+	public int 				light;
 
-	public ItemInfo(BaseItem.Type structureRoom, String name, boolean solid, int width, int height, int matter, int power, int zone) {
-		this.type = structureRoom;
+	public ItemInfo(BaseItem.Type type, String name, boolean solid, int width, int height, int matter, int power, int zone) {
+		this.light = 0;
+		this.type = type;
 		this.name = name;
 		this.solid = solid;
 		this.width = width;
@@ -21,5 +23,8 @@ public class ItemInfo {
 		this.matter = matter;
 		this.power = power;
 		this.zone = zone;
+		if (type == Type.QUARTER_CHAIR) {
+			this.light = 5;
+		}
 	}
 }

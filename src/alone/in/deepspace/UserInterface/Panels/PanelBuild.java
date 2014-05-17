@@ -80,6 +80,12 @@ public class PanelBuild extends UserSubInterface {
 		lbSickbay.setPosition(new Vector2f(20, 670));
 		addView(lbSickbay);
 
+		TextView lbCommon = new TextView(new Vector2f(140, 32));
+		lbCommon.setString("Common");
+		lbCommon.setCharacterSize(20);
+		lbCommon.setPosition(new Vector2f(20, 920));
+		addView(lbCommon);
+
 		drawPanel();
 	}
 
@@ -160,6 +166,9 @@ public class PanelBuild extends UserSubInterface {
 			// Tactical
 			drawIcon(750, 0, BaseItem.Type.TACTICAL_PHASER.ordinal());
 			drawIcon(750, 1, BaseItem.Type.TACTICAL_SHIELD_GRID.ordinal());
+
+			// Common
+			drawIcon(900, 0, BaseItem.Type.BAR_PUB.ordinal());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

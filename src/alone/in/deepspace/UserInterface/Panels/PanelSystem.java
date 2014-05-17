@@ -7,6 +7,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Game;
+import alone.in.deepspace.Main;
 import alone.in.deepspace.Engine.ui.TextView;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
@@ -17,6 +18,7 @@ public class PanelSystem extends UserSubInterface {
 	private TextView _lbRenderTime;
 	private TextView _lbMemoryUsed;
 	private int _used;
+	private TextView _lbUpdate;
 	
 	public PanelSystem(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
@@ -34,6 +36,12 @@ public class PanelSystem extends UserSubInterface {
 		_lbMemoryUsed.setColor(Color.WHITE);
 		_lbMemoryUsed.setPosition(new Vector2f(200, 6));
 		addView(_lbMemoryUsed);
+
+		_lbUpdate = new TextView(new Vector2f(10, 10));
+		_lbUpdate.setCharacterSize(14);
+		_lbUpdate.setColor(Color.WHITE);
+		_lbUpdate.setPosition(new Vector2f(380, 6));
+		addView(_lbUpdate);
 	}
 	
 	@Override
@@ -47,5 +55,6 @@ public class PanelSystem extends UserSubInterface {
 
         _lbRenderTime.setString("Rendering: " + Game.renderTime + "ms");
         _lbMemoryUsed.setString("Heap: " + String.valueOf(_used) + " / " + String.valueOf(total) + " Mo");
+        _lbUpdate.setString("Update: " + String.valueOf(Main.getUpdateInterval()) + " ms");
 	}
 }

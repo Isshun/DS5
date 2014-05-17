@@ -1,0 +1,2 @@
+gcc -I"C:\Program Files\Java\jdk1.7.0_51\include" -I"C:\Program Files\Java\jdk1.7.0_51\include\win32" -o JNILight.o -c JNILight.c
+gcc -shared -o JNILight.dll JNILight.o JNILight.def -L "C:\win-builds-64\lib"

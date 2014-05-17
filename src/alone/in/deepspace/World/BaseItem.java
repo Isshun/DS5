@@ -115,6 +115,7 @@ public class BaseItem {
 	private int 		_power;
 	private int 		_powerSupply;
 	private int 		_mode;
+	private int			_light;
 	private int 		_nbMode;
 	private int 		_maxId;
 	private boolean		_isWorking;
@@ -155,6 +156,7 @@ public class BaseItem {
 
 		for (ItemInfo info: _itemInfo) {
 			if (info.type == t) {
+				_light = info.light;
 				_name = info.name;
 				_width = info.width;
 				_height = info.height;
@@ -210,6 +212,7 @@ public class BaseItem {
 	public String		getName() { return _name; }
 	public int 			getPower() { return _power; }
 	public int 			getMode() { return _mode; }
+	public int 			getLight() { return _light; }
 
 	// Boolean
 	public boolean		isSolid() { return _isSolid; }

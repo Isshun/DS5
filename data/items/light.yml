@@ -1,0 +1,9 @@
+name: light
+label: Light
+solid: true
+width: 1
+height: 1
+light: 10
+cost:
+  matter: 42
+  power: 1

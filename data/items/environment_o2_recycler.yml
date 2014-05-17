@@ -1,0 +1,10 @@
+name: o2_recycler
+label: O2 Recycler
+solid: true
+width: 1
+height: 1
+light: 10
+cost:
+  matter: 42
+  power: 10
+  o2: 100

@@ -14,6 +14,7 @@ import alone.in.deepspace.Engine.MainRenderer;
 import alone.in.deepspace.UserInterface.MenuBase;
 import alone.in.deepspace.UserInterface.MenuLoad;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.loader.ItemLoader;
 
 
 public class Main {
@@ -22,6 +23,8 @@ public class Main {
 	static final int 				UPDATE_INTERVAL = 100;
 	private static Game				game;
 
+	private static int _updateInterval = UPDATE_INTERVAL;
+
 	public static void main(String[] args) {
 		//Create the window
 		RenderWindow window = new RenderWindow();
@@ -29,6 +32,8 @@ public class Main {
 
 		MainRenderer.getInstance().setWindow(window);
 
+		ItemLoader.load("base");
+		
 		try {
 			game = new Game(window);
 			game.load("saves/2.sav");
@@ -117,14 +122,14 @@ public class Main {
 
 			Time elapsed = display_timer.getElapsedTime();
 
-			long nextUpdate = last_update.asMilliseconds() + UPDATE_INTERVAL - elapsed.asMilliseconds();
+			long nextUpdate = last_update.asMilliseconds() + _updateInterval - elapsed.asMilliseconds();
 			long nextRefresh = last_refresh.asMilliseconds() + REFRESH_INTERVAL - elapsed.asMilliseconds();
 
 			// Refresh
 			if (nextRefresh <= 0) {
 				//_renderTime = (int) (elapsed.asMilliseconds() - _last_refresh.asMilliseconds());
 				last_refresh = elapsed;
-				double animProgress = 1 - (double)nextUpdate / UPDATE_INTERVAL;
+				double animProgress = 1 - (double)nextUpdate / _updateInterval;
 				game.onRefresh(animProgress, renderTime);
 				if (menu != null) {
 					menu.refresh(window);
@@ -142,6 +147,14 @@ public class Main {
 				game.onUpdate();
 			}
 		}
+	}
+	
+	public static int getUpdateInterval() {
+		return _updateInterval;
+	}
+
+	public static void setUpdateInterval(int updateInterval) {
+		_updateInterval = updateInterval;
 	}
 
 }

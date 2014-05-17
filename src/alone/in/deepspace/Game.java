@@ -35,7 +35,9 @@ import alone.in.deepspace.UserInterface.MenuBase;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.World.WorldMap;
 import alone.in.deepspace.World.WorldRenderer;
+import alone.in.deepspace.loader.ItemLoader;
 
 public class Game implements ISavable {
 	public static int 				renderTime;
@@ -54,8 +56,13 @@ public class Game implements ISavable {
 	private DynamicObjectManager	_dynamicObjectManager;
 	private int 					_lastLeftClick;
 	private MenuBase 				_menu;
+	private JNILight _jni;
 
 	public static int getFrame() { return _frame; }
+	
+	static {
+		System.loadLibrary("JNILight");
+	}
 
 	public Game(RenderWindow app) throws IOException, TextureCreationException {
 		Log.debug("Game");
@@ -72,6 +79,8 @@ public class Game implements ISavable {
 		ServiceManager.setWorldRenderer(_worldRenderer);
 		_dynamicObjectManager = DynamicObjectManager.getInstance();
 
+		_jni = new JNILight();
+		
 		_update = 0;
 		_characterManager = ServiceManager.getCharacterManager();
 		_FoeManager = FoeManager.getInstance();
@@ -97,7 +106,7 @@ public class Game implements ISavable {
 		// Update item
 		int w = ServiceManager.getWorldMap().getWidth();
 		int h = ServiceManager.getWorldMap().getHeight();
-
+		
 		for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
 
@@ -221,11 +230,13 @@ public class Game implements ISavable {
 		if (_menu != null) {
 			_menu.refresh(_app);
 		}
-
+		
+//		_jni.helloJNI();
+		
 		//TODO
 		//srand(_seed + _frame++);
 	}
-
+	
 	void	draw_surface() {
 		// Background
 		Transform transform2 = new Transform();
@@ -286,7 +297,7 @@ public class Game implements ISavable {
 
 	void	create() {
 		Log.info("Game: create");
-
+		
 		ResourceManager.getInstance().setMatter(Constant.RESSOURCE_MATTER_START);
 
 		ServiceManager.getWorldMap().create();

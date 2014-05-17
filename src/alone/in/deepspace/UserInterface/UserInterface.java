@@ -8,6 +8,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
+import alone.in.deepspace.Main;
 import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Character.CharacterManager;
 import alone.in.deepspace.Character.ServiceManager;
@@ -245,6 +246,17 @@ public class UserInterface {
 	}
 	
 	public boolean checkKeyboard(Event	event, int frame, int lastInput) {
+		
+		if (event.asKeyEvent().key == Keyboard.Key.ADD) {
+			if (Main.getUpdateInterval() - 40 > 0) {
+				Main.setUpdateInterval(Main.getUpdateInterval() - 40);
+			}
+		}
+
+		if (event.asKeyEvent().key == Keyboard.Key.SUBTRACT) {
+			Main.setUpdateInterval(Main.getUpdateInterval() + 40);
+		}
+		
 	  if (_panelBuild.checkKey(event.asKeyEvent().key)) {
 		return true;
 	  }

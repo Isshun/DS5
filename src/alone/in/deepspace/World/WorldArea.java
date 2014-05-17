@@ -14,12 +14,14 @@ public class WorldArea {
 	private int				_x;
 	private int				_y;
 	private String			_name;
+	private int 			_light;
 
 	public WorldArea(BaseItem.Type type, int x, int y) {
 		_oxygen = (int) (Math.random() % 100);
 		_x = x;
 		_y = y;
 		_name = "area";
+		_light = 0;
 	}
 
 	public void				setItem(UserItem item) { _item = item; }
@@ -38,5 +40,10 @@ public class WorldArea {
 	public int				getY() { return _y; }
 	public String 			getName() { return _name; }
 	public Room.Type		getRoomType() { return _roomType; }
+
+	public int getLight() { return _light; }
+
+	public void setLight(int value) { _light = value; }
+	public void addLight(int value) { _light += value; }
 
 }
