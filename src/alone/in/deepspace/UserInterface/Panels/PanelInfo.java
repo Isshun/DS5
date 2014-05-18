@@ -15,15 +15,15 @@ import alone.in.deepspace.Engine.ui.View;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.RoomManager;
 import alone.in.deepspace.Managers.SpriteManager;
+import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Room;
+import alone.in.deepspace.Models.StorageItem;
+import alone.in.deepspace.Models.StructureItem;
+import alone.in.deepspace.Models.UserItem;
+import alone.in.deepspace.Models.WorldArea;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.ObjectPool;
-import alone.in.deepspace.World.BaseItem;
-import alone.in.deepspace.World.StorageItem;
-import alone.in.deepspace.World.StructureItem;
-import alone.in.deepspace.World.UserItem;
-import alone.in.deepspace.World.WorldArea;
 
 public class PanelInfo extends UserSubInterface {
 
@@ -41,6 +41,8 @@ public class PanelInfo extends UserSubInterface {
 	private PanelInfoItemOptions _structureOptions;
 	private TextView _lbRoom;
 	private TextView _itemStorage;
+	private TextView _itemLight;
+	private TextView light;
 
 	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;
 
@@ -81,12 +83,24 @@ public class PanelInfo extends UserSubInterface {
 		  _itemStorage.setPosition(10, itemOffset + 200);
 		  _itemStorage.setCharacterSize(14);
 		  addView(_itemStorage);
+
+		  _itemLight = new TextView(null);
+		  _itemLight.setPosition(10, itemOffset + 220);
+		  _itemLight.setCharacterSize(14);
+		  _itemLight.setString("gg");
+		  addView(_itemLight);
 		  
 		  TextView sep = new TextView(null);
 		  sep.setPosition(0, 200);
 		  sep.setCharacterSize(22);
 		  sep.setString("----------------------------------");
 		  addView(sep);
+		  
+		  light = new TextView(null);
+		  light.setPosition(0, 180);
+		  light.setCharacterSize(22);
+		  light.setString("----------------------------------");
+		  addView(light);
 	  }
 
 	  void	addLine(final RenderWindow app, final String label, final String value) {
@@ -110,6 +124,8 @@ public class PanelInfo extends UserSubInterface {
 
 	  public void  setArea(WorldArea area) {
 		  _area = area;
+		  
+		  light.setString("light: " + String.valueOf(area.getLight()));
 		  
 		  if (area != null) {
 			  Room room = RoomManager.getInstance().get(area.getX(), area.getY());
@@ -182,6 +198,7 @@ public class PanelInfo extends UserSubInterface {
 			  _itemName.setString("");
 			  _itemMatter.setString("");
 			  _itemStorage.setString("");
+			  _itemLight.setString("");
 			  return;
 		  }
 

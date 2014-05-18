@@ -14,7 +14,9 @@ import alone.in.deepspace.Character.CharacterManager;
 import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Engine.Viewport;
 import alone.in.deepspace.Managers.RoomManager;
+import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Room;
+import alone.in.deepspace.Models.WorldArea;
 import alone.in.deepspace.UserInterface.Panels.PanelBase;
 import alone.in.deepspace.UserInterface.Panels.PanelBuild;
 import alone.in.deepspace.UserInterface.Panels.PanelCharacter;
@@ -28,8 +30,6 @@ import alone.in.deepspace.UserInterface.Panels.PanelShortcut;
 import alone.in.deepspace.UserInterface.Panels.PanelSystem;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Settings;
-import alone.in.deepspace.World.BaseItem;
-import alone.in.deepspace.World.WorldArea;
 
 public class UserInterface {
 

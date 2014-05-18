@@ -1,4 +1,4 @@
-package alone.in.deepspace.loader;
+package alone.in.deepspace.Engine.loader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +11,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import alone.in.deepspace.Character.ServiceManager;
-import alone.in.deepspace.World.ItemInfo;
+import alone.in.deepspace.Models.ItemInfo;
 
 public class ItemLoader {
 	

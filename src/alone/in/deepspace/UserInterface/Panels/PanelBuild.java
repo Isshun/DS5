@@ -11,19 +11,18 @@ import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
 import alone.in.deepspace.Character.ServiceManager;
-import alone.in.deepspace.Engine.ui.OnClickListener;
 import alone.in.deepspace.Engine.ui.ButtonView;
+import alone.in.deepspace.Engine.ui.OnClickListener;
 import alone.in.deepspace.Engine.ui.TextView;
 import alone.in.deepspace.Engine.ui.View;
 import alone.in.deepspace.Managers.SpriteManager;
+import alone.in.deepspace.Models.CategoryInfo;
+import alone.in.deepspace.Models.ItemInfo;
 import alone.in.deepspace.UserInterface.OnFocusListener;
 import alone.in.deepspace.UserInterface.UserInteraction;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.BaseItem;
-import alone.in.deepspace.World.ItemInfo;
-import alone.in.deepspace.model.CategoryInfo;
 
 public class PanelBuild extends UserSubInterface {
 

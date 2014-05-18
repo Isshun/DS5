@@ -1,7 +1,7 @@
 package alone.in.deepspace.Engine;
 
 import alone.in.deepspace.Character.ServiceManager;
-import alone.in.deepspace.World.ItemInfo;
+import alone.in.deepspace.Models.ItemInfo;
 
 public class SpriteResource {
 

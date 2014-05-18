@@ -12,6 +12,8 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.Shader;
+import org.jsfml.graphics.ShaderSourceException;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
@@ -24,6 +26,9 @@ import alone.in.deepspace.Character.CharacterManager;
 import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Engine.ISavable;
 import alone.in.deepspace.Engine.Viewport;
+import alone.in.deepspace.Engine.renderer.DebugRenderer;
+import alone.in.deepspace.Engine.renderer.LightRenderer;
+import alone.in.deepspace.Engine.renderer.WorldRenderer;
 import alone.in.deepspace.Managers.DynamicObjectManager;
 import alone.in.deepspace.Managers.FoeManager;
 import alone.in.deepspace.Managers.JobManager;
@@ -35,9 +40,7 @@ import alone.in.deepspace.UserInterface.MenuBase;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.WorldMap;
-import alone.in.deepspace.World.WorldRenderer;
-import alone.in.deepspace.loader.ItemLoader;
+import alone.in.deepspace.Utils.Settings;
 
 public class Game implements ISavable {
 	public static int 				renderTime;
@@ -56,7 +59,9 @@ public class Game implements ISavable {
 	private DynamicObjectManager	_dynamicObjectManager;
 	private int 					_lastLeftClick;
 	private MenuBase 				_menu;
-	private JNILight _jni;
+	private JNILight 				_jni;
+	private LightRenderer			_lightRenderer;
+	private DebugRenderer 			_debugRenderer;
 
 	public static int getFrame() { return _frame; }
 	
@@ -77,6 +82,9 @@ public class Game implements ISavable {
 		_spriteManager = SpriteManager.getInstance();
 		_worldRenderer = new WorldRenderer(app, _spriteManager, _ui);
 		ServiceManager.setWorldRenderer(_worldRenderer);
+		_lightRenderer = new LightRenderer(app);
+		ServiceManager.setLightRenderer(_lightRenderer);
+		_debugRenderer = new DebugRenderer(app);
 		_dynamicObjectManager = DynamicObjectManager.getInstance();
 
 		_jni = new JNILight();
@@ -206,23 +214,30 @@ public class Game implements ISavable {
 		}
 	}
 
-	void	onRefresh(double animProgress, int rTime) throws IOException {
+	void	onDraw(int animProgress, int rTime) throws IOException {
 		// Flush
 		_app.clear(new Color(0, 0, 50));
 		_frame++;
 		renderTime = rTime;
 
 		// Draw scene
-		draw_surface();
+		draw_surface(animProgress);
 
 		Transform transform = new Transform();
 		transform = _viewport.getViewTransform(transform);
 		RenderStates render = new RenderStates(transform);
 
-		_characterManager.refresh(_app, render, animProgress);
-		_FoeManager.refresh(_app, render, animProgress);
-
+		_characterManager.onDraw(_app, render, animProgress);
+		_FoeManager.onDraw(_app, render, animProgress);
 		_dynamicObjectManager.refresh(_app, render, animProgress);
+
+		_lightRenderer.onDraw(_app, render, animProgress);
+		
+		// Draw debug
+		if (Settings.getInstance().isDebug()) {
+			_debugRenderer.onDraw(_app, render, animProgress);
+		}
+
 
 		// User interface
 		_ui.refresh(_frame, _update, rTime);
@@ -237,7 +252,7 @@ public class Game implements ISavable {
 		//srand(_seed + _frame++);
 	}
 	
-	void	draw_surface() {
+	void	draw_surface(int animProgress) {
 		// Background
 		Transform transform2 = new Transform();
 		RenderStates render2 = new RenderStates(_viewport.getViewTransformBackground(transform2));
@@ -246,7 +261,7 @@ public class Game implements ISavable {
 		// Render transformation for viewport
 		Transform transform = new Transform();
 		RenderStates render = new RenderStates(_viewport.getViewTransform(transform));
-		_worldRenderer.refresh(render);
+		_worldRenderer.onDraw(_app, render, animProgress);
 	}
 
 	public void onEvent(Event event) throws IOException {
@@ -355,7 +370,7 @@ public class Game implements ISavable {
 		RoomManager.getInstance().load(filePath);
 		JobManager.getInstance().load(filePath);
 		
-		ServiceManager.getWorldRenderer().initLight();
+		_lightRenderer.initLight();
 		
 		//JobManager.getInstance().move(ServiceManager.getCharacterManager().getList().get(0), 25, 14);
 	}

@@ -13,13 +13,13 @@ import org.jsfml.graphics.Texture;
 
 import alone.in.deepspace.Character.Profession;
 import alone.in.deepspace.Engine.SpriteResource;
+import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.Models.ItemInfo;
+import alone.in.deepspace.Models.StorageItem;
+import alone.in.deepspace.Models.StructureItem;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.Utils.ObjectPool;
-import alone.in.deepspace.World.BaseItem;
-import alone.in.deepspace.World.ItemInfo;
-import alone.in.deepspace.World.StorageItem;
-import alone.in.deepspace.World.StructureItem;
 
 public class SpriteManager {
 	

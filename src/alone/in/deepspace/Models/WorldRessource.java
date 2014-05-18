@@ -1,4 +1,4 @@
-package alone.in.deepspace.World;
+package alone.in.deepspace.Models;
 
 public class WorldRessource extends BaseItem {
 	private int		_type;

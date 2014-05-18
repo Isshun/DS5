@@ -2,15 +2,17 @@ package alone.in.deepspace.Character;
 
 import java.io.IOException;
 
-import alone.in.deepspace.World.WorldMap;
-import alone.in.deepspace.World.WorldRenderer;
+import alone.in.deepspace.Engine.renderer.LightRenderer;
+import alone.in.deepspace.Engine.renderer.WorldRenderer;
+import alone.in.deepspace.Managers.WorldManager;
 
 public class ServiceManager {
 
-	private static WorldMap 		_worldMap;
+	private static WorldManager 		_worldMap;
 	private static CharacterManager _charactersManager;
 	private static WorldRenderer 	_worldRenderer;
 	private static GameData 		_data;
+	private static LightRenderer _lightRenderer;
 
 	public static void reset() {
 		_worldMap = null;
@@ -18,9 +20,9 @@ public class ServiceManager {
 		_worldRenderer = null;
 	}
 
-	public static WorldMap getWorldMap() {
+	public static WorldManager getWorldMap() {
 		if (_worldMap == null) {
-			_worldMap = new WorldMap();
+			_worldMap = new WorldManager();
 		}
 		return _worldMap;
 	}
@@ -50,5 +52,13 @@ public class ServiceManager {
 
 	public static void setData(GameData data) {
 		_data = data;
+	}
+
+	public static LightRenderer getLightRenderer() {
+		return _lightRenderer;
+	}
+
+	public static void setLightRenderer(LightRenderer lightRenderer) {
+		_lightRenderer = lightRenderer;
 	}
 }

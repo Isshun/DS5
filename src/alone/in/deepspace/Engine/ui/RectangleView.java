@@ -10,7 +10,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Engine.MainRenderer;
+import alone.in.deepspace.Engine.renderer.MainRenderer;
 
 public abstract class RectangleView {
 	protected RenderStates 	_render;

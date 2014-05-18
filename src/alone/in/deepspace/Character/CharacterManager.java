@@ -310,7 +310,7 @@ public class CharacterManager implements ISavable {
 	  return null;
 	}
 
-	public void	refresh(RenderWindow app, RenderStates render, double animProgress) throws IOException {
+	public void	onDraw(RenderWindow app, RenderStates render, double animProgress) throws IOException {
 
 	  for (Character c: _characters) {
 		int posX = c.getX() * Constant.TILE_SIZE - (Constant.CHAR_WIDTH - Constant.TILE_SIZE) + 2;

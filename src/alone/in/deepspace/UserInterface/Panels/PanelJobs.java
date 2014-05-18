@@ -13,7 +13,6 @@ import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.World.BaseItem;
 
 public class PanelJobs extends UserSubInterface {
 	private static final Color 	COLOR_BUILD = new Color(170, 128, 64);

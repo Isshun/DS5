@@ -1,7 +1,7 @@
 package alone.in.deepspace;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;
@@ -13,14 +13,13 @@ import org.jsfml.window.event.Event;
 
 import alone.in.deepspace.Character.GameData;
 import alone.in.deepspace.Character.ServiceManager;
-import alone.in.deepspace.Engine.MainRenderer;
+import alone.in.deepspace.Engine.loader.CategoryLoader;
+import alone.in.deepspace.Engine.loader.ItemLoader;
+import alone.in.deepspace.Engine.renderer.MainRenderer;
+import alone.in.deepspace.Models.ItemInfo;
 import alone.in.deepspace.UserInterface.MenuBase;
 import alone.in.deepspace.UserInterface.MenuLoad;
 import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.World.ItemInfo;
-import alone.in.deepspace.loader.CategoryLoader;
-import alone.in.deepspace.loader.ItemLoader;
-
 
 public class Main {
 
@@ -151,8 +150,8 @@ public class Main {
 			if (nextRefresh <= 0) {
 				//_renderTime = (int) (elapsed.asMilliseconds() - _last_refresh.asMilliseconds());
 				last_refresh = elapsed;
-				double animProgress = 1 - (double)nextUpdate / _updateInterval;
-				game.onRefresh(animProgress, renderTime);
+				int animProgress = (int)(1 - (double)nextUpdate / _updateInterval);
+				game.onDraw(animProgress, renderTime);
 				if (menu != null) {
 					menu.refresh(window);
 				}

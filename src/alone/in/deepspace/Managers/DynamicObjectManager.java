@@ -12,10 +12,10 @@ import org.jsfml.graphics.Texture;
 
 import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Character.ServiceManager;
+import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.Models.UserItem;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.BaseItem;
-import alone.in.deepspace.World.UserItem;
 
 public class DynamicObjectManager {
 	private static int 					ID_START = 2000000;

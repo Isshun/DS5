@@ -1,11 +1,9 @@
 package alone.in.deepspace.Managers;
 
 import alone.in.deepspace.Character.ServiceManager;
+import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Room;
-import alone.in.deepspace.Models.Room.Type;
-import alone.in.deepspace.World.BaseItem;
-import alone.in.deepspace.World.StructureItem;
-import alone.in.deepspace.World.WorldMap;
+import alone.in.deepspace.Models.StructureItem;
 
 public class ResourceManager {
 
@@ -62,6 +60,10 @@ public class ResourceManager {
 				_o2Supply -= item.getInfo().cost.o2;
 			}
 
+			if (item.getLight() > 0) {
+				ServiceManager.getLightRenderer().refresh(item);
+			}
+			
 			return Message.BUILD_COMPLETE;
 		}
 
@@ -72,7 +74,7 @@ public class ResourceManager {
 	}
 
 	public void update() {
-		WorldMap worldmap = ServiceManager.getWorldMap();
+		WorldManager worldmap = ServiceManager.getWorldMap();
 		int width = worldmap.getWidth();
 		int height = ServiceManager.getWorldMap().getWidth();
 

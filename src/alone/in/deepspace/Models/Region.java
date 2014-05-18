@@ -1,4 +1,4 @@
-package alone.in.deepspace.Managers;
+package alone.in.deepspace.Models;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import alone.in.deepspace.Character.ServiceManager;
+import alone.in.deepspace.Managers.PathManager;
+import alone.in.deepspace.Managers.WorldManager;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.StructureItem;
-import alone.in.deepspace.World.WorldMap;
 
 public class Region {
 	public static int	_count;
@@ -50,7 +50,7 @@ public class Region {
 		this.toX = toX;
 		this.toY = toY;
 		
-		WorldMap worldMap = ServiceManager.getWorldMap();
+		WorldManager worldMap = ServiceManager.getWorldMap();
 		for (int x = fromX; x <= toX; x++) {
 			for (int y = fromY; y <= toY; y++) {
 				if (x == fromX || x == toX || y == fromY || y == toY) {

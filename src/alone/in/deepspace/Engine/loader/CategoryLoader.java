@@ -1,12 +1,12 @@
-package alone.in.deepspace.loader;
+package alone.in.deepspace.Engine.loader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import alone.in.deepspace.Character.ServiceManager;
-import alone.in.deepspace.World.ItemInfo;
-import alone.in.deepspace.model.CategoryInfo;
+import alone.in.deepspace.Models.CategoryInfo;
+import alone.in.deepspace.Models.ItemInfo;
 
 public class CategoryLoader {
 

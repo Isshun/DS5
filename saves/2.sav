@@ -1,5 +1,5 @@
 BEGIN GAME
-MATTER	29372
+MATTER	29354
 SPICE	0
 WATER	0
 END GAME
@@ -138,9 +138,9 @@ BEGIN WORLDMAP
 19	14	base.floor	1
 19	15	base.floor	1
 19	16	base.floor	1
-19	16	base.chair	35
 19	17	base.floor	1
 19	18	base.floor	1
+19	18	base.light	10
 19	19	base.floor	1
 19	20	base.floor	1
 19	21	base.floor	1
@@ -249,7 +249,6 @@ BEGIN WORLDMAP
 25	20	base.floor	1
 25	21	base.floor	1
 25	22	base.floor	1
-25	22	base.chair	42
 25	23	base.floor	1
 25	24	base.floor	1
 25	25	base.floor	1
@@ -313,6 +312,7 @@ BEGIN WORLDMAP
 29	13	base.window	1
 29	14	base.floor	1
 29	15	base.floor	1
+29	15	base.light	10
 29	16	base.floor	1
 29	17	base.floor	1
 29	18	base.floor	1
@@ -363,14 +363,14 @@ BEGIN WORLDMAP
 31	29	base.wall	1
 END WORLDMAP
 BEGIN CHARACTERS
-19	16	3	Wesley Holmes
-18	26	1	Alice Hammond
-16	20	1	Alice Beckett
-16	13	1	Samuel Cooper
-15	15	1	Gaius Lawton
-17	14	1	Jonathan Hartness
-15	13	1	Jadzia Holmes
-16	14	1	Alice Archer
+25	22	0	Wesley Holmes
+18	26	4	Alice Hammond
+16	20	4	Alice Beckett
+16	13	4	Samuel Cooper
+15	15	4	Gaius Lawton
+17	14	4	Jonathan Hartness
+15	13	4	Jadzia Holmes
+16	14	4	Alice Archer
 END CHARACTERS
 BEGIN ROOMS
 23	4	6	0

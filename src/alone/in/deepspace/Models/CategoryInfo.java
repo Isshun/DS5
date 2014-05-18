@@ -1,9 +1,8 @@
-package alone.in.deepspace.model;
+package alone.in.deepspace.Models;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import alone.in.deepspace.World.ItemInfo;
 
 public class CategoryInfo {
 	public List<ItemInfo> 	items;

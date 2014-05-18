@@ -2,8 +2,8 @@ package alone.in.deepspace.Character;
 
 import java.util.List;
 
-import alone.in.deepspace.World.ItemInfo;
-import alone.in.deepspace.model.CategoryInfo;
+import alone.in.deepspace.Models.CategoryInfo;
+import alone.in.deepspace.Models.ItemInfo;
 
 public class GameData {
 

@@ -8,8 +8,6 @@ import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
-
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.Node;
@@ -20,9 +18,10 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
 import alone.in.deepspace.Game;
 import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Character.ServiceManager;
-import alone.in.deepspace.Managers.Region.Door;
 import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Models.Position;
+import alone.in.deepspace.Models.Region;
+import alone.in.deepspace.Models.Region.Door;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 

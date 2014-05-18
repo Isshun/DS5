@@ -13,10 +13,10 @@ import alone.in.deepspace.Engine.ui.TextView;
 import alone.in.deepspace.Engine.ui.View;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.ResourceManager;
+import alone.in.deepspace.Models.StructureItem;
+import alone.in.deepspace.Models.UserItem;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.World.StructureItem;
-import alone.in.deepspace.World.UserItem;
 
 public class PanelDebug extends UserSubInterface {
 
@@ -156,7 +156,7 @@ public class PanelDebug extends UserSubInterface {
 		lbResetLight.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				ServiceManager.getWorldRenderer().initLight();
+				ServiceManager.getLightRenderer().initLight();
 			}
 		});
 		lbResetLight.setString("Reset light");

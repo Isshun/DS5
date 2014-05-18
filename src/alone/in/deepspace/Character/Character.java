@@ -2,13 +2,13 @@ package alone.in.deepspace.Character;
 import alone.in.deepspace.Managers.JobManager;
 import alone.in.deepspace.Managers.PathManager;
 import alone.in.deepspace.Managers.ResourceManager;
+import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.Job;
 import alone.in.deepspace.Models.Movable;
+import alone.in.deepspace.Models.StructureItem;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.BaseItem;
-import alone.in.deepspace.World.StructureItem;
 
 public class Character extends Movable {
 

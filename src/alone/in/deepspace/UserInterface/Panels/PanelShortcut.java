@@ -13,7 +13,6 @@ import alone.in.deepspace.Engine.ui.View;
 import alone.in.deepspace.UserInterface.OnFocusListener;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.UserInterface.UserSubInterface;
-import alone.in.deepspace.UserInterface.UserInterface.Mode;
 import alone.in.deepspace.Utils.Constant;
 
 public class PanelShortcut extends UserSubInterface {

@@ -10,10 +10,10 @@ import java.io.IOException;
 import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Engine.ISavable;
 import alone.in.deepspace.Models.Room;
+import alone.in.deepspace.Models.StructureItem;
 import alone.in.deepspace.Models.Room.Type;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.StructureItem;
 
 public class RoomManager implements ISavable {
 

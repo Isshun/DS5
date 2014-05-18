@@ -2,7 +2,6 @@ package alone.in.deepspace.Models;
 import java.util.ArrayList;
 import java.util.List;
 
-import alone.in.deepspace.World.BaseItem;
 
 
 public class Room {

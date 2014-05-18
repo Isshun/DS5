@@ -112,7 +112,7 @@ public class FoeManager {
 //		Log.info("Save characters: " + filePath + " done");
 //	}
 	
-	public void	refresh(RenderWindow app, RenderStates render, double animProgress) throws IOException {
+	public void	onDraw(RenderWindow app, RenderStates render, double animProgress) throws IOException {
 
 		for (Foe c: _foes) {
 			int posX = c.getX() * Constant.TILE_SIZE - (Constant.CHAR_WIDTH - Constant.TILE_SIZE) + 2;

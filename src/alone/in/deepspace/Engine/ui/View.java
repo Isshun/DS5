@@ -8,7 +8,7 @@ import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Engine.MainRenderer;
+import alone.in.deepspace.Engine.renderer.MainRenderer;
 import alone.in.deepspace.UserInterface.EventManager;
 import alone.in.deepspace.UserInterface.OnFocusListener;
 

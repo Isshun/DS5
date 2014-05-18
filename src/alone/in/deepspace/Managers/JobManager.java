@@ -1,11 +1,5 @@
 package alone.in.deepspace.Managers;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,15 +8,13 @@ import alone.in.deepspace.Character.Character;
 import alone.in.deepspace.Character.CharacterNeeds;
 import alone.in.deepspace.Character.ServiceManager;
 import alone.in.deepspace.Engine.ISavable;
+import alone.in.deepspace.Models.BaseItem;
+import alone.in.deepspace.Models.ItemInfo;
 import alone.in.deepspace.Models.Job;
+import alone.in.deepspace.Models.UserItem;
 import alone.in.deepspace.Models.Job.Abort;
 import alone.in.deepspace.Models.Room;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.World.BaseItem;
-import alone.in.deepspace.World.ItemInfo;
-import alone.in.deepspace.World.StructureItem;
-import alone.in.deepspace.World.UserItem;
-import alone.in.deepspace.World.WorldRessource;
 
 public class JobManager implements ISavable {
 	public enum Action {
