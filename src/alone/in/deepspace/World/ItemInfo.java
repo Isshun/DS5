@@ -10,6 +10,7 @@ public class ItemInfo {
 	public String 		name;
 	public String 		inherits;
 	public String 		label;
+	public String 		category;
 	public boolean 		isWalkable;
 	public int 			width;
 	public int 			height;
@@ -20,4 +21,8 @@ public class ItemInfo {
 	public boolean 		isUserItem;
 	public int 			storage;
 	
+	public ItemInfo() {
+		width = 1;
+		height = 1;
+	}
 }

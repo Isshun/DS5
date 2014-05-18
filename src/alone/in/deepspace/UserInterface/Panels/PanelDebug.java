@@ -148,8 +148,22 @@ public class PanelDebug extends UserSubInterface {
 		lbKillEveryone.setString("Kill everyone");
 		lbKillEveryone.setCharacterSize(20);
 		lbKillEveryone.setColor(Color.WHITE);
-		lbKillEveryone.setPosition(new Vector2f(20, 260));
+		lbKillEveryone.setPosition(new Vector2f(20, 300));
 		addView(lbKillEveryone);
+
+		// Reset light 
+		TextView lbResetLight = new TextView(new Vector2f(200, 32));
+		lbResetLight.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				ServiceManager.getWorldRenderer().initLight();
+			}
+		});
+		lbResetLight.setString("Reset light");
+		lbResetLight.setCharacterSize(20);
+		lbResetLight.setColor(Color.WHITE);
+		lbResetLight.setPosition(new Vector2f(20, 260));
+		addView(lbResetLight);
 	}
 
 //	void  addDebug(final String key, String value) {

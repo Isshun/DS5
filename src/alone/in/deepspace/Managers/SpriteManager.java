@@ -29,6 +29,7 @@ public class SpriteManager {
 			new SpriteResource("base.wall",						0, 4, 5),
 			// new SpriteResource(BaseItem.Type.STRUCTURE_WALL_BELLOW,				1, 4, 5),
 			new SpriteResource("base.floor",					7, 7, 0),
+			new SpriteResource("base.window",					2, 0, 4),
 //			new SpriteResource(BaseItem.Type.STRUCTURE_GREENHOUSE,					7, 7, 0),
 			new SpriteResource("base.door",						2, 2, 0),
 			new SpriteResource("base.window",					2, 3, 0),
@@ -343,7 +344,7 @@ public class SpriteManager {
 
 		// Wall
 		else {
-			if (item.getName().equals("base.wall")) {
+			if (item.isWall()) {
 				int alpha = 75 + 180 / item.getMatter() * item.getMatterSupply();
 				int texture = 6;
 				int x = 0;

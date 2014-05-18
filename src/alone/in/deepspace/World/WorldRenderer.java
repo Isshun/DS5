@@ -70,14 +70,57 @@ public class WorldRenderer {
 		_textureCache.setSmooth(true);
 		_textureCache.display();
 		
-		_lightCache = new RenderTexture();
-		_lightCache.create(Constant.WORLD_WIDTH * Constant.TILE_SIZE, Constant.WORLD_HEIGHT * Constant.TILE_SIZE);
-		_lightCache.display();
 		
 		_hasChanged = true;
 
 		// TODO
 		//_font.loadFromFile((new File("res/xolonium/Xolonium-Regular.otf")).toPath());
+	}
+
+	private void diffuseLight(int x, int y, int light, int pass) {
+		for (int j = 0; j < light; j++) {
+			for (double i = -Math.PI; i < Math.PI; i += 0.1) {
+				double x2 = (int)Math.round(Math.cos(i) * j);
+				double y2 = (int)Math.round(Math.sin(i) * j);
+//				double value = Math.sqrt(Math.pow(Math.cos(i) * j, 2) + Math.pow(Math.sin(i) * j, 2));
+				double value = Math.sqrt(Math.pow(Math.abs(x2), 2) + Math.pow(Math.abs(y2), 2));
+				if (isFree(x, y, x+(int)x2, y+(int)y2)) {
+//					int v1 = Math.max(x2, x) - Math.min(x2, x);
+//					int v2 = Math.max(y2, y) - Math.min(y2, y);
+//					ServiceManager.getWorldMap().getArea(x+(int)x2, y+(int)y2).setLight(Math.min(Math.max(1 - value * 0.24 + 0.4, 0), 1));
+					if (ServiceManager.getWorldMap().getArea(x+(int)x2, y+(int)y2).getLightPass() < pass) {
+						ServiceManager.getWorldMap().getArea(x+(int)x2, y+(int)y2).addLight(Math.min(Math.max(1 - value * 0.15, 0), 1));
+						ServiceManager.getWorldMap().getArea(x+(int)x2, y+(int)y2).setLightPass(pass);
+					}
+				}
+			}
+		}
+			
+//		for (int i = 0; i < light; i++) {
+//			for (int j = 0; j < light; j++) {
+//			int value = light - i * 10 - j * 10;
+//				_areas[x-i][y-j].setLight(value);
+//				_areas[x+i][y-j].setLight(value);
+//				_areas[x-i][y+j].setLight(value);
+//				_areas[x+i][y+j].setLight(value);
+//			}
+//		}
+	}
+
+	private boolean isFree(int x, int y, int x2, int y2) {
+		int fromX = Math.min(x, x2);
+		int fromY = Math.min(y, y2);
+		int toX = Math.max(x, x2);
+		int toY = Math.max(y, y2);
+		for (int i = fromX; i <= toX; i++) {
+			for (int j = fromY; j <= toY; j++) {
+				StructureItem structure = ServiceManager.getWorldMap().getArea(i, j).getStructure();
+				if (structure != null && structure.isFloor() == false) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	public void	refresh(RenderStates render) {
@@ -109,7 +152,11 @@ public class WorldRenderer {
 		Sprite sp = new Sprite(_textureCache.getTexture());
 		_app.draw(sp, render);
 
-//		drawDebug(render, fromX, fromY, toX, toY, 0);
+		if (_lightCache != null) {
+			_app.draw((new Sprite(_lightCache.getTexture())), render);
+		}
+		
+		//drawDebug(render, fromX, fromY, toX, toY, 0);
 		
 		long elapsed = display_timer.getElapsedTime().asMilliseconds();
 		if (elapsed > 3)
@@ -287,6 +334,12 @@ public class WorldRenderer {
 	
 						if (sprite != null) {
 							_textureCache.draw(sprite);
+							
+							if (item.isWindow()) {
+								sprite = SpriteManager.getInstance().getIcon(item.getInfo());
+								sprite.setPosition(i * Constant.TILE_SIZE + 15, j * Constant.TILE_SIZE);
+								_textureCache.draw(sprite);
+							}
 						}
 					}
 				}
@@ -491,77 +544,140 @@ public class WorldRenderer {
 //			}
 //		}
 //		
-		_lightCache = new RenderTexture();
-		try {
-			_lightCache.create(Constant.WORLD_WIDTH * Constant.TILE_SIZE, Constant.WORLD_HEIGHT * Constant.TILE_SIZE);
-		} catch (TextureCreationException e) {
-			e.printStackTrace();
-		}
-		_lightCache.display();
 		
 //		_lightCache.clear(new Color(0, 0, 0, 100));
 		
-		RectangleShape shape = null;
-		RectangleShape fullShape = new RectangleShape(new Vector2f(320, 320));
-		RectangleShape halfShape = new RectangleShape(new Vector2f(32, 16));
-		
-		
-		for (int i = toX-1; i >= fromX; i--) {
-			for (int j = toY-1; j >= fromY; j--) {
-				WorldArea item = ServiceManager.getWorldMap().getArea(i, j);
-				StructureItem structure = ServiceManager.getWorldMap().getStructure(i, j);
-				StructureItem structureBellow = ServiceManager.getWorldMap().getStructure(i, j+1);
-
-				if (structure != null && structure.isFloor() && structureBellow != null && structureBellow.isFloor() == false) {
-					shape = halfShape;
-					shape.setFillColor(new Color(0, 200, 0, 100));
-					shape.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE + 16);
-					_lightCache.draw(shape);
-				} else {
-					shape = fullShape;
-				}
-
-				//				//
-//				if (item == null) {
-//					item = ServiceManager.getWorldMap().getArea(i, j);
+//		RectangleShape shape = null;
+//		RectangleShape fullShape = new RectangleShape(new Vector2f(320, 320));
+//		RectangleShape halfShape = new RectangleShape(new Vector2f(32, 16));
+//		
+//		
+//		for (int i = toX-1; i >= fromX; i--) {
+//			for (int j = toY-1; j >= fromY; j--) {
+//				WorldArea item = ServiceManager.getWorldMap().getArea(i, j);
+//				StructureItem structure = ServiceManager.getWorldMap().getStructure(i, j);
+//				StructureItem structureBellow = ServiceManager.getWorldMap().getStructure(i, j+1);
+//
+//				if (structure != null && structure.isFloor() && structureBellow != null && structureBellow.isFloor() == false) {
+//					shape = halfShape;
+//					shape.setFillColor(new Color(0, 200, 0, 100));
+//					shape.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE + 16);
+//					_lightCache.draw(shape);
+//				} else {
+//					shape = fullShape;
 //				}
 //
-//				if (item != null) {
-//					_shapeDebug.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-//					_app.draw(_shapeDebug, render);
+//				//				//
+////				if (item == null) {
+////					item = ServiceManager.getWorldMap().getArea(i, j);
+////				}
+////
+////				if (item != null) {
+////					_shapeDebug.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+////					_app.draw(_shapeDebug, render);
+////				}
+////				//
+////				text.setStyle(Text.REGULAR);
+//				if (item.getLight() != 0) {
+//					text.setString(String.valueOf(item.getLight()));
+//					text.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+//					_lightCache.draw(text);
 //				}
-//				//
-//				text.setStyle(Text.REGULAR);
-				if (item.getLight() != 0) {
-					text.setString(String.valueOf(item.getLight()));
-					text.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-					_lightCache.draw(text);
-				}
-
-				if (structure == null || structure.isFloor()) {
-					if (k == 0 || k == 1) {
-//						shape.setFillColor(new Color(200, 0, 0, 155 * (12 - item.getLight()) / 12));
+//
+//				if (structure == null || structure.isFloor()) {
+//					if (k == 0 || k == 1) {
+////						shape.setFillColor(new Color(200, 0, 0, 155 * (12 - item.getLight()) / 12));
+////						shape.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+////						_lightCache.draw(shape);
+//					}
+//				}
+//				else {
+//					if (k == 0 || k == 2) {
+//						shape.setFillColor(new Color(0, 0, 200, 100));
 //						shape.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
 //						_lightCache.draw(shape);
-					}
-				}
-				else {
-					if (k == 0 || k == 2) {
-						shape.setFillColor(new Color(0, 0, 200, 100));
-						shape.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-						_lightCache.draw(shape);
-					}
-				}
-
-			}
-		}
-		ObjectPool.release(text);
-
-		_app.draw((new Sprite(_lightCache.getTexture())), render);
+//					}
+//				}
+//
+//			}
+//		}
+//		ObjectPool.release(text);
+//
+//		_app.draw((new Sprite(_lightCache.getTexture())), render);
 	}
 
 	public void invalidate(int x, int y) {
 		_changed.add(new Vector2i(x, y));
+	}
+
+	public void initLight() {
+		
+		try {
+			
+			int width = ServiceManager.getWorldMap().getWidth();
+			int height = ServiceManager.getWorldMap().getHeight();
+			for (int x = 0; x < width; x++) {
+				for (int y = 0; y < height; y++) {
+					ServiceManager.getWorldMap().getArea(x, y).setLightPass(0);
+				}
+			}
+
+			int pass = 0;
+			for (int x = 0; x < width; x++) {
+				for (int y = 0; y < height; y++) {
+					WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
+					if (area.getItem() != null && area.getItem().getLight() > 0) {
+						diffuseLight(x, y, area.getItem().getLight(), ++pass);
+					}
+				}
+			}
+			
+			_lightCache = new RenderTexture();
+			_lightCache.create(Constant.WORLD_WIDTH * Constant.TILE_SIZE, Constant.WORLD_HEIGHT * Constant.TILE_SIZE);
+			_lightCache.display();
+			
+			Text text = ObjectPool.getText();
+			text.setFont(SpriteManager.getInstance().getFont());
+			text.setCharacterSize(10);
+			
+			RectangleShape shape = null;
+			RectangleShape fullShape = new RectangleShape(new Vector2f(32, 32));
+			fullShape.setFillColor(new Color(0, 0, 0, 0));
+			RectangleShape halfShape = new RectangleShape(new Vector2f(32, 16));
+			halfShape.setFillColor(new Color(0, 0, 0, 0));
+
+			for (int i = 40; i >= 0; i--) {
+				for (int j = 40; j >= 0; j--) {
+					WorldArea area = ServiceManager.getWorldMap().getArea(i, j);
+					StructureItem structure = ServiceManager.getWorldMap().getStructure(i, j);
+					StructureItem structureBellow = ServiceManager.getWorldMap().getStructure(i, j+1);
+	
+					if (structure != null && structure.isFloor() && structureBellow != null && structureBellow.isFloor() == false) {
+						shape = halfShape;
+						shape.setFillColor(new Color(0, 200, 0, 100));
+						shape.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE + 16);
+						_lightCache.draw(shape);
+					} else {
+						shape = fullShape;
+					}
+	
+					shape.setFillColor(new Color(0, 0, 0, 200 - (int)(area.getLight() * 255)));
+					shape.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+					_lightCache.draw(shape);
+
+//					if (area.getLight() > 0) {
+//						text.setString(String.valueOf((int)(area.getLight() * 255)));
+//						text.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+//						_lightCache.draw(text);
+//					}
+				}
+			}
+			
+			ObjectPool.release(text);
+
+		} catch (TextureCreationException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

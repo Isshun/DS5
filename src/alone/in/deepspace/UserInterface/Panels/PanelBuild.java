@@ -1,6 +1,7 @@
 package alone.in.deepspace.UserInterface.Panels;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jsfml.graphics.Color;
@@ -22,10 +23,11 @@ import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.World.BaseItem;
 import alone.in.deepspace.World.ItemInfo;
+import alone.in.deepspace.model.CategoryInfo;
 
 public class PanelBuild extends UserSubInterface {
 
-	private static final Color 	COLOR_YELLOW = new Color(236, 201, 37);
+	private static final Color 	COLOR_YELLOW = new Color(70, 100, 100);
 	private static int 			FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static int 			FRAME_HEIGHT = Constant.PANEL_HEIGHT;
 
@@ -47,7 +49,7 @@ public class PanelBuild extends UserSubInterface {
 	protected Mode 						_mode;
 
 	public PanelBuild(RenderWindow app, int tileIndex, UserInteraction interaction) throws IOException {
-		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 
 		setBackgroundColor(new Color(200, 200, 50, 140));
 
@@ -135,66 +137,26 @@ public class PanelBuild extends UserSubInterface {
 		try {
 
 			// TODO
-			int i = 0;
-			for (ItemInfo info: ServiceManager.getData().items) {
-				drawIcon(0, ++i, info);
+			int posY = 0;
+			List<CategoryInfo> categories = ServiceManager.getData().categories;
+			for (CategoryInfo category: categories) {
+				TextView lbQuarter = new TextView(new Vector2f(140, 32));
+				lbQuarter.setString(category.label);
+				lbQuarter.setCharacterSize(20);
+				lbQuarter.setPosition(new Vector2f(20, posY + 8));
+				addView(lbQuarter);
+				posY += 44;
+
+				int i = -1;
+				for (ItemInfo info: category.items) {
+					drawIcon(posY, ++i, info);
+				}
+				posY += ((int)(i / 4) + 1) * 100;
 			}
-			
-//			// Structure
-//			drawIcon(0, 0, -2);
-//			drawIcon(0, 1, BaseItem.Type.STRUCTURE_ROOM.ordinal());
-//			drawIcon(0, 2, BaseItem.Type.STRUCTURE_DOOR.ordinal());
-//			drawIcon(0, 3, BaseItem.Type.STRUCTURE_FLOOR.ordinal());
-//			drawIcon(0, 4, BaseItem.Type.STRUCTURE_HULL.ordinal());
-//			drawIcon(0, 5, BaseItem.Type.STRUCTURE_WALL.ordinal());
-//			drawIcon(0, 6, BaseItem.Type.STRUCTURE_WINDOW.ordinal());
-//			drawIcon(0, 7, BaseItem.Type.STRUCTURE_GREENHOUSE.ordinal());
-//
-//			// Quarter
-//			drawIcon(250, 0, -3);
-//			drawIcon(250, 1, BaseItem.Type.QUARTER_BED.ordinal());
-//			drawIcon(250, 2, BaseItem.Type.QUARTER_BEDSIDE_TABLE.ordinal());
-//			drawIcon(250, 3, BaseItem.Type.QUARTER_CHAIR.ordinal());
-//			drawIcon(250, 4, BaseItem.Type.QUARTER_CHEST.ordinal());
-//			drawIcon(250, 5, BaseItem.Type.QUARTER_DESK.ordinal());
-//			drawIcon(250, 6, BaseItem.Type.QUARTER_WARDROBE.ordinal());
-//
-//			// Engineering
-//			drawIcon(500, 0, BaseItem.Type.ENGINE_CONTROL_CENTER.ordinal());
-//			drawIcon(500, 1, BaseItem.Type.ENGINE_REACTION_CHAMBER.ordinal());
-//			drawIcon(500, 2, BaseItem.Type.ENVIRONMENT_O2_RECYCLER.ordinal());
-//			drawIcon(500, 3, BaseItem.Type.ENVIRONMENT_TEMPERATURE_REGULATION.ordinal());
-//
-//			// Special
-//			drawIcon(650, 0, BaseItem.Type.SCIENCE_ZYGOTE.ordinal());
-//			drawIcon(650, 1, BaseItem.Type.SCIENCE_ROBOT_MAKER.ordinal());
-//
-//			// Tactical
-//			drawIcon(750, 0, BaseItem.Type.TACTICAL_PHASER.ordinal());
-//			drawIcon(750, 1, BaseItem.Type.TACTICAL_SHIELD_GRID.ordinal());
-//
-//			// Common
-//			drawIcon(900, 0, BaseItem.Type.BAR_PUB.ordinal());
+
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
-		//	  try {
-		//		  if (_panelMode == Mode.MODE_STRUCTURE) {
-		//			for (int index = 0, i = BaseItem.Type.STRUCTURE_START.ordinal() + 1; i < BaseItem.Type.STRUCTURE_STOP.ordinal(); index++, i++) {
-		//				drawIcon(index, i);
-		//			}
-		//		  } else if (_panelMode == Mode.MODE_ITEM) {
-		//			for (int index = 0, i = BaseItem.Type.ITEM_START.ordinal() + 1; i < BaseItem.Type.ITEM_STOP.ordinal(); index++, i++) {
-		//			  drawIcon(index, i);
-		//			}
-		//		  }
-		//	  } catch (IOException e) {
-		//		  // TODO Auto-generated catch block
-		//		  e.printStackTrace();
-		//	  }
 	}
 
 	void	drawIcon(int offset, int index, final ItemInfo info) throws IOException {
@@ -208,8 +170,10 @@ public class PanelBuild extends UserSubInterface {
 //			} else {
 				icon = new ButtonView(new Vector2f(62, 80), info.label);
 				icon.setIcon(SpriteManager.getInstance().getIcon(info));
+				icon.setIconPadding(0, 20);
 //			}
-			icon.setPosition(20 + (index % 4) * 80, 60 + offset + (int)(index / 4) * 100);
+				icon.setPadding(4, 4, 4, 4);
+			icon.setPosition(20 + (index % 4) * 80, offset + (int)(index / 4) * 100);
 			icon.setBackgroundColor(info.equals(_itemHover) ? Color.WHITE : COLOR_YELLOW);
 			icon.setOnFocusListener(new OnFocusListener() {
 				@Override

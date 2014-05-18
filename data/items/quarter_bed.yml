@@ -2,5 +2,6 @@ name: bed
 label: Bed
 width: 2
 height: 2
+category: quarter
 cost:
   matter: 42

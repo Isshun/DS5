@@ -15,6 +15,8 @@ public class ButtonView extends View {
 	private Text 			_text;
 	private RectangleShape 	_background;
 	private Sprite 			_icon;
+	private int 			_iconPaddingX;
+	private int 			_iconPaddingY;
 
 	public ButtonView(Vector2f size, String string) {
 		super(size);
@@ -72,7 +74,7 @@ public class ButtonView extends View {
 		}
 
 		if (_icon != null) {
-			_icon.setPosition(_pos);
+			_icon.setPosition(_pos.x + _paddingLeft + _iconPaddingX, _pos.y + _paddingTop + _iconPaddingY);
 			app.draw(_icon, render);
 		}
 
@@ -87,6 +89,11 @@ public class ButtonView extends View {
 
 	public void setIcon(Sprite icon) {
 		_icon = icon;
+	}
+
+	public void setIconPadding(int x, int y) {
+		_iconPaddingX = x;
+		_iconPaddingY = y;
 	}
 }
 

@@ -18,6 +18,7 @@ import alone.in.deepspace.UserInterface.MenuBase;
 import alone.in.deepspace.UserInterface.MenuLoad;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.World.ItemInfo;
+import alone.in.deepspace.loader.CategoryLoader;
 import alone.in.deepspace.loader.ItemLoader;
 
 
@@ -43,10 +44,13 @@ public class Main {
 	    ItemInfo roomInfo = new ItemInfo();
 	    roomInfo.name = "base.room";
 	    roomInfo.label = "Room";
+	    roomInfo.category = "structure";
 	    ServiceManager.getData().items.add(roomInfo);
 
 		ItemLoader.load("data/items/", "base");
 		ItemLoader.load("mods/garden/items/", "garden");
+		
+		CategoryLoader.load();
 		
 		try {
 			game = new Game(window);

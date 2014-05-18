@@ -212,61 +212,10 @@ public class WorldMap implements ISavable, TileBasedMap {
 			}
 		}
 		
-		for (int x = 0; x < _width; x++) {
-			for (int y = 0; y < _height; y++) {
-				WorldArea area = _areas[x][y];
-
-				if (area.getItem() != null && area.getItem().getLight() > 0) {
-					// TODO
-					//diffuseLight(x, y, area.getItem().getLight());
-				}
-			}
-		}
-
 		// Add random seed each 10 update
 		//if (_count % 10 == 0) {
 //		addRandomSeed();
 		//}
-	}
-
-	private void diffuseLight(int x, int y, int light) {
-		for (int j = 0; j < light; j++) {
-			for (double i = -Math.PI; i < Math.PI; i += 0.1) {
-				int x2 = (int)Math.round(Math.cos(i) * j);
-				int y2 = (int)Math.round(Math.sin(i) * j);
-//				double value = Math.sqrt(Math.pow(Math.cos(i) * j, 2) + Math.pow(Math.sin(i) * j, 2));
-				double value = Math.sqrt(Math.pow(x2, 2) + Math.pow(y2, 2));
-				if (isFree(x, y, x+x2, y+y2)) {
-					_areas[x+x2][y+y2].addLight((int)(light*2-value*2));
-				}
-			}
-		}
-			
-//		for (int i = 0; i < light; i++) {
-//			for (int j = 0; j < light; j++) {
-//			int value = light - i * 10 - j * 10;
-//				_areas[x-i][y-j].setLight(value);
-//				_areas[x+i][y-j].setLight(value);
-//				_areas[x-i][y+j].setLight(value);
-//				_areas[x+i][y+j].setLight(value);
-//			}
-//		}
-	}
-
-	private boolean isFree(int x, int y, int x2, int y2) {
-		int fromX = Math.min(x, x2);
-		int fromY = Math.min(y, y2);
-		int toX = Math.max(x, x2);
-		int toY = Math.max(y, y2);
-		for (int i = fromX; i <= toX; i++) {
-			for (int j = fromY; j <= toY; j++) {
-				StructureItem structure = _areas[i][j].getStructure();
-				if (structure != null && structure.isFloor() == false) {
-					return false;
-				}
-			}
-		}
-		return true;
 	}
 
 	// TODO: itemName

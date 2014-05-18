@@ -215,6 +215,7 @@ public class BaseItem {
 	public boolean		isSolid() { return _isSolid; }
 	public boolean		isWorking() { return _isWorking; }
 
+
 //	public static String getItemName(Type type) {
 //		switch(type) {
 //		case NONE: return "NONE";
@@ -298,7 +299,7 @@ public class BaseItem {
 	}
 
 	public void nextMode() {
-		_mode = (_mode + 1) % _nbMode;
+		_mode = _nbMode > 0 ? (_mode + 1) % _nbMode : 0;
 	}
 
 	// TODO: item
@@ -308,7 +309,9 @@ public class BaseItem {
 	public boolean isDoor() { return getName().equals("base.door"); }
 
 	// TODO
-	public boolean isWall() { return getName().equals("base.wall"); }
+	public boolean isWall() { return getName().equals("base.wall") || getName().equals("base.window"); }
+
+	public boolean isWindow() { return getName().equals("base.window"); }
 
 
 }

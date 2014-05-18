@@ -355,6 +355,8 @@ public class Game implements ISavable {
 		RoomManager.getInstance().load(filePath);
 		JobManager.getInstance().load(filePath);
 		
+		ServiceManager.getWorldRenderer().initLight();
+		
 		//JobManager.getInstance().move(ServiceManager.getCharacterManager().getList().get(0), 25, 14);
 	}
 

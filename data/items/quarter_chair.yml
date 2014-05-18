@@ -2,5 +2,7 @@ name: chair
 label: Chair
 width: 1
 height: 1
+category: quarter
+light: 10
 cost:
   matter: 42

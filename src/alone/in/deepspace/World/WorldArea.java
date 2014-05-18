@@ -14,7 +14,8 @@ public class WorldArea {
 	private int				_x;
 	private int				_y;
 	private String			_name;
-	private int 			_light;
+	private double 			_light;
+	private int _lightPass;
 
 	public WorldArea(int x, int y) {
 		_oxygen = (int) (Math.random() % 100);
@@ -40,10 +41,11 @@ public class WorldArea {
 	public int				getY() { return _y; }
 	public String 			getName() { return _name; }
 	public Room.Type		getRoomType() { return _roomType; }
+	public double 			getLight() { return _light; }
 
-	public int getLight() { return _light; }
-
-	public void setLight(int value) { _light = value; }
-	public void addLight(int value) { _light += value; }
+	public void setLight(double value) { _light = value; }
+	public void addLight(double value) { _light += value; }
+	public int getLightPass() { return _lightPass; }
+	public void setLightPass(int pass) { _lightPass = pass; }
 
 }
