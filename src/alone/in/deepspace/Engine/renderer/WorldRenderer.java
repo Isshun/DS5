@@ -267,7 +267,7 @@ public class WorldRenderer implements IRenderer {
 							
 							if (item.isWindow()) {
 								sprite = SpriteManager.getInstance().getIcon(item.getInfo());
-								sprite.setPosition(i * Constant.TILE_SIZE + 15, j * Constant.TILE_SIZE);
+								sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
 								_textureCache.draw(sprite);
 							}
 						}

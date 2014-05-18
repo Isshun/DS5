@@ -4,13 +4,16 @@ import java.io.File;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderTexture;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Shader;
 import org.jsfml.graphics.ShaderSourceException;
+import org.jsfml.graphics.Shape;
 import org.jsfml.graphics.Sprite;
+import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Vector2f;
 
@@ -19,11 +22,29 @@ import alone.in.deepspace.Models.BaseItem;
 import alone.in.deepspace.Models.StructureItem;
 import alone.in.deepspace.Models.WorldArea;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.Utils.ObjectPool;
 
 public class LightRenderer implements IRenderer {
 	private RenderTexture 	_cache;
+	private Sprite _sprite;
+	private Sprite _sprite2;
 
 	public LightRenderer(RenderWindow app) {
+
+		try {
+			Texture texture = new Texture();
+			texture.loadFromFile((new File("res/Tilesets/shadow.png").toPath()));
+			_sprite2 = new Sprite();
+			_sprite2.setTexture(texture);
+			_sprite2.setTextureRect(new IntRect(0, 0, 16, 48));
+
+			_sprite = new Sprite();
+			_sprite.setTexture(texture);
+			_sprite.setTextureRect(new IntRect(16, 0, 16, 48));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
 		try {
 			_cache = new RenderTexture();
 			_cache.create(Constant.WORLD_WIDTH * Constant.TILE_SIZE, Constant.WORLD_HEIGHT * Constant.TILE_SIZE);
@@ -95,10 +116,14 @@ public class LightRenderer implements IRenderer {
 	}
 
 	public void refresh(BaseItem item) {
-		refresh(item.getX() - item.getLight(),
-				item.getY() - item.getLight(),
-				item.getX() + item.getLight(),
-				item.getY() + item.getLight());
+		
+		// TODO
+//		refresh(item.getX() - item.getLight(),
+//				item.getY() - item.getLight(),
+//				item.getX() + item.getLight(),
+//				item.getY() + item.getLight());
+		
+		initLight();
 	}
 	
 	private void refresh(int fromX, int fromY, int toX, int toY) {
@@ -157,16 +182,25 @@ public class LightRenderer implements IRenderer {
 		_cache.clear(new Color(0,  0, 0, 0));
 		RectangleShape shape = null;
 		RectangleShape fullShape = new RectangleShape(new Vector2f(32, 32));
+		RectangleShape sideShape = new RectangleShape(new Vector2f(16, 32));
+		RectangleShape smallShape = new RectangleShape(new Vector2f(16, 16));
 		fullShape.setFillColor(new Color(0, 0, 0, 0));
 		RectangleShape halfShape = new RectangleShape(new Vector2f(32, 16));
+
 		halfShape.setFillColor(new Color(0, 0, 0, 0));
 //		for (int x = fromX; x < toX; x++) {
 //			for (int y = fromY; y < toY; y++) {
 		for (int x = 0; x < mapWidth; x++) {
 			for (int y = 0; y < mapHeight; y++) {
 				WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
+				WorldArea areaBellow = ServiceManager.getWorldMap().getArea(x, y-1);
+				WorldArea areaRight = ServiceManager.getWorldMap().getArea(x+1, y);
+				WorldArea areaLeft = ServiceManager.getWorldMap().getArea(x-1, y);
 				StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
 				StructureItem structureBellow = ServiceManager.getWorldMap().getStructure(x, y+1);
+				StructureItem structureTop = ServiceManager.getWorldMap().getStructure(x, y-1);
+				StructureItem structureRight = ServiceManager.getWorldMap().getStructure(x+1, y);
+				StructureItem structureLeft = ServiceManager.getWorldMap().getStructure(x-1, y);
 
 				if (structure != null && structure.isFloor() && structureBellow != null && structureBellow.isFloor() == false) {
 					shape = halfShape;
@@ -177,9 +211,64 @@ public class LightRenderer implements IRenderer {
 					shape = fullShape;
 				}
 
-				shape.setFillColor(new Color(0, 0, 0, 200 - (int)(area.getLight() * 255)));
-				shape.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE);
-				_cache.draw(shape);
+				// Vertical wall
+				if (structure != null && structure.isWall() && structureBellow != null && structureBellow.isWall()) {
+//					_sprite2.setPosition(x * Constant.TILE_SIZE + 16, y * Constant.TILE_SIZE - 16);
+//					_sprite2.setColor(new Color(255, 255, 255, 200 - (int)(areaRight.getLight() * 255)));
+//					_cache.draw(_sprite2);
+//
+//					_sprite.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE - 16);
+//					_sprite.setColor(new Color(255, 255, 255, 200 - (int)(areaLeft.getLight() * 255)));
+//					_cache.draw(_sprite);
+					// Right
+					//if (structure != null && structure.isWall() && (structureRight == null || structureRight.isFloor())) {
+						sideShape.setPosition(x * Constant.TILE_SIZE + 16, y * Constant.TILE_SIZE - 0);
+						sideShape.setFillColor(new Color(0, 0, 0, 200 - (int)(areaRight.getLight() * 255)));
+						_cache.draw(sideShape);
+						
+						if (structureTop == null || structureTop.isWall() == false) {
+							smallShape.setPosition(x * Constant.TILE_SIZE + 16, y * Constant.TILE_SIZE - 16);
+							smallShape.setFillColor(new Color(0, 0, 0, 200 - (int)(areaRight.getLight() * 255)));
+							_cache.draw(smallShape);
+						}
+					//}
+					// Left
+					//if (structure != null && structure.isWall() && (structureLeft == null || structureLeft.isFloor())) {
+						sideShape.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE - 0);
+						sideShape.setFillColor(new Color(0, 0, 0, 200 - (int)(areaLeft.getLight() * 255)));
+						_cache.draw(sideShape);
+
+						if (structureTop == null || structureTop.isWall() == false) {
+							smallShape.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE - 16);
+							smallShape.setFillColor(new Color(0, 0, 0, 200 - (int)(areaLeft.getLight() * 255)));
+							_cache.draw(smallShape);
+						}
+//}
+				}
+				
+				// Horizontal wall
+				else if (structure != null && structure.isWall()) {
+					if (areaBellow != null) {
+						shape.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE);
+						shape.setFillColor(new Color(0, 0, 0, 200 - (int)(area.getLight() * 255)));
+						_cache.draw(shape);
+						
+						if (structureTop == null || structureTop.isWall() == false) {
+							halfShape.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE - 16);
+							halfShape.setFillColor(new Color(0, 0, 0, 200 - (int)(area.getLight() * 255)));
+							_cache.draw(halfShape);
+						}
+					}
+				}
+				
+				else {
+					if (structureBellow != null && structureBellow.isWall()) {
+						shape = halfShape;
+					}
+					shape.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE);
+					shape.setFillColor(new Color(0, 0, 0, 200 - (int)(area.getLight() * 255)));
+					_cache.draw(shape);
+				}
 			}
 		}
 	}
