@@ -60,7 +60,7 @@ public class WorldRenderer implements IRenderer {
 		_hasChanged = true;
 	}
 
-	public void onDraw(RenderWindow app, RenderStates render, int frame) {
+	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
 
 		int fromX = Math.max(_ui.getRelativePosXMin(0)-1, 0);
 		int fromY = Math.max(_ui.getRelativePosYMin(0)-1, 0);

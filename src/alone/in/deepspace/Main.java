@@ -155,7 +155,7 @@ public class Main {
 			if (nextRefresh <= 0) {
 				//_renderTime = (int) (elapsed.asMilliseconds() - _last_refresh.asMilliseconds());
 				last_refresh = elapsed;
-				int animProgress = (int)(1 - (double)nextUpdate / _updateInterval);
+				double animProgress = (1 - (double)nextUpdate / _updateInterval);
 				game.onDraw(animProgress, renderTime);
 				if (menu != null) {
 					menu.refresh(window);

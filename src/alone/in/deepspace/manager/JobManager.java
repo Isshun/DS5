@@ -536,7 +536,8 @@ public class JobManager implements ISavable {
 	}
 
 	public void addRoutineItem(BaseItem item) {
-		_routineItems.add(item);
+		// TODO
+		//_routineItems.add(item);
 	}
 
 	public Job createGatherJob(int x, int y) {
@@ -597,6 +598,15 @@ public class JobManager implements ISavable {
 	public Job createStoreJob() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Job createMovingJob(int x, int y) {
+		Job job = new Job(++_id, x, y);
+		job.setAction(JobManager.Action.MOVE);
+		
+		addJob(job);
+		
+		return job;
 	}
 
 }

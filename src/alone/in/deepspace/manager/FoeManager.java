@@ -113,63 +113,64 @@ public class FoeManager {
 //	}
 	
 	public void	onDraw(RenderWindow app, RenderStates render, double animProgress) throws IOException {
-
-		for (Foe c: _foes) {
-			int posX = c.getX() * Constant.TILE_WIDTH - (Constant.CHAR_WIDTH - Constant.TILE_WIDTH) + 2;
-			int posY = c.getY() * Constant.TILE_HEIGHT - (Constant.CHAR_HEIGHT - Constant.TILE_HEIGHT) + 0;
-			Character.Direction direction = c.getDirection();
-
-			// TODO: ugly
-			int offset = 0;
-
-			if (direction == Character.Direction.DIRECTION_TOP ||
-					direction == Character.Direction.DIRECTION_BOTTOM ||
-					direction == Character.Direction.DIRECTION_RIGHT ||
-					direction == Character.Direction.DIRECTION_LEFT)
-				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
-
-			if (direction == Character.Direction.DIRECTION_TOP_RIGHT ||
-					direction == Character.Direction.DIRECTION_TOP_LEFT  ||
-					direction == Character.Direction.DIRECTION_BOTTOM_RIGHT ||
-					direction == Character.Direction.DIRECTION_BOTTOM_LEFT)
-				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
-
-			int dirIndex = 0;
-			if (direction == Character.Direction.DIRECTION_BOTTOM) { posY -= offset; dirIndex = 0; }
-			if (direction == Character.Direction.DIRECTION_TOP) { posY += offset; dirIndex = 3; }
-			if (direction == Character.Direction.DIRECTION_RIGHT) { posX -= offset; dirIndex = 2; }
-			if (direction == Character.Direction.DIRECTION_LEFT) { posX += offset; dirIndex = 1; }
-			if (direction == Character.Direction.DIRECTION_BOTTOM_RIGHT) { posY -= offset; posX -= offset; dirIndex = 2; }
-			if (direction == Character.Direction.DIRECTION_BOTTOM_LEFT) { posY -= offset; posX += offset; dirIndex = 1; }
-			if (direction == Character.Direction.DIRECTION_TOP_RIGHT) { posY += offset; posX -= offset; dirIndex = 2; }
-			if (direction == Character.Direction.DIRECTION_TOP_LEFT) { posY += offset; posX += offset; dirIndex = 1; }
-		
-			if (direction == Character.Direction.DIRECTION_TOP_RIGHT)
-				direction = Character.Direction.DIRECTION_RIGHT;
-			if (direction == Character.Direction.DIRECTION_TOP_LEFT)
-				direction = Character.Direction.DIRECTION_LEFT;
-			if (direction == Character.Direction.DIRECTION_BOTTOM_RIGHT)
-				direction = Character.Direction.DIRECTION_RIGHT;
-			if (direction == Character.Direction.DIRECTION_BOTTOM_LEFT)
-				direction = Character.Direction.DIRECTION_LEFT;
-
-			// end ugly
-
-			int frame = c.getFrameIndex() / 20 % 4;
-			
-			Sprite sprite = SpriteManager.getInstance().getFoe(null, dirIndex, frame);
-			
-			sprite.setPosition(posX, posY);
-//			if (c.getNeeds().isSleeping()) {
-//			  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-//		 	} else if (direction == Character.Direction.DIRECTION_NONE) {
-//			  sprite.setTextureRect(new IntRect(0, 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-//			} else {
-//			  sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * frame, Constant.CHAR_HEIGHT * dirIndex, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-//			}
-			
-			app.draw(sprite, render);
-		}
+		// TODO
+//
+//		for (Foe c: _foes) {
+//			int posX = c.getX() * Constant.TILE_WIDTH - (Constant.CHAR_WIDTH - Constant.TILE_WIDTH) + 2;
+//			int posY = c.getY() * Constant.TILE_HEIGHT - (Constant.CHAR_HEIGHT - Constant.TILE_HEIGHT) + 0;
+//			Character.Direction direction = c.getDirection();
+//
+//			// TODO: ugly
+//			int offset = 0;
+//
+//			if (direction == Character.Direction.DIRECTION_TOP ||
+//					direction == Character.Direction.DIRECTION_BOTTOM ||
+//					direction == Character.Direction.DIRECTION_RIGHT ||
+//					direction == Character.Direction.DIRECTION_LEFT)
+//				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
+//
+//			if (direction == Character.Direction.DIRECTION_TOP_RIGHT ||
+//					direction == Character.Direction.DIRECTION_TOP_LEFT  ||
+//					direction == Character.Direction.DIRECTION_BOTTOM_RIGHT ||
+//					direction == Character.Direction.DIRECTION_BOTTOM_LEFT)
+//				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
+//
+//			int dirIndex = 0;
+//			if (direction == Character.Direction.DIRECTION_BOTTOM) { posY -= offset; dirIndex = 0; }
+//			if (direction == Character.Direction.DIRECTION_TOP) { posY += offset; dirIndex = 3; }
+//			if (direction == Character.Direction.DIRECTION_RIGHT) { posX -= offset; dirIndex = 2; }
+//			if (direction == Character.Direction.DIRECTION_LEFT) { posX += offset; dirIndex = 1; }
+//			if (direction == Character.Direction.DIRECTION_BOTTOM_RIGHT) { posY -= offset; posX -= offset; dirIndex = 2; }
+//			if (direction == Character.Direction.DIRECTION_BOTTOM_LEFT) { posY -= offset; posX += offset; dirIndex = 1; }
+//			if (direction == Character.Direction.DIRECTION_TOP_RIGHT) { posY += offset; posX -= offset; dirIndex = 2; }
+//			if (direction == Character.Direction.DIRECTION_TOP_LEFT) { posY += offset; posX += offset; dirIndex = 1; }
+//		
+//			if (direction == Character.Direction.DIRECTION_TOP_RIGHT)
+//				direction = Character.Direction.DIRECTION_RIGHT;
+//			if (direction == Character.Direction.DIRECTION_TOP_LEFT)
+//				direction = Character.Direction.DIRECTION_LEFT;
+//			if (direction == Character.Direction.DIRECTION_BOTTOM_RIGHT)
+//				direction = Character.Direction.DIRECTION_RIGHT;
+//			if (direction == Character.Direction.DIRECTION_BOTTOM_LEFT)
+//				direction = Character.Direction.DIRECTION_LEFT;
+//
+//			// end ugly
+//
+//			int frame = c.getFrameIndex() / 20 % 4;
+//			
+//			Sprite sprite = SpriteManager.getInstance().getFoe(null, dirIndex, frame);
+//			
+//			sprite.setPosition(posX, posY);
+////			if (c.getNeeds().isSleeping()) {
+////			  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+////		 	} else if (direction == Character.Direction.DIRECTION_NONE) {
+////			  sprite.setTextureRect(new IntRect(0, 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+////			} else {
+////			  sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * frame, Constant.CHAR_HEIGHT * dirIndex, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+////			}
+//			
+//			app.draw(sprite, render);
+//		}
 	}
 	
 	public static FoeManager getInstance() {

@@ -1,6 +1,7 @@
 package alone.in.deepspace.model;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
@@ -707,6 +708,10 @@ public class Character extends Movable {
 
 	public List<BaseItem> getCarried() {
 		return _carry;
+	}
+
+	public Vector<Position> getPath() {
+		return _path;
 	}
 
 }

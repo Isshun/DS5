@@ -1,4 +1,5 @@
 package alone.in.deepspace.manager;
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -7,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
@@ -21,6 +23,7 @@ import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Job;
+import alone.in.deepspace.model.Position;
 import alone.in.deepspace.model.Profession;
 
 
@@ -38,54 +41,57 @@ public class CharacterManager implements ISavable {
 	private int 					_count;
 	private Sprite 					_selection;
 
-	public CharacterManager() throws IOException {
-	  Log.debug("CharacterManager");
-	  
-	  // Selection
-	  Texture texture = new Texture();
-	  texture.loadFromFile((new File("res/cursor.png").toPath()));
-	  _selection = new Sprite();
-	  _selection.setTexture(texture);
-	  _selection.setTextureRect(new IntRect(0, 32, 32, Constant.CHAR_HEIGHT));
-	  
-	  _characters = new ArrayList<Character>();
-	  _count = 0;
+	private HashMap<Integer, Integer> _points;
+	private int _lastY;
 
-	  Log.debug("CharacterManager done");
+	public CharacterManager() throws IOException {
+		Log.debug("CharacterManager");
+
+		// Selection
+		Texture texture = new Texture();
+		texture.loadFromFile((new File("res/cursor.png").toPath()));
+		_selection = new Sprite();
+		_selection.setTexture(texture);
+		_selection.setTextureRect(new IntRect(0, 32, 32, Constant.CHAR_HEIGHT));
+
+		_characters = new ArrayList<Character>();
+		_count = 0;
+
+		Log.debug("CharacterManager done");
 	}
 
 
 	public void	assignJobs() {
 
 		//if (JobManager.getInstance().getCountFree() > 0) {
-			for (Character c: _characters) {
-				if (c.isSleeping() == false && c.getJob() == null) {
-					Job job = JobManager.getInstance().getJob(c);
+		for (Character c: _characters) {
+			if (c.isSleeping() == false && c.getJob() == null) {
+				Job job = JobManager.getInstance().getJob(c);
+				if (job != null) {
+					Log.debug("assignJobs to " + c.getName());
+					job.setCharacter(c);
+					c.setJob(job);
+				}
+				else {
+					job = JobManager.getInstance().createRoutineJob(c);
 					if (job != null) {
 						Log.debug("assignJobs to " + c.getName());
 						job.setCharacter(c);
+						job.getItem().setOwner(c);
 						c.setJob(job);
-					}
-					else {
-						job = JobManager.getInstance().createRoutineJob(c);
-						if (job != null) {
-							Log.debug("assignJobs to " + c.getName());
-							job.setCharacter(c);
-							job.getItem().setOwner(c);
-							c.setJob(job);
-						}
 					}
 				}
 			}
+		}
 		//}
 	}
 
 	public void	create() {
-	  add(0, 0, Profession.Type.ENGINEER);
-	  add(1, 0, Profession.Type.OPERATION);
-	  add(2, 0, Profession.Type.DOCTOR);
-	  add(3, 0, Profession.Type.SCIENCE);
-	  add(4, 0, Profession.Type.SECURITY);
+		add(0, 0, Profession.Type.ENGINEER);
+		add(1, 0, Profession.Type.OPERATION);
+		add(2, 0, Profession.Type.DOCTOR);
+		add(3, 0, Profession.Type.SCIENCE);
+		add(4, 0, Profession.Type.SECURITY);
 	}
 
 	public void	load(final String filePath) {
@@ -103,7 +109,7 @@ public class CharacterManager implements ISavable {
 				if ("BEGIN CHARACTERS".equals(line)) {
 					inBlock = true;
 				}
-				
+
 				// End block
 				else if ("END CHARACTERS".equals(line)) {
 					inBlock = false;
@@ -121,24 +127,24 @@ public class CharacterManager implements ISavable {
 						_characters.add(c);
 					}
 				}
-				
+
 			}
 		}
-		 catch (FileNotFoundException e) {
-			 Log.error("Unable to open save file: " + filePath);
-			 e.printStackTrace();
+		catch (FileNotFoundException e) {
+			Log.error("Unable to open save file: " + filePath);
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	private static Profession.Type getProfessionType(int index) {
-		  if (index == 1) {return Profession.Type.ENGINEER; }
-		  if (index == 2) {return Profession.Type.OPERATION; }
-		  if (index == 3) {return Profession.Type.DOCTOR; }
-		  if (index == 4) {return Profession.Type.SCIENCE; }
-		  if (index == 5) {return Profession.Type.SECURITY; }
-		  return Profession.Type.NONE;
+		if (index == 1) {return Profession.Type.ENGINEER; }
+		if (index == 2) {return Profession.Type.OPERATION; }
+		if (index == 3) {return Profession.Type.DOCTOR; }
+		if (index == 4) {return Profession.Type.SCIENCE; }
+		if (index == 5) {return Profession.Type.SECURITY; }
+		return Profession.Type.NONE;
 	}
 
 
@@ -163,254 +169,351 @@ public class CharacterManager implements ISavable {
 
 	// TODO
 	public Character	getNext(Character character) {
-	  for (Character c: _characters) {
-		if (c == character) {
-		  return c;
+		for (Character c: _characters) {
+			if (c == character) {
+				return c;
+			}
 		}
-	  }
 
-	  return null;
+		return null;
 	}
 
 	// TODO: heavy
 	public int			getCount(Profession.Type professionId) {
-	  int count = 0;
+		int count = 0;
 
-	  for (Character c: _characters) {
-		if (c.getProfession().getType() == professionId) {
-		  count++;
+		for (Character c: _characters) {
+			if (c.getProfession().getType() == professionId) {
+				count++;
+			}
 		}
-	  }
 
-	  return count;
+		return count;
 	}
 
 	public Profession[]	getProfessions() {
-	  return professions;
+		return professions;
 	}
 
 	public void    update(int count) {
-	  for (Character c: _characters) {
-		c.action();
-	    c.update();
-		c.move();
+		for (Character c: _characters) {
+			c.action();
+			c.update();
+			c.move();
+			
+			if (c.getJob() == null) {
+				if (c.getPosX() == 10 && c.getPosY() == 10) {
+					Job job = JobManager.getInstance().createMovingJob(20, 14);
+					c.setJob(job);
+				} else {
+					Job job = JobManager.getInstance().createMovingJob(10, 10);
+					c.setJob(job);
+				}
+				compute(null, null, 10, 10, 20, 14);
+			}
 
-		if (count % 10 == 0) {
-		  c.updateNeeds(count);
+			if (count % 10 == 0) {
+				c.updateNeeds(count);
+			}
 		}
-	  }
 	}
+
+	private void compute(RenderWindow app, RenderStates render, int fromX, int fromY, int toX, int toY) {
+		int offsetX = (int)((toX - fromX));
+		int offsetY = (int)((toY - fromY));
+		
+		double x = offsetX / 2 + fromX + offsetY;
+		double y = offsetY / 2 + fromY - offsetX;
+
+		double x2 = offsetX / 2 + fromX - offsetY;
+		double y2 = offsetY / 2 + fromY + offsetX;
+		
+		System.out.println("-------------------");
+		System.out.println("from: " + fromX + " x " + fromY);
+		System.out.println("to: " + toX + " x " + toY);
+		System.out.println("offset: " + offsetX + " x " + offsetY);
+		System.out.println("point: " + x + " x " + y);
+
+//		Sprite sprite = null;
+//		
+//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.chair"));
+//		sprite.setPosition((int)(fromX * 32), (int)(fromY * 32));
+//		app.draw(sprite, render);
+//		
+//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.chair"));
+//		sprite.setPosition((int)(toX * 32), (int)(toY * 32));
+//		app.draw(sprite, render);
+//
+//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//		sprite.setPosition((int)(x * 32), (int)(y * 32));
+//		app.draw(sprite, render);
+//		
+//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//		sprite.setPosition((int)(x2 * 32), (int)(y2 * 32));
+//		app.draw(sprite, render);
+
+		double r = Math.sqrt(Math.pow(Math.abs(x - fromX), 2) + Math.pow(Math.abs(y - fromY), 2));
+
+		{
+			double radOffsetX = (x - fromX)/r;
+			double radOffsetY = (y - fromY)/r;
+			double rad1 = Math.acos(radOffsetX);
+			double rad2 = Math.asin(radOffsetY);
+			
+//			sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//			sprite.setPosition((int)(x+radOffsetX*r)*32, (int)((y+radOffsetY*r)*32));
+//			app.draw(sprite, render);
+			
+			System.out.println("r: " + r);
+			System.out.println("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
+			System.out.println("rad: " + radOffsetX + " x " + radOffsetY + " = " + rad1 + " x " + rad2 + " -> " + (rad1 - rad2));
+		}
+		
+		{
+			double radOffsetX = (x - toX)/r;
+			double radOffsetY = (y - toY)/r;
+			double rad1 = Math.acos(radOffsetX);
+			double rad2 = Math.asin(radOffsetY);
+			
+//			sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//			sprite.setPosition((int)(x+radOffsetX*r)*32, (int)((y+radOffsetY*r)*32));
+//			app.draw(sprite, render);
+
+			System.out.println("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
+			System.out.println("rad: " + radOffsetX + " x " + radOffsetY + " = " + rad1 + " x " + rad2 + " -> " + (rad1 - rad2));
+		}
+		
+		
+		if (_points == null) {
+			_points = new HashMap<Integer, Integer>();
+			double from = Math.min(Math.PI-0.72, Math.PI-1.65);
+			double to = Math.max(Math.PI-0.72, Math.PI-1.65);
+			for (double i = from; i < to; i += 0.001) {
+//				sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//				sprite.setPosition((int)(x*32 + Math.cos(i)*r*32), (int)(y*32 + Math.sin(i)*r*32));
+//				app.draw(sprite, render);
+				
+				//_points.add(new Position((float)(x*32 + Math.cos(i)*r*32), (float)(y*32 + Math.sin(i)*r*32)));
+				_points.put((int)(x*32 + Math.cos(i)*r*32), (int)(y*32 + Math.sin(i)*r*32));
+			}
+		}
+
+		//System.exit(0);
+	}
+
 
 	// TODO: heavy
 	public Character        getCharacterAtPos(int x, int y) {
-	  Log.debug("getCharacterAtPos: " + x + "x" + y);
+		Log.debug("getCharacterAtPos: " + x + "x" + y);
 
-	  for (Character c: _characters) {
-		if (c.getX() == x && c.getY() == y) {
-	      Log.debug("getCharacterAtPos: found");
-	      return c;
-	    }
-	  }
+		for (Character c: _characters) {
+			if (c.getX() == x && c.getY() == y) {
+				Log.debug("getCharacterAtPos: found");
+				return c;
+			}
+		}
 
-	  return null;
+		return null;
 	}
-//
-//	Character		assignJob(Job job) {
-//	  if (job == null) {
-//		Log.error(" try to assign null job");
-//		return null;
-//	  }
-//
-//	  Character bestCharacter = null;
-//
-//	  JobManager.Action jobAction = job.getAction();
-//
-//	  for (Character c: _characters) {
-//		if (c.getJob() == null) {
-//
-//		  if (bestCharacter == null) {
-//			bestCharacter = c;
-//		  }
-//
-//		  // build action . only engineer
-//		  if (jobAction == JobManager.Action.BUILD && c.getProfession().getType() == Profession.Type.ENGINEER) {
-//			if (bestCharacter == null || c.getProfessionScore(Profession.Type.ENGINEER) > bestCharacter.getProfessionScore(Profession.Type.ENGINEER)) {
-//			  bestCharacter = c;
-//			}
-//		  }
-//		}
-//	  }
-//
-//	  if (bestCharacter != null) {
-//
-//		// TODO: remove if invalid
-//
-//		// Action build
-//		if (job.getAction() == JobManager.Action.BUILD) {
-//		  BaseItem jobItem = job.getItem();
-//		  BaseItem item = ServiceManager.getWorldMap().getItem(job.getX(), job.getY());
-//		  WorldArea area = ServiceManager.getWorldMap().getArea(job.getX(), job.getY());
-//		  if (item != null && item.isComplete() && area != null && area.isComplete()) {
-//			Log.error("CharacterManager: Job ACTION_BUILD on complete item");
-//			return null;
-//		  }
-//		  if (jobItem == null && item != null) {
-//			jobItem = item;
-//		  }
-//		  if (jobItem == null && area != null) {
-//			jobItem = area;
-//		  }
-//		  if (jobItem == null) {
-//			jobItem = ServiceManager.getWorldMap().putItem(job.getItemType(), job.getX(), job.getY());
-//		  }
-//		}
-//
-//		// Action gather
-//		else if (job.getAction() == JobManager.Action.GATHER) {
-//		  BaseItem jobItem = job.getItem();
-//		  if (jobItem == null) {
-//			Log.error("CharacterManager: Job ACTION_GATHER on missing item");
-//			return null;
-//		  }
-//		}
-//
-//		Log.info("assign " + job.getId() + " to " + bestCharacter);
-//	  	job.setCharacter(bestCharacter);
-//		bestCharacter.setJob(job);
-//	  }
-//
-//	  return bestCharacter;
-//	}
+	//
+	//	Character		assignJob(Job job) {
+	//	  if (job == null) {
+	//		Log.error(" try to assign null job");
+	//		return null;
+	//	  }
+	//
+	//	  Character bestCharacter = null;
+	//
+	//	  JobManager.Action jobAction = job.getAction();
+	//
+	//	  for (Character c: _characters) {
+	//		if (c.getJob() == null) {
+	//
+	//		  if (bestCharacter == null) {
+	//			bestCharacter = c;
+	//		  }
+	//
+	//		  // build action . only engineer
+	//		  if (jobAction == JobManager.Action.BUILD && c.getProfession().getType() == Profession.Type.ENGINEER) {
+	//			if (bestCharacter == null || c.getProfessionScore(Profession.Type.ENGINEER) > bestCharacter.getProfessionScore(Profession.Type.ENGINEER)) {
+	//			  bestCharacter = c;
+	//			}
+	//		  }
+	//		}
+	//	  }
+	//
+	//	  if (bestCharacter != null) {
+	//
+	//		// TODO: remove if invalid
+	//
+	//		// Action build
+	//		if (job.getAction() == JobManager.Action.BUILD) {
+	//		  BaseItem jobItem = job.getItem();
+	//		  BaseItem item = ServiceManager.getWorldMap().getItem(job.getX(), job.getY());
+	//		  WorldArea area = ServiceManager.getWorldMap().getArea(job.getX(), job.getY());
+	//		  if (item != null && item.isComplete() && area != null && area.isComplete()) {
+	//			Log.error("CharacterManager: Job ACTION_BUILD on complete item");
+	//			return null;
+	//		  }
+	//		  if (jobItem == null && item != null) {
+	//			jobItem = item;
+	//		  }
+	//		  if (jobItem == null && area != null) {
+	//			jobItem = area;
+	//		  }
+	//		  if (jobItem == null) {
+	//			jobItem = ServiceManager.getWorldMap().putItem(job.getItemType(), job.getX(), job.getY());
+	//		  }
+	//		}
+	//
+	//		// Action gather
+	//		else if (job.getAction() == JobManager.Action.GATHER) {
+	//		  BaseItem jobItem = job.getItem();
+	//		  if (jobItem == null) {
+	//			Log.error("CharacterManager: Job ACTION_GATHER on missing item");
+	//			return null;
+	//		  }
+	//		}
+	//
+	//		Log.info("assign " + job.getId() + " to " + bestCharacter);
+	//	  	job.setCharacter(bestCharacter);
+	//		bestCharacter.setJob(job);
+	//	  }
+	//
+	//	  return bestCharacter;
+	//	}
 
 	public Character		add(int x, int y) {
-	  if (_count + 1 > Constant.LIMIT_CHARACTER) {
-		Log.error("LIMIT_CHARACTER reached");
-		return null;
-	  }
+		if (_count + 1 > Constant.LIMIT_CHARACTER) {
+			Log.error("LIMIT_CHARACTER reached");
+			return null;
+		}
 
-	  Character c = new Character(_count++, x, y, null);
-	  Profession profession = professions[_count % professions.length];
-	  c.setProfession(profession.getType());
-	  _characters.add(c);
+		Character c = new Character(_count++, x, y, null);
+		Profession profession = professions[_count % professions.length];
+		c.setProfession(profession.getType());
+		_characters.add(c);
 
-	  return c;
+		return c;
 	}
 
 	public Character		add(int x, int y, Profession.Type profession) {
-	  if (_count + 1 > Constant.LIMIT_CHARACTER) {
-		Log.error("LIMIT_CHARACTER reached");
-		return null;
-	  }
+		if (_count + 1 > Constant.LIMIT_CHARACTER) {
+			Log.error("LIMIT_CHARACTER reached");
+			return null;
+		}
 
-	  Character c = new Character(_count++, x, y, null);
-	  c.setProfession(profession);
-	  _characters.add(c);
+		Character c = new Character(_count++, x, y, null);
+		c.setProfession(profession);
+		_characters.add(c);
 
-	  return c;
+		return c;
 	}
 
 	Character		getUnemployed(Profession.Type professionId) {
-	  for (Character c: _characters) {
-		if (c.getProfession().getType() == professionId && c.getJob() == null) {
-		  return c;
+		for (Character c: _characters) {
+			if (c.getProfession().getType() == professionId && c.getJob() == null) {
+				return c;
+			}
 		}
-	  }
 
-	  return null;
+		return null;
 	}
 
 	public void	onDraw(RenderWindow app, RenderStates render, double animProgress) throws IOException {
+		for (Character c: _characters) {
+			int posX = c.getX() * Constant.TILE_WIDTH - (Constant.CHAR_WIDTH - Constant.TILE_WIDTH) + 2;
+			int posY = c.getY() * Constant.TILE_HEIGHT - (Constant.CHAR_HEIGHT - Constant.TILE_HEIGHT) + 0;
+			Character.Direction direction = c.getDirection();
 
-	  for (Character c: _characters) {
-		int posX = c.getX() * Constant.TILE_WIDTH - (Constant.CHAR_WIDTH - Constant.TILE_WIDTH) + 2;
-		int posY = c.getY() * Constant.TILE_HEIGHT - (Constant.CHAR_HEIGHT - Constant.TILE_HEIGHT) + 0;
-		Character.Direction direction = c.getDirection();
+			// TODO: ugly
+			int offset = 0;
 
-		// TODO: ugly
-		int offset = 0;
+			if (direction == Character.Direction.DIRECTION_TOP ||
+					direction == Character.Direction.DIRECTION_BOTTOM ||
+					direction == Character.Direction.DIRECTION_RIGHT ||
+					direction == Character.Direction.DIRECTION_LEFT)
+				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
 
-		if (direction == Character.Direction.DIRECTION_TOP ||
-			direction == Character.Direction.DIRECTION_BOTTOM ||
-			direction == Character.Direction.DIRECTION_RIGHT ||
-			direction == Character.Direction.DIRECTION_LEFT)
-		  offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
+			if (direction == Character.Direction.DIRECTION_TOP_RIGHT ||
+					direction == Character.Direction.DIRECTION_TOP_LEFT  ||
+					direction == Character.Direction.DIRECTION_BOTTOM_RIGHT ||
+					direction == Character.Direction.DIRECTION_BOTTOM_LEFT)
+				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
 
-		if (direction == Character.Direction.DIRECTION_TOP_RIGHT ||
-			direction == Character.Direction.DIRECTION_TOP_LEFT  ||
-			direction == Character.Direction.DIRECTION_BOTTOM_RIGHT ||
-			direction == Character.Direction.DIRECTION_BOTTOM_LEFT)
-		  offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
+			int dirIndex = 0;
+			if (direction == Character.Direction.DIRECTION_BOTTOM) { posY -= offset; dirIndex = 0; }
+			if (direction == Character.Direction.DIRECTION_TOP) { posY += offset; dirIndex = 3; }
+			if (direction == Character.Direction.DIRECTION_RIGHT) { posX -= offset; dirIndex = 2; }
+			if (direction == Character.Direction.DIRECTION_LEFT) { posX += offset; dirIndex = 1; }
+			if (direction == Character.Direction.DIRECTION_BOTTOM_RIGHT) { posY -= offset; posX -= offset; dirIndex = 2; }
+			if (direction == Character.Direction.DIRECTION_BOTTOM_LEFT) { posY -= offset; posX += offset; dirIndex = 1; }
+			if (direction == Character.Direction.DIRECTION_TOP_RIGHT) { posY += offset; posX -= offset; dirIndex = 2; }
+			if (direction == Character.Direction.DIRECTION_TOP_LEFT) { posY += offset; posX += offset; dirIndex = 1; }
 
-		int dirIndex = 0;
-		if (direction == Character.Direction.DIRECTION_BOTTOM) { posY -= offset; dirIndex = 0; }
-		if (direction == Character.Direction.DIRECTION_TOP) { posY += offset; dirIndex = 3; }
-		if (direction == Character.Direction.DIRECTION_RIGHT) { posX -= offset; dirIndex = 2; }
-		if (direction == Character.Direction.DIRECTION_LEFT) { posX += offset; dirIndex = 1; }
-		if (direction == Character.Direction.DIRECTION_BOTTOM_RIGHT) { posY -= offset; posX -= offset; dirIndex = 2; }
-		if (direction == Character.Direction.DIRECTION_BOTTOM_LEFT) { posY -= offset; posX += offset; dirIndex = 1; }
-		if (direction == Character.Direction.DIRECTION_TOP_RIGHT) { posY += offset; posX -= offset; dirIndex = 2; }
-		if (direction == Character.Direction.DIRECTION_TOP_LEFT) { posY += offset; posX += offset; dirIndex = 1; }
-	
-		if (direction == Character.Direction.DIRECTION_TOP_RIGHT)
-		  direction = Character.Direction.DIRECTION_RIGHT;
-		if (direction == Character.Direction.DIRECTION_TOP_LEFT)
-		  direction = Character.Direction.DIRECTION_LEFT;
-		if (direction == Character.Direction.DIRECTION_BOTTOM_RIGHT)
-		  direction = Character.Direction.DIRECTION_RIGHT;
-		if (direction == Character.Direction.DIRECTION_BOTTOM_LEFT)
-		  direction = Character.Direction.DIRECTION_LEFT;
+			if (direction == Character.Direction.DIRECTION_TOP_RIGHT)
+				direction = Character.Direction.DIRECTION_RIGHT;
+			if (direction == Character.Direction.DIRECTION_TOP_LEFT)
+				direction = Character.Direction.DIRECTION_LEFT;
+			if (direction == Character.Direction.DIRECTION_BOTTOM_RIGHT)
+				direction = Character.Direction.DIRECTION_RIGHT;
+			if (direction == Character.Direction.DIRECTION_BOTTOM_LEFT)
+				direction = Character.Direction.DIRECTION_LEFT;
 
-		// end ugly
+			// end ugly
 
-		int frame = c.getFrameIndex() / 20 % 4;
+			int frame = c.getFrameIndex() / 20 % 4;
 
-		Profession profession = c.getProfession();
-		
-		Sprite sprite = SpriteManager.getInstance().getCharacter(profession, dirIndex, frame);
-		
-		sprite.setPosition(posX, posY);
-//		if (c.getNeeds().isSleeping()) {
-//		  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-//	 	} else if (direction == Character.Direction.DIRECTION_NONE) {
-//		  sprite.setTextureRect(new IntRect(0, 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-//		} else {
-//		  sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * frame, Constant.CHAR_HEIGHT * dirIndex, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-//		}
-		
-		app.draw(sprite, render);
+			Profession profession = c.getProfession();
 
-		// Selection
-		if (c.getSelected()) {
-		  _selection.setPosition(posX, posY);
-		  app.draw(_selection, render);
+			Sprite sprite = SpriteManager.getInstance().getCharacter(profession, dirIndex, frame);
+
+			if (_points != null && _points.get(posX) != null) {
+				_lastY = _points.get(posX);
+			}
+			sprite.setPosition(posX, _lastY);
+			//		if (c.getNeeds().isSleeping()) {
+			//		  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+			//	 	} else if (direction == Character.Direction.DIRECTION_NONE) {
+			//		  sprite.setTextureRect(new IntRect(0, 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+			//		} else {
+			//		  sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * frame, Constant.CHAR_HEIGHT * dirIndex, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+			//		}
+
+			app.draw(sprite, render);
+						
+			// Selection
+			if (c.getSelected()) {
+				_selection.setPosition(posX, posY);
+				app.draw(_selection, render);
+			}
 		}
-	  }
 	}
 
-//	public Sprite	getSprite(Sprite sprite, Profession.Type functionId, int index) {
-//
-//	  if (functionId == Profession.Type.SECURITY) {
-//		sprite.setTexture(_textures[1]);
-//	  } else {
-//		sprite.setTexture(_textures[0]);
-//	  }
-//
-//	  for (Character c: _characters) {
-//		int posX = c.getX() * Constant.TILE_SIZE - (Constant.CHAR_WIDTH - Constant.TILE_SIZE);
-//		int posY = c.getY() * Constant.TILE_SIZE - (Constant.CHAR_HEIGHT - Constant.TILE_SIZE + Constant.TILE_SIZE / 2);
-//
-//		// Sprite
-//		sprite.setPosition(posX, posY);
-//		if (c.getNeeds().isSleeping()) {
-//		  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-//		} else {
-//		  sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * (index % 4), 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-//		}
-//
-//	  }
-//
-//	  return sprite;
-//	}
+	//	public Sprite	getSprite(Sprite sprite, Profession.Type functionId, int index) {
+	//
+	//	  if (functionId == Profession.Type.SECURITY) {
+	//		sprite.setTexture(_textures[1]);
+	//	  } else {
+	//		sprite.setTexture(_textures[0]);
+	//	  }
+	//
+	//	  for (Character c: _characters) {
+	//		int posX = c.getX() * Constant.TILE_SIZE - (Constant.CHAR_WIDTH - Constant.TILE_SIZE);
+	//		int posY = c.getY() * Constant.TILE_SIZE - (Constant.CHAR_HEIGHT - Constant.TILE_SIZE + Constant.TILE_SIZE / 2);
+	//
+	//		// Sprite
+	//		sprite.setPosition(posX, posY);
+	//		if (c.getNeeds().isSleeping()) {
+	//		  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+	//		} else {
+	//		  sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * (index % 4), 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
+	//		}
+	//
+	//	  }
+	//
+	//	  return sprite;
+	//	}
 
 
 	public List<Character> getList() {

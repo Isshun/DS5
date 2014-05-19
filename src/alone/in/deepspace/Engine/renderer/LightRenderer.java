@@ -55,7 +55,7 @@ public class LightRenderer implements IRenderer {
 		}
 	}
 
-	public void onDraw(RenderWindow app, RenderStates render, int frame) {
+	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
 		if (_cache != null) {
 			try {
 				Shader blur = new Shader();

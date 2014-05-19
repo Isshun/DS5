@@ -23,7 +23,7 @@ public class DebugRenderer implements IRenderer {
 	}
 
 
-	public void onDraw(RenderWindow app, RenderStates render, int frame) {
+	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
 		
 //		Color color = new Color(0, 0, 0);
 //		_shapeDebug.setSize(ObjectPool.getVector2f(Constant.TILE_SIZE, Constant.TILE_SIZE));

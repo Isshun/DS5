@@ -330,7 +330,7 @@ public class Game implements ISavable {
 		JobManager.getInstance().save(filePath);
 	}
 
-	public void onDraw(int animProgress, int renderTime) throws IOException {
+	public void onDraw(double animProgress, int renderTime) throws IOException {
 		_frame++;
 		
 		_mainRenderer.draw(_app, animProgress, renderTime);

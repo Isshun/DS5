@@ -67,7 +67,7 @@ public class MainRenderer {
 		_debugRenderer = new DebugRenderer();
 	}
 
-	public void draw(RenderWindow app, int animProgress, int renderTime) {
+	public void draw(RenderWindow app, double animProgress, int renderTime) {
 		// Flush
 		app.clear(new Color(0, 0, 50));
 		_frame++;

@@ -1,6 +1,10 @@
 package alone.in.deepspace.model;
 
+import java.util.HashMap;
 import java.util.Vector;
+
+import org.jsfml.graphics.RenderStates;
+import org.jsfml.graphics.RenderWindow;
 
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
@@ -22,6 +26,9 @@ public class Movable implements PathManagerCallback {
 	protected int				_steps;
 	protected Job				_job;
 
+	private HashMap<Integer, Integer> _points;
+	private int _lastY;
+
 	public Movable(int id, int x, int y) {
 		  _id = id;
 		  _posY = _toX = y;
@@ -40,6 +47,9 @@ public class Movable implements PathManagerCallback {
 	@Override
 	public void	onPathComplete(Vector<Position> path, Job job) {
 	  Log.debug("Charactere #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
+	  
+//	  compute(_posX, _posY, _toX, _toY);
+	  compute(10, 10, 20, 20);
 	
 	  if (path.size() == 0) {
 		sendEvent(CharacterNeeds.Message.MSG_BLOCKED);
@@ -96,11 +106,101 @@ public class Movable implements PathManagerCallback {
 		}
 	}
 
-	void  addMessage(CharacterNeeds.Message msgBlocked, int count) {
+	private void compute(int fromX, int fromY, int toX, int toY) {
+		int offsetX = (int)((toX - fromX));
+		int offsetY = (int)((toY - fromY));
+		
+		double x = offsetX / 2 + fromX + offsetY;
+		double y = offsetY / 2 + fromY - offsetX;
+
+		double x2 = offsetX / 2 + fromX - offsetY;
+		double y2 = offsetY / 2 + fromY + offsetX;
+		
+		System.out.println("-------------------");
+		System.out.println("from: " + fromX + " x " + fromY);
+		System.out.println("to: " + toX + " x " + toY);
+		System.out.println("offset: " + offsetX + " x " + offsetY);
+		System.out.println("point: " + x + " x " + y);
+
+//		Sprite sprite = null;
+//		
+//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.chair"));
+//		sprite.setPosition((int)(fromX * 32), (int)(fromY * 32));
+//		app.draw(sprite, render);
+//		
+//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.chair"));
+//		sprite.setPosition((int)(toX * 32), (int)(toY * 32));
+//		app.draw(sprite, render);
+//
+//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//		sprite.setPosition((int)(x * 32), (int)(y * 32));
+//		app.draw(sprite, render);
+//		
+//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//		sprite.setPosition((int)(x2 * 32), (int)(y2 * 32));
+//		app.draw(sprite, render);
+
+		double r = Math.sqrt(Math.pow(Math.abs(x - fromX), 2) + Math.pow(Math.abs(y - fromY), 2));
+
+		{
+			double radOffsetX = (x - fromX)/r;
+			double radOffsetY = (y - fromY)/r;
+			double rad1 = Math.acos(radOffsetX);
+			double rad2 = Math.asin(radOffsetY);
+			
+//			sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//			sprite.setPosition((int)(x+radOffsetX*r)*32, (int)((y+radOffsetY*r)*32));
+//			app.draw(sprite, render);
+			
+			System.out.println("r: " + r);
+			System.out.println("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
+			System.out.println("rad: " + radOffsetX + " x " + radOffsetY + " = " + rad1 + " x " + rad2 + " -> " + (rad1 - rad2));
+		}
+		
+		{
+			double radOffsetX = (x - toX)/r;
+			double radOffsetY = (y - toY)/r;
+			double rad1 = Math.acos(radOffsetX);
+			double rad2 = Math.asin(radOffsetY);
+			
+//			sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//			sprite.setPosition((int)(x+radOffsetX*r)*32, (int)((y+radOffsetY*r)*32));
+//			app.draw(sprite, render);
+
+			System.out.println("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
+			System.out.println("rad: " + radOffsetX + " x " + radOffsetY + " = " + rad1 + " x " + rad2 + " -> " + (rad1 - rad2));
+		}
+		
+		
+		if (_points == null) {
+			_points = new HashMap<Integer, Integer>();
+			double from = Math.min(Math.PI-0.72, Math.PI-1.65);
+			double to = Math.max(Math.PI-0.72, Math.PI-1.65);
+			for (double i = from; i < to; i += 0.001) {
+//				sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//				sprite.setPosition((int)(x*32 + Math.cos(i)*r*32), (int)(y*32 + Math.sin(i)*r*32));
+//				app.draw(sprite, render);
+				
+				//_points.add(new Position((float)(x*32 + Math.cos(i)*r*32), (float)(y*32 + Math.sin(i)*r*32)));
+				_points.put((int)(x*32 + Math.cos(i)*r*32), (int)(y*32 + Math.sin(i)*r*32));
+			}
+		}
+
+		//System.exit(0);
+	}
+
+	public int getSmoothY(int posX) {
+		if (_points != null && _points.get(posX) != null) {
+			_lastY = _points.get(posX);
+		}
+		return _lastY * Constant.TILE_HEIGHT;
+	}
+
+	protected void  addMessage(CharacterNeeds.Message msgBlocked, int count) {
 	  //_messages[msgBlocked] = count;
 	}
 	
-	void  removeMessage(int msg) {
+	protected void  removeMessage(int msg) {
 	  //_messages[msg] = MESSAGE_COUNT_INIT;
 	}
 	
