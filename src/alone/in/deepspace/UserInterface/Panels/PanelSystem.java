@@ -10,6 +10,7 @@ import alone.in.deepspace.Game;
 import alone.in.deepspace.Main;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.ui.TextView;
 
 public class PanelSystem extends UserSubInterface {
@@ -53,7 +54,7 @@ public class PanelSystem extends UserSubInterface {
         
         _used = (_used * 7 + used) / 8;
 
-        _lbRenderTime.setString("Rendering: " + Game.renderTime + "ms");
+        _lbRenderTime.setString("Rendering: " + MainRenderer.getInstance().getRenderTime() + "ms");
         _lbMemoryUsed.setString("Heap: " + String.valueOf(_used) + " / " + String.valueOf(total) + " Mo");
         _lbUpdate.setString("Update: " + String.valueOf(Main.getUpdateInterval()) + " ms");
 	}

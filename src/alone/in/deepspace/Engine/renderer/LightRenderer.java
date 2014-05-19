@@ -25,11 +25,12 @@ import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.model.WorldArea;
 
 public class LightRenderer implements IRenderer {
+	private static final int LIGHT_DISTANCE = 10;
 	private RenderTexture 	_cache;
 	private Sprite _sprite;
 	private Sprite _sprite2;
 
-	public LightRenderer(RenderWindow app) {
+	public LightRenderer() {
 
 		try {
 			Texture texture = new Texture();
@@ -47,7 +48,7 @@ public class LightRenderer implements IRenderer {
 
 		try {
 			_cache = new RenderTexture();
-			_cache.create(Constant.WORLD_WIDTH * Constant.TILE_SIZE, Constant.WORLD_HEIGHT * Constant.TILE_SIZE);
+			_cache.create(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
 			_cache.display();
 		} catch (TextureCreationException e) {
 			e.printStackTrace();
@@ -83,9 +84,10 @@ public class LightRenderer implements IRenderer {
 				int y2 = y+(int)offsetY;
 				double radius = Math.sqrt(Math.pow(Math.abs(offsetX), 2) + Math.pow(Math.abs(offsetY), 2));
 				if (x2 >= fromX && y2 >= fromY && x2 <= toX && y2 <= toY && isFree(x, y, x+(int)offsetX, y+(int)offsetY)) {
-					if (ServiceManager.getWorldMap().getArea(x2, y2).getLightPass() < pass) {
-						ServiceManager.getWorldMap().getArea(x2, y2).addLight(Math.min(Math.max(bright - radius * 0.15, 0), 1));
-						ServiceManager.getWorldMap().getArea(x2, y2).setLightPass(pass);
+					WorldArea area = ServiceManager.getWorldMap().getArea(x2, y2);
+					if (area != null && area.getLightPass() < pass) {
+						area.addLight(Math.min(Math.max(bright - radius * 0.15, 0), 1));
+						area.setLightPass(pass);
 					}
 				}
 			}
@@ -93,6 +95,10 @@ public class LightRenderer implements IRenderer {
 	}
 
 	private boolean isFree(int x, int y, int x2, int y2) {
+		if (x == x2 && y == y2) {
+			return true;
+		}
+		
 		int fromX = Math.min(x, x2);
 		int fromY = Math.min(y, y2);
 		int toX = Math.max(x, x2);
@@ -148,7 +154,10 @@ public class LightRenderer implements IRenderer {
 			for (int y = fromY; y < toY; y++) {
 				WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
 				if (area.getItem() != null && area.getItem().getLight() > 0) {
-					diffuseLight(fromX, fromY, toX, toY, x, y, area.getItem().getLight(), ++pass, 1);
+					diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getItem().getLight() / 10);
+				}
+				if (area.getRessource() != null && area.getRessource().getLight() > 0) {
+					diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getRessource().getLight() / 10);
 				}
 			}
 		}
@@ -205,7 +214,7 @@ public class LightRenderer implements IRenderer {
 				if (structure != null && structure.isFloor() && structureBellow != null && structureBellow.isFloor() == false) {
 					shape = halfShape;
 					shape.setFillColor(new Color(0, 200, 0, 100));
-					shape.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE + 16);
+					shape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT + 16);
 					_cache.draw(shape);
 				} else {
 					shape = fullShape;
@@ -222,24 +231,24 @@ public class LightRenderer implements IRenderer {
 //					_cache.draw(_sprite);
 					// Right
 					//if (structure != null && structure.isWall() && (structureRight == null || structureRight.isFloor())) {
-						sideShape.setPosition(x * Constant.TILE_SIZE + 16, y * Constant.TILE_SIZE - 0);
+						sideShape.setPosition(x * Constant.TILE_WIDTH + 16, y * Constant.TILE_HEIGHT - 0);
 						sideShape.setFillColor(new Color(0, 0, 0, 200 - (int)(areaRight.getLight() * 255)));
 						_cache.draw(sideShape);
 						
 						if (structureTop == null || structureTop.isWall() == false) {
-							smallShape.setPosition(x * Constant.TILE_SIZE + 16, y * Constant.TILE_SIZE - 16);
+							smallShape.setPosition(x * Constant.TILE_WIDTH + 16, y * Constant.TILE_HEIGHT - 16);
 							smallShape.setFillColor(new Color(0, 0, 0, 200 - (int)(areaRight.getLight() * 255)));
 							_cache.draw(smallShape);
 						}
 					//}
 					// Left
 					//if (structure != null && structure.isWall() && (structureLeft == null || structureLeft.isFloor())) {
-						sideShape.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE - 0);
+						sideShape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT - 0);
 						sideShape.setFillColor(new Color(0, 0, 0, 200 - (int)(areaLeft.getLight() * 255)));
 						_cache.draw(sideShape);
 
 						if (structureTop == null || structureTop.isWall() == false) {
-							smallShape.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE - 16);
+							smallShape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT - 16);
 							smallShape.setFillColor(new Color(0, 0, 0, 200 - (int)(areaLeft.getLight() * 255)));
 							_cache.draw(smallShape);
 						}
@@ -249,12 +258,12 @@ public class LightRenderer implements IRenderer {
 				// Horizontal wall
 				else if (structure != null && structure.isWall()) {
 					if (areaBellow != null) {
-						shape.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE);
+						shape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
 						shape.setFillColor(new Color(0, 0, 0, 200 - (int)(area.getLight() * 255)));
 						_cache.draw(shape);
 						
 						if (structureTop == null || structureTop.isWall() == false) {
-							halfShape.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE - 16);
+							halfShape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT - 16);
 							halfShape.setFillColor(new Color(0, 0, 0, 200 - (int)(area.getLight() * 255)));
 							_cache.draw(halfShape);
 						}
@@ -265,7 +274,7 @@ public class LightRenderer implements IRenderer {
 					if (structureBellow != null && structureBellow.isWall()) {
 						shape = halfShape;
 					}
-					shape.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE);
+					shape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
 					shape.setFillColor(new Color(0, 0, 0, 200 - (int)(area.getLight() * 255)));
 					_cache.draw(shape);
 				}

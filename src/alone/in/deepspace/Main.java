@@ -16,7 +16,8 @@ import alone.in.deepspace.UserInterface.MenuLoad;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.engine.loader.CategoryLoader;
 import alone.in.deepspace.engine.loader.ItemLoader;
-import alone.in.deepspace.engine.renderer.MainRenderer;
+import alone.in.deepspace.engine.loader.StringsLoader;
+import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.GameData;
 import alone.in.deepspace.model.ItemInfo;
@@ -34,14 +35,22 @@ public class Main {
 		RenderWindow window = new RenderWindow();
 		window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5");
 
-		MainRenderer.getInstance().setWindow(window);
-
 		ServiceManager.setData(new GameData());
 		
 		ServiceManager.getData().items = new ArrayList<ItemInfo>();
 
 		ItemLoader.load("data/items/", "base");
 		ItemLoader.load("mods/garden/items/", "garden");
+		StringsLoader.load("data/strings/", "fr");
+		
+		for (ItemInfo item: ServiceManager.getData().items) {
+			if (item.onGather != null) {
+				item.onGather.itemProduce = ServiceManager.getData().getItemInfo(item.onGather.produce);
+			}
+			if (item.onMine != null) {
+				item.onMine.itemProduce = ServiceManager.getData().getItemInfo(item.onMine.produce);
+			}
+		}
 		
 		CategoryLoader.load();
 		
@@ -61,6 +70,8 @@ public class Main {
 		//		window.setFramerateLimit(30);
 
 		window.close();
+		
+		PathManager.getInstance().close();
 	}
 
 	private static void loop(final RenderWindow window) throws IOException, InterruptedException {

@@ -12,32 +12,31 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.renderer.MainRenderer;
 
-public abstract class RectangleView {
+public abstract class RectangleView extends View {
 	protected RenderStates 	_render;
 	private RectangleShape 	_background;
-	private int _posX;
-	private int _posY;
-
-	private List<View> _views;
-
-	protected boolean _isVisible;
+	private List<View> 		_views;
 
 	public RectangleView(Vector2f size) {
-		_views = new ArrayList<View>();
-		_background = new RectangleShape();
-		_background.setSize(size);
-	}
+		super(size);
 	
-	public void setPosition(Vector2f pos) {
-		_posX = (int) pos.x;
-		_posY = (int) pos.y;
+		_views = new ArrayList<View>();
+		
+		setPosition(0, 0);
+	}
+
+	private void createRender() {
 		Transform transform = new Transform();
-	    transform = Transform.translate(transform, pos);
+	    transform = Transform.translate(transform, _posX + _parentPosX, _posY + _parentPosY);
 	    _render = new RenderStates(transform);
 	}
 	
 	public void setBackgroundColor(Color color) {
-		_background.setFillColor(color);
+		if (_background == null) {
+			_background = new RectangleShape();
+			_background.setSize(_size);
+			_background.setFillColor(color);
+		}
 	}
 
 	public void addView(View view) {
@@ -46,12 +45,18 @@ public abstract class RectangleView {
 		_views.add(view);
 	}
 
+	public void clearAllViews() {
+		_views.clear();
+	}
+
 	public void removeView(View view) {
 		view.setParentPosition(_posX, _posY);
 		_views.remove(view);
 	}
 
 	public void setPosition(int x, int y) {
+		_posX = x;
+		_posY = y;
 		for (View view: _views) {
 			view.setParentPosition(x, y);
 		}
@@ -62,7 +67,13 @@ public abstract class RectangleView {
 			return;
 		}
 		
-		MainRenderer.getInstance().draw(_background, _render);
+		if (_render == null) {
+			createRender();
+		}
+		
+		if (_background != null) {
+			MainRenderer.getInstance().draw(_background, _render);
+		}
 
 		for (View view: _views) {
 			view.refresh(app, _render);

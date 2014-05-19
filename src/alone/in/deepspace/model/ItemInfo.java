@@ -13,23 +13,30 @@ public class ItemInfo {
 		public int posY;
 	}
 
-	public String 			name;
-	public String 			inherits;
-	public String 			label;
-	public String 			category;
-	public boolean 			isWalkable;
-	public int 				width;
-	public int 				height;
-	public int 				light;
-	public ItemInfoCost 	cost;
-	public ItemInfoAction 	onAction;
-	public boolean 			isStructure;
-	public boolean 			isRessource;
-	public boolean 			isUserItem;
-	public int 				storage;
-	public int 				spriteId;
-	public String			fileName;
-	public String 			packageName;
+	public static class ItemInfoRessource {
+		public String 	produce;
+		public ItemInfo itemProduce;
+	}
+
+	public String 				name;
+	public String 				inherits;
+	public String 				label;
+	public String 				category;
+	public boolean 				isWalkable;
+	public int 					width;
+	public int 					height;
+	public int 					light;
+	public ItemInfoCost 		cost;
+	public ItemInfoAction 		onAction;
+	public ItemInfoRessource	onGather;
+	public ItemInfoRessource	onMine;
+	public boolean 				isStructure;
+	public boolean 				isRessource;
+	public boolean 				isUserItem;
+	public int 					storage;
+	public int 					spriteId;
+	public String				fileName;
+	public String 				packageName;
 	
 	public ItemInfo() {
 		width = 1;

@@ -22,45 +22,8 @@ import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.StructureItem;
 
 public class SpriteManager {
-	
-	//TODO
-	SpriteResource[] spritesRes = {
-			new SpriteResource("base.hull",						2, 8, 0),
-			new SpriteResource("base.wall",						0, 4, 5),
-			// new SpriteResource(BaseItem.Type.STRUCTURE_WALL_BELLOW,				1, 4, 5),
-			new SpriteResource("base.floor",					7, 7, 0),
-			new SpriteResource("base.window",					2, 0, 4),
-//			new SpriteResource(BaseItem.Type.STRUCTURE_GREENHOUSE,					7, 7, 0),
-			new SpriteResource("base.door",						2, 2, 0),
-			new SpriteResource("base.window",					2, 3, 0),
-//			new SpriteResource(BaseItem.Type.TRANSPORTATION_TRANSPORTER_SYSTEMS,	1, 8, 0),
-//			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_1,					2, 0, 3),
-			new SpriteResource("garden.tree_1",					3, 0, 3),
-			new SpriteResource("garden.tree_2",					4, 0, 3),
-			new SpriteResource("garden.tree_3",					5, 0, 3),
-			new SpriteResource("garden.tree_4",					0, 0, 3),
-			new SpriteResource("garden.tree_5",					0, 1, 3),
-//			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_7,					1, 0, 3),
-//			new SpriteResource(BaseItem.Type.ARBORETUM_TREE_8,					1, 1, 3),
-			new SpriteResource("base.pub",						0, 8, 3),
-			new SpriteResource("base.biobed",					11, 4, 1),
-			new SpriteResource("base.tree",						0, 1, 3),
-			new SpriteResource("base.main_engine",				12, 12, 1),
-			new SpriteResource("base.o2_recycler",				11, 16, 1),
-			new SpriteResource("base.holodeck_grid",			5, 6, 0),
-			new SpriteResource("base.control_center",			8, 10, 1),
-			new SpriteResource("base.bed",						10, 7, 2),
-			new SpriteResource("base.bedside_table",			8, 6, 2),
-			//new SpriteResource("base.chair",					8, 6, 2),
-			new SpriteResource("base.robot_maker",				12, 7, 2),
-			new SpriteResource("base.zygote",					12, 9, 2),
-			new SpriteResource("base.phaser",					12, 6, 2),
-			new SpriteResource("base.res",						8, 1, 4),
-//			new SpriteResource(BaseItem.Type.NONE,								0, 0, 0),
-	};
-
+	private static int 				_count;
 	private static SpriteManager 	_self;
-
 	private Map<Integer, Sprite>	_spritesCharacters;
 	private Map<Long, Sprite> 		_sprites;
 	private Texture[] 				_textureCharacters;
@@ -73,8 +36,6 @@ public class SpriteManager {
 			0, 1, 2, 1, 3, 0, 1, 3, 0, 1,
 			0, 0, 1, 3, 2, 2, 1, 3, 2, 1,
 			3, 1, 1, 0, 3, 2, 0, 1, 0, 1};
-
-	private static int _count;
 
 	private SpriteManager() throws IOException {
 		_sprites = new HashMap<Long, Sprite>();
@@ -160,13 +121,13 @@ public class SpriteManager {
 	}
 
 	public Sprite	getItem(BaseItem item) {
-		if (item != null) {
+		if (item != null && item.isStructure() == false) {
 			if (item.isStorage()) {
-				BaseItem subItem = ((StorageItem)item).getFirst();
-				if (subItem != null && !subItem.isStorage()) {
-					// TODO: recurse
-					return getItem(subItem);
-				}
+//				BaseItem subItem = ((StorageItem)item).getFirst();
+//				if (subItem != null && !subItem.isStorage()) {
+//					// TODO: recurse
+//					return getItem(subItem);
+//				}
 			}
 			
 			if (item.isRessource()) {
@@ -174,7 +135,6 @@ public class SpriteManager {
 			}
 
 			int alpha = Math.min(item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * item.getMatterSupply(), 255);
-			SpriteResource res = getRessourceForItemInfo(item.getInfo());
 			
 			return getSprite(item.getInfo(), alpha);
 			
@@ -191,17 +151,6 @@ public class SpriteManager {
 		return null;
 	}
 
-	private SpriteResource getRessourceForItemInfo(ItemInfo info) {
-		for (SpriteResource res: spritesRes) {
-			if (info.equals(res.info)) {
-				return res;
-			}
-		}
-		
-		//TODO
-		return new SpriteResource(info.name, 1, 0, 4);
-	}
-
 	public Sprite		getIcon(ItemInfo info) {
 		//		switch (type) {
 		//
@@ -211,8 +160,6 @@ public class SpriteManager {
 		//		case IC_BATTERY:
 		//			return _spriteBattery;
 		//		}
-
-		SpriteResource res = getRessourceForItemInfo(info);
 
 //		for (int i = 0; spritesRes[i].type != BaseItem.Type.NONE; i++) {
 //			if (spritesRes[i].type == type) {
@@ -251,19 +198,19 @@ public class SpriteManager {
 	public Sprite getGreenHouse(int index) {
 		int texture = 4;
 //		int offset = _random[index % 50];
-		int x = (int) (index * (Constant.TILE_SIZE + 2) + 1);
-		int y = (int) (10 * (Constant.TILE_SIZE + 2) + 1);
+		int x = (int) (index * (Constant.TILE_WIDTH + 2) + 1);
+		int y = (int) (10 * (Constant.TILE_HEIGHT + 2) + 1);
 
-		return getSprite(texture, x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
+		return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
 	}
 
 	public Sprite getExterior(int index) {
 		int texture = 4;
 		int offset = _random[index % 50];
-		int x = (int) (offset * Constant.TILE_SIZE);
-		int y = (int) (7 * (Constant.TILE_SIZE + 2) + 1);
+		int x = (int) (offset * Constant.TILE_WIDTH);
+		int y = (int) (7 * (Constant.TILE_HEIGHT + 2) + 1);
 
-		return getSprite(texture, x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
+		return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
 	}
 
 	private Sprite getSprite(int textureIndex, int i, int j, int k, int l) {
@@ -303,7 +250,7 @@ public class SpriteManager {
 						texture.loadFromFile((imgFile.toPath()));
 						texture.setSmooth(true);
 						sprite.setTexture(texture);
-						sprite.setTextureRect(ObjectPool.getIntRect(0, 0, item.width * 32, item.height * 32));
+						sprite.setTextureRect(ObjectPool.getIntRect(0, 0, item.width * Constant.TILE_WIDTH, item.height * Constant.TILE_HEIGHT + 89));
 						_sprites.put((long) item.spriteId, sprite);
 					}
 				} catch (IOException e) {
@@ -341,29 +288,31 @@ public class SpriteManager {
 //		if (item.getMatterSupply() == 0) {
 //			return null;//getExterior(item.getWidth() + item.getHeight() * 42);
 //		} else {
-			int value = Math.min(item.getMatterSupply(), 7);
-			return getSprite(4,
-					value * Constant.TILE_SIZE,
-					9 * (Constant.TILE_SIZE + 2) + 1,
-					Constant.TILE_SIZE + 1,
-					Constant.TILE_SIZE);
+//			int value = Math.min(item.getMatterSupply(), 7);
+//			return getSprite(4,
+//					value * Constant.TILE_WIDTH,
+//					9 * (Constant.TILE_HEIGHT + 2) + 1,
+//					Constant.TILE_WIDTH + 1,
+//					Constant.TILE_HEIGHT);
+		return getSprite(item.getInfo(), 255);
 //		}
 	}
 
 	public Sprite				getFloor(StructureItem item, int zone, int room) {
 		int choice = 1;
 		int texture = 4;
-		int x = (room % choice) * Constant.TILE_SIZE;
-		int y = zone * (Constant.TILE_SIZE + 2) + 1;
+		int x = (room % choice) * Constant.TILE_WIDTH;
+		int y = zone * (Constant.TILE_HEIGHT + 2) + 1;
 		int alpha = Math.min(item != null ? 75 + 180 / item.getMatter() * item.getMatterSupply() : 255, 255);
-		return getSprite(texture, x, y, Constant.TILE_SIZE, Constant.TILE_SIZE, alpha);
+		//return getSprite(texture, x, y, Constant.TILE_SIZE, Constant.TILE_SIZE, alpha);
+		return getSprite(item.getInfo(), 255);
 	}
 
 	public Sprite				getNoOxygen() {
 		int texture = 4;
 		int x = 0;
-		int y = 8 * (Constant.TILE_SIZE + 2) + 1;
-		return getSprite(texture, x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
+		int y = 8 * (Constant.TILE_HEIGHT + 2) + 1;
+		return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
 	}
 
 	public Sprite		getWall(BaseItem item, int special, int index, int zone) {
@@ -504,10 +453,10 @@ public class SpriteManager {
 
 	public Sprite getBullet(int i) {
 		return getSprite(1,
-				i * Constant.TILE_SIZE,
-				17 * Constant.TILE_SIZE,
-				Constant.TILE_SIZE,
-				Constant.TILE_SIZE);
+				i * Constant.TILE_WIDTH,
+				17 * Constant.TILE_HEIGHT,
+				Constant.TILE_WIDTH,
+				Constant.TILE_HEIGHT);
 	}
 
 }

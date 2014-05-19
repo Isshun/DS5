@@ -100,12 +100,12 @@ public class Viewport {
 
 	public int getRealPosX(int x) {
 		//x *= _toScale;
-		int posX = _posX + x * Constant.TILE_SIZE;
+		int posX = _posX + x * Constant.TILE_WIDTH;
 		return Constant.UI_WIDTH + (int) (posX * getScale(_toScale));
 	}
 
 	public int getRealPosY(int y) {
-		int posY = _posY + y * Constant.TILE_SIZE;
+		int posY = _posY + y * Constant.TILE_HEIGHT;
 		return Constant.UI_HEIGHT + (int) (posY * getScale(_toScale));
 	}
 

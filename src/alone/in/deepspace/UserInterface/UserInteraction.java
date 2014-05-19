@@ -65,7 +65,7 @@ public class UserInteraction {
 			for (int y = startY; y <= toY; y++) {
 				Transform transform = new Transform();
 				RenderStates render = new RenderStates(_viewport.getViewTransform(transform));
-				spriteCursor.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE);
+				spriteCursor.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
 				MainRenderer.getInstance().draw(spriteCursor, render);
 			}
 		}
@@ -210,6 +210,30 @@ public class UserInteraction {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
 				ServiceManager.getWorldMap().removeStructure(x, y);
+			}
+		}
+	}
+
+	public void planGather(int startX, int startY, int toX, int toY) {
+		for (int x = startX; x <= toX; x++) {
+			for (int y = startY; y <= toY; y++) {
+				JobManager.getInstance().createGatherJob(x, y);
+			}
+		}
+	}
+
+	public void planMining(int startX, int startY, int toX, int toY) {
+		for (int x = startX; x <= toX; x++) {
+			for (int y = startY; y <= toY; y++) {
+				JobManager.getInstance().createMiningJob(x, y);
+			}
+		}
+	}
+
+	public void planDump(int startX, int startY, int toX, int toY) {
+		for (int x = startX; x <= toX; x++) {
+			for (int y = startY; y <= toY; y++) {
+				JobManager.getInstance().createDumpJob(x, y);
 			}
 		}
 	}

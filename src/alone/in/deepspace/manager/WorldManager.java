@@ -439,11 +439,15 @@ public class WorldManager implements ISavable, TileBasedMap {
 //		} else
 		
 		// TODO: filter
-		if ("base.storage".equals(info.name)) {
-			item = new StorageItem();
-			_areas[x][y].setItem((UserItem) item);
-			return item;
-		} if (info.isStructure) {
+//		if ("base.storage".equals(info.name)) {
+//			item = new StorageItem();
+//			_areas[x][y].setItem((UserItem) item);
+//			return item;
+		if (info.storage > 0) {
+			item = new StorageItem(info);
+		} else if (info.isRessource) {
+			item = new WorldRessource(info);
+		} else if (info.isStructure) {
 			item = new StructureItem(info);
 		} else {
 			item = new UserItem(info);
@@ -453,10 +457,10 @@ public class WorldManager implements ISavable, TileBasedMap {
 
 		// Ressource
 		if (item.isRessource()) {
-			_areas[x][y].setItem((UserItem) item);
+			_areas[x][y].setRessource((WorldRessource) item);
 //			if ((item).getValue() > 0) {
-				item.setMatterSupply(10);
-				JobManager.getInstance().gather(item);
+//				item.setMatterSupply(10);
+				//JobManager.getInstance().gather(item);
 				ServiceManager.getWorldRenderer().invalidate(item.getX(), item.getY());
 				return item;
 //			}
@@ -629,7 +633,9 @@ public class WorldManager implements ISavable, TileBasedMap {
 		UserItem onAreaItem = _areas[x][y].getItem();
 		
 		if (onAreaItem == null) {
-			onAreaItem = new StorageItem();
+			// TODO
+			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
+			onAreaItem = new StorageItem(info);
 			((StorageItem)carriedItem).addItem(carriedItem);
 			_areas[x][y].setItem(onAreaItem);
 		} else if (carriedItem.isStorage()) {
@@ -643,4 +649,5 @@ public class WorldManager implements ISavable, TileBasedMap {
 	public BaseItem putItem(ItemInfo info, int x, int y) {
 		return putItem(info, x, y, 0);
 	}
+
 }

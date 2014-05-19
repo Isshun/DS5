@@ -1,4 +1,7 @@
 package alone.in.deepspace.model;
+import java.util.ArrayList;
+import java.util.List;
+
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
@@ -131,8 +134,7 @@ public class Character extends Movable {
 	private String			_name;
 	private Profession		_profession;
 	private boolean			_selected;
-
-	private int _carry;
+	private List<BaseItem> 	_carry;
 
 	//	  private int				_messages[32];
 
@@ -141,6 +143,7 @@ public class Character extends Movable {
 
 		Log.debug("Character #" + id);
 
+		_carry = new ArrayList<BaseItem>();
 		_gender = Math.random() * 1000 % 2 == 0 ? Character.Gender.GENDER_MALE : Character.Gender.GENDER_FEMALE;
 		// _path = null;
 		_selected = false;
@@ -182,7 +185,7 @@ public class Character extends Movable {
 	public boolean			getSelected() { return _selected; }
 	public int				getProfessionScore(Profession.Type professionEngineer) { return 42; }
 
-	public boolean			isFull() { return _carry == Constant.CHARACTER_CARRY_CAPACITY; }
+	public boolean			isFull() { return _carry.size() == Constant.CHARACTER_CARRY_CAPACITY; }
 
 	public void	setJob(Job job) {
 		Log.debug("set new job");
@@ -511,10 +514,17 @@ public class Character extends Movable {
 	}
 
 	private void		actionStore() {
-		ServiceManager.getWorldMap().storeItem(_job.getItem(), _job.getX(), _job.getY());
-		JobManager.getInstance().complete(_job);
+		UserItem item = ServiceManager.getWorldMap().getItem(_job.getX(), _job.getY());
+		if (item != null && item.isStorage()) {
+			((StorageItem)item).getItems().addAll(_carry);
+			_carry.clear();
+			JobManager.getInstance().complete(_job);
+			_carry.clear();
+		} else {
+			Log.error("Character: actionStore on non storage item");
+			JobManager.getInstance().cancel(_job);
+		}
 		_job = null;
-		_carry = 0;
 	}
 
 	private void		actionBuild() {
@@ -575,15 +585,25 @@ public class Character extends Movable {
 			_job = null;
 			return;
 		}
+		
+		BaseItem gatheredItem = _job.getItem();
 
-		// Character is full: cancel current job
-		if (_carry + 1 >= Constant.CHARACTER_CARRY_CAPACITY && _job != null) {
-			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
+		if (gatheredItem.getInfo().onGather == null) {
+			Log.error("Character: actionGather on non gatherable item");
+			JobManager.getInstance().cancel(_job);
 			_job = null;
 			return;
 		}
 
 
+		// Character is full: cancel current job
+		if (_carry.size() == Constant.CHARACTER_CARRY_CAPACITY) {
+			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
+			_job = JobManager.getInstance().storeItem(_carry.get(0));
+			return;
+		}
+
+		// TODO
 		int value = ServiceManager.getWorldMap().gather(_job.getItem(), getProfessionScore(Profession.Type.NONE));
 
 		Log.debug("gather: " + value);
@@ -594,8 +614,50 @@ public class Character extends Movable {
 			JobManager.getInstance().complete(_job);
 			_job = null;
 		}
+		
+		_carry.add(new BaseItem(gatheredItem.getInfo().onGather.itemProduce));
+		//_carry += value;
+	}
 
-		_carry += value;
+	private void		actionMine() {
+		// Wrong call
+		if (_job == null || _job.getItem() == null) {
+			Log.error("Character: actionMine on null job or null job's item");
+			JobManager.getInstance().cancel(_job);
+			_job = null;
+			return;
+		}
+		
+		BaseItem gatheredItem = _job.getItem();
+
+		if (gatheredItem.getInfo().onMine == null) {
+			Log.error("Character: actionMine on non minable item");
+			JobManager.getInstance().cancel(_job);
+			_job = null;
+			return;
+		}
+
+
+		// Character is full: cancel current job
+		if (_carry.size() == Constant.CHARACTER_CARRY_CAPACITY) {
+			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
+			_job = JobManager.getInstance().storeItem(_carry.get(0));
+			return;
+		}
+
+		// TODO
+		int value = ServiceManager.getWorldMap().gather(_job.getItem(), getProfessionScore(Profession.Type.NONE));
+
+		Log.debug("mine: " + value);
+
+		ResourceManager.getInstance().addMatter(value);
+
+		if (_job.getItem().getMatterSupply() == 0) {
+			JobManager.getInstance().complete(_job);
+			_job = null;
+		}
+		
+		_carry.add(new BaseItem(gatheredItem.getInfo().onMine.itemProduce));
 	}
 
 	private void		actionDestroy() {
@@ -606,7 +668,16 @@ public class Character extends Movable {
 	}
 
 	public void			action() {
-		if (_job == null || _posX != _toX || _posY != _toY) {
+		if (_job == null) {
+			return;
+		}
+		
+		if (_posX != _toX || _posY != _toY) {
+			
+			// TODO
+			if (_path == null) {
+				PathManager.getInstance().getPathAsync(this, _job);
+			}
 			return;
 		}
 
@@ -616,6 +687,7 @@ public class Character extends Movable {
 		case MOVE: actionMove(); break;
 		case USE: actionUse(); break;
 		case GATHER: actionGather(); break;
+		case MINING: actionMine(); break;
 		case DESTROY: actionDestroy(); break;
 		case BUILD: actionBuild(); break;
 		case STORE: actionStore(); break;
@@ -631,6 +703,10 @@ public class Character extends Movable {
 
 	public boolean isSleeping() {
 		return _needs._sleeping > 0;
+	}
+
+	public List<BaseItem> getCarried() {
+		return _carry;
 	}
 
 }

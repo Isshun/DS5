@@ -13,11 +13,11 @@ import alone.in.deepspace.manager.UIEventManager;
 
 public abstract class View {
 	protected Vector2f 		_pos;
-	private Vector2f 		_size;
+	protected Vector2f 		_size;
 	protected boolean		_isVisible;
 	private Rectangle 		_rect;
-	private int 			_parentPosX;
-	private int 			_parentPosY;
+	protected int 			_parentPosX;
+	protected int 			_parentPosY;
 	protected int 			_posX;
 	protected int 			_posY;
 	private RectangleShape	_background;
@@ -25,10 +25,10 @@ public abstract class View {
 	protected int			_paddingBottom;
 	protected int 			_paddingRight;
 	protected int 			_paddingTop;
-	private RectangleView _parent;
+	private RectangleView 	_parent;
 	private OnClickListener _onClickListener;
 	private OnFocusListener _onFocusListener;
-	private boolean mIsActive;
+	private boolean 		mIsActive;
 
 	public View(Vector2f size) {
 		_size = size;

@@ -322,8 +322,8 @@ public class CharacterManager implements ISavable {
 	public void	onDraw(RenderWindow app, RenderStates render, double animProgress) throws IOException {
 
 	  for (Character c: _characters) {
-		int posX = c.getX() * Constant.TILE_SIZE - (Constant.CHAR_WIDTH - Constant.TILE_SIZE) + 2;
-		int posY = c.getY() * Constant.TILE_SIZE - (Constant.CHAR_HEIGHT - Constant.TILE_SIZE) + 0;
+		int posX = c.getX() * Constant.TILE_WIDTH - (Constant.CHAR_WIDTH - Constant.TILE_WIDTH) + 2;
+		int posY = c.getY() * Constant.TILE_HEIGHT - (Constant.CHAR_HEIGHT - Constant.TILE_HEIGHT) + 0;
 		Character.Direction direction = c.getDirection();
 
 		// TODO: ugly
@@ -333,13 +333,13 @@ public class CharacterManager implements ISavable {
 			direction == Character.Direction.DIRECTION_BOTTOM ||
 			direction == Character.Direction.DIRECTION_RIGHT ||
 			direction == Character.Direction.DIRECTION_LEFT)
-		  offset = (int) ((1-animProgress) * Constant.TILE_SIZE);
+		  offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
 
 		if (direction == Character.Direction.DIRECTION_TOP_RIGHT ||
 			direction == Character.Direction.DIRECTION_TOP_LEFT  ||
 			direction == Character.Direction.DIRECTION_BOTTOM_RIGHT ||
 			direction == Character.Direction.DIRECTION_BOTTOM_LEFT)
-		  offset = (int) ((1-animProgress) * Constant.TILE_SIZE);
+		  offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
 
 		int dirIndex = 0;
 		if (direction == Character.Direction.DIRECTION_BOTTOM) { posY -= offset; dirIndex = 0; }

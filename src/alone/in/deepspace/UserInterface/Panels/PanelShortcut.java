@@ -108,6 +108,21 @@ public class PanelShortcut extends UserSubInterface {
 			}
 		});
 		addView(lbDebug);
+
+		TextView lbOrders = new TextView(new Vector2f(140, 36));
+		lbOrders.setCharacterSize(14);
+		lbOrders.setColor(Color.WHITE);
+		lbOrders.setPadding(8, 20, 10, 45);
+		lbOrders.setBackgroundColor(new Color(250, 120, 180, 255));
+		lbOrders.setPosition(new Vector2f(760, 6));
+		lbOrders.setString("Plan");
+		lbOrders.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				userInterface.setMode(UserInterface.Mode.PLAN);
+			}
+		});
+		addView(lbOrders);
 }
 
 	@Override

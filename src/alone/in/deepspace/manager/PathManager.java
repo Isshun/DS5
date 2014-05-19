@@ -500,7 +500,7 @@ public class PathManager {
 	public static PathManager getInstance() {
 		if (sSelf == null) {
 			sSelf = new PathManager();
-			sSelf.init();
+			//sSelf.init();
 		}
 		return sSelf;
 	}
@@ -509,6 +509,10 @@ public class PathManager {
 		long sum = getSum(startX, startY, toX, toY);
 		Log.info("blocked: " + (_pool.get(sum) != null && _pool.get(sum).blocked));
 		return _pool.get(sum) != null && _pool.get(sum).blocked;
+	}
+
+	public void close() {
+		_threadPool.shutdownNow();		
 	}
 
 	// TODO Auto-generated method stub

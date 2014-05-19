@@ -7,10 +7,8 @@ public class StorageItem extends UserItem {
 
 	private List<BaseItem>	_items;
 	
-	public StorageItem() {
-		
-		// TODO
-		super(new ItemInfo());
+	public StorageItem(ItemInfo info) {
+		super(info);
 		
 		_items = new ArrayList<BaseItem>();
 	}

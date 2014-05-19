@@ -46,6 +46,7 @@ public class PanelBuild extends UserSubInterface {
 	private TextView 					_lbStructure;
 	protected ItemInfo 					_currentSelected;
 	protected Mode 						_mode;
+	private int							_startY;
 
 	public PanelBuild(RenderWindow app, int tileIndex, UserInteraction interaction) throws IOException {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
@@ -57,11 +58,6 @@ public class PanelBuild extends UserSubInterface {
 		_panelModeHover = Mode.BUILD_STRUCTURE;
 		_mode = Mode.NONE;
 
-//		_lbStructure = new TextView(new Vector2f(140, 32));
-//		_lbStructure.setString("Structure");
-//		_lbStructure.setCharacterSize(20);
-//		_lbStructure.setPosition(new Vector2f(20, 20));
-//		addView(_lbStructure);
 //
 //		TextView lbQuarter = new TextView(new Vector2f(140, 32));
 //		lbQuarter.setString("Quarter");
@@ -95,60 +91,55 @@ public class PanelBuild extends UserSubInterface {
 	}
 
 	protected void	drawPanel() {
+		clearAllViews();
+		_icons.clear();
+		
+		TextView lbUp = new TextView(new Vector2f(140, 32));
+		lbUp.setString("UP");
+		lbUp.setCharacterSize(20);
+		lbUp.setPosition(new Vector2f(20, 20));
+		lbUp.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				_startY -= 400;
+				drawPanel();
+			}
+		});
+		addView(lbUp);
 
-		//	  Text text = new Text();
-		//	  text.setFont(SpriteManager.getInstance().getFont());
-		//
-		//	  // Header structure
-		//	  text.setString("Structure");
-		//	  text.setCharacterSize(TITLE_SIZE);
-		//	  text.setPosition(_posX + Constant.UI_PADDING, _posY + Constant.UI_PADDING);
-		//	  if (_panelModeHover == Mode.MODE_STRUCTURE) {
-		//		text.setStyle(Text.UNDERLINED);
-		//		text.setColor(Color.YELLOW);
-		//		_app.draw(text);
-		//	  }
-		//	  text.setColor(Color.WHITE);
-		//	  text.setStyle(Text.REGULAR);
-		//	  _app.draw(text);
-		//	  text.setString(_panelMode == Mode.MODE_STRUCTURE ? "Structure" : "S");
-		//	  text.setStyle(Text.UNDERLINED);
-		//	  text.setColor(Color.YELLOW);
-		//	  _app.draw(text);
-		//
-		//	  // Header item
-		//	  text.setString("Items");
-		//	  text.setCharacterSize(TITLE_SIZE);
-		//	  text.setPosition(_posX + 200 + Constant.UI_PADDING, _posY + Constant.UI_PADDING);
-		//	  if (_panelModeHover == Mode.MODE_ITEM) {
-		//		text.setStyle(Text.UNDERLINED);
-		//		text.setColor(Color.YELLOW);
-		//		_app.draw(text);
-		//	  }
-		//	  text.setColor(Color.WHITE);
-		//	  text.setStyle(Text.REGULAR);
-		//	  _app.draw(text);
-		//	  text.setString(_panelMode == Mode.MODE_ITEM ? "Items" : "I");
-		//	  text.setStyle(Text.UNDERLINED);
-		//	  text.setColor(Color.YELLOW);
-		//	  _app.draw(text);
+		TextView lbDown = new TextView(new Vector2f(140, 32));
+		lbDown.setString("DOWN");
+		lbDown.setCharacterSize(20);
+		lbDown.setPosition(new Vector2f(200, 20));
+		lbDown.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				_startY += 400;
+				drawPanel();
+			}
+		});
+		addView(lbDown);
 
 		try {
 
 			// TODO
-			int posY = 0;
+			int posY = _startY + 64;
 			List<CategoryInfo> categories = ServiceManager.getData().categories;
 			for (CategoryInfo category: categories) {
-				TextView lbQuarter = new TextView(new Vector2f(140, 32));
-				lbQuarter.setString(category.label);
-				lbQuarter.setCharacterSize(20);
-				lbQuarter.setPosition(new Vector2f(20, posY + 8));
-				addView(lbQuarter);
+				if (posY > 42) {
+					TextView lbQuarter = new TextView(new Vector2f(140, 32));
+					lbQuarter.setString(category.label);
+					lbQuarter.setCharacterSize(20);
+					lbQuarter.setPosition(new Vector2f(20, posY + 8));
+					addView(lbQuarter);
+				}
 				posY += 44;
-
+	
 				int i = -1;
 				for (ItemInfo info: category.items) {
-					drawIcon(posY, ++i, info);
+					if (posY > 42) {
+						drawIcon(posY, ++i, info);
+					}
 				}
 				posY += ((int)(i / 4) + 1) * 100;
 			}

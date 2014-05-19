@@ -33,21 +33,21 @@ public class ItemLoader {
 			try {
 				InputStream input = new FileInputStream(itemFile);
 			    Yaml yaml = new Yaml(new Constructor(ItemInfo.class));
-			    ItemInfo test = (ItemInfo)yaml.load(input);
-			    test.fileName = itemFile.getName().substring(0, itemFile.getName().length() - 4);
-			    test.packageName = packageName;
-			    test.name = test.packageName +  '.' + test.fileName;
-			    test.isWalkable = true;
-			    if (!test.isStructure && !test.isRessource) {
-			    	test.isUserItem = true;
+			    ItemInfo info = (ItemInfo)yaml.load(input);
+			    info.fileName = itemFile.getName().substring(0, itemFile.getName().length() - 4);
+			    info.packageName = packageName;
+			    info.name = info.packageName +  '.' + info.fileName;
+			    info.isWalkable = true;
+			    if (!info.isStructure && !info.isRessource) {
+			    	info.isUserItem = true;
 			    }
-			    items.add(test);
-			    System.out.println(" - load: " + test.name);
+			    items.add(info);
+			    System.out.println(" - load: " + info.name);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
-
+		
 	    System.out.println("items loaded: " + items.size());
 	    
 	    ServiceManager.getData().items.addAll(items);

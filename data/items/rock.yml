@@ -1,0 +1,10 @@
+label: Rock
+width: 1
+height: 1
+category: structure
+isRessource: true
+light: 0
+onMine:
+  produce: base.matter
+cost:
+  matter: 10

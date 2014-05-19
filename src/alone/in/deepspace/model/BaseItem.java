@@ -206,7 +206,7 @@ public class BaseItem {
 	}
 
 	// TODO: item
-	public boolean isFloor() { return getName().equals("base.floor"); }
+	public boolean isFloor() { return getName().equals("base.floor") || getName().equals("base.rock") || getName().equals("base.ground"); }
 
 	// TODO: item
 	public boolean isDoor() { return getName().equals("base.door"); }

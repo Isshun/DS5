@@ -16,6 +16,7 @@ import alone.in.deepspace.UserInterface.Panels.PanelCrew;
 import alone.in.deepspace.UserInterface.Panels.PanelDebug;
 import alone.in.deepspace.UserInterface.Panels.PanelInfo;
 import alone.in.deepspace.UserInterface.Panels.PanelJobs;
+import alone.in.deepspace.UserInterface.Panels.PanelPlan;
 import alone.in.deepspace.UserInterface.Panels.PanelResource;
 import alone.in.deepspace.UserInterface.Panels.PanelRoom;
 import alone.in.deepspace.UserInterface.Panels.PanelShortcut;
@@ -25,9 +26,9 @@ import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.ui.UIMessage;
 import alone.in.deepspace.manager.CharacterManager;
-import alone.in.deepspace.manager.UIEventManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.manager.UIEventManager;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Room;
@@ -52,6 +53,7 @@ public class UserInterface {
 	private UserInterfaceSecurity		_uiSecurity;
 	private CharacterManager        	_characteres;
 	private PanelCharacter  			_panelCharacter;
+	private PanelPlan					_panelPlan;
 	private PanelInfo					_panelInfo;
 	private PanelCrew					_uiCharacter;
 	private PanelBuild					_panelBuild;
@@ -79,7 +81,8 @@ public class UserInterface {
 		CHARACTER,
 		SCIENCE,
 		SECURITY,
-		ROOM
+		ROOM,
+		PLAN
 	}
 	
 	public void	onMouseMove(int x, int y) {
@@ -146,16 +149,17 @@ public class UserInterface {
 	    _viewport.startMove(x, y);
 	}
 	
-	public int getRelativePosX(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_SIZE); }
-	public int getRelativePosY(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_SIZE); }
-	public int getRelativePosXMax(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMinScale() / Constant.TILE_SIZE); }
-	public int getRelativePosYMax(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMinScale() / Constant.TILE_SIZE); }
-	public int getRelativePosXMin(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_SIZE); }
-	public int getRelativePosYMin(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_SIZE); }
+	public int getRelativePosX(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
+	public int getRelativePosY(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
+	public int getRelativePosXMax(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMinScale() / Constant.TILE_WIDTH); }
+	public int getRelativePosYMax(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMinScale() / Constant.TILE_HEIGHT); }
+	public int getRelativePosXMin(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
+	public int getRelativePosYMin(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
 
 	public void setMode(Mode info) {
 		if (info != Mode.CHARACTER) _panelCharacter.setVisible(false);
 		if (info != Mode.INFO) 		_panelInfo.setVisible(false);
+		if (info != Mode.PLAN) 		_panelPlan.setVisible(false);
 		if (info != Mode.DEBUG) 	_panelDebug.setVisible(false);
 		if (info != Mode.BASE) 		_panelBase.setVisible(false);
 		if (info != Mode.BUILD) 	_panelBuild.setVisible(false);
@@ -170,6 +174,7 @@ public class UserInterface {
 		case BUILD: 	_panelBuild.toogle(); break;
 		case INFO: 		_panelInfo.toogle(); break;
 		case DEBUG: 	_panelDebug.toogle(); break;
+		case PLAN: 		_panelPlan.toogle(); break;
 		case CHARACTER: _panelCharacter.toogle(); break;
 		case BASE: 		_panelBase.toogle(); break;
 		case JOBS: 		_uiJobs.toogle(); break;
@@ -192,6 +197,7 @@ public class UserInterface {
 		_panelBase.refresh(_app);
 	    _panelInfo.refresh(_app);
 //	  	_panelDebug.refresh(, _interaction.getCursor().getX(), _interaction.getCursor().getY());
+	    _panelPlan.refresh(_app);
 	  	_panelDebug.refresh(_app);
 	  	_panelSystem.refresh(_app);
 	  	_panelShortcut.refresh(_app);
@@ -210,8 +216,7 @@ public class UserInterface {
 	  	_panelBuild.refresh(_app);
 	  	_uiJobs.refresh(_app);
 	  	
-		PanelBuild.Mode mode = _panelBuild.getMode();
-		if (mode != PanelBuild.Mode.NONE) {
+		if (_panelBuild.getMode() != PanelBuild.Mode.NONE || _panelPlan.getMode() != PanelPlan.Mode.NONE) {
 		  	if (_keyLeftPressed) {
 				  _interaction.drawCursor(Math.min(_keyPressPosX, _keyMovePosX),
 						Math.min(_keyPressPosY, _keyMovePosY),
@@ -374,6 +379,7 @@ public class UserInterface {
 		_panelCharacter = new PanelCharacter(app);
 		_panelInfo = new PanelInfo(app);
 		_panelDebug = new PanelDebug(app);
+		_panelPlan = new PanelPlan(app);
 		_panelSystem = new PanelSystem(app);
 		_panelSystem.setVisible(true);
 		_panelShortcut = new PanelShortcut(app, this);
@@ -426,6 +432,33 @@ public class UserInterface {
 	}
 
 	public void onLeftClick(int x, int y) {
+
+		// Plan gather
+		if (_panelPlan.getMode() == PanelPlan.Mode.GATHER) {
+			_interaction.planGather(
+					Math.min(_keyPressPosX, _keyMovePosX),
+					Math.min(_keyPressPosY, _keyMovePosY),
+					Math.max(_keyPressPosX, _keyMovePosX),
+					Math.max(_keyPressPosY, _keyMovePosY));
+		}
+
+		// Plan mining
+		if (_panelPlan.getMode() == PanelPlan.Mode.MINING) {
+			_interaction.planMining(
+					Math.min(_keyPressPosX, _keyMovePosX),
+					Math.min(_keyPressPosY, _keyMovePosY),
+					Math.max(_keyPressPosX, _keyMovePosX),
+					Math.max(_keyPressPosY, _keyMovePosY));
+		}
+
+		// Plan dump
+		if (_panelPlan.getMode() == PanelPlan.Mode.DUMP) {
+			_interaction.planDump(
+					Math.min(_keyPressPosX, _keyMovePosX),
+					Math.min(_keyPressPosY, _keyMovePosY),
+					Math.max(_keyPressPosX, _keyMovePosX),
+					Math.max(_keyPressPosY, _keyMovePosY));
+		}
 
 		// Remove item
 		if (_panelBuild.getMode() == PanelBuild.Mode.REMOVE_ITEM) {

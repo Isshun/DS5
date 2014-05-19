@@ -33,6 +33,8 @@ public class PanelCharacter extends UserSubInterface {
 	private TextView _lbJob;
 
 	private TextView _lbJob2;
+
+	private TextView[] _lbCarry;
 	
 	public PanelCharacter(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
@@ -73,6 +75,16 @@ public class PanelCharacter extends UserSubInterface {
 		_lbJob2.setColor(Color.WHITE);
 		_lbJob2.setPosition(new Vector2f(PADDING_H, PADDING_V + 432));
 		addView(_lbJob2);
+		
+		_lbCarry = new TextView[10];
+		for (int i = 0; i < 10; i++) {
+			_lbCarry[i] = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
+			_lbCarry[i].setCharacterSize(12);
+			_lbCarry[i].setColor(Color.WHITE);
+			_lbCarry[i].setPosition(new Vector2f(PADDING_H, PADDING_V + 464 + i * 28));
+			addView(_lbCarry[i]);
+		}
+
 	}
 
 	public void  setCharacter(Character character) {
@@ -198,6 +210,13 @@ public class PanelCharacter extends UserSubInterface {
 			  }
 		  }
 
+		  for (int i = 0; i < 10; i++) {
+			  if (_character.getCarried().size() > i) {
+				  _lbCarry[i].setString(_character.getCarried().get(i).getName());
+			  } else {
+				  _lbCarry[i].setString("");
+			  }
+		  }
 
 //	    // Name
 //	    Text text = new Text();

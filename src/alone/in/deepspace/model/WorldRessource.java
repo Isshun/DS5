@@ -1,6 +1,6 @@
 package alone.in.deepspace.model;
 
-public class WorldRessource extends BaseItem {
+public class WorldRessource extends UserItem {
 	private int		_type;
 	private int		_value;
 

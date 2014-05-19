@@ -31,6 +31,7 @@ import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.renderer.DebugRenderer;
 import alone.in.deepspace.engine.renderer.LightRenderer;
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.renderer.WorldRenderer;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.DynamicObjectManager;
@@ -43,25 +44,17 @@ import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
 
 public class Game implements ISavable {
-	public static int 				renderTime;
-	private RenderWindow			_app;
 	private int 					_lastInput;
 	private static int 				_frame;
+	private int 					_update;
 	private Viewport 				_viewport;
 	private UserInterface 			_ui;
-	private SpriteManager 			_spriteManager;
-	private WorldRenderer 			_worldRenderer;
-	private int 					_update;
 	private CharacterManager		_characterManager;
-	private Texture 				_backgroundTexture;
-	private Sprite 					_background;
 	private FoeManager 				_FoeManager;
 	private DynamicObjectManager	_dynamicObjectManager;
 	private int 					_lastLeftClick;
-	private MenuBase 				_menu;
-	private JNILight 				_jni;
-	private LightRenderer			_lightRenderer;
-	private DebugRenderer 			_debugRenderer;
+	private MainRenderer 			_mainRenderer;
+	private RenderWindow 			_app;
 
 	public static int getFrame() { return _frame; }
 	
@@ -72,35 +65,23 @@ public class Game implements ISavable {
 	public Game(RenderWindow app) throws IOException, TextureCreationException {
 		Log.debug("Game");
 
-		_app = app;
 		_lastInput = 0;
 		_frame = 0;
+		_app = app;
+		
 		_viewport = new Viewport(app);
+		
 		_ui = UserInterface.getInstance();
 		_ui.init(app, _viewport);
 
-		_spriteManager = SpriteManager.getInstance();
-		_worldRenderer = new WorldRenderer(app, _spriteManager, _ui);
-		ServiceManager.setWorldRenderer(_worldRenderer);
-		_lightRenderer = new LightRenderer(app);
-		ServiceManager.setLightRenderer(_lightRenderer);
-		_debugRenderer = new DebugRenderer(app);
 		_dynamicObjectManager = DynamicObjectManager.getInstance();
 
-		_jni = new JNILight();
-		
 		_update = 0;
 		_characterManager = ServiceManager.getCharacterManager();
 		_FoeManager = FoeManager.getInstance();
 
-		// Background
-		Log.debug("Game background");
-		_backgroundTexture = new Texture();
-		_backgroundTexture.loadFromFile((new File("res/background.png")).toPath());
-		_background = new Sprite();
-		_background.setTexture(_backgroundTexture);
-		_background.setTextureRect(new IntRect(0, 0, 1920, 1080));
-
+		_mainRenderer = new MainRenderer(app, _viewport, _ui);
+		
 		app.setKeyRepeatEnabled(true);
 		
 		Log.info("Game:\tdone");
@@ -214,56 +195,6 @@ public class Game implements ISavable {
 		}
 	}
 
-	void	onDraw(int animProgress, int rTime) throws IOException {
-		// Flush
-		_app.clear(new Color(0, 0, 50));
-		_frame++;
-		renderTime = rTime;
-
-		// Draw scene
-		draw_surface(animProgress);
-
-		Transform transform = new Transform();
-		transform = _viewport.getViewTransform(transform);
-		RenderStates render = new RenderStates(transform);
-
-		_characterManager.onDraw(_app, render, animProgress);
-		_FoeManager.onDraw(_app, render, animProgress);
-		_dynamicObjectManager.refresh(_app, render, animProgress);
-
-		_lightRenderer.onDraw(_app, render, animProgress);
-		
-		// Draw debug
-		if (Settings.getInstance().isDebug()) {
-			_debugRenderer.onDraw(_app, render, animProgress);
-		}
-
-
-		// User interface
-		_ui.refresh(_frame, _update, rTime);
-
-		if (_menu != null) {
-			_menu.refresh(_app);
-		}
-		
-//		_jni.helloJNI();
-		
-		//TODO
-		//srand(_seed + _frame++);
-	}
-	
-	void	draw_surface(int animProgress) {
-		// Background
-		Transform transform2 = new Transform();
-		RenderStates render2 = new RenderStates(_viewport.getViewTransformBackground(transform2));
-		_app.draw(_background, render2);
-
-		// Render transformation for viewport
-		Transform transform = new Transform();
-		RenderStates render = new RenderStates(_viewport.getViewTransform(transform));
-		_worldRenderer.onDraw(_app, render, animProgress);
-	}
-
 	public void onEvent(Event event) throws IOException {
 		if (event.type == Event.Type.MOUSE_MOVED) {
 			_ui.onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
@@ -370,8 +301,8 @@ public class Game implements ISavable {
 		RoomManager.getInstance().load(filePath);
 		JobManager.getInstance().load(filePath);
 		
-		_lightRenderer.initLight();
-		
+		_mainRenderer.init();
+
 		//JobManager.getInstance().move(ServiceManager.getCharacterManager().getList().get(0), 25, 14);
 	}
 
@@ -397,6 +328,27 @@ public class Game implements ISavable {
 		ServiceManager.getCharacterManager().save(filePath);
 		RoomManager.getInstance().save(filePath);
 		JobManager.getInstance().save(filePath);
+	}
+
+	public void onDraw(int animProgress, int renderTime) throws IOException {
+		_frame++;
+		
+		_mainRenderer.draw(_app, animProgress, renderTime);
+		
+		Transform transform = new Transform();
+		transform = _viewport.getViewTransform(transform);
+		RenderStates render = new RenderStates(transform);
+
+		_characterManager.onDraw(_app, render, animProgress);
+		_FoeManager.onDraw(_app, render, animProgress);
+		_dynamicObjectManager.refresh(_app, render, animProgress);
+
+		// User interface
+		_ui.refresh(_frame, _update, renderTime);
+
+//		if (_menu != null) {
+//			_menu.refresh(_app);
+//		}
 	}
 
 }

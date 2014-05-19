@@ -10,16 +10,12 @@ import alone.in.deepspace.Utils.ObjectPool;
 import alone.in.deepspace.manager.SpriteManager;
 
 public class DebugRenderer implements IRenderer {
-
-	private RenderWindow 	_app;
 	private RenderTexture 	_cache;
 
-	public DebugRenderer(RenderWindow app) {
-		_app = app;
-
+	public DebugRenderer() {
 		try {
 			_cache = new RenderTexture();
-			_cache.create(Constant.WORLD_WIDTH * Constant.TILE_SIZE, Constant.WORLD_HEIGHT * Constant.TILE_SIZE);
+			_cache.create(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
 			_cache.display();
 		} catch (TextureCreationException e) {
 			e.printStackTrace();

@@ -1,0 +1,9 @@
+label: Matter
+width: 1
+height: 1
+category: structure
+isStructure: true
+isRessource: true
+light: 0
+cost:
+  matter: 10

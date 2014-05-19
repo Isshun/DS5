@@ -14,10 +14,11 @@ import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.model.Job.Abort;
+import alone.in.deepspace.model.WorldRessource;
 
 public class JobManager implements ISavable {
 	public enum Action {
-		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY, WORK
+		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY, WORK, MINING
 	}
 
 	private static JobManager	sSelf;
@@ -244,6 +245,21 @@ public class JobManager implements ISavable {
 			}
 		}
 
+		// Ressource
+		else if (info.isRessource) {
+			BaseItem currentItem = ServiceManager.getWorldMap().getItem(x, y);
+			BaseItem currentRessource = ServiceManager.getWorldMap().getRessource(x, y);
+			if (currentRessource != null && currentRessource.getInfo().equals(info)) {
+				Log.error("Build item: already exist on this area");
+				return null;
+			} else if (currentItem != null) {
+				Log.error("JobManager: add build on non null item");
+				return null;
+			} else {
+				item = ServiceManager.getWorldMap().putItem(info, x, y);
+			}
+		}
+
 		return build(item);
 	}
 
@@ -436,6 +452,7 @@ public class JobManager implements ISavable {
 		case STORE: 	return "store";
 		case WORK: 		return "work";
 		case DESTROY:	return "destroy";
+		case MINING:	return "mine";
 		}
 		return null;
 	}
@@ -452,14 +469,16 @@ public class JobManager implements ISavable {
 		_jobs.clear();
 	}
 
-	public void storeItem(UserItem item) {
+	public Job storeItem(BaseItem item) {
 		Job job = new Job(++_id, item.getX(), item.getY());
 		job.setAction(JobManager.Action.STORE);
 		job.setItem(item);
 		addJob(job);
+		
+		return job;
 	}
 
-	public void destroyItem(UserItem item) {
+	public void destroyItem(BaseItem item) {
 		Job job = new Job(++_id, item.getX(), item.getY());
 		job.setAction(JobManager.Action.DESTROY);
 		job.setItem(item);
@@ -479,6 +498,14 @@ public class JobManager implements ISavable {
 	}
 
 	public Job createRoutineJob(Character c) {
+		
+		// Character has item to store
+		if (c.getCarried().size() > 0) {
+			// TODO
+			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
+			return storeItem(ServiceManager.getWorldMap().getNearest(info, c.getPosX(), c.getPosY()));
+		}
+		
 		BaseItem bestItem = null;
 		int bestDistance = Integer.MAX_VALUE;
 		
@@ -510,6 +537,66 @@ public class JobManager implements ISavable {
 
 	public void addRoutineItem(BaseItem item) {
 		_routineItems.add(item);
+	}
+
+	public Job createGatherJob(int x, int y) {
+		WorldRessource res = ServiceManager.getWorldMap().getRessource(x, y);
+		if (res == null) {
+			return null;
+		}
+		
+		// Resource is not gatherable
+		if (res.getInfo().onGather == null) {
+			return null;
+		}
+		
+		Job job = new Job(++_id, res.getX(), res.getY());
+		job.setAction(JobManager.Action.GATHER);
+		job.setItem(res);
+
+		addJob(job);
+		
+		return job;
+	}
+
+	public Job createMiningJob(int x, int y) {
+		WorldRessource res = ServiceManager.getWorldMap().getRessource(x, y);
+		if (res == null) {
+			return null;
+		}
+		
+		// Resource is not minable
+		if (res.getInfo().onMine == null) {
+			return null;
+		}
+		
+		Job job = new Job(++_id, res.getX(), res.getY());
+		job.setAction(JobManager.Action.MINING);
+		job.setItem(res);
+
+		addJob(job);
+		
+		return job;
+	}
+
+	public Job createDumpJob(int x, int y) {
+		UserItem item = ServiceManager.getWorldMap().getItem(x, y);
+		if (item == null) {
+			return null;
+		}
+		
+		Job job = new Job(++_id, item.getX(), item.getY());
+		job.setAction(JobManager.Action.GATHER);
+		job.setItem(item);
+
+		addJob(job);
+		
+		return job;
+	}
+
+	public Job createStoreJob() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

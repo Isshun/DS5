@@ -23,7 +23,8 @@ public class Constant {
 	public static final int UI_PADDING				= 10;
 	public static final int UI_FONT_SIZE			= 32;
 
-	public static final int TILE_SIZE				= 32;
+	public static final int TILE_WIDTH				= 32;
+	public static final int TILE_HEIGHT				= 32;
 
 	public static final int CHAR_HEIGHT				= 48;
 	public static final int CHAR_WIDTH				= 32;
