@@ -33,6 +33,7 @@ public class Movable implements PathManagerCallback {
 		  _id = id;
 		  _posY = _toX = y;
 		  _posX = _toY = x;
+		  _points = new HashMap<Integer, Integer>();
 		  _frameIndex = (int) (Math.random() * 1000 % 20);
 	}
 	
@@ -48,8 +49,9 @@ public class Movable implements PathManagerCallback {
 	public void	onPathComplete(Vector<Position> path, Job job) {
 	  Log.debug("Charactere #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
 	  
-//	  compute(_posX, _posY, _toX, _toY);
-	  compute(10, 10, 20, 20);
+	  System.out.println(_posX + ", " + _posY + " to " + _toX + ", " + _toY);
+	  compute(_posX, _posY, _toX, _toY);
+//	  compute(10, 10, 20, 14);
 	
 	  if (path.size() == 0) {
 		sendEvent(CharacterNeeds.Message.MSG_BLOCKED);
@@ -107,14 +109,30 @@ public class Movable implements PathManagerCallback {
 	}
 
 	private void compute(int fromX, int fromY, int toX, int toY) {
-		int offsetX = (int)((toX - fromX));
-		int offsetY = (int)((toY - fromY));
+		_points.clear();
 		
-		double x = offsetX / 2 + fromX + offsetY;
-		double y = offsetY / 2 + fromY - offsetX;
+		int offsetX = (int)(toX - fromX);
+		int offsetY = (int)(toY - fromY);
+		
+		int centerX = fromX + (toX - fromX) / 2;
+		int centerY = fromY + (toY - fromY) / 2;
+		
+		double x = 0;
+		if (fromY > toY) {
+			x = centerX + offsetY;
+		} else {
+			x = centerX - offsetY;
+		}
+		
+		double y = 0; 
+		if (fromX > toX) {
+			y = centerY + offsetX;
+		} else {
+			y = centerY - offsetX;
+		}
 
 		double x2 = offsetX / 2 + fromX - offsetY;
-		double y2 = offsetY / 2 + fromY + offsetX;
+		double y2 = offsetY / 2 + fromY - offsetX;
 		
 		System.out.println("-------------------");
 		System.out.println("from: " + fromX + " x " + fromY);
@@ -142,48 +160,42 @@ public class Movable implements PathManagerCallback {
 
 		double r = Math.sqrt(Math.pow(Math.abs(x - fromX), 2) + Math.pow(Math.abs(y - fromY), 2));
 
-		{
-			double radOffsetX = (x - fromX)/r;
-			double radOffsetY = (y - fromY)/r;
-			double rad1 = Math.acos(radOffsetX);
-			double rad2 = Math.asin(radOffsetY);
+			double rad2OffsetX = (x - fromX)/r;
+			double rad2OffsetY = (y - fromY)/r;
+			double rad2 = Math.acos((rad2OffsetX));
+			//double rad2 = Math.asin(rad2OffsetY);
 			
 //			sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
 //			sprite.setPosition((int)(x+radOffsetX*r)*32, (int)((y+radOffsetY*r)*32));
 //			app.draw(sprite, render);
 			
-			System.out.println("r: " + r);
-			System.out.println("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
-			System.out.println("rad: " + radOffsetX + " x " + radOffsetY + " = " + rad1 + " x " + rad2 + " -> " + (rad1 - rad2));
-		}
+//			System.out.println("r: " + r);
+//			System.out.println("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
+			System.out.println("rad: " + rad2OffsetX + " x " + rad2OffsetY + " = " + rad2 + " x " + rad2);
 		
-		{
-			double radOffsetX = (x - toX)/r;
-			double radOffsetY = (y - toY)/r;
-			double rad1 = Math.acos(radOffsetX);
-			double rad2 = Math.asin(radOffsetY);
+			double rad1OffsetX = (x - toX)/r;
+			double rad1OffsetY = (y - toY)/r;
+			double rad1 = Math.acos((rad1OffsetX));
+			//double rad2 = Math.asin(radOffsetY);
 			
 //			sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
 //			sprite.setPosition((int)(x+radOffsetX*r)*32, (int)((y+radOffsetY*r)*32));
 //			app.draw(sprite, render);
-
-			System.out.println("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
-			System.out.println("rad: " + radOffsetX + " x " + radOffsetY + " = " + rad1 + " x " + rad2 + " -> " + (rad1 - rad2));
-		}
+//
+//			System.out.println("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
+			System.out.println("rad: " + rad1OffsetX + " x " + rad1OffsetY + " = " + rad1 + " x " + rad1);
 		
 		
-		if (_points == null) {
-			_points = new HashMap<Integer, Integer>();
-			double from = Math.min(Math.PI-0.72, Math.PI-1.65);
-			double to = Math.max(Math.PI-0.72, Math.PI-1.65);
-			for (double i = from; i < to; i += 0.001) {
+		double from = Math.min(Math.PI-rad1, Math.PI-rad2);
+		double to = Math.max(Math.PI-rad1, Math.PI-rad2);
+		for (double i = from; i < to; i += 0.001) {
 //				sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
 //				sprite.setPosition((int)(x*32 + Math.cos(i)*r*32), (int)(y*32 + Math.sin(i)*r*32));
 //				app.draw(sprite, render);
-				
-				//_points.add(new Position((float)(x*32 + Math.cos(i)*r*32), (float)(y*32 + Math.sin(i)*r*32)));
-				_points.put((int)(x*32 + Math.cos(i)*r*32), (int)(y*32 + Math.sin(i)*r*32));
-			}
+			
+			//_points.add(new Position((float)(x*32 + Math.cos(i)*r*32), (float)(y*32 + Math.sin(i)*r*32)));
+//			System.out.println("x: " + x*32 + ", y: " + y);
+			_points.put((int)(x*32 + Math.cos(i)*r*32), (int)(y*32 + Math.sin(i)*r*32));
 		}
 
 		//System.exit(0);
@@ -193,7 +205,7 @@ public class Movable implements PathManagerCallback {
 		if (_points != null && _points.get(posX) != null) {
 			_lastY = _points.get(posX);
 		}
-		return _lastY * Constant.TILE_HEIGHT;
+		return _lastY;
 	}
 
 	protected void  addMessage(CharacterNeeds.Message msgBlocked, int count) {

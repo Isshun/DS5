@@ -676,9 +676,9 @@ public class Character extends Movable {
 		if (_posX != _toX || _posY != _toY) {
 			
 			// TODO
-			if (_path == null) {
-				PathManager.getInstance().getPathAsync(this, _job);
-			}
+//			if (_path == null) {
+//				PathManager.getInstance().getPathAsync(this, _job);
+//			}
 			return;
 		}
 

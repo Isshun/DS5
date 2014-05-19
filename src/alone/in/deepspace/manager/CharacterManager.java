@@ -41,9 +41,6 @@ public class CharacterManager implements ISavable {
 	private int 					_count;
 	private Sprite 					_selection;
 
-	private HashMap<Integer, Integer> _points;
-	private int _lastY;
-
 	public CharacterManager() throws IOException {
 		Log.debug("CharacterManager");
 
@@ -202,14 +199,13 @@ public class CharacterManager implements ISavable {
 			c.move();
 			
 			if (c.getJob() == null) {
-				if (c.getPosX() == 10 && c.getPosY() == 10) {
+				if (c.getPosX() == 30 && c.getPosY() == 10) {
 					Job job = JobManager.getInstance().createMovingJob(20, 14);
 					c.setJob(job);
 				} else {
-					Job job = JobManager.getInstance().createMovingJob(10, 10);
+					Job job = JobManager.getInstance().createMovingJob(30, 10);
 					c.setJob(job);
 				}
-				compute(null, null, 10, 10, 20, 14);
 			}
 
 			if (count % 10 == 0) {
@@ -217,90 +213,6 @@ public class CharacterManager implements ISavable {
 			}
 		}
 	}
-
-	private void compute(RenderWindow app, RenderStates render, int fromX, int fromY, int toX, int toY) {
-		int offsetX = (int)((toX - fromX));
-		int offsetY = (int)((toY - fromY));
-		
-		double x = offsetX / 2 + fromX + offsetY;
-		double y = offsetY / 2 + fromY - offsetX;
-
-		double x2 = offsetX / 2 + fromX - offsetY;
-		double y2 = offsetY / 2 + fromY + offsetX;
-		
-		System.out.println("-------------------");
-		System.out.println("from: " + fromX + " x " + fromY);
-		System.out.println("to: " + toX + " x " + toY);
-		System.out.println("offset: " + offsetX + " x " + offsetY);
-		System.out.println("point: " + x + " x " + y);
-
-//		Sprite sprite = null;
-//		
-//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.chair"));
-//		sprite.setPosition((int)(fromX * 32), (int)(fromY * 32));
-//		app.draw(sprite, render);
-//		
-//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.chair"));
-//		sprite.setPosition((int)(toX * 32), (int)(toY * 32));
-//		app.draw(sprite, render);
-//
-//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
-//		sprite.setPosition((int)(x * 32), (int)(y * 32));
-//		app.draw(sprite, render);
-//		
-//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
-//		sprite.setPosition((int)(x2 * 32), (int)(y2 * 32));
-//		app.draw(sprite, render);
-
-		double r = Math.sqrt(Math.pow(Math.abs(x - fromX), 2) + Math.pow(Math.abs(y - fromY), 2));
-
-		{
-			double radOffsetX = (x - fromX)/r;
-			double radOffsetY = (y - fromY)/r;
-			double rad1 = Math.acos(radOffsetX);
-			double rad2 = Math.asin(radOffsetY);
-			
-//			sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
-//			sprite.setPosition((int)(x+radOffsetX*r)*32, (int)((y+radOffsetY*r)*32));
-//			app.draw(sprite, render);
-			
-			System.out.println("r: " + r);
-			System.out.println("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
-			System.out.println("rad: " + radOffsetX + " x " + radOffsetY + " = " + rad1 + " x " + rad2 + " -> " + (rad1 - rad2));
-		}
-		
-		{
-			double radOffsetX = (x - toX)/r;
-			double radOffsetY = (y - toY)/r;
-			double rad1 = Math.acos(radOffsetX);
-			double rad2 = Math.asin(radOffsetY);
-			
-//			sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
-//			sprite.setPosition((int)(x+radOffsetX*r)*32, (int)((y+radOffsetY*r)*32));
-//			app.draw(sprite, render);
-
-			System.out.println("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
-			System.out.println("rad: " + radOffsetX + " x " + radOffsetY + " = " + rad1 + " x " + rad2 + " -> " + (rad1 - rad2));
-		}
-		
-		
-		if (_points == null) {
-			_points = new HashMap<Integer, Integer>();
-			double from = Math.min(Math.PI-0.72, Math.PI-1.65);
-			double to = Math.max(Math.PI-0.72, Math.PI-1.65);
-			for (double i = from; i < to; i += 0.001) {
-//				sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
-//				sprite.setPosition((int)(x*32 + Math.cos(i)*r*32), (int)(y*32 + Math.sin(i)*r*32));
-//				app.draw(sprite, render);
-				
-				//_points.add(new Position((float)(x*32 + Math.cos(i)*r*32), (float)(y*32 + Math.sin(i)*r*32)));
-				_points.put((int)(x*32 + Math.cos(i)*r*32), (int)(y*32 + Math.sin(i)*r*32));
-			}
-		}
-
-		//System.exit(0);
-	}
-
 
 	// TODO: heavy
 	public Character        getCharacterAtPos(int x, int y) {
@@ -468,10 +380,7 @@ public class CharacterManager implements ISavable {
 
 			Sprite sprite = SpriteManager.getInstance().getCharacter(profession, dirIndex, frame);
 
-			if (_points != null && _points.get(posX) != null) {
-				_lastY = _points.get(posX);
-			}
-			sprite.setPosition(posX, _lastY);
+			sprite.setPosition(posX, c.getSmoothY(posX));
 			//		if (c.getNeeds().isSleeping()) {
 			//		  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
 			//	 	} else if (direction == Character.Direction.DIRECTION_NONE) {
