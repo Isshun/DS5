@@ -2,5 +2,7 @@ name: biobed
 label: Biobed
 width: 1
 height: 2
+onAction:
+  tile: 1
 cost:
   matter: 42

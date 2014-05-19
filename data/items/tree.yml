@@ -1,6 +1,6 @@
 name: tree
 label: Tree
 width: 1
-height: 1
+height: 2
 cost:
   matter: 5

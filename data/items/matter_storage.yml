@@ -1,0 +1,6 @@
+label: Matter storage
+width: 2
+height: 3
+category: system
+cost:
+  matter: 42

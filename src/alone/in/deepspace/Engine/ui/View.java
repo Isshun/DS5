@@ -1,4 +1,4 @@
-package alone.in.deepspace.Engine.ui;
+package alone.in.deepspace.engine.ui;
 
 import java.awt.Rectangle;
 
@@ -8,9 +8,8 @@ import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Engine.renderer.MainRenderer;
-import alone.in.deepspace.UserInterface.EventManager;
-import alone.in.deepspace.UserInterface.OnFocusListener;
+import alone.in.deepspace.engine.renderer.MainRenderer;
+import alone.in.deepspace.manager.UIEventManager;
 
 public abstract class View {
 	protected Vector2f 		_pos;
@@ -58,12 +57,12 @@ public abstract class View {
 	
 	public void setOnClickListener(OnClickListener onClickListener) {
 		_onClickListener = onClickListener;
-		EventManager.getInstance().setOnClickListener(this, onClickListener);
+		UIEventManager.getInstance().setOnClickListener(this, onClickListener);
 	}
 
 	public void setOnFocusListener(OnFocusListener onFocusListener) {
 		_onFocusListener = onFocusListener;
-		EventManager.getInstance().setOnFocusListener(this, onFocusListener);
+		UIEventManager.getInstance().setOnFocusListener(this, onFocusListener);
 	}
 
 	public void click() {

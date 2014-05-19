@@ -1,4 +1,4 @@
-package alone.in.deepspace.Engine.renderer;
+package alone.in.deepspace.engine.renderer;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,17 +18,17 @@ import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
-import alone.in.deepspace.Character.ServiceManager;
-import alone.in.deepspace.Managers.RoomManager;
-import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.Room;
-import alone.in.deepspace.Models.StructureItem;
-import alone.in.deepspace.Models.WorldArea;
-import alone.in.deepspace.Models.WorldRessource;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.manager.RoomManager;
+import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.manager.SpriteManager;
+import alone.in.deepspace.model.BaseItem;
+import alone.in.deepspace.model.Room;
+import alone.in.deepspace.model.StructureItem;
+import alone.in.deepspace.model.WorldArea;
+import alone.in.deepspace.model.WorldRessource;
 
 public class WorldRenderer implements IRenderer {
 	private SpriteManager			_spriteManager;
@@ -267,8 +267,10 @@ public class WorldRenderer implements IRenderer {
 							
 							if (item.isWindow()) {
 								sprite = SpriteManager.getInstance().getIcon(item.getInfo());
-								sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-								_textureCache.draw(sprite);
+								if (sprite != null) {
+									sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+									_textureCache.draw(sprite);
+								}
 							}
 						}
 					}

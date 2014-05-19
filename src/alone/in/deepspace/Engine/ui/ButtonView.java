@@ -1,4 +1,4 @@
-package alone.in.deepspace.Engine.ui;
+package alone.in.deepspace.engine.ui;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
@@ -8,7 +8,7 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Managers.SpriteManager;
+import alone.in.deepspace.manager.SpriteManager;
 
 public class ButtonView extends View {
 

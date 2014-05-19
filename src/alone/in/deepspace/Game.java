@@ -22,25 +22,25 @@ import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.event.Event;
 import org.jsfml.window.event.MouseButtonEvent;
 
-import alone.in.deepspace.Character.CharacterManager;
-import alone.in.deepspace.Character.ServiceManager;
-import alone.in.deepspace.Engine.ISavable;
-import alone.in.deepspace.Engine.Viewport;
-import alone.in.deepspace.Engine.renderer.DebugRenderer;
-import alone.in.deepspace.Engine.renderer.LightRenderer;
-import alone.in.deepspace.Engine.renderer.WorldRenderer;
-import alone.in.deepspace.Managers.DynamicObjectManager;
-import alone.in.deepspace.Managers.FoeManager;
-import alone.in.deepspace.Managers.JobManager;
-import alone.in.deepspace.Managers.ResourceManager;
-import alone.in.deepspace.Managers.RoomManager;
-import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.UserInterface.EventManager;
 import alone.in.deepspace.UserInterface.MenuBase;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.Utils.Settings;
+import alone.in.deepspace.engine.ISavable;
+import alone.in.deepspace.engine.Viewport;
+import alone.in.deepspace.engine.renderer.DebugRenderer;
+import alone.in.deepspace.engine.renderer.LightRenderer;
+import alone.in.deepspace.engine.renderer.WorldRenderer;
+import alone.in.deepspace.manager.CharacterManager;
+import alone.in.deepspace.manager.DynamicObjectManager;
+import alone.in.deepspace.manager.UIEventManager;
+import alone.in.deepspace.manager.FoeManager;
+import alone.in.deepspace.manager.JobManager;
+import alone.in.deepspace.manager.ResourceManager;
+import alone.in.deepspace.manager.RoomManager;
+import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.manager.SpriteManager;
 
 public class Game implements ISavable {
 	public static int 				renderTime;
@@ -267,7 +267,7 @@ public class Game implements ISavable {
 	public void onEvent(Event event) throws IOException {
 		if (event.type == Event.Type.MOUSE_MOVED) {
 			_ui.onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
-			EventManager.getInstance().onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
+			UIEventManager.getInstance().onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
 		}
 
 		if (event.type == Event.Type.MOUSE_BUTTON_PRESSED || event.type == Event.Type.MOUSE_BUTTON_RELEASED) {
@@ -277,7 +277,7 @@ public class Game implements ISavable {
 					_ui.onLeftPress(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
 				} else {
 					// Is consume by EventManager
-					if (EventManager.getInstance().leftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y)) {
+					if (UIEventManager.getInstance().leftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y)) {
 						// Nothing to do !
 					}
 					// Is double click

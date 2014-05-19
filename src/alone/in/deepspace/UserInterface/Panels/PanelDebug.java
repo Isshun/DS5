@@ -6,17 +6,17 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Character.Profession;
-import alone.in.deepspace.Character.ServiceManager;
-import alone.in.deepspace.Engine.ui.OnClickListener;
-import alone.in.deepspace.Engine.ui.TextView;
-import alone.in.deepspace.Engine.ui.View;
-import alone.in.deepspace.Managers.JobManager;
-import alone.in.deepspace.Managers.ResourceManager;
-import alone.in.deepspace.Models.StructureItem;
-import alone.in.deepspace.Models.UserItem;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.engine.ui.OnClickListener;
+import alone.in.deepspace.engine.ui.TextView;
+import alone.in.deepspace.engine.ui.View;
+import alone.in.deepspace.manager.JobManager;
+import alone.in.deepspace.manager.ResourceManager;
+import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.Profession;
+import alone.in.deepspace.model.StructureItem;
+import alone.in.deepspace.model.UserItem;
 
 public class PanelDebug extends UserSubInterface {
 

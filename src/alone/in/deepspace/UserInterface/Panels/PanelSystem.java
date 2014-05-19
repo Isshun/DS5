@@ -8,9 +8,9 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.Main;
-import alone.in.deepspace.Engine.ui.TextView;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.engine.ui.TextView;
 
 public class PanelSystem extends UserSubInterface {
 	private static final int FRAME_WIDTH = Constant.WINDOW_WIDTH;

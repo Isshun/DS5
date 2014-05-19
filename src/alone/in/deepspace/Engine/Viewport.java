@@ -1,4 +1,4 @@
-package alone.in.deepspace.Engine;
+package alone.in.deepspace.engine;
 
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;

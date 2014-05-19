@@ -1,4 +1,4 @@
-package alone.in.deepspace.Engine.ui;
+package alone.in.deepspace.engine.ui;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderStates;
@@ -6,7 +6,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Managers.SpriteManager;
+import alone.in.deepspace.manager.SpriteManager;
 
 public class TextView extends View {
 

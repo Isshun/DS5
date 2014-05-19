@@ -6,10 +6,10 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Engine.ui.TextView;
-import alone.in.deepspace.Managers.ResourceManager;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.engine.ui.TextView;
+import alone.in.deepspace.manager.ResourceManager;
 
 public class PanelResource extends UserSubInterface {
 	private static final int FRAME_WIDTH = Constant.PANEL_WIDTH;

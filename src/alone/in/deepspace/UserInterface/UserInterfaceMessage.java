@@ -6,7 +6,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Engine.ui.TextView;
+import alone.in.deepspace.engine.ui.TextView;
 
 public class UserInterfaceMessage extends UserSubInterface {
 

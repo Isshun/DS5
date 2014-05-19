@@ -11,15 +11,15 @@ import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
-import alone.in.deepspace.Character.GameData;
-import alone.in.deepspace.Character.ServiceManager;
-import alone.in.deepspace.Engine.loader.CategoryLoader;
-import alone.in.deepspace.Engine.loader.ItemLoader;
-import alone.in.deepspace.Engine.renderer.MainRenderer;
-import alone.in.deepspace.Models.ItemInfo;
 import alone.in.deepspace.UserInterface.MenuBase;
 import alone.in.deepspace.UserInterface.MenuLoad;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.engine.loader.CategoryLoader;
+import alone.in.deepspace.engine.loader.ItemLoader;
+import alone.in.deepspace.engine.renderer.MainRenderer;
+import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.GameData;
+import alone.in.deepspace.model.ItemInfo;
 
 public class Main {
 
@@ -39,12 +39,6 @@ public class Main {
 		ServiceManager.setData(new GameData());
 		
 		ServiceManager.getData().items = new ArrayList<ItemInfo>();
-	    
-	    ItemInfo roomInfo = new ItemInfo();
-	    roomInfo.name = "base.room";
-	    roomInfo.label = "Room";
-	    roomInfo.category = "structure";
-	    ServiceManager.getData().items.add(roomInfo);
 
 		ItemLoader.load("data/items/", "base");
 		ItemLoader.load("mods/garden/items/", "garden");

@@ -1,13 +1,13 @@
-package alone.in.deepspace.Engine.renderer;
+package alone.in.deepspace.engine.renderer;
 
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderTexture;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.graphics.TextureCreationException;
-import alone.in.deepspace.Managers.SpriteManager;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.ObjectPool;
+import alone.in.deepspace.manager.SpriteManager;
 
 public class DebugRenderer implements IRenderer {
 

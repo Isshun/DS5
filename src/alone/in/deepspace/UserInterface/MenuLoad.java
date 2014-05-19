@@ -10,10 +10,10 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.OnLoadListener;
-import alone.in.deepspace.Engine.ui.OnClickListener;
-import alone.in.deepspace.Engine.ui.TextView;
-import alone.in.deepspace.Engine.ui.View;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.engine.ui.OnClickListener;
+import alone.in.deepspace.engine.ui.TextView;
+import alone.in.deepspace.engine.ui.View;
 
 public class MenuLoad extends MenuBase {
 	private static final int 	FRAME_WIDTH = 640;

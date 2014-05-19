@@ -1,0 +1,12 @@
+label: Main computer
+width: 5
+height: 2
+light: 10
+category: system
+onAction:
+  posX: 4
+  posY: 3
+cost:
+  matter: 42
+  power: 10
+  o2: 100

@@ -6,15 +6,15 @@ import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Character.Character;
-import alone.in.deepspace.Character.CharacterNeeds;
-import alone.in.deepspace.Engine.ui.TextView;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.engine.ui.TextView;
+import alone.in.deepspace.model.Character;
+import alone.in.deepspace.model.CharacterNeeds;
 
 
 public class PanelCharacter extends UserSubInterface {
-	private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "Sleep"};
+	private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "Sleep", "Work"};
 
 	private static final int PADDING_V = 34;
 	private static final int PADDING_H = 16;
@@ -28,7 +28,11 @@ public class PanelCharacter extends UserSubInterface {
 	private static final int FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	
-	private RectangleShape[] _shapes = new RectangleShape[11];
+	private RectangleShape[] _shapes = new RectangleShape[12];
+
+	private TextView _lbJob;
+
+	private TextView _lbJob2;
 	
 	public PanelCharacter(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
@@ -49,13 +53,26 @@ public class PanelCharacter extends UserSubInterface {
 		_lbProfession.setPosition(new Vector2f(PADDING_H, PADDING_V + LINE_HEIGHT));
 		addView(_lbProfession);
 		
-	    for (int i = 0; i < 11; i++) {
+	    for (int i = 0; i < 12; i++) {
 	      addGauge(PADDING_H + 180 * (i % 2),
 	               32 + 50 * (i / 2) + (FONT_SIZE + 16) + PADDING_V,
 	               160,
 	               12,
 	               i);
 	    }
+	    
+
+		_lbJob = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
+		_lbJob.setCharacterSize(FONT_SIZE);
+		_lbJob.setColor(Color.WHITE);
+		_lbJob.setPosition(new Vector2f(PADDING_H, PADDING_V + 400));
+		addView(_lbJob);
+	    
+		_lbJob2 = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
+		_lbJob2.setCharacterSize(12);
+		_lbJob2.setColor(Color.WHITE);
+		_lbJob2.setPosition(new Vector2f(PADDING_H, PADDING_V + 432));
+		addView(_lbJob2);
 	}
 
 	public void  setCharacter(Character character) {
@@ -151,7 +168,7 @@ public class PanelCharacter extends UserSubInterface {
 	  if (_character != null) {
 
 		  CharacterNeeds needs = _character.getNeeds();
-		  for (int i = 0; i < 11; i++) {
+		  for (int i = 0; i < 12; i++) {
 
 		      int value = 0;
 		      switch (i) {
@@ -166,10 +183,19 @@ public class PanelCharacter extends UserSubInterface {
 			  case 8: value = Math.min(Math.max(needs.getInjuries(), 0), 100); break;
 			  case 9: value = Math.min(Math.max(needs.getSatiety(), 0), 100); break;
 			  case 10: value = Math.min(Math.max(needs.getSleeping(), 0), 100); break;
+			  case 11: value = Math.min(Math.max(needs.getWorkRemain(), 0), 100); break;
 		      }
 		      _shapes[i].setSize(new Vector2f(160.0f / 100 * value, 12));
 		      
 			  app.draw(_shapes[i], _render);
+			  
+			  if (_character.getJob() != null) {
+				  _lbJob.setString("Job");
+				  _lbJob2.setString(_character.getJob().getLabel());
+			  } else {
+				  _lbJob.setString("");
+				  _lbJob2.setString("");
+			  }
 		  }
 
 

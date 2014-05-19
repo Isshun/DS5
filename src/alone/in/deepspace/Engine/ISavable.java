@@ -1,4 +1,4 @@
-package alone.in.deepspace.Engine;
+package alone.in.deepspace.engine;
 
 public interface ISavable {
 	void	save(final String filePath);

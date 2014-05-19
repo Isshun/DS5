@@ -1,5 +1,5 @@
 BEGIN GAME
-MATTER	29354
+MATTER	28502
 SPICE	0
 WATER	0
 END GAME
@@ -126,6 +126,7 @@ BEGIN WORLDMAP
 18	20	base.floor	1
 18	21	base.floor	1
 18	22	base.floor	1
+18	22	base.biobed	42
 18	23	base.floor	1
 18	24	base.floor	1
 18	25	base.floor	1
@@ -142,6 +143,7 @@ BEGIN WORLDMAP
 19	18	base.floor	1
 19	18	base.light	10
 19	19	base.floor	1
+19	19	base.zygote	42
 19	20	base.floor	1
 19	21	base.floor	1
 19	22	base.floor	1
@@ -150,6 +152,7 @@ BEGIN WORLDMAP
 19	25	base.floor	1
 19	26	base.floor	1
 19	27	base.floor	1
+19	27	base.chair	42
 19	28	base.floor	1
 19	29	base.wall	1
 20	13	base.wall	1
@@ -163,9 +166,11 @@ BEGIN WORLDMAP
 20	21	base.floor	1
 20	22	base.floor	1
 20	23	base.floor	1
-20	23	garden.tree_1	1
+20	23	base.bed	1
 20	24	base.floor	1
+20	24	base.chair	42
 20	25	base.floor	1
+20	25	base.biobed	42
 20	26	base.floor	1
 20	27	base.floor	1
 20	28	base.floor	1
@@ -202,6 +207,7 @@ BEGIN WORLDMAP
 22	25	base.floor	1
 22	26	base.floor	1
 22	27	base.floor	1
+22	27	base.chair	42
 22	28	base.floor	1
 22	29	base.wall	1
 23	13	base.window	1
@@ -232,6 +238,7 @@ BEGIN WORLDMAP
 24	20	base.floor	1
 24	21	base.floor	1
 24	22	base.floor	1
+24	22	base.chair	42
 24	23	base.floor	1
 24	24	base.floor	1
 24	25	base.floor	1
@@ -268,10 +275,13 @@ BEGIN WORLDMAP
 26	21	base.floor	1
 26	22	base.floor	1
 26	23	base.floor	1
+26	23	base.biobed	42
 26	24	base.floor	1
 26	25	base.floor	1
+26	25	base.chair	42
 26	26	base.floor	1
 26	27	base.floor	1
+26	27	base.chair	42
 26	28	base.floor	1
 26	29	base.wall	1
 27	13	base.wall	1
@@ -279,6 +289,7 @@ BEGIN WORLDMAP
 27	14	base.bedside_table	42
 27	15	base.floor	1
 27	16	base.floor	1
+27	16	base.chair	42
 27	17	base.floor	1
 27	18	base.floor	1
 27	19	base.floor	1
@@ -296,6 +307,7 @@ BEGIN WORLDMAP
 28	14	base.floor	1
 28	15	base.floor	1
 28	16	base.floor	1
+28	16	garden.tree3	1
 28	17	base.floor	1
 28	18	base.floor	1
 28	19	base.floor	1
@@ -305,6 +317,7 @@ BEGIN WORLDMAP
 28	23	base.floor	1
 28	24	base.floor	1
 28	25	base.floor	1
+28	25	base.chair	42
 28	26	base.floor	1
 28	27	base.floor	1
 28	28	base.floor	1
@@ -314,6 +327,7 @@ BEGIN WORLDMAP
 29	15	base.floor	1
 29	15	base.light	10
 29	16	base.floor	1
+29	16	base.chair	42
 29	17	base.floor	1
 29	18	base.floor	1
 29	19	base.floor	1
@@ -325,6 +339,7 @@ BEGIN WORLDMAP
 29	25	base.floor	1
 29	26	base.floor	1
 29	27	base.floor	1
+29	27	base.chair	42
 29	28	base.floor	1
 29	29	base.wall	1
 30	13	base.wall	1
@@ -340,6 +355,7 @@ BEGIN WORLDMAP
 30	23	base.floor	1
 30	24	base.floor	1
 30	25	base.floor	1
+30	25	base.chair	42
 30	26	base.floor	1
 30	27	base.floor	1
 30	28	base.floor	1
@@ -348,7 +364,7 @@ BEGIN WORLDMAP
 31	14	base.wall	1
 31	15	base.wall	1
 31	16	base.wall	1
-31	17	base.wall	1
+31	17	base.door	42
 31	18	base.wall	1
 31	19	base.wall	1
 31	20	base.wall	1
@@ -361,16 +377,91 @@ BEGIN WORLDMAP
 31	27	base.wall	1
 31	28	base.wall	1
 31	29	base.wall	1
+32	13	base.wall	1
+32	14	base.floor	1
+32	15	base.floor	1
+32	16	base.floor	1
+32	17	base.floor	1
+32	18	base.floor	1
+32	19	base.floor	1
+32	20	base.wall	1
+33	13	base.wall	1
+33	14	base.floor	1
+33	15	base.floor	1
+33	16	base.floor	1
+33	17	base.floor	1
+33	18	base.floor	1
+33	19	base.floor	1
+33	20	base.wall	1
+34	13	base.wall	1
+34	14	base.floor	1
+34	15	base.floor	1
+34	15	base.main_computer	17
+34	16	base.floor	1
+34	17	base.floor	1
+34	18	base.floor	1
+34	19	base.floor	1
+34	20	base.wall	1
+35	13	base.wall	1
+35	14	base.floor	1
+35	15	base.floor	1
+35	16	base.floor	1
+35	17	base.floor	1
+35	18	base.floor	1
+35	19	base.floor	1
+35	20	base.wall	1
+36	13	base.wall	1
+36	14	base.floor	1
+36	15	base.floor	1
+36	16	base.floor	1
+36	17	base.floor	1
+36	18	base.floor	1
+36	19	base.floor	1
+36	20	base.wall	1
+37	13	base.wall	1
+37	14	base.floor	1
+37	15	base.floor	1
+37	16	base.floor	1
+37	17	base.floor	1
+37	18	base.floor	1
+37	19	base.floor	1
+37	20	base.wall	1
+38	13	base.wall	1
+38	14	base.floor	1
+38	15	base.floor	1
+38	16	base.floor	1
+38	17	base.floor	1
+38	18	base.floor	1
+38	19	base.floor	1
+38	20	base.wall	1
+39	13	base.wall	1
+39	14	base.floor	1
+39	15	base.floor	1
+39	16	base.floor	1
+39	17	base.floor	1
+39	18	base.floor	1
+39	19	base.floor	1
+39	20	base.wall	1
+40	13	base.wall	1
+40	14	base.floor	1
+40	15	base.floor	1
+40	16	base.floor	1
+40	17	base.floor	1
+40	18	base.floor	1
+40	19	base.floor	1
+40	20	base.wall	1
+41	13	base.wall	1
+41	14	base.wall	1
+41	15	base.wall	1
+41	16	base.wall	1
+41	17	base.wall	1
+41	18	base.wall	1
+41	19	base.wall	1
+41	20	base.wall	1
 END WORLDMAP
 BEGIN CHARACTERS
-25	22	0	Wesley Holmes
-18	26	4	Alice Hammond
-16	20	4	Alice Beckett
-16	13	4	Samuel Cooper
-15	15	4	Gaius Lawton
-17	14	4	Jonathan Hartness
-15	13	4	Jadzia Holmes
-16	14	4	Alice Archer
+34	15	0	Alice Beckett
+0	0	0	Wesley Wildman
 END CHARACTERS
 BEGIN ROOMS
 23	4	6	0

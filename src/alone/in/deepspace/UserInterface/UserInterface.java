@@ -9,14 +9,6 @@ import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
 import alone.in.deepspace.Main;
-import alone.in.deepspace.Character.Character;
-import alone.in.deepspace.Character.CharacterManager;
-import alone.in.deepspace.Character.ServiceManager;
-import alone.in.deepspace.Engine.Viewport;
-import alone.in.deepspace.Managers.RoomManager;
-import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.Room;
-import alone.in.deepspace.Models.WorldArea;
 import alone.in.deepspace.UserInterface.Panels.PanelBase;
 import alone.in.deepspace.UserInterface.Panels.PanelBuild;
 import alone.in.deepspace.UserInterface.Panels.PanelCharacter;
@@ -30,6 +22,16 @@ import alone.in.deepspace.UserInterface.Panels.PanelShortcut;
 import alone.in.deepspace.UserInterface.Panels.PanelSystem;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Settings;
+import alone.in.deepspace.engine.Viewport;
+import alone.in.deepspace.engine.ui.UIMessage;
+import alone.in.deepspace.manager.CharacterManager;
+import alone.in.deepspace.manager.UIEventManager;
+import alone.in.deepspace.manager.RoomManager;
+import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.BaseItem;
+import alone.in.deepspace.model.Character;
+import alone.in.deepspace.model.Room;
+import alone.in.deepspace.model.WorldArea;
 
 public class UserInterface {
 
@@ -99,7 +101,7 @@ public class UserInterface {
 	}
 
 	public void	onLeftPress(int x, int y) {
-		if (EventManager.getInstance().has(x, y)) {
+		if (UIEventManager.getInstance().has(x, y)) {
 			return;
 		}
 		
@@ -134,7 +136,7 @@ public class UserInterface {
 	}
 
 	public void	onRightPress(int x, int y) {
-		if (EventManager.getInstance().has(x, y)) {
+		if (UIEventManager.getInstance().has(x, y)) {
 			return;
 		}
 
@@ -477,15 +479,15 @@ public class UserInterface {
 				setMode(Mode.CHARACTER);
 			} else {
 				WorldArea a = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
-				_panelInfo.setArea(a);
 				if (a != null) {
+					_panelInfo.setArea(a);
 //				if (_panelInfo.getArea() == a && _panelInfo.getItem() == null && a.getItem() != null) {
 //				  _panelInfo.setItem(a.getItem());
 //				} else {
 //				  _panelInfo.setItem(null);
 //				}
+					setMode(Mode.INFO);
 				}
-				setMode(Mode.INFO);
 			}
 		}
 

@@ -1,4 +1,4 @@
-package alone.in.deepspace.Engine.renderer;
+package alone.in.deepspace.engine.renderer;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,12 +17,12 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Character.ServiceManager;
-import alone.in.deepspace.Models.BaseItem;
-import alone.in.deepspace.Models.StructureItem;
-import alone.in.deepspace.Models.WorldArea;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.ObjectPool;
+import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.BaseItem;
+import alone.in.deepspace.model.StructureItem;
+import alone.in.deepspace.model.WorldArea;
 
 public class LightRenderer implements IRenderer {
 	private RenderTexture 	_cache;
@@ -99,7 +99,7 @@ public class LightRenderer implements IRenderer {
 		int toY = Math.max(y, y2);
 		for (int i = fromX; i <= toX; i++) {
 			for (int j = fromY; j <= toY; j++) {
-				StructureItem structure = ServiceManager.getWorldMap().getArea(i, j).getStructure();
+				StructureItem structure = ServiceManager.getWorldMap().getStructure(i, j);
 				if (structure != null && structure.isFloor() == false) {
 					return false;
 				}

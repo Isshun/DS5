@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Engine.ui.OnClickListener;
-import alone.in.deepspace.Engine.ui.TextView;
+import alone.in.deepspace.engine.ui.OnClickListener;
+import alone.in.deepspace.engine.ui.TextView;
 
 public class PanelInfoItemOptions {
 

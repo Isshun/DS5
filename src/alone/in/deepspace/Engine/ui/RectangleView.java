@@ -1,4 +1,4 @@
-package alone.in.deepspace.Engine.ui;
+package alone.in.deepspace.engine.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Engine.renderer.MainRenderer;
+import alone.in.deepspace.engine.renderer.MainRenderer;
 
 public abstract class RectangleView {
 	protected RenderStates 	_render;

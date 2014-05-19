@@ -1,0 +1,8 @@
+label: Workstation
+width: 2
+height: 2
+onAction:
+  tile: 1
+category: system
+cost:
+  matter: 42

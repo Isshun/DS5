@@ -8,14 +8,14 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Engine.ui.ButtonView;
-import alone.in.deepspace.Engine.ui.OnClickListener;
-import alone.in.deepspace.Engine.ui.View;
-import alone.in.deepspace.Managers.SpriteManager;
-import alone.in.deepspace.Models.Room;
-import alone.in.deepspace.Models.Room.Type;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.engine.ui.ButtonView;
+import alone.in.deepspace.engine.ui.OnClickListener;
+import alone.in.deepspace.engine.ui.View;
+import alone.in.deepspace.manager.SpriteManager;
+import alone.in.deepspace.model.Room;
+import alone.in.deepspace.model.Room.Type;
 
 public class PanelRoom extends UserSubInterface {
 	private static final Color COLOR_YELLOW = new Color(236, 201, 37);

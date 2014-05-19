@@ -1,4 +1,4 @@
-package alone.in.deepspace.Engine.loader;
+package alone.in.deepspace.engine.loader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,8 +10,8 @@ import java.util.List;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import alone.in.deepspace.Character.ServiceManager;
-import alone.in.deepspace.Models.ItemInfo;
+import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.ItemInfo;
 
 public class ItemLoader {
 	
@@ -34,7 +34,9 @@ public class ItemLoader {
 				InputStream input = new FileInputStream(itemFile);
 			    Yaml yaml = new Yaml(new Constructor(ItemInfo.class));
 			    ItemInfo test = (ItemInfo)yaml.load(input);
-			    test.name = packageName +  '.' + test.name;
+			    test.fileName = itemFile.getName().substring(0, itemFile.getName().length() - 4);
+			    test.packageName = packageName;
+			    test.name = test.packageName +  '.' + test.fileName;
 			    test.isWalkable = true;
 			    if (!test.isStructure && !test.isRessource) {
 			    	test.isUserItem = true;
