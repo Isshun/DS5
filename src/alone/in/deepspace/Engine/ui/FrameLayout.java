@@ -11,7 +11,6 @@ import org.jsfml.system.Vector2f;
 import alone.in.deepspace.engine.renderer.MainRenderer;
 
 public class FrameLayout extends View {
-	protected RenderStates 	_render;
 	private List<View> 		_views;
 
 	public FrameLayout(Vector2f size) {
@@ -23,22 +22,6 @@ public class FrameLayout extends View {
 		_views = new ArrayList<View>();
 		
 		setPosition(0, 0);
-	}
-	
-	private void createRender() {
-		int posX = _posX;
-		int posY = _posY;
-		
-		View parent = _parent;
-		while (parent != null) {
-			posX += parent._posX;
-			posY += parent._posY;
-			parent = parent._parent;
-		}
-		
-		Transform transform = new Transform();
-	    transform = Transform.translate(transform, posX, posY);
-	    _render = new RenderStates(transform);
 	}
 	
 	public void addView(View view) {
