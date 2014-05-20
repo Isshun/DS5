@@ -162,16 +162,20 @@ public class BaseItem {
 	}
 	
 	private void initSlot(ItemInfo info) {
-		_slots = new ArrayList<ItemSlot>();
-		if (info.slots != null) {
-			for (ItemInfoSlot s: info.slots) {
-				_slots.add(new ItemSlot(this, s.x, s.y));
+		if (info.onAction != null) {
+			_slots = new ArrayList<ItemSlot>();
+
+			// Get slot from item infos
+			if (info.onAction.slots != null) {
+				for (ItemInfoSlot s: info.onAction.slots) {
+					_slots.add(new ItemSlot(this, s.x, s.y));
+				}
 			}
-		}
-		
-		// Unique slot at 0x0
-		else {
-			_slots.add(new ItemSlot(this, 0, 0));
+			
+			// Unique slot at 0x0
+			else {
+				_slots.add(new ItemSlot(this, 0, 0));
+			}
 		}
 	}
 
@@ -285,6 +289,10 @@ public class BaseItem {
 	}
 
 	public int getNbFreeSlots() {
+		if (_slots == null) {
+			return 0;
+		}
+		
 		int i = 0;
 		for (ItemSlot slot: _slots) {
 			if (slot.isFree()) {

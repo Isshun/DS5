@@ -4,8 +4,9 @@ height: 2
 light: 10
 category: system
 onAction:
-  posX: 4
-  posY: 3
+  slots:
+    - x: -1
+      y: 0
 cost:
   matter: 42
   power: 10

@@ -233,7 +233,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 				if (area != null) {
 
 					// item
-					BaseItem item = area.getItem();
+					UserItem item = area.getItem();
 					if (item != null && item.getName().equals(itemName) && item.isComplete()) {
 						if (free == false || item.isFree()) {
 							Log.debug("item found");

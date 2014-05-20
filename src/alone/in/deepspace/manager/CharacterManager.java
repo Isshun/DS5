@@ -377,7 +377,7 @@ public class CharacterManager implements ISavable {
 
 			Sprite sprite = SpriteManager.getInstance().getCharacter(profession, dirIndex, frame);
 
-			sprite.setPosition(posX, c.getSmoothY(posX));
+			sprite.setPosition(posX, c.getSmoothY(posX) - 16);
 			//		if (c.getNeeds().isSleeping()) {
 			//		  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
 			//	 	} else if (direction == Character.Direction.DIRECTION_NONE) {

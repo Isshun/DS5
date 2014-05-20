@@ -3,6 +3,8 @@ label: Biobed
 width: 1
 height: 2
 onAction:
-  tile: 1
+  slots:
+    - x: 0
+      y: 0
 cost:
   matter: 42

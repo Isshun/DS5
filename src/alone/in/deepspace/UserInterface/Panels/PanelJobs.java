@@ -85,7 +85,7 @@ public class PanelJobs extends UserSubInterface {
 				  case NO_MATTER:
 					  text.setColor(COLOR_BLOCKED);
 					  oss += " (no matter)";
-				case INVALIDE:
+				case INVALID:
 					  oss += " (invalide)";
 					break;
 				case NO_LEFT_CARRY:

@@ -151,11 +151,6 @@ public class CharacterNeeds {
 		} else {
 			updateAwake();
 		}
-
-		// Sleep on the ground
-		if (_energy <= 0) {
-			sleep(null);
-		}
 	}
 
 	void	updateAwake() {

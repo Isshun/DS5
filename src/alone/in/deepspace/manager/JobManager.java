@@ -379,11 +379,20 @@ public class JobManager implements ISavable {
 	public void	abort(Job job, Abort reason) {
 		Log.debug("Job abort: " + job.getId());
 
-		if (reason == Job.Abort.INVALIDE) {
+		// Job is invalid, don't resume
+		if (reason == Job.Abort.INVALID) {
 			_jobs.remove(job);
 			_count--;
 			_start--;
-		} else {
+		}
+		// Job is USE action, don't resume
+		else if (job.getAction() == Action.USE) {
+			_jobs.remove(job);
+			_count--;
+			_start--;
+		}
+		// Regular job, reset
+		else {
 			_start++;
 			job.setFail(reason, Game.getFrame());
 			job.setCharacter(null);
@@ -407,21 +416,14 @@ public class JobManager implements ISavable {
 	}
 
 	// TODO: change name by filter
-	public void	need(Character character, String itemName) {
+	public Job need(Character character, String itemName) {
 		Log.debug("JobManager: Character '" + character.getName() + "' need item #" + itemName);
 
 		BaseItem item = ServiceManager.getWorldMap().find(itemName, true);
 		if (item != null) {
-
-			Job job = new Job(++_id, item.getX(), item.getY());
-			job.setAction(JobManager.Action.USE);
-			job.setCharacterRequire(character);
-			job.setItem(item);
-
-			addJob(job);
-			// PathManager.getInstance().getPathAsync(character, item);
-			return;
+			return createUseJob(item);
 		}
+		return null;
 	}
 
 	void	addJob(Job job) {
@@ -525,7 +527,7 @@ public class JobManager implements ISavable {
 		return null;
 	}
 
-	private Job createUseJob(UserItem item) {
+	private Job createUseJob(BaseItem item) {
 		if (!item.hasFreeSlot()) {
 			return null;
 		}

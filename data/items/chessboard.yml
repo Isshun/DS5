@@ -9,8 +9,8 @@ onAction:
   effects:
     hapiness: 10
     relation: 10
-slots:
-  - x: -1
-    y: 0
-  - x: 1
-    y: 0
+  slots:
+    - x: -1
+      y: 0
+    - x: 1
+      y: 0

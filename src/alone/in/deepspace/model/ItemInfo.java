@@ -10,14 +10,12 @@ public class ItemInfo {
 	}
 
 	public static class ItemInfoAction {
-		public int 				tile;
-		public int 				posX;
-		public int 				posY;
-		public int 				duration;
-		public ItemInfoProduce	produce;
-		public ItemInfo 		itemProduce;
-		public ItemInfoPractice practice;
-		public ItemInfoNeeds	effects;
+		public int 					duration;
+		public ItemInfoProduce		produce;
+		public ItemInfo 			itemProduce;
+		public ItemInfoPractice 	practice;
+		public ItemInfoNeeds		effects;
+		public List<ItemInfoSlot>	slots;
 	}
 
 	public static class ItemInfoRessource {
@@ -57,7 +55,6 @@ public class ItemInfo {
 	public int 					width;
 	public int 					height;
 	public int 					light;
-	public List<ItemInfoSlot>	slots;
 	public ItemInfoCost 		cost;
 	public ItemInfoAction 		onAction;
 	public ItemInfoRessource	onGather;

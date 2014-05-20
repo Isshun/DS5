@@ -197,11 +197,13 @@ public class Character extends Movable {
 		if (_job != null) {
 			JobManager.getInstance().abort(_job, Job.Abort.INTERRUPTE);
 		}
-		_job = job;
-		_toX = job.getX();
-		_toY = job.getY();
-		if (_posX != job.getX() || _posY != job.getY()) {
-			PathManager.getInstance().getPathAsync(this, job);
+		if (job != null) {
+			_job = job;
+			_toX = job.getX();
+			_toY = job.getY();
+			if (_posX != job.getX() || _posY != job.getY()) {
+				PathManager.getInstance().getPathAsync(this, job);
+			}
 		}
 	}
 
@@ -307,14 +309,19 @@ public class Character extends Movable {
 		if (_job != null && _job.getItem() != null && _job.getItem().isSleepingItem()) {
 			return;
 		}
+		
+		// No energy + no job to sleepingItem -> sleep on the ground
+		if (_needs.getEnergy() <= 0) {
+			_needs.sleep(null);
+		}
 
 		// TODO
 		// Energy
-		if (_needs.getEnergy() < 20) {
+		if (_needs.isTired()) {
 			Log.info("Charactere #" + _id + ": need sleep: " + _needs.getEnergy());
 
 			// Need sleep
-			JobManager.getInstance().need(this, "base.bed");
+			setJob(JobManager.getInstance().need(this, "base.bed"));
 
 			// // Sleep in chair
 			// {
@@ -426,7 +433,7 @@ public class Character extends Movable {
 		// Wrong call
 		if (_job == null || _job.getItem() == null) {
 			Log.error("Character: actionUse on null job or null job's item");
-			JobManager.getInstance().abort(_job, Job.Abort.INVALIDE);
+			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
 			_job = null;
 			return;
 		}
@@ -434,7 +441,7 @@ public class Character extends Movable {
 		// Item is no longer exists
 		if (_job.getItem() != ServiceManager.getWorldMap().getItem(_job.getX(), _job.getY())) {
 			Log.warning("Character #" + _id + ": actionUse on invalide item");
-			JobManager.getInstance().abort(_job, Job.Abort.INVALIDE);
+			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
 			_job = null;
 			return;
 		}
@@ -465,57 +472,37 @@ public class Character extends Movable {
 		// Wrong call
 		if (_job == null || _job.getItem() == null) {
 			Log.error("Character: actionUse on null job or null job's item");
-			JobManager.getInstance().abort(_job, Job.Abort.INVALIDE);
+			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
 			_job = null;
+			return;
+		}
+		
+		// Item not reached
+		if (_job.getX() != _posX || _job.getY() != _posY) {
 			return;
 		}
 
 		// Item is no longer exists
 		if (_job.getItem() != ServiceManager.getWorldMap().getItem(_job.getItem().getX(), _job.getItem().getY())) {
 			Log.warning("Character #" + _id + ": actionUse on invalide item");
-			JobManager.getInstance().abort(_job, Job.Abort.INVALIDE);
+			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
 			_job = null;
 			return;
 		}
 
 		// Character is sleeping
-		if (_needs.isSleeping()) {
+		if (_needs.isSleeping() && _job.getItem().isSleepingItem() == false) {
 			Log.debug("use: sleeping . use canceled");
 			return;
 		}
 
 		Log.debug("Character #" + _id + ": actionUse");
 
-		BaseItem item = _job.getItem();
-
-		
-		// TODO: item name
-		
-		// Bar
-		if (item.getName().equals("base.pub")) {
-			_needs.eat();
-			// BaseItem item = ServiceManager.getWorldMap().getRandomPosInRoom(item.getRoomId());
-			// if (item != null) {
-			// 	PathManager.getInstance().getPathAsync(this, item);
-			// 	_goal = GOAL_MOVE;
-			// }
-		}
-
-		// Bed
-		if (item.getName().equals("base.bed")) {
-			_needs.sleep(item);
-			item.setOwner(this);
-		}
-
-		// Chair
-		if (item.getName().equals("base.chair")) {
-			_needs.sleep(item);
-			item.setOwner(this);
-		}
-
 		// Character using item
 		if (_job.getDurationLeft() > 0) {
 			_job.decreaseDurationLeft();
+
+			BaseItem item = _job.getItem();
 
 			// Item is use by 2 or more character
 			if (item.getNbFreeSlots() + 1 < item.getNbSlots()) {
@@ -688,6 +675,18 @@ public class Character extends Movable {
 
 	public void			action() {
 		if (_job == null) {
+			return;
+		}
+		
+		// TODO
+		if (_job.getCharacter() != null && _job.getCharacter() != this) {
+			_job = null;
+			return;
+		}
+		
+		if (_needs.isTired() && (_job.getItem() == null || _job.getItem().isSleepingItem() == false)) {
+			JobManager.getInstance().abort(_job, Job.Abort.INTERRUPTE);
+			_job = null;
 			return;
 		}
 		

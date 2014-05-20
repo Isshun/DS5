@@ -9,7 +9,7 @@ import alone.in.deepspace.manager.JobManager;
 public class Job {
 
 	public static enum Abort {
-		NO_MATTER, INTERRUPTE, BLOCKED, NO_LEFT_CARRY, INVALIDE
+		NO_MATTER, INTERRUPTE, BLOCKED, NO_LEFT_CARRY, INVALID
 	};
 
 	private int 				_id;
@@ -106,7 +106,7 @@ public class Job {
 			case NO_MATTER:
 				oss += " (no matter)";
 				break;
-			case INVALIDE:
+			case INVALID:
 				oss += " (invalide)";
 				break;
 			case NO_LEFT_CARRY:
