@@ -13,7 +13,7 @@ import alone.in.deepspace.manager.SpriteManager;
 public class ButtonView extends View {
 
 	private Text 			_text;
-	private RectangleShape 	_background;
+//	private RectangleShape 	_background;
 	private Sprite 			_icon;
 	private int 			_iconPaddingX;
 	private int 			_iconPaddingY;
@@ -52,9 +52,6 @@ public class ButtonView extends View {
 
 	public void setPosition(Vector2f pos) {
 		super.setPosition(pos);
-		if (_background != null) {
-			_background.setPosition(pos);
-		}
 		if (_icon != null) {
 			_icon.setPosition(pos);
 		}
@@ -71,9 +68,9 @@ public class ButtonView extends View {
 
 	@Override
 	public void onRefresh(RenderWindow app, RenderStates render) {
-		if (_background != null) {
-			app.draw(_background, render);
-		}
+//		if (_background != null) {
+//			app.draw(_background, render);
+//		}
 
 		if (_icon != null) {
 			_icon.setPosition(_pos.x + _paddingLeft + _iconPaddingX, _pos.y + _paddingTop + _iconPaddingY);

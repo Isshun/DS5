@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
@@ -25,6 +26,7 @@ import alone.in.deepspace.UserInterface.Panels.PanelSystem;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.engine.Viewport;
+import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.UIMessage;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.RoomManager;
@@ -205,12 +207,17 @@ public class UserInterface {
 	  	_panelResource.refresh(_app, null);
 	  	_panelRoom.refresh(_app, null);
 	  	
+	  	
+	  	FrameLayout fr = new FrameLayout(new Vector2f(100, 100));
+	  	fr.setPosition(100, 100);
+	  	fr.setBackgroundColor(Color.GREEN);
+	  	fr.refresh(_app, null);
+	  	
 	  	_panelMessage.setFrame(frame);
 //	  	_panelMessage.refresh(_app);
 	  	
 //	  	_interaction.refreshCursor();
 	
-	  	_uiCharacter.setBackgroundColor(Color.RED);
 	  	_uiCharacter.refresh(_app, null);
 	  	_uiScience.refresh(_app, null);
 	  	_uiSecurity.refresh(_app, null);
@@ -398,6 +405,7 @@ public class UserInterface {
 		_uiSecurity = new UserInterfaceSecurity(app, 4);
 		_crewViewOpen = false;
 		_uiCharacter = new PanelCrew(app, 0);
+		_uiCharacter.setUI(this);
 		_uiBase = new UserInterfaceMenuOperation(app, 1);
 		_uiJobs = new PanelJobs(app);
 		_panelMessage.setStart(0);
@@ -510,8 +518,7 @@ public class UserInterface {
 		if (_interaction.getMode() == UserInteraction.Mode.MODE_NONE) {// && _menu.getCode() == UserInterfaceMenu.CODE_MAIN) {
 			Character c = _characteres.getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
 			if (c != null) {
-				_panelCharacter.setCharacter(c);
-				setMode(Mode.CHARACTER);
+				setCharacter(c);
 			} else {
 				WorldArea a = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
 				if (a != null) {
@@ -527,6 +534,11 @@ public class UserInterface {
 		}
 
 		_keyLeftPressed = false;
+	}
+
+	public void setCharacter(Character c) {
+		_panelCharacter.setCharacter(c);
+		setMode(Mode.CHARACTER);
 	}
 
 	public void onRightClick(int x, int y) {

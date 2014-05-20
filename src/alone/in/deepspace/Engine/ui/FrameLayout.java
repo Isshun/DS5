@@ -7,11 +7,13 @@ import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
 import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
 
 import alone.in.deepspace.engine.renderer.MainRenderer;
 
 public class FrameLayout extends View {
 	private List<View> 		_views;
+	protected RenderStates 	_render;
 
 	public FrameLayout(Vector2f size) {
 		super(size);
@@ -23,7 +25,23 @@ public class FrameLayout extends View {
 		
 		setPosition(0, 0);
 	}
-	
+
+	private void createRender() {
+		int posX = _posX;
+		int posY = _posY;
+		
+		View parent = _parent;
+		while (parent != null) {
+			posX += parent._posX;
+			posY += parent._posY;
+			parent = parent._parent;
+		}
+		
+		Transform transform = new Transform();
+	    transform = Transform.translate(transform, posX, posY);
+	    _render = new RenderStates(transform);
+	}
+
 	public void addView(View view) {
 		view.setParentPosition(_posX, _posY);
 		view.setParent(this);
@@ -46,7 +64,12 @@ public class FrameLayout extends View {
 			view.setParentPosition(x, y);
 		}
 	}
-	
+
+	// TODO
+	public void setPosition(Vector2f pos) {
+		setPosition((int)pos.x, (int)pos.y);
+	}
+
 	@Override
 	public void refresh(RenderWindow app, RenderStates render) {
 		if (_isVisible == false) {
@@ -58,11 +81,7 @@ public class FrameLayout extends View {
 		}
 
 		super.refresh(app, _render);
-		
-//		if (_background != null) {
-//			MainRenderer.getInstance().draw(_background, _render);
-//		}
-//
+
 		for (View view: _views) {
 			view.refresh(app, _render);
 		}

@@ -11,10 +11,12 @@ import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
 import alone.in.deepspace.Strings;
+import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.ImageView;
+import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
@@ -42,6 +44,7 @@ public class PanelCrew extends UserSubInterface {
 	private CharacterManager     _characterManager;
 	private List<ViewHolder> _viewHolderList;
 	private TextView _lbCount;
+	private UserInterface _ui;
 
 	public PanelCrew(RenderWindow app, int tileIndex) throws IOException {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
@@ -59,7 +62,7 @@ public class PanelCrew extends UserSubInterface {
 		addView(_lbCount);
 	}
 
-	void  addCharacter(RenderWindow app, int index, Character character) {
+	void  addCharacter(RenderWindow app, int index, final Character character) {
 		int x = 0;
 		int y = index;
 		
@@ -78,6 +81,13 @@ public class PanelCrew extends UserSubInterface {
 				@Override
 				public void onEnter(View view) {
 					view.setBackgroundColor(new Color(40, 40, 80));
+				}
+			});
+			viewHolder.frame.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					close();
+					_ui.setCharacter(character);
 				}
 			});
 			addView(viewHolder.frame);
@@ -198,5 +208,9 @@ public class PanelCrew extends UserSubInterface {
 	  }
 	
 	  return false;
+	}
+
+	public void setUI(UserInterface userInterface) {
+		_ui = userInterface;
 	}
 }

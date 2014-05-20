@@ -30,7 +30,6 @@ public abstract class View {
 	private OnClickListener _onClickListener;
 	private OnFocusListener _onFocusListener;
 	private boolean 		_isActive;
-	protected RenderStates 	_render;
 
 	public View(Vector2f size) {
 		_size = size;
@@ -41,27 +40,11 @@ public abstract class View {
 	
 	protected abstract void onCreate();
 
-	protected void createRender() {
-		int posX = _posX;
-		int posY = _posY;
-		
-		View parent = _parent;
-		while (parent != null) {
-			posX += parent._posX;
-			posY += parent._posY;
-			parent = parent._parent;
-		}
-		
-		Transform transform = new Transform();
-	    transform = Transform.translate(transform, posX, posY);
-	    _render = new RenderStates(transform);
-	}
-	
 	public void refresh(RenderWindow app, RenderStates render) {
 		if (_isVisible == false) {
 			return;
 		}
-				
+		
 		if (_background != null) {
 			MainRenderer.getInstance().draw(_background, render);
 		}
@@ -110,7 +93,7 @@ public abstract class View {
 			_background.setSize(_size);
 		}
 		if (_pos != null) {
-			//_background.setPosition(_pos);
+			_background.setPosition(_pos);
 		}
 		_background.setFillColor(color);
 	}
@@ -141,7 +124,7 @@ public abstract class View {
 			_rect = new Rectangle(_parentPosX + _posX, _parentPosY + _posY, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
 		}
 		if (_background != null) {
-			//_background.setPosition(pos);
+			_background.setPosition(pos);
 		}
 	}
 
