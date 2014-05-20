@@ -275,7 +275,7 @@ public class LightRenderer implements IRenderer {
 						shape = halfShape;
 					}
 					shape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-					shape.setFillColor(new Color(0, 0, 0, 200 - (int)(area.getLight() * 255)));
+					shape.setFillColor(new Color(10, 10, 30, 200 - (int)(area.getLight() * 255)));
 					_cache.draw(shape);
 				}
 			}
@@ -296,12 +296,16 @@ public class LightRenderer implements IRenderer {
 				WorldArea areaBellow = ServiceManager.getWorldMap().getArea(x, y+1);
 
 				// Ground
-				if (area != null && area.getStructure() == null && area.getLight() > 0 && areaBellow != null && areaBellow.getStructure() == null && areaBellow.getLight() <= 0) {
-					areaBellow.setLight(area.getLight() * 0.75);
+				if (area != null && area.getLight() > 0 && areaBellow != null && areaBellow.getLight() <= 0) {
+					if (area.getStructure() == null || area.getStructure().isFloor()) {
+						if (areaBellow.getStructure() == null || areaBellow.getStructure().isFloor()) {
+							areaBellow.setLight(area.getLight() * 0.75);
+						}
+					}
 				}
 
 				// Wall
-				if (area != null && area.getStructure() != null && area.getStructure().isWall() && area.getLight() <= 0) {
+				if (area != null && area.getStructure() != null && (area.getStructure().isWall() || area.getStructure().isDoor()) && area.getLight() <= 0) {
 					WorldArea areaLeft = ServiceManager.getWorldMap().getArea(x-1, y);
 					WorldArea areaRight = ServiceManager.getWorldMap().getArea(x+1, y);
 					double lightRight = areaRight != null ? areaRight.getLight() : 0;

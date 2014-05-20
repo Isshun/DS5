@@ -202,10 +202,12 @@ public class Movable implements PathManagerCallback {
 	}
 
 	public int getSmoothY(int posX) {
-		if (_points != null && _points.get(posX) != null) {
-			_lastY = _points.get(posX);
-		}
-		return _lastY;
+		return _posY * 32;
+		
+//		if (_points != null && _points.get(posX) != null) {
+//			_lastY = _points.get(posX);
+//		}
+//		return _lastY;
 	}
 
 	protected void  addMessage(CharacterNeeds.Message msgBlocked, int count) {

@@ -8,14 +8,23 @@ public class ItemInfo {
 	}
 
 	public static class ItemInfoAction {
-		public int tile;
-		public int posX;
-		public int posY;
+		public int 		tile;
+		public int 		posX;
+		public int 		posY;
+		public String 	produce;
+		public ItemInfo itemProduce;
 	}
 
 	public static class ItemInfoRessource {
 		public String 	produce;
 		public ItemInfo itemProduce;
+	}
+
+	public static class ItemInfoConsomable {
+		public int		food;
+		public int 		drink;
+		public int 		energy;
+		public int 		hapiness;
 	}
 
 	public String 				name;
@@ -30,8 +39,10 @@ public class ItemInfo {
 	public ItemInfoAction 		onAction;
 	public ItemInfoRessource	onGather;
 	public ItemInfoRessource	onMine;
+	public ItemInfoConsomable	onConsumption;
 	public boolean 				isStructure;
 	public boolean 				isRessource;
+	public boolean 				isConsomable;
 	public boolean 				isUserItem;
 	public int 					storage;
 	public int 					spriteId;

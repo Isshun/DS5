@@ -207,12 +207,6 @@ public class UserInterface {
 	  	_panelResource.refresh(_app, null);
 	  	_panelRoom.refresh(_app, null);
 	  	
-	  	
-	  	FrameLayout fr = new FrameLayout(new Vector2f(100, 100));
-	  	fr.setPosition(100, 100);
-	  	fr.setBackgroundColor(Color.GREEN);
-	  	fr.refresh(_app, null);
-	  	
 	  	_panelMessage.setFrame(frame);
 //	  	_panelMessage.refresh(_app);
 	  	

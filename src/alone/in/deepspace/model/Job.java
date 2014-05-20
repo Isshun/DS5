@@ -21,23 +21,43 @@ public class Job {
 	private int 				_fail;
 	public int 					_blocked;
 	private Abort 				_reason;
+	private Color _color;
 
 	public Job(int id, int x, int y) {
-	  Log.debug("Job #" + id);
+		Log.debug("Job #" + id);
 
-	  _id = id;
-	  _posY = y;
-	  _posX = x;
-	  _item = null;
-	  _action = JobManager.Action.NONE;
-	  _character = null;
+		_id = id;
+		_posY = y;
+		_posX = x;
+		_item = null;
+		_action = JobManager.Action.NONE;
+		_character = null;
 
-	  Log.debug("Job #" + id + " done");
+		Log.debug("Job #" + id + " done");
 	}
 
-	public void setAction(JobManager.Action action) { _action = action; }
+	public void setAction(JobManager.Action action) {
+		_action = action;
+
+		switch (_action) {
+		case BUILD: _color = new Color(170, 128, 64); break;
+		case MOVE: _color = Color.CYAN; break;
+		case GATHER: _color = Color.GREEN; break;
+		case MINING: _color = Color.GREEN; break;
+		case WORK: _color = Color.GREEN; break;
+		case NONE: _color = Color.BLACK; break;
+		case USE: _color = Color.BLUE; break;
+		case DESTROY: _color = new Color(200, 20, 20); break;
+		case STORE: _color = new Color(180, 100, 255); break;
+		}
+	}
 	public void	setItem(BaseItem item) { _item = item; }
-	public void	setCharacter(Character character) { _character = character; }
+	public void	setCharacter(Character character) {
+		_character = character;
+		if (_item != null) {
+			_item.setOwner(character);
+		}
+	}
 	public void	setCharacterRequire(Character character) { _characterRequire = character; }
 
 	public int					getX() { return _posX; }
@@ -50,17 +70,17 @@ public class Job {
 	public int 					getFail() { return _fail; }
 	public int 					getBlocked() { return _blocked; }
 	public Abort				getReason() { return _reason; }
-	
+
 	public void					setFail(Abort reason, int frame) { _reason = reason; _fail = frame; }
 	public void					setBlocked(int frame) { _blocked = frame; }
 
 	public String getLabel() {
 		String oss = (_id  < 10 ? "#0" : "#") + _id
-			  + " - " + JobManager.getActionName(_action);
+				+ " - " + JobManager.getActionName(_action);
 		if (_item != null) {
 			oss += " " + _item.getName();
 		}
-	  
+
 		if (_character != null) {
 			oss += " (" + _character.getName() + ")";
 		} else if (_fail > 0) {
@@ -93,5 +113,9 @@ public class Job {
 			oss += " " + _item.getName();
 		}
 		return oss;
+	}
+
+	public Color getColor() {
+		return _color;
 	}
 }

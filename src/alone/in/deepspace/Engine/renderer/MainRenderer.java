@@ -35,6 +35,7 @@ public class MainRenderer {
 	private WorldRenderer 			_worldRenderer;
 	private LightRenderer			_lightRenderer;
 	private DebugRenderer 			_debugRenderer;
+	private JobRenderer				_jobRenderer;
 	private SpriteManager 			_spriteManager;
 	private Viewport 				_viewport;
 	private Texture 				_backgroundTexture;
@@ -65,6 +66,8 @@ public class MainRenderer {
 		_lightRenderer = new LightRenderer();
 		ServiceManager.setLightRenderer(_lightRenderer);
 		_debugRenderer = new DebugRenderer();
+		
+		_jobRenderer = new JobRenderer();
 	}
 
 	public void draw(RenderWindow app, double animProgress, int renderTime) {
@@ -92,6 +95,8 @@ public class MainRenderer {
 
 		_lightRenderer.onDraw(app, render, animProgress);
 		
+		_jobRenderer.onDraw(app, render, animProgress);
+
 		// Draw debug
 		if (Settings.getInstance().isDebug()) {
 			_debugRenderer.onDraw(app, render, animProgress);

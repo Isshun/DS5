@@ -587,7 +587,7 @@ public class JobManager implements ISavable {
 		}
 		
 		Job job = new Job(++_id, item.getX(), item.getY());
-		job.setAction(JobManager.Action.GATHER);
+		job.setAction(JobManager.Action.DESTROY);
 		job.setItem(item);
 
 		addJob(job);

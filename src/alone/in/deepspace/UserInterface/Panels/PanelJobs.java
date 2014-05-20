@@ -72,17 +72,7 @@ public class PanelJobs extends UserSubInterface {
 					  oss += " " + job.getItem().getName();
 				  }
 			  if (job.getCharacter() != null) {
-				  switch (job.getAction()) {
-				  case BUILD: text.setColor(COLOR_BUILD); break;
-				  case MOVE: text.setColor(Color.CYAN); break;
-				  case GATHER: text.setColor(Color.GREEN); break;
-				  case MINING: text.setColor(Color.GREEN); break;
-				  case WORK: text.setColor(Color.GREEN); break;
-				  case NONE: text.setColor(Color.BLACK); break;
-				  case USE: text.setColor(Color.BLUE); break;
-				  case DESTROY: text.setColor(COLOR_DESTROY); break;
-				  case STORE: text.setColor(COLOR_STORE); break;
-				  }
+				  text.setColor(job.getColor());
 				oss += " (" + job.getCharacter().getName() + ")";
 			  } else if (job.getFail() > 0) {
 				  switch (job.getReason()) {

@@ -25,6 +25,7 @@ public class StringsLoader {
 
 		    if (map.containsKey("PRODUCT_WHEN_GATHERED")) Strings.PRODUCT_WHEN_GATHERED = map.get("PRODUCT_WHEN_GATHERED");
 		    if (map.containsKey("PRODUCT_WHEN_MINED")) Strings.PRODUCT_WHEN_MINED = map.get("PRODUCT_WHEN_MINED");
+		    if (map.containsKey("PROVIDE")) Strings.PROVIDE = map.get("PROVIDE");
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

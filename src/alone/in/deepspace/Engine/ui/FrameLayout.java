@@ -9,6 +9,7 @@ import org.jsfml.graphics.Transform;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
+import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.renderer.MainRenderer;
 
 public class FrameLayout extends View {
@@ -43,6 +44,11 @@ public class FrameLayout extends View {
 	}
 
 	public void addView(View view) {
+		if (this.equals(view)) {
+			Log.error("FrameLayout: try to add itself to childrens");
+			return;
+		}
+		
 		view.setParentPosition(_posX, _posY);
 		view.setParent(this);
 		_views.add(view);

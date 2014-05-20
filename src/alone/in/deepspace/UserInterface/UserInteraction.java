@@ -3,11 +3,14 @@ package alone.in.deepspace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
+import org.jsfml.graphics.Color;
 import org.jsfml.graphics.IntRect;
+import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.Transform;
+import org.jsfml.system.Vector2f;
 import org.jsfml.window.Mouse;
 
 import alone.in.deepspace.Utils.Constant;
@@ -18,6 +21,7 @@ import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Cursor;
 import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.model.StructureItem;
 
 public class UserInteraction {
 
@@ -29,21 +33,27 @@ public class UserInteraction {
 	};
 
 	Texture				_cursorTexture;
-	Viewport				_viewport;
-	Cursor					_cursor;
-	Mode					_mode;
+	Viewport			_viewport;
+	Cursor				_cursor;
+	Mode				_mode;
 	int					_startPressX;
 	int					_startPressY;
 	int					_mouseMoveX;
 	int					_mouseMoveY;
-	Mouse.Button			_button;
-	private Sprite 			spriteCursor;
+	Mouse.Button		_button;
+	private Sprite 		spriteCursor;
+	private Texture 	_texture;
 
 	UserInteraction(Viewport viewport) throws IOException {
 		_viewport = viewport;
 		_cursor = new Cursor();
 		_cursorTexture = new Texture();
 		_cursorTexture.loadFromFile((new File("res/cursor.png")).toPath());
+		
+		_texture = new Texture();
+		_texture.loadFromFile((new File("res/selection.png")).toPath());
+		_texture.setRepeated(true);
+
 		_startPressX = 0;
 		_startPressY = 0;
 		_mouseMoveX = 0;
@@ -61,12 +71,60 @@ public class UserInteraction {
 		startY = Math.max(startY, 0);
 		toX = Math.min(toX, ServiceManager.getWorldMap().getWidth());
 		toY = Math.min(toY, ServiceManager.getWorldMap().getHeight());
+//
+		Transform transform = new Transform();
+		RenderStates render = new RenderStates(_viewport.getViewTransform(transform));
+//
+//		RectangleShape rectangle = new RectangleShape(new Vector2f(toX - startX, toY - startY));
+//		rectangle.setTexture(_texture);
+//		rectangle.setPosition(new Vector2f(startX, startY));
+//		rectangle.setTextureRect(new IntRect(0, 0, toX - startX, toY - startY));
+//		rectangle.setFillColor(new Color(255, 255, 255, 255));
+//		MainRenderer.getInstance().draw(rectangle, render);
+
+		int border = 3;
+		
+		RectangleShape rectangleItem = new RectangleShape(new Vector2f(32, 32));
+		rectangleItem.setFillColor(new Color(200, 255, 100, 120));
+		
+		RectangleShape rectangle1 = new RectangleShape(new Vector2f(32, 32));
+		rectangle1.setFillColor(new Color(100, 255, 100, 20));
+		
+		RectangleShape rectangle2 = new RectangleShape(new Vector2f(32, 32));
+		rectangle2.setFillColor(new Color(100, 255, 100, 40));
+
+		RectangleShape rectangleTop = new RectangleShape(new Vector2f((toX - startX + 1) * 32 - border * 2, border));
+		rectangleTop.setFillColor(new Color(100, 255, 100, 100));
+		rectangleTop.setPosition(new Vector2f(startX * 32 + border, startY * 32));
+		MainRenderer.getInstance().draw(rectangleTop, render);
+		rectangleTop.setPosition(new Vector2f(startX * 32 + border, (toY + 1) * 32 - border));
+		MainRenderer.getInstance().draw(rectangleTop, render);
+
+		RectangleShape rectangleLeft = new RectangleShape(new Vector2f(border, (toY - startY + 1) * 32));
+		rectangleLeft.setFillColor(new Color(100, 255, 100, 100));
+		rectangleLeft.setPosition(new Vector2f(startX * 32, startY * 32));
+		MainRenderer.getInstance().draw(rectangleLeft, render);
+		rectangleLeft.setPosition(new Vector2f((toX + 1) * 32 - border, startY * 32));
+		MainRenderer.getInstance().draw(rectangleLeft, render);
+		
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				Transform transform = new Transform();
-				RenderStates render = new RenderStates(_viewport.getViewTransform(transform));
-				spriteCursor.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-				MainRenderer.getInstance().draw(spriteCursor, render);
+				if ((x + y) % 2 == 0) {
+					rectangle1.setPosition(new Vector2f(x * 32, y * 32));
+					MainRenderer.getInstance().draw(rectangle1, render);
+				} else {
+					rectangle2.setPosition(new Vector2f(x * 32, y * 32));
+					MainRenderer.getInstance().draw(rectangle2, render);
+				}
+				
+				if (ServiceManager.getWorldMap().getRessource(x, y) != null) {
+					rectangleItem.setPosition(new Vector2f(x * 32, y * 32));
+					MainRenderer.getInstance().draw(rectangleItem, render);
+				}
+//				Transform transform = new Transform();
+//				RenderStates render = new RenderStates(_viewport.getViewTransform(transform));
+//				spriteCursor.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
+//				MainRenderer.getInstance().draw(spriteCursor, render);
 			}
 		}
 	}
@@ -164,7 +222,10 @@ public class UserInteraction {
 					if (x == startX || x == toX || y == startY || y == toY) {
 						Log.warning("1");
 						// TODO
-						JobManager.getInstance().build(ServiceManager.getData().getItemInfo("base.wall"), x, y);
+						StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
+						if (structure == null || structure.getName().equals("base.door") == false) {
+							JobManager.getInstance().build(ServiceManager.getData().getItemInfo("base.wall"), x, y);
+						}
 						// item = ServiceManager.getWorldMap().putItem(x, y, BaseItem.STRUCTURE_WALL);
 					} else {
 						Log.warning("2");

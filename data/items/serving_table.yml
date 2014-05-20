@@ -1,6 +1,8 @@
 label: Serving table
-width: 2
+width: 3
 height: 1
 category: common
 cost:
   matter: 8
+onAction:
+  produce: base.meal

@@ -50,6 +50,9 @@ public class Main {
 			if (item.onMine != null) {
 				item.onMine.itemProduce = ServiceManager.getData().getItemInfo(item.onMine.produce);
 			}
+			if (item.onAction != null && item.onAction.produce != null) {
+				item.onAction.itemProduce = ServiceManager.getData().getItemInfo(item.onAction.produce);
+			}
 		}
 		
 		CategoryLoader.load();

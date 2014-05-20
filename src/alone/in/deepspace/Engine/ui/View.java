@@ -34,6 +34,7 @@ public abstract class View {
 	public View(Vector2f size) {
 		_size = size;
 		_isVisible = true;
+		_pos = new Vector2f(0, 0);
 
 		onCreate();
 	}

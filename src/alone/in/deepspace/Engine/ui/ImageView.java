@@ -9,12 +9,16 @@ public class ImageView extends View {
 
 	private Sprite 			_icon;
 
+	public ImageView() {
+		super(new Vector2f(0, 0));
+	}
+	
 	public ImageView(Sprite sprite) {
 		super(sprite.getScale());
 		
 		_icon = sprite;
 	}
-
+	
 	@Override
 	protected void onCreate() {
 	}

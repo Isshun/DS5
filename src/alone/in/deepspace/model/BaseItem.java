@@ -81,6 +81,7 @@ public class BaseItem {
 	private int 		_maxId;
 	private ItemInfo	_info;
 	private boolean		_isWorking;
+	private String _label;
 
 	public BaseItem(ItemInfo info) {
 		init(info, ++_maxId);
@@ -123,6 +124,7 @@ public class BaseItem {
 		{
 			_light = info.light;
 			_name = info.name;
+			_label = info.label;
 			_width = info.width;
 			_height = info.height;
 			
@@ -170,6 +172,8 @@ public class BaseItem {
 	public int 			getPower() { return _power; }
 	public int 			getMode() { return _mode; }
 	public int 			getLight() { return _light; }
+	public String 		getLabel() { return _label; }
+
 
 	public ItemInfo 	getInfo() { return _info; }
 

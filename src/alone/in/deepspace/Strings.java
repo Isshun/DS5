@@ -8,6 +8,7 @@ public class Strings {
 	public static String PRODUCT_WHEN_MINED = "Produce when mined:";
 	public static String LB_MINING = "mining";
 	public static String LB_DUMP = "dump";
-	public String PRODUCT_WHEN_GATHERED2 = "Produce when gathered:";
-	public String PRODUCT_WHEN_MINED2 = "Produce when mined:";
+	public static String LB_NONE = "none";
+	public static String LB_GROUND = "ground";
+	public static String PROVIDE = "Provide";
 }
