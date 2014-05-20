@@ -8,6 +8,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.Strings;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.engine.ui.ButtonView;
@@ -49,7 +50,8 @@ public class PanelRoom extends UserSubInterface {
 	void	drawIcon(int offset, final int index) throws IOException {
 		ButtonView icon = _icons.get(index);
 		if (icon == null) {
-			icon = new ButtonView(new Vector2f(62, 80), TEXTS[index]);
+			icon = new ButtonView(new Vector2f(62, 80));
+			icon.setString(TEXTS[index]);
 			icon.setIcon(SpriteManager.getInstance().getFloor(null, index, 0));
 			icon.setPosition(20 + (index % 4) * 80, 60 + offset + (int)(index / 4) * 100);
 			icon.setBackgroundColor(index == 0 ? Color.RED : new Color(0, 150, 180, 255));

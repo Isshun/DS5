@@ -198,15 +198,15 @@ public class CharacterManager implements ISavable {
 			c.update();
 			c.move();
 			
-			if (c.getJob() == null) {
-				if (c.getPosX() == 30 && c.getPosY() == 10) {
-					Job job = JobManager.getInstance().createMovingJob(20, 14);
-					c.setJob(job);
-				} else {
-					Job job = JobManager.getInstance().createMovingJob(30, 10);
-					c.setJob(job);
-				}
-			}
+//			if (c.getJob() == null) {
+//				if (c.getPosX() == 30 && c.getPosY() == 10) {
+//					Job job = JobManager.getInstance().createMovingJob(20, 14);
+//					c.setJob(job);
+//				} else {
+//					Job job = JobManager.getInstance().createMovingJob(30, 10);
+//					c.setJob(job);
+//				}
+//			}
 
 			if (count % 10 == 0) {
 				c.updateNeeds(count);

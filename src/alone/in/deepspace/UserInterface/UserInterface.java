@@ -3,6 +3,7 @@ package alone.in.deepspace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
+import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.Keyboard;
@@ -193,28 +194,29 @@ public class UserInterface {
 	}
 	
 	public void refresh(int frame, int update, int renderTime) {
-		_panelCharacter.refresh(_app);
-		_panelBase.refresh(_app);
-	    _panelInfo.refresh(_app);
+		_panelCharacter.refresh(_app, null);
+		_panelBase.refresh(_app, null);
+	    _panelInfo.refresh(_app, null);
 //	  	_panelDebug.refresh(, _interaction.getCursor().getX(), _interaction.getCursor().getY());
-	    _panelPlan.refresh(_app);
-	  	_panelDebug.refresh(_app);
-	  	_panelSystem.refresh(_app);
-	  	_panelShortcut.refresh(_app);
-	  	_panelResource.refresh(_app);
-	  	_panelRoom.refresh(_app);
+	    _panelPlan.refresh(_app, null);
+	  	_panelDebug.refresh(_app, null);
+	  	_panelSystem.refresh(_app, null);
+	  	_panelShortcut.refresh(_app, null);
+	  	_panelResource.refresh(_app, null);
+	  	_panelRoom.refresh(_app, null);
 	  	
 	  	_panelMessage.setFrame(frame);
 //	  	_panelMessage.refresh(_app);
 	  	
 //	  	_interaction.refreshCursor();
 	
-	  	_uiCharacter.refresh(_app);
-	  	_uiScience.refresh(_app);
-	  	_uiSecurity.refresh(_app);
-	  	_uiBase.refresh(_app);
-	  	_panelBuild.refresh(_app);
-	  	_uiJobs.refresh(_app);
+	  	_uiCharacter.setBackgroundColor(Color.RED);
+	  	_uiCharacter.refresh(_app, null);
+	  	_uiScience.refresh(_app, null);
+	  	_uiSecurity.refresh(_app, null);
+	  	_uiBase.refresh(_app, null);
+	  	_panelBuild.refresh(_app, null);
+	  	_uiJobs.refresh(_app, null);
 	  	
 		if (_panelBuild.getMode() != PanelBuild.Mode.NONE || _panelPlan.getMode() != PanelPlan.Mode.NONE) {
 		  	if (_keyLeftPressed) {

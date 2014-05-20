@@ -10,9 +10,14 @@ import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
+import alone.in.deepspace.Strings;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.engine.ui.FrameLayout;
+import alone.in.deepspace.engine.ui.ImageView;
+import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
+import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
@@ -21,14 +26,17 @@ import alone.in.deepspace.model.Character;
 public class PanelCrew extends UserSubInterface {
 
 	private static class ViewHolder {
-		public Text 	lbName;
-		public Text 	lbProfession;
-		public Sprite	thumb;
+		public TextView 	lbName;
+		public TextView 	lbProfession;
+		public ImageView		thumb;
+		public FrameLayout frame;
+		public TextView lbJob;
 	}
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
+	private static final int CREW_LINE_SPACING = 10;
 
-	private static int CREW_LINE_HEIGHT = 42;
+	private static int CREW_LINE_HEIGHT = 52;
 	private static int CREW_LINE_WIDTH  = 350;
 
 	private CharacterManager     _characterManager;
@@ -36,7 +44,7 @@ public class PanelCrew extends UserSubInterface {
 	private TextView _lbCount;
 
 	public PanelCrew(RenderWindow app, int tileIndex) throws IOException {
-		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 		  
 		setBackgroundColor(new Color(100, 0, 0, 180));
 		
@@ -54,25 +62,49 @@ public class PanelCrew extends UserSubInterface {
 	void  addCharacter(RenderWindow app, int index, Character character) {
 		int x = 0;
 		int y = index;
-
-		ViewHolder view = null;
+		
 		if (index >= _viewHolderList.size()) {
-			view = new ViewHolder();
+			final ViewHolder viewHolder = new ViewHolder();
+
+			// Frame
+			viewHolder.frame = new FrameLayout(new Vector2f(CREW_LINE_WIDTH, CREW_LINE_HEIGHT));
+			viewHolder.frame.setPosition(Constant.UI_PADDING, 38 + Constant.UI_PADDING + ((CREW_LINE_HEIGHT + CREW_LINE_SPACING) * y));
+			viewHolder.frame.setOnFocusListener(new OnFocusListener() {
+				@Override
+				public void onExit(View view) {
+					view.setBackgroundColor(null);
+				}
+				
+				@Override
+				public void onEnter(View view) {
+					view.setBackgroundColor(new Color(40, 40, 80));
+				}
+			});
+			addView(viewHolder.frame);
 			
 			// Name
-			view.lbName = new Text();
-			view.lbName.setFont(SpriteManager.getInstance().getFont());
-			view.lbName.setCharacterSize(14);
-			view.lbName.setString(character.getName());
-			view.lbName.setStyle(Text.REGULAR);
-			view.lbName.setPosition(Constant.UI_PADDING + 42,
-					32 + Constant.UI_PADDING + (CREW_LINE_HEIGHT * y));
+			viewHolder.lbName = new TextView();
+			viewHolder.lbName.setCharacterSize(14);
+			viewHolder.lbName.setPosition(Constant.UI_PADDING + 32, 6);
+			viewHolder.frame.addView(viewHolder.lbName);
 		
-			view.lbProfession = new Text();
-			view.lbProfession.setString(character.getName());
-			view.lbProfession.setPosition(_posX + Constant.UI_PADDING + Constant.CHAR_WIDTH + Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
-					_posY + 32 + Constant.UI_PADDING + 3 + (CREW_LINE_HEIGHT * y));
+			// Job
+			viewHolder.lbJob = new TextView();
+			viewHolder.lbJob.setCharacterSize(14);
+			viewHolder.lbJob.setPosition(Constant.UI_PADDING + 32, Constant.UI_PADDING + 16);
+			viewHolder.frame.addView(viewHolder.lbJob);
+		
+			// Profession
+			viewHolder.lbProfession = new TextView();
+			viewHolder.lbProfession.setCharacterSize(14);
+			viewHolder.lbProfession.setPosition(CREW_LINE_WIDTH - Constant.UI_PADDING - 100, Constant.UI_PADDING);
+			viewHolder.frame.addView(viewHolder.lbProfession);
 
+			viewHolder.thumb = new ImageView(SpriteManager.getInstance().getCharacter(character.getProfession(), 0, 0));
+			viewHolder.thumb.setPosition(8, 5);
+			viewHolder.frame.addView(viewHolder.thumb);
+
+			
 //		  // Function
 //		  Profession function = character.getProfession();
 //		  text.setString(function.getName());
@@ -81,17 +113,26 @@ public class PanelCrew extends UserSubInterface {
 //		  text.setColor(function.getColor());
 //		  _app.draw(text, _render);
 		
-			_viewHolderList.add(view);
+			_viewHolderList.add(viewHolder);
 		} else {
-			view = _viewHolderList.get(index);
+			final ViewHolder viewHolder = _viewHolderList.get(index);
+
+			// Name
+			viewHolder.lbName.setString(character.getName());
+			
+			// Job
+			if (character.getJob() != null) {
+				viewHolder.lbJob.setString(character.getJob().getShortLabel());
+				viewHolder.lbJob.setColor(new Color(255, 255, 255));
+			} else {
+				viewHolder.lbJob.setString(Strings.LB_NO_JOB);
+				viewHolder.lbJob.setColor(new Color(255, 255, 255, 100));
+			}
+			
+			// Profession
+			viewHolder.lbProfession.setString(character.getProfession().getName());
 		}
 		
-		app.draw(view.lbName, _render);
-		app.draw(view.lbProfession, _render);
-		view.thumb = SpriteManager.getInstance().getCharacter(character.getProfession(), 0, 0);
-		view.thumb.setPosition(Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
-				32 + Constant.UI_PADDING + (CREW_LINE_HEIGHT * y));
-		app.draw(view.thumb, _render);
 	}
 	
 	@Override

@@ -158,7 +158,7 @@ public class Main {
 				double animProgress = (1 - (double)nextUpdate / _updateInterval);
 				game.onDraw(animProgress, renderTime);
 				if (menu != null) {
-					menu.refresh(window);
+					menu.refresh(window, null);
 				}
 				window.display();
 			} else {

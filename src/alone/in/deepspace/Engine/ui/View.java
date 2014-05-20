@@ -6,6 +6,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.Transform;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.renderer.MainRenderer;
@@ -25,21 +26,25 @@ public abstract class View {
 	protected int			_paddingBottom;
 	protected int 			_paddingRight;
 	protected int 			_paddingTop;
-	private RectangleView 	_parent;
+	protected FrameLayout 	_parent;
 	private OnClickListener _onClickListener;
 	private OnFocusListener _onFocusListener;
-	private boolean 		mIsActive;
+	private boolean 		_isActive;
 
 	public View(Vector2f size) {
 		_size = size;
 		_isVisible = true;
+
+		onCreate();
 	}
 	
+	protected abstract void onCreate();
+
 	public void refresh(RenderWindow app, RenderStates render) {
 		if (_isVisible == false) {
 			return;
 		}
-		
+				
 		if (_background != null) {
 			MainRenderer.getInstance().draw(_background, render);
 		}
@@ -76,6 +81,11 @@ public abstract class View {
 	}
 
 	public void setBackgroundColor(Color color) {
+		if (color == null) {
+			_background = null;
+			return;
+		}
+		
 		if (_background == null) {
 			_background = new RectangleShape();
 		}
@@ -83,7 +93,7 @@ public abstract class View {
 			_background.setSize(_size);
 		}
 		if (_pos != null) {
-			_background.setPosition(_pos);
+			//_background.setPosition(_pos);
 		}
 		_background.setFillColor(color);
 	}
@@ -114,27 +124,27 @@ public abstract class View {
 			_rect = new Rectangle(_parentPosX + _posX, _parentPosY + _posY, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
 		}
 		if (_background != null) {
-			_background.setPosition(_pos);
+			//_background.setPosition(pos);
 		}
 	}
 
 	public void onRefresh(RenderWindow app, RenderStates states) {
 	}
 
-	public void setParent(RectangleView parent) {
+	public void setParent(FrameLayout parent) {
 		_parent = parent;
 	}
 
-	public RectangleView getParent() {
+	public FrameLayout getParent() {
 		return _parent;
 	}
 
 	public boolean isActive() {
-		return mIsActive;
+		return _isActive;
 	}
 
 	public void setActive(boolean active) {
-		mIsActive = active;
+		_isActive = active;
 	}
 
 }

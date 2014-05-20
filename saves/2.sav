@@ -2621,7 +2621,17 @@ BEGIN WORLDMAP
 49	49	base.rock	0
 END WORLDMAP
 BEGIN CHARACTERS
-17	17	3	Alice Cooper
+20	23	2	Alice Cooper
+20	23	0	Wesley Cooper
+20	23	0	Jadzia Lawton
+20	22	0	Jonathan Barclay
+0	0	0	Alice Mallory
+0	0	0	Samuel Thrace
+0	0	0	Wesley Hartness
+0	0	0	Kathryn Sheppard
+0	0	0	Jadzia Anders
+0	0	0	Gaius Archer
+0	0	0	Janice Wildman
 END CHARACTERS
 BEGIN ROOMS
 END ROOMS

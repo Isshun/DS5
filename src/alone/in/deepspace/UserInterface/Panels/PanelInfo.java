@@ -16,7 +16,7 @@ import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.ObjectPool;
 import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.OnClickListener;
-import alone.in.deepspace.engine.ui.RectangleView;
+import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.JobManager;
@@ -51,9 +51,9 @@ public class PanelInfo extends UserSubInterface {
 	private TextView _itemStorage;
 	private TextView light;
 	private TextView[] _lbCarry;
-	private RectangleView _itemGather;
+	private FrameLayout _itemGather;
 	private TextView _itemGatherProduce;
-	private RectangleView _itemMine;
+	private FrameLayout _itemMine;
 	private TextView _itemMineProduce;
 	private ButtonView _itemGatherIcon;
 	private ButtonView _itemMineIcon;
@@ -124,7 +124,7 @@ public class PanelInfo extends UserSubInterface {
 	}
 
 	private void createGatherView() {
-		_itemGather = new RectangleView(new Vector2f(120, 200)) {
+		_itemGather = new FrameLayout(new Vector2f(120, 200)) {
 			@Override
 			public void onRefresh(RenderWindow app) {
 
@@ -143,13 +143,13 @@ public class PanelInfo extends UserSubInterface {
 		_itemGatherProduce.setCharacterSize(MENU_AREA_CONTENT_FONT_SIZE);
 		_itemGather.addView(_itemGatherProduce);
 		
-		_itemGatherIcon = new ButtonView(new Vector2f(32, 32), "");
+		_itemGatherIcon = new ButtonView(new Vector2f(32, 32));
 		_itemGatherIcon.setPosition(0, 28);
 		_itemGather.addView(_itemGatherIcon);
 	}
 
 	private void createMiningView() {
-		_itemMine = new RectangleView(new Vector2f(120, 200)) {
+		_itemMine = new FrameLayout(new Vector2f(120, 200)) {
 			@Override
 			public void onRefresh(RenderWindow app) {
 
@@ -168,7 +168,7 @@ public class PanelInfo extends UserSubInterface {
 		_itemMineProduce.setCharacterSize(MENU_AREA_CONTENT_FONT_SIZE);
 		_itemMine.addView(_itemMineProduce);
 
-		_itemMineIcon = new ButtonView(new Vector2f(32, 32), "");
+		_itemMineIcon = new ButtonView(new Vector2f(32, 32));
 		_itemMineIcon.setPosition(0, 28);
 		_itemMine.addView(_itemMineIcon);
 	}
@@ -328,13 +328,13 @@ public class PanelInfo extends UserSubInterface {
 	@Override
 	public void onRefresh(RenderWindow app) {
 		BaseItem item = _area != null ? _area.getItem() : null;
-		if (item == null) {
+		if (item == null && _area != null) {
 			item = _area.getRessource();
 		}
 
-		// TODO
-		_itemGather.refresh(app);
-		_itemMine.refresh(app);
+//		// TODO
+//		_itemGather.refresh(app);
+//		_itemMine.refresh(app);
 		
 		if (item != null) {
 

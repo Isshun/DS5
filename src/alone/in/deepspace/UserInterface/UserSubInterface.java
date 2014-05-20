@@ -12,16 +12,14 @@ import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
 import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.engine.ui.RectangleView;
+import alone.in.deepspace.engine.ui.FrameLayout;
 
 
-public abstract class UserSubInterface extends RectangleView {
+public abstract class UserSubInterface extends FrameLayout {
 	protected Texture	_texturePanel;
 	protected Texture	_textureTile;
 	protected Sprite	_bgPanel;
 	protected Sprite	_bgTile;
-	protected int		_posX;
-	protected int		_posY;
 	protected int		_posTileX;
 	protected int		_posTileY;
 	protected boolean	_isTileActive;
@@ -42,9 +40,6 @@ public abstract class UserSubInterface extends RectangleView {
 		
 		setPosition(pos);
 		
-		_posX = (int) pos.x;
-		_posY = (int) pos.y;
-
 		_posTileX = (Constant.MENU_TILE_WIDTH + Constant.UI_PADDING + Constant.UI_PADDING) * tileIndex + Constant.UI_PADDING;
 		_posTileY = Constant.WINDOW_HEIGHT - 180 - Constant.UI_PADDING;
 		_tileIndex = tileIndex;

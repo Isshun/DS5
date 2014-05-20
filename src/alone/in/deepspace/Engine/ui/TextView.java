@@ -12,9 +12,16 @@ public class TextView extends View {
 
 	private Text _text;
 
+	public TextView() {
+		super(new Vector2f(0, 0));
+	}
+
 	public TextView(Vector2f size) {
 		super(size);
-		
+	}
+
+	@Override
+	protected void onCreate() {
 		_text = new Text();
 		_text.setFont(SpriteManager.getInstance().getFont());
 	}

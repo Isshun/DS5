@@ -6,6 +6,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.Strings;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.engine.ui.ButtonView;
@@ -35,7 +36,8 @@ public class PanelPlan extends UserSubInterface {
 		
 		setBackgroundColor(new Color(0, 0, 0, 150));
 
-		ButtonView btGather = new ButtonView(new Vector2f(80, 32), "gather");
+		ButtonView btGather = new ButtonView(new Vector2f(80, 32));
+		btGather.setString(Strings.LB_GATHER);
 		btGather.setPosition(0, 0);
 		btGather.setCharacterSize(22);
 		btGather.setOnClickListener(new OnClickListener() {
@@ -46,7 +48,8 @@ public class PanelPlan extends UserSubInterface {
 		});
 		addView(btGather);
 		  
-		ButtonView btMining = new ButtonView(new Vector2f(80, 32), "mining");
+		ButtonView btMining = new ButtonView(new Vector2f(80, 32));
+		btMining.setString(Strings.LB_MINING);
 		btMining.setPosition(0, 50);
 		btMining.setCharacterSize(22);
 		btMining.setOnClickListener(new OnClickListener() {
@@ -57,7 +60,8 @@ public class PanelPlan extends UserSubInterface {
 		});
 		addView(btMining);
 
-		ButtonView btDump = new ButtonView(new Vector2f(80, 32), "dump");
+		ButtonView btDump = new ButtonView(new Vector2f(80, 32));
+		btDump.setString(Strings.LB_DUMP);
 		btDump.setPosition(0, 100);
 		btDump.setCharacterSize(22);
 		btDump.setOnClickListener(new OnClickListener() {

@@ -6,6 +6,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.Strings;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
@@ -39,7 +40,8 @@ public class PanelShortcut extends UserSubInterface {
 		lbEngineering.setPosition(new Vector2f(10, 6));
 		addView(lbEngineering);
 		
-		ButtonView lbOperation = new ButtonView(new Vector2f(140, 36), "Jobs");
+		ButtonView lbOperation = new ButtonView(new Vector2f(140, 36));
+		lbOperation.setString(Strings.JOBS);
 		lbOperation.setOnFocusListener(new OnFocusListener() {			
 			@Override
 			public void onExit(View view) {

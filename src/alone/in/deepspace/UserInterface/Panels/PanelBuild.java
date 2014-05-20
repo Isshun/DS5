@@ -158,7 +158,8 @@ public class PanelBuild extends UserSubInterface {
 //				icon = new ButtonView(new Vector2f(62, 80), "remove");
 //				icon.setIcon(SpriteManager.getInstance().getBullet(3));
 //			} else {
-				icon = new ButtonView(new Vector2f(62, 80), info.label);
+				icon = new ButtonView(new Vector2f(62, 80));
+				icon.setString(info.label);
 				icon.setIcon(SpriteManager.getInstance().getIcon(info));
 				icon.setIconPadding(0, 20);
 //			}

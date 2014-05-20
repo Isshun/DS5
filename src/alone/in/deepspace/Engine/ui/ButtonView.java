@@ -18,11 +18,13 @@ public class ButtonView extends View {
 	private int 			_iconPaddingX;
 	private int 			_iconPaddingY;
 
-	public ButtonView(Vector2f size, String string) {
+	public ButtonView(Vector2f size) {
 		super(size);
-		
+	}
+
+	@Override
+	protected void onCreate() {
 		_text = new Text();
-		_text.setString(string);
 		_text.setCharacterSize(12);
 		_text.setFont(SpriteManager.getInstance().getFont());
 	}
@@ -95,5 +97,6 @@ public class ButtonView extends View {
 		_iconPaddingX = x;
 		_iconPaddingY = y;
 	}
+
 }
 

@@ -86,4 +86,12 @@ public class Job {
 		}
 		return oss.toString();
 	}
+
+	public String getShortLabel() {
+		String oss = JobManager.getActionName(_action);
+		if (_item != null) {
+			oss += " " + _item.getName();
+		}
+		return oss;
+	}
 }
