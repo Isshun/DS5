@@ -32,6 +32,7 @@ public class PanelCrew extends UserSubInterface {
 		public TextView 	lbProfession;
 		public ImageView		thumb;
 		public FrameLayout frame;
+		public TextView lbStatus;
 		public TextView lbJob;
 	}
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
@@ -98,10 +99,16 @@ public class PanelCrew extends UserSubInterface {
 			viewHolder.lbName.setPosition(Constant.UI_PADDING + 32, 6);
 			viewHolder.frame.addView(viewHolder.lbName);
 		
+			// Status
+			viewHolder.lbStatus = new TextView();
+			viewHolder.lbStatus.setCharacterSize(14);
+			viewHolder.lbStatus.setPosition(Constant.UI_PADDING + 32, Constant.UI_PADDING + 16);
+			viewHolder.frame.addView(viewHolder.lbStatus);
+		
 			// Job
 			viewHolder.lbJob = new TextView();
 			viewHolder.lbJob.setCharacterSize(14);
-			viewHolder.lbJob.setPosition(Constant.UI_PADDING + 32, Constant.UI_PADDING + 16);
+			viewHolder.lbJob.setPosition(Constant.UI_PADDING + 300, 6);
 			viewHolder.frame.addView(viewHolder.lbJob);
 		
 			// Profession
@@ -131,6 +138,10 @@ public class PanelCrew extends UserSubInterface {
 			viewHolder.lbName.setString(character.getName());
 			
 			// Job
+			viewHolder.lbStatus.setString(character.getStatus().getThoughts());
+			viewHolder.lbStatus.setColor(character.getStatus().getColor());
+			
+			// Job
 			if (character.getJob() != null) {
 				viewHolder.lbJob.setString(character.getJob().getShortLabel());
 				viewHolder.lbJob.setColor(new Color(255, 255, 255));
@@ -138,7 +149,7 @@ public class PanelCrew extends UserSubInterface {
 				viewHolder.lbJob.setString(Strings.LB_NO_JOB);
 				viewHolder.lbJob.setColor(new Color(255, 255, 255, 100));
 			}
-			
+
 			// Profession
 			viewHolder.lbProfession.setString(character.getProfession().getName());
 		}

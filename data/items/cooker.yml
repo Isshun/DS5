@@ -1,0 +1,11 @@
+label: Cooker
+category: common
+onAction:
+  duration: 10
+  practice:
+    cooking: 1
+  produce:
+    item: base.meal
+    quantity: 4
+cost:
+  matter: 42

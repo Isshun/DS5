@@ -49,6 +49,10 @@ public class Constant {
 	public static final int WORLD_WIDTH = 50;
 	public static final int WORLD_HEIGHT = 50;
 	public static final int CHARACTER_CARRY_CAPACITY = 10;
+	public static final double LIMITE_RELATION_LONELY = 20;
+	public static final double LIMITE_LOW_OXYGEN = 20;
+	public static final double LIMITE_NO_OXYGEN = 0;
+	public static final double LIMITE_TIRED = 20;
 
 	
 }

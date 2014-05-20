@@ -70,6 +70,8 @@ public class PanelInfo extends UserSubInterface {
 	private FrameLayout 			_itemAction;
 	private TextView 				_itemActionProduce;
 	private ButtonView			 	_itemActionIcon;
+	private TextView 				_itemSlots;
+	private TextView 				_itemUsed;
 
 	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;
 
@@ -134,6 +136,16 @@ public class PanelInfo extends UserSubInterface {
 		_itemOwner.setCharacterSize(14);
 		_layoutItem.addView(_itemOwner);
 
+		_itemSlots = new TextView(null);
+		_itemSlots.setPosition(10, 120);
+		_itemSlots.setCharacterSize(14);
+		_layoutItem.addView(_itemSlots);
+
+		_itemUsed = new TextView(null);
+		_itemUsed.setPosition(10, 140);
+		_itemUsed.setCharacterSize(14);
+		_layoutItem.addView(_itemUsed);
+		
 		_itemStorage = new TextView(null);
 		_itemStorage.setPosition(10, 200);
 		_itemStorage.setCharacterSize(16);
@@ -477,6 +489,9 @@ public class PanelInfo extends UserSubInterface {
 		
 		if (item != null) {
 
+			_itemSlots.setString("Free slots: " + _item.getNbFreeSlots());
+			_itemUsed.setString("Used: " + _item.getNbUsed());
+			
 			if (item.isStorage()) {
 				StorageItem storage = ((StorageItem)item);
 				if (storage.getItems().size() > 0) {

@@ -10,6 +10,7 @@ import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.CharacterNeeds;
 import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.model.ItemInfo.ItemInfoSlot;
 import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.UserItem;
@@ -27,7 +28,6 @@ public class JobManager implements ISavable {
 	private int 				_count;
 	private int 				_id;
 	private int 				_start;
-	private int 				_countFree;
 
 	private ArrayList<BaseItem> _routineItems;
 
@@ -38,7 +38,6 @@ public class JobManager implements ISavable {
 		_count = 0;
 		_id = 0;
 		_start = 0;
-		_countFree = 0;
 		_routineItems = new ArrayList<BaseItem>();
 
 		Log.debug("JobManager done");
@@ -46,7 +45,6 @@ public class JobManager implements ISavable {
 
 	public List<Job>	getJobs() { return _jobs; };
 	int					getCount() { return _count; }
-	int					getCountFree() { return _countFree; }
 
 	// TODO
 	public void	load(final String filePath) {
@@ -290,7 +288,6 @@ public class JobManager implements ISavable {
 				job.setAction(JobManager.Action.STORE);
 				job.setCharacterRequire(character);
 				addJob(job);
-				_countFree--;
 				return job;
 			}
 		}
@@ -330,7 +327,6 @@ public class JobManager implements ISavable {
 
 		if (bestJob != null) {
 			Log.debug("bestjob: " + bestDistance + " (" + bestJob.getX() + ", " + bestJob.getY() + ")");
-			_countFree--;
 		} else {
 			Log.debug("bestjob: null");
 		}
@@ -342,15 +338,11 @@ public class JobManager implements ISavable {
 		CharacterNeeds needs = character.getNeeds();
 		if (needs.getFood() < 20) {
 			// TODO
-			UserItem item = ServiceManager.getWorldMap().getNearest(ServiceManager.getData().getItemInfo("base.pub"), character.getPosX(), character.getPosY());
+			ItemFilter itemFilter = new ItemFilter();
+			itemFilter.food = true;
+			UserItem item = ServiceManager.getWorldMap().getNearest(itemFilter, character.getPosX(), character.getPosY());
 			if (item != null) {
-				Job job = new Job(++_id, item.getX(), item.getY());
-				job.setAction(JobManager.Action.USE);
-				job.setItem(item);
-				job.setCharacterRequire(character);
-				addJob(job);
-				_countFree--;
-				return job;
+				return createUseJob(item);
 			}
 		}
 
@@ -393,7 +385,6 @@ public class JobManager implements ISavable {
 			_start--;
 		} else {
 			_start++;
-			_countFree++;
 			job.setFail(reason, Game.getFrame());
 			job.setCharacter(null);
 		}
@@ -404,6 +395,10 @@ public class JobManager implements ISavable {
 
 		if (job.getItem() != null) {
 			job.getItem().setOwner(null);
+		}
+		
+		if (job.getSlot() != null) {
+			job.getSlot().release();
 		}
 		
 		_jobs.remove(job);
@@ -432,7 +427,6 @@ public class JobManager implements ISavable {
 	void	addJob(Job job) {
 		_jobs.add(job);
 		_count++;
-		_countFree++;
 	}
 
 	public static JobManager getInstance() {
@@ -506,6 +500,12 @@ public class JobManager implements ISavable {
 			return storeItem(ServiceManager.getWorldMap().getNearest(info, c.getPosX(), c.getPosY()));
 		}
 		
+		// Play with random object
+		UserItem toy = ServiceManager.getWorldMap().getRandomToy(c.getPosX(), c.getPosY());
+		if (toy != null) {
+			return createUseJob(toy);
+		}
+		
 		BaseItem bestItem = null;
 		int bestDistance = Integer.MAX_VALUE;
 		
@@ -523,6 +523,24 @@ public class JobManager implements ISavable {
 		}
 		
 		return null;
+	}
+
+	private Job createUseJob(UserItem item) {
+		if (!item.hasFreeSlot()) {
+			return null;
+		}
+		
+		Job job = new Job(++_id);
+		ItemSlot slot = item.takeSlot(job);
+		job.setSlot(slot);
+		job.setPosition(slot.getX(), slot.getY());
+		job.setAction(JobManager.Action.USE);
+		job.setItem(item);
+		job.setDurationLeft(item.getInfo().onAction.duration);
+
+		addJob(job);
+		
+		return job;
 	}
 
 	private Job createJobWork(BaseItem item) {

@@ -3,6 +3,7 @@ package alone.in.deepspace.model;
 import org.jsfml.graphics.Color;
 
 import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
 
 public class Job {
@@ -21,14 +22,25 @@ public class Job {
 	private int 				_fail;
 	public int 					_blocked;
 	private Abort 				_reason;
-	private Color _color;
+	private Color 				_color;
+	private boolean 			_isUsingItem;
+	private int _durationLeft;
+	private ItemSlot _slot;
 
 	public Job(int id, int x, int y) {
 		Log.debug("Job #" + id);
-
-		_id = id;
+		init(id);
 		_posY = y;
 		_posX = x;
+	}
+
+	public Job(int id) {
+		Log.debug("Job #" + id);
+		init(id);
+	}
+
+	private void init(int id) {
+		_id = id;
 		_item = null;
 		_action = JobManager.Action.NONE;
 		_character = null;
@@ -110,12 +122,46 @@ public class Job {
 	public String getShortLabel() {
 		String oss = JobManager.getActionName(_action);
 		if (_item != null) {
-			oss += " " + _item.getName();
+			oss += " " + _item.getLabel();
 		}
 		return oss;
 	}
 
 	public Color getColor() {
 		return _color;
+	}
+
+	public String getActionName() {
+		return JobManager.getActionName(_action);
+	}
+
+	public void setDurationLeft(int duration) {
+		_durationLeft = duration;
+	}
+
+	public int getDurationLeft() {
+		return _durationLeft;
+	}
+
+	public void useItem() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void decreaseDurationLeft() {
+		_durationLeft--;
+	}
+
+	public void setPosition(int x, int y) {
+		_posX = x;
+		_posY = y;
+	}
+
+	public void setSlot(ItemSlot slot) {
+		_slot = slot;
+	}
+
+	public ItemSlot getSlot() {
+		return _slot;
 	}
 }

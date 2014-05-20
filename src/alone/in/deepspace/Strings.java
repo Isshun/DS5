@@ -11,4 +11,12 @@ public class Strings {
 	public static String LB_NONE = "none";
 	public static String LB_GROUND = "ground";
 	public static String PROVIDE = "Provide";
+	public static String CHARACTER_EVERYTHINGS_GOES_RIGHT = "Everything goes right";
+	public static String CHARACTER_SAY_TIRED = "I'm a little tired";
+	public static String CHARACTER_SAY_HUNGRY = "I'm hungry";
+	public static String CHARACTER_SAY_STARVING = "I'm starving";
+	public static String CHARACTER_SAY_LONELY = "I feel lonely...";
+	public static String CHARACTER_SAY_LOW_OXYGEN = "It's hard to breath";
+	public static String CHARACTER_SAY_NO_OXYGEN = "I can't breath !";
+	public static String CHARACTER_SAY_NOWHERE_TO_SLEEP = "I have nowhere to sleep";
 }

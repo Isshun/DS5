@@ -31,18 +31,19 @@ public class ItemLoader {
 		// Load files
 		for (File itemFile: itemFiles) {
 			try {
-				InputStream input = new FileInputStream(itemFile);
+			    System.out.println(" - load: " + itemFile.getName());
+
+			    InputStream input = new FileInputStream(itemFile);
 			    Yaml yaml = new Yaml(new Constructor(ItemInfo.class));
 			    ItemInfo info = (ItemInfo)yaml.load(input);
 			    info.fileName = itemFile.getName().substring(0, itemFile.getName().length() - 4);
 			    info.packageName = packageName;
 			    info.name = info.packageName +  '.' + info.fileName;
 			    info.isWalkable = true;
-			    if (!info.isStructure && !info.isRessource) {
+			    if (!info.isStructure && !info.isRessource && !info.isConsomable) {
 			    	info.isUserItem = true;
 			    }
 			    items.add(info);
-			    System.out.println(" - load: " + info.name);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -51,6 +52,28 @@ public class ItemLoader {
 	    System.out.println("items loaded: " + items.size());
 	    
 	    ServiceManager.getData().items.addAll(items);
+	}
+
+	public static void load() {
+		ItemLoader.load("data/items/", "base");
+		ItemLoader.load("mods/garden/items/", "garden");
+		for (ItemInfo item: ServiceManager.getData().items) {
+			if (item.craftedFrom != null) {
+				item.craftedFromItems = new ArrayList<ItemInfo>();
+				for (String name: item.craftedFrom) {
+					item.craftedFromItems.add(ServiceManager.getData().getItemInfo(name));
+				}
+			}
+			if (item.onGather != null) {
+				item.onGather.itemProduce = ServiceManager.getData().getItemInfo(item.onGather.produce);
+			}
+			if (item.onMine != null) {
+				item.onMine.itemProduce = ServiceManager.getData().getItemInfo(item.onMine.produce);
+			}
+			if (item.onAction != null && item.onAction.produce != null) {
+				item.onAction.itemProduce = ServiceManager.getData().getItemInfo(item.onAction.produce.item);
+			}
+		}
 	}
 
 }

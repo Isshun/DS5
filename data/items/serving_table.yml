@@ -4,5 +4,16 @@ height: 1
 category: common
 cost:
   matter: 8
+slots:
+  - x: 0
+    y: 1
+  - x: 1
+    y: 1
+  - x: 2
+    y: 1
 onAction:
-  produce: base.meal
+  duration: 10
+  effects:
+    food: 100
+    drink: 100
+    hapiness: 10

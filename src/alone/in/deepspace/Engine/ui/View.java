@@ -16,7 +16,7 @@ public abstract class View {
 	protected Vector2f 		_pos;
 	protected Vector2f 		_size;
 	protected boolean		_isVisible;
-	private Rectangle 		_rect;
+	protected Rectangle 		_rect;
 	protected int 			_parentPosX;
 	protected int 			_parentPosY;
 	protected int 			_posX;
@@ -146,6 +146,10 @@ public abstract class View {
 
 	public void setActive(boolean active) {
 		_isActive = active;
+	}
+
+	public boolean isVisible() {
+		return _isVisible;
 	}
 
 }

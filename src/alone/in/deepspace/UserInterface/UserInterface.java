@@ -16,6 +16,7 @@ import alone.in.deepspace.UserInterface.Panels.PanelBuild;
 import alone.in.deepspace.UserInterface.Panels.PanelCharacter;
 import alone.in.deepspace.UserInterface.Panels.PanelCrew;
 import alone.in.deepspace.UserInterface.Panels.PanelDebug;
+import alone.in.deepspace.UserInterface.Panels.PanelDebugItem;
 import alone.in.deepspace.UserInterface.Panels.PanelInfo;
 import alone.in.deepspace.UserInterface.Panels.PanelJobs;
 import alone.in.deepspace.UserInterface.Panels.PanelPlan;
@@ -73,7 +74,8 @@ public class UserInterface {
 	private UIMessage 					_message;
 	private int 						_mouseRealPosX;
 	private int 						_mouseRealPosY;
-	
+	private PanelDebugItem 				_panelDebugItems;
+
 	public enum Mode {
 		BASE,
 		INFO,
@@ -85,9 +87,9 @@ public class UserInterface {
 		SCIENCE,
 		SECURITY,
 		ROOM,
-		PLAN
+		PLAN, DEBUGITEMS
 	}
-	
+
 	public void	onMouseMove(int x, int y) {
 		_mouseRealPosX = x;
 		_mouseRealPosY = y;
@@ -98,7 +100,7 @@ public class UserInterface {
 		if (_keyRightPressed) {
 			_viewport.update(x, y);
 		}
-	
+
 		// no buttons pressed
 		else {
 			// _cursor.setMousePos(x  _viewport.getScale() - UI_WIDTH - _viewport.getPosX() - 1,
@@ -110,35 +112,35 @@ public class UserInterface {
 		if (UIEventManager.getInstance().has(x, y)) {
 			return;
 		}
-		
-	  if (_panelBuild.catchClick(x, y)) {
-		_keyLeftPressed = false;
-		return;
-	  }
-	
-	  if (_uiCharacter.catchClick(x, y)) {
-		_keyLeftPressed = false;
-		return;
-	  }
-	
-	  if (_uiScience.catchClick(x, y)) {
-		_keyLeftPressed = false;
-		return;
-	  }
-	
-	  if (_uiSecurity.catchClick(x, y)) {
-		_keyLeftPressed = false;
-		return;
-	  }
-	
-	  if (_uiBase.catchClick(x, y)) {
-		_keyLeftPressed = false;
-		return;
-	  }
 
-	  _keyLeftPressed = true;
-	  _keyMovePosX = _keyPressPosX = getRelativePosX(x);
-	  _keyMovePosY = _keyPressPosY = getRelativePosY(y);
+		if (_panelBuild.catchClick(x, y)) {
+			_keyLeftPressed = false;
+			return;
+		}
+
+		if (_uiCharacter.catchClick(x, y)) {
+			_keyLeftPressed = false;
+			return;
+		}
+
+		if (_uiScience.catchClick(x, y)) {
+			_keyLeftPressed = false;
+			return;
+		}
+
+		if (_uiSecurity.catchClick(x, y)) {
+			_keyLeftPressed = false;
+			return;
+		}
+
+		if (_uiBase.catchClick(x, y)) {
+			_keyLeftPressed = false;
+			return;
+		}
+
+		_keyLeftPressed = true;
+		_keyMovePosX = _keyPressPosX = getRelativePosX(x);
+		_keyMovePosY = _keyPressPosY = getRelativePosY(y);
 	}
 
 	public void	onRightPress(int x, int y) {
@@ -149,9 +151,9 @@ public class UserInterface {
 		_keyRightPressed = true;
 		_mouseRightPressX = x;
 		_mouseRightPressY = y;
-	    _viewport.startMove(x, y);
+		_viewport.startMove(x, y);
 	}
-	
+
 	public int getRelativePosX(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
 	public int getRelativePosY(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
 	public int getRelativePosXMax(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMinScale() / Constant.TILE_WIDTH); }
@@ -164,6 +166,7 @@ public class UserInterface {
 		if (info != Mode.INFO) 		_panelInfo.setVisible(false);
 		if (info != Mode.PLAN) 		_panelPlan.setVisible(false);
 		if (info != Mode.DEBUG) 	_panelDebug.setVisible(false);
+		if (info != Mode.DEBUGITEMS)_panelDebug.setVisible(false);
 		if (info != Mode.BASE) 		_panelBase.setVisible(false);
 		if (info != Mode.BUILD) 	_panelBuild.setVisible(false);
 		if (info != Mode.CREW) 		_uiCharacter.setVisible(false);
@@ -172,11 +175,12 @@ public class UserInterface {
 		if (info != Mode.SECURITY)	_uiSecurity.setVisible(false);
 		if (info != Mode.JOBS)		_uiJobs.setVisible(false);
 		if (info != Mode.ROOM)		_panelRoom.setVisible(false);
-		
+
 		switch (info) {
 		case BUILD: 	_panelBuild.toogle(); break;
 		case INFO: 		_panelInfo.toogle(); break;
 		case DEBUG: 	_panelDebug.toogle(); break;
+		case DEBUGITEMS:_panelDebugItems.toogle(); break;
 		case PLAN: 		_panelPlan.toogle(); break;
 		case CHARACTER: _panelCharacter.toogle(); break;
 		case BASE: 		_panelBase.toogle(); break;
@@ -189,50 +193,51 @@ public class UserInterface {
 	}
 
 	public void	onMouseWheel(int delta, int x, int y) {
-	  _viewport.setScale(delta);
-	
-	  _keyMovePosX = getRelativePosX(x);
-	  _keyMovePosY = getRelativePosY(y);
+		_viewport.setScale(delta);
+
+		_keyMovePosX = getRelativePosX(x);
+		_keyMovePosY = getRelativePosY(y);
 	}
-	
+
 	public void refresh(int frame, int update, int renderTime) {
 		_panelCharacter.refresh(_app, null);
 		_panelBase.refresh(_app, null);
-	    _panelInfo.refresh(_app, null);
-//	  	_panelDebug.refresh(, _interaction.getCursor().getX(), _interaction.getCursor().getY());
-	    _panelPlan.refresh(_app, null);
-	  	_panelDebug.refresh(_app, null);
-	  	_panelSystem.refresh(_app, null);
-	  	_panelShortcut.refresh(_app, null);
-	  	_panelResource.refresh(_app, null);
-	  	_panelRoom.refresh(_app, null);
-	  	
-	  	_panelMessage.setFrame(frame);
-//	  	_panelMessage.refresh(_app);
-	  	
-//	  	_interaction.refreshCursor();
-	
-	  	_uiCharacter.refresh(_app, null);
-	  	_uiScience.refresh(_app, null);
-	  	_uiSecurity.refresh(_app, null);
-	  	_uiBase.refresh(_app, null);
-	  	_panelBuild.refresh(_app, null);
-	  	_uiJobs.refresh(_app, null);
-	  	
+		_panelInfo.refresh(_app, null);
+		//	  	_panelDebug.refresh(, _interaction.getCursor().getX(), _interaction.getCursor().getY());
+		_panelPlan.refresh(_app, null);
+		_panelDebug.refresh(_app, null);
+		_panelDebugItems.refresh(_app, null);
+		_panelSystem.refresh(_app, null);
+		_panelShortcut.refresh(_app, null);
+		_panelResource.refresh(_app, null);
+		_panelRoom.refresh(_app, null);
+
+		_panelMessage.setFrame(frame);
+		//	  	_panelMessage.refresh(_app);
+
+		//	  	_interaction.refreshCursor();
+
+		_uiCharacter.refresh(_app, null);
+		_uiScience.refresh(_app, null);
+		_uiSecurity.refresh(_app, null);
+		_uiBase.refresh(_app, null);
+		_panelBuild.refresh(_app, null);
+		_uiJobs.refresh(_app, null);
+
 		if (_panelBuild.getMode() != PanelBuild.Mode.NONE || _panelPlan.getMode() != PanelPlan.Mode.NONE) {
-		  	if (_keyLeftPressed) {
-				  _interaction.drawCursor(Math.min(_keyPressPosX, _keyMovePosX),
+			if (_keyLeftPressed) {
+				_interaction.drawCursor(Math.min(_keyPressPosX, _keyMovePosX),
 						Math.min(_keyPressPosY, _keyMovePosY),
 						Math.max(_keyPressPosX, _keyMovePosX),
 						Math.max(_keyPressPosY, _keyMovePosY));
-		  	} else {
-				  _interaction.drawCursor(Math.min(_keyMovePosX, _keyMovePosX),
+			} else {
+				_interaction.drawCursor(Math.min(_keyMovePosX, _keyMovePosX),
 						Math.min(_keyMovePosY, _keyMovePosY),
 						Math.max(_keyMovePosX, _keyMovePosX),
 						Math.max(_keyMovePosY, _keyMovePosY));
-		  	}
+			}
 		}
-		
+
 		Room.Type roomType = _panelRoom.getSelectedRoom();
 		if (roomType != null) {
 			int fromX = _keyLeftPressed ? Math.min(_keyPressPosX, _keyMovePosX) : _keyMovePosX;
@@ -240,9 +245,9 @@ public class UserInterface {
 			int toX = _keyLeftPressed ? Math.max(_keyPressPosX, _keyMovePosX) : _keyMovePosX;
 			int toY = _keyLeftPressed ? Math.max(_keyPressPosY, _keyMovePosY) : _keyMovePosY;
 			_interaction.drawCursor(fromX, fromY, toX, toY);
-//			RoomManager.getInstance().putRoom(fromX, fromY, toX, toY, roomType);
+			//			RoomManager.getInstance().putRoom(fromX, fromY, toX, toY, roomType);
 		}
-		
+
 		if (_message != null) {
 			_app.draw(_message.border);
 			_app.draw(_message.shape);
@@ -250,13 +255,13 @@ public class UserInterface {
 			if (--_message.frame < 0) {
 				_message = null;
 			}
-			
+
 		}
 
 	}
-	
+
 	public boolean checkKeyboard(Event	event, int frame, int lastInput) {
-		
+
 		if (event.asKeyEvent().key == Keyboard.Key.ADD) {
 			if (Main.getUpdateInterval() - 40 > 0) {
 				Main.setUpdateInterval(Main.getUpdateInterval() - 40);
@@ -266,100 +271,120 @@ public class UserInterface {
 		if (event.asKeyEvent().key == Keyboard.Key.SUBTRACT) {
 			Main.setUpdateInterval(Main.getUpdateInterval() + 40);
 		}
-		
-	  if (_panelBuild.checkKey(event.asKeyEvent().key)) {
-		return true;
-	  }
-	
-	  if (_uiCharacter.checkKey(event.asKeyEvent().key)) {
-		return true;
-	  }
-	
-	  if (_uiBase.checkKey(event.asKeyEvent().key)) {
-		return true;
-	  }
-	
-	  if (_uiSecurity.checkKey(event.asKeyEvent().key)) {
-		return true;
-	  }
-	
-	  if (_uiScience.checkKey(event.asKeyEvent().key)) {
-		return true;
-	  }
-	
-	  if (_interaction.getMode() != UserInteraction.Mode.MODE_NONE) {
-		if (event.type == Event.Type.KEY_RELEASED && event.asKeyEvent().key == Keyboard.Key.ESCAPE) {
-//		  _interaction.cancel();
-		  return true;
-		}
-	  }
-	
-	  if (event.asKeyEvent().key == Keyboard.Key.TAB) {
-		if ((event.type == Event.Type.KEY_RELEASED)) {
-		  if (_panelCharacter.getCharacter() != null) {
-			_panelCharacter.setCharacter(_characteres.getNext(_panelCharacter.getCharacter()));
-		  }
-		}
-		return true;
-	  }
-	
-	  if (event.asKeyEvent().key == Keyboard.Key.D) {
-		Settings.getInstance().setDebug(!Settings.getInstance().isDebug());
-		if (Settings.getInstance().isDebug()) {
-			setMode(Mode.DEBUG);
-		} else {
-			setMode(_panelCharacter.getCharacter() != null ? Mode.CHARACTER : Mode.INFO);
-		}
-		// 	ServiceManager.getWorldMap().dump();
-	  }	
-	  else if (event.asKeyEvent().key == Keyboard.Key.C) {
-		_crewViewOpen = !_crewViewOpen;
-	  }
-	  else if (event.asKeyEvent().key == Keyboard.Key.E || event.asKeyEvent().key == Keyboard.Key.B) {
-		  setMode(Mode.BUILD);
-	  }
-	  else if (event.asKeyEvent().key == Keyboard.Key.O) {
-		_uiBase.toogleTile();
-	  }
-	  else if (event.asKeyEvent().key == Keyboard.Key.R) {
-		_panelRoom.toogle();
-	  }
-	  else if (event.asKeyEvent().key == Keyboard.Key.J) {
-		  setMode(Mode.JOBS);
-	  }
-//	  else if (event.asKeyEvent().key == Keyboard.Key.I) {
-//		ServiceManager.getWorldMap().dumpItems();
-//	  }
-	  else if (event.asKeyEvent().key == Keyboard.Key.UP) {
-		if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
-		  _viewport.update(0, Constant.MOVE_VIEW_OFFSET);
-		  lastInput = frame;
-		  // _cursor._y--;
-		}
-	  }
-	  else if (event.asKeyEvent().key == Keyboard.Key.DOWN) {
-		if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
-		  _viewport.update(0, -Constant.MOVE_VIEW_OFFSET);
-		  lastInput = frame;
-		  // _cursor._y++;
-		}
-	  }
-	  else if (event.asKeyEvent().key == Keyboard.Key.RIGHT) {
-		if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
-		  _viewport.update(-Constant.MOVE_VIEW_OFFSET, 0);
-		  lastInput = frame;
-		  // _cursor._x++;
-		}
-	  }
-	  else if (event.asKeyEvent().key == Keyboard.Key.LEFT) {
-		if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
-		  _viewport.update(Constant.MOVE_VIEW_OFFSET, 0);
-		  lastInput = frame;
-		  // _cursor._x--;
-		}
-	  }
 
-	  return false;
+		if (_panelBuild.checkKey(event.asKeyEvent().key)) {
+			return true;
+		}
+
+		if (_uiCharacter.checkKey(event.asKeyEvent().key)) {
+			return true;
+		}
+
+		if (_uiBase.checkKey(event.asKeyEvent().key)) {
+			return true;
+		}
+
+		if (_uiSecurity.checkKey(event.asKeyEvent().key)) {
+			return true;
+		}
+
+		if (_uiScience.checkKey(event.asKeyEvent().key)) {
+			return true;
+		}
+
+		if (_interaction.getMode() != UserInteraction.Mode.MODE_NONE) {
+			if (event.type == Event.Type.KEY_RELEASED && event.asKeyEvent().key == Keyboard.Key.ESCAPE) {
+				//		  _interaction.cancel();
+				return true;
+			}
+		}
+
+		if (event.asKeyEvent().key == Keyboard.Key.TAB) {
+			if ((event.type == Event.Type.KEY_RELEASED)) {
+				if (_panelCharacter.getCharacter() != null) {
+					_panelCharacter.setCharacter(_characteres.getNext(_panelCharacter.getCharacter()));
+				}
+			}
+			return true;
+		}
+
+		if (event.asKeyEvent().key == Keyboard.Key.PAGEUP) {
+			if ((event.type == Event.Type.KEY_RELEASED)) {
+				ServiceManager.getWorldMap().upFloor();
+			}
+			return true;
+		}
+
+		if (event.asKeyEvent().key == Keyboard.Key.PAGEDOWN) {
+			if ((event.type == Event.Type.KEY_RELEASED)) {
+				ServiceManager.getWorldMap().downFloor();
+			}
+			return true;
+		}
+
+		if (event.asKeyEvent().key == Keyboard.Key.D) {
+			Settings.getInstance().setDebug(!Settings.getInstance().isDebug());
+			if (Settings.getInstance().isDebug()) {
+				setMode(Mode.DEBUG);
+			} else {
+				setMode(_panelCharacter.getCharacter() != null ? Mode.CHARACTER : Mode.INFO);
+			}
+			// 	ServiceManager.getWorldMap().dump();
+		}	
+		else if (event.asKeyEvent().key == Keyboard.Key.C) {
+			_crewViewOpen = !_crewViewOpen;
+		}
+		else if (event.asKeyEvent().key == Keyboard.Key.I) {
+			_panelDebugItems.toogle();
+		}
+		else if (event.asKeyEvent().key == Keyboard.Key.BACKSPACE) {
+			_panelDebugItems.reset();
+		}
+		else if (event.asKeyEvent().key == Keyboard.Key.E || event.asKeyEvent().key == Keyboard.Key.B) {
+			setMode(Mode.BUILD);
+		}
+		else if (event.asKeyEvent().key == Keyboard.Key.O) {
+			_uiBase.toogleTile();
+		}
+		else if (event.asKeyEvent().key == Keyboard.Key.R) {
+			_panelRoom.toogle();
+		}
+		else if (event.asKeyEvent().key == Keyboard.Key.J) {
+			setMode(Mode.JOBS);
+		}
+		//	  else if (event.asKeyEvent().key == Keyboard.Key.I) {
+		//		ServiceManager.getWorldMap().dumpItems();
+		//	  }
+		else if (event.asKeyEvent().key == Keyboard.Key.UP) {
+			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
+				_viewport.update(0, Constant.MOVE_VIEW_OFFSET);
+				lastInput = frame;
+				// _cursor._y--;
+			}
+		}
+		else if (event.asKeyEvent().key == Keyboard.Key.DOWN) {
+			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
+				_viewport.update(0, -Constant.MOVE_VIEW_OFFSET);
+				lastInput = frame;
+				// _cursor._y++;
+			}
+		}
+		else if (event.asKeyEvent().key == Keyboard.Key.RIGHT) {
+			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
+				_viewport.update(-Constant.MOVE_VIEW_OFFSET, 0);
+				lastInput = frame;
+				// _cursor._x++;
+			}
+		}
+		else if (event.asKeyEvent().key == Keyboard.Key.LEFT) {
+			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
+				_viewport.update(Constant.MOVE_VIEW_OFFSET, 0);
+				lastInput = frame;
+				// _cursor._x--;
+			}
+		}
+
+		return false;
 	}
 
 	public static UserInterface getInstance() {
@@ -377,11 +402,13 @@ public class UserInterface {
 		_keyRightPressed = false;
 		_font = new Font();
 		_font.loadFromFile((new File("res/fonts/xolonium_regular.otf")).toPath());
-	
+
 		_panelBase = new PanelBase(app);
 		_panelCharacter = new PanelCharacter(app);
 		_panelInfo = new PanelInfo(app);
 		_panelDebug = new PanelDebug(app);
+		_panelDebug.setUI(this);
+		_panelDebugItems = new PanelDebugItem(app);
 		_panelPlan = new PanelPlan(app);
 		_panelSystem = new PanelSystem(app);
 		_panelSystem.setVisible(true);
@@ -392,7 +419,7 @@ public class UserInterface {
 		_panelMessage = new UserInterfaceMessage(app);
 		_panelMessage.setVisible(true);
 		_panelRoom = new PanelRoom(app);
-  
+
 		_interaction = new UserInteraction(_viewport);
 		_panelBuild = new PanelBuild(app, 3, _interaction);
 		_uiScience = new UserInterfaceScience(app, 2);
@@ -408,7 +435,7 @@ public class UserInterface {
 	}
 
 	public void displayMessage(String msg) {
-//		_message = new UIMessage(msg, _mouseRealPosX, _mouseRealPosY);
+		//		_message = new UIMessage(msg, _mouseRealPosX, _mouseRealPosY);
 		_message = new UIMessage(msg, 10, 30);
 	}
 
@@ -423,7 +450,7 @@ public class UserInterface {
 		if (area != null) {
 			BaseItem item = area.getItem();
 			BaseItem structure = area.getStructure();
-			
+
 			if (item != null) {
 				item.nextMode();
 				ServiceManager.getWorldRenderer().invalidate(item.getX(), item.getY());
@@ -436,6 +463,10 @@ public class UserInterface {
 	}
 
 	public void onLeftClick(int x, int y) {
+		if (_keyLeftPressed == false) {
+			return;
+		}
+		_keyLeftPressed = false;
 
 		// Plan gather
 		if (_panelPlan.getMode() == PanelPlan.Mode.GATHER) {
@@ -444,6 +475,7 @@ public class UserInterface {
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
 					Math.max(_keyPressPosY, _keyMovePosY));
+			return;
 		}
 
 		// Plan mining
@@ -453,6 +485,7 @@ public class UserInterface {
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
 					Math.max(_keyPressPosY, _keyMovePosY));
+			return;
 		}
 
 		// Plan dump
@@ -462,6 +495,7 @@ public class UserInterface {
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
 					Math.max(_keyPressPosY, _keyMovePosY));
+			return;
 		}
 
 		// Remove item
@@ -471,6 +505,7 @@ public class UserInterface {
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
 					Math.max(_keyPressPosY, _keyMovePosY));
+			return;
 		}
 
 		// Remove structure
@@ -480,8 +515,9 @@ public class UserInterface {
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
 					Math.max(_keyPressPosY, _keyMovePosY));
+			return;
 		}
-		
+
 		// Build item
 		if (_panelBuild.getSelectedItem() != null) {
 			_interaction.build(_panelBuild.getSelectedItem(),
@@ -489,8 +525,9 @@ public class UserInterface {
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
 					Math.max(_keyPressPosY, _keyMovePosY));
+			return;
 		}
-		
+
 		// Set room
 		Room.Type roomType = _panelRoom.getSelectedRoom();
 		if (roomType != null) {
@@ -507,7 +544,7 @@ public class UserInterface {
 
 		_panelCharacter.setCharacter(null);
 		setMode(Mode.BASE);
-	
+
 		// Select character
 		if (_interaction.getMode() == UserInteraction.Mode.MODE_NONE) {// && _menu.getCode() == UserInterfaceMenu.CODE_MAIN) {
 			Character c = _characteres.getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
@@ -517,17 +554,16 @@ public class UserInterface {
 				WorldArea a = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
 				if (a != null) {
 					_panelInfo.setArea(a);
-//				if (_panelInfo.getArea() == a && _panelInfo.getItem() == null && a.getItem() != null) {
-//				  _panelInfo.setItem(a.getItem());
-//				} else {
-//				  _panelInfo.setItem(null);
-//				}
+					//				if (_panelInfo.getArea() == a && _panelInfo.getItem() == null && a.getItem() != null) {
+					//				  _panelInfo.setItem(a.getItem());
+					//				} else {
+					//				  _panelInfo.setItem(null);
+					//				}
 					setMode(Mode.INFO);
 				}
 			}
 		}
 
-		_keyLeftPressed = false;
 	}
 
 	public void setCharacter(Character c) {
@@ -536,13 +572,13 @@ public class UserInterface {
 	}
 
 	public void onRightClick(int x, int y) {
-		
+
 		// Cancel selected items 
 		if (_mouseRightPressX >= x-1 && _mouseRightPressX <= x+1 && _mouseRightPressY >= y-1 && _mouseRightPressY <= y+1) {
 			_panelBuild.setSelectedItem(null);
 			_panelRoom.setSelected(null);
 		}
-	
+
 		// Move viewport
 		if (_keyRightPressed && Math.abs(_mouseRightPressX - x) > 5 || Math.abs(_mouseRightPressY - y) > 5) {
 			_viewport.update(x, y);

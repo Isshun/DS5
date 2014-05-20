@@ -1,5 +1,4 @@
 package alone.in.deepspace.manager;
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,7 +7,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
@@ -23,7 +21,6 @@ import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Job;
-import alone.in.deepspace.model.Position;
 import alone.in.deepspace.model.Profession;
 
 

@@ -12,6 +12,7 @@ import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.ui.TextView;
+import alone.in.deepspace.manager.ServiceManager;
 
 public class PanelSystem extends UserSubInterface {
 	private static final int FRAME_WIDTH = Constant.WINDOW_WIDTH;
@@ -20,6 +21,7 @@ public class PanelSystem extends UserSubInterface {
 	private TextView _lbMemoryUsed;
 	private int _used;
 	private TextView _lbUpdate;
+	private TextView _lbFloor;
 	
 	public PanelSystem(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
@@ -43,6 +45,12 @@ public class PanelSystem extends UserSubInterface {
 		_lbUpdate.setColor(Color.WHITE);
 		_lbUpdate.setPosition(new Vector2f(380, 6));
 		addView(_lbUpdate);
+
+		_lbFloor = new TextView(new Vector2f(10, 10));
+		_lbFloor.setCharacterSize(14);
+		_lbFloor.setColor(Color.WHITE);
+		_lbFloor.setPosition(new Vector2f(550, 6));
+		addView(_lbFloor);
 	}
 	
 	@Override
@@ -57,5 +65,6 @@ public class PanelSystem extends UserSubInterface {
         _lbRenderTime.setString("Rendering: " + MainRenderer.getInstance().getRenderTime() + "ms");
         _lbMemoryUsed.setString("Heap: " + String.valueOf(_used) + " / " + String.valueOf(total) + " Mo");
         _lbUpdate.setString("Update: " + String.valueOf(Main.getUpdateInterval()) + " ms");
+        _lbFloor.setString("Floor: " + ServiceManager.getWorldMap().getFloor());
 	}
 }

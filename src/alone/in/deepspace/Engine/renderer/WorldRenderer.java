@@ -452,4 +452,8 @@ public class WorldRenderer implements IRenderer {
 		_changed.add(new Vector2i(x, y));
 	}
 
+	public void invalidate() {
+		_hasChanged = true;
+	}
+
 }

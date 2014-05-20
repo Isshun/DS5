@@ -34,7 +34,7 @@ public class JobRenderer implements IRenderer {
 		List<Job> jobs = JobManager.getInstance().getJobs();
 		for (Job job: jobs) {
 			Color color = job.getColor();
-			rectangleItem.setFillColor(new Color(color.r, color.g, color.b, 40));
+			rectangleItem.setFillColor(new Color(color.r, color.g, color.b, 100));
 			rectangleItem.setPosition(new Vector2f(job.getX() * Constant.TILE_WIDTH, job.getY() * Constant.TILE_HEIGHT));
 			MainRenderer.getInstance().draw(rectangleItem, render);
 		}

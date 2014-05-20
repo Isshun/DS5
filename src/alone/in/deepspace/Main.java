@@ -39,21 +39,9 @@ public class Main {
 		
 		ServiceManager.getData().items = new ArrayList<ItemInfo>();
 
-		ItemLoader.load("data/items/", "base");
-		ItemLoader.load("mods/garden/items/", "garden");
-		StringsLoader.load("data/strings/", "fr");
+		ItemLoader.load();
 		
-		for (ItemInfo item: ServiceManager.getData().items) {
-			if (item.onGather != null) {
-				item.onGather.itemProduce = ServiceManager.getData().getItemInfo(item.onGather.produce);
-			}
-			if (item.onMine != null) {
-				item.onMine.itemProduce = ServiceManager.getData().getItemInfo(item.onMine.produce);
-			}
-			if (item.onAction != null && item.onAction.produce != null) {
-				item.onAction.itemProduce = ServiceManager.getData().getItemInfo(item.onAction.produce);
-			}
-		}
+		StringsLoader.load("data/strings/", "fr");
 		
 		CategoryLoader.load();
 		

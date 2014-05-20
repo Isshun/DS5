@@ -1,5 +1,11 @@
 package alone.in.deepspace.model;
 
+import java.util.ArrayList;
+
+import alone.in.deepspace.manager.ItemSlot;
+import alone.in.deepspace.model.ItemInfo.ItemInfoNeeds;
+import alone.in.deepspace.model.ItemInfo.ItemInfoSlot;
+
 
 public class BaseItem {
 
@@ -81,7 +87,11 @@ public class BaseItem {
 	private int 		_maxId;
 	private ItemInfo	_info;
 	private boolean		_isWorking;
-	private String _label;
+	private String 		_label;
+	private boolean 	_isToy;
+	public int 			actionRemain;
+	private ArrayList<ItemSlot> _slots;
+	private int _nbUsed;
 
 	public BaseItem(ItemInfo info) {
 		init(info, ++_maxId);
@@ -128,6 +138,16 @@ public class BaseItem {
 			_width = info.width;
 			_height = info.height;
 			
+			if (info.onAction != null && info.onAction.effects != null) {
+				ItemInfoNeeds effects = info.onAction.effects;
+				if (effects.hapiness > 0 && effects.hapiness > effects.energy && effects.hapiness > effects.health && effects.hapiness > effects.food && effects.hapiness > effects.drink) {
+					_isToy = true;
+				}
+				if (effects.relation > 0 && effects.relation > effects.energy && effects.relation > effects.health && effects.relation > effects.food && effects.relation > effects.drink) {
+					_isToy = true;
+				}
+			}
+			
 			// TODO: zone
 			//_zoneIdRequired = info.zone;
 			if (info.cost != null) {
@@ -137,6 +157,46 @@ public class BaseItem {
 			
 			_isSolid = !info.isWalkable;
 		}
+		
+		initSlot(info);
+	}
+	
+	private void initSlot(ItemInfo info) {
+		_slots = new ArrayList<ItemSlot>();
+		if (info.slots != null) {
+			for (ItemInfoSlot s: info.slots) {
+				_slots.add(new ItemSlot(this, s.x, s.y));
+			}
+		}
+		
+		// Unique slot at 0x0
+		else {
+			_slots.add(new ItemSlot(this, 0, 0));
+		}
+	}
+
+	public ItemSlot takeSlot(Job job) {
+		for (ItemSlot slot: _slots) {
+			if (slot.isFree()) {
+				slot.take(job);
+				_nbUsed++;
+				return slot;
+			}
+		}
+		return null;
+	}
+	
+	public void releaseSlot(ItemSlot slot) {
+		slot.release();
+	}
+
+	public boolean hasFreeSlot() {
+		for (ItemSlot slot: _slots) {
+			if (slot.isFree()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void	setOwner(Character character) {
@@ -219,6 +279,32 @@ public class BaseItem {
 	public boolean isWall() { return getName().equals("base.wall") || getName().equals("base.window"); }
 
 	public boolean isWindow() { return getName().equals("base.window"); }
+
+	public boolean isToy() {
+		return _isToy;
+	}
+
+	public int getNbFreeSlots() {
+		int i = 0;
+		for (ItemSlot slot: _slots) {
+			if (slot.isFree()) {
+				i++;
+			}
+		}
+		return i;
+	}
+
+	public int getNbSlots() {
+		return _slots.size();
+	}
+
+	public int getNbUsed() {
+		return _nbUsed;
+	}
+
+	public void use(Character character) {
+		character.getNeeds().add(_info.onAction);
+	}
 
 
 }

@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -16,8 +18,12 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
+import alone.in.deepspace.engine.renderer.LightRenderer;
+import alone.in.deepspace.engine.renderer.MainRenderer;
+import alone.in.deepspace.engine.renderer.WorldRenderer;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.model.ItemInfo.ItemInfoNeeds;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.StructureItem;
@@ -34,15 +40,21 @@ public class WorldManager implements ISavable, TileBasedMap {
 
 	private static final int 	LIMIT_ITEMS = 42000;
 
+	private static final int START_FLOOR = 5;
+	private static final int NB_FLOOR = 10;
+
 	private Map<Integer, Room>	_rooms;
 	private int					_itemCout;
 	private WorldArea[][]		_areas;
+	private WorldArea[][][]		_floors;
 	private int					_width;
 	private int					_height;
 
 	private Vector<DebugPos> 	_debugPath;
 	private DebugPos 			_debugPathStart;
 	private DebugPos 			_debugPathStop;
+
+	private int 				_floor;
 
 	public WorldManager() {
 		_itemCout = 0;
@@ -52,16 +64,18 @@ public class WorldManager implements ISavable, TileBasedMap {
 		dump();
 
 		_rooms = new HashMap<Integer, Room>();
-		_areas = new WorldArea[_width][_height];
-		for (int x = 0; x < _width; x++) {
-			_areas[x] = new WorldArea[_height];
-			for (int y = 0; y < _height; y++) {
-				_areas[x][y] = new WorldArea(x, y);
+		_floors = new WorldArea[NB_FLOOR][_width][_height];
+		for (int f = 0; f < NB_FLOOR; f++) {
+			_floors[f] = new WorldArea[_width][_height];
+			for (int x = 0; x < _width; x++) {
+				_floors[f][x] = new WorldArea[_height];
+				for (int y = 0; y < _height; y++) {
+					_floors[f][x][y] = new WorldArea(x, y);
+				}
 			}
 		}
-
-		// PathManager.getInstance().addObject(x, y, true);
-
+		
+		_areas = _floors[0];
 	}
 
 	public void	create() {
@@ -72,24 +86,26 @@ public class WorldManager implements ISavable, TileBasedMap {
 
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
 			bw.write("BEGIN WORLDMAP\n");
-			for (int x = 0; x < _width; x++) {
-				for (int y = 0; y < _height; y++) {
-					if (_areas[x][y] != null) {
-						WorldArea area = _areas[x][y];
-						StructureItem structureItem = area.getStructure();
-						UserItem userItem = area.getItem();
-						WorldRessource ressource = area.getRessource();
-
-						if (structureItem != null) {
-							bw.write(x + "\t" + y + "\t" + structureItem.getName() + "\t" + structureItem.getMatterSupply() + "\n");
-						}
-
-						if (userItem != null) {
-							bw.write(x + "\t" + y + "\t" + userItem.getName() + "\t" + userItem.getMatterSupply() + "\n");
-						}
-
-						if (ressource != null) {
-							bw.write(x + "\t" + y + "\t" + ressource.getName() + "\t" + ressource.getMatterSupply() + "\n");
+			for (int f = 0; f < NB_FLOOR; f++) {
+				for (int x = 0; x < _width; x++) {
+					for (int y = 0; y < _height; y++) {
+						if (_floors[f][x][y] != null) {
+							WorldArea area = _floors[f][x][y];
+							StructureItem structureItem = area.getStructure();
+							UserItem userItem = area.getItem();
+							WorldRessource ressource = area.getRessource();
+	
+							if (structureItem != null) {
+								bw.write(f + "\t" + x + "\t" + y + "\t" + structureItem.getName() + "\t" + structureItem.getMatterSupply() + "\n");
+							}
+	
+							if (userItem != null) {
+								bw.write(f + "\t" + x + "\t" + y + "\t" + userItem.getName() + "\t" + userItem.getMatterSupply() + "\n");
+							}
+	
+							if (ressource != null) {
+								bw.write(f + "\t" + x + "\t" + y + "\t" + ressource.getName() + "\t" + ressource.getMatterSupply() + "\n");
+							}
 						}
 					}
 				}
@@ -108,7 +124,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 	public void	load(final String filePath) {
 		Log.error("Load worldmap: " + filePath);
 
-		int x, y, matter;
+		int f, x, y, matter;
 		boolean	inBlock = false;
 
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -129,12 +145,13 @@ public class WorldManager implements ISavable, TileBasedMap {
 				// Item
 				else if (inBlock) {
 					String[] values = line.split("\t");
-					if (values.length == 4) {
-						x = Integer.valueOf(values[0]);
-						y = Integer.valueOf(values[1]);
-						matter = Integer.valueOf(values[3]);
-						ItemInfo info = ServiceManager.getData().getItemInfo(values[2]);
-						putItem(info, x, y, matter);
+					if (values.length == 5) {
+						f = Integer.valueOf(values[0]);
+						x = Integer.valueOf(values[1]);
+						y = Integer.valueOf(values[2]);
+						matter = Integer.valueOf(values[4]);
+						ItemInfo info = ServiceManager.getData().getItemInfo(values[3]);
+						putItem(info, f, x, y, matter);
 					}
 				}
 
@@ -144,19 +161,12 @@ public class WorldManager implements ISavable, TileBasedMap {
 			Log.error("Unable to open save file: " + filePath);
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		for (int x2 = 4; x2 < 10; x2++) {
-			for (int y2 = 20; y2 < 30; y2++) {
-				putItem("base.res", x2, y2, 10);
-			}
 		}
 	}
 
 	private BaseItem putItem(String name, int x2, int y2, int i) {
-		return putItem(ServiceManager.getData().getItemInfo(name), x2, y2, i);
+		return putItem(ServiceManager.getData().getItemInfo(name), _floor, x2, y2, i);
 	}
 
 	public void	addRandomSeed() {
@@ -384,7 +394,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 			return null;
 		}
 
-		return putItem(ServiceManager.getData().getItemInfo(name), x, y, isFree ? 999 : 0);
+		return putItem(ServiceManager.getData().getItemInfo(name), _floor, x, y, isFree ? 999 : 0);
 	}
 
 	public BaseItem putItem(String name, int x, int y) {
@@ -396,7 +406,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 		return putItem(name, x, y, false);
 	}
 
-	public BaseItem putItem(ItemInfo info, int x, int y, int matterSupply) {
+	public BaseItem putItem(ItemInfo info, int f, int x, int y, int matterSupply) {
 		// Return if out of bound
 		if (x < 0 || y < 0 || x >= _width || y >= _height) {
 			Log.error("put item out of bound, type: "
@@ -418,12 +428,12 @@ public class WorldManager implements ISavable, TileBasedMap {
 
 		// If item alread exists check the roomId
 		int roomId = 0;
-		if (_areas[x][y] != null)  {
-			roomId = _areas[x][y].getRoomId();
+		if (_floors[f][x][y] != null)  {
+			roomId = _floors[f][x][y].getRoomId();
 		}
 
 		// Return if same item already exists at this position
-		WorldArea area = _areas[x][y];
+		WorldArea area = _floors[f][x][y];
 		if (area != null) {
 			if (area.getItem() != null && area.getItem().getName().equals(info.name) ||
 					area.getStructure() != null && area.getStructure().getName().equals(info.name)) {
@@ -457,7 +467,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 
 		// Ressource
 		if (item.isRessource()) {
-			_areas[x][y].setRessource((WorldRessource) item);
+			_floors[f][x][y].setRessource((WorldRessource) item);
 //			if ((item).getValue() > 0) {
 //				item.setMatterSupply(10);
 				//JobManager.getInstance().gather(item);
@@ -468,7 +478,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 
 		// Wall
 		else if (item.isStructure() && item.isFloor() == false) {
-			_areas[x][y].setStructure((StructureItem) item);
+			_floors[f][x][y].setStructure((StructureItem) item);
 			// _items[x][y].setRoomId(roomId);
 			// _items[x][y].setZoneId(0);
 			//destroyRoom(roomId);
@@ -477,10 +487,10 @@ public class WorldManager implements ISavable, TileBasedMap {
 		// Object or floor
 		else {
 			if (item.isFloor()) {
-				_areas[x][y].setStructure((StructureItem) item);
+				_floors[f][x][y].setStructure((StructureItem) item);
 			} else if (item.isRessource() == false) {
-				if (_areas[x][y] != null) {
-					_areas[x][y].setItem((UserItem) item);
+				if (_floors[f][x][y] != null) {
+					_floors[f][x][y].setItem((UserItem) item);
 
 					// TODO: dynamic
 //					if (item.isType(BaseItem.Type.TACTICAL_PHASER)) {
@@ -528,6 +538,48 @@ public class WorldManager implements ISavable, TileBasedMap {
 	public int					getWidth() { return _width; }
 	public int					getHeight() { return _height; }
 
+	public UserItem getNearest(ItemFilter itemFilter, int startX, int startY) {
+		PathManager pathManager = PathManager.getInstance();
+		int maxX = Math.max(startX, _width - startX);
+		int maxY = Math.max(startY, _height - startY);
+		for (int offsetX = 0; offsetX < maxX; offsetX++) {
+			for (int offsetY = 0; offsetY < maxY; offsetY++) {
+				UserItem item = getItem(startX + offsetX, startY + offsetY);
+				if (mathFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
+					return item;
+				}
+				item = getItem(startX - offsetX, startY - offsetY);
+				if (mathFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
+					return getItem(startX - offsetX, startY - offsetY);
+				}
+				item = getItem(startX + offsetX, startY - offsetY);
+				if (mathFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
+					return getItem(startX + offsetX, startY - offsetY);
+				}
+				item = getItem(startX - offsetX, startY + offsetY);
+				if (mathFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
+					return getItem(startX - offsetX, startY + offsetY);
+				}
+			}
+		}
+		return null;
+	}
+
+
+	private boolean mathFilter(BaseItem item, ItemFilter itemFilter) {
+		if (item != null && item.getInfo().onAction != null && item.getInfo().onAction.effects != null) {
+			ItemInfoNeeds effects = item.getInfo().onAction.effects;
+			if (itemFilter.drink && effects.drink > 0) { return true; }
+			if (itemFilter.energy && effects.energy > 0) { return true; }
+			if (itemFilter.food && effects.food > 0) { return true; }
+			if (itemFilter.hapiness && effects.hapiness > 0) { return true; }
+			if (itemFilter.health && effects.health > 0) { return true; }
+			if (itemFilter.relation && effects.relation > 0) { return true; }
+		}
+		return false;
+	}
+
+	// TODO: delete
 	public UserItem getNearest(ItemInfo info, int startX, int startY) {
 		PathManager pathManager = PathManager.getInstance();
 		int maxX = Math.max(startX, _width - startX);
@@ -647,7 +699,47 @@ public class WorldManager implements ISavable, TileBasedMap {
 	}
 
 	public BaseItem putItem(ItemInfo info, int x, int y) {
-		return putItem(info, x, y, 0);
+		return putItem(info, _floor, x, y, 0);
+	}
+
+	public int getFloor() {
+		return _floor;
+	}
+
+	public void upFloor() {
+		setFloor(_floor + 1);
+	}
+
+	private void setFloor(int floor) {
+		_floor = floor;
+		_areas = _floors[floor];
+		ServiceManager.getWorldRenderer().invalidate();
+		ServiceManager.getLightRenderer().initLight();
+	}
+
+	public void downFloor() {
+		setFloor(_floor - 1);
+	}
+
+	public UserItem getRandomToy(int posX, int posY) {
+		List<UserItem> items = new ArrayList<UserItem>(); 
+		for (int offsetX = 0; offsetX < 14; offsetX++) {
+			for (int offsetY = 0; offsetY < 14; offsetY++) {
+				UserItem item = null;
+				item = getItem(posX + offsetX, posY + offsetY);
+				if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
+				item = getItem(posX - offsetX, posY - offsetY);
+				if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
+				item = getItem(posX + offsetX, posY - offsetY);
+				if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
+				item = getItem(posX - offsetX, posY + offsetY);
+				if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
+			}
+		}
+		if (items.size() > 0) {
+			return items.get((int)(Math.random() * items.size()));
+		}
+		return null;
 	}
 
 }

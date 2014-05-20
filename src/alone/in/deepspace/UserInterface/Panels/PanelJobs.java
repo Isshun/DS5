@@ -69,7 +69,7 @@ public class PanelJobs extends UserSubInterface {
 			  String oss = (job.getId()  < 10 ? "#0" : "#") + job.getId()
 				  + " - " + JobManager.getActionName(job.getAction());
 				  if (job.getItem() != null) {
-					  oss += " " + job.getItem().getName();
+					  oss += " " + job.getItem().getLabel();
 				  }
 			  if (job.getCharacter() != null) {
 				  text.setColor(job.getColor());

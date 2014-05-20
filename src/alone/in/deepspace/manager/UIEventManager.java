@@ -53,7 +53,7 @@ public class UIEventManager {
 
 	public boolean has(int x, int y) {
 		for (View view: _onClickListeners.keySet()) {
-			if (view.getRect().contains(x, y)) {
+			if (view.isVisible() && view.isActive() && view.getRect().contains(x, y)) {
 				return true;
 			}
 		}

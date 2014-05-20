@@ -50,8 +50,7 @@ public class Movable implements PathManagerCallback {
 	  Log.debug("Charactere #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
 	  
 	  System.out.println(_posX + ", " + _posY + " to " + _toX + ", " + _toY);
-	  compute(_posX, _posY, _toX, _toY);
-//	  compute(10, 10, 20, 14);
+//	  compute(_posX, _posY, _toX, _toY);
 	
 	  if (path.size() == 0) {
 		sendEvent(CharacterNeeds.Message.MSG_BLOCKED);

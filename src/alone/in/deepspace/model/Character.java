@@ -137,6 +137,8 @@ public class Character extends Movable {
 	private boolean			_selected;
 	private List<BaseItem> 	_carry;
 
+	private CharacterStatus _status;
+
 	//	  private int				_messages[32];
 
 	public Character(int id, int x, int y, String name) {
@@ -151,6 +153,7 @@ public class Character extends Movable {
 		_blocked = 0;
 		_direction = Direction.DIRECTION_NONE;
 		_needs = new CharacterNeeds(this);
+		_status = new CharacterStatus(this);
 		_steps = 0;
 		_name = name;
 
@@ -308,7 +311,7 @@ public class Character extends Movable {
 		// TODO
 		// Energy
 		if (_needs.getEnergy() < 20) {
-			Log.debug("Charactere #" + _id + ": need sleep: " + _needs.getEnergy());
+			Log.info("Charactere #" + _id + ": need sleep: " + _needs.getEnergy());
 
 			// Need sleep
 			JobManager.getInstance().need(this, "base.bed");
@@ -468,7 +471,7 @@ public class Character extends Movable {
 		}
 
 		// Item is no longer exists
-		if (_job.getItem() != ServiceManager.getWorldMap().getItem(_job.getX(), _job.getY())) {
+		if (_job.getItem() != ServiceManager.getWorldMap().getItem(_job.getItem().getX(), _job.getItem().getY())) {
 			Log.warning("Character #" + _id + ": actionUse on invalide item");
 			JobManager.getInstance().abort(_job, Job.Abort.INVALIDE);
 			_job = null;
@@ -510,7 +513,22 @@ public class Character extends Movable {
 			item.setOwner(this);
 		}
 
+		// Character using item
+		if (_job.getDurationLeft() > 0) {
+			_job.decreaseDurationLeft();
+
+			// Item is use by 2 or more character
+			if (item.getNbFreeSlots() + 1 < item.getNbSlots()) {
+				_needs.addRelation(1);
+			}
+			
+			// Add item effects
+			item.use(this);
+			return;
+		}
+
 		JobManager.getInstance().complete(_job);
+		
 		_job = null;
 	}
 
@@ -712,6 +730,10 @@ public class Character extends Movable {
 
 	public Vector<Position> getPath() {
 		return _path;
+	}
+
+	public CharacterStatus getStatus() {
+		return _status;
 	}
 
 }

@@ -6,6 +6,8 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.UserInterface.UserInterface;
+import alone.in.deepspace.UserInterface.UserInterface.Mode;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.engine.ui.OnClickListener;
@@ -22,6 +24,7 @@ public class PanelDebug extends UserSubInterface {
 
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
+	private UserInterface _ui;
 	
 	public PanelDebug(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
@@ -55,6 +58,20 @@ public class PanelDebug extends UserSubInterface {
 		lbAddMatter.setColor(Color.WHITE);
 		lbAddMatter.setPosition(new Vector2f(20, 60));
 		addView(lbAddMatter);
+
+		// Items
+		TextView lbItems = new TextView(new Vector2f(200, 32));
+		lbItems.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				_ui.setMode(Mode.DEBUGITEMS);
+			}
+		});
+		lbItems.setString("items");
+		lbItems.setCharacterSize(20);
+		lbItems.setColor(Color.WHITE);
+		lbItems.setPosition(new Vector2f(20, 340));
+		addView(lbItems);
 
 		// Re-launch jobs 
 		TextView lbReLaunchJob = new TextView(new Vector2f(200, 32));
@@ -225,6 +242,10 @@ public class PanelDebug extends UserSubInterface {
 //		addDebug("zone", String.valueOf(item.getZoneId()));
 //		addDebug("room", String.valueOf(item.getRoomId()));
 //	  }
+	}
+
+	public void setUI(UserInterface ui) {
+		_ui = ui;
 	}
 
 }

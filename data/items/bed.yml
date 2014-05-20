@@ -3,5 +3,11 @@ label: Bed
 width: 2
 height: 2
 category: quarter
+onAction:
+  duration: 15
+  effects:
+    energy: 100
+    hapiness: 10
+    relation: 10
 cost:
   matter: 42
