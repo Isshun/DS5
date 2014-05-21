@@ -84,6 +84,11 @@ public abstract class View {
 		return _rect;
 	}
 
+	// TODO
+	public void resetPos() {
+		_rect = null;
+	}
+
 	public void setBackgroundColor(Color color) {
 		if (color == null) {
 			_background = null;
@@ -115,9 +120,13 @@ public abstract class View {
 		_paddingRight = r;
 		_paddingBottom = b;
 		_paddingLeft = l;
-//		if (_background != null && _pos != null && _size != null) {
-//			_background.setSize(new Vector2f(_size.x + _paddingLeft + _paddingRight, _size.y + _paddingTop + _paddingBottom));
-//		}
+	}
+
+	public void setPadding(int t, int r) {
+		_paddingTop = t;
+		_paddingRight = r;
+		_paddingBottom = t;
+		_paddingLeft = r;
 	}
 
 	public void setPosition(Vector2f pos) {

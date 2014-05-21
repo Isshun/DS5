@@ -20,11 +20,13 @@ import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.Character;
+import alone.in.deepspace.model.Character.Gender;
 import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.Profession;
 
 
 public class CharacterManager implements ISavable {
+
 	public static final Profession professions[] = {
 		new Profession(Profession.Type.ENGINEER, "Engineer", new Color(255, 255, 50), new Color(50, 50, 50)),
 		new Profession(Profession.Type.OPERATION, "Technician", new Color(128, 0, 0), new Color(255, 255, 255)),
@@ -90,7 +92,7 @@ public class CharacterManager implements ISavable {
 	public void	load(final String filePath) {
 		Log.error("Load characters: " + filePath);
 
-		int x, y, professionType;
+		int x, y, gender;
 		boolean	inBlock = false;
 
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -114,9 +116,9 @@ public class CharacterManager implements ISavable {
 					if (values.length == 4) {
 						x = Integer.valueOf(values[0]);
 						y = Integer.valueOf(values[1]);
-						professionType = Integer.valueOf(values[2]);
+						gender = Integer.valueOf(values[2]);
 						Character c = new Character(_count++, x, y, values[3]);
-						c.setProfession(CharacterManager.getProfessionType(professionType));
+						c.setGender(CharacterManager.getGender(gender));
 						_characters.add(c);
 					}
 				}
@@ -129,6 +131,13 @@ public class CharacterManager implements ISavable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static Character.Gender getGender(int gender) {
+		if (gender == 1) { return Gender.GENDER_MALE; }
+		if (gender == 2) { return Gender.GENDER_FEMALE; }
+		if (gender == 3) { return Gender.GENDER_BOTH; }
+		return Gender.GENDER_NONE;
 	}
 
 	private static Profession.Type getProfessionType(int index) {
@@ -147,7 +156,7 @@ public class CharacterManager implements ISavable {
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
 			bw.write("BEGIN CHARACTERS\n");
 			for (Character c: _characters) {
-				bw.write(c.getX() + "\t" + c.getY() + "\t" + c.getProfession().getType().ordinal() + "\t" + c.getName() + "\n");
+				bw.write(c.getX() + "\t" + c.getY() + "\t" + c.getGender().ordinal() + "\t" + c.getName() + "\n");
 			}
 			bw.write("END CHARACTERS\n");
 		} catch (FileNotFoundException e) {

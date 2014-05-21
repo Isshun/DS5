@@ -8,10 +8,13 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.Strings;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.engine.ui.ButtonView;
+import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.OnClickListener;
+import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.Room;
@@ -25,10 +28,38 @@ public class PanelRoom extends UserSubInterface {
 	
 	private Type 					_selected;
 	private Map<Integer, ButtonView> 	_icons;
+	private Room _room;
+	private FrameLayout _layoutRoomInfo;
+	private TextView _lbRoomName;
+	private TextView _lbRoomOwner;
+	private FrameLayout _layoutButtons;
 
 	public PanelRoom(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 		_icons = new HashMap<Integer, ButtonView>();
+		_layoutButtons = new FrameLayout(new Vector2f(200, 400));
+		_layoutButtons.setVisible(true);
+		addView(_layoutButtons);
+
+		createRoomInfo(0, 0);
+	}
+
+	private void createRoomInfo(int x, int y) {
+		_layoutRoomInfo = new FrameLayout(new Vector2f(FRAME_WIDTH - Constant.UI_PADDING_H * 2, 200));
+		_layoutRoomInfo.setPosition(Constant.UI_PADDING_H + x, Constant.UI_PADDING_H + y);
+		_layoutRoomInfo.setVisible(false);
+		
+		_lbRoomName = new TextView();
+		_lbRoomName.setCharacterSize(32);
+		_lbRoomName.setPosition(8, 0);
+		_layoutRoomInfo.addView(_lbRoomName);
+
+		_lbRoomOwner = new TextView();
+		_lbRoomOwner.setCharacterSize(22);
+		_lbRoomOwner.setPosition(8, 42);
+		_layoutRoomInfo.addView(_lbRoomOwner);
+
+		addView(_layoutRoomInfo);
 	}
 
 	@Override
@@ -73,7 +104,7 @@ public class PanelRoom extends UserSubInterface {
 					((ButtonView) view).setBackgroundColor(Color.RED);
 				}
 			});
-			addView(icon);
+			_layoutButtons.addView(icon);
 
 			_icons.put(index, icon);
 		}
@@ -81,6 +112,27 @@ public class PanelRoom extends UserSubInterface {
 
 	public void setSelected(Room.Type type) {
 		_selected = type;
+	}
+
+	public void setRoom(Room room) {
+		if (_room != room) {
+			_room = room;
+			displayRoom(room);
+		}
+	}
+
+	private void displayRoom(Room room) {
+		if (room == null) {
+			_layoutRoomInfo.setVisible(false);
+			_layoutButtons.setVisible(true);
+			return;
+		}
+		
+		_layoutRoomInfo.setVisible(true);
+		_layoutButtons.setVisible(false);
+		_lbRoomName.setString(room.getName());
+		_lbRoomOwner.setString(room.getOwner() != null ? room.getOwner().getName() : Strings.LB_NOBODY);
+		_layoutRoomInfo.setBackgroundColor(new Color(50 + room.getColor().r, 50 + room.getColor().g, 50 + room.getColor().b, 100));
 	}
 
 }

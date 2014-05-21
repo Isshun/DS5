@@ -32,4 +32,5 @@ public class Strings {
 	public static String LB_EFFECT_RELATION = "Relation";
 	public static String LB_EFFECT_HEALTH = "Health";
 	public static String LB_EFFECTS = "Effects";
+	public static String LB_NOBODY = "Nobody";
 }

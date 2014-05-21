@@ -8,10 +8,12 @@ import org.jsfml.graphics.Color;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
+import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.Character.Gender;
 import alone.in.deepspace.model.Job.Abort;
 
 public class Character extends Movable {
@@ -28,7 +30,7 @@ public class Character extends Movable {
 		DIRECTION_NONE
 	};
 
-	enum Gender {
+	public enum Gender {
 		GENDER_NONE,
 		GENDER_MALE,
 		GENDER_FEMALE,
@@ -53,6 +55,8 @@ public class Character extends Movable {
 
 		Log.info("Character #" + id);
 
+		_profession = CharacterManager.professions[id % CharacterManager.professions.length];
+
 		_carry = new ArrayList<BaseItem>();
 		_gender = (int)(Math.random() * 1000) % 2 == 0 ? Character.Gender.GENDER_MALE : Character.Gender.GENDER_FEMALE;
 		_color = _gender == Gender.GENDER_FEMALE ? new Color(255, 180, 220) : new Color(110, 200, 255);
@@ -72,7 +76,7 @@ public class Character extends Movable {
 		if (name == null) {
 			if ((int)(Math.random() * 1000) % 2 == 0) {
 				_name = CharacterName.getShortFirstname(_gender)
-						+ " (" + CharacterName.getMiddlename() + ") "
+						+ " \"" + CharacterName.getMiddlename() + "\" "
 						+ CharacterName.getShortLastName();
 			} else {
 				_name = CharacterName.getFirstname(_gender)
@@ -85,6 +89,7 @@ public class Character extends Movable {
 
 	public void				setSelected(boolean selected) { _selected = selected; }
 	public void				setName(String name) { _name = name; }
+	public void 			setGender(Gender gender) { _gender = gender; }
 
 	public Profession		getProfession() { return _profession; }
 	public Profession.Type	getProfessionId() { return _profession.getType(); }
@@ -94,8 +99,16 @@ public class Character extends Movable {
 	//	  int[]				getMessages() { return _messages; }
 	public boolean			getSelected() { return _selected; }
 	public int				getProfessionScore(Profession.Type professionEngineer) { return 42; }
+	public List<BaseItem> 	getCarried() { return _carry; }
+	public Vector<Position> getPath() { return _path; }
+	public CharacterStatus 	getStatus() { return _status; }
+	public Color 			getColor() { return _color; }
+	public int 				getLag() { return _lag; }
+	public int 				getSpace() { return _inventorySpace - _carry.size(); }
+	public Gender 			getGender() { return _gender; }
 
 	public boolean			isFull() { return _carry.size() == Constant.CHARACTER_CARRY_CAPACITY; }
+	public boolean 			isSleeping() { return _needs._sleeping > 0; }
 
 	public void	setJob(Job job) {
 		if (_job == job) {
@@ -625,33 +638,4 @@ public class Character extends Movable {
 		JobManager.getInstance().complete(_job);
 		_job = null;
 	}
-
-	public boolean isSleeping() {
-		return _needs._sleeping > 0;
-	}
-
-	public List<BaseItem> getCarried() {
-		return _carry;
-	}
-
-	public Vector<Position> getPath() {
-		return _path;
-	}
-
-	public CharacterStatus getStatus() {
-		return _status;
-	}
-
-	public Color getColor() {
-		return _color;
-	}
-
-	public int getLag() {
-		return _lag;
-	}
-
-	public int getSpace() {
-		return _inventorySpace - _carry.size();
-	}
-
 }

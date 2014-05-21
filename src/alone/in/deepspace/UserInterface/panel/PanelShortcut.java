@@ -19,12 +19,12 @@ import alone.in.deepspace.engine.ui.View;
 public class PanelShortcut extends UserSubInterface {
 	private static final int FRAME_WIDTH = Constant.WINDOW_WIDTH;
 	private static final int FRAME_HEIGHT = 120;
-	
+
 	public PanelShortcut(RenderWindow app, final UserInterface userInterface) throws IOException {
 		super(app, 0, new Vector2f(0, Constant.WINDOW_HEIGHT - FRAME_HEIGHT), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
-		
+
 		setBackgroundColor(new Color(200, 50, 140, 150));
-		
+
 		TextView lbEngineering = new TextView(new Vector2f(140, 36));
 		lbEngineering.setCharacterSize(14);
 		lbEngineering.setColor(Color.WHITE);
@@ -39,7 +39,7 @@ public class PanelShortcut extends UserSubInterface {
 		});
 		lbEngineering.setPosition(new Vector2f(10, 6));
 		addView(lbEngineering);
-		
+
 		ButtonView lbOperation = new ButtonView(new Vector2f(140, 36));
 		lbOperation.setString(Strings.JOBS);
 		lbOperation.setOnFocusListener(new OnFocusListener() {			
@@ -47,17 +47,17 @@ public class PanelShortcut extends UserSubInterface {
 			public void onExit(View view) {
 				view.setBackgroundColor(new Color(0, 255, 0, 180));
 			}
-			
+
 			@Override
 			public void onEnter(View view) {
 				view.setBackgroundColor(Color.RED);
 			}
 		});
-//		lbOperation.setCharacterSize(14);
-//		lbOperation.setColor(Color.WHITE);
+		//		lbOperation.setCharacterSize(14);
+		//		lbOperation.setColor(Color.WHITE);
 		lbOperation.setBackgroundColor(new Color(0, 255, 0, 180));
 		lbOperation.setPosition(new Vector2f(160, 6));
-	//	lbOperation.setPadding(8, 20, 10, 50);
+		//	lbOperation.setPadding(8, 20, 10, 50);
 		lbOperation.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -65,7 +65,7 @@ public class PanelShortcut extends UserSubInterface {
 			}
 		});
 		addView(lbOperation);
-		
+
 		TextView lbCrew = new TextView(new Vector2f(140, 36));
 		lbCrew.setCharacterSize(14);
 		lbCrew.setColor(Color.WHITE);
@@ -80,7 +80,7 @@ public class PanelShortcut extends UserSubInterface {
 			}
 		});
 		addView(lbCrew);
-		
+
 		TextView lbRoom = new TextView(new Vector2f(140, 36));
 		lbRoom.setCharacterSize(14);
 		lbRoom.setColor(Color.WHITE);
@@ -125,7 +125,7 @@ public class PanelShortcut extends UserSubInterface {
 			}
 		});
 		addView(lbOrders);
-}
+	}
 
 	@Override
 	public void onRefresh(RenderWindow app) {

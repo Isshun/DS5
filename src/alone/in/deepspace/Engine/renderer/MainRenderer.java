@@ -14,6 +14,7 @@ import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.graphics.Transform;
 
 import alone.in.deepspace.UserInterface.UserInterface;
+import alone.in.deepspace.UserInterface.UserInterface.Mode;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.engine.Viewport;
@@ -41,6 +42,8 @@ public class MainRenderer {
 	private Texture 				_backgroundTexture;
 	private Sprite 					_background;
 	private RenderWindow 			_app;
+	private RoomRenderer 			_roomRenderer;
+	private UserInterface 			_ui;
 	private static MainRenderer 	_this;
 	
 	public MainRenderer(RenderWindow app, Viewport viewport, UserInterface ui) throws IOException, TextureCreationException {
@@ -48,6 +51,7 @@ public class MainRenderer {
 		// TODO
 		_this = this;
 		_app = app;
+		_ui = ui;
 		
 		// Background
 		Log.debug("Game background");
@@ -68,6 +72,7 @@ public class MainRenderer {
 		_debugRenderer = new DebugRenderer();
 		
 		_jobRenderer = new JobRenderer();
+		_roomRenderer = new RoomRenderer();
 	}
 
 	public void draw(RenderWindow app, double animProgress, int renderTime) {
@@ -94,6 +99,10 @@ public class MainRenderer {
 		RenderStates render = new RenderStates(transform);
 
 		_lightRenderer.onDraw(app, render, animProgress);
+
+		if (_ui.getMode() == Mode.ROOM) {
+			_roomRenderer.onDraw(app, render, animProgress);
+		}
 		
 		_jobRenderer.onDraw(app, render, animProgress);
 

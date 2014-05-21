@@ -2,6 +2,8 @@ package alone.in.deepspace.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsfml.graphics.Color;
+
 
 
 public class Room {
@@ -23,14 +25,20 @@ public class Room {
 	int					_zoneId;
 	List<BaseItem>		_doors;
 	private Type _type;
-	private int _owner;
+	private Character _owner;
 	private int _x;
 	private int _y;
+	private Color _color;
+	private int _minX;
+	private int _maxX;
 
 	public Room(Type type, int x, int y) {
+		_color = new Color((int)(Math.random() * 200), (int)(Math.random() * 200), (int)(Math.random() * 200));
 		_id = -1;
 		_x = x;
 		_y = y;
+		_maxX = Integer.MIN_VALUE;
+		_minX = Integer.MAX_VALUE;
 		_zoneId = 0;
 		_type = type;
 		_doors = new ArrayList<BaseItem>();
@@ -205,11 +213,11 @@ public class Room {
 		}
 	}
 
-	public void setOwner(int owner) {
+	public void setOwner(Character owner) {
 		_owner = owner;
 	}
 
-	public int getOwner() {
+	public Character getOwner() {
 		return _owner;
 	}
 
@@ -217,5 +225,18 @@ public class Room {
 	public int getY() { return _y; }
 
 	public boolean isType(Type type) { return _type == type; }
+
+	public Color getColor() {
+		return _color;
+	}
+
+	public int 		getMinX() { return _minX; }
+	public void 	setMinX(int x) { _minX = x; }
+	public int 		getMaxX() { return _maxX; }
+	public void 	setMaxX(int x) { _maxX = x; }
+
+	public int getWidth() {
+		return _maxX - _minX + 1;
+	}
 
 }

@@ -739,4 +739,13 @@ public class WorldManager implements ISavable, TileBasedMap {
 		return null;
 	}
 
+	// TODO
+	public List<Room> getRooms() {
+		return new ArrayList<Room>(_rooms.values());
+	}
+
+	public void addRoom(Room room) {
+		_rooms.put(room.getId(), room);
+	}
+
 }

@@ -6,10 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
+import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.Room.Type;
 import alone.in.deepspace.model.StructureItem;
@@ -18,6 +21,7 @@ public class RoomManager implements ISavable {
 
 	private static RoomManager 	_self;
 	private Room[][] 			_rooms;
+	private List<Room>			_roomList;
 
 	public static RoomManager getInstance() {
 		if (_self == null) {
@@ -28,9 +32,12 @@ public class RoomManager implements ISavable {
 	
 	public RoomManager() {
 		_rooms = new Room[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
+		_roomList = new ArrayList<Room>();
 	}
 
-	public void putRoom(int fromX, int fromY, int toX, int toY, Type type, int owner) {
+	public void putRoom(int startX, int startY, int fromX, int fromY, int toX, int toY, Type type, Character owner) {
+		Log.info("RoomManager: put room from " + fromX + "x" + fromY + " to " + toX + "x" + toY);
+
 		if (type == null) {
 			Log.error("RoomManager: cannot put new room with NULL type");
 			return;
@@ -38,12 +45,19 @@ public class RoomManager implements ISavable {
 		
 		Room room = null;
 		
-		// Check if room already exists on selected area
-		for (int x = fromX - 1; x <= toX + 1; x++) {
-			for (int y = fromY - 1; y <= toY + 1; y++) {
-				if (x > 0 && y > 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT && _rooms[x][y] != null && _rooms[x][y].getType() == type) {
-					room = _rooms[x][y];
-					break;
+		// Check if room already exists on start area
+		if (startX > 0 && startY > 0 && startX < Constant.WORLD_WIDTH && startY < Constant.WORLD_HEIGHT && _rooms[startX][startY] != null) {
+			room = _rooms[startX][startY];
+		}
+		
+		// Check on others areas
+		else {
+			for (int x = fromX - 1; x <= toX + 1; x++) {
+				for (int y = fromY - 1; y <= toY + 1; y++) {
+					if (x > 0 && y > 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT && _rooms[x][y] != null && _rooms[x][y].getType() == type) {
+						room = _rooms[x][y];
+						break;
+					}
 				}
 			}
 		}
@@ -52,6 +66,7 @@ public class RoomManager implements ISavable {
 		if (room == null) {
 			room = new Room(type, fromX, fromY);
 			room.setOwner(owner);
+			_roomList.add(room); 
 		}
 		
 		// Set room for each area
@@ -109,6 +124,8 @@ public class RoomManager implements ISavable {
 		int x, y, type, owner;
 		boolean	inBlock = false;
 
+		List<Character> characters = ServiceManager.getCharacterManager().getList();
+		
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 			String line = null;
 
@@ -132,7 +149,11 @@ public class RoomManager implements ISavable {
 						y = Integer.valueOf(values[1]);
 						type = Integer.valueOf(values[2]);
 						owner = Integer.valueOf(values[3]);
-						putRoom(x, y, x, y, Room.getType(type), owner);
+						Character character = null;
+						if (characters.size() > 0) {
+							character = characters.get((int)(Math.random() * characters.size()));
+						}
+						putRoom(x, y, x, y, x, y, Room.getType(type), character);
 					}
 				}
 				
@@ -188,6 +209,14 @@ public class RoomManager implements ISavable {
 		if (hasGarden) {
 			ResourceManager.getInstance().refreshWater();
 		}
+	}
+
+	public Room[][] getRooms() {
+		return _rooms;
+	}
+
+	public List<Room> getRoomList() {
+		return _roomList;
 	}
 
 }

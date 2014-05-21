@@ -50,6 +50,14 @@ public class TextView extends View {
 			_text.setPosition(new Vector2f(_pos.x + _paddingLeft, _pos.y + _paddingTop));
 		}
 	}
+	
+	@Override
+	public void setPadding(int t, int r) {
+		super.setPadding(t, r);
+		if (_pos != null) {
+			_text.setPosition(new Vector2f(_pos.x + _paddingLeft, _pos.y + _paddingTop));
+		}
+	}
 
 	@Override
 	public void onRefresh(RenderWindow app, RenderStates render) {
@@ -59,4 +67,5 @@ public class TextView extends View {
 	public void setPosition(int i, int j) {
 		setPosition(new Vector2f(i, j));
 	}
+
 }

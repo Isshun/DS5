@@ -1,6 +1,5 @@
 package alone.in.deepspace.engine.ui;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,13 +65,10 @@ public class FrameLayout extends View {
 	public void setPosition(int x, int y) {
 		_posX = x;
 		_posY = y;
-		if (_parent != null) {
-			_rect = new Rectangle(_parent.getPosX() + _posX, _parent.getPosY() + _posY, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
-		} else {
-			_rect = new Rectangle(_posX, _posY, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
-		}
+		
+		_render = null;
 //		for (View view: _views) {
-//			view.setParentPosition(x, y);
+//			view.setPosition(view.getPosX() + x, y);
 //		}
 	}
 

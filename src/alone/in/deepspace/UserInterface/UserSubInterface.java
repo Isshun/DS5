@@ -1,9 +1,6 @@
 package alone.in.deepspace.UserInterface;
-import java.io.File;
-import java.io.IOException;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
@@ -13,7 +10,6 @@ import org.jsfml.window.Mouse;
 
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.engine.ui.FrameLayout;
-
 
 public abstract class UserSubInterface extends FrameLayout {
 	protected Texture	_texturePanel;
@@ -35,7 +31,7 @@ public abstract class UserSubInterface extends FrameLayout {
 	public boolean		isTileActive() { return _isTileActive; }
 	public boolean		isOnTile(int x, int y) { return x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120; }
 
-	public UserSubInterface(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size) throws IOException {
+	public UserSubInterface(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size) {
 		super(size);
 		
 		setPosition(pos);
@@ -46,17 +42,17 @@ public abstract class UserSubInterface extends FrameLayout {
 		_isTileActive = false;
 		_isVisible = false;
 
-		_textureTile = new Texture();
-		_textureTile.loadFromFile((new File("res/bg_tile_base.png")).toPath());
-		_bgTile = new Sprite();
-		_bgTile.setTexture(_textureTile);
-		_bgTile.setTextureRect(new IntRect(0, 0, 240, 120));
-
-		_texturePanel = new Texture();
-		_texturePanel.loadFromFile((new File("res/bg_panel_base.png")).toPath());
-		_bgPanel = new Sprite();
-		_bgPanel.setTexture(_texturePanel);
-		_bgPanel.setTextureRect(new IntRect(0, 0, 800, 600));
+//		_textureTile = new Texture();
+//		_textureTile.loadFromFile((new File("res/bg_tile_base.png")).toPath());
+//		_bgTile = new Sprite();
+//		_bgTile.setTexture(_textureTile);
+//		_bgTile.setTextureRect(new IntRect(0, 0, 240, 120));
+//
+//		_texturePanel = new Texture();
+//		_texturePanel.loadFromFile((new File("res/bg_panel_base.png")).toPath());
+//		_bgPanel = new Sprite();
+//		_bgPanel.setTexture(_texturePanel);
+//		_bgPanel.setTextureRect(new IntRect(0, 0, 800, 600));
 		
 		setBackgroundColor(new Color(0, 0, 0, 180));
 	}

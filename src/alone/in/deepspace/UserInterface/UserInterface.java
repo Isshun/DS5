@@ -2,13 +2,17 @@ package alone.in.deepspace.UserInterface;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
 import alone.in.deepspace.Main;
+import alone.in.deepspace.Strings;
+import alone.in.deepspace.UserInterface.UserInterface.Mode;
 import alone.in.deepspace.UserInterface.panel.PanelBase;
 import alone.in.deepspace.UserInterface.panel.PanelBuild;
 import alone.in.deepspace.UserInterface.panel.PanelCharacter;
@@ -23,9 +27,13 @@ import alone.in.deepspace.UserInterface.panel.PanelRoom;
 import alone.in.deepspace.UserInterface.panel.PanelShortcut;
 import alone.in.deepspace.UserInterface.panel.PanelSystem;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.engine.Viewport;
+import alone.in.deepspace.engine.ui.OnClickListener;
+import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.UIMessage;
+import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
@@ -69,6 +77,10 @@ public class UserInterface {
 	private PanelRoom 					_panelRoom;
 	private UIMessage 					_message;
 	private PanelDebugItem 				_panelDebugItems;
+	private Mode 						_mode;
+	private ContextualMenu 				_menu;
+	private int _menuPosX;
+	private int _menuPosY;
 
 	public enum Mode {
 		BASE,
@@ -132,6 +144,10 @@ public class UserInterface {
 		// right button pressed
 		if (_keyRightPressed) {
 			_viewport.update(x, y);
+			if (_menu != null && _menu.isVisible()) {
+				//_menu.move(_viewport.getPosX(), _viewport.getPosY());
+				_menu.setPosition(_viewport.getPosX(), _viewport.getPosY());
+			}
 		}
 	}
 
@@ -193,34 +209,37 @@ public class UserInterface {
 	public int getRelativePosXMin(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
 	public int getRelativePosYMin(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
 
-	public void setMode(Mode info) {
-		if (info != Mode.CHARACTER) _panelCharacter.setVisible(false);
-		if (info != Mode.INFO) 		_panelInfo.setVisible(false);
-		if (info != Mode.PLAN) 		_panelPlan.setVisible(false);
-		if (info != Mode.DEBUG) 	_panelDebug.setVisible(false);
-		if (info != Mode.DEBUGITEMS)_panelDebugItems.setVisible(false);
-		if (info != Mode.BASE) 		_panelBase.setVisible(false);
-		if (info != Mode.BUILD) 	_panelBuild.setVisible(false);
-		if (info != Mode.CREW) 		_panelCrew.setVisible(false);
-		if (info != Mode.BASE) 		_uiBase.setVisible(false);
-		if (info != Mode.SCIENCE) 	_uiScience.setVisible(false);
-		if (info != Mode.SECURITY)	_uiSecurity.setVisible(false);
-		if (info != Mode.JOBS)		_uiJobs.setVisible(false);
-		if (info != Mode.ROOM)		_panelRoom.setVisible(false);
+	public void setMode(Mode mode) {
+		_mode = _mode != mode ? mode : Mode.NONE;
+		_menu = null;
+		
+		if (_mode != Mode.CHARACTER) 	_panelCharacter.setVisible(false);
+		if (_mode != Mode.INFO) 		_panelInfo.setVisible(false);
+		if (_mode != Mode.PLAN) 		_panelPlan.setVisible(false);
+		if (_mode != Mode.DEBUG) 		_panelDebug.setVisible(false);
+		if (_mode != Mode.DEBUGITEMS)	_panelDebugItems.setVisible(false);
+		if (_mode != Mode.BASE) 		_panelBase.setVisible(false);
+		if (_mode != Mode.BUILD) 		_panelBuild.setVisible(false);
+		if (_mode != Mode.CREW) 		_panelCrew.setVisible(false);
+		if (_mode != Mode.BASE) 		_uiBase.setVisible(false);
+		if (_mode != Mode.SCIENCE) 		_uiScience.setVisible(false);
+		if (_mode != Mode.SECURITY)		_uiSecurity.setVisible(false);
+		if (_mode != Mode.JOBS)			_uiJobs.setVisible(false);
+		if (_mode != Mode.ROOM)			_panelRoom.setVisible(false);
 
-		switch (info) {
-		case BUILD: 	_panelBuild.toogle(); break;
-		case INFO: 		_panelInfo.toogle(); break;
-		case DEBUG: 	_panelDebug.toogle(); break;
-		case DEBUGITEMS:_panelDebugItems.toogle(); break;
-		case PLAN: 		_panelPlan.toogle(); break;
-		case CHARACTER: _panelCharacter.toogle(); break;
-		case BASE: 		_panelBase.toogle(); break;
-		case JOBS: 		_uiJobs.toogle(); break;
-		case CREW: 		_panelCrew.toogle(); break;
-		case ROOM: 		_panelRoom.toogle(); break;
-		case SCIENCE:	_uiScience.toogle(); break;
-		case SECURITY:	_uiSecurity.toogle(); break;
+		switch (_mode) {
+		case BUILD: 		_panelBuild.toogle(); break;
+		case INFO: 			_panelInfo.toogle(); break;
+		case DEBUG: 		_panelDebug.toogle(); break;
+		case DEBUGITEMS:	_panelDebugItems.toogle(); break;
+		case PLAN: 			_panelPlan.toogle(); break;
+		case CHARACTER: 	_panelCharacter.toogle(); break;
+		case BASE: 			_panelBase.toogle(); break;
+		case JOBS: 			_uiJobs.toogle(); break;
+		case CREW: 			_panelCrew.toogle(); break;
+		case ROOM: 			_panelRoom.toogle(); break;
+		case SCIENCE:		_uiScience.toogle(); break;
+		case SECURITY:		_uiSecurity.toogle(); break;
 		case NONE: break;
 		}
 	}
@@ -278,7 +297,6 @@ public class UserInterface {
 			int toX = _keyLeftPressed ? Math.max(_keyPressPosX, _keyMovePosX) : _keyMovePosX;
 			int toY = _keyLeftPressed ? Math.max(_keyPressPosY, _keyMovePosY) : _keyMovePosY;
 			_interaction.drawCursor(fromX, fromY, toX, toY);
-			//			RoomManager.getInstance().putRoom(fromX, fromY, toX, toY, roomType);
 		}
 
 		if (_message != null) {
@@ -290,7 +308,10 @@ public class UserInterface {
 			}
 
 		}
-
+				
+		if (_menu != null) {
+			_menu.refresh(_app, null);
+		}
 	}
 
 	public boolean checkKeyboard(Event	event, int frame, int lastInput) {
@@ -387,7 +408,7 @@ public class UserInterface {
 			_uiBase.toogleTile();
 		}
 		else if (event.asKeyEvent().key == Keyboard.Key.R) {
-			_panelRoom.toogle();
+			setMode(Mode.ROOM);
 		}
 		else if (event.asKeyEvent().key == Keyboard.Key.P) {
 			setMode(Mode.PLAN);
@@ -531,19 +552,29 @@ public class UserInterface {
 			return;
 		}
 
+		
 		// Set room
 		Room.Type roomType = _panelRoom.getSelectedRoom();
 		if (roomType != null) {
-			int fromX = _keyLeftPressed ? Math.min(_keyPressPosX, _keyMovePosX) : _keyMovePosX;
-			int fromY = _keyLeftPressed ? Math.min(_keyPressPosY, _keyMovePosY) : _keyMovePosY;
-			int toX = _keyLeftPressed ? Math.max(_keyPressPosX, _keyMovePosX) : _keyMovePosX;
-			int toY = _keyLeftPressed ? Math.max(_keyPressPosY, _keyMovePosY) : _keyMovePosY;
+			int fromX = Math.min(_keyPressPosX, _keyMovePosX);
+			int fromY = Math.min(_keyPressPosY, _keyMovePosY);
+			int toX = Math.max(_keyPressPosX, _keyMovePosX);
+			int toY = Math.max(_keyPressPosY, _keyMovePosY);
 			if (roomType == Room.Type.NONE) {
 				RoomManager.getInstance().removeRoom(fromX, fromY, toX, toY, roomType);
 			} else {
-				RoomManager.getInstance().putRoom(fromX, fromY, toX, toY, roomType, 0);
+				RoomManager.getInstance().putRoom(_keyPressPosX, _keyPressPosX, fromX, fromY, toX, toY, roomType, null);
 			}
+			
+			return;
 		}
+		
+		if (_mode == Mode.ROOM) {
+			final Room room = RoomManager.getInstance().get(getRelativePosX(x), getRelativePosY(y));
+			_panelRoom.setRoom(room);
+			return;
+		}
+
 
 		_panelCharacter.setCharacter(null);
 		setMode(Mode.BASE);
@@ -581,6 +612,55 @@ public class UserInterface {
 			_viewport.update(x, y);
 		}
 		
+		else if (_mode == Mode.ROOM) {
+			final Room room = RoomManager.getInstance().get(getRelativePosX(x), getRelativePosY(y));
+			if (room != null) {
+				
+				List<Character> characters = ServiceManager.getCharacterManager().getList();
+				final ContextualMenu subMenu = new ContextualMenu(_app, 0, new Vector2f(100, 0), new Vector2f(160, (characters.size() + 1) * ContextualMenu.LINE_HEIGHT + ContextualMenu.PADDING_V * 2), _viewport);
+				subMenu.addEntry(Strings.LB_NOBODY, new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						room.setOwner(null);
+						_menu = null;
+					}
+				}, null);
+				for (final Character character: characters) {
+					subMenu.addEntry(character.getName(), new OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							room.setOwner(character);
+							_menu = null;
+						}
+					}, null);
+				}
+
+				_menuPosX = x;
+				_menuPosY = y;
+				_menu = new ContextualMenu(_app, 0, new Vector2f(x, y), new Vector2f(100, 120), _viewport);
+				_menu.addEntry("set owner", new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						_menu.addSubMenu(1, subMenu);
+					}
+				}, new OnFocusListener() {
+					
+					@Override
+					public void onExit(View view) {
+//						_menu.removeSubMenu();
+					}
+					
+					@Override
+					public void onEnter(View view) {
+//						_menu.addSubMenu(1, subMenu);
+					}
+				});
+				_menu.setVisible(true);
+			} else {
+				_menu = null;
+			}
+		}
+		
 		// Cancel selected items 
 		else {
 			_panelBuild.setSelectedItem(null);
@@ -590,5 +670,9 @@ public class UserInterface {
 		}
 
 		_keyRightPressed = false;
+	}
+
+	public Mode getMode() {
+		return _mode;
 	}
 }
