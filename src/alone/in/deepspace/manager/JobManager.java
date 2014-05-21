@@ -10,11 +10,10 @@ import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.CharacterNeeds;
 import alone.in.deepspace.model.ItemInfo;
-import alone.in.deepspace.model.ItemInfo.ItemInfoSlot;
 import alone.in.deepspace.model.Job;
+import alone.in.deepspace.model.Job.Abort;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.UserItem;
-import alone.in.deepspace.model.Job.Abort;
 import alone.in.deepspace.model.WorldRessource;
 
 public class JobManager implements ISavable {
@@ -25,26 +24,20 @@ public class JobManager implements ISavable {
 	private static JobManager	sSelf;
 
 	private ArrayList<Job> 		_jobs;
-	private int 				_count;
-	private int 				_id;
-	private int 				_start;
-
 	private ArrayList<BaseItem> _routineItems;
+	private int 				_id;
 
 	JobManager() {
 		Log.debug("JobManager");
 
-		_jobs = new ArrayList<Job>();
-		_count = 0;
 		_id = 0;
-		_start = 0;
+		_jobs = new ArrayList<Job>();
 		_routineItems = new ArrayList<BaseItem>();
 
 		Log.debug("JobManager done");
 	}
 
 	public List<Job>	getJobs() { return _jobs; };
-	int					getCount() { return _count; }
 
 	// TODO
 	public void	load(final String filePath) {
@@ -263,14 +256,6 @@ public class JobManager implements ISavable {
 
 	// TODO: one pass + check profession
 	public Job getJob(Character character) {
-		//		if (_countFree == 0) {
-		//			return null;
-		//		}
-
-		if (character.getJob() != null) {
-			return null;
-		}
-
 		Log.debug("bestJob: start");
 
 		Job bestJob = getJobForCharacterNeed(character);
@@ -379,21 +364,20 @@ public class JobManager implements ISavable {
 	public void	abort(Job job, Abort reason) {
 		Log.debug("Job abort: " + job.getId());
 
-		// Job is invalid, don't resume
-		if (reason == Job.Abort.INVALID) {
+		// Job is invalid or USE action, don't resume
+		if (reason == Job.Abort.INVALID || job.getAction() == Action.USE) {
 			_jobs.remove(job);
-			_count--;
-			_start--;
+			if (job.getItem() != null) {
+				job.getItem().setOwner(null);
+			}
+			
+			if (job.getSlot() != null) {
+				job.getSlot().release();
+			}
 		}
-		// Job is USE action, don't resume
-		else if (job.getAction() == Action.USE) {
-			_jobs.remove(job);
-			_count--;
-			_start--;
-		}
+
 		// Regular job, reset
 		else {
-			_start++;
 			job.setFail(reason, Game.getFrame());
 			job.setCharacter(null);
 		}
@@ -411,8 +395,6 @@ public class JobManager implements ISavable {
 		}
 		
 		_jobs.remove(job);
-		_count--;
-		_start--;
 	}
 
 	// TODO: change name by filter
@@ -428,7 +410,6 @@ public class JobManager implements ISavable {
 
 	void	addJob(Job job) {
 		_jobs.add(job);
-		_count++;
 	}
 
 	public static JobManager getInstance() {
@@ -451,14 +432,6 @@ public class JobManager implements ISavable {
 		case MINING:	return "mine";
 		}
 		return null;
-	}
-
-	public void cancel(Job job) {
-		Log.info("Job cancel: " + job.getId());
-		job.setCharacter(null);
-		_jobs.remove(job);
-		_count--;
-		_start--;
 	}
 
 	public void clear() {
@@ -494,6 +467,7 @@ public class JobManager implements ISavable {
 	}
 
 	public Job createRoutineJob(Character c) {
+		Log.info("createRoutineJob");
 		
 		// Character has item to store
 		if (c.getCarried().size() > 0) {

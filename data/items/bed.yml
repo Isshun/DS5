@@ -4,7 +4,7 @@ width: 2
 height: 2
 category: quarter
 onAction:
-  duration: 15
+  duration: 20
   effects:
     energy: 100
     hapiness: 10

@@ -6,7 +6,7 @@ category: common
 cost:
   matter: 42
 onAction:
-  duration: 10
+  duration: 5
   produce:
     item: base.meal
     quantity: 2

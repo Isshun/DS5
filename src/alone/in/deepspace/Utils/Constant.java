@@ -53,6 +53,8 @@ public class Constant {
 	public static final double LIMITE_LOW_OXYGEN = 20;
 	public static final double LIMITE_NO_OXYGEN = 0;
 	public static final double LIMITE_TIRED = 20;
-
-	
+	public static final int SLEEP_ON_FLOOR_DURATION = 100;
+	public static final double SLEEP_ON_FLOOR_ENERGY_RESTORE = 20;
+	public static final double SLEEP_ON_FLOOR_HAPINESS_RESTORE = -10;
+	public static final int DURATION_MULTIPLIER = 10;
 }

@@ -10,7 +10,7 @@ onAction:
       y: 0
     - x: 0
       y: 1
-  duration: 100
+  duration: 12
   effects:
     hapiness: 10
     relation: 10

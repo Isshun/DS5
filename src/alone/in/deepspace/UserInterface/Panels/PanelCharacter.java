@@ -58,6 +58,7 @@ public class PanelCharacter extends UserSubInterface {
 		// Profession
 		_lbProfession = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbProfession.setCharacterSize(FONT_SIZE);
+		_lbProfession.setVisible(false);
 		_lbProfession.setColor(Color.WHITE);
 		_lbProfession.setPosition(new Vector2f(PADDING_H, PADDING_V + LINE_HEIGHT));
 		addView(_lbProfession);
@@ -220,7 +221,7 @@ public class PanelCharacter extends UserSubInterface {
 
 				if (_character.getJob() != null) {
 					_lbJob.setString("Job");
-					_lbJob2.setString(_character.getJob().getLabel());
+					_lbJob2.setString(_character.getJob().getShortLabel());
 				} else {
 					_lbJob.setString("");
 					_lbJob2.setString("");

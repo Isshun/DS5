@@ -310,8 +310,8 @@ public class BaseItem {
 		return _nbUsed;
 	}
 
-	public void use(Character character) {
-		character.getNeeds().add(_info.onAction);
+	public void use(Character character, int durationLeft) {
+		character.getNeeds().use(this, _info.onAction, durationLeft);
 	}
 
 

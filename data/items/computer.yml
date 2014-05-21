@@ -3,7 +3,7 @@ category: common
 cost:
   matter: 42
 onAction:
-  duration: 10
+  duration: 5
   effects:
     hapiness: 10
     relation: 10

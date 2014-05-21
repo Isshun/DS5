@@ -315,6 +315,13 @@ public class UserInterface {
 			return true;
 		}
 
+		if (event.asKeyEvent().key == Keyboard.Key.SPACE) {
+			if ((event.type == Event.Type.KEY_RELEASED)) {
+				Main.pause();
+			}
+			return true;
+		}
+
 		if (event.asKeyEvent().key == Keyboard.Key.PAGEDOWN) {
 			if ((event.type == Event.Type.KEY_RELEASED)) {
 				ServiceManager.getWorldMap().downFloor();

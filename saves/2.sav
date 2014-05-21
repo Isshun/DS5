@@ -969,13 +969,7 @@ BEGIN WORLDMAP
 5	28	23	base.floor	1
 END WORLDMAP
 BEGIN CHARACTERS
-14	16	4	Gaius Anders
-19	12	5	Janice Wildman
-24	21	5	Wesley Hammond
-14	15	5	Janice Thrace
-26	17	5	Jonathan Zimmerman
-24	19	5	Janice Hartness
-26	21	5	Samuel Barclay
+19	13	5	Gaius O'Neill
 END CHARACTERS
 BEGIN ROOMS
 END ROOMS

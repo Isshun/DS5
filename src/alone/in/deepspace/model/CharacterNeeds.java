@@ -2,7 +2,6 @@ package alone.in.deepspace.model;
 
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.model.ItemInfo.ItemInfoAction;
-import alone.in.deepspace.model.ItemInfo.ItemInfoNeeds;
 
 public class CharacterNeeds {
 	public enum Message {
@@ -58,9 +57,9 @@ public class CharacterNeeds {
 	public int	getEating() { return _eating; }
 	public int	getDrinking() { return _drinking; }
 	public int	getSocialize() { return _socialize; }
-	public int	getFood() { return (int)_food; }
-	public int	getEnergy() { return (int)_energy; }
-	public int	getHappiness() { return (int) _happiness; }
+	public int	getFood() { return (int)Math.ceil(_food); }
+	public int	getEnergy() { return (int)Math.ceil(_energy); }
+	public int	getHappiness() { return (int)Math.ceil(_happiness); }
 	public int	getRelation() { return (int)_relation; }
 	public int	getSecurity() { return (int)_security; }
 	public int	getOxygen() { return (int)_oxygen; }
@@ -102,9 +101,6 @@ public class CharacterNeeds {
 		// 	return;
 		// }
 
-		// Food
-		_food -= 2;
-
 		// Food: starve
 		if (isStarved()) {
 			// addMessage(MSG_STARVE, count);
@@ -112,6 +108,7 @@ public class CharacterNeeds {
 			_happiness = Math.max(_happiness - 0.5f, 0.0f);
 			_health = Math.max(_health - 0.1f, 0.0f);
 			if (_sleeping <= 0) {
+				System.out.println("change 1");
 				_energy = (int) Math.max(_energy - 1.0f, 0.0f);
 			}
 		}
@@ -155,35 +152,21 @@ public class CharacterNeeds {
 
 	void	updateAwake() {
 		// Energy
+		
+		System.out.println("update awake");
+
+		// Food
+		_food -= 2;
 		_energy -= 1;
 	}
 
 	void	updateSleeping() {
-		_sleeping -= 1;
 
-		// Strong heal if character in sickbay
-
-		// TODO
-		if (_sleepItem != null) {
-			add(_sleepItem.getInfo().onAction);
-			//			  if (_sleepItem.getName().equals("base.bed")) {
-			//				_energy = Math.min(_energy + 6, 100);
-			//				_happiness += 0.1;
-			//			  } else if (_sleepItem.getName().equals("base.chair")) {
-			//				_energy = Math.min(_energy + 5, 100);
-			//				_happiness -= 0.1;
-			//			  } else if (_sleepItem.getName().equals("base.biobed")) {
-			//				_energy = Math.min(_energy + 6, 100);
-			//				if (_health > 20) {
-			//				  _health = Math.max(_health + 2, 100.0f);
-			//				}
-			//			  } else if (_sleepItem.getName().equals("base.emergency_shelters")) {
-			//				_energy = Math.min(_energy + 6, 100);
-			//				_health = Math.min(_health + 4, 100.0f);
-			//			  }
-		} else {
-			//			_energy = Math.min(_energy + 5, 100);
-			//			_happiness -= 0.1;
+		// Sleep on floor
+		if (_sleepItem == null) {
+			_sleeping -= 10;
+			_energy = Math.min(_energy + (double)Constant.SLEEP_ON_FLOOR_ENERGY_RESTORE / Constant.SLEEP_ON_FLOOR_DURATION, 100);
+			_happiness = Math.min(_happiness + (double)Constant.SLEEP_ON_FLOOR_HAPINESS_RESTORE / Constant.SLEEP_ON_FLOOR_DURATION, 100);
 		}
 
 		// Minor health gain
@@ -213,7 +196,7 @@ public class CharacterNeeds {
 		if (item != null) {
 			_sleeping = item.getInfo().onAction.duration;
 		} else {
-			_sleeping = 100;
+			_sleeping = Constant.SLEEP_ON_FLOOR_DURATION;
 		}
 	}
 
@@ -229,13 +212,18 @@ public class CharacterNeeds {
 		_relation = Math.min(_relation + 1, 100);
 	}
 
-	public void add(ItemInfoAction action) {
+	public void use(BaseItem item, ItemInfoAction action, int durationLeft) {
+		if (item.isSleepingItem()) {
+			_sleepItem = item;
+			_sleeping = durationLeft;
+		}
+		
 		if (action != null && action.effects != null) {
-			_energy = Math.min(_energy + action.effects.energy / action.duration, 100);
-			_food = Math.min(_food + action.effects.food / action.duration, 100);
-			_happiness = Math.min(_happiness + action.effects.hapiness / action.duration, 100);
-			_health = Math.min(_health + action.effects.health / action.duration, 100);
-			_relation = Math.min(_relation + action.effects.relation / action.duration, 100);
+			_energy = Math.min(_energy + (double)action.effects.energy / (double)action.duration, 100);
+			_food = Math.min(_food + (double)action.effects.food / action.duration, 100);
+			_happiness = Math.min(_happiness + (double)action.effects.hapiness / action.duration, 100);
+			_health = Math.min(_health + (double)action.effects.health / action.duration, 100);
+			_relation = Math.min(_relation + (double)action.effects.relation / action.duration, 100);
 		}
 	}
 

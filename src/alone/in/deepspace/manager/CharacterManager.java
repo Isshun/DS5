@@ -54,25 +54,58 @@ public class CharacterManager implements ISavable {
 		Log.debug("CharacterManager done");
 	}
 
-
 	public void	assignJobs() {
+		for (Character c: _characters) {
+			if (c.isSleeping() == false && c.getJob() == null) {
+
+				// Need to sleep
+				if (c.getNeeds().isTired()) {
+					c.setJob(JobManager.getInstance().need(c, "base.bed"));
+				}
+				
+				else {
+					// Regular job
+					Job job = JobManager.getInstance().getJob(c);
+					if (job != null) {
+						c.setJob(job);
+					}
+	
+					// Routine job
+					else {
+						c.setJob(JobManager.getInstance().createRoutineJob(c));
+					}
+				}
+			}
+		}
+	}
+
+
+	public void	assignJobs2() {
 
 		//if (JobManager.getInstance().getCountFree() > 0) {
 		for (Character c: _characters) {
 			if (c.isSleeping() == false && c.getJob() == null) {
-				Job job = JobManager.getInstance().getJob(c);
-				if (job != null) {
-					Log.debug("assignJobs to " + c.getName());
-					job.setCharacter(c);
-					c.setJob(job);
+				// Need to sleep
+				if (c.getNeeds().isTired()) {
+					c.setJob(JobManager.getInstance().need(c, "base.bed"));
 				}
+				
 				else {
-					job = JobManager.getInstance().createRoutineJob(c);
+					
+					Job job = JobManager.getInstance().getJob(c);
 					if (job != null) {
 						Log.debug("assignJobs to " + c.getName());
 						job.setCharacter(c);
-						job.getItem().setOwner(c);
 						c.setJob(job);
+					}
+					else {
+						job = JobManager.getInstance().createRoutineJob(c);
+						if (job != null) {
+							Log.debug("assignJobs to " + c.getName());
+							job.setCharacter(c);
+							job.getItem().setOwner(c);
+							c.setJob(job);
+						}
 					}
 				}
 			}
@@ -377,7 +410,7 @@ public class CharacterManager implements ISavable {
 
 			Sprite sprite = SpriteManager.getInstance().getCharacter(profession, dirIndex, frame);
 
-			sprite.setPosition(posX, c.getSmoothY(posX) - 16);
+			sprite.setPosition(posX, posY);
 			//		if (c.getNeeds().isSleeping()) {
 			//		  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
 			//	 	} else if (direction == Character.Direction.DIRECTION_NONE) {

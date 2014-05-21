@@ -174,4 +174,8 @@ public class Main {
 		_updateInterval = updateInterval;
 	}
 
+	public static void pause() {
+		_updateInterval = _updateInterval == 1000000 ? 100 : 1000000;
+	}
+
 }

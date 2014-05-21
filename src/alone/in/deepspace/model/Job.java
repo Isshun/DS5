@@ -5,6 +5,7 @@ import org.jsfml.graphics.Color;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
+import alone.in.deepspace.manager.JobManager.Action;
 
 public class Job {
 
@@ -65,7 +66,15 @@ public class Job {
 	}
 	public void	setItem(BaseItem item) { _item = item; }
 	public void	setCharacter(Character character) {
+		if (_character == character) {
+			return;
+		}
+		
 		_character = character;
+		if (character != null) {
+			character.setJob(this);
+		}
+		
 		if (_item != null) {
 			_item.setOwner(character);
 		}
@@ -93,6 +102,10 @@ public class Job {
 			oss += " " + _item.getName();
 		}
 
+		if (_action == Action.USE) {
+			oss += " (" + _durationLeft / 10 + ")";
+		}
+		
 		if (_character != null) {
 			oss += " (" + _character.getName() + ")";
 		} else if (_fail > 0) {
@@ -123,6 +136,9 @@ public class Job {
 		String oss = JobManager.getActionName(_action);
 		if (_item != null) {
 			oss += " " + _item.getLabel();
+		}
+		if (_action == Action.USE) {
+			oss += " (" + _durationLeft / 10 + " seconds)";
 		}
 		return oss;
 	}

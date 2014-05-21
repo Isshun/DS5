@@ -10,6 +10,7 @@ import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.Job.Abort;
 
 public class Character extends Movable {
 
@@ -192,12 +193,17 @@ public class Character extends Movable {
 	public boolean			isFull() { return _carry.size() == Constant.CHARACTER_CARRY_CAPACITY; }
 
 	public void	setJob(Job job) {
+		if (_job == job) {
+			return;
+		}
+
 		Log.debug("set new job");
 
 		if (_job != null) {
 			JobManager.getInstance().abort(_job, Job.Abort.INTERRUPTE);
 		}
 		if (job != null) {
+			job.setCharacter(this);
 			_job = job;
 			_toX = job.getX();
 			_toY = job.getY();
@@ -310,6 +316,7 @@ public class Character extends Movable {
 			return;
 		}
 		
+		// TODO
 		// No energy + no job to sleepingItem -> sleep on the ground
 		if (_needs.getEnergy() <= 0) {
 			_needs.sleep(null);
@@ -318,10 +325,10 @@ public class Character extends Movable {
 		// TODO
 		// Energy
 		if (_needs.isTired()) {
-			Log.info("Charactere #" + _id + ": need sleep: " + _needs.getEnergy());
-
-			// Need sleep
-			setJob(JobManager.getInstance().need(this, "base.bed"));
+//			Log.info("Charactere #" + _id + ": need sleep: " + _needs.getEnergy());
+//
+//			// Need sleep
+//			setJob(JobManager.getInstance().need(this, "base.bed"));
 
 			// // Sleep in chair
 			// {
@@ -510,7 +517,7 @@ public class Character extends Movable {
 			}
 			
 			// Add item effects
-			item.use(this);
+			item.use(this, _job.getDurationLeft());
 			return;
 		}
 
@@ -528,7 +535,7 @@ public class Character extends Movable {
 			_carry.clear();
 		} else {
 			Log.error("Character: actionStore on non storage item");
-			JobManager.getInstance().cancel(_job);
+			JobManager.getInstance().abort(_job, Abort.INVALID);
 		}
 		_job = null;
 	}
@@ -537,7 +544,7 @@ public class Character extends Movable {
 		// Wrong call
 		if (_job == null || _job.getItem() == null) {
 			Log.error("Character: actionBuild on null job or null job's item");
-			JobManager.getInstance().cancel(_job);
+			JobManager.getInstance().abort(_job, Abort.INVALID);
 			_job = null;
 			return;
 		}
@@ -549,13 +556,11 @@ public class Character extends Movable {
 		if (item != currentStructure && item != currentItem) {
 			if (item != currentStructure) {
 				Log.warning("Character #" + _id + ": actionBuild on invalide structure");
-				JobManager.getInstance().cancel(_job);
-				_job = null;
 			} else if (item != currentItem) {
 				Log.warning("Character #" + _id + ": actionBuild on invalide item");
-				JobManager.getInstance().cancel(_job);
-				_job = null;
 			}
+			JobManager.getInstance().abort(_job, Abort.INVALID);
+			_job = null;
 			return;
 		}
 
@@ -587,7 +592,7 @@ public class Character extends Movable {
 		// Wrong call
 		if (_job == null || _job.getItem() == null) {
 			Log.error("Character: actionGather on null job or null job's item");
-			JobManager.getInstance().cancel(_job);
+			Log.warning("Character #" + _id + ": actionBuild on invalide item");
 			_job = null;
 			return;
 		}
@@ -596,7 +601,7 @@ public class Character extends Movable {
 
 		if (gatheredItem.getInfo().onGather == null) {
 			Log.error("Character: actionGather on non gatherable item");
-			JobManager.getInstance().cancel(_job);
+			Log.warning("Character #" + _id + ": actionBuild on invalide item");
 			_job = null;
 			return;
 		}
@@ -629,7 +634,7 @@ public class Character extends Movable {
 		// Wrong call
 		if (_job == null || _job.getItem() == null) {
 			Log.error("Character: actionMine on null job or null job's item");
-			JobManager.getInstance().cancel(_job);
+			JobManager.getInstance().abort(_job, Abort.INVALID);
 			_job = null;
 			return;
 		}
@@ -638,7 +643,7 @@ public class Character extends Movable {
 
 		if (gatheredItem.getInfo().onMine == null) {
 			Log.error("Character: actionMine on non minable item");
-			JobManager.getInstance().cancel(_job);
+			JobManager.getInstance().abort(_job, Abort.INVALID);
 			_job = null;
 			return;
 		}

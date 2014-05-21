@@ -2,6 +2,7 @@ package alone.in.deepspace.manager;
 
 import java.io.IOException;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.renderer.LightRenderer;
 import alone.in.deepspace.engine.renderer.WorldRenderer;
 import alone.in.deepspace.model.GameData;
@@ -13,6 +14,7 @@ public class ServiceManager {
 	private static WorldRenderer 	_worldRenderer;
 	private static GameData 		_data;
 	private static LightRenderer _lightRenderer;
+	private static Game _game;
 
 	public static void reset() {
 		_worldMap = null;
@@ -60,5 +62,9 @@ public class ServiceManager {
 
 	public static void setLightRenderer(LightRenderer lightRenderer) {
 		_lightRenderer = lightRenderer;
+	}
+
+	public static Game getGame() {
+		return _game;
 	}
 }

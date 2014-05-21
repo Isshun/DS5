@@ -3,6 +3,7 @@ package alone.in.deepspace.model;
 import org.jsfml.graphics.Color;
 
 import alone.in.deepspace.Strings;
+import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.manager.ServiceManager;
 
 public class CharacterStatus {
@@ -32,7 +33,7 @@ public class CharacterStatus {
 			BaseItem item = ServiceManager.getWorldMap().getItem(_character.getPosX(), _character.getPosY());
 			if (item != null && item.isSleepingItem()) {
 				_color = COLOR_GOOD;
-				return "I sleep well, even " + _needs.getSleeping() + "h";
+				return "I sleep well, even " + (_needs.getSleeping() / Constant.DURATION_MULTIPLIER) + "h";
 			} else {
 				_color = COLOR_BAD;
 				return Strings.CHARACTER_SAY_NOWHERE_TO_SLEEP;

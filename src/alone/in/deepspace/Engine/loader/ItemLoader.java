@@ -10,6 +10,7 @@ import java.util.List;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
+import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.ItemInfo;
 
@@ -70,8 +71,11 @@ public class ItemLoader {
 			if (item.onMine != null) {
 				item.onMine.itemProduce = ServiceManager.getData().getItemInfo(item.onMine.produce);
 			}
-			if (item.onAction != null && item.onAction.produce != null) {
-				item.onAction.itemProduce = ServiceManager.getData().getItemInfo(item.onAction.produce.item);
+			if (item.onAction != null) {
+				item.onAction.duration *= Constant.DURATION_MULTIPLIER;
+				if (item.onAction.produce != null) {
+					item.onAction.itemProduce = ServiceManager.getData().getItemInfo(item.onAction.produce.item);
+				}
 			}
 		}
 	}

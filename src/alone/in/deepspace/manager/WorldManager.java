@@ -235,7 +235,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 					// item
 					UserItem item = area.getItem();
 					if (item != null && item.getName().equals(itemName) && item.isComplete()) {
-						if (free == false || item.isFree()) {
+						if (free == false || item.hasFreeSlot()) {
 							Log.debug("item found");
 							return item;
 						}
@@ -245,7 +245,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 					// Structure
 					StructureItem structure = area.getStructure();
 					if(structure != null && structure.getName().equals(itemName) && structure.isComplete()) {
-						if (free == false || structure.isFree()) {
+						if (free == false || structure.hasFreeSlot()) {
 							Log.debug("item found");
 							return structure;
 						}
