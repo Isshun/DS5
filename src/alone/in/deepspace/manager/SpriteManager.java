@@ -248,7 +248,7 @@ public class SpriteManager {
 						texture.loadFromFile((imgFile.toPath()));
 						texture.setSmooth(true);
 						sprite.setTexture(texture);
-						sprite.setTextureRect(ObjectPool.getIntRect(0, 0, item.width * Constant.TILE_WIDTH, item.height * Constant.TILE_HEIGHT + 89));
+						sprite.setTextureRect(ObjectPool.getIntRect(0, 0, item.width * Constant.TILE_WIDTH, item.height * Constant.TILE_HEIGHT));
 						_sprites.put((long) item.spriteId, sprite);
 					}
 				} catch (IOException e) {
