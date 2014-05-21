@@ -487,12 +487,15 @@ public class PanelInfo extends UserSubInterface {
 				_layoutEffects.setVisible(true);
 				ItemInfoEffects effects = item.getInfo().onAction.effects;
 				int line = 0;
-				if (effects.drink > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_DRINK + ": " + effects.drink); }
-				if (effects.energy > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_ENERGY + ": " + effects.energy); }
-				if (effects.food > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_FOOD + ": " + effects.food); }
-				if (effects.hapiness > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_HAPINESS + ": " + effects.hapiness); }
-				if (effects.health > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_HEALTH + ": " + effects.health); }
-				if (effects.relation > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_RELATION + ": " + effects.relation); }
+				if (effects.drink > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_DRINK + ": " + (effects.drink > 0 ? "+" : "") + effects.drink); }
+				if (effects.energy > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_ENERGY + ": " + (effects.energy> 0 ? "+" : "") + effects.energy); }
+				if (effects.food > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_FOOD + ": " + (effects.food > 0 ? "+" : "") + effects.food); }
+				if (effects.hapiness > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_HAPINESS + ": " + (effects.hapiness > 0 ? "+" : "") + effects.hapiness); }
+				if (effects.health > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_HEALTH + ": " + (effects.health > 0 ? "+" : "") + effects.health); }
+				if (effects.relation > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_RELATION + ": " + (effects.relation > 0 ? "+" : "") + effects.relation); }
+				for (int i = line; i < 10; i++) {
+					_itemEffects[line++].setString("");
+				}
 			}
 		} else {
 			_itemAction.setVisible(false);
