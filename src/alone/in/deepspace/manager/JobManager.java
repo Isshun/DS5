@@ -265,17 +265,22 @@ public class JobManager implements ISavable {
 			}
 		}
 
-		{
-			int x = character.getX();
-			int y = character.getY();
+		int x = character.getX();
+		int y = character.getY();
+
+		// Regular jobs
+		if (bestJob == null) {
 			for (Job job: _jobs) {
-				// TODO: restart job after fail
-				if ((job.getCharacter() == null || job.getCharacter().getJob() == null) && job.getFail() <= 0 && job.getAction() != Action.GATHER) {
+				if (job.getCharacter() == null && job.getFail() <= 0) {
+					if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter() == 0) {
+						job.setFail(Abort.NO_MATTER, Game.getFrame());
+						continue;
+					}
+					if ((job.getAction() == Action.GATHER || job.getAction() == Action.MINING) && character.getSpace() == 0) {
+						continue;
+					}
 					int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
 					if (distance < bestDistance || bestDistance == -1) {
-						if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter() == 0) {
-							continue;
-						}
 						bestJob = job;
 						bestDistance = distance;
 					}
@@ -283,12 +288,10 @@ public class JobManager implements ISavable {
 			}
 		}
 
+		// Failed jobs
 		if (bestJob == null) {
-			int x = character.getX();
-			int y = character.getY();
 			for (Job job: _jobs) {
-				// TODO: restart job after fail
-				if (job.getCharacter() == null && job.getFail() <= 0) {
+				if (job.getCharacter() == null && job.getFail() > 0) {
 					int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
 					if (distance < bestDistance || bestDistance == -1) {
 						bestJob = job;
@@ -461,7 +464,10 @@ public class JobManager implements ISavable {
 		if (c.getCarried().size() > 0) {
 			// TODO
 			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
-			return storeItem(ServiceManager.getWorldMap().getNearest(info, c.getPosX(), c.getPosY()));
+			BaseItem storage = ServiceManager.getWorldMap().getNearest(info, c.getPosX(), c.getPosY());
+			if (storage != null) {
+				return storeItem(storage);
+			}
 		}
 		
 		if ((int)(Math.random() * 100) <= Constant.CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS) {

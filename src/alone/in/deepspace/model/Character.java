@@ -35,16 +35,16 @@ public class Character extends Movable {
 		GENDER_BOTH
 	};
 
-	CharacterNeeds			_needs;
-	private Gender			_gender;
-	private String			_name;
-	private Profession		_profession;
-	private boolean			_selected;
-	private List<BaseItem> 	_carry;
-	private CharacterStatus _status;
-	private Color 			_color;
-	private int _lag;
-	private Vector<Position> _lastPath;
+	CharacterNeeds				_needs;
+	private Gender				_gender;
+	private String				_name;
+	private Profession			_profession;
+	private boolean				_selected;
+	private List<BaseItem> 		_carry;
+	private CharacterStatus 	_status;
+	private Color 				_color;
+	private int 				_lag;
+	private int 				_inventorySpace;
 
 	//	  private int				_messages[32];
 
@@ -63,6 +63,7 @@ public class Character extends Movable {
 		_direction = Direction.DIRECTION_NONE;
 		_needs = new CharacterNeeds(this);
 		_status = new CharacterStatus(this);
+		_inventorySpace = Constant.CHARACTER_INVENTORY_SPACE;
 		_steps = 0;
 		_name = name;
 
@@ -647,6 +648,10 @@ public class Character extends Movable {
 
 	public int getLag() {
 		return _lag;
+	}
+
+	public int getSpace() {
+		return _inventorySpace - _carry.size();
 	}
 
 }

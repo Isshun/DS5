@@ -293,14 +293,14 @@ public class LightRenderer implements IRenderer {
 				WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
 				WorldArea areaBellow = ServiceManager.getWorldMap().getArea(x, y+1);
 
-				// Ground
-				if (area != null && area.getLight() > 0 && areaBellow != null && areaBellow.getLight() <= 0) {
-					if (area.getStructure() == null || area.getStructure().isFloor()) {
-						if (areaBellow.getStructure() == null || areaBellow.getStructure().isFloor()) {
-							areaBellow.setLight(area.getLight() * 0.75);
-						}
-					}
-				}
+//				// Ground
+//				if (area != null && area.getLight() > 0 && areaBellow != null && areaBellow.getLight() <= 0) {
+//					if (area.getStructure() == null || area.getStructure().isFloor()) {
+//						if (areaBellow.getStructure() == null || areaBellow.getStructure().isFloor()) {
+//							areaBellow.setLight(area.getLight() * 0.5);
+//						}
+//					}
+//				}
 
 				// Wall
 				if (area != null && area.getStructure() != null && (area.getStructure().isWall() || area.getStructure().isDoor()) && area.getLight() <= 0) {

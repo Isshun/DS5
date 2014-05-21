@@ -7,6 +7,7 @@ import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.Strings;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.engine.ui.TextView;
@@ -81,12 +82,19 @@ public class PanelCharacter extends UserSubInterface {
 		_lbJob2.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + 432));
 		addView(_lbJob2);
 
+		TextView lbCarry= new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
+		lbCarry.setCharacterSize(FONT_SIZE);
+		lbCarry.setColor(Color.WHITE);
+		lbCarry.setString(Strings.LB_INVENTORY);
+		lbCarry.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + 500));
+		addView(lbCarry);
+
 		_lbCarry = new TextView[10];
 		for (int i = 0; i < 10; i++) {
 			_lbCarry[i] = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 			_lbCarry[i].setCharacterSize(12);
 			_lbCarry[i].setColor(Color.WHITE);
-			_lbCarry[i].setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + 464 + i * 28));
+			_lbCarry[i].setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + 532 + i * 20));
 			addView(_lbCarry[i]);
 		}
 

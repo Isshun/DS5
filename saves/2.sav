@@ -4,12 +4,16 @@ SPICE	0
 WATER	0
 END GAME
 BEGIN WORLDMAP
+0	2	1	base.seaweed5	0
 0	2	2	base.ground	1
 0	2	3	base.ground	1
 0	2	4	base.ground	1
 0	2	5	base.ground	1
+0	2	5	base.seaweed1	0
 0	2	6	base.ground	1
 0	2	7	base.ground	1
+0	2	27	base.seaweed5	0
+0	2	34	base.seaweed1	0
 0	3	2	base.ground	1
 0	3	3	base.ground	1
 0	3	4	base.ground	1
@@ -39,6 +43,7 @@ BEGIN WORLDMAP
 0	4	22	base.wall	1
 0	4	23	base.wall	1
 0	4	24	base.wall	1
+0	4	40	base.seaweed5	0
 0	5	2	base.ground	1
 0	5	3	base.ground	1
 0	5	4	base.ground	1
@@ -66,8 +71,11 @@ BEGIN WORLDMAP
 0	5	22	base.floor	1
 0	5	23	base.floor	1
 0	5	24	base.wall	1
+0	5	44	base.seaweed2	0
+0	6	1	base.seaweed1	0
 0	6	2	base.ground	1
 0	6	3	base.ground	1
+0	6	3	base.seaweed3	0
 0	6	4	base.ground	1
 0	6	5	base.ground	1
 0	6	6	base.ground	1
@@ -93,6 +101,8 @@ BEGIN WORLDMAP
 0	6	22	base.light	10
 0	6	23	base.floor	1
 0	6	24	base.wall	1
+0	6	29	base.seaweed1	0
+0	6	34	base.seaweed3	0
 0	7	2	base.ground	1
 0	7	3	base.ground	1
 0	7	4	base.ground	1
@@ -139,6 +149,7 @@ BEGIN WORLDMAP
 0	8	22	base.floor	1
 0	8	23	base.floor	1
 0	8	24	base.wall	1
+0	8	42	base.seaweed1	0
 0	9	2	base.ground	1
 0	9	3	base.ground	1
 0	9	4	base.ground	1
@@ -162,6 +173,7 @@ BEGIN WORLDMAP
 0	9	22	base.floor	1
 0	9	23	base.floor	1
 0	9	24	base.wall	1
+0	9	35	base.seaweed2	0
 0	10	2	base.ground	1
 0	10	3	base.wall	1
 0	10	4	base.wall	1
@@ -185,6 +197,7 @@ BEGIN WORLDMAP
 0	10	22	base.door	42
 0	10	23	base.wall	1
 0	10	24	base.wall	1
+0	10	32	base.seaweed1	0
 0	11	2	base.ground	1
 0	11	3	base.wall	1
 0	11	4	base.floor	1
@@ -300,6 +313,7 @@ BEGIN WORLDMAP
 0	15	22	base.light	10
 0	15	23	base.floor	1
 0	15	24	base.wall	1
+0	15	38	base.seaweed1	0
 0	16	3	base.wall	1
 0	16	4	base.floor	1
 0	16	5	base.floor	1
@@ -322,6 +336,7 @@ BEGIN WORLDMAP
 0	16	22	base.floor	1
 0	16	23	base.floor	1
 0	16	24	base.wall	1
+0	16	46	base.seaweed4	0
 0	17	3	base.wall	1
 0	17	4	base.floor	1
 0	17	5	base.floor	1
@@ -411,6 +426,7 @@ BEGIN WORLDMAP
 0	20	22	base.floor	1
 0	20	23	base.floor	1
 0	20	24	base.wall	1
+0	20	32	base.seaweed1	0
 0	21	3	base.wall	1
 0	21	4	base.floor	1
 0	21	5	base.floor	1
@@ -457,6 +473,7 @@ BEGIN WORLDMAP
 0	22	22	base.floor	1
 0	22	23	base.floor	1
 0	22	24	base.wall	1
+0	22	41	base.seaweed2	0
 0	23	3	base.wall	1
 0	23	4	base.floor	1
 0	23	5	base.floor	1
@@ -502,6 +519,9 @@ BEGIN WORLDMAP
 0	24	22	base.floor	1
 0	24	23	base.floor	1
 0	24	24	base.wall	1
+0	24	26	base.seaweed3	0
+0	24	39	base.seaweed1	0
+0	24	45	base.seaweed1	0
 0	25	3	base.wall	1
 0	25	4	base.floor	1
 0	25	5	base.floor	1
@@ -678,6 +698,9 @@ BEGIN WORLDMAP
 0	32	13	base.floor	1
 0	32	14	base.floor	1
 0	32	15	base.wall	1
+0	32	22	base.seaweed3	0
+0	32	40	base.seaweed1	0
+0	32	48	base.seaweed2	0
 0	33	1	base.ground	1
 0	33	2	base.ground	1
 0	33	3	base.wall	1
@@ -693,6 +716,7 @@ BEGIN WORLDMAP
 0	33	13	base.floor	1
 0	33	14	base.floor	1
 0	33	15	base.wall	1
+0	33	35	base.seaweed4	0
 0	34	1	base.ground	1
 0	34	2	base.ground	1
 0	34	3	base.wall	1
@@ -708,6 +732,7 @@ BEGIN WORLDMAP
 0	34	13	base.floor	1
 0	34	14	base.floor	1
 0	34	15	base.wall	1
+0	35	0	base.seaweed3	0
 0	35	3	base.wall	1
 0	35	4	base.floor	1
 0	35	5	base.floor	1
@@ -748,6 +773,7 @@ BEGIN WORLDMAP
 0	37	13	base.floor	1
 0	37	14	base.floor	1
 0	37	15	base.wall	1
+0	37	44	base.seaweed5	0
 0	38	3	base.wall	1
 0	38	4	base.floor	1
 0	38	5	base.floor	1
@@ -761,6 +787,7 @@ BEGIN WORLDMAP
 0	38	13	base.floor	1
 0	38	14	base.floor	1
 0	38	15	base.wall	1
+0	38	34	base.seaweed1	0
 0	39	3	base.wall	1
 0	39	4	base.floor	1
 0	39	5	base.floor	1
@@ -774,6 +801,7 @@ BEGIN WORLDMAP
 0	39	13	base.floor	1
 0	39	14	base.floor	1
 0	39	15	base.wall	1
+0	39	21	base.seaweed1	0
 0	40	3	base.wall	1
 0	40	4	base.wall	1
 0	40	5	base.wall	1
@@ -787,6 +815,18 @@ BEGIN WORLDMAP
 0	40	13	base.wall	1
 0	40	14	base.wall	1
 0	40	15	base.wall	1
+0	41	26	base.seaweed2	0
+0	42	37	base.seaweed2	0
+0	42	44	base.seaweed1	0
+0	44	4	base.seaweed1	0
+0	45	10	base.seaweed4	0
+0	45	37	base.seaweed1	0
+0	46	33	base.seaweed4	0
+0	47	15	base.seaweed1	0
+0	47	19	base.seaweed3	0
+0	47	28	base.seaweed1	0
+0	48	5	base.seaweed2	0
+0	48	8	base.seaweed1	0
 5	14	12	base.floor	1
 5	14	13	base.floor	1
 5	14	14	base.floor	1
@@ -969,14 +1009,14 @@ BEGIN WORLDMAP
 5	28	23	base.floor	1
 END WORLDMAP
 BEGIN CHARACTERS
-24	21	5	Tory (Six) Sisko
-26	21	5	Samuel Hammond
-5	9	5	Galen Sheppard
-23	20	5	Amy (Crashdown) Sisko
-24	19	5	Tom (Crashdown) Wells
-14	15	5	Michael Barclay
-5	13	5	Emma (Oz) Weir
-14	16	5	Vic (Betty) Adama
+14	16	4	Tory (Six) Sisko
+5	17	4	Samuel Hammond
+18	18	4	Galen Sheppard
+14	16	4	Amy (Crashdown) Sisko
+9	14	4	Tom (Crashdown) Wells
+5	13	4	Michael Barclay
+20	20	4	Emma (Oz) Weir
+14	15	4	Vic (Betty) Adama
 END CHARACTERS
 BEGIN ROOMS
 END ROOMS

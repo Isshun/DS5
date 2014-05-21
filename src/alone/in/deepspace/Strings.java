@@ -19,4 +19,5 @@ public class Strings {
 	public static String CHARACTER_SAY_LOW_OXYGEN = "It's hard to breath";
 	public static String CHARACTER_SAY_NO_OXYGEN = "I can't breath !";
 	public static String CHARACTER_SAY_NOWHERE_TO_SLEEP = "I have nowhere to sleep";
+	public static String LB_INVENTORY = "Inventory";
 }
