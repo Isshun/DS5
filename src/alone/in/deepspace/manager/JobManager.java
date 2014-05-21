@@ -114,19 +114,6 @@ public class JobManager implements ISavable {
 //		}
 	}
 
-	private static Action getActionFromIndex(int action) {
-		switch(action) {
-		case 0: return Action.NONE;
-		case 1: return Action.BUILD;
-		case 2: return Action.GATHER;
-		case 3: return Action.USE;
-		case 4: return Action.MOVE;
-		case 5: return Action.STORE;
-		case 6: return Action.DESTROY;
-		}
-		return null;
-	}
-
 	// TODO
 	public void	save(final String filePath) {
 //		Log.info("Save jobs: " + filePath);

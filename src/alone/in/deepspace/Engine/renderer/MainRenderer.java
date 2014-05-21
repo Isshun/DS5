@@ -1,4 +1,5 @@
 package alone.in.deepspace.engine.renderer;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -18,7 +19,6 @@ import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
-
 
 public class MainRenderer {
 	public void draw(Drawable sprite, RenderStates render) {

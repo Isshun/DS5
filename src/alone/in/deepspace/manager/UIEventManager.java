@@ -74,13 +74,11 @@ public class UIEventManager {
 		for (View view: _onFocusListeners.keySet()) {
 			if (view.getRect().contains(x, y) && (view.getParent() == null || view.getParent().getVisible())) {
 				if (view.isFocus() == false) {
-					view.setFocus(true);
-					_onFocusListeners.get(view).onEnter(view);
+					view.onEnter();
 				}
 			} else {
 				if (view.isFocus()) {
-					view.setFocus(false);
-					_onFocusListeners.get(view).onExit(view);
+					view.onExit();
 				}
 			}
 		}

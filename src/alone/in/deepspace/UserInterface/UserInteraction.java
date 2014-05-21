@@ -13,7 +13,6 @@ import org.jsfml.graphics.Transform;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Mouse;
 
-import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.renderer.MainRenderer;

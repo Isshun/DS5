@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jsfml.graphics.Font;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderTexture;
@@ -24,15 +23,12 @@ import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.StructureItem;
-import alone.in.deepspace.model.WorldArea;
 import alone.in.deepspace.model.WorldRessource;
 
 public class WorldRenderer implements IRenderer {
 	private SpriteManager			_spriteManager;
-	private Font					_font;
 	private UserInterface			_ui;
 	private RectangleShape 			_shape;
-	private RectangleShape 			_shapeDebug;
 	private int 					_lastSpecialY;
 	private int 					_lastSpecialX;
 	private Sprite 					_spriteCache;
@@ -47,7 +43,6 @@ public class WorldRenderer implements IRenderer {
 		_spriteManager = spriteManager;
 		_shape = new RectangleShape();
 		_shape.setSize(new Vector2f(Constant.TILE_WIDTH, Constant.TILE_HEIGHT));
-		_shapeDebug = new RectangleShape();
 		_changed = new HashSet<Vector2i>();
 		
 		_spriteCache = new Sprite();
@@ -134,9 +129,6 @@ public class WorldRenderer implements IRenderer {
 		for (int i = toX-1; i >= fromX; i--) {
 			for (int j = toY-1; j >= fromY; j--) {
 				if (i >= 0 && j >= 0 && i < Constant.WORLD_WIDTH && j < Constant.WORLD_HEIGHT) {
-					// Oxygen
-					WorldArea area = ServiceManager.getWorldMap().getArea(i, j);
-	
 					// Structure
 					StructureItem structure = ServiceManager.getWorldMap().getStructure(i, j);
 					
@@ -292,7 +284,6 @@ public class WorldRenderer implements IRenderer {
 		StructureItem bellow = ServiceManager.getWorldMap().getStructure(i, j+1);
 		StructureItem right = ServiceManager.getWorldMap().getStructure(i+1, j);
 		StructureItem left = ServiceManager.getWorldMap().getStructure(i-1, j);
-		StructureItem above = ServiceManager.getWorldMap().getStructure(i, j-1);
 
 		Room room = RoomManager.getInstance().get(i, j + 1);
 		int zone = room != null ? room.getType().ordinal() : 0;

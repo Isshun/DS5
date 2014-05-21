@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface.Panels;
+package alone.in.deepspace.UserInterface.panel;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,9 +19,7 @@ import alone.in.deepspace.engine.ui.ImageView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
-import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.RoomManager;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Room;
@@ -33,7 +31,6 @@ import alone.in.deepspace.model.WorldRessource;
 
 public class PanelInfo extends UserSubInterface {
 
-	private static final int FONT_SIZE = 20;
 	private static final int LINE_HEIGHT = 28;
 
 	public WorldArea				getArea() { return _area; }

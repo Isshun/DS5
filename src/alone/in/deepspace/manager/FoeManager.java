@@ -11,7 +11,6 @@ import org.jsfml.graphics.Texture;
 
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Foe;
 
 

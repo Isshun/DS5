@@ -3,9 +3,6 @@ package alone.in.deepspace.model;
 import java.util.HashMap;
 import java.util.Vector;
 
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
-
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.manager.JobManager;

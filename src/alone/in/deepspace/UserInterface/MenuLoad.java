@@ -76,7 +76,7 @@ public class MenuLoad extends MenuBase {
 
 	@Override
 	public void onKeyEnter() {
-		_lbFiles.get(_index).click();
+		_lbFiles.get(_index).onClick();
 	}
 
 }

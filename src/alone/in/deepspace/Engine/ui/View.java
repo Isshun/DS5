@@ -6,7 +6,6 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Transform;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.renderer.MainRenderer;
@@ -72,7 +71,7 @@ public abstract class View {
 		UIEventManager.getInstance().setOnFocusListener(this, onFocusListener);
 	}
 
-	public void click() {
+	public void onClick() {
 		if (_onClickListener != null) {
 			_onClickListener.onClick(this);
 		}
@@ -159,5 +158,19 @@ public abstract class View {
 
 	public void setId(int id) {
 		_id = id;
+	}
+
+	public void onEnter() {
+		_isFocus = true;
+		if (_onFocusListener != null) {
+			_onFocusListener.onEnter(this);
+		}
+	}
+
+	public void onExit() {
+		_isFocus = false;
+		if (_onFocusListener != null) {
+			_onFocusListener.onExit(this);
+		}
 	}
 }

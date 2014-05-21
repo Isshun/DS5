@@ -8,10 +8,8 @@ import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
 import org.jsfml.system.Vector2f;
-import org.jsfml.system.Vector2i;
 
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.engine.renderer.MainRenderer;
 
 public class FrameLayout extends View {
 	private List<View> 		_views;

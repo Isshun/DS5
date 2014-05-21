@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface.Panels;
+package alone.in.deepspace.UserInterface.panel;
 
 import java.util.ArrayList;
 import java.util.List;

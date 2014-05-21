@@ -2,46 +2,33 @@ package alone.in.deepspace;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Shader;
-import org.jsfml.graphics.ShaderSourceException;
-import org.jsfml.graphics.Sprite;
-import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.graphics.Transform;
 import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.event.Event;
 import org.jsfml.window.event.MouseButtonEvent;
 
-import alone.in.deepspace.UserInterface.MenuBase;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.engine.Viewport;
-import alone.in.deepspace.engine.renderer.DebugRenderer;
-import alone.in.deepspace.engine.renderer.LightRenderer;
 import alone.in.deepspace.engine.renderer.MainRenderer;
-import alone.in.deepspace.engine.renderer.WorldRenderer;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.DynamicObjectManager;
-import alone.in.deepspace.manager.UIEventManager;
 import alone.in.deepspace.manager.FoeManager;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.manager.SpriteManager;
+import alone.in.deepspace.manager.UIEventManager;
 
 public class Game implements ISavable {
 	private int 					_lastInput;

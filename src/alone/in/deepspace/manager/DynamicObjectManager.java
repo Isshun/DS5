@@ -1,4 +1,5 @@
 package alone.in.deepspace.manager;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.UserItem;
 
 public class DynamicObjectManager {
-	private static int 					ID_START = 2000000;
 	private static DynamicObjectManager	_self;
 
 	private ArrayList<BaseItem>	 		_objects;

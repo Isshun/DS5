@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface.Panels;
+package alone.in.deepspace.UserInterface.panel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,17 +34,17 @@ public class PanelCrew extends UserSubInterface {
 		public TextView lbStatus;
 		public TextView lbJob;
 	}
+
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
-	private static final int CREW_LINE_SPACING = 10;
+	private static final int 	CREW_LINE_SPACING = 10;
+	private static final int 	CREW_LINE_HEIGHT = 52;
+	private static final int 	CREW_LINE_WIDTH  = FRAME_WIDTH - Constant.UI_PADDING * 2;
 
-	private static int CREW_LINE_HEIGHT = 52;
-	private static int CREW_LINE_WIDTH  = FRAME_WIDTH - Constant.UI_PADDING * 2;
-
-	private CharacterManager     _characterManager;
-	private List<ViewHolder> _viewHolderList;
-	private TextView _lbCount;
-	private UserInterface _ui;
+	private CharacterManager    _characterManager;
+	private List<ViewHolder> 	_viewHolderList;
+	private TextView 			_lbCount;
+	private UserInterface 		_ui;
 
 	public PanelCrew(RenderWindow app, int tileIndex) throws IOException {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));

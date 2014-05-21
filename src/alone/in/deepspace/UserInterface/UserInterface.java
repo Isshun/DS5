@@ -9,19 +9,19 @@ import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
 import alone.in.deepspace.Main;
-import alone.in.deepspace.UserInterface.Panels.PanelBase;
-import alone.in.deepspace.UserInterface.Panels.PanelBuild;
-import alone.in.deepspace.UserInterface.Panels.PanelCharacter;
-import alone.in.deepspace.UserInterface.Panels.PanelCrew;
-import alone.in.deepspace.UserInterface.Panels.PanelDebug;
-import alone.in.deepspace.UserInterface.Panels.PanelDebugItem;
-import alone.in.deepspace.UserInterface.Panels.PanelInfo;
-import alone.in.deepspace.UserInterface.Panels.PanelJobs;
-import alone.in.deepspace.UserInterface.Panels.PanelPlan;
-import alone.in.deepspace.UserInterface.Panels.PanelResource;
-import alone.in.deepspace.UserInterface.Panels.PanelRoom;
-import alone.in.deepspace.UserInterface.Panels.PanelShortcut;
-import alone.in.deepspace.UserInterface.Panels.PanelSystem;
+import alone.in.deepspace.UserInterface.panel.PanelBase;
+import alone.in.deepspace.UserInterface.panel.PanelBuild;
+import alone.in.deepspace.UserInterface.panel.PanelCharacter;
+import alone.in.deepspace.UserInterface.panel.PanelCrew;
+import alone.in.deepspace.UserInterface.panel.PanelDebug;
+import alone.in.deepspace.UserInterface.panel.PanelDebugItem;
+import alone.in.deepspace.UserInterface.panel.PanelInfo;
+import alone.in.deepspace.UserInterface.panel.PanelJobs;
+import alone.in.deepspace.UserInterface.panel.PanelPlan;
+import alone.in.deepspace.UserInterface.panel.PanelResource;
+import alone.in.deepspace.UserInterface.panel.PanelRoom;
+import alone.in.deepspace.UserInterface.panel.PanelShortcut;
+import alone.in.deepspace.UserInterface.panel.PanelSystem;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.engine.Viewport;
@@ -221,6 +221,7 @@ public class UserInterface {
 		case ROOM: 		_panelRoom.toogle(); break;
 		case SCIENCE:	_uiScience.toogle(); break;
 		case SECURITY:	_uiSecurity.toogle(); break;
+		case NONE: break;
 		}
 	}
 

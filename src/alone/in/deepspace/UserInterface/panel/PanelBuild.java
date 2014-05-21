@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface.Panels;
+package alone.in.deepspace.UserInterface.panel;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +43,6 @@ public class PanelBuild extends UserSubInterface {
 	};
 
 	private Map<ItemInfo, ButtonView> 	_icons;
-	private TextView 					_lbStructure;
 	protected ItemInfo 					_currentSelected;
 	protected Mode 						_mode;
 	private int							_startY;

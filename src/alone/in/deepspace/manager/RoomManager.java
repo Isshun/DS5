@@ -11,8 +11,8 @@ import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.Room;
-import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.model.Room.Type;
+import alone.in.deepspace.model.StructureItem;
 
 public class RoomManager implements ISavable {
 

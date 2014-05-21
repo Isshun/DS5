@@ -17,8 +17,6 @@ import alone.in.deepspace.Utils.ObjectPool;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Profession;
-import alone.in.deepspace.model.SpriteResource;
-import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.StructureItem;
 
 public class SpriteManager {

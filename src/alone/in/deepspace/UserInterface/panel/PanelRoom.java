@@ -1,4 +1,4 @@
-package alone.in.deepspace.UserInterface.Panels;
+package alone.in.deepspace.UserInterface.panel;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -8,7 +8,6 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Strings;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.engine.ui.ButtonView;

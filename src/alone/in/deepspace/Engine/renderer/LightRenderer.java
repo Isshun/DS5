@@ -11,14 +11,12 @@ import org.jsfml.graphics.RenderTexture;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Shader;
 import org.jsfml.graphics.ShaderSourceException;
-import org.jsfml.graphics.Shape;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.Utils.ObjectPool;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.StructureItem;

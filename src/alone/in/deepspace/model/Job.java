@@ -25,9 +25,8 @@ public class Job {
 	public int 					_blocked;
 	private Abort 				_reason;
 	private Color 				_color;
-	private boolean 			_isUsingItem;
-	private int _durationLeft;
-	private ItemSlot _slot;
+	private int 				_durationLeft;
+	private ItemSlot 			_slot;
 
 	public Job(int id, int x, int y) {
 		Log.debug("Job #" + id);
@@ -50,38 +49,6 @@ public class Job {
 		Log.debug("Job #" + id + " done");
 	}
 
-	public void setAction(JobManager.Action action) {
-		_action = action;
-
-		switch (_action) {
-		case BUILD: _color = new Color(170, 128, 64); break;
-		case MOVE: _color = Color.CYAN; break;
-		case GATHER: _color = Color.GREEN; break;
-		case MINING: _color = Color.GREEN; break;
-		case WORK: _color = Color.GREEN; break;
-		case NONE: _color = Color.BLACK; break;
-		case USE: _color = Color.BLUE; break;
-		case DESTROY: _color = new Color(200, 20, 20); break;
-		case STORE: _color = new Color(180, 100, 255); break;
-		}
-	}
-	public void	setItem(BaseItem item) { _item = item; }
-	public void	setCharacter(Character character) {
-		if (_character == character) {
-			return;
-		}
-		
-		_character = character;
-		if (character != null) {
-			character.setJob(this);
-		}
-		
-		if (_item != null) {
-			_item.setOwner(character);
-		}
-	}
-	public void	setCharacterRequire(Character character) { _characterRequire = character; }
-
 	public int					getX() { return _posX; }
 	public int					getY() { return _posY; }
 	public int					getId() { return _id; }
@@ -92,9 +59,18 @@ public class Job {
 	public int 					getFail() { return _fail; }
 	public int 					getBlocked() { return _blocked; }
 	public Abort				getReason() { return _reason; }
+	public ItemSlot 			getSlot() { return _slot; }
+	public Color 				getColor() { return _color; }
+	public String 				getActionName() { return JobManager.getActionName(_action); }
+	public int 					getDurationLeft() { return _durationLeft; }
 
+	public void					setCharacterRequire(Character character) { _characterRequire = character; }
 	public void					setFail(Abort reason, int frame) { _reason = reason; _fail = frame; }
 	public void					setBlocked(int frame) { _blocked = frame; }
+	public void 				setPosition(int x, int y) { _posX = x; _posY = y; }
+	public void 				setSlot(ItemSlot slot) { _slot = slot; }
+	public void					setItem(BaseItem item) { _item = item; }
+	public void 				setDurationLeft(int duration) { _durationLeft = duration; }
 
 	public String getLabel() {
 		String oss = (_id  < 10 ? "#0" : "#") + _id
@@ -144,41 +120,38 @@ public class Job {
 		return oss;
 	}
 
-	public Color getColor() {
-		return _color;
-	}
+	public void setAction(JobManager.Action action) {
+		_action = action;
 
-	public String getActionName() {
-		return JobManager.getActionName(_action);
+		switch (_action) {
+		case BUILD: _color = new Color(170, 128, 64); break;
+		case MOVE: _color = Color.CYAN; break;
+		case GATHER: _color = Color.GREEN; break;
+		case MINING: _color = Color.GREEN; break;
+		case WORK: _color = Color.GREEN; break;
+		case NONE: _color = Color.BLACK; break;
+		case USE: _color = Color.BLUE; break;
+		case DESTROY: _color = new Color(200, 20, 20); break;
+		case STORE: _color = new Color(180, 100, 255); break;
+		}
 	}
-
-	public void setDurationLeft(int duration) {
-		_durationLeft = duration;
-	}
-
-	public int getDurationLeft() {
-		return _durationLeft;
-	}
-
-	public void useItem() {
-		// TODO Auto-generated method stub
+	public void	setCharacter(Character character) {
+		if (_character == character) {
+			return;
+		}
 		
+		_character = character;
+		if (character != null) {
+			character.setJob(this);
+		}
+		
+		if (_item != null) {
+			_item.setOwner(character);
+		}
 	}
 
 	public void decreaseDurationLeft() {
 		_durationLeft--;
 	}
 
-	public void setPosition(int x, int y) {
-		_posX = x;
-		_posY = y;
-	}
-
-	public void setSlot(ItemSlot slot) {
-		_slot = slot;
-	}
-
-	public ItemSlot getSlot() {
-		return _slot;
-	}
 }
