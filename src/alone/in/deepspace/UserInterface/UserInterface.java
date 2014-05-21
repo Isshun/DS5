@@ -575,17 +575,17 @@ public class UserInterface {
 
 	public void onRightClick(int x, int y) {
 
+		// Move viewport
+		if (_keyRightPressed && Math.abs(_mouseRightPressX - x) > 5 || Math.abs(_mouseRightPressY - y) > 5) {
+			_viewport.update(x, y);
+		}
+		
 		// Cancel selected items 
-		if (_mouseRightPressX >= x-1 && _mouseRightPressX <= x+1 && _mouseRightPressY >= y-1 && _mouseRightPressY <= y+1) {
+		else {
 			_panelBuild.setSelectedItem(null);
 			_panelRoom.setSelected(null);
 			_panelPlan.setMode(PanelPlan.Mode.NONE);
 			setMode(Mode.NONE);
-		}
-
-		// Move viewport
-		if (_keyRightPressed && Math.abs(_mouseRightPressX - x) > 5 || Math.abs(_mouseRightPressY - y) > 5) {
-			_viewport.update(x, y);
 		}
 
 		_keyRightPressed = false;

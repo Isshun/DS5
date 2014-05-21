@@ -53,11 +53,21 @@ public class UIEventManager {
 
 	public boolean has(int x, int y) {
 		for (View view: _onClickListeners.keySet()) {
-			if (view.isVisible() && view.getRect().contains(x, y)) {
+			if (isVisible(view) && view.getRect().contains(x, y)) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private boolean isVisible(View view) {
+		while (view != null) {
+			if (view.isVisible() == false) {
+				return false;
+			}
+			view = view.getParent();
+		}
+		return true;
 	}
 
 	public void onMouseMove(int x, int y) {
