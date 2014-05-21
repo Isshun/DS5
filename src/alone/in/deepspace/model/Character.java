@@ -44,6 +44,7 @@ public class Character extends Movable {
 	private CharacterStatus _status;
 	private Color 			_color;
 	private int _lag;
+	private Vector<Position> _lastPath;
 
 	//	  private int				_messages[32];
 
@@ -332,8 +333,10 @@ public class Character extends Movable {
 			//   _path = null;
 			// }
 		} else {
-			Log.debug("Character #" + _id + ": reached");
-			
+			if (_path != null) {
+				Log.info("Character #" + _id + ": reached");
+			}
+			_steps = 0;
 			_path = null;
 			_node = null;
 		}
@@ -599,11 +602,6 @@ public class Character extends Movable {
 		}
 		
 		if (_posX != _toX || _posY != _toY) {
-			
-			// TODO
-//			if (_path == null) {
-//				PathManager.getInstance().getPathAsync(this, _job);
-//			}
 			return;
 		}
 
