@@ -32,12 +32,10 @@ public class CharacterNeeds {
 	double	_injuries;
 	double	_satiety;
 
-	private BaseItem _sleepItem;
-	private Character _character;
-	private int _workRemain;
+	private BaseItem 	_sleepItem;
+	private int 		_workRemain;
 
 	public CharacterNeeds(Character character) {
-		_character = character;
 		_sleepItem = null;
 		_sleeping = 0;
 		_food = (int) (Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);
@@ -151,13 +149,8 @@ public class CharacterNeeds {
 	}
 
 	void	updateAwake() {
-		// Energy
-		
-		System.out.println("update awake");
-
-		// Food
-		_food -= 2;
 		_energy -= 1;
+		_food -= 2;
 	}
 
 	void	updateSleeping() {

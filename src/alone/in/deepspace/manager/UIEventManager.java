@@ -53,14 +53,14 @@ public class UIEventManager {
 
 	public boolean has(int x, int y) {
 		for (View view: _onClickListeners.keySet()) {
-			if (isVisible(view) && view.getRect().contains(x, y)) {
+			if (hasVisibleHierarchy(view) && view.getRect().contains(x, y)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean isVisible(View view) {
+	private boolean hasVisibleHierarchy(View view) {
 		while (view != null) {
 			if (view.isVisible() == false) {
 				return false;

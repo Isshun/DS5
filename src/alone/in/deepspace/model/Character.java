@@ -43,6 +43,7 @@ public class Character extends Movable {
 	private List<BaseItem> 	_carry;
 	private CharacterStatus _status;
 	private Color 			_color;
+	private int _lag;
 
 	//	  private int				_messages[32];
 
@@ -54,6 +55,7 @@ public class Character extends Movable {
 		_carry = new ArrayList<BaseItem>();
 		_gender = (int)(Math.random() * 1000) % 2 == 0 ? Character.Gender.GENDER_MALE : Character.Gender.GENDER_FEMALE;
 		_color = _gender == Gender.GENDER_FEMALE ? new Color(255, 180, 220) : new Color(110, 200, 255);
+		_lag = (int)(Math.random() * 10);
 		// _path = null;
 		_selected = false;
 		_blocked = 0;
@@ -643,6 +645,10 @@ public class Character extends Movable {
 
 	public Color getColor() {
 		return _color;
+	}
+
+	public int getLag() {
+		return _lag;
 	}
 
 }

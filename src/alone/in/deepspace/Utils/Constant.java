@@ -59,4 +59,5 @@ public class Constant {
 	public static final double SLEEP_ON_FLOOR_ENERGY_RESTORE = 20;
 	public static final double SLEEP_ON_FLOOR_HAPINESS_RESTORE = -10;
 	public static final int DURATION_MULTIPLIER = 10;
+	public static final int CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS = 20;
 }

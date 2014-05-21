@@ -54,9 +54,9 @@ public class CharacterManager implements ISavable {
 		Log.debug("CharacterManager done");
 	}
 
-	public void	assignJobs() {
+	public void	assignJobs(int update) {
 		for (Character c: _characters) {
-			if (c.isSleeping() == false && c.getJob() == null) {
+			if (update % 10 == c.getLag() && c.isSleeping() == false && c.getJob() == null) {
 
 				// Need to sleep
 				if (c.getNeeds().isTired()) {
@@ -77,40 +77,6 @@ public class CharacterManager implements ISavable {
 				}
 			}
 		}
-	}
-
-
-	public void	assignJobs2() {
-
-		//if (JobManager.getInstance().getCountFree() > 0) {
-		for (Character c: _characters) {
-			if (c.isSleeping() == false && c.getJob() == null) {
-				// Need to sleep
-				if (c.getNeeds().isTired()) {
-					c.setJob(JobManager.getInstance().need(c, "base.bed"));
-				}
-				
-				else {
-					
-					Job job = JobManager.getInstance().getJob(c);
-					if (job != null) {
-						Log.debug("assignJobs to " + c.getName());
-						job.setCharacter(c);
-						c.setJob(job);
-					}
-					else {
-						job = JobManager.getInstance().createRoutineJob(c);
-						if (job != null) {
-							Log.debug("assignJobs to " + c.getName());
-							job.setCharacter(c);
-							job.getItem().setOwner(c);
-							c.setJob(job);
-						}
-					}
-				}
-			}
-		}
-		//}
 	}
 
 	public void	create() {

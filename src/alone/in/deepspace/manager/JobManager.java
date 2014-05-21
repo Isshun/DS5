@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.Game;
+import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.BaseItem;
@@ -474,6 +475,10 @@ public class JobManager implements ISavable {
 			// TODO
 			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
 			return storeItem(ServiceManager.getWorldMap().getNearest(info, c.getPosX(), c.getPosY()));
+		}
+		
+		if ((int)(Math.random() * 100) <= Constant.CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS) {
+			return createMovingJob(20, 20);
 		}
 		
 		// Play with random object

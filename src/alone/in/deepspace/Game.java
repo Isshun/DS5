@@ -182,7 +182,7 @@ public class Game implements ISavable {
 		// }
 
 		// Characters
-		_characterManager.assignJobs();
+		_characterManager.assignJobs(_update);
 		_characterManager.update(_update);
 
 		// Foes
