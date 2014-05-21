@@ -219,6 +219,7 @@ public class PanelInfo extends UserSubInterface {
 
 			}
 		};
+		_itemGather.setVisible(false);
 		_itemGather.setPosition(10, 200);
 		_layoutItem.addView(_itemGather);
 		
@@ -245,6 +246,7 @@ public class PanelInfo extends UserSubInterface {
 			}
 		};
 		_itemMine.setPosition(0, 200);
+		_itemMine.setVisible(false);
 		_layoutItem.addView(_itemMine);
 		
 		TextView lbTitle = new TextView(new Vector2f(10, 10));

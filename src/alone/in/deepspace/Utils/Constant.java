@@ -21,6 +21,8 @@ public class Constant {
 	public static final int UI_WIDTH				= 300;
 	public static final int UI_HEIGHT				= 100;
 	public static final int UI_PADDING				= 10;
+	public static final int UI_PADDING_H			= 16;
+	public static final int UI_PADDING_V			= 10;
 	public static final int UI_FONT_SIZE			= 32;
 
 	public static final int TILE_WIDTH				= 32;

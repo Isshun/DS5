@@ -1,4 +1,5 @@
 package alone.in.deepspace.UserInterface.Panels;
+
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
@@ -6,7 +7,6 @@ import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Strings;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.engine.ui.TextView;
@@ -14,12 +14,9 @@ import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.CharacterNeeds;
 import alone.in.deepspace.model.CharacterStatus;
 
-
 public class PanelCharacter extends UserSubInterface {
 	private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "unused", "Work"};
 
-	private static final int PADDING_V = 34;
-	private static final int PADDING_H = 16;
 	private static final int FONT_SIZE = 20;
 	private static final int LINE_HEIGHT = 28;
 	private static final int FRAME_WIDTH = Constant.PANEL_WIDTH;
@@ -37,7 +34,7 @@ public class PanelCharacter extends UserSubInterface {
 	private TextView _lbState;
 
 	public PanelCharacter(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 
 		setBackgroundColor(new Color(0, 0, 0, 150));
 
@@ -45,14 +42,14 @@ public class PanelCharacter extends UserSubInterface {
 		_lbName = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbName.setCharacterSize(FONT_SIZE);
 		_lbName.setColor(Color.WHITE);
-		_lbName.setPosition(new Vector2f(PADDING_H, PADDING_V));
+		_lbName.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V));
 		addView(_lbName);
 
 		// Status
 		_lbState = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbState.setCharacterSize(14);
 		_lbState.setColor(Color.WHITE);
-		_lbState.setPosition(new Vector2f(PADDING_H, PADDING_V + 28));
+		_lbState.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + 28));
 		addView(_lbState);
 
 		// Profession
@@ -60,12 +57,12 @@ public class PanelCharacter extends UserSubInterface {
 		_lbProfession.setCharacterSize(FONT_SIZE);
 		_lbProfession.setVisible(false);
 		_lbProfession.setColor(Color.WHITE);
-		_lbProfession.setPosition(new Vector2f(PADDING_H, PADDING_V + LINE_HEIGHT));
+		_lbProfession.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + LINE_HEIGHT));
 		addView(_lbProfession);
 
 		for (int i = 0; i < 12; i++) {
-			addGauge(PADDING_H + 180 * (i % 2),
-					32 + 50 * (i / 2) + (FONT_SIZE + 16) + PADDING_V,
+			addGauge(Constant.UI_PADDING_H + 180 * (i % 2),
+					32 + 50 * (i / 2) + (FONT_SIZE + 16) + Constant.UI_PADDING_V,
 					160,
 					12,
 					i);
@@ -75,13 +72,13 @@ public class PanelCharacter extends UserSubInterface {
 		_lbJob = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbJob.setCharacterSize(FONT_SIZE);
 		_lbJob.setColor(Color.WHITE);
-		_lbJob.setPosition(new Vector2f(PADDING_H, PADDING_V + 400));
+		_lbJob.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + 400));
 		addView(_lbJob);
 
 		_lbJob2 = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbJob2.setCharacterSize(12);
 		_lbJob2.setColor(Color.WHITE);
-		_lbJob2.setPosition(new Vector2f(PADDING_H, PADDING_V + 432));
+		_lbJob2.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + 432));
 		addView(_lbJob2);
 
 		_lbCarry = new TextView[10];
@@ -89,7 +86,7 @@ public class PanelCharacter extends UserSubInterface {
 			_lbCarry[i] = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 			_lbCarry[i].setCharacterSize(12);
 			_lbCarry[i].setColor(Color.WHITE);
-			_lbCarry[i].setPosition(new Vector2f(PADDING_H, PADDING_V + 464 + i * 28));
+			_lbCarry[i].setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + 464 + i * 28));
 			addView(_lbCarry[i]);
 		}
 
@@ -102,6 +99,7 @@ public class PanelCharacter extends UserSubInterface {
 		if (character != null) {
 			character.setSelected(true);
 			_lbName.setString(character.getName());
+			_lbName.setColor(character.getColor());
 			_lbProfession.setString(character.getProfession().getName());
 		}
 		_character = character;

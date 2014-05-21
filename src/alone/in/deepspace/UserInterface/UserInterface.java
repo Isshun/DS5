@@ -3,10 +3,8 @@ package alone.in.deepspace.UserInterface;
 import java.io.File;
 import java.io.IOException;
 
-import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
@@ -27,7 +25,6 @@ import alone.in.deepspace.UserInterface.Panels.PanelSystem;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.engine.Viewport;
-import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.UIMessage;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.RoomManager;
@@ -51,7 +48,6 @@ public class UserInterface {
 	private int							_keyPressPosY;
 	private int							_keyMovePosX;
 	private int							_keyMovePosY;
-	private boolean						_crewViewOpen;
 	private UserInteraction				_interaction;
 	private UserInterfaceScience		_uiScience;
 	private UserInterfaceSecurity		_uiSecurity;
@@ -59,7 +55,7 @@ public class UserInterface {
 	private PanelCharacter  			_panelCharacter;
 	private PanelPlan					_panelPlan;
 	private PanelInfo					_panelInfo;
-	private PanelCrew					_uiCharacter;
+	private PanelCrew					_panelCrew;
 	private PanelBuild					_panelBuild;
 	private PanelDebug					_panelDebug;
 	private UserInterfaceMenuOperation	_uiBase;
@@ -72,8 +68,6 @@ public class UserInterface {
 	private UserInterfaceMessage 		_panelMessage;
 	private PanelRoom 					_panelRoom;
 	private UIMessage 					_message;
-	private int 						_mouseRealPosX;
-	private int 						_mouseRealPosY;
 	private PanelDebugItem 				_panelDebugItems;
 
 	public enum Mode {
@@ -91,20 +85,12 @@ public class UserInterface {
 	}
 
 	public void	onMouseMove(int x, int y) {
-		_mouseRealPosX = x;
-		_mouseRealPosY = y;
 		_keyMovePosX = getRelativePosX(x);
 		_keyMovePosY = getRelativePosY(y);
 
 		// right button pressed
 		if (_keyRightPressed) {
 			_viewport.update(x, y);
-		}
-
-		// no buttons pressed
-		else {
-			// _cursor.setMousePos(x  _viewport.getScale() - UI_WIDTH - _viewport.getPosX() - 1,
-			//                      y  _viewport.getScale() - UI_HEIGHT - _viewport.getPosY() - 1);
 		}
 	}
 
@@ -118,7 +104,7 @@ public class UserInterface {
 			return;
 		}
 
-		if (_uiCharacter.catchClick(x, y)) {
+		if (_panelCrew.catchClick(x, y)) {
 			_keyLeftPressed = false;
 			return;
 		}
@@ -166,10 +152,10 @@ public class UserInterface {
 		if (info != Mode.INFO) 		_panelInfo.setVisible(false);
 		if (info != Mode.PLAN) 		_panelPlan.setVisible(false);
 		if (info != Mode.DEBUG) 	_panelDebug.setVisible(false);
-		if (info != Mode.DEBUGITEMS)_panelDebug.setVisible(false);
+		if (info != Mode.DEBUGITEMS)_panelDebugItems.setVisible(false);
 		if (info != Mode.BASE) 		_panelBase.setVisible(false);
 		if (info != Mode.BUILD) 	_panelBuild.setVisible(false);
-		if (info != Mode.CREW) 		_uiCharacter.setVisible(false);
+		if (info != Mode.CREW) 		_panelCrew.setVisible(false);
 		if (info != Mode.BASE) 		_uiBase.setVisible(false);
 		if (info != Mode.SCIENCE) 	_uiScience.setVisible(false);
 		if (info != Mode.SECURITY)	_uiSecurity.setVisible(false);
@@ -185,7 +171,7 @@ public class UserInterface {
 		case CHARACTER: _panelCharacter.toogle(); break;
 		case BASE: 		_panelBase.toogle(); break;
 		case JOBS: 		_uiJobs.toogle(); break;
-		case CREW: 		_uiCharacter.toogle(); break;
+		case CREW: 		_panelCrew.toogle(); break;
 		case ROOM: 		_panelRoom.toogle(); break;
 		case SCIENCE:	_uiScience.toogle(); break;
 		case SECURITY:	_uiSecurity.toogle(); break;
@@ -217,7 +203,7 @@ public class UserInterface {
 
 		//	  	_interaction.refreshCursor();
 
-		_uiCharacter.refresh(_app, null);
+		_panelCrew.refresh(_app, null);
 		_uiScience.refresh(_app, null);
 		_uiSecurity.refresh(_app, null);
 		_uiBase.refresh(_app, null);
@@ -276,7 +262,7 @@ public class UserInterface {
 			return true;
 		}
 
-		if (_uiCharacter.checkKey(event.asKeyEvent().key)) {
+		if (_panelCrew.checkKey(event.asKeyEvent().key)) {
 			return true;
 		}
 
@@ -339,7 +325,7 @@ public class UserInterface {
 			// 	ServiceManager.getWorldMap().dump();
 		}	
 		else if (event.asKeyEvent().key == Keyboard.Key.C) {
-			_crewViewOpen = !_crewViewOpen;
+			setMode(Mode.CREW);
 		}
 		else if (event.asKeyEvent().key == Keyboard.Key.I) {
 			_panelDebugItems.toogle();
@@ -431,9 +417,8 @@ public class UserInterface {
 		_panelBuild = new PanelBuild(app, 3, _interaction);
 		_uiScience = new UserInterfaceScience(app, 2);
 		_uiSecurity = new UserInterfaceSecurity(app, 4);
-		_crewViewOpen = false;
-		_uiCharacter = new PanelCrew(app, 0);
-		_uiCharacter.setUI(this);
+		_panelCrew = new PanelCrew(app, 0);
+		_panelCrew.setUI(this);
 		_uiBase = new UserInterfaceMenuOperation(app, 1);
 		_uiJobs = new PanelJobs(app);
 		_panelMessage.setStart(0);

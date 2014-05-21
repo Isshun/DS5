@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import org.jsfml.graphics.Color;
+
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
@@ -13,104 +15,6 @@ import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Job.Abort;
 
 public class Character extends Movable {
-
-	final String[] firstname = {
-			// male
-			"Galen",
-			"Lewis",
-			"Benjamin",
-			"Michael",
-			"Jonathan",
-			"Gaius",
-			"Samuel",
-			"Wesley",
-			// female
-			"Jadzia",
-			"Janice",
-			"Alice",
-			"Kathryn",
-			"Beverly",
-			"Willow",
-			"Tasha",
-			"Samantha"
-	};
-
-	final String[] shortFirstname = {
-			// male
-			"Matt",
-			"Jack",
-			"Adam",
-			"Bill",
-			"Tom",
-			"Saul",
-			"Lee",
-			// female
-			"Tory",
-			"Vic",
-			"Ezri",
-			"Ellen",
-			"Kara",
-			"Emma",
-			"Wade",
-			"Amy"
-	};
-
-	final String[] middlename = {
-			"Crashdown",
-			"Hardball",
-			"Apollo",
-			"Boomer",
-			"Doc",
-			"Starbuck",
-			"Hotdog",
-			"Jammer",
-			"Trip",
-			"Helo",
-			"Dee",
-			"Oz",
-			"Klaus",
-			"Mac",
-			"Betty",
-			"Six"
-	};
-
-	final String[] shortLastname = {
-			"Mudd",
-			"Dax",
-			"Nerys",
-			"Laren",
-			"Rand",
-			"McCoy",
-			"Adama",
-			"Tyrol",
-			"Reed",
-			"Sisko",
-			"Riker",
-			"Wells",
-			"Quinn",
-			"Weir",
-			"Rush",
-			"Tyler"
-	};
-
-	final String[] lastname = {
-			"Zimmerman",
-			"Anders",
-			"Barclay",
-			"Archer",
-			"Thrace",
-			"Summers",
-			"Holmes",
-			"Wildman",
-			"Lawton",
-			"Mallory",
-			"Beckett",
-			"Hammond",
-			"O'Neill",
-			"Sheppard",
-			"Cooper",
-			"Hartness"
-	};
 
 	public enum Direction {
 		DIRECTION_BOTTOM,
@@ -137,18 +41,19 @@ public class Character extends Movable {
 	private Profession		_profession;
 	private boolean			_selected;
 	private List<BaseItem> 	_carry;
-
 	private CharacterStatus _status;
+	private Color 			_color;
 
 	//	  private int				_messages[32];
 
 	public Character(int id, int x, int y, String name) {
 		super(id, x, y);
 
-		Log.debug("Character #" + id);
+		Log.info("Character #" + id);
 
 		_carry = new ArrayList<BaseItem>();
-		_gender = Math.random() * 1000 % 2 == 0 ? Character.Gender.GENDER_MALE : Character.Gender.GENDER_FEMALE;
+		_gender = (int)(Math.random() * 1000) % 2 == 0 ? Character.Gender.GENDER_MALE : Character.Gender.GENDER_FEMALE;
+		_color = _gender == Gender.GENDER_FEMALE ? new Color(255, 180, 220) : new Color(110, 200, 255);
 		// _path = null;
 		_selected = false;
 		_blocked = 0;
@@ -160,22 +65,18 @@ public class Character extends Movable {
 
 		//memset(_messages, MESSAGE_COUNT_INIT, CHARACTER_MAX_MESSAGE * sizeof(int));
 
-		int offset = (_gender == Character.Gender.GENDER_FEMALE ? 4 : 0);
 		if (name == null) {
-			if ((Math.random() * 1000) % 2 == 0) {
-				_name = shortFirstname[(int) ((Math.random() * 1000) % 8 + offset)]
-						+ " ("
-						+ middlename[(int) ((Math.random() * 1000) % 16)]
-								+ ") "
-								+ shortLastname[(int) ((Math.random() * 1000) % 16)];
+			if ((int)(Math.random() * 1000) % 2 == 0) {
+				_name = CharacterName.getShortFirstname(_gender)
+						+ " (" + CharacterName.getMiddlename() + ") "
+						+ CharacterName.getShortLastName();
 			} else {
-				_name = firstname[(int) ((Math.random() * 1000) % 8 + offset)]
-						+ " "
-						+ lastname[(int) ((Math.random() * 1000) % 16)];
+				_name = CharacterName.getFirstname(_gender)
+						+ " " + CharacterName.getLastName();
 			}
 		}
 
-		Log.debug("Character done: " + _name + " (" + x + ", " + y + ")");
+		Log.info("Character done: " + _name + " (" + x + ", " + y + ")" + _gender);
 	}
 
 	public void				setSelected(boolean selected) { _selected = selected; }
@@ -738,6 +639,10 @@ public class Character extends Movable {
 
 	public CharacterStatus getStatus() {
 		return _status;
+	}
+
+	public Color getColor() {
+		return _color;
 	}
 
 }

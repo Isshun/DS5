@@ -498,7 +498,10 @@ public class JobManager implements ISavable {
 			return createJobWork(bestItem);
 		}
 		
-		return null;
+		// Go to meeting room
+		return createMovingJob(10, 10);
+		
+//		return null;
 	}
 
 	private Job createUseJob(BaseItem item) {

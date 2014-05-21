@@ -969,7 +969,14 @@ BEGIN WORLDMAP
 5	28	23	base.floor	1
 END WORLDMAP
 BEGIN CHARACTERS
-19	13	5	Gaius O'Neill
+0	0	0	Tory (Six) Sisko
+0	0	0	Samuel Hammond
+0	0	0	Galen Sheppard
+0	0	0	Amy (Crashdown) Sisko
+0	0	0	Tom (Crashdown) Wells
+3	9	0	Michael Barclay
+1	6	0	Emma (Oz) Weir
+0	0	0	Vic (Betty) Adama
 END CHARACTERS
 BEGIN ROOMS
 END ROOMS

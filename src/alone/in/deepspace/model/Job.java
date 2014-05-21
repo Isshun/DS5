@@ -2,6 +2,7 @@ package alone.in.deepspace.model;
 
 import org.jsfml.graphics.Color;
 
+import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
@@ -138,7 +139,7 @@ public class Job {
 			oss += " " + _item.getLabel();
 		}
 		if (_action == Action.USE) {
-			oss += " (" + _durationLeft / 10 + " seconds)";
+			oss += " (" + _durationLeft / Constant.DURATION_MULTIPLIER + "s)";
 		}
 		return oss;
 	}

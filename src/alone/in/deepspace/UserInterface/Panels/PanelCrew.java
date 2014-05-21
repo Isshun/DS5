@@ -1,12 +1,11 @@
 package alone.in.deepspace.UserInterface.Panels;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Sprite;
-import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 
@@ -40,7 +39,7 @@ public class PanelCrew extends UserSubInterface {
 	private static final int CREW_LINE_SPACING = 10;
 
 	private static int CREW_LINE_HEIGHT = 52;
-	private static int CREW_LINE_WIDTH  = 350;
+	private static int CREW_LINE_WIDTH  = FRAME_WIDTH - Constant.UI_PADDING * 2;
 
 	private CharacterManager     _characterManager;
 	private List<ViewHolder> _viewHolderList;
@@ -50,7 +49,7 @@ public class PanelCrew extends UserSubInterface {
 	public PanelCrew(RenderWindow app, int tileIndex) throws IOException {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 		  
-		setBackgroundColor(new Color(100, 0, 0, 180));
+		setBackgroundColor(new Color(0, 0, 0, 180));
 		
 		_viewHolderList = new ArrayList<ViewHolder>();
 		_characterManager = ServiceManager.getCharacterManager();
@@ -96,6 +95,7 @@ public class PanelCrew extends UserSubInterface {
 			// Name
 			viewHolder.lbName = new TextView();
 			viewHolder.lbName.setCharacterSize(14);
+			viewHolder.lbName.setColor(character.getColor());
 			viewHolder.lbName.setPosition(Constant.UI_PADDING + 32, 6);
 			viewHolder.frame.addView(viewHolder.lbName);
 		
@@ -107,13 +107,14 @@ public class PanelCrew extends UserSubInterface {
 		
 			// Job
 			viewHolder.lbJob = new TextView();
-			viewHolder.lbJob.setCharacterSize(14);
-			viewHolder.lbJob.setPosition(Constant.UI_PADDING + 300, 6);
+			viewHolder.lbJob.setCharacterSize(12);
+			viewHolder.lbJob.setPosition(Constant.UI_PADDING + 260, 6);
 			viewHolder.frame.addView(viewHolder.lbJob);
 		
 			// Profession
 			viewHolder.lbProfession = new TextView();
 			viewHolder.lbProfession.setCharacterSize(14);
+			viewHolder.lbProfession.setVisible(false);
 			viewHolder.lbProfession.setPosition(CREW_LINE_WIDTH - Constant.UI_PADDING - 100, Constant.UI_PADDING);
 			viewHolder.frame.addView(viewHolder.lbProfession);
 
@@ -212,11 +213,6 @@ public class PanelCrew extends UserSubInterface {
 	
 	public boolean	checkKey(Keyboard.Key key) {
 	  super.checkKey(key);
-	
-	  if (key == Keyboard.Key.C) {
-		toogle();
-		return true;
-	  }
 	
 	  return false;
 	}
