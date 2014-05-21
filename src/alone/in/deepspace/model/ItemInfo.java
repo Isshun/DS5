@@ -14,7 +14,7 @@ public class ItemInfo {
 		public ItemInfoProduce		produce;
 		public ItemInfo 			itemProduce;
 		public ItemInfoPractice 	practice;
-		public ItemInfoNeeds		effects;
+		public ItemInfoEffects		effects;
 		public List<ItemInfoSlot>	slots;
 	}
 
@@ -37,7 +37,7 @@ public class ItemInfo {
 		public int		cooking;
 	}
 
-	public static class ItemInfoNeeds {
+	public static class ItemInfoEffects {
 		public int		food;
 		public int 		drink;
 		public int 		energy;
@@ -59,7 +59,7 @@ public class ItemInfo {
 	public ItemInfoAction 		onAction;
 	public ItemInfoRessource	onGather;
 	public ItemInfoRessource	onMine;
-	public ItemInfoNeeds		onConsumption;
+	public ItemInfoEffects		onConsumption;
 	public boolean 				isStructure;
 	public boolean 				isRessource;
 	public boolean 				isConsomable;

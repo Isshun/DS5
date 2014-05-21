@@ -20,7 +20,7 @@ import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.ItemInfo;
-import alone.in.deepspace.model.ItemInfo.ItemInfoNeeds;
+import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.StructureItem;
@@ -565,7 +565,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 
 	private boolean mathFilter(BaseItem item, ItemFilter itemFilter) {
 		if (item != null && item.getInfo().onAction != null && item.getInfo().onAction.effects != null) {
-			ItemInfoNeeds effects = item.getInfo().onAction.effects;
+			ItemInfoEffects effects = item.getInfo().onAction.effects;
 			if (itemFilter.drink && effects.drink > 0) { return true; }
 			if (itemFilter.energy && effects.energy > 0) { return true; }
 			if (itemFilter.food && effects.food > 0) { return true; }

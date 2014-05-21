@@ -1,6 +1,7 @@
 package alone.in.deepspace;
 
 public class Strings {
+	public static final String LB_STORAGE_CONTAINS = "Contains";
 	public static String LB_NO_JOB = "no job";
 	public static String LB_GATHER = "gather";
 	public static String JOBS = "Jobs";
@@ -20,4 +21,15 @@ public class Strings {
 	public static String CHARACTER_SAY_NO_OXYGEN = "I can't breath !";
 	public static String CHARACTER_SAY_NOWHERE_TO_SLEEP = "I have nowhere to sleep";
 	public static String LB_INVENTORY = "Inventory";
+	public static String LB_ITEM_CONSOMABLE = "Consomable";
+	public static String LB_ITEM_USER = "Item";
+	public static String LB_ITEM_STRUCTURE = "Structure";
+	public static String LB_ITEM_RESSOURCE = "Ressource";
+	public static String LB_EFFECT_DRINK = "Drink";
+	public static String LB_EFFECT_ENERGY = "Energy";
+	public static String LB_EFFECT_HAPINESS = "Hapiness";
+	public static String LB_EFFECT_FOOD = "Food";
+	public static String LB_EFFECT_RELATION = "Relation";
+	public static String LB_EFFECT_HEALTH = "Health";
+	public static String LB_EFFECTS = "Effects";
 }

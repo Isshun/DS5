@@ -2,8 +2,9 @@ package alone.in.deepspace.model;
 
 import java.util.ArrayList;
 
+import alone.in.deepspace.Strings;
 import alone.in.deepspace.manager.ItemSlot;
-import alone.in.deepspace.model.ItemInfo.ItemInfoNeeds;
+import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.ItemInfo.ItemInfoSlot;
 
 
@@ -139,7 +140,7 @@ public class BaseItem {
 			_height = info.height;
 			
 			if (info.onAction != null && info.onAction.effects != null) {
-				ItemInfoNeeds effects = info.onAction.effects;
+				ItemInfoEffects effects = info.onAction.effects;
 				if (effects.hapiness > 0 && effects.hapiness > effects.energy && effects.hapiness > effects.health && effects.hapiness > effects.food && effects.hapiness > effects.drink) {
 					_isToy = true;
 				}
@@ -314,5 +315,11 @@ public class BaseItem {
 		character.getNeeds().use(this, _info.onAction, durationLeft);
 	}
 
+	public String getLabelType() {
+		if (_info.isConsomable) { return Strings.LB_ITEM_CONSOMABLE; }
+		if (_info.isStructure) { return Strings.LB_ITEM_STRUCTURE; }
+		if (_info.isRessource) { return Strings.LB_ITEM_RESSOURCE; }
+		return Strings.LB_ITEM_USER;
+	}
 
 }

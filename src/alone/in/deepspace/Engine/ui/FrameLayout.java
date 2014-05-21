@@ -48,7 +48,7 @@ public class FrameLayout extends View {
 			return;
 		}
 		
-		view.setParentPosition(_posX, _posY);
+//		view.setParentPosition(_posX, _posY);
 		view.setParent(this);
 		_views.add(view);
 	}
@@ -58,17 +58,22 @@ public class FrameLayout extends View {
 	}
 
 	public void removeView(View view) {
-		view.setParentPosition(_posX, _posY);
+		//view.setParentPosition(_posX, _posY);
+		view.setParent(null);
 		_views.remove(view);
 	}
 
 	public void setPosition(int x, int y) {
 		_posX = x;
 		_posY = y;
-		_rect = new Rectangle(_parentPosX + _posX, _parentPosY + _posY, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
-		for (View view: _views) {
-			view.setParentPosition(x, y);
+		if (_parent != null) {
+			_rect = new Rectangle(_parent.getPosX() + _posX, _parent.getPosY() + _posY, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
+		} else {
+			_rect = new Rectangle(_posX, _posY, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
 		}
+//		for (View view: _views) {
+//			view.setParentPosition(x, y);
+//		}
 	}
 
 	// TODO

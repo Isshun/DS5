@@ -22,10 +22,10 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.BaseItem;
+import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.StructureItem;
-import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.model.WorldArea;
 import alone.in.deepspace.model.WorldRessource;
 
@@ -45,14 +45,14 @@ public class PanelInfo extends UserSubInterface {
 	private StructureItem 			_structure;
 	private PanelInfoItemOptions 	_structureOptions;
 	private TextView 				_lbRoom;
-	private TextView 				_itemStorage;
-	private TextView[]				_lbCarry;
+	private ImageView[]				_lbCarry;
 	private FrameLayout 			_itemGather;
 	private TextView 				_itemGatherProduce;
 	private FrameLayout 			_itemMine;
 	private TextView 				_itemMineProduce;
 	private ButtonView 				_itemGatherIcon;
 	private ButtonView 				_itemMineIcon;
+	private TextView 				_itemStorage;
 	private FrameLayout 			_layoutItem;
 	private ImageView 				_itemIcon;
 	private TextView 				_itemOwner;
@@ -69,6 +69,9 @@ public class PanelInfo extends UserSubInterface {
 	private ButtonView			 	_itemActionIcon;
 	private TextView 				_itemSlots;
 	private TextView 				_itemUsed;
+	private FrameLayout 			_layoutStorage;
+	private FrameLayout _layoutEffects;
+	private TextView[] _itemEffects;
 
 	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;
 
@@ -77,6 +80,9 @@ public class PanelInfo extends UserSubInterface {
 
 	private static final int 		FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
+	private static final int 		INVENTORY_NB_COLS = 10;
+	private static final int 		INVENTORY_ITEM_SIZE = 32;
+	private static final int 		INVENTORY_ITEM_SPACE = 4;
 
 	public PanelInfo(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
@@ -93,17 +99,55 @@ public class PanelInfo extends UserSubInterface {
 		createGatherView();
 		createMiningView();
 		createActionView();
+		createEffectsView(0, 200);
+
+		_layoutStorage = new FrameLayout(new Vector2f(200, 400));
+		_layoutStorage.setPosition(0, 400);
+
+		_itemStorage = new TextView(null);
+		_itemStorage.setPosition(10, 10);
+		_itemStorage.setCharacterSize(16);
+		_layoutStorage.addView(_itemStorage);
 		
-		_lbCarry = new TextView[42];
+//		_lbContains = new TextView(null);
+//		_lbContains.setPosition(10, 10);
+//		_lbContains.setString(Strings.LB_STORAGE_CONTAINS);
+//		_lbContains.setCharacterSize(22);
+//		_layoutStorage.addView(_lbContains);
+
+		_lbCarry = new ImageView[42];
 		for (int i = 0; i < 42; i++) {
-			_lbCarry[i] = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
-			_lbCarry[i].setCharacterSize(12);
-			_lbCarry[i].setColor(Color.WHITE);
-			_lbCarry[i].setPosition(new Vector2f(20, 20 + 464 + i * 28));
-			addView(_lbCarry[i]);
+			int x = i % INVENTORY_NB_COLS;
+			int y = i / INVENTORY_NB_COLS;
+			_lbCarry[i] = new ImageView();
+			_lbCarry[i].setId(100 + i);
+			_lbCarry[i].setPosition(new Vector2f(Constant.UI_PADDING_H + x * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE, 40 + y * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE));
+			_layoutStorage.addView(_lbCarry[i]);
 		}
+		_layoutItem.addView(_layoutStorage);
 	}
 
+	private void createEffectsView(int x, int y) {
+		_layoutEffects = new FrameLayout(new Vector2f(FRAME_WIDTH, 80));
+		_layoutEffects.setPosition(x, y);
+
+		TextView lbEffect = new TextView(null);
+		lbEffect.setPosition(x + 10, y + 10);
+		lbEffect.setCharacterSize(16);
+		lbEffect.setString(Strings.LB_EFFECTS);
+		_layoutEffects.addView(lbEffect);
+
+		_itemEffects = new TextView[10];
+		for (int i = 0; i < 10; i++) {
+			_itemEffects[i] = new TextView(null);
+			_itemEffects[i].setPosition(x + 24, y + 34 + i * 20);
+			_itemEffects[i].setCharacterSize(12);
+			_layoutEffects.addView(_itemEffects[i]);
+		}
+		
+		_layoutItem.addView(_layoutEffects);
+	}
+	
 	private void createItemInfoView(int x, int y) {
 		_layoutItem = new FrameLayout(new Vector2f(FRAME_WIDTH, 80));
 		_layoutItem.setPosition(x, y);
@@ -142,11 +186,6 @@ public class PanelInfo extends UserSubInterface {
 		_itemUsed.setPosition(10, 140);
 		_itemUsed.setCharacterSize(14);
 		_layoutItem.addView(_itemUsed);
-		
-		_itemStorage = new TextView(null);
-		_itemStorage.setPosition(10, 200);
-		_itemStorage.setCharacterSize(16);
-		_layoutItem.addView(_itemStorage);
 		
 		_itemIcon = new ImageView();
 		_layoutItem.addView(_itemIcon);
@@ -286,8 +325,8 @@ public class PanelInfo extends UserSubInterface {
 		}
 		
 		_area = area;
-		_itemStorage.setVisible(false);
 		_layoutArea.setVisible(false);
+		_layoutItem.setVisible(false);
 		_layoutItem.setVisible(false);
 		
 		if (area.getItem() != null) {
@@ -326,7 +365,7 @@ public class PanelInfo extends UserSubInterface {
 		_layoutItem.setVisible(true);
 
 		_itemName.setString(item.getLabel() != null ? item.getLabel() : item.getName());
-		_itemCategory.setString("(" + item.getInfo().category + ")");
+		_itemCategory.setString("(" + item.getLabelType() + ")");
 		_itemMatter.setString("Matter: " + String.valueOf(item.getMatterSupply()));
 		if (item.getOwner() != null) {
 			_itemOwner.setString("Owner: " + item.getOwner().getName());
@@ -401,7 +440,7 @@ public class PanelInfo extends UserSubInterface {
 		}
 	}
 
-	private void setItem(final UserItem item) {
+	private void setItem(final BaseItem item) {
 		_item = item;
 
 		if (_itemOptions != null) {
@@ -413,10 +452,12 @@ public class PanelInfo extends UserSubInterface {
 		}
 
 		_layoutItem.setVisible(true);
+		_layoutEffects.setVisible(false);
+		_layoutStorage.setVisible(item.isStorage());
 
 		// Configure new item
 		_itemName.setString(item.getLabel() != null ? item.getLabel() : item.getName());
-		_itemCategory.setString("(" + item.getInfo().category + ")");
+		_itemCategory.setString("(" + item.getLabelType() + ")");
 		_itemMatter.setString("Matter: " + String.valueOf(item.getMatterSupply()));
 		_itemPower.setString("Power: " + String.valueOf(item.getPower()));
 		if (item.getOwner() != null) {
@@ -434,9 +475,24 @@ public class PanelInfo extends UserSubInterface {
 		// Action item
 		if (item.getInfo().onAction != null) {
 			_itemAction.setVisible(true);
+			
+			// Item action produce
 			if (item.getInfo().onAction.itemProduce != null) {
 				_itemActionProduce.setString(item.getInfo().onAction.itemProduce.label);
 				_itemActionIcon.setIcon(SpriteManager.getInstance().getIcon(item.getInfo().onAction.itemProduce));
+			}
+
+			// Item action effects
+			if (item.getInfo().onAction.effects != null) {
+				_layoutEffects.setVisible(true);
+				ItemInfoEffects effects = item.getInfo().onAction.effects;
+				int line = 0;
+				if (effects.drink > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_DRINK + ": " + effects.drink); }
+				if (effects.energy > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_ENERGY + ": " + effects.energy); }
+				if (effects.food > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_FOOD + ": " + effects.food); }
+				if (effects.hapiness > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_HAPINESS + ": " + effects.hapiness); }
+				if (effects.health > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_HEALTH + ": " + effects.health); }
+				if (effects.relation > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_RELATION + ": " + effects.relation); }
 			}
 		} else {
 			_itemAction.setVisible(false);
@@ -444,8 +500,6 @@ public class PanelInfo extends UserSubInterface {
 		
 		_itemGather.setVisible(false);
 		_itemMine.setVisible(false);
-		
-		_itemStorage.setVisible(true);
 
 //		_itemOptions = new PanelInfoItemOptions(20, 280);
 //		addView(_itemOptions.add("Remove", new OnClickListener() {
@@ -490,16 +544,23 @@ public class PanelInfo extends UserSubInterface {
 
 			_itemSlots.setString("Free slots: " + _item.getNbFreeSlots());
 			_itemUsed.setString("Used: " + _item.getNbUsed());
-			
+
 			if (item.isStorage()) {
 				StorageItem storage = ((StorageItem)item);
 				if (storage.getItems().size() > 0) {
 					_itemStorage.setString("Storage: " + storage.getItems().size());
 					for (int i = 0; i < 42; i++) {
 						if (i < storage.getItems().size()) {
-							_lbCarry[i].setString(storage.getItems().get(i).getName());
+							final BaseItem storedItem = storage.getItems().get(i);
+							_lbCarry[i].setImage(SpriteManager.getInstance().getIcon(storedItem.getInfo()));
+							_lbCarry[i].setOnClickListener(new OnClickListener() {
+								@Override
+								public void onClick(View view) {
+									setItem(storedItem);
+								}
+							});
 						} else {
-							_lbCarry[i].setString("");
+							_lbCarry[i].setImage(null);
 						}
 					}
 				} else {

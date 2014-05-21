@@ -13,10 +13,10 @@ public class ImageView extends View {
 		super(new Vector2f(0, 0));
 	}
 	
-	public ImageView(Sprite sprite) {
-		super(sprite.getScale());
+	public ImageView(Sprite icon) {
+		super(new Vector2f(icon.getTextureRect().width, icon.getTextureRect().height));
 		
-		_icon = sprite;
+		_icon = icon;
 	}
 	
 	@Override
@@ -44,6 +44,11 @@ public class ImageView extends View {
 
 	public void setImage(Sprite icon) {
 		_icon = icon;
+		if (icon != null) {
+			setSize(new Vector2f(icon.getTextureRect().width, icon.getTextureRect().height));
+		} else {
+			setSize(null);
+		}
 	}
 
 }

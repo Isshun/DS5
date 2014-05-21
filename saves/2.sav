@@ -1,5 +1,5 @@
 BEGIN GAME
-MATTER	20714
+MATTER	20672
 SPICE	0
 WATER	0
 END GAME
@@ -776,6 +776,7 @@ BEGIN WORLDMAP
 0	37	44	base.seaweed5	0
 0	38	3	base.wall	1
 0	38	4	base.floor	1
+0	38	4	base.storage	42
 0	38	5	base.floor	1
 0	38	6	base.floor	1
 0	38	7	base.floor	1
@@ -1009,14 +1010,14 @@ BEGIN WORLDMAP
 5	28	23	base.floor	1
 END WORLDMAP
 BEGIN CHARACTERS
-14	16	4	Tory (Six) Sisko
-5	17	4	Samuel Hammond
-18	18	4	Galen Sheppard
-14	16	4	Amy (Crashdown) Sisko
-9	14	4	Tom (Crashdown) Wells
-5	13	4	Michael Barclay
-20	20	4	Emma (Oz) Weir
-14	15	4	Vic (Betty) Adama
+16	16	3	Tory (Six) Sisko
+24	19	3	Samuel Hammond
+16	9	3	Galen Sheppard
+30	6	3	Amy (Crashdown) Sisko
+30	12	3	Tom (Crashdown) Wells
+5	13	3	Michael Barclay
+5	9	3	Emma (Oz) Weir
+14	15	3	Vic (Betty) Adama
 END CHARACTERS
 BEGIN ROOMS
 END ROOMS

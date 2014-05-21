@@ -15,9 +15,9 @@ public abstract class View {
 	protected Vector2f 		_pos;
 	protected Vector2f 		_size;
 	protected boolean		_isVisible;
-	protected Rectangle 		_rect;
-	protected int 			_parentPosX;
-	protected int 			_parentPosY;
+	protected Rectangle 	_rect;
+//	protected int 			_parentPosX;
+//	protected int 			_parentPosY;
 	protected int 			_posX;
 	protected int 			_posY;
 	private RectangleShape	_background;
@@ -54,7 +54,7 @@ public abstract class View {
 	}
 
 	protected void setSize(Vector2f size) {
-		_size = size;		
+		_size = size;
 	}
 	
 	public void setVisible(boolean visible) {
@@ -78,6 +78,9 @@ public abstract class View {
 	}
 
 	public Rectangle getRect() {
+		if (_rect == null) {
+			_rect = computeRect();
+		}
 		return _rect;
 	}
 
@@ -99,13 +102,13 @@ public abstract class View {
 		_background.setFillColor(color);
 	}
 
-	public void setParentPosition(int x, int y) {
-		if (x != _parentPosX || y != _parentPosY) {
-			_parentPosX = x;
-			_parentPosY = y;
-			_rect = new Rectangle(_parentPosX + _posX, _parentPosY + _posY, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
-		}
-	}
+//	public void setParentPosition(int x, int y) {
+//		if (x != _parentPosX || y != _parentPosY) {
+//			_parentPosX = x;
+//			_parentPosY = y;
+//			_rect = new Rectangle(_parentPosX + _posX, _parentPosY + _posY, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
+//		}
+//	}
 	
 	public void setPadding(int t, int r, int b, int l) {
 		_paddingTop = t;
@@ -122,7 +125,6 @@ public abstract class View {
 			_pos = pos;
 			_posX = (int) pos.x;
 			_posY = (int) pos.y;
-			_rect = new Rectangle(_parentPosX + _posX, _parentPosY + _posY, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
 		}
 		if (_background != null) {
 			_background.setPosition(pos);
@@ -134,6 +136,18 @@ public abstract class View {
 
 	public void setParent(FrameLayout parent) {
 		_parent = parent;
+	}
+
+	private Rectangle computeRect() {
+		int x = 0;
+		int y = 0;
+		View view = this;
+		while (view != null) {
+			x += view.getPosX();
+			y += view.getPosY();
+			view = view.getParent();
+		}
+		return new Rectangle(x, y, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
 	}
 
 	public FrameLayout getParent() {
@@ -158,6 +172,14 @@ public abstract class View {
 
 	public void setId(int id) {
 		_id = id;
+	}
+
+	public int getPosX() {
+		return _posX;
+	}
+
+	public int getPosY() {
+		return _posY;
 	}
 
 	public void onEnter() {
