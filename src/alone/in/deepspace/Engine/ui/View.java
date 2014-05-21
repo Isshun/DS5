@@ -29,7 +29,8 @@ public abstract class View {
 	protected FrameLayout 	_parent;
 	private OnClickListener _onClickListener;
 	private OnFocusListener _onFocusListener;
-	private boolean 		_isActive;
+	private boolean 		_isFocus;
+	private int _id;
 
 	public View(Vector2f size) {
 		_size = size;
@@ -140,16 +141,23 @@ public abstract class View {
 		return _parent;
 	}
 
-	public boolean isActive() {
-		return _isActive;
+	public boolean isFocus() {
+		return _isFocus;
 	}
 
-	public void setActive(boolean active) {
-		_isActive = active;
+	public void setFocus(boolean focus) {
+		_isFocus = focus;
 	}
 
 	public boolean isVisible() {
 		return _isVisible;
 	}
 
+	public int getId() {
+		return _id;
+	}
+
+	public void setId(int id) {
+		_id = id;
+	}
 }

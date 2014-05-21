@@ -53,7 +53,7 @@ public class UIEventManager {
 
 	public boolean has(int x, int y) {
 		for (View view: _onClickListeners.keySet()) {
-			if (view.isVisible() && view.isActive() && view.getRect().contains(x, y)) {
+			if (view.isVisible() && view.getRect().contains(x, y)) {
 				return true;
 			}
 		}
@@ -63,13 +63,13 @@ public class UIEventManager {
 	public void onMouseMove(int x, int y) {
 		for (View view: _onFocusListeners.keySet()) {
 			if (view.getRect().contains(x, y) && (view.getParent() == null || view.getParent().getVisible())) {
-				if (view.isActive() == false) {
-					view.setActive(true);
+				if (view.isFocus() == false) {
+					view.setFocus(true);
 					_onFocusListeners.get(view).onEnter(view);
 				}
 			} else {
-				if (view.isActive()) {
-					view.setActive(false);
+				if (view.isFocus()) {
+					view.setFocus(false);
 					_onFocusListeners.get(view).onExit(view);
 				}
 			}

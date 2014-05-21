@@ -14,12 +14,6 @@ import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.View;
 
 public class PanelPlan extends UserSubInterface {
-
-	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;
-
-	private static final int 		MENU_PADDING_TOP = 34;
-	private static final int 		MENU_PADDING_LEFT = 16;
-	  
 	private static final int 		FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 
@@ -28,7 +22,10 @@ public class PanelPlan extends UserSubInterface {
 	}
 
 	protected Mode _mode;
-	
+
+	public Mode getMode() { return _mode; }
+	public void setMode(Mode mode) { _mode = mode; }
+
 	public PanelPlan(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 		  
@@ -38,6 +35,8 @@ public class PanelPlan extends UserSubInterface {
 
 		ButtonView btGather = new ButtonView(new Vector2f(80, 32));
 		btGather.setString(Strings.LB_GATHER);
+		btGather.setId(42);
+		btGather.setBackgroundColor(Color.RED);
 		btGather.setPosition(0, 0);
 		btGather.setCharacterSize(22);
 		btGather.setOnClickListener(new OnClickListener() {
@@ -51,6 +50,7 @@ public class PanelPlan extends UserSubInterface {
 		ButtonView btMining = new ButtonView(new Vector2f(80, 32));
 		btMining.setString(Strings.LB_MINING);
 		btMining.setPosition(0, 50);
+		btMining.setBackgroundColor(Color.RED);
 		btMining.setCharacterSize(22);
 		btMining.setOnClickListener(new OnClickListener() {
 			@Override
@@ -63,6 +63,7 @@ public class PanelPlan extends UserSubInterface {
 		ButtonView btDump = new ButtonView(new Vector2f(80, 32));
 		btDump.setString(Strings.LB_DUMP);
 		btDump.setPosition(0, 100);
+		btDump.setBackgroundColor(Color.RED);
 		btDump.setCharacterSize(22);
 		btDump.setOnClickListener(new OnClickListener() {
 			@Override
@@ -75,9 +76,5 @@ public class PanelPlan extends UserSubInterface {
 
 	@Override
 	public void onRefresh(RenderWindow app) {
-	}
-
-	public Mode getMode() {
-		return _mode;
 	}
 }

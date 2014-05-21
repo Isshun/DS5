@@ -81,9 +81,50 @@ public class UserInterface {
 		SCIENCE,
 		SECURITY,
 		ROOM,
-		PLAN, DEBUGITEMS
+		PLAN,
+		DEBUGITEMS,
+		NONE
 	}
 
+	public void onCreate(RenderWindow app, Viewport viewport) throws IOException {
+		_viewport = viewport;
+		_app = app;
+		_characteres = ServiceManager.getCharacterManager();
+		_keyLeftPressed = false;
+		_keyRightPressed = false;
+		_font = new Font();
+		_font.loadFromFile((new File("res/fonts/xolonium_regular.otf")).toPath());
+
+		_panelBase = new PanelBase(app);
+		_panelCharacter = new PanelCharacter(app);
+		_panelInfo = new PanelInfo(app);
+		_panelDebug = new PanelDebug(app);
+		_panelDebug.setUI(this);
+		_panelDebugItems = new PanelDebugItem(app);
+		_panelPlan = new PanelPlan(app);
+		_panelSystem = new PanelSystem(app);
+		_panelSystem.setVisible(true);
+		_panelShortcut = new PanelShortcut(app, this);
+		_panelShortcut.setVisible(true);
+		_panelResource = new PanelResource(app);
+		_panelResource.setVisible(true);
+		_panelMessage = new UserInterfaceMessage(app);
+		_panelMessage.setVisible(true);
+		_panelRoom = new PanelRoom(app);
+
+		_interaction = new UserInteraction(_viewport);
+		_panelBuild = new PanelBuild(app, 3, _interaction);
+		_uiScience = new UserInterfaceScience(app, 2);
+		_uiSecurity = new UserInterfaceSecurity(app, 4);
+		_panelCrew = new PanelCrew(app, 0);
+		_panelCrew.setUI(this);
+		_uiBase = new UserInterfaceMenuOperation(app, 1);
+		_uiJobs = new PanelJobs(app);
+		_panelMessage.setStart(0);
+
+		setMode(Mode.NONE);
+	}
+	
 	public void	onMouseMove(int x, int y) {
 		_keyMovePosX = getRelativePosX(x);
 		_keyMovePosY = getRelativePosY(y);
@@ -123,6 +164,11 @@ public class UserInterface {
 			_keyLeftPressed = false;
 			return;
 		}
+
+//		if (_panelPlan.catchClick(x, y)) {
+//			_keyLeftPressed = false;
+//			return;
+//		}
 
 		_keyLeftPressed = true;
 		_keyMovePosX = _keyPressPosX = getRelativePosX(x);
@@ -342,6 +388,9 @@ public class UserInterface {
 		else if (event.asKeyEvent().key == Keyboard.Key.R) {
 			_panelRoom.toogle();
 		}
+		else if (event.asKeyEvent().key == Keyboard.Key.P) {
+			setMode(Mode.PLAN);
+		}
 		else if (event.asKeyEvent().key == Keyboard.Key.J) {
 			setMode(Mode.JOBS);
 		}
@@ -385,45 +434,6 @@ public class UserInterface {
 			_self = new UserInterface();
 		}
 		return _self;
-	}
-
-	public void init(RenderWindow app, Viewport viewport) throws IOException {
-		_viewport = viewport;
-		_app = app;
-		_characteres = ServiceManager.getCharacterManager();
-		_keyLeftPressed = false;
-		_keyRightPressed = false;
-		_font = new Font();
-		_font.loadFromFile((new File("res/fonts/xolonium_regular.otf")).toPath());
-
-		_panelBase = new PanelBase(app);
-		_panelCharacter = new PanelCharacter(app);
-		_panelInfo = new PanelInfo(app);
-		_panelDebug = new PanelDebug(app);
-		_panelDebug.setUI(this);
-		_panelDebugItems = new PanelDebugItem(app);
-		_panelPlan = new PanelPlan(app);
-		_panelSystem = new PanelSystem(app);
-		_panelSystem.setVisible(true);
-		_panelShortcut = new PanelShortcut(app, this);
-		_panelShortcut.setVisible(true);
-		_panelResource = new PanelResource(app);
-		_panelResource.setVisible(true);
-		_panelMessage = new UserInterfaceMessage(app);
-		_panelMessage.setVisible(true);
-		_panelRoom = new PanelRoom(app);
-
-		_interaction = new UserInteraction(_viewport);
-		_panelBuild = new PanelBuild(app, 3, _interaction);
-		_uiScience = new UserInterfaceScience(app, 2);
-		_uiSecurity = new UserInterfaceSecurity(app, 4);
-		_panelCrew = new PanelCrew(app, 0);
-		_panelCrew.setUI(this);
-		_uiBase = new UserInterfaceMenuOperation(app, 1);
-		_uiJobs = new PanelJobs(app);
-		_panelMessage.setStart(0);
-
-		setMode(Mode.BASE);
 	}
 
 	public void displayMessage(String msg) {
@@ -569,6 +579,8 @@ public class UserInterface {
 		if (_mouseRightPressX >= x-1 && _mouseRightPressX <= x+1 && _mouseRightPressY >= y-1 && _mouseRightPressY <= y+1) {
 			_panelBuild.setSelectedItem(null);
 			_panelRoom.setSelected(null);
+			_panelPlan.setMode(PanelPlan.Mode.NONE);
+			setMode(Mode.NONE);
 		}
 
 		// Move viewport

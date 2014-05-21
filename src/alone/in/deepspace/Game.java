@@ -72,7 +72,7 @@ public class Game implements ISavable {
 		_viewport = new Viewport(app);
 		
 		_ui = UserInterface.getInstance();
-		_ui.init(app, _viewport);
+		_ui.onCreate(app, _viewport);
 
 		_dynamicObjectManager = DynamicObjectManager.getInstance();
 
