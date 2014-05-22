@@ -84,4 +84,12 @@ public class UIEventManager {
 		}
 	}
 
+	public void removeOnClickListener(OnClickListener listener) {
+		_onClickListeners.remove(listener);
+	}
+
+	public void removeOnFocusListener(OnFocusListener listener) {
+		_onFocusListeners.remove(listener);
+	}
+
 }

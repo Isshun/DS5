@@ -53,7 +53,7 @@ public abstract class View {
 		onRefresh(app, render);
 	}
 
-	protected void setSize(Vector2f size) {
+	public void setSize(Vector2f size) {
 		_size = size;
 	}
 	
@@ -62,11 +62,17 @@ public abstract class View {
 	}
 	
 	public void setOnClickListener(OnClickListener onClickListener) {
+		if (_onClickListener != null) {
+			UIEventManager.getInstance().removeOnClickListener(_onClickListener);
+		}
 		_onClickListener = onClickListener;
 		UIEventManager.getInstance().setOnClickListener(this, onClickListener);
 	}
 
 	public void setOnFocusListener(OnFocusListener onFocusListener) {
+		if (_onFocusListener != null) {
+			UIEventManager.getInstance().removeOnFocusListener(_onFocusListener );
+		}
 		_onFocusListener = onFocusListener;
 		UIEventManager.getInstance().setOnFocusListener(this, onFocusListener);
 	}

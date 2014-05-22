@@ -16,6 +16,8 @@ public class CharacterStatus {
 	private Character 		_character;
 	private CharacterNeeds 	_needs;
 	private Color 			_color;
+	private String _thoughts;
+	private String _thoughtsShort;
 
 	public CharacterStatus(Character character) {
 		_character = character;
@@ -27,45 +29,72 @@ public class CharacterStatus {
 		return _color;
 	}
 
+	public String getThoughtsShort() {
+		refreshThoughts();
+		return _thoughtsShort;
+	}
+
 	public String getThoughts() {
+		refreshThoughts();
+		return _thoughts;
+	}
+	
+	public void refreshThoughts() {
 		if (_needs.isSleeping()) {
 			// TODO
 			BaseItem item = ServiceManager.getWorldMap().getItem(_character.getPosX(), _character.getPosY());
 			if (item != null && item.isSleepingItem()) {
 				_color = COLOR_GOOD;
-				return "I sleep well, even " + (_needs.getSleeping() / Constant.DURATION_MULTIPLIER) + "h";
+				_thoughts = "I sleep well, even " + (_needs.getSleeping() / Constant.DURATION_MULTIPLIER) + "h";
+				_thoughtsShort = Strings.THOUGHTS_GOOD;
+				return;
 			} else {
 				_color = COLOR_BAD;
-				return Strings.CHARACTER_SAY_NOWHERE_TO_SLEEP;
+				_thoughts = Strings.CHARACTER_SAY_NOWHERE_TO_SLEEP;
+				_thoughtsShort = Strings.THOUGHTS_BAD;
+				return;
 			}
 		}
 		if (_needs.isTired()) {
 			_color = COLOR_MEDIUM;
-			return Strings.CHARACTER_SAY_TIRED;
+			_thoughts = Strings.CHARACTER_SAY_TIRED;
+			_thoughtsShort = Strings.THOUGHTS_MEDIUM;
+			return;
 		}
 		if (_needs.isStarved()) {
 			_color = COLOR_BAD;
-			return Strings.CHARACTER_SAY_STARVING;
+			_thoughts = Strings.CHARACTER_SAY_STARVING;
+			_thoughtsShort = Strings.THOUGHTS_BAD;
+			return;
 		}
 		if (_needs.isHungry()) {
 			_color = COLOR_GOOD;
-			return Strings.CHARACTER_EVERYTHINGS_GOES_RIGHT;
+			_thoughts = Strings.CHARACTER_EVERYTHINGS_GOES_RIGHT;
+			_thoughtsShort = Strings.THOUGHTS_GOOD;
+			return;
 		}
 		if (_needs.isSuffocating()) {
 			_color = COLOR_REALLY_BAD;
-			return Strings.CHARACTER_SAY_NO_OXYGEN;
+			_thoughts = Strings.CHARACTER_SAY_NO_OXYGEN;
+			_thoughtsShort = Strings.THOUGHTS_REALLY_BAD;
+			return;
 		}
 		if (_needs.isLowOxygen()) {
 			_color = COLOR_BAD;
-			return Strings.CHARACTER_SAY_LOW_OXYGEN;
+			_thoughts = Strings.CHARACTER_SAY_LOW_OXYGEN;
+			_thoughtsShort = Strings.THOUGHTS_BAD;
+			return;
 		}
 		if (_needs.isLonely()) {
 			_color = COLOR_MEDIUM;
-			return Strings.CHARACTER_SAY_LONELY;
+			_thoughts = Strings.CHARACTER_SAY_LONELY;
+			_thoughtsShort = Strings.THOUGHTS_MEDIUM;
+			return;
 		}
 		
 		_color = COLOR_GOOD;
-		return Strings.CHARACTER_EVERYTHINGS_GOES_RIGHT;
+		_thoughts = Strings.CHARACTER_EVERYTHINGS_GOES_RIGHT;
+		_thoughtsShort = Strings.THOUGHTS_GOOD;
 	}
 
 }

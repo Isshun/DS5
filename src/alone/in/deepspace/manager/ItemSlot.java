@@ -34,4 +34,8 @@ public class ItemSlot {
 	public int getY() {
 		return _item.getY() + _relY;
 	}
+
+	public Job getJob() {
+		return _job;
+	}
 }

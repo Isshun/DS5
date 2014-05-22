@@ -10,6 +10,11 @@ import alone.in.deepspace.manager.SpriteManager;
 
 public class TextView extends View {
 
+	public static final int	REGULAR = Text.REGULAR;
+	public static final int	BOLD = Text.BOLD;
+	public static final int	ITALIC = Text.ITALIC;
+	public static final int	UNDERLINED = Text.UNDERLINED;
+	
 	private Text _text;
 
 	public TextView() {
@@ -32,6 +37,10 @@ public class TextView extends View {
 
 	public void setCharacterSize(int size) {
 		_text.setCharacterSize(size);
+	}
+
+	public void setStyle(int style) {
+		_text.setStyle(style);
 	}
 
 	public void setColor(Color color) {

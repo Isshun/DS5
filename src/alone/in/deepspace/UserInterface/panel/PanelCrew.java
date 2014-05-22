@@ -13,6 +13,7 @@ import alone.in.deepspace.Strings;
 import alone.in.deepspace.UserInterface.UserInterface;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.ImageView;
 import alone.in.deepspace.engine.ui.OnClickListener;
@@ -29,22 +30,29 @@ public class PanelCrew extends UserSubInterface {
 	private static class ViewHolder {
 		public TextView 	lbName;
 		public TextView 	lbProfession;
-		public ImageView		thumb;
-		public FrameLayout frame;
-		public TextView lbStatus;
-		public TextView lbJob;
+		public ImageView	thumb;
+		public FrameLayout 	frame;
+		public TextView 	lbStatus;
+		public TextView 	lbJob;
+		public TextView 	lbStatusShort;
 	}
 
+	private static final int	MODE_SMALL = 0;
+	private static final int	MODE_DETAIL = 1;
+	
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
-	private static final int 	CREW_LINE_SPACING = 10;
-	private static final int 	CREW_LINE_HEIGHT = 52;
+	private static final int 	CREW_DETAIL_SPACING = 10;
+	private static final int 	CREW_LINE_SPACING = 2;
+	private static final int 	CREW_DETAIL_HEIGHT = 52;
+	private static final int 	CREW_LINE_HEIGHT = 22;
 	private static final int 	CREW_LINE_WIDTH  = FRAME_WIDTH - Constant.UI_PADDING * 2;
-
+	
 	private CharacterManager    _characterManager;
 	private List<ViewHolder> 	_viewHolderList;
 	private TextView 			_lbCount;
 	private UserInterface 		_ui;
+	protected int _mode;
 
 	public PanelCrew(RenderWindow app, int tileIndex) throws IOException {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
@@ -53,13 +61,72 @@ public class PanelCrew extends UserSubInterface {
 		
 		_viewHolderList = new ArrayList<ViewHolder>();
 		_characterManager = ServiceManager.getCharacterManager();
+
+		// Button small
+		ButtonView btModeSmall = new ButtonView(new Vector2f(50, 20));
+		btModeSmall.setString("small");
+		btModeSmall.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				setMode(MODE_SMALL);
+			}
+		});
+		addView(btModeSmall);
+
+		// Button detail
+		ButtonView btModeDetail = new ButtonView(new Vector2f(50, 20));
+		btModeDetail.setString("detail");
+		btModeDetail.setPosition(80, 0);
+		btModeDetail.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				setMode(MODE_DETAIL);
+			}
+		});
+		addView(btModeDetail);
 		
 		// Name
 		_lbCount = new TextView(new Vector2f(10, 10));
 		_lbCount.setCharacterSize(20);
 		_lbCount.setColor(Color.WHITE);
-		_lbCount.setPosition(new Vector2f(10, 10));
+		_lbCount.setPosition(new Vector2f(10, 22));
 		addView(_lbCount);
+	}
+
+	protected void setMode(int mode) {
+		_mode = mode;
+
+		int i = 0;
+		for (ViewHolder viewHolder: _viewHolderList) {
+			if (mode == MODE_SMALL) {
+				setModeSmall(viewHolder, i);
+			} else {
+				setModeDetail(viewHolder, i);
+			}
+			i++;
+		}
+	}
+
+	protected void setModeSmall(ViewHolder viewHolder, int i) {
+		viewHolder.frame.setPosition(Constant.UI_PADDING, 38 + Constant.UI_PADDING + ((CREW_LINE_HEIGHT + CREW_LINE_SPACING) * i));
+		viewHolder.frame.setSize(new Vector2f(CREW_LINE_WIDTH, CREW_LINE_HEIGHT));
+		viewHolder.lbName.setPosition(6, 2);
+		viewHolder.lbJob.setVisible(false);
+		viewHolder.lbProfession.setVisible(false);
+		viewHolder.thumb.setVisible(false);
+		viewHolder.lbStatus.setVisible(false);
+		viewHolder.lbStatusShort.setVisible(true);
+		viewHolder.frame.resetPos();
+	}
+
+	protected void setModeDetail(ViewHolder viewHolder, int i) {
+		viewHolder.frame.setPosition(Constant.UI_PADDING, 38 + Constant.UI_PADDING + ((CREW_DETAIL_HEIGHT + CREW_DETAIL_SPACING) * i));
+		viewHolder.lbName.setPosition(Constant.UI_PADDING + 32, 6);
+		viewHolder.lbJob.setVisible(true);
+		viewHolder.thumb.setVisible(true);
+		viewHolder.lbStatus.setVisible(true);
+		viewHolder.lbStatusShort.setVisible(false);
+		viewHolder.frame.resetPos();
 	}
 
 	void  addCharacter(RenderWindow app, int index, final Character character) {
@@ -70,8 +137,8 @@ public class PanelCrew extends UserSubInterface {
 			final ViewHolder viewHolder = new ViewHolder();
 
 			// Frame
-			viewHolder.frame = new FrameLayout(new Vector2f(CREW_LINE_WIDTH, CREW_LINE_HEIGHT));
-			viewHolder.frame.setPosition(Constant.UI_PADDING, 38 + Constant.UI_PADDING + ((CREW_LINE_HEIGHT + CREW_LINE_SPACING) * y));
+			viewHolder.frame = new FrameLayout(new Vector2f(CREW_LINE_WIDTH, CREW_DETAIL_HEIGHT));
+			viewHolder.frame.setPosition(Constant.UI_PADDING, 38 + Constant.UI_PADDING + ((CREW_DETAIL_HEIGHT + CREW_DETAIL_SPACING) * y));
 			viewHolder.frame.setOnFocusListener(new OnFocusListener() {
 				@Override
 				public void onExit(View view) {
@@ -83,19 +150,11 @@ public class PanelCrew extends UserSubInterface {
 					view.setBackgroundColor(new Color(40, 40, 80));
 				}
 			});
-			viewHolder.frame.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					close();
-					_ui.setCharacter(character);
-				}
-			});
 			addView(viewHolder.frame);
 			
 			// Name
 			viewHolder.lbName = new TextView();
 			viewHolder.lbName.setCharacterSize(14);
-			viewHolder.lbName.setColor(character.getColor());
 			viewHolder.lbName.setPosition(Constant.UI_PADDING + 32, 6);
 			viewHolder.frame.addView(viewHolder.lbName);
 		
@@ -104,6 +163,14 @@ public class PanelCrew extends UserSubInterface {
 			viewHolder.lbStatus.setCharacterSize(14);
 			viewHolder.lbStatus.setPosition(Constant.UI_PADDING + 32, Constant.UI_PADDING + 16);
 			viewHolder.frame.addView(viewHolder.lbStatus);
+		
+			// Status short
+			viewHolder.lbStatusShort = new TextView();
+			viewHolder.lbStatusShort.setCharacterSize(14);
+			viewHolder.lbStatusShort.setVisible(false);
+			viewHolder.lbStatusShort.setPosition(Constant.UI_PADDING + 300, 2);
+
+			viewHolder.frame.addView(viewHolder.lbStatusShort);
 		
 			// Job
 			viewHolder.lbJob = new TextView();
@@ -122,6 +189,11 @@ public class PanelCrew extends UserSubInterface {
 			viewHolder.thumb.setPosition(8, 5);
 			viewHolder.frame.addView(viewHolder.thumb);
 
+			if (_mode == MODE_SMALL) {
+				setModeSmall(viewHolder, index);
+			} else {
+				setModeDetail(viewHolder, index);
+			}
 			
 //		  // Function
 //		  Profession function = character.getProfession();
@@ -135,12 +207,24 @@ public class PanelCrew extends UserSubInterface {
 		} else {
 			final ViewHolder viewHolder = _viewHolderList.get(index);
 
+			// Action
+			viewHolder.frame.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					close();
+					_ui.setCharacter(character);
+				}
+			});
+
 			// Name
 			viewHolder.lbName.setString(character.getName());
-			
-			// Job
+			viewHolder.lbName.setColor(character.getColor());
+
+			// Status
 			viewHolder.lbStatus.setString(character.getStatus().getThoughts());
 			viewHolder.lbStatus.setColor(character.getStatus().getColor());
+			viewHolder.lbStatusShort.setString(character.getStatus().getThoughtsShort());
+			viewHolder.lbStatusShort.setColor(character.getStatus().getColor());
 			
 			// Job
 			if (character.getJob() != null) {
@@ -150,7 +234,6 @@ public class PanelCrew extends UserSubInterface {
 				viewHolder.lbJob.setString(Strings.LB_NO_JOB);
 				viewHolder.lbJob.setColor(new Color(255, 255, 255, 100));
 			}
-
 			// Profession
 			viewHolder.lbProfession.setString(character.getProfession().getName());
 		}

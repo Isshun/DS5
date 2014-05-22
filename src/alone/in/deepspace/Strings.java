@@ -2,6 +2,7 @@ package alone.in.deepspace;
 
 public class Strings {
 	public static final String LB_STORAGE_CONTAINS = "Contains";
+	public static final String LB_NEEDS = "Needs";
 	public static String LB_NO_JOB = "no job";
 	public static String LB_GATHER = "gather";
 	public static String JOBS = "Jobs";
@@ -33,4 +34,15 @@ public class Strings {
 	public static String LB_EFFECT_HEALTH = "Health";
 	public static String LB_EFFECTS = "Effects";
 	public static String LB_NOBODY = "Nobody";
+	public static String LB_FAMILY = "Family";
+	public static String LB_PROFESSION = "Profession";
+	public static String LB_RELATION_CHILDREN = "children";
+	public static String LB_RELATION_FRIEND = "friend";
+	public static String LB_RELATION_MATE = "mate";
+	public static String LB_RELATION_PARENT = "parent";
+	public static String LB_DECEADED = "deceaded";
+	public static String THOUGHTS_GOOD = "good";
+	public static String THOUGHTS_MEDIUM = "medium";
+	public static String THOUGHTS_BAD = "bad";
+	public static String THOUGHTS_REALLY_BAD = "really bad";
 }

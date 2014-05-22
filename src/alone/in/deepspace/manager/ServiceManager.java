@@ -10,16 +10,18 @@ import alone.in.deepspace.model.GameData;
 public class ServiceManager {
 
 	private static WorldManager 		_worldMap;
-	private static CharacterManager _charactersManager;
-	private static WorldRenderer 	_worldRenderer;
-	private static GameData 		_data;
-	private static LightRenderer _lightRenderer;
-	private static Game _game;
+	private static CharacterManager 	_charactersManager;
+	private static WorldRenderer 		_worldRenderer;
+	private static GameData 			_data;
+	private static LightRenderer 		_lightRenderer;
+	private static Game 				_game;
+	private static RelationManager 		_relationManager;
 
 	public static void reset() {
 		_worldMap = null;
 		_charactersManager = null;
 		_worldRenderer = null;
+		_relationManager = null;
 	}
 
 	public static WorldManager getWorldMap() {
@@ -66,5 +68,12 @@ public class ServiceManager {
 
 	public static Game getGame() {
 		return _game;
+	}
+
+	public static RelationManager getRelationManager() {
+		if (_relationManager == null) {
+			_relationManager = new RelationManager();
+		}
+		return _relationManager;
 	}
 }

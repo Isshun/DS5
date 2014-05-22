@@ -1,6 +1,7 @@
 package alone.in.deepspace.UserInterface.panel;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
@@ -10,18 +11,26 @@ import org.jsfml.system.Vector2f;
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.UserInterface.UserSubInterface;
 import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.engine.ui.FrameLayout;
+import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
+import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.CharacterNeeds;
+import alone.in.deepspace.model.CharacterRelation;
 import alone.in.deepspace.model.CharacterStatus;
 
 public class PanelCharacter extends UserSubInterface {
 	private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "unused", "Work"};
 
-	private static final int FONT_SIZE = 20;
+	private static final int FONT_SIZE = 22;
+	private static final int FONT_SIZE_SMALL = 14;
 	private static final int LINE_HEIGHT = 28;
 	private static final int FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
+
+	private static final int NB_MAX_RELATION = 18;
+	private static final int NB_MAX_CARRY = 10;
 
 	private Character   	    _character;
 	private TextView 			_lbName;
@@ -31,8 +40,18 @@ public class PanelCharacter extends UserSubInterface {
 	private TextView 			_lbJob;
 	private TextView 			_lbJob2;
 	private TextView[] 			_lbCarry;
+	private TextView 			_lbState;
+	private FrameLayout 		_layoutFamily;
 
-	private TextView _lbState;
+	private TextView[] _familyEntries;
+
+	private FrameLayout _layoutProfession;
+
+	private TextView[] _familyRelationEntries;
+
+	private int _nbRelation;
+
+	private TextView _lbOld;
 
 	public PanelCharacter(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
@@ -46,58 +65,120 @@ public class PanelCharacter extends UserSubInterface {
 		_lbName.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V));
 		addView(_lbName);
 
+		// Name
+		_lbOld = new TextView(null);
+		_lbOld.setCharacterSize(FONT_SIZE_SMALL);
+		_lbOld.setColor(Color.WHITE);
+		_lbOld.setPosition(new Vector2f(FRAME_WIDTH - 65, Constant.UI_PADDING_V + 9));
+		addView(_lbOld);
+
 		// Status
 		_lbState = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
-		_lbState.setCharacterSize(14);
+		_lbState.setCharacterSize(FONT_SIZE_SMALL);
 		_lbState.setColor(Color.WHITE);
 		_lbState.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + 28));
 		addView(_lbState);
 
-		// Profession
-		_lbProfession = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
-		_lbProfession.setCharacterSize(FONT_SIZE);
-		_lbProfession.setVisible(false);
-		_lbProfession.setColor(Color.WHITE);
-		_lbProfession.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + LINE_HEIGHT));
-		addView(_lbProfession);
+		createProfessionInfo(0, 34);
+		createNeedsInfo(0, 125);
+		createJobInfo(0, 480);
+		createFamilyInfo(0, 650);
+		createInventoryInfo(0, 560);
+	}
 
-		for (int i = 0; i < 12; i++) {
-			addGauge(Constant.UI_PADDING_H + 180 * (i % 2),
-					32 + 50 * (i / 2) + (FONT_SIZE + 16) + Constant.UI_PADDING_V,
-					160,
-					12,
-					i);
-		}
-
-
-		_lbJob = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
-		_lbJob.setCharacterSize(FONT_SIZE);
-		_lbJob.setColor(Color.WHITE);
-		_lbJob.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + 400));
-		addView(_lbJob);
-
-		_lbJob2 = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
-		_lbJob2.setCharacterSize(12);
-		_lbJob2.setColor(Color.WHITE);
-		_lbJob2.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + 432));
-		addView(_lbJob2);
-
+	private void createInventoryInfo(int x, int y) {
 		TextView lbCarry= new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		lbCarry.setCharacterSize(FONT_SIZE);
 		lbCarry.setColor(Color.WHITE);
 		lbCarry.setString(Strings.LB_INVENTORY);
-		lbCarry.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + 500));
+		lbCarry.setPosition(new Vector2f(Constant.UI_PADDING_H + x, Constant.UI_PADDING_V + y));
 		addView(lbCarry);
 
-		_lbCarry = new TextView[10];
-		for (int i = 0; i < 10; i++) {
+		_lbCarry = new TextView[NB_MAX_CARRY];
+		for (int i = 0; i < NB_MAX_CARRY; i++) {
 			_lbCarry[i] = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
-			_lbCarry[i].setCharacterSize(12);
+			_lbCarry[i].setCharacterSize(FONT_SIZE_SMALL);
 			_lbCarry[i].setColor(Color.WHITE);
-			_lbCarry[i].setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V + 532 + i * 20));
+			_lbCarry[i].setPosition(new Vector2f(Constant.UI_PADDING_H + x, Constant.UI_PADDING_V + y + 32 + i * 20));
 			addView(_lbCarry[i]);
 		}
+	}
 
+	private void createJobInfo(int x, int y) {
+		_lbJob = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
+		_lbJob.setCharacterSize(FONT_SIZE);
+		_lbJob.setColor(Color.WHITE);
+		_lbJob.setPosition(new Vector2f(Constant.UI_PADDING_H + x, Constant.UI_PADDING_V + y));
+		addView(_lbJob);
+
+		_lbJob2 = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
+		_lbJob2.setCharacterSize(FONT_SIZE_SMALL);
+		_lbJob2.setColor(Color.WHITE);
+		_lbJob2.setPosition(new Vector2f(Constant.UI_PADDING_H + x, Constant.UI_PADDING_V + y + 32));
+		addView(_lbJob2);
+
+	}
+
+	private void createProfessionInfo(int x, int y) {
+		_layoutProfession = new FrameLayout(new Vector2f(200, 200));
+		_layoutProfession.setPosition(x, y);
+		addView(_layoutProfession);
+		
+		TextView lbTitle = new TextView();
+		lbTitle.setCharacterSize(FONT_SIZE);
+		lbTitle.setPosition(Constant.UI_PADDING_H + x, y);
+		lbTitle.setString(Strings.LB_PROFESSION);
+		_layoutProfession.addView(lbTitle);
+		
+		_lbProfession = new TextView();
+		_lbProfession.setCharacterSize(FONT_SIZE_SMALL);
+		_lbProfession.setString(Strings.LB_PROFESSION);
+		_lbProfession.setPosition(Constant.UI_PADDING_H + x, y + 32);
+		_layoutProfession.addView(_lbProfession);
+	}
+
+	private void createNeedsInfo(int x, int y) {
+		TextView text = new TextView();
+		text.setCharacterSize(FONT_SIZE);
+		text.setColor(Color.WHITE);
+		text.setString(Strings.LB_NEEDS);
+		text.setPosition(Constant.UI_PADDING_H + x, Constant.UI_PADDING_V + y);
+		addView(text);
+
+		for (int i = 0; i < 12; i++) {
+			addGauge(Constant.UI_PADDING_H + x + 180 * (i % 2),
+					y + 50 * (i / 2) + (FONT_SIZE + 16) + Constant.UI_PADDING_V,
+					160,
+					12,
+					i);
+		}
+	}
+
+	private void createFamilyInfo(int x, int y) {
+		_layoutFamily = new FrameLayout(new Vector2f(200, 200));
+		_layoutFamily.setVisible(false);
+		_layoutFamily.setPosition(Constant.UI_PADDING_H + x, Constant.UI_PADDING_V + y);
+		addView(_layoutFamily);
+		
+		TextView lbFamily = new TextView();
+		lbFamily.setCharacterSize(FONT_SIZE);
+		lbFamily.setString(Strings.LB_FAMILY);
+		_layoutFamily.addView(lbFamily);
+		
+		_familyEntries = new TextView[NB_MAX_RELATION];
+		_familyRelationEntries = new TextView[NB_MAX_RELATION];
+		for (int i = 0; i < NB_MAX_RELATION; i++) {
+			_familyEntries[i] = new TextView(new Vector2f(400, 22));
+			_familyEntries[i].setCharacterSize(FONT_SIZE_SMALL);
+			_familyEntries[i].setPosition(0, 32 + 22 * i);
+			_familyEntries[i].setStyle(TextView.UNDERLINED);
+			_layoutFamily.addView(_familyEntries[i]);
+			
+			_familyRelationEntries[i] = new TextView(new Vector2f(100, 32));
+			_familyRelationEntries[i].setCharacterSize(FONT_SIZE_SMALL);
+			_familyRelationEntries[i].setPosition(280, 32 + 22 * i);
+			_layoutFamily.addView(_familyRelationEntries[i]);
+		}
 	}
 
 	public void  setCharacter(Character character) {
@@ -109,8 +190,34 @@ public class PanelCharacter extends UserSubInterface {
 			_lbName.setString(character.getName());
 			_lbName.setColor(character.getColor());
 			_lbProfession.setString(character.getProfession().getName());
+			
+			List<CharacterRelation> relations = character.getFamilyMembers();
+			refreshRelations(relations);
 		}
 		_character = character;
+	}
+
+	private void refreshRelations(List<CharacterRelation> relations) {
+		_nbRelation = relations.size();
+		_layoutFamily.setVisible(relations.size() > 0);
+		int i = 0;
+		for (final CharacterRelation relation: relations) {
+			if (i < NB_MAX_RELATION) {
+				_familyEntries[i].setString(relation.getSecond().getName());
+				_familyEntries[i].setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						setCharacter(relation.getSecond());
+					}
+				});
+				_familyRelationEntries[i].setString(relation.getRelationLabel());
+				i++;
+			}
+		}
+		for (; i < NB_MAX_RELATION; i++) {
+			_familyEntries[i].setString("");
+			_familyRelationEntries[i].setString("");
+		}
 	}
 
 	public Character  getCharacter() { return _character; }
@@ -157,7 +264,7 @@ public class PanelCharacter extends UserSubInterface {
 
 		// Name
 		TextView text = new TextView(new Vector2f(width, height));
-		text.setCharacterSize(FONT_SIZE);
+		text.setCharacterSize(FONT_SIZE_SMALL);
 		text.setColor(Color.WHITE);
 		text.setString(texts[index]);
 		text.setPosition(new Vector2f(posX, posY));
@@ -169,7 +276,7 @@ public class PanelCharacter extends UserSubInterface {
 		_shapes[index].setPosition(posX, posY + FONT_SIZE + 8);
 
 		_values[index] = new TextView();
-		_values[index].setCharacterSize(12);
+		_values[index].setCharacterSize(FONT_SIZE_SMALL);
 		_values[index].setPosition(posX + 130, posY);
 		addView(_values[index]);
 
@@ -202,6 +309,8 @@ public class PanelCharacter extends UserSubInterface {
 			_lbState.setString(status.getThoughts());
 			_lbState.setColor(status.getColor());
 
+			_lbOld.setString(_character.getOld() + "yo.");
+			
 			CharacterNeeds needs = _character.getNeeds();
 			for (int i = 0; i < 12; i++) {
 
@@ -234,7 +343,7 @@ public class PanelCharacter extends UserSubInterface {
 				}
 			}
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < NB_MAX_CARRY; i++) {
 				if (_character.getCarried().size() > i) {
 					_lbCarry[i].setString(_character.getCarried().get(i).getName());
 				} else {
@@ -242,6 +351,11 @@ public class PanelCharacter extends UserSubInterface {
 				}
 			}
 
+			List<CharacterRelation> relations = _character.getFamilyMembers();
+			if (_nbRelation != relations.size()) {
+				refreshRelations(relations);
+			}
+			
 			//	    // Name
 			//	    Text text = new Text();
 			//	    text.setString(_character.getName());

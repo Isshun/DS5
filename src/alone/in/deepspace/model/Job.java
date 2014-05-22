@@ -11,7 +11,7 @@ import alone.in.deepspace.manager.JobManager.Action;
 public class Job {
 
 	public static enum Abort {
-		NO_MATTER, INTERRUPTE, BLOCKED, NO_LEFT_CARRY, INVALID
+		NO_MATTER, INTERRUPTE, BLOCKED, NO_LEFT_CARRY, INVALID, DIED
 	};
 
 	private int 				_id;

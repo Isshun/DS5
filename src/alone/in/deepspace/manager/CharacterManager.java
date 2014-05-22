@@ -16,13 +16,16 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
+import alone.in.deepspace.Strings;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Character.Gender;
+import alone.in.deepspace.model.Job.Abort;
 import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.Profession;
+import alone.in.deepspace.model.Room;
 
 
 public class CharacterManager implements ISavable {
@@ -35,10 +38,15 @@ public class CharacterManager implements ISavable {
 		new Profession(Profession.Type.SECURITY, "Security", new Color(42, 42, 42), new Color(255, 255, 255)),
 		new Profession(Profession.Type.NONE, "", new Color(0, 0, 0), new Color(0, 0, 0))
 	};
+	
+	public static Profession professionsChild = new Profession(Profession.Type.CHILD, "Child", new Color(0, 0, 0), new Color(0, 0, 0));
+	public static Profession professionsStudent = new Profession(Profession.Type.STUDENT, "Student", new Color(0, 0, 0), new Color(0, 0, 0));
 
 	private ArrayList<Character> 	_characters;
 	private int 					_count;
 	private Sprite 					_selection;
+	private List<Character> 		_addOnUpdate;
+	private List<Character> 		_removeOnUpdate;
 
 	public CharacterManager() throws IOException {
 		Log.debug("CharacterManager");
@@ -51,6 +59,8 @@ public class CharacterManager implements ISavable {
 		_selection.setTextureRect(new IntRect(0, 32, 32, Constant.CHAR_HEIGHT));
 
 		_characters = new ArrayList<Character>();
+		_addOnUpdate = new ArrayList<Character>();
+		_removeOnUpdate = new ArrayList<Character>();
 		_count = 0;
 
 		Log.debug("CharacterManager done");
@@ -117,7 +127,9 @@ public class CharacterManager implements ISavable {
 						x = Integer.valueOf(values[0]);
 						y = Integer.valueOf(values[1]);
 						gender = Integer.valueOf(values[2]);
-						Character c = new Character(_count++, x, y, values[3]);
+						int sep = values[3].lastIndexOf(' ');
+						String lastName = values[3].substring(sep + 1, values[3].length());
+						Character c = new Character(_count++, x, y, values[3], lastName);
 						c.setGender(CharacterManager.getGender(gender));
 						_characters.add(c);
 					}
@@ -198,6 +210,25 @@ public class CharacterManager implements ISavable {
 	}
 
 	public void    update(int count) {
+		
+		// Add new born
+		_characters.addAll(_addOnUpdate);
+		_addOnUpdate.clear();
+		
+		// Remove died character
+		for (Character character: _removeOnUpdate) {
+			if (character.getJob() != null) {
+				JobManager.getInstance().abort(character.getJob(), Abort.DIED);
+				List<Room> rooms = RoomManager.getInstance().getRoomList();
+				for (Room room: rooms) {
+					if (room.getOwner() == character) {
+						room.setOwner(null);
+					}
+				}
+			}
+		}
+		_characters.removeAll(_removeOnUpdate);
+		
 		for (Character c: _characters) {
 			c.action();
 			c.update();
@@ -306,7 +337,7 @@ public class CharacterManager implements ISavable {
 			return null;
 		}
 
-		Character c = new Character(_count++, x, y, null);
+		Character c = new Character(_count++, x, y, null, null);
 		Profession profession = professions[_count % professions.length];
 		c.setProfession(profession.getType());
 		_characters.add(c);
@@ -320,11 +351,21 @@ public class CharacterManager implements ISavable {
 			return null;
 		}
 
-		Character c = new Character(_count++, x, y, null);
+		Character c = new Character(_count++, x, y, null, null);
 		c.setProfession(profession);
 		_characters.add(c);
 
 		return c;
+	}
+	
+	public Character add(Character c) {
+		_addOnUpdate.add(c);
+		return c;
+	}
+	
+	public void remove(Character c) {
+		_removeOnUpdate.add(c);
+		c.setName(Strings.LB_DECEADED);
 	}
 
 	Character		getUnemployed(Profession.Type professionId) {

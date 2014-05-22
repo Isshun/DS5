@@ -16,7 +16,7 @@ public class Profession {
 	}
 
 	public enum Type {
-		ENGINEER, OPERATION, DOCTOR, SCIENCE, SECURITY, NONE
+		ENGINEER, OPERATION, DOCTOR, SCIENCE, SECURITY, CHILD, STUDENT, NONE
 		
 	}
 

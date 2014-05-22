@@ -27,6 +27,7 @@ public class JobManager implements ISavable {
 	private ArrayList<Job> 		_jobs;
 	private ArrayList<BaseItem> _routineItems;
 	private int 				_id;
+	private int					_mode;
 
 	JobManager() {
 		Log.debug("JobManager");

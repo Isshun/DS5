@@ -1,6 +1,7 @@
 package alone.in.deepspace.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.manager.ItemSlot;
@@ -214,47 +215,46 @@ public class BaseItem {
 		return value;
 	}
 
-	void				addMatter(int value) { _matterSupply += _matter; }
+	void					addMatter(int value) { _matterSupply += _matter; }
 
 	// Sets
-	public void			setPosition(int x, int y) { _x = x; _y = y; }
-	public void 		setMatterSupply(int matterSupply) { _matterSupply = matterSupply; }
-	public void 		setPowerSupply(int i) { _powerSupply = i; }
-	public void 		setSolid(boolean isSolid) { _isSolid = isSolid; }
-	public void 		setMode(int mode) { _mode = mode; }
-	public void 		setWorking(boolean working) { _isWorking = working; }
+	public void				setPosition(int x, int y) { _x = x; _y = y; }
+	public void 			setMatterSupply(int matterSupply) { _matterSupply = matterSupply; }
+	public void 			setPowerSupply(int i) { _powerSupply = i; }
+	public void 			setSolid(boolean isSolid) { _isSolid = isSolid; }
+	public void 			setMode(int mode) { _mode = mode; }
+	public void 			setWorking(boolean working) { _isWorking = working; }
 
 	// Gets
-	public int			getMatterSupply() { return _matterSupply; }
-	public Character	getOwner() { return _owner; }
-	public int			getWidth() { return _width; }
-	public int			getHeight() { return _height; }
-	public int			getX() { return _x; }
-	public int			getY() { return _y; }
-	public int			getZoneIdRequired() { return _zoneIdRequired; }
-	public int			getId() { return _id; }
-	public String		getName() { return _name; }
-	public int 			getPower() { return _power; }
-	public int 			getMode() { return _mode; }
-	public int 			getLight() { return _light; }
-	public String 		getLabel() { return _label; }
-
-
-	public ItemInfo 	getInfo() { return _info; }
+	public int				getMatterSupply() { return _matterSupply; }
+	public Character		getOwner() { return _owner; }
+	public int				getWidth() { return _width; }
+	public int				getHeight() { return _height; }
+	public int				getX() { return _x; }
+	public int				getY() { return _y; }
+	public int				getZoneIdRequired() { return _zoneIdRequired; }
+	public int				getId() { return _id; }
+	public String			getName() { return _name; }
+	public int 				getPower() { return _power; }
+	public int 				getMode() { return _mode; }
+	public int 				getLight() { return _light; }
+	public String 			getLabel() { return _label; }
+	public List<ItemSlot> 	getSlots() { return _slots; }
+	public ItemInfo 		getInfo() { return _info; }
 
 	// Boolean
-	public boolean		isSolid() { return _isSolid; }
-	public boolean		isWorking() { return _isWorking; }
-
-	public boolean		isComplete() { return _matterSupply >= _matter; }
-	public boolean		isSupply() { return _power == _powerSupply; }
-	public boolean		isFree() { return _owner == null; }
+	public boolean			isSolid() { return _isSolid; }
+	public boolean			isWorking() { return _isWorking; }
+	
+	public boolean			isComplete() { return _matterSupply >= _matter; }
+	public boolean			isSupply() { return _power == _powerSupply; }
+	public boolean			isFree() { return _owner == null; }
 	
 	// TODO
-	public boolean		isSleepingItem() { return "base.bed".equals(_name) || "base.chair".equals(_name); }
-	public boolean		isStructure() { return _info.isStructure; }
-	public boolean		isRessource() { return _info.isRessource; }
-	public boolean		isWalkable() { return !_info.isWalkable; }
+	public boolean			isSleepingItem() { return "base.bed".equals(_name) || "base.chair".equals(_name); }
+	public boolean			isStructure() { return _info.isStructure; }
+	public boolean			isRessource() { return _info.isRessource; }
+	public boolean			isWalkable() { return !_info.isWalkable; }
 	
 	public boolean isStorage() { return _info.storage > 0; }
 
@@ -321,5 +321,4 @@ public class BaseItem {
 		if (_info.isRessource) { return Strings.LB_ITEM_RESSOURCE; }
 		return Strings.LB_ITEM_USER;
 	}
-
 }
