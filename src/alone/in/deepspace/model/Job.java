@@ -114,7 +114,7 @@ public class Job {
 		if (_item != null) {
 			oss += " " + _item.getLabel();
 		}
-		if (_action == Action.USE) {
+		if (_durationLeft > 0) {
 			oss += " (" + _durationLeft / Constant.DURATION_MULTIPLIER + "s)";
 		}
 		return oss;

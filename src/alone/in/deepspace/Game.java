@@ -265,7 +265,7 @@ public class Game implements ISavable {
 		_dynamicObjectManager.refresh(_app, render, animProgress);
 
 		// User interface
-		_ui.refresh(_frame, _update, renderTime);
+		_ui.onDraw(_frame, _update, renderTime);
 
 //		if (_menu != null) {
 //			_menu.refresh(_app);

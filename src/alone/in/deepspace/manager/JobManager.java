@@ -257,7 +257,7 @@ public class JobManager implements ISavable {
 		
 		// Character is full: go back to storage area
 		if (character.isFull()) {
-			Room room = RoomManager.getInstance().getNearFreeStorage(character.getPosX(), character.getPosY());
+			Room room = RoomManager.getInstance().getNearFreeStorage(character.getX(), character.getY());
 			if (room != null) {
 				Job job = new Job(++_id, room.getX(), room.getY());
 				job.setAction(JobManager.Action.STORE);
@@ -323,7 +323,7 @@ public class JobManager implements ISavable {
 			// TODO
 			ItemFilter itemFilter = new ItemFilter();
 			itemFilter.food = true;
-			UserItem item = ServiceManager.getWorldMap().getNearest(itemFilter, character.getPosX(), character.getPosY());
+			UserItem item = ServiceManager.getWorldMap().getNearest(itemFilter, character.getX(), character.getY());
 			if (item != null) {
 				return createUseJob(item);
 			}
@@ -471,7 +471,7 @@ public class JobManager implements ISavable {
 		if (c.getCarried().size() > 0) {
 			// TODO
 			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
-			BaseItem storage = ServiceManager.getWorldMap().getNearest(info, c.getPosX(), c.getPosY());
+			BaseItem storage = ServiceManager.getWorldMap().getNearest(info, c.getX(), c.getY());
 			if (storage != null) {
 				return storeItem(storage);
 			}
@@ -482,7 +482,7 @@ public class JobManager implements ISavable {
 		}
 		
 		// Play with random object
-		UserItem toy = ServiceManager.getWorldMap().getRandomToy(c.getPosX(), c.getPosY());
+		UserItem toy = ServiceManager.getWorldMap().getRandomToy(c.getX(), c.getY());
 		if (toy != null) {
 			return createUseJob(toy);
 		}
@@ -510,9 +510,9 @@ public class JobManager implements ISavable {
 	}
 
 	private Job createMovingToMettingRoom(Character c) {
-		Room room = RoomManager.getInstance().getNeerRoom(c.getPosX(), c.getPosY(), Room.Type.PUB);
+		Room room = RoomManager.getInstance().getNeerRoom(c.getX(), c.getY(), Room.Type.PUB);
 		if (room != null) {
-			return createMovingJob(room.getX(), room.getY());
+			return createMovingJob(room.getX(), room.getY(), Constant.CHARACTER_STAY_IN_METTING_ROOM * Constant.DURATION_MULTIPLIER);
 		}
 		return null;
 	}
@@ -610,10 +610,10 @@ public class JobManager implements ISavable {
 		return null;
 	}
 
-	public Job createMovingJob(int x, int y) {
+	public Job createMovingJob(int x, int y, int stay) {
 		Job job = new Job(++_id, x, y);
 		job.setAction(JobManager.Action.MOVE);
-		
+		job.setDurationLeft(stay);
 		addJob(job);
 		
 		return job;

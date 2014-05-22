@@ -42,7 +42,7 @@ public class CharacterStatus {
 	public void refreshThoughts() {
 		if (_needs.isSleeping()) {
 			// TODO
-			BaseItem item = ServiceManager.getWorldMap().getItem(_character.getPosX(), _character.getPosY());
+			BaseItem item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
 			if (item != null && item.isSleepingItem()) {
 				_color = COLOR_GOOD;
 				_thoughts = "I sleep well, even " + (_needs.getSleeping() / Constant.DURATION_MULTIPLIER) + "h";

@@ -27,6 +27,7 @@ import alone.in.deepspace.UserInterface.panel.PanelSystem;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.engine.Viewport;
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.ui.UIMessage;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.RoomManager;
@@ -74,6 +75,7 @@ public class UserInterface {
 	private Mode 						_mode;
 	private ContextualMenu 				_menu;
 	private Game _game;
+	private int _used;
 
 	public enum Mode {
 		BASE,
@@ -245,11 +247,10 @@ public class UserInterface {
 		_keyMovePosY = getRelativePosY(y);
 	}
 
-	public void refresh(int frame, int update, int renderTime) {
+	public void onDraw(int frame, int update, int renderTime) {
 		_panelCharacter.refresh(_app, null);
 		_panelBase.refresh(_app, null);
 		_panelInfo.refresh(_app, null);
-		//	  	_panelDebug.refresh(, _interaction.getCursor().getX(), _interaction.getCursor().getY());
 		_panelPlan.refresh(_app, null);
 		_panelDebug.refresh(_app, null);
 		_panelDebugItems.refresh(_app, null);
@@ -257,18 +258,20 @@ public class UserInterface {
 		_panelShortcut.refresh(_app, null);
 		_panelResource.refresh(_app, null);
 		_panelRoom.refresh(_app, null);
-
 		_panelMessage.setFrame(frame);
-		//	  	_panelMessage.refresh(_app);
-
-		//	  	_interaction.refreshCursor();
-
 		_panelCrew.refresh(_app, null);
 		_uiScience.refresh(_app, null);
 		_uiSecurity.refresh(_app, null);
 		_uiBase.refresh(_app, null);
 		_panelBuild.refresh(_app, null);
 		_panelJobs.refresh(_app, null);
+		
+//		int mb = 1024 * 1024;
+//        Runtime runtime = Runtime.getRuntime();
+//        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
+//        int total = (int) (runtime.totalMemory() / mb);
+//        _used = (_used * 7 + used) / 8;
+//        System.out.println("Heap: " + String.valueOf(_used) + " / " + String.valueOf(total) + " Mo");
 
 		if (_panelBuild.getMode() != PanelBuild.Mode.NONE || _panelPlan.getMode() != PanelPlan.Mode.NONE) {
 			if (_keyLeftPressed) {

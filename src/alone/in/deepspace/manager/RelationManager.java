@@ -40,7 +40,7 @@ public class RelationManager {
 		int count = ServiceManager.getCharacterManager().getList().size();
 
 		String lastName = c1.getGender() == Gender.GENDER_MALE ? c1.getLastName() : c2.getLastName();
-		Character child = new Character(count + 1, c1.getPosX(), c2.getPosY(), null, lastName, 0);
+		Character child = new Character(count + 1, c1.getX(), c2.getY(), null, lastName, 0);
 		child.setProfession(CharacterManager.professionsChild);
 		child.setParent(c1, c2);
 		c1.addChildren(child);

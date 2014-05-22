@@ -638,6 +638,11 @@ public class Character extends Movable {
 	}
 
 	private void actionMove() {
+		if (_job.getDurationLeft() > 0) {
+			_job.decreaseDurationLeft();
+			return;
+		}
+
 		JobManager.getInstance().complete(_job);
 		_job = null;
 	}

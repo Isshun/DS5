@@ -34,11 +34,9 @@ public class Movable implements PathManagerCallback {
 		  _frameIndex = (int) (Math.random() * 1000 % 20);
 	}
 	
-	public int				getX() { return _posX; }
-	public int				getY() { return _posY; }
 	public int				getId() { return _id; }
-	public int 				getPosX() { return _posX; }
-	public int 				getPosY() { return _posY; }
+	public int 				getX() { return _posX; }
+	public int 				getY() { return _posY; }
 	public Direction		getDirection() { return _direction; }
 	public int				getFrameIndex() { return _frameIndex++; }
 

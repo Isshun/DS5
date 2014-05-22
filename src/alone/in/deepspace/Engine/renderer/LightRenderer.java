@@ -27,6 +27,8 @@ public class LightRenderer implements IRenderer {
 	private RenderTexture 	_cache;
 	private Sprite _sprite;
 	private Sprite _sprite2;
+	private Shader _blur;
+	private Sprite _spriteCache;
 
 	public LightRenderer() {
 
@@ -54,23 +56,26 @@ public class LightRenderer implements IRenderer {
 	}
 
 	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
-		if (_cache != null) {
+		if (_blur == null) {
 			try {
-				Shader blur = new Shader();
-				blur.loadFromFile((new File("data/gauss.frag")).toPath(), Shader.Type.FRAGMENT);
-				blur.setParameter("texture", _cache.getTexture());
-				blur.setParameter("blur_radius", 0.0005f);
-				Shader.bind(blur);
-				RenderStates render2 = new RenderStates(render, blur);
-				app.draw((new Sprite(_cache.getTexture())), render2);
+				_blur = new Shader();
+				_blur.loadFromFile((new File("data/gauss.frag")).toPath(), Shader.Type.FRAGMENT);
+				_blur.setParameter("texture", _cache.getTexture());
+				_blur.setParameter("blur_radius", 0.0005f);
+				Shader.bind(_blur);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ShaderSourceException e) {
 				e.printStackTrace();
 			}
-
-//			app.draw((new Sprite(_cache.getTexture())), render);
 		}
+
+		if (_spriteCache == null) {
+			_spriteCache = new Sprite(_cache.getTexture());
+		}
+		
+		RenderStates render2 = new RenderStates(render, _blur);
+		app.draw(_spriteCache, render2);
 	}
 
 	private void diffuseLight(int fromX, int fromY, int toX, int toY, int x, int y, int light, int pass, double bright) {
