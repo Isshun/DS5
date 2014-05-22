@@ -17,9 +17,6 @@ import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.event.Event;
 import org.jsfml.window.event.MouseButtonEvent;
 
-import alone.in.deepspace.UserInterface.UserInterface;
-import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.renderer.MainRenderer;
@@ -32,6 +29,9 @@ import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.UIEventManager;
+import alone.in.deepspace.ui.UserInterface;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 public class Game implements ISavable {
 	private int 					_lastInput;

@@ -45,4 +45,6 @@ public class Strings {
 	public static String THOUGHTS_MEDIUM = "medium";
 	public static String THOUGHTS_BAD = "bad";
 	public static String THOUGHTS_REALLY_BAD = "really bad";
+	public static String LN_NO_JOB = "None";
+	public static String LB_JOB = "Job";
 }

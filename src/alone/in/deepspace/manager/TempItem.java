@@ -4,7 +4,7 @@ import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 
-import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.util.Constant;
 
 public class TempItem {
 	Sprite	sprite;

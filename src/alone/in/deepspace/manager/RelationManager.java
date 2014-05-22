@@ -1,8 +1,8 @@
 package alone.in.deepspace.manager;
 
-import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Character.Gender;
+import alone.in.deepspace.util.Constant;
 
 public class RelationManager {
 

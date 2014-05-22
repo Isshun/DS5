@@ -3,11 +3,11 @@ package alone.in.deepspace.model;
 import java.util.HashMap;
 import java.util.Vector;
 
-import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager.PathManagerCallback;
 import alone.in.deepspace.model.Character.Direction;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 public class Movable implements PathManagerCallback {
 	protected Position			_node;

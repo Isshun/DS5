@@ -10,9 +10,9 @@ import java.util.List;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.util.Constant;
 
 public class ItemLoader {
 	

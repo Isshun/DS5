@@ -13,13 +13,13 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.graphics.Transform;
 
-import alone.in.deepspace.UserInterface.UserInterface;
-import alone.in.deepspace.UserInterface.UserInterface.Mode;
-import alone.in.deepspace.Utils.Log;
-import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
+import alone.in.deepspace.ui.UserInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
+import alone.in.deepspace.util.Log;
+import alone.in.deepspace.util.Settings;
 
 public class MainRenderer {
 	public void draw(Drawable sprite, RenderStates render) {

@@ -10,9 +10,9 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.model.Job;
+import alone.in.deepspace.util.Constant;
 
 public class JobRenderer implements IRenderer {
 	private RenderTexture 	_cache;

@@ -14,9 +14,6 @@ import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
-import alone.in.deepspace.UserInterface.UserInterface;
-import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
@@ -24,6 +21,9 @@ import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.model.WorldRessource;
+import alone.in.deepspace.ui.UserInterface;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 public class WorldRenderer implements IRenderer {
 	private SpriteManager			_spriteManager;

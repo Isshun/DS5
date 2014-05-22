@@ -2,11 +2,11 @@ package alone.in.deepspace.model;
 
 import org.jsfml.graphics.Color;
 
-import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 public class Job {
 

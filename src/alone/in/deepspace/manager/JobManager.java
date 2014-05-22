@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.Game;
-import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
@@ -16,6 +14,8 @@ import alone.in.deepspace.model.Job.Abort;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.model.WorldRessource;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 public class JobManager implements ISavable {
 	public enum Action {

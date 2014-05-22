@@ -3,8 +3,8 @@ package alone.in.deepspace.model;
 import org.jsfml.graphics.Color;
 
 import alone.in.deepspace.Strings;
-import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.util.Constant;
 
 public class CharacterStatus {
 

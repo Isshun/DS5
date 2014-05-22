@@ -6,9 +6,9 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.graphics.TextureCreationException;
 
-import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.Utils.ObjectPool;
 import alone.in.deepspace.manager.SpriteManager;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.ObjectPool;
 
 public class DebugRenderer implements IRenderer {
 	private RenderTexture 	_cache;

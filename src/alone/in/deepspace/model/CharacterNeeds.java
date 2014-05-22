@@ -1,7 +1,7 @@
 package alone.in.deepspace.model;
 
-import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.model.ItemInfo.ItemInfoAction;
+import alone.in.deepspace.util.Constant;
 
 public class CharacterNeeds {
 	public enum Message {

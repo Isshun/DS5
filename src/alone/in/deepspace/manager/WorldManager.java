@@ -15,8 +15,6 @@ import java.util.Vector;
 import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
-import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.ItemInfo;
@@ -27,6 +25,8 @@ import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.model.WorldArea;
 import alone.in.deepspace.model.WorldRessource;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 public class WorldManager implements ISavable, TileBasedMap {
 	public static class DebugPos {

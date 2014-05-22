@@ -6,9 +6,6 @@ import java.util.Vector;
 
 import org.jsfml.graphics.Color;
 
-import alone.in.deepspace.UserInterface.UserInterface;
-import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
@@ -17,6 +14,9 @@ import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.CharacterRelation.Relation;
 import alone.in.deepspace.model.Job.Abort;
+import alone.in.deepspace.ui.UserInterface;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 public class Character extends Movable {
 

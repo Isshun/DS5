@@ -9,9 +9,9 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
-import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.model.Foe;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 
 public class FoeManager {

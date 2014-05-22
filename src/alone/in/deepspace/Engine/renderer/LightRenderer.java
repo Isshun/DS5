@@ -16,11 +16,11 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.model.WorldArea;
+import alone.in.deepspace.util.Constant;
 
 public class LightRenderer implements IRenderer {
 	private static final int LIGHT_DISTANCE = 10;

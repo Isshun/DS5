@@ -18,8 +18,6 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
 import alone.in.deepspace.Strings;
-import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Character.Gender;
@@ -27,6 +25,8 @@ import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.Job.Abort;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.Room;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 public class CharacterManager implements ISavable {
 

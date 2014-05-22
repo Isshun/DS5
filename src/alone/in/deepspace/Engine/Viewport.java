@@ -3,7 +3,7 @@ package alone.in.deepspace.engine;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
 
-import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.util.Constant;
 
 public class Viewport {
 	private static final int ANIM_FRAME = 10;

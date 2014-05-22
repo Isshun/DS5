@@ -11,11 +11,11 @@ import org.jsfml.graphics.Text;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.Room;
+import alone.in.deepspace.util.Constant;
 
 public class RoomRenderer implements IRenderer {
 	private RenderTexture 	_cache;

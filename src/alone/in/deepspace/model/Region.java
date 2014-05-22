@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.WorldManager;
+import alone.in.deepspace.util.Log;
 
 public class Region {
 	public static int	_count;

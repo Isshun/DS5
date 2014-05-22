@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.Room.Type;
 import alone.in.deepspace.model.StructureItem;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 public class RoomManager implements ISavable {
 

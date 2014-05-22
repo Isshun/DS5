@@ -9,13 +9,9 @@ import org.jsfml.system.Clock;
 import org.jsfml.system.Time;
 import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.VideoMode;
+import org.jsfml.window.WindowStyle;
 import org.jsfml.window.event.Event;
 
-import alone.in.deepspace.UserInterface.MenuBase;
-import alone.in.deepspace.UserInterface.MenuGame;
-import alone.in.deepspace.UserInterface.MenuLoad;
-import alone.in.deepspace.UserInterface.MenuSave;
-import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.engine.loader.CategoryLoader;
 import alone.in.deepspace.engine.loader.ItemLoader;
 import alone.in.deepspace.engine.loader.StringsLoader;
@@ -25,6 +21,11 @@ import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.GameData;
 import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.ui.MenuBase;
+import alone.in.deepspace.ui.MenuGame;
+import alone.in.deepspace.ui.MenuLoad;
+import alone.in.deepspace.ui.MenuSave;
+import alone.in.deepspace.util.Constant;
 
 public class Main {
 
@@ -39,7 +40,7 @@ public class Main {
 	public static void main(String[] args) {
 		//Create the window
 		RenderWindow window = new RenderWindow();
-		window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5");
+		window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5", WindowStyle.DEFAULT);
 
 		ServiceManager.setData(new GameData());
 		
