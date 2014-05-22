@@ -23,8 +23,8 @@ import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Character.Gender;
-import alone.in.deepspace.model.Job.Abort;
 import alone.in.deepspace.model.Job;
+import alone.in.deepspace.model.Job.Abort;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.Room;
 

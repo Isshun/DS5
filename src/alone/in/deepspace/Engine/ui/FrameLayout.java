@@ -25,6 +25,34 @@ public class FrameLayout extends View {
 		setPosition(0, 0);
 	}
 
+	@Override
+	protected void onDraw(RenderWindow app, RenderStates render) {
+	}
+
+	/**
+	 * FrameLayout have there own draw() method because render parameter
+	 * is RenderStates for root element View and don't contains the right
+	 * transformation for sub elements.
+	 */
+	@Override
+	public void draw(RenderWindow app, RenderStates render) {
+		if (_isVisible == false) {
+			return;
+		}
+		
+		if (_render == null) {
+			createRender();
+		}
+
+		super.draw(app, _render);
+
+		for (View view: _views) {
+			view.draw(app, _render);
+		}
+		
+		onDraw(app, _render);
+	}
+
 	private void createRender() {
 		int posX = _posX;
 		int posY = _posY;
@@ -76,25 +104,6 @@ public class FrameLayout extends View {
 	public void setPosition(Vector2f pos) {
 		setPosition((int)pos.x, (int)pos.y);
 	}
-
-	@Override
-	public void draw(RenderWindow app, RenderStates render) {
-		if (_isVisible == false) {
-			return;
-		}
-		
-		if (_render == null) {
-			createRender();
-		}
-
-		super.draw(app, _render);
-
-		for (View view: _views) {
-			view.draw(app, _render);
-		}
-		
-		onDraw(app, _render);
-	}
 	
 	public void setVisible(boolean visible) {
 		_isVisible = visible;
@@ -102,10 +111,6 @@ public class FrameLayout extends View {
 
 	public boolean getVisible() {
 		return _isVisible;
-	}
-
-	@Override
-	protected void onDraw(RenderWindow app, RenderStates render) {
 	}
 
 }

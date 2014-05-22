@@ -1,7 +1,6 @@
 package alone.in.deepspace.model;
 
 import alone.in.deepspace.Strings;
-import alone.in.deepspace.model.CharacterRelation.Relation;
 
 public class CharacterRelation {
 	public enum Relation {

@@ -27,7 +27,6 @@ import alone.in.deepspace.UserInterface.panel.PanelSystem;
 import alone.in.deepspace.Utils.Constant;
 import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.engine.Viewport;
-import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.ui.UIMessage;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.RoomManager;

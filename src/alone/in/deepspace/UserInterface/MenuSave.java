@@ -1,6 +1,5 @@
 package alone.in.deepspace.UserInterface;
 
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +9,6 @@ import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.event.Event;
-import org.jsfml.window.event.TextEvent;
-import org.jsfml.window.Keyboard.Key;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.Utils.Constant;

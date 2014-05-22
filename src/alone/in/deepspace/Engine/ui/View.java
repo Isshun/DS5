@@ -16,8 +16,6 @@ public abstract class View {
 	protected Vector2f 		_size;
 	protected boolean		_isVisible;
 	protected Rectangle 	_rect;
-//	protected int 			_parentPosX;
-//	protected int 			_parentPosY;
 	protected int 			_posX;
 	protected int 			_posY;
 	private RectangleShape	_background;
@@ -29,7 +27,7 @@ public abstract class View {
 	private OnClickListener _onClickListener;
 	private OnFocusListener _onFocusListener;
 	private boolean 		_isFocus;
-	private int _id;
+	private int 			_id;
 
 	public View(Vector2f size) {
 		_size = size;
@@ -41,6 +39,18 @@ public abstract class View {
 	
 	protected abstract void onCreate();
 	protected abstract void onDraw(RenderWindow app, RenderStates render);
+
+	public boolean 		isFocus() { return _isFocus; }
+	public boolean 		isVisible() { return _isVisible; }
+
+	public void 		setId(int id) { _id = id; }
+	public void 		setFocus(boolean focus) { _isFocus = focus; }
+	public void 		setParent(FrameLayout parent) { _parent = parent; }
+
+	public FrameLayout 	getParent() { return _parent; }
+	public int 			getId() { return _id; }
+	public int 			getPosX() { return _posX; }
+	public int 			getPosY() { return _posY; }
 
 	public void draw(RenderWindow app, RenderStates render) {
 		if (_isVisible == false) {
@@ -114,14 +124,6 @@ public abstract class View {
 		_background.setFillColor(color);
 	}
 
-//	public void setParentPosition(int x, int y) {
-//		if (x != _parentPosX || y != _parentPosY) {
-//			_parentPosX = x;
-//			_parentPosY = y;
-//			_rect = new Rectangle(_parentPosX + _posX, _parentPosY + _posY, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
-//		}
-//	}
-	
 	public void setPadding(int t, int r, int b, int l) {
 		_paddingTop = t;
 		_paddingRight = r;
@@ -147,10 +149,6 @@ public abstract class View {
 		}
 	}
 
-	public void setParent(FrameLayout parent) {
-		_parent = parent;
-	}
-
 	private Rectangle computeRect() {
 		int x = 0;
 		int y = 0;
@@ -161,38 +159,6 @@ public abstract class View {
 			view = view.getParent();
 		}
 		return new Rectangle(x, y, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
-	}
-
-	public FrameLayout getParent() {
-		return _parent;
-	}
-
-	public boolean isFocus() {
-		return _isFocus;
-	}
-
-	public void setFocus(boolean focus) {
-		_isFocus = focus;
-	}
-
-	public boolean isVisible() {
-		return _isVisible;
-	}
-
-	public int getId() {
-		return _id;
-	}
-
-	public void setId(int id) {
-		_id = id;
-	}
-
-	public int getPosX() {
-		return _posX;
-	}
-
-	public int getPosY() {
-		return _posY;
 	}
 
 	public void onEnter() {
