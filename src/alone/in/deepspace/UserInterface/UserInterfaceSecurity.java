@@ -18,58 +18,6 @@ public class UserInterfaceSecurity extends UserSubInterface {
 		_texturePanel.loadFromFile((new File("res/bg_panel_security.png")).toPath());
 	}
 
-
-	@Override
-	public void onRefresh(RenderWindow app) {
-
-	  // {
-	  // 	int matter = ResourceManager.getInstance().getMatter();
-	  //   std.ostringstream oss;
-	  //   oss + "Matter: " + matter;
-
-	  //   Text text;
-	  //   text.setString(oss.str());
-	  //   text.setFont(_font);
-	  //   text.setCharacterSize(24);
-	  //   // text.setStyle(Text.Underlined);
-
-	  // 	if (matter == 0)
-	  // 	  text.setColor(Color(255, 0, 0));
-	  // 	else if (matter < 20)
-	  // 	  text.setColor(Color(255, 255, 0));
-	  //   text.setPosition(UIRES_POSX + UI_PADDING + 0, UIRES_POSY + UI_PADDING + 0);
-	  //   _app.draw(text);
-	  // }
-
-	  // {
-	  //   std.ostringstream oss;
-	  //   oss + "Power: " + ResourceManager.getInstance().getPower();
-
-	  //   Text text;
-	  //   text.setString(oss.str());
-	  //   text.setFont(_font);
-	  //   text.setCharacterSize(24);
-	  //   // text.setCharacterSize(UI_FONT_SIZE);
-	  //   // text.setStyle(Text.Underlined);
-	  //   // text.setColor(Color(255, 255, 0));
-	  //   text.setPosition(UIRES_POSX + UI_PADDING + 280 + 0, UIRES_POSY + UI_PADDING + 0);
-	  //   _app.draw(text);
-	  // }
-
-	  // {
-	  //   std.ostringstream oss;
-	  //   oss + "O2: " + ResourceManager.getInstance().getO2();
-
-	  //   Text text;
-	  //   text.setString(oss.str());
-	  //   text.setFont(_font);
-	  //   text.setCharacterSize(24);
-	  //   text.setPosition(UIRES_POSX + UI_PADDING + 540 + 0, UIRES_POSY + UI_PADDING + 0);
-	  //   _app.draw(text);
-	  // }
-
-	}
-
 	void	draw(int frame) {
 	  // if (_isOpen) {
 	  // 	drawPanel(frame);

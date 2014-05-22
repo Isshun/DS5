@@ -224,7 +224,7 @@ public class Main {
 					});
 					_menu = menu;
 				}
-				_menu.refresh(window, null);
+				_menu.draw(window, null);
 			}
 			window.display();
 		}

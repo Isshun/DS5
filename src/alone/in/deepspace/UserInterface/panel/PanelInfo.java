@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
@@ -224,12 +225,7 @@ public class PanelInfo extends UserSubInterface {
 	}
 
 	private void createActionView() {
-		_itemAction = new FrameLayout(new Vector2f(120, 200)) {
-			@Override
-			public void onRefresh(RenderWindow app) {
-
-			}
-		};
+		_itemAction = new FrameLayout(new Vector2f(120, 200));
 		_itemAction.setPosition(10, 200);
 		_layoutItem.addView(_itemAction);
 		
@@ -249,12 +245,7 @@ public class PanelInfo extends UserSubInterface {
 	}
 
 	private void createGatherView() {
-		_itemGather = new FrameLayout(new Vector2f(120, 200)) {
-			@Override
-			public void onRefresh(RenderWindow app) {
-
-			}
-		};
+		_itemGather = new FrameLayout(new Vector2f(120, 200));
 		_itemGather.setVisible(false);
 		_itemGather.setPosition(10, 200);
 		_layoutItem.addView(_itemGather);
@@ -275,12 +266,7 @@ public class PanelInfo extends UserSubInterface {
 	}
 
 	private void createMiningView() {
-		_itemMine = new FrameLayout(new Vector2f(120, 200)) {
-			@Override
-			public void onRefresh(RenderWindow app) {
-
-			}
-		};
+		_itemMine = new FrameLayout(new Vector2f(120, 200));
 		_itemMine.setPosition(0, 200);
 		_itemMine.setVisible(false);
 		_layoutItem.addView(_itemMine);
@@ -533,7 +519,7 @@ public class PanelInfo extends UserSubInterface {
 	}
 
 	@Override
-	public void onRefresh(RenderWindow app) {
+	public void onDraw(RenderWindow app, RenderStates render) {
 		BaseItem item = _area != null ? _area.getItem() : null;
 		if (item == null && _area != null) {
 			item = _area.getRessource();

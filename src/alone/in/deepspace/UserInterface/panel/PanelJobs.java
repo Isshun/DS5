@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
@@ -30,7 +31,7 @@ public class PanelJobs extends UserSubInterface {
 	}
 	
 	@Override
-	public void onRefresh(RenderWindow app) {
+	public void onDraw(RenderWindow app, RenderStates render) {
 		if (_isVisible == false) {
 			return;
 		}

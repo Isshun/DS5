@@ -3,6 +3,7 @@ package alone.in.deepspace.UserInterface;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
@@ -39,7 +40,7 @@ public class UserInterfaceMessage extends UserSubInterface {
 	}
 
 	@Override
-	public void onRefresh(RenderWindow app) {
+	public void onDraw(RenderWindow app, RenderStates render) {
 		int offset = _frame - _start;
 		int index = (offset / LINE_INTERVAL) - 1;
 		if (offset % LINE_INTERVAL == 0) {

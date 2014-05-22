@@ -66,7 +66,7 @@ public class ButtonView extends View {
 	}
 
 	@Override
-	public void onRefresh(RenderWindow app, RenderStates render) {
+	public void onDraw(RenderWindow app, RenderStates render) {
 //		if (_background != null) {
 //			app.draw(_background, render);
 //		}
@@ -93,6 +93,5 @@ public class ButtonView extends View {
 		_iconPaddingX = x;
 		_iconPaddingY = y;
 	}
-
 }
 

@@ -40,8 +40,9 @@ public abstract class View {
 	}
 	
 	protected abstract void onCreate();
+	protected abstract void onDraw(RenderWindow app, RenderStates render);
 
-	public void refresh(RenderWindow app, RenderStates render) {
+	public void draw(RenderWindow app, RenderStates render) {
 		if (_isVisible == false) {
 			return;
 		}
@@ -50,7 +51,7 @@ public abstract class View {
 			MainRenderer.getInstance().draw(_background, render);
 		}
 		
-		onRefresh(app, render);
+		onDraw(app, render);
 	}
 
 	public void setSize(Vector2f size) {
@@ -144,9 +145,6 @@ public abstract class View {
 		if (_background != null) {
 			_background.setPosition(pos);
 		}
-	}
-
-	public void onRefresh(RenderWindow app, RenderStates states) {
 	}
 
 	public void setParent(FrameLayout parent) {

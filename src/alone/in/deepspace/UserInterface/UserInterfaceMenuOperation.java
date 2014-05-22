@@ -23,10 +23,6 @@ public class UserInterfaceMenuOperation extends UserSubInterface {
 		_texturePanel.loadFromFile((new File("res/bg_panel_operation.png")).toPath());
 	}
 
-	@Override
-	public void onRefresh(RenderWindow app) {
-	}
-
 	protected boolean	checkKey(Keyboard.Key key) {
 		super.checkKey(key);
 		if (key == Keyboard.Key.O) {

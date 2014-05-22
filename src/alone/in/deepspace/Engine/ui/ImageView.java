@@ -31,7 +31,7 @@ public class ImageView extends View {
 	}
 
 	@Override
-	public void onRefresh(RenderWindow app, RenderStates render) {
+	public void onDraw(RenderWindow app, RenderStates render) {
 		if (_icon != null) {
 			_icon.setPosition(_pos.x + _paddingLeft, _pos.y + _paddingTop);
 			app.draw(_icon, render);

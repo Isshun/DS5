@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
@@ -333,7 +334,7 @@ public class PanelCharacter extends UserSubInterface {
 	}
 
 	@Override
-	public void onRefresh(RenderWindow app) {
+	public void onDraw(RenderWindow app, RenderStates render) {
 		if (_character != null) {
 
 			CharacterStatus status = _character.getStatus();

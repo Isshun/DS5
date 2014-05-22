@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
@@ -63,7 +64,7 @@ public class PanelRoom extends UserSubInterface {
 	}
 
 	@Override
-	public void onRefresh(RenderWindow app) {
+	public void onDraw(RenderWindow app, RenderStates render) {
 		try {
 			for (int i = 0; i < TEXTS.length; i++) {
 				drawIcon(0, i);

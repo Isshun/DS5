@@ -73,8 +73,4 @@ public class PanelPlan extends UserSubInterface {
 		});
 		addView(btDump);
 	}
-
-	@Override
-	public void onRefresh(RenderWindow app) {
-	}
 }

@@ -69,7 +69,7 @@ public class TextView extends View {
 	}
 
 	@Override
-	public void onRefresh(RenderWindow app, RenderStates render) {
+	public void onDraw(RenderWindow app, RenderStates render) {
 		app.draw(_text, render);
 	}
 

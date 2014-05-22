@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.event.Event;
@@ -117,7 +118,7 @@ public class MenuSave extends MenuBase {
 	}
 	
 	@Override
-	public void onRefresh(RenderWindow app) {
+	public void onDraw(RenderWindow app, RenderStates render) {
 		int i = 0;
 		for (TextView lbFile: _lbFiles) {
 			lbFile.setColor(i++ == _index ? Color.YELLOW : Color.WHITE);

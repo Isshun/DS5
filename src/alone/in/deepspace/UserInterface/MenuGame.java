@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
@@ -39,7 +40,7 @@ public class MenuGame extends MenuBase {
 	}
 	
 	@Override
-	public void onRefresh(RenderWindow app) {
+	public void onDraw(RenderWindow app, RenderStates render) {
 		refreshEntry(app, "New game", 0);
 		refreshEntry(app, "Load", 1);
 		refreshEntry(app, "Save", 2);

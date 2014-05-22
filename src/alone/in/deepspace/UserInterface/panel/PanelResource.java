@@ -3,6 +3,7 @@ package alone.in.deepspace.UserInterface.panel;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
@@ -50,8 +51,7 @@ public class PanelResource extends UserSubInterface {
 	}
 	
 	@Override
-	public void onRefresh(RenderWindow app) {
-		
+	public void onDraw(RenderWindow app, RenderStates render) {
         _spice.setString("SP: " + String.valueOf(ResourceManager.getInstance().getSpice()));
         _o2.setString("O2: " + String.valueOf(ResourceManager.getInstance().getO2()));
         _energy.setString("PW: " + String.valueOf(ResourceManager.getInstance().getPower()));

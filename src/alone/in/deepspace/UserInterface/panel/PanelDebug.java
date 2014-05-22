@@ -3,6 +3,7 @@ package alone.in.deepspace.UserInterface.panel;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
@@ -223,26 +224,6 @@ public class PanelDebug extends UserSubInterface {
 //
 //		_index++;
 //	}
-
-	@Override
-	public void onRefresh(RenderWindow app) {
-//		_index = 0;
-//
-////		addDebug("add character");
-//		
-//	  BaseItem item = ServiceManager.getWorldMap().getItem(x, y);
-//
-//	  Log.debug("pos: " + x + " x " + y);
-//	  Log.debug("item: " + item);
-//
-//	  if (item != null) {
-//		addDebug("type", String.valueOf(item.getType()));
-//		addDebug("pos", item.getX() + " x " + item.getY());
-//		addDebug("zone req.", String.valueOf(item.getZoneIdRequired()));
-//		addDebug("zone", String.valueOf(item.getZoneId()));
-//		addDebug("room", String.valueOf(item.getRoomId()));
-//	  }
-	}
 
 	public void setUI(UserInterface ui) {
 		_ui = ui;

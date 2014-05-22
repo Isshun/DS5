@@ -126,8 +126,4 @@ public class PanelShortcut extends UserSubInterface {
 		});
 		addView(lbOrders);
 	}
-
-	@Override
-	public void onRefresh(RenderWindow app) {
-	}
 }

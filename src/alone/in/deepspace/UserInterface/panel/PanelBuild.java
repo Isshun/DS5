@@ -84,10 +84,6 @@ public class PanelBuild extends UserSubInterface {
 		drawPanel();
 	}
 
-	@Override
-	public void onRefresh(RenderWindow app) {
-	}
-
 	protected void	drawPanel() {
 		clearAllViews();
 		_icons.clear();

@@ -248,23 +248,23 @@ public class UserInterface {
 	}
 
 	public void onDraw(int frame, int update, int renderTime) {
-		_panelCharacter.refresh(_app, null);
-		_panelBase.refresh(_app, null);
-		_panelInfo.refresh(_app, null);
-		_panelPlan.refresh(_app, null);
-		_panelDebug.refresh(_app, null);
-		_panelDebugItems.refresh(_app, null);
-		_panelSystem.refresh(_app, null);
-		_panelShortcut.refresh(_app, null);
-		_panelResource.refresh(_app, null);
-		_panelRoom.refresh(_app, null);
+		_panelCharacter.draw(_app, null);
+		_panelBase.draw(_app, null);
+		_panelInfo.draw(_app, null);
+		_panelPlan.draw(_app, null);
+		_panelDebug.draw(_app, null);
+		_panelDebugItems.draw(_app, null);
+		_panelSystem.draw(_app, null);
+		_panelShortcut.draw(_app, null);
+		_panelResource.draw(_app, null);
+		_panelRoom.draw(_app, null);
 		_panelMessage.setFrame(frame);
-		_panelCrew.refresh(_app, null);
-		_uiScience.refresh(_app, null);
-		_uiSecurity.refresh(_app, null);
-		_uiBase.refresh(_app, null);
-		_panelBuild.refresh(_app, null);
-		_panelJobs.refresh(_app, null);
+		_panelCrew.draw(_app, null);
+		_uiScience.draw(_app, null);
+		_uiSecurity.draw(_app, null);
+		_uiBase.draw(_app, null);
+		_panelBuild.draw(_app, null);
+		_panelJobs.draw(_app, null);
 		
 //		int mb = 1024 * 1024;
 //        Runtime runtime = Runtime.getRuntime();
@@ -307,7 +307,7 @@ public class UserInterface {
 		}
 
 		if (_menu != null) {
-			_menu.refresh(_app, null);
+			_menu.draw(_app, null);
 		}
 	}
 

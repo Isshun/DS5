@@ -78,7 +78,7 @@ public class FrameLayout extends View {
 	}
 
 	@Override
-	public void refresh(RenderWindow app, RenderStates render) {
+	public void draw(RenderWindow app, RenderStates render) {
 		if (_isVisible == false) {
 			return;
 		}
@@ -87,24 +87,25 @@ public class FrameLayout extends View {
 			createRender();
 		}
 
-		super.refresh(app, _render);
+		super.draw(app, _render);
 
 		for (View view: _views) {
-			view.refresh(app, _render);
+			view.draw(app, _render);
 		}
 		
-		onRefresh(app);
+		onDraw(app, _render);
 	}
 	
 	public void setVisible(boolean visible) {
 		_isVisible = visible;
 	}
 
-	public void onRefresh(RenderWindow app) {
-	}
-
 	public boolean getVisible() {
 		return _isVisible;
+	}
+
+	@Override
+	protected void onDraw(RenderWindow app, RenderStates render) {
 	}
 
 }
