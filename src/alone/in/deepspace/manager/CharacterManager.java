@@ -1,4 +1,5 @@
 package alone.in.deepspace.manager;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,7 +27,6 @@ import alone.in.deepspace.model.Job.Abort;
 import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.Room;
-
 
 public class CharacterManager implements ISavable {
 
@@ -64,31 +64,6 @@ public class CharacterManager implements ISavable {
 		_count = 0;
 
 		Log.debug("CharacterManager done");
-	}
-
-	public void	assignJobs(int update) {
-		for (Character c: _characters) {
-			if (update % 10 == c.getLag() && c.isSleeping() == false && c.getJob() == null) {
-
-				// Need to sleep
-				if (c.getNeeds().isTired()) {
-					c.setJob(JobManager.getInstance().need(c, "base.bed"));
-				}
-				
-				else {
-					// Regular job
-					Job job = JobManager.getInstance().getJob(c);
-					if (job != null) {
-						c.setJob(job);
-					}
-	
-					// Routine job
-					else {
-						c.setJob(JobManager.getInstance().createRoutineJob(c));
-					}
-				}
-			}
-		}
 	}
 
 	public void	create() {
@@ -129,7 +104,7 @@ public class CharacterManager implements ISavable {
 						gender = Integer.valueOf(values[2]);
 						int sep = values[3].lastIndexOf(' ');
 						String lastName = values[3].substring(sep + 1, values[3].length());
-						Character c = new Character(_count++, x, y, values[3], lastName);
+						Character c = new Character(_count++, x, y, values[3], lastName, 24);
 						c.setGender(CharacterManager.getGender(gender));
 						_characters.add(c);
 					}
@@ -209,7 +184,8 @@ public class CharacterManager implements ISavable {
 		return professions;
 	}
 
-	public void    update(int count) {
+	public void    onUpdate(int update) {
+		Log.debug("CharacterManager: update");
 		
 		// Add new born
 		_characters.addAll(_addOnUpdate);
@@ -230,22 +206,46 @@ public class CharacterManager implements ISavable {
 		_characters.removeAll(_removeOnUpdate);
 		
 		for (Character c: _characters) {
-			c.action();
-			c.update();
-			c.move();
-			
-//			if (c.getJob() == null) {
-//				if (c.getPosX() == 30 && c.getPosY() == 10) {
-//					Job job = JobManager.getInstance().createMovingJob(20, 14);
-//					c.setJob(job);
-//				} else {
-//					Job job = JobManager.getInstance().createMovingJob(30, 10);
-//					c.setJob(job);
-//				}
-//			}
+			// Assign job
+			if (c.getJob() == null && update % 10 == c.getLag() && c.isSleeping() == false) {
+				assignJob(c);
+			}
 
-			if (count % 10 == 0) {
-				c.updateNeeds(count);
+			// Update needs
+			if (update % 10 == 0) {
+				c.updateNeeds(update);
+			}
+
+			c.action();
+			c.move();
+		}
+
+		Log.debug("CharacterManager: update done");
+	}
+
+	public void onLongUpdate() {
+		for (Character c: _characters) {
+			// Slow update
+			c.slowUpdate();
+		}
+	}
+
+	private void assignJob(Character c) {
+		// Need to sleep
+		if (c.getNeeds().isTired()) {
+			c.setJob(JobManager.getInstance().need(c, "base.bed"));
+		}
+		
+		else {
+			// Regular job
+			Job job = JobManager.getInstance().getJob(c);
+			if (job != null) {
+				c.setJob(job);
+			}
+
+			// Routine job
+			else {
+				c.setJob(JobManager.getInstance().createRoutineJob(c));
 			}
 		}
 	}
@@ -337,7 +337,7 @@ public class CharacterManager implements ISavable {
 			return null;
 		}
 
-		Character c = new Character(_count++, x, y, null, null);
+		Character c = new Character(_count++, x, y, null, null, 0);
 		Profession profession = professions[_count % professions.length];
 		c.setProfession(profession.getType());
 		_characters.add(c);
@@ -351,7 +351,7 @@ public class CharacterManager implements ISavable {
 			return null;
 		}
 
-		Character c = new Character(_count++, x, y, null, null);
+		Character c = new Character(_count++, x, y, null, null, 0);
 		c.setProfession(profession);
 		_characters.add(c);
 

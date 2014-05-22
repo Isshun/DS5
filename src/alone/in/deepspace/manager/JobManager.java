@@ -249,6 +249,7 @@ public class JobManager implements ISavable {
 
 		Job bestJob = getJobForCharacterNeed(character);
 		if (bestJob != null) {
+			Log.debug("bestJob: 1");
 			return bestJob;  
 		}
 
@@ -262,12 +263,15 @@ public class JobManager implements ISavable {
 				job.setAction(JobManager.Action.STORE);
 				job.setCharacterRequire(character);
 				addJob(job);
+				Log.debug("bestJob: 2");
 				return job;
 			}
 		}
 
 		int x = character.getX();
 		int y = character.getY();
+
+		Log.debug("bestJob: 3");
 
 		// Regular jobs
 		if (bestJob == null) {
@@ -288,6 +292,8 @@ public class JobManager implements ISavable {
 				}
 			}
 		}
+
+		Log.debug("bestJob: 4");
 
 		// Failed jobs
 		if (bestJob == null) {
@@ -472,7 +478,7 @@ public class JobManager implements ISavable {
 		}
 		
 		if ((int)(Math.random() * 100) <= Constant.CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS) {
-			return createMovingJob(20, 20);
+			return createMovingToMettingRoom(c);
 		}
 		
 		// Play with random object
@@ -498,9 +504,17 @@ public class JobManager implements ISavable {
 		}
 		
 		// Go to meeting room
-		return createMovingJob(10, 10);
+		return createMovingToMettingRoom(c);
 		
 //		return null;
+	}
+
+	private Job createMovingToMettingRoom(Character c) {
+		Room room = RoomManager.getInstance().getNeerRoom(c.getPosX(), c.getPosY(), Room.Type.PUB);
+		if (room != null) {
+			return createMovingJob(room.getX(), room.getY());
+		}
+		return null;
 	}
 
 	private Job createUseJob(BaseItem item) {

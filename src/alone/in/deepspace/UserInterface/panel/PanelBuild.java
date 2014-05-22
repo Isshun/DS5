@@ -30,10 +30,6 @@ public class PanelBuild extends UserSubInterface {
 	private static int 			FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static int 			FRAME_HEIGHT = Constant.PANEL_HEIGHT;
 
-	Mode				_panelMode;
-	Mode				_panelModeHover;
-	ItemInfo			_itemHover;
-
 	public enum Mode {
 		NONE,
 		BUILD_STRUCTURE,
@@ -42,6 +38,9 @@ public class PanelBuild extends UserSubInterface {
 		REMOVE_ITEM
 	};
 
+	private Mode						_panelMode;
+	private Mode						_panelModeHover;
+	private ItemInfo					_itemHover;
 	private Map<ItemInfo, ButtonView> 	_icons;
 	protected ItemInfo 					_currentSelected;
 	protected Mode 						_mode;
@@ -57,30 +56,30 @@ public class PanelBuild extends UserSubInterface {
 		_panelModeHover = Mode.BUILD_STRUCTURE;
 		_mode = Mode.NONE;
 
-//
-//		TextView lbQuarter = new TextView(new Vector2f(140, 32));
-//		lbQuarter.setString("Quarter");
-//		lbQuarter.setCharacterSize(20);
-//		lbQuarter.setPosition(new Vector2f(20, 270));
-//		addView(lbQuarter);
-//
-//		TextView lbEngineering = new TextView(new Vector2f(140, 32));
-//		lbEngineering.setString("Engineering");
-//		lbEngineering.setCharacterSize(20);
-//		lbEngineering.setPosition(new Vector2f(20, 520));
-//		addView(lbEngineering);
-//
-//		TextView lbSickbay = new TextView(new Vector2f(140, 32));
-//		lbSickbay.setString("Sickbay");
-//		lbSickbay.setCharacterSize(20);
-//		lbSickbay.setPosition(new Vector2f(20, 670));
-//		addView(lbSickbay);
-//
-//		TextView lbCommon = new TextView(new Vector2f(140, 32));
-//		lbCommon.setString("Common");
-//		lbCommon.setCharacterSize(20);
-//		lbCommon.setPosition(new Vector2f(20, 920));
-//		addView(lbCommon);
+		//
+		//		TextView lbQuarter = new TextView(new Vector2f(140, 32));
+		//		lbQuarter.setString("Quarter");
+		//		lbQuarter.setCharacterSize(20);
+		//		lbQuarter.setPosition(new Vector2f(20, 270));
+		//		addView(lbQuarter);
+		//
+		//		TextView lbEngineering = new TextView(new Vector2f(140, 32));
+		//		lbEngineering.setString("Engineering");
+		//		lbEngineering.setCharacterSize(20);
+		//		lbEngineering.setPosition(new Vector2f(20, 520));
+		//		addView(lbEngineering);
+		//
+		//		TextView lbSickbay = new TextView(new Vector2f(140, 32));
+		//		lbSickbay.setString("Sickbay");
+		//		lbSickbay.setCharacterSize(20);
+		//		lbSickbay.setPosition(new Vector2f(20, 670));
+		//		addView(lbSickbay);
+		//
+		//		TextView lbCommon = new TextView(new Vector2f(140, 32));
+		//		lbCommon.setString("Common");
+		//		lbCommon.setCharacterSize(20);
+		//		lbCommon.setPosition(new Vector2f(20, 920));
+		//		addView(lbCommon);
 
 		drawPanel();
 	}
@@ -92,7 +91,7 @@ public class PanelBuild extends UserSubInterface {
 	protected void	drawPanel() {
 		clearAllViews();
 		_icons.clear();
-		
+
 		TextView lbUp = new TextView(new Vector2f(140, 32));
 		lbUp.setString("UP");
 		lbUp.setCharacterSize(20);
@@ -133,7 +132,7 @@ public class PanelBuild extends UserSubInterface {
 					addView(lbQuarter);
 				}
 				posY += 44;
-	
+
 				int i = -1;
 				for (ItemInfo info: category.items) {
 					if (posY > 42) {
@@ -151,18 +150,18 @@ public class PanelBuild extends UserSubInterface {
 	void	drawIcon(int offset, int index, final ItemInfo info) throws IOException {
 		ButtonView icon = _icons.get(info);
 		if (icon == null) {
-			
+
 			// TODO
-//			if (type < 0) {
-//				icon = new ButtonView(new Vector2f(62, 80), "remove");
-//				icon.setIcon(SpriteManager.getInstance().getBullet(3));
-//			} else {
-				icon = new ButtonView(new Vector2f(62, 80));
-				icon.setString(info.label);
-				icon.setIcon(SpriteManager.getInstance().getIcon(info));
-				icon.setIconPadding(0, 20);
-//			}
-				icon.setPadding(4, 4, 4, 4);
+			//			if (type < 0) {
+			//				icon = new ButtonView(new Vector2f(62, 80), "remove");
+			//				icon.setIcon(SpriteManager.getInstance().getBullet(3));
+			//			} else {
+			icon = new ButtonView(new Vector2f(62, 80));
+			icon.setString(info.label);
+			icon.setIcon(SpriteManager.getInstance().getIcon(info));
+			icon.setIconPadding(0, 20);
+			//			}
+			icon.setPadding(4, 4, 4, 4);
 			icon.setPosition(20 + (index % 4) * 80, offset + (int)(index / 4) * 100);
 			icon.setBackgroundColor(info.equals(_itemHover) ? Color.WHITE : COLOR_YELLOW);
 			icon.setOnFocusListener(new OnFocusListener() {
@@ -182,15 +181,15 @@ public class PanelBuild extends UserSubInterface {
 					for (ButtonView icon: _icons.values()) {
 						icon.setBackgroundColor(COLOR_YELLOW);
 					}
-// TODO
+					// TODO
 					//					if (type == -2) {
-//						_mode = Mode.REMOVE_STRUCTURE;
-//					} else if (type == -3) {
-//						_mode = Mode.REMOVE_ITEM;
-//					} else {
-//						_mode = Mode.BUILD_ITEM;
-//						_currentSelected = BaseItem.getTypeIndex(type);
-//					}
+					//						_mode = Mode.REMOVE_STRUCTURE;
+					//					} else if (type == -3) {
+					//						_mode = Mode.REMOVE_ITEM;
+					//					} else {
+					//						_mode = Mode.BUILD_ITEM;
+					//						_currentSelected = BaseItem.getTypeIndex(type);
+					//					}
 					setSelectedItem(info);
 
 					((ButtonView) view).setBackgroundColor(Color.RED);
@@ -278,15 +277,15 @@ public class PanelBuild extends UserSubInterface {
 
 					// TODO
 					_itemHover = ServiceManager.getData().items.get(0);
-//					if (_panelMode == Mode.BUILD_STRUCTURE) {
-//						if (index + BaseItem.Type.STRUCTURE_START.ordinal() + 1 < BaseItem.Type.STRUCTURE_STOP.ordinal()) {
-//							_itemHover = index + BaseItem.Type.STRUCTURE_START.ordinal() + 1;
-//						}
-//					} else if (_panelMode == Mode.BUILD_ITEM) {
-//						if (index + BaseItem.Type.ITEM_START.ordinal() + 1 < BaseItem.Type.ITEM_STOP.ordinal()) {
-//							_itemHover = index + BaseItem.Type.ITEM_START.ordinal() + 1;
-//						}
-//					}
+					//					if (_panelMode == Mode.BUILD_STRUCTURE) {
+					//						if (index + BaseItem.Type.STRUCTURE_START.ordinal() + 1 < BaseItem.Type.STRUCTURE_STOP.ordinal()) {
+					//							_itemHover = index + BaseItem.Type.STRUCTURE_START.ordinal() + 1;
+					//						}
+					//					} else if (_panelMode == Mode.BUILD_ITEM) {
+					//						if (index + BaseItem.Type.ITEM_START.ordinal() + 1 < BaseItem.Type.ITEM_STOP.ordinal()) {
+					//							_itemHover = index + BaseItem.Type.ITEM_START.ordinal() + 1;
+					//						}
+					//					}
 				}
 				return true;
 			}

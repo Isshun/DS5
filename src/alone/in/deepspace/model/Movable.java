@@ -23,8 +23,8 @@ public class Movable implements PathManagerCallback {
 	protected int				_steps;
 	protected Job				_job;
 
-	private HashMap<Integer, Integer> _points;
-	private int _lastY;
+	private HashMap<Integer, Integer> 	_points;
+	private int 						_lastY;
 
 	public Movable(int id, int x, int y) {
 		  _id = id;

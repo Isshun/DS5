@@ -219,4 +219,16 @@ public class RoomManager implements ISavable {
 		return _roomList;
 	}
 
+	public Room getNeerRoom(int x, int y, Type pub) {
+		int besDistance = Integer.MAX_VALUE;
+		Room bestRoom = null;
+		for (Room room: _roomList) {
+			int distance = Math.abs(room.getX() - x) + Math.abs(room.getY() - y);
+			if (distance < besDistance) {
+				besDistance = distance;
+			}
+		}
+		return bestRoom;
+	}
+
 }

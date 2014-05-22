@@ -2,7 +2,6 @@ package alone.in.deepspace.UserInterface;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.RenderWindow;
@@ -10,9 +9,8 @@ import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.Main;
-import alone.in.deepspace.Strings;
-import alone.in.deepspace.UserInterface.UserInterface.Mode;
 import alone.in.deepspace.UserInterface.panel.PanelBase;
 import alone.in.deepspace.UserInterface.panel.PanelBuild;
 import alone.in.deepspace.UserInterface.panel.PanelCharacter;
@@ -27,13 +25,9 @@ import alone.in.deepspace.UserInterface.panel.PanelRoom;
 import alone.in.deepspace.UserInterface.panel.PanelShortcut;
 import alone.in.deepspace.UserInterface.panel.PanelSystem;
 import alone.in.deepspace.Utils.Constant;
-import alone.in.deepspace.Utils.Log;
 import alone.in.deepspace.Utils.Settings;
 import alone.in.deepspace.engine.Viewport;
-import alone.in.deepspace.engine.ui.OnClickListener;
-import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.UIMessage;
-import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
@@ -71,7 +65,7 @@ public class UserInterface {
 	private PanelBase 					_panelBase;
 	private PanelSystem 				_panelSystem;
 	private PanelShortcut 				_panelShortcut;
-	private PanelJobs					_uiJobs;
+	private PanelJobs					_panelJobs;
 	private PanelResource 				_panelResource;
 	private UserInterfaceMessage 		_panelMessage;
 	private PanelRoom 					_panelRoom;
@@ -79,8 +73,7 @@ public class UserInterface {
 	private PanelDebugItem 				_panelDebugItems;
 	private Mode 						_mode;
 	private ContextualMenu 				_menu;
-	private int _menuPosX;
-	private int _menuPosY;
+	private Game _game;
 
 	public enum Mode {
 		BASE,
@@ -98,7 +91,8 @@ public class UserInterface {
 		NONE
 	}
 
-	public void onCreate(RenderWindow app, Viewport viewport) throws IOException {
+	public void onCreate(Game game, RenderWindow app, Viewport viewport) throws IOException {
+		_game = game;
 		_viewport = viewport;
 		_app = app;
 		_characteres = ServiceManager.getCharacterManager();
@@ -131,12 +125,12 @@ public class UserInterface {
 		_panelCrew = new PanelCrew(app, 0);
 		_panelCrew.setUI(this);
 		_uiBase = new UserInterfaceMenuOperation(app, 1);
-		_uiJobs = new PanelJobs(app);
+		_panelJobs = new PanelJobs(app);
 		_panelMessage.setStart(0);
 
 		setMode(Mode.NONE);
 	}
-	
+
 	public void	onMouseMove(int x, int y) {
 		_keyMovePosX = getRelativePosX(x);
 		_keyMovePosY = getRelativePosY(y);
@@ -146,7 +140,7 @@ public class UserInterface {
 			_viewport.update(x, y);
 			if (_menu != null && _menu.isVisible()) {
 				//_menu.move(_viewport.getPosX(), _viewport.getPosY());
-				_menu.setPosition(_viewport.getPosX(), _viewport.getPosY());
+				_menu.setViewPortPosition(_viewport.getPosX(), _viewport.getPosY());
 			}
 		}
 	}
@@ -181,10 +175,10 @@ public class UserInterface {
 			return;
 		}
 
-//		if (_panelPlan.catchClick(x, y)) {
-//			_keyLeftPressed = false;
-//			return;
-//		}
+		//		if (_panelPlan.catchClick(x, y)) {
+		//			_keyLeftPressed = false;
+		//			return;
+		//		}
 
 		_keyLeftPressed = true;
 		_keyMovePosX = _keyPressPosX = getRelativePosX(x);
@@ -212,7 +206,7 @@ public class UserInterface {
 	public void setMode(Mode mode) {
 		_mode = _mode != mode ? mode : Mode.NONE;
 		_menu = null;
-		
+
 		if (_mode != Mode.CHARACTER) 	_panelCharacter.setVisible(false);
 		if (_mode != Mode.INFO) 		_panelInfo.setVisible(false);
 		if (_mode != Mode.PLAN) 		_panelPlan.setVisible(false);
@@ -224,7 +218,7 @@ public class UserInterface {
 		if (_mode != Mode.BASE) 		_uiBase.setVisible(false);
 		if (_mode != Mode.SCIENCE) 		_uiScience.setVisible(false);
 		if (_mode != Mode.SECURITY)		_uiSecurity.setVisible(false);
-		if (_mode != Mode.JOBS)			_uiJobs.setVisible(false);
+		if (_mode != Mode.JOBS)			_panelJobs.setVisible(false);
 		if (_mode != Mode.ROOM)			_panelRoom.setVisible(false);
 
 		switch (_mode) {
@@ -235,7 +229,7 @@ public class UserInterface {
 		case PLAN: 			_panelPlan.toogle(); break;
 		case CHARACTER: 	_panelCharacter.toogle(); break;
 		case BASE: 			_panelBase.toogle(); break;
-		case JOBS: 			_uiJobs.toogle(); break;
+		case JOBS: 			_panelJobs.toogle(); break;
 		case CREW: 			_panelCrew.toogle(); break;
 		case ROOM: 			_panelRoom.toogle(); break;
 		case SCIENCE:		_uiScience.toogle(); break;
@@ -274,7 +268,7 @@ public class UserInterface {
 		_uiSecurity.refresh(_app, null);
 		_uiBase.refresh(_app, null);
 		_panelBuild.refresh(_app, null);
-		_uiJobs.refresh(_app, null);
+		_panelJobs.refresh(_app, null);
 
 		if (_panelBuild.getMode() != PanelBuild.Mode.NONE || _panelPlan.getMode() != PanelPlan.Mode.NONE) {
 			if (_keyLeftPressed) {
@@ -308,7 +302,7 @@ public class UserInterface {
 			}
 
 		}
-				
+
 		if (_menu != null) {
 			_menu.refresh(_app, null);
 		}
@@ -319,6 +313,8 @@ public class UserInterface {
 		if (event.asKeyEvent().key == Keyboard.Key.ADD) {
 			if (Main.getUpdateInterval() - 40 > 0) {
 				Main.setUpdateInterval(Main.getUpdateInterval() - 40);
+			} else {
+				Main.setUpdateInterval(0);
 			}
 		}
 
@@ -353,6 +349,16 @@ public class UserInterface {
 			}
 		}
 
+		
+		if (event.asKeyEvent().key == Keyboard.Key.ESCAPE || event.asKeyEvent().key == Keyboard.Key.BACKSPACE) {
+			if (_mode != Mode.NONE) {
+				setMode(Mode.NONE);
+			} else {
+				_game.setRunning(!_game.isRunning());
+			}
+			return true;
+		}
+		
 		if (event.asKeyEvent().key == Keyboard.Key.TAB) {
 			if ((event.type == Event.Type.KEY_RELEASED)) {
 				if (_panelCharacter.getCharacter() != null) {
@@ -371,7 +377,7 @@ public class UserInterface {
 
 		if (event.asKeyEvent().key == Keyboard.Key.SPACE) {
 			if ((event.type == Event.Type.KEY_RELEASED)) {
-				Main.pause();
+				_game.setRunning(_game.isRunning());
 			}
 			return true;
 		}
@@ -552,7 +558,7 @@ public class UserInterface {
 			return;
 		}
 
-		
+
 		// Set room
 		Room.Type roomType = _panelRoom.getSelectedRoom();
 		if (roomType != null) {
@@ -565,10 +571,10 @@ public class UserInterface {
 			} else {
 				RoomManager.getInstance().putRoom(_keyPressPosX, _keyPressPosX, fromX, fromY, toX, toY, roomType, null);
 			}
-			
+
 			return;
 		}
-		
+
 		if (_mode == Mode.ROOM) {
 			final Room room = RoomManager.getInstance().get(getRelativePosX(x), getRelativePosY(y));
 			_panelRoom.setRoom(room);
@@ -611,56 +617,16 @@ public class UserInterface {
 		if (_keyRightPressed && Math.abs(_mouseRightPressX - x) > 5 || Math.abs(_mouseRightPressY - y) > 5) {
 			_viewport.update(x, y);
 		}
-		
-		else if (_mode == Mode.ROOM) {
+
+		else if (_mode == Mode.ROOM && _panelRoom.getSelectedRoom() == Room.Type.NONE) {
 			final Room room = RoomManager.getInstance().get(getRelativePosX(x), getRelativePosY(y));
 			if (room != null) {
-				
-				List<Character> characters = ServiceManager.getCharacterManager().getList();
-				final ContextualMenu subMenu = new ContextualMenu(_app, 0, new Vector2f(100, 0), new Vector2f(160, (characters.size() + 1) * ContextualMenu.LINE_HEIGHT + ContextualMenu.PADDING_V * 2), _viewport);
-				subMenu.addEntry(Strings.LB_NOBODY, new OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						room.setOwner(null);
-						_menu = null;
-					}
-				}, null);
-				for (final Character character: characters) {
-					subMenu.addEntry(character.getName(), new OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							room.setOwner(character);
-							_menu = null;
-						}
-					}, null);
-				}
-
-				_menuPosX = x;
-				_menuPosY = y;
-				_menu = new ContextualMenu(_app, 0, new Vector2f(x, y), new Vector2f(100, 120), _viewport);
-				_menu.addEntry("set owner", new OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						_menu.addSubMenu(1, subMenu);
-					}
-				}, new OnFocusListener() {
-					
-					@Override
-					public void onExit(View view) {
-//						_menu.removeSubMenu();
-					}
-					
-					@Override
-					public void onEnter(View view) {
-//						_menu.addSubMenu(1, subMenu);
-					}
-				});
-				_menu.setVisible(true);
+				_menu = new RoomContextualMenu(_app, 0, new Vector2f(x, y), new Vector2f(100, 120), _viewport, room);
 			} else {
 				_menu = null;
 			}
 		}
-		
+
 		// Cancel selected items 
 		else {
 			_panelBuild.setSelectedItem(null);

@@ -1,5 +1,5 @@
 BEGIN GAME
-MATTER	20672
+MATTER	20630
 SPICE	0
 WATER	0
 END GAME
@@ -354,6 +354,7 @@ BEGIN WORLDMAP
 0	17	17	base.floor	1
 0	17	18	base.floor	1
 0	17	19	base.floor	1
+0	17	19	base.test	42
 0	17	20	base.floor	1
 0	17	21	base.floor	1
 0	17	22	base.floor	1
@@ -1010,15 +1011,7 @@ BEGIN WORLDMAP
 5	28	23	base.floor	1
 END WORLDMAP
 BEGIN CHARACTERS
-14	15	2	Samantha Sheppard
-14	16	2	Samantha Cooper
-5	21	1	Gaius Summers
-5	9	2	Janice Beckett
-19	13	2	Kathryn Sheppard
-24	21	2	Janice Mallory
-23	13	2	Alice Hartness
-26	19	1	Wesley Cooper
-24	19	1	Wesley Lawton
+0	0	2	Ezri "Hardball" Dax
 END CHARACTERS
 BEGIN ROOMS
 5	9	1	0

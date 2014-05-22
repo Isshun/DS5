@@ -1,10 +1,9 @@
 package alone.in.deepspace.model;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
-
-
 
 public class Room {
 	public enum Type {
@@ -18,25 +17,27 @@ public class Room {
 		GARDEN
 	}
 
-	static int _roomCount = 0;
-	static int _roomTmpId = 0;
+	static int 			_roomCount = 0;
+	static int 			_roomTmpId = 0;
 
 	int					_id;
 	int					_zoneId;
 	List<BaseItem>		_doors;
-	private Type _type;
-	private Character _owner;
-	private int _x;
-	private int _y;
-	private Color _color;
-	private int _minX;
-	private int _maxX;
+	private Type 		_type;
+	private Character 	_owner;
+	private int 		_x;
+	private int 		_y;
+	private Color 		_color;
+	private int 		_minX;
+	private int 		_maxX;
+	private boolean 	_isCommon;
 
 	public Room(Type type, int x, int y) {
 		_color = new Color((int)(Math.random() * 200), (int)(Math.random() * 200), (int)(Math.random() * 200));
 		_id = -1;
 		_x = x;
 		_y = y;
+		_isCommon = true;
 		_maxX = Integer.MIN_VALUE;
 		_minX = Integer.MAX_VALUE;
 		_zoneId = 0;
@@ -73,13 +74,27 @@ public class Room {
 	//	  return null;
 	//	}
 
-	public int				getId() { return _id; }
-	public int				getZoneId() { return _zoneId; }
-	public static int		getNewId() { return ++_roomCount; }
+	public int			getId() { return _id; }
+	public int			getZoneId() { return _zoneId; }
+	public static int	getNewId() { return ++_roomCount; }
 
-	public void setId(int i) {
-		_id = i;
-	}
+	public Character 	getOwner() { return _owner; }
+	public int 			getX() { return _x; }
+	public int 			getY() { return _y; }
+	public Color 		getColor() { return _color; }
+	public int 			getMinX() { return _minX; }
+	public int 			getMaxX() { return _maxX; }
+	public int 			getWidth() { return _maxX - _minX + 1; }
+	public Type 		getType() { return _type; }
+
+	public void 		setOwner(Character owner) { _owner = owner; }
+	public void 		setMaxX(int x) { _maxX = x; }
+	public void 		setMinX(int x) { _minX = x; }
+	public void 		setCommon(boolean common) { _isCommon = common; }
+	public void 		setId(int i) { _id = i; }
+
+	public boolean 		isCommon() { return _isCommon; }
+	public boolean		isType(Type type) { return _type == type; }
 
 //	public void			setZoneId(int zoneId) {
 //		_zoneId = zoneId;
@@ -183,10 +198,6 @@ public class Room {
 	//	  setZone(x-1, y, roomId, zoneId);
 	//	}
 
-	public Type getType() {
-		return _type;
-	}
-
 	public static Type getType(int type) {
 		switch (type) {
 		case 1: return Type.QUARTER;
@@ -212,31 +223,4 @@ public class Room {
 		default: 			return "";
 		}
 	}
-
-	public void setOwner(Character owner) {
-		_owner = owner;
-	}
-
-	public Character getOwner() {
-		return _owner;
-	}
-
-	public int getX() { return _x; }
-	public int getY() { return _y; }
-
-	public boolean isType(Type type) { return _type == type; }
-
-	public Color getColor() {
-		return _color;
-	}
-
-	public int 		getMinX() { return _minX; }
-	public void 	setMinX(int x) { _minX = x; }
-	public int 		getMaxX() { return _maxX; }
-	public void 	setMaxX(int x) { _maxX = x; }
-
-	public int getWidth() {
-		return _maxX - _minX + 1;
-	}
-
 }

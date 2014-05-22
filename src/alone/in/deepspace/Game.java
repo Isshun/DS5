@@ -6,11 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.graphics.Transform;
+import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.event.Event;
 import org.jsfml.window.event.MouseButtonEvent;
@@ -25,6 +27,7 @@ import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.DynamicObjectManager;
 import alone.in.deepspace.manager.FoeManager;
 import alone.in.deepspace.manager.JobManager;
+import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
@@ -42,6 +45,8 @@ public class Game implements ISavable {
 	private int 					_lastLeftClick;
 	private MainRenderer 			_mainRenderer;
 	private RenderWindow 			_app;
+	private boolean					_isMenuOpen;
+	private boolean 				_isRunning;
 
 	public static int getFrame() { return _frame; }
 	
@@ -55,11 +60,12 @@ public class Game implements ISavable {
 		_lastInput = 0;
 		_frame = 0;
 		_app = app;
+		_isRunning = true;
 		
 		_viewport = new Viewport(app);
 		
 		_ui = UserInterface.getInstance();
-		_ui.onCreate(app, _viewport);
+		_ui.onCreate(this, app, _viewport);
 
 		_dynamicObjectManager = DynamicObjectManager.getInstance();
 
@@ -74,112 +80,34 @@ public class Game implements ISavable {
 		Log.info("Game:\tdone");
 	}
 
-	void	onUpdate() {
+	public void	onUpdate() {
+		if (_isMenuOpen) {
+			return;
+		}
+		
 		_dynamicObjectManager.update();
 
 		ServiceManager.getWorldMap().update();
 
-		// Update item
-		int w = ServiceManager.getWorldMap().getWidth();
-		int h = ServiceManager.getWorldMap().getHeight();
-		
-		for (int i = 0; i < w; i++) {
-			for (int j = 0; j < h; j++) {
-
-
-				//				// Update oxygen
-				//				if (_frame % 6 == 0) {
-				//					WorldArea area = ServiceManager.getWorldMap().getArea(i, j);
-				//					if (area.getStructure() != null && area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				//						int oxygen = area.getOxygen();
-				//						int count = 1;
-				//
-				//						WorldArea a1 = ServiceManager.getWorldMap().getArea(i+1, j);
-				//						if (a1.getStructure() == null) {
-				//							count++;
-				//						}
-				//						else if (area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				//							oxygen += a1.getOxygen();
-				//							count++;
-				//						}
-				//
-				//						WorldArea a2 = ServiceManager.getWorldMap().getArea(i-1, j);
-				//						if (a2.getStructure() == null) {
-				//							count++;
-				//						}
-				//						else if (a2.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				//							oxygen += a2.getOxygen();
-				//							count++;
-				//						}
-				//
-				//						WorldArea a3 = ServiceManager.getWorldMap().getArea(i, j+1);
-				//						if (a3.getStructure() == null) {
-				//							count++;
-				//						}
-				//						else if (a3.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				//							oxygen += a3.getOxygen();
-				//							count++;
-				//						}
-				//			
-				//						WorldArea a4 = ServiceManager.getWorldMap().getArea(i, j-1);
-				//						if (a4.getStructure() == null) {
-				//							count++;
-				//						}
-				//						else if (a4.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				//							oxygen += a4.getOxygen();
-				//							count++;
-				//						}
-				//			
-				//						int value = (int) Math.ceil((double)oxygen / count);
-				//			
-				//						  // if (a1 != null && a1.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				//						  // 	a1.setOxygen(value);
-				//						  // }
-				//			
-				//						  // if (a2 != null && a2.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				//						  // 	a2.setOxygen(value);
-				//						  // }
-				//			
-				//						  // if (a3 != null && a3.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				//						  // 	a3.setOxygen(value);
-				//						  // }
-				//			
-				//						  // if (a4 != null && a4.isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-				//						  // 	a4.setOxygen(value);
-				//						  // }
-				//			
-				//						area.setOxygen(value);
-				//					}
-				//				}
-			}
+		// Path complete
+		List<Runnable> jobsDone = PathManager.getInstance().getJobs();
+		for (Runnable job: jobsDone) {
+			job.run();
 		}
-
-
-		// assign works
-		// if (_update % 10 == 0) {
-		//   ServiceManager.getWorldMap().reloadAborted();
-		// }
-
-		// int jobsCount = JobManager.getInstance().getCount();
-		// if (jobsCount > 0) {
-		//   Job job = JobManager.getInstance().getJob();
-		//   if (job != null && _characterManager.assignJob(job) == null) {
-		// 	JobManager.getInstance().abort(job);
-		//   }
-		// }
-
+		jobsDone.clear();
+		
 		// Characters
-		_characterManager.assignJobs(_update);
-		_characterManager.update(_update);
+		_characterManager.onUpdate(_update);
 
 		// Foes
 		_FoeManager.checkSurroundings();
 
 		_update++;
+	}
 
-		if (_update % 50 == 0) {
-			ResourceManager.getInstance().update();
-		}
+	public void onLongUpdate() {
+		ResourceManager.getInstance().update();
+		_characterManager.onLongUpdate();
 	}
 
 	public void onEvent(Event event) throws IOException {
@@ -224,7 +152,13 @@ public class Game implements ISavable {
 
 		// Check key code
 		if (event.type == Event.Type.KEY_RELEASED) {
-			_ui.checkKeyboard(event, _frame, _lastInput);
+			if (_ui.checkKeyboard(event, _frame, _lastInput)) {
+				return;
+			}
+			
+			if (event.asKeyEvent().key == Keyboard.Key.ESCAPE) {
+				_isMenuOpen = !_isMenuOpen;
+			}
 		}
 	}
 
@@ -338,4 +272,11 @@ public class Game implements ISavable {
 //		}
 	}
 
+	public boolean isRunning() {
+		return _isRunning;
+	}
+
+	public void setRunning(boolean running) {
+		_isRunning = running;		
+	}
 }

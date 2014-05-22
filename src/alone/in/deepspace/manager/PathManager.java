@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedTransferQueue;
+import java.util.concurrent.TransferQueue;
 
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.Mover;
@@ -25,7 +27,7 @@ import alone.in.deepspace.model.Region;
 import alone.in.deepspace.model.Region.Door;
 
 public class PathManager {
-	
+
 	public interface PathManagerCallback {
 		  void	onPathComplete(Vector<Position> path, Job item);
 		  void	onPathFailed(Job item);
@@ -71,23 +73,24 @@ public class PathManager {
 		}
 	}
 
-	private static final int THREAD_POOL_SIZE = 4;
+	private static final int 			THREAD_POOL_SIZE = 4;
+	protected static final int 			REGION_SIZE = 10;
 
-	protected static final int REGION_SIZE = 10;
+	private static PathManager 			sSelf;
+	final private ArrayList<Runnable> 	_jobsDone;
+	private Map<Long, OldPath> 			_pool;
+	private ExecutorService 			_threadPool;
+	private Map<Integer, Boolean>		_bridges;
+	public List<Door>					_doors;
+	protected Region[][] 				_regions;
 
-	private static PathManager sSelf;
-	private Map<Long, OldPath> _pool;
-	private ExecutorService _threadPool;
-	private Map<Integer, Boolean>	_bridges;
-	public List<Door>				_doors;
-
-	protected Region[][] _regions;
 
 	public PathManager() {
 		_threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 		_pool = new HashMap<Long, OldPath>();
 		_bridges = new HashMap<Integer, Boolean>();
 		_doors = new ArrayList<Door>();
+		_jobsDone = new ArrayList<Runnable>();
 		NodesPool.init();
 		
 		//		  _data = new map<int, AStarSearch<MapSearchNode>*>();
@@ -361,52 +364,61 @@ public class PathManager {
 
 				//Log.info("getPathAsync: " + character.getX() + ", " + character.getY() + ", " + toX + ", " + toY);
 				Log.debug("getPathAsync");
-
-				// Get in cache
-				long sum1 = getSum(fromX, fromY, toX, toY);
-				if (_pool.get(sum1) != null) {
-					Log.info("character: path in cache");
-					Vector<Position> path = _pool.get(sum1).path;
-					if (path != null) {
-						character.onPathComplete(path, job);
-					} else {
-						character.onPathFailed(job);
-					}
-					return;
-				}
-
-				// Get in cache
-				long sum2 = getSum(toX, toY, fromX, fromY);
-				if (_pool.get(sum2) != null) {
-					Log.info("character: path in cache");
-					character.onPathComplete(_pool.get(sum2).path, job);
-					return;
-				}
-				
+//
+//				// Get in cache
+//				long sum1 = getSum(fromX, fromY, toX, toY);
+//				if (_pool.get(sum1) != null) {
+//					Log.info("character: path in cache");
+//					Vector<Position> path = _pool.get(sum1).path;
+//					if (path != null) {
+//						character.onPathComplete(path, job);
+//					} else {
+//						character.onPathFailed(job);
+//					}
+//					return;
+//				}
+//
+//				// Get in cache
+//				long sum2 = getSum(toX, toY, fromX, fromY);
+//				if (_pool.get(sum2) != null) {
+//					Log.info("character: path in cache");
+//					character.onPathComplete(_pool.get(sum2).path, job);
+//					return;
+//				}
+//				
 				Node[][] nodes = NodesPool.getNodes(ServiceManager.getWorldMap());
 				PathFinder finder = new AStarPathFinder(ServiceManager.getWorldMap(), 500, true, nodes);
 				Path rawpath = finder.findPath(new Mover() {}, fromX, fromY, toX, toY);
 				if (rawpath != null) {
 
-					// Cache
-					Vector<Position> path = new Vector<Position>();
+//					// Cache
+					final Vector<Position> path = new Vector<Position>();
 					for (int i = 0; i < rawpath.getLength(); i++) {
 						path.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
 					}
-					_pool.put(sum1, new OldPath(path));
+//					_pool.put(sum1, new OldPath(path));
+//
+//					// Cache
+//					Vector<Position> reversedPath = new Vector<Position>();
+//					for (int i = rawpath.getLength() - 1; i >= 0; i--) {
+//						reversedPath.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
+//					}
+//					_pool.put(sum2, new OldPath(reversedPath));
 
-					// Cache
-					Vector<Position> reversedPath = new Vector<Position>();
-					for (int i = rawpath.getLength() - 1; i >= 0; i--) {
-						reversedPath.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
+					Log.info("character: path complete (" + fromX + "x" + fromY + " to " + toX + "x" + toY + ")");
+					
+					synchronized(_jobsDone) {
+						_jobsDone.add(new Runnable() {
+							@Override
+							public void run() {
+								character.onPathComplete(path, job);
+							}
+						});
 					}
-					_pool.put(sum2, new OldPath(reversedPath));
-
-					Log.info("character: path complete");
-					character.onPathComplete(path, job);
+					
 				} else {
-					_pool.put(sum1, new OldPath(null));
-					_pool.put(sum2, new OldPath(null));
+//					_pool.put(sum1, new OldPath(null));
+//					_pool.put(sum2, new OldPath(null));
 
 					Log.info("character: path fail");
 					job.setBlocked(Game.getFrame());
@@ -515,6 +527,7 @@ public class PathManager {
 		_threadPool.shutdownNow();		
 	}
 
-	// TODO Auto-generated method stub
-
+	public List<Runnable> getJobs() {
+		return _jobsDone;
+	}
 }

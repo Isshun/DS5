@@ -50,7 +50,6 @@ public class Constant {
 	public static final int PANEL_HEIGHT = WINDOW_HEIGHT;
 	public static final int WORLD_WIDTH = 50;
 	public static final int WORLD_HEIGHT = 50;
-	public static final int CHARACTER_CARRY_CAPACITY = 10;
 	public static final double LIMITE_RELATION_LONELY = 20;
 	public static final double LIMITE_LOW_OXYGEN = 20;
 	public static final double LIMITE_NO_OXYGEN = 0;
@@ -60,11 +59,14 @@ public class Constant {
 	public static final double SLEEP_ON_FLOOR_HAPINESS_RESTORE = -10;
 	public static final int DURATION_MULTIPLIER = 10;
 	public static final int CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS = 20;
-	public static final int CHARACTER_INVENTORY_SPACE = 10;
+	public static final int CHARACTER_INVENTORY_SPACE = 20;
 	public static final double CHARACTER_GROW_PER_UPDATE = 0.01;
 	public static final int CHARACTER_DELAY_BEFORE_FIRST_CHILD = 4;
 	public static final int CHARACTER_DELAY_BETWEEN_CHILDS = 4;
 	public static final int CHARACTER_MAX_CHILD = 4;
 	public static final int CHARACTER_CHILD_MIN_OLD = 16;
 	public static final int CHARACTER_CHILD_MAX_OLD = 50;
+	public static final int SLOW_UPDATE_INTERVAL = 20;
+	public static final int CHARACTER_DATE_MIN_OLD = 14;
+	public static final double CHARACTER_MAX_OLD = 80;
 }

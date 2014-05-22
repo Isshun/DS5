@@ -20,10 +20,10 @@ public class ContextualMenu extends UserSubInterface {
 	private int					ENTRY_WIDTH;
 	private int					ENTRY_HEIGHT = LINE_HEIGHT;
 	
-	private List<TextView>	_entries;
-	private ContextualMenu 	_subMenu;
-	private int 			_initPosX;
-	private int 			_initPosY;
+	private List<TextView>		_entries;
+	private ContextualMenu 		_subMenu;
+	private int 				_initPosX;
+	private int 				_initPosY;
 	
 	public ContextualMenu(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size, Viewport viewport) {
 		super(app, tileIndex, pos, size);
@@ -41,28 +41,6 @@ public class ContextualMenu extends UserSubInterface {
 		setBackgroundColor(new Color(0, 0, 0, 140));
 	}
 	
-//	@Override
-//	public void setPosition(int x, int y) {
-//		_posX = _initPosX + x;
-//		_posY = _initPosY + y;
-//		_render = null;
-//	
-//		if (_subMenu != null) {
-//			_subMenu.resetRender();
-//		}
-//	}
-
-//	public void move(int posX, int posY) {
-//		setPosition(_posX + posX, _posY + posY);
-//		if (_subMenu != null) {
-//			_subMenu.move(_posX + posX, _posY + posY);
-//		}
-//	}
-
-	private void resetRender() {
-		_render = null;		
-	}
-
 	public void addEntry(String label, OnClickListener listener, final OnFocusListener onFocusListener) {
 		final TextView text = new TextView(new Vector2f(ENTRY_WIDTH, ENTRY_HEIGHT));
 		text.setString(label);
@@ -97,7 +75,7 @@ public class ContextualMenu extends UserSubInterface {
 		}
 
 		_subMenu = subMenu;
-		subMenu.setPosition(subMenu.getPosX() + _posX, subMenu.getPosY() + _posY);
+		subMenu.setPosition(subMenu.getPosX() + _initPosX, subMenu.getPosY() + _initPosY);
 		subMenu.resetPos();
 		subMenu.getRect();
 		subMenu.setId(80);
@@ -116,6 +94,15 @@ public class ContextualMenu extends UserSubInterface {
 	public void removeSubMenu() {
 		removeView(_subMenu);
 		_subMenu = null;
+	}
+
+	public void setViewPortPosition(int x, int y) {
+		setPosition(_initPosX + x, _initPosY + y);
+		resetPos();
+		
+		if (_subMenu != null) {
+			_subMenu.setViewPortPosition(_initPosX + x, _initPosY + y);
+		}
 	}
 
 }

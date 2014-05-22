@@ -1,4 +1,5 @@
 package alone.in.deepspace.model;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -12,10 +13,8 @@ import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager;
-import alone.in.deepspace.manager.RelationManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.Character.Gender;
 import alone.in.deepspace.model.CharacterRelation.Relation;
 import alone.in.deepspace.model.Job.Abort;
 
@@ -63,31 +62,28 @@ public class Character extends Movable {
 
 	//	  private int				_messages[32];
 
-	public Character(int id, int x, int y, String name, String lastName) {
+	public Character(int id, int x, int y, String name, String lastName, int old) {
 		super(id, x, y);
 
 		Log.info("Character #" + id);
 
+		_old = old;
 		_profession = CharacterManager.professions[id % CharacterManager.professions.length];
 		_relations = new ArrayList<CharacterRelation>();
 		_carry = new ArrayList<BaseItem>();
 		setGender((int)(Math.random() * 1000) % 2 == 0 ? Character.Gender.GENDER_MALE : Character.Gender.GENDER_FEMALE);
 		_lag = (int)(Math.random() * 10);
-		// _path = null;
 		_selected = false;
 		_blocked = 0;
-		_nextChildAtOld = Double.MAX_VALUE;
+		_nextChildAtOld = -1;
 		_direction = Direction.DIRECTION_NONE;
 		_needs = new CharacterNeeds(this);
 		_status = new CharacterStatus(this);
 		_inventorySpace = Constant.CHARACTER_INVENTORY_SPACE;
 		_steps = 0;
 		_name = name;
-//		_isGay = (int)(Math.random() * 100) % 10 == 0;
-		_isGay = false;
+		_isGay = (int)(Math.random() * 100) % 10 == 0;
 		_lastName = lastName;
-
-		//memset(_messages, MESSAGE_COUNT_INIT, CHARACTER_MAX_MESSAGE * sizeof(int));
 
 		if (name == null) {
 			if ((int)(Math.random() * 1000) % 2 == 0) {
@@ -126,7 +122,7 @@ public class Character extends Movable {
 			}
 			r.getSecond().setMate(null);
 			_relations.remove(r);
-			_nextChildAtOld = Double.MAX_VALUE;
+			_nextChildAtOld = -1;
 			_mate = null;
 		}
 		
@@ -165,9 +161,10 @@ public class Character extends Movable {
 	public Character 		getMate() { return _mate; }
 	public String 			getLastName() { return _lastName; }
 	public List<CharacterRelation> getRelations() { return _relations; }
-	public int 				getOld() { return (int)_old; }
+	public double			getOld() { return _old; }
+	public double 			getNextChildAtOld() { return _nextChildAtOld; }
 
-	public boolean			isFull() { return _carry.size() == Constant.CHARACTER_CARRY_CAPACITY; }
+	public boolean			isFull() { return _carry.size() == Constant.CHARACTER_INVENTORY_SPACE; }
 	public boolean 			isSleeping() { return _needs._sleeping > 0; }
 	public boolean 			isGay() { return _isGay; }
 
@@ -274,38 +271,27 @@ public class Character extends Movable {
 	}
 
 
-	public void  update() {
-		_old += Constant.CHARACTER_GROW_PER_UPDATE;
+	public void  slowUpdate() {
+		_old += Constant.CHARACTER_GROW_PER_UPDATE * Constant.SLOW_UPDATE_INTERVAL;
 		
-		// Character is busy
-		if (_job != null) {
-			return;
+		if (_old > Constant.CHARACTER_MAX_OLD) {
+			ServiceManager.getCharacterManager().remove(this);
 		}
-
-		// Character is sleeping
-		if (_needs.isSleeping()) {
-			return;
-		}
-
-		// // Chatacter moving to a position
-		// if (_astarsearch != null) {
-		// }
-
-		// Chatacter moving to bedroom
-		if (_job != null && _job.getItem() != null && _job.getItem().isSleepingItem()) {
-			return;
+		
+		// New child
+		if (_nbChild < Constant.CHARACTER_MAX_CHILD && _mate != null && _old > Constant.CHARACTER_CHILD_MIN_OLD && _old < Constant.CHARACTER_CHILD_MAX_OLD && _old > _nextChildAtOld && _nextChildAtOld > 0) {
+			_nextChildAtOld = _old + Constant.CHARACTER_DELAY_BETWEEN_CHILDS;
+			if (ServiceManager.getRelationManager().addChildren(this, _mate) != null) {
+				_nbChild++;
+			}
 		}
 		
 		// TODO
 		// No energy + no job to sleepingItem -> sleep on the ground
-		if (_needs.getEnergy() <= 0) {
-			_needs.sleep(null);
-		}
-
-		// New child
-		if (_mate != null && _old > Constant.CHARACTER_CHILD_MIN_OLD && _old < Constant.CHARACTER_CHILD_MAX_OLD && _old > _nextChildAtOld) {
-			_nextChildAtOld = _old + Constant.CHARACTER_DELAY_BETWEEN_CHILDS;
-			ServiceManager.getRelationManager().addChildren(this, _mate);
+		if (_needs.getEnergy() <= 0 && _needs.isSleeping() == false) {
+			if (_job == null || _job.getItem() == null || _job.getItem().isSleepingItem() == false) {
+				_needs.sleep(null);
+			}
 		}
 	}
 
@@ -545,7 +531,7 @@ public class Character extends Movable {
 
 
 		// Character is full: cancel current job
-		if (_carry.size() == Constant.CHARACTER_CARRY_CAPACITY) {
+		if (_carry.size() == Constant.CHARACTER_INVENTORY_SPACE) {
 			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
 			_job = JobManager.getInstance().storeItem(_carry.get(0));
 			return;
@@ -587,7 +573,7 @@ public class Character extends Movable {
 
 
 		// Character is full: cancel current job
-		if (_carry.size() == Constant.CHARACTER_CARRY_CAPACITY) {
+		if (_carry.size() == Constant.CHARACTER_INVENTORY_SPACE) {
 			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
 			_job = JobManager.getInstance().storeItem(_carry.get(0));
 			return;
