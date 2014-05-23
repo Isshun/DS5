@@ -11,7 +11,9 @@ import java.util.List;
 
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.Character;
+import alone.in.deepspace.model.CharacterRelation;
 import alone.in.deepspace.model.Room;
+import alone.in.deepspace.model.CharacterRelation.Relation;
 import alone.in.deepspace.model.Room.Type;
 import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.util.Constant;
@@ -153,7 +155,7 @@ public class RoomManager implements ISavable {
 						if (characters.size() > 0) {
 							character = characters.get((int)(Math.random() * characters.size()));
 						}
-						putRoom(x, y, x, y, x, y, Room.getType(type), character);
+						putRoom(x, y, x, y, x, y, Room.getType(type), null);
 					}
 				}
 				
@@ -232,6 +234,63 @@ public class RoomManager implements ISavable {
 			}
 		}
 		return bestRoom;
+	}
+
+	public Room take(Character character, Type type) {
+		if (character.getQuarter() != null) {
+			return character.getQuarter();
+		}
+		
+		// Check relations
+		List<CharacterRelation> relations = character.getRelations();
+		for (CharacterRelation relation: relations) {
+			
+			// Check if relation have there own quarters
+			Room relationQuarter = relation.getSecond().getQuarter();
+			if (relationQuarter != null) {
+
+				// Live in parent's quarters
+				if (relation.getRelation() == Relation.PARENT && character.getOld() <= Constant.CHARACTER_LEAVE_HOME_OLD) {
+					character.setQuarter(relationQuarter);
+					relationQuarter.addOccupant(character);
+					return relationQuarter;
+				}
+				
+				// Live with mate
+				if (relation.getRelation() == Relation.MATE && character.getOld() > Constant.CHARACTER_LEAVE_HOME_OLD) {
+					character.setQuarter(relationQuarter);
+					relationQuarter.addOccupant(character);
+					return relationQuarter;
+				}
+
+				// Children take the quarters first
+				if (relation.getRelation() == Relation.CHILDREN && relation.getSecond().getOld() <= Constant.CHARACTER_LEAVE_HOME_OLD) {
+					character.setQuarter(relationQuarter);
+					relationQuarter.addOccupant(character);
+					return relationQuarter;
+				}
+			}
+		}
+		
+		for (Room room: _roomList) {
+			if (room.isType(type) && room.getOwner() == null) {
+				room.setOwner(character);
+				room.addOccupant(character);
+				character.setQuarter(room);
+				return room;
+			}
+		}
+		
+		return null;
+	}
+
+	public void removeFromRooms(Character character) {
+		List<Room> rooms = RoomManager.getInstance().getRoomList();
+		for (Room room: rooms) {
+			if (room.getOccupants().contains(character)) {
+				room.removeOccupant(character);
+			}
+		}
 	}
 
 }

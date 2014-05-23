@@ -114,7 +114,7 @@ public class RoomRenderer implements IRenderer {
 		if (room.getOwner() != null) {
 			text.setPosition(x + padding, y + height);
 			text.setCharacterSize(characterSubSize);
-			text.setString("(" + room.getOwner().getName() + ")");
+			text.setString("(" + room.getOwner().getLastName() + ")");
 			MainRenderer.getInstance().draw(text, render);
 		}
 

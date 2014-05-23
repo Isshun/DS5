@@ -2,7 +2,10 @@ package alone.in.deepspace.ui.panel;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderStates;
@@ -16,24 +19,27 @@ import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.SpriteManager;
+import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.Room.Type;
 import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;
 
 public class PanelRoom extends UserSubInterface {
-	private static final Color COLOR_YELLOW = new Color(236, 201, 37);
+	private static final Color 		COLOR_YELLOW = new Color(236, 201, 37);
 	private static final int 		FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	private static final String[]	TEXTS = {"Remove", "Quarter", "Sickbay", "Engineering", "Pub", "Holodeck", "Store", "Garden"};
+	private static final int 		MAX_OCCUPANTS = 10;
 	
 	private Type 					_selected;
 	private Map<Integer, ButtonView> 	_icons;
 	private Room _room;
 	private FrameLayout _layoutRoomInfo;
 	private TextView _lbRoomName;
-	private TextView _lbRoomOwner;
+	private TextView[] _lbRoomOccupants;
 	private FrameLayout _layoutButtons;
+	private TextView[] _lbRoomOccupantsOld;
 
 	public PanelRoom(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
@@ -55,30 +61,36 @@ public class PanelRoom extends UserSubInterface {
 		_lbRoomName.setPosition(8, 0);
 		_layoutRoomInfo.addView(_lbRoomName);
 
-		_lbRoomOwner = new TextView();
-		_lbRoomOwner.setCharacterSize(22);
-		_lbRoomOwner.setPosition(8, 42);
-		_layoutRoomInfo.addView(_lbRoomOwner);
+		_lbRoomOccupants = new TextView[MAX_OCCUPANTS];
+		_lbRoomOccupantsOld = new TextView[MAX_OCCUPANTS];
+		for (int i = 0; i < MAX_OCCUPANTS; i++) {
+			_lbRoomOccupants[i] = new TextView();
+			_lbRoomOccupants[i].setCharacterSize(14);
+			_lbRoomOccupants[i].setPosition(8, 42 + 22 * i);
+			_layoutRoomInfo.addView(_lbRoomOccupants[i]);
+
+			_lbRoomOccupantsOld[i] = new TextView();
+			_lbRoomOccupantsOld[i].setCharacterSize(14);
+			_lbRoomOccupantsOld[i].setPosition(FRAME_WIDTH - 100, 42 + 22 * i);
+			_layoutRoomInfo.addView(_lbRoomOccupantsOld[i]);
+		}
 
 		addView(_layoutRoomInfo);
 	}
 
 	@Override
 	public void onDraw(RenderWindow app, RenderStates render) {
-		try {
-			for (int i = 0; i < TEXTS.length; i++) {
-				drawIcon(0, i);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		for (int i = 0; i < TEXTS.length; i++) {
+			drawIcon(0, i);
 		}
+		displayRoom(_room);
 	}
 
 	public Room.Type getSelectedRoom() {
 		return _selected;
 	}
 	
-	void	drawIcon(int offset, final int index) throws IOException {
+	void	drawIcon(int offset, final int index) {
 		ButtonView icon = _icons.get(index);
 		if (icon == null) {
 			icon = new ButtonView(new Vector2f(62, 80));
@@ -132,7 +144,21 @@ public class PanelRoom extends UserSubInterface {
 		_layoutRoomInfo.setVisible(true);
 		_layoutButtons.setVisible(false);
 		_lbRoomName.setString(room.getName());
-		_lbRoomOwner.setString(room.getOwner() != null ? room.getOwner().getName() : Strings.LB_NOBODY);
+		
+		int i = 0;
+		Set<Character> occupants = room.getOccupants();
+		for (Character character: occupants) {
+			if (i < MAX_OCCUPANTS) {
+				_lbRoomOccupants[i].setString(character.getName());
+				_lbRoomOccupants[i].setColor(character.getColor());
+				_lbRoomOccupantsOld[i].setString((int)character.getOld() + "yo.");
+				i++;
+			}
+		}
+		for (;i < MAX_OCCUPANTS; i++) {
+			_lbRoomOccupants[i].setString(i == 0 ? Strings.LB_NOBODY : "");
+			_lbRoomOccupantsOld[i].setString("");
+		}
 		_layoutRoomInfo.setBackgroundColor(new Color(50 + room.getColor().r, 50 + room.getColor().g, 50 + room.getColor().b, 100));
 	}
 

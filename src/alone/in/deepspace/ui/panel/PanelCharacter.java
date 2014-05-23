@@ -88,9 +88,9 @@ public class PanelCharacter extends UserSubInterface {
 
 		createProfessionInfo(0, 70);
 		createNeedsInfo(0, 155);
-		createJobInfo(0, 550);
-		createFamilyInfo(0, 650);
-		createInventoryInfo(0, 645);
+		createJobInfo(0, 530);
+		createInventoryInfo(0, 610);
+		createFamilyInfo(0, 700);
 		if (Settings.getInstance().isDebug()) {
 			createDebug(0, 850);
 		}
@@ -210,8 +210,7 @@ public class PanelCharacter extends UserSubInterface {
 
 	private void createFamilyInfo(int x, int y) {
 		_layoutFamily = new FrameLayout(new Vector2f(200, 200));
-		_layoutFamily.setVisible(false);
-		_layoutFamily.setPosition(x, y);
+		_layoutFamily.setPosition(Constant.UI_PADDING_H + x, y);
 		addView(_layoutFamily);
 
 		TextView lbFamily = new TextView();
@@ -224,7 +223,7 @@ public class PanelCharacter extends UserSubInterface {
 		for (int i = 0; i < NB_MAX_RELATION; i++) {
 			_familyEntries[i] = new TextView(new Vector2f(400, 22));
 			_familyEntries[i].setCharacterSize(FONT_SIZE_SMALL);
-			_familyEntries[i].setPosition(0, 32 + 22 * i);
+			_familyEntries[i].setPosition(Constant.UI_PADDING_H, 32 + 22 * i);
 			_familyEntries[i].setStyle(TextView.UNDERLINED);
 			_layoutFamily.addView(_familyEntries[i]);
 
@@ -253,7 +252,6 @@ public class PanelCharacter extends UserSubInterface {
 
 	private void refreshRelations(List<CharacterRelation> relations) {
 		_nbRelation = relations.size();
-		_layoutFamily.setVisible(relations.size() > 0);
 		int i = 0;
 		for (final CharacterRelation relation: relations) {
 			if (i < NB_MAX_RELATION) {

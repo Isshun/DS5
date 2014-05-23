@@ -11,6 +11,7 @@ import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ResourceManager;
+import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.CharacterRelation.Relation;
 import alone.in.deepspace.model.Job.Abort;
@@ -44,7 +45,7 @@ public class Character extends Movable {
 
 	CharacterNeeds					_needs;
 	private Gender					_gender;
-	private String					_name;
+	private String					_firstName;
 	private Profession				_profession;
 	private boolean					_selected;
 	private List<BaseItem> 			_carry;
@@ -59,6 +60,8 @@ public class Character extends Movable {
 	private Character 				_mate;
 	private boolean 				_isGay;
 	private String 					_lastName;
+	private String 					_birthName;
+	private Room					_quarter;
 
 	//	  private int				_messages[32];
 
@@ -81,28 +84,26 @@ public class Character extends Movable {
 		_status = new CharacterStatus(this);
 		_inventorySpace = Constant.CHARACTER_INVENTORY_SPACE;
 		_steps = 0;
-		_name = name;
+		_firstName = name;
 		_isGay = (int)(Math.random() * 100) % 10 == 0;
-		_lastName = lastName;
-
+		_lastName = _birthName = lastName;
+		
 		if (name == null) {
 			if ((int)(Math.random() * 1000) % 2 == 0) {
-				_name = CharacterName.getShortFirstname(_gender)
+				_firstName = CharacterName.getShortFirstname(_gender)
 						+ " \"" + CharacterName.getMiddlename() + "\" ";
 				_lastName = lastName != null ? lastName : CharacterName.getShortLastName();
-				_name += _lastName;
 			} else {
-				_name = CharacterName.getFirstname(_gender) + " ";
+				_firstName = CharacterName.getFirstname(_gender) + " ";
 				_lastName = lastName != null ? lastName : CharacterName.getLastName();
-				_name += _lastName;
 			}
 		}
 
-		Log.info("Character done: " + _name + " (" + x + ", " + y + ")" + _gender);
+		Log.info("Character done: " + _firstName + " (" + x + ", " + y + ")" + _gender);
 	}
 
 	public void				setSelected(boolean selected) { _selected = selected; }
-	public void				setName(String name) { _name = name; }
+	public void				setName(String name) { _firstName = name; }
 	public void 			setGender(Gender gender) {
 		_gender = gender;
 		_color = _gender == Gender.GENDER_FEMALE ? COLOR_FEMALE : COLOR_MALE;
@@ -112,26 +113,55 @@ public class Character extends Movable {
 			return;
 		}
 		
+		// Update lastName
+		if (_gender == Gender.GENDER_FEMALE && mate.getGender() == Gender.GENDER_MALE) {
+			_lastName = mate.getLastName();
+		}
+		
 		// Break up
 		if (_mate != null) {
+			// Remove quarter
+			if (_quarter != null && _quarter.getOwner() == _mate) {
+				_quarter.removeOccupant(this);
+				_quarter = null;
+			}
+			
+			// Remove relation
 			CharacterRelation r = null;
 			for (CharacterRelation relation: _relations) {
 				if (relation.getRelation() == Relation.MATE) {
 					r = relation;
 				}
 			}
-			r.getSecond().setMate(null);
 			_relations.remove(r);
+			
+			// Cancel next child
 			_nextChildAtOld = -1;
+
+			_mate.setMate(null);
 			_mate = null;
 		}
 		
 		// New mate
 		if (mate != null) {
 			_mate = mate;
+			
+			// Add relation
 			_relations.add(new CharacterRelation(this, mate, Relation.MATE));
+			
+			// Schedule next child
 			if (_gender == Gender.GENDER_FEMALE) {
 				_nextChildAtOld = _old + Constant.CHARACTER_DELAY_BEFORE_FIRST_CHILD;
+			}
+			
+			// Add quarter
+			if (mate.getQuarter() != null && mate.getQuarter().getOwner() == mate) {
+				if (_quarter != null) {
+					_quarter.removeOccupant(this);
+				}
+				
+				mate.getQuarter().addOccupant(this);
+				_quarter = mate.getQuarter();
 			}
 		}
 	}
@@ -146,7 +176,7 @@ public class Character extends Movable {
 	public Profession		getProfession() { return _profession; }
 	public Profession.Type	getProfessionId() { return _profession.getType(); }
 	public Job				getJob() { return _job; }
-	public String			getName() { return _name; }
+	public String			getName() { return _firstName + _lastName; }
 	public CharacterNeeds	getNeeds() { return _needs; }
 	//	  int[]				getMessages() { return _messages; }
 	public boolean			getSelected() { return _selected; }
@@ -276,6 +306,17 @@ public class Character extends Movable {
 		
 		if (_old > Constant.CHARACTER_MAX_OLD) {
 			ServiceManager.getCharacterManager().remove(this);
+		}
+		
+		// Leave parent quarters
+		if (_old > Constant.CHARACTER_LEAVE_HOME_OLD && _quarter != null && (_quarter.getOwner() != this || _quarter.getOwner() != _mate)) {
+			_quarter.removeOccupant(this);
+			_quarter = null;
+		}
+		
+		// Find quarter
+		if (_quarter == null) {
+			RoomManager.getInstance().take(this, Room.Type.QUARTER);
 		}
 		
 		// New child
@@ -654,6 +695,14 @@ public class Character extends Movable {
 	public void setParent(Character c1, Character c2) {
 		_relations.add(new CharacterRelation(this, c1, Relation.PARENT));
 		_relations.add(new CharacterRelation(this, c2, Relation.PARENT));
+	}
+
+	public Room getQuarter() {
+		return _quarter;
+	}
+
+	public void setQuarter(Room quarter) {
+		_quarter = quarter;
 	}
 
 }

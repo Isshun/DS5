@@ -104,7 +104,8 @@ public class CharacterManager implements ISavable {
 						gender = Integer.valueOf(values[2]);
 						int sep = values[3].lastIndexOf(' ');
 						String lastName = values[3].substring(sep + 1, values[3].length());
-						Character c = new Character(_count++, x, y, values[3], lastName, 24);
+						String firstName = values[3].substring(0, sep + 1);
+						Character c = new Character(_count++, x, y, firstName, lastName, 24);
 						c.setGender(CharacterManager.getGender(gender));
 						_characters.add(c);
 					}
@@ -194,13 +195,11 @@ public class CharacterManager implements ISavable {
 		// Remove died character
 		for (Character character: _removeOnUpdate) {
 			if (character.getJob() != null) {
+				// Cancel job
 				JobManager.getInstance().abort(character.getJob(), Abort.DIED);
-				List<Room> rooms = RoomManager.getInstance().getRoomList();
-				for (Room room: rooms) {
-					if (room.getOwner() == character) {
-						room.setOwner(null);
-					}
-				}
+				
+				// Remove from rooms
+				RoomManager.getInstance().removeFromRooms(character);
 			}
 		}
 		_characters.removeAll(_removeOnUpdate);
@@ -337,7 +336,7 @@ public class CharacterManager implements ISavable {
 			return null;
 		}
 
-		Character c = new Character(_count++, x, y, null, null, 0);
+		Character c = new Character(_count++, x, y, null, null, 24);
 		Profession profession = professions[_count % professions.length];
 		c.setProfession(profession.getType());
 		_characters.add(c);
@@ -351,7 +350,7 @@ public class CharacterManager implements ISavable {
 			return null;
 		}
 
-		Character c = new Character(_count++, x, y, null, null, 0);
+		Character c = new Character(_count++, x, y, null, null, 24);
 		c.setProfession(profession);
 		_characters.add(c);
 

@@ -91,10 +91,12 @@ public class Game implements ISavable {
 
 		// Path complete
 		List<Runnable> jobsDone = PathManager.getInstance().getJobs();
-		for (Runnable job: jobsDone) {
-			job.run();
+		synchronized (jobsDone) {
+			for (Runnable job: jobsDone) {
+				job.run();
+			}
+			jobsDone.clear();
 		}
-		jobsDone.clear();
 		
 		// Characters
 		_characterManager.onUpdate(_update);

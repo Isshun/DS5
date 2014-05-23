@@ -204,6 +204,7 @@ public class PanelCrew extends UserSubInterface {
 			_viewHolderList.add(viewHolder);
 		} else {
 			final ViewHolder viewHolder = _viewHolderList.get(index);
+			viewHolder.frame.setVisible(true);
 
 			// Action
 			viewHolder.frame.setOnClickListener(new OnClickListener() {
@@ -240,6 +241,10 @@ public class PanelCrew extends UserSubInterface {
 
 	@Override
 	public void onDraw(RenderWindow app, RenderStates render) {
+		for (ViewHolder holder: _viewHolderList) {
+			holder.frame.setVisible(false);
+		}
+		
 		List<Character> characters = _characterManager.getList();
 		int i = 0;
 		for (Character c: characters) {

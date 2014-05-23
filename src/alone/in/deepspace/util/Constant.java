@@ -58,9 +58,9 @@ public class Constant {
 	public static final double SLEEP_ON_FLOOR_ENERGY_RESTORE = 20;
 	public static final double SLEEP_ON_FLOOR_HAPINESS_RESTORE = -10;
 	public static final int DURATION_MULTIPLIER = 10;
-	public static final int CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS = 100;
+	public static final int CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS = 20;
 	public static final int CHARACTER_INVENTORY_SPACE = 20;
-	public static final double CHARACTER_GROW_PER_UPDATE = 0.01;
+	public static final double CHARACTER_GROW_PER_UPDATE = 0.1;
 	public static final int CHARACTER_DELAY_BEFORE_FIRST_CHILD = 4;
 	public static final int CHARACTER_DELAY_BETWEEN_CHILDS = 4;
 	public static final int CHARACTER_MAX_CHILD = 4;
@@ -70,4 +70,5 @@ public class Constant {
 	public static final int CHARACTER_DATE_MIN_OLD = 14;
 	public static final double CHARACTER_MAX_OLD = 80;
 	public static final int CHARACTER_STAY_IN_METTING_ROOM = 20;
+	public static final double CHARACTER_LEAVE_HOME_OLD = 18;
 }
