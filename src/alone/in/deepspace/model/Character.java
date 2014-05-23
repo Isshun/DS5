@@ -135,6 +135,9 @@ public class Character extends Movable {
 			}
 			_relations.remove(r);
 			
+			// Restore birtName
+			_lastName = _birthName;
+			
 			// Cancel next child
 			_nextChildAtOld = -1;
 
