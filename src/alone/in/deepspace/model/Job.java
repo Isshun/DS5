@@ -30,7 +30,8 @@ public class Job {
 	private int 				_durationLeft;
 	private ItemSlot 			_slot;
 	private int 				_nbUsed;
-	private Job _next;
+	private UserItem 			_dispenser;
+	private Action 				_subAction;
 
 	public Job(int id, int x, int y) {
 		Log.debug("Job #" + id);
@@ -147,6 +148,7 @@ public class Job {
 		case GATHER: _color = Color.GREEN; break;
 		case MINING: _color = Color.GREEN; break;
 		case WORK: _color = Color.GREEN; break;
+		case REFILL: _color = Color.GREEN; break;
 		case NONE: _color = Color.BLACK; break;
 		case USE_INVENTORY:
 		case USE: _color = Color.BLUE; break;
@@ -175,12 +177,20 @@ public class Job {
 		_nbUsed++;
 	}
 
-	public void setNext(Job next) {
-		_next = next;
+	public void setDispenser(UserItem dispenser) {
+		_dispenser = dispenser;
 	}
 
-	public Job getNext() {
-		return _next;
+	public Action getSubAction() {
+		return _subAction;
+	}
+
+	public void setSubAction(Action action) {
+		_subAction = action;
+	}
+
+	public UserItem getDispenser() {
+		return _dispenser;
 	}
 
 }

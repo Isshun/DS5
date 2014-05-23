@@ -131,7 +131,7 @@ public class Game implements ISavable {
 		// Refill dispenser
 		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
 			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
-				BaseItem dispenser = ServiceManager.getWorldMap().getItem(x, y);
+				UserItem dispenser = ServiceManager.getWorldMap().getItem(x, y);
 				if (dispenser != null && dispenser.isDispenser() && dispenser.isWaitRefill() == false) {
 					
 					// Looking for storage containing accepted item
@@ -146,12 +146,9 @@ public class Game implements ISavable {
 
 					// Create jobs if needed items available
 					if (storage != null) {
-						Job takeJob = JobManager.getInstance().createTakeJob(null, storage, itemFilter);
-						Job storeJob = JobManager.getInstance().createStoreJob(null, dispenser);
-						if (takeJob != null && storeJob != null) {
-							takeJob.setNext(storeJob);
-							JobManager.getInstance().addJob(takeJob);
-							dispenser.setWaitRefill(true);
+						Job job = JobManager.getInstance().createRefillJob(null, storage, itemFilter, dispenser);
+						if (job != null) {
+							JobManager.getInstance().addJob(job);
 						}
 					}
 				}

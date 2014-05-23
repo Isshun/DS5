@@ -533,16 +533,13 @@ public class Character extends Movable {
 	private void		actionStore() {
 		UserItem item = ServiceManager.getWorldMap().getItem(_job.getX(), _job.getY());
 
-//		// TODO
-//		if (item.isStorage() == false) {
-//			Log.error("Character: actionStore on non storage item");
-//			JobManager.getInstance().abort(_job, Abort.INVALID);
-//			return;		
-//		}
+		if (item.isStorage() == false) {
+			Log.error("Character: actionStore on non storage item");
+			JobManager.getInstance().abort(_job, Abort.INVALID);
+			return;		
+		}
 
-		
-//			((StorageItem)item).getItems().addAll(_inventory);
-		item.addInventory(_inventory);
+		((StorageItem)item).getItems().addAll(_inventory);
 		JobManager.getInstance().complete(_job);
 		item.setWaitRefill(false);
 		_inventory.clear();
@@ -731,6 +728,7 @@ public class Character extends Movable {
 		case USE: actionUse(); break;
 		case USE_INVENTORY: actionUseInventory(); break;
 		case GATHER: actionGather(); break;
+		case REFILL: actionRefill(); break;
 		case MINING: actionMine(); break;
 		case DESTROY: actionDestroy(); break;
 		case BUILD: actionBuild(); break;
@@ -738,6 +736,43 @@ public class Character extends Movable {
 		case WORK: actionWork(); break;
 		case TAKE: actionTake(); break;
 		case NONE: break;
+		}
+	}
+
+	private void actionRefill() {
+		if (_job == null || _job.getAction() != Action.REFILL || _job.getItemFilter() == null || _job.getItem() == null || _job.getDispenser() == null || _job.getItem().isStorage() == false) {
+			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
+			Log.error("actionRefill: invalid job");
+			_job = null;
+			return;
+		}
+		
+		// Take in storage
+		if (_job.getSubAction() == Action.TAKE) {
+			StorageItem storage = (StorageItem)_job.getItem();
+			BaseItem item = storage.get(_job.getItemFilter());
+			if (item != null) {
+				addInventory(item);
+				storage.remove(item);
+			}
+			
+			_job.setPosition(_job.getDispenser().getX(), _job.getDispenser().getY());
+			_job.setSubAction(Action.STORE);
+			_toX = _job.getX();
+			_toY = _job.getY();
+			if (_posX != _job.getX() || _posY != _job.getY()) {
+				PathManager.getInstance().getPathAsync(this, _job);
+			}
+		}
+		
+		// Refill dispenser
+		else {
+			_job.getDispenser().addInventory(_inventory);
+			_job.getDispenser().setWaitRefill(false);
+			_inventory.clear();
+			
+			JobManager.getInstance().complete(_job);
+			_job = null;
 		}
 	}
 

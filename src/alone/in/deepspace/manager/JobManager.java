@@ -20,7 +20,7 @@ import alone.in.deepspace.util.Log;
 
 public class JobManager implements ISavable {
 	public enum Action {
-		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY, WORK, MINING, TAKE, USE_INVENTORY
+		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY, WORK, MINING, TAKE, USE_INVENTORY, REFILL
 	}
 
 	private static JobManager	sSelf;
@@ -421,11 +421,6 @@ public class JobManager implements ISavable {
 			job.getSlot().getItem().releaseSlot(job.getSlot());
 		}
 		
-		if (job.getNext() != null) {
-			job.getNext().setCharacterRequire(job.getCharacter());
-			addJob(job.getNext());
-		}
-		
 		_jobs.remove(job);
 	}
 
@@ -447,6 +442,7 @@ public class JobManager implements ISavable {
 		case NONE: 		return "none";
 		case BUILD: 	return "build";
 		case GATHER: 	return "gather";
+		case REFILL: 	return "refill";
 		case MOVE: 		return "move";
 		case USE_INVENTORY:
 		case USE: 		return "use";
@@ -630,6 +626,21 @@ public class JobManager implements ISavable {
 		Job job = new Job(++_id, x, y);
 		job.setAction(JobManager.Action.MOVE);
 		job.setDurationLeft(stay);
+		return job;
+	}
+
+	public Job createRefillJob(Character character, StorageItem storage, ItemFilter filter, UserItem dispenser) {
+		Log.debug("create take job");
+
+		Job job = new Job(++_id, storage.getX(), storage.getY());
+		job.setAction(JobManager.Action.REFILL);
+		job.setSubAction(JobManager.Action.TAKE);
+		job.setDispenser(dispenser);
+		dispenser.setWaitRefill(true);
+		job.setItem(storage);
+		job.setItemFilter(filter);
+		job.setCharacterRequire(character);
+		
 		return job;
 	}
 
