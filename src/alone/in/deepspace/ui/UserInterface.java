@@ -589,7 +589,8 @@ public class UserInterface {
 
 		// Select character
 		if (_interaction.getMode() == UserInteraction.Mode.MODE_NONE) {// && _menu.getCode() == UserInterfaceMenu.CODE_MAIN) {
-			Character c = _characteres.getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
+//			Character c = _characteres.getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
+			Character c = null;
 			if (c != null) {
 				setCharacter(c);
 			} else {

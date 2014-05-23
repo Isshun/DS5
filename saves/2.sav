@@ -1,5 +1,5 @@
 BEGIN GAME
-MATTER	20620
+MATTER	19782
 SPICE	0
 WATER	0
 END GAME
@@ -201,6 +201,7 @@ BEGIN WORLDMAP
 0	11	2	base.ground	1
 0	11	3	base.wall	1
 0	11	4	base.floor	1
+0	11	4	base.bed	42
 0	11	5	base.floor	1
 0	11	6	base.floor	1
 0	11	7	base.floor	1
@@ -291,6 +292,7 @@ BEGIN WORLDMAP
 0	14	24	base.wall	1
 0	15	3	base.wall	1
 0	15	4	base.floor	1
+0	15	4	base.bed	42
 0	15	5	base.floor	1
 0	15	6	base.floor	1
 0	15	7	base.floor	1
@@ -384,6 +386,7 @@ BEGIN WORLDMAP
 0	18	24	base.wall	1
 0	19	3	base.wall	1
 0	19	4	base.floor	1
+0	19	4	base.bed	42
 0	19	5	base.floor	1
 0	19	6	base.floor	1
 0	19	7	base.floor	1
@@ -465,9 +468,11 @@ BEGIN WORLDMAP
 0	22	13	base.floor	1
 0	22	14	base.floor	1
 0	22	15	base.floor	1
+0	22	15	base.serving_table	8
 0	22	16	base.floor	1
 0	22	17	base.floor	1
 0	22	18	base.floor	1
+0	22	18	base.serving_table	8
 0	22	19	base.floor	1
 0	22	20	base.floor	1
 0	22	21	base.floor	1
@@ -477,6 +482,7 @@ BEGIN WORLDMAP
 0	22	41	base.seaweed2	0
 0	23	3	base.wall	1
 0	23	4	base.floor	1
+0	23	4	base.bed	42
 0	23	5	base.floor	1
 0	23	6	base.floor	1
 0	23	7	base.floor	1
@@ -559,12 +565,15 @@ BEGIN WORLDMAP
 0	26	10	base.floor	1
 0	26	11	base.wall	1
 0	26	12	base.floor	1
+0	26	12	base.serving_table	8
 0	26	13	base.floor	1
 0	26	14	base.floor	1
 0	26	15	base.floor	1
+0	26	15	base.serving_table	8
 0	26	16	base.floor	1
 0	26	17	base.floor	1
 0	26	18	base.floor	1
+0	26	18	base.serving_table	8
 0	26	19	base.floor	1
 0	26	20	base.floor	1
 0	26	21	base.floor	1
@@ -575,6 +584,7 @@ BEGIN WORLDMAP
 0	27	2	base.ground	1
 0	27	3	base.wall	1
 0	27	4	base.floor	1
+0	27	4	base.bed	42
 0	27	5	base.floor	1
 0	27	6	base.floor	1
 0	27	7	base.floor	1
@@ -678,10 +688,13 @@ BEGIN WORLDMAP
 0	31	6	base.floor	1
 0	31	7	base.floor	1
 0	31	8	base.floor	1
+0	31	8	base.bed	42
 0	31	9	base.floor	1
 0	31	10	base.floor	1
+0	31	10	base.bed	42
 0	31	11	base.floor	1
 0	31	12	base.floor	1
+0	31	12	base.bed	42
 0	31	13	base.floor	1
 0	31	14	base.floor	1
 0	31	15	base.wall	1
@@ -707,14 +720,19 @@ BEGIN WORLDMAP
 0	33	2	base.ground	1
 0	33	3	base.wall	1
 0	33	4	base.floor	1
+0	33	4	base.bed	42
 0	33	5	base.floor	1
 0	33	6	base.floor	1
+0	33	6	base.bed	42
 0	33	7	base.floor	1
 0	33	8	base.floor	1
+0	33	8	base.bed	42
 0	33	9	base.floor	1
 0	33	10	base.floor	1
+0	33	10	base.bed	42
 0	33	11	base.floor	1
 0	33	12	base.floor	1
+0	33	12	base.bed	42
 0	33	13	base.floor	1
 0	33	14	base.floor	1
 0	33	15	base.wall	1
@@ -751,14 +769,18 @@ BEGIN WORLDMAP
 0	35	15	base.wall	1
 0	36	3	base.wall	1
 0	36	4	base.floor	1
+0	36	4	base.bed	42
 0	36	5	base.floor	1
 0	36	6	base.floor	1
+0	36	6	base.bed	42
 0	36	7	base.floor	1
 0	36	8	base.floor	1
+0	36	8	base.bed	42
 0	36	9	base.floor	1
 0	36	10	base.floor	1
 0	36	11	base.floor	1
 0	36	12	base.floor	1
+0	36	12	base.bed	42
 0	36	13	base.floor	1
 0	36	14	base.floor	1
 0	36	15	base.wall	1
@@ -783,10 +805,12 @@ BEGIN WORLDMAP
 0	38	6	base.floor	1
 0	38	7	base.floor	1
 0	38	8	base.floor	1
+0	38	8	base.bed	42
 0	38	9	base.floor	1
 0	38	10	base.floor	1
 0	38	11	base.floor	1
 0	38	12	base.floor	1
+0	38	12	base.bed	42
 0	38	13	base.floor	1
 0	38	14	base.floor	1
 0	38	15	base.wall	1
@@ -1012,8 +1036,186 @@ BEGIN WORLDMAP
 5	28	23	base.floor	1
 END WORLDMAP
 BEGIN CHARACTERS
+14	15	2	Beverly Reed
+24	21	2	Tasha Mallory
+22	16	1	Lee "Starbuck" Cooper
+17	14	1	Wesley Hammond
+16	11	2	Kara "Starbuck" Reed
+22	19	1	Galen Adama
+11	4	1	Jonathan Mallory
+14	15	2	Tory "Boomer" Summers
+17	14	1	Adam "Six" Reed
+14	15	2	Ezri "Hotdog" Adama
+5	9	1	Gaius Zimmerman
+11	4	2	Tory "Hotdog" Thrace
+11	4	1	Adam "Hardball" Sheppard
+24	21	1	Lewis Anders
+11	4	2	Ezri "Mac" Summers
+11	4	2	Wade "Hardball" Thrace
+17	14	2	Jadzia Cooper
+24	19	1	Galen Thrace
+22	19	1	Gaius Hammond
+11	4	1	Adam "Betty" Tyler
+13	10	1	Lewis Tyler
+24	21	1	Jonathan O'Neill
+24	21	1	Saul "Oz" Adama
+17	14	2	Ellen "Hotdog" Tyler
+24	13	2	Vic "Doc" Summers
+16	18	1	Benjamin Reed
+17	14	1	Adam "Helo" Adama
+14	15	1	Michael Zimmerman
+14	15	2	Ellen "Apollo" O'Neill
+24	21	1	Lee "Klaus" Sheppard
+16	18	2	Willow Mallory
+17	14	1	Jack "Doc" Summers
+24	19	2	Vic "Dee" Nerys
+22	19	1	Galen Cooper
+5	17	1	Samuel Thrace
+22	19	2	Kara "Hotdog" Summers
+17	14	2	Emma "Mac" Tyler
+16	18	1	Lee "Doc" Tyler
+11	4	1	Matt "Six" O'Neill
+17	14	2	Tory "Trip" Adama
+14	15	2	Amy "Hotdog" Beckett
+26	21	1	Gaius Mallory
+14	15	2	Beverly Holmes
+17	14	1	Jack "Mac" Reed
+14	15	2	Tory "Klaus" Sheppard
+5	13	1	Samuel Zimmerman
+24	21	2	Janice Zimmerman
+11	4	1	Michael Sheppard
+14	15	2	Willow Anders
+20	19	1	Wesley Summers
+17	14	1	Benjamin Nerys
+11	4	2	Wade "Six" Adama
+14	15	1	Adam "Mac" Thrace
+14	15	1	Bill "Dee" Hammond
+17	14	2	Emma "Mac" Anders
+16	18	1	Saul "Starbuck" Tyler
+11	4	1	Jack "Trip" Barclay
+11	4	1	Jack "Klaus" Hammond
+16	18	1	Matt "Klaus" O'Neill
+14	15	1	Benjamin Adama
+24	19	1	Benjamin Beckett
+22	19	1	Jonathan Mallory
+23	10	1	Michael Holmes
+22	19	2	Beverly Adama
+11	4	1	Bill "Six" Zimmerman
+11	4	2	Wade "Apollo" Zimmerman
+17	14	1	Adam "Crashdown" Sheppard
+24	21	2	Wade "Six" Anders
+11	4	1	Samuel Summers
+17	14	1	Michael Thrace
+17	14	1	Michael Tyler
+24	16	2	Vic "Helo" Tyler
+11	4	1	Jack "Six" Barclay
+17	14	2	Janice Sheppard
+23	4	2	Wade "Oz" Beckett
+14	15	2	Willow Barclay
+16	18	2	Samantha Hammond
+24	19	2	Tory "Hardball" Beckett
+24	21	2	Samantha Summers
+11	4	2	Wade "Starbuck" Zimmerman
+14	16	2	Tory "Helo" Summers
+11	4	1	Adam "Klaus" Summers
+11	4	2	Emma "Mac" Cooper
+17	14	1	Galen Zimmerman
+22	13	2	Ezri "Dee" Summers
+11	4	2	Tasha Thrace
+11	4	1	Lewis Thrace
+16	18	2	Ellen "Klaus" Mallory
+11	4	1	Jonathan Summers
+16	18	2	Alice Mallory
+16	18	2	Janice Summers
+24	21	1	Jonathan Thrace
+17	14	1	Tom "Starbuck" Tyler
+24	21	1	Michael Sheppard
+14	15	2	Ezri "Mac" Zimmerman
+17	14	2	Ellen "Trip" Summers
+24	19	1	Wesley Mallory
+14	15	1	Michael Hammond
+17	14	1	Lewis Tyler
+17	14	2	Tasha Thrace
+24	19	1	Galen Tyler
+14	15	1	Jack "Hardball" Anders
+24	19	2	Janice Beckett
+16	18	1	Jonathan Sheppard
+17	14	1	Benjamin Sheppard
+20	12	2	Ellen "Doc" Thrace
+17	14	2	Alice Zimmerman
+14	15	2	Kathryn Holmes
+11	4	2	Amy "Hotdog" Mallory
+24	19	2	Beverly Hammond
+16	18	1	Samuel Tyler
+21	19	2	Kathryn Reed
+23	16	2	Samantha Anders
+23	13	1	Samuel Tyler
+17	14	1	Tom "Boomer" Anders
+14	15	1	Bill "Helo" Beckett
+16	18	2	Tory "Oz" Sheppard
+14	15	1	Lewis Sheppard
+24	21	1	Tom "Doc" Thrace
+14	16	1	Wesley Summers
+26	19	2	Kathryn Thrace
+11	4	1	Michael Zimmerman
+16	18	2	Vic "Dee" Holmes
+22	19	1	Lewis Tyler
+17	14	1	Adam "Doc" Mallory
+15	4	1	Saul "Doc" Adama
+17	14	2	Ellen "Boomer" Anders
+11	4	1	Lewis Adama
+11	4	1	Adam "Betty" Cooper
+18	15	2	Tory "Crashdown" Zimmerman
+21	18	2	Jadzia Hammond
+11	4	2	Samantha O'Neill
+24	19	2	Beverly Tyler
+11	4	1	Michael Nerys
+17	14	1	Tom "Apollo" Anders
+24	19	2	Kathryn Anders
+17	14	2	Wade "Klaus" Beckett
+17	14	2	Beverly Sheppard
+16	18	2	Kara "Apollo" Sheppard
+24	13	2	Ellen "Trip" Summers
+14	15	2	Ellen "Dee" Thrace
+24	13	1	Adam "Betty" Zimmerman
+5	21	2	Jadzia Holmes
+17	14	1	Adam "Klaus" Tyler
+19	13	1	Wesley Adama
+11	4	2	Jadzia Anders
+24	21	2	Janice Adama
+22	19	2	Alice Hammond
+14	15	2	Alice Cooper
+24	21	1	Galen Tyler
+11	4	2	Jadzia Nerys
+17	14	2	Janice Thrace
+17	14	1	Wesley Anders
+14	16	1	Wesley Beckett
+16	18	2	Kathryn Sheppard
+17	14	1	Galen Thrace
+11	4	1	Michael Holmes
+24	21	2	Ezri "Betty" Anders
+11	4	2	Beverly Tyler
 END CHARACTERS
 BEGIN ROOMS
+3	31	1	0
+3	32	1	0
+3	33	1	0
+3	35	1	0
+3	36	1	0
+3	37	1	0
+4	26	1	0
+4	27	1	0
+4	28	1	0
+4	29	1	0
+4	31	1	0
+4	32	1	0
+4	33	1	0
+4	35	1	0
+4	36	1	0
+4	37	1	0
+4	42	1	0
+4	43	1	0
+4	44	1	0
 5	9	1	0
 5	10	1	0
 5	11	1	0
@@ -1026,6 +1228,22 @@ BEGIN ROOMS
 5	21	1	0
 5	22	1	0
 5	23	1	0
+5	26	1	0
+5	27	1	0
+5	28	1	0
+5	29	1	0
+5	31	1	0
+5	32	1	0
+5	33	1	0
+5	35	1	0
+5	36	1	0
+5	37	1	0
+5	42	1	0
+5	43	1	0
+5	44	1	0
+5	46	1	0
+5	47	1	0
+5	48	1	0
 6	9	1	0
 6	10	1	0
 6	11	1	0
@@ -1038,6 +1256,22 @@ BEGIN ROOMS
 6	21	1	0
 6	22	1	0
 6	23	1	0
+6	26	1	0
+6	27	1	0
+6	28	1	0
+6	29	1	0
+6	31	1	0
+6	32	1	0
+6	33	1	0
+6	35	1	0
+6	36	1	0
+6	37	1	0
+6	42	1	0
+6	43	1	0
+6	44	1	0
+6	46	1	0
+6	47	1	0
+6	48	1	0
 7	9	1	0
 7	10	1	0
 7	11	1	0
@@ -1050,6 +1284,22 @@ BEGIN ROOMS
 7	21	1	0
 7	22	1	0
 7	23	1	0
+7	26	1	0
+7	27	1	0
+7	28	1	0
+7	29	1	0
+7	31	1	0
+7	32	1	0
+7	33	1	0
+7	35	1	0
+7	36	1	0
+7	37	1	0
+7	42	1	0
+7	43	1	0
+7	44	1	0
+7	46	1	0
+7	47	1	0
+7	48	1	0
 8	9	1	0
 8	10	1	0
 8	11	1	0
@@ -1062,6 +1312,22 @@ BEGIN ROOMS
 8	21	1	0
 8	22	1	0
 8	23	1	0
+8	26	1	0
+8	27	1	0
+8	28	1	0
+8	29	1	0
+8	31	1	0
+8	32	1	0
+8	33	1	0
+8	35	1	0
+8	36	1	0
+8	37	1	0
+8	42	1	0
+8	43	1	0
+8	44	1	0
+8	46	1	0
+8	47	1	0
+8	48	1	0
 9	9	1	0
 9	10	1	0
 9	11	1	0
@@ -1074,26 +1340,126 @@ BEGIN ROOMS
 9	21	1	0
 9	22	1	0
 9	23	1	0
+9	26	1	0
+9	27	1	0
+9	28	1	0
+9	29	1	0
+9	31	1	0
+9	32	1	0
+9	33	1	0
+9	42	1	0
+9	43	1	0
+9	44	1	0
+9	46	1	0
+9	47	1	0
+9	48	1	0
+10	26	1	0
+10	27	1	0
+10	28	1	0
+10	29	1	0
+10	46	1	0
+10	47	1	0
+10	48	1	0
 11	4	1	0
 11	5	1	0
 11	6	1	0
 11	7	1	0
+11	34	1	0
+11	35	1	0
+11	36	1	0
+11	38	1	0
+11	39	1	0
+11	40	1	0
+11	46	1	0
+11	47	1	0
+11	48	1	0
 12	4	1	0
 12	5	1	0
 12	6	1	0
 12	7	1	0
+12	30	1	0
+12	31	1	0
+12	32	1	0
+12	34	1	0
+12	35	1	0
+12	36	1	0
+12	38	1	0
+12	39	1	0
+12	40	1	0
+12	42	1	0
+12	43	1	0
+12	46	1	0
+12	47	1	0
+12	48	1	0
 13	4	1	0
 13	5	1	0
 13	6	1	0
 13	7	1	0
+13	26	1	0
+13	27	1	0
+13	28	1	0
+13	30	1	0
+13	31	1	0
+13	32	1	0
+13	34	1	0
+13	35	1	0
+13	36	1	0
+13	38	1	0
+13	39	1	0
+13	40	1	0
+13	42	1	0
+13	43	1	0
+13	46	1	0
+13	47	1	0
+13	48	1	0
+14	26	1	0
+14	27	1	0
+14	28	1	0
+14	30	1	0
+14	31	1	0
+14	32	1	0
+14	34	1	0
+14	35	1	0
+14	36	1	0
+14	38	1	0
+14	39	1	0
+14	40	1	0
+14	42	1	0
+14	43	1	0
 15	4	1	0
 15	5	1	0
 15	6	1	0
 15	7	1	0
+15	26	1	0
+15	27	1	0
+15	28	1	0
+15	30	1	0
+15	31	1	0
+15	32	1	0
+15	34	1	0
+15	35	1	0
+15	36	1	0
+15	38	1	0
+15	39	1	0
+15	40	1	0
+15	42	1	0
+15	43	1	0
 16	4	1	0
 16	5	1	0
 16	6	1	0
 16	7	1	0
+16	26	1	0
+16	27	1	0
+16	28	1	0
+16	30	1	0
+16	31	1	0
+16	32	1	0
+16	34	1	0
+16	35	1	0
+16	36	1	0
+16	38	1	0
+16	39	1	0
+16	40	1	0
 17	4	1	0
 17	5	1	0
 17	6	1	0
@@ -1104,12 +1470,42 @@ BEGIN ROOMS
 17	17	4	0
 17	18	4	0
 17	19	4	0
+17	26	1	0
+17	27	1	0
+17	28	1	0
+17	30	1	0
+17	31	1	0
+17	32	1	0
+17	34	1	0
+17	35	1	0
+17	36	1	0
+17	38	1	0
+17	39	1	0
+17	40	1	0
+17	47	4	0
+17	48	4	0
+17	49	4	0
 18	14	4	0
 18	15	4	0
 18	16	4	0
 18	17	4	0
 18	18	4	0
 18	19	4	0
+18	26	1	0
+18	27	1	0
+18	28	1	0
+18	30	1	0
+18	31	1	0
+18	32	1	0
+18	34	1	0
+18	35	1	0
+18	36	1	0
+18	38	1	0
+18	39	1	0
+18	40	1	0
+18	47	4	0
+18	48	4	0
+18	49	4	0
 19	4	1	0
 19	5	1	0
 19	6	1	0
@@ -1120,6 +1516,20 @@ BEGIN ROOMS
 19	17	4	0
 19	18	4	0
 19	19	4	0
+19	26	1	0
+19	27	1	0
+19	28	1	0
+19	34	1	0
+19	35	1	0
+19	36	1	0
+19	42	4	0
+19	43	4	0
+19	44	4	0
+19	45	4	0
+19	46	4	0
+19	47	4	0
+19	48	4	0
+19	49	4	0
 20	4	1	0
 20	5	1	0
 20	6	1	0
@@ -1130,6 +1540,14 @@ BEGIN ROOMS
 20	17	4	0
 20	18	4	0
 20	19	4	0
+20	42	4	0
+20	43	4	0
+20	44	4	0
+20	45	4	0
+20	46	4	0
+20	47	4	0
+20	48	4	0
+20	49	4	0
 21	4	1	0
 21	5	1	0
 21	6	1	0
@@ -1140,34 +1558,511 @@ BEGIN ROOMS
 21	17	4	0
 21	18	4	0
 21	19	4	0
+21	33	1	0
+21	34	1	0
+21	35	1	0
+21	42	4	0
+21	43	4	0
+21	44	4	0
+21	45	4	0
+21	46	4	0
+21	47	4	0
+21	48	4	0
+21	49	4	0
 22	14	4	0
 22	15	4	0
 22	16	4	0
 22	17	4	0
 22	18	4	0
 22	19	4	0
+22	26	1	0
+22	27	1	0
+22	28	1	0
+22	30	1	0
+22	31	1	0
+22	33	1	0
+22	34	1	0
+22	35	1	0
+22	38	1	0
+22	39	1	0
+22	40	1	0
+22	42	4	0
+22	43	4	0
+22	44	4	0
+22	45	4	0
+22	46	4	0
 23	4	1	0
 23	5	1	0
 23	6	1	0
 23	7	1	0
+23	26	1	0
+23	27	1	0
+23	28	1	0
+23	30	1	0
+23	31	1	0
+23	33	1	0
+23	34	1	0
+23	35	1	0
+23	38	1	0
+23	39	1	0
+23	40	1	0
+23	42	4	0
+23	43	4	0
+23	44	4	0
+23	45	4	0
+23	46	4	0
 24	4	1	0
 24	5	1	0
 24	6	1	0
 24	7	1	0
+24	26	1	0
+24	27	1	0
+24	28	1	0
+24	30	1	0
+24	31	1	0
+24	33	1	0
+24	34	1	0
+24	35	1	0
+24	38	1	0
+24	39	1	0
+24	40	1	0
+24	42	4	0
+24	43	4	0
+24	44	4	0
+24	45	4	0
+24	46	4	0
 25	4	1	0
 25	5	1	0
 25	6	1	0
 25	7	1	0
+25	26	1	0
+25	27	1	0
+25	28	1	0
+25	30	1	0
+25	31	1	0
+25	33	1	0
+25	34	1	0
+25	35	1	0
+25	38	1	0
+25	39	1	0
+25	40	1	0
+25	42	4	0
+25	43	4	0
+25	44	4	0
+25	45	4	0
+25	46	4	0
+26	26	1	0
+26	27	1	0
+26	28	1	0
+26	30	1	0
+26	31	1	0
+26	33	1	0
+26	34	1	0
+26	35	1	0
+26	38	1	0
+26	39	1	0
+26	40	1	0
+26	42	4	0
+26	43	4	0
+26	44	4	0
+26	45	4	0
+26	46	4	0
 27	4	1	0
 27	5	1	0
 27	6	1	0
 27	7	1	0
+27	26	1	0
+27	27	1	0
+27	28	1	0
+27	30	1	0
+27	31	1	0
+27	38	1	0
+27	39	1	0
+27	40	1	0
+27	42	4	0
+27	43	4	0
+27	44	4	0
+27	45	4	0
+27	46	4	0
 28	4	1	0
 28	5	1	0
 28	6	1	0
 28	7	1	0
+28	26	1	0
+28	27	1	0
+28	28	1	0
+28	42	4	0
+28	43	4	0
+28	44	4	0
+28	45	4	0
+28	46	4	0
 29	4	1	0
 29	5	1	0
 29	6	1	0
 29	7	1	0
+29	42	1	0
+29	43	1	0
+29	44	1	0
+30	27	1	0
+30	28	1	0
+30	30	1	0
+30	31	1	0
+30	33	1	0
+30	34	1	0
+30	37	1	0
+30	38	1	0
+30	39	1	0
+30	42	1	0
+30	43	1	0
+30	44	1	0
+31	4	1	0
+31	5	1	0
+31	6	1	0
+31	7	1	0
+31	9	1	0
+31	10	1	0
+31	12	1	0
+31	13	1	0
+31	16	1	0
+31	18	1	0
+31	19	1	0
+31	21	1	0
+31	22	1	0
+31	24	1	0
+31	25	1	0
+31	27	1	0
+31	28	1	0
+31	30	1	0
+31	31	1	0
+31	33	1	0
+31	34	1	0
+31	37	1	0
+31	38	1	0
+31	39	1	0
+31	42	1	0
+31	43	1	0
+31	44	1	0
+32	4	1	0
+32	5	1	0
+32	6	1	0
+32	7	1	0
+32	9	1	0
+32	10	1	0
+32	12	1	0
+32	13	1	0
+32	16	1	0
+32	18	1	0
+32	19	1	0
+32	21	1	0
+32	22	1	0
+32	24	1	0
+32	25	1	0
+32	27	1	0
+32	28	1	0
+32	30	1	0
+32	31	1	0
+32	33	1	0
+32	34	1	0
+32	37	1	0
+32	38	1	0
+32	39	1	0
+32	42	1	0
+32	43	1	0
+32	44	1	0
+32	47	1	0
+32	48	1	0
+33	4	1	0
+33	5	1	0
+33	6	1	0
+33	7	1	0
+33	9	1	0
+33	10	1	0
+33	12	1	0
+33	13	1	0
+33	16	1	0
+33	18	1	0
+33	19	1	0
+33	21	1	0
+33	22	1	0
+33	24	1	0
+33	25	1	0
+33	27	1	0
+33	28	1	0
+33	30	1	0
+33	31	1	0
+33	33	1	0
+33	34	1	0
+33	37	1	0
+33	38	1	0
+33	39	1	0
+33	42	1	0
+33	43	1	0
+33	44	1	0
+33	47	1	0
+33	48	1	0
+34	4	1	0
+34	5	1	0
+34	6	1	0
+34	7	1	0
+34	9	1	0
+34	10	1	0
+34	12	1	0
+34	13	1	0
+34	16	1	0
+34	18	1	0
+34	19	1	0
+34	21	1	0
+34	22	1	0
+34	24	1	0
+34	25	1	0
+34	27	1	0
+34	28	1	0
+34	30	1	0
+34	31	1	0
+34	33	1	0
+34	34	1	0
+34	37	1	0
+34	38	1	0
+34	39	1	0
+34	42	1	0
+34	43	1	0
+34	44	1	0
+34	47	1	0
+34	48	1	0
+35	4	1	0
+35	5	1	0
+35	6	1	0
+35	7	1	0
+35	9	1	0
+35	10	1	0
+35	12	1	0
+35	13	1	0
+35	16	1	0
+35	18	1	0
+35	19	1	0
+35	21	1	0
+35	22	1	0
+35	24	1	0
+35	25	1	0
+35	27	1	0
+35	28	1	0
+35	30	1	0
+35	31	1	0
+35	33	1	0
+35	34	1	0
+35	37	1	0
+35	38	1	0
+35	39	1	0
+35	42	1	0
+35	43	1	0
+35	44	1	0
+35	47	1	0
+35	48	1	0
+36	4	1	0
+36	5	1	0
+36	6	1	0
+36	7	1	0
+36	9	1	0
+36	10	1	0
+36	12	1	0
+36	13	1	0
+36	16	1	0
+36	18	1	0
+36	19	1	0
+36	21	1	0
+36	22	1	0
+36	24	1	0
+36	25	1	0
+36	27	1	0
+36	28	1	0
+36	30	1	0
+36	31	1	0
+36	33	1	0
+36	34	1	0
+36	42	1	0
+36	43	1	0
+36	44	1	0
+36	47	1	0
+36	48	1	0
+37	18	1	0
+37	19	1	0
+37	21	1	0
+37	22	1	0
+37	24	1	0
+37	25	1	0
+37	27	1	0
+37	28	1	0
+37	47	1	0
+37	48	1	0
+38	4	1	0
+38	5	1	0
+38	7	1	0
+38	8	1	0
+38	10	1	0
+38	11	1	0
+38	13	1	0
+38	14	1	0
+38	24	1	0
+38	25	1	0
+38	42	1	0
+38	43	1	0
+38	44	1	0
+38	47	1	0
+38	48	1	0
+39	4	1	0
+39	5	1	0
+39	7	1	0
+39	8	1	0
+39	10	1	0
+39	11	1	0
+39	13	1	0
+39	14	1	0
+39	30	1	0
+39	31	1	0
+39	33	1	0
+39	34	1	0
+39	36	1	0
+39	37	1	0
+39	38	1	0
+39	42	1	0
+39	43	1	0
+39	44	1	0
+40	17	1	0
+40	18	1	0
+40	20	1	0
+40	21	1	0
+40	23	1	0
+40	24	1	0
+40	26	1	0
+40	27	1	0
+40	30	1	0
+40	31	1	0
+40	33	1	0
+40	34	1	0
+40	36	1	0
+40	37	1	0
+40	38	1	0
+40	39	1	0
+40	42	1	0
+40	43	1	0
+40	44	1	0
+41	4	1	0
+41	5	1	0
+41	7	1	0
+41	8	1	0
+41	10	1	0
+41	11	1	0
+41	13	1	0
+41	14	1	0
+41	17	1	0
+41	18	1	0
+41	20	1	0
+41	21	1	0
+41	23	1	0
+41	24	1	0
+41	26	1	0
+41	27	1	0
+41	30	1	0
+41	31	1	0
+41	33	1	0
+41	34	1	0
+41	36	1	0
+41	37	1	0
+41	38	1	0
+41	39	1	0
+41	42	1	0
+41	43	1	0
+41	44	1	0
+42	4	1	0
+42	5	1	0
+42	7	1	0
+42	8	1	0
+42	10	1	0
+42	11	1	0
+42	13	1	0
+42	14	1	0
+42	17	1	0
+42	18	1	0
+42	20	1	0
+42	21	1	0
+42	23	1	0
+42	24	1	0
+42	26	1	0
+42	27	1	0
+42	30	1	0
+42	31	1	0
+42	33	1	0
+42	34	1	0
+42	36	1	0
+42	37	1	0
+42	38	1	0
+42	39	1	0
+42	42	1	0
+42	43	1	0
+42	44	1	0
+43	4	1	0
+43	5	1	0
+43	7	1	0
+43	8	1	0
+43	10	1	0
+43	11	1	0
+43	13	1	0
+43	14	1	0
+43	17	1	0
+43	18	1	0
+43	20	1	0
+43	21	1	0
+43	23	1	0
+43	24	1	0
+43	26	1	0
+43	27	1	0
+43	30	1	0
+43	31	1	0
+43	33	1	0
+43	34	1	0
+43	36	1	0
+43	37	1	0
+43	38	1	0
+43	39	1	0
+43	42	1	0
+43	43	1	0
+43	44	1	0
+44	17	1	0
+44	18	1	0
+44	20	1	0
+44	21	1	0
+44	23	1	0
+44	24	1	0
+44	26	1	0
+44	27	1	0
+44	30	1	0
+44	31	1	0
+44	33	1	0
+44	34	1	0
+44	36	1	0
+44	37	1	0
+44	38	1	0
+44	39	1	0
+45	17	1	0
+45	18	1	0
+45	20	1	0
+45	21	1	0
+45	23	1	0
+45	24	1	0
+45	26	1	0
+45	27	1	0
+45	30	1	0
+45	31	1	0
+45	33	1	0
+45	34	1	0
+45	36	1	0
+45	37	1	0
+45	38	1	0
+45	39	1	0
+46	23	1	0
+46	24	1	0
+46	26	1	0
+46	27	1	0
+47	26	1	0
+47	27	1	0
 END ROOMS

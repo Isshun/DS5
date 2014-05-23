@@ -21,6 +21,7 @@ public class ItemSlot {
 
 	public void release() {
 		_job = null;
+		_item.releaseSlot(this);
 	}
 
 	public boolean isFree() {

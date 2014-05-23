@@ -526,7 +526,7 @@ public class PanelInfo extends UserSubInterface {
 		if (item != null) {
 
 			_itemSlots.setString("Free slots: " + item.getNbFreeSlots());
-			_itemUsed.setString("Used: " + item.getNbUsed());
+			_itemUsed.setString("Used: " + item.getTotalUse());
 
 			if (item.isStorage()) {
 				StorageItem storage = ((StorageItem)item);

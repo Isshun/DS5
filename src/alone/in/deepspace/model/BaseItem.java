@@ -93,7 +93,9 @@ public class BaseItem {
 	private boolean 	_isToy;
 	public int 			actionRemain;
 	private ArrayList<ItemSlot> _slots;
-	private int _nbUsed;
+	private int 		_nbTotalUsed;
+	private int 		_nbSlotUsed;
+	private int 		_nbSlot;
 
 	public BaseItem(ItemInfo info) {
 		init(info, ++_maxId);
@@ -178,6 +180,8 @@ public class BaseItem {
 			else {
 				_slots.add(new ItemSlot(this, 0, 0));
 			}
+			
+			_nbSlot = _slots.size();
 		}
 	}
 
@@ -185,7 +189,8 @@ public class BaseItem {
 		for (ItemSlot slot: _slots) {
 			if (slot.isFree()) {
 				slot.take(job);
-				_nbUsed++;
+				_nbSlotUsed++;
+				_nbTotalUsed++;
 				return slot;
 			}
 		}
@@ -193,16 +198,14 @@ public class BaseItem {
 	}
 	
 	public void releaseSlot(ItemSlot slot) {
-		slot.release();
+		if (slot.getJob() != null) {
+			slot.release();
+		}
+		_nbSlotUsed--;
 	}
 
 	public boolean hasFreeSlot() {
-		for (ItemSlot slot: _slots) {
-			if (slot.isFree()) {
-				return true;
-			}
-		}
-		return false;
+		return _nbSlotUsed < _nbSlot;
 	}
 
 	public void	setOwner(Character character) {
@@ -307,8 +310,8 @@ public class BaseItem {
 		return _slots.size();
 	}
 
-	public int getNbUsed() {
-		return _nbUsed;
+	public int getTotalUse() {
+		return _nbTotalUsed;
 	}
 
 	public void use(Character character, int durationLeft) {

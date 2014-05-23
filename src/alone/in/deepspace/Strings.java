@@ -47,4 +47,8 @@ public class Strings {
 	public static String THOUGHTS_REALLY_BAD = "really bad";
 	public static String LN_NO_JOB = "None";
 	public static String LB_JOB = "Job";
+	public static String LB_RELATION_BROTHER = "brother";
+	public static String LB_RELATION_HALF_BROTHER = "half-brother";
+	public static String LB_RELATION_SISTER = "sister";
+	public static String LB_RELATION_HALF_SISTER = "half-sister";
 }

@@ -168,9 +168,6 @@ public class Character extends Movable {
 			}
 		}
 	}
-	public void 			addChildren(Character children) {
-		_relations.add(new CharacterRelation(this, children, Relation.CHILDREN));
-	}
 	public void 			addFriend(Character friend) {
 		_relations.add(new CharacterRelation(this, friend, Relation.FRIEND));
 	}
@@ -325,7 +322,7 @@ public class Character extends Movable {
 		// New child
 		if (_nbChild < Constant.CHARACTER_MAX_CHILD && _mate != null && _old > Constant.CHARACTER_CHILD_MIN_OLD && _old < Constant.CHARACTER_CHILD_MAX_OLD && _old > _nextChildAtOld && _nextChildAtOld > 0) {
 			_nextChildAtOld = _old + Constant.CHARACTER_DELAY_BETWEEN_CHILDS;
-			if (ServiceManager.getRelationManager().addChildren(this, _mate) != null) {
+			if (ServiceManager.getRelationManager().createChildren(this, _mate) != null) {
 				_nbChild++;
 			}
 		}
@@ -479,7 +476,7 @@ public class Character extends Movable {
 				List<ItemSlot> slots = item.getSlots();
 				for (ItemSlot slot: slots) {
 					Character slotCharacter = slot.getJob() != null ? slot.getJob().getCharacter() : null;
-					ServiceManager.getRelationManager().date(this, slotCharacter);
+					ServiceManager.getRelationManager().meet(this, slotCharacter);
 				}
 			}
 			
@@ -693,11 +690,6 @@ public class Character extends Movable {
 
 	public List<CharacterRelation> getFamilyMembers() {
 		return _relations;
-	}
-
-	public void setParent(Character c1, Character c2) {
-		_relations.add(new CharacterRelation(this, c1, Relation.PARENT));
-		_relations.add(new CharacterRelation(this, c2, Relation.PARENT));
 	}
 
 	public Room getQuarter() {

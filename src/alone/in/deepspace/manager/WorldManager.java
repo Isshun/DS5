@@ -542,19 +542,19 @@ public class WorldManager implements ISavable, TileBasedMap {
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
 				UserItem item = getItem(startX + offsetX, startY + offsetY);
-				if (mathFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
+				if (item != null && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
 					return item;
 				}
 				item = getItem(startX - offsetX, startY - offsetY);
-				if (mathFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
+				if (item != null && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
 					return getItem(startX - offsetX, startY - offsetY);
 				}
 				item = getItem(startX + offsetX, startY - offsetY);
-				if (mathFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
+				if (item != null && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
 					return getItem(startX + offsetX, startY - offsetY);
 				}
 				item = getItem(startX - offsetX, startY + offsetY);
-				if (mathFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
+				if (item != null && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
 					return getItem(startX - offsetX, startY + offsetY);
 				}
 			}
@@ -563,7 +563,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 	}
 
 
-	private boolean mathFilter(BaseItem item, ItemFilter itemFilter) {
+	private boolean matchFilter(BaseItem item, ItemFilter itemFilter) {
 		if (item != null && item.getInfo().onAction != null && item.getInfo().onAction.effects != null) {
 			ItemInfoEffects effects = item.getInfo().onAction.effects;
 			if (itemFilter.drink && effects.drink > 0) { return true; }

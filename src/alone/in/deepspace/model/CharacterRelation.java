@@ -7,7 +7,11 @@ public class CharacterRelation {
 		MATE,
 		FRIEND,
 		CHILDREN,
-		PARENT
+		PARENT,
+		BROTHER,
+		SISTER,
+		HALF_BROTHER,
+		HALF_SISTER
 	}
 
 	private Relation 	_relation;
@@ -34,6 +38,10 @@ public class CharacterRelation {
 		case FRIEND: return Strings.LB_RELATION_FRIEND;
 		case MATE: return Strings.LB_RELATION_MATE;
 		case PARENT: return Strings.LB_RELATION_PARENT;
+		case BROTHER: return Strings.LB_RELATION_BROTHER;
+		case HALF_BROTHER: return Strings.LB_RELATION_HALF_BROTHER;
+		case SISTER: return Strings.LB_RELATION_SISTER;
+		case HALF_SISTER: return Strings.LB_RELATION_HALF_SISTER;
 		}
 		return null;
 	}
