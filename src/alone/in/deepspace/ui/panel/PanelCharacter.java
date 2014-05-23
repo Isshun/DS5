@@ -416,6 +416,9 @@ public class PanelCharacter extends UserSubInterface {
 
 				_debugEntries[2].setString("is gay");
 				_debugEntriesValue[2].setString(String.valueOf(_character.isGay()));
+
+				_debugEntries[3].setString("gender");
+				_debugEntriesValue[3].setString(String.valueOf(_character.getGender()));
 			}
 
 			//	    // Name

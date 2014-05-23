@@ -346,7 +346,21 @@ public class JobManager implements ISavable {
 			// Have item in inventory
 			BaseItem item = character.find(filter);
 			if (item != null) {
-				return createUseInventoryJob(character, item);
+				Job job = createUseInventoryJob(character, item);
+				addJob(job);
+				return job;
+			}
+			
+			// Looking [for food dispenser
+			for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
+				for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
+					item = ServiceManager.getWorldMap().getItem(x, y);
+					if (item != null && item.matchFilter(filter)) {
+						Job job = createUseJob(item);
+						addJob(job);
+						return job;
+					}
+				}
 			}
 			
 			// Take item from storage

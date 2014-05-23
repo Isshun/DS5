@@ -88,9 +88,7 @@ public class Character extends Movable {
 		_steps = 0;
 		_firstName = name;
 		_isGay = (int)(Math.random() * 100) % 10 == 0;
-		_gender = Gender.GENDER_FEMALE;
-		_lastName = _birthName = lastName;
-		
+		_lastName = lastName;
 		if (name == null) {
 			if ((int)(Math.random() * 1000) % 2 == 0) {
 				_firstName = CharacterName.getShortFirstname(_gender)
@@ -101,6 +99,7 @@ public class Character extends Movable {
 				_lastName = lastName != null ? lastName : CharacterName.getLastName();
 			}
 		}
+		_birthName = _lastName;
 
 		Log.info("Character done: " + _firstName + " (" + x + ", " + y + ")" + _gender);
 	}
@@ -421,19 +420,17 @@ public class Character extends Movable {
 			return;
 		}
 
-		// Work is complete
-		if (_needs.getWorkRemain() <= 0) {
-			Log.debug("Character #" + _id + ": work complete");
-			JobManager.getInstance().complete(_job);
-			_job = null;
-		}
-		
 		// Work continue
-		else {
+		if (_needs.getWorkRemain() > 0) {
 			_needs.setWorkRemain(_needs.getWorkRemain() - 1);
 			Log.debug("Character #" + _id + ": working");
+			return;
 		}
 		
+		// Work is complete
+		Log.debug("Character #" + _id + ": work complete");
+		JobManager.getInstance().complete(_job);
+		_job = null;
 	}
 
 	private void actionUseInventory() {

@@ -341,7 +341,7 @@ public class BaseItem {
 				if (itemProduce != null && itemProduce.onAction != null && (filter.neededItem == itemProduce || _info.matchFilter(itemProduce.onAction.effects, filter))) {
 					// Have components
 					for (ItemInfo component: itemProduce.craftedFromItems) {
-						if (_inventory.contains(component)) {
+						if (inventoryContains(component)) {
 							filter.matchingItem = itemProduce;
 							return true;
 						}
@@ -350,6 +350,15 @@ public class BaseItem {
 			}
 		}
 		
+		return false;
+	}
+
+	private boolean inventoryContains(ItemInfo info) {
+		for (BaseItem item: _inventory) {
+			if (item.getInfo() == info) {
+				return true;
+			}
+		}
 		return false;
 	}
 
