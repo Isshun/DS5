@@ -18,7 +18,6 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.ItemInfo;
-import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.StructureItem;
@@ -385,7 +384,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 		removeItem(item);
 	}
 
-	public BaseItem putItem(String name, int x, int y, boolean isFree) {
+	private BaseItem putItem(String name, int x, int y, boolean isFree) {
 		if (_itemCout + 1 > LIMIT_ITEMS) {
 			Log.error("LIMIT_ITEMS reached");
 			return null;
@@ -517,6 +516,19 @@ public class WorldManager implements ISavable, TileBasedMap {
 		return (x < 0 || x >= _width || y < 0 || y >= _height) || _areas[x][y] == null ? null : _areas[x][y].getItem();
 	}
 
+	// TODO
+	public UserItem 			find(ItemFilter filter) {
+		for (int x = 0; x < _width; x++) {
+			for (int y = 0; y < _height; y++) {
+				UserItem item = _areas[x][y].getItem();
+				if (item != null && item.getInfo().matchFilter(filter)) {
+					return item;
+				}
+			}
+		}
+		return null;
+	}
+
 	public StructureItem 		getStructure(int x, int y) {
 		return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y].getStructure();
 	}
@@ -535,65 +547,31 @@ public class WorldManager implements ISavable, TileBasedMap {
 	public int					getWidth() { return _width; }
 	public int					getHeight() { return _height; }
 
-	public UserItem getNearest(ItemFilter itemFilter, int startX, int startY) {
+	public UserItem getNearest(ItemFilter filter, int startX, int startY) {
 		PathManager pathManager = PathManager.getInstance();
 		int maxX = Math.max(startX, _width - startX);
 		int maxY = Math.max(startY, _height - startY);
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
 				UserItem item = getItem(startX + offsetX, startY + offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && itemOrProduceMatchFilter(item.getInfo(), itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && item.getInfo().matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
 					return item;
 				}
 				item = getItem(startX - offsetX, startY - offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && itemOrProduceMatchFilter(item.getInfo(), itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && item.getInfo().matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
 					return getItem(startX - offsetX, startY - offsetY);
 				}
 				item = getItem(startX + offsetX, startY - offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && itemOrProduceMatchFilter(item.getInfo(), itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && item.getInfo().matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
 					return getItem(startX + offsetX, startY - offsetY);
 				}
 				item = getItem(startX - offsetX, startY + offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && itemOrProduceMatchFilter(item.getInfo(), itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && item.getInfo().matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
 					return getItem(startX - offsetX, startY + offsetY);
 				}
 			}
 		}
 		return null;
-	}
-
-
-	private boolean itemOrProduceMatchFilter(ItemInfo item, ItemFilter itemFilter) {
-
-		// Item
-		if (effectMatchFilter(item.onAction.effects, itemFilter)) {
-			return true;
-		}
-
-		// Produce
-		if (item.onAction.itemProduce != null) {
-			List<ItemInfo> itemProduces = new ArrayList<ItemInfo>();
-			itemProduces.add(item.onAction.itemProduce);
-			for (ItemInfo itemProduce: itemProduces) {
-				if (itemProduce != null && itemProduce.onAction != null && effectMatchFilter(itemProduce.onAction.effects, itemFilter)) {
-					return true;
-				}
-			}
-		}
-		
-		return false;
-	}
-
-	private boolean effectMatchFilter(ItemInfoEffects effects, ItemFilter itemFilter) {
-		if (effects != null) {
-			if (itemFilter.drink && effects.drink > 0) { return true; }
-			if (itemFilter.energy && effects.energy > 0) { return true; }
-			if (itemFilter.food && effects.food > 0) { return true; }
-			if (itemFilter.hapiness && effects.hapiness > 0) { return true; }
-			if (itemFilter.health && effects.health > 0) { return true; }
-			if (itemFilter.relation && effects.relation > 0) { return true; }
-		}
-		return false;
 	}
 
 	// TODO: delete
@@ -766,6 +744,34 @@ public class WorldManager implements ISavable, TileBasedMap {
 
 	public void addRoom(Room room) {
 		_rooms.put(room.getId(), room);
+	}
+
+	// TODO
+	public BaseItem findStorageContains(ItemFilter filter, int x, int y) {
+		
+		// Find all storage
+		List<StorageItem> storages = new ArrayList<StorageItem>();
+		for (int i = 0; i < _width; i++) {
+			for (int j = 0; j < _height; j++) {
+				BaseItem item = _areas[i][j].getItem();
+				if (item != null && item.isStorage()) {
+					storages.add((StorageItem)item);
+				}
+			}
+		}
+
+		// Find nearest storage containing item
+		StorageItem bestStorage = null;
+		int bestDistance = Integer.MAX_VALUE;
+		for (StorageItem storage: storages) {
+			int distance = Math.abs(storage.getX() - x) + Math.abs(storage.getY() - y);
+			if (distance < bestDistance && storage.contains(filter)) {
+				bestStorage = storage;
+				bestDistance = distance;
+			}
+		}
+		
+		return bestStorage;
 	}
 
 }

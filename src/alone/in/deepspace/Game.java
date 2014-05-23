@@ -23,12 +23,16 @@ import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.DynamicObjectManager;
 import alone.in.deepspace.manager.FoeManager;
+import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.UIEventManager;
+import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
+import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
@@ -108,6 +112,17 @@ public class Game implements ISavable {
 	}
 
 	public void onLongUpdate() {
+
+		// Launch jobs if low food
+		if (ResourceManager.getInstance().isLowFood()) {
+			ItemFilter itemFilter = new ItemFilter(true, false);
+			itemFilter.food = true;
+			UserItem item = ServiceManager.getWorldMap().find(itemFilter);
+			if (item != null) {
+				JobManager.getInstance().createUseJob(item);
+			}
+		}
+		
 		ResourceManager.getInstance().update();
 		_characterManager.onLongUpdate();
 	}

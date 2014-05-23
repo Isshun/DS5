@@ -6,6 +6,6 @@ onAction:
     cooking: 1
   produce:
     item: base.meal
-    quantity: 4
+    quantity: 10
 cost:
   matter: 42

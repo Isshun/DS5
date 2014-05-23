@@ -71,4 +71,5 @@ public class Constant {
 	public static final double CHARACTER_MAX_OLD = 80;
 	public static final int CHARACTER_STAY_IN_METTING_ROOM = 20;
 	public static final double CHARACTER_LEAVE_HOME_OLD = 18;
+	public static final int RESSOURCE_LOW_FOOD = 10;
 }

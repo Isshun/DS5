@@ -8,24 +8,30 @@ public class ItemSlot {
 	private BaseItem	_item;
 	private int			_relX;
 	private int			_relY;
+	private boolean		_isFree;
 
 	public ItemSlot(BaseItem item, int x, int y) {
 		_item = item;
 		_relX = x;
 		_relY = y;
+		_isFree = true;
 	}
 
 	public void take(Job job) {
 		_job = job;
+		_isFree = false;
 	}
 
 	public void release() {
+		if (_isFree == false) {
+			_isFree = true;
+			_item.releaseSlot(this);
+		}
 		_job = null;
-		_item.releaseSlot(this);
 	}
 
 	public boolean isFree() {
-		return _job == null;
+		return _isFree;
 	}
 
 	public int getX() {

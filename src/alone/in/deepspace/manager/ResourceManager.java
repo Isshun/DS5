@@ -12,6 +12,7 @@ public class ResourceManager {
 	int	_o2Supply;
 	int	_matter;
 	int	_power;
+	int	_food;
 
 	private int _spice;
 
@@ -24,6 +25,7 @@ public class ResourceManager {
 		_power = 0;
 		_o2Use = 0;
 		_o2Supply = 0;
+		_food = 0;
 	}
 
 	public static ResourceManager	getInstance() {
@@ -140,6 +142,7 @@ public class ResourceManager {
 	public int 	getPower() { return _power; }
 	public int 	getSpice() { return _spice; }
 	public int 	getWater() { return _water; }
+	public int	getFood() { return _food; }
 
 	public void setSpice(int spice) { _spice = spice; }
 	public void setWater(int water) { _water = water; refreshWater(); }
@@ -149,4 +152,9 @@ public class ResourceManager {
 	public void addWater(int value) { _water += value; refreshWater(); }
 	public void addSpice(int value) { _spice += value; }
 	public void addPower(int value) { _power += value; }
+	public void addFood(int value) { _food += value; }
+
+	public boolean isLowFood() {
+		return _food < ServiceManager.getCharacterManager().getCount();
+	}
 }

@@ -7,8 +7,10 @@ import java.util.Vector;
 import org.jsfml.graphics.Color;
 
 import alone.in.deepspace.manager.CharacterManager;
+import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
+import alone.in.deepspace.manager.JobManager.Action;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.RoomManager;
@@ -432,6 +434,31 @@ public class Character extends Movable {
 		}
 		
 	}
+
+	private void actionUseInventory() {
+		if (_job == null || _job.getAction() != Action.USE_INVENTORY || _job.getItem() == null) {
+			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
+			Log.error("actionUseInventory: invalid job");
+			_job = null;
+			return;
+		}
+		
+		if (_inventory.contains(_job.getItem()) == false) {
+			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
+			Log.error("actionUseInventory: item is missing from inventory");
+			_job = null;
+			return;
+		}
+		
+		// TODO: immediate use
+		for (int i = 0; i < _job.getItem().getInfo().onAction.duration * Constant.DURATION_MULTIPLIER; i++) {
+			_job.getItem().use(this, i);
+		}
+		_inventory.remove(_job.getItem());
+		
+		JobManager.getInstance().complete(_job);
+		_job = null;
+	}
 	
 	// TODO: make objects stats table instead switch
 	private void actionUse() {
@@ -468,6 +495,15 @@ public class Character extends Movable {
 
 		// Character using item
 		if (_job.getDurationLeft() > 0) {
+
+			// Update resource manager
+			if (_job.getNbUsed() == 0) {
+				if (item.getInfo().isFood) {
+					ResourceManager.getInstance().addFood(-1);
+				}
+			}
+
+			// Decrease duration
 			_job.decreaseDurationLeft();
 
 			// Item is use by 2 or more character
@@ -479,28 +515,16 @@ public class Character extends Movable {
 					ServiceManager.getRelationManager().meet(this, slotCharacter);
 				}
 			}
-			
+
 			// Add item effects
 			item.use(this, _job.getDurationLeft());
+			
 			return;
 		}
 
 		// Action produce item
-		UserItem producedItem = item.produce(this);
-		if (producedItem != null) {
-			// TODO: immediate use
-			producedItem.use(this, 1);
-			producedItem.use(this, 1);
-			producedItem.use(this, 1);
-			producedItem.use(this, 1);
-			producedItem.use(this, 1);
-			producedItem.use(this, 1);
-			producedItem.use(this, 1);
-			producedItem.use(this, 1);
-			producedItem.use(this, 1);
-			producedItem.use(this, 1);
-			_inventory.remove(producedItem);
-		}
+		item.produce(this);
+//		if (producedItem != null) {
 		JobManager.getInstance().complete(_job);
 		
 		_job = null;
@@ -684,14 +708,35 @@ public class Character extends Movable {
 		switch (action) {
 		case MOVE: actionMove(); break;
 		case USE: actionUse(); break;
+		case USE_INVENTORY: actionUseInventory(); break;
 		case GATHER: actionGather(); break;
 		case MINING: actionMine(); break;
 		case DESTROY: actionDestroy(); break;
 		case BUILD: actionBuild(); break;
 		case STORE: actionStore(); break;
 		case WORK: actionWork(); break;
+		case TAKE: actionTake(); break;
 		case NONE: break;
 		}
+	}
+
+	private void actionTake() {
+		if (_job == null || _job.getAction() != Action.TAKE || _job.getItem() == null || _job.getItemFilter() == null) {
+			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
+			Log.error("actionTake: invalid job");
+			_job = null;
+			return;
+		}
+		
+		StorageItem storage = (StorageItem)_job.getItem();
+		BaseItem item = storage.get(_job.getItemFilter());
+		if (item != null) {
+			addInventory(item);
+			storage.remove(item);
+		}
+
+		JobManager.getInstance().complete(_job);
+		_job = null;
 	}
 
 	private void actionMove() {
@@ -718,6 +763,15 @@ public class Character extends Movable {
 
 	public void addInventory(BaseItem item) {
 		_inventory.add(item);
+	}
+
+	public BaseItem find(ItemFilter filter) {
+		for (BaseItem item: _inventory) {
+			if (item.getInfo().matchFilter(filter)) {
+				return item;
+			}
+		}
+		return null;
 	}
 
 }

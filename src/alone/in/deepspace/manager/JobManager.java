@@ -19,7 +19,7 @@ import alone.in.deepspace.util.Log;
 
 public class JobManager implements ISavable {
 	public enum Action {
-		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY, WORK, MINING
+		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY, WORK, MINING, TAKE, USE_INVENTORY
 	}
 
 	private static JobManager	sSelf;
@@ -257,15 +257,7 @@ public class JobManager implements ISavable {
 		
 		// Character is full: go back to storage area
 		if (character.isFull()) {
-			Room room = RoomManager.getInstance().getNearFreeStorage(character.getX(), character.getY());
-			if (room != null) {
-				Job job = new Job(++_id, room.getX(), room.getY());
-				job.setAction(JobManager.Action.STORE);
-				job.setCharacterRequire(character);
-				addJob(job);
-				Log.debug("bestJob: 2");
-				return job;
-			}
+			return createStoreJob(character);
 		}
 
 		int x = character.getX();
@@ -317,15 +309,48 @@ public class JobManager implements ISavable {
 		return bestJob;
 	}
 
+	private Job createStoreJob(Character character) {
+		Room room = RoomManager.getInstance().getNearFreeStorage(character.getX(), character.getY());
+		if (room != null) {
+			Job job = new Job(++_id, room.getX(), room.getY());
+			job.setAction(JobManager.Action.STORE);
+			job.setCharacterRequire(character);
+			addJob(job);
+			Log.debug("bestJob: 2");
+			return job;
+		}
+		return null;
+	}
+
+	private Job createTakeJob(Character character, BaseItem storage, ItemFilter filter) {
+		Log.debug("create take job");
+
+		Job job = new Job(++_id, storage.getX(), storage.getY());
+		job.setAction(JobManager.Action.TAKE);
+		job.setItem(storage);
+		job.setItemFilter(filter);
+		job.setCharacterRequire(character);
+		addJob(job);
+		
+		return job;
+	}
+
 	private Job getJobForCharacterNeed(Character character) {
 		CharacterNeeds needs = character.getNeeds();
 		if (needs.getFood() < 20) {
-			// TODO
-			ItemFilter itemFilter = new ItemFilter();
-			itemFilter.food = true;
-			UserItem item = ServiceManager.getWorldMap().getNearest(itemFilter, character.getX(), character.getY());
+			ItemFilter filter = new ItemFilter(true, true);
+			filter.food = true;
+
+			// Have item in inventory
+			BaseItem item = character.find(filter);
 			if (item != null) {
-				return createUseJob(item);
+				return createUseInventoryJob(character, item);
+			}
+			
+			// Take item from storage
+			item = ServiceManager.getWorldMap().findStorageContains(filter, character.getX(), character.getY());
+			if (item != null) {
+				return createTakeJob(character, item, filter);
 			}
 		}
 
@@ -423,11 +448,13 @@ public class JobManager implements ISavable {
 		case BUILD: 	return "build";
 		case GATHER: 	return "gather";
 		case MOVE: 		return "move";
+		case USE_INVENTORY:
 		case USE: 		return "use";
 		case STORE: 	return "store";
 		case WORK: 		return "work";
 		case DESTROY:	return "destroy";
 		case MINING:	return "mine";
+		case TAKE:		return "take";
 		}
 		return null;
 	}
@@ -517,7 +544,23 @@ public class JobManager implements ISavable {
 		return null;
 	}
 
-	private Job createUseJob(BaseItem item) {
+	private Job createUseInventoryJob(Character character, BaseItem item) {
+		if (!item.getInfo().isConsomable) {
+			return null;
+		}
+		
+		Job job = new Job(++_id);
+		job.setPosition(character.getX(), character.getY());
+		job.setAction(JobManager.Action.USE_INVENTORY);
+		job.setItem(item);
+		job.setDurationLeft(item.getInfo().onAction.duration);
+
+		addJob(job);
+		
+		return job;
+	}
+
+	public Job createUseJob(BaseItem item) {
 		if (!item.hasFreeSlot()) {
 			return null;
 		}
@@ -534,7 +577,7 @@ public class JobManager implements ISavable {
 		
 		return job;
 	}
-
+	
 	private Job createJobWork(BaseItem item) {
 		Job job = new Job(++_id, item.getX(), item.getY());
 		job.setAction(JobManager.Action.WORK);
@@ -603,11 +646,6 @@ public class JobManager implements ISavable {
 		addJob(job);
 		
 		return job;
-	}
-
-	public Job createStoreJob() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public Job createMovingJob(int x, int y, int stay) {

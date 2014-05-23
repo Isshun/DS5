@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.Strings;
+import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ItemSlot;
+import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.ItemInfo.ItemInfoSlot;
 
@@ -198,10 +200,10 @@ public class BaseItem {
 	}
 	
 	public void releaseSlot(ItemSlot slot) {
-		if (slot.getJob() != null) {
+		if (slot.isFree() == false) {
 			slot.release();
-			_nbSlotUsed--;
 		}
+		_nbSlotUsed--;
 	}
 
 	public boolean hasFreeSlot() {
@@ -244,26 +246,28 @@ public class BaseItem {
 	public String 			getLabel() { return _label; }
 	public List<ItemSlot> 	getSlots() { return _slots; }
 	public ItemInfo 		getInfo() { return _info; }
+	public int 				getNbFreeSlots() { return _nbTotalUsed - _nbSlotUsed; }
+	public int 				getNbSlots() { return _slots.size(); }
+	public int 				getTotalUse() { return _nbTotalUsed; }
+	public int 				getMatter() { return _matter; }
 
 	// Boolean
 	public boolean			isSolid() { return _isSolid; }
 	public boolean			isWorking() { return _isWorking; }
-	
 	public boolean			isComplete() { return _matterSupply >= _matter; }
 	public boolean			isSupply() { return _power == _powerSupply; }
 	public boolean			isFree() { return _owner == null; }
-	
-	// TODO
 	public boolean			isSleepingItem() { return "base.bed".equals(_name) || "base.chair".equals(_name); }
 	public boolean			isStructure() { return _info.isStructure; }
 	public boolean			isRessource() { return _info.isRessource; }
 	public boolean			isWalkable() { return !_info.isWalkable; }
-	
-	public boolean isStorage() { return _info.storage > 0; }
-
-	public int getMatter() {
-		return _matter;
-	}
+	public boolean 			isFloor() { return getName().equals("base.floor") || getName().equals("base.rock") || getName().equals("base.ground"); }
+	public boolean 			isDoor() { return getName().equals("base.door"); }
+	public boolean 			isWall() { return getName().equals("base.wall") || getName().equals("base.window"); }
+	public boolean 			isWindow() { return getName().equals("base.window"); }
+	public boolean 			isToy() { return _isToy; }
+	public boolean 			isStorage() { return _info.storage > 0; }
+	public boolean 			isFood() { return _info.isFood; }
 
 	public static boolean isUserItem(ItemInfo info) {
 		return !info.isStructure && !info.isRessource;
@@ -277,43 +281,6 @@ public class BaseItem {
 		_mode = _nbMode > 0 ? (_mode + 1) % _nbMode : 0;
 	}
 
-	// TODO: item
-	public boolean isFloor() { return getName().equals("base.floor") || getName().equals("base.rock") || getName().equals("base.ground"); }
-
-	// TODO: item
-	public boolean isDoor() { return getName().equals("base.door"); }
-
-	// TODO
-	public boolean isWall() { return getName().equals("base.wall") || getName().equals("base.window"); }
-
-	public boolean isWindow() { return getName().equals("base.window"); }
-
-	public boolean isToy() {
-		return _isToy;
-	}
-
-	public int getNbFreeSlots() {
-		if (_slots == null) {
-			return 0;
-		}
-		
-		int i = 0;
-		for (ItemSlot slot: _slots) {
-			if (slot.isFree()) {
-				i++;
-			}
-		}
-		return i;
-	}
-
-	public int getNbSlots() {
-		return _slots.size();
-	}
-
-	public int getTotalUse() {
-		return _nbTotalUsed;
-	}
-
 	public void use(Character character, int durationLeft) {
 		character.getNeeds().use(this, _info.onAction, durationLeft);
 	}
@@ -325,12 +292,15 @@ public class BaseItem {
 		return Strings.LB_ITEM_USER;
 	}
 
-	public UserItem produce(Character character) {
+	public void produce(Character character) {
 		if (_info.onAction != null && _info.onAction.itemProduce != null) {
-			UserItem item = new UserItem(_info.onAction.itemProduce);
-			character.addInventory(item);
-			return item;
+			for (int i = 0; i < _info.onAction.produce.quantity; i++) {
+				UserItem item = new UserItem(_info.onAction.itemProduce);
+				if (item.isFood()) {
+					ResourceManager.getInstance().addFood(1);
+				}
+				character.addInventory(item);
+			}
 		}
-		return null;
 	}
 }

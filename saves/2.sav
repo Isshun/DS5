@@ -1,5 +1,5 @@
 BEGIN GAME
-MATTER	19782
+MATTER	19740
 SPICE	0
 WATER	0
 END GAME
@@ -404,6 +404,7 @@ BEGIN WORLDMAP
 0	19	18	base.floor	1
 0	19	19	base.floor	1
 0	19	20	base.floor	1
+0	19	20	base.cooker	42
 0	19	21	base.floor	1
 0	19	22	base.floor	1
 0	19	23	base.floor	1
@@ -1035,7 +1036,7 @@ BEGIN WORLDMAP
 5	28	23	base.floor	1
 END WORLDMAP
 BEGIN CHARACTERS
-5	5	1	Michael Anders
+17	14	1	Michael Anders
 END CHARACTERS
 BEGIN ROOMS
 3	31	1	0

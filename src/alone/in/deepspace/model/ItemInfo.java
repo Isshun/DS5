@@ -1,6 +1,9 @@
 package alone.in.deepspace.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import alone.in.deepspace.manager.ItemFilter;
 
 public class ItemInfo {
 	public static class ItemInfoCost {
@@ -59,11 +62,11 @@ public class ItemInfo {
 	public ItemInfoAction 		onAction;
 	public ItemInfoRessource	onGather;
 	public ItemInfoRessource	onMine;
-//	public ItemInfoEffects		onConsumption;
 	public boolean 				isStructure;
 	public boolean 				isRessource;
 	public boolean 				isConsomable;
 	public boolean 				isUserItem;
+	public boolean 				isFood;
 	public int 					storage;
 	public int 					spriteId;
 	public String				fileName;
@@ -74,4 +77,40 @@ public class ItemInfo {
 		width = 1;
 		height = 1;
 	}
+	
+	public boolean matchFilter(ItemFilter filter) {
+
+		// Item immediate effect
+		if (filter.isImmediate && matchFilter(onAction.effects, filter)) {
+			filter.matchingItem = this;
+			return true;
+		}
+
+		// Item produce
+		if (filter.isFactory && onAction != null && onAction.itemProduce != null) {
+			List<ItemInfo> itemProduces = new ArrayList<ItemInfo>();
+			itemProduces.add(onAction.itemProduce);
+			for (ItemInfo itemProduce: itemProduces) {
+				if (itemProduce != null && itemProduce.onAction != null && matchFilter(itemProduce.onAction.effects, filter)) {
+					filter.matchingItem = itemProduce;
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	private boolean matchFilter(ItemInfoEffects effects, ItemFilter filter) {
+		if (effects != null) {
+			if (filter.drink && effects.drink > 0) { return true; }
+			if (filter.energy && effects.energy > 0) { return true; }
+			if (filter.food && effects.food > 0) { return true; }
+			if (filter.hapiness && effects.hapiness > 0) { return true; }
+			if (filter.health && effects.health > 0) { return true; }
+			if (filter.relation && effects.relation > 0) { return true; }
+		}
+		return false;
+	}
+
 }

@@ -2,6 +2,7 @@ package alone.in.deepspace.model;
 
 import org.jsfml.graphics.Color;
 
+import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
@@ -18,6 +19,7 @@ public class Job {
 	private int					_posY;
 	private int 				_posX;
 	private BaseItem			_item;
+	private ItemFilter 			_filter;
 	private JobManager.Action 	_action;
 	private Character 			_character;
 	private Character 			_characterRequire;
@@ -27,6 +29,7 @@ public class Job {
 	private Color 				_color;
 	private int 				_durationLeft;
 	private ItemSlot 			_slot;
+	private int 				_nbUsed;
 
 	public Job(int id, int x, int y) {
 		Log.debug("Job #" + id);
@@ -43,6 +46,7 @@ public class Job {
 	private void init(int id) {
 		_id = id;
 		_item = null;
+		_filter = null;
 		_action = JobManager.Action.NONE;
 		_character = null;
 
@@ -63,6 +67,8 @@ public class Job {
 	public Color 				getColor() { return _color; }
 	public String 				getActionName() { return JobManager.getActionName(_action); }
 	public int 					getDurationLeft() { return _durationLeft; }
+	public ItemFilter			getItemFilter() { return _filter; }
+	public int 					getNbUsed() { return _nbUsed; }
 
 	public void					setCharacterRequire(Character character) { _characterRequire = character; }
 	public void					setFail(Abort reason, int frame) { _reason = reason; _fail = frame; }
@@ -71,14 +77,21 @@ public class Job {
 	public void 				setSlot(ItemSlot slot) { _slot = slot; }
 	public void					setItem(BaseItem item) { _item = item; }
 	public void 				setDurationLeft(int duration) { _durationLeft = duration; }
+	public void 				setItemFilter(ItemFilter filter) { _filter = filter; }
+
 
 	public String getLabel() {
 		String oss = (_id  < 10 ? "#0" : "#") + _id
 				+ " - " + JobManager.getActionName(_action);
+
+		if (_action == Action.TAKE && _filter != null && _filter.matchingItem != null) {
+			oss += " " + _filter.matchingItem.label + " in ";
+		}
+
 		if (_item != null) {
 			oss += " " + _item.getName();
 		}
-
+		
 		if (_action == Action.USE) {
 			oss += " (" + _durationLeft / 10 + ")";
 		}
@@ -111,6 +124,9 @@ public class Job {
 
 	public String getShortLabel() {
 		String oss = JobManager.getActionName(_action);
+		if (_action == Action.TAKE && _filter != null && _filter.matchingItem != null) {
+			oss += " " + _filter.matchingItem.label + " in ";
+		}
 		if (_item != null) {
 			oss += " " + _item.getLabel();
 		}
@@ -130,9 +146,11 @@ public class Job {
 		case MINING: _color = Color.GREEN; break;
 		case WORK: _color = Color.GREEN; break;
 		case NONE: _color = Color.BLACK; break;
+		case USE_INVENTORY:
 		case USE: _color = Color.BLUE; break;
 		case DESTROY: _color = new Color(200, 20, 20); break;
 		case STORE: _color = new Color(180, 100, 255); break;
+		case TAKE: _color = new Color(180, 100, 255); break;
 		}
 	}
 	public void	setCharacter(Character character) {
@@ -152,6 +170,7 @@ public class Job {
 
 	public void decreaseDurationLeft() {
 		_durationLeft--;
+		_nbUsed++;
 	}
 
 }

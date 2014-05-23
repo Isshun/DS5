@@ -52,7 +52,7 @@ public class PanelResource extends UserSubInterface {
 	
 	@Override
 	public void onDraw(RenderWindow app, RenderStates render) {
-        _spice.setString("SP: " + String.valueOf(ResourceManager.getInstance().getSpice()));
+        _spice.setString("Food: " + String.valueOf(ResourceManager.getInstance().getFood()));
         _o2.setString("O2: " + String.valueOf(ResourceManager.getInstance().getO2()));
         _energy.setString("PW: " + String.valueOf(ResourceManager.getInstance().getPower()));
         _matter.setString("M: " + String.valueOf(ResourceManager.getInstance().getMatter()));

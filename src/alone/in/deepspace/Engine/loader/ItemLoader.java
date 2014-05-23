@@ -44,6 +44,7 @@ public class ItemLoader {
 			    if (!info.isStructure && !info.isRessource && !info.isConsomable) {
 			    	info.isUserItem = true;
 			    }
+			    info.isFood = info.onAction != null && info.onAction.effects != null && info.onAction.effects.food > 0;
 			    items.add(info);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
