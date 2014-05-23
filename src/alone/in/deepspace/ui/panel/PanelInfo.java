@@ -20,6 +20,7 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.BaseItem;
+import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.StorageItem;
@@ -31,8 +32,15 @@ import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.ObjectPool;
 
 public class PanelInfo extends UserSubInterface {
-
-	private static final int LINE_HEIGHT = 28;
+	private static final int 		LINE_HEIGHT = 28;
+	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;
+	private static final int 		MENU_PADDING_TOP = 34;
+	private static final int 		MENU_PADDING_LEFT = 16;
+	private static final int 		FRAME_WIDTH = Constant.PANEL_WIDTH;
+	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
+	private static final int 		INVENTORY_NB_COLS = 10;
+	private static final int 		INVENTORY_ITEM_SIZE = 32;
+	private static final int 		INVENTORY_ITEM_SPACE = 4;
 
 	private WorldArea				_area;
 	private int						_line;
@@ -69,17 +77,7 @@ public class PanelInfo extends UserSubInterface {
 	private FrameLayout 			_layoutStorage;
 	private FrameLayout 			_layoutEffects;
 	private TextView[] 				_itemEffects;
-
-	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;
-
-	private static final int 		MENU_PADDING_TOP = 34;
-	private static final int 		MENU_PADDING_LEFT = 16;
-
-	private static final int 		FRAME_WIDTH = Constant.PANEL_WIDTH;
-	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
-	private static final int 		INVENTORY_NB_COLS = 10;
-	private static final int 		INVENTORY_ITEM_SIZE = 32;
-	private static final int 		INVENTORY_ITEM_SPACE = 4;
+	private TextView _itemAccept;
 
 	public PanelInfo(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
@@ -105,6 +103,11 @@ public class PanelInfo extends UserSubInterface {
 		_itemStorage.setPosition(10, 10);
 		_itemStorage.setCharacterSize(16);
 		_layoutStorage.addView(_itemStorage);
+
+		_itemAccept = new TextView(null);
+		_itemAccept.setPosition(10, 500);
+		_itemAccept.setCharacterSize(16);
+		addView(_itemAccept);
 		
 //		_lbContains = new TextView(null);
 //		_lbContains.setPosition(10, 10);
@@ -434,6 +437,7 @@ public class PanelInfo extends UserSubInterface {
 		_layoutItem.setVisible(true);
 		_layoutEffects.setVisible(false);
 		_layoutStorage.setVisible(item.isStorage());
+		_itemAccept.setVisible(false);
 
 		// Configure new item
 		_itemName.setString(item.getLabel() != null ? item.getLabel() : item.getName());
@@ -455,6 +459,15 @@ public class PanelInfo extends UserSubInterface {
 		// Action item
 		if (item.getInfo().onAction != null) {
 			_itemAction.setVisible(true);
+			
+			if (item.getInfo().onAction.itemAccept != null) {
+				String str = "Accept:\n";
+				for (ItemInfo info: item.getInfo().onAction.itemAccept) {
+					str += "  " + info.label + "\n";
+				}
+				_itemAccept.setString(str);
+				_itemAccept.setVisible(true);
+			}
 			
 			// Item action produce
 			if (item.getInfo().onAction.itemProduce != null) {

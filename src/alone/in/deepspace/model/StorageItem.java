@@ -7,36 +7,33 @@ import alone.in.deepspace.manager.ItemFilter;
 
 public class StorageItem extends UserItem {
 
-	private List<BaseItem>	_items;
 	
 	public StorageItem(ItemInfo info) {
 		super(info);
-		
-		_items = new ArrayList<BaseItem>();
 	}
 	
 	public List<BaseItem>	getItems() {
-		return _items;
+		return _inventory;
 	}
 	
 	public void				addItem(BaseItem item) {
-		_items.add(item);
+		_inventory.add(item);
 	}
 
 	public BaseItem getFirst() {
-		if (_items.size() > 0) {
-			return _items.get(0);
+		if (_inventory.size() > 0) {
+			return _inventory.get(0);
 		}
 		return null;
 	}
 
 	public int getNbItems() {
-		return _items.size();
+		return _inventory.size();
 	}
 
 	public boolean contains(ItemFilter filter) {
-		for (BaseItem item: _items) {
-			if (item.getInfo().matchFilter(filter)) {
+		for (BaseItem item: _inventory) {
+			if (item.matchFilter(filter)) {
 				return true;
 			}
 		}
@@ -44,8 +41,8 @@ public class StorageItem extends UserItem {
 	}
 
 	public BaseItem get(ItemFilter filter) {
-		for (BaseItem item: _items) {
-			if (item.getInfo().matchFilter(filter)) {
+		for (BaseItem item: _inventory) {
+			if (item.matchFilter(filter)) {
 				return item;
 			}
 		}
@@ -53,6 +50,6 @@ public class StorageItem extends UserItem {
 	}
 
 	public void remove(BaseItem item) {
-		_items.remove(item);
+		_inventory.remove(item);
 	}
 }

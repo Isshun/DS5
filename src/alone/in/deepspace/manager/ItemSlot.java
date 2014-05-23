@@ -22,14 +22,6 @@ public class ItemSlot {
 		_isFree = false;
 	}
 
-	public void release() {
-		if (_isFree == false) {
-			_isFree = true;
-			_item.releaseSlot(this);
-		}
-		_job = null;
-	}
-
 	public boolean isFree() {
 		return _isFree;
 	}
@@ -44,5 +36,14 @@ public class ItemSlot {
 
 	public Job getJob() {
 		return _job;
+	}
+
+	public BaseItem getItem() {
+		return _item;
+	}
+
+	public void free() {
+		_job = null;
+		_isFree = true;
 	}
 }

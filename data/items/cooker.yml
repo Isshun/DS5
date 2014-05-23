@@ -4,6 +4,7 @@ onAction:
   duration: 10
   practice:
     cooking: 1
+  storage: 10
   produce:
     item: base.meal
     quantity: 10

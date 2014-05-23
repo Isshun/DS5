@@ -30,8 +30,11 @@ import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.UIEventManager;
+import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
+import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
@@ -119,7 +122,39 @@ public class Game implements ISavable {
 			itemFilter.food = true;
 			UserItem item = ServiceManager.getWorldMap().find(itemFilter);
 			if (item != null) {
-				JobManager.getInstance().createUseJob(item);
+				Job job = JobManager.getInstance().createUseJob(item);
+				JobManager.getInstance().addJob(job);
+			}
+		}
+		
+		// TODO
+		// Refill dispenser
+		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
+			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
+				BaseItem dispenser = ServiceManager.getWorldMap().getItem(x, y);
+				if (dispenser != null && dispenser.isDispenser() && dispenser.isWaitRefill() == false) {
+					
+					// Looking for storage containing accepted item
+					StorageItem storage = null;
+					ItemFilter itemFilter = new ItemFilter(true, true); 
+					for (ItemInfo neededItemInfo: dispenser.getInfo().onAction.itemAccept) {
+						if (storage == null) {
+							itemFilter.neededItem = neededItemInfo;
+							storage = ServiceManager.getWorldMap().findStorageContains(itemFilter, dispenser.getX(), dispenser.getY());
+						}
+					}
+
+					// Create jobs if needed items available
+					if (storage != null) {
+						Job takeJob = JobManager.getInstance().createTakeJob(null, storage, itemFilter);
+						Job storeJob = JobManager.getInstance().createStoreJob(null, dispenser);
+						if (takeJob != null && storeJob != null) {
+							takeJob.setNext(storeJob);
+							JobManager.getInstance().addJob(takeJob);
+							dispenser.setWaitRefill(true);
+						}
+					}
+				}
 			}
 		}
 		

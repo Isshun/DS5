@@ -30,6 +30,7 @@ public class Job {
 	private int 				_durationLeft;
 	private ItemSlot 			_slot;
 	private int 				_nbUsed;
+	private Job _next;
 
 	public Job(int id, int x, int y) {
 		Log.debug("Job #" + id);
@@ -172,6 +173,14 @@ public class Job {
 	public void decreaseDurationLeft() {
 		_durationLeft--;
 		_nbUsed++;
+	}
+
+	public void setNext(Job next) {
+		_next = next;
+	}
+
+	public Job getNext() {
+		return _next;
 	}
 
 }

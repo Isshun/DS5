@@ -66,6 +66,9 @@ public class ItemLoader {
 					item.craftedFromItems.add(ServiceManager.getData().getItemInfo(name));
 				}
 			}
+		}
+			
+		for (ItemInfo item: ServiceManager.getData().items) {
 			if (item.onGather != null) {
 				item.onGather.itemProduce = ServiceManager.getData().getItemInfo(item.onGather.produce);
 			}
@@ -76,6 +79,14 @@ public class ItemLoader {
 				item.onAction.duration *= Constant.DURATION_MULTIPLIER;
 				if (item.onAction.produce != null) {
 					item.onAction.itemProduce = ServiceManager.getData().getItemInfo(item.onAction.produce.item);
+					
+					// Item accepted for craft
+					item.onAction.itemAccept = new ArrayList<ItemInfo>();
+					List<ItemInfo> craftedItemList = item.onAction.itemProduce.craftedFromItems;
+					for (ItemInfo craftedItem: craftedItemList) {
+						item.onAction.itemAccept.add(craftedItem);
+					}
+					item.isDispenser = item.onAction.itemAccept.size() > 0;
 				}
 			}
 		}

@@ -96,8 +96,12 @@ public class BaseItem {
 	public int 			actionRemain;
 	private ArrayList<ItemSlot> _slots;
 	private int 		_nbTotalUsed;
-	private int 		_nbSlotUsed;
+	private int 		_nbFreeSlot;
 	private int 		_nbSlot;
+	protected List<BaseItem>	_inventory;
+	
+	// TODO: only dispenser
+	private	boolean		_isWaitRefill;
 
 	public BaseItem(ItemInfo info) {
 		init(info, ++_maxId);
@@ -118,6 +122,7 @@ public class BaseItem {
 		_owner = null;
 		_id = id;
 		_name = null;
+		_inventory = new ArrayList<BaseItem>();
 
 		// TODO: modes
 //		_nbMode = 1;
@@ -183,7 +188,7 @@ public class BaseItem {
 				_slots.add(new ItemSlot(this, 0, 0));
 			}
 			
-			_nbSlot = _slots.size();
+			_nbFreeSlot = _nbSlot = _slots.size();
 		}
 	}
 
@@ -191,7 +196,7 @@ public class BaseItem {
 		for (ItemSlot slot: _slots) {
 			if (slot.isFree()) {
 				slot.take(job);
-				_nbSlotUsed++;
+				_nbFreeSlot--;
 				_nbTotalUsed++;
 				return slot;
 			}
@@ -201,13 +206,18 @@ public class BaseItem {
 	
 	public void releaseSlot(ItemSlot slot) {
 		if (slot.isFree() == false) {
-			slot.release();
+			slot.free();
 		}
-		_nbSlotUsed--;
+		_nbFreeSlot = 0;
+		for (ItemSlot s: _slots) {
+			if (s.isFree()) {
+				_nbFreeSlot++;
+			}
+		}
 	}
 
 	public boolean hasFreeSlot() {
-		return _nbSlotUsed < _nbSlot;
+		return _nbFreeSlot > 0;
 	}
 
 	public void	setOwner(Character character) {
@@ -246,8 +256,8 @@ public class BaseItem {
 	public String 			getLabel() { return _label; }
 	public List<ItemSlot> 	getSlots() { return _slots; }
 	public ItemInfo 		getInfo() { return _info; }
-	public int 				getNbFreeSlots() { return _nbTotalUsed - _nbSlotUsed; }
-	public int 				getNbSlots() { return _slots.size(); }
+	public int 				getNbFreeSlots() { return _nbTotalUsed - _nbFreeSlot; }
+	public int 				getNbSlots() { return _nbSlot; }
 	public int 				getTotalUse() { return _nbTotalUsed; }
 	public int 				getMatter() { return _matter; }
 
@@ -268,6 +278,7 @@ public class BaseItem {
 	public boolean 			isToy() { return _isToy; }
 	public boolean 			isStorage() { return _info.storage > 0; }
 	public boolean 			isFood() { return _info.isFood; }
+	public boolean 			isDispenser() { return _info.isDispenser; }
 
 	public static boolean isUserItem(ItemInfo info) {
 		return !info.isStructure && !info.isRessource;
@@ -302,5 +313,50 @@ public class BaseItem {
 				character.addInventory(item);
 			}
 		}
+	}
+
+	public boolean matchFilter(ItemFilter filter) {
+		
+		// Item immediate effect
+		if (filter.isImmediate) {
+
+			// Filter on item
+			if (filter.neededItem == _info) {
+				filter.matchingItem = _info;
+				return true;
+			}
+
+			if (_info.onAction != null && _info.matchFilter(_info.onAction.effects, filter)) {
+				filter.matchingItem = _info;
+				return true;
+			}
+		}
+
+		// Item produce
+		if (filter.isFactory && _info.onAction != null && _info.onAction.itemProduce != null) {
+			List<ItemInfo> itemProduces = new ArrayList<ItemInfo>();
+			itemProduces.add(_info.onAction.itemProduce);
+			for (ItemInfo itemProduce: itemProduces) {
+				if (itemProduce != null && itemProduce.onAction != null && (filter.neededItem == itemProduce || _info.matchFilter(itemProduce.onAction.effects, filter))) {
+					// Have components
+					for (ItemInfo component: itemProduce.craftedFromItems) {
+						if (_inventory.contains(component)) {
+							filter.matchingItem = itemProduce;
+							return true;
+						}
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	public boolean isWaitRefill() {
+		return _isWaitRefill;
+	}
+
+	public void setWaitRefill(boolean b) {
+		_isWaitRefill = b;
 	}
 }

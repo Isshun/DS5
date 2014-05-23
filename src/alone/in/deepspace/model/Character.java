@@ -450,6 +450,13 @@ public class Character extends Movable {
 			return;
 		}
 		
+		// Update resource manager
+		if (_job.getNbUsed() == 0) {
+			if (_job.getItem().getInfo().isFood) {
+				ResourceManager.getInstance().addFood(-1);
+			}
+		}
+		
 		// TODO: immediate use
 		for (int i = 0; i < _job.getItem().getInfo().onAction.duration * Constant.DURATION_MULTIPLIER; i++) {
 			_job.getItem().use(this, i);
@@ -496,13 +503,6 @@ public class Character extends Movable {
 		// Character using item
 		if (_job.getDurationLeft() > 0) {
 
-			// Update resource manager
-			if (_job.getNbUsed() == 0) {
-				if (item.getInfo().isFood) {
-					ResourceManager.getInstance().addFood(-1);
-				}
-			}
-
 			// Decrease duration
 			_job.decreaseDurationLeft();
 
@@ -532,15 +532,20 @@ public class Character extends Movable {
 
 	private void		actionStore() {
 		UserItem item = ServiceManager.getWorldMap().getItem(_job.getX(), _job.getY());
-		if (item != null && item.isStorage()) {
-			((StorageItem)item).getItems().addAll(_inventory);
-			_inventory.clear();
-			JobManager.getInstance().complete(_job);
-			_inventory.clear();
-		} else {
-			Log.error("Character: actionStore on non storage item");
-			JobManager.getInstance().abort(_job, Abort.INVALID);
-		}
+
+//		// TODO
+//		if (item.isStorage() == false) {
+//			Log.error("Character: actionStore on non storage item");
+//			JobManager.getInstance().abort(_job, Abort.INVALID);
+//			return;		
+//		}
+
+		
+//			((StorageItem)item).getItems().addAll(_inventory);
+		item.addInventory(_inventory);
+		JobManager.getInstance().complete(_job);
+		item.setWaitRefill(false);
+		_inventory.clear();
 		_job = null;
 	}
 
@@ -614,7 +619,15 @@ public class Character extends Movable {
 		// Character is full: cancel current job
 		if (_inventory.size() == Constant.CHARACTER_INVENTORY_SPACE) {
 			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
-			_job = JobManager.getInstance().storeItem(_inventory.get(0));
+
+			// TODO
+			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
+			BaseItem storage = ServiceManager.getWorldMap().getNearest(info, _posX, _posY);
+			if (storage != null) {
+				Job job = JobManager.getInstance().createStoreJob(this, storage);
+				JobManager.getInstance().addJob(job);
+				_job = job;
+			}
 			return;
 		}
 
@@ -656,7 +669,15 @@ public class Character extends Movable {
 		// Character is full: cancel current job
 		if (_inventory.size() == Constant.CHARACTER_INVENTORY_SPACE) {
 			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
-			_job = JobManager.getInstance().storeItem(_inventory.get(0));
+
+			// TODO
+			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
+			BaseItem storage = ServiceManager.getWorldMap().getNearest(info, _posX, _posY);
+			if (storage != null) {
+				Job job = JobManager.getInstance().createStoreJob(this, storage);
+				JobManager.getInstance().addJob(job);
+				_job = job;
+			}
 			return;
 		}
 
@@ -767,7 +788,7 @@ public class Character extends Movable {
 
 	public BaseItem find(ItemFilter filter) {
 		for (BaseItem item: _inventory) {
-			if (item.getInfo().matchFilter(filter)) {
+			if (item.matchFilter(filter)) {
 				return item;
 			}
 		}

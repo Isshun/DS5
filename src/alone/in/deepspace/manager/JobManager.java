@@ -12,6 +12,7 @@ import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.Job.Abort;
 import alone.in.deepspace.model.Room;
+import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.model.WorldRessource;
 import alone.in.deepspace.util.Constant;
@@ -257,7 +258,14 @@ public class JobManager implements ISavable {
 		
 		// Character is full: go back to storage area
 		if (character.isFull()) {
-			return createStoreJob(character);
+			// TODO
+			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
+			BaseItem storage = ServiceManager.getWorldMap().getNearest(info, character.getX(), character.getY());
+			if (storage != null) {
+				Job storeJob = createStoreJob(character, storage);
+				addJob(storeJob);
+				return storeJob;
+			}
 		}
 
 		int x = character.getX();
@@ -309,20 +317,15 @@ public class JobManager implements ISavable {
 		return bestJob;
 	}
 
-	private Job createStoreJob(Character character) {
-		Room room = RoomManager.getInstance().getNearFreeStorage(character.getX(), character.getY());
-		if (room != null) {
-			Job job = new Job(++_id, room.getX(), room.getY());
-			job.setAction(JobManager.Action.STORE);
-			job.setCharacterRequire(character);
-			addJob(job);
-			Log.debug("bestJob: 2");
-			return job;
-		}
-		return null;
+	public Job createStoreJob(Character character, BaseItem storage) {
+		Job job = new Job(++_id, storage.getX(), storage.getY());
+		job.setAction(JobManager.Action.STORE);
+		job.setItem(storage);
+		job.setCharacterRequire(character);
+		return job;
 	}
 
-	private Job createTakeJob(Character character, BaseItem storage, ItemFilter filter) {
+	public Job createTakeJob(Character character, BaseItem storage, ItemFilter filter) {
 		Log.debug("create take job");
 
 		Job job = new Job(++_id, storage.getX(), storage.getY());
@@ -330,7 +333,6 @@ public class JobManager implements ISavable {
 		job.setItem(storage);
 		job.setItemFilter(filter);
 		job.setCharacterRequire(character);
-		addJob(job);
 		
 		return job;
 	}
@@ -350,7 +352,9 @@ public class JobManager implements ISavable {
 			// Take item from storage
 			item = ServiceManager.getWorldMap().findStorageContains(filter, character.getX(), character.getY());
 			if (item != null) {
-				return createTakeJob(character, item, filter);
+				Job job = createTakeJob(character, item, filter);
+				addJob(job);
+				return job;
 			}
 		}
 
@@ -395,7 +399,7 @@ public class JobManager implements ISavable {
 			}
 			
 			if (job.getSlot() != null) {
-				job.getSlot().release();
+				job.getSlot().getItem().releaseSlot(job.getSlot());
 			}
 		}
 
@@ -414,25 +418,21 @@ public class JobManager implements ISavable {
 		}
 		
 		if (job.getSlot() != null) {
-			job.getSlot().release();
+			job.getSlot().getItem().releaseSlot(job.getSlot());
+		}
+		
+		if (job.getNext() != null) {
+			job.getNext().setCharacterRequire(job.getCharacter());
+			addJob(job.getNext());
 		}
 		
 		_jobs.remove(job);
 	}
 
-	// TODO: change name by filter
-	public Job need(Character character, String itemName) {
-		Log.debug("JobManager: Character '" + character.getName() + "' need item #" + itemName);
-
-		BaseItem item = ServiceManager.getWorldMap().find(itemName, true);
-		if (item != null) {
-			return createUseJob(item);
+	public void	addJob(Job job) {
+		if (job != null && _jobs.contains(job) == false) {
+			_jobs.add(job);
 		}
-		return null;
-	}
-
-	void	addJob(Job job) {
-		_jobs.add(job);
 	}
 
 	public static JobManager getInstance() {
@@ -463,15 +463,6 @@ public class JobManager implements ISavable {
 		_jobs.clear();
 	}
 
-	public Job storeItem(BaseItem item) {
-		Job job = new Job(++_id, item.getX(), item.getY());
-		job.setAction(JobManager.Action.STORE);
-		job.setItem(item);
-		addJob(job);
-		
-		return job;
-	}
-
 	public void destroyItem(BaseItem item) {
 		Job job = new Job(++_id, item.getX(), item.getY());
 		job.setAction(JobManager.Action.DESTROY);
@@ -500,7 +491,7 @@ public class JobManager implements ISavable {
 			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
 			BaseItem storage = ServiceManager.getWorldMap().getNearest(info, c.getX(), c.getY());
 			if (storage != null) {
-				return storeItem(storage);
+				return createStoreJob(c, storage);
 			}
 		}
 		
@@ -527,7 +518,7 @@ public class JobManager implements ISavable {
 		}
 		
 		if (bestItem != null) {
-			return createJobWork(bestItem);
+			return createWorkJob(bestItem);
 		}
 		
 		// Go to meeting room
@@ -555,8 +546,6 @@ public class JobManager implements ISavable {
 		job.setItem(item);
 		job.setDurationLeft(item.getInfo().onAction.duration);
 
-		addJob(job);
-		
 		return job;
 	}
 
@@ -573,18 +562,13 @@ public class JobManager implements ISavable {
 		job.setItem(item);
 		job.setDurationLeft(item.getInfo().onAction.duration);
 
-		addJob(job);
-		
 		return job;
 	}
 	
-	private Job createJobWork(BaseItem item) {
+	private Job createWorkJob(BaseItem item) {
 		Job job = new Job(++_id, item.getX(), item.getY());
 		job.setAction(JobManager.Action.WORK);
 		job.setItem(item);
-
-		addJob(job);
-		
 		return job;
 	}
 
@@ -608,8 +592,6 @@ public class JobManager implements ISavable {
 		job.setAction(JobManager.Action.GATHER);
 		job.setItem(res);
 
-		addJob(job);
-		
 		return job;
 	}
 
@@ -627,8 +609,6 @@ public class JobManager implements ISavable {
 		Job job = new Job(++_id, res.getX(), res.getY());
 		job.setAction(JobManager.Action.MINING);
 		job.setItem(res);
-
-		addJob(job);
 		
 		return job;
 	}
@@ -642,8 +622,6 @@ public class JobManager implements ISavable {
 		Job job = new Job(++_id, item.getX(), item.getY());
 		job.setAction(JobManager.Action.DESTROY);
 		job.setItem(item);
-
-		addJob(job);
 		
 		return job;
 	}
@@ -652,8 +630,6 @@ public class JobManager implements ISavable {
 		Job job = new Job(++_id, x, y);
 		job.setAction(JobManager.Action.MOVE);
 		job.setDurationLeft(stay);
-		addJob(job);
-		
 		return job;
 	}
 

@@ -19,6 +19,7 @@ import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Cursor;
 import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.util.Log;
 
@@ -277,7 +278,8 @@ public class UserInteraction {
 	public void planGather(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				JobManager.getInstance().createGatherJob(x, y);
+				Job job = JobManager.getInstance().createGatherJob(x, y);
+				JobManager.getInstance().addJob(job);
 			}
 		}
 	}
@@ -285,7 +287,8 @@ public class UserInteraction {
 	public void planMining(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				JobManager.getInstance().createMiningJob(x, y);
+				Job job = JobManager.getInstance().createMiningJob(x, y);
+				JobManager.getInstance().addJob(job);
 			}
 		}
 	}
@@ -293,7 +296,8 @@ public class UserInteraction {
 	public void planDump(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				JobManager.getInstance().createDumpJob(x, y);
+				Job job = JobManager.getInstance().createDumpJob(x, y);
+				JobManager.getInstance().addJob(job);
 			}
 		}
 	}

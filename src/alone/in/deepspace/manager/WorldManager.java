@@ -521,7 +521,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 		for (int x = 0; x < _width; x++) {
 			for (int y = 0; y < _height; y++) {
 				UserItem item = _areas[x][y].getItem();
-				if (item != null && item.getInfo().matchFilter(filter)) {
+				if (item != null && item.matchFilter(filter)) {
 					return item;
 				}
 			}
@@ -554,19 +554,19 @@ public class WorldManager implements ISavable, TileBasedMap {
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
 				UserItem item = getItem(startX + offsetX, startY + offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && item.getInfo().matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && item.matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
 					return item;
 				}
 				item = getItem(startX - offsetX, startY - offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && item.getInfo().matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && item.matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
 					return getItem(startX - offsetX, startY - offsetY);
 				}
 				item = getItem(startX + offsetX, startY - offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && item.getInfo().matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && item.matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
 					return getItem(startX + offsetX, startY - offsetY);
 				}
 				item = getItem(startX - offsetX, startY + offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && item.getInfo().matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && item.matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
 					return getItem(startX - offsetX, startY + offsetY);
 				}
 			}
@@ -747,7 +747,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 	}
 
 	// TODO
-	public BaseItem findStorageContains(ItemFilter filter, int x, int y) {
+	public StorageItem findStorageContains(ItemFilter filter, int x, int y) {
 		
 		// Find all storage
 		List<StorageItem> storages = new ArrayList<StorageItem>();

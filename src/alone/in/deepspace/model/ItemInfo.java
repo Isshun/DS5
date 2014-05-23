@@ -14,11 +14,13 @@ public class ItemInfo {
 
 	public static class ItemInfoAction {
 		public int 					duration;
+		public int 					storage;
 		public ItemInfoProduce		produce;
 		public ItemInfo 			itemProduce;
 		public ItemInfoPractice 	practice;
 		public ItemInfoEffects		effects;
 		public List<ItemInfoSlot>	slots;
+		public ArrayList<ItemInfo> 	itemAccept;
 	}
 
 	public static class ItemInfoRessource {
@@ -72,36 +74,14 @@ public class ItemInfo {
 	public String				fileName;
 	public String 				packageName;
 	public List<ItemInfo> 		craftedFromItems;
+	public boolean 				isDispenser;
 	
 	public ItemInfo() {
 		width = 1;
 		height = 1;
 	}
 	
-	public boolean matchFilter(ItemFilter filter) {
-
-		// Item immediate effect
-		if (filter.isImmediate && matchFilter(onAction.effects, filter)) {
-			filter.matchingItem = this;
-			return true;
-		}
-
-		// Item produce
-		if (filter.isFactory && onAction != null && onAction.itemProduce != null) {
-			List<ItemInfo> itemProduces = new ArrayList<ItemInfo>();
-			itemProduces.add(onAction.itemProduce);
-			for (ItemInfo itemProduce: itemProduces) {
-				if (itemProduce != null && itemProduce.onAction != null && matchFilter(itemProduce.onAction.effects, filter)) {
-					filter.matchingItem = itemProduce;
-					return true;
-				}
-			}
-		}
-		
-		return false;
-	}
-
-	private boolean matchFilter(ItemInfoEffects effects, ItemFilter filter) {
+	boolean matchFilter(ItemInfoEffects effects, ItemFilter filter) {
 		if (effects != null) {
 			if (filter.drink && effects.drink > 0) { return true; }
 			if (filter.energy && effects.energy > 0) { return true; }

@@ -23,6 +23,7 @@ import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Character.Gender;
 import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.Job.Abort;
+import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.util.Constant;
@@ -230,22 +231,33 @@ public class CharacterManager implements ISavable {
 	}
 
 	private void assignJob(Character c) {
+		// TODO: change name by filter
 		// Need to sleep
 		if (c.getNeeds().isTired()) {
-			c.setJob(JobManager.getInstance().need(c, "base.bed"));
+			BaseItem item = ServiceManager.getWorldMap().find("base.bed", true);
+			if (item != null) {
+				Job job = JobManager.getInstance().createUseJob(item);
+				if (job != null) {
+					JobManager.getInstance().addJob(job);
+					c.setJob(job);
+					return;
+				}
+			}
 		}
 		
-		else {
-			// Regular job
-			Job job = JobManager.getInstance().getJob(c);
-			if (job != null) {
-				c.setJob(job);
-			}
+		// Regular job
+		Job job = JobManager.getInstance().getJob(c);
+		if (job != null) {
+			c.setJob(job);
+			return;
+		}
 
-			// Routine job
-			else {
-				c.setJob(JobManager.getInstance().createRoutineJob(c));
-			}
+		// Routine job
+		job = JobManager.getInstance().createRoutineJob(c);
+		if (job != null) {
+			JobManager.getInstance().addJob(job);
+			c.setJob(job);
+			return;
 		}
 	}
 

@@ -12,6 +12,7 @@ public class ItemFilter {
 	public boolean 	isFactory;
 	public boolean 	isImmediate;
 	public ItemInfo	matchingItem;
+	public ItemInfo neededItem;
 	
 	public ItemFilter(boolean isFactory, boolean isImmediate) {
 		this.isFactory = isFactory;
