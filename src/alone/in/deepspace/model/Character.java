@@ -88,6 +88,7 @@ public class Character extends Movable {
 		_steps = 0;
 		_firstName = name;
 		_isGay = (int)(Math.random() * 100) % 10 == 0;
+		_gender = Gender.GENDER_FEMALE;
 		_lastName = _birthName = lastName;
 		
 		if (name == null) {

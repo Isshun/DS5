@@ -11,6 +11,7 @@ import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.manager.JobManager;
+import alone.in.deepspace.manager.JobManager.Action;
 import alone.in.deepspace.model.Job;
 import alone.in.deepspace.util.Constant;
 
@@ -33,7 +34,7 @@ public class JobRenderer implements IRenderer {
 
 		List<Job> jobs = JobManager.getInstance().getJobs();
 		for (Job job: jobs) {
-			if (job.isActive()) {
+			if (job.getAction() != Action.USE || job.isActive()) {
 				Color color = job.getColor();
 				rectangleItem.setFillColor(new Color(color.r, color.g, color.b, 100));
 				rectangleItem.setPosition(new Vector2f(job.getX() * Constant.TILE_WIDTH, job.getY() * Constant.TILE_HEIGHT));

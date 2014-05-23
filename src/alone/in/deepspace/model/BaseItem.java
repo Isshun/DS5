@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.Strings;
+import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.ResourceManager;
@@ -256,7 +257,7 @@ public class BaseItem {
 	public String 			getLabel() { return _label; }
 	public List<ItemSlot> 	getSlots() { return _slots; }
 	public ItemInfo 		getInfo() { return _info; }
-	public int 				getNbFreeSlots() { return _nbTotalUsed - _nbFreeSlot; }
+	public int 				getNbFreeSlots() { return _nbFreeSlot; }
 	public int 				getNbSlots() { return _nbSlot; }
 	public int 				getTotalUse() { return _nbTotalUsed; }
 	public int 				getMatter() { return _matter; }
@@ -358,5 +359,9 @@ public class BaseItem {
 
 	public void setWaitRefill(boolean b) {
 		_isWaitRefill = b;
+	}
+
+	public List<BaseItem> getInventory() {
+		return _inventory;
 	}
 }

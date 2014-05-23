@@ -35,9 +35,9 @@ public class RelationManager {
 		if (c1.getOld() < Constant.CHARACTER_DATE_MIN_OLD || c2.getOld() < Constant.CHARACTER_DATE_MIN_OLD) {
 			return;
 		}
-
+		
 		// Gender mismatch
-		if (c1.isGay() != c2.isGay() || (c1.isGay() && c1.getGender() != c2.getGender())) {
+		if (c1.isGay() != c2.isGay() || (c1.isGay() && c1.getGender() != c2.getGender()) || (c1.isGay() == false && c1.getGender() == c2.getGender())) {
 			return;
 		}
 

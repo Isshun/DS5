@@ -77,7 +77,8 @@ public class PanelInfo extends UserSubInterface {
 	private FrameLayout 			_layoutStorage;
 	private FrameLayout 			_layoutEffects;
 	private TextView[] 				_itemEffects;
-	private TextView _itemAccept;
+	private TextView 				_itemAccept;
+	private TextView 				_itemInventoryCount;
 
 	public PanelInfo(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
@@ -108,6 +109,11 @@ public class PanelInfo extends UserSubInterface {
 		_itemAccept.setPosition(10, 500);
 		_itemAccept.setCharacterSize(16);
 		addView(_itemAccept);
+		
+		_itemInventoryCount = new TextView(null);
+		_itemInventoryCount.setPosition(10, 400);
+		_itemInventoryCount.setCharacterSize(16);
+		addView(_itemInventoryCount);
 		
 //		_lbContains = new TextView(null);
 //		_lbContains.setPosition(10, 10);
@@ -540,6 +546,7 @@ public class PanelInfo extends UserSubInterface {
 
 			_itemSlots.setString("Free slots: " + item.getNbFreeSlots());
 			_itemUsed.setString("Used: " + item.getTotalUse());
+			_itemInventoryCount.setString("Inventory: " + item.getInventory().size());
 
 			if (item.isStorage()) {
 				StorageItem storage = ((StorageItem)item);
