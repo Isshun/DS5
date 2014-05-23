@@ -542,19 +542,19 @@ public class WorldManager implements ISavable, TileBasedMap {
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
 				UserItem item = getItem(startX + offsetX, startY + offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && itemOrProduceMatchFilter(item.getInfo(), itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
 					return item;
 				}
 				item = getItem(startX - offsetX, startY - offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && itemOrProduceMatchFilter(item.getInfo(), itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
 					return getItem(startX - offsetX, startY - offsetY);
 				}
 				item = getItem(startX + offsetX, startY - offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && itemOrProduceMatchFilter(item.getInfo(), itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
 					return getItem(startX + offsetX, startY - offsetY);
 				}
 				item = getItem(startX - offsetX, startY + offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && itemOrProduceMatchFilter(item.getInfo(), itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
 					return getItem(startX - offsetX, startY + offsetY);
 				}
 			}
@@ -563,9 +563,29 @@ public class WorldManager implements ISavable, TileBasedMap {
 	}
 
 
-	private boolean matchFilter(BaseItem item, ItemFilter itemFilter) {
-		if (item != null && item.getInfo().onAction != null && item.getInfo().onAction.effects != null) {
-			ItemInfoEffects effects = item.getInfo().onAction.effects;
+	private boolean itemOrProduceMatchFilter(ItemInfo item, ItemFilter itemFilter) {
+
+		// Item
+		if (effectMatchFilter(item.onAction.effects, itemFilter)) {
+			return true;
+		}
+
+		// Produce
+		if (item.onAction.itemProduce != null) {
+			List<ItemInfo> itemProduces = new ArrayList<ItemInfo>();
+			itemProduces.add(item.onAction.itemProduce);
+			for (ItemInfo itemProduce: itemProduces) {
+				if (itemProduce != null && itemProduce.onAction != null && effectMatchFilter(itemProduce.onAction.effects, itemFilter)) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	private boolean effectMatchFilter(ItemInfoEffects effects, ItemFilter itemFilter) {
+		if (effects != null) {
 			if (itemFilter.drink && effects.drink > 0) { return true; }
 			if (itemFilter.energy && effects.energy > 0) { return true; }
 			if (itemFilter.food && effects.food > 0) { return true; }

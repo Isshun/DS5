@@ -59,7 +59,7 @@ public class ItemInfo {
 	public ItemInfoAction 		onAction;
 	public ItemInfoRessource	onGather;
 	public ItemInfoRessource	onMine;
-	public ItemInfoEffects		onConsumption;
+//	public ItemInfoEffects		onConsumption;
 	public boolean 				isStructure;
 	public boolean 				isRessource;
 	public boolean 				isConsomable;

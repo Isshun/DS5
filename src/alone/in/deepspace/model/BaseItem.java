@@ -324,4 +324,13 @@ public class BaseItem {
 		if (_info.isRessource) { return Strings.LB_ITEM_RESSOURCE; }
 		return Strings.LB_ITEM_USER;
 	}
+
+	public UserItem produce(Character character) {
+		if (_info.onAction != null && _info.onAction.itemProduce != null) {
+			UserItem item = new UserItem(_info.onAction.itemProduce);
+			character.addInventory(item);
+			return item;
+		}
+		return null;
+	}
 }

@@ -13,7 +13,6 @@ onAction:
     - x: 2
       y: 1
   duration: 5
-  effects:
-    food: 100
-    drink: 100
-    hapiness: 10
+  produce:
+    item: "base.meal"
+    quantity: 1

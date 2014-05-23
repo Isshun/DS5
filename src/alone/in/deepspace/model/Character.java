@@ -48,7 +48,7 @@ public class Character extends Movable {
 	private String					_firstName;
 	private Profession				_profession;
 	private boolean					_selected;
-	private List<BaseItem> 			_carry;
+	private List<BaseItem> 			_inventory;
 	private CharacterStatus 		_status;
 	private Color 					_color;
 	private int 					_lag;
@@ -73,7 +73,7 @@ public class Character extends Movable {
 		_old = old;
 		_profession = CharacterManager.professions[id % CharacterManager.professions.length];
 		_relations = new ArrayList<CharacterRelation>();
-		_carry = new ArrayList<BaseItem>();
+		_inventory = new ArrayList<BaseItem>();
 		setGender((int)(Math.random() * 1000) % 2 == 0 ? Character.Gender.GENDER_MALE : Character.Gender.GENDER_FEMALE);
 		_lag = (int)(Math.random() * 10);
 		_selected = false;
@@ -181,12 +181,12 @@ public class Character extends Movable {
 	//	  int[]				getMessages() { return _messages; }
 	public boolean			getSelected() { return _selected; }
 	public int				getProfessionScore(Profession.Type professionEngineer) { return 42; }
-	public List<BaseItem> 	getCarried() { return _carry; }
+	public List<BaseItem> 	getCarried() { return _inventory; }
 	public Vector<Position> getPath() { return _path; }
 	public CharacterStatus 	getStatus() { return _status; }
 	public Color 			getColor() { return _color; }
 	public int 				getLag() { return _lag; }
-	public int 				getSpace() { return _inventorySpace - _carry.size(); }
+	public int 				getSpace() { return _inventorySpace - _inventory.size(); }
 	public Gender 			getGender() { return _gender; }
 	public Character 		getMate() { return _mate; }
 	public String 			getLastName() { return _lastName; }
@@ -194,7 +194,7 @@ public class Character extends Movable {
 	public double			getOld() { return _old; }
 	public double 			getNextChildAtOld() { return _nextChildAtOld; }
 
-	public boolean			isFull() { return _carry.size() == Constant.CHARACTER_INVENTORY_SPACE; }
+	public boolean			isFull() { return _inventory.size() == Constant.CHARACTER_INVENTORY_SPACE; }
 	public boolean 			isSleeping() { return _needs._sleeping > 0; }
 	public boolean 			isGay() { return _isGay; }
 
@@ -464,11 +464,11 @@ public class Character extends Movable {
 
 		Log.debug("Character #" + _id + ": actionUse");
 
+		BaseItem item = _job.getItem();
+
 		// Character using item
 		if (_job.getDurationLeft() > 0) {
 			_job.decreaseDurationLeft();
-
-			BaseItem item = _job.getItem();
 
 			// Item is use by 2 or more character
 			if (item.getNbFreeSlots() + 1 < item.getNbSlots()) {
@@ -485,6 +485,22 @@ public class Character extends Movable {
 			return;
 		}
 
+		// Action produce item
+		UserItem producedItem = item.produce(this);
+		if (producedItem != null) {
+			// TODO: immediate use
+			producedItem.use(this, 1);
+			producedItem.use(this, 1);
+			producedItem.use(this, 1);
+			producedItem.use(this, 1);
+			producedItem.use(this, 1);
+			producedItem.use(this, 1);
+			producedItem.use(this, 1);
+			producedItem.use(this, 1);
+			producedItem.use(this, 1);
+			producedItem.use(this, 1);
+			_inventory.remove(producedItem);
+		}
 		JobManager.getInstance().complete(_job);
 		
 		_job = null;
@@ -493,10 +509,10 @@ public class Character extends Movable {
 	private void		actionStore() {
 		UserItem item = ServiceManager.getWorldMap().getItem(_job.getX(), _job.getY());
 		if (item != null && item.isStorage()) {
-			((StorageItem)item).getItems().addAll(_carry);
-			_carry.clear();
+			((StorageItem)item).getItems().addAll(_inventory);
+			_inventory.clear();
 			JobManager.getInstance().complete(_job);
-			_carry.clear();
+			_inventory.clear();
 		} else {
 			Log.error("Character: actionStore on non storage item");
 			JobManager.getInstance().abort(_job, Abort.INVALID);
@@ -572,9 +588,9 @@ public class Character extends Movable {
 
 
 		// Character is full: cancel current job
-		if (_carry.size() == Constant.CHARACTER_INVENTORY_SPACE) {
+		if (_inventory.size() == Constant.CHARACTER_INVENTORY_SPACE) {
 			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
-			_job = JobManager.getInstance().storeItem(_carry.get(0));
+			_job = JobManager.getInstance().storeItem(_inventory.get(0));
 			return;
 		}
 
@@ -590,7 +606,7 @@ public class Character extends Movable {
 			_job = null;
 		}
 		
-		_carry.add(new BaseItem(gatheredItem.getInfo().onGather.itemProduce));
+		_inventory.add(new BaseItem(gatheredItem.getInfo().onGather.itemProduce));
 		//_carry += value;
 	}
 
@@ -614,9 +630,9 @@ public class Character extends Movable {
 
 
 		// Character is full: cancel current job
-		if (_carry.size() == Constant.CHARACTER_INVENTORY_SPACE) {
+		if (_inventory.size() == Constant.CHARACTER_INVENTORY_SPACE) {
 			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
-			_job = JobManager.getInstance().storeItem(_carry.get(0));
+			_job = JobManager.getInstance().storeItem(_inventory.get(0));
 			return;
 		}
 
@@ -632,7 +648,7 @@ public class Character extends Movable {
 			_job = null;
 		}
 		
-		_carry.add(new BaseItem(gatheredItem.getInfo().onMine.itemProduce));
+		_inventory.add(new BaseItem(gatheredItem.getInfo().onMine.itemProduce));
 	}
 
 	private void		actionDestroy() {
@@ -698,6 +714,10 @@ public class Character extends Movable {
 
 	public void setQuarter(Room quarter) {
 		_quarter = quarter;
+	}
+
+	public void addInventory(BaseItem item) {
+		_inventory.add(item);
 	}
 
 }

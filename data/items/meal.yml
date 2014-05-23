@@ -6,6 +6,9 @@ craftedFrom:
   - base.seaweed
   - base.seafood
   - base.vegetable
-onConsumption:
-  food: 100
-  drink: 100
+onAction:
+  duration: 1
+  effects:
+    food: 100
+    drink: 100
+    hapiness: 10

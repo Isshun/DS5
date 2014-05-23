@@ -212,7 +212,7 @@ public class CharacterNeeds {
 		}
 		
 		if (action != null && action.effects != null) {
-			_energy = Math.min(_energy + (double)action.effects.energy / (double)action.duration, 100);
+			_energy = Math.min(_energy + (double)action.effects.energy / action.duration, 100);
 			_food = Math.min(_food + (double)action.effects.food / action.duration, 100);
 			_happiness = Math.min(_happiness + (double)action.effects.hapiness / action.duration, 100);
 			_health = Math.min(_health + (double)action.effects.health / action.duration, 100);
