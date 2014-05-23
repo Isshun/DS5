@@ -79,6 +79,7 @@ public class Job {
 	public void 				setDurationLeft(int duration) { _durationLeft = duration; }
 	public void 				setItemFilter(ItemFilter filter) { _filter = filter; }
 
+	public boolean 				isActive() { return _character != null; }
 
 	public String getLabel() {
 		String oss = (_id  < 10 ? "#0" : "#") + _id
