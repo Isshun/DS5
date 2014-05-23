@@ -200,8 +200,8 @@ public class BaseItem {
 	public void releaseSlot(ItemSlot slot) {
 		if (slot.getJob() != null) {
 			slot.release();
+			_nbSlotUsed--;
 		}
-		_nbSlotUsed--;
 	}
 
 	public boolean hasFreeSlot() {

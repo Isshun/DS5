@@ -542,19 +542,19 @@ public class WorldManager implements ISavable, TileBasedMap {
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
 				UserItem item = getItem(startX + offsetX, startY + offsetY);
-				if (item != null && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
 					return item;
 				}
 				item = getItem(startX - offsetX, startY - offsetY);
-				if (item != null && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
 					return getItem(startX - offsetX, startY - offsetY);
 				}
 				item = getItem(startX + offsetX, startY - offsetY);
-				if (item != null && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
 					return getItem(startX + offsetX, startY - offsetY);
 				}
 				item = getItem(startX - offsetX, startY + offsetY);
-				if (item != null && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
+				if (item != null && item.isComplete() && item.hasFreeSlot() && matchFilter(item, itemFilter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
 					return getItem(startX - offsetX, startY + offsetY);
 				}
 			}
