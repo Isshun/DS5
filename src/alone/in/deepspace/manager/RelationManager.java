@@ -56,7 +56,7 @@ public class RelationManager {
 	public Character createChildren(Character c1, Character c2) {
 		int count = ServiceManager.getCharacterManager().getList().size();
 
-		String lastName = c1.getGender() == Gender.GENDER_MALE ? c1.getLastName() : c2.getLastName();
+		String lastName = c1.getGender() == Gender.MALE ? c1.getLastName() : c2.getLastName();
 		Character child = new Character(count + 1, c1.getX(), c2.getY(), null, lastName, 0);
 		child.setProfession(CharacterManager.professionsChild);
 
@@ -95,21 +95,21 @@ public class RelationManager {
 		for (Character c: childrensFirstParent) {
 			// Add real brother
 			if (childrensSecondParent.contains(c)) {
-				child.getRelations().add(new CharacterRelation(child, c, c.getGender() == Gender.GENDER_MALE ? Relation.BROTHER : Relation.SISTER));
-				c.getRelations().add(new CharacterRelation(c, child, child.getGender() == Gender.GENDER_MALE ? Relation.BROTHER : Relation.SISTER));
+				child.getRelations().add(new CharacterRelation(child, c, c.getGender() == Gender.MALE ? Relation.BROTHER : Relation.SISTER));
+				c.getRelations().add(new CharacterRelation(c, child, child.getGender() == Gender.MALE ? Relation.BROTHER : Relation.SISTER));
 			}
 			// Add half-brother
 			else {
-				child.getRelations().add(new CharacterRelation(child, c, c.getGender() == Gender.GENDER_MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
-				c.getRelations().add(new CharacterRelation(c, child, child.getGender() == Gender.GENDER_MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
+				child.getRelations().add(new CharacterRelation(child, c, c.getGender() == Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
+				c.getRelations().add(new CharacterRelation(c, child, child.getGender() == Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
 			}
 		}
 
 		for (Character c: childrensSecondParent) {
 			// Add half-brother for second parent
 			if (childrensFirstParent.contains(c) == false) {
-				child.getRelations().add(new CharacterRelation(child, c, c.getGender() == Gender.GENDER_MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
-				c.getRelations().add(new CharacterRelation(c, child, child.getGender() == Gender.GENDER_MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
+				child.getRelations().add(new CharacterRelation(child, c, c.getGender() == Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
+				c.getRelations().add(new CharacterRelation(c, child, child.getGender() == Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
 			}
 		}
 	}

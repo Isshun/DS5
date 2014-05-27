@@ -4,6 +4,5 @@ width: 1
 height: 1
 category: structure
 isWalkable: true
-isStructure: true
 cost:
   matter: 42

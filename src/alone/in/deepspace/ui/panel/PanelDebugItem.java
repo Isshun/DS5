@@ -110,7 +110,7 @@ public class PanelDebugItem extends UserSubInterface {
 		
 		{
 			TextView text = new TextView();
-			text.setString("Is ressource: " + item.isRessource);
+			text.setString("Is ressource: " + item.isResource);
 			text.setPosition(x, y);
 			text.setCharacterSize(16);
 			_itemView.addView(text);

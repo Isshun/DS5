@@ -2,7 +2,7 @@ label: Seaweed
 width: 1
 height: 1
 light: 2
-isRessource: true
+category: resource
 onGather:
   produce: base.seaweed
 cost:

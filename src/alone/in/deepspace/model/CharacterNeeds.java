@@ -43,6 +43,7 @@ public class CharacterNeeds {
 		_happiness = (Constant.CHARACTER_INIT_HAPPINESS + (Math.random() * 100) % 20 - 10);
 		_health = (float) (Constant.CHARACTER_INIT_HEALTH + (Math.random() * 100) % 20 - 10);
 		_energy = (int) (Constant.CHARACTER_INIT_ENERGY + (Math.random() * 100) % 100);
+		_energy = 100;
 		_relation = 0;
 		_security = 0;
 		_injuries = 0;

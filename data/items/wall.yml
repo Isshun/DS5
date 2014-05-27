@@ -3,6 +3,5 @@ label: Wall
 width: 1
 height: 1
 category: structure
-isStructure: true
 cost:
   matter: 1

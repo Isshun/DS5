@@ -1,7 +1,10 @@
 label: Chess table
 width: 1
 height: 1
-category: quarter
+frames: 7
+framesInterval: 18
+category: item
+room: quarter
 cost:
   matter: 42
 onAction:

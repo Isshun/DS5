@@ -10,7 +10,11 @@ public class StorageItem extends UserItem {
 
 	private List<ItemInfo>	_accepts;
 	private List<BaseItem>	_inventory;
-	private	boolean		_isWaitRefill;
+	private	boolean			_isWaitRefill;
+	private boolean 		_acceptFood;
+	private boolean 		_acceptDrink;
+	private boolean 		_acceptConsomable;
+	private boolean 		_acceptGarbage;
 
 	public StorageItem(ItemInfo info) {
 		super(info);
@@ -150,6 +154,32 @@ public class StorageItem extends UserItem {
 		}
 		
 		return false;
+	}
+
+	public void setStorageFilter(boolean acceptFood, boolean acceptDrink, boolean acceptConsomable, boolean acceptGarbage) {
+		_acceptFood = acceptFood;
+		_acceptDrink = acceptDrink;
+		_acceptConsomable = acceptConsomable;
+		_acceptGarbage = acceptGarbage;
+	}
+
+	public boolean acceptFood() { return _acceptFood; }
+	public boolean acceptDrink() { return _acceptDrink; }
+	public boolean acceptConsomable() { return _acceptConsomable; }
+	public boolean acceptGarbage() { return _acceptGarbage; }
+
+	public boolean accept(BaseItem item) {
+		if (item == null) {
+			return false;
+		}
+		
+		if (!_acceptFood && item.isFood()) {return false; }
+		if (!_acceptDrink && item.isDrink()) {return false; }
+		if (!_acceptConsomable && item.isConsomable()) {return false; }
+		if (!_acceptGarbage && item.isGarbage()) {return false; }
+		if (_accepts != null && !_accepts.isEmpty() && !_accepts.contains(item.getInfo())) { return false; }
+		
+		return true;
 	}
 
 }

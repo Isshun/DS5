@@ -403,37 +403,22 @@ public class WorldRenderer implements IRenderer {
 	}
 
 	void	refreshItems(RenderWindow app, RenderStates render, int fromX, int fromY, int toX, int toY) {
-//		int offsetY = -16;
-//		int offsetX = 2;
 		int offsetY = 0;
 		int offsetX = 0;
 
-		for (int i = fromX-1; i <= toX; i++) {
-			for (int j = fromY-1; j <= toY; j++) {
-				BaseItem item = ServiceManager.getWorldMap().getItem(i, j);
-
+		for (int x = fromX-1; x <= toX; x++) {
+			for (int y = fromY-1; y <= toY; y++) {
+				BaseItem item = ServiceManager.getWorldMap().getItem(x, y);
 				if (item != null) {
-
-					// Draw item
-					Sprite sprite = _spriteManager.getItem(item);
+					Sprite sprite = _spriteManager.getItem(item, item.getCurrentFrame());
 					if (sprite != null) {
 						if (item.isStructure()) {
-							sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
+							sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
 						} else {
-							sprite.setPosition(i * Constant.TILE_WIDTH + offsetX, j * Constant.TILE_HEIGHT + offsetY);
+							sprite.setPosition(x * Constant.TILE_WIDTH + offsetX, y * Constant.TILE_HEIGHT + offsetY);
 						}
 						app.draw(sprite, render);
 					}
-
-					//					// Draw battery
-					//					if (item.isComplete() && !item.isSupply()) {
-					//						Sprite sprite;
-					//
-					//						_spriteManager.getSprite(SpriteManager.IC_BATTERY, sprite);
-					//						sprite.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-					//
-					//						_app.draw(sprite, render);
-					//					}
 				}
 			}
 		}

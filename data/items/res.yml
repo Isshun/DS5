@@ -2,5 +2,6 @@ name: res
 label: Res
 width: 1
 height: 1
+category: resource
 cost:
   matter: 1

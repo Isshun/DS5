@@ -1,11 +1,5 @@
 package alone.in.deepspace.manager;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +9,6 @@ import java.util.Vector;
 import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
-import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Room;
@@ -27,11 +20,11 @@ import alone.in.deepspace.model.WorldRessource;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
-public class WorldManager implements ISavable, TileBasedMap {
+public class WorldManager implements TileBasedMap {
 	public static class DebugPos {
-		public int x;
-		public int y;
-		public boolean inPath;
+		public int 			x;
+		public int 			y;
+		public boolean 		inPath;
 	}
 
 	private static final int 	LIMIT_ITEMS = 42000;
@@ -52,11 +45,16 @@ public class WorldManager implements ISavable, TileBasedMap {
 
 	private int 				_floor;
 
+	private List<StorageItem> 	_storageItems;
+	private List<StorageItem> 	_dispenserItems;
+
 	public WorldManager() {
 		_itemCout = 0;
 		_width = Constant.WORLD_WIDTH;
 		_height = Constant.WORLD_HEIGHT;
-
+		_storageItems = new ArrayList<StorageItem>();
+		_dispenserItems = new ArrayList<StorageItem>();
+		
 		dump();
 
 		_rooms = new HashMap<Integer, Room>();
@@ -77,91 +75,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 	public void	create() {
 	}
 
-	public void	save(final String filePath) {
-		Log.info("Save worldmap: " + filePath);
-
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
-			bw.write("BEGIN WORLDMAP\n");
-			for (int f = 0; f < NB_FLOOR; f++) {
-				for (int x = 0; x < _width; x++) {
-					for (int y = 0; y < _height; y++) {
-						if (_floors[f][x][y] != null) {
-							WorldArea area = _floors[f][x][y];
-							StructureItem structureItem = area.getStructure();
-							UserItem userItem = area.getItem();
-							WorldRessource ressource = area.getRessource();
-	
-							if (structureItem != null) {
-								bw.write(f + "\t" + x + "\t" + y + "\t" + structureItem.getName() + "\t" + structureItem.getMatterSupply() + "\n");
-							}
-	
-							if (userItem != null) {
-								bw.write(f + "\t" + x + "\t" + y + "\t" + userItem.getName() + "\t" + userItem.getMatterSupply() + "\n");
-							}
-	
-							if (ressource != null) {
-								bw.write(f + "\t" + x + "\t" + y + "\t" + ressource.getName() + "\t" + ressource.getMatterSupply() + "\n");
-							}
-						}
-					}
-				}
-			}
-			bw.write("END WORLDMAP\n");
-		} catch (FileNotFoundException e) {
-			Log.error("Unable to open save file: " + filePath);
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		Log.info("Save worldmap: " + filePath + " done");
-	}
-
-	public void	load(final String filePath) {
-		Log.error("Load worldmap: " + filePath);
-
-		int f, x, y, matter;
-		boolean	inBlock = false;
-
-		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-			String line = null;
-
-			while ((line = br.readLine()) != null) {
-
-				// Start block
-				if ("BEGIN WORLDMAP".equals(line)) {
-					inBlock = true;
-				}
-
-				// End block
-				else if ("END WORLDMAP".equals(line)) {
-					inBlock = false;
-				}
-
-				// Item
-				else if (inBlock) {
-					String[] values = line.split("\t");
-					if (values.length == 5) {
-						f = Integer.valueOf(values[0]);
-						x = Integer.valueOf(values[1]);
-						y = Integer.valueOf(values[2]);
-						matter = Integer.valueOf(values[4]);
-						ItemInfo info = ServiceManager.getData().getItemInfo(values[3]);
-						putItem(info, f, x, y, matter);
-					}
-				}
-
-			}
-		}
-		catch (FileNotFoundException e) {
-			Log.error("Unable to open save file: " + filePath);
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private BaseItem putItem(String name, int x2, int y2, int i) {
+	public BaseItem putItem(String name, int x2, int y2, int i) {
 		return putItem(ServiceManager.getData().getItemInfo(name), _floor, x2, y2, i);
 	}
 
@@ -384,7 +298,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 		removeItem(item);
 	}
 
-	private BaseItem putItem(String name, int x, int y, boolean isFree) {
+	public BaseItem putItem(String name, int x, int y, boolean isFree) {
 		if (_itemCout + 1 > LIMIT_ITEMS) {
 			Log.error("LIMIT_ITEMS reached");
 			return null;
@@ -449,9 +363,13 @@ public class WorldManager implements ISavable, TileBasedMap {
 //			item = new StorageItem();
 //			_areas[x][y].setItem((UserItem) item);
 //			return item;
-		if (info.isStorage) {
+		if (info.isDispenser) {
 			item = new StorageItem(info);
-		} else if (info.isRessource) {
+			_dispenserItems.add((StorageItem)item);
+		} else if (info.isStorage) {
+			item = new StorageItem(info);
+			_storageItems.add((StorageItem)item);
+		} else if (info.isResource) {
 			item = new WorldRessource(info);
 		} else if (info.isStructure) {
 			item = new StructureItem(info);
@@ -651,6 +569,8 @@ public class WorldManager implements ISavable, TileBasedMap {
 		return sx != tx && sy != ty ? 1f : 0.8f;
 	}
 
+	public List<StorageItem> getDispensers() { return _dispenserItems; }
+
 	public Vector<DebugPos> getDebug() {
 		return _debugPath;
 	}
@@ -748,24 +668,29 @@ public class WorldManager implements ISavable, TileBasedMap {
 
 	// TODO
 	public StorageItem findStorageContains(ItemFilter filter, int x, int y) {
-		
-		// Find all storage
-		List<StorageItem> storages = new ArrayList<StorageItem>();
-		for (int i = 0; i < _width; i++) {
-			for (int j = 0; j < _height; j++) {
-				BaseItem item = _areas[i][j].getItem();
-				if (item != null && item.isStorage()) {
-					storages.add((StorageItem)item);
+		StorageItem bestStorage = null;
+		int bestDistance = Integer.MAX_VALUE;
+
+		for (StorageItem storage: _storageItems) {
+			if (storage.isDispenser() == false) {
+				int distance = Math.abs(storage.getX() - x) + Math.abs(storage.getY() - y);
+				if (distance < bestDistance && storage.contains(filter)) {
+					bestStorage = storage;
+					bestDistance = distance;
 				}
 			}
 		}
+		
+		return bestStorage;
+	}
 
-		// Find nearest storage containing item
+	public StorageItem getNearestStorage(int x, int y, BaseItem item) {
 		StorageItem bestStorage = null;
 		int bestDistance = Integer.MAX_VALUE;
-		for (StorageItem storage: storages) {
+		
+		for (StorageItem storage: _storageItems) {
 			int distance = Math.abs(storage.getX() - x) + Math.abs(storage.getY() - y);
-			if (distance < bestDistance && storage.contains(filter)) {
+			if (distance < bestDistance && storage.accept(item)) {
 				bestStorage = storage;
 				bestDistance = distance;
 			}

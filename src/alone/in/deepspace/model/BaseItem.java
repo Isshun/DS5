@@ -99,6 +99,10 @@ public class BaseItem {
 	private int 		_nbTotalUsed;
 	private int 		_nbFreeSlot;
 	private int 		_nbSlot;
+	private int			_currentFrame;
+	private int			_nbFrame;
+	private int 		_animFrame;
+	private int 		_animFrameInterval;
 	
 	public BaseItem(ItemInfo info) {
 		init(info, ++_maxId);
@@ -144,6 +148,8 @@ public class BaseItem {
 			_label = info.label;
 			_width = info.width;
 			_height = info.height;
+			_nbFrame = info.frames > 0 ? info.frames : 1;
+			_animFrameInterval = info.framesInterval > 0 ? info.framesInterval : 1;
 			
 			if (info.onAction != null && info.onAction.effects != null) {
 				ItemInfoEffects effects = info.onAction.effects;
@@ -265,7 +271,7 @@ public class BaseItem {
 	public boolean			isFree() { return _owner == null; }
 	public boolean			isSleepingItem() { return "base.bed".equals(_name) || "base.chair".equals(_name); }
 	public boolean			isStructure() { return _info.isStructure; }
-	public boolean			isRessource() { return _info.isRessource; }
+	public boolean			isRessource() { return _info.isResource; }
 	public boolean			isWalkable() { return !_info.isWalkable; }
 	public boolean 			isFloor() { return getName().equals("base.floor") || getName().equals("base.rock") || getName().equals("base.ground"); }
 	public boolean 			isDoor() { return getName().equals("base.door"); }
@@ -277,11 +283,11 @@ public class BaseItem {
 	public boolean 			isDispenser() { return _info.isDispenser; }
 
 	public static boolean isUserItem(ItemInfo info) {
-		return !info.isStructure && !info.isRessource;
+		return !info.isStructure && !info.isResource;
 	}
 
 	public static boolean isResource(ItemInfo info) {
-		return info.isRessource;
+		return info.isResource;
 	}
 
 	public void nextMode() {
@@ -290,12 +296,15 @@ public class BaseItem {
 
 	public void use(Character character, int durationLeft) {
 		character.getNeeds().use(this, _info.onAction, durationLeft);
+		if (_animFrame++ % _animFrameInterval == 0) {
+			_currentFrame = (_currentFrame + 1) % _nbFrame;
+		}
 	}
 
 	public String getLabelType() {
 		if (_info.isConsomable) { return Strings.LB_ITEM_CONSOMABLE; }
 		if (_info.isStructure) { return Strings.LB_ITEM_STRUCTURE; }
-		if (_info.isRessource) { return Strings.LB_ITEM_RESSOURCE; }
+		if (_info.isResource) { return Strings.LB_ITEM_RESSOURCE; }
 		return Strings.LB_ITEM_USER;
 	}
 
@@ -317,5 +326,30 @@ public class BaseItem {
 		}
 		
 		return false;
+	}
+
+	public String getLabelCategory() {
+		if (_info.isUserItem) { return "item"; }
+		if (_info.isConsomable) { return "consomable"; }
+		if (_info.isStructure) { return "structure"; }
+		if (_info.isResource) { return "resource"; }
+		if (_info.isFood) { return "food"; }
+		return null;
+	}
+
+	public boolean isDrink() {
+		return _info.isDrink;
+	}
+
+	public boolean isConsomable() {
+		return _info.isConsomable;
+	}
+
+	public boolean isGarbage() {
+		return false;
+	}
+
+	public int getCurrentFrame() {
+		return _currentFrame;
 	}
 }

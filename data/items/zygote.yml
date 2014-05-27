@@ -2,6 +2,7 @@ name: zygote
 label: Zygote
 width: 2
 height: 2
-category: system
+category: item
+room: system
 cost:
   matter: 42

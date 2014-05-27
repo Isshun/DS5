@@ -1,5 +1,6 @@
 label: Cooker
-category: common
+category: item
+width: 2
 onAction:
   duration: 10
   practice:
@@ -7,5 +8,10 @@ onAction:
   storage: 10
   produce:
     - base.meal
+  slots:
+    - x: 0
+      y: 1
+    - x: 1
+      y: 1
 cost:
   matter: 42

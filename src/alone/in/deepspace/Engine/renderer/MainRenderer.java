@@ -44,6 +44,7 @@ public class MainRenderer {
 	private RenderWindow 			_app;
 	private RoomRenderer 			_roomRenderer;
 	private UserInterface 			_ui;
+	private CharacterRenderer 		_characterRenderer;
 	private static MainRenderer 	_this;
 	
 	public MainRenderer(RenderWindow app, Viewport viewport, UserInterface ui) throws IOException, TextureCreationException {
@@ -70,6 +71,8 @@ public class MainRenderer {
 		_lightRenderer = new LightRenderer();
 		ServiceManager.setLightRenderer(_lightRenderer);
 		_debugRenderer = new DebugRenderer();
+		
+		_characterRenderer = new CharacterRenderer(ServiceManager.getCharacterManager().getList());
 		
 		_jobRenderer = new JobRenderer();
 		_roomRenderer = new RoomRenderer();
@@ -106,6 +109,8 @@ public class MainRenderer {
 		
 		_jobRenderer.onDraw(app, render, animProgress);
 
+		_characterRenderer.onDraw(_app, render, animProgress);
+		
 		// Draw debug
 		if (Settings.getInstance().isDebug()) {
 			_debugRenderer.onDraw(app, render, animProgress);

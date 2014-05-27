@@ -2,6 +2,7 @@ name: main_engine
 label: Main Engine
 width: 2
 height: 3
-category: system
+category: item
+room: system
 cost:
   matter: 42

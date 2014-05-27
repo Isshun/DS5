@@ -3,6 +3,7 @@ label: Light
 width: 1
 height: 1
 light: 10
+category: item
 cost:
   matter: 10
   power: 1

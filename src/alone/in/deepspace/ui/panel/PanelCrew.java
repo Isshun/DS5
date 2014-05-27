@@ -183,7 +183,7 @@ public class PanelCrew extends UserSubInterface {
 			viewHolder.lbProfession.setPosition(CREW_LINE_WIDTH - Constant.UI_PADDING - 100, Constant.UI_PADDING);
 			viewHolder.frame.addView(viewHolder.lbProfession);
 
-			viewHolder.thumb = new ImageView(SpriteManager.getInstance().getCharacter(character.getProfession(), 0, 0));
+			viewHolder.thumb = new ImageView(SpriteManager.getInstance().getCharacter(character.getProfession(), 0, 0, 0));
 			viewHolder.thumb.setPosition(8, 5);
 			viewHolder.frame.addView(viewHolder.thumb);
 

@@ -12,6 +12,7 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
 import alone.in.deepspace.model.BaseItem;
+import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.StructureItem;
@@ -50,7 +51,7 @@ public class SpriteManager {
 		_textureCharacters[1].setSmooth(true);
 
 		_textureCharacters[2] = new Texture();
-		_textureCharacters[2].loadFromFile((new File("res/Characters/Spacecharas.png")).toPath());
+		_textureCharacters[2].loadFromFile((new File("res/Characters/gallery_84826_3_2787.png")).toPath());
 		_textureCharacters[2].setSmooth(true);
 
 		_textureCharacters[3] = new Texture();
@@ -87,6 +88,10 @@ public class SpriteManager {
 		_texture[6].loadFromFile((new File("res/Tilesets/walls.png").toPath()));
 		_texture[6].setSmooth(true);
 
+		_texture[7] = new Texture();
+		_texture[7].loadFromFile((new File("res/Tilesets/icons.png").toPath()));
+		_texture[7].setSmooth(true);
+
 		// Font
 		_font = new Font();
 		_font.loadFromFile((new File("res/fonts/xolonium_regular.otf")).toPath());
@@ -118,35 +123,22 @@ public class SpriteManager {
 		return _font;
 	}
 
-	public Sprite	getItem(BaseItem item) {
+	public Sprite getItem(BaseItem item, int tile) {
 		if (item != null && item.isStructure() == false) {
-			if (item.isStorage()) {
-//				BaseItem subItem = ((StorageItem)item).getFirst();
-//				if (subItem != null && !subItem.isStorage()) {
-//					// TODO: recurse
-//					return getItem(subItem);
-//				}
-			}
-			
 			if (item.isRessource()) {
 				return getRessource(item);
 			}
 
 			int alpha = Math.min(item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * item.getMatterSupply(), 255);
 			
-			return getSprite(item.getInfo(), alpha);
-			
-//			if (res != null) {
-////				return getSprite(res.textureIndex,
-////						res.posX * Constant.TILE_SIZE,
-////						res.posY * Constant.TILE_SIZE,
-////						item.getWidth() * Constant.TILE_SIZE,
-////						item.getHeight() * Constant.TILE_SIZE,
-////						alpha);
-//			}
+			return getSprite(item.getInfo(), tile, alpha);
 		}
 
 		return null;
+	}
+
+	public Sprite	getItem(BaseItem item) {
+		return getItem(item, 0);
 	}
 
 	public Sprite		getIcon(ItemInfo info) {
@@ -165,7 +157,7 @@ public class SpriteManager {
 //			}
 //		}
 		
-		return getSprite(info, 255);
+		return getSprite(info, 0, 255);
 
 //		if (res != null) {
 //			if (info.isRessource) {
@@ -228,37 +220,50 @@ public class SpriteManager {
 		return sprite;
 	}
 
-	private Sprite getSprite(ItemInfo item, int alpha) {
+	private Sprite getSprite(ItemInfo item, int tile, int alpha) {
 		if (item.spriteId == 0) {
 			item.spriteId = ++_count;
-
-			Sprite sprite = _sprites.get((long)item.spriteId);
-			if (sprite == null) {
-				try {
-					File imgFile = null;
-					if ("base".equals(item.packageName)) {
-						imgFile = new File("data/items/" + item.fileName + ".png");
-					} else {
-						imgFile = new File("mods/" + item.packageName + "/items/" + item.fileName + ".png");
-					}
-					if (imgFile.exists()) {
-						sprite = new Sprite();
-						sprite.setColor(new Color(255, 255, 255, alpha));
-						Texture texture = new Texture();
-						texture.loadFromFile((imgFile.toPath()));
-						texture.setSmooth(true);
-						sprite.setTexture(texture);
-						sprite.setTextureRect(ObjectPool.getIntRect(0, 0, item.width * Constant.TILE_WIDTH, item.height * Constant.TILE_HEIGHT));
-						_sprites.put((long) item.spriteId, sprite);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
+		}
+		
+		long sum = getSum(item.spriteId, tile);
+		
+		Sprite sprite = _sprites.get(sum);
+		if (sprite == null) {
+			try {
+				File imgFile = null;
+				if ("base".equals(item.packageName)) {
+					imgFile = new File("data/items/" + item.fileName + ".png");
+				} else {
+					imgFile = new File("mods/" + item.packageName + "/items/" + item.fileName + ".png");
 				}
+				if (imgFile.exists()) {
+					sprite = new Sprite();
+					sprite.setColor(new Color(255, 255, 255, alpha));
+					Texture texture = new Texture();
+					texture.loadFromFile((imgFile.toPath()));
+					texture.setSmooth(true);
+					sprite.setTexture(texture);
+					sprite.setTextureRect(ObjectPool.getIntRect(tile * item.width * Constant.TILE_WIDTH, 0, item.width * Constant.TILE_WIDTH, item.height * Constant.TILE_HEIGHT));
+					_sprites.put(sum, sprite);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			return sprite;
+		}
+		return sprite;
+	}
+
+	private long getSum(int spriteId, int tile) {
+		if (spriteId > 4096 || tile > 4096) {
+			Log.error("SpriteManager.getSum -> out of bounds values");
 		}
 
-		return _sprites.get((long)item.spriteId);
+		long sum = spriteId;
+		sum = sum << 12;
+		sum += tile;
+		sum = sum << 12;
+
+		return sum;
 	}
 
 	private long getSum(int texture, int x, int y, int extra1, int extra2, int alpha) {
@@ -292,13 +297,13 @@ public class SpriteManager {
 //					9 * (Constant.TILE_HEIGHT + 2) + 1,
 //					Constant.TILE_WIDTH + 1,
 //					Constant.TILE_HEIGHT);
-		return getSprite(item.getInfo(), 255);
+		return getSprite(item.getInfo(), 0, 255);
 //		}
 	}
 
 	public Sprite				getFloor(StructureItem item, int zone, int room) {
 		if (item != null) {
-			return getSprite(item.getInfo(), 255);
+			return getSprite(item.getInfo(), 0, 255);
 		} else {
 			int choice = 1;
 			int texture = 4;
@@ -401,17 +406,23 @@ public class SpriteManager {
 		return null;	  
 	}
 
-	public Sprite getCharacter(Profession profession, int direction, int frame) {
+	public Sprite getCharacter(Character c, int dirIndex, int frame) {
+		return getCharacter(c.getProfession(), dirIndex, frame, c.isSleeping() ? 1 : 0);
+	}
+
+	public Sprite getCharacter(Profession profession, int direction, int frame, int extra) {
 		int sum = profession.getType().ordinal();
 		sum = sum << 8;
 		sum += direction;
 		sum = sum << 8;
 		sum += frame;
+		sum = sum << 8;
+		sum += extra;
 
 		Sprite sprite = _spritesCharacters.get(sum);
 		if (sprite == null) {
 			sprite = new Sprite();
-			sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * frame,
+			sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * frame + (extra * 128),
 					Constant.CHAR_HEIGHT * direction,
 					Constant.CHAR_WIDTH,
 					Constant.CHAR_HEIGHT));
@@ -419,7 +430,8 @@ public class SpriteManager {
 			switch (profession.getType()) {
 			case ENGINEER:
 				sprite.setTexture(_textureCharacters[2]);
-				sprite.setTextureRect(new IntRect(0, 0, Constant.CHAR_WIDTH, 32));
+				sprite.setScale(0.8f, 0.8f);
+//				sprite.setTextureRect(new IntRect(0, 0, Constant.CHAR_WIDTH, 32));
 				break;
 			case SECURITY:
 				sprite.setTexture(_textureCharacters[1]);
@@ -458,6 +470,14 @@ public class SpriteManager {
 				17 * Constant.TILE_HEIGHT,
 				Constant.TILE_WIDTH,
 				Constant.TILE_HEIGHT);
+	}
+
+	public Sprite getIconChecked() {
+		return getSprite(7, 0, 0, 16, 16, 255);
+	}
+
+	public Sprite getIconUnChecked() {
+		return getSprite(7, 32, 0, 16, 16, 255);
 	}
 
 }

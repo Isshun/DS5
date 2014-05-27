@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.Game;
-import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.CharacterNeeds;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.Job.Abort;
+import alone.in.deepspace.model.Job.JobStatus;
+import alone.in.deepspace.model.jobCheck.CheckEmptyDispenser;
+import alone.in.deepspace.model.jobCheck.CheckLowFood;
+import alone.in.deepspace.model.jobCheck.JobCheck;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.UserItem;
@@ -18,17 +21,17 @@ import alone.in.deepspace.model.WorldRessource;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
-public class JobManager implements ISavable {
+public class JobManager {
 	public enum Action {
 		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY, WORK, MINING, TAKE, USE_INVENTORY, REFILL
 	}
 
 	private static JobManager	sSelf;
 
-	private ArrayList<Job> 		_jobs;
-	private ArrayList<BaseItem> _routineItems;
+	private List<JobCheck>		_jobsCheck;
+	private List<Job> 			_jobs;
+	private List<BaseItem> 		_routineItems;
 	private int 				_id;
-	private int					_mode;
 
 	JobManager() {
 		Log.debug("JobManager");
@@ -36,108 +39,15 @@ public class JobManager implements ISavable {
 		_id = 0;
 		_jobs = new ArrayList<Job>();
 		_routineItems = new ArrayList<BaseItem>();
+		_jobsCheck = new ArrayList<JobCheck>();
+
+		_jobsCheck.add(new CheckLowFood());
+		_jobsCheck.add(new CheckEmptyDispenser());
 
 		Log.debug("JobManager done");
 	}
 
 	public List<Job>	getJobs() { return _jobs; };
-
-	// TODO
-	public void	load(final String filePath) {
-//		Log.error("Load jobs: " + filePath);
-//
-//		boolean	inBlock = false;
-//		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-//			String line = null;
-//
-//			while ((line = br.readLine()) != null) {
-//
-//				// Start block
-//				if ("BEGIN JOBS".equals(line)) {
-//					inBlock = true;
-//				}
-//
-//				// End block
-//				else if ("END JOBS".equals(line)) {
-//					inBlock = false;
-//				}
-//
-//				// Item
-//				else if (inBlock) {
-//					String[] values = line.split("\t");
-//					if (values.length == 6) {
-//						int x = Integer.valueOf(values[0]);
-//						int y = Integer.valueOf(values[1]);
-//						int action = Integer.valueOf(values[2]);
-//						int characterId = Integer.valueOf(values[3]);
-//						int characterRequireId = Integer.valueOf(values[4]);
-//						int itemType = Integer.valueOf(values[5]);
-//						Job job = new Job(++_id, x, y);
-//						job.setAction(JobManager.getActionFromIndex(action));
-//						if (characterId > 0) {
-//							Character c = ServiceManager.getCharacterManager().getCharacter(characterId);
-//							job.setCharacter(c);
-//						}
-//						if (characterRequireId > 0) {
-//							Character c = ServiceManager.getCharacterManager().getCharacter(characterId);
-//							job.setCharacterRequire(c);
-//						}
-//						if (itemType > 0) {
-//							BaseItem.Type type = BaseItem.getTypeIndex(itemType);
-//							job.setItemType(type);
-//
-//							// Add item
-//							UserItem item = ServiceManager.getWorldMap().getItem(x, y);
-//							StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
-//							if (item != null && item.isType(type)) {
-//								job.setItem(item);
-//							}
-//							if (structure != null && structure.isType(type)) {
-//								job.setItem(structure);
-//							}
-//						}
-//
-//						// Not restart already completed jobs
-//						if (job.getAction() == Action.BUILD && job.getItem() != null && job.getItem().isComplete()) {
-//							Log.warning("job already complete, abort");
-//						} else {
-//							addJob(job);
-//						}
-//					}
-//				}
-//
-//			}
-//		}
-//		catch (FileNotFoundException e) {
-//			Log.error("Unable to open save file: " + filePath);
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-	}
-
-	// TODO
-	public void	save(final String filePath) {
-//		Log.info("Save jobs: " + filePath);
-//
-//		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
-//			bw.write("BEGIN JOBS\n");
-//			for (Job j: _jobs) {
-//				int currentCharacterId = j.getCharacter() != null ? j.getCharacter().getId() : 0;
-//				int requireCharacterId = j.getCharacterRequire() != null ? j.getCharacterRequire().getId() : 0;
-//				int itemType = j.getItem() != null ? j.getItem().getType().ordinal() : 0;
-//				bw.write(j.getX() + "\t" + j.getY() + "\t" + j.getAction().ordinal() + "\t" + currentCharacterId + "\t" + requireCharacterId + "\t" + itemType + "\n");
-//			}
-//			bw.write("END JOBS\n");
-//		} catch (FileNotFoundException e) {
-//			Log.error("Unable to open save file: " + filePath);
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//		Log.info("Save jobs: " + filePath + " done");
-	}
 
 	public Job	build(BaseItem item) {
 		if (item == null) {
@@ -227,7 +137,7 @@ public class JobManager implements ISavable {
 		}
 
 		// Ressource
-		else if (info.isRessource) {
+		else if (info.isResource) {
 			BaseItem currentItem = ServiceManager.getWorldMap().getItem(x, y);
 			BaseItem currentRessource = ServiceManager.getWorldMap().getRessource(x, y);
 			if (currentRessource != null && currentRessource.getInfo().equals(info)) {
@@ -339,7 +249,7 @@ public class JobManager implements ISavable {
 
 	private Job getJobForCharacterNeed(Character character) {
 		CharacterNeeds needs = character.getNeeds();
-		if (needs.getFood() < 20) {
+		if (needs.isHungry()) {
 			ItemFilter filter = new ItemFilter(true, true);
 			filter.food = true;
 
@@ -350,8 +260,16 @@ public class JobManager implements ISavable {
 				addJob(job);
 				return job;
 			}
+
+			// Take item from storage
+			item = ServiceManager.getWorldMap().findStorageContains(filter, character.getX(), character.getY());
+			if (item != null) {
+				Job job = createTakeJob(character, item, filter);
+				addJob(job);
+				return job;
+			}
 			
-			// Looking [for food dispenser
+			// Looking for food dispenser
 			for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
 				for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
 					item = ServiceManager.getWorldMap().getItem(x, y);
@@ -361,14 +279,6 @@ public class JobManager implements ISavable {
 						return job;
 					}
 				}
-			}
-			
-			// Take item from storage
-			item = ServiceManager.getWorldMap().findStorageContains(filter, character.getX(), character.getY());
-			if (item != null) {
-				Job job = createTakeJob(character, item, filter);
-				addJob(job);
-				return job;
 			}
 		}
 
@@ -405,6 +315,8 @@ public class JobManager implements ISavable {
 	public void	abort(Job job, Abort reason) {
 		Log.debug("Job abort: " + job.getId());
 
+		job.setStatus(JobStatus.ABORTED);
+		
 		// Job is invalid or USE action, don't resume
 		if (reason == Job.Abort.INVALID || job.getAction() == Action.USE) {
 			_jobs.remove(job);
@@ -427,6 +339,8 @@ public class JobManager implements ISavable {
 	public void	complete(Job job) {
 		Log.debug("Job complete: " + job.getId());
 
+		job.setStatus(JobStatus.COMPLETE);
+		
 		if (job.getItem() != null) {
 			job.getItem().setOwner(null);
 		}
@@ -497,9 +411,7 @@ public class JobManager implements ISavable {
 		
 		// Character has item to store
 		if (c.getCarried().size() > 0) {
-			// TODO
-			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
-			BaseItem storage = ServiceManager.getWorldMap().getNearest(info, c.getX(), c.getY());
+			StorageItem storage = ServiceManager.getWorldMap().getNearestStorage(c.getX(), c.getY(), c.getCarried().get(0));
 			if (storage != null) {
 				return createStoreJob(c, storage);
 			}
@@ -533,8 +445,6 @@ public class JobManager implements ISavable {
 		
 		// Go to meeting room
 		return createMovingToMettingRoom(c);
-		
-//		return null;
 	}
 
 	private Job createMovingToMettingRoom(Character c) {
@@ -644,6 +554,11 @@ public class JobManager implements ISavable {
 	}
 
 	public Job createRefillJob(Character character, StorageItem storage, ItemFilter filter, StorageItem dispenser) {
+		if (storage == null || dispenser == null || storage == dispenser) {
+			Log.error("createRefillJob: wrong items");
+			return null;
+		}
+		
 		Log.debug("create take job");
 
 		Job job = new Job(++_id, storage.getX(), storage.getY());
@@ -658,4 +573,9 @@ public class JobManager implements ISavable {
 		return job;
 	}
 
+	public void onLongUpdate() {
+		for (JobCheck jobCheck: _jobsCheck) {
+			jobCheck.check(this);
+		}
+	}
 }

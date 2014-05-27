@@ -1088,7 +1088,7 @@ public class CharacterName {
 	};
 
 	public static String getShortFirstname(Gender gender) {
-		int offset = (gender == Character.Gender.GENDER_FEMALE ? 8 : 0);
+		int offset = (gender == Character.Gender.FEMALE ? 8 : 0);
 		return shortFirstname[(int)(Math.random() * 1000) % 8 + offset];
 	}
 
@@ -1101,7 +1101,7 @@ public class CharacterName {
 	}
 
 	public static String getFirstname(Gender gender) {
-		int offset = (gender == Character.Gender.GENDER_FEMALE ? 8 : 0);
+		int offset = (gender == Character.Gender.FEMALE ? 8 : 0);
 		return firstname[(int)(Math.random() * 1000) % 8 + offset];
 	}
 

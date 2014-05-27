@@ -54,10 +54,13 @@ public class ItemInfo {
 	public String 				name;
 	public String 				inherits;
 	public String 				label;
+	public String 				room;
 	public String 				category;
 	public List<String>			craftedFrom;
 	public int					craftedQuantitfy;
 	public boolean 				isWalkable;
+	public int 					frames;
+	public int 					framesInterval;
 	public int 					width;
 	public int 					height;
 	public int 					light;
@@ -66,7 +69,7 @@ public class ItemInfo {
 	public ItemInfoRessource	onGather;
 	public ItemInfoRessource	onMine;
 	public boolean 				isStructure;
-	public boolean 				isRessource;
+	public boolean 				isResource;
 	public boolean 				isConsomable;
 	public boolean 				isUserItem;
 	public boolean 				isFood;
@@ -77,6 +80,7 @@ public class ItemInfo {
 	public List<ItemInfo> 		craftedFromItems;
 	public boolean 				isDispenser;
 	public boolean 				isStorage;
+	public boolean 				isDrink;
 	
 	public ItemInfo() {
 		width = 1;

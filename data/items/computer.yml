@@ -1,5 +1,7 @@
 label: Computer
-category: common
+category: item
+frames: 4
+framesInterval: 2
 cost:
   matter: 42
 onAction:

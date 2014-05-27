@@ -41,10 +41,21 @@ public class ItemLoader {
 			    info.packageName = packageName;
 			    info.name = info.packageName +  '.' + info.fileName;
 			    info.isWalkable = true;
-			    info.isStorage = info.storage > 0 || info.onAction != null && info.onAction.storage > 0;
-			    if (!info.isStructure && !info.isRessource && !info.isConsomable) {
-			    	info.isUserItem = true;
+
+			    // Get category
+			    if ("consomable".equals(info.category)) {
+				    info.isConsomable = true;
+			    } else if ("structure".equals(info.category)) {
+				    info.isStructure = true; 
+			    } else if ("item".equals(info.category)) {
+				    info.isUserItem = true; 
+			    } else if ("resource".equals(info.category)) {
+				    info.isResource = true; 
+			    } else {
+			    	throw new RuntimeException("unknow item category: " + info.category);
 			    }
+			    
+			    info.isStorage = info.storage > 0 || info.onAction != null && info.onAction.storage > 0;
 			    info.isFood = info.onAction != null && info.onAction.effects != null && info.onAction.effects.food > 0;
 			    items.add(info);
 			} catch (FileNotFoundException e) {

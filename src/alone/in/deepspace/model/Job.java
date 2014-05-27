@@ -10,11 +10,16 @@ import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
+import alone.in.deepspace.model.Job.JobStatus;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class Job {
 
+	public static enum JobStatus {
+		WAITING, RUNNING, COMPLETE, ABORTED
+	}
+	
 	public static enum Abort {
 		NO_MATTER, INTERRUPTE, BLOCKED, NO_LEFT_CARRY, INVALID, DIED
 	};
@@ -37,6 +42,7 @@ public class Job {
 	private int 				_nbUsed;
 	private StorageItem 		_dispenser;
 	private Action 				_subAction;
+	private JobStatus			_status;
 
 	public Job(int id, int x, int y) {
 		Log.debug("Job #" + id);
@@ -56,6 +62,7 @@ public class Job {
 		_filter = null;
 		_action = JobManager.Action.NONE;
 		_character = null;
+		_status = JobStatus.WAITING;
 
 		Log.debug("Job #" + id + " done");
 	}
@@ -76,6 +83,7 @@ public class Job {
 	public int 					getDurationLeft() { return _durationLeft; }
 	public ItemFilter			getItemFilter() { return _filter; }
 	public int 					getNbUsed() { return _nbUsed; }
+	public JobStatus			getStatus() { return _status; }
 
 	public void					setCharacterRequire(Character character) { _characterRequire = character; }
 	public void					setFail(Abort reason, int frame) { _reason = reason; _fail = frame; }
@@ -85,6 +93,7 @@ public class Job {
 	public void					setItem(BaseItem item) { _item = item; }
 	public void 				setDurationLeft(int duration) { _durationLeft = duration; }
 	public void 				setItemFilter(ItemFilter filter) { _filter = filter; }
+	public void 				setStatus(JobStatus status) { _status = status; }
 
 	public boolean 				isActive() { return _character != null; }
 
@@ -207,6 +216,10 @@ public class Job {
 
 	public List<BaseItem> getCarry() {
 		return _carryItems;
+	}
+
+	public boolean isFinish() {
+		return _status == JobStatus.COMPLETE || _status == JobStatus.ABORTED;
 	}
 
 }

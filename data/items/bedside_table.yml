@@ -2,6 +2,7 @@ name: bedside_table
 label: Bedside Table
 width: 1
 height: 1
-category: quarter
+category: item
+room: quarter
 cost:
   matter: 42

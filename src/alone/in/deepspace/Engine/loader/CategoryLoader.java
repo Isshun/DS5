@@ -14,7 +14,7 @@ public class CategoryLoader {
 		Map<String, CategoryInfo> categories = new HashMap<String, CategoryInfo>();
 		
 		for (ItemInfo itemInfo: ServiceManager.getData().items) {
-			String categoryName = itemInfo.category != null ? itemInfo.category : "default";
+			String categoryName = itemInfo.room != null ? itemInfo.room : "default";
 			CategoryInfo category = categories.get(categoryName); 
 			if (category == null) {
 				category = new CategoryInfo(categoryName, categoryName);

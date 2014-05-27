@@ -1,8 +1,9 @@
 name: bed
 label: Bed
-width: 2
+width: 1
 height: 2
-category: quarter
+category: item
+room: quarter
 onAction:
   duration: 20
   effects:

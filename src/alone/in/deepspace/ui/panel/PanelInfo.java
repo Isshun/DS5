@@ -17,6 +17,7 @@ import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.ImageView;
 import alone.in.deepspace.engine.ui.OnClickListener;
+import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.RoomManager;
@@ -80,8 +81,14 @@ public class PanelInfo extends UserSubInterface {
 	private FrameLayout 			_layoutEffects;
 	private TextView[] 				_itemEffects;
 	private TextView 				_itemAccept;
-	private TextView 				_itemInventoryCount;
 	private TextView[] 				_lbCarryCount;
+	private ButtonView 				_btStorageFilter;
+	private FrameLayout 			_layoutStorageFilter;
+	private BaseItem 				_item;
+	private CheckBoxView _cbFood;
+	private CheckBoxView _cbDrink;
+	private CheckBoxView _cbConsomable;
+	private CheckBoxView _cbGarbage;
 
 	public PanelInfo(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
@@ -99,44 +106,180 @@ public class PanelInfo extends UserSubInterface {
 		createMiningView();
 		createActionView();
 		createEffectsView(0, 200);
+		createStorageView(0, 400);
+		createStorageFilterView(0, 400);
 
+		_itemAccept = new TextView(null);
+		_itemAccept.setPosition(10, 600);
+		_itemAccept.setCharacterSize(16);
+		addView(_itemAccept);
+	}
+
+	private void createStorageFilterView(int x, int y) {
+		_layoutStorageFilter = new FrameLayout(new Vector2f(200, 400));
+		_layoutStorageFilter.setVisible(false);
+		_layoutStorageFilter.setPosition(x, y);
+
+
+		_cbFood = addStorageFilterCheckBox(10, 60, "food");
+		_cbDrink = addStorageFilterCheckBox(150, 60, "drink");
+		_cbConsomable = addStorageFilterCheckBox(10, 84, "consomable");
+		_cbGarbage = addStorageFilterCheckBox(150, 84, "garbage");
+
+		// Label title
+		{
+			TextView text = new TextView(new Vector2f(100, 20));
+			text.setString("Storage filters");
+			text.setPosition(10, 10);
+			text.setCharacterSize(20);
+			_layoutStorageFilter.addView(text);
+		}
+		
+		// Label select
+		{
+			TextView text = new TextView(new Vector2f(100, 20));
+			text.setString("select all");
+			text.setPosition(10, 38);
+			text.setCharacterSize(12);
+			text.setStyle(TextView.UNDERLINED);
+			text.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					_cbFood.setChecked(true);
+					_cbDrink.setChecked(true);
+					_cbConsomable.setChecked(true);
+					_cbGarbage.setChecked(true);
+				}
+			});
+			_layoutStorageFilter.addView(text);
+		}
+		
+		// Label unselect
+		{
+			TextView text = new TextView(new Vector2f(100, 20));
+			text.setString("unselect all");
+			text.setPosition(200, 38);
+			text.setCharacterSize(12);
+			text.setStyle(TextView.UNDERLINED);
+			text.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					_cbFood.setChecked(false);
+					_cbDrink.setChecked(false);
+					_cbConsomable.setChecked(false);
+					_cbGarbage.setChecked(false);
+				}
+			});
+			_layoutStorageFilter.addView(text);
+		}
+		
+		// Label ok
+		{
+			ButtonView text = new ButtonView(new Vector2f(100, 20));
+			text.setString("ok");
+			text.setPosition(10, 100);
+			text.setBackgroundColor(Color.RED);
+			text.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					_layoutStorageFilter.setVisible(false);
+					_layoutStorage.setVisible(true);
+					if (_item != null && _item.isStorage()) {
+						((StorageItem)_item).setStorageFilter(
+							_cbFood.getChecked(),
+							_cbDrink.getChecked(),
+							_cbConsomable.getChecked(),
+							_cbGarbage.getChecked()
+						);
+					}
+				}
+			});
+			_layoutStorageFilter.addView(text);
+		}
+		
+		// Label cancel
+		{
+			ButtonView text = new ButtonView(new Vector2f(100, 20));
+			text.setString("cancel");
+			text.setBackgroundColor(Color.RED);
+			text.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					_layoutStorageFilter.setVisible(false);
+					_layoutStorage.setVisible(true);
+				}
+			});
+			text.setPosition(200, 100);
+			_layoutStorageFilter.addView(text);
+		}
+		
+		
+		_layoutItem.addView(_layoutStorageFilter);
+	}
+
+	private CheckBoxView addStorageFilterCheckBox(int x, int y, String label) {
+		final CheckBoxView checkBox = new CheckBoxView(new Vector2f(100, 20));
+		checkBox.setString(label);
+		checkBox.setPosition(x, y);
+		checkBox.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				checkBox.toogleChecked();
+			}
+		});
+		checkBox.toogleChecked();
+		_layoutStorageFilter.addView(checkBox);
+		
+		return checkBox;
+	}
+
+	private void createStorageView(int x, int y) {
 		_layoutStorage = new FrameLayout(new Vector2f(200, 400));
-		_layoutStorage.setPosition(0, 400);
+		_layoutStorage.setPosition(x, y);
 
 		_itemStorage = new TextView(null);
 		_itemStorage.setPosition(10, 10);
 		_itemStorage.setCharacterSize(16);
 		_layoutStorage.addView(_itemStorage);
 
-		_itemAccept = new TextView(null);
-		_itemAccept.setPosition(10, 600);
-		_itemAccept.setCharacterSize(16);
-		addView(_itemAccept);
-
-		_itemInventoryCount = new TextView(null);
-		_itemInventoryCount.setPosition(10, 400);
-		_itemInventoryCount.setCharacterSize(16);
-		addView(_itemInventoryCount);
-
-		//		_lbContains = new TextView(null);
-		//		_lbContains.setPosition(10, 10);
-		//		_lbContains.setString(Strings.LB_STORAGE_CONTAINS);
-		//		_lbContains.setCharacterSize(22);
-		//		_layoutStorage.addView(_lbContains);
+		_btStorageFilter = new ButtonView(new Vector2f(100, 32));
+		_btStorageFilter.setPosition(300, 10);
+		_btStorageFilter.setString("filter");
+		_btStorageFilter.setCharacterSize(16);
+		_btStorageFilter.setBackgroundColor(Color.RED);
+		_btStorageFilter.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				_layoutStorageFilter.setVisible(true);
+				_layoutStorage.setVisible(false);
+			}
+		});
+		_btStorageFilter.setOnFocusListener(new OnFocusListener() {
+			@Override
+			public void onExit(View view) {
+				_btStorageFilter.setBackgroundColor(Color.RED);
+			}
+			
+			@Override
+			public void onEnter(View view) {
+				_btStorageFilter.setBackgroundColor(Color.GREEN);
+			}
+		});
+		_layoutStorage.addView(_btStorageFilter);
 
 		_lbCarry = new ImageView[42];
 		_lbCarryCount = new TextView[42];
 		for (int i = 0; i < 42; i++) {
-			int x = i % INVENTORY_NB_COLS;
-			int y = i / INVENTORY_NB_COLS;
+			int x2 = i % INVENTORY_NB_COLS;
+			int y2 = i / INVENTORY_NB_COLS;
 			_lbCarry[i] = new ImageView();
 			_lbCarry[i].setId(100 + i);
-			_lbCarry[i].setPosition(new Vector2f(Constant.UI_PADDING_H + x * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE, 40 + y * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE));
+			_lbCarry[i].setPosition(new Vector2f(Constant.UI_PADDING_H + x2 * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE, 40 + y2 * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE));
 			_layoutStorage.addView(_lbCarry[i]);
 			_lbCarryCount[i] = new TextView();
 			_lbCarryCount[i].setCharacterSize(10);
 			_lbCarryCount[i].setColor(Color.WHITE);
-			_lbCarryCount[i].setPosition(new Vector2f(Constant.UI_PADDING_H + x * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE + 16, 40 + y * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE + 16));
+			_lbCarryCount[i].setPosition(new Vector2f(Constant.UI_PADDING_H + x2 * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE + 16, 40 + y2 * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE + 16));
 			_layoutStorage.addView(_lbCarryCount[i]);
 		}
 		_layoutItem.addView(_layoutStorage);
@@ -365,7 +508,7 @@ public class PanelInfo extends UserSubInterface {
 		_layoutItem.setVisible(true);
 
 		_itemName.setString(item.getLabel() != null ? item.getLabel() : item.getName());
-		_itemCategory.setString("(" + item.getLabelType() + ")");
+		_itemCategory.setString("(" + item.getLabelCategory() + ")");
 		_itemMatter.setString("Matter: " + String.valueOf(item.getMatterSupply()));
 		if (item.getOwner() != null) {
 			_itemOwner.setString("Owner: " + item.getOwner().getName());
@@ -441,6 +584,8 @@ public class PanelInfo extends UserSubInterface {
 	}
 
 	private void setItem(final BaseItem item) {
+		_item = item;
+	
 		if (_itemOptions != null) {
 			List<TextView> texts = _itemOptions.getOptions();
 			for (TextView text: texts) {
@@ -450,13 +595,14 @@ public class PanelInfo extends UserSubInterface {
 		}
 
 		_layoutItem.setVisible(true);
+		_layoutStorage.setVisible(false);
+		_layoutStorageFilter.setVisible(false);
 		_layoutEffects.setVisible(false);
-		_layoutStorage.setVisible(item.isStorage());
 		_itemAccept.setVisible(false);
 
 		// Configure new item
 		_itemName.setString(item.getLabel() != null ? item.getLabel() : item.getName());
-		_itemCategory.setString("(" + item.getLabelType() + ")");
+		_itemCategory.setString("(" + item.getLabelCategory() + ")");
 		_itemMatter.setString("Matter: " + String.valueOf(item.getMatterSupply()));
 		_itemPower.setString("Power: " + String.valueOf(item.getPower()));
 		if (item.getOwner() != null) {
@@ -469,6 +615,11 @@ public class PanelInfo extends UserSubInterface {
 		if (icon != null) {
 			_itemIcon.setImage(icon);
 			_itemIcon.setPosition(new Vector2f(FRAME_WIDTH - 32 - icon.getTextureRect().width, 20));
+		}
+		
+		// Storage
+		if (item.isStorage()) {
+			setItemStorage((StorageItem)item);
 		}
 
 		// Action item
@@ -544,6 +695,15 @@ public class PanelInfo extends UserSubInterface {
 
 	}
 
+	private void setItemStorage(StorageItem storage) {
+		_layoutStorage.setVisible(true);
+		
+		_cbFood.setChecked(storage.acceptFood());
+		_cbDrink.setChecked(storage.acceptDrink());
+		_cbConsomable.setChecked(storage.acceptConsomable());
+		_cbGarbage.setChecked(storage.acceptGarbage());
+	}
+
 	@Override
 	public void onDraw(RenderWindow app, RenderStates render) {
 		BaseItem item = _area != null ? _area.getItem() : null;
@@ -559,12 +719,9 @@ public class PanelInfo extends UserSubInterface {
 
 			_itemSlots.setString("Free slots: " + item.getNbFreeSlots());
 			_itemUsed.setString("Used: " + item.getTotalUse());
-			_layoutStorage.setVisible(false);
 
 			if (item.isStorage()) {
 				StorageItem storage = ((StorageItem)item);
-				_itemInventoryCount.setString("Inventory: " + storage.getInventory().size());
-				_layoutStorage.setVisible(true);
 				_itemStorage.setString("Storage: " + storage.getItems().size());
 				Map<ItemInfo, Integer> inventoryInfo = new HashMap<ItemInfo, Integer>();
 				for (BaseItem storredItem: storage.getItems()) {

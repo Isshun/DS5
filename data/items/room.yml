@@ -2,6 +2,5 @@ label: Room
 width: 2
 height: 2
 category: structure
-isStructure: true
 cost:
   matter: 1

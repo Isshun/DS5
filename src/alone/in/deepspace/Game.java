@@ -19,6 +19,8 @@ import org.jsfml.window.event.MouseButtonEvent;
 
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.engine.Viewport;
+import alone.in.deepspace.engine.loader.JobManagerLoader;
+import alone.in.deepspace.engine.loader.WorldSaver;
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.DynamicObjectManager;
@@ -116,46 +118,7 @@ public class Game implements ISavable {
 
 	public void onLongUpdate() {
 
-		// Launch jobs if low food
-		if (ResourceManager.getInstance().isLowFood()) {
-			ItemFilter itemFilter = new ItemFilter(true, false);
-			itemFilter.food = true;
-			UserItem item = ServiceManager.getWorldMap().find(itemFilter);
-			if (item != null) {
-				Job job = JobManager.getInstance().createUseJob(item);
-				JobManager.getInstance().addJob(job);
-			}
-		}
-		
-		// TODO
-		// Refill dispenser
-		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
-			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
-				UserItem item = ServiceManager.getWorldMap().getItem(x, y);
-				if (item != null && item.isDispenser()) {
-					StorageItem dispenser = (StorageItem)item;
-					if (dispenser.needRefill() && dispenser.isWaitRefill() == false) {
-						// Looking for storage containing accepted item
-						StorageItem storage = null;
-						ItemFilter itemFilter = new ItemFilter(true, true); 
-						for (ItemInfo neededItemInfo: dispenser.getInfo().onAction.itemAccept) {
-							if (storage == null) {
-								itemFilter.neededItem = neededItemInfo;
-								storage = ServiceManager.getWorldMap().findStorageContains(itemFilter, dispenser.getX(), dispenser.getY());
-							}
-						}
-	
-						// Create jobs if needed items available
-						if (storage != null) {
-							Job job = JobManager.getInstance().createRefillJob(null, storage, itemFilter, dispenser);
-							if (job != null) {
-								JobManager.getInstance().addJob(job);
-							}
-						}
-					}
-				}
-			}
-		}
+		JobManager.getInstance().onLongUpdate();
 		
 		ResourceManager.getInstance().update();
 		_characterManager.onLongUpdate();
@@ -266,12 +229,15 @@ public class Game implements ISavable {
 			e.printStackTrace();
 		}
 
-		ServiceManager.getWorldMap().load(filePath);
+
+		WorldSaver.load(ServiceManager.getWorldMap(), filePath + ".yml");
+
 		ResourceManager.getInstance().refreshWater();
 
 		ServiceManager.getCharacterManager().load(filePath);
 		RoomManager.getInstance().load(filePath);
-		JobManager.getInstance().load(filePath);
+		
+		JobManagerLoader.load(JobManager.getInstance());
 		
 		onLoadComplete();
 		
@@ -281,20 +247,20 @@ public class Game implements ISavable {
 	}
 
 	private void onLoadComplete() {
-		ItemInfo info = ServiceManager.getData().getItemInfo("base.seaweed");
-		
-		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
-			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
-				UserItem item = ServiceManager.getWorldMap().getItem(x, y);
-				if (item != null && item.isStorage()) {
-					StorageItem storage = (StorageItem)item;
-					for (int i = 0; i < 100; i++) {
-						storage.addInventory(new UserItem(info));
-					}
-				}
-			}
-			
-		}		
+//		ItemInfo info = ServiceManager.getData().getItemInfo("base.seaweed");
+//		
+//		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
+//			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
+//				UserItem item = ServiceManager.getWorldMap().getItem(x, y);
+//				if (item != null && "base.storage".equals(item.getInfo().name)) {
+//					StorageItem storage = (StorageItem)item;
+//					for (int i = 0; i < 100; i++) {
+//						storage.addInventory(new UserItem(info));
+//					}
+//				}
+//			}
+//			
+//		}		
 	}
 
 	public void	save(final String filePath) {
@@ -315,10 +281,12 @@ public class Game implements ISavable {
 
 		Log.info("Save game: " + filePath + " done");
 
-		ServiceManager.getWorldMap().save(filePath);
+		WorldSaver.save(ServiceManager.getWorldMap(), filePath + ".yml");
+
 		ServiceManager.getCharacterManager().save(filePath);
 		RoomManager.getInstance().save(filePath);
-		JobManager.getInstance().save(filePath);
+
+		JobManagerLoader.save(JobManager.getInstance());
 	}
 
 	public void onDraw(double animProgress, int renderTime) throws IOException {
@@ -330,7 +298,6 @@ public class Game implements ISavable {
 		transform = _viewport.getViewTransform(transform);
 		RenderStates render = new RenderStates(transform);
 
-		_characterManager.onDraw(_app, render, animProgress);
 		_FoeManager.onDraw(_app, render, animProgress);
 		_dynamicObjectManager.refresh(_app, render, animProgress);
 

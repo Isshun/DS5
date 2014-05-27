@@ -1,6 +1,7 @@
 label: Large jail door
 width: 3
 height: 2
+category: item
 cost:
   matter: 10
   power: 1

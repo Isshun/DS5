@@ -23,23 +23,11 @@ import alone.in.deepspace.util.Log;
 
 public class Character extends Movable {
 
-	public enum Direction {
-		DIRECTION_BOTTOM,
-		DIRECTION_LEFT,
-		DIRECTION_RIGHT,
-		DIRECTION_TOP,
-		DIRECTION_BOTTOM_RIGHT,
-		DIRECTION_BOTTOM_LEFT,
-		DIRECTION_TOP_RIGHT,
-		DIRECTION_TOP_LEFT,
-		DIRECTION_NONE
-	};
-
 	public enum Gender {
-		GENDER_NONE,
-		GENDER_MALE,
-		GENDER_FEMALE,
-		GENDER_BOTH
+		NONE,
+		MALE,
+		FEMALE,
+		BOTH
 	}
 
 	private static final Color COLOR_FEMALE = new Color(255, 180, 220);
@@ -76,12 +64,12 @@ public class Character extends Movable {
 		_profession = CharacterManager.professions[id % CharacterManager.professions.length];
 		_relations = new ArrayList<CharacterRelation>();
 		_inventory = new ArrayList<BaseItem>();
-		setGender((int)(Math.random() * 1000) % 2 == 0 ? Character.Gender.GENDER_MALE : Character.Gender.GENDER_FEMALE);
+		setGender((int)(Math.random() * 1000) % 2 == 0 ? Character.Gender.MALE : Character.Gender.FEMALE);
 		_lag = (int)(Math.random() * 10);
 		_selected = false;
 		_blocked = 0;
 		_nextChildAtOld = -1;
-		_direction = Direction.DIRECTION_NONE;
+		_direction = Direction.NONE;
 		_needs = new CharacterNeeds(this);
 		_status = new CharacterStatus(this);
 		_inventorySpace = Constant.CHARACTER_INVENTORY_SPACE;
@@ -108,7 +96,7 @@ public class Character extends Movable {
 	public void				setName(String name) { _firstName = name; }
 	public void 			setGender(Gender gender) {
 		_gender = gender;
-		_color = _gender == Gender.GENDER_FEMALE ? COLOR_FEMALE : COLOR_MALE;
+		_color = _gender == Gender.FEMALE ? COLOR_FEMALE : COLOR_MALE;
 	}
 	public void 			setMate(Character mate) {
 		if (_mate == mate) {
@@ -116,7 +104,7 @@ public class Character extends Movable {
 		}
 		
 		// Update lastName
-		if (_gender == Gender.GENDER_FEMALE && mate.getGender() == Gender.GENDER_MALE) {
+		if (_gender == Gender.FEMALE && mate.getGender() == Gender.MALE) {
 			_lastName = mate.getLastName();
 		}
 		
@@ -155,7 +143,7 @@ public class Character extends Movable {
 			_relations.add(new CharacterRelation(this, mate, Relation.MATE));
 			
 			// Schedule next child
-			if (_gender == Gender.GENDER_FEMALE) {
+			if (_gender == Gender.FEMALE) {
 				_nextChildAtOld = _old + Constant.CHARACTER_DELAY_BEFORE_FIRST_CHILD;
 			}
 			
@@ -338,9 +326,13 @@ public class Character extends Movable {
 		}
 	}
 
-	public void		move() {
-		_direction = Direction.DIRECTION_NONE;
+	public boolean isMoving() {
+		return _node != null;
+	}
 
+	public void		move() {
+		_move = Direction.NONE;
+		
 		// Character is sleeping
 		if (_needs.isSleeping()) {
 			Log.debug("Character #" + _id + ": sleeping . move canceled");
@@ -352,14 +344,14 @@ public class Character extends Movable {
 			// _node.PrintNodeInfo();
 
 			// Set direction
-			if (_node.x > _posX && _node.y > _posY) setDirection(Direction.DIRECTION_BOTTOM_RIGHT);
-			else if (_node.x < _posX && _node.y > _posY) setDirection(Direction.DIRECTION_BOTTOM_LEFT);
-			else if (_node.x > _posX && _node.y < _posY) setDirection(Direction.DIRECTION_TOP_RIGHT);
-			else if (_node.x < _posX && _node.y < _posY) setDirection(Direction.DIRECTION_TOP_LEFT);
-			else if (_node.x > _posX) setDirection(Direction.DIRECTION_RIGHT);
-			else if (_node.x < _posX) setDirection(Direction.DIRECTION_LEFT);
-			else if (_node.y > _posY) setDirection(Direction.DIRECTION_BOTTOM);
-			else if (_node.y < _posY) setDirection(Direction.DIRECTION_TOP);
+			if (_node.x > _posX && _node.y > _posY) setMove(Direction.BOTTOM_RIGHT);
+			else if (_node.x < _posX && _node.y > _posY) setMove(Direction.BOTTOM_LEFT);
+			else if (_node.x > _posX && _node.y < _posY) setMove(Direction.TOP_RIGHT);
+			else if (_node.x < _posX && _node.y < _posY) setMove(Direction.TOP_LEFT);
+			else if (_node.x > _posX) setMove(Direction.RIGHT);
+			else if (_node.x < _posX) setMove(Direction.LEFT);
+			else if (_node.y > _posY) setMove(Direction.BOTTOM);
+			else if (_node.y < _posY) setMove(Direction.TOP);
 
 			_posX = (int) _node.x;
 			_posY = (int) _node.y;
@@ -516,6 +508,11 @@ public class Character extends Movable {
 
 			// Add item effects
 			item.use(this, _job.getDurationLeft());
+
+			if (item.getX() > _posX) { _direction = Direction.RIGHT; }
+			if (item.getX() < _posX) { _direction = Direction.LEFT; }
+			if (item.getY() > _posY) { _direction = Direction.TOP; }
+			if (item.getY() < _posY) { _direction = Direction.BOTTOM; }
 			
 			return;
 		}

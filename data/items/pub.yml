@@ -2,7 +2,7 @@ name: pub
 label: Pub
 width: 1
 height: 1
-category: common
+category: item
 cost:
   matter: 42
 onAction:

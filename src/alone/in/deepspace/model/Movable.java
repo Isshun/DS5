@@ -5,11 +5,23 @@ import java.util.Vector;
 
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager.PathManagerCallback;
-import alone.in.deepspace.model.Character.Direction;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class Movable implements PathManagerCallback {
+
+	public enum Direction {
+		BOTTOM,
+		LEFT,
+		RIGHT,
+		TOP,
+		BOTTOM_RIGHT,
+		BOTTOM_LEFT,
+		TOP_RIGHT,
+		TOP_LEFT,
+		NONE
+	};
+
 	protected Position			_node;
 	protected int				_posX;
 	protected int				_posY;
@@ -19,12 +31,12 @@ public class Movable implements PathManagerCallback {
 	protected int				_frameIndex;
 	protected int				_blocked;
 	protected Direction			_direction;
+	protected Direction 		_move;
 	protected Vector<Position>	_path;
 	protected int				_steps;
 	protected Job				_job;
 
 	private HashMap<Integer, Integer> 	_points;
-	private int 						_lastY;
 
 	public Movable(int id, int x, int y) {
 		  _id = id;
@@ -38,6 +50,7 @@ public class Movable implements PathManagerCallback {
 	public int 				getX() { return _posX; }
 	public int 				getY() { return _posY; }
 	public Direction		getDirection() { return _direction; }
+	public Direction 		getMove() { return _move; }
 	public int				getFrameIndex() { return _frameIndex++; }
 
 	@Override
@@ -88,12 +101,17 @@ public class Movable implements PathManagerCallback {
 		_job = null;
 	}
 	
-	protected void	setDirection(Direction direction) {
+	public void	setDirection(Direction direction) {
 		if (_direction != direction) {
 			_direction = direction;
 		}
 	}
-	
+
+	protected void setMove(Direction move) {
+		_move = move;
+		setDirection(move);
+	}
+
 	void	sendEvent(CharacterNeeds.Message msgBlocked) {
 		if (msgBlocked == CharacterNeeds.Message.MSG_BLOCKED) {
 			if (++_blocked >= Constant.BLOCKED_COUNT_BEFORE_MESSAGE) {

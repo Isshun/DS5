@@ -2,7 +2,6 @@ label: Ground
 width: 1
 height: 1
 category: structure
-isStructure: true
 isWalkable: true
 cost:
   matter: 1

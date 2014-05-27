@@ -19,13 +19,13 @@ import org.jsfml.graphics.Texture;
 
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.engine.ISavable;
+import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Character.Gender;
 import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.Job.Abort;
-import alone.in.deepspace.model.BaseItem;
+import alone.in.deepspace.model.Movable.Direction;
 import alone.in.deepspace.model.Profession;
-import alone.in.deepspace.model.Room;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -66,6 +66,9 @@ public class CharacterManager implements ISavable {
 
 		Log.debug("CharacterManager done");
 	}
+
+	public List<Character> 	getList() { return _characters; }
+	public int 				getCount() { return _count; }
 
 	public void	create() {
 		add(0, 0, Profession.Type.ENGINEER);
@@ -123,10 +126,10 @@ public class CharacterManager implements ISavable {
 	}
 
 	private static Character.Gender getGender(int gender) {
-		if (gender == 1) { return Gender.GENDER_MALE; }
-		if (gender == 2) { return Gender.GENDER_FEMALE; }
-		if (gender == 3) { return Gender.GENDER_BOTH; }
-		return Gender.GENDER_NONE;
+		if (gender == 1) { return Gender.MALE; }
+		if (gender == 2) { return Gender.FEMALE; }
+		if (gender == 3) { return Gender.BOTH; }
+		return Gender.NONE;
 	}
 
 	private static Profession.Type getProfessionType(int index) {
@@ -216,6 +219,7 @@ public class CharacterManager implements ISavable {
 				c.updateNeeds(update);
 			}
 
+			c.setDirection(Direction.NONE);
 			c.action();
 			c.move();
 		}
@@ -274,73 +278,6 @@ public class CharacterManager implements ISavable {
 
 		return null;
 	}
-	//
-	//	Character		assignJob(Job job) {
-	//	  if (job == null) {
-	//		Log.error(" try to assign null job");
-	//		return null;
-	//	  }
-	//
-	//	  Character bestCharacter = null;
-	//
-	//	  JobManager.Action jobAction = job.getAction();
-	//
-	//	  for (Character c: _characters) {
-	//		if (c.getJob() == null) {
-	//
-	//		  if (bestCharacter == null) {
-	//			bestCharacter = c;
-	//		  }
-	//
-	//		  // build action . only engineer
-	//		  if (jobAction == JobManager.Action.BUILD && c.getProfession().getType() == Profession.Type.ENGINEER) {
-	//			if (bestCharacter == null || c.getProfessionScore(Profession.Type.ENGINEER) > bestCharacter.getProfessionScore(Profession.Type.ENGINEER)) {
-	//			  bestCharacter = c;
-	//			}
-	//		  }
-	//		}
-	//	  }
-	//
-	//	  if (bestCharacter != null) {
-	//
-	//		// TODO: remove if invalid
-	//
-	//		// Action build
-	//		if (job.getAction() == JobManager.Action.BUILD) {
-	//		  BaseItem jobItem = job.getItem();
-	//		  BaseItem item = ServiceManager.getWorldMap().getItem(job.getX(), job.getY());
-	//		  WorldArea area = ServiceManager.getWorldMap().getArea(job.getX(), job.getY());
-	//		  if (item != null && item.isComplete() && area != null && area.isComplete()) {
-	//			Log.error("CharacterManager: Job ACTION_BUILD on complete item");
-	//			return null;
-	//		  }
-	//		  if (jobItem == null && item != null) {
-	//			jobItem = item;
-	//		  }
-	//		  if (jobItem == null && area != null) {
-	//			jobItem = area;
-	//		  }
-	//		  if (jobItem == null) {
-	//			jobItem = ServiceManager.getWorldMap().putItem(job.getItemType(), job.getX(), job.getY());
-	//		  }
-	//		}
-	//
-	//		// Action gather
-	//		else if (job.getAction() == JobManager.Action.GATHER) {
-	//		  BaseItem jobItem = job.getItem();
-	//		  if (jobItem == null) {
-	//			Log.error("CharacterManager: Job ACTION_GATHER on missing item");
-	//			return null;
-	//		  }
-	//		}
-	//
-	//		Log.info("assign " + job.getId() + " to " + bestCharacter);
-	//	  	job.setCharacter(bestCharacter);
-	//		bestCharacter.setJob(job);
-	//	  }
-	//
-	//	  return bestCharacter;
-	//	}
 
 	public Character		add(int x, int y) {
 		if (_count + 1 > Constant.LIMIT_CHARACTER) {
@@ -387,108 +324,6 @@ public class CharacterManager implements ISavable {
 		}
 
 		return null;
-	}
-
-	public void	onDraw(RenderWindow app, RenderStates render, double animProgress) throws IOException {
-		for (Character c: _characters) {
-			int posX = c.getX() * Constant.TILE_WIDTH - (Constant.CHAR_WIDTH - Constant.TILE_WIDTH) + 2;
-			int posY = c.getY() * Constant.TILE_HEIGHT - (Constant.CHAR_HEIGHT - Constant.TILE_HEIGHT) + 0;
-			Character.Direction direction = c.getDirection();
-
-			// TODO: ugly
-			int offset = 0;
-
-			if (direction == Character.Direction.DIRECTION_TOP ||
-					direction == Character.Direction.DIRECTION_BOTTOM ||
-					direction == Character.Direction.DIRECTION_RIGHT ||
-					direction == Character.Direction.DIRECTION_LEFT)
-				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
-
-			if (direction == Character.Direction.DIRECTION_TOP_RIGHT ||
-					direction == Character.Direction.DIRECTION_TOP_LEFT  ||
-					direction == Character.Direction.DIRECTION_BOTTOM_RIGHT ||
-					direction == Character.Direction.DIRECTION_BOTTOM_LEFT)
-				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
-
-			int dirIndex = 0;
-			if (direction == Character.Direction.DIRECTION_BOTTOM) { posY -= offset; dirIndex = 0; }
-			if (direction == Character.Direction.DIRECTION_TOP) { posY += offset; dirIndex = 3; }
-			if (direction == Character.Direction.DIRECTION_RIGHT) { posX -= offset; dirIndex = 2; }
-			if (direction == Character.Direction.DIRECTION_LEFT) { posX += offset; dirIndex = 1; }
-			if (direction == Character.Direction.DIRECTION_BOTTOM_RIGHT) { posY -= offset; posX -= offset; dirIndex = 2; }
-			if (direction == Character.Direction.DIRECTION_BOTTOM_LEFT) { posY -= offset; posX += offset; dirIndex = 1; }
-			if (direction == Character.Direction.DIRECTION_TOP_RIGHT) { posY += offset; posX -= offset; dirIndex = 2; }
-			if (direction == Character.Direction.DIRECTION_TOP_LEFT) { posY += offset; posX += offset; dirIndex = 1; }
-
-			if (direction == Character.Direction.DIRECTION_TOP_RIGHT)
-				direction = Character.Direction.DIRECTION_RIGHT;
-			if (direction == Character.Direction.DIRECTION_TOP_LEFT)
-				direction = Character.Direction.DIRECTION_LEFT;
-			if (direction == Character.Direction.DIRECTION_BOTTOM_RIGHT)
-				direction = Character.Direction.DIRECTION_RIGHT;
-			if (direction == Character.Direction.DIRECTION_BOTTOM_LEFT)
-				direction = Character.Direction.DIRECTION_LEFT;
-
-			// end ugly
-
-			int frame = c.getFrameIndex() / 20 % 4;
-
-			Profession profession = c.getProfession();
-
-			Sprite sprite = SpriteManager.getInstance().getCharacter(profession, dirIndex, frame);
-
-			sprite.setPosition(posX, posY);
-			//		if (c.getNeeds().isSleeping()) {
-			//		  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-			//	 	} else if (direction == Character.Direction.DIRECTION_NONE) {
-			//		  sprite.setTextureRect(new IntRect(0, 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-			//		} else {
-			//		  sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * frame, Constant.CHAR_HEIGHT * dirIndex, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-			//		}
-
-			app.draw(sprite, render);
-						
-			// Selection
-			if (c.getSelected()) {
-				_selection.setPosition(posX, posY);
-				app.draw(_selection, render);
-			}
-		}
-	}
-
-	//	public Sprite	getSprite(Sprite sprite, Profession.Type functionId, int index) {
-	//
-	//	  if (functionId == Profession.Type.SECURITY) {
-	//		sprite.setTexture(_textures[1]);
-	//	  } else {
-	//		sprite.setTexture(_textures[0]);
-	//	  }
-	//
-	//	  for (Character c: _characters) {
-	//		int posX = c.getX() * Constant.TILE_SIZE - (Constant.CHAR_WIDTH - Constant.TILE_SIZE);
-	//		int posY = c.getY() * Constant.TILE_SIZE - (Constant.CHAR_HEIGHT - Constant.TILE_SIZE + Constant.TILE_SIZE / 2);
-	//
-	//		// Sprite
-	//		sprite.setPosition(posX, posY);
-	//		if (c.getNeeds().isSleeping()) {
-	//		  sprite.setTextureRect(new IntRect(0, Constant.CHAR_HEIGHT, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-	//		} else {
-	//		  sprite.setTextureRect(new IntRect(Constant.CHAR_WIDTH * (index % 4), 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT));
-	//		}
-	//
-	//	  }
-	//
-	//	  return sprite;
-	//	}
-
-
-	public List<Character> getList() {
-		return _characters;
-	}
-
-
-	public int getCount() {
-		return _count;
 	}
 
 

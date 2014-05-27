@@ -2,5 +2,6 @@ name: phaser
 label: Phaser
 width: 1
 height: 1
+category: item
 cost:
   matter: 42
