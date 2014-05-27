@@ -160,11 +160,15 @@ public class PanelDebugItem extends UserSubInterface {
 			// Produce
 			if (item.onAction.produce != null) {
 				TextView text = new TextView(new Vector2f(100, 20));
-				text.setString("produce " + item.onAction.produce.item + " x" + item.onAction.produce.quantity);
+				String str = "produce: ";
+				for (String itemProduceName: item.onAction.produce) {
+					str += itemProduceName + "\n";
+				}
+				text.setString(str);
 				text.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						initItem(item.onAction.itemProduce);
+						initItem(item.onAction.itemsProduce.get(0));
 					}
 				});
 				text.setPosition(x, y);

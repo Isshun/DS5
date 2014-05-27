@@ -449,7 +449,7 @@ public class WorldManager implements ISavable, TileBasedMap {
 //			item = new StorageItem();
 //			_areas[x][y].setItem((UserItem) item);
 //			return item;
-		if (info.storage > 0) {
+		if (info.isStorage) {
 			item = new StorageItem(info);
 		} else if (info.isRessource) {
 			item = new WorldRessource(info);

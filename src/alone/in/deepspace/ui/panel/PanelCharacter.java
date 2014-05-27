@@ -14,6 +14,7 @@ import alone.in.deepspace.engine.ui.ColorView;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.ImageView;
 import alone.in.deepspace.engine.ui.OnClickListener;
+import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.SpriteManager;
@@ -39,6 +40,7 @@ public class PanelCharacter extends UserSubInterface {
 	private static final int NB_INVENTORY_PER_LINE = 10;
 
 	private Character   	    _character;
+	private TextView 			_lbTip;
 	private TextView 			_lbName;
 	private TextView 			_lbProfession;
 	private RectangleShape[] 	_shapes = new RectangleShape[NB_GAUGE];
@@ -65,6 +67,13 @@ public class PanelCharacter extends UserSubInterface {
 
 		setBackgroundColor(new Color(0, 0, 0, 150));
 
+		// Tip
+		_lbTip = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
+		_lbTip.setCharacterSize(FONT_SIZE);
+		_lbTip.setColor(Color.WHITE);
+		_lbTip.setBackgroundColor(new Color(255, 255, 255, 100));
+		addView(_lbTip);
+		
 		// Name
 		_lbName = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbName.setCharacterSize(FONT_SIZE);
@@ -137,10 +146,22 @@ public class PanelCharacter extends UserSubInterface {
 
 		_lbCarry = new ImageView[Constant.CHARACTER_INVENTORY_SPACE];
 		for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
-			int x2 = i % NB_INVENTORY_PER_LINE;
-			int y2 = i / NB_INVENTORY_PER_LINE;
+			final int x2 = i % NB_INVENTORY_PER_LINE;
+			final int y2 = i / NB_INVENTORY_PER_LINE;
 			_lbCarry[i] = new ImageView();
 			_lbCarry[i].setPosition(new Vector2f(x2 * 28, Constant.UI_PADDING_V + 32 + y2 * 28));
+			_lbCarry[i].setOnFocusListener(new OnFocusListener() {
+				@Override
+				public void onExit(View view) {
+					_lbTip.setVisible(false);
+				}
+				
+				@Override
+				public void onEnter(View view) {
+					_lbTip.setVisible(true);
+					_lbTip.setPosition(new Vector2f(x2 * 28 + 16, Constant.UI_PADDING_V + 32 + y2 * 28 + 16));
+				}
+			});
 			_layoutInventory.addView(_lbCarry[i]);
 		}
 	}
@@ -397,6 +418,7 @@ public class PanelCharacter extends UserSubInterface {
 				if (_character.getCarried().size() > i) {
 					BaseItem item = _character.getCarried().get(i);
 					_lbCarry[i].setImage(SpriteManager.getInstance().getIcon(item.getInfo()));
+					_lbTip.setString(item.getName());
 				} else {
 					_lbCarry[i].setImage(null);
 				}

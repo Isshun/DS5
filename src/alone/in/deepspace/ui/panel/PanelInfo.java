@@ -1,7 +1,9 @@
 package alone.in.deepspace.ui.panel;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderStates;
@@ -79,6 +81,7 @@ public class PanelInfo extends UserSubInterface {
 	private TextView[] 				_itemEffects;
 	private TextView 				_itemAccept;
 	private TextView 				_itemInventoryCount;
+	private TextView[] 				_lbCarryCount;
 
 	public PanelInfo(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
@@ -106,22 +109,23 @@ public class PanelInfo extends UserSubInterface {
 		_layoutStorage.addView(_itemStorage);
 
 		_itemAccept = new TextView(null);
-		_itemAccept.setPosition(10, 500);
+		_itemAccept.setPosition(10, 600);
 		_itemAccept.setCharacterSize(16);
 		addView(_itemAccept);
-		
+
 		_itemInventoryCount = new TextView(null);
 		_itemInventoryCount.setPosition(10, 400);
 		_itemInventoryCount.setCharacterSize(16);
 		addView(_itemInventoryCount);
-		
-//		_lbContains = new TextView(null);
-//		_lbContains.setPosition(10, 10);
-//		_lbContains.setString(Strings.LB_STORAGE_CONTAINS);
-//		_lbContains.setCharacterSize(22);
-//		_layoutStorage.addView(_lbContains);
+
+		//		_lbContains = new TextView(null);
+		//		_lbContains.setPosition(10, 10);
+		//		_lbContains.setString(Strings.LB_STORAGE_CONTAINS);
+		//		_lbContains.setCharacterSize(22);
+		//		_layoutStorage.addView(_lbContains);
 
 		_lbCarry = new ImageView[42];
+		_lbCarryCount = new TextView[42];
 		for (int i = 0; i < 42; i++) {
 			int x = i % INVENTORY_NB_COLS;
 			int y = i / INVENTORY_NB_COLS;
@@ -129,6 +133,11 @@ public class PanelInfo extends UserSubInterface {
 			_lbCarry[i].setId(100 + i);
 			_lbCarry[i].setPosition(new Vector2f(Constant.UI_PADDING_H + x * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE, 40 + y * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE));
 			_layoutStorage.addView(_lbCarry[i]);
+			_lbCarryCount[i] = new TextView();
+			_lbCarryCount[i].setCharacterSize(10);
+			_lbCarryCount[i].setColor(Color.WHITE);
+			_lbCarryCount[i].setPosition(new Vector2f(Constant.UI_PADDING_H + x * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE + 16, 40 + y * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE + 16));
+			_layoutStorage.addView(_lbCarryCount[i]);
 		}
 		_layoutItem.addView(_layoutStorage);
 	}
@@ -150,14 +159,14 @@ public class PanelInfo extends UserSubInterface {
 			_itemEffects[i].setCharacterSize(12);
 			_layoutEffects.addView(_itemEffects[i]);
 		}
-		
+
 		_layoutItem.addView(_layoutEffects);
 	}
-	
+
 	private void createItemInfoView(int x, int y) {
 		_layoutItem = new FrameLayout(new Vector2f(FRAME_WIDTH, 80));
 		_layoutItem.setPosition(x, y);
-		
+
 		_itemName = new TextView(null);
 		_itemName.setPosition(10, 0);
 		_itemName.setCharacterSize(22);
@@ -192,17 +201,17 @@ public class PanelInfo extends UserSubInterface {
 		_itemUsed.setPosition(10, 140);
 		_itemUsed.setCharacterSize(14);
 		_layoutItem.addView(_itemUsed);
-		
+
 		_itemIcon = new ImageView();
 		_layoutItem.addView(_itemIcon);
-		
+
 		addView(_layoutItem);
 	}
 
 	private void createAreaInfoView(int x, int y) {
 		_layoutArea = new FrameLayout(new Vector2f(FRAME_WIDTH, 80));
 		_layoutArea.setPosition(x, y);
-		
+
 		_areaName = new TextView(null);
 		_areaName.setPosition(10, 0);
 		_areaName.setCharacterSize(22);
@@ -225,7 +234,7 @@ public class PanelInfo extends UserSubInterface {
 
 		_areaIcon = new ImageView();
 		_layoutArea.addView(_areaIcon);
-		
+
 		addView(_layoutArea);
 	}
 
@@ -233,17 +242,17 @@ public class PanelInfo extends UserSubInterface {
 		_itemAction = new FrameLayout(new Vector2f(120, 200));
 		_itemAction.setPosition(10, 200);
 		_layoutItem.addView(_itemAction);
-		
+
 		TextView lbTitle = new TextView(new Vector2f(10, 10));
 		lbTitle.setString(Strings.PROVIDE);
 		lbTitle.setCharacterSize(16);
 		_itemAction.addView(lbTitle);
-		
+
 		_itemActionProduce = new TextView(new Vector2f(10, 10));
 		_itemActionProduce.setPosition(32, 28);
 		_itemActionProduce.setCharacterSize(14);
 		_itemAction.addView(_itemActionProduce);
-		
+
 		_itemActionIcon = new ButtonView(new Vector2f(32, 32));
 		_itemActionIcon.setPosition(0, 28);
 		_itemAction.addView(_itemActionIcon);
@@ -254,17 +263,17 @@ public class PanelInfo extends UserSubInterface {
 		_itemGather.setVisible(false);
 		_itemGather.setPosition(10, 200);
 		_layoutItem.addView(_itemGather);
-		
+
 		TextView lbTitle = new TextView(new Vector2f(10, 10));
 		lbTitle.setString(Strings.PRODUCT_WHEN_GATHERED);
 		lbTitle.setCharacterSize(16);
 		_itemGather.addView(lbTitle);
-		
+
 		_itemGatherProduce = new TextView(new Vector2f(10, 10));
 		_itemGatherProduce.setPosition(32, 28);
 		_itemGatherProduce.setCharacterSize(14);
 		_itemGather.addView(_itemGatherProduce);
-		
+
 		_itemGatherIcon = new ButtonView(new Vector2f(32, 32));
 		_itemGatherIcon.setPosition(0, 28);
 		_itemGather.addView(_itemGatherIcon);
@@ -275,12 +284,12 @@ public class PanelInfo extends UserSubInterface {
 		_itemMine.setPosition(0, 200);
 		_itemMine.setVisible(false);
 		_layoutItem.addView(_itemMine);
-		
+
 		TextView lbTitle = new TextView(new Vector2f(10, 10));
 		lbTitle.setString(Strings.PRODUCT_WHEN_MINED);
 		lbTitle.setCharacterSize(16);
 		_itemMine.addView(lbTitle);
-		
+
 		_itemMineProduce = new TextView(new Vector2f(10, 10));
 		_itemMineProduce.setPosition(32, 28);
 		_itemMineProduce.setCharacterSize(14);
@@ -314,12 +323,12 @@ public class PanelInfo extends UserSubInterface {
 		if (area == null) {
 			return;
 		}
-		
+
 		_area = area;
 		_layoutArea.setVisible(false);
 		_layoutItem.setVisible(false);
 		_layoutItem.setVisible(false);
-		
+
 		if (area.getItem() != null) {
 			setItem(area.getItem());
 			return;
@@ -385,7 +394,7 @@ public class PanelInfo extends UserSubInterface {
 		} else {
 			_itemMine.setVisible(false);
 		}
-		
+
 		_itemAction.setVisible(false);
 	}
 	private void  setStructure(final StructureItem structure) {
@@ -465,7 +474,7 @@ public class PanelInfo extends UserSubInterface {
 		// Action item
 		if (item.getInfo().onAction != null) {
 			_itemAction.setVisible(true);
-			
+
 			if (item.getInfo().onAction.itemAccept != null) {
 				String str = "Accept:\n";
 				for (ItemInfo info: item.getInfo().onAction.itemAccept) {
@@ -474,11 +483,15 @@ public class PanelInfo extends UserSubInterface {
 				_itemAccept.setString(str);
 				_itemAccept.setVisible(true);
 			}
-			
+
 			// Item action produce
-			if (item.getInfo().onAction.itemProduce != null) {
-				_itemActionProduce.setString(item.getInfo().onAction.itemProduce.label);
-				_itemActionIcon.setIcon(SpriteManager.getInstance().getIcon(item.getInfo().onAction.itemProduce));
+			if (item.getInfo().onAction.itemsProduce != null) {
+				String str = "";
+				for (ItemInfo itemProduce: item.getInfo().onAction.itemsProduce) {
+					str += itemProduce.label + "\n";
+				}
+				_itemActionProduce.setString(str);
+				_itemActionIcon.setIcon(SpriteManager.getInstance().getIcon(item.getInfo().onAction.itemsProduce.get(0)));
 			}
 
 			// Item action effects
@@ -499,36 +512,36 @@ public class PanelInfo extends UserSubInterface {
 		} else {
 			_itemAction.setVisible(false);
 		}
-		
+
 		_itemGather.setVisible(false);
 		_itemMine.setVisible(false);
 
-//		_itemOptions = new PanelInfoItemOptions(20, 280);
-//		addView(_itemOptions.add("Remove", new OnClickListener() {
-//			@Override
-//			public void onClick(View view) {
-//				JobManager.getInstance().storeItem(item);
-//			}
-//		}));
-//		addView(_itemOptions.add("Destroy", new OnClickListener() {
-//			@Override
-//			public void onClick(View view) {
-//				JobManager.getInstance().destroyItem(item);
-//			}
-//		}));
-//		addView(_itemOptions.add("Add character", new OnClickListener() {
-//			@Override
-//			public void onClick(View view) {
-//				ServiceManager.getCharacterManager().add(item.getX(), item.getY());
-//			}
-//		}));
-//		addView(_itemOptions.add("kill everyone", new OnClickListener() {
-//			@Override
-//			public void onClick(View view) {
-//				ServiceManager.getCharacterManager().clear();
-//			}
-//		}));
-		
+		//		_itemOptions = new PanelInfoItemOptions(20, 280);
+		//		addView(_itemOptions.add("Remove", new OnClickListener() {
+		//			@Override
+		//			public void onClick(View view) {
+		//				JobManager.getInstance().storeItem(item);
+		//			}
+		//		}));
+		//		addView(_itemOptions.add("Destroy", new OnClickListener() {
+		//			@Override
+		//			public void onClick(View view) {
+		//				JobManager.getInstance().destroyItem(item);
+		//			}
+		//		}));
+		//		addView(_itemOptions.add("Add character", new OnClickListener() {
+		//			@Override
+		//			public void onClick(View view) {
+		//				ServiceManager.getCharacterManager().add(item.getX(), item.getY());
+		//			}
+		//		}));
+		//		addView(_itemOptions.add("kill everyone", new OnClickListener() {
+		//			@Override
+		//			public void onClick(View view) {
+		//				ServiceManager.getCharacterManager().clear();
+		//			}
+		//		}));
+
 	}
 
 	@Override
@@ -538,39 +551,54 @@ public class PanelInfo extends UserSubInterface {
 			item = _area.getRessource();
 		}
 
-//		// TODO
-//		_itemGather.refresh(app);
-//		_itemMine.refresh(app);
-		
+		//		// TODO
+		//		_itemGather.refresh(app);
+		//		_itemMine.refresh(app);
+
 		if (item != null) {
 
 			_itemSlots.setString("Free slots: " + item.getNbFreeSlots());
 			_itemUsed.setString("Used: " + item.getTotalUse());
-			_itemInventoryCount.setString("Inventory: " + item.getInventory().size());
+			_layoutStorage.setVisible(false);
 
 			if (item.isStorage()) {
 				StorageItem storage = ((StorageItem)item);
-				if (storage.getItems().size() > 0) {
-					_itemStorage.setString("Storage: " + storage.getItems().size());
-					for (int i = 0; i < 42; i++) {
-						if (i < storage.getItems().size()) {
-							final BaseItem storedItem = storage.getItems().get(i);
-							_lbCarry[i].setImage(SpriteManager.getInstance().getIcon(storedItem.getInfo()));
-							_lbCarry[i].setOnClickListener(new OnClickListener() {
-								@Override
-								public void onClick(View view) {
-									setItem(storedItem);
-								}
-							});
-						} else {
-							_lbCarry[i].setImage(null);
-						}
+				_itemInventoryCount.setString("Inventory: " + storage.getInventory().size());
+				_layoutStorage.setVisible(true);
+				_itemStorage.setString("Storage: " + storage.getItems().size());
+				Map<ItemInfo, Integer> inventoryInfo = new HashMap<ItemInfo, Integer>();
+				for (BaseItem storredItem: storage.getItems()) {
+					ItemInfo storedInfo = storredItem.getInfo();
+					if (inventoryInfo.containsKey(storedInfo)) {
+						inventoryInfo.put(storedInfo, inventoryInfo.get(storedInfo) + 1);
+					} else {
+						inventoryInfo.put(storedInfo, 1);
 					}
-				} else {
-					_itemStorage.setString("Storage: empty");
+				}
+				// Hide old entries
+				for (int i = 0; i < 42; i++) {
+					_lbCarry[i].setVisible(false);
+					_lbCarryCount[i].setVisible(false);
+				}
+				// Set new entries
+				int i = 0;
+				for (ItemInfo storedItemInfo: inventoryInfo.keySet()) {
+					int count = inventoryInfo.get(storedItemInfo);
+					
+					_lbCarry[i].setVisible(true);
+					_lbCarry[i].setImage(SpriteManager.getInstance().getIcon(storedItemInfo));
+//					_lbCarry[i].setOnClickListener(new OnClickListener() {
+//						@Override
+//						public void onClick(View view) {
+//							setItem(storedItemInfo);
+//						}
+//					});
+					_lbCarryCount[i].setVisible(true);
+					_lbCarryCount[i].setString("x"+count);
+					i++;
 				}
 			}
-			
+
 			//	  	_line = 0;
 			//	  	addLine(app, "Pos: " + item.getX() + " x " + item.getY());
 			//	  	addLine(app, "Oxygen", _area.getOxygen());

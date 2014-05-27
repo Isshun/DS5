@@ -41,6 +41,7 @@ public class ItemLoader {
 			    info.packageName = packageName;
 			    info.name = info.packageName +  '.' + info.fileName;
 			    info.isWalkable = true;
+			    info.isStorage = info.storage > 0 || info.onAction != null && info.onAction.storage > 0;
 			    if (!info.isStructure && !info.isRessource && !info.isConsomable) {
 			    	info.isUserItem = true;
 			    }
@@ -78,13 +79,16 @@ public class ItemLoader {
 			if (item.onAction != null) {
 				item.onAction.duration *= Constant.DURATION_MULTIPLIER;
 				if (item.onAction.produce != null) {
-					item.onAction.itemProduce = ServiceManager.getData().getItemInfo(item.onAction.produce.item);
+					// Items produce
+					item.onAction.itemsProduce = new ArrayList<ItemInfo>();
+					for (String itemProduceName: item.onAction.produce) {
+						item.onAction.itemsProduce.add(ServiceManager.getData().getItemInfo(itemProduceName));
+					}
 					
 					// Item accepted for craft
 					item.onAction.itemAccept = new ArrayList<ItemInfo>();
-					List<ItemInfo> craftedItemList = item.onAction.itemProduce.craftedFromItems;
-					for (ItemInfo craftedItem: craftedItemList) {
-						item.onAction.itemAccept.add(craftedItem);
+					for (ItemInfo itemProduce: item.onAction.itemsProduce) {
+						item.onAction.itemAccept.addAll(itemProduce.craftedFromItems);
 					}
 					item.isDispenser = item.onAction.itemAccept.size() > 0;
 				}

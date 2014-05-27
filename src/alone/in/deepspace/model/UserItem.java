@@ -12,8 +12,4 @@ public class UserItem extends BaseItem {
 		super(info);
 	}
 
-	public void addInventory(List<BaseItem> items) {
-		_inventory.addAll(items);
-	}
-
 }

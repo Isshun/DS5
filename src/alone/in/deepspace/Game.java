@@ -131,24 +131,26 @@ public class Game implements ISavable {
 		// Refill dispenser
 		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
 			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
-				UserItem dispenser = ServiceManager.getWorldMap().getItem(x, y);
-				if (dispenser != null && dispenser.isDispenser() && dispenser.isWaitRefill() == false) {
-					
-					// Looking for storage containing accepted item
-					StorageItem storage = null;
-					ItemFilter itemFilter = new ItemFilter(true, true); 
-					for (ItemInfo neededItemInfo: dispenser.getInfo().onAction.itemAccept) {
-						if (storage == null) {
-							itemFilter.neededItem = neededItemInfo;
-							storage = ServiceManager.getWorldMap().findStorageContains(itemFilter, dispenser.getX(), dispenser.getY());
+				UserItem item = ServiceManager.getWorldMap().getItem(x, y);
+				if (item != null && item.isDispenser()) {
+					StorageItem dispenser = (StorageItem)item;
+					if (dispenser.needRefill() && dispenser.isWaitRefill() == false) {
+						// Looking for storage containing accepted item
+						StorageItem storage = null;
+						ItemFilter itemFilter = new ItemFilter(true, true); 
+						for (ItemInfo neededItemInfo: dispenser.getInfo().onAction.itemAccept) {
+							if (storage == null) {
+								itemFilter.neededItem = neededItemInfo;
+								storage = ServiceManager.getWorldMap().findStorageContains(itemFilter, dispenser.getX(), dispenser.getY());
+							}
 						}
-					}
-
-					// Create jobs if needed items available
-					if (storage != null) {
-						Job job = JobManager.getInstance().createRefillJob(null, storage, itemFilter, dispenser);
-						if (job != null) {
-							JobManager.getInstance().addJob(job);
+	
+						// Create jobs if needed items available
+						if (storage != null) {
+							Job job = JobManager.getInstance().createRefillJob(null, storage, itemFilter, dispenser);
+							if (job != null) {
+								JobManager.getInstance().addJob(job);
+							}
 						}
 					}
 				}
@@ -211,7 +213,7 @@ public class Game implements ISavable {
 		}
 	}
 
-	void	create() {
+	void	onCreate() {
 		Log.info("Game: create");
 		
 		ResourceManager.getInstance().setMatter(Constant.RESSOURCE_MATTER_START);
@@ -271,9 +273,28 @@ public class Game implements ISavable {
 		RoomManager.getInstance().load(filePath);
 		JobManager.getInstance().load(filePath);
 		
+		onLoadComplete();
+		
 		_mainRenderer.init();
 
 		//JobManager.getInstance().move(ServiceManager.getCharacterManager().getList().get(0), 25, 14);
+	}
+
+	private void onLoadComplete() {
+		ItemInfo info = ServiceManager.getData().getItemInfo("base.seaweed");
+		
+		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
+			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
+				UserItem item = ServiceManager.getWorldMap().getItem(x, y);
+				if (item != null && item.isStorage()) {
+					StorageItem storage = (StorageItem)item;
+					for (int i = 0; i < 100; i++) {
+						storage.addInventory(new UserItem(info));
+					}
+				}
+			}
+			
+		}		
 	}
 
 	public void	save(final String filePath) {

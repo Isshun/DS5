@@ -1,5 +1,5 @@
 BEGIN GAME
-MATTER	19740
+MATTER	19746
 SPICE	0
 WATER	0
 END GAME
@@ -465,15 +465,12 @@ BEGIN WORLDMAP
 0	22	10	base.floor	1
 0	22	11	base.wall	1
 0	22	12	base.floor	1
-0	22	12	base.serving_table	8
 0	22	13	base.floor	1
 0	22	14	base.floor	1
 0	22	15	base.floor	1
-0	22	15	base.serving_table	8
 0	22	16	base.floor	1
 0	22	17	base.floor	1
 0	22	18	base.floor	1
-0	22	18	base.serving_table	8
 0	22	19	base.floor	1
 0	22	20	base.floor	1
 0	22	21	base.floor	1
@@ -565,15 +562,12 @@ BEGIN WORLDMAP
 0	26	10	base.floor	1
 0	26	11	base.wall	1
 0	26	12	base.floor	1
-0	26	12	base.serving_table	8
 0	26	13	base.floor	1
 0	26	14	base.floor	1
 0	26	15	base.floor	1
-0	26	15	base.serving_table	8
 0	26	16	base.floor	1
 0	26	17	base.floor	1
 0	26	18	base.floor	1
-0	26	18	base.serving_table	8
 0	26	19	base.floor	1
 0	26	20	base.floor	1
 0	26	21	base.floor	1
@@ -1036,7 +1030,7 @@ BEGIN WORLDMAP
 5	28	23	base.floor	1
 END WORLDMAP
 BEGIN CHARACTERS
-17	14	1	Michael Anders
+20	14	1	Michael Anders
 END CHARACTERS
 BEGIN ROOMS
 3	31	1	0

@@ -4,12 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.manager.ItemFilter;
+import alone.in.deepspace.manager.ResourceManager;
 
 public class StorageItem extends UserItem {
 
-	
+	private List<ItemInfo>	_accepts;
+	private List<BaseItem>	_inventory;
+	private	boolean		_isWaitRefill;
+
 	public StorageItem(ItemInfo info) {
 		super(info);
+		
+		_inventory = new ArrayList<BaseItem>();
+		
+		if (info.onAction != null && info.onAction.storage > 0) {
+			_accepts = new ArrayList<ItemInfo>();
+			for (ItemInfo itemProduce: info.onAction.itemsProduce) {
+				_accepts.addAll(itemProduce.craftedFromItems);
+			}
+		}
 	}
 	
 	public List<BaseItem>	getItems() {
@@ -52,4 +65,91 @@ public class StorageItem extends UserItem {
 	public void remove(BaseItem item) {
 		_inventory.remove(item);
 	}
+	
+	public void addInventory(List<BaseItem> items) {
+		_inventory.addAll(items);
+	}
+
+	public void addInventory(UserItem item) {
+		_inventory.add(item);
+	}
+
+	public boolean needRefill() {
+		return _info.onAction != null && _inventory.size() < _info.onAction.storage;
+	}
+
+	private boolean inventoryContains(ItemInfo info) {
+		for (BaseItem item: _inventory) {
+			if (item.getInfo() == info) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isWaitRefill() {
+		return _isWaitRefill;
+	}
+
+	public void setWaitRefill(boolean b) {
+		_isWaitRefill = b;
+	}
+
+	public List<BaseItem> getInventory() {
+		return _inventory;
+	}
+	
+	public void produce(Character character) {
+		if (_info.onAction != null && _info.onAction.itemsProduce != null) {
+			// TODO: add item needed to action
+			ItemInfo itemToProduce = _info.onAction.itemsProduce.get(0);
+			for (int i = 0; i < itemToProduce.craftedQuantitfy; i++) {
+				// TODO: get most common component
+				BaseItem component = takeFromInventory(itemToProduce.craftedFromItems.get(0));
+				if (component != null) {
+					UserItem item = new UserItem(itemToProduce);
+					if (item.isFood()) {
+						ResourceManager.getInstance().addFood(1);
+					}
+					character.addInventory(item);
+				}
+			}
+		}
+	}
+
+
+	private BaseItem takeFromInventory(ItemInfo itemInfo) {
+		for (BaseItem item: _inventory) {
+			if (item.getInfo() == itemInfo) {
+				_inventory.remove(item);
+				return item;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public boolean matchFilter(ItemFilter filter) {
+		if (super.matchFilter(filter)) {
+			return true;
+		}
+
+		// Item produce
+		if (filter.isFactory && _info.onAction != null && _info.onAction.itemsProduce != null) {
+			for (ItemInfo itemProduce: _info.onAction.itemsProduce) {
+				if (itemProduce != null && itemProduce.onAction != null && (filter.neededItem == itemProduce || _info.matchFilter(itemProduce.onAction.effects, filter))) {
+					// Have components
+					for (ItemInfo component: itemProduce.craftedFromItems) {
+						if (inventoryContains(component)) {
+							filter.matchingItem = itemProduce;
+							return true;
+						}
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+
 }

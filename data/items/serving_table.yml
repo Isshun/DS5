@@ -14,5 +14,4 @@ onAction:
       y: 1
   duration: 5
   produce:
-    item: "base.meal"
-    quantity: 1
+    - base.meal

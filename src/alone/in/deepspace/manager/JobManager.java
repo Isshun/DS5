@@ -643,7 +643,7 @@ public class JobManager implements ISavable {
 		return job;
 	}
 
-	public Job createRefillJob(Character character, StorageItem storage, ItemFilter filter, UserItem dispenser) {
+	public Job createRefillJob(Character character, StorageItem storage, ItemFilter filter, StorageItem dispenser) {
 		Log.debug("create take job");
 
 		Job job = new Job(++_id, storage.getX(), storage.getY());

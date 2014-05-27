@@ -521,7 +521,10 @@ public class Character extends Movable {
 		}
 
 		// Action produce item
-		item.produce(this);
+		if (item.isStorage()) {
+			// TODO
+			((StorageItem)item).produce(this);
+		}
 //		if (producedItem != null) {
 		JobManager.getInstance().complete(_job);
 		
@@ -537,9 +540,10 @@ public class Character extends Movable {
 			return;		
 		}
 
-		((StorageItem)item).getItems().addAll(_inventory);
+		StorageItem storage = ((StorageItem)item);
+		storage.addInventory(_inventory);
+		storage.setWaitRefill(false);
 		JobManager.getInstance().complete(_job);
-		item.setWaitRefill(false);
 		_inventory.clear();
 		_job = null;
 	}
@@ -749,9 +753,11 @@ public class Character extends Movable {
 		if (_job.getSubAction() == Action.TAKE) {
 			StorageItem storage = (StorageItem)_job.getItem();
 			BaseItem item = storage.get(_job.getItemFilter());
-			if (item != null) {
+			while (item != null && _inventory.size() < _inventorySpace) {
+				_job.addCarry(item);
 				addInventory(item);
 				storage.remove(item);
+				item = storage.get(_job.getItemFilter());
 			}
 			
 			_job.setPosition(_job.getDispenser().getX(), _job.getDispenser().getY());
@@ -765,9 +771,11 @@ public class Character extends Movable {
 		
 		// Refill dispenser
 		else {
-			_job.getDispenser().addInventory(_inventory);
-			_job.getDispenser().setWaitRefill(false);
-			_inventory.clear();
+			if (_job.getCarry() != null) {
+				_job.getDispenser().addInventory(_job.getCarry());
+				_job.getDispenser().setWaitRefill(false);
+				_inventory.removeAll(_job.getCarry());
+			}
 			
 			JobManager.getInstance().complete(_job);
 			_job = null;

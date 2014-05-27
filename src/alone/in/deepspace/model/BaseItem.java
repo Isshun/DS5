@@ -90,7 +90,7 @@ public class BaseItem {
 	private int			_light;
 	private int 		_nbMode;
 	private int 		_maxId;
-	private ItemInfo	_info;
+	protected ItemInfo	_info;
 	private boolean		_isWorking;
 	private String 		_label;
 	private boolean 	_isToy;
@@ -99,11 +99,7 @@ public class BaseItem {
 	private int 		_nbTotalUsed;
 	private int 		_nbFreeSlot;
 	private int 		_nbSlot;
-	protected List<BaseItem>	_inventory;
 	
-	// TODO: only dispenser
-	private	boolean		_isWaitRefill;
-
 	public BaseItem(ItemInfo info) {
 		init(info, ++_maxId);
 	}
@@ -123,7 +119,6 @@ public class BaseItem {
 		_owner = null;
 		_id = id;
 		_name = null;
-		_inventory = new ArrayList<BaseItem>();
 
 		// TODO: modes
 //		_nbMode = 1;
@@ -277,7 +272,7 @@ public class BaseItem {
 	public boolean 			isWall() { return getName().equals("base.wall") || getName().equals("base.window"); }
 	public boolean 			isWindow() { return getName().equals("base.window"); }
 	public boolean 			isToy() { return _isToy; }
-	public boolean 			isStorage() { return _info.storage > 0; }
+	public boolean 			isStorage() { return _info.isStorage; }
 	public boolean 			isFood() { return _info.isFood; }
 	public boolean 			isDispenser() { return _info.isDispenser; }
 
@@ -304,18 +299,6 @@ public class BaseItem {
 		return Strings.LB_ITEM_USER;
 	}
 
-	public void produce(Character character) {
-		if (_info.onAction != null && _info.onAction.itemProduce != null) {
-			for (int i = 0; i < _info.onAction.produce.quantity; i++) {
-				UserItem item = new UserItem(_info.onAction.itemProduce);
-				if (item.isFood()) {
-					ResourceManager.getInstance().addFood(1);
-				}
-				character.addInventory(item);
-			}
-		}
-	}
-
 	public boolean matchFilter(ItemFilter filter) {
 		
 		// Item immediate effect
@@ -332,45 +315,7 @@ public class BaseItem {
 				return true;
 			}
 		}
-
-		// Item produce
-		if (filter.isFactory && _info.onAction != null && _info.onAction.itemProduce != null) {
-			List<ItemInfo> itemProduces = new ArrayList<ItemInfo>();
-			itemProduces.add(_info.onAction.itemProduce);
-			for (ItemInfo itemProduce: itemProduces) {
-				if (itemProduce != null && itemProduce.onAction != null && (filter.neededItem == itemProduce || _info.matchFilter(itemProduce.onAction.effects, filter))) {
-					// Have components
-					for (ItemInfo component: itemProduce.craftedFromItems) {
-						if (inventoryContains(component)) {
-							filter.matchingItem = itemProduce;
-							return true;
-						}
-					}
-				}
-			}
-		}
 		
 		return false;
-	}
-
-	private boolean inventoryContains(ItemInfo info) {
-		for (BaseItem item: _inventory) {
-			if (item.getInfo() == info) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean isWaitRefill() {
-		return _isWaitRefill;
-	}
-
-	public void setWaitRefill(boolean b) {
-		_isWaitRefill = b;
-	}
-
-	public List<BaseItem> getInventory() {
-		return _inventory;
 	}
 }

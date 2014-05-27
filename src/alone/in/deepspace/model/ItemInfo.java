@@ -15,8 +15,8 @@ public class ItemInfo {
 	public static class ItemInfoAction {
 		public int 					duration;
 		public int 					storage;
-		public ItemInfoProduce		produce;
-		public ItemInfo 			itemProduce;
+		public List<String>			produce;
+		public List<ItemInfo>		itemsProduce;
 		public ItemInfoPractice 	practice;
 		public ItemInfoEffects		effects;
 		public List<ItemInfoSlot>	slots;
@@ -56,6 +56,7 @@ public class ItemInfo {
 	public String 				label;
 	public String 				category;
 	public List<String>			craftedFrom;
+	public int					craftedQuantitfy;
 	public boolean 				isWalkable;
 	public int 					width;
 	public int 					height;
@@ -75,6 +76,7 @@ public class ItemInfo {
 	public String 				packageName;
 	public List<ItemInfo> 		craftedFromItems;
 	public boolean 				isDispenser;
+	public boolean 				isStorage;
 	
 	public ItemInfo() {
 		width = 1;
