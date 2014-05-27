@@ -13,7 +13,7 @@ public class Room {
 		QUARTER,
 		SICKBAY,
 		ENGINEERING,
-		PUB,
+		METTING,
 		HOLODECK,
 		STORAGE,
 		GARDEN
@@ -229,7 +229,7 @@ public class Room {
 		case 1: return Type.QUARTER;
 		case 2: return Type.SICKBAY;
 		case 3: return Type.ENGINEERING;
-		case 4: return Type.PUB;
+		case 4: return Type.METTING;
 		case 5: return Type.HOLODECK;
 		case 6: return Type.STORAGE;
 		case 7: return Type.GARDEN;
@@ -242,7 +242,7 @@ public class Room {
 		case QUARTER:		return "Quarter";
 		case SICKBAY: 		return "Sickbay";
 		case ENGINEERING: 	return "Engineering";
-		case PUB: 			return "Pub";
+		case METTING: 			return "Pub";
 		case HOLODECK: 		return "Holodeck";
 		case STORAGE: 		return "Storage";
 		case GARDEN: 		return "Garden";

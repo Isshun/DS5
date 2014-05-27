@@ -3,6 +3,7 @@ package alone.in.deepspace.engine.loader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
@@ -73,12 +74,16 @@ public class WorldSaver {
 		}
 		
 		try {
-			OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(filePath));
+			FileOutputStream fs = new FileOutputStream(filePath);
+			OutputStreamWriter output = new OutputStreamWriter(fs);
 		    Yaml yaml = new Yaml();
 		    StringWriter writer = new StringWriter();
 		    yaml.dump(save, output);
+		    fs.close();
 		    System.out.println(writer.toString());
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -120,12 +125,20 @@ public class WorldSaver {
 	public static void load(WorldManager worldManager, String filePath) {
 	    Log.info("load world");
 	    long time = System.currentTimeMillis();
-		
+	    WorldSave worldSave = null;
+
 		try {
 			InputStream input = new FileInputStream(filePath);
 		    Yaml yaml = new Yaml(new Constructor(WorldSave.class));
-		    WorldSave worldSave = (WorldSave)yaml.load(input);
-		    
+		    worldSave = (WorldSave)yaml.load(input);
+		    input.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (worldSave != null) {
 		    for (WorldSaveArea area: worldSave.areas) {
 		    	if (area != null) {
 		    		// UserItem
@@ -148,12 +161,8 @@ public class WorldSaver {
 		    		}
 		    	}
 		    }
-
 		    Log.info("load complete: " + (System.currentTimeMillis() - time) + "ms");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		}
-		
 	}
 
 }

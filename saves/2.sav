@@ -1,10 +1,20 @@
 BEGIN GAME
-MATTER	19749
+MATTER	18401
 SPICE	0
 WATER	0
 END GAME
 BEGIN CHARACTERS
-22	21	1	Michael Anders
+17	14	1	Michael Anders
+24	19	2	Samantha Lopez
+17	14	1	Tom "Apollo" Knapp
+26	21	2	Jadzia Knapp
+17	14	2	Ellen "Six" Miller
+24	21	2	Willow Baldwin
+17	14	2	Janice York
+17	14	2	Kathryn Barrera
+17	14	1	Adam "Mac" Joyce
+19	13	1	Wesley Miller
+26	19	1	Jack "Apollo" Lopez
 END CHARACTERS
 BEGIN ROOMS
 3	31	1	0

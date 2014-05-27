@@ -58,7 +58,7 @@ public abstract class View {
 		}
 		
 		if (_background != null) {
-			MainRenderer.getInstance().draw(_background, render);
+			app.draw(_background, render);
 		}
 		
 		onDraw(app, render);

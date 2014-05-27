@@ -1,4 +1,4 @@
-!!alone.in.deepspace.manager.WorldSaver$WorldSave
+!!alone.in.deepspace.engine.loader.WorldSaver$WorldSave
 areas:
 - {item: null, structure: null, x: 0, y: 0}
 - {item: null, structure: null, x: 0, y: 1}
@@ -255,79 +255,79 @@ areas:
   x: 4
   y: 5
 - item: null
-  structure: {matter: 999, name: base.ground}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 6
 - item: null
-  structure: {matter: 999, name: base.ground}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 8
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 9
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 11
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 12
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 13
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 14
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 15
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 16
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 17
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 18
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 19
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 20
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 21
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 22
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 23
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.hull}
   x: 4
   y: 24
 - {item: null, structure: null, x: 4, y: 25}
@@ -374,75 +374,75 @@ areas:
   x: 5
   y: 5
 - item: null
-  structure: {matter: 999, name: base.ground}
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 6
 - item: null
-  structure: {matter: 999, name: base.ground}
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 8
-- item: {storage: null, matter: 999, name: base.bed}
-  structure: {matter: 999, name: base.floor}
+- item: null
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 9
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 10
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 11
 - item: null
   structure: {matter: 999, name: base.wall}
   x: 5
   y: 12
-- item: {storage: null, matter: 999, name: base.bed}
-  structure: {matter: 999, name: base.floor}
+- item: null
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 13
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 14
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 15
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 16
-- item: {storage: null, matter: 999, name: base.bed}
-  structure: {matter: 999, name: base.floor}
+- item: null
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 17
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 18
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 19
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 20
-- item: {storage: null, matter: 999, name: base.bed}
-  structure: {matter: 999, name: base.floor}
+- item: null
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 21
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 22
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 5
   y: 23
 - item: null
@@ -493,75 +493,75 @@ areas:
   x: 6
   y: 5
 - item: null
-  structure: {matter: 999, name: base.ground}
+  structure: {matter: 1, name: base.wall}
   x: 6
   y: 6
-- item: null
-  structure: {matter: 999, name: base.ground}
+- item: {matter: 42, name: base.bed, storage: null}
+  structure: {matter: 1, name: base.floor}
   x: 6
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 6
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 6
   y: 9
-- item: {storage: null, matter: 999, name: base.light}
-  structure: {matter: 999, name: base.floor}
+- item: {matter: 42, name: base.bed, storage: null}
+  structure: {matter: 1, name: base.floor}
   x: 6
   y: 10
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.floor}
   x: 6
   y: 11
 - item: null
   structure: {matter: 999, name: base.wall}
   x: 6
   y: 12
-- item: null
-  structure: {matter: 999, name: base.floor}
+- item: {matter: 42, name: base.bed, storage: null}
+  structure: {matter: 1, name: base.floor}
   x: 6
   y: 13
-- item: {storage: null, matter: 999, name: base.light}
-  structure: {matter: 999, name: base.floor}
+- item: null
+  structure: {matter: 1, name: base.floor}
   x: 6
   y: 14
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 6
   y: 15
-- item: null
-  structure: {matter: 999, name: base.wall}
+- item: {matter: 42, name: base.bed, storage: null}
+  structure: {matter: 1, name: base.floor}
   x: 6
   y: 16
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.floor}
   x: 6
   y: 17
-- item: {storage: null, matter: 999, name: base.light}
-  structure: {matter: 999, name: base.floor}
+- item: null
+  structure: {matter: 1, name: base.wall}
   x: 6
   y: 18
-- item: null
-  structure: {matter: 999, name: base.floor}
+- item: {matter: 42, name: base.bed, storage: null}
+  structure: {matter: 1, name: base.floor}
   x: 6
   y: 19
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 6
   y: 20
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 6
   y: 21
-- item: {storage: null, matter: 999, name: base.light}
-  structure: {matter: 999, name: base.floor}
+- item: null
+  structure: {matter: 1, name: base.floor}
   x: 6
   y: 22
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.floor}
   x: 6
   y: 23
 - item: null
@@ -612,19 +612,19 @@ areas:
   x: 7
   y: 5
 - item: null
-  structure: {matter: 999, name: base.ground}
+  structure: {matter: 1, name: base.wall}
   x: 7
   y: 6
 - item: null
-  structure: {matter: 999, name: base.ground}
+  structure: {matter: 1, name: base.floor}
   x: 7
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 7
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 7
   y: 9
 - item: null
@@ -648,11 +648,11 @@ areas:
   x: 7
   y: 14
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 7
   y: 15
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 7
   y: 16
 - item: null
@@ -660,7 +660,7 @@ areas:
   x: 7
   y: 17
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 7
   y: 18
 - item: null
@@ -668,11 +668,11 @@ areas:
   x: 7
   y: 19
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 7
   y: 20
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 7
   y: 21
 - item: null
@@ -731,19 +731,19 @@ areas:
   x: 8
   y: 5
 - item: null
-  structure: {matter: 999, name: base.ground}
+  structure: {matter: 1, name: base.wall}
   x: 8
   y: 6
 - item: null
-  structure: {matter: 999, name: base.ground}
+  structure: {matter: 1, name: base.floor}
   x: 8
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 8
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 8
   y: 9
 - item: null
@@ -767,11 +767,11 @@ areas:
   x: 8
   y: 14
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 8
   y: 15
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 8
   y: 16
 - item: null
@@ -779,7 +779,7 @@ areas:
   x: 8
   y: 17
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 8
   y: 18
 - item: null
@@ -787,11 +787,11 @@ areas:
   x: 8
   y: 19
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 8
   y: 20
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 8
   y: 21
 - item: null
@@ -850,19 +850,19 @@ areas:
   x: 9
   y: 5
 - item: null
-  structure: {matter: 999, name: base.ground}
+  structure: {matter: 1, name: base.wall}
   x: 9
   y: 6
 - item: null
-  structure: {matter: 999, name: base.ground}
+  structure: {matter: 1, name: base.floor}
   x: 9
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 9
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 9
   y: 9
 - item: null
@@ -886,11 +886,11 @@ areas:
   x: 9
   y: 14
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 9
   y: 15
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 9
   y: 16
 - item: null
@@ -898,7 +898,7 @@ areas:
   x: 9
   y: 17
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 9
   y: 18
 - item: null
@@ -906,11 +906,11 @@ areas:
   x: 9
   y: 19
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 9
   y: 20
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 9
   y: 21
 - item: null
@@ -977,7 +977,7 @@ areas:
   x: 10
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.door}
   x: 10
   y: 8
 - item: null
@@ -985,11 +985,11 @@ areas:
   x: 10
   y: 9
 - item: null
-  structure: {matter: 999, name: base.door}
+  structure: {matter: 1, name: base.wall}
   x: 10
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.door}
   x: 10
   y: 11
 - item: null
@@ -1013,11 +1013,11 @@ areas:
   x: 10
   y: 16
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.door}
   x: 10
   y: 17
 - item: null
-  structure: {matter: 999, name: base.door}
+  structure: {matter: 1, name: base.wall}
   x: 10
   y: 18
 - item: null
@@ -1025,7 +1025,7 @@ areas:
   x: 10
   y: 19
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.door}
   x: 10
   y: 20
 - item: null
@@ -1033,11 +1033,11 @@ areas:
   x: 10
   y: 21
 - item: null
-  structure: {matter: 999, name: base.door}
+  structure: {matter: 1, name: base.wall}
   x: 10
   y: 22
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 42, name: base.door}
   x: 10
   y: 23
 - item: null
@@ -1079,7 +1079,7 @@ areas:
   structure: {matter: 999, name: base.wall}
   x: 11
   y: 3
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 11
   y: 4
@@ -1088,7 +1088,7 @@ areas:
   x: 11
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 11
   y: 6
 - item: null
@@ -1096,11 +1096,11 @@ areas:
   x: 11
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 11
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.floor}
   x: 11
   y: 9
 - item: null
@@ -1204,7 +1204,7 @@ areas:
   x: 12
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 12
   y: 6
 - item: null
@@ -1212,14 +1212,14 @@ areas:
   x: 12
   y: 7
 - item: null
-  structure: {matter: 999, name: base.door}
+  structure: {matter: 1, name: base.floor}
   x: 12
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.floor}
   x: 12
   y: 9
-- item: {storage: null, matter: 999, name: base.light}
+- item: {matter: 999, name: base.light, storage: null}
   structure: {matter: 999, name: base.floor}
   x: 12
   y: 10
@@ -1247,7 +1247,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 12
   y: 16
-- item: null
+- item: {matter: 10, name: base.light, storage: null}
   structure: {matter: 999, name: base.floor}
   x: 12
   y: 17
@@ -1320,7 +1320,7 @@ areas:
   x: 13
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 13
   y: 6
 - item: null
@@ -1328,15 +1328,15 @@ areas:
   x: 13
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 13
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 13
   y: 9
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 13
   y: 10
 - item: null
@@ -1440,15 +1440,15 @@ areas:
   x: 14
   y: 6
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 14
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 14
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 14
   y: 9
 - item: null
@@ -1456,7 +1456,7 @@ areas:
   x: 14
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 14
   y: 11
 - item: null
@@ -1543,7 +1543,7 @@ areas:
   structure: {matter: 999, name: base.wall}
   x: 15
   y: 3
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 15
   y: 4
@@ -1552,7 +1552,7 @@ areas:
   x: 15
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 15
   y: 6
 - item: null
@@ -1560,11 +1560,11 @@ areas:
   x: 15
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 15
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 15
   y: 9
 - item: null
@@ -1572,14 +1572,14 @@ areas:
   x: 15
   y: 10
 - item: null
-  structure: {matter: 999, name: base.door}
+  structure: {matter: 1, name: base.floor}
   x: 15
   y: 11
 - item: null
   structure: {matter: 999, name: base.floor}
   x: 15
   y: 12
-- item: {storage: null, matter: 999, name: base.light}
+- item: {matter: 999, name: base.light, storage: null}
   structure: {matter: 999, name: base.floor}
   x: 15
   y: 13
@@ -1615,7 +1615,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 15
   y: 21
-- item: {storage: null, matter: 999, name: base.light}
+- item: {matter: 999, name: base.light, storage: null}
   structure: {matter: 999, name: base.floor}
   x: 15
   y: 22
@@ -1668,7 +1668,7 @@ areas:
   x: 16
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 16
   y: 6
 - item: null
@@ -1676,11 +1676,11 @@ areas:
   x: 16
   y: 7
 - item: null
-  structure: {matter: 999, name: base.door}
+  structure: {matter: 1, name: base.floor}
   x: 16
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 16
   y: 9
 - item: null
@@ -1688,7 +1688,7 @@ areas:
   x: 16
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 16
   y: 11
 - item: null
@@ -1784,7 +1784,7 @@ areas:
   x: 17
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 17
   y: 6
 - item: null
@@ -1792,11 +1792,11 @@ areas:
   x: 17
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 17
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 17
   y: 9
 - item: null
@@ -1804,7 +1804,7 @@ areas:
   x: 17
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 17
   y: 11
 - item: null
@@ -1904,15 +1904,15 @@ areas:
   x: 18
   y: 6
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 18
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 18
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 18
   y: 9
 - item: null
@@ -1920,7 +1920,7 @@ areas:
   x: 18
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 18
   y: 11
 - item: null
@@ -2007,7 +2007,7 @@ areas:
   structure: {matter: 999, name: base.wall}
   x: 19
   y: 3
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 19
   y: 4
@@ -2016,7 +2016,7 @@ areas:
   x: 19
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 19
   y: 6
 - item: null
@@ -2024,11 +2024,11 @@ areas:
   x: 19
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 19
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 19
   y: 9
 - item: null
@@ -2036,10 +2036,10 @@ areas:
   x: 19
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 19
   y: 11
-- item: {storage: null, matter: 999, name: base.computer}
+- item: {matter: 999, name: base.computer, storage: null}
   structure: {matter: 999, name: base.floor}
   x: 19
   y: 12
@@ -2072,11 +2072,20 @@ areas:
   x: 19
   y: 19
 - item:
-    storage:
-      inventory: [base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed]
     matter: 999
     name: base.cooker
+    storage:
+      acceptConsomable: false
+      acceptDrink: false
+      acceptFood: false
+      acceptGarbage: false
+      inventory: [base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
+        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
+        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
+        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
+        base.seaweed]
+      matter: 0
+      name: null
   structure: {matter: 999, name: base.floor}
   x: 19
   y: 20
@@ -2137,7 +2146,7 @@ areas:
   x: 20
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 20
   y: 6
 - item: null
@@ -2145,11 +2154,11 @@ areas:
   x: 20
   y: 7
 - item: null
-  structure: {matter: 999, name: base.door}
+  structure: {matter: 1, name: base.floor}
   x: 20
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 20
   y: 9
 - item: null
@@ -2157,7 +2166,7 @@ areas:
   x: 20
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 20
   y: 11
 - item: null
@@ -2253,7 +2262,7 @@ areas:
   x: 21
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 21
   y: 6
 - item: null
@@ -2261,11 +2270,11 @@ areas:
   x: 21
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 21
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 21
   y: 9
 - item: null
@@ -2273,7 +2282,7 @@ areas:
   x: 21
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 21
   y: 11
 - item: null
@@ -2296,7 +2305,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 21
   y: 16
-- item: {storage: null, matter: 999, name: base.light}
+- item: {matter: 999, name: base.light, storage: null}
   structure: {matter: 999, name: base.floor}
   x: 21
   y: 17
@@ -2373,15 +2382,15 @@ areas:
   x: 22
   y: 6
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 22
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 22
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 22
   y: 9
 - item: null
@@ -2389,7 +2398,7 @@ areas:
   x: 22
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 22
   y: 11
 - item: null
@@ -2476,7 +2485,7 @@ areas:
   structure: {matter: 999, name: base.wall}
   x: 23
   y: 3
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 23
   y: 4
@@ -2485,7 +2494,7 @@ areas:
   x: 23
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 23
   y: 6
 - item: null
@@ -2493,11 +2502,11 @@ areas:
   x: 23
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 23
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 23
   y: 9
 - item: null
@@ -2505,7 +2514,7 @@ areas:
   x: 23
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 23
   y: 11
 - item: null
@@ -2601,7 +2610,7 @@ areas:
   x: 24
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 24
   y: 6
 - item: null
@@ -2609,11 +2618,11 @@ areas:
   x: 24
   y: 7
 - item: null
-  structure: {matter: 999, name: base.door}
+  structure: {matter: 1, name: base.floor}
   x: 24
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 24
   y: 9
 - item: null
@@ -2621,7 +2630,7 @@ areas:
   x: 24
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 24
   y: 11
 - item: null
@@ -2717,7 +2726,7 @@ areas:
   x: 25
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 25
   y: 6
 - item: null
@@ -2725,11 +2734,11 @@ areas:
   x: 25
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 25
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 25
   y: 9
 - item: null
@@ -2737,7 +2746,7 @@ areas:
   x: 25
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 25
   y: 11
 - item: null
@@ -2768,7 +2777,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 25
   y: 18
-- item: {storage: null, matter: 999, name: base.chessboard}
+- item: {matter: 999, name: base.chessboard, storage: null}
   structure: {matter: 999, name: base.floor}
   x: 25
   y: 19
@@ -2776,7 +2785,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 25
   y: 20
-- item: {storage: null, matter: 999, name: base.chessboard}
+- item: {matter: 999, name: base.chessboard, storage: null}
   structure: {matter: 999, name: base.floor}
   x: 25
   y: 21
@@ -2843,15 +2852,15 @@ areas:
   x: 26
   y: 6
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 26
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 26
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 26
   y: 9
 - item: null
@@ -2859,7 +2868,7 @@ areas:
   x: 26
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 26
   y: 11
 - item: null
@@ -2952,7 +2961,7 @@ areas:
   structure: {matter: 999, name: base.wall}
   x: 27
   y: 3
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 27
   y: 4
@@ -2961,7 +2970,7 @@ areas:
   x: 27
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 27
   y: 6
 - item: null
@@ -2969,11 +2978,11 @@ areas:
   x: 27
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 27
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 27
   y: 9
 - item: null
@@ -2981,7 +2990,7 @@ areas:
   x: 27
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 27
   y: 11
 - item: null
@@ -3083,7 +3092,7 @@ areas:
   x: 28
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 28
   y: 6
 - item: null
@@ -3091,11 +3100,11 @@ areas:
   x: 28
   y: 7
 - item: null
-  structure: {matter: 999, name: base.door}
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 28
   y: 9
 - item: null
@@ -3103,14 +3112,14 @@ areas:
   x: 28
   y: 10
 - item: null
-  structure: {matter: 999, name: base.door}
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 11
 - item: null
   structure: {matter: 999, name: base.floor}
   x: 28
   y: 12
-- item: {storage: null, matter: 999, name: base.light}
+- item: {matter: 999, name: base.light, storage: null}
   structure: {matter: 999, name: base.floor}
   x: 28
   y: 13
@@ -3205,7 +3214,7 @@ areas:
   x: 29
   y: 5
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 29
   y: 6
 - item: null
@@ -3213,11 +3222,11 @@ areas:
   x: 29
   y: 7
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 8
 - item: null
-  structure: {matter: 999, name: base.floor}
+  structure: {matter: 1, name: base.wall}
   x: 29
   y: 9
 - item: null
@@ -3225,7 +3234,7 @@ areas:
   x: 29
   y: 10
 - item: null
-  structure: {matter: 999, name: base.wall}
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 11
 - item: null
@@ -3272,7 +3281,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 29
   y: 22
-- item: {storage: null, matter: 999, name: base.light}
+- item: {matter: 999, name: base.light, storage: null}
   structure: {matter: 999, name: base.floor}
   x: 29
   y: 23
@@ -3440,7 +3449,7 @@ areas:
   structure: {matter: 999, name: base.wall}
   x: 31
   y: 3
-- item: {storage: null, matter: 999, name: base.main_engine}
+- item: {matter: 999, name: base.main_engine, storage: null}
   structure: {matter: 999, name: base.floor}
   x: 31
   y: 4
@@ -3456,7 +3465,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 31
   y: 7
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 31
   y: 8
@@ -3464,7 +3473,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 31
   y: 9
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 31
   y: 10
@@ -3472,7 +3481,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 31
   y: 11
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 31
   y: 12
@@ -3630,7 +3639,7 @@ areas:
   structure: {matter: 999, name: base.wall}
   x: 33
   y: 3
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 33
   y: 4
@@ -3638,7 +3647,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 33
   y: 5
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 33
   y: 6
@@ -3646,7 +3655,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 33
   y: 7
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 33
   y: 8
@@ -3654,7 +3663,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 33
   y: 9
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 33
   y: 10
@@ -3662,7 +3671,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 33
   y: 11
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 33
   y: 12
@@ -3838,7 +3847,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 35
   y: 9
-- item: {storage: null, matter: 999, name: base.main_computer}
+- item: {matter: 999, name: base.main_computer, storage: null}
   structure: {matter: 999, name: base.floor}
   x: 35
   y: 10
@@ -3903,7 +3912,7 @@ areas:
   structure: {matter: 999, name: base.wall}
   x: 36
   y: 3
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 36
   y: 4
@@ -3911,7 +3920,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 36
   y: 5
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 36
   y: 6
@@ -3919,7 +3928,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 36
   y: 7
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 36
   y: 8
@@ -3935,7 +3944,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 36
   y: 11
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 36
   y: 12
@@ -4082,27 +4091,24 @@ areas:
   x: 38
   y: 3
 - item:
+    matter: 999
+    name: base.storage
     storage:
-      acceptFood: true
-      acceptDrink: true
       acceptConsomable: true
+      acceptDrink: true
+      acceptFood: true
       acceptGarbage: true
       inventory: [base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
         base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
         base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
         base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.meal,
+        base.seaweed, base.seaweed, base.seaweed, base.meal, base.meal, base.meal,
+        base.meal, base.meal, base.meal, base.meal, base.meal, base.meal, base.meal,
+        base.meal, base.meal, base.meal, base.meal, base.meal, base.meal, base.meal,
         base.meal, base.meal, base.meal, base.meal, base.meal, base.meal, base.meal,
         base.meal]
-    matter: 999
-    name: base.storage
+      matter: 0
+      name: null
   structure: {matter: 999, name: base.floor}
   x: 38
   y: 4
@@ -4118,7 +4124,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 38
   y: 7
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 38
   y: 8
@@ -4134,7 +4140,7 @@ areas:
   structure: {matter: 999, name: base.floor}
   x: 38
   y: 11
-- item: {storage: null, matter: 999, name: base.bed}
+- item: null
   structure: {matter: 999, name: base.floor}
   x: 38
   y: 12

@@ -11,7 +11,10 @@ import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.Job.Abort;
 import alone.in.deepspace.model.Job.JobStatus;
+import alone.in.deepspace.model.jobCheck.CharacterGoToMettingRoom;
+import alone.in.deepspace.model.jobCheck.CharacterPlayTime;
 import alone.in.deepspace.model.jobCheck.CheckEmptyDispenser;
+import alone.in.deepspace.model.jobCheck.CharacterHasItemToStore;
 import alone.in.deepspace.model.jobCheck.CheckLowFood;
 import alone.in.deepspace.model.jobCheck.JobCheck;
 import alone.in.deepspace.model.Room;
@@ -29,6 +32,7 @@ public class JobManager {
 	private static JobManager	sSelf;
 
 	private List<JobCheck>		_jobsCheck;
+	private List<JobCheck>		_routineJobsCheck;
 	private List<Job> 			_jobs;
 	private List<BaseItem> 		_routineItems;
 	private int 				_id;
@@ -39,10 +43,15 @@ public class JobManager {
 		_id = 0;
 		_jobs = new ArrayList<Job>();
 		_routineItems = new ArrayList<BaseItem>();
-		_jobsCheck = new ArrayList<JobCheck>();
 
+		_jobsCheck = new ArrayList<JobCheck>();
 		_jobsCheck.add(new CheckLowFood());
 		_jobsCheck.add(new CheckEmptyDispenser());
+		
+		_routineJobsCheck = new ArrayList<JobCheck>();
+		_routineJobsCheck.add(new CharacterHasItemToStore());
+		_routineJobsCheck.add(new CharacterPlayTime());
+		_routineJobsCheck.add(new CharacterGoToMettingRoom());
 
 		Log.debug("JobManager done");
 	}
@@ -406,53 +415,31 @@ public class JobManager {
 		addJob(job);
 	}
 
-	public Job createRoutineJob(Character c) {
+	public void giveRoutineJob(Character c) {
 		Log.info("createRoutineJob");
 		
-		// Character has item to store
-		if (c.getCarried().size() > 0) {
-			StorageItem storage = ServiceManager.getWorldMap().getNearestStorage(c.getX(), c.getY(), c.getCarried().get(0));
-			if (storage != null) {
-				return createStoreJob(c, storage);
+		for (JobCheck jobCheck: _routineJobsCheck) {
+			if (c.getJob() != null) {
+				return;
 			}
+			jobCheck.check(this, c);
 		}
 		
-		if ((int)(Math.random() * 100) <= Constant.CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS) {
-			return createMovingToMettingRoom(c);
-		}
-		
-		// Play with random object
-		UserItem toy = ServiceManager.getWorldMap().getRandomToy(c.getX(), c.getY());
-		if (toy != null) {
-			return createUseJob(toy);
-		}
-		
-		BaseItem bestItem = null;
-		int bestDistance = Integer.MAX_VALUE;
-		
-		for (BaseItem item: _routineItems) {
-			if (item.isFree()) {
-				int distance = Math.abs(item.getX() - c.getX()) + Math.abs(item.getY() - c.getY());
-				if (distance < bestDistance) {
-					bestItem = item;
-				}
-			}
-		}
-		
-		if (bestItem != null) {
-			return createWorkJob(bestItem);
-		}
-		
-		// Go to meeting room
-		return createMovingToMettingRoom(c);
-	}
-
-	private Job createMovingToMettingRoom(Character c) {
-		Room room = RoomManager.getInstance().getNeerRoom(c.getX(), c.getY(), Room.Type.PUB);
-		if (room != null) {
-			return createMovingJob(room.getX(), room.getY(), Constant.CHARACTER_STAY_IN_METTING_ROOM * Constant.DURATION_MULTIPLIER);
-		}
-		return null;
+//		BaseItem bestItem = null;
+//		int bestDistance = Integer.MAX_VALUE;
+//		
+//		for (BaseItem item: _routineItems) {
+//			if (item.isFree()) {
+//				int distance = Math.abs(item.getX() - c.getX()) + Math.abs(item.getY() - c.getY());
+//				if (distance < bestDistance) {
+//					bestItem = item;
+//				}
+//			}
+//		}
+//		
+//		if (bestItem != null) {
+//			return createWorkJob(bestItem);
+//		}
 	}
 
 	private Job createUseInventoryJob(Character character, BaseItem item) {
@@ -470,7 +457,7 @@ public class JobManager {
 	}
 
 	public Job createUseJob(BaseItem item) {
-		if (!item.hasFreeSlot()) {
+		if (item == null || !item.hasFreeSlot()) {
 			return null;
 		}
 		
@@ -575,7 +562,7 @@ public class JobManager {
 
 	public void onLongUpdate() {
 		for (JobCheck jobCheck: _jobsCheck) {
-			jobCheck.check(this);
+			jobCheck.check(this, null);
 		}
 	}
 }

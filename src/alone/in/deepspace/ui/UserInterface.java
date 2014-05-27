@@ -119,7 +119,7 @@ public class UserInterface {
 		_panelMessage.setVisible(true);
 		_panelRoom = new PanelRoom(app);
 
-		_interaction = new UserInteraction(_viewport);
+		_interaction = new UserInteraction(app, viewport);
 		_panelBuild = new PanelBuild(app, 3, _interaction);
 		_uiScience = new UserInterfaceScience(app, 2);
 		_uiSecurity = new UserInterfaceSecurity(app, 4);
@@ -344,7 +344,7 @@ public class UserInterface {
 			return true;
 		}
 
-		if (_interaction.getMode() != UserInteraction.Mode.MODE_NONE) {
+		if (_interaction.getMode() != UserInteraction.Mode.NONE) {
 			if (event.type == Event.Type.KEY_RELEASED && event.asKeyEvent().key == Keyboard.Key.ESCAPE) {
 				//		  _interaction.cancel();
 				return true;
@@ -588,7 +588,7 @@ public class UserInterface {
 		setMode(Mode.BASE);
 
 		// Select character
-		if (_interaction.getMode() == UserInteraction.Mode.MODE_NONE) {// && _menu.getCode() == UserInterfaceMenu.CODE_MAIN) {
+		if (_interaction.getMode() == UserInteraction.Mode.NONE) {// && _menu.getCode() == UserInterfaceMenu.CODE_MAIN) {
 //			Character c = _characteres.getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
 			Character c = null;
 			if (c != null) {

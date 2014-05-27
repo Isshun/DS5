@@ -109,7 +109,7 @@ public class PanelRoom extends UserSubInterface {
 					case 1: _selected = Room.Type.QUARTER; break;
 					case 2: _selected = Room.Type.SICKBAY; break;
 					case 3: _selected = Room.Type.ENGINEERING; break;
-					case 4: _selected = Room.Type.PUB; break;
+					case 4: _selected = Room.Type.METTING; break;
 					case 5: _selected = Room.Type.HOLODECK; break;
 					case 6: _selected = Room.Type.STORAGE; break;
 					case 7: _selected = Room.Type.GARDEN; break;

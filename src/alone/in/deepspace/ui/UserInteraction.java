@@ -7,6 +7,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
+import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.Transform;
@@ -26,25 +27,27 @@ import alone.in.deepspace.util.Log;
 public class UserInteraction {
 
 	public enum Mode {
-		MODE_NONE,
-		MODE_BUILD,
-		MODE_EREASE,
-		MODE_SELECT
+		NONE,
+		BUILD,
+		EREASE,
+		SELECT
 	};
 
-	Texture				_cursorTexture;
-	Viewport			_viewport;
-	Cursor				_cursor;
-	Mode				_mode;
-	int					_startPressX;
-	int					_startPressY;
-	int					_mouseMoveX;
-	int					_mouseMoveY;
-	Mouse.Button		_button;
-	private Sprite 		spriteCursor;
-	private Texture 	_texture;
+	Texture					_cursorTexture;
+	Viewport				_viewport;
+	Cursor					_cursor;
+	Mode					_mode;
+	int						_startPressX;
+	int						_startPressY;
+	int						_mouseMoveX;
+	int						_mouseMoveY;
+	Mouse.Button			_button;
+	private Sprite 			spriteCursor;
+	private Texture 		_texture;
+	private RenderWindow	_app;
 
-	UserInteraction(Viewport viewport) throws IOException {
+	UserInteraction(RenderWindow app, Viewport viewport) throws IOException {
+		_app = app;
 		_viewport = viewport;
 		_cursor = new Cursor();
 		_cursorTexture = new Texture();
@@ -59,7 +62,7 @@ public class UserInteraction {
 		_mouseMoveX = 0;
 		_mouseMoveY = 0;
 		_button = null;
-		_mode = Mode.MODE_NONE;
+		_mode = Mode.NONE;
 
 		spriteCursor = new Sprite();
 		spriteCursor.setTexture(_cursorTexture);
@@ -96,30 +99,30 @@ public class UserInteraction {
 		RectangleShape rectangleTop = new RectangleShape(new Vector2f((toX - startX + 1) * 32 - border * 2, border));
 		rectangleTop.setFillColor(new Color(100, 255, 100, 100));
 		rectangleTop.setPosition(new Vector2f(startX * 32 + border, startY * 32));
-		MainRenderer.getInstance().draw(rectangleTop, render);
+		_app.draw(rectangleTop, render);
 		rectangleTop.setPosition(new Vector2f(startX * 32 + border, (toY + 1) * 32 - border));
-		MainRenderer.getInstance().draw(rectangleTop, render);
+		_app.draw(rectangleTop, render);
 
 		RectangleShape rectangleLeft = new RectangleShape(new Vector2f(border, (toY - startY + 1) * 32));
 		rectangleLeft.setFillColor(new Color(100, 255, 100, 100));
 		rectangleLeft.setPosition(new Vector2f(startX * 32, startY * 32));
-		MainRenderer.getInstance().draw(rectangleLeft, render);
+		_app.draw(rectangleLeft, render);
 		rectangleLeft.setPosition(new Vector2f((toX + 1) * 32 - border, startY * 32));
-		MainRenderer.getInstance().draw(rectangleLeft, render);
+		_app.draw(rectangleLeft, render);
 		
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
 				if ((x + y) % 2 == 0) {
 					rectangle1.setPosition(new Vector2f(x * 32, y * 32));
-					MainRenderer.getInstance().draw(rectangle1, render);
+					_app.draw(rectangle1, render);
 				} else {
 					rectangle2.setPosition(new Vector2f(x * 32, y * 32));
-					MainRenderer.getInstance().draw(rectangle2, render);
+					_app.draw(rectangle2, render);
 				}
 				
 				if (ServiceManager.getWorldMap().getRessource(x, y) != null) {
 					rectangleItem.setPosition(new Vector2f(x * 32, y * 32));
-					MainRenderer.getInstance().draw(rectangleItem, render);
+					_app.draw(rectangleItem, render);
 				}
 //				Transform transform = new Transform();
 //				RenderStates render = new RenderStates(_viewport.getViewTransform(transform));

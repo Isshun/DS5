@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +32,21 @@ public class ItemLoader {
 		
 		// Load files
 		for (File itemFile: itemFiles) {
+			ItemInfo info = null;
+			
 			try {
 			    System.out.println(" - load: " + itemFile.getName());
-
 			    InputStream input = new FileInputStream(itemFile);
 			    Yaml yaml = new Yaml(new Constructor(ItemInfo.class));
-			    ItemInfo info = (ItemInfo)yaml.load(input);
+			    info = (ItemInfo)yaml.load(input);
+			    input.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			if (info != null) {
 			    info.fileName = itemFile.getName().substring(0, itemFile.getName().length() - 4);
 			    info.packageName = packageName;
 			    info.name = info.packageName +  '.' + info.fileName;
@@ -58,8 +68,6 @@ public class ItemLoader {
 			    info.isStorage = info.storage > 0 || info.onAction != null && info.onAction.storage > 0;
 			    info.isFood = info.onAction != null && info.onAction.effects != null && info.onAction.effects.food > 0;
 			    items.add(info);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
 			}
 		}
 		

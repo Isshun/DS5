@@ -38,7 +38,7 @@ public class JobRenderer implements IRenderer {
 				Color color = job.getColor();
 				rectangleItem.setFillColor(new Color(color.r, color.g, color.b, 100));
 				rectangleItem.setPosition(new Vector2f(job.getX() * Constant.TILE_WIDTH, job.getY() * Constant.TILE_HEIGHT));
-				MainRenderer.getInstance().draw(rectangleItem, render);
+				app.draw(rectangleItem, render);
 			}
 		}
 	}

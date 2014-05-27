@@ -29,7 +29,7 @@ public class RoomRenderer implements IRenderer {
 			e.printStackTrace();
 		}
 		
-		Room room = new Room(Room.Type.PUB, 12, 12);
+		Room room = new Room(Room.Type.METTING, 12, 12);
 		ServiceManager.getWorldMap().addRoom(room);
 	}
 
@@ -51,19 +51,19 @@ public class RoomRenderer implements IRenderer {
 					Color color = room.getColor();
 					rectangleItem.setFillColor(new Color(50 + color.r, 50 + color.g, 50 + color.b, 100));
 					rectangleItem.setPosition(new Vector2f(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT));
-					MainRenderer.getInstance().draw(rectangleItem, render);
+					app.draw(rectangleItem, render);
 				}
 			}			
 		}
 		
 		List<Room> roomList = RoomManager.getInstance().getRoomList();
 		for (Room room: roomList) {
-			displayRoomInfo(render, room, room.getX() * Constant.TILE_WIDTH, room.getY() * Constant.TILE_HEIGHT);
+			displayRoomInfo(app, render, room, room.getX() * Constant.TILE_WIDTH, room.getY() * Constant.TILE_HEIGHT);
 		}
 	}
 
 
-	private void displayRoomInfo(RenderStates render, Room room, int x, int y) {
+	private void displayRoomInfo(RenderWindow app, RenderStates render, Room room, int x, int y) {
 		int characterSize = 11;
 		int characterSubSize = 8;
 		int height = 20;
@@ -94,13 +94,13 @@ public class RoomRenderer implements IRenderer {
 		text.setCharacterSize(characterSize);
 		
 		text.setPosition(x + padding - 1, y + 1);
-		MainRenderer.getInstance().draw(text, render);
+		app.draw(text, render);
 		text.setPosition(x + padding + 1, y + 1);
-		MainRenderer.getInstance().draw(text, render);
+		app.draw(text, render);
 		text.setPosition(x + padding - 1, y - 1);
-		MainRenderer.getInstance().draw(text, render);
+		app.draw(text, render);
 		text.setPosition(x + padding + 1, y - 1);
-		MainRenderer.getInstance().draw(text, render);
+		app.draw(text, render);
 		
 //		text.setPosition(x + 11, y + 2);
 //		text.setColor(room.getColor());
@@ -108,14 +108,14 @@ public class RoomRenderer implements IRenderer {
 
 		text.setPosition(x + padding, y);
 		text.setColor(Color.WHITE);
-		MainRenderer.getInstance().draw(text, render);
+		app.draw(text, render);
 		
 		// Owner
 		if (room.getOwner() != null) {
 			text.setPosition(x + padding, y + height);
 			text.setCharacterSize(characterSubSize);
 			text.setString("(" + room.getOwner().getLastName() + ")");
-			MainRenderer.getInstance().draw(text, render);
+			app.draw(text, render);
 		}
 
 	}

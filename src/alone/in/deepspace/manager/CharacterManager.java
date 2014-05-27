@@ -257,12 +257,7 @@ public class CharacterManager implements ISavable {
 		}
 
 		// Routine job
-		job = JobManager.getInstance().createRoutineJob(c);
-		if (job != null) {
-			JobManager.getInstance().addJob(job);
-			c.setJob(job);
-			return;
-		}
+		JobManager.getInstance().giveRoutineJob(c);
 	}
 
 	// TODO: heavy

@@ -323,7 +323,7 @@ public class WorldManager implements TileBasedMap {
 					+ info.name + ", x: " + x + ", y: " + y + ")");
 			return null;
 		}
-
+		
 		// TODO
 		//		  // Return if item already exists
 		//		  if (_areas[x][y] != null && _areas[x][y].isType(type)) {
@@ -336,19 +336,17 @@ public class WorldManager implements TileBasedMap {
 		//			JobManager.getInstance().removeJob(_areas[x][y]);
 		//		  }
 
-		// If item alread exists check the roomId
-		int roomId = 0;
-		if (_floors[f][x][y] != null)  {
-			roomId = _floors[f][x][y].getRoomId();
-		}
-
 		// Return if same item already exists at this position
 		WorldArea area = _floors[f][x][y];
-		if (area != null) {
-			if (area.getItem() != null && area.getItem().getName().equals(info.name) ||
-					area.getStructure() != null && area.getStructure().getName().equals(info.name)) {
-				return null;
-			}
+		if (area == null) {
+			area = new WorldArea(x, y);
+			_floors[f][x][y] = area;
+		}
+
+		// Item already exists
+		if (area.getItem() != null && area.getItem().getName().equals(info.name) ||
+				area.getStructure() != null && area.getStructure().getName().equals(info.name)) {
+			return null;
 		}
 
 		// Get new item
