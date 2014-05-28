@@ -20,6 +20,7 @@ import org.jsfml.window.event.MouseButtonEvent;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.loader.JobManagerLoader;
+import alone.in.deepspace.engine.loader.WorldFactory;
 import alone.in.deepspace.engine.loader.WorldSaver;
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.manager.CharacterManager;
@@ -230,8 +231,10 @@ public class Game implements ISavable {
 		}
 
 
-		WorldSaver.load(ServiceManager.getWorldMap(), filePath + ".yml");
+//		WorldSaver.load(ServiceManager.getWorldMap(), filePath + ".yml");
 
+		WorldFactory.create(ServiceManager.getWorldMap());
+		
 		ResourceManager.getInstance().refreshWater();
 
 		ServiceManager.getCharacterManager().load(filePath);

@@ -126,6 +126,8 @@ public class WorldRenderer implements IRenderer {
 
 	// TODO: random
 	void	refreshFloor(RenderStates render, int fromX, int fromY, int toX, int toY) {
+		int floor = ServiceManager.getWorldMap().getFloor();
+		
 		for (int i = toX-1; i >= fromX; i--) {
 			for (int j = toY-1; j >= fromY; j--) {
 				if (i >= 0 && j >= 0 && i < Constant.WORLD_WIDTH && j < Constant.WORLD_HEIGHT) {
@@ -150,7 +152,7 @@ public class WorldRenderer implements IRenderer {
 							
 							WorldRessource ressource = ServiceManager.getWorldMap().getRessource(i, j);
 							if (ressource != null && ressource.getMatterSupply() > 0) {
-								sprite = _spriteManager.getRessource(ressource);
+								sprite = _spriteManager.getRessource(ressource, ressource.getTile());
 								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
 								_textureCache.draw(sprite);
 							}
@@ -167,7 +169,7 @@ public class WorldRenderer implements IRenderer {
 							
 							WorldRessource ressource = ServiceManager.getWorldMap().getRessource(i, j);
 							if (ressource != null) {
-								sprite = _spriteManager.getRessource(ressource);
+								sprite = _spriteManager.getRessource(ressource, ressource.getTile());
 								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
 								_textureCache.draw(sprite);
 							}
@@ -181,7 +183,7 @@ public class WorldRenderer implements IRenderer {
 					}
 					// Ressource
 					else {
-						Sprite sprite = _spriteManager.getExterior(i + j * 42);
+						Sprite sprite = _spriteManager.getExterior(i + j * 42, floor);
 						sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
 						_textureCache.draw(sprite);
 	
@@ -198,7 +200,7 @@ public class WorldRenderer implements IRenderer {
 						
 						WorldRessource ressource = ServiceManager.getWorldMap().getRessource(i, j);
 						if (ressource != null) {
-							sprite = _spriteManager.getRessource(ressource);
+							sprite = _spriteManager.getRessource(ressource, ressource.getTile());
 							sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
 							_textureCache.draw(sprite);
 						}

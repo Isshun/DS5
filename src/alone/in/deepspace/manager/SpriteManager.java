@@ -16,6 +16,7 @@ import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.StructureItem;
+import alone.in.deepspace.model.WorldRessource;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 import alone.in.deepspace.util.ObjectPool;
@@ -124,9 +125,13 @@ public class SpriteManager {
 	}
 
 	public Sprite getItem(BaseItem item, int tile) {
-		if (item != null && item.isStructure() == false) {
+		if (item == null) {
+			return null;
+		}
+		
+		if (item.isStructure() == false) {
 			if (item.isRessource()) {
-				return getRessource(item);
+				return getRessource((WorldRessource)item, 0);
 			}
 
 			int alpha = Math.min(item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * item.getMatterSupply(), 255);
@@ -194,13 +199,16 @@ public class SpriteManager {
 		return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
 	}
 
-	public Sprite getExterior(int index) {
+	public Sprite getExterior(int index, int floor) {
 		int texture = 4;
-		int offset = _random[index % 50];
-		int x = (int) (offset * Constant.TILE_WIDTH);
-		int y = (int) (7 * (Constant.TILE_HEIGHT + 2) + 1);
-
-		return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
+		return getSprite(texture, Math.min(floor, 4) * Constant.TILE_WIDTH, 12 * Constant.TILE_HEIGHT, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
+//		if (bottom) {
+//		} else {
+//			int offset = _random[index % 50];
+//			int x = (int) (offset * Constant.TILE_WIDTH);
+//			int y = (int) (7 * (Constant.TILE_HEIGHT + 2) + 1);
+//			return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
+//		}
 	}
 
 	private Sprite getSprite(int textureIndex, int i, int j, int k, int l) {
@@ -229,6 +237,8 @@ public class SpriteManager {
 		
 		Sprite sprite = _sprites.get(sum);
 		if (sprite == null) {
+			int tileX = tile % 10;
+			int tileY = tile / 10;
 			try {
 				File imgFile = null;
 				if ("base".equals(item.packageName)) {
@@ -243,7 +253,7 @@ public class SpriteManager {
 					texture.loadFromFile((imgFile.toPath()));
 					texture.setSmooth(true);
 					sprite.setTexture(texture);
-					sprite.setTextureRect(ObjectPool.getIntRect(tile * item.width * Constant.TILE_WIDTH, 0, item.width * Constant.TILE_WIDTH, item.height * Constant.TILE_HEIGHT));
+					sprite.setTextureRect(ObjectPool.getIntRect(tileX * item.width * Constant.TILE_WIDTH, tileY * item.height * Constant.TILE_HEIGHT, item.width * Constant.TILE_WIDTH, item.height * Constant.TILE_HEIGHT));
 					_sprites.put(sum, sprite);
 				}
 			} catch (IOException e) {
@@ -287,7 +297,12 @@ public class SpriteManager {
 		return sum;
 	}
 
-	public Sprite 				getRessource(BaseItem item) {
+	public Sprite 				getRessource(WorldRessource item, int tile) {
+
+		if ("base.rock".equals(item.getInfo().name)) {
+			return getSprite(item.getInfo(), tile, 255);
+		}
+		
 //		if (item.getMatterSupply() == 0) {
 //			return null;//getExterior(item.getWidth() + item.getHeight() * 42);
 //		} else {

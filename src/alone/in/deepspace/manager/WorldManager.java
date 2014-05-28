@@ -318,7 +318,7 @@ public class WorldManager implements TileBasedMap {
 
 	public BaseItem putItem(ItemInfo info, int f, int x, int y, int matterSupply) {
 		// Return if out of bound
-		if (x < 0 || y < 0 || x >= _width || y >= _height) {
+		if (f < 0 || f >= NB_FLOOR || x < 0 || y < 0 || x >= _width || y >= _height) {
 			Log.error("put item out of bound, type: "
 					+ info.name + ", x: " + x + ", y: " + y + ")");
 			return null;
@@ -444,13 +444,21 @@ public class WorldManager implements TileBasedMap {
 		}
 		return null;
 	}
+	
+	public WorldRessource getRessource(int f, int x, int y) {
+		return (f < 0 || f >= NB_FLOOR || x < 0 || x >= _width || y < 0 || y >= _height) ? null : _floors[f][x][y].getRessource();
+	}
+
+	public StructureItem getStructure(int f, int x, int y) {
+		return (f < 0 || f >= NB_FLOOR || x < 0 || x >= _width || y < 0 || y >= _height) ? null : _floors[f][x][y].getStructure();
+	}
 
 	public StructureItem 		getStructure(int x, int y) {
-		return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y].getStructure();
+		return getStructure(_floor, x, y);
 	}
 
 	public WorldRessource   	getRessource(int x, int y) {
-		return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y].getRessource();
+		return getRessource(_floor, x, y);
 	}
 
 	public WorldArea			getArea(int x, int y) {
@@ -624,6 +632,10 @@ public class WorldManager implements TileBasedMap {
 	}
 
 	private void setFloor(int floor) {
+		if (floor < 0 || floor >= NB_FLOOR) {
+			return;
+		}
+		
 		_floor = floor;
 		_areas = _floors[floor];
 		ServiceManager.getWorldRenderer().invalidate();
@@ -697,4 +709,189 @@ public class WorldManager implements TileBasedMap {
 		return bestStorage;
 	}
 
+	public void cleanRock() {
+		for (int f = 0; f < NB_FLOOR; f++) {
+			_areas = _floors[f];
+			for (int x = Constant.WORLD_WIDTH; x >= 0; x--) {
+				for (int y = Constant.WORLD_HEIGHT; y >= 0; y--) {
+					WorldRessource structure = getRessource(f, x, y);
+					if (structure != null && structure.isRock()) {
+						// 4 faces
+						if (isRock(x, y-1) && isRock(x, y+1) && isRock(x-1, y) && isRock(x+1, y)) {
+							if (notRock(x-1, y-1) && notRock(x+1, y+1)) { structure.setTile(6); } // 16
+							else if (notRock(x+1, y+1) && notRock(x-1, y-1)) { structure.setTile(16); } // 6
+
+							else if (notRock(x+1, y-1) && notRock(x-1, y-1)) { structure.setTile(0); } // 7
+							else if (notRock(x+1, y+1) && notRock(x-1, y+1)) { structure.setTile(0); } // 17 
+							else if (notRock(x+1, y+1) && notRock(x+1, y-1)) { structure.setTile(0); } // 27
+							else if (notRock(x-1, y+1) && notRock(x-1, y-1)) { structure.setTile(0); } // 37
+
+							else if (notRock(x+1, y-1)) { structure.setTile(14); setTop(f, x, y+1, 24); } // ok
+							else if (notRock(x-1, y-1)) { structure.setTile(11); setTop(f, x, y+1, 21); } // ok
+							else if (notRock(x+1, y+1)) { structure.setTile(59); setTop(f, x, y-1, 49); setTop(f, x, y-2, 39); } // ok + 55 bellow
+							else if (notRock(x-1, y+1)) { structure.setTile(56); setTop(f, x, y-1, 46); setTop(f, x, y-2, 36); setTop(f, x+1, y, 31); } // ok + 50 beloow
+						}
+						
+						// 3 faces
+						else if (isRock(x, y-1) && isRock(x, y+1) && isRock(x-1, y) && notRock(x+1, y)) {
+							WorldRessource res = getRessource(f, x, y+2);
+							// Rock bellow
+							if (res != null && res.isRock()) {
+								structure.setTile(25); setTop(f, x-1, y, 24);
+							} else {
+								structure.setTile(65);
+							}
+							
+						} // ok
+						else if (isRock(x, y-1) && isRock(x, y+1) && notRock(x-1, y) && isRock(x+1, y)) {
+							WorldRessource res = getRessource(f, x, y-1);
+							if (res != null && res.isRock() && (res.getTile() == 66 || res.getTile() == 56 || res.getTile() == 50)) {
+								structure.setTile(50); setTop(f, x+1, y, 31);
+							} else {
+								res = getRessource(f, x, y+1);
+								if (res != null && res.isRock() && (res.getTile() == 66 || res.getTile() == 50)) {
+									structure.setTile(50); setTop(f, x+1, y, 31);
+								} else {
+									structure.setTile(20);
+								}
+							}
+						} // ok
+						else if (isRock(x, y-1) && notRock(x, y+1) && isRock(x-1, y) && isRock(x+1, y)) {
+							WorldRessource res = getRessource(f, x-1, y);
+							if (res != null && res.isRock() && res.getTile() == 68) {
+								structure.setTile(67); setTop(f, x, y-1, 57); setTop(f, x, y-2, 47); setTop(f, x, y-3, 37);
+							} else {
+								structure.setTile(68); setTop(f, x, y-1, 58); setTop(f, x, y-2, 48); setTop(f, x, y-3, 38);
+							}
+						} // ok + 62 bellow
+						else if (notRock(x, y-1) && isRock(x, y+1) && isRock(x-1, y) && isRock(x+1, y)) { structure.setTile(2); setTop(f, x, y+1, 12); setTop(f, x, y+2, 22); } // ok
+
+						// 2 faces
+						else if (isRock(x, y-1) && isRock(x, y+1) && notRock(x-1, y) && notRock(x+1, y)) { structure.setTile(0); } // 36
+						else if (notRock(x, y-1) && notRock(x, y+1) && isRock(x-1, y) && isRock(x+1, y)) { structure.setTile(0); } // 26
+						else if (isRock(x, y-1) && notRock(x, y+1) && notRock(x-1, y) && isRock(x+1, y)) { structure.setTile(66); setTop(f, x, y-1, 50); } // 14
+						else if (isRock(x, y-1) && notRock(x, y+1) && isRock(x-1, y) && notRock(x+1, y)) { structure.setTile(69); } // 143
+						else if (notRock(x, y-1) && isRock(x, y+1) && isRock(x-1, y) && notRock(x+1, y)) { structure.setTile(15); } // ok
+						else if (notRock(x, y-1) && isRock(x, y+1) && notRock(x-1, y) && isRock(x+1, y)) { structure.setTile(10); } // ok
+
+						// 1 face
+						else if (isRock(x, y-1) && notRock(x, y+1) && notRock(x-1, y) && notRock(x+1, y)) { structure.setTile(0); } // 34
+						else if (notRock(x, y-1) && isRock(x, y+1) && notRock(x-1, y) && notRock(x+1, y)) { structure.setTile(0); } // 35
+						else if (notRock(x, y-1) && notRock(x, y+1) && isRock(x-1, y) && notRock(x+1, y)) { structure.setTile(0); } // 25
+						else if (notRock(x, y-1) && notRock(x, y+1) && notRock(x-1, y) && isRock(x+1, y)) { structure.setTile(0); } // 24
+
+					}
+				}
+			}
+		}
+	}
+//
+//	public void cleanRock() {
+//		for (int f = 0; f < NB_FLOOR; f++) {
+//			_areas = _floors[f];
+//			for (int x = 0; x < Constant.WORLD_WIDTH; x++) {
+//				for (int y = 0; y < Constant.WORLD_HEIGHT; y++) {
+//					WorldRessource structure = getRessource(x, y);
+//					if (structure != null && structure.isRock()) {
+//						// 4 faces
+//						if (isRock(x, y-1) && isRock(x, y+1) && isRock(x-1, y) && isRock(x+1, y)) {
+//							if (notRock(x-1, y-1) && notRock(x+1, y+1)) { structure.setTile(16); }
+//							else if (notRock(x+1, y+1) && notRock(x-1, y-1)) { structure.setTile(6); }
+//
+//							else if (notRock(x+1, y-1) && notRock(x-1, y-1)) { structure.setTile(7); }
+//							else if (notRock(x+1, y+1) && notRock(x-1, y+1)) { structure.setTile(17); }
+//							else if (notRock(x+1, y+1) && notRock(x+1, y-1)) { structure.setTile(27); }
+//							else if (notRock(x-1, y+1) && notRock(x-1, y-1)) { structure.setTile(37); }
+//
+//							else if (notRock(x+1, y-1)) { structure.setTile(20); }
+//							else if (notRock(x-1, y-1)) { structure.setTile(22); }
+//							else if (notRock(x+1, y+1)) { structure.setTile(0); }
+//							else if (notRock(x-1, y+1)) { structure.setTile(2); }
+//							else {structure.setTile(11);}
+//						}
+//						
+//						// 3 faces
+//						else if (isRock(x, y-1) && isRock(x, y+1) && isRock(x-1, y) && notRock(x+1, y)) { structure.setTile(10); }
+//						else if (isRock(x, y-1) && isRock(x, y+1) && notRock(x-1, y) && isRock(x+1, y)) { structure.setTile(12); }
+//						else if (isRock(x, y-1) && notRock(x, y+1) && isRock(x-1, y) && isRock(x+1, y)) { structure.setTile(1); }
+//						else if (notRock(x, y-1) && isRock(x, y+1) && isRock(x-1, y) && isRock(x+1, y)) { structure.setTile(21); }
+//
+//						// 2 faces
+//						else if (isRock(x, y-1) && isRock(x, y+1) && notRock(x-1, y) && notRock(x+1, y)) { structure.setTile(36); }
+//						else if (notRock(x, y-1) && notRock(x, y+1) && isRock(x-1, y) && isRock(x+1, y)) { structure.setTile(26); }
+//						else if (isRock(x, y-1) && notRock(x, y+1) && notRock(x-1, y) && isRock(x+1, y)) { structure.setTile(14); }
+//						else if (isRock(x, y-1) && notRock(x, y+1) && isRock(x-1, y) && notRock(x+1, y)) { structure.setTile(15); }
+//						else if (notRock(x, y-1) && isRock(x, y+1) && isRock(x-1, y) && notRock(x+1, y)) { structure.setTile(5); }
+//						else if (notRock(x, y-1) && isRock(x, y+1) && notRock(x-1, y) && isRock(x+1, y)) { structure.setTile(4); }
+//
+//						// 1 face
+//						else if (isRock(x, y-1) && notRock(x, y+1) && notRock(x-1, y) && notRock(x+1, y)) { structure.setTile(34); }
+//						else if (notRock(x, y-1) && isRock(x, y+1) && notRock(x-1, y) && notRock(x+1, y)) { structure.setTile(35); }
+//						else if (notRock(x, y-1) && notRock(x, y+1) && isRock(x-1, y) && notRock(x+1, y)) { structure.setTile(25); }
+//						else if (notRock(x, y-1) && notRock(x, y+1) && notRock(x-1, y) && isRock(x+1, y)) { structure.setTile(24); }
+//
+//					}
+//				}
+//			}
+//		}
+//	}
+
+	private void setTop(int f, int x, int y, int tile) {
+		WorldRessource topres = getRessource(f, x, y);
+		if (topres != null && topres.isRock() && topres.getTile() == 0) {
+			topres.setTile(tile);
+		}
+	}
+
+	private boolean notRock(int x, int y) {
+		if (x < 0 || x >= _width || y < 0 || y >= _height) {
+			return false;
+		}
+		if (_areas[x][y].getRessource() != null && _areas[x][y].getRessource().isRock()) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isRock(int x, int y) {
+		if (x < 0 || x >= _width || y < 0 || y >= _height) {
+			return true;
+		}
+		if (_areas[x][y].getRessource() != null && _areas[x][y].getRessource().isRock()) {
+			return true;
+		}
+		return false;
+	}
+
+	public void cleanRock2() {
+//		for (int f = 0; f < NB_FLOOR; f++) {
+//			_areas = _floors[f];
+//			for (int x = Constant.WORLD_WIDTH; x >= 0; x--) {
+//				for (int y = Constant.WORLD_HEIGHT; y >= 0; y--) {
+//					WorldRessource structure = getRessource(x, y);
+//					if (structure != null && structure.isRock() && okErase(structure.getTile())) {
+//						if (f < NB_FLOOR - 1) {
+//							WorldArea topFloorArea = _floors[f+1][x][y];
+//							if (topFloorArea.getRessource() != null) {
+//								structure.setDoubleRender(structure.getTile());
+//								structure.setTile(topFloorArea.getRessource().getTile());
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+	}
+
+	private boolean okErase(int tile) {
+		switch (tile) {
+		case 0:
+		case 36:
+		case 38:
+		case 39:
+		case 48:
+			return true;
+		}
+		return false;
+	}
 }

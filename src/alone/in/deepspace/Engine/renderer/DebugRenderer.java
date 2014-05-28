@@ -6,7 +6,9 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.graphics.TextureCreationException;
 
+import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
+import alone.in.deepspace.model.WorldRessource;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.ObjectPool;
 
@@ -32,8 +34,17 @@ public class DebugRenderer implements IRenderer {
 //
 		Text text = ObjectPool.getText();
 		text.setFont(SpriteManager.getInstance().getFont());
-		text.setCharacterSize(10);
-		
+		text.setCharacterSize(8);
+		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
+			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
+				WorldRessource res = ServiceManager.getWorldMap().getRessource(x, y);
+				if (res != null) {
+					text.setString(""+res.getTile());
+					text.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
+					app.draw(text, render);
+				}
+			}
+		}
 
 //		if (area.getLight() > 0) {
 //			text.setString(String.valueOf((int)(area.getLight() * 255)));
