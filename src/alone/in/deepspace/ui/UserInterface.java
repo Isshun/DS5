@@ -75,6 +75,7 @@ public class UserInterface {
 	private ContextualMenu 				_menu;
 	private Game _game;
 	private int _used;
+	private boolean _mouseOnMap;
 
 	public enum Mode {
 		BASE,
@@ -136,6 +137,9 @@ public class UserInterface {
 		_keyMovePosX = getRelativePosX(x);
 		_keyMovePosY = getRelativePosY(y);
 
+		// TODO
+		_mouseOnMap = x < 1500;
+		
 		// right button pressed
 		if (_keyRightPressed) {
 			_viewport.update(x, y);
@@ -272,17 +276,19 @@ public class UserInterface {
 //        _used = (_used * 7 + used) / 8;
 //        System.out.println("Heap: " + String.valueOf(_used) + " / " + String.valueOf(total) + " Mo");
 
-		if (_panelBuild.getMode() != PanelBuild.Mode.NONE || _panelPlan.getMode() != PanelPlan.Mode.NONE) {
-			if (_keyLeftPressed) {
-				_interaction.drawCursor(Math.min(_keyPressPosX, _keyMovePosX),
-						Math.min(_keyPressPosY, _keyMovePosY),
-						Math.max(_keyPressPosX, _keyMovePosX),
-						Math.max(_keyPressPosY, _keyMovePosY));
-			} else {
-				_interaction.drawCursor(Math.min(_keyMovePosX, _keyMovePosX),
-						Math.min(_keyMovePosY, _keyMovePosY),
-						Math.max(_keyMovePosX, _keyMovePosX),
-						Math.max(_keyMovePosY, _keyMovePosY));
+		if (_mouseOnMap) {
+			if (_panelBuild.getMode() != PanelBuild.Mode.NONE || _panelPlan.getMode() != PanelPlan.Mode.NONE) {
+				if (_keyLeftPressed) {
+					_interaction.drawCursor(Math.min(_keyPressPosX, _keyMovePosX),
+							Math.min(_keyPressPosY, _keyMovePosY),
+							Math.max(_keyPressPosX, _keyMovePosX),
+							Math.max(_keyPressPosY, _keyMovePosY));
+				} else {
+					_interaction.drawCursor(Math.min(_keyMovePosX, _keyMovePosX),
+							Math.min(_keyMovePosY, _keyMovePosY),
+							Math.max(_keyMovePosX, _keyMovePosX),
+							Math.max(_keyMovePosY, _keyMovePosY));
+				}
 			}
 		}
 

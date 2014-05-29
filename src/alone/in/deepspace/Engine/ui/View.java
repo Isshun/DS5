@@ -19,6 +19,7 @@ public abstract class View {
 	protected int 			_posX;
 	protected int 			_posY;
 	private RectangleShape	_background;
+	private RectangleShape	_borders[];
 	protected int 			_paddingLeft;
 	protected int			_paddingBottom;
 	protected int 			_paddingRight;
@@ -28,10 +29,15 @@ public abstract class View {
 	private OnFocusListener _onFocusListener;
 	private boolean 		_isFocus;
 	private int 			_id;
+	private int 			_borderSize;
+	private boolean 		_invalid;
+	private Color 			_borderColor;
+	private Color _backgroundColor;
 
 	public View(Vector2f size) {
 		_size = size;
 		_isVisible = true;
+		_borderSize = 2;
 		_pos = new Vector2f(0, 0);
 
 		onCreate();
@@ -56,16 +62,70 @@ public abstract class View {
 		if (_isVisible == false) {
 			return;
 		}
+
+		if (_invalid) {
+			refresh();
+		}
 		
 		if (_background != null) {
 			app.draw(_background, render);
 		}
 		
 		onDraw(app, render);
+
+		
+		// Borders
+		if (_borders != null) {
+			app.draw(_borders[0], render);
+			app.draw(_borders[2], render);
+			app.draw(_borders[1], render);
+			app.draw(_borders[3], render);
+		}
+	}
+
+	private void refresh() {
+		// Background
+		if (_backgroundColor != null && _size != null && _pos != null) {
+			_background = new RectangleShape();
+			_background.setSize(_size);
+			_background.setPosition(_pos);
+			_background.setFillColor(_backgroundColor);
+		} else {
+			_background = null;
+		}
+	
+		// Border
+		if (_borderColor != null && _size != null && _pos != null) {
+			_borders = new RectangleShape[4];
+			_borders[0] = new RectangleShape();
+			_borders[0].setPosition(_pos);
+			_borders[0].setSize(new Vector2f(_size.x, _borderSize));
+			_borders[0].setFillColor(_borderColor);
+
+			_borders[1] = new RectangleShape();
+			_borders[1].setPosition(_pos.x, _pos.y + _size.y);
+			_borders[1].setSize(new Vector2f(_size.x, _borderSize));
+			_borders[1].setFillColor(_borderColor);
+
+			_borders[2] = new RectangleShape();
+			_borders[2].setPosition(_pos);
+			_borders[2].setSize(new Vector2f(_borderSize, _size.y));
+			_borders[2].setFillColor(_borderColor);
+
+			_borders[3] = new RectangleShape();
+			_borders[3].setPosition(_pos.x + _size.x - _borderSize, _pos.y);
+			_borders[3].setSize(new Vector2f(_borderSize, _size.y));
+			_borders[3].setFillColor(_borderColor);
+		} else {
+			_borders = null;
+		}
+
+		_invalid = false;
 	}
 
 	public void setSize(Vector2f size) {
 		_size = size;
+		_invalid = true;
 	}
 	
 	public void setVisible(boolean visible) {
@@ -107,21 +167,8 @@ public abstract class View {
 	}
 
 	public void setBackgroundColor(Color color) {
-		if (color == null) {
-			_background = null;
-			return;
-		}
-		
-		if (_background == null) {
-			_background = new RectangleShape();
-		}
-		if (_size != null) {
-			_background.setSize(_size);
-		}
-		if (_pos != null) {
-			_background.setPosition(_pos);
-		}
-		_background.setFillColor(color);
+		_backgroundColor = color;
+		_invalid = true;
 	}
 
 	public void setPadding(int t, int r, int b, int l) {
@@ -129,6 +176,7 @@ public abstract class View {
 		_paddingRight = r;
 		_paddingBottom = b;
 		_paddingLeft = l;
+		_invalid = true;
 	}
 
 	public void setPadding(int t, int r) {
@@ -136,17 +184,16 @@ public abstract class View {
 		_paddingRight = r;
 		_paddingBottom = t;
 		_paddingLeft = r;
+		_invalid = true;
 	}
 
 	public void setPosition(Vector2f pos) {
-		if (pos != null && (pos.x != _posX || pos.y != _posY)) {
+		if (pos != null) {
 			_pos = pos;
 			_posX = (int) pos.x;
 			_posY = (int) pos.y;
 		}
-		if (_background != null) {
-			_background.setPosition(pos);
-		}
+		_invalid = true;
 	}
 
 	private Rectangle computeRect() {
@@ -174,4 +221,15 @@ public abstract class View {
 			_onFocusListener.onExit(this);
 		}
 	}
+	
+	public void setBorderColor(Color color) {
+		_borderColor = color;
+		_invalid = true;
+	}
+
+	public void setBorderSize(int borderSize) {
+		_borderSize = borderSize;
+		_invalid = true;
+	}
+
 }

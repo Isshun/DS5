@@ -95,7 +95,7 @@ public class SpriteManager {
 
 		// Font
 		_font = new Font();
-		_font.loadFromFile((new File("res/fonts/xolonium_regular.otf")).toPath());
+		_font.loadFromFile((new File("res/fonts/font.ttf")).toPath());
 
 		//		// IC battery
 		//		{

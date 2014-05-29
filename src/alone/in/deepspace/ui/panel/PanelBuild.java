@@ -11,6 +11,7 @@ import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
 import alone.in.deepspace.engine.ui.ButtonView;
+import alone.in.deepspace.engine.ui.ColorView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
@@ -49,7 +50,7 @@ public class PanelBuild extends UserSubInterface {
 	public PanelBuild(RenderWindow app, int tileIndex, UserInteraction interaction) throws IOException {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 
-		setBackgroundColor(new Color(200, 200, 50, 140));
+		setBackgroundColor(new Color(22, 35, 35));
 
 		_icons = new HashMap<ItemInfo, ButtonView>();
 		_panelMode = Mode.BUILD_STRUCTURE;
@@ -141,6 +142,10 @@ public class PanelBuild extends UserSubInterface {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+//		View layer = new ColorView(new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+//		layer.setBackgroundColor(new Color(58, 215, 248, 100));
+//		addView(layer);
 	}
 
 	void	drawIcon(int offset, int index, final ItemInfo info, boolean visible) throws IOException {
@@ -153,29 +158,33 @@ public class PanelBuild extends UserSubInterface {
 			//				icon.setIcon(SpriteManager.getInstance().getBullet(3));
 			//			} else {
 			icon = new ButtonView(new Vector2f(62, 80));
-			icon.setString(info.label);
+			icon.setString(info.label.length() > 7 ? info.label.substring(0, 7) : info.label);
+			icon.setTextPadding(60, 0);
 			icon.setIcon(SpriteManager.getInstance().getIcon(info));
-			icon.setIconPadding(0, 20);
-			//			}
 			icon.setPadding(4, 4, 4, 4);
 			icon.setPosition(20 + (index % 4) * 80, offset + (int)(index / 4) * 100);
-			icon.setBackgroundColor(info.equals(_itemHover) ? Color.WHITE : COLOR_YELLOW);
+
+			icon.setBackgroundColor(new Color(29, 85, 96, 100));
+			//icon.setBorderColor(new Color(161, 255, 255));
+			
+			icon.setBorderSize(2);
 			icon.setOnFocusListener(new OnFocusListener() {
 				@Override
 				public void onEnter(View view) {
-					view.setBackgroundColor(Color.CYAN);
+					view.setBackgroundColor(new Color(29, 85, 96, 180));
 				}
 
 				@Override
 				public void onExit(View view) {
-					view.setBackgroundColor(info.equals(_currentSelected) ? Color.RED : COLOR_YELLOW);
+					view.setBackgroundColor(info.equals(_currentSelected) ? new Color(29, 85, 96) : new Color(29, 85, 96, 100));
 				}
 			});
 			icon.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
 					for (ButtonView icon: _icons.values()) {
-						icon.setBackgroundColor(COLOR_YELLOW);
+						icon.setBackgroundColor(new Color(29, 85, 96, 100));
+						icon.setBorderColor(null);
 					}
 					// TODO
 					//					if (type == -2) {
@@ -188,7 +197,8 @@ public class PanelBuild extends UserSubInterface {
 					//					}
 					setSelectedItem(info);
 
-					((ButtonView) view).setBackgroundColor(Color.RED);
+					view.setBackgroundColor(new Color(29, 85, 96));
+					view.setBorderColor(new Color(161, 255, 255));
 				}
 			});
 			addView(icon);

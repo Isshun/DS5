@@ -146,6 +146,14 @@ public class WorldSaver {
 	    long time = System.currentTimeMillis();
 	    WorldSave worldSave = null;
 
+//	    for (Event event : yaml.parse(new StringReader("abc: 56"))) {
+//            if (e == null) {
+//                assertTrue(event instanceof StreamStartEvent);
+//            }
+//            e = event;
+//            counter++;
+//        }
+	    
 		try {
 			InputStream input = new FileInputStream(filePath);
 		    Yaml yaml = new Yaml(new Constructor(WorldSave.class));

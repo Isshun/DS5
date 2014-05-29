@@ -58,7 +58,7 @@ public class PanelCrew extends UserSubInterface {
 	public PanelCrew(RenderWindow app, int tileIndex) throws IOException {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 
-		setBackgroundColor(new Color(0, 0, 0, 180));
+		setBackgroundColor(new Color(18, 30, 30));
 
 		_viewHolderList = new ArrayList<ViewHolder>();
 		_characterManager = ServiceManager.getCharacterManager();
@@ -163,7 +163,7 @@ public class PanelCrew extends UserSubInterface {
 			viewHolder.frame.addView(viewHolder.lbStatus);
 
 			// Status short
-			viewHolder.lbStatusShort = new TextView();
+			viewHolder.lbStatusShort = new TextView(new Vector2f(80, 20));
 			viewHolder.lbStatusShort.setCharacterSize(14);
 			viewHolder.lbStatusShort.setVisible(false);
 			viewHolder.lbStatusShort.setPosition(Constant.UI_PADDING + 300, 2);
@@ -217,13 +217,14 @@ public class PanelCrew extends UserSubInterface {
 
 			// Name
 			viewHolder.lbName.setString(character.getName());
-			viewHolder.lbName.setColor(character.getColor());
+			//viewHolder.lbName.setColor(character.getColor());
+			viewHolder.lbName.setColor(new Color(120, 255, 255));
 
 			// Status
 			viewHolder.lbStatus.setString(character.getStatus().getThoughts());
 			viewHolder.lbStatus.setColor(character.getStatus().getColor());
 			viewHolder.lbStatusShort.setString(character.getStatus().getThoughtsShort());
-			viewHolder.lbStatusShort.setColor(character.getStatus().getColor());
+			viewHolder.lbStatusShort.setBackgroundColor(character.getStatus().getColor());
 
 			// Job
 			if (character.getJob() != null) {

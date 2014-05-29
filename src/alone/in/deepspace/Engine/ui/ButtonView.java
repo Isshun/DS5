@@ -1,6 +1,7 @@
 package alone.in.deepspace.engine.ui;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
@@ -17,6 +18,7 @@ public class ButtonView extends View {
 	private Sprite 			_icon;
 	protected int 			_iconPaddingLeft;
 	protected int 			_iconPaddingTop;
+	private RectangleShape _overlay;
 
 	public ButtonView(Vector2f size) {
 		super(size);
@@ -55,6 +57,9 @@ public class ButtonView extends View {
 		if (_icon != null) {
 			_icon.setPosition(pos);
 		}
+		if (_overlay != null) {
+			_overlay.setPosition(pos);
+		}
 		_text.setPosition(new Vector2f(pos.x + _paddingLeft + _textPaddingLeft, pos.y + _paddingTop + _textPaddingTop));
 	}
 
@@ -80,6 +85,10 @@ public class ButtonView extends View {
 		if (_text != null) {
 			app.draw(_text, render);
 		}
+		
+		if (_overlay != null) {
+			app.draw(_overlay, render);
+		}
 	}
 
 	public void setPosition(int i, int j) {
@@ -93,6 +102,23 @@ public class ButtonView extends View {
 	public void setIconPadding(int x, int y) {
 		_iconPaddingLeft = x;
 		_iconPaddingTop = y;
+	}
+
+	public void setOverlayColor(Color color) {
+		if (color == null) {
+			_overlay = null;
+		}
+		
+		_overlay = new RectangleShape(_size);
+		_overlay.setFillColor(color);
+		if (_overlay != null && _pos != null) {
+			_overlay.setPosition(_pos);
+		}
+	}
+
+	public void setTextPadding(int top, int left) {
+		_textPaddingTop = top;
+		_textPaddingLeft = left;
 	}
 }
 
