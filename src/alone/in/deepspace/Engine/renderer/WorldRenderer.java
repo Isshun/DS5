@@ -20,7 +20,7 @@ import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.StructureItem;
-import alone.in.deepspace.model.WorldRessource;
+import alone.in.deepspace.model.WorldResource;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
@@ -69,6 +69,8 @@ public class WorldRenderer implements IRenderer {
 			if (_hasChanged) {
 				refreshFloor(render, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 				refreshStructure(render, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
+				refreshResource(render, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
+				_spriteCache.setTexture(_textureCache.getTexture());
 			} else {
 				if (_pass == 0) {
 					_pass = 4;
@@ -124,8 +126,27 @@ public class WorldRenderer implements IRenderer {
 
 	}
 
+	private void refreshResource(RenderStates render, int fromX, int fromY, int toX, int toY) {
+		int floor = ServiceManager.getWorldMap().getFloor();
+		
+		for (int i = toX-1; i >= fromX; i--) {
+			for (int j = toY-1; j >= fromY; j--) {
+				if (i >= 0 && j >= 0 && i < Constant.WORLD_WIDTH && j < Constant.WORLD_HEIGHT) {
+					WorldResource ressource = ServiceManager.getWorldMap().getRessource(i, j);
+					if (ressource != null) {
+						Sprite sprite = _spriteManager.getRessource(ressource, ressource.getTile());
+						sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT - 16);
+						_textureCache.draw(sprite);
+					}
+				}
+			}
+		}
+	}
+
 	// TODO: random
 	void	refreshFloor(RenderStates render, int fromX, int fromY, int toX, int toY) {
+		_textureCache.clear();
+		
 		int floor = ServiceManager.getWorldMap().getFloor();
 		
 		for (int i = toX-1; i >= fromX; i--) {
@@ -150,7 +171,7 @@ public class WorldRenderer implements IRenderer {
 							sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
 							_textureCache.draw(sprite);
 							
-							WorldRessource ressource = ServiceManager.getWorldMap().getRessource(i, j);
+							WorldResource ressource = ServiceManager.getWorldMap().getRessource(i, j);
 							if (ressource != null && ressource.getMatterSupply() > 0) {
 								sprite = _spriteManager.getRessource(ressource, ressource.getTile());
 								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
@@ -167,7 +188,7 @@ public class WorldRenderer implements IRenderer {
 								_textureCache.draw(sprite);
 							}
 							
-							WorldRessource ressource = ServiceManager.getWorldMap().getRessource(i, j);
+							WorldResource ressource = ServiceManager.getWorldMap().getRessource(i, j);
 							if (ressource != null) {
 								sprite = _spriteManager.getRessource(ressource, ressource.getTile());
 								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
@@ -181,35 +202,16 @@ public class WorldRenderer implements IRenderer {
 //							_texture.draw(shape);
 						}
 					}
-					// Ressource
+					
+					// No floor
 					else {
 						Sprite sprite = _spriteManager.getExterior(i + j * 42, floor);
 						sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
 						_textureCache.draw(sprite);
-	
-	//					if (area.getStructure() != null && area.getStructure().isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-	//						if (area.getOxygen() < 25) {
-	//							sprite = _spriteManager.getNoOxygen();
-	//							_app.draw(sprite, render);
-	//						} else if (area.getOxygen() < 100) {
-	//							_shape.setFillColor(ObjectPool.getColor(255, 0, 0, area.getOxygen() * 125 / 100));
-	//							_shape.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-	//							_app.draw(_shape, render);
-	//						}
-	//					}
-						
-						WorldRessource ressource = ServiceManager.getWorldMap().getRessource(i, j);
-						if (ressource != null) {
-							sprite = _spriteManager.getRessource(ressource, ressource.getTile());
-							sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
-							_textureCache.draw(sprite);
-						}
 					}
 				}
 			}
 		}
-		
-		_spriteCache.setTexture(_textureCache.getTexture());
 	}
 
 	//TODO: random
@@ -427,7 +429,8 @@ public class WorldRenderer implements IRenderer {
 	}
 
 	public void invalidate(int x, int y) {
-		_changed.add(new Vector2i(x, y));
+//		_changed.add(new Vector2i(x, y));
+		_hasChanged = true;
 	}
 
 	public void invalidate() {

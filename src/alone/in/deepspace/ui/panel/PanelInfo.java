@@ -29,7 +29,7 @@ import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.model.WorldArea;
-import alone.in.deepspace.model.WorldRessource;
+import alone.in.deepspace.model.WorldResource;
 import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.ObjectPool;
@@ -504,7 +504,7 @@ public class PanelInfo extends UserSubInterface {
 		}
 	}
 
-	private void setRessource(WorldRessource item) {
+	private void setRessource(WorldResource item) {
 		_layoutItem.setVisible(true);
 
 		_itemName.setString(item.getLabel() != null ? item.getLabel() : item.getName());

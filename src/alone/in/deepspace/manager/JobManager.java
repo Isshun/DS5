@@ -20,7 +20,7 @@ import alone.in.deepspace.model.jobCheck.JobCheck;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.UserItem;
-import alone.in.deepspace.model.WorldRessource;
+import alone.in.deepspace.model.WorldResource;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -485,7 +485,7 @@ public class JobManager {
 	}
 
 	public Job createGatherJob(int x, int y) {
-		WorldRessource res = ServiceManager.getWorldMap().getRessource(x, y);
+		WorldResource res = ServiceManager.getWorldMap().getRessource(x, y);
 		if (res == null) {
 			return null;
 		}
@@ -503,7 +503,7 @@ public class JobManager {
 	}
 
 	public Job createMiningJob(int x, int y) {
-		WorldRessource res = ServiceManager.getWorldMap().getRessource(x, y);
+		WorldResource res = ServiceManager.getWorldMap().getRessource(x, y);
 		if (res == null) {
 			return null;
 		}
@@ -563,6 +563,20 @@ public class JobManager {
 	public void onLongUpdate() {
 		for (JobCheck jobCheck: _jobsCheck) {
 			jobCheck.check(this, null);
+		}
+	}
+
+	public void addGatherJob(int x, int y) {
+		Job job = createGatherJob(x, y);
+		if (job != null) {
+			addJob(job);
+		}
+	}
+
+	public void addMineJob(int x, int y) {
+		Job job = createMiningJob(x, y);
+		if (job != null) {
+			addJob(job);
 		}
 	}
 }

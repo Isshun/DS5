@@ -16,7 +16,7 @@ import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.StructureItem;
-import alone.in.deepspace.model.WorldRessource;
+import alone.in.deepspace.model.WorldResource;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 import alone.in.deepspace.util.ObjectPool;
@@ -131,7 +131,7 @@ public class SpriteManager {
 		
 		if (item.isStructure() == false) {
 			if (item.isRessource()) {
-				return getRessource((WorldRessource)item, 0);
+				return getRessource((WorldResource)item, 0);
 			}
 
 			int alpha = Math.min(item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * item.getMatterSupply(), 255);
@@ -297,7 +297,7 @@ public class SpriteManager {
 		return sum;
 	}
 
-	public Sprite 				getRessource(WorldRessource item, int tile) {
+	public Sprite 				getRessource(WorldResource item, int tile) {
 
 		if ("base.rock".equals(item.getInfo().name)) {
 			return getSprite(item.getInfo(), tile, 255);

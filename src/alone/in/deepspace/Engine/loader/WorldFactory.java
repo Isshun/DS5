@@ -65,11 +65,8 @@ public class WorldFactory {
 			System.out.print('\n');
 		}
 
+		
 		worldMap.cleanRock();
-		
-//		worldMap.cleanRock2();
-		
-		
 	}
 
 	private static void clean(int[][] map) {

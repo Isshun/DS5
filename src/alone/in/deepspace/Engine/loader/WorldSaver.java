@@ -20,6 +20,7 @@ import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.model.WorldArea;
+import alone.in.deepspace.model.WorldResource;
 import alone.in.deepspace.util.Log;
 
 public class WorldSaver {
@@ -34,9 +35,11 @@ public class WorldSaver {
 	
 	private static class WorldSaveArea {
 		public WorldSaveStructure 	structure;
+		public WorldSaveResource 	resource;
 		public WorldSaveUserItem 	item;
 		public int 					x;
 		public int 					y;
+		public int 					z;
 	}
 	
 	private static class WorldSaveBaseItem {
@@ -62,14 +65,21 @@ public class WorldSaver {
 	
 	private static class WorldSaveStructure extends WorldSaveBaseItem {
 	}
+
+	private static class WorldSaveResource extends WorldSaveBaseItem {
+
+		public int tile;
+	}
 	
 	public static void save(WorldManager worldManager, String filePath) {
 		WorldSave save = new WorldSave();
 		
-		for (int x = 0; x < worldManager.getWidth(); x++) {
-			for (int y = 0; y < worldManager.getHeight(); y++) {
-				WorldArea area = worldManager.getArea(x, y);
-				saveArea(save, area);
+		for (int z = 0; z < 10; z++) {
+			for (int x = 0; x < worldManager.getWidth(); x++) {
+				for (int y = 0; y < worldManager.getHeight(); y++) {
+					WorldArea area = worldManager.getArea(z, x, y);
+					saveArea(save, area);
+				}
 			}
 		}
 		
@@ -93,6 +103,7 @@ public class WorldSaver {
 		
 		areaSave.x = area.getX();
 		areaSave.y = area.getY();
+		areaSave.z = area.getZ();
 		
 		UserItem item = area.getItem();
 		if (item != null) {
@@ -119,6 +130,14 @@ public class WorldSaver {
 			areaSave.structure.matter = structure.getMatterSupply();
 		}
 		
+		WorldResource resource = area.getRessource();
+		if (resource != null) {
+			areaSave.resource = new WorldSaveResource();
+			areaSave.resource.name = resource.getName();
+			areaSave.resource.matter = resource.getMatterSupply();
+			areaSave.resource.tile = resource.getTile();
+		}
+		
 		save.areas.add(areaSave);
 	}
 
@@ -143,7 +162,7 @@ public class WorldSaver {
 		    	if (area != null) {
 		    		// UserItem
 		    		if (area.item != null) {
-		    			BaseItem item = worldManager.putItem(area.item.name, area.x, area.y, area.item.matter);
+		    			BaseItem item = worldManager.putItem(area.item.name, area.x, area.y, area.z, area.item.matter);
 		    			if (area.item.storage != null) {
 		    				StorageItem storage = ((StorageItem)item);
 		    				storage.setStorageFilter(area.item.storage.acceptFood,
@@ -155,9 +174,18 @@ public class WorldSaver {
 		    				}
 		    			}
 		    		}
+
 		    		// Structure
 		    		if (area.structure != null) {
-		    			worldManager.putItem(area.structure.name, area.x, area.y, area.structure.matter);
+		    			worldManager.putItem(area.structure.name, area.x, area.y, area.z, area.structure.matter);
+		    		}
+
+		    		// Resource
+		    		if (area.resource != null) {
+		    			BaseItem item = worldManager.putItem(area.resource.name, area.x, area.y, area.z, area.resource.matter);
+		    			if (item != null) {
+			    			((WorldResource)item).setTile(area.resource.tile);
+		    			}
 		    		}
 		    	}
 		    }

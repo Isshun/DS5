@@ -195,6 +195,7 @@ public class PanelBuild extends UserSubInterface {
 
 			_icons.put(info, icon);
 		}
+		icon.resetPos();
 		icon.setVisible(visible);
 	}
 

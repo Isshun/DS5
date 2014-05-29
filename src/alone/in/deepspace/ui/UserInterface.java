@@ -552,7 +552,7 @@ public class UserInterface {
 
 		// Build item
 		if (_panelBuild.getSelectedItem() != null) {
-			_interaction.build(_panelBuild.getSelectedItem(),
+			_interaction.planBuild(_panelBuild.getSelectedItem(),
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),

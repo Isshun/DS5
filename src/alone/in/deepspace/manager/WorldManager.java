@@ -9,6 +9,7 @@ import java.util.Vector;
 import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
+import alone.in.deepspace.engine.renderer.WorldRenderer;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Room;
@@ -16,7 +17,7 @@ import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.model.WorldArea;
-import alone.in.deepspace.model.WorldRessource;
+import alone.in.deepspace.model.WorldResource;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -64,7 +65,7 @@ public class WorldManager implements TileBasedMap {
 			for (int x = 0; x < _width; x++) {
 				_floors[f][x] = new WorldArea[_height];
 				for (int y = 0; y < _height; y++) {
-					_floors[f][x][y] = new WorldArea(x, y);
+					_floors[f][x][y] = new WorldArea(x, y, f);
 				}
 			}
 		}
@@ -75,8 +76,8 @@ public class WorldManager implements TileBasedMap {
 	public void	create() {
 	}
 
-	public BaseItem putItem(String name, int x2, int y2, int i) {
-		return putItem(ServiceManager.getData().getItemInfo(name), _floor, x2, y2, i);
+	public BaseItem putItem(String name, int x, int y, int z, int i) {
+		return putItem(ServiceManager.getData().getItemInfo(name), z, x, y, i);
 	}
 
 	public void	addRandomSeed() {
@@ -97,7 +98,7 @@ public class WorldManager implements TileBasedMap {
 		int realX = i % _width;
 		int realY = j % _height;
 		if (_areas[realX][realY].getStructure() == null) {
-			WorldRessource ressource = (WorldRessource)putItem("base.res", realX, realY, 10);
+			WorldResource ressource = (WorldResource)putItem("base.res", 0, realX, realY, 10);
 			JobManager.getInstance().gather(ressource);
 			return true;
 		}
@@ -339,7 +340,7 @@ public class WorldManager implements TileBasedMap {
 		// Return if same item already exists at this position
 		WorldArea area = _floors[f][x][y];
 		if (area == null) {
-			area = new WorldArea(x, y);
+			area = new WorldArea(x, y, f);
 			_floors[f][x][y] = area;
 		}
 
@@ -368,7 +369,7 @@ public class WorldManager implements TileBasedMap {
 			item = new StorageItem(info);
 			_storageItems.add((StorageItem)item);
 		} else if (info.isResource) {
-			item = new WorldRessource(info);
+			item = new WorldResource(info);
 		} else if (info.isStructure) {
 			item = new StructureItem(info);
 		} else {
@@ -379,7 +380,7 @@ public class WorldManager implements TileBasedMap {
 
 		// Ressource
 		if (item.isRessource()) {
-			_floors[f][x][y].setRessource((WorldRessource) item);
+			_floors[f][x][y].setRessource((WorldResource) item);
 //			if ((item).getValue() > 0) {
 //				item.setMatterSupply(10);
 				//JobManager.getInstance().gather(item);
@@ -445,7 +446,7 @@ public class WorldManager implements TileBasedMap {
 		return null;
 	}
 	
-	public WorldRessource getRessource(int f, int x, int y) {
+	public WorldResource getRessource(int f, int x, int y) {
 		return (f < 0 || f >= NB_FLOOR || x < 0 || x >= _width || y < 0 || y >= _height) ? null : _floors[f][x][y].getRessource();
 	}
 
@@ -457,7 +458,7 @@ public class WorldManager implements TileBasedMap {
 		return getStructure(_floor, x, y);
 	}
 
-	public WorldRessource   	getRessource(int x, int y) {
+	public WorldResource   	getRessource(int x, int y) {
 		return getRessource(_floor, x, y);
 	}
 
@@ -714,7 +715,7 @@ public class WorldManager implements TileBasedMap {
 			_areas = _floors[f];
 			for (int x = Constant.WORLD_WIDTH; x >= 0; x--) {
 				for (int y = Constant.WORLD_HEIGHT; y >= 0; y--) {
-					WorldRessource structure = getRessource(f, x, y);
+					WorldResource structure = getRessource(f, x, y);
 					if (structure != null && structure.isRock()) {
 						// 4 faces
 						if (isRock(x, y-1) && isRock(x, y+1) && isRock(x-1, y) && isRock(x+1, y)) {
@@ -734,7 +735,7 @@ public class WorldManager implements TileBasedMap {
 						
 						// 3 faces
 						else if (isRock(x, y-1) && isRock(x, y+1) && isRock(x-1, y) && notRock(x+1, y)) {
-							WorldRessource res = getRessource(f, x, y+2);
+							WorldResource res = getRessource(f, x, y+2);
 							// Rock bellow
 							if (res != null && res.isRock()) {
 								structure.setTile(25); setTop(f, x-1, y, 24);
@@ -744,7 +745,7 @@ public class WorldManager implements TileBasedMap {
 							
 						} // ok
 						else if (isRock(x, y-1) && isRock(x, y+1) && notRock(x-1, y) && isRock(x+1, y)) {
-							WorldRessource res = getRessource(f, x, y-1);
+							WorldResource res = getRessource(f, x, y-1);
 							if (res != null && res.isRock() && (res.getTile() == 66 || res.getTile() == 56 || res.getTile() == 50)) {
 								structure.setTile(50); setTop(f, x+1, y, 31);
 							} else {
@@ -757,7 +758,7 @@ public class WorldManager implements TileBasedMap {
 							}
 						} // ok
 						else if (isRock(x, y-1) && notRock(x, y+1) && isRock(x-1, y) && isRock(x+1, y)) {
-							WorldRessource res = getRessource(f, x-1, y);
+							WorldResource res = getRessource(f, x-1, y);
 							if (res != null && res.isRock() && res.getTile() == 68) {
 								structure.setTile(67); setTop(f, x, y-1, 57); setTop(f, x, y-2, 47); setTop(f, x, y-3, 37);
 							} else {
@@ -837,7 +838,7 @@ public class WorldManager implements TileBasedMap {
 //	}
 
 	private void setTop(int f, int x, int y, int tile) {
-		WorldRessource topres = getRessource(f, x, y);
+		WorldResource topres = getRessource(f, x, y);
 		if (topres != null && topres.isRock() && topres.getTile() == 0) {
 			topres.setTile(tile);
 		}
@@ -893,5 +894,26 @@ public class WorldManager implements TileBasedMap {
 			return true;
 		}
 		return false;
+	}
+
+	public void removeResource(WorldResource resource) {
+		if (resource == null) {
+			return;
+		}
+		
+		int x = resource.getX();
+		int y = resource.getY();
+
+		if (_areas[x][y].getRessource() != resource) {
+			return;
+		}
+		
+		_areas[resource.getX()][resource.getY()].setRessource(null);
+		ServiceManager.getWorldRenderer().invalidate(x, y);
+		ServiceManager.getWorldRenderer().invalidate();
+	}
+
+	public WorldArea getArea(int z, int x, int y) {
+		return _floors[z][x][y];
 	}
 }

@@ -22,6 +22,7 @@ import alone.in.deepspace.model.Cursor;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.StructureItem;
+import alone.in.deepspace.model.WorldResource;
 import alone.in.deepspace.util.Log;
 
 public class UserInteraction {
@@ -215,10 +216,20 @@ public class UserInteraction {
 	//	  return false;
 	//	}
 
-	void	build(ItemInfo info, int startX, int startY, int toX, int toY) {
+	public void	planBuild(ItemInfo info, int startX, int startY, int toX, int toY) {
 		for (int x = toX; x >= startX; x--) {
 			for (int y = toY; y >= startY; y--) {
 
+				// Check if resource is present on area
+				WorldResource res = ServiceManager.getWorldMap().getRessource(x, y);
+				if (res != null) {
+					if (res.canBeMined()) {
+						JobManager.getInstance().addMineJob(x, y);
+					} else if (res.canBeHarvested()) {
+						JobManager.getInstance().addGatherJob(x, y);
+					}
+				}
+				
 				//TODO
 				// Structure
 				if (info.name.equals("base.room")) {

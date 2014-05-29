@@ -652,7 +652,13 @@ public class Character extends Movable {
 			return;
 		}
 		
-		BaseItem gatheredItem = _job.getItem();
+		if (_job.getItem().isRessource() == false) {
+			Log.error("Character: actionMine on non resource");
+			JobManager.getInstance().abort(_job, Abort.INVALID);
+			_job = null;
+		}
+
+		WorldResource gatheredItem = (WorldResource)_job.getItem();
 
 		if (gatheredItem.getInfo().onMine == null) {
 			Log.error("Character: actionMine on non minable item");
@@ -684,7 +690,8 @@ public class Character extends Movable {
 
 		ResourceManager.getInstance().addMatter(value);
 
-		if (_job.getItem().getMatterSupply() == 0) {
+		if (gatheredItem.getMatterSupply() == 0) {
+			ServiceManager.getWorldMap().removeResource(gatheredItem);
 			JobManager.getInstance().complete(_job);
 			_job = null;
 		}

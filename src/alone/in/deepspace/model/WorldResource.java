@@ -1,15 +1,15 @@
 package alone.in.deepspace.model;
 
-public class WorldRessource extends UserItem {
+public class WorldResource extends UserItem {
 	private int		_value;
 	private int 	_tile;
 	private int _doubleRender;
 
-	public WorldRessource(ItemInfo info, int id) {
+	public WorldResource(ItemInfo info, int id) {
 		super(info, id);
 	}
 
-	public WorldRessource(ItemInfo info) {
+	public WorldResource(ItemInfo info) {
 		super(info);
 	}
 
@@ -39,6 +39,14 @@ public class WorldRessource extends UserItem {
 
 	public int getDoubleRender() {
 		return _doubleRender;
+	}
+
+	public boolean canBeMined() {
+		return "base.rock".equals(_info.name);
+	}
+
+	public boolean canBeHarvested() {
+		return _info.name.contains("base.seaweed");
 	}
 
 }

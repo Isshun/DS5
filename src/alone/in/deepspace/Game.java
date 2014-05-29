@@ -36,6 +36,7 @@ import alone.in.deepspace.manager.UIEventManager;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.StorageItem;
+import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.UserItem;
@@ -231,9 +232,8 @@ public class Game implements ISavable {
 		}
 
 
-//		WorldSaver.load(ServiceManager.getWorldMap(), filePath + ".yml");
-
-		WorldFactory.create(ServiceManager.getWorldMap());
+		WorldSaver.load(ServiceManager.getWorldMap(), filePath + ".yml");
+		//WorldFactory.create(ServiceManager.getWorldMap());
 		
 		ResourceManager.getInstance().refreshWater();
 
@@ -252,8 +252,15 @@ public class Game implements ISavable {
 	private void onLoadComplete() {
 //		ItemInfo info = ServiceManager.getData().getItemInfo("base.seaweed");
 //		
-//		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
-//			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
+		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
+			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
+				StructureItem structure = ServiceManager.getWorldMap().getStructure(0, x, y);
+				if (structure != null && structure.getName().equals("base.ground")) {
+					ServiceManager.getWorldMap().putItem("base.seaweed1", x, y);
+				}
+			}
+		}
+		
 //				UserItem item = ServiceManager.getWorldMap().getItem(x, y);
 //				if (item != null && "base.storage".equals(item.getInfo().name)) {
 //					StorageItem storage = (StorageItem)item;
@@ -263,7 +270,7 @@ public class Game implements ISavable {
 //				}
 //			}
 //			
-//		}		
+//		}
 	}
 
 	public void	save(final String filePath) {
