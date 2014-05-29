@@ -78,14 +78,14 @@ public class Character extends Movable {
 		_isGay = (int)(Math.random() * 100) % 10 == 0;
 		_lastName = lastName;
 		if (name == null) {
-			if ((int)(Math.random() * 1000) % 2 == 0) {
-				_firstName = CharacterName.getShortFirstname(_gender)
-						+ " \"" + CharacterName.getMiddlename() + "\" ";
-				_lastName = lastName != null ? lastName : CharacterName.getShortLastName();
-			} else {
+//			if ((int)(Math.random() * 1000) % 2 == 0) {
+//				_firstName = CharacterName.getShortFirstname(_gender)
+//						+ " \"" + CharacterName.getMiddlename() + "\" ";
+//				_lastName = lastName != null ? lastName : CharacterName.getShortLastName();
+//			} else {
 				_firstName = CharacterName.getFirstname(_gender) + " ";
 				_lastName = lastName != null ? lastName : CharacterName.getLastName();
-			}
+//			}
 		}
 		_birthName = _lastName;
 
