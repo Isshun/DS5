@@ -45,7 +45,7 @@ public class CharacterStatus {
 			BaseItem item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
 			if (item != null && item.isSleepingItem()) {
 				_color = COLOR_GOOD;
-				_thoughts = "I sleep well, even " + (_needs.getSleeping() / Constant.DURATION_MULTIPLIER) + "h";
+				_thoughts = Strings.CHARACTER_SAY_SLEEP;
 				_thoughtsShort = Strings.THOUGHTS_GOOD;
 				return;
 			} else {

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.ConstTexture;
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.Sprite;
@@ -36,6 +37,7 @@ public class SpriteManager {
 			0, 1, 2, 1, 3, 0, 1, 3, 0, 1,
 			0, 0, 1, 3, 2, 2, 1, 3, 2, 1,
 			3, 1, 1, 0, 3, 2, 0, 1, 0, 1};
+	private Texture _textureNeedBar;
 
 	private SpriteManager() throws IOException {
 		_sprites = new HashMap<Long, Sprite>();
@@ -58,6 +60,11 @@ public class SpriteManager {
 		_textureCharacters[3] = new Texture();
 		_textureCharacters[3].loadFromFile((new File("res/Characters/NuChara01.png")).toPath());
 		_textureCharacters[3].setSmooth(true);
+
+		_textureNeedBar = new Texture();
+		_textureNeedBar.loadFromFile((new File("res/Tilesets/needbar.png")).toPath());
+		_textureNeedBar.setRepeated(true);
+		//_textureNeedBar.setSmooth(true);
 
 		_texture = new Texture[8];
 
@@ -493,6 +500,10 @@ public class SpriteManager {
 
 	public Sprite getIconUnChecked() {
 		return getSprite(7, 32, 0, 16, 16, 255);
+	}
+
+	public Texture getTexture() {
+		return _textureNeedBar;
 	}
 
 }

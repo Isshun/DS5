@@ -250,6 +250,10 @@ public class UserInterface {
 		_keyMovePosY = getRelativePosY(y);
 	}
 
+	public void onRefresh(int update) {
+		_panelCharacter.onRefresh(update);
+	}
+	
 	public void onDraw(int frame, int update, int renderTime) {
 		_panelCharacter.draw(_app, null);
 		_panelBase.draw(_app, null);

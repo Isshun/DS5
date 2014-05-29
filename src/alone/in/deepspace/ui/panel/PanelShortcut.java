@@ -6,124 +6,87 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Strings;
-import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.ui.UserInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;
 
 public class PanelShortcut extends UserSubInterface {
 	private static final int FRAME_WIDTH = Constant.WINDOW_WIDTH;
 	private static final int FRAME_HEIGHT = 120;
+	
+	private static class PanelEntry {
+		Mode		mode;
+		String		label;
+		String 		shortcut;
+		int 		shortcutPos;
 
+		public PanelEntry(String label, String shortcut, int shortcutPos, Mode mode) {
+			this.shortcut = shortcut;
+			this.label = label;
+			this.mode = mode;
+			this.shortcutPos = shortcutPos;
+		}
+	}
+
+	private PanelEntry	_entries[] = {
+			new PanelEntry("  [ UILD]  ", 		"B", 	3, Mode.BUILD),
+			new PanelEntry("[ CCUPATION]  ", 	"O",	1, Mode.JOBS),
+			new PanelEntry("   [ REW]  ", 		"C", 	4, Mode.CREW),
+			new PanelEntry("   [ OOM]  ", 		"R", 	4, Mode.ROOM),
+			new PanelEntry("  [ EBUG]  ", 		"D", 	3, Mode.DEBUG),
+			new PanelEntry("   [ LAN]  ", 		"P",	4, Mode.PLAN)
+	};
+	
 	public PanelShortcut(RenderWindow app, final UserInterface userInterface) throws IOException {
 		super(app, 0, new Vector2f(0, Constant.WINDOW_HEIGHT - FRAME_HEIGHT), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 
-		setBackgroundColor(new Color(200, 50, 140, 150));
+		setBackgroundColor(new Color(18, 28, 30));
+		
+		int posX = 10;
+		for (PanelEntry entry: _entries) {
+			final PanelEntry e = entry;
+			
+			TextView label = new TextView(new Vector2f(160, 36));
+			label.setColor(new Color(120, 255, 255));
+			label.setPosition(new Vector2f(posX, 6));
+			label.setString(e.label);
+			label.setCharacterSize(20);
+			label.setPadding(3, 8);
+			label.setBackgroundColor(new Color(29, 85, 96, 100));
+			label.setOnFocusListener(new OnFocusListener() {
+				@Override
+				public void onEnter(View view) {
+					view.setBackgroundColor(new Color(29, 85, 96, 180));
+				}
 
-		TextView lbEngineering = new TextView(new Vector2f(140, 36));
-		lbEngineering.setCharacterSize(14);
-		lbEngineering.setColor(Color.WHITE);
-		lbEngineering.setString("Build");
-		lbEngineering.setPadding(8, 20, 10, 50);
-		lbEngineering.setBackgroundColor(new Color(0, 0, 255, 180));
-		lbEngineering.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				userInterface.setMode(UserInterface.Mode.BUILD);
-			}
-		});
-		lbEngineering.setPosition(new Vector2f(10, 6));
-		addView(lbEngineering);
-
-		ButtonView lbOperation = new ButtonView(new Vector2f(140, 36));
-		lbOperation.setString(Strings.JOBS);
-		lbOperation.setOnFocusListener(new OnFocusListener() {			
-			@Override
-			public void onExit(View view) {
-				view.setBackgroundColor(new Color(0, 255, 0, 180));
-			}
-
-			@Override
-			public void onEnter(View view) {
-				view.setBackgroundColor(Color.RED);
-			}
-		});
-		//		lbOperation.setCharacterSize(14);
-		//		lbOperation.setColor(Color.WHITE);
-		lbOperation.setBackgroundColor(new Color(0, 255, 0, 180));
-		lbOperation.setPosition(new Vector2f(160, 6));
-		//	lbOperation.setPadding(8, 20, 10, 50);
-		lbOperation.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				userInterface.setMode(UserInterface.Mode.JOBS);
-			}
-		});
-		addView(lbOperation);
-
-		TextView lbCrew = new TextView(new Vector2f(140, 36));
-		lbCrew.setCharacterSize(14);
-		lbCrew.setColor(Color.WHITE);
-		lbCrew.setPadding(8, 20, 10, 50);
-		lbCrew.setBackgroundColor(new Color(0, 255, 255, 180));
-		lbCrew.setPosition(new Vector2f(310, 6));
-		lbCrew.setString("Crew");
-		lbCrew.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				userInterface.setMode(UserInterface.Mode.CREW);
-			}
-		});
-		addView(lbCrew);
-
-		TextView lbRoom = new TextView(new Vector2f(140, 36));
-		lbRoom.setCharacterSize(14);
-		lbRoom.setColor(Color.WHITE);
-		lbRoom.setPadding(8, 20, 10, 50);
-		lbRoom.setBackgroundColor(new Color(0, 150, 180, 255));
-		lbRoom.setPosition(new Vector2f(460, 6));
-		lbRoom.setString("Room");
-		lbRoom.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				userInterface.setMode(UserInterface.Mode.ROOM);
-			}
-		});
-		addView(lbRoom);
-
-		TextView lbDebug = new TextView(new Vector2f(140, 36));
-		lbDebug.setCharacterSize(14);
-		lbDebug.setColor(Color.WHITE);
-		lbDebug.setPadding(8, 20, 10, 45);
-		lbDebug.setBackgroundColor(new Color(150, 200, 180, 255));
-		lbDebug.setPosition(new Vector2f(610, 6));
-		lbDebug.setString("Debug");
-		lbDebug.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				userInterface.setMode(UserInterface.Mode.DEBUG);
-			}
-		});
-		addView(lbDebug);
-
-		TextView lbOrders = new TextView(new Vector2f(140, 36));
-		lbOrders.setCharacterSize(14);
-		lbOrders.setColor(Color.WHITE);
-		lbOrders.setPadding(8, 20, 10, 45);
-		lbOrders.setBackgroundColor(new Color(250, 120, 180, 255));
-		lbOrders.setPosition(new Vector2f(760, 6));
-		lbOrders.setString("Plan");
-		lbOrders.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				userInterface.setMode(UserInterface.Mode.PLAN);
-			}
-		});
-		addView(lbOrders);
+				@Override
+				public void onExit(View view) {
+					view.setBackgroundColor(new Color(29, 85, 96, 100));
+				}
+			});
+			label.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					userInterface.setMode(e.mode);
+				}
+			});
+			addView(label);
+			
+			TextView shortcut = new TextView(new Vector2f(160, 36));
+			shortcut.setColor(new Color(176, 205, 53));
+			shortcut.setPosition(new Vector2f(posX + (int)(e.shortcutPos * 11.8), 6));
+			shortcut.setString(e.shortcut);
+			shortcut.setCharacterSize(20);
+			shortcut.setPadding(3, 8);
+			shortcut.setStyle(TextView.UNDERLINED);
+			addView(shortcut);
+			
+			posX += 170;
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package alone.in.deepspace.ui;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
@@ -105,5 +106,9 @@ public abstract class UserSubInterface extends FrameLayout {
 
 		return false;
 	}
-
+	
+	public void onRefresh(int update) {
+		
+	}
+	
 }

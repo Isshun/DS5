@@ -115,6 +115,8 @@ public class Game implements ISavable {
 		// Foes
 		_FoeManager.checkSurroundings();
 
+		_ui.onRefresh(_update);
+		
 		_update++;
 	}
 

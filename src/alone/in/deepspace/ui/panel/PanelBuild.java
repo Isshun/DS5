@@ -123,7 +123,7 @@ public class PanelBuild extends UserSubInterface {
 			for (CategoryInfo category: categories) {
 				if (posY > 42) {
 					TextView lbQuarter = new TextView(new Vector2f(140, 32));
-					lbQuarter.setString(category.label);
+					lbQuarter.setString(category.label.toUpperCase() + "................");
 					lbQuarter.setCharacterSize(20);
 					lbQuarter.setPosition(new Vector2f(20, posY + 8));
 					addView(lbQuarter);

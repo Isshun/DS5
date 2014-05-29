@@ -3,6 +3,8 @@ package alone.in.deepspace;
 public class Strings {
 	public static final String LB_STORAGE_CONTAINS = "Contains";
 	public static final String LB_NEEDS = "Needs";
+	public static final String LB_CHARACTER_INFO_JOB = "Current occupation";
+	public static final String CHARACTER_SAY_SLEEP = "I sleep well";
 	public static String LB_NO_JOB = "no job";
 	public static String LB_GATHER = "gather";
 	public static String JOBS = "Jobs";
@@ -17,7 +19,7 @@ public class Strings {
 	public static String CHARACTER_SAY_TIRED = "I'm a little tired";
 	public static String CHARACTER_SAY_HUNGRY = "I'm hungry";
 	public static String CHARACTER_SAY_STARVING = "I'm starving";
-	public static String CHARACTER_SAY_LONELY = "I feel lonely...";
+	public static String CHARACTER_SAY_LONELY = "I feel lonely";
 	public static String CHARACTER_SAY_LOW_OXYGEN = "It's hard to breath";
 	public static String CHARACTER_SAY_NO_OXYGEN = "I can't breath !";
 	public static String CHARACTER_SAY_NOWHERE_TO_SLEEP = "I have nowhere to sleep";
