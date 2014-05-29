@@ -9,10 +9,18 @@ import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse;
 
+import alone.in.deepspace.engine.ui.ColorView;
 import alone.in.deepspace.engine.ui.FrameLayout;
+import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.util.Constant;
 
 public abstract class UserSubInterface extends FrameLayout {
+	
+	protected static final Color COLOR_TEXT = new Color(120, 255, 255);
+	protected static final Color COLOR_LABEL = Color.WHITE;
+	protected static final int FONT_SIZE = 22;
+	protected static final int FONT_SIZE_SMALL = 14;
+
 	protected Texture	_texturePanel;
 	protected Texture	_textureTile;
 	protected Sprite	_bgPanel;
@@ -35,6 +43,12 @@ public abstract class UserSubInterface extends FrameLayout {
 	public UserSubInterface(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size) {
 		super(size);
 		
+		setBackgroundColor(new Color(18, 28, 30));
+
+		View border = new ColorView(new Vector2f(4, size.y));
+		border.setBackgroundColor(new Color(37, 70, 72));
+		addView(border);
+
 		setPosition(pos);
 		
 		_posTileX = (Constant.MENU_TILE_WIDTH + Constant.UI_PADDING + Constant.UI_PADDING) * tileIndex + Constant.UI_PADDING;
@@ -54,8 +68,6 @@ public abstract class UserSubInterface extends FrameLayout {
 //		_bgPanel = new Sprite();
 //		_bgPanel.setTexture(_texturePanel);
 //		_bgPanel.setTextureRect(new IntRect(0, 0, 800, 600));
-		
-		setBackgroundColor(new Color(0, 0, 0, 180));
 	}
 
 	protected boolean	checkKey(Keyboard.Key key) {

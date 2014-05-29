@@ -30,17 +30,17 @@ public class JobRenderer implements IRenderer {
 
 
 	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
-		RectangleShape rectangleItem = new RectangleShape(new Vector2f(Constant.TILE_WIDTH, Constant.TILE_HEIGHT));
-
-		List<Job> jobs = JobManager.getInstance().getJobs();
-		for (Job job: jobs) {
-			if (job.getAction() != Action.USE || job.isActive()) {
-				Color color = job.getColor();
-				rectangleItem.setFillColor(new Color(color.r, color.g, color.b, 100));
-				rectangleItem.setPosition(new Vector2f(job.getX() * Constant.TILE_WIDTH, job.getY() * Constant.TILE_HEIGHT));
-				app.draw(rectangleItem, render);
-			}
-		}
+//		RectangleShape rectangleItem = new RectangleShape(new Vector2f(Constant.TILE_WIDTH, Constant.TILE_HEIGHT));
+//
+//		List<Job> jobs = JobManager.getInstance().getJobs();
+//		for (Job job: jobs) {
+//			if (job.getAction() != Action.USE || job.isActive()) {
+//				Color color = job.getColor();
+//				rectangleItem.setFillColor(new Color(color.r, color.g, color.b, 100));
+//				rectangleItem.setPosition(new Vector2f(job.getX() * Constant.TILE_WIDTH, job.getY() * Constant.TILE_HEIGHT));
+//				app.draw(rectangleItem, render);
+//			}
+//		}
 	}
 
 }

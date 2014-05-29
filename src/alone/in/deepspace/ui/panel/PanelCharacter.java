@@ -24,11 +24,11 @@ import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Character.Gender;
 import alone.in.deepspace.model.CharacterNeeds;
 import alone.in.deepspace.model.CharacterRelation;
-import alone.in.deepspace.model.CharacterStatus;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Settings;
+import alone.in.deepspace.util.StringUtils;
 
 public class PanelCharacter extends UserSubInterface {
 	private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "unused", "Work"};
@@ -45,8 +45,6 @@ public class PanelCharacter extends UserSubInterface {
 	private static final int NB_COLUMNS = 47;
 	private static final int NB_COLUMNS_NEEDS = 22;
 
-	private static final Color COLOR_TEXT = new Color(120, 255, 255);
-	private static final Color COLOR_LABEL = Color.WHITE;
 	private static final Color COLOR_0 = new Color(120, 255, 255);
 	private static final Color COLOR_1 = new Color(59, 247, 232);
 	private static final Color COLOR_2 = new Color(214, 247, 59);
@@ -98,15 +96,13 @@ public class PanelCharacter extends UserSubInterface {
 
 	private int _animGauge;
 
+	private String _lastEnlisted;
+
+	private TextView _lbEnlisted;
+
 	public PanelCharacter(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 
-		setBackgroundColor(new Color(18, 28, 30));
-
-		View border = new ColorView(new Vector2f(4, FRAME_HEIGHT));
-		border.setBackgroundColor(new Color(37, 70, 72));
-		addView(border);
-		
 		_cursor = new ColorView(new Vector2f(8, 16));
 		_cursor.setBackgroundColor(COLOR_TEXT);
 		addView(_cursor);
@@ -126,14 +122,34 @@ public class PanelCharacter extends UserSubInterface {
 		_lbName.setPosition(new Vector2f(20, 18));
 		addView(_lbName);
 
-		createBasicInformation(20, 64);
-		createNeedsInfo(20, 186);
+		createReport(20, 64);
+		createBasicInformation(20, 144);
+		createNeedsInfo(20, 266);
 		createJobInfo(20, 530);
 		createInventoryInfo(20, 610);
 		createFamilyInfo(20, 700);
 		if (Settings.getInstance().isDebug()) {
 			createDebug(20, 850);
 		}
+	}
+
+	private void createReport(int x, int y) {
+		int posY = y;
+		int posX = x;
+		
+		TextView text = new TextView();
+		text.setCharacterSize(FONT_SIZE);
+		text.setColor(COLOR_LABEL);
+		text.setString("Last report");
+		text.setPosition(posX, posY);
+		addView(text);
+		posY += 32;
+		
+		_lbState = new TextView(null);
+		_lbState.setCharacterSize(FONT_SIZE_SMALL);
+		_lbState.setColor(COLOR_TEXT);
+		_lbState.setPosition(new Vector2f(posX, posY));
+		addView(_lbState);
 	}
 
 	private void createBasicInformation(int x, int y) {
@@ -171,24 +187,12 @@ public class PanelCharacter extends UserSubInterface {
 		addView(_lbProfession);
 		posY += 20;
 
-		_lbState = new TextView(null);
-		_lbState.setCharacterSize(FONT_SIZE_SMALL);
-		_lbState.setColor(COLOR_TEXT);
-		_lbState.setPosition(new Vector2f(posX, posY));
-		addView(_lbState);
-	}
-
-	private String getDashedString(String label, String value, int columns) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(label);
-		
-		for (int i = columns - label.length() - value.length(); i > 0; i--) {
-			sb.append('.');
-		}
-		
-		sb.append(value);
-		
-		return sb.toString();
+		_lbEnlisted = new TextView(null);
+		_lbEnlisted.setCharacterSize(FONT_SIZE_SMALL);
+		_lbEnlisted.setColor(COLOR_TEXT);
+		_lbEnlisted.setPosition(new Vector2f(posX, posY));
+		addView(_lbEnlisted);
+		posY += 20;
 	}
 
 	private void createDebug(int x, int y) {
@@ -477,11 +481,15 @@ public class PanelCharacter extends UserSubInterface {
 		
 		if (_character != null) {
 			
+			String status = _character.getStatus().getThoughts();
+			String time = _character.getStatus().getLastReportDelay() + "sec. ago";
+			_lbState.setString(StringUtils.getDashedString(status, time, NB_COLUMNS));
+			
 			// Old
 			int old = (int)_character.getOld();
 			if (old != _lastOld) {
 				_lastOld = old;
-				startAnim(_lbOld, getDashedString("Old", String.valueOf(old), NB_COLUMNS));
+				startAnim(_lbOld, StringUtils.getDashedString("Old", String.valueOf(old), NB_COLUMNS));
 				return;
 			}
 
@@ -489,7 +497,7 @@ public class PanelCharacter extends UserSubInterface {
 			Gender gender = _character.getGender();
 			if (!gender.equals(_lastGender)) {
 				_lastGender = gender;
-				startAnim(_lbGender, getDashedString("Gender:", Gender.MALE.equals(gender) ? "male" : "female", NB_COLUMNS));
+				startAnim(_lbGender, StringUtils.getDashedString("Gender:", Gender.MALE.equals(gender) ? "male" : "female", NB_COLUMNS));
 				return;
 			}
 			
@@ -497,17 +505,30 @@ public class PanelCharacter extends UserSubInterface {
 			Profession profession = _character.getProfession();
 			if (!profession.equals(_lastProfession)) {
 				_lastProfession = profession;
-				startAnim(_lbProfession, getDashedString("Profession:", profession.getName(), NB_COLUMNS));
+				startAnim(_lbProfession, StringUtils.getDashedString("Profession:", profession.getName(), NB_COLUMNS));
+				return;
+			}
+
+			// Enlist
+			String enlisted = _character.getEnlisted();
+			if (!enlisted.equals(_lastEnlisted)) {
+				_lastEnlisted = enlisted;
+				startAnim(_lbEnlisted, StringUtils.getDashedString("Enlisted since:", enlisted, NB_COLUMNS));
 				return;
 			}
 			
-			// Thoughts
-			String thoughts = _character.getStatus().getThoughts();
-			if (!thoughts.equals(_lastThoughts)) {
-				_lastThoughts = thoughts;
-				startAnim(_lbState, getDashedString("Last report:", thoughts, NB_COLUMNS));
-				return;
-			}
+			
+			
+
+
+			
+//			// Thoughts
+//			String thoughts = _character.getStatus().getThoughts();
+//			if (!thoughts.equals(_lastThoughts)) {
+//				_lastThoughts = thoughts;
+//				startAnim(_lbState, getDashedString("Last report:", thoughts, NB_COLUMNS));
+//				return;
+//			}
 		}
 	}
 	
@@ -564,7 +585,7 @@ public class PanelCharacter extends UserSubInterface {
 				_shapes[i].setTextureRect(new IntRect(0, level * 16, (int)size, 12));
 				app.draw(_shapes[i], _render);
 				
-				_values[i].setString(getDashedString(texts[i], String.valueOf(value), NB_COLUMNS_NEEDS));
+				_values[i].setString(StringUtils.getDashedString(texts[i], String.valueOf(value), NB_COLUMNS_NEEDS));
 				_values[i].setColor(color);
 				_values[i].setVisible(true);
 

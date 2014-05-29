@@ -193,14 +193,18 @@ public class Character extends Movable {
 			return;
 		}
 
-		Log.debug("set new job");
-
+		// Cancel previous job
 		if (_job != null) {
 			JobManager.getInstance().abort(_job, Job.Abort.INTERRUPTE);
 		}
+
+		// Set new job
+		_job = job;
+
+		// Launche new job if not null
 		if (job != null) {
+			Log.debug("set new job");
 			job.setCharacter(this);
-			_job = job;
 			_toX = job.getX();
 			_toY = job.getY();
 			if (_posX != job.getX() || _posY != job.getY()) {
@@ -838,6 +842,10 @@ public class Character extends Movable {
 			}
 		}
 		return null;
+	}
+
+	public String getEnlisted() {
+		return "april 25";
 	}
 
 }

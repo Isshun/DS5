@@ -97,4 +97,8 @@ public class CharacterStatus {
 		_thoughtsShort = Strings.THOUGHTS_GOOD;
 	}
 
+	public int getLastReportDelay() {
+		return 1;
+	}
+
 }

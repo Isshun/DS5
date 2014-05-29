@@ -126,6 +126,8 @@ public class Game implements ISavable {
 		
 		ResourceManager.getInstance().update();
 		_characterManager.onLongUpdate();
+		
+		System.gc();
 	}
 
 	public void onEvent(Event event) throws IOException {

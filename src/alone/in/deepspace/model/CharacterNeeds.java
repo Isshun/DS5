@@ -107,7 +107,6 @@ public class CharacterNeeds {
 			_happiness = Math.max(_happiness - 0.5f, 0.0f);
 			_health = Math.max(_health - 0.1f, 0.0f);
 			if (_sleeping <= 0) {
-				System.out.println("change 1");
 				_energy = (int) Math.max(_energy - 1.0f, 0.0f);
 			}
 		}

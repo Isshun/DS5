@@ -1,27 +1,96 @@
 BEGIN GAME
-MATTER	15598
+MATTER	12386
 SPICE	0
 WATER	0
 END GAME
 BEGIN CHARACTERS
-16	10	1	Tom "Six" Anders
-12	10	1	Jonathan Anders
-16	10	2	Ellen "Starbuck" Joyce
-16	10	2	Kathryn Joyce
-16	10	1	Matt "Boomer" Miller
-27	9	1	Lewis Joyce
-27	9	2	Vic "Starbuck" Miller
-6	15	2	Jadzia Miller
-6	11	2	Janice Joyce
-18	8	1	Saul "Crashdown" Miller
-16	10	2	Willow Joyce
-12	11	2	Beverly Joyce
-16	10	2	Willow Anders
-16	10	1	Samuel Joyce
-17	8	1	Tom "Doc" Joyce
-6	7	1	Lee "Helo" Miller
-27	11	2	Samantha Miller
-16	10	1	Benjamin Anders
+27	14	2	Kathryn Hanson
+27	14	2	Ezri "Six" Quinn
+20	9	1	Samuel Meyer
+27	14	1	Lewis Nunez
+12	10	1	Michael Hicks
+27	14	2	Amy "Dee" Washington
+12	11	1	Lee "Hotdog" Quinn
+27	14	2	Kathryn Marquez
+27	14	2	Jadzia Carrillo
+18	9	2	Beverly Cabrera
+27	14	2	Jadzia Ford
+27	14	2	Alice Andrade
+27	14	1	Tom "Apollo" Pugh
+31	11	2	Tasha Alvarado
+18	10	1	Matt "Six" Tanner
+27	14	2	Jadzia Morris
+27	14	2	Wade "Trip" Nunez
+27	14	2	Tasha Mcbride
+27	14	2	Kara "Hotdog" Valencia
+17	11	2	Beverly Tanner
+27	14	1	Tom "Crashdown" Pope
+27	14	1	Matt "Jammer" Washington
+27	14	2	Beverly Quinn
+27	14	1	Bill "Mac" Morris
+22	9	2	Alice Price
+27	14	2	Tasha Cook
+24	10	1	Bill "Klaus" Quinn
+12	7	1	Saul "Hardball" Cunningham
+27	14	1	Samuel Price
+24	10	1	Tom "Oz" Price
+32	1	2	Emma "Six" Pope
+32	8	2	Kathryn Price
+24	10	2	Jadzia Cunningham
+27	14	1	Bill "Jammer" Merritt
+31	8	1	Samuel Hanson
+33	1	1	Matt "Betty" Cabrera
+32	4	2	Beverly Pugh
+31	1	2	Kara "Klaus" Lopez
+27	14	2	Tasha Parker
+17	9	1	Lewis Cook
+27	14	2	Samantha Atkins
+12	7	2	Kathryn Cummings
+20	11	2	Ezri "Oz" Price
+12	7	1	Tom "Helo" Price
+12	7	1	Lee "Betty" Washington
+12	7	2	Samantha Mcbride
+27	14	2	Beverly Andrade
+27	14	1	Gaius Price
+27	14	1	Adam "Six" Hanson
+17	8	2	Ellen "Starbuck" Washington
+27	14	1	Saul "Crashdown" Mcbride
+22	10	1	Adam "Mac" Andrade
+27	14	2	Tory "Betty" Morris
+18	9	2	Jadzia Pope
+9	12	2	Samantha Cabrera
+11	11	2	Kara "Apollo" Price
+31	4	2	Kara "Trip" Price
+33	4	1	Benjamin Tanner
+32	11	1	Benjamin Pugh
+28	1	2	Janice Quinn
+33	8	2	Tory "Oz" Cook
+22	11	1	Lee "Apollo" Washington
+12	7	2	Samantha Mcbride
+16	9	1	Tom "Hardball" Andrade
+27	14	2	Willow Morris
+16	11	2	Ellen "Helo" Pope
+27	14	1	Saul "Dee" Cabrera
+27	14	1	Galen Price
+12	7	2	Emma "Dee" Nunez
+27	14	2	Willow Tanner
+27	14	1	Jonathan Pugh
+18	11	2	Amy "Apollo" Quinn
+27	14	2	Tasha Cook
+27	14	2	Tasha Cunningham
+27	14	2	Kathryn Washington
+27	14	2	Kathryn Mcbride
+27	14	1	Galen Andrade
+24	10	1	Lee "Crashdown" Morris
+21	11	2	Janice Pope
+27	14	1	Lewis Cabrera
+27	14	2	Willow Price
+27	14	1	Jack "Jammer" Nunez
+27	14	2	Beverly Tanner
+16	10	2	Beverly Pugh
+21	9	1	Samuel Quinn
+27	14	1	Michael Cook
+17	9	2	Tasha Cunningham
 END CHARACTERS
 BEGIN ROOMS
 3	31	1	0
@@ -490,8 +559,6 @@ BEGIN ROOMS
 26	44	4	0
 26	45	4	0
 26	46	4	0
-27	4	1	0
-27	5	1	0
 27	14	4	0
 27	15	4	0
 27	26	1	0

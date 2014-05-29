@@ -5183,7 +5183,7 @@ areas:
       inventory: [base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
         base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
         base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed]
+        base.seaweed, base.seaweed, base.seaweed, base.seaweed]
       matter: 0
       name: null
   resource: null
@@ -5203,7 +5203,7 @@ areas:
   x: 17
   y: 9
   z: 0
-- item: null
+- item: {matter: 42, name: base.test, storage: null}
   resource: null
   structure: {matter: 1, name: base.floor}
   x: 17
@@ -6403,7 +6403,7 @@ areas:
   x: 21
   y: 9
   z: 0
-- item: null
+- item: {matter: 42, name: base.test, storage: null}
   resource: null
   structure: {matter: 1, name: base.floor}
   x: 21
@@ -7307,10 +7307,10 @@ areas:
     matter: 42
     name: base.storage
     storage:
-      acceptConsomable: false
-      acceptDrink: false
-      acceptFood: false
-      acceptGarbage: false
+      acceptConsomable: true
+      acceptDrink: true
+      acceptFood: true
+      acceptGarbage: true
       inventory: [base.matter, base.matter, base.matter, base.matter, base.matter,
         base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
         base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
@@ -7389,59 +7389,17 @@ areas:
         base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
         base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
         base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
         base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
+        base.seaweed, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
         base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
         base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
         base.seaweed, base.seaweed, base.seaweed, base.matter, base.matter, base.matter,
         base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
-        base.matter, base.matter, base.matter, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.matter, base.matter,
-        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
-        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
-        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
-        base.matter, base.matter, base.matter, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
-        base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed, base.seaweed,
         base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
         base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
         base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
@@ -7462,7 +7420,49 @@ areas:
         base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
         base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
         base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
-        base.matter, base.matter, base.matter, base.matter]
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.matter, base.matter, base.matter, base.matter, base.matter,
+        base.matter, base.meal, base.meal, base.meal, base.meal, base.meal, base.meal,
+        base.meal, base.meal, base.meal, base.meal, base.meal, base.meal]
       matter: 0
       name: null
   resource: null
@@ -8605,86 +8605,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 28
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 6
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 10, name: base.light, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 28
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 31}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 28
   y: 13
   z: 0
@@ -8905,86 +8905,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 29
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 29
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 29
   y: 13
   z: 0
@@ -9205,86 +9205,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 30
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 30
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 30
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 30
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 30
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 30
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 30
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 30
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 30
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 30
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 30
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 30
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 30
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 30
   y: 13
   z: 0
@@ -9505,86 +9505,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 31
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 31
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 31
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 31
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 31
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 31
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 31
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 31
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 31
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 31
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 31
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 31
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 31
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 31
   y: 13
   z: 0
@@ -9805,86 +9805,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 32
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 32
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 32
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 32
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 32
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 32
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 32
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 32
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 32
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 32
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 32
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 32
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 32
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 32
   y: 13
   z: 0
@@ -10105,86 +10105,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 33
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 33
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 33
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 33
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 33
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 33
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 33
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 33
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 33
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 33
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 33
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 33
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 33
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 33
   y: 13
   z: 0
@@ -10405,86 +10405,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 34
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 34
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 34
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 34
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 34
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 34
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 34
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 34
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 34
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 34
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 34
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 34
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 34
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 34
   y: 13
   z: 0
@@ -10705,86 +10705,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 35
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 35
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 35
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 35
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 35
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 35
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 35
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 35
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 35
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 35
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 35
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 35
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 35
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 35
   y: 13
   z: 0
@@ -11005,86 +11005,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 36
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 36
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 36
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 36
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 36
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 36
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 36
   y: 6
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 0, name: base.light, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 36
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 36
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 36
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 36
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 36
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 36
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 36
   y: 13
   z: 0
@@ -11305,86 +11305,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 37
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 37
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 37
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 37
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 37
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 37
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 37
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 37
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 37
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 37
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 37
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 37
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 37
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 37
   y: 13
   z: 0
@@ -11605,86 +11605,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 38
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 38
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 38
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 38
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 38
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 38
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 38
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 38
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 38
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 38
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 38
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 38
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 38
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 38
   y: 13
   z: 0
@@ -11905,86 +11905,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 39
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 39
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 39
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 39
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 39
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 39
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 39
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 39
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 39
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 39
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 39
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 39
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 39
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 39
   y: 13
   z: 0
@@ -12205,86 +12205,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 40
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 40
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 40
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 40
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 40
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 40
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 40
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 40
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 40
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 40
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 40
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 40
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 40
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 40
   y: 13
   z: 0
@@ -12505,86 +12505,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 41
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 41
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 41
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 41
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 41
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 41
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 41
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 41
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 41
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 41
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 41
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 41
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 41
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 41
   y: 13
   z: 0
@@ -12805,86 +12805,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 42
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 42
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 42
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 42
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 42
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 42
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 42
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 42
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 42
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 42
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 42
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 42
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 42
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 42
   y: 13
   z: 0
@@ -13105,86 +13105,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 43
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 43
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 43
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 43
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 43
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 43
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 43
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 43
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 43
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 43
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 43
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 43
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 43
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 43
   y: 13
   z: 0
@@ -13405,86 +13405,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 44
   y: 0
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 44
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 44
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 44
   y: 3
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 44
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 44
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 44
   y: 6
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 10, name: base.light, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 44
   y: 7
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 44
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 44
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 44
   y: 10
   z: 0
-- item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+- item: {matter: 42, name: base.bed, storage: null}
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 44
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.floor}
   x: 44
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 44
   y: 13
   z: 0
@@ -13705,86 +13705,86 @@ areas:
   y: 49
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 0
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 1
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 2
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 3
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 4
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 5
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 6
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 7
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 8
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 9
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 10
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 11
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 12
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0}
-  structure: null
+  resource: null
+  structure: {matter: 1, name: base.wall}
   x: 45
   y: 13
   z: 0

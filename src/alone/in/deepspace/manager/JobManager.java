@@ -37,6 +37,8 @@ public class JobManager {
 	private List<BaseItem> 		_routineItems;
 	private int 				_id;
 
+	private int _nbVisibleJob;
+
 	JobManager() {
 		Log.debug("JobManager");
 
@@ -110,7 +112,7 @@ public class JobManager {
 		}
 
 		for (Job job: toRemove) {
-			_jobs.remove(job);
+			removeJob(job);
 		}
 	}
 
@@ -324,31 +326,35 @@ public class JobManager {
 	public void	abort(Job job, Abort reason) {
 		Log.debug("Job abort: " + job.getId());
 
+		// Already aborted
+		if (job.getStatus() == JobStatus.ABORTED) {
+			return;
+		}
+
 		job.setStatus(JobStatus.ABORTED);
+
+		// Job is invalid, don't resume
+		if (reason == Job.Abort.INVALID) {
+			removeJob(job);
+			return;
+		}
 		
-		// Job is invalid or USE action, don't resume
-		if (reason == Job.Abort.INVALID || job.getAction() == Action.USE) {
-			_jobs.remove(job);
-			if (job.getItem() != null) {
-				job.getItem().setOwner(null);
-			}
-			
-			if (job.getSlot() != null) {
-				job.getSlot().getItem().releaseSlot(job.getSlot());
-			}
+		// Job is USE or MOVE action, don't resume
+		if (job.getAction() == Action.MOVE || job.getAction() == Action.USE) {
+			removeJob(job);
+			return;
 		}
 
 		// Regular job, reset
-		else {
-			job.setFail(reason, Game.getFrame());
-			job.setCharacter(null);
-		}
+		job.setFail(reason, Game.getFrame());
+		job.setCharacter(null);
 	}
 
-	public void	complete(Job job) {
-		Log.debug("Job complete: " + job.getId());
-
-		job.setStatus(JobStatus.COMPLETE);
+	private void removeJob(Job job) {
+		if (job.getCharacter() != null) {
+			job.getCharacter().setJob(null);
+			job.setCharacter(null);
+		}
 		
 		if (job.getItem() != null) {
 			job.getItem().setOwner(null);
@@ -358,11 +364,26 @@ public class JobManager {
 			job.getSlot().getItem().releaseSlot(job.getSlot());
 		}
 		
-		_jobs.remove(job);
+		if (_jobs.remove(job) && Action.MOVE.equals(job.getAction()) == false) {
+			_nbVisibleJob--;
+		}
+	}
+
+	public void	complete(Job job) {
+		Log.debug("Job complete: " + job.getId());
+
+		job.setStatus(JobStatus.COMPLETE);
+		
+		removeJob(job);
 	}
 
 	public void	addJob(Job job) {
 		if (job != null && _jobs.contains(job) == false) {
+			
+			if (Action.MOVE.equals(job.getAction()) == false) {
+				_nbVisibleJob++;
+			}
+			
 			_jobs.add(job);
 		}
 	}
@@ -578,5 +599,9 @@ public class JobManager {
 		if (job != null) {
 			addJob(job);
 		}
+	}
+
+	public int getNbVisibleJob() {
+		return _nbVisibleJob;
 	}
 }
