@@ -1,96 +1,851 @@
 BEGIN GAME
-MATTER	12386
+MATTER	5266
 SPICE	0
 WATER	0
 END GAME
 BEGIN CHARACTERS
-27	14	2	Kathryn Hanson
-27	14	2	Ezri "Six" Quinn
-20	9	1	Samuel Meyer
-27	14	1	Lewis Nunez
-12	10	1	Michael Hicks
-27	14	2	Amy "Dee" Washington
-12	11	1	Lee "Hotdog" Quinn
-27	14	2	Kathryn Marquez
-27	14	2	Jadzia Carrillo
-18	9	2	Beverly Cabrera
-27	14	2	Jadzia Ford
-27	14	2	Alice Andrade
-27	14	1	Tom "Apollo" Pugh
-31	11	2	Tasha Alvarado
-18	10	1	Matt "Six" Tanner
-27	14	2	Jadzia Morris
-27	14	2	Wade "Trip" Nunez
-27	14	2	Tasha Mcbride
-27	14	2	Kara "Hotdog" Valencia
-17	11	2	Beverly Tanner
-27	14	1	Tom "Crashdown" Pope
-27	14	1	Matt "Jammer" Washington
-27	14	2	Beverly Quinn
-27	14	1	Bill "Mac" Morris
-22	9	2	Alice Price
-27	14	2	Tasha Cook
-24	10	1	Bill "Klaus" Quinn
+39	17	2	Kathryn Washington
+27	15	2	Ezri "Six" Quinn
+12	7	1	Samuel Meyer
+12	7	1	Lewis Nunez
+38	23	1	Michael Hicks
+12	7	2	Amy "Dee" Washington
+12	7	1	Lee "Hotdog" Quinn
+35	14	2	Kathryn Merritt
+12	7	2	Jadzia Andrade
+12	7	2	Beverly Hanson
+27	14	2	Jadzia Washington
+12	7	2	Alice Hanson
+12	7	1	Tom "Apollo" Pugh
+12	7	2	Tasha Mcbride
+30	8	1	Matt "Six" Tanner
+36	1	2	Jadzia Washington
+27	15	2	Wade "Trip" Price
+27	15	2	Tasha Hanson
+44	14	2	Kara "Hotdog" Valencia
+34	23	2	Beverly Price
+12	7	1	Tom "Crashdown" Pope
+12	7	1	Matt "Jammer" Washington
+27	15	2	Beverly Quinn
+27	15	1	Bill "Mac" Morris
+12	7	2	Alice Pugh
+12	7	2	Tasha Pope
+12	7	1	Bill "Klaus" Quinn
 12	7	1	Saul "Hardball" Cunningham
-27	14	1	Samuel Price
-24	10	1	Tom "Oz" Price
-32	1	2	Emma "Six" Pope
-32	8	2	Kathryn Price
-24	10	2	Jadzia Cunningham
-27	14	1	Bill "Jammer" Merritt
-31	8	1	Samuel Hanson
-33	1	1	Matt "Betty" Cabrera
-32	4	2	Beverly Pugh
-31	1	2	Kara "Klaus" Lopez
-27	14	2	Tasha Parker
-17	9	1	Lewis Cook
-27	14	2	Samantha Atkins
-12	7	2	Kathryn Cummings
-20	11	2	Ezri "Oz" Price
+12	7	1	Samuel Price
+12	7	1	Tom "Oz" Price
+12	7	2	Emma "Six" Hanson
+10	1	2	Kathryn Pugh
+27	14	2	Jadzia Cabrera
+36	17	1	Bill "Jammer" Merritt
+27	15	1	Samuel Hanson
+12	7	1	Matt "Betty" Cabrera
+12	7	2	Beverly Pugh
+12	7	2	Kara "Klaus" Hanson
+29	11	2	Tasha Quinn
+40	14	1	Lewis Cook
+27	15	2	Samantha Pope
+12	7	2	Kathryn Andrade
+12	7	2	Ezri "Oz" Andrade
 12	7	1	Tom "Helo" Price
-12	7	1	Lee "Betty" Washington
+28	23	1	Lee "Betty" Washington
 12	7	2	Samantha Mcbride
-27	14	2	Beverly Andrade
-27	14	1	Gaius Price
-27	14	1	Adam "Six" Hanson
-17	8	2	Ellen "Starbuck" Washington
-27	14	1	Saul "Crashdown" Mcbride
-22	10	1	Adam "Mac" Andrade
-27	14	2	Tory "Betty" Morris
-18	9	2	Jadzia Pope
-9	12	2	Samantha Cabrera
-11	11	2	Kara "Apollo" Price
-31	4	2	Kara "Trip" Price
-33	4	1	Benjamin Tanner
-32	11	1	Benjamin Pugh
-28	1	2	Janice Quinn
-33	8	2	Tory "Oz" Cook
-22	11	1	Lee "Apollo" Washington
-12	7	2	Samantha Mcbride
-16	9	1	Tom "Hardball" Andrade
-27	14	2	Willow Morris
-16	11	2	Ellen "Helo" Pope
-27	14	1	Saul "Dee" Cabrera
-27	14	1	Galen Price
-12	7	2	Emma "Dee" Nunez
-27	14	2	Willow Tanner
-27	14	1	Jonathan Pugh
-18	11	2	Amy "Apollo" Quinn
-27	14	2	Tasha Cook
-27	14	2	Tasha Cunningham
-27	14	2	Kathryn Washington
-27	14	2	Kathryn Mcbride
+27	15	2	Beverly Cabrera
+31	3	1	Gaius Price
+31	17	1	Adam "Six" Hanson
+12	7	2	Ellen "Starbuck" Washington
+12	7	1	Saul "Crashdown" Mcbride
+12	7	1	Adam "Mac" Andrade
+41	26	2	Tory "Betty" Hanson
+11	2	2	Jadzia Cabrera
+12	7	2	Samantha Price
+27	15	2	Kara "Apollo" Hanson
+12	7	2	Kara "Trip" Washington
+6	25	1	Benjamin Tanner
+12	7	1	Benjamin Pugh
+27	15	2	Janice Morris
+12	7	2	Tory "Oz" Hanson
+27	14	1	Lee "Apollo" Washington
+6	7	2	Samantha Washington
+12	7	1	Tom "Hardball" Andrade
+12	7	2	Willow Hanson
+16	11	2	Ellen "Helo" Cabrera
+12	7	1	Saul "Dee" Cabrera
+12	7	1	Galen Price
+12	7	2	Emma "Dee" Pugh
+37	17	2	Willow Cunningham
+12	7	1	Jonathan Pugh
+38	17	2	Amy "Apollo" Meyer
+35	23	2	Tasha Price
+11	2	2	Tasha Quinn
+14	10	2	Kathryn Tanner
+30	26	2	Kathryn Tanner
 27	14	1	Galen Andrade
-24	10	1	Lee "Crashdown" Morris
-21	11	2	Janice Pope
-27	14	1	Lewis Cabrera
-27	14	2	Willow Price
-27	14	1	Jack "Jammer" Nunez
-27	14	2	Beverly Tanner
-16	10	2	Beverly Pugh
-21	9	1	Samuel Quinn
-27	14	1	Michael Cook
-17	9	2	Tasha Cunningham
+12	7	1	Lee "Crashdown" Morris
+35	4	2	Janice Hanson
+12	7	1	Lewis Cabrera
+29	14	2	Willow Morris
+11	4	1	Jack "Jammer" Nunez
+27	14	2	Beverly Nunez
+12	7	2	Beverly Morris
+12	7	1	Samuel Quinn
+12	7	1	Michael Cook
+36	23	2	Tasha Hanson
+44	4	2	Claire Pugh
+12	7	2	Robbie Cabrera
+29	17	1	Ruben Price
+12	6	2	Annette Cabrera
+27	15	2	Jocelyn Morris
+39	26	2	Chandra Cabrera
+12	7	1	Julio Pugh
+12	7	2	Doreen Meyer
+8	29	1	Jamie Quinn
+12	7	2	Corrine Quinn
+12	7	2	Lidia Cook
+12	7	1	Travis Cabrera
+27	15	2	James Washington
+12	7	2	Lynette Quinn
+12	7	2	Daphne Pugh
+32	23	2	Rita Cabrera
+40	8	2	Claudine Mcbride
+17	12	1	Scott Morris
+12	7	1	Stephen Morris
+12	7	2	Genevieve Nunez
+12	7	1	Ramon Price
+12	7	1	Eddie Merritt
+12	9	1	Jared Washington
+7	24	2	Carole Pugh
+7	24	1	Dale Hanson
+12	7	2	Violet Tanner
+6	25	2	Lilia Hanson
+13	6	1	Dave Price
+27	14	2	Marina Cabrera
+12	7	2	April Price
+27	15	1	Lance Andrade
+12	7	1	Marion Quinn
+12	7	1	Terry Tanner
+12	7	2	Bonnie Quinn
+12	7	2	Noelle Price
+12	7	1	Frederick Cabrera
+28	4	1	Larry Quinn
+12	7	1	Cory Pope
+12	8	2	Robyn Hanson
+7	28	2	Corinne Nunez
+12	7	2	Dorothy Hicks
+12	7	1	Chad Pugh
+42	4	1	Clifford Andrade
+12	7	1	Herbert Price
+12	7	2	Britney Morris
+12	7	1	Harold Morris
+34	14	1	Gilbert Andrade
+12	7	2	Krista Quinn
+12	7	2	Benita Hanson
+6	21	2	Noreen Pugh
+27	14	1	Dean Tanner
+12	7	2	Ava Washington
+12	7	1	Alexander Hanson
+12	7	1	Gerald Morris
+27	14	1	Leonard Quinn
+27	15	2	Sasha Price
+12	7	1	Dave Cabrera
+12	7	2	Christie Tanner
+27	14	1	Tim Andrade
+12	7	1	Allen Cunningham
+12	7	1	Jesus Quinn
+27	14	2	Wendi Washington
+12	5	2	Bethany Cook
+27	14	1	Roy Washington
+12	7	1	Daryl Hanson
+12	7	1	Shawn Meyer
+27	14	1	Kent Morris
+12	7	1	Marvin Merritt
+27	14	1	Roger Hanson
+41	17	2	Sherrie Merritt
+34	11	1	Terrance Price
+12	7	1	Allan Cabrera
+12	8	2	Margaret Quinn
+29	4	1	Roland Quinn
+27	14	1	Charles Pugh
+27	14	2	Carly Washington
+12	7	2	Marian Merritt
+43	11	1	Clyde Washington
+27	14	2	Rosie Cabrera
+12	7	2	Charmaine Mcbride
+12	7	1	Ron Hanson
+27	14	2	Natalia Nunez
+42	23	1	Dwayne Quinn
+12	7	2	Gretchen Tanner
+12	7	2	Robyn Cabrera
+12	7	1	Arnold Cabrera
+12	7	2	Margery Price
+41	4	2	Isabella Pope
+41	14	2	Stefanie Price
+27	14	2	Lorna Hanson
+27	14	2	Casandra Quinn
+29	20	1	Guy Nunez
+33	17	1	Rafael Washington
+12	7	1	Manuel Morris
+8	20	2	Christy Andrade
+12	7	1	Lewis Meyer
+44	23	1	Timothy Morris
+12	7	2	Reyna Merritt
+28	1	2	Arlene Hanson
+40	1	2	Naomi Price
+12	7	2	Michele Price
+27	14	1	Ronnie Price
+41	11	1	Vincent Cabrera
+30	14	2	Jana Morris
+27	15	2	Ginger Quinn
+39	11	1	Frank Pugh
+27	15	2	Dana Morris
+30	1	2	Sonya Pope
+12	7	2	Arline Washington
+12	7	2	Rosemarie Morris
+27	14	1	Alfredo Mcbride
+31	14	1	Roberto Hanson
+27	14	2	Sonia Price
+28	8	1	Brad Quinn
+10	1	1	Peter Cook
+27	14	2	Leigh Cunningham
+12	7	1	Paul Cabrera
+41	23	1	Kent Tanner
+12	7	2	Deanne Andrade
+12	7	1	Daniel Cunningham
+37	26	1	Bruce Quinn
+12	7	1	Earl Nunez
+37	8	1	Ruben Nunez
+27	15	1	John Washington
+31	1	2	Mandy Quinn
+44	1	1	Sam Hanson
+12	7	1	Mathew Meyer
+27	15	1	Sergio Morris
+17	8	2	Lupe Andrade
+12	7	1	Dale Hanson
+41	1	1	Melvin Price
+35	3	1	Bernard Price
+27	14	1	Norman Price
+27	14	1	Ken Cabrera
+12	7	2	Gracie Meyer
+12	7	2	Kimberley Quinn
+12	7	2	Geraldine Pugh
+27	14	2	Christi Cabrera
+12	7	2	Nancy Tanner
+38	26	1	Travis Cabrera
+33	4	1	Jerome Washington
+27	14	2	Kelsey Pope
+12	7	2	Lidia Tanner
+31	20	1	Nathaniel Washington
+12	7	1	Milton Tanner
+33	8	1	Tim Mcbride
+27	15	2	Suzanne Quinn
+12	7	1	Neil Hanson
+10	15	2	Wilda Price
+10	1	2	Abby Morris
+12	7	2	Alisa Quinn
+38	11	2	Elva Morris
+27	14	1	Mitchell Morris
+12	7	1	Allan Price
+12	7	1	Tyrone Quinn
+27	15	2	Fran Cabrera
+31	21	2	Constance Nunez
+27	15	2	Viola Morris
+27	14	1	John Cabrera
+12	7	2	Susan Cabrera
+12	7	1	Jesus Cabrera
+12	7	2	Phoebe Quinn
+41	20	1	Mitchell Andrade
+12	7	2	Pearl Cunningham
+12	7	2	Frankie Washington
+12	7	2	Roberta Nunez
+27	14	1	Alfred Nunez
+27	14	2	Suzette Washington
+12	7	2	Kathryn Tanner
+7	25	1	Corey Hanson
+43	20	1	Roland Meyer
+12	7	1	Julio Morris
+30	23	1	Billy Merritt
+12	7	2	Francisca Hanson
+12	7	2	Allie Price
+12	7	2	Jeanne Cabrera
+27	15	2	Tabatha Hanson
+12	7	1	Javier Cabrera
+6	22	1	Bob Pugh
+12	7	1	Clayton Pope
+27	15	1	Jonathan Cabrera
+12	7	2	Hannah Hanson
+12	7	1	Peter Washington
+12	7	1	Bruce Tanner
+12	7	2	Nola Andrade
+12	7	1	Leonard Price
+43	23	1	Theodore Quinn
+12	7	2	Lorene Hanson
+42	14	1	Don Morris
+12	7	2	Luisa Price
+12	7	1	Fernando Quinn
+36	26	1	Tom Price
+29	1	2	Theresa Andrade
+12	7	1	Perry Morris
+12	7	1	Billy Cabrera
+12	7	1	Rene Morris
+12	7	1	Harvey Price
+27	14	1	Patrick Tanner
+12	7	2	Marcia Cabrera
+12	7	2	Kristie Morris
+27	15	1	Chris Washington
+12	7	1	Derek Tanner
+12	7	2	Janelle Cook
+27	14	1	Scott Price
+27	14	2	Darcy Pugh
+27	14	2	Tricia Cabrera
+12	7	1	Justin Hanson
+12	7	2	Mabel Morris
+30	11	1	Ross Price
+8	20	2	Kellie Merritt
+27	14	1	Keith Price
+38	14	2	Priscilla Quinn
+27	14	1	Gaius Cabrera
+27	14	2	Laurel Tanner
+12	7	2	Caroline Cook
+32	11	2	Lily Cabrera
+12	7	2	Rosemary Washington
+12	7	1	Tyler Tanner
+12	10	1	Edwin Cook
+27	14	2	Kara Cabrera
+34	8	1	Jose Hicks
+33	1	2	Maryann Hanson
+12	7	2	Lila Nunez
+12	7	1	Lloyd Hanson
+12	7	2	Lawanda Hicks
+10	1	2	Myrna Price
+9	16	2	Jannie Hicks
+10	1	1	Donald Nunez
+12	7	1	Victor Nunez
+36	11	2	Wendi Cabrera
+8	24	1	Ivan Hanson
+10	1	2	Lynn Price
+12	7	2	Elba Mcbride
+27	14	2	Debora Andrade
+12	7	2	Pearl Washington
+12	7	2	Lakisha Washington
+12	7	1	Frederick Andrade
+16	7	1	Joe Cabrera
+12	7	2	Jerry Hicks
+13	8	1	Roberto Quinn
+8	21	2	Anita Nunez
+16	37	1	Lonnie Nunez
+12	7	1	Jared Nunez
+12	7	2	Cristina Meyer
+12	7	1	Don Morris
+10	1	1	Leon Meyer
+27	15	2	Malinda Morris
+12	7	2	Marta Price
+43	1	1	Edgar Price
+12	7	2	Eliza Andrade
+30	20	1	Larry Quinn
+12	7	1	Gene Cabrera
+12	7	2	Gilda Washington
+12	7	1	Armando Quinn
+27	15	1	Steve Hanson
+27	14	1	Jason Hanson
+12	7	2	Danielle Price
+12	7	1	Randy Price
+12	7	1	Ray Washington
+12	7	2	Noreen Tanner
+12	7	2	Tameka Morris
+12	7	2	Emily Tanner
+12	6	2	Marsha Meyer
+33	14	2	Martina Hanson
+12	7	2	Ruthie Price
+27	15	2	Nelda Andrade
+27	15	1	Rick Mcbride
+12	7	1	Martin Pope
+12	7	2	Antonia Andrade
+8	19	1	Leslie Tanner
+9	16	1	Calvin Tanner
+6	30	2	Sonya Quinn
+12	7	2	Lawanda Pugh
+9	15	1	Donald Cabrera
+10	1	2	Jodie Nunez
+37	23	2	Sheila Price
+36	4	1	Donald Hanson
+12	7	1	Clifton Hanson
+12	7	2	Angelica Price
+27	15	2	Sonja Price
+14	8	1	Wayne Washington
+12	7	2	Grace Nunez
+12	7	1	Dave Morris
+12	7	1	Lance Price
+16	7	1	Leslie Quinn
+12	7	2	Meagan Morris
+12	7	2	Tonia Quinn
+12	7	1	Eduardo Price
+27	15	2	Helena Hanson
+15	10	1	Allan Tanner
+6	19	1	Marcus Andrade
+6	25	1	Jerry Mcbride
+31	8	2	Cecelia Pope
+12	7	1	Isaac Washington
+12	7	1	Neil Nunez
+12	7	2	Faye Cabrera
+12	7	1	Anthony Morris
+12	7	1	Bob Andrade
+21	10	2	Chrystal Andrade
+12	7	2	Dee Price
+12	7	2	Emily Hanson
+12	7	2	Brigitte Pope
+35	1	2	Iva Morris
+38	4	1	Peter Price
+27	14	2	Janis Meyer
+12	7	1	Donald Pope
+12	7	2	Harriet Pope
+12	7	1	Terry Nunez
+12	7	2	Lourdes Tanner
+12	7	2	Jennie Morris
+12	7	1	George Merritt
+39	23	2	Trisha Quinn
+12	7	1	Terry Cabrera
+28	14	1	Gilbert Meyer
+12	7	2	Jennifer Cook
+9	15	1	Michael Price
+12	7	1	Albert Cabrera
+27	14	1	Ray Meyer
+12	7	2	Traci Cunningham
+12	7	2	Ellen Mcbride
+12	7	2	Ruth Pope
+11	2	1	Carl Cabrera
+12	7	1	Luis Price
+12	7	2	Jeanie Quinn
+12	7	1	Leroy Washington
+6	17	1	Wayne Quinn
+12	7	1	Robert Hanson
+12	7	1	Derrick Hanson
+12	6	2	Carmela Pugh
+12	7	2	Holly Price
+9	16	2	Abigail Morris
+31	4	2	Helga Merritt
+12	7	2	Ericka Washington
+12	7	1	Dennis Nunez
+44	8	1	Thomas Morris
+43	14	1	Norman Price
+27	14	1	Miguel Washington
+27	15	1	Eric Washington
+12	7	2	Jaclyn Washington
+18	8	2	Sadie Tanner
+12	7	1	Frank Hanson
+12	7	1	Gregory Merritt
+12	7	1	Dale Hanson
+12	7	2	Joann Quinn
+27	15	2	Rosalyn Morris
+12	7	1	Greg Quinn
+40	11	2	Candace Morris
+12	7	1	Ernest Quinn
+12	7	2	Inez Price
+12	7	2	Freda Hanson
+27	14	2	Miriam Andrade
+12	7	2	Belinda Hanson
+12	7	1	Hector Mcbride
+12	7	2	Martina Washington
+12	7	2	Debra Price
+12	7	1	Wesley Hanson
+12	7	1	Alfredo Tanner
+12	7	2	Lacey Price
+27	15	2	Yolanda Andrade
+10	1	2	Savannah Cabrera
+8	23	1	Floyd Cabrera
+12	7	2	Tasha Quinn
+12	7	2	Essie Pope
+27	14	2	Sheena Merritt
+27	14	2	Lizzie Quinn
+44	20	1	Jacob Price
+12	7	2	Randi Hanson
+12	7	1	Juan Washington
+7	21	1	Raul Hanson
+7	19	2	Gladys Nunez
+27	14	2	Pam Nunez
+12	7	1	Kyle Cabrera
+43	8	1	Carl Morris
+32	20	1	Marshall Andrade
+12	7	2	Ollie Andrade
+12	7	2	Theresa Mcbride
+12	7	2	Wilma Hanson
+27	15	1	Stanley Washington
+12	7	2	Phyllis Morris
+12	7	2	Claudette Morris
+11	3	1	Roberto Price
+12	7	1	Gilbert Meyer
+27	15	2	Belinda Pope
+12	7	1	Willie Price
+36	14	2	Rena Meyer
+12	5	1	Oscar Nunez
+42	17	1	Glenn Cabrera
+12	7	2	Crystal Price
+27	14	1	Phillip Tanner
+6	26	1	Darren Merritt
+12	7	2	Mercedes Pugh
+12	7	2	Cecile Cabrera
+12	7	1	Thomas Meyer
+27	14	1	Lewis Cook
+12	7	1	Alex Price
+31	11	1	Daniel Cabrera
+12	7	1	Todd Meyer
+35	17	2	Mae Price
+12	7	2	Elaine Mcbride
+12	7	2	Ruby Quinn
+12	7	2	Valarie Cabrera
+27	15	2	Emilia Price
+27	14	2	Carissa Hanson
+12	7	2	Jane Washington
+42	8	2	Antonia Quinn
+12	7	2	Ernestine Merritt
+12	7	2	Araceli Price
+12	7	2	Robin Hanson
+12	7	1	Earl Price
+12	7	2	Ana Morris
+29	8	2	Iva Hanson
+29	23	1	Joshua Washington
+12	7	2	Pam Price
+12	11	1	Andrew Morris
+27	14	2	Cornelia Price
+12	7	1	Neil Washington
+12	7	2	Betsy Cook
+17	7	1	Cory Washington
+27	14	1	Willard Washington
+12	7	2	John Pugh
+12	7	1	Bobby Hanson
+27	14	1	Michael Merritt
+12	7	1	Angel Hanson
+12	7	1	Bobby Quinn
+12	7	2	Janine Pugh
+12	7	2	Laurie Quinn
+36	8	1	Ruben Morris
+33	16	1	Ramon Quinn
+23	17	1	Leonard Price
+12	7	1	Keith Hanson
+12	7	2	Geneva Andrade
+12	7	2	Clarissa Hanson
+12	7	2	Celeste Mcbride
+12	7	1	Clinton Washington
+9	16	1	Mark Price
+42	11	2	Pearlie Hanson
+28	20	1	Ben Tanner
+12	7	2	Gertrude Price
+27	15	2	Shirley Andrade
+10	1	2	Maricela Hicks
+33	11	2	Stefanie Quinn
+6	15	2	Paula Mcbride
+12	7	1	Brent Pope
+35	8	1	Bernard Merritt
+12	7	1	Ronnie Quinn
+12	7	2	Helena Price
+12	7	2	Tammie Cabrera
+12	7	2	Nannie Washington
+28	11	1	Chester Hanson
+12	7	1	Kent Cabrera
+27	15	2	Ivy Nunez
+27	14	2	Gilda Cabrera
+12	7	2	Tammie Mcbride
+12	7	1	Edwin Tanner
+12	7	2	Lee Andrade
+44	26	1	Gene Hanson
+12	7	2	Avis Andrade
+27	14	1	Ian Quinn
+12	7	2	Joanne Cabrera
+11	2	2	Concetta Hanson
+27	15	1	Hector Washington
+27	15	1	Wesley Morris
+12	7	2	Cheri Morris
+12	7	1	Greg Price
+12	7	2	Hannah Meyer
+12	7	1	Keith Pope
+27	14	2	Sarah Price
+7	27	1	Herbert Tanner
+12	7	2	Helga Nunez
+27	15	2	Madeline Cabrera
+44	11	2	Robin Tanner
+30	4	2	Ann Tanner
+12	7	2	Gladys Merritt
+12	7	1	Rick Pugh
+42	26	1	Jason Cabrera
+12	7	2	Doris Cabrera
+12	7	2	Robyn Morris
+12	7	2	Kristi Meyer
+12	7	2	Patty Price
+32	17	1	Kyle Cabrera
+12	7	1	Christopher Meyer
+27	14	1	Julio Cabrera
+8	26	1	Adrian Hanson
+12	7	1	Ramon Washington
+12	7	1	Jared Pugh
+34	17	1	Harvey Morris
+12	7	2	Alberta Washington
+12	7	2	Crystal Cook
+27	15	2	Gwendolyn Washington
+27	14	1	Russell Washington
+41	8	1	Sidney Pugh
+19	14	1	Rene Hanson
+27	14	1	Wade Merritt
+12	7	1	Leo Hanson
+10	1	2	Toni Quinn
+12	7	1	Nathan Pugh
+12	7	2	Minnie Quinn
+12	7	1	Jaime Morris
+12	7	2	Sharlene Hicks
+12	7	2	Marsha Quinn
+12	7	2	Kelli Price
+29	26	1	Benjamin Hanson
+27	14	1	Jimmie Andrade
+27	14	2	Maude Morris
+12	7	2	Addie Nunez
+33	20	2	Daphne Pugh
+27	14	1	Galen Washington
+12	7	1	Jeffrey Price
+12	7	1	Jerry Hicks
+27	15	1	Johnny Cabrera
+6	23	1	Darryl Merritt
+37	1	2	Tanya Quinn
+31	23	2	Debora Merritt
+12	6	2	Ashley Cabrera
+27	15	2	Hester Washington
+12	7	2	Angelia Hanson
+27	15	1	Roger Cabrera
+27	15	2	Alexandra Andrade
+40	20	2	Cherry Nunez
+27	14	1	Jim Cabrera
+12	7	2	Willie Morris
+40	4	2	Liliana Tanner
+12	7	2	Claire Morris
+27	15	1	Andy Andrade
+27	15	1	Darryl Quinn
+12	7	2	Tasha Cabrera
+12	7	2	Nola Hanson
+27	15	2	Edwina Hanson
+27	14	1	Ricky Washington
+27	14	1	Eddie Morris
+27	15	2	Vonda Morris
+12	7	1	Gary Price
+12	7	1	Scott Meyer
+27	15	2	Tiffany Pope
+12	7	2	Gladys Price
+12	7	2	Aisha Nunez
+39	20	2	Earline Cabrera
+27	14	1	Gilbert Tanner
+12	7	1	Marcus Merritt
+12	7	1	Allen Pugh
+27	14	1	Calvin Cabrera
+12	7	1	Lawrence Meyer
+37	4	1	Terry Quinn
+12	7	2	Jill Nunez
+11	3	1	Clyde Cook
+12	7	1	James Price
+32	1	1	Michael Cabrera
+12	7	2	Anita Meyer
+12	7	1	Allen Cabrera
+12	7	1	Wallace Hanson
+12	7	2	Rosemary Washington
+35	20	1	Armando Pugh
+12	6	1	Ricky Morris
+12	7	1	Joshua Washington
+27	15	1	Theodore Cook
+44	17	1	Bradley Washington
+12	7	1	Shane Washington
+12	7	2	Merle Nunez
+28	17	1	Wallace Hanson
+32	14	2	Freda Merritt
+27	14	2	Eddie Hanson
+12	7	1	Jim Quinn
+27	15	1	Lewis Pugh
+12	7	1	Louis Hicks
+12	7	2	Enid Price
+27	15	1	Brent Hanson
+12	7	1	Ross Andrade
+27	14	1	Rene Hanson
+32	16	1	Theodore Nunez
+10	1	2	Trina Mcbride
+12	7	1	Chad Washington
+11	2	1	Francisco Price
+12	7	2	Erna Hicks
+42	1	1	Alvin Washington
+11	4	1	Leroy Cabrera
+7	26	2	Christa Washington
+27	13	2	Rene Quinn
+12	7	2	Anastasia Meyer
+12	7	2	Winnie Cabrera
+8	20	2	Jeannine Pope
+27	15	1	Wesley Cabrera
+12	7	2	Tina Andrade
+10	1	1	Glenn Nunez
+12	7	2	Karla Tanner
+28	26	2	Teresa Hanson
+11	2	2	Maggie Washington
+26	16	2	Mabel Cabrera
+12	7	1	Kirk Hanson
+12	7	2	Imelda Morris
+12	7	1	Clinton Price
+27	14	2	Antoinette Morris
+12	7	2	Margery Cabrera
+12	7	1	Leonard Quinn
+27	14	2	Viola Morris
+27	15	2	Florence Cunningham
+12	7	1	Philip Cook
+27	14	2	Janice Hicks
+12	7	1	Miguel Morris
+12	7	1	Cody Nunez
+12	7	1	James Morris
+27	15	2	Ronda Washington
+12	7	2	Esperanza Nunez
+12	7	1	Thomas Price
+12	7	1	Terrence Cunningham
+11	3	2	Francesca Price
+12	7	2	Marjorie Morris
+12	7	1	Roberto Pope
+38	23	2	Fay Morris
+12	7	1	Bruce Hicks
+27	15	1	Sergio Washington
+12	7	1	Rodney Tanner
+12	7	1	Craig Nunez
+32	4	2	Marcy Cabrera
+33	23	1	Gene Pope
+28	20	1	Scott Price
+12	7	1	Calvin Merritt
+12	7	2	Joanna Price
+12	7	1	Paul Cunningham
+12	7	2	Willa Price
+12	7	1	Randall Pugh
+6	25	2	Sonia Hanson
+12	7	2	Estela Morris
+12	7	1	Frank Pope
+27	15	2	Bettye Morris
+12	7	2	Nettie Washington
+12	7	1	Edward Hicks
+12	7	2	Magdalena Meyer
+37	11	1	Jacob Tanner
+42	20	1	Jacob Tanner
+27	14	1	Troy Nunez
+43	26	1	Marvin Cabrera
+12	7	1	Don Morris
+12	7	2	Ashlee Pope
+12	7	1	Larry Price
+12	7	2	Sophie Merritt
+32	8	2	Bridgette Hanson
+12	7	1	Mathew Tanner
+27	14	1	Corey Quinn
+12	7	2	Rhoda Cabrera
+12	7	1	Ronald Price
+12	7	2	Gayle Cunningham
+12	7	2	Marva Price
+12	7	2	Haley Pugh
+27	14	2	Leslie Hanson
+34	26	1	Jared Morris
+12	5	1	Ricky Pope
+12	7	2	Sybil Morris
+38	1	1	Bob Morris
+10	1	2	Tessa Pugh
+14	7	1	Freddie Hicks
+33	16	1	Daryl Tanner
+12	7	1	Luis Meyer
+37	14	1	Randy Tanner
+27	14	1	Benjamin Cabrera
+7	27	2	Minnie Meyer
+12	7	2	Zelma Morris
+12	7	2	Gilda Price
+27	15	1	Eduardo Pope
+27	15	2	Sallie Nunez
+6	28	1	Terrance Merritt
+27	15	1	Darren Tanner
+12	7	1	Jordan Hanson
+27	15	2	Charlene Merritt
+43	4	2	Nichole Price
+12	7	1	Javier Quinn
+12	7	2	Esmeralda Cabrera
+31	26	2	Amelia Quinn
+12	7	2	Kathrine Price
+12	7	2	Beth Price
+27	14	2	Charity Price
+12	7	1	Jessie Pugh
+28	15	2	Bethany Meyer
+12	7	2	Geraldine Hanson
+27	14	2	Angel Quinn
+12	7	2	Autumn Morris
+43	17	1	Juan Hanson
+12	7	2	Erica Pope
+12	7	1	Rick Morris
+27	14	1	Randall Quinn
+12	7	1	Duane Hicks
+27	14	1	Lester Price
+12	7	1	Tim Pugh
+27	15	2	Dawn Tanner
+12	7	2	Dolly Meyer
+12	7	2	Stefanie Meyer
+12	7	2	Kelly Tanner
+34	4	2	Cathleen Cabrera
+27	15	1	Carl Meyer
+6	11	2	Lula Nunez
+35	11	2	Dionne Price
+39	14	2	Annette Pope
+27	14	2	Corina Pugh
+39	8	2	Shanna Morris
+30	17	2	Henrietta Nunez
+36	20	1	Herbert Tanner
+40	26	2	Ramona Hanson
+35	26	1	Christopher Merritt
+34	1	2	Reyna Merritt
+12	6	1	Todd Hanson
+12	7	1	Wesley Price
+38	8	1	Bradley Price
+12	7	1	Rene Quinn
+12	7	1	Rick Quinn
+12	7	2	Corrine Cabrera
+27	14	1	Steve Price
+12	7	2	Wendi Pugh
+12	7	1	Elmer Meyer
+34	20	2	Lillie Hanson
+33	12	1	Pedro Quinn
+27	14	2	Phoebe Hanson
+12	7	1	Rafael Pope
+27	15	1	Terrence Quinn
+12	7	1	Brandon Price
+12	7	2	Bridgette Morris
+12	7	2	Estela Morris
+7	22	1	Harold Tanner
+27	14	2	Georgette Meyer
+12	7	2	Noelle Pugh
+12	7	2	Kate Meyer
+12	7	2	Danielle Pope
+12	7	2	Lula Mcbride
+12	7	1	Ray Meyer
+20	8	1	Dwight Pugh
+12	7	1	Eduardo Nunez
+27	14	1	Rick Morris
+27	14	2	Tammy Nunez
+8	30	2	Edwina Tanner
+27	14	1	Maurice Hanson
+27	14	2	Noelle Merritt
+27	14	1	Greg Hanson
+21	8	2	Bobbie Nunez
+12	7	2	Clarice Price
+8	22	1	Kevin Price
+6	29	2	Meagan Quinn
+12	7	2	Jeanine Andrade
+6	25	2	Shanna Merritt
+12	7	2	Ila Quinn
+8	25	1	Salvador Pugh
+27	14	2	Kathryn Price
+27	14	1	Derek Cabrera
+27	14	2	Dena Meyer
+6	24	2	Kara Quinn
+8	28	2	Monica Hanson
+7	30	1	Micheal Mcbride
+6	20	1	Ryan Washington
+12	7	1	Philip Pope
+27	15	2	Felicia Quinn
+27	14	2	Mae Price
+12	7	1	Gordon Meyer
+27	14	2	Katherine Morris
+27	14	1	Jim Morris
+20	10	1	Bobby Pugh
+12	7	1	Daryl Mcbride
+12	7	2	Christina Pope
+6	29	2	Lucille Quinn
 END CHARACTERS
 BEGIN ROOMS
 3	31	1	0
@@ -112,18 +867,6 @@ BEGIN ROOMS
 4	42	1	0
 4	43	1	0
 4	44	1	0
-5	19	1	0
-5	21	1	0
-5	22	1	0
-5	23	1	0
-5	26	1	0
-5	27	1	0
-5	28	1	0
-5	29	1	0
-5	31	1	0
-5	32	1	0
-5	33	1	0
-5	35	1	0
 5	36	1	0
 5	37	1	0
 5	42	1	0
@@ -146,9 +889,7 @@ BEGIN ROOMS
 6	28	1	0
 6	29	1	0
 6	31	1	0
-6	32	1	0
 6	33	1	0
-6	35	1	0
 6	36	1	0
 6	37	1	0
 6	42	1	0
@@ -171,9 +912,7 @@ BEGIN ROOMS
 7	28	1	0
 7	29	1	0
 7	31	1	0
-7	32	1	0
 7	33	1	0
-7	35	1	0
 7	36	1	0
 7	37	1	0
 7	42	1	0
@@ -191,9 +930,7 @@ BEGIN ROOMS
 8	28	1	0
 8	29	1	0
 8	31	1	0
-8	32	1	0
 8	33	1	0
-8	35	1	0
 8	36	1	0
 8	37	1	0
 8	42	1	0
@@ -218,7 +955,6 @@ BEGIN ROOMS
 9	28	1	0
 9	29	1	0
 9	31	1	0
-9	32	1	0
 9	33	1	0
 9	42	1	0
 9	43	1	0
@@ -235,8 +971,6 @@ BEGIN ROOMS
 10	48	1	0
 11	4	1	0
 11	5	1	0
-11	34	1	0
-11	35	1	0
 11	36	1	0
 11	38	1	0
 11	39	1	0
@@ -559,11 +1293,6 @@ BEGIN ROOMS
 26	44	4	0
 26	45	4	0
 26	46	4	0
-27	14	4	0
-27	15	4	0
-27	26	1	0
-27	27	1	0
-27	28	1	0
 27	30	1	0
 27	31	1	0
 27	38	1	0
@@ -580,7 +1309,6 @@ BEGIN ROOMS
 28	7	1	0
 28	26	1	0
 28	27	1	0
-28	28	1	0
 28	42	4	0
 28	43	4	0
 28	44	4	0
@@ -594,7 +1322,6 @@ BEGIN ROOMS
 29	43	1	0
 29	44	1	0
 30	27	1	0
-30	28	1	0
 30	30	1	0
 30	31	1	0
 30	33	1	0
@@ -612,7 +1339,6 @@ BEGIN ROOMS
 31	9	1	0
 31	10	1	0
 31	12	1	0
-31	13	1	0
 31	16	1	0
 31	18	1	0
 31	19	1	0
@@ -621,7 +1347,6 @@ BEGIN ROOMS
 31	24	1	0
 31	25	1	0
 31	27	1	0
-31	28	1	0
 31	30	1	0
 31	31	1	0
 31	33	1	0
@@ -639,7 +1364,6 @@ BEGIN ROOMS
 32	9	1	0
 32	10	1	0
 32	12	1	0
-32	13	1	0
 32	16	1	0
 32	18	1	0
 32	19	1	0
@@ -648,7 +1372,6 @@ BEGIN ROOMS
 32	24	1	0
 32	25	1	0
 32	27	1	0
-32	28	1	0
 32	30	1	0
 32	31	1	0
 32	33	1	0
@@ -668,7 +1391,6 @@ BEGIN ROOMS
 33	9	1	0
 33	10	1	0
 33	12	1	0
-33	13	1	0
 33	16	1	0
 33	18	1	0
 33	19	1	0
@@ -677,7 +1399,6 @@ BEGIN ROOMS
 33	24	1	0
 33	25	1	0
 33	27	1	0
-33	28	1	0
 33	30	1	0
 33	31	1	0
 33	33	1	0
@@ -697,7 +1418,6 @@ BEGIN ROOMS
 34	9	1	0
 34	10	1	0
 34	12	1	0
-34	13	1	0
 34	16	1	0
 34	18	1	0
 34	19	1	0
@@ -706,7 +1426,6 @@ BEGIN ROOMS
 34	24	1	0
 34	25	1	0
 34	27	1	0
-34	28	1	0
 34	30	1	0
 34	31	1	0
 34	33	1	0
@@ -726,7 +1445,6 @@ BEGIN ROOMS
 35	9	1	0
 35	10	1	0
 35	12	1	0
-35	13	1	0
 35	16	1	0
 35	18	1	0
 35	19	1	0
@@ -735,7 +1453,6 @@ BEGIN ROOMS
 35	24	1	0
 35	25	1	0
 35	27	1	0
-35	28	1	0
 35	30	1	0
 35	31	1	0
 35	33	1	0
@@ -755,7 +1472,6 @@ BEGIN ROOMS
 36	9	1	0
 36	10	1	0
 36	12	1	0
-36	13	1	0
 36	16	1	0
 36	18	1	0
 36	19	1	0
@@ -764,7 +1480,6 @@ BEGIN ROOMS
 36	24	1	0
 36	25	1	0
 36	27	1	0
-36	28	1	0
 36	30	1	0
 36	31	1	0
 36	33	1	0
@@ -781,7 +1496,6 @@ BEGIN ROOMS
 37	24	1	0
 37	25	1	0
 37	27	1	0
-37	28	1	0
 37	47	1	0
 37	48	1	0
 38	4	1	0
@@ -790,7 +1504,6 @@ BEGIN ROOMS
 38	8	1	0
 38	10	1	0
 38	11	1	0
-38	13	1	0
 38	14	1	0
 38	24	1	0
 38	25	1	0
@@ -805,7 +1518,6 @@ BEGIN ROOMS
 39	8	1	0
 39	10	1	0
 39	11	1	0
-39	13	1	0
 39	14	1	0
 39	30	1	0
 39	31	1	0
@@ -842,7 +1554,6 @@ BEGIN ROOMS
 41	8	1	0
 41	10	1	0
 41	11	1	0
-41	13	1	0
 41	14	1	0
 41	17	1	0
 41	18	1	0
@@ -869,7 +1580,6 @@ BEGIN ROOMS
 42	8	1	0
 42	10	1	0
 42	11	1	0
-42	13	1	0
 42	14	1	0
 42	17	1	0
 42	18	1	0
@@ -896,7 +1606,6 @@ BEGIN ROOMS
 43	8	1	0
 43	10	1	0
 43	11	1	0
-43	13	1	0
 43	14	1	0
 43	17	1	0
 43	18	1	0
@@ -933,14 +1642,6 @@ BEGIN ROOMS
 44	37	1	0
 44	38	1	0
 44	39	1	0
-45	17	1	0
-45	18	1	0
-45	20	1	0
-45	21	1	0
-45	23	1	0
-45	24	1	0
-45	26	1	0
-45	27	1	0
 45	30	1	0
 45	31	1	0
 45	33	1	0

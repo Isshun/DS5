@@ -295,7 +295,7 @@ public class Character extends Movable {
 	}
 
 
-	public void  slowUpdate() {
+	public void  longUpdate() {
 		_old += Constant.CHARACTER_GROW_PER_UPDATE * Constant.SLOW_UPDATE_INTERVAL;
 		
 		if (_old > Constant.CHARACTER_MAX_OLD) {
@@ -535,7 +535,7 @@ public class Character extends Movable {
 	private void		actionStore() {
 		UserItem item = ServiceManager.getWorldMap().getItem(_job.getX(), _job.getY());
 
-		if (item.isStorage() == false) {
+		if (item == null || item.isStorage() == false) {
 			Log.error("Character: actionStore on non storage item");
 			JobManager.getInstance().abort(_job, Abort.INVALID);
 			return;		
@@ -543,7 +543,6 @@ public class Character extends Movable {
 
 		StorageItem storage = ((StorageItem)item);
 		storage.addInventory(_inventory);
-		storage.setWaitRefill(false);
 		JobManager.getInstance().complete(_job);
 		_inventory.clear();
 		_job = null;
@@ -781,7 +780,6 @@ public class Character extends Movable {
 		else {
 			if (_job.getCarry() != null) {
 				_job.getDispenser().addInventory(_job.getCarry());
-				_job.getDispenser().setWaitRefill(false);
 				_inventory.removeAll(_job.getCarry());
 			}
 			
@@ -846,6 +844,18 @@ public class Character extends Movable {
 
 	public String getEnlisted() {
 		return "april 25";
+	}
+
+	public String getBirthName() {
+		return _birthName;
+	}
+
+	public String getFirstName() {
+		return _firstName;
+	}
+
+	public int getNbRelations() {
+		return _relations.size();
 	}
 
 }

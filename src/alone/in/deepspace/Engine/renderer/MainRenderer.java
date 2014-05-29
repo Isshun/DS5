@@ -78,6 +78,7 @@ public class MainRenderer {
 //			_debugRenderer.onDraw(app, render, animProgress);
 		}
 	}
+
 	public void init() {
 		_lightRenderer.initLight();
 	}

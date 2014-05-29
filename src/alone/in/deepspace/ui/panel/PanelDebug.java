@@ -224,8 +224,4 @@ public class PanelDebug extends UserSubInterface {
 //		_index++;
 //	}
 
-	public void setUI(UserInterface ui) {
-		_ui = ui;
-	}
-
 }

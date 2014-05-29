@@ -18,6 +18,7 @@ public class CharacterStatus {
 	private Color 			_color;
 	private String _thoughts;
 	private String _thoughtsShort;
+	private int _level;
 
 	public CharacterStatus(Character character) {
 		_character = character;
@@ -45,11 +46,13 @@ public class CharacterStatus {
 			BaseItem item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
 			if (item != null && item.isSleepingItem()) {
 				_color = COLOR_GOOD;
+				_level = 0;
 				_thoughts = Strings.CHARACTER_SAY_SLEEP;
 				_thoughtsShort = Strings.THOUGHTS_GOOD;
 				return;
 			} else {
 				_color = COLOR_BAD;
+				_level = 2;
 				_thoughts = Strings.CHARACTER_SAY_NOWHERE_TO_SLEEP;
 				_thoughtsShort = Strings.THOUGHTS_BAD;
 				return;
@@ -57,41 +60,48 @@ public class CharacterStatus {
 		}
 		if (_needs.isTired()) {
 			_color = COLOR_MEDIUM;
+			_level = 1;
 			_thoughts = Strings.CHARACTER_SAY_TIRED;
 			_thoughtsShort = Strings.THOUGHTS_MEDIUM;
 			return;
 		}
 		if (_needs.isStarved()) {
 			_color = COLOR_BAD;
+			_level = 2;
 			_thoughts = Strings.CHARACTER_SAY_STARVING;
 			_thoughtsShort = Strings.THOUGHTS_BAD;
 			return;
 		}
 		if (_needs.isHungry()) {
 			_color = COLOR_GOOD;
+			_level = 0;
 			_thoughts = Strings.CHARACTER_EVERYTHINGS_GOES_RIGHT;
 			_thoughtsShort = Strings.THOUGHTS_GOOD;
 			return;
 		}
 		if (_needs.isSuffocating()) {
 			_color = COLOR_REALLY_BAD;
+			_level = 3;
 			_thoughts = Strings.CHARACTER_SAY_NO_OXYGEN;
 			_thoughtsShort = Strings.THOUGHTS_REALLY_BAD;
 			return;
 		}
 		if (_needs.isLowOxygen()) {
+			_level = 2;
 			_color = COLOR_BAD;
 			_thoughts = Strings.CHARACTER_SAY_LOW_OXYGEN;
 			_thoughtsShort = Strings.THOUGHTS_BAD;
 			return;
 		}
 		if (_needs.isLonely()) {
+			_level = 1;
 			_color = COLOR_MEDIUM;
 			_thoughts = Strings.CHARACTER_SAY_LONELY;
 			_thoughtsShort = Strings.THOUGHTS_MEDIUM;
 			return;
 		}
 		
+		_level = 0;
 		_color = COLOR_GOOD;
 		_thoughts = Strings.CHARACTER_EVERYTHINGS_GOES_RIGHT;
 		_thoughtsShort = Strings.THOUGHTS_GOOD;
@@ -99,6 +109,14 @@ public class CharacterStatus {
 
 	public int getLastReportDelay() {
 		return 1;
+	}
+
+	public int getLevel() {
+		return _level;
+	}
+
+	public String getTip() {
+		return "Your people are starving.\n- Make sure your storages contain enough ingredients (vegetable, seaweed, fish).\n- Launch food production from Caretaker menu";
 	}
 
 }

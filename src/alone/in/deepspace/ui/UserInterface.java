@@ -76,6 +76,7 @@ public class UserInterface {
 	private Game _game;
 	private int _used;
 	private boolean _mouseOnMap;
+	private PanelTooltip _panelTooltip;
 
 	public enum Mode {
 		BASE,
@@ -90,7 +91,7 @@ public class UserInterface {
 		ROOM,
 		PLAN,
 		DEBUGITEMS,
-		NONE
+		NONE, TOOLTIP
 	}
 
 	public void onCreate(Game game, RenderWindow app, Viewport viewport) throws IOException {
@@ -105,6 +106,7 @@ public class UserInterface {
 
 		_panelBase = new PanelBase(app);
 		_panelCharacter = new PanelCharacter(app);
+		_panelCharacter.setUI(this);
 		_panelInfo = new PanelInfo(app);
 		_panelDebug = new PanelDebug(app);
 		_panelDebug.setUI(this);
@@ -119,6 +121,7 @@ public class UserInterface {
 		_panelMessage = new UserInterfaceMessage(app);
 		_panelMessage.setVisible(true);
 		_panelRoom = new PanelRoom(app);
+		_panelTooltip = new PanelTooltip(app);
 
 		_interaction = new UserInteraction(app, viewport);
 		_panelBuild = new PanelBuild(app, 3, _interaction);
@@ -128,6 +131,7 @@ public class UserInterface {
 		_panelCrew.setUI(this);
 		_uiBase = new UserInterfaceMenuOperation(app, 1);
 		_panelJobs = new PanelJobs(app);
+		_panelJobs.setUI(this);
 		_panelMessage.setStart(0);
 
 		setMode(Mode.NONE);
@@ -221,6 +225,7 @@ public class UserInterface {
 		if (_mode != Mode.BUILD) 		_panelBuild.setVisible(false);
 		if (_mode != Mode.CREW) 		_panelCrew.setVisible(false);
 		if (_mode != Mode.BASE) 		_uiBase.setVisible(false);
+		if (_mode != Mode.TOOLTIP) 		_panelTooltip.setVisible(false);
 		if (_mode != Mode.SCIENCE) 		_uiScience.setVisible(false);
 		if (_mode != Mode.SECURITY)		_uiSecurity.setVisible(false);
 		if (_mode != Mode.JOBS)			_panelJobs.setVisible(false);
@@ -232,6 +237,7 @@ public class UserInterface {
 		case DEBUG: 		_panelDebug.toogle(); break;
 		case DEBUGITEMS:	_panelDebugItems.toogle(); break;
 		case PLAN: 			_panelPlan.toogle(); break;
+		case TOOLTIP: 		_panelTooltip.toogle(); break;
 		case CHARACTER: 	_panelCharacter.toogle(); break;
 		case BASE: 			_panelBase.toogle(); break;
 		case JOBS: 			_panelJobs.toogle(); break;
@@ -251,7 +257,23 @@ public class UserInterface {
 	}
 
 	public void onRefresh(int update) {
-		_panelCharacter.onRefresh(update);
+		_panelCharacter.refresh(update);
+		_panelBase.refresh(update);
+		_panelInfo.refresh(update);
+		_panelPlan.refresh(update);
+		_panelDebug.refresh(update);
+		_panelDebugItems.refresh(update);
+		_panelSystem.refresh(update);
+		_panelShortcut.refresh(update);
+		_panelResource.refresh(update);
+		_panelRoom.refresh(update);
+		_panelCrew.refresh(update);
+		_uiScience.refresh(update);
+		_uiSecurity.refresh(update);
+		_uiBase.refresh(update);
+		_panelBuild.refresh(update);
+		_panelJobs.refresh(update);
+		_panelTooltip.refresh(update);
 	}
 	
 	public void onDraw(int frame, int update, int renderTime) {
@@ -272,7 +294,8 @@ public class UserInterface {
 		_uiBase.draw(_app, null);
 		_panelBuild.draw(_app, null);
 		_panelJobs.draw(_app, null);
-		
+		_panelTooltip.draw(_app, null);
+
 //		int mb = 1024 * 1024;
 //        Runtime runtime = Runtime.getRuntime();
 //        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
@@ -653,5 +676,10 @@ public class UserInterface {
 
 	public Mode getMode() {
 		return _mode;
+	}
+
+	public void showTooltip(String tip) {
+		setMode(Mode.TOOLTIP);
+		_panelTooltip.setTooltip(tip);
 	}
 }

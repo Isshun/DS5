@@ -18,6 +18,7 @@ public abstract class UserSubInterface extends FrameLayout {
 	
 	protected static final Color COLOR_TEXT = new Color(120, 255, 255);
 	protected static final Color COLOR_LABEL = Color.WHITE;
+	protected static final Color COLOR_ACTIVE = new Color(176, 205, 53);
 	protected static final int FONT_SIZE = 22;
 	protected static final int FONT_SIZE_SMALL = 14;
 
@@ -29,6 +30,7 @@ public abstract class UserSubInterface extends FrameLayout {
 	protected int		_posTileY;
 	protected boolean	_isTileActive;
 	protected int		_tileIndex;
+	public UserInterface _ui;
 		  
 	public void			openTile() { _isTileActive = true; }
 	public void			closeTile() { _isTileActive = false; }
@@ -80,6 +82,10 @@ public abstract class UserSubInterface extends FrameLayout {
 		return false;
 	}
 
+	public void setUI(UserInterface ui) {
+		_ui = ui;
+	}
+
 	public boolean	onMouseMove(int x, int y) {
 		_isTileActive = false;
 		
@@ -119,7 +125,13 @@ public abstract class UserSubInterface extends FrameLayout {
 		return false;
 	}
 	
-	public void onRefresh(int update) {
+	public void refresh(int update) {
+		if (_isVisible) {
+			onRefresh(update);
+		}
+	}
+	
+	protected void onRefresh(int update) {
 		
 	}
 	

@@ -10,7 +10,7 @@ public class StorageItem extends UserItem {
 
 	private List<ItemInfo>	_accepts;
 	private List<BaseItem>	_inventory;
-	private	boolean			_isWaitRefill;
+	private	Job			_refillJob;
 	private boolean 		_acceptFood;
 	private boolean 		_acceptDrink;
 	private boolean 		_acceptConsomable;
@@ -91,12 +91,16 @@ public class StorageItem extends UserItem {
 		return false;
 	}
 
-	public boolean isWaitRefill() {
-		return _isWaitRefill;
+	public boolean isWaitForRefill() {
+		return _refillJob != null && _refillJob.isFinish() == false;
 	}
 
-	public void setWaitRefill(boolean b) {
-		_isWaitRefill = b;
+	public Job getRefillJob() {
+		return _refillJob;
+	}
+
+	public void setRefillJob(Job job) {
+		_refillJob = job;
 	}
 
 	public List<BaseItem> getInventory() {

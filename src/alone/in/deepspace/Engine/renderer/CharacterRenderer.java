@@ -13,9 +13,11 @@ import alone.in.deepspace.util.Constant;
 
 public class CharacterRenderer implements IRenderer {
 	private List<Character> _characters;
+	private SpriteManager 	_spriteManager;
 
 	public CharacterRenderer(List<Character> characters) {
 		_characters = characters;
+		_spriteManager = SpriteManager.getInstance();
 	}
 
 	public void	onDraw(RenderWindow app, RenderStates render, double animProgress) {
@@ -49,7 +51,7 @@ public class CharacterRenderer implements IRenderer {
 			}
 
 			// Draw sprite
-			Sprite sprite = SpriteManager.getInstance().getCharacter(c, dirIndex, frame);
+			Sprite sprite = _spriteManager.getCharacter(c, dirIndex, frame);
 			sprite.setPosition(posX, posY + (c.isSleeping() ? 20 : 0));
 			app.draw(sprite, render);
 						

@@ -339,8 +339,13 @@ public class JobManager {
 			return;
 		}
 		
-		// Job is USE or MOVE action, don't resume
-		if (job.getAction() == Action.MOVE || job.getAction() == Action.USE) {
+		// Job is USE / USE_INVENTORY / MOVE / TAKE / STORE / REFILL action, don't resume
+		if (job.getAction() == Action.MOVE ||
+				job.getAction() == Action.USE ||
+				job.getAction() == Action.REFILL ||
+				job.getAction() == Action.USE_INVENTORY ||
+				job.getAction() == Action.TAKE ||
+				job.getAction() == Action.STORE) {
 			removeJob(job);
 			return;
 		}
@@ -573,7 +578,7 @@ public class JobManager {
 		job.setAction(JobManager.Action.REFILL);
 		job.setSubAction(JobManager.Action.TAKE);
 		job.setDispenser(dispenser);
-		dispenser.setWaitRefill(true);
+		dispenser.setRefillJob(job);
 		job.setItem(storage);
 		job.setItemFilter(filter);
 		job.setCharacterRequire(character);

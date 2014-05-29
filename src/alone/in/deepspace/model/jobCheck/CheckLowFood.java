@@ -27,14 +27,14 @@ public class CheckLowFood implements JobCheck {
 		// Search for food-factory
 		ItemFilter itemFilter = new ItemFilter(true, false);
 		itemFilter.food = true;
-		UserItem item = ServiceManager.getWorldMap().find(itemFilter);
+		UserItem item = ServiceManager.getWorldMap().find(itemFilter, true);
 		if (item == null) {
 			return;
 		}
 		
 		// Create job
-		_job = jobManager.createUseJob(item);
-		jobManager.addJob(_job);
+		Job job = jobManager.createUseJob(item);
+		jobManager.addJob(job);
 	}
 
 }

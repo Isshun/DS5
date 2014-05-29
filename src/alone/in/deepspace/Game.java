@@ -127,7 +127,7 @@ public class Game implements ISavable {
 		ResourceManager.getInstance().update();
 		_characterManager.onLongUpdate();
 		
-		System.gc();
+		//System.gc();
 	}
 
 	public void onEvent(Event event) throws IOException {
@@ -304,23 +304,19 @@ public class Game implements ISavable {
 	}
 
 	public void onDraw(double animProgress, int renderTime) throws IOException {
-		_frame++;
-		
-		_mainRenderer.draw(_app, animProgress, renderTime);
-		
-		Transform transform = new Transform();
-		transform = _viewport.getViewTransform(transform);
-		RenderStates render = new RenderStates(transform);
-
-		_FoeManager.onDraw(_app, render, animProgress);
-		_dynamicObjectManager.refresh(_app, render, animProgress);
-
-		// User interface
-		_ui.onDraw(_frame, _update, renderTime);
-
-//		if (_menu != null) {
-//			_menu.refresh(_app);
-//		}
+//		_frame++;
+//		
+//		_mainRenderer.draw(_app, animProgress, renderTime);
+//		
+//		Transform transform = new Transform();
+//		transform = _viewport.getViewTransform(transform);
+//		RenderStates render = new RenderStates(transform);
+//
+//		_FoeManager.onDraw(_app, render, animProgress);
+//		_dynamicObjectManager.refresh(_app, render, animProgress);
+//
+//		// User interface
+//		_ui.onDraw(_frame, _update, renderTime);
 	}
 
 	public boolean isRunning() {

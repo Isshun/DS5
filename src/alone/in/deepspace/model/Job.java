@@ -147,9 +147,9 @@ public class Job {
 		if (_item != null) {
 			oss += " " + _item.getLabel();
 		}
-		if (_durationLeft > 0) {
-			oss += " (" + _durationLeft / Constant.DURATION_MULTIPLIER + "s)";
-		}
+//		if (_durationLeft > 0) {
+//			oss += " (" + _durationLeft / Constant.DURATION_MULTIPLIER + "s)";
+//		}
 		return oss;
 	}
 
@@ -220,6 +220,10 @@ public class Job {
 
 	public boolean isFinish() {
 		return _status == JobStatus.COMPLETE || _status == JobStatus.ABORTED;
+	}
+	
+	public String getFormatedDuration() {
+		return "" + _durationLeft / Constant.DURATION_MULTIPLIER + "s left";
 	}
 
 }

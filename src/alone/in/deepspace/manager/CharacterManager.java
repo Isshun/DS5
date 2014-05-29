@@ -229,8 +229,7 @@ public class CharacterManager implements ISavable {
 
 	public void onLongUpdate() {
 		for (Character c: _characters) {
-			// Slow update
-			c.slowUpdate();
+			c.longUpdate();
 		}
 	}
 

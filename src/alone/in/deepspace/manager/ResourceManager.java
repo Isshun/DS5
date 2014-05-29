@@ -155,6 +155,7 @@ public class ResourceManager {
 	public void addFood(int value) { _food += value; }
 
 	public boolean isLowFood() {
-		return _food < ServiceManager.getCharacterManager().getCount();
+		//return _food < ServiceManager.getCharacterManager().getCount();
+		return true;
 	}
 }

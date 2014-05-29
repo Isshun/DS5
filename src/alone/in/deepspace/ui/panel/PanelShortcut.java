@@ -36,10 +36,11 @@ public class PanelShortcut extends UserSubInterface {
 	private PanelEntry	_entries[] = {
 			new PanelEntry("  [ UILD]  ", 		"B", 	3, Mode.BUILD),
 			new PanelEntry("[ CCUPATION]  ", 	"O",	1, Mode.JOBS),
-			new PanelEntry("   [ REW]  ", 		"C", 	4, Mode.CREW),
+			new PanelEntry("  [ EOPLE]  ", 		"P", 	3, Mode.CREW),
 			new PanelEntry("   [ OOM]  ", 		"R", 	4, Mode.ROOM),
 			new PanelEntry("  [ EBUG]  ", 		"D", 	3, Mode.DEBUG),
-			new PanelEntry("   [ LAN]  ", 		"P",	4, Mode.PLAN)
+			new PanelEntry("   [ LAN]  ", 		"P",	4, Mode.PLAN),
+			new PanelEntry("[ ARETAKER] ", 		"C",	1, Mode.PLAN)
 	};
 	
 	public PanelShortcut(RenderWindow app, final UserInterface userInterface) throws IOException {

@@ -434,11 +434,11 @@ public class WorldManager implements TileBasedMap {
 	}
 
 	// TODO
-	public UserItem 			find(ItemFilter filter) {
+	public UserItem 			find(ItemFilter filter, boolean free) {
 		for (int x = 0; x < _width; x++) {
 			for (int y = 0; y < _height; y++) {
 				UserItem item = _areas[x][y].getItem();
-				if (item != null && item.matchFilter(filter)) {
+				if (item != null && item.isFree() && item.matchFilter(filter)) {
 					return item;
 				}
 			}

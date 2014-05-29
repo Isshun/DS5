@@ -24,6 +24,8 @@ import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Character.Gender;
 import alone.in.deepspace.model.CharacterNeeds;
 import alone.in.deepspace.model.CharacterRelation;
+import alone.in.deepspace.model.CharacterRelation.Relation;
+import alone.in.deepspace.model.CharacterStatus;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;
@@ -46,8 +48,8 @@ public class PanelCharacter extends UserSubInterface {
 	private static final int NB_COLUMNS_NEEDS = 22;
 
 	private static final Color COLOR_0 = new Color(120, 255, 255);
-	private static final Color COLOR_1 = new Color(59, 247, 232);
-	private static final Color COLOR_2 = new Color(214, 247, 59);
+	private static final Color COLOR_1 = new Color(214, 247, 59);
+	private static final Color COLOR_2 = new Color(247, 57, 57);
 	private static final Color COLOR_3 = new Color(247, 57, 57);
 
 	private Character   	    _character;
@@ -100,6 +102,14 @@ public class PanelCharacter extends UserSubInterface {
 
 	private TextView _lbEnlisted;
 
+	private String _lastBirthName;
+
+	private TextView _lbBirthName;
+
+	private Color _statusColor;
+
+	private CharacterStatus _lastStatus;
+
 	public PanelCharacter(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 
@@ -123,10 +133,10 @@ public class PanelCharacter extends UserSubInterface {
 		addView(_lbName);
 
 		createReport(20, 64);
-		createBasicInformation(20, 144);
-		createNeedsInfo(20, 266);
-		createJobInfo(20, 530);
-		createInventoryInfo(20, 610);
+		createJobInfo(20, 136);
+		createNeedsInfo(20, 206);
+		createBasicInformation(20, 480);
+		createInventoryInfo(20, 630);
 		createFamilyInfo(20, 700);
 		if (Settings.getInstance().isDebug()) {
 			createDebug(20, 850);
@@ -145,10 +155,28 @@ public class PanelCharacter extends UserSubInterface {
 		addView(text);
 		posY += 32;
 		
-		_lbState = new TextView(null);
+		_lbState = new TextView(new Vector2f(300, 20));
 		_lbState.setCharacterSize(FONT_SIZE_SMALL);
-		_lbState.setColor(COLOR_TEXT);
 		_lbState.setPosition(new Vector2f(posX, posY));
+		_lbState.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				_ui.showTooltip(_lastStatus.getTip());
+			}
+		});
+		_lbState.setOnFocusListener(new OnFocusListener() {
+			@Override
+			public void onExit(View view) {
+				_lbState.setColor(_statusColor != null ? _statusColor : COLOR_TEXT);
+				_lbState.setStyle(TextView.REGULAR);
+			}
+			
+			@Override
+			public void onEnter(View view) {
+				_lbState.setColor(COLOR_ACTIVE);
+				_lbState.setStyle(TextView.UNDERLINED);
+			}
+		});
 		addView(_lbState);
 	}
 
@@ -193,6 +221,13 @@ public class PanelCharacter extends UserSubInterface {
 		_lbEnlisted.setPosition(new Vector2f(posX, posY));
 		addView(_lbEnlisted);
 		posY += 20;
+
+		_lbBirthName = new TextView(null);
+		_lbBirthName.setCharacterSize(FONT_SIZE_SMALL);
+		_lbBirthName.setColor(COLOR_TEXT);
+		_lbBirthName.setPosition(new Vector2f(posX, posY));
+		addView(_lbBirthName);
+		posY += 20;
 	}
 
 	private void createDebug(int x, int y) {
@@ -203,7 +238,7 @@ public class PanelCharacter extends UserSubInterface {
 
 		TextView lbDebug = new TextView();
 		lbDebug.setCharacterSize(FONT_SIZE);
-		lbDebug.setPosition(Constant.UI_PADDING_H, 0);
+		lbDebug.setPosition(0, 0);
 		lbDebug.setString("Debug");
 		_layoutDebug.addView(lbDebug);
 
@@ -212,13 +247,14 @@ public class PanelCharacter extends UserSubInterface {
 		for (int i = 0; i < NB_MAX_RELATION; i++) {
 			_debugEntries[i] = new TextView(new Vector2f(400, 22));
 			_debugEntries[i].setCharacterSize(FONT_SIZE_SMALL);
-			_debugEntries[i].setPosition(Constant.UI_PADDING_H * 2, 32 + 22 * i);
+			_debugEntries[i].setColor(COLOR_TEXT);
+			_debugEntries[i].setPosition(0, 32 + 22 * i);
 			_layoutDebug.addView(_debugEntries[i]);
 
-			_debugEntriesValue[i] = new TextView(new Vector2f(100, 32));
-			_debugEntriesValue[i].setCharacterSize(FONT_SIZE_SMALL);
-			_debugEntriesValue[i].setPosition(280, 32 + 22 * i);
-			_layoutDebug.addView(_debugEntriesValue[i]);
+//			_debugEntriesValue[i] = new TextView(new Vector2f(100, 32));
+//			_debugEntriesValue[i].setCharacterSize(FONT_SIZE_SMALL);
+//			_debugEntriesValue[i].setPosition(280, 32 + 22 * i);
+//			_layoutDebug.addView(_debugEntriesValue[i]);
 		}		
 	}
 
@@ -231,7 +267,7 @@ public class PanelCharacter extends UserSubInterface {
 		lbCarry.setCharacterSize(FONT_SIZE);
 		lbCarry.setColor(COLOR_LABEL);
 		lbCarry.setString(Strings.LB_INVENTORY);
-		lbCarry.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V));
+		lbCarry.setPosition(new Vector2f(0, 0));
 		_layoutInventory.addView(lbCarry);
 
 		_lbCarry = new ImageView[Constant.CHARACTER_INVENTORY_SPACE];
@@ -239,7 +275,7 @@ public class PanelCharacter extends UserSubInterface {
 			final int x2 = i % NB_INVENTORY_PER_LINE;
 			final int y2 = i / NB_INVENTORY_PER_LINE;
 			_lbCarry[i] = new ImageView();
-			_lbCarry[i].setPosition(new Vector2f(x2 * 28, Constant.UI_PADDING_V + 32 + y2 * 28));
+			_lbCarry[i].setPosition(new Vector2f(x2 * 28, 32 + y2 * 28));
 			_lbCarry[i].setOnFocusListener(new OnFocusListener() {
 				@Override
 				public void onExit(View view) {
@@ -249,7 +285,7 @@ public class PanelCharacter extends UserSubInterface {
 				@Override
 				public void onEnter(View view) {
 					_lbTip.setVisible(true);
-					_lbTip.setPosition(new Vector2f(x2 * 28 + 16, Constant.UI_PADDING_V + 32 + y2 * 28 + 16));
+					_lbTip.setPosition(new Vector2f(x2 * 28 + 16, 32 + y2 * 28 + 16));
 				}
 			});
 			_layoutInventory.addView(_lbCarry[i]);
@@ -260,23 +296,18 @@ public class PanelCharacter extends UserSubInterface {
 		_layoutJob = new FrameLayout(new Vector2f(FRAME_WIDTH, 80));
 		_layoutJob.setPosition(x, y);
 		addView(_layoutJob);
-
-//		ColorView view = new ColorView(new Vector2f(FRAME_WIDTH - Constant.UI_PADDING_H * 4, 2));
-//		view.setPosition(Constant.UI_PADDING_H, 38);
-//		view.setBackgroundColor(new Color(255, 255, 255, 255));
-//		_layoutJob.addView(view);
 		
 		_lbJob = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbJob.setCharacterSize(FONT_SIZE);
 		_lbJob.setColor(COLOR_LABEL);
-		_lbJob.setPosition(new Vector2f(Constant.UI_PADDING_H, Constant.UI_PADDING_V));
+		_lbJob.setPosition(0, 0);
 		_lbJob.setString(Strings.LB_CHARACTER_INFO_JOB);
 		_layoutJob.addView(_lbJob);
 
 		_lbJob2 = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbJob2.setCharacterSize(FONT_SIZE_SMALL);
-		_lbJob2.setColor(COLOR_LABEL);
-		_lbJob2.setPosition(new Vector2f(Constant.UI_PADDING_H * 2, Constant.UI_PADDING_V + 32));
+		_lbJob2.setColor(COLOR_TEXT);
+		_lbJob2.setPosition(0, 32);
 		_layoutJob.addView(_lbJob2);
 	}
 
@@ -321,7 +352,7 @@ public class PanelCharacter extends UserSubInterface {
 
 	private void createFamilyInfo(int x, int y) {
 		_layoutFamily = new FrameLayout(new Vector2f(200, 200));
-		_layoutFamily.setPosition(Constant.UI_PADDING_H + x, y);
+		_layoutFamily.setPosition(x, y);
 		addView(_layoutFamily);
 
 		TextView lbFamily = new TextView();
@@ -334,13 +365,14 @@ public class PanelCharacter extends UserSubInterface {
 		for (int i = 0; i < NB_MAX_RELATION; i++) {
 			_familyEntries[i] = new TextView(new Vector2f(400, 22));
 			_familyEntries[i].setCharacterSize(FONT_SIZE_SMALL);
-			_familyEntries[i].setPosition(Constant.UI_PADDING_H, 32 + 22 * i);
-			_familyEntries[i].setStyle(TextView.UNDERLINED);
+			_familyEntries[i].setPosition(0, 32 + 22 * i);
+			_familyEntries[i].setColor(COLOR_TEXT);
 			_layoutFamily.addView(_familyEntries[i]);
 
 			_familyRelationEntries[i] = new TextView(new Vector2f(100, 32));
 			_familyRelationEntries[i].setCharacterSize(FONT_SIZE_SMALL);
 			_familyRelationEntries[i].setPosition(280, 32 + 22 * i);
+			_familyRelationEntries[i].setColor(COLOR_TEXT);
 			_layoutFamily.addView(_familyRelationEntries[i]);
 		}
 	}
@@ -354,14 +386,11 @@ public class PanelCharacter extends UserSubInterface {
 			character.setSelected(true);
 			_lbName.setString(character.getName().toUpperCase());
 			_lbName.setColor(character.getColor());
-			
-			List<CharacterRelation> relations = character.getFamilyMembers();
-			refreshRelations(relations);
-			
-			_lastGender = null;
-			_lastOld = -1;
-			_lastProfession = null;
-			_lastThoughts = null;
+			_nbRelation = -1;			
+//			_lastGender = null;
+//			_lastOld = -1;
+//			_lastProfession = null;
+//			_lastThoughts = null;
 			
 			// Reset gauges
 			for (int i = 0; i < NB_GAUGE; i++) {
@@ -372,25 +401,62 @@ public class PanelCharacter extends UserSubInterface {
 		_character = character;
 	}
 
-	private void refreshRelations(List<CharacterRelation> relations) {
+	private void refreshRelations() {
+		List<CharacterRelation> relations = _character.getRelations();
 		_nbRelation = relations.size();
 		int i = 0;
 		for (final CharacterRelation relation: relations) {
 			if (i < NB_MAX_RELATION) {
-				_familyEntries[i].setString(relation.getSecond().getName());
+				String left = relation.getSecond().getName();
+//				_familyEntries[i].setStyle(TextView.UNDERLINED);
 				_familyEntries[i].setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View view) {
 						setCharacter(relation.getSecond());
 					}
 				});
-				_familyRelationEntries[i].setString(relation.getRelationLabel());
+				_familyEntries[i].setOnFocusListener(new OnFocusListener() {
+					@Override
+					public void onExit(View view) {
+						((TextView)view).setStyle(TextView.REGULAR);
+						((TextView)view).setColor(COLOR_TEXT);
+						//view.setBackgroundColor(null);
+					}
+
+					@Override
+					public void onEnter(View view) {
+						((TextView)view).setStyle(TextView.UNDERLINED);
+						((TextView)view).setColor(COLOR_ACTIVE);
+						//view.setBackgroundColor(new Color(40, 40, 80));
+					}
+				});
+
+				String right = relation.getRelationLabel();
+				switch (relation.getRelation()) {
+				case CHILDREN:
+				case BROTHER:
+				case SISTER:
+				case HALF_BROTHER:
+				case HALF_SISTER:
+					right += " (" + (int)relation.getSecond().getOld() + "yo.)";
+					break;
+				default: break;
+				}
+				
+				_familyEntries[i].setString(StringUtils.getDashedString(left, right, NB_COLUMNS));
+
 				i++;
 			}
 		}
 		for (; i < NB_MAX_RELATION; i++) {
-			_familyEntries[i].setString("");
-			_familyRelationEntries[i].setString("");
+			if (i == 0) {
+				_familyEntries[i].setString("no results");
+				_familyEntries[i].setStyle(TextView.REGULAR);
+				_familyRelationEntries[i].setString("");
+			} else {
+				_familyEntries[i].setString("");
+				_familyRelationEntries[i].setString("");
+			}
 		}
 	}
 
@@ -471,9 +537,10 @@ public class PanelCharacter extends UserSubInterface {
 	public void onRefresh(int update) {
 
 		if (update % 2 == 0) {
+			return;
+		}
 			_cursor.setVisible(!_cursor.isVisible());
 			_animGauge++;
-		}
 
 		if (_animRemain > 0) {
 			return;
@@ -481,9 +548,30 @@ public class PanelCharacter extends UserSubInterface {
 		
 		if (_character != null) {
 			
+			refreshJob();
+			refreshNeeds();
+			refreshInventory();
+			refreshDebug();
+			
+			// Relations
+			if (update % 20 == 0 || _nbRelation != _character.getNbRelations()) {
+				refreshRelations();
+			}
+			
+			_lastStatus = _character.getStatus();
 			String status = _character.getStatus().getThoughts();
 			String time = _character.getStatus().getLastReportDelay() + "sec. ago";
 			_lbState.setString(StringUtils.getDashedString(status, time, NB_COLUMNS));
+			int level = _character.getStatus().getLevel();
+			switch (level) {
+			case 0: _statusColor = COLOR_0; break;
+			case 1: _statusColor = COLOR_1; break;
+			case 2: _statusColor = COLOR_2; break;
+			case 3: _statusColor = COLOR_3; break;
+			}
+			if (_lbState.isFocus() == false) {
+				_lbState.setColor(_statusColor);
+			}
 			
 			// Old
 			int old = (int)_character.getOld();
@@ -516,22 +604,80 @@ public class PanelCharacter extends UserSubInterface {
 				startAnim(_lbEnlisted, StringUtils.getDashedString("Enlisted since:", enlisted, NB_COLUMNS));
 				return;
 			}
-			
-			
-			
 
-
+			// BirthName
+			String birthName = _character.getFirstName() + _character.getBirthName();
+			if (!birthName.equals(_lastBirthName)) {
+				_lastBirthName = birthName;
+				startAnim(_lbBirthName, StringUtils.getDashedString("Birth name:", birthName, NB_COLUMNS));
+				return;
+			}
 			
-//			// Thoughts
-//			String thoughts = _character.getStatus().getThoughts();
-//			if (!thoughts.equals(_lastThoughts)) {
-//				_lastThoughts = thoughts;
-//				startAnim(_lbState, getDashedString("Last report:", thoughts, NB_COLUMNS));
-//				return;
-//			}
 		}
 	}
 	
+	private void refreshJob() {
+		if (_character.getJob() != null) {
+			_lbJob2.setString(StringUtils.getDashedString(_character.getJob().getShortLabel(), _character.getJob().getFormatedDuration(), NB_COLUMNS));
+		} else {
+			_lbJob2.setString(Strings.LN_NO_JOB);
+		}
+	}
+
+	private void refreshDebug() {
+		if (Settings.getInstance().isDebug()) {
+			_debugEntries[0].setString(StringUtils.getDashedString("Old", String.valueOf(_character.getOld()), NB_COLUMNS));
+			_debugEntries[1].setString(StringUtils.getDashedString("NextChild", String.valueOf(_character.getNextChildAtOld()), NB_COLUMNS));
+			_debugEntries[2].setString(StringUtils.getDashedString("IsGay", String.valueOf(_character.isGay()), NB_COLUMNS));
+			_debugEntries[3].setString(StringUtils.getDashedString("Gender", String.valueOf(_character.getGender()), NB_COLUMNS));
+		}
+
+	}
+
+	private void refreshInventory() {
+		for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
+			if (_character.getCarried().size() > i) {
+				BaseItem item = _character.getCarried().get(i);
+				_lbCarry[i].setImage(SpriteManager.getInstance().getIcon(item.getInfo()));
+				_lbTip.setString(item.getName());
+			} else {
+				_lbCarry[i].setImage(null);
+			}
+		}
+	}
+
+	private void refreshNeeds() {
+		CharacterNeeds needs = _character.getNeeds();
+		for (int i = 0; i < NB_GAUGE; i++) {
+
+			int value = 0;
+			switch (i) {
+			case 0: value = Math.min(Math.max(needs.getFood(), 0), 100); break;
+			case 1: value = Math.min(Math.max(needs.getOxygen(), 0), 100); break;
+			case 2: value = Math.min(Math.max(needs.getHappiness(), 0), 100); break;
+			case 3: value = Math.min(Math.max(needs.getEnergy(), 0), 100); break;
+			case 4: value = Math.min(Math.max(needs.getRelation(), 0), 100); break;
+			case 5: value = Math.min(Math.max(needs.getSecurity(), 0), 100); break;
+			case 6: value = Math.min(Math.max(needs.getHealth(), 0), 100); break;
+//			case 7: value = Math.min(Math.max(needs.getSickness(), 0), 100); break;
+//			case 8: value = Math.min(Math.max(needs.getInjuries(), 0), 100); break;
+//			case 9: value = Math.min(Math.max(needs.getSatiety(), 0), 100); break;
+//			case 10: value = Math.min(Math.max(needs.getSleeping(), 0), 100); break;
+//			case 11: value = Math.min(Math.max(needs.getWorkRemain(), 0), 100); break;
+			}
+			float size = Math.max(Math.round(180.0f / 100 * value / 10) * 10, 10);
+			int level = 0;
+			Color color = COLOR_0;
+			if (value < 10) { level = 3; color = COLOR_2; }
+			else if (value < 50) { level = 2; color = COLOR_1; }
+			_shapes[i].setSize(new Vector2f(size, 12));
+			_shapes[i].setTextureRect(new IntRect(0, level * 16, (int)size, 12));
+			
+			_values[i].setString(StringUtils.getDashedString(texts[i], String.valueOf(value), NB_COLUMNS_NEEDS));
+			_values[i].setColor(color);
+		}
+	}
+
 	private void startAnim(TextView text, String value) {
 		_animFrame = 0;
 		_animLabel = text;
@@ -558,119 +704,11 @@ public class PanelCharacter extends UserSubInterface {
 		}
 
 		if (_character != null) {
-			CharacterNeeds needs = _character.getNeeds();
 			for (int i = 0; i < _animGauge && i < NB_GAUGE; i++) {
-
-				int value = 0;
-				switch (i) {
-				case 0: value = Math.min(Math.max(needs.getFood(), 0), 100); break;
-				case 1: value = Math.min(Math.max(needs.getOxygen(), 0), 100); break;
-				case 2: value = Math.min(Math.max(needs.getHappiness(), 0), 100); break;
-				case 3: value = Math.min(Math.max(needs.getEnergy(), 0), 100); break;
-				case 4: value = Math.min(Math.max(needs.getRelation(), 0), 100); break;
-				case 5: value = Math.min(Math.max(needs.getSecurity(), 0), 100); break;
-				case 6: value = Math.min(Math.max(needs.getHealth(), 0), 100); break;
-//				case 7: value = Math.min(Math.max(needs.getSickness(), 0), 100); break;
-//				case 8: value = Math.min(Math.max(needs.getInjuries(), 0), 100); break;
-//				case 9: value = Math.min(Math.max(needs.getSatiety(), 0), 100); break;
-//				case 10: value = Math.min(Math.max(needs.getSleeping(), 0), 100); break;
-//				case 11: value = Math.min(Math.max(needs.getWorkRemain(), 0), 100); break;
-				}
-				float size = Math.max(Math.round(180.0f / 100 * value / 10) * 10, 10);
-				int level = 0;
-				Color color = COLOR_0;
-				if (value < 10) { level = 3; color = COLOR_3; }
-				else if (value < 50) { level = 2; color = COLOR_2; }
-				_shapes[i].setSize(new Vector2f(size, 12));
-				_shapes[i].setTextureRect(new IntRect(0, level * 16, (int)size, 12));
-				app.draw(_shapes[i], _render);
-				
-				_values[i].setString(StringUtils.getDashedString(texts[i], String.valueOf(value), NB_COLUMNS_NEEDS));
-				_values[i].setColor(color);
 				_values[i].setVisible(true);
-
-				if (_character.getJob() != null) {
-					_lbJob2.setString(_character.getJob().getShortLabel());
-				} else {
-					_lbJob2.setString(Strings.LN_NO_JOB);
-				}
+				app.draw(_shapes[i], _render);
 			}
-
-			for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
-				if (_character.getCarried().size() > i) {
-					BaseItem item = _character.getCarried().get(i);
-					_lbCarry[i].setImage(SpriteManager.getInstance().getIcon(item.getInfo()));
-					_lbTip.setString(item.getName());
-				} else {
-					_lbCarry[i].setImage(null);
-				}
-			}
-
-			List<CharacterRelation> relations = _character.getFamilyMembers();
-			if (_nbRelation != relations.size()) {
-				refreshRelations(relations);
-			}
-
-			if (Settings.getInstance().isDebug()) {
-				_debugEntries[0].setString("old");
-				_debugEntriesValue[0].setString(String.valueOf(_character.getOld()));
-
-				_debugEntries[1].setString("next child at old");
-				_debugEntriesValue[1].setString(String.valueOf(_character.getNextChildAtOld()));
-
-				_debugEntries[2].setString("is gay");
-				_debugEntriesValue[2].setString(String.valueOf(_character.isGay()));
-
-				_debugEntries[3].setString("gender");
-				_debugEntriesValue[3].setString(String.valueOf(_character.getGender()));
-			}
-
-			//	    // Name
-			//	    Text text = new Text();
-			//	    text.setString(_character.getName());
-			//	    text.setFont(_font);
-			//	    text.setCharacterSize(MENU_CHARACTER_FONT_SIZE);
-			//	    text.setStyle(Text.REGULAR);
-			//	    text.setPosition(MENU_PADDING_LEFT + 0, MENU_PADDING_TOP);
-			//	    _app.draw(text, render);
-			//
-			//	    // Job
-			//		Profession function = _character.getProfession();
-			//	    Text job = new Text();
-			//	    job.setString(function.getName());
-			//	    job.setFont(_font);
-			//	    job.setCharacterSize(24);
-			//	    job.setColor(function.getColor());
-			//	    job.setStyle(Text.REGULAR);
-			//	    job.setPosition(MENU_PADDING_LEFT + 0, MENU_PADDING_TOP + MENU_CHARACTER_FONT_SIZE);
-			//	    _app.draw(job, render);
-			//
-			//		CharacterNeeds needs = _character.getNeeds();
-			//	    for (int i = 0; i < 11; i++) {
-			//
-			//	      addGauge(MENU_PADDING_LEFT + 180 * (i % 2),
-			//	               10 + 50 * (i / 2) + (UI_FONT_SIZE + 16) + MENU_PADDING_TOP,
-			//	               160,
-			//	               12,
-			//	               value,
-			//				   texts[i],
-			//				   render);
 		}
-
-		// TODO
-		//		int messages = _character.getMessages();
-		//	    for (int i = 0; i < CHARACTER_Math.max_MESSAGE; i++) {
-		//		  if (messages[i] == -1 || messages[i] > frame - 100) {
-		//			addMessage(MENU_PADDING_LEFT,
-		//					   280 + (i * UI_FONT_SIZE) + MENU_PADDING_TOP,
-		//					   UI_WIDTH - MENU_PADDING_TOP * 2,
-		//					   UI_FONT_SIZE,
-		//					   i,
-		//					   render);
-		//		  }
-		//	    }
-
-		//	  }
 	}
 
 }

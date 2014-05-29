@@ -268,7 +268,7 @@ public class BaseItem {
 	public boolean			isWorking() { return _isWorking; }
 	public boolean			isComplete() { return _matterSupply >= _matter; }
 	public boolean			isSupply() { return _power == _powerSupply; }
-	public boolean			isFree() { return _owner == null; }
+	public boolean			isFree() { return _nbFreeSlot > 0; }
 	public boolean			isSleepingItem() { return "base.bed".equals(_name) || "base.chair".equals(_name); }
 	public boolean			isStructure() { return _info.isStructure; }
 	public boolean			isRessource() { return _info.isResource; }
