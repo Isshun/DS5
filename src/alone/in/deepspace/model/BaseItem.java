@@ -10,6 +10,7 @@ import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.ItemInfo.ItemInfoSlot;
+import alone.in.deepspace.model.job.Job;
 
 
 public class BaseItem {

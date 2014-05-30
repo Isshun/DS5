@@ -38,7 +38,7 @@ import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
-import alone.in.deepspace.model.Job;
+import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;

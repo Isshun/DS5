@@ -3,8 +3,8 @@ package alone.in.deepspace.model.jobCheck;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Character;
-import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.UserItem;
+import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.util.Constant;
 
 // Play with random object
@@ -18,10 +18,9 @@ public class CharacterPlayTime implements JobCheck {
 
 		UserItem toy = ServiceManager.getWorldMap().getRandomToy(character.getX(), character.getY());
 		if (toy != null) {
-			Job job = jobManager.createUseJob(toy);
+			Job job = jobManager.addUseJob(toy);
 			if (job != null) {
 				character.setJob(job);
-				jobManager.addJob(job);
 			}
 
 		}

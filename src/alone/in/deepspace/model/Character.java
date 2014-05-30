@@ -16,7 +16,9 @@ import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.CharacterRelation.Relation;
-import alone.in.deepspace.model.Job.Abort;
+import alone.in.deepspace.model.job.Job;
+import alone.in.deepspace.model.job.Job.Abort;
+import alone.in.deepspace.model.job.JobRefill;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
@@ -626,15 +628,7 @@ public class Character extends Movable {
 		// Character is full: cancel current job
 		if (_inventorySpaceLeft <= 0) {
 			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
-
-			// TODO
-			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
-			BaseItem storage = ServiceManager.getWorldMap().getNearest(info, _posX, _posY);
-			if (storage != null) {
-				Job job = JobManager.getInstance().createStoreJob(this, storage);
-				JobManager.getInstance().addJob(job);
-				_job = job;
-			}
+			_job = JobManager.getInstance().addStoreJob(this);
 			return;
 		}
 
@@ -683,15 +677,7 @@ public class Character extends Movable {
 		// Character is full: cancel current job
 		if (_inventorySpaceLeft <= 0) {
 			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
-
-			// TODO
-			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
-			BaseItem storage = ServiceManager.getWorldMap().getNearest(info, _posX, _posY);
-			if (storage != null) {
-				Job job = JobManager.getInstance().createStoreJob(this, storage);
-				JobManager.getInstance().addJob(job);
-				_job = job;
-			}
+			_job = JobManager.getInstance().addStoreJob(this);
 			return;
 		}
 
@@ -758,12 +744,22 @@ public class Character extends Movable {
 	}
 
 	private void actionRefill() {
-		if (_job == null || _job.getAction() != Action.REFILL || _job.getItemFilter() == null || _job.getItem() == null || _job.getDispenser() == null || _job.getItem().isStorage() == false) {
+		if (_job == null || _job.getAction() != Action.REFILL) {
 			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
 			Log.error("actionRefill: invalid job");
 			_job = null;
 			return;
 		}
+		
+		Abort reason = _job.check(this);
+		if (reason != null) {
+			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
+			Log.error("actionRefill: invalid job");
+			_job = null;
+			return;
+		}
+		
+		JobRefill job = (JobRefill)_job;
 		
 		// Take in storage
 		if (_job.getSubAction() == Action.TAKE) {
@@ -776,7 +772,7 @@ public class Character extends Movable {
 				item = storage.get(_job.getItemFilter());
 			}
 			
-			_job.setPosition(_job.getDispenser().getX(), _job.getDispenser().getY());
+			_job.setPosition(job.getDispenser().getX(), job.getDispenser().getY());
 			_job.setSubAction(Action.STORE);
 			_toX = _job.getX();
 			_toY = _job.getY();
@@ -788,7 +784,7 @@ public class Character extends Movable {
 		// Refill dispenser
 		else {
 			if (_job.getCarry() != null) {
-				_job.getDispenser().addInventory(_job.getCarry());
+				job.getDispenser().addInventory(_job.getCarry());
 				_inventory.removeAll(_job.getCarry());
 				_inventorySpaceLeft = _inventorySpace - _inventory.size();
 			}

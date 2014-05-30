@@ -12,8 +12,6 @@ import java.util.List;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.IntRect;
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
@@ -22,10 +20,10 @@ import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Character.Gender;
-import alone.in.deepspace.model.Job;
-import alone.in.deepspace.model.Job.Abort;
 import alone.in.deepspace.model.Movable.Direction;
 import alone.in.deepspace.model.Profession;
+import alone.in.deepspace.model.job.Job;
+import alone.in.deepspace.model.job.Job.Abort;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -239,9 +237,8 @@ public class CharacterManager implements ISavable {
 		if (c.getNeeds().isTired()) {
 			BaseItem item = ServiceManager.getWorldMap().find("base.bed", true);
 			if (item != null) {
-				Job job = JobManager.getInstance().createUseJob(item);
+				Job job = JobManager.getInstance().addUseJob(item);
 				if (job != null) {
-					JobManager.getInstance().addJob(job);
 					c.setJob(job);
 					return;
 				}

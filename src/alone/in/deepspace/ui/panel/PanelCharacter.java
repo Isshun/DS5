@@ -76,41 +76,25 @@ public class PanelCharacter extends UserSubInterface {
 	private FrameLayout 		_layoutNeeds;
 	private FrameLayout 		_layoutInventory;
 
-	private int _count;
-
-	private int _animRemain;
-
-	private TextView _lbGender;
-
-	private String _lastThoughts;
-
-	private int _lastOld;
-	private Gender	_lastGender;
-	private Profession	_lastProfession;
-
-	private TextView _animLabel;
-
-	private String _animValue;
-
-	private int _animFrame;
-
-	private FrameLayout[] _gauges = new FrameLayout[NB_GAUGE];
-
-	private int _animGauge;
-
-	private String _lastEnlisted;
-
-	private TextView _lbEnlisted;
-
-	private String _lastBirthName;
-
-	private TextView _lbBirthName;
-
-	private Color _statusColor;
-
-	private CharacterStatus _lastStatus;
-
-	private TextView _lbInventory;
+	private int 				_count;
+	private int 				_animRemain;
+	private TextView	 		_lbGender;
+	private String 				_lastThoughts;
+	private int 				_lastOld;
+	private Gender				_lastGender;
+	private Profession			_lastProfession;
+	private TextView 			_animLabel;
+	private String 				_animValue;
+	private int 				_animFrame;
+	private FrameLayout[] 		_gauges = new FrameLayout[NB_GAUGE];
+	private int 				_animGauge;
+	private String 				_lastEnlisted;
+	private TextView 			_lbEnlisted;
+	private String 				_lastBirthName;
+	private TextView 			_lbBirthName;
+	private Color 				_statusColor;
+	private CharacterStatus 	_lastStatus;
+	private TextView 			_lbInventory;
 
 	public PanelCharacter(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
@@ -138,10 +122,10 @@ public class PanelCharacter extends UserSubInterface {
 		createJobInfo(20, 136);
 		createNeedsInfo(20, 206);
 		createBasicInformation(20, 480);
-		createInventoryInfo(20, 630);
-		createFamilyInfo(20, 700);
+		createInventoryInfo(20, 635);
+		createRelationShip(20, 735);
 		if (Settings.getInstance().isDebug()) {
-			createDebug(20, 850);
+			//createDebug(20, 850);
 		}
 	}
 
@@ -351,7 +335,7 @@ public class PanelCharacter extends UserSubInterface {
 		}
 	}
 
-	private void createFamilyInfo(int x, int y) {
+	private void createRelationShip(int x, int y) {
 		_layoutFamily = new FrameLayout(new Vector2f(200, 200));
 		_layoutFamily.setPosition(x, y);
 		addView(_layoutFamily);
@@ -623,7 +607,7 @@ public class PanelCharacter extends UserSubInterface {
 	}
 
 	private void refreshDebug() {
-		if (Settings.getInstance().isDebug()) {
+		if (Settings.getInstance().isDebug() && _debugEntries != null) {
 			_debugEntries[0].setString(StringUtils.getDashedString("Old", String.valueOf(_character.getOld()), NB_COLUMNS));
 			_debugEntries[1].setString(StringUtils.getDashedString("NextChild", String.valueOf(_character.getNextChildAtOld()), NB_COLUMNS));
 			_debugEntries[2].setString(StringUtils.getDashedString("IsGay", String.valueOf(_character.isGay()), NB_COLUMNS));
@@ -634,7 +618,7 @@ public class PanelCharacter extends UserSubInterface {
 
 	private void refreshInventory() {
 		_lbInventory.setString(StringUtils.getDashedString(Strings.LB_INVENTORY,
-				_character.getInventorySpace() - _character.getInventoryLeftSpace() + "/" + _character.getInventorySpace(), 20));
+				_character.getInventorySpace() - _character.getInventoryLeftSpace() + "/" + _character.getInventorySpace(), 29));
 		
 		for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
 			if (_character.getCarried().size() > i) {

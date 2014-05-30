@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager.PathManagerCallback;
+import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 

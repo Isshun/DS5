@@ -5,8 +5,8 @@ import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Character;
-import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.UserItem;
+import alone.in.deepspace.model.job.Job;
 
 /**
  * Launch jobs if low food
@@ -33,8 +33,7 @@ public class CheckLowFood implements JobCheck {
 		}
 		
 		// Create job
-		Job job = jobManager.createUseJob(item);
-		jobManager.addJob(job);
+		jobManager.addUseJob(item);
 	}
 
 }

@@ -8,20 +8,28 @@ import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.CharacterNeeds;
 import alone.in.deepspace.model.ItemInfo;
-import alone.in.deepspace.model.Job;
-import alone.in.deepspace.model.Job.Abort;
-import alone.in.deepspace.model.Job.JobStatus;
-import alone.in.deepspace.model.JobUse;
-import alone.in.deepspace.model.jobCheck.CharacterGoToMettingRoom;
-import alone.in.deepspace.model.jobCheck.CharacterPlayTime;
-import alone.in.deepspace.model.jobCheck.CheckEmptyDispenser;
-import alone.in.deepspace.model.jobCheck.CharacterHasItemToStore;
-import alone.in.deepspace.model.jobCheck.CheckLowFood;
-import alone.in.deepspace.model.jobCheck.JobCheck;
-import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.model.WorldResource;
+import alone.in.deepspace.model.job.Job;
+import alone.in.deepspace.model.job.Job.Abort;
+import alone.in.deepspace.model.job.Job.JobStatus;
+import alone.in.deepspace.model.job.JobBuild;
+import alone.in.deepspace.model.job.JobDestroy;
+import alone.in.deepspace.model.job.JobGather;
+import alone.in.deepspace.model.job.JobMining;
+import alone.in.deepspace.model.job.JobMove;
+import alone.in.deepspace.model.job.JobRefill;
+import alone.in.deepspace.model.job.JobStore;
+import alone.in.deepspace.model.job.JobTake;
+import alone.in.deepspace.model.job.JobUse;
+import alone.in.deepspace.model.job.JobUseInventory;
+import alone.in.deepspace.model.jobCheck.CharacterGoToMettingRoom;
+import alone.in.deepspace.model.jobCheck.CharacterHasItemToStore;
+import alone.in.deepspace.model.jobCheck.CharacterPlayTime;
+import alone.in.deepspace.model.jobCheck.CheckEmptyDispenser;
+import alone.in.deepspace.model.jobCheck.CheckLowFood;
+import alone.in.deepspace.model.jobCheck.JobCheck;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -36,14 +44,12 @@ public class JobManager {
 	private List<JobCheck>		_routineJobsCheck;
 	private List<Job> 			_jobs;
 	private List<BaseItem> 		_routineItems;
-	private int 				_id;
 
 	private int _nbVisibleJob;
 
 	JobManager() {
 		Log.debug("JobManager");
 
-		_id = 0;
 		_jobs = new ArrayList<Job>();
 		_routineItems = new ArrayList<BaseItem>();
 
@@ -61,7 +67,7 @@ public class JobManager {
 
 	public List<Job>	getJobs() { return _jobs; };
 
-	public Job	build(BaseItem item) {
+	public Job	addBuild(BaseItem item) {
 		if (item == null) {
 			Log.error("JobManager: build on null item");
 			return null;
@@ -72,16 +78,13 @@ public class JobManager {
 			return null;
 		}
 		
-		Job job = new Job(++_id, item.getX(), item.getY());
-		job.setAction(JobManager.Action.BUILD);
-		job.setItem(item);
-
+		Job job = JobBuild.create(item);
 		addJob(job);
 
 		return job;
 	}
 
-	public Job	gather(BaseItem ressource) {
+	public Job	addGather(WorldResource ressource) {
 		if (ressource == null) {
 			Log.error("JobManager: gather on null area");
 			return null;
@@ -94,10 +97,7 @@ public class JobManager {
 			}
 		}
 
-		Job job = new Job(++_id, ressource.getX(), ressource.getY());
-		job.setAction(Action.GATHER);
-		job.setItem(ressource);
-
+		Job job = JobGather.create(ressource);
 		addJob(job);
 
 		return job;
@@ -163,7 +163,7 @@ public class JobManager {
 			}
 		}
 
-		return build(item);
+		return addBuild(item);
 	}
 
 	// TODO: one pass + check profession
@@ -184,7 +184,7 @@ public class JobManager {
 			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
 			BaseItem storage = ServiceManager.getWorldMap().getNearest(info, character.getX(), character.getY());
 			if (storage != null) {
-				Job storeJob = createStoreJob(character, storage);
+				Job storeJob = JobStore.create(character, storage);
 				addJob(storeJob);
 				return storeJob;
 			}
@@ -239,36 +239,6 @@ public class JobManager {
 		return bestJob;
 	}
 
-	public Job createStoreJob(Character character, BaseItem storage) {
-		if (storage == null) {
-			Log.error("createStoreJob: storage cannot be null");
-			return null;
-		}
-		
-		if (character == null) {
-			Log.error("createStoreJob: character cannot be null");
-			return null;
-		}
-		
-		Job job = new Job(++_id, storage.getX(), storage.getY());
-		job.setAction(JobManager.Action.STORE);
-		job.setItem(storage);
-		job.setCharacterRequire(character);
-		return job;
-	}
-
-	public Job createTakeJob(Character character, BaseItem storage, ItemFilter filter) {
-		Log.debug("create take job");
-
-		Job job = new Job(++_id, storage.getX(), storage.getY());
-		job.setAction(JobManager.Action.TAKE);
-		job.setItem(storage);
-		job.setItemFilter(filter);
-		job.setCharacterRequire(character);
-		
-		return job;
-	}
-
 	private Job getJobForCharacterNeed(Character character) {
 		CharacterNeeds needs = character.getNeeds();
 		if (needs.isHungry()) {
@@ -278,17 +248,23 @@ public class JobManager {
 			// Have item in inventory
 			BaseItem item = character.find(filter);
 			if (item != null) {
-				Job job = createUseInventoryJob(character, item);
-				addJob(job);
-				return job;
+				Job job = JobUseInventory.create(character, item);
+				if (job != null) {
+					addJob(job);
+					character.setJob(job);
+					return job;
+				}
 			}
 
 			// Take item from storage
-			item = ServiceManager.getWorldMap().findStorageContains(filter, character.getX(), character.getY());
-			if (item != null) {
-				Job job = createTakeJob(character, item, filter);
-				addJob(job);
-				return job;
+			StorageItem storage = ServiceManager.getWorldMap().findStorageContains(filter, character.getX(), character.getY());
+			if (storage != null) {
+				Job job = JobTake.create(character, storage, filter);
+				if (job != null) {
+					addJob(job);
+					character.setJob(job);
+					return job;
+				}
 			}
 			
 			// Looking for food dispenser
@@ -296,9 +272,12 @@ public class JobManager {
 				for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
 					item = ServiceManager.getWorldMap().getItem(x, y);
 					if (item != null && item.matchFilter(filter)) {
-						Job job = createUseJob(item);
-						addJob(job);
-						return job;
+						Job job = JobUse.create(item);
+						if (job != null) {
+							addJob(job);
+							character.setJob(job);
+							return job;
+						}
 					}
 				}
 			}
@@ -471,18 +450,20 @@ public class JobManager {
 		_jobs.clear();
 	}
 
-	public void destroyItem(BaseItem item) {
-		Job job = new Job(++_id, item.getX(), item.getY());
-		job.setAction(JobManager.Action.DESTROY);
-		job.setItem(item);
+	public void addDestroyJob(BaseItem item) {
+		Job job = JobDestroy.create(item);
 		addJob(job);
 	}
 
-	public void move(Character character, int x, int y) {
-		Job job = new Job(++_id, x, y);
-		job.setAction(JobManager.Action.MOVE);
-		job.setCharacterRequire(character);
+	public void addMoveJob(Character character, int x, int y) {
+		Job job = JobMove.create(character, x, y, 0);
 		addJob(job);
+	}
+
+	public Job addMoveJob(Character character, int x, int y, int stay) {
+		Job job = JobMove.create(character, x, y, stay);
+		addJob(job);
+		return job;
 	}
 
 	public void giveRoutineJob(Character c) {
@@ -511,44 +492,7 @@ public class JobManager {
 //			return createWorkJob(bestItem);
 //		}
 	}
-
-	private Job createUseInventoryJob(Character character, BaseItem item) {
-		if (!item.getInfo().isConsomable) {
-			return null;
-		}
-		
-		Job job = new Job(++_id);
-		job.setPosition(character.getX(), character.getY());
-		job.setAction(JobManager.Action.USE_INVENTORY);
-		job.setItem(item);
-		job.setDurationLeft(item.getInfo().onAction.duration);
-
-		return job;
-	}
-
-	public Job createUseJob(BaseItem item) {
-		if (item == null || !item.hasFreeSlot()) {
-			return null;
-		}
-		
-		JobUse job = new JobUse(++_id);
-		ItemSlot slot = item.takeSlot(job);
-		job.setSlot(slot);
-		job.setPosition(slot.getX(), slot.getY());
-		job.setAction(JobManager.Action.USE);
-		job.setItem(item);
-		job.setDurationLeft(item.getInfo().onAction.duration);
-
-		return job;
-	}
 	
-	private Job createWorkJob(BaseItem item) {
-		Job job = new Job(++_id, item.getX(), item.getY());
-		job.setAction(JobManager.Action.WORK);
-		job.setItem(item);
-		return job;
-	}
-
 	public void addRoutineItem(BaseItem item) {
 		// TODO
 		//_routineItems.add(item);
@@ -560,15 +504,8 @@ public class JobManager {
 			return null;
 		}
 		
-		// Resource is not gatherable
-		if (res.getInfo().onGather == null) {
-			return null;
-		}
+		Job job = JobGather.create(res);
 		
-		Job job = new Job(++_id, res.getX(), res.getY());
-		job.setAction(JobManager.Action.GATHER);
-		job.setItem(res);
-
 		return job;
 	}
 
@@ -578,15 +515,7 @@ public class JobManager {
 			return null;
 		}
 		
-		// Resource is not minable
-		if (res.getInfo().onMine == null) {
-			return null;
-		}
-		
-		Job job = new Job(++_id, res.getX(), res.getY());
-		job.setAction(JobManager.Action.MINING);
-		job.setItem(res);
-		
+		Job job = JobMining.create(res);
 		return job;
 	}
 
@@ -596,37 +525,15 @@ public class JobManager {
 			return null;
 		}
 		
-		Job job = new Job(++_id, item.getX(), item.getY());
-		job.setAction(JobManager.Action.DESTROY);
-		job.setItem(item);
-		
-		return job;
-	}
-
-	public Job createMovingJob(int x, int y, int stay) {
-		Job job = new Job(++_id, x, y);
-		job.setAction(JobManager.Action.MOVE);
-		job.setDurationLeft(stay);
+		Job job = JobDestroy.create(item);
 		return job;
 	}
 
 	public Job createRefillJob(Character character, StorageItem storage, ItemFilter filter, StorageItem dispenser) {
-		if (storage == null || dispenser == null || storage == dispenser) {
-			Log.error("createRefillJob: wrong items");
-			return null;
+		Job job = JobRefill.create(dispenser, storage, filter);
+		if (job != null) {
+			job.setCharacterRequire(character);
 		}
-		
-		Log.debug("create take job");
-
-		Job job = new Job(++_id, storage.getX(), storage.getY());
-		job.setAction(JobManager.Action.REFILL);
-		job.setSubAction(JobManager.Action.TAKE);
-		job.setDispenser(dispenser);
-		dispenser.setRefillJob(job);
-		job.setItem(storage);
-		job.setItemFilter(filter);
-		job.setCharacterRequire(character);
-		
 		return job;
 	}
 
@@ -650,26 +557,23 @@ public class JobManager {
 		}
 	}
 
-	public void addStoreJob(Character character) {
-		if (character == null) {
-			Log.error("addStoreJob: character cannot be null");
-			return;
-		}
-		
-		if (character.getCarried().size() == 0) {
-			Log.error("addStoreJob: character inventory cannot be empty");
-			return;
-		}
-		
-		BaseItem itemToStore = character.getCarried().get(0);
-		StorageItem storage = ServiceManager.getWorldMap().getNearestStorage(character.getX(), character.getY(), itemToStore);
-		Job job = createStoreJob(character, storage);
+	public Job addStoreJob(Character character) {
+		Job job = JobStore.create(character);
 		if (job != null) {
 			addJob(job);
 		}
+		return job;
 	}
 
 	public int getNbVisibleJob() {
 		return _nbVisibleJob;
+	}
+
+	public Job addUseJob(BaseItem item) {
+		Job job = JobUse.create(item);
+		if (job != null) {
+			addJob(job);
+		}
+		return job;
 	}
 }

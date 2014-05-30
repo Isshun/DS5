@@ -17,10 +17,10 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.model.Character;
-import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.Position;
 import alone.in.deepspace.model.Region;
 import alone.in.deepspace.model.Region.Door;
+import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 

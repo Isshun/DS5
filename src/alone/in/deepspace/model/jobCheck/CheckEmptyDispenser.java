@@ -7,8 +7,8 @@ import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.ItemInfo;
-import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.StorageItem;
+import alone.in.deepspace.model.job.Job;
 
 // Refill dispenser
 public class CheckEmptyDispenser implements JobCheck {

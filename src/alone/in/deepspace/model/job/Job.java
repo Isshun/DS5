@@ -1,7 +1,6 @@
-package alone.in.deepspace.model;
+package alone.in.deepspace.model.job;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
@@ -10,12 +9,13 @@ import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
-import alone.in.deepspace.model.Job.Abort;
-import alone.in.deepspace.model.Job.JobStatus;
+import alone.in.deepspace.model.BaseItem;
+import alone.in.deepspace.model.Character;
+import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
-public class Job {
+public abstract class Job {
 
 	public static enum JobStatus {
 		WAITING, RUNNING, COMPLETE, ABORTED
@@ -25,14 +25,15 @@ public class Job {
 		NO_COMPONENTS, INTERRUPTE, BLOCKED, NO_LEFT_CARRY, INVALID, DIED
 	};
 
+	private static int			_count;
 	private int 				_id;
 	private int					_posY;
 	private int 				_posX;
 	protected BaseItem			_item;
 	private List<BaseItem>		_carryItems;
-	private ItemFilter 			_filter;
+	protected ItemFilter 		_filter;
 	private JobManager.Action 	_action;
-	private Character 			_character;
+	protected Character 		_character;
 	private Character 			_characterRequire;
 	private int 				_fail;
 	public int 					_blocked;
@@ -41,31 +42,28 @@ public class Job {
 	private int 				_durationLeft;
 	private ItemSlot 			_slot;
 	private int 				_nbUsed;
-	private StorageItem 		_dispenser;
-	private Action 				_subAction;
+	protected Action 			_subAction;
 	private JobStatus			_status;
 
-	public Job(int id, int x, int y) {
-		Log.debug("Job #" + id);
-		init(id);
+	public Job(int x, int y) {
+		init();
 		_posY = y;
 		_posX = x;
 	}
 
-	public Job(int id) {
-		Log.debug("Job #" + id);
-		init(id);
+	public Job() {
+		init();
 	}
 
-	private void init(int id) {
-		_id = id;
+	private void init() {
+		_id = ++_count;
 		_item = null;
 		_filter = null;
 		_action = JobManager.Action.NONE;
 		_character = null;
 		_status = JobStatus.WAITING;
 
-		Log.debug("Job #" + id + " done");
+		Log.debug("Job #" + _id + " create");
 	}
 
 	public int					getX() { return _posX; }
@@ -192,20 +190,12 @@ public class Job {
 		_nbUsed++;
 	}
 
-	public void setDispenser(StorageItem dispenser) {
-		_dispenser = dispenser;
-	}
-
 	public Action getSubAction() {
 		return _subAction;
 	}
 
 	public void setSubAction(Action action) {
 		_subAction = action;
-	}
-
-	public StorageItem getDispenser() {
-		return _dispenser;
 	}
 
 	public void addCarry(BaseItem item) {
@@ -227,8 +217,6 @@ public class Job {
 		return "" + _durationLeft / Constant.DURATION_MULTIPLIER + "s left";
 	}
 
-	public Abort check(Character character) {
-		return null;
-	}
+	public abstract Abort check(Character character);
 
 }

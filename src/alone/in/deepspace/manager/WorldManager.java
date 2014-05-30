@@ -98,7 +98,7 @@ public class WorldManager implements TileBasedMap {
 		int realY = j % _height;
 		if (_areas[realX][realY].getStructure() == null) {
 			WorldResource ressource = (WorldResource)putItem("base.res", 0, realX, realY, 10);
-			JobManager.getInstance().gather(ressource);
+			JobManager.getInstance().addGather(ressource);
 			return true;
 		}
 		return false;

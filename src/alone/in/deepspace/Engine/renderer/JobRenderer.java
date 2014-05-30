@@ -12,7 +12,7 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
-import alone.in.deepspace.model.Job;
+import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.util.Constant;
 
 public class JobRenderer implements IRenderer {

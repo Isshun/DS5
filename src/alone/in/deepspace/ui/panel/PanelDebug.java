@@ -84,11 +84,11 @@ public class PanelDebug extends UserSubInterface {
 					for (int y = 0; y < height; y++) {
 						StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
 						if (structure != null && structure.isComplete() == false) {
-							JobManager.getInstance().build(structure);
+							JobManager.getInstance().addBuild(structure);
 						}
 						UserItem item = ServiceManager.getWorldMap().getItem(x, y);
 						if (item != null && item.isComplete() == false) {
-							JobManager.getInstance().build(item);
+							JobManager.getInstance().addBuild(item);
 						}
 					}
 				}

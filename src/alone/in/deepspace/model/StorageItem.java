@@ -5,6 +5,7 @@ import java.util.List;
 
 import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ResourceManager;
+import alone.in.deepspace.model.job.Job;
 
 public class StorageItem extends UserItem {
 

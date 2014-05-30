@@ -16,7 +16,7 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
 import alone.in.deepspace.manager.SpriteManager;
-import alone.in.deepspace.model.Job;
+import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;
