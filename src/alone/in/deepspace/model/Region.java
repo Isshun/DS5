@@ -41,35 +41,35 @@ public class Region {
 	}
 
 	public Region(int id, int fromX, int fromY, int toX, int toY) {
-		Log.info("create region: " + id);
-		
-		this._doors = new ArrayList<Door>();
-		this.id = id;
-		this.fromX = fromX;
-		this.fromY = fromY;
-		this.toX = toX;
-		this.toY = toY;
-		
-		WorldManager worldMap = ServiceManager.getWorldMap();
-		for (int x = fromX; x <= toX; x++) {
-			for (int y = fromY; y <= toY; y++) {
-				if (x == fromX || x == toX || y == fromY || y == toY) {
-					StructureItem structure = worldMap.getStructure(x, y);
-					if (structure != null && structure.isFloor()) {
-						Log.debug("Region #" + id + ": door at pos " + x + "x" + y);
-						_doors.add(new Door(x, y));
-					}
-				}
-			}
-		}
-
-		for (Door d1: _doors) {
-			for (Door d2: _doors) {
-				if (d1 != d2) {
-					PathManager.getInstance().getInnerPath(d1, d2);
-				}
-			}
-		}
+//		Log.info("create region: " + id);
+//		
+//		this._doors = new ArrayList<Door>();
+//		this.id = id;
+//		this.fromX = fromX;
+//		this.fromY = fromY;
+//		this.toX = toX;
+//		this.toY = toY;
+//		
+//		WorldManager worldMap = ServiceManager.getWorldMap();
+//		for (int x = fromX; x <= toX; x++) {
+//			for (int y = fromY; y <= toY; y++) {
+//				if (x == fromX || x == toX || y == fromY || y == toY) {
+//					StructureItem structure = worldMap.getStructure(x, y);
+//					if (structure != null && structure.isFloor()) {
+//						Log.debug("Region #" + id + ": door at pos " + x + "x" + y);
+//						_doors.add(new Door(x, y));
+//					}
+//				}
+//			}
+//		}
+//
+//		for (Door d1: _doors) {
+//			for (Door d2: _doors) {
+//				if (d1 != d2) {
+//					PathManager.getInstance().getInnerPath(d1, d2);
+//				}
+//			}
+//		}
 	}
 	
 	@Override

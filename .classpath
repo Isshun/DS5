@@ -5,5 +5,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/jsfml.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/pathfinding.jar"/>
 	<classpathentry kind="lib" path="lib/snakeyaml-1.11.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GeoGen"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/PathFinding"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -6,10 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.newdawn.slick.util.pathfinding.Mover;
+import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
-import alone.in.deepspace.engine.renderer.WorldRenderer;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Room;
@@ -547,34 +546,34 @@ public class WorldManager implements TileBasedMap {
 		//Log.info("visite: " + x + ", " + y);
 	}
 
-	@Override
-	public boolean blocked(Mover mover, int x, int y) {
-		if (x >= 0 && y >= 0 && x < _width && y < _height) {
-			return _areas[x][y].getStructure() != null && _areas[x][y].getStructure().isComplete() && _areas[x][y].getStructure().isSolid();
-		}
-		return false;
-	}
-
-	@Override
-	public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
-
-//		 int dx = Math.abs(sx - tx);
-//		 int dy = Math.abs(sy - ty);
-//		 return Math.max(dx, dy);
-				    		
-		WorldArea a1 = _areas[sx][sy];
-		WorldArea a2 = _areas[tx][ty];
-
-		if (a1.getStructure() != null && a1.getStructure().isComplete() && a2.getStructure() == null ||
-				a2.getStructure() != null && a2.getStructure().isComplete() && a1.getStructure() == null) {
-			return 5;
-		}
-
-//		boolean r = Math.random() * 10 % 2 == 0;
-//		return sx != tx ? (r ? 10f : 1f) : (r ? 1f : 10f);
-		
-		return sx != tx && sy != ty ? 1f : 0.8f;
-	}
+//	@Override
+//	public boolean blocked(Mover mover, int x, int y) {
+//		if (x >= 0 && y >= 0 && x < _width && y < _height) {
+//			return _areas[x][y].getStructure() != null && _areas[x][y].getStructure().isComplete() && _areas[x][y].getStructure().isSolid();
+//		}
+//		return false;
+//	}
+//
+//	@Override
+//	public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
+//
+////		 int dx = Math.abs(sx - tx);
+////		 int dy = Math.abs(sy - ty);
+////		 return Math.max(dx, dy);
+//				    		
+//		WorldArea a1 = _areas[sx][sy];
+//		WorldArea a2 = _areas[tx][ty];
+//
+//		if (a1.getStructure() != null && a1.getStructure().isComplete() && a2.getStructure() == null ||
+//				a2.getStructure() != null && a2.getStructure().isComplete() && a1.getStructure() == null) {
+//			return 5;
+//		}
+//
+////		boolean r = Math.random() * 10 % 2 == 0;
+////		return sx != tx ? (r ? 10f : 1f) : (r ? 1f : 10f);
+//		
+//		return sx != tx && sy != ty ? 1f : 0.8f;
+//	}
 
 	public List<StorageItem> getDispensers() { return _dispenserItems; }
 
@@ -915,5 +914,35 @@ public class WorldManager implements TileBasedMap {
 
 	public WorldArea getArea(int z, int x, int y) {
 		return _floors[z][x][y];
+	}
+
+	@Override
+	public boolean blocked(PathFindingContext context, int x, int y) {
+		if (x >= 0 && y >= 0 && x < _width && y < _height) {
+			return _areas[x][y].getStructure() != null && _areas[x][y].getStructure().isComplete() && _areas[x][y].getStructure().isSolid();
+		}
+		return false;
+	}
+
+	@Override
+	public float getCost(PathFindingContext context, int tx, int ty) {
+
+//		 int dx = Math.abs(sx - tx);
+//		 int dy = Math.abs(sy - ty);
+//		 return Math.max(dx, dy);
+				    		
+//		WorldArea a1 = _areas[sx][sy];
+//		WorldArea a2 = _areas[tx][ty];
+//
+//		if (a1.getStructure() != null && a1.getStructure().isComplete() && a2.getStructure() == null ||
+//				a2.getStructure() != null && a2.getStructure().isComplete() && a1.getStructure() == null) {
+//			return 5;
+//		}
+//
+////		boolean r = Math.random() * 10 % 2 == 0;
+////		return sx != tx ? (r ? 10f : 1f) : (r ? 1f : 10f);
+//		
+//		return sx != tx && sy != ty ? 1f : 0.8f;
+		return 1f;
 	}
 }

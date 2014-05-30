@@ -10,9 +10,9 @@ import java.util.concurrent.Executors;
 
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.Mover;
-import org.newdawn.slick.util.pathfinding.Node;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
+import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import alone.in.deepspace.Game;
@@ -30,36 +30,36 @@ public class PathManager {
 		  void	onPathComplete(Vector<Position> path, Job item);
 		  void	onPathFailed(Job item);
 	}
-
-	public static class NodesPool {
-		private static List<Node[][]> nodesList;
-
-		public static void init() {
-			nodesList = new ArrayList<Node[][]>();
-		}
-
-		public static Node[][] getNodes(TileBasedMap map) {
-//			synchronized(nodesList) {
-//				if (nodesList.size() > 0) {
-//					return nodesList.remove(0);
+//
+//	public static class NodesPool {
+//		private static List<Node[][]> nodesList;
+//
+//		public static void init() {
+//			nodesList = new ArrayList<Node[][]>();
+//		}
+//
+//		public static Node[][] getNodes(TileBasedMap map) {
+////			synchronized(nodesList) {
+////				if (nodesList.size() > 0) {
+////					return nodesList.remove(0);
+////				}
+////			}
+////			Log.error("empty pool");
+//			Node[][] nodes = new Node[map.getWidthInTiles()][map.getHeightInTiles()];
+//			for (int x=0;x<map.getWidthInTiles();x++) {
+//				for (int y=0;y<map.getHeightInTiles();y++) {
+//					nodes[x][y] = new Node(x,y);
 //				}
 //			}
-//			Log.error("empty pool");
-			Node[][] nodes = new Node[map.getWidthInTiles()][map.getHeightInTiles()];
-			for (int x=0;x<map.getWidthInTiles();x++) {
-				for (int y=0;y<map.getHeightInTiles();y++) {
-					nodes[x][y] = new Node(x,y);
-				}
-			}
-			return nodes;
-		}
-
-		public static void recycle(Node[][] nodes) {
-//			synchronized(nodesList) {
-//				nodesList.add(nodes);
-//			}
-		}
-	}
+//			return nodes;
+//		}
+//
+//		public static void recycle(Node[][] nodes) {
+////			synchronized(nodesList) {
+////				nodesList.add(nodes);
+////			}
+//		}
+//	}
 
 	private static class OldPath {
 		public boolean			blocked;
@@ -89,7 +89,7 @@ public class PathManager {
 		_bridges = new HashMap<Integer, Boolean>();
 		_doors = new ArrayList<Door>();
 		_jobsDone = new ArrayList<Runnable>();
-		NodesPool.init();
+//		NodesPool.init();
 		
 		//		  _data = new map<int, AStarSearch<MapSearchNode>*>();
 		//		  memset(_map, 0, LIMIT_CHARACTER * LIMIT_ITEMS * sizeof(int));
@@ -384,8 +384,8 @@ public class PathManager {
 //					return;
 //				}
 //				
-				Node[][] nodes = NodesPool.getNodes(ServiceManager.getWorldMap());
-				PathFinder finder = new AStarPathFinder(ServiceManager.getWorldMap(), 500, true, nodes);
+//				Node[][] nodes = NodesPool.getNodes(ServiceManager.getWorldMap());
+				PathFinder finder = new AStarPathFinder(ServiceManager.getWorldMap(), 500, true);
 				Path rawpath = finder.findPath(new Mover() {}, fromX, fromY, toX, toY);
 				if (rawpath != null) {
 
@@ -422,82 +422,11 @@ public class PathManager {
 					job.setBlocked(Game.getFrame());
 					character.onPathFailed(job);
 				}
-				NodesPool.recycle(nodes);
+//				NodesPool.recycle(nodes);
 			}
 		});
 	}
 	
-	public void getInnerPath(final Door d1, final Door d2) {
-		final int fromX = d1.x;
-		final int fromY = d1.y;
-		final int toX = d2.x;
-		final int toY = d2.y;
-
-//		_threadPool.execute(new Runnable() {
-//			@Override
-//			public void run() {
-				//Log.info("Go from " + fromX + "x" + fromY + " to " + toX + "x" + toY + " -> region #" + r1 + " to #" + r2);
-				//Log.info("getPathAsync: " + character.getX() + ", " + character.getY() + ", " + toX + ", " + toY);
-
-				long sum1 = getSum(fromX, fromY, toX, toY);
-				long sum2 = getSum(toX, toY, fromX, fromY);
-
-				if (_pool.get(sum1) != null) {
-					Log.info("region: path in cache");
-					if (_pool.get(sum1).path != null) {
-						d1.addBridge(d2);
-						d2.addBridge(d1);
-					}
-					_bridges.put(d1.id << 16 + d2.id, _pool.get(sum1).path != null); 
-					_bridges.put(d2.id << 16 + d1.id, _pool.get(sum1).path != null); 
-					return;
-				}
-
-//				if (_pool.get(sum2) != null) {
-//					Log.info("region: path in cache");
-//					_bridges.put(d1.id << 16 + d2.id, _pool.get(sum1).path != null); 
-//					return;
-//				}
-				
-				Node[][] nodes = NodesPool.getNodes(ServiceManager.getWorldMap());
-				PathFinder finder = new AStarPathFinder(ServiceManager.getWorldMap(), 500, true, nodes);
-				Path rawpath = finder.findPath(new Mover() {}, fromX, fromY, toX, toY);
-				if (rawpath != null) {
-
-					// Cache
-					Vector<Position> path = new Vector<Position>();
-					for (int i = 0; i < rawpath.getLength(); i++) {
-						path.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
-					}
-					_pool.put(sum1, new OldPath(path));
-
-					// Cache
-					Vector<Position> reversedPath = new Vector<Position>();
-					for (int i = rawpath.getLength() - 1; i >= 0; i--) {
-						reversedPath.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
-					}
-					_pool.put(sum2, new OldPath(reversedPath));
-
-					d1.addBridge(d2);
-					d2.addBridge(d1);
-					_bridges.put(d1.id << 16 + d2.id, true); 
-					_bridges.put(d2.id << 16 + d1.id, true); 
-
-					Log.info("region: path complete");
-				} else {
-					_pool.put(sum1, new OldPath(null));
-					_pool.put(sum2, new OldPath(null));
-
-					_bridges.put(d1.id << 16 + d2.id, false); 
-					_bridges.put(d2.id << 16 + d1.id, false); 
-
-					Log.info("region: path fail");
-				}
-				NodesPool.recycle(nodes);
-//			}
-//		});
-	}
-
 //	private boolean inCompletePath(Vector<Position> path, int x, int y) {
 //		for (Position position : path) {
 //			if (position.x == x && position.y == y) {

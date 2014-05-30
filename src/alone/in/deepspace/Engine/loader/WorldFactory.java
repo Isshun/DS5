@@ -1,10 +1,12 @@
 package alone.in.deepspace.engine.loader;
 
+import hoten.voronoi.Center;
+import hoten.voronoi.VoronoiGraph;
 import hoten.voronoi.nodename.as3delaunay.Voronoi;
 
+import java.awt.Color;
 import java.util.Random;
 
-import test.TestGraphImpl;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.ItemInfo;
@@ -20,20 +22,45 @@ public class WorldFactory {
 			}
 		}
 		
-        final int width = Constant.WORLD_WIDTH * 2;
-        final int height = Constant.WORLD_HEIGHT * 2;
+        final int width = Constant.WORLD_WIDTH;
+        final int height = Constant.WORLD_HEIGHT;
         final int numSites = 5000;
         final long seed = 42;//System.nanoTime();
         final Random r = new Random(seed);
         System.out.println("seed: " + seed);
 
         //make the intial underlying voronoi structure
-        final Voronoi v = new Voronoi(numSites, width, height, r, null);
+        final Voronoi v = new Voronoi(numSites, width * 2, height * 2, r, null);
 
         //assemble the voronoi strucutre into a usable graph object representing a map
-        final TestGraphImpl graph = new TestGraphImpl(v, 2, r);
+        final VoronoiGraph graph = new VoronoiGraph(v, 2, r) {
+			@Override
+			protected Enum getBiome(Center p) {
+				return null;
+			}
+
+			@Override
+			protected Color getColor(Enum biome) {
+				return null;
+			}
+        };
         
-        graph.paint(map);
+        for (Center c : graph.centers) {
+        	System.out.println(c.elevation);
+        	int x = (int)(c.loc.x - width / 2);
+        	int y = (int)(c.loc.y - height / 2);
+        	int e = 10 - (int)(c.elevation * 12);
+        	if (x >= 0 && y >= 0 && x < width && y < height) {
+        		System.out.println(e);
+            	map[x][y] = e;
+        	}
+
+        	// clean
+        	if (x+1 >= 0 && y >= 0 && x+1 < width && y < height && map[x+1][y] > e) { map[x+1][y] = e; }
+        	if (x-1 >= 0 && y >= 0 && x-1 < width && y < height && map[x-1][y] > e) { map[x-1][y] = e; }
+        	if (x >= 0 && y+1 >= 0 && x < width && y+1 < height && map[x][y+1] > e) { map[x][y+1] = e; }
+        	if (x >= 0 && y-1 >= 0 && x < width && y-1 < height && map[x][y-1] > e) { map[x][y-1] = e; }
+        }
         
         clean(map);
         clean(map);
