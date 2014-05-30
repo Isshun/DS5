@@ -38,12 +38,13 @@ public class Character extends Movable {
 	private String					_firstName;
 	private Profession				_profession;
 	private boolean					_selected;
-	private List<BaseItem> 			_inventory;
 	private CharacterStatus 		_status;
 	private Color 					_color;
 	private int 					_lag;
 	private double 					_old;
+	private List<BaseItem> 			_inventory;
 	private int 					_inventorySpace;
+	private int 					_inventorySpaceLeft;
 	private int 					_nbChild;
 	private double 					_nextChildAtOld;
 	private List<CharacterRelation> _relations;
@@ -73,6 +74,7 @@ public class Character extends Movable {
 		_needs = new CharacterNeeds(this);
 		_status = new CharacterStatus(this);
 		_inventorySpace = Constant.CHARACTER_INVENTORY_SPACE;
+		_inventorySpaceLeft = _inventorySpace;
 		_steps = 0;
 		_firstName = name;
 		_isGay = (int)(Math.random() * 100) % 10 == 0;
@@ -176,7 +178,7 @@ public class Character extends Movable {
 	public CharacterStatus 	getStatus() { return _status; }
 	public Color 			getColor() { return _color; }
 	public int 				getLag() { return _lag; }
-	public int 				getSpace() { return _inventorySpace - _inventory.size(); }
+	public int 				getSpace() { return _inventorySpaceLeft; }
 	public Gender 			getGender() { return _gender; }
 	public Character 		getMate() { return _mate; }
 	public String 			getLastName() { return _lastName; }
@@ -455,12 +457,19 @@ public class Character extends Movable {
 		for (int i = 0; i < _job.getItem().getInfo().onAction.duration * Constant.DURATION_MULTIPLIER; i++) {
 			_job.getItem().use(this, i);
 		}
-		_inventory.remove(_job.getItem());
+
+		removeInventory(_job.getItem());
 		
 		JobManager.getInstance().complete(_job);
 		_job = null;
 	}
 	
+	private void removeInventory(BaseItem item) {
+		if (_inventory.remove(_job.getItem())) {
+			_inventorySpaceLeft++;
+		}
+	}
+
 	// TODO: make objects stats table instead switch
 	private void actionUse() {
 		// Wrong call
@@ -476,29 +485,28 @@ public class Character extends Movable {
 			return;
 		}
 
-		// Item is no longer exists
-		if (_job.getItem() != ServiceManager.getWorldMap().getItem(_job.getItem().getX(), _job.getItem().getY())) {
-			Log.warning("Character #" + _id + ": actionUse on invalide item");
-			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
-			_job = null;
-			return;
-		}
-
 		// Character is sleeping
 		if (_needs.isSleeping() && _job.getItem().isSleepingItem() == false) {
 			Log.debug("use: sleeping . use canceled");
 			return;
 		}
-
+		
+		Abort reason = _job.check(this);
+		if (reason != null) {
+			JobManager.getInstance().abort(_job, reason);
+			_job = null;
+			return;
+		}
+		
 		Log.debug("Character #" + _id + ": actionUse");
-
-		BaseItem item = _job.getItem();
 
 		// Character using item
 		if (_job.getDurationLeft() > 0) {
 
 			// Decrease duration
 			_job.decreaseDurationLeft();
+
+			BaseItem item = _job.getItem();
 
 			// Item is use by 2 or more character
 			if (item.getNbFreeSlots() + 1 < item.getNbSlots()) {
@@ -510,23 +518,22 @@ public class Character extends Movable {
 				}
 			}
 
-			// Add item effects
-			item.use(this, _job.getDurationLeft());
-
+			// Set character direction
 			if (item.getX() > _posX) { _direction = Direction.RIGHT; }
 			if (item.getX() < _posX) { _direction = Direction.LEFT; }
 			if (item.getY() > _posY) { _direction = Direction.TOP; }
 			if (item.getY() < _posY) { _direction = Direction.BOTTOM; }
 			
+			// Add item effects and create crafted item
+			UserItem produce = item.use(this, _job.getDurationLeft());
+			if (produce != null) {
+				addInventory(produce);
+				System.out.println("inventory: " + _inventorySpaceLeft);
+			}
+
 			return;
 		}
 
-		// Action produce item
-		if (item.isStorage()) {
-			// TODO
-			((StorageItem)item).produce(this);
-		}
-//		if (producedItem != null) {
 		JobManager.getInstance().complete(_job);
 		
 		_job = null;
@@ -545,6 +552,7 @@ public class Character extends Movable {
 		storage.addInventory(_inventory);
 		JobManager.getInstance().complete(_job);
 		_inventory.clear();
+		_inventorySpaceLeft = _inventorySpace;
 		_job = null;
 	}
 
@@ -581,7 +589,7 @@ public class Character extends Movable {
 		if (result == ResourceManager.Message.NO_MATTER) {
 			UserInterface.getInstance().displayMessage("not enough matter", _job.getX(), _job.getY());
 			Log.debug("Character #" + _id + ": not enough matter");
-			JobManager.getInstance().abort(_job, Job.Abort.NO_MATTER);
+			JobManager.getInstance().abort(_job, Job.Abort.NO_COMPONENTS);
 			_job = null;
 		}
 
@@ -616,7 +624,7 @@ public class Character extends Movable {
 
 
 		// Character is full: cancel current job
-		if (_inventory.size() == Constant.CHARACTER_INVENTORY_SPACE) {
+		if (_inventorySpaceLeft <= 0) {
 			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
 
 			// TODO
@@ -643,6 +651,7 @@ public class Character extends Movable {
 		}
 		
 		_inventory.add(new BaseItem(gatheredItem.getInfo().onGather.itemProduce));
+		_inventorySpaceLeft--;
 		//_carry += value;
 	}
 
@@ -672,7 +681,7 @@ public class Character extends Movable {
 
 
 		// Character is full: cancel current job
-		if (_inventory.size() == Constant.CHARACTER_INVENTORY_SPACE) {
+		if (_inventorySpaceLeft <= 0) {
 			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
 
 			// TODO
@@ -699,7 +708,7 @@ public class Character extends Movable {
 			_job = null;
 		}
 		
-		_inventory.add(new BaseItem(gatheredItem.getInfo().onMine.itemProduce));
+		addInventory(new BaseItem(gatheredItem.getInfo().onMine.itemProduce));
 	}
 
 	private void		actionDestroy() {
@@ -760,7 +769,7 @@ public class Character extends Movable {
 		if (_job.getSubAction() == Action.TAKE) {
 			StorageItem storage = (StorageItem)_job.getItem();
 			BaseItem item = storage.get(_job.getItemFilter());
-			while (item != null && _inventory.size() < _inventorySpace) {
+			while (item != null && _inventorySpaceLeft > 0) {
 				_job.addCarry(item);
 				addInventory(item);
 				storage.remove(item);
@@ -781,6 +790,7 @@ public class Character extends Movable {
 			if (_job.getCarry() != null) {
 				_job.getDispenser().addInventory(_job.getCarry());
 				_inventory.removeAll(_job.getCarry());
+				_inventorySpaceLeft = _inventorySpace - _inventory.size();
 			}
 			
 			JobManager.getInstance().complete(_job);
@@ -830,7 +840,10 @@ public class Character extends Movable {
 	}
 
 	public void addInventory(BaseItem item) {
-		_inventory.add(item);
+		if (item != null) {
+			_inventory.add(item);
+			_inventorySpaceLeft--;
+		}
 	}
 
 	public BaseItem find(ItemFilter filter) {
@@ -856,6 +869,18 @@ public class Character extends Movable {
 
 	public int getNbRelations() {
 		return _relations.size();
+	}
+
+	public int getInventoryLeftSpace() {
+		return _inventorySpaceLeft;
+	}
+
+	public int getInventorySpace() {
+		return _inventorySpace;
+	}
+
+	public boolean hasInventorySpaceLeft() {
+		return _inventorySpaceLeft > 0;
 	}
 
 }

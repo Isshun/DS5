@@ -252,6 +252,10 @@ public class CharacterManager implements ISavable {
 		Job job = JobManager.getInstance().getJob(c);
 		if (job != null) {
 			c.setJob(job);
+			Abort reason = job.check(c);
+			if (reason != null) {
+				JobManager.getInstance().abort(job, reason);
+			}
 			return;
 		}
 

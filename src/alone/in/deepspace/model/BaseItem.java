@@ -294,11 +294,16 @@ public class BaseItem {
 		_mode = _nbMode > 0 ? (_mode + 1) % _nbMode : 0;
 	}
 
-	public void use(Character character, int durationLeft) {
+	public UserItem use(Character character, int durationLeft) {
+		// Add effect on character
 		character.getNeeds().use(this, _info.onAction, durationLeft);
+		
+		// Play animation
 		if (_animFrame++ % _animFrameInterval == 0) {
 			_currentFrame = (_currentFrame + 1) % _nbFrame;
 		}
+		
+		return null;
 	}
 
 	public String getLabelType() {
@@ -351,5 +356,9 @@ public class BaseItem {
 
 	public int getCurrentFrame() {
 		return _currentFrame;
+	}
+
+	public boolean isFactory() {
+		return _info.onAction != null && _info.onAction.itemsProduce != null;
 	}
 }

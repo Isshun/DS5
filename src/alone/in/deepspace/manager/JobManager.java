@@ -11,6 +11,7 @@ import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Job;
 import alone.in.deepspace.model.Job.Abort;
 import alone.in.deepspace.model.Job.JobStatus;
+import alone.in.deepspace.model.JobUse;
 import alone.in.deepspace.model.jobCheck.CharacterGoToMettingRoom;
 import alone.in.deepspace.model.jobCheck.CharacterPlayTime;
 import alone.in.deepspace.model.jobCheck.CheckEmptyDispenser;
@@ -199,7 +200,7 @@ public class JobManager {
 			for (Job job: _jobs) {
 				if (job.getCharacter() == null && job.getFail() <= 0) {
 					if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter() == 0) {
-						job.setFail(Abort.NO_MATTER, Game.getFrame());
+						job.setFail(Abort.NO_COMPONENTS, Game.getFrame());
 						continue;
 					}
 					if ((job.getAction() == Action.GATHER || job.getAction() == Action.MINING) && character.getSpace() == 0) {
@@ -239,6 +240,16 @@ public class JobManager {
 	}
 
 	public Job createStoreJob(Character character, BaseItem storage) {
+		if (storage == null) {
+			Log.error("createStoreJob: storage cannot be null");
+			return null;
+		}
+		
+		if (character == null) {
+			Log.error("createStoreJob: character cannot be null");
+			return null;
+		}
+		
 		Job job = new Job(++_id, storage.getX(), storage.getY());
 		job.setAction(JobManager.Action.STORE);
 		job.setItem(storage);
@@ -333,8 +344,18 @@ public class JobManager {
 
 		job.setStatus(JobStatus.ABORTED);
 
+		// Abort because character inventory is full
+		if (reason == Abort.NO_LEFT_CARRY) {
+			addStoreJob(job.getCharacter());
+		}
+		
+		// Abort because factory is out of components
+		if (reason == Abort.NO_COMPONENTS) {
+			addRefillJob((StorageItem)job.getItem());
+		}
+		
 		// Job is invalid, don't resume
-		if (reason == Job.Abort.INVALID) {
+		if (reason == Abort.INVALID) {
 			removeJob(job);
 			return;
 		}
@@ -353,6 +374,34 @@ public class JobManager {
 		// Regular job, reset
 		job.setFail(reason, Game.getFrame());
 		job.setCharacter(null);
+	}
+
+	public void addRefillJob(StorageItem dispenser) {
+		if (dispenser == null || dispenser.isFactory() == false) {
+			Log.error("addRefillJob: item is null or invalid");
+			return;
+		}
+		
+		// Looking for storage containing accepted item
+		StorageItem storage = null;
+		ItemFilter itemFilter = new ItemFilter(true, true); 
+		for (ItemInfo neededItemInfo: dispenser.getInfo().onAction.itemAccept) {
+			if (storage == null) {
+				itemFilter.neededItem = neededItemInfo;
+				storage = ServiceManager.getWorldMap().findStorageContains(itemFilter, dispenser.getX(), dispenser.getY());
+			}
+		}
+
+		// No storage containing needed item
+		if (storage == null) {
+			return;
+		}
+		
+		// Create jobs if needed item is available
+		Job job = createRefillJob(null, storage, itemFilter, dispenser);
+		if (job != null) {
+			addJob(job);
+		}
 	}
 
 	private void removeJob(Job job) {
@@ -429,11 +478,6 @@ public class JobManager {
 		addJob(job);
 	}
 
-	public void askStoreCarry() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void move(Character character, int x, int y) {
 		Job job = new Job(++_id, x, y);
 		job.setAction(JobManager.Action.MOVE);
@@ -487,7 +531,7 @@ public class JobManager {
 			return null;
 		}
 		
-		Job job = new Job(++_id);
+		JobUse job = new JobUse(++_id);
 		ItemSlot slot = item.takeSlot(job);
 		job.setSlot(slot);
 		job.setPosition(slot.getX(), slot.getY());
@@ -601,6 +645,25 @@ public class JobManager {
 
 	public void addMineJob(int x, int y) {
 		Job job = createMiningJob(x, y);
+		if (job != null) {
+			addJob(job);
+		}
+	}
+
+	public void addStoreJob(Character character) {
+		if (character == null) {
+			Log.error("addStoreJob: character cannot be null");
+			return;
+		}
+		
+		if (character.getCarried().size() == 0) {
+			Log.error("addStoreJob: character inventory cannot be empty");
+			return;
+		}
+		
+		BaseItem itemToStore = character.getCarried().get(0);
+		StorageItem storage = ServiceManager.getWorldMap().getNearestStorage(character.getX(), character.getY(), itemToStore);
+		Job job = createStoreJob(character, storage);
 		if (job != null) {
 			addJob(job);
 		}

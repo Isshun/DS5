@@ -50,12 +50,12 @@ public class Constant {
 	public static final int 	DURATION_MULTIPLIER 	= 10;
 	public static final int 	CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS = 20;
 	public static final int 	CHARACTER_INVENTORY_SPACE = 20;
-	public static final double 	CHARACTER_GROW_PER_UPDATE = 0.01;
-	public static final int 	CHARACTER_DELAY_BEFORE_FIRST_CHILD = 0;
+	public static final double 	CHARACTER_GROW_PER_UPDATE = 0.001;
+	public static final int 	CHARACTER_DELAY_BEFORE_FIRST_CHILD = 2;
 	public static final int		CHARACTER_DELAY_BETWEEN_CHILDS = 4;
 	public static final int 	CHARACTER_MAX_CHILD = 4;
 	public static final int 	CHARACTER_CHILD_MIN_OLD = 16;
-	public static final int 	CHARACTER_CHILD_MAX_OLD = 50;
+	public static final int 	CHARACTER_CHILD_MAX_OLD = 42;
 	public static final int 	SLOW_UPDATE_INTERVAL 	= 20;
 	public static final int 	CHARACTER_DATE_MIN_OLD 	= 14;
 	public static final double 	CHARACTER_MAX_OLD 		= 80;

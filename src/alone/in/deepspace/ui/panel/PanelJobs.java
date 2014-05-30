@@ -153,7 +153,7 @@ public class PanelJobs extends UserSubInterface {
 						case INTERRUPTE:
 							left = " (interrupte)";
 							break;
-						case NO_MATTER:
+						case NO_COMPONENTS:
 //							_entries[i].setColor(COLOR_BLOCKED);
 							left = " (no matter)";
 							break;

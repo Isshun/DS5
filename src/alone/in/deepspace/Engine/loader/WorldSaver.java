@@ -3,16 +3,23 @@ package alone.in.deepspace.engine.loader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.events.Event;
 
+import com.thoughtworks.xstream.XStream;
+
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.BaseItem;
@@ -73,7 +80,7 @@ public class WorldSaver {
 	
 	public static void save(WorldManager worldManager, String filePath) {
 		WorldSave save = new WorldSave();
-		
+
 		for (int z = 0; z < 10; z++) {
 			for (int x = 0; x < worldManager.getWidth(); x++) {
 				for (int y = 0; y < worldManager.getHeight(); y++) {
@@ -82,20 +89,38 @@ public class WorldSaver {
 				}
 			}
 		}
+
+		XStream xstream = new XStream();
+		String xml = xstream.toXML(save);
+	    System.out.println(xml);
 		
 		try {
-			FileOutputStream fs = new FileOutputStream(filePath);
+			FileOutputStream fs = new FileOutputStream(filePath + ".xml");
 			OutputStreamWriter output = new OutputStreamWriter(fs);
-		    Yaml yaml = new Yaml();
-		    StringWriter writer = new StringWriter();
-		    yaml.dump(save, output);
+//		    StringWriter writer = new StringWriter();
+//		    writer.write(xml);
+			output.write(xml);
+			output.close();
 		    fs.close();
-		    System.out.println(writer.toString());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+//		try {
+//			FileOutputStream fs = new FileOutputStream(filePath);
+//			OutputStreamWriter output = new OutputStreamWriter(fs);
+//		    Yaml yaml = new Yaml();
+//		    StringWriter writer = new StringWriter();
+//		    yaml.dump(save, output);
+//		    fs.close();
+//		    System.out.println(writer.toString());
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	private static void saveArea(WorldSave save, WorldArea area) {
@@ -146,18 +171,17 @@ public class WorldSaver {
 	    long time = System.currentTimeMillis();
 	    WorldSave worldSave = null;
 
-//	    for (Event event : yaml.parse(new StringReader("abc: 56"))) {
-//            if (e == null) {
-//                assertTrue(event instanceof StreamStartEvent);
-//            }
-//            e = event;
-//            counter++;
-//        }
+		int mb = 1024 * 1024;
+        Runtime runtime = Runtime.getRuntime();
+        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
+        System.out.print("" + used);
 	    
+        // 12 - 215mb + 140% / 1700ms + 70%
+        // 12 - 88mb / 1000ms
 		try {
-			InputStream input = new FileInputStream(filePath);
-		    Yaml yaml = new Yaml(new Constructor(WorldSave.class));
-		    worldSave = (WorldSave)yaml.load(input);
+			InputStream input = new FileInputStream(filePath + ".xml");
+			XStream xstream = new XStream();
+			worldSave = (WorldSave)xstream.fromXML(input);
 		    input.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -197,8 +221,11 @@ public class WorldSaver {
 		    		}
 		    	}
 		    }
-		    Log.info("load complete: " + (System.currentTimeMillis() - time) + "ms");
 		}
+	    
+	    Log.info("load complete: " + (System.currentTimeMillis() - time) + "ms");
+        used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
+        System.out.print("" + used);
 	}
 
 }

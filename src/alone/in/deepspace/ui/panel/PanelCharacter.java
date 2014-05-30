@@ -61,7 +61,7 @@ public class PanelCharacter extends UserSubInterface {
 	private TextView[] 			_values = new TextView[NB_GAUGE];
 	private TextView 			_lbJob;
 	private TextView 			_lbJob2;
-	private ImageView[] 		_lbCarry;
+	private ImageView[] 		_lbInventoryEntries;
 	private TextView 			_lbState;
 	private FrameLayout 		_layoutFamily;
 	private TextView[] 			_familyEntries;
@@ -109,6 +109,8 @@ public class PanelCharacter extends UserSubInterface {
 	private Color _statusColor;
 
 	private CharacterStatus _lastStatus;
+
+	private TextView _lbInventory;
 
 	public PanelCharacter(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
@@ -263,20 +265,19 @@ public class PanelCharacter extends UserSubInterface {
 		_layoutInventory.setPosition(x, y);
 		addView(_layoutInventory);
 		
-		TextView lbCarry= new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
-		lbCarry.setCharacterSize(FONT_SIZE);
-		lbCarry.setColor(COLOR_LABEL);
-		lbCarry.setString(Strings.LB_INVENTORY);
-		lbCarry.setPosition(new Vector2f(0, 0));
-		_layoutInventory.addView(lbCarry);
+		_lbInventory = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
+		_lbInventory.setCharacterSize(FONT_SIZE);
+		_lbInventory.setColor(COLOR_LABEL);
+		_lbInventory.setPosition(new Vector2f(0, 0));
+		_layoutInventory.addView(_lbInventory);
 
-		_lbCarry = new ImageView[Constant.CHARACTER_INVENTORY_SPACE];
+		_lbInventoryEntries = new ImageView[Constant.CHARACTER_INVENTORY_SPACE];
 		for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
 			final int x2 = i % NB_INVENTORY_PER_LINE;
 			final int y2 = i / NB_INVENTORY_PER_LINE;
-			_lbCarry[i] = new ImageView();
-			_lbCarry[i].setPosition(new Vector2f(x2 * 28, 32 + y2 * 28));
-			_lbCarry[i].setOnFocusListener(new OnFocusListener() {
+			_lbInventoryEntries[i] = new ImageView();
+			_lbInventoryEntries[i].setPosition(new Vector2f(x2 * 28, 32 + y2 * 28));
+			_lbInventoryEntries[i].setOnFocusListener(new OnFocusListener() {
 				@Override
 				public void onExit(View view) {
 					_lbTip.setVisible(false);
@@ -288,7 +289,7 @@ public class PanelCharacter extends UserSubInterface {
 					_lbTip.setPosition(new Vector2f(x2 * 28 + 16, 32 + y2 * 28 + 16));
 				}
 			});
-			_layoutInventory.addView(_lbCarry[i]);
+			_layoutInventory.addView(_lbInventoryEntries[i]);
 		}
 	}
 
@@ -535,12 +536,9 @@ public class PanelCharacter extends UserSubInterface {
 
 	@Override
 	public void onRefresh(int update) {
-
-		if (update % 2 == 0) {
-			return;
-		}
-			_cursor.setVisible(!_cursor.isVisible());
-			_animGauge++;
+		_cursor.setVisible(!_cursor.isVisible());
+		
+		_animGauge++;
 
 		if (_animRemain > 0) {
 			return;
@@ -635,13 +633,16 @@ public class PanelCharacter extends UserSubInterface {
 	}
 
 	private void refreshInventory() {
+		_lbInventory.setString(StringUtils.getDashedString(Strings.LB_INVENTORY,
+				_character.getInventorySpace() - _character.getInventoryLeftSpace() + "/" + _character.getInventorySpace(), 20));
+		
 		for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
 			if (_character.getCarried().size() > i) {
 				BaseItem item = _character.getCarried().get(i);
-				_lbCarry[i].setImage(SpriteManager.getInstance().getIcon(item.getInfo()));
+				_lbInventoryEntries[i].setImage(SpriteManager.getInstance().getIcon(item.getInfo()));
 				_lbTip.setString(item.getName());
 			} else {
-				_lbCarry[i].setImage(null);
+				_lbInventoryEntries[i].setImage(null);
 			}
 		}
 	}
@@ -702,7 +703,7 @@ public class PanelCharacter extends UserSubInterface {
 				anim();
 			}
 		}
-
+		
 		if (_character != null) {
 			for (int i = 0; i < _animGauge && i < NB_GAUGE; i++) {
 				_values[i].setVisible(true);

@@ -3,7 +3,6 @@ package alone.in.deepspace.ui.panel;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
@@ -54,16 +53,16 @@ public class PanelSystem extends UserSubInterface {
 	}
 	
 	@Override
-	public void onDraw(RenderWindow app, RenderStates render) {
+	public void onRefresh(int frame) {
 		int mb = 1024 * 1024;
         Runtime runtime = Runtime.getRuntime();
         int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
         int total = (int) (runtime.totalMemory() / mb);
         
-        _used = (_used * 7 + used) / 8;
+//        _used = (_used * 7 + used) / 8;
 
         _lbRenderTime.setString("Rendering: " + MainRenderer.getInstance().getRenderTime() + "ms");
-        _lbMemoryUsed.setString("Heap: " + String.valueOf(_used) + " / " + String.valueOf(total) + " Mo");
+        _lbMemoryUsed.setString("Heap: " + String.valueOf(used) + " / " + String.valueOf(total) + " Mo");
         _lbUpdate.setString("Update: " + String.valueOf(Main.getUpdateInterval()) + " ms");
         _lbFloor.setString("Floor: " + ServiceManager.getWorldMap().getFloor());
 	}

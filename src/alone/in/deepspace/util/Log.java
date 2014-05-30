@@ -24,10 +24,14 @@ public class Log {
 		if (LEVEL < LEVEL_ERROR) return;
 
 		if (str != null) {
-			System.out.println(str);
+			UserInterface.getInstance().displayMessage(str);
 		}
 		
-		UserInterface.getInstance().displayMessage(str);
+		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+		System.out.println("Error occured \"" + str + "\"");
+		for (int i = 2; i < elements.length; i++) {
+			System.out.println("          " + elements[i].toString());
+		}
 	}
 
 	public static void info(String str) {

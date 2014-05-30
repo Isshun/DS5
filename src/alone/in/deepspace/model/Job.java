@@ -10,6 +10,7 @@ import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
+import alone.in.deepspace.model.Job.Abort;
 import alone.in.deepspace.model.Job.JobStatus;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
@@ -21,13 +22,13 @@ public class Job {
 	}
 	
 	public static enum Abort {
-		NO_MATTER, INTERRUPTE, BLOCKED, NO_LEFT_CARRY, INVALID, DIED
+		NO_COMPONENTS, INTERRUPTE, BLOCKED, NO_LEFT_CARRY, INVALID, DIED
 	};
 
 	private int 				_id;
 	private int					_posY;
 	private int 				_posX;
-	private BaseItem			_item;
+	protected BaseItem			_item;
 	private List<BaseItem>		_carryItems;
 	private ItemFilter 			_filter;
 	private JobManager.Action 	_action;
@@ -123,7 +124,7 @@ public class Job {
 			case INTERRUPTE:
 				oss += " (interrupte)";
 				break;
-			case NO_MATTER:
+			case NO_COMPONENTS:
 				oss += " (no matter)";
 				break;
 			case INVALID:
@@ -224,6 +225,10 @@ public class Job {
 	
 	public String getFormatedDuration() {
 		return "" + _durationLeft / Constant.DURATION_MULTIPLIER + "s left";
+	}
+
+	public Abort check(Character character) {
+		return null;
 	}
 
 }

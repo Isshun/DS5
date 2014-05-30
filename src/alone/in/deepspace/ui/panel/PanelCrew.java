@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
@@ -130,7 +129,7 @@ public class PanelCrew extends UserSubInterface {
 		viewHolder.frame.resetPos();
 	}
 
-	void  addCharacter(RenderWindow app, int index, final Character character) {
+	void  addCharacter(int index, final Character character) {
 		if (index >= _viewHolderList.size()) {
 			final ViewHolder viewHolder = new ViewHolder();
 
@@ -241,18 +240,22 @@ public class PanelCrew extends UserSubInterface {
 	}
 
 	@Override
-	public void onDraw(RenderWindow app, RenderStates render) {
-		for (ViewHolder holder: _viewHolderList) {
-			holder.frame.setVisible(false);
-		}
-		
-		List<Character> characters = _characterManager.getList();
-		int i = 0;
-		for (Character c: characters) {
-			addCharacter(app, i++, c);
-		}
+	public void onRefresh(int frame) {
+		if (frame % 2 == 0) {
+			
+			for (ViewHolder holder: _viewHolderList) {
+				holder.frame.setVisible(false);
+			}
+			
+			List<Character> characters = _characterManager.getList();
+			int i = 0;
+			for (Character c: characters) {
+				addCharacter(i++, c);
+			}
 
-		_lbCount.setString("Count: " + characters.size());
+			_lbCount.setString("Count: " + characters.size());
+
+		}
 	}
 
 	public boolean	checkKey(Keyboard.Key key) {

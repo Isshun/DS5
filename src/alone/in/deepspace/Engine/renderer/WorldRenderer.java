@@ -58,34 +58,36 @@ public class WorldRenderer implements IRenderer {
 		_hasChanged = true;
 	}
 
-	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
-
+	public void onRefresh(int frame) {
 		int fromX = Math.max(_ui.getRelativePosXMin(0)-1, 0);
 		int fromY = Math.max(_ui.getRelativePosYMin(0)-1, 0);
 		int toX = Math.min(_ui.getRelativePosXMax(Constant.WINDOW_WIDTH)+1, _worldMap.getWidth());
 		int toY = Math.min(_ui.getRelativePosYMax(Constant.WINDOW_HEIGHT)+1, _worldMap.getHeight());
 
-		// Debug() << "Renderer: " << fromX << " to: " << toX;
-
-		Clock display_timer = new Clock();
-		if (_pass > 0 || _hasChanged || _changed.size() > 0) {
+		if (_hasChanged || _changed.size() > 0) {
 			if (_hasChanged) {
-				refreshFloor(render, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
-				refreshStructure(render, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
-				refreshResource(render, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
+				refreshFloor(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
+				refreshStructure(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
+				refreshResource(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 				_spriteCache.setTexture(_textureCache.getTexture());
 			} else {
-				if (_pass == 0) {
-					_pass = 4;
-				}
 				for (Vector2i vector: _changed) {
-					refreshFloor(render, vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
+					refreshFloor(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
 				}
-				refreshStructure(render, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
+				refreshStructure(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 			}
 			_changed.clear();
 			_hasChanged = false;
 		}
+		
+		refreshItems(fromX, fromY, toX, toY);
+	}
+	
+	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
+
+		// Debug() << "Renderer: " << fromX << " to: " << toX;
+
+		Clock display_timer = new Clock();
 		Sprite sp = new Sprite(_textureCache.getTexture());
 		app.draw(sp, render);
 
@@ -98,7 +100,7 @@ public class WorldRenderer implements IRenderer {
 //		Log.info("display structure: " + display_timer.getElapsedTime().asMicroseconds());
 
 		display_timer.restart();
-		refreshItems(app, render, fromX, fromY, toX, toY);
+		
 //		Log.info("display items: " + display_timer.getElapsedTime().asMicroseconds());
 
 //		Vector<DebugPos> debugPath = _worldMap.getDebug();
@@ -129,7 +131,7 @@ public class WorldRenderer implements IRenderer {
 
 	}
 
-	private void refreshResource(RenderStates render, int fromX, int fromY, int toX, int toY) {
+	private void refreshResource(int fromX, int fromY, int toX, int toY) {
 		int floor = _worldMap.getFloor();
 		
 		for (int i = toX-1; i >= fromX; i--) {
@@ -147,7 +149,7 @@ public class WorldRenderer implements IRenderer {
 	}
 
 	// TODO: random
-	void	refreshFloor(RenderStates render, int fromX, int fromY, int toX, int toY) {
+	void	refreshFloor(int fromX, int fromY, int toX, int toY) {
 		_textureCache.clear();
 		
 		int floor = _worldMap.getFloor();
@@ -218,7 +220,7 @@ public class WorldRenderer implements IRenderer {
 	}
 
 	//TODO: random
-	void	refreshStructure(RenderStates render, int fromX, int fromY, int toX, int toY) {
+	void	refreshStructure(int fromX, int fromY, int toX, int toY) {
 		_lastSpecialX = -1;
 		_lastSpecialY = -1;
 		int offsetWall = (Constant.TILE_WIDTH / 2 * 3) - Constant.TILE_HEIGHT;
@@ -409,7 +411,7 @@ public class WorldRenderer implements IRenderer {
 		return sprite;
 	}
 
-	void	refreshItems(RenderWindow app, RenderStates render, int fromX, int fromY, int toX, int toY) {
+	void	refreshItems(int fromX, int fromY, int toX, int toY) {
 		int offsetY = 0;
 		int offsetX = 0;
 
@@ -424,7 +426,7 @@ public class WorldRenderer implements IRenderer {
 						} else {
 							sprite.setPosition(x * Constant.TILE_WIDTH + offsetX, y * Constant.TILE_HEIGHT + offsetY);
 						}
-						app.draw(sprite, render);
+						_textureCache.draw(sprite);
 					}
 				}
 			}

@@ -602,17 +602,17 @@ public class WorldManager implements TileBasedMap {
 		_debugPathStart.y = posY;
 	}
 
-	public void storeItem(BaseItem carriedItem, int x, int y) {
+	public void storeItem(UserItem carriedItem, int x, int y) {
 		UserItem onAreaItem = _areas[x][y].getItem();
 		
 		if (onAreaItem == null) {
 			// TODO
 			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
 			onAreaItem = new StorageItem(info);
-			((StorageItem)carriedItem).addItem(carriedItem);
+			((StorageItem)carriedItem).addInventory(carriedItem);
 			_areas[x][y].setItem(onAreaItem);
 		} else if (carriedItem.isStorage()) {
-			((StorageItem)onAreaItem).addItem(carriedItem);
+			((StorageItem)onAreaItem).addInventory(carriedItem);
 		} else {
 			// TODO: not implemented
 			Log.error("Storage area is used by non storage item");

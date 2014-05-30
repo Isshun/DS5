@@ -17,21 +17,7 @@ public class CheckEmptyDispenser implements JobCheck {
 		List<StorageItem> dispensers = ServiceManager.getWorldMap().getDispensers();
 		for (StorageItem dispenser: dispensers) {
 			if (dispenser.needRefill() && dispenser.isWaitForRefill() == false) {
-				// Looking for storage containing accepted item
-				StorageItem storage = null;
-				ItemFilter itemFilter = new ItemFilter(true, true); 
-				for (ItemInfo neededItemInfo: dispenser.getInfo().onAction.itemAccept) {
-					if (storage == null) {
-						itemFilter.neededItem = neededItemInfo;
-						storage = ServiceManager.getWorldMap().findStorageContains(itemFilter, dispenser.getX(), dispenser.getY());
-					}
-				}
-
-				// Create jobs if needed item is available
-				if (storage != null) {
-					Job job = jobManager.createRefillJob(null, storage, itemFilter, dispenser);
-					jobManager.addJob(job);
-				}
+				JobManager.getInstance().addRefillJob(dispenser);
 			}			
 		}
 	}

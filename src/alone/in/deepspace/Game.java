@@ -58,6 +58,7 @@ public class Game implements ISavable {
 	private RenderWindow 			_app;
 	private boolean					_isMenuOpen;
 	private boolean 				_isRunning;
+	private int 					_frameRefresh;
 
 	public static int getFrame() { return _frame; }
 	
@@ -91,6 +92,18 @@ public class Game implements ISavable {
 		Log.info("Game:\tdone");
 	}
 
+	public void onRefresh() {
+		_mainRenderer.refresh(_frameRefresh);
+
+		_ui.onRefresh(_frameRefresh);
+		_frameRefresh++;
+		
+//		int mb = 1024 * 1024;
+//        Runtime runtime = Runtime.getRuntime();
+//        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
+//        System.out.println(used);
+	}
+
 	public void	onUpdate() {
 		if (_isMenuOpen) {
 			return;
@@ -114,8 +127,6 @@ public class Game implements ISavable {
 
 		// Foes
 		_FoeManager.checkSurroundings();
-
-		_ui.onRefresh(_update);
 		
 		_update++;
 	}
@@ -304,9 +315,9 @@ public class Game implements ISavable {
 	}
 
 	public void onDraw(double animProgress, int renderTime) throws IOException {
-//		_frame++;
-//		
-//		_mainRenderer.draw(_app, animProgress, renderTime);
+		_frame++;
+		
+		_mainRenderer.draw(_app, animProgress, renderTime);
 //		
 //		Transform transform = new Transform();
 //		transform = _viewport.getViewTransform(transform);
@@ -314,9 +325,9 @@ public class Game implements ISavable {
 //
 //		_FoeManager.onDraw(_app, render, animProgress);
 //		_dynamicObjectManager.refresh(_app, render, animProgress);
-//
-//		// User interface
-//		_ui.onDraw(_frame, _update, renderTime);
+
+		// User interface
+		_ui.onDraw(_frame, _update, renderTime);
 	}
 
 	public boolean isRunning() {
@@ -326,4 +337,5 @@ public class Game implements ISavable {
 	public void setRunning(boolean running) {
 		_isRunning = running;		
 	}
+
 }

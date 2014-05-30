@@ -55,6 +55,10 @@ public class MainRenderer {
 		_roomRenderer = new RoomRenderer();
 	}
 
+	public void refresh(int frame) {
+		_worldRenderer.onRefresh(frame);
+	}
+	
 	public void draw(RenderWindow app, double animProgress, int renderTime) {
 		// Flush
 		app.clear(new Color(0, 0, 50));

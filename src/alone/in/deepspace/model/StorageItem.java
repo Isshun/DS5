@@ -15,6 +15,7 @@ public class StorageItem extends UserItem {
 	private boolean 		_acceptDrink;
 	private boolean 		_acceptConsomable;
 	private boolean 		_acceptGarbage;
+	private double			_itemProduceState;
 
 	public StorageItem(ItemInfo info) {
 		super(info);
@@ -33,10 +34,6 @@ public class StorageItem extends UserItem {
 		return _inventory;
 	}
 	
-	public void				addItem(BaseItem item) {
-		_inventory.add(item);
-	}
-
 	public BaseItem getFirst() {
 		if (_inventory.size() > 0) {
 			return _inventory.get(0);
@@ -76,6 +73,10 @@ public class StorageItem extends UserItem {
 
 	public void addInventory(UserItem item) {
 		_inventory.add(item);
+		
+		if (item.isFood()) {
+			ResourceManager.getInstance().addFood(1);
+		}
 	}
 
 	public boolean needRefill() {
@@ -106,23 +107,25 @@ public class StorageItem extends UserItem {
 	public List<BaseItem> getInventory() {
 		return _inventory;
 	}
-	
-	public void produce(Character character) {
+	@Override
+	public UserItem use(Character character, int durationLeft) {
+		super.use(character, durationLeft);
+		
 		if (_info.onAction != null && _info.onAction.itemsProduce != null) {
-			// TODO: add item needed to action
 			ItemInfo itemToProduce = _info.onAction.itemsProduce.get(0);
-			for (int i = 0; i < itemToProduce.craftedQuantitfy; i++) {
+			_itemProduceState += (double)itemToProduce.craftedQuantitfy / _info.onAction.duration;
+			if (_itemProduceState >= 1) {
+				_itemProduceState -= 1;
+				
 				// TODO: get most common component
 				BaseItem component = takeFromInventory(itemToProduce.craftedFromItems.get(0));
 				if (component != null) {
-					UserItem item = new UserItem(itemToProduce);
-					if (item.isFood()) {
-						ResourceManager.getInstance().addFood(1);
-					}
-					character.addInventory(item);
+					return new UserItem(itemToProduce);
 				}
 			}
 		}
+		
+		return null;
 	}
 
 

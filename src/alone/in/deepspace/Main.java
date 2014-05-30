@@ -29,8 +29,9 @@ import alone.in.deepspace.util.Constant;
 
 public class Main {
 
-	static final int 				REFRESH_INTERVAL = (1000/60);
+	static final int 				DRAW_INTERVAL = (1000/60);
 	static final int 				UPDATE_INTERVAL = 100;
+	private static final int		REFRESH_INTERVAL = 200;
 	private static final int 		LONG_UPDATE_INTERVAL = 2000;
 	private static Game				game;
 	private static MenuBase			_menu;
@@ -78,6 +79,7 @@ public class Main {
 		Clock timer = new Clock();
 		int renderTime = 0;
 
+		Time last_draw = display_timer.getElapsedTime();
 		Time last_refresh = display_timer.getElapsedTime();
 		Time last_update = display_timer.getElapsedTime();
 		Time last_long_update = display_timer.getElapsedTime();
@@ -154,25 +156,32 @@ public class Main {
 			}
 
 			Time elapsed = display_timer.getElapsedTime();
-
-			long nextRefresh = last_refresh.asMilliseconds() + REFRESH_INTERVAL - elapsed.asMilliseconds();
+			long elapsedMs = elapsed.asMilliseconds();
+			long nextDraw = last_draw.asMilliseconds() + DRAW_INTERVAL - elapsedMs;
 
 			// Sleep
-			if (nextRefresh > 0) {
-				int currentRenderTime = (int) (elapsed.asMilliseconds() - last_refresh.asMilliseconds());
+			if (nextDraw > 0) {
+				int currentRenderTime = (int) (elapsedMs - last_draw.asMilliseconds());
 				renderTime = (renderTime * 7 + currentRenderTime) / 8;
-				Thread.sleep(nextRefresh);
+				Thread.sleep(nextDraw);
 			}
 			
-			long nextUpdate = last_update.asMilliseconds() + _updateInterval - elapsed.asMilliseconds();
-			long nextLongUpdate = last_long_update.asMilliseconds() + _longUpdateInterval - elapsed.asMilliseconds();
+			long nextUpdate = last_update.asMilliseconds() + _updateInterval - elapsedMs;
+			long nextRefresh = last_refresh.asMilliseconds() + REFRESH_INTERVAL - elapsedMs;
+			long nextLongUpdate = last_long_update.asMilliseconds() + _longUpdateInterval - elapsedMs;
 
 			// Refresh
-			last_refresh = elapsed;
+			last_draw = elapsed;
 			if (game.isRunning()) {
 				// Draw
 				double animProgress = (1 - (double)nextUpdate / _updateInterval);
 				game.onDraw(animProgress, renderTime);
+				
+				// Refresh
+				if (nextRefresh <= 0) {
+					last_refresh = elapsed;
+					game.onRefresh();
+				}
 				
 				// Update
 				if (nextUpdate <= 0) {

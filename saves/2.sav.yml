@@ -1,4 +1,3 @@
-!!alone.in.deepspace.engine.loader.WorldSaver$WorldSave
 areas:
 - item: null
   resource: {matter: 0, name: base.rock, tile: 0}

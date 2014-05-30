@@ -3,7 +3,6 @@ package alone.in.deepspace.ui.panel;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
@@ -13,12 +12,13 @@ import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;
 
 public class PanelResource extends UserSubInterface {
-	private static final int FRAME_WIDTH = Constant.PANEL_WIDTH;
-	private static final int FRAME_HEIGHT = 32;
-	private TextView _spice;
-	private TextView _energy;
-	private TextView _matter;
-	private TextView _o2;
+	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
+	private static final int 	FRAME_HEIGHT = 32;
+
+	private TextView 	_spice;
+	private TextView 	_energy;
+	private TextView 	_matter;
+	private TextView 	_o2;
 	
 	public PanelResource(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
@@ -51,7 +51,7 @@ public class PanelResource extends UserSubInterface {
 	}
 	
 	@Override
-	public void onDraw(RenderWindow app, RenderStates render) {
+	public void onRefresh(int frame) {
         _spice.setString("Food: " + String.valueOf(ResourceManager.getInstance().getFood()));
         _o2.setString("O2: " + String.valueOf(ResourceManager.getInstance().getO2()));
         _energy.setString("PW: " + String.valueOf(ResourceManager.getInstance().getPower()));
