@@ -181,8 +181,8 @@ public class JobManager {
 		// Character is full: go back to storage area
 		if (character.isFull()) {
 			// TODO
-			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
-			BaseItem storage = ServiceManager.getWorldMap().getNearest(info, character.getX(), character.getY());
+			BaseItem itemToStore = character.getInventory().get(0);
+			StorageItem storage = ServiceManager.getWorldMap().getNearestStorage(character.getX(), character.getY(), itemToStore);
 			if (storage != null) {
 				Job storeJob = JobStore.create(character, storage);
 				addJob(storeJob);

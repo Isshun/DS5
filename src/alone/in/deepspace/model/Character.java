@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.jsfml.graphics.Color;
+import org.omg.stub.java.rmi._Remote_Stub;
 
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.ItemFilter;
@@ -175,7 +176,7 @@ public class Character extends Movable {
 	//	  int[]				getMessages() { return _messages; }
 	public boolean			getSelected() { return _selected; }
 	public int				getProfessionScore(Profession.Type professionEngineer) { return 42; }
-	public List<BaseItem> 	getCarried() { return _inventory; }
+	public List<BaseItem> 	getInventory() { return _inventory; }
 	public Vector<Position> getPath() { return _path; }
 	public CharacterStatus 	getStatus() { return _status; }
 	public Color 			getColor() { return _color; }
@@ -198,7 +199,7 @@ public class Character extends Movable {
 		}
 
 		// Cancel previous job
-		if (_job != null) {
+		if (_job != null && _job != job) {
 			JobManager.getInstance().abort(_job, Job.Abort.INTERRUPTE);
 		}
 
@@ -396,320 +397,22 @@ public class Character extends Movable {
 			_node = null;
 		}
 	}
-
-	private void actionWork() {
-		// Wrong call
-		if (_job == null || _job.getItem() == null) {
-			Log.error("Character: actionUse on null job or null job's item");
-			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
-			_job = null;
-			return;
-		}
-
-		// Item is no longer exists
-		if (_job.getItem() != ServiceManager.getWorldMap().getItem(_job.getX(), _job.getY())) {
-			Log.warning("Character #" + _id + ": actionUse on invalide item");
-			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
-			_job = null;
-			return;
-		}
-
-		// Character is sleeping
-		if (_needs.isSleeping()) {
-			Log.debug("use: sleeping . use canceled");
-			return;
-		}
-
-		// Work continue
-		if (_needs.getWorkRemain() > 0) {
-			_needs.setWorkRemain(_needs.getWorkRemain() - 1);
-			Log.debug("Character #" + _id + ": working");
-			return;
-		}
-		
-		// Work is complete
-		Log.debug("Character #" + _id + ": work complete");
-		JobManager.getInstance().complete(_job);
-		_job = null;
-	}
-
-	private void actionUseInventory() {
-		if (_job == null || _job.getAction() != Action.USE_INVENTORY || _job.getItem() == null) {
-			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
-			Log.error("actionUseInventory: invalid job");
-			_job = null;
-			return;
-		}
-		
-		if (_inventory.contains(_job.getItem()) == false) {
-			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
-			Log.error("actionUseInventory: item is missing from inventory");
-			_job = null;
-			return;
-		}
-		
-		// Update resource manager
-		if (_job.getNbUsed() == 0) {
-			if (_job.getItem().getInfo().isFood) {
-				ResourceManager.getInstance().addFood(-1);
-			}
-		}
-		
-		// TODO: immediate use
-		for (int i = 0; i < _job.getItem().getInfo().onAction.duration * Constant.DURATION_MULTIPLIER; i++) {
-			_job.getItem().use(this, i);
-		}
-
-		removeInventory(_job.getItem());
-		
-		JobManager.getInstance().complete(_job);
-		_job = null;
-	}
 	
-	private void removeInventory(BaseItem item) {
+	public void removeInventory(BaseItem item) {
 		if (_inventory.remove(_job.getItem())) {
 			_inventorySpaceLeft++;
 		}
 	}
 
-	// TODO: make objects stats table instead switch
-	private void actionUse() {
-		// Wrong call
-		if (_job == null || _job.getItem() == null) {
-			Log.error("Character: actionUse on null job or null job's item");
-			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
-			_job = null;
-			return;
-		}
-		
-		// Item not reached
-		if (_job.getX() != _posX || _job.getY() != _posY) {
-			return;
-		}
-
-		// Character is sleeping
-		if (_needs.isSleeping() && _job.getItem().isSleepingItem() == false) {
-			Log.debug("use: sleeping . use canceled");
-			return;
-		}
-		
-		Abort reason = _job.check(this);
-		if (reason != null) {
-			JobManager.getInstance().abort(_job, reason);
-			_job = null;
-			return;
-		}
-		
-		Log.debug("Character #" + _id + ": actionUse");
-
-		// Character using item
-		if (_job.getDurationLeft() > 0) {
-
-			// Decrease duration
-			_job.decreaseDurationLeft();
-
-			BaseItem item = _job.getItem();
-
-			// Item is use by 2 or more character
-			if (item.getNbFreeSlots() + 1 < item.getNbSlots()) {
-				_needs.addRelation(1);
-				List<ItemSlot> slots = item.getSlots();
-				for (ItemSlot slot: slots) {
-					Character slotCharacter = slot.getJob() != null ? slot.getJob().getCharacter() : null;
-					ServiceManager.getRelationManager().meet(this, slotCharacter);
-				}
-			}
-
-			// Set character direction
-			if (item.getX() > _posX) { _direction = Direction.RIGHT; }
-			if (item.getX() < _posX) { _direction = Direction.LEFT; }
-			if (item.getY() > _posY) { _direction = Direction.TOP; }
-			if (item.getY() < _posY) { _direction = Direction.BOTTOM; }
-			
-			// Add item effects and create crafted item
-			UserItem produce = item.use(this, _job.getDurationLeft());
-			if (produce != null) {
-				addInventory(produce);
-				System.out.println("inventory: " + _inventorySpaceLeft);
-			}
-
-			return;
-		}
-
-		JobManager.getInstance().complete(_job);
-		
-		_job = null;
-	}
-
-	private void		actionStore() {
-		UserItem item = ServiceManager.getWorldMap().getItem(_job.getX(), _job.getY());
-
-		if (item == null || item.isStorage() == false) {
-			Log.error("Character: actionStore on non storage item");
-			JobManager.getInstance().abort(_job, Abort.INVALID);
-			return;		
-		}
-
-		StorageItem storage = ((StorageItem)item);
-		storage.addInventory(_inventory);
-		JobManager.getInstance().complete(_job);
-		_inventory.clear();
-		_inventorySpaceLeft = _inventorySpace;
-		_job = null;
-	}
-
-	private void		actionBuild() {
-		// Wrong call
-		if (_job == null || _job.getItem() == null) {
-			Log.error("Character: actionBuild on null job or null job's item");
-			JobManager.getInstance().abort(_job, Abort.INVALID);
-			_job = null;
-			return;
-		}
-
-		// Item is no longer exists
-		BaseItem item = _job.getItem();
-		StructureItem currentStructure = ServiceManager.getWorldMap().getStructure(_job.getX(), _job.getY());
-		BaseItem currentItem = ServiceManager.getWorldMap().getItem(_job.getX(), _job.getY());
-		if (item != currentStructure && item != currentItem) {
-			if (item != currentStructure) {
-				Log.warning("Character #" + _id + ": actionBuild on invalide structure");
-			} else if (item != currentItem) {
-				Log.warning("Character #" + _id + ": actionBuild on invalide item");
-			}
-			JobManager.getInstance().abort(_job, Abort.INVALID);
-			_job = null;
-			return;
-		}
-
-
-		Log.debug("Character #" + _id + ": actionBuild");
-
-		// Build
-		ResourceManager.Message result = ResourceManager.getInstance().build(item);
-
-		if (result == ResourceManager.Message.NO_MATTER) {
-			UserInterface.getInstance().displayMessage("not enough matter", _job.getX(), _job.getY());
-			Log.debug("Character #" + _id + ": not enough matter");
-			JobManager.getInstance().abort(_job, Job.Abort.NO_COMPONENTS);
-			_job = null;
-		}
-
-		if (result == ResourceManager.Message.BUILD_COMPLETE) {
-			Log.debug("Character #" + _id + ": build complete");
-			JobManager.getInstance().complete(_job);
-			_job = null;
-		}
-
-		if (result == ResourceManager.Message.BUILD_PROGRESS) {
-			Log.debug("Character #" + _id + ": build progress");
-		}
-	}
-
-	private void		actionGather() {
-		// Wrong call
-		if (_job == null || _job.getItem() == null) {
-			Log.error("Character: actionGather on null job or null job's item");
-			Log.warning("Character #" + _id + ": actionBuild on invalide item");
-			_job = null;
-			return;
-		}
-		
-		BaseItem gatheredItem = _job.getItem();
-
-		if (gatheredItem.getInfo().onGather == null) {
-			Log.error("Character: actionGather on non gatherable item");
-			Log.warning("Character #" + _id + ": actionBuild on invalide item");
-			_job = null;
-			return;
-		}
-
-
-		// Character is full: cancel current job
-		if (_inventorySpaceLeft <= 0) {
-			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
-			_job = JobManager.getInstance().addStoreJob(this);
-			return;
-		}
-
-		// TODO
-		int value = ServiceManager.getWorldMap().gather(_job.getItem(), getProfessionScore(Profession.Type.NONE));
-
-		Log.debug("gather: " + value);
-
-		ResourceManager.getInstance().addMatter(value);
-
-		if (_job.getItem().getMatterSupply() == 0) {
-			JobManager.getInstance().complete(_job);
-			_job = null;
-		}
-		
-		_inventory.add(new BaseItem(gatheredItem.getInfo().onGather.itemProduce));
-		_inventorySpaceLeft--;
-		//_carry += value;
-	}
-
-	private void		actionMine() {
-		// Wrong call
-		if (_job == null || _job.getItem() == null) {
-			Log.error("Character: actionMine on null job or null job's item");
-			JobManager.getInstance().abort(_job, Abort.INVALID);
-			_job = null;
-			return;
-		}
-		
-		if (_job.getItem().isRessource() == false) {
-			Log.error("Character: actionMine on non resource");
-			JobManager.getInstance().abort(_job, Abort.INVALID);
-			_job = null;
-		}
-
-		WorldResource gatheredItem = (WorldResource)_job.getItem();
-
-		if (gatheredItem.getInfo().onMine == null) {
-			Log.error("Character: actionMine on non minable item");
-			JobManager.getInstance().abort(_job, Abort.INVALID);
-			_job = null;
-			return;
-		}
-
-
-		// Character is full: cancel current job
-		if (_inventorySpaceLeft <= 0) {
-			JobManager.getInstance().abort(_job, Job.Abort.NO_LEFT_CARRY);
-			_job = JobManager.getInstance().addStoreJob(this);
-			return;
-		}
-
-		// TODO
-		int value = ServiceManager.getWorldMap().gather(_job.getItem(), getProfessionScore(Profession.Type.NONE));
-
-		Log.debug("mine: " + value);
-
-		ResourceManager.getInstance().addMatter(value);
-
-		if (gatheredItem.getMatterSupply() == 0) {
-			ServiceManager.getWorldMap().removeResource(gatheredItem);
-			JobManager.getInstance().complete(_job);
-			_job = null;
-		}
-		
-		addInventory(new BaseItem(gatheredItem.getInfo().onMine.itemProduce));
-	}
-
-	private void		actionDestroy() {
-		ResourceManager.getInstance().addMatter(1);
-		ServiceManager.getWorldMap().removeItem(_job.getItem());
-		JobManager.getInstance().complete(_job);
-		_job = null;
-	}
-
 	public void			action() {
+		if (_posX != _toX || _posY != _toY) {
+			return;
+		}
+
 		if (_job == null) {
 			return;
 		}
 		
-		// TODO
 		if (_job.getCharacter() != null && _job.getCharacter() != this) {
 			_job = null;
 			return;
@@ -720,107 +423,12 @@ public class Character extends Movable {
 			_job = null;
 			return;
 		}
-		
-		if (_posX != _toX || _posY != _toY) {
-			return;
-		}
 
-		JobManager.Action action = _job.getAction();
-
-		switch (action) {
-		case MOVE: actionMove(); break;
-		case USE: actionUse(); break;
-		case USE_INVENTORY: actionUseInventory(); break;
-		case GATHER: actionGather(); break;
-		case REFILL: actionRefill(); break;
-		case MINING: actionMine(); break;
-		case DESTROY: actionDestroy(); break;
-		case BUILD: actionBuild(); break;
-		case STORE: actionStore(); break;
-		case WORK: actionWork(); break;
-		case TAKE: actionTake(); break;
-		case NONE: break;
-		}
-	}
-
-	private void actionRefill() {
-		if (_job == null || _job.getAction() != Action.REFILL) {
-			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
-			Log.error("actionRefill: invalid job");
+		if (_job.action(this)) {
 			_job = null;
-			return;
+			// TODO
+			//_job = JobManager.getInstance().addStoreJob(this);
 		}
-		
-		Abort reason = _job.check(this);
-		if (reason != null) {
-			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
-			Log.error("actionRefill: invalid job");
-			_job = null;
-			return;
-		}
-		
-		JobRefill job = (JobRefill)_job;
-		
-		// Take in storage
-		if (_job.getSubAction() == Action.TAKE) {
-			StorageItem storage = (StorageItem)_job.getItem();
-			BaseItem item = storage.get(_job.getItemFilter());
-			while (item != null && _inventorySpaceLeft > 0) {
-				_job.addCarry(item);
-				addInventory(item);
-				storage.remove(item);
-				item = storage.get(_job.getItemFilter());
-			}
-			
-			_job.setPosition(job.getDispenser().getX(), job.getDispenser().getY());
-			_job.setSubAction(Action.STORE);
-			_toX = _job.getX();
-			_toY = _job.getY();
-			if (_posX != _job.getX() || _posY != _job.getY()) {
-				PathManager.getInstance().getPathAsync(this, _job);
-			}
-		}
-		
-		// Refill dispenser
-		else {
-			if (_job.getCarry() != null) {
-				job.getDispenser().addInventory(_job.getCarry());
-				_inventory.removeAll(_job.getCarry());
-				_inventorySpaceLeft = _inventorySpace - _inventory.size();
-			}
-			
-			JobManager.getInstance().complete(_job);
-			_job = null;
-		}
-	}
-
-	private void actionTake() {
-		if (_job == null || _job.getAction() != Action.TAKE || _job.getItem() == null || _job.getItemFilter() == null) {
-			JobManager.getInstance().abort(_job, Job.Abort.INVALID);
-			Log.error("actionTake: invalid job");
-			_job = null;
-			return;
-		}
-		
-		StorageItem storage = (StorageItem)_job.getItem();
-		BaseItem item = storage.get(_job.getItemFilter());
-		if (item != null) {
-			addInventory(item);
-			storage.remove(item);
-		}
-
-		JobManager.getInstance().complete(_job);
-		_job = null;
-	}
-
-	private void actionMove() {
-		if (_job.getDurationLeft() > 0) {
-			_job.decreaseDurationLeft();
-			return;
-		}
-
-		JobManager.getInstance().complete(_job);
-		_job = null;
 	}
 
 	public List<CharacterRelation> getFamilyMembers() {
@@ -868,7 +476,7 @@ public class Character extends Movable {
 	}
 
 	public int getInventoryLeftSpace() {
-		return _inventorySpaceLeft;
+		return Math.max(_inventorySpaceLeft, 0);
 	}
 
 	public int getInventorySpace() {
@@ -877,6 +485,16 @@ public class Character extends Movable {
 
 	public boolean hasInventorySpaceLeft() {
 		return _inventorySpaceLeft > 0;
+	}
+
+	public void clearInventory() {
+		_inventory.clear();
+		_inventorySpaceLeft = _inventorySpace;
+	}
+
+	public void removeInventory(List<BaseItem> items) {
+		_inventory.remove(items);
+		_inventorySpaceLeft = _inventorySpace - _inventory.size();
 	}
 
 }

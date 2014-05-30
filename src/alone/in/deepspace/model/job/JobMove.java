@@ -22,4 +22,15 @@ public class JobMove extends Job {
 		return null;
 	}
 
+	@Override
+	public boolean action(Character character) {
+		if (_durationLeft > 0) {
+			decreaseDurationLeft();
+			return false;
+		}
+
+		JobManager.getInstance().complete(this);
+		return true;
+	}
+
 }

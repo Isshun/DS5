@@ -1,6 +1,7 @@
 package alone.in.deepspace.model.job;
 
 import alone.in.deepspace.manager.JobManager;
+import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
@@ -45,6 +46,14 @@ public class JobDestroy extends Job {
 			return Abort.NO_COMPONENTS;
 		}
 		return null;
+	}
+
+	@Override
+	public boolean action(Character character) {
+		ResourceManager.getInstance().addMatter(1);
+		ServiceManager.getWorldMap().removeItem(_item);
+		JobManager.getInstance().complete(this);
+		return true;
 	}
 
 }

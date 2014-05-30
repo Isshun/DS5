@@ -11,7 +11,6 @@ import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
-import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -27,10 +26,10 @@ public abstract class Job {
 
 	private static int			_count;
 	private int 				_id;
-	private int					_posY;
-	private int 				_posX;
+	protected int				_posY;
+	protected int 				_posX;
 	protected BaseItem			_item;
-	private List<BaseItem>		_carryItems;
+	protected List<BaseItem>		_carryItems;
 	protected ItemFilter 		_filter;
 	private JobManager.Action 	_action;
 	protected Character 		_character;
@@ -39,9 +38,9 @@ public abstract class Job {
 	public int 					_blocked;
 	private Abort 				_reason;
 	private Color 				_color;
-	private int 				_durationLeft;
+	protected int 				_durationLeft;
 	private ItemSlot 			_slot;
-	private int 				_nbUsed;
+	protected int 				_nbUsed;
 	protected Action 			_subAction;
 	private JobStatus			_status;
 
@@ -218,5 +217,7 @@ public abstract class Job {
 	}
 
 	public abstract Abort check(Character character);
+
+	public abstract boolean action(Character character);
 
 }

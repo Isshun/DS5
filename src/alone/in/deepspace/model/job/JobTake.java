@@ -2,6 +2,8 @@ package alone.in.deepspace.model.job;
 
 import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.JobManager;
+import alone.in.deepspace.manager.JobManager.Action;
+import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.util.Log;
@@ -46,6 +48,26 @@ public class JobTake extends Job {
 		}
 
 		return null;
+	}
+
+	@Override
+	// TODO: check character inventory space
+	public boolean action(Character character) {
+		if (_item == null || _filter == null) {
+			JobManager.getInstance().abort(this, Job.Abort.INVALID);
+			Log.error("actionTake: invalid job");
+			return true;
+		}
+		
+		StorageItem storage = (StorageItem)_item;
+		BaseItem neededItem = storage.get(_filter);
+		if (neededItem != null) {
+			character.addInventory(neededItem);
+			storage.remove(neededItem);
+		}
+
+		JobManager.getInstance().complete(this);
+		return true;
 	}
 
 }

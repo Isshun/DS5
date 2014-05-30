@@ -1,9 +1,13 @@
 package alone.in.deepspace.model.job;
 
 import alone.in.deepspace.manager.JobManager;
+import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
+import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.WorldResource;
+import alone.in.deepspace.util.Log;
 
 public class JobMining extends Job {
 
@@ -47,6 +51,53 @@ public class JobMining extends Job {
 		}
 
 		return null;
+	}
+
+	@Override
+	public boolean action(Character character) {
+		// Wrong call
+		if (_item == null) {
+			Log.error("Character: actionMine on null job or null job's item");
+			JobManager.getInstance().abort(this, Abort.INVALID);
+			return true;
+		}
+		
+		if (_item.isRessource() == false) {
+			Log.error("Character: actionMine on non resource");
+			JobManager.getInstance().abort(this, Abort.INVALID);
+			return true;
+		}
+
+		WorldResource gatheredItem = (WorldResource)_item;
+
+		if (gatheredItem.getInfo().onMine == null) {
+			Log.error("Character: actionMine on non minable item");
+			JobManager.getInstance().abort(this, Abort.INVALID);
+			return true;
+		}
+
+		// Character is full: cancel current job
+		if (character.getInventoryLeftSpace() <= 0) {
+			JobManager.getInstance().abort(this, Job.Abort.NO_LEFT_CARRY);
+			return true;
+		}
+
+		// TODO
+		int value = ServiceManager.getWorldMap().gather(_item, character.getProfessionScore(Profession.Type.NONE));
+
+		Log.debug("mine: " + value);
+
+		ResourceManager.getInstance().addMatter(value);
+
+		if (gatheredItem.getMatterSupply() == 0) {
+			ServiceManager.getWorldMap().removeResource(gatheredItem);
+			JobManager.getInstance().complete(this);
+			return true;
+		}
+		
+		character.addInventory(new BaseItem(gatheredItem.getInfo().onMine.itemProduce));
+		
+		return false;
 	}
 
 }

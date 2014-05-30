@@ -9,7 +9,7 @@ public class CharacterHasItemToStore implements JobCheck {
 
 	@Override
 	public void check(JobManager jobManager, Character character) {
-		if (character.getCarried().size() > 0) {
+		if (character.getInventory().size() > 0) {
 			Job job = jobManager.addStoreJob(character);
 			if (job != null) {
 				character.setJob(job);

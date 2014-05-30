@@ -1,10 +1,10 @@
 package alone.in.deepspace.model.job;
 
 import alone.in.deepspace.manager.ItemFilter;
-import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
 import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.util.Log;
@@ -58,7 +58,7 @@ public class JobRefill extends Job {
 		}
 		
 		// Character inventory is empty
-		if (_character.getCarried().size() == 0) {
+		if (_character.getInventory().size() == 0) {
 			return Abort.NO_COMPONENTS;
 		}
 
@@ -86,6 +86,53 @@ public class JobRefill extends Job {
 
 	public StorageItem getDispenser() {
 		return _dispenser;
+	}
+
+	@Override
+	public boolean action(Character character) {
+		Abort reason = check(character);
+		if (reason != null) {
+			JobManager.getInstance().abort(this, Job.Abort.INVALID);
+			Log.error("actionRefill: invalid job");
+			return true;
+		}
+		
+		// Take in storage
+		if (_subAction == Action.TAKE) {
+			return actionTake(character);
+		}
+		
+		// Refill dispenser
+		else {
+			return actionStore(character);
+		}
+	}
+
+	private boolean actionStore(Character character) {
+		if (_carryItems != null) {
+			_dispenser.addInventory(_carryItems);
+			character.removeInventory(_carryItems);
+		}
+		
+		JobManager.getInstance().complete(this);
+		return true;
+	}
+
+	private boolean actionTake(Character character) {
+		BaseItem item = _storage.get(_filter);
+		while (item != null && character.getInventoryLeftSpace() > 0) {
+			addCarry(item);
+			character.addInventory(item);
+			_storage.remove(item);
+			item = _storage.get(_filter);
+		}
+
+		// Change to STORE job
+		setPosition(_dispenser.getX(), _dispenser.getY());
+		setSubAction(Action.STORE);
+		character.setJob(this);
+		
+		return false;
 	}
 
 }

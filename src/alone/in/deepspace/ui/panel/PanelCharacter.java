@@ -621,8 +621,8 @@ public class PanelCharacter extends UserSubInterface {
 				_character.getInventorySpace() - _character.getInventoryLeftSpace() + "/" + _character.getInventorySpace(), 29));
 		
 		for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
-			if (_character.getCarried().size() > i) {
-				BaseItem item = _character.getCarried().get(i);
+			if (_character.getInventory().size() > i) {
+				BaseItem item = _character.getInventory().get(i);
 				_lbInventoryEntries[i].setImage(SpriteManager.getInstance().getIcon(item.getInfo()));
 				_lbTip.setString(item.getName());
 			} else {
