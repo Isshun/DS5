@@ -2,7 +2,6 @@ package alone.in.deepspace.model.job;
 
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ResourceManager;
-import alone.in.deepspace.manager.JobManager.Action;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.util.Constant;
@@ -29,13 +28,14 @@ public class JobUseInventory extends Job {
 	}
 
 	@Override
-	public Abort check(Character character) {
+	public boolean check(Character character) {
 		// Item is null
 		if (_item == null) {
-			return Abort.INVALID;
+			_reason = Abort.INVALID;
+			return false;
 		}
 		
-		return null;
+		return true;
 	}
 
 	@Override

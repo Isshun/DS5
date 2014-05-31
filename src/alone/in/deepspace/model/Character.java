@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.jsfml.graphics.Color;
+import org.newdawn.slick.util.pathfinding.Mover;
 import org.omg.stub.java.rmi._Remote_Stub;
 
 import alone.in.deepspace.manager.CharacterManager;
@@ -24,7 +25,7 @@ import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
-public class Character extends Movable {
+public class Character extends Movable implements Mover {
 
 	public enum Gender {
 		NONE,
@@ -425,9 +426,8 @@ public class Character extends Movable {
 		}
 
 		if (_job.action(this)) {
-			_job = null;
-			// TODO
-			//_job = JobManager.getInstance().addStoreJob(this);
+			// If job is complete, get new one
+			JobManager.getInstance().assignJob(this);
 		}
 	}
 
@@ -496,5 +496,50 @@ public class Character extends Movable {
 		_inventory.remove(items);
 		_inventorySpaceLeft = _inventorySpace - _inventory.size();
 	}
-
+	
+	@Override
+	public void	onPathFailed(Job job) {
+		JobManager.Action action = job.getAction(); 
+		if (action == JobManager.Action.MOVE) {
+			Log.warning("Move failed (no path)");
+		}
+		if (action == JobManager.Action.USE) {
+		  Log.warning("Use failed (no path)");
+		}
+		if (action == JobManager.Action.BUILD) {
+			Log.warning("Build failed (no path)");
+		}
+		sendEvent(CharacterNeeds.Message.MSG_BLOCKED);
+	
+		// Abort job
+		JobManager.getInstance().abort(job, Job.Abort.BLOCKED);
+		_job = null;
+	}
+	
+	@Override
+	public void	onPathComplete(Vector<Position> path, Job job) {
+	  Log.debug("Charactere #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
+	  
+	  if (path.size() == 0) {
+		sendEvent(CharacterNeeds.Message.MSG_BLOCKED);
+		return;
+	  }
+	
+	  _blocked = 0;
+	
+	  _toX = job.getX();
+	  _toY = job.getY();
+	
+	  // if (_path != null) {
+	  // 	_path.FreeSolutionNodes();
+	  // 	Debug() + "free 1";
+	  // 	_path.EnsureMemoryFreed();
+	  // 	delete _path;
+	  // 	_path = null;
+	  // }
+	
+	  _path = path;
+	  _steps = 0;
+	}
+	
 }

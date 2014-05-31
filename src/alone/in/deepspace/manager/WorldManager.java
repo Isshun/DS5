@@ -646,6 +646,7 @@ public class WorldManager implements TileBasedMap {
 		setFloor(_floor - 1);
 	}
 
+	// TODO: heavy
 	public UserItem getRandomToy(int posX, int posY) {
 		List<UserItem> items = new ArrayList<UserItem>(); 
 		for (int offsetX = 0; offsetX < 14; offsetX++) {
@@ -942,7 +943,6 @@ public class WorldManager implements TileBasedMap {
 ////		boolean r = Math.random() * 10 % 2 == 0;
 ////		return sx != tx ? (r ? 10f : 1f) : (r ? 1f : 10f);
 //		
-//		return sx != tx && sy != ty ? 1f : 0.8f;
-		return 1f;
+		return context.getSourceX() != tx && context.getSourceY() != ty ? 1.5f : 1f;
 	}
 }

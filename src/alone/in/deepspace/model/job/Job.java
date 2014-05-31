@@ -36,13 +36,14 @@ public abstract class Job {
 	private Character 			_characterRequire;
 	private int 				_fail;
 	public int 					_blocked;
-	private Abort 				_reason;
+	protected Abort 				_reason;
 	private Color 				_color;
 	protected int 				_durationLeft;
 	private ItemSlot 			_slot;
 	protected int 				_nbUsed;
 	protected Action 			_subAction;
 	private JobStatus			_status;
+	private int _nbBlocked;
 
 	public Job(int x, int y) {
 		init();
@@ -85,7 +86,7 @@ public abstract class Job {
 
 	public void					setCharacterRequire(Character character) { _characterRequire = character; }
 	public void					setFail(Abort reason, int frame) { _reason = reason; _fail = frame; }
-	public void					setBlocked(int frame) { _blocked = frame; }
+	public void					setBlocked(int frame) { _blocked = frame; _nbBlocked++; }
 	public void 				setPosition(int x, int y) { _posX = x; _posY = y; }
 	public void 				setSlot(ItemSlot slot) { _slot = slot; }
 	public void					setItem(BaseItem item) { _item = item; }
@@ -216,8 +217,10 @@ public abstract class Job {
 		return "" + _durationLeft / Constant.DURATION_MULTIPLIER + "s left";
 	}
 
-	public abstract Abort check(Character character);
+	public abstract boolean check(Character character);
 
 	public abstract boolean action(Character character);
+
+	public int getNbBlocked() { return _nbBlocked; }
 
 }

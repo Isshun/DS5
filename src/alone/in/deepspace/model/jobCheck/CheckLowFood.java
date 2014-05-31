@@ -7,6 +7,7 @@ import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.model.job.Job;
+import alone.in.deepspace.model.job.JobUse;
 
 /**
  * Launch jobs if low food
@@ -15,13 +16,13 @@ public class CheckLowFood implements JobCheck {
 
 	private Job _job;
 
-	public void check(JobManager jobManager, Character character) {
+	public Job create(JobManager jobManager, Character character) {
 		if (_job != null && _job.isFinish() == false) {
-			return;
+			return null;
 		}
 		
 		if (ResourceManager.getInstance().isLowFood() == false) {
-			return;
+			return null;
 		}
 		
 		// Search for food-factory
@@ -29,11 +30,11 @@ public class CheckLowFood implements JobCheck {
 		itemFilter.food = true;
 		UserItem item = ServiceManager.getWorldMap().find(itemFilter, true);
 		if (item == null) {
-			return;
+			return null;
 		}
 		
 		// Create job
-		jobManager.addUseJob(item);
+		return JobUse.create(item);
 	}
 
 }

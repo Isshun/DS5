@@ -15,7 +15,8 @@ public class TextView extends View {
 	public static final int	ITALIC = Text.ITALIC;
 	public static final int	UNDERLINED = Text.UNDERLINED;
 	
-	private Text _text;
+	private Text 			_text;
+	private String 			_value;
 
 	public TextView() {
 		super(new Vector2f(0, 0));
@@ -32,7 +33,10 @@ public class TextView extends View {
 	}
 
 	public void setString(String string) {
-		_text.setString(string);
+		if (string != null && string.equals(_value) == false) {
+			_text.setString(string);
+			_value = string;
+		}
 	}
 
 	public void setCharacterSize(int size) {

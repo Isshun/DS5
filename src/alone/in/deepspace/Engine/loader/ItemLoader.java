@@ -50,7 +50,6 @@ public class ItemLoader {
 			    info.fileName = itemFile.getName().substring(0, itemFile.getName().length() - 4);
 			    info.packageName = packageName;
 			    info.name = info.packageName +  '.' + info.fileName;
-			    info.isWalkable = true;
 
 			    // Get category
 			    if ("consomable".equals(info.category)) {

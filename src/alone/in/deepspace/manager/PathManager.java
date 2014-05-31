@@ -9,11 +9,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
-import org.newdawn.slick.util.pathfinding.Mover;
+import org.newdawn.slick.util.pathfinding.AStarPathFinder.Node;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFinder;
-import org.newdawn.slick.util.pathfinding.PathFindingContext;
-import org.newdawn.slick.util.pathfinding.TileBasedMap;
+import org.newdawn.slick.util.pathfinding.Step;
+import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.model.Character;
@@ -81,6 +81,8 @@ public class PathManager {
 	private Map<Integer, Boolean>		_bridges;
 	public List<Door>					_doors;
 	protected Region[][] 				_regions;
+	private Node[][] 					_nodes;
+	private Step[][] 					_steps;
 
 
 	public PathManager() {
@@ -89,6 +91,14 @@ public class PathManager {
 		_bridges = new HashMap<Integer, Boolean>();
 		_doors = new ArrayList<Door>();
 		_jobsDone = new ArrayList<Runnable>();
+		_nodes = new Node[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
+		_steps = new Step[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
+//		for (int x=0;x<Constant.WORLD_WIDTH;x++) {
+//			for (int y=0;y<Constant.WORLD_HEIGHT;y++) {
+//				_nodes[x][y] = new Node(x,y);
+//			}
+//		}
+
 //		NodesPool.init();
 		
 		//		  _data = new map<int, AStarSearch<MapSearchNode>*>();
@@ -385,8 +395,8 @@ public class PathManager {
 //				}
 //				
 //				Node[][] nodes = NodesPool.getNodes(ServiceManager.getWorldMap());
-				PathFinder finder = new AStarPathFinder(ServiceManager.getWorldMap(), 500, true);
-				Path rawpath = finder.findPath(new Mover() {}, fromX, fromY, toX, toY);
+				PathFinder finder = new AStarPathFinder(ServiceManager.getWorldMap(), 500, false, _nodes, _steps, new ManhattanHeuristic(1));
+				Path rawpath = finder.findPath(character, fromX, fromY, toX, toY);
 				if (rawpath != null) {
 
 //					// Cache
@@ -403,7 +413,7 @@ public class PathManager {
 //					}
 //					_pool.put(sum2, new OldPath(reversedPath));
 
-					Log.info("character: path complete (" + fromX + "x" + fromY + " to " + toX + "x" + toY + ")");
+					Log.debug("character: path complete (" + fromX + "x" + fromY + " to " + toX + "x" + toY + ")");
 					
 					synchronized(_jobsDone) {
 						_jobsDone.add(new Runnable() {

@@ -132,13 +132,10 @@ public class Game implements ISavable {
 	}
 
 	public void onLongUpdate() {
-
 		JobManager.getInstance().onLongUpdate();
 		
 		ResourceManager.getInstance().update();
 		_characterManager.onLongUpdate();
-		
-		//System.gc();
 	}
 
 	public void onEvent(Event event) throws IOException {

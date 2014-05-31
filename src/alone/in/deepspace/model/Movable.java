@@ -3,13 +3,12 @@ package alone.in.deepspace.model;
 import java.util.HashMap;
 import java.util.Vector;
 
-import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager.PathManagerCallback;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
-public class Movable implements PathManagerCallback {
+public abstract class Movable implements PathManagerCallback {
 
 	public enum Direction {
 		BOTTOM,
@@ -54,54 +53,6 @@ public class Movable implements PathManagerCallback {
 	public Direction 		getMove() { return _move; }
 	public int				getFrameIndex() { return _frameIndex++; }
 
-	@Override
-	public void	onPathComplete(Vector<Position> path, Job job) {
-	  Log.debug("Charactere #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
-	  
-	  System.out.println(_posX + ", " + _posY + " to " + _toX + ", " + _toY);
-//	  compute(_posX, _posY, _toX, _toY);
-	
-	  if (path.size() == 0) {
-		sendEvent(CharacterNeeds.Message.MSG_BLOCKED);
-		return;
-	  }
-	
-	  _blocked = 0;
-	
-	  _toX = job.getX();
-	  _toY = job.getY();
-	
-	  // if (_path != null) {
-	  // 	_path.FreeSolutionNodes();
-	  // 	Debug() + "free 1";
-	  // 	_path.EnsureMemoryFreed();
-	  // 	delete _path;
-	  // 	_path = null;
-	  // }
-	
-	  _path = path;
-	  _steps = 0;
-	}
-	
-	@Override
-	public void	onPathFailed(Job job) {
-		JobManager.Action action = job.getAction(); 
-		if (action == JobManager.Action.MOVE) {
-			Log.warning("Move failed (no path)");
-		}
-		if (action == JobManager.Action.USE) {
-		  Log.warning("Use failed (no path)");
-		}
-		if (action == JobManager.Action.BUILD) {
-			Log.warning("Build failed (no path)");
-		}
-		sendEvent(CharacterNeeds.Message.MSG_BLOCKED);
-	
-		// Give up job
-		JobManager.getInstance().abort(job, Job.Abort.BLOCKED);
-		_job = null;
-	}
-	
 	public void	setDirection(Direction direction) {
 		if (_direction != direction) {
 			_direction = direction;

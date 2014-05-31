@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.ui.OnClickListener;
@@ -15,7 +13,6 @@ import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
-import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.ui.UserSubInterface;
@@ -31,9 +28,14 @@ public class PanelJobs extends UserSubInterface {
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	private static final int 	NB_COLUMNS = 47;
-	private TextView _lbTitle;
-	private UserInterface _ui;
-	private TextView[] _entries;
+	private static final int 	RESIZE_RUNNING_JOB_OCCURENCE = 20;
+	
+	private TextView 			_lbTitle;
+	private TextView 			_lbTitle2;
+	private UserInterface 		_ui;
+	private TextView[] 			_entries;
+	private int 				_nbRunningJob;
+	private int 				_nbRunningJobCandidat;
 
 	public PanelJobs(RenderWindow app) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
@@ -44,10 +46,15 @@ public class PanelJobs extends UserSubInterface {
 		_lbTitle.setPosition(20, 18);
 		addView(_lbTitle);
 
+		_lbTitle2 = new TextView();
+		_lbTitle2.setCharacterSize(FONT_SIZE);
+		_lbTitle2.setColor(COLOR_LABEL);
+		_lbTitle2.setPosition(20, 18);
+		addView(_lbTitle2);
+
 		_entries = new TextView[75];
 		for (int i = 0; i < 75; i++) {
 			_entries[i] = new TextView(new Vector2f(FRAME_WIDTH - 42, 16));
-			_entries[i].setPosition(20, 52 + Constant.UI_PADDING + (18 * i));
 			_entries[i].setCharacterSize(14);
 			_entries[i].setColor(COLOR_TEXT);
 			_entries[i].setOnFocusListener(new OnFocusListener() {
@@ -75,108 +82,84 @@ public class PanelJobs extends UserSubInterface {
 
 	@Override
 	public void onRefresh(int update) {
+		List<Job> jobs = JobManager.getInstance().getJobs();
 		int posX = 20;
-		int posY = 0;
+		int posY = 62;
+		int i = 0;
 
 		// Display jobs
-		List<Job> jobs = JobManager.getInstance().getJobs();
-		int nbVisibleJob = JobManager.getInstance().getNbVisibleJob();
-
-		_lbTitle.setString(StringUtils.getDashedString("OCCUPATIONS", String.valueOf(nbVisibleJob), 29));
-		
-		int i = 0;
 		for (Job job: jobs) {
-			if (Action.MOVE.equals(job.getAction()) == false) {				
+			if (job.getCharacter() != null && Action.MOVE.equals(job.getAction()) == false) {				
 				if (i < 75) {
-					final Job j = job;
-					_entries[i].setVisible(true);
-					_entries[i].setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							if (j.getCharacter() != null) {
-								close();
-								_ui.setCharacter(j.getCharacter());
-							}
-						}
-					});
-					
-//					String oss = (job.getId()  < 10 ? "#0" : "#") + job.getId()
-//							+ " - " + JobManager.getActionName(job.getAction());
-//					if (job.getItem() != null) {
-//						oss += " " + job.getItem().getLabel();
-//					}
-//					if (job.getCharacter() != null) {
-//						text.setColor(job.getColor());
-//						oss += " (" + job.getCharacter().getName() + ")";
-//					} else if (job.getFail() > 0) {
-//						switch (job.getReason()) {
-//						case BLOCKED:
-//							text.setColor(COLOR_BLOCKED);
-//							oss += " (blocked: #" + job.getBlocked() + ")";
-//							break;
-//						case INTERRUPTE:
-//							oss += " (interrupte)";
-//							break;
-//						case NO_MATTER:
-//							text.setColor(COLOR_BLOCKED);
-//							oss += " (no matter)";
-//							break;
-//						case INVALID:
-//							oss += " (invalide)";
-//							break;
-//						case NO_LEFT_CARRY:
-//							oss += " (no left carry)";
-//							break;
-//						default:
-//							break;
-//						}
-//					} else {
-//						text.setColor(COLOR_QUEUE);
-//						oss += " (on queue)";
-//					}
-					
-					String right = JobManager.getActionName(job.getAction());
-					if (job.getItem() != null) {
-						right += " " + job.getItem().getLabel();
-					}
-					
-					String left = "(on queue)";
-					if (job.getCharacter() != null) {
-//						_entries[i].setColor(job.getColor());
-						left = job.getCharacter().getName();
-					} else if (job.getFail() > 0) {
-						switch (job.getReason()) {
-						case BLOCKED:
-//							_entries[i].setColor(COLOR_BLOCKED);
-							left = " (blocked: #" + job.getBlocked() + ")";
-							break;
-						case INTERRUPTE:
-							left = " (interrupte)";
-							break;
-						case NO_COMPONENTS:
-//							_entries[i].setColor(COLOR_BLOCKED);
-							left = " (no matter)";
-							break;
-						case INVALID:
-							left = " (invalide)";
-							break;
-						case NO_LEFT_CARRY:
-							left = " (no left carry)";
-							break;
-						default:
-							break;
-						}
-					}
-//					_entries[i].setColor(COLOR_TEXT);
-					_entries[i].setString(StringUtils.getDashedString(left, right, NB_COLUMNS));
-					
-					i++;
+					refreshJob(job, _entries[i++], posX, posY);
+					posY += 18;
 				}
 			}
 		}
+		int nbVisibleJob = i;
+		_lbTitle.setString(StringUtils.getDashedString("OCCUPATIONS", String.valueOf(nbVisibleJob), 29));
+		if (update % RESIZE_RUNNING_JOB_OCCURENCE == 0) {
+			_nbRunningJob = _nbRunningJobCandidat;
+			_nbRunningJobCandidat = i;
+		}
+		if (i > _nbRunningJobCandidat) {
+			_nbRunningJobCandidat = i;
+		}
+		if (i > _nbRunningJob) {
+			_nbRunningJob = i;
+		}
 		
+		posY = 82 + (18 * _nbRunningJob);
+		_lbTitle2.setPosition(posX, posY);
+
+		posY += 42;
+		for (Job job: jobs) {
+			if (job.getCharacter() == null) {				
+				if (i < 75) {
+					refreshJob(job, _entries[i++], posX, posY);
+					posY += 18;
+				}
+			}
+		}
+		_lbTitle2.setString(StringUtils.getDashedString("IN QUEUE", String.valueOf(i - nbVisibleJob), 29));
+
 		for (; i < 75; i++) {
 			_entries[i].setVisible(false);
 		}
+	}
+
+	private void refreshJob(final Job job, TextView text, int x, int y) {
+		text.setVisible(true);
+		text.setPosition(x, y);
+		text.resetPos();
+		text.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (job.getCharacter() != null) {
+					close();
+					_ui.setCharacter(job.getCharacter());
+				}
+			}
+		});
+		
+		String right = JobManager.getActionName(job.getAction());
+		if (job.getItem() != null) {
+			right += " " + job.getItem().getLabel();
+		}
+		
+		String left = "(on queue)";
+		if (job.getCharacter() != null) {
+			left = job.getCharacter().getName();
+		} else if (job.getFail() > 0) {
+			switch (job.getReason()) {
+			case BLOCKED: left = "(blocked: #" + job.getNbBlocked() + ")"; break;
+			case INTERRUPTE: left = "(interrupte)"; break;
+			case NO_COMPONENTS: left = "(no matter)"; break;
+			case INVALID: left = "(invalide)"; break;
+			case NO_LEFT_CARRY: left = "(no left carry)"; break;
+			default: break;
+			}
+		}
+		text.setString(StringUtils.getDashedString(left, right, NB_COLUMNS));
 	}
 }

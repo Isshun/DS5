@@ -5,26 +5,24 @@ import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.model.job.Job;
+import alone.in.deepspace.model.job.JobUse;
 import alone.in.deepspace.util.Constant;
 
 // Play with random object
 public class CharacterPlayTime implements JobCheck {
 
 	@Override
-	public void check(JobManager jobManager, Character character) {
+	public Job create(JobManager jobManager, Character character) {
 		if ((int)(Math.random() * 100) <= Constant.CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS) {
-			return;
+			return null;
 		}
 
 		UserItem toy = ServiceManager.getWorldMap().getRandomToy(character.getX(), character.getY());
-		if (toy != null) {
-			Job job = jobManager.addUseJob(toy);
-			if (job != null) {
-				character.setJob(job);
-			}
-
+		if (toy == null) {
+			return null;
 		}
-		return;
+		
+		return JobUse.create(toy, character);
 	}
 
 }

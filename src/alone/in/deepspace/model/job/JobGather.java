@@ -30,28 +30,32 @@ public class JobGather extends Job {
 	}
 
 	@Override
-	public Abort check(Character character) {
+	public boolean check(Character character) {
 		// Item is null
 		if (_item == null) {
-			return Abort.INVALID;
+			_reason = Abort.INVALID;
+			return false;
 		}
 
 		// Item is no longer exists
 		if (_item != ServiceManager.getWorldMap().getRessource(_item.getX(), _item.getY())) {
-			return Abort.INVALID;
+			_reason = Abort.INVALID;
+			return false;
 		}
 
 		// Resource is depleted
 		if (_item.getMatterSupply() <= 0) {
-			return Abort.INVALID;
+			_reason = Abort.INVALID;
+			return false;
 		}
 
 		// No space left in inventory
 		if (character.hasInventorySpaceLeft() == false) {
-			return Abort.NO_LEFT_CARRY;
+			_reason = Abort.NO_LEFT_CARRY;
+			return false;
 		}
 
-		return null;
+		return true;
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import alone.in.deepspace.Main;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.ui.UIMessage;
 import alone.in.deepspace.manager.CharacterManager;
+import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.UIEventManager;
@@ -665,6 +666,12 @@ public class UserInterface {
 
 		// Cancel selected items 
 		else {
+			if (_panelCharacter.getCharacter() != null) {
+				JobManager.getInstance().addMoveJob(_panelCharacter.getCharacter(), getRelativePosX(x), getRelativePosY(y));
+				_keyRightPressed = false;
+				return;
+			}
+			
 			_panelBuild.setSelectedItem(null);
 			_panelRoom.setSelected(null);
 			_panelPlan.setMode(PanelPlan.Mode.NONE);

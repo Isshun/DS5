@@ -5,5 +5,5 @@ import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.job.Job;
 
 public interface JobCheck {
-	void check(JobManager jobManager, Character character);
+	Job create(JobManager jobManager, Character character);
 }

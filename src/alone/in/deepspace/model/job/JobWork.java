@@ -24,8 +24,8 @@ public class JobWork extends Job {
 	}
 
 	@Override
-	public Abort check(Character character) {
-		return null;
+	public boolean check(Character character) {
+		return true;
 	}
 
 	@Override

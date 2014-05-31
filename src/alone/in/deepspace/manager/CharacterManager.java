@@ -209,7 +209,7 @@ public class CharacterManager implements ISavable {
 		for (Character c: _characters) {
 			// Assign job
 			if (c.getJob() == null && update % 10 == c.getLag() && c.isSleeping() == false) {
-				assignJob(c);
+				JobManager.getInstance().assignJob(c);
 			}
 
 			// Update needs
@@ -229,35 +229,6 @@ public class CharacterManager implements ISavable {
 		for (Character c: _characters) {
 			c.longUpdate();
 		}
-	}
-
-	private void assignJob(Character c) {
-		// TODO: change name by filter
-		// Need to sleep
-		if (c.getNeeds().isTired()) {
-			BaseItem item = ServiceManager.getWorldMap().find("base.bed", true);
-			if (item != null) {
-				Job job = JobManager.getInstance().addUseJob(item);
-				if (job != null) {
-					c.setJob(job);
-					return;
-				}
-			}
-		}
-		
-		// Regular job
-		Job job = JobManager.getInstance().getJob(c);
-		if (job != null) {
-			c.setJob(job);
-			Abort reason = job.check(c);
-			if (reason != null) {
-				JobManager.getInstance().abort(job, reason);
-			}
-			return;
-		}
-
-		// Routine job
-		JobManager.getInstance().giveRoutineJob(c);
 	}
 
 	// TODO: heavy

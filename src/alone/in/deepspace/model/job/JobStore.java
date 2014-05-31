@@ -55,13 +55,14 @@ public class JobStore extends Job {
 	}
 
 	@Override
-	public Abort check(Character character) {
+	public boolean check(Character character) {
 		// Item is null
 		if (_item == null || _storage == null) {
-			return Abort.INVALID;
+			_reason = Abort.INVALID;
+			return false;
 		}
 
-		return null;
+		return true;
 	}
 
 	// TODO: add inventory filter

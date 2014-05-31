@@ -85,6 +85,7 @@ public class ItemInfo {
 	public ItemInfo() {
 		width = 1;
 		height = 1;
+		isWalkable = true;
 	}
 	
 	boolean matchFilter(ItemInfoEffects effects, ItemFilter filter) {

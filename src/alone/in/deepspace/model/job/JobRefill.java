@@ -38,10 +38,11 @@ public class JobRefill extends Job {
 	}
 
 	@Override
-	public Abort check(Character character) {
+	public boolean check(Character character) {
 		// Item is null
 		if (_item == null || _storage == null || _dispenser == null || _filter == null) {
-			return Abort.INVALID;
+			_reason = Abort.INVALID;
+			return false;
 		}
 		
 		if (_subAction == Action.TAKE) {
@@ -51,37 +52,42 @@ public class JobRefill extends Job {
 		}
 	}
 
-	private Abort checkStore() {
+	private boolean checkStore() {
 		// Dispenser no longer exists
 		if (_dispenser != ServiceManager.getWorldMap().getItem(_dispenser.getX(), _dispenser.getY())) {
-			return Abort.INVALID;
+			_reason = Abort.INVALID;
+			return false;
 		}
 		
 		// Character inventory is empty
 		if (_character.getInventory().size() == 0) {
-			return Abort.NO_COMPONENTS;
+			_reason = Abort.NO_COMPONENTS;
+			return false;
 		}
 
-		return null;
+		return true;
 	}
 
-	private Abort checkTake() {
+	private boolean checkTake() {
 		// Storage no longer exists
 		if (_storage != ServiceManager.getWorldMap().getItem(_storage.getX(), _storage.getY())) {
-			return Abort.INVALID;
+			_reason = Abort.INVALID;
+			return false;
 		}
 
 		// Dispenser no longer exists
 		if (_dispenser != ServiceManager.getWorldMap().getItem(_dispenser.getX(), _dispenser.getY())) {
-			return Abort.INVALID;
+			_reason = Abort.INVALID;
+			return false;
 		}
 
 		// No space left in inventory
 		if (_character.hasInventorySpaceLeft() == false) {
-			return Abort.NO_LEFT_CARRY;
+			_reason = Abort.NO_LEFT_CARRY;
+			return false;
 		}
 		
-		return null;
+		return true;
 	}
 
 	public StorageItem getDispenser() {
@@ -90,9 +96,8 @@ public class JobRefill extends Job {
 
 	@Override
 	public boolean action(Character character) {
-		Abort reason = check(character);
-		if (reason != null) {
-			JobManager.getInstance().abort(this, Job.Abort.INVALID);
+		if (check(character) == false) {
+			JobManager.getInstance().abort(this, _reason);
 			Log.error("actionRefill: invalid job");
 			return true;
 		}

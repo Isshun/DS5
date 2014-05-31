@@ -6,7 +6,6 @@ import java.util.List;
 import alone.in.deepspace.Game;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
-import alone.in.deepspace.model.CharacterNeeds;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.UserItem;
@@ -21,16 +20,16 @@ import alone.in.deepspace.model.job.JobMining;
 import alone.in.deepspace.model.job.JobMove;
 import alone.in.deepspace.model.job.JobRefill;
 import alone.in.deepspace.model.job.JobStore;
-import alone.in.deepspace.model.job.JobTake;
 import alone.in.deepspace.model.job.JobUse;
-import alone.in.deepspace.model.job.JobUseInventory;
 import alone.in.deepspace.model.jobCheck.CharacterGoToMettingRoom;
 import alone.in.deepspace.model.jobCheck.CharacterHasItemToStore;
+import alone.in.deepspace.model.jobCheck.CharacterIsFull;
+import alone.in.deepspace.model.jobCheck.CharacterIsHungry;
+import alone.in.deepspace.model.jobCheck.CharacterIsTired;
 import alone.in.deepspace.model.jobCheck.CharacterPlayTime;
 import alone.in.deepspace.model.jobCheck.CheckEmptyDispenser;
 import alone.in.deepspace.model.jobCheck.CheckLowFood;
 import alone.in.deepspace.model.jobCheck.JobCheck;
-import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class JobManager {
@@ -39,11 +38,23 @@ public class JobManager {
 	}
 
 	private static JobManager	sSelf;
-
-	private List<JobCheck>		_jobsCheck;
-	private List<JobCheck>		_routineJobsCheck;
 	private List<Job> 			_jobs;
-	private List<BaseItem> 		_routineItems;
+
+	private JobCheck[]		_jobsCheck = {
+			new CheckLowFood(),
+			new CheckEmptyDispenser()			
+	};
+
+	private JobCheck[]		_routineJobsCheck = {
+			new CharacterHasItemToStore(),
+			new CharacterPlayTime(),
+			new CharacterGoToMettingRoom()
+	};
+	private JobCheck[]		_priorityJobsCheck = {
+			new CharacterIsTired(),
+			new CharacterIsHungry(),
+			new CharacterIsFull(),
+	};
 
 	private int _nbVisibleJob;
 
@@ -51,16 +62,6 @@ public class JobManager {
 		Log.debug("JobManager");
 
 		_jobs = new ArrayList<Job>();
-		_routineItems = new ArrayList<BaseItem>();
-
-		_jobsCheck = new ArrayList<JobCheck>();
-		_jobsCheck.add(new CheckLowFood());
-		_jobsCheck.add(new CheckEmptyDispenser());
-		
-		_routineJobsCheck = new ArrayList<JobCheck>();
-		_routineJobsCheck.add(new CharacterHasItemToStore());
-		_routineJobsCheck.add(new CharacterPlayTime());
-		_routineJobsCheck.add(new CharacterGoToMettingRoom());
 
 		Log.debug("JobManager done");
 	}
@@ -72,12 +73,12 @@ public class JobManager {
 			Log.error("JobManager: build on null item");
 			return null;
 		}
-		
+
 		if (item.isComplete()) {
 			Log.error("Build item: already complete, nothing to do");
 			return null;
 		}
-		
+
 		Job job = JobBuild.create(item);
 		addJob(job);
 
@@ -148,7 +149,7 @@ public class JobManager {
 			}
 		}
 
-		// Ressource
+		// Resource
 		else if (info.isResource) {
 			BaseItem currentItem = ServiceManager.getWorldMap().getItem(x, y);
 			BaseItem currentRessource = ServiceManager.getWorldMap().getRessource(x, y);
@@ -166,51 +167,62 @@ public class JobManager {
 		return addBuild(item);
 	}
 
-	// TODO: one pass + check profession
-	public Job getJob(Character character) {
-		Log.debug("bestJob: start");
+	/**
+	 * Assign job to character
+	 * 
+	 * @param character
+	 */
+	public void assignJob(Character character) {
+		Log.debug("assignJob");
 
-		Job bestJob = getJobForCharacterNeed(character);
-		if (bestJob != null) {
-			Log.debug("bestJob: 1");
-			return bestJob;  
-		}
+		// Priority jobs
+		Job job = createPriorityJob(character);
 
-		int bestDistance = -1;
-		
-		// Character is full: go back to storage area
-		if (character.isFull()) {
-			// TODO
-			BaseItem itemToStore = character.getInventory().get(0);
-			StorageItem storage = ServiceManager.getWorldMap().getNearestStorage(character.getX(), character.getY(), itemToStore);
-			if (storage != null) {
-				Job storeJob = JobStore.create(character, storage);
-				addJob(storeJob);
-				return storeJob;
+		// Regular jobs
+		if (job == null) {
+			job = getBestJob(character);
+			if (job != null && job.getStatus() == JobStatus.ABORTED) {
+				job.setStatus(JobStatus.RUNNING);
 			}
 		}
 
+		// Routine jobs
+		if (job == null) {
+			job = createRoutineJob(character);
+		}
+
+		if (job != null) {
+			addJob(job);
+			character.setJob(job);
+			Log.info("assign [" + job.getShortLabel() + "] to [" + character.getName() + "]");
+		}
+
+		Log.debug("assignJob: done");
+	}
+
+	// TODO: one pass + check profession
+	private Job getBestJob(Character character) {
+		Log.debug("getBestJob");
+		
 		int x = character.getX();
 		int y = character.getY();
-
-		Log.debug("bestJob: 3");
+		int bestDistance = Integer.MAX_VALUE;
+		Job bestJob = null;
 
 		// Regular jobs
-		if (bestJob == null) {
-			for (Job job: _jobs) {
-				if (job.getCharacter() == null && job.getFail() <= 0) {
-					if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter() == 0) {
-						job.setFail(Abort.NO_COMPONENTS, Game.getFrame());
-						continue;
-					}
-					if ((job.getAction() == Action.GATHER || job.getAction() == Action.MINING) && character.getSpace() == 0) {
-						continue;
-					}
-					int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
-					if (distance < bestDistance || bestDistance == -1) {
-						bestJob = job;
-						bestDistance = distance;
-					}
+		for (Job job: _jobs) {
+			if (job.getCharacter() == null && job.getFail() <= 0) {
+				if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter() == 0) {
+					job.setFail(Abort.NO_COMPONENTS, Game.getFrame());
+					continue;
+				}
+				if ((job.getAction() == Action.GATHER || job.getAction() == Action.MINING) && character.getSpace() == 0) {
+					continue;
+				}
+				int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
+				if (distance < bestDistance && job.check(character)) {
+					bestJob = job;
+					bestDistance = distance;
 				}
 			}
 		}
@@ -222,7 +234,7 @@ public class JobManager {
 			for (Job job: _jobs) {
 				if (job.getCharacter() == null && job.getFail() > 0) {
 					int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
-					if (distance < bestDistance || bestDistance == -1) {
+					if (distance < bestDistance && job.check(character)) {
 						bestJob = job;
 						bestDistance = distance;
 					}
@@ -237,53 +249,6 @@ public class JobManager {
 		}
 
 		return bestJob;
-	}
-
-	private Job getJobForCharacterNeed(Character character) {
-		CharacterNeeds needs = character.getNeeds();
-		if (needs.isHungry()) {
-			ItemFilter filter = new ItemFilter(true, true);
-			filter.food = true;
-
-			// Have item in inventory
-			BaseItem item = character.find(filter);
-			if (item != null) {
-				Job job = JobUseInventory.create(character, item);
-				if (job != null) {
-					addJob(job);
-					character.setJob(job);
-					return job;
-				}
-			}
-
-			// Take item from storage
-			StorageItem storage = ServiceManager.getWorldMap().findStorageContains(filter, character.getX(), character.getY());
-			if (storage != null) {
-				Job job = JobTake.create(character, storage, filter);
-				if (job != null) {
-					addJob(job);
-					character.setJob(job);
-					return job;
-				}
-			}
-			
-			// Looking for food dispenser
-			for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
-				for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
-					item = ServiceManager.getWorldMap().getItem(x, y);
-					if (item != null && item.matchFilter(filter)) {
-						Job job = JobUse.create(item);
-						if (job != null) {
-							addJob(job);
-							character.setJob(job);
-							return job;
-						}
-					}
-				}
-			}
-		}
-
-		return null;
 	}
 
 	//	// TODO: ugly
@@ -327,18 +292,18 @@ public class JobManager {
 		if (reason == Abort.NO_LEFT_CARRY) {
 			addStoreJob(job.getCharacter());
 		}
-		
+
 		// Abort because factory is out of components
 		if (reason == Abort.NO_COMPONENTS) {
 			addRefillJob((StorageItem)job.getItem());
 		}
-		
+
 		// Job is invalid, don't resume
 		if (reason == Abort.INVALID) {
 			removeJob(job);
 			return;
 		}
-		
+
 		// Job is USE / USE_INVENTORY / MOVE / TAKE / STORE / REFILL action, don't resume
 		if (job.getAction() == Action.MOVE ||
 				job.getAction() == Action.USE ||
@@ -360,7 +325,7 @@ public class JobManager {
 			Log.error("addRefillJob: item is null or invalid");
 			return;
 		}
-		
+
 		// Looking for storage containing accepted item
 		StorageItem storage = null;
 		ItemFilter itemFilter = new ItemFilter(true, true); 
@@ -375,7 +340,7 @@ public class JobManager {
 		if (storage == null) {
 			return;
 		}
-		
+
 		// Create jobs if needed item is available
 		Job job = createRefillJob(null, storage, itemFilter, dispenser);
 		if (job != null) {
@@ -388,15 +353,15 @@ public class JobManager {
 			job.getCharacter().setJob(null);
 			job.setCharacter(null);
 		}
-		
+
 		if (job.getItem() != null) {
 			job.getItem().setOwner(null);
 		}
-		
+
 		if (job.getSlot() != null) {
 			job.getSlot().getItem().releaseSlot(job.getSlot());
 		}
-		
+
 		if (_jobs.remove(job) && Action.MOVE.equals(job.getAction()) == false) {
 			_nbVisibleJob--;
 		}
@@ -406,17 +371,17 @@ public class JobManager {
 		Log.debug("Job complete: " + job.getId());
 
 		job.setStatus(JobStatus.COMPLETE);
-		
+
 		removeJob(job);
 	}
 
 	public void	addJob(Job job) {
 		if (job != null && _jobs.contains(job) == false) {
-			
+
 			if (Action.MOVE.equals(job.getAction()) == false) {
 				_nbVisibleJob++;
 			}
-			
+
 			_jobs.add(job);
 		}
 	}
@@ -466,33 +431,34 @@ public class JobManager {
 		return job;
 	}
 
-	public void giveRoutineJob(Character c) {
-		Log.info("createRoutineJob");
-		
-		for (JobCheck jobCheck: _routineJobsCheck) {
-			if (c.getJob() != null) {
-				return;
+	private Job createPriorityJob(Character character) {
+		Log.debug("createPriorityJob");
+
+		Job job = null;
+		for (JobCheck jobCheck: _priorityJobsCheck) {
+			if (job != null) {
+				return job;
 			}
-			jobCheck.check(this, c);
+			job = jobCheck.create(this, character);
 		}
-		
-//		BaseItem bestItem = null;
-//		int bestDistance = Integer.MAX_VALUE;
-//		
-//		for (BaseItem item: _routineItems) {
-//			if (item.isFree()) {
-//				int distance = Math.abs(item.getX() - c.getX()) + Math.abs(item.getY() - c.getY());
-//				if (distance < bestDistance) {
-//					bestItem = item;
-//				}
-//			}
-//		}
-//		
-//		if (bestItem != null) {
-//			return createWorkJob(bestItem);
-//		}
+
+		return null;
 	}
-	
+
+	public Job createRoutineJob(Character character) {
+		Log.debug("createRoutineJob");
+
+		Job job = null;
+		for (JobCheck jobCheck: _routineJobsCheck) {
+			if (job != null) {
+				return job;
+			}
+			job = jobCheck.create(this, character);
+		}
+
+		return null;
+	}
+
 	public void addRoutineItem(BaseItem item) {
 		// TODO
 		//_routineItems.add(item);
@@ -503,9 +469,9 @@ public class JobManager {
 		if (res == null) {
 			return null;
 		}
-		
+
 		Job job = JobGather.create(res);
-		
+
 		return job;
 	}
 
@@ -514,7 +480,7 @@ public class JobManager {
 		if (res == null) {
 			return null;
 		}
-		
+
 		Job job = JobMining.create(res);
 		return job;
 	}
@@ -524,7 +490,7 @@ public class JobManager {
 		if (item == null) {
 			return null;
 		}
-		
+
 		Job job = JobDestroy.create(item);
 		return job;
 	}
@@ -539,7 +505,18 @@ public class JobManager {
 
 	public void onLongUpdate() {
 		for (JobCheck jobCheck: _jobsCheck) {
-			jobCheck.check(this, null);
+			jobCheck.create(this, null);
+		}
+		
+		// Remove invalid job
+		List<Job> invalidJobs = new ArrayList<Job>();
+		for (Job job: _jobs) {
+			if (job.getReason() == Abort.INVALID) {
+				invalidJobs.add(job);
+			}
+		}
+		for (Job job: invalidJobs) {
+			removeJob(job);
 		}
 	}
 

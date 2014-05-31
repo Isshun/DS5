@@ -31,23 +31,26 @@ public class JobTake extends Job {
 	}
 
 	@Override
-	public Abort check(Character character) {
+	public boolean check(Character character) {
 		// Item is null
 		if (_item == null || _storage == null) {
-			return Abort.INVALID;
+			_reason = Abort.INVALID;
+			return false;
 		}
 		
 		// No space left in inventory
 		if (_character.hasInventorySpaceLeft() == false) {
-			return Abort.NO_LEFT_CARRY;
+			_reason = Abort.NO_LEFT_CARRY;
+			return false;
 		}
 		
 		// Storage not contains requested item
 		if (_storage.contains(_filter) == false) {
-			return Abort.INVALID;
+			_reason = Abort.INVALID;
+			return false;
 		}
 
-		return null;
+		return true;
 	}
 
 	@Override

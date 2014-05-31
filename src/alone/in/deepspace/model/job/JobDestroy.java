@@ -25,27 +25,31 @@ public class JobDestroy extends Job {
 	}
 
 	@Override
-	public Abort check(Character character) {
+	public boolean check(Character character) {
 		// Item is null
 		if (_item == null) {
-			return Abort.INVALID;
+			_reason = Abort.INVALID;
+			return false;
 		}
 		
 		// Item is no longer exists
 		if (_item != ServiceManager.getWorldMap().getItem(_item.getX(), _item.getY())) {
-			return Abort.INVALID;
+			_reason = Abort.INVALID;
+			return false;
 		}
 		
 		// No space left in inventory
 		if (_item.isFactory() && character.hasInventorySpaceLeft() == false) {
-			return Abort.NO_LEFT_CARRY;
+			_reason = Abort.NO_LEFT_CARRY;
+			return false;
 		}
 		
 		// Factory is empty
 		if (_item.isFactory() && ((StorageItem)_item).getInventory().size() == 0) {
-			return Abort.NO_COMPONENTS;
+			_reason = Abort.NO_COMPONENTS;
+			return false;
 		}
-		return null;
+		return true;
 	}
 
 	@Override
