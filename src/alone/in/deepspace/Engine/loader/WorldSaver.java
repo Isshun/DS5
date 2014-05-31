@@ -81,7 +81,7 @@ public class WorldSaver {
 	public static void save(WorldManager worldManager, String filePath) {
 		WorldSave save = new WorldSave();
 
-		for (int z = 0; z < 10; z++) {
+		for (int z = 0; z < 1; z++) {
 			for (int x = 0; x < worldManager.getWidth(); x++) {
 				for (int y = 0; y < worldManager.getHeight(); y++) {
 					WorldArea area = worldManager.getArea(z, x, y);
@@ -92,7 +92,6 @@ public class WorldSaver {
 
 		XStream xstream = new XStream();
 		String xml = xstream.toXML(save);
-	    System.out.println(xml);
 		
 		try {
 			FileOutputStream fs = new FileOutputStream(filePath + ".xml");

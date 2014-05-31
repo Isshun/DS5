@@ -19,8 +19,8 @@ public class Viewport {
 	private int _scaleAnim;
 
 	public Viewport(RenderWindow app) {
-		_posX = 0;
-		_posY = 0;
+		_posX = - Constant.WORLD_WIDTH * Constant.TILE_WIDTH / 2;
+		_posY = - Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT / 2;
 		_lastPosX = 0;
 		_lastPosY = 0;
 		_width = Constant.WINDOW_WIDTH - Constant.UI_WIDTH;

@@ -4,7 +4,13 @@ SPICE	0
 WATER	0
 END GAME
 BEGIN CHARACTERS
-14	8	1	Gary Bentley
+131	144	1	Gary Bentley
+135	126	2	Wanda Cook
+135	126	2	Jewell Lewis
+132	147	1	Bruce Bauer
+135	126	1	Albert Potter
+137	136	2	Alisha Bauer
+137	135	1	Casey Frost
 END CHARACTERS
 BEGIN ROOMS
 END ROOMS

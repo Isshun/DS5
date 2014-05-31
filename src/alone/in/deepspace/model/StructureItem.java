@@ -18,4 +18,8 @@ public class StructureItem extends BaseItem {
 		return getName().equals("base.floor");// == BaseItem.Type.STRUCTURE_FLOOR || _type == BaseItem.Type.STRUCTURE_GREENHOUSE;
 	}
 
+	public boolean isHull() {
+		return getName().equals("base.hull");
+	}
+
 }

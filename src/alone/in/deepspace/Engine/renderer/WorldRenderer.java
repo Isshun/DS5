@@ -66,16 +66,17 @@ public class WorldRenderer implements IRenderer {
 
 		if (_hasChanged || _changed.size() > 0) {
 			if (_hasChanged) {
+				_textureCache.clear();
 				refreshFloor(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 				refreshStructure(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 				refreshResource(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
-				_spriteCache.setTexture(_textureCache.getTexture());
 			} else {
 				for (Vector2i vector: _changed) {
 					refreshFloor(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
 				}
 				refreshStructure(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 			}
+			_spriteCache.setTexture(_textureCache.getTexture());
 			_changed.clear();
 			_hasChanged = false;
 		}
@@ -132,8 +133,6 @@ public class WorldRenderer implements IRenderer {
 	}
 
 	private void refreshResource(int fromX, int fromY, int toX, int toY) {
-		int floor = _worldMap.getFloor();
-		
 		for (int i = toX-1; i >= fromX; i--) {
 			for (int j = toY-1; j >= fromY; j--) {
 				if (i >= 0 && j >= 0 && i < Constant.WORLD_WIDTH && j < Constant.WORLD_HEIGHT) {
@@ -150,8 +149,6 @@ public class WorldRenderer implements IRenderer {
 
 	// TODO: random
 	void	refreshFloor(int fromX, int fromY, int toX, int toY) {
-		_textureCache.clear();
-		
 		int floor = _worldMap.getFloor();
 		
 		for (int i = toX-1; i >= fromX; i--) {
@@ -260,6 +257,11 @@ public class WorldRenderer implements IRenderer {
 	
 							// Wall
 							else if (item.isWall()) {
+								sprite = drawWall(item, i, j, offsetWall);
+							}	  
+
+							// Hull
+							else if (item.isHull()) {
 								sprite = drawWall(item, i, j, offsetWall);
 							}	  
 						}

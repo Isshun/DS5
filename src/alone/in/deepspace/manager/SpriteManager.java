@@ -343,7 +343,7 @@ public class SpriteManager {
 		return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
 	}
 
-	public Sprite		getWall(BaseItem item, int special, int index, int zone) {
+	public Sprite		getWall(StructureItem item, int special, int index, int zone) {
 		int WALL_HEIGHT = 48;
 		int WALL_WIDTH = 32;
 
@@ -423,6 +423,16 @@ public class SpriteManager {
 				}
 
 				return getSprite(texture, x, y, width, height, alpha);
+			}
+			
+			else if (item.isHull()) {
+				int texture = 6;
+				int alpha = 255;
+				int x = 0;
+				int y = WALL_HEIGHT * zone;
+				int width = WALL_WIDTH;
+				int height = WALL_HEIGHT;
+				return getSprite(item.getInfo(), 0, 255);
 			}
 		}
 		return null;	  

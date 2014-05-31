@@ -156,6 +156,6 @@ public class ResourceManager {
 
 	public boolean isLowFood() {
 		//return _food < ServiceManager.getCharacterManager().getCount();
-		return true;
+		return false;
 	}
 }
