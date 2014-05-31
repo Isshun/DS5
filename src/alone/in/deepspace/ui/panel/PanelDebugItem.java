@@ -28,7 +28,7 @@ public class PanelDebugItem extends UserSubInterface {
 	private FrameLayout _itemView;
 	
 	public PanelDebugItem(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(0, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(app, 0, new Vector2f(0, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
 		
 		setBackgroundColor(new Color(0, 0, 0));
 

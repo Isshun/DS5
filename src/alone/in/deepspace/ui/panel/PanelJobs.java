@@ -38,16 +38,16 @@ public class PanelJobs extends UserSubInterface {
 	private int 				_nbRunningJobCandidat;
 
 	public PanelJobs(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
 
 		_lbTitle = new TextView();
-		_lbTitle.setCharacterSize(FONT_SIZE);
+		_lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 		_lbTitle.setColor(COLOR_LABEL);
 		_lbTitle.setPosition(20, 18);
 		addView(_lbTitle);
 
 		_lbTitle2 = new TextView();
-		_lbTitle2.setCharacterSize(FONT_SIZE);
+		_lbTitle2.setCharacterSize(FONT_SIZE_TITLE);
 		_lbTitle2.setColor(COLOR_LABEL);
 		_lbTitle2.setPosition(20, 18);
 		addView(_lbTitle2);

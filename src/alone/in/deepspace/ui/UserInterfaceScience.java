@@ -11,7 +11,7 @@ import org.jsfml.window.Keyboard;
 public class UserInterfaceScience extends UserSubInterface {
 	
 	UserInterfaceScience(RenderWindow app, int tileIndex) throws IOException {
-		super(app, tileIndex, new Vector2f(0, 0), new Vector2f(200, 200));
+		super(app, tileIndex, new Vector2f(0, 0), new Vector2f(200, 200), null);
   
 		_textureTile = new Texture();
 		_textureTile.loadFromFile((new File("res/bg_tile_science.png")).toPath());

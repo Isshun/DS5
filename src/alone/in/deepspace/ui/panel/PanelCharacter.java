@@ -44,7 +44,6 @@ public class PanelCharacter extends UserSubInterface {
 	private static final int NB_MAX_RELATION = 18;
 	private static final int NB_INVENTORY_PER_LINE = 10;
 
-	private static final int NB_COLUMNS = 47;
 	private static final int NB_COLUMNS_NEEDS = 22;
 
 	private static final Color COLOR_0 = new Color(120, 255, 255);
@@ -97,7 +96,7 @@ public class PanelCharacter extends UserSubInterface {
 	private TextView 			_lbInventory;
 
 	public PanelCharacter(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), null);
 
 		_cursor = new ColorView(new Vector2f(8, 16));
 		_cursor.setBackgroundColor(COLOR_TEXT);
@@ -362,7 +361,7 @@ public class PanelCharacter extends UserSubInterface {
 		}
 	}
 
-	public void  setCharacter(Character character) {
+	public void  select(Character character) {
 		if (_character != null) {
 			_character.setSelected(false);
 		}
@@ -397,7 +396,7 @@ public class PanelCharacter extends UserSubInterface {
 				_familyEntries[i].setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						setCharacter(relation.getSecond());
+						select(relation.getSecond());
 					}
 				});
 				_familyEntries[i].setOnFocusListener(new OnFocusListener() {

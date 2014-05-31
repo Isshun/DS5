@@ -27,7 +27,7 @@ public class PanelPlan extends UserSubInterface {
 	public void setMode(Mode mode) { _mode = mode; }
 
 	public PanelPlan(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), null);
 		  
 		_mode = Mode.NONE;
 		

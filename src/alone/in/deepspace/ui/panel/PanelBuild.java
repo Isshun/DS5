@@ -48,7 +48,7 @@ public class PanelBuild extends UserSubInterface {
 	private int							_startY;
 
 	public PanelBuild(RenderWindow app, int tileIndex, UserInteraction interaction) throws IOException {
-		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), null);
 
 		setBackgroundColor(new Color(22, 35, 35));
 

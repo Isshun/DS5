@@ -26,7 +26,7 @@ public class UserInterfaceMessage extends UserSubInterface {
 	private int _start;
 
 	public UserInterfaceMessage(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(20, 20), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(app, 0, new Vector2f(20, 20), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
 		  
 		_texts = new TextView[10];
 		for (int i = 0; i < 10; i++) {

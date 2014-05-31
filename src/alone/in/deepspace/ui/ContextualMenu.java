@@ -27,7 +27,7 @@ public class ContextualMenu extends UserSubInterface {
 	private int 				_initPosY;
 	
 	public ContextualMenu(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size, Viewport viewport) {
-		super(app, tileIndex, pos, size);
+		super(app, tileIndex, pos, size, null);
 		setVisible(true);
 		
 		ENTRY_WIDTH = (int) (size.x - PADDING_H * 2);

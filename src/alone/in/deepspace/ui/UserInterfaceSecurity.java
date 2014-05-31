@@ -10,7 +10,7 @@ import org.jsfml.window.Keyboard;
 
 public class UserInterfaceSecurity extends UserSubInterface {
 	UserInterfaceSecurity(RenderWindow app, int tileIndex) throws IOException {
-		super(app, tileIndex, new Vector2f(0, 0), new Vector2f(200, 200));
+		super(app, tileIndex, new Vector2f(0, 0), new Vector2f(200, 200), null);
 	  
 		_textureTile = new Texture();
 		_textureTile.loadFromFile((new File("res/bg_tile_security.png")).toPath());

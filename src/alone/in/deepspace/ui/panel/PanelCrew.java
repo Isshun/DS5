@@ -55,7 +55,7 @@ public class PanelCrew extends UserSubInterface {
 	protected int 				_mode;
 
 	public PanelCrew(RenderWindow app, int tileIndex) throws IOException {
-		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), null);
 
 		setBackgroundColor(new Color(18, 30, 30));
 

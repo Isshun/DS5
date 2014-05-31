@@ -23,7 +23,7 @@ public class PanelSystem extends UserSubInterface {
 	private TextView _lbFloor;
 	
 	public PanelSystem(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(app, 0, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
 		
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		

@@ -14,7 +14,7 @@ public class PanelTooltip extends UserSubInterface {
 	private TextView 	_lbToolTip;
 
 	public PanelTooltip(RenderWindow app) {
-		super(app, 0, new Vector2f(200, 200), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(app, 0, new Vector2f(200, 200), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
 		
 		_lbToolTip = new TextView(null);
 		_lbToolTip.setCharacterSize(16);

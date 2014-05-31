@@ -1,7 +1,6 @@
 package alone.in.deepspace.ui;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
@@ -19,8 +18,10 @@ public abstract class UserSubInterface extends FrameLayout {
 	protected static final Color COLOR_TEXT = new Color(120, 255, 255);
 	protected static final Color COLOR_LABEL = Color.WHITE;
 	protected static final Color COLOR_ACTIVE = new Color(176, 205, 53);
-	protected static final int FONT_SIZE = 22;
-	protected static final int FONT_SIZE_SMALL = 14;
+	protected static final int 	FONT_SIZE_TITLE = 22;
+	protected static final int 	FONT_SIZE = 14;
+	protected static final int 	NB_COLUMNS = 47;
+	protected static final int 	NB_COLUMNS_TITLE = 29;
 
 	protected Texture	_texturePanel;
 	protected Texture	_textureTile;
@@ -42,7 +43,7 @@ public abstract class UserSubInterface extends FrameLayout {
 	public boolean		isTileActive() { return _isTileActive; }
 	public boolean		isOnTile(int x, int y) { return x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120; }
 
-	public UserSubInterface(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size) {
+	public UserSubInterface(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size, UserInterface ui) {
 		super(size);
 		
 		setBackgroundColor(new Color(18, 28, 30));
@@ -53,6 +54,7 @@ public abstract class UserSubInterface extends FrameLayout {
 
 		setPosition(pos);
 		
+		_ui = ui;
 		_posTileX = (Constant.MENU_TILE_WIDTH + Constant.UI_PADDING + Constant.UI_PADDING) * tileIndex + Constant.UI_PADDING;
 		_posTileY = Constant.WINDOW_HEIGHT - 180 - Constant.UI_PADDING;
 		_tileIndex = tileIndex;

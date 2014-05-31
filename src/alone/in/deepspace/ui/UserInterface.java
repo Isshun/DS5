@@ -20,6 +20,7 @@ import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.UIEventManager;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Character;
+import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.WorldArea;
 import alone.in.deepspace.ui.panel.PanelBase;
@@ -108,7 +109,7 @@ public class UserInterface {
 		_panelBase = new PanelBase(app);
 		_panelCharacter = new PanelCharacter(app);
 		_panelCharacter.setUI(this);
-		_panelInfo = new PanelInfo(app);
+		_panelInfo = new PanelInfo(app, this);
 		_panelDebug = new PanelDebug(app);
 		_panelDebug.setUI(this);
 		_panelDebugItems = new PanelDebugItem(app);
@@ -135,7 +136,7 @@ public class UserInterface {
 		_panelJobs.setUI(this);
 		_panelMessage.setStart(0);
 
-		setMode(Mode.NONE);
+		toogleMode(Mode.NONE);
 	}
 
 	public void	onMouseMove(int x, int y) {
@@ -213,8 +214,12 @@ public class UserInterface {
 	public int getRelativePosXMin(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
 	public int getRelativePosYMin(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
 
-	public void setMode(Mode mode) {
-		_mode = _mode != mode ? mode : Mode.NONE;
+	public void toogleMode(Mode mode) {
+		setMode(_mode != mode ? mode : Mode.NONE);
+	}
+
+	private void setMode(Mode mode) {
+		_mode = mode;
 		_menu = null;
 
 		if (_mode != Mode.CHARACTER) 	_panelCharacter.setVisible(false);
@@ -233,19 +238,19 @@ public class UserInterface {
 		if (_mode != Mode.ROOM)			_panelRoom.setVisible(false);
 
 		switch (_mode) {
-		case BUILD: 		_panelBuild.toogle(); break;
-		case INFO: 			_panelInfo.toogle(); break;
-		case DEBUG: 		_panelDebug.toogle(); break;
-		case DEBUGITEMS:	_panelDebugItems.toogle(); break;
-		case PLAN: 			_panelPlan.toogle(); break;
-		case TOOLTIP: 		_panelTooltip.toogle(); break;
-		case CHARACTER: 	_panelCharacter.toogle(); break;
-		case BASE: 			_panelBase.toogle(); break;
-		case JOBS: 			_panelJobs.toogle(); break;
-		case CREW: 			_panelCrew.toogle(); break;
-		case ROOM: 			_panelRoom.toogle(); break;
-		case SCIENCE:		_uiScience.toogle(); break;
-		case SECURITY:		_uiSecurity.toogle(); break;
+		case BUILD: 		_panelBuild.setVisible(true); break;
+		case INFO: 			_panelInfo.setVisible(true); break;
+		case DEBUG: 		_panelDebug.setVisible(true); break;
+		case DEBUGITEMS:	_panelDebugItems.setVisible(true); break;
+		case PLAN: 			_panelPlan.setVisible(true); break;
+		case TOOLTIP: 		_panelTooltip.setVisible(true); break;
+		case CHARACTER: 	_panelCharacter.setVisible(true); break;
+		case BASE: 			_panelBase.setVisible(true); break;
+		case JOBS: 			_panelJobs.setVisible(true); break;
+		case CREW: 			_panelCrew.setVisible(true); break;
+		case ROOM: 			_panelRoom.setVisible(true); break;
+		case SCIENCE:		_uiScience.setVisible(true); break;
+		case SECURITY:		_uiSecurity.setVisible(true); break;
 		case NONE: break;
 		}
 	}
@@ -388,7 +393,7 @@ public class UserInterface {
 		
 		if (event.asKeyEvent().key == Keyboard.Key.ESCAPE || event.asKeyEvent().key == Keyboard.Key.BACKSPACE) {
 			if (_mode != Mode.NONE) {
-				setMode(Mode.NONE);
+				toogleMode(Mode.NONE);
 			} else {
 				_game.setRunning(!_game.isRunning());
 			}
@@ -398,7 +403,7 @@ public class UserInterface {
 		if (event.asKeyEvent().key == Keyboard.Key.TAB) {
 			if ((event.type == Event.Type.KEY_RELEASED)) {
 				if (_panelCharacter.getCharacter() != null) {
-					_panelCharacter.setCharacter(_characteres.getNext(_panelCharacter.getCharacter()));
+					_panelCharacter.select(_characteres.getNext(_panelCharacter.getCharacter()));
 				}
 			}
 			return true;
@@ -428,14 +433,14 @@ public class UserInterface {
 		if (event.asKeyEvent().key == Keyboard.Key.D) {
 			Settings.getInstance().setDebug(!Settings.getInstance().isDebug());
 			if (Settings.getInstance().isDebug()) {
-				setMode(Mode.DEBUG);
+				toogleMode(Mode.DEBUG);
 			} else {
-				setMode(_panelCharacter.getCharacter() != null ? Mode.CHARACTER : Mode.INFO);
+				toogleMode(_panelCharacter.getCharacter() != null ? Mode.CHARACTER : Mode.INFO);
 			}
 			// 	ServiceManager.getWorldMap().dump();
 		}	
 		else if (event.asKeyEvent().key == Keyboard.Key.C) {
-			setMode(Mode.CREW);
+			toogleMode(Mode.CREW);
 		}
 		else if (event.asKeyEvent().key == Keyboard.Key.I) {
 			_panelDebugItems.toogle();
@@ -444,19 +449,19 @@ public class UserInterface {
 			_panelDebugItems.reset();
 		}
 		else if (event.asKeyEvent().key == Keyboard.Key.E || event.asKeyEvent().key == Keyboard.Key.B) {
-			setMode(Mode.BUILD);
+			toogleMode(Mode.BUILD);
 		}
 		else if (event.asKeyEvent().key == Keyboard.Key.O) {
 			_uiBase.toogleTile();
 		}
 		else if (event.asKeyEvent().key == Keyboard.Key.R) {
-			setMode(Mode.ROOM);
+			toogleMode(Mode.ROOM);
 		}
 		else if (event.asKeyEvent().key == Keyboard.Key.P) {
-			setMode(Mode.PLAN);
+			toogleMode(Mode.PLAN);
 		}
 		else if (event.asKeyEvent().key == Keyboard.Key.J) {
-			setMode(Mode.JOBS);
+			toogleMode(Mode.JOBS);
 		}
 		//	  else if (event.asKeyEvent().key == Keyboard.Key.I) {
 		//		ServiceManager.getWorldMap().dumpItems();
@@ -618,8 +623,8 @@ public class UserInterface {
 		}
 
 
-		_panelCharacter.setCharacter(null);
-		setMode(Mode.BASE);
+		_panelCharacter.select(null);
+		toogleMode(Mode.BASE);
 
 		// Select character
 		if (_interaction.getMode() == UserInteraction.Mode.NONE) {// && _menu.getCode() == UserInterfaceMenu.CODE_MAIN) {
@@ -630,13 +635,13 @@ public class UserInterface {
 			} else {
 				WorldArea a = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
 				if (a != null) {
-					_panelInfo.setArea(a);
+					_panelInfo.select(a);
 					//				if (_panelInfo.getArea() == a && _panelInfo.getItem() == null && a.getItem() != null) {
 					//				  _panelInfo.setItem(a.getItem());
 					//				} else {
 					//				  _panelInfo.setItem(null);
 					//				}
-					setMode(Mode.INFO);
+					toogleMode(Mode.INFO);
 				}
 			}
 		}
@@ -644,8 +649,8 @@ public class UserInterface {
 	}
 
 	public void setCharacter(Character c) {
-		_panelCharacter.setCharacter(c);
-		setMode(Mode.CHARACTER);
+		_panelCharacter.select(c);
+		toogleMode(Mode.CHARACTER);
 	}
 
 	public void onRightClick(int x, int y) {
@@ -675,7 +680,7 @@ public class UserInterface {
 			_panelBuild.setSelectedItem(null);
 			_panelRoom.setSelected(null);
 			_panelPlan.setMode(PanelPlan.Mode.NONE);
-			setMode(Mode.NONE);
+			toogleMode(Mode.NONE);
 		}
 
 		_keyRightPressed = false;
@@ -686,7 +691,17 @@ public class UserInterface {
 	}
 
 	public void showTooltip(String tip) {
-		setMode(Mode.TOOLTIP);
+		toogleMode(Mode.TOOLTIP);
 		_panelTooltip.setTooltip(tip);
+	}
+
+	public void select(ItemInfo itemInfo) {
+		setMode(Mode.INFO);
+		_panelInfo.select(itemInfo);
+	}
+
+	public void select(Character character) {
+		setMode(Mode.CHARACTER);
+		_panelCharacter.select(character);
 	}
 }

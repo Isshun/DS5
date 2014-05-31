@@ -21,7 +21,7 @@ public class PanelResource extends UserSubInterface {
 	private TextView 	_o2;
 	
 	public PanelResource(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
 		
 		setBackgroundColor(new Color(200, 200, 140, 150));
 		

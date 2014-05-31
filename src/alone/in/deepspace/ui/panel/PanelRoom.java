@@ -42,7 +42,7 @@ public class PanelRoom extends UserSubInterface {
 	private TextView[] _lbRoomOccupantsOld;
 
 	public PanelRoom(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), null);
 		_icons = new HashMap<Integer, ButtonView>();
 		_layoutButtons = new FrameLayout(new Vector2f(200, 400));
 		_layoutButtons.setVisible(true);

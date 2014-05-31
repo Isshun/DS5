@@ -15,8 +15,8 @@ public class TextView extends View {
 	public static final int	ITALIC = Text.ITALIC;
 	public static final int	UNDERLINED = Text.UNDERLINED;
 	
-	private Text 			_text;
-	private String 			_value;
+	protected Text 			_text;
+	protected String 			_value;
 
 	public TextView() {
 		super(new Vector2f(0, 0));

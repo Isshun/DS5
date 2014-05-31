@@ -44,7 +44,7 @@ public class PanelShortcut extends UserSubInterface {
 	};
 	
 	public PanelShortcut(RenderWindow app, final UserInterface userInterface) throws IOException {
-		super(app, 0, new Vector2f(0, Constant.WINDOW_HEIGHT - FRAME_HEIGHT), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(app, 0, new Vector2f(0, Constant.WINDOW_HEIGHT - FRAME_HEIGHT), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
 
 		setBackgroundColor(new Color(18, 28, 30));
 		
@@ -73,7 +73,7 @@ public class PanelShortcut extends UserSubInterface {
 			label.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					userInterface.setMode(e.mode);
+					userInterface.toogleMode(e.mode);
 				}
 			});
 			addView(label);

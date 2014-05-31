@@ -27,7 +27,7 @@ public class PanelDebug extends UserSubInterface {
 	private UserInterface _ui;
 	
 	public PanelDebug(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
 		
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		
@@ -64,7 +64,7 @@ public class PanelDebug extends UserSubInterface {
 		lbItems.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				_ui.setMode(Mode.DEBUGITEMS);
+				_ui.toogleMode(Mode.DEBUGITEMS);
 			}
 		});
 		lbItems.setString("items");
