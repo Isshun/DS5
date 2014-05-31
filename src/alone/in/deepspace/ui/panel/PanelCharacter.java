@@ -20,13 +20,13 @@ import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.Character;
-import alone.in.deepspace.model.Character.Gender;
-import alone.in.deepspace.model.CharacterNeeds;
-import alone.in.deepspace.model.CharacterRelation;
-import alone.in.deepspace.model.CharacterRelation.Relation;
-import alone.in.deepspace.model.CharacterStatus;
 import alone.in.deepspace.model.Profession;
+import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.character.CharacterNeeds;
+import alone.in.deepspace.model.character.CharacterRelation;
+import alone.in.deepspace.model.character.CharacterStatus;
+import alone.in.deepspace.model.character.Character.Gender;
+import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Settings;
@@ -146,7 +146,7 @@ public class PanelCharacter extends UserSubInterface {
 		_lbState.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				_ui.showTooltip(_lastStatus.getTip());
+				_ui.select(_lastStatus.getTip());
 			}
 		});
 		_lbState.setOnFocusListener(new OnFocusListener() {
@@ -193,7 +193,7 @@ public class PanelCharacter extends UserSubInterface {
 		addView(_lbGender);
 		posY += 20;
 
-		_lbProfession = new TextView(null);
+		_lbProfession = new LinkView();
 		_lbProfession.setCharacterSize(FONT_SIZE_SMALL);
 		_lbProfession.setColor(COLOR_TEXT);
 		_lbProfession.setPosition(new Vector2f(posX, posY));
@@ -288,7 +288,7 @@ public class PanelCharacter extends UserSubInterface {
 		_lbJob.setString(Strings.LB_CHARACTER_INFO_JOB);
 		_layoutJob.addView(_lbJob);
 
-		_lbJob2 = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
+		_lbJob2 = new LinkView();
 		_lbJob2.setCharacterSize(FONT_SIZE_SMALL);
 		_lbJob2.setColor(COLOR_TEXT);
 		_lbJob2.setPosition(0, 32);
@@ -529,7 +529,7 @@ public class PanelCharacter extends UserSubInterface {
 		
 		if (_character != null) {
 			
-			refreshJob();
+			refreshJob(_character.getJob());
 			refreshNeeds();
 			refreshInventory();
 			refreshDebug();
@@ -571,9 +571,24 @@ public class PanelCharacter extends UserSubInterface {
 			}
 			
 			// Profession
-			Profession profession = _character.getProfession();
+			final Profession profession = _character.getProfession();
 			if (!profession.equals(_lastProfession)) {
 				_lastProfession = profession;
+				_lbProfession.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						switch (profession.getType()) {
+						case CHILD: _ui.select(ToolTips.PROFESSION_CHILD); break;
+						case DOCTOR: _ui.select(ToolTips.PROFESSION_DOCTOR); break;
+						case ENGINEER: _ui.select(ToolTips.PROFESSION_ENGINEER); break;
+						case NONE: _ui.select(ToolTips.PROFESSION_NONE); break;
+						case OPERATION: _ui.select(ToolTips.PROFESSION_OPERATION); break;
+						case SCIENCE: _ui.select(ToolTips.PROFESSION_SCIENCE); break;
+						case SECURITY: _ui.select(ToolTips.PROFESSION_SECURITY); break;
+						case STUDENT: _ui.select(ToolTips.PROFESSION_STUDENT); break;
+						}
+					}
+				});
 				startAnim(_lbProfession, StringUtils.getDashedString("Profession:", profession.getName(), NB_COLUMNS));
 				return;
 			}
@@ -597,11 +612,39 @@ public class PanelCharacter extends UserSubInterface {
 		}
 	}
 	
-	private void refreshJob() {
-		if (_character.getJob() != null) {
-			_lbJob2.setString(StringUtils.getDashedString(_character.getJob().getShortLabel(), _character.getJob().getFormatedDuration(), NB_COLUMNS));
+	private void refreshJob(final Job job) {
+		if (job != null) {
+			_lbJob2.setString(StringUtils.getDashedString(job.getShortLabel(), job.getFormatedDuration(), NB_COLUMNS));
+			switch (job.getAction()) {
+			case BUILD:
+			case DESTROY:
+			case GATHER:
+			case MINING:
+			case REFILL:
+			case USE:
+				_lbJob2.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						_ui.select(job.getItem());
+					}
+				});
+				break;
+			case USE_INVENTORY:
+				_lbJob2.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						_ui.select(job.getItem().getInfo());
+					}
+				});
+				break;
+			default:
+				_lbJob2.setOnClickListener(null);
+				break;
+			
+			}
 		} else {
 			_lbJob2.setString(Strings.LN_NO_JOB);
+			_lbJob2.setOnClickListener(null);
 		}
 	}
 

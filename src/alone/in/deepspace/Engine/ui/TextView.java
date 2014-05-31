@@ -7,6 +7,7 @@ import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.manager.SpriteManager;
+import alone.in.deepspace.util.StringUtils;
 
 public class TextView extends View {
 
@@ -79,6 +80,10 @@ public class TextView extends View {
 
 	public void setPosition(int i, int j) {
 		setPosition(new Vector2f(i, j));
+	}
+
+	public void setDashedString(String label, String value, int nbColumns) {
+		setString(StringUtils.getDashedString(label, value, nbColumns));
 	}
 
 }

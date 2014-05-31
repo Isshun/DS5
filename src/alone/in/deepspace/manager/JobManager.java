@@ -5,11 +5,11 @@ import java.util.List;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.model.WorldResource;
+import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.job.Job.Abort;
 import alone.in.deepspace.model.job.Job.JobStatus;

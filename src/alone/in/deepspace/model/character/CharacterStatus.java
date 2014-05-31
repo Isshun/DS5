@@ -1,9 +1,12 @@
-package alone.in.deepspace.model;
+package alone.in.deepspace.model.character;
 
 import org.jsfml.graphics.Color;
 
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.BaseItem;
+import alone.in.deepspace.ui.panel.ToolTips;
+import alone.in.deepspace.ui.panel.ToolTips.ToolTip;
 import alone.in.deepspace.util.Constant;
 
 public class CharacterStatus {
@@ -115,8 +118,8 @@ public class CharacterStatus {
 		return _level;
 	}
 
-	public String getTip() {
-		return "Your people are starving.\n- Make sure your storages contain enough ingredients (vegetable, seaweed, fish).\n- Launch food production from Caretaker menu";
+	public ToolTip getTip() {
+		return ToolTips.STATE_STARVING;
 	}
 
 }

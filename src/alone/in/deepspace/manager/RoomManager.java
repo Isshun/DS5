@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.engine.ISavable;
-import alone.in.deepspace.model.Character;
-import alone.in.deepspace.model.CharacterRelation;
 import alone.in.deepspace.model.Room;
-import alone.in.deepspace.model.CharacterRelation.Relation;
 import alone.in.deepspace.model.Room.Type;
+import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.character.CharacterRelation;
+import alone.in.deepspace.model.character.CharacterRelation.Relation;
 import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;

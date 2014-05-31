@@ -1,6 +1,7 @@
 package alone.in.deepspace.model;
 
 import java.util.Vector;
+
 import alone.in.deepspace.model.job.Job;
 
 public class Foe extends Movable {

@@ -18,6 +18,7 @@ public abstract class UserSubInterface extends FrameLayout {
 	protected static final Color COLOR_TEXT = new Color(120, 255, 255);
 	protected static final Color COLOR_LABEL = Color.WHITE;
 	protected static final Color COLOR_ACTIVE = new Color(176, 205, 53);
+	protected static final int 	LINE_HEIGHT = 20;
 	protected static final int 	FONT_SIZE_TITLE = 22;
 	protected static final int 	FONT_SIZE = 14;
 	protected static final int 	NB_COLUMNS = 47;
@@ -104,7 +105,7 @@ public abstract class UserSubInterface extends FrameLayout {
 	}
 
 	public boolean	catchClick(int x, int y) {
-		if (_isVisible) {
+		if (_isVisible && x > _posX && x < _posX + _size.x && y > _posY && y < _posY + _size.y) {
 			return true;
 		}
 		return false;

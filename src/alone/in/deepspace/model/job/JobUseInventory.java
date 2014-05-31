@@ -3,7 +3,7 @@ package alone.in.deepspace.model.job;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.Character;
+import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 

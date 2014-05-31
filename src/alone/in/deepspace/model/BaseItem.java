@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.Strings;
-import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ItemSlot;
-import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.ItemInfo.ItemInfoSlot;
+import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.job.Job;
 
 
@@ -361,5 +360,9 @@ public class BaseItem {
 
 	public boolean isFactory() {
 		return _info.onAction != null && _info.onAction.itemsProduce != null;
+	}
+
+	public boolean isUsable() {
+		return _info.onAction != null;
 	}
 }

@@ -19,10 +19,10 @@ import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.UIEventManager;
 import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.WorldArea;
+import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.ui.panel.PanelBase;
 import alone.in.deepspace.ui.panel.PanelBuild;
 import alone.in.deepspace.ui.panel.PanelCharacter;
@@ -36,6 +36,7 @@ import alone.in.deepspace.ui.panel.PanelResource;
 import alone.in.deepspace.ui.panel.PanelRoom;
 import alone.in.deepspace.ui.panel.PanelShortcut;
 import alone.in.deepspace.ui.panel.PanelSystem;
+import alone.in.deepspace.ui.panel.ToolTips.ToolTip;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Settings;
 
@@ -75,10 +76,11 @@ public class UserInterface {
 	private PanelDebugItem 				_panelDebugItems;
 	private Mode 						_mode;
 	private ContextualMenu 				_menu;
-	private Game _game;
-	private int _used;
-	private boolean _mouseOnMap;
-	private PanelTooltip _panelTooltip;
+	private Game 						_game;
+	private int 						_used;
+	private boolean 					_mouseOnMap;
+	private PanelTooltip 				_panelTooltip;
+	private UserSubInterface 			_currentPanel;
 
 	public enum Mode {
 		BASE,
@@ -238,20 +240,24 @@ public class UserInterface {
 		if (_mode != Mode.ROOM)			_panelRoom.setVisible(false);
 
 		switch (_mode) {
-		case BUILD: 		_panelBuild.setVisible(true); break;
-		case INFO: 			_panelInfo.setVisible(true); break;
-		case DEBUG: 		_panelDebug.setVisible(true); break;
-		case DEBUGITEMS:	_panelDebugItems.setVisible(true); break;
-		case PLAN: 			_panelPlan.setVisible(true); break;
-		case TOOLTIP: 		_panelTooltip.setVisible(true); break;
-		case CHARACTER: 	_panelCharacter.setVisible(true); break;
-		case BASE: 			_panelBase.setVisible(true); break;
-		case JOBS: 			_panelJobs.setVisible(true); break;
-		case CREW: 			_panelCrew.setVisible(true); break;
-		case ROOM: 			_panelRoom.setVisible(true); break;
-		case SCIENCE:		_uiScience.setVisible(true); break;
-		case SECURITY:		_uiSecurity.setVisible(true); break;
-		case NONE: break;
+		case BUILD: 		_currentPanel = _panelBuild; break;
+		case INFO: 			_currentPanel = _panelInfo; break;
+		case DEBUG: 		_currentPanel = _panelDebug; break;
+		case DEBUGITEMS:	_currentPanel = _panelDebugItems; break;
+		case PLAN: 			_currentPanel = _panelPlan; break;
+		case TOOLTIP: 		_currentPanel = _panelTooltip; break;
+		case CHARACTER: 	_currentPanel = _panelCharacter; break;
+		case BASE: 			_currentPanel = _panelBase; break;
+		case JOBS: 			_currentPanel = _panelJobs; break;
+		case CREW: 			_currentPanel = _panelCrew; break;
+		case ROOM: 			_currentPanel = _panelRoom; break;
+		case SCIENCE:		_currentPanel = _uiScience; break;
+		case SECURITY:		_currentPanel = _uiSecurity; break;
+		case NONE: 			_currentPanel = null; break;
+		}
+		
+		if (_currentPanel != null) {
+			_currentPanel.setVisible(true);
 		}
 	}
 
@@ -599,7 +605,6 @@ public class UserInterface {
 			return;
 		}
 
-
 		// Set room
 		Room.Type roomType = _panelRoom.getSelectedRoom();
 		if (roomType != null) {
@@ -622,7 +627,11 @@ public class UserInterface {
 			return;
 		}
 
-
+		// Click is catch by panel
+		if (_currentPanel != null && _currentPanel.catchClick(x, y)) {
+			return;
+		}
+		
 		_panelCharacter.select(null);
 		toogleMode(Mode.BASE);
 
@@ -690,11 +699,6 @@ public class UserInterface {
 		return _mode;
 	}
 
-	public void showTooltip(String tip) {
-		toogleMode(Mode.TOOLTIP);
-		_panelTooltip.setTooltip(tip);
-	}
-
 	public void select(ItemInfo itemInfo) {
 		setMode(Mode.INFO);
 		_panelInfo.select(itemInfo);
@@ -703,5 +707,15 @@ public class UserInterface {
 	public void select(Character character) {
 		setMode(Mode.CHARACTER);
 		_panelCharacter.select(character);
+	}
+
+	public void select(BaseItem item) {
+		setMode(Mode.INFO);
+		_panelInfo.select(item);
+	}
+
+	public void select(ToolTip toolTip) {
+		_panelTooltip.select(toolTip);
+		setMode(Mode.TOOLTIP);
 	}
 }

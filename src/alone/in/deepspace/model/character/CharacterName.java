@@ -1,6 +1,6 @@
-package alone.in.deepspace.model;
+package alone.in.deepspace.model.character;
 
-import alone.in.deepspace.model.Character.Gender;
+import alone.in.deepspace.model.character.Character.Gender;
 
 public class CharacterName {
 

@@ -1,6 +1,5 @@
 package alone.in.deepspace.model;
 
-import java.util.List;
 
 
 public class UserItem extends BaseItem {

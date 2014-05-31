@@ -20,7 +20,7 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
-import alone.in.deepspace.model.Character;
+import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;

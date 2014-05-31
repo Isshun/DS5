@@ -19,9 +19,9 @@ import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.SpriteManager;
-import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.Room.Type;
+import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;
 

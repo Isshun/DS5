@@ -3,10 +3,10 @@ package alone.in.deepspace.manager;
 import java.util.ArrayList;
 import java.util.List;
 
-import alone.in.deepspace.model.Character;
-import alone.in.deepspace.model.CharacterRelation;
-import alone.in.deepspace.model.Character.Gender;
-import alone.in.deepspace.model.CharacterRelation.Relation;
+import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.character.CharacterRelation;
+import alone.in.deepspace.model.character.Character.Gender;
+import alone.in.deepspace.model.character.CharacterRelation.Relation;
 import alone.in.deepspace.util.Constant;
 
 public class RelationManager {

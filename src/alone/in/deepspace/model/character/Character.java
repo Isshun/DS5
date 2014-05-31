@@ -1,4 +1,4 @@
-package alone.in.deepspace.model;
+package alone.in.deepspace.model.character;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,22 +6,20 @@ import java.util.Vector;
 
 import org.jsfml.graphics.Color;
 import org.newdawn.slick.util.pathfinding.Mover;
-import org.omg.stub.java.rmi._Remote_Stub;
 
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.ItemFilter;
-import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
-import alone.in.deepspace.manager.JobManager.Action;
 import alone.in.deepspace.manager.PathManager;
-import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.CharacterRelation.Relation;
+import alone.in.deepspace.model.BaseItem;
+import alone.in.deepspace.model.Movable;
+import alone.in.deepspace.model.Position;
+import alone.in.deepspace.model.Profession;
+import alone.in.deepspace.model.Room;
+import alone.in.deepspace.model.character.CharacterRelation.Relation;
 import alone.in.deepspace.model.job.Job;
-import alone.in.deepspace.model.job.Job.Abort;
-import alone.in.deepspace.model.job.JobRefill;
-import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -392,10 +390,15 @@ public class Character extends Movable implements Mover {
 		} else {
 			if (_path != null) {
 				Log.info("Character #" + _id + ": reached");
+				_steps = 0;
+				_path = null;
+				_node = null;
+				
+				// TODO: why character sometimes not reach job location
+				if (_posX != _toX || _posY != _toY) {
+					setJob(null);
+				}
 			}
-			_steps = 0;
-			_path = null;
-			_node = null;
 		}
 	}
 	

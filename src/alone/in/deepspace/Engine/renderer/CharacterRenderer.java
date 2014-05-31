@@ -7,8 +7,8 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 
 import alone.in.deepspace.manager.SpriteManager;
-import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.Movable.Direction;
+import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.util.Constant;
 
 public class CharacterRenderer implements IRenderer {

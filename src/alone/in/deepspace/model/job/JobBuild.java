@@ -4,9 +4,9 @@ import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.StructureItem;
+import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Log;
 

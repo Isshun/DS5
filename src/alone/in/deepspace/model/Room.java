@@ -7,6 +7,8 @@ import java.util.Set;
 
 import org.jsfml.graphics.Color;
 
+import alone.in.deepspace.model.character.Character;
+
 public class Room {
 	public enum Type {
 		NONE,

@@ -15,6 +15,11 @@ public class LinkView extends TextView {
 		setOnFocusListener(null);
 	}
 
+	public LinkView() {
+		super(new Vector2f(300, 20));
+		setOnFocusListener(null);
+	}
+
 	@Override
 	public void setOnFocusListener(final OnFocusListener onFocusListener) {
 		super.setOnFocusListener(new OnFocusListener() {

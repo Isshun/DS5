@@ -1,5 +1,7 @@
-package alone.in.deepspace.model;
+package alone.in.deepspace.model.character;
 
+import alone.in.deepspace.model.BaseItem;
+import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.ItemInfo.ItemInfoAction;
 import alone.in.deepspace.util.Constant;
 

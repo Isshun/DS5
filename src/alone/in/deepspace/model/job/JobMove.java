@@ -1,7 +1,7 @@
 package alone.in.deepspace.model.job;
 
 import alone.in.deepspace.manager.JobManager;
-import alone.in.deepspace.model.Character;
+import alone.in.deepspace.model.character.Character;
 
 public class JobMove extends Job {
 

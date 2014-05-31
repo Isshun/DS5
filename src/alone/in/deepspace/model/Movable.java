@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import alone.in.deepspace.manager.PathManager.PathManagerCallback;
+import alone.in.deepspace.model.character.CharacterNeeds;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.util.Constant;
-import alone.in.deepspace.util.Log;
 
 public abstract class Movable implements PathManagerCallback {
 
@@ -64,7 +64,7 @@ public abstract class Movable implements PathManagerCallback {
 		setDirection(move);
 	}
 
-	void	sendEvent(CharacterNeeds.Message msgBlocked) {
+	protected void	sendEvent(CharacterNeeds.Message msgBlocked) {
 		if (msgBlocked == CharacterNeeds.Message.MSG_BLOCKED) {
 			if (++_blocked >= Constant.BLOCKED_COUNT_BEFORE_MESSAGE) {
 				addMessage(CharacterNeeds.Message.MSG_BLOCKED, -1);

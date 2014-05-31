@@ -12,8 +12,8 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
 import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.Character;
 import alone.in.deepspace.model.UserItem;
+import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 

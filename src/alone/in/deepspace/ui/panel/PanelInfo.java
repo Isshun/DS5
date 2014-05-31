@@ -18,6 +18,7 @@ import alone.in.deepspace.engine.ui.ImageView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
+import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.BaseItem;
@@ -29,6 +30,8 @@ import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.model.WorldArea;
 import alone.in.deepspace.model.WorldResource;
+import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;
@@ -36,7 +39,6 @@ import alone.in.deepspace.util.ObjectPool;
 import alone.in.deepspace.util.StringUtils;
 
 public class PanelInfo extends UserSubInterface {
-	private static final int 		LINE_HEIGHT = 28;
 	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;
 	private static final int 		MENU_PADDING_TOP = 34;
 	private static final int 		MENU_PADDING_LEFT = 16;
@@ -45,6 +47,7 @@ public class PanelInfo extends UserSubInterface {
 	private static final int 		INVENTORY_NB_COLS = 10;
 	private static final int 		INVENTORY_ITEM_SIZE = 32;
 	private static final int 		INVENTORY_ITEM_SPACE = 4;
+	private static final int 		NB_SLOTS_MAX = 10;
 
 	private WorldArea				_area;
 	private int						_line;
@@ -76,8 +79,6 @@ public class PanelInfo extends UserSubInterface {
 	private FrameLayout 			_itemAction;
 	private TextView 				_itemProduceName;
 	private ButtonView			 	_itemProduceIcon;
-	private TextView 				_itemSlots;
-	private TextView 				_itemUsed;
 	private FrameLayout 			_layoutStorage;
 	private FrameLayout 			_layoutEffects;
 	private TextView[] 				_itemEffects;
@@ -91,28 +92,50 @@ public class PanelInfo extends UserSubInterface {
 	private CheckBoxView 			_cbConsomable;
 	private CheckBoxView 			_cbGarbage;
 	private ItemInfo				_itemInfo;
-	private WorldResource _resource;
-	private FrameLayout _itemActionProduce;
-	private FrameLayout _layoutItemProduce;
-	private FrameLayout _layoutStorageSimpleFilter;
+	private WorldResource 			_resource;
+	private FrameLayout 			_itemActionProduce;
+	private FrameLayout 			_layoutItemProduce;
+	private FrameLayout 			_layoutStorageSimpleFilter;
+	private FrameLayout _layoutSlot;
+	private TextView _lbSlot;
+	private LinkView[] _lbSlots;
 
 	public PanelInfo(RenderWindow app, UserInterface ui) throws IOException {
 		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), ui);
 
-		setBackgroundColor(new Color(0, 0, 0, 150));
-
 		_lbRoom = new TextView(null);
 		_lbRoom.setPosition(200, 40);
-		_lbRoom.setCharacterSize(22);
+		_lbRoom.setCharacterSize(FONT_SIZE_TITLE);
 		addView(_lbRoom);
 
 		createAreaInfoView(20, 4);
 		createItemInfoView(20, 4);
 		createGatherView();
+		createSlotsView(20, 660);
 		createMiningView();
 		createItemActionView();
 		createEffectsView(20, 200);
 		createViewStorage(20, 400);
+	}
+
+	private void createSlotsView(int x, int y) {
+		_layoutSlot = new FrameLayout(new Vector2f(100, 100));
+		_layoutSlot.setPosition(x, y);
+		addView(_layoutSlot);
+		
+		_lbSlot = new TextView();
+		_lbSlot.setCharacterSize(FONT_SIZE_TITLE);
+		_lbSlot.setColor(COLOR_LABEL);
+		_layoutSlot.addView(_lbSlot);
+		
+		_lbSlots = new LinkView[NB_SLOTS_MAX];
+		for (int i = 0; i < NB_SLOTS_MAX; i++) {
+			_lbSlots[i] = new LinkView();
+			_lbSlots[i].setCharacterSize(FONT_SIZE);
+			_lbSlots[i].setPosition(0, 34 + i * LINE_HEIGHT);
+			_lbSlots[i].setColor(COLOR_TEXT);
+			_layoutSlot.addView(_lbSlots[i]);
+		}
 	}
 
 	private void createStorageFilterAdvancedView(int x, int y) {
@@ -270,22 +293,22 @@ public class PanelInfo extends UserSubInterface {
 	private void createEffectsView(int x, int y) {
 		_layoutEffects = new FrameLayout(new Vector2f(FRAME_WIDTH, 80));
 		_layoutEffects.setPosition(x, y);
+		addView(_layoutEffects);
 
 		TextView lbEffect = new TextView(null);
-		lbEffect.setPosition(x + 10, y + 10);
-		lbEffect.setCharacterSize(16);
+		lbEffect.setPosition(0, 0);
+		lbEffect.setCharacterSize(FONT_SIZE_TITLE);
 		lbEffect.setString(Strings.LB_EFFECTS);
 		_layoutEffects.addView(lbEffect);
 
 		_itemEffects = new TextView[10];
 		for (int i = 0; i < 10; i++) {
 			_itemEffects[i] = new TextView(null);
-			_itemEffects[i].setPosition(x + 24, y + 34 + i * 20);
-			_itemEffects[i].setCharacterSize(12);
+			_itemEffects[i].setPosition(0, 34 + i * LINE_HEIGHT);
+			_itemEffects[i].setCharacterSize(FONT_SIZE);
 			_layoutEffects.addView(_itemEffects[i]);
 		}
 
-		_layoutItem.addView(_layoutEffects);
 	}
 
 	private void createItemInfoView(int x, int y) {
@@ -294,38 +317,28 @@ public class PanelInfo extends UserSubInterface {
 
 		_itemName = new TextView(null);
 		_itemName.setPosition(0, 0);
-		_itemName.setCharacterSize(22);
+		_itemName.setCharacterSize(FONT_SIZE_TITLE);
 		_layoutItem.addView(_itemName);
 
 		_itemCategory = new TextView(null);
 		_itemCategory.setPosition(0, 28);
-		_itemCategory.setCharacterSize(14);
+		_itemCategory.setCharacterSize(FONT_SIZE);
 		_layoutItem.addView(_itemCategory);
 
 		_itemMatter = new TextView(null);
 		_itemMatter.setPosition(0, 60);
-		_itemMatter.setCharacterSize(14);
+		_itemMatter.setCharacterSize(FONT_SIZE);
 		_layoutItem.addView(_itemMatter);
 
 		_itemPower = new TextView(null);
 		_itemPower.setPosition(0, 80);
-		_itemPower.setCharacterSize(14);
+		_itemPower.setCharacterSize(FONT_SIZE);
 		_layoutItem.addView(_itemPower);
 
 		_itemOwner = new TextView(null);
 		_itemOwner.setPosition(0, 100);
-		_itemOwner.setCharacterSize(14);
+		_itemOwner.setCharacterSize(FONT_SIZE);
 		_layoutItem.addView(_itemOwner);
-
-		_itemSlots = new TextView(null);
-		_itemSlots.setPosition(0, 120);
-		_itemSlots.setCharacterSize(14);
-		_layoutItem.addView(_itemSlots);
-
-		_itemUsed = new TextView(null);
-		_itemUsed.setPosition(0, 140);
-		_itemUsed.setCharacterSize(14);
-		_layoutItem.addView(_itemUsed);
 
 		_itemIcon = new ImageView();
 		_layoutItem.addView(_itemIcon);
@@ -339,22 +352,22 @@ public class PanelInfo extends UserSubInterface {
 
 		_areaName = new TextView(null);
 		_areaName.setPosition(0, 0);
-		_areaName.setCharacterSize(22);
+		_areaName.setCharacterSize(FONT_SIZE_TITLE);
 		_layoutArea.addView(_areaName);
 
 		_areaPos= new TextView(null);
 		_areaPos.setPosition(FRAME_WIDTH - 100, 0);
-		_areaPos.setCharacterSize(14);
+		_areaPos.setCharacterSize(FONT_SIZE);
 		_layoutArea.addView(_areaPos);
 
 		_areaCategory = new TextView(null);
 		_areaCategory.setPosition(0, 28);
-		_areaCategory.setCharacterSize(14);
+		_areaCategory.setCharacterSize(FONT_SIZE);
 		_layoutArea.addView(_areaCategory);
 
 		_areaLight = new TextView(null);
 		_areaLight.setPosition(0, 28);
-		_areaLight.setCharacterSize(14);
+		_areaLight.setCharacterSize(FONT_SIZE);
 		_layoutArea.addView(_areaLight);
 
 		_areaIcon = new ImageView();
@@ -402,7 +415,7 @@ public class PanelInfo extends UserSubInterface {
 
 		_itemGatherProduce = new TextView(new Vector2f(10, 10));
 		_itemGatherProduce.setPosition(32, 28);
-		_itemGatherProduce.setCharacterSize(14);
+		_itemGatherProduce.setCharacterSize(FONT_SIZE);
 		_itemGather.addView(_itemGatherProduce);
 
 		_itemGatherIcon = new ButtonView(new Vector2f(32, 32));
@@ -423,7 +436,7 @@ public class PanelInfo extends UserSubInterface {
 
 		_itemMineProduce = new TextView(new Vector2f(10, 10));
 		_itemMineProduce.setPosition(32, 28);
-		_itemMineProduce.setCharacterSize(14);
+		_itemMineProduce.setCharacterSize(FONT_SIZE);
 		_itemMine.addView(_itemMineProduce);
 
 		_itemMineIcon = new ButtonView(new Vector2f(32, 32));
@@ -463,6 +476,11 @@ public class PanelInfo extends UserSubInterface {
 
 		if (area.getItem() != null) {
 			displayItem(area.getItem());
+			return;
+		}
+
+		if (area.getStructure() != null) {
+			displayItem(area.getStructure());
 			return;
 		}
 
@@ -538,44 +556,44 @@ public class PanelInfo extends UserSubInterface {
 	private void  setStructure(final StructureItem structure) {
 		_structure = structure;
 
-		if (_structureOptions != null) {
-			List<TextView> texts = _structureOptions.getOptions();
-			for (TextView text: texts) {
-				text.setOnClickListener(null);
-				removeView(text);
-			}
-		}
+//		if (_structureOptions != null) {
+//			List<TextView> texts = _structureOptions.getOptions();
+//			for (TextView text: texts) {
+//				text.setOnClickListener(null);
+//				removeView(text);
+//			}
+//		}
 
-		if (structure != null) {
-			_areaName.setString(structure.getLabel());
-			_areaPos.setString("(" + structure.getX() + "x" + structure.getY() + ")");
-
-			// TODO
-			if (structure.getName().equals("base.door")) {
-				_structureOptions = new PanelInfoItemOptions(20, 100);
-				addView(_structureOptions.add("Automatic opening", new OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						structure.setMode(0);
-						structure.setSolid(false);
-					}
-				}));
-				addView(_structureOptions.add("Still open", new OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						structure.setMode(2);
-						structure.setSolid(false);
-					}
-				}));
-				addView(_structureOptions.add("Locked", new OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						structure.setMode(1);
-						structure.setSolid(true);
-					}
-				}));
-			}
-		}
+//		if (structure != null) {
+//			_areaName.setString(structure.getLabel());
+//			_areaPos.setString("(" + structure.getX() + "x" + structure.getY() + ")");
+//
+//			// TODO
+//			if (structure.getName().equals("base.door")) {
+//				_structureOptions = new PanelInfoItemOptions(20, 100);
+//				addView(_structureOptions.add("Automatic opening", new OnClickListener() {
+//					@Override
+//					public void onClick(View view) {
+//						structure.setMode(0);
+//						structure.setSolid(false);
+//					}
+//				}));
+//				addView(_structureOptions.add("Still open", new OnClickListener() {
+//					@Override
+//					public void onClick(View view) {
+//						structure.setMode(2);
+//						structure.setSolid(false);
+//					}
+//				}));
+//				addView(_structureOptions.add("Locked", new OnClickListener() {
+//					@Override
+//					public void onClick(View view) {
+//						structure.setMode(1);
+//						structure.setSolid(true);
+//					}
+//				}));
+//			}
+//		}
 	}
 	
 	public void displayItemInfo(ItemInfo itemInfo) {
@@ -639,12 +657,12 @@ public class PanelInfo extends UserSubInterface {
 			_layoutEffects.setVisible(true);
 			ItemInfoEffects effects = action.effects;
 			int line = 0;
-			if (effects.drink > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_DRINK + ": " + (effects.drink > 0 ? "+" : "") + effects.drink); }
-			if (effects.energy > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_ENERGY + ": " + (effects.energy> 0 ? "+" : "") + effects.energy); }
-			if (effects.food > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_FOOD + ": " + (effects.food > 0 ? "+" : "") + effects.food); }
-			if (effects.hapiness > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_HAPINESS + ": " + (effects.hapiness > 0 ? "+" : "") + effects.hapiness); }
-			if (effects.health > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_HEALTH + ": " + (effects.health > 0 ? "+" : "") + effects.health); }
-			if (effects.relation > 0) { _itemEffects[line++].setString(Strings.LB_EFFECT_RELATION + ": " + (effects.relation > 0 ? "+" : "") + effects.relation); }
+			if (effects.drink > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_DRINK, (effects.drink > 0 ? "+" : "") + effects.drink, NB_COLUMNS); }
+			if (effects.energy > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_ENERGY, (effects.energy> 0 ? "+" : "") + effects.energy, NB_COLUMNS); }
+			if (effects.food > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_FOOD, (effects.food > 0 ? "+" : "") + effects.food, NB_COLUMNS); }
+			if (effects.hapiness > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_HAPINESS, (effects.hapiness > 0 ? "+" : "") + effects.hapiness, NB_COLUMNS); }
+			if (effects.health > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_HEALTH, (effects.health > 0 ? "+" : "") + effects.health, NB_COLUMNS); }
+			if (effects.relation > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_RELATION, (effects.relation > 0 ? "+" : "") + effects.relation, NB_COLUMNS); }
 			for (int i = line; i < 10; i++) {
 				_itemEffects[line++].setString("");
 			}
@@ -697,55 +715,71 @@ public class PanelInfo extends UserSubInterface {
 
 	@Override
 	public void onRefresh(int frame) {
-		BaseItem item = _area != null ? _area.getItem() : null;
-		if (item == null && _area != null) {
-			item = _area.getRessource();
-		}
-
-		//		// TODO
-		//		_itemGather.refresh(app);
-		//		_itemMine.refresh(app);
-
-		if (item != null) {
-
-			_itemSlots.setString("Free slots: " + item.getNbFreeSlots());
-			_itemUsed.setString("Used: " + item.getTotalUse());
-
-			if (item.isStorage()) {
-				StorageItem storage = ((StorageItem)item);
-				_itemStorage.setString(StringUtils.getDashedString("Stored", String.valueOf(storage.getNbItems()), NB_COLUMNS_TITLE));
-				Map<ItemInfo, Integer> inventoryInfo = new HashMap<ItemInfo, Integer>();
-				for (BaseItem storredItem: storage.getItems()) {
-					ItemInfo storedInfo = storredItem.getInfo();
-					if (inventoryInfo.containsKey(storedInfo)) {
-						inventoryInfo.put(storedInfo, inventoryInfo.get(storedInfo) + 1);
-					} else {
-						inventoryInfo.put(storedInfo, 1);
-					}
-				}
-				// Hide old entries
-				for (int i = 0; i < 42; i++) {
-					_lbCarry[i].setVisible(false);
-					_lbCarryCount[i].setVisible(false);
-				}
-				// Set new entries
-				int i = 0;
-				for (ItemInfo storedItemInfo: inventoryInfo.keySet()) {
-					int count = inventoryInfo.get(storedItemInfo);
-					
-					_lbCarry[i].setVisible(true);
-					_lbCarry[i].setImage(SpriteManager.getInstance().getIcon(storedItemInfo));
-//					_lbCarry[i].setOnClickListener(new OnClickListener() {
-//						@Override
-//						public void onClick(View view) {
-//							setItem(storedItemInfo);
-//						}
-//					});
-					_lbCarryCount[i].setVisible(true);
-					_lbCarryCount[i].setString("x"+count);
-					i++;
-				}
+		if (_item != null) {
+			if (_item.isUsable()) {
+				refreshSlots(_item);
 			}
+			if (_item.isStorage()) {
+				refreshStorage((StorageItem)_item);
+			}
+		}
+	}
+
+	private void refreshStorage(StorageItem storage) {
+		_itemStorage.setString(StringUtils.getDashedString("Contains", String.valueOf(storage.getNbItems()), NB_COLUMNS_TITLE));
+		Map<ItemInfo, Integer> inventoryInfo = new HashMap<ItemInfo, Integer>();
+		for (BaseItem storredItem: storage.getItems()) {
+			ItemInfo storedInfo = storredItem.getInfo();
+			if (inventoryInfo.containsKey(storedInfo)) {
+				inventoryInfo.put(storedInfo, inventoryInfo.get(storedInfo) + 1);
+			} else {
+				inventoryInfo.put(storedInfo, 1);
+			}
+		}
+		// Hide old entries
+		for (int i = 0; i < 42; i++) {
+			_lbCarry[i].setVisible(false);
+			_lbCarryCount[i].setVisible(false);
+		}
+		// Set new entries
+		int i = 0;
+		for (ItemInfo storedItemInfo: inventoryInfo.keySet()) {
+			int count = inventoryInfo.get(storedItemInfo);
+			
+			_lbCarry[i].setVisible(true);
+			_lbCarry[i].setImage(SpriteManager.getInstance().getIcon(storedItemInfo));
+			_lbCarryCount[i].setVisible(true);
+			_lbCarryCount[i].setString("x"+count);
+			i++;
+		}
+	}
+
+	private void refreshSlots(BaseItem item) {
+		List<ItemSlot> slots = item.getSlots();
+		int nbSlot = item.getNbSlots();
+		int usedSlot = item.getNbSlots() - item.getNbFreeSlots();
+		_lbSlot.setString(StringUtils.getDashedString("IN USE", usedSlot + "/" + nbSlot, NB_COLUMNS_TITLE));
+		
+		int i = 0;
+		for (ItemSlot slot: slots) {
+			Job job = slot.getJob();
+			if (i < NB_SLOTS_MAX && job != null) {
+				final Character character = job.getCharacter();
+				String left = character != null ? character.getName() : "used";
+				String right = job.getFormatedDuration();
+				_lbSlots[i].setVisible(true);
+				_lbSlots[i].setDashedString(left, right, NB_COLUMNS);
+				_lbSlots[i].setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						_ui.select(character);
+					}
+				});
+				i++;
+			}
+		}
+		for (; i < NB_SLOTS_MAX; i++) {
+			_lbSlots[i].setVisible(false);
 		}
 	}
 
@@ -766,6 +800,11 @@ public class PanelInfo extends UserSubInterface {
 		_itemAccept.setVisible(false);
 		_itemAction.setVisible(false);
 		_layoutItemProduce.setVisible(false);
+	}
+
+	public void select(BaseItem item) {
+		clean();
+		displayItem(item);
 	}
 
 }
