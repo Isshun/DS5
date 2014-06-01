@@ -670,10 +670,14 @@ public class PanelInfo extends UserSubInterface {
 	}
 
 	public void displayItem(final BaseItem item) {
+		if (_item != null) {
+			_item.setSelected(false);
+		}
 		_item = item;
 		if (_item == null) {
 			return;
 		}
+		_item.setSelected(true);
 		
 		_layoutItem.setVisible(true);
 

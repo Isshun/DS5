@@ -14,6 +14,7 @@ import alone.in.deepspace.util.Constant;
 public class CharacterRenderer implements IRenderer {
 	private List<Character> _characters;
 	private SpriteManager 	_spriteManager;
+	private int _frame;
 
 	public CharacterRenderer(List<Character> characters) {
 		_characters = characters;
@@ -55,12 +56,20 @@ public class CharacterRenderer implements IRenderer {
 			sprite.setPosition(posX, posY + (c.isSleeping() ? 20 : 0));
 			app.draw(sprite, render);
 						
-//			// Selection
-//			if (c.getSelected()) {
+			// Selection
+			if (c.getSelected()) {
+				sprite = _spriteManager.getSelector(_frame);
+				sprite.setPosition(posX - 2, posY + (c.isSleeping() ? 20 : 0) - 2);
+				app.draw(sprite, render);
+//
 //				_selection.setPosition(posX, posY);
 //				app.draw(_selection, render);
-//			}
+			}
 		}
+	}
+
+	public void onRefresh(int frame) {
+		_frame = frame;
 	}
 
 }

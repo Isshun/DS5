@@ -103,6 +103,7 @@ public class BaseItem {
 	private int			_nbFrame;
 	private int 		_animFrame;
 	private int 		_animFrameInterval;
+	private boolean _selected;
 	
 	public BaseItem(ItemInfo info) {
 		init(info, ++_maxId);
@@ -364,5 +365,13 @@ public class BaseItem {
 
 	public boolean isUsable() {
 		return _info.onAction != null;
+	}
+
+	public void setSelected(boolean selected) {
+		_selected = selected;
+	}
+
+	public boolean isSelected() {
+		return _selected;
 	}
 }

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.ConstTexture;
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.Sprite;
@@ -23,6 +22,8 @@ import alone.in.deepspace.util.Log;
 import alone.in.deepspace.util.ObjectPool;
 
 public class SpriteManager {
+	private static final int NB_SELECTOR_TILE = 4;
+	private static final int NB_ITEM_SELECTOR_TILE = 2;
 	private static int 				_count;
 	private static SpriteManager 	_self;
 	private Map<Integer, Sprite>	_spritesCharacters;
@@ -38,6 +39,10 @@ public class SpriteManager {
 			0, 0, 1, 3, 2, 2, 1, 3, 2, 1,
 			3, 1, 1, 0, 3, 2, 0, 1, 0, 1};
 	private Texture _textureNeedBar;
+	private Texture _textureSelector;
+	private Sprite[] _selectors;
+	private Texture _textureItemSelector;
+	private Sprite[] _itemSelectors;
 
 	private SpriteManager() throws IOException {
 		_sprites = new HashMap<Long, Sprite>();
@@ -64,7 +69,22 @@ public class SpriteManager {
 		_textureNeedBar = new Texture();
 		_textureNeedBar.loadFromFile((new File("res/Tilesets/needbar.png")).toPath());
 		_textureNeedBar.setRepeated(true);
-		//_textureNeedBar.setSmooth(true);
+
+		_textureSelector = new Texture();
+		_textureSelector.loadFromFile((new File("res/Tilesets/selector.png")).toPath());
+		_selectors = new Sprite[NB_SELECTOR_TILE];
+		for (int i = 0; i < NB_SELECTOR_TILE; i++) {
+			_selectors[i] = new Sprite(_textureSelector);
+			_selectors[i].setTextureRect(new IntRect(i * 34, 0, 34, 48));
+		}
+
+		_textureItemSelector = new Texture();
+		_textureItemSelector.loadFromFile((new File("res/Tilesets/item_selector_2.png")).toPath());
+		_itemSelectors = new Sprite[NB_ITEM_SELECTOR_TILE];
+		for (int i = 0; i < NB_ITEM_SELECTOR_TILE; i++) {
+			_itemSelectors[i] = new Sprite(_textureItemSelector);
+			_itemSelectors[i].setTextureRect(new IntRect(i * 32, 0, 32, 32));
+		}
 
 		_texture = new Texture[8];
 
@@ -514,6 +534,14 @@ public class SpriteManager {
 
 	public Texture getTexture() {
 		return _textureNeedBar;
+	}
+
+	public Sprite getSelector(int tile) {
+		return _selectors[tile % NB_SELECTOR_TILE];
+	}
+
+	public Sprite getSelector(BaseItem item, int frame) {
+		return _itemSelectors[frame % NB_ITEM_SELECTOR_TILE];
 	}
 
 }

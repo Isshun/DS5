@@ -39,6 +39,8 @@ public class WorldRenderer implements IRenderer {
 
 	private Set<Vector2i> 			_changed;
 	private WorldManager 			_worldMap;
+	private BaseItem _itemSelected;
+	private int _frame;
 
 	public WorldRenderer(SpriteManager spriteManager, UserInterface ui) throws IOException, TextureCreationException {
 		_ui = ui;
@@ -59,6 +61,7 @@ public class WorldRenderer implements IRenderer {
 	}
 
 	public void onRefresh(int frame) {
+		_frame = frame;
 		int fromX = Math.max(_ui.getRelativePosXMin(0)-1, 0);
 		int fromY = Math.max(_ui.getRelativePosYMin(0)-1, 0);
 		int toX = Math.min(_ui.getRelativePosXMax(Constant.WINDOW_WIDTH)+1, _worldMap.getWidth());
@@ -81,7 +84,7 @@ public class WorldRenderer implements IRenderer {
 			_hasChanged = false;
 		}
 		
-		refreshItems(fromX, fromY, toX, toY);
+		refreshItems(frame, fromX, fromY, toX, toY);
 	}
 	
 	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
@@ -91,6 +94,12 @@ public class WorldRenderer implements IRenderer {
 		Clock display_timer = new Clock();
 		Sprite sp = new Sprite(_textureCache.getTexture());
 		app.draw(sp, render);
+
+//		if (_itemSelected != null) {
+//			Sprite sprite = _spriteManager.getSelector(_itemSelected, _frame);
+//			sprite.setPosition(_itemSelected.getX() * Constant.TILE_WIDTH, _itemSelected.getY() * Constant.TILE_HEIGHT);
+//			app.draw(sprite, render);
+//		}
 
 		long elapsed = display_timer.getElapsedTime().asMilliseconds();
 		if (elapsed > 3)
@@ -413,7 +422,7 @@ public class WorldRenderer implements IRenderer {
 		return sprite;
 	}
 
-	void	refreshItems(int fromX, int fromY, int toX, int toY) {
+	void	refreshItems(int frame, int fromX, int fromY, int toX, int toY) {
 		int offsetY = 0;
 		int offsetX = 0;
 
@@ -429,6 +438,9 @@ public class WorldRenderer implements IRenderer {
 							sprite.setPosition(x * Constant.TILE_WIDTH + offsetX, y * Constant.TILE_HEIGHT + offsetY);
 						}
 						_textureCache.draw(sprite);
+					}
+					if (item.isSelected()) {
+						_itemSelected = item;
 					}
 				}
 			}

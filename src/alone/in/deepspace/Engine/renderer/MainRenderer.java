@@ -57,6 +57,7 @@ public class MainRenderer {
 
 	public void refresh(int frame) {
 		_worldRenderer.onRefresh(frame);
+		_characterRenderer.onRefresh(frame);
 	}
 	
 	public void draw(RenderWindow app, double animProgress, int renderTime) {

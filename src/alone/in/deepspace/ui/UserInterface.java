@@ -615,16 +615,16 @@ public class UserInterface {
 		if (_currentPanel != null && _currentPanel.catchClick(x, y)) {
 			return;
 		}
-		
-		_panelCharacter.select(null);
 
 		// Select character
 		if (_interaction.getMode() == UserInteraction.Mode.NONE) {// && _menu.getCode() == UserInterfaceMenu.CODE_MAIN) {
-//			Character c = _characteres.getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
-			Character c = null;
-			if (c != null) {
-				setCharacter(c);
-			} else {
+			Character c = _characteres.getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
+			if (c != null && c != _panelCharacter.getCharacter()) {
+				select(c);
+			}
+			else  {
+				_panelCharacter.select(null);
+
 				WorldArea a = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
 				if (a != null) {
 					_panelInfo.select(a);
