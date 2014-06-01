@@ -71,7 +71,8 @@ public class PathManager {
 		}
 	}
 
-	private static final int 			THREAD_POOL_SIZE = 4;
+	// TODO: sharing nodes pool
+	private static final int 			THREAD_POOL_SIZE = 1;
 	protected static final int 			REGION_SIZE = 10;
 
 	private static PathManager 			sSelf;

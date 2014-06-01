@@ -23,7 +23,7 @@ public class Viewport {
 		_posY = - Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT / 2;
 		_lastPosX = 0;
 		_lastPosY = 0;
-		_width = Constant.WINDOW_WIDTH - Constant.UI_WIDTH;
+		_width = Constant.WINDOW_WIDTH - Constant.UI_WIDTH - Constant.PANEL_WIDTH;
 		_height = Constant.WINDOW_HEIGHT - Constant.UI_HEIGHT;
 		_toScale = 0;
 	}

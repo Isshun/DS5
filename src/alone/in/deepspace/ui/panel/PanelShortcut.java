@@ -3,9 +3,13 @@ package alone.in.deepspace.ui.panel;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.engine.Viewport;
+import alone.in.deepspace.engine.renderer.MiniMapRenderer;
+import alone.in.deepspace.engine.ui.ColorView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
@@ -16,8 +20,8 @@ import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;
 
 public class PanelShortcut extends UserSubInterface {
-	private static final int FRAME_WIDTH = Constant.WINDOW_WIDTH;
-	private static final int FRAME_HEIGHT = 120;
+	private static final int FRAME_WIDTH = Constant.PANEL_WIDTH;
+	private static final int FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	
 	private static class PanelEntry {
 		Mode		mode;
@@ -42,22 +46,28 @@ public class PanelShortcut extends UserSubInterface {
 			new PanelEntry("   [ LAN]  ", 		"P",	4, Mode.PLAN),
 			new PanelEntry("[ ARETAKER] ", 		"C",	1, Mode.PLAN)
 	};
-	
-	public PanelShortcut(RenderWindow app, final UserInterface userInterface) throws IOException {
-		super(app, 0, new Vector2f(0, Constant.WINDOW_HEIGHT - FRAME_HEIGHT), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
 
-		setBackgroundColor(new Color(18, 28, 30));
+	private MiniMapRenderer	_miniMapRenderer;
+	
+	public PanelShortcut(RenderWindow app, final UserInterface userInterface, Viewport viewport) throws IOException {
+		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
+
+		_miniMapRenderer = new MiniMapRenderer(viewport);
 		
-		int posX = 10;
+//		addBorder(Constant.PANEL_WIDTH - 48, 200);
+
+		int posX = 24;
+		int posY = 244;
+		int i = 0;
 		for (PanelEntry entry: _entries) {
 			final PanelEntry e = entry;
 			
-			TextView label = new TextView(new Vector2f(160, 36));
+			TextView label = new TextView(new Vector2f(175, 36));
 			label.setColor(new Color(120, 255, 255));
-			label.setPosition(new Vector2f(posX, 6));
+			label.setPosition(new Vector2f(posX, posY));
 			label.setString(e.label);
 			label.setCharacterSize(20);
-			label.setPadding(3, 8);
+			label.setPadding(3, 16);
 			label.setBackgroundColor(new Color(29, 85, 96, 100));
 			label.setOnFocusListener(new OnFocusListener() {
 				@Override
@@ -80,14 +90,56 @@ public class PanelShortcut extends UserSubInterface {
 			
 			TextView shortcut = new TextView(new Vector2f(160, 36));
 			shortcut.setColor(new Color(176, 205, 53));
-			shortcut.setPosition(new Vector2f(posX + (int)(e.shortcutPos * 11.8), 6));
+			shortcut.setPosition(new Vector2f(posX + (int)(e.shortcutPos * 11.8), posY));
 			shortcut.setString(e.shortcut);
 			shortcut.setCharacterSize(20);
-			shortcut.setPadding(3, 8);
+			shortcut.setPadding(3, 16);
 			shortcut.setStyle(TextView.UNDERLINED);
 			addView(shortcut);
 			
-			posX += 170;
+			if (i % 2 == 0) {
+				posX += 197;
+			} else {
+				posX = 24;
+				posY += 62;
+			}
+			i++;
 		}
+	}
+	
+	private void addBorder(int width, int height) {
+		// Left
+		View border = new ColorView(new Vector2f(4, height));
+		border.setBackgroundColor(new Color(37, 70, 72));
+		border.setPosition(new Vector2f(24, 20));
+		addView(border);
+
+		// Right
+		border = new ColorView(new Vector2f(4, height));
+		border.setBackgroundColor(new Color(37, 70, 72));
+		border.setPosition(new Vector2f(24 + width - 4, 20));
+		addView(border);
+
+		// Top
+		border = new ColorView(new Vector2f(width, 4));
+		border.setBackgroundColor(new Color(37, 70, 72));
+		border.setPosition(new Vector2f(24, 20));
+		addView(border);
+
+		// Bottom
+		border = new ColorView(new Vector2f(width, 4));
+		border.setBackgroundColor(new Color(37, 70, 72));
+		border.setPosition(new Vector2f(24, 20 + height - 4));
+		addView(border);
+	}
+
+	@Override
+	public void onDraw(RenderWindow app, RenderStates render) {
+		_miniMapRenderer.onDraw(app, render, 0);
+	}
+	
+	@Override
+	protected void onRefresh(int update) {
+		_miniMapRenderer.onRefresh(update);
 	}
 }

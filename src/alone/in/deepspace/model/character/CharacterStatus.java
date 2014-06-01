@@ -5,8 +5,8 @@ import org.jsfml.graphics.Color;
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.ui.panel.ToolTips;
-import alone.in.deepspace.ui.panel.ToolTips.ToolTip;
+import alone.in.deepspace.model.ToolTips;
+import alone.in.deepspace.model.ToolTips.ToolTip;
 import alone.in.deepspace.util.Constant;
 
 public class CharacterStatus {
@@ -19,9 +19,10 @@ public class CharacterStatus {
 	private Character 		_character;
 	private CharacterNeeds 	_needs;
 	private Color 			_color;
-	private String _thoughts;
-	private String _thoughtsShort;
-	private int _level;
+	private String 			_thoughts;
+	private String 			_thoughtsShort;
+	private int 			_level;
+	private ToolTip 		_tooltip;
 
 	public CharacterStatus(Character character) {
 		_character = character;
@@ -44,18 +45,22 @@ public class CharacterStatus {
 	}
 	
 	public void refreshThoughts() {
+		_tooltip = null;
+		
 		if (_needs.isSleeping()) {
 			// TODO
 			BaseItem item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
 			if (item != null && item.isSleepingItem()) {
 				_color = COLOR_GOOD;
 				_level = 0;
+				_tooltip = ToolTips.STATE_SLEEPING;
 				_thoughts = Strings.CHARACTER_SAY_SLEEP;
 				_thoughtsShort = Strings.THOUGHTS_GOOD;
 				return;
 			} else {
 				_color = COLOR_BAD;
 				_level = 2;
+				_tooltip = ToolTips.STATE_EXHAUSTED;
 				_thoughts = Strings.CHARACTER_SAY_NOWHERE_TO_SLEEP;
 				_thoughtsShort = Strings.THOUGHTS_BAD;
 				return;
@@ -64,6 +69,7 @@ public class CharacterStatus {
 		if (_needs.isTired()) {
 			_color = COLOR_MEDIUM;
 			_level = 1;
+			_tooltip = ToolTips.STATE_TIRED;
 			_thoughts = Strings.CHARACTER_SAY_TIRED;
 			_thoughtsShort = Strings.THOUGHTS_MEDIUM;
 			return;
@@ -71,6 +77,7 @@ public class CharacterStatus {
 		if (_needs.isStarved()) {
 			_color = COLOR_BAD;
 			_level = 2;
+			_tooltip = ToolTips.STATE_STARVING;
 			_thoughts = Strings.CHARACTER_SAY_STARVING;
 			_thoughtsShort = Strings.THOUGHTS_BAD;
 			return;
@@ -78,6 +85,7 @@ public class CharacterStatus {
 		if (_needs.isHungry()) {
 			_color = COLOR_GOOD;
 			_level = 0;
+			_tooltip = ToolTips.STATE_HUNGER;
 			_thoughts = Strings.CHARACTER_EVERYTHINGS_GOES_RIGHT;
 			_thoughtsShort = Strings.THOUGHTS_GOOD;
 			return;
@@ -99,6 +107,7 @@ public class CharacterStatus {
 		if (_needs.isLonely()) {
 			_level = 1;
 			_color = COLOR_MEDIUM;
+			_tooltip = ToolTips.STATE_FEELING_BAD;
 			_thoughts = Strings.CHARACTER_SAY_LONELY;
 			_thoughtsShort = Strings.THOUGHTS_MEDIUM;
 			return;
@@ -106,6 +115,7 @@ public class CharacterStatus {
 		
 		_level = 0;
 		_color = COLOR_GOOD;
+		_tooltip = ToolTips.STATE_OK;
 		_thoughts = Strings.CHARACTER_EVERYTHINGS_GOES_RIGHT;
 		_thoughtsShort = Strings.THOUGHTS_GOOD;
 	}
@@ -119,7 +129,7 @@ public class CharacterStatus {
 	}
 
 	public ToolTip getTip() {
-		return ToolTips.STATE_STARVING;
+		return _tooltip;
 	}
 
 }

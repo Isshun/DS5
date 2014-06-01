@@ -1,4 +1,4 @@
-package alone.in.deepspace.ui;
+package alone.in.deepspace.ui.panel;
 
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
@@ -7,10 +7,10 @@ import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
-import alone.in.deepspace.ui.panel.LinkView;
-import alone.in.deepspace.ui.panel.ToolTips;
-import alone.in.deepspace.ui.panel.ToolTips.ToolTip;
-import alone.in.deepspace.ui.panel.ToolTips.ToolTipCategory;
+import alone.in.deepspace.model.ToolTips;
+import alone.in.deepspace.model.ToolTips.ToolTip;
+import alone.in.deepspace.model.ToolTips.ToolTipCategory;
+import alone.in.deepspace.ui.UserSubInterface;
 
 public class PanelTooltip extends UserSubInterface {
 
@@ -39,11 +39,11 @@ public class PanelTooltip extends UserSubInterface {
 		addView(_lbContent);
 		
 		FrameLayout layoutCategory = new FrameLayout(null);
-		layoutCategory.setPosition(20, FRAME_HEIGHT - 60);
+		layoutCategory.setPosition(20, FRAME_HEIGHT - 66);
 		addView(layoutCategory);
 		
 		_lbCategory = new TextView(null);
-		_lbCategory.setCharacterSize(FONT_SIZE);
+		_lbCategory.setCharacterSize(FONT_SIZE_TITLE);
 		_lbCategory.setPosition(0, 0);
 		layoutCategory.addView(_lbCategory);
 		
@@ -87,10 +87,10 @@ public class PanelTooltip extends UserSubInterface {
 			int posX = 0;
 			for (ToolTip t: category.tooltips) {
 				final ToolTip ft = t;
-				_lbCategories[i].setString(t.title);
+				_lbCategories[i].setString("[" + t.title + "]");
 				_lbCategories[i].setVisible(true);
-				_lbCategories[i].setPosition(posX, 26);
-				_lbCategories[i].setSize(new Vector2f(t.title.length() * CHARACTER_WIDTH, LINE_HEIGHT));
+				_lbCategories[i].setPosition(posX, 32);
+				_lbCategories[i].setSize(new Vector2f((t.title.length() + 2) * CHARACTER_WIDTH, LINE_HEIGHT));
 				_lbCategories[i].resetPos();
 				_lbCategories[i].setOnClickListener(new OnClickListener() {
 					@Override
@@ -98,7 +98,7 @@ public class PanelTooltip extends UserSubInterface {
 						select(ft);
 					}
 				});
-				posX += t.title.length() * CHARACTER_WIDTH + 12;
+				posX += (t.title.length() + 2) * CHARACTER_WIDTH + 12;
 				i++;
 			}
 			for (; i < NB_MAX_LINK; i++) {

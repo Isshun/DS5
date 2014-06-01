@@ -21,6 +21,7 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Profession;
+import alone.in.deepspace.model.ToolTips;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.character.CharacterNeeds;
 import alone.in.deepspace.model.character.CharacterRelation;
@@ -186,9 +187,15 @@ public class PanelCharacter extends UserSubInterface {
 		addView(_lbOld);
 		posY += 20;
 
-		_lbGender = new TextView(null);
+		_lbGender = new LinkView();
 		_lbGender.setCharacterSize(FONT_SIZE_SMALL);
 		_lbGender.setColor(COLOR_TEXT);
+		_lbGender.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				_ui.select(ToolTips.GENDER);
+			}
+		});
 		_lbGender.setPosition(new Vector2f(posX, posY));
 		addView(_lbGender);
 		posY += 20;

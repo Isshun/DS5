@@ -22,6 +22,7 @@ import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.WorldArea;
+import alone.in.deepspace.model.ToolTips.ToolTip;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.ui.panel.PanelBase;
 import alone.in.deepspace.ui.panel.PanelBuild;
@@ -36,7 +37,7 @@ import alone.in.deepspace.ui.panel.PanelResource;
 import alone.in.deepspace.ui.panel.PanelRoom;
 import alone.in.deepspace.ui.panel.PanelShortcut;
 import alone.in.deepspace.ui.panel.PanelSystem;
-import alone.in.deepspace.ui.panel.ToolTips.ToolTip;
+import alone.in.deepspace.ui.panel.PanelTooltip;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Settings;
 
@@ -63,9 +64,8 @@ public class UserInterface {
 	private PanelCrew					_panelCrew;
 	private PanelBuild					_panelBuild;
 	private PanelDebug					_panelDebug;
-	private UserInterfaceMenuOperation	_uiBase;
 	private Font 						_font;
-	private PanelBase 					_panelBase;
+//	private PanelBase 					_panelBase;
 	private PanelSystem 				_panelSystem;
 	private PanelShortcut 				_panelShortcut;
 	private PanelJobs					_panelJobs;
@@ -83,7 +83,6 @@ public class UserInterface {
 	private UserSubInterface 			_currentPanel;
 
 	public enum Mode {
-		BASE,
 		INFO,
 		DEBUG,
 		BUILD,
@@ -108,7 +107,7 @@ public class UserInterface {
 		_font = new Font();
 		_font.loadFromFile((new File("res/fonts/xolonium_regular.otf")).toPath());
 
-		_panelBase = new PanelBase(app);
+//		_panelBase = new PanelBase(app);
 		_panelCharacter = new PanelCharacter(app);
 		_panelCharacter.setUI(this);
 		_panelInfo = new PanelInfo(app, this);
@@ -118,7 +117,7 @@ public class UserInterface {
 		_panelPlan = new PanelPlan(app);
 		_panelSystem = new PanelSystem(app);
 		_panelSystem.setVisible(true);
-		_panelShortcut = new PanelShortcut(app, this);
+		_panelShortcut = new PanelShortcut(app, this, _viewport);
 		_panelShortcut.setVisible(true);
 		_panelResource = new PanelResource(app);
 		_panelResource.setVisible(true);
@@ -133,10 +132,11 @@ public class UserInterface {
 		_uiSecurity = new UserInterfaceSecurity(app, 4);
 		_panelCrew = new PanelCrew(app, 0);
 		_panelCrew.setUI(this);
-		_uiBase = new UserInterfaceMenuOperation(app, 1);
 		_panelJobs = new PanelJobs(app);
 		_panelJobs.setUI(this);
 		_panelMessage.setStart(0);
+		
+		_currentPanel = _panelShortcut;
 
 		toogleMode(Mode.NONE);
 	}
@@ -183,11 +183,6 @@ public class UserInterface {
 			return;
 		}
 
-		if (_uiBase.catchClick(x, y)) {
-			_keyLeftPressed = false;
-			return;
-		}
-
 		//		if (_panelPlan.catchClick(x, y)) {
 		//			_keyLeftPressed = false;
 		//			return;
@@ -229,10 +224,9 @@ public class UserInterface {
 		if (_mode != Mode.PLAN) 		_panelPlan.setVisible(false);
 		if (_mode != Mode.DEBUG) 		_panelDebug.setVisible(false);
 		if (_mode != Mode.DEBUGITEMS)	_panelDebugItems.setVisible(false);
-		if (_mode != Mode.BASE) 		_panelBase.setVisible(false);
+		if (_mode != Mode.NONE) 		_panelShortcut.setVisible(false);
 		if (_mode != Mode.BUILD) 		_panelBuild.setVisible(false);
 		if (_mode != Mode.CREW) 		_panelCrew.setVisible(false);
-		if (_mode != Mode.BASE) 		_uiBase.setVisible(false);
 		if (_mode != Mode.TOOLTIP) 		_panelTooltip.setVisible(false);
 		if (_mode != Mode.SCIENCE) 		_uiScience.setVisible(false);
 		if (_mode != Mode.SECURITY)		_uiSecurity.setVisible(false);
@@ -247,13 +241,12 @@ public class UserInterface {
 		case PLAN: 			_currentPanel = _panelPlan; break;
 		case TOOLTIP: 		_currentPanel = _panelTooltip; break;
 		case CHARACTER: 	_currentPanel = _panelCharacter; break;
-		case BASE: 			_currentPanel = _panelBase; break;
 		case JOBS: 			_currentPanel = _panelJobs; break;
 		case CREW: 			_currentPanel = _panelCrew; break;
 		case ROOM: 			_currentPanel = _panelRoom; break;
 		case SCIENCE:		_currentPanel = _uiScience; break;
 		case SECURITY:		_currentPanel = _uiSecurity; break;
-		case NONE: 			_currentPanel = null; break;
+		case NONE: 			_currentPanel = _panelShortcut; break;
 		}
 		
 		if (_currentPanel != null) {
@@ -270,7 +263,7 @@ public class UserInterface {
 
 	public void onRefresh(int update) {
 		_panelCharacter.refresh(update);
-		_panelBase.refresh(update);
+//		_panelBase.refresh(update);
 		_panelInfo.refresh(update);
 		_panelPlan.refresh(update);
 		_panelDebug.refresh(update);
@@ -282,28 +275,26 @@ public class UserInterface {
 		_panelCrew.refresh(update);
 		_uiScience.refresh(update);
 		_uiSecurity.refresh(update);
-		_uiBase.refresh(update);
 		_panelBuild.refresh(update);
 		_panelJobs.refresh(update);
 		_panelTooltip.refresh(update);
 	}
 	
 	public void onDraw(int frame, int update, int renderTime) {
+		_panelShortcut.draw(_app, null);
 		_panelCharacter.draw(_app, null);
-		_panelBase.draw(_app, null);
+//		_panelBase.draw(_app, null);
 		_panelInfo.draw(_app, null);
 		_panelPlan.draw(_app, null);
 		_panelDebug.draw(_app, null);
 		_panelDebugItems.draw(_app, null);
 		_panelSystem.draw(_app, null);
-		_panelShortcut.draw(_app, null);
 		_panelResource.draw(_app, null);
 		_panelRoom.draw(_app, null);
 		_panelMessage.setFrame(frame);
 		_panelCrew.draw(_app, null);
 		_uiScience.draw(_app, null);
 		_uiSecurity.draw(_app, null);
-		_uiBase.draw(_app, null);
 		_panelBuild.draw(_app, null);
 		_panelJobs.draw(_app, null);
 		_panelTooltip.draw(_app, null);
@@ -374,10 +365,6 @@ public class UserInterface {
 		}
 
 		if (_panelCrew.checkKey(event.asKeyEvent().key)) {
-			return true;
-		}
-
-		if (_uiBase.checkKey(event.asKeyEvent().key)) {
 			return true;
 		}
 
@@ -456,9 +443,6 @@ public class UserInterface {
 		}
 		else if (event.asKeyEvent().key == Keyboard.Key.E || event.asKeyEvent().key == Keyboard.Key.B) {
 			toogleMode(Mode.BUILD);
-		}
-		else if (event.asKeyEvent().key == Keyboard.Key.O) {
-			_uiBase.toogleTile();
 		}
 		else if (event.asKeyEvent().key == Keyboard.Key.R) {
 			toogleMode(Mode.ROOM);
@@ -633,7 +617,6 @@ public class UserInterface {
 		}
 		
 		_panelCharacter.select(null);
-		toogleMode(Mode.BASE);
 
 		// Select character
 		if (_interaction.getMode() == UserInteraction.Mode.NONE) {// && _menu.getCode() == UserInterfaceMenu.CODE_MAIN) {
@@ -680,11 +663,15 @@ public class UserInterface {
 
 		// Cancel selected items 
 		else {
-			if (_panelCharacter.getCharacter() != null) {
-				JobManager.getInstance().addMoveJob(_panelCharacter.getCharacter(), getRelativePosX(x), getRelativePosY(y));
-				_keyRightPressed = false;
+			if (_mode == Mode.CHARACTER) {
+				setMode(Mode.CREW);
 				return;
 			}
+//			if (_panelCharacter.getCharacter() != null) {
+//				JobManager.getInstance().addMoveJob(_panelCharacter.getCharacter(), getRelativePosX(x), getRelativePosY(y));
+//				_keyRightPressed = false;
+//				return;
+//			}
 			
 			_panelBuild.setSelectedItem(null);
 			_panelRoom.setSelected(null);
