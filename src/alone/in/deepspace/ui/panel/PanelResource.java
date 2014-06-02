@@ -8,10 +8,10 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.manager.ResourceManager;
-import alone.in.deepspace.ui.UserSubInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 
-public class PanelResource extends UserSubInterface {
+public class PanelResource extends BasePanel {
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int 	FRAME_HEIGHT = 32;
 
@@ -21,7 +21,7 @@ public class PanelResource extends UserSubInterface {
 	private TextView 	_o2;
 	
 	public PanelResource(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
+		super(Mode.NONE, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		
 		setBackgroundColor(new Color(200, 200, 140, 150));
 		
@@ -56,5 +56,11 @@ public class PanelResource extends UserSubInterface {
         _o2.setString("O2: " + String.valueOf(ResourceManager.getInstance().getO2()));
         _energy.setString("PW: " + String.valueOf(ResourceManager.getInstance().getPower()));
         _matter.setString("M: " + String.valueOf(ResourceManager.getInstance().getMatter()));
+	}
+
+	@Override
+	protected void onCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 }

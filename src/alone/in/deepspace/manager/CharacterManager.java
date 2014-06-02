@@ -17,12 +17,10 @@ import org.jsfml.graphics.Texture;
 
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.engine.ISavable;
-import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Movable.Direction;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.character.Character.Gender;
-import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.job.Job.Abort;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
@@ -273,6 +271,7 @@ public class CharacterManager implements ISavable {
 	}
 	
 	public Character add(Character c) {
+		_count++;
 		_addOnUpdate.add(c);
 		return c;
 	}

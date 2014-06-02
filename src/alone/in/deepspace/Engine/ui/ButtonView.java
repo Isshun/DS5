@@ -22,10 +22,7 @@ public class ButtonView extends View {
 
 	public ButtonView(Vector2f size) {
 		super(size);
-	}
 
-	@Override
-	protected void onCreate() {
 		_text = new Text();
 		_text.setFont(SpriteManager.getInstance().getFont());
 	}

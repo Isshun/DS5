@@ -1,6 +1,4 @@
-package alone.in.deepspace.ui;
-
-import java.io.IOException;
+package alone.in.deepspace.ui.panel;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderStates;
@@ -8,8 +6,9 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.ui.TextView;
+import alone.in.deepspace.ui.UserInterface.Mode;
 
-public class UserInterfaceMessage extends UserSubInterface {
+public class PanelMessage extends BasePanel {
 
 	private static int LINE_INTERVAL = 100;
 	private static String[] MESSAGE = {
@@ -25,8 +24,8 @@ public class UserInterfaceMessage extends UserSubInterface {
 	private TextView[] 	_texts;
 	private int _start;
 
-	public UserInterfaceMessage(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(20, 20), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
+	public PanelMessage() {
+		super(Mode.NONE, new Vector2f(20, 20), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		  
 		_texts = new TextView[10];
 		for (int i = 0; i < 10; i++) {
@@ -63,6 +62,12 @@ public class UserInterfaceMessage extends UserSubInterface {
 
 	public void setStart(int start) {
 		_start = start;
+	}
+
+	@Override
+	protected void onCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

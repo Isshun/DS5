@@ -1,35 +1,32 @@
 package alone.in.deepspace.ui.panel;
 
-import java.io.IOException;
-
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.View;
-import alone.in.deepspace.ui.UserSubInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 
-public class PanelPlan extends UserSubInterface {
+public class PanelPlan extends BasePanel {
 	private static final int 		FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 
-	public enum Mode {
+	public enum PanelMode {
 		GATHER, MINING, DUMP, NONE
 	}
 
-	protected Mode _mode;
+	protected PanelMode _mode;
 
-	public Mode getMode() { return _mode; }
-	public void setMode(Mode mode) { _mode = mode; }
+	public PanelMode getPanelMode() { return _mode; }
+	public void setMode(PanelMode mode) { _mode = mode; }
 
-	public PanelPlan(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), null);
+	public PanelPlan(Mode mode) {
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 		  
-		_mode = Mode.NONE;
+		_mode = PanelMode.NONE;
 		
 		setBackgroundColor(new Color(0, 0, 0, 150));
 
@@ -42,7 +39,7 @@ public class PanelPlan extends UserSubInterface {
 		btGather.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				_mode = Mode.GATHER;
+				_mode = PanelMode.GATHER;
 			}
 		});
 		addView(btGather);
@@ -55,7 +52,7 @@ public class PanelPlan extends UserSubInterface {
 		btMining.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				_mode = Mode.MINING;
+				_mode = PanelMode.MINING;
 			}
 		});
 		addView(btMining);
@@ -68,9 +65,14 @@ public class PanelPlan extends UserSubInterface {
 		btDump.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				_mode = Mode.DUMP;
+				_mode = PanelMode.DUMP;
 			}
 		});
 		addView(btDump);
+	}
+	@Override
+	protected void onCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 }

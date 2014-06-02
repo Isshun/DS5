@@ -1,4 +1,4 @@
-package alone.in.deepspace.ui;
+package alone.in.deepspace.ui.panel;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
@@ -9,12 +9,14 @@ import org.jsfml.window.Keyboard;
 import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.Mouse;
 
+import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.ui.ColorView;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.View;
-import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.ui.UserInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
 
-public abstract class UserSubInterface extends FrameLayout {
+public abstract class BasePanel extends FrameLayout {
 	
 	protected static final Color COLOR_TEXT = new Color(120, 255, 255);
 	protected static final Color COLOR_LABEL = Color.WHITE;
@@ -29,11 +31,12 @@ public abstract class UserSubInterface extends FrameLayout {
 	protected Texture	_textureTile;
 	protected Sprite	_bgPanel;
 	protected Sprite	_bgTile;
-	protected int		_posTileX;
-	protected int		_posTileY;
 	protected boolean	_isTileActive;
 	protected int		_tileIndex;
-	public UserInterface _ui;
+	protected UserInterface _ui;
+	protected RenderWindow _app;
+	private Mode 		_mode;
+	protected Viewport _viewport;
 		  
 	public void			openTile() { _isTileActive = true; }
 	public void			closeTile() { _isTileActive = false; }
@@ -43,9 +46,8 @@ public abstract class UserSubInterface extends FrameLayout {
 	public void			close() { _isVisible = false; }
 	public boolean		isOpen() { return _isVisible; }
 	public boolean		isTileActive() { return _isTileActive; }
-	public boolean		isOnTile(int x, int y) { return x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120; }
 
-	public UserSubInterface(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size, UserInterface ui) {
+	public BasePanel(Mode mode, Vector2f pos, Vector2f size) {
 		super(size);
 		
 		setBackgroundColor(new Color(18, 28, 30));
@@ -56,10 +58,7 @@ public abstract class UserSubInterface extends FrameLayout {
 
 		setPosition(pos);
 		
-		_ui = ui;
-		_posTileX = (Constant.MENU_TILE_WIDTH + Constant.UI_PADDING + Constant.UI_PADDING) * tileIndex + Constant.UI_PADDING;
-		_posTileY = Constant.WINDOW_HEIGHT - 180 - Constant.UI_PADDING;
-		_tileIndex = tileIndex;
+		_mode = mode;
 		_isTileActive = false;
 		_isVisible = false;
 
@@ -75,6 +74,15 @@ public abstract class UserSubInterface extends FrameLayout {
 //		_bgPanel.setTexture(_texturePanel);
 //		_bgPanel.setTextureRect(new IntRect(0, 0, 800, 600));
 	}
+	
+	public void init(RenderWindow app, UserInterface ui, Viewport viewport) {
+		_app = app;
+		_ui = ui;
+		_viewport = viewport;;
+		onCreate();
+	}
+	
+	protected abstract void onCreate();
 	
 	public boolean	checkKey(Keyboard.Key key) {
 		if (_isVisible) {
@@ -102,11 +110,6 @@ public abstract class UserSubInterface extends FrameLayout {
 			return true;
 		}
 
-		else if (x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120) {
-			_isTileActive = true;
-			return true;
-		}
-
 		return false;
 	}
 
@@ -118,20 +121,7 @@ public abstract class UserSubInterface extends FrameLayout {
 	}
 
 	public boolean	mouseRelease(Mouse.Button button, int x, int y) {
-
-		// On tile
-		if (x > _posTileX && x < _posTileX + 240 && y > _posTileY && y < _posTileY + 120) {
-			_isVisible = !_isVisible;
-			_isTileActive = true;
-			return true;
-		}
-
-		// Panel open
-		else if (_isVisible) {
-			return true;
-		}
-
-		return false;
+		return _isVisible;
 	}
 	
 	public void refresh(int update) {
@@ -142,6 +132,9 @@ public abstract class UserSubInterface extends FrameLayout {
 	
 	protected void onRefresh(int update) {
 		
+	}
+	public Mode getMode() {
+		return _mode;
 	}
 	
 }

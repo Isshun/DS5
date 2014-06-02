@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard.Key;
 
@@ -22,13 +21,12 @@ import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.CategoryInfo;
 import alone.in.deepspace.model.ItemInfo;
-import alone.in.deepspace.ui.UserInteraction;
-import alone.in.deepspace.ui.UserSubInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.StringUtils;
 
-public class PanelBuild extends UserSubInterface {
-	public enum Mode {
+public class PanelBuild extends BasePanel {
+	public enum PanelMode {
 		NONE,
 		BUILD_STRUCTURE,
 		BUILD_ITEM,
@@ -45,26 +43,26 @@ public class PanelBuild extends UserSubInterface {
 	private Map<ItemInfo, ButtonView> 		_icons;
 	private List<View>						_iconsList;
 	protected ItemInfo 						_currentSelected;
-	protected Mode 							_mode;
+	protected PanelMode 					_panelMode;
 	private int								_startY;
 	private boolean 						_animRunning;
 	private Map<CategoryInfo, FrameLayout>	_layouts;
 	private CategoryInfo 					_currentCategory;
 	private ButtonView[] 					_iconShortcut;
 
-	public PanelBuild(RenderWindow app, int tileIndex, UserInteraction interaction) {
-		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), null);
+	public PanelBuild(Mode mode) {
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 
 		_iconShortcut = new ButtonView[10];
 		_layouts = new HashMap<CategoryInfo, FrameLayout>();
 		_iconsList = new ArrayList<View>();
 		_icons = new HashMap<ItemInfo, ButtonView>();
-		_mode = Mode.NONE;
+		_panelMode = PanelMode.NONE;
 
 		drawPanel(true);
 	}
 
-	public Mode getMode() { return _mode; }
+	public PanelMode getPanelMode() { return _panelMode; }
 	public ItemInfo getSelectedItem() { return _currentSelected; }
 
 	// TODO: ugly
@@ -218,7 +216,7 @@ public class PanelBuild extends UserSubInterface {
 	}
 
 	public void select(ItemInfo info) {
-		_mode = info == null ? Mode.NONE : Mode.BUILD_ITEM;
+		_panelMode = info == null ? PanelMode.NONE : PanelMode.BUILD_ITEM;
 		_currentSelected = info;
 	}
 
@@ -280,5 +278,11 @@ public class PanelBuild extends UserSubInterface {
 		select((ItemInfo)view.getData());
 		view.setBackgroundColor(new Color(29, 85, 96));
 		view.setBorderColor(new Color(161, 255, 255));
+	}
+
+	@Override
+	protected void onCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 }

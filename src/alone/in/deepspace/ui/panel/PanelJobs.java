@@ -1,10 +1,8 @@
 package alone.in.deepspace.ui.panel;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.ui.OnClickListener;
@@ -15,11 +13,11 @@ import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.ui.UserInterface;
-import alone.in.deepspace.ui.UserSubInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.StringUtils;
 
-public class PanelJobs extends UserSubInterface {
+public class PanelJobs extends BasePanel {
 	private static final Color 	COLOR_BUILD = new Color(170, 128, 64);
 	private static final Color 	COLOR_BLOCKED = new Color(255, 20, 20);
 	private static final Color 	COLOR_DESTROY = new Color(200, 20, 20);
@@ -37,8 +35,8 @@ public class PanelJobs extends UserSubInterface {
 	private int 				_nbRunningJob;
 	private int 				_nbRunningJobCandidat;
 
-	public PanelJobs(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
+	public PanelJobs(Mode mode) {
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 
 		_lbTitle = new TextView();
 		_lbTitle.setCharacterSize(FONT_SIZE_TITLE);
@@ -161,5 +159,11 @@ public class PanelJobs extends UserSubInterface {
 			}
 		}
 		text.setString(StringUtils.getDashedString(left, right, NB_COLUMNS));
+	}
+
+	@Override
+	protected void onCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -1,6 +1,5 @@
 package alone.in.deepspace.ui.panel;
 
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.ui.FrameLayout;
@@ -11,9 +10,9 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.model.ToolTips;
 import alone.in.deepspace.model.ToolTips.ToolTip;
 import alone.in.deepspace.model.ToolTips.ToolTipCategory;
-import alone.in.deepspace.ui.UserSubInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
 
-public class PanelTooltip extends UserSubInterface {
+public class PanelTooltip extends BasePanel {
 
 	private static final int FRAME_WIDTH = 800;
 	private static final int FRAME_HEIGHT = 600;
@@ -26,8 +25,8 @@ public class PanelTooltip extends UserSubInterface {
 	private TextView _lbCategory;
 	private LinkView[] _lbCategories;
 
-	public PanelTooltip(RenderWindow app) {
-		super(app, 0, new Vector2f(200, 200), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
+	public PanelTooltip(Mode mode) {
+		super(mode, new Vector2f(200, 200), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		
 		_lbToolTip = new TextView(null);
 		_lbToolTip.setCharacterSize(FONT_SIZE_TITLE);
@@ -106,6 +105,12 @@ public class PanelTooltip extends UserSubInterface {
 				_lbCategories[i].setVisible(false);
 			}
 		}
+	}
+
+	@Override
+	protected void onCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

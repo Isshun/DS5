@@ -1,6 +1,5 @@
 package alone.in.deepspace.ui.panel;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -20,10 +19,10 @@ import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.Room.Type;
 import alone.in.deepspace.model.character.Character;
-import alone.in.deepspace.ui.UserSubInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 
-public class PanelRoom extends UserSubInterface {
+public class PanelRoom extends BasePanel {
 	private static final Color 		COLOR_YELLOW = new Color(236, 201, 37);
 	private static final int 		FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
@@ -39,8 +38,8 @@ public class PanelRoom extends UserSubInterface {
 	private FrameLayout _layoutButtons;
 	private TextView[] _lbRoomOccupantsOld;
 
-	public PanelRoom(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), null);
+	public PanelRoom(Mode mode) {
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 		_icons = new HashMap<Integer, ButtonView>();
 		_layoutButtons = new FrameLayout(new Vector2f(200, 400));
 		_layoutButtons.setVisible(true);
@@ -158,6 +157,12 @@ public class PanelRoom extends UserSubInterface {
 			_lbRoomOccupantsOld[i].setString("");
 		}
 		_layoutRoomInfo.setBackgroundColor(new Color(50 + room.getColor().r, 50 + room.getColor().g, 50 + room.getColor().b, 100));
+	}
+
+	@Override
+	protected void onCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

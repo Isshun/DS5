@@ -13,8 +13,10 @@ import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
+import alone.in.deepspace.ui.UserInterface.Mode;
+import alone.in.deepspace.ui.panel.BasePanel;
 
-public class ContextualMenu extends UserSubInterface {
+public class ContextualMenu extends BasePanel {
 	public final static int		LINE_HEIGHT = 22;
 	public final static int		PADDING_V = 4;
 	private final static int	PADDING_H = 4;
@@ -27,7 +29,7 @@ public class ContextualMenu extends UserSubInterface {
 	private int 				_initPosY;
 	
 	public ContextualMenu(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size, Viewport viewport) {
-		super(app, tileIndex, pos, size, null);
+		super(Mode.NONE, pos, size);
 		setVisible(true);
 		
 		ENTRY_WIDTH = (int) (size.x - PADDING_H * 2);
@@ -104,6 +106,12 @@ public class ContextualMenu extends UserSubInterface {
 		if (_subMenu != null) {
 			_subMenu.setViewPortPosition(_initPosX + x, _initPosY + y);
 		}
+	}
+
+	@Override
+	protected void onCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

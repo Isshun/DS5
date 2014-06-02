@@ -7,7 +7,7 @@ import org.jsfml.system.Vector2f;
 
 public class ImageView extends View {
 
-	private Sprite 			_icon;
+	private Sprite 			_image;
 
 	public ImageView() {
 		super(new Vector2f(0, 0));
@@ -16,25 +16,21 @@ public class ImageView extends View {
 	public ImageView(Sprite icon) {
 		super(new Vector2f(icon.getTextureRect().width, icon.getTextureRect().height));
 		
-		_icon = icon;
+		_image = icon;
 	}
 	
 	@Override
-	protected void onCreate() {
-	}
-
-	@Override
 	public void onDraw(RenderWindow app, RenderStates render) {
-		if (_icon != null) {
-			_icon.setPosition(_pos.x + _paddingLeft, _pos.y + _paddingTop);
-			app.draw(_icon, render);
+		if (_image != null) {
+			_image.setPosition(_pos.x + _paddingLeft, _pos.y + _paddingTop);
+			app.draw(_image, render);
 		}
 	}
 
 	public void setPosition(Vector2f pos) {
 		super.setPosition(pos);
-		if (_icon != null) {
-			_icon.setPosition(pos);
+		if (_image != null) {
+			_image.setPosition(pos);
 		}
 	}
 
@@ -48,7 +44,11 @@ public class ImageView extends View {
 		} else {
 			setSize(null);
 		}
-		_icon = icon;
+		_image = icon;
+	}
+
+	public void setSprite(Sprite sprite) {
+		_image = sprite;
 	}
 
 }

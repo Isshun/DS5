@@ -59,6 +59,7 @@ public class Game implements ISavable {
 	private boolean					_isMenuOpen;
 	private boolean 				_isRunning;
 	private int 					_frameRefresh;
+	private StatsData				_stats;
 
 	public static int getFrame() { return _frame; }
 	
@@ -69,6 +70,7 @@ public class Game implements ISavable {
 	public Game(RenderWindow app) throws IOException, TextureCreationException {
 		Log.debug("Game");
 
+		_stats = new StatsData();
 		_lastInput = 0;
 		_frame = 0;
 		_app = app;
@@ -136,6 +138,8 @@ public class Game implements ISavable {
 		
 		ResourceManager.getInstance().update();
 		_characterManager.onLongUpdate();
+		
+		_stats.nbCharacter.add(_characterManager.getCount());
 	}
 
 	public void onEvent(Event event) throws IOException {
@@ -333,6 +337,10 @@ public class Game implements ISavable {
 
 	public void setRunning(boolean running) {
 		_isRunning = running;		
+	}
+
+	public StatsData getStats() {
+		return _stats;		
 	}
 
 }

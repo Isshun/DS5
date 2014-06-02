@@ -1,13 +1,10 @@
 package alone.in.deepspace.ui.panel;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
-import org.jsfml.window.Keyboard;
 
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.engine.ui.ButtonView;
@@ -22,10 +19,10 @@ import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.ui.UserInterface;
-import alone.in.deepspace.ui.UserSubInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 
-public class PanelCrew extends UserSubInterface {
+public class PanelCrew extends BasePanel {
 
 	private static class ViewHolder {
 		public TextView 	lbName;
@@ -51,11 +48,10 @@ public class PanelCrew extends UserSubInterface {
 	private CharacterManager    _characterManager;
 	private List<ViewHolder> 	_viewHolderList;
 	private TextView 			_lbCount;
-	private UserInterface 		_ui;
 	protected int 				_mode;
 
-	public PanelCrew(RenderWindow app, int tileIndex) throws IOException {
-		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), null);
+	public PanelCrew(Mode mode) {
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 
 		_viewHolderList = new ArrayList<ViewHolder>();
 		_characterManager = ServiceManager.getCharacterManager();
@@ -258,5 +254,11 @@ public class PanelCrew extends UserSubInterface {
 
 	public void setUI(UserInterface userInterface) {
 		_ui = userInterface;
+	}
+
+	@Override
+	protected void onCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 }

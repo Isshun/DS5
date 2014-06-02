@@ -41,11 +41,8 @@ public abstract class View {
 		_isVisible = true;
 		_borderSize = 2;
 		_pos = new Vector2f(0, 0);
-
-		onCreate();
 	}
 	
-	protected abstract void onCreate();
 	protected abstract void onDraw(RenderWindow app, RenderStates render);
 
 	public boolean 		isFocus() { return _isFocus; }

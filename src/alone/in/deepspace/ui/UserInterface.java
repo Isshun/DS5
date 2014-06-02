@@ -1,9 +1,7 @@
 package alone.in.deepspace.ui;
 
-import java.io.File;
 import java.io.IOException;
 
-import org.jsfml.graphics.Font;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
@@ -23,6 +21,7 @@ import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.ToolTips.ToolTip;
 import alone.in.deepspace.model.WorldArea;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.ui.panel.BasePanel;
 import alone.in.deepspace.ui.panel.PanelBuild;
 import alone.in.deepspace.ui.panel.PanelCharacter;
 import alone.in.deepspace.ui.panel.PanelCrew;
@@ -33,7 +32,10 @@ import alone.in.deepspace.ui.panel.PanelJobs;
 import alone.in.deepspace.ui.panel.PanelPlan;
 import alone.in.deepspace.ui.panel.PanelResource;
 import alone.in.deepspace.ui.panel.PanelRoom;
+import alone.in.deepspace.ui.panel.PanelScience;
+import alone.in.deepspace.ui.panel.PanelSecurity;
 import alone.in.deepspace.ui.panel.PanelShortcut;
+import alone.in.deepspace.ui.panel.PanelStats;
 import alone.in.deepspace.ui.panel.PanelSystem;
 import alone.in.deepspace.ui.panel.PanelTooltip;
 import alone.in.deepspace.util.Constant;
@@ -53,33 +55,42 @@ public class UserInterface {
 	private int							_keyMovePosX;
 	private int							_keyMovePosY;
 	private UserInteraction				_interaction;
-	private UserInterfaceScience		_uiScience;
-	private UserInterfaceSecurity		_uiSecurity;
 	private CharacterManager        	_characteres;
-	private PanelCharacter  			_panelCharacter;
-	private PanelPlan					_panelPlan;
-	private PanelInfo					_panelInfo;
-	private PanelCrew					_panelCrew;
-	private PanelBuild					_panelBuild;
-	private PanelDebug					_panelDebug;
-	private Font 						_font;
-	//	private PanelBase 					_panelBase;
 	private PanelSystem 				_panelSystem;
 	private PanelShortcut 				_panelShortcut;
-	private PanelJobs					_panelJobs;
 	private PanelResource 				_panelResource;
-	private UserInterfaceMessage 		_panelMessage;
 	private PanelRoom 					_panelRoom;
 	private UIMessage 					_message;
 	private PanelDebugItem 				_panelDebugItems;
 	private Mode 						_mode;
 	private ContextualMenu 				_menu;
 	private Game 						_game;
-	private int 						_used;
 	private boolean 					_mouseOnMap;
 	private PanelTooltip 				_panelTooltip;
-	private UserSubInterface 			_currentPanel;
+	private BasePanel 					_currentPanel;
 
+	private	BasePanel[]			_panels = new BasePanel[] {
+			new PanelCharacter(Mode.CHARACTER),
+			new PanelInfo(Mode.INFO),
+			new PanelDebug(Mode.DEBUG),
+			new PanelDebugItem(Mode.DEBUGITEMS),
+			new PanelPlan(Mode.PLAN),
+			new PanelRoom(Mode.ROOM),
+			new PanelTooltip(Mode.TOOLTIP),
+			new PanelBuild(Mode.BUILD),
+			new PanelScience(Mode.SCIENCE),
+			new PanelSecurity(Mode.SECURITY),
+			new PanelCrew(Mode.CREW),
+			new PanelJobs(Mode.JOBS),
+			new PanelStats(Mode.STATS),
+			new PanelShortcut(Mode.NONE)
+	};
+
+	private PanelBuild _panelBuild;
+	private PanelPlan _panelPlan;
+	private PanelCharacter _panelCharacter;
+	private PanelInfo _panelInfo;
+	
 	public enum Mode {
 		INFO,
 		DEBUG,
@@ -92,7 +103,7 @@ public class UserInterface {
 		ROOM,
 		PLAN,
 		DEBUGITEMS,
-		NONE, TOOLTIP
+		NONE, TOOLTIP, STATS
 	}
 
 	public void onCreate(Game game, RenderWindow app, Viewport viewport) throws IOException {
@@ -102,41 +113,45 @@ public class UserInterface {
 		_characteres = ServiceManager.getCharacterManager();
 		_keyLeftPressed = false;
 		_keyRightPressed = false;
-		_font = new Font();
-		_font.loadFromFile((new File("res/fonts/xolonium_regular.otf")).toPath());
 
-		//		_panelBase = new PanelBase(app);
-		_panelCharacter = new PanelCharacter(app);
-		_panelCharacter.setUI(this);
-		_panelInfo = new PanelInfo(app, this);
-		_panelDebug = new PanelDebug(app);
-		_panelDebug.setUI(this);
-		_panelDebugItems = new PanelDebugItem(app);
-		_panelPlan = new PanelPlan(app);
+		for (BasePanel panel: _panels) {
+			panel.init(app, this, viewport);
+		}
+		
 		_panelSystem = new PanelSystem(app);
 		_panelSystem.setVisible(true);
-		_panelShortcut = new PanelShortcut(app, this, _viewport);
-		_panelShortcut.setVisible(true);
 		_panelResource = new PanelResource(app);
 		_panelResource.setVisible(true);
-		_panelMessage = new UserInterfaceMessage(app);
-		_panelMessage.setVisible(true);
-		_panelRoom = new PanelRoom(app);
-		_panelTooltip = new PanelTooltip(app);
+		
+		// TODO
+		for (BasePanel panel: _panels) {
+			if (Mode.BUILD.equals(panel.getMode())) {
+				_panelBuild = (PanelBuild)panel;
+			}
+			else if (Mode.CREW.equals(panel.getMode())) {
+			}
+			else if (Mode.PLAN.equals(panel.getMode())) {
+				_panelPlan = (PanelPlan)panel;
+			}
+			else if (Mode.CHARACTER.equals(panel.getMode())) {
+				_panelCharacter = (PanelCharacter)panel;
+			}
+			else if (Mode.INFO.equals(panel.getMode())) {
+				_panelInfo = (PanelInfo)panel;
+			}
+			else if (Mode.ROOM.equals(panel.getMode())) {
+				_panelRoom = (PanelRoom)panel;
+			}
+			else if (Mode.TOOLTIP.equals(panel.getMode())) {
+				_panelTooltip = (PanelTooltip)panel;
+			}
+		}
 
 		_interaction = new UserInteraction(app, viewport);
-		_panelBuild = new PanelBuild(app, 3, _interaction);
-		_uiScience = new UserInterfaceScience(app, 2);
-		_uiSecurity = new UserInterfaceSecurity(app, 4);
-		_panelCrew = new PanelCrew(app, 0);
-		_panelCrew.setUI(this);
-		_panelJobs = new PanelJobs(app);
-		_panelJobs.setUI(this);
-		_panelMessage.setStart(0);
 
 		_currentPanel = _panelShortcut;
 
-		toogleMode(Mode.NONE);
+		setMode(Mode.NONE);
 	}
 
 	public void	onMouseMove(int x, int y) {
@@ -161,30 +176,11 @@ public class UserInterface {
 			return;
 		}
 
-		if (_panelBuild.catchClick(x, y)) {
+		for (BasePanel panel: _panels) {
+			panel.catchClick(x, y);
 			_keyLeftPressed = false;
 			return;
 		}
-
-		if (_panelCrew.catchClick(x, y)) {
-			_keyLeftPressed = false;
-			return;
-		}
-
-		if (_uiScience.catchClick(x, y)) {
-			_keyLeftPressed = false;
-			return;
-		}
-
-		if (_uiSecurity.catchClick(x, y)) {
-			_keyLeftPressed = false;
-			return;
-		}
-
-		//		if (_panelPlan.catchClick(x, y)) {
-		//			_keyLeftPressed = false;
-		//			return;
-		//		}
 
 		_keyLeftPressed = true;
 		_keyMovePosX = _keyPressPosX = getRelativePosX(x);
@@ -217,34 +213,13 @@ public class UserInterface {
 		_mode = mode;
 		_menu = null;
 
-		if (_mode != Mode.CHARACTER) 	_panelCharacter.setVisible(false);
-		if (_mode != Mode.INFO) 		_panelInfo.setVisible(false);
-		if (_mode != Mode.PLAN) 		_panelPlan.setVisible(false);
-		if (_mode != Mode.DEBUG) 		_panelDebug.setVisible(false);
-		if (_mode != Mode.DEBUGITEMS)	_panelDebugItems.setVisible(false);
-		if (_mode != Mode.NONE) 		_panelShortcut.setVisible(false);
-		if (_mode != Mode.BUILD) 		_panelBuild.setVisible(false);
-		if (_mode != Mode.CREW) 		_panelCrew.setVisible(false);
-		if (_mode != Mode.TOOLTIP) 		_panelTooltip.setVisible(false);
-		if (_mode != Mode.SCIENCE) 		_uiScience.setVisible(false);
-		if (_mode != Mode.SECURITY)		_uiSecurity.setVisible(false);
-		if (_mode != Mode.JOBS)			_panelJobs.setVisible(false);
-		if (_mode != Mode.ROOM)			_panelRoom.setVisible(false);
-
-		switch (_mode) {
-		case BUILD: 		_currentPanel = _panelBuild; break;
-		case INFO: 			_currentPanel = _panelInfo; break;
-		case DEBUG: 		_currentPanel = _panelDebug; break;
-		case DEBUGITEMS:	_currentPanel = _panelDebugItems; break;
-		case PLAN: 			_currentPanel = _panelPlan; break;
-		case TOOLTIP: 		_currentPanel = _panelTooltip; break;
-		case CHARACTER: 	_currentPanel = _panelCharacter; break;
-		case JOBS: 			_currentPanel = _panelJobs; break;
-		case CREW: 			_currentPanel = _panelCrew; break;
-		case ROOM: 			_currentPanel = _panelRoom; break;
-		case SCIENCE:		_currentPanel = _uiScience; break;
-		case SECURITY:		_currentPanel = _uiSecurity; break;
-		case NONE: 			_currentPanel = _panelShortcut; break;
+		for (BasePanel panel: _panels) {
+			if (_mode.equals(panel.getMode())) {
+				_currentPanel = panel;
+				panel.setVisible(true);
+			} else {
+				panel.setVisible(false);
+			}
 		}
 
 		if (_currentPanel != null) {
@@ -260,52 +235,18 @@ public class UserInterface {
 	}
 
 	public void onRefresh(int update) {
-		_panelCharacter.refresh(update);
-		//		_panelBase.refresh(update);
-		_panelInfo.refresh(update);
-		_panelPlan.refresh(update);
-		_panelDebug.refresh(update);
-		_panelDebugItems.refresh(update);
-		_panelSystem.refresh(update);
-		_panelShortcut.refresh(update);
-		_panelResource.refresh(update);
-		_panelRoom.refresh(update);
-		_panelCrew.refresh(update);
-		_uiScience.refresh(update);
-		_uiSecurity.refresh(update);
-		_panelBuild.refresh(update);
-		_panelJobs.refresh(update);
-		_panelTooltip.refresh(update);
+		for (BasePanel panel: _panels) {
+			panel.refresh(update);
+		}
 	}
 
 	public void onDraw(int frame, int update, int renderTime) {
-		_panelShortcut.draw(_app, null);
-		_panelCharacter.draw(_app, null);
-		//		_panelBase.draw(_app, null);
-		_panelInfo.draw(_app, null);
-		_panelPlan.draw(_app, null);
-		_panelDebug.draw(_app, null);
-		_panelDebugItems.draw(_app, null);
-		_panelSystem.draw(_app, null);
-		_panelResource.draw(_app, null);
-		_panelRoom.draw(_app, null);
-		_panelMessage.setFrame(frame);
-		_panelCrew.draw(_app, null);
-		_uiScience.draw(_app, null);
-		_uiSecurity.draw(_app, null);
-		_panelBuild.draw(_app, null);
-		_panelJobs.draw(_app, null);
-		_panelTooltip.draw(_app, null);
-
-		//		int mb = 1024 * 1024;
-		//        Runtime runtime = Runtime.getRuntime();
-		//        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
-		//        int total = (int) (runtime.totalMemory() / mb);
-		//        _used = (_used * 7 + used) / 8;
-		//        System.out.println("Heap: " + String.valueOf(_used) + " / " + String.valueOf(total) + " Mo");
+		for (BasePanel panel: _panels) {
+			panel.draw(_app, null);
+		}
 
 		if (_mouseOnMap) {
-			if (_panelBuild.getMode() != PanelBuild.Mode.NONE || _panelPlan.getMode() != PanelPlan.Mode.NONE) {
+			if (_panelBuild.getPanelMode() != PanelBuild.PanelMode.NONE || _panelPlan.getPanelMode() != PanelPlan.PanelMode.NONE) {
 				if (_keyLeftPressed) {
 					_interaction.drawCursor(Math.min(_keyPressPosX, _keyMovePosX),
 							Math.min(_keyPressPosY, _keyMovePosY),
@@ -366,21 +307,6 @@ public class UserInterface {
 
 		}
 
-		if (_panelBuild.checkKey(event.asKeyEvent().key)) {
-			return true;
-		}
-
-		if (_panelCrew.checkKey(event.asKeyEvent().key)) {
-			return true;
-		}
-
-		if (_uiSecurity.checkKey(event.asKeyEvent().key)) {
-			return true;
-		}
-
-		if (_uiScience.checkKey(event.asKeyEvent().key)) {
-			return true;
-		}
 
 		if (_interaction.getMode() != UserInteraction.Mode.NONE) {
 			if (event.type == Event.Type.KEY_RELEASED && event.asKeyEvent().key == Keyboard.Key.ESCAPE) {
@@ -453,6 +379,9 @@ public class UserInterface {
 		}
 		else if (event.asKeyEvent().key == Keyboard.Key.R) {
 			toogleMode(Mode.ROOM);
+		}
+		else if (event.asKeyEvent().key == Keyboard.Key.S) {
+			toogleMode(Mode.STATS);
 		}
 		else if (event.asKeyEvent().key == Keyboard.Key.P) {
 			toogleMode(Mode.PLAN);
@@ -537,7 +466,7 @@ public class UserInterface {
 		_keyLeftPressed = false;
 
 		// Plan gather
-		if (_panelPlan.getMode() == PanelPlan.Mode.GATHER) {
+		if (_panelPlan.getPanelMode() == PanelPlan.PanelMode.GATHER) {
 			_interaction.planGather(
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
@@ -547,7 +476,7 @@ public class UserInterface {
 		}
 
 		// Plan mining
-		if (_panelPlan.getMode() == PanelPlan.Mode.MINING) {
+		if (_panelPlan.getPanelMode() == PanelPlan.PanelMode.MINING) {
 			_interaction.planMining(
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
@@ -557,7 +486,7 @@ public class UserInterface {
 		}
 
 		// Plan dump
-		if (_panelPlan.getMode() == PanelPlan.Mode.DUMP) {
+		if (_panelPlan.getPanelMode() == PanelPlan.PanelMode.DUMP) {
 			_interaction.planDump(
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
@@ -567,7 +496,7 @@ public class UserInterface {
 		}
 
 		// Remove item
-		if (_panelBuild.getMode() == PanelBuild.Mode.REMOVE_ITEM) {
+		if (_panelBuild.getPanelMode() == PanelBuild.PanelMode.REMOVE_ITEM) {
 			_interaction.removeItem(
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
@@ -577,7 +506,7 @@ public class UserInterface {
 		}
 
 		// Remove structure
-		if (_panelBuild.getMode() == PanelBuild.Mode.REMOVE_STRUCTURE) {
+		if (_panelBuild.getPanelMode() == PanelBuild.PanelMode.REMOVE_STRUCTURE) {
 			_interaction.removeStructure(
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
@@ -682,7 +611,7 @@ public class UserInterface {
 
 			_panelBuild.select(null);
 			_panelRoom.select(null);
-			_panelPlan.setMode(PanelPlan.Mode.NONE);
+			_panelPlan.setMode(PanelPlan.PanelMode.NONE);
 			toogleMode(Mode.NONE);
 		}
 
@@ -711,5 +640,9 @@ public class UserInterface {
 	public void select(ToolTip toolTip) {
 		_panelTooltip.select(toolTip);
 		setMode(Mode.TOOLTIP);
+	}
+
+	public Game getGame() {
+		return _game;
 	}
 }

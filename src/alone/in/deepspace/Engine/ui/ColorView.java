@@ -11,10 +11,6 @@ public class ColorView extends View {
 	}
 	
 	@Override
-	protected void onCreate() {
-	}
-
-	@Override
 	public void onDraw(RenderWindow app, RenderStates render) {
 	}
 

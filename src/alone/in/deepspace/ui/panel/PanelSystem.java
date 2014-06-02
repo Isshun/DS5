@@ -10,10 +10,10 @@ import alone.in.deepspace.Main;
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.ui.UserSubInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 
-public class PanelSystem extends UserSubInterface {
+public class PanelSystem extends BasePanel {
 	private static final int FRAME_WIDTH = Constant.WINDOW_WIDTH;
 	private static final int FRAME_HEIGHT = 32;
 	private TextView _lbRenderTime;
@@ -23,7 +23,7 @@ public class PanelSystem extends UserSubInterface {
 	private TextView _lbFloor;
 	
 	public PanelSystem(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
+		super(Mode.NONE, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		
@@ -65,5 +65,11 @@ public class PanelSystem extends UserSubInterface {
         _lbMemoryUsed.setString("Heap: " + String.valueOf(used) + " / " + String.valueOf(total) + " Mo");
         _lbUpdate.setString("Update: " + String.valueOf(Main.getUpdateInterval()) + " ms");
         _lbFloor.setString("Floor: " + ServiceManager.getWorldMap().getFloor());
+	}
+
+	@Override
+	protected void onCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 }

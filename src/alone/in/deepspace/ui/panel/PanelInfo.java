@@ -1,6 +1,5 @@
 package alone.in.deepspace.ui.panel;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,13 +33,12 @@ import alone.in.deepspace.model.WorldArea;
 import alone.in.deepspace.model.WorldResource;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.job.Job;
-import alone.in.deepspace.ui.UserInterface;
-import alone.in.deepspace.ui.UserSubInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.ObjectPool;
 import alone.in.deepspace.util.StringUtils;
 
-public class PanelInfo extends UserSubInterface {
+public class PanelInfo extends BasePanel {
 	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;
 	private static final int 		MENU_PADDING_TOP = 34;
 	private static final int 		MENU_PADDING_LEFT = 16;
@@ -102,8 +100,8 @@ public class PanelInfo extends UserSubInterface {
 	private TextView _lbSlot;
 	private LinkView[] _lbSlots;
 
-	public PanelInfo(RenderWindow app, UserInterface ui) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), ui);
+	public PanelInfo(Mode mode) {
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 
 		_lbRoom = new TextView(null);
 		_lbRoom.setPosition(200, 40);
@@ -811,6 +809,12 @@ public class PanelInfo extends UserSubInterface {
 	public void select(BaseItem item) {
 		clean();
 		displayItem(item);
+	}
+
+	@Override
+	protected void onCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

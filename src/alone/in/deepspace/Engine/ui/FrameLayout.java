@@ -16,16 +16,16 @@ public class FrameLayout extends View {
 
 	public FrameLayout(Vector2f size) {
 		super(size);
+		init();
 	}
 
 	public FrameLayout() {
 		super(new Vector2f(0, 0));
+		init();
 	}
 
-	@Override
-	protected void onCreate() {
+	private void init() {
 		_views = new ArrayList<View>();
-		
 		setPosition(0, 0);
 	}
 

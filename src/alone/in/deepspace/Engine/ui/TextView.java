@@ -21,14 +21,15 @@ public class TextView extends View {
 
 	public TextView() {
 		super(new Vector2f(0, 0));
+		init();
 	}
 
 	public TextView(Vector2f size) {
 		super(size);
+		init();
 	}
 
-	@Override
-	protected void onCreate() {
+	private void init() {
 		_text = new Text();
 		_text.setFont(SpriteManager.getInstance().getFont());
 	}

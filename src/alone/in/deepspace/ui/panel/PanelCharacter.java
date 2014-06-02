@@ -1,6 +1,5 @@
 package alone.in.deepspace.ui.panel;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
@@ -29,12 +28,12 @@ import alone.in.deepspace.model.character.CharacterNeeds;
 import alone.in.deepspace.model.character.CharacterRelation;
 import alone.in.deepspace.model.character.CharacterStatus;
 import alone.in.deepspace.model.job.Job;
-import alone.in.deepspace.ui.UserSubInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Settings;
 import alone.in.deepspace.util.StringUtils;
 
-public class PanelCharacter extends UserSubInterface {
+public class PanelCharacter extends BasePanel {
 	private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "unused", "Work"};
 
 	private static final int FONT_SIZE = 22;
@@ -97,8 +96,8 @@ public class PanelCharacter extends UserSubInterface {
 	private CharacterStatus 	_lastStatus;
 	private TextView 			_lbInventory;
 
-	public PanelCharacter(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), null);
+	public PanelCharacter(Mode mode) {
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
 
 		_cursor = new ColorView(new Vector2f(8, 16));
 		_cursor.setBackgroundColor(COLOR_TEXT);
@@ -744,6 +743,12 @@ public class PanelCharacter extends UserSubInterface {
 				app.draw(_shapes[i], _render);
 			}
 		}
+	}
+
+	@Override
+	protected void onCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

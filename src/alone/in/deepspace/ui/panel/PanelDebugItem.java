@@ -1,10 +1,8 @@
 package alone.in.deepspace.ui.panel;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.ui.FrameLayout;
@@ -13,10 +11,10 @@ import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.ItemInfo;
-import alone.in.deepspace.ui.UserSubInterface;
+import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 
-public class PanelDebugItem extends UserSubInterface {
+public class PanelDebugItem extends BasePanel {
 
 	private static final int 	FRAME_WIDTH = Constant.WINDOW_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT - 30;
@@ -27,8 +25,8 @@ public class PanelDebugItem extends UserSubInterface {
 	private FrameLayout _grid;
 	private FrameLayout _itemView;
 	
-	public PanelDebugItem(RenderWindow app) throws IOException {
-		super(app, 0, new Vector2f(0, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), null);
+	public PanelDebugItem(Mode mode) {
+		super(mode, new Vector2f(0, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		
 		setBackgroundColor(new Color(0, 0, 0));
 
@@ -216,6 +214,12 @@ public class PanelDebugItem extends UserSubInterface {
 	public void reset() {
 		_grid.setVisible(true);
 		_itemView.setVisible(false);
+	}
+
+	@Override
+	protected void onCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
