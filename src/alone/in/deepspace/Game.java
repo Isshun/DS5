@@ -8,10 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;
-import org.jsfml.graphics.Transform;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.event.Event;
@@ -20,26 +18,19 @@ import org.jsfml.window.event.MouseButtonEvent;
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.loader.JobManagerLoader;
-import alone.in.deepspace.engine.loader.WorldFactory;
 import alone.in.deepspace.engine.loader.WorldSaver;
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.ui.UIEventManager;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.DynamicObjectManager;
 import alone.in.deepspace.manager.FoeManager;
-import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.item.ItemBase;
-import alone.in.deepspace.model.item.ItemInfo;
-import alone.in.deepspace.model.item.StorageItem;
+import alone.in.deepspace.manager.StatsManager;
 import alone.in.deepspace.model.item.StructureItem;
-import alone.in.deepspace.model.item.UserItem;
-import alone.in.deepspace.model.item.ItemInfo.ItemInfoEffects;
-import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
@@ -59,7 +50,7 @@ public class Game implements ISavable {
 	private boolean					_isMenuOpen;
 	private boolean 				_isRunning;
 	private int 					_frameRefresh;
-	private StatsData				_stats;
+	private StatsManager			_statsManager;
 
 	public static int getFrame() { return _frame; }
 	
@@ -70,7 +61,7 @@ public class Game implements ISavable {
 	public Game(RenderWindow app) throws IOException, TextureCreationException {
 		Log.debug("Game");
 
-		_stats = new StatsData();
+		_statsManager = new StatsManager();
 		_lastInput = 0;
 		_frame = 0;
 		_app = app;
@@ -139,7 +130,7 @@ public class Game implements ISavable {
 		ResourceManager.getInstance().onLongUpdate();
 		_characterManager.onLongUpdate();
 		
-		_stats.nbCharacter.add(_characterManager.getCount());
+		_statsManager.update();
 	}
 
 	public void onEvent(Event event) throws IOException {
@@ -339,8 +330,8 @@ public class Game implements ISavable {
 		_isRunning = running;		
 	}
 
-	public StatsData getStats() {
-		return _stats;		
+	public StatsManager getStats() {
+		return _statsManager;		
 	}
 
 }

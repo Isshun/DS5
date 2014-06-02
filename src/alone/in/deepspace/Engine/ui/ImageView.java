@@ -50,6 +50,5 @@ public class ImageView extends View {
 	public void setSprite(Sprite sprite) {
 		_image = sprite;
 	}
-
 }
 
