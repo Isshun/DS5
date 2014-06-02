@@ -3,7 +3,6 @@ package alone.in.deepspace.engine.renderer;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.Drawable;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;

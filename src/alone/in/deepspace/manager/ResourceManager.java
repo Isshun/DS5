@@ -1,5 +1,6 @@
 package alone.in.deepspace.manager;
 
+import alone.in.deepspace.Strings;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;
 
@@ -7,24 +8,27 @@ public class ResourceManager {
 
 	private static ResourceManager _self;
 
-	int	_o2Use;
-	int	_o2Supply;
-	int	_matter;
-	int	_power;
-	int	_food;
+//	private ResourceData	_o2Use;
+//	private ResourceData	_o2Supply;
+	private ResourceData	_matter;
+	private ResourceData	_power;
+	private ResourceData	_food;
+	private ResourceData 	_water;
+	private ResourceData 	_gasoline;
+	private ResourceData 	_spice;
 
-	private int _spice;
-
-	private int _water;
+	private ResourceData _oxygen;
 
 	public enum Message {NONE, NO_MATTER, BUILD_COMPLETE, BUILD_PROGRESS};
 
 	private ResourceManager() {
-		_matter = 0;
-		_power = 0;
-		_o2Use = 0;
-		_o2Supply = 0;
-		_food = 0;
+		_matter = new ResourceData(Strings.LB_MATTER);
+		_power = new ResourceData(Strings.LB_POWER);
+		_spice = new ResourceData("spice");
+		_food = new ResourceData(Strings.LB_FOOD);
+		_gasoline = new ResourceData(Strings.LB_GASOLINE);
+		_water = new ResourceData(Strings.LB_WATER);
+		_oxygen = new ResourceData("o2");
 	}
 
 	public static ResourceManager	getInstance() {
@@ -35,14 +39,14 @@ public class ResourceManager {
 	}
 
 	public Message build(ItemBase item) {
-		if (_matter == 0) {
+		if (_matter.value == 0) {
 			return Message.NO_MATTER;
 		}
 
 		ServiceManager.getWorldRenderer().invalidate(item.getX(), item.getY());
 
 		if (item.isComplete() == false) {
-			_matter--;
+			_matter.value--;
 			item.setMatterSupply(item.getMatterSupply() + 1);
 		}
 
@@ -51,13 +55,13 @@ public class ResourceManager {
 
 			// Remove power use
 			if (item.getPower() != 0) {
-				item.setPowerSupply(_power >= item.getPower() ? item.getPower() : _power);
-				_power -= item.getPower();
+				item.setPowerSupply(_power.value >= item.getPower() ? item.getPower() : _power.value);
+				_power.value -= item.getPower();
 			}
 
 			// O2
 			if (item.getInfo().cost != null) {
-				_o2Supply -= item.getInfo().cost.o2;
+				//_o2Supply.value -= item.getInfo().cost.o2;
 			}
 
 			if (item.getLight() > 0) {
@@ -117,35 +121,43 @@ public class ResourceManager {
 //		}
 	}
 
-	public int 	getO2() { return (int) (_o2Use == 0 ? 100 : _o2Supply >= _o2Use ? 100 : _o2Supply * 100.0f / _o2Use); }
-	public int 	getMatter() { return _matter; }
-	public int 	getPower() { return _power; }
-	public int 	getSpice() { return _spice; }
-	public int 	getWater() { return _water; }
-	public int	getFood() { return _food; }
+//	public int 	getO2() { return (int) (_o2Use == 0 ? 100 : _o2Supply >= _o2Use ? 100 : _o2Supply * 100.0f / _o2Use); }
+	public ResourceData getMatter() { return _matter; }
+	public ResourceData	getPower() { return _power; }
+	public ResourceData	getSpice() { return _spice; }
+	public ResourceData	getWater() { return _water; }
+	public ResourceData getFood() { return _food; }
 
-	public void setSpice(int spice) { _spice = spice; }
-	public void setWater(int water) { _water = water; refreshWater(); }
-	public void	setMatter(int matter) { _matter = matter; }
+	public void setSpice(int spice) { _spice.value = spice; }
+	public void setWater(int water) { _water.value = water; refreshWater(); }
+	public void	setMatter(int matter) { _matter.value = matter; }
 
-	public void addMatter(int value) { _matter += value; }
-	public void addWater(int value) { _water += value; refreshWater(); }
-	public void addSpice(int value) { _spice += value; }
-	public void addPower(int value) { _power += value; }
-	public void addFood(int value) { _food += value; }
+	public void addMatter(int value) { _matter.value += value; }
+	public void addWater(int value) { _water.value += value; refreshWater(); }
+	public void addSpice(int value) { _spice.value += value; }
+	public void addPower(int value) { _power.value += value; }
+	public void addFood(int value) { _food.value += value; }
 
 	public boolean isLowFood() {
-		return _food < ServiceManager.getCharacterManager().getCount();
+		return _food.value < ServiceManager.getCharacterManager().getCount();
 	}
 
 	public void remove(ItemInfo info) {
-		if (info.isFood) { _food--; }
+		if (info.isFood) { _food.value--; }
 	}
 
 	public void add(ItemInfo info) {
-		if (info.isFood) { _food++; }
+		if (info.isFood) { _food.value++; }
 	}
 
 	public void onLongUpdate() {
+	}
+
+	public ResourceData getGasoline() {
+		return _gasoline;
+	}
+
+	public ResourceData getO2() {
+		return _oxygen;
 	}
 }

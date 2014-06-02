@@ -1,9 +1,6 @@
 package alone.in.deepspace.ui.panel;
 
-import java.io.IOException;
-
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.ui.TextView;
@@ -20,11 +17,12 @@ public class PanelResource extends BasePanel {
 	private TextView 	_matter;
 	private TextView 	_o2;
 	
-	public PanelResource(RenderWindow app) throws IOException {
+	public PanelResource() {
 		super(Mode.NONE, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
-		
-		setBackgroundColor(new Color(200, 200, 140, 150));
-		
+	}
+
+	@Override
+	protected void onCreate() {
 		_spice = new TextView(new Vector2f(10, 10));
 		_spice.setCharacterSize(14);
 		_spice.setColor(Color.WHITE);
@@ -48,19 +46,15 @@ public class PanelResource extends BasePanel {
 		_o2.setColor(Color.WHITE);
 		_o2.setPosition(new Vector2f(332, 6));
 		addView(_o2);
+		
+		setAlwaysVisible(true);
 	}
 	
 	@Override
 	public void onRefresh(int frame) {
-        _spice.setString("Food: " + String.valueOf(ResourceManager.getInstance().getFood()));
-        _o2.setString("O2: " + String.valueOf(ResourceManager.getInstance().getO2()));
-        _energy.setString("PW: " + String.valueOf(ResourceManager.getInstance().getPower()));
-        _matter.setString("M: " + String.valueOf(ResourceManager.getInstance().getMatter()));
-	}
-
-	@Override
-	protected void onCreate() {
-		// TODO Auto-generated method stub
-		
+        _spice.setString("Food: " + String.valueOf(ResourceManager.getInstance().getFood().value));
+        _o2.setString("O2: " + String.valueOf(ResourceManager.getInstance().getO2().value));
+        _energy.setString("PW: " + String.valueOf(ResourceManager.getInstance().getPower().value));
+        _matter.setString("M: " + String.valueOf(ResourceManager.getInstance().getMatter().value));
 	}
 }

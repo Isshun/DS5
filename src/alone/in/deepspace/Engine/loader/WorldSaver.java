@@ -3,32 +3,25 @@ package alone.in.deepspace.engine.loader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
-import org.yaml.snakeyaml.events.Event;
-
-import com.thoughtworks.xstream.XStream;
-
-import alone.in.deepspace.engine.renderer.MainRenderer;
+import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.util.Log;
+
+import com.thoughtworks.xstream.XStream;
 
 public class WorldSaver {
 
@@ -208,7 +201,8 @@ public class WorldSaver {
 		    						area.item.storage.acceptConsomable,
 		    						area.item.storage.acceptGarbage);
 		    				for (String storredItemName: area.item.storage.inventory) {
-		    					storage.addInventory(new UserItem(ServiceManager.getData().getItemInfo(storredItemName)));
+		    					ItemInfo info = ServiceManager.getData().getItemInfo(storredItemName);
+		    					storage.addInventory(new UserItem(info));
 		    				}
 		    			}
 		    		}

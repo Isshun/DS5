@@ -1,18 +1,10 @@
 package alone.in.deepspace.engine.renderer;
 
-import java.util.List;
-
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderTexture;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;
-import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.manager.JobManager;
-import alone.in.deepspace.manager.JobManager.Action;
-import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.util.Constant;
 
 public class JobRenderer implements IRenderer {

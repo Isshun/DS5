@@ -99,7 +99,7 @@ public class PanelCharacter extends BasePanel {
 	@Override
 	protected void onCreate() {
 		_cursor = new ColorView(new Vector2f(8, 16));
-		_cursor.setBackgroundColor(Colors.TEXT);
+		_cursor.setBackgroundColor(Colors.LINK_INACTIVE);
 		addView(_cursor);
 
 		// Tip

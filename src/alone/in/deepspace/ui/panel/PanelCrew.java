@@ -62,6 +62,7 @@ public class PanelCrew extends BasePanel {
 		// Button small
 		ButtonView btModeSmall = new ButtonView(new Vector2f(50, 20));
 		btModeSmall.setString("small");
+		btModeSmall.setCharacterSize(FONT_SIZE);
 		btModeSmall.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -73,6 +74,7 @@ public class PanelCrew extends BasePanel {
 		// Button detail
 		ButtonView btModeDetail = new ButtonView(new Vector2f(50, 20));
 		btModeDetail.setString("detail");
+		btModeDetail.setCharacterSize(FONT_SIZE);
 		btModeDetail.setPosition(80, 0);
 		btModeDetail.setOnClickListener(new OnClickListener() {
 			@Override

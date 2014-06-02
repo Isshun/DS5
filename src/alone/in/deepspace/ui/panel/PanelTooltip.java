@@ -57,7 +57,6 @@ public class PanelTooltip extends BasePanel {
 		for (int i = 0; i < NB_MAX_LINK; i++) {
 			_lbCategories[i] = new LinkView();
 			_lbCategories[i].setCharacterSize(FONT_SIZE);
-			_lbCategories[i].setColor(Colors.TEXT);
 			layoutCategory.addView(_lbCategories[i]);
 		}
 	}

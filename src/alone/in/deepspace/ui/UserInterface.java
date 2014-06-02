@@ -4,9 +4,7 @@ import java.io.IOException;
 
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
-import org.jsfml.window.Keyboard;
 import org.jsfml.window.Keyboard.Key;
-import org.jsfml.window.event.Event;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.Main;
@@ -23,7 +21,6 @@ import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.ui.panel.BasePanel;
-import alone.in.deepspace.ui.panel.PanelBase;
 import alone.in.deepspace.ui.panel.PanelBuild;
 import alone.in.deepspace.ui.panel.PanelCharacter;
 import alone.in.deepspace.ui.panel.PanelCrew;
@@ -59,16 +56,13 @@ public class UserInterface {
 	private int							_keyMovePosY;
 	private UserInteraction				_interaction;
 	private CharacterManager        	_characteres;
-	private PanelSystem 				_panelSystem;
 	private PanelShortcut 				_panelShortcut;
-	private PanelResource 				_panelResource;
 	private PanelRoom 					_panelRoom;
 	private UIMessage 					_message;
 	private Mode 						_mode;
 	private ContextualMenu 				_menu;
 	private Game 						_game;
 	private boolean 					_mouseOnMap;
-	private PanelTooltip 				_panelTooltip;
 	private BasePanel 					_currentPanel;
 
 	private	BasePanel[]			_panels = new BasePanel[] {
@@ -85,7 +79,9 @@ public class UserInterface {
 			new PanelCrew(Mode.CREW),
 			new PanelJobs(Mode.JOBS),
 			new PanelStats(Mode.STATS),
-			new PanelShortcut(Mode.NONE)
+			new PanelShortcut(Mode.NONE),
+			new PanelSystem(),
+			new PanelResource()
 	};
 
 	private PanelBuild _panelBuild;
@@ -122,11 +118,6 @@ public class UserInterface {
 		for (BasePanel panel: _panels) {
 			panel.init(app, this, viewport);
 		}
-		
-		_panelSystem = new PanelSystem(app);
-		_panelSystem.setVisible(true);
-		_panelResource = new PanelResource(app);
-		_panelResource.setVisible(true);
 		
 		// TODO
 		for (BasePanel panel: _panels) {
@@ -214,7 +205,7 @@ public class UserInterface {
 			if (_mode.equals(panel.getMode())) {
 				_currentPanel = panel;
 				panel.setVisible(true);
-			} else {
+			} else if (panel.isAlwaysVisible() == false) {
 				panel.setVisible(false);
 			}
 		}

@@ -5,6 +5,11 @@ public class Strings {
 	public static final String LB_NEEDS = "Needs";
 	public static final String LB_CHARACTER_INFO_JOB = "Current occupation";
 	public static final String CHARACTER_SAY_SLEEP = "I sleep well";
+	public static final String LB_MATTER = "Matter";
+	public static final String LB_POWER = "Power";
+	public static final String LB_FOOD = "Food";
+	public static final String LB_WATER = "Water";
+	public static final String LB_GASOLINE = "Gasoline";
 	public static String LB_NO_JOB = "no job";
 	public static String LB_GATHER = "gather";
 	public static String JOBS = "Jobs";

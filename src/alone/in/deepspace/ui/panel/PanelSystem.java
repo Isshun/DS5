@@ -16,17 +16,17 @@ import alone.in.deepspace.util.Constant;
 public class PanelSystem extends BasePanel {
 	private static final int FRAME_WIDTH = Constant.WINDOW_WIDTH;
 	private static final int FRAME_HEIGHT = 32;
-	private TextView _lbRenderTime;
-	private TextView _lbMemoryUsed;
-	private int _used;
-	private TextView _lbUpdate;
-	private TextView _lbFloor;
+	private TextView 	_lbRenderTime;
+	private TextView 	_lbMemoryUsed;
+	private TextView 	_lbUpdate;
+	private TextView 	_lbFloor;
 	
-	public PanelSystem(RenderWindow app) throws IOException {
+	public PanelSystem() {
 		super(Mode.NONE, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
-		
-		setBackgroundColor(new Color(200, 50, 140, 150));
-		
+	}
+	
+	@Override
+	protected void onCreate() {
 		_lbRenderTime = new TextView(new Vector2f(10, 10));
 		_lbRenderTime.setCharacterSize(14);
 		_lbRenderTime.setColor(Color.WHITE);
@@ -50,8 +50,10 @@ public class PanelSystem extends BasePanel {
 		_lbFloor.setColor(Color.WHITE);
 		_lbFloor.setPosition(new Vector2f(550, 6));
 		addView(_lbFloor);
+
+		setAlwaysVisible(true);
 	}
-	
+
 	@Override
 	public void onRefresh(int frame) {
 		int mb = 1024 * 1024;
@@ -65,11 +67,5 @@ public class PanelSystem extends BasePanel {
         _lbMemoryUsed.setString("Heap: " + String.valueOf(used) + " / " + String.valueOf(total) + " Mo");
         _lbUpdate.setString("Update: " + String.valueOf(Main.getUpdateInterval()) + " ms");
         _lbFloor.setString("Floor: " + ServiceManager.getWorldMap().getFloor());
-	}
-
-	@Override
-	protected void onCreate() {
-		// TODO Auto-generated method stub
-		
 	}
 }

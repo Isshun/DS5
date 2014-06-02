@@ -213,7 +213,7 @@ public class JobManager {
 		// Regular jobs
 		for (Job job: _jobs) {
 			if (job.getCharacter() == null && job.getFail() <= 0) {
-				if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter() == 0) {
+				if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter().value == 0) {
 					job.setFail(Abort.NO_COMPONENTS, Game.getFrame());
 					continue;
 				}

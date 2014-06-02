@@ -240,10 +240,6 @@ public abstract class ItemBase {
 		// Add effect on character
 		character.getNeeds().use(this, _info.onAction, durationLeft);
 		
-		if (isConsomable()) {
-			ResourceManager.getInstance().remove(_info);
-		}
-		
 		// Play animation
 		if (_animFrame++ % _animFrameInterval == 0) {
 			_currentFrame = (_currentFrame + 1) % _nbFrame;

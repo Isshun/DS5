@@ -2,8 +2,6 @@ package alone.in.deepspace.ui.panel;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Sprite;
-import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Keyboard.Key;
@@ -24,25 +22,16 @@ public abstract class BasePanel extends FrameLayout {
 	protected static final int 	NB_COLUMNS = 47;
 	protected static final int 	NB_COLUMNS_TITLE = 29;
 
-	protected Texture	_texturePanel;
-	protected Texture	_textureTile;
-	protected Sprite	_bgPanel;
-	protected Sprite	_bgTile;
-	protected boolean	_isTileActive;
-	protected int		_tileIndex;
-	protected UserInterface _ui;
-	protected RenderWindow _app;
-	private Mode 		_mode;
-	protected Viewport _viewport;
+	protected UserInterface 	_ui;
+	protected RenderWindow 		_app;
+	private Mode 				_mode;
+	protected Viewport 			_viewport;
+	private boolean 			_alwaysVisible;
 		  
-	public void			openTile() { _isTileActive = true; }
-	public void			closeTile() { _isTileActive = false; }
-	public void			toogleTile() { _isTileActive = !_isTileActive; }
 	public void			toogle() { _isVisible = !_isVisible; }
 	public void			open() { _isVisible = true; }
 	public void			close() { _isVisible = false; }
 	public boolean		isOpen() { return _isVisible; }
-	public boolean		isTileActive() { return _isTileActive; }
 
 	public BasePanel(Mode mode, Vector2f pos, Vector2f size) {
 		super(size);
@@ -56,26 +45,18 @@ public abstract class BasePanel extends FrameLayout {
 		setPosition(pos);
 		
 		_mode = mode;
-		_isTileActive = false;
 		_isVisible = false;
-
-//		_textureTile = new Texture();
-//		_textureTile.loadFromFile((new File("res/bg_tile_base.png")).toPath());
-//		_bgTile = new Sprite();
-//		_bgTile.setTexture(_textureTile);
-//		_bgTile.setTextureRect(new IntRect(0, 0, 240, 120));
-//
-//		_texturePanel = new Texture();
-//		_texturePanel.loadFromFile((new File("res/bg_panel_base.png")).toPath());
-//		_bgPanel = new Sprite();
-//		_bgPanel.setTexture(_texturePanel);
-//		_bgPanel.setTextureRect(new IntRect(0, 0, 800, 600));
 	}
-	
+
+	protected void setAlwaysVisible(boolean alwaysVisible) {
+		_alwaysVisible = alwaysVisible;
+		_isVisible = alwaysVisible;
+	}
+
 	public void init(RenderWindow app, UserInterface ui, Viewport viewport) {
 		_app = app;
 		_ui = ui;
-		_viewport = viewport;;
+		_viewport = viewport;
 		onCreate();
 	}
 	
@@ -97,8 +78,6 @@ public abstract class BasePanel extends FrameLayout {
 	}
 
 	public boolean	onMouseMove(int x, int y) {
-		_isTileActive = false;
-		
 		if (_isVisible && x > _posX && x < _posX + 800 && y > _posY && y < _posY + 600) {
 			return true;
 		}
@@ -128,6 +107,10 @@ public abstract class BasePanel extends FrameLayout {
 	}
 	public Mode getMode() {
 		return _mode;
+	}
+
+	public boolean isAlwaysVisible() {
+		return _alwaysVisible;
 	}
 	
 }

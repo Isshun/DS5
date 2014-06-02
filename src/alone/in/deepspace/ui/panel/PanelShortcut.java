@@ -16,6 +16,7 @@ import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
+import alone.in.deepspace.manager.ResourceData;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
@@ -24,7 +25,13 @@ public class PanelShortcut extends BasePanel {
 	private static final int FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	private static final int NB_COLUMNS_STATS = NB_COLUMNS / 2 - 1;
+	private static final int NB_RESOURCE_MAX = 10;
 
+	private static class ResourceEntry {
+		public ResourceData	data;
+		public TextView		text;
+	}
+	
 	private static class PanelEntry {
 		Mode		mode;
 		String		label;
@@ -46,16 +53,16 @@ public class PanelShortcut extends BasePanel {
 			new PanelEntry("[ OOM]", 		"R", 	1, Mode.ROOM),
 			new PanelEntry("[ EBUG]", 		"D", 	1, Mode.DEBUG),
 			new PanelEntry("[ LAN]", 		"P",	1, Mode.PLAN),
-			new PanelEntry("[ ARETAKER]", 	"C",	1, Mode.PLAN),
+			new PanelEntry("[ ARETAKER]", 	"C",	1, Mode.NONE),
 			new PanelEntry("[ TATS]", 		"S",	1, 	Mode.STATS)
 	};
 
-	private MiniMapRenderer	_miniMapRenderer;
-	private TextView _lbTime;
-	private TextView _lbResFood;
+	private MiniMapRenderer		_miniMapRenderer;
+	private TextView 			_lbTime;
+	private ResourceEntry[] 	_resources;
 
 	public PanelShortcut(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 	}
 	
 	@Override
@@ -75,11 +82,18 @@ public class PanelShortcut extends BasePanel {
 		addView(lbResources);
 		posY += 42;
 		
-		_lbResFood = new LinkView();
-		_lbResFood.setCharacterSize(FONT_SIZE);
-		_lbResFood.setPosition(posX, posY);
-		addView(_lbResFood);
+		_resources = new ResourceEntry[NB_RESOURCE_MAX];
+		addResource(0, posX, posY, ResourceManager.getInstance().getFood());
+		addResource(1, posX + 195, posY, ResourceManager.getInstance().getWater());
 		posY += 32;
+
+		addResource(2, posX, posY, ResourceManager.getInstance().getGasoline());
+		addResource(3, posX + 195, posY, ResourceManager.getInstance().getMatter());
+		posY += 32;
+		
+		addResource(4, posX, posY, ResourceManager.getInstance().getO2());
+		addResource(5, posX + 195, posY, ResourceManager.getInstance().getPower());
+		posY += 42;
 
 		TextView lbActions = new TextView();
 		lbActions.setString("Actions");
@@ -139,6 +153,16 @@ public class PanelShortcut extends BasePanel {
 		}
 	}	
 
+	private void addResource(int index, int posX, int posY, ResourceData data) {
+		_resources[index] = new ResourceEntry();
+		_resources[index].data = data;
+		
+		_resources[index].text = new LinkView();
+		_resources[index].text.setCharacterSize(FONT_SIZE);
+		_resources[index].text.setPosition(posX, posY);
+		addView(_resources[index].text);
+	}
+
 	@Override
 	public void onDraw(RenderWindow app, RenderStates render) {
 		_miniMapRenderer.onDraw(app, render, 0);
@@ -156,7 +180,11 @@ public class PanelShortcut extends BasePanel {
 		Date date = cal.getTime();
 		DateFormat formater = new SimpleDateFormat("dd MMMM y");
 		_lbTime.setString(formater.format(date));
-		
-		_lbResFood.setDashedString("Food", String.valueOf(ResourceManager.getInstance().getFood()), NB_COLUMNS_STATS);
+
+		for (ResourceEntry res: _resources) {
+			if (res != null) {
+				res.text.setDashedString(res.data.label, String.valueOf(res.data.value), NB_COLUMNS_STATS);
+			}
+		}
 	}
 }
