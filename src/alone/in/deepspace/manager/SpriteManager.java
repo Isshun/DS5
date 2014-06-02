@@ -163,7 +163,7 @@ public class SpriteManager {
 
 			int alpha = Math.min(item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * item.getMatterSupply(), 255);
 			
-			return getSprite(item.getInfo(), tile, alpha);
+			return getSprite(item.getInfo(), tile, alpha, false);
 		}
 
 		return null;
@@ -189,7 +189,7 @@ public class SpriteManager {
 //			}
 //		}
 		
-		return getSprite(info, 0, 255);
+		return getSprite(info, 0, 255, true);
 
 //		if (res != null) {
 //			if (info.isRessource) {
@@ -255,12 +255,15 @@ public class SpriteManager {
 		return sprite;
 	}
 
-	private Sprite getSprite(ItemInfo item, int tile, int alpha) {
+//	private Sprite getSprite(ItemInfo item, int tile, int alpha, boolean isIcon) {
+//	}
+//	
+	private Sprite getSprite(ItemInfo item, int tile, int alpha, boolean isIcon) {
 		if (item.spriteId == 0) {
 			item.spriteId = ++_count;
 		}
 		
-		long sum = getSum(item.spriteId, tile);
+		long sum = getSum(item.spriteId, tile, isIcon ? 1 : 0);
 		
 		Sprite sprite = _sprites.get(sum);
 		if (sprite == null) {
@@ -281,6 +284,18 @@ public class SpriteManager {
 					texture.setSmooth(true);
 					sprite.setTexture(texture);
 					sprite.setTextureRect(ObjectPool.getIntRect(tileX * item.width * Constant.TILE_WIDTH, tileY * item.height * Constant.TILE_HEIGHT, item.width * Constant.TILE_WIDTH, item.height * Constant.TILE_HEIGHT));
+					if (isIcon) {
+						switch (Math.max(item.width, item.height)) {
+						case 2: sprite.setScale(0.85f, 0.85f); break;
+						case 3: sprite.setScale(0.55f, 0.55f); break;
+						case 4: sprite.setScale(0.35f, 0.35f); break;
+						case 5: sprite.setScale(0.32f, 0.32f); break;
+						case 6: sprite.setScale(0.3f, 0.3f); break;
+						case 7: sprite.setScale(0.25f, 0.25f); break;
+						case 8: sprite.setScale(0.2f, 0.2f); break;
+						}
+						
+					}
 					_sprites.put(sum, sprite);
 				}
 			} catch (IOException e) {
@@ -290,14 +305,16 @@ public class SpriteManager {
 		return sprite;
 	}
 
-	private long getSum(int spriteId, int tile) {
-		if (spriteId > 4096 || tile > 4096) {
+	private long getSum(int spriteId, int tile, int extra) {
+		if (spriteId > 4096 || tile > 4096 || extra > 4096) {
 			Log.error("SpriteManager.getSum -> out of bounds values");
 		}
 
 		long sum = spriteId;
 		sum = sum << 12;
 		sum += tile;
+		sum = sum << 12;
+		sum += extra;
 		sum = sum << 12;
 
 		return sum;
@@ -327,7 +344,7 @@ public class SpriteManager {
 	public Sprite 				getRessource(WorldResource item, int tile) {
 
 		if ("base.rock".equals(item.getInfo().name)) {
-			return getSprite(item.getInfo(), tile, 255);
+			return getSprite(item.getInfo(), tile, 255, false);
 		}
 		
 //		if (item.getMatterSupply() == 0) {
@@ -339,13 +356,13 @@ public class SpriteManager {
 //					9 * (Constant.TILE_HEIGHT + 2) + 1,
 //					Constant.TILE_WIDTH + 1,
 //					Constant.TILE_HEIGHT);
-		return getSprite(item.getInfo(), 0, 255);
+		return getSprite(item.getInfo(), 0, 255, false);
 //		}
 	}
 
 	public Sprite				getFloor(StructureItem item, int zone, int room) {
 		if (item != null) {
-			return getSprite(item.getInfo(), 0, 255);
+			return getSprite(item.getInfo(), 0, 255, false);
 		} else {
 			int choice = 1;
 			int texture = 4;
@@ -452,7 +469,7 @@ public class SpriteManager {
 				int y = WALL_HEIGHT * zone;
 				int width = WALL_WIDTH;
 				int height = WALL_HEIGHT;
-				return getSprite(item.getInfo(), 0, 255);
+				return getSprite(item.getInfo(), 0, 255, false);
 			}
 		}
 		return null;	  

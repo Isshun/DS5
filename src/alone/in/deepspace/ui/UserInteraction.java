@@ -15,7 +15,6 @@ import org.jsfml.system.Vector2f;
 import org.jsfml.window.Mouse;
 
 import alone.in.deepspace.engine.Viewport;
-import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Cursor;

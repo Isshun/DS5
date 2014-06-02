@@ -6,6 +6,7 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
+import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.Mouse;
 
 import alone.in.deepspace.engine.ui.ColorView;
@@ -74,17 +75,22 @@ public abstract class UserSubInterface extends FrameLayout {
 //		_bgPanel.setTexture(_texturePanel);
 //		_bgPanel.setTextureRect(new IntRect(0, 0, 800, 600));
 	}
-
-	protected boolean	checkKey(Keyboard.Key key) {
+	
+	public boolean	checkKey(Keyboard.Key key) {
 		if (_isVisible) {
 			if (key == Keyboard.Key.ESCAPE) {
 				_isVisible = false;
 				return true;
 			}
+			return onKey(key);
 		}
 		return false;
 	}
 
+	protected boolean onKey(Key key) {
+		return false;
+	}
+	
 	public void setUI(UserInterface ui) {
 		_ui = ui;
 	}

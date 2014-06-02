@@ -27,7 +27,6 @@ public class ButtonView extends View {
 	@Override
 	protected void onCreate() {
 		_text = new Text();
-		_text.setCharacterSize(12);
 		_text.setFont(SpriteManager.getInstance().getFont());
 	}
 

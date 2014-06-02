@@ -1,5 +1,6 @@
 package alone.in.deepspace.ui.panel;
-import java.io.IOException;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,11 +8,12 @@ import java.util.Map;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
-import org.jsfml.window.Keyboard;
-import org.jsfml.window.Mouse;
+import org.jsfml.window.Keyboard.Key;
 
 import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.ColorView;
+import alone.in.deepspace.engine.ui.FrameLayout;
+import alone.in.deepspace.engine.ui.LinkView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
@@ -23,14 +25,9 @@ import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.ui.UserInteraction;
 import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;
-import alone.in.deepspace.util.Log;
+import alone.in.deepspace.util.StringUtils;
 
 public class PanelBuild extends UserSubInterface {
-
-	private static final Color 	COLOR_YELLOW = new Color(70, 100, 100);
-	private static int 			FRAME_WIDTH = Constant.PANEL_WIDTH;
-	private static int 			FRAME_HEIGHT = Constant.PANEL_HEIGHT;
-
 	public enum Mode {
 		NONE,
 		BUILD_STRUCTURE,
@@ -39,135 +36,150 @@ public class PanelBuild extends UserSubInterface {
 		REMOVE_ITEM
 	};
 
-	private Mode						_panelMode;
-	private Mode						_panelModeHover;
-	private ItemInfo					_itemHover;
-	private Map<ItemInfo, ButtonView> 	_icons;
-	protected ItemInfo 					_currentSelected;
-	protected Mode 						_mode;
-	private int							_startY;
+	private static final Color				COLOR_INACTIVE = new Color(29, 85, 96, 100);
+	private static final int 				GRID_WIDTH = 100;
+	private static final int 				GRID_HEIGHT = 120;
+	private static int 						FRAME_WIDTH = Constant.PANEL_WIDTH;
+	private static int 						FRAME_HEIGHT = Constant.PANEL_HEIGHT;
 
-	public PanelBuild(RenderWindow app, int tileIndex, UserInteraction interaction) throws IOException {
+	private Map<ItemInfo, ButtonView> 		_icons;
+	private List<View>						_iconsList;
+	protected ItemInfo 						_currentSelected;
+	protected Mode 							_mode;
+	private int								_startY;
+	private boolean 						_animRunning;
+	private Map<CategoryInfo, FrameLayout>	_layouts;
+	private CategoryInfo 					_currentCategory;
+	private ButtonView[] 					_iconShortcut;
+
+	public PanelBuild(RenderWindow app, int tileIndex, UserInteraction interaction) {
 		super(app, tileIndex, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), null);
 
-		setBackgroundColor(new Color(22, 35, 35));
-
+		_iconShortcut = new ButtonView[10];
+		_layouts = new HashMap<CategoryInfo, FrameLayout>();
+		_iconsList = new ArrayList<View>();
 		_icons = new HashMap<ItemInfo, ButtonView>();
-		_panelMode = Mode.BUILD_STRUCTURE;
-		_panelModeHover = Mode.BUILD_STRUCTURE;
 		_mode = Mode.NONE;
 
-		//
-		//		TextView lbQuarter = new TextView(new Vector2f(140, 32));
-		//		lbQuarter.setString("Quarter");
-		//		lbQuarter.setCharacterSize(20);
-		//		lbQuarter.setPosition(new Vector2f(20, 270));
-		//		addView(lbQuarter);
-		//
-		//		TextView lbEngineering = new TextView(new Vector2f(140, 32));
-		//		lbEngineering.setString("Engineering");
-		//		lbEngineering.setCharacterSize(20);
-		//		lbEngineering.setPosition(new Vector2f(20, 520));
-		//		addView(lbEngineering);
-		//
-		//		TextView lbSickbay = new TextView(new Vector2f(140, 32));
-		//		lbSickbay.setString("Sickbay");
-		//		lbSickbay.setCharacterSize(20);
-		//		lbSickbay.setPosition(new Vector2f(20, 670));
-		//		addView(lbSickbay);
-		//
-		//		TextView lbCommon = new TextView(new Vector2f(140, 32));
-		//		lbCommon.setString("Common");
-		//		lbCommon.setCharacterSize(20);
-		//		lbCommon.setPosition(new Vector2f(20, 920));
-		//		addView(lbCommon);
-
-		drawPanel();
+		drawPanel(true);
 	}
 
-	protected void	drawPanel() {
+	public Mode getMode() { return _mode; }
+	public ItemInfo getSelectedItem() { return _currentSelected; }
+
+	// TODO: ugly
+	protected void	drawPanel(boolean witchAnim) {
+		_animRunning = true;
 		clearAllViews();
 		_icons.clear();
 
-		TextView lbUp = new TextView(new Vector2f(140, 32));
-		lbUp.setString("UP");
-		lbUp.setCharacterSize(20);
-		lbUp.setPosition(new Vector2f(20, 20));
-		lbUp.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				_startY += 400;
-				drawPanel();
-			}
-		});
-		addView(lbUp);
+		// TODO
+		int posY = _startY;
+		List<CategoryInfo> categories = ServiceManager.getData().categories;
+		_iconsList.clear();
+		_layouts.clear();
 
-		TextView lbDown = new TextView(new Vector2f(140, 32));
-		lbDown.setString("DOWN");
-		lbDown.setCharacterSize(20);
-		lbDown.setPosition(new Vector2f(200, 20));
-		lbDown.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				_startY -= 400;
-				drawPanel();
-			}
-		});
-		addView(lbDown);
+		for (CategoryInfo c: categories) {
+			final CategoryInfo category = c;
 
-		try {
+			// Content
+			final FrameLayout layout = new FrameLayout();
+			layout.setPosition(new Vector2f(20, posY + 52));
+			addView(layout);
+			_layouts.put(category, layout);
 
-			// TODO
-			int posY = _startY + 64;
-			List<CategoryInfo> categories = ServiceManager.getData().categories;
-			for (CategoryInfo category: categories) {
-				if (posY > 42) {
-					TextView lbQuarter = new TextView(new Vector2f(140, 32));
-					lbQuarter.setString(category.label.toUpperCase() + "................");
-					lbQuarter.setCharacterSize(20);
-					lbQuarter.setPosition(new Vector2f(20, posY + 8));
-					addView(lbQuarter);
+			// Title
+			TextView lbTitle = new LinkView();
+			lbTitle.setDashedString(c.labelWithoutShortcut.toUpperCase(), c.items.size() + " items", NB_COLUMNS_TITLE);
+			lbTitle.setCharacterSize(FONT_SIZE_TITLE);
+			lbTitle.setPosition(new Vector2f(20, posY + 8));
+			lbTitle.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					toogleCategory(category);
 				}
-				posY += 44;
+			});
+			addView(lbTitle);
 
-				int i = -1;
-				for (ItemInfo info: category.items) {
+			// Shortcut
+			TextView lbShortcut = new LinkView();
+			lbShortcut.setString(c.shortcut.toUpperCase());
+			lbShortcut.setCharacterSize(FONT_SIZE_TITLE);
+			lbShortcut.setColor(COLOR_ACTIVE);
+			lbShortcut.setPosition(new Vector2f(c.shortcutPos * 12 + 20, posY + 8));
+			addView(lbShortcut);
+
+			// Underline -- because at FONT_SIZE_TITLE regular underline get bold state...
+			View underline = new ColorView(new Vector2f(12, 1));
+			underline.setBackgroundColor(COLOR_ACTIVE);
+			underline.setPosition(new Vector2f(c.shortcutPos * 12 + 20, posY + 33));
+			addView(underline);
+
+			posY += 44;
+
+			// Items
+			if (category.equals(_currentCategory)) {
+				int i = 0;
+				for (ItemInfo info: c.items) {
 					if (info.isUserItem || info.isStructure) {
-						drawIcon(posY, ++i, info, posY > 42);
+						View icon = drawIcon(layout, i, info, posY > 42);
+						icon.setVisible(!witchAnim);
+						_iconsList.add(icon);
+						i++;
 					}
 				}
-				posY += ((int)(i / 4) + 1) * 100;
-			}
+				posY += Math.ceil((double)i / 4) * GRID_HEIGHT;
+				for (; i < 10; i++) {
+					_iconShortcut[i] = null;
+				}
+			}		}
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-//		View layer = new ColorView(new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
-//		layer.setBackgroundColor(new Color(58, 215, 248, 100));
-//		addView(layer);
+		View border = new ColorView(new Vector2f(4, FRAME_HEIGHT));
+		border.setBackgroundColor(new Color(37, 70, 72));
+		addView(border);
 	}
 
-	void	drawIcon(int offset, int index, final ItemInfo info, boolean visible) throws IOException {
+	protected void toogleCategory(CategoryInfo category) {
+		_currentCategory = _currentCategory != category ? category : null;
+
+		if (_currentCategory != null) {
+			openCategory(_currentCategory);
+		} else {
+			drawPanel(false);			
+		}
+	}
+
+	protected void openCategory(CategoryInfo category) {
+		boolean withAnim = _currentCategory != category;
+
+		_currentCategory = category;
+		
+//		for (FrameLayout l: _layouts.values()) {
+//			l.setVisible(false);
+//		}
+//		if (_currentCategory != null) {
+//			_layouts.get(_currentCategory).setVisible(true);
+//		}
+		drawPanel(withAnim);
+	}
+
+	private ButtonView	drawIcon(FrameLayout layout, int index, final ItemInfo info, boolean visible) {
 		ButtonView icon = _icons.get(info);
 		if (icon == null) {
+			int x = (index % 4) * GRID_WIDTH;
+			int y = (int)(index / 4) * GRID_HEIGHT;
 
-			// TODO
-			//			if (type < 0) {
-			//				icon = new ButtonView(new Vector2f(62, 80), "remove");
-			//				icon.setIcon(SpriteManager.getInstance().getBullet(3));
-			//			} else {
-			icon = new ButtonView(new Vector2f(62, 80));
-			icon.setString(info.label.length() > 7 ? info.label.substring(0, 7) : info.label);
-			icon.setTextPadding(60, 0);
+			icon = new ButtonView(new Vector2f(82, 100));
+			String label = info.label.length() > 9 ? info.label.substring(0, 9) : info.label;
+			icon.setString(label);
+			icon.setTextPadding(80, 4);
 			icon.setIcon(SpriteManager.getInstance().getIcon(info));
-			icon.setPadding(4, 4, 4, 4);
-			icon.setPosition(20 + (index % 4) * 80, offset + (int)(index / 4) * 100);
-
-			icon.setBackgroundColor(new Color(29, 85, 96, 100));
-			//icon.setBorderColor(new Color(161, 255, 255));
-			
+			icon.setIconPadding(14, 10);
+			icon.setPosition(x, y);
+			icon.setCharacterSize(FONT_SIZE);
+			icon.setBackgroundColor(COLOR_INACTIVE);
 			icon.setBorderSize(2);
+			icon.setData(info);
 			icon.setOnFocusListener(new OnFocusListener() {
 				@Override
 				public void onEnter(View view) {
@@ -182,182 +194,91 @@ public class PanelBuild extends UserSubInterface {
 			icon.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					for (ButtonView icon: _icons.values()) {
-						icon.setBackgroundColor(new Color(29, 85, 96, 100));
-						icon.setBorderColor(null);
-					}
-					// TODO
-					//					if (type == -2) {
-					//						_mode = Mode.REMOVE_STRUCTURE;
-					//					} else if (type == -3) {
-					//						_mode = Mode.REMOVE_ITEM;
-					//					} else {
-					//						_mode = Mode.BUILD_ITEM;
-					//						_currentSelected = BaseItem.getTypeIndex(type);
-					//					}
-					setSelectedItem(info);
-
-					view.setBackgroundColor(new Color(29, 85, 96));
-					view.setBorderColor(new Color(161, 255, 255));
+					clickOnIcon(view);
 				}
 			});
-			addView(icon);
+			if (index < 10) {
+				_iconShortcut[index] = icon;
+			}
+			layout.addView(icon);
+
+			TextView lbIndex = new TextView();
+			lbIndex.setString(String.valueOf(index+1));
+			lbIndex.setColor(COLOR_ACTIVE);
+			lbIndex.setStyle(TextView.UNDERLINED);
+			lbIndex.setCharacterSize(FONT_SIZE);
+			lbIndex.setPosition(x+4, y);
+			layout.addView(lbIndex);
 
 			_icons.put(info, icon);
 		}
 		icon.resetPos();
-		icon.setVisible(visible);
+
+		return icon;
 	}
 
-	void	drawTile() {
-		//	  super.drawTile(new Color(249, 195, 63));
-		//	 
-		//	  Text text = new Text();
-		//	  text.setFont(SpriteManager.getInstance().getFont());
-		//	  text.setCharacterSize(FONT_SIZE);
-		//
-		//	  {
-		//		int matter = ResourceManager.getInstance().getMatter();
-		//
-		//		text.setString("Matter: " + matter);
-		//
-		//		if (matter == 0)
-		//		  text.setColor(Color.RED);
-		//		else if (matter < 20)
-		//		  text.setColor(Color.YELLOW);
-		//	    text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + TITLE_SIZE + Constant.UI_PADDING);
-		//	    _app.draw(text);
-		//		text.setColor(Color.WHITE);
-		//	  }
-		//
-		//	  text.setString("Engineering");
-		//	  text.setCharacterSize(TITLE_SIZE);
-		//	  text.setPosition(_posTileX + Constant.UI_PADDING, _posTileY + Constant.UI_PADDING);
-		//	  _app.draw(text);
-		//	  text.setString("E");
-		//	  text.setStyle(Text.UNDERLINED);
-		//	  text.setColor(Color.YELLOW);
-		//	  _app.draw(text);
-	}
-
-	public boolean	checkKey(Keyboard.Key key) {
-		super.checkKey(key);
-
-		if (isOpen()) {
-			switch (key) {
-			case S:
-				_panelMode = Mode.BUILD_STRUCTURE;
-				return true;
-			case I:
-				_panelMode = Mode.BUILD_ITEM;
-				return true;
-			case E:
-				close();
-				setVisible(false);
-				return true;
-			default:
-				return false;
-			}
-		}
-
-		return false;
-	}
-
-	public boolean	onMouseMove(int x, int y) {
-		_isTileActive = false;
-		_panelModeHover = Mode.NONE;
-
-		if (isOpen()) {
-			_itemHover = null;
-
-			if (x > _posX && x < _posX + 800 && y > _posY && y < _posY + 600) {
-
-				// categories
-				if (y < _posY + 50) {
-					_panelModeHover = x < _posX + 200 ? Mode.BUILD_STRUCTURE : Mode.BUILD_ITEM;
-				}
-
-				// items
-				else {
-					int row = (y - _posY - 50) / 100;
-					int col = (x - _posX - 10) / 80;
-					int index = row * 9 + col;
-
-					// TODO
-					_itemHover = ServiceManager.getData().items.get(0);
-					//					if (_panelMode == Mode.BUILD_STRUCTURE) {
-					//						if (index + BaseItem.Type.STRUCTURE_START.ordinal() + 1 < BaseItem.Type.STRUCTURE_STOP.ordinal()) {
-					//							_itemHover = index + BaseItem.Type.STRUCTURE_START.ordinal() + 1;
-					//						}
-					//					} else if (_panelMode == Mode.BUILD_ITEM) {
-					//						if (index + BaseItem.Type.ITEM_START.ordinal() + 1 < BaseItem.Type.ITEM_STOP.ordinal()) {
-					//							_itemHover = index + BaseItem.Type.ITEM_START.ordinal() + 1;
-					//						}
-					//					}
-				}
-				return true;
-			}
-		}
-
-		else if (isOnTile(x, y)) {
-			_isTileActive = true;
-			return true;
-		}
-
-		return false;
-	}
-
-	public boolean	catchClick(int x, int y) {
-		if (_isVisible && x > _posX) {
-			return true;
-		}
-		else if (isOnTile(x, y)) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean	mouseRelease(Mouse.Button button, int x, int y) {
-
-		// Panel open
-		if (_isVisible && x > _posX && x < _posX + 800 && y > _posY && y < _posY + 600) {
-			Log.info("UI Engineering: select item #" + _itemHover);
-
-			if (y < _posY + 50) {
-				_panelMode = _panelModeHover;
-			}
-
-			if (_itemHover != null) {
-				//_interaction.selectBuildItem(BaseItem.getTypeIndex(_itemHover));
-				//		  _isOpen = false;
-				onMouseMove(x, y);
-			}
-
-			return true;
-		}
-
-		// On tile
-		else if (isOnTile(x, y)) {
-			_isVisible = !_isVisible;
-			_isTileActive = true;
-			return true;
-		}
-
-		return false;
-	}
-
-	public ItemInfo getSelectedItem() {
-		return _currentSelected;
-	}
-
-	public void setSelectedItem(ItemInfo info) {
+	public void select(ItemInfo info) {
 		_mode = info == null ? Mode.NONE : Mode.BUILD_ITEM;
 		_currentSelected = info;
 	}
 
-	public Mode getMode() {
-		return _mode;
+	@Override
+	protected void onRefresh(int frame) {
+		if (_animRunning) {
+			int i = 0;
+			for (View icon: _iconsList) {
+				if (icon.isVisible() == false) {
+					icon.setVisible(true);
+					if (++i == 4) {
+						return;
+					}
+				}
+			}
+		}
+		_animRunning = false;
 	}
 
+	@Override
+	protected boolean onKey(Key key) {
+		String shortcut = StringUtils.getStringFromKey(key);
+		if (shortcut != null) {
+			List<CategoryInfo> categories = ServiceManager.getData().categories;
+			for (CategoryInfo category: categories) {
+				if (shortcut.equals(category.shortcut)) {
+					openCategory(category);
+					return true;
+				}
+			}
+		}
+		
+		switch (key) {
+		case NUM0: clickOnIcon(_iconShortcut[9]); break;
+		case NUM1: clickOnIcon(_iconShortcut[0]); break;
+		case NUM2: clickOnIcon(_iconShortcut[1]); break;
+		case NUM3: clickOnIcon(_iconShortcut[2]); break;
+		case NUM4: clickOnIcon(_iconShortcut[3]); break;
+		case NUM5: clickOnIcon(_iconShortcut[4]); break;
+		case NUM6: clickOnIcon(_iconShortcut[5]); break;
+		case NUM7: clickOnIcon(_iconShortcut[6]); break;
+		case NUM8: clickOnIcon(_iconShortcut[7]); break;
+		case NUM9: clickOnIcon(_iconShortcut[8]); break;
+		default: break;
+		}
 
+		return false;
+	}
+
+	private void clickOnIcon(View view) {
+		if (view == null) {
+			return;
+		}
+		
+		for (ButtonView icon: _icons.values()) {
+			icon.setBackgroundColor(new Color(29, 85, 96, 100));
+			icon.setBorderColor(null);
+		}
+		select((ItemInfo)view.getData());
+		view.setBackgroundColor(new Color(29, 85, 96));
+		view.setBorderColor(new Color(161, 255, 255));
+	}
 }

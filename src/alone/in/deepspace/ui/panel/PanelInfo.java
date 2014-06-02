@@ -13,8 +13,10 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.engine.ui.ButtonView;
+import alone.in.deepspace.engine.ui.CheckBoxView;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.ImageView;
+import alone.in.deepspace.engine.ui.LinkView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;

@@ -6,7 +6,6 @@ import java.io.IOException;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
-import org.jsfml.window.Keyboard;
 
 public class UserInterfaceScience extends UserSubInterface {
 	
@@ -18,16 +17,4 @@ public class UserInterfaceScience extends UserSubInterface {
 		_texturePanel = new Texture();
 		_texturePanel.loadFromFile((new File("res/bg_panel_science.png")).toPath());
 	}
-
-	protected boolean	checkKey(Keyboard.Key key) {
-		super.checkKey(key);
-	
-	//  if (key == Keyboard.Key.R) {
-	//	toogle();
-	//	return true;
-	//  }
-
-		return false;
-	}
-
 }

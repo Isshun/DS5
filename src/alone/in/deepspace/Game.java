@@ -244,7 +244,7 @@ public class Game implements ISavable {
 		}
 
 
-		WorldSaver.load(ServiceManager.getWorldMap(), filePath + ".yml");
+		WorldSaver.load(ServiceManager.getWorldMap(), filePath);
 		//WorldFactory.create(ServiceManager.getWorldMap());
 		
 		ResourceManager.getInstance().refreshWater();
@@ -303,7 +303,7 @@ public class Game implements ISavable {
 
 		Log.info("Save game: " + filePath + " done");
 
-		WorldSaver.save(ServiceManager.getWorldMap(), filePath + ".yml");
+		WorldSaver.save(ServiceManager.getWorldMap(), filePath);
 
 		ServiceManager.getCharacterManager().save(filePath);
 		RoomManager.getInstance().save(filePath);

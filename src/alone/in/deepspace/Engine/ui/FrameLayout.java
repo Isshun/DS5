@@ -18,6 +18,10 @@ public class FrameLayout extends View {
 		super(size);
 	}
 
+	public FrameLayout() {
+		super(new Vector2f(0, 0));
+	}
+
 	@Override
 	protected void onCreate() {
 		_views = new ArrayList<View>();
@@ -81,12 +85,14 @@ public class FrameLayout extends View {
 	}
 
 	public void clearAllViews() {
+		for (View view: _views) {
+			view.remove();
+		}
 		_views.clear();
 	}
 
 	public void removeView(View view) {
-		//view.setParentPosition(_posX, _posY);
-		view.setParent(null);
+		view.remove();
 		_views.remove(view);
 	}
 

@@ -256,12 +256,6 @@ public class PanelCrew extends UserSubInterface {
 		}
 	}
 
-	public boolean	checkKey(Keyboard.Key key) {
-		super.checkKey(key);
-
-		return false;
-	}
-
 	public void setUI(UserInterface userInterface) {
 		_ui = userInterface;
 	}

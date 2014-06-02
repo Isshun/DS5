@@ -14,17 +14,15 @@ import alone.in.deepspace.Main;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.ui.UIMessage;
 import alone.in.deepspace.manager.CharacterManager;
-import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.UIEventManager;
 import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Room;
-import alone.in.deepspace.model.WorldArea;
 import alone.in.deepspace.model.ToolTips.ToolTip;
+import alone.in.deepspace.model.WorldArea;
 import alone.in.deepspace.model.character.Character;
-import alone.in.deepspace.ui.panel.PanelBase;
 import alone.in.deepspace.ui.panel.PanelBuild;
 import alone.in.deepspace.ui.panel.PanelCharacter;
 import alone.in.deepspace.ui.panel.PanelCrew;
@@ -65,7 +63,7 @@ public class UserInterface {
 	private PanelBuild					_panelBuild;
 	private PanelDebug					_panelDebug;
 	private Font 						_font;
-//	private PanelBase 					_panelBase;
+	//	private PanelBase 					_panelBase;
 	private PanelSystem 				_panelSystem;
 	private PanelShortcut 				_panelShortcut;
 	private PanelJobs					_panelJobs;
@@ -107,7 +105,7 @@ public class UserInterface {
 		_font = new Font();
 		_font.loadFromFile((new File("res/fonts/xolonium_regular.otf")).toPath());
 
-//		_panelBase = new PanelBase(app);
+		//		_panelBase = new PanelBase(app);
 		_panelCharacter = new PanelCharacter(app);
 		_panelCharacter.setUI(this);
 		_panelInfo = new PanelInfo(app, this);
@@ -135,7 +133,7 @@ public class UserInterface {
 		_panelJobs = new PanelJobs(app);
 		_panelJobs.setUI(this);
 		_panelMessage.setStart(0);
-		
+
 		_currentPanel = _panelShortcut;
 
 		toogleMode(Mode.NONE);
@@ -147,7 +145,7 @@ public class UserInterface {
 
 		// TODO
 		_mouseOnMap = x < 1500;
-		
+
 		// right button pressed
 		if (_keyRightPressed) {
 			_viewport.update(x, y);
@@ -248,7 +246,7 @@ public class UserInterface {
 		case SECURITY:		_currentPanel = _uiSecurity; break;
 		case NONE: 			_currentPanel = _panelShortcut; break;
 		}
-		
+
 		if (_currentPanel != null) {
 			_currentPanel.setVisible(true);
 		}
@@ -263,7 +261,7 @@ public class UserInterface {
 
 	public void onRefresh(int update) {
 		_panelCharacter.refresh(update);
-//		_panelBase.refresh(update);
+		//		_panelBase.refresh(update);
 		_panelInfo.refresh(update);
 		_panelPlan.refresh(update);
 		_panelDebug.refresh(update);
@@ -279,11 +277,11 @@ public class UserInterface {
 		_panelJobs.refresh(update);
 		_panelTooltip.refresh(update);
 	}
-	
+
 	public void onDraw(int frame, int update, int renderTime) {
 		_panelShortcut.draw(_app, null);
 		_panelCharacter.draw(_app, null);
-//		_panelBase.draw(_app, null);
+		//		_panelBase.draw(_app, null);
 		_panelInfo.draw(_app, null);
 		_panelPlan.draw(_app, null);
 		_panelDebug.draw(_app, null);
@@ -299,12 +297,12 @@ public class UserInterface {
 		_panelJobs.draw(_app, null);
 		_panelTooltip.draw(_app, null);
 
-//		int mb = 1024 * 1024;
-//        Runtime runtime = Runtime.getRuntime();
-//        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
-//        int total = (int) (runtime.totalMemory() / mb);
-//        _used = (_used * 7 + used) / 8;
-//        System.out.println("Heap: " + String.valueOf(_used) + " / " + String.valueOf(total) + " Mo");
+		//		int mb = 1024 * 1024;
+		//        Runtime runtime = Runtime.getRuntime();
+		//        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
+		//        int total = (int) (runtime.totalMemory() / mb);
+		//        _used = (_used * 7 + used) / 8;
+		//        System.out.println("Heap: " + String.valueOf(_used) + " / " + String.valueOf(total) + " Mo");
 
 		if (_mouseOnMap) {
 			if (_panelBuild.getMode() != PanelBuild.Mode.NONE || _panelPlan.getMode() != PanelPlan.Mode.NONE) {
@@ -360,6 +358,14 @@ public class UserInterface {
 			Main.setUpdateInterval(Main.getUpdateInterval() + 40);
 		}
 
+		if (event.asKeyEvent().key == Keyboard.Key.ESCAPE) {
+			setMode(Mode.NONE);
+		}
+
+		if (event.asKeyEvent().key == Keyboard.Key.BACKSPACE) {
+
+		}
+
 		if (_panelBuild.checkKey(event.asKeyEvent().key)) {
 			return true;
 		}
@@ -383,16 +389,17 @@ public class UserInterface {
 			}
 		}
 
-		
+
 		if (event.asKeyEvent().key == Keyboard.Key.ESCAPE || event.asKeyEvent().key == Keyboard.Key.BACKSPACE) {
-			if (_mode != Mode.NONE) {
-				toogleMode(Mode.NONE);
-			} else {
-				_game.setRunning(!_game.isRunning());
-			}
+			setMode(Mode.NONE);
+			//			if (_mode != Mode.NONE) {
+			//				setMode(Mode.NONE);
+			//			} else {
+			//				//_game.setRunning(!_game.isRunning());
+			//			}
 			return true;
 		}
-		
+
 		if (event.asKeyEvent().key == Keyboard.Key.TAB) {
 			if ((event.type == Event.Type.KEY_RELEASED)) {
 				if (_panelCharacter.getCharacter() != null) {
@@ -667,14 +674,14 @@ public class UserInterface {
 				setMode(Mode.CREW);
 				return;
 			}
-//			if (_panelCharacter.getCharacter() != null) {
-//				JobManager.getInstance().addMoveJob(_panelCharacter.getCharacter(), getRelativePosX(x), getRelativePosY(y));
-//				_keyRightPressed = false;
-//				return;
-//			}
-			
-			_panelBuild.setSelectedItem(null);
-			_panelRoom.setSelected(null);
+			//			if (_panelCharacter.getCharacter() != null) {
+			//				JobManager.getInstance().addMoveJob(_panelCharacter.getCharacter(), getRelativePosX(x), getRelativePosY(y));
+			//				_keyRightPressed = false;
+			//				return;
+			//			}
+
+			_panelBuild.select(null);
+			_panelRoom.select(null);
 			_panelPlan.setMode(PanelPlan.Mode.NONE);
 			toogleMode(Mode.NONE);
 		}

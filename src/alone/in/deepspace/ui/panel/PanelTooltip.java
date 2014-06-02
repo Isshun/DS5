@@ -4,6 +4,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.ui.FrameLayout;
+import alone.in.deepspace.engine.ui.LinkView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;

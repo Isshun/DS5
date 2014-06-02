@@ -16,8 +16,8 @@ import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.ui.UserInterface;
-import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.ui.UserInterface.Mode;
+import alone.in.deepspace.ui.UserSubInterface;
 import alone.in.deepspace.util.Constant;
 
 public class PanelDebug extends UserSubInterface {

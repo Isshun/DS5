@@ -6,7 +6,6 @@ import java.io.IOException;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
-import org.jsfml.window.Keyboard;
 
 public class UserInterfaceMenuOperation extends UserSubInterface {
 	
@@ -21,14 +20,5 @@ public class UserInterfaceMenuOperation extends UserSubInterface {
 		_textureTile.loadFromFile((new File("res/bg_tile_operation.png")).toPath());
 		_texturePanel = new Texture();
 		_texturePanel.loadFromFile((new File("res/bg_panel_operation.png")).toPath());
-	}
-
-	protected boolean	checkKey(Keyboard.Key key) {
-		super.checkKey(key);
-		if (key == Keyboard.Key.O) {
-			toogle();
-			return true;
-		}
-		return false;
 	}
 }

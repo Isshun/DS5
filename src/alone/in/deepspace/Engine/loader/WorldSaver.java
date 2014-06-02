@@ -79,6 +79,8 @@ public class WorldSaver {
 	}
 	
 	public static void save(WorldManager worldManager, String filePath) {
+		System.gc();
+		
 		WorldSave save = new WorldSave();
 
 		for (int z = 0; z < 1; z++) {
@@ -123,6 +125,9 @@ public class WorldSaver {
 	}
 
 	private static void saveArea(WorldSave save, WorldArea area) {
+		if (area.getItem() == null && area.getRessource() == null && area.getStructure() == null) {
+			return;
+		}
 		WorldSaveArea areaSave = new WorldSaveArea();
 		
 		areaSave.x = area.getX();
@@ -166,7 +171,9 @@ public class WorldSaver {
 	}
 
 	public static void load(WorldManager worldManager, String filePath) {
-	    Log.info("load world");
+		System.gc();
+
+		Log.info("load world");
 	    long time = System.currentTimeMillis();
 	    WorldSave worldSave = null;
 

@@ -2,8 +2,6 @@ package alone.in.deepspace.ui.panel;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -123,7 +121,7 @@ public class PanelRoom extends UserSubInterface {
 		}
 	}
 
-	public void setSelected(Room.Type type) {
+	public void select(Room.Type type) {
 		_selected = type;
 	}
 

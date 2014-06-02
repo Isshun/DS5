@@ -10,6 +10,7 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.manager.UIEventManager;
+import alone.in.deepspace.model.ItemInfo;
 
 public abstract class View {
 	protected Vector2f 		_pos;
@@ -32,7 +33,8 @@ public abstract class View {
 	private int 			_borderSize;
 	private boolean 		_invalid;
 	private Color 			_borderColor;
-	private Color _backgroundColor;
+	private Color 			_backgroundColor;
+	private Object 			_data;
 
 	public View(Vector2f size) {
 		_size = size;
@@ -232,4 +234,18 @@ public abstract class View {
 		_invalid = true;
 	}
 
+	public Object getData() {
+		return _data;
+	}
+	
+	public void setData(Object data) {
+		_data = data;
+	}
+
+	public void remove() {
+		_parent = null;
+		if (_onClickListener != null) {
+			UIEventManager.getInstance().removeOnClickListener(_onClickListener);
+		}
+	}
 }
