@@ -359,7 +359,7 @@ public class PanelCharacter extends BasePanel {
 				case SISTER:
 				case HALF_BROTHER:
 				case HALF_SISTER:
-					right += " (" + (int)relation.getSecond().getOld() + "yo.)";
+					right += " (" + (int)relation.getSecond().getOld() + "yo)";
 					break;
 				default: break;
 				}

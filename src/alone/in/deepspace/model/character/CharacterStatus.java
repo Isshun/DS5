@@ -3,6 +3,7 @@ package alone.in.deepspace.model.character;
 import org.jsfml.graphics.Color;
 
 import alone.in.deepspace.Strings;
+import alone.in.deepspace.engine.ui.Colors;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.ToolTips;
 import alone.in.deepspace.model.ToolTips.ToolTip;
@@ -10,7 +11,7 @@ import alone.in.deepspace.model.item.ItemBase;
 
 public class CharacterStatus {
 
-	private static final Color COLOR_GOOD = new Color(50, 200, 50);
+	private static final Color COLOR_GOOD = Colors.LINK_INACTIVE;//new Color(50, 200, 50);
 	private static final Color COLOR_MEDIUM = new Color(200, 200, 50);
 	private static final Color COLOR_BAD = new Color(200, 120, 60);
 	private static final Color COLOR_REALLY_BAD = new Color(200, 0, 0);

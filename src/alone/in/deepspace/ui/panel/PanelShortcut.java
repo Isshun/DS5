@@ -80,7 +80,7 @@ public class PanelShortcut extends BasePanel {
 		lbResources.setPosition(posX, posY);
 		lbResources.setCharacterSize(FONT_SIZE_TITLE);
 		addView(lbResources);
-		posY += 42;
+		posY += 38;
 		
 		_resources = new ResourceEntry[NB_RESOURCE_MAX];
 		addResource(0, posX, posY, ResourceManager.getInstance().getFood());

@@ -86,9 +86,9 @@ public class PanelCrew extends BasePanel {
 
 		// Name
 		_lbCount = new TextView(new Vector2f(10, 10));
-		_lbCount.setCharacterSize(20);
+		_lbCount.setCharacterSize(FONT_SIZE_TITLE);
 		_lbCount.setColor(Color.WHITE);
-		_lbCount.setPosition(new Vector2f(10, 22));
+		_lbCount.setPosition(new Vector2f(20, 22));
 		addView(_lbCount);
 	}
 	
@@ -107,9 +107,9 @@ public class PanelCrew extends BasePanel {
 	}
 
 	protected void setModeSmall(ViewHolder viewHolder, int i) {
-		viewHolder.frame.setPosition(Constant.UI_PADDING, 38 + Constant.UI_PADDING + ((CREW_LINE_HEIGHT + CREW_LINE_SPACING) * i));
+		viewHolder.frame.setPosition(20, 54 + ((CREW_LINE_HEIGHT + CREW_LINE_SPACING) * i));
 		viewHolder.frame.setSize(new Vector2f(CREW_LINE_WIDTH, CREW_LINE_HEIGHT));
-		viewHolder.lbName.setPosition(6, 2);
+		viewHolder.lbName.setPosition(0, 2);
 		viewHolder.lbJob.setVisible(false);
 		viewHolder.lbProfession.setVisible(false);
 		viewHolder.thumb.setVisible(false);
@@ -119,8 +119,8 @@ public class PanelCrew extends BasePanel {
 	}
 
 	protected void setModeDetail(ViewHolder viewHolder, int i) {
-		viewHolder.frame.setPosition(Constant.UI_PADDING, 38 + Constant.UI_PADDING + ((CREW_DETAIL_HEIGHT + CREW_DETAIL_SPACING) * i));
-		viewHolder.lbName.setPosition(Constant.UI_PADDING + 32, 6);
+		viewHolder.frame.setPosition(20, 54 + ((CREW_DETAIL_HEIGHT + CREW_DETAIL_SPACING) * i));
+		viewHolder.lbName.setPosition(32, 6);
 		viewHolder.lbJob.setVisible(true);
 		viewHolder.thumb.setVisible(true);
 		viewHolder.lbStatus.setVisible(true);
@@ -134,7 +134,6 @@ public class PanelCrew extends BasePanel {
 
 			// Frame
 			viewHolder.frame = new FrameLayout(new Vector2f(CREW_LINE_WIDTH, CREW_DETAIL_HEIGHT));
-			viewHolder.frame.setPosition(Constant.UI_PADDING, 38 + Constant.UI_PADDING + ((CREW_DETAIL_HEIGHT + CREW_DETAIL_SPACING) * index));
 			viewHolder.frame.setOnFocusListener(new OnFocusListener() {
 				@Override
 				public void onExit(View view) {
@@ -150,28 +149,27 @@ public class PanelCrew extends BasePanel {
 
 			// Name
 			viewHolder.lbName = new TextView();
-			viewHolder.lbName.setCharacterSize(14);
-			viewHolder.lbName.setPosition(Constant.UI_PADDING + 32, 6);
+			viewHolder.lbName.setCharacterSize(FONT_SIZE);
+			viewHolder.lbName.setPosition(0, 6);
 			viewHolder.frame.addView(viewHolder.lbName);
 
 			// Status
 			viewHolder.lbStatus = new TextView();
-			viewHolder.lbStatus.setCharacterSize(14);
-			viewHolder.lbStatus.setPosition(Constant.UI_PADDING + 32, Constant.UI_PADDING + 16);
+			viewHolder.lbStatus.setCharacterSize(FONT_SIZE);
+			viewHolder.lbStatus.setPosition(20, Constant.UI_PADDING + 16);
 			viewHolder.frame.addView(viewHolder.lbStatus);
 
 			// Status short
 			viewHolder.lbStatusShort = new TextView(new Vector2f(80, 20));
-			viewHolder.lbStatusShort.setCharacterSize(14);
+			viewHolder.lbStatusShort.setCharacterSize(FONT_SIZE);
 			viewHolder.lbStatusShort.setVisible(false);
-			viewHolder.lbStatusShort.setPosition(Constant.UI_PADDING + 300, 2);
 
 			viewHolder.frame.addView(viewHolder.lbStatusShort);
 
 			// Job
 			viewHolder.lbJob = new TextView();
 			viewHolder.lbJob.setCharacterSize(12);
-			viewHolder.lbJob.setPosition(Constant.UI_PADDING + 260, 6);
+			viewHolder.lbJob.setPosition(260, 6);
 			viewHolder.frame.addView(viewHolder.lbJob);
 
 			// Profession
@@ -214,14 +212,15 @@ public class PanelCrew extends BasePanel {
 			});
 
 			// Name
-			viewHolder.lbName.setString(character.getName());
+			viewHolder.lbName.setDashedString(character.getName(), "", NB_COLUMNS);
 			viewHolder.lbName.setColor(new Color(120, 255, 255));
 
 			// Status
 			viewHolder.lbStatus.setString(character.getStatus().getThoughts());
 			viewHolder.lbStatus.setColor(character.getStatus().getColor());
 			viewHolder.lbStatusShort.setString(character.getStatus().getThoughtsShort());
-			viewHolder.lbStatusShort.setBackgroundColor(character.getStatus().getColor());
+			viewHolder.lbStatusShort.setColor(character.getStatus().getColor());
+			viewHolder.lbStatusShort.setPosition(376 - character.getStatus().getThoughtsShort().length() * 8, 2);
 
 			// Job
 			if (character.getJob() != null) {
@@ -251,8 +250,7 @@ public class PanelCrew extends BasePanel {
 				addCharacter(i++, c);
 			}
 
-			_lbCount.setString("Count: " + characters.size());
-
+			_lbCount.setDashedString("Count", String.valueOf(characters.size()), NB_COLUMNS_TITLE);
 		}
 	}
 

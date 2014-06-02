@@ -8,7 +8,7 @@ import org.jsfml.graphics.TextureCreationException;
 
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
-import alone.in.deepspace.model.item.WorldResource;
+import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.ObjectPool;
 
@@ -37,9 +37,9 @@ public class DebugRenderer implements IRenderer {
 		text.setCharacterSize(8);
 		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
 			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
-				WorldResource res = ServiceManager.getWorldMap().getRessource(x, y);
+				WorldArea res = ServiceManager.getWorldMap().getArea(x, y);
 				if (res != null) {
-					text.setString(""+res.getTile());
+					text.setString(""+(int)(res.getLight() * 100));
 					text.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
 					app.draw(text, render);
 				}

@@ -2,7 +2,6 @@ package alone.in.deepspace.ui.panel;
 
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.engine.ui.Colors;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.LinkView;
 import alone.in.deepspace.engine.ui.OnClickListener;
@@ -21,11 +20,11 @@ public class PanelTooltip extends BasePanel {
 	private static final int NB_MAX_LINK = 10;
 	private static final int CHARACTER_WIDTH = 8;
 
-	private TextView _lbToolTip;
-	private TextView _lbContent;
-	private TextView _lbCategory;
-	private LinkView[] _lbCategories;
-	private ToolTip _tooltips;
+	private TextView 	_lbToolTip;
+	private TextView 	_lbContent;
+	private TextView 	_lbCategory;
+	private LinkView[] 	_lbCategories;
+	private ToolTip 	_tooltips;
 
 	public PanelTooltip(Mode mode) {
 		super(mode, new Vector2f(200, 200), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
@@ -33,7 +32,6 @@ public class PanelTooltip extends BasePanel {
 	
 	@Override
 	protected void onCreate() {
-		
 		_lbToolTip = new TextView(null);
 		_lbToolTip.setCharacterSize(FONT_SIZE_TITLE);
 		_lbToolTip.setPosition(20, 18);
