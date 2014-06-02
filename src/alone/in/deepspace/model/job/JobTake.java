@@ -2,10 +2,9 @@ package alone.in.deepspace.model.job;
 
 import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.JobManager;
-import alone.in.deepspace.manager.JobManager.Action;
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.util.Log;
 
 public class JobTake extends Job {
@@ -63,7 +62,7 @@ public class JobTake extends Job {
 		}
 		
 		StorageItem storage = (StorageItem)_item;
-		BaseItem neededItem = storage.get(_filter);
+		ItemBase neededItem = storage.get(_filter);
 		if (neededItem != null) {
 			character.addInventory(neededItem);
 			storage.remove(neededItem);

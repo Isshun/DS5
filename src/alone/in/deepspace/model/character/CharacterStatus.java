@@ -4,10 +4,9 @@ import org.jsfml.graphics.Color;
 
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.ToolTips;
 import alone.in.deepspace.model.ToolTips.ToolTip;
-import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.model.item.ItemBase;
 
 public class CharacterStatus {
 
@@ -49,7 +48,7 @@ public class CharacterStatus {
 		
 		if (_needs.isSleeping()) {
 			// TODO
-			BaseItem item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
+			ItemBase item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
 			if (item != null && item.isSleepingItem()) {
 				_color = COLOR_GOOD;
 				_level = 0;

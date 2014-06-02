@@ -11,12 +11,12 @@ import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Profession;
-import alone.in.deepspace.model.StructureItem;
-import alone.in.deepspace.model.WorldResource;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.StructureItem;
+import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 import alone.in.deepspace.util.ObjectPool;
@@ -151,7 +151,7 @@ public class SpriteManager {
 		return _font;
 	}
 
-	public Sprite getItem(BaseItem item, int tile) {
+	public Sprite getItem(ItemBase item, int tile) {
 		if (item == null) {
 			return null;
 		}
@@ -169,7 +169,7 @@ public class SpriteManager {
 		return null;
 	}
 
-	public Sprite	getItem(BaseItem item) {
+	public Sprite	getItem(ItemBase item) {
 		return getItem(item, 0);
 	}
 
@@ -557,7 +557,7 @@ public class SpriteManager {
 		return _selectors[tile % NB_SELECTOR_TILE];
 	}
 
-	public Sprite getSelector(BaseItem item, int frame) {
+	public Sprite getSelector(ItemBase item, int frame) {
 		return _itemSelectors[frame % NB_ITEM_SELECTOR_TILE];
 	}
 

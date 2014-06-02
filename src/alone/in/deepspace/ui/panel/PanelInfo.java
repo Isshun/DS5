@@ -22,16 +22,16 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.SpriteManager;
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.ItemInfo;
-import alone.in.deepspace.model.ItemInfo.ItemInfoAction;
-import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.Room;
-import alone.in.deepspace.model.StorageItem;
-import alone.in.deepspace.model.StructureItem;
-import alone.in.deepspace.model.WorldArea;
-import alone.in.deepspace.model.WorldResource;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.ItemInfo.ItemInfoAction;
+import alone.in.deepspace.model.item.ItemInfo.ItemInfoEffects;
+import alone.in.deepspace.model.item.StorageItem;
+import alone.in.deepspace.model.item.StructureItem;
+import alone.in.deepspace.model.item.WorldArea;
+import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
@@ -86,7 +86,7 @@ public class PanelInfo extends BasePanel {
 	private TextView[] 				_lbCarryCount;
 	private ButtonView 				_btStorageFilter;
 	private FrameLayout 			_layoutStorageAdvancedFilter;
-	private BaseItem 				_item;
+	private ItemBase 				_item;
 	private CheckBoxView 			_cbFood;
 	private CheckBoxView 			_cbDrink;
 	private CheckBoxView 			_cbConsomable;
@@ -125,7 +125,6 @@ public class PanelInfo extends BasePanel {
 		
 		_lbSlot = new TextView();
 		_lbSlot.setCharacterSize(FONT_SIZE_TITLE);
-		_lbSlot.setColor(COLOR_LABEL);
 		_layoutSlot.addView(_lbSlot);
 		
 		_lbSlots = new LinkView[NB_SLOTS_MAX];
@@ -133,7 +132,6 @@ public class PanelInfo extends BasePanel {
 			_lbSlots[i] = new LinkView();
 			_lbSlots[i].setCharacterSize(FONT_SIZE);
 			_lbSlots[i].setPosition(0, 34 + i * LINE_HEIGHT);
-			_lbSlots[i].setColor(COLOR_TEXT);
 			_layoutSlot.addView(_lbSlots[i]);
 		}
 	}
@@ -199,7 +197,6 @@ public class PanelInfo extends BasePanel {
 		_itemAccept = new TextView(null);
 		_itemAccept.setPosition(0, 42);
 		_itemAccept.setCharacterSize(FONT_SIZE);
-		_itemAccept.setColor(COLOR_TEXT);
 		_layoutStorageSimpleFilter.addView(_itemAccept);
 	}
 
@@ -208,7 +205,6 @@ public class PanelInfo extends BasePanel {
 		checkBox.setString(label);
 		checkBox.setPosition(x, y);
 		checkBox.setCharacterSize(FONT_SIZE);
-		checkBox.setColor(COLOR_TEXT);
 		checkBox.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -394,7 +390,6 @@ public class PanelInfo extends BasePanel {
 		_itemProduceName = new LinkView(new Vector2f(300, 20));
 		_itemProduceName.setPosition(32, 28);
 		_itemProduceName.setCharacterSize(FONT_SIZE);
-		_itemProduceName.setColor(COLOR_TEXT);
 		_layoutItemProduce.addView(_itemProduceName);
 
 		_itemProduceIcon = new ButtonView(new Vector2f(32, 32));
@@ -461,11 +456,6 @@ public class PanelInfo extends BasePanel {
 		text.setPosition(MENU_PADDING_LEFT + 0, MENU_PADDING_TOP + 32 + (_line++ * 24));
 		app.draw(text, _render);
 		ObjectPool.release(text);
-	}
-
-	public void  select(WorldArea area) {
-		clean();
-		displayArea(area);
 	}
 	
 	public void displayArea(WorldArea area) {
@@ -598,25 +588,27 @@ public class PanelInfo extends BasePanel {
 	
 	public void displayItemInfo(ItemInfo itemInfo) {
 		_itemInfo = itemInfo;
-		_layoutItem.setVisible(true);
-
-		// Basic info
-		_itemName.setString(itemInfo.label != null ? itemInfo.label : itemInfo.name);
-		_itemCategory.setString("(" + itemInfo.category + ")");
-
-		// Icon
-		Sprite icon = SpriteManager.getInstance().getIcon(itemInfo);
-		if (icon != null) {
-			_itemIcon.setImage(icon);
-			_itemIcon.setPosition(new Vector2f(FRAME_WIDTH - 32 - icon.getTextureRect().width, 20));
-		}
 		
-		// Action item
-		if (itemInfo.onAction != null) {
-			displayItemAction(itemInfo.onAction);
-		} else {
-		}
+		if (_itemInfo != null) {
+			_layoutItem.setVisible(true);
 
+			// Basic info
+			_itemName.setString(itemInfo.label != null ? itemInfo.label : itemInfo.name);
+			_itemCategory.setString("(" + itemInfo.category + ")");
+
+			// Icon
+			Sprite icon = SpriteManager.getInstance().getIcon(itemInfo);
+			if (icon != null) {
+				_itemIcon.setImage(icon);
+				_itemIcon.setPosition(new Vector2f(FRAME_WIDTH - 32 - icon.getTextureRect().width, 20));
+			}
+			
+			// Action item
+			if (itemInfo.onAction != null) {
+				displayItemAction(itemInfo.onAction);
+			} else {
+			}
+		}
 	}
 	
 	private void displayItemAction(ItemInfoAction action) {
@@ -669,7 +661,7 @@ public class PanelInfo extends BasePanel {
 		}
 	}
 
-	public void displayItem(final BaseItem item) {
+	public void displayItem(final ItemBase item) {
 		if (_item != null) {
 			_item.setSelected(false);
 		}
@@ -719,6 +711,27 @@ public class PanelInfo extends BasePanel {
 
 	@Override
 	public void onRefresh(int frame) {
+		// Area
+		WorldArea area = _ui.getSelectedArea();
+		if (area != null && _area != area) {
+			clean();
+			displayArea(area);
+		}
+		
+		// Item
+		ItemBase item = _ui.getSelectedItem();
+		if (item != null && _item != item) {
+			clean();
+			displayItem(item);
+		}
+
+		// ItemInfo
+		ItemInfo itemInfo = _ui.getSelectedItemInfo();
+		if (itemInfo != null && _itemInfo != itemInfo) {
+			clean();
+			displayItemInfo(itemInfo);
+		}
+
 		if (_item != null) {
 			if (_item.isUsable()) {
 				refreshSlots(_item);
@@ -732,7 +745,7 @@ public class PanelInfo extends BasePanel {
 	private void refreshStorage(StorageItem storage) {
 		_itemStorage.setString(StringUtils.getDashedString("Contains", String.valueOf(storage.getNbItems()), NB_COLUMNS_TITLE));
 		Map<ItemInfo, Integer> inventoryInfo = new HashMap<ItemInfo, Integer>();
-		for (BaseItem storredItem: storage.getItems()) {
+		for (ItemBase storredItem: storage.getItems()) {
 			ItemInfo storedInfo = storredItem.getInfo();
 			if (inventoryInfo.containsKey(storedInfo)) {
 				inventoryInfo.put(storedInfo, inventoryInfo.get(storedInfo) + 1);
@@ -758,7 +771,7 @@ public class PanelInfo extends BasePanel {
 		}
 	}
 
-	private void refreshSlots(BaseItem item) {
+	private void refreshSlots(ItemBase item) {
 		List<ItemSlot> slots = item.getSlots();
 		int nbSlot = item.getNbSlots();
 		int usedSlot = item.getNbSlots() - item.getNbFreeSlots();
@@ -787,11 +800,6 @@ public class PanelInfo extends BasePanel {
 		}
 	}
 
-	public void select(ItemInfo itemInfo) {
-		clean();
-		displayItemInfo(itemInfo);
-	}
-
 	private void clean() {
 		_area = null;
 		_item = null;
@@ -804,11 +812,6 @@ public class PanelInfo extends BasePanel {
 		_itemAccept.setVisible(false);
 		_itemAction.setVisible(false);
 		_layoutItemProduce.setVisible(false);
-	}
-
-	public void select(BaseItem item) {
-		clean();
-		displayItem(item);
 	}
 
 	@Override

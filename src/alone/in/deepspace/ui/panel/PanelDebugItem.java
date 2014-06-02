@@ -10,7 +10,7 @@ import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 

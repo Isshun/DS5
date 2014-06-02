@@ -13,12 +13,12 @@ import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Movable;
 import alone.in.deepspace.model.Position;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.character.CharacterRelation.Relation;
+import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
@@ -44,7 +44,7 @@ public class Character extends Movable implements Mover {
 	private Color 					_color;
 	private int 					_lag;
 	private double 					_old;
-	private List<BaseItem> 			_inventory;
+	private List<ItemBase> 			_inventory;
 	private int 					_inventorySpace;
 	private int 					_inventorySpaceLeft;
 	private int 					_nbChild;
@@ -66,7 +66,7 @@ public class Character extends Movable implements Mover {
 		_old = old;
 		_profession = CharacterManager.professions[id % CharacterManager.professions.length];
 		_relations = new ArrayList<CharacterRelation>();
-		_inventory = new ArrayList<BaseItem>();
+		_inventory = new ArrayList<ItemBase>();
 		setGender((int)(Math.random() * 1000) % 2 == 0 ? Character.Gender.MALE : Character.Gender.FEMALE);
 		_lag = (int)(Math.random() * 10);
 		_selected = false;
@@ -175,7 +175,7 @@ public class Character extends Movable implements Mover {
 	//	  int[]				getMessages() { return _messages; }
 	public boolean			getSelected() { return _selected; }
 	public int				getProfessionScore(Profession.Type professionEngineer) { return 42; }
-	public List<BaseItem> 	getInventory() { return _inventory; }
+	public List<ItemBase> 	getInventory() { return _inventory; }
 	public Vector<Position> getPath() { return _path; }
 	public CharacterStatus 	getStatus() { return _status; }
 	public Color 			getColor() { return _color; }
@@ -402,7 +402,7 @@ public class Character extends Movable implements Mover {
 		}
 	}
 	
-	public void removeInventory(BaseItem item) {
+	public void removeInventory(ItemBase item) {
 		if (_inventory.remove(_job.getItem())) {
 			_inventorySpaceLeft++;
 		}
@@ -446,15 +446,15 @@ public class Character extends Movable implements Mover {
 		_quarter = quarter;
 	}
 
-	public void addInventory(BaseItem item) {
+	public void addInventory(ItemBase item) {
 		if (item != null) {
 			_inventory.add(item);
 			_inventorySpaceLeft--;
 		}
 	}
 
-	public BaseItem find(ItemFilter filter) {
-		for (BaseItem item: _inventory) {
+	public ItemBase find(ItemFilter filter) {
+		for (ItemBase item: _inventory) {
 			if (item.matchFilter(filter)) {
 				return item;
 			}
@@ -495,7 +495,7 @@ public class Character extends Movable implements Mover {
 		_inventorySpaceLeft = _inventorySpace;
 	}
 
-	public void removeInventory(List<BaseItem> items) {
+	public void removeInventory(List<ItemBase> items) {
 		_inventory.remove(items);
 		_inventorySpaceLeft = _inventorySpace - _inventory.size();
 	}

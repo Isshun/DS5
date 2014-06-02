@@ -11,16 +11,16 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class DynamicObjectManager {
 	private static DynamicObjectManager	_self;
 
-	private ArrayList<BaseItem>	 		_objects;
+	private ArrayList<ItemBase>	 		_objects;
 	private ArrayList<TempItem>	 		_tempItems;
 	private int 						_count;
 	private Sprite 						_selection;
@@ -37,7 +37,7 @@ public class DynamicObjectManager {
 	  _selection.setTexture(texture);
 	  _selection.setTextureRect(new IntRect(0, 32, 32, Constant.CHAR_HEIGHT));
 	  
-	  _objects = new ArrayList<BaseItem>();
+	  _objects = new ArrayList<ItemBase>();
 	  _tempItems = new ArrayList<TempItem>();
 	  _tempItems.add(new TempItem(0, 0, 100));
 	  _toTempItemDestroy = new ArrayList<TempItem>();
@@ -48,7 +48,7 @@ public class DynamicObjectManager {
 	}
 	
 	public void	refresh(RenderWindow app, RenderStates render, double animProgress) throws IOException {
-		for (BaseItem o: _objects) {
+		for (ItemBase o: _objects) {
 			Sprite sprite = SpriteManager.getInstance().getItem(o);
 			app.draw(sprite, render);
 		}

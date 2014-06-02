@@ -18,9 +18,6 @@ import alone.in.deepspace.ui.UserInterface.Mode;
 
 public abstract class BasePanel extends FrameLayout {
 	
-	protected static final Color COLOR_TEXT = new Color(120, 255, 255);
-	protected static final Color COLOR_LABEL = Color.WHITE;
-	protected static final Color COLOR_ACTIVE = new Color(176, 205, 53);
 	protected static final int 	LINE_HEIGHT = 20;
 	protected static final int 	FONT_SIZE_TITLE = 22;
 	protected static final int 	FONT_SIZE = 14;
@@ -86,10 +83,6 @@ public abstract class BasePanel extends FrameLayout {
 	
 	public boolean	checkKey(Keyboard.Key key) {
 		if (_isVisible) {
-			if (key == Keyboard.Key.ESCAPE) {
-				_isVisible = false;
-				return true;
-			}
 			return onKey(key);
 		}
 		return false;

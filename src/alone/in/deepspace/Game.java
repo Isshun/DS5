@@ -23,6 +23,7 @@ import alone.in.deepspace.engine.loader.JobManagerLoader;
 import alone.in.deepspace.engine.loader.WorldFactory;
 import alone.in.deepspace.engine.loader.WorldSaver;
 import alone.in.deepspace.engine.renderer.MainRenderer;
+import alone.in.deepspace.engine.ui.UIEventManager;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.DynamicObjectManager;
 import alone.in.deepspace.manager.FoeManager;
@@ -32,14 +33,13 @@ import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.manager.UIEventManager;
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.ItemInfo;
-import alone.in.deepspace.model.StorageItem;
-import alone.in.deepspace.model.StructureItem;
-import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.StorageItem;
+import alone.in.deepspace.model.item.StructureItem;
+import alone.in.deepspace.model.item.UserItem;
+import alone.in.deepspace.model.item.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.job.Job;
-import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
@@ -136,7 +136,7 @@ public class Game implements ISavable {
 	public void onLongUpdate() {
 		JobManager.getInstance().onLongUpdate();
 		
-		ResourceManager.getInstance().update();
+		ResourceManager.getInstance().onLongUpdate();
 		_characterManager.onLongUpdate();
 		
 		_stats.nbCharacter.add(_characterManager.getCount());
@@ -184,7 +184,7 @@ public class Game implements ISavable {
 
 		// Check key code
 		if (event.type == Event.Type.KEY_RELEASED) {
-			if (_ui.checkKeyboard(event, _frame, _lastInput)) {
+			if (_ui.checkKeyboard(event.asKeyEvent().key, _frame, _lastInput)) {
 				return;
 			}
 			

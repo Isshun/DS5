@@ -1,16 +1,16 @@
 package alone.in.deepspace.manager;
 
-import alone.in.deepspace.model.BaseItem;
+import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.job.Job;
 
 public class ItemSlot {
 	private Job			_job;
-	private BaseItem	_item;
+	private ItemBase	_item;
 	private int			_relX;
 	private int			_relY;
 	private boolean		_isFree;
 
-	public ItemSlot(BaseItem item, int x, int y) {
+	public ItemSlot(ItemBase item, int x, int y) {
 		_item = item;
 		_relX = x;
 		_relY = y;
@@ -38,7 +38,7 @@ public class ItemSlot {
 		return _job;
 	}
 
-	public BaseItem getItem() {
+	public ItemBase getItem() {
 		return _item;
 	}
 

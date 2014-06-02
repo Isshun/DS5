@@ -9,14 +9,15 @@ import java.util.Vector;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Room;
-import alone.in.deepspace.model.StorageItem;
-import alone.in.deepspace.model.StructureItem;
-import alone.in.deepspace.model.UserItem;
-import alone.in.deepspace.model.WorldArea;
-import alone.in.deepspace.model.WorldResource;
+import alone.in.deepspace.model.item.FactoryItem;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.StorageItem;
+import alone.in.deepspace.model.item.StructureItem;
+import alone.in.deepspace.model.item.UserItem;
+import alone.in.deepspace.model.item.WorldArea;
+import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -46,14 +47,14 @@ public class WorldManager implements TileBasedMap {
 	private int 				_floor;
 
 	private List<StorageItem> 	_storageItems;
-	private List<StorageItem> 	_dispenserItems;
+	private List<FactoryItem> 	_factoryItems;
 
 	public WorldManager() {
 		_itemCout = 0;
 		_width = Constant.WORLD_WIDTH;
 		_height = Constant.WORLD_HEIGHT;
 		_storageItems = new ArrayList<StorageItem>();
-		_dispenserItems = new ArrayList<StorageItem>();
+		_factoryItems = new ArrayList<FactoryItem>();
 		
 		dump();
 
@@ -75,7 +76,7 @@ public class WorldManager implements TileBasedMap {
 	public void	create() {
 	}
 
-	public BaseItem putItem(String name, int x, int y, int z, int i) {
+	public ItemBase putItem(String name, int x, int y, int z, int i) {
 		return putItem(ServiceManager.getData().getItemInfo(name), z, x, y, i);
 	}
 
@@ -104,7 +105,7 @@ public class WorldManager implements TileBasedMap {
 		return false;
 	}
 
-	public int	gather(BaseItem item, int maxValue) {
+	public int	gather(ItemBase item, int maxValue) {
 		if (item == null || maxValue == 0) {
 			Log.error("gather: wrong call");
 			return 0;
@@ -132,7 +133,7 @@ public class WorldManager implements TileBasedMap {
 	}
 
 	// TODO: itemName
-	public BaseItem	find(String itemName, boolean free) {
+	public ItemBase	find(String itemName, boolean free) {
 		Log.debug("WorldMap: find");
 
 		int notFree = 0;
@@ -269,7 +270,7 @@ public class WorldManager implements TileBasedMap {
 	}
 
 	// TODO: call job listener
-	public void removeItem(BaseItem item) {
+	public void removeItem(ItemBase item) {
 		if (item != null) {
 			int x = item.getX();
 			int y = item.getY();
@@ -298,7 +299,7 @@ public class WorldManager implements TileBasedMap {
 		removeItem(item);
 	}
 
-	public BaseItem putItem(String name, int x, int y, boolean isFree) {
+	public ItemBase putItem(String name, int x, int y, boolean isFree) {
 		if (_itemCout + 1 > LIMIT_ITEMS) {
 			Log.error("LIMIT_ITEMS reached");
 			return null;
@@ -307,7 +308,7 @@ public class WorldManager implements TileBasedMap {
 		return putItem(ServiceManager.getData().getItemInfo(name), _floor, x, y, isFree ? 999 : 0);
 	}
 
-	public BaseItem putItem(String name, int x, int y) {
+	public ItemBase putItem(String name, int x, int y) {
 		if (_itemCout + 1 > LIMIT_ITEMS) {
 			Log.error("LIMIT_ITEMS reached");
 			return null;
@@ -316,7 +317,7 @@ public class WorldManager implements TileBasedMap {
 		return putItem(name, x, y, false);
 	}
 
-	public BaseItem putItem(ItemInfo info, int f, int x, int y, int matterSupply) {
+	public ItemBase putItem(ItemInfo info, int f, int x, int y, int matterSupply) {
 		// Return if out of bound
 		if (f < 0 || f >= NB_FLOOR || x < 0 || y < 0 || x >= _width || y >= _height) {
 			Log.error("put item out of bound, type: "
@@ -350,7 +351,7 @@ public class WorldManager implements TileBasedMap {
 		}
 
 		// Get new item
-		BaseItem item = null;
+		ItemBase item = null;
 //		if (BaseItem.isResource(type)) {
 //			item = new WorldRessource(type);
 //			((WorldRessource)item).setValue(matterSupply);
@@ -361,9 +362,9 @@ public class WorldManager implements TileBasedMap {
 //			item = new StorageItem();
 //			_areas[x][y].setItem((UserItem) item);
 //			return item;
-		if (info.isDispenser) {
-			item = new StorageItem(info);
-			_dispenserItems.add((StorageItem)item);
+		if (info.isFactory) {
+			item = new FactoryItem(info);
+			_factoryItems.add((FactoryItem)item);
 		} else if (info.isStorage) {
 			item = new StorageItem(info);
 			_storageItems.add((StorageItem)item);
@@ -575,7 +576,7 @@ public class WorldManager implements TileBasedMap {
 //		return sx != tx && sy != ty ? 1f : 0.8f;
 //	}
 
-	public List<StorageItem> getDispensers() { return _dispenserItems; }
+	public List<FactoryItem> getFactories() { return _factoryItems; }
 
 	public Vector<DebugPos> getDebug() {
 		return _debugPath;
@@ -619,7 +620,7 @@ public class WorldManager implements TileBasedMap {
 		}
 	}
 
-	public BaseItem putItem(ItemInfo info, int x, int y) {
+	public ItemBase putItem(ItemInfo info, int x, int y) {
 		return putItem(info, _floor, x, y, 0);
 	}
 
@@ -695,7 +696,7 @@ public class WorldManager implements TileBasedMap {
 		return bestStorage;
 	}
 
-	public StorageItem getNearestStorage(int x, int y, BaseItem item) {
+	public StorageItem getNearestStorage(int x, int y, ItemBase item) {
 		StorageItem bestStorage = null;
 		int bestDistance = Integer.MAX_VALUE;
 		
@@ -884,17 +885,17 @@ public class WorldManager implements TileBasedMap {
 //		}
 	}
 
-	private boolean okErase(int tile) {
-		switch (tile) {
-		case 0:
-		case 36:
-		case 38:
-		case 39:
-		case 48:
-			return true;
-		}
-		return false;
-	}
+//	private boolean okErase(int tile) {
+//		switch (tile) {
+//		case 0:
+//		case 36:
+//		case 38:
+//		case 39:
+//		case 48:
+//			return true;
+//		}
+//		return false;
+//	}
 
 	public void removeResource(WorldResource resource) {
 		if (resource == null) {

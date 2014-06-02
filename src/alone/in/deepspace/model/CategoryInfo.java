@@ -3,6 +3,8 @@ package alone.in.deepspace.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import alone.in.deepspace.model.item.ItemInfo;
+
 public class CategoryInfo {
 	public List<ItemInfo> 	items;
 	public String			name;

@@ -128,16 +128,6 @@ public class CharacterManager implements ISavable {
 		return Gender.NONE;
 	}
 
-	private static Profession.Type getProfessionType(int index) {
-		if (index == 1) {return Profession.Type.ENGINEER; }
-		if (index == 2) {return Profession.Type.OPERATION; }
-		if (index == 3) {return Profession.Type.DOCTOR; }
-		if (index == 4) {return Profession.Type.SCIENCE; }
-		if (index == 5) {return Profession.Type.SECURITY; }
-		return Profession.Type.NONE;
-	}
-
-
 	public void	save(final String filePath) {
 		Log.info("Save characters: " + filePath);
 

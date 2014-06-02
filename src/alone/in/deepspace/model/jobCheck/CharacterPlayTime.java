@@ -2,8 +2,8 @@ package alone.in.deepspace.model.jobCheck;
 
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.UserItem;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.job.JobUse;
 import alone.in.deepspace.util.Constant;

@@ -3,9 +3,9 @@ package alone.in.deepspace.model.jobCheck;
 import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.job.JobTake;
 import alone.in.deepspace.model.job.JobUse;
@@ -21,7 +21,7 @@ public class CharacterIsHungry implements JobCheck {
 			filter.food = true;
 
 			// Have item in inventory
-			BaseItem item = character.find(filter);
+			ItemBase item = character.find(filter);
 			if (item != null) {
 				return JobUseInventory.create(character, item);
 			}

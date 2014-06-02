@@ -1,4 +1,4 @@
-package alone.in.deepspace.model;
+package alone.in.deepspace.model.item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +78,7 @@ public class ItemInfo {
 	public String				fileName;
 	public String 				packageName;
 	public List<ItemInfo> 		craftedFromItems;
-	public boolean 				isDispenser;
+	public boolean 				isFactory;
 	public boolean 				isStorage;
 	public boolean 				isDrink;
 	

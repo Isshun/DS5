@@ -18,10 +18,10 @@ import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.manager.WorldManager;
-import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Room;
-import alone.in.deepspace.model.StructureItem;
-import alone.in.deepspace.model.WorldResource;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.StructureItem;
+import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
@@ -39,7 +39,7 @@ public class WorldRenderer implements IRenderer {
 
 	private Set<Vector2i> 			_changed;
 	private WorldManager 			_worldMap;
-	private BaseItem _itemSelected;
+	private ItemBase _itemSelected;
 	private int _frame;
 
 	public WorldRenderer(SpriteManager spriteManager, UserInterface ui) throws IOException, TextureCreationException {
@@ -428,7 +428,7 @@ public class WorldRenderer implements IRenderer {
 
 		for (int x = fromX-1; x <= toX; x++) {
 			for (int y = fromY-1; y <= toY; y++) {
-				BaseItem item = _worldMap.getItem(x, y);
+				ItemBase item = _worldMap.getItem(x, y);
 				if (item != null) {
 					Sprite sprite = _spriteManager.getItem(item, item.getCurrentFrame());
 					if (sprite != null) {

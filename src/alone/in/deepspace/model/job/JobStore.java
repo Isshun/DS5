@@ -2,9 +2,9 @@ package alone.in.deepspace.model.job;
 
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.util.Log;
 
 public class JobStore extends Job {
@@ -48,7 +48,7 @@ public class JobStore extends Job {
 			return null;
 		}
 
-		BaseItem itemToStore = character.getInventory().get(0);
+		ItemBase itemToStore = character.getInventory().get(0);
 		StorageItem storage = ServiceManager.getWorldMap().getNearestStorage(character.getX(), character.getY(), itemToStore);
 		
 		return create(character, storage);

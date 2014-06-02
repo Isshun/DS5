@@ -2,9 +2,9 @@ package alone.in.deepspace.ui.panel;
 
 import java.util.List;
 
-import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.engine.ui.LinkView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
@@ -12,17 +12,11 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
 import alone.in.deepspace.model.job.Job;
-import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.StringUtils;
 
 public class PanelJobs extends BasePanel {
-	private static final Color 	COLOR_BUILD = new Color(170, 128, 64);
-	private static final Color 	COLOR_BLOCKED = new Color(255, 20, 20);
-	private static final Color 	COLOR_DESTROY = new Color(200, 20, 20);
-	private static final Color 	COLOR_STORE = new Color(180, 100, 255);
-	private static final Color 	COLOR_QUEUE = new Color(255, 255, 20);
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	private static final int 	NB_COLUMNS = 47;
@@ -30,52 +24,33 @@ public class PanelJobs extends BasePanel {
 	
 	private TextView 			_lbTitle;
 	private TextView 			_lbTitle2;
-	private UserInterface 		_ui;
 	private TextView[] 			_entries;
 	private int 				_nbRunningJob;
 	private int 				_nbRunningJobCandidat;
 
 	public PanelJobs(Mode mode) {
 		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+	}
+
+	@Override
+	protected void onCreate() {
 
 		_lbTitle = new TextView();
 		_lbTitle.setCharacterSize(FONT_SIZE_TITLE);
-		_lbTitle.setColor(COLOR_LABEL);
 		_lbTitle.setPosition(20, 18);
 		addView(_lbTitle);
 
 		_lbTitle2 = new TextView();
 		_lbTitle2.setCharacterSize(FONT_SIZE_TITLE);
-		_lbTitle2.setColor(COLOR_LABEL);
 		_lbTitle2.setPosition(20, 18);
 		addView(_lbTitle2);
 
 		_entries = new TextView[75];
 		for (int i = 0; i < 75; i++) {
-			_entries[i] = new TextView(new Vector2f(FRAME_WIDTH - 42, 16));
+			_entries[i] = new LinkView(new Vector2f(FRAME_WIDTH - 42, 16));
 			_entries[i].setCharacterSize(14);
-			_entries[i].setColor(COLOR_TEXT);
-			_entries[i].setOnFocusListener(new OnFocusListener() {
-				@Override
-				public void onExit(View view) {
-					((TextView)view).setStyle(TextView.REGULAR);
-					((TextView)view).setColor(COLOR_TEXT);
-					//view.setBackgroundColor(null);
-				}
-
-				@Override
-				public void onEnter(View view) {
-					((TextView)view).setStyle(TextView.UNDERLINED);
-					((TextView)view).setColor(COLOR_ACTIVE);
-					//view.setBackgroundColor(new Color(40, 40, 80));
-				}
-			});
 			addView(_entries[i]);
 		}
-	}
-
-	public void setUI(UserInterface userInterface) {
-		_ui = userInterface;
 	}
 
 	@Override
@@ -135,7 +110,7 @@ public class PanelJobs extends BasePanel {
 			public void onClick(View view) {
 				if (job.getCharacter() != null) {
 					close();
-					_ui.setCharacter(job.getCharacter());
+					_ui.select(job.getCharacter());
 				}
 			}
 		});
@@ -159,11 +134,5 @@ public class PanelJobs extends BasePanel {
 			}
 		}
 		text.setString(StringUtils.getDashedString(left, right, NB_COLUMNS));
-	}
-
-	@Override
-	protected void onCreate() {
-		// TODO Auto-generated method stub
-		
 	}
 }

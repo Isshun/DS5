@@ -1,28 +1,23 @@
-package alone.in.deepspace.model;
+package alone.in.deepspace.model.item;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ResourceManager;
-import alone.in.deepspace.model.character.Character;
-import alone.in.deepspace.model.job.Job;
 
 public class StorageItem extends UserItem {
-
-	private List<ItemInfo>	_accepts;
-	private List<BaseItem>	_inventory;
-	private	Job			_refillJob;
-	private boolean 		_acceptFood;
-	private boolean 		_acceptDrink;
-	private boolean 		_acceptConsomable;
-	private boolean 		_acceptGarbage;
-	private double			_itemProduceState;
-
+	protected List<ItemBase>	_inventory;
+	private List<ItemInfo>		_accepts;
+	private boolean 			_acceptFood;
+	private boolean 			_acceptDrink;
+	private boolean 			_acceptConsomable;
+	private boolean 			_acceptGarbage;
+	
 	public StorageItem(ItemInfo info) {
 		super(info);
 		
-		_inventory = new ArrayList<BaseItem>();
+		_inventory = new ArrayList<ItemBase>();
 		
 		if (info.onAction != null && info.onAction.storage > 0) {
 			_accepts = new ArrayList<ItemInfo>();
@@ -32,11 +27,11 @@ public class StorageItem extends UserItem {
 		}
 	}
 	
-	public List<BaseItem>	getItems() {
+	public List<ItemBase>	getItems() {
 		return _inventory;
 	}
 	
-	public BaseItem getFirst() {
+	public ItemBase getFirst() {
 		if (_inventory.size() > 0) {
 			return _inventory.get(0);
 		}
@@ -48,7 +43,7 @@ public class StorageItem extends UserItem {
 	}
 
 	public boolean contains(ItemFilter filter) {
-		for (BaseItem item: _inventory) {
+		for (ItemBase item: _inventory) {
 			if (item.matchFilter(filter)) {
 				return true;
 			}
@@ -56,8 +51,8 @@ public class StorageItem extends UserItem {
 		return false;
 	}
 
-	public BaseItem get(ItemFilter filter) {
-		for (BaseItem item: _inventory) {
+	public ItemBase get(ItemFilter filter) {
+		for (ItemBase item: _inventory) {
 			if (item.matchFilter(filter)) {
 				return item;
 			}
@@ -65,11 +60,11 @@ public class StorageItem extends UserItem {
 		return null;
 	}
 
-	public void remove(BaseItem item) {
+	public void remove(ItemBase item) {
 		_inventory.remove(item);
 	}
 	
-	public void addInventory(List<BaseItem> items) {
+	public void addInventory(List<ItemBase> items) {
 		_inventory.addAll(items);
 	}
 
@@ -81,12 +76,8 @@ public class StorageItem extends UserItem {
 		}
 	}
 
-	public boolean needRefill() {
-		return _info.onAction != null && _inventory.size() < _info.onAction.storage;
-	}
-
 	private boolean inventoryContains(ItemInfo info) {
-		for (BaseItem item: _inventory) {
+		for (ItemBase item: _inventory) {
 			if (item.getInfo() == info) {
 				return true;
 			}
@@ -94,45 +85,12 @@ public class StorageItem extends UserItem {
 		return false;
 	}
 
-	public boolean isWaitForRefill() {
-		return _refillJob != null && _refillJob.isFinish() == false;
-	}
-
-	public Job getRefillJob() {
-		return _refillJob;
-	}
-
-	public void setRefillJob(Job job) {
-		_refillJob = job;
-	}
-
-	public List<BaseItem> getInventory() {
+	public List<ItemBase> getInventory() {
 		return _inventory;
 	}
-	@Override
-	public UserItem use(Character character, int durationLeft) {
-		super.use(character, durationLeft);
-		
-		if (_info.onAction != null && _info.onAction.itemsProduce != null) {
-			ItemInfo itemToProduce = _info.onAction.itemsProduce.get(0);
-			_itemProduceState += (double)itemToProduce.craftedQuantitfy / _info.onAction.duration;
-			if (_itemProduceState >= 1) {
-				_itemProduceState -= 1;
-				
-				// TODO: get most common component
-				BaseItem component = takeFromInventory(itemToProduce.craftedFromItems.get(0));
-				if (component != null) {
-					return new UserItem(itemToProduce);
-				}
-			}
-		}
-		
-		return null;
-	}
 
-
-	private BaseItem takeFromInventory(ItemInfo itemInfo) {
-		for (BaseItem item: _inventory) {
+	protected ItemBase takeFromInventory(ItemInfo itemInfo) {
+		for (ItemBase item: _inventory) {
 			if (item.getInfo() == itemInfo) {
 				_inventory.remove(item);
 				return item;
@@ -177,7 +135,7 @@ public class StorageItem extends UserItem {
 	public boolean acceptConsomable() { return _acceptConsomable; }
 	public boolean acceptGarbage() { return _acceptGarbage; }
 
-	public boolean accept(BaseItem item) {
+	public boolean accept(ItemBase item) {
 		if (item == null) {
 			return false;
 		}

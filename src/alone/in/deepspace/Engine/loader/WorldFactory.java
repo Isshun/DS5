@@ -9,7 +9,7 @@ import java.util.Random;
 
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.WorldManager;
-import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.util.Constant;
 
 public class WorldFactory {

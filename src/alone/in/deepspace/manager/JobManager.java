@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.Game;
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.ItemInfo;
-import alone.in.deepspace.model.StorageItem;
-import alone.in.deepspace.model.UserItem;
-import alone.in.deepspace.model.WorldResource;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.FactoryItem;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.StorageItem;
+import alone.in.deepspace.model.item.UserItem;
+import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.job.Job.Abort;
 import alone.in.deepspace.model.job.Job.JobStatus;
@@ -27,7 +28,7 @@ import alone.in.deepspace.model.jobCheck.CharacterIsFull;
 import alone.in.deepspace.model.jobCheck.CharacterIsHungry;
 import alone.in.deepspace.model.jobCheck.CharacterIsTired;
 import alone.in.deepspace.model.jobCheck.CharacterPlayTime;
-import alone.in.deepspace.model.jobCheck.CheckEmptyDispenser;
+import alone.in.deepspace.model.jobCheck.CheckEmptyFactory;
 import alone.in.deepspace.model.jobCheck.CheckLowFood;
 import alone.in.deepspace.model.jobCheck.JobCheck;
 import alone.in.deepspace.util.Log;
@@ -42,7 +43,7 @@ public class JobManager {
 
 	private JobCheck[]		_jobsCheck = {
 			new CheckLowFood(),
-			new CheckEmptyDispenser()			
+			new CheckEmptyFactory()			
 	};
 
 	private JobCheck[]		_routineJobsCheck = {
@@ -68,7 +69,7 @@ public class JobManager {
 
 	public List<Job>	getJobs() { return _jobs; };
 
-	public Job	addBuild(BaseItem item) {
+	public Job	addBuild(ItemBase item) {
 		if (item == null) {
 			Log.error("JobManager: build on null item");
 			return null;
@@ -104,7 +105,7 @@ public class JobManager {
 		return job;
 	}
 
-	public void	removeJob(BaseItem item) {
+	public void	removeJob(ItemBase item) {
 		List<Job> toRemove = new ArrayList<Job>();
 
 		for (Job job: _jobs) {
@@ -119,11 +120,11 @@ public class JobManager {
 	}
 
 	public Job	build(ItemInfo info, int x, int y) {
-		BaseItem item = null;
+		ItemBase item = null;
 
 		// Structure
 		if (info.isStructure) {
-			BaseItem current = ServiceManager.getWorldMap().getStructure(x, y);
+			ItemBase current = ServiceManager.getWorldMap().getStructure(x, y);
 			if (current != null && current.getInfo().equals(info)) {
 				Log.error("Build structure: already exist on this area");
 				return null;
@@ -133,7 +134,7 @@ public class JobManager {
 
 		// Item
 		else if (info.isUserItem) {
-			BaseItem current = ServiceManager.getWorldMap().getItem(x, y);
+			ItemBase current = ServiceManager.getWorldMap().getItem(x, y);
 			if (current != null && current.getInfo().equals(info)) {
 				Log.error("Build item: already exist on this area");
 				return null;
@@ -151,8 +152,8 @@ public class JobManager {
 
 		// Resource
 		else if (info.isResource) {
-			BaseItem currentItem = ServiceManager.getWorldMap().getItem(x, y);
-			BaseItem currentRessource = ServiceManager.getWorldMap().getRessource(x, y);
+			ItemBase currentItem = ServiceManager.getWorldMap().getItem(x, y);
+			ItemBase currentRessource = ServiceManager.getWorldMap().getRessource(x, y);
 			if (currentRessource != null && currentRessource.getInfo().equals(info)) {
 				Log.error("Build item: already exist on this area");
 				return null;
@@ -295,7 +296,7 @@ public class JobManager {
 
 		// Abort because factory is out of components
 		if (reason == Abort.NO_COMPONENTS) {
-			addRefillJob((StorageItem)job.getItem());
+			addRefillJob((FactoryItem)job.getItem());
 		}
 
 		// Job is invalid, don't resume
@@ -320,8 +321,8 @@ public class JobManager {
 		job.setCharacter(null);
 	}
 
-	public void addRefillJob(StorageItem dispenser) {
-		if (dispenser == null || dispenser.isFactory() == false) {
+	public void addRefillJob(FactoryItem factory) {
+		if (factory == null) {
 			Log.error("addRefillJob: item is null or invalid");
 			return;
 		}
@@ -329,10 +330,10 @@ public class JobManager {
 		// Looking for storage containing accepted item
 		StorageItem storage = null;
 		ItemFilter itemFilter = new ItemFilter(true, true); 
-		for (ItemInfo neededItemInfo: dispenser.getInfo().onAction.itemAccept) {
+		for (ItemInfo neededItemInfo: factory.getInfo().onAction.itemAccept) {
 			if (storage == null) {
 				itemFilter.neededItem = neededItemInfo;
-				storage = ServiceManager.getWorldMap().findStorageContains(itemFilter, dispenser.getX(), dispenser.getY());
+				storage = ServiceManager.getWorldMap().findStorageContains(itemFilter, factory.getX(), factory.getY());
 			}
 		}
 
@@ -342,7 +343,7 @@ public class JobManager {
 		}
 
 		// Create jobs if needed item is available
-		Job job = createRefillJob(null, storage, itemFilter, dispenser);
+		Job job = createRefillJob(null, storage, itemFilter, factory);
 		if (job != null) {
 			addJob(job);
 		}
@@ -415,7 +416,7 @@ public class JobManager {
 		_jobs.clear();
 	}
 
-	public void addDestroyJob(BaseItem item) {
+	public void addDestroyJob(ItemBase item) {
 		Job job = JobDestroy.create(item);
 		addJob(job);
 	}
@@ -459,7 +460,7 @@ public class JobManager {
 		return null;
 	}
 
-	public void addRoutineItem(BaseItem item) {
+	public void addRoutineItem(ItemBase item) {
 		// TODO
 		//_routineItems.add(item);
 	}
@@ -495,8 +496,8 @@ public class JobManager {
 		return job;
 	}
 
-	public Job createRefillJob(Character character, StorageItem storage, ItemFilter filter, StorageItem dispenser) {
-		Job job = JobRefill.create(dispenser, storage, filter);
+	public Job createRefillJob(Character character, StorageItem storage, ItemFilter filter, FactoryItem factory) {
+		Job job = JobRefill.create(factory, storage, filter);
 		if (job != null) {
 			job.setCharacterRequire(character);
 		}
@@ -546,7 +547,7 @@ public class JobManager {
 		return _nbVisibleJob;
 	}
 
-	public Job addUseJob(BaseItem item) {
+	public Job addUseJob(ItemBase item) {
 		Job job = JobUse.create(item);
 		if (job != null) {
 			addJob(job);

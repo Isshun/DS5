@@ -3,10 +3,10 @@ package alone.in.deepspace.model.job;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.StorageItem;
-import alone.in.deepspace.model.StructureItem;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.StorageItem;
+import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Log;
 
@@ -16,7 +16,7 @@ public class JobBuild extends Job {
 		super(x, y);
 	}
 
-	public static Job create(BaseItem item) {
+	public static Job create(ItemBase item) {
 		Job job = new JobBuild(item.getX(), item.getY());
 		job.setAction(JobManager.Action.BUILD);
 		job.setItem(item);
@@ -62,7 +62,7 @@ public class JobBuild extends Job {
 
 		// Item is no longer exists
 		StructureItem currentStructure = ServiceManager.getWorldMap().getStructure(_posX, _posY);
-		BaseItem currentItem = ServiceManager.getWorldMap().getItem(_posX, _posY);
+		ItemBase currentItem = ServiceManager.getWorldMap().getItem(_posX, _posY);
 		if (_item != currentStructure && _item != currentItem) {
 			if (_item != currentStructure) {
 				Log.warning("Character #" + character.getId() + ": actionBuild on invalide structure");

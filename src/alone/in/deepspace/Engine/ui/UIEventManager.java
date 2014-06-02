@@ -1,11 +1,8 @@
-package alone.in.deepspace.manager;
+package alone.in.deepspace.engine.ui;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import alone.in.deepspace.engine.ui.OnClickListener;
-import alone.in.deepspace.engine.ui.OnFocusListener;
-import alone.in.deepspace.engine.ui.View;
 
 
 public class UIEventManager {

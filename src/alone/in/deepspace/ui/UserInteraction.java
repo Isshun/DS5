@@ -18,9 +18,9 @@ import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Cursor;
-import alone.in.deepspace.model.ItemInfo;
-import alone.in.deepspace.model.StructureItem;
-import alone.in.deepspace.model.WorldResource;
+import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.StructureItem;
+import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.util.Log;
 

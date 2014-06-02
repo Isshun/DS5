@@ -17,9 +17,9 @@ import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.StructureItem;
-import alone.in.deepspace.model.WorldArea;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.StructureItem;
+import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.util.Constant;
 
 public class LightRenderer implements IRenderer {
@@ -124,7 +124,7 @@ public class LightRenderer implements IRenderer {
 		refresh(0, 0, width, height);
 	}
 
-	public void refresh(BaseItem item) {
+	public void refresh(ItemBase item) {
 		
 		// TODO
 //		refresh(item.getX() - item.getLight(),

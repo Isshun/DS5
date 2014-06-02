@@ -1,4 +1,5 @@
-package alone.in.deepspace.model;
+package alone.in.deepspace.model.item;
+
 
 public class WorldResource extends UserItem {
 	private int		_value;

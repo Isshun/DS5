@@ -11,6 +11,7 @@ import org.jsfml.window.Keyboard.Key;
 
 import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.ColorView;
+import alone.in.deepspace.engine.ui.Colors;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.LinkView;
 import alone.in.deepspace.engine.ui.OnClickListener;
@@ -20,7 +21,7 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.CategoryInfo;
-import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.StringUtils;
@@ -91,6 +92,7 @@ public class PanelBuild extends BasePanel {
 			lbTitle.setDashedString(c.labelWithoutShortcut.toUpperCase(), c.items.size() + " items", NB_COLUMNS_TITLE);
 			lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 			lbTitle.setPosition(new Vector2f(20, posY + 8));
+			lbTitle.setColor(Colors.TEXT);
 			lbTitle.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
@@ -100,16 +102,16 @@ public class PanelBuild extends BasePanel {
 			addView(lbTitle);
 
 			// Shortcut
-			TextView lbShortcut = new LinkView();
+			TextView lbShortcut = new TextView();
 			lbShortcut.setString(c.shortcut.toUpperCase());
 			lbShortcut.setCharacterSize(FONT_SIZE_TITLE);
-			lbShortcut.setColor(COLOR_ACTIVE);
+			lbShortcut.setColor(Colors.LINK_ACTIVE);
 			lbShortcut.setPosition(new Vector2f(c.shortcutPos * 12 + 20, posY + 8));
 			addView(lbShortcut);
 
 			// Underline -- because at FONT_SIZE_TITLE regular underline get bold state...
 			View underline = new ColorView(new Vector2f(12, 1));
-			underline.setBackgroundColor(COLOR_ACTIVE);
+			underline.setBackgroundColor(Colors.LINK_ACTIVE);
 			underline.setPosition(new Vector2f(c.shortcutPos * 12 + 20, posY + 33));
 			addView(underline);
 
@@ -174,6 +176,7 @@ public class PanelBuild extends BasePanel {
 			icon.setIcon(SpriteManager.getInstance().getIcon(info));
 			icon.setIconPadding(14, 10);
 			icon.setPosition(x, y);
+			icon.setColor(Colors.TEXT);
 			icon.setCharacterSize(FONT_SIZE);
 			icon.setBackgroundColor(COLOR_INACTIVE);
 			icon.setBorderSize(2);
@@ -202,7 +205,7 @@ public class PanelBuild extends BasePanel {
 
 			TextView lbIndex = new TextView();
 			lbIndex.setString(String.valueOf(index+1));
-			lbIndex.setColor(COLOR_ACTIVE);
+			lbIndex.setColor(Colors.LINK_ACTIVE);
 			lbIndex.setStyle(TextView.UNDERLINED);
 			lbIndex.setCharacterSize(FONT_SIZE);
 			lbIndex.setPosition(x+4, y);

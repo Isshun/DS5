@@ -3,6 +3,7 @@ package alone.in.deepspace.model;
 import java.util.List;
 
 import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.item.ItemInfo;
 
 public class GameData {
 

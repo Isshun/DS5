@@ -3,10 +3,10 @@ package alone.in.deepspace.model.job;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Profession;
-import alone.in.deepspace.model.WorldResource;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.UserItem;
+import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.util.Log;
 
 public class JobMining extends Job {
@@ -99,7 +99,7 @@ public class JobMining extends Job {
 			return true;
 		}
 		
-		character.addInventory(new BaseItem(gatheredItem.getInfo().onMine.itemProduce));
+		character.addInventory(new UserItem(gatheredItem.getInfo().onMine.itemProduce));
 		
 		return false;
 	}

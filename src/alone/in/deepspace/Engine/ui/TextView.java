@@ -32,6 +32,7 @@ public class TextView extends View {
 	private void init() {
 		_text = new Text();
 		_text.setFont(SpriteManager.getInstance().getFont());
+		_text.setColor(Colors.TEXT);
 	}
 
 	public void setString(String string) {

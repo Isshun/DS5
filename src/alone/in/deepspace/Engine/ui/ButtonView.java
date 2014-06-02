@@ -18,13 +18,16 @@ public class ButtonView extends View {
 	private Sprite 			_icon;
 	protected int 			_iconPaddingLeft;
 	protected int 			_iconPaddingTop;
-	private RectangleShape _overlay;
+	private RectangleShape 	_overlay;
 
 	public ButtonView(Vector2f size) {
 		super(size);
 
 		_text = new Text();
 		_text.setFont(SpriteManager.getInstance().getFont());
+
+		setBackgroundColor(Colors.BT_INACTIVE);
+		setColor(Colors.BT_TEXT);
 	}
 
 	public void setString(String string) {
@@ -48,6 +51,29 @@ public class ButtonView extends View {
 //		}
 //	}
 
+	@Override
+	public void setOnFocusListener(final OnFocusListener onFocusListener) {
+		super.setOnFocusListener(new OnFocusListener() {
+			private Color _color;
+			
+			@Override
+			public void onEnter(View view) {
+				_color = _backgroundColor;
+				view.setBackgroundColor(new Color(29, 85, 96, 180));
+				if (onFocusListener != null) {
+					onFocusListener.onExit(view);
+				}
+			}
+
+			@Override
+			public void onExit(View view) {
+				view.setBackgroundColor(_color);
+				if (onFocusListener != null) {
+					onFocusListener.onExit(view);
+				}
+			}
+		});
+	}
 	public void setPosition(Vector2f pos) {
 		super.setPosition(pos);
 		if (_icon != null) {

@@ -5,23 +5,25 @@ import java.io.IOException;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
+import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.event.Event;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.Main;
 import alone.in.deepspace.engine.Viewport;
+import alone.in.deepspace.engine.ui.UIEventManager;
 import alone.in.deepspace.engine.ui.UIMessage;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.manager.UIEventManager;
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.ItemInfo;
 import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.ToolTips.ToolTip;
-import alone.in.deepspace.model.WorldArea;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.ui.panel.BasePanel;
+import alone.in.deepspace.ui.panel.PanelBase;
 import alone.in.deepspace.ui.panel.PanelBuild;
 import alone.in.deepspace.ui.panel.PanelCharacter;
 import alone.in.deepspace.ui.panel.PanelCrew;
@@ -30,6 +32,7 @@ import alone.in.deepspace.ui.panel.PanelDebugItem;
 import alone.in.deepspace.ui.panel.PanelInfo;
 import alone.in.deepspace.ui.panel.PanelJobs;
 import alone.in.deepspace.ui.panel.PanelPlan;
+import alone.in.deepspace.ui.panel.PanelPlan.PanelMode;
 import alone.in.deepspace.ui.panel.PanelResource;
 import alone.in.deepspace.ui.panel.PanelRoom;
 import alone.in.deepspace.ui.panel.PanelScience;
@@ -61,7 +64,6 @@ public class UserInterface {
 	private PanelResource 				_panelResource;
 	private PanelRoom 					_panelRoom;
 	private UIMessage 					_message;
-	private PanelDebugItem 				_panelDebugItems;
 	private Mode 						_mode;
 	private ContextualMenu 				_menu;
 	private Game 						_game;
@@ -87,9 +89,12 @@ public class UserInterface {
 	};
 
 	private PanelBuild _panelBuild;
-	private PanelPlan _panelPlan;
-	private PanelCharacter _panelCharacter;
-	private PanelInfo _panelInfo;
+	private Character 	_selectedCharacter;
+	private ItemBase 	_selectedItem;
+	private ToolTip 	_selectedTooltip;
+	private ItemInfo 	_selectedItemInfo;
+	private WorldArea 	_selectedArea;
+	private PanelMode 	_selectedPlan;
 	
 	public enum Mode {
 		INFO,
@@ -128,22 +133,8 @@ public class UserInterface {
 			if (Mode.BUILD.equals(panel.getMode())) {
 				_panelBuild = (PanelBuild)panel;
 			}
-			else if (Mode.CREW.equals(panel.getMode())) {
-			}
-			else if (Mode.PLAN.equals(panel.getMode())) {
-				_panelPlan = (PanelPlan)panel;
-			}
-			else if (Mode.CHARACTER.equals(panel.getMode())) {
-				_panelCharacter = (PanelCharacter)panel;
-			}
-			else if (Mode.INFO.equals(panel.getMode())) {
-				_panelInfo = (PanelInfo)panel;
-			}
 			else if (Mode.ROOM.equals(panel.getMode())) {
 				_panelRoom = (PanelRoom)panel;
-			}
-			else if (Mode.TOOLTIP.equals(panel.getMode())) {
-				_panelTooltip = (PanelTooltip)panel;
 			}
 		}
 
@@ -177,9 +168,10 @@ public class UserInterface {
 		}
 
 		for (BasePanel panel: _panels) {
-			panel.catchClick(x, y);
-			_keyLeftPressed = false;
-			return;
+			if (panel.catchClick(x, y)) {
+				_keyLeftPressed = false;
+				return;
+			}
 		}
 
 		_keyLeftPressed = true;
@@ -198,13 +190,18 @@ public class UserInterface {
 		_viewport.startMove(x, y);
 	}
 
-	public int getRelativePosX(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
-	public int getRelativePosY(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
-	public int getRelativePosXMax(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMinScale() / Constant.TILE_WIDTH); }
-	public int getRelativePosYMax(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMinScale() / Constant.TILE_HEIGHT); }
-	public int getRelativePosXMin(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
-	public int getRelativePosYMin(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
-
+	public int 			getRelativePosX(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
+	public int 			getRelativePosY(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
+	public int 			getRelativePosXMax(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMinScale() / Constant.TILE_WIDTH); }
+	public int 			getRelativePosYMax(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMinScale() / Constant.TILE_HEIGHT); }
+	public int 			getRelativePosXMin(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
+	public int 			getRelativePosYMin(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
+	public Character 	getSelectedCharacter() { return _selectedCharacter; }
+	public WorldArea	getSelectedArea() { return _selectedArea; }
+	public ItemBase 	getSelectedItem() { return _selectedItem; }
+	public ItemInfo		getSelectedItemInfo() { return _selectedItemInfo; }
+	public ToolTip		getSelectedTooltip() { return _selectedTooltip; }
+	
 	public void toogleMode(Mode mode) {
 		setMode(_mode != mode ? mode : Mode.NONE);
 	}
@@ -246,7 +243,7 @@ public class UserInterface {
 		}
 
 		if (_mouseOnMap) {
-			if (_panelBuild.getPanelMode() != PanelBuild.PanelMode.NONE || _panelPlan.getPanelMode() != PanelPlan.PanelMode.NONE) {
+			if (_panelBuild.getPanelMode() != PanelBuild.PanelMode.NONE || _selectedPlan != null) {
 				if (_keyLeftPressed) {
 					_interaction.drawCursor(Math.min(_keyPressPosX, _keyMovePosX),
 							Math.min(_keyPressPosY, _keyMovePosY),
@@ -285,143 +282,119 @@ public class UserInterface {
 		}
 	}
 
-	public boolean checkKeyboard(Event	event, int frame, int lastInput) {
+	public boolean checkKeyboard(Key key, int frame, int lastInput) {
 
-		if (event.asKeyEvent().key == Keyboard.Key.ADD) {
+		for (BasePanel panel: _panels) {
+			if (panel.checkKey(key)) {
+				return true;
+			}
+		}
+		
+		switch (key) {
+
+		case ADD:
 			if (Main.getUpdateInterval() - 40 > 0) {
 				Main.setUpdateInterval(Main.getUpdateInterval() - 40);
 			} else {
 				Main.setUpdateInterval(0);
 			}
-		}
+			return true;
 
-		if (event.asKeyEvent().key == Keyboard.Key.SUBTRACT) {
+		case SUBTRACT:
 			Main.setUpdateInterval(Main.getUpdateInterval() + 40);
-		}
-
-		if (event.asKeyEvent().key == Keyboard.Key.ESCAPE) {
+			return true;
+			
+		case ESCAPE:
 			setMode(Mode.NONE);
-		}
-
-		if (event.asKeyEvent().key == Keyboard.Key.BACKSPACE) {
-
-		}
-
-
-		if (_interaction.getMode() != UserInteraction.Mode.NONE) {
-			if (event.type == Event.Type.KEY_RELEASED && event.asKeyEvent().key == Keyboard.Key.ESCAPE) {
-				//		  _interaction.cancel();
-				return true;
-			}
-		}
-
-
-		if (event.asKeyEvent().key == Keyboard.Key.ESCAPE || event.asKeyEvent().key == Keyboard.Key.BACKSPACE) {
-			setMode(Mode.NONE);
-			//			if (_mode != Mode.NONE) {
-			//				setMode(Mode.NONE);
-			//			} else {
-			//				//_game.setRunning(!_game.isRunning());
-			//			}
 			return true;
-		}
 
-		if (event.asKeyEvent().key == Keyboard.Key.TAB) {
-			if ((event.type == Event.Type.KEY_RELEASED)) {
-				if (_panelCharacter.getCharacter() != null) {
-					_panelCharacter.select(_characteres.getNext(_panelCharacter.getCharacter()));
-				}
+		case BACKSPACE:
+			return true;
+
+		case TAB:
+			if (_selectedCharacter != null) {
+				_selectedCharacter = _characteres.getNext(_selectedCharacter);
 			}
 			return true;
-		}
 
-		if (event.asKeyEvent().key == Keyboard.Key.PAGEUP) {
-			if ((event.type == Event.Type.KEY_RELEASED)) {
-				ServiceManager.getWorldMap().upFloor();
-			}
+		case PAGEUP:
+			ServiceManager.getWorldMap().upFloor();
 			return true;
-		}
 
-		if (event.asKeyEvent().key == Keyboard.Key.SPACE) {
-			if ((event.type == Event.Type.KEY_RELEASED)) {
-				_game.setRunning(_game.isRunning());
-			}
+		case PAGEDOWN:
+			ServiceManager.getWorldMap().downFloor();
 			return true;
-		}
 
-		if (event.asKeyEvent().key == Keyboard.Key.PAGEDOWN) {
-			if ((event.type == Event.Type.KEY_RELEASED)) {
-				ServiceManager.getWorldMap().downFloor();
-			}
+		case SPACE:
+			_game.setRunning(!_game.isRunning());
 			return true;
-		}
 
-		if (event.asKeyEvent().key == Keyboard.Key.D) {
+		case D:
 			Settings.getInstance().setDebug(!Settings.getInstance().isDebug());
 			if (Settings.getInstance().isDebug()) {
 				toogleMode(Mode.DEBUG);
-			} else {
-				toogleMode(_panelCharacter.getCharacter() != null ? Mode.CHARACTER : Mode.INFO);
 			}
-			// 	ServiceManager.getWorldMap().dump();
-		}	
-		else if (event.asKeyEvent().key == Keyboard.Key.C) {
+			return true;
+
+		case C:
 			toogleMode(Mode.CREW);
-		}
-		else if (event.asKeyEvent().key == Keyboard.Key.I) {
-			_panelDebugItems.toogle();
-		}
-		else if (event.asKeyEvent().key == Keyboard.Key.BACKSPACE) {
-			_panelDebugItems.reset();
-		}
-		else if (event.asKeyEvent().key == Keyboard.Key.E || event.asKeyEvent().key == Keyboard.Key.B) {
+			return true;
+
+		case B:
 			toogleMode(Mode.BUILD);
-		}
-		else if (event.asKeyEvent().key == Keyboard.Key.R) {
+			return true;
+
+		case R:
 			toogleMode(Mode.ROOM);
-		}
-		else if (event.asKeyEvent().key == Keyboard.Key.S) {
+			return true;
+
+		case S:
 			toogleMode(Mode.STATS);
-		}
-		else if (event.asKeyEvent().key == Keyboard.Key.P) {
+			return true;
+
+		case P:
 			toogleMode(Mode.PLAN);
-		}
-		else if (event.asKeyEvent().key == Keyboard.Key.J) {
+			return true;
+
+		case O:
 			toogleMode(Mode.JOBS);
+			return true;
+			
+		default:
+			return false;
 		}
+
 		//	  else if (event.asKeyEvent().key == Keyboard.Key.I) {
 		//		ServiceManager.getWorldMap().dumpItems();
 		//	  }
-		else if (event.asKeyEvent().key == Keyboard.Key.UP) {
-			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
-				_viewport.update(0, Constant.MOVE_VIEW_OFFSET);
-				lastInput = frame;
-				// _cursor._y--;
-			}
-		}
-		else if (event.asKeyEvent().key == Keyboard.Key.DOWN) {
-			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
-				_viewport.update(0, -Constant.MOVE_VIEW_OFFSET);
-				lastInput = frame;
-				// _cursor._y++;
-			}
-		}
-		else if (event.asKeyEvent().key == Keyboard.Key.RIGHT) {
-			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
-				_viewport.update(-Constant.MOVE_VIEW_OFFSET, 0);
-				lastInput = frame;
-				// _cursor._x++;
-			}
-		}
-		else if (event.asKeyEvent().key == Keyboard.Key.LEFT) {
-			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (event.type == Event.Type.KEY_PRESSED)) {
-				_viewport.update(Constant.MOVE_VIEW_OFFSET, 0);
-				lastInput = frame;
-				// _cursor._x--;
-			}
-		}
-
-		return false;
+//		else if (key == Keyboard.Key.UP) {
+//			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (key.type == Event.Type.KEY_PRESSED)) {
+//				_viewport.update(0, Constant.MOVE_VIEW_OFFSET);
+//				lastInput = frame;
+//				// _cursor._y--;
+//			}
+//		}
+//		else if (key == Keyboard.Key.DOWN) {
+//			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (key.type == Event.Type.KEY_PRESSED)) {
+//				_viewport.update(0, -Constant.MOVE_VIEW_OFFSET);
+//				lastInput = frame;
+//				// _cursor._y++;
+//			}
+//		}
+//		else if (key == Keyboard.Key.RIGHT) {
+//			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (key.type == Event.Type.KEY_PRESSED)) {
+//				_viewport.update(-Constant.MOVE_VIEW_OFFSET, 0);
+//				lastInput = frame;
+//				// _cursor._x++;
+//			}
+//		}
+//		else if (key == Keyboard.Key.LEFT) {
+//			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (key.type == Event.Type.KEY_PRESSED)) {
+//				_viewport.update(Constant.MOVE_VIEW_OFFSET, 0);
+//				lastInput = frame;
+//				// _cursor._x--;
+//			}
+//		}
 	}
 
 	public static UserInterface getInstance() {
@@ -445,8 +418,8 @@ public class UserInterface {
 
 		WorldArea area = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
 		if (area != null) {
-			BaseItem item = area.getItem();
-			BaseItem structure = area.getStructure();
+			ItemBase item = area.getItem();
+			ItemBase structure = area.getStructure();
 
 			if (item != null) {
 				item.nextMode();
@@ -466,7 +439,7 @@ public class UserInterface {
 		_keyLeftPressed = false;
 
 		// Plan gather
-		if (_panelPlan.getPanelMode() == PanelPlan.PanelMode.GATHER) {
+		if (_selectedPlan == PanelPlan.PanelMode.GATHER) {
 			_interaction.planGather(
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
@@ -476,7 +449,7 @@ public class UserInterface {
 		}
 
 		// Plan mining
-		if (_panelPlan.getPanelMode() == PanelPlan.PanelMode.MINING) {
+		if (_selectedPlan == PanelPlan.PanelMode.MINING) {
 			_interaction.planMining(
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
@@ -486,7 +459,7 @@ public class UserInterface {
 		}
 
 		// Plan dump
-		if (_panelPlan.getPanelMode() == PanelPlan.PanelMode.DUMP) {
+		if (_selectedPlan == PanelPlan.PanelMode.DUMP) {
 			_interaction.planDump(
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
@@ -555,30 +528,22 @@ public class UserInterface {
 		// Select character
 		if (_interaction.getMode() == UserInteraction.Mode.NONE) {// && _menu.getCode() == UserInterfaceMenu.CODE_MAIN) {
 			Character c = _characteres.getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
-			if (c != null && c != _panelCharacter.getCharacter()) {
+			if (c != null && c != _selectedCharacter) {
 				select(c);
 			}
 			else  {
-				_panelCharacter.select(null);
+				_selectedCharacter = null;
 
 				WorldArea a = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
 				if (a != null) {
-					_panelInfo.select(a);
-					//				if (_panelInfo.getArea() == a && _panelInfo.getItem() == null && a.getItem() != null) {
-					//				  _panelInfo.setItem(a.getItem());
-					//				} else {
-					//				  _panelInfo.setItem(null);
-					//				}
-					toogleMode(Mode.INFO);
+					if (a.getItem() != null) { select(a.getItem()); }
+					else if (a.getStructure() != null) { select(a.getStructure()); }
+					else if (a.getRessource() != null) { select(a.getRessource()); }
+					else { select(a); }
 				}
 			}
 		}
 
-	}
-
-	public void setCharacter(Character c) {
-		_panelCharacter.select(c);
-		toogleMode(Mode.CHARACTER);
 	}
 
 	public void onRightClick(int x, int y) {
@@ -611,7 +576,7 @@ public class UserInterface {
 
 			_panelBuild.select(null);
 			_panelRoom.select(null);
-			_panelPlan.setMode(PanelPlan.PanelMode.NONE);
+			_selectedPlan = PanelPlan.PanelMode.NONE;
 			toogleMode(Mode.NONE);
 		}
 
@@ -622,24 +587,49 @@ public class UserInterface {
 		return _mode;
 	}
 
+	private void cleanSelect() {
+		_selectedPlan = null;
+		_selectedArea = null;
+		_selectedCharacter = null;
+		_selectedItem = null;
+		_selectedItemInfo = null;
+		_selectedTooltip = null;
+	}
+
 	public void select(ItemInfo itemInfo) {
+		cleanSelect();
 		setMode(Mode.INFO);
-		_panelInfo.select(itemInfo);
+		_selectedItemInfo = itemInfo;
 	}
 
 	public void select(Character character) {
+		cleanSelect();
 		setMode(Mode.CHARACTER);
-		_panelCharacter.select(character);
+		_selectedCharacter = character;
 	}
 
-	public void select(BaseItem item) {
+	public void select(ItemBase item) {
+		cleanSelect();
 		setMode(Mode.INFO);
-		_panelInfo.select(item);
+		_selectedItem = item;
 	}
 
-	public void select(ToolTip toolTip) {
-		_panelTooltip.select(toolTip);
+	public void select(WorldArea area) {
+		cleanSelect();
+		setMode(Mode.INFO);
+		_selectedArea = area;
+	}
+
+	public void select(ToolTip tooltip) {
+		cleanSelect();
 		setMode(Mode.TOOLTIP);
+		_selectedTooltip = tooltip;
+	}
+	
+	public void select(PanelPlan.PanelMode plan) {
+		cleanSelect();
+		setMode(Mode.PLAN);
+		_selectedPlan = plan;
 	}
 
 	public Game getGame() {

@@ -2,8 +2,8 @@ package alone.in.deepspace.model.job;
 
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ResourceManager;
-import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -13,7 +13,7 @@ public class JobUseInventory extends Job {
 		super(x, y);
 	}
 
-	public static Job create(Character character, BaseItem item) {
+	public static Job create(Character character, ItemBase item) {
 		if (!item.getInfo().isConsomable) {
 			return null;
 		}

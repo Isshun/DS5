@@ -22,12 +22,12 @@ import com.thoughtworks.xstream.XStream;
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.WorldManager;
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.StorageItem;
-import alone.in.deepspace.model.StructureItem;
-import alone.in.deepspace.model.UserItem;
-import alone.in.deepspace.model.WorldArea;
-import alone.in.deepspace.model.WorldResource;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.StorageItem;
+import alone.in.deepspace.model.item.StructureItem;
+import alone.in.deepspace.model.item.UserItem;
+import alone.in.deepspace.model.item.WorldArea;
+import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.util.Log;
 
 public class WorldSaver {
@@ -146,7 +146,7 @@ public class WorldSaver {
 				areaSave.item.storage.acceptDrink = storage.acceptDrink();
 				areaSave.item.storage.acceptConsomable = storage.acceptConsomable();
 				areaSave.item.storage.acceptGarbage = storage.acceptGarbage();
-				for (BaseItem storredItem: storage.getInventory()) {
+				for (ItemBase storredItem: storage.getInventory()) {
 					areaSave.item.storage.inventory.add(storredItem.getName());
 				}
 			}
@@ -200,7 +200,7 @@ public class WorldSaver {
 		    	if (area != null) {
 		    		// UserItem
 		    		if (area.item != null) {
-		    			BaseItem item = worldManager.putItem(area.item.name, area.x, area.y, area.z, area.item.matter);
+		    			ItemBase item = worldManager.putItem(area.item.name, area.x, area.y, area.z, area.item.matter);
 		    			if (area.item.storage != null) {
 		    				StorageItem storage = ((StorageItem)item);
 		    				storage.setStorageFilter(area.item.storage.acceptFood,
@@ -220,7 +220,7 @@ public class WorldSaver {
 
 		    		// Resource
 		    		if (area.resource != null) {
-		    			BaseItem item = worldManager.putItem(area.resource.name, area.x, area.y, area.z, area.resource.matter);
+		    			ItemBase item = worldManager.putItem(area.resource.name, area.x, area.y, area.z, area.resource.matter);
 		    			if (item != null) {
 			    			((WorldResource)item).setTile(area.resource.tile);
 		    			}

@@ -8,9 +8,6 @@ import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.engine.renderer.MainRenderer;
-import alone.in.deepspace.manager.UIEventManager;
-import alone.in.deepspace.model.ItemInfo;
 
 public abstract class View {
 	protected Vector2f 		_pos;
@@ -26,14 +23,14 @@ public abstract class View {
 	protected int 			_paddingRight;
 	protected int 			_paddingTop;
 	protected FrameLayout 	_parent;
-	private OnClickListener _onClickListener;
+	protected OnClickListener _onClickListener;
 	private OnFocusListener _onFocusListener;
-	private boolean 		_isFocus;
+	protected boolean 		_isFocus;
 	private int 			_id;
 	private int 			_borderSize;
 	private boolean 		_invalid;
 	private Color 			_borderColor;
-	private Color 			_backgroundColor;
+	protected Color			_backgroundColor;
 	private Object 			_data;
 
 	public View(Vector2f size) {

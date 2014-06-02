@@ -6,7 +6,7 @@ import java.util.List;
 
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.CategoryInfo;
-import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.model.item.ItemInfo;
 
 public class CategoryLoader {
 	private List<CategoryInfo> 				_sortedCategories;

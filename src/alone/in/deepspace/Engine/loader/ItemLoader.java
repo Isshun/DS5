@@ -12,7 +12,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.util.Constant;
 
 public class ItemLoader {
@@ -108,7 +108,7 @@ public class ItemLoader {
 					for (ItemInfo itemProduce: item.onAction.itemsProduce) {
 						item.onAction.itemAccept.addAll(itemProduce.craftedFromItems);
 					}
-					item.isDispenser = item.onAction.itemAccept.size() > 0;
+					item.isFactory = item.onAction.itemAccept.size() > 0;
 				}
 			}
 		}

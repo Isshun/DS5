@@ -1,8 +1,7 @@
 package alone.in.deepspace.model.character;
 
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.ItemInfo;
-import alone.in.deepspace.model.ItemInfo.ItemInfoAction;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemInfo.ItemInfoAction;
 import alone.in.deepspace.util.Constant;
 
 public class CharacterNeeds {
@@ -34,7 +33,7 @@ public class CharacterNeeds {
 	double	_injuries;
 	double	_satiety;
 
-	private BaseItem 	_sleepItem;
+	private ItemBase 	_sleepItem;
 	private int 		_workRemain;
 
 	public CharacterNeeds(Character character) {
@@ -186,7 +185,7 @@ public class CharacterNeeds {
 		_satiety = 100;
 	}
 
-	public void	sleep(BaseItem item) {
+	public void	sleep(ItemBase item) {
 		_sleepItem = item;
 		if (item != null) {
 			_sleeping = item.getInfo().onAction.duration;
@@ -207,7 +206,7 @@ public class CharacterNeeds {
 		_relation = Math.min(_relation + 1, 100);
 	}
 
-	public void use(BaseItem item, ItemInfoAction action, int durationLeft) {
+	public void use(ItemBase item, ItemInfoAction action, int durationLeft) {
 		if (item.isSleepingItem()) {
 			_sleepItem = item;
 			_sleeping = durationLeft;

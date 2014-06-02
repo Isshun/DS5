@@ -1,4 +1,4 @@
-package alone.in.deepspace.model;
+package alone.in.deepspace.model.item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,73 +6,14 @@ import java.util.List;
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ItemSlot;
-import alone.in.deepspace.model.ItemInfo.ItemInfoEffects;
-import alone.in.deepspace.model.ItemInfo.ItemInfoSlot;
+import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemInfo.ItemInfoEffects;
+import alone.in.deepspace.model.item.ItemInfo.ItemInfoSlot;
 import alone.in.deepspace.model.job.Job;
 
 
-public class BaseItem {
-
-//	public enum Type {
-//		NONE,
-//		STRUCTURE_START,
-//		STRUCTURE_ROOM,
-//		STRUCTURE_WALL,
-//		STRUCTURE_HULL,
-//		STRUCTURE_FLOOR,
-//		STRUCTURE_WINDOW,
-//		STRUCTURE_DOOR,
-//		STRUCTURE_GREENHOUSE,
-//		STRUCTURE_STOP,
-//		ITEM_START,
-//		SICKBAY_BIOBED,
-//		SICKBAY_LAB,
-//		SICKBAY_EMERGENCY_SHELTERS,
-//		ENGINE_CONTROL_CENTER,
-//		ENGINE_REACTION_CHAMBER,
-//		HOLODECK_GRID,
-//		ARBORETUM_TREE_1,
-//		ARBORETUM_TREE_2,
-//		ARBORETUM_TREE_3,
-//		ARBORETUM_TREE_4,
-//		ARBORETUM_TREE_5,
-//		ARBORETUM_TREE_6,
-//		ARBORETUM_TREE_7,
-//		ARBORETUM_TREE_8,
-//		ARBORETUM_TREE_9,
-//		GYMNASIUM_STUFF_1,
-//		GYMNASIUM_STUFF_2,
-//		GYMNASIUM_STUFF_3,
-//		GYMNASIUM_STUFF_4,
-//		GYMNASIUM_STUFF_5,
-//		SCHOOL_DESK,
-//		BAR_PUB,
-//		AMPHITHEATER_STAGE,
-//		QUARTER_BED,
-//		QUARTER_DESK,
-//		QUARTER_CHAIR,
-//		QUARTER_WARDROBE,
-//		QUARTER_CHEST,
-//		QUARTER_BEDSIDE_TABLE,
-//		ENVIRONMENT_O2_RECYCLER,
-//		ENVIRONMENT_TEMPERATURE_REGULATION,
-//		TRANSPORTATION_SHUTTLECRAFT,
-//		TRANSPORTATION_CARGO,
-//		TRANSPORTATION_CONTAINER,
-//		TRANSPORTATION_TRANSPORTER_SYSTEMS,
-//		TACTICAL_PHOTON_TORPEDO,
-//		TACTICAL_PHASER,
-//		TACTICAL_SHIELD_GRID,
-//		TACTICAL_CLOAKING_DEVICE,
-//		SCIENCE_HYDROPONICS,
-//		RES_1,
-//		SCIENCE_ZYGOTE,
-//		SCIENCE_ROBOT_MAKER,
-//		SPECIAL_STORAGE,
-//		ITEM_STOP,
-//	};
-
+public abstract class ItemBase {
 	private int			_x;
 	private int			_y;
 	private int			_id;
@@ -105,11 +46,11 @@ public class BaseItem {
 	private int 		_animFrameInterval;
 	private boolean _selected;
 	
-	public BaseItem(ItemInfo info) {
+	public ItemBase(ItemInfo info) {
 		init(info, ++_maxId);
 	}
 
-	public BaseItem(ItemInfo info, int id) {
+	public ItemBase(ItemInfo info, int id) {
 		if (_maxId < id) {
 			_maxId = id;
 		}
@@ -281,7 +222,7 @@ public class BaseItem {
 	public boolean 			isToy() { return _isToy; }
 	public boolean 			isStorage() { return _info.isStorage; }
 	public boolean 			isFood() { return _info.isFood; }
-	public boolean 			isDispenser() { return _info.isDispenser; }
+	public boolean 			isDispenser() { return _info.isFactory; }
 
 	public static boolean isUserItem(ItemInfo info) {
 		return !info.isStructure && !info.isResource;
@@ -298,6 +239,10 @@ public class BaseItem {
 	public UserItem use(Character character, int durationLeft) {
 		// Add effect on character
 		character.getNeeds().use(this, _info.onAction, durationLeft);
+		
+		if (isConsomable()) {
+			ResourceManager.getInstance().remove(_info);
+		}
 		
 		// Play animation
 		if (_animFrame++ % _animFrameInterval == 0) {

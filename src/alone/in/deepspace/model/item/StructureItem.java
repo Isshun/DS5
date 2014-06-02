@@ -1,12 +1,10 @@
-package alone.in.deepspace.model;
+package alone.in.deepspace.model.item;
 
-public class StructureItem extends BaseItem {
 
-	private int _tile;
+public class StructureItem extends ItemBase {
 
 	public StructureItem(ItemInfo info, int id) {
 		super(info, id);
-		// TODO Auto-generated constructor stub
 	}
 
 	public StructureItem(ItemInfo info) {

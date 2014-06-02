@@ -8,6 +8,7 @@ import java.util.Set;
 import org.jsfml.graphics.Color;
 
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemBase;
 
 public class Room {
 	public enum Type {
@@ -26,7 +27,7 @@ public class Room {
 
 	int						_id;
 	int						_zoneId;
-	List<BaseItem>			_doors;
+	List<ItemBase>			_doors;
 	private Type 			_type;
 	private Character 		_owner;
 	private int 			_x;
@@ -47,7 +48,7 @@ public class Room {
 		_minX = Integer.MAX_VALUE;
 		_zoneId = 0;
 		_type = type;
-		_doors = new ArrayList<BaseItem>();
+		_doors = new ArrayList<ItemBase>();
 		_occupants = new HashSet<Character>();
 	}
 

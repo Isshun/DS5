@@ -9,8 +9,8 @@ import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
-import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -28,8 +28,8 @@ public abstract class Job {
 	private int 				_id;
 	protected int				_posY;
 	protected int 				_posX;
-	protected BaseItem			_item;
-	protected List<BaseItem>		_carryItems;
+	protected ItemBase			_item;
+	protected List<ItemBase>		_carryItems;
 	protected ItemFilter 		_filter;
 	private JobManager.Action 	_action;
 	protected Character 		_character;
@@ -70,7 +70,7 @@ public abstract class Job {
 	public int					getY() { return _posY; }
 	public int					getId() { return _id; }
 	public JobManager.Action	getAction() { return _action; }
-	public BaseItem				getItem() { return _item; }
+	public ItemBase				getItem() { return _item; }
 	public Character			getCharacter() { return _character; }
 	public Character			getCharacterRequire() { return _characterRequire; }
 	public int 					getFail() { return _fail; }
@@ -89,7 +89,7 @@ public abstract class Job {
 	public void					setBlocked(int frame) { _blocked = frame; _nbBlocked++; }
 	public void 				setPosition(int x, int y) { _posX = x; _posY = y; }
 	public void 				setSlot(ItemSlot slot) { _slot = slot; }
-	public void					setItem(BaseItem item) { _item = item; }
+	public void					setItem(ItemBase item) { _item = item; }
 	public void 				setDurationLeft(int duration) { _durationLeft = duration; }
 	public void 				setItemFilter(ItemFilter filter) { _filter = filter; }
 	public void 				setStatus(JobStatus status) { _status = status; }
@@ -116,21 +116,13 @@ public abstract class Job {
 			oss += " (" + _character.getName() + ")";
 		} else if (_fail > 0) {
 			switch (_reason) {
-			case BLOCKED:
-				oss += " (blocked: #" + _blocked + ")";
-				break;
-			case INTERRUPTE:
-				oss += " (interrupte)";
-				break;
-			case NO_COMPONENTS:
-				oss += " (no matter)";
-				break;
-			case INVALID:
-				oss += " (invalide)";
-				break;
-			case NO_LEFT_CARRY:
-				oss += " (no left carry)";
-				break;
+			case BLOCKED: 		oss += " (blocked: #" + _blocked + ")"; break;
+			case INTERRUPTE: 	oss += " (interrupte)"; break;
+			case NO_COMPONENTS: oss += " (no matter)"; break;
+			case INVALID: 		oss += " (invalide)"; break;
+			case NO_LEFT_CARRY: oss += " (no left carry)"; break;
+			case DIED: 			oss += " (died)"; break;
+			default: break;
 			}
 		} else {
 			oss += " (on queue)";
@@ -198,14 +190,14 @@ public abstract class Job {
 		_subAction = action;
 	}
 
-	public void addCarry(BaseItem item) {
+	public void addCarry(ItemBase item) {
 		if (_carryItems == null) {
-			_carryItems = new ArrayList<BaseItem>();
+			_carryItems = new ArrayList<ItemBase>();
 		}
 		_carryItems.add(item);
 	}
 
-	public List<BaseItem> getCarry() {
+	public List<ItemBase> getCarry() {
 		return _carryItems;
 	}
 

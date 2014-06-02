@@ -2,6 +2,7 @@ package alone.in.deepspace.ui.panel;
 
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.engine.ui.Colors;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.LinkView;
 import alone.in.deepspace.engine.ui.OnClickListener;
@@ -24,9 +25,14 @@ public class PanelTooltip extends BasePanel {
 	private TextView _lbContent;
 	private TextView _lbCategory;
 	private LinkView[] _lbCategories;
+	private ToolTip _tooltips;
 
 	public PanelTooltip(Mode mode) {
 		super(mode, new Vector2f(200, 200), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+	}
+	
+	@Override
+	protected void onCreate() {
 		
 		_lbToolTip = new TextView(null);
 		_lbToolTip.setCharacterSize(FONT_SIZE_TITLE);
@@ -51,66 +57,71 @@ public class PanelTooltip extends BasePanel {
 		for (int i = 0; i < NB_MAX_LINK; i++) {
 			_lbCategories[i] = new LinkView();
 			_lbCategories[i].setCharacterSize(FONT_SIZE);
-			_lbCategories[i].setColor(COLOR_TEXT);
+			_lbCategories[i].setColor(Colors.TEXT);
 			layoutCategory.addView(_lbCategories[i]);
 		}
 	}
 
-	public void select(ToolTip toolTip) {
+	private String getFormatedContent(String content) {
 		StringBuilder sb = new StringBuilder();
+		String str = content;
 
-		// Title
-		_lbToolTip.setString(toolTip.title);
-		
-		// Content
-		String content = toolTip.content;
-		while (content.length() > LINE_LENGTH) {
-			int spaceIndex = content.substring(0, LINE_LENGTH).lastIndexOf(' ');
-			int nlIndex = content.substring(0, LINE_LENGTH).lastIndexOf('\n');
+		while (str.length() > LINE_LENGTH) {
+			int spaceIndex = str.substring(0, LINE_LENGTH).lastIndexOf(' ');
+			int nlIndex = str.substring(0, LINE_LENGTH).lastIndexOf('\n');
 			int cutIndex = nlIndex == -1 ? spaceIndex : nlIndex;
-			sb.append(content.substring(0, cutIndex == -1 ? LINE_LENGTH : cutIndex)).append('\n');
-			content = content.substring(cutIndex == -1 ? LINE_LENGTH : cutIndex + 1);
+			sb.append(str.substring(0, cutIndex == -1 ? LINE_LENGTH : cutIndex)).append('\n');
+			str = str.substring(cutIndex == -1 ? LINE_LENGTH : cutIndex + 1);
 		}
-		sb.append(content);
-		_lbContent.setString(sb.toString());
+		sb.append(str);
 		
-		// Category
-		ToolTipCategory category = null;
-		for (ToolTipCategory c: ToolTips.categories) {
-			if (c.contains(toolTip)) {
-				category = c;
-			}
-		}
-		if (category != null) {
-			_lbCategory.setString("See other tags for [" + category.title + "]");
-			int i = 0;
-			int posX = 0;
-			for (ToolTip t: category.tooltips) {
-				final ToolTip ft = t;
-				_lbCategories[i].setString("[" + t.title + "]");
-				_lbCategories[i].setVisible(true);
-				_lbCategories[i].setPosition(posX, 32);
-				_lbCategories[i].setSize(new Vector2f((t.title.length() + 2) * CHARACTER_WIDTH, LINE_HEIGHT));
-				_lbCategories[i].resetPos();
-				_lbCategories[i].setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						select(ft);
-					}
-				});
-				posX += (t.title.length() + 2) * CHARACTER_WIDTH + 12;
-				i++;
-			}
-			for (; i < NB_MAX_LINK; i++) {
-				_lbCategories[i].setVisible(false);
-			}
-		}
+		return sb.toString();
 	}
 
 	@Override
-	protected void onCreate() {
-		// TODO Auto-generated method stub
-		
+	public void onRefresh(int frame) {
+		ToolTip tooltip = _ui.getSelectedTooltip();
+		if (tooltip != null && tooltip != _tooltips) {
+			_tooltips = tooltip;
+
+			// Title
+			_lbToolTip.setString(tooltip.title);
+
+			// Content
+			_lbContent.setString(getFormatedContent(tooltip.content));
+			
+			// Category
+			ToolTipCategory category = null;
+			for (ToolTipCategory c: ToolTips.categories) {
+				if (c.contains(tooltip)) {
+					category = c;
+				}
+			}
+			if (category != null) {
+				_lbCategory.setString("See other tags for [" + category.title + "]");
+				int i = 0;
+				int posX = 0;
+				for (ToolTip t: category.tooltips) {
+					final ToolTip ft = t;
+					_lbCategories[i].setString("[" + t.title + "]");
+					_lbCategories[i].setVisible(true);
+					_lbCategories[i].setPosition(posX, 32);
+					_lbCategories[i].setSize(new Vector2f((t.title.length() + 2) * CHARACTER_WIDTH, LINE_HEIGHT));
+					_lbCategories[i].resetPos();
+					_lbCategories[i].setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							_ui.select(ft);
+						}
+					});
+					posX += (t.title.length() + 2) * CHARACTER_WIDTH + 12;
+					i++;
+				}
+				for (; i < NB_MAX_LINK; i++) {
+					_lbCategories[i].setVisible(false);
+				}
+			}
+		}
 	}
 
 }

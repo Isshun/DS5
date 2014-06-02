@@ -52,7 +52,10 @@ public class PanelCrew extends BasePanel {
 
 	public PanelCrew(Mode mode) {
 		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+	}
 
+	@Override
+	protected void onCreate() {
 		_viewHolderList = new ArrayList<ViewHolder>();
 		_characterManager = ServiceManager.getCharacterManager();
 
@@ -86,7 +89,7 @@ public class PanelCrew extends BasePanel {
 		_lbCount.setPosition(new Vector2f(10, 22));
 		addView(_lbCount);
 	}
-
+	
 	protected void setMode(int mode) {
 		_mode = mode;
 
@@ -204,13 +207,12 @@ public class PanelCrew extends BasePanel {
 				@Override
 				public void onClick(View view) {
 					close();
-					_ui.setCharacter(character);
+					_ui.select(character);
 				}
 			});
 
 			// Name
 			viewHolder.lbName.setString(character.getName());
-			//viewHolder.lbName.setColor(character.getColor());
 			viewHolder.lbName.setColor(new Color(120, 255, 255));
 
 			// Status
@@ -254,11 +256,5 @@ public class PanelCrew extends BasePanel {
 
 	public void setUI(UserInterface userInterface) {
 		_ui = userInterface;
-	}
-
-	@Override
-	protected void onCreate() {
-		// TODO Auto-generated method stub
-		
 	}
 }

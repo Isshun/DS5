@@ -4,22 +4,23 @@ import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.StorageItem;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.FactoryItem;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.util.Log;
 
 public class JobRefill extends Job {
 
 	private StorageItem _storage;
-	private StorageItem _dispenser;
+	private StorageItem _factory;
 
 	private JobRefill(int x, int y) {
 		super(x, y);
 	}
 
-	public static Job create(StorageItem dispenser, StorageItem storage, ItemFilter filter) {
-		if (storage == null || dispenser == null || storage == dispenser) {
+	public static Job create(FactoryItem factory, StorageItem storage, ItemFilter filter) {
+		if (storage == null || factory == null || storage == factory) {
 			Log.error("createRefillJob: wrong items");
 			return null;
 		}
@@ -27,12 +28,12 @@ public class JobRefill extends Job {
 		JobRefill job = new JobRefill(storage.getX(), storage.getY());
 		job.setAction(JobManager.Action.REFILL);
 		job.setSubAction(JobManager.Action.TAKE);
-		dispenser.setRefillJob(job);
+		factory.setRefillJob(job);
 		job.setItem(storage);
 		job.setItemFilter(filter);
 		
 		job._storage = storage;
-		job._dispenser = dispenser;
+		job._factory = factory;
 
 		return job;
 	}
@@ -40,7 +41,7 @@ public class JobRefill extends Job {
 	@Override
 	public boolean check(Character character) {
 		// Item is null
-		if (_item == null || _storage == null || _dispenser == null || _filter == null) {
+		if (_item == null || _storage == null || _factory == null || _filter == null) {
 			_reason = Abort.INVALID;
 			return false;
 		}
@@ -54,7 +55,7 @@ public class JobRefill extends Job {
 
 	private boolean checkStore() {
 		// Dispenser no longer exists
-		if (_dispenser != ServiceManager.getWorldMap().getItem(_dispenser.getX(), _dispenser.getY())) {
+		if (_factory != ServiceManager.getWorldMap().getItem(_factory.getX(), _factory.getY())) {
 			_reason = Abort.INVALID;
 			return false;
 		}
@@ -76,7 +77,7 @@ public class JobRefill extends Job {
 		}
 
 		// Dispenser no longer exists
-		if (_dispenser != ServiceManager.getWorldMap().getItem(_dispenser.getX(), _dispenser.getY())) {
+		if (_factory != ServiceManager.getWorldMap().getItem(_factory.getX(), _factory.getY())) {
 			_reason = Abort.INVALID;
 			return false;
 		}
@@ -91,7 +92,7 @@ public class JobRefill extends Job {
 	}
 
 	public StorageItem getDispenser() {
-		return _dispenser;
+		return _factory;
 	}
 
 	@Override
@@ -115,7 +116,7 @@ public class JobRefill extends Job {
 
 	private boolean actionStore(Character character) {
 		if (_carryItems != null) {
-			_dispenser.addInventory(_carryItems);
+			_factory.addInventory(_carryItems);
 			character.removeInventory(_carryItems);
 		}
 		
@@ -124,7 +125,7 @@ public class JobRefill extends Job {
 	}
 
 	private boolean actionTake(Character character) {
-		BaseItem item = _storage.get(_filter);
+		ItemBase item = _storage.get(_filter);
 		while (item != null && character.getInventoryLeftSpace() > 0) {
 			addCarry(item);
 			character.addInventory(item);
@@ -133,7 +134,7 @@ public class JobRefill extends Job {
 		}
 
 		// Change to STORE job
-		setPosition(_dispenser.getX(), _dispenser.getY());
+		setPosition(_factory.getX(), _factory.getY());
 		setSubAction(Action.STORE);
 		character.setJob(this);
 		

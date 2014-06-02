@@ -5,26 +5,26 @@ import org.jsfml.system.Vector2f;
 
 
 public class LinkView extends TextView {
-	private static final Color COLOR_ACTIVE = new Color(176, 205, 53);
-
+	protected Color _colorBak;
+	
 	public LinkView(Vector2f size) {
 		super(size);
 		setOnFocusListener(null);
+		setColor(Colors.LINK_INACTIVE);
 	}
 
 	public LinkView() {
 		super(new Vector2f(300, 20));
 		setOnFocusListener(null);
+		setColor(Colors.LINK_INACTIVE);
 	}
 
 	@Override
 	public void setOnFocusListener(final OnFocusListener onFocusListener) {
 		super.setOnFocusListener(new OnFocusListener() {
-			private Color _color;
-			
 			@Override
 			public void onExit(View view) {
-				setColor(_color);
+				_text.setColor(_colorBak);
 				setStyle(TextView.REGULAR);
 				if (onFocusListener != null) {
 					onFocusListener.onExit(view);
@@ -32,14 +32,23 @@ public class LinkView extends TextView {
 			}
 			@Override
 			public void onEnter(View view) {
-				_color = _text.getColor();
-				setStyle(TextView.UNDERLINED);
-				setColor(COLOR_ACTIVE);
+				_colorBak = _text.getColor();
+				if (_onClickListener != null) {
+					setStyle(TextView.UNDERLINED);
+					_text.setColor(Colors.LINK_ACTIVE);
+				}
 				if (onFocusListener != null) {
-					onFocusListener.onExit(view);
+					onFocusListener.onEnter(view);
 				}
 			}
 		});
 	}
 
+	@Override
+	public void setColor(Color color) {
+		if (_isFocus == false) {
+			_text.setColor(color);
+		}
+		_colorBak = color;
+	}
 }

@@ -20,7 +20,7 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.GameData;
-import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.ui.MenuBase;
 import alone.in.deepspace.ui.MenuGame;
 import alone.in.deepspace.ui.MenuLoad;

@@ -1,8 +1,7 @@
 package alone.in.deepspace.manager;
 
-import alone.in.deepspace.model.BaseItem;
-import alone.in.deepspace.model.Room;
-import alone.in.deepspace.model.StructureItem;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemInfo;
 
 public class ResourceManager {
 
@@ -35,7 +34,7 @@ public class ResourceManager {
 		return _self;
 	}
 
-	public Message build(BaseItem item) {
+	public Message build(ItemBase item) {
 		if (_matter == 0) {
 			return Message.NO_MATTER;
 		}
@@ -73,25 +72,6 @@ public class ResourceManager {
 			return Message.BUILD_PROGRESS;
 		}
 	}
-
-	public void update() {
-		WorldManager worldmap = ServiceManager.getWorldMap();
-		int width = worldmap.getWidth();
-		int height = ServiceManager.getWorldMap().getWidth();
-
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				StructureItem structure = worldmap.getStructure(x, y);
-				Room room = RoomManager.getInstance().get(x, y);
-				// TODO
-//				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() && room != null && room.isType(Type.GARDEN)) {
-//					worldmap.putItem(BaseItem.Type.RES_1, x, y, 10);
-////					ServiceManager.getWorldRenderer().invalidate(x, y);
-//				}
-			}
-		}
-	}
-	
 	
 	// TODO
 	public void refreshWater() {
@@ -155,7 +135,17 @@ public class ResourceManager {
 	public void addFood(int value) { _food += value; }
 
 	public boolean isLowFood() {
-		//return _food < ServiceManager.getCharacterManager().getCount();
-		return false;
+		return _food < ServiceManager.getCharacterManager().getCount();
+	}
+
+	public void remove(ItemInfo info) {
+		if (info.isFood) { _food--; }
+	}
+
+	public void add(ItemInfo info) {
+		if (info.isFood) { _food++; }
+	}
+
+	public void onLongUpdate() {
 	}
 }

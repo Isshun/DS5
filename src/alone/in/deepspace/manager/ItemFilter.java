@@ -1,6 +1,6 @@
 package alone.in.deepspace.manager;
 
-import alone.in.deepspace.model.ItemInfo;
+import alone.in.deepspace.model.item.ItemInfo;
 
 public class ItemFilter {
 	public boolean 	food;

@@ -5,11 +5,11 @@ import java.util.List;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Movable.Direction;
 import alone.in.deepspace.model.character.Character;
-import alone.in.deepspace.model.StorageItem;
-import alone.in.deepspace.model.UserItem;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.StorageItem;
+import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.util.Log;
 
 public class JobUse extends Job {
@@ -18,11 +18,11 @@ public class JobUse extends Job {
 		super();
 	}
 
-	public static Job create(BaseItem item) {
+	public static Job create(ItemBase item) {
 		return create(item, null);
 	}
 
-	public static Job create(BaseItem item, Character character) {
+	public static Job create(ItemBase item, Character character) {
 		if (item == null || !item.hasFreeSlot()) {
 			return null;
 		}

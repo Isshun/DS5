@@ -11,6 +11,7 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.engine.ui.ColorView;
+import alone.in.deepspace.engine.ui.Colors;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.ImageView;
 import alone.in.deepspace.engine.ui.LinkView;
@@ -19,7 +20,6 @@ import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.SpriteManager;
-import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.ToolTips;
 import alone.in.deepspace.model.character.Character;
@@ -27,6 +27,7 @@ import alone.in.deepspace.model.character.Character.Gender;
 import alone.in.deepspace.model.character.CharacterNeeds;
 import alone.in.deepspace.model.character.CharacterRelation;
 import alone.in.deepspace.model.character.CharacterStatus;
+import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
@@ -71,42 +72,39 @@ public class PanelCharacter extends BasePanel {
 	private TextView 			_lbOld;
 	private FrameLayout 		_layoutDebug;
 	private TextView[] 			_debugEntries;
-	private TextView[] 			_debugEntriesValue;
 	private FrameLayout 		_layoutJob;
 	private FrameLayout 		_layoutNeeds;
 	private FrameLayout 		_layoutInventory;
 
-	private int 				_count;
 	private int 				_animRemain;
 	private TextView	 		_lbGender;
-	private String 				_lastThoughts;
 	private int 				_lastOld;
 	private Gender				_lastGender;
 	private Profession			_lastProfession;
 	private TextView 			_animLabel;
 	private String 				_animValue;
 	private int 				_animFrame;
-	private FrameLayout[] 		_gauges = new FrameLayout[NB_GAUGE];
 	private int 				_animGauge;
 	private String 				_lastEnlisted;
 	private TextView 			_lbEnlisted;
 	private String 				_lastBirthName;
 	private TextView 			_lbBirthName;
-	private Color 				_statusColor;
 	private CharacterStatus 	_lastStatus;
 	private TextView 			_lbInventory;
 
 	public PanelCharacter(Mode mode) {
 		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+	}
 
+	@Override
+	protected void onCreate() {
 		_cursor = new ColorView(new Vector2f(8, 16));
-		_cursor.setBackgroundColor(COLOR_TEXT);
+		_cursor.setBackgroundColor(Colors.TEXT);
 		addView(_cursor);
 
 		// Tip
 		_lbTip = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbTip.setCharacterSize(FONT_SIZE);
-		_lbTip.setColor(COLOR_LABEL);
 		_lbTip.setBackgroundColor(new Color(255, 255, 255, 100));
 		_lbTip.setVisible(false);
 		addView(_lbTip);
@@ -114,7 +112,6 @@ public class PanelCharacter extends BasePanel {
 		// Name
 		_lbName = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbName.setCharacterSize(FONT_SIZE);
-		_lbName.setColor(COLOR_LABEL);
 		_lbName.setPosition(new Vector2f(20, 18));
 		addView(_lbName);
 
@@ -128,14 +125,13 @@ public class PanelCharacter extends BasePanel {
 			//createDebug(20, 850);
 		}
 	}
-
+	
 	private void createReport(int x, int y) {
 		int posY = y;
 		int posX = x;
 		
 		TextView text = new TextView();
 		text.setCharacterSize(FONT_SIZE);
-		text.setColor(COLOR_LABEL);
 		text.setString("Last report");
 		text.setPosition(posX, posY);
 		addView(text);
@@ -150,19 +146,6 @@ public class PanelCharacter extends BasePanel {
 				_ui.select(_lastStatus.getTip());
 			}
 		});
-		_lbState.setOnFocusListener(new OnFocusListener() {
-			@Override
-			public void onExit(View view) {
-				_lbState.setColor(_statusColor != null ? _statusColor : COLOR_TEXT);
-				_lbState.setStyle(TextView.REGULAR);
-			}
-			
-			@Override
-			public void onEnter(View view) {
-				_lbState.setColor(COLOR_ACTIVE);
-				_lbState.setStyle(TextView.UNDERLINED);
-			}
-		});
 		addView(_lbState);
 	}
 
@@ -172,16 +155,14 @@ public class PanelCharacter extends BasePanel {
 		
 		TextView text = new TextView();
 		text.setCharacterSize(FONT_SIZE);
-		text.setColor(COLOR_LABEL);
 		text.setString("Staff record");
 		text.setPosition(posX, posY);
 		addView(text);
 		posY += 32;
 		
 		// Name
-		_lbOld = new TextView(null);
+		_lbOld = new LinkView();
 		_lbOld.setCharacterSize(FONT_SIZE_SMALL);
-		_lbOld.setColor(COLOR_TEXT);
 //		_lbOld.setPosition(new Vector2f(FRAME_WIDTH - 65, Constant.UI_PADDING_V + 9));
 		_lbOld.setPosition(new Vector2f(posX, posY));
 		addView(_lbOld);
@@ -189,7 +170,6 @@ public class PanelCharacter extends BasePanel {
 
 		_lbGender = new LinkView();
 		_lbGender.setCharacterSize(FONT_SIZE_SMALL);
-		_lbGender.setColor(COLOR_TEXT);
 		_lbGender.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -202,21 +182,18 @@ public class PanelCharacter extends BasePanel {
 
 		_lbProfession = new LinkView();
 		_lbProfession.setCharacterSize(FONT_SIZE_SMALL);
-		_lbProfession.setColor(COLOR_TEXT);
 		_lbProfession.setPosition(new Vector2f(posX, posY));
 		addView(_lbProfession);
 		posY += 20;
 
-		_lbEnlisted = new TextView(null);
+		_lbEnlisted = new LinkView();
 		_lbEnlisted.setCharacterSize(FONT_SIZE_SMALL);
-		_lbEnlisted.setColor(COLOR_TEXT);
 		_lbEnlisted.setPosition(new Vector2f(posX, posY));
 		addView(_lbEnlisted);
 		posY += 20;
 
-		_lbBirthName = new TextView(null);
+		_lbBirthName = new LinkView();
 		_lbBirthName.setCharacterSize(FONT_SIZE_SMALL);
-		_lbBirthName.setColor(COLOR_TEXT);
 		_lbBirthName.setPosition(new Vector2f(posX, posY));
 		addView(_lbBirthName);
 		posY += 20;
@@ -235,11 +212,9 @@ public class PanelCharacter extends BasePanel {
 		_layoutDebug.addView(lbDebug);
 
 		_debugEntries = new TextView[NB_MAX_RELATION];
-		_debugEntriesValue = new TextView[NB_MAX_RELATION];
 		for (int i = 0; i < NB_MAX_RELATION; i++) {
-			_debugEntries[i] = new TextView(new Vector2f(400, 22));
+			_debugEntries[i] = new LinkView(new Vector2f(400, 22));
 			_debugEntries[i].setCharacterSize(FONT_SIZE_SMALL);
-			_debugEntries[i].setColor(COLOR_TEXT);
 			_debugEntries[i].setPosition(0, 32 + 22 * i);
 			_layoutDebug.addView(_debugEntries[i]);
 
@@ -257,7 +232,6 @@ public class PanelCharacter extends BasePanel {
 		
 		_lbInventory = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbInventory.setCharacterSize(FONT_SIZE);
-		_lbInventory.setColor(COLOR_LABEL);
 		_lbInventory.setPosition(new Vector2f(0, 0));
 		_layoutInventory.addView(_lbInventory);
 
@@ -290,14 +264,12 @@ public class PanelCharacter extends BasePanel {
 		
 		_lbJob = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
 		_lbJob.setCharacterSize(FONT_SIZE);
-		_lbJob.setColor(COLOR_LABEL);
 		_lbJob.setPosition(0, 0);
 		_lbJob.setString(Strings.LB_CHARACTER_INFO_JOB);
 		_layoutJob.addView(_lbJob);
 
 		_lbJob2 = new LinkView();
 		_lbJob2.setCharacterSize(FONT_SIZE_SMALL);
-		_lbJob2.setColor(COLOR_TEXT);
 		_lbJob2.setPosition(0, 32);
 		_layoutJob.addView(_lbJob2);
 	}
@@ -327,7 +299,6 @@ public class PanelCharacter extends BasePanel {
 
 		TextView text = new TextView();
 		text.setCharacterSize(FONT_SIZE);
-		text.setColor(COLOR_LABEL);
 		text.setString("Monitoring");
 		text.setPosition(0, 0);
 		_layoutNeeds.addView(text);
@@ -354,42 +325,16 @@ public class PanelCharacter extends BasePanel {
 		_familyEntries = new TextView[NB_MAX_RELATION];
 		_familyRelationEntries = new TextView[NB_MAX_RELATION];
 		for (int i = 0; i < NB_MAX_RELATION; i++) {
-			_familyEntries[i] = new TextView(new Vector2f(400, 22));
+			_familyEntries[i] = new LinkView(new Vector2f(400, 22));
 			_familyEntries[i].setCharacterSize(FONT_SIZE_SMALL);
 			_familyEntries[i].setPosition(0, 32 + 22 * i);
-			_familyEntries[i].setColor(COLOR_TEXT);
 			_layoutFamily.addView(_familyEntries[i]);
 
-			_familyRelationEntries[i] = new TextView(new Vector2f(100, 32));
+			_familyRelationEntries[i] = new LinkView(new Vector2f(100, 32));
 			_familyRelationEntries[i].setCharacterSize(FONT_SIZE_SMALL);
 			_familyRelationEntries[i].setPosition(280, 32 + 22 * i);
-			_familyRelationEntries[i].setColor(COLOR_TEXT);
 			_layoutFamily.addView(_familyRelationEntries[i]);
 		}
-	}
-
-	public void  select(Character character) {
-		if (_character != null) {
-			_character.setSelected(false);
-		}
-		
-		if (character != null) {
-			character.setSelected(true);
-			_lbName.setString(character.getName().toUpperCase());
-			_lbName.setColor(character.getColor());
-			_nbRelation = -1;			
-//			_lastGender = null;
-//			_lastOld = -1;
-//			_lastProfession = null;
-//			_lastThoughts = null;
-			
-			// Reset gauges
-			for (int i = 0; i < NB_GAUGE; i++) {
-				_values[i].setVisible(false);
-			}
-			_animGauge = 0;
-		}
-		_character = character;
 	}
 
 	private void refreshRelations() {
@@ -403,22 +348,7 @@ public class PanelCharacter extends BasePanel {
 				_familyEntries[i].setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						select(relation.getSecond());
-					}
-				});
-				_familyEntries[i].setOnFocusListener(new OnFocusListener() {
-					@Override
-					public void onExit(View view) {
-						((TextView)view).setStyle(TextView.REGULAR);
-						((TextView)view).setColor(COLOR_TEXT);
-						//view.setBackgroundColor(null);
-					}
-
-					@Override
-					public void onEnter(View view) {
-						((TextView)view).setStyle(TextView.UNDERLINED);
-						((TextView)view).setColor(COLOR_ACTIVE);
-						//view.setBackgroundColor(new Color(40, 40, 80));
+						_ui.select(relation.getSecond());
 					}
 				});
 
@@ -497,9 +427,8 @@ public class PanelCharacter extends BasePanel {
 		_shapes[index].setSize(new Vector2f(width, height));
 		_shapes[index].setPosition(posX, posY + FONT_SIZE + 2);
 
-		_values[index] = new TextView();
+		_values[index] = new LinkView();
 		_values[index].setCharacterSize(FONT_SIZE_SMALL);
-		_values[index].setColor(COLOR_TEXT);
 		_values[index].setPosition(posX, posY);
 		addView(_values[index]);
 
@@ -526,6 +455,25 @@ public class PanelCharacter extends BasePanel {
 
 	@Override
 	public void onRefresh(int update) {
+		Character character = _ui.getSelectedCharacter();
+		if (_character != character && character != null) {
+			if (_character != null) {
+				_character.setSelected(false);
+			}
+			character.setSelected(true);
+			_lbName.setString(character.getName().toUpperCase());
+			_lbName.setColor(character.getColor());
+			_nbRelation = -1;			
+			
+			// Reset gauges
+			for (int i = 0; i < NB_GAUGE; i++) {
+				_values[i].setVisible(false);
+			}
+			_animGauge = 0;
+			_character = character;
+		}
+		_character = character;
+		
 		_cursor.setVisible(!_cursor.isVisible());
 		
 		_animGauge++;
@@ -552,13 +500,10 @@ public class PanelCharacter extends BasePanel {
 			_lbState.setString(StringUtils.getDashedString(status, time, NB_COLUMNS));
 			int level = _character.getStatus().getLevel();
 			switch (level) {
-			case 0: _statusColor = COLOR_0; break;
-			case 1: _statusColor = COLOR_1; break;
-			case 2: _statusColor = COLOR_2; break;
-			case 3: _statusColor = COLOR_3; break;
-			}
-			if (_lbState.isFocus() == false) {
-				_lbState.setColor(_statusColor);
+			case 0: _lbState.setColor(COLOR_0); break;
+			case 1: _lbState.setColor(COLOR_1); break;
+			case 2: _lbState.setColor(COLOR_2); break;
+			case 3: _lbState.setColor(COLOR_3); break;
 			}
 			
 			// Old
@@ -671,7 +616,7 @@ public class PanelCharacter extends BasePanel {
 		
 		for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
 			if (_character.getInventory().size() > i) {
-				BaseItem item = _character.getInventory().get(i);
+				ItemBase item = _character.getInventory().get(i);
 				_lbInventoryEntries[i].setImage(SpriteManager.getInstance().getIcon(item.getInfo()));
 				_lbTip.setString(item.getName());
 			} else {
@@ -744,11 +689,4 @@ public class PanelCharacter extends BasePanel {
 			}
 		}
 	}
-
-	@Override
-	protected void onCreate() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

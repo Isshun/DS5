@@ -2,8 +2,8 @@ package alone.in.deepspace.model.job;
 
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.BaseItem;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.util.Log;
 
 public class JobWork extends Job {
@@ -12,7 +12,7 @@ public class JobWork extends Job {
 		super(x, y);
 	}
 
-	public static Job create(BaseItem item) {
+	public static Job create(ItemBase item) {
 		if (item == null) {
 			return null;
 		}

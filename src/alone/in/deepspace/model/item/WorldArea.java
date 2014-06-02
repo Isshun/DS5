@@ -1,4 +1,4 @@
-package alone.in.deepspace.model;
+package alone.in.deepspace.model.item;
 
 
 
