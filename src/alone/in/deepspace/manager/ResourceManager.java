@@ -1,6 +1,7 @@
 package alone.in.deepspace.manager;
 
 import alone.in.deepspace.Strings;
+import alone.in.deepspace.model.ToolTips;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;
 
@@ -22,13 +23,13 @@ public class ResourceManager {
 	public enum Message {NONE, NO_MATTER, BUILD_COMPLETE, BUILD_PROGRESS};
 
 	private ResourceManager() {
-		_matter = new ResourceData(Strings.LB_MATTER);
-		_power = new ResourceData(Strings.LB_POWER);
-		_spice = new ResourceData("spice");
-		_food = new ResourceData(Strings.LB_FOOD);
-		_gasoline = new ResourceData(Strings.LB_GASOLINE);
-		_water = new ResourceData(Strings.LB_WATER);
-		_oxygen = new ResourceData("o2");
+		_matter = new ResourceData(Strings.LB_MATTER, ToolTips.RES_MATTER);
+		_power = new ResourceData(Strings.LB_POWER, ToolTips.RES_POWER);
+		_spice = new ResourceData("spice", ToolTips.RES_SPICE);
+		_food = new ResourceData(Strings.LB_FOOD, ToolTips.RES_FOOD);
+		_gasoline = new ResourceData(Strings.LB_GASOLINE, ToolTips.RES_GASOLINE);
+		_water = new ResourceData(Strings.LB_WATER, ToolTips.RES_WATER);
+		_oxygen = new ResourceData("o2", ToolTips.RES_OXYGEN);
 	}
 
 	public static ResourceManager	getInstance() {

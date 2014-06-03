@@ -23,7 +23,7 @@ public class PanelDebug extends BasePanel {
 	private UserInterface _ui;
 	
 	public PanelDebug(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
 		
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		

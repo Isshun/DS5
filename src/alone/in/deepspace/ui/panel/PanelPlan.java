@@ -18,7 +18,7 @@ public class PanelPlan extends BasePanel {
 	}
 
 	public PanelPlan(UserInterface.Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
 	}
 
 	@Override

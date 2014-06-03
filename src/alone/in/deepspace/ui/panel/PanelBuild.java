@@ -52,7 +52,7 @@ public class PanelBuild extends BasePanel {
 	private ButtonView[] 					_iconShortcut;
 
 	public PanelBuild(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
 
 		_iconShortcut = new ButtonView[10];
 		_layouts = new HashMap<CategoryInfo, FrameLayout>();

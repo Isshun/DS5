@@ -28,7 +28,7 @@ public class PanelStats extends BasePanel {
 	private TextView[] 			_labels;
 
 	public PanelStats(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
 	}
 
 	@Override

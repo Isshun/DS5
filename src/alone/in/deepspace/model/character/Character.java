@@ -39,7 +39,7 @@ public class Character extends Movable implements Mover {
 	private Gender					_gender;
 	private String					_firstName;
 	private Profession				_profession;
-	private boolean					_selected;
+	private boolean					_isSelected;
 	private CharacterStatus 		_status;
 	private Color 					_color;
 	private int 					_lag;
@@ -69,7 +69,7 @@ public class Character extends Movable implements Mover {
 		_inventory = new ArrayList<ItemBase>();
 		setGender((int)(Math.random() * 1000) % 2 == 0 ? Character.Gender.MALE : Character.Gender.FEMALE);
 		_lag = (int)(Math.random() * 10);
-		_selected = false;
+		_isSelected = false;
 		_blocked = 0;
 		_nextChildAtOld = -1;
 		_direction = Direction.NONE;
@@ -96,7 +96,7 @@ public class Character extends Movable implements Mover {
 		Log.info("Character done: " + _firstName + " (" + x + ", " + y + ")" + _gender);
 	}
 
-	public void				setSelected(boolean selected) { _selected = selected; }
+	public void				setSelected(boolean selected) { _isSelected = selected; }
 	public void				setName(String name) { _firstName = name; }
 	public void 			setGender(Gender gender) {
 		_gender = gender;
@@ -173,7 +173,7 @@ public class Character extends Movable implements Mover {
 	public String			getName() { return _firstName + _lastName; }
 	public CharacterNeeds	getNeeds() { return _needs; }
 	//	  int[]				getMessages() { return _messages; }
-	public boolean			getSelected() { return _selected; }
+	public boolean			isSelected() { return _isSelected; }
 	public int				getProfessionScore(Profession.Type professionEngineer) { return 42; }
 	public List<ItemBase> 	getInventory() { return _inventory; }
 	public Vector<Position> getPath() { return _path; }
@@ -543,6 +543,10 @@ public class Character extends Movable implements Mover {
 	
 	  _path = path;
 	  _steps = 0;
+	}
+
+	public void setFirstname(String firstName) {
+		_firstName = firstName + " ";
 	}
 	
 }

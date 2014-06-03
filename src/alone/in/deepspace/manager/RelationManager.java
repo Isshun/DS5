@@ -72,6 +72,10 @@ public class RelationManager {
 		c2.getRelations().add(new CharacterRelation(c2, child, Relation.CHILDREN));
 		ServiceManager.getCharacterManager().add(child);
 
+		if ("potter".equals(child.getLastName().toLowerCase()) && child.getRelations().size() == 2) {
+			child.setFirstname("Harry");
+		}
+		
 		return child;
 	}
 

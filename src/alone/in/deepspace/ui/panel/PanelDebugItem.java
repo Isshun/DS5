@@ -26,7 +26,7 @@ public class PanelDebugItem extends BasePanel {
 	private FrameLayout _itemView;
 	
 	public PanelDebugItem(Mode mode) {
-		super(mode, new Vector2f(0, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(mode, new Vector2f(0, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
 		
 		setBackgroundColor(new Color(0, 0, 0));
 

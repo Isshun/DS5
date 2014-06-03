@@ -28,7 +28,7 @@ public abstract class View {
 	protected boolean 		_isFocus;
 	private int 			_id;
 	private int 			_borderSize;
-	private boolean 		_invalid;
+	protected boolean 		_invalid;
 	private Color 			_borderColor;
 	protected Color			_backgroundColor;
 	private Object 			_data;
@@ -189,6 +189,13 @@ public abstract class View {
 			_posX = (int) pos.x;
 			_posY = (int) pos.y;
 		}
+		_invalid = true;
+	}
+
+	public void setPosition(int x, int y) {
+		_posX = x;
+		_posY = y;
+		_pos = new Vector2f(x, y);
 		_invalid = true;
 	}
 

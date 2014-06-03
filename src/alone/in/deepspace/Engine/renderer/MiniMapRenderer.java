@@ -90,9 +90,13 @@ public class MiniMapRenderer implements IRenderer {
 	
 	@Override
 	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
-		if (_sprite != null) {
-			app.draw(_sprite, render);
-		}
+//		if (_sprite != null) {
+//			app.draw(_sprite, render);
+//		}
+	}
+
+	public Sprite getSprite() {
+		return _sprite;
 	}
 
 }

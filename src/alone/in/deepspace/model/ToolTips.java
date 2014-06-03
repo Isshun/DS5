@@ -1,5 +1,6 @@
 package alone.in.deepspace.model;
 
+
 public class ToolTips {
 
 	public static class ToolTip {
@@ -51,10 +52,18 @@ public class ToolTips {
 	
 	public static final ToolTip GENDER = new ToolTip("Gender", "Gender doesn't really matter, except if you want children");
 	
+	public static final ToolTip RES_MATTER = new ToolTip("Matter", "matter");
+	public static final ToolTip RES_POWER = new ToolTip("Power", "power");
+	public static final ToolTip RES_SPICE = new ToolTip("Spice", "spice");
+	public static final ToolTip RES_FOOD = new ToolTip("Food", "food");
+	public static final ToolTip RES_GASOLINE = new ToolTip("Gasoline", "gasoline");
+	public static final ToolTip RES_WATER = new ToolTip("Water", "water");
+	public static final ToolTip RES_OXYGEN = new ToolTip("Oxygen", "oxygen");
+
 	public static final ToolTipCategory[] categories = {
 		new ToolTipCategory("Profession", new ToolTip[] {PROFESSION_CHILD, PROFESSION_DOCTOR, PROFESSION_ENGINEER, PROFESSION_NONE, PROFESSION_OPERATION, PROFESSION_SCIENCE, PROFESSION_SECURITY, PROFESSION_STUDENT}),
 		new ToolTipCategory("Personality", new ToolTip[] {GENDER}),
+		new ToolTipCategory("Resources", new ToolTip[] {RES_FOOD, RES_GASOLINE, RES_MATTER, RES_OXYGEN, RES_POWER, RES_SPICE, RES_WATER}),
 		new ToolTipCategory("State", new ToolTip[] {STATE_STARVING, STATE_EXHAUSTED, STATE_HUNGER, STATE_TIRED, STATE_UNCONSCIOUS, STATE_OK, STATE_FEELING_BAD})
 	};
-	
 }

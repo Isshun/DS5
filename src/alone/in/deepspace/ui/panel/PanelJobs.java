@@ -6,7 +6,6 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.ui.LinkView;
 import alone.in.deepspace.engine.ui.OnClickListener;
-import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.JobManager;
@@ -29,7 +28,7 @@ public class PanelJobs extends BasePanel {
 	private int 				_nbRunningJobCandidat;
 
 	public PanelJobs(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
 	}
 
 	@Override
@@ -57,7 +56,7 @@ public class PanelJobs extends BasePanel {
 	public void onRefresh(int update) {
 		List<Job> jobs = JobManager.getInstance().getJobs();
 		int posX = 20;
-		int posY = 62;
+		int posY = 92;
 		int i = 0;
 
 		// Display jobs
@@ -82,7 +81,7 @@ public class PanelJobs extends BasePanel {
 			_nbRunningJob = i;
 		}
 		
-		posY = 82 + (18 * _nbRunningJob);
+		posY = 102 + (18 * _nbRunningJob);
 		_lbTitle2.setPosition(posX, posY);
 
 		posY += 42;

@@ -25,7 +25,7 @@ public class PanelMessage extends BasePanel {
 	private int _start;
 
 	public PanelMessage() {
-		super(Mode.NONE, new Vector2f(20, 20), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(Mode.NONE, new Vector2f(20, 20), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
 		  
 		_texts = new TextView[10];
 		for (int i = 0; i < 10; i++) {

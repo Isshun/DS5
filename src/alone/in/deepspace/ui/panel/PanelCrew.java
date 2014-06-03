@@ -51,7 +51,7 @@ public class PanelCrew extends BasePanel {
 	protected int 				_mode;
 
 	public PanelCrew(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
 	}
 
 	@Override
@@ -63,6 +63,7 @@ public class PanelCrew extends BasePanel {
 		ButtonView btModeSmall = new ButtonView(new Vector2f(50, 20));
 		btModeSmall.setString("small");
 		btModeSmall.setCharacterSize(FONT_SIZE);
+		btModeSmall.setPosition(300, -32);
 		btModeSmall.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -75,7 +76,7 @@ public class PanelCrew extends BasePanel {
 		ButtonView btModeDetail = new ButtonView(new Vector2f(50, 20));
 		btModeDetail.setString("detail");
 		btModeDetail.setCharacterSize(FONT_SIZE);
-		btModeDetail.setPosition(80, 0);
+		btModeDetail.setPosition(360, -32);
 		btModeDetail.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -107,23 +108,25 @@ public class PanelCrew extends BasePanel {
 	}
 
 	protected void setModeSmall(ViewHolder viewHolder, int i) {
-		viewHolder.frame.setPosition(20, 54 + ((CREW_LINE_HEIGHT + CREW_LINE_SPACING) * i));
+		viewHolder.frame.setPosition(20, 96 + ((CREW_LINE_HEIGHT + CREW_LINE_SPACING) * i));
 		viewHolder.frame.setSize(new Vector2f(CREW_LINE_WIDTH, CREW_LINE_HEIGHT));
 		viewHolder.lbName.setPosition(0, 2);
 		viewHolder.lbJob.setVisible(false);
 		viewHolder.lbProfession.setVisible(false);
 		viewHolder.thumb.setVisible(false);
 		viewHolder.lbStatus.setVisible(false);
+		viewHolder.lbStatus.setPosition(20, Constant.UI_PADDING + 16);
 		viewHolder.lbStatusShort.setVisible(true);
 		viewHolder.frame.resetPos();
 	}
 
 	protected void setModeDetail(ViewHolder viewHolder, int i) {
-		viewHolder.frame.setPosition(20, 54 + ((CREW_DETAIL_HEIGHT + CREW_DETAIL_SPACING) * i));
+		viewHolder.frame.setPosition(20, 96 + ((CREW_DETAIL_HEIGHT + CREW_DETAIL_SPACING) * i));
 		viewHolder.lbName.setPosition(32, 6);
 		viewHolder.lbJob.setVisible(true);
 		viewHolder.thumb.setVisible(true);
 		viewHolder.lbStatus.setVisible(true);
+		viewHolder.lbStatus.setPosition(32, Constant.UI_PADDING + 16);
 		viewHolder.lbStatusShort.setVisible(false);
 		viewHolder.frame.resetPos();
 	}
@@ -156,7 +159,6 @@ public class PanelCrew extends BasePanel {
 			// Status
 			viewHolder.lbStatus = new TextView();
 			viewHolder.lbStatus.setCharacterSize(FONT_SIZE);
-			viewHolder.lbStatus.setPosition(20, Constant.UI_PADDING + 16);
 			viewHolder.frame.addView(viewHolder.lbStatus);
 
 			// Status short
@@ -180,7 +182,7 @@ public class PanelCrew extends BasePanel {
 			viewHolder.frame.addView(viewHolder.lbProfession);
 
 			viewHolder.thumb = new ImageView(SpriteManager.getInstance().getCharacter(character.getProfession(), 0, 0, 0));
-			viewHolder.thumb.setPosition(8, 5);
+			viewHolder.thumb.setPosition(0, 5);
 			viewHolder.frame.addView(viewHolder.thumb);
 
 			if (_mode == MODE_SMALL) {
@@ -226,9 +228,11 @@ public class PanelCrew extends BasePanel {
 			if (character.getJob() != null) {
 				viewHolder.lbJob.setString(character.getJob().getShortLabel());
 				viewHolder.lbJob.setColor(new Color(255, 255, 255));
+				viewHolder.lbJob.setPosition(376 - character.getJob().getShortLabel().length() * 8, 6);
 			} else {
 				viewHolder.lbJob.setString(Strings.LB_NO_JOB);
 				viewHolder.lbJob.setColor(new Color(255, 255, 255, 100));
+				viewHolder.lbJob.setPosition(376 - Strings.LB_NO_JOB.length() * 8, 6);
 			}
 			// Profession
 			viewHolder.lbProfession.setString(character.getProfession().getName());

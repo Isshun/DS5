@@ -523,7 +523,10 @@ public class UserInterface {
 				select(c);
 			}
 			else  {
-				_selectedCharacter = null;
+				if (_selectedCharacter != null) {
+					_selectedCharacter.setSelected(false);
+					_selectedCharacter = null;
+				}
 
 				WorldArea a = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
 				if (a != null) {
@@ -581,6 +584,9 @@ public class UserInterface {
 	private void cleanSelect() {
 		_selectedPlan = null;
 		_selectedArea = null;
+		if (_selectedCharacter != null) {
+			_selectedCharacter.setSelected(false);
+		}
 		_selectedCharacter = null;
 		_selectedItem = null;
 		_selectedItemInfo = null;
@@ -597,6 +603,9 @@ public class UserInterface {
 		cleanSelect();
 		setMode(Mode.CHARACTER);
 		_selectedCharacter = character;
+		if (_selectedCharacter != null) {
+			_selectedCharacter.setSelected(true);
+		}
 	}
 
 	public void select(ItemBase item) {
@@ -625,5 +634,9 @@ public class UserInterface {
 
 	public Game getGame() {
 		return _game;
+	}
+
+	public void back() {
+		setMode(Mode.NONE);
 	}
 }

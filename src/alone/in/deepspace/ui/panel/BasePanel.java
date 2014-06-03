@@ -8,8 +8,12 @@ import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.Mouse;
 
 import alone.in.deepspace.engine.Viewport;
+import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.ColorView;
+import alone.in.deepspace.engine.ui.Colors;
 import alone.in.deepspace.engine.ui.FrameLayout;
+import alone.in.deepspace.engine.ui.OnClickListener;
+import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.ui.UserInterface.Mode;
@@ -27,20 +31,50 @@ public abstract class BasePanel extends FrameLayout {
 	private Mode 				_mode;
 	protected Viewport 			_viewport;
 	private boolean 			_alwaysVisible;
+	private boolean _isRightPane;
 		  
 	public void			toogle() { _isVisible = !_isVisible; }
 	public void			open() { _isVisible = true; }
 	public void			close() { _isVisible = false; }
 	public boolean		isOpen() { return _isVisible; }
 
-	public BasePanel(Mode mode, Vector2f pos, Vector2f size) {
+	public BasePanel(Mode mode, Vector2f pos, Vector2f size, boolean isRightPane) {
 		super(size);
+		
+		_isRightPane = isRightPane;
+		if (isRightPane && mode != Mode.NONE) {
+			ButtonView btBack = new ButtonView(new Vector2f(100, 32));
+			btBack.setTextPadding(1, 6);
+			btBack.setCharacterSize(FONT_SIZE_TITLE);
+			btBack.setString("[    ]");
+			btBack.setPosition(20, 10);
+			btBack.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					_ui.back();
+				}
+			});
+			super.addView(btBack);
+			
+			TextView lbBack = new TextView();
+			lbBack.setString("Back");
+			lbBack.setCharacterSize(FONT_SIZE_TITLE);
+			lbBack.setColor(Colors.LINK_ACTIVE);
+			lbBack.setPosition(20, 10);
+			lbBack.setPadding(1, 20);
+			super.addView(lbBack);
+			
+			ColorView rectangleUnderline = new ColorView(new Vector2f((int)(4 * 12.5), 1));
+			rectangleUnderline.setPosition(40, 36);
+			rectangleUnderline.setBackgroundColor(Colors.LINK_ACTIVE);
+			super.addView(rectangleUnderline);
+		}
 		
 		setBackgroundColor(new Color(18, 28, 30));
 
 		View border = new ColorView(new Vector2f(4, size.y));
 		border.setBackgroundColor(new Color(37, 70, 72));
-		addView(border);
+		super.addView(border);
 
 		setPosition(pos);
 		
@@ -48,6 +82,14 @@ public abstract class BasePanel extends FrameLayout {
 		_isVisible = false;
 	}
 
+	@Override
+	public void addView(View view) {
+		if (_isRightPane && _mode != Mode.NONE) {
+			view.setPosition(view.getPosX(), view.getPosY() + 42);
+		}
+		super.addView(view);
+	}
+	
 	protected void setAlwaysVisible(boolean alwaysVisible) {
 		_alwaysVisible = alwaysVisible;
 		_isVisible = alwaysVisible;

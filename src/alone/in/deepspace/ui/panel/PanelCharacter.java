@@ -49,7 +49,7 @@ public class PanelCharacter extends BasePanel {
 	private static final int NB_COLUMNS_NEEDS = 22;
 
 	private static final Color COLOR_0 = new Color(120, 255, 255);
-	private static final Color COLOR_1 = new Color(214, 247, 59);
+	private static final Color COLOR_1 = new Color(209, 203, 69);
 	private static final Color COLOR_2 = new Color(247, 57, 57);
 	private static final Color COLOR_3 = new Color(247, 57, 57);
 
@@ -93,7 +93,7 @@ public class PanelCharacter extends BasePanel {
 	private TextView 			_lbInventory;
 
 	public PanelCharacter(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class PanelCharacter extends BasePanel {
 		addView(text);
 		posY += 32;
 		
-		_lbState = new TextView(new Vector2f(300, 20));
+		_lbState = new LinkView();
 		_lbState.setCharacterSize(FONT_SIZE_SMALL);
 		_lbState.setPosition(new Vector2f(posX, posY));
 		_lbState.setOnClickListener(new OnClickListener() {
@@ -425,7 +425,7 @@ public class PanelCharacter extends BasePanel {
 		_shapes[index] = new RectangleShape();
 		_shapes[index].setTexture(SpriteManager.getInstance().getTexture());
 		_shapes[index].setSize(new Vector2f(width, height));
-		_shapes[index].setPosition(posX, posY + FONT_SIZE + 2);
+		_shapes[index].setPosition(posX, posY + 42 + FONT_SIZE + 2);
 
 		_values[index] = new LinkView();
 		_values[index].setCharacterSize(FONT_SIZE_SMALL);

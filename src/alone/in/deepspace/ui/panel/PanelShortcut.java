@@ -11,6 +11,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.renderer.MiniMapRenderer;
+import alone.in.deepspace.engine.ui.ImageView;
 import alone.in.deepspace.engine.ui.LinkView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.OnFocusListener;
@@ -60,9 +61,10 @@ public class PanelShortcut extends BasePanel {
 	private MiniMapRenderer		_miniMapRenderer;
 	private TextView 			_lbTime;
 	private ResourceEntry[] 	_resources;
+	private ImageView _map;
 
 	public PanelShortcut(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
 	}
 	
 	@Override
@@ -74,6 +76,10 @@ public class PanelShortcut extends BasePanel {
 		_miniMapRenderer = new MiniMapRenderer(_viewport);
 		int posX = 24;
 		int posY = 244;
+		
+		_map = new ImageView();
+		_map.setPosition(20, 20);
+		addView(_map);
 		
 		TextView lbResources = new TextView();
 		lbResources.setString("Resources");
@@ -153,13 +159,19 @@ public class PanelShortcut extends BasePanel {
 		}
 	}	
 
-	private void addResource(int index, int posX, int posY, ResourceData data) {
+	private void addResource(int index, int posX, int posY, final ResourceData data) {
 		_resources[index] = new ResourceEntry();
 		_resources[index].data = data;
 		
-		_resources[index].text = new LinkView();
+		_resources[index].text = new LinkView(new Vector2f(180, 20));
 		_resources[index].text.setCharacterSize(FONT_SIZE);
 		_resources[index].text.setPosition(posX, posY);
+		_resources[index].text.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				_ui.select(data.tooltip);
+			}
+		});
 		addView(_resources[index].text);
 	}
 
@@ -171,6 +183,7 @@ public class PanelShortcut extends BasePanel {
 	@Override
 	protected void onRefresh(int update) {
 		_miniMapRenderer.onRefresh(update);
+		_map.setSprite(_miniMapRenderer.getSprite());
 		
 		//update * 1000000
 		Calendar cal = Calendar.getInstance();
@@ -180,6 +193,7 @@ public class PanelShortcut extends BasePanel {
 		Date date = cal.getTime();
 		DateFormat formater = new SimpleDateFormat("dd MMMM y");
 		_lbTime.setString(formater.format(date));
+		_lbTime.setVisible(false);
 
 		for (ResourceEntry res: _resources) {
 			if (res != null) {

@@ -28,6 +28,7 @@ public class ButtonView extends View {
 
 		setBackgroundColor(Colors.BT_INACTIVE);
 		setColor(Colors.BT_TEXT);
+		setOnFocusListener(null);
 	}
 
 	public void setString(String string) {
@@ -59,9 +60,10 @@ public class ButtonView extends View {
 			@Override
 			public void onEnter(View view) {
 				_color = _backgroundColor;
-				view.setBackgroundColor(new Color(29, 85, 96, 180));
+				//view.setBackgroundColor(new Color(29, 85, 96, 180));
+				view.setBackgroundColor(Colors.BT_ACTIVE);
 				if (onFocusListener != null) {
-					onFocusListener.onExit(view);
+					onFocusListener.onEnter(view);
 				}
 			}
 
@@ -91,6 +93,7 @@ public class ButtonView extends View {
 		if (_pos != null) {
 			_text.setPosition(new Vector2f(_pos.x + _paddingLeft, _pos.y + _paddingTop));
 		}
+		_invalid = true;
 	}
 
 	@Override
@@ -124,6 +127,7 @@ public class ButtonView extends View {
 	public void setIconPadding(int x, int y) {
 		_iconPaddingLeft = x;
 		_iconPaddingTop = y;
+		_invalid = true;
 	}
 
 	public void setOverlayColor(Color color) {
@@ -141,6 +145,7 @@ public class ButtonView extends View {
 	public void setTextPadding(int top, int left) {
 		_textPaddingTop = top;
 		_textPaddingLeft = left;
+		_invalid = true;
 	}
 }
 

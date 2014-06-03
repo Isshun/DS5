@@ -57,7 +57,7 @@ public class CharacterRenderer implements IRenderer {
 			app.draw(sprite, render);
 						
 			// Selection
-			if (c.getSelected()) {
+			if (c.isSelected()) {
 				sprite = _spriteManager.getSelector(_frame);
 				sprite.setPosition(posX - 2, posY + (c.isSleeping() ? 20 : 0) - 2);
 				app.draw(sprite, render);

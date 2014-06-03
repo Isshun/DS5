@@ -1,9 +1,6 @@
 package alone.in.deepspace.ui.panel;
 
-import java.io.IOException;
-
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Main;
@@ -22,7 +19,7 @@ public class PanelSystem extends BasePanel {
 	private TextView 	_lbFloor;
 	
 	public PanelSystem() {
-		super(Mode.NONE, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(Mode.NONE, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), false);
 	}
 	
 	@Override

@@ -101,7 +101,7 @@ public class PanelInfo extends BasePanel {
 	private LinkView[] _lbSlots;
 
 	public PanelInfo(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
 
 		_lbRoom = new TextView(null);
 		_lbRoom.setPosition(200, 40);

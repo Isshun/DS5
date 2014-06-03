@@ -27,7 +27,7 @@ public class PanelTooltip extends BasePanel {
 	private ToolTip 	_tooltips;
 
 	public PanelTooltip(Mode mode) {
-		super(mode, new Vector2f(200, 200), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(mode, new Vector2f(200, 200), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), false);
 	}
 	
 	@Override

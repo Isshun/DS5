@@ -12,7 +12,7 @@ public class PanelBase extends BasePanel {
 	private static final int FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 
 	public PanelBase() throws IOException {
-		super(Mode.NONE, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(Mode.NONE, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
 	}
 
 	@Override

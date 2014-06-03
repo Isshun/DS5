@@ -39,7 +39,7 @@ public class PanelRoom extends BasePanel {
 	private TextView[] _lbRoomOccupantsOld;
 
 	public PanelRoom(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32));
+		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
 		_icons = new HashMap<Integer, ButtonView>();
 		_layoutButtons = new FrameLayout(new Vector2f(200, 400));
 		_layoutButtons.setVisible(true);
