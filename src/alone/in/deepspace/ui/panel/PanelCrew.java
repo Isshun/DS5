@@ -8,6 +8,7 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.engine.ui.ButtonView;
+import alone.in.deepspace.engine.ui.Colors;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.ImageView;
 import alone.in.deepspace.engine.ui.OnClickListener;
@@ -140,12 +141,16 @@ public class PanelCrew extends BasePanel {
 			viewHolder.frame.setOnFocusListener(new OnFocusListener() {
 				@Override
 				public void onExit(View view) {
-					view.setBackgroundColor(null);
+					viewHolder.lbName.setColor(Colors.LINK_INACTIVE);
+					viewHolder.lbName.setStyle(TextView.REGULAR);
+					//view.setBackgroundColor(null);
 				}
 
 				@Override
 				public void onEnter(View view) {
-					view.setBackgroundColor(new Color(40, 40, 80));
+					viewHolder.lbName.setColor(Colors.LINK_ACTIVE);
+					viewHolder.lbName.setStyle(TextView.UNDERLINED);
+					//view.setBackgroundColor(new Color(40, 40, 80));
 				}
 			});
 			addView(viewHolder.frame);
@@ -215,7 +220,7 @@ public class PanelCrew extends BasePanel {
 
 			// Name
 			viewHolder.lbName.setDashedString(character.getName(), "", NB_COLUMNS);
-			viewHolder.lbName.setColor(new Color(120, 255, 255));
+			viewHolder.lbName.setColor(viewHolder.frame.isFocus() ? Colors.LINK_ACTIVE : new Color(120, 255, 255));
 
 			// Status
 			viewHolder.lbStatus.setString(character.getStatus().getThoughts());
