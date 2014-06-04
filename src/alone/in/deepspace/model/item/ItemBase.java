@@ -6,7 +6,6 @@ import java.util.List;
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ItemSlot;
-import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.item.ItemInfo.ItemInfoSlot;

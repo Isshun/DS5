@@ -5,7 +5,6 @@ import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
-import alone.in.deepspace.model.item.StorageItem;
 
 public class JobDestroy extends Job {
 
@@ -33,22 +32,11 @@ public class JobDestroy extends Job {
 		}
 		
 		// Item is no longer exists
-		if (_item != ServiceManager.getWorldMap().getItem(_item.getX(), _item.getY())) {
+		if (_item != ServiceManager.getWorldMap().getItem(_item.getX(), _item.getY()) && _item != ServiceManager.getWorldMap().getStructure(_item.getX(), _item.getY())) {
 			_reason = Abort.INVALID;
 			return false;
 		}
-		
-		// No space left in inventory
-		if (_item.isFactory() && character.hasInventorySpaceLeft() == false) {
-			_reason = Abort.NO_LEFT_CARRY;
-			return false;
-		}
-		
-		// Factory is empty
-		if (_item.isFactory() && ((StorageItem)_item).getInventory().size() == 0) {
-			_reason = Abort.NO_COMPONENTS;
-			return false;
-		}
+
 		return true;
 	}
 

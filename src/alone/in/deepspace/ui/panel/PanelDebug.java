@@ -32,7 +32,7 @@ public class PanelDebug extends BasePanel {
 		txtAddCharacter.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				ServiceManager.getCharacterManager().add(0, 0, Profession.Type.ENGINEER);
+				ServiceManager.getCharacterManager().add(150, 150, Profession.Type.ENGINEER);
 			}
 		});
 		txtAddCharacter.setString("Add character");

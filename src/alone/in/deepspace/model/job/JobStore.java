@@ -61,6 +61,9 @@ public class JobStore extends Job {
 			_reason = Abort.INVALID;
 			return false;
 		}
+		
+		// TODO: storage is not empty
+		// TODO: storage accept item
 
 		return true;
 	}

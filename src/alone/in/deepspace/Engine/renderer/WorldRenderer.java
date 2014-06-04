@@ -39,8 +39,8 @@ public class WorldRenderer implements IRenderer {
 
 	private Set<Vector2i> 			_changed;
 	private WorldManager 			_worldMap;
-	private ItemBase _itemSelected;
-	private int _frame;
+	private ItemBase 				_itemSelected;
+	private int 					_frame;
 
 	public WorldRenderer(SpriteManager spriteManager, UserInterface ui) throws IOException, TextureCreationException {
 		_ui = ui;

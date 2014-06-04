@@ -285,9 +285,9 @@ public class Game implements ISavable {
 
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
 			bw.write("BEGIN GAME\n");
-			bw.write("MATTER\t" + ResourceManager.getInstance().getMatter() + "\n");
-			bw.write("SPICE\t" + ResourceManager.getInstance().getSpice() + "\n");
-			bw.write("WATER\t" + ResourceManager.getInstance().getWater() + "\n");
+			bw.write("MATTER\t" + ResourceManager.getInstance().getMatter().value + "\n");
+			bw.write("SPICE\t" + ResourceManager.getInstance().getSpice().value + "\n");
+			bw.write("WATER\t" + ResourceManager.getInstance().getWater().value + "\n");
 			bw.write("END GAME\n");
 		} catch (FileNotFoundException e) {
 			Log.error("Unable to open save file: " + filePath);

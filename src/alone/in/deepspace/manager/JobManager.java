@@ -41,6 +41,12 @@ public class JobManager {
 	private static JobManager	sSelf;
 	private List<Job> 			_jobs;
 
+	private JobCheck[]		_priorityJobsCheck = {
+			new CharacterIsTired(),
+			new CharacterIsHungry(),
+			new CharacterIsFull(),
+	};
+
 	private JobCheck[]		_jobsCheck = {
 			new CheckLowFood(),
 			new CheckEmptyFactory()			
@@ -50,11 +56,6 @@ public class JobManager {
 			new CharacterHasItemToStore(),
 			new CharacterPlayTime(),
 			new CharacterGoToMettingRoom()
-	};
-	private JobCheck[]		_priorityJobsCheck = {
-			new CharacterIsTired(),
-			new CharacterIsHungry(),
-			new CharacterIsFull(),
 	};
 
 	private int _nbVisibleJob;

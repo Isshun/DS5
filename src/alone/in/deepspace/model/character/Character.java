@@ -198,7 +198,7 @@ public class Character extends Movable implements Mover {
 		}
 
 		// Cancel previous job
-		if (_job != null && _job != job) {
+		if (_job != null && _job != job && _job.isFinish() == false) {
 			JobManager.getInstance().abort(_job, Job.Abort.INTERRUPTE);
 		}
 
