@@ -4,11 +4,8 @@ SPICE	0
 WATER	0
 END GAME
 BEGIN CHARACTERS
-135	126	1	Gary Bentley
-135	126	2	Wanda Frost
-135	126	2	Jewell Lewis
-135	126	1	Bruce Bauer
-135	126	1	Albert Potter
-135	126	2	Alisha Potter
-135	126	1	Casey Frost
+150	150	1	Craig Roman
+150	150	1	Mitchell Tucker
+150	150	2	Marsha Bishop
+150	150	2	Mindy Booth
 END CHARACTERS

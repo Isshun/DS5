@@ -352,7 +352,7 @@ public class SpriteManager {
 	public Sprite 				getRessource(WorldResource item, int tile, int state) {
 
 		if ("base.rock".equals(item.getInfo().name)) {
-			return getSprite(item.getInfo(), tile, state, 255, false);
+			return getSprite(item.getInfo(), tile, state + 1, 255, false);
 		}
 		
 //		if (item.getMatterSupply() == 0) {
@@ -364,7 +364,7 @@ public class SpriteManager {
 //					9 * (Constant.TILE_HEIGHT + 2) + 1,
 //					Constant.TILE_WIDTH + 1,
 //					Constant.TILE_HEIGHT);
-		return getSprite(item.getInfo(), 0, state, 255, false);
+		return getSprite(item.getInfo(), 0, state + 1, 255, false);
 //		}
 	}
 

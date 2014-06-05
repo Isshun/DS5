@@ -40,7 +40,12 @@ public class UIEventManager {
 	
 	public boolean leftClick(int x, int y) {
 		for (View view: _onClickListeners.keySet()) {
-			if (view.getRect().contains(x, y) && (view.getParent() == null || view.getParent().getVisible())) {
+			if (view.getId() == 112) {
+				System.out.println("y: " + view.getPosY());
+			}
+		}
+		for (View view: _onClickListeners.keySet()) {
+			if (hasVisibleHierarchy(view) && view.getRect().contains(x, y)) {
 				_onClickListeners.get(view).onClick(view);
 				return true;
 			}
@@ -69,7 +74,7 @@ public class UIEventManager {
 
 	public void onMouseMove(int x, int y) {
 		for (View view: _onFocusListeners.keySet()) {
-			if (view.getRect().contains(x, y) && (view.getParent() == null || view.getParent().getVisible())) {
+			if (view.getRect().contains(x, y) && (view.getParent() == null || view.getParent().isVisible())) {
 				if (view.isFocus() == false) {
 					view.onEnter();
 				}
@@ -81,12 +86,12 @@ public class UIEventManager {
 		}
 	}
 
-	public void removeOnClickListener(OnClickListener listener) {
-		_onClickListeners.remove(listener);
+	public void removeOnClickListener(View view) {
+		_onClickListeners.remove(view);
 	}
 
-	public void removeOnFocusListener(OnFocusListener listener) {
-		_onFocusListeners.remove(listener);
+	public void removeOnFocusListener(View view) {
+		_onFocusListeners.remove(view);
 	}
 
 }

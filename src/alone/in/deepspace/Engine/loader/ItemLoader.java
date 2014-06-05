@@ -7,22 +7,20 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.GameData;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.util.Constant;
 
 public class ItemLoader {
 	
-	public static void load(String path, String packageName) {
+	public static void load(GameData data, String path, String packageName) {
 	    System.out.println("load items...");
 
-	    List<ItemInfo> items = new ArrayList<ItemInfo>();
-	    
 	    // List files
 		File itemFiles[] = (new File(path)).listFiles(new FilenameFilter() {
 			@Override
@@ -32,6 +30,7 @@ public class ItemLoader {
 		});
 		
 		// Load files
+		int i = 0;
 		for (File itemFile: itemFiles) {
 			ItemInfo info = null;
 			
@@ -67,19 +66,24 @@ public class ItemLoader {
 			    
 			    info.isStorage = info.storage > 0 || info.onAction != null && info.onAction.storage > 0;
 			    info.isFood = info.onAction != null && info.onAction.effects != null && info.onAction.effects.food > 0;
-			    items.add(info);
+			    data.items.add(info);
 			}
+			
+			i++;
 		}
 		
-	    System.out.println("items loaded: " + items.size());
-	    
-	    ServiceManager.getData().items.addAll(items);
+	    System.out.println("items loaded: " + i);
 	}
 
 	public static void load() {
-		ItemLoader.load("data/items/", "base");
-		ItemLoader.load("mods/garden/items/", "garden");
-		for (ItemInfo item: ServiceManager.getData().items) {
+		GameData data = ServiceManager.getData();
+		
+		ItemLoader.load(data, "data/items/", "base");
+		ItemLoader.load(data, "mods/garden/items/", "garden");
+		
+		// First pass
+		for (ItemInfo item: data.items) {
+			// Init crafted item
 			if (item.craftedFrom != null) {
 				item.craftedFromItems = new ArrayList<ItemInfo>();
 				for (String name: item.craftedFrom) {
@@ -87,14 +91,22 @@ public class ItemLoader {
 				}
 			}
 		}
+
+		// Second pass
+		for (ItemInfo item: data.items) {
 			
-		for (ItemInfo item: ServiceManager.getData().items) {
+			// Init gather item
 			if (item.onGather != null) {
 				item.onGather.itemProduce = ServiceManager.getData().getItemInfo(item.onGather.produce);
+				data.gatherItems.add(item);
 			}
+			
+			// Init mine item
 			if (item.onMine != null) {
 				item.onMine.itemProduce = ServiceManager.getData().getItemInfo(item.onMine.produce);
 			}
+			
+			// Init action item
 			if (item.onAction != null) {
 				item.onAction.duration *= Constant.DURATION_MULTIPLIER;
 				if (item.onAction.produce != null) {

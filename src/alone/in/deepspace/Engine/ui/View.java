@@ -10,28 +10,28 @@ import org.jsfml.system.Vector2f;
 
 
 public abstract class View {
-	protected Vector2f 		_pos;
-	protected Vector2f 		_size;
-	protected boolean		_isVisible;
-	protected Rectangle 	_rect;
-	protected int 			_posX;
-	protected int 			_posY;
-	private RectangleShape	_background;
-	private RectangleShape	_borders[];
-	protected int 			_paddingLeft;
-	protected int			_paddingBottom;
-	protected int 			_paddingRight;
-	protected int 			_paddingTop;
-	protected FrameLayout 	_parent;
-	protected OnClickListener _onClickListener;
-	private OnFocusListener _onFocusListener;
-	protected boolean 		_isFocus;
-	private int 			_id;
-	private int 			_borderSize;
-	protected boolean 		_invalid;
-	private Color 			_borderColor;
-	protected Color			_backgroundColor;
-	private Object 			_data;
+	protected Vector2f 			_pos;
+	protected Vector2f 			_size;
+	protected boolean			_isVisible;
+	protected Rectangle 		_rect;
+	protected int 				_posX;
+	protected int 				_posY;
+	private RectangleShape		_background;
+	private RectangleShape		_borders[];
+	protected int 				_paddingLeft;
+	protected int				_paddingBottom;
+	protected int 				_paddingRight;
+	protected int 				_paddingTop;
+	protected FrameLayout 		_parent;
+	protected OnClickListener 	_onClickListener;
+	private OnFocusListener 	_onFocusListener;
+	protected boolean 			_isFocus;
+	private int 				_id;
+	private int 				_borderSize;
+	protected boolean 			_invalid;
+	private Color 				_borderColor;
+	protected Color				_backgroundColor;
+	private Object 				_data;
 
 	public View(Vector2f size) {
 		_size = size;
@@ -129,17 +129,11 @@ public abstract class View {
 	}
 	
 	public void setOnClickListener(OnClickListener onClickListener) {
-		if (_onClickListener != null) {
-			UIEventManager.getInstance().removeOnClickListener(_onClickListener);
-		}
 		_onClickListener = onClickListener;
 		UIEventManager.getInstance().setOnClickListener(this, onClickListener);
 	}
 
 	public void setOnFocusListener(OnFocusListener onFocusListener) {
-		if (_onFocusListener != null) {
-			UIEventManager.getInstance().removeOnFocusListener(_onFocusListener );
-		}
 		_onFocusListener = onFocusListener;
 		UIEventManager.getInstance().setOnFocusListener(this, onFocusListener);
 	}
@@ -243,10 +237,10 @@ public abstract class View {
 		_data = data;
 	}
 
-	public void remove() {
+	protected void remove() {
 		_parent = null;
 		if (_onClickListener != null) {
-			UIEventManager.getInstance().removeOnClickListener(_onClickListener);
+			UIEventManager.getInstance().removeOnClickListener(this);
 		}
 	}
 }

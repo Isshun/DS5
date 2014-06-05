@@ -60,4 +60,8 @@ public class WorldResource extends UserItem {
 		return _value < 1;
 	}
 
+	public boolean isMature() {
+		return _value >= _info.onGather.mature;
+	}
+
 }

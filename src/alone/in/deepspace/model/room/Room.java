@@ -248,7 +248,7 @@ public class Room {
 		case QUARTER:		return "Quarter";
 		case SICKBAY: 		return "Sickbay";
 		case ENGINEERING: 	return "Engineering";
-		case METTING: 			return "Pub";
+		case METTING: 		return "Pub";
 		case HOLODECK: 		return "Holodeck";
 		case STORAGE: 		return "Storage";
 		case GARDEN: 		return "Garden";
@@ -269,5 +269,16 @@ public class Room {
 
 	public boolean isGarden() {
 		return _type == Type.GARDEN;
+	}
+
+	public void setOption(int index) {
+	}
+
+	public List<RoomOption> getOptions() {
+		return null;
+	}
+
+	public boolean isQuarter() {
+		return Type.QUARTER.equals(_type);
 	}
 }

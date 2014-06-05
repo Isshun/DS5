@@ -12,4 +12,7 @@ public class Colors {
 	public static final Color LINK_ACTIVE = new Color(176, 205, 53);
 
 	public static final Color TEXT = Color.WHITE;
+
+	public static final Color BORDER = new Color(37, 70, 72);
+	public static final Color BACKGROUND = new Color(18, 28, 30);
 }

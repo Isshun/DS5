@@ -1,10 +1,8 @@
 package alone.in.deepspace.manager;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +14,6 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
 import alone.in.deepspace.Strings;
-import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.model.Movable.Direction;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.character.Character;
@@ -25,7 +22,7 @@ import alone.in.deepspace.model.job.Job.Abort;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
-public class CharacterManager implements ISavable {
+public class CharacterManager {
 
 	public static final Profession professions[] = {
 		new Profession(Profession.Type.ENGINEER, "Engineer", new Color(255, 255, 50), new Color(50, 50, 50)),
@@ -74,52 +71,52 @@ public class CharacterManager implements ISavable {
 		add(4, 0, Profession.Type.SECURITY);
 	}
 
-	public void	load(final String filePath) {
-		Log.error("Load characters: " + filePath);
-
-		int x, y, gender;
-		boolean	inBlock = false;
-
-		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-			String line = null;
-
-			while ((line = br.readLine()) != null) {
-
-				// Start block
-				if ("BEGIN CHARACTERS".equals(line)) {
-					inBlock = true;
-				}
-
-				// End block
-				else if ("END CHARACTERS".equals(line)) {
-					inBlock = false;
-				}
-
-				// Item
-				else if (inBlock) {
-					String[] values = line.split("\t");
-					if (values.length == 4) {
-						x = Integer.valueOf(values[0]);
-						y = Integer.valueOf(values[1]);
-						gender = Integer.valueOf(values[2]);
-						int sep = values[3].lastIndexOf(' ');
-						String lastName = values[3].substring(sep + 1, values[3].length());
-						String firstName = values[3].substring(0, sep + 1);
-						Character c = new Character(_count++, x, y, firstName, lastName, 24);
-						c.setGender(CharacterManager.getGender(gender));
-						_characters.add(c);
-					}
-				}
-
-			}
-		}
-		catch (FileNotFoundException e) {
-			Log.error("Unable to open save file: " + filePath);
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public void	load(final String filePath) {
+//		Log.error("Load characters: " + filePath);
+//
+//		int x, y, gender;
+//		boolean	inBlock = false;
+//
+//		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+//			String line = null;
+//
+//			while ((line = br.readLine()) != null) {
+//
+//				// Start block
+//				if ("BEGIN CHARACTERS".equals(line)) {
+//					inBlock = true;
+//				}
+//
+//				// End block
+//				else if ("END CHARACTERS".equals(line)) {
+//					inBlock = false;
+//				}
+//
+//				// Item
+//				else if (inBlock) {
+//					String[] values = line.split("\t");
+//					if (values.length == 4) {
+//						x = Integer.valueOf(values[0]);
+//						y = Integer.valueOf(values[1]);
+//						gender = Integer.valueOf(values[2]);
+//						int sep = values[3].lastIndexOf(' ');
+//						String lastName = values[3].substring(sep + 1, values[3].length());
+//						String firstName = values[3].substring(0, sep + 1);
+//						Character c = new Character(_count++, x, y, firstName, lastName, 24);
+//						c.setGender(CharacterManager.getGender(gender));
+//						_characters.add(c);
+//					}
+//				}
+//
+//			}
+//		}
+//		catch (FileNotFoundException e) {
+//			Log.error("Unable to open save file: " + filePath);
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	private static Character.Gender getGender(int gender) {
 		if (gender == 1) { return Gender.MALE; }
@@ -296,5 +293,4 @@ public class CharacterManager implements ISavable {
 		}
 		return null;
 	}
-
 }

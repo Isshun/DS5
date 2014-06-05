@@ -45,7 +45,6 @@ public class PanelBuild extends BasePanel {
 	private List<View>						_iconsList;
 	protected ItemInfo 						_currentSelected;
 	protected PanelMode 					_panelMode;
-	private int								_startY;
 	private boolean 						_animRunning;
 	private Map<CategoryInfo, FrameLayout>	_layouts;
 	private CategoryInfo 					_currentCategory;
@@ -68,12 +67,14 @@ public class PanelBuild extends BasePanel {
 
 	// TODO: ugly
 	protected void	drawPanel(boolean witchAnim) {
+		System.out.println("DRAW PANEL");
+		
 		_animRunning = true;
 		clearAllViews();
 		_icons.clear();
 
 		// TODO
-		int posY = _startY;
+		int posY = 0;
 		List<CategoryInfo> categories = ServiceManager.getData().categories;
 		_iconsList.clear();
 		_layouts.clear();
@@ -88,7 +89,7 @@ public class PanelBuild extends BasePanel {
 			_layouts.put(category, layout);
 
 			// Title
-			TextView lbTitle = new LinkView();
+			TextView lbTitle = new LinkView(new Vector2f(380, 28));
 			lbTitle.setDashedString(c.labelWithoutShortcut.toUpperCase(), c.items.size() + " items", NB_COLUMNS_TITLE);
 			lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 			lbTitle.setPosition(new Vector2f(20, posY + 8));
@@ -100,6 +101,8 @@ public class PanelBuild extends BasePanel {
 				}
 			});
 			addView(lbTitle);
+			
+			System.out.println("posY: " + posY + ", label: " + c.labelWithoutShortcut);
 
 			// Shortcut
 			TextView lbShortcut = new TextView();
@@ -132,7 +135,8 @@ public class PanelBuild extends BasePanel {
 				for (; i < 10; i++) {
 					_iconShortcut[i] = null;
 				}
-			}		}
+			}
+		}
 
 		View border = new ColorView(new Vector2f(4, FRAME_HEIGHT));
 		border.setBackgroundColor(new Color(37, 70, 72));
@@ -174,6 +178,9 @@ public class PanelBuild extends BasePanel {
 			icon.setString(label);
 			icon.setTextPadding(80, 4);
 			icon.setIcon(SpriteManager.getInstance().getIcon(info));
+			if (info.name.equals("base.bed")) {
+				icon.setId(112);
+			}
 			icon.setIconPadding(14, 10);
 			icon.setPosition(x, y);
 			icon.setColor(Colors.TEXT);
@@ -279,8 +286,10 @@ public class PanelBuild extends BasePanel {
 			icon.setBorderColor(null);
 		}
 		select((ItemInfo)view.getData());
+//		_ui.select((ItemInfo)view.getData());
 		view.setBackgroundColor(new Color(29, 85, 96));
 		view.setBorderColor(new Color(161, 255, 255));
+//		view.setBackgroundColor(Color.RED);
 	}
 
 	@Override

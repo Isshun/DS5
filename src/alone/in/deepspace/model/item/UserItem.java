@@ -9,4 +9,8 @@ public class UserItem extends ItemBase {
 		super(info);
 	}
 
+	public boolean isBed() {
+		return _info.onAction != null && _info.onAction.effects != null && _info.onAction.effects.energy > 0;
+	}
+
 }

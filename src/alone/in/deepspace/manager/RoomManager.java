@@ -15,6 +15,7 @@ import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.room.GardenRoom;
+import alone.in.deepspace.model.room.QuarterRoom;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.model.room.Room.Type;
 import alone.in.deepspace.util.Constant;
@@ -69,6 +70,8 @@ public class RoomManager {
 		if (room == null) {
 			if (type == Type.GARDEN) {
 				room = new GardenRoom(fromX, fromY);
+			} else if (type == Type.QUARTER) {
+				room = new QuarterRoom(fromX, fromY);
 			} else {
 				room = new Room(type, fromX, fromY);
 			}
@@ -102,41 +105,6 @@ public class RoomManager {
 			return _rooms[x][y];
 		}
 		return null;
-	}
-
-	public List<RoomSave> save(WorldSave save) {
-		save.rooms = new ArrayList<RoomSave>();
-		
-		for (Room room: _roomList) {
-			if (room.isGarden()) {
-				GardenRoom garden = (GardenRoom)room;
-				for (WorldArea area: room.getAreas()) {
-					RoomSave roomSave = new RoomSave();
-					roomSave.x = area.getX();
-					roomSave.y = area.getY();
-					roomSave.culture = garden.getCulture().name;
-					roomSave.type = room.getType().ordinal();
-					save.rooms.add(roomSave);
-				}
-			}
-		}
-		
-		return save.rooms;
-	}
-
-	public void	load(List<RoomSave> rooms) {
-		List<Character> characters = ServiceManager.getCharacterManager().getList();
-		Character character = null;
-		if (characters.size() > 0) {
-			character = characters.get((int)(Math.random() * characters.size()));
-		}
-		for (RoomSave roomSave: rooms) {
-			Room room = putRoom(roomSave.x, roomSave.y, roomSave.x, roomSave.y, roomSave.x, roomSave.y, Room.getType(roomSave.type), null);
-			if (room.isGarden()) {
-				ItemInfo info = ServiceManager.getData().getItemInfo(roomSave.culture);
-				((GardenRoom)room).setCulture(info);
-			}
-		}
 	}
 
 	public Room getNearFreeStorage(int fromX, int fromY) {
@@ -263,9 +231,7 @@ public class RoomManager {
 
 	public void update() {
 		for (Room room: _roomList) {
-			if (room.isType(Type.GARDEN)) {
-				room.update();
-			}
+			room.update();
 		}
 	}
 

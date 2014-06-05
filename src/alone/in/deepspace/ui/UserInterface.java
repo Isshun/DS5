@@ -34,6 +34,7 @@ import alone.in.deepspace.ui.panel.PanelPlan;
 import alone.in.deepspace.ui.panel.PanelPlan.PanelMode;
 import alone.in.deepspace.ui.panel.PanelResource;
 import alone.in.deepspace.ui.panel.PanelRoom;
+import alone.in.deepspace.ui.panel.PanelRoom.PanelRoomListener;
 import alone.in.deepspace.ui.panel.PanelScience;
 import alone.in.deepspace.ui.panel.PanelSecurity;
 import alone.in.deepspace.ui.panel.PanelShortcut;
@@ -43,7 +44,7 @@ import alone.in.deepspace.ui.panel.PanelTooltip;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Settings;
 
-public class UserInterface {
+public class UserInterface implements PanelRoomListener {
 	enum Action {
 		REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, BUILD_ROOM
 	}
@@ -97,6 +98,7 @@ public class UserInterface {
 	private PanelMode 		_selectedPlan;
 	private Type 			_selectedRoomType;
 	private Room _selectedRoom;
+	private int _update;
 	
 	public enum Mode {
 		INFO,
@@ -197,7 +199,7 @@ public class UserInterface {
 		_menu = null;
 		
 		if (mode == Mode.NONE) {
-			_selectedPlan = null;
+			cleanSelect();
 		}
 
 		for (BasePanel panel: _panels) {
@@ -222,6 +224,7 @@ public class UserInterface {
 	}
 
 	public void onRefresh(int update) {
+		_update = update;
 		for (BasePanel panel: _panels) {
 			panel.refresh(update);
 		}
@@ -344,38 +347,6 @@ public class UserInterface {
 		default:
 			return false;
 		}
-
-		//	  else if (event.asKeyEvent().key == Keyboard.Key.I) {
-		//		ServiceManager.getWorldMap().dumpItems();
-		//	  }
-//		else if (key == Keyboard.Key.UP) {
-//			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (key.type == Event.Type.KEY_PRESSED)) {
-//				_viewport.update(0, Constant.MOVE_VIEW_OFFSET);
-//				lastInput = frame;
-//				// _cursor._y--;
-//			}
-//		}
-//		else if (key == Keyboard.Key.DOWN) {
-//			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (key.type == Event.Type.KEY_PRESSED)) {
-//				_viewport.update(0, -Constant.MOVE_VIEW_OFFSET);
-//				lastInput = frame;
-//				// _cursor._y++;
-//			}
-//		}
-//		else if (key == Keyboard.Key.RIGHT) {
-//			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (key.type == Event.Type.KEY_PRESSED)) {
-//				_viewport.update(-Constant.MOVE_VIEW_OFFSET, 0);
-//				lastInput = frame;
-//				// _cursor._x++;
-//			}
-//		}
-//		else if (key == Keyboard.Key.LEFT) {
-//			if (frame > lastInput + Constant.KEY_REPEAT_INTERVAL && (key.type == Event.Type.KEY_PRESSED)) {
-//				_viewport.update(Constant.MOVE_VIEW_OFFSET, 0);
-//				lastInput = frame;
-//				// _cursor._x--;
-//			}
-//		}
 	}
 
 	public static UserInterface getInstance() {
@@ -413,19 +384,39 @@ public class UserInterface {
 		}
 	}
 
-	public void onLeftClick(int x, int y) {
+	public boolean onLeftClick(int x, int y) {
 		if (_keyLeftPressed == false) {
-			return;
+			return false;
 		}
 		_keyLeftPressed = false;
 
+		// Set plan
 		if (_selectedPlan != null) {
 			_interaction.plan(_selectedPlan,
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
 					Math.max(_keyPressPosY, _keyMovePosY));
-			return;
+			return true;
+		}
+
+		// Set room
+		if (_mode == Mode.ROOM) {
+			if (_keyPressPosX == _keyMovePosX && _keyPressPosY == _keyMovePosY) {
+				final Room room = RoomManager.getInstance().get(getRelativePosX(x), getRelativePosY(y));
+				select(room);
+				return true;
+			}
+
+			if (_selectedRoomType != null) {
+				_interaction.roomType(_selectedRoomType,
+						_keyPressPosX, _keyPressPosY,
+						Math.min(_keyPressPosX, _keyMovePosX),
+						Math.min(_keyPressPosY, _keyMovePosY),
+						Math.max(_keyPressPosX, _keyMovePosX),
+						Math.max(_keyPressPosY, _keyMovePosY));
+			}
+			return true;
 		}
 		
 		// Remove item
@@ -435,7 +426,7 @@ public class UserInterface {
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
 					Math.max(_keyPressPosY, _keyMovePosY));
-			return;
+			return true;
 		}
 
 		// Remove structure
@@ -445,7 +436,7 @@ public class UserInterface {
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
 					Math.max(_keyPressPosY, _keyMovePosY));
-			return;
+			return true;
 		}
 
 		// Build item
@@ -455,35 +446,12 @@ public class UserInterface {
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
 					Math.max(_keyPressPosY, _keyMovePosY));
-			return;
-		}
-
-		// Set room
-		if (_action == Action.BUILD_ROOM) {
-			if (_selectedRoomType != null) {
-				int fromX = Math.min(_keyPressPosX, _keyMovePosX);
-				int fromY = Math.min(_keyPressPosY, _keyMovePosY);
-				int toX = Math.max(_keyPressPosX, _keyMovePosX);
-				int toY = Math.max(_keyPressPosY, _keyMovePosY);
-				if (_selectedRoomType == Room.Type.NONE) {
-					RoomManager.getInstance().removeRoom(fromX, fromY, toX, toY, _selectedRoomType);
-				} else {
-					RoomManager.getInstance().putRoom(_keyPressPosX, _keyPressPosX, fromX, fromY, toX, toY, _selectedRoomType, null);
-				}
-
-				return;
-			}
-		}
-
-		if (_mode == Mode.ROOM) {
-			final Room room = RoomManager.getInstance().get(getRelativePosX(x), getRelativePosY(y));
-			select(room);
-			return;
+			return true;
 		}
 
 		// Click is catch by panel
 		if (_currentPanel != null && _currentPanel.catchClick(x, y)) {
-			return;
+			return true;
 		}
 
 		// Select character
@@ -508,6 +476,7 @@ public class UserInterface {
 			}
 		}
 
+		return false;
 	}
 
 	public void onRightClick(int x, int y) {
@@ -517,6 +486,10 @@ public class UserInterface {
 			_viewport.update(x, y);
 		}
 
+		else if (_selectedRoomType != null) {
+			cleanSelect();
+		}
+		
 		else if (_mode == Mode.ROOM && _selectedRoomType == Room.Type.NONE) {
 			final Room room = RoomManager.getInstance().get(getRelativePosX(x), getRelativePosY(y));
 			if (room != null) {
@@ -625,5 +598,13 @@ public class UserInterface {
 
 	public void back() {
 		setMode(Mode.NONE);
+	}
+
+	public Room getSelectedRoom() {
+		return _selectedRoom;
+	}
+
+	public Type getSelectedRoomType() {
+		return _selectedRoomType;
 	}
 }

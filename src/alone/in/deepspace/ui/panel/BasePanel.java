@@ -17,13 +17,14 @@ import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.ui.UserInterface.Mode;
+import alone.in.deepspace.util.Constant;
 
 public abstract class BasePanel extends FrameLayout {
 	
 	protected static final int 	LINE_HEIGHT = 20;
 	protected static final int 	FONT_SIZE_TITLE = 22;
 	protected static final int 	FONT_SIZE = 14;
-	protected static final int 	NB_COLUMNS = 47;
+	protected static final int 	NB_COLUMNS = Constant.NB_COLUMNS;
 	protected static final int 	NB_COLUMNS_TITLE = 29;
 
 	protected UserInterface 	_ui;
@@ -70,10 +71,10 @@ public abstract class BasePanel extends FrameLayout {
 			super.addView(rectangleUnderline);
 		}
 		
-		setBackgroundColor(new Color(18, 28, 30));
+		setBackgroundColor(Colors.BACKGROUND);
 
 		View border = new ColorView(new Vector2f(4, size.y));
-		border.setBackgroundColor(new Color(37, 70, 72));
+		border.setBackgroundColor(Colors.BORDER);
 		super.addView(border);
 
 		setPosition(pos);
@@ -158,5 +159,19 @@ public abstract class BasePanel extends FrameLayout {
 	public boolean drawCursor() {
 		return false;
 	}
-	
+
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		if (visible) {
+			onOpen();
+		} else {
+			onClose();
+		}
+	}
+	protected void onClose() {
+	}
+
+	protected void onOpen() {
+	}
 }

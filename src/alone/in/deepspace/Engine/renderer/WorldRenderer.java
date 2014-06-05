@@ -36,7 +36,6 @@ public class WorldRenderer implements IRenderer {
 	private RenderTexture 			_textureCache;
 	private boolean 				_hasChanged;
 	private int						_pass;
-
 	private Set<Vector2i> 			_changed;
 	private WorldManager 			_worldMap;
 	private ItemBase 				_itemSelected;
@@ -74,17 +73,21 @@ public class WorldRenderer implements IRenderer {
 				refreshStructure(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 				refreshResource(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 			} else {
-				for (Vector2i vector: _changed) {
-					refreshFloor(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
-				}
+//				for (Vector2i vector: _changed) {
+//					refreshFloor(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
+//				}
+				refreshFloor(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 				refreshStructure(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
+				refreshResource(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 			}
-			_spriteCache.setTexture(_textureCache.getTexture());
 			_changed.clear();
 			_hasChanged = false;
 		}
 
-		refreshItems(frame, fromX, fromY, toX, toY);
+		refreshItems(frame, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
+
+		_spriteCache.setTexture(_textureCache.getTexture());
+		//refreshItems(frame, fromX, fromY, toX, toY);
 	}
 
 	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
@@ -110,35 +113,6 @@ public class WorldRenderer implements IRenderer {
 		//		Log.info("display structure: " + display_timer.getElapsedTime().asMicroseconds());
 
 		display_timer.restart();
-
-		//		Log.info("display items: " + display_timer.getElapsedTime().asMicroseconds());
-
-		//		Vector<DebugPos> debugPath = _worldMap.getDebug();
-		//		DebugPos startDebugPath = _worldMap.getStartDebug();
-		//		DebugPos stopDebugPath = _worldMap.getStopDebug();
-		//		Sprite sprite = null;
-		//		if (debugPath != null) {
-		//			for (DebugPos pos: debugPath) {
-		//				if (pos.inPath) {
-		//					sprite = SpriteManager.getInstance().getBullet(2);
-		//				} else {
-		//					sprite = SpriteManager.getInstance().getBullet(0);
-		//				}
-		//				sprite.setPosition(pos.x * Constant.TILE_SIZE, pos.y * Constant.TILE_SIZE);
-		//				_app.draw(sprite, render);
-		//			}
-		//		}
-		//		if (startDebugPath != null) {
-		//			sprite = SpriteManager.getInstance().getBullet(2);
-		//			sprite.setPosition(startDebugPath.x * Constant.TILE_SIZE, startDebugPath.y * Constant.TILE_SIZE);
-		//			_app.draw(sprite, render);
-		//		}
-		//		if (stopDebugPath != null) {
-		//			sprite = SpriteManager.getInstance().getBullet(3);
-		//			sprite.setPosition(stopDebugPath.x * Constant.TILE_SIZE, stopDebugPath.y * Constant.TILE_SIZE);
-		//			_app.draw(sprite, render);
-		//		}
-
 	}
 
 	private void refreshResource(int fromX, int fromY, int toX, int toY) {
@@ -425,14 +399,18 @@ public class WorldRenderer implements IRenderer {
 					}
 				}
 
-				// Resource
-				WorldResource resource = _worldMap.getRessource(x, y);
-				if (resource != null) {
-					Sprite sprite = _spriteManager.getRessource(resource, resource.getTile(), (int)Math.min(resource.getValue(), 5));
-					sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-					_textureCache.draw(sprite);
-				}
+				refreshResource(x, y);
 			}
+		}
+	}
+
+	// Resource
+	private void refreshResource(int x, int y) {
+		WorldResource resource = _worldMap.getRessource(x, y);
+		if (resource != null) {
+			Sprite sprite = _spriteManager.getRessource(resource, resource.getTile(), (int)Math.min(resource.getValue(), 5));
+			sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
+			_textureCache.draw(sprite);
 		}
 	}
 

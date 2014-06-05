@@ -30,7 +30,6 @@ import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.StatsManager;
-import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
@@ -157,7 +156,10 @@ public class Game implements ISavable {
 					}
 					// Is simple click
 					else {
-						_ui.onLeftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+						boolean use = _ui.onLeftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+						if (use) {
+							_ui.onRefresh(_update);
+						}
 					}
 					_lastLeftClick = _frame;
 				}
@@ -246,8 +248,6 @@ public class Game implements ISavable {
 		
 		ResourceManager.getInstance().refreshWater();
 
-		ServiceManager.getCharacterManager().load(filePath);
-		
 		JobManagerLoader.load(JobManager.getInstance());
 		
 		onLoadComplete();
@@ -260,14 +260,14 @@ public class Game implements ISavable {
 	private void onLoadComplete() {
 //		ItemInfo info = ServiceManager.getData().getItemInfo("base.seaweed");
 //		
-		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
-			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
-				StructureItem structure = ServiceManager.getWorldMap().getStructure(0, x, y);
-				if (structure != null && structure.getName().equals("base.ground")) {
-					ServiceManager.getWorldMap().putItem("base.seaweed1", x, y);
-				}
-			}
-		}
+//		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
+//			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
+//				StructureItem structure = ServiceManager.getWorldMap().getStructure(0, x, y);
+//				if (structure != null && structure.getName().equals("base.ground")) {
+//					ServiceManager.getWorldMap().putItem("base.seaweed1", x, y);
+//				}
+//			}
+//		}
 		
 //				UserItem item = ServiceManager.getWorldMap().getItem(x, y);
 //				if (item != null && "base.storage".equals(item.getInfo().name)) {

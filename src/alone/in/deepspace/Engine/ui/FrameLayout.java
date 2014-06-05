@@ -84,6 +84,15 @@ public class FrameLayout extends View {
 		_views.add(view);
 	}
 
+	@Override
+	protected void remove() {
+		super.remove();
+		for (View view: _views) {
+			view.remove();
+		}
+		_views.clear();
+	}
+	
 	public void clearAllViews() {
 		for (View view: _views) {
 			view.remove();
@@ -110,13 +119,4 @@ public class FrameLayout extends View {
 	public void setPosition(Vector2f pos) {
 		setPosition((int)pos.x, (int)pos.y);
 	}
-	
-	public void setVisible(boolean visible) {
-		_isVisible = visible;
-	}
-
-	public boolean getVisible() {
-		return _isVisible;
-	}
-
 }

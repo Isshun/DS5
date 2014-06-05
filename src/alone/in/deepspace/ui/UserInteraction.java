@@ -16,12 +16,15 @@ import org.jsfml.window.Mouse;
 
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.manager.JobManager;
+import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Cursor;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.job.Job;
+import alone.in.deepspace.model.room.Room;
+import alone.in.deepspace.model.room.Room.Type;
 import alone.in.deepspace.ui.panel.PanelPlan.PanelMode;
 import alone.in.deepspace.util.Log;
 
@@ -323,6 +326,15 @@ public class UserInteraction {
 		case MINING: planMining(startX, startY, toX, toY); break;
 		default: break;
 		}
+	}
+
+	public void roomType(Type roomType, int clickX, int clickY, int fromX, int fromY, int toX, int toY) {
+		if (roomType == Room.Type.NONE) {
+			RoomManager.getInstance().removeRoom(fromX, fromY, toX, toY, roomType);
+		} else {
+			RoomManager.getInstance().putRoom(clickX, clickY, fromX, fromY, toX, toY, roomType, null);
+		}
+		
 	}
 
 }

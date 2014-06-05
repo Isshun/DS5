@@ -56,9 +56,7 @@ public class Character extends Movable implements Mover {
 	private String 					_birthName;
 	private Room					_quarter;
 
-	//	  private int				_messages[32];
-
-	public Character(int id, int x, int y, String name, String lastName, int old) {
+	public Character(int id, int x, int y, String name, String lastName, double old) {
 		super(id, x, y);
 
 		Log.info("Character #" + id);

@@ -26,6 +26,7 @@ public class ItemInfo {
 	public static class ItemInfoRessource {
 		public String 	produce;
 		public ItemInfo itemProduce;
+		public int		mature;
 	}
 
 	public static class ItemInfoProduce {

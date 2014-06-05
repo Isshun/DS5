@@ -5,6 +5,7 @@ light: 0
 category: resource
 onGather:
   produce: base.seaweed
+  mature: 5
 cost:
   matter: 10
   power: 1

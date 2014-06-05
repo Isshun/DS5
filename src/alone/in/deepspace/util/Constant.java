@@ -62,4 +62,5 @@ public class Constant {
 	public static final int 	CHARACTER_STAY_IN_METTING_ROOM = 10;
 	public static final double 	CHARACTER_LEAVE_HOME_OLD = 18;
 	public static final int 	RESSOURCE_LOW_FOOD 		= 10;
+	public static final int 	NB_COLUMNS = 47;
 }

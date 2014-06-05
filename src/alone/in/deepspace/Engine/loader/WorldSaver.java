@@ -9,7 +9,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import alone.in.deepspace.manager.RoomManager;
+import alone.in.deepspace.engine.loader.CharacterSerializer.CharacterSave;
 import alone.in.deepspace.manager.RoomSave;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.WorldManager;
@@ -29,6 +29,7 @@ public class WorldSaver {
 	public static class WorldSave {
 		public List<WorldSaveArea>	areas;
 		public List<RoomSave> 		rooms;
+		public List<CharacterSave>	characters;
 		
 		public WorldSave() {
 			areas = new ArrayList<WorldSaveArea>();
@@ -78,7 +79,8 @@ public class WorldSaver {
 		
 		WorldSave save = new WorldSave();
 		
-		save.rooms = RoomManager.getInstance().save(save);
+		(new RoomSerializer()).save(save);
+		(new CharacterSerializer()).save(save);
 
 		for (int z = 0; z < 1; z++) {
 			for (int x = 0; x < worldManager.getWidth(); x++) {
@@ -195,7 +197,11 @@ public class WorldSaver {
 
 		if (worldSave != null) {
 			if (worldSave.rooms != null) {
-				RoomManager.getInstance().load(worldSave.rooms);
+				(new RoomSerializer()).load(worldSave);
+			}
+
+			if (worldSave.characters != null) {
+				(new CharacterSerializer()).load(worldSave);
 			}
 			
 		    for (WorldSaveArea area: worldSave.areas) {
@@ -236,6 +242,8 @@ public class WorldSaver {
 	    Log.info("load complete: " + (System.currentTimeMillis() - time) + "ms");
         used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
         System.out.print("" + used);
+        
+		System.gc();
 	}
 
 }

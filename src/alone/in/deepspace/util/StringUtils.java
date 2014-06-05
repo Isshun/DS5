@@ -17,6 +17,10 @@ public class StringUtils {
 		return sb.toString();
 	}
 
+	public static String getDashedString(String label, String value) {
+		return getDashedString(label, value, Constant.NB_COLUMNS);
+	}
+
 	public static String getStringFromKey(Key key) {
 		switch (key) {
 		case A: return "a";
@@ -48,6 +52,4 @@ public class StringUtils {
 		default: return null;
 		}
 	}
-
-
 }

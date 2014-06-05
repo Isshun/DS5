@@ -4146,11 +4146,6 @@
             <string>base.meal</string>
             <string>base.meal</string>
             <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
             <string>base.seaweed</string>
             <string>base.seaweed</string>
             <string>base.seaweed</string>
@@ -5766,10 +5761,10 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>9</value>
+        <value>5</value>
       </resource>
       <x>137</x>
       <y>139</y>
@@ -5781,10 +5776,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>137</x>
       <y>140</y>
@@ -5796,10 +5791,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>137</x>
       <y>141</y>
@@ -6059,10 +6054,10 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>138</x>
       <y>139</y>
@@ -6074,10 +6069,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>138</x>
       <y>140</y>
@@ -6089,10 +6084,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>138</x>
       <y>141</y>
@@ -6499,10 +6494,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>139</x>
       <y>139</y>
@@ -6514,10 +6509,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>139</x>
       <y>140</y>
@@ -6529,10 +6524,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>139</x>
       <y>141</y>
@@ -6805,10 +6800,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>140</x>
       <y>139</y>
@@ -6820,10 +6815,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>140</x>
       <y>140</y>
@@ -6835,10 +6830,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>140</x>
       <y>141</y>
@@ -7093,10 +7088,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>141</x>
       <y>139</y>
@@ -7108,10 +7103,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>141</x>
       <y>140</y>
@@ -7123,10 +7118,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>7</value>
+        <value>5</value>
       </resource>
       <x>141</x>
       <y>141</y>
@@ -7436,10 +7431,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>6</value>
+        <value>5</value>
       </resource>
       <x>142</x>
       <y>139</y>
@@ -7451,10 +7446,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>6</value>
+        <value>5</value>
       </resource>
       <x>142</x>
       <y>140</y>
@@ -7466,7 +7461,7 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>5</value>
@@ -7706,10 +7701,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>6</value>
+        <value>5</value>
       </resource>
       <x>143</x>
       <y>139</y>
@@ -7721,10 +7716,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>6</value>
+        <value>5</value>
       </resource>
       <x>143</x>
       <y>140</y>
@@ -7736,10 +7731,10 @@
         <matter>999</matter>
       </structure>
       <resource>
-        <name>base.seaweed1</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>10</value>
+        <value>5</value>
       </resource>
       <x>143</x>
       <y>141</y>
@@ -16365,397 +16360,583 @@
       <x>143</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>142</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>142</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>143</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>141</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>141</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>141</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>142</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>143</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>143</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>141</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>141</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>141</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>142</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>142</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>142</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>143</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>143</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>143</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>140</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>140</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>140</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>140</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>140</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>140</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>143</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>140</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>140</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>140</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>141</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>141</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>141</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>142</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>142</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>142</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>143</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>143</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>143</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>139</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>139</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>139</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>139</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>139</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>139</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>139</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>139</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>139</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>137</x>
-      <y>139</y>
-      <type>7</type>
-      <culture>base.seaweed1</culture>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>137</x>
-      <y>140</y>
-      <type>7</type>
-      <culture>base.seaweed1</culture>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>137</x>
-      <y>141</y>
-      <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>138</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>138</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>138</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>137</x>
-      <y>139</y>
-      <type>7</type>
-      <culture>base.seaweed1</culture>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>137</x>
-      <y>140</y>
-      <type>7</type>
-      <culture>base.seaweed1</culture>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>137</x>
-      <y>141</y>
-      <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>138</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>138</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>138</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>137</x>
-      <y>139</y>
-      <type>7</type>
-      <culture>base.seaweed1</culture>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>137</x>
-      <y>139</y>
-      <type>7</type>
-      <culture>base.seaweed1</culture>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>137</x>
-      <y>140</y>
-      <type>7</type>
-      <culture>base.seaweed1</culture>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>137</x>
-      <y>141</y>
-      <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>138</x>
       <y>139</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>138</x>
       <y>140</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>138</x>
       <y>141</y>
       <type>7</type>
-      <culture>base.seaweed1</culture>
+      <culture>base.seaweed3</culture>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>137</x>
+      <y>139</y>
+      <type>7</type>
+      <culture>base.seaweed3</culture>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>137</x>
+      <y>140</y>
+      <type>7</type>
+      <culture>base.seaweed3</culture>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>137</x>
+      <y>141</y>
+      <type>7</type>
+      <culture>base.seaweed3</culture>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>137</x>
+      <y>139</y>
+      <type>7</type>
+      <culture>base.seaweed3</culture>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>137</x>
+      <y>140</y>
+      <type>7</type>
+      <culture>base.seaweed3</culture>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>137</x>
+      <y>141</y>
+      <type>7</type>
+      <culture>base.seaweed3</culture>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>137</x>
+      <y>139</y>
+      <type>7</type>
+      <culture>base.seaweed3</culture>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>137</x>
+      <y>139</y>
+      <type>7</type>
+      <culture>base.seaweed3</culture>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>137</x>
+      <y>140</y>
+      <type>7</type>
+      <culture>base.seaweed3</culture>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>137</x>
+      <y>141</y>
+      <type>7</type>
+      <culture>base.seaweed3</culture>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>131</x>
+      <y>132</y>
+      <type>1</type>
+      <occupants>
+        <int>0</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>131</x>
+      <y>133</y>
+      <type>1</type>
+      <occupants>
+        <int>0</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>131</x>
+      <y>134</y>
+      <type>1</type>
+      <occupants>
+        <int>0</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>132</x>
+      <y>132</y>
+      <type>1</type>
+      <occupants>
+        <int>0</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>132</x>
+      <y>133</y>
+      <type>1</type>
+      <occupants>
+        <int>0</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>132</x>
+      <y>134</y>
+      <type>1</type>
+      <occupants>
+        <int>0</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>131</x>
+      <y>136</y>
+      <type>1</type>
+      <occupants>
+        <int>1</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>131</x>
+      <y>137</y>
+      <type>1</type>
+      <occupants>
+        <int>1</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>131</x>
+      <y>138</y>
+      <type>1</type>
+      <occupants>
+        <int>1</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>132</x>
+      <y>136</y>
+      <type>1</type>
+      <occupants>
+        <int>1</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>132</x>
+      <y>137</y>
+      <type>1</type>
+      <occupants>
+        <int>1</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>132</x>
+      <y>138</y>
+      <type>1</type>
+      <occupants>
+        <int>1</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>131</x>
+      <y>140</y>
+      <type>1</type>
+      <occupants>
+        <int>2</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>131</x>
+      <y>141</y>
+      <type>1</type>
+      <occupants>
+        <int>2</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>131</x>
+      <y>142</y>
+      <type>1</type>
+      <occupants>
+        <int>2</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>132</x>
+      <y>140</y>
+      <type>1</type>
+      <occupants>
+        <int>2</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>132</x>
+      <y>141</y>
+      <type>1</type>
+      <occupants>
+        <int>2</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>132</x>
+      <y>142</y>
+      <type>1</type>
+      <occupants>
+        <int>2</int>
+      </occupants>
     </alone.in.deepspace.manager.RoomSave>
   </rooms>
+  <characters>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>0</id>
+      <lastname>Roman</lastname>
+      <firstname>Craig </firstname>
+      <relations/>
+      <old>24.02</old>
+      <x>150</x>
+      <y>150</y>
+      <gender>MALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>1</id>
+      <lastname>Tucker</lastname>
+      <firstname>Mitchell </firstname>
+      <relations/>
+      <old>24.02</old>
+      <x>150</x>
+      <y>150</y>
+      <gender>MALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>2</id>
+      <lastname>Bishop</lastname>
+      <firstname>Marsha </firstname>
+      <relations/>
+      <old>24.02</old>
+      <x>150</x>
+      <y>150</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>3</id>
+      <lastname>Booth</lastname>
+      <firstname>Mindy </firstname>
+      <relations/>
+      <old>24.02</old>
+      <x>150</x>
+      <y>150</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+  </characters>
 </alone.in.deepspace.engine.loader.WorldSaver_-WorldSave>
