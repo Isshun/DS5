@@ -9,7 +9,8 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import alone.in.deepspace.manager.ResourceManager;
+import alone.in.deepspace.manager.RoomManager;
+import alone.in.deepspace.manager.RoomSave;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.item.ItemBase;
@@ -25,8 +26,9 @@ import com.thoughtworks.xstream.XStream;
 
 public class WorldSaver {
 
-	private static class WorldSave {
+	public static class WorldSave {
 		public List<WorldSaveArea>	areas;
+		public List<RoomSave> 		rooms;
 		
 		public WorldSave() {
 			areas = new ArrayList<WorldSaveArea>();
@@ -67,14 +69,16 @@ public class WorldSaver {
 	}
 
 	private static class WorldSaveResource extends WorldSaveBaseItem {
-
 		public int tile;
+		public int value;
 	}
 	
 	public static void save(WorldManager worldManager, String filePath) {
 		System.gc();
 		
 		WorldSave save = new WorldSave();
+		
+		save.rooms = RoomManager.getInstance().save(save);
 
 		for (int z = 0; z < 1; z++) {
 			for (int x = 0; x < worldManager.getWidth(); x++) {
@@ -158,6 +162,7 @@ public class WorldSaver {
 			areaSave.resource.name = resource.getName();
 			areaSave.resource.matter = resource.getMatterSupply();
 			areaSave.resource.tile = resource.getTile();
+			areaSave.resource.value = (int)resource.getValue();
 		}
 		
 		save.areas.add(areaSave);
@@ -189,6 +194,10 @@ public class WorldSaver {
 		}
 
 		if (worldSave != null) {
+			if (worldSave.rooms != null) {
+				RoomManager.getInstance().load(worldSave.rooms);
+			}
+			
 		    for (WorldSaveArea area: worldSave.areas) {
 		    	if (area != null) {
 		    		// UserItem
@@ -217,6 +226,7 @@ public class WorldSaver {
 		    			ItemBase item = worldManager.putItem(area.resource.name, area.x, area.y, area.z, area.resource.matter);
 		    			if (item != null) {
 			    			((WorldResource)item).setTile(area.resource.tile);
+			    			((WorldResource)item).setValue(area.resource.value);
 		    			}
 		    		}
 		    	}

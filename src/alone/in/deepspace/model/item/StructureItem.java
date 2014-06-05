@@ -13,7 +13,7 @@ public class StructureItem extends ItemBase {
 
 	// TODO: item
 	public boolean roomCanBeSet() {
-		return getName().equals("base.floor");// == BaseItem.Type.STRUCTURE_FLOOR || _type == BaseItem.Type.STRUCTURE_GREENHOUSE;
+		return _info.name.equals("base.floor") || _info.name.equals("base.ground");
 	}
 
 	public boolean isHull() {

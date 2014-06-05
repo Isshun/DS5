@@ -16,10 +16,10 @@ import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Movable;
 import alone.in.deepspace.model.Position;
 import alone.in.deepspace.model.Profession;
-import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.character.CharacterRelation.Relation;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.job.Job;
+import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -547,6 +547,10 @@ public class Character extends Movable implements Mover {
 
 	public void setFirstname(String firstName) {
 		_firstName = firstName + " ";
+	}
+
+	public int getLeftSpace() {
+		return _inventorySpaceLeft;
 	}
 	
 }

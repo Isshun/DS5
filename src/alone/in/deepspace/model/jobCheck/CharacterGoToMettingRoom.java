@@ -2,10 +2,10 @@ package alone.in.deepspace.model.jobCheck;
 
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.RoomManager;
-import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.job.JobMove;
+import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.util.Constant;
 
 public class CharacterGoToMettingRoom implements JobCheck {

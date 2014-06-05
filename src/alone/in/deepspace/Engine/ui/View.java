@@ -79,7 +79,7 @@ public abstract class View {
 		}
 	}
 
-	private void refresh() {
+	protected void refresh() {
 		// Background
 		if (_backgroundColor != null && _size != null && _pos != null) {
 			_background = new RectangleShape();

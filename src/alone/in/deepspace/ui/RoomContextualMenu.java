@@ -11,8 +11,8 @@ import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.room.Room;
 
 public class RoomContextualMenu extends ContextualMenu {
 

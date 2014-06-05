@@ -12,13 +12,17 @@ import org.jsfml.system.Vector2f;
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.FrameLayout;
+import alone.in.deepspace.engine.ui.LinkView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
+import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
-import alone.in.deepspace.model.Room;
-import alone.in.deepspace.model.Room.Type;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.room.GardenRoom;
+import alone.in.deepspace.model.room.Room;
+import alone.in.deepspace.model.room.Room.Type;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 
@@ -52,6 +56,7 @@ public class PanelRoom extends BasePanel {
 		_layoutRoomInfo = new FrameLayout(new Vector2f(FRAME_WIDTH - Constant.UI_PADDING_H * 2, 200));
 		_layoutRoomInfo.setPosition(Constant.UI_PADDING_H + x, Constant.UI_PADDING_H + y);
 		_layoutRoomInfo.setVisible(false);
+		addView(_layoutRoomInfo);
 		
 		_lbRoomName = new TextView();
 		_lbRoomName.setCharacterSize(32);
@@ -72,7 +77,20 @@ public class PanelRoom extends BasePanel {
 			_layoutRoomInfo.addView(_lbRoomOccupantsOld[i]);
 		}
 
-		addView(_layoutRoomInfo);
+		for (int i = 0; i < 10; i++) {
+			final ItemInfo info = ServiceManager.getData().getItemInfo("base.seaweed" + i);
+			LinkView lbOption = new LinkView();
+			lbOption.setPosition(20, 200 + i * 20);
+			lbOption.setCharacterSize(FONT_SIZE);
+			lbOption.setString(info.name);
+			lbOption.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					((GardenRoom)_room).setCulture(info);
+				}
+			});
+			_layoutRoomInfo.addView(lbOption);
+		}
 	}
 
 	@Override
@@ -92,6 +110,7 @@ public class PanelRoom extends BasePanel {
 		if (icon == null) {
 			icon = new ButtonView(new Vector2f(62, 80));
 			icon.setString(TEXTS[index]);
+			icon.setCharacterSize(FONT_SIZE);
 			icon.setIcon(SpriteManager.getInstance().getFloor(null, index, 0));
 			icon.setPosition(20 + (index % 4) * 80, 60 + offset + (int)(index / 4) * 100);
 			icon.setBackgroundColor(index == 0 ? Color.RED : new Color(0, 150, 180, 255));

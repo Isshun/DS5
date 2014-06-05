@@ -22,7 +22,6 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.ItemSlot;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.SpriteManager;
-import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;
@@ -33,6 +32,7 @@ import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.job.Job;
+import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.ObjectPool;
@@ -96,9 +96,10 @@ public class PanelInfo extends BasePanel {
 	private FrameLayout 			_itemActionProduce;
 	private FrameLayout 			_layoutItemProduce;
 	private FrameLayout 			_layoutStorageSimpleFilter;
-	private FrameLayout _layoutSlot;
-	private TextView _lbSlot;
-	private LinkView[] _lbSlots;
+	private FrameLayout 			_layoutSlot;
+	private TextView 				_lbSlot;
+	private LinkView[] 				_lbSlots;
+	private TextView 				_itemMatterSupply;
 
 	public PanelInfo(Mode mode) {
 		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
@@ -114,7 +115,7 @@ public class PanelInfo extends BasePanel {
 		createSlotsView(20, 660);
 		createMiningView();
 		createItemActionView();
-		createEffectsView(20, 200);
+		createEffectsView(20, 300);
 		createViewStorage(20, 400);
 	}
 
@@ -316,22 +317,28 @@ public class PanelInfo extends BasePanel {
 		_itemName.setCharacterSize(FONT_SIZE_TITLE);
 		_layoutItem.addView(_itemName);
 
-		_itemCategory = new TextView(null);
+		_itemCategory = new TextView();
 		_itemCategory.setPosition(0, 28);
 		_itemCategory.setCharacterSize(FONT_SIZE);
 		_layoutItem.addView(_itemCategory);
 
-		_itemMatter = new TextView(null);
+		_itemMatter = new TextView();
 		_itemMatter.setPosition(0, 60);
 		_itemMatter.setCharacterSize(FONT_SIZE);
 		_layoutItem.addView(_itemMatter);
 
-		_itemPower = new TextView(null);
+		_itemMatterSupply = new TextView();
+		_itemMatterSupply.setPosition(0, 80);
+		_itemMatterSupply.setCharacterSize(FONT_SIZE);
+		_layoutItem.addView(_itemMatterSupply);
+
+		_itemPower = new TextView();
 		_itemPower.setPosition(0, 80);
 		_itemPower.setCharacterSize(FONT_SIZE);
+		_itemPower.setVisible(false);
 		_layoutItem.addView(_itemPower);
 
-		_itemOwner = new TextView(null);
+		_itemOwner = new TextView();
 		_itemOwner.setPosition(0, 100);
 		_itemOwner.setCharacterSize(FONT_SIZE);
 		_layoutItem.addView(_itemOwner);
@@ -405,7 +412,7 @@ public class PanelInfo extends BasePanel {
 
 		TextView lbTitle = new TextView(new Vector2f(10, 10));
 		lbTitle.setString(Strings.PRODUCT_WHEN_GATHERED);
-		lbTitle.setCharacterSize(16);
+		lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 		_itemGather.addView(lbTitle);
 
 		_itemGatherProduce = new TextView(new Vector2f(10, 10));
@@ -469,13 +476,13 @@ public class PanelInfo extends BasePanel {
 			return;
 		}
 
-		if (area.getStructure() != null) {
-			displayItem(area.getStructure());
+		if (area.getRessource() != null) {
+			displayResource(area.getRessource());
 			return;
 		}
 
-		if (area.getRessource() != null) {
-			displayResource(area.getRessource());
+		if (area.getStructure() != null) {
+			displayItem(area.getStructure());
 			return;
 		}
 
@@ -512,7 +519,8 @@ public class PanelInfo extends BasePanel {
 
 		_itemName.setString(resource.getLabel() != null ? resource.getLabel() : resource.getName());
 		_itemCategory.setString("(" + resource.getLabelCategory() + ")");
-		_itemMatter.setString("Matter: " + String.valueOf(resource.getMatterSupply()));
+		_itemMatterSupply.setString("Matter supply: " + String.valueOf(resource.getMatterSupply()));
+		_itemMatter.setString("Value: " + String.valueOf(resource.getValue()));
 		if (resource.getOwner() != null) {
 			_itemOwner.setString("Owner: " + resource.getOwner().getName());
 		} else {
@@ -622,7 +630,7 @@ public class PanelInfo extends BasePanel {
 			_itemAccept.setString(str);
 			_itemAccept.setVisible(true);
 		}
-
+		
 		// Item action produce
 		if (action.itemsProduce != null) {
 			_layoutItemProduce.setVisible(true);
@@ -646,7 +654,7 @@ public class PanelInfo extends BasePanel {
 
 		// Item action effects
 		if (action.effects != null) {
-			_layoutEffects.setVisible(true);
+			_layoutEffects.setVisible(false);
 			ItemInfoEffects effects = action.effects;
 			int line = 0;
 			if (effects.drink > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_DRINK, (effects.drink > 0 ? "+" : "") + effects.drink, NB_COLUMNS); }
@@ -675,6 +683,10 @@ public class PanelInfo extends BasePanel {
 
 		displayItemInfo(item.getInfo());
 
+		if (item.getInfo().onAction != null && item.getInfo().onAction.effects != null) {
+			displayEffect();
+		}
+
 //		if (_itemOptions != null) {
 //			List<TextView> texts = _itemOptions.getOptions();
 //			for (TextView text: texts) {
@@ -684,7 +696,8 @@ public class PanelInfo extends BasePanel {
 //		}
 
 		// Configure new item
-		_itemMatter.setString("Matter: " + String.valueOf(item.getMatterSupply()));
+		_itemMatter.setString("Matter2: " + String.valueOf(item.getMatter()));
+		_itemMatterSupply.setString("Matter supply: " + String.valueOf(item.getMatterSupply()));
 		_itemPower.setString("Power: " + String.valueOf(item.getPower()));
 		_itemOwner.setString("Owner: " + (item.getOwner() != null ? item.getOwner().getName() : Strings.LB_NONE));
 
@@ -695,6 +708,10 @@ public class PanelInfo extends BasePanel {
 
 		_itemGather.setVisible(false);
 		_itemMine.setVisible(false);
+	}
+
+	private void displayEffect() {
+		_layoutEffects.setVisible(true);
 	}
 
 	private void setItemStorage(StorageItem storage) {
@@ -723,6 +740,12 @@ public class PanelInfo extends BasePanel {
 		if (item != null && _item != item) {
 			clean();
 			displayItem(item);
+		}
+
+		if (_ui.getSelectedResource() != null) {
+			clean();
+			displayResource(_ui.getSelectedResource());
+			return;
 		}
 
 		// ItemInfo

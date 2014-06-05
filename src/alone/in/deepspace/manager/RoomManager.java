@@ -1,25 +1,26 @@
 package alone.in.deepspace.manager;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import alone.in.deepspace.engine.ISavable;
-import alone.in.deepspace.model.Room;
-import alone.in.deepspace.model.Room.Type;
+import alone.in.deepspace.engine.loader.WorldSaver.WorldSave;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.character.CharacterRelation;
 import alone.in.deepspace.model.character.CharacterRelation.Relation;
+import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.StructureItem;
+import alone.in.deepspace.model.item.WorldArea;
+import alone.in.deepspace.model.room.GardenRoom;
+import alone.in.deepspace.model.room.Room;
+import alone.in.deepspace.model.room.Room.Type;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
-public class RoomManager implements ISavable {
+public class RoomManager {
 
 	private static RoomManager 	_self;
 	private Room[][] 			_rooms;
@@ -37,12 +38,12 @@ public class RoomManager implements ISavable {
 		_roomList = new ArrayList<Room>();
 	}
 
-	public void putRoom(int startX, int startY, int fromX, int fromY, int toX, int toY, Type type, Character owner) {
+	public Room putRoom(int startX, int startY, int fromX, int fromY, int toX, int toY, Type type, Character owner) {
 		Log.info("RoomManager: put room from " + fromX + "x" + fromY + " to " + toX + "x" + toY);
 
 		if (type == null) {
 			Log.error("RoomManager: cannot put new room with NULL type");
-			return;
+			return null;
 		}
 		
 		Room room = null;
@@ -66,7 +67,11 @@ public class RoomManager implements ISavable {
 		
 		// Create new room if not exist
 		if (room == null) {
-			room = new Room(type, fromX, fromY);
+			if (type == Type.GARDEN) {
+				room = new GardenRoom(fromX, fromY);
+			} else {
+				room = new Room(type, fromX, fromY);
+			}
 			room.setOwner(owner);
 			_roomList.add(room); 
 		}
@@ -77,6 +82,7 @@ public class RoomManager implements ISavable {
 				if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
 					StructureItem struct = ServiceManager.getWorldMap().getStructure(x, y);
 					if (struct == null || struct.roomCanBeSet()) {
+						room.addArea(ServiceManager.getWorldMap().getArea(x, y));
 						_rooms[x][y] = room;
 						ServiceManager.getWorldRenderer().invalidate(x, y);
 					}
@@ -87,6 +93,8 @@ public class RoomManager implements ISavable {
 		if (type == Room.Type.GARDEN) {
 			ResourceManager.getInstance().refreshWater();
 		}
+		
+		return room;
 	}
 
 	public Room get(int x, int y) {
@@ -96,77 +104,38 @@ public class RoomManager implements ISavable {
 		return null;
 	}
 
-	public void	save(final String filePath) {
-		Log.info("Save rooms: " + filePath);
-
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
-			bw.write("BEGIN ROOMS\n");
-			for (int x = 0; x < Constant.WORLD_WIDTH; x++) {
-				for (int y = 0; y < Constant.WORLD_HEIGHT; y++) {
-					Room room = _rooms[x][y];
-					if (room != null) {
-						bw.write(x + "\t" + y + "\t" + room.getType().ordinal() + "\t" + 0 + "\n");
-					}
+	public List<RoomSave> save(WorldSave save) {
+		save.rooms = new ArrayList<RoomSave>();
+		
+		for (Room room: _roomList) {
+			if (room.isGarden()) {
+				GardenRoom garden = (GardenRoom)room;
+				for (WorldArea area: room.getAreas()) {
+					RoomSave roomSave = new RoomSave();
+					roomSave.x = area.getX();
+					roomSave.y = area.getY();
+					roomSave.culture = garden.getCulture().name;
+					roomSave.type = room.getType().ordinal();
+					save.rooms.add(roomSave);
 				}
 			}
-			bw.write("END ROOMS\n");
-		} catch (FileNotFoundException e) {
-			Log.error("Unable to open save file: " + filePath);
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
-
-		Log.info("Save rooms: " + filePath + " done");
+		
+		return save.rooms;
 	}
 
-	public void	load(final String filePath) {
-		Log.error("Load rooms: " + filePath);
-
-		int x, y, type, owner;
-		boolean	inBlock = false;
-
+	public void	load(List<RoomSave> rooms) {
 		List<Character> characters = ServiceManager.getCharacterManager().getList();
-		
-		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-			String line = null;
-
-			while ((line = br.readLine()) != null) {
-
-				// Start block
-				if ("BEGIN ROOMS".equals(line)) {
-					inBlock = true;
-				}
-				
-				// End block
-				else if ("END ROOMS".equals(line)) {
-					inBlock = false;
-				}
-
-				// Item
-				else if (inBlock) {
-					String[] values = line.split("\t");
-					if (values.length == 4) {
-						x = Integer.valueOf(values[0]);
-						y = Integer.valueOf(values[1]);
-						type = Integer.valueOf(values[2]);
-						owner = Integer.valueOf(values[3]);
-						Character character = null;
-						if (characters.size() > 0) {
-							character = characters.get((int)(Math.random() * characters.size()));
-						}
-						putRoom(x, y, x, y, x, y, Room.getType(type), null);
-					}
-				}
-				
-			}
+		Character character = null;
+		if (characters.size() > 0) {
+			character = characters.get((int)(Math.random() * characters.size()));
 		}
-		catch (FileNotFoundException e) {
-			 Log.error("Unable to open save file: " + filePath);
-			 e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for (RoomSave roomSave: rooms) {
+			Room room = putRoom(roomSave.x, roomSave.y, roomSave.x, roomSave.y, roomSave.x, roomSave.y, Room.getType(roomSave.type), null);
+			if (room.isGarden()) {
+				ItemInfo info = ServiceManager.getData().getItemInfo(roomSave.culture);
+				((GardenRoom)room).setCulture(info);
+			}
 		}
 	}
 
@@ -285,10 +254,17 @@ public class RoomManager implements ISavable {
 	}
 
 	public void removeFromRooms(Character character) {
-		List<Room> rooms = RoomManager.getInstance().getRoomList();
-		for (Room room: rooms) {
+		for (Room room: _roomList) {
 			if (room.getOccupants().contains(character)) {
 				room.removeOccupant(character);
+			}
+		}
+	}
+
+	public void update() {
+		for (Room room: _roomList) {
+			if (room.isType(Type.GARDEN)) {
+				room.update();
 			}
 		}
 	}

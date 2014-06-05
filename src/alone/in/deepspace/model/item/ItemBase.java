@@ -167,12 +167,6 @@ public abstract class ItemBase {
 		_owner = character;
 	}
 
-	public int			gatherMatter(int maxValue) {
-		int value = Math.min(maxValue, _matterSupply);
-		_matterSupply -= value;
-		return value;
-	}
-
 	void					addMatter(int value) { _matterSupply += _matter; }
 
 	// Sets
@@ -313,5 +307,9 @@ public abstract class ItemBase {
 
 	public boolean isSelected() {
 		return _selected;
+	}
+	
+	public boolean isType(ItemInfo info) {
+		return _info == info;
 	}
 }

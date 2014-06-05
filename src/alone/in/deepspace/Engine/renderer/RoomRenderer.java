@@ -14,7 +14,7 @@ import org.jsfml.system.Vector2f;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
-import alone.in.deepspace.model.Room;
+import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.util.Constant;
 
 public class RoomRenderer implements IRenderer {

@@ -2,9 +2,9 @@ package alone.in.deepspace.model.item;
 
 
 public class WorldResource extends UserItem {
-	private int		_value;
+	private double	_value;
 	private int 	_tile;
-	private int _doubleRender;
+	private int 	_doubleRender;
 
 	public WorldResource(ItemInfo info, int id) {
 		super(info, id);
@@ -14,12 +14,12 @@ public class WorldResource extends UserItem {
 		super(info);
 	}
 
-	public void addValue(int value) {_value += value;}
+	public void addValue(double d) {_value += d;}
 
-	public void	setValue(int value) {_value = value;}
+	public void	setValue(double value) {_value = value;}
 	
-	public int	getValue(int max) {return Math.min(_value, max);}
-	public int	getValue() { return _value; }
+	public double getValue(int max) {return Math.min(_value, max);}
+	public double getValue() { return _value; }
 	
 
 	public boolean isRock() {
@@ -48,6 +48,16 @@ public class WorldResource extends UserItem {
 
 	public boolean canBeHarvested() {
 		return _info.name.contains("base.seaweed");
+	}
+
+	public int gatherMatter(int maxValue) {
+		int value = (int)Math.min(maxValue, _value);
+		_value -= value;
+		return value;
+	}
+
+	public boolean isDepleted() {
+		return _value < 1;
 	}
 
 }

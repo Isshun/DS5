@@ -87,7 +87,7 @@ public class JobMining extends Job {
 		}
 
 		// TODO
-		int value = ServiceManager.getWorldMap().gather(_item, character.getProfessionScore(Profession.Type.NONE));
+		int value = ServiceManager.getWorldMap().gather((WorldResource)_item, character.getProfessionScore(Profession.Type.NONE));
 
 		Log.debug("mine: " + value);
 

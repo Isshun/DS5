@@ -12,19 +12,22 @@ import alone.in.deepspace.util.Log;
 
 public class JobGather extends Job {
 
+	private WorldResource	_resource;
+
 	private JobGather(int x, int y) {
 		super(x, y);
 	}
 
-	public static Job create(WorldResource ressource) {
+	public static Job create(WorldResource resource) {
 		// Resource is not gatherable
-		if (ressource == null || ressource.getInfo().onGather == null) {
+		if (resource == null || resource.getInfo().onGather == null) {
 			return null;
 		}
 
-		Job job = new JobGather(ressource.getX(), ressource.getY());
+		JobGather job = new JobGather(resource.getX(), resource.getY());
 		job.setAction(Action.GATHER);
-		job.setItem(ressource);
+		job.setItem(resource);
+		job._resource = resource;
 
 		return job;
 	}
@@ -32,22 +35,22 @@ public class JobGather extends Job {
 	@Override
 	public boolean check(Character character) {
 		// Item is null
-		if (_item == null) {
+		if (_resource == null) {
 			_reason = Abort.INVALID;
 			return false;
 		}
 
 		// Item is no longer exists
-		if (_item != ServiceManager.getWorldMap().getRessource(_item.getX(), _item.getY())) {
+		if (_resource != ServiceManager.getWorldMap().getRessource(_resource.getX(), _resource.getY())) {
 			_reason = Abort.INVALID;
 			return false;
 		}
 
-		// Resource is depleted
-		if (_item.getMatterSupply() <= 0) {
-			_reason = Abort.INVALID;
-			return false;
-		}
+//		// Resource is depleted
+//		if (_resource.isDepleted()) {
+//			_reason = Abort.INVALID;
+//			return false;
+//		}
 
 		// No space left in inventory
 		if (character.hasInventorySpaceLeft() == false) {
@@ -61,13 +64,13 @@ public class JobGather extends Job {
 	@Override
 	public boolean action(Character character) {
 		// Wrong call
-		if (_item == null) {
+		if (_resource == null) {
 			Log.error("Character: actionGather on null job or null job's item");
 			JobManager.getInstance().abort(this, Abort.INVALID);
 			return true;
 		}
 
-		if (_item.getInfo().onGather == null) {
+		if (_resource.getInfo().onGather == null) {
 			Log.error("Character: actionGather on non gatherable item");
 			JobManager.getInstance().abort(this, Abort.INVALID);
 			return true;
@@ -81,19 +84,22 @@ public class JobGather extends Job {
 		}
 
 		// TODO
-		int value = ServiceManager.getWorldMap().gather(_item, character.getProfessionScore(Profession.Type.NONE));
+		int value = ServiceManager.getWorldMap().gather(_resource, Math.max(character.getProfessionScore(Profession.Type.NONE), character.getLeftSpace()));
 
 		Log.debug("gather: " + value);
 
 		ResourceManager.getInstance().addMatter(value);
 
-		if (_item.getMatterSupply() == 0) {
+		for (int i = 0; i < value; i++) {
+			character.addInventory(new UserItem(_resource.getInfo().onGather.itemProduce));
+		}
+		
+		if (_resource.isDepleted()) {
 			JobManager.getInstance().complete(this);
+			ServiceManager.getWorldMap().removeResource(_resource);
 			return true;
 		}
 
-		character.addInventory(new UserItem(_item.getInfo().onGather.itemProduce));
-		
 		return false;
 	}
 

@@ -1,4 +1,4 @@
-package alone.in.deepspace.model;
+package alone.in.deepspace.model.room;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,6 +9,7 @@ import org.jsfml.graphics.Color;
 
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.WorldArea;
 
 public class Room {
 	public enum Type {
@@ -37,9 +38,11 @@ public class Room {
 	private int 			_maxX;
 	private boolean 		_isCommon;
 	private Set<Character> 	_occupants;
+	protected List<WorldArea> 	_areas;
 
 	public Room(Type type, int x, int y) {
 		_color = new Color((int)(Math.random() * 200), (int)(Math.random() * 200), (int)(Math.random() * 200));
+		_areas = new ArrayList<WorldArea>();
 		_id = -1;
 		_x = x;
 		_y = y;
@@ -251,5 +254,20 @@ public class Room {
 		case GARDEN: 		return "Garden";
 		default: 			return "";
 		}
+	}
+
+	public void update() {
+	}
+
+	public void addArea(WorldArea area) {
+		_areas.add(area);
+	}
+
+	public List<WorldArea> getAreas() {
+		return _areas;
+	}
+
+	public boolean isGarden() {
+		return _type == Type.GARDEN;
 	}
 }

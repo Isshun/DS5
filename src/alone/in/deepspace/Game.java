@@ -129,8 +129,10 @@ public class Game implements ISavable {
 		
 		ResourceManager.getInstance().onLongUpdate();
 		_characterManager.onLongUpdate();
-		
+
 		_statsManager.update();
+		
+		RoomManager.getInstance().update();
 	}
 
 	public void onEvent(Event event) throws IOException {
@@ -245,7 +247,6 @@ public class Game implements ISavable {
 		ResourceManager.getInstance().refreshWater();
 
 		ServiceManager.getCharacterManager().load(filePath);
-		RoomManager.getInstance().load(filePath);
 		
 		JobManagerLoader.load(JobManager.getInstance());
 		
@@ -301,8 +302,6 @@ public class Game implements ISavable {
 		WorldSaver.save(ServiceManager.getWorldMap(), filePath);
 
 		ServiceManager.getCharacterManager().save(filePath);
-		RoomManager.getInstance().save(filePath);
-
 		JobManagerLoader.save(JobManager.getInstance());
 	}
 

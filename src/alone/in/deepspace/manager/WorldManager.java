@@ -9,7 +9,6 @@ import java.util.Vector;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
-import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.item.FactoryItem;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;
@@ -18,6 +17,7 @@ import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
+import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -105,18 +105,18 @@ public class WorldManager implements TileBasedMap {
 		return false;
 	}
 
-	public int	gather(ItemBase item, int maxValue) {
-		if (item == null || maxValue == 0) {
+	public int	gather(WorldResource resource, int maxValue) {
+		if (resource == null || maxValue == 0) {
 			Log.error("gather: wrong call");
 			return 0;
 		}
 
-		int value = item.gatherMatter(maxValue);
-		int x = item.getX();
-		int y = item.getY();
+		int value = resource.gatherMatter(maxValue);
+		int x = resource.getX();
+		int y = resource.getY();
 		
-		if (item.getMatterSupply() <= 0) {
-			_areas[x][y].setItem(null);
+		if (resource.isDepleted()) {
+			_areas[x][y].setRessource(null);
 		}
 		
 		ServiceManager.getWorldRenderer().invalidate(x, y);
@@ -618,6 +618,21 @@ public class WorldManager implements TileBasedMap {
 			// TODO: not implemented
 			Log.error("Storage area is used by non storage item");
 		}
+	}
+
+	public void replaceItem(ItemInfo info, int x, int y) {
+		replaceItem(info, _floor, x, y);
+	}
+
+	private void replaceItem(ItemInfo info, int f, int x, int y) {
+		if (info.isResource) {
+			_floors[f][x][y].setRessource(null);
+		} else if (info.isStructure) {
+			_floors[f][x][y].setStructure(null);
+		} else {
+			_floors[f][x][y].setItem(null);
+		}
+		putItem(info, f, x, y, 0);
 	}
 
 	public ItemBase putItem(ItemInfo info, int x, int y) {

@@ -467,13 +467,14 @@ public class JobManager {
 	}
 
 	public Job createGatherJob(int x, int y) {
+		System.out.println("gather: " + x + " x " + y);
+		
 		WorldResource res = ServiceManager.getWorldMap().getRessource(x, y);
 		if (res == null) {
 			return null;
 		}
 
 		Job job = JobGather.create(res);
-
 		return job;
 	}
 

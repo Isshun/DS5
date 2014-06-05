@@ -154,5 +154,9 @@ public abstract class BasePanel extends FrameLayout {
 	public boolean isAlwaysVisible() {
 		return _alwaysVisible;
 	}
+
+	public boolean drawCursor() {
+		return false;
+	}
 	
 }

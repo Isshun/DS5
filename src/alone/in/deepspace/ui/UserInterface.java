@@ -14,12 +14,14 @@ import alone.in.deepspace.engine.ui.UIMessage;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.Room;
 import alone.in.deepspace.model.ToolTips.ToolTip;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.WorldArea;
+import alone.in.deepspace.model.item.WorldResource;
+import alone.in.deepspace.model.room.Room;
+import alone.in.deepspace.model.room.Room.Type;
 import alone.in.deepspace.ui.panel.BasePanel;
 import alone.in.deepspace.ui.panel.PanelBuild;
 import alone.in.deepspace.ui.panel.PanelCharacter;
@@ -42,6 +44,9 @@ import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Settings;
 
 public class UserInterface {
+	enum Action {
+		REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, BUILD_ROOM
+	}
 
 	private static UserInterface		_self;
 	private RenderWindow				_app;
@@ -56,15 +61,14 @@ public class UserInterface {
 	private int							_keyMovePosY;
 	private UserInteraction				_interaction;
 	private CharacterManager        	_characteres;
-	private PanelShortcut 				_panelShortcut;
-	private PanelRoom 					_panelRoom;
 	private UIMessage 					_message;
 	private Mode 						_mode;
 	private ContextualMenu 				_menu;
 	private Game 						_game;
 	private boolean 					_mouseOnMap;
 	private BasePanel 					_currentPanel;
-
+	private	Action						_action;
+	
 	private	BasePanel[]			_panels = new BasePanel[] {
 			new PanelCharacter(Mode.CHARACTER),
 			new PanelInfo(Mode.INFO),
@@ -84,13 +88,15 @@ public class UserInterface {
 			new PanelResource()
 	};
 
-	private PanelBuild _panelBuild;
-	private Character 	_selectedCharacter;
-	private ItemBase 	_selectedItem;
-	private ToolTip 	_selectedTooltip;
-	private ItemInfo 	_selectedItemInfo;
-	private WorldArea 	_selectedArea;
-	private PanelMode 	_selectedPlan;
+	private Character 		_selectedCharacter;
+	private ItemBase 		_selectedItem;
+	private WorldResource	_selectedResource;
+	private ToolTip 		_selectedTooltip;
+	private ItemInfo 		_selectedItemInfo;
+	private WorldArea 		_selectedArea;
+	private PanelMode 		_selectedPlan;
+	private Type 			_selectedRoomType;
+	private Room _selectedRoom;
 	
 	public enum Mode {
 		INFO,
@@ -119,19 +125,7 @@ public class UserInterface {
 			panel.init(app, this, viewport);
 		}
 		
-		// TODO
-		for (BasePanel panel: _panels) {
-			if (Mode.BUILD.equals(panel.getMode())) {
-				_panelBuild = (PanelBuild)panel;
-			}
-			else if (Mode.ROOM.equals(panel.getMode())) {
-				_panelRoom = (PanelRoom)panel;
-			}
-		}
-
 		_interaction = new UserInteraction(app, viewport);
-
-		_currentPanel = _panelShortcut;
 
 		setMode(Mode.NONE);
 	}
@@ -181,17 +175,18 @@ public class UserInterface {
 		_viewport.startMove(x, y);
 	}
 
-	public int 			getRelativePosX(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
-	public int 			getRelativePosY(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
-	public int 			getRelativePosXMax(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMinScale() / Constant.TILE_WIDTH); }
-	public int 			getRelativePosYMax(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMinScale() / Constant.TILE_HEIGHT); }
-	public int 			getRelativePosXMin(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
-	public int 			getRelativePosYMin(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
-	public Character 	getSelectedCharacter() { return _selectedCharacter; }
-	public WorldArea	getSelectedArea() { return _selectedArea; }
-	public ItemBase 	getSelectedItem() { return _selectedItem; }
-	public ItemInfo		getSelectedItemInfo() { return _selectedItemInfo; }
-	public ToolTip		getSelectedTooltip() { return _selectedTooltip; }
+	public int 				getRelativePosX(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
+	public int 				getRelativePosY(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
+	public int 				getRelativePosXMax(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMinScale() / Constant.TILE_WIDTH); }
+	public int 				getRelativePosYMax(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMinScale() / Constant.TILE_HEIGHT); }
+	public int 				getRelativePosXMin(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
+	public int 				getRelativePosYMin(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
+	public Character 		getSelectedCharacter() { return _selectedCharacter; }
+	public WorldArea		getSelectedArea() { return _selectedArea; }
+	public ItemBase 		getSelectedItem() { return _selectedItem; }
+	public WorldResource	getSelectedResource() { return _selectedResource; }
+	public ItemInfo			getSelectedItemInfo() { return _selectedItemInfo; }
+	public ToolTip			getSelectedTooltip() { return _selectedTooltip; }
 	
 	public void toogleMode(Mode mode) {
 		setMode(_mode != mode ? mode : Mode.NONE);
@@ -200,6 +195,10 @@ public class UserInterface {
 	private void setMode(Mode mode) {
 		_mode = mode;
 		_menu = null;
+		
+		if (mode == Mode.NONE) {
+			_selectedPlan = null;
+		}
 
 		for (BasePanel panel: _panels) {
 			if (_mode.equals(panel.getMode())) {
@@ -234,7 +233,7 @@ public class UserInterface {
 		}
 
 		if (_mouseOnMap) {
-			if (_panelBuild.getPanelMode() != PanelBuild.PanelMode.NONE || _selectedPlan != null) {
+			if (_selectedRoomType != null || _selectedPlan != null) {
 				if (_keyLeftPressed) {
 					_interaction.drawCursor(Math.min(_keyPressPosX, _keyMovePosX),
 							Math.min(_keyPressPosY, _keyMovePosY),
@@ -247,15 +246,6 @@ public class UserInterface {
 							Math.max(_keyMovePosY, _keyMovePosY));
 				}
 			}
-		}
-
-		Room.Type roomType = _panelRoom.getSelectedRoom();
-		if (roomType != null) {
-			int fromX = _keyLeftPressed ? Math.min(_keyPressPosX, _keyMovePosX) : _keyMovePosX;
-			int fromY = _keyLeftPressed ? Math.min(_keyPressPosY, _keyMovePosY) : _keyMovePosY;
-			int toX = _keyLeftPressed ? Math.max(_keyPressPosX, _keyMovePosX) : _keyMovePosX;
-			int toY = _keyLeftPressed ? Math.max(_keyPressPosY, _keyMovePosY) : _keyMovePosY;
-			_interaction.drawCursor(fromX, fromY, toX, toY);
 		}
 
 		if (_message != null) {
@@ -429,38 +419,17 @@ public class UserInterface {
 		}
 		_keyLeftPressed = false;
 
-		// Plan gather
-		if (_selectedPlan == PanelPlan.PanelMode.GATHER) {
-			_interaction.planGather(
+		if (_selectedPlan != null) {
+			_interaction.plan(_selectedPlan,
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
 					Math.max(_keyPressPosY, _keyMovePosY));
 			return;
 		}
-
-		// Plan mining
-		if (_selectedPlan == PanelPlan.PanelMode.MINING) {
-			_interaction.planMining(
-					Math.min(_keyPressPosX, _keyMovePosX),
-					Math.min(_keyPressPosY, _keyMovePosY),
-					Math.max(_keyPressPosX, _keyMovePosX),
-					Math.max(_keyPressPosY, _keyMovePosY));
-			return;
-		}
-
-		// Plan dump
-		if (_selectedPlan == PanelPlan.PanelMode.DUMP) {
-			_interaction.planDump(
-					Math.min(_keyPressPosX, _keyMovePosX),
-					Math.min(_keyPressPosY, _keyMovePosY),
-					Math.max(_keyPressPosX, _keyMovePosX),
-					Math.max(_keyPressPosY, _keyMovePosY));
-			return;
-		}
-
+		
 		// Remove item
-		if (_panelBuild.getPanelMode() == PanelBuild.PanelMode.REMOVE_ITEM) {
+		if (_action == Action.REMOVE_ITEM) {
 			_interaction.removeItem(
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
@@ -470,7 +439,7 @@ public class UserInterface {
 		}
 
 		// Remove structure
-		if (_panelBuild.getPanelMode() == PanelBuild.PanelMode.REMOVE_STRUCTURE) {
+		if (_action == Action.REMOVE_STRUCTURE) {
 			_interaction.removeStructure(
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
@@ -480,8 +449,8 @@ public class UserInterface {
 		}
 
 		// Build item
-		if (_panelBuild.getSelectedItem() != null) {
-			_interaction.planBuild(_panelBuild.getSelectedItem(),
+		if (_action == Action.BUILD_ITEM) {
+			_interaction.planBuild(_selectedItemInfo,
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
@@ -490,24 +459,25 @@ public class UserInterface {
 		}
 
 		// Set room
-		Room.Type roomType = _panelRoom.getSelectedRoom();
-		if (roomType != null) {
-			int fromX = Math.min(_keyPressPosX, _keyMovePosX);
-			int fromY = Math.min(_keyPressPosY, _keyMovePosY);
-			int toX = Math.max(_keyPressPosX, _keyMovePosX);
-			int toY = Math.max(_keyPressPosY, _keyMovePosY);
-			if (roomType == Room.Type.NONE) {
-				RoomManager.getInstance().removeRoom(fromX, fromY, toX, toY, roomType);
-			} else {
-				RoomManager.getInstance().putRoom(_keyPressPosX, _keyPressPosX, fromX, fromY, toX, toY, roomType, null);
-			}
+		if (_action == Action.BUILD_ROOM) {
+			if (_selectedRoomType != null) {
+				int fromX = Math.min(_keyPressPosX, _keyMovePosX);
+				int fromY = Math.min(_keyPressPosY, _keyMovePosY);
+				int toX = Math.max(_keyPressPosX, _keyMovePosX);
+				int toY = Math.max(_keyPressPosY, _keyMovePosY);
+				if (_selectedRoomType == Room.Type.NONE) {
+					RoomManager.getInstance().removeRoom(fromX, fromY, toX, toY, _selectedRoomType);
+				} else {
+					RoomManager.getInstance().putRoom(_keyPressPosX, _keyPressPosX, fromX, fromY, toX, toY, _selectedRoomType, null);
+				}
 
-			return;
+				return;
+			}
 		}
 
 		if (_mode == Mode.ROOM) {
 			final Room room = RoomManager.getInstance().get(getRelativePosX(x), getRelativePosY(y));
-			_panelRoom.setRoom(room);
+			select(room);
 			return;
 		}
 
@@ -530,9 +500,9 @@ public class UserInterface {
 
 				WorldArea a = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
 				if (a != null) {
-					if (a.getItem() != null) { select(a.getItem()); }
+					if (a.getRessource() != null) { select(a.getRessource()); }
+					else if (a.getItem() != null) { select(a.getItem()); }
 					else if (a.getStructure() != null) { select(a.getStructure()); }
-					else if (a.getRessource() != null) { select(a.getRessource()); }
 					else { select(a); }
 				}
 			}
@@ -547,7 +517,7 @@ public class UserInterface {
 			_viewport.update(x, y);
 		}
 
-		else if (_mode == Mode.ROOM && _panelRoom.getSelectedRoom() == Room.Type.NONE) {
+		else if (_mode == Mode.ROOM && _selectedRoomType == Room.Type.NONE) {
 			final Room room = RoomManager.getInstance().get(getRelativePosX(x), getRelativePosY(y));
 			if (room != null) {
 				_menu = new RoomContextualMenu(_app, 0, new Vector2f(x, y), new Vector2f(100, 120), _viewport, room);
@@ -568,8 +538,6 @@ public class UserInterface {
 			//				return;
 			//			}
 
-			_panelBuild.select(null);
-			_panelRoom.select(null);
 			_selectedPlan = PanelPlan.PanelMode.NONE;
 			toogleMode(Mode.NONE);
 		}
@@ -583,12 +551,15 @@ public class UserInterface {
 
 	private void cleanSelect() {
 		_selectedPlan = null;
+		_selectedRoom = null;
+		_selectedRoomType = null;
 		_selectedArea = null;
 		if (_selectedCharacter != null) {
 			_selectedCharacter.setSelected(false);
 		}
 		_selectedCharacter = null;
 		_selectedItem = null;
+		_selectedResource = null;
 		_selectedItemInfo = null;
 		_selectedTooltip = null;
 	}
@@ -606,6 +577,18 @@ public class UserInterface {
 		if (_selectedCharacter != null) {
 			_selectedCharacter.setSelected(true);
 		}
+	}
+	
+	public void select(Room room) {
+		cleanSelect();
+		setMode(Mode.ROOM);
+		_selectedRoom = room;
+	}
+
+	public void select(WorldResource resource) {
+		cleanSelect();
+		setMode(Mode.INFO);
+		_selectedResource = resource;
 	}
 
 	public void select(ItemBase item) {
@@ -630,6 +613,10 @@ public class UserInterface {
 		cleanSelect();
 		setMode(Mode.PLAN);
 		_selectedPlan = plan;
+	}
+
+	public void select(Room.Type roomType) {
+		_selectedRoomType = roomType;
 	}
 
 	public Game getGame() {

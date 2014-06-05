@@ -13,12 +13,17 @@ import alone.in.deepspace.manager.SpriteManager;
 public class ButtonView extends View {
 
 	private Text 			_text;
+	private Text 			_textShortcut;
+	private RectangleShape	_rectShortcut;
 	protected int 			_textPaddingLeft;
 	protected int 			_textPaddingTop;
 	private Sprite 			_icon;
 	protected int 			_iconPaddingLeft;
 	protected int 			_iconPaddingTop;
 	private RectangleShape 	_overlay;
+	private String 			_string;
+	private int 			_shortcutPos;
+	private int 			_textSize;
 
 	public ButtonView(Vector2f size) {
 		super(size);
@@ -32,25 +37,32 @@ public class ButtonView extends View {
 	}
 
 	public void setString(String string) {
+		_string = string;
 		_text.setString(string);
 	}
 
 	public void setCharacterSize(int size) {
+		_textSize = size;
 		_text.setCharacterSize(size);
 	}
 
 	public void setColor(Color color) {
 		_text.setColor(color);
 	}
-	
-//	public void setBackground(Color color) {
-//		_background = new RectangleShape();
-//		_background.setSize(new Vector2f(62, 80));
-//		_background.setFillColor(color);
-//		if (_pos != null) {
-//			_background.setPosition(_posX, _posY);
-//		}
-//	}
+
+	@Override
+	protected void refresh() {
+		super.refresh();
+		
+		if (_textShortcut != null) {
+			_textShortcut.setPosition(_pos.x + _paddingLeft + _textPaddingLeft + ((_shortcutPos + 1) * 12), _pos.y + _paddingTop + _textPaddingTop);
+			_textShortcut.setCharacterSize(_textSize);
+		}
+		
+		if (_rectShortcut != null) {
+			_rectShortcut.setPosition(_pos.x + _paddingLeft + _textPaddingLeft + ((_shortcutPos + 1) * 12), _pos.y + _paddingTop + _textPaddingTop + 24);
+		}
+	}
 
 	@Override
 	public void setOnFocusListener(final OnFocusListener onFocusListener) {
@@ -84,7 +96,7 @@ public class ButtonView extends View {
 		if (_overlay != null) {
 			_overlay.setPosition(pos);
 		}
-		_text.setPosition(new Vector2f(pos.x + _paddingLeft + _textPaddingLeft, pos.y + _paddingTop + _textPaddingTop));
+		_text.setPosition(new Vector2f(_pos.x + _paddingLeft + _textPaddingLeft, _pos.y + _paddingTop + _textPaddingTop));
 	}
 
 	@Override
@@ -109,6 +121,14 @@ public class ButtonView extends View {
 
 		if (_text != null) {
 			app.draw(_text, render);
+		}
+		
+		if (_textShortcut != null) {
+			app.draw(_textShortcut, render);
+		}
+		
+		if (_rectShortcut != null) {
+			app.draw(_rectShortcut, render);
 		}
 		
 		if (_overlay != null) {
@@ -145,6 +165,22 @@ public class ButtonView extends View {
 	public void setTextPadding(int top, int left) {
 		_textPaddingTop = top;
 		_textPaddingLeft = left;
+		_invalid = true;
+	}
+
+	public void setShortcut(int index) {
+		char shortcut = _string.charAt(index);
+		_string = "[" + _string.substring(0, index) + " " + _string.substring(index + 1) + "]";
+		_shortcutPos = index * 12;
+		_text.setString(_string);
+		
+		_textShortcut = new Text();
+		_textShortcut.setFont(SpriteManager.getInstance().getFont());
+		_textShortcut.setString(String.valueOf(shortcut));
+		_textShortcut.setColor(Colors.LINK_ACTIVE);
+		_rectShortcut = new RectangleShape(new Vector2f(12, 1));
+		_rectShortcut.setFillColor(Colors.LINK_ACTIVE);
+		
 		_invalid = true;
 	}
 }

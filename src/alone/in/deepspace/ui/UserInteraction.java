@@ -22,6 +22,7 @@ import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.job.Job;
+import alone.in.deepspace.ui.panel.PanelPlan.PanelMode;
 import alone.in.deepspace.util.Log;
 
 public class UserInteraction {
@@ -312,6 +313,15 @@ public class UserInteraction {
 				Job job = JobManager.getInstance().createDumpJob(x, y);
 				JobManager.getInstance().addJob(job);
 			}
+		}
+	}
+
+	public void plan(PanelMode plan, int startX, int startY, int toX, int toY) {
+		switch (plan) {
+		case DUMP: planDump(startX, startY, toX, toY); break;
+		case GATHER: planGather(startX, startY, toX, toY); break;
+		case MINING: planMining(startX, startY, toX, toY); break;
+		default: break;
 		}
 	}
 
