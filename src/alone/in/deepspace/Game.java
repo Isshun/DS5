@@ -87,6 +87,7 @@ public class Game implements ISavable {
 	}
 
 	public void onRefresh() {
+		_mainRenderer.refresh(_frameRefresh);
 		_ui.onRefresh(_frameRefresh);
 		_frameRefresh++;
 	}
@@ -304,7 +305,6 @@ public class Game implements ISavable {
 		_renderTime = renderTime;
 
 		_mainRenderer.draw(_app, _frame, animProgress);
-		_mainRenderer.refresh(_frameRefresh);
 
 		// User interface
 		_ui.onDraw(_frame, _update, renderTime);
