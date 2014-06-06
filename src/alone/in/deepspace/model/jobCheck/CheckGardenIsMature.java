@@ -2,8 +2,8 @@ package alone.in.deepspace.model.jobCheck;
 
 import java.util.List;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.JobManager;
-import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.job.JobGather;
@@ -15,7 +15,7 @@ import alone.in.deepspace.model.room.Room;
 public class CheckGardenIsMature implements JobCheck {
 
 	public void create(JobManager jobManager) {
-		List<Room> rooms = RoomManager.getInstance().getRoomList();
+		List<Room> rooms = Game.getRoomManager().getRoomList();
 		for (Room room: rooms) {
 			if (room.isGarden()) {
 				List<WorldArea> areas = room.getAreas();

@@ -1,17 +1,12 @@
 package alone.in.deepspace.manager;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import alone.in.deepspace.engine.loader.WorldSaver.WorldSave;
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.character.CharacterRelation;
 import alone.in.deepspace.model.character.CharacterRelation.Relation;
-import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.room.GardenRoom;
@@ -22,18 +17,9 @@ import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class RoomManager {
-
-	private static RoomManager 	_self;
 	private Room[][] 			_rooms;
 	private List<Room>			_roomList;
 
-	public static RoomManager getInstance() {
-		if (_self == null) {
-			_self = new RoomManager();
-		}
-		return _self;
-	}
-	
 	public RoomManager() {
 		_rooms = new Room[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
 		_roomList = new ArrayList<Room>();
@@ -89,7 +75,7 @@ public class RoomManager {
 						area.setRoom(room);
 						room.addArea(area);
 						_rooms[x][y] = room;
-						ServiceManager.getWorldRenderer().invalidate(x, y);
+						MainRenderer.getInstance().invalidate(x, y);
 					}
 				}
 			}
@@ -142,7 +128,7 @@ public class RoomManager {
 						hasGarden = true;
 					}
 					_rooms[x][y] = null;
-					ServiceManager.getWorldRenderer().invalidate(x, y);
+					MainRenderer.getInstance().invalidate(x, y);
 				}
 			}
 		}

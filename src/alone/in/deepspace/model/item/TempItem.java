@@ -1,18 +1,19 @@
-package alone.in.deepspace.manager;
+package alone.in.deepspace.model.item;
 
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 
+import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.util.Constant;
 
 public class TempItem {
 	Sprite	sprite;
 	int 	posX;
 	int 	posY;
-	double 	offsetX;
-	double 	offsetY;
-	int 	lifespan;
+	public double 	offsetX;
+	public double 	offsetY;
+	public int 	lifespan;
 	
 	public TempItem(int posX, int posY, int lifespan) {
 		this.sprite = SpriteManager.getInstance().getBullet(0);

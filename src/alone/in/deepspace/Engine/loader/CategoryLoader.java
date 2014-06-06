@@ -2,32 +2,29 @@ package alone.in.deepspace.engine.loader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.CategoryInfo;
+import alone.in.deepspace.model.GameData;
 import alone.in.deepspace.model.item.ItemInfo;
 
 public class CategoryLoader {
-	private List<CategoryInfo> 				_sortedCategories;
 	private HashMap<String, CategoryInfo> 	_categories;
 	private ArrayList<Character> 			_usedShortcut;
 
-	public static void load() {
-		(new CategoryLoader()).init();
+	public static void load(GameData data) {
+		(new CategoryLoader()).init(data);
 	}
 
+	// TODO
 	private CategoryLoader() {
-		_sortedCategories = new ArrayList<CategoryInfo>();
-		ServiceManager.getData().categories = _sortedCategories; 
 		_categories = new HashMap<String, CategoryInfo>();
 		_usedShortcut = new ArrayList<Character>();
 	}
 	
-	private void init() {
-		getOrCreateCategory("structure");
+	private void init(GameData data) {
+		getOrCreateCategory(data, "structure");
 		
-		for (ItemInfo itemInfo: ServiceManager.getData().items) {
+		for (ItemInfo itemInfo: data.items) {
 			String categoryName = "default";
 			if (itemInfo.isStructure) {
 				categoryName = "structure";
@@ -35,19 +32,23 @@ public class CategoryLoader {
 				categoryName = itemInfo.room;
 			}
 
-			CategoryInfo category = getOrCreateCategory(categoryName);
+			CategoryInfo category = getOrCreateCategory(data, categoryName);
 			category.items.add(itemInfo);
 		}
 
 		System.out.println("category loaded: " + _categories.size());
 	}
 
-	private CategoryInfo getOrCreateCategory(String categoryName) {
+	private CategoryInfo getOrCreateCategory(GameData data, String categoryName) {
 		if (_categories.containsKey(categoryName)) {
 			return _categories.get(categoryName);
 		}
+		
+		return createCategory(data, categoryName);
+	}
 
-		// Create new category
+	// Create new category
+	private CategoryInfo createCategory(GameData data, String categoryName) {
 		CategoryInfo category = new CategoryInfo(categoryName, categoryName);
 		category.shortcutPos = getShortcutPos(categoryName);
 		if (category.shortcutPos != -1) {
@@ -57,7 +58,7 @@ public class CategoryLoader {
 			category.labelWithoutShortcut = categoryName;
 		}
 		_categories.put(categoryName, category);
-		_sortedCategories.add(category);
+		data.categories.add(category);
 		
 		return category;
 	}

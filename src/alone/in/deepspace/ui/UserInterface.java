@@ -3,17 +3,20 @@ package alone.in.deepspace.ui;
 import java.io.IOException;
 
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard.Key;
-import org.omg.stub.java.rmi._Remote_Stub;
+import org.jsfml.window.Mouse.Button;
+import org.jsfml.window.event.Event;
+import org.jsfml.window.event.MouseButtonEvent;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.Main;
 import alone.in.deepspace.engine.Viewport;
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.ui.UIEventManager;
 import alone.in.deepspace.engine.ui.UIMessage;
 import alone.in.deepspace.manager.CharacterManager;
-import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.ToolTips.ToolTip;
 import alone.in.deepspace.model.character.Character;
@@ -23,13 +26,11 @@ import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.model.room.Room.Type;
-import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.ui.panel.BasePanel;
 import alone.in.deepspace.ui.panel.PanelBuild;
 import alone.in.deepspace.ui.panel.PanelCharacter;
 import alone.in.deepspace.ui.panel.PanelCrew;
 import alone.in.deepspace.ui.panel.PanelDebug;
-import alone.in.deepspace.ui.panel.PanelDebugItem;
 import alone.in.deepspace.ui.panel.PanelInfo;
 import alone.in.deepspace.ui.panel.PanelJobs;
 import alone.in.deepspace.ui.panel.PanelPlan;
@@ -71,12 +72,14 @@ public class UserInterface implements PanelRoomListener {
 	private boolean 					_mouseOnMap;
 	private BasePanel 					_currentPanel;
 	private	Action						_action;
-	
+
+	private long 						_lastLeftClick;
+	private int 						_lastInput;
+
 	private	BasePanel[]			_panels = new BasePanel[] {
 			new PanelCharacter(Mode.CHARACTER),
 			new PanelInfo(Mode.INFO),
 			new PanelDebug(Mode.DEBUG),
-			new PanelDebugItem(Mode.DEBUGITEMS),
 			new PanelPlan(Mode.PLAN),
 			new PanelRoom(Mode.ROOM),
 			new PanelTooltip(Mode.TOOLTIP),
@@ -122,7 +125,7 @@ public class UserInterface implements PanelRoomListener {
 		_game = game;
 		_viewport = viewport;
 		_app = app;
-		_characteres = ServiceManager.getCharacterManager();
+		_characteres = Game.getCharacterManager();
 		_keyLeftPressed = false;
 		_keyRightPressed = false;
 		_cursor = new UserInterfaceCursor();
@@ -199,6 +202,8 @@ public class UserInterface implements PanelRoomListener {
 	}
 
 	private void setMode(Mode mode) {
+		MainRenderer.getInstance().setMode(mode);
+
 		_mode = mode;
 		_menu = null;
 		
@@ -234,7 +239,7 @@ public class UserInterface implements PanelRoomListener {
 		}
 	}
 
-	public void onDraw(int frame, int update, int renderTime) {
+	public void onDraw(int update, int renderTime) {
 		for (BasePanel panel: _panels) {
 			panel.draw(_app, null);
 		}
@@ -270,7 +275,7 @@ public class UserInterface implements PanelRoomListener {
 		}
 	}
 
-	public boolean checkKeyboard(Key key, int frame, int lastInput) {
+	public boolean checkKeyboard(Key key, int lastInput) {
 
 		for (BasePanel panel: _panels) {
 			if (panel.checkKey(key)) {
@@ -379,11 +384,11 @@ public class UserInterface implements PanelRoomListener {
 
 			if (item != null) {
 				item.nextMode();
-				ServiceManager.getWorldRenderer().invalidate(item.getX(), item.getY());
+				MainRenderer.getInstance().invalidate(item.getX(), item.getY());
 			}
 			else if (structure != null) {
 				structure.nextMode();
-				ServiceManager.getWorldRenderer().invalidate(structure.getX(), structure.getY());
+				MainRenderer.getInstance().invalidate(structure.getX(), structure.getY());
 			}
 		}
 	}
@@ -407,7 +412,7 @@ public class UserInterface implements PanelRoomListener {
 		// Set room
 		if (_mode == Mode.ROOM) {
 			if (_keyPressPosX == _keyMovePosX && _keyPressPosY == _keyMovePosY) {
-				final Room room = RoomManager.getInstance().get(getRelativePosX(x), getRelativePosY(y));
+				final Room room = Game.getRoomManager().get(getRelativePosX(x), getRelativePosY(y));
 				select(room);
 				return true;
 			}
@@ -495,7 +500,7 @@ public class UserInterface implements PanelRoomListener {
 		}
 		
 		else if (_mode == Mode.ROOM && _selectedRoomType == Room.Type.NONE) {
-			final Room room = RoomManager.getInstance().get(getRelativePosX(x), getRelativePosY(y));
+			final Room room = Game.getRoomManager().get(getRelativePosX(x), getRelativePosY(y));
 			if (room != null) {
 				_menu = new RoomContextualMenu(_app, 0, new Vector2f(x, y), new Vector2f(100, 120), _viewport, room);
 			} else {
@@ -625,4 +630,56 @@ public class UserInterface implements PanelRoomListener {
 	public Type getSelectedRoomType() {
 		return _selectedRoomType;
 	}
+
+	public void onEvent(Event event, Clock timer) {
+		if (event.type == Event.Type.MOUSE_MOVED) {
+			onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
+			UIEventManager.getInstance().onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
+		}
+
+		if (event.type == Event.Type.MOUSE_BUTTON_PRESSED || event.type == Event.Type.MOUSE_BUTTON_RELEASED) {
+			MouseButtonEvent mouseButtonEvent = event.asMouseButtonEvent();
+			if (mouseButtonEvent.button == Button.LEFT) {
+				if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
+					onLeftPress(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+				} else {
+					// Is consume by EventManager
+					if (UIEventManager.getInstance().leftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y)) {
+						// Nothing to do !
+					}
+					// Is double click
+					else if (_lastLeftClick + 200 > timer.getElapsedTime().asMilliseconds()) {
+						onDoubleClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+					}
+					// Is simple click
+					else {
+						boolean use = onLeftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+						if (use) {
+							onRefresh(_update);
+						}
+					}
+					_lastLeftClick = timer.getElapsedTime().asMilliseconds();
+				}
+			} else if (mouseButtonEvent.button == Button.RIGHT) {
+				if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
+					onRightPress(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+				} else {
+					onRightClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
+				}
+			}
+			//_ui.mouseRelease(event.asMouseButtonEvent().button, event.asMouseButtonEvent().position.x, event.asMouseButtonEvent().position.y);
+		}
+
+		if (event.type == Event.Type.MOUSE_WHEEL_MOVED) {
+			onMouseWheel(event.asMouseWheelEvent().delta, event.asMouseWheelEvent().position.x, event.asMouseWheelEvent().position.y);
+		}
+
+		// Check key code
+		if (event.type == Event.Type.KEY_RELEASED) {
+			if (checkKeyboard(event.asKeyEvent().key, _lastInput)) {
+				return;
+			}
+		}
+	}
+
 }

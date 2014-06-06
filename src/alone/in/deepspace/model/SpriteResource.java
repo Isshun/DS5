@@ -1,6 +1,6 @@
 package alone.in.deepspace.model;
 
-import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.Game;
 import alone.in.deepspace.model.item.ItemInfo;
 
 public class SpriteResource {
@@ -12,7 +12,7 @@ public class SpriteResource {
 	public int				textureIndex;
 	
 	public SpriteResource(String name, int x, int y, int texture) {
-		this.info = ServiceManager.getData().getItemInfo(name);
+		this.info = Game.getData().getItemInfo(name);
 		this.posX = x;
 		this.posY = y;
 		this.textureIndex = texture;

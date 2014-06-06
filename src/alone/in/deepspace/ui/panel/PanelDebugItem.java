@@ -5,11 +5,11 @@ import java.util.List;
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
@@ -42,7 +42,7 @@ public class PanelDebugItem extends BasePanel {
 		_grid.setPosition(0, 0);
 		
 		int i = 0;
-		List<ItemInfo> items = ServiceManager.getData().items;
+		List<ItemInfo> items = Game.getData().items;
 		for (ItemInfo item: items) {
 			_grid.addView(createGridItem(item, i % 10, i / 10));
 			i++;

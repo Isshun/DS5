@@ -10,10 +10,11 @@ import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
 
 import alone.in.deepspace.Strings;
+import alone.in.deepspace.model.GameData;
 
 public class StringsLoader {
 
-	public static void load(String path, String fileName) {
+	public static void load(GameData data, String path, String fileName) {
 	    System.out.println("load strings...");
 
 	    File itemFile = new File(path + fileName + ".yml");

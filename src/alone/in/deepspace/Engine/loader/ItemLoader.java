@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.GameData;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.util.Constant;
@@ -75,9 +74,7 @@ public class ItemLoader {
 	    System.out.println("items loaded: " + i);
 	}
 
-	public static void load() {
-		GameData data = ServiceManager.getData();
-		
+	public static void load(final GameData data) {
 		ItemLoader.load(data, "data/items/", "base");
 		ItemLoader.load(data, "mods/garden/items/", "garden");
 		
@@ -87,7 +84,7 @@ public class ItemLoader {
 			if (item.craftedFrom != null) {
 				item.craftedFromItems = new ArrayList<ItemInfo>();
 				for (String name: item.craftedFrom) {
-					item.craftedFromItems.add(ServiceManager.getData().getItemInfo(name));
+					item.craftedFromItems.add(data.getItemInfo(name));
 				}
 			}
 		}
@@ -97,13 +94,13 @@ public class ItemLoader {
 			
 			// Init gather item
 			if (item.onGather != null) {
-				item.onGather.itemProduce = ServiceManager.getData().getItemInfo(item.onGather.produce);
+				item.onGather.itemProduce = data.getItemInfo(item.onGather.produce);
 				data.gatherItems.add(item);
 			}
 			
 			// Init mine item
 			if (item.onMine != null) {
-				item.onMine.itemProduce = ServiceManager.getData().getItemInfo(item.onMine.produce);
+				item.onMine.itemProduce = data.getItemInfo(item.onMine.produce);
 			}
 			
 			// Init action item
@@ -113,7 +110,7 @@ public class ItemLoader {
 					// Items produce
 					item.onAction.itemsProduce = new ArrayList<ItemInfo>();
 					for (String itemProduceName: item.onAction.produce) {
-						item.onAction.itemsProduce.add(ServiceManager.getData().getItemInfo(itemProduceName));
+						item.onAction.itemsProduce.add(data.getItemInfo(itemProduceName));
 					}
 					
 					// Item accepted for craft

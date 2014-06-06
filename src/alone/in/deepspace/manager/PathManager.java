@@ -15,7 +15,7 @@ import org.newdawn.slick.util.pathfinding.PathFinder;
 import org.newdawn.slick.util.pathfinding.Step;
 import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
 
-import alone.in.deepspace.Game;
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.model.Position;
 import alone.in.deepspace.model.Region;
 import alone.in.deepspace.model.Region.Door;
@@ -430,7 +430,8 @@ public class PathManager {
 //					_pool.put(sum2, new OldPath(null));
 
 					Log.info("character: path fail");
-					job.setBlocked(Game.getFrame());
+					// TODO
+					job.setBlocked(MainRenderer.getFrame());
 					character.onPathFailed(job);
 				}
 //				NodesPool.recycle(nodes);

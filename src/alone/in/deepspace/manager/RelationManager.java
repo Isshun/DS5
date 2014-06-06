@@ -3,6 +3,7 @@ package alone.in.deepspace.manager;
 import java.util.ArrayList;
 import java.util.List;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.character.Character.Gender;
 import alone.in.deepspace.model.character.CharacterRelation;
@@ -54,7 +55,7 @@ public class RelationManager {
 	}
 
 	public Character createChildren(Character c1, Character c2) {
-		int count = ServiceManager.getCharacterManager().getList().size();
+		int count = Game.getCharacterManager().getList().size();
 
 		String lastName = c1.getGender() == Gender.MALE ? c1.getLastName() : c2.getLastName();
 		Character child = new Character(count + 1, c1.getX(), c2.getY(), null, lastName, 0);
@@ -70,7 +71,7 @@ public class RelationManager {
 		// Set parents' child
 		c1.getRelations().add(new CharacterRelation(c1, child, Relation.CHILDREN));
 		c2.getRelations().add(new CharacterRelation(c2, child, Relation.CHILDREN));
-		ServiceManager.getCharacterManager().add(child);
+		Game.getCharacterManager().add(child);
 
 		if ("potter".equals(child.getLastName().toLowerCase()) && child.getRelations().size() == 2) {
 			child.setFirstname("Harry");

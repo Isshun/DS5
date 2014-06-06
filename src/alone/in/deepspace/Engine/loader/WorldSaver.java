@@ -9,9 +9,9 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.loader.CharacterSerializer.CharacterSave;
 import alone.in.deepspace.manager.RoomSave;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;
@@ -216,7 +216,7 @@ public class WorldSaver {
 		    						area.item.storage.acceptConsomable,
 		    						area.item.storage.acceptGarbage);
 		    				for (String storredItemName: area.item.storage.inventory) {
-		    					ItemInfo info = ServiceManager.getData().getItemInfo(storredItemName);
+		    					ItemInfo info = Game.getData().getItemInfo(storredItemName);
 		    					storage.addInventory(new UserItem(info));
 		    				}
 		    			}

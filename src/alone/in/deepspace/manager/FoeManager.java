@@ -1,35 +1,20 @@
 package alone.in.deepspace.manager;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Sprite;
-import org.jsfml.graphics.Texture;
 
 import alone.in.deepspace.model.Foe;
-import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 
 public class FoeManager {
 	private static int ID_START = 1000000;
-	private static FoeManager		_self;
 	private ArrayList<Foe>		 	_foes;
 	private int 					_count;
-	private Sprite 					_selection;
-
-	public FoeManager() throws IOException {
+	public FoeManager() {
 	  Log.debug("FoeManager");
-	  
-	  // Selection
-	  Texture texture = new Texture();
-	  texture.loadFromFile((new File("res/cursor.png").toPath()));
-	  _selection = new Sprite();
-	  _selection.setTexture(texture);
-	  _selection.setTextureRect(new IntRect(0, 32, 32, Constant.CHAR_HEIGHT));
 	  
 	  _foes = new ArrayList<Foe>();
 	  _foes.add(new Foe(ID_START + _count++, 0, 0));
@@ -172,19 +157,6 @@ public class FoeManager {
 //		}
 	}
 	
-	public static FoeManager getInstance() {
-		if (_self == null) {
-			try {
-				_self = new FoeManager();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return _self;
-	}
-
-
 	public int getCount() {
 		return _count;
 	}

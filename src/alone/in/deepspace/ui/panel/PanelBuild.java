@@ -9,6 +9,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard.Key;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.ColorView;
 import alone.in.deepspace.engine.ui.Colors;
@@ -18,7 +19,6 @@ import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.CategoryInfo;
 import alone.in.deepspace.model.item.ItemInfo;
@@ -52,6 +52,10 @@ public class PanelBuild extends BasePanel {
 
 	public PanelBuild(Mode mode) {
 		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
+	}
+
+	@Override
+	protected void onCreate() {
 
 		_iconShortcut = new ButtonView[10];
 		_layouts = new HashMap<CategoryInfo, FrameLayout>();
@@ -75,7 +79,7 @@ public class PanelBuild extends BasePanel {
 
 		// TODO
 		int posY = 0;
-		List<CategoryInfo> categories = ServiceManager.getData().categories;
+		List<CategoryInfo> categories = Game.getData().categories;
 		_iconsList.clear();
 		_layouts.clear();
 
@@ -251,7 +255,7 @@ public class PanelBuild extends BasePanel {
 	protected boolean onKey(Key key) {
 		String shortcut = StringUtils.getStringFromKey(key);
 		if (shortcut != null) {
-			List<CategoryInfo> categories = ServiceManager.getData().categories;
+			List<CategoryInfo> categories = Game.getData().categories;
 			for (CategoryInfo category: categories) {
 				if (shortcut.equals(category.shortcut)) {
 					openCategory(category);
@@ -291,11 +295,5 @@ public class PanelBuild extends BasePanel {
 		view.setBackgroundColor(new Color(29, 85, 96));
 		view.setBorderColor(new Color(161, 255, 255));
 //		view.setBackgroundColor(Color.RED);
-	}
-
-	@Override
-	protected void onCreate() {
-		// TODO Auto-generated method stub
-		
 	}
 }

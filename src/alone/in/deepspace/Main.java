@@ -1,7 +1,6 @@
 package alone.in.deepspace;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;
@@ -15,16 +14,17 @@ import org.jsfml.window.event.Event;
 import alone.in.deepspace.engine.loader.CategoryLoader;
 import alone.in.deepspace.engine.loader.ItemLoader;
 import alone.in.deepspace.engine.loader.StringsLoader;
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.GameData;
-import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.ui.MenuBase;
 import alone.in.deepspace.ui.MenuGame;
 import alone.in.deepspace.ui.MenuLoad;
 import alone.in.deepspace.ui.MenuSave;
+import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
 
 public class Main {
@@ -37,25 +37,29 @@ public class Main {
 	private static MenuBase			_menu;
 	private static int 				_updateInterval = UPDATE_INTERVAL;
 	private static int 				_longUpdateInterval = LONG_UPDATE_INTERVAL;
+	private static MainRenderer 	_mainRenderer;
+	private static UserInterface _userInterface;
 
 	public static void main(String[] args) {
 		//Create the window
 		RenderWindow window = new RenderWindow();
 		window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5", WindowStyle.DEFAULT);
 
-		ServiceManager.setData(new GameData());
-		
-		ServiceManager.getData().items = new ArrayList<ItemInfo>();
+		GameData data = new GameData();
 
-		ItemLoader.load();
+		ItemLoader.load(data);
+		StringsLoader.load(data, "data/strings/", "fr");
+		CategoryLoader.load(data);
 		
-		StringsLoader.load("data/strings/", "fr");
-		
-		CategoryLoader.load();
-		
+		_mainRenderer = new MainRenderer(window);
+		_userInterface = UserInterface.getInstance();
+
 		try {
-			game = new Game(window);
+			game = new Game(window, data);
+			game.onCreate();
 			game.load("saves/2.sav");
+			_mainRenderer.init(game);
+			_userInterface.onCreate(game, window, game.getViewport());
 			loop(window);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -84,75 +88,14 @@ public class Main {
 		Time last_update = display_timer.getElapsedTime();
 		Time last_long_update = display_timer.getElapsedTime();
 
+		int update = 0;
+		int refresh = 0;
+		
 		while (window.isOpen()) {
-			timer.restart();
-
 			// Events
 			Event event = null;
 			while ((event = window.pollEvent()) != null) {
-				if (event.type == Event.Type.CLOSED) {
-					window.close();
-
-					return;
-				}
-				if (event.type == Event.Type.KEY_RELEASED) {
-
-					// Events for menu
-					if (game.isRunning() == false) {
-						if (_menu != null && _menu.isVisible()) {
-							if (_menu.checkKey(event)) {
-								continue;
-							}
-						}
-					}
-					
-					if (event.asKeyEvent().key == Key.K) {
-						window.close();
-
-						return;
-					}
-					if (event.asKeyEvent().control && event.asKeyEvent().key == Key.S) {
-						game.save("saves/2.sav");
-					}
-					if (event.asKeyEvent().control && event.asKeyEvent().key == Key.L) {
-						_menu = new MenuLoad(new OnLoadListener() {
-							@Override
-							public void onLoad(String path) {
-								try {
-									ServiceManager.reset();
-									game = new Game(window);
-									game.load(path);
-								} catch (IOException | TextureCreationException e) {
-									e.printStackTrace();
-								}
-							}
-						});
-						continue;
-					}
-	
-					if (event.asKeyEvent().key == Key.DOWN) {
-						if (_menu != null) {
-							_menu.onKeyDown();
-						}
-						continue;
-					}
-	
-					if (event.asKeyEvent().key == Key.UP) {
-						if (_menu != null) {
-							_menu.onKeyUp();
-						}
-						continue;
-					}
-	
-					if (event.asKeyEvent().key == Key.RETURN) {
-						if (_menu != null) {
-							_menu.onKeyEnter();
-						}
-						continue;
-					}
-				}
-
-				game.onEvent(event);
+				manageEvent(event, window, timer);
 			}
 
 			Time elapsed = display_timer.getElapsedTime();
@@ -175,18 +118,22 @@ public class Main {
 			if (game.isRunning()) {
 				// Draw
 				double animProgress = (1 - (double)nextUpdate / _updateInterval);
-				game.onDraw(animProgress, renderTime);
-				
+				_mainRenderer.draw(window, animProgress, renderTime);
+				_userInterface.onDraw(update, renderTime);
+
 				// Refresh
 				if (nextRefresh <= 0) {
 					last_refresh = elapsed;
-					game.onRefresh();
+					_mainRenderer.refresh(refresh);
+					_userInterface.onRefresh(refresh);
+					refresh++;
 				}
 				
 				// Update
 				if (nextUpdate <= 0) {
 					last_update = elapsed;
 					game.onUpdate();
+					update++;
 				}
 				
 				// Long update
@@ -240,6 +187,73 @@ public class Main {
 		}
 	}
 	
+	private static void manageEvent(final Event event, final RenderWindow window, Clock timer) throws IOException {
+		if (event.type == Event.Type.CLOSED) {
+			window.close();
+
+			return;
+		}
+		if (event.type == Event.Type.KEY_RELEASED) {
+
+			// Events for menu
+			if (game.isRunning() == false) {
+				if (_menu != null && _menu.isVisible()) {
+					if (_menu.checkKey(event)) {
+						return;
+					}
+				}
+			}
+			
+			if (event.asKeyEvent().key == Key.K) {
+				window.close();
+
+				return;
+			}
+			if (event.asKeyEvent().control && event.asKeyEvent().key == Key.S) {
+				game.save("saves/2.sav");
+			}
+			if (event.asKeyEvent().control && event.asKeyEvent().key == Key.L) {
+				_menu = new MenuLoad(new OnLoadListener() {
+					@Override
+					public void onLoad(String path) {
+						try {
+							ServiceManager.reset();
+							// TODO NULL
+							game = new Game(window, null);
+							game.load(path);
+						} catch (IOException | TextureCreationException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				return;
+			}
+
+			if (event.asKeyEvent().key == Key.DOWN) {
+				if (_menu != null) {
+					_menu.onKeyDown();
+				}
+				return;
+			}
+
+			if (event.asKeyEvent().key == Key.UP) {
+				if (_menu != null) {
+					_menu.onKeyUp();
+				}
+				return;
+			}
+
+			if (event.asKeyEvent().key == Key.RETURN) {
+				if (_menu != null) {
+					_menu.onKeyEnter();
+				}
+				return;
+			}
+		}
+
+		_userInterface.onEvent(event, timer);
+	}
+
 	public static int getUpdateInterval() {
 		return _updateInterval;
 	}

@@ -3,10 +3,11 @@ package alone.in.deepspace.manager;
 import java.util.ArrayList;
 import java.util.List;
 
-import alone.in.deepspace.Game;
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.FactoryItem;
 import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemFilter;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.model.item.UserItem;
@@ -219,7 +220,8 @@ public class JobManager {
 		for (Job job: _jobs) {
 			if (job.getCharacter() == null && job.getFail() <= 0) {
 				if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter().value == 0) {
-					job.setFail(Abort.NO_COMPONENTS, Game.getFrame());
+					// TODO
+					job.setFail(Abort.NO_COMPONENTS, MainRenderer.getFrame());
 					continue;
 				}
 				if ((job.getAction() == Action.GATHER || job.getAction() == Action.MINING) && character.getSpace() == 0) {
@@ -322,7 +324,8 @@ public class JobManager {
 		}
 
 		// Regular job, reset
-		job.setFail(reason, Game.getFrame());
+		// TODO
+		job.setFail(reason, MainRenderer.getFrame());
 		job.setCharacter(null);
 	}
 

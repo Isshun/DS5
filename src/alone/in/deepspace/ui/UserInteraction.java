@@ -3,20 +3,15 @@ package alone.in.deepspace.ui;
 import java.io.File;
 import java.io.IOException;
 
-import org.jsfml.graphics.Color;
 import org.jsfml.graphics.IntRect;
-import org.jsfml.graphics.RectangleShape;
-import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
-import org.jsfml.graphics.Transform;
-import org.jsfml.system.Vector2f;
 import org.jsfml.window.Mouse;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.manager.JobManager;
-import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Cursor;
 import alone.in.deepspace.model.item.ItemInfo;
@@ -95,13 +90,13 @@ public class UserInteraction {
 						// TODO
 						StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
 						if (structure == null || structure.getName().equals("base.door") == false) {
-							JobManager.getInstance().build(ServiceManager.getData().getItemInfo("base.wall"), x, y);
+							JobManager.getInstance().build(Game.getData().getItemInfo("base.wall"), x, y);
 						}
 						// item = ServiceManager.getWorldMap().putItem(x, y, BaseItem.STRUCTURE_WALL);
 					} else {
 						Log.warning("2");
 						// TODO
-						JobManager.getInstance().build(ServiceManager.getData().getItemInfo("base.floor"), x, y);
+						JobManager.getInstance().build(Game.getData().getItemInfo("base.floor"), x, y);
 						// item = ServiceManager.getWorldMap().putItem(x, y, BaseItem.STRUCTURE_FLOOR);
 					}
 				} else {
@@ -184,9 +179,9 @@ public class UserInteraction {
 
 	public void roomType(Type roomType, int clickX, int clickY, int fromX, int fromY, int toX, int toY) {
 		if (roomType == Room.Type.NONE) {
-			RoomManager.getInstance().removeRoom(fromX, fromY, toX, toY, roomType);
+			Game.getRoomManager().removeRoom(fromX, fromY, toX, toY, roomType);
 		} else {
-			RoomManager.getInstance().putRoom(clickX, clickY, fromX, fromY, toX, toY, roomType, null);
+			Game.getRoomManager().putRoom(clickX, clickY, fromX, fromY, toX, toY, roomType, null);
 		}
 		
 	}

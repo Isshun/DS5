@@ -6,6 +6,7 @@ import java.util.List;
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.Colors;
@@ -16,7 +17,6 @@ import alone.in.deepspace.engine.ui.OnFocusListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.CharacterManager;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.ui.UserInterface;
@@ -58,7 +58,7 @@ public class PanelCrew extends BasePanel {
 	@Override
 	protected void onCreate() {
 		_viewHolderList = new ArrayList<ViewHolder>();
-		_characterManager = ServiceManager.getCharacterManager();
+		_characterManager = Game.getCharacterManager();
 
 		// Button small
 		ButtonView btModeSmall = new ButtonView(new Vector2f(50, 20));

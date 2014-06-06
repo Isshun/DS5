@@ -3,8 +3,8 @@ package alone.in.deepspace.engine.loader;
 import java.util.ArrayList;
 import java.util.List;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.loader.WorldSaver.WorldSave;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.character.Character.Gender;
 import alone.in.deepspace.model.character.CharacterRelation;
@@ -47,7 +47,7 @@ public class CharacterSerializer implements SerializerInterface {
 	}
 	
 	public void save(WorldSave save) {
-		List<Character> characters = ServiceManager.getCharacterManager().getList();
+		List<Character> characters = Game.getCharacterManager().getList();
 		save.characters = new ArrayList<CharacterSave>();
 
 		for (Character character: characters) {
@@ -57,7 +57,7 @@ public class CharacterSerializer implements SerializerInterface {
 
 	public void load(WorldSave save) {
 	    for (CharacterSave characterSave: save.characters) {
-			ServiceManager.getCharacterManager().add(loadCharacter(characterSave));
+			Game.getCharacterManager().add(loadCharacter(characterSave));
 	    }		
 	}
 

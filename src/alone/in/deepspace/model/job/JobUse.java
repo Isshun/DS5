@@ -2,12 +2,13 @@ package alone.in.deepspace.model.job;
 
 import java.util.List;
 
-import alone.in.deepspace.manager.ItemSlot;
+import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Movable.Direction;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemSlot;
 import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.util.Log;
@@ -79,7 +80,7 @@ public class JobUse extends Job {
 				List<ItemSlot> slots = _item.getSlots();
 				for (ItemSlot slot: slots) {
 					Character slotCharacter = slot.getJob() != null ? slot.getJob().getCharacter() : null;
-					ServiceManager.getRelationManager().meet(character, slotCharacter);
+					Game.getRelationManager().meet(character, slotCharacter);
 				}
 			}
 

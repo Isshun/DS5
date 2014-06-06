@@ -1,7 +1,6 @@
 package alone.in.deepspace.manager;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,15 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.IntRect;
-import org.jsfml.graphics.Sprite;
-import org.jsfml.graphics.Texture;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.model.Movable.Direction;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.character.Character;
-import alone.in.deepspace.model.character.Character.Gender;
 import alone.in.deepspace.model.job.Job.Abort;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
@@ -38,23 +34,14 @@ public class CharacterManager {
 
 	private ArrayList<Character> 	_characters;
 	private int 					_count;
-	private Sprite 					_selection;
 	private List<Character> 		_addOnUpdate;
-	private List<Character> 		_removeOnUpdate;
-
-	public CharacterManager() throws IOException {
+	
+	public CharacterManager() {
 		Log.debug("CharacterManager");
-
-		// Selection
-		Texture texture = new Texture();
-		texture.loadFromFile((new File("res/cursor.png").toPath()));
-		_selection = new Sprite();
-		_selection.setTexture(texture);
-		_selection.setTextureRect(new IntRect(0, 32, 32, Constant.CHAR_HEIGHT));
 
 		_characters = new ArrayList<Character>();
 		_addOnUpdate = new ArrayList<Character>();
-		_removeOnUpdate = new ArrayList<Character>();
+		new ArrayList<Character>();
 		_count = 0;
 
 		Log.debug("CharacterManager done");
@@ -69,60 +56,6 @@ public class CharacterManager {
 		add(2, 0, Profession.Type.DOCTOR);
 		add(3, 0, Profession.Type.SCIENCE);
 		add(4, 0, Profession.Type.SECURITY);
-	}
-
-//	public void	load(final String filePath) {
-//		Log.error("Load characters: " + filePath);
-//
-//		int x, y, gender;
-//		boolean	inBlock = false;
-//
-//		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-//			String line = null;
-//
-//			while ((line = br.readLine()) != null) {
-//
-//				// Start block
-//				if ("BEGIN CHARACTERS".equals(line)) {
-//					inBlock = true;
-//				}
-//
-//				// End block
-//				else if ("END CHARACTERS".equals(line)) {
-//					inBlock = false;
-//				}
-//
-//				// Item
-//				else if (inBlock) {
-//					String[] values = line.split("\t");
-//					if (values.length == 4) {
-//						x = Integer.valueOf(values[0]);
-//						y = Integer.valueOf(values[1]);
-//						gender = Integer.valueOf(values[2]);
-//						int sep = values[3].lastIndexOf(' ');
-//						String lastName = values[3].substring(sep + 1, values[3].length());
-//						String firstName = values[3].substring(0, sep + 1);
-//						Character c = new Character(_count++, x, y, firstName, lastName, 24);
-//						c.setGender(CharacterManager.getGender(gender));
-//						_characters.add(c);
-//					}
-//				}
-//
-//			}
-//		}
-//		catch (FileNotFoundException e) {
-//			Log.error("Unable to open save file: " + filePath);
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
-
-	private static Character.Gender getGender(int gender) {
-		if (gender == 1) { return Gender.MALE; }
-		if (gender == 2) { return Gender.FEMALE; }
-		if (gender == 3) { return Gender.BOTH; }
-		return Gender.NONE;
 	}
 
 	public void	save(final String filePath) {
@@ -189,7 +122,7 @@ public class CharacterManager {
 					JobManager.getInstance().abort(c.getJob(), Abort.DIED);
 					
 					// Remove from rooms
-					RoomManager.getInstance().removeFromRooms(c);
+					Game.getRoomManager().removeFromRooms(c);
 				}
 				characterToRemove = c;
 			}

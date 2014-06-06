@@ -9,9 +9,12 @@ import java.util.Vector;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
+import alone.in.deepspace.Game;
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.FactoryItem;
 import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemFilter;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.model.item.StructureItem;
@@ -78,7 +81,7 @@ public class WorldManager implements TileBasedMap {
 	}
 
 	public ItemBase putItem(String name, int x, int y, int z, int i) {
-		return putItem(ServiceManager.getData().getItemInfo(name), z, x, y, i);
+		return putItem(Game.getData().getItemInfo(name), z, x, y, i);
 	}
 
 	public void	addRandomSeed() {
@@ -120,7 +123,7 @@ public class WorldManager implements TileBasedMap {
 			_areas[x][y].setRessource(null);
 		}
 		
-		ServiceManager.getWorldRenderer().invalidate(x, y);
+		MainRenderer.getInstance().invalidate(x, y);
 		
 		return value;
 	}
@@ -266,7 +269,7 @@ public class WorldManager implements TileBasedMap {
 				_areas[x][y].setItem(null);
 			}
 			_areas[x][y].setStructure(null);
-			ServiceManager.getWorldRenderer().invalidate(x, y);
+			MainRenderer.getInstance().invalidate(x, y);
 		}
 	}
 
@@ -277,7 +280,7 @@ public class WorldManager implements TileBasedMap {
 			int y = item.getY();
 			item.setOwner(null);
 			_areas[x][y].setItem(null);
-			ServiceManager.getWorldRenderer().invalidate(x, y);
+			MainRenderer.getInstance().invalidate(x, y);
 		}
 	}
 
@@ -306,7 +309,7 @@ public class WorldManager implements TileBasedMap {
 			return null;
 		}
 
-		return putItem(ServiceManager.getData().getItemInfo(name), _floor, x, y, isFree ? 999 : 0);
+		return putItem(Game.getData().getItemInfo(name), _floor, x, y, isFree ? 999 : 0);
 	}
 
 	public ItemBase putItem(String name, int x, int y) {
@@ -385,7 +388,7 @@ public class WorldManager implements TileBasedMap {
 //			if ((item).getValue() > 0) {
 //				item.setMatterSupply(10);
 				//JobManager.getInstance().gather(item);
-				ServiceManager.getWorldRenderer().invalidate(item.getX(), item.getY());
+				MainRenderer.getInstance().invalidate(item.getX(), item.getY());
 				return item;
 //			}
 		}
@@ -425,7 +428,7 @@ public class WorldManager implements TileBasedMap {
 			JobManager.getInstance().addRoutineItem(item);
 		}
 
-		ServiceManager.getWorldRenderer().invalidate(item.getX(), item.getY());
+		MainRenderer.getInstance().invalidate(item.getX(), item.getY());
 		
 		return item;
 	}
@@ -615,7 +618,7 @@ public class WorldManager implements TileBasedMap {
 		
 		if (onAreaItem == null) {
 			// TODO
-			ItemInfo info = ServiceManager.getData().getItemInfo("base.storage");
+			ItemInfo info = Game.getData().getItemInfo("base.storage");
 			onAreaItem = new StorageItem(info);
 			((StorageItem)carriedItem).addInventory(carriedItem);
 			_areas[x][y].setItem(onAreaItem);
@@ -661,8 +664,7 @@ public class WorldManager implements TileBasedMap {
 		
 		_floor = floor;
 		_areas = _floors[floor];
-		ServiceManager.getWorldRenderer().invalidate();
-		ServiceManager.getLightRenderer().initLight();
+		MainRenderer.getInstance().invalidate();
 	}
 
 	public void downFloor() {
@@ -932,8 +934,8 @@ public class WorldManager implements TileBasedMap {
 		}
 		
 		_areas[resource.getX()][resource.getY()].setRessource(null);
-		ServiceManager.getWorldRenderer().invalidate(x, y);
-		ServiceManager.getWorldRenderer().invalidate();
+		MainRenderer.getInstance().invalidate(x, y);
+		MainRenderer.getInstance().invalidate();
 	}
 
 	public WorldArea getArea(int z, int x, int y) {

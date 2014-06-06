@@ -3,11 +3,10 @@ package alone.in.deepspace.engine.loader;
 import java.util.ArrayList;
 import java.util.List;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.loader.WorldSaver.WorldSave;
-import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.RoomSave;
 import alone.in.deepspace.manager.RoomSave.RoomSaveArea;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.character.Character.Gender;
 import alone.in.deepspace.model.character.CharacterRelation;
@@ -54,7 +53,7 @@ public class RoomSerializer implements SerializerInterface {
 	}
 	
 	public void save(WorldSave save) {
-		List<Room> rooms = RoomManager.getInstance().getRoomList();
+		List<Room> rooms = Game.getRoomManager().getRoomList();
 		save.rooms = new ArrayList<RoomSave>();
 		
 		for (Room room: rooms) {
@@ -83,7 +82,7 @@ public class RoomSerializer implements SerializerInterface {
 	}
 
 	public void	load(WorldSave save) {
-		List<Character> characters = ServiceManager.getCharacterManager().getList();
+		List<Character> characters = Game.getCharacterManager().getList();
 		Character character = null;
 		if (characters.size() > 0) {
 			character = characters.get((int)(Math.random() * characters.size()));
@@ -91,9 +90,9 @@ public class RoomSerializer implements SerializerInterface {
 		
 		for (RoomSave roomSave: save.rooms) {
 			for (RoomSaveArea roomSaveArea: roomSave.areas) {
-				Room room = RoomManager.getInstance().putRoom(roomSaveArea.x, roomSaveArea.y, roomSaveArea.x, roomSaveArea.y, roomSaveArea.x, roomSaveArea.y, Room.getType(roomSave.type), null);
+				Room room = Game.getRoomManager().putRoom(roomSaveArea.x, roomSaveArea.y, roomSaveArea.x, roomSaveArea.y, roomSaveArea.x, roomSaveArea.y, Room.getType(roomSave.type), null);
 				if (room.isGarden()) {
-					ItemInfo info = ServiceManager.getData().getItemInfo(roomSave.culture);
+					ItemInfo info = Game.getData().getItemInfo(roomSave.culture);
 					((GardenRoom)room).setCulture(info);
 				}
 			}

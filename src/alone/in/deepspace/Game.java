@@ -1,102 +1,86 @@
 package alone.in.deepspace;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;
-import org.jsfml.window.Keyboard;
-import org.jsfml.window.Mouse.Button;
-import org.jsfml.window.event.Event;
-import org.jsfml.window.event.MouseButtonEvent;
 
 import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.loader.JobManagerLoader;
 import alone.in.deepspace.engine.loader.WorldSaver;
-import alone.in.deepspace.engine.renderer.MainRenderer;
-import alone.in.deepspace.engine.ui.UIEventManager;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.DynamicObjectManager;
 import alone.in.deepspace.manager.FoeManager;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager;
+import alone.in.deepspace.manager.RelationManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.StatsManager;
-import alone.in.deepspace.ui.UserInterface;
+import alone.in.deepspace.manager.WorldManager;
+import alone.in.deepspace.model.GameData;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class Game implements ISavable {
-	private static int 				_renderTime;
-	private int 					_lastInput;
-	private static int 				_frame;
-	private int 					_update;
-	private Viewport 				_viewport;
-	private UserInterface 			_ui;
-	private CharacterManager		_characterManager;
-	private FoeManager 				_FoeManager;
-	private DynamicObjectManager	_dynamicObjectManager;
-	private int 					_lastLeftClick;
-	private MainRenderer 			_mainRenderer;
-	private RenderWindow 			_app;
-	private boolean					_isMenuOpen;
-	private boolean 				_isRunning;
-	private int 					_frameRefresh;
-	private StatsManager			_statsManager;
+	private static GameData 			_data;
+	private static RoomManager 			_roomManager;
+	private static StatsManager			_statsManager;
+	private static ResourceManager 		_resourceManager;
+	private static CharacterManager 	_characterManager;
+	private static WorldManager 		_worldManager;
+	private static FoeManager 			_foeManager;
+	private static DynamicObjectManager	_dynamicObjectManager;
+	private static RelationManager 		_relationManager;
 
-	public static int getFrame() { return _frame; }
-	public static int getRenderTime() { return _renderTime; }
+	public static StatsManager 			getStatsManager() { return _statsManager; }
+	public static RoomManager 			getRoomManager() { return _roomManager; }
+	public static ResourceManager 		get() { return _resourceManager ; }
+	public static CharacterManager 		getCharacterManager() { return _characterManager; }
+	public static WorldManager 			getWorldManager() { return _worldManager; }
+	public static FoeManager 			getFoeManager() { return _foeManager; }
+	public static DynamicObjectManager 	getDynamicObjectManager() { return _dynamicObjectManager; }
+	public static RelationManager		getRelationManager() { return _relationManager; }
+	public static GameData				getData() { return _data; }
+
+	private static int 					_renderTime;
+	private static int 					_frame;
+	private int 						_update;
+	private Viewport 					_viewport;
+	private boolean						_isMenuOpen;
+	private boolean 					_isRunning;
 
 	static {
 		System.loadLibrary("JNILight");
 	}
 
-	public Game(RenderWindow app) throws IOException, TextureCreationException {
+	public Game(RenderWindow app, GameData data) throws IOException, TextureCreationException {
 		Log.debug("Game");
 
-		_statsManager = new StatsManager();
-		_lastInput = 0;
+		_data = data;
 		_frame = 0;
-		_app = app;
 		_isRunning = true;
-		
-		_viewport = new Viewport(app, -Constant.WORLD_WIDTH * Constant.TILE_WIDTH / 2, -Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT / 2);
-		
-		_ui = UserInterface.getInstance();
-		_ui.onCreate(this, app, _viewport);
 
-		_dynamicObjectManager = DynamicObjectManager.getInstance();
+		_viewport = new Viewport(app, -Constant.WORLD_WIDTH * Constant.TILE_WIDTH / 2, -Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT / 2);
 
 		_update = 0;
-		_characterManager = ServiceManager.getCharacterManager();
-		_FoeManager = FoeManager.getInstance();
 
-		_mainRenderer = new MainRenderer(app, _viewport, _ui);
-		
 		app.setKeyRepeatEnabled(true);
-		
-		Log.info("Game:\tdone");
-	}
 
-	public void onRefresh() {
-		_mainRenderer.refresh(_frameRefresh);
-		_ui.onRefresh(_frameRefresh);
-		_frameRefresh++;
+		Log.info("Game:\tdone");
 	}
 
 	public void	onUpdate() {
 		if (_isMenuOpen) {
 			return;
 		}
-		
+
 		_dynamicObjectManager.update();
 
 		ServiceManager.getWorldMap().update();
@@ -109,172 +93,75 @@ public class Game implements ISavable {
 			}
 			jobsDone.clear();
 		}
-		
+
 		// Characters
 		_characterManager.onUpdate(_update);
 
 		// Foes
-		_FoeManager.checkSurroundings();
-		
+		_foeManager.checkSurroundings();
+
 		_update++;
 	}
 
 	public void onLongUpdate() {
 		JobManager.getInstance().onLongUpdate();
-		
+
 		ResourceManager.getInstance().onLongUpdate();
 		_characterManager.onLongUpdate();
 
 		_statsManager.update();
-		
-		RoomManager.getInstance().update();
-	}
 
-	public void onEvent(Event event) throws IOException {
-		if (event.type == Event.Type.MOUSE_MOVED) {
-			_ui.onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
-			UIEventManager.getInstance().onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);
-		}
-
-		if (event.type == Event.Type.MOUSE_BUTTON_PRESSED || event.type == Event.Type.MOUSE_BUTTON_RELEASED) {
-			MouseButtonEvent mouseButtonEvent = event.asMouseButtonEvent();
-			if (mouseButtonEvent.button == Button.LEFT) {
-				if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
-					_ui.onLeftPress(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
-				} else {
-					// Is consume by EventManager
-					if (UIEventManager.getInstance().leftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y)) {
-						// Nothing to do !
-					}
-					// Is double click
-					else if (_lastLeftClick + 20 > _frame) {
-						_ui.onDoubleClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
-					}
-					// Is simple click
-					else {
-						boolean use = _ui.onLeftClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
-						if (use) {
-							_ui.onRefresh(_update);
-						}
-					}
-					_lastLeftClick = _frame;
-				}
-			} else if (mouseButtonEvent.button == Button.RIGHT) {
-				if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
-					_ui.onRightPress(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
-				} else {
-					_ui.onRightClick(mouseButtonEvent.position.x, mouseButtonEvent.position.y);
-				}
-			}
-			//_ui.mouseRelease(event.asMouseButtonEvent().button, event.asMouseButtonEvent().position.x, event.asMouseButtonEvent().position.y);
-		}
-
-		if (event.type == Event.Type.MOUSE_WHEEL_MOVED) {
-			_ui.onMouseWheel(event.asMouseWheelEvent().delta, event.asMouseWheelEvent().position.x, event.asMouseWheelEvent().position.y);
-		}
-
-		// Check key code
-		if (event.type == Event.Type.KEY_RELEASED) {
-			if (_ui.checkKeyboard(event.asKeyEvent().key, _frame, _lastInput)) {
-				return;
-			}
-			
-			if (event.asKeyEvent().key == Keyboard.Key.ESCAPE) {
-				_isMenuOpen = !_isMenuOpen;
-			}
-		}
+		_roomManager.update();
 	}
 
 	void	onCreate() {
 		Log.info("Game: create");
-		
-		ResourceManager.getInstance().setMatter(Constant.RESSOURCE_MATTER_START);
 
+		_roomManager = new RoomManager();
+		_resourceManager = new ResourceManager();
+		_statsManager = new StatsManager();
+		_dynamicObjectManager = new DynamicObjectManager();
+		_characterManager = new CharacterManager();
+		_foeManager = new FoeManager();
+		_relationManager = new RelationManager();
+		
 		ServiceManager.getWorldMap().create();
-		ServiceManager.getCharacterManager().create();
+		Game.getCharacterManager().create();
 	}
 
 	public void	load(final String filePath) {
-		Log.error("Load game: " + filePath);
-
-		boolean	inBlock = false;
-		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-			String line = null;
-
-			while ((line = br.readLine()) != null) {
-
-				// Start block
-				if ("BEGIN GAME".equals(line)) {
-					inBlock = true;
-				}
-
-				// End block
-				else if ("END GAME".equals(line)) {
-					inBlock = false;
-				}
-
-				else if (inBlock) {
-					String[] values = line.split("\t");
-					if (values.length == 2) {
-						if ("MATTER".equals(values[0])) {
-							ResourceManager.getInstance().setMatter(Integer.valueOf(values[1]));
-						}
-						if ("SPICE".equals(values[0])) {
-							ResourceManager.getInstance().setSpice(Integer.valueOf(values[1]));
-						}
-						if ("WATER".equals(values[0])) {
-							ResourceManager.getInstance().setWater(Integer.valueOf(values[1]));
-						}
-					}
-				}
-
-			}
-		}
-		catch (FileNotFoundException e) {
-			Log.error("Unable to open save file: " + filePath);
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-
 		WorldSaver.load(ServiceManager.getWorldMap(), filePath);
 		//WorldFactory.create(ServiceManager.getWorldMap());
-		
+
 		ResourceManager.getInstance().refreshWater();
 
 		JobManagerLoader.load(JobManager.getInstance());
-		
-		onLoadComplete();
-		
-		_mainRenderer.init();
 
-		//JobManager.getInstance().move(ServiceManager.getCharacterManager().getList().get(0), 25, 14);
+		onLoadComplete();
 	}
 
 	private void onLoadComplete() {
-//		ItemInfo info = ServiceManager.getData().getItemInfo("base.seaweed");
-//		
-//		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
-//			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
-//				StructureItem structure = ServiceManager.getWorldMap().getStructure(0, x, y);
-//				if (structure != null && structure.getName().equals("base.ground")) {
-//					ServiceManager.getWorldMap().putItem("base.seaweed1", x, y);
-//				}
-//			}
-//		}
-		
-//				UserItem item = ServiceManager.getWorldMap().getItem(x, y);
-//				if (item != null && "base.storage".equals(item.getInfo().name)) {
-//					StorageItem storage = (StorageItem)item;
-//					for (int i = 0; i < 100; i++) {
-//						storage.addInventory(new UserItem(info));
-//					}
-//				}
-//			}
-//			
-//		}
+		//		ItemInfo info = Game.getData().getItemInfo("base.seaweed");
+		//		
+		//		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
+		//			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
+		//				StructureItem structure = ServiceManager.getWorldMap().getStructure(0, x, y);
+		//				if (structure != null && structure.getName().equals("base.ground")) {
+		//					ServiceManager.getWorldMap().putItem("base.seaweed1", x, y);
+		//				}
+		//			}
+		//		}
+
+		//				UserItem item = ServiceManager.getWorldMap().getItem(x, y);
+		//				if (item != null && "base.storage".equals(item.getInfo().name)) {
+		//					StorageItem storage = (StorageItem)item;
+		//					for (int i = 0; i < 100; i++) {
+		//						storage.addInventory(new UserItem(info));
+		//					}
+		//				}
+		//			}
+		//			
+		//		}
 	}
 
 	public void	save(final String filePath) {
@@ -297,18 +184,12 @@ public class Game implements ISavable {
 
 		WorldSaver.save(ServiceManager.getWorldMap(), filePath);
 
-		ServiceManager.getCharacterManager().save(filePath);
+		Game.getCharacterManager().save(filePath);
 		JobManagerLoader.save(JobManager.getInstance());
 	}
 
 	public void onDraw(double animProgress, int renderTime) throws IOException {
 		_renderTime = renderTime;
-
-		_mainRenderer.draw(_app, _frame, animProgress);
-
-		// User interface
-		_ui.onDraw(_frame, _update, renderTime);
-
 		_frame++;
 	}
 
@@ -319,9 +200,7 @@ public class Game implements ISavable {
 	public void setRunning(boolean running) {
 		_isRunning = running;		
 	}
-
-	public StatsManager getStats() {
-		return _statsManager;		
+	public Viewport getViewport() {
+		return _viewport;
 	}
-
 }

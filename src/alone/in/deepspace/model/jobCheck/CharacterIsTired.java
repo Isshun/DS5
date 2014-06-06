@@ -1,10 +1,10 @@
 package alone.in.deepspace.model.jobCheck;
 
-import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemFilter;
 import alone.in.deepspace.model.job.JobUse;
 
 /**

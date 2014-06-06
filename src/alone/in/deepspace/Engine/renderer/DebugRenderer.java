@@ -8,7 +8,6 @@ import org.jsfml.graphics.TextureCreationException;
 
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
-import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.ObjectPool;

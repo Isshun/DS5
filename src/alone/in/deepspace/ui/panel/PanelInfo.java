@@ -10,6 +10,7 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.CheckBoxView;
@@ -19,14 +20,13 @@ import alone.in.deepspace.engine.ui.LinkView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
-import alone.in.deepspace.manager.ItemSlot;
-import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.ItemInfo.ItemInfoAction;
 import alone.in.deepspace.model.item.ItemInfo.ItemInfoEffects;
+import alone.in.deepspace.model.item.ItemSlot;
 import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.WorldArea;
@@ -491,7 +491,7 @@ public class PanelInfo extends BasePanel {
 
 		_areaLight.setString("luminosity: " + (int)Math.min(area.getLight() * 100, 100));
 
-		Room room = RoomManager.getInstance().get(area.getX(), area.getY());
+		Room room = Game.getRoomManager().get(area.getX(), area.getY());
 		_lbRoom.setString(room != null ? room.getName() : "");
 		if (area.getItem() != null) {
 		} else {

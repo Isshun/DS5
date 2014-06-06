@@ -57,7 +57,7 @@ public class PanelStats extends BasePanel {
 
 	@Override
 	public void onRefresh(int frame) {
-		_stats = _ui.getGame().getStats();
+		_stats = _ui.getGame().getStatsManager();
 //		_image.
 		
 		addData(0, _stats.nbCharacter, Color.RED);

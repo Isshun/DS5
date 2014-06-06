@@ -3,6 +3,7 @@ package alone.in.deepspace.model.room;
 import java.util.ArrayList;
 import java.util.List;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.ServiceManager;
@@ -21,7 +22,7 @@ public class GardenRoom extends Room {
 		super(Type.GARDEN, x, y);
 
 		_options = new ArrayList<RoomOption>();
-		_cultures  = ServiceManager.getData().gatherItems;
+		_cultures  = Game.getData().gatherItems;
 		for (ItemInfo c: _cultures) {
 			final ItemInfo culture = c;
 			_options.add(new RoomOption("Set " + culture.label,
@@ -33,7 +34,7 @@ public class GardenRoom extends Room {
 				}
 			}));
 		}
-		_currentCulture = ServiceManager.getData().getRandomGatherItem();
+		_currentCulture = Game.getData().getRandomGatherItem();
 	}
 
 	public void setCulture(ItemInfo culture) {

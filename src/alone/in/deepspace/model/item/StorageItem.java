@@ -3,7 +3,6 @@ package alone.in.deepspace.model.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.ResourceManager;
 
 public class StorageItem extends UserItem {

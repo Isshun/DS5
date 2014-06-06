@@ -7,7 +7,7 @@ import hoten.voronoi.nodename.as3delaunay.Voronoi;
 import java.awt.Color;
 import java.util.Random;
 
-import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.util.Constant;
@@ -75,8 +75,8 @@ public class WorldFactory {
 //					(int)(Math.random() * 10));
 //		}
 //		
-		ItemInfo info = ServiceManager.getData().getItemInfo("base.rock");
-		ItemInfo infoGround = ServiceManager.getData().getItemInfo("base.ground");
+		ItemInfo info = Game.getData().getItemInfo("base.rock");
+		ItemInfo infoGround = Game.getData().getItemInfo("base.ground");
 		
 		for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
 			for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {

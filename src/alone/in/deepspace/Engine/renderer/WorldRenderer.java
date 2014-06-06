@@ -1,6 +1,5 @@
 package alone.in.deepspace.engine.renderer;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +13,7 @@ import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
-import alone.in.deepspace.manager.RoomManager;
+import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.manager.WorldManager;
@@ -28,7 +27,6 @@ import alone.in.deepspace.util.Log;
 
 public class WorldRenderer implements IRenderer {
 	private SpriteManager			_spriteManager;
-	private UserInterface			_ui;
 	private RectangleShape 			_shape;
 	private int 					_lastSpecialY;
 	private int 					_lastSpecialX;
@@ -42,8 +40,7 @@ public class WorldRenderer implements IRenderer {
 	private ItemBase 				_itemSelected;
 	private int 					_frame;
 
-	public WorldRenderer(SpriteManager spriteManager, UserInterface ui) throws IOException, TextureCreationException {
-		_ui = ui;
+	public WorldRenderer(SpriteManager spriteManager) {
 		_spriteManager = spriteManager;
 		_shape = new RectangleShape();
 		_shape.setSize(new Vector2f(Constant.TILE_WIDTH, Constant.TILE_HEIGHT));
@@ -52,20 +49,25 @@ public class WorldRenderer implements IRenderer {
 		
 		_spriteCache = new Sprite();
 
-		_textureCache = new RenderTexture();
-		_textureCache.create(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
-		_textureCache.setSmooth(true);
-		_textureCache.display();
+		try {
+			_textureCache = new RenderTexture();
+			_textureCache.create(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
+			_textureCache.setSmooth(true);
+			_textureCache.display();
+		} catch (TextureCreationException e) {
+			e.printStackTrace();
+		}
 		
 		_hasChanged = true;
 	}
 
 	public void onRefresh(int frame) {
+		UserInterface ui = UserInterface.getInstance();
 		_frame = frame;
-		int fromX = Math.max(_ui.getRelativePosXMin(0)-1, 0);
-		int fromY = Math.max(_ui.getRelativePosYMin(0)-1, 0);
-		int toX = Math.min(_ui.getRelativePosXMax(Constant.WINDOW_WIDTH)+1, _worldMap.getWidth());
-		int toY = Math.min(_ui.getRelativePosYMax(Constant.WINDOW_HEIGHT)+1, _worldMap.getHeight());
+		int fromX = Math.max(ui.getRelativePosXMin(0)-1, 0);
+		int fromY = Math.max(ui.getRelativePosYMin(0)-1, 0);
+		int toX = Math.min(ui.getRelativePosXMax(Constant.WINDOW_WIDTH)+1, _worldMap.getWidth());
+		int toY = Math.min(ui.getRelativePosYMax(Constant.WINDOW_HEIGHT)+1, _worldMap.getHeight());
 
 		if (_hasChanged || _changed.size() > 0) {
 			if (_hasChanged) {
@@ -166,10 +168,10 @@ public class WorldRenderer implements IRenderer {
 					// Structure
 					StructureItem structure = _worldMap.getStructure(i, j);
 					
-					Room room = RoomManager.getInstance().get(i, j);
+					Room room = Game.getRoomManager().get(i, j);
 					if (structure != null && structure.roomCanBeSet() == false) {
 						structure = _worldMap.getStructure(i, j-1);
-						room = RoomManager.getInstance().get(i, j-1);
+						room = Game.getRoomManager().get(i, j-1);
 					}
 	
 					if (structure != null && structure.isFloor()) {
@@ -305,7 +307,7 @@ public class WorldRenderer implements IRenderer {
 		StructureItem right = _worldMap.getStructure(i+1, j);
 		StructureItem left = _worldMap.getStructure(i-1, j);
 
-		Room room = RoomManager.getInstance().get(i, j + 1);
+		Room room = Game.getRoomManager().get(i, j + 1);
 		int zone = room != null ? room.getType().ordinal() : 0;
 
 		// bellow is a wall

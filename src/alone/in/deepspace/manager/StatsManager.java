@@ -2,6 +2,7 @@ package alone.in.deepspace.manager;
 
 import java.util.List;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.StatsData;
 import alone.in.deepspace.model.Profession.Type;
 import alone.in.deepspace.model.character.Character;
@@ -27,7 +28,7 @@ public class StatsManager {
 		int nbSingleValue = 0;
 		int nbChildValue = 0;
 		int nbStudentValue = 0;
-		List<Character> characters = ServiceManager.getCharacterManager().getList();
+		List<Character> characters = Game.getCharacterManager().getList();
 		for (Character character: characters) {
 			
 			// In relation or single

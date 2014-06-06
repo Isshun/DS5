@@ -1,6 +1,8 @@
 package alone.in.deepspace.manager;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.Strings;
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.model.ToolTips;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;
@@ -22,7 +24,7 @@ public class ResourceManager {
 
 	public enum Message {NONE, NO_MATTER, BUILD_COMPLETE, BUILD_PROGRESS};
 
-	private ResourceManager() {
+	public ResourceManager() {
 		_matter = new ResourceData(Strings.LB_MATTER, ToolTips.RES_MATTER);
 		_power = new ResourceData(Strings.LB_POWER, ToolTips.RES_POWER);
 		_spice = new ResourceData("spice", ToolTips.RES_SPICE);
@@ -44,7 +46,7 @@ public class ResourceManager {
 			return Message.NO_MATTER;
 		}
 
-		ServiceManager.getWorldRenderer().invalidate(item.getX(), item.getY());
+		MainRenderer.getInstance().invalidate(item.getX(), item.getY());
 
 		if (item.isComplete() == false) {
 			_matter.value--;
@@ -66,7 +68,7 @@ public class ResourceManager {
 			}
 
 			if (item.getLight() > 0) {
-				ServiceManager.getLightRenderer().refresh(item);
+				MainRenderer.getInstance().refreshLight(item);
 			}
 			
 			return Message.BUILD_COMPLETE;
@@ -92,7 +94,7 @@ public class ResourceManager {
 //				Room room = RoomManager.getInstance().get(x, y);
 //				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() && room != null && room.isType(Type.GARDEN)) {
 //					structure.setWorking(water-- > 0);
-//					ServiceManager.getWorldRenderer().invalidate(x, y);
+//					MainRenderer.getInstance().invalidate(x, y);
 //				}
 //			}
 //		}
@@ -104,7 +106,7 @@ public class ResourceManager {
 //				Room room = RoomManager.getInstance().get(x, y);
 //				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() == false && room != null && room.isType(Type.GARDEN)) {
 //					structure.setWorking(water-- > 0);
-//					ServiceManager.getWorldRenderer().invalidate(x, y);
+//					MainRenderer.getInstance().invalidate(x, y);
 //				}
 //			}
 //		}
@@ -116,7 +118,7 @@ public class ResourceManager {
 //				Room room = RoomManager.getInstance().get(x, y);
 //				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && (room == null || room.isType(Type.GARDEN) == false)) {
 //					structure.setWorking(water-- > 0);
-//					ServiceManager.getWorldRenderer().invalidate(x, y);
+//					MainRenderer.getInstance().invalidate(x, y);
 //				}
 //			}
 //		}
@@ -140,7 +142,7 @@ public class ResourceManager {
 	public void addFood(int value) { _food.value += value; }
 
 	public boolean isLowFood() {
-		return _food.value < ServiceManager.getCharacterManager().getCount();
+		return _food.value < Game.getCharacterManager().getCount();
 	}
 
 	public void remove(ItemInfo info) {

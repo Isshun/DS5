@@ -7,8 +7,8 @@ import java.util.Vector;
 import org.jsfml.graphics.Color;
 import org.newdawn.slick.util.pathfinding.Mover;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.CharacterManager;
-import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.RoomManager;
@@ -18,6 +18,7 @@ import alone.in.deepspace.model.Position;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.character.CharacterRelation.Relation;
 import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemFilter;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.util.Constant;
@@ -217,7 +218,7 @@ public class Character extends Movable implements Mover {
 	}
 
 	public void	setProfession(Profession.Type professionId) {
-		Profession[] professions = ServiceManager.getCharacterManager().getProfessions();
+		Profession[] professions = Game.getCharacterManager().getProfessions();
 
 		for (int i = 0; i < professions.length; i++) {
 			Profession profession = professions[i];
@@ -313,13 +314,13 @@ public class Character extends Movable implements Mover {
 		
 		// Find quarter
 		if (_quarter == null) {
-			RoomManager.getInstance().take(this, Room.Type.QUARTER);
+			Game.getRoomManager().take(this, Room.Type.QUARTER);
 		}
 		
 		// New child
 		if (_nbChild < Constant.CHARACTER_MAX_CHILD && _mate != null && _old > Constant.CHARACTER_CHILD_MIN_OLD && _old < Constant.CHARACTER_CHILD_MAX_OLD && _old > _nextChildAtOld && _nextChildAtOld > 0) {
 			_nextChildAtOld = _old + Constant.CHARACTER_DELAY_BETWEEN_CHILDS;
-			if (ServiceManager.getRelationManager().createChildren(this, _mate) != null) {
+			if (Game.getRelationManager().createChildren(this, _mate) != null) {
 				_nbChild++;
 			}
 		}

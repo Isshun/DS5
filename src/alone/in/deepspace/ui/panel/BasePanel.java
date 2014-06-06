@@ -1,6 +1,5 @@
 package alone.in.deepspace.ui.panel;
 
-import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;

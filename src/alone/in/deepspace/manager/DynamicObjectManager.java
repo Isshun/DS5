@@ -1,41 +1,29 @@
 package alone.in.deepspace.manager;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
-import org.jsfml.graphics.Texture;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.TempItem;
 import alone.in.deepspace.model.item.UserItem;
-import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class DynamicObjectManager {
-	private static DynamicObjectManager	_self;
-
 	private ArrayList<ItemBase>	 		_objects;
 	private ArrayList<TempItem>	 		_tempItems;
 	private int 						_count;
-	private Sprite 						_selection;
 	private int 						_countFire;
 	private ArrayList<TempItem> 		_toTempItemDestroy;
 
-	public DynamicObjectManager() throws IOException {
+	public DynamicObjectManager() {
 	  Log.debug("FoeManager");
-	  
-	  // Selection
-	  Texture texture = new Texture();
-	  texture.loadFromFile((new File("res/cursor.png").toPath()));
-	  _selection = new Sprite();
-	  _selection.setTexture(texture);
-	  _selection.setTextureRect(new IntRect(0, 32, 32, Constant.CHAR_HEIGHT));
 	  
 	  _objects = new ArrayList<ItemBase>();
 	  _tempItems = new ArrayList<TempItem>();
@@ -58,18 +46,6 @@ public class DynamicObjectManager {
 		}
 	}
 	
-	public static DynamicObjectManager getInstance() {
-		if (_self == null) {
-			try {
-				_self = new DynamicObjectManager();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return _self;
-	}
-
-
 	public int getCount() {
 		return _count;
 	}
@@ -102,7 +78,7 @@ public class DynamicObjectManager {
 		int range = 20;
 
 		if (_countFire++ % 4 != 0) {
-			List<Character> characters = ServiceManager.getCharacterManager().getList();
+			List<Character> characters = Game.getCharacterManager().getList();
 			for (Character c: characters) {
 				if (c.getX() > x - range && c.getX() < x + range && c.getY() > y - range && c.getY() < y + range ) {
 					int offsetX = Math.abs(c.getX() - x);

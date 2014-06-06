@@ -3,6 +3,8 @@ package alone.in.deepspace.ui.panel;
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.Game;
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
@@ -32,7 +34,7 @@ public class PanelDebug extends BasePanel {
 		txtAddCharacter.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				ServiceManager.getCharacterManager().add(150, 150, Profession.Type.ENGINEER);
+				Game.getCharacterManager().add(150, 150, Profession.Type.ENGINEER);
 			}
 		});
 		txtAddCharacter.setString("Add character");
@@ -154,7 +156,7 @@ public class PanelDebug extends BasePanel {
 		lbKillEveryone.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				ServiceManager.getCharacterManager().clear();
+				Game.getCharacterManager().clear();
 				JobManager.getInstance().clear();
 			}
 		});
@@ -169,7 +171,7 @@ public class PanelDebug extends BasePanel {
 		lbResetLight.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				ServiceManager.getLightRenderer().initLight();
+				MainRenderer.getInstance().initLight();
 			}
 		});
 		lbResetLight.setString("Reset light");

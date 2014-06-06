@@ -5,12 +5,12 @@ import java.util.List;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.room.Room;
 
@@ -19,7 +19,7 @@ public class RoomContextualMenu extends ContextualMenu {
 	public RoomContextualMenu(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size, Viewport viewport, final Room room) {
 		super(app, tileIndex, pos, size, viewport);
 		
-		List<Character> characters = ServiceManager.getCharacterManager().getList();
+		List<Character> characters = Game.getCharacterManager().getList();
 		final ContextualMenu subMenu = new ContextualMenu(app, 0, new Vector2f(100, 0), new Vector2f(160, (characters.size() + 1) * ContextualMenu.LINE_HEIGHT + ContextualMenu.PADDING_V * 2), viewport);
 		subMenu.addEntry(Strings.LB_NOBODY, new OnClickListener() {
 			@Override

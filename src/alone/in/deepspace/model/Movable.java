@@ -106,19 +106,19 @@ public abstract class Movable implements PathManagerCallback {
 
 //		Sprite sprite = null;
 //		
-//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.chair"));
+//		sprite = SpriteManager.getInstance().getIcon(Game.getData().getItemInfo("base.chair"));
 //		sprite.setPosition((int)(fromX * 32), (int)(fromY * 32));
 //		app.draw(sprite, render);
 //		
-//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.chair"));
+//		sprite = SpriteManager.getInstance().getIcon(Game.getData().getItemInfo("base.chair"));
 //		sprite.setPosition((int)(toX * 32), (int)(toY * 32));
 //		app.draw(sprite, render);
 //
-//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//		sprite = SpriteManager.getInstance().getIcon(Game.getData().getItemInfo("base.light"));
 //		sprite.setPosition((int)(x * 32), (int)(y * 32));
 //		app.draw(sprite, render);
 //		
-//		sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//		sprite = SpriteManager.getInstance().getIcon(Game.getData().getItemInfo("base.light"));
 //		sprite.setPosition((int)(x2 * 32), (int)(y2 * 32));
 //		app.draw(sprite, render);
 
@@ -129,7 +129,7 @@ public abstract class Movable implements PathManagerCallback {
 			double rad2 = Math.acos((rad2OffsetX));
 			//double rad2 = Math.asin(rad2OffsetY);
 			
-//			sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//			sprite = SpriteManager.getInstance().getIcon(Game.getData().getItemInfo("base.light"));
 //			sprite.setPosition((int)(x+radOffsetX*r)*32, (int)((y+radOffsetY*r)*32));
 //			app.draw(sprite, render);
 			
@@ -142,7 +142,7 @@ public abstract class Movable implements PathManagerCallback {
 			double rad1 = Math.acos((rad1OffsetX));
 			//double rad2 = Math.asin(radOffsetY);
 			
-//			sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//			sprite = SpriteManager.getInstance().getIcon(Game.getData().getItemInfo("base.light"));
 //			sprite.setPosition((int)(x+radOffsetX*r)*32, (int)((y+radOffsetY*r)*32));
 //			app.draw(sprite, render);
 //
@@ -153,7 +153,7 @@ public abstract class Movable implements PathManagerCallback {
 		double from = Math.min(Math.PI-rad1, Math.PI-rad2);
 		double to = Math.max(Math.PI-rad1, Math.PI-rad2);
 		for (double i = from; i < to; i += 0.001) {
-//				sprite = SpriteManager.getInstance().getIcon(ServiceManager.getData().getItemInfo("base.light"));
+//				sprite = SpriteManager.getInstance().getIcon(Game.getData().getItemInfo("base.light"));
 //				sprite.setPosition((int)(x*32 + Math.cos(i)*r*32), (int)(y*32 + Math.sin(i)*r*32));
 //				app.draw(sprite, render);
 			

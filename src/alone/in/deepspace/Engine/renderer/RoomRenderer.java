@@ -11,7 +11,7 @@ import org.jsfml.graphics.Text;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.manager.RoomManager;
+import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.room.Room;
@@ -37,7 +37,7 @@ public class RoomRenderer implements IRenderer {
 	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
 		RectangleShape rectangleItem = new RectangleShape(new Vector2f(Constant.TILE_WIDTH, Constant.TILE_HEIGHT));
 		
-		Room[][] rooms = RoomManager.getInstance().getRooms();
+		Room[][] rooms = Game.getRoomManager().getRooms();
 		for (int x = 0; x < Constant.WORLD_WIDTH; x++) {
 			for (int y = 0; y < Constant.WORLD_HEIGHT; y++) {
 				Room room = rooms[x][y];
@@ -56,7 +56,7 @@ public class RoomRenderer implements IRenderer {
 			}			
 		}
 		
-		List<Room> roomList = RoomManager.getInstance().getRoomList();
+		List<Room> roomList = Game.getRoomManager().getRoomList();
 		for (Room room: roomList) {
 			displayRoomInfo(app, render, room, room.getX() * Constant.TILE_WIDTH, room.getY() * Constant.TILE_HEIGHT);
 		}

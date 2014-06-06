@@ -1,6 +1,5 @@
-package alone.in.deepspace.manager;
+package alone.in.deepspace.model.item;
 
-import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.job.Job;
 
 public class ItemSlot {
