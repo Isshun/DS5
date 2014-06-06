@@ -3,20 +3,20 @@ package alone.in.deepspace.model.jobCheck;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.model.character.Character;
-import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.job.JobMove;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.util.Constant;
 
-public class CharacterGoToMettingRoom implements JobCheck {
+public class CharacterGoToMettingRoom implements JobCharacterCheck {
 
 	@Override
-	public Job create(JobManager jobManager, Character character) {
+	public boolean create(JobManager jobManager, Character character) {
 		Room room = RoomManager.getInstance().getNeerRoom(character.getX(), character.getY(), Room.Type.METTING);
 		if (room != null) {
-			return JobMove.create(character, room.getX(), room.getY(), Constant.CHARACTER_STAY_IN_METTING_ROOM * Constant.DURATION_MULTIPLIER);
+			jobManager.addJob(JobMove.create(character, room.getX(), room.getY(), Constant.CHARACTER_STAY_IN_METTING_ROOM * Constant.DURATION_MULTIPLIER), character);
+			return true;
 		}
-		return null;
+		return false;
 	}
 
 }

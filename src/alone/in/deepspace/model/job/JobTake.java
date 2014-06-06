@@ -38,7 +38,7 @@ public class JobTake extends Job {
 		}
 		
 		// No space left in inventory
-		if (_character.hasInventorySpaceLeft() == false) {
+		if (character.hasInventorySpaceLeft() == false) {
 			_reason = Abort.NO_LEFT_CARRY;
 			return false;
 		}

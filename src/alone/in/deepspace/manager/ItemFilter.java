@@ -3,16 +3,17 @@ package alone.in.deepspace.manager;
 import alone.in.deepspace.model.item.ItemInfo;
 
 public class ItemFilter {
-	public boolean 	food;
-	public boolean 	drink;
-	public boolean 	energy;
-	public boolean 	hapiness;
-	public boolean 	relation;
-	public boolean 	health;
+	public boolean 	effectFood;
+	public boolean 	effectDrink;
+	public boolean 	effectEnergy;
+	public boolean 	effectHapiness;
+	public boolean 	effectRelation;
+	public boolean 	effectHealth;
 	public boolean 	isFactory;
 	public boolean 	isImmediate;
-	public ItemInfo	matchingItem;
-	public ItemInfo neededItem;
+	public ItemInfo	itemMatched;
+	public ItemInfo itemNeeded;
+	public boolean 	hasFreeSlot;
 	
 	public ItemFilter(boolean isFactory, boolean isImmediate) {
 		this.isFactory = isFactory;

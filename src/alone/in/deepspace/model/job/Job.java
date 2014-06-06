@@ -100,8 +100,8 @@ public abstract class Job {
 		String oss = (_id  < 10 ? "#0" : "#") + _id
 				+ " - " + JobManager.getActionName(_action);
 
-		if (_action == Action.TAKE && _filter != null && _filter.matchingItem != null) {
-			oss += " " + _filter.matchingItem.label + " in ";
+		if (_action == Action.TAKE && _filter != null && _filter.itemMatched != null) {
+			oss += " " + _filter.itemMatched.label + " in ";
 		}
 
 		if (_item != null) {
@@ -132,8 +132,8 @@ public abstract class Job {
 
 	public String getShortLabel() {
 		String oss = JobManager.getActionName(_action);
-		if (_action == Action.TAKE && _filter != null && _filter.matchingItem != null) {
-			oss += " " + _filter.matchingItem.label + " in ";
+		if (_action == Action.TAKE && _filter != null && _filter.itemMatched != null) {
+			oss += " " + _filter.itemMatched.label + " in ";
 		}
 		if (_item != null) {
 			oss += " " + _item.getLabel();

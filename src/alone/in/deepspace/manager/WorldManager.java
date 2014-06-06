@@ -9,6 +9,7 @@ import java.util.Vector;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
+import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.FactoryItem;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;
@@ -472,12 +473,18 @@ public class WorldManager implements TileBasedMap {
 	public int					getWidth() { return _width; }
 	public int					getHeight() { return _height; }
 
-	public UserItem getNearest(ItemFilter filter, int startX, int startY) {
+	public UserItem getNearest(ItemFilter filter, Character character) {
 		PathManager pathManager = PathManager.getInstance();
+		int startX = character.getX();
+		int startY = character.getY();
 		int maxX = Math.max(startX, _width - startX);
 		int maxY = Math.max(startY, _height - startY);
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
+				WorldArea area = getArea(startX + offsetX, startY + offsetY);
+				if (area.getRoom() != null) {
+					continue;
+				}
 				UserItem item = getItem(startX + offsetX, startY + offsetY);
 				if (item != null && item.isComplete() && item.hasFreeSlot() && item.matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
 					return item;
@@ -960,5 +967,18 @@ public class WorldManager implements TileBasedMap {
 ////		return sx != tx ? (r ? 10f : 1f) : (r ? 1f : 10f);
 //		
 		return context.getSourceX() != tx && context.getSourceY() != ty ? 1.5f : 1f;
+	}
+
+	public ItemBase findInRoom(ItemFilter filter, Room room) {
+		if (room != null) {
+			List<WorldArea> areas = room.getAreas();
+			for (WorldArea area: areas) {
+				UserItem item = area.getItem();
+				if (item != null && (filter.hasFreeSlot == false || item.isFree()) && item.matchFilter(filter)) {
+					return item;
+				}
+			}
+		}
+		return null;
 	}
 }

@@ -55,6 +55,7 @@ public class Character extends Movable implements Mover {
 	private String 					_lastName;
 	private String 					_birthName;
 	private Room					_quarter;
+	private boolean _isDead;
 
 	public Character(int id, int x, int y, String name, String lastName, double old) {
 		super(id, x, y);
@@ -301,7 +302,7 @@ public class Character extends Movable implements Mover {
 		_old += Constant.CHARACTER_GROW_PER_UPDATE * Constant.SLOW_UPDATE_INTERVAL;
 		
 		if (_old > Constant.CHARACTER_MAX_OLD) {
-			ServiceManager.getCharacterManager().remove(this);
+			_isDead = true;
 		}
 		
 		// Leave parent quarters
@@ -549,6 +550,14 @@ public class Character extends Movable implements Mover {
 
 	public int getLeftSpace() {
 		return _inventorySpaceLeft;
+	}
+
+	public boolean isDead() {
+		return _isDead;
+	}
+
+	public void setIsDead() {
+		_isDead = true;
 	}
 	
 }

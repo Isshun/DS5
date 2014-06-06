@@ -6,6 +6,7 @@ import java.util.List;
 import alone.in.deepspace.engine.loader.WorldSaver.WorldSave;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.RoomSave;
+import alone.in.deepspace.manager.RoomSave.RoomSaveArea;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.character.Character.Gender;
@@ -57,30 +58,27 @@ public class RoomSerializer implements SerializerInterface {
 		save.rooms = new ArrayList<RoomSave>();
 		
 		for (Room room: rooms) {
+			RoomSave roomSave = new RoomSave();
+			roomSave.type = room.getType().ordinal();
+			for (WorldArea area: room.getAreas()) {
+				roomSave.areas.add(new RoomSaveArea(area.getX(), area.getY()));
+			}
+
+			// Garden
 			if (room.isGarden()) {
 				GardenRoom garden = (GardenRoom)room;
-				for (WorldArea area: room.getAreas()) {
-					RoomSave roomSave = new RoomSave();
-					roomSave.x = area.getX();
-					roomSave.y = area.getY();
-					roomSave.culture = garden.getCulture().name;
-					roomSave.type = room.getType().ordinal();
-					save.rooms.add(roomSave);
+				roomSave.culture = garden.getCulture().name;
+			}
+			
+			// Quarter
+			else if (room.isQuarter()) {
+				roomSave.occupants = new ArrayList<Integer>();
+				for (Character character: room.getOccupants()) {
+					roomSave.occupants.add(character.getId());
 				}
 			}
-			if (room.isQuarter()) {
-				for (WorldArea area: room.getAreas()) {
-					RoomSave roomSave = new RoomSave();
-					roomSave.x = area.getX();
-					roomSave.y = area.getY();
-					roomSave.occupants = new ArrayList<Integer>();
-					for (Character character: room.getOccupants()) {
-						roomSave.occupants.add(character.getId());
-					}
-					roomSave.type = room.getType().ordinal();
-					save.rooms.add(roomSave);
-				}
-			}
+
+			save.rooms.add(roomSave);
 		}
 	}
 
@@ -92,10 +90,12 @@ public class RoomSerializer implements SerializerInterface {
 		}
 		
 		for (RoomSave roomSave: save.rooms) {
-			Room room = RoomManager.getInstance().putRoom(roomSave.x, roomSave.y, roomSave.x, roomSave.y, roomSave.x, roomSave.y, Room.getType(roomSave.type), null);
-			if (room.isGarden()) {
-				ItemInfo info = ServiceManager.getData().getItemInfo(roomSave.culture);
-				((GardenRoom)room).setCulture(info);
+			for (RoomSaveArea roomSaveArea: roomSave.areas) {
+				Room room = RoomManager.getInstance().putRoom(roomSaveArea.x, roomSaveArea.y, roomSaveArea.x, roomSaveArea.y, roomSaveArea.x, roomSaveArea.y, Room.getType(roomSave.type), null);
+				if (room.isGarden()) {
+					ItemInfo info = ServiceManager.getData().getItemInfo(roomSave.culture);
+					((GardenRoom)room).setCulture(info);
+				}
 			}
 		}
 	}

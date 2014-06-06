@@ -1,25 +1,43 @@
 package alone.in.deepspace.model.jobCheck;
 
+import alone.in.deepspace.manager.ItemFilter;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
-import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.job.JobUse;
 
-// TODO: change name by filter
-public class CharacterIsTired implements JobCheck {
+/**
+ * Check if character is tired then send to bed
+ * 
+ */
+public class CharacterIsTired implements JobCharacterCheck {
 
 	@Override
-	public Job create(JobManager jobManager, Character character) {
+	public boolean create(JobManager jobManager, Character character) {
 		if (character.getNeeds().isTired()) {
-			ItemBase item = ServiceManager.getWorldMap().find("base.bed", true);
+			ItemFilter filter = new ItemFilter(false, true);
+			filter.hasFreeSlot = true;
+			filter.effectEnergy = true;
+			
+			// Character has quarters
+			if (character.getQuarter() != null) {
+				ItemBase item = ServiceManager.getWorldMap().findInRoom(filter, character.getQuarter());
+				if (item != null) {
+					jobManager.addJob(JobUse.create(item, character), character);
+					return true;
+				}
+			}
+			
+			// No quarters or no usable bed in quarters
+			ItemBase item = ServiceManager.getWorldMap().getNearest(filter, character);
 			if (item != null) {
-				return JobUse.create(item, character);
+				jobManager.addJob(JobUse.create(item, character), character);
+				return true;
 			}
 		}
 		
-		return null;
+		return false;
 	}
 
 }

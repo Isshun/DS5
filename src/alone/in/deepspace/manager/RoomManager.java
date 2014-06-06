@@ -85,7 +85,9 @@ public class RoomManager {
 				if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
 					StructureItem struct = ServiceManager.getWorldMap().getStructure(x, y);
 					if (struct == null || struct.roomCanBeSet()) {
-						room.addArea(ServiceManager.getWorldMap().getArea(x, y));
+						WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
+						area.setRoom(room);
+						room.addArea(area);
 						_rooms[x][y] = room;
 						ServiceManager.getWorldRenderer().invalidate(x, y);
 					}

@@ -108,11 +108,11 @@ public class StorageItem extends UserItem {
 		// Item produce
 		if (filter.isFactory && _info.onAction != null && _info.onAction.itemsProduce != null) {
 			for (ItemInfo itemProduce: _info.onAction.itemsProduce) {
-				if (itemProduce != null && itemProduce.onAction != null && (filter.neededItem == itemProduce || _info.matchFilter(itemProduce.onAction.effects, filter))) {
+				if (itemProduce != null && itemProduce.onAction != null && (filter.itemNeeded == itemProduce || _info.matchFilter(itemProduce.onAction.effects, filter))) {
 					// Have components
 					for (ItemInfo component: itemProduce.craftedFromItems) {
 						if (inventoryContains(component)) {
-							filter.matchingItem = itemProduce;
+							filter.itemMatched = itemProduce;
 							return true;
 						}
 					}

@@ -6,30 +6,31 @@ import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.StorageItem;
-import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.job.JobTake;
 import alone.in.deepspace.model.job.JobUse;
 import alone.in.deepspace.model.job.JobUseInventory;
 
 // TODO: change name by filter
-public class CharacterIsHungry implements JobCheck {
+public class CharacterIsHungry implements JobCharacterCheck {
 
 	@Override
-	public Job create(JobManager jobManager, Character character) {
+	public boolean create(JobManager jobManager, Character character) {
 		if (character.getNeeds().isHungry()) {
 			ItemFilter filter = new ItemFilter(true, true);
-			filter.food = true;
+			filter.effectFood = true;
 
 			// Have item in inventory
 			ItemBase item = character.find(filter);
 			if (item != null) {
-				return JobUseInventory.create(character, item);
+				jobManager.addJob(JobUseInventory.create(character, item), character);
+				return true;
 			}
 
 			// Take item from storage
 			StorageItem storage = ServiceManager.getWorldMap().findStorageContains(filter, character.getX(), character.getY());
 			if (storage != null) {
-				return JobTake.create(character, storage, filter);
+				jobManager.addJob(JobTake.create(character, storage, filter), character);
+				return true;
 			}
 
 			// Looking for food dispenser
@@ -37,11 +38,12 @@ public class CharacterIsHungry implements JobCheck {
 				for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
 					item = ServiceManager.getWorldMap().getItem(x, y);
 					if (item != null && item.matchFilter(filter)) {
-						return JobUse.create(item);
+						jobManager.addJob(JobUse.create(item), character);
+						return true;
 					}
 				}
 			}
 		}
-		return null;
+		return false;
 	}
 }

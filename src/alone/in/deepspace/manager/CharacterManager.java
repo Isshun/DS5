@@ -178,33 +178,41 @@ public class CharacterManager {
 		// Add new born
 		_characters.addAll(_addOnUpdate);
 		_addOnUpdate.clear();
-		
-		// Remove died character
-		for (Character character: _removeOnUpdate) {
-			if (character.getJob() != null) {
-				// Cancel job
-				JobManager.getInstance().abort(character.getJob(), Abort.DIED);
-				
-				// Remove from rooms
-				RoomManager.getInstance().removeFromRooms(character);
-			}
-		}
-		_characters.removeAll(_removeOnUpdate);
+
+		Character characterToRemove = null;
 		
 		for (Character c: _characters) {
-			// Assign job
-			if (c.getJob() == null && update % 10 == c.getLag() && c.isSleeping() == false) {
-				JobManager.getInstance().assignJob(c);
+			// Check if character is dead
+			if (c.isDead()) {
+				if (c.getJob() != null) {
+					// Cancel job
+					JobManager.getInstance().abort(c.getJob(), Abort.DIED);
+					
+					// Remove from rooms
+					RoomManager.getInstance().removeFromRooms(c);
+				}
+				characterToRemove = c;
 			}
+			
+			else {
+				// Assign job
+				if (c.getJob() == null && update % 10 == c.getLag() && c.isSleeping() == false) {
+					JobManager.getInstance().assignJob(c);
+				}
 
-			// Update needs
-			if (update % 10 == 0) {
-				c.updateNeeds(update);
+				// Update needs
+				if (update % 10 == 0) {
+					c.updateNeeds(update);
+				}
+				
+				c.setDirection(Direction.NONE);
+				c.action();
+				c.move();
 			}
-
-			c.setDirection(Direction.NONE);
-			c.action();
-			c.move();
+		}
+		
+		if (characterToRemove != null) {
+			_characters.remove(characterToRemove);
 		}
 
 		Log.debug("CharacterManager: update done");
@@ -264,7 +272,7 @@ public class CharacterManager {
 	}
 	
 	public void remove(Character c) {
-		_removeOnUpdate.add(c);
+		c.setIsDead();
 		c.setName(Strings.LB_DECEADED);
 	}
 
@@ -280,8 +288,11 @@ public class CharacterManager {
 
 
 	public void clear() {
-		_characters.clear();
-		JobManager.getInstance().clear();
+		for (Character c: _characters) {
+			c.setIsDead();
+		}
+		//_characters.clear();
+		//JobManager.getInstance().clear();
 	}
 
 	// TODO: heavy

@@ -254,13 +254,13 @@ public abstract class ItemBase {
 		if (filter.isImmediate) {
 
 			// Filter on item
-			if (filter.neededItem == _info) {
-				filter.matchingItem = _info;
+			if (filter.itemNeeded == _info) {
+				filter.itemMatched = _info;
 				return true;
 			}
 
 			if (_info.onAction != null && _info.matchFilter(_info.onAction.effects, filter)) {
-				filter.matchingItem = _info;
+				filter.itemMatched = _info;
 				return true;
 			}
 		}

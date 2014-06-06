@@ -1,10 +1,13 @@
 package alone.in.deepspace.model.item;
 
+import alone.in.deepspace.model.job.Job;
+
 
 public class WorldResource extends UserItem {
 	private double	_value;
 	private int 	_tile;
 	private int 	_doubleRender;
+	private Job		_job;
 
 	public WorldResource(ItemInfo info, int id) {
 		super(info, id);
@@ -62,6 +65,14 @@ public class WorldResource extends UserItem {
 
 	public boolean isMature() {
 		return _value >= _info.onGather.mature;
+	}
+
+	public void setJob(Job job) {
+		_job = job;
+	}
+
+	public boolean hasNoJob() {
+		return _job == null;
 	}
 
 }

@@ -28,6 +28,7 @@ public class JobGather extends Job {
 		job.setAction(Action.GATHER);
 		job.setItem(resource);
 		job._resource = resource;
+		job._resource.setJob(job);
 
 		return job;
 	}
@@ -95,6 +96,7 @@ public class JobGather extends Job {
 		}
 		
 		if (_resource.isDepleted()) {
+			_resource.setJob(null);
 			JobManager.getInstance().complete(this);
 			ServiceManager.getWorldMap().removeResource(_resource);
 			return true;
@@ -102,5 +104,4 @@ public class JobGather extends Job {
 
 		return false;
 	}
-
 }

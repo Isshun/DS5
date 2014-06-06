@@ -1,9 +1,8 @@
 package alone.in.deepspace.model.item;
 
-
+import alone.in.deepspace.model.room.Room;
 
 public class WorldArea {
-
 	private UserItem 		_item;
 	private StructureItem 	_structure;
 	private WorldResource 	_ressource;
@@ -13,6 +12,7 @@ public class WorldArea {
 	private double 			_light;
 	private int 			_lightPass;
 	private int 			_z;
+	private Room 			_room;
 
 	public WorldArea(int x, int y, int z) {
 		_oxygen = (int) (Math.random() % 100);
@@ -30,6 +30,7 @@ public class WorldArea {
 	public void				setOxygen(int oxygen) { _oxygen = oxygen; }
 	public void 			setLight(double value) { _light = value; }
 	public void 			setLightPass(int pass) { _lightPass = pass; }
+	public void 			setRoom(Room room) { _room = room; }
 
 	public UserItem			getItem() { return _item; }
 	public StructureItem	getStructure() { return _structure; }
@@ -40,4 +41,5 @@ public class WorldArea {
 	public int				getZ() { return _z; }
 	public double 			getLight() { return _light; }
 	public int 				getLightPass() { return _lightPass; }
+	public Room				getRoom() { return _room; }
 }

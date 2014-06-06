@@ -257,6 +257,9 @@ public class Room {
 	}
 
 	public void update() {
+		if (_owner != null && _owner.isDead()) {
+			_owner = null;
+		}
 	}
 
 	public void addArea(WorldArea area) {

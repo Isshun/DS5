@@ -29,8 +29,9 @@ import alone.in.deepspace.model.jobCheck.CharacterIsHungry;
 import alone.in.deepspace.model.jobCheck.CharacterIsTired;
 import alone.in.deepspace.model.jobCheck.CharacterPlayTime;
 import alone.in.deepspace.model.jobCheck.CheckEmptyFactory;
-import alone.in.deepspace.model.jobCheck.CheckGardenIsOk;
+import alone.in.deepspace.model.jobCheck.CheckGardenIsMature;
 import alone.in.deepspace.model.jobCheck.CheckLowFood;
+import alone.in.deepspace.model.jobCheck.JobCharacterCheck;
 import alone.in.deepspace.model.jobCheck.JobCheck;
 import alone.in.deepspace.util.Log;
 
@@ -42,7 +43,7 @@ public class JobManager {
 	private static JobManager	sSelf;
 	private List<Job> 			_jobs;
 
-	private JobCheck[]		_priorityJobsCheck = {
+	private JobCharacterCheck[]		_priorityJobsCheck = {
 			new CharacterIsTired(),
 			new CharacterIsHungry(),
 			new CharacterIsFull(),
@@ -51,10 +52,10 @@ public class JobManager {
 	private JobCheck[]		_jobsCheck = {
 			new CheckLowFood(),
 			new CheckEmptyFactory(),
-			new CheckGardenIsOk()
+			new CheckGardenIsMature()
 	};
 
-	private JobCheck[]		_routineJobsCheck = {
+	private JobCharacterCheck[]		_routineJobsCheck = {
 			new CharacterHasItemToStore(),
 			new CharacterPlayTime(),
 			new CharacterGoToMettingRoom()
@@ -180,24 +181,25 @@ public class JobManager {
 		Log.debug("assignJob");
 
 		// Priority jobs
-		Job job = createPriorityJob(character);
+		if (createPriorityJob(character)) {
+			return;
+		}
 
 		// Regular jobs
-		if (job == null) {
-			job = getBestJob(character);
-			if (job != null && job.getStatus() == JobStatus.ABORTED) {
-				job.setStatus(JobStatus.RUNNING);
-			}
+		Job job = getBestJob(character);
+		if (job != null) {
+			job.setStatus(JobStatus.RUNNING);
+			character.setJob(job);
+			return;
 		}
 
 		// Routine jobs
-		if (job == null) {
-			job = createRoutineJob(character);
+		if (createRoutineJob(character)) {
+			return;
 		}
 
+		// TODO
 		if (job != null) {
-			addJob(job);
-			character.setJob(job);
 			Log.info("assign [" + job.getShortLabel() + "] to [" + character.getName() + "]");
 		}
 
@@ -207,7 +209,7 @@ public class JobManager {
 	// TODO: one pass + check profession
 	private Job getBestJob(Character character) {
 		Log.debug("getBestJob");
-		
+
 		int x = character.getX();
 		int y = character.getY();
 		int bestDistance = Integer.MAX_VALUE;
@@ -335,7 +337,7 @@ public class JobManager {
 		ItemFilter itemFilter = new ItemFilter(true, true); 
 		for (ItemInfo neededItemInfo: factory.getInfo().onAction.itemAccept) {
 			if (storage == null) {
-				itemFilter.neededItem = neededItemInfo;
+				itemFilter.itemNeeded = neededItemInfo;
 				storage = ServiceManager.getWorldMap().findStorageContains(itemFilter, factory.getX(), factory.getY());
 			}
 		}
@@ -435,32 +437,28 @@ public class JobManager {
 		return job;
 	}
 
-	private Job createPriorityJob(Character character) {
+	private boolean createPriorityJob(Character character) {
 		Log.debug("createPriorityJob");
 
-		Job job = null;
-		for (JobCheck jobCheck: _priorityJobsCheck) {
-			if (job != null) {
-				return job;
+		for (JobCharacterCheck jobCheck: _priorityJobsCheck) {
+			if (jobCheck.create(this, character)) {
+				return true;
 			}
-			job = jobCheck.create(this, character);
 		}
 
-		return null;
+		return false;
 	}
 
-	public Job createRoutineJob(Character character) {
+	public boolean createRoutineJob(Character character) {
 		Log.debug("createRoutineJob");
 
-		Job job = null;
-		for (JobCheck jobCheck: _routineJobsCheck) {
-			if (job != null) {
-				return job;
+		for (JobCharacterCheck jobCheck: _routineJobsCheck) {
+			if (jobCheck.create(this, character)) {
+				return true;
 			}
-			job = jobCheck.create(this, character);
 		}
 
-		return null;
+		return false;
 	}
 
 	public void addRoutineItem(ItemBase item) {
@@ -470,7 +468,7 @@ public class JobManager {
 
 	public Job createGatherJob(int x, int y) {
 		System.out.println("gather: " + x + " x " + y);
-		
+
 		WorldResource res = ServiceManager.getWorldMap().getRessource(x, y);
 		if (res == null) {
 			return null;
@@ -510,9 +508,9 @@ public class JobManager {
 
 	public void onLongUpdate() {
 		for (JobCheck jobCheck: _jobsCheck) {
-			jobCheck.create(this, null);
+			jobCheck.create(this);
 		}
-		
+
 		// Remove invalid job
 		List<Job> invalidJobs = new ArrayList<Job>();
 		for (Job job: _jobs) {
@@ -557,5 +555,10 @@ public class JobManager {
 			addJob(job);
 		}
 		return job;
+	}
+
+	public void addJob(Job job, Character character) {
+		addJob(job);
+		job.setCharacter(character);
 	}
 }

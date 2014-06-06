@@ -91,12 +91,12 @@ public class ItemInfo {
 	
 	boolean matchFilter(ItemInfoEffects effects, ItemFilter filter) {
 		if (effects != null) {
-			if (filter.drink && effects.drink > 0) { return true; }
-			if (filter.energy && effects.energy > 0) { return true; }
-			if (filter.food && effects.food > 0) { return true; }
-			if (filter.hapiness && effects.hapiness > 0) { return true; }
-			if (filter.health && effects.health > 0) { return true; }
-			if (filter.relation && effects.relation > 0) { return true; }
+			if (filter.effectDrink && effects.drink > 0) { return true; }
+			if (filter.effectEnergy && effects.energy > 0) { return true; }
+			if (filter.effectFood && effects.food > 0) { return true; }
+			if (filter.effectHapiness && effects.hapiness > 0) { return true; }
+			if (filter.effectHealth && effects.health > 0) { return true; }
+			if (filter.effectRelation && effects.relation > 0) { return true; }
 		}
 		return false;
 	}
