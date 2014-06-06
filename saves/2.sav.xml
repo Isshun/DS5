@@ -4928,6 +4928,61 @@
             <string>base.seaweed</string>
             <string>base.seaweed</string>
             <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
           </inventory>
           <acceptFood>true</acceptFood>
           <acceptDrink>true</acceptDrink>
@@ -6818,7 +6873,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>5</value>
+        <value>0</value>
       </resource>
       <x>140</x>
       <y>140</y>
@@ -6833,7 +6888,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>5</value>
+        <value>0</value>
       </resource>
       <x>140</x>
       <y>141</y>
@@ -7091,7 +7146,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>5</value>
+        <value>0</value>
       </resource>
       <x>141</x>
       <y>139</y>
@@ -7106,7 +7161,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>5</value>
+        <value>0</value>
       </resource>
       <x>141</x>
       <y>140</y>
@@ -7121,7 +7176,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>5</value>
+        <value>0</value>
       </resource>
       <x>141</x>
       <y>141</y>
@@ -7438,7 +7493,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>5</value>
+        <value>0</value>
       </resource>
       <x>142</x>
       <y>139</y>
@@ -7453,7 +7508,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>5</value>
+        <value>0</value>
       </resource>
       <x>142</x>
       <y>140</y>
@@ -7468,7 +7523,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>5</value>
+        <value>0</value>
       </resource>
       <x>142</x>
       <y>141</y>
@@ -7708,7 +7763,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>5</value>
+        <value>0</value>
       </resource>
       <x>143</x>
       <y>139</y>
@@ -7723,7 +7778,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>5</value>
+        <value>0</value>
       </resource>
       <x>143</x>
       <y>140</y>
@@ -7738,7 +7793,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>5</value>
+        <value>0</value>
       </resource>
       <x>143</x>
       <y>141</y>
@@ -16452,7 +16507,9 @@
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <type>1</type>
-      <occupants/>
+      <occupants>
+        <int>0</int>
+      </occupants>
       <areas>
         <alone.in.deepspace.manager.RoomSave_-RoomSaveArea>
           <x>131</x>
@@ -16482,7 +16539,9 @@
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <type>1</type>
-      <occupants/>
+      <occupants>
+        <int>1</int>
+      </occupants>
       <areas>
         <alone.in.deepspace.manager.RoomSave_-RoomSaveArea>
           <x>131</x>
@@ -16512,7 +16571,9 @@
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <type>1</type>
-      <occupants/>
+      <occupants>
+        <int>2</int>
+      </occupants>
       <areas>
         <alone.in.deepspace.manager.RoomSave_-RoomSaveArea>
           <x>131</x>
@@ -16544,12 +16605,62 @@
   <characters>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>0</id>
+      <lastname>Grant</lastname>
+      <firstname>Caroline </firstname>
+      <relations/>
+      <old>24.259999999999994</old>
+      <x>69</x>
+      <y>69</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>1</id>
+      <lastname>Ryan</lastname>
+      <firstname>James </firstname>
+      <relations/>
+      <old>24.259999999999994</old>
+      <x>76</x>
+      <y>80</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>2</id>
+      <lastname>Miles</lastname>
+      <firstname>Hester </firstname>
+      <relations/>
+      <old>24.259999999999994</old>
+      <x>93</x>
+      <y>95</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>3</id>
+      <lastname>Douglas</lastname>
+      <firstname>Gena </firstname>
+      <relations/>
+      <old>24.259999999999994</old>
+      <x>61</x>
+      <y>64</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>4</id>
+      <lastname>Rojas</lastname>
+      <firstname>William </firstname>
+      <relations/>
+      <old>24.259999999999994</old>
+      <x>81</x>
+      <y>86</y>
+      <gender>MALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>0</id>
       <lastname>Frank</lastname>
       <firstname>Fernando </firstname>
       <relations/>
-      <old>24.0</old>
-      <x>0</x>
-      <y>0</y>
+      <old>24.259999999999994</old>
+      <x>84</x>
+      <y>87</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
@@ -16557,9 +16668,9 @@
       <lastname>Shelton</lastname>
       <firstname>Effie </firstname>
       <relations/>
-      <old>24.0</old>
-      <x>1</x>
-      <y>0</y>
+      <old>24.259999999999994</old>
+      <x>82</x>
+      <y>83</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
@@ -16567,9 +16678,9 @@
       <lastname>Hudson</lastname>
       <firstname>Tamara </firstname>
       <relations/>
-      <old>24.0</old>
-      <x>2</x>
-      <y>0</y>
+      <old>24.259999999999994</old>
+      <x>84</x>
+      <y>87</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
@@ -16577,9 +16688,9 @@
       <lastname>Frey</lastname>
       <firstname>Erna </firstname>
       <relations/>
-      <old>24.0</old>
-      <x>3</x>
-      <y>0</y>
+      <old>24.259999999999994</old>
+      <x>84</x>
+      <y>85</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
@@ -16587,9 +16698,9 @@
       <lastname>Simmons</lastname>
       <firstname>Bernice </firstname>
       <relations/>
-      <old>24.0</old>
-      <x>4</x>
-      <y>0</y>
+      <old>24.259999999999994</old>
+      <x>74</x>
+      <y>75</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
@@ -16597,9 +16708,9 @@
       <lastname>Sawyer</lastname>
       <firstname>Thelma </firstname>
       <relations/>
-      <old>24.179999999999996</old>
-      <x>150</x>
-      <y>150</y>
+      <old>24.43999999999999</old>
+      <x>137</x>
+      <y>135</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
@@ -16607,9 +16718,9 @@
       <lastname>Henry</lastname>
       <firstname>Earline </firstname>
       <relations/>
-      <old>24.179999999999996</old>
-      <x>150</x>
-      <y>150</y>
+      <old>24.43999999999999</old>
+      <x>137</x>
+      <y>134</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
@@ -16617,9 +16728,9 @@
       <lastname>Little</lastname>
       <firstname>Milton </firstname>
       <relations/>
-      <old>24.08</old>
-      <x>150</x>
-      <y>150</y>
+      <old>24.339999999999993</old>
+      <x>138</x>
+      <y>128</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
@@ -16627,9 +16738,9 @@
       <lastname>Fitzpatrick</lastname>
       <firstname>Claude </firstname>
       <relations/>
-      <old>24.08</old>
-      <x>150</x>
-      <y>150</y>
+      <old>24.339999999999993</old>
+      <x>141</x>
+      <y>127</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
   </characters>

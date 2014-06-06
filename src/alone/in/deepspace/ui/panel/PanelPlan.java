@@ -12,12 +12,8 @@ import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.ui.UserInterface;
-import alone.in.deepspace.util.Constant;
 
-public class PanelPlan extends BasePanel {
-	private static final int 		FRAME_WIDTH = Constant.PANEL_WIDTH;
-	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
-
+public class PanelPlan extends BaseRightPanel {
 	public enum PanelMode {
 		GATHER, MINING, DUMP, NONE
 	}
@@ -25,7 +21,7 @@ public class PanelPlan extends BasePanel {
 	private List<View> _buttons;
 
 	public PanelPlan(UserInterface.Mode mode, Key shortcut) {
-		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
+		super(mode, shortcut);
 	}
 
 	@Override

@@ -30,7 +30,7 @@ import alone.in.deepspace.model.room.RoomOption;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 
-public class PanelRoom extends BasePanel {
+public class PanelRoom extends BaseRightPanel {
 	public interface PanelRoomListener {
 		void select(Room.Type roomType);
 	}
@@ -87,7 +87,7 @@ public class PanelRoom extends BasePanel {
 	};
 
 	public PanelRoom(Mode mode, Key shortcut) {
-		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
+		super(mode, shortcut);
 	}
 
 	@Override

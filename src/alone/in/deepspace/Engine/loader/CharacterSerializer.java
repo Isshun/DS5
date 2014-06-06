@@ -57,14 +57,15 @@ public class CharacterSerializer implements SerializerInterface {
 
 	public void load(WorldSave save) {
 	    for (CharacterSave characterSave: save.characters) {
-			Game.getCharacterManager().add(loadCharacter(characterSave));
+			loadCharacter(characterSave);
 	    }		
 	}
 
-	private static Character loadCharacter(CharacterSave characterSave) {
+	private static void loadCharacter(CharacterSave characterSave) {
 		Character character = new Character(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
 		character.setGender(characterSave.gender);
-		return character;
+		
+		Game.getCharacterManager().add(character);
 	}
 
 }

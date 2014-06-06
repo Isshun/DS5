@@ -10,7 +10,7 @@ import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.OnLoadListener;
+import alone.in.deepspace.engine.loader.GameLoadListener;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
@@ -23,7 +23,7 @@ public class MenuLoad extends MenuBase {
 	private List<TextView>		_lbFiles;
 	private int 				_nbFiles;
 	
-	public MenuLoad(final OnLoadListener onLoadListener) throws IOException {
+	public MenuLoad(final GameLoadListener onLoadListener) throws IOException {
 		super(new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		
 		setPosition(new Vector2f(Constant.WINDOW_WIDTH / 2 - FRAME_WIDTH / 2, Constant.WINDOW_HEIGHT / 2 - FRAME_HEIGHT / 2));

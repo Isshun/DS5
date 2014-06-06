@@ -17,7 +17,7 @@ public class PanelMessage extends BasePanel {
 	private TextView[] 		_texts;
 
 	public PanelMessage() {
-		super(Mode.NONE, null, new Vector2f(0, Constant.WINDOW_HEIGHT - FRAME_HEIGHT), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
+		super(Mode.NONE, null, new Vector2f(0, Constant.WINDOW_HEIGHT - FRAME_HEIGHT), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		setAlwaysVisible(true);
 	}		  
 

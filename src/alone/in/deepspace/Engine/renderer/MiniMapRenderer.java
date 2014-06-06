@@ -1,5 +1,7 @@
 package alone.in.deepspace.engine.renderer;
 
+import java.util.List;
+
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Image;
 import org.jsfml.graphics.RenderStates;
@@ -8,9 +10,12 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.Viewport;
+import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.WorldManager;
+import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.util.Constant;
 
 public class MiniMapRenderer implements IRenderer {
@@ -76,6 +81,11 @@ public class MiniMapRenderer implements IRenderer {
 //				image.setPixel(x, y, new Color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255)));
 				_image.setPixel(x, y, color);
 			}
+		}
+		
+		List<Character> characters = Game.getCharacterManager().getList();
+		for (Character character: characters) {
+			_image.setPixel(character.getX(), character.getY(), Color.RED);
 		}
 		
 		try {

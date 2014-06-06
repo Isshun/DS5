@@ -24,8 +24,7 @@ import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 
-public class PanelCrew extends BasePanel {
-
+public class PanelCrew extends BaseRightPanel {
 	private static class ViewHolder {
 		public TextView 	lbName;
 		public TextView 	lbProfession;
@@ -39,8 +38,6 @@ public class PanelCrew extends BasePanel {
 	private static final int	MODE_SMALL = 0;
 	private static final int	MODE_DETAIL = 1;
 
-	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
-	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	private static final int 	CREW_DETAIL_SPACING = 10;
 	private static final int 	CREW_LINE_SPACING = 2;
 	private static final int 	CREW_DETAIL_HEIGHT = 52;
@@ -53,7 +50,7 @@ public class PanelCrew extends BasePanel {
 	protected int 				_mode;
 
 	public PanelCrew(Mode mode, Key shortcut) {
-		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
+		super(mode, shortcut);
 	}
 
 	@Override

@@ -21,11 +21,8 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.ResourceData;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.ui.UserInterface.Mode;
-import alone.in.deepspace.util.Constant;
 
-public class PanelShortcut extends BasePanel {
-	private static final int FRAME_WIDTH = Constant.PANEL_WIDTH;
-	private static final int FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
+public class PanelShortcut extends BaseRightPanel {
 	private static final int NB_COLUMNS_STATS = NB_COLUMNS / 2 - 1;
 	private static final int NB_RESOURCE_MAX = 10;
 
@@ -65,7 +62,7 @@ public class PanelShortcut extends BasePanel {
 	private ImageView _map;
 
 	public PanelShortcut(Mode mode, Key shortcut) {
-		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
+		super(mode, shortcut);
 	}
 	
 	@Override

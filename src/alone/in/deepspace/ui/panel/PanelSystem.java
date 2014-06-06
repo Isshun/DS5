@@ -5,7 +5,10 @@ import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Main;
 import alone.in.deepspace.engine.renderer.MainRenderer;
+import alone.in.deepspace.engine.ui.ColorView;
+import alone.in.deepspace.engine.ui.Colors;
 import alone.in.deepspace.engine.ui.TextView;
+import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
@@ -19,11 +22,18 @@ public class PanelSystem extends BasePanel {
 	private TextView 	_lbFloor;
 	
 	public PanelSystem() {
-		super(Mode.NONE, null, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), false);
+		super(Mode.NONE, null, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 	}
 	
 	@Override
 	protected void onCreate() {
+		setBackgroundColor(Colors.BT_INACTIVE);
+		
+		View border = new ColorView(new Vector2f(_size.x, 4));
+		border.setBackgroundColor(Colors.BACKGROUND);
+		border.setPosition(_posX, (int)(_posY + _size.y));
+		super.addView(border);
+
 		_lbRenderTime = new TextView(new Vector2f(10, 10));
 		_lbRenderTime.setCharacterSize(14);
 		_lbRenderTime.setColor(Color.WHITE);

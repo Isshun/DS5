@@ -35,14 +35,10 @@ import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Settings;
 import alone.in.deepspace.util.StringUtils;
 
-public class PanelCharacter extends BasePanel {
+public class PanelCharacter extends BaseRightPanel {
 	private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "unused", "Work"};
 
-	private static final int FONT_SIZE = 22;
-	private static final int FONT_SIZE_SMALL = 14;
 	private static final int LINE_HEIGHT = 28;
-	private static final int FRAME_WIDTH = Constant.PANEL_WIDTH;
-	private static final int FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	private static final int NB_GAUGE = 7;
 	private static final int NB_MAX_RELATION = 18;
 	private static final int NB_INVENTORY_PER_LINE = 10;
@@ -94,7 +90,7 @@ public class PanelCharacter extends BasePanel {
 	private TextView 			_lbInventory;
 
 	public PanelCharacter(Mode mode, Key shortcut) {
-		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
+		super(mode, shortcut);
 	}
 
 	@Override
@@ -105,14 +101,14 @@ public class PanelCharacter extends BasePanel {
 
 		// Tip
 		_lbTip = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
-		_lbTip.setCharacterSize(FONT_SIZE);
+		_lbTip.setCharacterSize(FONT_SIZE_TITLE);
 		_lbTip.setBackgroundColor(new Color(255, 255, 255, 100));
 		_lbTip.setVisible(false);
 		addView(_lbTip);
 		
 		// Name
 		_lbName = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
-		_lbName.setCharacterSize(FONT_SIZE);
+		_lbName.setCharacterSize(FONT_SIZE_TITLE);
 		_lbName.setPosition(new Vector2f(20, 18));
 		addView(_lbName);
 
@@ -132,14 +128,14 @@ public class PanelCharacter extends BasePanel {
 		int posX = x;
 		
 		TextView text = new TextView();
-		text.setCharacterSize(FONT_SIZE);
+		text.setCharacterSize(FONT_SIZE_TITLE);
 		text.setString("Last report");
 		text.setPosition(posX, posY);
 		addView(text);
 		posY += 32;
 		
 		_lbState = new LinkView();
-		_lbState.setCharacterSize(FONT_SIZE_SMALL);
+		_lbState.setCharacterSize(FONT_SIZE);
 		_lbState.setPosition(new Vector2f(posX, posY));
 		_lbState.setOnClickListener(new OnClickListener() {
 			@Override
@@ -155,7 +151,7 @@ public class PanelCharacter extends BasePanel {
 		int posX = x;
 		
 		TextView text = new TextView();
-		text.setCharacterSize(FONT_SIZE);
+		text.setCharacterSize(FONT_SIZE_TITLE);
 		text.setString("Staff record");
 		text.setPosition(posX, posY);
 		addView(text);
@@ -163,14 +159,14 @@ public class PanelCharacter extends BasePanel {
 		
 		// Name
 		_lbOld = new LinkView();
-		_lbOld.setCharacterSize(FONT_SIZE_SMALL);
+		_lbOld.setCharacterSize(FONT_SIZE);
 //		_lbOld.setPosition(new Vector2f(FRAME_WIDTH - 65, Constant.UI_PADDING_V + 9));
 		_lbOld.setPosition(new Vector2f(posX, posY));
 		addView(_lbOld);
 		posY += 20;
 
 		_lbGender = new LinkView();
-		_lbGender.setCharacterSize(FONT_SIZE_SMALL);
+		_lbGender.setCharacterSize(FONT_SIZE);
 		_lbGender.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -182,19 +178,19 @@ public class PanelCharacter extends BasePanel {
 		posY += 20;
 
 		_lbProfession = new LinkView();
-		_lbProfession.setCharacterSize(FONT_SIZE_SMALL);
+		_lbProfession.setCharacterSize(FONT_SIZE);
 		_lbProfession.setPosition(new Vector2f(posX, posY));
 		addView(_lbProfession);
 		posY += 20;
 
 		_lbEnlisted = new LinkView();
-		_lbEnlisted.setCharacterSize(FONT_SIZE_SMALL);
+		_lbEnlisted.setCharacterSize(FONT_SIZE);
 		_lbEnlisted.setPosition(new Vector2f(posX, posY));
 		addView(_lbEnlisted);
 		posY += 20;
 
 		_lbBirthName = new LinkView();
-		_lbBirthName.setCharacterSize(FONT_SIZE_SMALL);
+		_lbBirthName.setCharacterSize(FONT_SIZE);
 		_lbBirthName.setPosition(new Vector2f(posX, posY));
 		addView(_lbBirthName);
 		posY += 20;
@@ -207,7 +203,7 @@ public class PanelCharacter extends BasePanel {
 		addView(_layoutDebug);
 
 		TextView lbDebug = new TextView();
-		lbDebug.setCharacterSize(FONT_SIZE);
+		lbDebug.setCharacterSize(FONT_SIZE_TITLE);
 		lbDebug.setPosition(0, 0);
 		lbDebug.setString("Debug");
 		_layoutDebug.addView(lbDebug);
@@ -215,7 +211,7 @@ public class PanelCharacter extends BasePanel {
 		_debugEntries = new TextView[NB_MAX_RELATION];
 		for (int i = 0; i < NB_MAX_RELATION; i++) {
 			_debugEntries[i] = new LinkView(new Vector2f(400, 22));
-			_debugEntries[i].setCharacterSize(FONT_SIZE_SMALL);
+			_debugEntries[i].setCharacterSize(FONT_SIZE);
 			_debugEntries[i].setPosition(0, 32 + 22 * i);
 			_layoutDebug.addView(_debugEntries[i]);
 
@@ -232,7 +228,7 @@ public class PanelCharacter extends BasePanel {
 		addView(_layoutInventory);
 		
 		_lbInventory = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
-		_lbInventory.setCharacterSize(FONT_SIZE);
+		_lbInventory.setCharacterSize(FONT_SIZE_TITLE);
 		_lbInventory.setPosition(new Vector2f(0, 0));
 		_layoutInventory.addView(_lbInventory);
 
@@ -264,13 +260,13 @@ public class PanelCharacter extends BasePanel {
 		addView(_layoutJob);
 		
 		_lbJob = new TextView(new Vector2f(FRAME_WIDTH, LINE_HEIGHT));
-		_lbJob.setCharacterSize(FONT_SIZE);
+		_lbJob.setCharacterSize(FONT_SIZE_TITLE);
 		_lbJob.setPosition(0, 0);
 		_lbJob.setString(Strings.LB_CHARACTER_INFO_JOB);
 		_layoutJob.addView(_lbJob);
 
 		_lbJob2 = new LinkView();
-		_lbJob2.setCharacterSize(FONT_SIZE_SMALL);
+		_lbJob2.setCharacterSize(FONT_SIZE);
 		_lbJob2.setPosition(0, 32);
 		_layoutJob.addView(_lbJob2);
 	}
@@ -281,13 +277,13 @@ public class PanelCharacter extends BasePanel {
 		addView(_layoutProfession);
 
 		TextView lbTitle = new TextView();
-		lbTitle.setCharacterSize(FONT_SIZE);
+		lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 		lbTitle.setPosition(Constant.UI_PADDING_H, Constant.UI_PADDING_V);
 		lbTitle.setString(Strings.LB_PROFESSION);
 		_layoutProfession.addView(lbTitle);
 
 		_lbProfession = new TextView();
-		_lbProfession.setCharacterSize(FONT_SIZE_SMALL);
+		_lbProfession.setCharacterSize(FONT_SIZE);
 		_lbProfession.setString(Strings.LB_PROFESSION);
 		_lbProfession.setPosition(Constant.UI_PADDING_H * 2, Constant.UI_PADDING_V + 32);
 		_layoutProfession.addView(_lbProfession);
@@ -299,14 +295,14 @@ public class PanelCharacter extends BasePanel {
 		addView(_layoutNeeds);
 
 		TextView text = new TextView();
-		text.setCharacterSize(FONT_SIZE);
+		text.setCharacterSize(FONT_SIZE_TITLE);
 		text.setString("Monitoring");
 		text.setPosition(0, 0);
 		_layoutNeeds.addView(text);
 
 		for (int i = 0; i < NB_GAUGE; i++) {
 			addGauge(x + 200 * (i % 2),
-					y + 50 * (i / 2) + (FONT_SIZE + 24),
+					y + 50 * (i / 2) + (FONT_SIZE_TITLE + 24),
 					160,
 					12,
 					i);
@@ -319,7 +315,7 @@ public class PanelCharacter extends BasePanel {
 		addView(_layoutFamily);
 
 		TextView lbFamily = new TextView();
-		lbFamily.setCharacterSize(FONT_SIZE);
+		lbFamily.setCharacterSize(FONT_SIZE_TITLE);
 		lbFamily.setString("Relationship");
 		_layoutFamily.addView(lbFamily);
 
@@ -327,12 +323,12 @@ public class PanelCharacter extends BasePanel {
 		_familyRelationEntries = new TextView[NB_MAX_RELATION];
 		for (int i = 0; i < NB_MAX_RELATION; i++) {
 			_familyEntries[i] = new LinkView(new Vector2f(400, 22));
-			_familyEntries[i].setCharacterSize(FONT_SIZE_SMALL);
+			_familyEntries[i].setCharacterSize(FONT_SIZE);
 			_familyEntries[i].setPosition(0, 32 + 22 * i);
 			_layoutFamily.addView(_familyEntries[i]);
 
 			_familyRelationEntries[i] = new LinkView(new Vector2f(100, 32));
-			_familyRelationEntries[i].setCharacterSize(FONT_SIZE_SMALL);
+			_familyRelationEntries[i].setCharacterSize(FONT_SIZE);
 			_familyRelationEntries[i].setPosition(280, 32 + 22 * i);
 			_layoutFamily.addView(_familyRelationEntries[i]);
 		}
@@ -426,10 +422,10 @@ public class PanelCharacter extends BasePanel {
 		_shapes[index] = new RectangleShape();
 		_shapes[index].setTexture(SpriteManager.getInstance().getTexture());
 		_shapes[index].setSize(new Vector2f(width, height));
-		_shapes[index].setPosition(posX, posY + 42 + FONT_SIZE + 2);
+		_shapes[index].setPosition(posX, posY + 42 + FONT_SIZE_TITLE + 2);
 
 		_values[index] = new LinkView();
-		_values[index].setCharacterSize(FONT_SIZE_SMALL);
+		_values[index].setCharacterSize(FONT_SIZE);
 		_values[index].setPosition(posX, posY);
 		addView(_values[index]);
 

@@ -79,7 +79,6 @@ public class FrameLayout extends View {
 			return;
 		}
 		
-//		view.setParentPosition(_posX, _posY);
 		view.setParent(this);
 		_views.add(view);
 	}

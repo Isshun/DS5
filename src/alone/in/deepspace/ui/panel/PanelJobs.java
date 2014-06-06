@@ -13,12 +13,9 @@ import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.ui.UserInterface.Mode;
-import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.StringUtils;
 
-public class PanelJobs extends BasePanel {
-	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
-	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
+public class PanelJobs extends BaseRightPanel {
 	private static final int 	NB_COLUMNS = 47;
 	private static final int 	RESIZE_RUNNING_JOB_OCCURENCE = 20;
 	
@@ -29,7 +26,7 @@ public class PanelJobs extends BasePanel {
 	private int 				_nbRunningJobCandidat;
 
 	public PanelJobs(Mode mode, Key shortcut) {
-		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
+		super(mode, shortcut);
 	}
 
 	@Override

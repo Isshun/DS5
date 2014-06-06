@@ -1,19 +1,11 @@
 package alone.in.deepspace.ui;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.jsfml.graphics.IntRect;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.window.Mouse;
 
 import alone.in.deepspace.Game;
-import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.Cursor;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.WorldResource;
@@ -24,48 +16,23 @@ import alone.in.deepspace.ui.panel.PanelPlan.PanelMode;
 import alone.in.deepspace.util.Log;
 
 public class UserInteraction {
-
-	public enum Mode {
-		NONE,
-		BUILD,
-		EREASE,
-		SELECT
-	};
+	public enum Mode { NONE, BUILD, EREASE, SELECT };
 
 	Texture					_cursorTexture;
-	Viewport				_viewport;
-	Cursor					_cursor;
 	Mode					_mode;
 	int						_startPressX;
 	int						_startPressY;
 	int						_mouseMoveX;
 	int						_mouseMoveY;
 	Mouse.Button			_button;
-	private Sprite 			spriteCursor;
-	private Texture 		_texture;
-	private RenderWindow	_app;
-
-	UserInteraction(RenderWindow app, Viewport viewport) throws IOException {
-		_app = app;
-		_viewport = viewport;
-		_cursor = new Cursor();
-		_cursorTexture = new Texture();
-		_cursorTexture.loadFromFile((new File("res/cursor.png")).toPath());
-		
-		_texture = new Texture();
-		_texture.loadFromFile((new File("res/selection.png")).toPath());
-		_texture.setRepeated(true);
-
+	
+	UserInteraction() {
 		_startPressX = 0;
 		_startPressY = 0;
 		_mouseMoveX = 0;
 		_mouseMoveY = 0;
 		_button = null;
 		_mode = Mode.NONE;
-
-		spriteCursor = new Sprite();
-		spriteCursor.setTexture(_cursorTexture);
-		spriteCursor.setTextureRect(new IntRect(0, 0, 32, 32));
 	}
 
 	public void	planBuild(ItemInfo info, int startX, int startY, int toX, int toY) {
@@ -128,10 +95,6 @@ public class UserInteraction {
 	//	void selectBuildItem(BaseItem.Type type) { _mode = Mode.MODE_BUILD; _itemType = type; }
 	//	void cancel() { _mode = Mode.MODE_NONE; _itemType = BaseItem.Type.NONE; }
 	//	BaseItem.Type getBuildItem() { return _itemType; }
-
-	public Cursor getCursor() {
-		return _cursor;
-	}
 
 	public void removeStructure(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {

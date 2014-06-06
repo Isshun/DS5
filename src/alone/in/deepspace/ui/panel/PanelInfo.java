@@ -35,16 +35,13 @@ import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.ui.UserInterface.Mode;
-import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.ObjectPool;
 import alone.in.deepspace.util.StringUtils;
 
-public class PanelInfo extends BasePanel {
+public class PanelInfo extends BaseRightPanel {
 	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;
 	private static final int 		MENU_PADDING_TOP = 34;
 	private static final int 		MENU_PADDING_LEFT = 16;
-	private static final int 		FRAME_WIDTH = Constant.PANEL_WIDTH;
-	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	private static final int 		INVENTORY_NB_COLS = 10;
 	private static final int 		INVENTORY_ITEM_SIZE = 32;
 	private static final int 		INVENTORY_ITEM_SPACE = 4;
@@ -53,10 +50,7 @@ public class PanelInfo extends BasePanel {
 	private WorldArea				_area;
 	private int						_line;
 	private TextView 				_itemName;
-	private PanelInfoItemOptions	_itemOptions;
 	private TextView 				_itemMatter;
-	private StructureItem 			_structure;
-	private PanelInfoItemOptions 	_structureOptions;
 	private TextView 				_lbRoom;
 	private ImageView[]				_lbCarry;
 	private FrameLayout 			_itemGather;
@@ -85,7 +79,6 @@ public class PanelInfo extends BasePanel {
 	private TextView[] 				_itemEffects;
 	private TextView 				_itemAccept;
 	private TextView[] 				_lbCarryCount;
-	private ButtonView 				_btStorageFilter;
 	private FrameLayout 			_layoutStorageAdvancedFilter;
 	private ItemBase 				_item;
 	private CheckBoxView 			_cbFood;
@@ -94,7 +87,6 @@ public class PanelInfo extends BasePanel {
 	private CheckBoxView 			_cbGarbage;
 	private ItemInfo				_itemInfo;
 	private WorldResource 			_resource;
-	private FrameLayout 			_itemActionProduce;
 	private FrameLayout 			_layoutItemProduce;
 	private FrameLayout 			_layoutStorageSimpleFilter;
 	private FrameLayout 			_layoutSlot;
@@ -103,7 +95,7 @@ public class PanelInfo extends BasePanel {
 	private TextView 				_itemMatterSupply;
 
 	public PanelInfo(Mode mode, Key shortcut) {
-		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
+		super(mode, shortcut);
 
 		_lbRoom = new TextView(null);
 		_lbRoom.setPosition(200, 40);
@@ -553,7 +545,6 @@ public class PanelInfo extends BasePanel {
 		_itemAction.setVisible(false);
 	}
 	private void  setStructure(final StructureItem structure) {
-		_structure = structure;
 
 //		if (_structureOptions != null) {
 //			List<TextView> texts = _structureOptions.getOptions();

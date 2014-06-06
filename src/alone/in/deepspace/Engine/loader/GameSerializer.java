@@ -1,4 +1,4 @@
-package alone.in.deepspace;
+package alone.in.deepspace.engine.loader;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,10 +9,6 @@ import java.io.OutputStreamWriter;
 
 import org.yaml.snakeyaml.Yaml;
 
-import alone.in.deepspace.engine.loader.CharacterSerializer;
-import alone.in.deepspace.engine.loader.JobManagerLoader;
-import alone.in.deepspace.engine.loader.RoomSerializer;
-import alone.in.deepspace.engine.loader.WorldSaver;
 import alone.in.deepspace.engine.loader.WorldSaver.WorldSave;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;

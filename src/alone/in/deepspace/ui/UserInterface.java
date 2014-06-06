@@ -1,7 +1,5 @@
 package alone.in.deepspace.ui;
 
-import java.io.IOException;
-
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
@@ -128,22 +126,22 @@ public class UserInterface implements PanelRoomListener {
 		_self = this;
 		_app = app;
 		_panelMessage = new PanelMessage();
-		_panelMessage.init(_app, this, null);
+		_panelMessage.init(this, null);
 	}
 
-	public void onCreate(Game game, Viewport viewport) throws IOException {
+	public void onCreate(Game game) {
 		_game = game;
-		_viewport = viewport;
+		_viewport = game.getViewport();
 		_characteres = Game.getCharacterManager();
 		_keyLeftPressed = false;
 		_keyRightPressed = false;
 		_cursor = new UserInterfaceCursor();
 		
 		for (BasePanel panel: _panels) {
-			panel.init(_app, this, viewport);
+			panel.init(this, _viewport);
 		}
 		
-		_interaction = new UserInteraction(_app, viewport);
+		_interaction = new UserInteraction();
 
 		setMode(Mode.NONE);
 	}
@@ -477,8 +475,8 @@ public class UserInterface implements PanelRoomListener {
 						}
 					}
 				}
-//				if (a.getStructure() != null) { select(a.getStructure()); return true; }
-//				else { select(a); return true; }
+				if (a.getStructure() != null) { select(a.getStructure()); return true; }
+				else { select(a); return true; }
 			}
 		}
 

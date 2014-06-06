@@ -5,7 +5,6 @@ import org.jsfml.graphics.Image;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
-import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard.Key;
 
 import alone.in.deepspace.StatsData;
@@ -13,14 +12,11 @@ import alone.in.deepspace.engine.ui.ImageView;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.manager.StatsManager;
 import alone.in.deepspace.ui.UserInterface.Mode;
-import alone.in.deepspace.util.Constant;
 
-public class PanelStats extends BasePanel {
-	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
-	private static final int 	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
+public class PanelStats extends BaseRightPanel {
 	private static final Color COLOR_BORDER = new Color(22, 50, 56);
-	private static final int WIDTH = 300;
-	private static final int HEIGHT = 200;
+	private static final int CHART_WIDTH = 300;
+	private static final int CHART_HEIGHT = 200;
 	private static final int NB_DATA_MAX = 5;
 
 	private ImageView 			_imageView;
@@ -29,7 +25,7 @@ public class PanelStats extends BasePanel {
 	private TextView[] 			_labels;
 
 	public PanelStats(Mode mode, Key shortcut) {
-		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
+		super(mode, shortcut);
 	}
 
 	@Override
@@ -65,17 +61,17 @@ public class PanelStats extends BasePanel {
 		addData(1, _stats.nbCouple, Color.GREEN);
 		addData(2, _stats.nbChild, Color.BLUE);
 		
-		for (int i = 0; i < WIDTH; i++) {
+		for (int i = 0; i < CHART_WIDTH; i++) {
 			_image.setPixel(i, 0, COLOR_BORDER);
 			_image.setPixel(i, 1, COLOR_BORDER);
-			_image.setPixel(i, HEIGHT-1, COLOR_BORDER);
-			_image.setPixel(i, HEIGHT-2, COLOR_BORDER);
+			_image.setPixel(i, CHART_HEIGHT-1, COLOR_BORDER);
+			_image.setPixel(i, CHART_HEIGHT-2, COLOR_BORDER);
 		}
-		for (int i = 0; i < HEIGHT; i++) {
+		for (int i = 0; i < CHART_HEIGHT; i++) {
 			_image.setPixel(0, i, COLOR_BORDER);
 			_image.setPixel(1, i, COLOR_BORDER);
-			_image.setPixel(WIDTH-1, i, COLOR_BORDER);
-			_image.setPixel(WIDTH-2, i, COLOR_BORDER);
+			_image.setPixel(CHART_WIDTH-1, i, COLOR_BORDER);
+			_image.setPixel(CHART_WIDTH-2, i, COLOR_BORDER);
 		}
 		
 		Texture texture = new Texture();
@@ -109,7 +105,7 @@ public class PanelStats extends BasePanel {
 	}
 
 	private void setPixel(int x, int y, Color color) {
-		if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
+		if (x >= 0 && x < CHART_WIDTH && y >= 0 && y < CHART_HEIGHT) {
 			_image.setPixel(x, y, color);
 		}
 	}

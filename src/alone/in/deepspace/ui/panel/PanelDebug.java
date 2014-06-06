@@ -12,7 +12,6 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.ui.UserInterface;
@@ -26,7 +25,7 @@ public class PanelDebug extends BasePanel {
 	private UserInterface _ui;
 	
 	public PanelDebug(Mode mode, Key shortcut) {
-		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
+		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		
@@ -35,7 +34,7 @@ public class PanelDebug extends BasePanel {
 		txtAddCharacter.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Game.getCharacterManager().add(150, 150, Profession.Type.ENGINEER);
+				Game.getCharacterManager().addRandom(150, 150);
 			}
 		});
 		txtAddCharacter.setString("Add character");

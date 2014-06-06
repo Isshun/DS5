@@ -11,7 +11,6 @@ import alone.in.deepspace.model.Movable.Direction;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.job.Job.Abort;
-import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class CharacterManager {
@@ -45,14 +44,6 @@ public class CharacterManager {
 
 	public List<Character> 	getList() { return _characters; }
 	public int 				getCount() { return _count; }
-
-	public void	create() {
-		add(0, 0, Profession.Type.ENGINEER);
-		add(1, 0, Profession.Type.OPERATION);
-		add(2, 0, Profession.Type.DOCTOR);
-		add(3, 0, Profession.Type.SCIENCE);
-		add(4, 0, Profession.Type.SECURITY);
-	}
 
 	// TODO
 	public Character	getNext(Character character) {
@@ -148,33 +139,6 @@ public class CharacterManager {
 		return null;
 	}
 
-	public Character		add(int x, int y) {
-		if (_count + 1 > Constant.LIMIT_CHARACTER) {
-			Log.error("LIMIT_CHARACTER reached");
-			return null;
-		}
-
-		Character c = new Character(_count++, x, y, null, null, 24);
-		Profession profession = professions[_count % professions.length];
-		c.setProfession(profession.getType());
-		_characters.add(c);
-
-		return c;
-	}
-
-	public Character		add(int x, int y, Profession.Type profession) {
-		if (_count + 1 > Constant.LIMIT_CHARACTER) {
-			Log.error("LIMIT_CHARACTER reached");
-			return null;
-		}
-
-		Character c = new Character(_count++, x, y, null, null, 24);
-		c.setProfession(profession);
-		_characters.add(c);
-
-		return c;
-	}
-	
 	public Character add(Character c) {
 		_count++;
 		_addOnUpdate.add(c);
@@ -213,5 +177,10 @@ public class CharacterManager {
 			}
 		}
 		return null;
+	}
+
+	public void addRandom(int x, int y) {
+		Character character = new Character(_count++, x, y, null, null, 16);
+		add(character);
 	}
 }

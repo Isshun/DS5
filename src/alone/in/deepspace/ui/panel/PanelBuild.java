@@ -23,10 +23,9 @@ import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.CategoryInfo;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.ui.UserInterface.Mode;
-import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.StringUtils;
 
-public class PanelBuild extends BasePanel {
+public class PanelBuild extends BaseRightPanel {
 	public enum PanelMode {
 		NONE,
 		BUILD_STRUCTURE,
@@ -38,8 +37,6 @@ public class PanelBuild extends BasePanel {
 	private static final Color				COLOR_INACTIVE = new Color(29, 85, 96, 100);
 	private static final int 				GRID_WIDTH = 100;
 	private static final int 				GRID_HEIGHT = 120;
-	private static int 						FRAME_WIDTH = Constant.PANEL_WIDTH;
-	private static int 						FRAME_HEIGHT = Constant.PANEL_HEIGHT;
 
 	private Map<ItemInfo, ButtonView> 		_icons;
 	private List<View>						_iconsList;
@@ -51,12 +48,11 @@ public class PanelBuild extends BasePanel {
 	private ButtonView[] 					_iconShortcut;
 
 	public PanelBuild(Mode mode, Key shortcut) {
-		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
+		super(mode, shortcut);
 	}
 
 	@Override
 	protected void onCreate() {
-
 		_iconShortcut = new ButtonView[10];
 		_layouts = new HashMap<CategoryInfo, FrameLayout>();
 		_iconsList = new ArrayList<View>();

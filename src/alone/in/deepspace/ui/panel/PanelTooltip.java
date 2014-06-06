@@ -28,7 +28,7 @@ public class PanelTooltip extends BasePanel {
 	private ToolTip 	_tooltips;
 
 	public PanelTooltip(Mode mode, Key shortcut) {
-		super(mode, shortcut, new Vector2f(200, 200), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), false);
+		super(mode, shortcut, new Vector2f(200, 200), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 	}
 	
 	@Override

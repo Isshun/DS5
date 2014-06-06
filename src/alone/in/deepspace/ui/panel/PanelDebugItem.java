@@ -27,7 +27,7 @@ public class PanelDebugItem extends BasePanel {
 	private FrameLayout _itemView;
 	
 	public PanelDebugItem(Mode mode, Key shortcut) {
-		super(mode, shortcut, new Vector2f(0, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
+		super(mode, shortcut, new Vector2f(0, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		
 		setBackgroundColor(new Color(0, 0, 0));
 

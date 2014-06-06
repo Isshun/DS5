@@ -1,18 +1,16 @@
 package alone.in.deepspace;
 
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;
 
-import alone.in.deepspace.engine.ISavable;
 import alone.in.deepspace.engine.Viewport;
+import alone.in.deepspace.engine.loader.GameSerializer;
 import alone.in.deepspace.engine.loader.JobManagerLoader;
-import alone.in.deepspace.engine.loader.WorldSaver;
+import alone.in.deepspace.engine.loader.LoadListener;
+import alone.in.deepspace.engine.loader.WorldFactory;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.DynamicObjectManager;
 import alone.in.deepspace.manager.FoeManager;
@@ -49,26 +47,17 @@ public class Game {
 	public static RelationManager		getRelationManager() { return _relationManager; }
 	public static GameData				getData() { return _data; }
 
-	private static int 					_renderTime;
-	private static int 					_frame;
 	private int 						_update;
 	private Viewport 					_viewport;
 	private boolean						_isMenuOpen;
 	private boolean 					_isRunning;
 
-	static {
-		System.loadLibrary("JNILight");
-	}
-
-	public Game(RenderWindow app, GameData data) throws IOException, TextureCreationException {
+	public Game(RenderWindow app, GameData data) {
 		Log.debug("Game");
 
 		_data = data;
-		_frame = 0;
 		_isRunning = true;
-
 		_viewport = new Viewport(app, -Constant.WORLD_WIDTH * Constant.TILE_WIDTH / 2, -Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT / 2);
-
 		_update = 0;
 
 		app.setKeyRepeatEnabled(true);
@@ -124,47 +113,19 @@ public class Game {
 		_characterManager = new CharacterManager();
 		_foeManager = new FoeManager();
 		_relationManager = new RelationManager();
-		
-		ServiceManager.getWorldMap().create();
-		Game.getCharacterManager().create();
+	}
+
+	public void	newGame(final String filePath, LoadListener loadListener) {
+		loadListener.onUpdate("Create new game");
+		WorldFactory.create(ServiceManager.getWorldMap());
+		ResourceManager.getInstance().refreshWater();
 	}
 
 	public void	load(final String filePath, LoadListener loadListener) {
 		loadListener.onUpdate("Load game");
-		
 		GameSerializer.load(filePath, loadListener);
-		
-		//WorldFactory.create(ServiceManager.getWorldMap());
-
 		ResourceManager.getInstance().refreshWater();
-
 		JobManagerLoader.load(JobManager.getInstance(), loadListener);
-
-		onLoadComplete();
-	}
-
-	private void onLoadComplete() {
-		//		ItemInfo info = Game.getData().getItemInfo("base.seaweed");
-		//		
-		//		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
-		//			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
-		//				StructureItem structure = ServiceManager.getWorldMap().getStructure(0, x, y);
-		//				if (structure != null && structure.getName().equals("base.ground")) {
-		//					ServiceManager.getWorldMap().putItem("base.seaweed1", x, y);
-		//				}
-		//			}
-		//		}
-
-		//				UserItem item = ServiceManager.getWorldMap().getItem(x, y);
-		//				if (item != null && "base.storage".equals(item.getInfo().name)) {
-		//					StorageItem storage = (StorageItem)item;
-		//					for (int i = 0; i < 100; i++) {
-		//						storage.addInventory(new UserItem(info));
-		//					}
-		//				}
-		//			}
-		//			
-		//		}
 	}
 
 	public void	save(final String filePath) {
@@ -173,11 +134,6 @@ public class Game {
 		GameSerializer.save(filePath);
 
 		Log.info("Save game: " + filePath + " done");
-	}
-
-	public void onDraw(double animProgress, int renderTime) throws IOException {
-		_renderTime = renderTime;
-		_frame++;
 	}
 
 	public boolean isRunning() {

@@ -77,9 +77,6 @@ public class WorldManager implements TileBasedMap {
 		_areas = _floors[0];
 	}
 
-	public void	create() {
-	}
-
 	public ItemBase putItem(String name, int x, int y, int z, int i) {
 		return putItem(Game.getData().getItemInfo(name), z, x, y, i);
 	}

@@ -9,7 +9,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.OnLoadListener;
+import alone.in.deepspace.engine.loader.GameLoadListener;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.OnFocusListener;
@@ -27,7 +27,7 @@ public class MenuGame extends MenuBase {
 	private FrameLayout 		_menu;
 	protected int 				_selected = -1;
 	
-	public MenuGame(final OnLoadListener onLoadListener) throws IOException {
+	public MenuGame(final GameLoadListener onLoadListener) throws IOException {
 		super(new Vector2f(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT));
 		setBackgroundColor(new Color(0, 0, 0, 150));
 		
