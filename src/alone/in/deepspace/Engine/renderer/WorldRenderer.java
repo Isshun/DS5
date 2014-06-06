@@ -75,10 +75,9 @@ public class WorldRenderer implements IRenderer {
 				refreshStructure(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 				refreshResource(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 			} else {
-//				for (Vector2i vector: _changed) {
-//					refreshFloor(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
-//				}
-				refreshFloor(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
+				for (Vector2i vector: _changed) {
+					refreshFloor(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
+				}
 				refreshStructure(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 				refreshResource(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 			}
