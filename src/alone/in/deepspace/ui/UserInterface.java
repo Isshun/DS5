@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard.Key;
+import org.omg.stub.java.rmi._Remote_Stub;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.Main;
@@ -100,6 +101,7 @@ public class UserInterface implements PanelRoomListener {
 	private Type 			_selectedRoomType;
 	private Room _selectedRoom;
 	private int _update;
+	private UserInterfaceCursor	_cursor;
 	
 	public enum Mode {
 		INFO,
@@ -123,6 +125,7 @@ public class UserInterface implements PanelRoomListener {
 		_characteres = ServiceManager.getCharacterManager();
 		_keyLeftPressed = false;
 		_keyRightPressed = false;
+		_cursor = new UserInterfaceCursor();
 
 		for (BasePanel panel: _panels) {
 			panel.init(app, this, viewport);
@@ -239,12 +242,12 @@ public class UserInterface implements PanelRoomListener {
 		if (_mouseOnMap) {
 			if (_selectedRoomType != null || _selectedPlan != null) {
 				if (_keyLeftPressed) {
-					_interaction.drawCursor(Math.min(_keyPressPosX, _keyMovePosX),
+					_cursor.draw(_app, _viewport.getRender(), Math.min(_keyPressPosX, _keyMovePosX),
 							Math.min(_keyPressPosY, _keyMovePosY),
 							Math.max(_keyPressPosX, _keyMovePosX),
 							Math.max(_keyPressPosY, _keyMovePosY));
 				} else {
-					_interaction.drawCursor(Math.min(_keyMovePosX, _keyMovePosX),
+					_cursor.draw(_app, _viewport.getRender(), Math.min(_keyMovePosX, _keyMovePosX),
 							Math.min(_keyMovePosY, _keyMovePosY),
 							Math.max(_keyMovePosX, _keyMovePosX),
 							Math.max(_keyMovePosY, _keyMovePosY));

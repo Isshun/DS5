@@ -1,5 +1,6 @@
 package alone.in.deepspace.engine;
 
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
 
@@ -8,24 +9,29 @@ import alone.in.deepspace.util.Constant;
 public class Viewport {
 	private static final int ANIM_FRAME = 10;
 
-	private int _posX;
-	private int _posY;
-	private int _lastPosX;
-	private int _lastPosY;
-	private int _width;
-	private int _toScale;
-	private int _height;
-	private int _fromScale;
-	private int _scaleAnim;
+	private Transform	_transform;
+	private int 		_posX;
+	private int 		_posY;
+	private int 		_lastPosX;
+	private int 		_lastPosY;
+	private int 		_width;
+	private int 		_toScale;
+	private int 		_height;
+	private int 		_fromScale;
+	private int 		_scaleAnim;
 
-	public Viewport(RenderWindow app) {
-		_posX = - Constant.WORLD_WIDTH * Constant.TILE_WIDTH / 2;
-		_posY = - Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT / 2;
+	private RenderStates _render;
+
+	public Viewport(RenderWindow app, int x, int y) {
+		_posX = x;
+		_posY = y;
 		_lastPosX = 0;
 		_lastPosY = 0;
 		_width = Constant.WINDOW_WIDTH - Constant.UI_WIDTH - Constant.PANEL_WIDTH;
 		_height = Constant.WINDOW_HEIGHT - Constant.UI_HEIGHT;
 		_toScale = 0;
+		_transform = new Transform();
+		_transform = Transform.translate(_transform, x, y);
 	}
 
 	public int   getPosX() { return _posX; }
@@ -37,6 +43,15 @@ public class Viewport {
 		_scaleAnim = 0;
 		_fromScale = _toScale;
 		_toScale = Math.min(Math.max(_toScale + delta, -4), 4);
+
+		// Update transform
+		float fromValue = getScale(_fromScale);
+		float toValue = getScale(_toScale);
+		if (_scaleAnim < ANIM_FRAME) {
+			_scaleAnim++;
+		}
+		float scale = fromValue + ((toValue - fromValue) / ANIM_FRAME * _scaleAnim);
+		_transform = Transform.scale(_transform, scale, scale);
 	}
 
 	public void    startMove(int x, int y) {
@@ -45,24 +60,17 @@ public class Viewport {
 	}
 
 	public void    update(int x, int y) {
-		_posX -= (_lastPosX - x);
-		_posY -= (_lastPosY - y);
-		_lastPosX = x;
-		_lastPosY = y;
-	}
+		if (x != 0 || y != 0) {
+			// Update transform
+			_transform = Transform.translate(_transform, x-_lastPosX, y-_lastPosY);
 
-	public Transform  getViewTransform(Transform transform) {
-		float fromValue = getScale(_fromScale);
-		float toValue = getScale(_toScale);
-		if (_scaleAnim < ANIM_FRAME) {
-			_scaleAnim++;
+			_posX -= (_lastPosX - x);
+			_posY -= (_lastPosY - y);
+			_lastPosX = x;
+			_lastPosY = y;
+
+			_render = null;
 		}
-		float scale = fromValue + ((toValue - fromValue) / ANIM_FRAME * _scaleAnim);
-
-		transform = Transform.translate(transform, Constant.UI_WIDTH + _posX, Constant.UI_HEIGHT + _posY);
-		transform = Transform.scale(transform, scale, scale);
-
-		return transform;
 	}
 
 	public Transform  getViewTransformBackground(Transform transform) {
@@ -107,6 +115,13 @@ public class Viewport {
 	public int getRealPosY(int y) {
 		int posY = _posY + y * Constant.TILE_HEIGHT;
 		return Constant.UI_HEIGHT + (int) (posY * getScale(_toScale));
+	}
+
+	public RenderStates getRender() {
+		if (_render == null) {
+			_render = new RenderStates(_transform);
+		}
+		return _render;
 	}
 
 }

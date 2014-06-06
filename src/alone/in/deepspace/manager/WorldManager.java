@@ -482,7 +482,7 @@ public class WorldManager implements TileBasedMap {
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
 				WorldArea area = getArea(startX + offsetX, startY + offsetY);
-				if (area.getRoom() != null) {
+				if (area == null || area.getRoom() != null) {
 					continue;
 				}
 				UserItem item = getItem(startX + offsetX, startY + offsetY);

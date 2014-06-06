@@ -35,6 +35,7 @@ import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class Game implements ISavable {
+	private static int 				_renderTime;
 	private int 					_lastInput;
 	private static int 				_frame;
 	private int 					_update;
@@ -52,7 +53,8 @@ public class Game implements ISavable {
 	private StatsManager			_statsManager;
 
 	public static int getFrame() { return _frame; }
-	
+	public static int getRenderTime() { return _renderTime; }
+
 	static {
 		System.loadLibrary("JNILight");
 	}
@@ -66,7 +68,7 @@ public class Game implements ISavable {
 		_app = app;
 		_isRunning = true;
 		
-		_viewport = new Viewport(app);
+		_viewport = new Viewport(app, -Constant.WORLD_WIDTH * Constant.TILE_WIDTH / 2, -Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT / 2);
 		
 		_ui = UserInterface.getInstance();
 		_ui.onCreate(this, app, _viewport);
@@ -299,20 +301,15 @@ public class Game implements ISavable {
 	}
 
 	public void onDraw(double animProgress, int renderTime) throws IOException {
-		_frame++;
-		
-		_mainRenderer.draw(_app, animProgress, renderTime);
+		_renderTime = renderTime;
+
+		_mainRenderer.draw(_app, _frame, animProgress);
 		_mainRenderer.refresh(_frameRefresh);
-//		
-//		Transform transform = new Transform();
-//		transform = _viewport.getViewTransform(transform);
-//		RenderStates render = new RenderStates(transform);
-//
-//		_FoeManager.onDraw(_app, render, animProgress);
-//		_dynamicObjectManager.refresh(_app, render, animProgress);
 
 		// User interface
 		_ui.onDraw(_frame, _update, renderTime);
+
+		_frame++;
 	}
 
 	public boolean isRunning() {

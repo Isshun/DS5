@@ -3,8 +3,8 @@ package alone.in.deepspace.ui.panel;
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2f;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.Main;
-import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.ui.UserInterface.Mode;
@@ -60,7 +60,7 @@ public class PanelSystem extends BasePanel {
         
 //        _used = (_used * 7 + used) / 8;
 
-        _lbRenderTime.setString("Rendering: " + MainRenderer.getInstance().getRenderTime() + "ms");
+        _lbRenderTime.setString("Rendering: " + Game.getRenderTime() + "ms");
         _lbMemoryUsed.setString("Heap: " + String.valueOf(used) + " / " + String.valueOf(total) + " Mo");
         _lbUpdate.setString("Update: " + String.valueOf(Main.getUpdateInterval()) + " ms");
         _lbFloor.setString("Floor: " + ServiceManager.getWorldMap().getFloor());

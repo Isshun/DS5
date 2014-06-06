@@ -90,34 +90,19 @@ public class WorldRenderer implements IRenderer {
 	}
 
 	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
-
-		// Debug() << "Renderer: " << fromX << " to: " << toX;
-
 		_app = app;
 		_render = render;
 		
-		Clock display_timer = new Clock();
-		Sprite sp = new Sprite(_textureCache.getTexture());
-		app.draw(sp, render);
+//		Clock display_timer = new Clock();
+//		Sprite sp = new Sprite(_textureCache.getTexture());
+//		app.draw(sp, render);
 		
 		refreshItems(_frame, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 
-
-		//		if (_itemSelected != null) {
-		//			Sprite sprite = _spriteManager.getSelector(_itemSelected, _frame);
-		//			sprite.setPosition(_itemSelected.getX() * Constant.TILE_WIDTH, _itemSelected.getY() * Constant.TILE_HEIGHT);
-		//			app.draw(sprite, render);
-		//		}
-
-		long elapsed = display_timer.getElapsedTime().asMilliseconds();
-		if (elapsed > 3)
-			Log.info("display floor: " + elapsed + "ms");
-
-
-		//		display_timer.restart();
-		//		Log.info("display structure: " + display_timer.getElapsedTime().asMicroseconds());
-
-		display_timer.restart();
+//		long elapsed = display_timer.getElapsedTime().asMilliseconds();
+//		if (elapsed > 3)
+//			Log.info("display floor: " + elapsed + "ms");
+//		display_timer.restart();
 	}
 
 	private void refreshResource(int fromX, int fromY, int toX, int toY) {

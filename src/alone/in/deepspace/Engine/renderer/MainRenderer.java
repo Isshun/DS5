@@ -6,7 +6,6 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;
-import org.jsfml.graphics.Transform;
 
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.manager.ServiceManager;
@@ -16,26 +15,17 @@ import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Settings;
 
 public class MainRenderer {
-	static MainRenderer 			_self;
-	private int 					_frame;
-	private int 					_renderTime;
 	private WorldRenderer 			_worldRenderer;
 	private LightRenderer			_lightRenderer;
 	private DebugRenderer 			_debugRenderer;
 	private JobRenderer				_jobRenderer;
 	private SpriteManager 			_spriteManager;
 	private Viewport 				_viewport;
-	private RenderWindow 			_app;
 	private RoomRenderer 			_roomRenderer;
 	private UserInterface 			_ui;
 	private CharacterRenderer 		_characterRenderer;
-	private static MainRenderer 	_this;
 	
 	public MainRenderer(RenderWindow app, Viewport viewport, UserInterface ui) throws IOException, TextureCreationException {
-
-		// TODO
-		_this = this;
-		_app = app;
 		_ui = ui;
 		
 		_viewport = viewport;
@@ -59,15 +49,10 @@ public class MainRenderer {
 		_characterRenderer.onRefresh(frame);
 	}
 	
-	public void draw(RenderWindow app, double animProgress, int renderTime) {
-		// Flush
+	public void draw(RenderWindow app, int frame, double animProgress) {
 		app.clear(new Color(0, 0, 50));
-		_frame++;
-		_renderTime = renderTime;
-
-		Transform transform = new Transform();
-		transform = _viewport.getViewTransform(transform);
-		RenderStates render = new RenderStates(transform);
+		
+		RenderStates render = _viewport.getRender();
 
 		_worldRenderer.onDraw(app, render, animProgress);
 		_lightRenderer.onDraw(app, render, animProgress);
@@ -79,19 +64,11 @@ public class MainRenderer {
 		
 		// Draw debug
 		if (Settings.getInstance().isDebug()) {
-			_debugRenderer.onDraw(app, render, animProgress);
+			//_debugRenderer.onDraw(app, render, animProgress);
 		}
 	}
 
 	public void init() {
 		_lightRenderer.initLight();
-	}
-
-	public static MainRenderer getInstance() {
-		return _this;
-	}
-
-	public int getRenderTime() {
-		return _renderTime;
 	}
 }
