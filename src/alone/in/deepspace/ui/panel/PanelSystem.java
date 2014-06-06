@@ -19,7 +19,7 @@ public class PanelSystem extends BasePanel {
 	private TextView 	_lbFloor;
 	
 	public PanelSystem() {
-		super(Mode.NONE, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), false);
+		super(Mode.NONE, null, new Vector2f(0, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), false);
 	}
 	
 	@Override

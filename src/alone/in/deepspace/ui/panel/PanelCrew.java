@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2f;
+import org.jsfml.window.Keyboard.Key;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.Strings;
@@ -51,8 +52,8 @@ public class PanelCrew extends BasePanel {
 	private TextView 			_lbCount;
 	protected int 				_mode;
 
-	public PanelCrew(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
+	public PanelCrew(Mode mode, Key shortcut) {
+		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
 	}
 
 	@Override

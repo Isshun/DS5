@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2f;
+import org.jsfml.window.Keyboard.Key;
 
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.engine.ui.ButtonView;
@@ -23,8 +24,8 @@ public class PanelPlan extends BasePanel {
 
 	private List<View> _buttons;
 
-	public PanelPlan(UserInterface.Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
+	public PanelPlan(UserInterface.Mode mode, Key shortcut) {
+		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
 	}
 
 	@Override

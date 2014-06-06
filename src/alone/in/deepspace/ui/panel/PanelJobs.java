@@ -3,6 +3,7 @@ package alone.in.deepspace.ui.panel;
 import java.util.List;
 
 import org.jsfml.system.Vector2f;
+import org.jsfml.window.Keyboard.Key;
 
 import alone.in.deepspace.engine.ui.LinkView;
 import alone.in.deepspace.engine.ui.OnClickListener;
@@ -27,8 +28,8 @@ public class PanelJobs extends BasePanel {
 	private int 				_nbRunningJob;
 	private int 				_nbRunningJobCandidat;
 
-	public PanelJobs(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
+	public PanelJobs(Mode mode, Key shortcut) {
+		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2f;
+import org.jsfml.window.Keyboard.Key;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.ui.FrameLayout;
@@ -25,8 +26,8 @@ public class PanelDebugItem extends BasePanel {
 	private FrameLayout _grid;
 	private FrameLayout _itemView;
 	
-	public PanelDebugItem(Mode mode) {
-		super(mode, new Vector2f(0, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
+	public PanelDebugItem(Mode mode, Key shortcut) {
+		super(mode, shortcut, new Vector2f(0, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
 		
 		setBackgroundColor(new Color(0, 0, 0));
 

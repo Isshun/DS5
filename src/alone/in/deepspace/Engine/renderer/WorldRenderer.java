@@ -96,6 +96,10 @@ public class WorldRenderer implements IRenderer {
 		Clock display_timer = new Clock();
 		Sprite sp = new Sprite(_textureCache.getTexture());
 		app.draw(sp, render);
+		
+		if (_itemSelected != null) {
+			refreshSelected(app, render, _frame, _itemSelected);
+		}
 
 //		if (_itemSelected != null) {
 //			Sprite sprite = _spriteManager.getSelector(_itemSelected, _frame);
@@ -441,12 +445,43 @@ public class WorldRenderer implements IRenderer {
 						}
 						_textureCache.draw(sprite);
 					}
+
+					// Selection
 					if (item.isSelected()) {
 						_itemSelected = item;
 					}
 				}
 			}
 		}
+	}
+
+	private void refreshSelected(RenderWindow app, RenderStates render, int frame, ItemBase item) {
+		int x = item.getX();
+		int y = item.getY();
+		int offset = 0;
+		switch (frame % 5) {
+		case 1: offset = 1; break;
+		case 2: offset = 2; break;
+		case 3: offset = 3; break;
+		case 4: offset = 2; break;
+		case 5: offset = 1; break;
+		}
+		
+		Sprite sprite = _spriteManager.getSelectorCorner(0);
+		sprite.setPosition(x * Constant.TILE_WIDTH - offset, y * Constant.TILE_HEIGHT - offset);
+		app.draw(sprite, render);
+
+		sprite = _spriteManager.getSelectorCorner(1);
+		sprite.setPosition((x + item.getWidth()) * Constant.TILE_WIDTH - 6 + offset, y * Constant.TILE_HEIGHT - offset);
+		app.draw(sprite, render);
+		
+		sprite = _spriteManager.getSelectorCorner(2);
+		sprite.setPosition(x * Constant.TILE_WIDTH - offset, (y + item.getHeight()) * Constant.TILE_HEIGHT - 6 + offset);
+		app.draw(sprite, render);
+		
+		sprite = _spriteManager.getSelectorCorner(3);
+		sprite.setPosition((x + item.getWidth()) * Constant.TILE_WIDTH - 6 + offset, (y + item.getHeight()) * Constant.TILE_HEIGHT - 6 + offset);
+		app.draw(sprite, render);
 	}
 
 	public void invalidate(int x, int y) {

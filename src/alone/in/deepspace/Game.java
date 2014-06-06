@@ -28,7 +28,7 @@ import alone.in.deepspace.model.GameData;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
-public class Game implements ISavable {
+public class Game {
 	private static GameData 			_data;
 	private static RoomManager 			_roomManager;
 	private static StatsManager			_statsManager;
@@ -129,13 +129,16 @@ public class Game implements ISavable {
 		Game.getCharacterManager().create();
 	}
 
-	public void	load(final String filePath) {
-		WorldSaver.load(ServiceManager.getWorldMap(), filePath);
+	public void	load(final String filePath, LoadListener loadListener) {
+		loadListener.onUpdate("Load game");
+		
+		GameSerializer.load(filePath, loadListener);
+		
 		//WorldFactory.create(ServiceManager.getWorldMap());
 
 		ResourceManager.getInstance().refreshWater();
 
-		JobManagerLoader.load(JobManager.getInstance());
+		JobManagerLoader.load(JobManager.getInstance(), loadListener);
 
 		onLoadComplete();
 	}
@@ -167,25 +170,9 @@ public class Game implements ISavable {
 	public void	save(final String filePath) {
 		Log.info("Save game: " + filePath);
 
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
-			bw.write("BEGIN GAME\n");
-			bw.write("MATTER\t" + ResourceManager.getInstance().getMatter().value + "\n");
-			bw.write("SPICE\t" + ResourceManager.getInstance().getSpice().value + "\n");
-			bw.write("WATER\t" + ResourceManager.getInstance().getWater().value + "\n");
-			bw.write("END GAME\n");
-		} catch (FileNotFoundException e) {
-			Log.error("Unable to open save file: " + filePath);
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		GameSerializer.save(filePath);
 
 		Log.info("Save game: " + filePath + " done");
-
-		WorldSaver.save(ServiceManager.getWorldMap(), filePath);
-
-		Game.getCharacterManager().save(filePath);
-		JobManagerLoader.save(JobManager.getInstance());
 	}
 
 	public void onDraw(double animProgress, int renderTime) throws IOException {

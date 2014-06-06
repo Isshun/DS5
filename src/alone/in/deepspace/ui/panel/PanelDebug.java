@@ -2,6 +2,7 @@ package alone.in.deepspace.ui.panel;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2f;
+import org.jsfml.window.Keyboard.Key;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.renderer.MainRenderer;
@@ -24,8 +25,8 @@ public class PanelDebug extends BasePanel {
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	private UserInterface _ui;
 	
-	public PanelDebug(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
+	public PanelDebug(Mode mode, Key shortcut) {
+		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
 		
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		

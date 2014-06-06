@@ -33,9 +33,10 @@ import alone.in.deepspace.ui.panel.PanelCrew;
 import alone.in.deepspace.ui.panel.PanelDebug;
 import alone.in.deepspace.ui.panel.PanelInfo;
 import alone.in.deepspace.ui.panel.PanelJobs;
+import alone.in.deepspace.ui.panel.PanelManager;
+import alone.in.deepspace.ui.panel.PanelMessage;
 import alone.in.deepspace.ui.panel.PanelPlan;
 import alone.in.deepspace.ui.panel.PanelPlan.PanelMode;
-import alone.in.deepspace.ui.panel.PanelResource;
 import alone.in.deepspace.ui.panel.PanelRoom;
 import alone.in.deepspace.ui.panel.PanelRoom.PanelRoomListener;
 import alone.in.deepspace.ui.panel.PanelScience;
@@ -45,7 +46,6 @@ import alone.in.deepspace.ui.panel.PanelStats;
 import alone.in.deepspace.ui.panel.PanelSystem;
 import alone.in.deepspace.ui.panel.PanelTooltip;
 import alone.in.deepspace.util.Constant;
-import alone.in.deepspace.util.Settings;
 
 public class UserInterface implements PanelRoomListener {
 	enum Action {
@@ -72,40 +72,40 @@ public class UserInterface implements PanelRoomListener {
 	private boolean 					_mouseOnMap;
 	private BasePanel 					_currentPanel;
 	private	Action						_action;
-
+	private UserInterfaceCursor			_cursor;
 	private long 						_lastLeftClick;
 	private int 						_lastInput;
+	private PanelMessage 				_panelMessage;
+	
+	private Character 					_selectedCharacter;
+	private ItemBase 					_selectedItem;
+	private WorldResource				_selectedResource;
+	private ToolTip 					_selectedTooltip;
+	private ItemInfo 					_selectedItemInfo;
+	private WorldArea 					_selectedArea;
+	private PanelMode 					_selectedPlan;
+	private Type 						_selectedRoomType;
+	private Room 						_selectedRoom;
+	private int 						_update;
 
-	private	BasePanel[]			_panels = new BasePanel[] {
-			new PanelCharacter(Mode.CHARACTER),
-			new PanelInfo(Mode.INFO),
-			new PanelDebug(Mode.DEBUG),
-			new PanelPlan(Mode.PLAN),
-			new PanelRoom(Mode.ROOM),
-			new PanelTooltip(Mode.TOOLTIP),
-			new PanelBuild(Mode.BUILD),
-			new PanelScience(Mode.SCIENCE),
-			new PanelSecurity(Mode.SECURITY),
-			new PanelCrew(Mode.CREW),
-			new PanelJobs(Mode.JOBS),
-			new PanelStats(Mode.STATS),
-			new PanelShortcut(Mode.NONE),
+	private	BasePanel[]					_panels = new BasePanel[] {
 			new PanelSystem(),
-			new PanelResource()
+			new PanelCharacter(	Mode.CHARACTER, null),
+			new PanelInfo(		Mode.INFO, 		null),
+			new PanelDebug(		Mode.DEBUG, 	Key.TILDE),
+			new PanelPlan(		Mode.PLAN, 		Key.P),
+			new PanelRoom(		Mode.ROOM, 		Key.R),
+			new PanelTooltip(	Mode.TOOLTIP, 	Key.F1),
+			new PanelBuild(		Mode.BUILD, 	Key.B),
+			new PanelScience(	Mode.SCIENCE, 	null),
+			new PanelSecurity(	Mode.SECURITY, 	null),
+			new PanelCrew(		Mode.CREW, 		Key.C),
+			new PanelJobs(		Mode.JOBS, 		Key.O),
+			new PanelStats(		Mode.STATS, 	Key.S),
+			new PanelManager(	Mode.MANAGER, 	Key.M),
+			new PanelShortcut(	Mode.NONE, 		null),
 	};
 
-	private Character 		_selectedCharacter;
-	private ItemBase 		_selectedItem;
-	private WorldResource	_selectedResource;
-	private ToolTip 		_selectedTooltip;
-	private ItemInfo 		_selectedItemInfo;
-	private WorldArea 		_selectedArea;
-	private PanelMode 		_selectedPlan;
-	private Type 			_selectedRoomType;
-	private Room _selectedRoom;
-	private int _update;
-	private UserInterfaceCursor	_cursor;
-	
 	public enum Mode {
 		INFO,
 		DEBUG,
@@ -118,23 +118,32 @@ public class UserInterface implements PanelRoomListener {
 		ROOM,
 		PLAN,
 		DEBUGITEMS,
-		NONE, TOOLTIP, STATS
+		NONE,
+		TOOLTIP,
+		STATS,
+		MANAGER
+	}
+	
+	public UserInterface(RenderWindow app) {
+		_self = this;
+		_app = app;
+		_panelMessage = new PanelMessage();
+		_panelMessage.init(_app, this, null);
 	}
 
-	public void onCreate(Game game, RenderWindow app, Viewport viewport) throws IOException {
+	public void onCreate(Game game, Viewport viewport) throws IOException {
 		_game = game;
 		_viewport = viewport;
-		_app = app;
 		_characteres = Game.getCharacterManager();
 		_keyLeftPressed = false;
 		_keyRightPressed = false;
 		_cursor = new UserInterfaceCursor();
-
+		
 		for (BasePanel panel: _panels) {
-			panel.init(app, this, viewport);
+			panel.init(_app, this, viewport);
 		}
 		
-		_interaction = new UserInteraction(app, viewport);
+		_interaction = new UserInteraction(_app, viewport);
 
 		setMode(Mode.NONE);
 	}
@@ -184,12 +193,12 @@ public class UserInterface implements PanelRoomListener {
 		_viewport.startMove(x, y);
 	}
 
-	public int 				getRelativePosX(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
-	public int 				getRelativePosY(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
-	public int 				getRelativePosXMax(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMinScale() / Constant.TILE_WIDTH); }
-	public int 				getRelativePosYMax(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMinScale() / Constant.TILE_HEIGHT); }
-	public int 				getRelativePosXMin(int x) { return (int) ((x - Constant.UI_WIDTH - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
-	public int 				getRelativePosYMin(int y) { return (int) ((y - Constant.UI_HEIGHT - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
+	public int 				getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
+	public int 				getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
+	public int 				getRelativePosXMax(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getMinScale() / Constant.TILE_WIDTH); }
+	public int 				getRelativePosYMax(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getMinScale() / Constant.TILE_HEIGHT); }
+	public int 				getRelativePosXMin(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
+	public int 				getRelativePosYMin(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
 	public Character 		getSelectedCharacter() { return _selectedCharacter; }
 	public WorldArea		getSelectedArea() { return _selectedArea; }
 	public ItemBase 		getSelectedItem() { return _selectedItem; }
@@ -237,12 +246,15 @@ public class UserInterface implements PanelRoomListener {
 		for (BasePanel panel: _panels) {
 			panel.refresh(update);
 		}
+		_panelMessage.refresh(update);
 	}
 
 	public void onDraw(int update, int renderTime) {
 		for (BasePanel panel: _panels) {
 			panel.draw(_app, null);
 		}
+		
+		_panelMessage.draw(_app, null);
 
 		if (_mouseOnMap) {
 			if (_selectedRoomType != null || _selectedPlan != null) {
@@ -322,46 +334,20 @@ public class UserInterface implements PanelRoomListener {
 			_game.setRunning(!_game.isRunning());
 			return true;
 
-		case D:
-			Settings.getInstance().setDebug(!Settings.getInstance().isDebug());
-			if (Settings.getInstance().isDebug()) {
-				toogleMode(Mode.DEBUG);
-			}
-			return true;
-
-		case C:
-			toogleMode(Mode.CREW);
-			return true;
-
-		case B:
-			toogleMode(Mode.BUILD);
-			return true;
-
-		case R:
-			toogleMode(Mode.ROOM);
-			return true;
-
-		case S:
-			toogleMode(Mode.STATS);
-			return true;
-
-		case P:
-			toogleMode(Mode.PLAN);
-			return true;
-
-		case O:
-			toogleMode(Mode.JOBS);
-			return true;
-			
-		default:
-			return false;
+		default: break;
 		}
+		
+		for (BasePanel panel: _panels) {
+			if (key.equals(panel.getShortcut())) {
+				toogleMode(panel.getMode());
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	public static UserInterface getInstance() {
-		if (_self == null) {
-			_self = new UserInterface();
-		}
 		return _self;
 	}
 
@@ -475,13 +461,24 @@ public class UserInterface implements PanelRoomListener {
 					_selectedCharacter = null;
 				}
 
-				WorldArea a = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
+				int relX = getRelativePosX(x);
+				int relY = getRelativePosY(y);
+				WorldArea a = ServiceManager.getWorldMap().getArea(relX, relY);
 				if (a != null) {
-					if (a.getRessource() != null) { select(a.getRessource()); }
-					else if (a.getItem() != null) { select(a.getItem()); }
-					else if (a.getStructure() != null) { select(a.getStructure()); }
-					else { select(a); }
+					if (a.getRessource() != null) { select(a.getRessource()); return true; }
+					else if (a.getItem() != null) { select(a.getItem()); return true; }
 				}
+				for (int x2 = 0; x2 < Constant.ITEM_MAX_WIDTH; x2++) {
+					for (int y2 = 0; y2 < Constant.ITEM_MAX_HEIGHT; y2++) {
+						ItemBase item = ServiceManager.getWorldMap().getItem(relX - x2, relY - y2);
+						if (item != null && item.getWidth() > x2 && item.getHeight() > y2) {
+							select(item);
+							return true;
+						}
+					}
+				}
+//				if (a.getStructure() != null) { select(a.getStructure()); return true; }
+//				else { select(a); return true; }
 			}
 		}
 
@@ -680,6 +677,10 @@ public class UserInterface implements PanelRoomListener {
 				return;
 			}
 		}
+	}
+
+	public void addMessage(int level, String message) {
+		_panelMessage.addMessage(level, message);
 	}
 
 }

@@ -50,8 +50,8 @@ public class PanelBuild extends BasePanel {
 	private CategoryInfo 					_currentCategory;
 	private ButtonView[] 					_iconShortcut;
 
-	public PanelBuild(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
+	public PanelBuild(Mode mode, Key shortcut) {
+		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
 	}
 
 	@Override

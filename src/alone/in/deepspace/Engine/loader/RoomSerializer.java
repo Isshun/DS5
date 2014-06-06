@@ -5,6 +5,7 @@ import java.util.List;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.loader.WorldSaver.WorldSave;
+import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.RoomSave;
 import alone.in.deepspace.manager.RoomSave.RoomSaveArea;
 import alone.in.deepspace.model.character.Character;
@@ -82,11 +83,7 @@ public class RoomSerializer implements SerializerInterface {
 	}
 
 	public void	load(WorldSave save) {
-		List<Character> characters = Game.getCharacterManager().getList();
-		Character character = null;
-		if (characters.size() > 0) {
-			character = characters.get((int)(Math.random() * characters.size()));
-		}
+		CharacterManager characterManager = Game.getCharacterManager();
 		
 		for (RoomSave roomSave: save.rooms) {
 			for (RoomSaveArea roomSaveArea: roomSave.areas) {
@@ -94,6 +91,11 @@ public class RoomSerializer implements SerializerInterface {
 				if (room.isGarden()) {
 					ItemInfo info = Game.getData().getItemInfo(roomSave.culture);
 					((GardenRoom)room).setCulture(info);
+				}
+				if (roomSave.occupants != null) {
+					for (int characterId: roomSave.occupants) {
+						room.addOccupant(characterManager.getCharacter(characterId));
+					}
 				}
 			}
 		}

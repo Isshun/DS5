@@ -1,9 +1,5 @@
 package alone.in.deepspace.manager;
 
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,25 +52,6 @@ public class CharacterManager {
 		add(2, 0, Profession.Type.DOCTOR);
 		add(3, 0, Profession.Type.SCIENCE);
 		add(4, 0, Profession.Type.SECURITY);
-	}
-
-	public void	save(final String filePath) {
-		Log.info("Save characters: " + filePath);
-
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
-			bw.write("BEGIN CHARACTERS\n");
-			for (Character c: _characters) {
-				bw.write(c.getX() + "\t" + c.getY() + "\t" + c.getGender().ordinal() + "\t" + c.getName() + "\n");
-			}
-			bw.write("END CHARACTERS\n");
-		} catch (FileNotFoundException e) {
-			Log.error("Unable to open save file: " + filePath);
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		Log.info("Save characters: " + filePath + " done");
 	}
 
 	// TODO

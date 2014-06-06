@@ -88,4 +88,8 @@ public class TextView extends View {
 		setString(StringUtils.getDashedString(label, value, nbColumns));
 	}
 
+	public String getString() {
+		return _value;
+	}
+
 }

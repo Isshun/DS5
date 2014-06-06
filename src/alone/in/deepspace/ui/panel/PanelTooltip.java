@@ -1,6 +1,7 @@
 package alone.in.deepspace.ui.panel;
 
 import org.jsfml.system.Vector2f;
+import org.jsfml.window.Keyboard.Key;
 
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.LinkView;
@@ -26,8 +27,8 @@ public class PanelTooltip extends BasePanel {
 	private LinkView[] 	_lbCategories;
 	private ToolTip 	_tooltips;
 
-	public PanelTooltip(Mode mode) {
-		super(mode, new Vector2f(200, 200), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), false);
+	public PanelTooltip(Mode mode, Key shortcut) {
+		super(mode, shortcut, new Vector2f(200, 200), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), false);
 	}
 	
 	@Override

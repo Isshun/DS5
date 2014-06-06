@@ -9,6 +9,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
+import org.jsfml.window.Keyboard.Key;
 
 import alone.in.deepspace.engine.renderer.MiniMapRenderer;
 import alone.in.deepspace.engine.ui.ImageView;
@@ -54,8 +55,8 @@ public class PanelShortcut extends BasePanel {
 			new PanelEntry("[ OOM]", 		"R", 	1, Mode.ROOM),
 			new PanelEntry("[ EBUG]", 		"D", 	1, Mode.DEBUG),
 			new PanelEntry("[ LAN]", 		"P",	1, Mode.PLAN),
-			new PanelEntry("[ ARETAKER]", 	"C",	1, Mode.NONE),
-			new PanelEntry("[ TATS]", 		"S",	1, 	Mode.STATS)
+			new PanelEntry("[ ANAGE]", 		"M",	1, Mode.MANAGER),
+			new PanelEntry("[ TATS]", 		"S",	1, Mode.STATS)
 	};
 
 	private MiniMapRenderer		_miniMapRenderer;
@@ -63,8 +64,8 @@ public class PanelShortcut extends BasePanel {
 	private ResourceEntry[] 	_resources;
 	private ImageView _map;
 
-	public PanelShortcut(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
+	public PanelShortcut(Mode mode, Key shortcut) {
+		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 0), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
 	}
 	
 	@Override

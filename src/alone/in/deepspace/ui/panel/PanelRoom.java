@@ -86,8 +86,8 @@ public class PanelRoom extends BasePanel {
 			new PanelEntry("Garden", Room.Type.GARDEN, Key.G),
 	};
 
-	public PanelRoom(Mode mode) {
-		super(mode, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
+	public PanelRoom(Mode mode, Key shortcut) {
+		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT - 32), true);
 	}
 
 	@Override

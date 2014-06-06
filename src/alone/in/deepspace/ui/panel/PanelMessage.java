@@ -1,73 +1,44 @@
 package alone.in.deepspace.ui.panel;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.ui.UserInterface.Mode;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.StringUtils;
 
 public class PanelMessage extends BasePanel {
-
-	private static int LINE_INTERVAL = 100;
-	private static String[] MESSAGE = {
-		"Bonjour commandant, bienvenue sur---------",
-		"Gliese-581-c",
-		"Je ne peux vous parlez que 10min par période",
-		"de rotation alors ne perdons pas de temps"
-	};
+	private static final int 	LINE_INTERVAL = 20;
+	private static final int 	NB_LINES = 8;
+	private static final int 	FRAME_HEIGHT = 16 + LINE_INTERVAL * NB_LINES;
+	private static final int	FRAME_WIDTH = 440;
 	
-	private static final int 	FRAME_WIDTH = 380;
-	private static final int	FRAME_HEIGHT = 200;
-	private int 		_frame;
-	private TextView[] 	_texts;
-	private int _start;
+	private TextView[] 		_texts;
 
 	public PanelMessage() {
-		super(Mode.NONE, new Vector2f(20, 20), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
-		  
-		_texts = new TextView[10];
-		for (int i = 0; i < 10; i++) {
-			_texts[i] = new TextView(null);
-			_texts[i].setCharacterSize(14);
-			_texts[i].setPosition(10, 20 * i);
-			addView(_texts[i]);
-		}
-		
-		setBackgroundColor(new Color(100, 0, 0, 180));
-	}
-
-	@Override
-	public void onDraw(RenderWindow app, RenderStates render) {
-		int offset = _frame - _start;
-		int index = (offset / LINE_INTERVAL) - 1;
-		if (offset % LINE_INTERVAL == 0) {
-			if (index < MESSAGE.length) {
-				_texts[index].setString(MESSAGE[index]);
-			}
-		} else {
-			if (offset % 30 == 0 && index + 1 < MESSAGE.length) {
-				_texts[index + 1].setString("...");
-			}
-			if (offset % 60 == 0 && index < MESSAGE.length) {
-				_texts[index + 1].setString("");
-			}
-		}
-	}
-
-	public void setFrame(int frame) {
-		_frame = frame;
-	}
-
-	public void setStart(int start) {
-		_start = start;
-	}
+		super(Mode.NONE, null, new Vector2f(0, Constant.WINDOW_HEIGHT - FRAME_HEIGHT), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT), true);
+		setAlwaysVisible(true);
+	}		  
 
 	@Override
 	protected void onCreate() {
-		// TODO Auto-generated method stub
+		_texts = new TextView[NB_LINES];
+		for (int i = 0; i < NB_LINES; i++) {
+			_texts[i] = new TextView();
+			_texts[i].setCharacterSize(FONT_SIZE);
+			_texts[i].setPosition(14, 8 + i * LINE_INTERVAL);
+			addView(_texts[i]);
+		}
 		
+		setBackgroundColor(new Color(18, 28, 30, 80));
+	}
+
+	public void addMessage(int level, String message) {
+		for (int i = 0; i < NB_LINES - 1; i++) {
+			_texts[i].setString(_texts[i+1].getString());
+		}
+		_texts[NB_LINES - 1].setString(StringUtils.getDashedString(message, "", 52));
 	}
 
 }

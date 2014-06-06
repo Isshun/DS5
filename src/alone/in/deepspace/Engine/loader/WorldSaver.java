@@ -1,11 +1,5 @@
 package alone.in.deepspace.engine.loader;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +14,6 @@ import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
-import alone.in.deepspace.util.Log;
-
-import com.thoughtworks.xstream.XStream;
 
 public class WorldSaver {
 
@@ -74,56 +65,7 @@ public class WorldSaver {
 		public int value;
 	}
 	
-	public static void save(WorldManager worldManager, String filePath) {
-		System.gc();
-		
-		WorldSave save = new WorldSave();
-		
-		(new RoomSerializer()).save(save);
-		(new CharacterSerializer()).save(save);
-
-		for (int z = 0; z < 1; z++) {
-			for (int x = 0; x < worldManager.getWidth(); x++) {
-				for (int y = 0; y < worldManager.getHeight(); y++) {
-					WorldArea area = worldManager.getArea(z, x, y);
-					saveArea(save, area);
-				}
-			}
-		}
-
-		XStream xstream = new XStream();
-		String xml = xstream.toXML(save);
-		
-		try {
-			FileOutputStream fs = new FileOutputStream(filePath + ".xml");
-			OutputStreamWriter output = new OutputStreamWriter(fs);
-//		    StringWriter writer = new StringWriter();
-//		    writer.write(xml);
-			output.write(xml);
-			output.close();
-		    fs.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-//		try {
-//			FileOutputStream fs = new FileOutputStream(filePath);
-//			OutputStreamWriter output = new OutputStreamWriter(fs);
-//		    Yaml yaml = new Yaml();
-//		    StringWriter writer = new StringWriter();
-//		    yaml.dump(save, output);
-//		    fs.close();
-//		    System.out.println(writer.toString());
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-	}
-
-	private static void saveArea(WorldSave save, WorldArea area) {
+	private static void saveArea(List<WorldSaveArea> areas, WorldArea area) {
 		if (area.getItem() == null && area.getRessource() == null && area.getStructure() == null) {
 			return;
 		}
@@ -167,83 +109,54 @@ public class WorldSaver {
 			areaSave.resource.value = (int)resource.getValue();
 		}
 		
-		save.areas.add(areaSave);
+		areas.add(areaSave);
 	}
 
-	public static void load(WorldManager worldManager, String filePath) {
-		System.gc();
+	public static void load(WorldManager worldManager, List<WorldSaveArea> areas) {
+	    for (WorldSaveArea area: areas) {
+	    	if (area != null) {
+	    		// UserItem
+	    		if (area.item != null) {
+	    			ItemBase item = worldManager.putItem(area.item.name, area.x, area.y, area.z, area.item.matter);
+	    			if (area.item.storage != null) {
+	    				StorageItem storage = ((StorageItem)item);
+	    				storage.setStorageFilter(area.item.storage.acceptFood,
+	    						area.item.storage.acceptDrink,
+	    						area.item.storage.acceptConsomable,
+	    						area.item.storage.acceptGarbage);
+	    				for (String storredItemName: area.item.storage.inventory) {
+	    					ItemInfo info = Game.getData().getItemInfo(storredItemName);
+	    					storage.addInventory(new UserItem(info));
+	    				}
+	    			}
+	    		}
 
-		Log.info("load world");
-	    long time = System.currentTimeMillis();
-	    WorldSave worldSave = null;
+	    		// Structure
+	    		if (area.structure != null) {
+	    			worldManager.putItem(area.structure.name, area.x, area.y, area.z, area.structure.matter);
+	    		}
 
-		int mb = 1024 * 1024;
-        Runtime runtime = Runtime.getRuntime();
-        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
-        System.out.print("" + used);
-	    
-        // 12 - 215mb + 140% / 1700ms + 70%
-        // 12 - 88mb / 1000ms
-		try {
-			InputStream input = new FileInputStream(filePath + ".xml");
-			XStream xstream = new XStream();
-			worldSave = (WorldSave)xstream.fromXML(input);
-		    input.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	    		// Resource
+	    		if (area.resource != null) {
+	    			ItemBase item = worldManager.putItem(area.resource.name, area.x, area.y, area.z, area.resource.matter);
+	    			if (item != null) {
+		    			((WorldResource)item).setTile(area.resource.tile);
+		    			((WorldResource)item).setValue(area.resource.value);
+	    			}
+	    		}
+	    	}
+	    }
+	}
 
-		if (worldSave != null) {
-			if (worldSave.rooms != null) {
-				(new RoomSerializer()).load(worldSave);
+	public static void save(WorldManager worldManager, List<WorldSaveArea> areas) {
+		for (int z = 0; z < 1; z++) {
+			for (int x = 0; x < worldManager.getWidth(); x++) {
+				for (int y = 0; y < worldManager.getHeight(); y++) {
+					WorldArea area = worldManager.getArea(z, x, y);
+					saveArea(areas, area);
+				}
 			}
-
-			if (worldSave.characters != null) {
-				(new CharacterSerializer()).load(worldSave);
-			}
-			
-		    for (WorldSaveArea area: worldSave.areas) {
-		    	if (area != null) {
-		    		// UserItem
-		    		if (area.item != null) {
-		    			ItemBase item = worldManager.putItem(area.item.name, area.x, area.y, area.z, area.item.matter);
-		    			if (area.item.storage != null) {
-		    				StorageItem storage = ((StorageItem)item);
-		    				storage.setStorageFilter(area.item.storage.acceptFood,
-		    						area.item.storage.acceptDrink,
-		    						area.item.storage.acceptConsomable,
-		    						area.item.storage.acceptGarbage);
-		    				for (String storredItemName: area.item.storage.inventory) {
-		    					ItemInfo info = Game.getData().getItemInfo(storredItemName);
-		    					storage.addInventory(new UserItem(info));
-		    				}
-		    			}
-		    		}
-
-		    		// Structure
-		    		if (area.structure != null) {
-		    			worldManager.putItem(area.structure.name, area.x, area.y, area.z, area.structure.matter);
-		    		}
-
-		    		// Resource
-		    		if (area.resource != null) {
-		    			ItemBase item = worldManager.putItem(area.resource.name, area.x, area.y, area.z, area.resource.matter);
-		    			if (item != null) {
-			    			((WorldResource)item).setTile(area.resource.tile);
-			    			((WorldResource)item).setValue(area.resource.value);
-		    			}
-		    		}
-		    	}
-		    }
 		}
-	    
-	    Log.info("load complete: " + (System.currentTimeMillis() - time) + "ms");
-        used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
-        System.out.print("" + used);
-        
-		System.gc();
 	}
 
 }

@@ -32,15 +32,17 @@ public abstract class BasePanel extends FrameLayout {
 	protected Viewport 			_viewport;
 	private boolean 			_alwaysVisible;
 	private boolean _isRightPane;
+	private Key _shortcut;
 		  
 	public void			toogle() { _isVisible = !_isVisible; }
 	public void			open() { _isVisible = true; }
 	public void			close() { _isVisible = false; }
 	public boolean		isOpen() { return _isVisible; }
 
-	public BasePanel(Mode mode, Vector2f pos, Vector2f size, boolean isRightPane) {
+	public BasePanel(Mode mode, Key shortcut, Vector2f pos, Vector2f size, boolean isRightPane) {
 		super(size);
 		
+		_shortcut = shortcut;
 		_isRightPane = isRightPane;
 		if (isRightPane && mode != Mode.NONE) {
 			ButtonView btBack = new ButtonView(new Vector2f(100, 32));
@@ -172,5 +174,8 @@ public abstract class BasePanel extends FrameLayout {
 	}
 
 	protected void onOpen() {
+	}
+	public Key getShortcut() {
+		return _shortcut;
 	}
 }

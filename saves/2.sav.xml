@@ -16452,9 +16452,7 @@
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <type>1</type>
-      <occupants>
-        <int>7</int>
-      </occupants>
+      <occupants/>
       <areas>
         <alone.in.deepspace.manager.RoomSave_-RoomSaveArea>
           <x>131</x>
@@ -16484,9 +16482,7 @@
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <type>1</type>
-      <occupants>
-        <int>8</int>
-      </occupants>
+      <occupants/>
       <areas>
         <alone.in.deepspace.manager.RoomSave_-RoomSaveArea>
           <x>131</x>
@@ -16516,9 +16512,7 @@
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <type>1</type>
-      <occupants>
-        <int>9</int>
-      </occupants>
+      <occupants/>
       <areas>
         <alone.in.deepspace.manager.RoomSave_-RoomSaveArea>
           <x>131</x>
@@ -16548,6 +16542,56 @@
     </alone.in.deepspace.manager.RoomSave>
   </rooms>
   <characters>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>0</id>
+      <lastname>Frank</lastname>
+      <firstname>Fernando </firstname>
+      <relations/>
+      <old>24.0</old>
+      <x>0</x>
+      <y>0</y>
+      <gender>MALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>1</id>
+      <lastname>Shelton</lastname>
+      <firstname>Effie </firstname>
+      <relations/>
+      <old>24.0</old>
+      <x>1</x>
+      <y>0</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>2</id>
+      <lastname>Hudson</lastname>
+      <firstname>Tamara </firstname>
+      <relations/>
+      <old>24.0</old>
+      <x>2</x>
+      <y>0</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>3</id>
+      <lastname>Frey</lastname>
+      <firstname>Erna </firstname>
+      <relations/>
+      <old>24.0</old>
+      <x>3</x>
+      <y>0</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>4</id>
+      <lastname>Simmons</lastname>
+      <firstname>Bernice </firstname>
+      <relations/>
+      <old>24.0</old>
+      <x>4</x>
+      <y>0</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>7</id>
       <lastname>Sawyer</lastname>

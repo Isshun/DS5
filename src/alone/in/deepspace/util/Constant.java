@@ -63,4 +63,6 @@ public class Constant {
 	public static final double 	CHARACTER_LEAVE_HOME_OLD = 18;
 	public static final int 	RESSOURCE_LOW_FOOD 		= 10;
 	public static final int 	NB_COLUMNS = 47;
+	public static final int 	ITEM_MAX_WIDTH = 5;
+	public static final int 	ITEM_MAX_HEIGHT = 4;
 }

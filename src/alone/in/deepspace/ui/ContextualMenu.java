@@ -29,7 +29,7 @@ public class ContextualMenu extends BasePanel {
 	private int 				_initPosY;
 	
 	public ContextualMenu(RenderWindow app, int tileIndex, Vector2f pos, Vector2f size, Viewport viewport) {
-		super(Mode.NONE, pos, size, true);
+		super(Mode.NONE, null, pos, size, true);
 		setVisible(true);
 		
 		ENTRY_WIDTH = (int) (size.x - PADDING_H * 2);

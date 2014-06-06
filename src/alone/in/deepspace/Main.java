@@ -2,7 +2,9 @@ package alone.in.deepspace;
 
 import java.io.IOException;
 
+import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.Text;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Clock;
 import org.jsfml.system.Time;
@@ -10,15 +12,18 @@ import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 import org.jsfml.window.event.Event;
+import org.jsfml.window.event.KeyEvent;
 
 import alone.in.deepspace.engine.loader.CategoryLoader;
 import alone.in.deepspace.engine.loader.ItemLoader;
 import alone.in.deepspace.engine.loader.StringsLoader;
 import alone.in.deepspace.engine.renderer.MainRenderer;
+import alone.in.deepspace.engine.ui.Colors;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.GameData;
 import alone.in.deepspace.ui.MenuBase;
 import alone.in.deepspace.ui.MenuGame;
@@ -26,6 +31,7 @@ import alone.in.deepspace.ui.MenuLoad;
 import alone.in.deepspace.ui.MenuSave;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 public class Main {
 
@@ -38,13 +44,15 @@ public class Main {
 	private static int 				_updateInterval = UPDATE_INTERVAL;
 	private static int 				_longUpdateInterval = LONG_UPDATE_INTERVAL;
 	private static MainRenderer 	_mainRenderer;
-	private static UserInterface _userInterface;
+	private static UserInterface	_userInterface;
+	private static LoadListener 	_loadListener;
+	private static boolean			_isFullscreen;
 
 	public static void main(String[] args) {
 		//Create the window
-		RenderWindow window = new RenderWindow();
+		final RenderWindow window = new RenderWindow();
 		window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5", WindowStyle.DEFAULT);
-
+		
 		GameData data = new GameData();
 
 		ItemLoader.load(data);
@@ -52,14 +60,34 @@ public class Main {
 		CategoryLoader.load(data);
 		
 		_mainRenderer = new MainRenderer(window);
-		_userInterface = UserInterface.getInstance();
+		_userInterface = new UserInterface(window);
 
+		_loadListener = new LoadListener() {
+			@Override
+			public void onUpdate(String message) {
+				window.clear();
+				Text text = new Text(message, SpriteManager.getInstance().getFont());
+				text.setCharacterSize(42);
+				text.setColor(Colors.LINK_INACTIVE);
+				text.setPosition(Constant.WINDOW_WIDTH / 2 - message.length() * 20 / 2, Constant.WINDOW_HEIGHT / 2 - 40);
+				window.draw(text);
+
+				_userInterface.addMessage(Log.LEVEL_INFO, message);
+				_userInterface.onRefresh(0);
+				_userInterface.onDraw(0, 0);
+
+				window.display();
+			}
+			
+		};
+		
 		try {
 			game = new Game(window, data);
 			game.onCreate();
-			game.load("saves/2.sav");
+			game.load("saves/2.sav", _loadListener);
 			_mainRenderer.init(game);
-			_userInterface.onCreate(game, window, game.getViewport());
+			_userInterface.onCreate(game, game.getViewport());
+
 			loop(window);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -194,6 +222,7 @@ public class Main {
 			return;
 		}
 		if (event.type == Event.Type.KEY_RELEASED) {
+			KeyEvent keyEvent = event.asKeyEvent();
 
 			// Events for menu
 			if (game.isRunning() == false) {
@@ -204,50 +233,49 @@ public class Main {
 				}
 			}
 			
-			if (event.asKeyEvent().key == Key.K) {
+			switch (keyEvent.key) {
+
+			// Kill
+			case K:
 				window.close();
-
 				return;
-			}
-			if (event.asKeyEvent().control && event.asKeyEvent().key == Key.S) {
-				game.save("saves/2.sav");
-			}
-			if (event.asKeyEvent().control && event.asKeyEvent().key == Key.L) {
-				_menu = new MenuLoad(new OnLoadListener() {
-					@Override
-					public void onLoad(String path) {
-						try {
-							ServiceManager.reset();
-							// TODO NULL
-							game = new Game(window, null);
-							game.load(path);
-						} catch (IOException | TextureCreationException e) {
-							e.printStackTrace();
+				
+			// Save
+			case S:
+				if (keyEvent.control) {
+					game.save("saves/2.sav");
+				}
+				break;
+			
+			// Load
+			case L:
+				if (keyEvent.control) {
+					_menu = new MenuLoad(new OnLoadListener() {
+						@Override
+						public void onLoad(String path) {
+							try {
+								ServiceManager.reset();
+								// TODO NULL
+								game = new Game(window, null);
+								game.load(path, _loadListener);
+							} catch (IOException | TextureCreationException e) {
+								e.printStackTrace();
+							}
 						}
-					}
-				});
-				return;
-			}
-
-			if (event.asKeyEvent().key == Key.DOWN) {
-				if (_menu != null) {
-					_menu.onKeyDown();
+					});
+					return;
 				}
-				return;
-			}
-
-			if (event.asKeyEvent().key == Key.UP) {
-				if (_menu != null) {
-					_menu.onKeyUp();
+				break;
+				
+				// Fullscreen
+			case RETURN:
+				if (keyEvent.alt) {
+					_isFullscreen = !_isFullscreen;
+					window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5", _isFullscreen ? WindowStyle.NONE : WindowStyle.DEFAULT);
 				}
-				return;
-			}
 
-			if (event.asKeyEvent().key == Key.RETURN) {
-				if (_menu != null) {
-					_menu.onKeyEnter();
-				}
-				return;
+			default:
+				break;
 			}
 		}
 

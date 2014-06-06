@@ -389,7 +389,7 @@ public class Character extends Movable implements Mover {
 			// }
 		} else {
 			if (_path != null) {
-				Log.info("Character #" + _id + ": reached");
+				Log.debug("Character #" + _id + ": reached");
 				_steps = 0;
 				_path = null;
 				_node = null;

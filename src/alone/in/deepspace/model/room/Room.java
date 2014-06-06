@@ -113,9 +113,11 @@ public class Room {
 	}
 
 	public void 			addOccupant(Character character) {
-		_occupants.add(character);
-		if (_owner == null) {
-			_owner = character;
+		if (character != null) {
+			_occupants.add(character);
+			if (_owner == null) {
+				_owner = character;
+			}
 		}
 	}
 
