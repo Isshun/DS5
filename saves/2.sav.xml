@@ -5945,6 +5945,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.computer</name>
+        <matter>42</matter>
+      </item>
       <x>138</x>
       <y>127</y>
       <z>0</z>
@@ -16756,103 +16760,105 @@
       <x>131</x>
       <y>132</y>
       <type>1</type>
-      <occupants>
-        <int>0</int>
-      </occupants>
+      <occupants/>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>131</x>
       <y>133</y>
       <type>1</type>
-      <occupants>
-        <int>0</int>
-      </occupants>
+      <occupants/>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>131</x>
       <y>134</y>
       <type>1</type>
-      <occupants>
-        <int>0</int>
-      </occupants>
+      <occupants/>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>132</x>
       <y>132</y>
       <type>1</type>
-      <occupants>
-        <int>0</int>
-      </occupants>
+      <occupants/>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>132</x>
       <y>133</y>
       <type>1</type>
-      <occupants>
-        <int>0</int>
-      </occupants>
+      <occupants/>
     </alone.in.deepspace.manager.RoomSave>
     <alone.in.deepspace.manager.RoomSave>
       <x>132</x>
       <y>134</y>
       <type>1</type>
+      <occupants/>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>131</x>
+      <y>136</y>
+      <type>1</type>
+      <occupants>
+        <int>1</int>
+        <int>5</int>
+        <int>3</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>131</x>
+      <y>137</y>
+      <type>1</type>
+      <occupants>
+        <int>1</int>
+        <int>5</int>
+        <int>3</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>131</x>
+      <y>138</y>
+      <type>1</type>
+      <occupants>
+        <int>1</int>
+        <int>5</int>
+        <int>3</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>132</x>
+      <y>136</y>
+      <type>1</type>
+      <occupants>
+        <int>1</int>
+        <int>5</int>
+        <int>3</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>132</x>
+      <y>137</y>
+      <type>1</type>
+      <occupants>
+        <int>1</int>
+        <int>5</int>
+        <int>3</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>132</x>
+      <y>138</y>
+      <type>1</type>
+      <occupants>
+        <int>1</int>
+        <int>5</int>
+        <int>3</int>
+      </occupants>
+    </alone.in.deepspace.manager.RoomSave>
+    <alone.in.deepspace.manager.RoomSave>
+      <x>131</x>
+      <y>140</y>
+      <type>1</type>
       <occupants>
         <int>0</int>
-      </occupants>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>131</x>
-      <y>136</y>
-      <type>1</type>
-      <occupants>
-        <int>1</int>
-      </occupants>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>131</x>
-      <y>137</y>
-      <type>1</type>
-      <occupants>
-        <int>1</int>
-      </occupants>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>131</x>
-      <y>138</y>
-      <type>1</type>
-      <occupants>
-        <int>1</int>
-      </occupants>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>132</x>
-      <y>136</y>
-      <type>1</type>
-      <occupants>
-        <int>1</int>
-      </occupants>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>132</x>
-      <y>137</y>
-      <type>1</type>
-      <occupants>
-        <int>1</int>
-      </occupants>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>132</x>
-      <y>138</y>
-      <type>1</type>
-      <occupants>
-        <int>1</int>
-      </occupants>
-    </alone.in.deepspace.manager.RoomSave>
-    <alone.in.deepspace.manager.RoomSave>
-      <x>131</x>
-      <y>140</y>
-      <type>1</type>
-      <occupants>
+        <int>6</int>
         <int>2</int>
       </occupants>
     </alone.in.deepspace.manager.RoomSave>
@@ -16861,6 +16867,8 @@
       <y>141</y>
       <type>1</type>
       <occupants>
+        <int>0</int>
+        <int>6</int>
         <int>2</int>
       </occupants>
     </alone.in.deepspace.manager.RoomSave>
@@ -16869,6 +16877,8 @@
       <y>142</y>
       <type>1</type>
       <occupants>
+        <int>0</int>
+        <int>6</int>
         <int>2</int>
       </occupants>
     </alone.in.deepspace.manager.RoomSave>
@@ -16877,6 +16887,8 @@
       <y>140</y>
       <type>1</type>
       <occupants>
+        <int>0</int>
+        <int>6</int>
         <int>2</int>
       </occupants>
     </alone.in.deepspace.manager.RoomSave>
@@ -16885,6 +16897,8 @@
       <y>141</y>
       <type>1</type>
       <occupants>
+        <int>0</int>
+        <int>6</int>
         <int>2</int>
       </occupants>
     </alone.in.deepspace.manager.RoomSave>
@@ -16893,6 +16907,8 @@
       <y>142</y>
       <type>1</type>
       <occupants>
+        <int>0</int>
+        <int>6</int>
         <int>2</int>
       </occupants>
     </alone.in.deepspace.manager.RoomSave>
@@ -16902,40 +16918,114 @@
       <id>0</id>
       <lastname>Roman</lastname>
       <firstname>Craig </firstname>
-      <relations/>
-      <old>24.679999999999986</old>
-      <x>135</x>
-      <y>126</y>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>2</id>
+          <relationId>0</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>6</id>
+          <relationId>2</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>24.839999999999982</old>
+      <x>137</x>
+      <y>135</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>1</id>
       <lastname>Tucker</lastname>
       <firstname>Mitchell </firstname>
-      <relations/>
-      <old>24.679999999999986</old>
-      <x>135</x>
-      <y>126</y>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>3</id>
+          <relationId>0</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>5</id>
+          <relationId>2</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>24.839999999999982</old>
+      <x>141</x>
+      <y>127</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>2</id>
-      <lastname>Bishop</lastname>
+      <lastname>Roman</lastname>
       <firstname>Marsha </firstname>
-      <relations/>
-      <old>24.679999999999986</old>
-      <x>135</x>
-      <y>126</y>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>0</id>
+          <relationId>0</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>6</id>
+          <relationId>2</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>24.839999999999982</old>
+      <x>137</x>
+      <y>136</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>3</id>
-      <lastname>Booth</lastname>
+      <lastname>Tucker</lastname>
       <firstname>Mindy </firstname>
-      <relations/>
-      <old>24.679999999999986</old>
-      <x>142</x>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>1</id>
+          <relationId>0</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>5</id>
+          <relationId>2</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>24.839999999999982</old>
+      <x>138</x>
+      <y>128</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>5</id>
+      <lastname>Tucker</lastname>
+      <firstname>Gene </firstname>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>3</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>1</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>0.14</old>
+      <x>143</x>
       <y>127</y>
+      <gender>MALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>6</id>
+      <lastname>Roman</lastname>
+      <firstname>Morgan </firstname>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>2</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>0</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>0.12000000000000001</old>
+      <x>131</x>
+      <y>147</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
   </characters>

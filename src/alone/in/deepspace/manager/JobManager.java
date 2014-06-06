@@ -29,6 +29,7 @@ import alone.in.deepspace.model.jobCheck.CharacterIsHungry;
 import alone.in.deepspace.model.jobCheck.CharacterIsTired;
 import alone.in.deepspace.model.jobCheck.CharacterPlayTime;
 import alone.in.deepspace.model.jobCheck.CheckEmptyFactory;
+import alone.in.deepspace.model.jobCheck.CheckGardenIsOk;
 import alone.in.deepspace.model.jobCheck.CheckLowFood;
 import alone.in.deepspace.model.jobCheck.JobCheck;
 import alone.in.deepspace.util.Log;
@@ -49,7 +50,8 @@ public class JobManager {
 
 	private JobCheck[]		_jobsCheck = {
 			new CheckLowFood(),
-			new CheckEmptyFactory()			
+			new CheckEmptyFactory(),
+			new CheckGardenIsOk()
 	};
 
 	private JobCheck[]		_routineJobsCheck = {

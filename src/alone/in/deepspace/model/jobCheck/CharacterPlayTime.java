@@ -18,7 +18,7 @@ public class CharacterPlayTime implements JobCheck {
 		}
 
 		UserItem toy = ServiceManager.getWorldMap().getRandomToy(character.getX(), character.getY());
-		if (toy != null) {
+		if (toy == null) {
 			return null;
 		}
 		

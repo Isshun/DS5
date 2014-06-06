@@ -48,7 +48,7 @@ public class Constant {
 	public static final double 	SLEEP_ON_FLOOR_ENERGY_RESTORE = 60;
 	public static final double 	SLEEP_ON_FLOOR_HAPINESS_RESTORE = -10;
 	public static final int 	DURATION_MULTIPLIER 	= 10;
-	public static final int 	CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS = 20;
+	public static final int 	CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS = 0;
 	public static final int 	CHARACTER_INVENTORY_SPACE = 20;
 	public static final double 	CHARACTER_GROW_PER_UPDATE = 0.001;
 	public static final int 	CHARACTER_DELAY_BEFORE_FIRST_CHILD = 0;

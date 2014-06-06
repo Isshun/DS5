@@ -1,11 +1,13 @@
 BEGIN GAME
-MATTER	5430
+MATTER	5388
 SPICE	0
 WATER	0
 END GAME
 BEGIN CHARACTERS
-135	126	1	Craig Roman
-135	126	1	Mitchell Tucker
-135	126	2	Marsha Bishop
-142	127	2	Mindy Booth
+137	135	1	Craig Roman
+141	127	1	Mitchell Tucker
+137	136	2	Marsha Roman
+138	128	2	Mindy Tucker
+143	127	1	Gene Tucker
+131	147	2	Morgan Roman
 END CHARACTERS
