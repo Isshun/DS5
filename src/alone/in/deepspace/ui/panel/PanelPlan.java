@@ -12,13 +12,14 @@ import alone.in.deepspace.engine.ui.ButtonView;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.ui.UserInterface;
+import alone.in.deepspace.ui.UserInteraction.Action;
 
 public class PanelPlan extends BaseRightPanel {
-	public enum PanelMode {
+	public enum Planning {
 		GATHER, MINING, DUMP, NONE
 	}
 
-	private List<View> _buttons;
+	private List<View> 				_buttons;
 
 	public PanelPlan(UserInterface.Mode mode, Key shortcut) {
 		super(mode, shortcut);
@@ -37,7 +38,7 @@ public class PanelPlan extends BaseRightPanel {
 			@Override
 			public void onClick(View view) {
 				clickOnIcon(view);
-				_ui.select(PanelMode.GATHER);
+				_interaction.set(Action.SET_PLAN, Planning.GATHER);
 			}
 		});
 		btGather.setShortcut(0);
@@ -53,7 +54,7 @@ public class PanelPlan extends BaseRightPanel {
 			@Override
 			public void onClick(View view) {
 				clickOnIcon(view);
-				_ui.select(PanelMode.MINING);
+				_interaction.set(Action.SET_PLAN, Planning.DUMP);
 			}
 		});
 		btMining.setShortcut(0);
@@ -69,7 +70,7 @@ public class PanelPlan extends BaseRightPanel {
 			@Override
 			public void onClick(View view) {
 				clickOnIcon(view);
-				_ui.select(PanelMode.DUMP);
+				_interaction.set(Action.SET_PLAN, Planning.MINING);
 			}
 		});
 		btDump.setShortcut(0);

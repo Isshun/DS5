@@ -44,10 +44,10 @@ public class PanelCrew extends BaseRightPanel {
 	private static final int 	CREW_LINE_HEIGHT = 22;
 	private static final int 	CREW_LINE_WIDTH  = FRAME_WIDTH - Constant.UI_PADDING * 2;
 
-	private CharacterManager    _characterManager;
-	private List<ViewHolder> 	_viewHolderList;
-	private TextView 			_lbCount;
-	protected int 				_mode;
+	private CharacterManager    		_characterManager;
+	private List<ViewHolder> 			_viewHolderList;
+	private TextView 					_lbCount;
+	protected int 						_mode;
 
 	public PanelCrew(Mode mode, Key shortcut) {
 		super(mode, shortcut);

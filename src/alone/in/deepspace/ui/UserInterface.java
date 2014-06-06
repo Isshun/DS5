@@ -23,7 +23,7 @@ import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.room.Room;
-import alone.in.deepspace.model.room.Room.Type;
+import alone.in.deepspace.ui.UserInteraction.Action;
 import alone.in.deepspace.ui.panel.BasePanel;
 import alone.in.deepspace.ui.panel.PanelBuild;
 import alone.in.deepspace.ui.panel.PanelCharacter;
@@ -34,9 +34,7 @@ import alone.in.deepspace.ui.panel.PanelJobs;
 import alone.in.deepspace.ui.panel.PanelManager;
 import alone.in.deepspace.ui.panel.PanelMessage;
 import alone.in.deepspace.ui.panel.PanelPlan;
-import alone.in.deepspace.ui.panel.PanelPlan.PanelMode;
 import alone.in.deepspace.ui.panel.PanelRoom;
-import alone.in.deepspace.ui.panel.PanelRoom.PanelRoomListener;
 import alone.in.deepspace.ui.panel.PanelScience;
 import alone.in.deepspace.ui.panel.PanelSecurity;
 import alone.in.deepspace.ui.panel.PanelShortcut;
@@ -45,11 +43,7 @@ import alone.in.deepspace.ui.panel.PanelSystem;
 import alone.in.deepspace.ui.panel.PanelTooltip;
 import alone.in.deepspace.util.Constant;
 
-public class UserInterface implements PanelRoomListener {
-	enum Action {
-		REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, BUILD_ROOM
-	}
-
+public class UserInterface {
 	private static UserInterface		_self;
 	private RenderWindow				_app;
 	private Viewport					_viewport;
@@ -69,21 +63,17 @@ public class UserInterface implements PanelRoomListener {
 	private Game 						_game;
 	private boolean 					_mouseOnMap;
 	private BasePanel 					_currentPanel;
-	private	Action						_action;
 	private UserInterfaceCursor			_cursor;
 	private long 						_lastLeftClick;
 	private int 						_lastInput;
 	private PanelMessage 				_panelMessage;
-	
+	private ToolTip 					_selectedTooltip;
 	private Character 					_selectedCharacter;
 	private ItemBase 					_selectedItem;
 	private WorldResource				_selectedResource;
-	private ToolTip 					_selectedTooltip;
-	private ItemInfo 					_selectedItemInfo;
 	private WorldArea 					_selectedArea;
-	private PanelMode 					_selectedPlan;
-	private Type 						_selectedRoomType;
 	private Room 						_selectedRoom;
+	private ItemInfo 					_selectedItemInfo;
 	private int 						_update;
 
 	private	BasePanel[]					_panels = new BasePanel[] {
@@ -125,8 +115,9 @@ public class UserInterface implements PanelRoomListener {
 	public UserInterface(RenderWindow app) {
 		_self = this;
 		_app = app;
+		_interaction = new UserInteraction(this);
 		_panelMessage = new PanelMessage();
-		_panelMessage.init(this, null);
+		_panelMessage.init(this, _interaction, null);
 	}
 
 	public void onCreate(Game game) {
@@ -138,10 +129,9 @@ public class UserInterface implements PanelRoomListener {
 		_cursor = new UserInterfaceCursor();
 		
 		for (BasePanel panel: _panels) {
-			panel.init(this, _viewport);
+			panel.init(this, _interaction, _viewport);
 		}
 		
-		_interaction = new UserInteraction();
 
 		setMode(Mode.NONE);
 	}
@@ -197,25 +187,28 @@ public class UserInterface implements PanelRoomListener {
 	public int 				getRelativePosYMax(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getMinScale() / Constant.TILE_HEIGHT); }
 	public int 				getRelativePosXMin(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
 	public int 				getRelativePosYMin(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
+	public ToolTip			getSelectedTooltip() { return _selectedTooltip; }
 	public Character 		getSelectedCharacter() { return _selectedCharacter; }
 	public WorldArea		getSelectedArea() { return _selectedArea; }
 	public ItemBase 		getSelectedItem() { return _selectedItem; }
 	public WorldResource	getSelectedResource() { return _selectedResource; }
 	public ItemInfo			getSelectedItemInfo() { return _selectedItemInfo; }
-	public ToolTip			getSelectedTooltip() { return _selectedTooltip; }
-	
+	public Room 			getSelectedRoom() { return _selectedRoom; }
+
 	public void toogleMode(Mode mode) {
 		setMode(_mode != mode ? mode : Mode.NONE);
 	}
 
-	private void setMode(Mode mode) {
+	public void setMode(Mode mode) {
+		_interaction.clean();
 		MainRenderer.getInstance().setMode(mode);
 
 		_mode = mode;
 		_menu = null;
 		
 		if (mode == Mode.NONE) {
-			cleanSelect();
+			_interaction.clean();
+			clean();
 		}
 
 		for (BasePanel panel: _panels) {
@@ -255,7 +248,7 @@ public class UserInterface implements PanelRoomListener {
 		_panelMessage.draw(_app, null);
 
 		if (_mouseOnMap) {
-			if (_selectedRoomType != null || _selectedPlan != null) {
+			if (_interaction.isAction(Action.SET_ROOM) || _interaction.isAction(Action.SET_PLAN) || _interaction.isAction(Action.BUILD_ITEM)) {
 				if (_keyLeftPressed) {
 					_cursor.draw(_app, _viewport.getRender(), Math.min(_keyPressPosX, _keyMovePosX),
 							Math.min(_keyPressPosY, _keyMovePosY),
@@ -384,8 +377,8 @@ public class UserInterface implements PanelRoomListener {
 		_keyLeftPressed = false;
 
 		// Set plan
-		if (_selectedPlan != null) {
-			_interaction.plan(_selectedPlan,
+		if (_interaction.isAction(Action.SET_PLAN)) {
+			_interaction.plan(
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
@@ -401,8 +394,8 @@ public class UserInterface implements PanelRoomListener {
 				return true;
 			}
 
-			if (_selectedRoomType != null) {
-				_interaction.roomType(_selectedRoomType,
+			if (_interaction.isAction(Action.SET_ROOM)) {
+				_interaction.roomType(
 						_keyPressPosX, _keyPressPosY,
 						Math.min(_keyPressPosX, _keyMovePosX),
 						Math.min(_keyPressPosY, _keyMovePosY),
@@ -412,29 +405,8 @@ public class UserInterface implements PanelRoomListener {
 			return true;
 		}
 		
-		// Remove item
-		if (_action == Action.REMOVE_ITEM) {
-			_interaction.removeItem(
-					Math.min(_keyPressPosX, _keyMovePosX),
-					Math.min(_keyPressPosY, _keyMovePosY),
-					Math.max(_keyPressPosX, _keyMovePosX),
-					Math.max(_keyPressPosY, _keyMovePosY));
-			return true;
-		}
-
-		// Remove structure
-		if (_action == Action.REMOVE_STRUCTURE) {
-			_interaction.removeStructure(
-					Math.min(_keyPressPosX, _keyMovePosX),
-					Math.min(_keyPressPosY, _keyMovePosY),
-					Math.max(_keyPressPosX, _keyMovePosX),
-					Math.max(_keyPressPosY, _keyMovePosY));
-			return true;
-		}
-
-		// Build item
-		if (_action == Action.BUILD_ITEM) {
-			_interaction.planBuild(_selectedItemInfo,
+		if (_interaction.hasAction()) {
+			_interaction.action(
 					Math.min(_keyPressPosX, _keyMovePosX),
 					Math.min(_keyPressPosY, _keyMovePosY),
 					Math.max(_keyPressPosX, _keyMovePosX),
@@ -448,7 +420,7 @@ public class UserInterface implements PanelRoomListener {
 		}
 
 		// Select character
-		if (_interaction.getMode() == UserInteraction.Mode.NONE) {// && _menu.getCode() == UserInterfaceMenu.CODE_MAIN) {
+		if (_interaction.isAction(Action.NONE)) {
 			Character c = _characteres.getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
 			if (c != null && c != _selectedCharacter) {
 				select(c);
@@ -456,7 +428,7 @@ public class UserInterface implements PanelRoomListener {
 			else  {
 				if (_selectedCharacter != null) {
 					_selectedCharacter.setSelected(false);
-					_selectedCharacter = null;
+					clean();
 				}
 
 				int relX = getRelativePosX(x);
@@ -490,11 +462,11 @@ public class UserInterface implements PanelRoomListener {
 			_viewport.update(x, y);
 		}
 
-		else if (_selectedRoomType != null) {
-			cleanSelect();
+		else if (_interaction.isAction(Action.SET_ROOM)) {
+			_interaction.clean();
 		}
 		
-		else if (_mode == Mode.ROOM && _selectedRoomType == Room.Type.NONE) {
+		else if (_mode == Mode.ROOM && _interaction.getSelectedRoomType() == Room.Type.NONE) {
 			final Room room = Game.getRoomManager().get(getRelativePosX(x), getRelativePosY(y));
 			if (room != null) {
 				_menu = new RoomContextualMenu(_app, 0, new Vector2f(x, y), new Vector2f(100, 120), _viewport, room);
@@ -509,13 +481,7 @@ public class UserInterface implements PanelRoomListener {
 				setMode(Mode.CREW);
 				return;
 			}
-			//			if (_panelCharacter.getCharacter() != null) {
-			//				JobManager.getInstance().addMoveJob(_panelCharacter.getCharacter(), getRelativePosX(x), getRelativePosY(y));
-			//				_keyRightPressed = false;
-			//				return;
-			//			}
-
-			_selectedPlan = PanelPlan.PanelMode.NONE;
+			_interaction.clean();
 			toogleMode(Mode.NONE);
 		}
 
@@ -524,106 +490,6 @@ public class UserInterface implements PanelRoomListener {
 
 	public Mode getMode() {
 		return _mode;
-	}
-
-	// TODO
-	private void cleanSelect() {
-		_action = null;
-		_selectedPlan = null;
-		_selectedRoom = null;
-		_selectedRoomType = null;
-		_selectedArea = null;
-		if (_selectedCharacter != null) {
-			_selectedCharacter.setSelected(false);
-		}
-		_selectedCharacter = null;
-		if (_selectedItem != null) {
-			_selectedItem.setSelected(false);
-		}
-		_selectedItem = null;
-		_selectedResource = null;
-		_selectedItemInfo = null;
-		_selectedTooltip = null;
-	}
-
-	public void select(ItemInfo itemInfo) {
-		cleanSelect();
-		setMode(Mode.INFO);
-		_selectedItemInfo = itemInfo;
-	}
-
-	public void select(ItemInfo info, Mode mode) {
-		if (mode == Mode.BUILD) {
-			cleanSelect();
-			setMode(Mode.BUILD);
-			_action = Action.BUILD_ITEM;
-			_selectedItemInfo = info;
-		}
-	}
-
-	public void select(Character character) {
-		cleanSelect();
-		setMode(Mode.CHARACTER);
-		_selectedCharacter = character;
-		if (_selectedCharacter != null) {
-			_selectedCharacter.setSelected(true);
-		}
-	}
-	
-	public void select(Room room) {
-		cleanSelect();
-		setMode(Mode.ROOM);
-		_selectedRoom = room;
-	}
-
-	public void select(WorldResource resource) {
-		cleanSelect();
-		setMode(Mode.INFO);
-		_selectedResource = resource;
-	}
-
-	public void select(ItemBase item) {
-		cleanSelect();
-		setMode(Mode.INFO);
-		_selectedItem = item;
-	}
-
-	public void select(WorldArea area) {
-		cleanSelect();
-		setMode(Mode.INFO);
-		_selectedArea = area;
-	}
-
-	public void select(ToolTip tooltip) {
-		cleanSelect();
-		setMode(Mode.TOOLTIP);
-		_selectedTooltip = tooltip;
-	}
-	
-	public void select(PanelPlan.PanelMode plan) {
-		cleanSelect();
-		setMode(Mode.PLAN);
-		_selectedPlan = plan;
-	}
-
-	public void select(Room.Type roomType) {
-		_selectedRoomType = roomType;
-	}
-
-	public Game getGame() {
-		return _game;
-	}
-
-	public void back() {
-		setMode(Mode.NONE);
-	}
-
-	public Room getSelectedRoom() {
-		return _selectedRoom;
-	}
-
-	public Type getSelectedRoomType() {
-		return _selectedRoomType;
 	}
 
 	public void onEvent(Event event, Clock timer) {
@@ -681,4 +547,67 @@ public class UserInterface implements PanelRoomListener {
 		_panelMessage.addMessage(level, message);
 	}
 
+	public void back() {
+		setMode(Mode.NONE);
+	}
+
+	public void select(ToolTip tooltip) {
+		_interaction.clean();
+		_selectedTooltip = tooltip;
+		setMode(Mode.TOOLTIP);
+	}
+
+	public void select(Character character) {
+		clean();
+		setMode(Mode.CHARACTER);
+		_selectedCharacter = character;
+		if (_selectedCharacter != null) {
+			_selectedCharacter.setSelected(true);
+		}
+	}
+	
+	public void select(Room room) {
+		clean();
+		setMode(Mode.ROOM);
+		_selectedRoom = room;
+	}
+
+	public void select(WorldResource resource) {
+		clean();
+		setMode(Mode.INFO);
+		_selectedResource = resource;
+	}
+
+	public void select(ItemBase item) {
+		clean();
+		setMode(Mode.INFO);
+		_selectedItem = item;
+	}
+
+	public void select(WorldArea area) {
+		clean();
+		setMode(Mode.INFO);
+		_selectedArea = area;
+	}
+
+	public void select(ItemInfo itemInfo) {
+		clean();
+		setMode(Mode.INFO);
+		_selectedItemInfo = itemInfo;
+	}
+
+	public void clean() {
+		_selectedArea = null;
+		_selectedItemInfo = null;
+		if (_selectedCharacter != null) {
+			_selectedCharacter.setSelected(false);
+		}
+		_selectedCharacter = null;
+		if (_selectedItem != null) {
+			_selectedItem.setSelected(false);
+		}
+		_selectedItem = null;
+		_selectedResource = null;
+		_selectedTooltip = null;
+	}
 }

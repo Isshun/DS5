@@ -12,30 +12,46 @@ import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.model.room.Room.Type;
-import alone.in.deepspace.ui.panel.PanelPlan.PanelMode;
+import alone.in.deepspace.ui.UserInterface.Mode;
+import alone.in.deepspace.ui.panel.PanelPlan.Planning;
 import alone.in.deepspace.util.Log;
 
 public class UserInteraction {
-	public enum Mode { NONE, BUILD, EREASE, SELECT };
+	public enum Action {
+		NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_ROOM, SET_PLAN
+	}
 
 	Texture					_cursorTexture;
-	Mode					_mode;
+	Action					_action;
 	int						_startPressX;
 	int						_startPressY;
 	int						_mouseMoveX;
 	int						_mouseMoveY;
 	Mouse.Button			_button;
 	
-	UserInteraction() {
+	private Planning 					_selectedPlan;
+	private Type 						_selectedRoomType;
+	private Room 						_selectedRoom;
+	private UserInterface				_ui;
+	private ItemInfo _selectedItemInfo;
+
+	UserInteraction(UserInterface ui) {
 		_startPressX = 0;
 		_startPressY = 0;
 		_mouseMoveX = 0;
 		_mouseMoveY = 0;
 		_button = null;
-		_mode = Mode.NONE;
+		_action = Action.NONE;
+		_ui = ui;
 	}
 
-	public void	planBuild(ItemInfo info, int startX, int startY, int toX, int toY) {
+	public Action  getAction() { return _action; }
+
+	public void	planBuild(int startX, int startY, int toX, int toY) {
+		if (_selectedItemInfo == null) {
+			return;
+		}
+		
 		for (int x = toX; x >= startX; x--) {
 			for (int y = toY; y >= startY; y--) {
 
@@ -51,7 +67,7 @@ public class UserInteraction {
 				
 				//TODO
 				// Structure
-				if (info.name.equals("base.room")) {
+				if (_selectedItemInfo.name.equals("base.room")) {
 					if (x == startX || x == toX || y == startY || y == toY) {
 						Log.warning("1");
 						// TODO
@@ -68,10 +84,10 @@ public class UserInteraction {
 					}
 				} else {
 					// item = ServiceManager.getWorldMap().putItem(x, y, _menu.getBuildItemType());
-					if (info != null) {
-						Log.warning("3 " + info.name);
+					if (_selectedItemInfo != null) {
+						Log.warning("3 " + _selectedItemInfo.name);
 						// TODO
-						JobManager.getInstance().build(info, x, y);
+						JobManager.getInstance().build(_selectedItemInfo, x, y);
 						// item = ServiceManager.getWorldMap().putItem(x, y, type);
 					}
 				}
@@ -89,12 +105,6 @@ public class UserInteraction {
 			}
 		}
 	}
-
-	Mode getMode() { return _mode; }
-	void setMode(Mode mode) { _mode = mode; }
-	//	void selectBuildItem(BaseItem.Type type) { _mode = Mode.MODE_BUILD; _itemType = type; }
-	//	void cancel() { _mode = Mode.MODE_NONE; _itemType = BaseItem.Type.NONE; }
-	//	BaseItem.Type getBuildItem() { return _itemType; }
 
 	public void removeStructure(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
@@ -131,8 +141,12 @@ public class UserInteraction {
 		}
 	}
 
-	public void plan(PanelMode plan, int startX, int startY, int toX, int toY) {
-		switch (plan) {
+	public void plan(int startX, int startY, int toX, int toY) {
+		if (_selectedPlan == null) {
+			return;
+		}
+		
+		switch (_selectedPlan) {
 		case DUMP: planDump(startX, startY, toX, toY); break;
 		case GATHER: planGather(startX, startY, toX, toY); break;
 		case MINING: planMining(startX, startY, toX, toY); break;
@@ -140,13 +154,77 @@ public class UserInteraction {
 		}
 	}
 
-	public void roomType(Type roomType, int clickX, int clickY, int fromX, int fromY, int toX, int toY) {
-		if (roomType == Room.Type.NONE) {
-			Game.getRoomManager().removeRoom(fromX, fromY, toX, toY, roomType);
+	public void roomType(int clickX, int clickY, int fromX, int fromY, int toX, int toY) {
+		if (_selectedRoomType == null) {
+			return;
+		}
+		
+		if (_selectedRoomType == Room.Type.NONE) {
+			Game.getRoomManager().removeRoom(fromX, fromY, toX, toY, _selectedRoomType);
 		} else {
-			Game.getRoomManager().putRoom(clickX, clickY, fromX, fromY, toX, toY, roomType, null);
+			Game.getRoomManager().putRoom(clickX, clickY, fromX, fromY, toX, toY, _selectedRoomType, null);
 		}
 		
 	}
 
+	public void set(Action action, Type roomType) {
+		_action = action;
+		_selectedRoomType = roomType;
+	}
+
+	public boolean isAction(Action action) {
+		return _action.equals(action);
+	}
+
+	public void select(ItemInfo info, Mode mode) {
+		if (mode == Mode.BUILD) {
+			clean();
+			_ui.setMode(Mode.BUILD);
+			_action = Action.BUILD_ITEM;
+			_selectedItemInfo = info;
+		}
+	}
+
+	public Type getSelectedRoomType() {
+		return _selectedRoomType;
+	}
+
+	public void clean() {
+		_action = Action.NONE;
+		_selectedPlan = null;
+		_selectedRoom = null;
+		_selectedRoomType = null;
+		_selectedItemInfo = null;
+	}
+
+	public void set(Action action, Planning plan) {
+		_action = action;
+		_selectedPlan = plan;
+	}
+
+	public void set(Action action, ItemInfo info) {
+		_action = action;
+		_selectedItemInfo = info;
+	}
+
+	public void action(int fromX, int fromY, int toX, int toY) {
+		// Remove item
+		if (_action == Action.REMOVE_ITEM) {
+			removeItem(fromX, fromY, toX, toY);
+		}
+
+		// Remove structure
+		if (_action == Action.REMOVE_STRUCTURE) {
+			removeStructure(fromX, fromY, toX, toY);
+		}
+
+		// Build item
+		if (_action == Action.BUILD_ITEM) {
+			planBuild(fromX, fromY, toX, toY);
+		}
+	}
+
+	public boolean hasAction() {
+		return _action != null && _action != Action.NONE;
+	}
 }

@@ -21,7 +21,7 @@ public abstract class Job {
 	}
 	
 	public static enum Abort {
-		NO_COMPONENTS, INTERRUPTE, BLOCKED, NO_LEFT_CARRY, INVALID, DIED
+		NO_COMPONENTS, INTERRUPTE, BLOCKED, NO_LEFT_CARRY, INVALID, DIED, NO_BUILD_RESOURCES
 	};
 
 	private static int			_count;
@@ -118,6 +118,7 @@ public abstract class Job {
 			switch (_reason) {
 			case BLOCKED: 		oss += " (blocked: #" + _blocked + ")"; break;
 			case INTERRUPTE: 	oss += " (interrupte)"; break;
+			case NO_BUILD_RESOURCES:
 			case NO_COMPONENTS: oss += " (no matter)"; break;
 			case INVALID: 		oss += " (invalide)"; break;
 			case NO_LEFT_CARRY: oss += " (no left carry)"; break;

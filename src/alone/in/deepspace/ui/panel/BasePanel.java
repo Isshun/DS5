@@ -1,6 +1,5 @@
 package alone.in.deepspace.ui.panel;
 
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Keyboard.Key;
@@ -8,6 +7,7 @@ import org.jsfml.window.Mouse;
 
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.ui.FrameLayout;
+import alone.in.deepspace.ui.UserInteraction;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
@@ -25,6 +25,7 @@ public abstract class BasePanel extends FrameLayout {
 	protected Viewport 			_viewport;
 	private boolean 			_alwaysVisible;
 	private Key 				_shortcut;
+	protected UserInteraction 	_interaction;
 		  
 	public void			toogle() { _isVisible = !_isVisible; }
 	public void			open() { _isVisible = true; }
@@ -44,8 +45,9 @@ public abstract class BasePanel extends FrameLayout {
 		_isVisible = alwaysVisible;
 	}
 
-	public void init(UserInterface ui, Viewport viewport) {
+	public void init(UserInterface ui, UserInteraction interaction, Viewport viewport) {
 		_ui = ui;
+		_interaction = interaction;
 		_viewport = viewport;
 		onCreate();
 	}

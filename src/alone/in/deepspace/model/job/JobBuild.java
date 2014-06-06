@@ -67,7 +67,7 @@ public class JobBuild extends Job {
 		if (result == ResourceManager.Message.NO_MATTER) {
 			UserInterface.getInstance().displayMessage("not enough matter", _posX, _posY);
 			Log.debug("Character #" + character.getId() + ": not enough matter");
-			JobManager.getInstance().abort(this, Job.Abort.NO_COMPONENTS);
+			JobManager.getInstance().abort(this, Job.Abort.NO_BUILD_RESOURCES);
 			return true;
 		}
 

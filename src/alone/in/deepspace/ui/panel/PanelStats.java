@@ -7,6 +7,7 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.window.Keyboard.Key;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.StatsData;
 import alone.in.deepspace.engine.ui.ImageView;
 import alone.in.deepspace.engine.ui.TextView;
@@ -54,7 +55,7 @@ public class PanelStats extends BaseRightPanel {
 
 	@Override
 	public void onRefresh(int frame) {
-		_stats = _ui.getGame().getStatsManager();
+		_stats = Game.getStatsManager();
 //		_image.
 		
 		addData(0, _stats.nbCharacter, Color.RED);

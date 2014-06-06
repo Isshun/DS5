@@ -124,6 +124,7 @@ public class PanelJobs extends BaseRightPanel {
 			switch (job.getReason()) {
 			case BLOCKED: left = "(blocked: #" + job.getNbBlocked() + ")"; break;
 			case INTERRUPTE: left = "(interrupte)"; break;
+			case NO_BUILD_RESOURCES:
 			case NO_COMPONENTS: left = "(no matter)"; break;
 			case INVALID: left = "(invalide)"; break;
 			case NO_LEFT_CARRY: left = "(no left carry)"; break;

@@ -27,14 +27,11 @@ import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.model.room.Room.Type;
 import alone.in.deepspace.model.room.RoomOption;
+import alone.in.deepspace.ui.UserInteraction.Action;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
 
 public class PanelRoom extends BaseRightPanel {
-	public interface PanelRoomListener {
-		void select(Room.Type roomType);
-	}
-
 	private class PanelEntry {
 		public Key				shortcut;
 		public String			label;
@@ -49,7 +46,7 @@ public class PanelRoom extends BaseRightPanel {
 			this.onClickListener = new OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					_ui.select(roomType);
+					_interaction.set(Action.SET_ROOM, roomType);
 					clearButtons();
 					view.setBackgroundColor(new Color(29, 85, 96));
 					view.setBorderColor(new Color(161, 255, 255));
@@ -104,10 +101,6 @@ public class PanelRoom extends BaseRightPanel {
 		}
 
 		createRoomInfo(0, 250);
-	}
-
-	@Override
-	protected void onOpen() {
 	}
 
 	protected boolean onKey(Key key) {
@@ -187,7 +180,7 @@ public class PanelRoom extends BaseRightPanel {
 
 	@Override
 	public void onRefresh(int frame) {
-		if (_ui.getSelectedRoomType() == null) {
+		if (_interaction.getSelectedRoomType() == null) {
 			clearButtons();
 		}
 

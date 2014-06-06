@@ -22,6 +22,7 @@ import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.CategoryInfo;
 import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.ui.UserInteraction.Action;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.StringUtils;
 
@@ -203,7 +204,7 @@ public class PanelBuild extends BaseRightPanel {
 				@Override
 				public void onClick(View view) {
 					clickOnIcon(view);
-					_ui.select(info, Mode.BUILD);
+					_interaction.set(Action.BUILD_ITEM, info);
 				}
 			});
 			if (index < 10) {
@@ -224,11 +225,6 @@ public class PanelBuild extends BaseRightPanel {
 		icon.resetPos();
 
 		return icon;
-	}
-
-	public void select(ItemInfo info) {
-		_panelMode = info == null ? PanelMode.NONE : PanelMode.BUILD_ITEM;
-		_currentSelected = info;
 	}
 
 	@Override
@@ -286,7 +282,7 @@ public class PanelBuild extends BaseRightPanel {
 			icon.setBackgroundColor(new Color(29, 85, 96, 100));
 			icon.setBorderColor(null);
 		}
-		select((ItemInfo)view.getData());
+		//select((ItemInfo)view.getData());
 //		_ui.select((ItemInfo)view.getData());
 		view.setBackgroundColor(new Color(29, 85, 96));
 		view.setBorderColor(new Color(161, 255, 255));

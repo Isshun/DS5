@@ -221,7 +221,7 @@ public class JobManager {
 			if (job.getCharacter() == null && job.getFail() <= 0) {
 				if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter().value == 0) {
 					// TODO
-					job.setFail(Abort.NO_COMPONENTS, MainRenderer.getFrame());
+					job.setFail(Abort.NO_BUILD_RESOURCES, MainRenderer.getFrame());
 					continue;
 				}
 				if ((job.getAction() == Action.GATHER || job.getAction() == Action.MINING) && character.getSpace() == 0) {
