@@ -23,7 +23,7 @@ import alone.in.deepspace.util.ObjectPool;
 
 public class SpriteManager {
 	private static final int NB_SELECTOR_TILE = 4;
-	private static final int NB_ITEM_SELECTOR_TILE = 2;
+	private static final int NB_ITEM_SELECTOR_TILE = 4;
 	private static int 				_count;
 	private static SpriteManager 	_self;
 	private Map<Integer, Sprite>	_spritesCharacters;
@@ -79,7 +79,7 @@ public class SpriteManager {
 		}
 
 		_textureItemSelector = new Texture();
-		_textureItemSelector.loadFromFile((new File("res/Tilesets/item_selector_2.png")).toPath());
+		_textureItemSelector.loadFromFile((new File("res/Tilesets/item_selector.png")).toPath());
 		_itemSelectors = new Sprite[NB_ITEM_SELECTOR_TILE];
 		for (int i = 0; i < NB_ITEM_SELECTOR_TILE; i++) {
 			_itemSelectors[i] = new Sprite(_textureItemSelector);
@@ -563,6 +563,10 @@ public class SpriteManager {
 
 	public Sprite getSelector(int tile) {
 		return _selectors[tile % NB_SELECTOR_TILE];
+	}
+
+	public Sprite getSelectorCorner(int corner) {
+		return _itemSelectors[corner];
 	}
 
 	public Sprite getSelector(ItemBase item, int frame) {

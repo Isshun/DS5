@@ -22,6 +22,7 @@ import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.model.room.Room.Type;
+import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.ui.panel.BasePanel;
 import alone.in.deepspace.ui.panel.PanelBuild;
 import alone.in.deepspace.ui.panel.PanelCharacter;
@@ -522,7 +523,9 @@ public class UserInterface implements PanelRoomListener {
 		return _mode;
 	}
 
+	// TODO
 	private void cleanSelect() {
+		_action = null;
 		_selectedPlan = null;
 		_selectedRoom = null;
 		_selectedRoomType = null;
@@ -531,6 +534,9 @@ public class UserInterface implements PanelRoomListener {
 			_selectedCharacter.setSelected(false);
 		}
 		_selectedCharacter = null;
+		if (_selectedItem != null) {
+			_selectedItem.setSelected(false);
+		}
 		_selectedItem = null;
 		_selectedResource = null;
 		_selectedItemInfo = null;
@@ -541,6 +547,15 @@ public class UserInterface implements PanelRoomListener {
 		cleanSelect();
 		setMode(Mode.INFO);
 		_selectedItemInfo = itemInfo;
+	}
+
+	public void select(ItemInfo info, Mode mode) {
+		if (mode == Mode.BUILD) {
+			cleanSelect();
+			setMode(Mode.BUILD);
+			_action = Action.BUILD_ITEM;
+			_selectedItemInfo = info;
+		}
 	}
 
 	public void select(Character character) {

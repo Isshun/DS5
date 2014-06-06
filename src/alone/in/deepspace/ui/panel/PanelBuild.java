@@ -203,6 +203,7 @@ public class PanelBuild extends BasePanel {
 				@Override
 				public void onClick(View view) {
 					clickOnIcon(view);
+					_ui.select(info, Mode.BUILD);
 				}
 			});
 			if (index < 10) {

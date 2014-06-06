@@ -4142,10 +4142,6 @@
             <string>base.meal</string>
             <string>base.meal</string>
             <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
             <string>base.seaweed</string>
             <string>base.seaweed</string>
             <string>base.seaweed</string>
@@ -7258,6 +7254,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.chessboard</name>
+        <matter>42</matter>
+      </item>
       <x>142</x>
       <y>127</y>
       <z>0</z>
@@ -16903,9 +16903,9 @@
       <lastname>Roman</lastname>
       <firstname>Craig </firstname>
       <relations/>
-      <old>24.02</old>
-      <x>150</x>
-      <y>150</y>
+      <old>24.679999999999986</old>
+      <x>135</x>
+      <y>126</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
@@ -16913,9 +16913,9 @@
       <lastname>Tucker</lastname>
       <firstname>Mitchell </firstname>
       <relations/>
-      <old>24.02</old>
-      <x>150</x>
-      <y>150</y>
+      <old>24.679999999999986</old>
+      <x>135</x>
+      <y>126</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
@@ -16923,9 +16923,9 @@
       <lastname>Bishop</lastname>
       <firstname>Marsha </firstname>
       <relations/>
-      <old>24.02</old>
-      <x>150</x>
-      <y>150</y>
+      <old>24.679999999999986</old>
+      <x>135</x>
+      <y>126</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
@@ -16933,9 +16933,9 @@
       <lastname>Booth</lastname>
       <firstname>Mindy </firstname>
       <relations/>
-      <old>24.02</old>
-      <x>150</x>
-      <y>150</y>
+      <old>24.679999999999986</old>
+      <x>142</x>
+      <y>127</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
   </characters>

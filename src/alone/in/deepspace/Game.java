@@ -85,15 +85,8 @@ public class Game implements ISavable {
 	}
 
 	public void onRefresh() {
-		_mainRenderer.refresh(_frameRefresh);
-
 		_ui.onRefresh(_frameRefresh);
 		_frameRefresh++;
-		
-//		int mb = 1024 * 1024;
-//        Runtime runtime = Runtime.getRuntime();
-//        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
-//        System.out.println(used);
 	}
 
 	public void	onUpdate() {
@@ -309,6 +302,7 @@ public class Game implements ISavable {
 		_frame++;
 		
 		_mainRenderer.draw(_app, animProgress, renderTime);
+		_mainRenderer.refresh(_frameRefresh);
 //		
 //		Transform transform = new Transform();
 //		transform = _viewport.getViewTransform(transform);
