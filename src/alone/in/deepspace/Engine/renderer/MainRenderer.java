@@ -24,6 +24,7 @@ public class MainRenderer {
 	private RoomRenderer 			_roomRenderer;
 	private Mode 					_mode;
 
+	private static int 				_fps;
 	private static int 				_renderTime;
 	private static int 				_frame;
 	
@@ -109,5 +110,11 @@ public class MainRenderer {
 		if (_lightRenderer != null) {
 			_lightRenderer.refresh(item);
 		}
+	}
+	public void setFPS(int fps) {
+		_fps = fps;
+	}
+	public static int getFPS() {
+		return _fps;
 	}
 }

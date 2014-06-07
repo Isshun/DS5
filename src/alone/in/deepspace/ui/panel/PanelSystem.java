@@ -73,6 +73,6 @@ public class PanelSystem extends BasePanel {
         _lbRenderTime.setString("Rendering: " + MainRenderer.getRenderTime() + "ms");
         _lbMemoryUsed.setString("Heap: " + String.valueOf(used) + " / " + String.valueOf(total) + " Mo");
         _lbUpdate.setString("Update: " + String.valueOf(Main.getUpdateInterval()) + " ms");
-        _lbFloor.setString("Floor: " + ServiceManager.getWorldMap().getFloor());
+        _lbFloor.setString("FPS: " + MainRenderer.getFPS());
 	}
 }

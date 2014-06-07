@@ -115,6 +115,8 @@ public class Main {
 
 		int update = 0;
 		int refresh = 0;
+		int frame = 0;
+		int lastSavedFrame = 0;
 		
 		while (window.isOpen()) {
 			// Events
@@ -140,6 +142,7 @@ public class Main {
 
 			// Refresh
 			last_draw = elapsed;
+			frame++;
 			if (_game.isRunning()) {
 				// Draw
 				double animProgress = (1 - (double)nextUpdate / _updateInterval);
@@ -165,6 +168,8 @@ public class Main {
 				if (nextLongUpdate <= 0) {
 					last_long_update = elapsed;
 					_game.onLongUpdate();
+					_mainRenderer.setFPS((frame - lastSavedFrame) / 2);
+					lastSavedFrame = frame;
 				}
 			}
 			else {

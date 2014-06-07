@@ -29,98 +29,79 @@ public class PathManager {
 		  void	onPathComplete(Path path, Job item);
 		  void	onPathFailed(Job item);
 	}
-//
-//	public static class NodesPool {
-//		private static List<Node[][]> nodesList;
-//
-//		public static void init() {
-//			nodesList = new ArrayList<Node[][]>();
-//		}
-//
-//		public static Node[][] getNodes(TileBasedMap map) {
-////			synchronized(nodesList) {
-////				if (nodesList.size() > 0) {
-////					return nodesList.remove(0);
-////				}
-////			}
-////			Log.error("empty pool");
-//			Node[][] nodes = new Node[map.getWidthInTiles()][map.getHeightInTiles()];
-//			for (int x=0;x<map.getWidthInTiles();x++) {
-//				for (int y=0;y<map.getHeightInTiles();y++) {
-//					nodes[x][y] = new Node(x,y);
-//				}
-//			}
-//			return nodes;
-//		}
-//
-//		public static void recycle(Node[][] nodes) {
-////			synchronized(nodesList) {
-////				nodesList.add(nodes);
-////			}
-//		}
-//	}
 
-	private static class OldPath {
-		public boolean			blocked;
-		public Vector<Position>	path;
+	public static class FinderPool {
+		private static List<AStarPathFinder> 	_finderPool;
+		private static Step[][] 				_steps;
 
-		public OldPath(Vector<Position> path) {
-			this.path = path;
-			this.blocked = path == null;
+		public static void init() {
+			_steps = new Step[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
+			_finderPool = new ArrayList<AStarPathFinder>();
+			for (int i = 0; i < THREAD_POOL_SIZE; i++) {
+				Node[][] nodes = new Node[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
+				_finderPool.add(new AStarPathFinder(ServiceManager.getWorldMap(), 500, true, nodes, _steps, new ManhattanHeuristic(1)));
+			}
+		}
+
+		public static AStarPathFinder getFinder() {
+			synchronized(_finderPool) {
+				if (_finderPool.size() > 0) {
+					return _finderPool.remove(0);
+				}
+			}
+			return null;
+		}
+
+		public static void recycle(AStarPathFinder finder) {
+			synchronized(_finderPool) {
+				_finderPool.add(finder);
+			}
 		}
 	}
 
-	// TODO: sharing nodes pool
-	private static final int 			THREAD_POOL_SIZE = 1;
+	private static final int 			THREAD_POOL_SIZE = 4;
 	protected static final int 			REGION_SIZE = 10;
 
 	private static PathManager 			sSelf;
 	final private ArrayList<Runnable> 	_paths;
-	private Map<Long, OldPath> 			_pool;
 	private ExecutorService 			_threadPool;
 	private Map<Integer, Boolean>		_bridges;
-	public List<Door>					_doors;
-	protected Region[][] 				_regions;
-	private Node[][] 					_nodes;
-	private Step[][] 					_steps;
-	private AStarPathFinder 			_finder;
+//	public List<Door>					_doors;
+//	protected Region[][] 				_regions;
 
 
 	public PathManager() {
 		_threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-		_pool = new HashMap<Long, OldPath>();
 		_bridges = new HashMap<Integer, Boolean>();
-		_doors = new ArrayList<Door>();
+//		_doors = new ArrayList<Door>();
 		_paths = new ArrayList<Runnable>();
-		_nodes = new Node[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
-		_steps = new Step[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
-		_finder = new AStarPathFinder(ServiceManager.getWorldMap(), 500, true, _nodes, _steps, new ManhattanHeuristic(1));
+		FinderPool.init();
 	}
 	
 	public void init() {
 		int columns = Constant.WORLD_WIDTH / REGION_SIZE;
 		int lines = Constant.WORLD_HEIGHT / REGION_SIZE;
 
-		_regions = new Region[lines][columns];
-		for (int j = 0; j < lines; j++) {
-			for (int i = 0; i < columns; i++) {
-				_regions[j][i] = new Region(i + (j * columns),
-						i * REGION_SIZE,
-						j * REGION_SIZE,
-						(i + 1) * REGION_SIZE,
-						(j + 1) * REGION_SIZE);
-				_doors.addAll(_regions[j][i]._doors);
-			}
-		}
-		
-		for (int j = 0; j < lines; j++) {
-			for (int i = 0; i < columns; i++) {
-				if (j < lines-1) { getBridges(_regions[j][i], _regions[j+1][i]); }
-				if (j > 0) { getBridges(_regions[j][i], _regions[j-1][i]); }
-				if (i < columns-1) { getBridges(_regions[j][i], _regions[j][i+1]); }
-				if (i > 0) { getBridges(_regions[j][i], _regions[j][i-1]); }
-			}
-		}
+//		_regions = new Region[lines][columns];
+//		for (int j = 0; j < lines; j++) {
+//			for (int i = 0; i < columns; i++) {
+//				_regions[j][i] = new Region(i + (j * columns),
+//						i * REGION_SIZE,
+//						j * REGION_SIZE,
+//						(i + 1) * REGION_SIZE,
+//						(j + 1) * REGION_SIZE);
+//				_doors.addAll(_regions[j][i]._doors);
+//			}
+//		}
+//		
+//		for (int j = 0; j < lines; j++) {
+//			for (int i = 0; i < columns; i++) {
+//				if (j < lines-1) { getBridges(_regions[j][i], _regions[j+1][i]); }
+//				if (j > 0) { getBridges(_regions[j][i], _regions[j-1][i]); }
+//				if (i < columns-1) { getBridges(_regions[j][i], _regions[j][i+1]); }
+//				if (i > 0) { getBridges(_regions[j][i], _regions[j][i-1]); }
+//			}
+//		}
 
 //		for (Door d1: _doors) {
 //			for (Door d2: _doors) {
@@ -359,8 +340,8 @@ public class PathManager {
 				
 				//Log.info("Go from " + fromX + "x" + fromY + " to " + toX + "x" + toY + " -> region #" + r1 + " to #" + r2);
 				
-				ServiceManager.getWorldMap().startDebug(fromX, fromY);
-				ServiceManager.getWorldMap().stopDebug(toX, toY);
+//				ServiceManager.getWorldMap().startDebug(fromX, fromY);
+//				ServiceManager.getWorldMap().stopDebug(toX, toY);
 
 				//Log.info("getPathAsync: " + character.getX() + ", " + character.getY() + ", " + toX + ", " + toY);
 				Log.debug("getPathAsync");
@@ -385,9 +366,17 @@ public class PathManager {
 //					character.onPathComplete(_pool.get(sum2).path, job);
 //					return;
 //				}
-//				
-//				Node[][] nodes = NodesPool.getNodes(ServiceManager.getWorldMap());
-				final Path rawpath = _finder.findPath(character, fromX, fromY, toX, toY);
+//
+				
+				AStarPathFinder finder = FinderPool.getFinder();
+				if (finder == null) {
+					character.onPathFailed(job);
+					throw new RuntimeException("no more AStarPathFinder in FinderPool");
+				}
+
+				final Path rawpath = finder.findPath(character, fromX, fromY, toX, toY);
+				FinderPool.recycle(finder);
+				
 				if (rawpath != null) {
 
 //					// Cache
@@ -429,15 +418,6 @@ public class PathManager {
 		});
 	}
 	
-//	private boolean inCompletePath(Vector<Position> path, int x, int y) {
-//		for (Position position : path) {
-//			if (position.x == x && position.y == y) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-
 	public static PathManager getInstance() {
 		if (sSelf == null) {
 			sSelf = new PathManager();
@@ -447,9 +427,10 @@ public class PathManager {
 	}
 
 	public boolean isBlocked(int startX, int startY, int toX, int toY) {
-		long sum = getSum(startX, startY, toX, toY);
-		Log.info("blocked: " + (_pool.get(sum) != null && _pool.get(sum).blocked));
-		return _pool.get(sum) != null && _pool.get(sum).blocked;
+//		long sum = getSum(startX, startY, toX, toY);
+//		Log.info("blocked: " + (_pool.get(sum) != null && _pool.get(sum).blocked));
+//		return _pool.get(sum) != null && _pool.get(sum).blocked;
+		return false;
 	}
 
 	public void close() {
