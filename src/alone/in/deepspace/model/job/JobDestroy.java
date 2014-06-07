@@ -48,4 +48,13 @@ public class JobDestroy extends Job {
 		return true;
 	}
 
+	@Override
+	public String getLabel() {
+		return "destroy " + _item.getLabel();
+	}
+
+	@Override
+	public String getShortLabel() {
+		return "destroy " + _item.getLabel();
+	}
 }

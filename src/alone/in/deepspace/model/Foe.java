@@ -1,6 +1,6 @@
 package alone.in.deepspace.model;
 
-import java.util.Vector;
+import org.newdawn.slick.util.pathfinding.Path;
 
 import alone.in.deepspace.model.job.Job;
 
@@ -11,7 +11,7 @@ public class Foe extends Movable {
 	}
 
 	@Override
-	public void onPathComplete(Vector<Position> path, Job item) {
+	public void onPathComplete(Path path, Job item) {
 		// TODO Auto-generated method stub
 		
 	}

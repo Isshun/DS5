@@ -29,14 +29,14 @@ public abstract class Job {
 	protected int				_posY;
 	protected int 				_posX;
 	protected ItemBase			_item;
-	protected List<ItemBase>		_carryItems;
+	protected List<ItemBase>	_carryItems;
 	protected ItemFilter 		_filter;
 	private JobManager.Action 	_action;
 	protected Character 		_character;
 	private Character 			_characterRequire;
 	private int 				_fail;
 	public int 					_blocked;
-	protected Abort 				_reason;
+	protected Abort 			_reason;
 	private Color 				_color;
 	protected int 				_durationLeft;
 	private ItemSlot 			_slot;
@@ -44,6 +44,7 @@ public abstract class Job {
 	protected Action 			_subAction;
 	private JobStatus			_status;
 	private int _nbBlocked;
+	private boolean _hasDuration;
 
 	public Job(int x, int y) {
 		init();
@@ -66,6 +67,8 @@ public abstract class Job {
 		Log.debug("Job #" + _id + " create");
 	}
 
+	public abstract String 		getLabel();
+	public abstract String 		getShortLabel();
 	public int					getX() { return _posX; }
 	public int					getY() { return _posY; }
 	public int					getId() { return _id; }
@@ -90,60 +93,61 @@ public abstract class Job {
 	public void 				setPosition(int x, int y) { _posX = x; _posY = y; }
 	public void 				setSlot(ItemSlot slot) { _slot = slot; }
 	public void					setItem(ItemBase item) { _item = item; }
-	public void 				setDurationLeft(int duration) { _durationLeft = duration; }
+	public void 				setDurationLeft(int duration) { if (duration > 0) { _hasDuration = true; } _durationLeft = duration; }
 	public void 				setItemFilter(ItemFilter filter) { _filter = filter; }
 	public void 				setStatus(JobStatus status) { _status = status; }
 
-	public boolean 				isActive() { return _character != null; }
+	public boolean 				hasCharacter() { return _character != null; }
+	public boolean 				hasDuration() { return _hasDuration; }
 
-	public String getLabel() {
-		String oss = (_id  < 10 ? "#0" : "#") + _id
-				+ " - " + JobManager.getActionName(_action);
-
-		if (_action == Action.TAKE && _filter != null && _filter.itemMatched != null) {
-			oss += " " + _filter.itemMatched.label + " in ";
-		}
-
-		if (_item != null) {
-			oss += " " + _item.getName();
-		}
-		
-		if (_action == Action.USE) {
-			oss += " (" + _durationLeft / 10 + ")";
-		}
-		
-		if (_character != null) {
-			oss += " (" + _character.getName() + ")";
-		} else if (_fail > 0) {
-			switch (_reason) {
-			case BLOCKED: 		oss += " (blocked: #" + _blocked + ")"; break;
-			case INTERRUPTE: 	oss += " (interrupte)"; break;
-			case NO_BUILD_RESOURCES:
-			case NO_COMPONENTS: oss += " (no matter)"; break;
-			case INVALID: 		oss += " (invalide)"; break;
-			case NO_LEFT_CARRY: oss += " (no left carry)"; break;
-			case DIED: 			oss += " (died)"; break;
-			default: break;
-			}
-		} else {
-			oss += " (on queue)";
-		}
-		return oss.toString();
-	}
-
-	public String getShortLabel() {
-		String oss = JobManager.getActionName(_action);
-		if (_action == Action.TAKE && _filter != null && _filter.itemMatched != null) {
-			oss += " " + _filter.itemMatched.label + " in ";
-		}
-		if (_item != null) {
-			oss += " " + _item.getLabel();
-		}
-//		if (_durationLeft > 0) {
-//			oss += " (" + _durationLeft / Constant.DURATION_MULTIPLIER + "s)";
+//	public String getLabel() {
+//		String oss = (_id  < 10 ? "#0" : "#") + _id
+//				+ " - " + JobManager.getActionName(_action);
+//
+//		if (_action == Action.TAKE && _filter != null && _filter.itemMatched != null) {
+//			oss += " " + _filter.itemMatched.label + " in ";
 //		}
-		return oss;
-	}
+//
+//		if (_item != null) {
+//			oss += " " + _item.getName();
+//		}
+//		
+//		if (_action == Action.USE) {
+//			oss += " (" + _durationLeft / 10 + ")";
+//		}
+//		
+//		if (_character != null) {
+//			oss += " (" + _character.getName() + ")";
+//		} else if (_fail > 0) {
+//			switch (_reason) {
+//			case BLOCKED: 		oss += " (blocked: #" + _blocked + ")"; break;
+//			case INTERRUPTE: 	oss += " (interrupte)"; break;
+//			case NO_BUILD_RESOURCES:
+//			case NO_COMPONENTS: oss += " (no matter)"; break;
+//			case INVALID: 		oss += " (invalide)"; break;
+//			case NO_LEFT_CARRY: oss += " (no left carry)"; break;
+//			case DIED: 			oss += " (died)"; break;
+//			default: break;
+//			}
+//		} else {
+//			oss += " (on queue)";
+//		}
+//		return oss.toString();
+//	}
+//
+//	public String getShortLabel() {
+//		String oss = JobManager.getActionName(_action);
+//		if (_action == Action.TAKE && _filter != null && _filter.itemMatched != null) {
+//			oss += " " + _filter.itemMatched.label + " in ";
+//		}
+//		if (_item != null) {
+//			oss += " " + _item.getLabel();
+//		}
+////		if (_durationLeft > 0) {
+////			oss += " (" + _durationLeft / Constant.DURATION_MULTIPLIER + "s)";
+////		}
+//		return oss;
+//	}
 
 	public void setAction(JobManager.Action action) {
 		_action = action;

@@ -104,4 +104,14 @@ public class JobGather extends Job {
 
 		return false;
 	}
+
+	@Override
+	public String getLabel() {
+		return "gather " + _item.getLabel();
+	}
+
+	@Override
+	public String getShortLabel() {
+		return "gather" + _item.getLabel();
+	}
 }

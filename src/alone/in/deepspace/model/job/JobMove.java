@@ -33,4 +33,13 @@ public class JobMove extends Job {
 		return true;
 	}
 
+	@Override
+	public String getLabel() {
+		return "move";
+	}
+
+	@Override
+	public String getShortLabel() {
+		return "move";
+	}
 }

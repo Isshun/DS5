@@ -1,7 +1,9 @@
 package alone.in.deepspace.model;
 
 import java.util.HashMap;
-import java.util.Vector;
+
+import org.newdawn.slick.util.pathfinding.Path;
+import org.newdawn.slick.util.pathfinding.Step;
 
 import alone.in.deepspace.manager.PathManager.PathManagerCallback;
 import alone.in.deepspace.model.character.CharacterNeeds;
@@ -22,7 +24,7 @@ public abstract class Movable implements PathManagerCallback {
 		NONE
 	};
 
-	protected Position			_node;
+	protected Step				_node;
 	protected int				_posX;
 	protected int				_posY;
 	protected int				_toX;
@@ -32,7 +34,7 @@ public abstract class Movable implements PathManagerCallback {
 	protected int				_blocked;
 	protected Direction			_direction;
 	protected Direction 		_move;
-	protected Vector<Position>	_path;
+	protected Path				_path;
 	protected int				_steps;
 	protected Job				_job;
 

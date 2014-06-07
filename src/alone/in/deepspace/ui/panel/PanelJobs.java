@@ -117,7 +117,7 @@ public class PanelJobs extends BaseRightPanel {
 			right += " " + job.getItem().getLabel();
 		}
 		
-		String left = "(on queue)";
+		String left = "";
 		if (job.getCharacter() != null) {
 			left = job.getCharacter().getName();
 		} else if (job.getFail() > 0) {
@@ -129,6 +129,14 @@ public class PanelJobs extends BaseRightPanel {
 			case INVALID: left = "(invalide)"; break;
 			case NO_LEFT_CARRY: left = "(no left carry)"; break;
 			default: break;
+			}
+		} else {
+			switch (job.getStatus()) {
+			case ABORTED: left = "(aborted)"; break;
+			case COMPLETE: left = "(complete)"; break;
+			case RUNNING: left = "(running)"; break;
+			case WAITING: left = "(on queue)"; break;
+			default: left = "(unknow)"; break;
 			}
 		}
 		text.setString(StringUtils.getDashedString(left, right, NB_COLUMNS));

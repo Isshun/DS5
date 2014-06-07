@@ -563,7 +563,7 @@ public class PanelCharacter extends BaseRightPanel {
 	
 	private void refreshJob(final Job job) {
 		if (job != null) {
-			_lbJob2.setString(StringUtils.getDashedString(job.getShortLabel(), job.getFormatedDuration(), NB_COLUMNS));
+			_lbJob2.setString(StringUtils.getDashedString(job.getShortLabel(), job.hasDuration() ? job.getFormatedDuration() : "", NB_COLUMNS));
 			switch (job.getAction()) {
 			case BUILD:
 			case DESTROY:

@@ -11,7 +11,6 @@ import java.util.concurrent.Executors;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder.Node;
 import org.newdawn.slick.util.pathfinding.Path;
-import org.newdawn.slick.util.pathfinding.PathFinder;
 import org.newdawn.slick.util.pathfinding.Step;
 import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
 
@@ -27,7 +26,7 @@ import alone.in.deepspace.util.Log;
 public class PathManager {
 
 	public interface PathManagerCallback {
-		  void	onPathComplete(Vector<Position> path, Job item);
+		  void	onPathComplete(Path path, Job item);
 		  void	onPathFailed(Job item);
 	}
 //
@@ -76,7 +75,7 @@ public class PathManager {
 	protected static final int 			REGION_SIZE = 10;
 
 	private static PathManager 			sSelf;
-	final private ArrayList<Runnable> 	_jobsDone;
+	final private ArrayList<Runnable> 	_paths;
 	private Map<Long, OldPath> 			_pool;
 	private ExecutorService 			_threadPool;
 	private Map<Integer, Boolean>		_bridges;
@@ -84,6 +83,7 @@ public class PathManager {
 	protected Region[][] 				_regions;
 	private Node[][] 					_nodes;
 	private Step[][] 					_steps;
+	private AStarPathFinder 			_finder;
 
 
 	public PathManager() {
@@ -91,19 +91,10 @@ public class PathManager {
 		_pool = new HashMap<Long, OldPath>();
 		_bridges = new HashMap<Integer, Boolean>();
 		_doors = new ArrayList<Door>();
-		_jobsDone = new ArrayList<Runnable>();
+		_paths = new ArrayList<Runnable>();
 		_nodes = new Node[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
 		_steps = new Step[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
-//		for (int x=0;x<Constant.WORLD_WIDTH;x++) {
-//			for (int y=0;y<Constant.WORLD_HEIGHT;y++) {
-//				_nodes[x][y] = new Node(x,y);
-//			}
-//		}
-
-//		NodesPool.init();
-		
-		//		  _data = new map<int, AStarSearch<MapSearchNode>*>();
-		//		  memset(_map, 0, LIMIT_CHARACTER * LIMIT_ITEMS * sizeof(int));
+		_finder = new AStarPathFinder(ServiceManager.getWorldMap(), 500, true, _nodes, _steps, new ManhattanHeuristic(1));
 	}
 	
 	public void init() {
@@ -396,15 +387,14 @@ public class PathManager {
 //				}
 //				
 //				Node[][] nodes = NodesPool.getNodes(ServiceManager.getWorldMap());
-				PathFinder finder = new AStarPathFinder(ServiceManager.getWorldMap(), 500, false, _nodes, _steps, new ManhattanHeuristic(1));
-				Path rawpath = finder.findPath(character, fromX, fromY, toX, toY);
+				final Path rawpath = _finder.findPath(character, fromX, fromY, toX, toY);
 				if (rawpath != null) {
 
 //					// Cache
-					final Vector<Position> path = new Vector<Position>();
-					for (int i = 0; i < rawpath.getLength(); i++) {
-						path.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
-					}
+//					final Vector<Position> path = new Vector<Position>();
+//					for (int i = 0; i < rawpath.getLength(); i++) {
+//						path.add(new Position(rawpath.getStep(i).getX(), rawpath.getStep(i).getY()));
+//					}
 //					_pool.put(sum1, new OldPath(path));
 //
 //					// Cache
@@ -416,11 +406,11 @@ public class PathManager {
 
 					Log.debug("character: path complete (" + fromX + "x" + fromY + " to " + toX + "x" + toY + ")");
 					
-					synchronized(_jobsDone) {
-						_jobsDone.add(new Runnable() {
+					synchronized(_paths) {
+						_paths.add(new Runnable() {
 							@Override
 							public void run() {
-								character.onPathComplete(path, job);
+								character.onPathComplete(rawpath, job);
 							}
 						});
 					}
@@ -466,7 +456,7 @@ public class PathManager {
 		_threadPool.shutdownNow();		
 	}
 
-	public List<Runnable> getJobs() {
-		return _jobsDone;
+	public List<Runnable> getPaths() {
+		return _paths;
 	}
 }

@@ -41,7 +41,7 @@ public class JobManager {
 		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY, WORK, MINING, TAKE, USE_INVENTORY, REFILL
 	}
 
-	private static JobManager	sSelf;
+	private static JobManager	_self;
 	private List<Job> 			_jobs;
 
 	private JobCharacterCheck[]		_priorityJobsCheck = {
@@ -63,11 +63,14 @@ public class JobManager {
 	};
 
 	private int _nbVisibleJob;
+	private List<Job> _toRemove;
 
-	JobManager() {
+	public JobManager() {
 		Log.debug("JobManager");
 
+		_self = this;
 		_jobs = new ArrayList<Job>();
+		_toRemove = new ArrayList<Job>();
 
 		Log.debug("JobManager done");
 	}
@@ -218,7 +221,7 @@ public class JobManager {
 
 		// Regular jobs
 		for (Job job: _jobs) {
-			if (job.getCharacter() == null && job.getFail() <= 0) {
+			if (job.isFinish() == false && job.getCharacter() == null && job.getFail() <= 0) {
 				if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter().value == 0) {
 					// TODO
 					job.setFail(Abort.NO_BUILD_RESOURCES, MainRenderer.getFrame());
@@ -371,7 +374,8 @@ public class JobManager {
 			job.getSlot().getItem().releaseSlot(job.getSlot());
 		}
 
-		if (_jobs.remove(job) && Action.MOVE.equals(job.getAction()) == false) {
+		_toRemove.add(job);
+		if (Action.MOVE.equals(job.getAction()) == false) {
 			_nbVisibleJob--;
 		}
 	}
@@ -396,10 +400,7 @@ public class JobManager {
 	}
 
 	public static JobManager getInstance() {
-		if (sSelf == null) {
-			sSelf = new JobManager();
-		}
-		return sSelf;
+		return _self;
 	}
 
 	public static String getActionName(Action action) {
@@ -508,7 +509,7 @@ public class JobManager {
 		}
 		return job;
 	}
-
+	
 	public void onLongUpdate() {
 		for (JobCheck jobCheck: _jobsCheck) {
 			jobCheck.create(this);
@@ -563,5 +564,13 @@ public class JobManager {
 	public void addJob(Job job, Character character) {
 		addJob(job);
 		job.setCharacter(character);
+	}
+
+	// Remove finished jobs
+	public void cleanJobs() {
+		if (_toRemove.isEmpty() == false) {
+			_jobs.removeAll(_toRemove);
+			_toRemove.clear();
+		}
 	}
 }

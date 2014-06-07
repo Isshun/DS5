@@ -83,4 +83,13 @@ public class JobBuild extends Job {
 		return false;
 	}
 
+	@Override
+	public String getLabel() {
+		return "build " + _item.getLabel();
+	}
+
+	@Override
+	public String getShortLabel() {
+		return "build " + _item.getLabel();
+	}
 }

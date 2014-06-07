@@ -141,4 +141,13 @@ public class JobRefill extends Job {
 		return false;
 	}
 
+	@Override
+	public String getLabel() {
+		return "refill " + _factory.getLabel();
+	}
+
+	@Override
+	public String getShortLabel() {
+		return "refill " + _factory.getLabel();
+	}
 }

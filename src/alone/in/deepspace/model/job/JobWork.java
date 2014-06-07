@@ -62,4 +62,15 @@ public class JobWork extends Job {
 		JobManager.getInstance().complete(this);
 		return true;
 	}
+
+	@Override
+	public String getLabel() {
+		return "work";
+	}
+
+	@Override
+	public String getShortLabel() {
+		return "work";
+	}
+
 }

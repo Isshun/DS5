@@ -69,4 +69,13 @@ public class JobUseInventory extends Job {
 		return true;
 	}
 
+	@Override
+	public String getLabel() {
+		return "use " + _item.getLabel();
+	}
+
+	@Override
+	public String getShortLabel() {
+		return "use" + _item.getLabel();
+	}
 }

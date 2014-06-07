@@ -36,6 +36,7 @@ public class Game {
 	private static FoeManager 			_foeManager;
 	private static DynamicObjectManager	_dynamicObjectManager;
 	private static RelationManager 		_relationManager;
+	private static JobManager 			_jobManager;
 
 	public static StatsManager 			getStatsManager() { return _statsManager; }
 	public static RoomManager 			getRoomManager() { return _roomManager; }
@@ -45,6 +46,7 @@ public class Game {
 	public static FoeManager 			getFoeManager() { return _foeManager; }
 	public static DynamicObjectManager 	getDynamicObjectManager() { return _dynamicObjectManager; }
 	public static RelationManager		getRelationManager() { return _relationManager; }
+	public static JobManager			getJobManager() { return _jobManager; }
 	public static GameData				getData() { return _data; }
 
 	private int 						_update;
@@ -75,12 +77,12 @@ public class Game {
 		ServiceManager.getWorldMap().update();
 
 		// Path complete
-		List<Runnable> jobsDone = PathManager.getInstance().getJobs();
-		synchronized (jobsDone) {
-			for (Runnable job: jobsDone) {
-				job.run();
+		List<Runnable> paths = PathManager.getInstance().getPaths();
+		synchronized (paths) {
+			for (Runnable path: paths) {
+				path.run();
 			}
-			jobsDone.clear();
+			paths.clear();
 		}
 
 		// Characters
@@ -89,11 +91,14 @@ public class Game {
 		// Foes
 		_foeManager.checkSurroundings();
 
+		// Clean completed jobs
+		_jobManager.cleanJobs();
+
 		_update++;
 	}
 
 	public void onLongUpdate() {
-		JobManager.getInstance().onLongUpdate();
+		_jobManager.onLongUpdate();
 
 		ResourceManager.getInstance().onLongUpdate();
 		_characterManager.onLongUpdate();
@@ -113,6 +118,7 @@ public class Game {
 		_characterManager = new CharacterManager();
 		_foeManager = new FoeManager();
 		_relationManager = new RelationManager();
+		_jobManager = new JobManager();
 	}
 
 	public void	newGame(final String filePath, LoadListener loadListener) {

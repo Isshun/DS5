@@ -429,6 +429,7 @@ public class WorldRenderer implements IRenderer {
 	}
 
 	void	refreshItems(int frame, int fromX, int fromY, int toX, int toY) {
+		_itemSelected = null;
 		int offsetY = 0;
 		int offsetX = 0;
 

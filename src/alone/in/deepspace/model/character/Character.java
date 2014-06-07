@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import org.jsfml.graphics.Color;
 import org.newdawn.slick.util.pathfinding.Mover;
+import org.newdawn.slick.util.pathfinding.Path;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.CharacterManager;
@@ -176,7 +177,7 @@ public class Character extends Movable implements Mover {
 	public boolean			isSelected() { return _isSelected; }
 	public int				getProfessionScore(Profession.Type professionEngineer) { return 42; }
 	public List<ItemBase> 	getInventory() { return _inventory; }
-	public Vector<Position> getPath() { return _path; }
+	public Path 			getPath() { return _path; }
 	public CharacterStatus 	getStatus() { return _status; }
 	public Color 			getColor() { return _color; }
 	public int 				getLag() { return _lag; }
@@ -352,26 +353,28 @@ public class Character extends Movable implements Mover {
 			// _node.PrintNodeInfo();
 
 			// Set direction
-			if (_node.x > _posX && _node.y > _posY) setMove(Direction.BOTTOM_RIGHT);
-			else if (_node.x < _posX && _node.y > _posY) setMove(Direction.BOTTOM_LEFT);
-			else if (_node.x > _posX && _node.y < _posY) setMove(Direction.TOP_RIGHT);
-			else if (_node.x < _posX && _node.y < _posY) setMove(Direction.TOP_LEFT);
-			else if (_node.x > _posX) setMove(Direction.RIGHT);
-			else if (_node.x < _posX) setMove(Direction.LEFT);
-			else if (_node.y > _posY) setMove(Direction.BOTTOM);
-			else if (_node.y < _posY) setMove(Direction.TOP);
+			int x = _node.getX();
+			int y = _node.getY();
+			if (x > _posX && y > _posY) setMove(Direction.BOTTOM_RIGHT);
+			else if (x < _posX && y > _posY) setMove(Direction.BOTTOM_LEFT);
+			else if (x > _posX && y < _posY) setMove(Direction.TOP_RIGHT);
+			else if (x < _posX && y < _posY) setMove(Direction.TOP_LEFT);
+			else if (x > _posX) setMove(Direction.RIGHT);
+			else if (x < _posX) setMove(Direction.LEFT);
+			else if (y > _posY) setMove(Direction.BOTTOM);
+			else if (y < _posY) setMove(Direction.TOP);
 
-			_posX = (int) _node.x;
-			_posY = (int) _node.y;
+			_posX = (int) x;
+			_posY = (int) y;
 			_steps++;
 			Log.debug("Character #" + _id + ": goto " + _posX + " x " + _posY + ", step: " + _steps);
 		}
 
 		// Next node
-		if (_path != null && (int)_path.size() > _steps) {
+		if (_path != null && (int)_path.getLength() > _steps) {
 			Log.debug("Character #" + _id + ": move");
 
-			_node = _path.get(_steps);
+			_node = _path.getStep(_steps);
 
 			// if (_steps == 0) {
 			// } else {
@@ -520,10 +523,10 @@ public class Character extends Movable implements Mover {
 	}
 	
 	@Override
-	public void	onPathComplete(Vector<Position> path, Job job) {
+	public void	onPathComplete(Path rawpath, Job job) {
 	  Log.debug("Charactere #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
-	  
-	  if (path.size() == 0) {
+
+	  if (rawpath.getLength() == 0) {
 		sendEvent(CharacterNeeds.Message.MSG_BLOCKED);
 		return;
 	  }
@@ -541,7 +544,7 @@ public class Character extends Movable implements Mover {
 	  // 	_path = null;
 	  // }
 	
-	  _path = path;
+	  _path = rawpath;
 	  _steps = 0;
 	}
 

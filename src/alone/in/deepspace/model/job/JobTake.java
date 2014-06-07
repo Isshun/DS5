@@ -72,4 +72,19 @@ public class JobTake extends Job {
 		return true;
 	}
 
+	@Override
+	public String getLabel() {
+		if (_filter.itemMatched != null) {
+			return "take " + _filter.itemMatched.label;
+		}
+		return "take";
+	}
+
+	@Override
+	public String getShortLabel() {
+		if (_filter.itemMatched != null) {
+			return "take " + _filter.itemMatched.label;
+		}
+		return "take";
+	}
 }

@@ -83,4 +83,14 @@ public class JobStore extends Job {
 		return true;
 	}
 
+	@Override
+	public String getLabel() {
+		return "store";
+	}
+
+	@Override
+	public String getShortLabel() {
+		return "store";
+	}
+
 }
