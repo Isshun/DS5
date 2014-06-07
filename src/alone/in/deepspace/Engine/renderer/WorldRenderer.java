@@ -198,6 +198,8 @@ public class WorldRenderer implements IRenderer {
 						
 						// Floor
 						else {
+//							Room room = Game.getRoomManager().get(i, j + 1);
+//							int zone = room != null ? room.getType().ordinal() : 0;
 							int roomId = room != null ? room.getType().ordinal() : 0;
 							Sprite sprite = _spriteManager.getFloor(structure, roomId, 0);
 							if (sprite != null) {
@@ -313,7 +315,6 @@ public class WorldRenderer implements IRenderer {
 
 		Room room = Game.getRoomManager().get(i, j + 1);
 		int zone = room != null ? room.getType().ordinal() : 0;
-
 		// bellow is a wall
 		if (bellow != null && (bellow.isWall() || bellow.isDoor())) {
 			StructureItem bellowBellow = _worldMap.getStructure(i, j+2);
@@ -325,35 +326,35 @@ public class WorldRenderer implements IRenderer {
 				boolean wallOnLeft = bellowLeft != null && (bellowLeft.isWall() || bellowLeft.isDoor());
 				
 				if (wallOnRight && wallOnLeft) {
-					sprite = _spriteManager.getWall(item, 5, 0, 0);
+					sprite = _spriteManager.getWall(item, 5, 0, zone);
 				} else if (wallOnLeft) {
 					boolean wallOnSupRight = right != null && (right.isWall() || right.isDoor());
 					if (wallOnSupRight) {
-						sprite = _spriteManager.getWall(item, 1, 5, 0);
+						sprite = _spriteManager.getWall(item, 1, 5, zone);
 					} else {
-						sprite = _spriteManager.getWall(item, 5, 2, 0);
+						sprite = _spriteManager.getWall(item, 5, 2, zone);
 					}
 				} else if (wallOnRight) {
 					boolean wallOnSupLeft = left != null && (left.isWall() || left.isDoor());
 					if (wallOnSupLeft) {
-						sprite = _spriteManager.getWall(item, 1, 4, 0);
+						sprite = _spriteManager.getWall(item, 1, 4, zone);
 					} else {
-						sprite = _spriteManager.getWall(item, 5, 1, 0);
+						sprite = _spriteManager.getWall(item, 5, 1, zone);
 					}
 				} else {
-					sprite = _spriteManager.getWall(item, 5, 3, 0);
+					sprite = _spriteManager.getWall(item, 5, 3, zone);
 				}
 			} else {
 				boolean wallOnRight = right != null && (right.isWall() || right.isDoor());
 				boolean wallOnLeft = left != null && (left.isWall() || left.isDoor());
 				if (wallOnRight && wallOnLeft) {
-					sprite = _spriteManager.getWall(item, 1, 0, 0);
+					sprite = _spriteManager.getWall(item, 1, 0, zone);
 				} else if (wallOnLeft) {
-					sprite = _spriteManager.getWall(item, 1, 2, 0);
+					sprite = _spriteManager.getWall(item, 1, 2, zone);
 				} else if (wallOnRight) {
-					sprite = _spriteManager.getWall(item, 1, 1, 0);
+					sprite = _spriteManager.getWall(item, 1, 1, zone);
 				} else {
-					sprite = _spriteManager.getWall(item, 1, 3, 0);
+					sprite = _spriteManager.getWall(item, 1, 3, zone);
 				}
 			}
 			if (sprite != null) {

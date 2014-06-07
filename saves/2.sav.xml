@@ -4785,84 +4785,316 @@
             <string>base.meal</string>
             <string>base.meal</string>
             <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
             <string>base.seaweed</string>
             <string>base.seaweed</string>
             <string>base.seaweed</string>
@@ -5332,8 +5564,8 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <structure>
-        <name>base.door</name>
-        <matter>0</matter>
+        <name>base.floor</name>
+        <matter>1</matter>
       </structure>
       <x>135</x>
       <y>131</y>
@@ -5445,7 +5677,7 @@
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <structure>
         <name>base.door</name>
-        <matter>0</matter>
+        <matter>42</matter>
       </structure>
       <x>135</x>
       <y>143</y>
@@ -6115,7 +6347,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>137</x>
       <y>139</y>
@@ -6130,7 +6362,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>0</value>
       </resource>
       <x>137</x>
       <y>140</y>
@@ -6145,7 +6377,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>137</x>
       <y>141</y>
@@ -6412,7 +6644,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>138</x>
       <y>139</y>
@@ -6427,7 +6659,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>138</x>
       <y>140</y>
@@ -6442,7 +6674,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>138</x>
       <y>141</y>
@@ -6852,7 +7084,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>139</x>
       <y>139</y>
@@ -6867,7 +7099,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>139</x>
       <y>140</y>
@@ -6882,7 +7114,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>139</x>
       <y>141</y>
@@ -7158,7 +7390,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>140</x>
       <y>139</y>
@@ -7173,7 +7405,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>140</x>
       <y>140</y>
@@ -7188,7 +7420,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>140</x>
       <y>141</y>
@@ -7446,7 +7678,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>141</x>
       <y>139</y>
@@ -7461,7 +7693,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>141</x>
       <y>140</y>
@@ -7476,7 +7708,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>141</x>
       <y>141</y>
@@ -7793,7 +8025,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>142</x>
       <y>139</y>
@@ -7808,7 +8040,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>142</x>
       <y>140</y>
@@ -7823,7 +8055,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>142</x>
       <y>141</y>
@@ -8047,8 +8279,8 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <structure>
-        <name>base.door</name>
-        <matter>0</matter>
+        <name>base.wall</name>
+        <matter>1</matter>
       </structure>
       <x>143</x>
       <y>138</y>
@@ -8063,7 +8295,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>143</x>
       <y>139</y>
@@ -8078,7 +8310,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>143</x>
       <y>140</y>
@@ -8093,7 +8325,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>2</value>
+        <value>1</value>
       </resource>
       <x>143</x>
       <y>141</y>
@@ -8316,8 +8548,8 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <structure>
-        <name>base.wall</name>
-        <matter>1</matter>
+        <name>base.door</name>
+        <matter>42</matter>
       </structure>
       <x>144</x>
       <y>138</y>
@@ -10143,7 +10375,7 @@
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <structure>
         <name>base.door</name>
-        <matter>0</matter>
+        <matter>42</matter>
       </structure>
       <x>152</x>
       <y>135</y>
@@ -16808,12 +17040,12 @@
     <alone.in.deepspace.manager.RoomSave>
       <type>1</type>
       <occupants>
-        <int>14</int>
-        <int>9</int>
-        <int>10</int>
-        <int>12</int>
         <int>16</int>
-        <int>16</int>
+        <int>22</int>
+        <int>25</int>
+        <int>17</int>
+        <int>5</int>
+        <int>19</int>
       </occupants>
       <areas>
         <alone.in.deepspace.manager.RoomSave_-RoomSaveArea>
@@ -16877,12 +17109,10 @@
     <alone.in.deepspace.manager.RoomSave>
       <type>1</type>
       <occupants>
-        <int>9</int>
-        <int>15</int>
-        <int>13</int>
-        <int>13</int>
+        <int>21</int>
+        <int>24</int>
+        <int>7</int>
         <int>3</int>
-        <int>11</int>
       </occupants>
       <areas>
         <alone.in.deepspace.manager.RoomSave_-RoomSaveArea>
@@ -17284,27 +17514,27 @@
       <firstname>Micheal </firstname>
       <relations>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>9</id>
+          <id>5</id>
           <relationId>0</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>10</id>
+          <id>17</id>
           <relationId>2</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>12</id>
+          <id>19</id>
           <relationId>2</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>14</id>
+          <id>22</id>
           <relationId>2</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>16</id>
+          <id>25</id>
           <relationId>2</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>20.379999999999907</old>
+      <old>23.49999999999984</old>
       <x>131</x>
       <y>132</y>
       <gender>MALE</gender>
@@ -17314,358 +17544,239 @@
       <lastname>Bright</lastname>
       <firstname>Gary </firstname>
       <relations/>
-      <old>20.23999999999991</old>
+      <old>23.359999999999843</old>
       <x>131</x>
       <y>136</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>3</id>
-      <lastname>Davidson</lastname>
+      <lastname>Hunt</lastname>
       <firstname>Betty </firstname>
       <relations>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>13</id>
+          <id>7</id>
           <relationId>0</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>9</id>
+          <id>21</id>
           <relationId>2</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>11</id>
-          <relationId>2</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>13</id>
-          <relationId>2</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>15</id>
+          <id>24</id>
           <relationId>2</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>20.23999999999991</old>
-      <x>131</x>
-      <y>140</y>
+      <old>23.359999999999843</old>
+      <x>137</x>
+      <y>132</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>5</id>
-      <lastname>Nolan</lastname>
+      <lastname>Macias</lastname>
       <firstname>Annmarie </firstname>
-      <relations/>
-      <old>20.23999999999991</old>
-      <x>131</x>
-      <y>150</y>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>16</id>
+          <relationId>0</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>17</id>
+          <relationId>2</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>19</id>
+          <relationId>2</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>22</id>
+          <relationId>2</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>25</id>
+          <relationId>2</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>23.359999999999843</old>
+      <x>153</x>
+      <y>129</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>7</id>
       <lastname>Hunt</lastname>
       <firstname>Ricky </firstname>
-      <relations/>
-      <old>20.21999999999991</old>
-      <x>153</x>
-      <y>129</y>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>3</id>
+          <relationId>0</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>21</id>
+          <relationId>2</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>24</id>
+          <relationId>2</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>23.339999999999844</old>
+      <x>137</x>
+      <y>135</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>9</id>
-      <lastname>Macias</lastname>
+      <lastname>Leach</lastname>
       <firstname>Margret </firstname>
       <relations>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>16</id>
+          <id>11</id>
           <relationId>0</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>10</id>
+          <id>18</id>
           <relationId>2</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>12</id>
+          <id>20</id>
           <relationId>2</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>14</id>
-          <relationId>2</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>16</id>
+          <id>23</id>
           <relationId>2</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>20.21999999999991</old>
-      <x>135</x>
-      <y>126</y>
+      <old>23.339999999999844</old>
+      <x>137</x>
+      <y>132</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>11</id>
       <lastname>Leach</lastname>
       <firstname>Edward </firstname>
-      <relations/>
-      <old>20.21999999999991</old>
-      <x>135</x>
-      <y>126</y>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>9</id>
+          <relationId>0</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>18</id>
+          <relationId>2</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>20</id>
+          <relationId>2</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>23</id>
+          <relationId>2</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>23.339999999999844</old>
+      <x>137</x>
+      <y>132</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>13</id>
       <lastname>Davidson</lastname>
       <firstname>Derrick </firstname>
-      <relations>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>3</id>
-          <relationId>0</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>9</id>
-          <relationId>2</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>11</id>
-          <relationId>2</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>13</id>
-          <relationId>2</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>15</id>
-          <relationId>2</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-      </relations>
-      <old>20.21999999999991</old>
-      <x>153</x>
-      <y>136</y>
+      <relations/>
+      <old>23.339999999999844</old>
+      <x>135</x>
+      <y>126</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>9</id>
       <lastname>Davidson</lastname>
       <firstname>Clarence </firstname>
-      <relations>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>3</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>13</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>11</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>13</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>15</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-      </relations>
-      <old>4.000000000000003</old>
-      <x>138</x>
-      <y>128</y>
+      <relations/>
+      <old>7.119999999999936</old>
+      <x>153</x>
+      <y>126</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>10</id>
       <lastname>Macias</lastname>
       <firstname>Anthony </firstname>
-      <relations>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>9</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>16</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>12</id>
-          <relationId>5</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>14</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>16</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-      </relations>
-      <old>3.760000000000003</old>
-      <x>137</x>
-      <y>136</y>
+      <relations/>
+      <old>6.879999999999941</old>
+      <x>141</x>
+      <y>127</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>11</id>
       <lastname>Davidson</lastname>
       <firstname>Reginald </firstname>
-      <relations>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>3</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>13</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>9</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>13</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>15</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-      </relations>
-      <old>2.980000000000002</old>
-      <x>141</x>
-      <y>127</y>
+      <relations/>
+      <old>6.099999999999958</old>
+      <x>153</x>
+      <y>133</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>12</id>
       <lastname>Macias</lastname>
       <firstname>Pearl </firstname>
-      <relations>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>9</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>16</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>10</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>14</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>16</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-      </relations>
-      <old>2.740000000000002</old>
-      <x>135</x>
-      <y>126</y>
+      <relations/>
+      <old>5.859999999999963</old>
+      <x>137</x>
+      <y>132</y>
       <gender>FEMALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>13</id>
       <lastname>Davidson</lastname>
       <firstname>Charlie </firstname>
-      <relations>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>3</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>13</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>9</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>11</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>15</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-      </relations>
-      <old>1.9600000000000013</old>
-      <x>153</x>
-      <y>133</y>
+      <relations/>
+      <old>5.07999999999998</old>
+      <x>138</x>
+      <y>128</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>14</id>
       <lastname>Macias</lastname>
       <firstname>Herbert </firstname>
-      <relations>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>9</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>16</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>10</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>12</id>
-          <relationId>5</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>16</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-      </relations>
-      <old>1.720000000000001</old>
+      <relations/>
+      <old>4.839999999999985</old>
       <x>137</x>
-      <y>135</y>
+      <y>132</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>15</id>
       <lastname>Davidson</lastname>
       <firstname>Sam </firstname>
-      <relations>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>3</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>13</id>
-          <relationId>3</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>9</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>11</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>13</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-      </relations>
-      <old>0.9400000000000005</old>
-      <x>153</x>
-      <y>126</y>
+      <relations/>
+      <old>4.060000000000001</old>
+      <x>137</x>
+      <y>136</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
       <id>16</id>
       <lastname>Macias</lastname>
       <firstname>Alfred </firstname>
+      <relations/>
+      <old>3.820000000000003</old>
+      <x>131</x>
+      <y>140</y>
+      <gender>MALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>17</id>
+      <lastname>Macias</lastname>
+      <firstname>Norma </firstname>
       <relations>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>9</id>
+          <id>5</id>
           <relationId>3</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
@@ -17673,21 +17784,241 @@
           <relationId>3</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>10</id>
-          <relationId>4</relationId>
-        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>12</id>
+          <id>19</id>
           <relationId>5</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
         <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
-          <id>14</id>
+          <id>22</id>
+          <relationId>5</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>25</id>
           <relationId>4</relationId>
         </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>0.7000000000000003</old>
+      <old>3.1000000000000023</old>
+      <x>137</x>
+      <y>132</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>18</id>
+      <lastname>Leach</lastname>
+      <firstname>Randy </firstname>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>9</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>11</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>20</id>
+          <relationId>4</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>23</id>
+          <relationId>4</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>2.960000000000002</old>
       <x>143</x>
       <y>127</y>
+      <gender>MALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>19</id>
+      <lastname>Macias</lastname>
+      <firstname>Grace </firstname>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>5</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>16</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>17</id>
+          <relationId>5</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>22</id>
+          <relationId>5</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>25</id>
+          <relationId>4</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>2.0800000000000014</old>
+      <x>135</x>
+      <y>126</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>20</id>
+      <lastname>Leach</lastname>
+      <firstname>Lonnie </firstname>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>9</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>11</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>18</id>
+          <relationId>4</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>23</id>
+          <relationId>4</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>1.9400000000000013</old>
+      <x>137</x>
+      <y>132</y>
+      <gender>MALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>21</id>
+      <lastname>Hunt</lastname>
+      <firstname>Marshall </firstname>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>3</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>7</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>24</id>
+          <relationId>5</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>1.1200000000000006</old>
+      <x>137</x>
+      <y>140</y>
+      <gender>MALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>22</id>
+      <lastname>Macias</lastname>
+      <firstname>Saundra </firstname>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>5</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>16</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>17</id>
+          <relationId>5</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>19</id>
+          <relationId>5</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>25</id>
+          <relationId>4</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>1.0600000000000005</old>
+      <x>137</x>
+      <y>136</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>23</id>
+      <lastname>Leach</lastname>
+      <firstname>Bill </firstname>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>9</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>11</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>18</id>
+          <relationId>4</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>20</id>
+          <relationId>4</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>0.9200000000000005</old>
+      <x>153</x>
+      <y>136</y>
+      <gender>MALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>24</id>
+      <lastname>Hunt</lastname>
+      <firstname>Allie </firstname>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>3</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>7</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>21</id>
+          <relationId>4</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>0.1</old>
+      <x>131</x>
+      <y>147</y>
+      <gender>FEMALE</gender>
+    </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+    <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
+      <id>25</id>
+      <lastname>Macias</lastname>
+      <firstname>Raul </firstname>
+      <relations>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>5</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>16</id>
+          <relationId>3</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>17</id>
+          <relationId>5</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>19</id>
+          <relationId>5</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+        <alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+          <id>22</id>
+          <relationId>5</relationId>
+        </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterRelationSave>
+      </relations>
+      <old>0.04</old>
+      <x>138</x>
+      <y>132</y>
       <gender>MALE</gender>
     </alone.in.deepspace.engine.loader.CharacterSerializer_-CharacterSave>
   </characters>

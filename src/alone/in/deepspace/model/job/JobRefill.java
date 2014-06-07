@@ -47,13 +47,13 @@ public class JobRefill extends Job {
 		}
 		
 		if (_subAction == Action.TAKE) {
-			return checkTake();
+			return checkTake(character);
 		} else {
-			return checkStore();
+			return checkStore(character);
 		}
 	}
 
-	private boolean checkStore() {
+	private boolean checkStore(Character character) {
 		// Dispenser no longer exists
 		if (_factory != ServiceManager.getWorldMap().getItem(_factory.getX(), _factory.getY())) {
 			_reason = Abort.INVALID;
@@ -69,7 +69,7 @@ public class JobRefill extends Job {
 		return true;
 	}
 
-	private boolean checkTake() {
+	private boolean checkTake(Character character) {
 		// Storage no longer exists
 		if (_storage != ServiceManager.getWorldMap().getItem(_storage.getX(), _storage.getY())) {
 			_reason = Abort.INVALID;
@@ -83,7 +83,7 @@ public class JobRefill extends Job {
 		}
 
 		// No space left in inventory
-		if (_character.hasInventorySpaceLeft() == false) {
+		if (character.hasInventorySpaceLeft() == false) {
 			_reason = Abort.NO_LEFT_CARRY;
 			return false;
 		}
