@@ -240,7 +240,7 @@ public class UserInterface {
 		_panelMessage.refresh(update);
 	}
 
-	public void onDraw(int update, int renderTime) {
+	public void onDraw(int update, long renderTime) {
 		for (BasePanel panel: _panels) {
 			panel.draw(_app, null);
 		}

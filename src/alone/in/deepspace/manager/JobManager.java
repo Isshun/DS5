@@ -3,6 +3,7 @@ package alone.in.deepspace.manager;
 import java.util.ArrayList;
 import java.util.List;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.FactoryItem;
@@ -298,6 +299,13 @@ public class JobManager {
 		}
 
 		job.setStatus(JobStatus.ABORTED);
+		
+		// Abort because path to item is blocked
+		if (reason == Abort.BLOCKED) {
+			if (job.getItem() != null) {
+				job.getItem().setBlocked(Game.getUpdate());
+			}
+		}
 
 		// Abort because character inventory is full
 		if (reason == Abort.NO_LEFT_CARRY) {
@@ -389,14 +397,16 @@ public class JobManager {
 	}
 
 	public void	addJob(Job job) {
-		if (job != null && _jobs.contains(job) == false) {
-
-			if (Action.MOVE.equals(job.getAction()) == false) {
-				_nbVisibleJob++;
-			}
-
-			_jobs.add(job);
+		if (job == null || _jobs.contains(job)) {
+			Log.error("Trying to add null or already existing job to JobManager");
+			return;
 		}
+
+		if (Action.MOVE.equals(job.getAction()) == false) {
+			_nbVisibleJob++;
+		}
+
+		_jobs.add(job);
 	}
 
 	public static JobManager getInstance() {
@@ -563,7 +573,9 @@ public class JobManager {
 
 	public void addJob(Job job, Character character) {
 		addJob(job);
-		job.setCharacter(character);
+		if (job != null) {
+			job.setCharacter(character);
+		}
 	}
 
 	// Remove finished jobs

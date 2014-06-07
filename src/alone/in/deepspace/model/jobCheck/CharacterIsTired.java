@@ -17,12 +17,12 @@ public class CharacterIsTired implements JobCharacterCheck {
 	public boolean create(JobManager jobManager, Character character) {
 		if (character.getNeeds().isTired()) {
 			ItemFilter filter = new ItemFilter(false, true);
-			filter.hasFreeSlot = true;
+			filter.needFreeSlot = true;
 			filter.effectEnergy = true;
 			
 			// Character has quarters
 			if (character.getQuarter() != null) {
-				ItemBase item = ServiceManager.getWorldMap().findInRoom(filter, character.getQuarter());
+				ItemBase item = character.getQuarter().find(filter);
 				if (item != null) {
 					jobManager.addJob(JobUse.create(item, character), character);
 					return true;

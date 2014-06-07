@@ -41,7 +41,8 @@ public abstract class ItemBase {
 	private int			_nbFrame;
 	private int 		_animFrame;
 	private int 		_animFrameInterval;
-	private boolean _selected;
+	private boolean 	_selected;
+	private int 		_lastBlocked;
 	
 	public ItemBase(ItemInfo info) {
 		init(info, ++_maxId);
@@ -56,6 +57,7 @@ public abstract class ItemBase {
 
 	private void init(ItemInfo info, int id) {
 		// Init
+		_lastBlocked = -1;
 		_isSolid = false;
 		_matterSupply = 0;
 		_zoneIdRequired = 0;
@@ -157,10 +159,6 @@ public abstract class ItemBase {
 		}
 	}
 
-	public boolean hasFreeSlot() {
-		return _nbFreeSlot > 0;
-	}
-
 	public void	setOwner(Character character) {
 		_owner = character;
 	}
@@ -195,13 +193,13 @@ public abstract class ItemBase {
 	public int 				getNbSlots() { return _nbSlot; }
 	public int 				getTotalUse() { return _nbTotalUsed; }
 	public int 				getMatter() { return _matter; }
+	public int 				getLastBlocked() { return _lastBlocked; }
 
 	// Boolean
 	public boolean			isSolid() { return _isSolid; }
 	public boolean			isWorking() { return _isWorking; }
 	public boolean			isComplete() { return _matterSupply >= _matter; }
 	public boolean			isSupply() { return _power == _powerSupply; }
-	public boolean			isFree() { return _nbFreeSlot > 0; }
 	public boolean			isSleepingItem() { return "base.bed".equals(_name) || "base.chair".equals(_name); }
 	public boolean			isStructure() { return _info.isStructure; }
 	public boolean			isRessource() { return _info.isResource; }
@@ -214,6 +212,7 @@ public abstract class ItemBase {
 	public boolean 			isStorage() { return _info.isStorage; }
 	public boolean 			isFood() { return _info.isFood; }
 	public boolean 			isDispenser() { return _info.isFactory; }
+	public boolean 			hasFreeSlot() { return _nbFreeSlot > 0; }
 
 	public static boolean isUserItem(ItemInfo info) {
 		return !info.isStructure && !info.isResource;
@@ -247,9 +246,13 @@ public abstract class ItemBase {
 	}
 
 	public boolean matchFilter(ItemFilter filter) {
+		// Filter need free slots but item is busy
+		if (filter.needFreeSlot && _nbFreeSlot <= 0) {
+			return false;
+		}
 		
-		// Item immediate effect
-		if (filter.isImmediate) {
+		// Filter looking for item
+		if (filter.lookingForItem) {
 
 			// Filter on item
 			if (filter.itemNeeded == _info) {
@@ -309,5 +312,9 @@ public abstract class ItemBase {
 	
 	public boolean isType(ItemInfo info) {
 		return _info == info;
+	}
+
+	public void setBlocked(int update) {
+		_lastBlocked = update;
 	}
 }

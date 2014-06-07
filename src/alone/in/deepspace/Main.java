@@ -104,19 +104,18 @@ public class Main {
 	}
 
 	private static void loop(final RenderWindow window) throws IOException, InterruptedException {
-		Clock display_timer = new Clock();
 		Clock timer = new Clock();
-		int renderTime = 0;
-
-		Time last_draw = display_timer.getElapsedTime();
-		Time last_refresh = display_timer.getElapsedTime();
-		Time last_update = display_timer.getElapsedTime();
-		Time last_long_update = display_timer.getElapsedTime();
+		long renderTime = 0;
 
 		int update = 0;
 		int refresh = 0;
 		int frame = 0;
 		int lastSavedFrame = 0;
+
+		long nextDraw = 0;
+		long nextUpdate = 0;
+		long nextRefresh = 0;
+		long nextLongUpdate = 0;
 		
 		while (window.isOpen()) {
 			// Events
@@ -125,98 +124,97 @@ public class Main {
 				manageEvent(event, window, timer);
 			}
 
-			Time elapsed = display_timer.getElapsedTime();
-			long elapsedMs = elapsed.asMilliseconds();
-			long nextDraw = last_draw.asMilliseconds() + DRAW_INTERVAL - elapsedMs;
+			long elapsed = timer.getElapsedTime().asMilliseconds();
 
 			// Sleep
-			if (nextDraw > 0) {
-				int currentRenderTime = (int) (elapsedMs - last_draw.asMilliseconds());
-				renderTime = (renderTime * 7 + currentRenderTime) / 8;
-				Thread.sleep(nextDraw);
+			if (elapsed < nextDraw) {
+				//int currentRenderTime = (int) (DRAW_INTERVAL - (nextDraw - elapsed));
+				//renderTime = (renderTime * 7 + currentRenderTime) / 8;
+				Thread.sleep(nextDraw - elapsed);
 			}
 			
-			long nextUpdate = last_update.asMilliseconds() + _updateInterval - elapsedMs;
-			long nextRefresh = last_refresh.asMilliseconds() + REFRESH_INTERVAL - elapsedMs;
-			long nextLongUpdate = last_long_update.asMilliseconds() + _longUpdateInterval - elapsedMs;
-
-			// Refresh
-			last_draw = elapsed;
-			frame++;
+			
 			if (_game.isRunning()) {
 				// Draw
-				double animProgress = (1 - (double)nextUpdate / _updateInterval);
+				double animProgress = (1 - (double)(nextUpdate - elapsed) / _updateInterval);
 				_mainRenderer.draw(window, animProgress, renderTime);
 				_userInterface.onDraw(update, renderTime);
 
 				// Refresh
-				if (nextRefresh <= 0) {
-					last_refresh = elapsed;
+				if (elapsed >= nextRefresh) {
 					_mainRenderer.refresh(refresh);
 					_userInterface.onRefresh(refresh);
 					refresh++;
+					nextRefresh += REFRESH_INTERVAL;
 				}
 				
 				// Update
-				if (nextUpdate <= 0) {
-					last_update = elapsed;
+				if (elapsed >= nextUpdate) {
 					_game.onUpdate();
 					update++;
+					nextUpdate += _updateInterval;
 				}
 				
 				// Long update
-				if (nextLongUpdate <= 0) {
-					last_long_update = elapsed;
+				if (elapsed >= nextLongUpdate) {
 					_game.onLongUpdate();
-					_mainRenderer.setFPS((frame - lastSavedFrame) / 2);
-					lastSavedFrame = frame;
+					_mainRenderer.setFPS(frame, _longUpdateInterval);
+					nextLongUpdate += _longUpdateInterval;
 				}
 			}
 			else {
-				if (_menu == null) {
-					MenuGame menu = new MenuGame(new GameLoadListener() {
-						@Override
-						public void onLoad(String path) {
-						}
-					});
-					menu.addEntry("New game", 0, new OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							
-						}
-					});
-					menu.addEntry("Load", 1, new OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							
-						}
-					});
-					menu.addEntry("Save", 2, new OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							_menu = new MenuSave(_game);
-						}
-					});
-					menu.addEntry("Feedback", 3, new OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							
-						}
-					});
-					menu.addEntry("Exit", 4, new OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							window.close();
-						}
-					});
-					_menu = menu;
-				}
-				_menu.draw(window, null);
+				manageMenu(window);
 			}
+
+			// Draw
 			window.display();
+			nextDraw += DRAW_INTERVAL;
+			frame++;
 		}
 	}
 	
+	private static void manageMenu(final RenderWindow window) throws IOException, InterruptedException {
+		if (_menu == null) {
+			MenuGame menu = new MenuGame(new GameLoadListener() {
+				@Override
+				public void onLoad(String path) {
+				}
+			});
+			menu.addEntry("New game", 0, new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					
+				}
+			});
+			menu.addEntry("Load", 1, new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					
+				}
+			});
+			menu.addEntry("Save", 2, new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					_menu = new MenuSave(_game);
+				}
+			});
+			menu.addEntry("Feedback", 3, new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					
+				}
+			});
+			menu.addEntry("Exit", 4, new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					window.close();
+				}
+			});
+			_menu = menu;
+		}
+		_menu.draw(window, null);
+	}
+
 	private static void manageEvent(final Event event, final RenderWindow window, Clock timer) throws IOException {
 		if (event.type == Event.Type.CLOSED) {
 			window.close();

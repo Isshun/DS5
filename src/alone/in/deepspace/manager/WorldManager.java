@@ -59,8 +59,6 @@ public class WorldManager implements TileBasedMap {
 		_height = Constant.WORLD_HEIGHT;
 		_storageItems = new ArrayList<StorageItem>();
 		_factoryItems = new ArrayList<FactoryItem>();
-		
-		dump();
 
 		_rooms = new HashMap<Integer, Room>();
 		_floors = new WorldArea[NB_FLOOR][_width][_height];
@@ -170,93 +168,6 @@ public class WorldManager implements TileBasedMap {
 		Log.debug("No free item found (not free: " + notFree + ")");
 
 		return null;
-	}
-
-	//		//TODO: perf
-	//		BaseItem	getRandomPosInRoom(int roomId) {
-	//			Log.debug("getRandomPosInRoom: " + roomId);
-	//
-	//		  int count = 0;
-	//		  for (int x = 0; x < _width; x++) {
-	//			for (int y = 0; y < _height; y++) {
-	//			  if(_areas[x][y] != null && _areas[x][y].getRoomId() == roomId && _areas[x][y].isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-	//				count++;
-	//			  }
-	//			}
-	//		  }
-	//		  Log.debug("getRandomPosInRoom found: " + count);
-	//
-	//		  if (count > 0) {
-	//			int goal = (int) (Math.random() % count);
-	//			for (int x = 0; x < _width; x++) {
-	//			  for (int y = 0; y < _height; y++) {
-	//				if(_areas[x][y] != null
-	//				   && _areas[x][y].getRoomId() == roomId
-	//				   && _areas[x][y].isType(BaseItem.Type.STRUCTURE_FLOOR)) {
-	//				  if (goal-- == 0) {
-	//					  Log.debug("getRandomPosInRoom return: " + x + " " + y + " " + count);
-	//					return _areas[x][y];
-	//				  }
-	//				}
-	//			  }
-	//			}
-	//		  }
-	//
-	//		  Log.warning("getRandomPosInRoom: no room found");
-	//		  return  null;
-	//		}
-
-	void	initRoom() {
-		// for (int y = 0; y < _height; y++) {
-		// 	for (int x = 0; x < _width; x++) {
-		// 	  BaseItem item = getItem(x, y);
-		// 	  if (item != null
-		// 		  && (item.isStructure() == false || item.getType() == BaseItem.STRUCTURE_FLOOR)
-		// 		  && item.getRoomId() == 0) {
-		// 		Room.createFromPos(x, y);
-		// 	  }
-		// 	}
-		// }
-	}
-
-	void dump() {
-		// // for (int x = 0; x < _width; x++) {
-		// // 	for (int y = 0; y < _height; y++) {
-		// // 	  if (_items[x][y] != null) {
-		// // 		Info() + x + " x " + y + " = " + _items[x][y].type;
-		// // 	  }
-		// // 	}
-		// // }
-
-		// // std.cout + std.endl + "\r";
-
-		// system("clear");
-
-		// for (int y = 0; y < _height; y++) {
-		// 	for (int x = 0; x < _width; x++) {
-		// 	  std.cout + _tmp[x][y];
-		// 	  // std.cout + GetMap(x, y);
-		// 	  // if (_items[x][y] != null) {
-		// 	  // 	Info() + x + " x " + y + " = " + _items[x][y].type;
-		// 	  // }
-		// 	}
-		// 	std.cout + std.endl;
-		// }
-
-	}
-
-	//		public void		dumpItems() {
-	//		  for (int x = 0; x < _width; x++) {
-	//			for (int y = 0; y < _height; y++) {
-	//			  if (_items[x][y] != null && _items[x][y].isStructure() == false) {
-	//				Log.info("" + x + " x " + y + " = " + _items[x][y].getType() + ", zone: " + _items[x][y].getZoneId());
-	//			  }
-	//			}
-	//		  }
-	//		}
-
-	boolean getSolid(int x, int y) {
-		return false;
 	}
 
 	// TODO: call job listener
@@ -435,11 +346,13 @@ public class WorldManager implements TileBasedMap {
 	}
 
 	// TODO
-	public UserItem 			find(ItemFilter filter, boolean free) {
+	public UserItem 			find(ItemFilter filter) {
 		for (int x = 0; x < _width; x++) {
 			for (int y = 0; y < _height; y++) {
 				UserItem item = _areas[x][y].getItem();
-				if (item != null && item.isFree() && item.matchFilter(filter)) {
+				if (item != null && item.matchFilter(filter)) {
+					int i = 0;
+					item.matchFilter(filter);
 					return item;
 				}
 			}
@@ -469,12 +382,10 @@ public class WorldManager implements TileBasedMap {
 
 	public Room					getRoom(int id) { return _rooms.get(id); }
 	public int					getRoomCount() { return _rooms.size(); }
-
 	public int					getWidth() { return _width; }
 	public int					getHeight() { return _height; }
 
 	public UserItem getNearest(ItemFilter filter, Character character) {
-		PathManager pathManager = PathManager.getInstance();
 		int startX = character.getX();
 		int startY = character.getY();
 		int maxX = Math.max(startX, _width - startX);
@@ -482,57 +393,55 @@ public class WorldManager implements TileBasedMap {
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
 				WorldArea area = getArea(startX + offsetX, startY + offsetY);
-				if (area == null || area.getRoom() != null) {
+
+				// Check on non-existing area
+				if (area == null) {
 					continue;
 				}
+				
+				// Private room exists and character is not allowed
+				if (area.getRoom() != null && area.getRoom().isPrivate() && area.getRoom().getOccupants().contains(character) == false) {
+					continue;
+				}
+				
 				UserItem item = getItem(startX + offsetX, startY + offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && item.matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
-					return item;
-				}
+				if (getNearestItemCheck(item, filter)) { return item; }
+
 				item = getItem(startX - offsetX, startY - offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && item.matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
-					return getItem(startX - offsetX, startY - offsetY);
-				}
+				if (getNearestItemCheck(item, filter)) { return item; }
+
 				item = getItem(startX + offsetX, startY - offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && item.matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
-					return getItem(startX + offsetX, startY - offsetY);
-				}
+				if (getNearestItemCheck(item, filter)) { return item; }
+
 				item = getItem(startX - offsetX, startY + offsetY);
-				if (item != null && item.isComplete() && item.hasFreeSlot() && item.matchFilter(filter) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
-					return getItem(startX - offsetX, startY + offsetY);
-				}
+				if (getNearestItemCheck(item, filter)) { return item; }
 			}
 		}
 		return null;
 	}
 
-	// TODO: delete
-	public UserItem getNearest(ItemInfo info, int startX, int startY) {
-		PathManager pathManager = PathManager.getInstance();
-		int maxX = Math.max(startX, _width - startX);
-		int maxY = Math.max(startY, _height - startY);
-		for (int offsetX = 0; offsetX < maxX; offsetX++) {
-			for (int offsetY = 0; offsetY < maxY; offsetY++) {
-				if (isItemTypeAtPos(startX + offsetX, startY + offsetY, info) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY + offsetY)) {
-					return getItem(startX + offsetX, startY + offsetY);
-				}
-				if (isItemTypeAtPos(startX - offsetX, startY - offsetY, info) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY - offsetY)) {
-					return getItem(startX - offsetX, startY - offsetY);
-				}
-				if (isItemTypeAtPos(startX + offsetX, startY - offsetY, info) && !pathManager.isBlocked(startX, startY, startX + offsetX, startY - offsetY)) {
-					return getItem(startX + offsetX, startY - offsetY);
-				}
-				if (isItemTypeAtPos(startX - offsetX, startY + offsetY, info) && !pathManager.isBlocked(startX, startY, startX - offsetX, startY + offsetY)) {
-					return getItem(startX - offsetX, startY + offsetY);
-				}
-			}
+	private boolean getNearestItemCheck(UserItem item, ItemFilter filter) {
+		// Item not exists
+		if (item == null) {
+			return false;
 		}
-		return null;
-	}
-
-	private boolean isItemTypeAtPos(int x, int y, ItemInfo info) {
-		UserItem item = getItem(x, y);
-		return (item != null && item.getInfo().equals(info));
+		
+		// Item is blocked
+		if (item.getLastBlocked() != -1 && item.getLastBlocked() < Game.getUpdate() + Constant.COUNT_BEFORE_REUSE_BLOCKED_ITEM) {
+			return false;
+		}
+		
+		// Item is not completed
+		if (item.isComplete() == false) {
+			return false;
+		}
+		
+		// Item don't match filter
+		if (item.matchFilter(filter) == false) {
+			return false;
+		}
+		
+		return true;
 	}
 
 	@Override
@@ -553,35 +462,6 @@ public class WorldManager implements TileBasedMap {
 //		_debugPath.add(pos);
 		//Log.info("visite: " + x + ", " + y);
 	}
-
-//	@Override
-//	public boolean blocked(Mover mover, int x, int y) {
-//		if (x >= 0 && y >= 0 && x < _width && y < _height) {
-//			return _areas[x][y].getStructure() != null && _areas[x][y].getStructure().isComplete() && _areas[x][y].getStructure().isSolid();
-//		}
-//		return false;
-//	}
-//
-//	@Override
-//	public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
-//
-////		 int dx = Math.abs(sx - tx);
-////		 int dy = Math.abs(sy - ty);
-////		 return Math.max(dx, dy);
-//				    		
-//		WorldArea a1 = _areas[sx][sy];
-//		WorldArea a2 = _areas[tx][ty];
-//
-//		if (a1.getStructure() != null && a1.getStructure().isComplete() && a2.getStructure() == null ||
-//				a2.getStructure() != null && a2.getStructure().isComplete() && a1.getStructure() == null) {
-//			return 5;
-//		}
-//
-////		boolean r = Math.random() * 10 % 2 == 0;
-////		return sx != tx ? (r ? 10f : 1f) : (r ? 1f : 10f);
-//		
-//		return sx != tx && sy != ty ? 1f : 0.8f;
-//	}
 
 	public List<FactoryItem> getFactories() { return _factoryItems; }
 
@@ -966,18 +846,5 @@ public class WorldManager implements TileBasedMap {
 ////		return sx != tx ? (r ? 10f : 1f) : (r ? 1f : 10f);
 //		
 		return context.getSourceX() != tx && context.getSourceY() != ty ? 1.5f : 1f;
-	}
-
-	public ItemBase findInRoom(ItemFilter filter, Room room) {
-		if (room != null) {
-			List<WorldArea> areas = room.getAreas();
-			for (WorldArea area: areas) {
-				UserItem item = area.getItem();
-				if (item != null && (filter.hasFreeSlot == false || item.isFree()) && item.matchFilter(filter)) {
-					return item;
-				}
-			}
-		}
-		return null;
 	}
 }

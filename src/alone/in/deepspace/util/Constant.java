@@ -65,4 +65,5 @@ public class Constant {
 	public static final int 	NB_COLUMNS = 47;
 	public static final int 	ITEM_MAX_WIDTH = 5;
 	public static final int 	ITEM_MAX_HEIGHT = 4;
+	public static final int 	COUNT_BEFORE_REUSE_BLOCKED_ITEM = 10;
 }

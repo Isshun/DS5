@@ -24,12 +24,14 @@ public class MainRenderer {
 	private RoomRenderer 			_roomRenderer;
 	private Mode 					_mode;
 
+	private int _lastSavedFrame;
+
 	private static int 				_fps;
-	private static int 				_renderTime;
+	private static long 			_renderTime;
 	private static int 				_frame;
 	
 	public static int getFrame() { return _frame; }
-	public static int getRenderTime() { return _renderTime; }
+	public static long getRenderTime() { return _renderTime; }
 
 	public MainRenderer(RenderWindow app) {
 		_self = this;
@@ -48,7 +50,7 @@ public class MainRenderer {
 		_characterRenderer.onRefresh(frame);
 	}
 	
-	public void draw(RenderWindow app, double animProgress, int renderTime) {
+	public void draw(RenderWindow app, double animProgress, long renderTime) {
 		_renderTime = renderTime;
 
 		app.clear(new Color(0, 0, 50));
@@ -111,8 +113,9 @@ public class MainRenderer {
 			_lightRenderer.refresh(item);
 		}
 	}
-	public void setFPS(int fps) {
-		_fps = fps;
+	public void setFPS(int frame, int interval) {
+		_fps = (frame - _lastSavedFrame) / (interval / 1000);
+		_lastSavedFrame = frame;
 	}
 	public static int getFPS() {
 		return _fps;

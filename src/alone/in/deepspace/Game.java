@@ -49,7 +49,7 @@ public class Game {
 	public static JobManager			getJobManager() { return _jobManager; }
 	public static GameData				getData() { return _data; }
 
-	private int 						_update;
+	private static int 					_update;
 	private Viewport 					_viewport;
 	private boolean						_isMenuOpen;
 	private boolean 					_isRunning;
@@ -151,5 +151,9 @@ public class Game {
 	}
 	public Viewport getViewport() {
 		return _viewport;
+	}
+	
+	public static int getUpdate() {
+		return _update;
 	}
 }

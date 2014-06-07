@@ -34,14 +34,10 @@ public class CharacterIsHungry implements JobCharacterCheck {
 			}
 
 			// Looking for food dispenser
-			for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
-				for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
-					item = ServiceManager.getWorldMap().getItem(x, y);
-					if (item != null && item.matchFilter(filter)) {
-						jobManager.addJob(JobUse.create(item), character);
-						return true;
-					}
-				}
+			item = ServiceManager.getWorldMap().getNearest(filter, character);
+			if (item != null) {
+				jobManager.addJob(JobUse.create(item), character);
+				return true;
 			}
 		}
 		return false;

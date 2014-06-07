@@ -373,6 +373,11 @@ public class PathManager {
 					character.onPathFailed(job);
 					throw new RuntimeException("no more AStarPathFinder in FinderPool");
 				}
+				
+				int fx = fromX;
+				int fy = fromY;
+				int tx = toX;
+				int ty = toY;
 
 				final Path rawpath = finder.findPath(character, fromX, fromY, toX, toY);
 				FinderPool.recycle(finder);

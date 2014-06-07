@@ -8,14 +8,15 @@ public class ItemFilter {
 	public boolean 	effectHapiness;
 	public boolean 	effectRelation;
 	public boolean 	effectHealth;
-	public boolean 	isFactory;
-	public boolean 	isImmediate;
+	public boolean 	lookingForFactory;
+	public boolean 	lookingForItem;
 	public ItemInfo	itemMatched;
 	public ItemInfo itemNeeded;
-	public boolean 	hasFreeSlot;
+	public boolean 	needFreeSlot;
 	
 	public ItemFilter(boolean isFactory, boolean isImmediate) {
-		this.isFactory = isFactory;
-		this.isImmediate = isImmediate;
+		this.lookingForFactory = isFactory;
+		this.lookingForItem = isImmediate;
+		this.needFreeSlot = true;
 	}
 }

@@ -9,6 +9,8 @@ import org.jsfml.graphics.Color;
 
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemFilter;
+import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldArea;
 
 public class Room {
@@ -285,5 +287,25 @@ public class Room {
 
 	public boolean isQuarter() {
 		return Type.QUARTER.equals(_type);
+	}
+
+	public boolean isPrivate() {
+		return _type == Type.QUARTER;
+	}
+
+	/**
+	 * Search and return desired item in room
+	 * 
+	 * @param filter
+	 * @return
+	 */
+	public ItemBase find(ItemFilter filter) {
+		for (WorldArea area: _areas) {
+			UserItem item = area.getItem();
+			if (item != null && item.matchFilter(filter)) {
+				return item;
+			}
+		}
+		return null;
 	}
 }

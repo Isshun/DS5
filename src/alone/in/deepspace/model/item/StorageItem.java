@@ -104,8 +104,14 @@ public class StorageItem extends UserItem {
 			return true;
 		}
 
-		// Item produce
-		if (filter.isFactory && _info.onAction != null && _info.onAction.itemsProduce != null) {
+		// Filter looking for factory
+		if (filter.lookingForFactory && _info.onAction != null && _info.onAction.itemsProduce != null) {
+
+			// Factory has no free slots
+			if (filter.needFreeSlot && hasFreeSlot() == false) {
+				return false;
+			}
+			
 			for (ItemInfo itemProduce: _info.onAction.itemsProduce) {
 				if (itemProduce != null && itemProduce.onAction != null && (filter.itemNeeded == itemProduce || _info.matchFilter(itemProduce.onAction.effects, filter))) {
 					// Have components
