@@ -1,0 +1,17 @@
+label: Sofa
+width: 1
+height: 2
+type: item
+category: common
+cost:
+  matter: 42
+onAction:
+  slots:
+    - x: 0
+      y: 0
+    - x: 0
+      y: 1
+  duration: 12
+  effects:
+    hapiness: 10
+    relation: 10

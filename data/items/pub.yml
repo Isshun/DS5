@@ -1,0 +1,12 @@
+name: pub
+label: Pub
+width: 1
+category: kitchen
+height: 1
+type: item
+cost:
+  matter: 42
+onAction:
+  duration: 5
+  produce:
+    - base.meal

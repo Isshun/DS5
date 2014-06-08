@@ -1,0 +1,7 @@
+name: window
+label: Window
+width: 1
+height: 1
+type: structure
+cost:
+  matter: 1

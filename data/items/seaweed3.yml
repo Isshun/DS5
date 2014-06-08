@@ -1,0 +1,11 @@
+label: Seaweed
+width: 1
+height: 1
+light: 2
+type: resource
+onGather:
+  produce: base.seaweed
+  mature: 5
+cost:
+  matter: 10
+  power: 1

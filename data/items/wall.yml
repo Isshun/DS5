@@ -1,0 +1,8 @@
+name: wall
+label: Wall
+width: 1
+height: 1
+type: structure
+isWalkable: false
+cost:
+  matter: 1

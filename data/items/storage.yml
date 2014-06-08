@@ -1,0 +1,8 @@
+label: Storage
+width: 2
+height: 3
+type: item
+category: system
+storage: 100
+cost:
+  matter: 42

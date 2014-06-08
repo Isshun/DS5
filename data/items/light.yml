@@ -1,0 +1,9 @@
+name: light
+label: Light
+width: 1
+height: 1
+light: 10
+type: item
+cost:
+  matter: 10
+  power: 1

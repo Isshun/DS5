@@ -1,0 +1,8 @@
+name: main_engine
+label: Main Engine
+width: 2
+height: 3
+type: item
+category: system
+cost:
+  matter: 42

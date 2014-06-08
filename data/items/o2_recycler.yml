@@ -1,0 +1,11 @@
+name: o2_recycler
+label: O2 Recycler
+width: 1
+height: 2
+light: 10
+type: item
+category: system
+cost:
+  matter: 42
+  power: 10
+  o2: 100

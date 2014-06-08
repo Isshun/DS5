@@ -1,31 +1,38 @@
-package alone.in.deepspace.Engine;
+package alone.in.deepspace.engine;
 
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
 
-import alone.in.deepspace.Utils.Constant;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 public class Viewport {
 	private static final int ANIM_FRAME = 10;
 
-	private int _posX;
-	private int _posY;
-	private int _lastPosX;
-	private int _lastPosY;
-	private int _width;
-	private int _toScale;
-	private int _height;
-	private int _fromScale;
-	private int _scaleAnim;
+	private Transform	_transform;
+	private int 		_posX;
+	private int 		_posY;
+	private int 		_lastPosX;
+	private int 		_lastPosY;
+	private int 		_width;
+	private int 		_toScale;
+	private int 		_height;
+	private int 		_fromScale;
+	private int 		_scaleAnim;
 
-	public Viewport(RenderWindow app) {
-		_posX = 0;
-		_posY = 0;
+	private RenderStates _render;
+
+	public Viewport(RenderWindow app, int x, int y) {
+		_posX = x;
+		_posY = y;
 		_lastPosX = 0;
 		_lastPosY = 0;
-		_width = Constant.WINDOW_WIDTH - Constant.UI_WIDTH;
-		_height = Constant.WINDOW_HEIGHT - Constant.UI_HEIGHT;
+		_width = Constant.WINDOW_WIDTH - Constant.PANEL_WIDTH;
+		_height = Constant.WINDOW_HEIGHT;
 		_toScale = 0;
+		_transform = new Transform();
+		_transform = Transform.translate(_transform, x, y);
 	}
 
 	public int   getPosX() { return _posX; }
@@ -33,10 +40,41 @@ public class Viewport {
 	public int   getWidth() { return _width; }
 	public int   getHeight() { return _height; }
 
-	public void  setScale(int delta) {
-		_scaleAnim = 0;
+	public void  setScale(int delta, int centerX, int centerY) {
 		_fromScale = _toScale;
 		_toScale = Math.min(Math.max(_toScale + delta, -4), 4);
+		if (_fromScale == _toScale) {
+			return;
+		}
+		
+		_scaleAnim = 0;
+		
+		// Update transform
+		float fromValue = getScale(_fromScale);
+		float toValue = getScale(_toScale);
+		if (_scaleAnim < ANIM_FRAME) {
+			_scaleAnim++;
+		}
+		
+		centerX = _width / 2;
+		centerY = _height / 2;
+		
+		int offsetX = _posX - centerX;
+		int offsetXAfter = (int)(offsetX * (toValue / fromValue));
+		_posX = centerX + offsetXAfter;
+
+		int offsetY = _posY - centerY;
+		int offsetYAfter = (int)(offsetY * (toValue / fromValue));
+		_posY = centerY + offsetYAfter;
+		
+		_transform = new Transform();
+		_transform = Transform.translate(_transform, _posX, _posY);
+		_transform = Transform.scale(_transform, toValue, toValue);
+
+		_lastPosX = _posX;
+		_lastPosY = _posY;
+
+		_render = null;
 	}
 
 	public void    startMove(int x, int y) {
@@ -45,24 +83,17 @@ public class Viewport {
 	}
 
 	public void    update(int x, int y) {
-		_posX -= (_lastPosX - x);
-		_posY -= (_lastPosY - y);
-		_lastPosX = x;
-		_lastPosY = y;
-	}
+		if (x != 0 || y != 0) {
+			// Update transform
+			_transform = Transform.translate(_transform, x-_lastPosX, y-_lastPosY);
 
-	public Transform  getViewTransform(Transform transform) {
-		float fromValue = getScale(_fromScale);
-		float toValue = getScale(_toScale);
-		if (_scaleAnim < ANIM_FRAME) {
-			_scaleAnim++;
+			_posX -= (_lastPosX - x);
+			_posY -= (_lastPosY - y);
+			_lastPosX = x;
+			_lastPosY = y;
+
+			_render = null;
 		}
-		float scale = fromValue + ((toValue - fromValue) / ANIM_FRAME * _scaleAnim);
-
-		transform = Transform.translate(transform, Constant.UI_WIDTH + _posX, Constant.UI_HEIGHT + _posY);
-		transform = Transform.scale(transform, scale, scale);
-
-		return transform;
 	}
 
 	public Transform  getViewTransformBackground(Transform transform) {
@@ -100,13 +131,20 @@ public class Viewport {
 
 	public int getRealPosX(int x) {
 		//x *= _toScale;
-		int posX = _posX + x * Constant.TILE_SIZE;
-		return Constant.UI_WIDTH + (int) (posX * getScale(_toScale));
+		int posX = _posX + x * Constant.TILE_WIDTH;
+		return (int) (posX * getScale(_toScale));
 	}
 
 	public int getRealPosY(int y) {
-		int posY = _posY + y * Constant.TILE_SIZE;
-		return Constant.UI_HEIGHT + (int) (posY * getScale(_toScale));
+		int posY = _posY + y * Constant.TILE_HEIGHT;
+		return (int) (posY * getScale(_toScale));
+	}
+
+	public RenderStates getRender() {
+		if (_render == null) {
+			_render = new RenderStates(_transform);
+		}
+		return _render;
 	}
 
 }

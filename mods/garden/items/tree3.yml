@@ -1,0 +1,7 @@
+name: tree_3
+label: Tree 3
+type: item
+inherits: base.tree
+width: 1
+height: 2
+

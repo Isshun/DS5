@@ -1,0 +1,15 @@
+label: Computer
+type: item
+frames: 4
+framesInterval: 2
+category: common
+cost:
+  matter: 42
+onAction:
+  duration: 5
+  effects:
+    hapiness: 10
+    relation: 10
+  slots:
+    - x: 0
+      y: 1
