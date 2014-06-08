@@ -1,10 +1,10 @@
-package alone.in.deepspace.engine.loader;
+package alone.in.deepspace.engine.serializer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.Game;
-import alone.in.deepspace.engine.loader.WorldSaver.WorldSave;
+import alone.in.deepspace.engine.serializer.WorldSaver.WorldSave;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.RoomSave;
 import alone.in.deepspace.manager.RoomSave.RoomSaveArea;

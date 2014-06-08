@@ -3,6 +3,8 @@ package alone.in.deepspace.manager;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsfml.graphics.Color;
+
 import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.model.character.Character;
@@ -39,6 +41,19 @@ import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class JobManager {
+	public final static Color COLOR_BUILD = new Color(170, 128, 64);
+	public final static Color COLOR_MOVE = Color.CYAN;
+	public final static Color COLOR_GATHER = Color.GREEN;
+	public final static Color COLOR_MINING = Color.GREEN;
+	public final static Color COLOR_WORK = Color.GREEN;
+	public final static Color COLOR_REFILL = Color.GREEN;
+	public final static Color COLOR_NONE = Color.BLACK;
+	public final static Color COLOR_USE_INVENTORY = Color.BLUE;
+	public final static Color COLOR_USE = Color.BLUE;
+	public final static Color COLOR_DESTROY = new Color(200, 20, 20);
+	public final static Color COLOR_STORE = new Color(180, 100, 255);
+	public final static Color COLOR_TAKE = new Color(180, 100, 255);
+
 	public enum Action {
 		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY, WORK, MINING, TAKE, USE_INVENTORY, REFILL
 	}

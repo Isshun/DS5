@@ -76,7 +76,9 @@ public class MiniMapRenderer implements IRenderer {
 				}
 				else if (worldManager.getRessource(x, y) != null) {
 					if (worldManager.getRessource(x, y).isRock()) {
-						color = Color.BLUE;
+					}
+					if (worldManager.getRessource(x, y).getInfo().onGather != null) {
+						color = Color.GREEN;
 					}
 				}
 

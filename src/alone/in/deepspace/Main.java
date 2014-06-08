@@ -10,12 +10,12 @@ import org.jsfml.window.WindowStyle;
 import org.jsfml.window.event.Event;
 import org.jsfml.window.event.KeyEvent;
 
-import alone.in.deepspace.engine.loader.CategoryLoader;
-import alone.in.deepspace.engine.loader.GameLoadListener;
-import alone.in.deepspace.engine.loader.ItemLoader;
-import alone.in.deepspace.engine.loader.LoadListener;
-import alone.in.deepspace.engine.loader.StringsLoader;
 import alone.in.deepspace.engine.renderer.MainRenderer;
+import alone.in.deepspace.engine.serializer.CategoryLoader;
+import alone.in.deepspace.engine.serializer.GameLoadListener;
+import alone.in.deepspace.engine.serializer.ItemLoader;
+import alone.in.deepspace.engine.serializer.LoadListener;
+import alone.in.deepspace.engine.serializer.StringsLoader;
 import alone.in.deepspace.engine.ui.Colors;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.View;
@@ -112,8 +112,6 @@ public class Main {
 		int update = 0;
 		int refresh = 0;
 		int frame = 0;
-		int lastSavedFrame = 0;
-
 		long nextDraw = 0;
 		long nextUpdate = 0;
 		long nextRefresh = 0;
@@ -245,7 +243,9 @@ public class Main {
 			// Save
 			case S:
 				if (keyEvent.control) {
+					_loadListener.onUpdate("saving [" + SAVE_FILE + "]");
 					_game.save(SAVE_FILE);
+					_loadListener.onUpdate("save done");
 					return;
 				}
 				break;

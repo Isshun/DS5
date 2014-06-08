@@ -98,7 +98,7 @@ public class Character extends Movable {
 		_gender = gender;
 		_color = _gender == Gender.FEMALE ? COLOR_FEMALE : COLOR_MALE;
 	}
-	public void 			setMate(Character mate) {
+	public void 			addMateRelation(Character mate) {
 		if (_mate == mate) {
 			return;
 		}
@@ -131,7 +131,7 @@ public class Character extends Movable {
 			// Cancel next child
 			_nextChildAtOld = -1;
 
-			_mate.setMate(null);
+			_mate.addMateRelation(null);
 			_mate = null;
 		}
 		
@@ -557,6 +557,18 @@ public class Character extends Movable {
 
 	public void setIsDead() {
 		_isDead = true;
+	}
+
+	public void setNextChildAtOld(double nextChildAtOld) {
+		_nextChildAtOld = nextChildAtOld;
+	}
+
+	public int getNbChild() {
+		return _nbChild;		
+	}
+
+	public void setNbChild(int nbChild) {
+		_nbChild = nbChild;
 	}
 	
 }

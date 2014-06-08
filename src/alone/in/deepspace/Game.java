@@ -5,10 +5,10 @@ import java.util.List;
 import org.jsfml.graphics.RenderWindow;
 
 import alone.in.deepspace.engine.Viewport;
-import alone.in.deepspace.engine.loader.GameSerializer;
-import alone.in.deepspace.engine.loader.JobManagerLoader;
-import alone.in.deepspace.engine.loader.LoadListener;
-import alone.in.deepspace.engine.loader.WorldFactory;
+import alone.in.deepspace.engine.serializer.GameSerializer;
+import alone.in.deepspace.engine.serializer.JobManagerLoader;
+import alone.in.deepspace.engine.serializer.LoadListener;
+import alone.in.deepspace.engine.serializer.WorldFactory;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.DynamicObjectManager;
 import alone.in.deepspace.manager.FoeManager;

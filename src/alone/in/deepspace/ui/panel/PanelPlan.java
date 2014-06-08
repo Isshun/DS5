@@ -54,7 +54,7 @@ public class PanelPlan extends BaseRightPanel {
 			@Override
 			public void onClick(View view) {
 				clickOnIcon(view);
-				_interaction.set(Action.SET_PLAN, Planning.DUMP);
+				_interaction.set(Action.SET_PLAN, Planning.MINING);
 			}
 		});
 		btMining.setShortcut(0);
@@ -70,7 +70,7 @@ public class PanelPlan extends BaseRightPanel {
 			@Override
 			public void onClick(View view) {
 				clickOnIcon(view);
-				_interaction.set(Action.SET_PLAN, Planning.MINING);
+				_interaction.set(Action.SET_PLAN, Planning.DUMP);
 			}
 		});
 		btDump.setShortcut(0);

@@ -59,6 +59,9 @@ public class MainRenderer {
 
 		_worldRenderer.onDraw(app, render, animProgress);
 		_lightRenderer.onDraw(app, render, animProgress);
+
+		_worldRenderer.onDrawSelected(app, render, animProgress);
+		
 		if (_mode == Mode.ROOM) {
 			_roomRenderer.onDraw(app, render, animProgress);
 		}

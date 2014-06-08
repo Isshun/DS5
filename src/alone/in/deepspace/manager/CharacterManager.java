@@ -180,7 +180,7 @@ public class CharacterManager {
 	}
 
 	public void addRandom(int x, int y) {
-		Character character = new Character(_count++, x, y, null, null, 16);
+		Character character = new Character(Utils.getUUID(), x, y, null, null, 16);
 		add(character);
 	}
 }

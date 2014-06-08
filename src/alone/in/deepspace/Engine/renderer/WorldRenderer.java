@@ -78,6 +78,7 @@ public class WorldRenderer implements IRenderer {
 			} else {
 				for (Vector2i vector: _changed) {
 					refreshFloor(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
+					refreshResource(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
 				}
 				refreshStructure(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 			}
@@ -97,9 +98,6 @@ public class WorldRenderer implements IRenderer {
 		Sprite sp = new Sprite(_textureCache.getTexture());
 		app.draw(sp, render);
 		
-		if (_itemSelected != null) {
-			refreshSelected(app, render, _frame, _itemSelected);
-		}
 
 //		if (_itemSelected != null) {
 //			Sprite sprite = _spriteManager.getSelector(_itemSelected, _frame);
@@ -494,6 +492,12 @@ public class WorldRenderer implements IRenderer {
 
 	public void invalidate() {
 		_hasChanged = true;
+	}
+
+	public void onDrawSelected(RenderWindow app, RenderStates render, double animProgress) {
+		if (_itemSelected != null) {
+			refreshSelected(app, render, _frame, _itemSelected);
+		}
 	}
 
 }

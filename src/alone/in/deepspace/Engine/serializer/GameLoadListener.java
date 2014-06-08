@@ -1,4 +1,4 @@
-package alone.in.deepspace.engine.loader;
+package alone.in.deepspace.engine.serializer;
 
 
 public interface GameLoadListener {

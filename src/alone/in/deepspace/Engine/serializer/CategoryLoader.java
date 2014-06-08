@@ -1,4 +1,4 @@
-package alone.in.deepspace.engine.loader;
+package alone.in.deepspace.engine.serializer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

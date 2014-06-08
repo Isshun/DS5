@@ -1,4 +1,4 @@
-package alone.in.deepspace.engine.loader;
+package alone.in.deepspace.engine.serializer;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
-import org.yaml.snakeyaml.Yaml;
-
-import alone.in.deepspace.engine.loader.WorldSaver.WorldSave;
+import alone.in.deepspace.engine.serializer.WorldSaver.WorldSave;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.util.Log;
@@ -80,9 +78,6 @@ public class GameSerializer {
 		// Write XML
 		XStream xstream = new XStream();
 		String xml = xstream.toXML(save);
-		
-		Yaml yaml = new Yaml();
-		String yml = yaml.dump(save);
 		
 		try {
 			FileOutputStream fs = new FileOutputStream(filePath + ".xml");

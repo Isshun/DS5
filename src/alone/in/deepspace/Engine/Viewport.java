@@ -92,8 +92,6 @@ public class Viewport {
 			_lastPosX = x;
 			_lastPosY = y;
 
-			Log.info("posX: " + _posX);
-
 			_render = null;
 		}
 	}

@@ -50,15 +50,13 @@ public class RelationManager {
 			}
 		}
 
-		c1.setMate(c2);
-		c2.setMate(c1);
+		c1.addMateRelation(c2);
+		c2.addMateRelation(c1);
 	}
 
 	public Character createChildren(Character c1, Character c2) {
-		int count = Game.getCharacterManager().getList().size();
-
 		String lastName = c1.getGender() == Gender.MALE ? c1.getLastName() : c2.getLastName();
-		Character child = new Character(count + 1, c1.getX(), c2.getY(), null, lastName, 0);
+		Character child = new Character(Utils.getUUID(), c1.getX(), c2.getY(), null, lastName, 0);
 		child.setProfession(CharacterManager.professionsChild);
 
 		// Set child's parents

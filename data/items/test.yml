@@ -2,7 +2,7 @@ label: Pink square
 width: 1
 height: 1
 type: item
-category: common
+category: recreation
 cost:
   matter: 42
 onAction:

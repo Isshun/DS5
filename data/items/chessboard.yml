@@ -4,7 +4,7 @@ height: 1
 frames: 7
 framesInterval: 18
 type: item
-category: quarter
+category: recreation
 cost:
   matter: 42
 onAction:

@@ -2,10 +2,10 @@ package alone.in.deepspace.model;
 
 import java.util.HashMap;
 
-import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Step;
 
+import alone.in.deepspace.manager.Utils;
 import alone.in.deepspace.manager.PathManager.PathManagerCallback;
 import alone.in.deepspace.model.character.CharacterNeeds;
 import alone.in.deepspace.model.job.Job;
@@ -42,11 +42,12 @@ public abstract class Movable implements PathManagerCallback {
 	private HashMap<Integer, Integer> 	_points;
 
 	public Movable(int id, int x, int y) {
-		  _id = id;
-		  _posY = _toX = y;
-		  _posX = _toY = x;
-		  _points = new HashMap<Integer, Integer>();
-		  _frameIndex = (int) (Math.random() * 1000 % 20);
+		Utils.useUUID(id);
+		_id = id;
+		_posY = _toX = y;
+		_posX = _toY = x;
+		_points = new HashMap<Integer, Integer>();
+		_frameIndex = (int) (Math.random() * 1000 % 20);
 	}
 	
 	public int				getId() { return _id; }
