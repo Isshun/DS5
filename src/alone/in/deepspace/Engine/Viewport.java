@@ -5,6 +5,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
 
 import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 public class Viewport {
 	private static final int ANIM_FRAME = 10;
@@ -27,8 +28,8 @@ public class Viewport {
 		_posY = y;
 		_lastPosX = 0;
 		_lastPosY = 0;
-		_width = Constant.WINDOW_WIDTH - Constant.UI_WIDTH - Constant.PANEL_WIDTH;
-		_height = Constant.WINDOW_HEIGHT - Constant.UI_HEIGHT;
+		_width = Constant.WINDOW_WIDTH - Constant.PANEL_WIDTH;
+		_height = Constant.WINDOW_HEIGHT;
 		_toScale = 0;
 		_transform = new Transform();
 		_transform = Transform.translate(_transform, x, y);
@@ -39,19 +40,41 @@ public class Viewport {
 	public int   getWidth() { return _width; }
 	public int   getHeight() { return _height; }
 
-	public void  setScale(int delta) {
-		_scaleAnim = 0;
+	public void  setScale(int delta, int centerX, int centerY) {
 		_fromScale = _toScale;
 		_toScale = Math.min(Math.max(_toScale + delta, -4), 4);
-
+		if (_fromScale == _toScale) {
+			return;
+		}
+		
+		_scaleAnim = 0;
+		
 		// Update transform
 		float fromValue = getScale(_fromScale);
 		float toValue = getScale(_toScale);
 		if (_scaleAnim < ANIM_FRAME) {
 			_scaleAnim++;
 		}
-		float scale = fromValue + ((toValue - fromValue) / ANIM_FRAME * _scaleAnim);
-		_transform = Transform.scale(_transform, scale, scale);
+		
+		centerX = _width / 2;
+		centerY = _height / 2;
+		
+		int offsetX = _posX - centerX;
+		int offsetXAfter = (int)(offsetX * (toValue / fromValue));
+		_posX = centerX + offsetXAfter;
+
+		int offsetY = _posY - centerY;
+		int offsetYAfter = (int)(offsetY * (toValue / fromValue));
+		_posY = centerY + offsetYAfter;
+		
+		_transform = new Transform();
+		_transform = Transform.translate(_transform, _posX, _posY);
+		_transform = Transform.scale(_transform, toValue, toValue);
+
+		_lastPosX = _posX;
+		_lastPosY = _posY;
+
+		_render = null;
 	}
 
 	public void    startMove(int x, int y) {
@@ -68,6 +91,8 @@ public class Viewport {
 			_posY -= (_lastPosY - y);
 			_lastPosX = x;
 			_lastPosY = y;
+
+			Log.info("posX: " + _posX);
 
 			_render = null;
 		}

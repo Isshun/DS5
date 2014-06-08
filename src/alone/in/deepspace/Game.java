@@ -1,10 +1,8 @@
 package alone.in.deepspace;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.TextureCreationException;
 
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.loader.GameSerializer;

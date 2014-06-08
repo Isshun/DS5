@@ -226,10 +226,12 @@ public class UserInterface {
 	}
 
 	public void	onMouseWheel(int delta, int x, int y) {
-		_viewport.setScale(delta);
+		_viewport.setScale(delta, x, y);
 
-		_keyMovePosX = getRelativePosX(x);
-		_keyMovePosY = getRelativePosY(y);
+//		_keyMovePosX = getRelativePosX(-_viewport.getPosX());
+//		_keyMovePosY = getRelativePosY(-_viewport.getPosY());
+		
+//		MainRenderer.getInstance().invalidate();
 	}
 
 	public void onRefresh(int update) {
