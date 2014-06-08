@@ -1,7 +1,10 @@
+
 package alone.in.deepspace.manager;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.model.character.Character;
@@ -23,6 +26,24 @@ public class RoomManager {
 	public RoomManager() {
 		_rooms = new Room[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
 		_roomList = new ArrayList<Room>();
+	}
+
+	public void add(Room room) {
+		if (room == null) {
+			Log.error("room cannot be null");
+			return;
+		}
+		
+		if (_roomList.contains(room)) {
+			Log.error("room already exists");
+			return;
+		}
+		
+		_roomList.add(room);
+		
+		for (WorldArea area: room.getAreas()) {
+			_rooms[area.getX()][area.getY()] = room;
+		}
 	}
 
 	public Room putRoom(int startX, int startY, int fromX, int fromY, int toX, int toY, Type type, Character owner) {
@@ -55,13 +76,14 @@ public class RoomManager {
 		// Create new room if not exist
 		if (room == null) {
 			if (type == Type.GARDEN) {
-				room = new GardenRoom(fromX, fromY);
+				room = new GardenRoom();
 			} else if (type == Type.QUARTER) {
-				room = new QuarterRoom(fromX, fromY);
+				room = new QuarterRoom();
 			} else {
-				room = new Room(type, fromX, fromY);
+				room = new Room(type);
 			}
 			room.setOwner(owner);
+			room.refreshPosition();
 			_roomList.add(room); 
 		}
 		
@@ -84,6 +106,9 @@ public class RoomManager {
 		if (type == Room.Type.GARDEN) {
 			ResourceManager.getInstance().refreshWater();
 		}
+		
+		// Refresh start position
+		room.refreshPosition();
 		
 		return room;
 	}
@@ -117,15 +142,24 @@ public class RoomManager {
 		return true;
 	}
 
-	public void removeRoom(int fromX, int fromY, int toX, int toY, Type roomType) {
+	public void removeRoom(int fromX, int fromY, int toX, int toY) {
+		Set<Room> updatedRooms = new HashSet<Room>();
 		boolean hasGarden = false;
 		
 		// Set room for each area
 		for (int x = fromX; x <= toX; x++) {
 			for (int y = fromY; y <= toY; y++) {
 				if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
-					if (_rooms[x][y] != null && _rooms[x][y].isType(Room.Type.GARDEN)) {
-						hasGarden = true;
+					if (_rooms[x][y] != null) {
+						updatedRooms.add(_rooms[x][y]);
+						
+						// Remove area from room
+						_rooms[x][y].removeArea(x, y);
+						
+						// Flag garden
+						if (_rooms[x][y].isType(Room.Type.GARDEN)) {
+							hasGarden = true;
+						}
 					}
 					_rooms[x][y] = null;
 					MainRenderer.getInstance().invalidate(x, y);
@@ -133,6 +167,21 @@ public class RoomManager {
 			}
 		}
 		
+		// Refresh start position
+		for (Room room: _roomList) {
+			room.refreshPosition();
+		}
+		
+		// Remove non existing room
+		List<Room> toRemove = new ArrayList<Room>();
+		for (Room room: _roomList) {
+			if (room.getAreas().size() == 0) {
+				toRemove.add(room);
+			}
+		}
+		_roomList.removeAll(toRemove);
+		
+		// Refresh water if garden was removed
 		if (hasGarden) {
 			ResourceManager.getInstance().refreshWater();
 		}
@@ -222,5 +271,4 @@ public class RoomManager {
 			room.update();
 		}
 	}
-
 }

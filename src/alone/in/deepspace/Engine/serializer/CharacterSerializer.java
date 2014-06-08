@@ -5,6 +5,7 @@ import java.util.List;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.serializer.WorldSaver.WorldSave;
+import alone.in.deepspace.manager.Utils;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.character.Character.Gender;
 import alone.in.deepspace.model.character.CharacterNeeds;
@@ -145,6 +146,7 @@ public class CharacterSerializer implements SerializerInterface {
 	}
 
 	private void loadCharacter(CharacterSave characterSave) {
+		Utils.useUUID(characterSave.id);
 		Character character = new Character(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
 		character.setGender(characterSave.gender);
 

@@ -9,12 +9,10 @@ import org.jsfml.graphics.RenderTexture;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.TextureCreationException;
-import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
 import alone.in.deepspace.Game;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.item.ItemBase;
@@ -23,7 +21,6 @@ import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
-import alone.in.deepspace.util.Log;
 
 public class WorldRenderer implements IRenderer {
 	private SpriteManager			_spriteManager;
@@ -45,7 +42,6 @@ public class WorldRenderer implements IRenderer {
 		_shape = new RectangleShape();
 		_shape.setSize(new Vector2f(Constant.TILE_WIDTH, Constant.TILE_HEIGHT));
 		_changed = new HashSet<Vector2i>();
-		_worldMap = ServiceManager.getWorldMap();
 		
 		_spriteCache = new Sprite();
 
@@ -62,6 +58,10 @@ public class WorldRenderer implements IRenderer {
 	}
 
 	public void onRefresh(int frame) {
+		if (_worldMap == null) {
+			_worldMap = Game.getWorldManager();
+		}
+		
 		UserInterface ui = UserInterface.getInstance();
 		_frame = frame;
 		int fromX = Math.max(ui.getRelativePosXMin(0)-1, 0);
@@ -216,19 +216,30 @@ public class WorldRenderer implements IRenderer {
 								// 	  || _characterManager.getCharacterAtPos(i, j-1) != null) {
 								// 	_spriteManager.getWall(item, 2, &sprite, 0, 0);
 								// } else {
-								sprite = _spriteManager.getWall(item, 0, 0, 0);
-								// }
-								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT - offsetWall);
+
+								sprite = _spriteManager.getSimpleWall(0);
+								if (sprite != null) {
+									sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT - offsetWall);
+									_textureCache.draw(sprite);
+								}
+
+								sprite = _spriteManager.getItem(item);
+								if (sprite != null) {
+									sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT - 4);
+									_textureCache.draw(sprite);
+								}
 							}
 	
 							// Wall
 							else if (item.isWall()) {
 								sprite = drawWall(item, i, j, offsetWall);
+								_textureCache.draw(sprite);
 							}	  
 
 							// Hull
 							else if (item.isHull()) {
 								sprite = drawWall(item, i, j, offsetWall);
+								_textureCache.draw(sprite);
 							}	  
 						}
 	
@@ -238,17 +249,13 @@ public class WorldRenderer implements IRenderer {
 						// 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 						// }
 	
-						if (sprite != null) {
-							_textureCache.draw(sprite);
-							
-							if (item.isWindow()) {
-								sprite = _spriteManager.getIcon(item.getInfo());
-								if (sprite != null) {
-									sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
-									_textureCache.draw(sprite);
-								}
-							}
-						}
+//							if (item.isWindow()) {
+//								sprite = _spriteManager.getIcon(item.getInfo());
+//								if (sprite != null) {
+//									sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
+//									_textureCache.draw(sprite);
+//								}
+//							}
 					}
 				}
 			}

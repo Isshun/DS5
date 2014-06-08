@@ -19,8 +19,7 @@ public class GameSerializer {
 	public static void load(String filePath, LoadListener loadListener) {
 		System.gc();
 
-		loadListener.onUpdate("load savegame [" + filePath + "]");
-
+		loadListener.onUpdate("Load savegame [" + filePath + "]");
 		Log.info("Load savegame [" + filePath + "]");
 	    long time = System.currentTimeMillis();
         
@@ -31,7 +30,7 @@ public class GameSerializer {
 			XStream xstream = new XStream();
 			worldSave = (WorldSave)xstream.fromXML(input);
 
-			Log.info("load complete 2: " + (System.currentTimeMillis() - time) + "ms");
+			Log.info("Save file loaded: " + (System.currentTimeMillis() - time) + "ms");
 		    input.close();
 			System.gc();
 		} catch (FileNotFoundException e) {
@@ -58,9 +57,7 @@ public class GameSerializer {
 			}
 		}
 
-		loadListener.onUpdate("Load complete");
-	    
-	    Log.info("load complete: " + (System.currentTimeMillis() - time) + "ms");
+	    Log.info("Game loaded: " + (System.currentTimeMillis() - time) + "ms");
         
 		System.gc();		
 	}

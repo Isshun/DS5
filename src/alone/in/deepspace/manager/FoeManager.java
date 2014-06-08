@@ -10,15 +10,13 @@ import alone.in.deepspace.util.Log;
 
 
 public class FoeManager {
-	private static int ID_START = 1000000;
 	private ArrayList<Foe>		 	_foes;
-	private int 					_count;
+	
 	public FoeManager() {
 	  Log.debug("FoeManager");
 	  
 	  _foes = new ArrayList<Foe>();
-	  _foes.add(new Foe(ID_START + _count++, 0, 0));
-	  _count = 0;
+	  _foes.add(new Foe(0, 0));
 
 	  Log.debug("FoeManager done");
 	}
@@ -155,10 +153,6 @@ public class FoeManager {
 //			
 //			app.draw(sprite, render);
 //		}
-	}
-	
-	public int getCount() {
-		return _count;
 	}
 
 	public void clear() {

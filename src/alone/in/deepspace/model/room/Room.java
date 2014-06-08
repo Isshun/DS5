@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.jsfml.graphics.Color;
 
+import alone.in.deepspace.manager.Utils;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemFilter;
@@ -25,9 +26,6 @@ public class Room {
 		GARDEN
 	}
 
-	static int 			_roomCount = 0;
-	static int 			_roomTmpId = 0;
-
 	int						_id;
 	int						_zoneId;
 	List<ItemBase>			_doors;
@@ -42,12 +40,18 @@ public class Room {
 	private Set<Character> 	_occupants;
 	protected List<WorldArea> 	_areas;
 
-	public Room(Type type, int x, int y) {
+	public Room(int id, Type type) {
+		init(id, type);
+	}
+
+	public Room(Type type) {
+		init(Utils.getUUID(), type);
+	}
+
+	private void init(int id, Type type) {
 		_color = new Color((int)(Math.random() * 200), (int)(Math.random() * 200), (int)(Math.random() * 200));
 		_areas = new ArrayList<WorldArea>();
-		_id = -1;
-		_x = x;
-		_y = y;
+		_id = id;
 		_isCommon = true;
 		_maxX = Integer.MIN_VALUE;
 		_minX = Integer.MAX_VALUE;
@@ -57,38 +61,8 @@ public class Room {
 		_occupants = new HashSet<Character>();
 	}
 
-	//	public static Room	createFromPos(int x, int y) {
-	//	  int ret = checkZone(x, y, --_roomTmpId);
-	//
-	//	  if (ret == 0) {
-	//		Room room = new Room();
-	//		room.setId(++_roomCount);
-	//		setZone(x, y, _roomCount, 0);
-	//		Log.info("Room create: " + _roomCount);
-	//		return room;
-	//	  }
-	//
-	//	  else if (ret > 0) {
-	//		Room room = ServiceManager.getWorldMap().getRoom(ret);
-	//		if (room != null) {
-	//		  setZone(x, y, ret, room.getZoneId());
-	//		  Log.info("Room set: " + ret);
-	//		  return room;
-	//		} else {
-	//		  Log.error("Room #" + ret + " not exists");
-	//		}
-	//	  }
-	//
-	//	  else {
-	//		Log.info("Room not complete");
-	//	  }
-	//
-	//	  return null;
-	//	}
-
 	public int				getId() { return _id; }
 	public int				getZoneId() { return _zoneId; }
-	public static int		getNewId() { return ++_roomCount; }
 	public Character 		getOwner() { return _owner; }
 	public int 				getX() { return _x; }
 	public int 				getY() { return _y; }
@@ -102,7 +76,6 @@ public class Room {
 	public void 			setMaxX(int x) { _maxX = x; }
 	public void 			setMinX(int x) { _minX = x; }
 	public void 			setCommon(boolean common) { _isCommon = common; }
-	public void 			setId(int i) { _id = i; }
 
 	public boolean 			isCommon() { return _isCommon; }
 	public boolean			isType(Type type) { return _type == type; }
@@ -307,5 +280,26 @@ public class Room {
 			}
 		}
 		return null;
+	}
+
+	public void removeArea(int x, int y) {
+		for (WorldArea area: _areas) {
+			if (area.getX() == x && area.getY() == y) {
+				_areas.remove(area);
+				return;
+			}
+		}
+	}
+
+	public void refreshPosition() {
+		_x = Integer.MAX_VALUE;
+		_y = Integer.MAX_VALUE;
+		
+		for (WorldArea area: _areas) {
+			if (area.getX() <= _x  && area.getY() <= _y) {
+				_x = area.getX();
+				_y = area.getY();
+			}
+		}
 	}
 }

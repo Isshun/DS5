@@ -17,9 +17,17 @@ public class QuarterRoom extends Room {
 	private RoomOption 			_entryBed;
 	private RoomOption 			_entryStorage;
 
-	public QuarterRoom(int x, int y) {
-		super(Type.QUARTER, x, y);
+	public QuarterRoom() {
+		super(Type.QUARTER);
+		init();
+	}
 
+	public QuarterRoom(int id) {
+		super(id, Type.QUARTER);
+		init();
+	}
+
+	private void init() {
 		_options = new ArrayList<RoomOption>();
 		
 		// Bed

@@ -18,9 +18,17 @@ public class GardenRoom extends Room {
 	private List<ItemInfo> 		_cultures;
 	private List<RoomOption>	_options;
 
-	public GardenRoom(int x, int y) {
-		super(Type.GARDEN, x, y);
+	public GardenRoom() {
+		super(Type.GARDEN);
+		init();
+	}
 
+	public GardenRoom(int id) {
+		super(id, Type.GARDEN);
+		init();
+	}
+
+	private void init() {
 		_options = new ArrayList<RoomOption>();
 		_cultures  = Game.getData().gatherItems;
 		for (ItemInfo c: _cultures) {

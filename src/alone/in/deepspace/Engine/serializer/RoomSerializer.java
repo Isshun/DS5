@@ -6,60 +6,47 @@ import java.util.List;
 import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.serializer.WorldSaver.WorldSave;
 import alone.in.deepspace.manager.CharacterManager;
-import alone.in.deepspace.manager.RoomSave;
-import alone.in.deepspace.manager.RoomSave.RoomSaveArea;
+import alone.in.deepspace.manager.RoomManager;
+import alone.in.deepspace.manager.Utils;
+import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.character.Character;
-import alone.in.deepspace.model.character.Character.Gender;
-import alone.in.deepspace.model.character.CharacterRelation;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.room.GardenRoom;
 import alone.in.deepspace.model.room.Room;
+import alone.in.deepspace.model.room.Room.Type;
 
 public class RoomSerializer implements SerializerInterface {
+	public static class RoomSaveArea {
+		public int 				x;
+		public int 				y;
+		
+		public RoomSaveArea(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+	
+	public static class RoomSave {
+		public Type 				type;
+		public String				culture;
+		public ArrayList<Integer> 	occupants;
+		public List<RoomSaveArea>	areas;
+		public int 					id;
+		
+		public RoomSave() {
+			this.areas = new ArrayList<RoomSaveArea>();
+		}
+	}
 
-	public class CharacterRelationSave {
-		public int	id;
-		public int	relationId;
-		
-		public CharacterRelationSave(CharacterRelation relation) {
-			this.id = relation.getSecond().getId();
-			this.relationId = relation.getRelation().ordinal();
-		}
-	}
-	
-	public class CharacterSave {
-		public int							id;
-		public String						lastname;
-		public String 						firstname;
-		public List<CharacterRelationSave>	relations;
-		public double 						old;
-		public int 							x;
-		public int 							y;
-		public Gender						gender;
-		
-		public CharacterSave(Character character) {
-			this.id = character.getId();
-			this.old = character.getOld();
-			this.x = character.getX();
-			this.y = character.getY();
-			this.gender = character.getGender();
-			this.lastname = character.getLastName();
-			this.firstname = character.getFirstName();
-			this.relations = new ArrayList<CharacterRelationSave>();
-			for (CharacterRelation relation: character.getRelations()) {
-				this.relations.add(new CharacterRelationSave(relation));
-			}
-		}
-	}
-	
 	public void save(WorldSave save) {
 		List<Room> rooms = Game.getRoomManager().getRoomList();
 		save.rooms = new ArrayList<RoomSave>();
 		
 		for (Room room: rooms) {
 			RoomSave roomSave = new RoomSave();
-			roomSave.type = room.getType().ordinal();
+			roomSave.id = room.getId();
+			roomSave.type = room.getType();
 			for (WorldArea area: room.getAreas()) {
 				roomSave.areas.add(new RoomSaveArea(area.getX(), area.getY()));
 			}
@@ -84,20 +71,41 @@ public class RoomSerializer implements SerializerInterface {
 
 	public void	load(WorldSave save) {
 		CharacterManager characterManager = Game.getCharacterManager();
+		WorldManager worldManager = Game.getWorldManager();
 		
 		for (RoomSave roomSave: save.rooms) {
-			for (RoomSaveArea roomSaveArea: roomSave.areas) {
-				Room room = Game.getRoomManager().putRoom(roomSaveArea.x, roomSaveArea.y, roomSaveArea.x, roomSaveArea.y, roomSaveArea.x, roomSaveArea.y, Room.getType(roomSave.type), null);
-				if (room.isGarden()) {
-					ItemInfo info = Game.getData().getItemInfo(roomSave.culture);
-					((GardenRoom)room).setCulture(info);
-				}
-				if (roomSave.occupants != null) {
-					for (int characterId: roomSave.occupants) {
-						room.addOccupant(characterManager.getCharacter(characterId));
-					}
+			Room room = null;
+			Utils.useUUID(roomSave.id);
+			
+			// Is Garden
+			if (roomSave.type == Type.GARDEN) {
+				GardenRoom gardenRoom = new GardenRoom(roomSave.id);
+				ItemInfo info = Game.getData().getItemInfo(roomSave.culture);
+				gardenRoom.setCulture(info);
+				room = gardenRoom;
+			}
+			
+			// Regular room
+			else {
+				room = new Room(roomSave.id, roomSave.type);
+			}
+			
+			// Add occupants
+			if (roomSave.occupants != null) {
+				for (int characterId: roomSave.occupants) {
+					room.addOccupant(characterManager.getCharacter(characterId));
 				}
 			}
+			
+			// Set areas
+			for (RoomSaveArea area: roomSave.areas) {
+				room.addArea(worldManager.getArea(area.x, area.y));
+			}
+			
+			// Refresh position
+			room.refreshPosition();
+			
+			Game.getRoomManager().add(room);
 		}
 	}
 }

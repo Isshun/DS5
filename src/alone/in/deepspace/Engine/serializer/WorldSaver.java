@@ -5,7 +5,7 @@ import java.util.List;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.serializer.CharacterSerializer.CharacterSave;
-import alone.in.deepspace.manager.RoomSave;
+import alone.in.deepspace.engine.serializer.RoomSerializer.RoomSave;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;

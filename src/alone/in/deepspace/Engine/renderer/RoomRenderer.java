@@ -1,6 +1,8 @@
 package alone.in.deepspace.engine.renderer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
@@ -18,9 +20,21 @@ import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.util.Constant;
 
 public class RoomRenderer implements IRenderer {
-	private RenderTexture 	_cache;
+	private static class RoomEntry {
+		public final Room	room;
+		
+		public RoomEntry(Room room) {
+			this.room = room;
+		}
+		
+	}
+	
+	private RenderTexture 			_cache;
+	private Map<Room, RoomEntry>	_roomEntries;
 
 	public RoomRenderer() {
+		_roomEntries = new HashMap<Room, RoomEntry>();
+		
 		try {
 			_cache = new RenderTexture();
 			_cache.create(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
@@ -28,9 +42,6 @@ public class RoomRenderer implements IRenderer {
 		} catch (TextureCreationException e) {
 			e.printStackTrace();
 		}
-		
-		Room room = new Room(Room.Type.METTING, 12, 12);
-		ServiceManager.getWorldMap().addRoom(room);
 	}
 
 
@@ -84,7 +95,10 @@ public class RoomRenderer implements IRenderer {
 			height = 26;
 			padding = 3;
 		}				
-				
+		
+		RoomEntry entry = new RoomEntry(room);
+		_roomEntries.put(room, entry);
+		
 		Text text = new Text();
 		text.setFont(SpriteManager.getInstance().getFont());
 		
@@ -123,8 +137,10 @@ public class RoomRenderer implements IRenderer {
 
 	@Override
 	public void onRefresh(int frame) {
-		// TODO Auto-generated method stub
-		
+//		List<Room> roomList = Game.getRoomManager().getRoomList();
+//		for (Room room: roomList) {
+//			displayRoomInfo(app, render, room, room.getX() * Constant.TILE_WIDTH, room.getY() * Constant.TILE_HEIGHT);
+//		}
 	}
 
 

@@ -88,9 +88,12 @@ public class Main {
 			_game.onCreate();
 			//_game.newGame(SAVE_FILE, _loadListener);
 			_game.load(SAVE_FILE, _loadListener);
+
+			_loadListener.onUpdate("Init render");
 			_mainRenderer.init(_game);
 			_userInterface.onCreate(_game);
 
+			_loadListener.onUpdate("Start game");
 			loop(window);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -256,7 +259,6 @@ public class Main {
 					_menu = new MenuLoad(new GameLoadListener() {
 						@Override
 						public void onLoad(String path) {
-							ServiceManager.reset();
 							// TODO NULL
 							_game = new Game(window, null);
 							_game.load(path, _loadListener);

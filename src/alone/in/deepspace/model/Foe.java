@@ -2,12 +2,13 @@ package alone.in.deepspace.model;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
+import alone.in.deepspace.manager.Utils;
 import alone.in.deepspace.model.job.Job;
 
 public class Foe extends Movable {
 
-	public Foe(int id, int x, int y) {
-		super(id, x, y);
+	public Foe(int x, int y) {
+		super(Utils.getUUID(), x, y);
 	}
 
 	@Override

@@ -109,6 +109,8 @@ public class Game {
 	void	onCreate() {
 		Log.info("Game: create");
 
+		_worldManager = new WorldManager();
+		ServiceManager.setWorldMap(_worldManager);
 		_roomManager = new RoomManager();
 		_resourceManager = new ResourceManager();
 		_statsManager = new StatsManager();
@@ -129,8 +131,12 @@ public class Game {
 	public void	load(final String filePath, LoadListener loadListener) {
 		loadListener.onUpdate("Load game");
 		GameSerializer.load(filePath, loadListener);
+
 		JobManagerLoader.load(JobManager.getInstance(), loadListener);
+
+		loadListener.onUpdate("Init world map");
 		ServiceManager.getWorldMap().cleanRock();
+		
 		ResourceManager.getInstance().refreshWater();
 		ResourceManager.getInstance().addMatter(5000);
 	}

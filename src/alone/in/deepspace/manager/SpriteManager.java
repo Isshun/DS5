@@ -22,6 +22,8 @@ import alone.in.deepspace.util.Log;
 import alone.in.deepspace.util.ObjectPool;
 
 public class SpriteManager {
+	private static final int WALL_HEIGHT = 48;
+	private static final int WALL_WIDTH = 32;
 	private static final int NB_SELECTOR_TILE = 4;
 	private static final int NB_ITEM_SELECTOR_TILE = 4;
 	private static int 				_count;
@@ -167,7 +169,7 @@ public class SpriteManager {
 			return getSprite(item.getInfo(), tile, 0, alpha, false);
 		}
 
-		return null;
+		return getSprite(item.getInfo(), tile, 0, 255, false);
 	}
 
 	public Sprite	getItem(ItemBase item) {
@@ -388,10 +390,17 @@ public class SpriteManager {
 		return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
 	}
 
-	public Sprite		getWall(StructureItem item, int special, int index, int zone) {
-		int WALL_HEIGHT = 48;
-		int WALL_WIDTH = 32;
+	public Sprite getSimpleWall(int zone) {
+		int texture = 6;
+		int x = 0;
+		int y = WALL_HEIGHT * zone;
+		int width = WALL_WIDTH;
+		int height = WALL_HEIGHT;
 
+		return getSprite(texture, x, y, width, height, 255);
+	}
+
+	public Sprite		getWall(StructureItem item, int special, int index, int zone) {
 		// Door
 		if (item.getName().equals("base.door")) {
 			int alpha = 75 + 180 / item.getMatter() * item.getMatterSupply();
@@ -572,5 +581,4 @@ public class SpriteManager {
 	public Sprite getSelector(ItemBase item, int frame) {
 		return _itemSelectors[frame % NB_ITEM_SELECTOR_TILE];
 	}
-
 }

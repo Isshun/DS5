@@ -166,7 +166,7 @@ public class UserInteraction {
 		}
 		
 		if (_selectedRoomType == Room.Type.NONE) {
-			Game.getRoomManager().removeRoom(fromX, fromY, toX, toY, _selectedRoomType);
+			Game.getRoomManager().removeRoom(fromX, fromY, toX, toY);
 		} else {
 			Game.getRoomManager().putRoom(clickX, clickY, fromX, fromY, toX, toY, _selectedRoomType, null);
 		}
