@@ -67920,10 +67920,6 @@
             <string>base.seaweed</string>
             <string>base.seaweed</string>
             <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
           </inventory>
           <acceptFood>false</acceptFood>
           <acceptDrink>false</acceptDrink>
@@ -69763,6 +69759,231 @@
         <storage>
           <matter>0</matter>
           <inventory>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
             <string>base.seaweed</string>
             <string>base.seaweed</string>
             <string>base.seaweed</string>
@@ -75795,6 +76016,47 @@
         <storage>
           <matter>0</matter>
           <inventory>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.seaweed</string>
+            <string>base.meal</string>
+            <string>base.meal</string>
+            <string>base.meal</string>
+            <string>base.meal</string>
+            <string>base.meal</string>
+            <string>base.meal</string>
             <string>base.meal</string>
             <string>base.meal</string>
             <string>base.meal</string>
@@ -77823,7 +78085,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>170</x>
       <y>143</y>
@@ -77834,7 +78096,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>170</x>
       <y>144</y>
@@ -77845,7 +78107,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>170</x>
       <y>145</y>
@@ -77856,7 +78118,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>170</x>
       <y>146</y>
@@ -77867,7 +78129,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>170</x>
       <y>147</y>
@@ -77878,7 +78140,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>170</x>
       <y>148</y>
@@ -78399,7 +78661,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>171</x>
       <y>143</y>
@@ -78410,7 +78672,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>171</x>
       <y>144</y>
@@ -78421,7 +78683,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>171</x>
       <y>145</y>
@@ -78432,7 +78694,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>171</x>
       <y>146</y>
@@ -78443,7 +78705,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>171</x>
       <y>147</y>
@@ -78454,7 +78716,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>171</x>
       <y>148</y>
@@ -78975,7 +79237,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>172</x>
       <y>143</y>
@@ -78986,7 +79248,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>172</x>
       <y>144</y>
@@ -78997,7 +79259,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>172</x>
       <y>145</y>
@@ -79008,7 +79270,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>172</x>
       <y>146</y>
@@ -79019,7 +79281,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>172</x>
       <y>147</y>
@@ -79030,7 +79292,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>172</x>
       <y>148</y>
@@ -79540,7 +79802,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>173</x>
       <y>143</y>
@@ -79551,7 +79813,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>173</x>
       <y>144</y>
@@ -79562,7 +79824,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>173</x>
       <y>145</y>
@@ -79573,7 +79835,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>173</x>
       <y>146</y>
@@ -79584,7 +79846,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>173</x>
       <y>147</y>
@@ -79595,7 +79857,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>173</x>
       <y>148</y>
@@ -80182,7 +80444,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>174</x>
       <y>143</y>
@@ -80193,7 +80455,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>174</x>
       <y>144</y>
@@ -80204,7 +80466,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>174</x>
       <y>145</y>
@@ -80215,7 +80477,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>174</x>
       <y>146</y>
@@ -80226,7 +80488,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>174</x>
       <y>147</y>
@@ -80237,7 +80499,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>174</x>
       <y>148</y>
@@ -80857,7 +81119,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>175</x>
       <y>143</y>
@@ -80868,7 +81130,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>175</x>
       <y>144</y>
@@ -80879,7 +81141,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>175</x>
       <y>145</y>
@@ -80890,7 +81152,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>175</x>
       <y>146</y>
@@ -80901,7 +81163,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>175</x>
       <y>147</y>
@@ -80912,7 +81174,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>175</x>
       <y>148</y>
@@ -81489,7 +81751,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>176</x>
       <y>143</y>
@@ -81500,7 +81762,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>176</x>
       <y>144</y>
@@ -81511,7 +81773,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>176</x>
       <y>145</y>
@@ -81522,7 +81784,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>176</x>
       <y>146</y>
@@ -81533,7 +81795,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>176</x>
       <y>147</y>
@@ -81544,7 +81806,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>176</x>
       <y>148</y>
@@ -82065,7 +82327,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>177</x>
       <y>143</y>
@@ -82076,7 +82338,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>177</x>
       <y>144</y>
@@ -82087,7 +82349,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>177</x>
       <y>145</y>
@@ -82098,7 +82360,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>177</x>
       <y>146</y>
@@ -82109,7 +82371,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>177</x>
       <y>147</y>
@@ -82120,7 +82382,7 @@
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>5</value>
       </resource>
       <x>177</x>
       <y>148</y>
@@ -84170,28 +84432,6 @@
       </resource>
       <x>182</x>
       <y>139</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed3</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>10</value>
-      </resource>
-      <x>182</x>
-      <y>147</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed3</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>10</value>
-      </resource>
-      <x>182</x>
-      <y>151</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -112535,19 +112775,19 @@
     <alone.in.deepspace.manager.RoomSave>
       <type>1</type>
       <occupants>
-        <int>1000044</int>
-        <int>1000024</int>
-        <int>1000016</int>
-        <int>1000032</int>
-        <int>1000028</int>
-        <int>1000002</int>
-        <int>1000020</int>
         <int>3</int>
-        <int>19</int>
-        <int>1000048</int>
-        <int>17</int>
-        <int>1000036</int>
+        <int>1000024</int>
+        <int>1000028</int>
+        <int>1000016</int>
         <int>1000040</int>
+        <int>17</int>
+        <int>1000048</int>
+        <int>1000020</int>
+        <int>1000036</int>
+        <int>1000044</int>
+        <int>1000002</int>
+        <int>1000032</int>
+        <int>19</int>
       </occupants>
       <areas>
         <alone.in.deepspace.manager.RoomSave_-RoomSaveArea>
@@ -112639,18 +112879,18 @@
     <alone.in.deepspace.manager.RoomSave>
       <type>1</type>
       <occupants>
-        <int>1000046</int>
-        <int>1000034</int>
-        <int>1000014</int>
-        <int>1000022</int>
-        <int>1000042</int>
-        <int>1000038</int>
-        <int>1000012</int>
-        <int>1000018</int>
-        <int>1000030</int>
-        <int>1000050</int>
         <int>1000026</int>
+        <int>1000018</int>
+        <int>1000012</int>
         <int>1000004</int>
+        <int>1000050</int>
+        <int>1000038</int>
+        <int>1000034</int>
+        <int>1000042</int>
+        <int>1000022</int>
+        <int>1000046</int>
+        <int>1000030</int>
+        <int>1000014</int>
       </occupants>
       <areas>
         <alone.in.deepspace.manager.RoomSave_-RoomSaveArea>
@@ -114765,12 +115005,29 @@
           <relation>CHILDREN</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>27.599999999999753</old>
-      <x>158</x>
-      <y>146</y>
+      <old>29.399999999999714</old>
+      <x>152</x>
+      <y>143</y>
       <gender>MALE</gender>
       <nextChildAtOld>0.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>78.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>97.0</oxygen>
+        <energy>87.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>19</id>
@@ -114826,12 +115083,29 @@
           <relation>CHILDREN</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>27.599999999999753</old>
-      <x>167</x>
-      <y>124</y>
+      <old>29.399999999999714</old>
+      <x>166</x>
+      <y>146</y>
       <gender>FEMALE</gender>
       <nextChildAtOld>22.959999999999873</nextChildAtOld>
       <nbChild>4</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>46.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>101.0</oxygen>
+        <energy>25.0</energy>
+        <health>90.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>3</id>
@@ -114887,12 +115161,29 @@
           <relation>BROTHER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>11.459999999999845</old>
-      <x>150</x>
-      <y>131</y>
+      <old>13.259999999999806</old>
+      <x>158</x>
+      <y>144</y>
       <gender>FEMALE</gender>
       <nextChildAtOld>0.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>64.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>90.0</oxygen>
+        <energy>22.0</energy>
+        <health>90.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000002</id>
@@ -114948,12 +115239,29 @@
           <relation>BROTHER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>11.379999999999846</old>
-      <x>166</x>
-      <y>146</y>
+      <old>13.179999999999808</old>
+      <x>152</x>
+      <y>143</y>
       <gender>FEMALE</gender>
       <nextChildAtOld>0.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>86.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>103.0</oxygen>
+        <energy>88.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000004</id>
@@ -115005,48 +115313,116 @@
           <relation>CHILDREN</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>27.17999999999976</old>
-      <x>167</x>
-      <y>124</y>
+      <old>28.979999999999723</old>
+      <x>152</x>
+      <y>143</y>
       <gender>MALE</gender>
       <nextChildAtOld>0.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>86.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>99.0</oxygen>
+        <energy>88.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000006</id>
       <lastname>Mueller</lastname>
       <firstname>Daryl </firstname>
       <relations/>
-      <old>27.17999999999976</old>
-      <x>167</x>
-      <y>124</y>
+      <old>28.979999999999723</old>
+      <x>166</x>
+      <y>144</y>
       <gender>MALE</gender>
       <nextChildAtOld>0.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>20.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>97.0</oxygen>
+        <energy>25.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000008</id>
       <lastname>Lewis</lastname>
       <firstname>Miguel </firstname>
       <relations/>
-      <old>27.099999999999763</old>
-      <x>156</x>
-      <y>144</y>
+      <old>28.899999999999725</old>
+      <x>152</x>
+      <y>143</y>
       <gender>MALE</gender>
       <nextChildAtOld>0.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>62.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>97.0</oxygen>
+        <energy>97.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000010</id>
       <lastname>Howell</lastname>
       <firstname>Jerry </firstname>
       <relations/>
-      <old>27.039999999999765</old>
-      <x>161</x>
-      <y>135</y>
+      <old>28.839999999999726</old>
+      <x>154</x>
+      <y>146</y>
       <gender>MALE</gender>
       <nextChildAtOld>0.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>94.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>102.0</oxygen>
+        <energy>93.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000012</id>
@@ -115098,12 +115474,29 @@
           <relation>CHILDREN</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>26.979999999999766</old>
-      <x>158</x>
-      <y>144</y>
+      <old>28.779999999999728</old>
+      <x>152</x>
+      <y>143</y>
       <gender>FEMALE</gender>
       <nextChildAtOld>22.339999999999886</nextChildAtOld>
       <nbChild>4</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>84.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>100.0</oxygen>
+        <energy>88.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000014</id>
@@ -115155,12 +115548,29 @@
           <relation>SISTER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>10.959999999999855</old>
-      <x>148</x>
-      <y>135</y>
+      <old>12.759999999999817</old>
+      <x>158</x>
+      <y>145</y>
       <gender>MALE</gender>
       <nextChildAtOld>0.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>64.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>101.0</oxygen>
+        <energy>23.0</energy>
+        <health>96.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000016</id>
@@ -115216,12 +115626,29 @@
           <relation>BROTHER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>10.779999999999859</old>
+      <old>12.57999999999982</old>
       <x>165</x>
       <y>131</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>-213.0</food>
+        <happiness>0.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>103.0</oxygen>
+        <energy>31.0</energy>
+        <health>88.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000018</id>
@@ -115273,12 +115700,29 @@
           <relation>SISTER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>10.779999999999859</old>
-      <x>148</x>
-      <y>139</y>
+      <old>12.57999999999982</old>
+      <x>152</x>
+      <y>143</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>92.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>96.0</oxygen>
+        <energy>55.0</energy>
+        <health>99.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000020</id>
@@ -115334,12 +115778,29 @@
           <relation>BROTHER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>9.899999999999878</old>
-      <x>168</x>
-      <y>146</y>
+      <old>11.69999999999984</old>
+      <x>148</x>
+      <y>131</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>112</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>32.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>101.0</oxygen>
+        <energy>46.0</energy>
+        <health>90.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000022</id>
@@ -115391,12 +115852,29 @@
           <relation>SISTER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>9.899999999999878</old>
-      <x>150</x>
-      <y>139</y>
+      <old>11.69999999999984</old>
+      <x>152</x>
+      <y>143</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>88.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>102.0</oxygen>
+        <energy>92.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000024</id>
@@ -115452,12 +115930,29 @@
           <relation>BROTHER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>9.879999999999878</old>
-      <x>167</x>
-      <y>124</y>
+      <old>11.67999999999984</old>
+      <x>152</x>
+      <y>143</y>
       <gender>FEMALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>86.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>107.0</oxygen>
+        <energy>22.0</energy>
+        <health>99.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000026</id>
@@ -115509,12 +116004,29 @@
           <relation>SISTER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>9.879999999999878</old>
-      <x>165</x>
-      <y>135</y>
+      <old>11.67999999999984</old>
+      <x>168</x>
+      <y>144</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>24.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>93.0</oxygen>
+        <energy>44.0</energy>
+        <health>90.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000028</id>
@@ -115570,12 +116082,29 @@
           <relation>BROTHER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>9.859999999999879</old>
-      <x>161</x>
-      <y>139</y>
+      <old>11.65999999999984</old>
+      <x>157</x>
+      <y>146</y>
       <gender>FEMALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>66.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>106.0</oxygen>
+        <energy>22.0</energy>
+        <health>99.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000030</id>
@@ -115627,12 +116156,33 @@
           <relation>SISTER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>9.859999999999879</old>
-      <x>150</x>
-      <y>135</y>
+      <old>11.65999999999984</old>
+      <x>157</x>
+      <y>144</y>
       <gender>FEMALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>44.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>103.0</oxygen>
+        <energy>23.0</energy>
+        <health>99.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory>
+        <string>base.meal</string>
+        <string>base.meal</string>
+        <string>base.meal</string>
+      </inventory>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000032</id>
@@ -115688,12 +116238,29 @@
           <relation>BROTHER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>9.719999999999882</old>
-      <x>148</x>
-      <y>131</y>
+      <old>11.519999999999843</old>
+      <x>152</x>
+      <y>143</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>86.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>91.0</oxygen>
+        <energy>88.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000034</id>
@@ -115745,12 +116312,29 @@
           <relation>SISTER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>9.719999999999882</old>
-      <x>157</x>
-      <y>144</y>
+      <old>11.519999999999843</old>
+      <x>158</x>
+      <y>146</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>66.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>91.0</oxygen>
+        <energy>22.0</energy>
+        <health>98.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000036</id>
@@ -115806,12 +116390,29 @@
           <relation>BROTHER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>8.699999999999903</old>
-      <x>167</x>
-      <y>124</y>
+      <old>10.499999999999865</old>
+      <x>152</x>
+      <y>143</y>
       <gender>FEMALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>48.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>109.0</oxygen>
+        <energy>23.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000038</id>
@@ -115863,12 +116464,29 @@
           <relation>SISTER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>8.699999999999903</old>
-      <x>167</x>
-      <y>124</y>
+      <old>10.499999999999865</old>
+      <x>161</x>
+      <y>143</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>0.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>103.0</oxygen>
+        <energy>89.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000040</id>
@@ -115924,12 +116542,29 @@
           <relation>BROTHER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>7.679999999999924</old>
-      <x>168</x>
-      <y>127</y>
+      <old>9.479999999999887</old>
+      <x>152</x>
+      <y>143</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>92.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>107.0</oxygen>
+        <energy>55.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000042</id>
@@ -115981,12 +116616,29 @@
           <relation>SISTER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>7.679999999999924</old>
-      <x>157</x>
-      <y>144</y>
+      <old>9.479999999999887</old>
+      <x>152</x>
+      <y>143</y>
       <gender>FEMALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>86.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>101.0</oxygen>
+        <energy>88.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000044</id>
@@ -116042,12 +116694,29 @@
           <relation>BROTHER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>6.659999999999946</old>
-      <x>165</x>
-      <y>139</y>
+      <old>8.459999999999908</old>
+      <x>152</x>
+      <y>143</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>92.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>105.0</oxygen>
+        <energy>55.0</energy>
+        <health>89.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000046</id>
@@ -116099,12 +116768,29 @@
           <relation>SISTER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>6.659999999999946</old>
-      <x>167</x>
-      <y>124</y>
+      <old>8.459999999999908</old>
+      <x>156</x>
+      <y>146</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>66.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>94.0</oxygen>
+        <energy>21.0</energy>
+        <health>95.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000048</id>
@@ -116160,12 +116846,29 @@
           <relation>BROTHER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>5.639999999999968</old>
-      <x>161</x>
-      <y>131</y>
+      <old>7.439999999999929</old>
+      <x>152</x>
+      <y>143</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>66.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>109.0</oxygen>
+        <energy>22.0</energy>
+        <health>97.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
     <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
       <id>1000050</id>
@@ -116217,12 +116920,29 @@
           <relation>BROTHER</relation>
         </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterRelationSave>
       </relations>
-      <old>5.639999999999968</old>
-      <x>166</x>
-      <y>144</y>
+      <old>7.439999999999929</old>
+      <x>152</x>
+      <y>143</y>
       <gender>FEMALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>88.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>90.0</oxygen>
+        <energy>90.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
     </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
   </characters>
 </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSave>

@@ -2,9 +2,12 @@ package alone.in.deepspace.engine.renderer;
 
 import java.util.List;
 
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
+import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.Movable.Direction;
@@ -14,11 +17,14 @@ import alone.in.deepspace.util.Constant;
 public class CharacterRenderer implements IRenderer {
 	private List<Character> _characters;
 	private SpriteManager 	_spriteManager;
-	private int _frame;
+	private int 			_update;
+	private RectangleShape _redBackground;
 
 	public CharacterRenderer(List<Character> characters) {
 		_characters = characters;
 		_spriteManager = SpriteManager.getInstance();
+		_redBackground = new RectangleShape(new Vector2f(32, 48));
+		_redBackground.setFillColor(new Color(200, 50, 0, 150));
 	}
 
 	public void	onDraw(RenderWindow app, RenderStates render, double animProgress) {
@@ -51,6 +57,12 @@ public class CharacterRenderer implements IRenderer {
 			default: break;
 			}
 
+			// Bad status
+			if (c.getStatus().getLevel() >= 2) {
+				_redBackground.setPosition(posX, posY);
+				app.draw(_redBackground, render);
+			}
+			
 			// Draw sprite
 			Sprite sprite = _spriteManager.getCharacter(c, dirIndex, frame);
 			sprite.setPosition(posX, posY + (c.isSleeping() ? 20 : 0));
@@ -58,15 +70,15 @@ public class CharacterRenderer implements IRenderer {
 						
 			// Selection
 			if (c.isSelected()) {
-				sprite = _spriteManager.getSelector(_frame);
+				sprite = _spriteManager.getSelector(_update);
 				sprite.setPosition(posX - 2, posY + (c.isSleeping() ? 20 : 0) - 2);
 				app.draw(sprite, render);
 			}
 		}
 	}
 
-	public void onRefresh(int frame) {
-		_frame = frame;
+	public void onRefresh(int update) {
+		_update = update;
 	}
 
 }

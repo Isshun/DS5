@@ -16,22 +16,22 @@ public class CharacterNeeds {
 	}
 
 	// Actions
-	int	_sleeping;
-	int	_eating;
-	int	_drinking;
-	int	_socialize;
+	private int	_sleeping;
+	private int	_eating;
+	private int	_drinking;
+	private int	_socialize;
 
 	// Stats
-	double	_food;
-	double 	_happiness;
-	double	_relation;
-	double	_security;
-	double	_oxygen;
-	double	_energy;
-	double	_health;
-	double	_sickness;
-	double	_injuries;
-	double	_satiety;
+	private double	_food;
+	private double 	_happiness;
+	private double	_relation;
+	private double	_security;
+	private double	_oxygen;
+	private double	_energy;
+	private double	_health;
+	private double	_sickness;
+	private double	_injuries;
+	private double	_satiety;
 
 	private ItemBase 	_sleepItem;
 	private int 		_workRemain;
@@ -76,6 +76,20 @@ public class CharacterNeeds {
 	public boolean 	isLowOxygen() { return _oxygen <= Constant.LIMITE_LOW_OXYGEN; }
 	public boolean 	isSuffocating() { return _oxygen <= Constant.LIMITE_NO_OXYGEN; }
 
+	public void setDrinking(int drinking) { _drinking = drinking; }
+	public void setEating(int eating) { _eating = eating; }
+	public void setEnergy(double energy) { _energy = energy; }
+	public void setFood(double food) { _food = food; }
+	public void setHapiness(double happiness) { _happiness = happiness; }
+	public void setHealth(double health) { _health = health; }
+	public void setInjuries(double injuries) { _injuries = injuries; }
+	public void setOxygen(double oxygen) { _oxygen = oxygen; }
+	public void setRelation(double relation) { _relation = relation; }
+	public void setSatiety(double satiety) { _satiety = satiety; }
+	public void setSecurity(double security) { _security = security; }
+	public void setSickness(double sickness) { _sickness = sickness; }
+	public void setSleeping(int sleeping) { _sleeping = sleeping; }
+	public void setSocialize(int socialize) { _socialize = socialize; }
 
 	public void	update() {
 
@@ -220,5 +234,4 @@ public class CharacterNeeds {
 			_relation = Math.min(_relation + (double)action.effects.relation / action.duration, 100);
 		}
 	}
-
 }

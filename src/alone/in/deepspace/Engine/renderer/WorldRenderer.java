@@ -91,58 +91,7 @@ public class WorldRenderer implements IRenderer {
 	}
 	
 	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
-
-		// Debug() << "Renderer: " << fromX << " to: " << toX;
-
-		Clock display_timer = new Clock();
-		Sprite sp = new Sprite(_textureCache.getTexture());
-		app.draw(sp, render);
-		
-
-//		if (_itemSelected != null) {
-//			Sprite sprite = _spriteManager.getSelector(_itemSelected, _frame);
-//			sprite.setPosition(_itemSelected.getX() * Constant.TILE_WIDTH, _itemSelected.getY() * Constant.TILE_HEIGHT);
-//			app.draw(sprite, render);
-//		}
-
-		long elapsed = display_timer.getElapsedTime().asMilliseconds();
-		if (elapsed > 3)
-			Log.info("display floor: " + elapsed + "ms");
-
-		
-//		display_timer.restart();
-//		Log.info("display structure: " + display_timer.getElapsedTime().asMicroseconds());
-
-		display_timer.restart();
-		
-//		Log.info("display items: " + display_timer.getElapsedTime().asMicroseconds());
-
-//		Vector<DebugPos> debugPath = _worldMap.getDebug();
-//		DebugPos startDebugPath = _worldMap.getStartDebug();
-//		DebugPos stopDebugPath = _worldMap.getStopDebug();
-//		Sprite sprite = null;
-//		if (debugPath != null) {
-//			for (DebugPos pos: debugPath) {
-//				if (pos.inPath) {
-//					sprite = SpriteManager.getInstance().getBullet(2);
-//				} else {
-//					sprite = SpriteManager.getInstance().getBullet(0);
-//				}
-//				sprite.setPosition(pos.x * Constant.TILE_SIZE, pos.y * Constant.TILE_SIZE);
-//				_app.draw(sprite, render);
-//			}
-//		}
-//		if (startDebugPath != null) {
-//			sprite = SpriteManager.getInstance().getBullet(2);
-//			sprite.setPosition(startDebugPath.x * Constant.TILE_SIZE, startDebugPath.y * Constant.TILE_SIZE);
-//			_app.draw(sprite, render);
-//		}
-//		if (stopDebugPath != null) {
-//			sprite = SpriteManager.getInstance().getBullet(3);
-//			sprite.setPosition(stopDebugPath.x * Constant.TILE_SIZE, stopDebugPath.y * Constant.TILE_SIZE);
-//			_app.draw(sprite, render);
-//		}
-
+		app.draw(_spriteCache, render);
 	}
 
 	private void refreshResource(int fromX, int fromY, int toX, int toY) {

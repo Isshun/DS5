@@ -7,11 +7,51 @@ import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.serializer.WorldSaver.WorldSave;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.character.Character.Gender;
+import alone.in.deepspace.model.character.CharacterNeeds;
 import alone.in.deepspace.model.character.CharacterRelation;
 import alone.in.deepspace.model.character.CharacterRelation.Relation;
-import alone.in.deepspace.util.Log;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.UserItem;
 
 public class CharacterSerializer implements SerializerInterface {
+
+	public static class CharacterNeedsSave {
+		// Actions
+		public int	sleeping;
+		public int	eating;
+		public int	drinking;
+		public int	socialize;
+
+		// Stats
+		public double	food;
+		public double 	happiness;
+		public double	relation;
+		public double	security;
+		public double	oxygen;
+		public double	energy;
+		public double	health;
+		public double	sickness;
+		public double	injuries;
+		public double	satiety;
+		
+		public CharacterNeedsSave(CharacterNeeds needs) {
+			this.sleeping = needs.getSleeping();
+			this.eating = needs.getEating();
+			this.drinking = needs.getDrinking();
+			this.socialize = needs.getSocialize();
+			
+			this.food = needs.getFood();
+			this.happiness = needs.getHappiness();
+			this.security = needs.getSecurity();
+			this.oxygen = needs.getOxygen();
+			this.energy = needs.getEnergy();
+			this.health = needs.getHealth();
+			this.sickness = needs.getSickness();
+			this.injuries = needs.getInjuries();
+			this.satiety = needs.getSatiety();
+		}
+	}
 
 	public static class CharacterRelationSave {
 		public int			id;
@@ -34,6 +74,8 @@ public class CharacterSerializer implements SerializerInterface {
 		public Gender						gender;
 		private double 						nextChildAtOld;
 		public int							nbChild;
+		public CharacterNeedsSave 			needs;
+		private ArrayList<String> inventory;
 		
 		public CharacterSave(Character character) {
 			this.id = character.getId();
@@ -46,6 +88,11 @@ public class CharacterSerializer implements SerializerInterface {
 			this.relations = new ArrayList<CharacterRelationSave>();
 			this.nextChildAtOld = character.getNextChildAtOld();
 			this.nbChild = character.getNbChild();
+			this.inventory = new ArrayList<String>();
+			for (ItemBase item: character.getInventory()) {
+				this.inventory.add(item.getInfo().name);
+			}
+			this.needs = new CharacterNeedsSave(character.getNeeds());
 			for (CharacterRelation relation: character.getRelations()) {
 				this.relations.add(new CharacterRelationSave(relation));
 			}
@@ -100,6 +147,32 @@ public class CharacterSerializer implements SerializerInterface {
 	private void loadCharacter(CharacterSave characterSave) {
 		Character character = new Character(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
 		character.setGender(characterSave.gender);
+
+		// Load inventory
+		if (characterSave.inventory != null) {
+			for (String name: characterSave.inventory) {
+				ItemInfo info = Game.getData().getItemInfo(name);
+				character.addInventory(new UserItem(info));
+			}
+		}
+		
+		// Load needs
+		if (characterSave.needs != null) {
+			character.getNeeds().setDrinking(characterSave.needs.drinking);
+			character.getNeeds().setEating(characterSave.needs.eating);
+			character.getNeeds().setEnergy(characterSave.needs.energy);
+			character.getNeeds().setFood(characterSave.needs.food);
+			character.getNeeds().setHapiness(characterSave.needs.happiness);
+			character.getNeeds().setHealth(characterSave.needs.health);
+			character.getNeeds().setInjuries(characterSave.needs.injuries);
+			character.getNeeds().setOxygen(characterSave.needs.oxygen);
+			character.getNeeds().setRelation(characterSave.needs.relation);
+			character.getNeeds().setSatiety(characterSave.needs.satiety);
+			character.getNeeds().setSecurity(characterSave.needs.security);
+			character.getNeeds().setSickness(characterSave.needs.sickness);
+			character.getNeeds().setSleeping(characterSave.needs.sleeping);
+			character.getNeeds().setSocialize(characterSave.needs.socialize);
+		}
 		Game.getCharacterManager().add(character);
 		_characters.add(character);
 	}

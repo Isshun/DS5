@@ -17,6 +17,7 @@ import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemFilter;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.room.Room;
+import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -185,7 +186,7 @@ public class Character extends Movable {
 	public double 			getNextChildAtOld() { return _nextChildAtOld; }
 
 	public boolean			isFull() { return _inventory.size() == Constant.CHARACTER_INVENTORY_SPACE; }
-	public boolean 			isSleeping() { return _needs._sleeping > 0; }
+	public boolean 			isSleeping() { return _needs.getSleeping() > 0; }
 	public boolean 			isGay() { return _isGay; }
 
 	public void	setJob(Job job) {
@@ -328,6 +329,9 @@ public class Character extends Movable {
 				_needs.sleep(null);
 			}
 		}
+		
+		// Refresh status
+		_status.refreshThoughts();
 	}
 
 	public boolean isMoving() {
@@ -511,6 +515,7 @@ public class Character extends Movable {
 			Log.warning("Build failed (no path)");
 		}
 		sendEvent(CharacterNeeds.Message.MSG_BLOCKED);
+		UserInterface.getInstance().displayMessage("blocked", _posX, _posY);
 	
 		// Abort job
 		JobManager.getInstance().abort(job, Job.Abort.BLOCKED);

@@ -266,9 +266,9 @@ public class UserInterface {
 		}
 
 		if (_message != null) {
-			_app.draw(_message.border);
-			_app.draw(_message.shape);
-			_app.draw(_message.text);
+			_app.draw(_message.border, _viewport.getRender());
+			_app.draw(_message.shape, _viewport.getRender());
+			_app.draw(_message.text, _viewport.getRender());
 			if (--_message.frame < 0) {
 				_message = null;
 			}
@@ -350,7 +350,8 @@ public class UserInterface {
 	}
 
 	public void displayMessage(String msg, int x, int y) {
-		_message = new UIMessage(msg, _viewport.getRealPosX(x) + 20, _viewport.getRealPosY(y) + 12);
+//		_message = new UIMessage(msg, _viewport.getRealPosX(x) + 20, _viewport.getRealPosY(y) + 12);
+		_message = new UIMessage(msg, x * Constant.TILE_WIDTH + 20, y * Constant.TILE_HEIGHT + 12);
 	}
 
 	public void onDoubleClick(int x, int y) {

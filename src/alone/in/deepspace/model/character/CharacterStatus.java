@@ -46,34 +46,17 @@ public class CharacterStatus {
 	
 	public void refreshThoughts() {
 		_tooltip = null;
-		
-		if (_needs.isSleeping()) {
-			// TODO
-			ItemBase item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
-			if (item != null && item.isSleepingItem()) {
-				_color = COLOR_GOOD;
-				_level = 0;
-				_tooltip = ToolTips.STATE_SLEEPING;
-				_thoughts = Strings.CHARACTER_SAY_SLEEP;
-				_thoughtsShort = Strings.THOUGHTS_GOOD;
-				return;
-			} else {
-				_color = COLOR_BAD;
-				_level = 2;
-				_tooltip = ToolTips.STATE_EXHAUSTED;
-				_thoughts = Strings.CHARACTER_SAY_NOWHERE_TO_SLEEP;
-				_thoughtsShort = Strings.THOUGHTS_BAD;
-				return;
-			}
-		}
-		if (_needs.isTired()) {
-			_color = COLOR_MEDIUM;
-			_level = 1;
-			_tooltip = ToolTips.STATE_TIRED;
-			_thoughts = Strings.CHARACTER_SAY_TIRED;
-			_thoughtsShort = Strings.THOUGHTS_MEDIUM;
+
+		// Level 3
+		if (_needs.isSuffocating()) {
+			_color = COLOR_REALLY_BAD;
+			_level = 3;
+			_thoughts = Strings.CHARACTER_SAY_NO_OXYGEN;
+			_thoughtsShort = Strings.THOUGHTS_REALLY_BAD;
 			return;
 		}
+		
+		// Level 2
 		if (_needs.isStarved()) {
 			_color = COLOR_BAD;
 			_level = 2;
@@ -82,19 +65,25 @@ public class CharacterStatus {
 			_thoughtsShort = Strings.THOUGHTS_BAD;
 			return;
 		}
-		if (_needs.isHungry()) {
-			_color = COLOR_GOOD;
-			_level = 0;
-			_tooltip = ToolTips.STATE_HUNGER;
-			_thoughts = Strings.CHARACTER_EVERYTHINGS_GOES_RIGHT;
-			_thoughtsShort = Strings.THOUGHTS_GOOD;
-			return;
+		if (_needs.isSleeping()) {
+			ItemBase item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
+			if (item == null || item.isSleepingItem() == false) {
+				_color = COLOR_BAD;
+				_level = 2;
+				_tooltip = ToolTips.STATE_EXHAUSTED;
+				_thoughts = Strings.CHARACTER_SAY_NOWHERE_TO_SLEEP;
+				_thoughtsShort = Strings.THOUGHTS_BAD;
+				return;
+			}
 		}
-		if (_needs.isSuffocating()) {
-			_color = COLOR_REALLY_BAD;
-			_level = 3;
-			_thoughts = Strings.CHARACTER_SAY_NO_OXYGEN;
-			_thoughtsShort = Strings.THOUGHTS_REALLY_BAD;
+		
+		// Level 1
+		if (_needs.isTired()) {
+			_color = COLOR_MEDIUM;
+			_level = 1;
+			_tooltip = ToolTips.STATE_TIRED;
+			_thoughts = Strings.CHARACTER_SAY_TIRED;
+			_thoughtsShort = Strings.THOUGHTS_MEDIUM;
 			return;
 		}
 		if (_needs.isLowOxygen()) {
@@ -111,6 +100,28 @@ public class CharacterStatus {
 			_thoughts = Strings.CHARACTER_SAY_LONELY;
 			_thoughtsShort = Strings.THOUGHTS_MEDIUM;
 			return;
+		}
+		
+		// Level 0
+		if (_needs.isHungry()) {
+			_color = COLOR_GOOD;
+			_level = 0;
+			_tooltip = ToolTips.STATE_HUNGER;
+			_thoughts = Strings.CHARACTER_EVERYTHINGS_GOES_RIGHT;
+			_thoughtsShort = Strings.THOUGHTS_GOOD;
+			return;
+		}
+		if (_needs.isSleeping()) {
+			// TODO
+			ItemBase item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
+			if (item != null && item.isSleepingItem()) {
+				_color = COLOR_GOOD;
+				_level = 0;
+				_tooltip = ToolTips.STATE_SLEEPING;
+				_thoughts = Strings.CHARACTER_SAY_SLEEP;
+				_thoughtsShort = Strings.THOUGHTS_GOOD;
+				return;
+			}
 		}
 		
 		_level = 0;
