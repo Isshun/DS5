@@ -51,16 +51,16 @@ public class ItemLoader {
 			    info.name = info.packageName +  '.' + info.fileName;
 
 			    // Get category
-			    if ("consomable".equals(info.category)) {
+			    if ("consomable".equals(info.type)) {
 				    info.isConsomable = true;
-			    } else if ("structure".equals(info.category)) {
+			    } else if ("structure".equals(info.type)) {
 				    info.isStructure = true; 
-			    } else if ("item".equals(info.category)) {
+			    } else if ("item".equals(info.type)) {
 				    info.isUserItem = true; 
-			    } else if ("resource".equals(info.category)) {
+			    } else if ("resource".equals(info.type)) {
 				    info.isResource = true; 
 			    } else {
-			    	throw new RuntimeException("unknow item category: " + info.category);
+			    	throw new RuntimeException("unknow item type: " + info.type);
 			    }
 			    
 			    info.isStorage = info.storage > 0 || info.onAction != null && info.onAction.storage > 0;

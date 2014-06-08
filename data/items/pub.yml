@@ -1,8 +1,9 @@
 name: pub
 label: Pub
 width: 1
+category: kitchen
 height: 1
-category: item
+type: item
 cost:
   matter: 42
 onAction:

@@ -1,5 +1,5 @@
 label: Fridge
-category: item
-room: common
+type: item
+category: kitchen
 cost:
   matter: 42

@@ -1,7 +1,7 @@
 label: Rock
 width: 1
 height: 1
-category: resource
+type: resource
 light: 0
 onMine:
   produce: base.matter

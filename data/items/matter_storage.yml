@@ -1,8 +1,8 @@
 label: Matter storage
 width: 2
 height: 3
-category: item
-room: system
+type: item
+category: system
 storage: 100
 cost:
   matter: 42

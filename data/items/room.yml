@@ -1,6 +1,6 @@
-label: Room
+label: Category
 width: 2
 height: 2
-category: structure
+type: structure
 cost:
   matter: 1

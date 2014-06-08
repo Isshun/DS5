@@ -1,9 +1,10 @@
 label: Serving table
 width: 3
 height: 1
+category: kitchen
 cost:
   matter: 8
-category: item
+type: item
 onAction:
   slots:
     - x: 0

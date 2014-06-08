@@ -2,7 +2,6 @@ name: hull
 label: Hull
 width: 1
 height: 1
-isWalkable: false
-category: structure
+isWalkable: falsetype: structure
 cost:
   matter: 42

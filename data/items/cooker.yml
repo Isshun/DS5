@@ -1,5 +1,6 @@
 label: Cooker
-category: item
+type: item
+category: kitchen
 width: 2
 onAction:
   duration: 10

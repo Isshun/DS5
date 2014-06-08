@@ -1,6 +1,6 @@
 name: tree_3
 label: Tree 3
-category: item
+type: item
 inherits: base.tree
 width: 1
 height: 2

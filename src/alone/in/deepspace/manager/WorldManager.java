@@ -880,22 +880,6 @@ public class WorldManager implements TileBasedMap {
 
 	@Override
 	public float getCost(PathFindingContext context, int tx, int ty) {
-
-//		 int dx = Math.abs(sx - tx);
-//		 int dy = Math.abs(sy - ty);
-//		 return Math.max(dx, dy);
-				    		
-//		WorldArea a1 = _areas[sx][sy];
-//		WorldArea a2 = _areas[tx][ty];
-//
-//		if (a1.getStructure() != null && a1.getStructure().isComplete() && a2.getStructure() == null ||
-//				a2.getStructure() != null && a2.getStructure().isComplete() && a1.getStructure() == null) {
-//			return 5;
-//		}
-//
-////		boolean r = Math.random() * 10 % 2 == 0;
-////		return sx != tx ? (r ? 10f : 1f) : (r ? 1f : 10f);
-//		
 		return context.getSourceX() != tx && context.getSourceY() != ty ? 1.5f : 1f;
 	}
 

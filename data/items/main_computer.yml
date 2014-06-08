@@ -2,8 +2,8 @@ label: Main computer
 width: 5
 height: 2
 light: 10
-category: item
-room: system
+type: item
+category: system
 onAction:
   slots:
     - x: -1

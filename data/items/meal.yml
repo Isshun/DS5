@@ -1,7 +1,7 @@
 label: Meal
 width: 1
 height: 1
-category: consomable
+type: consomable
 craftedQuantitfy: 10
 craftedFrom:
   - base.seaweed

@@ -2,7 +2,7 @@ label: Seaweed
 width: 1
 height: 1
 light: 0
-category: resource
+type: resource
 onGather:
   produce: base.seaweed
   mature: 5

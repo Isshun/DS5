@@ -594,7 +594,7 @@ public class PanelInfo extends BaseRightPanel {
 
 			// Basic info
 			_itemName.setString(itemInfo.label != null ? itemInfo.label : itemInfo.name);
-			_itemCategory.setString("(" + itemInfo.category + ")");
+			_itemCategory.setString("(" + itemInfo.type + ")");
 
 			// Icon
 			Sprite icon = SpriteManager.getInstance().getIcon(itemInfo);

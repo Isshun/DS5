@@ -1,5 +1,5 @@
 label: Laptop
-room: common
-category: item
+category: common
+type: item
 cost:
   matter: 42

@@ -5,7 +5,7 @@ onAction:
   slots:
     - x: 0
       y: 0
-category: item
-room: system
+type: item
+category: system
 cost:
   matter: 42

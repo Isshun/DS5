@@ -1,7 +1,7 @@
 name: biobed
 label: Biobed
-category: item
-room: sickbay
+type: item
+category: sickbay
 width: 1
 height: 2
 onAction:

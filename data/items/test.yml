@@ -1,8 +1,8 @@
 label: Pink square
 width: 1
 height: 1
-category: item
-room: quarter
+type: item
+category: common
 cost:
   matter: 42
 onAction:

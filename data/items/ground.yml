@@ -1,7 +1,7 @@
 label: Ground
 width: 1
 height: 1
-category: structure
+type: structure
 isWalkable: true
 cost:
   matter: 1

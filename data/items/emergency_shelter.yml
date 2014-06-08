@@ -1,7 +1,7 @@
 label: Emergency shelter
 width: 1
 height: 2
-category: item
-room: sickbay
+type: item
+category: sickbay
 cost:
   matter: 12

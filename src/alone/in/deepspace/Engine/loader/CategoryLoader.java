@@ -28,8 +28,8 @@ public class CategoryLoader {
 			String categoryName = "default";
 			if (itemInfo.isStructure) {
 				categoryName = "structure";
-			} else if (itemInfo.room != null) {
-				categoryName = itemInfo.room;
+			} else if (itemInfo.category != null) {
+				categoryName = itemInfo.category;
 			}
 
 			CategoryInfo category = getOrCreateCategory(data, categoryName);

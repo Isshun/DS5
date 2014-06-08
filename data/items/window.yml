@@ -2,6 +2,6 @@ name: window
 label: Window
 width: 1
 height: 1
-category: structure
+type: structure
 cost:
   matter: 1

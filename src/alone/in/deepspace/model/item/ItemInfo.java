@@ -54,8 +54,8 @@ public class ItemInfo {
 	public String 				name;
 	public String 				inherits;
 	public String 				label;
-	public String 				room;
 	public String 				category;
+	public String 				type;
 	public List<String>			craftedFrom;
 	public int					craftedQuantitfy;
 	public boolean 				isWalkable;
