@@ -153,9 +153,11 @@ public class WorldRenderer implements IRenderer {
 				if (i >= 0 && j >= 0 && i < Constant.WORLD_WIDTH && j < Constant.WORLD_HEIGHT) {
 					WorldResource ressource = _worldMap.getRessource(i, j);
 					if (ressource != null) {
-						Sprite sprite = _spriteManager.getRessource(ressource, ressource.getTile(), 0);
-						sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT - 16);
-						_textureCache.draw(sprite);
+						Sprite sprite = _spriteManager.getRessource(ressource);
+						if (sprite != null) {
+							sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
+							_textureCache.draw(sprite);
+						}
 					}
 				}
 			}
@@ -190,7 +192,7 @@ public class WorldRenderer implements IRenderer {
 							
 							WorldResource ressource = _worldMap.getRessource(i, j);
 							if (ressource != null && ressource.getMatterSupply() > 0) {
-								sprite = _spriteManager.getRessource(ressource, ressource.getTile(), 0);
+								sprite = _spriteManager.getRessource(ressource);
 								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
 								_textureCache.draw(sprite);
 							}
@@ -209,7 +211,7 @@ public class WorldRenderer implements IRenderer {
 							
 							WorldResource ressource = _worldMap.getRessource(i, j);
 							if (ressource != null) {
-								sprite = _spriteManager.getRessource(ressource, ressource.getTile(), 0);
+								sprite = _spriteManager.getRessource(ressource);
 								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
 								_textureCache.draw(sprite);
 							}

@@ -2,20 +2,15 @@ package alone.in.deepspace.model.character;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.jsfml.graphics.Color;
-import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.Path;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.PathManager;
-import alone.in.deepspace.manager.RoomManager;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Movable;
-import alone.in.deepspace.model.Position;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.character.CharacterRelation.Relation;
 import alone.in.deepspace.model.item.ItemBase;
@@ -25,7 +20,7 @@ import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
-public class Character extends Movable implements Mover {
+public class Character extends Movable {
 
 	public enum Gender {
 		NONE,

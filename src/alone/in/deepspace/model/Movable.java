@@ -2,6 +2,7 @@ package alone.in.deepspace.model;
 
 import java.util.HashMap;
 
+import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Step;
 
@@ -182,6 +183,14 @@ public abstract class Movable implements PathManagerCallback {
 	
 	protected void  removeMessage(int msg) {
 	  //_messages[msg] = MESSAGE_COUNT_INIT;
+	}
+
+	public int getTargetX() {
+		return _toX;
+	}
+	
+	public int getTargetY() {
+		return _toY;
 	}
 	
 }

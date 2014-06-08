@@ -17,6 +17,7 @@ import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Settings;
 
 public class PanelDebug extends BasePanel {
 
@@ -187,6 +188,17 @@ public class PanelDebug extends BasePanel {
 		
 	}
 
+	@Override
+	protected void onOpen() {
+		Settings.getInstance().setDebug(true);
+	}
+
+	@Override
+	protected void onClose() {
+		Settings.getInstance().setDebug(false);
+	}
+
+	
 //	void  addDebug(final String key, String value) {
 //		int y = _index * 32;
 //

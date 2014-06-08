@@ -116,6 +116,8 @@ public abstract class ItemBase {
 	}
 	
 	private void initSlot(ItemInfo info) {
+		_nbFreeSlot = -1;
+		
 		if (info.onAction != null) {
 			_slots = new ArrayList<ItemSlot>();
 
@@ -211,8 +213,8 @@ public abstract class ItemBase {
 	public boolean 			isToy() { return _isToy; }
 	public boolean 			isStorage() { return _info.isStorage; }
 	public boolean 			isFood() { return _info.isFood; }
-	public boolean 			isDispenser() { return _info.isFactory; }
-	public boolean 			hasFreeSlot() { return _nbFreeSlot > 0; }
+	public boolean 			isFactory() { return _info.isFactory; }
+	public boolean 			hasFreeSlot() { return _nbFreeSlot == -1 || _nbFreeSlot > 0; }
 
 	public static boolean isUserItem(ItemInfo info) {
 		return !info.isStructure && !info.isResource;
@@ -247,7 +249,7 @@ public abstract class ItemBase {
 
 	public boolean matchFilter(ItemFilter filter) {
 		// Filter need free slots but item is busy
-		if (filter.needFreeSlot && _nbFreeSlot <= 0) {
+		if (filter.needFreeSlot && hasFreeSlot() == false) {
 			return false;
 		}
 		
@@ -292,10 +294,6 @@ public abstract class ItemBase {
 
 	public int getCurrentFrame() {
 		return _currentFrame;
-	}
-
-	public boolean isFactory() {
-		return _info.onAction != null && _info.onAction.itemsProduce != null;
 	}
 
 	public boolean isUsable() {

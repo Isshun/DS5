@@ -709,8 +709,8 @@ public class PanelInfo extends BaseRightPanel {
 	private void setItemStorage(StorageItem storage) {
 		_layoutStorage.setVisible(true);
 
-		_layoutStorageAdvancedFilter.setVisible(storage.isDispenser() ? false : true);
-		_layoutStorageSimpleFilter.setVisible(storage.isDispenser() ? true : false);
+		_layoutStorageAdvancedFilter.setVisible(storage.isFactory() ? false : true);
+		_layoutStorageSimpleFilter.setVisible(storage.isFactory() ? true : false);
 		
 		_cbFood.setChecked(storage.acceptFood());
 		_cbDrink.setChecked(storage.acceptDrink());
@@ -820,7 +820,8 @@ public class PanelInfo extends BaseRightPanel {
 		_item = null;
 		_resource = null;
 		_itemInfo = null;
-		_layoutItem.setVisible(true);
+		_layoutArea.setVisible(false);
+		_layoutItem.setVisible(false);
 		_layoutStorage.setVisible(false);
 		_layoutStorageAdvancedFilter.setVisible(false);
 		_layoutEffects.setVisible(false);

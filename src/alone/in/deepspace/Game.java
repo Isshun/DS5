@@ -123,15 +123,18 @@ public class Game {
 
 	public void	newGame(final String filePath, LoadListener loadListener) {
 		loadListener.onUpdate("Create new game");
-		WorldFactory.create(ServiceManager.getWorldMap());
+		WorldFactory.create(ServiceManager.getWorldMap(), loadListener);
 		ResourceManager.getInstance().refreshWater();
+		ResourceManager.getInstance().addMatter(5000);
 	}
 
 	public void	load(final String filePath, LoadListener loadListener) {
 		loadListener.onUpdate("Load game");
 		GameSerializer.load(filePath, loadListener);
-		ResourceManager.getInstance().refreshWater();
 		JobManagerLoader.load(JobManager.getInstance(), loadListener);
+		ServiceManager.getWorldMap().cleanRock();
+		ResourceManager.getInstance().refreshWater();
+		ResourceManager.getInstance().addMatter(5000);
 	}
 
 	public void	save(final String filePath) {

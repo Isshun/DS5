@@ -75,4 +75,8 @@ public class WorldResource extends UserItem {
 		return _job == null;
 	}
 
+	public boolean isGrass() {
+		return "base.grass".equals(_info.name);
+	}
+
 }

@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder.Node;
+import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Step;
 import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
 
 import alone.in.deepspace.engine.renderer.MainRenderer;
-import alone.in.deepspace.model.Position;
+import alone.in.deepspace.model.Movable;
 import alone.in.deepspace.model.Region;
 import alone.in.deepspace.model.Region.Door;
 import alone.in.deepspace.model.character.Character;
@@ -25,6 +25,18 @@ import alone.in.deepspace.util.Log;
 
 public class PathManager {
 
+	public static class MyMover implements Mover {
+		public final Movable	movable;
+		public final int 		targetX;
+		public final int 		targetY;
+
+		public MyMover(Movable movable, int targetX, int targetY) {
+			this.movable = movable;
+			this.targetX = targetX;
+			this.targetY = targetY;
+		}
+	}
+	
 	public interface PathManagerCallback {
 		  void	onPathComplete(Path path, Job item);
 		  void	onPathFailed(Job item);
@@ -68,7 +80,6 @@ public class PathManager {
 	private Map<Integer, Boolean>		_bridges;
 //	public List<Door>					_doors;
 //	protected Region[][] 				_regions;
-
 
 	public PathManager() {
 		_threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
@@ -378,8 +389,9 @@ public class PathManager {
 				int fy = fromY;
 				int tx = toX;
 				int ty = toY;
-
-				final Path rawpath = finder.findPath(character, fromX, fromY, toX, toY);
+				
+				MyMover mover = new MyMover(character, job.getX(), job.getY());
+				final Path rawpath = finder.findPath(mover, fromX, fromY, toX, toY);
 				FinderPool.recycle(finder);
 				
 				if (rawpath != null) {

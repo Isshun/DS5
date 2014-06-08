@@ -50,6 +50,9 @@ public class JobStore extends Job {
 
 		ItemBase itemToStore = character.getInventory().get(0);
 		StorageItem storage = ServiceManager.getWorldMap().getNearestStorage(character.getX(), character.getY(), itemToStore);
+		if (storage == null) {
+			return null;
+		}
 		
 		return create(character, storage);
 	}

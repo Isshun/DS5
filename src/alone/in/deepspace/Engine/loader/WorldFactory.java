@@ -5,16 +5,74 @@ import hoten.voronoi.VoronoiGraph;
 import hoten.voronoi.nodename.as3delaunay.Voronoi;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.util.Constant;
 
 public class WorldFactory {
 
-	public static void create(WorldManager worldMap) {
+	private static final int RES_INTERVAL_HEAVY = 6;
+
+	public static void create(WorldManager world, LoadListener loadListener) {
+//		loadListener.onUpdate("Create grass 1");
+//		addGrass(world);
+//		loadListener.onUpdate("Create grass 2");
+//		addGrass(world);
+//		loadListener.onUpdate("Create grass 3");
+//		addGrass(world);
+//		loadListener.onUpdate("Create grass 4");
+//		addGrass(world);
+//		loadListener.onUpdate("Create grass 5");
+//		addGrass(world);
+//		loadListener.onUpdate("Create grass 6");
+//		addGrass(world);
+//		loadListener.onUpdate("Create grass 7");
+//		addGrass(world);
+//		loadListener.onUpdate("Create grass 8");
+////		addGrass(world);
+//////		loadListener.onUpdate("Create grass 9");
+//////		addGrass(world);
+//////		loadListener.onUpdate("Create grass 10");
+//////		addGrass(world);
+//////		loadListener.onUpdate("Create grass 11");
+//////		addGrass(world);
+//////		loadListener.onUpdate("Create grass 12");
+//////		addGrass(world);
+//////		loadListener.onUpdate("Create grass 13");
+//////		addGrass(world);
+//////		loadListener.onUpdate("Create grass 14");
+//////		addGrass(world);
+//		loadListener.onUpdate("Create mountain");
+//		addMountain(world);
+		
+		loadListener.onUpdate("Add random ressources");
+		addRandomRessources(world);
+	}
+
+	private static void addRandomRessources(WorldManager world) {
+		int resInterval = RES_INTERVAL_HEAVY;
+		List<ItemInfo> resourceItemsInfo = new ArrayList<ItemInfo>();
+		for (ItemInfo info: Game.getData().items) {
+			if (info.onGather != null) {
+				resourceItemsInfo.add(info);
+			}
+		}
+		int nbResource = Constant.WORLD_WIDTH * Constant.WORLD_HEIGHT / resInterval;
+		for (int i = 0; i < nbResource; i++) {
+			int x = (int)(Math.random() * Constant.WORLD_WIDTH);
+			int y = (int)(Math.random() * Constant.WORLD_HEIGHT);
+			ItemInfo info = resourceItemsInfo.get((int)(Math.random() * resourceItemsInfo.size()));
+			world.putResource(info, 0, x, y, 10);
+		}
+	}
+
+	private static void addMountain(WorldManager worldMap) {
 		int[][] map = new int[Constant.WORLD_HEIGHT][Constant.WORLD_WIDTH];
 		for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
 			for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
@@ -24,16 +82,16 @@ public class WorldFactory {
 		
         final int width = Constant.WORLD_WIDTH;
         final int height = Constant.WORLD_HEIGHT;
-        final int numSites = 5000;
+        final int numSites = 10000;
         final long seed = 42;//System.nanoTime();
         final Random r = new Random(seed);
         System.out.println("seed: " + seed);
 
         //make the intial underlying voronoi structure
-        final Voronoi v = new Voronoi(numSites, width * 2, height * 2, r, null);
+        final Voronoi v = new Voronoi(numSites, width, height, r, null);
 
         //assemble the voronoi strucutre into a usable graph object representing a map
-        final VoronoiGraph graph = new VoronoiGraph(v, 2, r) {
+        final VoronoiGraph graph = new VoronoiGraph(v, 20, r) {
 			@Override
 			protected Enum getBiome(Center p) {
 				return null;
@@ -46,54 +104,141 @@ public class WorldFactory {
         };
         
         for (Center c : graph.centers) {
-        	System.out.println(c.elevation);
-        	int x = (int)(c.loc.x - width / 2);
-        	int y = (int)(c.loc.y - height / 2);
-        	int e = 10 - (int)(c.elevation * 12);
-        	if (x >= 0 && y >= 0 && x < width && y < height) {
-        		System.out.println(e);
-            	map[x][y] = e;
+        	if (c.elevation >= 0.5) {
+        		for (Center n: c.neighbors) {
+        			if (n.elevation >= 0.5) {
+        				setElevation(map, c, n, 0.5);
+        			}
+        			//n.elevation = 1.5;
+        		}
         	}
 
-        	// clean
-        	if (x+1 >= 0 && y >= 0 && x+1 < width && y < height && map[x+1][y] > e) { map[x+1][y] = e; }
-        	if (x-1 >= 0 && y >= 0 && x-1 < width && y < height && map[x-1][y] > e) { map[x-1][y] = e; }
-        	if (x >= 0 && y+1 >= 0 && x < width && y+1 < height && map[x][y+1] > e) { map[x][y+1] = e; }
-        	if (x >= 0 && y-1 >= 0 && x < width && y-1 < height && map[x][y-1] > e) { map[x][y-1] = e; }
+//        	// clean
+//        	if (x+1 >= 0 && y >= 0 && x+1 < width && y < height && map[x+1][y] > e) { map[x+1][y] = e; }
+//        	if (x-1 >= 0 && y >= 0 && x-1 < width && y < height && map[x-1][y] > e) { map[x-1][y] = e; }
+//        	if (x >= 0 && y+1 >= 0 && x < width && y+1 < height && map[x][y+1] > e) { map[x][y+1] = e; }
+//        	if (x >= 0 && y-1 >= 0 && x < width && y-1 < height && map[x][y-1] > e) { map[x][y-1] = e; }
         }
         
-        clean(map);
-        clean(map);
-        clean(map);
-//
-//		
-//		for (int i = 0; i < 20; i++) {
-//			addShape(map,
-//					(int)(Math.random() * Constant.WORLD_WIDTH),
-//					(int)(Math.random() * Constant.WORLD_HEIGHT),
-//					(int)(Math.random() * 20),
-//					(int)(Math.random() * 10));
-//		}
-//		
+//        clean(map);
+//        clean(map);
+//        clean(map);
+
 		ItemInfo info = Game.getData().getItemInfo("base.rock");
-		ItemInfo infoGround = Game.getData().getItemInfo("base.ground");
-		
 		for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
 			for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
-				if (map[i][j] <= 0) {
-					worldMap.putItem(infoGround, 0, i, j, 999);
-				} else {
-					for (int f = 0; f < map[i][j]; f++) {
-						worldMap.putItem(info, f, i, j, 999);
-					}
+				if (map[i][j] > 15) {
+					worldMap.putItem(info, 0, i, j, 999);
 				}
-				System.out.print(map[i][j]);
 			}
-			System.out.print('\n');
+		}
+
+		worldMap.cleanRock();
+	}
+
+	private static void addGrass(WorldManager worldMap) {
+		int DIV = 5;
+		
+		int[][] map = new int[Constant.WORLD_HEIGHT][Constant.WORLD_WIDTH];
+		for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
+			for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
+				map[i][j] = 10;
+			}
+		}
+		
+        final int width = Constant.WORLD_WIDTH / DIV;
+        final int height = Constant.WORLD_HEIGHT / DIV;
+        final int numSites = 5000;
+        final long seed = System.nanoTime();
+        final Random r = new Random();
+        System.out.println("seed: " + seed);
+
+        //make the intial underlying voronoi structure
+        final Voronoi v = new Voronoi(numSites, width, height, r, null);
+
+        //assemble the voronoi strucutre into a usable graph object representing a map
+        final VoronoiGraph graph = new VoronoiGraph(v, 20, r) {
+			@Override
+			protected Enum getBiome(Center p) {
+				return null;
+			}
+
+			@Override
+			protected Color getColor(Enum biome) {
+				return null;
+			}
+        };
+        
+        for (Center c : graph.centers) {
+        	if (c.elevation >= 0.5) {
+        		for (Center n: c.neighbors) {
+        			if (n.elevation >= 0.5) {
+        				setElevation(map, c, n, 0.5);
+        			}
+        			//n.elevation = 1.5;
+        		}
+        	}
+
+//        	// clean
+//        	if (x+1 >= 0 && y >= 0 && x+1 < width && y < height && map[x+1][y] > e) { map[x+1][y] = e; }
+//        	if (x-1 >= 0 && y >= 0 && x-1 < width && y < height && map[x-1][y] > e) { map[x-1][y] = e; }
+//        	if (x >= 0 && y+1 >= 0 && x < width && y+1 < height && map[x][y+1] > e) { map[x][y+1] = e; }
+//        	if (x >= 0 && y-1 >= 0 && x < width && y-1 < height && map[x][y-1] > e) { map[x][y-1] = e; }
+        }
+        
+//        clean(map);
+//        clean(map);
+//        clean(map);
+
+		ItemInfo info = Game.getData().getItemInfo("base.grass");
+		int offsetX = (int)(Math.random() * Constant.WINDOW_WIDTH / DIV);
+		int offsetY = (int)(Math.random() * Constant.WINDOW_HEIGHT / DIV);
+		for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
+			for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
+				if (map[i][j] >= 15) {
+					worldMap.putItem(info, 0, offsetX + i, offsetY + j, 999);
+
+					worldMap.putItem(info, 0, offsetX + i + 1, offsetY + j, 999);
+					worldMap.putItem(info, 0, offsetX + i - 1, offsetY + j, 999);
+					worldMap.putItem(info, 0, offsetX + i, offsetY + j + 1, 999);
+					worldMap.putItem(info, 0, offsetX + i, offsetY + j - 1, 999);
+
+					worldMap.putItem(info, 0, offsetX + i + 1, offsetY + j + 1, 999);
+					worldMap.putItem(info, 0, offsetX + i + 1, offsetY + j - 1, 999);
+					worldMap.putItem(info, 0, offsetX + i - 1, offsetY + j + 1, 999);
+					worldMap.putItem(info, 0, offsetX + i - 1, offsetY + j - 1, 999);
+				}
+			}
 		}
 
 		
-		worldMap.cleanRock();
+//		for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
+//			for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
+//				WorldResource res = worldMap.getRessource(i, j);
+//				if (res != null && res.isRock()) {
+//					res.setTile(22);
+//				}
+//			}
+//		}
+//		
+		worldMap.cleanGrass();
+	}
+
+	private static void setElevation(int[][] map, Center c, Center n, double e) {
+		int fromX = (int) Math.min(c.loc.x, n.loc.x);
+		int fromY = (int) Math.min(c.loc.y, n.loc.y);
+		int toX = (int) Math.max(c.loc.x, n.loc.x);
+		int toY = (int) Math.max(c.loc.y, n.loc.y);
+		double offsetX = toX - fromX;
+		double offsetY = toY - fromY;
+		double maxOffset = Math.max(offsetX, offsetY);
+
+		for (double x = fromX; x < toX; x += offsetX / maxOffset) {
+			for (double y = fromY; y < toY; y += offsetY / maxOffset) {
+		    	map[(int)x][(int)y] = (int)(e * 100);
+		    	System.out.println("x: " + x + ", y: " + y);
+			}
+		}
 	}
 
 	private static void clean(int[][] map) {

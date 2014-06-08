@@ -1,0 +1,6 @@
+label: Grass
+width: 1
+height: 1
+category: resource
+cost:
+  matter: 10

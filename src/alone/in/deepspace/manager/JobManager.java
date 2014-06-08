@@ -35,6 +35,7 @@ import alone.in.deepspace.model.jobCheck.CheckGardenIsMature;
 import alone.in.deepspace.model.jobCheck.CheckLowFood;
 import alone.in.deepspace.model.jobCheck.JobCharacterCheck;
 import alone.in.deepspace.model.jobCheck.JobCheck;
+import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class JobManager {
@@ -245,6 +246,10 @@ public class JobManager {
 		if (bestJob == null) {
 			for (Job job: _jobs) {
 				if (job.getCharacter() == null && job.getFail() > 0) {
+					if (job.getReason() == Abort.BLOCKED && job.getBlocked() < Game.getUpdate() + Constant.DELAY_TO_RESTART_BLOCKED_JOB) {
+						continue;
+					}
+					
 					int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
 					if (distance < bestDistance && job.check(character)) {
 						bestJob = job;

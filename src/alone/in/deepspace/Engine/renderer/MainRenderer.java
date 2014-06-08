@@ -67,7 +67,7 @@ public class MainRenderer {
 		
 		// Draw debug
 		if (Settings.getInstance().isDebug()) {
-			//_debugRenderer.onDraw(app, render, animProgress);
+			_debugRenderer.onDraw(app, render, animProgress);
 		}
 		
 		_frame++;

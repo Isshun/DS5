@@ -14,7 +14,7 @@ public class Settings {
 	private boolean _debug;
 
 	public boolean isDebug() {
-		return true;
+		return _debug;
 	}
 
 	public void setDebug(boolean b) {

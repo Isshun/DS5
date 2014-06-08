@@ -72,7 +72,10 @@ public class MiniMapRenderer implements IRenderer {
 				else if (worldManager.getStructure(x, y) != null) {
 					if (worldManager.getStructure(x, y).isWall()) {
 						color = Color.RED;
-					} else {
+					}
+				}
+				else if (worldManager.getRessource(x, y) != null) {
+					if (worldManager.getRessource(x, y).isRock()) {
 						color = Color.BLUE;
 					}
 				}

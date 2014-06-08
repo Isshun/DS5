@@ -118,7 +118,9 @@ public class UserInteraction {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
 				Job job = JobManager.getInstance().createGatherJob(x, y);
-				JobManager.getInstance().addJob(job);
+				if (job != null) {
+					JobManager.getInstance().addJob(job);
+				}
 			}
 		}
 	}
@@ -127,7 +129,9 @@ public class UserInteraction {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
 				Job job = JobManager.getInstance().createMiningJob(x, y);
-				JobManager.getInstance().addJob(job);
+				if (job != null) {
+					JobManager.getInstance().addJob(job);
+				}
 			}
 		}
 	}
@@ -136,7 +140,9 @@ public class UserInteraction {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
 				Job job = JobManager.getInstance().createDumpJob(x, y);
-				JobManager.getInstance().addJob(job);
+				if (job != null) {
+					JobManager.getInstance().addJob(job);
+				}
 			}
 		}
 	}

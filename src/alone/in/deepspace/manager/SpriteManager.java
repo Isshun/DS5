@@ -151,6 +151,7 @@ public class SpriteManager {
 		return _font;
 	}
 
+	// TODO
 	public Sprite getItem(ItemBase item, int tile) {
 		if (item == null) {
 			return null;
@@ -158,7 +159,7 @@ public class SpriteManager {
 		
 		if (item.isStructure() == false) {
 			if (item.isRessource()) {
-				return getRessource((WorldResource)item, 0, 0);
+				return getRessource((WorldResource)item);
 			}
 
 			int alpha = Math.min(item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * item.getMatterSupply(), 255);
@@ -349,23 +350,21 @@ public class SpriteManager {
 		return sum;
 	}
 
-	public Sprite 				getRessource(WorldResource item, int tile, int state) {
-
-		if ("base.rock".equals(item.getInfo().name)) {
-			return getSprite(item.getInfo(), tile, state + 1, 255, false);
+	public Sprite 				getRessource(WorldResource resource) {
+		if ("base.rock".equals(resource.getInfo().name)) {
+			return getSprite(resource.getInfo(), resource.getTile(), 0, 255, false);
 		}
-		
-//		if (item.getMatterSupply() == 0) {
-//			return null;//getExterior(item.getWidth() + item.getHeight() * 42);
-//		} else {
-//			int value = Math.min(item.getMatterSupply(), 7);
-//			return getSprite(4,
-//					value * Constant.TILE_WIDTH,
-//					9 * (Constant.TILE_HEIGHT + 2) + 1,
-//					Constant.TILE_WIDTH + 1,
-//					Constant.TILE_HEIGHT);
-		return getSprite(item.getInfo(), 0, state + 1, 255, false);
-//		}
+
+		else if ("base.grass".equals(resource.getInfo().name)) {
+			return getSprite(resource.getInfo(), resource.getTile(), 0, 255, false);
+		}
+
+		else if (resource.getInfo().onGather != null) {
+			int state = (int)(Math.min(resource.getValue(), resource.getInfo().onGather.mature) + 1);
+			return getSprite(resource.getInfo(), 0, state, 255, false);
+		}
+
+		return getSprite(resource.getInfo(), 0, 1, 255, false);
 	}
 
 	public Sprite				getFloor(StructureItem item, int zone, int room) {

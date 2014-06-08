@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Clock;
-import org.jsfml.system.Time;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 import org.jsfml.window.event.Event;
@@ -38,6 +37,8 @@ public class Main {
 	static final int 				UPDATE_INTERVAL = 100;
 	private static final int		REFRESH_INTERVAL = 200;
 	private static final int 		LONG_UPDATE_INTERVAL = 2000;
+
+	private static final String 	SAVE_FILE = "saves/3.sav";
 	
 	private static Game				_game;
 	private static MenuBase			_menu;
@@ -85,7 +86,8 @@ public class Main {
 		try {
 			_game = new Game(window, data);
 			_game.onCreate();
-			_game.load("saves/2.sav", _loadListener);
+			//_game.newGame(SAVE_FILE, _loadListener);
+			_game.load(SAVE_FILE, _loadListener);
 			_mainRenderer.init(_game);
 			_userInterface.onCreate(_game);
 
@@ -243,7 +245,7 @@ public class Main {
 			// Save
 			case S:
 				if (keyEvent.control) {
-					_game.save("saves/2.sav");
+					_game.save(SAVE_FILE);
 					return;
 				}
 				break;

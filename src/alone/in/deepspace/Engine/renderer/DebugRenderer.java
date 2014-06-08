@@ -39,7 +39,7 @@ public class DebugRenderer implements IRenderer {
 			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
 				WorldResource res = ServiceManager.getWorldMap().getRessource(x, y);
 				if (res != null) {
-					text.setString(""+(int)(res.getValue()));
+					text.setString(""+(int)(res.getTile()));
 					text.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
 					app.draw(text, render);
 				}
