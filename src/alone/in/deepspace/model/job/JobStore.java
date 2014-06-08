@@ -61,7 +61,7 @@ public class JobStore extends Job {
 	public boolean check(Character character) {
 		// Item is null
 		if (_item == null || _storage == null) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 		
@@ -76,7 +76,7 @@ public class JobStore extends Job {
 	public boolean action(Character character) {
 		if (_storage == null) {
 			Log.error("Character: actionStore on non storage item");
-			JobManager.getInstance().abort(this, Abort.INVALID);
+			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
 			return true;		
 		}
 

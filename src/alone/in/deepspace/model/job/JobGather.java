@@ -37,13 +37,13 @@ public class JobGather extends Job {
 	public boolean check(Character character) {
 		// Item is null
 		if (_resource == null) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 
 		// Item is no longer exists
 		if (_resource != ServiceManager.getWorldMap().getRessource(_resource.getX(), _resource.getY())) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 
@@ -55,7 +55,7 @@ public class JobGather extends Job {
 
 		// No space left in inventory
 		if (character.hasInventorySpaceLeft() == false) {
-			_reason = Abort.NO_LEFT_CARRY;
+			_reason = JobAbortReason.NO_LEFT_CARRY;
 			return false;
 		}
 
@@ -67,20 +67,20 @@ public class JobGather extends Job {
 		// Wrong call
 		if (_resource == null) {
 			Log.error("Character: actionGather on null job or null job's item");
-			JobManager.getInstance().abort(this, Abort.INVALID);
+			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
 			return true;
 		}
 
 		if (_resource.getInfo().onGather == null) {
 			Log.error("Character: actionGather on non gatherable item");
-			JobManager.getInstance().abort(this, Abort.INVALID);
+			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
 			return true;
 		}
 
 
 		// Character is full: cancel current job
 		if (character.getInventoryLeftSpace() <= 0) {
-			JobManager.getInstance().abort(this, Abort.NO_LEFT_CARRY);
+			JobManager.getInstance().abort(this, JobAbortReason.NO_LEFT_CARRY);
 			return true;
 		}
 

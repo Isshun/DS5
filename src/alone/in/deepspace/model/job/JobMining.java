@@ -32,25 +32,25 @@ public class JobMining extends Job {
 	public boolean check(Character character) {
 		// Item is null
 		if (_item == null) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 		
 		// Item is no longer exists
 		if (_item != ServiceManager.getWorldMap().getRessource(_item.getX(), _item.getY())) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 		
 		// Resource is depleted
 		if (_item.getMatterSupply() <= 0) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 
 		// No space left in inventory
 		if (character.hasInventorySpaceLeft() == false) {
-			_reason = Abort.NO_LEFT_CARRY;
+			_reason = JobAbortReason.NO_LEFT_CARRY;
 			return false;
 		}
 
@@ -62,13 +62,13 @@ public class JobMining extends Job {
 		// Wrong call
 		if (_item == null) {
 			Log.error("Character: actionMine on null job or null job's item");
-			JobManager.getInstance().abort(this, Abort.INVALID);
+			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
 			return true;
 		}
 		
 		if (_item.isRessource() == false) {
 			Log.error("Character: actionMine on non resource");
-			JobManager.getInstance().abort(this, Abort.INVALID);
+			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
 			return true;
 		}
 
@@ -76,13 +76,13 @@ public class JobMining extends Job {
 
 		if (gatheredItem.getInfo().onMine == null) {
 			Log.error("Character: actionMine on non minable item");
-			JobManager.getInstance().abort(this, Abort.INVALID);
+			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
 			return true;
 		}
 
 		// Character is full: cancel current job
 		if (character.getInventoryLeftSpace() <= 0) {
-			JobManager.getInstance().abort(this, Job.Abort.NO_LEFT_CARRY);
+			JobManager.getInstance().abort(this, Job.JobAbortReason.NO_LEFT_CARRY);
 			return true;
 		}
 

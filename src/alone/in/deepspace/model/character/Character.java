@@ -196,7 +196,7 @@ public class Character extends Movable {
 
 		// Cancel previous job
 		if (_job != null && _job != job && _job.isFinish() == false) {
-			JobManager.getInstance().abort(_job, Job.Abort.INTERRUPTE);
+			JobManager.getInstance().abort(_job, Job.JobAbortReason.INTERRUPTE);
 		}
 
 		// Set new job
@@ -405,7 +405,7 @@ public class Character extends Movable {
 	}
 	
 	public void removeInventory(ItemBase item) {
-		if (_inventory.remove(_job.getItem())) {
+		if (item != null && _inventory.remove(item)) {
 			_inventorySpaceLeft++;
 		}
 	}
@@ -425,7 +425,7 @@ public class Character extends Movable {
 		}
 		
 		if (_needs.isTired() && (_job.getItem() == null || _job.getItem().isSleepingItem() == false)) {
-			JobManager.getInstance().abort(_job, Job.Abort.INTERRUPTE);
+			JobManager.getInstance().abort(_job, Job.JobAbortReason.INTERRUPTE);
 			_job = null;
 			return;
 		}
@@ -498,7 +498,7 @@ public class Character extends Movable {
 	}
 
 	public void removeInventory(List<ItemBase> items) {
-		_inventory.remove(items);
+		_inventory.removeAll(items);
 		_inventorySpaceLeft = _inventorySpace - _inventory.size();
 	}
 	
@@ -518,8 +518,12 @@ public class Character extends Movable {
 		UserInterface.getInstance().displayMessage("blocked", _posX, _posY);
 	
 		// Abort job
-		JobManager.getInstance().abort(job, Job.Abort.BLOCKED);
+		JobManager.getInstance().abort(job, Job.JobAbortReason.BLOCKED);
 		_job = null;
+
+		if (_onPathComplete != null) {
+			_onPathComplete.onPathFailed(job);
+		}
 	}
 	
 	@Override
@@ -546,6 +550,10 @@ public class Character extends Movable {
 	
 	  _path = rawpath;
 	  _steps = 0;
+	  
+	  if (_onPathComplete != null) {
+		  _onPathComplete.onPathComplete(rawpath, job);
+	  }
 	}
 
 	public void setFirstname(String firstName) {

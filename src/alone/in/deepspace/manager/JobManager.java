@@ -16,7 +16,7 @@ import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.job.Job;
-import alone.in.deepspace.model.job.Job.Abort;
+import alone.in.deepspace.model.job.Job.JobAbortReason;
 import alone.in.deepspace.model.job.Job.JobStatus;
 import alone.in.deepspace.model.job.JobBuild;
 import alone.in.deepspace.model.job.JobDestroy;
@@ -241,7 +241,7 @@ public class JobManager {
 			if (job.isFinish() == false && job.getCharacter() == null && job.getFail() <= 0) {
 				if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter().value == 0) {
 					// TODO
-					job.setFail(Abort.NO_BUILD_RESOURCES, MainRenderer.getFrame());
+					job.setFail(JobAbortReason.NO_BUILD_RESOURCES, MainRenderer.getFrame());
 					continue;
 				}
 				if ((job.getAction() == Action.GATHER || job.getAction() == Action.MINING) && character.getSpace() == 0) {
@@ -261,7 +261,7 @@ public class JobManager {
 		if (bestJob == null) {
 			for (Job job: _jobs) {
 				if (job.getCharacter() == null && job.getFail() > 0) {
-					if (job.getReason() == Abort.BLOCKED && job.getBlocked() < Game.getUpdate() + Constant.DELAY_TO_RESTART_BLOCKED_JOB) {
+					if (job.getReason() == JobAbortReason.BLOCKED && job.getBlocked() < Game.getUpdate() + Constant.DELAY_TO_RESTART_BLOCKED_JOB) {
 						continue;
 					}
 					
@@ -310,7 +310,7 @@ public class JobManager {
 	//	  return null;
 	//	}
 
-	public void	abort(Job job, Abort reason) {
+	public void	abort(Job job, JobAbortReason reason) {
 		Log.debug("Job abort: " + job.getId());
 
 		// Already aborted
@@ -319,26 +319,28 @@ public class JobManager {
 		}
 
 		job.setStatus(JobStatus.ABORTED);
+		job.setFail(reason, MainRenderer.getFrame());
+		job.setCharacter(null);
 		
 		// Abort because path to item is blocked
-		if (reason == Abort.BLOCKED) {
+		if (reason == JobAbortReason.BLOCKED) {
 			if (job.getItem() != null) {
 				job.getItem().setBlocked(Game.getUpdate());
 			}
 		}
 
 		// Abort because character inventory is full
-		if (reason == Abort.NO_LEFT_CARRY) {
+		if (reason == JobAbortReason.NO_LEFT_CARRY) {
 			addStoreJob(job.getCharacter());
 		}
 
 		// Abort because factory is out of components
-		if (reason == Abort.NO_COMPONENTS) {
+		if (reason == JobAbortReason.NO_COMPONENTS) {
 			addRefillJob((FactoryItem)job.getItem());
 		}
 
 		// Job is invalid, don't resume
-		if (reason == Abort.INVALID) {
+		if (reason == JobAbortReason.INVALID) {
 			removeJob(job);
 			return;
 		}
@@ -355,9 +357,6 @@ public class JobManager {
 		}
 
 		// Regular job, reset
-		// TODO
-		job.setFail(reason, MainRenderer.getFrame());
-		job.setCharacter(null);
 	}
 
 	public void addRefillJob(FactoryItem factory) {
@@ -548,7 +547,7 @@ public class JobManager {
 		// Remove invalid job
 		List<Job> invalidJobs = new ArrayList<Job>();
 		for (Job job: _jobs) {
-			if (job.getReason() == Abort.INVALID) {
+			if (job.getReason() == JobAbortReason.INVALID) {
 				invalidJobs.add(job);
 			}
 		}

@@ -202,7 +202,7 @@ public abstract class ItemBase {
 	public boolean			isWorking() { return _isWorking; }
 	public boolean			isComplete() { return _matterSupply >= _matter; }
 	public boolean			isSupply() { return _power == _powerSupply; }
-	public boolean			isSleepingItem() { return "base.bed".equals(_name) || "base.chair".equals(_name); }
+	public boolean			isSleepingItem() { return _info.isSleeping; }
 	public boolean			isStructure() { return _info.isStructure; }
 	public boolean			isRessource() { return _info.isResource; }
 	public boolean			isWalkable() { return !_info.isWalkable; }

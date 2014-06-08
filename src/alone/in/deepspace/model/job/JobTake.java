@@ -33,19 +33,19 @@ public class JobTake extends Job {
 	public boolean check(Character character) {
 		// Item is null
 		if (_item == null || _storage == null) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 		
 		// No space left in inventory
 		if (character.hasInventorySpaceLeft() == false) {
-			_reason = Abort.NO_LEFT_CARRY;
+			_reason = JobAbortReason.NO_LEFT_CARRY;
 			return false;
 		}
 		
 		// Storage not contains requested item
 		if (_storage.contains(_filter) == false) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 
@@ -56,7 +56,7 @@ public class JobTake extends Job {
 	// TODO: check character inventory space
 	public boolean action(Character character) {
 		if (_item == null || _filter == null) {
-			JobManager.getInstance().abort(this, Job.Abort.INVALID);
+			JobManager.getInstance().abort(this, Job.JobAbortReason.INVALID);
 			Log.error("actionTake: invalid job");
 			return true;
 		}

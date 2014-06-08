@@ -22,4 +22,8 @@ public class ServiceManager {
 		return _worldMap;
 	}
 
+	public static void setWorldMap(WorldManager worldManager) {
+		_worldMap = worldManager;
+	}
+
 }

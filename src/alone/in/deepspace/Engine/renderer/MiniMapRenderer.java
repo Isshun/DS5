@@ -12,7 +12,6 @@ import org.jsfml.graphics.TextureCreationException;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.Viewport;
-import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.character.Character;
@@ -112,6 +111,18 @@ public class MiniMapRenderer implements IRenderer {
 
 	public Sprite getSprite() {
 		return _sprite;
+	}
+
+	@Override
+	public void invalidate(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void invalidate() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

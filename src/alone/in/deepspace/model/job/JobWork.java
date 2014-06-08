@@ -33,14 +33,14 @@ public class JobWork extends Job {
 		// Wrong call
 		if (_item == null) {
 			Log.error("Character: actionUse on null job or null job's item");
-			JobManager.getInstance().abort(this, Job.Abort.INVALID);
+			JobManager.getInstance().abort(this, Job.JobAbortReason.INVALID);
 			return false;
 		}
 
 		// Item is no longer exists
 		if (_item != ServiceManager.getWorldMap().getItem(_posX, _posY)) {
 			Log.warning("Character #" + character.getId() + ": actionUse on invalide item");
-			JobManager.getInstance().abort(this, Job.Abort.INVALID);
+			JobManager.getInstance().abort(this, Job.JobAbortReason.INVALID);
 			return true;
 		}
 

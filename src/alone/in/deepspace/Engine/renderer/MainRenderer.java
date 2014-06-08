@@ -11,8 +11,8 @@ import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Settings;
 
-public class MainRenderer {
-	private static MainRenderer 	_self;
+public class MainRenderer implements IRenderer {
+	private static IRenderer 		_self;
 	
 	private SpriteManager 			_spriteManager;
 	private CharacterRenderer 		_characterRenderer;
@@ -45,17 +45,17 @@ public class MainRenderer {
 		_roomRenderer = new RoomRenderer();
 	}
 
-	public void refresh(int frame) {
+	public void onRefresh(int frame) {
 		_worldRenderer.onRefresh(frame);
 		_characterRenderer.onRefresh(frame);
 	}
 	
-	public void draw(RenderWindow app, double animProgress, long renderTime) {
-		_renderTime = renderTime;
+	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
+//		_renderTime = renderTime;
 
 		app.clear(new Color(0, 0, 50));
 		
-		RenderStates render = _viewport.getRender();
+		render = _viewport.getRender();
 
 		_worldRenderer.onDraw(app, render, animProgress);
 		_lightRenderer.onDraw(app, render, animProgress);
@@ -83,7 +83,7 @@ public class MainRenderer {
 		_lightRenderer.initLight();
 	}
 
-	public static MainRenderer getInstance() {
+	public static IRenderer getInstance() {
 		return _self;
 	}
 
@@ -122,5 +122,8 @@ public class MainRenderer {
 	}
 	public static int getFPS() {
 		return _fps;
+	}
+	public static void setInstance(IRenderer renderer) {
+		_self = renderer;
 	}
 }

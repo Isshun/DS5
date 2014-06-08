@@ -42,7 +42,7 @@ public class JobRefill extends Job {
 	public boolean check(Character character) {
 		// Item is null
 		if (_item == null || _storage == null || _factory == null || _filter == null) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 		
@@ -56,13 +56,13 @@ public class JobRefill extends Job {
 	private boolean checkStore(Character character) {
 		// Dispenser no longer exists
 		if (_factory != ServiceManager.getWorldMap().getItem(_factory.getX(), _factory.getY())) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 		
 		// Character inventory is empty
 		if (_character.getInventory().size() == 0) {
-			_reason = Abort.NO_COMPONENTS;
+			_reason = JobAbortReason.NO_COMPONENTS;
 			return false;
 		}
 
@@ -72,19 +72,19 @@ public class JobRefill extends Job {
 	private boolean checkTake(Character character) {
 		// Storage no longer exists
 		if (_storage != ServiceManager.getWorldMap().getItem(_storage.getX(), _storage.getY())) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 
 		// Dispenser no longer exists
 		if (_factory != ServiceManager.getWorldMap().getItem(_factory.getX(), _factory.getY())) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 
 		// No space left in inventory
 		if (character.hasInventorySpaceLeft() == false) {
-			_reason = Abort.NO_LEFT_CARRY;
+			_reason = JobAbortReason.NO_LEFT_CARRY;
 			return false;
 		}
 		

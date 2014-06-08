@@ -5,14 +5,19 @@ import java.util.HashMap;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Step;
 
-import alone.in.deepspace.manager.Utils;
 import alone.in.deepspace.manager.PathManager.PathManagerCallback;
+import alone.in.deepspace.manager.Utils;
 import alone.in.deepspace.model.character.CharacterNeeds;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.util.Constant;
 
 public abstract class Movable implements PathManagerCallback {
 
+	public interface OnPathComplete {
+		void	onPathFailed(Job job);
+		void	onPathComplete(Path rawpath, Job job);
+	}
+	
 	public enum Direction {
 		BOTTOM,
 		LEFT,
@@ -38,6 +43,7 @@ public abstract class Movable implements PathManagerCallback {
 	protected Path				_path;
 	protected int				_steps;
 	protected Job				_job;
+	protected OnPathComplete	_onPathComplete;
 
 	private HashMap<Integer, Integer> 	_points;
 
@@ -57,6 +63,8 @@ public abstract class Movable implements PathManagerCallback {
 	public Direction 		getMove() { return _move; }
 	public int				getFrameIndex() { return _frameIndex++; }
 
+	public void				setOnPathComplete(OnPathComplete onPathComplete) { _onPathComplete = onPathComplete; }
+	
 	public void	setDirection(Direction direction) {
 		if (_direction != direction) {
 			_direction = direction;

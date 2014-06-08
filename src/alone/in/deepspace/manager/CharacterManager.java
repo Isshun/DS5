@@ -10,7 +10,7 @@ import alone.in.deepspace.Strings;
 import alone.in.deepspace.model.Movable.Direction;
 import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.character.Character;
-import alone.in.deepspace.model.job.Job.Abort;
+import alone.in.deepspace.model.job.Job.JobAbortReason;
 import alone.in.deepspace.util.Log;
 
 public class CharacterManager {
@@ -87,7 +87,7 @@ public class CharacterManager {
 			if (c.isDead()) {
 				if (c.getJob() != null) {
 					// Cancel job
-					JobManager.getInstance().abort(c.getJob(), Abort.DIED);
+					JobManager.getInstance().abort(c.getJob(), JobAbortReason.DIED);
 					
 					// Remove from rooms
 					Game.getRoomManager().removeFromRooms(c);

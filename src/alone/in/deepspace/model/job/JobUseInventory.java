@@ -31,7 +31,7 @@ public class JobUseInventory extends Job {
 	public boolean check(Character character) {
 		// Item is null
 		if (_item == null) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 		
@@ -41,13 +41,13 @@ public class JobUseInventory extends Job {
 	@Override
 	public boolean action(Character character) {
 		if (_item == null) {
-			JobManager.getInstance().abort(this, Job.Abort.INVALID);
+			JobManager.getInstance().abort(this, Job.JobAbortReason.INVALID);
 			Log.error("actionUseInventory: invalid job");
 			return true;
 		}
 		
 		if (character.getInventory().contains(_item) == false) {
-			JobManager.getInstance().abort(this, Job.Abort.INVALID);
+			JobManager.getInstance().abort(this, Job.JobAbortReason.INVALID);
 			Log.error("actionUseInventory: item is missing from inventory");
 			return true;
 		}

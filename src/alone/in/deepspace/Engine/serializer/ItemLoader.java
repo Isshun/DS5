@@ -119,6 +119,7 @@ public class ItemLoader {
 						item.onAction.itemAccept.addAll(itemProduce.craftedFromItems);
 					}
 					item.isFactory = item.onAction.itemAccept.size() > 0;
+					item.isSleeping = "base.bed".equals(item.name);
 				}
 			}
 		}

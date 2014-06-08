@@ -157,4 +157,10 @@ public class Game {
 	public static int getUpdate() {
 		return _update;
 	}
+	public static void setCharacterManager(CharacterManager characterManager) {
+		_characterManager = characterManager;
+	}
+	public static void setRoomManager(RoomManager roomManager) {
+		_roomManager = roomManager;
+	}
 }

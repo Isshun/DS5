@@ -20,10 +20,6 @@ public class JobUse extends Job {
 	}
 
 	public static Job create(ItemBase item) {
-		return create(item, null);
-	}
-
-	public static Job create(ItemBase item, Character character) {
 		if (item == null || !item.hasFreeSlot()) {
 			return null;
 		}
@@ -34,8 +30,18 @@ public class JobUse extends Job {
 		job.setPosition(slot.getX(), slot.getY());
 		job.setAction(JobManager.Action.USE);
 		job.setItem(item);
-		job.setCharacterRequire(character);
 		job.setDurationLeft(item.getInfo().onAction.duration);
+
+		return job;
+	}
+
+	public static Job create(ItemBase item, Character character) {
+		if (character == null) {
+			return null;
+		}
+		
+		Job job = create(item);
+		job.setCharacterRequire(character);
 		
 		return job;
 	}
@@ -46,7 +52,7 @@ public class JobUse extends Job {
 		// Wrong call
 		if (_item == null || character == null) {
 			Log.error("wrong call");
-			JobManager.getInstance().abort(this, Abort.INVALID);
+			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
 			return true;
 		}
 		
@@ -70,7 +76,9 @@ public class JobUse extends Job {
 
 		// Character using item
 		if (_durationLeft > 0) {
-
+			// Set running
+			_status = JobStatus.RUNNING;
+			
 			// Decrease duration
 			decreaseDurationLeft();
 
@@ -95,7 +103,10 @@ public class JobUse extends Job {
 			if (produce != null) {
 				character.addInventory(produce);
 			}
-
+		}
+		
+		// Check after action
+		if (_durationLeft > 0) {
 			return false;
 		}
 
@@ -107,25 +118,25 @@ public class JobUse extends Job {
 	public boolean check(Character character) {
 		// Item is null
 		if (_item == null) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 		
 		// Item is no longer exists
 		if (_item != ServiceManager.getWorldMap().getItem(_item.getX(), _item.getY())) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 		
 		// No space left in inventory
 		if (_item.isFactory() && character.hasInventorySpaceLeft() == false) {
-			_reason = Abort.NO_LEFT_CARRY;
+			_reason = JobAbortReason.NO_LEFT_CARRY;
 			return false;
 		}
 		
 		// Factory is empty
 		if (_item.isFactory() && ((StorageItem)_item).getInventory().size() == 0) {
-			_reason = Abort.NO_COMPONENTS;
+			_reason = JobAbortReason.NO_COMPONENTS;
 			return false;
 		}
 		

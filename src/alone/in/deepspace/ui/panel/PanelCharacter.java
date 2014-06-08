@@ -28,6 +28,7 @@ import alone.in.deepspace.model.character.Character.Gender;
 import alone.in.deepspace.model.character.CharacterNeeds;
 import alone.in.deepspace.model.character.CharacterRelation;
 import alone.in.deepspace.model.character.CharacterStatus;
+import alone.in.deepspace.model.character.CharacterStatus.Level;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.ui.UserInterface.Mode;
@@ -495,12 +496,12 @@ public class PanelCharacter extends BaseRightPanel {
 			String status = _character.getStatus().getThoughts();
 			String time = _character.getStatus().getLastReportDelay() + "sec. ago";
 			_lbState.setString(StringUtils.getDashedString(status, time, NB_COLUMNS));
-			int level = _character.getStatus().getLevel();
+			Level level = _character.getStatus().getLevel();
 			switch (level) {
-			case 0: _lbState.setColor(COLOR_0); break;
-			case 1: _lbState.setColor(COLOR_1); break;
-			case 2: _lbState.setColor(COLOR_2); break;
-			case 3: _lbState.setColor(COLOR_3); break;
+			case GOOD: _lbState.setColor(COLOR_0); break;
+			case MEDIUM: _lbState.setColor(COLOR_1); break;
+			case BAD: _lbState.setColor(COLOR_2); break;
+			case REALLY_BAD: _lbState.setColor(COLOR_3); break;
 			}
 			
 			// Old

@@ -201,7 +201,8 @@ public class UserInterface {
 
 	public void setMode(Mode mode) {
 		_interaction.clean();
-		MainRenderer.getInstance().setMode(mode);
+		
+		((MainRenderer)MainRenderer.getInstance()).setMode(mode);
 
 		_mode = mode;
 		_menu = null;

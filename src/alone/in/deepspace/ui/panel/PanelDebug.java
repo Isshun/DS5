@@ -172,7 +172,7 @@ public class PanelDebug extends BasePanel {
 		lbResetLight.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				MainRenderer.getInstance().initLight();
+				((MainRenderer)MainRenderer.getInstance()).initLight();
 			}
 		});
 		lbResetLight.setString("Reset light");

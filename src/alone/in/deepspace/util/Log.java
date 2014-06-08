@@ -2,8 +2,6 @@ package alone.in.deepspace.util;
 
 import alone.in.deepspace.ui.UserInterface;
 
-
-@SuppressWarnings("unused")
 public class Log {
 	public static int LEVEL_FATAL = 0;
 	public static int LEVEL_ERROR = 1;
@@ -24,7 +22,9 @@ public class Log {
 		if (LEVEL < LEVEL_ERROR) return;
 
 		if (str != null) {
-			UserInterface.getInstance().displayMessage(str);
+			if (UserInterface.getInstance() != null) {
+				UserInterface.getInstance().displayMessage(str);
+			}
 		}
 		
 		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
@@ -33,7 +33,9 @@ public class Log {
 			System.out.println("          " + elements[i].toString());
 		}
 
-		UserInterface.getInstance().addMessage(LEVEL_ERROR, str);
+		if (UserInterface.getInstance() != null) {
+			UserInterface.getInstance().addMessage(LEVEL_ERROR, str);
+		}
 	}
 
 	public static void info(String str) {
@@ -43,7 +45,9 @@ public class Log {
 			System.out.println(str);
 		}
 		
-		UserInterface.getInstance().addMessage(LEVEL_INFO, str);
+		if (UserInterface.getInstance() != null) {
+			UserInterface.getInstance().addMessage(LEVEL_INFO, str);
+		}
 	}
 
 	public static void warning(String str) {
@@ -53,6 +57,8 @@ public class Log {
 			System.out.println(str);
 		}
 
-		UserInterface.getInstance().addMessage(LEVEL_WARNING, str);
+		if (UserInterface.getInstance() != null) {
+			UserInterface.getInstance().addMessage(LEVEL_WARNING, str);
+		}
 	}
 }

@@ -12,6 +12,7 @@ import org.jsfml.system.Vector2f;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.Movable.Direction;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.character.CharacterStatus.Level;
 import alone.in.deepspace.util.Constant;
 
 public class CharacterRenderer implements IRenderer {
@@ -58,7 +59,7 @@ public class CharacterRenderer implements IRenderer {
 			}
 
 			// Bad status
-			if (c.getStatus().getLevel() >= 2) {
+			if (c.getStatus().getLevel() == Level.BAD || c.getStatus().getLevel() == Level.REALLY_BAD) {
 				_redBackground.setPosition(posX, posY);
 				app.draw(_redBackground, render);
 			}
@@ -79,6 +80,18 @@ public class CharacterRenderer implements IRenderer {
 
 	public void onRefresh(int update) {
 		_update = update;
+	}
+
+	@Override
+	public void invalidate(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void invalidate() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -26,7 +26,7 @@ public class JobBuild extends Job {
 	public boolean check(Character character) {
 		// Item is null
 		if (_item == null) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 		
@@ -41,7 +41,7 @@ public class JobBuild extends Job {
 		// Wrong call
 		if (_item == null) {
 			Log.error("Character: actionBuild on null job or null job's item");
-			JobManager.getInstance().abort(this, Abort.INVALID);
+			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
 			return true;
 		}
 
@@ -54,7 +54,7 @@ public class JobBuild extends Job {
 			} else if (_item != currentItem) {
 				Log.warning("Character #" + character.getId() + ": actionBuild on invalide item");
 			}
-			JobManager.getInstance().abort(this, Abort.INVALID);
+			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
 			return true;
 		}
 
@@ -67,7 +67,7 @@ public class JobBuild extends Job {
 		if (result == ResourceManager.Message.NO_MATTER) {
 			UserInterface.getInstance().displayMessage("not enough matter", _posX, _posY);
 			Log.debug("Character #" + character.getId() + ": not enough matter");
-			JobManager.getInstance().abort(this, Job.Abort.NO_BUILD_RESOURCES);
+			JobManager.getInstance().abort(this, Job.JobAbortReason.NO_BUILD_RESOURCES);
 			return true;
 		}
 

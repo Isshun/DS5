@@ -137,12 +137,12 @@ public class Main {
 			if (_game.isRunning()) {
 				// Draw
 				double animProgress = (1 - (double)(nextUpdate - elapsed) / _updateInterval);
-				_mainRenderer.draw(window, animProgress, renderTime);
+				_mainRenderer.onDraw(window, null, animProgress);
 				_userInterface.onDraw(update, renderTime);
 
 				// Refresh
 				if (elapsed >= nextRefresh) {
-					_mainRenderer.refresh(refresh);
+					_mainRenderer.onRefresh(refresh);
 					_userInterface.onRefresh(refresh);
 					refresh++;
 					nextRefresh += REFRESH_INTERVAL;

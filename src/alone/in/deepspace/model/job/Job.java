@@ -20,7 +20,7 @@ public abstract class Job {
 		WAITING, RUNNING, COMPLETE, ABORTED
 	}
 	
-	public static enum Abort {
+	public static enum JobAbortReason {
 		NO_COMPONENTS, INTERRUPTE, BLOCKED, NO_LEFT_CARRY, INVALID, DIED, NO_BUILD_RESOURCES
 	};
 
@@ -36,13 +36,13 @@ public abstract class Job {
 	private Character 			_characterRequire;
 	private int 				_fail;
 	public int 					_blocked;
-	protected Abort 			_reason;
+	protected JobAbortReason 			_reason;
 	private Color 				_color;
 	protected int 				_durationLeft;
 	private ItemSlot 			_slot;
 	protected int 				_nbUsed;
 	protected Action 			_subAction;
-	private JobStatus			_status;
+	protected JobStatus			_status;
 	private int _nbBlocked;
 	private boolean _hasDuration;
 
@@ -78,7 +78,7 @@ public abstract class Job {
 	public Character			getCharacterRequire() { return _characterRequire; }
 	public int 					getFail() { return _fail; }
 	public int 					getBlocked() { return _blocked; }
-	public Abort				getReason() { return _reason; }
+	public JobAbortReason				getReason() { return _reason; }
 	public ItemSlot 			getSlot() { return _slot; }
 	public Color 				getColor() { return _color; }
 	public String 				getActionName() { return JobManager.getActionName(_action); }
@@ -88,7 +88,7 @@ public abstract class Job {
 	public JobStatus			getStatus() { return _status; }
 
 	public void					setCharacterRequire(Character character) { _characterRequire = character; }
-	public void					setFail(Abort reason, int frame) { _reason = reason; _fail = frame; }
+	public void					setFail(JobAbortReason reason, int frame) { _reason = reason; _fail = frame; }
 	public void					setBlocked(int frame) { _blocked = frame; _nbBlocked++; }
 	public void 				setPosition(int x, int y) { _posX = x; _posY = y; }
 	public void 				setSlot(ItemSlot slot) { _slot = slot; }
@@ -216,6 +216,12 @@ public abstract class Job {
 
 	public abstract boolean check(Character character);
 
+	/**
+	 * Launch job action
+	 * 
+	 * @param character
+	 * @return true if job is finish (completed or aborted)
+	 */
 	public abstract boolean action(Character character);
 
 	public int getNbBlocked() { return _nbBlocked; }

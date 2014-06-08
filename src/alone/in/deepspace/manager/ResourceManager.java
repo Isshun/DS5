@@ -68,7 +68,7 @@ public class ResourceManager {
 			}
 
 			if (item.getLight() > 0) {
-				MainRenderer.getInstance().refreshLight(item);
+				((MainRenderer)MainRenderer.getInstance()).refreshLight(item);
 			}
 			
 			return Message.BUILD_COMPLETE;

@@ -27,13 +27,13 @@ public class JobDestroy extends Job {
 	public boolean check(Character character) {
 		// Item is null
 		if (_item == null) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 		
 		// Item is no longer exists
 		if (_item != ServiceManager.getWorldMap().getItem(_item.getX(), _item.getY()) && _item != ServiceManager.getWorldMap().getStructure(_item.getX(), _item.getY())) {
-			_reason = Abort.INVALID;
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 
