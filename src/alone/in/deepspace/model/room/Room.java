@@ -282,6 +282,10 @@ public class Room {
 		return null;
 	}
 
+	public void removeArea(WorldArea area) {
+		_areas.remove(area);
+	}
+
 	public void removeArea(int x, int y) {
 		for (WorldArea area: _areas) {
 			if (area.getX() == x && area.getY() == y) {
@@ -302,4 +306,5 @@ public class Room {
 			}
 		}
 	}
+
 }

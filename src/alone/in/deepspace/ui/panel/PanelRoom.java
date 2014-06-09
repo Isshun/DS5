@@ -224,7 +224,7 @@ public class PanelRoom extends BaseRightPanel {
 
 	private void displayRoom(Room room) {
 		_layoutRoom.setVisible(true);
-		_lbRoomName.setString(room.getName());
+		_lbRoomName.setString(room.getName() + " #" + room.getId());
 
 		int i = 0;
 		Set<Character> occupants = room.getOccupants();

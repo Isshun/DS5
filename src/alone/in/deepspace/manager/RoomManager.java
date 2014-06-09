@@ -20,8 +20,19 @@ import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class RoomManager {
+	private static class TempRoom {
+		public WorldArea	area;
+		public boolean 		visited;
+		public int 			id;
+
+		public TempRoom(WorldArea area) {
+			this.area = area;
+		}
+	}
+	
 	private Room[][] 			_rooms;
 	private List<Room>			_roomList;
+	private Room _currentDiffuseRoom;
 
 	public RoomManager() {
 		_rooms = new Room[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
@@ -54,19 +65,28 @@ public class RoomManager {
 			return null;
 		}
 		
-		Room room = null;
+		Room existingRoom = null;
+		Room tempRoom = null;
+		int existingRoomPosX = 0;
+		int existingRoomPosY = 0;
+		List<TempRoom> tempRooms = new ArrayList<TempRoom>();
 		
 		// Check if room already exists on start area
 		if (startX > 0 && startY > 0 && startX < Constant.WORLD_WIDTH && startY < Constant.WORLD_HEIGHT && _rooms[startX][startY] != null) {
-			room = _rooms[startX][startY];
+			existingRoom = _rooms[startX][startY];
+			existingRoomPosX = startX;
+			existingRoomPosY = startY;
 		}
 		
 		// Check on others areas
 		else {
 			for (int x = fromX - 1; x <= toX + 1; x++) {
 				for (int y = fromY - 1; y <= toY + 1; y++) {
-					if (x > 0 && y > 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT && _rooms[x][y] != null && _rooms[x][y].getType() == type) {
-						room = _rooms[x][y];
+					if ((x >= fromX && x <= toX || y >= fromY && y <= toY) && x > 0 && y > 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT && _rooms[x][y] != null && _rooms[x][y].getType() == type) {
+						existingRoom = _rooms[x][y];
+//						tempRoom = existingRoom;
+						existingRoomPosX = x;
+						existingRoomPosY = y;
 						break;
 					}
 				}
@@ -74,33 +94,45 @@ public class RoomManager {
 		}
 		
 		// Create new room if not exist
-		if (room == null) {
-			if (type == Type.GARDEN) {
-				room = new GardenRoom();
-			} else if (type == Type.QUARTER) {
-				room = new QuarterRoom();
-			} else {
-				room = new Room(type);
-			}
-			room.setOwner(owner);
-			room.refreshPosition();
-			_roomList.add(room); 
+		if (tempRoom == null) {
+			tempRoom = createRoom(type, owner);
 		}
-		
+
 		// Set room for each area
 		for (int x = fromX; x <= toX; x++) {
 			for (int y = fromY; y <= toY; y++) {
 				if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
 					StructureItem struct = ServiceManager.getWorldMap().getStructure(x, y);
 					if (struct == null || struct.roomCanBeSet()) {
-						WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
-						area.setRoom(room);
-						room.addArea(area);
-						_rooms[x][y] = room;
-						MainRenderer.getInstance().invalidate(x, y);
+						if (_rooms[x][y] == null || _rooms[x][y].getType() != tempRoom.getType()) {
+							WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
+							area.setRoom(tempRoom);
+							tempRoom.addArea(area);
+							_rooms[x][y] = tempRoom;
+							tempRooms.add(new TempRoom(area));
+							MainRenderer.getInstance().invalidate(x, y);
+						}
 					}
 				}
 			}
+		}
+		
+		// If already existing room
+		if (existingRoom != null) {
+			_currentDiffuseRoom = existingRoom;
+			diffuseRoom(tempRoom, existingRoomPosX, existingRoomPosY);
+		}
+		
+		int leftRoom = Integer.MAX_VALUE;
+		while (tempRoom.getAreas().size() != 0 && tempRoom.getAreas().size() < leftRoom) {
+			leftRoom = tempRoom.getAreas().size();
+			Room newRoom = createRoom(tempRoom.getType(), owner);
+			_roomList.add(newRoom);
+			WorldArea area = tempRoom.getAreas().get(0);
+			replaceArea(newRoom, tempRoom, area.getX(), area.getY());
+			_currentDiffuseRoom = newRoom;
+			diffuseRoom(tempRoom, area.getX(), area.getY());
+			newRoom.refreshPosition();
 		}
 		
 		if (type == Room.Type.GARDEN) {
@@ -108,9 +140,84 @@ public class RoomManager {
 		}
 		
 		// Refresh start position
+		tempRoom.refreshPosition();
+		
+		return tempRoom;
+	}
+
+	private Room createRoom(Type type, Character owner) {
+		Room room = null;
+		
+		if (type == Type.GARDEN) {
+			room = new GardenRoom();
+		} else if (type == Type.QUARTER) {
+			room = new QuarterRoom();
+		} else {
+			room = new Room(type);
+		}
+		room.setOwner(owner);
 		room.refreshPosition();
 		
 		return room;
+	}
+
+	private void diffuseRoom(Room tempRoom, int x, int y) {
+		Room neighboorRoom = getRoom(x+1, y);
+
+		// If neighboorRoom IS NOT tempRoom AND IS NOT _currentDiffuseRoom, it's an old existing room
+		// so we replace all room previously set to _currentDiffuseRoom by this new room
+		if (neighboorRoom != null && neighboorRoom != tempRoom && neighboorRoom != _currentDiffuseRoom) {
+			List<WorldArea> areasCopy = new ArrayList<WorldArea>(_currentDiffuseRoom.getAreas());
+			for (WorldArea area: areasCopy) {
+				replaceArea(neighboorRoom, _currentDiffuseRoom, area.getX(), area.getY());
+			}
+			_currentDiffuseRoom = neighboorRoom;
+		}
+		
+		// If neighboorRoom IS NOT _currentDiffuseRoom, transform to _currentDiffuseRoom
+		if (neighboorRoom != null && neighboorRoom != _currentDiffuseRoom) {
+			replaceArea(_currentDiffuseRoom, neighboorRoom, x+1, y);
+			diffuseRoom(tempRoom, x+1, y);
+		}
+		neighboorRoom = getRoom(x-1, y);
+		if (neighboorRoom != null && neighboorRoom != _currentDiffuseRoom) {
+			replaceArea(_currentDiffuseRoom, neighboorRoom, x-1, y);
+			diffuseRoom(tempRoom, x-1, y);
+		}
+		neighboorRoom = getRoom(x, y+1);
+		if (neighboorRoom != null && neighboorRoom != _currentDiffuseRoom) {
+			replaceArea(_currentDiffuseRoom, neighboorRoom, x, y+1);
+			diffuseRoom(tempRoom, x, y+1);
+		}
+		neighboorRoom = getRoom(x, y-1);
+		if (neighboorRoom != null && neighboorRoom != _currentDiffuseRoom) {
+			replaceArea(_currentDiffuseRoom, neighboorRoom, x, y-1);
+			diffuseRoom(tempRoom, x, y-1);
+		}
+	}
+
+	private void replaceArea(Room room, Room neighboorRoom, int x, int y) {
+		WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
+		room.addArea(area);
+		neighboorRoom.removeArea(area);
+		_rooms[x][y] = room;
+	}
+
+	private Room getRoom(int x, int y) {
+		if (x >= 0 && x < Constant.WORLD_WIDTH && y >= 0 && y < Constant.WORLD_HEIGHT) {
+			return _rooms[x][y];
+		}
+		return null;
+	}
+
+	private boolean TempRoomsVisitedNeighboor(List<TempRoom> tempRooms, int x, int y) {
+		for (TempRoom temp: tempRooms) {
+			if (temp.visited && temp.area.getX() == x+1 && temp.area.getY() == y) { return true; }
+			if (temp.visited && temp.area.getX() == x-1 && temp.area.getY() == y) { return true; }
+			if (temp.visited && temp.area.getX() == x && temp.area.getY() == y+1) { return true; }
+			if (temp.visited && temp.area.getX() == x && temp.area.getY() == y-1) { return true; }
+		}
+		return false;
 	}
 
 	public Room get(int x, int y) {
