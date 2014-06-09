@@ -13,6 +13,7 @@ public class WorldArea {
 	private int 			_lightPass;
 	private int 			_z;
 	private Room 			_room;
+	private boolean 		_isStorage;
 
 	public WorldArea(int x, int y, int z) {
 		_oxygen = (int) (Math.random() % 100);
@@ -20,6 +21,7 @@ public class WorldArea {
 		_x = x;
 		_y = y;
 		_z = z;
+		_isStorage = false;
 	}
 
 	public void 			addLight(double value) { _light += value; }
@@ -31,6 +33,7 @@ public class WorldArea {
 	public void 			setLight(double value) { _light = value; }
 	public void 			setLightPass(int pass) { _lightPass = pass; }
 	public void 			setRoom(Room room) { _room = room; }
+	public void 			setStorage(boolean isStorage) { _isStorage = isStorage; }
 
 	public UserItem			getItem() { return _item; }
 	public StructureItem	getStructure() { return _structure; }
@@ -42,4 +45,5 @@ public class WorldArea {
 	public double 			getLight() { return _light; }
 	public int 				getLightPass() { return _lightPass; }
 	public Room				getRoom() { return _room; }
+	public boolean			isStorage() { return _isStorage; }
 }

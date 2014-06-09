@@ -1,26 +1,27 @@
 package alone.in.deepspace.model.job;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.FactoryItem;
-import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemFilter;
-import alone.in.deepspace.model.item.StorageItem;
+import alone.in.deepspace.model.item.UserItem;
+import alone.in.deepspace.model.room.StorageRoom;
 import alone.in.deepspace.util.Log;
 
 public class JobRefill extends Job {
 
-	private StorageItem _storage;
-	private StorageItem _factory;
+	private StorageRoom _storage;
+	private FactoryItem _factory;
 
 	private JobRefill(int x, int y) {
 		super(x, y);
 	}
 
-	public static Job create(FactoryItem factory, StorageItem storage, ItemFilter filter) {
-		if (storage == null || factory == null || storage == factory) {
+	public static Job create(FactoryItem factory, StorageRoom storage, ItemFilter filter) {
+		if (storage == null || factory == null) {
 			Log.error("createRefillJob: wrong items");
 			return null;
 		}
@@ -29,7 +30,7 @@ public class JobRefill extends Job {
 		job.setAction(JobManager.Action.REFILL);
 		job.setSubAction(JobManager.Action.TAKE);
 		factory.setRefillJob(job);
-		job.setItem(storage);
+		job.setItem(factory);
 		job.setItemFilter(filter);
 		
 		job._storage = storage;
@@ -71,7 +72,7 @@ public class JobRefill extends Job {
 
 	private boolean checkTake(Character character) {
 		// Storage no longer exists
-		if (_storage != ServiceManager.getWorldMap().getItem(_storage.getX(), _storage.getY())) {
+		if (Game.getRoomManager().getRoomList().contains(_storage) == false) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}
@@ -91,7 +92,7 @@ public class JobRefill extends Job {
 		return true;
 	}
 
-	public StorageItem getDispenser() {
+	public FactoryItem getDispenser() {
 		return _factory;
 	}
 
@@ -125,7 +126,7 @@ public class JobRefill extends Job {
 	}
 
 	private boolean actionTake(Character character) {
-		ItemBase item = _storage.get(_filter);
+		UserItem item = _storage.get(_filter);
 		while (item != null && character.getInventoryLeftSpace() > 0) {
 			addCarry(item);
 			character.addInventory(item);

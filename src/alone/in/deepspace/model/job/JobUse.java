@@ -7,9 +7,9 @@ import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.Movable.Direction;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.model.item.FactoryItem;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemSlot;
-import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.util.Log;
 
@@ -135,7 +135,7 @@ public class JobUse extends Job {
 		}
 		
 		// Factory is empty
-		if (_item.isFactory() && ((StorageItem)_item).getInventory().size() == 0) {
+		if (_item.isFactory() && ((FactoryItem)_item).getInventory().size() == 0) {
 			_reason = JobAbortReason.NO_COMPONENTS;
 			return false;
 		}

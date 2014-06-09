@@ -1,22 +1,22 @@
 package alone.in.deepspace.model.job;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.JobManager;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
-import alone.in.deepspace.model.item.StorageItem;
+import alone.in.deepspace.model.room.StorageRoom;
 import alone.in.deepspace.util.Log;
 
 public class JobStore extends Job {
 
-	private StorageItem _storage;
+	private StorageRoom _storage;
 
 	private JobStore(int x, int y) {
 		super(x, y);
 	}
 
 	// TODO: check if item to store is accepter by storage
-	public static Job create(Character character, StorageItem storage) {
+	public static Job create(Character character, StorageRoom storage) {
 		if (storage == null) {
 			Log.error("createStoreJob: storage cannot be null");
 			return null;
@@ -34,7 +34,6 @@ public class JobStore extends Job {
 		
 		JobStore job = new JobStore(storage.getX(), storage.getY());
 		job.setAction(JobManager.Action.STORE);
-		job.setItem(storage);
 		job.setCharacterRequire(character);
 		
 		job._storage = storage;
@@ -49,7 +48,7 @@ public class JobStore extends Job {
 		}
 
 		ItemBase itemToStore = character.getInventory().get(0);
-		StorageItem storage = ServiceManager.getWorldMap().getNearestStorage(character.getX(), character.getY(), itemToStore);
+		StorageRoom storage = Game.getRoomManager().getNearestStorage(character.getX(), character.getY(), itemToStore);
 		if (storage == null) {
 			return null;
 		}
@@ -60,7 +59,7 @@ public class JobStore extends Job {
 	@Override
 	public boolean check(Character character) {
 		// Item is null
-		if (_item == null || _storage == null) {
+		if (_storage == null) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}

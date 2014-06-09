@@ -4,6 +4,7 @@ import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -64,7 +65,7 @@ public class JobUseInventory extends Job {
 			_item.use(character, i);
 		}
 
-		character.removeInventory(_item);
+		character.removeInventory((UserItem)_item);
 		JobManager.getInstance().complete(this);
 		return true;
 	}

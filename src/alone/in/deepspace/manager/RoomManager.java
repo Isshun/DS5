@@ -10,11 +10,14 @@ import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.character.CharacterRelation;
 import alone.in.deepspace.model.character.CharacterRelation.Relation;
+import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemFilter;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.room.GardenRoom;
 import alone.in.deepspace.model.room.QuarterRoom;
 import alone.in.deepspace.model.room.Room;
+import alone.in.deepspace.model.room.StorageRoom;
 import alone.in.deepspace.model.room.Room.Type;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
@@ -152,6 +155,8 @@ public class RoomManager {
 			room = new GardenRoom();
 		} else if (type == Type.QUARTER) {
 			room = new QuarterRoom();
+		} else if (type == Type.STORAGE) {
+			room = new StorageRoom();
 		} else {
 			room = new Room(type);
 		}
@@ -159,6 +164,42 @@ public class RoomManager {
 		room.refreshPosition();
 		
 		return room;
+	}
+	
+	public StorageRoom findStorageContains(ItemFilter filter, int x, int y) {
+		StorageRoom bestStorage = null;
+		int bestDistance = Integer.MAX_VALUE;
+
+		for (Room room: _roomList) {
+			if (room.isStorage()) {
+				StorageRoom storage = (StorageRoom)room;
+				int distance = Math.abs(room.getX() - x) + Math.abs(room.getY() - y);
+				if (distance < bestDistance && storage.contains(filter)) {
+					bestStorage = storage;
+					bestDistance = distance;
+				}
+			}
+		}
+		
+		return bestStorage;
+	}
+
+	public StorageRoom getNearestStorage(int x, int y, ItemBase item) {
+		StorageRoom bestStorage = null;
+		int bestDistance = Integer.MAX_VALUE;
+		
+		for (Room room: _roomList) {
+			if (room.isStorage()) {
+				StorageRoom storage = (StorageRoom)room;
+				int distance = Math.abs(storage.getX() - x) + Math.abs(storage.getY() - y);
+				if (distance < bestDistance && storage.accept(item)) {
+					bestStorage = storage;
+					bestDistance = distance;
+				}
+			}
+		}
+		
+		return bestStorage;
 	}
 
 	private void diffuseRoom(Room tempRoom, int x, int y) {

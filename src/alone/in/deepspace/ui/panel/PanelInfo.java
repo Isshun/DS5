@@ -1,8 +1,6 @@
 package alone.in.deepspace.ui.panel;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
@@ -28,7 +26,6 @@ import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.ItemInfo.ItemInfoAction;
 import alone.in.deepspace.model.item.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.item.ItemSlot;
-import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
@@ -130,58 +127,58 @@ public class PanelInfo extends BaseRightPanel {
 		}
 	}
 
-	private void createStorageFilterAdvancedView(int x, int y) {
-		_layoutStorageAdvancedFilter = new FrameLayout(new Vector2f(200, 400));
-		_layoutStorageAdvancedFilter.setPosition(x, y);
-		_layoutStorage.addView(_layoutStorageAdvancedFilter);
-
-		_cbFood = addStorageFilterCheckBox(0, 42, "food");
-		_cbDrink = addStorageFilterCheckBox(195, 42, "drink");
-		_cbConsomable = addStorageFilterCheckBox(0, 66, "consomable");
-		_cbGarbage = addStorageFilterCheckBox(195, 66, "garbage");
-
-		// Label select
-		{
-			TextView text = new LinkView(new Vector2f(150, 20));
-			text.setString("select all");
-			text.setPosition(0, 16);
-			text.setCharacterSize(FONT_SIZE);
-			text.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					_cbFood.setChecked(true);
-					_cbDrink.setChecked(true);
-					_cbConsomable.setChecked(true);
-					_cbGarbage.setChecked(true);
-					if (_item != null && _item.isStorage()) {
-						((StorageItem)_item).setStorageFilter(true, true, true, true);
-					}
-				}
-			});
-			_layoutStorageAdvancedFilter.addView(text);
-		}
-		
-		// Label unselect
-		{
-			TextView text = new LinkView(new Vector2f(150, 20));
-			text.setString("unselect all");
-			text.setPosition(195, 16);
-			text.setCharacterSize(FONT_SIZE);
-			text.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					_cbFood.setChecked(false);
-					_cbDrink.setChecked(false);
-					_cbConsomable.setChecked(false);
-					_cbGarbage.setChecked(false);
-					if (_item != null && _item.isStorage()) {
-						((StorageItem)_item).setStorageFilter(false, false, false, false);
-					}
-				}
-			});
-			_layoutStorageAdvancedFilter.addView(text);
-		}
-	}
+//	private void createStorageFilterAdvancedView(int x, int y) {
+//		_layoutStorageAdvancedFilter = new FrameLayout(new Vector2f(200, 400));
+//		_layoutStorageAdvancedFilter.setPosition(x, y);
+//		_layoutStorage.addView(_layoutStorageAdvancedFilter);
+//
+//		_cbFood = addStorageFilterCheckBox(0, 42, "food");
+//		_cbDrink = addStorageFilterCheckBox(195, 42, "drink");
+//		_cbConsomable = addStorageFilterCheckBox(0, 66, "consomable");
+//		_cbGarbage = addStorageFilterCheckBox(195, 66, "garbage");
+//
+//		// Label select
+//		{
+//			TextView text = new LinkView(new Vector2f(150, 20));
+//			text.setString("select all");
+//			text.setPosition(0, 16);
+//			text.setCharacterSize(FONT_SIZE);
+//			text.setOnClickListener(new OnClickListener() {
+//				@Override
+//				public void onClick(View view) {
+//					_cbFood.setChecked(true);
+//					_cbDrink.setChecked(true);
+//					_cbConsomable.setChecked(true);
+//					_cbGarbage.setChecked(true);
+//					if (_item != null && _item.isStorage()) {
+//						((StorageItem)_item).setStorageFilter(true, true, true, true);
+//					}
+//				}
+//			});
+//			_layoutStorageAdvancedFilter.addView(text);
+//		}
+//		
+//		// Label unselect
+//		{
+//			TextView text = new LinkView(new Vector2f(150, 20));
+//			text.setString("unselect all");
+//			text.setPosition(195, 16);
+//			text.setCharacterSize(FONT_SIZE);
+//			text.setOnClickListener(new OnClickListener() {
+//				@Override
+//				public void onClick(View view) {
+//					_cbFood.setChecked(false);
+//					_cbDrink.setChecked(false);
+//					_cbConsomable.setChecked(false);
+//					_cbGarbage.setChecked(false);
+//					if (_item != null && _item.isStorage()) {
+//						((StorageItem)_item).setStorageFilter(false, false, false, false);
+//					}
+//				}
+//			});
+//			_layoutStorageAdvancedFilter.addView(text);
+//		}
+//	}
 
 	private void createStorageFilterSimpleView(int x, int y) {
 		_layoutStorageSimpleFilter = new FrameLayout(new Vector2f(200, 400));
@@ -194,30 +191,30 @@ public class PanelInfo extends BaseRightPanel {
 		_layoutStorageSimpleFilter.addView(_itemAccept);
 	}
 
-	private CheckBoxView addStorageFilterCheckBox(int x, int y, String label) {
-		final CheckBoxView checkBox = new CheckBoxView(new Vector2f(150, 20));
-		checkBox.setString(label);
-		checkBox.setPosition(x, y);
-		checkBox.setCharacterSize(FONT_SIZE);
-		checkBox.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				checkBox.toogleChecked();
-				if (_item != null && _item.isStorage()) {
-					((StorageItem)_item).setStorageFilter(
-						_cbFood.getChecked(),
-						_cbDrink.getChecked(),
-						_cbConsomable.getChecked(),
-						_cbGarbage.getChecked()
-					);
-				}
-			}
-		});
-		checkBox.toogleChecked();
-		_layoutStorageAdvancedFilter.addView(checkBox);
-		
-		return checkBox;
-	}
+//	private CheckBoxView addStorageFilterCheckBox(int x, int y, String label) {
+//		final CheckBoxView checkBox = new CheckBoxView(new Vector2f(150, 20));
+//		checkBox.setString(label);
+//		checkBox.setPosition(x, y);
+//		checkBox.setCharacterSize(FONT_SIZE);
+//		checkBox.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View view) {
+//				checkBox.toogleChecked();
+//				if (_item != null && _item.isStorage()) {
+//					((StorageItem)_item).setStorageFilter(
+//						_cbFood.getChecked(),
+//						_cbDrink.getChecked(),
+//						_cbConsomable.getChecked(),
+//						_cbGarbage.getChecked()
+//					);
+//				}
+//			}
+//		});
+//		checkBox.toogleChecked();
+//		_layoutStorageAdvancedFilter.addView(checkBox);
+//		
+//		return checkBox;
+//	}
 
 	private void createViewStorage(int x, int y) {
 		_layoutStorage = new FrameLayout(new Vector2f(200, 400));
@@ -236,32 +233,7 @@ public class PanelInfo extends BaseRightPanel {
 		_layoutStorage.addView(_itemStorage);
 		
 		createStorageFilterSimpleView(0, 120);
-		createStorageFilterAdvancedView(0, 120);
-
-//		_btStorageFilter = new ButtonView(new Vector2f(100, 32));
-//		_btStorageFilter.setPosition(300, 10);
-//		_btStorageFilter.setString("filter");
-//		_btStorageFilter.setCharacterSize(16);
-//		_btStorageFilter.setBackgroundColor(Color.RED);
-//		_btStorageFilter.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View view) {
-////				_layoutStorageFilter.setVisible(true);
-////				_layoutStorage.setVisible(false);
-//			}
-//		});
-//		_btStorageFilter.setOnFocusListener(new OnFocusListener() {
-//			@Override
-//			public void onExit(View view) {
-//				_btStorageFilter.setBackgroundColor(Color.RED);
-//			}
-//			
-//			@Override
-//			public void onEnter(View view) {
-//				_btStorageFilter.setBackgroundColor(Color.GREEN);
-//			}
-//		});
-//		_layoutStorage.addView(_btStorageFilter);
+//		createStorageFilterAdvancedView(0, 120);
 
 		_lbCarry = new ImageView[42];
 		_lbCarryCount = new TextView[42];
@@ -693,10 +665,10 @@ public class PanelInfo extends BaseRightPanel {
 		_itemPower.setString("Power: " + String.valueOf(item.getPower()));
 		_itemOwner.setString("Owner: " + (item.getOwner() != null ? item.getOwner().getName() : Strings.LB_NONE));
 
-		// Storage
-		if (item.isStorage()) {
-			setItemStorage((StorageItem)item);
-		}
+//		// Storage
+//		if (item.isStorage()) {
+//			setItemStorage((StorageItem)item);
+//		}
 
 		_itemGather.setVisible(false);
 		_itemMine.setVisible(false);
@@ -706,17 +678,17 @@ public class PanelInfo extends BaseRightPanel {
 		_layoutEffects.setVisible(true);
 	}
 
-	private void setItemStorage(StorageItem storage) {
-		_layoutStorage.setVisible(true);
-
-		_layoutStorageAdvancedFilter.setVisible(storage.isFactory() ? false : true);
-		_layoutStorageSimpleFilter.setVisible(storage.isFactory() ? true : false);
-		
-		_cbFood.setChecked(storage.acceptFood());
-		_cbDrink.setChecked(storage.acceptDrink());
-		_cbConsomable.setChecked(storage.acceptConsomable());
-		_cbGarbage.setChecked(storage.acceptGarbage());
-	}
+//	private void setItemStorage(StorageItem storage) {
+//		_layoutStorage.setVisible(true);
+//
+//		_layoutStorageAdvancedFilter.setVisible(storage.isFactory() ? false : true);
+//		_layoutStorageSimpleFilter.setVisible(storage.isFactory() ? true : false);
+//		
+//		_cbFood.setChecked(storage.acceptFood());
+//		_cbDrink.setChecked(storage.acceptDrink());
+//		_cbConsomable.setChecked(storage.acceptConsomable());
+//		_cbGarbage.setChecked(storage.acceptGarbage());
+//	}
 
 	@Override
 	public void onRefresh(int frame) {
@@ -751,40 +723,40 @@ public class PanelInfo extends BaseRightPanel {
 			if (_item.isUsable()) {
 				refreshSlots(_item);
 			}
-			if (_item.isStorage()) {
-				refreshStorage((StorageItem)_item);
-			}
+//			if (_item.isStorage()) {
+//				refreshStorage((StorageItem)_item);
+//			}
 		}
 	}
 
-	private void refreshStorage(StorageItem storage) {
-		_itemStorage.setString(StringUtils.getDashedString("Contains", String.valueOf(storage.getNbItems()), NB_COLUMNS_TITLE));
-		Map<ItemInfo, Integer> inventoryInfo = new HashMap<ItemInfo, Integer>();
-		for (ItemBase storredItem: storage.getItems()) {
-			ItemInfo storedInfo = storredItem.getInfo();
-			if (inventoryInfo.containsKey(storedInfo)) {
-				inventoryInfo.put(storedInfo, inventoryInfo.get(storedInfo) + 1);
-			} else {
-				inventoryInfo.put(storedInfo, 1);
-			}
-		}
-		// Hide old entries
-		for (int i = 0; i < 42; i++) {
-			_lbCarry[i].setVisible(false);
-			_lbCarryCount[i].setVisible(false);
-		}
-		// Set new entries
-		int i = 0;
-		for (ItemInfo storedItemInfo: inventoryInfo.keySet()) {
-			int count = inventoryInfo.get(storedItemInfo);
-			
-			_lbCarry[i].setVisible(true);
-			_lbCarry[i].setImage(SpriteManager.getInstance().getIcon(storedItemInfo));
-			_lbCarryCount[i].setVisible(true);
-			_lbCarryCount[i].setString("x"+count);
-			i++;
-		}
-	}
+//	private void refreshStorage(StorageItem storage) {
+//		_itemStorage.setString(StringUtils.getDashedString("Contains", String.valueOf(storage.getNbItems()), NB_COLUMNS_TITLE));
+//		Map<ItemInfo, Integer> inventoryInfo = new HashMap<ItemInfo, Integer>();
+//		for (ItemBase storredItem: storage.getItems()) {
+//			ItemInfo storedInfo = storredItem.getInfo();
+//			if (inventoryInfo.containsKey(storedInfo)) {
+//				inventoryInfo.put(storedInfo, inventoryInfo.get(storedInfo) + 1);
+//			} else {
+//				inventoryInfo.put(storedInfo, 1);
+//			}
+//		}
+//		// Hide old entries
+//		for (int i = 0; i < 42; i++) {
+//			_lbCarry[i].setVisible(false);
+//			_lbCarryCount[i].setVisible(false);
+//		}
+//		// Set new entries
+//		int i = 0;
+//		for (ItemInfo storedItemInfo: inventoryInfo.keySet()) {
+//			int count = inventoryInfo.get(storedItemInfo);
+//			
+//			_lbCarry[i].setVisible(true);
+//			_lbCarry[i].setImage(SpriteManager.getInstance().getIcon(storedItemInfo));
+//			_lbCarryCount[i].setVisible(true);
+//			_lbCarryCount[i].setString("x"+count);
+//			i++;
+//		}
+//	}
 
 	private void refreshSlots(ItemBase item) {
 		List<ItemSlot> slots = item.getSlots();
@@ -823,7 +795,7 @@ public class PanelInfo extends BaseRightPanel {
 		_layoutArea.setVisible(false);
 		_layoutItem.setVisible(false);
 		_layoutStorage.setVisible(false);
-		_layoutStorageAdvancedFilter.setVisible(false);
+//		_layoutStorageAdvancedFilter.setVisible(false);
 		_layoutEffects.setVisible(false);
 		_itemAccept.setVisible(false);
 		_itemAction.setVisible(false);

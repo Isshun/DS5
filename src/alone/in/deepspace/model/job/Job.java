@@ -11,6 +11,7 @@ import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemFilter;
 import alone.in.deepspace.model.item.ItemSlot;
+import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -29,7 +30,7 @@ public abstract class Job {
 	protected int				_posY;
 	protected int 				_posX;
 	protected ItemBase			_item;
-	protected List<ItemBase>	_carryItems;
+	protected List<UserItem>	_carryItems;
 	protected ItemFilter 		_filter;
 	private JobManager.Action 	_action;
 	protected Character 		_character;
@@ -195,14 +196,14 @@ public abstract class Job {
 		_subAction = action;
 	}
 
-	public void addCarry(ItemBase item) {
+	public void addCarry(UserItem item) {
 		if (_carryItems == null) {
-			_carryItems = new ArrayList<ItemBase>();
+			_carryItems = new ArrayList<UserItem>();
 		}
 		_carryItems.add(item);
 	}
 
-	public List<ItemBase> getCarry() {
+	public List<UserItem> getCarry() {
 		return _carryItems;
 	}
 

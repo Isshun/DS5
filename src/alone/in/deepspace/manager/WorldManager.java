@@ -12,13 +12,11 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
 import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.manager.PathManager.MyMover;
-import alone.in.deepspace.model.Movable;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.FactoryItem;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemFilter;
 import alone.in.deepspace.model.item.ItemInfo;
-import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldArea;
@@ -52,14 +50,12 @@ public class WorldManager implements TileBasedMap {
 
 	private int 				_floor;
 
-	private List<StorageItem> 	_storageItems;
 	private List<FactoryItem> 	_factoryItems;
 
 	public WorldManager() {
 		_itemCout = 0;
 		_width = Constant.WORLD_WIDTH;
 		_height = Constant.WORLD_HEIGHT;
-		_storageItems = new ArrayList<StorageItem>();
 		_factoryItems = new ArrayList<FactoryItem>();
 
 		_rooms = new HashMap<Integer, Room>();
@@ -280,8 +276,8 @@ public class WorldManager implements TileBasedMap {
 			item = new FactoryItem(info);
 			_factoryItems.add((FactoryItem)item);
 		} else if (info.isStorage) {
-			item = new StorageItem(info);
-			_storageItems.add((StorageItem)item);
+			Log.error("storage item is deprecated: " + info.name);
+			return null;
 		} else if (info.isResource) {
 			item = new WorldResource(info);
 		} else if (info.isStructure) {
@@ -492,23 +488,23 @@ public class WorldManager implements TileBasedMap {
 		_debugPathStart.y = posY;
 	}
 
-	public void storeItem(UserItem carriedItem, int x, int y) {
-		UserItem onAreaItem = _areas[x][y].getItem();
-		
-		if (onAreaItem == null) {
-			// TODO
-			ItemInfo info = Game.getData().getItemInfo("base.storage");
-			onAreaItem = new StorageItem(info);
-			((StorageItem)carriedItem).addInventory(carriedItem);
-			_areas[x][y].setItem(onAreaItem);
-		} else if (carriedItem.isStorage()) {
-			((StorageItem)onAreaItem).addInventory(carriedItem);
-		} else {
-			// TODO: not implemented
-			Log.error("Storage area is used by non storage item");
-		}
-	}
-
+//	public void storeItem(UserItem carriedItem, int x, int y) {
+//		UserItem onAreaItem = _areas[x][y].getItem();
+//		
+//		if (onAreaItem == null) {
+//			// TODO
+//			ItemInfo info = Game.getData().getItemInfo("base.storage");
+//			onAreaItem = new StorageItem(info);
+//			((StorageItem)carriedItem).addInventory(carriedItem);
+//			_areas[x][y].setItem(onAreaItem);
+//		} else if (carriedItem.isStorage()) {
+//			((StorageItem)onAreaItem).addInventory(carriedItem);
+//		} else {
+//			// TODO: not implemented
+//			Log.error("Storage area is used by non storage item");
+//		}
+//	}
+//
 	public void replaceItem(ItemInfo info, int x, int y) {
 		replaceItem(info, _floor, x, y);
 	}
@@ -579,39 +575,6 @@ public class WorldManager implements TileBasedMap {
 
 	public void addRoom(Room room) {
 		_rooms.put(room.getId(), room);
-	}
-
-	// TODO
-	public StorageItem findStorageContains(ItemFilter filter, int x, int y) {
-		StorageItem bestStorage = null;
-		int bestDistance = Integer.MAX_VALUE;
-
-		for (StorageItem storage: _storageItems) {
-			if (storage.isFactory() == false) {
-				int distance = Math.abs(storage.getX() - x) + Math.abs(storage.getY() - y);
-				if (distance < bestDistance && storage.contains(filter)) {
-					bestStorage = storage;
-					bestDistance = distance;
-				}
-			}
-		}
-		
-		return bestStorage;
-	}
-
-	public StorageItem getNearestStorage(int x, int y, ItemBase item) {
-		StorageItem bestStorage = null;
-		int bestDistance = Integer.MAX_VALUE;
-		
-		for (StorageItem storage: _storageItems) {
-			int distance = Math.abs(storage.getX() - x) + Math.abs(storage.getY() - y);
-			if (distance < bestDistance && storage.accept(item)) {
-				bestStorage = storage;
-				bestDistance = distance;
-			}
-		}
-		
-		return bestStorage;
 	}
 
 //	public void cleanRock() {

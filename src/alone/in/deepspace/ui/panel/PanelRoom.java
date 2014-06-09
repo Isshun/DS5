@@ -76,11 +76,12 @@ public class PanelRoom extends BaseRightPanel {
 	private PanelEntry[] _entries = {
 			new PanelEntry("Remove", Room.Type.NONE, Key.R),
 			new PanelEntry("Quarter", Room.Type.QUARTER, Key.Q),
-			new PanelEntry("Sickbay", Room.Type.SICKBAY, Key.S),
+			new PanelEntry("Sickbay", Room.Type.SICKBAY, Key.I),
 			new PanelEntry("Enginering", Room.Type.ENGINEERING, Key.E),
 			new PanelEntry("Pub", Room.Type.METTING, Key.P),
 			new PanelEntry("Holodeck", Room.Type.HOLODECK, Key.H),
 			new PanelEntry("Garden", Room.Type.GARDEN, Key.G),
+			new PanelEntry("Storage", Room.Type.STORAGE, Key.S),
 	};
 
 	public PanelRoom(Mode mode, Key shortcut) {

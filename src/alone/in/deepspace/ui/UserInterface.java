@@ -266,7 +266,7 @@ public class UserInterface {
 			}
 		}
 
-		if (_message != null) {
+		if (_message != null && _app != null && _viewport != null) {
 			_app.draw(_message.border, _viewport.getRender());
 			_app.draw(_message.shape, _viewport.getRender());
 			_app.draw(_message.text, _viewport.getRender());

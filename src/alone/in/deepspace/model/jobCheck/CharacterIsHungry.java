@@ -1,14 +1,15 @@
 package alone.in.deepspace.model.jobCheck;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemFilter;
-import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.model.job.JobTake;
 import alone.in.deepspace.model.job.JobUse;
 import alone.in.deepspace.model.job.JobUseInventory;
+import alone.in.deepspace.model.room.StorageRoom;
 
 // TODO: change name by filter
 public class CharacterIsHungry implements JobCharacterCheck {
@@ -27,7 +28,7 @@ public class CharacterIsHungry implements JobCharacterCheck {
 			}
 
 			// Take item from storage
-			StorageItem storage = ServiceManager.getWorldMap().findStorageContains(filter, character.getX(), character.getY());
+			StorageRoom storage = Game.getRoomManager().findStorageContains(filter, character.getX(), character.getY());
 			if (storage != null) {
 				jobManager.addJob(JobTake.create(character, storage, filter), character);
 				return true;

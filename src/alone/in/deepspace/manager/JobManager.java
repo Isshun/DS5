@@ -12,7 +12,6 @@ import alone.in.deepspace.model.item.FactoryItem;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemFilter;
 import alone.in.deepspace.model.item.ItemInfo;
-import alone.in.deepspace.model.item.StorageItem;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.job.Job;
@@ -37,6 +36,7 @@ import alone.in.deepspace.model.jobCheck.CheckGardenIsMature;
 import alone.in.deepspace.model.jobCheck.CheckLowFood;
 import alone.in.deepspace.model.jobCheck.JobCharacterCheck;
 import alone.in.deepspace.model.jobCheck.JobCheck;
+import alone.in.deepspace.model.room.StorageRoom;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -366,12 +366,12 @@ public class JobManager {
 		}
 
 		// Looking for storage containing accepted item
-		StorageItem storage = null;
+		StorageRoom storage = null;
 		ItemFilter itemFilter = new ItemFilter(true, true); 
 		for (ItemInfo neededItemInfo: factory.getInfo().onAction.itemAccept) {
 			if (storage == null) {
 				itemFilter.itemNeeded = neededItemInfo;
-				storage = ServiceManager.getWorldMap().findStorageContains(itemFilter, factory.getX(), factory.getY());
+				storage = Game.getRoomManager().findStorageContains(itemFilter, factory.getX(), factory.getY());
 			}
 		}
 
@@ -531,7 +531,7 @@ public class JobManager {
 		return job;
 	}
 
-	public Job createRefillJob(Character character, StorageItem storage, ItemFilter filter, FactoryItem factory) {
+	public Job createRefillJob(Character character, StorageRoom storage, ItemFilter filter, FactoryItem factory) {
 		Job job = JobRefill.create(factory, storage, filter);
 		if (job != null) {
 			job.setCharacterRequire(character);

@@ -66129,50 +66129,6 @@
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>154</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>154</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>154</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>154</x>
-      <y>154</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
@@ -66693,50 +66649,6 @@
       </structure>
       <x>155</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>155</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>155</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>155</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>155</x>
-      <y>154</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -67368,50 +67280,6 @@
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>156</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>156</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>156</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>156</x>
-      <y>154</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
         <name>base.seaweed4</name>
         <matter>0</matter>
         <tile>0</tile>
@@ -68027,62 +67895,6 @@
       <item>
         <name>base.cooker</name>
         <matter>42</matter>
-        <storage>
-          <matter>0</matter>
-          <inventory>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-          </inventory>
-          <acceptFood>false</acceptFood>
-          <acceptDrink>false</acceptDrink>
-          <acceptConsomable>false</acceptConsomable>
-          <acceptGarbage>false</acceptGarbage>
-        </storage>
       </item>
       <x>157</x>
       <y>143</y>
@@ -68135,50 +67947,6 @@
       </structure>
       <x>157</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>157</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>157</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>157</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>157</x>
-      <y>154</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -68670,50 +68438,6 @@
       </structure>
       <x>158</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>158</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>158</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>158</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>158</x>
-      <y>154</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -69323,50 +69047,6 @@
       </structure>
       <x>159</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>159</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>159</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>159</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>159</x>
-      <y>154</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -70042,2589 +69722,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.storage</name>
-        <matter>42</matter>
-        <storage>
-          <matter>0</matter>
-          <inventory>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-          </inventory>
-          <acceptFood>false</acceptFood>
-          <acceptDrink>false</acceptDrink>
-          <acceptConsomable>true</acceptConsomable>
-          <acceptGarbage>false</acceptGarbage>
-        </storage>
-      </item>
       <x>160</x>
       <y>143</y>
       <z>0</z>
@@ -72672,50 +69769,6 @@
       </structure>
       <x>160</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>160</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>160</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>160</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>160</x>
-      <y>154</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -73263,50 +70316,6 @@
       </structure>
       <x>161</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>161</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>161</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>161</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>161</x>
-      <y>154</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -73868,50 +70877,6 @@
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>162</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>162</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>162</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>162</x>
-      <y>154</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
@@ -74429,50 +71394,6 @@
       </structure>
       <x>163</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>163</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>163</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>163</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>163</x>
-      <y>154</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -75100,50 +72021,6 @@
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>164</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>164</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>164</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>164</x>
-      <y>154</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
         <name>base.seaweed5</name>
         <matter>0</matter>
         <tile>0</tile>
@@ -75716,50 +72593,6 @@
       </structure>
       <x>165</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>165</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>165</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>165</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>165</x>
-      <y>154</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -76350,50 +73183,6 @@
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>166</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>166</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>166</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>166</x>
-      <y>154</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
         <name>base.seaweed2</name>
         <matter>0</matter>
         <tile>0</tile>
@@ -76781,92 +73570,8 @@
         <matter>1</matter>
       </structure>
       <item>
-        <name>base.storage</name>
-        <matter>42</matter>
-        <storage>
-          <matter>0</matter>
-          <inventory>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.seaweed</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-            <string>base.meal</string>
-          </inventory>
-          <acceptFood>true</acceptFood>
-          <acceptDrink>true</acceptDrink>
-          <acceptConsomable>true</acceptConsomable>
-          <acceptGarbage>true</acceptGarbage>
-        </storage>
+        <name>base.seaweed</name>
+        <matter>0</matter>
       </item>
       <x>167</x>
       <y>124</y>
@@ -76877,6 +73582,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>167</x>
       <y>125</y>
       <z>0</z>
@@ -76886,6 +73595,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>167</x>
       <y>126</y>
       <z>0</z>
@@ -76895,6 +73608,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>167</x>
       <y>127</y>
       <z>0</z>
@@ -76904,6 +73621,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>167</x>
       <y>128</y>
       <z>0</z>
@@ -77094,50 +73815,6 @@
       </structure>
       <x>167</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>167</x>
-      <y>151</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>167</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>167</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <resource>
-        <name>base.seaweed1</name>
-        <matter>0</matter>
-        <tile>0</tile>
-        <value>0</value>
-      </resource>
-      <x>167</x>
-      <y>154</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -77539,6 +74216,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>168</x>
       <y>124</y>
       <z>0</z>
@@ -77548,6 +74229,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>168</x>
       <y>125</y>
       <z>0</z>
@@ -77557,6 +74242,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>168</x>
       <y>126</y>
       <z>0</z>
@@ -77566,6 +74255,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>168</x>
       <y>127</y>
       <z>0</z>
@@ -77575,6 +74268,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>168</x>
       <y>128</y>
       <z>0</z>
@@ -78067,6 +74764,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>169</x>
       <y>124</y>
       <z>0</z>
@@ -78076,6 +74777,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>169</x>
       <y>125</y>
       <z>0</z>
@@ -78085,6 +74790,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>169</x>
       <y>126</y>
       <z>0</z>
@@ -78094,6 +74803,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>169</x>
       <y>127</y>
       <z>0</z>
@@ -78103,6 +74816,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>169</x>
       <y>128</y>
       <z>0</z>
@@ -78730,6 +75447,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>170</x>
       <y>124</y>
       <z>0</z>
@@ -78739,6 +75460,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>170</x>
       <y>125</y>
       <z>0</z>
@@ -78748,6 +75473,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>170</x>
       <y>126</y>
       <z>0</z>
@@ -78757,6 +75486,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>170</x>
       <y>127</y>
       <z>0</z>
@@ -78766,6 +75499,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>170</x>
       <y>128</y>
       <z>0</z>
@@ -78910,10 +75647,10 @@
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.seaweed2</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>4</value>
+        <value>3</value>
       </resource>
       <x>170</x>
       <y>143</y>
@@ -78921,10 +75658,10 @@
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.seaweed2</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>4</value>
+        <value>3</value>
       </resource>
       <x>170</x>
       <y>144</y>
@@ -78932,10 +75669,10 @@
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.seaweed2</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>4</value>
+        <value>3</value>
       </resource>
       <x>170</x>
       <y>145</y>
@@ -79318,6 +76055,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>171</x>
       <y>124</y>
       <z>0</z>
@@ -79327,6 +76068,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>171</x>
       <y>125</y>
       <z>0</z>
@@ -79336,6 +76081,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>171</x>
       <y>126</y>
       <z>0</z>
@@ -79345,6 +76094,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>171</x>
       <y>127</y>
       <z>0</z>
@@ -79354,6 +76107,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>171</x>
       <y>128</y>
       <z>0</z>
@@ -79486,10 +76243,10 @@
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.seaweed2</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>4</value>
+        <value>3</value>
       </resource>
       <x>171</x>
       <y>143</y>
@@ -79497,10 +76254,10 @@
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.seaweed2</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>4</value>
+        <value>2</value>
       </resource>
       <x>171</x>
       <y>144</y>
@@ -79508,10 +76265,10 @@
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.seaweed2</name>
+        <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>4</value>
+        <value>2</value>
       </resource>
       <x>171</x>
       <y>145</y>
@@ -79894,6 +76651,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>172</x>
       <y>124</y>
       <z>0</z>
@@ -79903,6 +76664,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>172</x>
       <y>125</y>
       <z>0</z>
@@ -79912,6 +76677,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>172</x>
       <y>126</y>
       <z>0</z>
@@ -79921,6 +76690,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.light</name>
+        <matter>10</matter>
+      </item>
       <x>172</x>
       <y>127</y>
       <z>0</z>
@@ -79930,6 +76703,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>172</x>
       <y>128</y>
       <z>0</z>
@@ -80459,6 +77236,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>173</x>
       <y>124</y>
       <z>0</z>
@@ -80468,6 +77249,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>173</x>
       <y>125</y>
       <z>0</z>
@@ -80477,6 +77262,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>173</x>
       <y>126</y>
       <z>0</z>
@@ -80486,6 +77275,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>173</x>
       <y>127</y>
       <z>0</z>
@@ -80495,6 +77288,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>173</x>
       <y>128</y>
       <z>0</z>
@@ -81101,6 +77898,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>174</x>
       <y>124</y>
       <z>0</z>
@@ -81110,6 +77911,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>174</x>
       <y>125</y>
       <z>0</z>
@@ -81119,6 +77924,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>174</x>
       <y>126</y>
       <z>0</z>
@@ -81128,6 +77937,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>174</x>
       <y>127</y>
       <z>0</z>
@@ -81137,6 +77950,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>174</x>
       <y>128</y>
       <z>0</z>
@@ -81776,6 +78593,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>175</x>
       <y>124</y>
       <z>0</z>
@@ -81785,6 +78606,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>175</x>
       <y>125</y>
       <z>0</z>
@@ -81794,6 +78619,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>175</x>
       <y>126</y>
       <z>0</z>
@@ -81803,6 +78632,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>175</x>
       <y>127</y>
       <z>0</z>
@@ -81812,6 +78645,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>175</x>
       <y>128</y>
       <z>0</z>
@@ -82396,6 +79233,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>176</x>
       <y>124</y>
       <z>0</z>
@@ -82405,6 +79246,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>176</x>
       <y>125</y>
       <z>0</z>
@@ -82414,6 +79259,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>176</x>
       <y>126</y>
       <z>0</z>
@@ -82423,6 +79272,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.seaweed</name>
+        <matter>0</matter>
+      </item>
       <x>176</x>
       <y>127</y>
       <z>0</z>
@@ -82432,6 +79285,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>176</x>
       <y>128</y>
       <z>0</z>
@@ -82441,6 +79298,10 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.meal</name>
+        <matter>0</matter>
+      </item>
       <x>176</x>
       <y>129</y>
       <z>0</z>
@@ -114067,7 +110928,9 @@
     </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSave>
     <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSave>
       <type>QUARTER</type>
-      <occupants/>
+      <occupants>
+        <int>25</int>
+      </occupants>
       <areas>
         <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
           <x>148</x>
@@ -114869,6 +111732,282 @@
       </areas>
       <id>20</id>
     </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSave>
+    <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSave>
+      <type>STORAGE</type>
+      <areas>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>167</x>
+          <y>124</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>168</x>
+          <y>124</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>169</x>
+          <y>124</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>170</x>
+          <y>124</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>171</x>
+          <y>124</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>172</x>
+          <y>124</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>173</x>
+          <y>124</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>174</x>
+          <y>124</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>175</x>
+          <y>124</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>176</x>
+          <y>124</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>176</x>
+          <y>125</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>175</x>
+          <y>125</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>174</x>
+          <y>125</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>173</x>
+          <y>125</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>172</x>
+          <y>125</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>171</x>
+          <y>125</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>170</x>
+          <y>125</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>169</x>
+          <y>125</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>168</x>
+          <y>125</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>167</x>
+          <y>125</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>167</x>
+          <y>126</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>168</x>
+          <y>126</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>169</x>
+          <y>126</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>170</x>
+          <y>126</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>171</x>
+          <y>126</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>172</x>
+          <y>126</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>173</x>
+          <y>126</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>174</x>
+          <y>126</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>175</x>
+          <y>126</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>176</x>
+          <y>126</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>176</x>
+          <y>127</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>175</x>
+          <y>127</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>174</x>
+          <y>127</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>173</x>
+          <y>127</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>172</x>
+          <y>127</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>171</x>
+          <y>127</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>170</x>
+          <y>127</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>169</x>
+          <y>127</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>168</x>
+          <y>127</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>167</x>
+          <y>127</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>167</x>
+          <y>128</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>168</x>
+          <y>128</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>169</x>
+          <y>128</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>170</x>
+          <y>128</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>171</x>
+          <y>128</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>172</x>
+          <y>128</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>173</x>
+          <y>128</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>174</x>
+          <y>128</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>175</x>
+          <y>128</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>176</x>
+          <y>128</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>176</x>
+          <y>129</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>175</x>
+          <y>129</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>174</x>
+          <y>129</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>173</x>
+          <y>129</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>172</x>
+          <y>129</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>171</x>
+          <y>129</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>170</x>
+          <y>129</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>169</x>
+          <y>129</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>168</x>
+          <y>129</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+        <alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+          <x>167</x>
+          <y>129</y>
+        </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSaveArea>
+      </areas>
+      <id>23</id>
+    </alone.in.deepspace.engine.serializer.RoomSerializer_-RoomSave>
   </rooms>
-  <characters/>
+  <characters>
+    <alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
+      <id>25</id>
+      <lastname>Norton</lastname>
+      <firstname>Tommy </firstname>
+      <relations/>
+      <old>19.179999999999932</old>
+      <x>156</x>
+      <y>143</y>
+      <gender>MALE</gender>
+      <nextChildAtOld>-1.0</nextChildAtOld>
+      <nbChild>0</nbChild>
+      <needs>
+        <sleeping>0</sleeping>
+        <eating>0</eating>
+        <drinking>0</drinking>
+        <socialize>0</socialize>
+        <food>66.0</food>
+        <happiness>100.0</happiness>
+        <relation>0.0</relation>
+        <security>0.0</security>
+        <oxygen>101.0</oxygen>
+        <energy>83.0</energy>
+        <health>100.0</health>
+        <sickness>0.0</sickness>
+        <injuries>0.0</injuries>
+        <satiety>0.0</satiety>
+      </needs>
+      <inventory/>
+    </alone.in.deepspace.engine.serializer.CharacterSerializer_-CharacterSave>
+  </characters>
 </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSave>

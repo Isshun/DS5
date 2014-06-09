@@ -10,7 +10,6 @@ import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.util.StringUtils;
 
 public class QuarterRoom extends Room {
-	private ItemInfo 			_currentCulture;
 	private List<RoomOption>	_options;
 	private int 				_nbBed;
 	private int 				_nbStorage;
@@ -39,13 +38,6 @@ public class QuarterRoom extends Room {
 		_options.add(_entryStorage);
 	}
 
-	public void setCulture(ItemInfo culture) {
-		_currentCulture = culture;
-		for (WorldArea area: _areas) {
-			ServiceManager.getWorldMap().replaceItem(_currentCulture, area.getX(), area.getY());
-		}
-	}
-
 	@Override
 	public void update() {
 		_nbStorage = 0;
@@ -61,10 +53,6 @@ public class QuarterRoom extends Room {
 		
 		_entryBed.label = StringUtils.getDashedString("Bed", String.valueOf(_nbBed));
 		_entryStorage.label = StringUtils.getDashedString("Storage", String.valueOf(_nbStorage));
-	}
-
-	public ItemInfo getCulture() {
-		return _currentCulture;
 	}
 
 	public List<RoomOption> getOptions() {

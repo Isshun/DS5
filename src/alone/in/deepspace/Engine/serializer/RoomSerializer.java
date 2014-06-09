@@ -13,8 +13,10 @@ import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.room.GardenRoom;
+import alone.in.deepspace.model.room.QuarterRoom;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.model.room.Room.Type;
+import alone.in.deepspace.model.room.StorageRoom;
 
 public class RoomSerializer implements SerializerInterface {
 	public static class RoomSaveArea {
@@ -83,6 +85,18 @@ public class RoomSerializer implements SerializerInterface {
 				ItemInfo info = Game.getData().getItemInfo(roomSave.culture);
 				gardenRoom.setCulture(info);
 				room = gardenRoom;
+			}
+			
+			// Is storage
+			else if (roomSave.type == Type.STORAGE) {
+				StorageRoom storageRoom = new StorageRoom(roomSave.id);
+				room = storageRoom;
+			}
+
+			// Is quarter
+			else if (roomSave.type == Type.QUARTER) {
+				QuarterRoom quarterRoom = new QuarterRoom(roomSave.id);
+				room = quarterRoom;
 			}
 			
 			// Regular room

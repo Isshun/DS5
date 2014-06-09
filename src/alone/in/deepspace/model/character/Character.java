@@ -15,6 +15,7 @@ import alone.in.deepspace.model.Profession;
 import alone.in.deepspace.model.character.CharacterRelation.Relation;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemFilter;
+import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.ui.UserInterface;
@@ -42,7 +43,7 @@ public class Character extends Movable {
 	private Color 					_color;
 	private int 					_lag;
 	private double 					_old;
-	private List<ItemBase> 			_inventory;
+	private List<UserItem> 			_inventory;
 	private int 					_inventorySpace;
 	private int 					_inventorySpaceLeft;
 	private int 					_nbChild;
@@ -63,7 +64,7 @@ public class Character extends Movable {
 		_old = old;
 		_profession = CharacterManager.professions[id % CharacterManager.professions.length];
 		_relations = new ArrayList<CharacterRelation>();
-		_inventory = new ArrayList<ItemBase>();
+		_inventory = new ArrayList<UserItem>();
 		setGender((int)(Math.random() * 1000) % 2 == 0 ? Character.Gender.MALE : Character.Gender.FEMALE);
 		_lag = (int)(Math.random() * 10);
 		_isSelected = false;
@@ -172,7 +173,7 @@ public class Character extends Movable {
 	//	  int[]				getMessages() { return _messages; }
 	public boolean			isSelected() { return _isSelected; }
 	public int				getProfessionScore(Profession.Type professionEngineer) { return 42; }
-	public List<ItemBase> 	getInventory() { return _inventory; }
+	public List<UserItem> 	getInventory() { return _inventory; }
 	public Path 			getPath() { return _path; }
 	public CharacterStatus 	getStatus() { return _status; }
 	public Color 			getColor() { return _color; }
@@ -202,7 +203,7 @@ public class Character extends Movable {
 		// Set new job
 		_job = job;
 
-		// Launche new job if not null
+		// Launch new job if not null
 		if (job != null) {
 			Log.debug("set new job");
 			job.setCharacter(this);
@@ -404,7 +405,7 @@ public class Character extends Movable {
 		}
 	}
 	
-	public void removeInventory(ItemBase item) {
+	public void removeInventory(UserItem item) {
 		if (item != null && _inventory.remove(item)) {
 			_inventorySpaceLeft++;
 		}
@@ -448,7 +449,7 @@ public class Character extends Movable {
 		_quarter = quarter;
 	}
 
-	public void addInventory(ItemBase item) {
+	public void addInventory(UserItem item) {
 		if (item != null) {
 			_inventory.add(item);
 			_inventorySpaceLeft--;
@@ -497,7 +498,7 @@ public class Character extends Movable {
 		_inventorySpaceLeft = _inventorySpace;
 	}
 
-	public void removeInventory(List<ItemBase> items) {
+	public void removeInventory(List<UserItem> items) {
 		_inventory.removeAll(items);
 		_inventorySpaceLeft = _inventorySpace - _inventory.size();
 	}

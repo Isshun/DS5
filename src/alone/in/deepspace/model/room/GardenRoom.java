@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.Game;
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.ServiceManager;
@@ -14,6 +15,7 @@ import alone.in.deepspace.model.item.WorldResource;
 
 public class GardenRoom extends Room {
 
+	private static final double GROW_VALUE = 0.1;
 	private ItemInfo 			_currentCulture;
 	private List<ItemInfo> 		_cultures;
 	private List<RoomOption>	_options;
@@ -61,7 +63,10 @@ public class GardenRoom extends Room {
 
 			WorldResource res = area.getRessource();
 			if (res != null && res.isType(_currentCulture) && res.isMature() == false) {
-				res.addValue(0.1);
+				if ((int)res.getValue() != (int)(res.getValue() + GROW_VALUE)) {
+					MainRenderer.getInstance().invalidate(res.getX(), res.getY());
+				}
+				res.addValue(GROW_VALUE);
 			}
 		}
 	}

@@ -91,6 +91,7 @@ public class ItemLoader {
 
 		// Second pass
 		for (ItemInfo item: data.items) {
+			item.isSleeping = "base.bed".equals(item.name);
 			
 			// Init gather item
 			if (item.onGather != null) {
@@ -119,7 +120,6 @@ public class ItemLoader {
 						item.onAction.itemAccept.addAll(itemProduce.craftedFromItems);
 					}
 					item.isFactory = item.onAction.itemAccept.size() > 0;
-					item.isSleeping = "base.bed".equals(item.name);
 				}
 			}
 		}

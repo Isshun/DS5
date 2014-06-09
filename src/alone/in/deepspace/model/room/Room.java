@@ -289,7 +289,7 @@ public class Room {
 	public void removeArea(int x, int y) {
 		for (WorldArea area: _areas) {
 			if (area.getX() == x && area.getY() == y) {
-				_areas.remove(area);
+				removeArea(area);
 				return;
 			}
 		}
@@ -305,6 +305,10 @@ public class Room {
 				_y = area.getY();
 			}
 		}
+	}
+
+	public boolean isStorage() {
+		return _type == Type.STORAGE;
 	}
 
 }
