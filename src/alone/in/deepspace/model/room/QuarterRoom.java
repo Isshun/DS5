@@ -1,16 +1,12 @@
 package alone.in.deepspace.model.room;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldArea;
+import alone.in.deepspace.model.room.RoomOptions.RoomOption;
 import alone.in.deepspace.util.StringUtils;
 
 public class QuarterRoom extends Room {
-	private List<RoomOption>	_options;
+	private RoomOptions			_options;
 	private int 				_nbBed;
 	private int 				_nbStorage;
 	private RoomOption 			_entryBed;
@@ -27,15 +23,15 @@ public class QuarterRoom extends Room {
 	}
 
 	private void init() {
-		_options = new ArrayList<RoomOption>();
+		_options = new RoomOptions();
 		
 		// Bed
 		_entryBed = new RoomOption("bed", null, null);
-		_options.add(_entryBed);
+		_options.options.add(_entryBed);
 
 		// Storage
 		_entryStorage = new RoomOption("storage", null, null);
-		_options.add(_entryStorage);
+		_options.options.add(_entryStorage);
 	}
 
 	@Override
@@ -47,7 +43,7 @@ public class QuarterRoom extends Room {
 			UserItem item = area.getItem();
 			if (item != null) {
 				if (item.isBed()) { _nbBed++; }
-				if (item.isStorage()) { _nbStorage++; }
+				//if (item.isStorage()) { _nbStorage++; }
 			}
 		}
 		
@@ -55,7 +51,7 @@ public class QuarterRoom extends Room {
 		_entryStorage.label = StringUtils.getDashedString("Storage", String.valueOf(_nbStorage));
 	}
 
-	public List<RoomOption> getOptions() {
+	public RoomOptions getOptions() {
 		return _options;
 	}
 }

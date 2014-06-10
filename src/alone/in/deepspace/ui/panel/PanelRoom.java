@@ -26,7 +26,8 @@ import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.model.room.Room.Type;
-import alone.in.deepspace.model.room.RoomOption;
+import alone.in.deepspace.model.room.RoomOptions;
+import alone.in.deepspace.model.room.RoomOptions.RoomOption;
 import alone.in.deepspace.ui.UserInteraction.Action;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
@@ -151,19 +152,27 @@ public class PanelRoom extends BaseRightPanel {
 	private void createRoomInfoOption(Room room) {
 		_layoutRoomOption.clearAllViews();
 		int i = 0;
-		List<RoomOption> options = room.getOptions();
+		RoomOptions options = room.getOptions();
 		if (options != null) {
-			for (RoomOption option: options) {
+			if (options.title != null) {
+				TextView lbOptionTitle = new TextView();
+				lbOptionTitle.setPosition(0, 0);
+				lbOptionTitle.setCharacterSize(FONT_SIZE_TITLE);
+				lbOptionTitle.setString(options.title);
+				_layoutRoomOption.addView(lbOptionTitle);
+			}
+			
+			for (RoomOption option: options.options) {
 				if (option.icon != null) {
 					ImageView iconOption = new ImageView();
-					iconOption.setPosition(0, i * 32);
+					iconOption.setPosition(0, 42 + i * 32);
 					iconOption.setImage(option.icon);
 					iconOption.setOnClickListener(option.onClickListener);
 					_layoutRoomOption.addView(iconOption);
 				}
 
 				LinkView lbOption = new LinkView();
-				lbOption.setPosition(option.icon != null ? 32 : 0, i * 32);
+				lbOption.setPosition(option.icon != null ? 40 : 0, 42 + i * 32);
 				lbOption.setCharacterSize(FONT_SIZE);
 				lbOption.setString(option.label);
 				lbOption.setOnClickListener(option.onClickListener);

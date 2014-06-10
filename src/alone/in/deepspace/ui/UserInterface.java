@@ -20,6 +20,8 @@ import alone.in.deepspace.model.ToolTips.ToolTip;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.StructureItem;
+import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.room.Room;
@@ -69,7 +71,7 @@ public class UserInterface {
 	private PanelMessage 				_panelMessage;
 	private ToolTip 					_selectedTooltip;
 	private Character 					_selectedCharacter;
-	private ItemBase 					_selectedItem;
+	private UserItem 					_selectedItem;
 	private WorldResource				_selectedResource;
 	private WorldArea 					_selectedArea;
 	private Room 						_selectedRoom;
@@ -93,6 +95,7 @@ public class UserInterface {
 			new PanelManager(	Mode.MANAGER, 	Key.M),
 			new PanelShortcut(	Mode.NONE, 		null),
 	};
+	private StructureItem _selectedStructure;
 
 	public enum Mode {
 		INFO,
@@ -190,7 +193,7 @@ public class UserInterface {
 	public ToolTip			getSelectedTooltip() { return _selectedTooltip; }
 	public Character 		getSelectedCharacter() { return _selectedCharacter; }
 	public WorldArea		getSelectedArea() { return _selectedArea; }
-	public ItemBase 		getSelectedItem() { return _selectedItem; }
+	public UserItem			getSelectedItem() { return _selectedItem; }
 	public WorldResource	getSelectedResource() { return _selectedResource; }
 	public ItemInfo			getSelectedItemInfo() { return _selectedItemInfo; }
 	public Room 			getSelectedRoom() { return _selectedRoom; }
@@ -444,7 +447,7 @@ public class UserInterface {
 				}
 				for (int x2 = 0; x2 < Constant.ITEM_MAX_WIDTH; x2++) {
 					for (int y2 = 0; y2 < Constant.ITEM_MAX_HEIGHT; y2++) {
-						ItemBase item = ServiceManager.getWorldMap().getItem(relX - x2, relY - y2);
+						UserItem item = ServiceManager.getWorldMap().getItem(relX - x2, relY - y2);
 						if (item != null && item.getWidth() > x2 && item.getHeight() > y2) {
 							select(item);
 							return true;
@@ -582,10 +585,16 @@ public class UserInterface {
 		_selectedResource = resource;
 	}
 
-	public void select(ItemBase item) {
+	public void select(UserItem item) {
 		clean();
 		setMode(Mode.INFO);
 		_selectedItem = item;
+	}
+
+	public void select(StructureItem structure) {
+		clean();
+		setMode(Mode.INFO);
+		_selectedStructure = structure;
 	}
 
 	public void select(WorldArea area) {
@@ -602,6 +611,7 @@ public class UserInterface {
 
 	public void clean() {
 		_selectedArea = null;
+		_selectedStructure = null;
 		_selectedItemInfo = null;
 		if (_selectedCharacter != null) {
 			_selectedCharacter.setSelected(false);
@@ -613,5 +623,14 @@ public class UserInterface {
 		_selectedItem = null;
 		_selectedResource = null;
 		_selectedTooltip = null;
+	}
+
+	public void select(ItemBase item) {
+		if (item.isUserItem()) {
+			select((UserItem)item);
+		}
+		else if (item.isStructure()) {
+			select((StructureItem)item);
+		}
 	}
 }

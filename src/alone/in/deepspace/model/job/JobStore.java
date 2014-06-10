@@ -79,7 +79,7 @@ public class JobStore extends Job {
 			return true;		
 		}
 
-		_storage.addInventory(character.getInventory());
+		_storage.store(character.getInventory());
 		character.clearInventory();
 		JobManager.getInstance().complete(this);
 		return true;

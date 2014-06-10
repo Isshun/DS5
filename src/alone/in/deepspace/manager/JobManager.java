@@ -58,16 +58,18 @@ public class JobManager {
 		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY, WORK, MINING, TAKE, USE_INVENTORY, REFILL
 	}
 
-	private static JobManager	_self;
-	private List<Job> 			_jobs;
+	private static JobManager		_self;
+	private List<Job> 				_jobs;
+	private int 					_nbVisibleJob;
+	private List<Job> 				_toRemove;
 
 	private JobCharacterCheck[]		_priorityJobsCheck = {
 			new CharacterIsTired(),
-			new CharacterIsHungry(),
 			new CharacterIsFull(),
+			new CharacterIsHungry(),
 	};
 
-	private JobCheck[]		_jobsCheck = {
+	private JobCheck[]				_jobsCheck = {
 			new CheckLowFood(),
 			new CheckEmptyFactory(),
 			new CheckGardenIsMature()
@@ -78,9 +80,6 @@ public class JobManager {
 			new CharacterPlayTime(),
 			new CharacterGoToMettingRoom()
 	};
-
-	private int _nbVisibleJob;
-	private List<Job> _toRemove;
 
 	public JobManager() {
 		Log.debug("JobManager");

@@ -82,6 +82,7 @@ public class ItemInfo {
 	public boolean 				isStorage;
 	public boolean 				isDrink;
 	public boolean 				isSleeping;
+	public boolean 				isStack;
 	
 	public ItemInfo() {
 		width = 1;

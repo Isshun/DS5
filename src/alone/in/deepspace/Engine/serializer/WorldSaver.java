@@ -3,10 +3,13 @@ package alone.in.deepspace.engine.serializer;
 import java.util.ArrayList;
 import java.util.List;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.serializer.CharacterSerializer.CharacterSave;
 import alone.in.deepspace.engine.serializer.RoomSerializer.RoomSave;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.StackItem;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldArea;
@@ -39,19 +42,12 @@ public class WorldSaver {
 	}
 	
 	private static class WorldSaveUserItem extends WorldSaveBaseItem {
-		public WorldSaveStorageInfo	storage;
+		public WorldSaveStackInfo	stack;
 	}
 	
-	private static class WorldSaveStorageInfo extends WorldSaveBaseItem {
-		public List<String> 		inventory;
-		public boolean 				acceptFood;
-		public boolean 				acceptDrink;
-		public boolean 				acceptConsomable;
-		public boolean 				acceptGarbage;
-		
-		public WorldSaveStorageInfo() {
-			inventory = new ArrayList<String>();
-		}
+	private static class WorldSaveStackInfo {
+		public String				item;
+		public int					count;
 	}
 	
 	private static class WorldSaveStructure extends WorldSaveBaseItem {
@@ -77,17 +73,14 @@ public class WorldSaver {
 			areaSave.item = new WorldSaveUserItem();
 			areaSave.item.name = item.getName();
 			areaSave.item.matter = item.getMatterSupply();
-//			if (item.isStorage()) {
-//				StorageItem storage = (StorageItem)item;
-//				areaSave.item.storage = new WorldSaveStorageInfo();
-//				areaSave.item.storage.acceptFood = storage.acceptFood();
-//				areaSave.item.storage.acceptDrink = storage.acceptDrink();
-//				areaSave.item.storage.acceptConsomable = storage.acceptConsomable();
-//				areaSave.item.storage.acceptGarbage = storage.acceptGarbage();
-//				for (ItemBase storredItem: storage.getInventory()) {
-//					areaSave.item.storage.inventory.add(storredItem.getName());
-//				}
-//			}
+			if (item.isStack()) {
+				StackItem stack = (StackItem)item;
+				if (stack.getType() != null) {
+					areaSave.item.stack = new WorldSaveStackInfo();
+					areaSave.item.stack.item = stack.getType().name;
+					areaSave.item.stack.count = stack.size();
+				}
+			}
 		}
 		
 		StructureItem structure = area.getStructure();
@@ -115,17 +108,13 @@ public class WorldSaver {
 	    		// UserItem
 	    		if (area.item != null) {
 	    			ItemBase item = worldManager.putItem(area.item.name, area.x, area.y, area.z, area.item.matter);
-//	    			if (area.item.storage != null) {
-//	    				StorageItem storage = ((StorageItem)item);
-//	    				storage.setStorageFilter(area.item.storage.acceptFood,
-//	    						area.item.storage.acceptDrink,
-//	    						area.item.storage.acceptConsomable,
-//	    						area.item.storage.acceptGarbage);
-//	    				for (String storredItemName: area.item.storage.inventory) {
-//	    					ItemInfo info = Game.getData().getItemInfo(storredItemName);
-//	    					storage.addInventory(new UserItem(info));
-//	    				}
-//	    			}
+	    			if (area.item.stack != null) {
+	    				StackItem stack = ((StackItem)item);
+    					ItemInfo info = Game.getData().getItemInfo(area.item.stack.item);
+	    				for (int i = 0; i < area.item.stack.count; i++) {
+	    					stack.add(new UserItem(info));
+	    				}
+	    			}
 	    		}
 
 	    		// Structure

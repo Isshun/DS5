@@ -17,6 +17,7 @@ import alone.in.deepspace.model.item.FactoryItem;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemFilter;
 import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.StackItem;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldArea;
@@ -275,6 +276,8 @@ public class WorldManager implements TileBasedMap {
 		if (info.isFactory) {
 			item = new FactoryItem(info);
 			_factoryItems.add((FactoryItem)item);
+		} else if (info.isStack) {
+			item = new StackItem();
 		} else if (info.isStorage) {
 			Log.error("storage item is deprecated: " + info.name);
 			return null;
@@ -901,5 +904,14 @@ public class WorldManager implements TileBasedMap {
 		MainRenderer.getInstance().invalidate(x, y);
 
 		return resource;
+	}
+
+	public UserItem takeItem(int x, int y) {
+		UserItem item = getItem(x, y);
+		WorldArea area = getArea(x, y);
+		if (area != null) {
+			area.setItem(null);
+		}
+		return item;
 	}
 }

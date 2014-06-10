@@ -11,6 +11,7 @@ import alone.in.deepspace.manager.Utils;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.room.GardenRoom;
 import alone.in.deepspace.model.room.QuarterRoom;
@@ -118,6 +119,30 @@ public class RoomSerializer implements SerializerInterface {
 			
 			// Refresh position
 			room.refreshPosition();
+			
+			// Is storage / second pass
+			if (room.isStorage()) {
+				StorageRoom storageRoom = (StorageRoom)room;
+				
+				// Get item on floor
+				List<UserItem> items = new ArrayList<UserItem>();
+				for (RoomSaveArea saveArea: roomSave.areas) {
+					UserItem item = worldManager.takeItem(saveArea.x, saveArea.y);
+					if (item != null) {
+						items.add(item);
+					}
+				}
+				
+				// Add to storage
+				for (UserItem item: items) {
+					if (item.isStack()) {
+						storageRoom.store(item);
+					} else {
+						storageRoom.store(item);
+					}
+				}
+			}
+
 			
 			Game.getRoomManager().add(room);
 		}

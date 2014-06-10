@@ -73570,8 +73570,12 @@
         <matter>1</matter>
       </structure>
       <item>
-        <name>base.seaweed</name>
+        <name>base.stack</name>
         <matter>0</matter>
+        <stack>
+          <item>base.seaweed</item>
+          <count>10</count>
+        </stack>
       </item>
       <x>167</x>
       <y>124</y>
@@ -73582,10 +73586,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>167</x>
       <y>125</y>
       <z>0</z>
@@ -73595,10 +73595,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>167</x>
       <y>126</y>
       <z>0</z>
@@ -73608,10 +73604,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>167</x>
       <y>127</y>
       <z>0</z>
@@ -73621,10 +73613,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>167</x>
       <y>128</y>
       <z>0</z>
@@ -74217,8 +74205,12 @@
         <matter>1</matter>
       </structure>
       <item>
-        <name>base.seaweed</name>
+        <name>base.stack</name>
         <matter>0</matter>
+        <stack>
+          <item>base.seaweed</item>
+          <count>10</count>
+        </stack>
       </item>
       <x>168</x>
       <y>124</y>
@@ -74229,10 +74221,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>168</x>
       <y>125</y>
       <z>0</z>
@@ -74242,10 +74230,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>168</x>
       <y>126</y>
       <z>0</z>
@@ -74255,10 +74239,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>168</x>
       <y>127</y>
       <z>0</z>
@@ -74268,10 +74248,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>168</x>
       <y>128</y>
       <z>0</z>
@@ -74765,8 +74741,12 @@
         <matter>1</matter>
       </structure>
       <item>
-        <name>base.seaweed</name>
+        <name>base.stack</name>
         <matter>0</matter>
+        <stack>
+          <item>base.seaweed</item>
+          <count>6</count>
+        </stack>
       </item>
       <x>169</x>
       <y>124</y>
@@ -74777,10 +74757,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>169</x>
       <y>125</y>
       <z>0</z>
@@ -74790,10 +74766,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>169</x>
       <y>126</y>
       <z>0</z>
@@ -74803,10 +74775,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>169</x>
       <y>127</y>
       <z>0</z>
@@ -74816,10 +74784,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>169</x>
       <y>128</y>
       <z>0</z>
@@ -75447,10 +75411,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>170</x>
       <y>124</y>
       <z>0</z>
@@ -75460,10 +75420,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>170</x>
       <y>125</y>
       <z>0</z>
@@ -75473,10 +75429,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>170</x>
       <y>126</y>
       <z>0</z>
@@ -75486,10 +75438,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>170</x>
       <y>127</y>
       <z>0</z>
@@ -75499,10 +75447,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>170</x>
       <y>128</y>
       <z>0</z>
@@ -75650,7 +75594,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>2</value>
       </resource>
       <x>170</x>
       <y>143</y>
@@ -75661,7 +75605,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>2</value>
       </resource>
       <x>170</x>
       <y>144</y>
@@ -75672,7 +75616,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>2</value>
       </resource>
       <x>170</x>
       <y>145</y>
@@ -76055,10 +75999,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>171</x>
       <y>124</y>
       <z>0</z>
@@ -76068,10 +76008,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>171</x>
       <y>125</y>
       <z>0</z>
@@ -76081,10 +76017,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>171</x>
       <y>126</y>
       <z>0</z>
@@ -76094,10 +76026,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>171</x>
       <y>127</y>
       <z>0</z>
@@ -76107,10 +76035,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>171</x>
       <y>128</y>
       <z>0</z>
@@ -76246,7 +76170,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>2</value>
       </resource>
       <x>171</x>
       <y>143</y>
@@ -76651,10 +76575,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>172</x>
       <y>124</y>
       <z>0</z>
@@ -76664,10 +76584,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>172</x>
       <y>125</y>
       <z>0</z>
@@ -76677,10 +76593,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>172</x>
       <y>126</y>
       <z>0</z>
@@ -76690,10 +76602,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.light</name>
-        <matter>10</matter>
-      </item>
       <x>172</x>
       <y>127</y>
       <z>0</z>
@@ -76703,10 +76611,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>172</x>
       <y>128</y>
       <z>0</z>
@@ -77236,10 +77140,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>173</x>
       <y>124</y>
       <z>0</z>
@@ -77249,10 +77149,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>173</x>
       <y>125</y>
       <z>0</z>
@@ -77262,10 +77158,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>173</x>
       <y>126</y>
       <z>0</z>
@@ -77275,10 +77167,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>173</x>
       <y>127</y>
       <z>0</z>
@@ -77288,10 +77176,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>173</x>
       <y>128</y>
       <z>0</z>
@@ -77898,10 +77782,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>174</x>
       <y>124</y>
       <z>0</z>
@@ -77911,10 +77791,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>174</x>
       <y>125</y>
       <z>0</z>
@@ -77924,10 +77800,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>174</x>
       <y>126</y>
       <z>0</z>
@@ -77937,10 +77809,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>174</x>
       <y>127</y>
       <z>0</z>
@@ -77950,10 +77818,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>174</x>
       <y>128</y>
       <z>0</z>
@@ -78593,10 +78457,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>175</x>
       <y>124</y>
       <z>0</z>
@@ -78606,10 +78466,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>175</x>
       <y>125</y>
       <z>0</z>
@@ -78619,10 +78475,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>175</x>
       <y>126</y>
       <z>0</z>
@@ -78632,10 +78484,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>175</x>
       <y>127</y>
       <z>0</z>
@@ -78645,10 +78493,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>175</x>
       <y>128</y>
       <z>0</z>
@@ -79233,10 +79077,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>176</x>
       <y>124</y>
       <z>0</z>
@@ -79246,10 +79086,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>176</x>
       <y>125</y>
       <z>0</z>
@@ -79259,10 +79095,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>176</x>
       <y>126</y>
       <z>0</z>
@@ -79272,10 +79104,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.seaweed</name>
-        <matter>0</matter>
-      </item>
       <x>176</x>
       <y>127</y>
       <z>0</z>
@@ -79285,10 +79113,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>176</x>
       <y>128</y>
       <z>0</z>
@@ -79298,10 +79122,6 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
-      <item>
-        <name>base.meal</name>
-        <matter>0</matter>
-      </item>
       <x>176</x>
       <y>129</y>
       <z>0</z>
@@ -111985,7 +111805,7 @@
       <lastname>Norton</lastname>
       <firstname>Tommy </firstname>
       <relations/>
-      <old>19.179999999999932</old>
+      <old>22.199999999999868</old>
       <x>156</x>
       <y>143</y>
       <gender>MALE</gender>
@@ -111996,13 +111816,13 @@
         <eating>0</eating>
         <drinking>0</drinking>
         <socialize>0</socialize>
-        <food>66.0</food>
-        <happiness>100.0</happiness>
+        <food>-282.0</food>
+        <happiness>0.0</happiness>
         <relation>0.0</relation>
         <security>0.0</security>
         <oxygen>101.0</oxygen>
-        <energy>83.0</energy>
-        <health>100.0</health>
+        <energy>74.0</energy>
+        <health>98.0</health>
         <sickness>0.0</sickness>
         <injuries>0.0</injuries>
         <satiety>0.0</satiety>

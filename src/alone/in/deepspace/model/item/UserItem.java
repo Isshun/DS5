@@ -13,4 +13,7 @@ public class UserItem extends ItemBase {
 		return _info.onAction != null && _info.onAction.effects != null && _info.onAction.effects.energy > 0;
 	}
 
+	public boolean isStack() {
+		return false;
+	}
 }

@@ -18,7 +18,7 @@ public abstract class BasePanel extends FrameLayout {
 	protected static final int 	FONT_SIZE_TITLE = 22;
 	protected static final int 	FONT_SIZE = 14;
 	protected static final int 	NB_COLUMNS = Constant.NB_COLUMNS;
-	protected static final int 	NB_COLUMNS_TITLE = 29;
+	protected static final int 	NB_COLUMNS_TITLE = Constant.NB_COLUMNS_TITLE;
 
 	protected UserInterface 	_ui;
 	protected Mode 				_mode;

@@ -8,6 +8,7 @@ import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderTexture;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
+import org.jsfml.graphics.Text;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
@@ -16,7 +17,9 @@ import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.item.ItemBase;
+import alone.in.deepspace.model.item.StackItem;
 import alone.in.deepspace.model.item.StructureItem;
+import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.ui.UserInterface;
@@ -387,23 +390,25 @@ public class WorldRenderer implements IRenderer {
 
 	void	refreshItems(int frame, int fromX, int fromY, int toX, int toY) {
 		_itemSelected = null;
-		int offsetY = 0;
-		int offsetX = 0;
 
 		for (int x = fromX-1; x <= toX; x++) {
 			for (int y = fromY-1; y <= toY; y++) {
-				ItemBase item = _worldMap.getItem(x, y);
+				UserItem item = _worldMap.getItem(x, y);
 				if (item != null) {
-					Sprite sprite = _spriteManager.getItem(item, item.getCurrentFrame());
-					if (sprite != null) {
-						if (item.isStructure()) {
-							sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-						} else {
-							sprite.setPosition(x * Constant.TILE_WIDTH + offsetX, y * Constant.TILE_HEIGHT + offsetY);
-						}
-						_textureCache.draw(sprite);
+					// Stack item
+					if (item.isStack()) {
+						refreshStack((StackItem)item, x, y);
 					}
 
+					// Regular item
+					else {
+						Sprite sprite = _spriteManager.getItem(item, item.getCurrentFrame());
+						if (sprite != null) {
+							sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
+							_textureCache.draw(sprite);
+						}
+					}
+					
 					// Selection
 					if (item.isSelected()) {
 						_itemSelected = item;
@@ -411,6 +416,20 @@ public class WorldRenderer implements IRenderer {
 				}
 			}
 		}
+	}
+
+	private void refreshStack(StackItem stack, int x, int y) {
+		Sprite sprite = _spriteManager.getIcon(stack.getType());
+		if (sprite != null) {
+			sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
+			_textureCache.draw(sprite);
+		}
+		Text text = new Text();
+		text.setFont(SpriteManager.getInstance().getFont());
+		text.setCharacterSize(12);
+		text.setString("x" + stack.size());
+		text.setPosition(x * Constant.TILE_WIDTH + (stack.size() < 10 ? 18 : 10), y * Constant.TILE_HEIGHT + 18);
+		_textureCache.draw(text);
 	}
 
 	private void refreshSelected(RenderWindow app, RenderStates render, int frame, ItemBase item) {

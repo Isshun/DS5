@@ -1,6 +1,5 @@
 package alone.in.deepspace.model.room;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.Game;
@@ -12,13 +11,14 @@ import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
+import alone.in.deepspace.model.room.RoomOptions.RoomOption;
 
 public class GardenRoom extends Room {
 
 	private static final double GROW_VALUE = 0.1;
 	private ItemInfo 			_currentCulture;
 	private List<ItemInfo> 		_cultures;
-	private List<RoomOption>	_options;
+	private RoomOptions			_options;
 
 	public GardenRoom() {
 		super(Type.GARDEN);
@@ -31,11 +31,11 @@ public class GardenRoom extends Room {
 	}
 
 	private void init() {
-		_options = new ArrayList<RoomOption>();
+		_options = new RoomOptions();
 		_cultures  = Game.getData().gatherItems;
 		for (ItemInfo c: _cultures) {
 			final ItemInfo culture = c;
-			_options.add(new RoomOption("Set " + culture.label,
+			_options.options.add(new RoomOption("Set " + culture.label,
 					SpriteManager.getInstance().getIcon(culture),
 					new OnClickListener() {
 				@Override
@@ -75,7 +75,7 @@ public class GardenRoom extends Room {
 		return _currentCulture;
 	}
 
-	public List<RoomOption> getOptions() {
+	public RoomOptions getOptions() {
 		return _options;
 	}
 }

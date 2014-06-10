@@ -1,14 +1,24 @@
 package alone.in.deepspace.model.room;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import alone.in.deepspace.engine.ui.OnClickListener;
+import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.ResourceManager;
+import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemFilter;
 import alone.in.deepspace.model.item.ItemInfo;
+import alone.in.deepspace.model.item.StackItem;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldArea;
+import alone.in.deepspace.model.room.RoomOptions.RoomOption;
+import alone.in.deepspace.ui.UserInterface;
+import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.StringUtils;
 
 public class StorageRoom extends Room {
 	protected List<UserItem>	_inventory;
@@ -17,6 +27,10 @@ public class StorageRoom extends Room {
 	private boolean 			_acceptDrink;
 	private boolean 			_acceptConsomable;
 	private boolean 			_acceptGarbage;
+	private RoomOptions			_options;
+	private boolean 			_invalidate;
+	private int 				_nbItem;
+	private int 				_inventorySize;
 
 	public StorageRoom() {
 		super(Type.STORAGE);
@@ -45,38 +59,6 @@ public class StorageRoom extends Room {
 
 	}
 
-	@Override
-	public void update() {
-		//		_nbStorage = 0;
-		//		_nbBed = 0;
-		//		
-		//		for (WorldArea area: _areas) {
-		//			UserItem item = area.getItem();
-		//			if (item != null) {
-		//				if (item.isBed()) { _nbBed++; }
-		//				if (item.isStorage()) { _nbStorage++; }
-		//			}
-		//		}
-		//		
-		//		_entryBed.label = StringUtils.getDashedString("Bed", String.valueOf(_nbBed));
-		//		_entryStorage.label = StringUtils.getDashedString("Storage", String.valueOf(_nbStorage));
-	}
-
-	//	public List<RoomOption> getOptions() {
-	////		return _options;
-	//	}
-
-	public List<UserItem>	getItems() {
-		return _inventory;
-	}
-
-	public ItemBase getFirst() {
-		if (_inventory.size() > 0) {
-			return _inventory.get(0);
-		}
-		return null;
-	}
-
 	public int getNbItems() {
 		return _inventory.size();
 	}
@@ -90,47 +72,7 @@ public class StorageRoom extends Room {
 		return false;
 	}
 
-	public UserItem get(ItemFilter filter) {
-		for (UserItem item: _inventory) {
-			if (item.matchFilter(filter)) {
-				return item;
-			}
-		}
-		return null;
-	}
-
-	public void remove(ItemBase item) {
-		_inventory.remove(item);
-		
-		for (WorldArea area: _areas) {
-			if (area.getItem() == item) {
-				area.setItem(null);
-			}
-		}
-	}
-
-	public void addInventory(List<UserItem> items) {
-		for (UserItem item: items) {
-			addInventory(item);
-		}
-	}
-
-	public void addInventory(UserItem item) {
-		_inventory.add(item);
-
-		for (WorldArea area: _areas) {
-			if (area.getItem() == null) {
-				area.setItem(item);
-				break;
-			}
-		}
-		
-		if (item.isFood()) {
-			ResourceManager.getInstance().addFood(1);
-		}
-	}
-
-	private boolean inventoryContains(ItemInfo info) {
+	public boolean contains(ItemInfo info) {
 		for (ItemBase item: _inventory) {
 			if (item.getInfo() == info) {
 				return true;
@@ -139,19 +81,9 @@ public class StorageRoom extends Room {
 		return false;
 	}
 
-	public List<UserItem> getInventory() {
-		return _inventory;
-	}
-
-	protected ItemBase takeFromInventory(ItemInfo itemInfo) {
-		for (ItemBase item: _inventory) {
-			if (item.getInfo() == itemInfo) {
-				_inventory.remove(item);
-				return item;
-			}
-		}
-		return null;
-	}
+//	public List<UserItem> getInventory() {
+//		return _inventory;
+//	}
 
 	public void setStorageFilter(boolean acceptFood, boolean acceptDrink, boolean acceptConsomable, boolean acceptGarbage) {
 		_acceptFood = acceptFood;
@@ -183,11 +115,152 @@ public class StorageRoom extends Room {
 	public void addArea(WorldArea area) {
 		super.addArea(area);
 		area.setStorage(true);
+		_invalidate = true;
+		_inventorySize++;
 	}
 
 	@Override
 	public void removeArea(WorldArea area) {
 		super.removeArea(area);
 		area.setStorage(false);
+		_invalidate = true;
+		_inventorySize--;
+	}
+
+	@Override
+	public RoomOptions getOptions() {
+		if (_invalidate) {
+			_invalidate = false;
+			Map<ItemInfo, Integer> itemInfos = new HashMap<ItemInfo, Integer>();
+			_options = new RoomOptions();
+			_options.title = StringUtils.getDashedString("Storage", _nbItem + "/" + _inventorySize, Constant.NB_COLUMNS_TITLE);
+			for (UserItem item: _inventory) {
+				int count = 1;
+				ItemInfo info = item.getInfo();
+				if (item.isStack()) {
+					count = ((StackItem)item).size();
+					info = ((StackItem)item).getType();
+				}
+				if (info != null) {
+					itemInfos.put(info, itemInfos.containsKey(info) ? itemInfos.get(info) + count : count);
+				}
+			}
+			for (ItemInfo info: itemInfos.keySet()) {
+				final ItemInfo finalInfo = info;
+				String str = StringUtils.getDashedString(info.label, String.valueOf(itemInfos.get(info)), Constant.NB_COLUMNS - 4);
+				_options.options.add(new RoomOption(str, SpriteManager.getInstance().getIcon(info), new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						UserInterface.getInstance().select(finalInfo);
+					}
+				}));
+			}
+		}
+		return _options;
+	}
+
+	/**
+	 * Store a collection of item and return accepted item count
+	 * 
+	 * @param items
+	 * @return number of item stored
+	 */
+	public int store(List<UserItem> items) {
+		int count = 0;
+		for (UserItem item: items) {
+			if (store(item) == false) {
+				return count;
+			}
+			count++;
+		}
+		return count;
+	}
+
+	/**
+	 * Store an item and return true if accepted
+	 * 
+	 * @param item
+	 * @return true if success, false if item is not accepted or storage is full
+	 */
+	public boolean store(UserItem item) {
+		// Item is a stack
+		if (item.isStack()) {
+			if (_nbItem < _inventorySize) {
+				_nbItem++;
+				_invalidate = true;
+				_inventory.add(item);
+				addItemOnFirstArea(item);
+				ResourceManager.getInstance().add(item.getInfo());
+				return true;
+			}
+			return false;
+		}
+		
+		// Stack already exists
+		for (UserItem inventoryItem: _inventory) {
+			if (inventoryItem.isStack()) {
+				StackItem stack = (StackItem)inventoryItem;
+				if (stack.contains(item.getInfo()) && stack.hasSpaceLeft()) {
+					stack.add(item);
+					_invalidate = true;
+					ResourceManager.getInstance().add(item.getInfo());
+					return true;
+				}
+			}
+		}
+		
+		// Create new stack
+		if (_nbItem < _inventorySize) {
+			_nbItem++;
+			StackItem stack = new StackItem();
+			stack.add(item);
+			_inventory.add(stack);
+			_invalidate = true;
+			addItemOnFirstArea(stack);
+			ResourceManager.getInstance().add(item.getInfo());
+			return true;
+		}
+
+		return false;
+	}
+	
+	private void addItemOnFirstArea(UserItem item) {
+		for (WorldArea area: _areas) {
+			if (area.getItem() == null) {
+				area.setItem(item);
+				break;
+			}
+		}
+	}
+
+	public UserItem take(UserItem item) {
+		_inventory.remove(item);
+		
+		for (WorldArea area: _areas) {
+			if (area.getItem() == item) {
+				area.setItem(null);
+			}
+		}
+		_invalidate = true;
+		
+		return item;
+	}
+
+	public UserItem take(ItemFilter filter) {
+		for (UserItem item: _inventory) {
+			if (item.matchFilter(filter)) {
+				return take(item);
+			}
+		}
+		return null;
+	}
+
+	public UserItem take(ItemInfo itemInfo) {
+		for (UserItem item: _inventory) {
+			if (item.getInfo() == itemInfo) {
+				return take(item);
+			}
+		}
+		return null;
 	}
 }

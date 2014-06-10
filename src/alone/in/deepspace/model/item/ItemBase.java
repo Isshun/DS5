@@ -43,6 +43,7 @@ public abstract class ItemBase {
 	private int 		_animFrameInterval;
 	private boolean 	_selected;
 	private int 		_lastBlocked;
+	private WorldArea	_area;
 	
 	public ItemBase(ItemInfo info) {
 		init(info, ++_maxId);
@@ -86,7 +87,7 @@ public abstract class ItemBase {
 		{
 			_light = info.light;
 			_name = info.name;
-			_label = info.label;
+			_label = info.label != null ? info.label : info.name;
 			_width = info.width;
 			_height = info.height;
 			_nbFrame = info.frames > 0 ? info.frames : 1;
@@ -174,6 +175,9 @@ public abstract class ItemBase {
 	public void 			setSolid(boolean isSolid) { _isSolid = isSolid; }
 	public void 			setMode(int mode) { _mode = mode; }
 	public void 			setWorking(boolean working) { _isWorking = working; }
+	public void 			setArea(WorldArea area) { _area = area; }
+	public void 			setX(int x) { _x = x; }
+	public void 			setY(int y) { _y = y; }
 
 	// Gets
 	public int				getMatterSupply() { return _matterSupply; }
@@ -196,6 +200,7 @@ public abstract class ItemBase {
 	public int 				getTotalUse() { return _nbTotalUsed; }
 	public int 				getMatter() { return _matter; }
 	public int 				getLastBlocked() { return _lastBlocked; }
+	public WorldArea		getArea() { return _area; }
 
 	// Boolean
 	public boolean			isSolid() { return _isSolid; }
@@ -211,14 +216,11 @@ public abstract class ItemBase {
 	public boolean 			isWall() { return getName().equals("base.wall") || getName().equals("base.window"); }
 	public boolean 			isWindow() { return getName().equals("base.window"); }
 	public boolean 			isToy() { return _isToy; }
-	public boolean 			isStorage() { return _info.isStorage; }
+//	public boolean 			isStorage() { return _info.isStorage; }
 	public boolean 			isFood() { return _info.isFood; }
 	public boolean 			isFactory() { return _info.isFactory; }
 	public boolean 			hasFreeSlot() { return _nbFreeSlot == -1 || _nbFreeSlot > 0; }
-
-	public static boolean isUserItem(ItemInfo info) {
-		return !info.isStructure && !info.isResource;
-	}
+	public boolean 			isUserItem() { return _info.isUserItem; }
 
 	public static boolean isResource(ItemInfo info) {
 		return info.isResource;

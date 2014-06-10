@@ -1,5 +1,7 @@
 package alone.in.deepspace.model.job;
 
+import java.util.ArrayList;
+
 import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
@@ -12,9 +14,9 @@ import alone.in.deepspace.model.room.StorageRoom;
 import alone.in.deepspace.util.Log;
 
 public class JobRefill extends Job {
-
-	private StorageRoom _storage;
-	private FactoryItem _factory;
+	private ArrayList<UserItem> 	_carryItems;
+	private StorageRoom 			_storage;
+	private FactoryItem 			_factory;
 
 	private JobRefill(int x, int y) {
 		super(x, y);
@@ -33,6 +35,7 @@ public class JobRefill extends Job {
 		job.setItem(factory);
 		job.setItemFilter(filter);
 		
+		job._carryItems = new ArrayList<UserItem>();
 		job._storage = storage;
 		job._factory = factory;
 
@@ -126,12 +129,9 @@ public class JobRefill extends Job {
 	}
 
 	private boolean actionTake(Character character) {
-		UserItem item = _storage.get(_filter);
-		while (item != null && character.getInventoryLeftSpace() > 0) {
-			addCarry(item);
+		while (character.hasInventorySpaceLeft() && _storage.contains(_filter)) {
+			UserItem item = _storage.take(_filter);
 			character.addInventory(item);
-			_storage.remove(item);
-			item = _storage.get(_filter);
 		}
 
 		// Change to STORE job

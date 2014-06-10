@@ -46,14 +46,14 @@ public class GameSerializer {
 				(new CharacterSerializer()).load(worldSave);
 			}
 
-			if (worldSave.rooms != null) {
-				loadListener.onUpdate("Loading rooms");
-				(new RoomSerializer()).load(worldSave);
-			}
-
 			if (worldSave.areas != null) {
 				loadListener.onUpdate("Loading areas");
 				WorldSaver.load(ServiceManager.getWorldMap(), worldSave.areas);
+			}
+
+			if (worldSave.rooms != null) {
+				loadListener.onUpdate("Loading rooms");
+				(new RoomSerializer()).load(worldSave);
 			}
 		}
 

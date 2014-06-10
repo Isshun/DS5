@@ -1,8 +1,5 @@
 package alone.in.deepspace.model.job;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jsfml.graphics.Color;
 
 import alone.in.deepspace.manager.JobManager;
@@ -11,7 +8,6 @@ import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemFilter;
 import alone.in.deepspace.model.item.ItemSlot;
-import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
@@ -30,7 +26,6 @@ public abstract class Job {
 	protected int				_posY;
 	protected int 				_posX;
 	protected ItemBase			_item;
-	protected List<UserItem>	_carryItems;
 	protected ItemFilter 		_filter;
 	private JobManager.Action 	_action;
 	protected Character 		_character;
@@ -44,8 +39,8 @@ public abstract class Job {
 	protected int 				_nbUsed;
 	protected Action 			_subAction;
 	protected JobStatus			_status;
-	private int _nbBlocked;
-	private boolean _hasDuration;
+	private int 				_nbBlocked;
+	private boolean 			_hasDuration;
 
 	public Job(int x, int y) {
 		init();
@@ -194,17 +189,6 @@ public abstract class Job {
 
 	public void setSubAction(Action action) {
 		_subAction = action;
-	}
-
-	public void addCarry(UserItem item) {
-		if (_carryItems == null) {
-			_carryItems = new ArrayList<UserItem>();
-		}
-		_carryItems.add(item);
-	}
-
-	public List<UserItem> getCarry() {
-		return _carryItems;
 	}
 
 	public boolean isFinish() {

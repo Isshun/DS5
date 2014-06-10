@@ -67,4 +67,5 @@ public class Constant {
 	public static final int 	ITEM_MAX_HEIGHT = 4;
 	public static final int 	COUNT_BEFORE_REUSE_BLOCKED_ITEM = 10;
 	public static final int 	DELAY_TO_RESTART_BLOCKED_JOB = COUNT_BEFORE_REUSE_BLOCKED_ITEM;
+	public static final int NB_COLUMNS_TITLE = 29;
 }

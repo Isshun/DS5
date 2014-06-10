@@ -21,17 +21,19 @@ import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.character.Character;
-import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.ItemInfo.ItemInfoAction;
 import alone.in.deepspace.model.item.ItemInfo.ItemInfoEffects;
 import alone.in.deepspace.model.item.ItemSlot;
+import alone.in.deepspace.model.item.StackItem;
 import alone.in.deepspace.model.item.StructureItem;
+import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.ui.UserInterface.Mode;
+import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.ObjectPool;
 import alone.in.deepspace.util.StringUtils;
 
@@ -77,7 +79,6 @@ public class PanelInfo extends BaseRightPanel {
 	private TextView 				_itemAccept;
 	private TextView[] 				_lbCarryCount;
 	private FrameLayout 			_layoutStorageAdvancedFilter;
-	private ItemBase 				_item;
 	private CheckBoxView 			_cbFood;
 	private CheckBoxView 			_cbDrink;
 	private CheckBoxView 			_cbConsomable;
@@ -437,7 +438,7 @@ public class PanelInfo extends BaseRightPanel {
 		}
 
 		if (area.getItem() != null) {
-			displayItem(area.getItem());
+			refreshItem(area.getItem());
 			return;
 		}
 
@@ -447,7 +448,7 @@ public class PanelInfo extends BaseRightPanel {
 		}
 
 		if (area.getStructure() != null) {
-			displayItem(area.getStructure());
+			//refreshItem(area.getStructure());
 			return;
 		}
 
@@ -633,19 +634,27 @@ public class PanelInfo extends BaseRightPanel {
 		}
 	}
 
-	public void displayItem(final ItemBase item) {
-		if (_item != null) {
-			_item.setSelected(false);
-		}
-		_item = item;
-		if (_item == null) {
+	public void refreshItem(final UserItem item) {
+		if (item == null) {
 			return;
 		}
-		_item.setSelected(true);
+
+		item.setSelected(true);
+
+		if (item.isStack()) {
+			StackItem stack = (StackItem)item;
+			if (stack.getType() != null) {
+				_itemName.setString(StringUtils.getDashedString(stack.getType().label, " x" + stack.size(), Constant.NB_COLUMNS_TITLE));
+			}
+		}
+		
+		if (item.isUsable()) {
+			refreshSlots(item.getSlots());
+		}
 		
 		_layoutItem.setVisible(true);
 
-		displayItemInfo(item.getInfo());
+//		displayItemInfo(item.getInfo());
 
 		if (item.getInfo().onAction != null && item.getInfo().onAction.effects != null) {
 			displayEffect();
@@ -700,10 +709,9 @@ public class PanelInfo extends BaseRightPanel {
 		}
 		
 		// Item
-		ItemBase item = _ui.getSelectedItem();
-		if (item != null && _item != item) {
+		if (_ui.getSelectedItem() != null) {
 			clean();
-			displayItem(item);
+			refreshItem(_ui.getSelectedItem());
 		}
 
 		if (_ui.getSelectedResource() != null) {
@@ -717,15 +725,6 @@ public class PanelInfo extends BaseRightPanel {
 		if (itemInfo != null && _itemInfo != itemInfo) {
 			clean();
 			displayItemInfo(itemInfo);
-		}
-
-		if (_item != null) {
-			if (_item.isUsable()) {
-				refreshSlots(_item);
-			}
-//			if (_item.isStorage()) {
-//				refreshStorage((StorageItem)_item);
-//			}
 		}
 	}
 
@@ -758,16 +757,13 @@ public class PanelInfo extends BaseRightPanel {
 //		}
 //	}
 
-	private void refreshSlots(ItemBase item) {
-		List<ItemSlot> slots = item.getSlots();
-		int nbSlot = item.getNbSlots();
-		int usedSlot = item.getNbSlots() - item.getNbFreeSlots();
-		_lbSlot.setString(StringUtils.getDashedString("IN USE", usedSlot + "/" + nbSlot, NB_COLUMNS_TITLE));
-		
+	private void refreshSlots(List<ItemSlot> slots) {
 		int i = 0;
+		int used = 0;
 		for (ItemSlot slot: slots) {
 			Job job = slot.getJob();
 			if (i < NB_SLOTS_MAX && job != null) {
+				used++;
 				final Character character = job.getCharacter();
 				String left = character != null ? character.getName() : "used";
 				String right = job.getFormatedDuration();
@@ -785,11 +781,12 @@ public class PanelInfo extends BaseRightPanel {
 		for (; i < NB_SLOTS_MAX; i++) {
 			_lbSlots[i].setVisible(false);
 		}
+
+		_lbSlot.setString(StringUtils.getDashedString("IN USE", used + "/" + slots.size(), NB_COLUMNS_TITLE));
 	}
 
 	private void clean() {
 		_area = null;
-		_item = null;
 		_resource = null;
 		_itemInfo = null;
 		_layoutArea.setVisible(false);

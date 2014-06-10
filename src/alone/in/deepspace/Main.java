@@ -10,12 +10,12 @@ import org.jsfml.window.WindowStyle;
 import org.jsfml.window.event.Event;
 import org.jsfml.window.event.KeyEvent;
 
+import alone.in.deepspace.engine.dataLoader.CategoryLoader;
+import alone.in.deepspace.engine.dataLoader.ItemLoader;
+import alone.in.deepspace.engine.dataLoader.StringsLoader;
 import alone.in.deepspace.engine.renderer.MainRenderer;
-import alone.in.deepspace.engine.serializer.CategoryLoader;
 import alone.in.deepspace.engine.serializer.GameLoadListener;
-import alone.in.deepspace.engine.serializer.ItemLoader;
 import alone.in.deepspace.engine.serializer.LoadListener;
-import alone.in.deepspace.engine.serializer.StringsLoader;
 import alone.in.deepspace.engine.ui.Colors;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.View;
@@ -52,7 +52,7 @@ public class Main {
 	public static void main(String[] args) {
 		//Create the window
 		final RenderWindow window = new RenderWindow();
-		window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5", WindowStyle.NONE);
+		window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5", WindowStyle.DEFAULT);
 		
 		GameData data = new GameData();
 

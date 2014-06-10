@@ -254,7 +254,7 @@ public class Room {
 	public void setOption(int index) {
 	}
 
-	public List<RoomOption> getOptions() {
+	public RoomOptions getOptions() {
 		return null;
 	}
 

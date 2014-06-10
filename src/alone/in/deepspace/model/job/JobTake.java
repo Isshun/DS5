@@ -53,7 +53,6 @@ public class JobTake extends Job {
 	}
 
 	@Override
-	// TODO: check character inventory space
 	public boolean action(Character character) {
 		if (_storage == null || _filter == null) {
 			JobManager.getInstance().abort(this, Job.JobAbortReason.INVALID);
@@ -61,10 +60,9 @@ public class JobTake extends Job {
 			return true;
 		}
 		
-		UserItem neededItem = _storage.get(_filter);
-		if (neededItem != null) {
+		if (character.hasInventorySpaceLeft() && _storage.contains(_filter)) {
+			UserItem neededItem = _storage.take(_filter);
 			character.addInventory(neededItem);
-			_storage.remove(neededItem);
 		}
 
 		JobManager.getInstance().complete(this);
