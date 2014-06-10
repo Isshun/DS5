@@ -198,6 +198,9 @@ public class UserInterface {
 	public ItemInfo			getSelectedItemInfo() { return _selectedItemInfo; }
 	public Room 			getSelectedRoom() { return _selectedRoom; }
 
+	public int				getMouseX() { return _keyMovePosX; }
+	public int				getMouseY() { return _keyMovePosY; }
+	
 	public void toogleMode(Mode mode) {
 		setMode(_mode != mode ? mode : Mode.NONE);
 	}

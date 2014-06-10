@@ -239,7 +239,7 @@ public class Main {
 			switch (keyEvent.key) {
 
 			// Kill
-			case K:
+			case F4:
 				window.close();
 				return;
 				

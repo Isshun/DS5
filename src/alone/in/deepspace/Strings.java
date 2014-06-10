@@ -10,6 +10,7 @@ public class Strings {
 	public static final String LB_FOOD = "Food";
 	public static final String LB_WATER = "Water";
 	public static final String LB_GASOLINE = "Gasoline";
+	public static final String LB_PICK = "Pick up";
 	public static String LB_NO_JOB = "no job";
 	public static String LB_GATHER = "gather";
 	public static String JOBS = "Jobs";

@@ -8,8 +8,10 @@ import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.StructureItem;
+import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.job.Job;
+import alone.in.deepspace.model.job.JobTake;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.model.room.Room.Type;
 import alone.in.deepspace.ui.UserInterface.Mode;
@@ -136,6 +138,20 @@ public class UserInteraction {
 		}
 	}
 
+	public void planPick(int startX, int startY, int toX, int toY) {
+		for (int x = startX; x <= toX; x++) {
+			for (int y = startY; y <= toY; y++) {
+				UserItem item = Game.getWorldManager().getItem(x, y);
+				if (item != null) {
+					Job job = JobTake.create(item);
+					if (job != null) {
+						JobManager.getInstance().addJob(job);
+					}
+				}
+			}
+		}
+	}
+
 	public void planDump(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
@@ -156,6 +172,7 @@ public class UserInteraction {
 		case DUMP: planDump(startX, startY, toX, toY); break;
 		case GATHER: planGather(startX, startY, toX, toY); break;
 		case MINING: planMining(startX, startY, toX, toY); break;
+		case PICK: planPick(startX, startY, toX, toY); break;
 		default: break;
 		}
 	}

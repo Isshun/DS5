@@ -207,58 +207,50 @@ public class WorldRenderer implements IRenderer {
 					StructureItem item = _worldMap.getStructure(i, j);
 					if (item != null) {
 	
-						// Structure except floor
-						if (item.isStructure() && !item.isFloor()) {
-	
-							// Door
-							if (item.isDoor()) {
-								// if (_characterManager.getCharacterAtPos(i, j) != null
-								// 	  || _characterManager.getCharacterAtPos(i+1, j) != null
-								// 	  || _characterManager.getCharacterAtPos(i-1, j) != null
-								// 	  || _characterManager.getCharacterAtPos(i, j+1) != null
-								// 	  || _characterManager.getCharacterAtPos(i, j-1) != null) {
-								// 	_spriteManager.getWall(item, 2, &sprite, 0, 0);
-								// } else {
+						// Door
+						if (item.isDoor()) {
+							// if (_characterManager.getCharacterAtPos(i, j) != null
+							// 	  || _characterManager.getCharacterAtPos(i+1, j) != null
+							// 	  || _characterManager.getCharacterAtPos(i-1, j) != null
+							// 	  || _characterManager.getCharacterAtPos(i, j+1) != null
+							// 	  || _characterManager.getCharacterAtPos(i, j-1) != null) {
+							// 	_spriteManager.getWall(item, 2, &sprite, 0, 0);
+							// } else {
 
-								sprite = _spriteManager.getSimpleWall(0);
-								if (sprite != null) {
-									sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT - offsetWall);
-									_textureCache.draw(sprite);
-								}
-
-								sprite = _spriteManager.getItem(item);
-								if (sprite != null) {
-									sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT - 4);
-									_textureCache.draw(sprite);
-								}
+							sprite = _spriteManager.getSimpleWall(0);
+							if (sprite != null) {
+								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT - offsetWall);
+								_textureCache.draw(sprite);
 							}
-	
-							// Wall
-							else if (item.isWall()) {
-								sprite = drawWall(item, i, j, offsetWall);
-								_textureCache.draw(sprite);
-							}	  
 
-							// Hull
-							else if (item.isHull()) {
-								sprite = drawWall(item, i, j, offsetWall);
+							sprite = _spriteManager.getItem(item);
+							if (sprite != null) {
+								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT - 4);
 								_textureCache.draw(sprite);
-							}	  
+							}
 						}
-	
-						// // floor
-						// else {
-						// 	_spriteManager.getFloor(item, item.getZoneId(), item.getRoomId(), &sprite);
-						// 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-						// }
-	
-//							if (item.isWindow()) {
-//								sprite = _spriteManager.getIcon(item.getInfo());
-//								if (sprite != null) {
-//									sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
-//									_textureCache.draw(sprite);
-//								}
-//							}
+
+						// Floor
+						else if (item.isFloor()) {
+						}	  
+
+						// Wall
+						else if (item.isWall()) {
+							sprite = drawWall(item, i, j, offsetWall);
+							_textureCache.draw(sprite);
+						}	  
+
+						// Hull
+						else if (item.isHull()) {
+							sprite = drawWall(item, i, j, offsetWall);
+							_textureCache.draw(sprite);
+						}
+						
+						else {
+							sprite = SpriteManager.getInstance().getItem(item);
+							sprite.setPosition(item.getX() * Constant.TILE_WIDTH, item.getY() * Constant.TILE_HEIGHT);
+							_textureCache.draw(sprite);
+						}
 					}
 				}
 			}

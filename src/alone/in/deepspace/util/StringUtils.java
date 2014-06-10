@@ -49,6 +49,7 @@ public class StringUtils {
 		case X: return "x";
 		case Y: return "y";
 		case Z: return "z";
+		case SPACE: return " ";
 		default: return null;
 		}
 	}

@@ -109,7 +109,7 @@ public class LightRenderer implements IRenderer {
 		for (int i = fromX; i <= toX; i++) {
 			for (int j = fromY; j <= toY; j++) {
 				StructureItem structure = ServiceManager.getWorldMap().getStructure(i, j);
-				if (structure != null && structure.isFloor() == false) {
+				if (structure != null && (structure.isWall() || structure.isDoor() || structure.isHull())) {
 					return false;
 				}
 			}
@@ -158,6 +158,9 @@ public class LightRenderer implements IRenderer {
 				WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
 				if (area.getItem() != null && area.getItem().getLight() > 0) {
 					diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getItem().getLight() / 10);
+				}
+				if (area.getStructure() != null && area.getStructure().getLight() > 0) {
+					diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getStructure().getLight() / 10);
 				}
 				if (area.getRessource() != null && area.getRessource().getLight() > 0) {
 					diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getRessource().getLight() / 10);

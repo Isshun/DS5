@@ -2,28 +2,43 @@ package alone.in.deepspace.ui.panel;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2f;
+import org.jsfml.window.Keyboard;
 import org.jsfml.window.Keyboard.Key;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.renderer.MainRenderer;
+import alone.in.deepspace.engine.ui.ColorView;
+import alone.in.deepspace.engine.ui.Colors;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.model.item.StructureItem;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.ui.UserInterface.Mode;
+import alone.in.deepspace.ui.panel.PanelManager.PanelEntry;
 import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 import alone.in.deepspace.util.Settings;
+import alone.in.deepspace.util.StringUtils;
 
 public class PanelDebug extends BasePanel {
 
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	private UserInterface _ui;
+	private TextView _lbSearch;
+	private TextView[] _labels;
+	private TextView[] _shortcuts;
+	private int _nbEntries;
+	private int _line;
+	private String _search = "";
+	private int _nbResults;
+	private ItemInfo _currentItem;
 	
 	public PanelDebug(Mode mode, Key shortcut) {
 		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
@@ -184,8 +199,29 @@ public class PanelDebug extends BasePanel {
 
 	@Override
 	protected void onCreate() {
-		// TODO Auto-generated method stub
-		
+		_lbSearch = new TextView();
+		_lbSearch.setPosition(20, 60);
+		_lbSearch.setString("search: ");
+		_lbSearch.setCharacterSize(FONT_SIZE);
+		_lbSearch.setColor(Colors.LINK_INACTIVE);
+		addView(_lbSearch);
+
+		_nbEntries = Game.getData().items.size();
+		_labels = new TextView[_nbEntries];
+		_shortcuts = new TextView[_nbEntries];
+		for (int i = 0; i < _nbEntries; i++) {
+			_labels[i] = new TextView();
+			_labels[i].setPosition(20, 600 + i * LINE_HEIGHT);
+			_labels[i].setCharacterSize(FONT_SIZE);
+			addView(_labels[i]);
+
+			_shortcuts[i] = new TextView();
+			_shortcuts[i].setPosition(20, 600 + i * LINE_HEIGHT);
+			_shortcuts[i].setCharacterSize(FONT_SIZE);
+			_shortcuts[i].setColor(Colors.LINK_ACTIVE);
+			_shortcuts[i].setStyle(TextView.UNDERLINED);
+			addView(_shortcuts[i]);
+		}
 	}
 
 	@Override
@@ -198,6 +234,91 @@ public class PanelDebug extends BasePanel {
 		Settings.getInstance().setDebug(false);
 	}
 
+	@Override
+	public void onRefresh(int frame) {
+		int i = 0;
+		for (ItemInfo item: Game.getData().items) {
+			if (_search.length() == 0) {
+				if (i == _line) {
+					_currentItem = item;
+					_shortcuts[i].setVisible(true);
+					_shortcuts[i].setString(item.label);
+					_shortcuts[i].setPosition(20, _shortcuts[i].getPosY());
+					_shortcuts[i].setColor(Colors.LINK_ACTIVE);
+					_labels[i].setVisible(false);
+				}
+				else {
+					_shortcuts[i].setVisible(false);
+					_labels[i].setVisible(true);
+					_labels[i].setString(item.label);
+				}
+				i++;
+			}
+			
+			else {
+				int pos = item.label.toLowerCase().indexOf(_search);
+				if (pos != -1) {
+					if (i == _line) {
+						_currentItem = item;
+						_shortcuts[i].setString(item.label);
+						_shortcuts[i].setColor(Colors.LINK_ACTIVE);
+						_shortcuts[i].setPosition(20, _shortcuts[i].getPosY());
+						_labels[i].setVisible(false);
+					}
+					else {
+						_shortcuts[i].setString(item.label.substring(pos, pos + _search.length()));
+						_shortcuts[i].setColor(Colors.LINK_INACTIVE);
+						_shortcuts[i].setPosition(20 + pos * 8, _shortcuts[i].getPosY());
+						_labels[i].setVisible(true);
+						_labels[i].setString(item.label);
+					}
+					_shortcuts[i].setVisible(true);
+					i++;
+				}
+			}
+		}
+		_nbResults = i - 1;
+		for (; i < _nbEntries; i++) {
+			_shortcuts[i].setVisible(false);
+			_labels[i].setVisible(false);
+		}
+	}
+	
+	@Override
+	public boolean	onKey(Keyboard.Key key) {
+		if (key == Key.RETURN) {
+			int x = UserInterface.getInstance().getMouseX();
+			int y = UserInterface.getInstance().getMouseY();
+			Log.info("x: " + x + ", y: " + y);
+			int matter = 0;
+			if (_currentItem.cost != null) {
+				matter = _currentItem.cost.matter;
+			}
+			Game.getWorldManager().putItem(_currentItem, 0, x, y, matter);
+		}
+		else if (key == Key.UP) {
+			_line = _line - 1 < 0 ? _nbResults : _line - 1;
+		}
+		else if (key == Key.DOWN) {
+			_line = _line + 1 > _nbResults ? 0 : _line + 1;
+		}
+		else if (key == Key.BACKSPACE) {
+			if (_search.length() > 0) {
+				_search = _search.substring(0, _search.length() - 1);
+			}
+		} else {
+			String str = StringUtils.getStringFromKey(key);
+			if (str != null) {
+				_search += str;
+			} else {
+				close();
+				return false;
+			}
+		}
+		_lbSearch.setString("search: " + _search);
+		onRefresh(0);
+		return true;
+	}
 	
 //	void  addDebug(final String key, String value) {
 //		int y = _index * 32;

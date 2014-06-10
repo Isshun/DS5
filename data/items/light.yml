@@ -4,6 +4,7 @@ width: 1
 height: 1
 light: 10
 type: item
+isStructure: true
 cost:
   matter: 10
   power: 1

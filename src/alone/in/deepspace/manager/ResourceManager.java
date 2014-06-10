@@ -137,9 +137,6 @@ public class ResourceManager {
 
 	public void addMatter(int value) { _matter.value += value; }
 	public void addWater(int value) { _water.value += value; refreshWater(); }
-	public void addSpice(int value) { _spice.value += value; }
-	public void addPower(int value) { _power.value += value; }
-	public void addFood(int value) { _food.value += value; }
 
 	public boolean isLowFood() {
 		return _food.value < Game.getCharacterManager().getCount();

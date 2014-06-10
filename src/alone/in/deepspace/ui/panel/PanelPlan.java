@@ -16,7 +16,7 @@ import alone.in.deepspace.ui.UserInteraction.Action;
 
 public class PanelPlan extends BaseRightPanel {
 	public enum Planning {
-		GATHER, MINING, DUMP, NONE
+		GATHER, MINING, DUMP, PICK, NONE
 	}
 
 	private List<View> 				_buttons;
@@ -76,7 +76,23 @@ public class PanelPlan extends BaseRightPanel {
 		btDump.setShortcut(0);
 		addView(btDump);
 		_buttons.add(btDump);
-	}
+
+		ButtonView btPick = new ButtonView(new Vector2f(150, 36));
+		btPick.setString(Strings.LB_PICK.toUpperCase());
+		btPick.setPadding(3, 16);
+		btPick.setPosition(20, 170);
+		btPick.setCharacterSize(FONT_SIZE_TITLE);
+		btPick.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				clickOnIcon(view);
+				_interaction.set(Action.SET_PLAN, Planning.PICK);
+			}
+		});
+		btPick.setShortcut(0);
+		addView(btPick);
+		_buttons.add(btPick);
+}
 
 	protected void clickOnIcon(View view) {
 		for (View button: _buttons) {

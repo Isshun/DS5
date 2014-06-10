@@ -125,9 +125,7 @@ public class FactoryItem extends UserItem {
 	public void addInventory(UserItem item) {
 		_inventory.add(item);
 
-		if (item.isFood()) {
-			ResourceManager.getInstance().addFood(1);
-		}
+		ResourceManager.getInstance().add(item.getInfo());
 	}
 
 	public boolean accept(ItemBase item) {

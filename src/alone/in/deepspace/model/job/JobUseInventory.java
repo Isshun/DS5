@@ -55,9 +55,7 @@ public class JobUseInventory extends Job {
 		
 		// Update resource manager
 		if (_nbUsed == 0) {
-			if (_item.getInfo().isFood) {
-				ResourceManager.getInstance().addFood(-1);
-			}
+			ResourceManager.getInstance().add(_item.getInfo());
 		}
 		
 		// TODO: immediate use
