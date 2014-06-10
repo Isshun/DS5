@@ -91,7 +91,7 @@ public class Character extends Movable {
 		}
 		_birthName = _lastName;
 
-		Log.info("Character done: " + _firstName + " (" + x + ", " + y + ")" + _gender);
+		Log.info("Character done: " + _firstName + _lastName + " (" + x + ", " + y + ")");
 	}
 
 	public void				setSelected(boolean selected) { _isSelected = selected; }

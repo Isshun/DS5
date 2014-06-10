@@ -911,6 +911,7 @@ public class WorldManager implements TileBasedMap {
 		WorldArea area = getArea(x, y);
 		if (area != null) {
 			area.setItem(null);
+			MainRenderer.getInstance().invalidate(x, y);
 		}
 		return item;
 	}

@@ -47,36 +47,48 @@ public class JobTake extends Job {
 			return false;
 		}
 		
+		// Item is not in storage nor on the floor
+		if (_storage == null && _item == null) {
+			_reason = JobAbortReason.INVALID;
+			return false;
+		}
+		
 		// Check for item in storage room
-		if (_storage != null) {
-			// filter is null
-			if (_filter == null) {
-				_reason = JobAbortReason.INVALID;
-				return false;
-			}
-			
-			// Storage not contains requested item
-			if (_storage.contains(_filter) == false) {
-				_reason = JobAbortReason.INVALID;
-				return false;
-			}
-			
+		if (_storage != null && checkInStorage()) {
 			return true;
 		}
 
 		// Check for item on floor
-		else if (_item != null) {
-			// Item is not on target location
-			if (_item != Game.getWorldManager().getItem(_posX, _posY)) {
-				_reason = JobAbortReason.INVALID;
-				return false;
-			}
-			
+		else if (_item != null && checkOnFloor()) {
 			return true;
 		}
 		
-		_reason = JobAbortReason.INVALID;
 		return false;
+	}
+
+	private boolean checkOnFloor() {
+		// Item is not on target location
+		if (_item != Game.getWorldManager().getItem(_posX, _posY)) {
+			_reason = JobAbortReason.INVALID;
+			return false;
+		}
+		return true;
+	}
+
+	private boolean checkInStorage() {
+		// filter is null
+		if (_filter == null) {
+			_reason = JobAbortReason.INVALID;
+			return false;
+		}
+		
+		// Storage not contains requested item
+		if (_storage.contains(_filter) == false) {
+			_reason = JobAbortReason.INVALID;
+			return false;
+		}
+		
+		return true;
 	}
 
 	@Override

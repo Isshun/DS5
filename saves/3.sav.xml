@@ -66116,15 +66116,6 @@
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>154</x>
-      <y>156</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
         <name>base.seaweed3</name>
         <matter>0</matter>
@@ -66642,24 +66633,6 @@
       </structure>
       <x>155</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>155</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>155</x>
-      <y>155</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -67297,24 +67270,6 @@
       </structure>
       <x>156</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>156</x>
-      <y>156</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>156</x>
-      <y>157</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -67989,24 +67944,6 @@
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>157</x>
-      <y>155</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>157</x>
-      <y>157</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
         <name>base.seaweed4</name>
         <matter>0</matter>
@@ -68495,15 +68432,6 @@
       </structure>
       <x>158</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>158</x>
-      <y>157</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -69101,24 +69029,6 @@
       </structure>
       <x>159</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_meal</name>
-        <matter>0</matter>
-      </item>
-      <x>159</x>
-      <y>155</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>159</x>
-      <y>160</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -69844,15 +69754,6 @@
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>160</x>
-      <y>152</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
         <name>base.seaweed3</name>
         <matter>0</matter>
@@ -70393,24 +70294,6 @@
       </structure>
       <x>161</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>161</x>
-      <y>157</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>161</x>
-      <y>161</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -70967,24 +70850,6 @@
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_meal</name>
-        <matter>0</matter>
-      </item>
-      <x>162</x>
-      <y>154</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>162</x>
-      <y>157</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
         <name>base.seaweed2</name>
         <matter>0</matter>
@@ -71491,33 +71356,6 @@
       </structure>
       <x>163</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>163</x>
-      <y>157</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>163</x>
-      <y>158</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>163</x>
-      <y>161</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -72144,24 +71982,6 @@
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>164</x>
-      <y>153</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>164</x>
-      <y>159</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
         <name>base.seaweed5</name>
         <matter>0</matter>
@@ -72735,24 +72555,6 @@
       </structure>
       <x>165</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>165</x>
-      <y>156</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>165</x>
-      <y>157</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -73339,24 +73141,6 @@
       </structure>
       <x>166</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_meal</name>
-        <matter>0</matter>
-      </item>
-      <x>166</x>
-      <y>154</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>166</x>
-      <y>159</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -75139,24 +74923,6 @@
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>169</x>
-      <y>154</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>169</x>
-      <y>158</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
       <resource>
         <name>base.seaweed3</name>
         <matter>0</matter>
@@ -75778,7 +75544,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>2</value>
       </resource>
       <x>170</x>
       <y>143</y>
@@ -75789,7 +75555,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>2</value>
       </resource>
       <x>170</x>
       <y>144</y>
@@ -76200,6 +75966,14 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.stack</name>
+        <matter>0</matter>
+        <stack>
+          <item>base.military_ration</item>
+          <count>3</count>
+        </stack>
+      </item>
       <x>171</x>
       <y>125</y>
       <z>0</z>
@@ -76362,7 +76136,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>1</value>
       </resource>
       <x>171</x>
       <y>143</y>
@@ -76373,7 +76147,7 @@
         <name>base.seaweed3</name>
         <matter>0</matter>
         <tile>0</tile>
-        <value>3</value>
+        <value>1</value>
       </resource>
       <x>171</x>
       <y>144</y>
@@ -76421,15 +76195,6 @@
       </resource>
       <x>171</x>
       <y>148</y>
-      <z>0</z>
-    </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-    <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
-      <item>
-        <name>base.military_ration</name>
-        <matter>0</matter>
-      </item>
-      <x>171</x>
-      <y>156</y>
       <z>0</z>
     </alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.serializer.WorldSaver_-WorldSaveArea>
@@ -76793,6 +76558,14 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.stack</name>
+        <matter>0</matter>
+        <stack>
+          <item>base.seaweed</item>
+          <count>6</count>
+        </stack>
+      </item>
       <x>172</x>
       <y>125</y>
       <z>0</z>
@@ -77366,6 +77139,14 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.stack</name>
+        <matter>0</matter>
+        <stack>
+          <item>base.seaweed</item>
+          <count>10</count>
+        </stack>
+      </item>
       <x>173</x>
       <y>125</y>
       <z>0</z>
@@ -78025,6 +77806,14 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.stack</name>
+        <matter>0</matter>
+        <stack>
+          <item>base.seaweed</item>
+          <count>10</count>
+        </stack>
+      </item>
       <x>174</x>
       <y>125</y>
       <z>0</z>
@@ -78696,7 +78485,7 @@
         <matter>0</matter>
         <stack>
           <item>base.seaweed</item>
-          <count>6</count>
+          <count>10</count>
         </stack>
       </item>
       <x>175</x>
@@ -78708,6 +78497,14 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.stack</name>
+        <matter>0</matter>
+        <stack>
+          <item>base.military_ration</item>
+          <count>10</count>
+        </stack>
+      </item>
       <x>175</x>
       <y>125</y>
       <z>0</z>
@@ -79319,6 +79116,14 @@
         <name>base.light</name>
         <matter>10</matter>
       </structure>
+      <item>
+        <name>base.stack</name>
+        <matter>0</matter>
+        <stack>
+          <item>base.military_ration</item>
+          <count>10</count>
+        </stack>
+      </item>
       <x>176</x>
       <y>124</y>
       <z>0</z>
@@ -79328,6 +79133,14 @@
         <name>base.floor</name>
         <matter>1</matter>
       </structure>
+      <item>
+        <name>base.stack</name>
+        <matter>0</matter>
+        <stack>
+          <item>base.military_meal</item>
+          <count>3</count>
+        </stack>
+      </item>
       <x>176</x>
       <y>125</y>
       <z>0</z>
@@ -112473,24 +112286,24 @@
       <lastname>Norton</lastname>
       <firstname>Tommy </firstname>
       <relations/>
-      <old>24.819999999999812</old>
+      <old>25.939999999999788</old>
       <x>166</x>
       <y>146</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
       <needs>
-        <sleeping>-9</sleeping>
+        <sleeping>0</sleeping>
         <eating>0</eating>
         <drinking>0</drinking>
         <socialize>0</socialize>
-        <food>-642.0</food>
-        <happiness>3.0</happiness>
+        <food>-24.0</food>
+        <happiness>4.0</happiness>
         <relation>0.0</relation>
         <security>0.0</security>
         <oxygen>101.0</oxygen>
-        <energy>66.0</energy>
-        <health>98.0</health>
+        <energy>20.0</energy>
+        <health>97.0</health>
         <sickness>0.0</sickness>
         <injuries>0.0</injuries>
         <satiety>0.0</satiety>
