@@ -18,6 +18,7 @@ import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.room.RoomOptions.RoomOption;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 import alone.in.deepspace.util.StringUtils;
 
 public class StorageRoom extends Room {
@@ -139,7 +140,7 @@ public class StorageRoom extends Room {
 				ItemInfo info = item.getInfo();
 				if (item.isStack()) {
 					count = ((StackItem)item).size();
-					info = ((StackItem)item).getType();
+					info = ((StackItem)item).getStackedInfo();
 				}
 				if (info != null) {
 					itemInfos.put(info, itemInfos.containsKey(info) ? itemInfos.get(info) + count : count);
@@ -234,14 +235,45 @@ public class StorageRoom extends Room {
 	}
 
 	public UserItem take(UserItem item) {
+		if (item.isStack()) {
+			return takeItemInStack((StackItem)item);
+		} else {
+			return takeItemOnFloor(item);
+		}
+	}
+
+	private UserItem takeItemOnFloor(UserItem item) {
 		_inventory.remove(item);
 		
+		// Remove item from area
 		for (WorldArea area: _areas) {
 			if (area.getItem() == item) {
 				area.setItem(null);
 			}
 		}
 		_invalidate = true;
+		
+		return item;
+	}
+
+	private UserItem takeItemInStack(StackItem stack) {
+		if (stack.size() == 0) {
+			Log.error("stack is empty");
+			return null;
+		}
+		
+		UserItem item = stack.take();
+		_invalidate = true;
+		
+		// Remove stack if now empty
+		if (stack.size() == 0) {
+			_inventory.remove(item);
+			for (WorldArea area: _areas) {
+				if (area.getItem() == stack) {
+					area.setItem(null);
+				}
+			}
+		}
 		
 		return item;
 	}

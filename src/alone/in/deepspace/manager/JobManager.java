@@ -263,7 +263,7 @@ public class JobManager {
 					if (job.getReason() == JobAbortReason.BLOCKED && job.getBlocked() < Game.getUpdate() + Constant.DELAY_TO_RESTART_BLOCKED_JOB) {
 						continue;
 					}
-					
+
 					int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
 					if (distance < bestDistance && job.check(character)) {
 						bestJob = job;
@@ -320,7 +320,7 @@ public class JobManager {
 		job.setStatus(JobStatus.ABORTED);
 		job.setFail(reason, MainRenderer.getFrame());
 		job.setCharacter(null);
-		
+
 		// Abort because path to item is blocked
 		if (reason == JobAbortReason.BLOCKED) {
 			if (job.getItem() != null) {
@@ -365,24 +365,18 @@ public class JobManager {
 		}
 
 		// Looking for storage containing accepted item
-		StorageRoom storage = null;
-		ItemFilter itemFilter = new ItemFilter(true, true); 
 		for (ItemInfo neededItemInfo: factory.getInfo().onAction.itemAccept) {
-			if (storage == null) {
-				itemFilter.itemNeeded = neededItemInfo;
-				storage = Game.getRoomManager().findStorageContains(itemFilter, factory.getX(), factory.getY());
+			ItemFilter filter = ItemFilter.createConsomableFilter(neededItemInfo);
+
+			// Looking for storage containing needed item
+			StorageRoom storage = Game.getRoomManager().findStorageContains(filter, factory.getX(), factory.getY());
+			if (storage != null) {
+				Job job = createRefillJob(null, storage, filter, factory);
+				if (job != null) {
+					addJob(job);
+				}
+				return;
 			}
-		}
-
-		// No storage containing needed item
-		if (storage == null) {
-			return;
-		}
-
-		// Create jobs if needed item is available
-		Job job = createRefillJob(null, storage, itemFilter, factory);
-		if (job != null) {
-			addJob(job);
 		}
 	}
 
@@ -537,7 +531,7 @@ public class JobManager {
 		}
 		return job;
 	}
-	
+
 	public void onLongUpdate() {
 		for (JobCheck jobCheck: _jobsCheck) {
 			jobCheck.create(this);

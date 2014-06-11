@@ -263,83 +263,78 @@ public class WorldManager implements TileBasedMap {
 
 		// Get new item
 		ItemBase item = null;
-//		if (BaseItem.isResource(type)) {
-//			item = new WorldRessource(type);
-//			((WorldRessource)item).setValue(matterSupply);
-//		} else
-		
-		// TODO: filter
-//		if ("base.storage".equals(info.name)) {
-//			item = new StorageItem();
-//			_areas[x][y].setItem((UserItem) item);
-//			return item;
+
+		// Base light item
+		if ("base.light".equals(info.name)) {
+			area.setLightSource(info.light);
+			item = new UserItem(info);
+			((MainRenderer)MainRenderer.getInstance()).initLight();
+		}
+		// Storage item
+		else if (info.isStorage) {
+			Log.error("storage item is deprecated: " + info.name);
+			return null;
+		}
+		// World resource
+		else if (info.isResource) {
+			item = createResource(area, info, x, y, matterSupply);
+		}
+		// Structure item
+		else if (info.isStructure) {
+			item = createStructure(area, info, x, y, matterSupply);
+		}
+		// User item
+		else {
+			item = createUserItem(area, info, x, y, matterSupply);
+		}
+
+		item.setPosition(x, y);
+		MainRenderer.getInstance().invalidate(x, y);
+
+		return item;
+	}
+
+	private UserItem createUserItem(WorldArea area, ItemInfo info, int x, int y, int matterSupply) {
+		UserItem item = null;
+
+		// Factory item
 		if (info.isFactory) {
 			item = new FactoryItem(info);
 			_factoryItems.add((FactoryItem)item);
-		} else if (info.isStack) {
+		}
+		// Stack item
+		else if (info.isStack) {
 			item = new StackItem();
-		} else if (info.isStorage) {
-			Log.error("storage item is deprecated: " + info.name);
-			return null;
-		} else if (info.isResource) {
-			item = new WorldResource(info);
-		} else if (info.isStructure) {
-			item = new StructureItem(info);
-		} else {
+		}
+		// Regular user item
+		else {
 			item = new UserItem(info);
 		}
-		item.setPosition(x, y);
-		//		  int zoneId = item.getZoneId();
-
-		// Ressource
-		if (item.isRessource()) {
-			_floors[f][x][y].setRessource((WorldResource) item);
-//			if ((item).getValue() > 0) {
-//				item.setMatterSupply(10);
-				//JobManager.getInstance().gather(item);
-				MainRenderer.getInstance().invalidate(item.getX(), item.getY());
-				return item;
-//			}
-		}
-
-		// Wall
-		else if (item.isStructure() && item.isFloor() == false) {
-			_floors[f][x][y].setStructure((StructureItem) item);
-			// _items[x][y].setRoomId(roomId);
-			// _items[x][y].setZoneId(0);
-			//destroyRoom(roomId);
-		}
-
-		// Object or floor
-		else {
-			if (item.isFloor()) {
-				_floors[f][x][y].setStructure((StructureItem) item);
-			} else if (item.isRessource() == false) {
-				if (_floors[f][x][y] != null) {
-					_floors[f][x][y].setItem((UserItem) item);
-
-					// TODO: dynamic
-//					if (item.isType(BaseItem.Type.TACTICAL_PHASER)) {
-//						DynamicObjectManager.getInstance().add((UserItem)item);
-//					}
-				} else {
-					Log.error("Put item on null WorldArea");
-				}
-			}
-		}
-
-		// Put item
-		Log.debug("put item: " + item.getName());
-
-		item.setMatterSupply(matterSupply);
 		
-		if (info.name.equals("base.main_computer")) {
-			JobManager.getInstance().addRoutineItem(item);
-		}
-
-		MainRenderer.getInstance().invalidate(item.getX(), item.getY());
+		item.setMatterSupply(matterSupply);
+		area.setItem(item);
 		
 		return item;
+	}
+
+	private StructureItem createStructure(WorldArea area, ItemInfo info, int x, int y, int matterSupply) {
+		StructureItem structure = new StructureItem(info);
+		
+		structure.setMatterSupply(matterSupply);
+		_floors[0][x][y].setStructure(structure);
+		area.setStructure(structure);
+
+		return structure;
+	}
+
+	private ItemBase createResource(WorldArea area, ItemInfo info, int x, int y, int matterSupply) {
+		WorldResource resource = new WorldResource(info);
+		
+		resource.setValue(matterSupply);
+		_floors[0][x][y].setRessource(resource);
+		area.setRessource(resource);
+		
+		return resource;
 	}
 
 	public UserItem 			getItem(int x, int y) {
@@ -350,10 +345,8 @@ public class WorldManager implements TileBasedMap {
 	public UserItem 			find(ItemFilter filter) {
 		for (int x = 0; x < _width; x++) {
 			for (int y = 0; y < _height; y++) {
-				UserItem item = _areas[x][y].getItem();
+				UserItem item = _floors[0][x][y].getItem();
 				if (item != null && item.matchFilter(filter)) {
-					int i = 0;
-					item.matchFilter(filter);
 					return item;
 				}
 			}

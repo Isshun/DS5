@@ -156,6 +156,9 @@ public class LightRenderer implements IRenderer {
 		for (int x = fromX; x < toX; x++) {
 			for (int y = fromY; y < toY; y++) {
 				WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
+				if (area.hasLightSource()) {
+					diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getLightSource() / 10);
+				}
 				if (area.getItem() != null && area.getItem().getLight() > 0) {
 					diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getItem().getLight() / 10);
 				}

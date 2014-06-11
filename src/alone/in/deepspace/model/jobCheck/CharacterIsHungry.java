@@ -17,25 +17,27 @@ public class CharacterIsHungry implements JobCharacterCheck {
 	@Override
 	public boolean create(JobManager jobManager, Character character) {
 		if (character.getNeeds().isHungry()) {
-			ItemFilter filter = new ItemFilter(true, true);
-			filter.effectFood = true;
+			ItemFilter consomableItemFilter = ItemFilter.createConsomableFilter();
+			consomableItemFilter.effectFood = true;
 
 			// Have item in inventory
-			ItemBase item = character.find(filter);
+			ItemBase item = character.find(consomableItemFilter);
 			if (item != null) {
 				jobManager.addJob(JobUseInventory.create(character, item), character);
 				return true;
 			}
 
 			// Take item from storage
-			StorageRoom storage = Game.getRoomManager().findStorageContains(filter, character.getX(), character.getY());
+			StorageRoom storage = Game.getRoomManager().findStorageContains(consomableItemFilter, character.getX(), character.getY());
 			if (storage != null) {
-				jobManager.addJob(JobTake.create(character, storage, filter), character);
+				jobManager.addJob(JobTake.create(character, storage, consomableItemFilter), character);
 				return true;
 			}
 
 			// Looking for food dispenser
-			item = ServiceManager.getWorldMap().getNearest(filter, character);
+			ItemFilter factoryFilter = ItemFilter.createFactoryFilter();
+			factoryFilter.effectFood = true;
+			item = ServiceManager.getWorldMap().getNearest(factoryFilter, character);
 			if (item != null) {
 				jobManager.addJob(JobUse.create(item), character);
 				return true;

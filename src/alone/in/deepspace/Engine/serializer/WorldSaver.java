@@ -31,6 +31,7 @@ public class WorldSaver {
 		public WorldSaveStructure 	structure;
 		public WorldSaveResource 	resource;
 		public WorldSaveUserItem 	item;
+		public int					lightSource;
 		public int 					x;
 		public int 					y;
 		public int 					z;
@@ -67,6 +68,7 @@ public class WorldSaver {
 		areaSave.x = area.getX();
 		areaSave.y = area.getY();
 		areaSave.z = area.getZ();
+		areaSave.lightSource = area.getLightSource();
 		
 		UserItem item = area.getItem();
 		if (item != null) {
@@ -75,9 +77,9 @@ public class WorldSaver {
 			areaSave.item.matter = item.getMatterSupply();
 			if (item.isStack()) {
 				StackItem stack = (StackItem)item;
-				if (stack.getType() != null) {
+				if (stack.getStackedInfo() != null) {
 					areaSave.item.stack = new WorldSaveStackInfo();
-					areaSave.item.stack.item = stack.getType().name;
+					areaSave.item.stack.item = stack.getStackedInfo().name;
 					areaSave.item.stack.count = stack.size();
 				}
 			}
@@ -105,6 +107,11 @@ public class WorldSaver {
 	public static void load(WorldManager worldManager, List<WorldSaveArea> areas) {
 	    for (WorldSaveArea area: areas) {
 	    	if (area != null) {
+	    		// Light
+	    		if (area.lightSource > 0) {
+	    			worldManager.getArea(area.z, area.x, area.y).setLightSource(area.lightSource);
+	    		}
+	    		
 	    		// UserItem
 	    		if (area.item != null) {
 	    			ItemBase item = worldManager.putItem(area.item.name, area.x, area.y, area.z, area.item.matter);

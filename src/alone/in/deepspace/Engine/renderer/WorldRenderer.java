@@ -411,7 +411,7 @@ public class WorldRenderer implements IRenderer {
 	}
 
 	private void refreshStack(StackItem stack, int x, int y) {
-		Sprite sprite = _spriteManager.getIcon(stack.getType());
+		Sprite sprite = _spriteManager.getIcon(stack.getStackedInfo());
 		if (sprite != null) {
 			sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
 			_textureCache.draw(sprite);

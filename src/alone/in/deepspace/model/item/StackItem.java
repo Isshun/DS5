@@ -10,7 +10,7 @@ public class StackItem extends UserItem {
 	private static final int MAX_SIZE = 10;
 	
 	private List<UserItem>	_items;
-	private ItemInfo		_type;
+	private ItemInfo		_stackedInfo;
 	private int 			_size;
 	
 	public StackItem() {
@@ -25,7 +25,7 @@ public class StackItem extends UserItem {
 	}
 
 	public boolean contains(ItemInfo info) {
-		return _type == info;
+		return _stackedInfo == info;
 	}
 
 	public boolean hasSpaceLeft() {
@@ -33,19 +33,59 @@ public class StackItem extends UserItem {
 	}
 
 	public void add(UserItem item) {
-		if (_type != null && _type != item.getInfo()) {
+		if (_stackedInfo != null && _stackedInfo != item.getInfo()) {
 			Log.error("Cannot add UserItem to Stack: type not match");
 			return;
 		}
 		
 		_items.add(item);
-		_type = item.getInfo();
+		_stackedInfo = item.getInfo();
 		_size++;
+	}
+	
+	public UserItem take() {
+		if (_items.isEmpty()) {
+			Log.error("Cannot take item on empty stack");
+			return null;
+		}
+		
+		_size--;
+		return _items.get(0);
 	}
 	
 	/**
 	 * @return Number of item contained in stack
 	 */
 	public int 		size() { return _size; }
-	public ItemInfo	getType() { return _type; }
+	public ItemInfo	getStackedInfo() { return _stackedInfo; }
+	
+	@Override
+	public boolean matchFilter(ItemFilter filter) {
+		// Stack is empty
+		if (_size == 0) {
+			return false;
+		}
+		
+		// Filter need free slots
+		if (filter.needFreeSlot) {
+			return false;
+		}
+		
+		// Filter looking for item
+		if (filter.lookingForItem) {
+
+			// Filter on item
+			if (filter.itemNeeded == _stackedInfo) {
+				filter.itemMatched = _stackedInfo;
+				return true;
+			}
+
+			if (_stackedInfo.onAction != null && _stackedInfo.matchFilter(_stackedInfo.onAction.effects, filter)) {
+				filter.itemMatched = _stackedInfo;
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

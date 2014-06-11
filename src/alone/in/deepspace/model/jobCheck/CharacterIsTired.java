@@ -16,8 +16,7 @@ public class CharacterIsTired implements JobCharacterCheck {
 	@Override
 	public boolean create(JobManager jobManager, Character character) {
 		if (character.getNeeds().isTired()) {
-			ItemFilter filter = new ItemFilter(false, true);
-			filter.needFreeSlot = true;
+			ItemFilter filter = ItemFilter.createUsableFilter();
 			filter.effectEnergy = true;
 			
 			// Character has quarters

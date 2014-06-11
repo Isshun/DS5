@@ -132,6 +132,7 @@ public class JobRefill extends Job {
 		while (character.hasInventorySpaceLeft() && _storage.contains(_filter)) {
 			UserItem item = _storage.take(_filter);
 			character.addInventory(item);
+			_carryItems.add(item);
 		}
 
 		// Change to STORE job
@@ -144,11 +145,11 @@ public class JobRefill extends Job {
 
 	@Override
 	public String getLabel() {
-		return "refill " + _factory.getLabel();
+		return "refill " + _factory.getLabel() + _subAction;
 	}
 
 	@Override
 	public String getShortLabel() {
-		return "refill " + _factory.getLabel();
+		return "refill " + _factory.getLabel() + _subAction;
 	}
 }

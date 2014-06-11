@@ -14,6 +14,7 @@ public class WorldArea {
 	private int 			_z;
 	private Room 			_room;
 	private boolean 		_isStorage;
+	private int				_lightSource;
 
 	public WorldArea(int x, int y, int z) {
 		_oxygen = (int) (Math.random() % 100);
@@ -43,7 +44,10 @@ public class WorldArea {
 	public int 				getLightPass() { return _lightPass; }
 	public Room				getRoom() { return _room; }
 	public boolean			isStorage() { return _isStorage; }
-
+	public boolean			hasLightSource() { return _lightSource > 0; }
+	public int				getLightSource() { return _lightSource; }
+	public void				setLightSource(int value) { _lightSource = value; }
+	
 	public void				setItem(UserItem item) {
 		_item = item;
 		if (item != null) {

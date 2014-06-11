@@ -63,7 +63,7 @@ public class ItemLoader {
 			    	throw new RuntimeException("unknow item type: " + info.type);
 			    }
 			    
-			    info.isStorage = info.storage > 0 || info.onAction != null && info.onAction.storage > 0;
+//			    info.isStorage = info.storage > 0 || info.onAction != null && info.onAction.storage > 0;
 			    info.isFood = info.onAction != null && info.onAction.effects != null && info.onAction.effects.food > 0;
 			    data.items.add(info);
 			}

@@ -25,7 +25,7 @@ public class CheckLowFood implements JobCheck {
 		}
 		
 		// Search for food-factory
-		ItemFilter itemFilter = new ItemFilter(true, false);
+		ItemFilter itemFilter = ItemFilter.createFactoryFilter();
 		itemFilter.effectFood = true;
 		UserItem item = ServiceManager.getWorldMap().find(itemFilter);
 		if (item == null) {

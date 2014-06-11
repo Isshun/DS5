@@ -12,11 +12,52 @@ public class ItemFilter {
 	public boolean 	lookingForItem;
 	public ItemInfo	itemMatched;
 	public ItemInfo itemNeeded;
-	public boolean 	needFreeSlot;
-	
-	public ItemFilter(boolean isFactory, boolean isImmediate) {
+	public Boolean 	needFreeSlot;
+	public boolean isConsomable;
+
+	private ItemFilter(boolean isFactory, boolean isImmediate) {
 		this.lookingForFactory = isFactory;
 		this.lookingForItem = isImmediate;
-		this.needFreeSlot = true;
+	}
+
+	public static ItemFilter createConsomableFilter() {
+		ItemFilter filter = new ItemFilter(false, true);
+		filter.isConsomable = true;
+		filter.needFreeSlot = false;
+		return filter;
+	}
+
+	public static ItemFilter createConsomableFilter(ItemInfo neededItemInfo) {
+		ItemFilter filter = new ItemFilter(false, true);
+		filter.isConsomable = true;
+		filter.needFreeSlot = false;
+		filter.itemNeeded = neededItemInfo;
+		return filter;
+	}
+	
+	public static ItemFilter createFactoryFilter() {
+		ItemFilter filter = new ItemFilter(true, false);
+		filter.needFreeSlot = true;
+		return filter;
+	}
+	
+	public static ItemFilter createFactoryFilter(ItemInfo neededItemInfo) {
+		ItemFilter filter = new ItemFilter(true, false);
+		filter.needFreeSlot = true;
+		filter.itemNeeded = neededItemInfo;
+		return filter;
+	}
+
+	public static ItemFilter createUsableFilter() {
+		ItemFilter filter = new ItemFilter(false, true);
+		filter.needFreeSlot = true;
+		return filter;
+	}
+
+	public static ItemFilter createUsableFilter(ItemInfo neededItemInfo) {
+		ItemFilter filter = new ItemFilter(false, true);
+		filter.needFreeSlot = true;
+		filter.itemNeeded = neededItemInfo;
+		return filter;
 	}
 }

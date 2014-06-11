@@ -643,8 +643,8 @@ public class PanelInfo extends BaseRightPanel {
 
 		if (item.isStack()) {
 			StackItem stack = (StackItem)item;
-			if (stack.getType() != null) {
-				_itemName.setString(StringUtils.getDashedString(stack.getType().label, " x" + stack.size(), Constant.NB_COLUMNS_TITLE));
+			if (stack.getStackedInfo() != null) {
+				_itemName.setString(StringUtils.getDashedString(stack.getStackedInfo().label, " x" + stack.size(), Constant.NB_COLUMNS_TITLE));
 			}
 		}
 		

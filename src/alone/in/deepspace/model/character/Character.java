@@ -191,10 +191,6 @@ public class Character extends Movable {
 	public boolean 			isGay() { return _isGay; }
 
 	public void	setJob(Job job) {
-		if (_job == job) {
-			return;
-		}
-
 		// Cancel previous job
 		if (_job != null && _job != job && _job.isFinish() == false) {
 			JobManager.getInstance().abort(_job, Job.JobAbortReason.INTERRUPTE);
