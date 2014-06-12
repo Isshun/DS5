@@ -23,18 +23,20 @@ import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.util.Constant;
 
 public class LightRenderer implements IRenderer {
-	private static final int LIGHT_DISTANCE = 10;
-	private RenderTexture 	_cache;
-	private Sprite _sprite;
-	private Sprite _sprite2;
-	private Shader _blur;
-	private Sprite _spriteCache;
+	private static final int	LIGHT_DISTANCE = 10;
+
+	private RenderTexture 		_cache;
+	private Sprite 				_sprite;
+	private Sprite 				_sprite2;
+	private Shader 				_blur;
+	private Sprite 				_spriteCache;
+	private boolean 			_invalidate;
 
 	public LightRenderer() {
-
 		try {
 			Texture texture = new Texture();
 			texture.loadFromFile((new File("res/Tilesets/shadow.png").toPath()));
+			
 			_sprite2 = new Sprite();
 			_sprite2.setTexture(texture);
 			_sprite2.setTextureRect(new IntRect(0, 0, 16, 48));
@@ -42,14 +44,12 @@ public class LightRenderer implements IRenderer {
 			_sprite = new Sprite();
 			_sprite.setTexture(texture);
 			_sprite.setTextureRect(new IntRect(16, 0, 16, 48));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 
-		try {
 			_cache = new RenderTexture();
 			_cache.create(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
 			_cache.display();
+		} catch (IOException e) {
+			e.printStackTrace();
 		} catch (TextureCreationException e) {
 			e.printStackTrace();
 		}
@@ -74,8 +74,7 @@ public class LightRenderer implements IRenderer {
 			_spriteCache = new Sprite(_cache.getTexture());
 		}
 		
-		RenderStates render2 = new RenderStates(render, _blur);
-		app.draw(_spriteCache, render2);
+		app.draw(_spriteCache, new RenderStates(render, _blur));
 	}
 
 	private void diffuseLight(int fromX, int fromY, int toX, int toY, int x, int y, int light, int pass, double bright) {
@@ -118,10 +117,7 @@ public class LightRenderer implements IRenderer {
 	}
 
 	public void initLight() {
-		int width = ServiceManager.getWorldMap().getWidth();
-		int height = ServiceManager.getWorldMap().getHeight();
-
-		refresh(0, 0, width, height);
+		_invalidate = true;
 	}
 
 	public void refresh(ItemBase item) {
@@ -132,190 +128,9 @@ public class LightRenderer implements IRenderer {
 //				item.getX() + item.getLight(),
 //				item.getY() + item.getLight());
 		
-		initLight();
+		_invalidate = true;
 	}
 	
-	private void refresh(int fromX, int fromY, int toX, int toY) {
-		int mapWidth = ServiceManager.getWorldMap().getWidth();
-		int mapHeight = ServiceManager.getWorldMap().getHeight();
-		fromX = Math.max(fromX, 0);
-		fromY = Math.max(fromY, 0);
-		toX = Math.min(toX, mapWidth);
-		toY = Math.min(toY, mapHeight);
-
-		// Reset brightness for areas
-		for (int x = fromX; x < toX; x++) {
-			for (int y = fromY; y < toY; y++) {
-				ServiceManager.getWorldMap().getArea(x, y).setLightPass(0);
-				ServiceManager.getWorldMap().getArea(x, y).setLight(0);
-			}
-		}
-
-		// Compute lights and set areas
-		int pass = 0;
-		for (int x = fromX; x < toX; x++) {
-			for (int y = fromY; y < toY; y++) {
-				WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
-				if (area.hasLightSource()) {
-					diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getLightSource() / 10);
-				}
-				if (area.getItem() != null && area.getItem().getLight() > 0) {
-					diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getItem().getLight() / 10);
-				}
-				if (area.getStructure() != null && area.getStructure().getLight() > 0) {
-					diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getStructure().getLight() / 10);
-				}
-				if (area.getRessource() != null && area.getRessource().getLight() > 0) {
-					diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getRessource().getLight() / 10);
-				}
-			}
-		}
-		
-		// Reset brightness for areas
-		for (int x = fromX; x < toX; x++) {
-			for (int y = fromY; y < toY; y++) {
-				ServiceManager.getWorldMap().getArea(x, y).setLightPass(0);
-			}
-		}
-
-		// Windows
-		for (int x = fromX; x < toX; x++) {
-			for (int y = fromY; y < toY; y++) {
-				WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
-				WorldArea areaBellow = ServiceManager.getWorldMap().getArea(x, y+1);
-				if (areaBellow != null && areaBellow.getLight() > 0) {
-					if (area.getStructure() != null && area.getStructure().isWindow()) {
-						diffuseLight(fromX, fromY, toX, toY, x, y-1, 10, ++pass, areaBellow.getLight() * 0.75);
-					}
-					if (area.getStructure() != null && (area.getStructure().isWall() || area.getStructure().isDoor())) {
-						area.setLight(areaBellow.getLight());
-					}
-				}
-			}
-		}
-
-		fixLight(fromX-10, fromY-10, toX+10, toY+10);
-
-		// Draw shadows
-		_cache.clear(new Color(0,  0, 0, 0));
-		RectangleShape shape = new RectangleShape(new Vector2f(32, 32));
-		RectangleShape wallShape = new RectangleShape(new Vector2f(32, 48));
-		RectangleShape halfShape = new RectangleShape(new Vector2f(32, 16));
-
-		halfShape.setFillColor(new Color(0, 0, 0, 0));
-//		for (int x = fromX; x < toX; x++) {
-//			for (int y = fromY; y < toY; y++) {
-		for (int x = 0; x < mapWidth; x++) {
-			for (int y = 0; y < mapHeight; y++) {
-				WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
-				WorldArea areaBellow = ServiceManager.getWorldMap().getArea(x, y-1);
-				WorldArea areaRight = ServiceManager.getWorldMap().getArea(x+1, y);
-				WorldArea areaLeft = ServiceManager.getWorldMap().getArea(x-1, y);
-				StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
-				StructureItem structureBellow = ServiceManager.getWorldMap().getStructure(x, y+1);
-				StructureItem structureTop = ServiceManager.getWorldMap().getStructure(x, y-1);
-				StructureItem structureRight = ServiceManager.getWorldMap().getStructure(x+1, y);
-				StructureItem structureLeft = ServiceManager.getWorldMap().getStructure(x-1, y);
-//
-//				if (structure != null && structure.isFloor() && structureBellow != null && structureBellow.isFloor() == false) {
-//					shape = halfShape;
-//					shape.setFillColor(new Color(0, 200, 0, 100));
-//					shape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT + 16);
-//					_cache.draw(shape);
-//				} else {
-//					shape = fullShape;
-//				}
-
-//				// Vertical wall
-//				if (structure != null && structure.isWall() && structureBellow != null && structureBellow.isWall()) {
-////					_sprite2.setPosition(x * Constant.TILE_SIZE + 16, y * Constant.TILE_SIZE - 16);
-////					_sprite2.setColor(new Color(255, 255, 255, 200 - (int)(areaRight.getLight() * 255)));
-////					_cache.draw(_sprite2);
-////
-////					_sprite.setPosition(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE - 16);
-////					_sprite.setColor(new Color(255, 255, 255, 200 - (int)(areaLeft.getLight() * 255)));
-////					_cache.draw(_sprite);
-//					// Right
-//					//if (structure != null && structure.isWall() && (structureRight == null || structureRight.isFloor())) {
-//						sideShape.setPosition(x * Constant.TILE_WIDTH + 16, y * Constant.TILE_HEIGHT - 0);
-//						sideShape.setFillColor(new Color(0, 0, 0, 200 - (int)(areaRight.getLight() * 255)));
-//						_cache.draw(sideShape);
-//						
-//						if (structureTop == null || structureTop.isWall() == false) {
-//							smallShape.setPosition(x * Constant.TILE_WIDTH + 16, y * Constant.TILE_HEIGHT - 16);
-//							smallShape.setFillColor(new Color(0, 0, 0, 200 - (int)(areaRight.getLight() * 255)));
-//							_cache.draw(smallShape);
-//						}
-//					//}
-//					// Left
-//					//if (structure != null && structure.isWall() && (structureLeft == null || structureLeft.isFloor())) {
-//						sideShape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT - 0);
-//						sideShape.setFillColor(new Color(0, 0, 0, 200 - (int)(areaLeft.getLight() * 255)));
-//						_cache.draw(sideShape);
-//
-//						if (structureTop == null || structureTop.isWall() == false) {
-//							smallShape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT - 16);
-//							smallShape.setFillColor(new Color(0, 0, 0, 200 - (int)(areaLeft.getLight() * 255)));
-//							_cache.draw(smallShape);
-//						}
-////}
-//				}
-				
-//				// Horizontal wall
-//				else if (structure != null && structure.isWall()) {
-//					if (areaBellow != null) {
-//						shape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-//						shape.setFillColor(new Color(0, 0, 0, 200 - (int)(area.getLight() * 255)));
-//						_cache.draw(shape);
-//						
-//						if (structureTop == null || structureTop.isWall() == false) {
-//							halfShape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT - 16);
-//							halfShape.setFillColor(new Color(0, 0, 0, 200 - (int)(area.getLight() * 255)));
-//							_cache.draw(halfShape);
-//						}
-//					}
-//				}
-//				
-//				else {
-//					if (structureBellow != null && structureBellow.isWall()) {
-//						shape = halfShape;
-//					}
-//					shape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-//					shape.setFillColor(new Color(10, 10, 30, 200 - (int)(area.getLight() * 255)));
-//					_cache.draw(shape);
-//				}
-
-				Color color = new Color(10, 10, 30, 200 - (int)(area.getLight() * 255));
-				
-				if (structure != null && (structure.isWall() || structure.isDoor())) {
-					if (structureBellow != null && (structureBellow.isWall() || structureBellow.isDoor())) {
-						shape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT - 16);
-						shape.setFillColor(color);
-						_cache.draw(shape);
-					}
-					
-					else {
-						wallShape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT - 16);
-						wallShape.setFillColor(color);
-						_cache.draw(wallShape);
-					}
-				}
-				
-				else if (structureBellow != null && (structureBellow.isWall() || structureBellow.isDoor())) {
-					halfShape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-					halfShape.setFillColor(color);
-					_cache.draw(halfShape);
-				}
-				
-				else {
-					shape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-					shape.setFillColor(color);
-					_cache.draw(shape);
-				}
-			}
-		}
-	}
-
 	private void fixLight(int fromX, int fromY, int toX, int toY) {
 		int mapWidth = ServiceManager.getWorldMap().getWidth();
 		int mapHeight = ServiceManager.getWorldMap().getHeight();
@@ -326,19 +141,8 @@ public class LightRenderer implements IRenderer {
 
 		for (int x = fromX; x < toX; x++) {
 			for (int y = fromY; y < toY; y++) {
-				WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
-				WorldArea areaBellow = ServiceManager.getWorldMap().getArea(x, y+1);
-
-//				// Ground
-//				if (area != null && area.getLight() > 0 && areaBellow != null && areaBellow.getLight() <= 0) {
-//					if (area.getStructure() == null || area.getStructure().isFloor()) {
-//						if (areaBellow.getStructure() == null || areaBellow.getStructure().isFloor()) {
-//							areaBellow.setLight(area.getLight() * 0.5);
-//						}
-//					}
-//				}
-
 				// Wall
+				WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
 				if (area != null && area.getStructure() != null && (area.getStructure().isWall() || area.getStructure().isDoor()) && area.getLight() <= 0) {
 					WorldArea areaLeft = ServiceManager.getWorldMap().getArea(x-1, y);
 					WorldArea areaRight = ServiceManager.getWorldMap().getArea(x+1, y);
@@ -353,20 +157,125 @@ public class LightRenderer implements IRenderer {
 
 	@Override
 	public void onRefresh(int frame) {
-		// TODO Auto-generated method stub
-		
+		if (_invalidate) {
+			int fromX = 0;
+			int fromY = 0;
+			int toX = ServiceManager.getWorldMap().getWidth();
+			int toY = ServiceManager.getWorldMap().getHeight();
+			
+			int mapWidth = ServiceManager.getWorldMap().getWidth();
+			int mapHeight = ServiceManager.getWorldMap().getHeight();
+			fromX = Math.max(fromX, 0);
+			fromY = Math.max(fromY, 0);
+			toX = Math.min(toX, mapWidth);
+			toY = Math.min(toY, mapHeight);
+
+			// Reset brightness for areas
+			for (int x = fromX; x < toX; x++) {
+				for (int y = fromY; y < toY; y++) {
+					ServiceManager.getWorldMap().getArea(x, y).setLightPass(0);
+					ServiceManager.getWorldMap().getArea(x, y).setLight(0);
+				}
+			}
+
+			// Compute lights and set areas
+			int pass = 0;
+			for (int x = fromX; x < toX; x++) {
+				for (int y = fromY; y < toY; y++) {
+					WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
+					if (area.hasLightSource()) {
+						diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getLightSource() / 10);
+					}
+					if (area.getItem() != null && area.getItem().getLight() > 0) {
+						diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getItem().getLight() / 10);
+					}
+					if (area.getStructure() != null && area.getStructure().getLight() > 0) {
+						diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getStructure().getLight() / 10);
+					}
+					if (area.getRessource() != null && area.getRessource().getLight() > 0) {
+						diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getRessource().getLight() / 10);
+					}
+				}
+			}
+			
+			// Reset brightness for areas
+			for (int x = fromX; x < toX; x++) {
+				for (int y = fromY; y < toY; y++) {
+					ServiceManager.getWorldMap().getArea(x, y).setLightPass(0);
+				}
+			}
+
+			// Windows
+			for (int x = fromX; x < toX; x++) {
+				for (int y = fromY; y < toY; y++) {
+					WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
+					WorldArea areaBellow = ServiceManager.getWorldMap().getArea(x, y+1);
+					if (areaBellow != null && areaBellow.getLight() > 0) {
+						if (area.getStructure() != null && area.getStructure().isWindow()) {
+							diffuseLight(fromX, fromY, toX, toY, x, y-1, 10, ++pass, areaBellow.getLight() * 0.75);
+						}
+						if (area.getStructure() != null && (area.getStructure().isWall() || area.getStructure().isDoor())) {
+							area.setLight(areaBellow.getLight());
+						}
+					}
+				}
+			}
+
+			fixLight(fromX-10, fromY-10, toX+10, toY+10);
+
+			// Draw shadows
+			_cache.clear(new Color(0,  0, 0, 0));
+			RectangleShape shape = new RectangleShape(new Vector2f(32, 32));
+			RectangleShape wallShape = new RectangleShape(new Vector2f(32, 48));
+			RectangleShape halfShape = new RectangleShape(new Vector2f(32, 16));
+
+			halfShape.setFillColor(new Color(0, 0, 0, 0));
+			for (int x = 0; x < mapWidth; x++) {
+				for (int y = 0; y < mapHeight; y++) {
+					WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
+					StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
+					StructureItem structureBellow = ServiceManager.getWorldMap().getStructure(x, y+1);
+
+					Color color = new Color(10, 10, 30, 200 - (int)(area.getLight() * 255));
+					
+					if (structure != null && (structure.isWall() || structure.isDoor())) {
+						if (structureBellow != null && (structureBellow.isWall() || structureBellow.isDoor())) {
+							shape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT - 16);
+							shape.setFillColor(color);
+							_cache.draw(shape);
+						}
+						
+						else {
+							wallShape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT - 16);
+							wallShape.setFillColor(color);
+							_cache.draw(wallShape);
+						}
+					}
+					
+					else if (structureBellow != null && (structureBellow.isWall() || structureBellow.isDoor())) {
+						halfShape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
+						halfShape.setFillColor(color);
+						_cache.draw(halfShape);
+					}
+					
+					else {
+						shape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
+						shape.setFillColor(color);
+						_cache.draw(shape);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
 	public void invalidate(int x, int y) {
-		// TODO Auto-generated method stub
-		
+		_invalidate = true;
 	}
 
 	@Override
 	public void invalidate() {
-		// TODO Auto-generated method stub
-		
+		_invalidate = true;
 	}
 
 }

@@ -19,6 +19,7 @@ import alone.in.deepspace.manager.ResourceManager;
 import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.StatsManager;
+import alone.in.deepspace.manager.WorldFinder;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.GameData;
 import alone.in.deepspace.util.Constant;
@@ -48,6 +49,7 @@ public class Game {
 	public static GameData				getData() { return _data; }
 
 	private static int 					_update;
+	private static WorldFinder _worldFinder;
 	private Viewport 					_viewport;
 	private boolean						_isMenuOpen;
 	private boolean 					_isRunning;
@@ -71,8 +73,6 @@ public class Game {
 		}
 
 		_dynamicObjectManager.update();
-
-		ServiceManager.getWorldMap().update();
 
 		// Path complete
 		List<Runnable> paths = PathManager.getInstance().getPaths();
@@ -135,7 +135,7 @@ public class Game {
 		JobManagerLoader.load(JobManager.getInstance(), loadListener);
 
 		loadListener.onUpdate("Init world map");
-		ServiceManager.getWorldMap().cleanRock();
+		WorldFactory.cleanRock();
 		
 		ResourceManager.getInstance().refreshWater();
 		ResourceManager.getInstance().addMatter(5000);
@@ -168,5 +168,11 @@ public class Game {
 	}
 	public static void setRoomManager(RoomManager roomManager) {
 		_roomManager = roomManager;
+	}
+	public static WorldFinder getWorldFinder() {
+		return _worldFinder;
+	}
+	public static void setWorldFinder(WorldFinder worldFinder) {
+		_worldFinder = worldFinder;
 	}
 }

@@ -153,7 +153,7 @@ public class JobManager {
 				Log.error("Build structure: already exist on this area");
 				return null;
 			}
-			item = ServiceManager.getWorldMap().putItem(info, x, y);
+			item = ServiceManager.getWorldMap().putItem(info, x, y, 0, 0);
 		}
 
 		// Item
@@ -170,7 +170,7 @@ public class JobManager {
 				Log.error("JobManager: add build on non invalid structure (null or not STRUCTURE_FLOOR)");
 				return null;
 			} else {
-				item = ServiceManager.getWorldMap().putItem(info, x, y);
+				item = ServiceManager.getWorldMap().putItem(info, x, y, 0, 0);
 			}
 		}
 
@@ -185,7 +185,7 @@ public class JobManager {
 				Log.error("JobManager: add build on non null item");
 				return null;
 			} else {
-				item = ServiceManager.getWorldMap().putItem(info, x, y);
+				item = ServiceManager.getWorldMap().putItem(info, x, y, 0, 0);
 			}
 		}
 
@@ -198,10 +198,9 @@ public class JobManager {
 	 * @param character
 	 */
 	public void assignJob(Character character) {
-		Log.debug("assignJob");
-
 		// Priority jobs
 		if (createPriorityJob(character)) {
+			Log.info("assign priority job to [" + character.getName() + "]");
 			return;
 		}
 
@@ -210,20 +209,15 @@ public class JobManager {
 		if (job != null) {
 			job.setStatus(JobStatus.RUNNING);
 			character.setJob(job);
+			Log.info("assign [" + job.getShortLabel() + "] to [" + character.getName() + "]");
 			return;
 		}
 
 		// Routine jobs
 		if (createRoutineJob(character)) {
+			Log.info("assign routine job to [" + character.getName() + "]");
 			return;
 		}
-
-		// TODO
-		if (job != null) {
-			Log.info("assign [" + job.getShortLabel() + "] to [" + character.getName() + "]");
-		}
-
-		Log.debug("assignJob: done");
 	}
 
 	// TODO: one pass + check profession

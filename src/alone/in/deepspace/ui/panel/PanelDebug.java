@@ -294,7 +294,7 @@ public class PanelDebug extends BasePanel {
 			if (_currentItem.cost != null) {
 				matter = _currentItem.cost.matter;
 			}
-			Game.getWorldManager().putItem(_currentItem, 0, x, y, matter);
+			Game.getWorldManager().putItem(_currentItem, x, y, 0, matter);
 		}
 		else if (key == Key.UP) {
 			_line = _line - 1 < 0 ? _nbResults : _line - 1;

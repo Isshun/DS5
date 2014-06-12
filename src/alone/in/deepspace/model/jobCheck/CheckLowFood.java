@@ -1,8 +1,8 @@
 package alone.in.deepspace.model.jobCheck;
 
+import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.ResourceManager;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.item.ItemFilter;
 import alone.in.deepspace.model.item.UserItem;
 import alone.in.deepspace.model.job.Job;
@@ -27,7 +27,7 @@ public class CheckLowFood implements JobCheck {
 		// Search for food-factory
 		ItemFilter itemFilter = ItemFilter.createFactoryFilter();
 		itemFilter.effectFood = true;
-		UserItem item = ServiceManager.getWorldMap().find(itemFilter);
+		UserItem item = Game.getWorldFinder().find(itemFilter);
 		if (item == null) {
 			return;
 		}

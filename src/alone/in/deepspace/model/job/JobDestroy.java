@@ -43,7 +43,7 @@ public class JobDestroy extends Job {
 	@Override
 	public boolean action(Character character) {
 		ResourceManager.getInstance().addMatter(1);
-		ServiceManager.getWorldMap().removeItem(_item);
+		ServiceManager.getWorldMap().destroy(_item);
 		JobManager.getInstance().complete(this);
 		return true;
 	}

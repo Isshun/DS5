@@ -5,7 +5,6 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
 
 import alone.in.deepspace.util.Constant;
-import alone.in.deepspace.util.Log;
 
 public class Viewport {
 	private static final int ANIM_FRAME = 10;

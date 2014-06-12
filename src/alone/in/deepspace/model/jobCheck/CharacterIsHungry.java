@@ -2,7 +2,6 @@ package alone.in.deepspace.model.jobCheck;
 
 import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.JobManager;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemFilter;
@@ -37,7 +36,7 @@ public class CharacterIsHungry implements JobCharacterCheck {
 			// Looking for food dispenser
 			ItemFilter factoryFilter = ItemFilter.createFactoryFilter();
 			factoryFilter.effectFood = true;
-			item = ServiceManager.getWorldMap().getNearest(factoryFilter, character);
+			item = Game.getWorldFinder().getNearest(factoryFilter, character);
 			if (item != null) {
 				jobManager.addJob(JobUse.create(item), character);
 				return true;

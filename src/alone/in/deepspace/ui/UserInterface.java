@@ -72,6 +72,7 @@ public class UserInterface {
 	private ToolTip 					_selectedTooltip;
 	private Character 					_selectedCharacter;
 	private UserItem 					_selectedItem;
+	private StructureItem 				_selectedStructure;
 	private WorldResource				_selectedResource;
 	private WorldArea 					_selectedArea;
 	private Room 						_selectedRoom;
@@ -95,7 +96,6 @@ public class UserInterface {
 			new PanelManager(	Mode.MANAGER, 	Key.M),
 			new PanelShortcut(	Mode.NONE, 		null),
 	};
-	private StructureItem _selectedStructure;
 
 	public enum Mode {
 		INFO,
@@ -195,6 +195,7 @@ public class UserInterface {
 	public WorldArea		getSelectedArea() { return _selectedArea; }
 	public UserItem			getSelectedItem() { return _selectedItem; }
 	public WorldResource	getSelectedResource() { return _selectedResource; }
+	public StructureItem	getSelectedStructure() { return _selectedStructure; }
 	public ItemInfo			getSelectedItemInfo() { return _selectedItemInfo; }
 	public Room 			getSelectedRoom() { return _selectedRoom; }
 

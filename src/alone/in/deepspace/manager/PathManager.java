@@ -1,9 +1,7 @@
 package alone.in.deepspace.manager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,8 +14,6 @@ import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
 
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.model.Movable;
-import alone.in.deepspace.model.Region;
-import alone.in.deepspace.model.Region.Door;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.util.Constant;
@@ -77,21 +73,21 @@ public class PathManager {
 	private static PathManager 			sSelf;
 	final private ArrayList<Runnable> 	_paths;
 	private ExecutorService 			_threadPool;
-	private Map<Integer, Boolean>		_bridges;
+//	private Map<Integer, Boolean>		_bridges;
 //	public List<Door>					_doors;
 //	protected Region[][] 				_regions;
 
 	public PathManager() {
 		_threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-		_bridges = new HashMap<Integer, Boolean>();
+//		_bridges = new HashMap<Integer, Boolean>();
 //		_doors = new ArrayList<Door>();
 		_paths = new ArrayList<Runnable>();
 		FinderPool.init();
 	}
 	
 	public void init() {
-		int columns = Constant.WORLD_WIDTH / REGION_SIZE;
-		int lines = Constant.WORLD_HEIGHT / REGION_SIZE;
+//		int columns = Constant.WORLD_WIDTH / REGION_SIZE;
+//		int lines = Constant.WORLD_HEIGHT / REGION_SIZE;
 
 //		_regions = new Region[lines][columns];
 //		for (int j = 0; j < lines; j++) {
@@ -133,75 +129,75 @@ public class PathManager {
 	//		  _pathfinder.addObject(x, y, true);
 	//		}
 
-
-	private int getPath(List<Door> visited, Door d1, Door d2) {
-		visited.add(d1);
-		
-		for (Door d: d1.doors) {
-			if (d == d2) {
-				Log.info("in path: " + d.id);
-				return 1;
-			} else if (!visited.contains(d)) {
-				int ret = getPath(visited, d, d2);
-				if (ret == 1) {
-					Log.info("in path: " + d.id);
-				}
-				return ret;
-			}
-		}
-		return 0;
-	}
-
-	private void dumpLinks(List<Door> visited, Door d, int level) {
-		
-		visited.add(d);
-		
-//		for (int i = 0; i < level - 1; i++) {
-//			System.out.print("-");
+//
+//	private int getPath(List<Door> visited, Door d1, Door d2) {
+//		visited.add(d1);
+//		
+//		for (Door d: d1.doors) {
+//			if (d == d2) {
+//				Log.info("in path: " + d.id);
+//				return 1;
+//			} else if (!visited.contains(d)) {
+//				int ret = getPath(visited, d, d2);
+//				if (ret == 1) {
+//					Log.info("in path: " + d.id);
+//				}
+//				return ret;
+//			}
 //		}
-		System.out.print(String.valueOf(d.id));
-		System.out.print("\n");
-		
-		for (Door d2: d.doors) {
-			System.out.print("-");
-			System.out.print(String.valueOf(d2.id));
-			System.out.print("\n");
-		}
-		
-		System.out.print("\n\n");
-		for (Door d2: d.doors) {
-			if (!visited.contains(d2)) {
-				dumpLinks(visited, d2, level + 1);
-			}
-		}
-
-	}
-
-	private void getBridges(Region r1, Region r2) {
-		Log.info("get bridges between #" + r1.id + " and #" + r2.id);
-		
-		for (Door d1: r1._doors) {
-			for (Door d2: r2._doors) {
-				if (d1.x == d2.x && d1.y == d2.y) {
-					Log.info(d1.id + "x" + d2.id);
-					d1.addBridge(d2);
-					d2.addBridge(d1);
-					_bridges.put(d1.id << 16 + d2.id, true);
-				}
-			}
-		}
-	}
-
-	private long	getSum(int fromX, int fromY, int toX, int toY) {
-		long sum = fromX;
-		sum = sum << 16;
-		sum += fromY;
-		sum = sum << 16;
-		sum += toX;
-		sum = sum << 16;
-		sum += toY;
-		return sum;
-	}
+//		return 0;
+//	}
+//
+//	private void dumpLinks(List<Door> visited, Door d, int level) {
+//		
+//		visited.add(d);
+//		
+////		for (int i = 0; i < level - 1; i++) {
+////			System.out.print("-");
+////		}
+//		System.out.print(String.valueOf(d.id));
+//		System.out.print("\n");
+//		
+//		for (Door d2: d.doors) {
+//			System.out.print("-");
+//			System.out.print(String.valueOf(d2.id));
+//			System.out.print("\n");
+//		}
+//		
+//		System.out.print("\n\n");
+//		for (Door d2: d.doors) {
+//			if (!visited.contains(d2)) {
+//				dumpLinks(visited, d2, level + 1);
+//			}
+//		}
+//
+//	}
+//
+//	private void getBridges(Region r1, Region r2) {
+//		Log.info("get bridges between #" + r1.id + " and #" + r2.id);
+//		
+//		for (Door d1: r1._doors) {
+//			for (Door d2: r2._doors) {
+//				if (d1.x == d2.x && d1.y == d2.y) {
+//					Log.info(d1.id + "x" + d2.id);
+//					d1.addBridge(d2);
+//					d2.addBridge(d1);
+//					_bridges.put(d1.id << 16 + d2.id, true);
+//				}
+//			}
+//		}
+//	}
+//
+//	private long	getSum(int fromX, int fromY, int toX, int toY) {
+//		long sum = fromX;
+//		sum = sum << 16;
+//		sum += fromY;
+//		sum = sum << 16;
+//		sum += toX;
+//		sum = sum << 16;
+//		sum += toY;
+//		return sum;
+//	}
 
 	//		private Vector<Position>		getPath(MapSearchNode nodeStart, MapSearchNode nodeEnd) {
 	//
@@ -344,7 +340,7 @@ public class PathManager {
 		_threadPool.execute(new Runnable() {
 			@Override
 			public void run() {
-				int regionByLine = (Constant.WORLD_WIDTH / REGION_SIZE);
+//				int regionByLine = (Constant.WORLD_WIDTH / REGION_SIZE);
 				
 				//Region r1 = _regions.get((fromX / REGION_SIZE) % regionByLine + (fromY / REGION_SIZE) * regionByLine);
 				//Region r2 = _regions.get((toX / REGION_SIZE) % regionByLine + (fromY / REGION_SIZE) * regionByLine);
@@ -384,11 +380,6 @@ public class PathManager {
 					character.onPathFailed(job);
 					throw new RuntimeException("no more AStarPathFinder in FinderPool");
 				}
-				
-				int fx = fromX;
-				int fy = fromY;
-				int tx = toX;
-				int ty = toY;
 				
 				MyMover mover = new MyMover(character, job.getX(), job.getY());
 				final Path rawpath = finder.findPath(mover, fromX, fromY, toX, toY);

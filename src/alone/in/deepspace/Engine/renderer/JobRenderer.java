@@ -11,7 +11,6 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Vector2f;
 
-import alone.in.deepspace.Game;
 import alone.in.deepspace.manager.JobManager;
 import alone.in.deepspace.manager.JobManager.Action;
 import alone.in.deepspace.model.job.Job;

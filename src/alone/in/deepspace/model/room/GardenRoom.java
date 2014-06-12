@@ -14,11 +14,15 @@ import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.model.room.RoomOptions.RoomOption;
 
 public class GardenRoom extends Room {
-
+	private enum State {
+		RAW, GROWING, MATURE
+	}
+	
 	private static final double GROW_VALUE = 0.1;
 	private ItemInfo 			_currentCulture;
 	private List<ItemInfo> 		_cultures;
 	private RoomOptions			_options;
+	private State 				_state;
 
 	public GardenRoom() {
 		super(Type.GARDEN);
@@ -48,17 +52,22 @@ public class GardenRoom extends Room {
 	}
 
 	public void setCulture(ItemInfo culture) {
-		_currentCulture = culture;
-		for (WorldArea area: _areas) {
-			ServiceManager.getWorldMap().replaceItem(_currentCulture, area.getX(), area.getY());
+		if (culture != _currentCulture) {
+			_state = State.RAW;
+			_currentCulture = culture;
+			for (WorldArea area: _areas) {
+				ServiceManager.getWorldMap().replaceItem(_currentCulture, area.getX(), area.getY(), 0);
+			}
 		}
 	}
+	
+	public State getState() { return _state; }
 
 	@Override
 	public void update() {
 		for (WorldArea area: _areas) {
 			if (area.getRessource() == null) {
-				ServiceManager.getWorldMap().putItem(_currentCulture, area.getX(), area.getY());
+				ServiceManager.getWorldMap().putItem(_currentCulture, area.getX(), area.getY(), 0, 0);
 			}
 
 			WorldResource res = area.getRessource();

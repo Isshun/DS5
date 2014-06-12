@@ -70,7 +70,6 @@ public class MenuSave extends MenuBase {
 	
 	@Override
 	public boolean checkKey(Event event) {
-		String c = "";
 		switch (event.asKeyEvent().key) {
 		case A: _saveName += "a"; return true;
 		case B: _saveName += "b"; return true;

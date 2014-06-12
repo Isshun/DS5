@@ -17,22 +17,12 @@ import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.room.GardenRoom;
 import alone.in.deepspace.model.room.QuarterRoom;
 import alone.in.deepspace.model.room.Room;
-import alone.in.deepspace.model.room.StorageRoom;
 import alone.in.deepspace.model.room.Room.Type;
+import alone.in.deepspace.model.room.StorageRoom;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class RoomManager {
-	private static class TempRoom {
-		public WorldArea	area;
-		public boolean 		visited;
-		public int 			id;
-
-		public TempRoom(WorldArea area) {
-			this.area = area;
-		}
-	}
-	
 	private Room[][] 			_rooms;
 	private List<Room>			_roomList;
 	private Room _currentDiffuseRoom;
@@ -72,7 +62,6 @@ public class RoomManager {
 		Room tempRoom = null;
 		int existingRoomPosX = 0;
 		int existingRoomPosY = 0;
-		List<TempRoom> tempRooms = new ArrayList<TempRoom>();
 		
 		// Check if room already exists on start area
 		if (startX > 0 && startY > 0 && startX < Constant.WORLD_WIDTH && startY < Constant.WORLD_HEIGHT && _rooms[startX][startY] != null) {
@@ -112,7 +101,6 @@ public class RoomManager {
 							area.setRoom(tempRoom);
 							tempRoom.addArea(area);
 							_rooms[x][y] = tempRoom;
-							tempRooms.add(new TempRoom(area));
 							MainRenderer.getInstance().invalidate(x, y);
 						}
 					}
@@ -249,16 +237,6 @@ public class RoomManager {
 			return _rooms[x][y];
 		}
 		return null;
-	}
-
-	private boolean TempRoomsVisitedNeighboor(List<TempRoom> tempRooms, int x, int y) {
-		for (TempRoom temp: tempRooms) {
-			if (temp.visited && temp.area.getX() == x+1 && temp.area.getY() == y) { return true; }
-			if (temp.visited && temp.area.getX() == x-1 && temp.area.getY() == y) { return true; }
-			if (temp.visited && temp.area.getX() == x && temp.area.getY() == y+1) { return true; }
-			if (temp.visited && temp.area.getX() == x && temp.area.getY() == y-1) { return true; }
-		}
-		return false;
 	}
 
 	public Room get(int x, int y) {

@@ -33,9 +33,8 @@ public class UserInteraction {
 	
 	private Planning 					_selectedPlan;
 	private Type 						_selectedRoomType;
-	private Room 						_selectedRoom;
+	private ItemInfo 					_selectedItemInfo;
 	private UserInterface				_ui;
-	private ItemInfo _selectedItemInfo;
 
 	UserInteraction(UserInterface ui) {
 		_startPressX = 0;
@@ -103,7 +102,7 @@ public class UserInteraction {
 	public void removeItem(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				ServiceManager.getWorldMap().removeItem(x, y);
+				ServiceManager.getWorldMap().takeItem(x, y);
 			}
 		}
 	}
@@ -215,7 +214,6 @@ public class UserInteraction {
 	public void clean() {
 		_action = Action.NONE;
 		_selectedPlan = null;
-		_selectedRoom = null;
 		_selectedRoomType = null;
 		_selectedItemInfo = null;
 	}

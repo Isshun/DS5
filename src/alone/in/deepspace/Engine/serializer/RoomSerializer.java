@@ -6,7 +6,6 @@ import java.util.List;
 import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.serializer.WorldSaver.WorldSave;
 import alone.in.deepspace.manager.CharacterManager;
-import alone.in.deepspace.manager.RoomManager;
 import alone.in.deepspace.manager.Utils;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.character.Character;

@@ -14,7 +14,6 @@ import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Vector2f;
 
 import alone.in.deepspace.Game;
-import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.room.Room;
 import alone.in.deepspace.util.Constant;
