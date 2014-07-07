@@ -12,7 +12,7 @@ private:
   
 public:
     JNIBridge(JNIEnv *env, jobject *thisObj);
-    void update();
+    int update(long** map);
 };
 
 #endif

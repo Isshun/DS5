@@ -3,7 +3,6 @@ package alone.in.deepspace.model.item;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ItemInfo {
 	public static class ItemInfoCost {
 		public int matter;
@@ -50,6 +49,8 @@ public class ItemInfo {
 		public int 		health;
 		public int 		relation;
 	}
+
+	private static int count; 
 
 	public String 				name;
 	public String 				inherits;

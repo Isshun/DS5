@@ -37,4 +37,8 @@ public class GameData {
 		return null;
 	}
 
+	public List<ItemInfo> getItemsInfo() {
+		return items;
+	}
+
 }

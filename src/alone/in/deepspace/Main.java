@@ -1,9 +1,12 @@
 package alone.in.deepspace;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Text;
 import org.jsfml.system.Clock;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
@@ -16,30 +19,41 @@ import alone.in.deepspace.engine.dataLoader.StringsLoader;
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.serializer.GameLoadListener;
 import alone.in.deepspace.engine.serializer.LoadListener;
-import alone.in.deepspace.engine.ui.Colors;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ServiceManager;
-import alone.in.deepspace.manager.SpriteManager;
 import alone.in.deepspace.model.GameData;
+import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.ui.MenuBase;
 import alone.in.deepspace.ui.MenuGame;
 import alone.in.deepspace.ui.MenuLoad;
 import alone.in.deepspace.ui.MenuSave;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.util.Constant;
-import alone.in.deepspace.util.Log;
 
 public class Main {
-//	public class JNIBridge {
-		private int[] _map;
-		public native void init();
-		
-		public Main() {
-			_map = new int[] {2, 4, 8};
+	private int[] _map;
+	private int number;
+	private static Map<Integer, String> parameterMap;
+	public native void init(Object[] files);
+
+	   public Map<Integer, String> getParameterMap() {
+	        return parameterMap;
+	    }
+	
+	private int[] getMap() {
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-//	}
+
+		//_game.onUpdate();
+		
+		return ServiceManager.getWorldMap().getArray();
+	}
+
 
 	static final int 				DRAW_INTERVAL = (1000/60);
 	static final int 				UPDATE_INTERVAL = 100;
@@ -47,7 +61,7 @@ public class Main {
 	private static final int 		LONG_UPDATE_INTERVAL = 2000;
 
 	private static final String 	SAVE_FILE = "saves/3.sav";
-	
+
 	private static Game				_game;
 	private static MenuBase			_menu;
 	private static int 				_updateInterval = UPDATE_INTERVAL;
@@ -56,22 +70,22 @@ public class Main {
 	private static UserInterface	_userInterface;
 	private static LoadListener 	_loadListener;
 	private static boolean			_isFullscreen;
-	
+
 	static {
 		System.loadLibrary("TestJNI");
 	}
 
 	public static void main(String[] args) {
 		//Create the window
-//		final RenderWindow window = new RenderWindow();
-//		window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5", WindowStyle.DEFAULT);
-		
+		//		final RenderWindow window = new RenderWindow();
+		//		window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5", WindowStyle.DEFAULT);
+
 		GameData data = new GameData();
 
 		ItemLoader.load(data);
 		StringsLoader.load(data, "data/strings/", "fr");
 		CategoryLoader.load(data);
-		
+
 		_isFullscreen = true;
 		_mainRenderer = new MainRenderer(null);
 		//_userInterface = new UserInterface(null);
@@ -79,48 +93,66 @@ public class Main {
 		_loadListener = new LoadListener() {
 			@Override
 			public void onUpdate(String message) {
-//				window.clear();
-//				Text text = new Text(message, SpriteManager.getInstance().getFont());
-//				text.setCharacterSize(42);
-//				text.setColor(Colors.LINK_INACTIVE);
-//				text.setPosition(Constant.WINDOW_WIDTH / 2 - message.length() * 20 / 2, Constant.WINDOW_HEIGHT / 2 - 40);
-//				window.draw(text);
-//
-//				_userInterface.addMessage(Log.LEVEL_INFO, message);
-//				_userInterface.onRefresh(0);
-//				_userInterface.onDraw(0, 0);
-//
-//				window.display();
+				//				window.clear();
+				//				Text text = new Text(message, SpriteManager.getInstance().getFont());
+				//				text.setCharacterSize(42);
+				//				text.setColor(Colors.LINK_INACTIVE);
+				//				text.setPosition(Constant.WINDOW_WIDTH / 2 - message.length() * 20 / 2, Constant.WINDOW_HEIGHT / 2 - 40);
+				//				window.draw(text);
+				//
+				//				_userInterface.addMessage(Log.LEVEL_INFO, message);
+				//				_userInterface.onRefresh(0);
+				//				_userInterface.onDraw(0, 0);
+				//
+				//				window.display();
 			}
-			
+
 		};
+
+		//		try {
+		_game = new Game(data);
+		_game.onCreate();
+		//_game.newGame(SAVE_FILE, _loadListener);
+		_game.load(SAVE_FILE, _loadListener);
+
+		_loadListener.onUpdate("Init render");
+		_mainRenderer.init(_game);
+		//_userInterface.onCreate(_game);
+
+		_loadListener.onUpdate("Start game");
+
+		_game.onUpdate();
+
+		//String[] infos = new String[1000];
 		
-//		try {
-			_game = new Game(data);
-			_game.onCreate();
-			//_game.newGame(SAVE_FILE, _loadListener);
-			_game.load(SAVE_FILE, _loadListener);
+		List<String> infos = new ArrayList<String>();
+		
+		parameterMap = new HashMap<Integer, String>();
+		int i = 0;
+		for (ItemInfo info: Game.getData().items) {
+			infos.add(info.name);
+//			infos[i] = info.fileName;
+			info.spriteId = i;
+//			parameterMap.put(info.spriteId, info.fileName);
+			i++;
+		}
+		
+		
+		Main bridge = new Main();
+		bridge.getMap();
+		bridge.init(infos.toArray());
 
-			_loadListener.onUpdate("Init render");
-			_mainRenderer.init(_game);
-			//_userInterface.onCreate(_game);
-
-			_loadListener.onUpdate("Start game");
-			
-			Main bridge = new Main();
-			bridge.init();
-
-//			loop(window);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
+		//			loop(window);
+		//		} catch (IOException e) {
+		//			e.printStackTrace();
+		//		} catch (InterruptedException e) {
+		//			e.printStackTrace();
+		//		}
 
 		//		//Limit the framerate
 		//		window.setFramerateLimit(30);
 
-//		window.close();
+		//		window.close();
 		PathManager.getInstance().close();
 	}
 
@@ -135,7 +167,7 @@ public class Main {
 		long nextUpdate = 0;
 		long nextRefresh = 0;
 		long nextLongUpdate = 0;
-		
+
 		while (window.isOpen()) {
 			// Events
 			Event event = null;
@@ -151,8 +183,8 @@ public class Main {
 				//renderTime = (renderTime * 7 + currentRenderTime) / 8;
 				Thread.sleep(nextDraw - elapsed);
 			}
-			
-			
+
+
 			if (_game.isRunning()) {
 				// Draw
 				double animProgress = (1 - (double)(nextUpdate - elapsed) / _updateInterval);
@@ -166,14 +198,14 @@ public class Main {
 					refresh++;
 					nextRefresh += REFRESH_INTERVAL;
 				}
-				
+
 				// Update
 				if (elapsed >= nextUpdate) {
 					_game.onUpdate();
 					update++;
 					nextUpdate += _updateInterval;
 				}
-				
+
 				// Long update
 				if (elapsed >= nextLongUpdate) {
 					_game.onLongUpdate();
@@ -191,7 +223,7 @@ public class Main {
 			frame++;
 		}
 	}
-	
+
 	private static void manageMenu(final RenderWindow window) throws IOException, InterruptedException {
 		if (_menu == null) {
 			MenuGame menu = new MenuGame(new GameLoadListener() {
@@ -202,13 +234,13 @@ public class Main {
 			menu.addEntry("New game", 0, new OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					
+
 				}
 			});
 			menu.addEntry("Load", 1, new OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					
+
 				}
 			});
 			menu.addEntry("Save", 2, new OnClickListener() {
@@ -220,7 +252,7 @@ public class Main {
 			menu.addEntry("Feedback", 3, new OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					
+
 				}
 			});
 			menu.addEntry("Exit", 4, new OnClickListener() {
@@ -251,15 +283,15 @@ public class Main {
 					}
 				}
 			}
-			
+
 			switch (keyEvent.key) {
 
 			// Kill
 			case F4:
 				window.close();
 				return;
-				
-			// Save
+
+				// Save
 			case S:
 				if (keyEvent.control) {
 					_loadListener.onUpdate("saving [" + SAVE_FILE + "]");
@@ -268,8 +300,8 @@ public class Main {
 					return;
 				}
 				break;
-			
-			// Load
+
+				// Load
 			case L:
 				if (keyEvent.control) {
 					_menu = new MenuLoad(new GameLoadListener() {
@@ -283,7 +315,7 @@ public class Main {
 					return;
 				}
 				break;
-				
+
 				// Fullscreen
 			case RETURN:
 				if (keyEvent.alt) {

@@ -12,7 +12,7 @@ extern "C" {
  * Method:    init
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_alone_in_deepspace_Main_init(JNIEnv *, jobject);
+JNIEXPORT void JNICALL Java_alone_in_deepspace_Main_init(JNIEnv *, jobject, jobjectArray);
 
 #ifdef __cplusplus
 }

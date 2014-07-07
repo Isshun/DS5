@@ -43,10 +43,14 @@ public class WorldManager implements TileBasedMap {
 	private List<FactoryItem> 	_factoryItems;
 	private WorldFinder		 	_finder;
 
+	private int[] array;
+	
 	public WorldManager() {
 		_width = Constant.WORLD_WIDTH;
 		_height = Constant.WORLD_HEIGHT;
 		_factoryItems = new ArrayList<FactoryItem>();
+
+		array = new int[Constant.WORLD_WIDTH * Constant.WORLD_HEIGHT];
 
 		_rooms = new HashMap<Integer, Room>();
 		_areas = new WorldArea[_width][_height][NB_FLOOR];
@@ -63,6 +67,28 @@ public class WorldManager implements TileBasedMap {
 		_finder = new WorldFinder(this, _areas);
 	}
 
+	public int[]	getArray() {
+		for (int x = 0; x < Constant.WORLD_WIDTH; x++) {
+			for (int y = 0; y < Constant.WORLD_HEIGHT; y++) {
+				array[x * Constant.WORLD_WIDTH + y] = 0;
+				if (_areas[x][y][0].getRessource() != null) {
+					Log.info("id: " + _areas[x][y][0].getRessource().getInfo().spriteId);
+					array[x * Constant.WORLD_WIDTH + y] = _areas[x][y][0].getRessource().getInfo().spriteId;
+				}
+				if (_areas[x][y][0].getStructure() != null) {
+					Log.info("id: " + _areas[x][y][0].getStructure().getInfo().spriteId);
+					array[x * Constant.WORLD_WIDTH + y] = _areas[x][y][0].getStructure().getInfo().spriteId;
+				}
+				if (_areas[x][y][0].getItem() != null) {
+					Log.info("id: " + _areas[x][y][0].getItem().getInfo().spriteId);
+					array[x * Constant.WORLD_WIDTH + y] = _areas[x][y][0].getItem().getInfo().spriteId;
+				}
+			}
+		}
+		
+		return array;
+	}
+	
 	public ItemBase putItem(String name, int x, int y, int z, int i) {
 		return putItem(Game.getData().getItemInfo(name), x, y, z, i);
 	}

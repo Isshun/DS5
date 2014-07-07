@@ -70,7 +70,7 @@ public class Game {
 			return;
 		}
 
-		_dynamicObjectManager.update();
+//		_dynamicObjectManager.update();
 
 		// Path complete
 		List<Runnable> paths = PathManager.getInstance().getPaths();
