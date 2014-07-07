@@ -47,94 +47,94 @@ public class SpriteManager {
 	private Sprite[] _itemSelectors;
 
 	private SpriteManager() throws IOException {
-		_sprites = new HashMap<Long, Sprite>();
-		_spritesCharacters = new HashMap<Integer, Sprite>();
-
-		_textureCharacters = new Texture[4];
-
-		_textureCharacters[0] = new Texture();
-		_textureCharacters[0].loadFromFile((new File("res/Characters/scientifique.png")).toPath());
-		_textureCharacters[0].setSmooth(true);
-
-		_textureCharacters[1] = new Texture();
-		_textureCharacters[1].loadFromFile((new File("res/Characters/soldat3.png")).toPath());
-		_textureCharacters[1].setSmooth(true);
-
-		_textureCharacters[2] = new Texture();
-		_textureCharacters[2].loadFromFile((new File("res/Characters/gallery_84826_3_2787.png")).toPath());
-		_textureCharacters[2].setSmooth(true);
-
-		_textureCharacters[3] = new Texture();
-		_textureCharacters[3].loadFromFile((new File("res/Characters/NuChara01.png")).toPath());
-		_textureCharacters[3].setSmooth(true);
-
-		_textureNeedBar = new Texture();
-		_textureNeedBar.loadFromFile((new File("res/Tilesets/needbar.png")).toPath());
-		_textureNeedBar.setRepeated(true);
-
-		_textureSelector = new Texture();
-		_textureSelector.loadFromFile((new File("res/Tilesets/selector.png")).toPath());
-		_selectors = new Sprite[NB_SELECTOR_TILE];
-		for (int i = 0; i < NB_SELECTOR_TILE; i++) {
-			_selectors[i] = new Sprite(_textureSelector);
-			_selectors[i].setTextureRect(new IntRect(i * 34, 0, 34, 48));
-		}
-
-		_textureItemSelector = new Texture();
-		_textureItemSelector.loadFromFile((new File("res/Tilesets/item_selector.png")).toPath());
-		_itemSelectors = new Sprite[NB_ITEM_SELECTOR_TILE];
-		for (int i = 0; i < NB_ITEM_SELECTOR_TILE; i++) {
-			_itemSelectors[i] = new Sprite(_textureItemSelector);
-			_itemSelectors[i].setTextureRect(new IntRect(i * 32, 0, 32, 32));
-		}
-
-		_texture = new Texture[8];
-
-		_texture[0] = new Texture();
-		_texture[0].loadFromFile((new File("res/Tilesets/Futuristic_A5.png").toPath()));
-		_texture[0].setSmooth(true);
-
-		_texture[1] = new Texture();
-		_texture[1].loadFromFile((new File("res/Tilesets/Futuristic_TileC.png").toPath()));
-		_texture[1].setSmooth(true);
-
-		_texture[2] = new Texture();
-		_texture[2].loadFromFile((new File("res/Tilesets/Futuristic_TileB.png").toPath()));
-		_texture[2].setSmooth(true);
-
-		_texture[3] = new Texture();
-		_texture[3].loadFromFile((new File("res/Tilesets/Futuristic_TileE.png").toPath()));
-		_texture[3].setSmooth(true);
-
-		_texture[4] = new Texture();
-		_texture[4].loadFromFile((new File("res/Tilesets/zones.png").toPath()));
-		_texture[4].setSmooth(true);
-
-		_texture[5] = new Texture();
-		_texture[5].loadFromFile((new File("res/Tilesets/Futuristic_A3.png").toPath()));
-		_texture[5].setSmooth(true);
-
-		_texture[6] = new Texture();
-		_texture[6].loadFromFile((new File("res/Tilesets/walls.png").toPath()));
-		_texture[6].setSmooth(true);
-
-		_texture[7] = new Texture();
-		_texture[7].loadFromFile((new File("res/Tilesets/icons.png").toPath()));
-		_texture[7].setSmooth(true);
-
-		// Font
-		_font = new Font();
-		_font.loadFromFile((new File("res/fonts/font.ttf")).toPath());
-
-		//		// IC battery
-		//		{
-		//			Texture texture = new Texture();
-		//			texture.loadFromFile((new File("res/battery.png").toPath()));
-		//
-		//			_spriteBattery = _temp;
-		//			_spriteBattery.setTexture(texture);
-		//			_spriteBattery.setTextureRect(ObjectPool.getIntRect(0, 0, 24, 24));
-		//		}
+//		_sprites = new HashMap<Long, Sprite>();
+//		_spritesCharacters = new HashMap<Integer, Sprite>();
+//
+//		_textureCharacters = new Texture[4];
+//
+//		_textureCharacters[0] = new Texture();
+//		_textureCharacters[0].loadFromFile((new File("res/Characters/scientifique.png")).toPath());
+//		_textureCharacters[0].setSmooth(true);
+//
+//		_textureCharacters[1] = new Texture();
+//		_textureCharacters[1].loadFromFile((new File("res/Characters/soldat3.png")).toPath());
+//		_textureCharacters[1].setSmooth(true);
+//
+//		_textureCharacters[2] = new Texture();
+//		_textureCharacters[2].loadFromFile((new File("res/Characters/gallery_84826_3_2787.png")).toPath());
+//		_textureCharacters[2].setSmooth(true);
+//
+//		_textureCharacters[3] = new Texture();
+//		_textureCharacters[3].loadFromFile((new File("res/Characters/NuChara01.png")).toPath());
+//		_textureCharacters[3].setSmooth(true);
+//
+//		_textureNeedBar = new Texture();
+//		_textureNeedBar.loadFromFile((new File("res/Tilesets/needbar.png")).toPath());
+//		_textureNeedBar.setRepeated(true);
+//
+//		_textureSelector = new Texture();
+//		_textureSelector.loadFromFile((new File("res/Tilesets/selector.png")).toPath());
+//		_selectors = new Sprite[NB_SELECTOR_TILE];
+//		for (int i = 0; i < NB_SELECTOR_TILE; i++) {
+//			_selectors[i] = new Sprite(_textureSelector);
+//			_selectors[i].setTextureRect(new IntRect(i * 34, 0, 34, 48));
+//		}
+//
+//		_textureItemSelector = new Texture();
+//		_textureItemSelector.loadFromFile((new File("res/Tilesets/item_selector.png")).toPath());
+//		_itemSelectors = new Sprite[NB_ITEM_SELECTOR_TILE];
+//		for (int i = 0; i < NB_ITEM_SELECTOR_TILE; i++) {
+//			_itemSelectors[i] = new Sprite(_textureItemSelector);
+//			_itemSelectors[i].setTextureRect(new IntRect(i * 32, 0, 32, 32));
+//		}
+//
+//		_texture = new Texture[8];
+//
+//		_texture[0] = new Texture();
+//		_texture[0].loadFromFile((new File("res/Tilesets/Futuristic_A5.png").toPath()));
+//		_texture[0].setSmooth(true);
+//
+//		_texture[1] = new Texture();
+//		_texture[1].loadFromFile((new File("res/Tilesets/Futuristic_TileC.png").toPath()));
+//		_texture[1].setSmooth(true);
+//
+//		_texture[2] = new Texture();
+//		_texture[2].loadFromFile((new File("res/Tilesets/Futuristic_TileB.png").toPath()));
+//		_texture[2].setSmooth(true);
+//
+//		_texture[3] = new Texture();
+//		_texture[3].loadFromFile((new File("res/Tilesets/Futuristic_TileE.png").toPath()));
+//		_texture[3].setSmooth(true);
+//
+//		_texture[4] = new Texture();
+//		_texture[4].loadFromFile((new File("res/Tilesets/zones.png").toPath()));
+//		_texture[4].setSmooth(true);
+//
+//		_texture[5] = new Texture();
+//		_texture[5].loadFromFile((new File("res/Tilesets/Futuristic_A3.png").toPath()));
+//		_texture[5].setSmooth(true);
+//
+//		_texture[6] = new Texture();
+//		_texture[6].loadFromFile((new File("res/Tilesets/walls.png").toPath()));
+//		_texture[6].setSmooth(true);
+//
+//		_texture[7] = new Texture();
+//		_texture[7].loadFromFile((new File("res/Tilesets/icons.png").toPath()));
+//		_texture[7].setSmooth(true);
+//
+//		// Font
+//		_font = new Font();
+//		_font.loadFromFile((new File("res/fonts/font.ttf")).toPath());
+//
+//		//		// IC battery
+//		//		{
+//		//			Texture texture = new Texture();
+//		//			texture.loadFromFile((new File("res/battery.png").toPath()));
+//		//
+//		//			_spriteBattery = _temp;
+//		//			_spriteBattery.setTexture(texture);
+//		//			_spriteBattery.setTextureRect(ObjectPool.getIntRect(0, 0, 24, 24));
+//		//		}
 	}
 
 	public static SpriteManager getInstance() {
@@ -262,56 +262,57 @@ public class SpriteManager {
 //	}
 //	
 	private Sprite getSprite(ItemInfo item, int tile, int state, int alpha, boolean isIcon) {
-		if (item.spriteId == 0) {
-			item.spriteId = ++_count;
-		}
-		
-		long sum = getSum(item.spriteId, tile, state, isIcon ? 1 : 0);
-		
-		Sprite sprite = _sprites.get(sum);
-		if (sprite == null) {
-			int tileX = tile % 10;
-			int tileY = tile / 10;
-			int offsetY = state * item.height * Constant.TILE_HEIGHT;
-			
-			try {
-				File imgFile = null;
-				if ("base".equals(item.packageName)) {
-					imgFile = new File("data/items/" + item.fileName + ".png");
-				} else {
-					imgFile = new File("mods/" + item.packageName + "/items/" + item.fileName + ".png");
-				}
-				if (imgFile.exists()) {
-					sprite = new Sprite();
-					sprite.setColor(new Color(255, 255, 255, alpha));
-					Texture texture = new Texture();
-					texture.loadFromFile((imgFile.toPath()));
-					texture.setSmooth(true);
-					sprite.setTexture(texture);
-					sprite.setTextureRect(ObjectPool.getIntRect(
-							tileX * item.width * Constant.TILE_WIDTH,
-							tileY * item.height * Constant.TILE_HEIGHT + offsetY,
-							item.width * Constant.TILE_WIDTH,
-							item.height * Constant.TILE_HEIGHT));
-					if (isIcon) {
-						switch (Math.max(item.width, item.height)) {
-						case 2: sprite.setScale(0.85f, 0.85f); break;
-						case 3: sprite.setScale(0.55f, 0.55f); break;
-						case 4: sprite.setScale(0.35f, 0.35f); break;
-						case 5: sprite.setScale(0.32f, 0.32f); break;
-						case 6: sprite.setScale(0.3f, 0.3f); break;
-						case 7: sprite.setScale(0.25f, 0.25f); break;
-						case 8: sprite.setScale(0.2f, 0.2f); break;
-						}
-						
-					}
-					_sprites.put(sum, sprite);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return sprite;
+//		if (item.spriteId == 0) {
+//			item.spriteId = ++_count;
+//		}
+//		
+//		long sum = getSum(item.spriteId, tile, state, isIcon ? 1 : 0);
+//		
+//		Sprite sprite = _sprites.get(sum);
+//		if (sprite == null) {
+//			int tileX = tile % 10;
+//			int tileY = tile / 10;
+//			int offsetY = state * item.height * Constant.TILE_HEIGHT;
+//			
+//			try {
+//				File imgFile = null;
+//				if ("base".equals(item.packageName)) {
+//					imgFile = new File("data/items/" + item.fileName + ".png");
+//				} else {
+//					imgFile = new File("mods/" + item.packageName + "/items/" + item.fileName + ".png");
+//				}
+//				if (imgFile.exists()) {
+//					sprite = new Sprite();
+//					sprite.setColor(new Color(255, 255, 255, alpha));
+//					Texture texture = new Texture();
+//					texture.loadFromFile((imgFile.toPath()));
+//					texture.setSmooth(true);
+//					sprite.setTexture(texture);
+//					sprite.setTextureRect(ObjectPool.getIntRect(
+//							tileX * item.width * Constant.TILE_WIDTH,
+//							tileY * item.height * Constant.TILE_HEIGHT + offsetY,
+//							item.width * Constant.TILE_WIDTH,
+//							item.height * Constant.TILE_HEIGHT));
+//					if (isIcon) {
+//						switch (Math.max(item.width, item.height)) {
+//						case 2: sprite.setScale(0.85f, 0.85f); break;
+//						case 3: sprite.setScale(0.55f, 0.55f); break;
+//						case 4: sprite.setScale(0.35f, 0.35f); break;
+//						case 5: sprite.setScale(0.32f, 0.32f); break;
+//						case 6: sprite.setScale(0.3f, 0.3f); break;
+//						case 7: sprite.setScale(0.25f, 0.25f); break;
+//						case 8: sprite.setScale(0.2f, 0.2f); break;
+//						}
+//						
+//					}
+//					_sprites.put(sum, sprite);
+//				}
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		return sprite;
+		return null;
 	}
 
 	private long getSum(int spriteId, int tile, int state, int extra) {

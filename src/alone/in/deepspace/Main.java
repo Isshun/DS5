@@ -32,6 +32,14 @@ import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 
 public class Main {
+//	public class JNIBridge {
+		private int[] _map;
+		public native void init();
+		
+		public Main() {
+			_map = new int[] {2, 4, 8};
+		}
+//	}
 
 	static final int 				DRAW_INTERVAL = (1000/60);
 	static final int 				UPDATE_INTERVAL = 100;
@@ -48,11 +56,15 @@ public class Main {
 	private static UserInterface	_userInterface;
 	private static LoadListener 	_loadListener;
 	private static boolean			_isFullscreen;
+	
+	static {
+		System.loadLibrary("TestJNI");
+	}
 
 	public static void main(String[] args) {
 		//Create the window
-		final RenderWindow window = new RenderWindow();
-		window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5", WindowStyle.DEFAULT);
+//		final RenderWindow window = new RenderWindow();
+//		window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5", WindowStyle.DEFAULT);
 		
 		GameData data = new GameData();
 
@@ -61,50 +73,54 @@ public class Main {
 		CategoryLoader.load(data);
 		
 		_isFullscreen = true;
-		_mainRenderer = new MainRenderer(window);
-		_userInterface = new UserInterface(window);
+		_mainRenderer = new MainRenderer(null);
+		//_userInterface = new UserInterface(null);
 
 		_loadListener = new LoadListener() {
 			@Override
 			public void onUpdate(String message) {
-				window.clear();
-				Text text = new Text(message, SpriteManager.getInstance().getFont());
-				text.setCharacterSize(42);
-				text.setColor(Colors.LINK_INACTIVE);
-				text.setPosition(Constant.WINDOW_WIDTH / 2 - message.length() * 20 / 2, Constant.WINDOW_HEIGHT / 2 - 40);
-				window.draw(text);
-
-				_userInterface.addMessage(Log.LEVEL_INFO, message);
-				_userInterface.onRefresh(0);
-				_userInterface.onDraw(0, 0);
-
-				window.display();
+//				window.clear();
+//				Text text = new Text(message, SpriteManager.getInstance().getFont());
+//				text.setCharacterSize(42);
+//				text.setColor(Colors.LINK_INACTIVE);
+//				text.setPosition(Constant.WINDOW_WIDTH / 2 - message.length() * 20 / 2, Constant.WINDOW_HEIGHT / 2 - 40);
+//				window.draw(text);
+//
+//				_userInterface.addMessage(Log.LEVEL_INFO, message);
+//				_userInterface.onRefresh(0);
+//				_userInterface.onDraw(0, 0);
+//
+//				window.display();
 			}
 			
 		};
 		
-		try {
-			_game = new Game(window, data);
+//		try {
+			_game = new Game(data);
 			_game.onCreate();
 			//_game.newGame(SAVE_FILE, _loadListener);
 			_game.load(SAVE_FILE, _loadListener);
 
 			_loadListener.onUpdate("Init render");
 			_mainRenderer.init(_game);
-			_userInterface.onCreate(_game);
+			//_userInterface.onCreate(_game);
 
 			_loadListener.onUpdate("Start game");
-			loop(window);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+			
+			Main bridge = new Main();
+			bridge.init();
+
+//			loop(window);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 
 		//		//Limit the framerate
 		//		window.setFramerateLimit(30);
 
-		window.close();
+//		window.close();
 		PathManager.getInstance().close();
 	}
 
@@ -260,7 +276,7 @@ public class Main {
 						@Override
 						public void onLoad(String path) {
 							// TODO NULL
-							_game = new Game(window, null);
+							_game = new Game(null);
 							_game.load(path, _loadListener);
 						}
 					});
@@ -282,7 +298,7 @@ public class Main {
 			}
 		}
 
-		_userInterface.onEvent(event, timer);
+		//_userInterface.onEvent(event, timer);
 	}
 
 	public static int getUpdateInterval() {

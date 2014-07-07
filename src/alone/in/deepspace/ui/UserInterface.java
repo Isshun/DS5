@@ -251,41 +251,41 @@ public class UserInterface {
 	}
 
 	public void onDraw(int update, long renderTime) {
-		for (BasePanel panel: _panels) {
-			panel.draw(_app, null);
-		}
-		
-		_panelMessage.draw(_app, null);
-
-		if (_mouseOnMap) {
-			if (_interaction.isAction(Action.SET_ROOM) || _interaction.isAction(Action.SET_PLAN) || _interaction.isAction(Action.BUILD_ITEM)) {
-				if (_keyLeftPressed) {
-					_cursor.draw(_app, _viewport.getRender(), Math.min(_keyPressPosX, _keyMovePosX),
-							Math.min(_keyPressPosY, _keyMovePosY),
-							Math.max(_keyPressPosX, _keyMovePosX),
-							Math.max(_keyPressPosY, _keyMovePosY));
-				} else {
-					_cursor.draw(_app, _viewport.getRender(), Math.min(_keyMovePosX, _keyMovePosX),
-							Math.min(_keyMovePosY, _keyMovePosY),
-							Math.max(_keyMovePosX, _keyMovePosX),
-							Math.max(_keyMovePosY, _keyMovePosY));
-				}
-			}
-		}
-
-		if (_message != null && _app != null && _viewport != null) {
-			_app.draw(_message.border, _viewport.getRender());
-			_app.draw(_message.shape, _viewport.getRender());
-			_app.draw(_message.text, _viewport.getRender());
-			if (--_message.frame < 0) {
-				_message = null;
-			}
-
-		}
-
-		if (_menu != null) {
-			_menu.draw(_app, null);
-		}
+//		for (BasePanel panel: _panels) {
+//			panel.draw(_app, null);
+//		}
+//		
+//		_panelMessage.draw(_app, null);
+//
+//		if (_mouseOnMap) {
+//			if (_interaction.isAction(Action.SET_ROOM) || _interaction.isAction(Action.SET_PLAN) || _interaction.isAction(Action.BUILD_ITEM)) {
+//				if (_keyLeftPressed) {
+//					_cursor.draw(_app, _viewport.getRender(), Math.min(_keyPressPosX, _keyMovePosX),
+//							Math.min(_keyPressPosY, _keyMovePosY),
+//							Math.max(_keyPressPosX, _keyMovePosX),
+//							Math.max(_keyPressPosY, _keyMovePosY));
+//				} else {
+//					_cursor.draw(_app, _viewport.getRender(), Math.min(_keyMovePosX, _keyMovePosX),
+//							Math.min(_keyMovePosY, _keyMovePosY),
+//							Math.max(_keyMovePosX, _keyMovePosX),
+//							Math.max(_keyMovePosY, _keyMovePosY));
+//				}
+//			}
+//		}
+//
+//		if (_message != null && _app != null && _viewport != null) {
+//			_app.draw(_message.border, _viewport.getRender());
+//			_app.draw(_message.shape, _viewport.getRender());
+//			_app.draw(_message.text, _viewport.getRender());
+//			if (--_message.frame < 0) {
+//				_message = null;
+//			}
+//
+//		}
+//
+//		if (_menu != null) {
+//			_menu.draw(_app, null);
+//		}
 	}
 
 	public boolean checkKeyboard(Key key, int lastInput) {

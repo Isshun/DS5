@@ -24,8 +24,8 @@ public class CharacterRenderer implements IRenderer {
 	public CharacterRenderer(List<Character> characters) {
 		_characters = characters;
 		_spriteManager = SpriteManager.getInstance();
-		_redBackground = new RectangleShape(new Vector2f(32, 48));
-		_redBackground.setFillColor(new Color(200, 50, 0, 150));
+//		_redBackground = new RectangleShape(new Vector2f(32, 48));
+//		_redBackground.setFillColor(new Color(200, 50, 0, 150));
 	}
 
 	public void	onDraw(RenderWindow app, RenderStates render, double animProgress) {

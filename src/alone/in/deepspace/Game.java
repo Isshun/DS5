@@ -54,15 +54,13 @@ public class Game {
 	private boolean						_isMenuOpen;
 	private boolean 					_isRunning;
 
-	public Game(RenderWindow app, GameData data) {
+	public Game(GameData data) {
 		Log.debug("Game");
 
 		_data = data;
 		_isRunning = true;
-		_viewport = new Viewport(app, -Constant.WORLD_WIDTH * Constant.TILE_WIDTH / 2, -Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT / 2);
+		//_viewport = new Viewport(app, -Constant.WORLD_WIDTH * Constant.TILE_WIDTH / 2, -Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT / 2);
 		_update = 0;
-
-		app.setKeyRepeatEnabled(true);
 
 		Log.info("Game:\tdone");
 	}
@@ -114,7 +112,7 @@ public class Game {
 		_roomManager = new RoomManager();
 		_resourceManager = new ResourceManager();
 		_statsManager = new StatsManager();
-		_dynamicObjectManager = new DynamicObjectManager();
+//		_dynamicObjectManager = new DynamicObjectManager();
 		_characterManager = new CharacterManager();
 		_foeManager = new FoeManager();
 		_relationManager = new RelationManager();

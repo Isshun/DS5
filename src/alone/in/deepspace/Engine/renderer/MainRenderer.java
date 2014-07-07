@@ -35,53 +35,53 @@ public class MainRenderer implements IRenderer {
 
 	public MainRenderer(RenderWindow app) {
 		_self = this;
-		_spriteManager = SpriteManager.getInstance();
-
-		_worldRenderer = new WorldRenderer(_spriteManager);
-		_lightRenderer = new LightRenderer();
-		_debugRenderer = new DebugRenderer();
-		
-		_jobRenderer = new JobRenderer();
-		_roomRenderer = new RoomRenderer();
+//		_spriteManager = SpriteManager.getInstance();
+//
+//		_worldRenderer = new WorldRenderer(_spriteManager);
+//		_lightRenderer = new LightRenderer();
+//		_debugRenderer = new DebugRenderer();
+//		
+//		_jobRenderer = new JobRenderer();
+//		_roomRenderer = new RoomRenderer();
 	}
 
 	public void onRefresh(int frame) {
-		_lightRenderer.onRefresh(frame);
-		_worldRenderer.onRefresh(frame);
-		_characterRenderer.onRefresh(frame);
+//		_lightRenderer.onRefresh(frame);
+//		_worldRenderer.onRefresh(frame);
+//		_characterRenderer.onRefresh(frame);
 	}
 	
 	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
-//		_renderTime = renderTime;
-
-		app.clear(new Color(0, 0, 50));
-		
-		render = _viewport.getRender();
-
-		_worldRenderer.onDraw(app, render, animProgress);
-		_lightRenderer.onDraw(app, render, animProgress);
-
-		_worldRenderer.onDrawSelected(app, render, animProgress);
-		
-		if (_mode == Mode.ROOM) {
-			_roomRenderer.onDraw(app, render, animProgress);
-		}
-		_jobRenderer.onDraw(app, render, animProgress);
-		_characterRenderer.onDraw(app, render, animProgress);
-		
-		// Draw debug
-		if (Settings.getInstance().isDebug()) {
-			_debugRenderer.onDraw(app, render, animProgress);
-		}
-		
-		_frame++;
+////		_renderTime = renderTime;
+//
+//		app.clear(new Color(0, 0, 50));
+//		
+//		render = _viewport.getRender();
+//
+//		_worldRenderer.onDraw(app, render, animProgress);
+//		_lightRenderer.onDraw(app, render, animProgress);
+//
+//		_worldRenderer.onDrawSelected(app, render, animProgress);
+//		
+//		if (_mode == Mode.ROOM) {
+//			_roomRenderer.onDraw(app, render, animProgress);
+//		}
+//		_jobRenderer.onDraw(app, render, animProgress);
+//		_characterRenderer.onDraw(app, render, animProgress);
+//		
+//		// Draw debug
+//		if (Settings.getInstance().isDebug()) {
+//			_debugRenderer.onDraw(app, render, animProgress);
+//		}
+//		
+//		_frame++;
 	}
 
 	public void init(Game game) {
 		_frame = 0;
 		_viewport = game.getViewport();
 		_characterRenderer = new CharacterRenderer(Game.getCharacterManager().getList());
-		_lightRenderer.initLight();
+		//_lightRenderer.initLight();
 	}
 
 	public static IRenderer getInstance() {
@@ -98,18 +98,18 @@ public class MainRenderer implements IRenderer {
 	}
 
 	public void invalidate(int x, int y) {
-		if (_worldRenderer != null) {
-			_worldRenderer.invalidate(x, y);
-		}
+//		if (_worldRenderer != null) {
+//			_worldRenderer.invalidate(x, y);
+//		}
 	}
 
 	public void invalidate() {
-		if (_worldRenderer != null) {
-			_worldRenderer.invalidate();
-		}
-		if (_lightRenderer != null) {
-			_lightRenderer.initLight();
-		}
+//		if (_worldRenderer != null) {
+//			_worldRenderer.invalidate();
+//		}
+//		if (_lightRenderer != null) {
+//			_lightRenderer.initLight();
+//		}
 	}
 
 	public void refreshLight(ItemBase item) {
