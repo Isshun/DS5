@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.ui.OnClickListener;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.ResourceManager;
@@ -192,6 +193,7 @@ public class StorageRoom extends Room {
 				_inventory.add(item);
 				addItemOnFirstArea(item);
 				ResourceManager.getInstance().add(item.getInfo());
+				MainRenderer.getInstance().invalidate(item.getX(), item.getY());
 				return true;
 			}
 			return false;
@@ -205,6 +207,7 @@ public class StorageRoom extends Room {
 					stack.add(item);
 					_invalidate = true;
 					ResourceManager.getInstance().add(item.getInfo());
+					MainRenderer.getInstance().invalidate(item.getX(), item.getY());
 					return true;
 				}
 			}
@@ -219,6 +222,7 @@ public class StorageRoom extends Room {
 			_invalidate = true;
 			addItemOnFirstArea(stack);
 			ResourceManager.getInstance().add(item.getInfo());
+			MainRenderer.getInstance().invalidate(item.getX(), item.getY());
 			return true;
 		}
 
@@ -235,11 +239,18 @@ public class StorageRoom extends Room {
 	}
 
 	public UserItem take(UserItem item) {
+		UserItem returnItem = null;
 		if (item.isStack()) {
-			return takeItemInStack((StackItem)item);
+			returnItem = takeItemInStack((StackItem)item);
 		} else {
-			return takeItemOnFloor(item);
+			returnItem = takeItemOnFloor(item);
 		}
+		
+		if (returnItem != null) {
+			MainRenderer.getInstance().invalidate(returnItem.getX(), returnItem.getY());
+		}
+		
+		return returnItem;
 	}
 
 	private UserItem takeItemOnFloor(UserItem item) {

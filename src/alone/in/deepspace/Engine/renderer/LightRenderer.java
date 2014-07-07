@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderTexture;
@@ -26,8 +25,8 @@ public class LightRenderer implements IRenderer {
 	private static final int	LIGHT_DISTANCE = 10;
 
 	private RenderTexture 		_cache;
-	private Sprite 				_sprite;
-	private Sprite 				_sprite2;
+//	private Sprite 				_sprite;
+//	private Sprite 				_sprite2;
 	private Shader 				_blur;
 	private Sprite 				_spriteCache;
 	private boolean 			_invalidate;
@@ -36,14 +35,14 @@ public class LightRenderer implements IRenderer {
 		try {
 			Texture texture = new Texture();
 			texture.loadFromFile((new File("res/Tilesets/shadow.png").toPath()));
-			
-			_sprite2 = new Sprite();
-			_sprite2.setTexture(texture);
-			_sprite2.setTextureRect(new IntRect(0, 0, 16, 48));
 
-			_sprite = new Sprite();
-			_sprite.setTexture(texture);
-			_sprite.setTextureRect(new IntRect(16, 0, 16, 48));
+//			_sprite2 = new Sprite();
+//			_sprite2.setTexture(texture);
+//			_sprite2.setTextureRect(new IntRect(0, 0, 16, 48));
+
+//			_sprite = new Sprite();
+//			_sprite.setTexture(texture);
+//			_sprite.setTextureRect(new IntRect(16, 0, 16, 48));
 
 			_cache = new RenderTexture();
 			_cache.create(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
@@ -100,7 +99,7 @@ public class LightRenderer implements IRenderer {
 		if (x == x2 && y == y2) {
 			return true;
 		}
-		
+
 		int fromX = Math.min(x, x2);
 		int fromY = Math.min(y, y2);
 		int toX = Math.max(x, x2);
@@ -121,16 +120,16 @@ public class LightRenderer implements IRenderer {
 	}
 
 	public void refresh(ItemBase item) {
-		
+
 		// TODO
-//		refresh(item.getX() - item.getLight(),
-//				item.getY() - item.getLight(),
-//				item.getX() + item.getLight(),
-//				item.getY() + item.getLight());
-		
+		//		refresh(item.getX() - item.getLight(),
+		//				item.getY() - item.getLight(),
+		//				item.getX() + item.getLight(),
+		//				item.getY() + item.getLight());
+
 		_invalidate = true;
 	}
-	
+
 	private void fixLight(int fromX, int fromY, int toX, int toY) {
 		int mapWidth = ServiceManager.getWorldMap().getWidth();
 		int mapHeight = ServiceManager.getWorldMap().getHeight();
@@ -158,11 +157,13 @@ public class LightRenderer implements IRenderer {
 	@Override
 	public void onRefresh(int frame) {
 		if (_invalidate) {
+			_invalidate = false;
+			
 			int fromX = 0;
 			int fromY = 0;
 			int toX = ServiceManager.getWorldMap().getWidth();
 			int toY = ServiceManager.getWorldMap().getHeight();
-			
+
 			int mapWidth = ServiceManager.getWorldMap().getWidth();
 			int mapHeight = ServiceManager.getWorldMap().getHeight();
 			fromX = Math.max(fromX, 0);
@@ -197,7 +198,7 @@ public class LightRenderer implements IRenderer {
 					}
 				}
 			}
-			
+
 			// Reset brightness for areas
 			for (int x = fromX; x < toX; x++) {
 				for (int y = fromY; y < toY; y++) {
@@ -224,7 +225,7 @@ public class LightRenderer implements IRenderer {
 			fixLight(fromX-10, fromY-10, toX+10, toY+10);
 
 			// Draw shadows
-			_cache.clear(new Color(0,  0, 0, 0));
+			_cache.clear(new Color(0, 0, 0, 0));
 			RectangleShape shape = new RectangleShape(new Vector2f(32, 32));
 			RectangleShape wallShape = new RectangleShape(new Vector2f(32, 48));
 			RectangleShape halfShape = new RectangleShape(new Vector2f(32, 16));
@@ -237,27 +238,27 @@ public class LightRenderer implements IRenderer {
 					StructureItem structureBellow = ServiceManager.getWorldMap().getStructure(x, y+1);
 
 					Color color = new Color(10, 10, 30, 200 - (int)(area.getLight() * 255));
-					
+
 					if (structure != null && (structure.isWall() || structure.isDoor())) {
 						if (structureBellow != null && (structureBellow.isWall() || structureBellow.isDoor())) {
 							shape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT - 16);
 							shape.setFillColor(color);
 							_cache.draw(shape);
 						}
-						
+
 						else {
 							wallShape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT - 16);
 							wallShape.setFillColor(color);
 							_cache.draw(wallShape);
 						}
 					}
-					
+
 					else if (structureBellow != null && (structureBellow.isWall() || structureBellow.isDoor())) {
 						halfShape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
 						halfShape.setFillColor(color);
 						_cache.draw(halfShape);
 					}
-					
+
 					else {
 						shape.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
 						shape.setFillColor(color);

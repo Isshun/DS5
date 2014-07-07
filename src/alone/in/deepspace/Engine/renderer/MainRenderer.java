@@ -46,6 +46,7 @@ public class MainRenderer implements IRenderer {
 	}
 
 	public void onRefresh(int frame) {
+		_lightRenderer.onRefresh(frame);
 		_worldRenderer.onRefresh(frame);
 		_characterRenderer.onRefresh(frame);
 	}

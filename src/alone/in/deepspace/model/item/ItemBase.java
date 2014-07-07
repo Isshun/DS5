@@ -180,7 +180,7 @@ public abstract class ItemBase {
 	public void 			setY(int y) { _y = y; }
 
 	// Gets
-	public int				getMatterSupply() { return _matterSupply; }
+	public int				getMatterSupply() { return Math.min(_matterSupply, _matter); }
 	public Character		getOwner() { return _owner; }
 	public int				getWidth() { return _width; }
 	public int				getHeight() { return _height; }

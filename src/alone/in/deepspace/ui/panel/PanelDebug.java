@@ -195,6 +195,31 @@ public class PanelDebug extends BasePanel {
 		lbResetLight.setColor(Color.WHITE);
 		lbResetLight.setPosition(new Vector2f(20, 260));
 		addView(lbResetLight);
+		
+		// Add dome 
+		TextView lbDome = new TextView(new Vector2f(200, 32));
+		lbDome.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				for (double j = 0; j < 20; j++) {
+					for (double i = 0; i < Math.PI * 2; i += 0.01) {
+						double offsetX = (int)Math.round(Math.cos(i) * j);
+						double offsetY = (int)Math.round(Math.sin(i) * j);
+						ServiceManager.getWorldMap().putItem("base.floor", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
+					}
+				}
+				for (double i = 0; i < Math.PI * 2; i += 0.01) {
+					double offsetX = (int)Math.round(Math.cos(i) * 20);
+					double offsetY = (int)Math.round(Math.sin(i) * 20);
+					ServiceManager.getWorldMap().putItem("base.wall", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
+				}
+			}
+		});
+		lbDome.setString("Dome");
+		lbDome.setCharacterSize(20);
+		lbDome.setColor(Color.WHITE);
+		lbDome.setPosition(new Vector2f(20, 360));
+		addView(lbDome);
 	}
 
 	@Override

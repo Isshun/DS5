@@ -5,11 +5,9 @@ import java.util.Set;
 
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderTexture;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
-import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
@@ -30,8 +28,8 @@ public class WorldRenderer implements IRenderer {
 	private RectangleShape 			_shape;
 	private int 					_lastSpecialY;
 	private int 					_lastSpecialX;
-	private Sprite 					_spriteCache;
-	private RenderTexture 			_textureCache;
+	private RenderLayer 			_layerStructure;
+	private RenderLayer 			_layerItem;
 	private boolean 				_hasChanged;
 	private int						_pass;
 
@@ -46,16 +44,8 @@ public class WorldRenderer implements IRenderer {
 		_shape.setSize(new Vector2f(Constant.TILE_WIDTH, Constant.TILE_HEIGHT));
 		_changed = new HashSet<Vector2i>();
 		
-		_spriteCache = new Sprite();
-
-		try {
-			_textureCache = new RenderTexture();
-			_textureCache.create(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
-			_textureCache.setSmooth(true);
-			_textureCache.display();
-		} catch (TextureCreationException e) {
-			e.printStackTrace();
-		}
+		_layerStructure = new RenderLayer(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
+		_layerItem = new RenderLayer(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
 		
 		_hasChanged = true;
 	}
@@ -73,28 +63,32 @@ public class WorldRenderer implements IRenderer {
 		int toY = Math.min(ui.getRelativePosYMax(Constant.WINDOW_HEIGHT)+1, _worldMap.getHeight());
 
 		if (_hasChanged || _changed.size() > 0) {
+			_layerItem.clear();
+
 			if (_hasChanged) {
-				_textureCache.clear();
+				_layerStructure.clear();
 				refreshFloor(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 				refreshStructure(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
-				refreshResource(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
+//				refreshResource(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
+				refreshResource(fromX, fromY, toX, toY);
+				refreshItems(frame, fromX, fromY, toX, toY);
 			} else {
 				for (Vector2i vector: _changed) {
 					refreshFloor(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
-					refreshResource(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
+//					refreshResource(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
 				}
+				refreshResource(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
+				refreshItems(frame, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 				refreshStructure(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
 			}
-			_spriteCache.setTexture(_textureCache.getTexture());
 			_changed.clear();
 			_hasChanged = false;
 		}
-		
-		refreshItems(frame, fromX, fromY, toX, toY);
 	}
 	
 	public void onDraw(RenderWindow app, RenderStates render, double animProgress) {
-		app.draw(_spriteCache, render);
+		_layerStructure.onDraw(app, render);
+		_layerItem.onDraw(app, render);
 	}
 
 	private void refreshResource(int fromX, int fromY, int toX, int toY) {
@@ -106,7 +100,7 @@ public class WorldRenderer implements IRenderer {
 						Sprite sprite = _spriteManager.getRessource(ressource);
 						if (sprite != null) {
 							sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
-							_textureCache.draw(sprite);
+							_layerItem.draw(sprite);
 						}
 					}
 				}
@@ -138,13 +132,13 @@ public class WorldRenderer implements IRenderer {
 							int index = room != null && room.isType(Room.Type.GARDEN) ? 0 : 2;
 							Sprite sprite = _spriteManager.getGreenHouse(index + (structure.isWorking() ? 1 : 0));
 							sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
-							_textureCache.draw(sprite);
+							_layerStructure.draw(sprite);
 							
 							WorldResource ressource = _worldMap.getRessource(i, j);
 							if (ressource != null && ressource.getMatterSupply() > 0) {
 								sprite = _spriteManager.getRessource(ressource);
 								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
-								_textureCache.draw(sprite);
+								_layerStructure.draw(sprite);
 							}
 						}
 						
@@ -156,14 +150,14 @@ public class WorldRenderer implements IRenderer {
 							Sprite sprite = _spriteManager.getFloor(structure, roomId, 0);
 							if (sprite != null) {
 								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
-								_textureCache.draw(sprite);
+								_layerStructure.draw(sprite);
 							}
 							
 							WorldResource ressource = _worldMap.getRessource(i, j);
 							if (ressource != null) {
 								sprite = _spriteManager.getRessource(ressource);
 								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
-								_textureCache.draw(sprite);
+								_layerStructure.draw(sprite);
 							}
 
 							
@@ -178,7 +172,7 @@ public class WorldRenderer implements IRenderer {
 					else {
 						Sprite sprite = _spriteManager.getExterior(i + j * 42, floor);
 						sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
-						_textureCache.draw(sprite);
+						_layerStructure.draw(sprite);
 					}
 				}
 			}
@@ -220,13 +214,13 @@ public class WorldRenderer implements IRenderer {
 							sprite = _spriteManager.getSimpleWall(0);
 							if (sprite != null) {
 								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT - offsetWall);
-								_textureCache.draw(sprite);
+								_layerStructure.draw(sprite);
 							}
 
 							sprite = _spriteManager.getItem(item);
 							if (sprite != null) {
 								sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT - 4);
-								_textureCache.draw(sprite);
+								_layerStructure.draw(sprite);
 							}
 						}
 
@@ -237,19 +231,19 @@ public class WorldRenderer implements IRenderer {
 						// Wall
 						else if (item.isWall()) {
 							sprite = drawWall(item, i, j, offsetWall);
-							_textureCache.draw(sprite);
+							_layerStructure.draw(sprite);
 						}	  
 
 						// Hull
 						else if (item.isHull()) {
 							sprite = drawWall(item, i, j, offsetWall);
-							_textureCache.draw(sprite);
+							_layerStructure.draw(sprite);
 						}
 						
 						else {
 							sprite = SpriteManager.getInstance().getItem(item);
 							sprite.setPosition(item.getX() * Constant.TILE_WIDTH, item.getY() * Constant.TILE_HEIGHT);
-							_textureCache.draw(sprite);
+							_layerStructure.draw(sprite);
 						}
 					}
 				}
@@ -397,7 +391,7 @@ public class WorldRenderer implements IRenderer {
 						Sprite sprite = _spriteManager.getItem(item, item.getCurrentFrame());
 						if (sprite != null) {
 							sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-							_textureCache.draw(sprite);
+							_layerItem.draw(sprite);
 						}
 					}
 					
@@ -414,14 +408,14 @@ public class WorldRenderer implements IRenderer {
 		Sprite sprite = _spriteManager.getIcon(stack.getStackedInfo());
 		if (sprite != null) {
 			sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-			_textureCache.draw(sprite);
+			_layerItem.draw(sprite);
 		}
 		Text text = new Text();
 		text.setFont(SpriteManager.getInstance().getFont());
 		text.setCharacterSize(12);
 		text.setString("x" + stack.size());
 		text.setPosition(x * Constant.TILE_WIDTH + (stack.size() < 10 ? 18 : 10), y * Constant.TILE_HEIGHT + 18);
-		_textureCache.draw(text);
+		_layerItem.draw(text);
 	}
 
 	private void refreshSelected(RenderWindow app, RenderStates render, int frame, ItemBase item) {

@@ -8,6 +8,7 @@ import org.jsfml.graphics.TextureCreationException;
 
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.SpriteManager;
+import alone.in.deepspace.model.item.WorldArea;
 import alone.in.deepspace.model.item.WorldResource;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.ObjectPool;
@@ -32,19 +33,19 @@ public class DebugRenderer implements IRenderer {
 //		_shapeDebug.setSize(ObjectPool.getVector2f(Constant.TILE_SIZE, Constant.TILE_SIZE));
 //		_shapeDebug.setFillColor(new Color(250, 200, 200, 100));
 //
-		Text text = ObjectPool.getText();
-		text.setFont(SpriteManager.getInstance().getFont());
-		text.setCharacterSize(10);
-		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
-			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
-				WorldResource res = ServiceManager.getWorldMap().getRessource(x, y);
-				if (res != null) {
-					text.setString(""+(int)(res.getTile()));
-					text.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-					app.draw(text, render);
-				}
-			}
-		}
+//		Text text = ObjectPool.getText();
+//		text.setFont(SpriteManager.getInstance().getFont());
+//		text.setCharacterSize(10);
+//		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
+//			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
+//				WorldArea res = ServiceManager.getWorldMap().getArea(x, y);
+//				if (res != null) {
+//					text.setString(""+(int)(res.getLightSource()));
+//					text.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
+//					app.draw(text, render);
+//				}
+//			}
+//		}
 
 //		if (area.getLight() > 0) {
 //			text.setString(String.valueOf((int)(area.getLight() * 255)));
