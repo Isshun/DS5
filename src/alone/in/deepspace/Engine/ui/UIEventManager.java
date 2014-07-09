@@ -39,13 +39,19 @@ public class UIEventManager {
 	}
 	
 	public boolean leftClick(int x, int y) {
+//		for (View view: _onClickListeners.keySet()) {
+//			if (view.getId() == 112) {
+//				System.out.println("y: " + view.getPosY());
+//			}
+//		}
+		System.out.println("leftClick on: " + x + " x " + y);
 		for (View view: _onClickListeners.keySet()) {
-			if (view.getId() == 112) {
-				System.out.println("y: " + view.getPosY());
+			System.out.println("leftClick check: " + view.getPosX() + " x " + view.getPosY());
+			if (view.getRect().contains(x, y)) {
+				System.out.println("CONTAINS !!!");
 			}
-		}
-		for (View view: _onClickListeners.keySet()) {
 			if (hasVisibleHierarchy(view) && view.getRect().contains(x, y)) {
+				System.out.println("MATCH !!!");
 				_onClickListeners.get(view).onClick(view);
 				return true;
 			}

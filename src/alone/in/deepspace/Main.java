@@ -49,8 +49,16 @@ public class Main {
 	        return parameterMap;
 	    }
 		
+		private void onClick(int x, int y) {
+			_userInterface.onEventLeftClick(x, y);
+		}
+		
 		private void onUpdate() {
 			_game.onUpdate();
+		}
+		
+		private void onLongUpdate() {
+			_game.onLongUpdate();
 		}
 		
 		private void onRefresh(int refresh) {
@@ -58,28 +66,23 @@ public class Main {
 		}
 
 		private int[] getItems() {
-
-			//_game.onUpdate();
-			
 			return ServiceManager.getWorldMap().getArrayItems();
 		}
 
 		private int[] getAreas() {
-
-			//_game.onUpdate();
-			
 			return ServiceManager.getWorldMap().getArrayAreas();
 		}
 
 		private int[] getStructures() {
-
-			//_game.onUpdate();
-			
 			return ServiceManager.getWorldMap().getArrayStructures();
 		}
 
 		private Object getUI() {
 			return _userInterface.getObjects();
+		}
+
+		private Object getUITexts() {
+			return _userInterface.getObjectTexts();
 		}
 
 		private int[] getCharacters() {
@@ -165,6 +168,7 @@ public class Main {
 		_loadListener.onUpdate("Start game");
 
 		_game.onUpdate();
+		_game.onLongUpdate();
 
 		//String[] infos = new String[1000];
 		

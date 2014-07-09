@@ -103,7 +103,9 @@ public class UserInterface {
 			new PanelManager(	Mode.MANAGER, 	Key.M),
 			new PanelShortcut(	Mode.NONE, 		null),
 	};
+
 	private ArrayList<TextView> texts;
+	private ArrayList<View> views;
 
 	public enum Mode {
 		INFO,
@@ -125,6 +127,7 @@ public class UserInterface {
 
 	public UserInterface(RenderWindow app) {
 		texts = new ArrayList<TextView>();
+		views = new ArrayList<View>();
 		_self = this;
 		_app = app;
 		_interaction = new UserInteraction(this);
@@ -147,28 +150,42 @@ public class UserInterface {
 		setMode(Mode.PLAN);
 	}
 
-	public List<TextView> getObjects() {
+	public List<View> getObjects() {
+		views.clear();
+
+		for (BasePanel panel: _panels) {
+			if (panel.isVisible()) {
+				views.add(panel);
+				getObjects(views, null, panel, panel.getPosX(), panel.getPosY());
+			}
+		}
+
+		return views;
+	}
+	
+	public List<TextView> getObjectTexts() {
 		texts.clear();
 
 		for (BasePanel panel: _panels) {
 			if (panel.isVisible()) {
-				getObjects(texts, panel, panel.getPosX(), panel.getPosY());
+				getObjects(null, texts, panel, panel.getPosX(), panel.getPosY());
 			}
 		}
 
 		return texts;
 	}
 
-	private void getObjects(List<TextView> texts, FrameLayout layout, int x, int y) {
+	private void getObjects(List<View> views, List<TextView> texts, FrameLayout layout, int x, int y) {
 		for (View view: layout.getViews()) {
 			if (view.isVisible()) {
 				if (view instanceof TextView) {
-					//view.setParentPos(x, y);
-					//view.resetPos();
-					texts.add((TextView)view);
+					if (texts != null) texts.add((TextView)view);
+				}
+				else {
+					if (views != null) views.add(view);
 				}
 				if (view instanceof FrameLayout) {
-					getObjects(texts, (FrameLayout)view, x, y);
+					getObjects(views, texts, (FrameLayout)view, x, y);
 				}
 			}
 		}
@@ -416,6 +433,24 @@ public class UserInterface {
 		}
 	}
 
+	public void onEventLeftClick(int x, int y) {
+		if (UIEventManager.getInstance().leftClick(x, y)) {
+			// Nothing to do !
+		}
+//		// Is double click
+//		else if (_lastLeftClick + 200 > timer.getElapsedTime().asMilliseconds()) {
+//			onDoubleClick(x, y);
+//		}
+		// Is simple click
+		else {
+			boolean use = onLeftClick(x, y);
+			if (use) {
+				onRefresh(_update);
+			}
+		}
+//		_lastLeftClick = timer.getElapsedTime().asMilliseconds();
+	}
+	
 	public boolean onLeftClick(int x, int y) {
 		if (_keyLeftPressed == false) {
 			return false;
@@ -538,6 +573,8 @@ public class UserInterface {
 		return _mode;
 	}
 
+	
+	
 	public void onEvent(Event event, Clock timer) {
 		if (event.type == Event.Type.MOUSE_MOVED) {
 			onMouseMove(event.asMouseEvent().position.x, event.asMouseEvent().position.y);

@@ -32,6 +32,7 @@ public abstract class View {
 	private Color 				_borderColor;
 	protected Color				_backgroundColor;
 	private Object 				_data;
+	private int _color;
 
 	public View(Vector2f size) {
 		_size = size;
@@ -150,6 +151,14 @@ public abstract class View {
 		}
 		return _rect;
 	}
+	
+	public int getWidth() {
+		return getRect().width;
+	}
+
+	public int getHeight() {
+		return getRect().height;
+	}
 
 	// TODO
 	public void resetPos() {
@@ -157,10 +166,21 @@ public abstract class View {
 	}
 
 	public void setBackgroundColor(Color color) {
+		_color = 0;
+		_color += color.r;
+		_color = _color << 8;
+		_color += color.g;
+		_color = _color << 8;
+		_color += color.b;
+
 		_backgroundColor = color;
 		_invalid = true;
 	}
 
+	public int getColor() {
+		return _color;
+	}
+	
 	public void setPadding(int t, int r, int b, int l) {
 		_paddingTop = t;
 		_paddingRight = r;
@@ -196,13 +216,14 @@ public abstract class View {
 	private Rectangle computeRect() {
 		int x = 0;
 		int y = 0;
-		View view = this;
-		while (view != null) {
-			x += view.getPosX();
-			y += view.getPosY();
-			view = view.getParent();
-		}
-		return new Rectangle(x, y, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
+//		View view = this;
+//		while (view != null) {
+//			x += view.getPosX();
+//			y += view.getPosY();
+//			view = view.getParent();
+//		}
+//		return new Rectangle(x, y, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
+		return new Rectangle(getPosX(), getPosY(), (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
 	}
 
 	public void onEnter() {

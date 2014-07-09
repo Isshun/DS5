@@ -44,6 +44,8 @@ public class WorldManager implements TileBasedMap {
 	private WorldFinder		 	_finder;
 
 	private int[] array;
+	private int[] arrayAreas;
+	private int[] arrayStructures;
 	
 	public WorldManager() {
 		_width = Constant.WORLD_WIDTH;
@@ -51,6 +53,8 @@ public class WorldManager implements TileBasedMap {
 		_factoryItems = new ArrayList<FactoryItem>();
 
 		array = new int[Constant.WORLD_WIDTH * Constant.WORLD_HEIGHT];
+		arrayAreas = new int[Constant.WORLD_WIDTH * Constant.WORLD_HEIGHT];
+		arrayStructures = new int[Constant.WORLD_WIDTH * Constant.WORLD_HEIGHT];
 
 		_rooms = new HashMap<Integer, Room>();
 		_areas = new WorldArea[_width][_height][NB_FLOOR];
@@ -71,14 +75,15 @@ public class WorldManager implements TileBasedMap {
 		ItemInfo info = Game.getData().getItemInfo("base.sand");
 		for (int x = 0; x < Constant.WORLD_WIDTH; x++) {
 			for (int y = 0; y < Constant.WORLD_HEIGHT; y++) {
-				array[x * Constant.WORLD_WIDTH + y] = info.spriteId;
+//				arrayAreas[x * Constant.WORLD_WIDTH + y] = 0;
+				arrayAreas[x * Constant.WORLD_WIDTH + y] = info.spriteId;
 //				if (_areas[x][y][0] != null) {
 //					array[x * Constant.WORLD_WIDTH + y] = _areas[x][y][0].getRessource().getInfo().spriteId;
 //				}
 			}
 		}
 		
-		return array;
+		return arrayAreas;
 	}
 
 	public int[]	getArrayItems() {
@@ -97,14 +102,14 @@ public class WorldManager implements TileBasedMap {
 	public int[]	getArrayStructures() {
 		for (int x = 0; x < Constant.WORLD_WIDTH; x++) {
 			for (int y = 0; y < Constant.WORLD_HEIGHT; y++) {
-				array[x * Constant.WORLD_WIDTH + y] = 0;
+				arrayStructures[x * Constant.WORLD_WIDTH + y] = 0;
 				if (_areas[x][y][0].getStructure() != null) {
-					array[x * Constant.WORLD_WIDTH + y] = _areas[x][y][0].getStructure().getInfo().spriteId;
+					arrayStructures[x * Constant.WORLD_WIDTH + y] = _areas[x][y][0].getStructure().getInfo().spriteId;
 				}
 			}
 		}
 		
-		return array;
+		return arrayStructures;
 	}
 	
 	public ItemBase putItem(String name, int x, int y, int z, int i) {

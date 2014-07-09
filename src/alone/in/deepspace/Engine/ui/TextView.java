@@ -18,6 +18,7 @@ public class TextView extends View {
 	
 	protected FakeText 			_text;
 	protected String 			_value;
+	private int 				_characterSize;
 
 	public TextView() {
 		super(new Vector2f(0, 0));
@@ -43,6 +44,7 @@ public class TextView extends View {
 	}
 
 	public void setCharacterSize(int size) {
+		_characterSize = size;
 		_text.setCharacterSize(size);
 	}
 
@@ -90,5 +92,9 @@ public class TextView extends View {
 
 	public String getString() {
 		return _value;
+	}
+	
+	public int getCharacterSize() {
+		return _characterSize;
 	}
 }
