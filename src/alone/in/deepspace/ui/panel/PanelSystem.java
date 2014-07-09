@@ -35,6 +35,7 @@ public class PanelSystem extends BasePanel {
 		super.addView(border);
 
 		_lbRenderTime = new TextView(new Vector2f(10, 10));
+		_lbRenderTime.setString("rendertime");
 		_lbRenderTime.setCharacterSize(14);
 		_lbRenderTime.setColor(Color.WHITE);
 		_lbRenderTime.setPosition(new Vector2f(10, 6));

@@ -15,6 +15,7 @@ import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.character.Character;
+import alone.in.deepspace.ui.panel.FakeImage;
 import alone.in.deepspace.util.Constant;
 
 public class MiniMapRenderer implements IRenderer {
@@ -22,7 +23,7 @@ public class MiniMapRenderer implements IRenderer {
 	private static final Color COLOR_BORDER = new Color(22, 50, 56);
 	private Color[]		_colors;
 	private Sprite 		_sprite;
-	private Image 		_image;
+	private FakeImage 		_image;
 	private int 		_width;
 	private int 		_height;
 	private Texture 	_texture;
@@ -33,7 +34,7 @@ public class MiniMapRenderer implements IRenderer {
 		_height = 200;
 		_viewport = viewport;
 		
-		_image = new Image();
+		_image = new FakeImage();
 		_image.create(_width, _height);
 		
 		int i1 = 40;
@@ -43,7 +44,7 @@ public class MiniMapRenderer implements IRenderer {
 			_colors[i] = new Color((int)(18 + Math.random() * i1 - i2), (int)(28 + Math.random() * i1 - i2), (int)(30 + Math.random() * i1 - i2));
 		}
 
-		_texture = new Texture();
+//		_texture = new Texture();
 	}
 	
 	public void onRefresh(int frame) {
@@ -92,14 +93,14 @@ public class MiniMapRenderer implements IRenderer {
 			_image.setPixel(character.getX(), character.getY(), Color.RED);
 		}
 		
-		try {
-			_texture.loadFromImage(_image);
-		} catch (TextureCreationException e) {
-			e.printStackTrace();
-		}
-		
-		_sprite = new Sprite(_texture);
-		_sprite.setPosition(24, 20);
+//		try {
+//			_texture.loadFromImage(_image);
+//		} catch (TextureCreationException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		_sprite = new Sprite(_texture);
+//		_sprite.setPosition(24, 20);
 	}
 	
 	@Override

@@ -22,7 +22,7 @@ public class PanelStats extends BaseRightPanel {
 
 	private ImageView 			_imageView;
 	private StatsManager		_stats;
-	private Image 				_image;
+	private FakeImage 				_image;
 	private TextView[] 			_labels;
 
 	public PanelStats(Mode mode, Key shortcut) {
@@ -31,7 +31,7 @@ public class PanelStats extends BaseRightPanel {
 
 	@Override
 	protected void onCreate() {
-		_image = new Image();
+		_image = new FakeImage();
 		_image.create(300, 200);
 		
 		_imageView = new ImageView();
@@ -74,15 +74,16 @@ public class PanelStats extends BaseRightPanel {
 			_image.setPixel(CHART_WIDTH-1, i, COLOR_BORDER);
 			_image.setPixel(CHART_WIDTH-2, i, COLOR_BORDER);
 		}
-		
-		Texture texture = new Texture();
-		try {
-			texture.loadFromImage(_image);
-		} catch (TextureCreationException e) {
-			e.printStackTrace();
-		}
-		
-		_imageView.setSprite(new Sprite(texture));
+
+		// TODO
+//		Texture texture = new Texture();
+//		try {
+//			texture.loadFromImage(_image);
+//		} catch (TextureCreationException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		_imageView.setSprite(new Sprite(texture));
 	}
 
 	private void addData(int index, StatsData data, Color color) {

@@ -12,9 +12,9 @@ import alone.in.deepspace.manager.SpriteManager;
 
 public class ButtonView extends View {
 
-	private Text 			_text;
-	private Text 			_textShortcut;
-	private RectangleShape	_rectShortcut;
+	private FakeText 			_text;
+	private FakeText 			_textShortcut;
+	private FakeRectangleShape	_rectShortcut;
 	protected int 			_textPaddingLeft;
 	protected int 			_textPaddingTop;
 	private Sprite 			_icon;
@@ -28,7 +28,7 @@ public class ButtonView extends View {
 	public ButtonView(Vector2f size) {
 		super(size);
 
-		_text = new Text();
+		_text = new FakeText();
 		_text.setFont(SpriteManager.getInstance().getFont());
 
 		setBackgroundColor(Colors.BT_INACTIVE);
@@ -174,11 +174,11 @@ public class ButtonView extends View {
 		_shortcutPos = index * 12;
 		_text.setString(_string);
 		
-		_textShortcut = new Text();
+		_textShortcut = new FakeText();
 		_textShortcut.setFont(SpriteManager.getInstance().getFont());
 		_textShortcut.setString(String.valueOf(shortcut));
 		_textShortcut.setColor(Colors.LINK_ACTIVE);
-		_rectShortcut = new RectangleShape(new Vector2f(12, 1));
+		_rectShortcut = new FakeRectangleShape(new Vector2f(12, 1));
 		_rectShortcut.setFillColor(Colors.LINK_ACTIVE);
 		
 		_invalid = true;

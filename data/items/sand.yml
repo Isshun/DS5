@@ -1,0 +1,8 @@
+name: sand
+label: Sand
+width: 1
+height: 1
+type: structure
+isWalkable: true
+cost:
+  matter: 1

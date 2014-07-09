@@ -13,6 +13,7 @@ import org.jsfml.window.Keyboard.Key;
 import alone.in.deepspace.Strings;
 import alone.in.deepspace.engine.ui.ColorView;
 import alone.in.deepspace.engine.ui.Colors;
+import alone.in.deepspace.engine.ui.FakeRectangleShape;
 import alone.in.deepspace.engine.ui.FrameLayout;
 import alone.in.deepspace.engine.ui.ImageView;
 import alone.in.deepspace.engine.ui.LinkView;
@@ -56,7 +57,7 @@ public class PanelCharacter extends BaseRightPanel {
 	private TextView 			_lbName;
 	private TextView 			_lbProfession;
 	private ColorView 			_cursor;
-	private RectangleShape[] 	_shapes = new RectangleShape[NB_GAUGE];
+	private FakeRectangleShape[] 	_shapes = new FakeRectangleShape[NB_GAUGE];
 	private TextView[] 			_values = new TextView[NB_GAUGE];
 	private TextView 			_lbJob;
 	private TextView 			_lbJob2;
@@ -420,7 +421,7 @@ public class PanelCharacter extends BaseRightPanel {
 	//	}
 
 	void  addGauge(int posX, int posY, int width, int height, int index) {
-		_shapes[index] = new RectangleShape();
+		_shapes[index] = new FakeRectangleShape();
 		_shapes[index].setTexture(SpriteManager.getInstance().getTexture());
 		_shapes[index].setSize(new Vector2f(width, height));
 		_shapes[index].setPosition(posX, posY + 42 + FONT_SIZE_TITLE + 2);

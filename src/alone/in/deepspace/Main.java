@@ -20,10 +20,12 @@ import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.engine.serializer.GameLoadListener;
 import alone.in.deepspace.engine.serializer.LoadListener;
 import alone.in.deepspace.engine.ui.OnClickListener;
+import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.GameData;
+import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemInfo;
 import alone.in.deepspace.ui.MenuBase;
 import alone.in.deepspace.ui.MenuGame;
@@ -35,26 +37,66 @@ import alone.in.deepspace.util.Constant;
 public class Main {
 	private int[] _map;
 	private int number;
+	private int[] array;
 	private static Map<Integer, String> parameterMap;
 	public native void init(Object[] files);
 
+	public Main() {
+		array = new int[Constant.WORLD_WIDTH * Constant.WORLD_HEIGHT];
+	}
+	
 	   public Map<Integer, String> getParameterMap() {
 	        return parameterMap;
 	    }
-	
-	private int[] getMap() {
-		try {
-			Thread.sleep(10);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		
+		private void onUpdate() {
+			_game.onUpdate();
+		}
+		
+		private void onRefresh(int refresh) {
+			_userInterface.onRefresh(refresh);
 		}
 
-		//_game.onUpdate();
+		private int[] getItems() {
+
+			//_game.onUpdate();
+			
+			return ServiceManager.getWorldMap().getArrayItems();
+		}
+
+		private int[] getAreas() {
+
+			//_game.onUpdate();
+			
+			return ServiceManager.getWorldMap().getArrayAreas();
+		}
+
+		private int[] getStructures() {
+
+			//_game.onUpdate();
+			
+			return ServiceManager.getWorldMap().getArrayStructures();
+		}
+
+		private Object getUI() {
+			return _userInterface.getObjects();
+		}
+
+		private int[] getCharacters() {
+			ItemInfo info = Game.getData().getItemInfo("base.light");
+
+			for (int i = 0; i < Constant.WORLD_WIDTH * Constant.WORLD_HEIGHT; i++) {
+				array[i] = 0;
+			}
+			
+			List<Character> characters = Game.getCharacterManager().getList();
+			for (Character character: characters) {
+				array[character.getX() * Constant.WORLD_WIDTH + character.getY()] = info.spriteId;
+			}
+			
+			return array;
+		}
 		
-		return ServiceManager.getWorldMap().getArray();
-	}
-
-
 	static final int 				DRAW_INTERVAL = (1000/60);
 	static final int 				UPDATE_INTERVAL = 100;
 	private static final int		REFRESH_INTERVAL = 200;
@@ -72,7 +114,8 @@ public class Main {
 	private static boolean			_isFullscreen;
 
 	static {
-		System.loadLibrary("TestJNI");
+		//System.loadLibrary("DS5Render.dll");
+		System.load("C:\\Users\\Alex\\workspace\\DS5Render\\Debug\\DS5Render.dll");
 	}
 
 	public static void main(String[] args) {
@@ -88,7 +131,7 @@ public class Main {
 
 		_isFullscreen = true;
 		_mainRenderer = new MainRenderer(null);
-		//_userInterface = new UserInterface(null);
+		_userInterface = new UserInterface(null);
 
 		_loadListener = new LoadListener() {
 			@Override
@@ -117,7 +160,7 @@ public class Main {
 
 		_loadListener.onUpdate("Init render");
 		_mainRenderer.init(_game);
-		//_userInterface.onCreate(_game);
+		_userInterface.onCreate(_game);
 
 		_loadListener.onUpdate("Start game");
 
@@ -139,7 +182,6 @@ public class Main {
 		
 		
 		Main bridge = new Main();
-		bridge.getMap();
 		bridge.init(infos.toArray());
 
 		//			loop(window);

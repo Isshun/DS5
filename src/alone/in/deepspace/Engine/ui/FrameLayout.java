@@ -118,4 +118,8 @@ public class FrameLayout extends View {
 	public void setPosition(Vector2f pos) {
 		setPosition((int)pos.x, (int)pos.y);
 	}
+
+	public List<View> getViews() {
+		return _views;
+	}
 }

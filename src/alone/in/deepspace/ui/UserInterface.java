@@ -1,5 +1,8 @@
 package alone.in.deepspace.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
@@ -12,8 +15,12 @@ import alone.in.deepspace.Game;
 import alone.in.deepspace.Main;
 import alone.in.deepspace.engine.Viewport;
 import alone.in.deepspace.engine.renderer.MainRenderer;
+import alone.in.deepspace.engine.ui.FrameLayout;
+import alone.in.deepspace.engine.ui.LinkView;
+import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.UIEventManager;
 import alone.in.deepspace.engine.ui.UIMessage;
+import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.CharacterManager;
 import alone.in.deepspace.manager.ServiceManager;
 import alone.in.deepspace.model.ToolTips.ToolTip;
@@ -96,6 +103,7 @@ public class UserInterface {
 			new PanelManager(	Mode.MANAGER, 	Key.M),
 			new PanelShortcut(	Mode.NONE, 		null),
 	};
+	private ArrayList<TextView> texts;
 
 	public enum Mode {
 		INFO,
@@ -114,8 +122,9 @@ public class UserInterface {
 		STATS,
 		MANAGER
 	}
-	
+
 	public UserInterface(RenderWindow app) {
+		texts = new ArrayList<TextView>();
 		_self = this;
 		_app = app;
 		_interaction = new UserInteraction(this);
@@ -130,13 +139,39 @@ public class UserInterface {
 		_keyLeftPressed = false;
 		_keyRightPressed = false;
 		_cursor = new UserInterfaceCursor();
-		
+
 		for (BasePanel panel: _panels) {
 			panel.init(this, _interaction, _viewport);
 		}
-		
 
-		setMode(Mode.NONE);
+		setMode(Mode.PLAN);
+	}
+
+	public List<TextView> getObjects() {
+		texts.clear();
+
+		for (BasePanel panel: _panels) {
+			if (panel.isVisible()) {
+				getObjects(texts, panel, panel.getPosX(), panel.getPosY());
+			}
+		}
+
+		return texts;
+	}
+
+	private void getObjects(List<TextView> texts, FrameLayout layout, int x, int y) {
+		for (View view: layout.getViews()) {
+			if (view.isVisible()) {
+				if (view instanceof TextView) {
+					//view.setParentPos(x, y);
+					//view.resetPos();
+					texts.add((TextView)view);
+				}
+				if (view instanceof FrameLayout) {
+					getObjects(texts, (FrameLayout)view, x, y);
+				}
+			}
+		}
 	}
 
 	public void	onMouseMove(int x, int y) {
@@ -201,19 +236,19 @@ public class UserInterface {
 
 	public int				getMouseX() { return _keyMovePosX; }
 	public int				getMouseY() { return _keyMovePosY; }
-	
+
 	public void toogleMode(Mode mode) {
 		setMode(_mode != mode ? mode : Mode.NONE);
 	}
 
 	public void setMode(Mode mode) {
 		_interaction.clean();
-		
+
 		((MainRenderer)MainRenderer.getInstance()).setMode(mode);
 
 		_mode = mode;
 		_menu = null;
-		
+
 		if (mode == Mode.NONE) {
 			_interaction.clean();
 			clean();
@@ -236,10 +271,10 @@ public class UserInterface {
 	public void	onMouseWheel(int delta, int x, int y) {
 		_viewport.setScale(delta, x, y);
 
-//		_keyMovePosX = getRelativePosX(-_viewport.getPosX());
-//		_keyMovePosY = getRelativePosY(-_viewport.getPosY());
-		
-//		MainRenderer.getInstance().invalidate();
+		//		_keyMovePosX = getRelativePosX(-_viewport.getPosX());
+		//		_keyMovePosY = getRelativePosY(-_viewport.getPosY());
+
+		//		MainRenderer.getInstance().invalidate();
 	}
 
 	public void onRefresh(int update) {
@@ -251,41 +286,41 @@ public class UserInterface {
 	}
 
 	public void onDraw(int update, long renderTime) {
-//		for (BasePanel panel: _panels) {
-//			panel.draw(_app, null);
-//		}
-//		
-//		_panelMessage.draw(_app, null);
-//
-//		if (_mouseOnMap) {
-//			if (_interaction.isAction(Action.SET_ROOM) || _interaction.isAction(Action.SET_PLAN) || _interaction.isAction(Action.BUILD_ITEM)) {
-//				if (_keyLeftPressed) {
-//					_cursor.draw(_app, _viewport.getRender(), Math.min(_keyPressPosX, _keyMovePosX),
-//							Math.min(_keyPressPosY, _keyMovePosY),
-//							Math.max(_keyPressPosX, _keyMovePosX),
-//							Math.max(_keyPressPosY, _keyMovePosY));
-//				} else {
-//					_cursor.draw(_app, _viewport.getRender(), Math.min(_keyMovePosX, _keyMovePosX),
-//							Math.min(_keyMovePosY, _keyMovePosY),
-//							Math.max(_keyMovePosX, _keyMovePosX),
-//							Math.max(_keyMovePosY, _keyMovePosY));
-//				}
-//			}
-//		}
-//
-//		if (_message != null && _app != null && _viewport != null) {
-//			_app.draw(_message.border, _viewport.getRender());
-//			_app.draw(_message.shape, _viewport.getRender());
-//			_app.draw(_message.text, _viewport.getRender());
-//			if (--_message.frame < 0) {
-//				_message = null;
-//			}
-//
-//		}
-//
-//		if (_menu != null) {
-//			_menu.draw(_app, null);
-//		}
+		//		for (BasePanel panel: _panels) {
+		//			panel.draw(_app, null);
+		//		}
+		//		
+		//		_panelMessage.draw(_app, null);
+		//
+		//		if (_mouseOnMap) {
+		//			if (_interaction.isAction(Action.SET_ROOM) || _interaction.isAction(Action.SET_PLAN) || _interaction.isAction(Action.BUILD_ITEM)) {
+		//				if (_keyLeftPressed) {
+		//					_cursor.draw(_app, _viewport.getRender(), Math.min(_keyPressPosX, _keyMovePosX),
+		//							Math.min(_keyPressPosY, _keyMovePosY),
+		//							Math.max(_keyPressPosX, _keyMovePosX),
+		//							Math.max(_keyPressPosY, _keyMovePosY));
+		//				} else {
+		//					_cursor.draw(_app, _viewport.getRender(), Math.min(_keyMovePosX, _keyMovePosX),
+		//							Math.min(_keyMovePosY, _keyMovePosY),
+		//							Math.max(_keyMovePosX, _keyMovePosX),
+		//							Math.max(_keyMovePosY, _keyMovePosY));
+		//				}
+		//			}
+		//		}
+		//
+		//		if (_message != null && _app != null && _viewport != null) {
+		//			_app.draw(_message.border, _viewport.getRender());
+		//			_app.draw(_message.shape, _viewport.getRender());
+		//			_app.draw(_message.text, _viewport.getRender());
+		//			if (--_message.frame < 0) {
+		//				_message = null;
+		//			}
+		//
+		//		}
+		//
+		//		if (_menu != null) {
+		//			_menu.draw(_app, null);
+		//		}
 	}
 
 	public boolean checkKeyboard(Key key, int lastInput) {
@@ -295,7 +330,7 @@ public class UserInterface {
 				return true;
 			}
 		}
-		
+
 		switch (key) {
 
 		case ADD:
@@ -309,7 +344,7 @@ public class UserInterface {
 		case SUBTRACT:
 			Main.setUpdateInterval(Main.getUpdateInterval() + 40);
 			return true;
-			
+
 		case ESCAPE:
 			setMode(Mode.NONE);
 			return true;
@@ -337,14 +372,14 @@ public class UserInterface {
 
 		default: break;
 		}
-		
+
 		for (BasePanel panel: _panels) {
 			if (key.equals(panel.getShortcut())) {
 				toogleMode(panel.getMode());
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -358,7 +393,7 @@ public class UserInterface {
 	}
 
 	public void displayMessage(String msg, int x, int y) {
-//		_message = new UIMessage(msg, _viewport.getRealPosX(x) + 20, _viewport.getRealPosY(y) + 12);
+		//		_message = new UIMessage(msg, _viewport.getRealPosX(x) + 20, _viewport.getRealPosY(y) + 12);
 		_message = new UIMessage(msg, x * Constant.TILE_WIDTH + 20, y * Constant.TILE_HEIGHT + 12);
 	}
 
@@ -415,7 +450,7 @@ public class UserInterface {
 			}
 			return true;
 		}
-		
+
 		if (_interaction.hasAction()) {
 			_interaction.action(
 					Math.min(_keyPressPosX, _keyMovePosX),
@@ -476,7 +511,7 @@ public class UserInterface {
 		else if (_interaction.isAction(Action.SET_ROOM)) {
 			_interaction.clean();
 		}
-		
+
 		else if (_mode == Mode.ROOM && _interaction.getSelectedRoomType() == Room.Type.NONE) {
 			final Room room = Game.getRoomManager().get(getRelativePosX(x), getRelativePosY(y));
 			if (room != null) {
@@ -576,7 +611,7 @@ public class UserInterface {
 			_selectedCharacter.setSelected(true);
 		}
 	}
-	
+
 	public void select(Room room) {
 		clean();
 		setMode(Mode.ROOM);

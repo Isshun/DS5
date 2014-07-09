@@ -126,4 +126,9 @@ public abstract class BasePanel extends FrameLayout {
 	public Key getShortcut() {
 		return _shortcut;
 	}
+	
+	@Override
+	public boolean isVisible() {
+		return _alwaysVisible ? true : _isVisible;
+	}
 }

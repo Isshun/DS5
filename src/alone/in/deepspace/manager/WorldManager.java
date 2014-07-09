@@ -67,21 +67,39 @@ public class WorldManager implements TileBasedMap {
 		_finder = new WorldFinder(this, _areas);
 	}
 
-	public int[]	getArray() {
+	public int[]	getArrayAreas() {
+		ItemInfo info = Game.getData().getItemInfo("base.sand");
+		for (int x = 0; x < Constant.WORLD_WIDTH; x++) {
+			for (int y = 0; y < Constant.WORLD_HEIGHT; y++) {
+				array[x * Constant.WORLD_WIDTH + y] = info.spriteId;
+//				if (_areas[x][y][0] != null) {
+//					array[x * Constant.WORLD_WIDTH + y] = _areas[x][y][0].getRessource().getInfo().spriteId;
+//				}
+			}
+		}
+		
+		return array;
+	}
+
+	public int[]	getArrayItems() {
 		for (int x = 0; x < Constant.WORLD_WIDTH; x++) {
 			for (int y = 0; y < Constant.WORLD_HEIGHT; y++) {
 				array[x * Constant.WORLD_WIDTH + y] = 0;
-				if (_areas[x][y][0].getRessource() != null) {
-					Log.info("id: " + _areas[x][y][0].getRessource().getInfo().spriteId);
-					array[x * Constant.WORLD_WIDTH + y] = _areas[x][y][0].getRessource().getInfo().spriteId;
-				}
-				if (_areas[x][y][0].getStructure() != null) {
-					Log.info("id: " + _areas[x][y][0].getStructure().getInfo().spriteId);
-					array[x * Constant.WORLD_WIDTH + y] = _areas[x][y][0].getStructure().getInfo().spriteId;
-				}
 				if (_areas[x][y][0].getItem() != null) {
-					Log.info("id: " + _areas[x][y][0].getItem().getInfo().spriteId);
 					array[x * Constant.WORLD_WIDTH + y] = _areas[x][y][0].getItem().getInfo().spriteId;
+				}
+			}
+		}
+		
+		return array;
+	}
+
+	public int[]	getArrayStructures() {
+		for (int x = 0; x < Constant.WORLD_WIDTH; x++) {
+			for (int y = 0; y < Constant.WORLD_HEIGHT; y++) {
+				array[x * Constant.WORLD_WIDTH + y] = 0;
+				if (_areas[x][y][0].getStructure() != null) {
+					array[x * Constant.WORLD_WIDTH + y] = _areas[x][y][0].getStructure().getInfo().spriteId;
 				}
 			}
 		}

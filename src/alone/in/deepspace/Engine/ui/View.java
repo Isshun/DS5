@@ -51,8 +51,8 @@ public abstract class View {
 
 	public FrameLayout 	getParent() { return _parent; }
 	public int 			getId() { return _id; }
-	public int 			getPosX() { return _posX; }
-	public int 			getPosY() { return _posY; }
+	public int 			getPosX() { return _posX + (_parent != null ? _parent.getPosX() : 0); }
+	public int 			getPosY() { return _posY + (_parent != null ? _parent.getPosY() : 0); }
 
 	public void draw(RenderWindow app, RenderStates render) {
 		if (_isVisible == false) {

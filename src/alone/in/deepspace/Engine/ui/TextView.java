@@ -16,7 +16,7 @@ public class TextView extends View {
 	public static final int	ITALIC = Text.ITALIC;
 	public static final int	UNDERLINED = Text.UNDERLINED;
 	
-	protected Text 			_text;
+	protected FakeText 			_text;
 	protected String 			_value;
 
 	public TextView() {
@@ -30,7 +30,7 @@ public class TextView extends View {
 	}
 
 	private void init() {
-		_text = new Text();
+		_text = new FakeText();
 		_text.setFont(SpriteManager.getInstance().getFont());
 		_text.setColor(Colors.TEXT);
 	}
@@ -91,5 +91,4 @@ public class TextView extends View {
 	public String getString() {
 		return _value;
 	}
-
 }
