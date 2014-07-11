@@ -105,8 +105,13 @@ public class WorldSaver {
 	}
 
 	public static void load(WorldManager worldManager, List<WorldSaveArea> areas) {
-	    for (WorldSaveArea area: areas) {
+		worldManager.init();
+
+		for (WorldSaveArea area: areas) {
 	    	if (area != null) {
+	    		// Area
+	    		worldManager.putArea(area.x, area.y);
+	    		
 	    		// Light
 	    		if (area.lightSource > 0) {
 	    			worldManager.getArea(area.z, area.x, area.y).setLightSource(area.lightSource);

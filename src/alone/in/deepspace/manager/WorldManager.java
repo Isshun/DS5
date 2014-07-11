@@ -11,6 +11,7 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
 import alone.in.deepspace.Game;
 import alone.in.deepspace.engine.renderer.MainRenderer;
 import alone.in.deepspace.manager.PathManager.MyMover;
+import alone.in.deepspace.model.BridgeItem;
 import alone.in.deepspace.model.item.FactoryItem;
 import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.item.ItemInfo;
@@ -46,8 +47,13 @@ public class WorldManager implements TileBasedMap {
 	private int[] array;
 	private int[] arrayAreas;
 	private int[] arrayStructures;
+
+	private List<BridgeItem> _updated;
+
+	private boolean _clearList;
 	
 	public WorldManager() {
+		_updated = new ArrayList<BridgeItem>();
 		_width = Constant.WORLD_WIDTH;
 		_height = Constant.WORLD_HEIGHT;
 		_factoryItems = new ArrayList<FactoryItem>();
@@ -55,7 +61,7 @@ public class WorldManager implements TileBasedMap {
 		array = new int[Constant.WORLD_WIDTH * Constant.WORLD_HEIGHT];
 		arrayAreas = new int[Constant.WORLD_WIDTH * Constant.WORLD_HEIGHT];
 		arrayStructures = new int[Constant.WORLD_WIDTH * Constant.WORLD_HEIGHT];
-
+		
 		_rooms = new HashMap<Integer, Room>();
 		_areas = new WorldArea[_width][_height][NB_FLOOR];
 		for (int x = 0; x < _width; x++) {
@@ -86,17 +92,23 @@ public class WorldManager implements TileBasedMap {
 		return arrayAreas;
 	}
 
-	public int[]	getArrayItems() {
-		for (int x = 0; x < Constant.WORLD_WIDTH; x++) {
-			for (int y = 0; y < Constant.WORLD_HEIGHT; y++) {
-				array[x * Constant.WORLD_WIDTH + y] = 0;
-				if (_areas[x][y][0].getItem() != null) {
-					array[x * Constant.WORLD_WIDTH + y] = _areas[x][y][0].getItem().getInfo().spriteId;
-				}
-			}
+	public List<BridgeItem>	getArrayItems() {
+//		for (int x = 0; x < Constant.WORLD_WIDTH; x++) {
+//			for (int y = 0; y < Constant.WORLD_HEIGHT; y++) {
+//				array[x * Constant.WORLD_WIDTH + y] = 0;
+//				if (_areas[x][y][0].getItem() != null) {
+//					array[x * Constant.WORLD_WIDTH + y] = _areas[x][y][0].getItem().getInfo().spriteId;
+//				}
+//			}
+//		}
+		
+		if (_clearList) {
+			_updated.clear();
 		}
 		
-		return array;
+		_clearList = true;
+		
+		return _updated;
 	}
 
 	public int[]	getArrayStructures() {
@@ -155,9 +167,36 @@ public class WorldManager implements TileBasedMap {
 			_areas[x][y][0].setRessource(null);
 		}
 		
+		invalidate(BridgeItem.RESOURCE, x, y);
 		MainRenderer.getInstance().invalidate(x, y);
 		
 		return value;
+	}
+
+	private void invalidate(int type, int x, int y) {
+		if (_clearList) {
+			_clearList = false;
+			_updated.clear();
+		}
+		_updated.add(new BridgeItem(type, x, y));
+	}
+
+	private void invalidate(int type, int spriteId, int x, int y) {
+		if (_clearList) {
+			_clearList = false;
+			_updated.clear();
+		}
+		BridgeItem item = new BridgeItem(type, x, y);
+		item.sprite = spriteId;
+		_updated.add(item);
+	}
+
+	private void invalidate(ItemInfo info, int x, int y) {
+		if (_clearList) {
+			_clearList = false;
+			_updated.clear();
+		}
+		_updated.add(new BridgeItem(info, x, y));
 	}
 
 	// TODO: call job listener
@@ -165,8 +204,10 @@ public class WorldManager implements TileBasedMap {
 		if (x >= 0 && y >= 0 && x < _width && y < _height) {
 			if (_areas[x][y][0].getItem() != null) {
 				_areas[x][y][0].setItem(null);
+				invalidate(BridgeItem.USER_ITEM, x, y);
 			}
 			_areas[x][y][0].setStructure(null);
+			invalidate(BridgeItem.STRUCTURE_ITEM, x, y);
 			MainRenderer.getInstance().invalidate(x, y);
 		}
 	}
@@ -196,6 +237,7 @@ public class WorldManager implements TileBasedMap {
 		ItemBase item = ItemFactory.create(area, info, matterSupply);
 		if (item != null) {
 			item.setPosition(x, y);
+			invalidate(item.getInfo(), x, y);
 			MainRenderer.getInstance().invalidate(x, y);
 		}
 
@@ -346,6 +388,7 @@ public class WorldManager implements TileBasedMap {
 		}
 		
 		_areas[resource.getX()][resource.getY()][0].setRessource(null);
+		invalidate(BridgeItem.RESOURCE, x, y);
 		MainRenderer.getInstance().invalidate(x, y);
 		MainRenderer.getInstance().invalidate();
 	}
@@ -390,6 +433,7 @@ public class WorldManager implements TileBasedMap {
 	private UserItem takeItem(UserItem item, WorldArea area) {
 		if (area != null && item != null) {
 			area.setItem(null);
+			invalidate(BridgeItem.USER_ITEM, area.getX(), area.getY());
 			MainRenderer.getInstance().invalidate(area.getX(), area.getY());
 			return item;
 		}
@@ -434,6 +478,23 @@ public class WorldManager implements TileBasedMap {
 		}
 		
 		// Invalidate renderer
+		invalidate(BridgeItem.USER_ITEM, x, y);
+		invalidate(BridgeItem.RESOURCE, x, y);
+		invalidate(BridgeItem.STRUCTURE_ITEM, x, y);
 		MainRenderer.getInstance().invalidate(x, y);
+	}
+
+	public void putArea(int x, int y) {
+//		ItemInfo infoGround = Game.getData().getItemInfo("base.ground");
+//		invalidate(infoGround, x, y);
+	}
+
+	public void init() {
+		ItemInfo infoGround = Game.getData().getItemInfo("base.ground");
+		for (int x = 0; x < _width; x++) {
+			for (int y = 0; y < _height; y++) {
+				invalidate(BridgeItem.AREA, infoGround.spriteId, x, y);
+			}
+		}
 	}
 }

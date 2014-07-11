@@ -24,6 +24,7 @@ import alone.in.deepspace.engine.ui.TextView;
 import alone.in.deepspace.engine.ui.View;
 import alone.in.deepspace.manager.PathManager;
 import alone.in.deepspace.manager.ServiceManager;
+import alone.in.deepspace.model.BridgeItem;
 import alone.in.deepspace.model.GameData;
 import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.model.item.ItemInfo;
@@ -65,7 +66,7 @@ public class Main {
 			_userInterface.onRefresh(refresh);
 		}
 
-		private int[] getItems() {
+		private Object getItems() {
 			return ServiceManager.getWorldMap().getArrayItems();
 		}
 
@@ -131,6 +132,17 @@ public class Main {
 		ItemLoader.load(data);
 		StringsLoader.load(data, "data/strings/", "fr");
 		CategoryLoader.load(data);
+		
+		int i = 0;
+		List<String> infos = new ArrayList<String>();
+		
+		for (ItemInfo info: data.items) {
+			infos.add(info.name);
+//			infos[i] = info.fileName;
+			info.spriteId = i;
+//			parameterMap.put(info.spriteId, info.fileName);
+			i++;
+		}
 
 		_isFullscreen = true;
 		_mainRenderer = new MainRenderer(null);
@@ -158,6 +170,7 @@ public class Main {
 		//		try {
 		_game = new Game(data);
 		_game.onCreate();
+		
 		//_game.newGame(SAVE_FILE, _loadListener);
 		_game.load(SAVE_FILE, _loadListener);
 
@@ -172,18 +185,7 @@ public class Main {
 
 		//String[] infos = new String[1000];
 		
-		List<String> infos = new ArrayList<String>();
-		
 		parameterMap = new HashMap<Integer, String>();
-		int i = 0;
-		for (ItemInfo info: Game.getData().items) {
-			infos.add(info.name);
-//			infos[i] = info.fileName;
-			info.spriteId = i;
-//			parameterMap.put(info.spriteId, info.fileName);
-			i++;
-		}
-		
 		
 		Main bridge = new Main();
 		bridge.init(infos.toArray());
