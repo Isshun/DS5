@@ -22,6 +22,7 @@ public class BridgeItem {
 		} else {
 			this.type = AREA;
 		}
+//		this.type = USER_ITEM;
 		Log.info("sprite: " + info.spriteId);
 		this.sprite = info.spriteId;
 		this.x = x;

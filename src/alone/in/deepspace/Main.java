@@ -70,6 +70,10 @@ public class Main {
 			return ServiceManager.getWorldMap().getArrayItems();
 		}
 
+		private Object getItemInfos() {
+			return data.items;
+		}
+
 		private int[] getAreas() {
 			return ServiceManager.getWorldMap().getArrayAreas();
 		}
@@ -116,6 +120,7 @@ public class Main {
 	private static UserInterface	_userInterface;
 	private static LoadListener 	_loadListener;
 	private static boolean			_isFullscreen;
+	private static GameData data;
 
 	static {
 		//System.loadLibrary("DS5Render.dll");
@@ -127,13 +132,13 @@ public class Main {
 		//		final RenderWindow window = new RenderWindow();
 		//		window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "DS5", WindowStyle.DEFAULT);
 
-		GameData data = new GameData();
+		data = new GameData();
 
 		ItemLoader.load(data);
 		StringsLoader.load(data, "data/strings/", "fr");
 		CategoryLoader.load(data);
 		
-		int i = 0;
+		int i = 1;
 		List<String> infos = new ArrayList<String>();
 		
 		for (ItemInfo info: data.items) {
