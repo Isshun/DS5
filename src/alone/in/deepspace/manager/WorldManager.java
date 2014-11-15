@@ -172,6 +172,37 @@ public class WorldManager implements TileBasedMap {
 		
 		return value;
 	}
+	
+	public void invalidate() {
+		if (_clearList) {
+			_clearList = false;
+			_updated.clear();
+		}
+
+		for (int x = 0; x < _width; x++) {
+			_areas[x] = new WorldArea[_height][NB_FLOOR];
+			for (int y = 0; y < _height; y++) {
+				_areas[x][y] = new WorldArea[NB_FLOOR];
+				for (int f = 0; f < NB_FLOOR; f++) {
+					if (_areas[x][y][f] != null) {
+						if (_areas[x][y][f].getItem() != null) {
+							BridgeItem item = new BridgeItem(1, x, y);
+							item.sprite = _areas[x][y][f].getItem().getInfo().spriteId;
+							_updated.add(item);
+						}
+						if (_areas[x][y][f].getStructure() != null) {
+							BridgeItem item = new BridgeItem(2, x, y);
+							item.sprite = _areas[x][y][f].getStructure().getInfo().spriteId;
+							_updated.add(item);
+						}
+
+						BridgeItem item = new BridgeItem(4, x, y);
+						_updated.add(item);
+					}
+				}
+			}
+		}
+	}
 
 	private void invalidate(int type, int x, int y) {
 		if (_clearList) {
