@@ -23,6 +23,7 @@ import alone.in.deepspace.model.character.Character;
 import alone.in.deepspace.ui.UserInterface;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 
 public class PanelCrew extends BaseRightPanel {
 	private static class ViewHolder {
@@ -112,7 +113,7 @@ public class PanelCrew extends BaseRightPanel {
 		viewHolder.lbName.setPosition(0, 2);
 		viewHolder.lbJob.setVisible(false);
 		viewHolder.lbProfession.setVisible(false);
-		viewHolder.thumb.setVisible(false);
+//		viewHolder.thumb.setVisible(false);
 		viewHolder.lbStatus.setVisible(false);
 		viewHolder.lbStatus.setPosition(20, Constant.UI_PADDING + 16);
 		viewHolder.lbStatusShort.setVisible(true);
@@ -123,7 +124,7 @@ public class PanelCrew extends BaseRightPanel {
 		viewHolder.frame.setPosition(20, 96 + ((CREW_DETAIL_HEIGHT + CREW_DETAIL_SPACING) * i));
 		viewHolder.lbName.setPosition(32, 6);
 		viewHolder.lbJob.setVisible(true);
-		viewHolder.thumb.setVisible(true);
+//		viewHolder.thumb.setVisible(true);
 		viewHolder.lbStatus.setVisible(true);
 		viewHolder.lbStatus.setPosition(32, Constant.UI_PADDING + 16);
 		viewHolder.lbStatusShort.setVisible(false);
@@ -184,9 +185,9 @@ public class PanelCrew extends BaseRightPanel {
 			viewHolder.lbProfession.setPosition(CREW_LINE_WIDTH - Constant.UI_PADDING - 100, Constant.UI_PADDING);
 			viewHolder.frame.addView(viewHolder.lbProfession);
 
-			viewHolder.thumb = new ImageView(SpriteManager.getInstance().getCharacter(character.getProfession(), 0, 0, 0));
-			viewHolder.thumb.setPosition(0, 5);
-			viewHolder.frame.addView(viewHolder.thumb);
+//			viewHolder.thumb = new ImageView(SpriteManager.getInstance().getCharacter(character.getProfession(), 0, 0, 0));
+//			viewHolder.thumb.setPosition(0, 5);
+//			viewHolder.frame.addView(viewHolder.thumb);
 
 			if (_mode == MODE_SMALL) {
 				setModeSmall(viewHolder, index);
@@ -203,6 +204,7 @@ public class PanelCrew extends BaseRightPanel {
 			//		  _app.draw(text, _render);
 
 			_viewHolderList.add(viewHolder);
+
 		} else {
 			final ViewHolder viewHolder = _viewHolderList.get(index);
 			viewHolder.frame.setVisible(true);
@@ -245,6 +247,8 @@ public class PanelCrew extends BaseRightPanel {
 
 	@Override
 	public void onRefresh(int frame) {
+		Log.info("crew refresh: " + frame);
+		
 		if (frame % 2 == 0) {
 			
 			for (ViewHolder holder: _viewHolderList) {

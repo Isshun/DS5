@@ -34,6 +34,7 @@ import alone.in.deepspace.model.item.ItemBase;
 import alone.in.deepspace.model.job.Job;
 import alone.in.deepspace.ui.UserInterface.Mode;
 import alone.in.deepspace.util.Constant;
+import alone.in.deepspace.util.Log;
 import alone.in.deepspace.util.Settings;
 import alone.in.deepspace.util.StringUtils;
 
@@ -466,7 +467,7 @@ public class PanelCharacter extends BaseRightPanel {
 			
 			// Reset gauges
 			for (int i = 0; i < NB_GAUGE; i++) {
-				_values[i].setVisible(false);
+				//_values[i].setVisible(false);
 			}
 			_animGauge = 0;
 			_character = character;
@@ -477,9 +478,11 @@ public class PanelCharacter extends BaseRightPanel {
 		
 		_animGauge++;
 
-		if (_animRemain > 0) {
-			return;
-		}
+//		// Play anim
+//		if (_animRemain > 0) {
+//			anim();
+//			return;
+//		}
 		
 		if (_character != null) {
 			

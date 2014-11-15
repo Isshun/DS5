@@ -19,6 +19,7 @@ public class TextView extends View {
 	protected FakeText 			_text;
 	protected String 			_value;
 	private int 				_characterSize;
+	private int 				_textColor;
 
 	public TextView() {
 		super(new Vector2f(0, 0));
@@ -33,7 +34,7 @@ public class TextView extends View {
 	private void init() {
 		_text = new FakeText();
 		_text.setFont(SpriteManager.getInstance().getFont());
-		_text.setColor(Colors.TEXT);
+		setColor(Colors.TEXT);
 	}
 
 	public void setString(String string) {
@@ -53,6 +54,13 @@ public class TextView extends View {
 	}
 
 	public void setColor(Color color) {
+		_textColor = 0;
+		_textColor += color.r;
+		_textColor = _textColor << 8;
+		_textColor += color.g;
+		_textColor = _textColor << 8;
+		_textColor += color.b;
+
 		_text.setColor(color);
 	}
 
@@ -96,5 +104,9 @@ public class TextView extends View {
 	
 	public int getCharacterSize() {
 		return _characterSize;
+	}
+	
+	public int getRGB() {
+		return _textColor;
 	}
 }

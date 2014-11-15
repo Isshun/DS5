@@ -22,6 +22,7 @@ import alone.in.deepspace.manager.StatsManager;
 import alone.in.deepspace.manager.WorldFinder;
 import alone.in.deepspace.manager.WorldManager;
 import alone.in.deepspace.model.GameData;
+import alone.in.deepspace.model.character.CharacterInfo;
 import alone.in.deepspace.util.Constant;
 import alone.in.deepspace.util.Log;
 

@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alone.in.deepspace.Game;
+import alone.in.deepspace.model.character.CharacterInfo;
 import alone.in.deepspace.model.item.ItemInfo;
 
 public class GameData {
 
+	public CharacterInfo 		characterInfo;
 	public List<ItemInfo> 		items;
 	public List<ItemInfo> 		gatherItems;
 	public List<CategoryInfo> 	categories;

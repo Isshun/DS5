@@ -10,13 +10,13 @@ public class LinkView extends TextView {
 	public LinkView(Vector2f size) {
 		super(size);
 		setOnFocusListener(null);
-		setColor(Colors.LINK_INACTIVE);
+		setColor(Colors.LINK_INACTIVE, true);
 	}
 
 	public LinkView() {
 		super(new Vector2f(300, 20));
 		setOnFocusListener(null);
-		setColor(Colors.LINK_INACTIVE);
+		setColor(Colors.LINK_INACTIVE, true);
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class LinkView extends TextView {
 		super.setOnFocusListener(new OnFocusListener() {
 			@Override
 			public void onExit(View view) {
-				_text.setColor(_colorBak);
+				setColor(_colorBak, false);
 				setStyle(TextView.REGULAR);
 				if (onFocusListener != null) {
 					onFocusListener.onExit(view);
@@ -35,7 +35,7 @@ public class LinkView extends TextView {
 				_colorBak = _text.getColor();
 				if (_onClickListener != null) {
 					setStyle(TextView.UNDERLINED);
-					_text.setColor(Colors.LINK_ACTIVE);
+					setColor(Colors.LINK_ACTIVE, false);
 				}
 				if (onFocusListener != null) {
 					onFocusListener.onEnter(view);
@@ -44,11 +44,12 @@ public class LinkView extends TextView {
 		});
 	}
 
-	@Override
-	public void setColor(Color color) {
+	public void setColor(Color color, boolean replace) {
 		if (_isFocus == false) {
-			_text.setColor(color);
+			setColor(color);
 		}
-		_colorBak = color;
+		if (replace) {
+			_colorBak = color;
+		}
 	}
 }

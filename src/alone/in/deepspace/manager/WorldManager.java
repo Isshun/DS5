@@ -493,6 +493,10 @@ public class WorldManager implements TileBasedMap {
 		ItemInfo infoGround = Game.getData().getItemInfo("base.ground");
 		for (int x = 0; x < _width; x++) {
 			for (int y = 0; y < _height; y++) {
+//				if (f == 0) {
+//					BridgeItem bridgeItem = new BridgeItem();
+//					_updated.add(bridgeItem);
+//				}
 				invalidate(BridgeItem.AREA, infoGround.spriteId, x, y);
 			}
 		}

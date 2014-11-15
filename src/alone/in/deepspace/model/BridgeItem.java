@@ -19,6 +19,8 @@ public class BridgeItem {
 			this.type = USER_ITEM;
 		} else if (info.isStructure) {
 			this.type = STRUCTURE_ITEM;
+		} else if (info.isResource) {
+			this.type = USER_ITEM;
 		} else {
 			this.type = AREA;
 		}

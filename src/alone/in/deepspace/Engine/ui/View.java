@@ -35,6 +35,7 @@ public abstract class View {
 	private int _color;
 
 	public View(Vector2f size) {
+		_color = -1;
 		_size = size;
 		_isVisible = true;
 		_borderSize = 2;

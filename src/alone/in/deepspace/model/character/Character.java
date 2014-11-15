@@ -34,6 +34,7 @@ public class Character extends Movable {
 	private static final Color COLOR_FEMALE = new Color(255, 180, 220);
 	private static final Color COLOR_MALE = new Color(110, 200, 255);
 
+	CharacterInfo					_info;
 	CharacterNeeds					_needs;
 	private Gender					_gender;
 	private String					_firstName;
@@ -61,6 +62,7 @@ public class Character extends Movable {
 
 		Log.info("Character #" + id);
 
+		_info = Game.getData().characterInfo;
 		_old = old;
 		_profession = CharacterManager.professions[id % CharacterManager.professions.length];
 		_relations = new ArrayList<CharacterRelation>();

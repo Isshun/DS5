@@ -48,59 +48,59 @@ public class MiniMapRenderer implements IRenderer {
 	}
 	
 	public void onRefresh(int frame) {
-		WorldManager worldManager = ServiceManager.getWorldMap();
-		for (int x = 0; x < _width; x++) {
-			for (int y = 0; y < _height; y++) {
-				Color color = _colors[(int)(Math.random() * 42)];
-				int viewportX = -_viewport.getPosX() / 32;
-				int viewportY = -_viewport.getPosY() / 32;
-				int viewportWidth = _viewport.getWidth() / 32;
-				int viewportHeight = _viewport.getHeight() / 32;
-				
-				if (x <= 4 || x >= _width - 4 || y <= 4 || y >= _height - 4) {
-					color = COLOR_BORDER;
-				}
-				else if ((x == viewportX || x == viewportX + viewportWidth) && y >= viewportY && y <= viewportY + viewportHeight) {
-					color = Color.YELLOW;
-				}
-				else if ((y == viewportY || y == viewportY + viewportHeight) && x >= viewportX && x <= viewportX + viewportWidth) {
-					color = Color.YELLOW;
-				}
-				else if (worldManager.getItem(x, y) != null) {
-					color = Color.GREEN;
-				}
-				else if (worldManager.getStructure(x, y) != null) {
-					if (worldManager.getStructure(x, y).isWall()) {
-						color = Color.RED;
-					}
-				}
-				else if (worldManager.getRessource(x, y) != null) {
-					if (worldManager.getRessource(x, y).isRock()) {
-					}
-					if (worldManager.getRessource(x, y).getInfo().onGather != null) {
-						color = Color.GREEN;
-					}
-				}
-
-				
-//				image.setPixel(x, y, new Color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255)));
-				_image.setPixel(x, y, color);
-			}
-		}
-		
-		List<Character> characters = Game.getCharacterManager().getList();
-		for (Character character: characters) {
-			_image.setPixel(character.getX(), character.getY(), Color.RED);
-		}
-		
-//		try {
-//			_texture.loadFromImage(_image);
-//		} catch (TextureCreationException e) {
-//			e.printStackTrace();
+//		WorldManager worldManager = ServiceManager.getWorldMap();
+//		for (int x = 0; x < _width; x++) {
+//			for (int y = 0; y < _height; y++) {
+//				Color color = _colors[(int)(Math.random() * 42)];
+//				int viewportX = -_viewport.getPosX() / 32;
+//				int viewportY = -_viewport.getPosY() / 32;
+//				int viewportWidth = _viewport.getWidth() / 32;
+//				int viewportHeight = _viewport.getHeight() / 32;
+//				
+//				if (x <= 4 || x >= _width - 4 || y <= 4 || y >= _height - 4) {
+//					color = COLOR_BORDER;
+//				}
+//				else if ((x == viewportX || x == viewportX + viewportWidth) && y >= viewportY && y <= viewportY + viewportHeight) {
+//					color = Color.YELLOW;
+//				}
+//				else if ((y == viewportY || y == viewportY + viewportHeight) && x >= viewportX && x <= viewportX + viewportWidth) {
+//					color = Color.YELLOW;
+//				}
+//				else if (worldManager.getItem(x, y) != null) {
+//					color = Color.GREEN;
+//				}
+//				else if (worldManager.getStructure(x, y) != null) {
+//					if (worldManager.getStructure(x, y).isWall()) {
+//						color = Color.RED;
+//					}
+//				}
+//				else if (worldManager.getRessource(x, y) != null) {
+//					if (worldManager.getRessource(x, y).isRock()) {
+//					}
+//					if (worldManager.getRessource(x, y).getInfo().onGather != null) {
+//						color = Color.GREEN;
+//					}
+//				}
+//
+//				
+////				image.setPixel(x, y, new Color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255)));
+//				_image.setPixel(x, y, color);
+//			}
 //		}
 //		
-//		_sprite = new Sprite(_texture);
-//		_sprite.setPosition(24, 20);
+//		List<Character> characters = Game.getCharacterManager().getList();
+//		for (Character character: characters) {
+//			_image.setPixel(character.getX(), character.getY(), Color.RED);
+//		}
+//		
+////		try {
+////			_texture.loadFromImage(_image);
+////		} catch (TextureCreationException e) {
+////			e.printStackTrace();
+////		}
+////		
+////		_sprite = new Sprite(_texture);
+////		_sprite.setPosition(24, 20);
 	}
 	
 	@Override

@@ -147,7 +147,7 @@ public class UserInterface {
 			panel.init(this, _interaction, _viewport);
 		}
 
-		setMode(Mode.PLAN);
+		setMode(Mode.NONE);
 	}
 
 	public List<View> getObjects() {
