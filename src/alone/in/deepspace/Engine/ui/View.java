@@ -10,6 +10,8 @@ import org.jsfml.system.Vector2f;
 
 
 public abstract class View {
+	private static int _count = 0;
+	
 	protected Vector2f 			_pos;
 	protected Vector2f 			_size;
 	protected boolean			_isVisible;
@@ -35,6 +37,7 @@ public abstract class View {
 	private int _color;
 
 	public View(Vector2f size) {
+		_id = ++_count;
 		_color = -1;
 		_size = size;
 		_isVisible = true;
@@ -47,7 +50,7 @@ public abstract class View {
 	public boolean 		isFocus() { return _isFocus; }
 	public boolean 		isVisible() { return _isVisible; }
 
-	public void 		setId(int id) { _id = id; }
+	public void 		setId(int id) {}
 	public void 		setFocus(boolean focus) { _isFocus = focus; }
 	public void 		setParent(FrameLayout parent) { _parent = parent; }
 
@@ -144,6 +147,10 @@ public abstract class View {
 		if (_onClickListener != null) {
 			_onClickListener.onClick(this);
 		}
+	}
+	
+	public boolean hasAction() {
+		return _onClickListener != null;
 	}
 
 	public Rectangle getRect() {

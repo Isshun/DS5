@@ -26,7 +26,7 @@ import alone.in.deepspace.util.Log;
 import alone.in.deepspace.util.Settings;
 import alone.in.deepspace.util.StringUtils;
 
-public class PanelDebug extends BasePanel {
+public class PanelDebug extends BaseRightPanel {
 
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
@@ -41,7 +41,7 @@ public class PanelDebug extends BasePanel {
 	private ItemInfo _currentItem;
 	
 	public PanelDebug(Mode mode, Key shortcut) {
-		super(mode, shortcut, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
+		super(mode, shortcut);//, new Vector2f(Constant.WINDOW_WIDTH - FRAME_WIDTH, 32), new Vector2f(FRAME_WIDTH, FRAME_HEIGHT));
 		
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		

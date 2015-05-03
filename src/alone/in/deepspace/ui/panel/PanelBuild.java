@@ -47,6 +47,7 @@ public class PanelBuild extends BaseRightPanel {
 	private Map<CategoryInfo, FrameLayout>	_layouts;
 	private CategoryInfo 					_currentCategory;
 	private ButtonView[] 					_iconShortcut;
+	private FrameLayout 					_mainView;
 
 	public PanelBuild(Mode mode, Key shortcut) {
 		super(mode, shortcut);
@@ -59,6 +60,8 @@ public class PanelBuild extends BaseRightPanel {
 		_iconsList = new ArrayList<View>();
 		_icons = new HashMap<ItemInfo, ButtonView>();
 		_panelMode = PanelMode.NONE;
+		_mainView = new FrameLayout();
+		addView(_mainView);
 
 		drawPanel(true);
 	}
@@ -71,7 +74,7 @@ public class PanelBuild extends BaseRightPanel {
 		System.out.println("DRAW PANEL");
 		
 		_animRunning = true;
-		clearAllViews();
+		_mainView.clearAllViews();
 		_icons.clear();
 
 		// TODO
@@ -86,7 +89,7 @@ public class PanelBuild extends BaseRightPanel {
 			// Content
 			final FrameLayout layout = new FrameLayout();
 			layout.setPosition(new Vector2f(20, posY + 52));
-			addView(layout);
+			_mainView.addView(layout);
 			_layouts.put(category, layout);
 
 			// Title
@@ -101,7 +104,7 @@ public class PanelBuild extends BaseRightPanel {
 					toogleCategory(category);
 				}
 			});
-			addView(lbTitle);
+			_mainView.addView(lbTitle);
 			
 			System.out.println("posY: " + posY + ", label: " + c.labelWithoutShortcut);
 
@@ -111,13 +114,13 @@ public class PanelBuild extends BaseRightPanel {
 			lbShortcut.setCharacterSize(FONT_SIZE_TITLE);
 			lbShortcut.setColor(Colors.LINK_ACTIVE);
 			lbShortcut.setPosition(new Vector2f(c.shortcutPos * 12 + 20, posY + 8));
-			addView(lbShortcut);
+			_mainView.addView(lbShortcut);
 
 			// Underline -- because at FONT_SIZE_TITLE regular underline get bold state...
 			View underline = new ColorView(new Vector2f(12, 1));
 			underline.setBackgroundColor(Colors.LINK_ACTIVE);
 			underline.setPosition(new Vector2f(c.shortcutPos * 12 + 20, posY + 33));
-			addView(underline);
+			_mainView.addView(underline);
 
 			posY += 44;
 
@@ -141,7 +144,7 @@ public class PanelBuild extends BaseRightPanel {
 
 		View border = new ColorView(new Vector2f(4, FRAME_HEIGHT));
 		border.setBackgroundColor(new Color(37, 70, 72));
-		addView(border);
+		_mainView.addView(border);
 	}
 
 	protected void toogleCategory(CategoryInfo category) {
