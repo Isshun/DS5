@@ -1,29 +1,18 @@
 package org.smallbox.faraway.renderer;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RectangleShape;
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderTexture;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Shader;
-import org.jsfml.graphics.ShaderSourceException;
-import org.jsfml.graphics.Sprite;
-import org.jsfml.graphics.Texture;
-import org.jsfml.graphics.TextureCreationException;
+import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
-
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
 import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.engine.Viewport;
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.StructureItem;
 import org.smallbox.faraway.model.item.WorldArea;
-import org.smallbox.faraway.engine.util.Constant;
+
+import java.io.File;
+import java.io.IOException;
 
 public class LightRenderer implements IRenderer {
 	private static final int	LIGHT_DISTANCE = 10;

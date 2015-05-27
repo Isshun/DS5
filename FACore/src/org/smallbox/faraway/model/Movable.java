@@ -2,12 +2,11 @@ package org.smallbox.faraway.model;
 
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Step;
-
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.PathManager.PathManagerCallback;
 import org.smallbox.faraway.manager.Utils;
 import org.smallbox.faraway.model.character.CharacterNeeds;
 import org.smallbox.faraway.model.job.Job;
-import org.smallbox.faraway.engine.util.Constant;
 
 public abstract class Movable implements PathManagerCallback {
 

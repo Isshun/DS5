@@ -1,23 +1,22 @@
 package org.smallbox.faraway.manager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder.Node;
 import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Step;
 import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
-
-import org.smallbox.faraway.renderer.MainRenderer;
+import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.Movable;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.job.Job;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Log;
+import org.smallbox.faraway.renderer.MainRenderer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class PathManager {
 

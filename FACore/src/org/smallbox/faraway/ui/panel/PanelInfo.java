@@ -1,36 +1,22 @@
 package org.smallbox.faraway.ui.panel;
 
-import java.util.List;
-
 import org.jsfml.graphics.Text;
 import org.jsfml.window.Keyboard.Key;
-
 import org.smallbox.faraway.*;
-import org.smallbox.faraway.engine.ui.ButtonView;
-import org.smallbox.faraway.engine.ui.CheckBoxView;
-import org.smallbox.faraway.engine.ui.FrameLayout;
-import org.smallbox.faraway.engine.ui.ImageView;
-import org.smallbox.faraway.engine.ui.LinkView;
-import org.smallbox.faraway.engine.ui.OnClickListener;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.character.Character;
-import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.ItemInfo.ItemInfoAction;
-import org.smallbox.faraway.model.item.ItemInfo.ItemInfoEffects;
-import org.smallbox.faraway.model.item.ItemSlot;
-import org.smallbox.faraway.model.item.StackItem;
-import org.smallbox.faraway.model.item.StructureItem;
-import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.item.WorldArea;
-import org.smallbox.faraway.model.item.WorldResource;
-import org.smallbox.faraway.model.job.Job;
-import org.smallbox.faraway.model.room.Room;
-import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.ObjectPool;
 import org.smallbox.faraway.engine.util.StringUtils;
+import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.model.character.Character;
+import org.smallbox.faraway.model.item.*;
+import org.smallbox.faraway.model.item.ItemInfo.ItemInfoAction;
+import org.smallbox.faraway.model.item.ItemInfo.ItemInfoEffects;
+import org.smallbox.faraway.model.job.Job;
+import org.smallbox.faraway.model.room.Room;
+import org.smallbox.faraway.ui.UserInterface.Mode;
+
+import java.util.List;
 
 public class PanelInfo extends BaseRightPanel {
 	private static final int 		MENU_AREA_CONTENT_FONT_SIZE = 16;

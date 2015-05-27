@@ -1,16 +1,15 @@
 package org.smallbox.faraway.engine.dataLoader;
 
+import org.smallbox.faraway.Strings;
+import org.smallbox.faraway.model.GameData;
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.yaml.snakeyaml.Yaml;
-
-import org.smallbox.faraway.Strings;
-import org.smallbox.faraway.model.GameData;
 
 public class StringsLoader {
 

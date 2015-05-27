@@ -1,31 +1,22 @@
 package org.smallbox.faraway.renderer;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.jsfml.graphics.RectangleShape;
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
-
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
 import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.engine.Viewport;
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.manager.WorldManager;
-import org.smallbox.faraway.model.item.ItemBase;
-import org.smallbox.faraway.model.item.StackItem;
-import org.smallbox.faraway.model.item.StructureItem;
-import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.item.WorldResource;
+import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.room.Room;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.engine.util.Constant;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class WorldRenderer implements IRenderer {
 	private SpriteManager			_spriteManager;

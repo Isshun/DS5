@@ -1,23 +1,18 @@
 package org.smallbox.faraway.renderer;
 
-import java.util.List;
-
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Sprite;
 import org.jsfml.system.Vector2f;
-
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
 import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.engine.Viewport;
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.Movable.Direction;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.character.CharacterStatus.Level;
-import org.smallbox.faraway.engine.util.Constant;
+
+import java.util.List;
 
 public class CharacterRenderer implements IRenderer {
 	private List<Character> _characters;

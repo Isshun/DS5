@@ -1,11 +1,11 @@
 package org.smallbox.faraway.model.job;
 
 import org.smallbox.faraway.Game;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.room.StorageRoom;
-import org.smallbox.faraway.engine.util.Log;
 
 public class JobStore extends Job {
 

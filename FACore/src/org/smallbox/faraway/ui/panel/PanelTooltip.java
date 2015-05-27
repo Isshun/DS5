@@ -1,13 +1,7 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard.Key;
-
-import org.smallbox.faraway.engine.ui.FrameLayout;
-import org.smallbox.faraway.engine.ui.LinkView;
-import org.smallbox.faraway.engine.ui.OnClickListener;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
+import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.model.ToolTips;
 import org.smallbox.faraway.model.ToolTips.ToolTip;
 import org.smallbox.faraway.model.ToolTips.ToolTipCategory;

@@ -1,11 +1,9 @@
 package org.smallbox.faraway.renderer;
 
 import org.jsfml.graphics.*;
-
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
 import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.engine.util.Constant;
 
 public class RenderLayer {

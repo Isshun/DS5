@@ -1,15 +1,10 @@
 package org.smallbox.faraway.model.item;
 
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Sprite;
-
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
 import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.engine.Viewport;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.manager.SpriteManager;
 
 public class TempItem {
 	SpriteModel 	sprite;

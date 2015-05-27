@@ -1,9 +1,6 @@
 package org.smallbox.faraway.model.room;
 
-import java.util.List;
-
 import org.smallbox.faraway.Game;
-import org.smallbox.faraway.renderer.MainRenderer;
 import org.smallbox.faraway.engine.ui.OnClickListener;
 import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.manager.ServiceManager;
@@ -12,6 +9,9 @@ import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.WorldArea;
 import org.smallbox.faraway.model.item.WorldResource;
 import org.smallbox.faraway.model.room.RoomOptions.RoomOption;
+import org.smallbox.faraway.renderer.MainRenderer;
+
+import java.util.List;
 
 public class GardenRoom extends Room {
 	private enum State {

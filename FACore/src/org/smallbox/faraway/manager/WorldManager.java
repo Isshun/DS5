@@ -1,26 +1,19 @@
 package org.smallbox.faraway.manager;
 
+import org.newdawn.slick.util.pathfinding.PathFindingContext;
+import org.newdawn.slick.util.pathfinding.TileBasedMap;
+import org.smallbox.faraway.Game;
+import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.util.Log;
+import org.smallbox.faraway.manager.PathManager.MyMover;
+import org.smallbox.faraway.model.item.*;
+import org.smallbox.faraway.model.room.Room;
+import org.smallbox.faraway.renderer.MainRenderer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.newdawn.slick.util.pathfinding.PathFindingContext;
-import org.newdawn.slick.util.pathfinding.TileBasedMap;
-
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.renderer.MainRenderer;
-import org.smallbox.faraway.manager.PathManager.MyMover;
-import org.smallbox.faraway.model.item.FactoryItem;
-import org.smallbox.faraway.model.item.ItemBase;
-import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.StructureItem;
-import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.item.WorldArea;
-import org.smallbox.faraway.model.item.WorldResource;
-import org.smallbox.faraway.model.room.Room;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Log;
 
 public class WorldManager implements TileBasedMap {
 	public static class DebugPos {

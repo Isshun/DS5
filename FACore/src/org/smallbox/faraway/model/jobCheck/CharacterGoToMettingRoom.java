@@ -1,11 +1,11 @@
 package org.smallbox.faraway.model.jobCheck;
 
 import org.smallbox.faraway.Game;
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.job.JobMove;
 import org.smallbox.faraway.model.room.Room;
-import org.smallbox.faraway.engine.util.Constant;
 
 public class CharacterGoToMettingRoom implements CharacterCheck {
 

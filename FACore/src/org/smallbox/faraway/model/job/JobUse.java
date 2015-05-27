@@ -1,8 +1,7 @@
 package org.smallbox.faraway.model.job;
 
-import java.util.List;
-
 import org.smallbox.faraway.Game;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.Movable.Direction;
@@ -11,7 +10,8 @@ import org.smallbox.faraway.model.item.FactoryItem;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemSlot;
 import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.engine.util.Log;
+
+import java.util.List;
 
 public class JobUse extends Job {
 

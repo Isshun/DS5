@@ -1,16 +1,12 @@
 package org.smallbox.faraway.engine.ui;
 
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
-import org.smallbox.faraway.engine.Viewport;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.engine.util.StringUtils;
+import org.smallbox.faraway.manager.SpriteManager;
 
 public class TextView extends View {
 

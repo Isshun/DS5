@@ -1,8 +1,7 @@
 package org.smallbox.faraway;
 
-import org.jsfml.graphics.*;
 import org.jsfml.graphics.Color;
-import org.smallbox.faraway.engine.Viewport;
+import org.jsfml.graphics.*;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.View;
 

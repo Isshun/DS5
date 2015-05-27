@@ -1,8 +1,6 @@
 package org.smallbox.faraway.ui;
 
-import org.jsfml.system.Vector2f;
 import org.jsfml.window.event.Event;
-
 import org.smallbox.faraway.engine.ui.FrameLayout;
 
 public abstract class MenuBase extends FrameLayout {

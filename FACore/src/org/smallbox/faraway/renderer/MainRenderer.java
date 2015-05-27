@@ -1,17 +1,14 @@
 package org.smallbox.faraway.renderer;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
-
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
 import org.smallbox.faraway.engine.Viewport;
+import org.smallbox.faraway.engine.util.Settings;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.engine.util.Settings;
 
 public class MainRenderer implements IRenderer {
 	private static IRenderer 		_self;

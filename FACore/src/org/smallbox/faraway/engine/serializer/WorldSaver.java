@@ -1,19 +1,13 @@
 package org.smallbox.faraway.engine.serializer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.serializer.CharacterSerializer.CharacterSave;
 import org.smallbox.faraway.engine.serializer.RoomSerializer.RoomSave;
 import org.smallbox.faraway.manager.WorldManager;
-import org.smallbox.faraway.model.item.ItemBase;
-import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.StackItem;
-import org.smallbox.faraway.model.item.StructureItem;
-import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.item.WorldArea;
-import org.smallbox.faraway.model.item.WorldResource;
+import org.smallbox.faraway.model.item.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WorldSaver {
 

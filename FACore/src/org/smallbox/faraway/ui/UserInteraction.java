@@ -2,8 +2,8 @@ package org.smallbox.faraway.ui;
 
 import org.jsfml.graphics.Texture;
 import org.jsfml.window.Mouse;
-
 import org.smallbox.faraway.Game;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.item.ItemInfo;
@@ -16,7 +16,6 @@ import org.smallbox.faraway.model.room.Room;
 import org.smallbox.faraway.model.room.Room.Type;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.PanelPlan.Planning;
-import org.smallbox.faraway.engine.util.Log;
 
 public class UserInteraction {
 	public enum Action {

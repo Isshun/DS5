@@ -1,7 +1,5 @@
 package org.smallbox.faraway.engine.ui;
 
-import org.jsfml.system.Vector2f;
-
 import org.smallbox.faraway.engine.util.StringUtils;
 
 public class CheckBoxView extends LinkView {

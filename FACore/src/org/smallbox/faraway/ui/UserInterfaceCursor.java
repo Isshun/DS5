@@ -3,7 +3,6 @@ package org.smallbox.faraway.ui;
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
-import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.manager.ServiceManager;
 

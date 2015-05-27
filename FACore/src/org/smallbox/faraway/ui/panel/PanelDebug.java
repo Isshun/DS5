@@ -2,26 +2,25 @@ package org.smallbox.faraway.ui.panel;
 
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Keyboard.Key;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Game;
-import org.smallbox.faraway.renderer.MainRenderer;
 import org.smallbox.faraway.engine.ui.Colors;
 import org.smallbox.faraway.engine.ui.OnClickListener;
 import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.View;
+import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.util.Log;
+import org.smallbox.faraway.engine.util.Settings;
+import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.StructureItem;
 import org.smallbox.faraway.model.item.UserItem;
+import org.smallbox.faraway.renderer.MainRenderer;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.engine.util.Settings;
-import org.smallbox.faraway.engine.util.StringUtils;
 
 public class PanelDebug extends BasePanel {
 

@@ -1,23 +1,18 @@
 package org.smallbox.faraway.manager;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Sprite;
-
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
 import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.engine.Viewport;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.TempItem;
 import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.engine.util.Log;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DynamicObjectManager {
 	private ArrayList<ItemBase>	 		_objects;

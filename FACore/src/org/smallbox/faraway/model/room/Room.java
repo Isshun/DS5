@@ -1,10 +1,5 @@
 package org.smallbox.faraway.model.room;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.manager.Utils;
 import org.smallbox.faraway.model.character.Character;
@@ -12,6 +7,11 @@ import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemFilter;
 import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.model.item.WorldArea;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Room {
 	public enum Type {

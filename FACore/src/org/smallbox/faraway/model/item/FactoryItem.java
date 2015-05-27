@@ -1,11 +1,11 @@
 package org.smallbox.faraway.model.item;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.job.Job;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FactoryItem extends UserItem {
 

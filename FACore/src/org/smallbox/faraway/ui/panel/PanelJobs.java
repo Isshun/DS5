@@ -1,19 +1,17 @@
 package org.smallbox.faraway.ui.panel;
 
-import java.util.List;
-
-import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard.Key;
-
 import org.smallbox.faraway.engine.ui.LinkView;
 import org.smallbox.faraway.engine.ui.OnClickListener;
 import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.View;
+import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.JobManager.Action;
 import org.smallbox.faraway.model.job.Job;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.engine.util.StringUtils;
+
+import java.util.List;
 
 public class PanelJobs extends BaseRightPanel {
 	private static final int 	NB_COLUMNS = 47;

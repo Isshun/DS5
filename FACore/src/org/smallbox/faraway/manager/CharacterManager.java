@@ -1,16 +1,16 @@
 package org.smallbox.faraway.manager;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.Strings;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.Movable.Direction;
 import org.smallbox.faraway.model.Profession;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.job.Job.JobAbortReason;
-import org.smallbox.faraway.engine.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CharacterManager {
 

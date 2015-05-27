@@ -1,43 +1,20 @@
 package org.smallbox.faraway.manager;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Game;
-import org.smallbox.faraway.renderer.MainRenderer;
-import org.smallbox.faraway.model.character.Character;
-import org.smallbox.faraway.model.item.FactoryItem;
-import org.smallbox.faraway.model.item.ItemBase;
-import org.smallbox.faraway.model.item.ItemFilter;
-import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.item.WorldResource;
-import org.smallbox.faraway.model.job.Job;
-import org.smallbox.faraway.model.job.Job.JobAbortReason;
-import org.smallbox.faraway.model.job.Job.JobStatus;
-import org.smallbox.faraway.model.job.JobBuild;
-import org.smallbox.faraway.model.job.JobDestroy;
-import org.smallbox.faraway.model.job.JobGather;
-import org.smallbox.faraway.model.job.JobMining;
-import org.smallbox.faraway.model.job.JobMove;
-import org.smallbox.faraway.model.job.JobRefill;
-import org.smallbox.faraway.model.job.JobStore;
-import org.smallbox.faraway.model.job.JobUse;
-import org.smallbox.faraway.model.jobCheck.CharacterGoToMettingRoom;
-import org.smallbox.faraway.model.jobCheck.CharacterHasItemToStore;
-import org.smallbox.faraway.model.jobCheck.CharacterIsFull;
-import org.smallbox.faraway.model.jobCheck.CharacterIsHungry;
-import org.smallbox.faraway.model.jobCheck.CharacterIsTired;
-import org.smallbox.faraway.model.jobCheck.CharacterPlayTime;
-import org.smallbox.faraway.model.jobCheck.CheckEmptyFactory;
-import org.smallbox.faraway.model.jobCheck.CheckGardenIsMature;
-import org.smallbox.faraway.model.jobCheck.CheckLowFood;
-import org.smallbox.faraway.model.jobCheck.CharacterCheck;
-import org.smallbox.faraway.model.jobCheck.Check;
-import org.smallbox.faraway.model.room.StorageRoom;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
+import org.smallbox.faraway.model.character.Character;
+import org.smallbox.faraway.model.item.*;
+import org.smallbox.faraway.model.job.*;
+import org.smallbox.faraway.model.job.Job.JobAbortReason;
+import org.smallbox.faraway.model.job.Job.JobStatus;
+import org.smallbox.faraway.model.jobCheck.*;
+import org.smallbox.faraway.model.room.StorageRoom;
+import org.smallbox.faraway.renderer.MainRenderer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JobManager {
 	public final static Color COLOR_BUILD = new Color(170, 128, 64);

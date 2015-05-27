@@ -4,7 +4,6 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
-
 import org.smallbox.faraway.manager.SpriteManager;
 
 public class UIMessage {

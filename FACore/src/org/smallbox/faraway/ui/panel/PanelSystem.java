@@ -1,16 +1,14 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.jsfml.system.Vector2f;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Main;
-import org.smallbox.faraway.renderer.MainRenderer;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.Colors;
 import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.renderer.MainRenderer;
+import org.smallbox.faraway.ui.UserInterface.Mode;
 
 public class PanelSystem extends BasePanel {
 	private static final int FRAME_WIDTH = Constant.WINDOW_WIDTH;

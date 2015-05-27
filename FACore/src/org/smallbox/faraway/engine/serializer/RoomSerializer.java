@@ -1,8 +1,5 @@
 package org.smallbox.faraway.engine.serializer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.serializer.WorldSaver.WorldSave;
 import org.smallbox.faraway.manager.CharacterManager;
@@ -17,6 +14,9 @@ import org.smallbox.faraway.model.room.QuarterRoom;
 import org.smallbox.faraway.model.room.Room;
 import org.smallbox.faraway.model.room.Room.Type;
 import org.smallbox.faraway.model.room.StorageRoom;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RoomSerializer implements SerializerInterface {
 	public static class RoomSaveArea {

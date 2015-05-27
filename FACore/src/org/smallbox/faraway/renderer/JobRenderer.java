@@ -1,24 +1,18 @@
 package org.smallbox.faraway.renderer;
 
-import java.util.HashMap;
-import java.util.List;
-
-import org.jsfml.graphics.RectangleShape;
-import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderTexture;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;
-import org.jsfml.system.Vector2f;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
-import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.engine.ui.ColorView;
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.JobManager.Action;
 import org.smallbox.faraway.model.job.Job;
-import org.smallbox.faraway.engine.util.Constant;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class JobRenderer implements IRenderer {
 	private RenderTexture 					_cache;

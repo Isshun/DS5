@@ -1,13 +1,10 @@
 package org.smallbox.faraway.ui;
 
-import java.io.IOException;
-
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.system.Vector2f;
-
 import org.smallbox.faraway.Renderer;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.BasePanel;
+
+import java.io.IOException;
 
 public class UserInterfaceMenuOperation extends BasePanel {
 	

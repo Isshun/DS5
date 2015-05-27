@@ -1,14 +1,12 @@
 package org.smallbox.faraway.engine.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jsfml.system.Vector2f;
-
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
-import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.engine.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FrameLayout extends View {
 	private List<View> 		_views;

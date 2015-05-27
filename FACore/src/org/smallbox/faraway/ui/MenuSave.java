@@ -1,24 +1,20 @@
 package org.smallbox.faraway.ui;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.event.Event;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
-import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.engine.ui.FrameLayout;
 import org.smallbox.faraway.engine.ui.OnClickListener;
 import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.engine.util.Constant;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuSave extends MenuBase {
 	private static final int 	FRAME_WIDTH = 640;

@@ -1,12 +1,12 @@
 package org.smallbox.faraway.manager;
-import java.io.IOException;
-import java.util.ArrayList;
 
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
-
-import org.smallbox.faraway.model.Foe;
 import org.smallbox.faraway.engine.util.Log;
+import org.smallbox.faraway.model.Foe;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class FoeManager {

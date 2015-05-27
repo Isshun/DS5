@@ -1,10 +1,10 @@
 package org.smallbox.faraway.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.model.item.ItemInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameData {
 

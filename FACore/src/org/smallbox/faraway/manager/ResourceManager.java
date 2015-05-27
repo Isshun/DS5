@@ -2,10 +2,10 @@ package org.smallbox.faraway.manager;
 
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.Strings;
-import org.smallbox.faraway.renderer.MainRenderer;
 import org.smallbox.faraway.model.ToolTips;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemInfo;
+import org.smallbox.faraway.renderer.MainRenderer;
 
 public class ResourceManager {
 

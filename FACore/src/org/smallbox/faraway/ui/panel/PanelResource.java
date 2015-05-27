@@ -2,9 +2,9 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.engine.ui.TextView;
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.engine.util.Constant;
 
 public class PanelResource extends BasePanel {
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;

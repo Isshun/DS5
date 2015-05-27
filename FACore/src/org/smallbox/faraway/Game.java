@@ -1,29 +1,17 @@
 package org.smallbox.faraway;
 
-import java.util.List;
-
 import org.jsfml.graphics.RenderWindow;
-
 import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.engine.serializer.GameSerializer;
 import org.smallbox.faraway.engine.serializer.JobManagerLoader;
 import org.smallbox.faraway.engine.serializer.LoadListener;
 import org.smallbox.faraway.engine.serializer.WorldFactory;
-import org.smallbox.faraway.manager.CharacterManager;
-import org.smallbox.faraway.manager.DynamicObjectManager;
-import org.smallbox.faraway.manager.FoeManager;
-import org.smallbox.faraway.manager.JobManager;
-import org.smallbox.faraway.manager.PathManager;
-import org.smallbox.faraway.manager.RelationManager;
-import org.smallbox.faraway.manager.ResourceManager;
-import org.smallbox.faraway.manager.RoomManager;
-import org.smallbox.faraway.manager.ServiceManager;
-import org.smallbox.faraway.manager.StatsManager;
-import org.smallbox.faraway.manager.WorldFinder;
-import org.smallbox.faraway.manager.WorldManager;
-import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
+import org.smallbox.faraway.manager.*;
+import org.smallbox.faraway.model.GameData;
+
+import java.util.List;
 
 public class Game {
 	private static GameData 			_data;

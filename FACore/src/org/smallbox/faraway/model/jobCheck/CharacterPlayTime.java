@@ -1,11 +1,11 @@
 package org.smallbox.faraway.model.jobCheck;
 
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.model.job.JobUse;
-import org.smallbox.faraway.engine.util.Constant;
 
 // Play with random object
 public class CharacterPlayTime implements CharacterCheck {

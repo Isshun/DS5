@@ -1,10 +1,10 @@
 package org.smallbox.faraway.model.item;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StackItem extends UserItem {
 	private static final int MAX_SIZE = 10;

@@ -1,11 +1,11 @@
 package org.smallbox.faraway.manager;
 
-import java.util.List;
-
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.StatsData;
 import org.smallbox.faraway.model.Profession.Type;
 import org.smallbox.faraway.model.character.Character;
+
+import java.util.List;
 
 public class StatsManager {
 	public StatsData nbCharacter;

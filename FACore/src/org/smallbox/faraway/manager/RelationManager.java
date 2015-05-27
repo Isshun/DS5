@@ -1,14 +1,14 @@
 package org.smallbox.faraway.manager;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.smallbox.faraway.Game;
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.character.Character.Gender;
 import org.smallbox.faraway.model.character.CharacterRelation;
 import org.smallbox.faraway.model.character.CharacterRelation.Relation;
-import org.smallbox.faraway.engine.util.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RelationManager {
 

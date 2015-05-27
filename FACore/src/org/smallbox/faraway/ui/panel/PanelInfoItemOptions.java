@@ -1,12 +1,10 @@
 package org.smallbox.faraway.ui.panel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jsfml.system.Vector2f;
-
 import org.smallbox.faraway.engine.ui.OnClickListener;
 import org.smallbox.faraway.engine.ui.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PanelInfoItemOptions {
 

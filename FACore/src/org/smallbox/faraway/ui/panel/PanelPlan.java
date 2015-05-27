@@ -1,16 +1,14 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Keyboard.Key;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.ui.ButtonView;
 import org.smallbox.faraway.engine.ui.OnClickListener;
 import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInteraction.Action;
+import org.smallbox.faraway.ui.UserInterface;
 
 public class PanelPlan extends BaseRightPanel {
 	public enum Planning {

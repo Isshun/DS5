@@ -1,18 +1,12 @@
 package org.smallbox.faraway.engine.serializer;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-
+import com.thoughtworks.xstream.XStream;
 import org.smallbox.faraway.engine.serializer.WorldSaver.WorldSave;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
-import org.smallbox.faraway.engine.util.Log;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.*;
 
 public class GameSerializer {
 

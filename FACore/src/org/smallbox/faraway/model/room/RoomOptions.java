@@ -1,10 +1,10 @@
 package org.smallbox.faraway.model.room;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.engine.ui.OnClickListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RoomOptions {
 	public static class RoomOption {

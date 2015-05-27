@@ -1,14 +1,14 @@
 package org.smallbox.faraway.model.job;
 
 import org.smallbox.faraway.Color;
+import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.JobManager.Action;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemFilter;
 import org.smallbox.faraway.model.item.ItemSlot;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Log;
 
 public abstract class Job {
 

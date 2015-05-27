@@ -1,24 +1,20 @@
 package org.smallbox.faraway.renderer;
 
-import java.util.List;
-
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Image;
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
-
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.engine.Viewport;
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.manager.WorldManager;
 import org.smallbox.faraway.model.character.Character;
-import org.smallbox.faraway.engine.util.Constant;
+
+import java.util.List;
 
 public class MiniMapRenderer implements IRenderer {
 

@@ -1,12 +1,10 @@
 package org.smallbox.faraway.model.character;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.newdawn.slick.util.pathfinding.Path;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Game;
+import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.CharacterManager;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.PathManager;
@@ -19,8 +17,9 @@ import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.model.job.Job;
 import org.smallbox.faraway.model.room.Room;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Character extends Movable {
 

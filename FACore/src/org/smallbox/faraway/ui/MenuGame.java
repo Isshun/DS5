@@ -1,25 +1,17 @@
 package org.smallbox.faraway.ui;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2f;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
-import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.engine.serializer.GameLoadListener;
-import org.smallbox.faraway.engine.ui.FrameLayout;
-import org.smallbox.faraway.engine.ui.OnClickListener;
-import org.smallbox.faraway.engine.ui.OnFocusListener;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.manager.SpriteManager;
+
+import java.io.IOException;
+import java.util.List;
 
 public class MenuGame extends MenuBase {
 	private static final int 	FRAME_WIDTH = 640;

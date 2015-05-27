@@ -1,5 +1,6 @@
 package org.smallbox.faraway.model.job;
 
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.ServiceManager;
@@ -7,7 +8,6 @@ import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.StructureItem;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.engine.util.Log;
 
 public class JobBuild extends Job {
 

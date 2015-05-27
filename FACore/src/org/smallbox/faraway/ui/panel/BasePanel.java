@@ -3,14 +3,12 @@ package org.smallbox.faraway.ui.panel;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Keyboard.Key;
 import org.jsfml.window.Mouse;
-
 import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.engine.ui.FrameLayout;
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.engine.util.Constant;
 
 public abstract class BasePanel extends FrameLayout {
 	

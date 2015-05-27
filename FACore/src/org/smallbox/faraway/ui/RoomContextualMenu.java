@@ -1,12 +1,6 @@
 package org.smallbox.faraway.ui;
 
-import java.util.List;
-
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.system.Vector2f;
-
 import org.smallbox.faraway.Game;
-import org.smallbox.faraway.Renderer;
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.engine.ui.OnClickListener;
@@ -14,6 +8,8 @@ import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.room.Room;
+
+import java.util.List;
 
 public class RoomContextualMenu extends ContextualMenu {
 

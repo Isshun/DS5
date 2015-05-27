@@ -1,12 +1,8 @@
 
 package org.smallbox.faraway.manager;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.smallbox.faraway.renderer.MainRenderer;
+import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.character.CharacterRelation;
 import org.smallbox.faraway.model.character.CharacterRelation.Relation;
@@ -19,8 +15,12 @@ import org.smallbox.faraway.model.room.QuarterRoom;
 import org.smallbox.faraway.model.room.Room;
 import org.smallbox.faraway.model.room.Room.Type;
 import org.smallbox.faraway.model.room.StorageRoom;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Log;
+import org.smallbox.faraway.renderer.MainRenderer;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class RoomManager {
 	private Room[][] 			_rooms;

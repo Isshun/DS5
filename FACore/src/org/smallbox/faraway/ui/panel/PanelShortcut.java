@@ -1,26 +1,19 @@
 package org.smallbox.faraway.ui.panel;
 
+import org.jsfml.window.Keyboard.Key;
+import org.smallbox.faraway.Color;
+import org.smallbox.faraway.RenderEffect;
+import org.smallbox.faraway.Renderer;
+import org.smallbox.faraway.engine.ui.*;
+import org.smallbox.faraway.manager.ResourceData;
+import org.smallbox.faraway.manager.ResourceManager;
+import org.smallbox.faraway.renderer.MiniMapRenderer;
+import org.smallbox.faraway.ui.UserInterface.Mode;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import org.jsfml.window.Keyboard.Key;
-
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.Renderer;
-import org.smallbox.faraway.engine.Viewport;
-import org.smallbox.faraway.renderer.MiniMapRenderer;
-import org.smallbox.faraway.engine.ui.ImageView;
-import org.smallbox.faraway.engine.ui.LinkView;
-import org.smallbox.faraway.engine.ui.OnClickListener;
-import org.smallbox.faraway.engine.ui.OnFocusListener;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.manager.ResourceData;
-import org.smallbox.faraway.manager.ResourceManager;
-import org.smallbox.faraway.ui.UserInterface.Mode;
 
 public class PanelShortcut extends BaseRightPanel {
 	private static final int NB_COLUMNS_STATS = NB_COLUMNS / 2 - 1;

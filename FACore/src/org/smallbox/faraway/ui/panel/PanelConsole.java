@@ -1,14 +1,12 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.jsfml.graphics.RectangleShape;
-import org.jsfml.system.Vector2f;
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
 import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.StringUtils;
+import org.smallbox.faraway.ui.UserInterface.Mode;
 
 public class PanelConsole extends BasePanel {
 	private static final int 	LINE_INTERVAL = 20;

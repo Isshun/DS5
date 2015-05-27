@@ -1,5 +1,6 @@
 package org.smallbox.faraway.model.job;
 
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.ServiceManager;
@@ -7,7 +8,6 @@ import org.smallbox.faraway.model.Profession;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.model.item.WorldResource;
-import org.smallbox.faraway.engine.util.Log;
 
 public class JobMining extends Job {
 

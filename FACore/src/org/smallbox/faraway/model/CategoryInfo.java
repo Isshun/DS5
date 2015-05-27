@@ -1,9 +1,9 @@
 package org.smallbox.faraway.model;
 
+import org.smallbox.faraway.model.item.ItemInfo;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.smallbox.faraway.model.item.ItemInfo;
 
 public class CategoryInfo {
 	public List<ItemInfo> 	items;

@@ -1,20 +1,18 @@
 package org.smallbox.faraway.ui.panel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.Keyboard.Key;
-
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.Colors;
 import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.engine.util.StringUtils;
+import org.smallbox.faraway.model.item.ItemInfo;
+import org.smallbox.faraway.ui.UserInterface.Mode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PanelManager extends BaseRightPanel {
 	public class PanelEntry {

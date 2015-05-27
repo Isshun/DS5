@@ -1,16 +1,9 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard.Key;
-
-import org.smallbox.faraway.engine.ui.ButtonView;
-import org.smallbox.faraway.engine.ui.ColorView;
-import org.smallbox.faraway.engine.ui.Colors;
-import org.smallbox.faraway.engine.ui.OnClickListener;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.ui.UserInterface.Mode;
 
 public abstract class BaseRightPanel extends BasePanel {
 	protected static final int FRAME_WIDTH = Constant.PANEL_WIDTH;

@@ -1,11 +1,9 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.jsfml.graphics.Image;
-import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.window.Keyboard.Key;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.SpriteModel;

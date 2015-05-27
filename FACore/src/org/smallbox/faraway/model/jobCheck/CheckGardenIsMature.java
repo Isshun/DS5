@@ -1,13 +1,13 @@
 package org.smallbox.faraway.model.jobCheck;
 
-import java.util.List;
-
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.item.WorldArea;
 import org.smallbox.faraway.model.item.WorldResource;
 import org.smallbox.faraway.model.job.JobGather;
 import org.smallbox.faraway.model.room.Room;
+
+import java.util.List;
 
 /**
  * Launch jobs if low food

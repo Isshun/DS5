@@ -1,25 +1,20 @@
 package org.smallbox.faraway.renderer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.jsfml.graphics.RectangleShape;
-import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderTexture;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.graphics.TextureCreationException;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
-import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.engine.ui.ColorView;
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.room.Room;
-import org.smallbox.faraway.engine.util.Constant;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RoomRenderer implements IRenderer {
 	private static class RoomEntry {

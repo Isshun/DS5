@@ -1,12 +1,5 @@
 package org.smallbox.faraway.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.system.Vector2f;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
@@ -17,6 +10,9 @@ import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.BasePanel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContextualMenu extends BasePanel {
 	public final static int		LINE_HEIGHT = 22;

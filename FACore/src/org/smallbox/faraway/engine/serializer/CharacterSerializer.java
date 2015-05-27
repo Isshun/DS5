@@ -1,8 +1,5 @@
 package org.smallbox.faraway.engine.serializer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.serializer.WorldSaver.WorldSave;
 import org.smallbox.faraway.manager.Utils;
@@ -14,6 +11,9 @@ import org.smallbox.faraway.model.character.CharacterRelation.Relation;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CharacterSerializer implements SerializerInterface {
 

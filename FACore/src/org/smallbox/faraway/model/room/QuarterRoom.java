@@ -1,9 +1,9 @@
 package org.smallbox.faraway.model.room;
 
+import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.model.item.WorldArea;
 import org.smallbox.faraway.model.room.RoomOptions.RoomOption;
-import org.smallbox.faraway.engine.util.StringUtils;
 
 public class QuarterRoom extends Room {
 	private RoomOptions			_options;

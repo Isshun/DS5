@@ -1,11 +1,7 @@
 package org.smallbox.faraway.engine.ui;
 
-import org.jsfml.graphics.RenderStates;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.system.Vector2f;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
-import org.smallbox.faraway.engine.Viewport;
 
 public class ColorView extends View {
 

@@ -1,28 +1,19 @@
 package org.smallbox.faraway.ui.panel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard.Key;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.Strings;
-import org.smallbox.faraway.engine.ui.ButtonView;
-import org.smallbox.faraway.engine.ui.Colors;
-import org.smallbox.faraway.engine.ui.FrameLayout;
-import org.smallbox.faraway.engine.ui.ImageView;
-import org.smallbox.faraway.engine.ui.OnClickListener;
-import org.smallbox.faraway.engine.ui.OnFocusListener;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
+import org.smallbox.faraway.engine.ui.*;
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.CharacterManager;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.engine.util.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PanelCrew extends BaseRightPanel {
 	private static class ViewHolder {

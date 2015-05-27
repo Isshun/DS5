@@ -1,11 +1,11 @@
 package org.smallbox.faraway.engine.dataLoader;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.smallbox.faraway.model.CategoryInfo;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CategoryLoader {
 	private HashMap<String, CategoryInfo> 	_categories;

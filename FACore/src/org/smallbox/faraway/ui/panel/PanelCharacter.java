@@ -1,26 +1,17 @@
 package org.smallbox.faraway.ui.panel;
 
-import java.util.List;
-
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard.Key;
-
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Renderer;
 import org.smallbox.faraway.Strings;
-import org.smallbox.faraway.engine.Viewport;
-import org.smallbox.faraway.engine.ui.ColorView;
-import org.smallbox.faraway.engine.ui.Colors;
-import org.smallbox.faraway.engine.ui.FrameLayout;
-import org.smallbox.faraway.engine.ui.ImageView;
-import org.smallbox.faraway.engine.ui.LinkView;
-import org.smallbox.faraway.engine.ui.OnClickListener;
-import org.smallbox.faraway.engine.ui.OnFocusListener;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
+import org.smallbox.faraway.engine.ui.*;
+import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.util.Settings;
+import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.Profession;
 import org.smallbox.faraway.model.ToolTips;
@@ -33,9 +24,8 @@ import org.smallbox.faraway.model.character.CharacterStatus.Level;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.job.Job;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Settings;
-import org.smallbox.faraway.engine.util.StringUtils;
+
+import java.util.List;
 
 public class PanelCharacter extends BaseRightPanel {
 	private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "unused", "Work"};

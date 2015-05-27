@@ -1,8 +1,8 @@
 package org.smallbox.faraway.model.character;
 
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemInfo.ItemInfoAction;
-import org.smallbox.faraway.engine.util.Constant;
 
 public class CharacterNeeds {
 	public enum Message {

@@ -1,13 +1,13 @@
 package org.smallbox.faraway.model.item;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.model.character.Character;
 import org.smallbox.faraway.model.item.ItemInfo.ItemInfoEffects;
 import org.smallbox.faraway.model.item.ItemInfo.ItemInfoSlot;
 import org.smallbox.faraway.model.job.Job;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public abstract class ItemBase {

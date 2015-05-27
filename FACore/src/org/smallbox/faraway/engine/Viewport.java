@@ -3,7 +3,6 @@ package org.smallbox.faraway.engine;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transform;
-
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.engine.util.Constant;
 

@@ -1,7 +1,5 @@
 package org.smallbox.faraway;
 
-import java.io.IOException;
-
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Clock;
@@ -9,26 +7,23 @@ import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 import org.jsfml.window.event.Event;
 import org.jsfml.window.event.KeyEvent;
-
 import org.smallbox.faraway.engine.dataLoader.CategoryLoader;
 import org.smallbox.faraway.engine.dataLoader.ItemLoader;
 import org.smallbox.faraway.engine.dataLoader.StringsLoader;
-import org.smallbox.faraway.renderer.MainRenderer;
 import org.smallbox.faraway.engine.serializer.GameLoadListener;
 import org.smallbox.faraway.engine.serializer.LoadListener;
 import org.smallbox.faraway.engine.ui.Colors;
 import org.smallbox.faraway.engine.ui.OnClickListener;
 import org.smallbox.faraway.engine.ui.View;
+import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.PathManager;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.ui.MenuBase;
-import org.smallbox.faraway.ui.MenuGame;
-import org.smallbox.faraway.ui.MenuLoad;
-import org.smallbox.faraway.ui.MenuSave;
-import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Log;
+import org.smallbox.faraway.renderer.MainRenderer;
+import org.smallbox.faraway.ui.*;
+
+import java.io.IOException;
 
 public class Main {
 
