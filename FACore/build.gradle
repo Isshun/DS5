@@ -1,0 +1,16 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.6
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.main.java.srcDirs = [ "src/" ]
+
+
+dependencies {
+    compile files('libs/jsfml.jar')
+    compile files('libs/pathfinding.jar')
+    compile 'xmlpull:xmlpull:1.1.3.1'
+    compile 'org.ogce:xpp3:1.1.6'
+    compile 'com.thoughtworks.xstream:xstream:1.4.8'
+    compile 'org.yaml:snakeyaml:1.15'
+}
