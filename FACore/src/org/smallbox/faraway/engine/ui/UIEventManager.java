@@ -77,6 +77,8 @@ public class UIEventManager {
 			if (view.getRect().contains(x, y) && (view.getParent() == null || view.getParent().isVisible())) {
 				if (view.isFocus() == false) {
 					view.onEnter();
+					view.resetPos();
+					view.getRect();
 				}
 			} else {
 				if (view.isFocus()) {

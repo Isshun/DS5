@@ -1,15 +1,13 @@
 package org.smallbox.faraway.engine.ui;
 
-import org.jsfml.system.Vector2f;
+import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.Renderer;
-import org.smallbox.faraway.engine.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FrameLayout extends View {
-	private List<View> 		_views;
+public abstract class FrameLayout extends View {
+    protected List<View> 		_views;
 	protected RenderEffect _renderEffect;
 
 	public FrameLayout(int width, int height) {
@@ -23,15 +21,12 @@ public class FrameLayout extends View {
 	}
 
 	private void init() {
-		_views = new ArrayList<View>();
+		_views = new ArrayList<>();
 		setPosition(0, 0);
 	}
 
 	@Override
-	protected void onDraw(Renderer renderer, RenderEffect effect) {
-        for (View view: _views) {
-            view.draw(renderer, effect);
-        }
+	protected void onDraw(GFXRenderer renderer, RenderEffect effect) {
 	}
 
 	/**
@@ -40,7 +35,7 @@ public class FrameLayout extends View {
 	 * transformation for sub elements.
 	 */
 	@Override
-	public void draw(Renderer renderer, RenderEffect effect) {
+	public void draw(GFXRenderer renderer, RenderEffect effect) {
 		if (_isVisible == false) {
 			return;
 		}
@@ -49,8 +44,6 @@ public class FrameLayout extends View {
 			createRender();
 		}
 
-		super.draw(renderer, _renderEffect);
-
 		for (View view: _views) {
 			view.draw(renderer, _renderEffect);
 		}
@@ -58,29 +51,17 @@ public class FrameLayout extends View {
 		onDraw(renderer, _renderEffect);
 	}
 
-	private void createRender() {
-		int posX = _posX;
-		int posY = _posY;
-		
-		View parent = _parent;
-		while (parent != null) {
-			posX += parent._posX;
-			posY += parent._posY;
-			parent = parent._parent;
-		}
-
-        _renderEffect = new RenderEffect();
-	    _renderEffect.setTranslate(posX, posY);
-	}
+	protected abstract void createRender();
 
 	public void addView(View view) {
 		if (this.equals(view)) {
-			Log.error("FrameLayout: try to add itself to childrens");
+//			Log.error("FrameLayout: try to add itself to childrens");
 			return;
 		}
 		
 		view.setParent(this);
 		_views.add(view);
+		view.resetPos();
 	}
 
 	@Override
@@ -91,8 +72,27 @@ public class FrameLayout extends View {
 		}
 		_views.clear();
 	}
-	
-	public void clearAllViews() {
+
+    public View findById(String id) {
+        return findById(id.hashCode());
+    }
+
+    private View findById(int resId) {
+        for (View view: _views) {
+            if (view._id == resId) {
+                return view;
+            }
+            if (view instanceof FrameLayout) {
+                View ret = ((FrameLayout)view).findById(resId);
+                if (ret != null) {
+                    return ret;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void clearAllViews() {
 		for (View view: _views) {
 			view.remove();
 		}
@@ -105,17 +105,12 @@ public class FrameLayout extends View {
 	}
 
 	public void setPosition(int x, int y) {
-		_posX = x;
-		_posY = y;
+		_x = x;
+		_y = y;
 		
 		_renderEffect = null;
 //		for (View view: _views) {
 //			view.setPosition(view.getPosX() + x, y);
 //		}
-	}
-
-	// TODO
-	public void setPosition(Vector2f pos) {
-		setPosition((int)pos.x, (int)pos.y);
 	}
 }

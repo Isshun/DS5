@@ -1,3 +1,5 @@
 include 'FACore'
+include 'FAGame'
+include 'SFMLRender'
 include 'GeoGen'
 include 'PathFinding'

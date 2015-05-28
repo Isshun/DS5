@@ -1,245 +1,172 @@
 package org.smallbox.faraway.engine.ui;
 
-import org.jsfml.graphics.RectangleShape;
-import org.jsfml.system.Vector2f;
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.Renderer;
+import org.smallbox.faraway.*;
 
 import java.awt.*;
 
-
-public class View {
-	protected Vector2f 			_pos;
-	protected Vector2f 			_size;
-	protected boolean			_isVisible;
-	protected Rectangle 		_rect;
-	protected int 				_posX;
-	protected int 				_posY;
-	private RectangleShape		_background;
-	private RectangleShape		_borders[];
-	protected int 				_paddingLeft;
-	protected int				_paddingBottom;
-	protected int 				_paddingRight;
-	protected int 				_paddingTop;
-	protected FrameLayout 		_parent;
-	protected OnClickListener 	_onClickListener;
-	private OnFocusListener 	_onFocusListener;
-	protected boolean 			_isFocus;
-	private int 				_id;
-	private int 				_borderSize;
-	protected boolean 			_invalid;
-	private org.jsfml.graphics.Color _borderColor;
-	protected Color				_backgroundColor;
-	private Object 				_data;
-    private org.jsfml.graphics.Color        _backgroundColorJSFML;
+/**
+ * Created by Alex on 27/05/2015.
+ */
+public abstract class View {
+    protected int               _width;
+    protected int               _height;
+    public int                  _x;
+    public int                  _y;
+    protected boolean			_isVisible;
+    protected Rectangle 		_rect;
+    protected int 				_paddingLeft;
+    protected int				_paddingBottom;
+    protected int 				_paddingRight;
+    protected int 				_paddingTop;
+    public FrameLayout          _parent;
+    protected OnClickListener   _onClickListener;
+    protected OnFocusListener   _onFocusListener;
+    protected boolean 			_isFocus;
+    protected int 				_id;
+    protected int 				_borderSize;
+    protected boolean 			_invalid;
+    protected Object 			_data;
+    private ColorView           _background;
 
     public View(int width, int height) {
-		_size = new Vector2f(width, height);
-		_isVisible = true;
-		_borderSize = 2;
-		_pos = new Vector2f(0, 0);
-	}
-	
-	protected void onDraw(Renderer renderer, RenderEffect effect) {
-		if (_backgroundColor != null) {
-			if (_background == null) {
-				_background = new RectangleShape(new Vector2f(_size.x, _size.y));
-			}
-            renderer.draw(_background, effect);
-		}
-	}
+        _width = width;
+        _height = height;
+        _isVisible = true;
+        _borderSize = 2;
+        _x = 0;
+        _y = 0;
+    }
 
-	public boolean 		isFocus() { return _isFocus; }
-	public boolean 		isVisible() { return _isVisible; }
+    public boolean 		isFocus() { return _isFocus; }
+    public boolean 		isVisible() { return _isVisible; }
 
-	public void 		setId(int id) { _id = id; }
-	public void 		setFocus(boolean focus) { _isFocus = focus; }
-	public void 		setParent(FrameLayout parent) { _parent = parent; }
+    public void 		setId(int id) { _id = id; }
+    public void 		setFocus(boolean focus) { _isFocus = focus; }
+    public void 		setParent(FrameLayout parent) { _parent = parent; }
 
-	public FrameLayout 	getParent() { return _parent; }
-	public int 			getId() { return _id; }
-	public int 			getPosX() { return _posX; }
-	public int 			getPosY() { return _posY; }
+    public FrameLayout 	getParent() { return _parent; }
+    public int 			getId() { return _id; }
+    public int 			getPosX() { return _x; }
+    public int 			getPosY() { return _y; }
 
-	public void draw(Renderer renderer, RenderEffect effect) {
-		if (_isVisible == false) {
-			return;
-		}
+    protected abstract void onDraw(GFXRenderer renderer, RenderEffect effect);
+    public abstract void draw(GFXRenderer renderer, RenderEffect effect);
+    public abstract void refresh();
 
-		if (_invalid) {
-			refresh();
-		}
-		
-		if (_background != null) {
-			renderer.draw(_background, effect);
-		}
+    public void setBackgroundColor(org.smallbox.faraway.Color color) {
+        _background = ViewFactory.getInstance().createColorView(_width, _height);
+        _background.setBackgroundColor(color);
+    }
 
-		onDraw(renderer, effect);
+    public void setBorderColor(org.smallbox.faraway.Color color) {
+    }
 
-		// Borders
-		if (_borders != null) {
-			renderer.draw(_borders[0], effect);
-			renderer.draw(_borders[2], effect);
-			renderer.draw(_borders[1], effect);
-			renderer.draw(_borders[3], effect);
-		}
-	}
+    public void setSize(int width, int height) {
+        _width = width;
+        _height = height;
+        _invalid = true;
+    }
 
-	protected void refresh() {
-		// Background
-		if (_backgroundColor != null && _size != null && _pos != null) {
-			_background = new RectangleShape();
-			_background.setSize(_size);
-			_background.setPosition(_pos);
-			_background.setFillColor(_backgroundColorJSFML);
-		} else {
-			_background = null;
-		}
-	
-		// Border
-		if (_borderColor != null && _size != null && _pos != null) {
-			_borders = new RectangleShape[4];
-			_borders[0] = new RectangleShape();
-			_borders[0].setPosition(_pos);
-			_borders[0].setSize(new Vector2f(_size.x, _borderSize));
-			_borders[0].setFillColor(_borderColor);
+    public void setVisible(boolean visible) {
+        _isVisible = visible;
+    }
 
-			_borders[1] = new RectangleShape();
-			_borders[1].setPosition(_pos.x, _pos.y + _size.y);
-			_borders[1].setSize(new Vector2f(_size.x, _borderSize));
-			_borders[1].setFillColor(_borderColor);
+    public void setOnClickListener(OnClickListener onClickListener) {
+        _onClickListener = onClickListener;
+        UIEventManager.getInstance().setOnClickListener(this, onClickListener);
+    }
 
-			_borders[2] = new RectangleShape();
-			_borders[2].setPosition(_pos);
-			_borders[2].setSize(new Vector2f(_borderSize, _size.y));
-			_borders[2].setFillColor(_borderColor);
+    public void setOnFocusListener(OnFocusListener onFocusListener) {
+        _onFocusListener = onFocusListener;
+        UIEventManager.getInstance().setOnFocusListener(this, onFocusListener);
+    }
 
-			_borders[3] = new RectangleShape();
-			_borders[3].setPosition(_pos.x + _size.x - _borderSize, _pos.y);
-			_borders[3].setSize(new Vector2f(_borderSize, _size.y));
-			_borders[3].setFillColor(_borderColor);
-		} else {
-			_borders = null;
-		}
+    public void onClick() {
+        if (_onClickListener != null) {
+            _onClickListener.onClick(this);
+        }
+    }
 
-		_invalid = false;
-	}
+    public Rectangle getRect() {
+        if (_rect == null) {
+            _rect = computeRect();
+        }
+        return _rect;
+    }
 
-	public void setSize(int width, int height) {
-		_size = new Vector2f(width, height);
-		_invalid = true;
-	}
-	
-	public void setVisible(boolean visible) {
-		_isVisible = visible;
-	}
-	
-	public void setOnClickListener(OnClickListener onClickListener) {
-		_onClickListener = onClickListener;
-		UIEventManager.getInstance().setOnClickListener(this, onClickListener);
-	}
+    public void resetPos() {
+        _rect = computeRect();
+    }
 
-	public void setOnFocusListener(OnFocusListener onFocusListener) {
-		_onFocusListener = onFocusListener;
-		UIEventManager.getInstance().setOnFocusListener(this, onFocusListener);
-	}
+    public void setPadding(int t, int r, int b, int l) {
+        _paddingTop = t;
+        _paddingRight = r;
+        _paddingBottom = b;
+        _paddingLeft = l;
+        _invalid = true;
+    }
 
-	public void onClick() {
-		if (_onClickListener != null) {
-			_onClickListener.onClick(this);
-		}
-	}
+    public void setPadding(int t, int r) {
+        _paddingTop = t;
+        _paddingRight = r;
+        _paddingBottom = t;
+        _paddingLeft = r;
+        _invalid = true;
+    }
 
-	public Rectangle getRect() {
-		if (_rect == null) {
-			_rect = computeRect();
-		}
-		return _rect;
-	}
+    public void setPosition(int x, int y) {
+        _x = x;
+        _y = y;
+        _invalid = true;
+    }
 
-	// TODO
-	public void resetPos() {
-		_rect = null;
-	}
+    protected Rectangle computeRect() {
+        int x = 0;
+        int y = 0;
+        View view = this;
+        while (view != null) {
+            x += view.getPosX();
+            y += view.getPosY();
+            view = view.getParent();
+        }
+        return new Rectangle(x, y, _width, _height);
+    }
 
-	public void setBackgroundColor(Color color) {
-		_backgroundColorJSFML = new org.jsfml.graphics.Color(color.r, color.g, color.b);
-		_backgroundColor = color;
-		_invalid = true;
-	}
+    public void onEnter() {
+        _isFocus = true;
+        if (_onFocusListener != null) {
+            _onFocusListener.onEnter(this);
+        }
+    }
 
-	public void setPadding(int t, int r, int b, int l) {
-		_paddingTop = t;
-		_paddingRight = r;
-		_paddingBottom = b;
-		_paddingLeft = l;
-		_invalid = true;
-	}
+    public void onExit() {
+        _isFocus = false;
+        if (_onFocusListener != null) {
+            _onFocusListener.onExit(this);
+        }
+    }
 
-	public void setPadding(int t, int r) {
-		_paddingTop = t;
-		_paddingRight = r;
-		_paddingBottom = t;
-		_paddingLeft = r;
-		_invalid = true;
-	}
+    public void setBorderSize(int borderSize) {
+        _borderSize = borderSize;
+        _invalid = true;
+    }
 
-	public void setPosition(int x, int y) {
-		_posX = x;
-		_posY = y;
-		_pos = new Vector2f(x, y);
-		_invalid = true;
-	}
+    public Object getData() {
+        return _data;
+    }
 
-	private Rectangle computeRect() {
-		int x = 0;
-		int y = 0;
-		View view = this;
-		while (view != null) {
-			x += view.getPosX();
-			y += view.getPosY();
-			view = view.getParent();
-		}
-		return new Rectangle(x, y, (int)(_size != null ? _size.x : 0), (int)(_size != null ? _size.y : 0));
-	}
+    public void setData(Object data) {
+        _data = data;
+    }
 
-	public void onEnter() {
-		_isFocus = true;
-		if (_onFocusListener != null) {
-			_onFocusListener.onEnter(this);
-		}
-	}
+    protected void remove() {
+        _parent = null;
+        if (_onClickListener != null) {
+            UIEventManager.getInstance().removeOnClickListener(this);
+        }
+    }
 
-	public void onExit() {
-		_isFocus = false;
-		if (_onFocusListener != null) {
-			_onFocusListener.onExit(this);
-		}
-	}
-	
-	public void setBorderColor(Color color) {
-        _borderColor = color != null ? new org.jsfml.graphics.Color(color.r, color.g, color.b) : null;
-		_invalid = true;
-	}
+    public abstract int getContentWidth();
+    public abstract int getContentHeight();
 
-	public void setBorderSize(int borderSize) {
-		_borderSize = borderSize;
-		_invalid = true;
-	}
-
-	public Object getData() {
-		return _data;
-	}
-	
-	public void setData(Object data) {
-		_data = data;
-	}
-
-	protected void remove() {
-		_parent = null;
-		if (_onClickListener != null) {
-			UIEventManager.getInstance().removeOnClickListener(this);
-		}
-	}
 }

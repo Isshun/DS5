@@ -1,0 +1,58 @@
+package org.smallbox.faraway.ui.panel;
+
+import org.smallbox.faraway.Main;
+import org.smallbox.faraway.engine.ui.Colors;
+import org.smallbox.faraway.engine.ui.TextView;
+import org.smallbox.faraway.engine.ui.View;
+import org.smallbox.faraway.engine.ui.ViewFactory;
+import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.renderer.MainRenderer;
+import org.smallbox.faraway.ui.UserInterface.Mode;
+
+public class PanelSystem extends BasePanel {
+	private static final int FRAME_WIDTH = Constant.WINDOW_WIDTH;
+	private static final int FRAME_HEIGHT = 32;
+
+	private TextView 	    _lbRenderTime;
+	private TextView 	    _lbMemoryUsed;
+	private TextView 	    _lbUpdate;
+	private TextView 	    _lbFloor;
+	
+	public PanelSystem() {
+		super(Mode.NONE, null, 0, 0, FRAME_WIDTH, FRAME_HEIGHT);
+	}
+	
+	@Override
+	protected void onCreate(LayoutFactory factory) {
+        setBackgroundColor(Colors.BT_INACTIVE);
+
+        View border = ViewFactory.getInstance().createColorView(_width, 4);
+        border.setBackgroundColor(Colors.BACKGROUND);
+        border.setPosition(_x, _y + _height);
+        addView(border);
+
+        factory.load("data/ui/panels/system.yml", this, layout -> {
+            _lbRenderTime = (TextView)findById("lb_render_time");
+            _lbMemoryUsed = (TextView)findById("lb_memory");
+            _lbUpdate = (TextView)findById("lb_update");
+            _lbFloor = (TextView)findById("lb_floor");
+		});
+
+		setAlwaysVisible(true);
+	}
+
+	@Override
+	public void onRefresh(int frame) {
+		int mb = 1024 * 1024;
+        Runtime runtime = Runtime.getRuntime();
+        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
+        int total = (int) (runtime.totalMemory() / mb);
+        
+//        _used = (_used * 7 + used) / 8;
+
+        _lbRenderTime.setString("Rendering: " + MainRenderer.getRenderTime() + "ms");
+        _lbMemoryUsed.setString("Heap: " + String.valueOf(used) + " / " + String.valueOf(total) + " Mo");
+        _lbUpdate.setString("Update: " + String.valueOf(Main.getUpdateInterval()) + " ms");
+        _lbFloor.setString("FPS: " + MainRenderer.getFPS());
+	}
+}

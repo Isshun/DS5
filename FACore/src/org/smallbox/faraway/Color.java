@@ -39,4 +39,11 @@ public class Color {
         _rgb = (_rgb << 8) + b;
         _rgb = (_rgb << 8) + a;
     }
+
+    public Color(int rgb) {
+        _rgb = rgb;
+        this.r = (rgb >> 16) & 0xFF;
+        this.g = (rgb >> 8) & 0xFF;
+        this.b = rgb & 0xFF;
+    }
 }

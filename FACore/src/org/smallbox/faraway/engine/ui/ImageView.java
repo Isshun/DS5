@@ -1,10 +1,10 @@
 package org.smallbox.faraway.engine.ui;
 
+import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.Renderer;
 import org.smallbox.faraway.SpriteModel;
 
-public class ImageView extends View {
+public abstract class ImageView extends View {
 
 	private SpriteModel _image;
 
@@ -19,9 +19,9 @@ public class ImageView extends View {
 	}
 	
 	@Override
-	public void onDraw(Renderer renderer, RenderEffect effect) {
+	public void onDraw(GFXRenderer renderer, RenderEffect effect) {
 		if (_image != null) {
-			_image.setPosition((int)(_pos.x + _paddingLeft), (int)(_pos.y + _paddingTop));
+			_image.setPosition((int)(_x + _paddingLeft), (int)(_y + _paddingTop));
 			renderer.draw(_image, effect);
 		}
 	}

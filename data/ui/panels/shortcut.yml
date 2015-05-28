@@ -1,0 +1,103 @@
+entries:
+
+    -   type: label
+        id: lb_time
+        textsize: 14
+        position: [24, 24]
+
+    -   type: label
+        text: Resources
+        textsize: 24
+        position: [24, 244]
+
+    -   type: label
+        id: lb_food
+        textsize: 14
+        size: [180, 20]
+        position: [24, 274]
+
+    -   type: label
+        id: lb_water
+        textsize: 14
+        position: [220, 274]
+
+    -   type: label
+        id: lb_gas
+        textsize: 14
+        position: [24, 294]
+
+    -   type: label
+        id: lb_matter
+        textsize: 14
+        position: [220, 294]
+
+    -   type: label
+        id: lb_o2
+        textsize: 14
+        position: [24, 314]
+
+    -   type: label
+        id: lb_power
+        textsize: 14
+        position: [220, 314]
+
+    -   type: label
+        text: Actions
+        textsize: 24
+        position: [24, 344]
+
+    -   type: label
+        id: bt_build
+        text: '[_BUILD]'
+        textsize: 20
+        textcolor: 0x78ffff
+        position: [24, 374]
+
+    -   type: label
+        id: bt_occupation
+        text: '[_OCCUPATION]'
+        textsize: 20
+        textcolor: 0x78ffff
+        position: [220, 374]
+
+    -   type: label
+        id: bt_crew
+        text: '[_CREW]'
+        textsize: 20
+        textcolor: 0x78ffff
+        position: [24, 400]
+
+    -   type: label
+        id: bt_room
+        text: '[_ROOM]'
+        textsize: 20
+        textcolor: 0x78ffff
+        position: [220, 400]
+
+    -   type: label
+        id: bt_debug
+        text: '[_DEBUG]'
+        textsize: 20
+        textcolor: 0x78ffff
+        position: [24, 426]
+
+    -   type: label
+        id: bt_plan
+        text: '[_PLAN]'
+        textsize: 20
+        textcolor: 0x78ffff
+        position: [220, 426]
+
+    -   type: label
+        id: bt_manage
+        text: '[_MANAGE]'
+        textsize: 20
+        textcolor: 0x78ffff
+        position: [24, 452]
+
+    -   type: label
+        id: bt_stats
+        text: '[_STATS]'
+        textsize: 20
+        textcolor: 0x78ffff
+        position: [220, 452]
