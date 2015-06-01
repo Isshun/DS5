@@ -175,8 +175,8 @@ public class PanelDebug extends BasePanel {
 	}
 
 	@Override
-	protected void onCreate(LayoutFactory factory) {
-		_lbSearch = ViewFactory.getInstance().createTextView();
+	protected void onCreate(ViewFactory factory) {
+		_lbSearch = factory.createTextView();
 		_lbSearch.setPosition(20, 60);
 		_lbSearch.setString("search: ");
 		_lbSearch.setCharacterSize(FONT_SIZE);
@@ -187,12 +187,12 @@ public class PanelDebug extends BasePanel {
 		_labels = new TextView[_nbEntries];
 		_shortcuts = new TextView[_nbEntries];
 		for (int i = 0; i < _nbEntries; i++) {
-			_labels[i] = ViewFactory.getInstance().createTextView();
+			_labels[i] = factory.createTextView();
 			_labels[i].setPosition(20, 600 + i * LINE_HEIGHT);
 			_labels[i].setCharacterSize(FONT_SIZE);
 			addView(_labels[i]);
 
-			_shortcuts[i] = ViewFactory.getInstance().createTextView();
+			_shortcuts[i] = factory.createTextView();
 			_shortcuts[i].setPosition(20, 600 + i * LINE_HEIGHT);
 			_shortcuts[i].setCharacterSize(FONT_SIZE);
 			_shortcuts[i].setColor(Colors.LINK_ACTIVE);

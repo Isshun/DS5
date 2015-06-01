@@ -23,8 +23,8 @@ public abstract class BaseRightPanel extends BasePanel {
     }
 
     @Override
-	public void init(LayoutFactory factory, UserInterface ui, UserInteraction interaction, RenderEffect effect) {
-		super.init(factory, ui, interaction, effect);
+	public void init(ViewFactory viewFactory, LayoutFactory factory, UserInterface ui, UserInteraction interaction, RenderEffect effect) {
+		super.init(viewFactory, factory, ui, interaction, effect);
 
 		setBackgroundColor(Colors.BACKGROUND);
 		View border = ViewFactory.getInstance().createColorView(4, FRAME_HEIGHT);

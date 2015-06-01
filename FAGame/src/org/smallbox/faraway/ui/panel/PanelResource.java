@@ -21,26 +21,26 @@ public class PanelResource extends BasePanel {
 	}
 
 	@Override
-	protected void onCreate(LayoutFactory factory) {
-		_spice = ViewFactory.getInstance().createTextView(10, 10);
+	protected void onCreate(ViewFactory viewFactory) {
+		_spice = viewFactory.createTextView(10, 10);
 		_spice.setCharacterSize(14);
 		_spice.setColor(Color.WHITE);
 		_spice.setPosition(10, 6);
 		addView(_spice);
 		
-		_energy = ViewFactory.getInstance().createTextView(10, 10);
+		_energy = viewFactory.createTextView(10, 10);
 		_energy.setCharacterSize(14);
 		_energy.setColor(Color.WHITE);
 		_energy.setPosition(110, 6);
 		addView(_energy);
 
-		_matter = ViewFactory.getInstance().createTextView(10, 10);
+		_matter = viewFactory.createTextView(10, 10);
 		_matter.setCharacterSize(14);
 		_matter.setColor(Color.WHITE);
 		_matter.setPosition(210, 6);
 		addView(_matter);
 
-		_o2 = ViewFactory.getInstance().createTextView(10, 10);
+		_o2 = viewFactory.createTextView(10, 10);
 		_o2.setCharacterSize(14);
 		_o2.setColor(Color.WHITE);
 		_o2.setPosition(332, 6);

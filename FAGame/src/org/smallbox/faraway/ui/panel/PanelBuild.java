@@ -40,11 +40,11 @@ public class PanelBuild extends BaseRightPanel {
 	private TextView[] 						_iconShortcut;
 
 	public PanelBuild(Mode mode, GameEventListener.Key shortcut) {
-		super(mode, shortcut);
+		super(mode, shortcut, "data/ui/panels/build.yml");
 	}
 
 	@Override
-	protected void onCreate(LayoutFactory factory) {
+	protected void onCreate(ViewFactory factory) {
 		_iconShortcut = new TextView[10];
 		_layouts = new HashMap<>();
 		_iconsList = new ArrayList<>();
@@ -52,10 +52,6 @@ public class PanelBuild extends BaseRightPanel {
 		_panelMode = PanelMode.NONE;
 
 		drawPanel(true);
-
-		factory.load("data/ui/panels/build.yml", this, layout -> {
-			//_lbBack = (TextView)findById("lb_back");
-		});
 	}
 
 	public PanelMode getPanelMode() { return _panelMode; }

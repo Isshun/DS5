@@ -779,7 +779,7 @@ public class PanelInfo extends BaseRightPanel {
 	}
 
 	@Override
-	protected void onCreate(LayoutFactory factory) {
+	protected void onCreate(ViewFactory factory) {
 		// TODO Auto-generated method stub
 		
 	}

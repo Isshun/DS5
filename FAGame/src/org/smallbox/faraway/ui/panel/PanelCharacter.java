@@ -16,6 +16,7 @@ import org.smallbox.faraway.model.character.CharacterStatus;
 import org.smallbox.faraway.model.character.CharacterStatus.Level;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.job.Job;
+import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.List;
@@ -54,8 +55,6 @@ public class PanelCharacter extends BaseRightPanel {
     private TextView 			_lbOld;
     private FrameLayout 		_layoutDebug;
     private TextView[] 			_debugEntries;
-    private FrameLayout 		_layoutJob;
-    private FrameLayout 		_layoutNeeds;
     private FrameLayout 		_layoutInventory;
 
     private int 				_animRemain;
@@ -75,35 +74,38 @@ public class PanelCharacter extends BaseRightPanel {
     private TextView 			_lbInventory;
 
     public PanelCharacter(Mode mode, GameEventListener.Key shortcut) {
-        super(mode, shortcut);
+        super(mode, shortcut, "data/ui/panels/info_character.yml");
     }
 
     @Override
-    protected void onCreate(LayoutFactory factory) {
-        factory.load("data/ui/panels/info_character.yml", this, layout -> {
-            findById("bt_monitoring").setOnClickListener(view -> {
-                findById("frame_monitoring").setVisible(true);
-                findById("frame_personal_report").setVisible(false);
-            });
-            findById("bt_personal_report").setOnClickListener(view -> {
-                findById("frame_monitoring").setVisible(false);
-                findById("frame_personal_report").setVisible(true);
-            });
-
-            createNeedsInfo(0, 0);
-
+    public void onLayoutLoaded(LayoutModel layout) {
+        findById("bt_monitoring").setOnClickListener(view -> {
+            findById("frame_monitoring").setVisible(true);
             findById("frame_personal_report").setVisible(false);
-
-            _lbName = (TextView) findById("lb_name");
-            _lbState = (TextView) findById("lb_last_report");
+        });
+        findById("bt_personal_report").setOnClickListener(view -> {
+            findById("frame_monitoring").setVisible(false);
+            findById("frame_personal_report").setVisible(true);
         });
 
-        _cursor = ViewFactory.getInstance().createColorView(8, 16);
+        createNeedsInfo(0, 0);
+        createBasicInformation(0, 0);
+        createRelationShip(0, 0);
+
+        findById("frame_personal_report").setVisible(false);
+
+        _lbName = (TextView) findById("lb_name");
+        _lbState = (TextView) findById("lb_last_report");
+    }
+
+    @Override
+    protected void onCreate(ViewFactory factory) {
+        _cursor = factory.createColorView(8, 16);
         _cursor.setBackgroundColor(Colors.LINK_INACTIVE);
         addView(_cursor);
 
         // Tip
-        _lbTip = ViewFactory.getInstance().createTextView(FRAME_WIDTH, LINE_HEIGHT);
+        _lbTip = factory.createTextView(FRAME_WIDTH, LINE_HEIGHT);
         _lbTip.setCharacterSize(FONT_SIZE_TITLE);
         _lbTip.setBackgroundColor(new Color(255, 255, 255, 100));
         _lbTip.setVisible(false);
@@ -112,8 +114,6 @@ public class PanelCharacter extends BaseRightPanel {
         createJobInfo(20, 136);
         createInventoryInfo(20, 635);
 
-        createBasicInformation(20, 480);
-        createRelationShip(20, 735);
         if (Settings.getInstance().isDebug()) {
             //createDebug(20, 850);
         }
@@ -331,10 +331,6 @@ public class PanelCharacter extends BaseRightPanel {
         //_shapes[index].getData().setTexture(SpriteManager.getInstance().getTexture());
         _shapes[index].setPosition(posX, posY + 42 + FONT_SIZE_TITLE + 2);
 
-//		_values[index] = ViewFactory.getInstance().createTextView();
-//		_values[index].setCharacterSize(FONT_SIZE);
-//		_values[index].setPosition(posX, posY);
-
         switch (index) {
             case 0: _values[index] = (TextView)findById("lb_status_food"); break;
             case 1: _values[index] = (TextView)findById("lb_status_o2"); break;
@@ -345,16 +341,6 @@ public class PanelCharacter extends BaseRightPanel {
             case 6: _values[index] = (TextView)findById("lb_status_health"); break;
         }
 
-        //addView(_values[index]);
-
-        //	    Text text = new Text();
-        //	    text.setString(label);
-        //	    text.setFont(_font);
-        //	    text.setCharacterSize(MENU_CHARACTER_FONT_SIZE);
-        //	    text.setStyle(Text.REGULAR);
-        //	    text.setPosition(posX, posY);
-        //	    _app.draw(text, _renderEffect);
-        //
         //	    RectangleShape shapeBg = new RectangleShape();
         //	    shapeBg.setSize(new Vector2f(width, height));
         //	    shapeBg.setFillColor(new Color(100, 200, 0));
@@ -539,16 +525,15 @@ public class PanelCharacter extends BaseRightPanel {
     private void refreshNeeds() {
         CharacterNeeds needs = _character.getNeeds();
         for (int i = 0; i < NB_GAUGE; i++) {
-            TextView lbNeed = null;
             int value = 0;
             switch (i) {
-                case 0: value = Math.min(Math.max(needs.getFood(), 0), 100); lbNeed = (TextView)findById("lb_status_food"); break;
-                case 1: value = Math.min(Math.max(needs.getOxygen(), 0), 100); lbNeed = (TextView)findById("lb_status_o2"); break;
-                case 2: value = Math.min(Math.max(needs.getHappiness(), 0), 100); lbNeed = (TextView)findById("lb_status_happiness"); break;
-                case 3: value = Math.min(Math.max(needs.getEnergy(), 0), 100); lbNeed = (TextView)findById("lb_status_power"); break;
-                case 4: value = Math.min(Math.max(needs.getRelation(), 0), 100); lbNeed = (TextView)findById("lb_status_relation"); break;
-                case 5: value = Math.min(Math.max(needs.getSecurity(), 0), 100); lbNeed = (TextView)findById("lb_status_security"); break;
-                case 6: value = Math.min(Math.max(needs.getHealth(), 0), 100); lbNeed = (TextView)findById("lb_status_health"); break;
+                case 0: value = Math.min(Math.max(needs.getFood(), 0), 100); break;
+                case 1: value = Math.min(Math.max(needs.getOxygen(), 0), 100); break;
+                case 2: value = Math.min(Math.max(needs.getHappiness(), 0), 100); break;
+                case 3: value = Math.min(Math.max(needs.getEnergy(), 0), 100); break;
+                case 4: value = Math.min(Math.max(needs.getRelation(), 0), 100); break;
+                case 5: value = Math.min(Math.max(needs.getSecurity(), 0), 100); break;
+                case 6: value = Math.min(Math.max(needs.getHealth(), 0), 100); break;
 //			case 7: value = Math.min(Math.max(needs.getSickness(), 0), 100); break;
 //			case 8: value = Math.min(Math.max(needs.getInjuries(), 0), 100); break;
 //			case 9: value = Math.min(Math.max(needs.getSatiety(), 0), 100); break;
@@ -566,8 +551,6 @@ public class PanelCharacter extends BaseRightPanel {
 
             _values[i].setString(StringUtils.getDashedString(texts[i], String.valueOf(value), NB_COLUMNS_NEEDS));
             _values[i].setColor(color);
-//			lbNeed.setString(StringUtils.getDashedString(texts[i], String.valueOf(value), NB_COLUMNS_NEEDS));
-//            lbNeed.setColor(color);
         }
     }
 

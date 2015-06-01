@@ -215,7 +215,7 @@ public class PanelDebugItem extends BasePanel {
 	}
 
 	@Override
-	protected void onCreate(LayoutFactory factory) {
+	protected void onCreate(ViewFactory factory) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -41,7 +41,7 @@ public class PanelManager extends BaseRightPanel {
 	}
 
 	@Override
-	protected void onCreate(LayoutFactory factory) {
+	protected void onCreate(ViewFactory factory) {
 		_entries = new ArrayList<>();
 		List<ItemInfo> items = Game.getData().items;
 		for (ItemInfo item: items) {
@@ -55,7 +55,7 @@ public class PanelManager extends BaseRightPanel {
 		_entries.add(new PanelEntry("Making fertilizer"));
 		_nbEntries = _entries.size();
 
-		createView(ViewFactory.getInstance());
+		createView(factory);
 	}
 
 	private void createView(ViewFactory factory) {

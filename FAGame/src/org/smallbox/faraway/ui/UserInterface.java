@@ -3,6 +3,7 @@ package org.smallbox.faraway.ui;
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.ui.UIEventManager;
 import org.smallbox.faraway.engine.ui.UIMessage;
+import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.CharacterManager;
 import org.smallbox.faraway.manager.ServiceManager;
@@ -18,8 +19,9 @@ import java.io.File;
 
 public class UserInterface implements GameEventListener {
 	private static UserInterface		_self;
-	private final LayoutFactory _factory;
-	private Viewport                    _viewport;
+	private final LayoutFactory         _factory;
+    private final ViewFactory           _viewFactory;
+    private Viewport                    _viewport;
 	private boolean						_keyLeftPressed;
 	private boolean						_keyRightPressed;
 	private int							_mouseRightPressX;
@@ -138,7 +140,7 @@ public class UserInterface implements GameEventListener {
     public void reload() {
         for (BasePanel panel: _panels) {
             panel.clearAllViews();
-            panel.init(_factory, this, _interaction, null);
+            panel.init(_viewFactory, _factory, this, _interaction, null);
             panel.refresh(0);
         }
     }
@@ -161,12 +163,13 @@ public class UserInterface implements GameEventListener {
         INFO_STRUCTURE, INFO_ITEM, INFO_AREA, INFO_RESOURCE, MANAGER
 	}
 	
-	public UserInterface(LayoutFactory factory) {
+	public UserInterface(LayoutFactory layoutFactory, ViewFactory viewFactory) {
 		_self = this;
-		_factory = factory;
+		_factory = layoutFactory;
+		_viewFactory = viewFactory;
 		_interaction = new UserInteraction(this);
 		_panelMessage = new PanelConsole();
-		_panelMessage.init(factory, this, _interaction, null);
+		_panelMessage.init(viewFactory, layoutFactory, this, _interaction, null);
 	}
 
 	public void onCreate(Game game) {
@@ -178,7 +181,7 @@ public class UserInterface implements GameEventListener {
 		_cursor = new UserInterfaceCursor();
 		
 		for (BasePanel panel: _panels) {
-			panel.init(_factory, this, _interaction, SpriteManager.getInstance().createRenderEffect());
+			panel.init(_viewFactory, _factory, this, _interaction, SpriteManager.getInstance().createRenderEffect());
 
             switch (panel.getMode()) {
                 case INFO_STRUCTURE:

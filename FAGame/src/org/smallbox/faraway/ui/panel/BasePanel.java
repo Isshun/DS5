@@ -72,13 +72,13 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 		_isVisible = alwaysVisible;
 	}
 
-	public void init(LayoutFactory factory, UserInterface ui, UserInteraction interaction, RenderEffect effect) {
+	public void init(ViewFactory viewFactory, LayoutFactory layoutFactory, UserInterface ui, UserInteraction interaction, RenderEffect effect) {
 		clearAllViews();
 		_ui = ui;
 		_interaction = interaction;
-		onCreate(factory);
+		onCreate(viewFactory);
         if (_layoutPath != null) {
-            factory.load(_layoutPath, this, this);
+            layoutFactory.load(_layoutPath, this, this);
         }
 	}
 	
@@ -207,7 +207,7 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 		return _isLoaded;
 	}
 
-    protected void onCreate(LayoutFactory factory) {
+    protected void onCreate(ViewFactory factory) {
     }
 
     @Override

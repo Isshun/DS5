@@ -26,29 +26,29 @@ public class PanelTooltip extends BasePanel {
 	}
 	
 	@Override
-	protected void onCreate(LayoutFactory factory) {
-		_lbToolTip = ViewFactory.getInstance().createTextView(0, 0);
+	protected void onCreate(ViewFactory viewFactory) {
+		_lbToolTip = viewFactory.createTextView(0, 0);
 		_lbToolTip.setCharacterSize(FONT_SIZE_TITLE);
 		_lbToolTip.setPosition(20, 18);
 		addView(_lbToolTip);
 
-		_lbContent = ViewFactory.getInstance().createTextView(0, 0);
+		_lbContent = viewFactory.createTextView(0, 0);
 		_lbContent.setCharacterSize(FONT_SIZE);
 		_lbContent.setPosition(20, 52);
 		addView(_lbContent);
 		
-		FrameLayout layoutCategory = ViewFactory.getInstance().createFrameLayout(0, 0);
+		FrameLayout layoutCategory = viewFactory.createFrameLayout(0, 0);
 		layoutCategory.setPosition(20, FRAME_HEIGHT - 66);
 		addView(layoutCategory);
 		
-		_lbCategory = ViewFactory.getInstance().createTextView(0, 0);
+		_lbCategory = viewFactory.createTextView(0, 0);
 		_lbCategory.setCharacterSize(FONT_SIZE_TITLE);
 		_lbCategory.setPosition(0, 0);
 		layoutCategory.addView(_lbCategory);
 		
 		_lbCategories = new TextView[NB_MAX_LINK];
 		for (int i = 0; i < NB_MAX_LINK; i++) {
-			_lbCategories[i] = ViewFactory.getInstance().createTextView();
+			_lbCategories[i] = viewFactory.createTextView();
 			_lbCategories[i].setCharacterSize(FONT_SIZE);
 			layoutCategory.addView(_lbCategories[i]);
 		}

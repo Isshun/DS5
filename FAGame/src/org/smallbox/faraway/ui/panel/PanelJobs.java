@@ -28,21 +28,21 @@ public class PanelJobs extends BaseRightPanel {
 	}
 
 	@Override
-	protected void onCreate(LayoutFactory factory) {
+	protected void onCreate(ViewFactory viewFactory) {
 
-		_lbTitle = ViewFactory.getInstance().createTextView();
+		_lbTitle = viewFactory.createTextView();
 		_lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 		_lbTitle.setPosition(20, 18);
 		addView(_lbTitle);
 
-		_lbTitle2 = ViewFactory.getInstance().createTextView();
+		_lbTitle2 = viewFactory.createTextView();
 		_lbTitle2.setCharacterSize(FONT_SIZE_TITLE);
 		_lbTitle2.setPosition(20, 18);
 		addView(_lbTitle2);
 
 		_entries = new TextView[75];
 		for (int i = 0; i < 75; i++) {
-			_entries[i] = ViewFactory.getInstance().createTextView(FRAME_WIDTH - 42, 16);
+			_entries[i] = viewFactory.createTextView(FRAME_WIDTH - 42, 16);
 			_entries[i].setCharacterSize(14);
 			addView(_entries[i]);
 		}

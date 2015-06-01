@@ -73,10 +73,10 @@ public class PanelRoom extends BaseRightPanel {
 	}
 
 	@Override
-	protected void onCreate(LayoutFactory factory) {
+	protected void onCreate(ViewFactory factory) {
 		_buttons = new ArrayList<>();
 		_icons = new HashMap<>();
-		_layoutButtons = SpriteManager.getInstance().createFrameLayout(200, 400);
+		_layoutButtons = factory.createFrameLayout(200, 400);
 		_layoutButtons.setVisible(true);
 		addView(_layoutButtons);
 

@@ -24,10 +24,10 @@ public class PanelSystem extends BasePanel {
 	}
 	
 	@Override
-	protected void onCreate(LayoutFactory factory) {
+	protected void onCreate(ViewFactory factory) {
         setBackgroundColor(Colors.BT_INACTIVE);
 
-        View border = ViewFactory.getInstance().createColorView(_width, 4);
+        View border = factory.createColorView(_width, 4);
         border.setBackgroundColor(Colors.BACKGROUND);
         border.setPosition(_x, _y + _height);
         addView(border);

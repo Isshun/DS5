@@ -64,10 +64,10 @@ public class PanelPlan extends BaseRightPanel {
 	}
 
 	@Override
-	protected void onCreate(LayoutFactory factory) {
+	protected void onCreate(ViewFactory factory) {
 		int i = 0;
 		for (PanelEntry entry: _entries) {
-			entry.view = ViewFactory.getInstance().createTextView(150, 36);
+			entry.view = factory.createTextView(150, 36);
 			entry.view.setString(entry.label);
 			entry.view.setPadding(3, 16);
 			entry.view.setPosition(20, 20 + i++ * 50);

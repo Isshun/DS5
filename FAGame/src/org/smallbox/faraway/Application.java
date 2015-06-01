@@ -6,6 +6,7 @@ import org.smallbox.faraway.engine.dataLoader.StringsLoader;
 import org.smallbox.faraway.engine.serializer.LoadListener;
 import org.smallbox.faraway.engine.ui.Colors;
 import org.smallbox.faraway.engine.ui.TextView;
+import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.SpriteManager;
@@ -57,7 +58,7 @@ public class Application implements GameEventListener {
 		_renderer = renderer;
 		_isFullscreen = true;
 		_mainRenderer = new MainRenderer();
-		_userInterface = new UserInterface(new LayoutFactory());
+		_userInterface = new UserInterface(new LayoutFactory(), ViewFactory.getInstance());
 	}
 
     public GameData loadResources() {

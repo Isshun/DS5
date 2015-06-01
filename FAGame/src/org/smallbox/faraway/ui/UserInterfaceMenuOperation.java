@@ -19,6 +19,6 @@ public class UserInterfaceMenuOperation extends BasePanel {
 	}
 
 	@Override
-	protected void onCreate(LayoutFactory factory) {
+	protected void onCreate(ViewFactory factory) {
 	}
 }

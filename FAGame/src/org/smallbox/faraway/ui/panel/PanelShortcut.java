@@ -89,7 +89,7 @@ public class PanelShortcut extends BaseRightPanel {
     }
 
     @Override
-    protected void onCreate(LayoutFactory factory) {
+    protected void onCreate(ViewFactory factory) {
 ////		_miniMapRenderer = new MiniMapRenderer(_effect);
 //		int posX = 24;
 //		int posY = 244;

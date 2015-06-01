@@ -22,10 +22,10 @@ public class PanelConsole extends BasePanel {
 	}		  
 
 	@Override
-	protected void onCreate(LayoutFactory factory) {
+	protected void onCreate(ViewFactory factory) {
 		_texts = new TextView[NB_LINES];
 		for (int i = 0; i < NB_LINES; i++) {
-			_texts[i] = SpriteManager.getInstance().createTextView();
+			_texts[i] = factory.createTextView();
 			_texts[i].setCharacterSize(FONT_SIZE);
 			_texts[i].setPosition(14, 8 + i * LINE_INTERVAL);
 			addView(_texts[i]);

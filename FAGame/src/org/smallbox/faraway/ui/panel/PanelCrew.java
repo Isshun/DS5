@@ -45,12 +45,12 @@ public class PanelCrew extends BaseRightPanel {
 	}
 
 	@Override
-	protected void onCreate(LayoutFactory factory) {
+	protected void onCreate(ViewFactory factory) {
 		_viewHolderList = new ArrayList<>();
 		_characterManager = Game.getCharacterManager();
 
 		// Button small
-		TextView btModeSmall = ViewFactory.getInstance().createTextView(50, 20);
+		TextView btModeSmall = factory.createTextView(50, 20);
 		btModeSmall.setString("small");
 		btModeSmall.setCharacterSize(FONT_SIZE);
 		btModeSmall.setPosition(300, -32);
@@ -58,7 +58,7 @@ public class PanelCrew extends BaseRightPanel {
 		addView(btModeSmall);
 
 		// Button detail
-		TextView btModeDetail = ViewFactory.getInstance().createTextView(50, 20);
+		TextView btModeDetail = factory.createTextView(50, 20);
 		btModeDetail.setString("detail");
 		btModeDetail.setCharacterSize(FONT_SIZE);
 		btModeDetail.setPosition(360, -32);
@@ -66,7 +66,7 @@ public class PanelCrew extends BaseRightPanel {
 		addView(btModeDetail);
 
 		// Name
-		_lbCount = ViewFactory.getInstance().createTextView(10, 10);
+		_lbCount = factory.createTextView(10, 10);
 		_lbCount.setCharacterSize(FONT_SIZE_TITLE);
 		_lbCount.setColor(Color.WHITE);
 		_lbCount.setPosition(20, 22);
