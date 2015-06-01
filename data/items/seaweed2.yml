@@ -3,9 +3,11 @@ width: 2
 height: 1
 light: 0
 type: resource
-onGather:
-  produce: base.seaweed
-  mature: 5
+actions:
+    -   type: gather
+        products:
+            -   base.seaweed
+        mature: 5
 cost:
-  matter: 10
-  power: 1
+    matter: 10
+    power: 1

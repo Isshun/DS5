@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class WorldFactory {
 
@@ -51,16 +52,17 @@ public class WorldFactory {
 		addMountain(world);
 		
 		loadListener.onUpdate("Add random ressources");
-		addRandomRessources(world);
+		addRandomResources(world);
 	}
 
-	private static void addRandomRessources(WorldManager world) {
+	private static void addRandomResources(WorldManager world) {
 		int resInterval = RES_INTERVAL_HEAVY;
 		List<ItemInfo> resourceItemsInfo = new ArrayList<ItemInfo>();
 		for (ItemInfo info: Game.getData().items) {
-			if (info.onGather != null) {
-				resourceItemsInfo.add(info);
-			}
+			resourceItemsInfo.addAll(info.actions.stream()
+                    .filter(action -> "gather".equals(action.type))
+                    .map(action -> info)
+                    .collect(Collectors.toList()));
 		}
 		int nbResource = Constant.WORLD_WIDTH * Constant.WORLD_HEIGHT / resInterval;
 		for (int i = 0; i < nbResource; i++) {

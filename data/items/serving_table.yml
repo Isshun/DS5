@@ -3,16 +3,14 @@ width: 3
 height: 1
 category: kitchen
 cost:
-  matter: 8
+    matter: 8
 type: item
-onAction:
-  slots:
-    - x: 0
-      y: 1
-    - x: 1
-      y: 1
-    - x: 2
-      y: 1
-  duration: 5
-  produce:
-    - base.meal
+slots:
+    - [0, 1]
+    - [1, 1]
+    - [2, 1]
+actions:
+    -   type: use
+        duration: 5
+        products:
+            -   base.meal

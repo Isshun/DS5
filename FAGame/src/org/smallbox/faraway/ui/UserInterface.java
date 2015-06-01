@@ -95,6 +95,12 @@ public class UserInterface implements GameEventListener {
             UIEventManager.getInstance().onMouseMove(x, y);
         }
 
+		for (BasePanel panel: _panels) {
+			if (panel.onMouseEvent(timer, action, button, x, y)) {
+				return;
+			}
+		}
+
         if (action == Action.PRESSED || action == Action.RELEASED) {
             if (button == MouseButton.LEFT) {
                 if (action == Action.PRESSED) {
@@ -110,7 +116,7 @@ public class UserInterface implements GameEventListener {
                     }
                     // Is simple click
                     else {
-                        boolean use = onLeftClick(x, y);
+                         boolean use = onLeftClick(x, y);
                         if (use) {
                             onRefresh(_update);
                         }

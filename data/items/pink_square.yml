@@ -1,19 +1,23 @@
-label: Chess table
+label: Pink square
 width: 1
 height: 1
-frames: 7
-framesInterval: 18
 type: item
 category: recreation
-isToy: true
 cost:
     matter: 42
-slots:
-    - [-1, 0]
-    - [1, 0]
 actions:
     -   type: use
         duration: 10
         effects:
             hapiness: 10
             relation: 10
+slots:
+    - [1, -1]
+    - [-1, 1]
+    - [0, -1]
+    - [-1, 0]
+    - [-1, 0]
+    - [0, 1]
+    - [1, 0]
+    - [1, 1]
+    - [-1, -1]

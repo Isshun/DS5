@@ -1,9 +1,6 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.RenderEffect;
+import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.FrameLayout;
 import org.smallbox.faraway.engine.ui.View;
@@ -123,8 +120,8 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 	}
 	
 	protected void onRefresh(int update) {
-		
 	}
+
 	public Mode getMode() {
 		return _mode;
 	}
@@ -213,4 +210,8 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
     @Override
     public void onLayoutLoaded(LayoutModel layout) {
     }
+
+	public boolean onMouseEvent(GameTimer timer, GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
+		return false;
+	}
 }

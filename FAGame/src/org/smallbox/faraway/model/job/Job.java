@@ -8,6 +8,7 @@ import org.smallbox.faraway.manager.JobManager.Action;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemFilter;
+import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.ItemSlot;
 
 public abstract class Job {
@@ -27,6 +28,7 @@ public abstract class Job {
 	protected ItemBase			_item;
 	protected ItemFilter 		_filter;
 	private JobManager.Action 	_action;
+	protected ItemInfo.ItemInfoAction _actionInfo;
 	protected CharacterModel _character;
 	private CharacterModel _characterRequire;
 	private int 				_fail;
@@ -41,10 +43,11 @@ public abstract class Job {
 	private int 				_nbBlocked;
 	private boolean 			_hasDuration;
 
-	public Job(int x, int y) {
+	public Job(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
 		init();
 		_posY = y;
 		_posX = x;
+        _actionInfo = actionInfo;
 	}
 
 	public Job() {

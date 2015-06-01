@@ -130,7 +130,7 @@ public class PanelDebugItem extends BasePanel {
 			y += 22;
 		}
 		
-		if (item.onAction != null) {
+		if (item.actions != null) {
 
 			{
 				TextView text = SpriteManager.getInstance().createTextView();
@@ -145,48 +145,49 @@ public class PanelDebugItem extends BasePanel {
 			// Action duration
 			{
 				TextView text = SpriteManager.getInstance().createTextView();
-				text.setString("duration: " + item.onAction.duration);
+				//text.setString("duration: " + item.actions.duration);
+				text.setString("duration: TODO");
 				text.setPosition(x, y);
 				text.setCharacterSize(16);
 				_itemView.addView(text);
 				y += 22;
 			}
-
-			// Produce
-			if (item.onAction.produce != null) {
-				TextView text = SpriteManager.getInstance().createTextView();
-				text.setSize(100, 20);
-				String str = "produce: ";
-				for (String itemProduceName: item.onAction.produce) {
-					str += itemProduceName + "\n";
-				}
-				text.setString(str);
-				text.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						initItem(item.onAction.itemsProduce.get(0));
-					}
-				});
-				text.setPosition(x, y);
-				text.setCharacterSize(16);
-				_itemView.addView(text);
-				y += 22;
-			}
-
-			// Effects
-			if (item.onAction.effects != null) {
-				TextView text = SpriteManager.getInstance().createTextView();
-				String str = "effects: ";
-				str += "food("+item.onAction.effects.food+"), ";
-				str += "drink("+item.onAction.effects.drink+"), ";
-				str += "energy("+item.onAction.effects.energy+"), ";
-				str += "hapiness("+item.onAction.effects.hapiness+")";
-				text.setString("Action effects " + str);
-				text.setPosition(x, y);
-				text.setCharacterSize(16);
-				_itemView.addView(text);
-				y += 22;
-			}
+//
+//			// Produce
+//			if (item.actions.produce != null) {
+//				TextView text = SpriteManager.getInstance().createTextView();
+//				text.setSize(100, 20);
+//				String str = "products: ";
+//				for (String itemProduceName: item.actions.produce) {
+//					str += itemProduceName + "\n";
+//				}
+//				text.setString(str);
+//				text.setOnClickListener(new OnClickListener() {
+//					@Override
+//					public void onClick(View view) {
+//						initItem(item.actions.itemsProduce.get(0));
+//					}
+//				});
+//				text.setPosition(x, y);
+//				text.setCharacterSize(16);
+//				_itemView.addView(text);
+//				y += 22;
+//			}
+//
+//			// Effects
+//			if (item.actions.effects != null) {
+//				TextView text = SpriteManager.getInstance().createTextView();
+//				String str = "effects: ";
+//				str += "food("+item.actions.effects.food+"), ";
+//				str += "drink("+item.actions.effects.drink+"), ";
+//				str += "energy("+item.actions.effects.energy+"), ";
+//				str += "hapiness("+item.actions.effects.hapiness+")";
+//				text.setString("Action effects " + str);
+//				text.setPosition(x, y);
+//				text.setCharacterSize(16);
+//				_itemView.addView(text);
+//				y += 22;
+//			}
 		}
 		
 		if (item.craftedFromItems != null) {

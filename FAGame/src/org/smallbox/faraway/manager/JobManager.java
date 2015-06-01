@@ -30,7 +30,19 @@ public class JobManager {
 	public final static Color COLOR_STORE = new Color(180, 100, 255);
 	public final static Color COLOR_TAKE = new Color(180, 100, 255);
 
-	public enum Action {
+    public void addCraftJob(UserItem item, ItemInfo.ItemInfoAction action) {
+        if (item == null) {
+            throw new RuntimeException("Cannot add craft job (item is null)");
+        }
+
+        if (action == null) {
+            throw new RuntimeException("Cannot add craft job (action is null)");
+        }
+
+        item.addJob(JobCraft.create(action, item));
+    }
+
+    public enum Action {
 		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY, WORK, MINING, TAKE, USE_INVENTORY, REFILL
 	}
 
@@ -61,8 +73,8 @@ public class JobManager {
 		Log.debug("JobManager");
 
 		_self = this;
-		_jobs = new ArrayList<Job>();
-		_toRemove = new ArrayList<Job>();
+		_jobs = new ArrayList<>();
+		_toRemove = new ArrayList<>();
 
 		Log.debug("JobManager done");
 	}
@@ -106,7 +118,7 @@ public class JobManager {
 	}
 
 	public void	removeJob(ItemBase item) {
-		List<Job> toRemove = new ArrayList<Job>();
+		List<Job> toRemove = new ArrayList<>();
 
 		for (Job job: _jobs) {
 			if (job.getItem() == item) {
@@ -334,23 +346,24 @@ public class JobManager {
 			return;
 		}
 
-		// Looking for storage containing accepted item
-		for (ItemInfo neededItemInfo: factory.getInfo().onAction.itemAccept) {
-			ItemFilter filter = ItemFilter.createConsomableFilter(neededItemInfo);
-
-			// Looking for storage containing needed item
-			StorageRoom storage = Game.getRoomManager().findStorageContains(filter, factory.getX(), factory.getY());
-			if (storage != null) {
-				Job job = createRefillJob(null, storage, filter, factory);
-				if (job != null) {
-					addJob(job);
-				}
-				return;
-			}
-		}
+        // TODO
+//		// Looking for storage containing accepted item
+//		for (ItemInfo neededItemInfo: factory.getInfo().actions.itemAccept) {
+//			ItemFilter filter = ItemFilter.createConsomableFilter(neededItemInfo);
+//
+//			// Looking for storage containing needed item
+//			StorageRoom storage = Game.getRoomManager().findStorageContains(filter, factory.getX(), factory.getY());
+//			if (storage != null) {
+//				Job job = createRefillJob(null, storage, filter, factory);
+//				if (job != null) {
+//					addJob(job);
+//				}
+//				return;
+//			}
+//		}
 	}
 
-	private void removeJob(Job job) {
+	public void removeJob(Job job) {
 		if (job.getCharacter() != null) {
 			job.getCharacter().setJob(null);
 			job.setCharacter(null);
@@ -358,6 +371,7 @@ public class JobManager {
 
 		if (job.getItem() != null) {
 			job.getItem().setOwner(null);
+            job.getItem().removeJob(job);
 		}
 
 		if (job.getSlot() != null) {

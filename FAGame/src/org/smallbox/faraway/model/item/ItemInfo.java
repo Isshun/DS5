@@ -3,8 +3,8 @@ package org.smallbox.faraway.model.item;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ItemInfo {
+
 	public static class ItemInfoCost {
 		public int matter;
 		public int power;
@@ -14,28 +14,15 @@ public class ItemInfo {
 	public static class ItemInfoAction {
 		public int 					duration;
 		public int 					storage;
-		public List<String>			produce;
-		public List<ItemInfo>		itemsProduce;
+		public String 				type;
+		public String 				label;
+		public List<String> 		products;
+		public List<ItemInfo> 		productsItem;
 		public ItemInfoPractice 	practice;
 		public ItemInfoEffects		effects;
-		public List<ItemInfoSlot>	slots;
 		public ArrayList<ItemInfo> 	itemAccept;
-	}
-
-	public static class ItemInfoRessource {
-		public String 	produce;
-		public ItemInfo itemProduce;
-		public int		mature;
-	}
-
-	public static class ItemInfoProduce {
-		public String 	item;
-		public int 		quantity;
-	}
-
-	public static class ItemInfoSlot {
-		public int 		x;
-		public int 		y;
+		public int 					mature;
+		public int 					quantity;
 	}
 
 	public static class ItemInfoPractice {
@@ -56,6 +43,7 @@ public class ItemInfo {
 	public String 				label;
 	public String 				category;
 	public String 				type;
+	public List<int[]>			slots;
 	public List<String>			craftedFrom;
 	public int					craftedQuantitfy;
 	public boolean 				isWalkable;
@@ -65,14 +53,14 @@ public class ItemInfo {
 	public int 					height;
 	public int 					light;
 	public ItemInfoCost 		cost;
-	public ItemInfoAction 		onAction;
-	public ItemInfoRessource	onGather;
-	public ItemInfoRessource	onMine;
+	public List<ItemInfoAction> actions;
 	public boolean 				isStructure;
 	public boolean 				isResource;
 	public boolean 				isConsomable;
 	public boolean 				isUserItem;
 	public boolean 				isFood;
+	public boolean 				isToy;
+	public boolean 				isBed;
 	public int 					storage;
 	public int 					spriteId;
 	public String				fileName;

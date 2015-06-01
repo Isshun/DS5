@@ -64,7 +64,7 @@ public class WorldResource extends UserItem {
 	}
 
 	public boolean isMature() {
-		return _value >= _info.onGather.mature;
+		return _value >= _info.actions.get(0).mature;
 	}
 
 	public void setJob(Job job) {

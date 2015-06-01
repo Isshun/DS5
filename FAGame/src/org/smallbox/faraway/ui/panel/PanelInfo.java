@@ -328,7 +328,7 @@ public class PanelInfo extends BaseRightPanel {
 		_itemAction.setPosition(0, 200);
 		_layoutItem.addView(_itemAction);
 
-		// Item produce
+		// Item products
 		_layoutItemProduce = SpriteManager.getInstance().createFrameLayout(120, 200);
 		_layoutItemProduce.setPosition(0, 200);
 		_layoutItem.addView(_layoutItemProduce);
@@ -477,19 +477,21 @@ public class PanelInfo extends BaseRightPanel {
 		_itemIcon.setPosition(FRAME_WIDTH - 32 - icon.getWidth(), 20);
 
 		// Gatherable item
-		if (resource.getInfo().onGather != null) {
+		if (!resource.getInfo().actions.isEmpty() && "gather".equals(resource.getInfo().actions.get(0).type)) {
 			_itemGather.setVisible(true);
-			_itemGatherProduce.setString(resource.getInfo().onGather.itemProduce.label);
-			_itemGatherIcon.setIcon(SpriteManager.getInstance().getIcon(resource.getInfo().onGather.itemProduce));
+//			_itemGatherProduce.setString(resource.getInfo().actions.get(0).productsItem.label);
+			_itemGatherProduce.setString("TODO");
+//			_itemGatherIcon.setIcon(SpriteManager.getInstance().getIcon(resource.getInfo().onGather.itemProduce));
 		} else {
 			_itemGather.setVisible(false);
 		}
 
 		// Minable item
-		if (resource.getInfo().onMine != null) {
+		if (!resource.getInfo().actions.isEmpty() && "mine".equals(resource.getInfo().actions.get(0).type)) {
 			_itemMine.setVisible(true);
-			_itemMineProduce.setString(resource.getInfo().onMine.itemProduce.label);
-			_itemMineIcon.setIcon(SpriteManager.getInstance().getIcon(resource.getInfo().onMine.itemProduce));
+//			_itemMineProduce.setString(resource.getInfo().actions.get(0).productsItem.label);
+			_itemMineProduce.setString("TODO");
+//			_itemMineIcon.setIcon(SpriteManager.getInstance().getIcon(resource.getInfo().onMine.itemProduce));
 		} else {
 			_itemMine.setVisible(false);
 		}
@@ -556,62 +558,63 @@ public class PanelInfo extends BaseRightPanel {
 			}
 			
 			// Action item
-			if (itemInfo.onAction != null) {
-				displayItemAction(itemInfo.onAction);
+			if (itemInfo.actions != null) {
+				// TODO
+//				displayItemAction(itemInfo.actions);
 			} else {
 			}
 		}
 	}
-	
-	private void displayItemAction(ItemInfoAction action) {
-		_itemAction.setVisible(true);
-
-		if (action.itemAccept != null) {
-			String str = new String();
-			for (ItemInfo info: action.itemAccept) {
-				str += info.label + "\n";
-			}
-			_itemAccept.setString(str);
-			_itemAccept.setVisible(true);
-		}
-		
-		// Item action produce
-		if (action.itemsProduce != null) {
-			_layoutItemProduce.setVisible(true);
-
-			String str = "";
-			ItemInfo produce = null;
-			for (ItemInfo itemProduce: action.itemsProduce) {
-				str += StringUtils.getDashedString(itemProduce.label, "x" + itemProduce.craftedQuantitfy, NB_COLUMNS - 4) + "\n";
-				produce = itemProduce;
-			}
-			final ItemInfo finalProduce = produce;
-			_itemProduceName.setString(str);
-			_itemProduceName.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					_ui.select(finalProduce);
-				}
-			});
-			_itemProduceIcon.setIcon(SpriteManager.getInstance().getIcon(action.itemsProduce.get(0)));
-		}
-
-		// Item action effects
-		if (action.effects != null) {
-			_layoutEffects.setVisible(false);
-			ItemInfoEffects effects = action.effects;
-			int line = 0;
-			if (effects.drink > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_DRINK, (effects.drink > 0 ? "+" : "") + effects.drink, NB_COLUMNS); }
-			if (effects.energy > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_ENERGY, (effects.energy> 0 ? "+" : "") + effects.energy, NB_COLUMNS); }
-			if (effects.food > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_FOOD, (effects.food > 0 ? "+" : "") + effects.food, NB_COLUMNS); }
-			if (effects.hapiness > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_HAPINESS, (effects.hapiness > 0 ? "+" : "") + effects.hapiness, NB_COLUMNS); }
-			if (effects.health > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_HEALTH, (effects.health > 0 ? "+" : "") + effects.health, NB_COLUMNS); }
-			if (effects.relation > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_RELATION, (effects.relation > 0 ? "+" : "") + effects.relation, NB_COLUMNS); }
-			for (int i = line; i < 10; i++) {
-				_itemEffects[line++].setString("");
-			}
-		}
-	}
+//
+//	private void displayItemAction(ItemInfoAction action) {
+//		_itemAction.setVisible(true);
+//
+//		if (action.itemAccept != null) {
+//			String str = new String();
+//			for (ItemInfo info: action.itemAccept) {
+//				str += info.label + "\n";
+//			}
+//			_itemAccept.setString(str);
+//			_itemAccept.setVisible(true);
+//		}
+//
+//		// Item action products
+//		if (action.itemsProduce != null) {
+//			_layoutItemProduce.setVisible(true);
+//
+//			String str = "";
+//			ItemInfo produce = null;
+//			for (ItemInfo itemProduce: action.itemsProduce) {
+//				str += StringUtils.getDashedString(itemProduce.label, "x" + itemProduce.craftedQuantitfy, NB_COLUMNS - 4) + "\n";
+//				produce = itemProduce;
+//			}
+//			final ItemInfo finalProduce = produce;
+//			_itemProduceName.setString(str);
+//			_itemProduceName.setOnClickListener(new OnClickListener() {
+//				@Override
+//				public void onClick(View view) {
+//					_ui.select(finalProduce);
+//				}
+//			});
+//			_itemProduceIcon.setIcon(SpriteManager.getInstance().getIcon(action.itemsProduce.get(0)));
+//		}
+//
+//		// Item action effects
+//		if (action.effects != null) {
+//			_layoutEffects.setVisible(false);
+//			ItemInfoEffects effects = action.effects;
+//			int line = 0;
+//			if (effects.drink > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_DRINK, (effects.drink > 0 ? "+" : "") + effects.drink, NB_COLUMNS); }
+//			if (effects.energy > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_ENERGY, (effects.energy> 0 ? "+" : "") + effects.energy, NB_COLUMNS); }
+//			if (effects.food > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_FOOD, (effects.food > 0 ? "+" : "") + effects.food, NB_COLUMNS); }
+//			if (effects.hapiness > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_HAPINESS, (effects.hapiness > 0 ? "+" : "") + effects.hapiness, NB_COLUMNS); }
+//			if (effects.health > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_HEALTH, (effects.health > 0 ? "+" : "") + effects.health, NB_COLUMNS); }
+//			if (effects.relation > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_RELATION, (effects.relation > 0 ? "+" : "") + effects.relation, NB_COLUMNS); }
+//			for (int i = line; i < 10; i++) {
+//				_itemEffects[line++].setString("");
+//			}
+//		}
+//	}
 
 	public void refreshItem(final UserItem item) {
 		if (item == null) {
@@ -635,9 +638,10 @@ public class PanelInfo extends BaseRightPanel {
 
 //		displayItemInfo(item.getInfo());
 
-		if (item.getInfo().onAction != null && item.getInfo().onAction.effects != null) {
-			displayEffect();
-		}
+        // TODO
+//		if (item.getInfo().actions != null && item.getInfo().actions.effects != null) {
+//			displayEffect();
+//		}
 
 //		if (_itemOptions != null) {
 //			List<TextView> texts = _itemOptions.getOptions();

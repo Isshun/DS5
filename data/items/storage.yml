@@ -5,4 +5,4 @@ type: item
 category: system
 storage: 100
 cost:
-  matter: 42
+    matter: 42

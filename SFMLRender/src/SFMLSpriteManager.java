@@ -379,20 +379,22 @@ public class SFMLSpriteManager extends SpriteManager {
 
     @Override
 	public SpriteModel getResource(WorldResource resource) {
-		if ("base.rock".equals(resource.getInfo().name)) {
-			return getSprite(resource.getInfo(), resource.getTile(), 0, 255, false);
+		ItemInfo info = resource.getInfo();
+
+		if ("base.rock".equals(info.name)) {
+			return getSprite(info, resource.getTile(), 0, 255, false);
 		}
 
-		else if ("base.grass".equals(resource.getInfo().name)) {
-			return getSprite(resource.getInfo(), resource.getTile(), 0, 255, false);
+		else if ("base.grass".equals(info.name)) {
+			return getSprite(info, resource.getTile(), 0, 255, false);
 		}
 
-		else if (resource.getInfo().onGather != null) {
-			int state = (int)(Math.min(resource.getValue(), resource.getInfo().onGather.mature) + 1);
-			return getSprite(resource.getInfo(), 0, state, 255, false);
+		else if (!info.actions.isEmpty() && "gather".equals(info.actions.get(0).type)) {
+			int state = (int)(Math.min(resource.getValue(), info.actions.get(0).mature) + 1);
+			return getSprite(info, 0, state, 255, false);
 		}
 
-		return getSprite(resource.getInfo(), 0, 1, 255, false);
+		return getSprite(info, 0, 1, 255, false);
 	}
 
     @Override

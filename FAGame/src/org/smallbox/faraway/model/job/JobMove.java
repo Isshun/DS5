@@ -2,11 +2,12 @@ package org.smallbox.faraway.model.job;
 
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.item.ItemInfo;
 
 public class JobMove extends Job {
 
 	private JobMove(int x, int y) {
-		super(x, y);
+		super(null, x, y);
 	}
 
 	public static Job create(CharacterModel character, int x, int y, int stay) {

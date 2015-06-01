@@ -12,7 +12,7 @@ public class JobStore extends Job {
 	private StorageRoom _storage;
 
 	private JobStore(int x, int y) {
-		super(x, y);
+		super(null, x, y);
 	}
 
 	// TODO: check if item to store is accepter by storage

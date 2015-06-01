@@ -47,9 +47,9 @@ public class StorageRoom extends Room {
 		_acceptFood = true;
 		_acceptGarbage = true;
 
-		//		if (info.onAction != null && info.onAction.storage > 0) {
+		//		if (info.actions != null && info.actions.storage > 0) {
 		//			_accepts = new ArrayList<ItemInfo>();
-		//			for (ItemInfo itemProduce: info.onAction.itemsProduce) {
+		//			for (ItemInfo itemProduce: info.actions.itemsProduce) {
 		//				_accepts.addAll(itemProduce.craftedFromItems);
 		//			}
 		//		}

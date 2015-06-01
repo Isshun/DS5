@@ -10,7 +10,7 @@ public class UserItem extends ItemBase {
 	}
 
 	public boolean isBed() {
-		return _info.onAction != null && _info.onAction.effects != null && _info.onAction.effects.energy > 0;
+		return _info.isBed;
 	}
 
 	public boolean isStack() {

@@ -1,6 +1,5 @@
 package org.smallbox.faraway.engine.dataLoader;
 
-import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.yaml.snakeyaml.Yaml;
@@ -8,6 +7,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class ItemLoader {
 	
@@ -57,8 +57,8 @@ public class ItemLoader {
 			    	throw new RuntimeException("unknow item type: " + info.type);
 			    }
 			    
-//			    info.isStorage = info.storage > 0 || info.onAction != null && info.onAction.storage > 0;
-			    info.isFood = info.onAction != null && info.onAction.effects != null && info.onAction.effects.food > 0;
+//			    info.isStorage = info.storage > 0 || info.actions != null && info.actions.storage > 0;
+//			    info.isFood = info.actions != null && info.actions.effects != null && info.actions.effects.food > 0;
 			    data.items.add(info);
 			}
 			
@@ -86,36 +86,67 @@ public class ItemLoader {
 		// Second pass
 		for (ItemInfo item: data.items) {
 			item.isSleeping = "base.bed".equals(item.name);
-			
-			// Init gather item
-			if (item.onGather != null) {
-				item.onGather.itemProduce = data.getItemInfo(item.onGather.produce);
-				data.gatherItems.add(item);
-			}
-			
-			// Init mine item
-			if (item.onMine != null) {
-				item.onMine.itemProduce = data.getItemInfo(item.onMine.produce);
-			}
-			
-			// Init action item
-			if (item.onAction != null) {
-				item.onAction.duration *= Constant.DURATION_MULTIPLIER;
-				if (item.onAction.produce != null) {
-					// Items produce
-					item.onAction.itemsProduce = new ArrayList<ItemInfo>();
-					for (String itemProduceName: item.onAction.produce) {
-						item.onAction.itemsProduce.add(data.getItemInfo(itemProduceName));
+
+
+			if (item.actions != null) {
+				for (ItemInfo.ItemInfoAction action: item.actions) {
+					switch (action.type) {
+                        case "use":
+                            if (item.actions.size() > 1) {
+                                throw new RuntimeException("action type \"use\" need to be unique");
+                            }
+                            break;
+
+						case "cook":
+                            break;
+
+						case "gather":
+                            if (item.actions.size() > 1) {
+                                throw new RuntimeException("action type \"gather\" need to be unique");
+                            }
+
+                            if (action.products != null && !action.products.isEmpty()) {
+                                action.productsItem = new ArrayList<>();
+                                action.productsItem.add(data.getItemInfo(action.products.get(0)));
+                            }
+                            data.gatherItems.add(item);
+                            break;
+
+						case "mine":
+                            if (item.actions.size() > 1) {
+                                throw new RuntimeException("action type \"mine\" need to be unique");
+                            }
+
+                            if (action.products != null && !action.products.isEmpty()) {
+                                action.productsItem = new ArrayList<>();
+                                action.productsItem.add(data.getItemInfo(action.products.get(0)));
+                            }
+//                            data.gatherItems.add(item);
+                            break;
 					}
-					
-					// Item accepted for craft
-					item.onAction.itemAccept = new ArrayList<ItemInfo>();
-					for (ItemInfo itemProduce: item.onAction.itemsProduce) {
-						item.onAction.itemAccept.addAll(itemProduce.craftedFromItems);
-					}
-					item.isFactory = item.onAction.itemAccept.size() > 0;
+
+					break;
 				}
 			}
+
+//			// Init action item
+//			if (item.actions != null) {
+//				item.actions.duration *= Constant.DURATION_MULTIPLIER;
+//				if (item.actions.products != null) {
+//					// Items products
+//					item.actions.itemsProduce = new ArrayList<>();
+//					for (String itemProduceName: item.actions.products) {
+//						item.actions.itemsProduce.add(data.getItemInfo(itemProduceName));
+//					}
+//
+//					// Item accepted for craft
+//					item.actions.itemAccept = new ArrayList<>();
+//					for (ItemInfo itemProduce: item.actions.itemsProduce) {
+//						item.actions.itemAccept.addAll(itemProduce.craftedFromItems);
+//					}
+//					item.isFactory = item.actions.itemAccept.size() > 0;
+//				}
+//			}
 		}
 	}
 

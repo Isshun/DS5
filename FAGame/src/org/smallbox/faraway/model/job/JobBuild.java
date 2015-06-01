@@ -12,7 +12,7 @@ import org.smallbox.faraway.ui.UserInterface;
 public class JobBuild extends Job {
 
 	private JobBuild(int x, int y) {
-		super(x, y);
+		super(null, x, y);
 	}
 
 	public static Job create(ItemBase item) {

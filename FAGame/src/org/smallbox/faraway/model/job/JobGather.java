@@ -7,6 +7,7 @@ import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.model.item.WorldResource;
 
@@ -14,17 +15,18 @@ public class JobGather extends Job {
 
 	private WorldResource	_resource;
 
-	private JobGather(int x, int y) {
-		super(x, y);
+	private JobGather(ItemInfo.ItemInfoAction action, int x, int y) {
+		super(action, x, y);
 	}
 
 	public static Job create(WorldResource resource) {
 		// Resource is not gatherable
-		if (resource == null || resource.getInfo().onGather == null) {
+		if (resource == null || !"gather".equals(resource.getInfo().actions.get(0).type)) {
 			return null;
 		}
 
-		JobGather job = new JobGather(resource.getX(), resource.getY());
+
+		JobGather job = new JobGather(resource.getInfo().actions.get(0), resource.getX(), resource.getY());
 		job.setAction(Action.GATHER);
 		job.setItem(resource);
 		job._resource = resource;
@@ -71,7 +73,7 @@ public class JobGather extends Job {
 			return true;
 		}
 
-		if (_resource.getInfo().onGather == null) {
+		if (_resource.getInfo().actions.get(0) == null) {
 			Log.error("Character: actionGather on non gatherable item");
 			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
 			return true;
@@ -92,7 +94,9 @@ public class JobGather extends Job {
 		ResourceManager.getInstance().addMatter(value);
 
 		for (int i = 0; i < value; i++) {
-			character.addInventory(new UserItem(_resource.getInfo().onGather.itemProduce));
+            for (ItemInfo info: _resource.getInfo().actions.get(0).productsItem) {
+                character.addInventory(new UserItem(info));
+            }
 		}
 		
 		if (_resource.isDepleted()) {

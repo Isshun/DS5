@@ -93,9 +93,7 @@ public abstract class FrameLayout extends View {
     }
 
     public void clearAllViews() {
-		for (View view: _views) {
-			view.remove();
-		}
+        _views.forEach(org.smallbox.faraway.engine.ui.View::remove);
 		_views.clear();
 	}
 
@@ -113,4 +111,18 @@ public abstract class FrameLayout extends View {
 //			view.setPosition(view.getPosX() + x, y);
 //		}
 	}
+
+	public void resetAllPos() {
+		for (View view: _views) {
+			if (view instanceof FrameLayout) {
+				((FrameLayout) view).resetAllPos();
+			} else {
+				view.resetPos();
+			}
+		}
+	}
+
+    public List<View> getViews() {
+        return _views;
+    }
 }

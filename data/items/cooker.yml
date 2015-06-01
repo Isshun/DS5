@@ -2,17 +2,40 @@ label: Cooker
 type: item
 category: kitchen
 width: 2
-onAction:
-  duration: 10
-  practice:
-    cooking: 1
-  storage: 10
-  produce:
-    - base.meal
-  slots:
-    - x: 0
-      y: 1
-    - x: 1
-      y: 1
+slots:
+    - [0, 1]
+    - [1, 1]
+actions:
+    -   type: cook
+        label: Cook easy meal
+        duration: 10
+        practice:
+            cooking: 1
+        products:
+            - base.easy_meal
+
+    -   type: cook
+        label: Cook advance meal
+        duration: 10
+        practice:
+            cooking: 1
+        products:
+            - base.meal
+
+    -   type: cook
+        label: Cook lavish meal
+        duration: 10
+        practice:
+            cooking: 1
+        products:
+            - base.meal
+
+    -   type: cook
+        label: Cook ration
+        duration: 10
+        practice:
+            cooking: 1
+        products:
+            - base.meal
 cost:
   matter: 42

@@ -32,9 +32,10 @@ public class Application implements GameEventListener {
 	private static UserInterface	_userInterface;
 	private static LoadListener 	_loadListener;
 	private static boolean			_isFullscreen;
-    private GFXRenderer             _renderer;
+    private static GFXRenderer      _renderer;
 
     public Application(GFXRenderer renderer) {
+        _renderer = renderer;
         _loadListener = message -> {
             renderer.clear();
             TextView text = SpriteManager.getInstance().createTextView();
@@ -203,5 +204,13 @@ public class Application implements GameEventListener {
     public void longUpdate(int frame) {
         _game.onLongUpdate();
         _mainRenderer.setFPS(frame, _longUpdateInterval);
+    }
+
+    public static int getWindowWidth() {
+        return _renderer.getWidth();
+    }
+
+    public static int getWindowHeight() {
+        return _renderer.getHeight();
     }
 }

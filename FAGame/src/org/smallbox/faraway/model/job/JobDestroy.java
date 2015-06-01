@@ -9,7 +9,7 @@ import org.smallbox.faraway.model.item.ItemBase;
 public class JobDestroy extends Job {
 
 	private JobDestroy(int x, int y) {
-		super(x, y);
+		super(null, x, y);
 	}
 
 	public static Job create(ItemBase item) {

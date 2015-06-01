@@ -202,7 +202,7 @@ public class CharacterNeeds {
 	public void	sleep(ItemBase item) {
 		_sleepItem = item;
 		if (item != null) {
-			_sleeping = item.getInfo().onAction.duration;
+			_sleeping = item.getInfo().actions.get(0).duration;
 		} else {
 			_sleeping = Constant.SLEEP_ON_FLOOR_DURATION * Constant.DURATION_MULTIPLIER;
 		}

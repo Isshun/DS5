@@ -79,4 +79,16 @@ public abstract class TextView extends View {
     }
 
 	public abstract void init();
+
+	@Override
+	public void resetPos() {
+//		_width = getContentWidth();
+//		_height = getContentHeight();
+		super.resetPos();
+	}
+
+	public void resetSize() {
+		_width = getContentWidth();
+		_height = getContentHeight();
+	}
 }

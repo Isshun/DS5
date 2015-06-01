@@ -4,9 +4,7 @@ type: item
 category: sickbay
 width: 1
 height: 2
-onAction:
-  slots:
-    - x: 0
-      y: 0
+slots: 
+    - [0, 0]
 cost:
   matter: 42

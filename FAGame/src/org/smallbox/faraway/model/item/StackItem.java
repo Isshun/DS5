@@ -80,9 +80,13 @@ public class StackItem extends UserItem {
 				return true;
 			}
 
-			if (_stackedInfo.onAction != null && _stackedInfo.matchFilter(_stackedInfo.onAction.effects, filter)) {
-				filter.itemMatched = _stackedInfo;
-				return true;
+			if (_stackedInfo.actions != null) {
+				for (ItemInfo.ItemInfoAction action: _stackedInfo.actions) {
+					if (_stackedInfo.matchFilter(action.effects, filter)) {
+						filter.itemMatched = _stackedInfo;
+						return true;
+					}
+				}
 			}
 		}
 		

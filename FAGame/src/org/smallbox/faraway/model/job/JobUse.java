@@ -30,7 +30,7 @@ public class JobUse extends Job {
 		job.setPosition(slot.getX(), slot.getY());
 		job.setAction(JobManager.Action.USE);
 		job.setItem(item);
-		job.setDurationLeft(item.getInfo().onAction.duration);
+		job.setDurationLeft(item.getInfo().actions.get(0).duration);
 
 		return job;
 	}

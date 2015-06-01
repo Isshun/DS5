@@ -19,7 +19,7 @@ public class JobRefill extends Job {
 	private FactoryItem 			_factory;
 
 	private JobRefill(int x, int y) {
-		super(x, y);
+		super(null, x, y);
 	}
 
 	public static Job create(FactoryItem factory, StorageRoom storage, ItemFilter filter) {

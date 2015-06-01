@@ -5,19 +5,20 @@ import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.ItemInfo;
 
-public class JobWork extends Job {
+public class JobCraft extends Job {
 
-	private JobWork(int x, int y) {
-		super(x, y);
+	private JobCraft(ItemInfo.ItemInfoAction action, int x, int y) {
+		super(action, x, y);
 	}
 
-	public static Job create(ItemBase item) {
+	public static Job create(ItemInfo.ItemInfoAction action, ItemBase item) {
 		if (item == null) {
 			return null;
 		}
 		
-		Job job = new JobWork(item.getX(), item.getY());
+		Job job = new JobCraft(action, item.getX(), item.getY());
 		job.setAction(JobManager.Action.WORK);
 		job.setItem(item);
 		return job;
@@ -65,7 +66,7 @@ public class JobWork extends Job {
 
 	@Override
 	public String getLabel() {
-		return "work";
+		return _actionInfo.label;
 	}
 
 	@Override

@@ -6,25 +6,32 @@ import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.model.item.WorldResource;
 
 public class JobMining extends Job {
 
-	private JobMining(int x, int y) {
-		super(x, y);
+	private JobMining(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
+		super(actionInfo, x, y);
 	}
 
 	public static Job create(WorldResource res) {
 		// Resource is not minable
-		if (res == null || res.getInfo().onMine == null) {
+		if (res == null) {
 			return null;
 		}
-		
-		Job job = new JobMining(res.getX(), res.getY());
-		job.setAction(JobManager.Action.MINING);
-		job.setItem(res);
-		
+
+		if (res.getInfo().actions != null) {
+			for (ItemInfo.ItemInfoAction action: res.getInfo().actions) {
+				if ("mine".equals(action.type)) {
+					Job job = new JobMining(action, res.getX(), res.getY());
+					job.setAction(JobManager.Action.MINING);
+					job.setItem(res);
+				}
+			}
+		}
+
 		return null;
 	}
 
@@ -74,7 +81,7 @@ public class JobMining extends Job {
 
 		WorldResource gatheredItem = (WorldResource)_item;
 
-		if (gatheredItem.getInfo().onMine == null) {
+		if (!"mine".equals(_actionInfo)) {
 			Log.error("Character: actionMine on non minable item");
 			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
 			return true;
@@ -98,9 +105,11 @@ public class JobMining extends Job {
 			JobManager.getInstance().complete(this);
 			return true;
 		}
-		
-		character.addInventory(new UserItem(gatheredItem.getInfo().onMine.itemProduce));
-		
+
+        for (ItemInfo itemInfo: _actionInfo.productsItem) {
+            character.addInventory(new UserItem(itemInfo));
+        }
+
 		return false;
 	}
 

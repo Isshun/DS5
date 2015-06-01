@@ -13,7 +13,7 @@ public class JobTake extends Job {
 	private StorageRoom		_storage;
 	
 	private JobTake(int x, int y) {
-		super(x, y);
+		super(null, x, y);
 	}
 
 	public static Job create(UserItem item) {

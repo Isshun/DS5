@@ -17,11 +17,13 @@ public class FactoryItem extends UserItem {
 	public FactoryItem(ItemInfo info) {
 		super(info);
 
-		_inventory = new ArrayList<UserItem>();
-		if (info.onAction != null && info.onAction.storage > 0) {
-			_accepts = new ArrayList<ItemInfo>();
-			for (ItemInfo itemProduce: info.onAction.itemsProduce) {
-				_accepts.addAll(itemProduce.craftedFromItems);
+		_inventory = new ArrayList<>();
+		if (info.actions != null && info.storage > 0) {
+			_accepts = new ArrayList<>();
+			for (ItemInfo.ItemInfoAction action: info.actions) {
+				for (ItemInfo itemProduce : action.productsItem) {
+					_accepts.addAll(itemProduce.craftedFromItems);
+				}
 			}
 		}
 	}
@@ -30,9 +32,9 @@ public class FactoryItem extends UserItem {
 	public UserItem use(CharacterModel character, int durationLeft) {
 		super.use(character, durationLeft);
 
-		if (_info.onAction != null && _info.onAction.itemsProduce != null) {
-			ItemInfo itemToProduce = _info.onAction.itemsProduce.get(0);
-			_itemProduceState += (double)itemToProduce.craftedQuantitfy / _info.onAction.duration;
+		if (_info.actions != null && _info.actions.get(0).productsItem != null) {
+			ItemInfo itemToProduce = _info.actions.get(0).productsItem.get(0);
+			_itemProduceState += (double)itemToProduce.craftedQuantitfy / _info.actions.get(0).duration;
 			if (_itemProduceState >= 1) {
 				_itemProduceState -= 1;
 
@@ -56,31 +58,34 @@ public class FactoryItem extends UserItem {
 		}
 
 		// Filter looking for factory
-		if (filter.lookingForFactory && _info.onAction != null && _info.onAction.itemsProduce != null) {
+		if (filter.lookingForFactory && _info.actions != null) {
+            for (ItemInfo.ItemInfoAction action: _info.actions) {
+                if (action.productsItem != null) {
+                    // Factory has no free slots
+                    if (filter.needFreeSlot && hasFreeSlot() == false) {
+                        return false;
+                    }
 
-			// Factory has no free slots
-			if (filter.needFreeSlot && hasFreeSlot() == false) {
-				return false;
-			}
-
-			for (ItemInfo itemProduce: _info.onAction.itemsProduce) {
-				if (itemProduce != null && itemProduce.onAction != null && (filter.itemNeeded == itemProduce || _info.matchFilter(itemProduce.onAction.effects, filter))) {
-					// Have components
-					for (ItemInfo component: itemProduce.craftedFromItems) {
-						if (inventoryContains(component)) {
-							filter.itemMatched = itemProduce;
-							return true;
-						}
-					}
-				}
-			}
+                    for (ItemInfo productsItem: action.productsItem) {
+                        if (productsItem != null && productsItem.actions != null && (filter.itemNeeded == productsItem || _info.matchFilter(action.effects, filter))) {
+                            // Have components
+                            for (ItemInfo component: productsItem.craftedFromItems) {
+                                if (inventoryContains(component)) {
+                                    filter.itemMatched = productsItem;
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 		}
 
 		return false;
 	}
 
 	public boolean needRefill() {
-		return _info.onAction != null && _inventory.size() < _info.onAction.storage;
+		return _info.actions != null && _inventory.size() < _info.storage;
 	}
 
 	public boolean isWaitForRefill() {

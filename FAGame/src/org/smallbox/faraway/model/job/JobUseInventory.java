@@ -6,12 +6,13 @@ import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
 
 public class JobUseInventory extends Job {
 
-	private JobUseInventory(int x, int y) {
-		super(x, y);
+	private JobUseInventory(ItemInfo.ItemInfoAction action, int x, int y) {
+		super(action, x, y);
 	}
 
 	public static Job create(CharacterModel character, ItemBase item) {
@@ -19,11 +20,11 @@ public class JobUseInventory extends Job {
 			return null;
 		}
 		
-		Job job = new JobUseInventory(character.getX(), character.getY());
+		Job job = new JobUseInventory(item.getInfo().actions.get(0), character.getX(), character.getY());
 		job.setAction(JobManager.Action.USE_INVENTORY);
 		job.setItem(item);
 		job.setCharacterRequire(character);
-		job.setDurationLeft(item.getInfo().onAction.duration);
+		job.setDurationLeft(item.getInfo().actions.get(0).duration);
 
 		return job;
 	}
@@ -59,7 +60,7 @@ public class JobUseInventory extends Job {
 		}
 		
 		// TODO: immediate use
-		for (int i = 0; i < _item.getInfo().onAction.duration * Constant.DURATION_MULTIPLIER; i++) {
+		for (int i = 0; i < _item.getInfo().actions.get(0).duration * Constant.DURATION_MULTIPLIER; i++) {
 			_item.use(character, i);
 		}
 

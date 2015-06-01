@@ -1,6 +1,8 @@
 package org.smallbox.faraway.ui.panel;
 
+import org.smallbox.faraway.Application;
 import org.smallbox.faraway.Color;
+import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.ui.LayoutModel;
@@ -33,6 +35,7 @@ public class LayoutFactory {
             }
 
             panel.setLoaded();
+            panel.resetAllPos();
 
             listener.onLayoutLoaded(layout);
         } catch (FileNotFoundException e) {
@@ -54,7 +57,13 @@ public class LayoutFactory {
 
         lbText.setSize(lbText.getContentWidth() + 10, lbText.getContentHeight() + 10);
 
-        lbText.setPosition(entry.position[0], entry.position[1]);
+        if (entry.size != null) {
+            lbText.setSize(entry.size[0], entry.size[1]);
+        }
+
+        if (entry.position != null) {
+            lbText.setPosition(entry.position[0], entry.position[1]);
+        }
 
         lbText.init();
 
@@ -66,6 +75,12 @@ public class LayoutFactory {
 
         if (entry.position != null) {
             frame.setPosition(entry.position[0], entry.position[1]);
+        }
+
+        if (entry.size != null) {
+            frame.setPosition(
+                    entry.size[0] != -1 ? entry.size[0] : Application.getWindowWidth(),
+                    entry.size[1] != -1 ? entry.size[1] : Application.getWindowHeight());
         }
 
         if (entry.entries != null) {

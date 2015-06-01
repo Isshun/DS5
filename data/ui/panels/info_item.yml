@@ -22,3 +22,36 @@ entries:
         text: pos
         textsize: 14
         position: [24, 102]
+
+    -   type: frame
+        id: frame_craft
+        position: [0, 200]
+        entries:
+        
+        -   type: label
+            text: Crafts
+            position: [24, 0]
+            textsize: 20
+
+        -   type: label
+            id: bt_add_craft
+            text: "[+]"
+            textcolor: 0xb0cd35
+            position: [320, 0]
+            textsize: 24
+            size: [32, 32]
+
+        -   type: frame
+            id: frame_craft_entries
+            position: [0, 20]
+            entries:
+        
+
+        -   type: frame
+            id: menu_add_craft
+            position: [220, 40]
+            entries:
+
+            -   type: frame
+                id: menu_add_craft_entries
+                position: [0, 0]
