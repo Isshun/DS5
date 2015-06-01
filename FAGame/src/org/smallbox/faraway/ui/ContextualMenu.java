@@ -26,7 +26,7 @@ public class ContextualMenu extends BasePanel {
 	private int 				_initPosY;
 	
 	public ContextualMenu(int tileIndex, int x, int y, int width, int height, Viewport viewport) {
-		super(Mode.NONE, null, x, y, width, height);
+		super(Mode.NONE, null, x, y, width, height, null);
 		setVisible(true);
 		
 		ENTRY_WIDTH = (int) (width - PADDING_H * 2);

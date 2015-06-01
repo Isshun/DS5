@@ -11,7 +11,7 @@ import org.smallbox.faraway.model.job.Job.JobAbortReason;
 import org.smallbox.faraway.model.job.Job.JobStatus;
 import org.smallbox.faraway.model.jobCheck.*;
 import org.smallbox.faraway.model.room.StorageRoom;
-import org.smallbox.faraway.renderer.MainRenderer;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 
 import java.util.ArrayList;
 import java.util.List;

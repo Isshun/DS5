@@ -1,4 +1,4 @@
-package org.smallbox.faraway.renderer;
+package org.smallbox.faraway.engine.renderer;
 
 import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.Game;
@@ -27,7 +27,7 @@ public class WorldRenderer implements IRenderer {
         }
 	}
 
-	private SpriteManager _spriteManager;
+	private SpriteManager 			_spriteManager;
 	private ColorView               _shape;
 	private int 					_lastSpecialY;
 	private int 					_lastSpecialX;
@@ -382,7 +382,7 @@ public class WorldRenderer implements IRenderer {
 		for (int x = fromX-1; x <= toX; x++) {
 			for (int y = fromY-1; y <= toY; y++) {
 				UserItem item = _worldMap.getItem(x, y);
-				if (item != null) {
+				if (item != null && item.getX() == x && item.getY() == y) {
 					// Stack item
 					if (item.isStack()) {
 						refreshStack((StackItem)item, x, y);

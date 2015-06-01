@@ -4,5 +4,6 @@ width: 1
 height: 1
 type: structure
 isWalkable: false
+maxHealth: 250
 cost:
   matter: 1

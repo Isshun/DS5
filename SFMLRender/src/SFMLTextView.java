@@ -35,7 +35,10 @@ public class SFMLTextView extends TextView {
 	}
 
     @Override
-	public void setString(String string) {
+	public void setStringValue(String string) {
+        _shortcutString = null;
+        _shortcutUnderlineString = null;
+
 		if (string != null && !string.equals(_value)) {
             if (string.contains("_")) {
                 int pos = string.indexOf('_');
@@ -47,6 +50,7 @@ public class SFMLTextView extends TextView {
                 }
                 _shortcutString += string.substring(pos + 1, pos + 2);
                 _shortcutUnderlineString += "_";
+
                 string = string.substring(0, pos) + " " + string.substring(pos + 2);
             }
 
@@ -54,6 +58,24 @@ public class SFMLTextView extends TextView {
 			_value = string;
 		}
 	}
+
+    private void initShortcut() {
+        if (_shortcutString != null) {
+            _shortcut = new Text();
+            _shortcut.setFont(((SFMLSpriteManager) SpriteManager.getInstance()).getFont());
+            _shortcut.setColor(new org.jsfml.graphics.Color(176, 205, 53));
+            _shortcut.setPosition(_x, _y);
+            _shortcut.setString(_shortcutString);
+            _shortcut.setCharacterSize(_text.getCharacterSize());
+
+            _shortcutUnderline = new Text();
+            _shortcutUnderline.setFont(((SFMLSpriteManager) SpriteManager.getInstance()).getFont());
+            _shortcutUnderline.setColor(new org.jsfml.graphics.Color(176, 205, 53));
+            _shortcutUnderline.setPosition(_x, _y);
+            _shortcutUnderline.setString(_shortcutUnderlineString);
+            _shortcutUnderline.setCharacterSize(_text.getCharacterSize());
+        }
+    }
 
     private int getSFMLStyle(int style) {
         switch (style) {
@@ -126,7 +148,10 @@ public class SFMLTextView extends TextView {
     public void draw(GFXRenderer renderer, RenderEffect effect) {
         ((SFMLRenderer)renderer).draw(_text, effect);
 
-        if (_shortcut != null) {
+        if (_shortcutString != null) {
+            if (_shortcut == null) {
+                initShortcut();
+            }
             ((SFMLRenderer)renderer).draw(_shortcut, effect);
             ((SFMLRenderer)renderer).draw(_shortcutUnderline, effect);
         }
@@ -147,7 +172,7 @@ public class SFMLTextView extends TextView {
 
     @Override
 	public void setDashedString(String label, String value, int nbColumns) {
-		setString(StringUtils.getDashedString(label, value, nbColumns));
+		setStringValue(StringUtils.getDashedString(label, value, nbColumns));
 	}
 
     @Override
@@ -157,21 +182,7 @@ public class SFMLTextView extends TextView {
 
     @Override
     public void init() {
-        if (_shortcutString != null) {
-            _shortcut = new Text();
-            _shortcut.setFont(((SFMLSpriteManager) SpriteManager.getInstance()).getFont());
-            _shortcut.setColor(new org.jsfml.graphics.Color(176, 205, 53));
-            _shortcut.setPosition(_x, _y);
-            _shortcut.setString(_shortcutString);
-            _shortcut.setCharacterSize(_text.getCharacterSize());
-
-            _shortcutUnderline = new Text();
-            _shortcutUnderline.setFont(((SFMLSpriteManager) SpriteManager.getInstance()).getFont());
-            _shortcutUnderline.setColor(new org.jsfml.graphics.Color(176, 205, 53));
-            _shortcutUnderline.setPosition(_x, _y);
-            _shortcutUnderline.setString(_shortcutUnderlineString);
-            _shortcutUnderline.setCharacterSize(_text.getCharacterSize());
-        }
+        initShortcut();
     }
 
     public Drawable getText() {

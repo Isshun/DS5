@@ -69,7 +69,7 @@ entries:
 
     -   type: label
         id: bt_room
-        text: '[_ROOM]'
+        text: '[_ROOMS]'
         textsize: 20
         textcolor: 0x78ffff
         position: [220, 400]

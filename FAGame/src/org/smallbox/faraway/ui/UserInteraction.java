@@ -16,7 +16,8 @@ import org.smallbox.faraway.model.room.Room.Type;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.PanelPlan.Planning;
 
-public class UserInteraction {
+public class
+		UserInteraction {
 	public enum Action {
 		NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_ROOM, SET_PLAN
 	}

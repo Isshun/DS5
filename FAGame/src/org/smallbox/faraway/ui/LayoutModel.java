@@ -14,6 +14,7 @@ public class LayoutModel {
         public int      textcolor;
         public int[]    size;
         public int[]    position;
+        public List<LayoutEntry> entries;
     }
 
     public List<LayoutEntry> entries;

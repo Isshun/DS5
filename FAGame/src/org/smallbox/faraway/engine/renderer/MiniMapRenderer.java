@@ -1,4 +1,4 @@
-//package org.smallbox.faraway.renderer;
+//package org.smallbox.faraway.engine.renderer;
 //
 //import org.smallbox.faraway.*;
 //import org.smallbox.faraway.engine.util.Constant;
@@ -64,10 +64,10 @@
 //						color = Color.RED;
 //					}
 //				}
-//				else if (worldManager.getRessource(x, y) != null) {
-//					if (worldManager.getRessource(x, y).isRock()) {
+//				else if (worldManager.getResource(x, y) != null) {
+//					if (worldManager.getResource(x, y).isRock()) {
 //					}
-//					if (worldManager.getRessource(x, y).getInfo().onGather != null) {
+//					if (worldManager.getResource(x, y).getInfo().onGather != null) {
 //						color = Color.GREEN;
 //					}
 //				}

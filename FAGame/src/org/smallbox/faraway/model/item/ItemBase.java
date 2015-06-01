@@ -1,6 +1,7 @@
 package org.smallbox.faraway.model.item;
 
 import org.smallbox.faraway.Strings;
+import org.smallbox.faraway.model.MaterialModel;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemInfo.ItemInfoEffects;
 import org.smallbox.faraway.model.item.ItemInfo.ItemInfoSlot;
@@ -11,41 +12,42 @@ import java.util.List;
 
 
 public abstract class ItemBase {
-	private int			_x;
-	private int			_y;
-	private int			_id;
-	private boolean 	_isSolid;
-	private int 		_matterSupply;
-	private int 		_zoneIdRequired;
+	private int			    _x;
+	private int			    _y;
+	private int			    _id;
+	private boolean 	    _isSolid;
+	private int 		    _matterSupply;
+	private int 		    _zoneIdRequired;
 	private CharacterModel _owner;
-	private String 		_name;
-	private int 		_width;
-	private int 		_height;
-	private int 		_matter;
-	private int 		_power;
-	private int 		_powerSupply;
-	private int 		_mode;
-	private int			_light;
-	private int 		_nbMode;
-	private int 		_maxId;
-	protected ItemInfo	_info;
-	private boolean		_isWorking;
-	private String 		_label;
-	private boolean 	_isToy;
-	public int 			actionRemain;
+	private String 		    _name;
+	private int 		    _width;
+	private int 		    _height;
+	private int 		    _matter;
+	private int 		    _power;
+	private int 		    _powerSupply;
+	private int 		    _mode;
+	private int			    _light;
+	private int 		    _nbMode;
+	private int 		    _maxId;
+	protected ItemInfo	    _info;
+	private boolean		    _isWorking;
+	private String 		    _label;
+	private boolean 	    _isToy;
+	public int 			    actionRemain;
 	private ArrayList<ItemSlot> _slots;
-	private int 		_nbTotalUsed;
-	private int 		_nbFreeSlot;
-	private int 		_nbSlot;
-	private int			_currentFrame;
-	private int			_nbFrame;
-	private int 		_animFrame;
-	private int 		_animFrameInterval;
-	private boolean 	_selected;
-	private int 		_lastBlocked;
-	private WorldArea	_area;
-	
-	public ItemBase(ItemInfo info) {
+	private int 		    _nbTotalUsed;
+	private int 		    _nbFreeSlot;
+	private int 		    _nbSlot;
+	private int			    _currentFrame;
+	private int			    _nbFrame;
+	private int 		    _animFrame;
+	private int 		    _animFrameInterval;
+	private boolean 	    _selected;
+	private int 		    _lastBlocked;
+	private WorldArea	    _area;
+    private int             _health;
+
+    public ItemBase(ItemInfo info) {
 		init(info, ++_maxId);
 	}
 
@@ -58,6 +60,7 @@ public abstract class ItemBase {
 
 	private void init(ItemInfo info, int id) {
 		// Init
+        _health = info.maxHealth;
 		_lastBlocked = -1;
 		_isSolid = false;
 		_matterSupply = 0;
@@ -317,4 +320,12 @@ public abstract class ItemBase {
 	public void setBlocked(int update) {
 		_lastBlocked = update;
 	}
+
+	public int getHealth() {
+        return _health;
+    }
+
+	public int getMaxHealth() {
+        return _info.maxHealth;
+    }
 }

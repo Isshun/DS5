@@ -23,7 +23,7 @@ public class PanelDebugItem extends BasePanel {
 	private FrameLayout _itemView;
 	
 	public PanelDebugItem(Mode mode, GameEventListener.Key shortcut) {
-		super(mode, shortcut, 0, 32, FRAME_WIDTH, FRAME_HEIGHT);
+		super(mode, shortcut, 0, 32, FRAME_WIDTH, FRAME_HEIGHT, null);
 		
 		setBackgroundColor(new Color(0, 0, 0));
 

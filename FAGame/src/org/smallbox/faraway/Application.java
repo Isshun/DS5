@@ -6,156 +6,71 @@ import org.smallbox.faraway.engine.dataLoader.StringsLoader;
 import org.smallbox.faraway.engine.serializer.LoadListener;
 import org.smallbox.faraway.engine.ui.Colors;
 import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.manager.PathManager;
-import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.renderer.MainRenderer;
 import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.model.GameData;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.ui.*;
 import org.smallbox.faraway.ui.panel.LayoutFactory;
 
 import java.io.IOException;
 
-public class Main implements GameEventListener {
-	static final int 				DRAW_INTERVAL = (1000/60);
-	static final int 				UPDATE_INTERVAL = 100;
-	private static final int		REFRESH_INTERVAL = 200;
-	private static final int 		LONG_UPDATE_INTERVAL = 2000;
-
-	private static final String 	SAVE_FILE = "data/saves/3.sav";
+public class Application implements GameEventListener {
+	public static final int 		DRAW_INTERVAL = (1000/60);
+    public static final int 		UPDATE_INTERVAL = 100;
+    public static final int		    REFRESH_INTERVAL = 200;
+    public static final int 		LONG_UPDATE_INTERVAL = 2000;
+    public static final String 	    SAVE_FILE = "data/saves/3.sav";
 	
 	private static Game				_game;
 	private static MenuBase			_menu;
 	private static int 				_updateInterval = UPDATE_INTERVAL;
-	private static int 				_longUpdateInterval = LONG_UPDATE_INTERVAL;
+    private static int 				_longUpdateInterval = LONG_UPDATE_INTERVAL;
 	private static MainRenderer 	_mainRenderer;
 	private static UserInterface	_userInterface;
 	private static LoadListener 	_loadListener;
 	private static boolean			_isFullscreen;
     private GFXRenderer             _renderer;
 
-    public void create(GFXRenderer renderer) {
-		GameData data = new GameData();
-
-		ItemLoader.load(data);
-		StringsLoader.load(data, "data/strings/", "fr");
-		CategoryLoader.load(data);
-
-        _renderer = renderer;
-		_isFullscreen = true;
-		_mainRenderer = new MainRenderer();
-		_userInterface = new UserInterface(new LayoutFactory());
-
-		_loadListener = message -> {
+    public Application(GFXRenderer renderer) {
+        _loadListener = message -> {
             renderer.clear();
             TextView text = SpriteManager.getInstance().createTextView();
-			text.setString(message);
+            text.setString(message);
             text.setCharacterSize(42);
             text.setColor(Colors.LINK_INACTIVE);
             text.setPosition(Constant.WINDOW_WIDTH / 2 - message.length() * 20 / 2, Constant.WINDOW_HEIGHT / 2 - 40);
-			text.draw(renderer, null);
+            text.draw(renderer, null);
 
-            _userInterface.addMessage(Log.LEVEL_INFO, message);
-            _userInterface.onRefresh(0);
-            _userInterface.onDraw(renderer, 0, 0);
+            if (_userInterface != null) {
+                _userInterface.addMessage(Log.LEVEL_INFO, message);
+                _userInterface.onRefresh(0);
+                _userInterface.onDraw(renderer, 0, 0);
+            }
 
             renderer.display();
         };
-		
-		try {
-			_game = new Game(data);
-			_game.onCreate();
-			//_game.newGame(SAVE_FILE, _loadListener);
-			_game.load(SAVE_FILE, _loadListener);
+    }
 
-			_loadListener.onUpdate("Init _renderEffect");
-			_mainRenderer.init(_game);
-			_userInterface.onCreate(_game);
-
-			_loadListener.onUpdate("Start game");
-			loop(renderer);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		//		//Limit the framerate
-		//		window.setFramerateLimit(30);
-
-		renderer.close();
-		PathManager.getInstance().close();
+	public void create(GFXRenderer renderer) {
+		_renderer = renderer;
+		_isFullscreen = true;
+		_mainRenderer = new MainRenderer();
+		_userInterface = new UserInterface(new LayoutFactory());
 	}
 
-	private static void loop(final GFXRenderer renderer) throws IOException, InterruptedException {
-		long renderTime = 0;
+    public GameData loadResources() {
+        GameData data = new GameData();
 
-		int update = 0;
-		int refresh = 0;
-		int frame = 0;
-		long nextDraw = 0;
-		long nextUpdate = 0;
-		long nextRefresh = 0;
-		long nextLongUpdate = 0;
-		
-		while (renderer.isOpen()) {
-            renderer.refresh();
+        ItemLoader.load(data);
+        StringsLoader.load(data, "data/strings/", "fr");
+        CategoryLoader.load(data);
 
-			long elapsed = renderer.getTimer().getElapsedTime();
+        return data;
+    }
 
-			// Sleep
-			if (elapsed < nextDraw) {
-				//int currentRenderTime = (int) (DRAW_INTERVAL - (nextDraw - elapsed));
-				//renderTime = (renderTime * 7 + currentRenderTime) / 8;
-				Thread.sleep(nextDraw - elapsed);
-			}
-			
-			
-			if (_game.isRunning()) {
-				// Draw
-                RenderEffect effect = SpriteManager.getInstance().createRenderEffect();
-                effect.setViewport(_game.getViewport());
-
-                double animProgress = (1 - (double)(nextUpdate - elapsed) / _updateInterval);
-				_mainRenderer.onDraw(renderer, effect, animProgress);
-				_userInterface.onDraw(renderer, update, renderTime);
-
-				// Refresh
-				if (elapsed >= nextRefresh) {
-					_mainRenderer.onRefresh(refresh);
-					_userInterface.onRefresh(refresh);
-					refresh++;
-					nextRefresh += REFRESH_INTERVAL;
-				}
-				
-				// Update
-				if (elapsed >= nextUpdate) {
-					_game.onUpdate();
-					update++;
-					nextUpdate += _updateInterval;
-				}
-				
-				// Long update
-				if (elapsed >= nextLongUpdate) {
-					_game.onLongUpdate();
-					_mainRenderer.setFPS(frame, _longUpdateInterval);
-					nextLongUpdate += _longUpdateInterval;
-				}
-			}
-			else {
-				manageMenu(renderer);
-			}
-
-			// Draw
-            renderer.display();
-			nextDraw += DRAW_INTERVAL;
-			frame++;
-		}
-	}
-	
-	private static void manageMenu(final GFXRenderer renderer) throws IOException, InterruptedException {
+	public static void manageMenu(final GFXRenderer renderer) throws IOException, InterruptedException {
 		if (_menu == null) {
 			MenuGame menu = new MenuGame(path -> {
             });
@@ -174,6 +89,10 @@ public class Main implements GameEventListener {
 
 	public static int getUpdateInterval() {
 		return _updateInterval;
+	}
+
+	public static int getLongUpdateInterval() {
+		return _longUpdateInterval;
 	}
 
 	public static void setUpdateInterval(int updateInterval) {
@@ -251,6 +170,37 @@ public class Main implements GameEventListener {
 
     @Override
     public void onMouseEvent(GameTimer timer, Action action, MouseButton button, int x, int y) {
-        _userInterface.onMouseEvent(timer, action, button, x, y);
+        if (x > 0 && x < _renderer.getWidth() && y > 0 && y < _renderer.getHeight()) {
+            _userInterface.onMouseEvent(timer, action, button, x, y);
+        }
+    }
+
+    public LoadListener getLoadListener() {
+        return _loadListener;
+    }
+
+    public void startGame(Game game) {
+        _game = game;
+        _mainRenderer.init(_game);
+        _userInterface.onCreate(_game);
+    }
+
+    public void render(double animProgress, int update, long renderTime, GFXRenderer renderer, RenderEffect effect) {
+        _mainRenderer.onDraw(renderer, effect, animProgress);
+        _userInterface.onDraw(renderer, update, renderTime);
+    }
+
+    public void refresh(int refreshCount) {
+        _mainRenderer.onRefresh(refreshCount);
+        _userInterface.onRefresh(refreshCount);
+    }
+
+    public void update(int updateCount) {
+        _game.onUpdate();
+    }
+
+    public void longUpdate(int frame) {
+        _game.onLongUpdate();
+        _mainRenderer.setFPS(frame, _longUpdateInterval);
     }
 }

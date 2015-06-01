@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.GFXRenderer;
 //import org.smallbox.faraway.RenderEffect;
 //import org.smallbox.faraway.SpriteModel;
-//import org.smallbox.faraway.renderer.SpriteManager;
+//import org.smallbox.faraway.engine.renderer.SpriteManager;
 //
 //public abstract class ButtonView extends View {
 //

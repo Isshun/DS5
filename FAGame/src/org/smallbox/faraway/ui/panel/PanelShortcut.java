@@ -55,40 +55,41 @@ public class PanelShortcut extends BaseRightPanel {
     private ImageView _map;
 
     public PanelShortcut(Mode mode, GameEventListener.Key shortcut) {
-        super(mode, shortcut);
+        super(mode, shortcut, "data/ui/panels/shortcut.yml");
+    }
+
+    @Override
+    public void onLayoutLoaded(LayoutModel layout) {
+        _lbTime = (TextView) findById("lb_time");
+
+        _resources = new ArrayList<>();
+        addResource((TextView) findById("lb_food"), ResourceManager.getInstance().getFood());
+        addResource((TextView) findById("lb_water"), ResourceManager.getInstance().getWater());
+        addResource((TextView) findById("lb_gas"), ResourceManager.getInstance().getGasoline());
+        addResource((TextView) findById("lb_matter"), ResourceManager.getInstance().getMatter());
+        addResource((TextView) findById("lb_o2"), ResourceManager.getInstance().getO2());
+        addResource((TextView) findById("lb_power"), ResourceManager.getInstance().getPower());
+
+        for (PanelEntry entry : _entries) {
+            findById(entry.buttonId).setOnClickListener(view -> {
+                _ui.toogleMode(entry.mode);
+            });
+            findById(entry.buttonId).setOnFocusListener(new OnFocusListener() {
+                @Override
+                public void onEnter(View view) {
+                    view.setBackgroundColor(new Color(29, 85, 96, 180));
+                }
+
+                @Override
+                public void onExit(View view) {
+                    view.setBackgroundColor(new Color(29, 85, 96, 100));
+                }
+            });
+        }
     }
 
     @Override
     protected void onCreate(LayoutFactory factory) {
-        LayoutFactory.load("data/ui/panels/shortcut.yml", this, layout -> {
-            _lbTime = (TextView)findById("lb_time");
-
-            _resources = new ArrayList<>();
-            addResource((TextView)findById("lb_food"), ResourceManager.getInstance().getFood());
-            addResource((TextView)findById("lb_water"), ResourceManager.getInstance().getWater());
-            addResource((TextView)findById("lb_gas"), ResourceManager.getInstance().getGasoline());
-            addResource((TextView)findById("lb_matter"), ResourceManager.getInstance().getMatter());
-            addResource((TextView)findById("lb_o2"), ResourceManager.getInstance().getO2());
-            addResource((TextView)findById("lb_power"), ResourceManager.getInstance().getPower());
-
-            for (PanelEntry entry: _entries) {
-                findById(entry.buttonId).setOnClickListener(view -> {
-                    _ui.toogleMode(entry.mode);
-                });
-                findById(entry.buttonId).setOnFocusListener(new OnFocusListener() {
-                    @Override
-                    public void onEnter(View view) {
-                        view.setBackgroundColor(new Color(29, 85, 96, 180));
-                    }
-
-                    @Override
-                    public void onExit(View view) {
-                        view.setBackgroundColor(new Color(29, 85, 96, 100));
-                    }
-                });
-            }
-        });
-
 ////		_miniMapRenderer = new MiniMapRenderer(_effect);
 //		int posX = 24;
 //		int posY = 244;

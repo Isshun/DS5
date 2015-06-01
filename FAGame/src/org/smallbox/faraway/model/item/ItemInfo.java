@@ -83,7 +83,8 @@ public class ItemInfo {
 	public boolean 				isDrink;
 	public boolean 				isSleeping;
 	public boolean 				isStack;
-	
+	public int 					maxHealth;
+
 	public ItemInfo() {
 		width = 1;
 		height = 1;

@@ -8,7 +8,7 @@ import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.WorldArea;
 import org.smallbox.faraway.model.item.WorldResource;
 import org.smallbox.faraway.model.room.RoomOptions.RoomOption;
-import org.smallbox.faraway.renderer.MainRenderer;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.manager.SpriteManager;
 
 import java.util.List;
@@ -66,11 +66,11 @@ public class GardenRoom extends Room {
 	@Override
 	public void update() {
 		for (WorldArea area: _areas) {
-			if (area.getRessource() == null) {
+			if (area.getResource() == null) {
 				ServiceManager.getWorldMap().putItem(_currentCulture, area.getX(), area.getY(), 0, 0);
 			}
 
-			WorldResource res = area.getRessource();
+			WorldResource res = area.getResource();
 			if (res != null && res.isType(_currentCulture) && res.isMature() == false) {
 				if ((int)res.getValue() != (int)(res.getValue() + GROW_VALUE)) {
 					MainRenderer.getInstance().invalidate(res.getX(), res.getY());

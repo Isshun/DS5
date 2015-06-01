@@ -18,8 +18,7 @@ import org.smallbox.faraway.model.item.StructureItem;
 import org.smallbox.faraway.model.item.WorldResource;
 import org.smallbox.faraway.manager.SpriteManager;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +29,7 @@ public class SFMLSpriteManager extends SpriteManager {
 	private static final int NB_ITEM_SELECTOR_TILE = 4;
 	private static int 				_count;
 	private static SFMLSpriteManager _self;
+	private Map<String, String> _strings;
 	private Map<Integer, SFMLSprite>	_spritesCharacters;
 	private Map<Long, SFMLSprite> 		_sprites;
 	private Texture[] 				_textureCharacters;
@@ -49,6 +49,8 @@ public class SFMLSpriteManager extends SpriteManager {
 	private SFMLSprite[] _itemSelectors;
 
 	public SFMLSpriteManager() throws IOException {
+        loadStrings();
+
 		_sprites = new HashMap<>();
 		_spritesCharacters = new HashMap<>();
 
@@ -141,19 +143,33 @@ public class SFMLSpriteManager extends SpriteManager {
 		//		}
 	}
 
-	public static SFMLSpriteManager getInstance() {
-		if (_self == null) {
-			try {
-				_self = new SFMLSpriteManager();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return _self;
-	}
+    public void loadStrings() {
+        try {
+            _strings = new HashMap<>();
+            File file = new File("data/strings/fr.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"));
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.contains(":") && !line.startsWith("#")) {
+                    int sep = line.indexOf(':');
+                    if (line.contains("\"")) {
+                        sep = line.indexOf(':', line.indexOf('"', line.indexOf('"')+1)+1);
+                    }
 
-	public Font getFont() {
+                    String key = line.substring(0, sep).trim().replace("\"", "");
+                    String value  = line.substring(sep + 1).trim().replace("\"", "");
+                    _strings.put(key, value);
+                }
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Font getFont() {
 		return _font;
 	}
 
@@ -634,4 +650,13 @@ public class SFMLSpriteManager extends SpriteManager {
     public Viewport createViewport() {
         return new SFMLViewport(-Constant.WORLD_WIDTH * Constant.TILE_WIDTH / 2, -Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT / 2);
     }
+
+	@Override
+	public String getString(String string) {
+        String str = _strings.get(string);
+        if (str != null) {
+            return str;
+        }
+		return string;
+	}
 }

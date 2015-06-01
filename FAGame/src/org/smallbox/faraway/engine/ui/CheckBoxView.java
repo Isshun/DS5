@@ -54,7 +54,7 @@ public class CheckBoxView extends TextView {
 	}
 
 	@Override
-	public void setString(String text) {
+	public void setStringValue(String text) {
 		_label = text;
 //		super.setString(StringUtils.getDashedString(_label, "[ ]", NB_COLUMNS_NEEDS));
 	}

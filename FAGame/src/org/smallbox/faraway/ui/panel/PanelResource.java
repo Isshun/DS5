@@ -17,7 +17,7 @@ public class PanelResource extends BasePanel {
 	private TextView 	_o2;
 	
 	public PanelResource() {
-		super(Mode.NONE, null, Constant.WINDOW_WIDTH - FRAME_WIDTH, 0, FRAME_WIDTH, FRAME_HEIGHT);
+		super(Mode.NONE, null, Constant.WINDOW_WIDTH - FRAME_WIDTH, 0, FRAME_WIDTH, FRAME_HEIGHT, null);
 	}
 
 	@Override

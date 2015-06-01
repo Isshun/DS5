@@ -54,4 +54,6 @@ public abstract class SpriteManager {
     public abstract RenderEffect createRenderEffect();
     public abstract TextView createTextView(int width, int height);
     public abstract Viewport createViewport();
+    public abstract String getString(String string);
+    public abstract void loadStrings();
 }

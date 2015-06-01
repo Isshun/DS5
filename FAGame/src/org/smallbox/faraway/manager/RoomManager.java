@@ -15,7 +15,7 @@ import org.smallbox.faraway.model.room.QuarterRoom;
 import org.smallbox.faraway.model.room.Room;
 import org.smallbox.faraway.model.room.Room.Type;
 import org.smallbox.faraway.model.room.StorageRoom;
-import org.smallbox.faraway.renderer.MainRenderer;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 
 import java.util.ArrayList;
 import java.util.HashSet;

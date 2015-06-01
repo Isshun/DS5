@@ -7,7 +7,7 @@ import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.StructureItem;
 import org.smallbox.faraway.model.item.WorldArea;
-import org.smallbox.faraway.renderer.IRenderer;
+import org.smallbox.faraway.engine.renderer.IRenderer;
 
 import java.io.File;
 import java.io.IOException;
@@ -184,8 +184,8 @@ public class LightRenderer implements IRenderer {
 					if (area.getStructure() != null && area.getStructure().getLight() > 0) {
 						diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getStructure().getLight() / 10);
 					}
-					if (area.getRessource() != null && area.getRessource().getLight() > 0) {
-						diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getRessource().getLight() / 10);
+					if (area.getResource() != null && area.getResource().getLight() > 0) {
+						diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getResource().getLight() / 10);
 					}
 				}
 			}

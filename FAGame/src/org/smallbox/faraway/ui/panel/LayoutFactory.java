@@ -1,10 +1,7 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.Color;
-import org.smallbox.faraway.engine.ui.OnFocusListener;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.engine.ui.ViewFactory;
+import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.yaml.snakeyaml.Yaml;
@@ -29,9 +26,14 @@ public class LayoutFactory {
             InputStream input = new FileInputStream(new File(path));
             Yaml yaml = new Yaml(new Constructor(LayoutModel.class));
             LayoutModel layout = (LayoutModel)yaml.load(input);
-            for (LayoutModel.LayoutEntry entry: layout.entries) {
-                panel.addView(createFromLayout(entry));
+            if (layout.entries != null && !layout.entries.isEmpty()) {
+                for (LayoutModel.LayoutEntry entry : layout.entries) {
+                    panel.addView(createFromLayout(entry));
+                }
             }
+
+            panel.setLoaded();
+
             listener.onLayoutLoaded(layout);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -59,6 +61,22 @@ public class LayoutFactory {
         return lbText;
     }
 
+    private static View createFrame(LayoutModel.LayoutEntry entry) {
+        FrameLayout frame = ViewFactory.getInstance().createFrameLayout();
+
+        if (entry.position != null) {
+            frame.setPosition(entry.position[0], entry.position[1]);
+        }
+
+        if (entry.entries != null) {
+            for (LayoutModel.LayoutEntry subEntry : entry.entries) {
+                frame.addView(createFromLayout(subEntry));
+            }
+        }
+
+        return frame;
+    }
+
     public static View createFromLayout(LayoutModel.LayoutEntry entry) {
         View view = null;
 
@@ -66,6 +84,8 @@ public class LayoutFactory {
             case "label":
                 view = createLabel(entry);
                 break;
+            case "frame":
+                view = createFrame(entry);
         }
 
         if (view != null && entry.id != null) {

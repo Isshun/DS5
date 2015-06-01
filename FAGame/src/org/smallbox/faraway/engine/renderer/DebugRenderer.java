@@ -1,8 +1,7 @@
-package org.smallbox.faraway.renderer;
+package org.smallbox.faraway.engine.renderer;
 
 import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.util.Constant;
 
 public class DebugRenderer implements IRenderer {
 //	private RenderTexture 	_cache;

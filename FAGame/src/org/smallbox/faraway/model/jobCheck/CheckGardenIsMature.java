@@ -20,7 +20,7 @@ public class CheckGardenIsMature implements Check {
 			if (room.isGarden()) {
 				List<WorldArea> areas = room.getAreas();
 				for (WorldArea area: areas) {
-					WorldResource res = area.getRessource();
+					WorldResource res = area.getResource();
 					if (res != null && res.isMature() && res.hasNoJob()) {
 						jobManager.addJob(JobGather.create(res));
 					}

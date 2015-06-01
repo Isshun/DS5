@@ -5,7 +5,7 @@ import org.smallbox.faraway.model.room.Room;
 public class WorldArea {
 	private UserItem 		_item;
 	private StructureItem 	_structure;
-	private WorldResource 	_ressource;
+	private WorldResource 	_resource;
 	private int				_oxygen;
 	private int				_x;
 	private int				_y;
@@ -35,7 +35,7 @@ public class WorldArea {
 
 	public UserItem			getItem() { return _item; }
 	public StructureItem	getStructure() { return _structure; }
-	public WorldResource	getRessource() { return _ressource; }
+	public WorldResource 	getResource() { return _resource; }
 	public int				getOxygen() { return _oxygen; }
 	public int				getX() { return _x; }
 	public int				getY() { return _y; }
@@ -66,12 +66,12 @@ public class WorldArea {
 		}
 	}
 
-	public void				setRessource(WorldResource ressource) {
-		_ressource = ressource;
-		if (ressource != null) {
-			ressource.setArea(this);
-			ressource.setX(_x);
-			ressource.setY(_y);
+	public void 			setResource(WorldResource resource) {
+		_resource = resource;
+		if (resource != null) {
+			resource.setArea(this);
+			resource.setX(_x);
+			resource.setY(_y);
 		}
 	}
 }

@@ -3,11 +3,11 @@ package org.smallbox.faraway.manager;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.item.*;
-import org.smallbox.faraway.renderer.MainRenderer;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 
 public class ItemFactory {
 
-	public static ItemBase create(WorldArea area, ItemInfo info, int matterSupply) {
+	public static ItemBase create(WorldManager manager, WorldArea area, ItemInfo info, int matterSupply) {
 		// Base light item
 		if ("base.light".equals(info.name)) {
 			area.setLightSource(info.light);
@@ -29,11 +29,11 @@ public class ItemFactory {
 		}
 		// User item
 		else {
-			return createUserItem(area, info, matterSupply);
+			return createUserItem(manager, area, info, matterSupply);
 		}
 	}
 
-	private static UserItem createUserItem(WorldArea area, ItemInfo info, int matterSupply) {
+	private static UserItem createUserItem(WorldManager manager, WorldArea area, ItemInfo info, int matterSupply) {
 		UserItem item = null;
 
 		// Factory item
@@ -52,8 +52,14 @@ public class ItemFactory {
 		}
 		
 		item.setMatterSupply(matterSupply);
-		area.setItem(item);
-		
+
+		// Set world areas
+		for (int i = 0; i < item.getWidth(); i++) {
+			for (int j = 0; j < item.getHeight(); j++) {
+				manager.getArea(area.getX() + i, area.getY() + j).setItem(item);
+			}
+		}
+
 		return item;
 	}
 
@@ -70,7 +76,7 @@ public class ItemFactory {
 		WorldResource resource = new WorldResource(info);
 		
 		resource.setValue(matterSupply);
-		area.setRessource(resource);
+		area.setResource(resource);
 		
 		return resource;
 	}

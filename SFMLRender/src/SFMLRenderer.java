@@ -71,7 +71,7 @@ public class SFMLRenderer implements GFXRenderer {
 
     public void draw(Sprite spriteCache, RenderEffect effect) {
         if (effect != null) {
-            _window.draw(spriteCache, ((SFMLRenderEffect)effect).getRender());
+            _window.draw(spriteCache, ((SFMLRenderEffect)((SFMLRenderEffect)effect).getViewport().getRenderEffect()).getRender());
         } else {
             _window.draw(spriteCache);
         }
@@ -277,6 +277,16 @@ public class SFMLRenderer implements GFXRenderer {
     @Override
     public GameTimer getTimer() {
         return _timer;
+    }
+
+    @Override
+    public int getWidth() {
+        return _window.getSize().x;
+    }
+
+    @Override
+    public int getHeight() {
+        return _window.getSize().y;
     }
 
     public void setGameEventListener(GameEventListener listener) {

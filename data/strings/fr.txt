@@ -1,0 +1,101 @@
+#Structure
+Door: Porte
+Ground: Sol
+Floor: Sol
+Light: Lumière
+Hull: Coque
+Wall: Mur
+Window: Fenêtre
+Hubble: Hublot
+
+#Item
+Bed: Lit
+Chess tab: Échequier
+Pink square: Carré rose
+Bedside Table: Table de chevet
+Chair: Fauteuil
+Chest: Coffre
+Desk: Bureau
+Wardrobe: Garderobe
+Computer: Ordinateur
+Laptop: Ordinateur portable
+Cooker: Cuisinière
+Fridge: Frigo
+Pub: Bar
+Serving table: Buffet
+
+#Room
+Quarter: Quartier
+Sickbay: Infirmerie
+Garden: Jardin
+Storage: Reserve
+Enginering: Salle des machines
+
+#Menu
+Resources: Ressources
+
+Food: Nourriture
+Gasoline: Éssence
+Matter: Mattériaux
+Water: Eau
+"Power": "Énergie"
+
+Back: Retour
+[    ]: [      ]
+IN QUEUE: EN ATTENTE
+
+[_BUILD]: [_CONSTRUCTION]
+[_CREW]: [_EQUIPAGE]
+[_ROOMS]: [_PIECES]
+[_MANAGE]: [_GESTION]
+[_STATS]: [_STATISTIQUES]
+[_PLAN]: [_PLANIFICATION]
+
+"Rendering: %dms": "Temps de rendu: %dms"
+
+#Character
+Last reports: Derniers rapports
+Monitoring: Surveillance
+Staff record: Informations
+Inventory: Inventaire
+Relationship: Relations
+Health: Santé
+Security: Securité
+Energy: Energie
+Oxygen: Oxygène
+Happiness: Bonheurs
+
+#Relations
+parent: parent
+sister: soeur
+half-sister: demi-soeur
+brother: frère
+half-brother: demi-frère
+children: enfant
+mate: fiancé
+
+GATHER: RECOLTER
+MINING: MINER
+DUMP: DÉBARRASSER
+PICK UP: PRENDRE
+Count: Nombre
+Technician: Technicien
+Engineer: Ingénieur
+Doctor: Docteur
+Child: Enfant
+
+I'm starving: Je meurs de faim
+Everything goes right: Tous va bien
+I sleep well: Je dors bien
+bad: mauvais
+good: bon
+
+#Build menu
+STRUCTURE: _STRUCTURE
+QUARTER: _QUARTIER
+SICKBAY: _INFIERMERIE
+RECREATION: _DIVERTISSEMENT
+COMMON: _DIVERS
+KITCHEN: _CUISINE
+DEFAULT: _DIVERS
+SYSTEM: _SYSTÈME

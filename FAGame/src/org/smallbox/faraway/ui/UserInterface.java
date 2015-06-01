@@ -3,7 +3,6 @@ package org.smallbox.faraway.ui;
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.ui.UIEventManager;
 import org.smallbox.faraway.engine.ui.UIMessage;
-import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.CharacterManager;
 import org.smallbox.faraway.manager.ServiceManager;
@@ -11,9 +10,11 @@ import org.smallbox.faraway.model.ToolTips.ToolTip;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.room.Room;
-import org.smallbox.faraway.renderer.MainRenderer;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.ui.panel.*;
+
+import java.io.File;
 
 public class UserInterface implements GameEventListener {
 	private static UserInterface		_self;
@@ -48,11 +49,20 @@ public class UserInterface implements GameEventListener {
 	private Room 						_selectedRoom;
 	private ItemInfo 					_selectedItemInfo;
 	private int 						_update;
+    private long                        _lastModified;
+    private PanelInfoStructure          _panelInfoStructure;
+    private PanelInfoItem               _panelInfoItem;
+    private PanelInfoArea               _panelInfoArea;
+    private PanelInfoResource           _panelInfoResource;
 
 	private	BasePanel[]					_panels = new BasePanel[] {
 			new PanelSystem(),
-			new PanelCharacter(	Mode.CHARACTER, null),
-			new PanelInfo(		Mode.INFO, 		null),
+			new PanelCharacter(	    Mode.CHARACTER,         null),
+			new PanelInfo(		    Mode.INFO, 		        null),
+			new PanelInfoStructure(	Mode.INFO_STRUCTURE, 	null),
+			new PanelInfoItem(	    Mode.INFO_ITEM, 	null),
+			new PanelInfoArea(	    Mode.INFO_AREA, 	null),
+			new PanelInfoResource(	Mode.INFO_RESOURCE, 	null),
 			new PanelDebug(		Mode.DEBUG, 	Key.TILDE),
 			new PanelPlan(		Mode.PLAN, 		Key.P),
 			new PanelRoom(		Mode.ROOM, 		Key.R),
@@ -67,7 +77,7 @@ public class UserInterface implements GameEventListener {
 			new PanelShortcut(	Mode.NONE, 		null),
 	};
 
-	@Override
+    @Override
 	public void onKeyEvent(GameTimer timer, Action action, Key key, Modifier modifier) {
         if (action == Action.RELEASED) {
             if (checkKeyboard(key, _lastInput)) {
@@ -148,7 +158,7 @@ public class UserInterface implements GameEventListener {
 		NONE,
 		TOOLTIP,
 		STATS,
-		MANAGER
+        INFO_STRUCTURE, INFO_ITEM, INFO_AREA, INFO_RESOURCE, MANAGER
 	}
 	
 	public UserInterface(LayoutFactory factory) {
@@ -169,6 +179,21 @@ public class UserInterface implements GameEventListener {
 		
 		for (BasePanel panel: _panels) {
 			panel.init(_factory, this, _interaction, SpriteManager.getInstance().createRenderEffect());
+
+            switch (panel.getMode()) {
+                case INFO_STRUCTURE:
+                    _panelInfoStructure = (PanelInfoStructure) panel;
+                    break;
+                case INFO_ITEM:
+                    _panelInfoItem = (PanelInfoItem) panel;
+                    break;
+                case INFO_AREA:
+                    _panelInfoArea = (PanelInfoArea) panel;
+                    break;
+                case INFO_RESOURCE:
+                    _panelInfoResource = (PanelInfoResource) panel;
+                    break;
+            }
 		}
 		
 		setMode(Mode.NONE);
@@ -284,9 +309,37 @@ public class UserInterface implements GameEventListener {
 		}
 		_panelMessage.refresh(update);
 
-        if (update % 8 == 0) {
+		long lastResModified = getLastResModified();
+        if (update % 8 == 0 && lastResModified > _lastModified) {
+            SpriteManager.getInstance().loadStrings();
+            _lastModified = lastResModified;
             reload();
         }
+	}
+
+	private long getLastResModified() {
+        long lastModified = 0;
+
+        for (File file: new File("data/ui/").listFiles()) {
+            if (file.isDirectory()) {
+                for (File subFile : file.listFiles()) {
+                    if (subFile.lastModified() > lastModified) {
+                        lastModified = subFile.lastModified();
+                    }
+                }
+            }
+            if (file.lastModified() > lastModified) {
+                lastModified = file.lastModified();
+            }
+        }
+
+        for (File file: new File("data/strings/").listFiles()) {
+            if (file.lastModified() > lastModified) {
+                lastModified = file.lastModified();
+            }
+        }
+
+		return lastModified;
 	}
 
 	public void onDraw(GFXRenderer renderer, int update, long renderTime) {
@@ -340,15 +393,15 @@ public class UserInterface implements GameEventListener {
 		switch (key) {
 
 		case ADD:
-			if (Main.getUpdateInterval() - 40 > 0) {
-				Main.setUpdateInterval(Main.getUpdateInterval() - 40);
+			if (Application.getUpdateInterval() - 40 > 0) {
+				Application.setUpdateInterval(Application.getUpdateInterval() - 40);
 			} else {
-				Main.setUpdateInterval(0);
+				Application.setUpdateInterval(0);
 			}
 			return true;
 
 		case SUBTRACT:
-			Main.setUpdateInterval(Main.getUpdateInterval() + 40);
+			Application.setUpdateInterval(Application.getUpdateInterval() + 40);
 			return true;
 			
 		case ESCAPE:
@@ -487,7 +540,7 @@ public class UserInterface implements GameEventListener {
 				int relY = getRelativePosY(y);
 				WorldArea a = ServiceManager.getWorldMap().getArea(relX, relY);
 				if (a != null) {
-					if (a.getRessource() != null) { select(a.getRessource()); return true; }
+					if (a.getResource() != null) { select(a.getResource()); return true; }
 					else if (a.getItem() != null) { select(a.getItem()); return true; }
 				}
 				for (int x2 = 0; x2 < Constant.ITEM_MAX_WIDTH; x2++) {
@@ -576,32 +629,38 @@ public class UserInterface implements GameEventListener {
 
 	public void select(WorldResource resource) {
 		clean();
-		setMode(Mode.INFO);
+		setMode(Mode.INFO_RESOURCE);
 		_selectedResource = resource;
+        _panelInfoResource.select(resource);
 	}
 
 	public void select(UserItem item) {
 		clean();
 		setMode(Mode.INFO);
-		_selectedItem = item;
+        setMode(Mode.INFO_ITEM);
+        _selectedItem = item;
+        _panelInfoItem.select(item);
 	}
 
 	public void select(StructureItem structure) {
 		clean();
-		setMode(Mode.INFO);
+		setMode(Mode.INFO_STRUCTURE);
 		_selectedStructure = structure;
+        _panelInfoStructure.select(structure);
 	}
 
 	public void select(WorldArea area) {
 		clean();
-		setMode(Mode.INFO);
+		setMode(Mode.INFO_AREA);
 		_selectedArea = area;
+        _panelInfoArea.select(area);
 	}
 
 	public void select(ItemInfo itemInfo) {
 		clean();
-		setMode(Mode.INFO);
+		setMode(Mode.INFO_ITEM);
 		_selectedItemInfo = itemInfo;
+        _panelInfoItem.select(itemInfo);
 	}
 
 	public void clean() {

@@ -54,7 +54,7 @@ public class WorldSaver {
 	}
 	
 	private static void saveArea(List<WorldSaveArea> areas, WorldArea area) {
-		if (area.getItem() == null && area.getRessource() == null && area.getStructure() == null) {
+		if (area.getItem() == null && area.getResource() == null && area.getStructure() == null) {
 			return;
 		}
 		WorldSaveArea areaSave = new WorldSaveArea();
@@ -86,7 +86,7 @@ public class WorldSaver {
 			areaSave.structure.matter = structure.getMatterSupply();
 		}
 		
-		WorldResource resource = area.getRessource();
+		WorldResource resource = area.getResource();
 		if (resource != null) {
 			areaSave.resource = new WorldSaveResource();
 			areaSave.resource.name = resource.getName();

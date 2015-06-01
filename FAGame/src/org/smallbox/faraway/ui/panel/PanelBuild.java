@@ -5,6 +5,7 @@ import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.StringUtils;
+import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.CategoryInfo;
 import org.smallbox.faraway.model.item.ItemInfo;
@@ -51,6 +52,10 @@ public class PanelBuild extends BaseRightPanel {
 		_panelMode = PanelMode.NONE;
 
 		drawPanel(true);
+
+		factory.load("data/ui/panels/build.yml", this, layout -> {
+			//_lbBack = (TextView)findById("lb_back");
+		});
 	}
 
 	public PanelMode getPanelMode() { return _panelMode; }
@@ -58,8 +63,6 @@ public class PanelBuild extends BaseRightPanel {
 
 	// TODO: ugly
 	protected void	drawPanel(boolean witchAnim) {
-		System.out.println("DRAW PANEL");
-		
 		_animRunning = true;
 		clearAllViews();
 		_icons.clear();
@@ -81,7 +84,7 @@ public class PanelBuild extends BaseRightPanel {
 
 			// Title
 			TextView lbTitle = ViewFactory.getInstance().createTextView(380, 28);
-			lbTitle.setDashedString(c.labelWithoutShortcut.toUpperCase(), c.items.size() + " items", NB_COLUMNS_TITLE);
+			lbTitle.setDashedString(c.label.toUpperCase(), c.items.size() + " items", NB_COLUMNS_TITLE);
 			lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 			lbTitle.setPosition(20, posY + 8);
 			lbTitle.setColor(Colors.TEXT);
@@ -92,22 +95,20 @@ public class PanelBuild extends BaseRightPanel {
 				}
 			});
 			addView(lbTitle);
-			
-			System.out.println("posY: " + posY + ", label: " + c.labelWithoutShortcut);
 
-			// Shortcut
-			TextView lbShortcut = ViewFactory.getInstance().createTextView();
-			lbShortcut.setString(c.shortcut.toUpperCase());
-			lbShortcut.setCharacterSize(FONT_SIZE_TITLE);
-			lbShortcut.setColor(Colors.LINK_ACTIVE);
-			lbShortcut.setPosition(c.shortcutPos * 12 + 20, posY + 8);
-			addView(lbShortcut);
-
-			// Underline -- because at FONT_SIZE_TITLE regular underline get bold state...
-			View underline = ViewFactory.getInstance().createColorView(12, 1);
-			underline.setBackgroundColor(Colors.LINK_ACTIVE);
-			underline.setPosition(c.shortcutPos * 12 + 20, posY + 33);
-			addView(underline);
+//            // Shortcut
+//            TextView lbShortcut = ViewFactory.getInstance().createTextView();
+//            lbShortcut.setString(c.shortcut.toUpperCase());
+//            lbShortcut.setCharacterSize(FONT_SIZE_TITLE);
+//            lbShortcut.setColor(Colors.LINK_ACTIVE);
+//            lbShortcut.setPosition(c.shortcutPos * 12 + 20, posY + 8);
+//            addView(lbShortcut);
+//
+//            // Underline -- because at FONT_SIZE_TITLE regular underline get bold state...
+//            View underline = ViewFactory.getInstance().createColorView(12, 1);
+//            underline.setBackgroundColor(Colors.LINK_ACTIVE);
+//            underline.setPosition(c.shortcutPos * 12 + 20, posY + 33);
+//            addView(underline);
 
 			posY += 44;
 

@@ -1,3 +1,5 @@
+include 'core'
+include 'desktop'
 include 'FACore'
 include 'FAGame'
 include 'SFMLRender'

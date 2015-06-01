@@ -15,7 +15,7 @@ public class UserInterfaceMenuOperation extends BasePanel {
 	boolean			_isJobsOpen;
 	
 	UserInterfaceMenuOperation(GFXRenderer renderer, int tileIndex) throws IOException {
-		super(Mode.NONE, null, 0, 0, 200, 200);
+		super(Mode.NONE, null, 0, 0, 200, 200, null);
 	}
 
 	@Override

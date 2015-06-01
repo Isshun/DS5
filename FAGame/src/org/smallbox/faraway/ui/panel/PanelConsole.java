@@ -17,7 +17,7 @@ public class PanelConsole extends BasePanel {
 	private TextView[] 		_texts;
 
 	public PanelConsole() {
-		super(Mode.NONE, null, 0, Constant.WINDOW_HEIGHT - FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT);
+		super(Mode.NONE, null, 0, Constant.WINDOW_HEIGHT - FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT, null);
 		setAlwaysVisible(true);
 	}		  
 

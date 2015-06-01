@@ -22,7 +22,7 @@ public class PanelTooltip extends BasePanel {
 	private ToolTip 	_tooltips;
 
 	public PanelTooltip(Mode mode, GameEventListener.Key shortcut) {
-		super(mode, shortcut, 200, 200, FRAME_WIDTH, FRAME_HEIGHT);
+		super(mode, shortcut, 200, 200, FRAME_WIDTH, FRAME_HEIGHT, null);
 	}
 	
 	@Override

@@ -7,7 +7,7 @@ import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.renderer.RenderLayer;
+import org.smallbox.faraway.engine.renderer.RenderLayer;
 
 public class SFMLRenderLayer extends RenderLayer {
 	private static final Color COLOR_CLEAR = new Color(0, 0, 0, 0);

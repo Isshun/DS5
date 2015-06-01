@@ -18,4 +18,6 @@ public interface GFXRenderer {
     void setFullScreen(boolean isFullscreen);
     void drawLight();
     GameTimer getTimer();
+    int getWidth();
+    int getHeight();
 }

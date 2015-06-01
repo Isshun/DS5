@@ -90,7 +90,7 @@ public class Game {
 		_roomManager.update();
 	}
 
-	void	onCreate() {
+	public void	onCreate() {
 		Log.info("Game: create");
 
 		_worldManager = new WorldManager();

@@ -421,8 +421,8 @@ public class PanelInfo extends BaseRightPanel {
 			return;
 		}
 
-		if (area.getRessource() != null) {
-			displayResource(area.getRessource());
+		if (area.getResource() != null) {
+			displayResource(area.getResource());
 			return;
 		}
 

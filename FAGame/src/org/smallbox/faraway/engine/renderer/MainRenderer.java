@@ -1,4 +1,4 @@
-package org.smallbox.faraway.renderer;
+package org.smallbox.faraway.engine.renderer;
 
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.util.Settings;

@@ -1,4 +1,4 @@
-//package org.smallbox.faraway.renderer;
+//package org.smallbox.faraway.engine.renderer;
 //
 //import org.jsfml.graphics.RenderTexture;
 //import org.jsfml.graphics.Text;

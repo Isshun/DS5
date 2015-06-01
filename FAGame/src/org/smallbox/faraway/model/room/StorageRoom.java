@@ -8,7 +8,7 @@ import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.room.RoomOptions.RoomOption;
-import org.smallbox.faraway.renderer.MainRenderer;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.ui.UserInterface;
 

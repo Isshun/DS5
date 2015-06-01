@@ -1,6 +1,6 @@
 package org.smallbox.faraway.engine.ui;
 
-import org.smallbox.faraway.renderer.RenderLayer;
+import org.smallbox.faraway.engine.renderer.RenderLayer;
 
 /**
  * Created by Alex on 27/05/2015.

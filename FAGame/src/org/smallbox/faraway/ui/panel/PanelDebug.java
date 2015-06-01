@@ -16,7 +16,7 @@ import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.StructureItem;
 import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.renderer.MainRenderer;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
@@ -35,7 +35,7 @@ public class PanelDebug extends BasePanel {
 	private ItemInfo 			_currentItem;
 	
 	public PanelDebug(Mode mode, GameEventListener.Key shortcut) {
-		super(mode, shortcut, Constant.WINDOW_WIDTH - FRAME_WIDTH, 32, FRAME_WIDTH, FRAME_HEIGHT);
+		super(mode, shortcut, Constant.WINDOW_WIDTH - FRAME_WIDTH, 32, FRAME_WIDTH, FRAME_HEIGHT, null);
 		
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		

@@ -2,6 +2,7 @@ package org.smallbox.faraway.engine.ui;
 
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.SpriteModel;
+import org.smallbox.faraway.manager.SpriteManager;
 
 public abstract class TextView extends View {
 	public static final int	REGULAR = 0;
@@ -18,7 +19,17 @@ public abstract class TextView extends View {
 		super(width, height);
 	}
 
-	public abstract void setString(String string);
+	public void setString(String string) {
+        setStringValue(SpriteManager.getInstance().getString(string));
+	}
+
+    public void setString(String string, int value) {
+        string = SpriteManager.getInstance().getString(string);
+        string = String.format(string, value);
+        setStringValue(string);
+    }
+
+	public abstract void setStringValue(String string);
 	public abstract void setCharacterSize(int size);
 	public abstract void setStyle(int style);
 	public abstract void setColor(Color color);

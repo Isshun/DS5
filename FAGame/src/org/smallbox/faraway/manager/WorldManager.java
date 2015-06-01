@@ -8,7 +8,7 @@ import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.PathManager.MyMover;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.room.Room;
-import org.smallbox.faraway.renderer.MainRenderer;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,7 +96,7 @@ public class WorldManager implements TileBasedMap {
 		int y = resource.getY();
 		
 		if (resource.isDepleted()) {
-			_areas[x][y][0].setRessource(null);
+			_areas[x][y][0].setResource(null);
 		}
 		
 		MainRenderer.getInstance().invalidate(x, y);
@@ -137,7 +137,7 @@ public class WorldManager implements TileBasedMap {
 		}
 
 		// Get new item
-		ItemBase item = ItemFactory.create(area, info, matterSupply);
+		ItemBase item = ItemFactory.create(this, area, info, matterSupply);
 		if (item != null) {
 			item.setPosition(x, y);
 			MainRenderer.getInstance().invalidate(x, y);
@@ -151,7 +151,7 @@ public class WorldManager implements TileBasedMap {
 	}
 
 	public WorldResource getRessource(int x, int y, int z) {
-		return (z < 0 || z >= NB_FLOOR || x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y][z].getRessource();
+		return (z < 0 || z >= NB_FLOOR || x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y][z].getResource();
 	}
 
 	public StructureItem getStructure(int x, int y, int z) {
@@ -216,7 +216,7 @@ public class WorldManager implements TileBasedMap {
 
 	private void replaceItem(ItemInfo info, int x, int y, int z, int matterSupply) {
 		if (info.isResource) {
-			_areas[x][y][z].setRessource(null);
+			_areas[x][y][z].setResource(null);
 		} else if (info.isStructure) {
 			_areas[x][y][z].setStructure(null);
 		} else {
@@ -285,11 +285,11 @@ public class WorldManager implements TileBasedMap {
 		int x = resource.getX();
 		int y = resource.getY();
 
-		if (_areas[x][y][0].getRessource() != resource) {
+		if (_areas[x][y][0].getResource() != resource) {
 			return;
 		}
 		
-		_areas[resource.getX()][resource.getY()][0].setRessource(null);
+		_areas[resource.getX()][resource.getY()][0].setResource(null);
 		MainRenderer.getInstance().invalidate(x, y);
 		MainRenderer.getInstance().invalidate();
 	}
@@ -313,7 +313,14 @@ public class WorldManager implements TileBasedMap {
 
 	@Override
 	public float getCost(PathFindingContext context, int tx, int ty) {
-		return context.getSourceX() != tx && context.getSourceY() != ty ? 1.5f : 1f;
+		float cost = context.getSourceX() != tx && context.getSourceY() != ty ? 1.5f : 1f;
+
+		WorldArea area = _areas[tx][ty][0];
+		if (area != null && area.getItem() != null) {
+			cost *= 4;
+		}
+
+		return cost;
 	}
 
 	public UserItem takeItem(UserItem item) {
@@ -371,7 +378,7 @@ public class WorldManager implements TileBasedMap {
 			area.setStructure(null);
 		}
 		else if (item.isRessource()) {
-			area.setRessource(null);
+			area.setResource(null);
 		}
 		else if (item.isUserItem()) {
 			area.setItem(null);
