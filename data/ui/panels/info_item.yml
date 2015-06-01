@@ -6,6 +6,11 @@ entries:
         position: [24, 24]
 
     -   type: label
+        id: lb_id
+        textsize: 14
+        position: [280, 28]
+
+    -   type: label
         id: lb_durability
         text: durability
         textsize: 14
@@ -54,4 +59,6 @@ entries:
 
             -   type: frame
                 id: menu_add_craft_entries
+                background: 0xff0000
                 position: [0, 0]
+                size: [100, 100]

@@ -1,10 +1,10 @@
 package org.smallbox.faraway.engine.serializer;
 
 import org.smallbox.faraway.Game;
-import org.smallbox.faraway.engine.serializer.WorldSaver.WorldSave;
 import org.smallbox.faraway.manager.CharacterManager;
 import org.smallbox.faraway.manager.Utils;
 import org.smallbox.faraway.manager.WorldManager;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
@@ -37,13 +37,13 @@ public class RoomSerializer implements SerializerInterface {
 		public int 					id;
 		
 		public RoomSave() {
-			this.areas = new ArrayList<RoomSaveArea>();
+			this.areas = new ArrayList<>();
 		}
 	}
 
-	public void save(WorldSave save) {
+	public void save(GameSerializer.GameSave save) {
 		List<Room> rooms = Game.getRoomManager().getRoomList();
-		save.rooms = new ArrayList<RoomSave>();
+		save.rooms = new ArrayList<>();
 		
 		for (Room room: rooms) {
 			RoomSave roomSave = new RoomSave();
@@ -71,7 +71,7 @@ public class RoomSerializer implements SerializerInterface {
 		}
 	}
 
-	public void	load(WorldSave save) {
+	public void	load(GameSerializer.GameSave save) {
 		CharacterManager characterManager = Game.getCharacterManager();
 		WorldManager worldManager = Game.getWorldManager();
 		

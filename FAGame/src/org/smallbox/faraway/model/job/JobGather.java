@@ -11,7 +11,7 @@ import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.model.item.WorldResource;
 
-public class JobGather extends Job {
+public class JobGather extends JobModel {
 
 	private WorldResource	_resource;
 
@@ -19,7 +19,7 @@ public class JobGather extends Job {
 		super(action, x, y);
 	}
 
-	public static Job create(WorldResource resource) {
+	public static JobModel create(WorldResource resource) {
 		// Resource is not gatherable
 		if (resource == null || !"gather".equals(resource.getInfo().actions.get(0).type)) {
 			return null;
@@ -109,7 +109,12 @@ public class JobGather extends Job {
 		return false;
 	}
 
-	@Override
+    @Override
+    public String getType() {
+        return "gather";
+    }
+
+    @Override
 	public String getLabel() {
 		return "gather " + _item.getLabel();
 	}

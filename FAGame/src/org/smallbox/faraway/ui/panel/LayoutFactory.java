@@ -46,6 +46,12 @@ public class LayoutFactory {
     private static View createLabel(LayoutModel.LayoutEntry entry) {
         TextView lbText = ViewFactory.getInstance().createTextView();
 
+        if (entry.align != null) {
+            switch (entry.align) {
+                case "center": lbText.setAlign(TextView.Align.CENTER); break;
+            }
+        }
+
         if (entry.textsize != 0) {
             lbText.setCharacterSize(entry.textsize);
         }
@@ -63,6 +69,10 @@ public class LayoutFactory {
 
         if (entry.position != null) {
             lbText.setPosition(entry.position[0], entry.position[1]);
+        }
+
+        if (entry.background != 0) {
+            lbText.setBackgroundColor(new Color(entry.background));
         }
 
         lbText.init();
@@ -87,6 +97,10 @@ public class LayoutFactory {
             for (LayoutModel.LayoutEntry subEntry : entry.entries) {
                 frame.addView(createFromLayout(subEntry));
             }
+        }
+
+        if (entry.background != 0) {
+            frame.setBackgroundColor(new Color(entry.background));
         }
 
         return frame;

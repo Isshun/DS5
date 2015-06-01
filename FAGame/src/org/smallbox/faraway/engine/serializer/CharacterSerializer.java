@@ -1,7 +1,6 @@
 package org.smallbox.faraway.engine.serializer;
 
 import org.smallbox.faraway.Game;
-import org.smallbox.faraway.engine.serializer.WorldSaver.WorldSave;
 import org.smallbox.faraway.manager.Utils;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.character.CharacterModel.Gender;
@@ -14,6 +13,7 @@ import org.smallbox.faraway.model.item.UserItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CharacterSerializer implements SerializerInterface {
 
@@ -102,23 +102,15 @@ public class CharacterSerializer implements SerializerInterface {
 
 	private List<CharacterModel> _characters;
 	
-	public void save(WorldSave save) {
+	public void save(GameSerializer.GameSave save) {
 		List<CharacterModel> characters = Game.getCharacterManager().getList();
-		save.characters = new ArrayList<CharacterSave>();
-
-		for (CharacterModel character: characters) {
-			save.characters.add(new CharacterSave(character));
-		}
+		save.characters = characters.stream().map(CharacterSave::new).collect(Collectors.toList());
 	}
 
-	public void load(WorldSave save) {
-		_characters = new ArrayList<CharacterModel>();
-	    for (CharacterSave characterSave: save.characters) {
-			loadCharacter(characterSave);
-	    }
-	    for (CharacterSave characterSave: save.characters) {
-			loadCharacterRelation(characterSave);
-	    }
+	public void load(GameSerializer.GameSave save) {
+		_characters = new ArrayList<>();
+		save.characters.forEach(this::loadCharacter);
+		save.characters.forEach(this::loadCharacterRelation);
 	}
 
 	private void loadCharacterRelation(CharacterSave characterSave) {

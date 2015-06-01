@@ -1,86 +1,97 @@
 package org.smallbox.faraway.engine.serializer;
 
 import com.thoughtworks.xstream.XStream;
-import org.smallbox.faraway.engine.serializer.WorldSaver.WorldSave;
 import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.manager.JobManager;
-import org.smallbox.faraway.manager.ServiceManager;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameSerializer {
+    public static class GameSave {
+        public List<WorldSerializer.WorldSaveArea>      areas;
+        public List<RoomSerializer.RoomSave>			rooms;
+        public List<CharacterSerializer.CharacterSave>	characters;
+        public List<JobSerializer.JobSave> 				jobs;
 
-	public static void load(String filePath, LoadListener loadListener) {
-		System.gc();
+        public GameSave() {
+            areas = new ArrayList<>();
+        }
+    }
 
-		loadListener.onUpdate("Load savegame [" + filePath + "]");
-		Log.info("Load savegame [" + filePath + "]");
-	    long time = System.currentTimeMillis();
-        
+    public static void load(String filePath, LoadListener loadListener) {
+        System.gc();
+
+        loadListener.onUpdate("Load savegame [" + filePath + "]");
+        Log.info("Load savegame [" + filePath + "]");
+        long time = System.currentTimeMillis();
+
         // Open XML
-	    WorldSave worldSave = null;
-		try {
-			InputStream input = new FileInputStream(filePath + ".xml");
-			XStream xstream = new XStream();
-			worldSave = (WorldSave)xstream.fromXML(input);
+        try {
+            InputStream input = new FileInputStream(filePath + ".xml");
+            XStream xstream = new XStream();
+            load((GameSave)xstream.fromXML(input), loadListener);
+            input.close();
+            System.gc();
+            Log.info("Game loaded: " + (System.currentTimeMillis() - time) + "ms");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-			Log.info("Save file loaded: " + (System.currentTimeMillis() - time) + "ms");
-		    input.close();
-			System.gc();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    public static void load(GameSave save, LoadListener loadListener) {
+        if (save != null) {
+            if (save != null) {
+                if (save.characters != null) {
+                    loadListener.onUpdate("Loading characters");
+                    (new CharacterSerializer()).load(save);
+                }
 
-		// Load game
-		if (worldSave != null) {
-			if (worldSave.characters != null) {
-				loadListener.onUpdate("Loading characters");
-				(new CharacterSerializer()).load(worldSave);
-			}
+                if (save.areas != null) {
+                    loadListener.onUpdate("Loading areas");
+                    (new WorldSerializer()).load(save);
+                }
 
-			if (worldSave.areas != null) {
-				loadListener.onUpdate("Loading areas");
-				WorldSaver.load(ServiceManager.getWorldMap(), worldSave.areas);
-			}
+                if (save.rooms != null) {
+                    loadListener.onUpdate("Loading rooms");
+                    (new RoomSerializer()).load(save);
+                }
 
-			if (worldSave.rooms != null) {
-				loadListener.onUpdate("Loading rooms");
-				(new RoomSerializer()).load(worldSave);
-			}
-		}
+                if (save.jobs != null) {
+                    loadListener.onUpdate("Loading jobs");
+                    (new JobSerializer()).load(save);
+                }
+            }
+        }
+    }
 
-	    Log.info("Game loaded: " + (System.currentTimeMillis() - time) + "ms");
-        
-		System.gc();		
-	}
-	
-	public static void save(String filePath) {
-		System.gc();
+    public static void save(String filePath) {
+        System.gc();
 
-		// Construct save object
-		WorldSave save = new WorldSave();
-		(new RoomSerializer()).save(save);
-		(new CharacterSerializer()).save(save);
-		JobManagerLoader.save(JobManager.getInstance());
-		WorldSaver.save(ServiceManager.getWorldMap(), save.areas);
-		
-		// Write XML
-		XStream xstream = new XStream();
-		String xml = xstream.toXML(save);
-		
-		try {
-			FileOutputStream fs = new FileOutputStream(filePath + ".xml");
-			OutputStreamWriter output = new OutputStreamWriter(fs);
-			output.write(xml);
-			output.close();
-		    fs.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+        // Construct save object
+        GameSave save = new GameSave();
+        (new RoomSerializer()).save(save);
+        (new CharacterSerializer()).save(save);
+        (new JobSerializer()).save(save);
+        (new WorldSerializer()).save(save);
+
+        // Write XML
+        XStream xstream = new XStream();
+        String xml = xstream.toXML(save);
+
+        try {
+            FileOutputStream fs = new FileOutputStream(filePath + ".xml");
+            OutputStreamWriter output = new OutputStreamWriter(fs);
+            output.write(xml);
+            output.close();
+            fs.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

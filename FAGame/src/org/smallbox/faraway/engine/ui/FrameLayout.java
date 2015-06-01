@@ -44,6 +44,10 @@ public abstract class FrameLayout extends View {
 			createRender();
 		}
 
+        if (_background != null) {
+            renderer.draw(_background, effect);
+        }
+
 		for (View view: _views) {
 			view.draw(renderer, _renderEffect);
 		}

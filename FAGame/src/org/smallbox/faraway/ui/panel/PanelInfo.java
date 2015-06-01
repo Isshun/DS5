@@ -6,9 +6,7 @@ import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.*;
-import org.smallbox.faraway.model.item.ItemInfo.ItemInfoAction;
-import org.smallbox.faraway.model.item.ItemInfo.ItemInfoEffects;
-import org.smallbox.faraway.model.job.Job;
+import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.model.room.Room;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.ui.UserInterface.Mode;
@@ -744,7 +742,7 @@ public class PanelInfo extends BaseRightPanel {
 		int i = 0;
 		int used = 0;
 		for (ItemSlot slot: slots) {
-			Job job = slot.getJob();
+			JobModel job = slot.getJob();
 			if (i < NB_SLOTS_MAX && job != null) {
 				used++;
 				final CharacterModel character = job.getCharacter();

@@ -8,7 +8,7 @@ import org.smallbox.faraway.model.item.ItemFilter;
 import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.model.room.StorageRoom;
 
-public class JobTake extends Job {
+public class JobTake extends JobModel {
 
 	private StorageRoom		_storage;
 	
@@ -16,7 +16,7 @@ public class JobTake extends Job {
 		super(null, x, y);
 	}
 
-	public static Job create(UserItem item) {
+	public static JobModel create(UserItem item) {
 		Log.debug("create take job");
 
 		JobTake job = new JobTake(item.getX(), item.getY());
@@ -26,7 +26,7 @@ public class JobTake extends Job {
 		return job;
 	}
 
-	public static Job create(CharacterModel character, StorageRoom storage, ItemFilter filter) {
+	public static JobModel create(CharacterModel character, StorageRoom storage, ItemFilter filter) {
 		Log.debug("create take job");
 
 		JobTake job = new JobTake(storage.getX(), storage.getY());
@@ -96,7 +96,7 @@ public class JobTake extends Job {
 		// Take item in storage room
 		if (_storage != null) {
 			if (_filter == null) {
-				JobManager.getInstance().abort(this, Job.JobAbortReason.INVALID);
+				JobManager.getInstance().abort(this, JobModel.JobAbortReason.INVALID);
 				Log.error("actionTake: invalid job");
 				return true;
 			}
@@ -121,9 +121,14 @@ public class JobTake extends Job {
 			return true;
 		}
 
-		JobManager.getInstance().abort(this, Job.JobAbortReason.INVALID);
+		JobManager.getInstance().abort(this, JobModel.JobAbortReason.INVALID);
 		Log.error("actionTake: invalid job");
 		return true;
+	}
+
+	@Override
+	public String getType() {
+		return "take";
 	}
 
 	@Override

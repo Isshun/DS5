@@ -1,5 +1,7 @@
 package org.smallbox.faraway.engine.ui;
 
+import org.newdawn.slick.util.pathfinding.navmesh.NavPath;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,11 +10,13 @@ import java.util.Map;
 public class UIEventManager {
 	private static UIEventManager _self;
 	private Map<View, OnClickListener> _onClickListeners;
+	private Map<View, OnClickListener> _onRightClickListeners;
 	private Map<View, OnFocusListener> _onFocusListeners;
-	
+
 	private UIEventManager() {
-		_onClickListeners = new HashMap<View, OnClickListener>();
-		_onFocusListeners = new HashMap<View, OnFocusListener>();
+		_onClickListeners = new HashMap<>();
+		_onRightClickListeners = new HashMap<>();
+		_onFocusListeners = new HashMap<>();
 	}
 	
 	public static UIEventManager getInstance() {
@@ -38,15 +42,28 @@ public class UIEventManager {
 		}
 	}
 	
-	public boolean leftClick(int x, int y) {
-		for (View view: _onClickListeners.keySet()) {
-			if (view.getId() == 112) {
-				System.out.println("y: " + view.getPosY());
-			}
+	public void setOnRightClickListener(View view, OnClickListener onClickListener) {
+		if (onClickListener == null) {
+			_onRightClickListeners.remove(view);
+		} else {
+			_onRightClickListeners.put(view, onClickListener);
 		}
+	}
+
+	public boolean click(int x, int y) {
 		for (View view: _onClickListeners.keySet()) {
 			if (hasVisibleHierarchy(view) && view.getRect().contains(x, y)) {
 				_onClickListeners.get(view).onClick(view);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean rightClick(int x, int y) {
+		for (View view: _onRightClickListeners.keySet()) {
+			if (hasVisibleHierarchy(view) && view.getRect().contains(x, y)) {
+				_onRightClickListeners.get(view).onClick(view);
 				return true;
 			}
 		}

@@ -17,6 +17,8 @@ public class SFMLTextView extends TextView {
 	private Color 			_color;
     private String          _shortcutString;
     private String          _shortcutUnderlineString;
+    private int             _contentWidth;
+    private int             _contentHeight;
 
     public SFMLTextView() {
         super(0, 0);
@@ -55,8 +57,18 @@ public class SFMLTextView extends TextView {
             }
 
 			_text.setString(string);
+            _contentWidth = _text != null ? (int) (_text.getLocalBounds().width + _text.getLocalBounds().left) : 0;
+            _contentHeight = _text != null ? (int) (_text.getLocalBounds().height + _text.getLocalBounds().top) : 0;
 			_value = string;
 		}
+
+        int x = _x;
+        int y = _y;
+        if (_align == Align.CENTER) {
+            x += (_width - _contentWidth) / 2;
+            y += (_height - _contentHeight) / 2 - _text.getLocalBounds().top;
+        }
+        _text.setPosition(x, y);
 	}
 
     private void initShortcut() {
@@ -93,7 +105,7 @@ public class SFMLTextView extends TextView {
 
     @Override
 	public void setStyle(int style) {
-		_text.setStyle(style);
+		_text.setStyle(getSFMLStyle(style));
 	}
 
     @Override
@@ -114,17 +126,18 @@ public class SFMLTextView extends TextView {
 	@Override
 	public void setPosition(int x, int y) {
 		super.setPosition(x, y);
-		_text.setPosition(new Vector2f(x + _paddingLeft, y + _paddingTop));
+        setStringValue(_value);
+		//_text.setPosition(new Vector2f(x + _paddingLeft, y + _paddingTop));
 	}
 
     @Override
     public int getContentWidth() {
-        return _text != null ? (int) _text.getLocalBounds().width : 0;
+        return _contentWidth;
     }
 
     @Override
     public int getContentHeight() {
-        return _text != null ? (int) _text.getLocalBounds().height : 0;
+        return _contentHeight;
     }
 
     @Override
@@ -146,6 +159,10 @@ public class SFMLTextView extends TextView {
 
     @Override
     public void draw(GFXRenderer renderer, RenderEffect effect) {
+        if (_background != null) {
+            ((SFMLRenderer)renderer).draw(_background, effect);
+        }
+
         ((SFMLRenderer)renderer).draw(_text, effect);
 
         if (_shortcutString != null) {
@@ -160,10 +177,6 @@ public class SFMLTextView extends TextView {
     @Override
     public void refresh() {
         //TODO
-    }
-
-    @Override
-    public void setBackgroundColor(Color color) {
     }
 
     @Override

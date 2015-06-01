@@ -11,7 +11,7 @@ import org.smallbox.faraway.model.item.ItemFilter;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.ItemSlot;
 
-public abstract class Job {
+public abstract class JobModel {
 
 	public static enum JobStatus {
 		WAITING, RUNNING, COMPLETE, ABORTED
@@ -21,8 +21,9 @@ public abstract class Job {
 		NO_COMPONENTS, INTERRUPTE, BLOCKED, NO_LEFT_CARRY, INVALID, DIED, NO_BUILD_RESOURCES
 	};
 
-	private static int			_count;
+	private static int 			_countInstance;
 	private int 				_id;
+	protected int 				_count;
 	protected int				_posY;
 	protected int 				_posX;
 	protected ItemBase			_item;
@@ -41,26 +42,31 @@ public abstract class Job {
 	protected Action 			_subAction;
 	protected JobStatus			_status;
 	private int 				_nbBlocked;
+    protected double            _quantity;
+    protected int               _quantityTotal;
 	private boolean 			_hasDuration;
 
-	public Job(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
+	public JobModel(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
 		init();
 		_posY = y;
 		_posX = x;
         _actionInfo = actionInfo;
+        _quantityTotal = actionInfo.quantity;
+        _quantity = 0;
 	}
 
-	public Job() {
+	public JobModel() {
 		init();
 	}
 
 	private void init() {
-		_id = ++_count;
+		_id = ++_countInstance;
 		_item = null;
 		_filter = null;
 		_action = JobManager.Action.NONE;
 		_character = null;
 		_status = JobStatus.WAITING;
+		_count = 1;
 
 		Log.debug("Job #" + _id + " create");
 	}
@@ -72,17 +78,21 @@ public abstract class Job {
 	public int					getId() { return _id; }
 	public JobManager.Action	getAction() { return _action; }
 	public ItemBase				getItem() { return _item; }
-	public CharacterModel getCharacter() { return _character; }
-	public CharacterModel getCharacterRequire() { return _characterRequire; }
+	public CharacterModel       getCharacter() { return _character; }
+	public CharacterModel       getCharacterRequire() { return _characterRequire; }
 	public int 					getFail() { return _fail; }
 	public int 					getBlocked() { return _blocked; }
-	public JobAbortReason				getReason() { return _reason; }
+	public JobAbortReason		getReason() { return _reason; }
 	public ItemSlot 			getSlot() { return _slot; }
 	public Color 				getColor() { return _color; }
 	public String 				getActionName() { return JobManager.getActionName(_action); }
 	public int 					getDurationLeft() { return _durationLeft; }
 	public ItemFilter			getItemFilter() { return _filter; }
 	public int 					getNbUsed() { return _nbUsed; }
+	public double               getQuantity() { return _quantity; }
+	public int 					getQuantityTotal() { return _quantityTotal; }
+	public int 					getProgressPercent() { return (int)((double) _quantity / _quantityTotal * 100); }
+	public double               getProgress() { return (double) _quantity / _quantityTotal; }
 	public JobStatus			getStatus() { return _status; }
 
 	public void					setCharacterRequire(CharacterModel character) { _characterRequire = character; }
@@ -213,4 +223,29 @@ public abstract class Job {
 
 	public int getNbBlocked() { return _nbBlocked; }
 
+    public abstract String getType();
+
+    public ItemInfo.ItemInfoAction getActionInfo() {
+        return _actionInfo;
+    }
+
+	public boolean isFree() {
+		return _character == null;
+	}
+
+	public int getDistance(CharacterModel character) {
+		return Math.abs(character.getX() - _posX) + Math.abs(character.getY() - _posY);
+	}
+
+	public void setActionInfo(ItemInfo.ItemInfoAction action) {
+		_actionInfo = action;
+	}
+
+	public void setCount(int count) {
+		_count = count;
+	}
+
+	public int getCount() {
+		return _count;
+	}
 }

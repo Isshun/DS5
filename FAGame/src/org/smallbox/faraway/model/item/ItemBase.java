@@ -2,12 +2,10 @@ package org.smallbox.faraway.model.item;
 
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.job.Job;
+import org.smallbox.faraway.model.job.JobModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.stream.Collectors;
 
 
@@ -46,7 +44,7 @@ public abstract class ItemBase {
     private int 		    _lastBlocked;
     private WorldArea	    _area;
     private int             _health;
-    private List<Job>       _jobs;
+    private List<JobModel>       _jobs;
     private boolean         _needRefresh;
 
     public ItemBase(ItemInfo info) {
@@ -142,7 +140,7 @@ public abstract class ItemBase {
         }
     }
 
-    public ItemSlot takeSlot(Job job) {
+    public ItemSlot takeSlot(JobModel job) {
         for (ItemSlot slot: _slots) {
             if (slot.isFree()) {
                 slot.take(job);
@@ -334,7 +332,7 @@ public abstract class ItemBase {
         return _info.maxHealth;
     }
 
-    public void addJob(Job job) {
+    public void addJob(JobModel job) {
         _needRefresh = true;
 
         if (_jobs == null) {
@@ -348,7 +346,7 @@ public abstract class ItemBase {
         return _jobs != null && !_jobs.isEmpty();
     }
 
-    public List<Job> getJobs() {
+    public List<JobModel> getJobs() {
         return _jobs;
     }
 
@@ -360,11 +358,15 @@ public abstract class ItemBase {
         _needRefresh = true;
     }
 
-    public void removeJob(Job job) {
+    public void removeJob(JobModel job) {
         _needRefresh = true;
 
         if (_jobs != null) {
             _jobs.remove(job);
         }
+    }
+
+    public void setId(int id) {
+        _id = id;
     }
 }

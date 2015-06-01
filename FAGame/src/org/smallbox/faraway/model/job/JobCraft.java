@@ -7,21 +7,29 @@ import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemInfo;
 
-public class JobCraft extends Job {
+public class JobCraft extends JobModel {
 
 	private JobCraft(ItemInfo.ItemInfoAction action, int x, int y) {
 		super(action, x, y);
 	}
 
-	public static Job create(ItemInfo.ItemInfoAction action, ItemBase item) {
-		if (item == null) {
-			return null;
-		}
-		
-		Job job = new JobCraft(action, item.getX(), item.getY());
+	public static JobCraft create(ItemInfo.ItemInfoAction action, ItemBase item) {
+        if (item == null) {
+            throw new RuntimeException("Cannot add cook job (item is null)");
+        }
+
+        if (action == null) {
+            throw new RuntimeException("Cannot add cook job (action is null)");
+        }
+
+        JobCraft job = new JobCraft(action, item.getX(), item.getY());
 		job.setAction(JobManager.Action.WORK);
 		job.setItem(item);
-		return job;
+        job.setDurationLeft(action.duration);
+
+        item.addJob(job);
+
+        return job;
 	}
 
 	@Override
@@ -34,14 +42,14 @@ public class JobCraft extends Job {
 		// Wrong call
 		if (_item == null) {
 			Log.error("Character: actionUse on null job or null job's item");
-			JobManager.getInstance().abort(this, Job.JobAbortReason.INVALID);
+			JobManager.getInstance().abort(this, JobModel.JobAbortReason.INVALID);
 			return false;
 		}
 
 		// Item is no longer exists
 		if (_item != ServiceManager.getWorldMap().getItem(_posX, _posY)) {
 			Log.warning("Character #" + character.getId() + ": actionUse on invalide item");
-			JobManager.getInstance().abort(this, Job.JobAbortReason.INVALID);
+			JobManager.getInstance().abort(this, JobModel.JobAbortReason.INVALID);
 			return true;
 		}
 
@@ -52,19 +60,31 @@ public class JobCraft extends Job {
 		}
 
 		// Work continue
-		if (character.getNeeds().getWorkRemain() > 0) {
-			character.getNeeds().setWorkRemain(character.getNeeds().getWorkRemain() - 1);
+		if (_quantity < _quantityTotal) {
+            _quantity = Math.min(_quantityTotal, _quantity + character.work(CharacterModel.TalentType.CRAFT));
 			Log.debug("Character #" + character.getId() + ": working");
 			return false;
 		}
-		
-		// Work is complete
-		Log.debug("Character #" + character.getId() + ": work complete");
-		JobManager.getInstance().complete(this);
-		return true;
+
+        // Current item is complete but some remains
+        if (--_count != 0) {
+            _quantity = 0;
+            setCharacter(null);
+            return false;
+        }
+
+        // Work is complete
+        Log.debug("Character #" + character.getId() + ": work complete");
+        JobManager.getInstance().complete(this);
+        return true;
 	}
 
-	@Override
+    @Override
+    public String getType() {
+        return "craft";
+    }
+
+    @Override
 	public String getLabel() {
 		return _actionInfo.label;
 	}

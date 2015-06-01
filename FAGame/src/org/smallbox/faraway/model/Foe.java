@@ -2,7 +2,7 @@ package org.smallbox.faraway.model;
 
 import org.newdawn.slick.util.pathfinding.Path;
 import org.smallbox.faraway.manager.Utils;
-import org.smallbox.faraway.model.job.Job;
+import org.smallbox.faraway.model.job.JobModel;
 
 public class Foe extends Movable {
 
@@ -11,13 +11,13 @@ public class Foe extends Movable {
 	}
 
 	@Override
-	public void onPathComplete(Path path, Job item) {
+	public void onPathComplete(Path path, JobModel item) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void onPathFailed(Job item) {
+	public void onPathFailed(JobModel item) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,0 +1,37 @@
+package org.smallbox.faraway.model.check;
+
+import org.smallbox.faraway.manager.JobManager;
+import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.check.old.CharacterCheck;
+import org.smallbox.faraway.model.job.JobModel;
+
+/**
+ * Created by Alex on 01/06/2015.
+ */
+public class CheckCraft extends CharacterCheck {
+
+    public CheckCraft(CharacterModel character) {
+        super(character);
+    }
+
+    @Override
+    public boolean create(JobManager jobManager) {
+        int bestDistance = Integer.MAX_VALUE;
+        JobModel bestJob = null;
+        for (JobModel job: jobManager.getJobs()) {
+            if (job.isFree() && !job.isFinish() && "craft".equals(job.getType()) && job.getDistance(_character) < bestDistance) {
+                bestDistance = job.getDistance(_character);
+                bestJob = job;
+            }
+        }
+
+        if (bestJob != null) {
+            _character.setJob(bestJob);
+            return true;
+        }
+
+        return false;
+    }
+
+
+}

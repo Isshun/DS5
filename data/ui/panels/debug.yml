@@ -1,0 +1,25 @@
+entries:
+
+    -   type: label
+        id: bt_add_character
+        text: add character
+        textsize: 18
+        position: [20, 100]
+
+    -   type: label
+        id: bt_add_matter
+        text: add matter
+        textsize: 18
+        position: [20, 120]
+
+    -   type: label
+        id: bt_toggle_debug
+        text: toggle debug
+        textsize: 18
+        position: [20, 140]
+
+    -   type: label
+        id: bt_kill_all
+        text: kill all
+        textsize: 18
+        position: [20, 160]

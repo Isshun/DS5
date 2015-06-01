@@ -14,6 +14,7 @@ public class ItemFilter {
 	public ItemInfo itemNeeded;
 	public Boolean 	needFreeSlot;
 	public boolean isConsomable;
+	public boolean isFree;
 
 	private ItemFilter(boolean isFactory, boolean isImmediate) {
 		this.lookingForFactory = isFactory;
@@ -23,6 +24,7 @@ public class ItemFilter {
 	public static ItemFilter createConsomableFilter() {
 		ItemFilter filter = new ItemFilter(false, true);
 		filter.isConsomable = true;
+		filter.isFree = true;
 		filter.needFreeSlot = false;
 		return filter;
 	}
@@ -31,6 +33,7 @@ public class ItemFilter {
 		ItemFilter filter = new ItemFilter(false, true);
 		filter.isConsomable = true;
 		filter.needFreeSlot = false;
+		filter.isFree = true;
 		filter.itemNeeded = neededItemInfo;
 		return filter;
 	}

@@ -2,14 +2,14 @@ package org.smallbox.faraway.model.item;
 
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.job.Job;
+import org.smallbox.faraway.model.job.JobModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FactoryItem extends UserItem {
 
-	private	Job					_refillJob;
+	private JobModel _refillJob;
 	private double				_itemProduceState;
 	protected List<UserItem>	_inventory;
 	private List<ItemInfo>		_accepts;
@@ -92,11 +92,11 @@ public class FactoryItem extends UserItem {
 		return _refillJob != null && _refillJob.isFinish() == false;
 	}
 
-	public Job getRefillJob() {
+	public JobModel getRefillJob() {
 		return _refillJob;
 	}
 
-	public void setRefillJob(Job job) {
+	public void setRefillJob(JobModel job) {
 		_refillJob = job;
 	}
 

@@ -12,9 +12,11 @@ public class LayoutModel {
         public String   id;
         public int      textsize;
         public int      textcolor;
+        public int      background;
         public int[]    size;
         public int[]    position;
         public List<LayoutEntry> entries;
+        public String   align;
     }
 
     public List<LayoutEntry> entries;

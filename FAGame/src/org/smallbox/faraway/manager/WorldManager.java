@@ -387,4 +387,17 @@ public class WorldManager implements TileBasedMap {
 		// Invalidate renderer
 		MainRenderer.getInstance().invalidate(x, y);
 	}
+
+	// TODO
+	public UserItem getItemById(int itemId) {
+		for (int x = 0; x < _width; x++) {
+			for (int y = 0; y < _height; y++) {
+				if (_areas[x][y][0].getItem() != null && _areas[x][y][0].getItem().getId() == itemId) {
+					return _areas[x][y][0].getItem();
+				}
+			}
+		}
+		return null;
+	}
+
 }

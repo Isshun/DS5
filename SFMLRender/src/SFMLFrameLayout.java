@@ -34,9 +34,9 @@ public class SFMLFrameLayout extends FrameLayout {
         }
     }
 
-    @Override
-    public void setBackgroundColor(Color color) {
-    }
+//    @Override
+//    public void setBackgroundColor(Color color) {
+//    }
 
     @Override
     public void setBorderColor(Color color) {

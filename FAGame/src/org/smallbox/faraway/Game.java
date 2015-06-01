@@ -1,13 +1,11 @@
 package org.smallbox.faraway;
 
 import org.smallbox.faraway.engine.serializer.GameSerializer;
-import org.smallbox.faraway.engine.serializer.JobManagerLoader;
 import org.smallbox.faraway.engine.serializer.LoadListener;
 import org.smallbox.faraway.engine.serializer.WorldFactory;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.*;
 import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.manager.SpriteManager;
 
 import java.util.List;
 
@@ -22,6 +20,8 @@ public class Game {
 	private static DynamicObjectManager	_dynamicObjectManager;
 	private static RelationManager 		_relationManager;
 	private static JobManager 			_jobManager;
+	private boolean 					_paused;
+	private int 						_speed;
 
 	public static StatsManager 			getStatsManager() { return _statsManager; }
 	public static RoomManager 			getRoomManager() { return _roomManager; }
@@ -35,7 +35,7 @@ public class Game {
 	public static GameData				getData() { return _data; }
 
 	private static int 					_update;
-	private static WorldFinder _worldFinder;
+	private static WorldFinder 			_worldFinder;
 	private Viewport 					_viewport;
 	private boolean						_isMenuOpen;
 	private boolean 					_isRunning;
@@ -116,8 +116,6 @@ public class Game {
 		loadListener.onUpdate("Load game");
 		GameSerializer.load(filePath, loadListener);
 
-		JobManagerLoader.load(JobManager.getInstance(), loadListener);
-
 		loadListener.onUpdate("Init world map");
 		WorldFactory.cleanRock();
 		
@@ -159,5 +157,17 @@ public class Game {
 	}
 	public static void setWorldFinder(WorldFinder worldFinder) {
 		_worldFinder = worldFinder;
+	}
+
+	public void togglePaused() {
+		_paused = !_paused;
+	}
+
+	public void setSpeed(int speed) {
+		_speed = speed;
+	}
+
+	public boolean isPaused() {
+		return _paused;
 	}
 }

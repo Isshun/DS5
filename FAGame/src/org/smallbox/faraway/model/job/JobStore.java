@@ -7,7 +7,7 @@ import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.room.StorageRoom;
 
-public class JobStore extends Job {
+public class JobStore extends JobModel {
 
 	private StorageRoom _storage;
 
@@ -16,7 +16,7 @@ public class JobStore extends Job {
 	}
 
 	// TODO: check if item to store is accepter by storage
-	public static Job create(CharacterModel character, StorageRoom storage) {
+	public static JobModel create(CharacterModel character, StorageRoom storage) {
 		if (storage == null) {
 			Log.error("createStoreJob: storage cannot be null");
 			return null;
@@ -41,7 +41,7 @@ public class JobStore extends Job {
 		return job;
 	}
 
-	public static Job create(CharacterModel character) {
+	public static JobModel create(CharacterModel character) {
 		if (character == null) {
 			Log.error("createStoreJob: character cannot be null");
 			return null;
@@ -83,6 +83,11 @@ public class JobStore extends Job {
 		character.clearInventory();
 		JobManager.getInstance().complete(this);
 		return true;
+	}
+
+	@Override
+	public String getType() {
+		return "store";
 	}
 
 	@Override

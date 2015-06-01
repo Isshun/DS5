@@ -20,13 +20,14 @@ public abstract class View {
     protected int 				_paddingTop;
     public FrameLayout          _parent;
     protected OnClickListener   _onClickListener;
+    private OnClickListener     _onRightClickListener;
     protected OnFocusListener   _onFocusListener;
     protected boolean 			_isFocus;
     protected int 				_id;
     protected int 				_borderSize;
     protected boolean 			_invalid;
     protected Object 			_data;
-    private ColorView           _background;
+    protected ColorView         _background;
 
     public View(int width, int height) {
         _width = width;
@@ -42,7 +43,12 @@ public abstract class View {
 
     public void 		setId(int id) { _id = id; }
     public void 		setFocus(boolean focus) { _isFocus = focus; }
-    public void 		setParent(FrameLayout parent) { _parent = parent; }
+    public void 		setParent(FrameLayout parent) {
+        if (_background != null) {
+            _background.setParent(parent);
+        }
+        _parent = parent;
+    }
 
     public FrameLayout 	getParent() { return _parent; }
     public int 			getId() { return _id; }
@@ -55,6 +61,7 @@ public abstract class View {
 
     public void setBackgroundColor(org.smallbox.faraway.Color color) {
         _background = ViewFactory.getInstance().createColorView(_width, _height);
+        _background.setPosition(_x, _y);
         _background.setBackgroundColor(color);
     }
 
@@ -74,6 +81,11 @@ public abstract class View {
     public void setOnClickListener(OnClickListener onClickListener) {
         _onClickListener = onClickListener;
         UIEventManager.getInstance().setOnClickListener(this, onClickListener);
+    }
+
+    public void setOnRightClickListener(OnClickListener onClickListener) {
+        _onRightClickListener = onClickListener;
+        UIEventManager.getInstance().setOnRightClickListener(this, onClickListener);
     }
 
     public void setOnFocusListener(OnFocusListener onFocusListener) {
@@ -96,6 +108,9 @@ public abstract class View {
 
     public void resetPos() {
         _rect = computeRect();
+        if (_background != null) {
+            _background.resetPos();
+        }
     }
 
     public void setPadding(int t, int r, int b, int l) {
@@ -115,6 +130,10 @@ public abstract class View {
     }
 
     public void setPosition(int x, int y) {
+        if (_background != null) {
+            _background.setPosition(x, y);
+        }
+
         _x = x;
         _y = y;
         _invalid = true;
@@ -129,7 +148,7 @@ public abstract class View {
             y += view.getPosY();
             view = view.getParent();
         }
-        return new Rectangle(x, y, _width, _height);
+        return new Rectangle(x, y, _width == 0 ? getContentWidth() : _width, _height == 0 ? getContentHeight() : _height);
     }
 
     public void onEnter() {

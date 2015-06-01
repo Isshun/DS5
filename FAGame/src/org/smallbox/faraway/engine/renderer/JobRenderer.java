@@ -8,7 +8,7 @@ import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.JobManager.Action;
-import org.smallbox.faraway.model.job.Job;
+import org.smallbox.faraway.model.job.JobModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,8 +55,8 @@ public class JobRenderer implements IRenderer {
 
 	public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
 		int frame = MainRenderer.getFrame();
-		List<Job> jobs = JobManager.getInstance().getJobs();
-		for (Job job: jobs) {
+		List<JobModel> jobs = JobManager.getInstance().getJobs();
+		for (JobModel job: jobs) {
 			int x = job.getX();
 			int y = job.getY();
 			if (_areas[x][y] != frame && job.isFinish() == false) {

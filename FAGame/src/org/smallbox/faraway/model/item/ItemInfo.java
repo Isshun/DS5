@@ -23,6 +23,7 @@ public class ItemInfo {
 		public ArrayList<ItemInfo> 	itemAccept;
 		public int 					mature;
 		public int 					quantity;
+		public String 				name;
 	}
 
 	public static class ItemInfoPractice {

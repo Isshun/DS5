@@ -6,18 +6,18 @@ import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemBase;
 
-public class JobDestroy extends Job {
+public class JobDestroy extends JobModel {
 
 	private JobDestroy(int x, int y) {
 		super(null, x, y);
 	}
 
-	public static Job create(ItemBase item) {
+	public static JobModel create(ItemBase item) {
 		if (item == null) {
 			return null;
 		}
 		
-		Job job = new JobDestroy(item.getX(), item.getY());
+		JobModel job = new JobDestroy(item.getX(), item.getY());
 		job.setAction(JobManager.Action.DESTROY);
 		job.setItem(item);
 		return job;
@@ -46,6 +46,11 @@ public class JobDestroy extends Job {
 		ServiceManager.getWorldMap().destroy(_item);
 		JobManager.getInstance().complete(this);
 		return true;
+	}
+
+	@Override
+	public String getType() {
+		return "destroy";
 	}
 
 	@Override

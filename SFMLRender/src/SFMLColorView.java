@@ -17,7 +17,9 @@ public class SFMLColorView extends ColorView {
 
     @Override
     public void draw(GFXRenderer renderer, RenderEffect effect) {
-        ((SFMLRenderer)renderer).draw(_background, effect);
+        if (_background != null) {
+            ((SFMLRenderer) renderer).draw(_background, effect);
+        }
     }
 
     @Override
@@ -40,5 +42,14 @@ public class SFMLColorView extends ColorView {
         _background.setSize(new Vector2f(_width, _height));
         _background.setPosition(new Vector2f(_x, _y));
         _background.setFillColor(new org.jsfml.graphics.Color(color.r, color.g, color.b));
+    }
+
+    @Override
+    public void setPosition(int x, int y) {
+        super.setPosition(x, y);
+
+        if (_background != null) {
+            _background.setPosition(x, y);
+        }
     }
 }

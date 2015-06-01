@@ -5,11 +5,14 @@ import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.manager.SpriteManager;
 
 public abstract class TextView extends View {
+    public enum Align { CENTER, LEFT, RIGHT };
+
 	public static final int	REGULAR = 0;
 	public static final int	BOLD = 1;
 	public static final int	ITALIC = 2;
 	public static final int	UNDERLINED = 3;
 	protected Color _colorBak;
+	protected Align _align = Align.LEFT;
 
 	public TextView() {
 		super(0, 0);
@@ -22,6 +25,8 @@ public abstract class TextView extends View {
 	public void setString(String string) {
         setStringValue(SpriteManager.getInstance().getString(string));
 	}
+
+    public void setAlign(Align align) { _align = align; }
 
     public void setString(String string, int value) {
         string = SpriteManager.getInstance().getString(string);

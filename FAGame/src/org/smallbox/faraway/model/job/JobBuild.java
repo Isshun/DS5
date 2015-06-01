@@ -9,14 +9,14 @@ import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.StructureItem;
 import org.smallbox.faraway.ui.UserInterface;
 
-public class JobBuild extends Job {
+public class JobBuild extends JobModel {
 
 	private JobBuild(int x, int y) {
 		super(null, x, y);
 	}
 
-	public static Job create(ItemBase item) {
-		Job job = new JobBuild(item.getX(), item.getY());
+	public static JobModel create(ItemBase item) {
+		JobModel job = new JobBuild(item.getX(), item.getY());
 		job.setAction(JobManager.Action.BUILD);
 		job.setItem(item);
 		return job;
@@ -67,7 +67,7 @@ public class JobBuild extends Job {
 		if (result == ResourceManager.Message.NO_MATTER) {
 			UserInterface.getInstance().displayMessage("not enough matter", _posX, _posY);
 			Log.debug("Character #" + character.getId() + ": not enough matter");
-			JobManager.getInstance().abort(this, Job.JobAbortReason.NO_BUILD_RESOURCES);
+			JobManager.getInstance().abort(this, JobModel.JobAbortReason.NO_BUILD_RESOURCES);
 			return true;
 		}
 
@@ -81,6 +81,11 @@ public class JobBuild extends Job {
 			Log.debug("Character #" + character.getId() + ": build progress");
 		}
 		return false;
+	}
+
+	@Override
+	public String getType() {
+		return "build";
 	}
 
 	@Override

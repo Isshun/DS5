@@ -12,6 +12,7 @@ craftedFrom:
 actions:
 
     -   type: use
+        label: Eat advanced meal
         duration: 1
         effects:
             food: 100

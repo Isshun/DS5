@@ -2,16 +2,15 @@ package org.smallbox.faraway.model.job;
 
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.ItemInfo;
 
-public class JobMove extends Job {
+public class JobMove extends JobModel {
 
 	private JobMove(int x, int y) {
 		super(null, x, y);
 	}
 
-	public static Job create(CharacterModel character, int x, int y, int stay) {
-		Job job = new JobMove(x, y);
+	public static JobModel create(CharacterModel character, int x, int y, int stay) {
+		JobModel job = new JobMove(x, y);
 		job.setAction(JobManager.Action.MOVE);
 		job.setCharacterRequire(character);
 		job.setDurationLeft(stay);
@@ -32,6 +31,11 @@ public class JobMove extends Job {
 
 		JobManager.getInstance().complete(this);
 		return true;
+	}
+
+	@Override
+	public String getType() {
+		return "move";
 	}
 
 	@Override

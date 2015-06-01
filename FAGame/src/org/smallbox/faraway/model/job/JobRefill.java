@@ -13,7 +13,7 @@ import org.smallbox.faraway.model.room.StorageRoom;
 
 import java.util.ArrayList;
 
-public class JobRefill extends Job {
+public class JobRefill extends JobModel {
 	private ArrayList<UserItem> 	_carryItems;
 	private StorageRoom 			_storage;
 	private FactoryItem 			_factory;
@@ -22,7 +22,7 @@ public class JobRefill extends Job {
 		super(null, x, y);
 	}
 
-	public static Job create(FactoryItem factory, StorageRoom storage, ItemFilter filter) {
+	public static JobModel create(FactoryItem factory, StorageRoom storage, ItemFilter filter) {
 		if (storage == null || factory == null) {
 			Log.error("createRefillJob: wrong items");
 			return null;
@@ -116,6 +116,11 @@ public class JobRefill extends Job {
 		else {
 			return actionStore(character);
 		}
+	}
+
+	@Override
+	public String getType() {
+		return "refill";
 	}
 
 	private boolean actionStore(CharacterModel character) {

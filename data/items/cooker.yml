@@ -7,32 +7,36 @@ slots:
     - [1, 1]
 actions:
     -   type: cook
+        name: action_cook_easy
         label: Cook easy meal
-        duration: 10
+        quantity: 100
         practice:
             cooking: 1
         products:
             - base.easy_meal
 
     -   type: cook
+        name: action_cook_advance
         label: Cook advance meal
-        duration: 10
+        quantity: 10
         practice:
             cooking: 1
         products:
             - base.meal
 
     -   type: cook
+        name: action_cook_lavish
         label: Cook lavish meal
-        duration: 10
+        quantity: 10
         practice:
             cooking: 1
         products:
             - base.meal
 
     -   type: cook
+        name: action_cook_ration
         label: Cook ration
-        duration: 10
+        quantity: 10
         practice:
             cooking: 1
         products:

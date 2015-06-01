@@ -88,8 +88,13 @@ public class Main {
                 Thread.sleep(nextDraw - elapsed);
             }
 
+            // Render menu
+            if (!_game.isRunning()) {
+                application.manageMenu(renderer);
+            }
+
             // Render game
-            if (_game.isRunning()) {
+            else if (!_game.isPaused()) {
                 // Draw
                 RenderEffect effect = SpriteManager.getInstance().createRenderEffect();
                 effect.setViewport(_game.getViewport());
@@ -97,30 +102,25 @@ public class Main {
                 double animProgress = (1 - (double) (nextUpdate - elapsed) / Application.getUpdateInterval());
                 application.render(animProgress, update, renderTime, renderer, effect);
 
-                // Refresh
-                if (elapsed >= nextRefresh) {
-                    application.refresh(refresh);
-                    refresh++;
-                    nextRefresh += Application.REFRESH_INTERVAL;
-                }
+                    // Refresh
+                    if (elapsed >= nextRefresh) {
+                        application.refresh(refresh);
+                        refresh++;
+                        nextRefresh += Application.REFRESH_INTERVAL;
+                    }
 
-                // Update
-                if (elapsed >= nextUpdate) {
-                    application.update(update);
-                    update++;
-                    nextUpdate += Application.getUpdateInterval();
-                }
+                    // Update
+                    if (elapsed >= nextUpdate) {
+                        application.update(update);
+                        update++;
+                        nextUpdate += Application.getUpdateInterval();
+                    }
 
-                // Long update
-                if (elapsed >= nextLongUpdate) {
-                    application.longUpdate(frame);
-                    nextLongUpdate += Application.getLongUpdateInterval();
-                }
-            }
-
-            // Render menu
-            else {
-                application.manageMenu(renderer);
+                    // Long update
+                    if (elapsed >= nextLongUpdate) {
+                        application.longUpdate(frame);
+                        nextLongUpdate += Application.getLongUpdateInterval();
+                    }
             }
 
             // Draw

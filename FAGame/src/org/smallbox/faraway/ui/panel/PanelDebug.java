@@ -17,6 +17,7 @@ import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.StructureItem;
 import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
+import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
@@ -33,40 +34,13 @@ public class PanelDebug extends BasePanel {
 	private String 				_search = "";
 	private int 				_nbResults;
 	private ItemInfo 			_currentItem;
-	
+
 	public PanelDebug(Mode mode, GameEventListener.Key shortcut) {
-		super(mode, shortcut, Constant.WINDOW_WIDTH - FRAME_WIDTH, 32, FRAME_WIDTH, FRAME_HEIGHT, null);
+		super(mode, shortcut, Constant.WINDOW_WIDTH - FRAME_WIDTH, 32, FRAME_WIDTH, FRAME_HEIGHT, "data/ui/panels/debug.yml");
 		
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		
-		// Add character
-		TextView txtAddCharacter = ViewFactory.getInstance().createTextView(200, 32);
-		txtAddCharacter.setOnClickListener(view -> Game.getCharacterManager().addRandom(150, 150));
-		txtAddCharacter.setString("Add character");
-		txtAddCharacter.setCharacterSize(20);
-		txtAddCharacter.setColor(Color.WHITE);
-		txtAddCharacter.setPosition(20, 20);
-		addView(txtAddCharacter);
-
-		// Add Ressource
-		TextView lbAddMatter = ViewFactory.getInstance().createTextView(200, 32);
-		lbAddMatter.setOnClickListener(view -> ResourceManager.getInstance().addMatter(500));
-		lbAddMatter.setString("Add matter");
-		lbAddMatter.setCharacterSize(20);
-		lbAddMatter.setColor(Color.WHITE);
-		lbAddMatter.setPosition(20, 60);
-		addView(lbAddMatter);
-
-		// Items
-		TextView lbItems = ViewFactory.getInstance().createTextView(200, 32);
-		lbItems.setOnClickListener(view -> _ui.toogleMode(Mode.DEBUGITEMS));
-		lbItems.setString("items");
-		lbItems.setCharacterSize(20);
-		lbItems.setColor(Color.WHITE);
-		lbItems.setPosition(20, 340);
-		addView(lbItems);
-
-		// Re-launch jobs 
+		// Re-launch jobs
 		TextView lbReLaunchJob = ViewFactory.getInstance().createTextView(200, 32);
 		lbReLaunchJob.setOnClickListener(view -> {
             int width = ServiceManager.getWorldMap().getWidth();
@@ -130,18 +104,6 @@ public class PanelDebug extends BasePanel {
 		lbAddWater.setPosition(20, 220);
 		addView(lbAddWater);
 
-		// Kill everyone 
-		TextView lbKillEveryone = ViewFactory.getInstance().createTextView(200, 32);
-		lbKillEveryone.setOnClickListener(view -> {
-            Game.getCharacterManager().clear();
-            JobManager.getInstance().clear();
-        });
-		lbKillEveryone.setString("Kill everyone");
-		lbKillEveryone.setCharacterSize(20);
-		lbKillEveryone.setColor(Color.WHITE);
-		lbKillEveryone.setPosition(20, 300);
-		addView(lbKillEveryone);
-
 		// Reset light 
 		TextView lbResetLight = ViewFactory.getInstance().createTextView(200, 32);
 		lbResetLight.setOnClickListener(view -> ((MainRenderer)MainRenderer.getInstance()).initLight());
@@ -172,6 +134,17 @@ public class PanelDebug extends BasePanel {
 		lbDome.setColor(Color.WHITE);
 		lbDome.setPosition(20, 360);
 		addView(lbDome);
+	}
+
+	@Override
+	public void onLayoutLoaded(LayoutModel layout) {
+		findById("bt_add_character").setOnClickListener(view -> Game.getCharacterManager().addRandom(150, 150));
+		findById("bt_add_matter").setOnClickListener(view -> ResourceManager.getInstance().addMatter(500));
+		findById("bt_toggle_debug").setOnClickListener(view -> _ui.toogleMode(Mode.DEBUGITEMS));
+		findById("bt_kill_all").setOnClickListener(view -> {
+			Game.getCharacterManager().clear();
+			JobManager.getInstance().clear();
+		});
 	}
 
 	@Override

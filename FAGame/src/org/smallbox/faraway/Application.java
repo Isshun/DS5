@@ -113,6 +113,22 @@ public class Application implements GameEventListener {
         }
 
         switch (key) {
+            case SPACE:
+                _game.togglePaused();
+                break;
+
+            case D_1:
+                _game.setSpeed(1);
+                break;
+
+            case D_2:
+                _game.setSpeed(2);
+                break;
+
+            case D_3:
+                _game.setSpeed(3);
+                break;
+
             // Reload UI
             case F5:
                 _userInterface.reload();

@@ -34,7 +34,6 @@ public class CharacterNeeds {
 	private double	_satiety;
 
 	private ItemBase 	_sleepItem;
-	private int 		_workRemain;
 
 	public CharacterNeeds(CharacterModel character) {
 		_sleepItem = null;
@@ -50,7 +49,6 @@ public class CharacterNeeds {
 		_injuries = 0;
 		_sickness = 0;
 		_satiety = 0;
-		_workRemain = 100;
 	}
 
 	public int	getSleeping() { return _sleeping; }
@@ -188,7 +186,6 @@ public class CharacterNeeds {
 	}
 
 	private void onAwakening() {
-		_workRemain = 100;
 	}
 
 	public void	eat() {
@@ -206,14 +203,6 @@ public class CharacterNeeds {
 		} else {
 			_sleeping = Constant.SLEEP_ON_FLOOR_DURATION * Constant.DURATION_MULTIPLIER;
 		}
-	}
-
-	public int getWorkRemain() {
-		return _workRemain;
-	}
-
-	public void setWorkRemain(int value) {
-		_workRemain = value;
 	}
 
 	public void addRelation(int i) {

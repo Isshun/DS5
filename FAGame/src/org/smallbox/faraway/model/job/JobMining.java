@@ -10,13 +10,13 @@ import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.model.item.WorldResource;
 
-public class JobMining extends Job {
+public class JobMining extends JobModel {
 
 	private JobMining(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
 		super(actionInfo, x, y);
 	}
 
-	public static Job create(WorldResource res) {
+	public static JobModel create(WorldResource res) {
 		// Resource is not minable
 		if (res == null) {
 			return null;
@@ -25,7 +25,7 @@ public class JobMining extends Job {
 		if (res.getInfo().actions != null) {
 			for (ItemInfo.ItemInfoAction action: res.getInfo().actions) {
 				if ("mine".equals(action.type)) {
-					Job job = new JobMining(action, res.getX(), res.getY());
+					JobModel job = new JobMining(action, res.getX(), res.getY());
 					job.setAction(JobManager.Action.MINING);
 					job.setItem(res);
 				}
@@ -89,7 +89,7 @@ public class JobMining extends Job {
 
 		// Character is full: cancel current job
 		if (character.getInventoryLeftSpace() <= 0) {
-			JobManager.getInstance().abort(this, Job.JobAbortReason.NO_LEFT_CARRY);
+			JobManager.getInstance().abort(this, JobModel.JobAbortReason.NO_LEFT_CARRY);
 			return true;
 		}
 
@@ -111,6 +111,11 @@ public class JobMining extends Job {
         }
 
 		return false;
+	}
+
+	@Override
+	public String getType() {
+		return "mine";
 	}
 
 	@Override

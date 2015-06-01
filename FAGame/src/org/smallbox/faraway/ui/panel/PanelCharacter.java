@@ -15,13 +15,15 @@ import org.smallbox.faraway.model.character.CharacterRelation;
 import org.smallbox.faraway.model.character.CharacterStatus;
 import org.smallbox.faraway.model.character.CharacterStatus.Level;
 import org.smallbox.faraway.model.item.ItemBase;
-import org.smallbox.faraway.model.job.Job;
+import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.List;
 
 public class PanelCharacter extends BaseRightPanel {
+    private ViewFactory _viewFactory;
+
     private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "unused", "Work"};
 
     private static final int LINE_HEIGHT = 28;
@@ -44,7 +46,6 @@ public class PanelCharacter extends BaseRightPanel {
     private ColorView[] 		_shapes = new ColorView[NB_GAUGE];
     private TextView[] 			_values = new TextView[NB_GAUGE];
     private TextView 			_lbJob;
-    private TextView 			_lbJob2;
     private ImageView[] 		_lbInventoryEntries;
     private TextView 			_lbState;
     private FrameLayout 		_layoutFamily;
@@ -79,40 +80,84 @@ public class PanelCharacter extends BaseRightPanel {
 
     @Override
     public void onLayoutLoaded(LayoutModel layout) {
-        findById("bt_monitoring").setOnClickListener(view -> {
-            findById("frame_monitoring").setVisible(true);
-            findById("frame_personal_report").setVisible(false);
-        });
-        findById("bt_personal_report").setOnClickListener(view -> {
-            findById("frame_monitoring").setVisible(false);
-            findById("frame_personal_report").setVisible(true);
-        });
+        findById("bt_monitoring").setOnClickListener(view -> switchView("frame_monitoring"));
+        findById("bt_personal_report").setOnClickListener(view -> switchView("frame_personal_report"));
+        findById("bt_priorities").setOnClickListener(view -> switchView("frame_priorities"));
+        findById("bt_inventory").setOnClickListener(view -> switchView("frame_inventory"));
+        findById("bt_health").setOnClickListener(view -> switchView("frame_health"));
 
         createNeedsInfo(0, 0);
         createBasicInformation(0, 0);
         createRelationShip(0, 0);
+        createInventoryInfo(0, 0);
 
+        findById("frame_monitoring").setVisible(true);
         findById("frame_personal_report").setVisible(false);
+        findById("frame_priorities").setVisible(false);
+        findById("frame_inventory").setVisible(false);
+        findById("frame_health").setVisible(false);
 
         _lbName = (TextView) findById("lb_name");
         _lbState = (TextView) findById("lb_last_report");
+        _lbJob = (TextView) findById("lb_current_job");
+    }
+
+    private void switchView(String viewId) {
+        findById("frame_monitoring").setVisible("frame_monitoring".equals(viewId));
+        findById("frame_priorities").setVisible("frame_priorities".equals(viewId));
+        findById("frame_personal_report").setVisible("frame_personal_report".equals(viewId));
+        findById("frame_inventory").setVisible("frame_inventory".equals(viewId));
+        findById("frame_health").setVisible("frame_health".equals(viewId));
+    }
+
+    private void createPriorities() {
+        FrameLayout frameEntries = (FrameLayout) findById("frame_priorities_entries");
+        frameEntries.clearAllViews();
+
+        for (CharacterModel.TalentEntry priority: _character.getTalents()) {
+            TextView lbPriority = _viewFactory.createTextView();
+            lbPriority.setString(priority.name + " (" + (int)priority.level + ")");
+            lbPriority.setCharacterSize(16);
+            lbPriority.resetSize();
+            lbPriority.setPosition(0, priority.index * 28);
+            frameEntries.addView(lbPriority);
+
+            TextView btPriorityUp = _viewFactory.createTextView();
+            btPriorityUp.setString("[up]");
+            btPriorityUp.setCharacterSize(16);
+            btPriorityUp.resetSize();
+            btPriorityUp.setPosition(240, priority.index * 28);
+            btPriorityUp.setOnClickListener(view -> _character.movePriority(priority, priority.index - 1));
+            frameEntries.addView(btPriorityUp);
+
+            TextView btPriorityDown = _viewFactory.createTextView();
+            btPriorityDown.setString("[down]");
+            btPriorityDown.setCharacterSize(16);
+            btPriorityDown.resetSize();
+            btPriorityDown.setPosition(280, priority.index * 28);
+            btPriorityDown.setOnClickListener(view -> _character.movePriority(priority, priority.index + 1));
+            frameEntries.addView(btPriorityDown);
+        }
+    }
+
+    private void movePriority(CharacterModel.TalentEntry priority, int index) {
+
     }
 
     @Override
     protected void onCreate(ViewFactory factory) {
+        _viewFactory = factory;
+
         _cursor = factory.createColorView(8, 16);
         _cursor.setBackgroundColor(Colors.LINK_INACTIVE);
         addView(_cursor);
 
-        // Tip
-        _lbTip = factory.createTextView(FRAME_WIDTH, LINE_HEIGHT);
-        _lbTip.setCharacterSize(FONT_SIZE_TITLE);
-        _lbTip.setBackgroundColor(new Color(255, 255, 255, 100));
-        _lbTip.setVisible(false);
-        addView(_lbTip);
-
-        createJobInfo(20, 136);
-        createInventoryInfo(20, 635);
+//        // Tip
+//        _lbTip = factory.createTextView(FRAME_WIDTH, LINE_HEIGHT);
+//        _lbTip.setCharacterSize(FONT_SIZE_TITLE);
+//        _lbTip.setBackgroundColor(new Color(255, 255, 255, 100));
+//        _lbTip.setVisible(false);
+//        addView(_lbTip);
 
         if (Settings.getInstance().isDebug()) {
             //createDebug(20, 850);
@@ -159,15 +204,10 @@ public class PanelCharacter extends BaseRightPanel {
     }
 
     private void createInventoryInfo(int x, int y) {
-        _layoutInventory = ViewFactory.getInstance().createFrameLayout(FRAME_WIDTH, 80);
-        _layoutInventory.setPosition(x, y);
-        addView(_layoutInventory);
+        _lbInventory = (TextView) findById("lb_inventory");
 
-        _lbInventory = ViewFactory.getInstance().createTextView(FRAME_WIDTH, LINE_HEIGHT);
-        _lbInventory.setCharacterSize(FONT_SIZE_TITLE);
-        _lbInventory.setPosition(0, 0);
-        _layoutInventory.addView(_lbInventory);
-
+        FrameLayout frameInventoryEntries = (FrameLayout)findById("frame_inventory_entries");
+        frameInventoryEntries.clearAllViews();
         _lbInventoryEntries = new ImageView[Constant.CHARACTER_INVENTORY_SPACE];
         for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
             final int x2 = i % NB_INVENTORY_PER_LINE;
@@ -186,13 +226,8 @@ public class PanelCharacter extends BaseRightPanel {
                     _lbTip.setPosition(x2 * 28 + 16, 32 + y2 * 28 + 16);
                 }
             });
-            _layoutInventory.addView(_lbInventoryEntries[i]);
+            frameInventoryEntries.addView(_lbInventoryEntries[i]);
         }
-    }
-
-    private void createJobInfo(int x, int y) {
-        _lbJob = (TextView) findById("lb_current_job");
-        _lbJob2 = (TextView) findById("lb_current_job_l2");
     }
 
     private void createProfessionInfo(int x, int y) {
@@ -249,12 +284,7 @@ public class PanelCharacter extends BaseRightPanel {
             if (i < NB_MAX_RELATION) {
                 String left = relation.getSecond().getName();
 //				_familyEntries[i].setStyle(TextView.UNDERLINED);
-                _familyEntries[i].setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        _ui.select(relation.getSecond());
-                    }
-                });
+                _familyEntries[i].setOnClickListener(view -> _ui.select(relation.getSecond()));
 
                 String relationName = relation.getRelationLabel();
                 switch (relation.getRelation()) {
@@ -336,9 +366,17 @@ public class PanelCharacter extends BaseRightPanel {
             case 1: _values[index] = (TextView)findById("lb_status_o2"); break;
             case 2: _values[index] = (TextView)findById("lb_status_happiness"); break;
             case 3: _values[index] = (TextView)findById("lb_status_power"); break;
-            case 4: _values[index] = (TextView)findById("lb_status_relation"); break;
+            case 4:
+                _values[index] = (TextView)findById("lb_status_relation");
+                _values[index].setOnFocusListener(null);
+                _values[index].setOnClickListener(view -> switchView("frame_personal_report"));
+                break;
             case 5: _values[index] = (TextView)findById("lb_status_security"); break;
-            case 6: _values[index] = (TextView)findById("lb_status_health"); break;
+            case 6:
+                _values[index] = (TextView)findById("lb_status_health");
+                _values[index].setOnFocusListener(null);
+                _values[index].setOnClickListener(view -> switchView("frame_health"));
+                break;
         }
 
         //	    RectangleShape shapeBg = new RectangleShape();
@@ -357,23 +395,26 @@ public class PanelCharacter extends BaseRightPanel {
     @Override
     public void onRefresh(int update) {
         CharacterModel character = _ui.getSelectedCharacter();
-        if (_character != character && character != null) {
+        if (character != null && (_character != character || character.needRefresh())) {
+
             if (_character != null) {
                 _character.setSelected(false);
             }
-            character.setSelected(true);
-            _lbName.setString(character.getName().toUpperCase());
-            _lbName.setColor(character.getColor());
+
+            _character = character;
+            _character.setSelected(true);
+            _lbName.setString(_character.getName().toUpperCase());
+            _lbName.setColor(_character.getColor());
             _nbRelation = -1;
 
-            // Reset gauges
-            for (int i = 0; i < NB_GAUGE; i++) {
-                _values[i].setVisible(false);
-            }
-            _animGauge = 0;
-            _character = character;
+//            // Reset gauges
+//            for (int i = 0; i < NB_GAUGE; i++) {
+//                _values[i].setVisible(false);
+//            }
+//            _animGauge = 0;
+
+            createPriorities();
         }
-        _character = character;
 
         _cursor.setVisible(!_cursor.isVisible());
 
@@ -471,9 +512,9 @@ public class PanelCharacter extends BaseRightPanel {
         }
     }
 
-    private void refreshJob(final Job job) {
+    private void refreshJob(final JobModel job) {
         if (job != null) {
-            _lbJob2.setString(StringUtils.getDashedString(job.getShortLabel(), job.hasDuration() ? job.getFormatedDuration() : "", NB_COLUMNS));
+            _lbJob.setString(StringUtils.getDashedString(job.getLabel(), job.getProgressPercent() + "%", NB_COLUMNS));
             switch (job.getAction()) {
                 case BUILD:
                 case DESTROY:
@@ -481,19 +522,19 @@ public class PanelCharacter extends BaseRightPanel {
                 case MINING:
                 case REFILL:
                 case USE:
-                    _lbJob2.setOnClickListener(view -> _ui.select(job.getItem()));
+                    _lbJob.setOnClickListener(view -> _ui.select(job.getItem()));
                     break;
                 case USE_INVENTORY:
-                    _lbJob2.setOnClickListener(view -> _ui.select(job.getItem().getInfo()));
+                    _lbJob.setOnClickListener(view -> _ui.select(job.getItem().getInfo()));
                     break;
                 default:
-                    _lbJob2.setOnClickListener(null);
+                    _lbJob.setOnClickListener(null);
                     break;
 
             }
         } else {
-            _lbJob2.setString(Strings.LN_NO_JOB);
-            _lbJob2.setOnClickListener(null);
+            _lbJob.setString(Strings.LN_NO_JOB);
+            _lbJob.setOnClickListener(null);
         }
     }
 

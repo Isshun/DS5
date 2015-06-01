@@ -9,18 +9,18 @@ import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
 
-public class JobUseInventory extends Job {
+public class JobUseInventory extends JobModel {
 
 	private JobUseInventory(ItemInfo.ItemInfoAction action, int x, int y) {
 		super(action, x, y);
 	}
 
-	public static Job create(CharacterModel character, ItemBase item) {
+	public static JobModel create(CharacterModel character, ItemBase item) {
 		if (!item.getInfo().isConsomable) {
 			return null;
 		}
 		
-		Job job = new JobUseInventory(item.getInfo().actions.get(0), character.getX(), character.getY());
+		JobModel job = new JobUseInventory(item.getInfo().actions.get(0), character.getX(), character.getY());
 		job.setAction(JobManager.Action.USE_INVENTORY);
 		job.setItem(item);
 		job.setCharacterRequire(character);
@@ -43,13 +43,13 @@ public class JobUseInventory extends Job {
 	@Override
 	public boolean action(CharacterModel character) {
 		if (_item == null) {
-			JobManager.getInstance().abort(this, Job.JobAbortReason.INVALID);
+			JobManager.getInstance().abort(this, JobModel.JobAbortReason.INVALID);
 			Log.error("actionUseInventory: invalid job");
 			return true;
 		}
 		
 		if (character.getInventory().contains(_item) == false) {
-			JobManager.getInstance().abort(this, Job.JobAbortReason.INVALID);
+			JobManager.getInstance().abort(this, JobModel.JobAbortReason.INVALID);
 			Log.error("actionUseInventory: item is missing from inventory");
 			return true;
 		}
@@ -67,6 +67,11 @@ public class JobUseInventory extends Job {
 		character.removeInventory((UserItem)_item);
 		JobManager.getInstance().complete(this);
 		return true;
+	}
+
+	@Override
+	public String getType() {
+		return "use_inventory";
 	}
 
 	@Override

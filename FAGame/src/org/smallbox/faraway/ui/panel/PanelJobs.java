@@ -1,14 +1,12 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.engine.ui.OnClickListener;
 import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.JobManager.Action;
-import org.smallbox.faraway.model.job.Job;
+import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.List;
@@ -29,7 +27,6 @@ public class PanelJobs extends BaseRightPanel {
 
 	@Override
 	protected void onCreate(ViewFactory viewFactory) {
-
 		_lbTitle = viewFactory.createTextView();
 		_lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 		_lbTitle.setPosition(20, 18);
@@ -50,13 +47,13 @@ public class PanelJobs extends BaseRightPanel {
 
 	@Override
 	public void onRefresh(int update) {
-		List<Job> jobs = JobManager.getInstance().getJobs();
+		List<JobModel> jobs = JobManager.getInstance().getJobs();
 		int posX = 20;
 		int posY = 92;
 		int i = 0;
 
 		// Display jobs
-		for (Job job: jobs) {
+		for (JobModel job: jobs) {
 			if (job.getCharacter() != null && Action.MOVE.equals(job.getAction()) == false) {				
 				if (i < 75) {
 					refreshJob(job, _entries[i++], posX, posY);
@@ -81,7 +78,7 @@ public class PanelJobs extends BaseRightPanel {
 		_lbTitle2.setPosition(posX, posY);
 
 		posY += 42;
-		for (Job job: jobs) {
+		for (JobModel job: jobs) {
 			if (job.getCharacter() == null) {				
 				if (i < 75) {
 					refreshJob(job, _entries[i++], posX, posY);
@@ -96,25 +93,23 @@ public class PanelJobs extends BaseRightPanel {
 		}
 	}
 
-	private void refreshJob(final Job job, TextView text, int x, int y) {
+	private void refreshJob(final JobModel job, TextView text, int x, int y) {
 		text.setVisible(true);
 		text.setPosition(x, y);
 		text.resetPos();
-		text.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				if (job.getCharacter() != null) {
-					close();
-					_ui.select(job.getCharacter());
-				}
-			}
-		});
+		text.setOnClickListener(view -> {
+            if (job.getCharacter() != null) {
+                close();
+                _ui.select(job.getCharacter());
+            }
+        });
 		
-		String right = JobManager.getActionName(job.getAction());
-		if (job.getItem() != null) {
-			right += " " + job.getItem().getLabel();
-		}
-		
+		String right = job.getLabel();
+//		String right = JobManager.getActionName(job.getAction());
+//		if (job.getItem() != null) {
+//			right += " " + job.getItem().getLabel();
+//		}
+
 		String left = "";
 		if (job.getCharacter() != null) {
 			left = job.getCharacter().getName();

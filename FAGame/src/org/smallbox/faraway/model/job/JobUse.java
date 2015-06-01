@@ -13,13 +13,13 @@ import org.smallbox.faraway.model.item.UserItem;
 
 import java.util.List;
 
-public class JobUse extends Job {
+public class JobUse extends JobModel {
 
 	private JobUse() {
 		super();
 	}
 
-	public static Job create(ItemBase item) {
+	public static JobModel create(ItemBase item) {
 		if (item == null || !item.hasFreeSlot()) {
 			return null;
 		}
@@ -29,18 +29,19 @@ public class JobUse extends Job {
 		job.setSlot(slot);
 		job.setPosition(slot.getX(), slot.getY());
 		job.setAction(JobManager.Action.USE);
+		job.setActionInfo(item.getInfo().actions.get(0));
 		job.setItem(item);
 		job.setDurationLeft(item.getInfo().actions.get(0).duration);
 
 		return job;
 	}
 
-	public static Job create(ItemBase item, CharacterModel character) {
+	public static JobModel create(ItemBase item, CharacterModel character) {
 		if (character == null) {
 			return null;
 		}
 		
-		Job job = create(item);
+		JobModel job = create(item);
 		job.setCharacterRequire(character);
 		
 		return job;
@@ -115,6 +116,11 @@ public class JobUse extends Job {
 	}
 
 	@Override
+	public String getType() {
+		return "use";
+	}
+
+	@Override
 	public boolean check(CharacterModel character) {
 		// Item is null
 		if (_item == null) {
@@ -145,6 +151,9 @@ public class JobUse extends Job {
 
 	@Override
 	public String getLabel() {
+        if (_actionInfo != null && _actionInfo.label != null) {
+            return _actionInfo.label;
+        }
 		return "use " + _item.getLabel();
 	}
 

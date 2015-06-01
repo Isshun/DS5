@@ -7,7 +7,7 @@ import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.Movable.Direction;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.job.Job.JobAbortReason;
+import org.smallbox.faraway.model.job.JobModel.JobAbortReason;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,5 +181,9 @@ public class CharacterManager {
 	public void addRandom(int x, int y) {
 		CharacterModel character = new CharacterModel(Utils.getUUID(), x, y, null, null, 16);
 		add(character);
+	}
+
+	public List<CharacterModel> getCharacters() {
+		return _characters;
 	}
 }

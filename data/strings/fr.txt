@@ -24,6 +24,15 @@ Fridge: Frigo
 Pub: Bar
 Serving table: Buffet
 
+#Action
+Eat easy meal: Mange un repas simple
+Eat advanced meal: Mange un bon repas
+Eat military ration: Mange des rations militaire
+Cook easy meal: Cuisine un repas simple
+Cook advanced meal: Cuisine un bon repas
+Cook military ration: Cuisine des rations militaire
+Sleep in bed: Dors dans un lit
+
 #Room
 Quarter: Quartier
 Sickbay: Infirmerie
@@ -32,6 +41,12 @@ Storage: Reserve
 Enginering: Salle des machines
 
 #Menu
+[Monitoring]: [Surveillance]
+[Private life]: [Vie privée]
+[Priorities]: [Compétences]
+[Inventory]: [Inventaire]
+[Health]: [Santé]
+
 Resources: Ressources
 
 Food: Nourriture
@@ -85,6 +100,7 @@ Doctor: Docteur
 Child: Enfant
 
 I'm starving: Je meurs de faim
+I feel lonely: Je me sens seul
 Everything goes right: Tous va bien
 I sleep well: Je dors bien
 bad: mauvais

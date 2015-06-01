@@ -9,7 +9,7 @@ import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.job.Job;
+import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 
@@ -66,6 +66,7 @@ public class PanelInfoItem extends BaseRightPanel {
         select(item.getInfo());
 
         if (isLoaded()) {
+            ((TextView)findById("lb_id")).setString("(" + _item.getId() + ")");
             ((TextView)findById("lb_durability")).setString("Durability: " + _item.getHealth());
             ((TextView)findById("lb_matter")).setString("Matter: " + _item.getMatter());
             ((TextView)findById("lb_pos")).setString("Pos: " + _item.getX() + "x" + _item.getY());
@@ -85,7 +86,7 @@ public class PanelInfoItem extends BaseRightPanel {
             // Create actions list
             index = 0;
             if (_item.hasJobs()) {
-                for (Job job : _item.getJobs()) {
+                for (JobModel job : _item.getJobs()) {
                     addJobListEntry(job, index++);
                 }
             }
@@ -100,34 +101,49 @@ public class PanelInfoItem extends BaseRightPanel {
         }
     }
 
-    private void addJobListEntry(Job job, int index) {
+    private void addJobListEntry(JobModel job, int index) {
+        int lineHeight = 40;
+
         TextView lbEnable = _viewFactory.createTextView();
-        lbEnable.setString("[x]");
+        lbEnable.setString("[s]");
         lbEnable.setCharacterSize(14);
-        lbEnable.setPosition(24, 20 + 20 * index);
+        lbEnable.setPosition(24, 20 + lineHeight * index);
         _frameCraftEntries.addView(lbEnable);
 
-        TextView lbCraft = _viewFactory.createTextView();
-        lbCraft.setString(job.getLabel());
-        lbCraft.setCharacterSize(14);
-        lbCraft.setPosition(80, 20 + 20 * index);
-        _frameCraftEntries.addView(lbCraft);
-
-        TextView lbCraftCount = _viewFactory.createTextView();
-        lbCraftCount.setString("x1");
-        lbCraftCount.setCharacterSize(14);
-        lbCraftCount.setPosition(250, 20 + 20 * index);
-        _frameCraftEntries.addView(lbCraftCount);
-
         TextView lbCraftCancel = _viewFactory.createTextView();
-        lbCraftCancel.setString("cancel");
+        lbCraftCancel.setString("[c]");
         lbCraftCancel.setCharacterSize(14);
-        lbCraftCancel.setPosition(300, 20 + 20 * index);
+        lbCraftCancel.setPosition(52, 20 + lineHeight * index);
         lbCraftCancel.setOnClickListener(view -> {
             JobManager.getInstance().removeJob(job);
         });
         lbCraftCancel.resetSize();
         _frameCraftEntries.addView(lbCraftCancel);
+
+        TextView lbCraft = _viewFactory.createTextView();
+        lbCraft.setString(job.getLabel());
+        lbCraft.setCharacterSize(14);
+        lbCraft.setPosition(80, 20 + lineHeight * index);
+        _frameCraftEntries.addView(lbCraft);
+
+        TextView lbProgress = _viewFactory.createTextView();
+        lbProgress.setString(job.getProgressPercent() + "%");
+        lbProgress.setCharacterSize(14);
+        lbProgress.setPosition(80, 40 + lineHeight * index);
+        _frameCraftEntries.addView(lbProgress);
+
+        TextView lbCraftCount = _viewFactory.createTextView();
+        lbCraftCount.setString(job.getCount() < 0 ? "xx" : "x" + job.getCount());
+        lbCraftCount.setCharacterSize(14);
+        lbCraftCount.setPosition(350, 20 + lineHeight * index);
+        lbCraftCount.setOnClickListener(view -> {
+            job.setCount(job.getCount() == -1 ? 1 : -1);
+        });
+        lbCraftCount.setOnRightClickListener(view -> {
+            job.setCount(job.getCount() == -1 ? 1 : -1);
+        });
+        lbCraftCount.resetSize();
+        _frameCraftEntries.addView(lbCraftCount);
     }
 
     private void addActionMenuEntry(ItemInfo.ItemInfoAction action, int index) {
@@ -136,7 +152,9 @@ public class PanelInfoItem extends BaseRightPanel {
         lbCraft.setCharacterSize(14);
         lbCraft.setPosition(0, 0 + 20 * index);
         lbCraft.setSize(lbCraft.getContentWidth(), lbCraft.getContentHeight());
-        lbCraft.setOnClickListener(view -> JobManager.getInstance().addCraftJob(_item, action));
+        lbCraft.setOnClickListener(view -> {
+            JobManager.getInstance().addJob(_item, action);
+        });
         _menuAddCraftEntries.addView(lbCraft);
     }
 

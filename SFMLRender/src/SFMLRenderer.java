@@ -62,7 +62,7 @@ public class SFMLRenderer implements GFXRenderer {
 
     @Override
     public void draw(ColorView view, RenderEffect effect) {
-//        _window.draw(spriteCache, effect.getRender());
+        view.draw(this, effect);
     }
 
     public void draw(Text text) {
