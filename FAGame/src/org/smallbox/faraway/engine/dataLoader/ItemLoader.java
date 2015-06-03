@@ -95,6 +95,10 @@ public class ItemLoader {
 						action.productsItem = action.products.stream().map(data::getItemInfo).collect(Collectors.toList());
 					}
 
+                    if (action.dropRate == 0) {
+                        action.dropRate = 1;
+                    }
+
 					switch (action.type) {
                         case "use":
                             if (item.actions.size() > 1) {

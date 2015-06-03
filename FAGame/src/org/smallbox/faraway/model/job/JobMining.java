@@ -51,11 +51,11 @@ public class JobMining extends BaseJob {
 			return false;
 		}
 		
-		// Resource is depleted
-		if (_item.getMatterSupply() <= 0) {
-			_reason = JobAbortReason.INVALID;
-			return false;
-		}
+//		// Resource is depleted
+//		if (_item.getMatterSupply() <= 0) {
+//			_reason = JobAbortReason.INVALID;
+//			return false;
+//		}
 
 		// No space left in inventory
 		if (character.hasInventorySpaceLeft() == false) {
@@ -104,8 +104,10 @@ public class JobMining extends BaseJob {
 
         if (_character.work(CharacterModel.TalentType.MINE, gatheredItem)) {
 			ServiceManager.getWorldMap().removeResource(gatheredItem);
-            for (ItemInfo item: _actionInfo.productsItem) {
-                ServiceManager.getWorldMap().putItem(item, gatheredItem.getX(), gatheredItem.getY(), 0, 100);
+            if (_actionInfo.dropRate >= Math.random()) {
+                for (ItemInfo item : _actionInfo.productsItem) {
+                    ServiceManager.getWorldMap().putItem(item, gatheredItem.getX(), gatheredItem.getY(), 0, 100);
+                }
             }
             JobManager.getInstance().complete(this);
 			return true;

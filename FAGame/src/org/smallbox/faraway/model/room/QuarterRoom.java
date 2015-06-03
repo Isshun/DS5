@@ -13,12 +13,12 @@ public class QuarterRoom extends Room {
 	private RoomOption 			_entryStorage;
 
 	public QuarterRoom() {
-		super(Type.QUARTER);
+		super(RoomType.QUARTER);
 		init();
 	}
 
 	public QuarterRoom(int id) {
-		super(id, Type.QUARTER);
+		super(id, RoomType.QUARTER);
 		init();
 	}
 

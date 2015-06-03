@@ -23,6 +23,22 @@ public class SFMLImageView extends ImageView {
 
     @Override
     public void draw(GFXRenderer renderer, RenderEffect effect) {
+        if (_sprite == null && _image != null) {
+            _sprite = ((SFMLSprite)_image).getData();
+
+            int x = 0;
+            int y = 0;
+            View view = this;
+            while (view != null) {
+                x += view.getPosX();
+                y += view.getPosY();
+                view = view.getParent();
+            }
+            _sprite.setPosition(x, y);
+            ((SFMLRenderer)renderer).draw(_sprite);
+            return;
+        }
+
         if (_sprite == null && _path != null) {
             try {
                 Texture texture = new Texture();

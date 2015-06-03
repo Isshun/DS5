@@ -14,7 +14,17 @@ import java.util.List;
 import java.util.Set;
 
 public class Room {
-	public enum Type {
+	private boolean _isExterior;
+
+	public void setExterior(boolean isExterior) {
+		_isExterior = isExterior;
+	}
+
+	public boolean isExterior() {
+		return _isExterior;
+	}
+
+	public enum RoomType {
 		NONE,
 		QUARTER,
 		SICKBAY,
@@ -28,7 +38,7 @@ public class Room {
 	int						_id;
 	int						_zoneId;
 	List<ItemBase>			_doors;
-	private Type 			_type;
+	private RoomType _type;
 	private CharacterModel _owner;
 	private int 			_x;
 	private int 			_y;
@@ -39,15 +49,15 @@ public class Room {
 	private Set<CharacterModel> 	_occupants;
 	protected List<WorldArea> 	_areas;
 
-	public Room(int id, Type type) {
+	public Room(int id, RoomType type) {
 		init(id, type);
 	}
 
-	public Room(Type type) {
+	public Room(RoomType type) {
 		init(Utils.getUUID(), type);
 	}
 
-	private void init(int id, Type type) {
+	private void init(int id, RoomType type) {
 		_color = new Color((int)(Math.random() * 200), (int)(Math.random() * 200), (int)(Math.random() * 200));
 		_areas = new ArrayList<WorldArea>();
 		_id = id;
@@ -69,7 +79,7 @@ public class Room {
 	public int 				getMinX() { return _minX; }
 	public int 				getMaxX() { return _maxX; }
 	public int 				getWidth() { return _maxX - _minX + 1; }
-	public Type 			getType() { return _type; }
+	public RoomType getType() { return _type; }
 	public Set<CharacterModel>	getOccupants() { return _occupants; }
 
 	public void 			setMaxX(int x) { _maxX = x; }
@@ -77,7 +87,7 @@ public class Room {
 	public void 			setCommon(boolean common) { _isCommon = common; }
 
 	public boolean 			isCommon() { return _isCommon; }
-	public boolean			isType(Type type) { return _type == type; }
+	public boolean			isType(RoomType type) { return _type == type; }
 
 	public void 			setOwner(CharacterModel owner) {
 		_owner = owner; 
@@ -206,15 +216,15 @@ public class Room {
 	//	  setZone(x-1, y, roomId, zoneId);
 	//	}
 
-	public static Type getType(int type) {
+	public static RoomType getType(int type) {
 		switch (type) {
-		case 1: return Type.QUARTER;
-		case 2: return Type.SICKBAY;
-		case 3: return Type.ENGINEERING;
-		case 4: return Type.METTING;
-		case 5: return Type.HOLODECK;
-		case 6: return Type.STORAGE;
-		case 7: return Type.GARDEN;
+		case 1: return RoomType.QUARTER;
+		case 2: return RoomType.SICKBAY;
+		case 3: return RoomType.ENGINEERING;
+		case 4: return RoomType.METTING;
+		case 5: return RoomType.HOLODECK;
+		case 6: return RoomType.STORAGE;
+		case 7: return RoomType.GARDEN;
 		};
 		return null;
 	}
@@ -247,7 +257,7 @@ public class Room {
 	}
 
 	public boolean isGarden() {
-		return _type == Type.GARDEN;
+		return _type == RoomType.GARDEN;
 	}
 
 	public void setOption(int index) {
@@ -258,11 +268,11 @@ public class Room {
 	}
 
 	public boolean isQuarter() {
-		return Type.QUARTER.equals(_type);
+		return RoomType.QUARTER.equals(_type);
 	}
 
 	public boolean isPrivate() {
-		return _type == Type.QUARTER;
+		return _type == RoomType.QUARTER;
 	}
 
 	/**
@@ -307,7 +317,7 @@ public class Room {
 	}
 
 	public boolean isStorage() {
-		return _type == Type.STORAGE;
+		return _type == RoomType.STORAGE;
 	}
 
 }

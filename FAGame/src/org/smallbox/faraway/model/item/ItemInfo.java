@@ -33,6 +33,7 @@ public class ItemInfo {
 		public int 					mature;
 		public int                  cost;
 		public String 				name;
+		public float                dropRate;
 	}
 
 	public static class ItemInfoEffects {

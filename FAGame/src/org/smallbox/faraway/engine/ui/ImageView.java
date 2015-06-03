@@ -6,8 +6,8 @@ import org.smallbox.faraway.SpriteModel;
 
 public abstract class ImageView extends View {
 
-	private SpriteModel _image;
-	protected String 	_path;
+	protected SpriteModel	_image;
+	protected String 		_path;
 	protected double 		_scaleX = 1;
 	protected double 		_scaleY = 1;
 

@@ -20,4 +20,7 @@ public class StructureItem extends ItemBase {
 		return getName().equals("base.hull");
 	}
 
+	public boolean isGround() {
+		return getName().equals("base.ground");
+	}
 }

@@ -8,7 +8,7 @@ import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.CategoryInfo;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.ui.UserInteraction.Action;
+import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.ArrayList;
@@ -26,10 +26,10 @@ public class PanelBuild extends BaseRightPanel {
 	};
 
 	private static final Color				COLOR_INACTIVE = new Color(29, 85, 96, 100);
-	private static final int 				GRID_WIDTH = 100;
-	private static final int 				GRID_HEIGHT = 120;
+	private static final int 				GRID_WIDTH = 90;
+	private static final int 				GRID_HEIGHT = 110;
 
-	private Map<ItemInfo, TextView> 		_icons;
+	private Map<ItemInfo, View> 	        _icons;
 	private List<View>						_iconsList;
 	protected ItemInfo 						_currentSelected;
 	protected PanelMode 					_panelMode;
@@ -44,6 +44,7 @@ public class PanelBuild extends BaseRightPanel {
 
 	@Override
 	protected void onCreate(ViewFactory factory) {
+        clearAllViews();
 		_iconShortcut = new TextView[10];
 		_layouts = new HashMap<>();
 		_iconsList = new ArrayList<>();
@@ -57,7 +58,7 @@ public class PanelBuild extends BaseRightPanel {
 	public ItemInfo getSelectedItem() { return _currentSelected; }
 
 	// TODO: ugly
-	protected void	drawPanel(boolean witchAnim) {
+	protected void	drawPanel(boolean anim) {
 		_animRunning = true;
 		clearAllViews();
 		_icons.clear();
@@ -83,12 +84,7 @@ public class PanelBuild extends BaseRightPanel {
 			lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 			lbTitle.setPosition(20, posY + 8);
 			lbTitle.setColor(Colors.TEXT);
-			lbTitle.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					toogleCategory(category);
-				}
-			});
+			lbTitle.setOnClickListener(view -> toggleCategory(category));
 			addView(lbTitle);
 
 //            // Shortcut
@@ -108,20 +104,8 @@ public class PanelBuild extends BaseRightPanel {
 			posY += 44;
 
 			// Items
-			if (category.equals(_currentCategory)) {
-				int i = 0;
-				for (ItemInfo info: c.items) {
-					if (info.isUserItem || info.isStructure) {
-						View icon = drawIcon(layout, i, info, posY > 42);
-						icon.setVisible(!witchAnim);
-						_iconsList.add(icon);
-						i++;
-					}
-				}
-				posY += Math.ceil((double)i / 4) * GRID_HEIGHT;
-				for (; i < 10; i++) {
-					_iconShortcut[i] = null;
-				}
+			if (category == _currentCategory) {
+                posY = refreshCategory(category, layout, posY, anim);
 			}
 		}
 
@@ -130,17 +114,34 @@ public class PanelBuild extends BaseRightPanel {
 		addView(border);
 	}
 
-	protected void toogleCategory(CategoryInfo category) {
+	private int refreshCategory(CategoryInfo category, FrameLayout layout, int posY, boolean anim) {
+		int i = 0;
+		for (ItemInfo info: category.items) {
+			if (info.isUserItem || info.isStructure) {
+				drawIcon(layout, i, info, posY > 42);
+                _icons.get(info).setVisible(!anim);
+				_iconsList.add(_icons.get(info));
+				i++;
+			}
+		}
+		posY += Math.ceil((double)i / 4) * GRID_HEIGHT;
+		for (; i < 10; i++) {
+			_iconShortcut[i] = null;
+		}
+        return posY;
+	}
+
+	protected void toggleCategory(CategoryInfo category) {
 		_currentCategory = _currentCategory != category ? category : null;
 
 		if (_currentCategory != null) {
-			openCategory(_currentCategory);
+			refreshPanel(_currentCategory);
 		} else {
 			drawPanel(false);			
 		}
 	}
 
-	protected void openCategory(CategoryInfo category) {
+	protected void refreshPanel(CategoryInfo category) {
 		boolean withAnim = _currentCategory != category;
 
 		_currentCategory = category;
@@ -154,60 +155,76 @@ public class PanelBuild extends BaseRightPanel {
 		drawPanel(withAnim);
 	}
 
-	private TextView	drawIcon(FrameLayout layout, int index, final ItemInfo info, boolean visible) {
-		TextView icon = _icons.get(info);
-		if (icon == null) {
+	private void drawIcon(FrameLayout layout, int index, final ItemInfo info, boolean visible) {
+		if (!_icons.containsKey(info)) {
 			int x = (index % 4) * GRID_WIDTH;
-			int y = (int)(index / 4) * GRID_HEIGHT;
+			int y = (index / 4) * GRID_HEIGHT;
 
-			icon = ViewFactory.getInstance().createTextView(82, 100);
-			String label = info.label.length() > 9 ? info.label.substring(0, 9) : info.label;
-			icon.setString(label);
-			icon.setTextPadding(80, 4);
-			icon.setIcon(SpriteManager.getInstance().getIcon(info));
-			if (info.name.equals("base.bed")) {
-				icon.setId(112);
-			}
-			icon.setIconPadding(14, 10);
-			icon.setPosition(x, y);
-			icon.setColor(Colors.TEXT);
-			icon.setCharacterSize(FONT_SIZE);
-			icon.setBackgroundColor(COLOR_INACTIVE);
-			icon.setBorderSize(2);
-			icon.setData(info);
-			icon.setOnFocusListener(new OnFocusListener() {
-				@Override
-				public void onEnter(View view) {
-					view.setBackgroundColor(new Color(29, 85, 96, 180));
-				}
+			ViewFactory.getInstance().load("data/ui/panels/build_entry.yml", view -> {
+                String label = info.label.length() > 9 ? info.label.substring(0, 9) : info.label;
+                ((TextView)view.findById("lb_item")).setString(label);
+                ((ImageView)view.findById("img_item")).setImage(SpriteManager.getInstance().getIcon(info));
+                view.findById("frame_select").setVisible(false);
+                view.findById("frame_material").setVisible(false);
 
-				@Override
-				public void onExit(View view) {
-					view.setBackgroundColor(info.equals(_currentSelected) ? new Color(29, 85, 96) : new Color(29, 85, 96, 100));
-				}
-			});
-			icon.setOnClickListener(view -> {
-                clickOnIcon(view);
-                _interaction.set(Action.BUILD_ITEM, info);
+//                view.setOnFocusListener(new OnFocusListener() {
+//                    @Override
+//                    public void onEnter(View view) {
+//                        view.findById("frame_select").setVisible(true);
+//                    }
+//
+//                    @Override
+//                    public void onExit(View view) {
+//                        view.findById("frame_select").setVisible(true);
+//                    }
+//                });
+                view.setOnClickListener(v -> {
+                    _interaction.set(UserInteraction.Action.BUILD_ITEM, info);
+                    _icons.values().forEach(view1 -> view1.findById("frame_select").setVisible(false));
+                    v.findById("frame_select").setVisible(true);
+                });
+                view.setOnRightClickListener(v -> {
+                    FrameLayout frameMaterial = (FrameLayout)v.findById("frame_material");
+                    frameMaterial.setVisible(!frameMaterial.isVisible());
+                });
+			    view.setData(info);
+                view.setPosition(x, y);
+                view.setSize(72, 96);
+                layout.addView(view);
+                layout.resetAllPos();
+                _icons.put(info, view);
             });
-			if (index < 10) {
-				_iconShortcut[index] = icon;
-			}
-			layout.addView(icon);
 
-			TextView lbIndex = ViewFactory.getInstance().createTextView();
-			lbIndex.setString(String.valueOf(index+1));
-			lbIndex.setColor(Colors.LINK_ACTIVE);
-			lbIndex.setStyle(TextView.UNDERLINED);
-			lbIndex.setCharacterSize(FONT_SIZE);
-			lbIndex.setPosition(x+4, y);
-			layout.addView(lbIndex);
+//			icon.setOnFocusListener(new OnFocusListener() {
+//				@Override
+//				public void onEnter(View view) {
+//					view.setBackgroundColor(new Color(29, 85, 96, 180));
+//				}
+//
+//				@Override
+//				public void onExit(View view) {
+//					view.setBackgroundColor(info.equals(_currentSelected) ? new Color(29, 85, 96) : new Color(29, 85, 96, 100));
+//				}
+//			});
+//			icon.setOnClickListener(view -> {
+//                clickOnIcon(view);
+//                _interaction.set(Action.BUILD_ITEM, info);
+//            });
+//			if (index < 10) {
+//				_iconShortcut[index] = icon;
+//			}
 
-			_icons.put(info, icon);
+//			TextView lbIndex = ViewFactory.getInstance().createTextView();
+//			lbIndex.setString(String.valueOf(index+1));
+//			lbIndex.setColor(Colors.LINK_ACTIVE);
+//			lbIndex.setStyle(TextView.UNDERLINED);
+//			lbIndex.setCharacterSize(FONT_SIZE);
+//			lbIndex.setPosition(x+4, y);
+//			layout.addView(lbIndex);
+
+//			frame.addView(icon);
 		}
-		icon.resetPos();
-
-		return icon;
+//		frame.resetPos();
 	}
 
 	@Override
@@ -233,7 +250,7 @@ public class PanelBuild extends BaseRightPanel {
 			List<CategoryInfo> categories = Game.getData().categories;
 			for (CategoryInfo category: categories) {
 				if (shortcut.equals(category.shortcut)) {
-					openCategory(category);
+					refreshPanel(category);
 					return true;
 				}
 			}
@@ -260,8 +277,8 @@ public class PanelBuild extends BaseRightPanel {
 		if (view == null) {
 			return;
 		}
-		
-		for (TextView icon: _icons.values()) {
+
+		for (View icon: _icons.values()) {
 			icon.setBackgroundColor(new Color(29, 85, 96, 100));
 			icon.setBorderColor(null);
 		}

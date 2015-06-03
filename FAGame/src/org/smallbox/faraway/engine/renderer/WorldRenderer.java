@@ -131,7 +131,7 @@ public class WorldRenderer implements IRenderer {
 						// TODO
 //						// Greenhouse
 						if (structure.getName().equals("base.greenhouse")) {
-							int index = room != null && room.isType(Room.Type.GARDEN) ? 0 : 2;
+							int index = room != null && room.isType(Room.RoomType.GARDEN) ? 0 : 2;
 							SpriteModel sprite = _spriteManager.getGreenHouse(index + (structure.isWorking() ? 1 : 0));
 							sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
 							_layerStructure.draw(sprite);

@@ -8,7 +8,7 @@ import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.room.Room;
-import org.smallbox.faraway.model.room.Room.Type;
+import org.smallbox.faraway.model.room.Room.RoomType;
 import org.smallbox.faraway.model.room.RoomOptions;
 import org.smallbox.faraway.model.room.RoomOptions.RoomOption;
 import org.smallbox.faraway.ui.UserInteraction.Action;
@@ -21,11 +21,11 @@ public class PanelRoom extends BaseRightPanel {
 	private class PanelEntry {
 		public GameEventListener.Key				shortcut;
 		public String			label;
-		public Type				roomType;
+		public RoomType roomType;
 		public OnClickListener 	onClickListener;
 		public View 			view;
 
-		public PanelEntry(final String label, final Type roomType, final GameEventListener.Key shortcut) {
+		public PanelEntry(final String label, final RoomType roomType, final GameEventListener.Key shortcut) {
 			this.shortcut = shortcut;
 			this.label = label;
 			this.roomType = roomType;
@@ -60,14 +60,14 @@ public class PanelRoom extends BaseRightPanel {
 	private FrameLayout 				_layoutRoomOption;
 
 	private PanelEntry[] _entries = {
-			new PanelEntry("Remove", Room.Type.NONE, GameEventListener.Key.R),
-			new PanelEntry("Quarter", Room.Type.QUARTER, GameEventListener.Key.Q),
-			new PanelEntry("Sickbay", Room.Type.SICKBAY, GameEventListener.Key.I),
-			new PanelEntry("Enginering", Room.Type.ENGINEERING, GameEventListener.Key.E),
-			new PanelEntry("Pub", Room.Type.METTING, GameEventListener.Key.P),
-			new PanelEntry("Holodeck", Room.Type.HOLODECK, GameEventListener.Key.H),
-			new PanelEntry("Garden", Room.Type.GARDEN, GameEventListener.Key.G),
-			new PanelEntry("Storage", Room.Type.STORAGE, GameEventListener.Key.S),
+			new PanelEntry("Remove", RoomType.NONE, GameEventListener.Key.R),
+			new PanelEntry("Quarter", RoomType.QUARTER, GameEventListener.Key.Q),
+			new PanelEntry("Sickbay", RoomType.SICKBAY, GameEventListener.Key.I),
+			new PanelEntry("Enginering", RoomType.ENGINEERING, GameEventListener.Key.E),
+			new PanelEntry("Pub", RoomType.METTING, GameEventListener.Key.P),
+			new PanelEntry("Holodeck", RoomType.HOLODECK, GameEventListener.Key.H),
+			new PanelEntry("Garden", RoomType.GARDEN, GameEventListener.Key.G),
+			new PanelEntry("Storage", RoomType.STORAGE, GameEventListener.Key.S),
 	};
 
 	public PanelRoom(Mode mode, GameEventListener.Key shortcut) {

@@ -11,7 +11,7 @@ import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.model.item.WorldResource;
 import org.smallbox.faraway.model.job.BaseJob;
 import org.smallbox.faraway.model.job.JobTake;
-import org.smallbox.faraway.model.room.Room.Type;
+import org.smallbox.faraway.model.room.Room.RoomType;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.PanelPlan.Planning;
 
@@ -29,7 +29,7 @@ public class
 	GameEventListener.MouseButton _button;
 	
 	private Planning 					_selectedPlan;
-	private Type 						_selectedRoomType;
+	private RoomType _selectedRoomType;
 	private ItemInfo 					_selectedItemInfo;
 	private UserInterface				_ui;
 
@@ -186,7 +186,7 @@ public class
 		
 	}
 
-	public void set(Action action, Type roomType) {
+	public void set(Action action, RoomType roomType) {
 		_action = action;
 		_selectedRoomType = roomType;
 	}
@@ -204,7 +204,7 @@ public class
 		}
 	}
 
-	public Type getSelectedRoomType() {
+	public RoomType getSelectedRoomType() {
 		return _selectedRoomType;
 	}
 

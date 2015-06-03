@@ -25,12 +25,12 @@ public class GardenRoom extends Room {
 	private State 				_state;
 
 	public GardenRoom() {
-		super(Type.GARDEN);
+		super(RoomType.GARDEN);
 		init();
 	}
 
 	public GardenRoom(int id) {
-		super(id, Type.GARDEN);
+		super(id, RoomType.GARDEN);
 		init();
 	}
 

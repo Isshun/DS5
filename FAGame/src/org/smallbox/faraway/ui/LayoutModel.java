@@ -14,7 +14,7 @@ public class LayoutModel {
         public String   style;
         public int      textsize;
         public int      textcolor;
-        public int      background;
+        public long     background;
         public int[]    size;
         public int[]    position;
         public List<LayoutEntry> entries;

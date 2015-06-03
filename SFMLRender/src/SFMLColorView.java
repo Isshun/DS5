@@ -52,7 +52,7 @@ public class SFMLColorView extends ColorView {
             _background = new RectangleShape();
             _background.setSize(new Vector2f(_width, _height));
             _background.setPosition(new Vector2f(_x, _y));
-            _background.setFillColor(new org.jsfml.graphics.Color(color.r, color.g, color.b));
+            _background.setFillColor(new org.jsfml.graphics.Color(color.r, color.g, color.b, color.a));
         } else {
             _background = null;
         }

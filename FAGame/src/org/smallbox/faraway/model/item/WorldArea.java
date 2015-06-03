@@ -48,7 +48,8 @@ public class WorldArea {
 	public boolean			hasLightSource() { return _lightSource > 0; }
 	public int				getLightSource() { return _lightSource; }
 	public void				setLightSource(int value) { _lightSource = value; }
-	
+	public boolean 			canSupportRoof() { return (_structure != null && (_structure.isWall() || _structure.isDoor())) || (_resource != null && _resource.isRock()); }
+
 	public void				setItem(UserItem item) {
 		_item = item;
 		if (item != null) {

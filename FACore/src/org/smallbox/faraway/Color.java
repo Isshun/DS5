@@ -15,10 +15,12 @@ public class Color {
     public final int r;
     public final int g;
     public final int b;
+    public final int a;
 
-    private int _rgb;
+    private long _rgb;
 
     public Color(int r, int g, int b) {
+        this.a = 255;
         this.r = r;
         this.g = g;
         this.b = b;
@@ -30,6 +32,7 @@ public class Color {
     }
 
     public Color(int r, int g, int b, int a) {
+        this.a = 255;
         this.r = r;
         this.g = g;
         this.b = b;
@@ -40,10 +43,11 @@ public class Color {
         _rgb = (_rgb << 8) + a;
     }
 
-    public Color(int rgb) {
+    public Color(long rgb) {
         _rgb = rgb;
-        this.r = (rgb >> 16) & 0xFF;
-        this.g = (rgb >> 8) & 0xFF;
-        this.b = rgb & 0xFF;
+        this.a = rgb > 0xffffff ? (int) ((rgb >> 22) & 0xFF) : 255;
+        this.r = (int) ((rgb >> 16) & 0xFF);
+        this.g = (int) ((rgb >> 8) & 0xFF);
+        this.b = (int) (rgb & 0xFF);
     }
 }

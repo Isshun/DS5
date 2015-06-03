@@ -574,7 +574,7 @@ public class UserInterface implements GameEventListener {
             _interaction.clean();
         }
 
-        else if (_mode == Mode.ROOM && _interaction.getSelectedRoomType() == Room.Type.NONE) {
+        else if (_mode == Mode.ROOM && _interaction.getSelectedRoomType() == Room.RoomType.NONE) {
 //            final Room room = Game.getRoomManager().get(getRelativePosX(x), getRelativePosY(y));
 //            if (room != null) {
 //                throw new RuntimeException("not implemented");
@@ -658,6 +658,8 @@ public class UserInterface implements GameEventListener {
         setMode(Mode.INFO_STRUCTURE);
         _selectedStructure = structure;
         _panelInfoStructure.select(structure);
+
+        dumpRoomInfo(structure.getArea());
     }
 
     public void select(WorldArea area) {
@@ -665,6 +667,18 @@ public class UserInterface implements GameEventListener {
         setMode(Mode.INFO_AREA);
         _selectedArea = area;
         _panelInfoArea.select(area);
+
+        dumpRoomInfo(area);
+    }
+
+    private void dumpRoomInfo(WorldArea area) {
+        if (area.getRoom() != null) {
+            for (WorldArea a: area.getRoom().getAreas()) {
+                System.out.println("in room: " + a.getX() + "x" + a.getY());
+            }
+            System.out.println("room size: " + area.getRoom().getAreas().size());
+            System.out.println("room exterior: " + area.getRoom().isExterior());
+        }
     }
 
     public void select(ItemInfo itemInfo) {

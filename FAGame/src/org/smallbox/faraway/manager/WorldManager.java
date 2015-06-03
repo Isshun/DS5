@@ -17,6 +17,10 @@ import java.util.Map;
 
 public class WorldManager implements TileBasedMap {
 
+    public WorldArea[][][] getAreas() {
+        return _areas;
+    }
+
     public static class DebugPos {
         public int 			x;
         public int 			y;
@@ -153,7 +157,7 @@ public class WorldManager implements TileBasedMap {
 
         // Put structure on area
         else {
-            if (area.getStructure() == null) {
+            if (area.getStructure() == null || area.getStructure().isGround()) {
                 ItemBase item = ItemFactory.create(this, area, itemInfo, matterSupply);
                 if (item != null) {
                     item.setPosition(x, y);

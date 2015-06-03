@@ -62,6 +62,7 @@ entries:
             position: [24, 45]
             size: [175, 45]
             align: center
+            background: 0x1d5560
 
         -   type: label
             id: bt_occupation
@@ -71,6 +72,7 @@ entries:
             position: [220, 45]
             size: [175, 45]
             align: center
+            background: 0x1d5560
 
         -   type: label
             id: bt_crew
@@ -80,6 +82,7 @@ entries:
             position: [24, 115]
             size: [175, 45]
             align: center
+            background: 0x1d5560
 
         -   type: label
             id: bt_room
@@ -89,6 +92,7 @@ entries:
             position: [220, 115]
             size: [175, 45]
             align: center
+            background: 0x1d5560
 
         -   type: label
             id: bt_debug
@@ -98,6 +102,7 @@ entries:
             position: [24, 185]
             size: [175, 45]
             align: center
+            background: 0x1d5560
 
         -   type: label
             id: bt_plan
@@ -107,6 +112,7 @@ entries:
             position: [220, 185]
             size: [175, 45]
             align: center
+            background: 0x1d5560
 
         -   type: label
             id: bt_manage
@@ -116,6 +122,7 @@ entries:
             position: [24, 255]
             size: [175, 45]
             align: center
+            background: 0x1d5560
 
         -   type: label
             id: bt_stats
@@ -125,3 +132,14 @@ entries:
             position: [220, 255]
             size: [175, 45]
             align: center
+            background: 0x1d5560
+
+        -   type: label
+            id: bt_display
+            text: '[_DISPLAY]'
+            textsize: 18
+            textcolor: 0x78ffff
+            position: [24, 325]
+            size: [175, 45]
+            align: center
+            background: 0x1d5560

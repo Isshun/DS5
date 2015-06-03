@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Game {
 	private static GameData 			_data;
-//	private static RoomManager 			_roomManager;
+	private static RoomManager 			_roomManager;
 	private static StatsManager			_statsManager;
 	private static ResourceManager 		_resourceManager;
 	private static CharacterManager 	_characterManager;
@@ -24,7 +24,7 @@ public class Game {
 	private int 						_speed;
 
 	public static StatsManager 			getStatsManager() { return _statsManager; }
-//	public static RoomManager 			getRoomManager() { return _roomManager; }
+	public static RoomManager 			getRoomManager() { return _roomManager; }
 	public static ResourceManager 		get() { return _resourceManager ; }
 	public static CharacterManager 		getCharacterManager() { return _characterManager; }
 	public static WorldManager 			getWorldManager() { return _worldManager; }
@@ -95,7 +95,7 @@ public class Game {
 
 		_worldManager = new WorldManager();
 		ServiceManager.setWorldMap(_worldManager);
-//		_roomManager = new RoomManager();
+		_roomManager = new RoomManager();
 		_resourceManager = new ResourceManager();
 		_statsManager = new StatsManager();
 		_dynamicObjectManager = new DynamicObjectManager();

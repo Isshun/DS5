@@ -152,8 +152,8 @@ public abstract class View {
         int y = 0;
         View view = this;
         while (view != null) {
-            x += view.getPosX() + view.getOffsetX();
-            y += view.getPosY() + view.getOffsetY();
+            x += view.getPosX();
+            y += view.getPosY();
             view = view.getParent();
         }
         return new Rectangle(x, y, _width == 0 ? getContentWidth() : _width, _height == 0 ? getContentHeight() : _height);

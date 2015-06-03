@@ -72,7 +72,7 @@ public class Application implements GameEventListener {
 		_isFullscreen = true;
 		_gameRenderer = new MainRenderer();
 		_gameInterface = new UserInterface(new LayoutFactory(), ViewFactory.getInstance());
-        //_mainMenu = new MainMenu(new LayoutFactory(), ViewFactory.getInstance(), renderer);
+        _mainMenu = new MainMenu(new LayoutFactory(), ViewFactory.getInstance(), renderer);
     }
 
     public GameData loadResources() {
