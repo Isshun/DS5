@@ -38,7 +38,6 @@ public class MainRenderer implements IRenderer {
 		//_lightRenderer = new LightRenderer();
 //		_roomRenderer = new RoomRenderer();
 		_debugRenderer = new DebugRenderer();
-		
 		_jobRenderer = new JobRenderer();
 	}
 
@@ -116,7 +115,7 @@ public class MainRenderer implements IRenderer {
 	public void refreshLight(ItemBase item) {
         // TODO
 //		if (_lightRenderer != null) {
-//			_lightRenderer.refresh(item);
+//			_lightRenderer.refreshGame(item);
 //		}
 	}
 	public void setFPS(int frame, int interval) {

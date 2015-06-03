@@ -26,7 +26,7 @@ entries:
         id: lb_pos
         text: pos
         textsize: 14
-        position: [24, 102]
+        position: [280, 46]
 
     -   type: frame
         id: frame_craft

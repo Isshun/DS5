@@ -1,9 +1,9 @@
 package org.smallbox.faraway.model.item;
 
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.model.job.BaseJob;
 
 public class ItemSlot {
-	private JobModel _job;
+	private BaseJob _job;
 	private ItemBase	_item;
 	private int			_relX;
 	private int			_relY;
@@ -16,7 +16,7 @@ public class ItemSlot {
 		_isFree = true;
 	}
 
-	public void take(JobModel job) {
+	public void take(BaseJob job) {
 		_job = job;
 		_isFree = false;
 	}
@@ -33,7 +33,7 @@ public class ItemSlot {
 		return _item.getY() + _relY;
 	}
 
-	public JobModel getJob() {
+	public BaseJob getJob() {
 		return _job;
 	}
 

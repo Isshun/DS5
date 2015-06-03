@@ -1,13 +1,12 @@
 package org.smallbox.faraway.manager;
 
 import org.smallbox.faraway.Color;
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.Movable.Direction;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.job.JobModel.JobAbortReason;
+import org.smallbox.faraway.model.job.BaseJob.JobAbortReason;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,9 +86,9 @@ public class CharacterManager {
 				if (c.getJob() != null) {
 					// Cancel job
 					JobManager.getInstance().abort(c.getJob(), JobAbortReason.DIED);
-					
-					// Remove from rooms
-					Game.getRoomManager().removeFromRooms(c);
+//
+//					// Remove from rooms
+//					Game.getRoomManager().removeFromRooms(c);
 				}
 				characterToRemove = c;
 			}

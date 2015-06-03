@@ -7,7 +7,12 @@ import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemInfo;
 
-public class JobCook extends JobModel {
+public class JobCook extends BaseJob {
+
+	@Override
+	public CharacterModel.TalentType getTalentNeeded() {
+		return CharacterModel.TalentType.COOK;
+	}
 
 	private JobCook(ItemInfo.ItemInfoAction action, int x, int y) {
 		super(action, x, y);
@@ -23,9 +28,7 @@ public class JobCook extends JobModel {
 		}
 
 		JobCook job = new JobCook(action, item.getX(), item.getY());
-		job.setAction(JobManager.Action.WORK);
 		job.setItem(item);
-        job.setDurationLeft(action.duration);
 
 		item.addJob(job);
 
@@ -53,30 +56,30 @@ public class JobCook extends JobModel {
 			return true;
 		}
 
-		// Character is sleeping
-		if (character.getNeeds().isSleeping()) {
-			Log.debug("use: sleeping . use canceled");
-			return false;
-		}
-
 		// Work continue
-		if (_quantity < _quantityTotal) {
-            _quantity = Math.min(_quantityTotal, _quantity + character.work(CharacterModel.TalentType.COOK));
+		if (_cost < _totalCost) {
+            _cost = Math.min(_totalCost, _cost + character.work(CharacterModel.TalentType.COOK));
 			Log.debug("Character #" + character.getId() + ": working");
 			return false;
 		}
 
         // Current item is complete but some remains
-        if (--_count != 0) {
-            _quantity = 0;
-            setCharacter(null);
-            return false;
-        }
+		_cost = 0;
+		for (ItemInfo itemInfo: _actionInfo.productsItem) {
+			ServiceManager.getWorldMap().putItem(itemInfo, _posX, _posY, 0, 100);
+//                _character.addInventory(new UserItem(itemInfo));
+		}
+		_character.quitJob();
+		setCharacter(null);
 
         // Work is complete
-        Log.debug("Character #" + character.getId() + ": work complete");
-        JobManager.getInstance().complete(this);
-        return true;
+		if (_count++ >= _totalCount) {
+			Log.debug("Character #" + character.getId() + ": work complete");
+			JobManager.getInstance().complete(this);
+			return true;
+		}
+
+		return false;
 	}
 
     @Override

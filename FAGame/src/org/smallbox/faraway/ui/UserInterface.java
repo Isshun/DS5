@@ -1,21 +1,20 @@
 package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.*;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.ui.UIEventManager;
 import org.smallbox.faraway.engine.ui.UIMessage;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.CharacterManager;
 import org.smallbox.faraway.manager.ServiceManager;
+import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.manager.Utils;
 import org.smallbox.faraway.model.ToolTips.ToolTip;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.room.Room;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.ui.panel.*;
-
-import java.io.File;
 
 public class UserInterface implements GameEventListener {
     private static UserInterface		_self;
@@ -50,19 +49,23 @@ public class UserInterface implements GameEventListener {
     private WorldArea 					_selectedArea;
     private Room 						_selectedRoom;
     private ItemInfo 					_selectedItemInfo;
+    private ConsumableItem              _selectedConsumable;
     private int 						_update;
     private long                        _lastModified;
     private PanelInfoStructure          _panelInfoStructure;
     private PanelInfoItem               _panelInfoItem;
     private PanelInfoArea               _panelInfoArea;
     private PanelInfoResource           _panelInfoResource;
+    private PanelInfoConsumable         _panelInfoConsumable;
 
     private	BasePanel[]					_panels = new BasePanel[] {
             new PanelSystem(),
+            new PanelResources(),
             new PanelCharacter(	    Mode.CHARACTER,         null),
             new PanelInfo(		    Mode.INFO, 		        null),
             new PanelInfoStructure(	Mode.INFO_STRUCTURE, 	null),
             new PanelInfoItem(	    Mode.INFO_ITEM, 	null),
+            new PanelInfoConsumable(Mode.INFO_CONSUMABLE, 	null),
             new PanelInfoArea(	    Mode.INFO_AREA, 	null),
             new PanelInfoResource(	Mode.INFO_RESOURCE, 	null),
             new PanelDebug(		Mode.DEBUG, 	Key.TILDE),
@@ -178,7 +181,7 @@ public class UserInterface implements GameEventListener {
         NONE,
         TOOLTIP,
         STATS,
-        INFO_STRUCTURE, INFO_ITEM, INFO_AREA, INFO_RESOURCE, MANAGER
+        INFO_STRUCTURE, INFO_ITEM, INFO_AREA, INFO_RESOURCE, INFO_CONSUMABLE, MANAGER
     }
 
     public UserInterface(LayoutFactory layoutFactory, ViewFactory viewFactory) {
@@ -207,6 +210,9 @@ public class UserInterface implements GameEventListener {
                     break;
                 case INFO_ITEM:
                     _panelInfoItem = (PanelInfoItem) panel;
+                    break;
+                case INFO_CONSUMABLE:
+                    _panelInfoConsumable = (PanelInfoConsumable) panel;
                     break;
                 case INFO_AREA:
                     _panelInfoArea = (PanelInfoArea) panel;
@@ -330,37 +336,12 @@ public class UserInterface implements GameEventListener {
         }
         _panelMessage.refresh(update);
 
-        long lastResModified = getLastResModified();
+        long lastResModified = Utils.getLastUIModified();
         if (update % 8 == 0 && lastResModified > _lastModified) {
             SpriteManager.getInstance().loadStrings();
             _lastModified = lastResModified;
             reload();
         }
-    }
-
-    private long getLastResModified() {
-        long lastModified = 0;
-
-        for (File file: new File("data/ui/").listFiles()) {
-            if (file.isDirectory()) {
-                for (File subFile : file.listFiles()) {
-                    if (subFile.lastModified() > lastModified) {
-                        lastModified = subFile.lastModified();
-                    }
-                }
-            }
-            if (file.lastModified() > lastModified) {
-                lastModified = file.lastModified();
-            }
-        }
-
-        for (File file: new File("data/strings/").listFiles()) {
-            if (file.lastModified() > lastModified) {
-                lastModified = file.lastModified();
-            }
-        }
-
-        return lastModified;
     }
 
     public void onDraw(GFXRenderer renderer, int update, long renderTime) {
@@ -514,11 +495,11 @@ public class UserInterface implements GameEventListener {
 
         // Set room
         if (_mode == Mode.ROOM) {
-            if (_keyPressPosX == _keyMovePosX && _keyPressPosY == _keyMovePosY) {
-                final Room room = Game.getRoomManager().get(getRelativePosX(x), getRelativePosY(y));
-                select(room);
-                return true;
-            }
+//            if (_keyPressPosX == _keyMovePosX && _keyPressPosY == _keyMovePosY) {
+//                final Room room = Game.getRoomManager().get(getRelativePosX(x), getRelativePosY(y));
+//                select(room);
+//                return true;
+//            }
 
             if (_interaction.isAction(UserInteraction.Action.SET_ROOM)) {
                 _interaction.roomType(
@@ -563,6 +544,7 @@ public class UserInterface implements GameEventListener {
                 if (a != null) {
                     if (a.getResource() != null) { select(a.getResource()); return true; }
                     else if (a.getItem() != null) { select(a.getItem()); return true; }
+                    else if (a.getConsumable() != null) { select(a.getConsumable()); return true; }
                 }
                 for (int x2 = 0; x2 < Constant.ITEM_MAX_WIDTH; x2++) {
                     for (int y2 = 0; y2 < Constant.ITEM_MAX_HEIGHT; y2++) {
@@ -593,13 +575,13 @@ public class UserInterface implements GameEventListener {
         }
 
         else if (_mode == Mode.ROOM && _interaction.getSelectedRoomType() == Room.Type.NONE) {
-            final Room room = Game.getRoomManager().get(getRelativePosX(x), getRelativePosY(y));
-            if (room != null) {
-                throw new RuntimeException("not implemented");
-                //_menu = new RoomContextualMenu(_app, 0, new Vector2f(x, y), new Vector2f(100, 120), _viewport, room);
-            } else {
-                _menu = null;
-            }
+//            final Room room = Game.getRoomManager().get(getRelativePosX(x), getRelativePosY(y));
+//            if (room != null) {
+//                throw new RuntimeException("not implemented");
+//                //_menu = new RoomContextualMenu(_app, 0, new Vector2f(x, y), new Vector2f(100, 120), _viewport, room);
+//            } else {
+//                _menu = null;
+//            }
         }
 
         // Cancel selected items
@@ -661,6 +643,14 @@ public class UserInterface implements GameEventListener {
         setMode(Mode.INFO_ITEM);
         _selectedItem = item;
         _panelInfoItem.select(item);
+    }
+
+    public void select(ConsumableItem consumable) {
+        clean();
+        setMode(Mode.INFO);
+        setMode(Mode.INFO_CONSUMABLE);
+        _selectedConsumable = consumable;
+        _panelInfoConsumable.select(consumable);
     }
 
     public void select(StructureItem structure) {

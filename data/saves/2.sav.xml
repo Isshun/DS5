@@ -632,7 +632,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -643,7 +643,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -654,7 +654,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -665,7 +665,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -676,7 +676,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -687,7 +687,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -698,7 +698,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -727,7 +727,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -738,7 +738,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -749,7 +749,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -760,7 +760,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -771,7 +771,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -782,7 +782,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -793,7 +793,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -822,7 +822,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -833,7 +833,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -844,7 +844,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -855,7 +855,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -866,7 +866,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -877,7 +877,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -888,7 +888,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -917,7 +917,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -928,7 +928,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -939,7 +939,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -950,7 +950,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -961,7 +961,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -972,7 +972,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>
@@ -983,7 +983,7 @@
     </alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
     <alone.in.deepspace.engine.loader.WorldSaver_-WorldSaveArea>
       <resource>
-        <name>base.rock</name>
+        <name>base.res_rock</name>
         <matter>0</matter>
         <tile>0</tile>
         <value>0</value>

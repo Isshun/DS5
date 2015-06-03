@@ -1,0 +1,40 @@
+entries:
+
+    -   type: label
+        id: lb_name
+        textsize: 24
+        position: [24, 24]
+
+    -   type: label
+        id: lb_id
+        textsize: 14
+        position: [280, 28]
+
+    -   type: label
+        id: lb_durability
+        text: durability
+        textsize: 14
+        position: [24, 58]
+
+    -   type: label
+        id: lb_matter
+        text: matter
+        textsize: 14
+        position: [24, 80]
+
+    -   type: label
+        id: lb_quantity
+        text: matter
+        textsize: 14
+        position: [24, 102]
+
+    -   type: label
+        id: lb_pos
+        text: pos
+        textsize: 14
+        position: [280, 46]
+
+    -   type: label
+        text: Effects
+        textsize: 20
+        position: [24, 200]

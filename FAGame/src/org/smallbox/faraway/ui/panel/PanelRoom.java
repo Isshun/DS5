@@ -1,14 +1,16 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.*;
+import org.smallbox.faraway.Color;
+import org.smallbox.faraway.GameEventListener;
+import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.room.Room;
 import org.smallbox.faraway.model.room.Room.Type;
 import org.smallbox.faraway.model.room.RoomOptions;
 import org.smallbox.faraway.model.room.RoomOptions.RoomOption;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.ui.UserInteraction.Action;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 

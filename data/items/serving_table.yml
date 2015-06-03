@@ -9,8 +9,3 @@ slots:
     - [0, 1]
     - [1, 1]
     - [2, 1]
-actions:
-    -   type: use
-        duration: 5
-        products:
-            -   base.meal

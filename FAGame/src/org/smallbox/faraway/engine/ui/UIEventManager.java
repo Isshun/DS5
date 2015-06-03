@@ -1,7 +1,5 @@
 package org.smallbox.faraway.engine.ui;
 
-import org.newdawn.slick.util.pathfinding.navmesh.NavPath;
-
 import java.util.HashMap;
 import java.util.Map;
 

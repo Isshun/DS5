@@ -5,7 +5,6 @@ import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.StringUtils;
-import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.CategoryInfo;
 import org.smallbox.faraway.model.item.ItemInfo;

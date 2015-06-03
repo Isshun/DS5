@@ -41,6 +41,10 @@ Storage: Reserve
 Enginering: Salle des machines
 
 #Menu
+New colony: Nouvelle colonie
+Load colony: Charger une colonie
+Quit: Quitter
+
 [Monitoring]: [Surveillance]
 [Private life]: [Vie privée]
 [Priorities]: [Compétences]
@@ -53,7 +57,8 @@ Food: Nourriture
 Gasoline: Éssence
 Matter: Mattériaux
 Water: Eau
-"Power": "Énergie"
+Power: Énergie
+Effects: Effets
 
 Back: Retour
 [    ]: [      ]

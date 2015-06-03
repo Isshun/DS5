@@ -51,19 +51,19 @@ public class WorldFactory {
 		loadListener.onUpdate("Create mountain");
 		addMountain(world);
 		
-		loadListener.onUpdate("Add random ressources");
+		loadListener.onUpdate("Add random resources");
 		addRandomResources(world);
 	}
 
 	private static void addRandomResources(WorldManager world) {
 		int resInterval = RES_INTERVAL_HEAVY;
 		List<ItemInfo> resourceItemsInfo = new ArrayList<ItemInfo>();
-		for (ItemInfo info: Game.getData().items) {
+		Game.getData().items.stream().filter(info -> info.actions != null).forEach(info -> {
 			resourceItemsInfo.addAll(info.actions.stream()
-                    .filter(action -> "gather".equals(action.type))
-                    .map(action -> info)
-                    .collect(Collectors.toList()));
-		}
+					.filter(action -> "gather".equals(action.type))
+					.map(action -> info)
+					.collect(Collectors.toList()));
+		});
 		int nbResource = Constant.WORLD_WIDTH * Constant.WORLD_HEIGHT / resInterval;
 		for (int i = 0; i < nbResource; i++) {
 			int x = (int)(Math.random() * Constant.WORLD_WIDTH);
@@ -123,7 +123,7 @@ public class WorldFactory {
 //        clean(map);
 //        clean(map);
 
-		ItemInfo info = Game.getData().getItemInfo("base.rock");
+		ItemInfo info = Game.getData().getItemInfo("base.res_rock");
 		for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
 			for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
 				if (map[i][j] > 15) {
@@ -289,7 +289,7 @@ public class WorldFactory {
 		for (int f = 0; f < 1; f++) {
 			for (int x = Constant.WORLD_WIDTH; x >= 0; x--) {
 				for (int y = Constant.WORLD_HEIGHT; y >= 0; y--) {
-					WorldResource resource = worldManager.getRessource(x, y, f);
+					WorldResource resource = worldManager.getResource(x, y, f);
 					if (resource != null && resource.isRock()) {
 						// 4 faces
 						if (isRock(x, y-1) && isRock(x, y+1) && isRock(x-1, y) && isRock(x+1, y)) {
@@ -309,7 +309,7 @@ public class WorldFactory {
 						
 						// 3 faces
 						else if (isRock(x, y-1) && isRock(x, y+1) && isRock(x-1, y) && notRock(x+1, y)) {
-							WorldResource res = worldManager.getRessource(x, y+2, f);
+							WorldResource res = worldManager.getResource(x, y + 2, f);
 							// Rock bellow
 							if (res != null && res.isRock()) {
 								resource.setTile(25); setTop(f, x-1, y, 24);
@@ -319,11 +319,11 @@ public class WorldFactory {
 							
 						} // ok
 						else if (isRock(x, y-1) && isRock(x, y+1) && notRock(x-1, y) && isRock(x+1, y)) {
-							WorldResource res = worldManager.getRessource(x, y-1, f);
+							WorldResource res = worldManager.getResource(x, y - 1, f);
 							if (res != null && res.isRock() && (res.getTile() == 66 || res.getTile() == 56 || res.getTile() == 50)) {
 								resource.setTile(25); setTop(f, x+1, y, 31);
 							} else {
-								res = worldManager.getRessource(x, y+1, f);
+								res = worldManager.getResource(x, y + 1, f);
 								if (res != null && res.isRock() && (res.getTile() == 66 || res.getTile() == 50)) {
 									resource.setTile(20); setTop(f, x+1, y, 31);
 								} else {
@@ -332,7 +332,7 @@ public class WorldFactory {
 							}
 						} // ok
 						else if (isRock(x, y-1) && notRock(x, y+1) && isRock(x-1, y) && isRock(x+1, y)) {
-							WorldResource res = worldManager.getRessource(x-1, y, f);
+							WorldResource res = worldManager.getResource(x - 1, y, f);
 							if (res != null && res.isRock() && res.getTile() == 68) {
 								resource.setTile(67); setTop(f, x, y-1, 57); setTop(f, x, y-2, 47); setTop(f, x, y-3, 37);
 							} else {
@@ -367,7 +367,7 @@ public class WorldFactory {
 		for (int f = 0; f < 1; f++) {
 			for (int x = Constant.WORLD_WIDTH; x >= 0; x--) {
 				for (int y = Constant.WORLD_HEIGHT; y >= 0; y--) {
-					WorldResource structure = worldManager.getRessource(x, y, f);
+					WorldResource structure = worldManager.getResource(x, y, f);
 					if (structure != null && structure.isGrass()) {
 						// 4 faces
 						if (isGrass(x, y-1) && isGrass(x, y+1) && isGrass(x-1, y) && isGrass(x+1, y)) {
@@ -397,7 +397,7 @@ public class WorldFactory {
 	}
 
 	private static void setTop(int f, int x, int y, int tile) {
-		WorldResource topres = Game.getWorldManager().getRessource(x, y, f);
+		WorldResource topres = Game.getWorldManager().getResource(x, y, f);
 		if (topres != null && topres.isRock() && topres.getTile() == 0) {
 			topres.setTile(tile);
 		}
@@ -407,7 +407,7 @@ public class WorldFactory {
 		if (x < 0 || x >= Constant.WORLD_WIDTH || y < 0 || y >= Constant.WORLD_HEIGHT) {
 			return false;
 		}
-		if (Game.getWorldManager().getRessource(x, y) != null && Game.getWorldManager().getRessource(x, y).isRock()) {
+		if (Game.getWorldManager().getResource(x, y) != null && Game.getWorldManager().getResource(x, y).isRock()) {
 			return false;
 		}
 		return true;
@@ -417,7 +417,7 @@ public class WorldFactory {
 		if (x < 0 || x >= Constant.WORLD_WIDTH || y < 0 || y >= Constant.WORLD_HEIGHT) {
 			return false;
 		}
-		if (Game.getWorldManager().getRessource(x, y) != null && Game.getWorldManager().getRessource(x, y).isGrass()) {
+		if (Game.getWorldManager().getResource(x, y) != null && Game.getWorldManager().getResource(x, y).isGrass()) {
 			return false;
 		}
 		return true;
@@ -427,7 +427,7 @@ public class WorldFactory {
 		if (x < 0 || x >= Constant.WORLD_WIDTH || y < 0 || y >= Constant.WORLD_HEIGHT) {
 			return true;
 		}
-		if (Game.getWorldManager().getRessource(x, y) != null && Game.getWorldManager().getRessource(x, y).isRock()) {
+		if (Game.getWorldManager().getResource(x, y) != null && Game.getWorldManager().getResource(x, y).isRock()) {
 			return true;
 		}
 		return false;
@@ -437,7 +437,7 @@ public class WorldFactory {
 		if (x < 0 || x >= Constant.WORLD_WIDTH || y < 0 || y >= Constant.WORLD_HEIGHT) {
 			return true;
 		}
-		if (Game.getWorldManager().getRessource(x, y) != null && Game.getWorldManager().getRessource(x, y).isGrass()) {
+		if (Game.getWorldManager().getResource(x, y) != null && Game.getWorldManager().getResource(x, y).isGrass()) {
 			return true;
 		}
 		return false;

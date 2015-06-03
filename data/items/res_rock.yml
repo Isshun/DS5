@@ -1,0 +1,11 @@
+label: Rock
+width: 1
+height: 1
+type: resource
+light: 0
+actions:
+    -   type: mine
+        products:
+            -   base.rock
+cost:
+    matter: 10

@@ -2,17 +2,15 @@ package org.smallbox.faraway.manager;
 
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Game;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.check.old.CharacterCheck;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.job.*;
-import org.smallbox.faraway.model.job.JobModel.JobAbortReason;
-import org.smallbox.faraway.model.job.JobModel.JobStatus;
-import org.smallbox.faraway.model.check.*;
-import org.smallbox.faraway.model.check.old.*;
-import org.smallbox.faraway.model.room.StorageRoom;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
+import org.smallbox.faraway.model.job.BaseJob.JobAbortReason;
+import org.smallbox.faraway.model.job.BaseJob.JobStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,14 +40,10 @@ public class JobManager {
         }
     }
 
-    public enum Action {
-		NONE, BUILD, GATHER, USE, MOVE, STORE, DESTROY, WORK, MINING, TAKE, USE_INVENTORY, REFILL
-	}
-
 	private static JobManager		_self;
-	private List<JobModel> 			_jobs;
+	private List<BaseJob> 			_jobs;
 	private int 					_nbVisibleJob;
-	private List<JobModel> 			_toRemove;
+	private List<BaseJob> 			_toRemove;
 
 //	private CharacterCheck[]		_priorityJobsCheck = {
 //			new CharacterIsTired(),
@@ -79,9 +73,9 @@ public class JobManager {
 		Log.debug("JobManager done");
 	}
 
-	public List<JobModel>	getJobs() { return _jobs; };
+	public List<BaseJob>	getJobs() { return _jobs; };
 
-	public JobModel addBuild(ItemBase item) {
+	public BaseJob addBuild(ItemBase item) {
 		if (item == null) {
 			Log.error("JobManager: build on null item");
 			return null;
@@ -92,46 +86,46 @@ public class JobManager {
 			return null;
 		}
 
-		JobModel job = JobBuild.create(item);
+		BaseJob job = JobBuild.create(item);
 		addJob(job);
 
 		return job;
 	}
 
-	public JobModel addGather(WorldResource ressource) {
+	public BaseJob addGather(WorldResource ressource) {
 		if (ressource == null) {
 			Log.error("JobManager: gather on null area");
 			return null;
 		}
 
 		// return if job already exist for this item
-		for (JobModel job: _jobs) {
+		for (BaseJob job: _jobs) {
 			if (job.getItem() == ressource) {
 				return null;
 			}
 		}
 
-		JobModel job = JobGather.create(ressource);
+		BaseJob job = JobGather.create(ressource);
 		addJob(job);
 
 		return job;
 	}
 
 	public void	removeJob(ItemBase item) {
-		List<JobModel> toRemove = new ArrayList<>();
+		List<BaseJob> toRemove = new ArrayList<>();
 
-		for (JobModel job: _jobs) {
+		for (BaseJob job: _jobs) {
 			if (job.getItem() == item) {
 				toRemove.add(job);
 			}
 		}
 
-		for (JobModel job: toRemove) {
+		for (BaseJob job: toRemove) {
 			removeJob(job);
 		}
 	}
 
-	public JobModel build(ItemInfo info, int x, int y) {
+	public BaseJob build(ItemInfo info, int x, int y) {
 		ItemBase item = null;
 
 		// Structure
@@ -165,7 +159,7 @@ public class JobManager {
 		// Resource
 		else if (info.isResource) {
 			ItemBase currentItem = ServiceManager.getWorldMap().getItem(x, y);
-			ItemBase currentRessource = ServiceManager.getWorldMap().getRessource(x, y);
+			ItemBase currentRessource = ServiceManager.getWorldMap().getResource(x, y);
 			if (currentRessource != null && currentRessource.getInfo().equals(info)) {
 				Log.error("Build item: already exist on this area");
 				return null;
@@ -193,7 +187,7 @@ public class JobManager {
 		}
 
 		// Regular jobs
-		JobModel job = getBestJob(character);
+		BaseJob job = getBestJob(character);
 		if (job != null) {
 			job.setStatus(JobStatus.RUNNING);
 			character.setJob(job);
@@ -209,38 +203,36 @@ public class JobManager {
 	}
 
 	// TODO: one pass + check profession
-	private JobModel getBestJob(CharacterModel character) {
+	private BaseJob getBestJob(CharacterModel character) {
 		Log.debug("getBestJob");
 
 		int x = character.getX();
 		int y = character.getY();
 		int bestDistance = Integer.MAX_VALUE;
-		JobModel bestJob = null;
+		BaseJob bestJob = null;
 
 		// Regular jobs
-		for (JobModel job: _jobs) {
-			if (job.isFinish() == false && job.getCharacter() == null && job.getFail() <= 0) {
-				if (job.getAction() == Action.BUILD && ResourceManager.getInstance().getMatter().value == 0) {
-					// TODO
-					job.setFail(JobAbortReason.NO_BUILD_RESOURCES, MainRenderer.getFrame());
-					continue;
-				}
-				if ((job.getAction() == Action.GATHER || job.getAction() == Action.MINING) && character.getSpace() == 0) {
-					continue;
-				}
-				int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
-				if (distance < bestDistance && job.check(character)) {
-					bestJob = job;
-					bestDistance = distance;
-				}
-			}
-		}
+        for (CharacterModel.TalentEntry talent: character.getTalents()) {
+            for (BaseJob job: _jobs) {
+                if (talent.type == job.getTalentNeeded() && job.isFinish() == false && job.getCharacter() == null && job.getFail() <= 0) {
+                    int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
+                    if (distance < bestDistance && job.check(character)) {
+                        bestJob = job;
+                        bestDistance = distance;
+                    }
+                }
+            }
+            // Job found for current talent
+            if (bestJob != null) {
+                break;
+            }
+        }
 
 		Log.debug("bestJob: 4");
 
 		// Failed jobs
 		if (bestJob == null) {
-			for (JobModel job: _jobs) {
+			for (BaseJob job: _jobs) {
 				if (job.getCharacter() == null && job.getFail() > 0) {
 					if (job.getReason() == JobAbortReason.BLOCKED && job.getBlocked() < Game.getUpdate() + Constant.DELAY_TO_RESTART_BLOCKED_JOB) {
 						continue;
@@ -291,7 +283,7 @@ public class JobManager {
 	//	  return null;
 	//	}
 
-	public void	abort(JobModel job, JobAbortReason reason) {
+	public void	abort(BaseJob job, JobAbortReason reason) {
 		Log.debug("Job abort: " + job.getId());
 
 		// Already aborted
@@ -332,12 +324,7 @@ public class JobManager {
 		}
 
 		// Job is USE / USE_INVENTORY / MOVE / TAKE / STORE / REFILL action, don't resume
-		if (job.getAction() == Action.MOVE ||
-				job.getAction() == Action.USE ||
-				job.getAction() == Action.REFILL ||
-				job.getAction() == Action.USE_INVENTORY ||
-				job.getAction() == Action.TAKE ||
-				job.getAction() == Action.STORE) {
+		if (!job.canBeResume()) {
 			removeJob(job);
 			return;
 		}
@@ -368,7 +355,9 @@ public class JobManager {
 //		}
 	}
 
-	public void removeJob(JobModel job) {
+	public void removeJob(BaseJob job) {
+        System.out.println("remove job: " + job.getLabel() + " (" + job.getReasonString() + ")");
+
 		if (job.getCharacter() != null) {
 			job.getCharacter().setJob(null);
 			job.setCharacter(null);
@@ -384,12 +373,12 @@ public class JobManager {
 		}
 
 		_toRemove.add(job);
-		if (Action.MOVE.equals(job.getAction()) == false) {
+		if (job.isVisibleInUI()) {
 			_nbVisibleJob--;
 		}
 	}
 
-	public void	complete(JobModel job) {
+	public void	complete(BaseJob job) {
 		Log.debug("Job complete: " + job.getId());
 
 		job.setStatus(JobStatus.COMPLETE);
@@ -397,15 +386,17 @@ public class JobManager {
 		removeJob(job);
 	}
 
-	public void	addJob(JobModel job) {
+	public void	addJob(BaseJob job) {
 		if (job == null || _jobs.contains(job)) {
 			Log.error("Trying to add null or already existing job to JobManager");
 			return;
 		}
 
-		if (Action.MOVE.equals(job.getAction()) == false) {
+		if (job.isVisibleInUI()) {
 			_nbVisibleJob++;
 		}
+
+		System.out.println("add job: " + job.getLabel());
 
 		_jobs.add(job);
 	}
@@ -414,40 +405,22 @@ public class JobManager {
 		return _self;
 	}
 
-	public static String getActionName(Action action) {
-		switch (action) {
-		case NONE: 		return "none";
-		case BUILD: 	return "build";
-		case GATHER: 	return "gather";
-		case REFILL: 	return "refill";
-		case MOVE: 		return "move";
-		case USE_INVENTORY:
-		case USE: 		return "use";
-		case STORE: 	return "store";
-		case WORK: 		return "work";
-		case DESTROY:	return "destroy";
-		case MINING:	return "mine";
-		case TAKE:		return "take";
-		}
-		return null;
-	}
-
 	public void clear() {
 		_jobs.clear();
 	}
 
 	public void addDestroyJob(ItemBase item) {
-		JobModel job = JobDestroy.create(item);
+		BaseJob job = JobDestroy.create(item);
 		addJob(job);
 	}
 
 	public void addMoveJob(CharacterModel character, int x, int y) {
-		JobModel job = JobMove.create(character, x, y, 0);
+		BaseJob job = JobMove.create(character, x, y, 0);
 		addJob(job);
 	}
 
-	public JobModel addMoveJob(CharacterModel character, int x, int y, int stay) {
-		JobModel job = JobMove.create(character, x, y, stay);
+	public BaseJob addMoveJob(CharacterModel character, int x, int y, int stay) {
+		BaseJob job = JobMove.create(character, x, y, stay);
 		addJob(job);
 		return job;
 	}
@@ -464,43 +437,35 @@ public class JobManager {
 		return false;
 	}
 
-	public JobModel createGatherJob(int x, int y) {
+	public BaseJob createGatherJob(int x, int y) {
 		System.out.println("gather: " + x + " x " + y);
 
-		WorldResource res = ServiceManager.getWorldMap().getRessource(x, y);
+		WorldResource res = ServiceManager.getWorldMap().getResource(x, y);
 		if (res == null) {
 			return null;
 		}
 
-		JobModel job = JobGather.create(res);
+		BaseJob job = JobGather.create(res);
 		return job;
 	}
 
-	public JobModel createMiningJob(int x, int y) {
-		WorldResource res = ServiceManager.getWorldMap().getRessource(x, y);
+	public BaseJob createMiningJob(int x, int y) {
+		WorldResource res = ServiceManager.getWorldMap().getResource(x, y);
 		if (res == null) {
 			return null;
 		}
 
-		JobModel job = JobMining.create(res);
+		BaseJob job = JobMining.create(res);
 		return job;
 	}
 
-	public JobModel createDumpJob(int x, int y) {
+	public BaseJob createDumpJob(int x, int y) {
 		UserItem item = ServiceManager.getWorldMap().getItem(x, y);
 		if (item == null) {
 			return null;
 		}
 
-		JobModel job = JobDestroy.create(item);
-		return job;
-	}
-
-	public JobModel createRefillJob(CharacterModel character, StorageRoom storage, ItemFilter filter, FactoryItem factory) {
-		JobModel job = JobRefill.create(factory, storage, filter);
-		if (job != null) {
-			job.setCharacterRequire(character);
-		}
+		BaseJob job = JobDestroy.create(item);
 		return job;
 	}
 
@@ -514,52 +479,53 @@ public class JobManager {
         }
 
 		// Remove invalid job
-		List<JobModel> invalidJobs = new ArrayList<>();
-		for (JobModel job: _jobs) {
+		List<BaseJob> invalidJobs = new ArrayList<>();
+		for (BaseJob job: _jobs) {
 			if (job.getReason() == JobAbortReason.INVALID) {
 				invalidJobs.add(job);
 			}
 		}
-		for (JobModel job: invalidJobs) {
+		for (BaseJob job: invalidJobs) {
 			removeJob(job);
 		}
 	}
 
 	public void addGatherJob(int x, int y) {
-		JobModel job = createGatherJob(x, y);
+		BaseJob job = createGatherJob(x, y);
 		if (job != null) {
 			addJob(job);
 		}
 	}
 
 	public void addMineJob(int x, int y) {
-		JobModel job = createMiningJob(x, y);
+		BaseJob job = createMiningJob(x, y);
 		if (job != null) {
 			addJob(job);
 		}
 	}
 
-	public JobModel addStoreJob(CharacterModel character) {
-		JobModel job = JobStore.create(character);
-		if (job != null) {
-			addJob(job);
-		}
-		return job;
+	public BaseJob addStoreJob(CharacterModel character) {
+//		BaseJob job = JobHaul.create(character);
+//		if (job != null) {
+//			addJob(job);
+//		}
+//		return job;
+        throw new RuntimeException("not implemented");
 	}
 
 	public int getNbVisibleJob() {
 		return _nbVisibleJob;
 	}
 
-	public JobModel addUseJob(ItemBase item) {
-		JobModel job = JobUse.create(item);
+	public BaseJob addUseJob(ItemBase item) {
+		BaseJob job = JobUse.create(item);
 		if (job != null) {
 			addJob(job);
 		}
 		return job;
 	}
 
-	public void addJob(JobModel job, CharacterModel character) {
+	public void addJob(BaseJob job, CharacterModel character) {
 		addJob(job);
 		if (job != null) {
 			job.setCharacter(character);
@@ -573,4 +539,13 @@ public class JobManager {
 			_toRemove.clear();
 		}
 	}
+
+    public void quit(BaseJob job) {
+        if (job != null) {
+            if (job.getCharacter() != null) {
+                job.getCharacter().setJob(null);
+            }
+            job.setCharacter(null);
+        }
+    }
 }

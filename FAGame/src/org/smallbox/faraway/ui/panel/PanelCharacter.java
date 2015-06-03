@@ -15,7 +15,7 @@ import org.smallbox.faraway.model.character.CharacterRelation;
 import org.smallbox.faraway.model.character.CharacterStatus;
 import org.smallbox.faraway.model.character.CharacterStatus.Level;
 import org.smallbox.faraway.model.item.ItemBase;
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.model.job.BaseJob;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
@@ -39,7 +39,6 @@ public class PanelCharacter extends BaseRightPanel {
     private static final Color COLOR_3 = new Color(247, 57, 57);
 
     private CharacterModel 		_character;
-    private TextView 			_lbTip;
     private TextView 			_lbName;
     private TextView 			_lbProfession;
     private ColorView 			_cursor;
@@ -214,18 +213,18 @@ public class PanelCharacter extends BaseRightPanel {
             final int y2 = i / NB_INVENTORY_PER_LINE;
             _lbInventoryEntries[i] = ViewFactory.getInstance().createImageView();
             _lbInventoryEntries[i].setPosition(x2 * 28, 32 + y2 * 28);
-            _lbInventoryEntries[i].setOnFocusListener(new OnFocusListener() {
-                @Override
-                public void onExit(View view) {
-                    _lbTip.setVisible(false);
-                }
-
-                @Override
-                public void onEnter(View view) {
-                    _lbTip.setVisible(true);
-                    _lbTip.setPosition(x2 * 28 + 16, 32 + y2 * 28 + 16);
-                }
-            });
+//            _lbInventoryEntries[i].setOnFocusListener(new OnFocusListener() {
+//                @Override
+//                public void onExit(View view) {
+//                    _lbTip.setVisible(false);
+//                }
+//
+//                @Override
+//                public void onEnter(View view) {
+//                    _lbTip.setVisible(true);
+//                    _lbTip.setPosition(x2 * 28 + 16, 32 + y2 * 28 + 16);
+//                }
+//            });
             frameInventoryEntries.addView(_lbInventoryEntries[i]);
         }
     }
@@ -420,12 +419,11 @@ public class PanelCharacter extends BaseRightPanel {
 
         _animGauge++;
 
-        if (_animRemain > 0) {
-            return;
-        }
+//        if (_animRemain > 0) {
+//            return;
+//        }
 
         if (_character != null) {
-
             refreshJob(_character.getJob());
             refreshNeeds();
             refreshInventory();
@@ -512,25 +510,11 @@ public class PanelCharacter extends BaseRightPanel {
         }
     }
 
-    private void refreshJob(final JobModel job) {
+    private void refreshJob(final BaseJob job) {
         if (job != null) {
             _lbJob.setString(StringUtils.getDashedString(job.getLabel(), job.getProgressPercent() + "%", NB_COLUMNS));
-            switch (job.getAction()) {
-                case BUILD:
-                case DESTROY:
-                case GATHER:
-                case MINING:
-                case REFILL:
-                case USE:
-                    _lbJob.setOnClickListener(view -> _ui.select(job.getItem()));
-                    break;
-                case USE_INVENTORY:
-                    _lbJob.setOnClickListener(view -> _ui.select(job.getItem().getInfo()));
-                    break;
-                default:
-                    _lbJob.setOnClickListener(null);
-                    break;
-
+            if (job.getItem() != null) {
+                _lbJob.setOnClickListener(view -> _ui.select(job.getItem()));
             }
         } else {
             _lbJob.setString(Strings.LN_NO_JOB);
@@ -556,7 +540,6 @@ public class PanelCharacter extends BaseRightPanel {
             if (_character.getInventory().size() > i) {
                 ItemBase item = _character.getInventory().get(i);
                 _lbInventoryEntries[i].setImage(SpriteManager.getInstance().getIcon(item.getInfo()));
-                _lbTip.setString(item.getName());
             } else {
                 _lbInventoryEntries[i].setImage(null);
             }

@@ -10,6 +10,8 @@ public class LayoutModel {
         public String   type;
         public String   text;
         public String   id;
+        public String   path;
+        public String   style;
         public int      textsize;
         public int      textcolor;
         public int      background;

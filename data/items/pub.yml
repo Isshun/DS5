@@ -6,8 +6,3 @@ height: 1
 type: item
 cost:
     matter: 42
-actions:
-    -   type: cook
-        duration: 5
-        products:
-            -   base.meal

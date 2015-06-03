@@ -1,13 +1,13 @@
 package org.smallbox.faraway.model.item;
 
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.model.job.BaseJob;
 
 
 public class WorldResource extends UserItem {
 	private double	_value;
 	private int 	_tile;
 	private int 	_doubleRender;
-	private JobModel _job;
+	private BaseJob _job;
 
 	public WorldResource(ItemInfo info, int id) {
 		super(info, id);
@@ -26,7 +26,7 @@ public class WorldResource extends UserItem {
 	
 
 	public boolean isRock() {
-		return "base.rock".equals(_info.name);
+		return "base.res_rock".equals(_info.name);
 	}
 
 	public void setTile(int tile) {
@@ -46,7 +46,7 @@ public class WorldResource extends UserItem {
 	}
 
 	public boolean canBeMined() {
-		return "base.rock".equals(_info.name);
+		return "base.res_rock".equals(_info.name);
 	}
 
 	public boolean canBeHarvested() {
@@ -67,7 +67,7 @@ public class WorldResource extends UserItem {
 		return _value >= _info.actions.get(0).mature;
 	}
 
-	public void setJob(JobModel job) {
+	public void setJob(BaseJob job) {
 		_job = job;
 	}
 

@@ -2,18 +2,17 @@ label: Advance meal
 width: 1
 height: 1
 isFood: true
-type: consomable
+type: consumable
 craftedQuantitfy: 10
-craftedFrom:
+receipts:
     - base.seaweed
     - base.seafood
     - base.vegetable
 
 actions:
-
     -   type: use
         label: Eat advanced meal
-        duration: 1
+        cost: 10
         effects:
             food: 100
             drink: 100

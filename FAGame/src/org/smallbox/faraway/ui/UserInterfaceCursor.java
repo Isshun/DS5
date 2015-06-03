@@ -50,7 +50,7 @@ public class UserInterfaceCursor {
 					rectangle2.draw(renderer, effect);
 				}
 				
-				if (ServiceManager.getWorldMap().getRessource(x, y) != null) {
+				if (ServiceManager.getWorldMap().getResource(x, y) != null) {
 					viewItem.setPosition(x * 32, y * 32);
 					viewItem.draw(renderer, effect);
 				}

@@ -113,7 +113,7 @@ public class LightRenderer implements IRenderer {
 	public void refresh(ItemBase item) {
 
 		// TODO
-		//		refresh(item.getX() - item.getLight(),
+		//		refreshGame(item.getX() - item.getLight(),
 		//				item.getY() - item.getLight(),
 		//				item.getX() + item.getLight(),
 		//				item.getY() + item.getLight());

@@ -1,7 +1,6 @@
 package org.smallbox.faraway;
 
 import org.smallbox.faraway.engine.ui.ColorView;
-import org.smallbox.faraway.engine.ui.View;
 
 /**
  * Created by Alex on 27/05/2015.

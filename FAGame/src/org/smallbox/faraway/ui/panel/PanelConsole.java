@@ -5,7 +5,6 @@ import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.StringUtils;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 public class PanelConsole extends BasePanel {

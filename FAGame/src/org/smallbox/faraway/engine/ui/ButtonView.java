@@ -31,7 +31,7 @@
 //		setOnFocusListener(null);
 //	}
 //
-//	public abstract void refresh();
+//	public abstract void refreshGame();
 //
 //	public void setString(String string) {
 //		_string = string;

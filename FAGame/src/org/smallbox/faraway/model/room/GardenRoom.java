@@ -1,15 +1,15 @@
 package org.smallbox.faraway.model.room;
 
 import org.smallbox.faraway.Game;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.ui.OnClickListener;
 import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.manager.ServiceManager;
+import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.WorldArea;
 import org.smallbox.faraway.model.item.WorldResource;
 import org.smallbox.faraway.model.room.RoomOptions.RoomOption;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.manager.SpriteManager;
 
 import java.util.List;
 

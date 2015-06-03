@@ -69,6 +69,10 @@ public class SFMLRenderer implements GFXRenderer {
         _window.draw(text);
     }
 
+    public void draw(Drawable drawable) {
+        _window.draw(drawable);
+    }
+
     public void draw(Sprite spriteCache, RenderEffect effect) {
         if (effect != null) {
             _window.draw(spriteCache, ((SFMLRenderEffect)((SFMLRenderEffect)effect).getViewport().getRenderEffect()).getRender());
@@ -118,27 +122,44 @@ public class SFMLRenderer implements GFXRenderer {
             }
 
             // Mouse button event
-            if (event.type == Event.Type.MOUSE_BUTTON_PRESSED
-                    || event.type == Event.Type.MOUSE_BUTTON_RELEASED) {
-                GameEventListener.Action action = null;
-                switch (event.type) {
-                    case MOUSE_BUTTON_PRESSED: action = GameEventListener.Action.PRESSED; break;
-                    case MOUSE_BUTTON_RELEASED: action = GameEventListener.Action.RELEASED; break;
-                }
+            if (event.type == Event.Type.MOUSE_BUTTON_PRESSED || event.type == Event.Type.MOUSE_BUTTON_RELEASED) {
+                int x = event.asMouseButtonEvent().position.x;
+                int y = event.asMouseButtonEvent().position.y;
+                if (x > 0 && x < _window.getSize().x && y > 0 && y < _window.getSize().y) {
+                    GameEventListener.Action action = null;
+                    switch (event.type) {
+                        case MOUSE_BUTTON_PRESSED:
+                            action = GameEventListener.Action.PRESSED;
+                            break;
+                        case MOUSE_BUTTON_RELEASED:
+                            action = GameEventListener.Action.RELEASED;
+                            break;
+                    }
 
-                GameEventListener.MouseButton button = null;
-                switch (event.asMouseButtonEvent().button) {
-                    case LEFT: button = GameEventListener.MouseButton.LEFT; break;
-                    case RIGHT: button = GameEventListener.MouseButton.RIGHT; break;
-                    case MIDDLE: button = GameEventListener.MouseButton.MIDDLE; break;
-                }
+                    GameEventListener.MouseButton button = null;
+                    switch (event.asMouseButtonEvent().button) {
+                        case LEFT:
+                            button = GameEventListener.MouseButton.LEFT;
+                            break;
+                        case RIGHT:
+                            button = GameEventListener.MouseButton.RIGHT;
+                            break;
+                        case MIDDLE:
+                            button = GameEventListener.MouseButton.MIDDLE;
+                            break;
+                    }
 
-                _listener.onMouseEvent(_timer, action, button, event.asMouseButtonEvent().position.x, event.asMouseButtonEvent().position.y);
+                    _listener.onMouseEvent(_timer, action, button, x, y);
+                }
             }
 
             // Mouse moved event
             if (event.type == Event.Type.MOUSE_MOVED) {
-                _listener.onMouseEvent(_timer, GameEventListener.Action.MOVE, null, event.asMouseEvent().position.x, event.asMouseEvent().position.y);
+                int x = event.asMouseEvent().position.x;
+                int y = event.asMouseEvent().position.y;
+                if (x > 0 && x < _window.getSize().x && y > 0 && y < _window.getSize().y) {
+                    _listener.onMouseEvent(_timer, GameEventListener.Action.MOVE, null, x, y);
+                }
             }
 
             // Key event

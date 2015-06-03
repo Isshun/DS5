@@ -10,7 +10,10 @@ import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class PanelShortcut extends BaseRightPanel {
     private static final int NB_COLUMNS_STATS = NB_COLUMNS / 2 - 1;

@@ -7,7 +7,7 @@ cost:
     matter: 42
 actions:
     -   type: use
-        duration: 10
+        cost: 10
         effects:
             hapiness: 10
             relation: 10

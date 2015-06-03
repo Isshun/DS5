@@ -2,13 +2,12 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.ui.*;
-import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.StringUtils;
+import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.*;
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.model.job.BaseJob;
 import org.smallbox.faraway.model.room.Room;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.List;
@@ -434,7 +433,8 @@ public class PanelInfo extends BaseRightPanel {
 
 		_areaLight.setString("luminosity: " + (int)Math.min(area.getLight() * 100, 100));
 
-		Room room = Game.getRoomManager().get(area.getX(), area.getY());
+		Room room = null;
+//		Room room = Game.getRoomManager().get(area.getX(), area.getY());
 		_lbRoom.setString(room != null ? room.getName() : "");
 		if (area.getItem() != null) {
 		} else {
@@ -621,13 +621,6 @@ public class PanelInfo extends BaseRightPanel {
 
 		item.setSelected(true);
 
-		if (item.isStack()) {
-			StackItem stack = (StackItem)item;
-			if (stack.getStackedInfo() != null) {
-				_itemName.setString(StringUtils.getDashedString(stack.getStackedInfo().label, " x" + stack.size(), Constant.NB_COLUMNS_TITLE));
-			}
-		}
-		
 		if (item.isUsable()) {
 			refreshSlots(item.getSlots());
 		}
@@ -742,7 +735,7 @@ public class PanelInfo extends BaseRightPanel {
 		int i = 0;
 		int used = 0;
 		for (ItemSlot slot: slots) {
-			JobModel job = slot.getJob();
+			BaseJob job = slot.getJob();
 			if (i < NB_SLOTS_MAX && job != null) {
 				used++;
 				final CharacterModel character = job.getCharacter();

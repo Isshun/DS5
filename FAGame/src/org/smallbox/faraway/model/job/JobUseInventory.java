@@ -1,6 +1,5 @@
 package org.smallbox.faraway.model.job;
 
-import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ResourceManager;
@@ -9,22 +8,30 @@ import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
 
-public class JobUseInventory extends JobModel {
+public class JobUseInventory extends BaseJob {
+
+	@Override
+	public boolean canBeResume() {
+		return false;
+	}
+
+	@Override
+	public CharacterModel.TalentType getTalentNeeded() {
+		return null;
+	}
 
 	private JobUseInventory(ItemInfo.ItemInfoAction action, int x, int y) {
 		super(action, x, y);
 	}
 
-	public static JobModel create(CharacterModel character, ItemBase item) {
+	public static BaseJob create(CharacterModel character, ItemBase item) {
 		if (!item.getInfo().isConsomable) {
 			return null;
 		}
 		
-		JobModel job = new JobUseInventory(item.getInfo().actions.get(0), character.getX(), character.getY());
-		job.setAction(JobManager.Action.USE_INVENTORY);
+		BaseJob job = new JobUseInventory(item.getInfo().actions.get(0), character.getX(), character.getY());
 		job.setItem(item);
 		job.setCharacterRequire(character);
-		job.setDurationLeft(item.getInfo().actions.get(0).duration);
 
 		return job;
 	}
@@ -43,13 +50,13 @@ public class JobUseInventory extends JobModel {
 	@Override
 	public boolean action(CharacterModel character) {
 		if (_item == null) {
-			JobManager.getInstance().abort(this, JobModel.JobAbortReason.INVALID);
+			JobManager.getInstance().abort(this, BaseJob.JobAbortReason.INVALID);
 			Log.error("actionUseInventory: invalid job");
 			return true;
 		}
 		
 		if (character.getInventory().contains(_item) == false) {
-			JobManager.getInstance().abort(this, JobModel.JobAbortReason.INVALID);
+			JobManager.getInstance().abort(this, BaseJob.JobAbortReason.INVALID);
 			Log.error("actionUseInventory: item is missing from inventory");
 			return true;
 		}
@@ -60,7 +67,7 @@ public class JobUseInventory extends JobModel {
 		}
 		
 		// TODO: immediate use
-		for (int i = 0; i < _item.getInfo().actions.get(0).duration * Constant.DURATION_MULTIPLIER; i++) {
+		for (int i = 0; i < _item.getInfo().actions.get(0).cost; i++) {
 			_item.use(character, i);
 		}
 

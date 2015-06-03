@@ -8,7 +8,6 @@ import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.BasePanel;
-import org.smallbox.faraway.ui.panel.LayoutFactory;
 
 import java.util.ArrayList;
 import java.util.List;

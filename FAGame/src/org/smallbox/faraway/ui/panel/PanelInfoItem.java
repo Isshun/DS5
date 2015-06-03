@@ -9,7 +9,7 @@ import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.model.job.BaseJob;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 
@@ -72,7 +72,7 @@ public class PanelInfoItem extends BaseRightPanel {
             ((TextView)findById("lb_pos")).setString("Pos: " + _item.getX() + "x" + _item.getY());
         }
 
-        if (_itemInfo.actions != null && !_itemInfo.actions.isEmpty()) {
+        if (_itemInfo.hasCraftAction()) {
             _frameCraft.setVisible(true);
             _frameCraftEntries.clearAllViews();
             _menuAddCraftEntries.clearAllViews();
@@ -86,10 +86,12 @@ public class PanelInfoItem extends BaseRightPanel {
             // Create actions list
             index = 0;
             if (_item.hasJobs()) {
-                for (JobModel job : _item.getJobs()) {
+                for (BaseJob job : _item.getJobs()) {
                     addJobListEntry(job, index++);
                 }
             }
+        } else {
+            _frameCraft.setVisible(false);
         }
     }
 
@@ -101,7 +103,7 @@ public class PanelInfoItem extends BaseRightPanel {
         }
     }
 
-    private void addJobListEntry(JobModel job, int index) {
+    private void addJobListEntry(BaseJob job, int index) {
         int lineHeight = 40;
 
         TextView lbEnable = _viewFactory.createTextView();
@@ -133,14 +135,14 @@ public class PanelInfoItem extends BaseRightPanel {
         _frameCraftEntries.addView(lbProgress);
 
         TextView lbCraftCount = _viewFactory.createTextView();
-        lbCraftCount.setString(job.getCount() < 0 ? "xx" : "x" + job.getCount());
+        lbCraftCount.setString(job.getTotalCount() == Integer.MAX_VALUE ? "xx" : "x" + job.getCount());
         lbCraftCount.setCharacterSize(14);
         lbCraftCount.setPosition(350, 20 + lineHeight * index);
         lbCraftCount.setOnClickListener(view -> {
-            job.setCount(job.getCount() == -1 ? 1 : -1);
+            job.setTotalCount(job.getTotalCount() == Integer.MAX_VALUE ? 1 : Integer.MAX_VALUE);
         });
         lbCraftCount.setOnRightClickListener(view -> {
-            job.setCount(job.getCount() == -1 ? 1 : -1);
+            job.setTotalCount(job.getTotalCount() == Integer.MAX_VALUE ? 1 : Integer.MAX_VALUE);
         });
         lbCraftCount.resetSize();
         _frameCraftEntries.addView(lbCraftCount);

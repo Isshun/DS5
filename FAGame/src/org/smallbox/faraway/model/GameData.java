@@ -11,12 +11,13 @@ public class GameData {
 	public List<ItemInfo> 		items;
 	public List<ItemInfo> 		gatherItems;
 	public List<CategoryInfo> 	categories;
+	public List<PlanetModel> 	planets;
 //	public List<Character> 		characters;
 
 	public GameData() {
-		gatherItems = new ArrayList<ItemInfo>();
-		items = new ArrayList<ItemInfo>();
-		categories = new ArrayList<CategoryInfo>();
+		gatherItems = new ArrayList<>();
+		items = new ArrayList<>();
+		categories = new ArrayList<>();
 	}
 	
 	public ItemInfo getItemInfo(String name) {
@@ -26,8 +27,7 @@ public class GameData {
 			}
 		}
 
-		// TODO
-		return Game.getData().items.get(0);
+		throw new RuntimeException("item not exists: " + name);
 	}
 
 	public ItemInfo getRandomGatherItem() {

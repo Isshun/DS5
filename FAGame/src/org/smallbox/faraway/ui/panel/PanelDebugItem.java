@@ -5,8 +5,8 @@ import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.List;
@@ -194,7 +194,7 @@ public class PanelDebugItem extends BasePanel {
 			TextView text = SpriteManager.getInstance().createTextView();
 			String str = "Crafted from: ";
 			int i = 0;
-			for (String name: item.craftedFrom) {
+			for (String name: item.receipts) {
 				if (i++ > 0) {
 					str += " / ";
 				}

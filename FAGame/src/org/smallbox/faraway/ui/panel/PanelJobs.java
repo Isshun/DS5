@@ -5,8 +5,7 @@ import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.JobManager;
-import org.smallbox.faraway.manager.JobManager.Action;
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.model.job.BaseJob;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.List;
@@ -47,14 +46,14 @@ public class PanelJobs extends BaseRightPanel {
 
 	@Override
 	public void onRefresh(int update) {
-		List<JobModel> jobs = JobManager.getInstance().getJobs();
+		List<BaseJob> jobs = JobManager.getInstance().getJobs();
 		int posX = 20;
 		int posY = 92;
 		int i = 0;
 
 		// Display jobs
-		for (JobModel job: jobs) {
-			if (job.getCharacter() != null && Action.MOVE.equals(job.getAction()) == false) {				
+		for (BaseJob job: jobs) {
+			if (job.getCharacter() != null && job.isVisibleInUI()) {
 				if (i < 75) {
 					refreshJob(job, _entries[i++], posX, posY);
 					posY += 18;
@@ -78,7 +77,7 @@ public class PanelJobs extends BaseRightPanel {
 		_lbTitle2.setPosition(posX, posY);
 
 		posY += 42;
-		for (JobModel job: jobs) {
+		for (BaseJob job: jobs) {
 			if (job.getCharacter() == null) {				
 				if (i < 75) {
 					refreshJob(job, _entries[i++], posX, posY);
@@ -93,7 +92,7 @@ public class PanelJobs extends BaseRightPanel {
 		}
 	}
 
-	private void refreshJob(final JobModel job, TextView text, int x, int y) {
+	private void refreshJob(final BaseJob job, TextView text, int x, int y) {
 		text.setVisible(true);
 		text.setPosition(x, y);
 		text.resetPos();
@@ -116,7 +115,7 @@ public class PanelJobs extends BaseRightPanel {
 		} else if (job.getFail() > 0) {
 			switch (job.getReason()) {
 			case BLOCKED: left = "(blocked: #" + job.getNbBlocked() + ")"; break;
-			case INTERRUPTE: left = "(interrupte)"; break;
+			case INTERRUPT: left = "(interrupte)"; break;
 			case NO_BUILD_RESOURCES:
 			case NO_COMPONENTS: left = "(no matter)"; break;
 			case INVALID: left = "(invalide)"; break;

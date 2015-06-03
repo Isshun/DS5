@@ -1,5 +1,4 @@
-import org.jsfml.graphics.Drawable;
-import org.jsfml.graphics.Text;
+import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.GFXRenderer;
@@ -8,6 +7,9 @@ import org.smallbox.faraway.engine.ui.Colors;
 import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.SpriteManager;
+
+import java.io.File;
+import java.io.IOException;
 
 public class SFMLTextView extends TextView {
 	protected Text 			_text;
@@ -42,19 +44,23 @@ public class SFMLTextView extends TextView {
         _shortcutUnderlineString = null;
 
 		if (string != null && !string.equals(_value)) {
-            if (string.contains("_")) {
-                int pos = string.indexOf('_');
-                _shortcutString = "";
-                _shortcutUnderlineString = "";
-                for (int i = 0; i < pos; i++) {
-                    _shortcutString += " ";
-                    _shortcutUnderlineString += " ";
-                }
-                _shortcutString += string.substring(pos + 1, pos + 2);
-                _shortcutUnderlineString += "_";
+            string = string.replace("\\n", "\n");
+            string = string.replace("_", "");
 
-                string = string.substring(0, pos) + " " + string.substring(pos + 2);
-            }
+
+//            if (string.contains("_")) {
+//                int pos = string.indexOf('_');
+//                _shortcutString = "";
+//                _shortcutUnderlineString = "";
+//                for (int i = 0; i < pos; i++) {
+//                    _shortcutString += " ";
+//                    _shortcutUnderlineString += " ";
+//                }
+//                _shortcutString += string.substring(pos + 1, pos + 2);
+//                _shortcutUnderlineString += "_";
+//
+//                string = string.substring(0, pos) + " " + string.substring(pos + 2);
+//            }
 
 			_text.setString(string);
             _contentWidth = _text != null ? (int) (_text.getLocalBounds().width + _text.getLocalBounds().left) : 0;
@@ -62,13 +68,11 @@ public class SFMLTextView extends TextView {
 			_value = string;
 		}
 
-        int x = _x;
-        int y = _y;
         if (_align == Align.CENTER) {
-            x += (_width - _contentWidth) / 2;
-            y += (_height - _contentHeight) / 2 - _text.getLocalBounds().top;
+            _offsetX = (_width - _contentWidth) / 2;
+            _offsetY = (int) ((_height - _contentHeight) / 2 - _text.getLocalBounds().top);
         }
-        _text.setPosition(x, y);
+        _text.setPosition(_x + _offsetX, _y + _offsetY);
 	}
 
     private void initShortcut() {
@@ -195,6 +199,8 @@ public class SFMLTextView extends TextView {
 
     @Override
     public void init() {
+        super.init();
+
         initShortcut();
     }
 

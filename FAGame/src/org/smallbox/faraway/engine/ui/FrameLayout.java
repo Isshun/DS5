@@ -7,22 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class FrameLayout extends View {
-    protected List<View> 		_views;
+    protected List<View> 		_views = new ArrayList<>();;
 	protected RenderEffect _renderEffect;
 
 	public FrameLayout(int width, int height) {
 		super(width, height);
-		init();
 	}
 
 	public FrameLayout() {
 		super(0, 0);
-		init();
 	}
 
-	private void init() {
-		_views = new ArrayList<>();
-		setPosition(0, 0);
+    @Override
+	public void init() {
+		if (_align == Align.CENTER && _parent != null) {
+			_offsetX = (_parent.getContentWidth() - _width) / 2;
+			_offsetY = (_parent.getContentHeight() - _height) / 2;
+		}
+
+        _views.forEach(View::init);
 	}
 
 	@Override
@@ -45,7 +48,7 @@ public abstract class FrameLayout extends View {
 		}
 
         if (_background != null) {
-            renderer.draw(_background, effect);
+            renderer.draw(_background, _renderEffect);
         }
 
 		for (View view: _views) {
@@ -77,6 +80,7 @@ public abstract class FrameLayout extends View {
 		_views.clear();
 	}
 
+    @Override
     public View findById(String id) {
         return findById(id.hashCode());
     }
@@ -129,4 +133,6 @@ public abstract class FrameLayout extends View {
     public List<View> getViews() {
         return _views;
     }
+
+
 }

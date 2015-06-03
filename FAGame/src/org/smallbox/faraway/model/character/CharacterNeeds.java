@@ -1,11 +1,14 @@
 package org.smallbox.faraway.model.character;
 
 import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemInfo.ItemInfoAction;
 
 public class CharacterNeeds {
-	public enum Message {
+    private final CharacterModel _character;
+
+    public enum Message {
 		MSG_HUNGRY,
 		MSG_STARVE,
 		MSG_NEED_OXYGEN,
@@ -36,6 +39,7 @@ public class CharacterNeeds {
 	private ItemBase 	_sleepItem;
 
 	public CharacterNeeds(CharacterModel character) {
+        _character = character;
 		_sleepItem = null;
 		_sleeping = 0;
 		_food = (int) (Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);
@@ -197,9 +201,13 @@ public class CharacterNeeds {
 	}
 
 	public void	sleep(ItemBase item) {
+        if (_character.getJob() != null) {
+            JobManager.getInstance().removeJob(_character.getJob());
+        }
+
 		_sleepItem = item;
 		if (item != null) {
-			_sleeping = item.getInfo().actions.get(0).duration;
+            _sleeping = Constant.SLEEP_DURATION * Constant.DURATION_MULTIPLIER;
 		} else {
 			_sleeping = Constant.SLEEP_ON_FLOOR_DURATION * Constant.DURATION_MULTIPLIER;
 		}
@@ -216,11 +224,11 @@ public class CharacterNeeds {
 		}
 		
 		if (action != null && action.effects != null) {
-			_energy = Math.min(_energy + (double)action.effects.energy / action.duration, 100);
-			_food = Math.min(_food + (double)action.effects.food / action.duration, 100);
-			_happiness = Math.min(_happiness + (double)action.effects.hapiness / action.duration, 100);
-			_health = Math.min(_health + (double)action.effects.health / action.duration, 100);
-			_relation = Math.min(_relation + (double)action.effects.relation / action.duration, 100);
+			_energy = Math.min(_energy + (double)action.effects.energy / action.cost, 100);
+			_food = Math.min(_food + (double)action.effects.food / action.cost, 100);
+			_happiness = Math.min(_happiness + (double)action.effects.hapiness / action.cost, 100);
+			_health = Math.min(_health + (double)action.effects.health / action.cost, 100);
+			_relation = Math.min(_relation + (double)action.effects.relation / action.cost, 100);
 		}
 	}
 }

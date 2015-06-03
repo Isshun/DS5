@@ -80,7 +80,7 @@ public class FoeManager {
 //		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
 //			bw.write("BEGIN CHARACTERS\n");
 //			for (Character c: _foes) {
-//				bw.write(c.getX() + "\t" + c.getY() + "\t" + c.getProfession().getType().ordinal() + "\t" + c.getName() + "\n");
+//				bw.write(c.getX() + "\t" + c.getY() + "\t" + c.getProfession().getSceneType().ordinal() + "\t" + c.getName() + "\n");
 //			}
 //			bw.write("END CHARACTERS\n");
 //		} catch (FileNotFoundException e) {

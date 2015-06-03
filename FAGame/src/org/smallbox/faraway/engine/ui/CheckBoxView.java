@@ -94,6 +94,11 @@ public class CheckBoxView extends TextView {
 
 	}
 
+	@Override
+	public View findById(String id) {
+		return null;
+	}
+
 	public void setChecked(boolean checked) {
 		_isChecked = checked;
 		if (_label != null) {

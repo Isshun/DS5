@@ -1,5 +1,6 @@
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.engine.ui.FrameLayout;
+import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.View;
 
 /**
@@ -24,14 +25,12 @@ public class SFMLFrameLayout extends FrameLayout {
         }
 
         _renderEffect = new SFMLRenderEffect();
-        _renderEffect.setTranslate(posX, posY);
+        _renderEffect.setTranslate(posX + _offsetX, posY + _offsetY);
     }
 
     @Override
     public void refresh() {
-        for (View view: _views) {
-            view.refresh();
-        }
+        _views.forEach(View::refresh);
     }
 
 //    @Override

@@ -6,12 +6,12 @@ import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Step;
 import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.Movable;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.job.JobModel;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
+import org.smallbox.faraway.model.job.BaseJob;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +33,8 @@ public class PathManager {
 	}
 	
 	public interface PathManagerCallback {
-		  void	onPathComplete(Path path, JobModel item);
-		  void	onPathFailed(JobModel item);
+		  void	onPathComplete(Path path, BaseJob item);
+		  void	onPathFailed(BaseJob item);
 	}
 
 	public static class FinderPool {
@@ -82,7 +82,7 @@ public class PathManager {
 	public void init() {
 	}
 
-	public void getPathAsync(final CharacterModel character, final JobModel job) {
+	public void getPathAsync(final CharacterModel character, final BaseJob job) {
 		final int fromX = character.getX();
 		final int fromY = character.getY();
 		final int toX = job.getX();

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.engine.ui;
 
-import org.smallbox.faraway.*;
+import org.smallbox.faraway.GFXRenderer;
+import org.smallbox.faraway.RenderEffect;
 
 import java.awt.*;
 
@@ -8,6 +9,8 @@ import java.awt.*;
  * Created by Alex on 27/05/2015.
  */
 public abstract class View {
+    public enum Align { CENTER, LEFT, RIGHT };
+
     protected int               _width;
     protected int               _height;
     public int                  _x;
@@ -28,6 +31,9 @@ public abstract class View {
     protected boolean 			_invalid;
     protected Object 			_data;
     protected ColorView         _background;
+    protected Align             _align = Align.LEFT;
+    protected int               _offsetX;
+    protected int               _offsetY;
 
     public View(int width, int height) {
         _width = width;
@@ -42,6 +48,7 @@ public abstract class View {
     public boolean 		isVisible() { return _isVisible; }
 
     public void 		setId(int id) { _id = id; }
+    public void         setAlign(Align align) { _align = align; }
     public void 		setFocus(boolean focus) { _isFocus = focus; }
     public void 		setParent(FrameLayout parent) {
         if (_background != null) {
@@ -60,8 +67,9 @@ public abstract class View {
     public abstract void refresh();
 
     public void setBackgroundColor(org.smallbox.faraway.Color color) {
-        _background = ViewFactory.getInstance().createColorView(_width, _height);
-        _background.setPosition(_x, _y);
+        if (_background == null) {
+            _background = ViewFactory.getInstance().createColorView(_width, _height);
+        }
         _background.setBackgroundColor(color);
     }
 
@@ -144,11 +152,19 @@ public abstract class View {
         int y = 0;
         View view = this;
         while (view != null) {
-            x += view.getPosX();
-            y += view.getPosY();
+            x += view.getPosX() + view.getOffsetX();
+            y += view.getPosY() + view.getOffsetY();
             view = view.getParent();
         }
         return new Rectangle(x, y, _width == 0 ? getContentWidth() : _width, _height == 0 ? getContentHeight() : _height);
+    }
+
+    private int getOffsetX() {
+        return _offsetX;
+    }
+
+    private int getOffsetY() {
+        return _offsetY;
     }
 
     public void onEnter() {
@@ -187,5 +203,6 @@ public abstract class View {
 
     public abstract int getContentWidth();
     public abstract int getContentHeight();
-
+    public void init(){}
+    public View findById(String id){return null;}
 }

@@ -1,0 +1,20 @@
+label: Advance meal
+width: 1
+height: 1
+isFood: true
+type: consumable
+craftedQuantitfy: 10
+receipts:
+    - base.seaweed
+    - base.seafood
+    - base.vegetable
+
+actions:
+
+    -   type: use
+        label: Eat advanced meal
+        cost: 10
+        effects:
+            food: 100
+            drink: 100
+            hapiness: 10

@@ -8,8 +8,8 @@ import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.engine.util.StringUtils;
-import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class PanelManager extends BaseRightPanel {
 		_entries = new ArrayList<>();
 		List<ItemInfo> items = Game.getData().items;
 		for (ItemInfo item: items) {
-			if (item.isFood && item.craftedFrom != null) {
+			if (item.isFood && item.receipts != null) {
 				_entries.add(new PanelEntry("Cooking " + item.label));
 			}
 		}

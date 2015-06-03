@@ -7,6 +7,9 @@ import org.smallbox.faraway.SpriteModel;
 public abstract class ImageView extends View {
 
 	private SpriteModel _image;
+	protected String 	_path;
+	protected double 		_scaleX = 1;
+	protected double 		_scaleY = 1;
 
 	public ImageView() {
 		super(0, 0);
@@ -42,6 +45,15 @@ public abstract class ImageView extends View {
 
 	public void setSprite(SpriteModel sprite) {
 		_image = sprite;
+	}
+
+	public void setImagePath(String path) {
+		_path = path;
+	}
+
+	public void setScale(double scaleX, double scaleY) {
+		_scaleX = scaleX;
+		_scaleY = scaleY;
 	}
 }
 

@@ -6,42 +6,54 @@ import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.Movable.Direction;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.FactoryItem;
-import org.smallbox.faraway.model.item.ItemBase;
-import org.smallbox.faraway.model.item.ItemSlot;
-import org.smallbox.faraway.model.item.UserItem;
+import org.smallbox.faraway.model.item.*;
 
 import java.util.List;
 
-public class JobUse extends JobModel {
+public class JobUse extends BaseJob {
+
+    @Override
+    public boolean canBeResume() {
+        return false;
+    }
+
+	@Override
+	public CharacterModel.TalentType getTalentNeeded() {
+		return null;
+	}
 
 	private JobUse() {
 		super();
 	}
 
-	public static JobModel create(ItemBase item) {
+	public static JobUse create(ItemBase item) {
 		if (item == null || !item.hasFreeSlot()) {
 			return null;
 		}
 
+        ItemInfo.ItemInfoAction infoAction = item.getInfo().actions.get(0);
+
 		JobUse job = new JobUse();
 		ItemSlot slot = item.takeSlot(job);
-		job.setSlot(slot);
-		job.setPosition(slot.getX(), slot.getY());
-		job.setAction(JobManager.Action.USE);
-		job.setActionInfo(item.getInfo().actions.get(0));
+		if (slot != null) {
+			job.setSlot(slot);
+			job.setPosition(slot.getX(), slot.getY());
+		} else {
+			job.setPosition(item.getX(), item.getY());
+		}
+		job.setActionInfo(infoAction);
 		job.setItem(item);
-		job.setDurationLeft(item.getInfo().actions.get(0).duration);
+        job.setQuantityTotal(infoAction.cost);
 
 		return job;
 	}
 
-	public static JobModel create(ItemBase item, CharacterModel character) {
+	public static JobUse create(ItemBase item, CharacterModel character) {
 		if (character == null) {
 			return null;
 		}
-		
-		JobModel job = create(item);
+
+		JobUse job = create(item);
 		job.setCharacterRequire(character);
 		
 		return job;
@@ -76,13 +88,10 @@ public class JobUse extends JobModel {
 		Log.debug("Character #" + character.getName() + ": actionUse");
 
 		// Character using item
-		if (_durationLeft > 0) {
+		if (_cost++ < _totalCost) {
 			// Set running
 			_status = JobStatus.RUNNING;
 			
-			// Decrease duration
-			decreaseDurationLeft();
-
 			// Item is use by 2 or more character
 			if (_item.getNbFreeSlots() + 1 < _item.getNbSlots()) {
 				character.getNeeds().addRelation(1);
@@ -98,19 +107,20 @@ public class JobUse extends JobModel {
 			if (_item.getX() < _posX) { character.setDirection(Direction.LEFT); }
 			if (_item.getY() > _posY) { character.setDirection(Direction.TOP); }
 			if (_item.getY() < _posY) { character.setDirection(Direction.BOTTOM); }
-			
-			// Add item effects and create crafted item
-			UserItem produce = _item.use(character, _durationLeft);
-			if (produce != null) {
-				character.addInventory(produce);
-			}
-		}
-		
-		// Check after action
-		if (_durationLeft > 0) {
-			return false;
+
+            // Use item
+            _item.use(_character, (int) (_totalCost - _cost));
+
+            return false;
 		}
 
+        if (_item.getInfo().isConsomable) {
+            ((ConsumableItem)_item).addQuantity(-1);
+            if (((ConsumableItem)_item).getQuantity() <= 0) {
+                Game.getWorldManager().removeItem(_item);
+            }
+        }
+		
 		JobManager.getInstance().complete(this);
 		return true;
 	}

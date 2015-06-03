@@ -11,14 +11,14 @@ import org.smallbox.faraway.manager.PathManager;
 import org.smallbox.faraway.model.Movable;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterRelation.Relation;
+import org.smallbox.faraway.model.check.*;
 import org.smallbox.faraway.model.check.character.CheckCharacterExhausted;
 import org.smallbox.faraway.model.check.character.CheckCharacterHungry;
 import org.smallbox.faraway.model.check.old.CharacterCheck;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemFilter;
 import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.job.JobModel;
-import org.smallbox.faraway.model.check.*;
+import org.smallbox.faraway.model.job.BaseJob;
 import org.smallbox.faraway.model.room.Room;
 import org.smallbox.faraway.ui.UserInterface;
 
@@ -35,13 +35,13 @@ public class CharacterModel extends Movable {
         GATHER,
         MINE,
         HAUL,
-        CLEAN
+        BUILD, CLEAN
     }
 
     public static class TalentEntry {
 		public final String         name;
         public final CharacterCheck check;
-        private final TalentType    type;
+        public final TalentType     type;
         public int                  index;
         public double               level;
         public double               learnCoef;
@@ -230,7 +230,7 @@ public class CharacterModel extends Movable {
 
 	public ProfessionModel getProfession() { return _profession; }
 	public ProfessionModel.Type	getProfessionId() { return _profession.getType(); }
-	public JobModel getJob() { return _job; }
+	public BaseJob getJob() { return _job; }
 	public String			getName() { return _firstName + _lastName; }
 	public CharacterNeeds	getNeeds() { return _needs; }
 	//	  int[]				getMessages() { return _messages; }
@@ -254,12 +254,15 @@ public class CharacterModel extends Movable {
 	public boolean 			isGay() { return _isGay; }
 	public boolean 			needRefresh() { return _needRefresh; }
 
+    public void quitJob() {
+        _job = null;
+    }
 
-	public void	setJob(JobModel job) {
-		// Cancel previous job
-		if (_job != null && _job != job && _job.isFinish() == false) {
-			JobManager.getInstance().abort(_job, JobModel.JobAbortReason.INTERRUPTE);
-		}
+    public void	setJob(BaseJob job) {
+//		// Cancel previous job
+//		if (_job != null && _job != job && _job.isFinish() == false) {
+//			JobManager.getInstance().abort(_job, BaseJob.JobAbortReason.INTERRUPT);
+//		}
 
 		// Set new job
 		_job = job;
@@ -314,7 +317,7 @@ public class CharacterModel extends Movable {
 	// }
 
 	// void	use(AStarSearch<MapSearchNode> path, Job job) {
-	//   Info() + "Character #" + _id +": use item type: " + item.getType();
+	//   Info() + "Character #" + _id +": use item type: " + item.getSceneType();
 
 	//   // If character currently building item: abort
 	//   if (_job != null && _job.getItem() != null && _job.getItem().isComplete() == false) {
@@ -330,7 +333,7 @@ public class CharacterModel extends Movable {
 	// }
 
 	// void	build(AStarSearch<MapSearchNode> path, Job job) {
-	//   Info() + "Character #" + _id + ": build item type: " + item.getType();
+	//   Info() + "Character #" + _id + ": build item type: " + item.getSceneType();
 
 	//   _build = item;
 	//   _build.setOwner(this);
@@ -371,10 +374,10 @@ public class CharacterModel extends Movable {
 			_quarter = null;
 		}
 
-		// Find quarter
-		if (_quarter == null) {
-			Game.getRoomManager().take(this, Room.Type.QUARTER);
-		}
+//		// Find quarter
+//		if (_quarter == null) {
+//			Game.getRoomManager().take(this, Room.Type.QUARTER);
+//		}
 
 		// New child
 		if (_nbChild < Constant.CHARACTER_MAX_CHILD && _mate != null && _old > Constant.CHARACTER_CHILD_MIN_OLD && _old < Constant.CHARACTER_CHILD_MAX_OLD && _old > _nextChildAtOld && _nextChildAtOld > 0) {
@@ -487,8 +490,8 @@ public class CharacterModel extends Movable {
 		}
 
 		if (_needs.isTired() && (_job.getItem() == null || _job.getItem().isSleepingItem() == false)) {
-			JobManager.getInstance().abort(_job, JobModel.JobAbortReason.INTERRUPTE);
-			_job = null;
+			JobManager.getInstance().quit(_job);
+//			_job = null;
 			return;
 		}
 
@@ -565,22 +568,13 @@ public class CharacterModel extends Movable {
 	}
 
 	@Override
-	public void	onPathFailed(JobModel job) {
-		JobManager.Action action = job.getAction();
-		if (action == JobManager.Action.MOVE) {
-			Log.warning("Move failed (no path)");
-		}
-		if (action == JobManager.Action.USE) {
-		  Log.warning("Use failed (no path)");
-		}
-		if (action == JobManager.Action.BUILD) {
-			Log.warning("Build failed (no path)");
-		}
+	public void	onPathFailed(BaseJob job) {
+		Log.warning("Job failed (no path)");
 		sendEvent(CharacterNeeds.Message.MSG_BLOCKED);
 		UserInterface.getInstance().displayMessage("blocked", _posX, _posY);
 
 		// Abort job
-		JobManager.getInstance().abort(job, JobModel.JobAbortReason.BLOCKED);
+		JobManager.getInstance().abort(job, BaseJob.JobAbortReason.BLOCKED);
 		_job = null;
 
 		if (_onPathComplete != null) {
@@ -589,7 +583,7 @@ public class CharacterModel extends Movable {
 	}
 
 	@Override
-	public void	onPathComplete(Path rawpath, JobModel job) {
+	public void	onPathComplete(Path rawpath, BaseJob job) {
 	  Log.debug("Charactere #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
 
 	  if (rawpath.getLength() == 0) {
@@ -666,9 +660,15 @@ public class CharacterModel extends Movable {
         return _talentsMap.get(type);
     }
 
-    public double work(TalentType type) {
+    public double work(TalentType talent) {
         _needRefresh = true;
-        return _talentsMap.get(type).work();
+        return _talentsMap.get(talent).work();
     }
+
+	public boolean work(TalentType talent, ItemBase item) {
+		_needRefresh = true;
+		item.setMatterSupply(item.getMatterSupply() - _talentsMap.get(talent).work());
+		return item.getMatterSupply() <= 0;
+	}
 
 }

@@ -20,3 +20,8 @@ entries:
         id: lb_floor
         textsize: 14
         position: [550, 8]
+
+    -   type: label
+        id: lb_frame
+        textsize: 14
+        position: [650, 8]

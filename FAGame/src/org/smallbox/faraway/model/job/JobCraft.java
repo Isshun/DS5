@@ -7,7 +7,12 @@ import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemInfo;
 
-public class JobCraft extends JobModel {
+public class JobCraft extends BaseJob {
+
+	@Override
+	public CharacterModel.TalentType getTalentNeeded() {
+		return CharacterModel.TalentType.CRAFT;
+	}
 
 	private JobCraft(ItemInfo.ItemInfoAction action, int x, int y) {
 		super(action, x, y);
@@ -23,9 +28,7 @@ public class JobCraft extends JobModel {
         }
 
         JobCraft job = new JobCraft(action, item.getX(), item.getY());
-		job.setAction(JobManager.Action.WORK);
 		job.setItem(item);
-        job.setDurationLeft(action.duration);
 
         item.addJob(job);
 
@@ -42,14 +45,14 @@ public class JobCraft extends JobModel {
 		// Wrong call
 		if (_item == null) {
 			Log.error("Character: actionUse on null job or null job's item");
-			JobManager.getInstance().abort(this, JobModel.JobAbortReason.INVALID);
+			JobManager.getInstance().abort(this, BaseJob.JobAbortReason.INVALID);
 			return false;
 		}
 
 		// Item is no longer exists
 		if (_item != ServiceManager.getWorldMap().getItem(_posX, _posY)) {
 			Log.warning("Character #" + character.getId() + ": actionUse on invalide item");
-			JobManager.getInstance().abort(this, JobModel.JobAbortReason.INVALID);
+			JobManager.getInstance().abort(this, BaseJob.JobAbortReason.INVALID);
 			return true;
 		}
 
@@ -60,15 +63,15 @@ public class JobCraft extends JobModel {
 		}
 
 		// Work continue
-		if (_quantity < _quantityTotal) {
-            _quantity = Math.min(_quantityTotal, _quantity + character.work(CharacterModel.TalentType.CRAFT));
+		if (_cost < _totalCost) {
+            _cost = Math.min(_totalCost, _cost + character.work(CharacterModel.TalentType.CRAFT));
 			Log.debug("Character #" + character.getId() + ": working");
 			return false;
 		}
 
         // Current item is complete but some remains
         if (--_count != 0) {
-            _quantity = 0;
+            _cost = 0;
             setCharacter(null);
             return false;
         }

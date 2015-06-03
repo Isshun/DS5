@@ -7,10 +7,8 @@ import org.smallbox.faraway.model.check.old.CharacterCheck;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemFilter;
 import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.job.JobTake;
 import org.smallbox.faraway.model.job.JobUse;
 import org.smallbox.faraway.model.job.JobUseInventory;
-import org.smallbox.faraway.model.room.StorageRoom;
 
 /**
  * Created by Alex on 01/06/2015.

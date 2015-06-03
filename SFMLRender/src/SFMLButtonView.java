@@ -14,7 +14,7 @@
 //	}
 //
 //	@Override
-//	public void refresh() {
+//	public void refreshGame() {
 //		if (_textShortcut != null) {
 //			_textShortcut.setPosition(_x + _paddingLeft + _textPaddingLeft + ((_shortcutPos + 1) * 12), _y + _paddingTop + _textPaddingTop);
 //			_textShortcut.setCharacterSize(_textSize);

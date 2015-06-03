@@ -1,17 +1,18 @@
 label: Easy meal
 width: 1
 height: 1
-type: consomable
 isFood: true
+type: consumable
 craftedQuantitfy: 10
-craftedFrom:
-  - base.seaweed
-  - base.seafood
-  - base.vegetable
+receipts:
+    - base.seaweed
+    - base.seafood
+    - base.vegetable
   
 actions:
     -   type: use
-        duration: 1
+        label: Eat easy meal
+        cost: 1
         effects:
             food: 100
             drink: 100

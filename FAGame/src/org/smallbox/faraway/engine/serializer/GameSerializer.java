@@ -10,7 +10,7 @@ import java.util.List;
 public class GameSerializer {
     public static class GameSave {
         public List<WorldSerializer.WorldSaveArea>      areas;
-        public List<RoomSerializer.RoomSave>			rooms;
+//        public List<RoomSerializer.RoomSave>			rooms;
         public List<CharacterSerializer.CharacterSave>	characters;
         public List<JobSerializer.JobSave> 				jobs;
 
@@ -54,10 +54,10 @@ public class GameSerializer {
                     (new WorldSerializer()).load(save);
                 }
 
-                if (save.rooms != null) {
-                    loadListener.onUpdate("Loading rooms");
-                    (new RoomSerializer()).load(save);
-                }
+//                if (save.rooms != null) {
+//                    loadListener.onUpdate("Loading rooms");
+//                    (new RoomSerializer()).load(save);
+//                }
 
                 if (save.jobs != null) {
                     loadListener.onUpdate("Loading jobs");
@@ -72,7 +72,7 @@ public class GameSerializer {
 
         // Construct save object
         GameSave save = new GameSave();
-        (new RoomSerializer()).save(save);
+//        (new RoomSerializer()).save(save);
         (new CharacterSerializer()).save(save);
         (new JobSerializer()).save(save);
         (new WorldSerializer()).save(save);

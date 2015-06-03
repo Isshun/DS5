@@ -5,6 +5,17 @@ import java.util.List;
 
 public class ItemInfo {
 
+	public boolean hasCraftAction() {
+		if (actions != null) {
+			for (ItemInfoAction action : actions) {
+				if ("craft".equals(action.type) || "cook".equals(action.type)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public static class ItemInfoCost {
 		public int matter;
 		public int power;
@@ -12,22 +23,16 @@ public class ItemInfo {
 	}
 
 	public static class ItemInfoAction {
-		public int 					duration;
 		public int 					storage;
 		public String 				type;
 		public String 				label;
 		public List<String> 		products;
 		public List<ItemInfo> 		productsItem;
-		public ItemInfoPractice 	practice;
 		public ItemInfoEffects		effects;
 		public ArrayList<ItemInfo> 	itemAccept;
 		public int 					mature;
-		public int 					quantity;
+		public int                  cost;
 		public String 				name;
-	}
-
-	public static class ItemInfoPractice {
-		public int		cooking;
 	}
 
 	public static class ItemInfoEffects {
@@ -45,7 +50,7 @@ public class ItemInfo {
 	public String 				category;
 	public String 				type;
 	public List<int[]>			slots;
-	public List<String>			craftedFrom;
+	public List<String>         receipts;
 	public int					craftedQuantitfy;
 	public boolean 				isWalkable;
 	public int 					frames;

@@ -2,7 +2,7 @@ package org.smallbox.faraway.model.item;
 
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.model.job.BaseJob;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ public abstract class ItemBase {
     private int			    _y;
     private int			    _id;
     private boolean 	    _isSolid;
-    private int 		    _matterSupply;
+    private double          _matterSupply;
     private int 		    _zoneIdRequired;
     private CharacterModel _owner;
     private String 		    _name;
@@ -44,7 +44,7 @@ public abstract class ItemBase {
     private int 		    _lastBlocked;
     private WorldArea	    _area;
     private int             _health;
-    private List<JobModel>       _jobs;
+    private List<BaseJob>       _jobs;
     private boolean         _needRefresh;
 
     public ItemBase(ItemInfo info) {
@@ -68,6 +68,7 @@ public abstract class ItemBase {
         _owner = null;
         _id = id;
         _name = null;
+        _nbFreeSlot = -1;
 
         // TODO: modes
 //		_nbMode = 1;
@@ -140,13 +141,15 @@ public abstract class ItemBase {
         }
     }
 
-    public ItemSlot takeSlot(JobModel job) {
-        for (ItemSlot slot: _slots) {
-            if (slot.isFree()) {
-                slot.take(job);
-                _nbFreeSlot--;
-                _nbTotalUsed++;
-                return slot;
+    public ItemSlot takeSlot(BaseJob job) {
+        if (_nbFreeSlot != -1) {
+            for (ItemSlot slot : _slots) {
+                if (slot.isFree()) {
+                    slot.take(job);
+                    _nbFreeSlot--;
+                    _nbTotalUsed++;
+                    return slot;
+                }
             }
         }
         return null;
@@ -172,7 +175,7 @@ public abstract class ItemBase {
 
     // Sets
     public void				setPosition(int x, int y) { _x = x; _y = y; }
-    public void 			setMatterSupply(int matterSupply) { _matterSupply = matterSupply; }
+    public void 			setMatterSupply(double matterSupply) { _matterSupply = matterSupply; }
     public void 			setPowerSupply(int i) { _powerSupply = i; }
     public void 			setSolid(boolean isSolid) { _isSolid = isSolid; }
     public void 			setMode(int mode) { _mode = mode; }
@@ -182,8 +185,8 @@ public abstract class ItemBase {
     public void 			setY(int y) { _y = y; }
 
     // Gets
-    public int				getMatterSupply() { return Math.min(_matterSupply, _matter); }
-    public CharacterModel getOwner() { return _owner; }
+    public double           getMatterSupply() { return Math.min(_matterSupply, _matter); }
+    public CharacterModel   getOwner() { return _owner; }
     public int				getWidth() { return _width; }
     public int				getHeight() { return _height; }
     public int				getX() { return _x; }
@@ -213,7 +216,7 @@ public abstract class ItemBase {
     public boolean			isStructure() { return _info.isStructure; }
     public boolean			isRessource() { return _info.isResource; }
     public boolean			isWalkable() { return !_info.isWalkable; }
-    public boolean 			isFloor() { return getName().equals("base.floor") || getName().equals("base.rock") || getName().equals("base.ground"); }
+    public boolean 			isFloor() { return getName().equals("base.floor") || getName().equals("base.res_rock") || getName().equals("base.ground"); }
     public boolean 			isDoor() { return getName().equals("base.door"); }
     public boolean 			isWall() { return getName().equals("base.wall") || getName().equals("base.window"); }
     public boolean 			isWindow() { return getName().equals("base.window"); }
@@ -332,7 +335,7 @@ public abstract class ItemBase {
         return _info.maxHealth;
     }
 
-    public void addJob(JobModel job) {
+    public void addJob(BaseJob job) {
         _needRefresh = true;
 
         if (_jobs == null) {
@@ -346,7 +349,7 @@ public abstract class ItemBase {
         return _jobs != null && !_jobs.isEmpty();
     }
 
-    public List<JobModel> getJobs() {
+    public List<BaseJob> getJobs() {
         return _jobs;
     }
 
@@ -358,7 +361,7 @@ public abstract class ItemBase {
         _needRefresh = true;
     }
 
-    public void removeJob(JobModel job) {
+    public void removeJob(BaseJob job) {
         _needRefresh = true;
 
         if (_jobs != null) {

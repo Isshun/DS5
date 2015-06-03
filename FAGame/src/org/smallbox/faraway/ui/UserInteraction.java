@@ -9,9 +9,8 @@ import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.StructureItem;
 import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.model.item.WorldResource;
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.model.job.BaseJob;
 import org.smallbox.faraway.model.job.JobTake;
-import org.smallbox.faraway.model.room.Room;
 import org.smallbox.faraway.model.room.Room.Type;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.PanelPlan.Planning;
@@ -55,7 +54,7 @@ public class
 			for (int y = toY; y >= startY; y--) {
 
 				// Check if resource is present on area
-				WorldResource res = ServiceManager.getWorldMap().getRessource(x, y);
+				WorldResource res = ServiceManager.getWorldMap().getResource(x, y);
 				if (res != null) {
 					if (res.canBeMined()) {
 						JobManager.getInstance().addMineJob(x, y);
@@ -116,7 +115,7 @@ public class
 	public void planGather(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				JobModel job = JobManager.getInstance().createGatherJob(x, y);
+				BaseJob job = JobManager.getInstance().createGatherJob(x, y);
 				if (job != null) {
 					JobManager.getInstance().addJob(job);
 				}
@@ -127,7 +126,7 @@ public class
 	public void planMining(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				JobModel job = JobManager.getInstance().createMiningJob(x, y);
+				BaseJob job = JobManager.getInstance().createMiningJob(x, y);
 				if (job != null) {
 					JobManager.getInstance().addJob(job);
 				}
@@ -140,7 +139,7 @@ public class
 			for (int y = startY; y <= toY; y++) {
 				UserItem item = Game.getWorldManager().getItem(x, y);
 				if (item != null) {
-					JobModel job = JobTake.create(item);
+					BaseJob job = JobTake.create(item);
 					if (job != null) {
 						JobManager.getInstance().addJob(job);
 					}
@@ -152,7 +151,7 @@ public class
 	public void planDump(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				JobModel job = JobManager.getInstance().createDumpJob(x, y);
+				BaseJob job = JobManager.getInstance().createDumpJob(x, y);
 				if (job != null) {
 					JobManager.getInstance().addJob(job);
 				}
@@ -179,11 +178,11 @@ public class
 			return;
 		}
 		
-		if (_selectedRoomType == Room.Type.NONE) {
-			Game.getRoomManager().removeRoom(fromX, fromY, toX, toY);
-		} else {
-			Game.getRoomManager().putRoom(clickX, clickY, fromX, fromY, toX, toY, _selectedRoomType, null);
-		}
+//		if (_selectedRoomType == Room.Type.NONE) {
+//			Game.getRoomManager().removeRoom(fromX, fromY, toX, toY);
+//		} else {
+//			Game.getRoomManager().putRoom(clickX, clickY, fromX, fromY, toX, toY, _selectedRoomType, null);
+//		}
 		
 	}
 

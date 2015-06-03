@@ -10,7 +10,7 @@ slots:
     - [0, 1]
 actions:
     -   type: use
-        duration: 12
+        cost: 12
         effects:
             hapiness: 10
             relation: 10

@@ -2,7 +2,6 @@ package org.smallbox.faraway.model.job;
 
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
-import org.smallbox.faraway.manager.JobManager.Action;
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.ProfessionModel;
@@ -11,15 +10,20 @@ import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.model.item.WorldResource;
 
-public class JobGather extends JobModel {
+public class JobGather extends BaseJob {
 
 	private WorldResource	_resource;
+
+	@Override
+	public CharacterModel.TalentType getTalentNeeded() {
+		return CharacterModel.TalentType.GATHER;
+	}
 
 	private JobGather(ItemInfo.ItemInfoAction action, int x, int y) {
 		super(action, x, y);
 	}
 
-	public static JobModel create(WorldResource resource) {
+	public static BaseJob create(WorldResource resource) {
 		// Resource is not gatherable
 		if (resource == null || !"gather".equals(resource.getInfo().actions.get(0).type)) {
 			return null;
@@ -27,7 +31,6 @@ public class JobGather extends JobModel {
 
 
 		JobGather job = new JobGather(resource.getInfo().actions.get(0), resource.getX(), resource.getY());
-		job.setAction(Action.GATHER);
 		job.setItem(resource);
 		job._resource = resource;
 		job._resource.setJob(job);
@@ -44,7 +47,7 @@ public class JobGather extends JobModel {
 		}
 
 		// Item is no longer exists
-		if (_resource != ServiceManager.getWorldMap().getRessource(_resource.getX(), _resource.getY())) {
+		if (_resource != ServiceManager.getWorldMap().getResource(_resource.getX(), _resource.getY())) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}

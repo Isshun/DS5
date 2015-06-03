@@ -6,12 +6,12 @@ import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.PathManager.PathManagerCallback;
 import org.smallbox.faraway.manager.Utils;
 import org.smallbox.faraway.model.character.CharacterNeeds;
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.model.job.BaseJob;
 
 public abstract class Movable implements PathManagerCallback {
 	public interface OnPathComplete {
-		void	onPathFailed(JobModel job);
-		void	onPathComplete(Path rawpath, JobModel job);
+		void	onPathFailed(BaseJob job);
+		void	onPathComplete(Path rawpath, BaseJob job);
 	}
 	
 	public enum Direction {
@@ -38,7 +38,7 @@ public abstract class Movable implements PathManagerCallback {
 	protected Direction 		_move;
 	protected Path				_path;
 	protected int				_steps;
-	protected JobModel _job;
+	protected BaseJob _job;
 	protected OnPathComplete	_onPathComplete;
 
 //	private HashMap<Integer, Integer> 	_points;

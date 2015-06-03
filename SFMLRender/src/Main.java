@@ -17,7 +17,6 @@ import java.io.IOException;
  * Created by Alex on 27/05/2015.
  */
 public class Main {
-    private static Game _game;
 
     public static void main(String[] args) throws IOException {
         ViewFactory.setInstance(new SFMLViewFactory());
@@ -37,20 +36,11 @@ public class Main {
         GameData data = application.loadResources();
 
         // Create app
-        application.create(renderer);
+        application.create(renderer, data);
         renderer.setGameEventListener(application);
 
         try {
-            _game = new Game(data);
-            _game.onCreate();
-            //_game.newGame(SAVE_FILE, _loadListener);
-
-            application.getLoadListener().onUpdate("Load save");
-            _game.load(Application.SAVE_FILE, application.getLoadListener());
-
-            application.getLoadListener().onUpdate("Start game");
-            application.startGame(_game);
-
+            application.loadGame();
             loop(window, application, renderer);
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,6 +69,8 @@ public class Main {
         while (window.isOpen()) {
             renderer.refresh();
 
+            Game game = application.getGame();
+
             long elapsed = renderer.getTimer().getElapsedTime();
 
             // Sleep
@@ -89,30 +81,34 @@ public class Main {
             }
 
             // Render menu
-            if (!_game.isRunning()) {
-                application.manageMenu(renderer);
+            if (game == null || !game.isRunning()) {
+                application.renderMenu(renderer, SpriteManager.getInstance().createRenderEffect());
+
+                // Refresh
+                if (elapsed >= nextRefresh) {
+                    application.refreshMenu(refresh++);
+                    nextRefresh += Application.REFRESH_INTERVAL;
+                }
             }
 
             // Render game
-            else if (!_game.isPaused()) {
+            else if (game != null && !game.isPaused()) {
                 // Draw
                 RenderEffect effect = SpriteManager.getInstance().createRenderEffect();
-                effect.setViewport(_game.getViewport());
+                effect.setViewport(game.getViewport());
 
                 double animProgress = (1 - (double) (nextUpdate - elapsed) / Application.getUpdateInterval());
-                application.render(animProgress, update, renderTime, renderer, effect);
+                application.renderGame(animProgress, update, renderTime, renderer, effect);
 
                     // Refresh
                     if (elapsed >= nextRefresh) {
-                        application.refresh(refresh);
-                        refresh++;
+                        application.refreshGame(refresh++);
                         nextRefresh += Application.REFRESH_INTERVAL;
                     }
 
                     // Update
                     if (elapsed >= nextUpdate) {
-                        application.update(update);
-                        update++;
+                        application.update(update++);
                         nextUpdate += Application.getUpdateInterval();
                     }
 

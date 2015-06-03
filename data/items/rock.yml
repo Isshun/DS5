@@ -1,11 +1,7 @@
-label: Rock
+label: Rubble
 width: 1
 height: 1
-type: resource
+type: item
 light: 0
-actions:
-    -   type: mine
-        products:
-            -   base.matter
 cost:
     matter: 10

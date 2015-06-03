@@ -2,6 +2,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.Texture;
+import org.newdawn.slick.util.pathfinding.Path;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.Viewport;
@@ -47,9 +48,12 @@ public class SFMLSpriteManager extends SpriteManager {
 	private SFMLSprite[] _selectors;
 	private Texture _textureItemSelector;
 	private SFMLSprite[] _itemSelectors;
+	private Map<String, SpriteModel> _icons;
 
 	public SFMLSpriteManager() throws IOException {
         loadStrings();
+
+		_icons = new HashMap<>();
 
 		_sprites = new HashMap<>();
 		_spritesCharacters = new HashMap<>();
@@ -169,7 +173,25 @@ public class SFMLSpriteManager extends SpriteManager {
         }
     }
 
-    public Font getFont() {
+	@Override
+	public SpriteModel getIcon(String path) {
+		if (!_icons.containsKey(path)) {
+			try {
+				Texture texture = new Texture();
+				texture.setSmooth(true);
+				texture.loadFromFile(new File(path).toPath());
+				SFMLSprite sprite = new SFMLSprite();
+                sprite.getData().setTexture(texture);
+				_icons.put(path, sprite);
+			} catch (IOException e) {
+				_icons.put(path, null);
+				e.printStackTrace();
+			}
+		}
+		return _icons.get(path);
+	}
+
+	public Font getFont() {
 		return _font;
 	}
 
@@ -185,7 +207,7 @@ public class SFMLSpriteManager extends SpriteManager {
 				return getResource((WorldResource) item);
 			}
 
-			int alpha = Math.min(item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * item.getMatterSupply(), 255);
+			int alpha = Math.min(item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * (int)item.getMatterSupply(), 255);
 			
 			return getSprite(item.getInfo(), tile, 0, alpha, false);
 		}
@@ -381,7 +403,7 @@ public class SFMLSpriteManager extends SpriteManager {
 	public SpriteModel getResource(WorldResource resource) {
 		ItemInfo info = resource.getInfo();
 
-		if ("base.rock".equals(info.name)) {
+		if ("base.res_rock".equals(info.name)) {
 			return getSprite(info, resource.getTile(), 0, 255, false);
 		}
 
@@ -404,7 +426,7 @@ public class SFMLSpriteManager extends SpriteManager {
 			int texture = 4;
 			int x = (room % choice) * Constant.TILE_WIDTH;
 			int y = zone * (Constant.TILE_HEIGHT + 2) + 1;
-			int alpha = Math.min(item != null ? 75 + 180 / item.getMatter() * item.getMatterSupply() : 255, 255);
+			int alpha = Math.min(item != null ? 75 + 180 / item.getMatter() * (int)item.getMatterSupply() : 255, 255);
 			return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT, alpha);
 		} else if (item != null) {
 			return getSprite(item.getInfo(), 0, 0, 255, false);
@@ -435,7 +457,7 @@ public class SFMLSpriteManager extends SpriteManager {
 	public SpriteModel getWall(StructureItem item, int special, int index, int zone) {
 		// Door
 		if (item.getName().equals("base.door")) {
-			int alpha = 75 + 180 / item.getMatter() * item.getMatterSupply();
+			int alpha = 75 + 180 / item.getMatter() * (int)item.getMatterSupply();
 			return getSprite(6,
 					WALL_WIDTH * item.getMode(),
 					WALL_HEIGHT * 7,
@@ -447,7 +469,7 @@ public class SFMLSpriteManager extends SpriteManager {
 		// Wall
 		else {
 			if (item.isWall()) {
-				int alpha = 75 + 180 / item.getMatter() * item.getMatterSupply();
+				int alpha = 75 + 180 / item.getMatter() * (int)item.getMatterSupply();
 				int texture = 6;
 				int x = 0;
 				int y = 0;

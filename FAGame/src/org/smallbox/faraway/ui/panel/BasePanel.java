@@ -13,7 +13,6 @@ import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnLayoutLoaded {
     protected static final int 	LINE_HEIGHT = 20;
@@ -148,6 +147,7 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 
 	protected void onOpen() {
 	}
+
 	public GameEventListener.Key getShortcut() {
 		return _shortcut;
 	}

@@ -3,17 +3,15 @@ package org.smallbox.faraway.model.job;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 
-public class JobMove extends JobModel {
+public class JobMove extends BaseJob {
 
 	private JobMove(int x, int y) {
 		super(null, x, y);
 	}
 
-	public static JobModel create(CharacterModel character, int x, int y, int stay) {
-		JobModel job = new JobMove(x, y);
-		job.setAction(JobManager.Action.MOVE);
+	public static BaseJob create(CharacterModel character, int x, int y, int stay) {
+		BaseJob job = new JobMove(x, y);
 		job.setCharacterRequire(character);
-		job.setDurationLeft(stay);
 		return job;
 	}
 
@@ -25,7 +23,6 @@ public class JobMove extends JobModel {
 	@Override
 	public boolean action(CharacterModel character) {
 		if (_durationLeft > 0) {
-			decreaseDurationLeft();
 			return false;
 		}
 
@@ -36,6 +33,21 @@ public class JobMove extends JobModel {
 	@Override
 	public String getType() {
 		return "move";
+	}
+
+	@Override
+	public boolean canBeResume() {
+		return false;
+	}
+
+	@Override
+	public CharacterModel.TalentType getTalentNeeded() {
+		return CharacterModel.TalentType.HAUL;
+	}
+
+	@Override
+	public boolean isVisibleInUI() {
+		return false;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import org.smallbox.faraway.model.room.Room;
 
 public class WorldArea {
 	private UserItem 		_item;
+	private ConsumableItem 	_consumable;
 	private StructureItem 	_structure;
 	private WorldResource 	_resource;
 	private int				_oxygen;
@@ -73,5 +74,24 @@ public class WorldArea {
 			resource.setX(_x);
 			resource.setY(_y);
 		}
+	}
+
+	public boolean isEmpty() {
+		return _resource == null && _item == null && _structure == null;
+	}
+
+	public UserItem getRootItem() {
+		if (_item != null && _item.getX() == _x && _item.getY() == _y) {
+			return _item;
+		}
+		return null;
+	}
+
+	public ConsumableItem getConsumable() {
+		return _consumable;
+	}
+
+	public void setConsumable(ConsumableItem consumable) {
+		_consumable = consumable;
 	}
 }

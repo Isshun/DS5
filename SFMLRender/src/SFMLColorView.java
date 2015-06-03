@@ -4,6 +4,7 @@ import org.smallbox.faraway.Color;
 import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.engine.ui.ColorView;
+import org.smallbox.faraway.engine.ui.View;
 
 /**
  * Created by Alex on 28/05/2015.
@@ -37,11 +38,24 @@ public class SFMLColorView extends ColorView {
     }
 
     @Override
+    public void init() {
+    }
+
+    @Override
+    public View findById(String id) {
+        return null;
+    }
+
+    @Override
     public void setBackgroundColor(Color color) {
-        _background = new RectangleShape();
-        _background.setSize(new Vector2f(_width, _height));
-        _background.setPosition(new Vector2f(_x, _y));
-        _background.setFillColor(new org.jsfml.graphics.Color(color.r, color.g, color.b));
+        if (color != null) {
+            _background = new RectangleShape();
+            _background.setSize(new Vector2f(_width, _height));
+            _background.setPosition(new Vector2f(_x, _y));
+            _background.setFillColor(new org.jsfml.graphics.Color(color.r, color.g, color.b));
+        } else {
+            _background = null;
+        }
     }
 
     @Override

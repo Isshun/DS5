@@ -2,14 +2,14 @@ package org.smallbox.faraway.model.item;
 
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.model.job.BaseJob;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FactoryItem extends UserItem {
 
-	private JobModel _refillJob;
+	private BaseJob _refillJob;
 	private double				_itemProduceState;
 	protected List<UserItem>	_inventory;
 	private List<ItemInfo>		_accepts;
@@ -34,7 +34,7 @@ public class FactoryItem extends UserItem {
 
 		if (_info.actions != null && _info.actions.get(0).productsItem != null) {
 			ItemInfo itemToProduce = _info.actions.get(0).productsItem.get(0);
-			_itemProduceState += (double)itemToProduce.craftedQuantitfy / _info.actions.get(0).duration;
+			_itemProduceState += (double)itemToProduce.craftedQuantitfy / _info.actions.get(0).cost;
 			if (_itemProduceState >= 1) {
 				_itemProduceState -= 1;
 
@@ -92,11 +92,11 @@ public class FactoryItem extends UserItem {
 		return _refillJob != null && _refillJob.isFinish() == false;
 	}
 
-	public JobModel getRefillJob() {
+	public BaseJob getRefillJob() {
 		return _refillJob;
 	}
 
-	public void setRefillJob(JobModel job) {
+	public void setRefillJob(BaseJob job) {
 		_refillJob = job;
 	}
 

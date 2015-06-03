@@ -45,7 +45,7 @@ public class ItemLoader {
 			    info.name = info.packageName +  '.' + info.fileName;
 
 			    // Get category
-			    if ("consomable".equals(info.type)) {
+			    if ("consumable".equals(info.type)) {
 				    info.isConsomable = true;
 			    } else if ("structure".equals(info.type)) {
 				    info.isStructure = true; 
@@ -75,9 +75,9 @@ public class ItemLoader {
 		// First pass
 		for (ItemInfo item: data.items) {
 			// Init crafted item
-			if (item.craftedFrom != null) {
+			if (item.receipts != null) {
 				item.craftedFromItems = new ArrayList<ItemInfo>();
-				for (String name: item.craftedFrom) {
+				for (String name: item.receipts) {
 					item.craftedFromItems.add(data.getItemInfo(name));
 				}
 			}
@@ -87,9 +87,14 @@ public class ItemLoader {
 		for (ItemInfo item: data.items) {
 			item.isSleeping = "base.bed".equals(item.name);
 
-
 			if (item.actions != null) {
 				for (ItemInfo.ItemInfoAction action: item.actions) {
+
+					// Set product items
+					if (action.products != null && !action.products.isEmpty()) {
+						action.productsItem = action.products.stream().map(data::getItemInfo).collect(Collectors.toList());
+					}
+
 					switch (action.type) {
                         case "use":
                             if (item.actions.size() > 1) {
@@ -104,11 +109,6 @@ public class ItemLoader {
                             if (item.actions.size() > 1) {
                                 throw new RuntimeException("action type \"gather\" need to be unique");
                             }
-
-                            if (action.products != null && !action.products.isEmpty()) {
-                                action.productsItem = new ArrayList<>();
-                                action.productsItem.add(data.getItemInfo(action.products.get(0)));
-                            }
                             data.gatherItems.add(item);
                             break;
 
@@ -116,16 +116,9 @@ public class ItemLoader {
                             if (item.actions.size() > 1) {
                                 throw new RuntimeException("action type \"mine\" need to be unique");
                             }
-
-                            if (action.products != null && !action.products.isEmpty()) {
-                                action.productsItem = new ArrayList<>();
-                                action.productsItem.add(data.getItemInfo(action.products.get(0)));
-                            }
 //                            data.gatherItems.add(item);
                             break;
 					}
-
-					break;
 				}
 			}
 

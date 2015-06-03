@@ -3,7 +3,7 @@ package org.smallbox.faraway.model.check;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.check.old.CharacterCheck;
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.model.job.BaseJob;
 
 /**
  * Created by Alex on 01/06/2015.
@@ -17,8 +17,8 @@ public class CheckCook extends CharacterCheck {
     @Override
     public boolean create(JobManager jobManager) {
         int bestDistance = Integer.MAX_VALUE;
-        JobModel bestJob = null;
-        for (JobModel job: jobManager.getJobs()) {
+        BaseJob bestJob = null;
+        for (BaseJob job: jobManager.getJobs()) {
             if (job.isFree() && !job.isFinish() && "cook".equals(job.getType()) && job.getDistance(_character) < bestDistance) {
                 bestDistance = job.getDistance(_character);
                 bestJob = job;

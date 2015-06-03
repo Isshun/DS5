@@ -420,43 +420,43 @@ areas:
   y: 115
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 125
   y: 168
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 125
   y: 169
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 125
   y: 170
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 125
   y: 171
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 125
   y: 172
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 125
   y: 173
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 125
   y: 174
@@ -474,43 +474,43 @@ areas:
   y: 115
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 126
   y: 168
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 126
   y: 169
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 126
   y: 170
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 126
   y: 171
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 126
   y: 172
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 126
   y: 173
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 126
   y: 174
@@ -528,43 +528,43 @@ areas:
   y: 115
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 127
   y: 168
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 127
   y: 169
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 127
   y: 170
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 127
   y: 171
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 127
   y: 172
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 127
   y: 173
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 127
   y: 174
@@ -582,43 +582,43 @@ areas:
   y: 115
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 128
   y: 168
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 128
   y: 169
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 128
   y: 170
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 128
   y: 171
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 128
   y: 172
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 128
   y: 173
   z: 0
 - item: null
-  resource: {matter: 0, name: base.rock, tile: 0, value: 0}
+  resource: {matter: 0, name: base.res_rock, tile: 0, value: 0}
   structure: null
   x: 128
   y: 174

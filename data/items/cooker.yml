@@ -5,41 +5,34 @@ width: 2
 slots:
     - [0, 1]
     - [1, 1]
+
 actions:
     -   type: cook
         name: action_cook_easy
         label: Cook easy meal
-        quantity: 100
-        practice:
-            cooking: 1
+        cost: 100
         products:
             - base.easy_meal
 
     -   type: cook
         name: action_cook_advance
         label: Cook advance meal
-        quantity: 10
-        practice:
-            cooking: 1
+        cost: 100
         products:
-            - base.meal
+            - base.advance_meal
 
     -   type: cook
         name: action_cook_lavish
         label: Cook lavish meal
-        quantity: 10
-        practice:
-            cooking: 1
+        cost: 10
         products:
-            - base.meal
+            - base.lavish_meal
 
     -   type: cook
         name: action_cook_ration
         label: Cook ration
-        quantity: 10
-        practice:
-            cooking: 1
+        cost: 10
         products:
-            - base.meal
+            - base.military_ration
 cost:
   matter: 42
