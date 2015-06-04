@@ -3,9 +3,11 @@ package org.smallbox.faraway.ui.mainMenu;
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.GFXRenderer;
+import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.PlanetModel;
 import org.smallbox.faraway.ui.LayoutModel;
 
@@ -89,9 +91,9 @@ public class PlanetScene extends MainMenuScene {
 
     private void formatPlanetHostileStats(TextView textView, String label, int value) {
         if (value == 0) {
-            textView.setString(StringUtils.getDashedString(SpriteManager.getInstance().getString(label), "no", 39));
+            textView.setString(StringUtils.getDashedString(GameData.getData().getString(label), "no", 39));
         } else {
-            textView.setString(StringUtils.getDashedString(SpriteManager.getInstance().getString(label), "yes (" + (value == 1 ? "few" : "many") + ")", 39));
+            textView.setString(StringUtils.getDashedString(GameData.getData().getString(label), "yes (" + (value == 1 ? "few" : "many") + ")", 39));
         }
         switch (value) {
             case 0: textView.setColor(COLOR_0); break;
@@ -102,7 +104,7 @@ public class PlanetScene extends MainMenuScene {
 
     private void formatPlanetStats(TextView textView, String label, int value) {
         textView.setString(StringUtils.getDashedString(
-                SpriteManager.getInstance().getString(label),
+                GameData.getData().getString(label),
                 StringUtils.getPlanetStatsText(value) + " (" + StringUtils.getPlanetStatsSymbol(value) + ")", 39));
         switch (value) {
             case -3: textView.setColor(COLOR_S3); break;

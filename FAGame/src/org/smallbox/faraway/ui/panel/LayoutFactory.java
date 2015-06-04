@@ -154,6 +154,7 @@ public class LayoutFactory {
 
         if (view != null && entry.id != null) {
             view.setId(entry.id.hashCode());
+            view.setName(entry.id);
         }
 
         return view;

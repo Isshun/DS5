@@ -11,7 +11,6 @@ import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.loader.PlanetLoader;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.MenuLoad;
@@ -32,8 +31,9 @@ public class Application implements GameEventListener {
 	private static MenuBase			_menu;
 	private static int 				_updateInterval = UPDATE_INTERVAL;
     private static int 				_longUpdateInterval = LONG_UPDATE_INTERVAL;
-	private static MainRenderer _gameRenderer;
-	private static UserInterface _gameInterface;
+	private static MainRenderer     _gameRenderer;
+	private static LightRenderer    _lightRenderer;
+	private static UserInterface    _gameInterface;
 	private static LoadListener 	_loadListener;
 	private static boolean			_isFullscreen;
     private static GFXRenderer      _renderer;
@@ -49,7 +49,7 @@ public class Application implements GameEventListener {
         _renderer = renderer;
         _loadListener = message -> {
             renderer.clear();
-            TextView text = SpriteManager.getInstance().createTextView();
+            TextView text = ViewFactory.getInstance().createTextView();
             text.setString(message);
             text.setCharacterSize(42);
             text.setColor(Colors.LINK_INACTIVE);
@@ -66,11 +66,13 @@ public class Application implements GameEventListener {
         };
     }
 
-	public void create(GFXRenderer renderer, GameData data) {
+	public void create(GFXRenderer renderer, LightRenderer lightRenderer, GameData data) {
+        GameData.setData(data);
         _data = data;
 		_renderer = renderer;
 		_isFullscreen = true;
 		_gameRenderer = new MainRenderer();
+        _lightRenderer = lightRenderer;
 		_gameInterface = new UserInterface(new LayoutFactory(), ViewFactory.getInstance());
         _mainMenu = new MainMenu(new LayoutFactory(), ViewFactory.getInstance(), renderer);
     }
@@ -110,6 +112,11 @@ public class Application implements GameEventListener {
         }
 
         switch (key) {
+            case RIGHT:
+                _game.getViewport().startMove(0, 0);
+                _game.getViewport().update(100, 0);
+                break;
+
             case SPACE:
                 _game.togglePaused();
                 break;
@@ -216,7 +223,7 @@ public class Application implements GameEventListener {
         _gameInterface.onCreate(_game);
     }
 
-    public void renderMenu(final GFXRenderer renderer, RenderEffect effect) throws IOException, InterruptedException {
+    public void renderMenu(final GFXRenderer renderer, RenderEffect effect) {
         _mainMenu.draw(renderer, effect);
 
 //		if (_menu == null) {
@@ -239,6 +246,7 @@ public class Application implements GameEventListener {
         _frame++;
         if (_game != null) {
             _gameRenderer.onDraw(renderer, effect, animProgress);
+            _lightRenderer.onDraw(renderer);
             _gameInterface.onDraw(renderer, update, renderTime);
         }
     }
@@ -265,6 +273,8 @@ public class Application implements GameEventListener {
         _game.onLongUpdate();
         _gameRenderer.setFPS(frame, _longUpdateInterval);
         _lastLongUpdateDelay = System.currentTimeMillis() - time;
+
+        GameData.getData().reloadConfig();
     }
 
     public static int getWindowWidth() {

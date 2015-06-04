@@ -13,7 +13,6 @@ import java.io.IOException;
  * Created by Alex on 28/05/2015.
  */
 public class SFMLImageView extends ImageView {
-
     private Sprite _sprite;
 
     @Override

@@ -46,15 +46,7 @@ public abstract class SpriteManager {
 	public abstract SpriteModel getSelector(int tile);
 	public abstract SpriteModel getSelectorCorner(int corner);
 	public abstract SpriteModel getSelector(ItemBase item, int frame);
-    public abstract FrameLayout createFrameLayout(int width, int height);
-	public abstract FrameLayout createFrameLayout();
-    public abstract TextView createTextView();
-	public abstract View createView(int width, int height);
-	public abstract View createView();
     public abstract RenderEffect createRenderEffect();
-    public abstract TextView createTextView(int width, int height);
     public abstract Viewport createViewport();
-    public abstract String getString(String string);
-    public abstract void loadStrings();
     public abstract SpriteModel getIcon(String path);
 }

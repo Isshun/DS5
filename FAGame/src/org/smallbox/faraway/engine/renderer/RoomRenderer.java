@@ -128,7 +128,7 @@
 //
 //
 //	@Override
-//	public void onRefresh(int frame) {
+//	public void onDraw(int frame) {
 ////		List<Room> roomList = Game.getRoomManager().getRoomList();
 ////		for (Room room: roomList) {
 ////			displayRoomInfo(app, _renderEffect, room, room.getX() * Constant.TILE_WIDTH, room.getY() * Constant.TILE_HEIGHT);

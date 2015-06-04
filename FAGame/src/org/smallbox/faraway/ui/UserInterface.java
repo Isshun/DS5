@@ -338,7 +338,7 @@ public class UserInterface implements GameEventListener {
 
         long lastResModified = Utils.getLastUIModified();
         if (update % 8 == 0 && lastResModified > _lastModified) {
-            SpriteManager.getInstance().loadStrings();
+            Game.getData().loadStrings();
             _lastModified = lastResModified;
             reload();
         }
@@ -545,6 +545,8 @@ public class UserInterface implements GameEventListener {
                     if (a.getResource() != null) { select(a.getResource()); return true; }
                     else if (a.getItem() != null) { select(a.getItem()); return true; }
                     else if (a.getConsumable() != null) { select(a.getConsumable()); return true; }
+                    else if (a.getStructure() != null) { select(a.getStructure()); return true; }
+                    else { select(a); return true; }
                 }
                 for (int x2 = 0; x2 < Constant.ITEM_MAX_WIDTH; x2++) {
                     for (int y2 = 0; y2 < Constant.ITEM_MAX_HEIGHT; y2++) {
@@ -555,8 +557,6 @@ public class UserInterface implements GameEventListener {
                         }
                     }
                 }
-                if (a.getStructure() != null) { select(a.getStructure()); return true; }
-                else { select(a); return true; }
             }
         }
 

@@ -1,7 +1,9 @@
 package org.smallbox.faraway.model.character;
 
+import org.smallbox.faraway.Game;
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.model.GameData;
 
 public class CharacterRelation {
 	public enum Relation {
@@ -47,7 +49,7 @@ public class CharacterRelation {
 		case HALF_SISTER: string = Strings.LB_RELATION_HALF_SISTER; break;
 		}
 
-		return SpriteManager.getInstance().getString(string);
+		return GameData.getData().getString(string);
 	}
 
 	public Relation getRelation() {

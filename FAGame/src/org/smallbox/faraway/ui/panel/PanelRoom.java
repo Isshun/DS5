@@ -101,12 +101,12 @@ public class PanelRoom extends BaseRightPanel {
 	}
 
 	private void createRoomInfo(int x, int y) {
-		_layoutRoom = SpriteManager.getInstance().createFrameLayout();
+		_layoutRoom = ViewFactory.getInstance().createFrameLayout();
 		_layoutRoom.setPosition(Constant.UI_PADDING_H + x, Constant.UI_PADDING_H + y);
 		_layoutRoom.setVisible(false);
 		addView(_layoutRoom);
 
-		_layoutRoomOption = SpriteManager.getInstance().createFrameLayout();
+		_layoutRoomOption = ViewFactory.getInstance().createFrameLayout();
 		_layoutRoomOption.setPosition(0, 200);
 		_layoutRoom.addView(_layoutRoomOption);
 
@@ -114,7 +114,7 @@ public class PanelRoom extends BaseRightPanel {
 		border.setBackgroundColor(Colors.BORDER);
 		_layoutRoom.addView(border);
 
-		_lbRoomName = SpriteManager.getInstance().createTextView();
+		_lbRoomName = ViewFactory.getInstance().createTextView();
 		_lbRoomName.setCharacterSize(FONT_SIZE_TITLE);
 		_lbRoomName.setPosition(0, 12);
 		_layoutRoom.addView(_lbRoomName);
@@ -122,12 +122,12 @@ public class PanelRoom extends BaseRightPanel {
 		_lbRoomOccupants = new TextView[MAX_OCCUPANTS];
 		_lbRoomOccupantsOld = new TextView[MAX_OCCUPANTS];
 		for (int i = 0; i < MAX_OCCUPANTS; i++) {
-			_lbRoomOccupants[i] = SpriteManager.getInstance().createTextView();
+			_lbRoomOccupants[i] = ViewFactory.getInstance().createTextView();
 			_lbRoomOccupants[i].setCharacterSize(14);
 			_lbRoomOccupants[i].setPosition(0, 48 + 22 * i);
 			_layoutRoom.addView(_lbRoomOccupants[i]);
 
-			_lbRoomOccupantsOld[i] = SpriteManager.getInstance().createTextView();
+			_lbRoomOccupantsOld[i] = ViewFactory.getInstance().createTextView();
 			_lbRoomOccupantsOld[i].setCharacterSize(14);
 			_lbRoomOccupantsOld[i].setPosition(FRAME_WIDTH - 100, 48 + 22 * i);
 			_layoutRoom.addView(_lbRoomOccupantsOld[i]);
@@ -140,7 +140,7 @@ public class PanelRoom extends BaseRightPanel {
 		RoomOptions options = room.getOptions();
 		if (options != null) {
 			if (options.title != null) {
-				TextView lbOptionTitle = SpriteManager.getInstance().createTextView();
+				TextView lbOptionTitle = ViewFactory.getInstance().createTextView();
 				lbOptionTitle.setPosition(0, 0);
 				lbOptionTitle.setCharacterSize(FONT_SIZE_TITLE);
 				lbOptionTitle.setString(options.title);

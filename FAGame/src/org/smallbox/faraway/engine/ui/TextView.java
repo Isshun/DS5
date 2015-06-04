@@ -1,8 +1,10 @@
 package org.smallbox.faraway.engine.ui;
 
 import org.smallbox.faraway.Color;
+import org.smallbox.faraway.Game;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.model.GameData;
 
 public abstract class TextView extends View {
 
@@ -21,17 +23,17 @@ public abstract class TextView extends View {
 	}
 
 	public void setString(String string) {
-        setStringValue(SpriteManager.getInstance().getString(string));
+        setStringValue(GameData.getData() != null ? GameData.getData().getString(string) : string);
 	}
 
     public void setString(String string, int value) {
-        string = SpriteManager.getInstance().getString(string);
+        string = GameData.getData().getString(string);
         string = String.format(string, value);
         setStringValue(string);
     }
 
     public void setString(String string, String value) {
-        string = SpriteManager.getInstance().getString(string);
+        string = GameData.getData().getString(string);
         string = String.format(string, value);
         setStringValue(string);
     }

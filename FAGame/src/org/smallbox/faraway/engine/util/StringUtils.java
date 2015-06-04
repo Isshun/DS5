@@ -1,12 +1,14 @@
 package org.smallbox.faraway.engine.util;
 
+import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.model.GameData;
 
 public class StringUtils {
 
 	public static String getDashedString(String label, String value, int columns) {
-		label = SpriteManager.getInstance().getString(label);
+		label = GameData.getData().getString(label);
 
 		StringBuilder sb = new StringBuilder();
 		sb.append(label);

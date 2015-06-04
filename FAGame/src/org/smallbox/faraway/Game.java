@@ -3,6 +3,7 @@ package org.smallbox.faraway;
 import org.smallbox.faraway.engine.serializer.GameSerializer;
 import org.smallbox.faraway.engine.serializer.LoadListener;
 import org.smallbox.faraway.engine.serializer.WorldFactory;
+import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.*;
 import org.smallbox.faraway.model.GameData;
@@ -20,6 +21,7 @@ public class Game {
 	private static DynamicObjectManager	_dynamicObjectManager;
 	private static RelationManager 		_relationManager;
 	private static JobManager 			_jobManager;
+	private static Game 				_self;
 	private boolean 					_paused;
 	private int 						_speed;
 
@@ -43,6 +45,7 @@ public class Game {
 	public Game(GameData data) {
 		Log.debug("Game");
 
+		_self = this;
 		_data = data;
 		_isRunning = true;
 		_viewport = SpriteManager.getInstance().createViewport();
@@ -169,5 +172,9 @@ public class Game {
 
 	public boolean isPaused() {
 		return _paused;
+	}
+
+	public static Game getInstance() {
+		return _self;
 	}
 }

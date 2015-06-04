@@ -41,7 +41,7 @@ public class ContextualMenu extends BasePanel {
 	}
 	
 	public void addEntry(String label, OnClickListener listener, final OnFocusListener onFocusListener) {
-		final TextView text = SpriteManager.getInstance().createTextView(ENTRY_WIDTH, ENTRY_HEIGHT);
+		final TextView text = ViewFactory.getInstance().createTextView(ENTRY_WIDTH, ENTRY_HEIGHT);
 		text.setString(label);
 		text.setCharacterSize(12);
 		text.setPadding(2, 4);

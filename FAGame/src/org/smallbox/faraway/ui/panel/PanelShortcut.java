@@ -121,7 +121,7 @@ public class PanelShortcut extends BaseRightPanel {
     protected void onRefresh(int update) {
 //// TODO
 ////        if (_miniMapRenderer != null) {
-////            _miniMapRenderer.onRefresh(update);
+////            _miniMapRenderer.onDraw(update);
 ////            _map.setSprite(_miniMapRenderer.getSprite());
 ////        }
 //

@@ -27,7 +27,7 @@ public class PanelDebugItem extends BasePanel {
 		
 		setBackgroundColor(new Color(0, 0, 0));
 
-		_itemView = SpriteManager.getInstance().createFrameLayout(FRAME_WIDTH, FRAME_HEIGHT);
+		_itemView = ViewFactory.getInstance().createFrameLayout(FRAME_WIDTH, FRAME_HEIGHT);
 		_itemView.setPosition(0, 0);
 		addView(_itemView);
 		
@@ -35,7 +35,7 @@ public class PanelDebugItem extends BasePanel {
 	}
 
 	private void initGrid() {
-		_grid = SpriteManager.getInstance().createFrameLayout(FRAME_WIDTH, FRAME_HEIGHT);
+		_grid = ViewFactory.getInstance().createFrameLayout(FRAME_WIDTH, FRAME_HEIGHT);
 		_grid.setPosition(0, 0);
 		
 		int i = 0;
@@ -49,7 +49,7 @@ public class PanelDebugItem extends BasePanel {
 	}
 
 	private View createGridItem(final ItemInfo item, int row, int col) {
-		FrameLayout layout = SpriteManager.getInstance().createFrameLayout(COL_WIDTH, ROW_HEIGHT);
+		FrameLayout layout = ViewFactory.getInstance().createFrameLayout(COL_WIDTH, ROW_HEIGHT);
 		layout.setBackgroundColor(new Color(255, 255, 255, 50));
 		layout.setPosition(SPACING + col * (COL_WIDTH + SPACING), SPACING + row * (ROW_HEIGHT + SPACING));
 		layout.setOnClickListener(new OnClickListener() {
@@ -59,7 +59,7 @@ public class PanelDebugItem extends BasePanel {
 			}
 		});
 		
-		TextView lbName = SpriteManager.getInstance().createTextView();
+		TextView lbName = ViewFactory.getInstance().createTextView();
 		lbName.setString(item.name);
 		lbName.setPosition(6, 6);
 		lbName.setCharacterSize(12);
@@ -77,7 +77,7 @@ public class PanelDebugItem extends BasePanel {
 		int x = 6;
 		
 		{
-			TextView text = SpriteManager.getInstance().createTextView();
+			TextView text = ViewFactory.getInstance().createTextView();
 			text.setString(item.name);
 			text.setPosition(x, y);
 			text.setCharacterSize(32);
@@ -86,7 +86,7 @@ public class PanelDebugItem extends BasePanel {
 		}
 		
 		{
-			TextView text = SpriteManager.getInstance().createTextView();
+			TextView text = ViewFactory.getInstance().createTextView();
 			text.setString("Label: " + item.label);
 			text.setPosition(x, y);
 			text.setCharacterSize(16);
@@ -95,7 +95,7 @@ public class PanelDebugItem extends BasePanel {
 		}
 
 		{
-			TextView text = SpriteManager.getInstance().createTextView();
+			TextView text = ViewFactory.getInstance().createTextView();
 			text.setString("Is structure: " + item.isStructure);
 			text.setPosition(x, y);
 			text.setCharacterSize(16);
@@ -104,7 +104,7 @@ public class PanelDebugItem extends BasePanel {
 		}
 		
 		{
-			TextView text = SpriteManager.getInstance().createTextView();
+			TextView text = ViewFactory.getInstance().createTextView();
 			text.setString("Is ressource: " + item.isResource);
 			text.setPosition(x, y);
 			text.setCharacterSize(16);
@@ -113,7 +113,7 @@ public class PanelDebugItem extends BasePanel {
 		}
 		
 		{
-			TextView text = SpriteManager.getInstance().createTextView();
+			TextView text = ViewFactory.getInstance().createTextView();
 			text.setString("Is consomable: " + item.isConsomable);
 			text.setPosition(x, y);
 			text.setCharacterSize(16);
@@ -122,7 +122,7 @@ public class PanelDebugItem extends BasePanel {
 		}
 		
 		{
-			TextView text = SpriteManager.getInstance().createTextView();
+			TextView text = ViewFactory.getInstance().createTextView();
 			text.setString("Is user item: " + item.isUserItem);
 			text.setPosition(x, y);
 			text.setCharacterSize(16);
@@ -133,7 +133,7 @@ public class PanelDebugItem extends BasePanel {
 		if (item.actions != null) {
 
 			{
-				TextView text = SpriteManager.getInstance().createTextView();
+				TextView text = ViewFactory.getInstance().createTextView();
 				text.setString("Action:");
 				text.setPosition(x, y);
 				text.setCharacterSize(16);
@@ -144,7 +144,7 @@ public class PanelDebugItem extends BasePanel {
 			
 			// Action duration
 			{
-				TextView text = SpriteManager.getInstance().createTextView();
+				TextView text = ViewFactory.getInstance().createTextView();
 				//text.setString("duration: " + item.actions.duration);
 				text.setString("duration: TODO");
 				text.setPosition(x, y);
@@ -155,7 +155,7 @@ public class PanelDebugItem extends BasePanel {
 //
 //			// Produce
 //			if (item.actions.produce != null) {
-//				TextView text = SpriteManager.getInstance().createTextView();
+//				TextView text = ViewFactory.getInstance().createTextView();
 //				text.setSize(100, 20);
 //				String str = "products: ";
 //				for (String itemProduceName: item.actions.produce) {
@@ -176,7 +176,7 @@ public class PanelDebugItem extends BasePanel {
 //
 //			// Effects
 //			if (item.actions.effects != null) {
-//				TextView text = SpriteManager.getInstance().createTextView();
+//				TextView text = ViewFactory.getInstance().createTextView();
 //				String str = "effects: ";
 //				str += "food("+item.actions.effects.food+"), ";
 //				str += "drink("+item.actions.effects.drink+"), ";
@@ -191,7 +191,7 @@ public class PanelDebugItem extends BasePanel {
 		}
 		
 		if (item.craftedFromItems != null) {
-			TextView text = SpriteManager.getInstance().createTextView();
+			TextView text = ViewFactory.getInstance().createTextView();
 			String str = "Crafted from: ";
 			int i = 0;
 			for (String name: item.receipts) {

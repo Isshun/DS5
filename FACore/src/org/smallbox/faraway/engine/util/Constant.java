@@ -4,7 +4,7 @@ import org.smallbox.faraway.Color;
 
 public class Constant {
 
-	public static String 		NAME	= "Exodus";
+	public static String 		NAME	= "FarPoint";
 	public static String 		VERSION	= "0.1";
 
 	public static final int 	BASE_WIDTH			= 1280;

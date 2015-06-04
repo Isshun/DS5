@@ -52,7 +52,7 @@
 //	}
 //
 //	@Override
-//	public void onRefresh(int frame) {
+//	public void onDraw(int frame) {
 //		_stats = Game.getStatsManager();
 ////		_image.
 //

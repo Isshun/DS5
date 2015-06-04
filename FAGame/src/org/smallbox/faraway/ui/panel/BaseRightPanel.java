@@ -39,7 +39,7 @@ public abstract class BaseRightPanel extends BasePanel {
 			btBack.setOnClickListener(view -> _ui.back());
 			addView(btBack);
 			
-			TextView lbBack = SpriteManager.getInstance().createTextView();
+			TextView lbBack = ViewFactory.getInstance().createTextView();
 			lbBack.setString("Back");
 			lbBack.setCharacterSize(FONT_SIZE_TITLE);
 			lbBack.setColor(Colors.LINK_ACTIVE);

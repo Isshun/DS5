@@ -37,7 +37,7 @@
 //		_texture = new Texture();
 //	}
 //
-//	public void onRefresh(int frame) {
+//	public void onDraw(int frame) {
 //		WorldManager worldManager = ServiceManager.getWorldMap();
 //		for (int x = 0; x < _width; x++) {
 //			for (int y = 0; y < _height; y++) {

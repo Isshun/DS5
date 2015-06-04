@@ -51,6 +51,7 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 		if (color != null) {
 			_background = ViewFactory.getInstance().createColorView(_width, _height);
 			_background.setBackgroundColor(color);
+			_background.setPosition(_x, _y);
 		} else {
 			_background = null;
 		}

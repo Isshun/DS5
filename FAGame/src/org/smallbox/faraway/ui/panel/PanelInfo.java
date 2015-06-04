@@ -70,7 +70,7 @@ public class PanelInfo extends BaseRightPanel {
 	public PanelInfo(Mode mode, GameEventListener.Key shortcut) {
 		super(mode, shortcut);
 
-		_lbRoom = SpriteManager.getInstance().createTextView();
+		_lbRoom = ViewFactory.getInstance().createTextView();
 		_lbRoom.setPosition(200, 40);
 		_lbRoom.setCharacterSize(FONT_SIZE_TITLE);
 		addView(_lbRoom);
@@ -86,11 +86,11 @@ public class PanelInfo extends BaseRightPanel {
 	}
 
 	private void createSlotsView(int x, int y) {
-		_layoutSlot = SpriteManager.getInstance().createFrameLayout(100, 100);
+		_layoutSlot = ViewFactory.getInstance().createFrameLayout(100, 100);
 		_layoutSlot.setPosition(x, y);
 		addView(_layoutSlot);
 		
-		_lbSlot = SpriteManager.getInstance().createTextView();
+		_lbSlot = ViewFactory.getInstance().createTextView();
 		_lbSlot.setCharacterSize(FONT_SIZE_TITLE);
 		_layoutSlot.addView(_lbSlot);
 		
@@ -157,11 +157,11 @@ public class PanelInfo extends BaseRightPanel {
 //	}
 
 	private void createStorageFilterSimpleView(int x, int y) {
-		_layoutStorageSimpleFilter = SpriteManager.getInstance().createFrameLayout(200, 400);
+		_layoutStorageSimpleFilter = ViewFactory.getInstance().createFrameLayout(200, 400);
 		_layoutStorageSimpleFilter.setPosition(x, y);
 		_layoutStorage.addView(_layoutStorageSimpleFilter);
 
-		_itemAccept = SpriteManager.getInstance().createTextView();
+		_itemAccept = ViewFactory.getInstance().createTextView();
 		_itemAccept.setPosition(0, 42);
 		_itemAccept.setCharacterSize(FONT_SIZE);
 		_layoutStorageSimpleFilter.addView(_itemAccept);
@@ -193,17 +193,17 @@ public class PanelInfo extends BaseRightPanel {
 //	}
 
 	private void createViewStorage(int x, int y) {
-		_layoutStorage = SpriteManager.getInstance().createFrameLayout(200, 400);
+		_layoutStorage = ViewFactory.getInstance().createFrameLayout(200, 400);
 		_layoutStorage.setPosition(x, y);
 		addView(_layoutStorage);
 
-		TextView lbAccept = SpriteManager.getInstance().createTextView();
+		TextView lbAccept = ViewFactory.getInstance().createTextView();
 		lbAccept.setPosition(0, 100);
 		lbAccept.setString("Items accepted");
 		lbAccept.setCharacterSize(FONT_SIZE_TITLE);
 		_layoutStorage.addView(lbAccept);
 		
-		_itemStorage = SpriteManager.getInstance().createTextView();
+		_itemStorage = ViewFactory.getInstance().createTextView();
 		_itemStorage.setPosition(0, 0);
 		_itemStorage.setCharacterSize(FONT_SIZE_TITLE);
 		_layoutStorage.addView(_itemStorage);
@@ -220,7 +220,7 @@ public class PanelInfo extends BaseRightPanel {
 			_lbCarry[i].setId(100 + i);
 			_lbCarry[i].setPosition(x2 * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE, 32 + y2 * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE);
 			_layoutStorage.addView(_lbCarry[i]);
-			_lbCarryCount[i] = SpriteManager.getInstance().createTextView();
+			_lbCarryCount[i] = ViewFactory.getInstance().createTextView();
 			_lbCarryCount[i].setCharacterSize(10);
 			_lbCarryCount[i].setColor(Color.WHITE);
 			_lbCarryCount[i].setPosition(x2 * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE + 16, 32 + y2 * INVENTORY_ITEM_SIZE + INVENTORY_ITEM_SPACE + 16);
@@ -229,11 +229,11 @@ public class PanelInfo extends BaseRightPanel {
 	}
 
 	private void createEffectsView(int x, int y) {
-		_layoutEffects = SpriteManager.getInstance().createFrameLayout(FRAME_WIDTH, 80);
+		_layoutEffects = ViewFactory.getInstance().createFrameLayout(FRAME_WIDTH, 80);
 		_layoutEffects.setPosition(x, y);
 		addView(_layoutEffects);
 
-		TextView lbEffect = SpriteManager.getInstance().createTextView();
+		TextView lbEffect = ViewFactory.getInstance().createTextView();
 		lbEffect.setPosition(0, 0);
 		lbEffect.setCharacterSize(FONT_SIZE_TITLE);
 		lbEffect.setString(Strings.LB_EFFECTS);
@@ -241,7 +241,7 @@ public class PanelInfo extends BaseRightPanel {
 
 		_itemEffects = new TextView[10];
 		for (int i = 0; i < 10; i++) {
-			_itemEffects[i] = SpriteManager.getInstance().createTextView();
+			_itemEffects[i] = ViewFactory.getInstance().createTextView();
 			_itemEffects[i].setPosition(0, 34 + i * LINE_HEIGHT);
 			_itemEffects[i].setCharacterSize(FONT_SIZE);
 			_layoutEffects.addView(_itemEffects[i]);
@@ -250,36 +250,36 @@ public class PanelInfo extends BaseRightPanel {
 	}
 
 	private void createItemInfoView(int x, int y) {
-		_layoutItem = SpriteManager.getInstance().createFrameLayout(FRAME_WIDTH, 80);
+		_layoutItem = ViewFactory.getInstance().createFrameLayout(FRAME_WIDTH, 80);
 		_layoutItem.setPosition(x, y);
 
-		_itemName = SpriteManager.getInstance().createTextView();
+		_itemName = ViewFactory.getInstance().createTextView();
 		_itemName.setPosition(0, 0);
 		_itemName.setCharacterSize(FONT_SIZE_TITLE);
 		_layoutItem.addView(_itemName);
 
-		_itemCategory = SpriteManager.getInstance().createTextView();
+		_itemCategory = ViewFactory.getInstance().createTextView();
 		_itemCategory.setPosition(0, 28);
 		_itemCategory.setCharacterSize(FONT_SIZE);
 		_layoutItem.addView(_itemCategory);
 
-		_itemMatter = SpriteManager.getInstance().createTextView();
+		_itemMatter = ViewFactory.getInstance().createTextView();
 		_itemMatter.setPosition(0, 60);
 		_itemMatter.setCharacterSize(FONT_SIZE);
 		_layoutItem.addView(_itemMatter);
 
-		_itemMatterSupply = SpriteManager.getInstance().createTextView();
+		_itemMatterSupply = ViewFactory.getInstance().createTextView();
 		_itemMatterSupply.setPosition(0, 80);
 		_itemMatterSupply.setCharacterSize(FONT_SIZE);
 		_layoutItem.addView(_itemMatterSupply);
 
-		_itemPower = SpriteManager.getInstance().createTextView();
+		_itemPower = ViewFactory.getInstance().createTextView();
 		_itemPower.setPosition(0, 80);
 		_itemPower.setCharacterSize(FONT_SIZE);
 		_itemPower.setVisible(false);
 		_layoutItem.addView(_itemPower);
 
-		_itemOwner = SpriteManager.getInstance().createTextView();
+		_itemOwner = ViewFactory.getInstance().createTextView();
 		_itemOwner.setPosition(0, 100);
 		_itemOwner.setCharacterSize(FONT_SIZE);
 		_layoutItem.addView(_itemOwner);
@@ -291,25 +291,25 @@ public class PanelInfo extends BaseRightPanel {
 	}
 
 	private void createAreaInfoView(int x, int y) {
-		_layoutArea = SpriteManager.getInstance().createFrameLayout(FRAME_WIDTH, 80);
+		_layoutArea = ViewFactory.getInstance().createFrameLayout(FRAME_WIDTH, 80);
 		_layoutArea.setPosition(x, y);
 
-		_areaName = SpriteManager.getInstance().createTextView();
+		_areaName = ViewFactory.getInstance().createTextView();
 		_areaName.setPosition(0, 0);
 		_areaName.setCharacterSize(FONT_SIZE_TITLE);
 		_layoutArea.addView(_areaName);
 
-		_areaPos= SpriteManager.getInstance().createTextView();
+		_areaPos= ViewFactory.getInstance().createTextView();
 		_areaPos.setPosition(FRAME_WIDTH - 100, 0);
 		_areaPos.setCharacterSize(FONT_SIZE);
 		_layoutArea.addView(_areaPos);
 
-		_areaCategory = SpriteManager.getInstance().createTextView();
+		_areaCategory = ViewFactory.getInstance().createTextView();
 		_areaCategory.setPosition(0, 28);
 		_areaCategory.setCharacterSize(FONT_SIZE);
 		_layoutArea.addView(_areaCategory);
 
-		_areaLight = SpriteManager.getInstance().createTextView();
+		_areaLight = ViewFactory.getInstance().createTextView();
 		_areaLight.setPosition(0, 28);
 		_areaLight.setCharacterSize(FONT_SIZE);
 		_layoutArea.addView(_areaLight);
@@ -321,16 +321,16 @@ public class PanelInfo extends BaseRightPanel {
 	}
 
 	private void createItemActionView() {
-		_itemAction = SpriteManager.getInstance().createFrameLayout(120, 200);
+		_itemAction = ViewFactory.getInstance().createFrameLayout(120, 200);
 		_itemAction.setPosition(0, 200);
 		_layoutItem.addView(_itemAction);
 
 		// Item products
-		_layoutItemProduce = SpriteManager.getInstance().createFrameLayout(120, 200);
+		_layoutItemProduce = ViewFactory.getInstance().createFrameLayout(120, 200);
 		_layoutItemProduce.setPosition(0, 200);
 		_layoutItem.addView(_layoutItemProduce);
 
-		TextView lbTitle = SpriteManager.getInstance().createTextView();
+		TextView lbTitle = ViewFactory.getInstance().createTextView();
 		lbTitle.setString(Strings.PROVIDE);
 		lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 		_layoutItemProduce.addView(lbTitle);
@@ -346,17 +346,17 @@ public class PanelInfo extends BaseRightPanel {
 	}
 
 	private void createGatherView() {
-		_itemGather = SpriteManager.getInstance().createFrameLayout(120, 200);
+		_itemGather = ViewFactory.getInstance().createFrameLayout(120, 200);
 		_itemGather.setVisible(false);
 		_itemGather.setPosition(0, 200);
 		_layoutItem.addView(_itemGather);
 
-		TextView lbTitle = SpriteManager.getInstance().createTextView();
+		TextView lbTitle = ViewFactory.getInstance().createTextView();
 		lbTitle.setString(Strings.PRODUCT_WHEN_GATHERED);
 		lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 		_itemGather.addView(lbTitle);
 
-		_itemGatherProduce = SpriteManager.getInstance().createTextView();
+		_itemGatherProduce = ViewFactory.getInstance().createTextView();
 		_itemGatherProduce.setPosition(32, 28);
 		_itemGatherProduce.setCharacterSize(FONT_SIZE);
 		_itemGather.addView(_itemGatherProduce);
@@ -367,17 +367,17 @@ public class PanelInfo extends BaseRightPanel {
 	}
 
 	private void createMiningView() {
-		_itemMine = SpriteManager.getInstance().createFrameLayout(120, 200);
+		_itemMine = ViewFactory.getInstance().createFrameLayout(120, 200);
 		_itemMine.setPosition(0, 200);
 		_itemMine.setVisible(false);
 		_layoutItem.addView(_itemMine);
 
-		TextView lbTitle = SpriteManager.getInstance().createTextView();
+		TextView lbTitle = ViewFactory.getInstance().createTextView();
 		lbTitle.setString(Strings.PRODUCT_WHEN_MINED);
 		lbTitle.setCharacterSize(16);
 		_itemMine.addView(lbTitle);
 
-		_itemMineProduce = SpriteManager.getInstance().createTextView();
+		_itemMineProduce = ViewFactory.getInstance().createTextView();
 		_itemMineProduce.setPosition(32, 28);
 		_itemMineProduce.setCharacterSize(FONT_SIZE);
 		_itemMine.addView(_itemMineProduce);

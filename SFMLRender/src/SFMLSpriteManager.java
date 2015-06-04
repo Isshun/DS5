@@ -30,7 +30,6 @@ public class SFMLSpriteManager extends SpriteManager {
 	private static final int NB_ITEM_SELECTOR_TILE = 4;
 	private static int 				_count;
 	private static SFMLSpriteManager _self;
-	private Map<String, String> _strings;
 	private Map<Integer, SFMLSprite>	_spritesCharacters;
 	private Map<Long, SFMLSprite> 		_sprites;
 	private Texture[] 				_textureCharacters;
@@ -51,8 +50,6 @@ public class SFMLSpriteManager extends SpriteManager {
 	private Map<String, SpriteModel> _icons;
 
 	public SFMLSpriteManager() throws IOException {
-        loadStrings();
-
 		_icons = new HashMap<>();
 
 		_sprites = new HashMap<>();
@@ -146,32 +143,6 @@ public class SFMLSpriteManager extends SpriteManager {
 		//			_spriteBattery.setTextureRect(ObjectPool.getIntRect(0, 0, 24, 24));
 		//		}
 	}
-
-    public void loadStrings() {
-        try {
-            _strings = new HashMap<>();
-            File file = new File("data/strings/fr.txt");
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"));
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.contains(":") && !line.startsWith("#")) {
-                    int sep = line.indexOf(':');
-                    if (line.contains("\"")) {
-                        sep = line.indexOf(':', line.indexOf('"', line.indexOf('"')+1)+1);
-                    }
-
-                    String key = line.substring(0, sep).trim().replace("\"", "");
-                    String value  = line.substring(sep + 1).trim().replace("\"", "");
-                    _strings.put(key, value);
-                }
-            }
-            br.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 	@Override
 	public SpriteModel getIcon(String path) {
@@ -635,52 +606,13 @@ public class SFMLSpriteManager extends SpriteManager {
 		return _itemSelectors[frame % NB_ITEM_SELECTOR_TILE];
 	}
 
-	@Override
-	public FrameLayout createFrameLayout(int width, int height) {
-		return new SFMLFrameLayout(width, height);
-	}
-
-	@Override
-	public FrameLayout createFrameLayout() {
-		return new SFMLFrameLayout(0, 0);
-	}
-
-    @Override
-    public TextView createTextView() {
-        return new SFMLTextView();
-    }
-
-    @Override
-	public View createView(int width, int height) {
-		return new SFMLView(width, height);
-	}
-
-	@Override
-	public View createView() {
-		return new SFMLView(0, 0);
-	}
-
     @Override
     public RenderEffect createRenderEffect() {
         return new SFMLRenderEffect();
     }
 
     @Override
-    public TextView createTextView(int width, int height) {
-        return new SFMLTextView(width, height);
-    }
-
-    @Override
     public Viewport createViewport() {
         return new SFMLViewport(-Constant.WORLD_WIDTH * Constant.TILE_WIDTH / 2, -Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT / 2);
     }
-
-	@Override
-	public String getString(String string) {
-        String str = _strings.get(string);
-        if (str != null) {
-            return str;
-        }
-		return string;
-	}
 }

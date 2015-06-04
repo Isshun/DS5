@@ -7,4 +7,6 @@ public interface SpriteModel {
     void setPosition(int x, int y);
     int getWidth();
     int getHeight();
+//    int getX();
+//    int getY();
 }

@@ -64,13 +64,13 @@ public class PanelManager extends BaseRightPanel {
 		_cursor.setPosition(86, 60);
 		addView(_cursor);
 
-		TextView lbOrder = SpriteManager.getInstance().createTextView();
+		TextView lbOrder = ViewFactory.getInstance().createTextView();
 		lbOrder.setString("Select order");
 		lbOrder.setCharacterSize(FONT_SIZE_TITLE);
 		lbOrder.setPosition(20, 20);
 		addView(lbOrder);
 		
-		_lbSearch = SpriteManager.getInstance().createTextView();
+		_lbSearch = ViewFactory.getInstance().createTextView();
 		_lbSearch.setPosition(20, 60);
 		_lbSearch.setString("search: ");
 		_lbSearch.setCharacterSize(FONT_SIZE);
@@ -80,12 +80,12 @@ public class PanelManager extends BaseRightPanel {
 		_labels = new TextView[_nbEntries];
 		_shortcuts = new TextView[_nbEntries];
 		for (int i = 0; i < _nbEntries; i++) {
-			_labels[i] = SpriteManager.getInstance().createTextView();
+			_labels[i] = ViewFactory.getInstance().createTextView();
 			_labels[i].setPosition(20, 100 + i * LINE_HEIGHT);
 			_labels[i].setCharacterSize(FONT_SIZE);
 			addView(_labels[i]);
 
-			_shortcuts[i] = SpriteManager.getInstance().createTextView();
+			_shortcuts[i] = ViewFactory.getInstance().createTextView();
 			_shortcuts[i].setPosition(20, 100 + i * LINE_HEIGHT);
 			_shortcuts[i].setCharacterSize(FONT_SIZE);
 			_shortcuts[i].setColor(Colors.LINK_ACTIVE);

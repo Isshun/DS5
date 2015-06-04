@@ -24,7 +24,7 @@
 //	public ButtonView(int width, int height) {
 //		super(width, height);
 //
-//		_text = SpriteManager.getInstance().createTextView();
+//		_text = ViewFactory.getInstance().createTextView();
 //
 //		setBackgroundColor(Colors.BT_INACTIVE);
 //		setColor(Colors.BT_TEXT);
@@ -153,7 +153,7 @@
 //		_shortcutPos = index * 12;
 //		_text.setString(_string);
 //
-//		_textShortcut = SpriteManager.getInstance().createTextView();
+//		_textShortcut = ViewFactory.getInstance().createTextView();
 //		_textShortcut.setString(String.valueOf(shortcut));
 //		_textShortcut.setColor(Colors.LINK_ACTIVE);
 //		_rectShortcut = new ColorView(12, 1);

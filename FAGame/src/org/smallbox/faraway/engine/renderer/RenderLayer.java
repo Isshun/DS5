@@ -13,4 +13,5 @@ public abstract class RenderLayer {
     public abstract void onDraw(GFXRenderer renderer, RenderEffect renderEffect);
     public abstract void draw(SpriteModel sprite);
     public abstract void draw(TextView text);
+    public void end() {}
 }

@@ -9,6 +9,8 @@ import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.manager.WorldManager;
+import org.smallbox.faraway.model.GameConfig;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.room.Room;
 import org.smallbox.faraway.ui.UserInterface;
@@ -17,7 +19,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class WorldRenderer implements IRenderer {
-	private static class Vector2i {
+    private int _fromX;
+    private int _fromY;
+    private int _toX;
+    private int _toY;
+
+    private static class Vector2i {
 		public final int x;
 		public final int y;
 		public Vector2i(int x, int y) {
@@ -31,7 +38,7 @@ public class WorldRenderer implements IRenderer {
 	private int 					_lastSpecialY;
 	private int 					_lastSpecialX;
 	private RenderLayer 			_layerStructure;
-	private RenderLayer 			_layerItem;
+//	private RenderLayer 			_layerItem;
 	private boolean 				_hasChanged;
 	private int						_pass;
 
@@ -46,7 +53,7 @@ public class WorldRenderer implements IRenderer {
 		_changed = new HashSet<>();
 
 		_layerStructure = ViewFactory.getInstance().createRenderLayer(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
-		_layerItem = ViewFactory.getInstance().createRenderLayer(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
+//		_layerItem = ViewFactory.getInstance().createRenderLayer(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
 
 		_hasChanged = true;
 	}
@@ -58,38 +65,54 @@ public class WorldRenderer implements IRenderer {
 
 		UserInterface ui = UserInterface.getInstance();
 		_frame = frame;
-		int fromX = Math.max(ui.getRelativePosXMin(0)-1, 0);
-		int fromY = Math.max(ui.getRelativePosYMin(0)-1, 0);
-		int toX = Math.min(ui.getRelativePosXMax(Constant.WINDOW_WIDTH)+1, _worldMap.getWidth());
-		int toY = Math.min(ui.getRelativePosYMax(Constant.WINDOW_HEIGHT)+1, _worldMap.getHeight());
+		// TODO
+//        int _fromX = Math.max(ui.getRelativePosXMin(0)-1, 0);
+//        int _fromY = Math.max(ui.getRelativePosYMin(0)-1, 0);
+//		int _toX = Math.min(ui.getRelativePosXMax(Constant.WINDOW_WIDTH)+1, _worldMap.getWidth());
+//		int _toY = Math.min(ui.getRelativePosYMax(Constant.WINDOW_HEIGHT)+1, _worldMap.getHeight());
+        _fromX = 4000 / 32;
+        _fromY = 4000 / 32;
+		_toX = _fromX + 50;
+		_toY = _fromY + 50;
 
-		if (_hasChanged || _changed.size() > 0) {
-			_layerItem.clear();
+		if (true || _hasChanged || _changed.size() > 0) {
+            _layerStructure.clear();
+//			_layerItem.clear();
 
-			if (_hasChanged) {
-				_layerStructure.clear();
-				refreshFloor(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
-				refreshStructure(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
-//				refreshResource(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
-				refreshResource(fromX, fromY, toX, toY);
-				refreshItems(frame, fromX, fromY, toX, toY);
-			} else {
-				for (Vector2i vector: _changed) {
-					refreshFloor(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
-//					refreshResource(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
-				}
-				refreshResource(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
-				refreshItems(frame, 0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
-				refreshStructure(0, 0, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
-			}
+//			if (_hasChanged) {
+            if (GameData.config.render.floor) {
+                refreshFloor(_fromX, _fromY, _toX, _toY);
+            }
+//				refreshStructure(_fromX, _fromY, _toX, _toY);
+////				refreshResource(_fromX, _fromY, _toX, _toY);
+//				refreshResource(_fromX, _fromY, _toX, _toY);
+//				refreshItems(frame, _fromX, _fromY, _toX, _toY);
+//			} else {
+//				for (Vector2i vector: _changed) {
+//					refreshFloor(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
+////					refreshResource(vector.x - 1, vector.y - 1, vector.x + 2, vector.y + 2);
+//				}
+            if (GameData.config.render.structure) {
+                refreshStructure(_fromX, _fromY, _toX, _toY);
+            }
+            if (GameData.config.render.resource) {
+				refreshResource(_fromX, _fromY, _toX, _toY);
+            }
+            if (GameData.config.render.item) {
+                refreshItems(frame, _fromX, _fromY, _toX, _toY);
+            }
+//			}
 			_changed.clear();
 			_hasChanged = false;
+            _layerStructure.end();
+//			_layerItem.end();
 		}
 	}
 
 	public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
 		_layerStructure.onDraw(renderer, effect);
-		_layerItem.onDraw(renderer, effect);
+//        refreshConsumable(renderer, _fromX, _fromY, _toX, _toY);
+		//_layerItem.onDraw(renderer, effect);
 	}
 
 	private void refreshResource(int fromX, int fromY, int toX, int toY) {
@@ -101,7 +124,7 @@ public class WorldRenderer implements IRenderer {
 						SpriteModel sprite = _spriteManager.getResource(ressource);
 						if (sprite != null) {
 							sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT);
-							_layerItem.draw(sprite);
+							_layerStructure.draw(sprite);
 						}
 					}
 				}
@@ -196,7 +219,7 @@ public class WorldRenderer implements IRenderer {
 
 		_pass--;
 
-		SpriteModel sprite = null;
+		SpriteModel sprite;
 		for (int j = toY-1; j >= fromY; j--) {
 			for (int i = toX-1; i >= fromX; i--) {
 				if (i >= 0 && j >= 0 && i < Constant.WORLD_WIDTH && j < Constant.WORLD_HEIGHT) {
@@ -389,7 +412,7 @@ public class WorldRenderer implements IRenderer {
 					SpriteModel sprite = _spriteManager.getItem(item, item.getCurrentFrame());
 					if (sprite != null) {
 						sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-						_layerItem.draw(sprite);
+						_layerStructure.draw(sprite);
 					}
 
 					// Selection
@@ -405,7 +428,7 @@ public class WorldRenderer implements IRenderer {
 					SpriteModel sprite = _spriteManager.getItem(consumable, consumable.getCurrentFrame());
 					if (sprite != null) {
 						sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-						_layerItem.draw(sprite);
+                        _layerStructure.draw(sprite);
 					}
 
 					// Selection
@@ -417,13 +440,39 @@ public class WorldRenderer implements IRenderer {
 		}
 	}
 
+	void	refreshConsumable(GFXRenderer renderer, int fromX, int fromY, int toX, int toY) {
+		_itemSelected = null;
+
+        if (_worldMap != null) {
+            for (int x = fromX - 1; x <= toX; x++) {
+                for (int y = fromY - 1; y <= toY; y++) {
+                    ConsumableItem consumable = _worldMap.getConsumable(x, y);
+                    if (consumable != null) {
+
+                        // Regular item
+                        SpriteModel sprite = _spriteManager.getItem(consumable, consumable.getCurrentFrame());
+                        if (sprite != null) {
+                            sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
+                            renderer.draw(sprite, null);
+                        }
+
+                        // Selection
+                        if (consumable.isSelected()) {
+                            _itemSelected = consumable;
+                        }
+                    }
+                }
+            }
+        }
+	}
+
 	//	private void refreshStack(StackItem stack, int x, int y) {
 //		SpriteModel sprite = _spriteManager.getIcon(stack.getStackedInfo());
 //		if (sprite != null) {
 //			sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
 //			_layerItem.draw(sprite);
 //		}
-//		TextView text = SpriteManager.getInstance().createTextView();
+//		TextView text = ViewFactory.getInstance().createTextView();
 //		text.setCharacterSize(12);
 //		text.setString("x" + stack.size());
 //		text.setPosition(x * Constant.TILE_WIDTH + (stack.size() < 10 ? 18 : 10), y * Constant.TILE_HEIGHT + 18);

@@ -1,9 +1,6 @@
 package org.smallbox.faraway.ui.mainMenu;
 
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.GameTimer;
-import org.smallbox.faraway.RenderEffect;
+import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.ui.UIEventManager;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.manager.SpriteManager;
@@ -70,7 +67,7 @@ public class MainMenu {
 
         long lastResModified = Utils.getLastUIModified();
         if (update % 8 == 0 && lastResModified > _lastModified) {
-            SpriteManager.getInstance().loadStrings();
+            Game.getData().loadStrings();
             _lastModified = lastResModified;
             reload();
         }

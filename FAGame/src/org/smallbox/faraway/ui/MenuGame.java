@@ -24,7 +24,7 @@ public class MenuGame extends MenuBase {
 		super(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
 		setBackgroundColor(new Color(0, 0, 0, 150));
 		
-		_menu = SpriteManager.getInstance().createFrameLayout();
+		_menu = ViewFactory.getInstance().createFrameLayout();
 		_menu.setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		_menu.setPosition(Constant.WINDOW_WIDTH / 2 - FRAME_WIDTH / 2, Constant.WINDOW_HEIGHT / 2 - FRAME_HEIGHT / 2);
 		_menu.setBackgroundColor(new Color(200, 200, 200, 50));

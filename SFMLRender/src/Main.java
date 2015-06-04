@@ -22,7 +22,7 @@ public class Main {
         ViewFactory.setInstance(new SFMLViewFactory());
 
         final RenderWindow window = new RenderWindow();
-        window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), "FarPoint", WindowStyle.DEFAULT);
+        window.create(new VideoMode(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT), Constant.NAME + " " + Constant.VERSION, WindowStyle.DEFAULT);
         window.setKeyRepeatEnabled(true);
 
         SpriteManager.setInstance(new SFMLSpriteManager());
@@ -36,7 +36,7 @@ public class Main {
         GameData data = application.loadResources();
 
         // Create app
-        application.create(renderer, data);
+//        application.create(renderer, data);
         renderer.setGameEventListener(application);
 
         try {

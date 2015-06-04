@@ -1,7 +1,7 @@
 package org.smallbox.faraway.engine.ui;
 
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
+import org.smallbox.faraway.*;
+import org.smallbox.faraway.Color;
 
 import java.awt.*;
 
@@ -9,6 +9,12 @@ import java.awt.*;
  * Created by Alex on 27/05/2015.
  */
 public abstract class View {
+    private String _name;
+
+    public void setName(String name) {
+        _name = name;
+    }
+
     public enum Align { CENTER, LEFT, RIGHT };
 
     protected int               _width;
@@ -34,6 +40,7 @@ public abstract class View {
     protected Align             _align = Align.LEFT;
     protected int               _offsetX;
     protected int               _offsetY;
+    protected Color             _backgroundColor;
 
     public View(int width, int height) {
         _width = width;
@@ -67,10 +74,7 @@ public abstract class View {
     public abstract void refresh();
 
     public void setBackgroundColor(org.smallbox.faraway.Color color) {
-        if (_background == null) {
-            _background = ViewFactory.getInstance().createColorView(_width, _height);
-        }
-        _background.setBackgroundColor(color);
+        _backgroundColor = color;
     }
 
     public void setBorderColor(org.smallbox.faraway.Color color) {
@@ -152,8 +156,8 @@ public abstract class View {
         int y = 0;
         View view = this;
         while (view != null) {
-            x += view.getPosX();
-            y += view.getPosY();
+            x += view.getPosX() + view.getOffsetX();
+            y += view.getPosY() + view.getOffsetY();
             view = view.getParent();
         }
         return new Rectangle(x, y, _width == 0 ? getContentWidth() : _width, _height == 0 ? getContentHeight() : _height);

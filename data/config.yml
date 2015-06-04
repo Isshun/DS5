@@ -1,0 +1,5 @@
+render:
+    floor:      true
+    structure:  true
+    resource:   true
+    item:       true
