@@ -214,7 +214,7 @@ public abstract class ItemBase {
     public boolean			isSupply() { return _power == _powerSupply; }
     public boolean			isSleepingItem() { return _info.isSleeping; }
     public boolean			isStructure() { return _info.isStructure; }
-    public boolean			isRessource() { return _info.isResource; }
+    public boolean          isResource() { return _info.isResource; }
     public boolean			isWalkable() { return !_info.isWalkable; }
     public boolean 			isFloor() { return getName().equals("base.floor") || getName().equals("base.res_rock") || getName().equals("base.ground"); }
     public boolean 			isDoor() { return getName().equals("base.door"); }
@@ -372,4 +372,6 @@ public abstract class ItemBase {
     public void setId(int id) {
         _id = id;
     }
+
+    public int getQuantity() { return 1; }
 }

@@ -50,13 +50,13 @@ public class JobUseInventory extends BaseJob {
 	@Override
 	public boolean action(CharacterModel character) {
 		if (_item == null) {
-			JobManager.getInstance().abort(this, BaseJob.JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, BaseJob.JobAbortReason.INVALID);
 			Log.error("actionUseInventory: invalid job");
 			return true;
 		}
 		
 		if (character.getInventory().contains(_item) == false) {
-			JobManager.getInstance().abort(this, BaseJob.JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, BaseJob.JobAbortReason.INVALID);
 			Log.error("actionUseInventory: item is missing from inventory");
 			return true;
 		}
@@ -72,7 +72,7 @@ public class JobUseInventory extends BaseJob {
 		}
 
 		character.removeInventory((UserItem)_item);
-		JobManager.getInstance().complete(this);
+		JobManager.getInstance().close(this);
 		return true;
 	}
 

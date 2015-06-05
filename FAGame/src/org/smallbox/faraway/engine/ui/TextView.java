@@ -1,9 +1,7 @@
 package org.smallbox.faraway.engine.ui;
 
 import org.smallbox.faraway.Color;
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.GameData;
 
 public abstract class TextView extends View {

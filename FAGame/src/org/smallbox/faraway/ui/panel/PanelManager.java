@@ -8,7 +8,6 @@ import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.engine.util.StringUtils;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 

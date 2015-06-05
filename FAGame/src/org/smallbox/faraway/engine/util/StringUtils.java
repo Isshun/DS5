@@ -1,8 +1,6 @@
 package org.smallbox.faraway.engine.util;
 
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.GameData;
 
 public class StringUtils {

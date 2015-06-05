@@ -72,20 +72,20 @@ public class JobGather extends BaseJob {
 		// Wrong call
 		if (_resource == null) {
 			Log.error("Character: actionGather on null job or null job's item");
-			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 			return true;
 		}
 
 		if (_resource.getInfo().actions.get(0) == null) {
 			Log.error("Character: actionGather on non gatherable item");
-			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 			return true;
 		}
 
 
 		// Character is full: cancel current job
 		if (character.getInventoryLeftSpace() <= 0) {
-			JobManager.getInstance().abort(this, JobAbortReason.NO_LEFT_CARRY);
+			JobManager.getInstance().quit(this, JobAbortReason.NO_LEFT_CARRY);
 			return true;
 		}
 
@@ -104,7 +104,7 @@ public class JobGather extends BaseJob {
 		
 		if (_resource.isDepleted()) {
 			_resource.setJob(null);
-			JobManager.getInstance().complete(this);
+			JobManager.getInstance().close(this);
 			ServiceManager.getWorldMap().removeResource(_resource);
 			return true;
 		}

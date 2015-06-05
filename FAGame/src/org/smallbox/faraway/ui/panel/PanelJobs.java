@@ -1,11 +1,13 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.GameEventListener;
+import org.smallbox.faraway.engine.ui.FrameLayout;
 import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.job.BaseJob;
+import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class PanelJobs extends BaseRightPanel {
 	private int 				_nbRunningJobCandidat;
 
 	public PanelJobs(Mode mode, GameEventListener.Key shortcut) {
-		super(mode, shortcut);
+		super(mode, shortcut, "data/ui/panels/jobs.yml");
 	}
 
 	@Override
@@ -44,52 +46,62 @@ public class PanelJobs extends BaseRightPanel {
 		}
 	}
 
+    @Override
+    public void onLayoutLoaded(LayoutModel layout) {
+    }
+
 	@Override
 	public void onRefresh(int update) {
-		List<BaseJob> jobs = JobManager.getInstance().getJobs();
-		int posX = 20;
-		int posY = 92;
-		int i = 0;
+        List<BaseJob> jobs = JobManager.getInstance().getJobs();
+
+        FrameLayout frameJobs = (FrameLayout)findById("frame_jobs");
+        frameJobs.clearAllViews();
 
 		// Display jobs
 		for (BaseJob job: jobs) {
-			if (job.getCharacter() != null && job.isVisibleInUI()) {
-				if (i < 75) {
-					refreshJob(job, _entries[i++], posX, posY);
-					posY += 18;
-				}
-			}
+            TextView lbJob = ViewFactory.getInstance().createTextView(200, 30);
+            lbJob.setString(job.getLabel());
+            lbJob.setCharacterSize(14);
+            lbJob.setPosition(0, 30 * jobs.indexOf(job));
+            frameJobs.addView(lbJob);
+//			if (job.getCharacter() != null && job.isVisibleInUI()) {
+//				if (i < 75) {
+//					refreshJob(job, _entries[i++], posX, posY);
+//					posY += 18;
+//				}
+//			}
 		}
-		int nbVisibleJob = i;
-		_lbTitle.setString(StringUtils.getDashedString("OCCUPATIONS", String.valueOf(nbVisibleJob), 29));
-		if (update % RESIZE_RUNNING_JOB_OCCURENCE == 0) {
-			_nbRunningJob = _nbRunningJobCandidat;
-			_nbRunningJobCandidat = i;
-		}
-		if (i > _nbRunningJobCandidat) {
-			_nbRunningJobCandidat = i;
-		}
-		if (i > _nbRunningJob) {
-			_nbRunningJob = i;
-		}
-		
-		posY = 102 + (18 * _nbRunningJob);
-		_lbTitle2.setPosition(posX, posY);
-
-		posY += 42;
-		for (BaseJob job: jobs) {
-			if (job.getCharacter() == null) {				
-				if (i < 75) {
-					refreshJob(job, _entries[i++], posX, posY);
-					posY += 18;
-				}
-			}
-		}
-		_lbTitle2.setString(StringUtils.getDashedString("IN QUEUE", String.valueOf(i - nbVisibleJob), 29));
-
-		for (; i < 75; i++) {
-			_entries[i].setVisible(false);
-		}
+//		int nbVisibleJob = i;
+//		_lbTitle.setString(StringUtils.getDashedString("OCCUPATIONS", String.valueOf(nbVisibleJob), 29));
+//		if (update % RESIZE_RUNNING_JOB_OCCURENCE == 0) {
+//			_nbRunningJob = _nbRunningJobCandidat;
+//			_nbRunningJobCandidat = i;
+//		}
+//		if (i > _nbRunningJobCandidat) {
+//			_nbRunningJobCandidat = i;
+//		}
+//		if (i > _nbRunningJob) {
+//			_nbRunningJob = i;
+//		}
+//
+//		posY = 102 + (18 * _nbRunningJob);
+//		_lbTitle2.setPosition(posX, posY);
+//
+//		posY += 42;
+//		for (BaseJob job: jobs) {
+//			if (job.getCharacter() == null) {
+//				if (i < 75) {
+//					refreshJob(job, _entries[i++], posX, posY);
+//					posY += 18;
+//				}
+//			}
+//		}
+//		_lbTitle2.setString(StringUtils.getDashedString("IN QUEUE", String.valueOf(i - nbVisibleJob), 29));
+//
+//		for (; i < 75; i++) {
+//			_entries[i].setString("");
+//			_entries[i].setVisible(false);
+//		}
 	}
 
 	private void refreshJob(final BaseJob job, TextView text, int x, int y) {
@@ -125,7 +137,7 @@ public class PanelJobs extends BaseRightPanel {
 		} else {
 			switch (job.getStatus()) {
 			case ABORTED: left = "(aborted)"; break;
-			case COMPLETE: left = "(complete)"; break;
+			case COMPLETE: left = "(close)"; break;
 			case RUNNING: left = "(running)"; break;
 			case WAITING: left = "(on queue)"; break;
 			default: left = "(unknow)"; break;

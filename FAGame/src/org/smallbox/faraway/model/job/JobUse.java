@@ -54,7 +54,9 @@ public class JobUse extends BaseJob {
 		}
 
 		JobUse job = create(item);
-		job.setCharacterRequire(character);
+		if (job != null) {
+			job.setCharacterRequire(character);
+		}
 		
 		return job;
 	}
@@ -65,7 +67,7 @@ public class JobUse extends BaseJob {
 		// Wrong call
 		if (_item == null || character == null) {
 			Log.error("wrong call");
-			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 			return true;
 		}
 		
@@ -77,11 +79,12 @@ public class JobUse extends BaseJob {
 		// Character is sleeping
 		if (character.isSleeping() && _item.isSleepingItem() == false) {
 			Log.debug("use: sleeping . use canceled");
+            JobManager.getInstance().close(this, _reason);
 			return false;
 		}
 		
 		if (check(character) == false) {
-			JobManager.getInstance().abort(this, _reason);
+			JobManager.getInstance().close(this, _reason);
 			return true;
 		}
 		
@@ -116,12 +119,13 @@ public class JobUse extends BaseJob {
 
         if (_item.getInfo().isConsomable) {
             ((ConsumableItem)_item).addQuantity(-1);
-            if (((ConsumableItem)_item).getQuantity() <= 0) {
-                Game.getWorldManager().removeItem(_item);
+            if (_item.getQuantity() <= 0) {
+                Game.getWorldManager().removeConsumable((ConsumableItem) _item);
             }
         }
-		
-		JobManager.getInstance().complete(this);
+
+        JobManager.getInstance().close(this);
+
 		return true;
 	}
 
@@ -139,16 +143,27 @@ public class JobUse extends BaseJob {
 		}
 		
 		// Item is no longer exists
-		if (_item != ServiceManager.getWorldMap().getItem(_item.getX(), _item.getY())) {
-			_reason = JobAbortReason.INVALID;
+		if (_item.isConsomable()) {
+			if (_item != ServiceManager.getWorldMap().getConsumable(_item.getX(), _item.getY())) {
+				_reason = JobAbortReason.INVALID;
+				return false;
+			}
+		} else {
+			if (_item != ServiceManager.getWorldMap().getItem(_item.getX(), _item.getY())) {
+				_reason = JobAbortReason.INVALID;
+				return false;
+			}
+		}
+
+		if (_item.getQuantity() <= 0) {
 			return false;
 		}
-		
-		// No space left in inventory
-		if (_item.isFactory() && character.hasInventorySpaceLeft() == false) {
-			_reason = JobAbortReason.NO_LEFT_CARRY;
-			return false;
-		}
+
+//		// No space left in inventory
+//		if (_item.isFactory() && character.hasInventorySpaceLeft() == false) {
+//			_reason = JobAbortReason.NO_LEFT_CARRY;
+//			return false;
+//		}
 		
 		// Factory is empty
 		if (_item.isFactory() && ((FactoryItem)_item).getInventory().size() == 0) {
@@ -171,4 +186,5 @@ public class JobUse extends BaseJob {
 	public String getShortLabel() {
 		return "use " + _item.getLabel();
 	}
+
 }

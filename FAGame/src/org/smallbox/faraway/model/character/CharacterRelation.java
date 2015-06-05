@@ -1,8 +1,6 @@
 package org.smallbox.faraway.model.character;
 
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.Strings;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.GameData;
 
 public class CharacterRelation {

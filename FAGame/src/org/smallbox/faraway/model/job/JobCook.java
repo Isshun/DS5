@@ -45,14 +45,14 @@ public class JobCook extends BaseJob {
 		// Wrong call
 		if (_item == null) {
 			Log.error("Character: actionUse on null job or null job's item");
-			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 			return false;
 		}
 
 		// Item is no longer exists
 		if (_item != ServiceManager.getWorldMap().getItem(_posX, _posY)) {
 			Log.warning("Character #" + character.getId() + ": actionUse on invalide item");
-			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 			return true;
 		}
 
@@ -63,19 +63,19 @@ public class JobCook extends BaseJob {
 			return false;
 		}
 
-        // Current item is complete but some remains
+        // Current item is close but some remains
 		_cost = 0;
 		for (ItemInfo itemInfo: _actionInfo.productsItem) {
 			ServiceManager.getWorldMap().putItem(itemInfo, _posX, _posY, 0, 100);
 //                _character.addInventory(new UserItem(itemInfo));
 		}
-		_character.quitJob();
-		setCharacter(null);
+
+		JobManager.getInstance().quit(this);
 
         // Work is complete
 		if (_count++ >= _totalCount) {
-			Log.debug("Character #" + character.getId() + ": work complete");
-			JobManager.getInstance().complete(this);
+			Log.debug("Character #" + character.getId() + ": work close");
+			JobManager.getInstance().close(this);
 			return true;
 		}
 

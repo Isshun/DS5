@@ -1,0 +1,10 @@
+entries:
+
+    -   type: label
+        text: Jobs
+        textsize: 24
+        position: [24, 24]
+
+    -   type: frame
+        id: frame_jobs
+        position: [24, 58]

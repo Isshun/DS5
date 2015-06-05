@@ -42,7 +42,7 @@ public class UserInterface implements GameEventListener {
     private int 						_lastInput;
     private PanelConsole                _panelMessage;
     private ToolTip 					_selectedTooltip;
-    private CharacterModel _selectedCharacter;
+    private CharacterModel              _selectedCharacter;
     private UserItem 					_selectedItem;
     private StructureItem 				_selectedStructure;
     private WorldResource				_selectedResource;
@@ -92,9 +92,9 @@ public class UserInterface implements GameEventListener {
     }
 
     @Override
-    public void onMouseEvent(GameTimer timer, Action action, MouseButton button, int x, int y) {
+    public void onMouseEvent(GameTimer timer, Action action, MouseButton button, int x, int y, boolean rightPressed) {
         if (action == Action.MOVE) {
-            onMouseMove(x, y);
+            onMouseMove(x, y, rightPressed);
             UIEventManager.getInstance().onMouseMove(x, y);
         }
 
@@ -226,7 +226,7 @@ public class UserInterface implements GameEventListener {
         setMode(Mode.NONE);
     }
 
-    public void	onMouseMove(int x, int y) {
+    public void	onMouseMove(int x, int y, boolean rightPressed) {
         _keyMovePosX = getRelativePosX(x);
         _keyMovePosY = getRelativePosY(y);
 
@@ -234,8 +234,9 @@ public class UserInterface implements GameEventListener {
         _mouseOnMap = x < 1500;
 
         // right button pressed
-        if (_keyRightPressed) {
+        if (_keyRightPressed || rightPressed) {
             _viewport.update(x, y);
+            System.out.println("pos: " + _viewport.getPosX() + "x" + _viewport.getPosY());
             if (_menu != null && _menu.isVisible()) {
                 //_menu.move(_viewport.getPosX(), _viewport.getPosY());
                 _menu.setViewPortPosition(_viewport.getPosX(), _viewport.getPosY());
@@ -278,7 +279,7 @@ public class UserInterface implements GameEventListener {
     public int 				getRelativePosXMin(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
     public int 				getRelativePosYMin(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
     public ToolTip			getSelectedTooltip() { return _selectedTooltip; }
-    public CharacterModel getSelectedCharacter() { return _selectedCharacter; }
+    public CharacterModel   getSelectedCharacter() { return _selectedCharacter; }
     public WorldArea		getSelectedArea() { return _selectedArea; }
     public UserItem			getSelectedItem() { return _selectedItem; }
     public WorldResource	getSelectedResource() { return _selectedResource; }

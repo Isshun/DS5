@@ -82,7 +82,7 @@ public class JobManager {
 		}
 
 		if (item.isComplete()) {
-			Log.error("Build item: already complete, nothing to do");
+			Log.error("Build item: already close, nothing to do");
 			return null;
 		}
 
@@ -283,55 +283,6 @@ public class JobManager {
 	//	  return null;
 	//	}
 
-	public void	abort(BaseJob job, JobAbortReason reason) {
-		Log.debug("Job abort: " + job.getId());
-
-		// Already aborted
-		if (job.getStatus() == JobStatus.ABORTED) {
-			return;
-		}
-
-		job.setStatus(JobStatus.ABORTED);
-		job.setFail(reason, MainRenderer.getFrame());
-		job.setCharacter(null);
-
-        // Remove character lock from item
-        if (job.getItem() != null && job.getItem().getOwner() == job.getCharacter()) {
-            job.getItem().setOwner(null);
-        }
-
-		// Abort because path to item is blocked
-		if (reason == JobAbortReason.BLOCKED) {
-			if (job.getItem() != null) {
-				job.getItem().setBlocked(Game.getUpdate());
-			}
-		}
-
-		// Abort because character inventory is full
-		if (reason == JobAbortReason.NO_LEFT_CARRY) {
-			addStoreJob(job.getCharacter());
-		}
-
-		// Abort because factory is out of components
-		if (reason == JobAbortReason.NO_COMPONENTS) {
-			addRefillJob((FactoryItem)job.getItem());
-		}
-
-		// Job is invalid, don't resume
-		if (reason == JobAbortReason.INVALID) {
-			removeJob(job);
-			return;
-		}
-
-		// Job is USE / USE_INVENTORY / MOVE / TAKE / STORE / REFILL action, don't resume
-		if (!job.canBeResume()) {
-			removeJob(job);
-			return;
-		}
-
-		// Regular job, reset
-	}
-
 	public void addRefillJob(FactoryItem factory) {
 		if (factory == null) {
 			Log.error("addRefillJob: item is null or invalid");
@@ -376,14 +327,6 @@ public class JobManager {
 		if (job.isVisibleInUI()) {
 			_nbVisibleJob--;
 		}
-	}
-
-	public void	complete(BaseJob job) {
-		Log.debug("Job complete: " + job.getId());
-
-		job.setStatus(JobStatus.COMPLETE);
-
-		removeJob(job);
 	}
 
 	public void	addJob(BaseJob job) {
@@ -540,12 +483,82 @@ public class JobManager {
 		}
 	}
 
+	public void close(BaseJob job) {
+		Log.debug("Job close: " + job.getId());
+
+		job.setStatus(JobStatus.COMPLETE);
+
+		removeJob(job);
+	}
+
+	public void close(BaseJob job, JobAbortReason reason) {
+		Log.debug("Job close: " + job.getId());
+
+		job.setStatus(JobStatus.COMPLETE);
+
+		removeJob(job);
+	}
+
     public void quit(BaseJob job) {
         if (job != null) {
             if (job.getCharacter() != null) {
                 job.getCharacter().setJob(null);
             }
             job.setCharacter(null);
+
+            if (!job.canBeResume()) {
+                close(job);
+            }
         }
     }
+
+	public void quit(BaseJob job, JobAbortReason reason) {
+		Log.debug("Job quit: " + job.getId());
+
+		// Already aborted
+		if (job.getStatus() == JobStatus.ABORTED) {
+			return;
+		}
+
+		job.setStatus(JobStatus.ABORTED);
+		job.setFail(reason, MainRenderer.getFrame());
+		job.setCharacter(null);
+
+		// Remove character lock from item
+		if (job.getItem() != null && job.getItem().getOwner() == job.getCharacter()) {
+			job.getItem().setOwner(null);
+		}
+
+		// Abort because path to item is blocked
+		if (reason == JobAbortReason.BLOCKED) {
+			if (job.getItem() != null) {
+				job.getItem().setBlocked(Game.getUpdate());
+			}
+		}
+
+		// Abort because character inventory is full
+		if (reason == JobAbortReason.NO_LEFT_CARRY) {
+			addStoreJob(job.getCharacter());
+		}
+
+		// Abort because factory is out of components
+		if (reason == JobAbortReason.NO_COMPONENTS) {
+			addRefillJob((FactoryItem)job.getItem());
+		}
+
+		// Job is invalid, don't resume
+		if (reason == JobAbortReason.INVALID) {
+			removeJob(job);
+			return;
+		}
+
+		// Job is USE / USE_INVENTORY / MOVE / TAKE / STORE / REFILL action, don't resume
+		if (!job.canBeResume()) {
+			removeJob(job);
+			return;
+		}
+
+		// Regular job, reset
+	}
+
 }

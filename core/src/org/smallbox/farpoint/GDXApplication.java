@@ -1,17 +1,11 @@
 package org.smallbox.farpoint;
 
-import box2dLight.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
 import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.Game;
@@ -23,8 +17,6 @@ import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.GameData;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GDXApplication extends ApplicationAdapter {
     private SpriteBatch batch;
@@ -74,7 +66,8 @@ public class GDXApplication extends ApplicationAdapter {
         GameData data = application.loadResources();
 
         // Create app
-        application.create(renderer, new GDXLightRenderer(), data);
+        GDXLightRenderer lightRenderer = new GDXLightRenderer();
+        application.create(renderer, lightRenderer, new GDXParticleRenderer(lightRenderer), data);
         renderer.setGameEventListener(application);
 
         application.loadGame();
@@ -153,6 +146,8 @@ public class GDXApplication extends ApplicationAdapter {
                 nextLongUpdate += Application.getLongUpdateInterval();
             }
         }
+
+        renderer.display();
 
         nextDraw += Application.DRAW_INTERVAL;
         frame++;

@@ -77,6 +77,15 @@ public class WorldArea {
 		}
 	}
 
+	public void setConsumable(ConsumableItem consumable) {
+		_consumable = consumable;
+		if (consumable != null) {
+			consumable.setArea(this);
+			consumable.setX(_x);
+			consumable.setY(_y);
+		}
+	}
+
 	public boolean isEmpty() {
 		return _resource == null && _item == null && _structure == null;
 	}
@@ -90,9 +99,5 @@ public class WorldArea {
 
 	public ConsumableItem getConsumable() {
 		return _consumable;
-	}
-
-	public void setConsumable(ConsumableItem consumable) {
-		_consumable = consumable;
 	}
 }

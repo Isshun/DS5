@@ -1,7 +1,8 @@
 package org.smallbox.faraway.engine.ui;
 
-import org.smallbox.faraway.*;
 import org.smallbox.faraway.Color;
+import org.smallbox.faraway.GFXRenderer;
+import org.smallbox.faraway.RenderEffect;
 
 import java.awt.*;
 
@@ -15,7 +16,7 @@ public abstract class View {
         _name = name;
     }
 
-    public enum Align { CENTER, LEFT, RIGHT };
+    public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };
 
     protected int               _width;
     protected int               _height;

@@ -63,7 +63,7 @@ public class GDXFrameLayout extends FrameLayout {
             }
         }
 
-        if (_gdxBackgroundColor != null) {
+        if (_isVisible && _gdxBackgroundColor != null) {
             ((GDXRenderer) renderer).draw(_gdxBackgroundColor, _finalX, _finalY, _width, _height);
         }
 

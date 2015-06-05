@@ -3,12 +3,10 @@ package org.smallbox.faraway.manager;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.ItemFilter;
-import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.item.WorldArea;
+import org.smallbox.faraway.model.item.*;
 
 public class WorldFinder {
-	
+
 	private int 				_width;
 	private int 				_height;
 	private WorldArea[][][] 	_areas;
@@ -22,7 +20,7 @@ public class WorldFinder {
 		Game.setWorldFinder(this);
 	}
 
-	public UserItem getNearest(ItemFilter filter, CharacterModel character) {
+	public ItemBase getNearest(ItemFilter filter, CharacterModel character) {
 		int startX = character.getX();
 		int startY = character.getY();
 		int maxX = Math.max(startX, _width - startX);
@@ -35,49 +33,67 @@ public class WorldFinder {
 				if (area == null) {
 					continue;
 				}
-				
-				// Private room exists and character is not allowed
-				if (area.getRoom() != null && area.getRoom().isPrivate() && area.getRoom().getOccupants().contains(character) == false) {
-					continue;
+
+//				// Private room exists and character is not allowed
+//				if (area.getRoom() != null && area.getRoom().isPrivate() && area.getRoom().getOccupants().contains(character) == false) {
+//					continue;
+//				}
+
+				if (filter.isConsomable) {
+					ConsumableItem consumable = _worldManager.getConsumable(startX + offsetX, startY + offsetY);
+                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
+
+                    consumable = _worldManager.getConsumable(startX - offsetX, startY - offsetY);
+                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
+
+                    consumable = _worldManager.getConsumable(startX + offsetX, startY - offsetY);
+                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
+
+                    consumable = _worldManager.getConsumable(startX - offsetX, startY + offsetY);
+                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
+				} else {
+					UserItem item = _worldManager.getItem(startX + offsetX, startY + offsetY);
+					if (getNearestItemCheck(item, filter)) { return item; }
+
+					item = _worldManager.getItem(startX - offsetX, startY - offsetY);
+					if (getNearestItemCheck(item, filter)) { return item; }
+
+					item = _worldManager.getItem(startX + offsetX, startY - offsetY);
+					if (getNearestItemCheck(item, filter)) { return item; }
+
+					item = _worldManager.getItem(startX - offsetX, startY + offsetY);
+					if (getNearestItemCheck(item, filter)) { return item; }
 				}
-				
-				UserItem item = _worldManager.getItem(startX + offsetX, startY + offsetY);
-				if (getNearestItemCheck(item, filter)) { return item; }
-
-				item = _worldManager.getItem(startX - offsetX, startY - offsetY);
-				if (getNearestItemCheck(item, filter)) { return item; }
-
-				item = _worldManager.getItem(startX + offsetX, startY - offsetY);
-				if (getNearestItemCheck(item, filter)) { return item; }
-
-				item = _worldManager.getItem(startX - offsetX, startY + offsetY);
-				if (getNearestItemCheck(item, filter)) { return item; }
 			}
 		}
 		return null;
 	}
 
-	private boolean getNearestItemCheck(UserItem item, ItemFilter filter) {
+	private boolean getNearestItemCheck(ItemBase item, ItemFilter filter) {
 		// Item not exists
 		if (item == null) {
 			return false;
 		}
-		
+
+        if (item.getQuantity() <= 0) {
+			return false;
+		}
+
 		// Item is blocked
 		if (item.getLastBlocked() != -1 && item.getLastBlocked() < Game.getUpdate() + Constant.COUNT_BEFORE_REUSE_BLOCKED_ITEM) {
 			return false;
 		}
-		
+
 		// Item is not completed
 		if (item.isComplete() == false) {
 			return false;
 		}
-		
+
 		// Item don't match filter
 		if (item.matchFilter(filter) == false) {
 			return false;
 		}
-		
+
 		return true;
 	}
 

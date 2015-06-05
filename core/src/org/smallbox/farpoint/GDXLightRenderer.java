@@ -1,8 +1,9 @@
 package org.smallbox.farpoint;
 
-import box2dLight.*;
+import box2dLight.Light;
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,7 +16,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import org.smallbox.faraway.GFXRenderer;
+import org.smallbox.faraway.Game;
 import org.smallbox.faraway.LightRenderer;
+import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.model.item.WorldArea;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +29,10 @@ import java.util.List;
  */
 public class GDXLightRenderer extends LightRenderer {
     static final int RAYS_PER_BALL = 128;
-    static final float LIGHT_DISTANCE = 16f;
     static final float RADIUS = 1f;
 
-    static final float viewportWidth = 48;
-    static final float viewportHeight = 32;
+    static final float viewportWidth = 1920;
+    static final float viewportHeight = 1200;
     private final SpriteBatch batch;
 
     OrthographicCamera camera;
@@ -42,7 +45,7 @@ public class GDXLightRenderer extends LightRenderer {
     World world;
 
     /** our boxes **/
-    ArrayList<Body> balls = new ArrayList<Body>();
+    ArrayList<Body> balls = new ArrayList<>();
 
     /** our ground box **/
     Body groundBody;
@@ -61,13 +64,20 @@ public class GDXLightRenderer extends LightRenderer {
     RayHandler rayHandler;
     List<Light> lights = new ArrayList<>();
     float sunDirection = -90f;
+    private List<Body>  _bodies = new ArrayList<>();
+    private Body        _sunBody;
+    private PointLight  _sunLight;
 
     public GDXLightRenderer() {
-        camera = new OrthographicCamera(viewportWidth, viewportHeight);
-        camera.position.set(0, viewportHeight / 2f, 0);
+//        camera = new OrthographicCamera(viewportWidth, viewportHeight);
+        camera = new OrthographicCamera();
+//        camera.setToOrtho(true);
+        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.position.set(4000, viewportHeight / 2f, 0);
+//        camera.translate(4000, 0);
         camera.update();
         this.batch = new SpriteBatch();
-        textureRegion = new TextureRegion(new Texture(Gdx.files.internal("data/minerals_blue-128.png")));
+        textureRegion = new TextureRegion(new Texture(Gdx.files.internal("data/items/chest.png")));
         bg = new Texture(Gdx.files.internal("data/tilea4mackeditFBU.png"));
         createPhysicsWorld();
 
@@ -82,37 +92,47 @@ public class GDXLightRenderer extends LightRenderer {
         rayHandler.setBlurNum(3);
         rayHandler.pointAtShadow(testPoint.x, testPoint.y);
 
-        initPointLights();
+//        initPointLights();
         /** BOX2D LIGHT STUFF END */
     }
 
     @Override
-    public void onDraw(GFXRenderer renderer) {
-//        Gdx.gl.glClearColor(1, 1, 1, 1);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    public void onDraw(GFXRenderer renderer, int x, int y) {
+        camera.position.set(x, y + viewportHeight / 2f, 0);
+        camera.update();
 
-//        batch.setProjectionMatrix(camera.combined);
-//        batch.disableBlending();
-//        batch.begin();
-//        {
-//            batch.draw(bg, -viewportWidth / 2f, 0, viewportWidth, viewportHeight);
-//            batch.enableBlending();
-//            for (int i = 0; i < BALLSNUM; i++) {
-//                Body ball = balls.get(i);
-//                Vector2 position = ball.getPosition();
-//                float angle = MathUtils.radiansToDegrees * ball.getAngle();
-//                batch.draw(
-//                        textureRegion,
-//                        position.x - RADIUS, position.y - RADIUS,
-//                        RADIUS, RADIUS,
-//                        RADIUS * 2, RADIUS * 2,
-//                        1f, 1f,
-//                        angle);
-//            }
-//        }
-//        batch.end();
+        batch.setProjectionMatrix(camera.combined);
+        batch.disableBlending();
+        batch.begin();
+        {
+            batch.enableBlending();
+            for (Body body: _bodies) {
+                Vector2 position = body.getPosition();
+                float angle = MathUtils.radiansToDegrees * body.getAngle();
+                batch.draw(
+                        textureRegion,
+                        position.x - RADIUS, position.y - RADIUS,
+                        RADIUS, RADIUS,
+                        RADIUS * 2, RADIUS * 2,
+                        1f, 1f,
+                        angle);
+            }
+            for (Body body: balls) {
+                Vector2 position = body.getPosition();
+                float angle = MathUtils.radiansToDegrees * body.getAngle();
+                batch.draw(
+                        textureRegion,
+                        position.x - RADIUS, position.y - RADIUS,
+                        RADIUS, RADIUS,
+                        RADIUS * 2, RADIUS * 2,
+                        1f, 1f,
+                        angle);
+            }
+        }
+        batch.end();
 
         /** BOX2D LIGHT STUFF BEGIN */
+//        rayHandler.setBlur(false);
         rayHandler.setCombinedMatrix(camera);
 
 //        if (stepped) rayHandler.update();
@@ -121,11 +141,16 @@ public class GDXLightRenderer extends LightRenderer {
         /** BOX2D LIGHT STUFF END */
     }
 
+    @Override
+    public void init() {
+        createWallObjects();
+        createLightObjects();
+        initPointLights();
+    }
+
     void clearLights() {
         if (lights.size() > 0) {
-            for (Light light : lights) {
-                light.remove();
-            }
+            lights.forEach(box2dLight.Light::remove);
             lights.clear();
         }
         groundBody.setActive(true);
@@ -134,89 +159,25 @@ public class GDXLightRenderer extends LightRenderer {
     void initPointLights() {
         clearLights();
 
-        PointLight sun = new PointLight(rayHandler, RAYS_PER_BALL, null, 1000, 0f, 0f);
-        sun.setSoft(false);
-        sun.attachToBody(balls.get(0), RADIUS / 2f, RADIUS / 2f);
-        sun.setColor(
-                255,
-                255,
-                255,
-                0.15f);
-        lights.add(sun);
+        _sunLight = new PointLight(rayHandler, RAYS_PER_BALL, null, 100000, 0f, 0f);
+        _sunLight.setSoft(false);
+        _sunLight.setPosition(0, 0);
+        _sunLight.setXray(true);
+        _sunLight.attachToBody(_sunBody, RADIUS / 2f, RADIUS / 2f);
+        _sunLight.setPosition(viewportWidth / 2, viewportHeight / 2);
+        _sunLight.setColor(255, 255, 255, 0.11f);
+        lights.add(_sunLight);
 
         for (Body ball: balls) {
-            PointLight light = new PointLight(rayHandler, RAYS_PER_BALL, null, LIGHT_DISTANCE, 0f, 0f);
-            light.setSoft(false);
-            light.attachToBody(ball, RADIUS / 2f, RADIUS / 2f);
-            light.setColor(
-                    MathUtils.random(),
-                    MathUtils.random(),
-                    MathUtils.random(),
-                    1f);
+//            ChainLight light = new ChainLight(
+//                    rayHandler, RAYS_PER_BALL, null, (int)ball.getUserData(), 1,
+//                    new float[]{-5, 0, 0, 3, 5, 0});
+            PointLight light = new PointLight(rayHandler, RAYS_PER_BALL, null, (int)ball.getUserData(), 0f, 0f);
+//            light.setSoft(false);
+            light.attachToBody(ball, 32 / 2f, 32 / 2f);
+            light.setColor((float)Math.random(), (float)Math.random(), (float)Math.random(), 1);
             lights.add(light);
         }
-    }
-//
-//    void initConeLights() {
-//        clearLights();
-//        for (int i = 0; i < BALLSNUM; i++) {
-//            ConeLight light = new ConeLight(
-//                    rayHandler, RAYS_PER_BALL, null, LIGHT_DISTANCE,
-//                    0, 0, 0f, MathUtils.random(15f, 40f));
-//            light.attachToBody(
-//                    balls.get(i),
-//                    RADIUS / 2f, RADIUS / 2f, MathUtils.random(0f, 360f));
-//            light.setColor(
-//                    MathUtils.random(),
-//                    MathUtils.random(),
-//                    MathUtils.random(),
-//                    1f);
-//            lights.add(light);
-//        }
-//    }
-//
-//    void initChainLights() {
-//        clearLights();
-//        for (int i = 0; i < BALLSNUM; i++) {
-//            ChainLight light = new ChainLight(
-//                    rayHandler, RAYS_PER_BALL, null, LIGHT_DISTANCE, 1,
-//                    new float[]{-5, 0, 0, 3, 5, 0});
-//            light.attachToBody(
-//                    balls.get(i),
-//                    MathUtils.random(0f, 360f));
-//            light.setColor(
-//                    MathUtils.random(),
-//                    MathUtils.random(),
-//                    MathUtils.random(),
-//                    1f);
-//            lights.add(light);
-//        }
-//    }
-
-    private final static int MAX_FPS = 30;
-    private final static int MIN_FPS = 15;
-    public final static float TIME_STEP = 1f / MAX_FPS;
-    private final static float MAX_STEPS = 1f + MAX_FPS / MIN_FPS;
-    private final static float MAX_TIME_PER_FRAME = TIME_STEP * MAX_STEPS;
-    private final static int VELOCITY_ITERS = 6;
-    private final static int POSITION_ITERS = 2;
-
-    float physicsTimeLeft;
-    long aika;
-    int times;
-
-    private boolean fixedStep(float delta) {
-        physicsTimeLeft += delta;
-        if (physicsTimeLeft > MAX_TIME_PER_FRAME)
-            physicsTimeLeft = MAX_TIME_PER_FRAME;
-
-        boolean stepped = false;
-        while (physicsTimeLeft >= TIME_STEP) {
-            world.step(TIME_STEP, VELOCITY_ITERS, POSITION_ITERS);
-            physicsTimeLeft -= TIME_STEP;
-            stepped = true;
-        }
-        return stepped;
     }
 
     private void createPhysicsWorld() {
@@ -231,18 +192,19 @@ public class GDXLightRenderer extends LightRenderer {
                 new Vector2(halfWidth, viewportHeight),
                 new Vector2(-halfWidth, viewportHeight) });
         BodyDef chainBodyDef = new BodyDef();
-        chainBodyDef.type = BodyDef.BodyType.StaticBody;
+        chainBodyDef.type = BodyDef.BodyType.DynamicBody;
         groundBody = world.createBody(chainBodyDef);
         groundBody.createFixture(chainShape, 0);
         chainShape.dispose();
-        createBoxes();
     }
 
-    private void createBoxes() {
-//        PolygonShape ballShape = new PolygonShape();
+    private void createLightObjects() {
+        balls.forEach(body -> world.destroyBody(body));
+        balls.clear();
+
         CircleShape ballShape = new CircleShape();
-//        ballShape.setAsBox(100, 100);
-        ballShape.setRadius(RADIUS);
+        ballShape.setRadius(0);
+//        ballShape.setRadius(RADIUS);
 
         FixtureDef def = new FixtureDef();
         def.restitution = 0.9f;
@@ -252,36 +214,57 @@ public class GDXLightRenderer extends LightRenderer {
         BodyDef boxBodyDef = new BodyDef();
         boxBodyDef.type = BodyDef.BodyType.DynamicBody;
 
-        createLight(boxBodyDef, def, 0, 10);
+        _sunBody = createLight(boxBodyDef, def, 0, 0);
 
+        if (Game.getWorldManager() != null) {
+            int width = Game.getWorldManager().getWidth();
+            int height = Game.getWorldManager().getHeight();
+            WorldArea[][][] areas = Game.getWorldManager().getAreas();
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (areas[x][y][0] != null && areas[x][y][0].getItem() != null && areas[x][y][0].getItem().getInfo().light > 0) {
+                        int posX = x * 32 - 0 - Constant.WINDOW_WIDTH / 2 + 16;
+                        int posY = y * 32 - 0 + 24;
+                        Body body = createLight(boxBodyDef, def, posX, posY);
+                        body.setUserData(areas[x][y][0].getItem().getInfo().light);
+                        balls.add(body);
+                    }
+                }
+            }
+        }
+    }
 
-        PolygonShape ballShape2 = new PolygonShape();
-        ballShape2.setAsBox(1, 1);
-//        ballShape2.setRadius(RADIUS);
+    private void createWallObjects() {
+        _bodies.forEach(body -> world.destroyBody(body));
+        _bodies.clear();
 
-        FixtureDef def2 = new FixtureDef();
-        def2.restitution = 0.9f;
-        def2.friction = 0.01f;
-        def2.shape = ballShape2;
-        def2.density = 1f;
-        BodyDef boxBodyDef2 = new BodyDef();
-        boxBodyDef2.type = BodyDef.BodyType.StaticBody;
+        PolygonShape boxShape = new PolygonShape();
+        boxShape.setAsBox(16, 16);
 
-        createBox(boxBodyDef2, def2, 5, 15);
-//        createBox(boxBodyDef, def, 20, 20);
-//        createBox(boxBodyDef, def, 30, 30);
-//        createBox(boxBodyDef, def, 40, 40);
-//        createBox(boxBodyDef, def, 50, 50);
-//        for (int i = 0; i < BALLSNUM; i++) {
-//            // Create the BodyDef, set a random position above the
-//            // ground and create a new body
-//            boxBodyDef.position.x = -20 + (float) (Math.random() * 40);
-//            boxBodyDef.position.y = 10 + (float) (Math.random() * 15);
-//            Body boxBody = world.createBody(boxBodyDef);
-//            boxBody.createFixture(def);
-//            balls.add(boxBody);
-//        }
-        ballShape2.dispose();
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.restitution = 0.1f;
+        fixtureDef.friction = 0.5f;
+        fixtureDef.shape = boxShape;
+        fixtureDef.density = 1f;
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+
+        if (Game.getWorldManager() != null) {
+            int width = Game.getWorldManager().getWidth();
+            int height = Game.getWorldManager().getHeight();
+            WorldArea[][][] areas = Game.getWorldManager().getAreas();
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (areas[x][y][0] != null && areas[x][y][0].getStructure() != null && areas[x][y][0].getStructure().isSolid()) {
+                        int posX = x * 32 - 0 - Constant.WINDOW_WIDTH / 2 + 16;
+                        int posY = y * 32 - 0 + 24;
+                        createBox(bodyDef, fixtureDef, posX, posY);
+                    }
+                }
+            }
+        }
+
+        boxShape.dispose();
     }
 
     private void createBox(BodyDef boxBodyDef, FixtureDef def, int x, int y) {
@@ -289,14 +272,15 @@ public class GDXLightRenderer extends LightRenderer {
         boxBodyDef.position.y = y;
         Body boxBody = world.createBody(boxBodyDef);
         boxBody.createFixture(def);
+        _bodies.add(boxBody);
     }
 
-    private void createLight(BodyDef boxBodyDef, FixtureDef def, int x, int y) {
+    private Body createLight(BodyDef boxBodyDef, FixtureDef def, int x, int y) {
         boxBodyDef.position.x = x;
         boxBodyDef.position.y = y;
         Body boxBody = world.createBody(boxBodyDef);
         boxBody.createFixture(def);
-        balls.add(boxBody);
+        return boxBody;
     }
 
     /**
@@ -304,17 +288,8 @@ public class GDXLightRenderer extends LightRenderer {
      * GC
      **/
     Vector3 testPoint = new Vector3();
-    QueryCallback callback = new QueryCallback() {
-        @Override
-        public boolean reportFixture(Fixture fixture) {
-            if (fixture.getBody() == groundBody)
-                return true;
 
-            if (fixture.testPoint(testPoint.x, testPoint.y)) {
-                hitBody = fixture.getBody();
-                return false;
-            } else
-                return true;
-        }
-    };
+    public Light getSun() {
+        return _sunLight;
+    }
 }

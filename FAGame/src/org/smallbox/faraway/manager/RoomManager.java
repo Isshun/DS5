@@ -2,6 +2,7 @@
 package org.smallbox.faraway.manager;
 
 import org.smallbox.faraway.Game;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.character.CharacterModel;
@@ -13,7 +14,6 @@ import org.smallbox.faraway.model.room.GardenRoom;
 import org.smallbox.faraway.model.room.QuarterRoom;
 import org.smallbox.faraway.model.room.Room;
 import org.smallbox.faraway.model.room.Room.RoomType;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
 
 import java.util.ArrayList;
 import java.util.HashSet;

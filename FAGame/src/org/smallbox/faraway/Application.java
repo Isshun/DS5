@@ -33,6 +33,7 @@ public class Application implements GameEventListener {
     private static int 				_longUpdateInterval = LONG_UPDATE_INTERVAL;
 	private static MainRenderer     _gameRenderer;
 	private static LightRenderer    _lightRenderer;
+    private static ParticleRenderer _particleRenderer;
 	private static UserInterface    _gameInterface;
 	private static LoadListener 	_loadListener;
 	private static boolean			_isFullscreen;
@@ -66,13 +67,13 @@ public class Application implements GameEventListener {
         };
     }
 
-	public void create(GFXRenderer renderer, LightRenderer lightRenderer, GameData data) {
-        GameData.setData(data);
+	public void create(GFXRenderer renderer, LightRenderer lightRenderer, ParticleRenderer particleRenderer, GameData data) {
         _data = data;
 		_renderer = renderer;
 		_isFullscreen = true;
 		_gameRenderer = new MainRenderer();
         _lightRenderer = lightRenderer;
+        _particleRenderer = particleRenderer;
 		_gameInterface = new UserInterface(new LayoutFactory(), ViewFactory.getInstance());
         _mainMenu = new MainMenu(new LayoutFactory(), ViewFactory.getInstance(), renderer);
     }
@@ -191,9 +192,9 @@ public class Application implements GameEventListener {
     }
 
     @Override
-    public void onMouseEvent(GameTimer timer, Action action, MouseButton button, int x, int y) {
+    public void onMouseEvent(GameTimer timer, Action action, MouseButton button, int x, int y, boolean rightPressed) {
         if (_game != null) {
-            _gameInterface.onMouseEvent(timer, action, button, x, y);
+            _gameInterface.onMouseEvent(timer, action, button, x, y, rightPressed);
         } else {
             _mainMenu.onMouseEvent(timer, action, button, x, y);
         }
@@ -221,6 +222,8 @@ public class Application implements GameEventListener {
         _loadListener.onUpdate("Start game");
         _gameRenderer.init(_game);
         _gameInterface.onCreate(_game);
+
+        _lightRenderer.init();
     }
 
     public void renderMenu(final GFXRenderer renderer, RenderEffect effect) {
@@ -246,8 +249,16 @@ public class Application implements GameEventListener {
         _frame++;
         if (_game != null) {
             _gameRenderer.onDraw(renderer, effect, animProgress);
-            _lightRenderer.onDraw(renderer);
+            _lightRenderer.onDraw(renderer, -effect.getViewport().getPosX(), -effect.getViewport().getPosY());
+            _particleRenderer.onDraw(renderer, -effect.getViewport().getPosX(), -effect.getViewport().getPosY());
             _gameInterface.onDraw(renderer, update, renderTime);
+            renderer.finish();
+        }
+    }
+
+    public void refreshConfig() {
+        if (_particleRenderer != null) {
+            _particleRenderer.refresh();
         }
     }
 

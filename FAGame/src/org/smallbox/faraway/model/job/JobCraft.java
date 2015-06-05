@@ -45,14 +45,14 @@ public class JobCraft extends BaseJob {
 		// Wrong call
 		if (_item == null) {
 			Log.error("Character: actionUse on null job or null job's item");
-			JobManager.getInstance().abort(this, BaseJob.JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, BaseJob.JobAbortReason.INVALID);
 			return false;
 		}
 
 		// Item is no longer exists
 		if (_item != ServiceManager.getWorldMap().getItem(_posX, _posY)) {
 			Log.warning("Character #" + character.getId() + ": actionUse on invalide item");
-			JobManager.getInstance().abort(this, BaseJob.JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, BaseJob.JobAbortReason.INVALID);
 			return true;
 		}
 
@@ -69,16 +69,16 @@ public class JobCraft extends BaseJob {
 			return false;
 		}
 
-        // Current item is complete but some remains
+        // Current item is close but some remains
         if (--_count != 0) {
             _cost = 0;
             setCharacter(null);
             return false;
         }
 
-        // Work is complete
-        Log.debug("Character #" + character.getId() + ": work complete");
-        JobManager.getInstance().complete(this);
+        // Work is close
+        Log.debug("Character #" + character.getId() + ": work close");
+        JobManager.getInstance().close(this);
         return true;
 	}
 

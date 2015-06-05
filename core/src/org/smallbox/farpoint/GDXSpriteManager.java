@@ -123,7 +123,7 @@ public class GDXSpriteManager extends SpriteManager {
         }
 
         if (item.isStructure() == false) {
-            if (item.isRessource()) {
+            if (item.isResource()) {
                 return getResource((WorldResource) item);
             }
 
@@ -160,7 +160,7 @@ public class GDXSpriteManager extends SpriteManager {
         return getSprite(info, 0, 0, 255, true);
 
 //		if (res != null) {
-//			if (info.isRessource) {
+//			if (info.isResource) {
 //				return getSprite(res.textureIndex,
 //						res.posX * Constant.TILE_SIZE,
 //						res.posY * Constant.TILE_SIZE,
@@ -235,8 +235,8 @@ public class GDXSpriteManager extends SpriteManager {
 
         GDXSpriteModel sprite = _sprites.get(sum);
         if (sprite == null) {
-            int tileX = tile % 10;
-            int tileY = tile / 10;
+            int tileX = item.tiles != null ? tile % item.tiles[0] : 0;
+            int tileY = item.tiles != null ? tile / item.tiles[0] : 0;
             int offsetY = state * item.height * Constant.TILE_HEIGHT;
 
             File imgFile;

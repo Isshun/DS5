@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui.panel;
 
+import org.smallbox.faraway.Color;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.GameTimer;
 import org.smallbox.faraway.engine.ui.FrameLayout;
@@ -152,8 +153,11 @@ public class PanelInfoItem extends BaseRightPanel {
         TextView lbCraft = _viewFactory.createTextView();
         lbCraft.setString(action.label);
         lbCraft.setCharacterSize(14);
-        lbCraft.setPosition(0, 0 + 20 * index);
-        lbCraft.setSize(lbCraft.getContentWidth(), lbCraft.getContentHeight());
+        lbCraft.setPosition(0, 0 + 28 * index);
+        lbCraft.setPadding(0, 8);
+        lbCraft.setSize(220, 28);
+        lbCraft.setBackgroundColor(new Color(0x1d5560));
+        lbCraft.setAlign(Align.CENTER_VERTICAL);
         lbCraft.setOnClickListener(view -> {
             JobManager.getInstance().addJob(_item, action);
         });

@@ -32,10 +32,9 @@ public class CheckCharacterHungry extends CharacterCheck {
 				return true;
 			}
 
-			// Take item from storage
-			UserItem nearestItem = Game.getWorldFinder().getNearest(filter, _character);
-			if (nearestItem != null) {
-				nearestItem.setOwner(_character);
+			// Take item on floor
+			ItemBase nearestItem = Game.getWorldFinder().getNearest(filter, _character);
+			if (nearestItem != null && nearestItem.hasFreeSlot()) {
 				jobManager.addJob(JobUse.create(nearestItem, _character), _character);
 				return true;
 			}

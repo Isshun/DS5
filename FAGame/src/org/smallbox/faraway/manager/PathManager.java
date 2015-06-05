@@ -102,7 +102,7 @@ public class PathManager {
             FinderPool.recycle(finder);
 
             if (rawpath != null) {
-                Log.debug("character: path complete (" + fromX + "x" + fromY + " to " + toX + "x" + toY + ")");
+                Log.debug("character: path close (" + fromX + "x" + fromY + " to " + toX + "x" + toY + ")");
 
                 synchronized(_paths) {
                     _paths.add(() -> character.onPathComplete(rawpath, job));

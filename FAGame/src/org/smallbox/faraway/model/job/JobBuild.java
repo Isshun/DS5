@@ -40,7 +40,7 @@ public class JobBuild extends BaseJob {
 		// Wrong call
 		if (_item == null) {
 			Log.error("Character: actionBuild on null job or null job's item");
-			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 			return true;
 		}
 
@@ -53,7 +53,7 @@ public class JobBuild extends BaseJob {
 			} else if (_item != currentItem) {
 				Log.warning("Character #" + character.getId() + ": actionBuild on invalide item");
 			}
-			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 			return true;
 		}
 
@@ -66,13 +66,13 @@ public class JobBuild extends BaseJob {
 		if (result == ResourceManager.Message.NO_MATTER) {
 			UserInterface.getInstance().displayMessage("not enough matter", _posX, _posY);
 			Log.debug("Character #" + character.getId() + ": not enough matter");
-			JobManager.getInstance().abort(this, BaseJob.JobAbortReason.NO_BUILD_RESOURCES);
+			JobManager.getInstance().quit(this, BaseJob.JobAbortReason.NO_BUILD_RESOURCES);
 			return true;
 		}
 
 		if (result == ResourceManager.Message.BUILD_COMPLETE) {
-			Log.debug("Character #" + character.getId() + ": build complete");
-			JobManager.getInstance().complete(this);
+			Log.debug("Character #" + character.getId() + ": build close");
+			JobManager.getInstance().close(this);
 			return true;
 		}
 

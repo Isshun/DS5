@@ -6,7 +6,6 @@ import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.engine.serializer.GameLoadListener;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.manager.SpriteManager;
 
 import java.io.IOException;
 import java.util.List;

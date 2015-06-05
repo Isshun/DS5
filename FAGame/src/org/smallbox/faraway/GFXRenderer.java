@@ -11,6 +11,7 @@ public interface GFXRenderer {
     void clear(Color color);
     void clear();
     void display();
+    void finish();
     void close();
     boolean isOpen();
     void refresh();

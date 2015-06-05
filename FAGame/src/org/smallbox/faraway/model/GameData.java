@@ -1,10 +1,9 @@
 package org.smallbox.faraway.model;
 
+import org.smallbox.faraway.Application;
 import org.smallbox.faraway.Game;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.manager.Utils;
+import org.smallbox.faraway.loader.WeatherLoader;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.ui.LayoutModel;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -14,20 +13,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameData {
+public class GameData implements GameDataListener {
+
+    @Override
+    public void onDataLoaded() {
+        Application.getInstance().refreshConfig();
+    }
 
     public static GameData      _data;
+    private final WeatherLoader _weatherLoader;
 
-	private Map<String, String> _strings;
-	public static GameConfig 		    config;
+    private Map<String, String> _strings;
+	public static GameConfig 	config;
 	public List<ItemInfo> 		items;
 	public List<ItemInfo> 		gatherItems;
 	public List<CategoryInfo> 	categories;
 	public List<PlanetModel> 	planets;
     private long                _lastConfigModified;
+    public Map<String, WeatherModel> weathers;
 //	public List<Character> 		characters;
 
 	public GameData() {
+        _data = this;
+
+        _weatherLoader = new WeatherLoader(this);
+        _weatherLoader.load(this);
+
 		loadStrings();
         loadConfig();
         gatherItems = new ArrayList<>();
@@ -90,11 +101,11 @@ public class GameData {
         return _data;
     }
 
-    public static void setData(GameData data) {
-        _data = data;
-    }
-
     public void reloadConfig() {
+        if (_weatherLoader != null) {
+            _weatherLoader.reloadIfNeeded(this);
+        }
+
         long lastConfigModified = new File("data/config.yml").lastModified();
         if (lastConfigModified > _lastConfigModified) {
             Game.getData().loadStrings();
@@ -109,6 +120,7 @@ public class GameData {
             Yaml yaml = new Yaml(new Constructor(GameConfig.class));
             config = (GameConfig)yaml.load(input);
             System.out.println("Config loaded");
+            onDataLoaded();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

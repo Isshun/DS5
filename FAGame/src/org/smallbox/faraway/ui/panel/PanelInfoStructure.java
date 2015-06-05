@@ -3,7 +3,6 @@ package org.smallbox.faraway.ui.panel;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.model.item.StructureItem;
-import org.smallbox.faraway.model.item.WorldArea;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 

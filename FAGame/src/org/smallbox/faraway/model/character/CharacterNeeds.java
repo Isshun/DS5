@@ -108,7 +108,7 @@ public class CharacterNeeds {
 		//   _hapiness -= 0.25;
 		// }
 
-		// 	// If current item is not under construction: abort
+		// 	// If current item is not under construction: quit
 		// 	if (_sleep == 0 && _item != NULL && _item->isComplete()) {
 		// 	  _item->setOwner(NULL);
 		// 	  _item = NULL;

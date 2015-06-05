@@ -1,37 +1,33 @@
 package org.smallbox.farpoint;
 
-import box2dLight.*;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.util.Constant;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Alex on 04/06/2015.
  */
 public class GDXRenderer implements GFXRenderer {
+    private static final Color TEXT_COLOR = Color.WHITE;
+
     private final SpriteBatch           _batch;
     private final GameTimer             _timer;
-    private final BitmapFont[]          _fonts;
+    public static BitmapFont[]          _fonts;
     private final OrthographicCamera    _camera;
     private final OrthographicCamera    _cameraWorld;
     private GameEventListener           _listener;
     private ShapeRenderer               _shapeRenderer;
 
     public GDXRenderer(SpriteBatch batch, GameTimer timer, BitmapFont[] fonts) {
+        _fonts = fonts;
         _batch = batch;
         _shapeRenderer = new ShapeRenderer();
         _shapeRenderer.setProjectionMatrix(_batch.getProjectionMatrix());
@@ -40,7 +36,6 @@ public class GDXRenderer implements GFXRenderer {
         _cameraWorld = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _cameraWorld.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _timer = timer;
-        _fonts = fonts;
     }
 
     @Override
@@ -79,6 +74,10 @@ public class GDXRenderer implements GFXRenderer {
 
     @Override
     public void display() {
+    }
+
+    @Override
+    public void finish() {
     }
 
     @Override
@@ -138,9 +137,7 @@ public class GDXRenderer implements GFXRenderer {
     public void draw(String string, int textSize, int x, int y, Color color) {
         if (string != null) {
             _batch.begin();
-            if (color != null) {
-                _fonts[textSize].setColor(color);
-            }
+            _fonts[textSize].setColor(color != null ? color : TEXT_COLOR);
             _fonts[textSize].draw(_batch, string, x, y);
             _batch.end();
         }
@@ -160,8 +157,10 @@ public class GDXRenderer implements GFXRenderer {
 
     public void draw(SpriteCache cache, int cacheId, int x, int y) {
         if (cache != null) {
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+
             Matrix4 matrix = new Matrix4();
-            matrix.translate(-4000, -4000, 0);
+            matrix.translate(x, y, 0);
 
             _cameraWorld.translate(10, 10);
             cache.setProjectionMatrix(_cameraWorld.combined);
@@ -170,6 +169,10 @@ public class GDXRenderer implements GFXRenderer {
             cache.draw(cacheId);
             cache.end();
         }
+    }
+
+    public Batch getBatch() {
+        return _batch;
     }
 
 //    public void draw(SpriteBatch batch) {

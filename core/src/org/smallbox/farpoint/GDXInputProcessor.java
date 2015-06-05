@@ -1,13 +1,13 @@
 package org.smallbox.farpoint;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.GameTimer;
 import org.smallbox.faraway.engine.util.Constant;
 
-import static com.badlogic.gdx.Input.*;
+import static com.badlogic.gdx.Input.Buttons;
+import static com.badlogic.gdx.Input.Keys;
 
 /**
  * Created by Alex on 04/06/2015.
@@ -16,6 +16,7 @@ public class GDXInputProcessor implements InputProcessor {
     private final Application   _application;
     private final GameTimer     _timer;
     private GameEventListener.Modifier _modifier;
+    private int                 _lastMouseButton;
 
     public GDXInputProcessor(Application application, GameTimer timer) {
         _application = application;
@@ -171,6 +172,8 @@ public class GDXInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
+        _lastMouseButton = button;
+
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
             GameEventListener.MouseButton mouseButton = GameEventListener.MouseButton.LEFT;
             switch (button) {
@@ -185,7 +188,7 @@ public class GDXInputProcessor implements InputProcessor {
                     break;
             }
 
-            _application.onMouseEvent(_timer, GameEventListener.Action.PRESSED, mouseButton, x, y);
+            _application.onMouseEvent(_timer, GameEventListener.Action.PRESSED, mouseButton, x, y, false);
         }
         return false;
     }
@@ -206,21 +209,22 @@ public class GDXInputProcessor implements InputProcessor {
                     break;
             }
 
-            _application.onMouseEvent(_timer, GameEventListener.Action.RELEASED, mouseButton, x, y);
+            _application.onMouseEvent(_timer, GameEventListener.Action.RELEASED, mouseButton, x, y, false);
         }
         return false;
     }
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
+    public boolean touchDragged(int x, int y, int pointer) {
+        _application.onMouseEvent(_timer, GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
         return false;
     }
 
     @Override
     public boolean mouseMoved(int x, int y) {
-        if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
-            _application.onMouseEvent(_timer, GameEventListener.Action.MOVE, null, x, y);
-        }
+//        if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
+//            _application.onMouseEvent(_timer, GameEventListener.Action.MOVE, null, x, y, false);
+//        }
         return false;
     }
 

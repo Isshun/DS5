@@ -38,13 +38,16 @@ entries:
             position: [24, 0]
             textsize: 20
 
+        -   type: frame
+            background: 0x1d5560
+            position: [359, 0]
+            size: [33, 24]
+
         -   type: label
             id: bt_add_craft
             text: "[+]"
-            textcolor: 0xb0cd35
-            position: [320, 0]
-            textsize: 24
-            size: [32, 32]
+            position: [361, 4]
+            textsize: 18
 
         -   type: frame
             id: frame_craft_entries
@@ -54,11 +57,10 @@ entries:
 
         -   type: frame
             id: menu_add_craft
-            position: [220, 40]
+            position: [172, 32]
             entries:
 
             -   type: frame
                 id: menu_add_craft_entries
-                background: 0xff0000
                 position: [0, 0]
                 size: [100, 100]

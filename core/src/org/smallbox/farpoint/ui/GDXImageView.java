@@ -4,15 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.engine.renderer.RenderLayer;
 import org.smallbox.faraway.engine.ui.ImageView;
 import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.farpoint.GDXRenderer;
 import org.smallbox.farpoint.GDXSpriteModel;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by Alex on 04/06/2015.
@@ -28,11 +23,11 @@ public class GDXImageView extends ImageView {
             _sprite = ((GDXSpriteModel)_image).getData();
 
             _finalX = 0;
-            _finalX = 0;
+            _finalY = 0;
             View view = this;
             while (view != null) {
                 _finalX += view.getPosX();
-                _finalX += view.getPosY();
+                _finalY += view.getPosY();
                 view = view.getParent();
             }
 //            _sprite.setPosition(x, y);
@@ -46,14 +41,14 @@ public class GDXImageView extends ImageView {
             _sprite = new Sprite();
 
             _finalX = 0;
-            _finalX = 0;
+            _finalY = 0;
             View view = this;
             while (view != null) {
                 _finalX += view.getPosX();
-                _finalX += view.getPosY();
+                _finalY += view.getPosY();
                 view = view.getParent();
             }
-//            _sprite.setPosition(x, y);
+//            _sprite.setPosition(_finalX, _finalY);
             _sprite.setTexture(texture);
             //_sprite.setTextureRect(new IntRect(0, 0, _width, _height));
             _sprite.setScale((float)_scaleX, (float)_scaleY);

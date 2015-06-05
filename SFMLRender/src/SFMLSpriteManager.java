@@ -2,13 +2,9 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.Texture;
-import org.newdawn.slick.util.pathfinding.Path;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.Viewport;
-import org.smallbox.faraway.engine.ui.FrameLayout;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.ProfessionModel;
@@ -174,7 +170,7 @@ public class SFMLSpriteManager extends SpriteManager {
 		}
 		
 		if (item.isStructure() == false) {
-			if (item.isRessource()) {
+			if (item.isResource()) {
 				return getResource((WorldResource) item);
 			}
 
@@ -211,7 +207,7 @@ public class SFMLSpriteManager extends SpriteManager {
 		return getSprite(info, 0, 0, 255, true);
 
 //		if (res != null) {
-//			if (info.isRessource) {
+//			if (info.isResource) {
 //				return getSprite(res.textureIndex,
 //						res.posX * Constant.TILE_SIZE,
 //						res.posY * Constant.TILE_SIZE,

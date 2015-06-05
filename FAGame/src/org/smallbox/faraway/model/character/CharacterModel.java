@@ -151,6 +151,7 @@ public class CharacterModel extends Movable {
 		}
 
         _priorities = new ArrayList<>();
+        _priorities.add(new CheckCharacterUse(this));
         _priorities.add(new CheckCharacterExhausted(this));
         _priorities.add(new CheckCharacterHungry(this));
 
@@ -261,7 +262,7 @@ public class CharacterModel extends Movable {
     public void	setJob(BaseJob job) {
 //		// Cancel previous job
 //		if (_job != null && _job != job && _job.isFinish() == false) {
-//			JobManager.getInstance().abort(_job, BaseJob.JobAbortReason.INTERRUPT);
+//			JobManager.getInstance().quit(_job, BaseJob.JobAbortReason.INTERRUPT);
 //		}
 
 		// Set new job
@@ -319,7 +320,7 @@ public class CharacterModel extends Movable {
 	// void	use(AStarSearch<MapSearchNode> path, Job job) {
 	//   Info() + "Character #" + _id +": use item type: " + item.getSceneType();
 
-	//   // If character currently building item: abort
+	//   // If character currently building item: quit
 	//   if (_job != null && _job.getItem() != null && _job.getItem().isComplete() == false) {
 	// 	ServiceManager.getWorldMap().buildAbort(_job.getItem());
 	// 	_job = null;
@@ -496,7 +497,7 @@ public class CharacterModel extends Movable {
 		}
 
 		if (_job.action(this)) {
-			// If job is complete, get new one
+			// If job is close, get new one
 			JobManager.getInstance().assignJob(this);
 		}
 	}
@@ -574,7 +575,7 @@ public class CharacterModel extends Movable {
 		UserInterface.getInstance().displayMessage("blocked", _posX, _posY);
 
 		// Abort job
-		JobManager.getInstance().abort(job, BaseJob.JobAbortReason.BLOCKED);
+		JobManager.getInstance().quit(job, BaseJob.JobAbortReason.BLOCKED);
 		_job = null;
 
 		if (_onPathComplete != null) {

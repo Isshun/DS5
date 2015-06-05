@@ -115,6 +115,12 @@ public class WorldManager implements TileBasedMap {
         }
     }
 
+    public void removeConsumable(ConsumableItem consumable) {
+        if (consumable != null && consumable.getArea() != null) {
+            consumable.getArea().setConsumable(null);
+        }
+    }
+
     // TODO: call job listener
     public void removeStructure(int x, int y) {
         if (x >= 0 && y >= 0 && x < _width && y < _height) {
@@ -450,7 +456,7 @@ public class WorldManager implements TileBasedMap {
         if (item.isStructure()) {
             area.setStructure(null);
         }
-        else if (item.isRessource()) {
+        else if (item.isResource()) {
             area.setResource(null);
         }
         else if (item.isUserItem()) {

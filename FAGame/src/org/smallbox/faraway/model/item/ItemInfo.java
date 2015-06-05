@@ -52,6 +52,7 @@ public class ItemInfo {
 	public String 				type;
 	public List<int[]>			slots;
 	public List<String>         receipts;
+	public int[]				tiles;
 	public int					craftedQuantitfy;
 	public boolean 				isWalkable;
 	public int 					frames;

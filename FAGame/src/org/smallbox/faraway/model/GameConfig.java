@@ -12,4 +12,6 @@ public class GameConfig {
     }
 
     public GameConfigRender render;
+    public String weather;
+    public String time;
 }

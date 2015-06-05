@@ -1,21 +1,19 @@
 package org.smallbox.faraway.manager;
 
 import org.smallbox.faraway.Game;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.item.*;
 
 public class ItemFactory {
 
 	public static ItemBase create(WorldManager manager, WorldArea area, ItemInfo info, int value) {
-		// Base light item
-		if ("base.light".equals(info.name)) {
-			area.setLightSource(info.light);
-			((MainRenderer)MainRenderer.getInstance()).initLight();
-			return null;
-		}
+//		// Base light item
+//		if ("base.light".equals(info.name)) {
+//			area.setLightSource(info.light);
+//			((MainRenderer)MainRenderer.getInstance()).initLight();
+//			return null;
+//		}
 		// Consumable item
-		else if (info.isConsomable) {
+		if (info.isConsomable) {
 			return createConsumable(area, info, value);
 		}
 		// World resource

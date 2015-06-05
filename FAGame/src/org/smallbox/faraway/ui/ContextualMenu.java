@@ -5,7 +5,6 @@ import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Viewport;
 import org.smallbox.faraway.engine.ui.*;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.BasePanel;
 

@@ -71,13 +71,13 @@
 //	public boolean action(CharacterModel character) {
 //		if (_storage == null) {
 //			Log.error("Character: actionStore on non storage item");
-//			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
+//			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 //			return true;
 //		}
 //
 //		_storage.store(character.getInventory());
 //		character.clearInventory();
-//		JobManager.getInstance().complete(this);
+//		JobManager.getInstance().close(this);
 //		return true;
 //	}
 //

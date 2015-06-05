@@ -1,8 +1,5 @@
 package org.smallbox.farpoint;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.Game;
@@ -10,9 +7,6 @@ import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.engine.renderer.RenderLayer;
 import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.ProfessionModel;
-import org.smallbox.faraway.model.character.CharacterModel;
 
 /**
  * Created by Alex on 04/06/2015.

@@ -26,7 +26,7 @@ public class JobMove extends BaseJob {
 			return false;
 		}
 
-		JobManager.getInstance().complete(this);
+		JobManager.getInstance().close(this);
 		return true;
 	}
 

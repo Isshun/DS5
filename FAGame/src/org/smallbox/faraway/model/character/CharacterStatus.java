@@ -58,16 +58,7 @@ public class CharacterStatus {
 			_thoughtsShort = Strings.THOUGHTS_REALLY_BAD;
 			return;
 		}
-		
-		// Level 2
-		if (_needs.isStarved()) {
-			_color = COLOR_BAD;
-			_level = Level.BAD;
-			_tooltip = ToolTips.STATE_STARVING;
-			_thoughts = Strings.CHARACTER_SAY_STARVING;
-			_thoughtsShort = Strings.THOUGHTS_BAD;
-			return;
-		}
+
 		if (_needs.isSleeping()) {
 			ItemBase item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
 			if (item == null || item.isSleepingItem() == false) {
@@ -79,6 +70,17 @@ public class CharacterStatus {
 				return;
 			}
 		}
+
+		// Level 2
+		if (_needs.isStarved()) {
+			_color = COLOR_BAD;
+			_level = Level.BAD;
+			_tooltip = ToolTips.STATE_STARVING;
+			_thoughts = Strings.CHARACTER_SAY_STARVING;
+			_thoughtsShort = Strings.THOUGHTS_BAD;
+			return;
+		}
+
 		if (_needs.isLowOxygen()) {
 			_level = Level.BAD;
 			_color = COLOR_BAD;

@@ -43,7 +43,7 @@ public class JobDestroy extends BaseJob {
 	public boolean action(CharacterModel character) {
 		ResourceManager.getInstance().addMatter(1);
 		ServiceManager.getWorldMap().destroy(_item);
-		JobManager.getInstance().complete(this);
+		JobManager.getInstance().close(this);
 		return true;
 	}
 

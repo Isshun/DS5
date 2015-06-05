@@ -1,3 +1,5 @@
+weather: snow
+time: midnight
 render:
     floor:      true
     structure:  true

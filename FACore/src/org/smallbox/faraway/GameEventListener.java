@@ -14,6 +14,6 @@ public interface GameEventListener {
     enum Modifier {NONE, CONTROL, ALT, SHIFT};
 
     void onKeyEvent(GameTimer timer, Action action, Key key, Modifier modifier);
-    void onMouseEvent(GameTimer timer, Action action, MouseButton button, int x, int y);
+    void onMouseEvent(GameTimer timer, Action action, MouseButton button, int x, int y, boolean b);
     void onWindowEvent(GameTimer timer, Action action);
 }

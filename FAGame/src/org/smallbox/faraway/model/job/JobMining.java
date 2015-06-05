@@ -71,25 +71,25 @@ public class JobMining extends BaseJob {
 		// Wrong call
 		if (_item == null) {
 			Log.error("Character: actionMine on null job or null job's item");
-			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 			return true;
 		}
 		
-		if (_item.isRessource() == false) {
+		if (_item.isResource() == false) {
 			Log.error("Character: actionMine on non resource");
-			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 			return true;
 		}
 
 		if (!"mine".equals(_actionInfo.type)) {
 			Log.error("Character: actionMine on non minable item");
-			JobManager.getInstance().abort(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 			return true;
 		}
 
 //		// Character is full: cancel current job
 //		if (character.getInventoryLeftSpace() <= 0) {
-//			JobManager.getInstance().abort(this, BaseJob.JobAbortReason.NO_LEFT_CARRY);
+//			JobManager.getInstance().quit(this, BaseJob.JobAbortReason.NO_LEFT_CARRY);
 //			return true;
 //		}
 
@@ -109,7 +109,7 @@ public class JobMining extends BaseJob {
                     ServiceManager.getWorldMap().putItem(item, gatheredItem.getX(), gatheredItem.getY(), 0, 100);
                 }
             }
-            JobManager.getInstance().complete(this);
+            JobManager.getInstance().close(this);
 			return true;
 		}
 

@@ -3,7 +3,6 @@ package org.smallbox.faraway.ui.mainMenu;
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.ui.UIEventManager;
 import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.manager.Utils;
 import org.smallbox.faraway.model.LandingSiteModel;
 import org.smallbox.faraway.model.PlanetModel;

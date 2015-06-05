@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = Constant.WINDOW_WIDTH;
 		config.height = Constant.WINDOW_HEIGHT;
+		config.title = Constant.NAME + " " + Constant.VERSION;
 		new LwjglApplication(new GDXApplication(), config);
 	}
 }

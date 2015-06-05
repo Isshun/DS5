@@ -89,7 +89,7 @@ public class JobTake extends BaseJob {
 //		// Take item in storage room
 //		if (_storage != null) {
 //			if (_filter == null) {
-//				JobManager.getInstance().abort(this, BaseJob.JobAbortReason.INVALID);
+//				JobManager.getInstance().quit(this, BaseJob.JobAbortReason.INVALID);
 //				Log.error("actionTake: invalid job");
 //				return true;
 //			}
@@ -99,7 +99,7 @@ public class JobTake extends BaseJob {
 //				character.addInventory(neededItem);
 //			}
 //
-//			JobManager.getInstance().complete(this);
+//			JobManager.getInstance().close(this);
 //			return true;
 //		}
 
@@ -110,11 +110,11 @@ public class JobTake extends BaseJob {
 //				character.addInventory(neededItem);
 //			}
 //
-//			JobManager.getInstance().complete(this);
+//			JobManager.getInstance().close(this);
 //			return true;
 //		}
 
-		JobManager.getInstance().abort(this, BaseJob.JobAbortReason.INVALID);
+		JobManager.getInstance().quit(this, BaseJob.JobAbortReason.INVALID);
 		Log.error("actionTake: invalid job");
 		return true;
 	}

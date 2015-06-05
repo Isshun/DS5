@@ -1,6 +1,7 @@
 label: Rock
 width: 1
 height: 1
+tiles: [3, 8]
 type: resource
 light: 0
 actions:

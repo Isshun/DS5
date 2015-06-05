@@ -3,7 +3,6 @@ package org.smallbox.faraway.ui.panel;
 import org.smallbox.faraway.engine.ui.OnClickListener;
 import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.manager.SpriteManager;
 
 import java.util.ArrayList;
 import java.util.List;

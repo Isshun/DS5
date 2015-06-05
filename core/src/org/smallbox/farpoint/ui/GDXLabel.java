@@ -1,11 +1,12 @@
 package org.smallbox.farpoint.ui;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.View;
+import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.farpoint.GDXRenderer;
 
 /**
@@ -56,7 +57,7 @@ public class GDXLabel extends TextView {
 
     @Override
     public void setDashedString(String label, String value, int nbColumns) {
-
+        _string = StringUtils.getDashedString(label, value, nbColumns);
     }
 
     @Override
@@ -80,6 +81,15 @@ public class GDXLabel extends TextView {
                 _finalY += view.getPosY();
                 view = view.getParent();
             }
+
+            if (_align == Align.CENTER) {
+                _offsetX = (_width - getContentWidth()) / 2;
+                _offsetY = (_height - getContentHeight()) / 2;
+            }
+
+            if (_align == Align.CENTER_VERTICAL) {
+                _offsetY = (_height - getContentHeight()) / 2;
+            }
         }
 
         if (_gdxBackgroundColor != null) {
@@ -87,7 +97,7 @@ public class GDXLabel extends TextView {
         }
 
 //        ((GDXRenderer) renderer).draw(com.badlogic.gdx.graphics.Color.RED, _finalX, _finalY, _width, _height);
-        ((GDXRenderer)renderer).draw(_string, _textSize, _finalX, _finalY, _gdxColor);
+        ((GDXRenderer)renderer).draw(_string, _textSize, _finalX + _offsetX + _paddingLeft, _finalY + _offsetY + _paddingTop, _gdxColor);
     }
 
     @Override
@@ -97,11 +107,17 @@ public class GDXLabel extends TextView {
 
     @Override
     public int getContentWidth() {
+        if (_string != null) {
+            return (int) GDXRenderer._fonts[_textSize].getBounds(_string).width;
+        }
         return 0;
     }
 
     @Override
     public int getContentHeight() {
+        if (_string != null) {
+            return (int) GDXRenderer._fonts[_textSize].getBounds(_string).height;
+        }
         return 0;
     }
 }

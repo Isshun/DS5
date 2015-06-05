@@ -85,7 +85,7 @@ public class CharacterManager {
 			if (c.isDead()) {
 				if (c.getJob() != null) {
 					// Cancel job
-					JobManager.getInstance().abort(c.getJob(), JobAbortReason.DIED);
+					JobManager.getInstance().quit(c.getJob(), JobAbortReason.DIED);
 //
 //					// Remove from rooms
 //					Game.getRoomManager().removeFromRooms(c);

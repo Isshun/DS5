@@ -7,7 +7,6 @@ import org.jsfml.window.event.KeyEvent;
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.engine.ui.*;
-import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.engine.util.Constant;
 
 /**
@@ -149,7 +148,7 @@ public class SFMLRenderer implements GFXRenderer {
                             break;
                     }
 
-                    _listener.onMouseEvent(_timer, action, button, x, y);
+                    _listener.onMouseEvent(_timer, action, button, x, y, true);
                 }
             }
 
@@ -158,7 +157,7 @@ public class SFMLRenderer implements GFXRenderer {
                 int x = event.asMouseEvent().position.x;
                 int y = event.asMouseEvent().position.y;
                 if (x > 0 && x < _window.getSize().x && y > 0 && y < _window.getSize().y) {
-                    _listener.onMouseEvent(_timer, GameEventListener.Action.MOVE, null, x, y);
+                    _listener.onMouseEvent(_timer, GameEventListener.Action.MOVE, null, x, y, true);
                 }
             }
 

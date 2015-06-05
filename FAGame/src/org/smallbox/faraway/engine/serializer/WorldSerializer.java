@@ -1,6 +1,5 @@
 package org.smallbox.faraway.engine.serializer;
 
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.manager.WorldManager;
 import org.smallbox.faraway.model.item.*;

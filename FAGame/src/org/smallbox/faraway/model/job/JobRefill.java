@@ -101,7 +101,7 @@
 //	@Override
 //	public boolean action(CharacterModel character) {
 //		if (check(character) == false) {
-//			JobManager.getInstance().abort(this, _reason);
+//			JobManager.getInstance().quit(this, _reason);
 //			Log.error("actionRefill: invalid job");
 //			return true;
 //		}
@@ -128,7 +128,7 @@
 //			character.removeInventory(_carryItems);
 //		}
 //
-//		JobManager.getInstance().complete(this);
+//		JobManager.getInstance().close(this);
 //		return true;
 //	}
 //

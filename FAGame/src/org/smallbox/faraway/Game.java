@@ -3,7 +3,6 @@ package org.smallbox.faraway;
 import org.smallbox.faraway.engine.serializer.GameSerializer;
 import org.smallbox.faraway.engine.serializer.LoadListener;
 import org.smallbox.faraway.engine.serializer.WorldFactory;
-import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.*;
 import org.smallbox.faraway.model.GameData;
@@ -61,7 +60,7 @@ public class Game {
 
 		_dynamicObjectManager.update();
 
-		// Path complete
+		// Path close
 		List<Runnable> paths = PathManager.getInstance().getPaths();
 		synchronized (paths) {
 			for (Runnable path: paths) {
@@ -177,4 +176,5 @@ public class Game {
 	public static Game getInstance() {
 		return _self;
 	}
+
 }

@@ -9,7 +9,6 @@ import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.manager.WorldManager;
-import org.smallbox.faraway.model.GameConfig;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.room.Room;

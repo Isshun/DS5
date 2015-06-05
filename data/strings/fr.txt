@@ -54,8 +54,8 @@ Quit: Quitter
 Resources: Ressources
 
 Food: Nourriture
-Gasoline: Éssence
-Matter: Mattériaux
+Gasoline: Essence
+Matter: Matériaux
 Water: Eau
 Power: Énergie
 Effects: Effets
@@ -114,7 +114,7 @@ good: bon
 #Build menu
 STRUCTURE: _STRUCTURE
 QUARTER: _QUARTIER
-SICKBAY: _INFIERMERIE
+SICKBAY: _INFIRMERIE
 RECREATION: _DIVERTISSEMENT
 COMMON: _DIVERS
 KITCHEN: _CUISINE
