@@ -320,7 +320,7 @@ public class GDXSpriteManager extends SpriteManager {
         }
 
         else if (!info.actions.isEmpty() && "gather".equals(info.actions.get(0).type)) {
-            int state = (int)(Math.min(resource.getValue(), info.actions.get(0).mature) + 1);
+            int state = (int)(Math.min(resource.getQuantity(), info.actions.get(0).mature) + 1);
             return getSprite(info, 0, state, 255, false);
         }
 

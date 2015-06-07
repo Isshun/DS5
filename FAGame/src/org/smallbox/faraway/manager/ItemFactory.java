@@ -5,6 +5,10 @@ import org.smallbox.faraway.model.item.*;
 
 public class ItemFactory {
 
+	public static ItemBase create(WorldManager manager, ItemInfo info, int value) {
+		return create(manager, null, info, value);
+	}
+
 	public static ItemBase create(WorldManager manager, WorldArea area, ItemInfo info, int value) {
 //		// Base light item
 //		if ("base.light".equals(info.name)) {
@@ -61,7 +65,10 @@ public class ItemFactory {
 
 		consumable.setQuantity(quantity);
 		consumable.setMatterSupply(100);
-		area.setConsumable(consumable);
+
+		if (area != null) {
+			area.setConsumable(consumable);
+		}
 
 		return consumable;
 	}
@@ -83,5 +90,4 @@ public class ItemFactory {
 		
 		return resource;
 	}
-
 }

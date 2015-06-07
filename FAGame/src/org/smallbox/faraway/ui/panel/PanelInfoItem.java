@@ -105,48 +105,26 @@ public class PanelInfoItem extends BaseRightPanel {
     }
 
     private void addJobListEntry(BaseJob job, int index) {
-        int lineHeight = 40;
+        _viewFactory.load("data/ui/panels/info_item_craft_entry.yml", view -> {
+            view.findById("bt_suspend");
+            view.findById("bt_cancel").setOnClickListener(v -> JobManager.getInstance().removeJob(job));
+            ((TextView)view.findById("lb_label")).setString(job.getLabel());
+            ((TextView)view.findById("lb_ingredient")).setString(job.getIngredient() != null ? job.getIngredient().getLabel() + " (" + job.getIngredient().getQuantity() + ")" : "no components");
+            ((TextView)view.findById("lb_progress")).setString(job.getProgressPercent() + "%");
 
-        TextView lbEnable = _viewFactory.createTextView();
-        lbEnable.setString("[s]");
-        lbEnable.setCharacterSize(14);
-        lbEnable.setPosition(24, 20 + lineHeight * index);
-        _frameCraftEntries.addView(lbEnable);
+            TextView lbCraftCount = (TextView)view.findById("lb_count");
+            lbCraftCount.setString(job.getTotalCount() == Integer.MAX_VALUE ? "xx" : "x" + job.getCount());
+            lbCraftCount.setOnClickListener(v -> {
+                job.setTotalCount(job.getTotalCount() == Integer.MAX_VALUE ? 1 : Integer.MAX_VALUE);
+            });
+            lbCraftCount.setOnRightClickListener(v -> {
+                job.setTotalCount(job.getTotalCount() == Integer.MAX_VALUE ? 1 : Integer.MAX_VALUE);
+            });
 
-        TextView lbCraftCancel = _viewFactory.createTextView();
-        lbCraftCancel.setString("[c]");
-        lbCraftCancel.setCharacterSize(14);
-        lbCraftCancel.setPosition(52, 20 + lineHeight * index);
-        lbCraftCancel.setOnClickListener(view -> {
-            JobManager.getInstance().removeJob(job);
+            view.setPosition(0, 40 + index * 80);
+            _frameCraftEntries.addView(view);
+//            _frameCraftEntries.resetAllPos();
         });
-        lbCraftCancel.resetSize();
-        _frameCraftEntries.addView(lbCraftCancel);
-
-        TextView lbCraft = _viewFactory.createTextView();
-        lbCraft.setString(job.getLabel());
-        lbCraft.setCharacterSize(14);
-        lbCraft.setPosition(80, 20 + lineHeight * index);
-        _frameCraftEntries.addView(lbCraft);
-
-        TextView lbProgress = _viewFactory.createTextView();
-        lbProgress.setString(job.getProgressPercent() + "%");
-        lbProgress.setCharacterSize(14);
-        lbProgress.setPosition(80, 40 + lineHeight * index);
-        _frameCraftEntries.addView(lbProgress);
-
-        TextView lbCraftCount = _viewFactory.createTextView();
-        lbCraftCount.setString(job.getTotalCount() == Integer.MAX_VALUE ? "xx" : "x" + job.getCount());
-        lbCraftCount.setCharacterSize(14);
-        lbCraftCount.setPosition(350, 20 + lineHeight * index);
-        lbCraftCount.setOnClickListener(view -> {
-            job.setTotalCount(job.getTotalCount() == Integer.MAX_VALUE ? 1 : Integer.MAX_VALUE);
-        });
-        lbCraftCount.setOnRightClickListener(view -> {
-            job.setTotalCount(job.getTotalCount() == Integer.MAX_VALUE ? 1 : Integer.MAX_VALUE);
-        });
-        lbCraftCount.resetSize();
-        _frameCraftEntries.addView(lbCraftCount);
     }
 
     private void addActionMenuEntry(ItemInfo.ItemInfoAction action, int index) {

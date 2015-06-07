@@ -40,9 +40,12 @@ public class ItemInfo {
 		public int		food;
 		public int 		drink;
 		public int 		energy;
-		public int 		hapiness;
+		public int 		happiness;
 		public int 		health;
 		public int 		relation;
+		public int 		oxygen;
+		public int 		socialize;
+		public int 		security;
 	}
 
 	public String 				name;
@@ -92,7 +95,7 @@ public class ItemInfo {
 			if (filter.effectDrink && effects.drink > 0) { return true; }
 			if (filter.effectEnergy && effects.energy > 0) { return true; }
 			if (filter.effectFood && effects.food > 0) { return true; }
-			if (filter.effectHapiness && effects.hapiness > 0) { return true; }
+			if (filter.effectHapiness && effects.happiness > 0) { return true; }
 			if (filter.effectHealth && effects.health > 0) { return true; }
 			if (filter.effectRelation && effects.relation > 0) { return true; }
 		}

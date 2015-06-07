@@ -9,7 +9,7 @@ actions:
     -   type: use
         cost: 10
         effects:
-            hapiness: 10
+            happiness: 10
             relation: 10
 slots:
     - [1, -1]

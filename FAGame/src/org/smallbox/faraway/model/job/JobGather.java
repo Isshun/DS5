@@ -2,9 +2,7 @@ package org.smallbox.faraway.model.job;
 
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
-import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.ServiceManager;
-import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
@@ -58,11 +56,11 @@ public class JobGather extends BaseJob {
 //			return false;
 //		}
 
-		// No space left in inventory
-		if (character.hasInventorySpaceLeft() == false) {
-			_reason = JobAbortReason.NO_LEFT_CARRY;
-			return false;
-		}
+//		// No space left in inventory
+//		if (character.hasInventorySpaceLeft() == false) {
+//			_reason = JobAbortReason.NO_LEFT_CARRY;
+//			return false;
+//		}
 
 		return true;
 	}
@@ -82,32 +80,41 @@ public class JobGather extends BaseJob {
 			return true;
 		}
 
+		// Work continue
+		if (_resource.getQuantity() > 0) {
 
-		// Character is full: cancel current job
-		if (character.getInventoryLeftSpace() <= 0) {
-			JobManager.getInstance().quit(this, JobAbortReason.NO_LEFT_CARRY);
-			return true;
+			for (ItemInfo info: _resource.getInfo().actions.get(0).productsItem) {
+				ServiceManager.getWorldMap().putItem(info, _posX, _posY, 0, 100);
+				//character.addInventory(new UserItem(info));
+			}
+
+			_resource.addQuantity(-1);
+
+			//_cost = Math.min(_totalCost, _cost + character.work(CharacterModel.TalentType.COOK));
+			Log.debug("Character #" + character.getId() + ": working");
+			return false;
 		}
 
-		// TODO
-		int value = ServiceManager.getWorldMap().gather(_resource, Math.max(character.getProfessionScore(ProfessionModel.Type.NONE), character.getLeftSpace()));
-
-		Log.debug("gather: " + value);
-
-		ResourceManager.getInstance().addMatter(value);
-
-		for (int i = 0; i < value; i++) {
-            for (ItemInfo info: _resource.getInfo().actions.get(0).productsItem) {
-                character.addInventory(new UserItem(info));
-            }
-		}
-		
-		if (_resource.isDepleted()) {
-			_resource.setJob(null);
-			JobManager.getInstance().close(this);
-			ServiceManager.getWorldMap().removeResource(_resource);
-			return true;
-		}
+//		// Character is full: cancel current job
+//		if (character.getInventoryLeftSpace() <= 0) {
+//			JobManager.getInstance().quit(this, JobAbortReason.NO_LEFT_CARRY);
+//			return true;
+//		}
+//
+//		// TODO
+//		int value = ServiceManager.getWorldMap().gather(_resource, Math.max(character.getProfessionScore(ProfessionModel.Type.NONE), character.getLeftSpace()));
+//
+//		Log.debug("gather: " + value);
+//
+//		ResourceManager.getInstance().addMatter(value);
+//
+//
+//		if (_resource.isDepleted()) {
+		_resource.setJob(null);
+		JobManager.getInstance().close(this);
+		ServiceManager.getWorldMap().removeResource(_resource);
+//			return true;
+//		}
 
 		return false;
 	}

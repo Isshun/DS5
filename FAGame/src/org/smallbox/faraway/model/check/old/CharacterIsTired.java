@@ -15,7 +15,7 @@
 //
 //	@Override
 //	public boolean create(JobManager jobManager, CharacterModel character) {
-//		if (character.getNeeds().isTired()) {
+//		if (character.getNeeds().isExhausted()) {
 //			ItemFilter filter = ItemFilter.createUsableFilter();
 //			filter.effectEnergy = true;
 //

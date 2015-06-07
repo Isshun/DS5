@@ -93,13 +93,13 @@ entries:
                 -   type: label
                     id: lb_status_food
                     textsize: 14
-                    position: [20, 50]
+                    position: [216, 50]
                     size: [175, 18]
                     
                 -   type: label
                     id: lb_status_o2
                     textsize: 14
-                    position: [216, 50]
+                    position: [216, 100]
                     size: [175, 18]
                 
                 -   type: label
@@ -111,7 +111,7 @@ entries:
                 -   type: label
                     id: lb_status_power
                     textsize: 14
-                    position: [216, 100]
+                    position: [20, 50]
                     size: [175, 18]
                 
                 -   type: label

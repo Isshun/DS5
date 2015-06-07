@@ -18,7 +18,7 @@ public class CheckCharacterExhausted extends CharacterCheck {
 
     @Override
     public boolean create(JobManager jobManager) {
-        if (_character.getNeeds().isTired()) {
+        if (_character.getNeeds().isExhausted()) {
             ItemFilter filter = ItemFilter.createUsableFilter();
             filter.effectEnergy = true;
 

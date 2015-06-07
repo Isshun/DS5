@@ -87,7 +87,7 @@ public class WorldSerializer implements SerializerInterface {
 			areaSave.resource.name = resource.getName();
 			areaSave.resource.matter = (int)resource.getMatterSupply();
 			areaSave.resource.tile = resource.getTile();
-			areaSave.resource.value = (int)resource.getValue();
+			areaSave.resource.value = (int)resource.getQuantity();
 			areaSave.resource.id = resource.getId();
 		}
 

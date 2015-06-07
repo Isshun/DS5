@@ -44,8 +44,8 @@ public abstract class ItemBase {
     private int 		    _lastBlocked;
     private WorldArea	    _area;
     private int             _health;
-    private List<BaseJob>       _jobs;
-    private boolean         _needRefresh;
+    private List<BaseJob>   _jobs;
+    protected boolean         _needRefresh;
 
     public ItemBase(ItemInfo info) {
         init(info, ++_maxId);
@@ -100,7 +100,7 @@ public abstract class ItemBase {
 
 //			if (info.actions != null && info.actions.effects != null) {
 //				ItemInfoEffects effects = info.actions.effects;
-//				if (effects.hapiness > 0 && effects.hapiness > effects.energy && effects.hapiness > effects.health && effects.hapiness > effects.food && effects.hapiness > effects.drink) {
+//				if (effects.happiness > 0 && effects.happiness > effects.energy && effects.happiness > effects.health && effects.happiness > effects.food && effects.happiness > effects.drink) {
 //					_isToy = true;
 //				}
 //				if (effects.relation > 0 && effects.relation > effects.energy && effects.relation > effects.health && effects.relation > effects.food && effects.relation > effects.drink) {
@@ -237,7 +237,7 @@ public abstract class ItemBase {
 
     public UserItem use(CharacterModel character, int durationLeft) {
         // Add effect on character
-        character.getNeeds().use(this, _info.actions.get(0), durationLeft);
+        character.getNeeds().use(this, _info.actions.get(0));
 
         // Play animation
         if (_animFrame++ % _animFrameInterval == 0) {

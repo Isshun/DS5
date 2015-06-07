@@ -109,4 +109,30 @@ public class WorldFinder {
 		}
 		return null;
 	}
+
+	public ConsumableItem getNearest(ItemInfo info, int startX, int startY) {
+		int maxX = Math.max(startX, _width - startX);
+		int maxY = Math.max(startY, _height - startY);
+		for (int offsetX = 0; offsetX < maxX; offsetX++) {
+			for (int offsetY = 0; offsetY < maxY; offsetY++) {
+				WorldArea area = _worldManager.getArea(startX + offsetX, startY + offsetY);
+				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info) {
+					return area.getConsumable();
+				}
+				area = _worldManager.getArea(startX - offsetX, startY + offsetY);
+				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info) {
+					return area.getConsumable();
+				}
+				area = _worldManager.getArea(startX + offsetX, startY - offsetY);
+				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info) {
+					return area.getConsumable();
+				}
+				area = _worldManager.getArea(startX - offsetX, startY - offsetY);
+				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info) {
+					return area.getConsumable();
+				}
+			}
+		}
+		return null;
+	}
 }

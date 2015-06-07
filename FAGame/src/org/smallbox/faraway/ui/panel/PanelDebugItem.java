@@ -180,7 +180,7 @@ public class PanelDebugItem extends BasePanel {
 //				str += "food("+item.actions.effects.food+"), ";
 //				str += "drink("+item.actions.effects.drink+"), ";
 //				str += "energy("+item.actions.effects.energy+"), ";
-//				str += "hapiness("+item.actions.effects.hapiness+")";
+//				str += "happiness("+item.actions.effects.happiness+")";
 //				text.setString("Action effects " + str);
 //				text.setPosition(x, y);
 //				text.setCharacterSize(16);

@@ -30,7 +30,7 @@ public class PanelPlan extends BaseRightPanel {
 		for (View v: ((FrameLayout)findById("frame_entries")).getViews()) {
 			v.setBackgroundColor(new Color(0, 85, 96));
 		}
-		view.setBackgroundColor(new Color(255, 85, 96));
+		view.setBackgroundColor(new Color(176, 205, 53));
 
 		// Set action
 		_interaction.set(Action.SET_PLAN, planning);

@@ -5,3 +5,18 @@ render:
     structure:  true
     resource:   true
     item:       true
+character:
+    effects:
+        regular:
+            energy: -0.25
+            food: -0.5
+            happiness: 100
+            relation: 100
+            security: 100
+        sleepOnFloor:
+            energy: -0.0
+            food: -1
+        starve:
+            energy: 0.0
+        exhausted:
+            energy: 0.0

@@ -23,6 +23,7 @@ public class Game {
 	private static Game 				_self;
 	private boolean 					_paused;
 	private int 						_speed;
+	private GameListener 				_gameListener;
 
 	public static StatsManager 			getStatsManager() { return _statsManager; }
 	public static RoomManager 			getRoomManager() { return _roomManager; }
@@ -177,4 +178,8 @@ public class Game {
 		return _self;
 	}
 
+	public void setListener(GameListener listener) {
+		_gameListener = listener;
+		_worldManager.setListener(_gameListener);
+	}
 }

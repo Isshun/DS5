@@ -169,13 +169,9 @@ public class GDXLightRenderer extends LightRenderer {
         lights.add(_sunLight);
 
         for (Body ball: balls) {
-//            ChainLight light = new ChainLight(
-//                    rayHandler, RAYS_PER_BALL, null, (int)ball.getUserData(), 1,
-//                    new float[]{-5, 0, 0, 3, 5, 0});
             PointLight light = new PointLight(rayHandler, RAYS_PER_BALL, null, (int)ball.getUserData(), 0f, 0f);
-//            light.setSoft(false);
             light.attachToBody(ball, 32 / 2f, 32 / 2f);
-            light.setColor((float)Math.random(), (float)Math.random(), (float)Math.random(), 1);
+//            light.setColor((float)Math.random(), (float)Math.random(), (float)Math.random(), 1);
             lights.add(light);
         }
     }
@@ -223,8 +219,8 @@ public class GDXLightRenderer extends LightRenderer {
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (areas[x][y][0] != null && areas[x][y][0].getItem() != null && areas[x][y][0].getItem().getInfo().light > 0) {
-                        int posX = x * 32 - 0 - Constant.WINDOW_WIDTH / 2 + 16;
-                        int posY = y * 32 - 0 + 24;
+                        int posX = x * 32 - 0 - Constant.WINDOW_WIDTH / 2;
+                        int posY = y * 32 - 0;
                         Body body = createLight(boxBodyDef, def, posX, posY);
                         body.setUserData(areas[x][y][0].getItem().getInfo().light);
                         balls.add(body);

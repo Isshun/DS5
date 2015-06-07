@@ -90,7 +90,7 @@ public class CharacterStatus {
 		}
 		
 		// Level 1
-		if (_needs.isTired() && _needs.isSleeping() == false) {
+		if (_needs.isExhausted() && _needs.isSleeping() == false) {
 			_color = COLOR_MEDIUM;
 			_level = Level.MEDIUM;
 			_tooltip = ToolTips.STATE_TIRED;

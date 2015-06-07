@@ -12,6 +12,8 @@ import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.loader.PlanetLoader;
 import org.smallbox.faraway.model.GameData;
+import org.smallbox.faraway.model.item.StructureItem;
+import org.smallbox.faraway.model.item.UserItem;
 import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.MenuLoad;
 import org.smallbox.faraway.ui.UserInterface;
@@ -118,7 +120,7 @@ public class Application implements GameEventListener {
                 _game.getViewport().update(100, 0);
                 break;
 
-            case SPACE:
+            case ESCAPE:
                 _game.togglePaused();
                 break;
 
@@ -224,6 +226,19 @@ public class Application implements GameEventListener {
         _gameInterface.onCreate(_game);
 
         _lightRenderer.init();
+
+        _game.setListener(new GameListener() {
+            @Override
+            public void onStructureBuild(StructureItem structure) {
+            }
+
+            @Override
+            public void onItemBuild(UserItem item) {
+                if (_lightRenderer != null && item.isLight()) {
+                    _lightRenderer.init();
+                }
+            }
+        });
     }
 
     public void renderMenu(final GFXRenderer renderer, RenderEffect effect) {

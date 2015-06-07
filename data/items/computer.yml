@@ -11,5 +11,5 @@ actions:
     -   type: use
         cost: 5
         effects:
-            hapiness: 10
+            happiness: 10
             relation: 10

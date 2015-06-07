@@ -27,7 +27,8 @@ public class PanelInfoStructure extends BaseRightPanel {
         _structure = structure;
 
         if (isLoaded()) {
-            ((TextView)findById("lb_name")).setString(structure.getLabel());
+            ((TextView)findById("lb_name")).setString(structure.getName());
+            ((TextView)findById("lb_label")).setString(structure.getLabel());
             ((TextView)findById("lb_durability")).setString("Durability: " + structure.getHealth());
             ((TextView)findById("lb_matter")).setString("Matter: " + structure.getMatter());
             ((TextView)findById("lb_pos")).setString("Pos: " + structure.getX() + "x" + structure.getY());

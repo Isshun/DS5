@@ -52,6 +52,16 @@ public class StringUtils {
 		case X: return "x";
 		case Y: return "y";
 		case Z: return "z";
+		case D_0: return "0";
+		case D_1: return "1";
+		case D_2: return "2";
+		case D_3: return "3";
+		case D_4: return "4";
+		case D_5: return "5";
+		case D_6: return "6";
+		case D_7: return "7";
+		case D_8: return "8";
+		case D_9: return "9";
 		case SPACE: return " ";
 		default: return null;
 		}

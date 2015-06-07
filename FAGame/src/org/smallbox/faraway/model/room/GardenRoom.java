@@ -72,10 +72,10 @@ public class GardenRoom extends Room {
 
 			WorldResource res = area.getResource();
 			if (res != null && res.isType(_currentCulture) && res.isMature() == false) {
-				if ((int)res.getValue() != (int)(res.getValue() + GROW_VALUE)) {
+				if ((int)res.getQuantity() != (int)(res.getQuantity() + GROW_VALUE)) {
 					MainRenderer.getInstance().invalidate(res.getX(), res.getY());
 				}
-				res.addValue(GROW_VALUE);
+				res.addQuantity(GROW_VALUE);
 			}
 		}
 	}

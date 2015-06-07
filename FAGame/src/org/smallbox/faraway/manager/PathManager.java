@@ -83,10 +83,14 @@ public class PathManager {
 	}
 
 	public void getPathAsync(final CharacterModel character, final BaseJob job) {
+		getPathAsync(character, job, job.getX(), job.getY());
+	}
+
+	public void getPathAsync(final CharacterModel character, final BaseJob job, final int x, final int y) {
 		final int fromX = character.getX();
 		final int fromY = character.getY();
-		final int toX = job.getX();
-		final int toY = job.getY();
+		final int toX = x;
+		final int toY = y;
 
 		_threadPool.execute(() -> {
             Log.debug("getPathAsync");
@@ -97,7 +101,7 @@ public class PathManager {
                 throw new RuntimeException("no more AStarPathFinder in FinderPool");
             }
 
-            MyMover mover = new MyMover(character, job.getX(), job.getY());
+            MyMover mover = new MyMover(character, x, y);
             final Path rawpath = finder.findPath(mover, fromX, fromY, toX, toY);
             FinderPool.recycle(finder);
 

@@ -109,6 +109,7 @@ public class GDXInputProcessor implements InputProcessor {
             case Keys.F10: key = GameEventListener.Key.F10; break;
             case Keys.F11: key = GameEventListener.Key.F11; break;
             case Keys.F12: key = GameEventListener.Key.F12; break;
+            case Keys.GRAVE: key = GameEventListener.Key.TILDE; break;
 //            case Input.Keys.LCONTROL:
 //            case Input.Keys.LSHIFT:
 //            case Input.Keys.LALT:

@@ -463,7 +463,7 @@ public class PanelInfo extends BaseRightPanel {
 		_itemName.setString(resource.getLabel() != null ? resource.getLabel() : resource.getName());
 		_itemCategory.setString("(" + resource.getLabelCategory() + ")");
 		_itemMatterSupply.setString("Matter supply: " + String.valueOf(resource.getMatterSupply()));
-		_itemMatter.setString("Value: " + String.valueOf(resource.getValue()));
+		_itemMatter.setString("Value: " + String.valueOf(resource.getQuantity()));
 		if (resource.getOwner() != null) {
 			_itemOwner.setString("Owner: " + resource.getOwner().getName());
 		} else {
@@ -605,7 +605,7 @@ public class PanelInfo extends BaseRightPanel {
 //			if (effects.drink > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_DRINK, (effects.drink > 0 ? "+" : "") + effects.drink, NB_COLUMNS); }
 //			if (effects.energy > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_ENERGY, (effects.energy> 0 ? "+" : "") + effects.energy, NB_COLUMNS); }
 //			if (effects.food > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_FOOD, (effects.food > 0 ? "+" : "") + effects.food, NB_COLUMNS); }
-//			if (effects.hapiness > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_HAPINESS, (effects.hapiness > 0 ? "+" : "") + effects.hapiness, NB_COLUMNS); }
+//			if (effects.happiness > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_HAPINESS, (effects.happiness > 0 ? "+" : "") + effects.happiness, NB_COLUMNS); }
 //			if (effects.health > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_HEALTH, (effects.health > 0 ? "+" : "") + effects.health, NB_COLUMNS); }
 //			if (effects.relation > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_RELATION, (effects.relation > 0 ? "+" : "") + effects.relation, NB_COLUMNS); }
 //			for (int i = line; i < 10; i++) {

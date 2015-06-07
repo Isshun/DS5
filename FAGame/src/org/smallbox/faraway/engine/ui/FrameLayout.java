@@ -68,7 +68,7 @@ public abstract class FrameLayout extends View {
 		
 		view.setParent(this);
 		_views.add(view);
-		view.resetPos();
+		view.resetAllPos();
 	}
 
 	@Override

@@ -3,25 +3,24 @@ package org.smallbox.faraway.ui.panel;
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.ui.Colors;
+import org.smallbox.faraway.engine.ui.FrameLayout;
 import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.engine.util.Settings;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ResourceManager;
-import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.StructureItem;
-import org.smallbox.faraway.model.item.UserItem;
+import org.smallbox.faraway.model.job.BaseJob;
 import org.smallbox.faraway.ui.LayoutModel;
-import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
-public class PanelDebug extends BasePanel {
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class PanelDebug extends BaseRightPanel {
 
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
@@ -34,106 +33,109 @@ public class PanelDebug extends BasePanel {
 	private String 				_search = "";
 	private int 				_nbResults;
 	private ItemInfo 			_currentItem;
+    private FrameLayout         _entries;
+    private int                 _index;
 
-	public PanelDebug(Mode mode, GameEventListener.Key shortcut) {
-		super(mode, shortcut, Constant.WINDOW_WIDTH - FRAME_WIDTH, 32, FRAME_WIDTH, FRAME_HEIGHT, "data/ui/panels/debug.yml");
-		
-		setBackgroundColor(new Color(200, 50, 140, 150));
-		
-		// Re-launch jobs
-		TextView lbReLaunchJob = ViewFactory.getInstance().createTextView(200, 32);
-		lbReLaunchJob.setOnClickListener(view -> {
-            int width = ServiceManager.getWorldMap().getWidth();
-            int height = ServiceManager.getWorldMap().getHeight();
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
-                    if (structure != null && !structure.isComplete()) {
-                        JobManager.getInstance().addBuild(structure);
-                    }
-                    UserItem item = ServiceManager.getWorldMap().getItem(x, y);
-                    if (item != null && !item.isComplete()) {
-                        JobManager.getInstance().addBuild(item);
-                    }
-                }
-            }
-        });
-		lbReLaunchJob.setString("Re-launch jobs");
-		lbReLaunchJob.setCharacterSize(20);
-		lbReLaunchJob.setColor(Color.WHITE);
-		lbReLaunchJob.setPosition(20, 100);
-		addView(lbReLaunchJob);
-
-		// Clear jobs 
-		TextView lbClearJob = ViewFactory.getInstance().createTextView(200, 32);
-		lbClearJob.setOnClickListener(view -> JobManager.getInstance().clear());
-		lbClearJob.setString("Clear jobs");
-		lbClearJob.setCharacterSize(20);
-		lbClearJob.setColor(Color.WHITE);
-		lbClearJob.setPosition(20, 140);
-		addView(lbClearJob);
-
-		// Add seed 
-		TextView lbAddSeed = ViewFactory.getInstance().createTextView(200, 32);
-		lbAddSeed.setOnClickListener(view -> {
-            ServiceManager.getWorldMap().addRandomSeed();
-            ServiceManager.getWorldMap().addRandomSeed();
-            ServiceManager.getWorldMap().addRandomSeed();
-            ServiceManager.getWorldMap().addRandomSeed();
-            ServiceManager.getWorldMap().addRandomSeed();
-            ServiceManager.getWorldMap().addRandomSeed();
-            ServiceManager.getWorldMap().addRandomSeed();
-            ServiceManager.getWorldMap().addRandomSeed();
-            ServiceManager.getWorldMap().addRandomSeed();
-            ServiceManager.getWorldMap().addRandomSeed();
-            ServiceManager.getWorldMap().addRandomSeed();
-            ServiceManager.getWorldMap().addRandomSeed();
-        });
-		lbAddSeed.setString("Add seed");
-		lbAddSeed.setCharacterSize(20);
-		lbAddSeed.setColor(Color.WHITE);
-		lbAddSeed.setPosition(20, 180);
-		addView(lbAddSeed);
-
-		// Add water 
-		TextView lbAddWater = ViewFactory.getInstance().createTextView(200, 32);
-		lbAddWater.setOnClickListener(view -> ResourceManager.getInstance().addWater(20));
-		lbAddWater.setString("Add water");
-		lbAddWater.setCharacterSize(20);
-		lbAddWater.setColor(Color.WHITE);
-		lbAddWater.setPosition(20, 220);
-		addView(lbAddWater);
-
-		// Reset light 
-		TextView lbResetLight = ViewFactory.getInstance().createTextView(200, 32);
-		lbResetLight.setOnClickListener(view -> ((MainRenderer)MainRenderer.getInstance()).initLight());
-		lbResetLight.setString("Reset light");
-		lbResetLight.setCharacterSize(20);
-		lbResetLight.setColor(Color.WHITE);
-		lbResetLight.setPosition(20, 260);
-		addView(lbResetLight);
-		
-		// Add dome 
-		TextView lbDome = ViewFactory.getInstance().createTextView(200, 32);
-		lbDome.setOnClickListener(view -> {
-            for (double j = 0; j < 20; j++) {
-                for (double i = 0; i < Math.PI * 2; i += 0.01) {
-                    double offsetX = (int)Math.round(Math.cos(i) * j);
-                    double offsetY = (int)Math.round(Math.sin(i) * j);
-                    ServiceManager.getWorldMap().putItem("base.floor", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
-                }
-            }
-            for (double i = 0; i < Math.PI * 2; i += 0.01) {
-                double offsetX = (int)Math.round(Math.cos(i) * 20);
-                double offsetY = (int)Math.round(Math.sin(i) * 20);
-                ServiceManager.getWorldMap().putItem("base.wall", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
-            }
-        });
-		lbDome.setString("Dome");
-		lbDome.setCharacterSize(20);
-		lbDome.setColor(Color.WHITE);
-		lbDome.setPosition(20, 360);
-		addView(lbDome);
+    public PanelDebug(Mode mode, GameEventListener.Key shortcut) {
+//		super(mode, shortcut, Constant.WINDOW_WIDTH - FRAME_WIDTH, 32, FRAME_WIDTH, FRAME_HEIGHT, null);
+		super(mode, shortcut);
+//
+//		setBackgroundColor(new Color(160, 80, 140, 150));
+//
+//		// Re-launch jobs
+//		TextView lbReLaunchJob = ViewFactory.getInstance().createTextView(200, 32);
+//		lbReLaunchJob.setOnClickListener(view -> {
+//            int width = ServiceManager.getWorldMap().getWidth();
+//            int height = ServiceManager.getWorldMap().getHeight();
+//            for (int x = 0; x < width; x++) {
+//                for (int y = 0; y < height; y++) {
+//                    StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
+//                    if (structure != null && !structure.isComplete()) {
+//                        JobManager.getInstance().addBuild(structure);
+//                    }
+//                    UserItem item = ServiceManager.getWorldMap().getItem(x, y);
+//                    if (item != null && !item.isComplete()) {
+//                        JobManager.getInstance().addBuild(item);
+//                    }
+//                }
+//            }
+//        });
+//		lbReLaunchJob.setString("Re-launch jobs");
+//		lbReLaunchJob.setCharacterSize(20);
+//		lbReLaunchJob.setColor(Color.WHITE);
+//		lbReLaunchJob.setPosition(20, 100);
+//		addView(lbReLaunchJob);
+//
+//		// Clear jobs
+//		TextView lbClearJob = ViewFactory.getInstance().createTextView(200, 32);
+//		lbClearJob.setOnClickListener(view -> JobManager.getInstance().clear());
+//		lbClearJob.setString("Clear jobs");
+//		lbClearJob.setCharacterSize(20);
+//		lbClearJob.setColor(Color.WHITE);
+//		lbClearJob.setPosition(20, 140);
+//		addView(lbClearJob);
+//
+//		// Add seed
+//		TextView lbAddSeed = ViewFactory.getInstance().createTextView(200, 32);
+//		lbAddSeed.setOnClickListener(view -> {
+//            ServiceManager.getWorldMap().addRandomSeed();
+//            ServiceManager.getWorldMap().addRandomSeed();
+//            ServiceManager.getWorldMap().addRandomSeed();
+//            ServiceManager.getWorldMap().addRandomSeed();
+//            ServiceManager.getWorldMap().addRandomSeed();
+//            ServiceManager.getWorldMap().addRandomSeed();
+//            ServiceManager.getWorldMap().addRandomSeed();
+//            ServiceManager.getWorldMap().addRandomSeed();
+//            ServiceManager.getWorldMap().addRandomSeed();
+//            ServiceManager.getWorldMap().addRandomSeed();
+//            ServiceManager.getWorldMap().addRandomSeed();
+//            ServiceManager.getWorldMap().addRandomSeed();
+//        });
+//		lbAddSeed.setString("Add seed");
+//		lbAddSeed.setCharacterSize(20);
+//		lbAddSeed.setColor(Color.WHITE);
+//		lbAddSeed.setPosition(20, 180);
+//		addView(lbAddSeed);
+//
+//		// Add water
+//		TextView lbAddWater = ViewFactory.getInstance().createTextView(200, 32);
+//		lbAddWater.setOnClickListener(view -> ResourceManager.getInstance().addWater(20));
+//		lbAddWater.setString("Add water");
+//		lbAddWater.setCharacterSize(20);
+//		lbAddWater.setColor(Color.WHITE);
+//		lbAddWater.setPosition(20, 220);
+//		addView(lbAddWater);
+//
+//		// Reset light
+//		TextView lbResetLight = ViewFactory.getInstance().createTextView(200, 32);
+//		lbResetLight.setOnClickListener(view -> ((MainRenderer)MainRenderer.getInstance()).initLight());
+//		lbResetLight.setString("Reset light");
+//		lbResetLight.setCharacterSize(20);
+//		lbResetLight.setColor(Color.WHITE);
+//		lbResetLight.setPosition(20, 260);
+//		addView(lbResetLight);
+//
+//		// Add dome
+//		TextView lbDome = ViewFactory.getInstance().createTextView(200, 32);
+//		lbDome.setOnClickListener(view -> {
+//            for (double j = 0; j < 20; j++) {
+//                for (double i = 0; i < Math.PI * 2; i += 0.01) {
+//                    double offsetX = (int)Math.round(Math.cos(i) * j);
+//                    double offsetY = (int)Math.round(Math.sin(i) * j);
+//                    ServiceManager.getWorldMap().putItem("base.floor", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
+//                }
+//            }
+//            for (double i = 0; i < Math.PI * 2; i += 0.01) {
+//                double offsetX = (int)Math.round(Math.cos(i) * 20);
+//                double offsetY = (int)Math.round(Math.sin(i) * 20);
+//                ServiceManager.getWorldMap().putItem("base.wall", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
+//            }
+//        });
+//		lbDome.setString("Dome");
+//		lbDome.setCharacterSize(20);
+//		lbDome.setColor(Color.WHITE);
+//		lbDome.setPosition(20, 360);
+//		addView(lbDome);
 	}
 
 	@Override
@@ -152,27 +154,31 @@ public class PanelDebug extends BasePanel {
 	protected void onCreate(ViewFactory factory) {
 		_lbSearch = factory.createTextView();
 		_lbSearch.setPosition(20, 60);
-		_lbSearch.setString("search: ");
+//		_lbSearch.setString("search: ");
 		_lbSearch.setCharacterSize(FONT_SIZE);
-		_lbSearch.setColor(Colors.LINK_INACTIVE);
+		_lbSearch.setColor(Colors.TEXT);
 		addView(_lbSearch);
+        
+        _entries = factory.createFrameLayout();
+        _entries.setPosition(20, 100);
+        addView(_entries);
 
-		_nbEntries = Game.getData().items.size();
-		_labels = new TextView[_nbEntries];
-		_shortcuts = new TextView[_nbEntries];
-		for (int i = 0; i < _nbEntries; i++) {
-			_labels[i] = factory.createTextView();
-			_labels[i].setPosition(20, 600 + i * LINE_HEIGHT);
-			_labels[i].setCharacterSize(FONT_SIZE);
-			addView(_labels[i]);
-
-			_shortcuts[i] = factory.createTextView();
-			_shortcuts[i].setPosition(20, 600 + i * LINE_HEIGHT);
-			_shortcuts[i].setCharacterSize(FONT_SIZE);
-			_shortcuts[i].setColor(Colors.LINK_ACTIVE);
-			_shortcuts[i].setStyle(TextView.UNDERLINED);
-			addView(_shortcuts[i]);
-		}
+//		_nbEntries = Game.getData().items.size();
+//		_labels = new TextView[_nbEntries];
+//		_shortcuts = new TextView[_nbEntries];
+//		for (int i = 0; i < _nbEntries; i++) {
+//			_labels[i] = factory.createTextView();
+//			_labels[i].setPosition(20, 600 + i * LINE_HEIGHT);
+//			_labels[i].setCharacterSize(FONT_SIZE);
+//			addView(_labels[i]);
+//
+//			_shortcuts[i] = factory.createTextView();
+//			_shortcuts[i].setPosition(20, 600 + i * LINE_HEIGHT);
+//			_shortcuts[i].setCharacterSize(FONT_SIZE);
+//			_shortcuts[i].setColor(Colors.LINK_ACTIVE);
+//			_shortcuts[i].setStyle(TextView.UNDERLINED);
+//			addView(_shortcuts[i]);
+//		}
 	}
 
 	@Override
@@ -187,65 +193,69 @@ public class PanelDebug extends BasePanel {
 
 	@Override
 	public void onRefresh(int frame) {
-		int i = 0;
-		for (ItemInfo item: Game.getData().items) {
-			if (_search.length() == 0) {
-				if (i == _line) {
-					_currentItem = item;
-					_shortcuts[i].setVisible(true);
-					_shortcuts[i].setString(item.label);
-					_shortcuts[i].setPosition(20, _shortcuts[i].getPosY());
-					_shortcuts[i].setColor(Colors.LINK_ACTIVE);
-					_labels[i].setVisible(false);
-				}
-				else {
-					_shortcuts[i].setVisible(false);
-					_labels[i].setVisible(true);
-					_labels[i].setString(item.label);
-				}
-				i++;
-			}
-			
-			else {
-				int pos = item.label.toLowerCase().indexOf(_search);
-				if (pos != -1) {
-					if (i == _line) {
-						_currentItem = item;
-						_shortcuts[i].setString(item.label);
-						_shortcuts[i].setColor(Colors.LINK_ACTIVE);
-						_shortcuts[i].setPosition(20, _shortcuts[i].getPosY());
-						_labels[i].setVisible(false);
-					}
-					else {
-						_shortcuts[i].setString(item.label.substring(pos, pos + _search.length()));
-						_shortcuts[i].setColor(Colors.LINK_INACTIVE);
-						_shortcuts[i].setPosition(20 + pos * 8, _shortcuts[i].getPosY());
-						_labels[i].setVisible(true);
-						_labels[i].setString(item.label);
-					}
-					_shortcuts[i].setVisible(true);
-					i++;
-				}
-			}
-		}
-		_nbResults = i - 1;
-		for (; i < _nbEntries; i++) {
-			_shortcuts[i].setVisible(false);
-			_labels[i].setVisible(false);
-		}
+//		int i = 0;
+//		for (ItemInfo item: Game.getData().items) {
+//			if (_search.length() == 0) {
+//				if (i == _line) {
+//					_currentItem = item;
+//					_shortcuts[i].setVisible(true);
+//					_shortcuts[i].setString(item.label);
+//					_shortcuts[i].setPosition(20, _shortcuts[i].getPosY());
+//					_shortcuts[i].setColor(Colors.LINK_ACTIVE);
+//					_labels[i].setVisible(false);
+//				}
+//				else {
+//					_shortcuts[i].setVisible(false);
+//					_labels[i].setVisible(true);
+//					_labels[i].setString(item.label);
+//				}
+//				i++;
+//			}
+//
+//			else {
+//				int pos = item.label.toLowerCase().indexOf(_search);
+//				if (pos != -1) {
+//					if (i == _line) {
+//						_currentItem = item;
+//						_shortcuts[i].setString(item.label);
+//						_shortcuts[i].setColor(Colors.LINK_ACTIVE);
+//						_shortcuts[i].setPosition(20, _shortcuts[i].getPosY());
+//						_labels[i].setVisible(false);
+//					}
+//					else {
+//						_shortcuts[i].setString(item.label.substring(pos, pos + _search.length()));
+//						_shortcuts[i].setColor(Colors.LINK_INACTIVE);
+//						_shortcuts[i].setPosition(20 + pos * 8, _shortcuts[i].getPosY());
+//						_labels[i].setVisible(true);
+//						_labels[i].setString(item.label);
+//					}
+//					_shortcuts[i].setVisible(true);
+//					i++;
+//				}
+//			}
+//		}
+//		_nbResults = i - 1;
+//		for (; i < _nbEntries; i++) {
+//			_shortcuts[i].setVisible(false);
+//			_labels[i].setVisible(false);
+//		}
 	}
 	
 	@Override
 	public boolean	onKey(GameEventListener.Key key) {
 		if (key == GameEventListener.Key.ENTER) {
-			int x = UserInterface.getInstance().getMouseX();
-			int y = UserInterface.getInstance().getMouseY();
-			Log.info("x: " + x + ", y: " + y);
-			int matter = 0;
-			if (_currentItem.cost != null) {
-				matter = _currentItem.cost.matter;
-			}
-			Game.getWorldManager().putItem(_currentItem, x, y, 0, matter);
+//			int x = UserInterface.getInstance().getMouseX();
+//			int y = UserInterface.getInstance().getMouseY();
+//			Log.info("x: " + x + ", y: " + y);
+//			int matter = 0;
+//			if (_currentItem.cost != null) {
+//				matter = _currentItem.cost.matter;
+//			}
+//			Game.getWorldManager().putItem(_currentItem, x, y, 0, matter);
+
+			exec(_search);
+
+			_search = "";
 		}
 		else if (key == GameEventListener.Key.UP) {
 			_line = _line - 1 < 0 ? _nbResults : _line - 1;
@@ -266,11 +276,56 @@ public class PanelDebug extends BasePanel {
 				return false;
 			}
 		}
-		_lbSearch.setString("search: " + _search);
+		_lbSearch.setString("" + _search);
 		onRefresh(0);
 		return true;
 	}
-	
+
+	private void exec(String command) {
+		command = command.trim();
+        clear();
+
+		if (command.startsWith("job")) {
+
+			if (command.equals("job")) {
+				for (BaseJob job: JobManager.getInstance().getJobs()) {
+					println(job.toString());
+				}
+			}
+
+            else {
+                Matcher m = Pattern.compile("job (\\d+)").matcher(command);
+                if (m.matches()) {
+                    int jobId = Integer.valueOf(m.group(1));
+                    JobManager.getInstance().getJobs().stream().filter(job -> job.getId() == jobId).forEach(job -> dumpJob(job));
+                }
+            }
+
+		}
+	}
+
+    private void clear() {
+        _index = 0;
+        _entries.clearAllViews();
+    }
+
+    private void println(String text) {
+        System.out.println(text);
+
+
+        TextView lbEntry = ViewFactory.getInstance().createTextView();
+        lbEntry.setColor(Color.WHITE);
+        lbEntry.setCharacterSize(14);
+        lbEntry.setString(text);
+        lbEntry.setPosition(0, 20 * _index++);
+        _entries.addView(lbEntry);
+    }
+
+    public void dumpJob(BaseJob job) {
+        println(job.getLabel());
+        println("char: " + (job.getCharacter() != null ? job.getCharacter().toString() : "none"));
+    }
+
 //	void  addDebug(final String key, String value) {
 //		int y = _index * 32;
 //

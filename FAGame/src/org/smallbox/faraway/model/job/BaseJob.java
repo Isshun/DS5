@@ -4,11 +4,8 @@ import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.ItemBase;
-import org.smallbox.faraway.model.item.ItemFilter;
-import org.smallbox.faraway.model.item.ItemInfo;
+import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.item.ItemInfo.ItemInfoAction;
-import org.smallbox.faraway.model.item.ItemSlot;
 
 public abstract class BaseJob {
 
@@ -23,6 +20,10 @@ public abstract class BaseJob {
     }
 
 	public SpriteModel getIcon() {
+		return null;
+	}
+
+	public ConsumableItem getIngredient() {
 		return null;
 	}
 
@@ -183,5 +184,10 @@ public abstract class BaseJob {
 
 	public int getTotalCount() {
 		return _totalCount;
+	}
+
+	@Override
+	public String toString() {
+		return "#" + _id + " (" + getLabel() + ")";
 	}
 }

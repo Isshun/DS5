@@ -12,4 +12,4 @@ actions:
         effects:
             food: 100
             drink: 100
-            hapiness: 5
+            happiness: 5

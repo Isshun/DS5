@@ -9,4 +9,4 @@ actions:
         effects:
             food: 100
             drink: 100
-            hapiness: -1
+            happiness: -1

@@ -16,4 +16,4 @@ actions:
         effects:
             food: 100
             drink: 100
-            hapiness: 10
+            happiness: 10

@@ -210,4 +210,7 @@ public abstract class View {
     public abstract int getContentHeight();
     public void init(){}
     public View findById(String id){return null;}
+    public void resetAllPos() {
+        resetPos();
+    }
 }

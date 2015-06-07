@@ -7,6 +7,7 @@ import org.smallbox.faraway.model.character.CharacterModel.Gender;
 import org.smallbox.faraway.model.character.CharacterNeeds;
 import org.smallbox.faraway.model.character.CharacterRelation;
 import org.smallbox.faraway.model.character.CharacterRelation.Relation;
+import org.smallbox.faraway.model.item.ConsumableItem;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.UserItem;
@@ -19,7 +20,7 @@ public class CharacterSerializer implements SerializerInterface {
 
 	public static class CharacterNeedsSave {
 		// Actions
-		public int	sleeping;
+		public boolean	isSleeping;
 		public int	eating;
 		public int	drinking;
 		public int	socialize;
@@ -37,7 +38,7 @@ public class CharacterSerializer implements SerializerInterface {
 		public double	satiety;
 		
 		public CharacterNeedsSave(CharacterNeeds needs) {
-			this.sleeping = needs.getSleeping();
+			this.isSleeping = needs.isSleeping();
 			this.eating = needs.getEating();
 			this.drinking = needs.getDrinking();
 			this.socialize = needs.getSocialize();
@@ -146,7 +147,7 @@ public class CharacterSerializer implements SerializerInterface {
 		if (characterSave.inventory != null) {
 			for (String name: characterSave.inventory) {
 				ItemInfo info = Game.getData().getItemInfo(name);
-				character.addInventory(new UserItem(info));
+				character.addInventory(new ConsumableItem(info));
 			}
 		}
 		
@@ -164,7 +165,7 @@ public class CharacterSerializer implements SerializerInterface {
 			character.getNeeds().setSatiety(characterSave.needs.satiety);
 			character.getNeeds().setSecurity(characterSave.needs.security);
 			character.getNeeds().setSickness(characterSave.needs.sickness);
-			character.getNeeds().setSleeping(characterSave.needs.sleeping);
+			character.getNeeds().setSleeping(characterSave.needs.isSleeping);
 			character.getNeeds().setSocialize(characterSave.needs.socialize);
 		}
 		Game.getCharacterManager().add(character);

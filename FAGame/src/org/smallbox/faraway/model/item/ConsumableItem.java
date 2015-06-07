@@ -19,6 +19,7 @@ public class ConsumableItem extends ItemBase {
     public void addQuantity(int quantity) {
         _quantity += quantity;
         _slots += quantity;
+        _needRefresh = true;
     }
 
     @Override
@@ -29,6 +30,7 @@ public class ConsumableItem extends ItemBase {
     public void setQuantity(int quantity) {
         _quantity = quantity;
         _slots = quantity;
+        _needRefresh = true;
     }
 
     @Override

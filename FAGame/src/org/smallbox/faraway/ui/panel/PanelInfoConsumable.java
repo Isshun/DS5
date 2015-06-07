@@ -57,7 +57,8 @@ public class PanelInfoConsumable extends BaseRightPanel {
         _itemInfo = info;
 
         if (isLoaded()) {
-            ((TextView)findById("lb_name")).setString(_itemInfo.label);
+            ((TextView)findById("lb_name")).setString(_itemInfo.name);
+            ((TextView)findById("lb_label")).setString(_itemInfo.label);
         }
     }
 

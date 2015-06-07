@@ -117,11 +117,8 @@ public class JobUse extends BaseJob {
             return false;
 		}
 
-        if (_item.getInfo().isConsomable) {
-            ((ConsumableItem)_item).addQuantity(-1);
-            if (_item.getQuantity() <= 0) {
-                Game.getWorldManager().removeConsumable((ConsumableItem) _item);
-            }
+        if (_item.isSleepingItem()) {
+            _character.getNeeds().setSleeping(false);
         }
 
         JobManager.getInstance().close(this);

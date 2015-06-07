@@ -3,6 +3,7 @@ package org.smallbox.faraway.manager;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 import org.smallbox.faraway.Game;
+import org.smallbox.faraway.GameListener;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
@@ -17,8 +18,26 @@ import java.util.Map;
 
 public class WorldManager implements TileBasedMap {
 
+    private GameListener _gameListener;
+
     public WorldArea[][][] getAreas() {
         return _areas;
+    }
+
+    public void setListener(GameListener listener) {
+        _gameListener = listener;
+    }
+
+    public int getConsumableCount(ItemInfo itemInfo) {
+        int count = 0;
+        for (int x = 0; x < _width; x++) {
+            for (int y = 0; y < _height; y++) {
+                if (_areas[x][y][0] != null && _areas[x][y][0].getConsumable() != null) {
+                    count += _areas[x][y][0].getConsumable().getQuantity();
+                }
+            }
+        }
+        return count;
     }
 
     public static class DebugPos {
@@ -163,10 +182,16 @@ public class WorldManager implements TileBasedMap {
 
         // Put structure on area
         else {
+            // TODO
             if (area.getStructure() == null || area.getStructure().isGround()) {
                 ItemBase item = ItemFactory.create(this, area, itemInfo, matterSupply);
                 if (item != null) {
                     item.setPosition(x, y);
+                    if (item.isStructure()) {
+                        if (_gameListener != null) {
+                            _gameListener.onStructureBuild((StructureItem) item);
+                        }
+                    }
                     MainRenderer.getInstance().invalidate(x, y);
                 }
                 return item;
@@ -176,30 +201,33 @@ public class WorldManager implements TileBasedMap {
         return null;
     }
 
-    private UserItem putItemOnArea(int x, int y, ItemInfo itemInfo) {
+    private ItemBase putItemOnArea(int x, int y, ItemInfo itemInfo) {
 
         // Put UserItem on floor
-        if (itemInfo.isUserItem) {
+        if (itemInfo.isConsomable) {
+            if (_areas[x][y][0].getConsumable() != null) {
+                _areas[x][y][0].getConsumable().addQuantity(1);
+            } else {
+                _areas[x][y][0].setConsumable((ConsumableItem)ItemFactory.create(this, _areas[x][y][0], itemInfo, 1));
+            }
+            return _areas[x][y][0].getConsumable();
+        }
+
+        // Put ConsumableItem on floor / or in existing stack
+        else {
             UserItem item = (UserItem)ItemFactory.create(this, _areas[x][y][0], itemInfo, 100);
             for (int i = 0; i < item.getWidth(); i++) {
                 for (int j = 0; j < item.getHeight(); j++) {
                     _areas[x][y][0].setItem(item);
                 }
             }
-        }
-
-        // Put ConsumableItem on floor / or in existing stack
-        else if (itemInfo.isConsomable) {
-            if (_areas[x][y][0].getConsumable() != null) {
-                _areas[x][y][0].getConsumable().addQuantity(1);
-            } else {
-                _areas[x][y][0].setConsumable((ConsumableItem)ItemFactory.create(this, _areas[x][y][0], itemInfo, 1));
+            if (_gameListener != null) {
+                _gameListener.onItemBuild(item);
             }
+            return _areas[x][y][0].getItem();
         }
-        MainRenderer.getInstance().invalidate(x, y);
-        System.out.println("put item on floor: " + itemInfo.name + " (" + x + "x" + y + ")");
-
-        return _areas[x][y][0].getItem();
+//        MainRenderer.getInstance().invalidate(x, y);
+//        System.out.println("put item on floor: " + itemInfo.name + " (" + x + "x" + y + ")");
     }
 
     private boolean areaFreeForItem(int x, int y, ItemInfo info) {
@@ -349,7 +377,7 @@ public class WorldManager implements TileBasedMap {
 
     // TODO
     public List<Room> getRooms() {
-        return new ArrayList<Room>(_rooms.values());
+        return new ArrayList<>(_rooms.values());
     }
 
     public void addRoom(Room room) {

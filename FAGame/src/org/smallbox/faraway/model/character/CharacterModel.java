@@ -15,6 +15,7 @@ import org.smallbox.faraway.model.check.*;
 import org.smallbox.faraway.model.check.character.CheckCharacterExhausted;
 import org.smallbox.faraway.model.check.character.CheckCharacterHungry;
 import org.smallbox.faraway.model.check.old.CharacterCheck;
+import org.smallbox.faraway.model.item.ConsumableItem;
 import org.smallbox.faraway.model.item.ItemBase;
 import org.smallbox.faraway.model.item.ItemFilter;
 import org.smallbox.faraway.model.item.UserItem;
@@ -28,7 +29,21 @@ import java.util.List;
 import java.util.Map;
 
 public class CharacterModel extends Movable {
-    public enum TalentType {
+	public boolean hasInInventory(ConsumableItem consumable) {
+		return _inventory.contains(consumable);
+	}
+
+	public void moveTo(BaseJob job, int posX, int posY) {
+		_toX = posX;
+		_toY = posY;
+        _job = job;
+		if (_posX != _toX || _posY != _toY) {
+			PathManager.getInstance().getPathAsync(this, _job, _toX, _toY);
+		}
+		Log.debug("move to: " + _toX + "x" + _toY);
+	}
+
+	public enum TalentType {
         HEAL,
         CRAFT,
         COOK,
@@ -89,7 +104,7 @@ public class CharacterModel extends Movable {
 	private Color 					_color;
 	private int 					_lag;
 	private double 					_old;
-	private List<UserItem> 			_inventory;
+	private List<ConsumableItem> 	_inventory;
 	private int 					_inventorySpace;
 	private int 					_inventorySpaceLeft;
 	private int 					_nbChild;
@@ -237,7 +252,7 @@ public class CharacterModel extends Movable {
 	//	  int[]				getMessages() { return _messages; }
 	public boolean			isSelected() { return _isSelected; }
 	public int				getProfessionScore(ProfessionModel.Type professionEngineer) { return 42; }
-	public List<UserItem> 	getInventory() { return _inventory; }
+	public List<ConsumableItem> 	getInventory() { return _inventory; }
 	public Path 			getPath() { return _path; }
 	public CharacterStatus 	getStatus() { return _status; }
 	public Color 			getColor() { return _color; }
@@ -251,7 +266,7 @@ public class CharacterModel extends Movable {
 	public double 			getNextChildAtOld() { return _nextChildAtOld; }
 
 	public boolean			isFull() { return _inventory.size() == Constant.CHARACTER_INVENTORY_SPACE; }
-	public boolean 			isSleeping() { return _needs.getSleeping() > 0; }
+	public boolean 			isSleeping() { return _needs.isSleeping(); }
 	public boolean 			isGay() { return _isGay; }
 	public boolean 			needRefresh() { return _needRefresh; }
 
@@ -260,24 +275,19 @@ public class CharacterModel extends Movable {
     }
 
     public void	setJob(BaseJob job) {
-//		// Cancel previous job
-//		if (_job != null && _job != job && _job.isFinish() == false) {
-//			JobManager.getInstance().quit(_job, BaseJob.JobAbortReason.INTERRUPT);
-//		}
+		// Cancel previous job
+		if (_job != job && _job != null && _job != job && !_job.isFinish()) {
+			JobManager.getInstance().quit(_job, BaseJob.JobAbortReason.INTERRUPT);
+		}
+
+		// Launch new job if not null
+		if (job != null && (_toX != job.getX() || _toY != job.getY())) {
+			job.setCharacter(this);
+			moveTo(job, job.getX(), job.getY());
+		}
 
 		// Set new job
 		_job = job;
-
-		// Launch new job if not null
-		if (job != null) {
-			Log.debug("set new job");
-			job.setCharacter(this);
-			_toX = job.getX();
-			_toY = job.getY();
-			if (_posX != job.getX() || _posY != job.getY()) {
-				PathManager.getInstance().getPathAsync(this, job);
-			}
-		}
 	}
 
 	public void	setProfession(ProfessionModel.Type professionId) {
@@ -392,7 +402,7 @@ public class CharacterModel extends Movable {
 		// No energy + no job to sleepingItem -> sleep on the ground
 		if (_needs.getEnergy() <= 0 && _needs.isSleeping() == false) {
 			if (_job == null || _job.getItem() == null || _job.getItem().isSleepingItem() == false) {
-				_needs.sleep(null);
+				_needs.setSleeping(true);
 			}
 		}
 
@@ -470,7 +480,7 @@ public class CharacterModel extends Movable {
 		}
 	}
 
-	public void removeInventory(UserItem item) {
+	public void removeInventory(ConsumableItem item) {
 		if (item != null && _inventory.remove(item)) {
 			_inventorySpaceLeft++;
 		}
@@ -490,7 +500,7 @@ public class CharacterModel extends Movable {
 			return;
 		}
 
-		if (_needs.isTired() && (_job.getItem() == null || _job.getItem().isSleepingItem() == false)) {
+		if (_needs.isExhausted() && (_job.getItem() == null || _job.getItem().isSleepingItem() == false)) {
 			JobManager.getInstance().quit(_job);
 //			_job = null;
 			return;
@@ -514,7 +524,7 @@ public class CharacterModel extends Movable {
 		_quarter = quarter;
 	}
 
-	public void addInventory(UserItem item) {
+	public void addInventory(ConsumableItem item) {
 		if (item != null) {
 			_inventory.add(item);
 			_inventorySpaceLeft--;

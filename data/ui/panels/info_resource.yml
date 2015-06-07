@@ -1,9 +1,14 @@
 entries:
 
     -   type: label
-        id: lb_name
+        id: lb_label
         textsize: 24
         position: [24, 24]
+
+    -   type: label
+        id: lb_name
+        textsize: 24
+        position: [224, 24]
 
     -   type: label
         id: lb_durability
@@ -12,7 +17,7 @@ entries:
         position: [24, 58]
 
     -   type: label
-        id: lb_matter
+        id: lb_quantity
         text: matter
         textsize: 14
         position: [24, 80]

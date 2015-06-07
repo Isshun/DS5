@@ -11,4 +11,8 @@ public class UserItem extends ItemBase {
 	public boolean isBed() {
 		return _info.isBed;
 	}
+
+	public boolean isLight() {
+		return _info.light > 0;
+	}
 }

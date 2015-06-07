@@ -4,7 +4,7 @@ import org.smallbox.faraway.model.job.BaseJob;
 
 
 public class WorldResource extends UserItem {
-	private double	_value;
+	private double 	_quantity;
 	private int 	_tile;
 	private int 	_doubleRender;
 	private BaseJob _job;
@@ -17,12 +17,16 @@ public class WorldResource extends UserItem {
 		super(info);
 	}
 
-	public void addValue(double d) {_value += d;}
+	public void addQuantity(double quantity) {
+		_quantity += quantity;}
 
-	public void	setValue(double value) {_value = value;}
+	public void	setValue(double value) {
+		_quantity = value;}
 	
-	public double getValue(int max) {return Math.min(_value, max);}
-	public double getValue() { return _value; }
+	public double getQuantity(int max) {return Math.min(_quantity, max);}
+
+	@Override
+	public int getQuantity() { return (int)_quantity; }
 	
 
 	public boolean isRock() {
@@ -54,17 +58,17 @@ public class WorldResource extends UserItem {
 	}
 
 	public int gatherMatter(int maxValue) {
-		int value = (int)Math.min(maxValue, _value);
-		_value -= value;
+		int value = (int)Math.min(maxValue, _quantity);
+		_quantity -= value;
 		return value;
 	}
 
 	public boolean isDepleted() {
-		return _value < 1;
+		return _quantity < 1;
 	}
 
 	public boolean isMature() {
-		return _value >= _info.actions.get(0).mature;
+		return _quantity >= _info.actions.get(0).mature;
 	}
 
 	public void setJob(BaseJob job) {
