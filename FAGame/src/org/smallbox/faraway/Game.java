@@ -3,9 +3,14 @@ package org.smallbox.faraway;
 import org.smallbox.faraway.engine.serializer.GameSerializer;
 import org.smallbox.faraway.engine.serializer.LoadListener;
 import org.smallbox.faraway.engine.serializer.WorldFactory;
+import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.*;
+import org.smallbox.faraway.model.GameConfig;
 import org.smallbox.faraway.model.GameData;
+import org.smallbox.faraway.model.PlanetModel;
+import org.smallbox.faraway.model.WeatherModel;
+import org.smallbox.faraway.ui.AreaManager;
 
 import java.util.List;
 
@@ -19,17 +24,24 @@ public class Game {
 	private static FoeManager 			_foeManager;
 	private static DynamicObjectManager	_dynamicObjectManager;
 	private static RelationManager 		_relationManager;
+	private static AreaManager          _areaManager;
+    private final ParticleRenderer      _particleRenderer;
+    private final LightRenderer         _lightRenderer;
+    private final PlanetModel           _planet;
+    private TemperatureManager          _temperatureManager;
+    private static WeatherManager       _weatherManager;
 	private static JobManager 			_jobManager;
 	private static Game 				_self;
 	private boolean 					_paused;
 	private int 						_speed;
-	private GameListener 				_gameListener;
+    private GameConfig                  _config;
 
-	public static StatsManager 			getStatsManager() { return _statsManager; }
+    public static StatsManager 			getStatsManager() { return _statsManager; }
 	public static RoomManager 			getRoomManager() { return _roomManager; }
 	public static ResourceManager 		get() { return _resourceManager ; }
 	public static CharacterManager 		getCharacterManager() { return _characterManager; }
 	public static WorldManager 			getWorldManager() { return _worldManager; }
+	public static WeatherManager        getWeatherManager() { return _weatherManager; }
 	public static FoeManager 			getFoeManager() { return _foeManager; }
 	public static DynamicObjectManager 	getDynamicObjectManager() { return _dynamicObjectManager; }
 	public static RelationManager		getRelationManager() { return _relationManager; }
@@ -42,14 +54,18 @@ public class Game {
 	private boolean						_isMenuOpen;
 	private boolean 					_isRunning;
 
-	public Game(GameData data) {
+	public Game(GameData data, ParticleRenderer particleRenderer, LightRenderer lightRenderer) {
 		Log.debug("Game");
 
 		_self = this;
 		_data = data;
+        _config = data.config;
+        _planet = new PlanetModel();
 		_isRunning = true;
 		_viewport = SpriteManager.getInstance().createViewport();
-		_update = 0;
+        _particleRenderer = particleRenderer;
+        _lightRenderer = lightRenderer;
+        _update = 0;
 
 		Log.info("Game:\tdone");
 	}
@@ -64,9 +80,7 @@ public class Game {
 		// Path close
 		List<Runnable> paths = PathManager.getInstance().getPaths();
 		synchronized (paths) {
-			for (Runnable path: paths) {
-				path.run();
-			}
+            paths.forEach(java.lang.Runnable::run);
 			paths.clear();
 		}
 
@@ -79,7 +93,18 @@ public class Game {
 		// Clean completed jobs
 		_jobManager.cleanJobs();
 
-		_update++;
+        if (_temperatureManager != null && _roomManager != null) {
+            _temperatureManager.update(_worldManager.getTemperature(), _roomManager.getRoomList());
+        }
+
+        if (_weatherManager != null) {
+            _weatherManager.update(_update);
+            if (_update % _config.tickPerHour == 0) {
+                _weatherManager.onHourChange(_planet, _update / _config.tickPerHour % _planet.dayDuration);
+            }
+        }
+
+        _update++;
 	}
 
 	public void onLongUpdate() {
@@ -98,7 +123,23 @@ public class Game {
 
 		_worldManager = new WorldManager();
 		ServiceManager.setWorldMap(_worldManager);
-		_roomManager = new RoomManager();
+
+		if (GameData.config.manager.room) {
+			_roomManager = new RoomManager();
+			_worldManager.addObserver(_roomManager);
+		}
+
+        if (GameData.config.manager.room && GameData.config.manager.temperature) {
+			_temperatureManager = new TemperatureManager();
+			_worldManager.addObserver(_temperatureManager);
+		}
+
+        if (GameData.config.manager.weather) {
+            _weatherManager = new WeatherManager(_lightRenderer, _particleRenderer, _worldManager);
+			_worldManager.addObserver(_weatherManager);
+		}
+
+        _areaManager = new AreaManager();
 		_resourceManager = new ResourceManager();
 		_statsManager = new StatsManager();
 		_dynamicObjectManager = new DynamicObjectManager();
@@ -182,8 +223,19 @@ public class Game {
 		return _self;
 	}
 
-	public void setListener(GameListener listener) {
-		_gameListener = listener;
-		_worldManager.setListener(_gameListener);
-	}
+    public int getHour() {
+        return _update / _config.tickPerHour % _planet.dayDuration;
+    }
+
+    public int getDay() {
+        return _update / _config.tickPerHour / _planet.dayDuration & _planet.yearDuration;
+    }
+
+    public int getYear() {
+        return _update / _config.tickPerHour / _planet.dayDuration / _planet.yearDuration;
+    }
+
+    public static AreaManager getAreaManager() {
+        return _areaManager;
+    }
 }

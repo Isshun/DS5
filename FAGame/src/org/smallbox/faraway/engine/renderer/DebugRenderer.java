@@ -27,7 +27,7 @@ public class DebugRenderer implements IRenderer {
 //		text.setCharacterSize(10);
 //		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
 //			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
-//				WorldArea res = ServiceManager.getWorldMap().getArea(x, y);
+//				WorldArea res = ServiceManager.getWorldMap().getParcel(x, y);
 //				if (res != null) {
 //					text.setString(""+(int)(res.getLightSource()));
 //					text.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
@@ -78,7 +78,7 @@ public class DebugRenderer implements IRenderer {
 //		
 //		for (int i = toX-1; i >= fromX; i--) {
 //			for (int j = toY-1; j >= fromY; j--) {
-//				WorldArea item = ServiceManager.getWorldMap().getArea(i, j);
+//				WorldArea item = ServiceManager.getWorldMap().getParcel(i, j);
 //				StructureItem structure = ServiceManager.getWorldMap().getStructure(i, j);
 //				StructureItem structureBellow = ServiceManager.getWorldMap().getStructure(i, j+1);
 //
@@ -93,7 +93,7 @@ public class DebugRenderer implements IRenderer {
 //
 //				//				//
 ////				if (item == null) {
-////					item = ServiceManager.getWorldMap().getArea(i, j);
+////					item = ServiceManager.getWorldMap().getParcel(i, j);
 ////				}
 ////
 ////				if (item != null) {

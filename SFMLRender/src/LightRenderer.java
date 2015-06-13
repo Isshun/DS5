@@ -6,7 +6,7 @@ import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.StructureModel;
-import org.smallbox.faraway.model.item.AreaModel;
+import org.smallbox.faraway.model.item.ParcelModel;
 import org.smallbox.faraway.engine.renderer.IRenderer;
 
 import java.io.File;
@@ -76,7 +76,7 @@ public class LightRenderer implements IRenderer {
 				int y2 = y+(int)offsetY;
 				double radius = Math.sqrt(Math.pow(Math.abs(offsetX), 2) + Math.pow(Math.abs(offsetY), 2));
 				if (x2 >= fromX && y2 >= fromY && x2 <= toX && y2 <= toY && isFree(x, y, x+(int)offsetX, y+(int)offsetY)) {
-					AreaModel area = ServiceManager.getWorldMap().getArea(x2, y2);
+					ParcelModel area = ServiceManager.getWorldMap().getParcel(x2, y2);
 					if (area != null && area.getLightPass() < pass) {
 						area.addLight(Math.min(Math.max(bright - radius * 0.15, 0), 1));
 						area.setLightPass(pass);
@@ -132,10 +132,10 @@ public class LightRenderer implements IRenderer {
 		for (int x = fromX; x < toX; x++) {
 			for (int y = fromY; y < toY; y++) {
 				// Wall
-				AreaModel area = ServiceManager.getWorldMap().getArea(x, y);
+				ParcelModel area = ServiceManager.getWorldMap().getParcel(x, y);
 				if (area != null && area.getStructure() != null && (area.getStructure().isWall() || area.getStructure().isDoor()) && area.getLight() <= 0) {
-					AreaModel areaLeft = ServiceManager.getWorldMap().getArea(x-1, y);
-					AreaModel areaRight = ServiceManager.getWorldMap().getArea(x+1, y);
+					ParcelModel areaLeft = ServiceManager.getWorldMap().getParcel(x - 1, y);
+					ParcelModel areaRight = ServiceManager.getWorldMap().getParcel(x + 1, y);
 					double lightRight = areaRight != null ? areaRight.getLight() : 0;
 					double lightLeft = areaLeft != null ? areaLeft.getLight() : 0;
 					area.setLight(Math.max(lightRight, lightLeft) * 0.75);
@@ -165,8 +165,8 @@ public class LightRenderer implements IRenderer {
 			// Reset brightness for areas
 			for (int x = fromX; x < toX; x++) {
 				for (int y = fromY; y < toY; y++) {
-					ServiceManager.getWorldMap().getArea(x, y).setLightPass(0);
-					ServiceManager.getWorldMap().getArea(x, y).setLight(0);
+					ServiceManager.getWorldMap().getParcel(x, y).setLightPass(0);
+					ServiceManager.getWorldMap().getParcel(x, y).setLight(0);
 				}
 			}
 
@@ -174,7 +174,7 @@ public class LightRenderer implements IRenderer {
 			int pass = 0;
 			for (int x = fromX; x < toX; x++) {
 				for (int y = fromY; y < toY; y++) {
-					AreaModel area = ServiceManager.getWorldMap().getArea(x, y);
+					ParcelModel area = ServiceManager.getWorldMap().getParcel(x, y);
 					if (area.hasLightSource()) {
 						diffuseLight(fromX, fromY, toX, toY, x, y, LIGHT_DISTANCE, ++pass, (double)area.getLightSource() / 10);
 					}
@@ -193,15 +193,15 @@ public class LightRenderer implements IRenderer {
 			// Reset brightness for areas
 			for (int x = fromX; x < toX; x++) {
 				for (int y = fromY; y < toY; y++) {
-					ServiceManager.getWorldMap().getArea(x, y).setLightPass(0);
+					ServiceManager.getWorldMap().getParcel(x, y).setLightPass(0);
 				}
 			}
 
 			// Windows
 			for (int x = fromX; x < toX; x++) {
 				for (int y = fromY; y < toY; y++) {
-					AreaModel area = ServiceManager.getWorldMap().getArea(x, y);
-					AreaModel areaBellow = ServiceManager.getWorldMap().getArea(x, y+1);
+					ParcelModel area = ServiceManager.getWorldMap().getParcel(x, y);
+					ParcelModel areaBellow = ServiceManager.getWorldMap().getParcel(x, y + 1);
 					if (areaBellow != null && areaBellow.getLight() > 0) {
 						if (area.getStructure() != null && area.getStructure().isWindow()) {
 							diffuseLight(fromX, fromY, toX, toY, x, y-1, 10, ++pass, areaBellow.getLight() * 0.75);
@@ -224,7 +224,7 @@ public class LightRenderer implements IRenderer {
 			halfShape.setFillColor(new Color(0, 0, 0, 0));
 			for (int x = 0; x < mapWidth; x++) {
 				for (int y = 0; y < mapHeight; y++) {
-					AreaModel area = ServiceManager.getWorldMap().getArea(x, y);
+					ParcelModel area = ServiceManager.getWorldMap().getParcel(x, y);
 					StructureModel structure = ServiceManager.getWorldMap().getStructure(x, y);
 					StructureModel structureBellow = ServiceManager.getWorldMap().getStructure(x, y+1);
 

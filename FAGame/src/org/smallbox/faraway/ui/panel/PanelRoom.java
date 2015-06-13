@@ -7,8 +7,8 @@ import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.room.Room;
-import org.smallbox.faraway.model.room.Room.RoomType;
+import org.smallbox.faraway.model.room.RoomModel;
+import org.smallbox.faraway.model.room.RoomModel.RoomType;
 import org.smallbox.faraway.model.room.RoomOptions;
 import org.smallbox.faraway.model.room.RoomOptions.RoomOption;
 import org.smallbox.faraway.ui.UserInteraction.Action;
@@ -50,7 +50,7 @@ public class PanelRoom extends BaseRightPanel {
 	private static final int 		MAX_OCCUPANTS = 10;
 
 	private Map<Integer, TextView> 		_icons;
-	private Room 						_room;
+	private RoomModel _room;
 	private FrameLayout 				_layoutRoom;
 	private TextView 					_lbRoomName;
 	private TextView[] 					_lbRoomOccupants;
@@ -134,7 +134,7 @@ public class PanelRoom extends BaseRightPanel {
 		}
 	}
 
-	private void createRoomInfoOption(Room room) {
+	private void createRoomInfoOption(RoomModel room) {
 		_layoutRoomOption.clearAllViews();
 		int i = 0;
 		RoomOptions options = room.getOptions();
@@ -175,7 +175,7 @@ public class PanelRoom extends BaseRightPanel {
 		}
 
 		// New room is selected
-		Room selectedRoom = _ui.getSelectedRoom();
+		RoomModel selectedRoom = _ui.getSelectedRoom();
 		if (selectedRoom != _room) {
 			setRoom(selectedRoom);
 		}
@@ -188,7 +188,7 @@ public class PanelRoom extends BaseRightPanel {
 		}
 	}
 
-	private void setRoom(Room room) {
+	private void setRoom(RoomModel room) {
 		_room = room;
 		if (room != null) {
 			createRoomInfoOption(room);
@@ -212,7 +212,7 @@ public class PanelRoom extends BaseRightPanel {
 		}
 	}
 
-	private void displayRoom(Room room) {
+	private void displayRoom(RoomModel room) {
 		_layoutRoom.setVisible(true);
 		_lbRoomName.setString(room.getName() + " #" + room.getId());
 

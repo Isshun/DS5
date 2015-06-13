@@ -12,21 +12,15 @@ import org.smallbox.faraway.model.WeatherModel;
  * Created by Alex on 05/06/2015.
  */
 public class GDXParticleRenderer extends ParticleRenderer {
-    private final GDXLightRenderer  _lightRenderer;
     private ParticleEffect          _effect;
-    private Color                   _sunColor;
+    private String                  _particle;
 
-    public GDXParticleRenderer(GDXLightRenderer lightRenderer) {
-        _lightRenderer = lightRenderer;
+    public GDXParticleRenderer() {
         refresh();
     }
 
     @Override
     public void onDraw(GFXRenderer renderer, int x, int y) {
-        if (_lightRenderer.getSun() != null && _sunColor != null) {
-            _lightRenderer.getSun().setColor(_sunColor);
-        }
-
         if (_effect != null) {
             _effect.update(Gdx.graphics.getDeltaTime());
             ((GDXRenderer) renderer).getBatch().begin();
@@ -40,26 +34,16 @@ public class GDXParticleRenderer extends ParticleRenderer {
 
     @Override
     public void refresh() {
-        WeatherModel weather = GameData.getData().weathers.get(GameData.config.weather);
-
-        // sun color
-        org.smallbox.faraway.Color color;
-        switch (GameData.getData().config.time) {
-            case "dawn": color = new org.smallbox.faraway.Color(weather.sun.dawn); break;
-            case "twilight": color = new org.smallbox.faraway.Color(weather.sun.twilight); break;
-            case "midnight": color = new org.smallbox.faraway.Color(weather.sun.midnight); break;
-            default: color = new org.smallbox.faraway.Color(weather.sun.noon); break;
-        }
-        _sunColor = new Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f);
-
-        // particles
+        // Dispose old effect
         if (_effect != null) {
             _effect.dispose();
             _effect = null;
         }
-        if (weather.particle != null) {
+
+        // Create effect
+        if (_particle != null) {
             _effect = new ParticleEffect();
-            _effect.load(Gdx.files.internal("data/particles/" + weather.particle), Gdx.files.internal("data/particles/"));
+            _effect.load(Gdx.files.internal("data/particles/" + _particle), Gdx.files.internal("data/particles/"));
             _effect.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
             _effect.getEmitters().first().getSpawnWidth().setHigh(Gdx.graphics.getWidth());
             _effect.getEmitters().first().getSpawnWidth().setLow(Gdx.graphics.getWidth());
@@ -68,6 +52,12 @@ public class GDXParticleRenderer extends ParticleRenderer {
             _effect.flipY();
             _effect.start();
         }
+    }
+
+    @Override
+    public void setParticle(String particle) {
+        _particle = particle;
+        refresh();
     }
 
     @Override

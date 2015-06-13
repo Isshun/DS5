@@ -1,11 +1,19 @@
 weather: regular
-time: noon
+time: midnight
+tickPerHour: 42
+
 render:
-    floor:      true
-    structure:  true
-    resource:   true
-    item:       true
-    consumable: true
+    floor:          true
+    structure:      true
+    resource:       true
+    item:           true
+    consumable:     true
+
+manager:
+    room:           true
+    temperature:    true
+    weather:        true
+
 character:
     effects:
         regular:

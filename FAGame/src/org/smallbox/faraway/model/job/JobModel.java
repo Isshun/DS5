@@ -9,7 +9,7 @@ import org.smallbox.faraway.model.item.ItemInfo.ItemInfoAction;
 
 public abstract class JobModel {
 
-    public boolean canBeResume() {
+	public boolean canBeResume() {
         return true;
     }
 
@@ -88,7 +88,7 @@ public abstract class JobModel {
 	public int					getX() { return _posX; }
 	public int					getY() { return _posY; }
 	public int					getId() { return _id; }
-	public MapObjectModel getItem() { return _item; }
+	public MapObjectModel 		getItem() { return _item; }
 	public CharacterModel       getCharacter() { return _character; }
 	public CharacterModel       getCharacterRequire() { return _characterRequire; }
 	public int 					getFail() { return _fail; }
@@ -100,12 +100,12 @@ public abstract class JobModel {
 	public int 					getNbUsed() { return _nbUsed; }
 	public double               getQuantity() { return _progress; }
 	public int 					getQuantityTotal() { return _cost; }
-	public int 					getProgressPercent() { return (int)((double) _progress / _cost * 100); }
+	public int 					getProgressPercent() { return (int)(getProgress() * 100); }
 	public double               getProgress() { return (double) _progress / _cost; }
 	public JobStatus			getStatus() { return _status; }
 
     public void                 setQuantity(int quantity) { _progress = quantity; }
-    public void setCost(int quantityTotal) { _cost = quantityTotal; }
+    public void 				setCost(int quantityTotal) { _cost = quantityTotal; }
     public void					setCharacterRequire(CharacterModel character) { _characterRequire = character; }
 	public void					setFail(JobAbortReason reason, int frame) { _reason = reason; _fail = frame; }
 	public void					setBlocked(int frame) { _blocked = frame; _nbBlocked++; }
@@ -121,12 +121,19 @@ public abstract class JobModel {
 		if (_character == character) {
 			return;
 		}
-		
+
+		// Remove job from old character
+		if (_character != null) {
+			_character.setJob(null);
+		}
+
+		// Set job to new character
 		_character = character;
 		if (character != null) {
 			character.setJob(this);
 		}
-		
+
+		// Lock item
 		if (_item != null) {
 			_item.setOwner(character);
 		}

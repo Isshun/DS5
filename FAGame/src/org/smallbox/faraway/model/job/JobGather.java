@@ -101,7 +101,11 @@ public class JobGather extends JobModel {
 
         Log.debug(character.getName() + ": gathering (" + _totalProgress + "/" + _totalCost + ")");
 
-        ++_totalProgress;
+//		CharacterModel.TalentEntry talent = character.getTalent(CharacterModel.TalentType.GATHER);
+//		double quantity = -talent.work();
+//		_resource.addQuantity(quantity);
+
+		++_totalProgress;
 		if (++_progress < _cost) {
 			return false;
 		}

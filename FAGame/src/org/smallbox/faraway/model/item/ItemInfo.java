@@ -15,6 +15,10 @@ public class ItemInfo {
 		return false;
 	}
 
+	public boolean hasTemperatureEffect() {
+		return effects != null && (effects.coldPotency != 0 || effects.heatPotency != 0);
+	}
+
 	public static class ItemInfoStorage {
 		public int[]				components;
 		public int[]				crafts;
@@ -63,6 +67,12 @@ public class ItemInfo {
 		public int 					oxygen;
 		public int 					socialize;
 		public int 					security;
+		public int 					heat;
+		public int 					heatPotency;
+		public int 					cold;
+		public int 					coldPotency;
+		public int 					temperature;
+		public int 					temperaturePotency;
 	}
 
 	public String 					name;
@@ -82,6 +92,7 @@ public class ItemInfo {
 	public int 						light;
 	public int 						cost;
 	public List<ItemInfoAction> 	actions;
+	public ItemInfoEffects 			effects;
 	public boolean 					isStructure;
 	public boolean 					isResource;
 	public boolean 					isConsumable;

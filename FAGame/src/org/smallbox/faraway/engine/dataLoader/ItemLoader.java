@@ -111,6 +111,13 @@ public class ItemLoader {
             if (!item.isUserItem && !item.isStructure && item.cost > 0) {
                 error(item, "Only UserItem and StructureItem can have cost attribute");
             }
+            if (item.receipts != null) {
+                for (ItemInfo.ItemInfoReceipt receipt: item.receipts) {
+                    if (receipt.products != null && receipt.products.size() > 1) {
+                        throw new RuntimeException("Receipt cannot produce multiple items");
+                    }
+                }
+            }
         }
     }
 

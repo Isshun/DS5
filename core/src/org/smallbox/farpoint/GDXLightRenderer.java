@@ -9,17 +9,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
+import org.smallbox.faraway.Color;
 import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.LightRenderer;
 import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.model.item.AreaModel;
+import org.smallbox.faraway.model.item.ParcelModel;
+import org.smallbox.faraway.model.item.ItemModel;
+import org.smallbox.faraway.model.item.ResourceModel;
+import org.smallbox.faraway.model.item.StructureModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +36,9 @@ public class GDXLightRenderer extends LightRenderer {
 
     static final float viewportWidth = 1920;
     static final float viewportHeight = 1200;
-    private final SpriteBatch batch;
+    private final SpriteBatch _batch;
 
-    OrthographicCamera camera;
+    OrthographicCamera _camera;
 
     BitmapFont font;
     TextureRegion textureRegion;
@@ -69,14 +72,14 @@ public class GDXLightRenderer extends LightRenderer {
     private PointLight  _sunLight;
 
     public GDXLightRenderer() {
-//        camera = new OrthographicCamera(viewportWidth, viewportHeight);
-        camera = new OrthographicCamera();
-//        camera.setToOrtho(true);
-        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.position.set(4000, viewportHeight / 2f, 0);
-//        camera.translate(4000, 0);
-        camera.update();
-        this.batch = new SpriteBatch();
+//        _camera = new OrthographicCamera(viewportWidth, viewportHeight);
+        _camera = new OrthographicCamera();
+//        _camera.setToOrtho(true);
+        _camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        _camera.position.set(4000, viewportHeight / 2f, 0);
+//        _camera.translate(4000, 0);
+        _camera.update();
+        _batch = new SpriteBatch();
 //        textureRegion = new TextureRegion(new Texture(Gdx.files.internal("data/items/chest.png")));
 //        bg = new Texture(Gdx.files.internal("data/tilea4mackeditFBU.png"));
         createPhysicsWorld();
@@ -98,42 +101,42 @@ public class GDXLightRenderer extends LightRenderer {
 
     @Override
     public void onDraw(GFXRenderer renderer, int x, int y) {
-        camera.position.set(x, y + viewportHeight / 2f, 0);
-        camera.update();
+        _camera.position.set(x, y + viewportHeight / 2f, 0);
+        _camera.update();
 
-        batch.setProjectionMatrix(camera.combined);
-        batch.disableBlending();
-        batch.begin();
-        {
-            batch.enableBlending();
-            for (Body body: _bodies) {
-                Vector2 position = body.getPosition();
-                float angle = MathUtils.radiansToDegrees * body.getAngle();
-                batch.draw(
-                        textureRegion,
-                        position.x - RADIUS, position.y - RADIUS,
-                        RADIUS, RADIUS,
-                        RADIUS * 2, RADIUS * 2,
-                        1f, 1f,
-                        angle);
-            }
-            for (Body body: balls) {
-                Vector2 position = body.getPosition();
-                float angle = MathUtils.radiansToDegrees * body.getAngle();
-                batch.draw(
-                        textureRegion,
-                        position.x - RADIUS, position.y - RADIUS,
-                        RADIUS, RADIUS,
-                        RADIUS * 2, RADIUS * 2,
-                        1f, 1f,
-                        angle);
-            }
-        }
-        batch.end();
+//        _batch.setProjectionMatrix(_camera.combined);
+//        _batch.disableBlending();
+//        _batch.begin();
+//        {
+//            _batch.enableBlending();
+//            for (Body body: _bodies) {
+//                Vector2 position = body.getPosition();
+//                float angle = MathUtils.radiansToDegrees * body.getAngle();
+//                _batch.draw(
+//                        textureRegion,
+//                        position.x - RADIUS, position.y - RADIUS,
+//                        RADIUS, RADIUS,
+//                        RADIUS * 2, RADIUS * 2,
+//                        1f, 1f,
+//                        angle);
+//            }
+//            for (Body body: balls) {
+//                Vector2 position = body.getPosition();
+//                float angle = MathUtils.radiansToDegrees * body.getAngle();
+//                _batch.draw(
+//                        textureRegion,
+//                        position.x - RADIUS, position.y - RADIUS,
+//                        RADIUS, RADIUS,
+//                        RADIUS * 2, RADIUS * 2,
+//                        1f, 1f,
+//                        angle);
+//            }
+//        }
+//        _batch.end();
 
         /** BOX2D LIGHT STUFF BEGIN */
 //        rayHandler.setBlur(false);
-        rayHandler.setCombinedMatrix(camera);
+        rayHandler.setCombinedMatrix(_camera);
 
 //        if (stepped) rayHandler.update();
         rayHandler.update();
@@ -146,6 +149,11 @@ public class GDXLightRenderer extends LightRenderer {
         createWallObjects();
         createLightObjects();
         initPointLights();
+    }
+
+    @Override
+    public void setSunColor(Color color) {
+        _sunLight.setColor(new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f));
     }
 
     void clearLights() {
@@ -215,7 +223,7 @@ public class GDXLightRenderer extends LightRenderer {
         if (Game.getWorldManager() != null) {
             int width = Game.getWorldManager().getWidth();
             int height = Game.getWorldManager().getHeight();
-            AreaModel[][][] areas = Game.getWorldManager().getAreas();
+            ParcelModel[][][] areas = Game.getWorldManager().getAreas();
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (areas[x][y][0] != null && areas[x][y][0].getItem() != null && areas[x][y][0].getItem().getInfo().light > 0) {
@@ -223,6 +231,13 @@ public class GDXLightRenderer extends LightRenderer {
                         int posY = y * 32 - 0;
                         Body body = createLight(boxBodyDef, def, posX, posY);
                         body.setUserData(areas[x][y][0].getItem().getInfo().light);
+                        balls.add(body);
+                    }
+                    if (areas[x][y][0] != null && areas[x][y][0].getResource() != null && areas[x][y][0].getResource().getInfo().light > 0) {
+                        int posX = x * 32 - 0 - Constant.WINDOW_WIDTH / 2;
+                        int posY = y * 32 - 0;
+                        Body body = createLight(boxBodyDef, def, posX, posY);
+                        body.setUserData(areas[x][y][0].getResource().getInfo().light);
                         balls.add(body);
                     }
                 }
@@ -248,7 +263,7 @@ public class GDXLightRenderer extends LightRenderer {
         if (Game.getWorldManager() != null) {
             int width = Game.getWorldManager().getWidth();
             int height = Game.getWorldManager().getHeight();
-            AreaModel[][][] areas = Game.getWorldManager().getAreas();
+            ParcelModel[][][] areas = Game.getWorldManager().getAreas();
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (areas[x][y][0] != null && areas[x][y][0].getStructure() != null && areas[x][y][0].getStructure().isSolid()) {
@@ -288,4 +303,26 @@ public class GDXLightRenderer extends LightRenderer {
     public Light getSun() {
         return _sunLight;
     }
+
+    @Override
+    public void onAddItem(ItemModel item) {
+        if (item.isLight()) {
+            init();
+        }
+    }
+
+    @Override
+    public void onAddResource(ResourceModel resource) {
+        if (resource.isLight()) {
+            init();
+        }
+    }
+
+    @Override
+    public void onAddStructure(StructureModel structure) {
+        if (structure.isSolid()) {
+            init();
+        }
+    }
+
 }

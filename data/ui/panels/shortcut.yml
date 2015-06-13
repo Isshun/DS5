@@ -143,3 +143,13 @@ entries:
             size: [175, 45]
             align: center
             background: 0x1d5560
+
+        -   type: label
+            id: bt_area
+            text: '[_AREAS]'
+            textsize: 18
+            textcolor: 0x78ffff
+            position: [220, 325]
+            size: [175, 45]
+            align: center
+            background: 0x1d5560

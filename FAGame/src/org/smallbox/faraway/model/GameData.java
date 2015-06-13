@@ -32,7 +32,6 @@ public class GameData implements GameDataListener {
 	public List<PlanetModel> 	planets;
     private long                _lastConfigModified;
     public Map<String, WeatherModel> weathers;
-//	public List<Character> 		characters;
 
 	public GameData() {
         _data = this;

@@ -2,4 +2,4 @@ label: Rubble
 width: 1
 height: 1
 type: item
-light: 0
+isConsumable: true

@@ -9,10 +9,10 @@ public class WorldFinder {
 
 	private int 				_width;
 	private int 				_height;
-	private AreaModel[][][] 	_areas;
+	private ParcelModel[][][] 	_areas;
 	private WorldManager 		_worldManager;
 
-	public WorldFinder(WorldManager worldManager, AreaModel[][][] areas) {
+	public WorldFinder(WorldManager worldManager, ParcelModel[][][] areas) {
 		_areas = areas;
 		_width = worldManager.getWidth();
 		_height = worldManager.getHeight();
@@ -27,7 +27,7 @@ public class WorldFinder {
 		int maxY = Math.max(startY, _height - startY);
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
-				AreaModel area = _worldManager.getArea(startX + offsetX, startY + offsetY);
+				ParcelModel area = _worldManager.getParcel(startX + offsetX, startY + offsetY);
 
 				// Check on non-existing area
 				if (area == null) {
@@ -115,19 +115,19 @@ public class WorldFinder {
 		int maxY = Math.max(startY, _height - startY);
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
-				AreaModel area = _worldManager.getArea(startX + offsetX, startY + offsetY);
+				ParcelModel area = _worldManager.getParcel(startX + offsetX, startY + offsetY);
 				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info) {
 					return area.getConsumable();
 				}
-				area = _worldManager.getArea(startX - offsetX, startY + offsetY);
+				area = _worldManager.getParcel(startX - offsetX, startY + offsetY);
 				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info) {
 					return area.getConsumable();
 				}
-				area = _worldManager.getArea(startX + offsetX, startY - offsetY);
+				area = _worldManager.getParcel(startX + offsetX, startY - offsetY);
 				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info) {
 					return area.getConsumable();
 				}
-				area = _worldManager.getArea(startX - offsetX, startY - offsetY);
+				area = _worldManager.getParcel(startX - offsetX, startY - offsetY);
 				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info) {
 					return area.getConsumable();
 				}

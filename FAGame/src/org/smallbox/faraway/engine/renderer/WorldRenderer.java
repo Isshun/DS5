@@ -4,15 +4,12 @@ import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.manager.WorldManager;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.*;
-import org.smallbox.faraway.model.room.Room;
-import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -77,7 +74,7 @@ public class WorldRenderer implements IRenderer {
 
             for (int x = toX; x > fromX; x--) {
                 for (int y = toY; y > fromY; y--) {
-                    AreaModel area = Game.getWorldManager().getArea(x, y);
+                    ParcelModel area = Game.getWorldManager().getParcel(x, y);
                     if (area != null) {
                         if (GameData.config.render.floor) {
                             refreshFloor(area, x, y);
@@ -110,7 +107,7 @@ public class WorldRenderer implements IRenderer {
         //_layerItem.onDraw(renderer, effect);
     }
 
-    private void refreshResource(AreaModel area, int x, int y) {
+    private void refreshResource(ParcelModel area, int x, int y) {
         ResourceModel resource = area.getResource();
         if (resource != null) {
             SpriteModel sprite = _spriteManager.getResource(resource);
@@ -122,7 +119,7 @@ public class WorldRenderer implements IRenderer {
     }
 
     // TODO: random
-    void	refreshFloor(AreaModel area, int x, int y) {
+    void	refreshFloor(ParcelModel area, int x, int y) {
         StructureModel structure = area.getStructure();
 
         if (structure != null && structure.isFloor()) {
@@ -133,7 +130,7 @@ public class WorldRenderer implements IRenderer {
                 _layerStructure.draw(sprite);
 
                 ResourceModel resource = _worldMap.getResource(x, y);
-                if (resource != null && resource.getMatterSupply() > 0) {
+                if (resource != null) {
                     sprite = _spriteManager.getResource(resource);
                     sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
                     _layerStructure.draw(sprite);
@@ -173,7 +170,7 @@ public class WorldRenderer implements IRenderer {
     }
 
     //TODO: random
-    void	refreshStructure(AreaModel area, int x, int y) {
+    void	refreshStructure(ParcelModel area, int x, int y) {
         int offsetWall = (Constant.TILE_WIDTH / 2 * 3) - Constant.TILE_HEIGHT;
 
         StructureModel structure = area.getStructure();
@@ -334,7 +331,7 @@ public class WorldRenderer implements IRenderer {
         return sprite;
     }
 
-    void	refreshItems(AreaModel area, int x, int y) {
+    void	refreshItems(ParcelModel area, int x, int y) {
         ItemModel item = area.getItem();
         if (item != null && item.getX() == x && item.getY() == y) {
 
@@ -382,7 +379,7 @@ public class WorldRenderer implements IRenderer {
         }
     }
 
-    void	refreshConsumable(AreaModel area, int x, int y) {
+    void	refreshConsumable(ParcelModel area, int x, int y) {
         ConsumableModel consumable = area.getConsumable();
         if (consumable != null) {
 

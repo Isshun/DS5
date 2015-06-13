@@ -67,7 +67,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         // Create app
         GDXLightRenderer lightRenderer = new GDXLightRenderer();
-        application.create(renderer, lightRenderer, new GDXParticleRenderer(lightRenderer), data);
+        application.create(renderer, lightRenderer, new GDXParticleRenderer(), data);
         renderer.setGameEventListener(application);
 
         application.loadGame();

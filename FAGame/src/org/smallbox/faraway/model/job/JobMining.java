@@ -27,7 +27,7 @@ public class JobMining extends JobModel {
 		if (res.getInfo().actions != null) {
 			for (ItemInfo.ItemInfoAction action: res.getInfo().actions) {
 				if ("mine".equals(action.type)) {
-					JobModel job = new JobMining(action, res.getX(), res.getY());
+					JobMining job = new JobMining(action, res.getX(), res.getY());
 					job.setItem(res);
 					return job;
 				}
@@ -87,42 +87,24 @@ public class JobMining extends JobModel {
 			return true;
 		}
 
-//		// Character is full: cancel current job
-//		if (character.getInventoryLeftSpace() <= 0) {
-//			JobManager.getInstance().quit(this, BaseJob.JobAbortReason.NO_LEFT_CARRY);
-//			return true;
-//		}
+        ResourceModel resource = (ResourceModel)_item;
 
-//        if (resource == null || maxValue == 0) {
-//            Log.error("gather: wrong call");
-//            return 0;
-//        }
-//
-        int value = ((ResourceModel)_item).gatherMatter(character.getProfessionScore(ProfessionModel.Type.NONE));
-		if (((ResourceModel)_item).isDepleted()) {
-			Game.getWorldManager().removeResource((ResourceModel)_item);
+        CharacterModel.TalentEntry talent = character.getTalent(CharacterModel.TalentType.MINE);
+        resource.addQuantity(-talent.work());
+        if (!resource.isDepleted()) {
+			Log.debug("Mine progress");
+			return false;
 		}
 
-		Log.debug("mine: " + value);
-
-//		ResourceManager.getInstance().addMatter(value);
-
-        ResourceModel gatheredItem = (ResourceModel)_item;
-
-        if (_character.work(CharacterModel.TalentType.MINE, gatheredItem)) {
-			ServiceManager.getWorldMap().removeResource(gatheredItem);
-            if (_actionInfo.dropRate >= Math.random()) {
-                for (ItemInfo.ItemProductInfo productInfo : _actionInfo.products) {
-                    ServiceManager.getWorldMap().putObject(productInfo.itemInfo, gatheredItem.getX(), gatheredItem.getY(), 0, 100);
-                }
+		// Resource is depleted
+		Log.info("Mine complete");
+		ServiceManager.getWorldMap().removeResource(resource);
+        for (ItemInfo.ItemProductInfo productInfo : _actionInfo.products) {
+            if (productInfo.dropRate > Math.random()) {
+                ServiceManager.getWorldMap().putObject(productInfo.itemInfo, resource.getX(), resource.getY(), 0, 100);
             }
-            JobManager.getInstance().close(this);
-			return true;
-		}
-
-//        for (ItemInfo itemInfo: _actionInfo.productsItem) {
-//            character.addComponent(new UserItem(itemInfo));
-//        }
+        }
+		JobManager.getInstance().close(this);
 
 		return false;
 	}
@@ -134,12 +116,12 @@ public class JobMining extends JobModel {
 
 	@Override
 	public String getLabel() {
-		return "mine " + _item.getLabel();
+		return "Mine " + _item.getLabel();
 	}
 
 	@Override
 	public String getShortLabel() {
-		return "mine " + _item.getLabel();
+		return "Mine " + _item.getLabel();
 	}
 
     @Override

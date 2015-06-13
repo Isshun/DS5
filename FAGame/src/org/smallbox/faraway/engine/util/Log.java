@@ -51,4 +51,12 @@ public class Log {
 		}
 	}
 
+	public static String getPrefix(int level) {
+		if (level == LEVEL_DEBUG) return "[D] ";
+		if (level == LEVEL_INFO) return "[I] ";
+		if (level == LEVEL_WARNING) return "[W] ";
+		if (level == LEVEL_ERROR) return "[E] ";
+		if (level == LEVEL_FATAL) return "[F] ";
+		return null;
+	}
 }

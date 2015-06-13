@@ -6,15 +6,17 @@ import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemFilter;
 import org.smallbox.faraway.model.item.ItemModel;
-import org.smallbox.faraway.model.item.AreaModel;
+import org.smallbox.faraway.model.item.ParcelModel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Room {
+public class RoomModel {
 	private boolean _isExterior;
+	private double 	_temperature;
+	private int 	_lightValue;
 
 	public void setExterior(boolean isExterior) {
 		_isExterior = isExterior;
@@ -22,6 +24,26 @@ public class Room {
 
 	public boolean isExterior() {
 		return _isExterior;
+	}
+
+	public double getTemperature() {
+		return _temperature;
+	}
+
+	public int getSize() {
+		return _areas.size();
+	}
+
+	public void setTemperature(double temperature) {
+		_temperature = temperature;
+	}
+
+	public void setLight(int lightValue) {
+		_lightValue = lightValue;
+	}
+
+	public int getLight() {
+		return _lightValue;
 	}
 
 	public enum RoomType {
@@ -47,19 +69,19 @@ public class Room {
 	private int 			_maxX;
 	private boolean 		_isCommon;
 	private Set<CharacterModel> 	_occupants;
-	protected List<AreaModel> 	_areas;
+	protected List<ParcelModel> 	_areas;
 
-	public Room(int id, RoomType type) {
+	public RoomModel(int id, RoomType type) {
 		init(id, type);
 	}
 
-	public Room(RoomType type) {
+	public RoomModel(RoomType type) {
 		init(Utils.getUUID(), type);
 	}
 
 	private void init(int id, RoomType type) {
 		_color = new Color((int)(Math.random() * 200), (int)(Math.random() * 200), (int)(Math.random() * 200));
-		_areas = new ArrayList<AreaModel>();
+		_areas = new ArrayList<ParcelModel>();
 		_id = id;
 		_isCommon = true;
 		_maxX = Integer.MIN_VALUE;
@@ -121,7 +143,7 @@ public class Room {
 	//		int h = ServiceManager.getWorldMap().getHeight();
 	//		for (int i = 0; i < w; i++) {
 	//			for (int j = 0; j < h; j++) {
-	//				WorldArea item = ServiceManager.getWorldMap().getArea(i, j);
+	//				WorldArea item = ServiceManager.getWorldMap().getParcel(i, j);
 	//				if (item != null && item.getRoomId() == _id) {
 	//					item.setZoneId(zoneId);
 	//				}
@@ -130,7 +152,7 @@ public class Room {
 	//	}
 
 	//	static int	checkZone(int x, int y, int id) {
-	//	  WorldArea item = ServiceManager.getWorldMap().getArea(x, y);
+	//	  WorldArea item = ServiceManager.getWorldMap().getParcel(x, y);
 	//
 	//	  // Out of bound or empty
 	//	  if (item == null) {
@@ -182,7 +204,7 @@ public class Room {
 	//	}
 
 	//	public static void	setZone(int x, int y, int roomId, int zoneId) {
-	//	  WorldArea item = ServiceManager.getWorldMap().getArea(x, y);
+	//	  WorldArea item = ServiceManager.getWorldMap().getParcel(x, y);
 	//
 	//	  // Out of bound or empty
 	//	  if (item == null) {
@@ -248,11 +270,11 @@ public class Room {
 		}
 	}
 
-	public void addArea(AreaModel area) {
+	public void addArea(ParcelModel area) {
 		_areas.add(area);
 	}
 
-	public List<AreaModel> getAreas() {
+	public List<ParcelModel> getAreas() {
 		return _areas;
 	}
 
@@ -282,7 +304,7 @@ public class Room {
 	 * @return
 	 */
 	public MapObjectModel find(ItemFilter filter) {
-		for (AreaModel area: _areas) {
+		for (ParcelModel area: _areas) {
 			ItemModel item = area.getItem();
 			if (item != null && item.matchFilter(filter)) {
 				return item;
@@ -291,12 +313,12 @@ public class Room {
 		return null;
 	}
 
-	public void removeArea(AreaModel area) {
+	public void removeArea(ParcelModel area) {
 		_areas.remove(area);
 	}
 
 	public void removeArea(int x, int y) {
-		for (AreaModel area: _areas) {
+		for (ParcelModel area: _areas) {
 			if (area.getX() == x && area.getY() == y) {
 				removeArea(area);
 				return;
@@ -308,7 +330,7 @@ public class Room {
 		_x = Integer.MAX_VALUE;
 		_y = Integer.MAX_VALUE;
 		
-		for (AreaModel area: _areas) {
+		for (ParcelModel area: _areas) {
 			if (area.getX() <= _x  && area.getY() <= _y) {
 				_x = area.getX();
 				_y = area.getY();

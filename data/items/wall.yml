@@ -5,4 +5,4 @@ height: 1
 type: structure
 isWalkable: false
 maxHealth: 250
-cost: 1
+cost: 100

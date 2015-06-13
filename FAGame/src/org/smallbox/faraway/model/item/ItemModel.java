@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemModel extends MapObjectModel {
-	private List<ConsumableModel> _components = new ArrayList<>();
-	private List<ConsumableModel> _crafts = new ArrayList<>();
+	private List<ConsumableModel> 	_components = new ArrayList<>();
+	private List<ConsumableModel> 	_crafts = new ArrayList<>();
+
+	private int 					_targetTemperature = 21;
 
 	public ItemModel(ItemInfo info, int id) { super(info, id); }
 
@@ -47,5 +49,13 @@ public class ItemModel extends MapObjectModel {
 
 	public List<ConsumableModel> getCrafts() {
 		return _crafts;
+	}
+
+	public int getTargetTemperature() {
+		return _targetTemperature;
+	}
+
+	public void setTargetTemperature(int targetTemperature) {
+		_targetTemperature = targetTemperature;
 	}
 }

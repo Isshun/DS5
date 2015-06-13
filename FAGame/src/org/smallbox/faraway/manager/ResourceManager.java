@@ -41,45 +41,6 @@ public class ResourceManager {
 		return _self;
 	}
 
-	public Message build(MapObjectModel item) {
-		if (_matter.value == 0) {
-			return Message.NO_MATTER;
-		}
-
-		MainRenderer.getInstance().invalidate(item.getX(), item.getY());
-
-		if (item.isComplete() == false) {
-			_matter.value--;
-			item.setMatterSupply(item.getMatterSupply() + 1);
-		}
-
-		// BUILD_COMPLETE
-		if (item.isComplete()) {
-
-			// Remove power use
-			if (item.getPower() != 0) {
-				item.setPowerSupply(_power.value >= item.getPower() ? item.getPower() : _power.value);
-				_power.value -= item.getPower();
-			}
-
-//			// O2
-//			if (item.getInfo().cost != null) {
-//				//_o2Supply.value -= item.getInfo().cost.o2;
-//			}
-
-			if (item.getLight() > 0) {
-				((MainRenderer)MainRenderer.getInstance()).refreshLight(item);
-			}
-			
-			return Message.BUILD_COMPLETE;
-		}
-
-		// BUILD_PROGRESS
-		else {
-			return Message.BUILD_PROGRESS;
-		}
-	}
-	
 	// TODO
 	public void refreshWater() {
 //		WorldMap worldmap = ServiceManager.getWorldMap();

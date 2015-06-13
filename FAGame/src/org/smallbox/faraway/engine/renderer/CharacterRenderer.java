@@ -82,6 +82,12 @@ public class CharacterRenderer implements IRenderer {
 				sprite.setPosition(posX - 2, posY - 2);
 				renderer.draw(sprite, effect);
 			}
+
+			if (c.isSleeping()) {
+				SpriteModel sprite = SpriteManager.getInstance().getIcon("data/res/ic_sleep.png");
+				sprite.setPosition(posX - 2, posY - 2);
+				renderer.draw(sprite, effect);
+			}
 		}
 	}
 

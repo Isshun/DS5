@@ -6,19 +6,20 @@ import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.MapObjectModel;
 
-public class JobDestroy extends JobModel {
+public class JobDump extends JobModel {
 
-	private JobDestroy(int x, int y) {
+	private JobDump(int x, int y) {
 		super(null, x, y);
 	}
 
-	public static JobModel create(MapObjectModel item) {
-		if (item == null) {
+	public static JobModel create(MapObjectModel objectModel) {
+		if (objectModel == null) {
 			return null;
 		}
 		
-		JobModel job = new JobDestroy(item.getX(), item.getY());
-		job.setItem(item);
+		JobModel job = new JobDump(objectModel.getX(), objectModel.getY());
+		job.setItem(objectModel);
+		job.setCost(objectModel.getInfo().cost);
 		return job;
 	}
 
@@ -31,7 +32,7 @@ public class JobDestroy extends JobModel {
 		}
 		
 		// Item is no longer exists
-		if (_item != ServiceManager.getWorldMap().getItem(_item.getX(), _item.getY()) && _item != ServiceManager.getWorldMap().getStructure(_item.getX(), _item.getY())) {
+		if (_item != ServiceManager.getWorldMap().getItem(_posX, _posY) && _item != ServiceManager.getWorldMap().getStructure(_posX, _posY)) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}
@@ -41,7 +42,12 @@ public class JobDestroy extends JobModel {
 
 	@Override
 	public boolean action(CharacterModel character) {
-		ResourceManager.getInstance().addMatter(1);
+        _item.addProgress(-character.getTalent(CharacterModel.TalentType.BUILD).work());
+        _progress = _cost - _item.getProgress();
+		if (!_item.isDump()) {
+			return false;
+		}
+
 		ServiceManager.getWorldMap().destroy(_item);
 		JobManager.getInstance().close(this);
 		return true;
@@ -64,11 +70,12 @@ public class JobDestroy extends JobModel {
 
 	@Override
 	public String getLabel() {
-		return "destroy " + _item.getLabel();
+		return "Dump " + _item.getLabel();
 	}
 
 	@Override
 	public String getShortLabel() {
-		return "destroy " + _item.getLabel();
+		return "Dump " + _item.getLabel();
 	}
+
 }

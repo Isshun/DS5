@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 01/06/2015.
  */
-public class PanelInfoItem extends BaseRightPanel {
+public class PanelInfoItem extends BaseInfoRightPanel {
     private ItemModel _item;
     private ItemInfo    _itemInfo;
     private ViewFactory _viewFactory;
@@ -29,6 +29,7 @@ public class PanelInfoItem extends BaseRightPanel {
     private FrameLayout _menuAddCraft;
     private FrameLayout _menuAddCraftEntries;
     private View        _btAddCraft;
+    private FrameLayout _frameTmp;
 
     public PanelInfoItem(UserInterface.Mode mode, GameEventListener.Key shortcut) {
         super(mode, shortcut, "data/ui/panels/info_item.yml");
@@ -41,6 +42,10 @@ public class PanelInfoItem extends BaseRightPanel {
 
     @Override
     public void onLayoutLoaded(LayoutModel layout) {
+        super.onLayoutLoaded(layout);
+
+        _frameTmp = (FrameLayout) findById("frame_tmp");
+        _frameTmp.setVisible(false);
         _frameCraft = (FrameLayout) findById("frame_craft");
         _frameCraft.setVisible(false);
         _frameCraftEntries = (FrameLayout) findById("frame_craft_entries");
@@ -65,6 +70,8 @@ public class PanelInfoItem extends BaseRightPanel {
     }
 
     public void select(ItemModel item) {
+        super.select(item.getArea());
+
         _item = item;
         _itemInfo = item.getInfo();
         select(item.getInfo());
@@ -78,6 +85,18 @@ public class PanelInfoItem extends BaseRightPanel {
             ((TextView)findById("lb_crafts")).setString("Crafts: " + String.join(", ", _item.getCrafts().stream().map(ConsumableModel::getFullLabel).collect(Collectors.toList())));
         }
 
+        // Temperature
+        if (_itemInfo.hasTemperatureEffect()) {
+            _frameTmp.setVisible(true);
+            ((TextView)findById("lb_tmp_target")).setString("Targeted: " + _item.getTargetTemperature());
+            ((TextView)findById("lb_potency")).setString("Potency: " + _item.getInfo().effects.heatPotency);
+            findById("bt_tmp_add").setOnClickListener(view -> _item.setTargetTemperature(_item.getTargetTemperature() + 1));
+            findById("bt_tmp_sub").setOnClickListener(view -> _item.setTargetTemperature(_item.getTargetTemperature() - 1));
+        } else {
+            _frameTmp.setVisible(false);
+        }
+
+        // Craft actions
         if (_itemInfo.hasCraftAction()) {
             _frameCraft.setVisible(true);
             _frameCraftEntries.clearAllViews();

@@ -1,8 +1,8 @@
 package org.smallbox.faraway.model.item;
 
-import org.smallbox.faraway.model.room.Room;
+import org.smallbox.faraway.model.room.RoomModel;
 
-public class AreaModel {
+public class ParcelModel {
 	private ItemModel _item;
 	private ConsumableModel _consumable;
 	private StructureModel _structure;
@@ -13,11 +13,11 @@ public class AreaModel {
 	private double 			_light;
 	private int 			_lightPass;
 	private int 			_z;
-	private Room 			_room;
+	private RoomModel _room;
 	private boolean 		_isStorage;
 	private int				_lightSource;
 
-	public AreaModel(int x, int y, int z) {
+	public ParcelModel(int x, int y, int z) {
 		_oxygen = (int) (Math.random() % 100);
 		_light = 0;
 		_x = x;
@@ -31,7 +31,7 @@ public class AreaModel {
 	public void				setOxygen(int oxygen) { _oxygen = oxygen; }
 	public void 			setLight(double value) { _light = value; }
 	public void 			setLightPass(int pass) { _lightPass = pass; }
-	public void 			setRoom(Room room) { _room = room; }
+	public void 			setRoom(RoomModel room) { _room = room; }
 	public void 			setStorage(boolean isStorage) { _isStorage = isStorage; }
 
 	public ItemModel getItem() { return _item; }
@@ -43,7 +43,7 @@ public class AreaModel {
 	public int				getZ() { return _z; }
 	public double 			getLight() { return _light; }
 	public int 				getLightPass() { return _lightPass; }
-	public Room				getRoom() { return _room; }
+	public RoomModel getRoom() { return _room; }
 	public boolean			isStorage() { return _isStorage; }
 	public boolean			hasLightSource() { return _lightSource > 0; }
 	public int				getLightSource() { return _lightSource; }

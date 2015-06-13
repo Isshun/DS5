@@ -1,78 +1,138 @@
 entries:
-
-    -   type: label
-        id: lb_name
-        textsize: 24
-        position: [24, 24]
-
-    -   type: label
-        id: lb_id
-        textsize: 14
-        position: [280, 28]
-
-    -   type: label
-        id: lb_durability
-        text: durability
-        textsize: 14
-        position: [24, 58]
-
-    -   type: label
-        id: lb_matter
-        text: matter
-        textsize: 14
-        position: [24, 80]
-
-    -   type: label
-        id: lb_components
-        text: components
-        textsize: 14
-        position: [24, 100]
-
-    -   type: label
-        id: lb_crafts
-        text: crafts
-        textsize: 14
+       
+    -   type: frame
+        position: [24, 10]
+        size: [370, 1]
+        background: 0x888888
+       
+    -   type: frame
+        id: frame_room_info
+        position: [0, 10]
+       
+    -   type: frame
         position: [24, 120]
-
-    -   type: label
-        id: lb_pos
-        text: pos
-        textsize: 14
-        position: [280, 46]
+        size: [370, 1]
+        background: 0x888888
 
     -   type: frame
-        id: frame_craft
-        position: [0, 200]
+        id: frame_item_info
+        position: [0, 124]
         entries:
-        
-        -   type: label
-            text: Crafts
-            position: [24, 0]
-            textsize: 20
-
-        -   type: frame
-            background: 0x1d5560
-            position: [359, 0]
-            size: [33, 24]
 
         -   type: label
-            id: bt_add_craft
-            text: "[+]"
-            position: [361, 4]
-            textsize: 18
+            id: lb_name
+            textsize: 24
+            position: [24, 24]
+
+        -   type: label
+            id: lb_id
+            textsize: 14
+            position: [280, 28]
+
+        -   type: label
+            id: lb_durability
+            text: durability
+            textsize: 14
+            position: [24, 58]
+
+        -   type: label
+            id: lb_matter
+            text: matter
+            textsize: 14
+            position: [24, 80]
+
+        -   type: label
+            id: lb_components
+            text: components
+            textsize: 14
+            position: [24, 100]
+
+        -   type: label
+            id: lb_crafts
+            text: crafts
+            textsize: 14
+            position: [24, 120]
+
+        -   type: label
+            id: lb_pos
+            text: pos
+            textsize: 14
+            position: [280, 46]
 
         -   type: frame
-            id: frame_craft_entries
-            position: [0, 20]
+            id: frame_tmp
+            position: [0, 200]
             entries:
-        
+
+            -   type: label
+                text: Temperature
+                textsize: 20
+                position: [24, 0]
+
+            -   type: label
+                id: lb_tmp_target
+                text: target
+                textsize: 14
+                position: [24, 30]
+
+            -   type: label
+                id: lb_potency
+                text: potency
+                textsize: 14
+                position: [300, 30]
+
+            -   type: label
+                id: bt_tmp_add
+                text: add
+                textsize: 14
+                position: [24, 70]
+                size: [100, 30]
+                background: 0x55aa88
+                align: center
+
+            -   type: label
+                id: bt_tmp_sub
+                text: sub
+                textsize: 14
+                position: [200, 70]
+                size: [100, 30]
+                background: 0x55aa88
+                align: center
 
         -   type: frame
-            id: menu_add_craft
-            position: [172, 32]
+            id: frame_craft
+            position: [0, 180]
             entries:
+            
+            -   type: label
+                text: Crafts
+                style: bold
+                position: [24, 0]
+                textsize: 20
 
             -   type: frame
-                id: menu_add_craft_entries
-                position: [0, 0]
-                size: [100, 100]
+                background: 0x1d5560
+                position: [359, 0]
+                size: [33, 24]
+
+            -   type: label
+                id: bt_add_craft
+                text: "[+]"
+                position: [361, 4]
+                textsize: 18
+
+            -   type: frame
+                id: frame_craft_entries
+                position: [4, 0]
+                entries:
+            
+
+            -   type: frame
+                id: menu_add_craft
+                position: [172, 32]
+                entries:
+
+                -   type: frame
+                    id: menu_add_craft_entries
+                    position: [0, 0]
+                    size: [100, 100]

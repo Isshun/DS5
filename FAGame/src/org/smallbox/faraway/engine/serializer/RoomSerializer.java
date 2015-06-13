@@ -112,7 +112,7 @@
 //
 //			// Set areas
 //			for (RoomSaveArea area: roomSave.areas) {
-//				room.addArea(worldManager.getArea(area.x, area.y));
+//				room.addArea(worldManager.getParcel(area.x, area.y));
 //			}
 //
 //			// Refresh position

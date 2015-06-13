@@ -167,7 +167,7 @@ public class CharacterNeeds {
 
 
 		// // Oxygen
-		// WorldArea* area = WorldMap.Type.getInstance()->getArea(_x, _y);
+		// WorldArea* area = WorldMap.Type.getInstance()->getParcel(_x, _y);
 		// if (area != NULL) {
 		// 	if (area->getOxygen() > _oxygen) {
 		// 	  _oxygen = min(area->getOxygen(), _oxygen + 5);

@@ -10,7 +10,7 @@ import org.smallbox.faraway.ui.UserInterface;
 
 public class PanelPlan extends BaseRightPanel {
 	public enum Planning {
-		GATHER, MINING, DUMP, PICK, NONE
+		GATHER, MINING, DUMP, PICK, NONE, HAUL
 	}
 
 	public PanelPlan(UserInterface.Mode mode, GameEventListener.Key shortcut) {
@@ -23,6 +23,7 @@ public class PanelPlan extends BaseRightPanel {
 		findById("bt_gather").setOnClickListener(view -> select(view, Planning.GATHER));
 		findById("bt_dump").setOnClickListener(view -> select(view, Planning.DUMP));
 		findById("bt_cut").setOnClickListener(view -> select(view, Planning.NONE));
+		findById("bt_haul").setOnClickListener(view -> select(view, Planning.HAUL));
 	}
 
 	private void select(View view, Planning planning) {

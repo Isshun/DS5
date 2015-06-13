@@ -12,13 +12,9 @@ import org.smallbox.faraway.manager.PathManager;
 import org.smallbox.faraway.model.Movable;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterRelation.Relation;
-import org.smallbox.faraway.model.check.*;
-import org.smallbox.faraway.model.check.character.CheckCharacterExhausted;
-import org.smallbox.faraway.model.check.character.CheckCharacterHungry;
-import org.smallbox.faraway.model.check.old.CharacterCheck;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.job.JobModel;
-import org.smallbox.faraway.model.room.Room;
+import org.smallbox.faraway.model.room.RoomModel;
 import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.ArrayList;
@@ -28,22 +24,28 @@ import java.util.Map;
 
 public class CharacterModel extends Movable {
 	private ConsumableModel _inventory;
+	private OnMoveListener 	_moveListener;
 //	public boolean hasInInventory(ConsumableModel consumable) {
 //		return _inventory.contains(consumable);
 //	}
 
-	public void moveTo(JobModel job, int posX, int posY, OnMoveListener onMoveListener) {
-		_toX = posX;
-		_toY = posY;
+	public void moveTo(JobModel job, int toX, int toY, OnMoveListener onMoveListener) {
+		_toX = toX;
+		_toY = toY;
         _job = job;
-		if (_posX != _toX || _posY != _toY) {
-			PathManager.getInstance().getPathAsync(onMoveListener, this, _job, _toX, _toY);
+		_moveListener = onMoveListener;
+		if (_posX != toX || _posY != toY) {
+			Log.debug("move to: " + toX + "x" + toY);
+			PathManager.getInstance().getPathAsync(onMoveListener, this, job, toX, toY);
+		} else {
+			if (onMoveListener != null) {
+				onMoveListener.onReach(job, this);
+			}
 		}
-		Log.debug("move to: " + _toX + "x" + _toY);
 	}
 
-	public AreaModel getArea() {
-		return Game.getWorldManager().getArea(_posX, _posY);
+	public ParcelModel getArea() {
+		return Game.getWorldManager().getParcel(_posX, _posY);
 	}
 
 	public void setInventory(ConsumableModel consumable) {
@@ -61,7 +63,8 @@ public class CharacterModel extends Movable {
         GATHER,
         MINE,
         HAUL,
-        BUILD, CLEAN
+        BUILD,
+		CLEAN
     }
 
     public static class TalentEntry {
@@ -95,13 +98,14 @@ public class CharacterModel extends Movable {
 	private static final Color COLOR_MALE = new Color(110, 200, 255);
 
 	private final TalentEntry[] TALENTS = new TalentEntry[] {
-			new TalentEntry(TalentType.HEAL, "Heal"),
-			new TalentEntry(TalentType.CRAFT, "Craft"),
-			new TalentEntry(TalentType.COOK, "Cook"),
-			new TalentEntry(TalentType.GATHER, "Gather"),
-			new TalentEntry(TalentType.MINE, "Mine"),
-			new TalentEntry(TalentType.HAUL, "Haul"),
-			new TalentEntry(TalentType.CLEAN, "Clean")
+			new TalentEntry(TalentType.HEAL, 	"Heal"),
+			new TalentEntry(TalentType.CRAFT, 	"Craft"),
+			new TalentEntry(TalentType.COOK, 	"Cook"),
+			new TalentEntry(TalentType.GATHER, 	"Gather"),
+			new TalentEntry(TalentType.MINE, 	"Mine"),
+			new TalentEntry(TalentType.HAUL, 	"Haul"),
+			new TalentEntry(TalentType.CLEAN, 	"Clean"),
+			new TalentEntry(TalentType.BUILD, 	"Build")
 	};
 
 	CharacterNeeds					_needs;
@@ -123,7 +127,7 @@ public class CharacterModel extends Movable {
 	private boolean 				_isGay;
 	private String 					_lastName;
 	private String 					_birthName;
-	private Room					_quarter;
+	private RoomModel _quarter;
 	private boolean 				_isDead;
 	private boolean 				_needRefresh;
 
@@ -479,6 +483,11 @@ public class CharacterModel extends Movable {
 		} else {
 			if (_path != null) {
 				Log.debug("Character #" + _id + ": reached");
+
+				if (_moveListener != null) {
+					_moveListener.onReach(_job, this);
+				}
+
 				_steps = 0;
 				_path = null;
 				_node = null;
@@ -521,11 +530,11 @@ public class CharacterModel extends Movable {
 		return _relations;
 	}
 
-	public Room getQuarter() {
+	public RoomModel getQuarter() {
 		return _quarter;
 	}
 
-	public void setQuarter(Room quarter) {
+	public void setQuarter(RoomModel quarter) {
 		_quarter = quarter;
 	}
 
@@ -671,16 +680,4 @@ public class CharacterModel extends Movable {
     public TalentEntry getTalent(TalentType type) {
         return _talentsMap.get(type);
     }
-
-    public double work(TalentType talent) {
-        _needRefresh = true;
-        return _talentsMap.get(talent).work();
-    }
-
-	public boolean work(TalentType talent, MapObjectModel item) {
-		_needRefresh = true;
-		item.setMatterSupply(item.getMatterSupply() - _talentsMap.get(talent).work());
-		return item.getMatterSupply() <= 0;
-	}
-
 }

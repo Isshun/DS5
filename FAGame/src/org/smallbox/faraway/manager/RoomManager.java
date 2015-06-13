@@ -2,38 +2,38 @@
 package org.smallbox.faraway.manager;
 
 import org.smallbox.faraway.Game;
+import org.smallbox.faraway.WorldObserver;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.character.CharacterRelation;
 import org.smallbox.faraway.model.character.CharacterRelation.Relation;
-import org.smallbox.faraway.model.item.StructureModel;
-import org.smallbox.faraway.model.item.AreaModel;
+import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.room.GardenRoom;
 import org.smallbox.faraway.model.room.QuarterRoom;
-import org.smallbox.faraway.model.room.Room;
-import org.smallbox.faraway.model.room.Room.RoomType;
+import org.smallbox.faraway.model.room.RoomModel;
+import org.smallbox.faraway.model.room.RoomModel.RoomType;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class RoomManager {
-    private Room[][] 			_rooms;
-    private List<Room>			_roomList;
-    private Room _currentDiffuseRoom;
-    private int _width;
-    private int _height;
-    private AreaModel[][][] _areas;
+public class RoomManager implements WorldObserver {
+    private RoomModel[][] 			_rooms;
+    private List<RoomModel>			_roomList;
+    private RoomModel _currentDiffuseRoom;
+    private int                 _width;
+    private int                 _height;
+    private ParcelModel[][][]     _areas;
 
     public RoomManager() {
-        _rooms = new Room[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
-        _roomList = new ArrayList<Room>();
+        _rooms = new RoomModel[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
+        _roomList = new ArrayList<>();
     }
 
-    public void add(Room room) {
+    public void add(RoomModel room) {
         if (room == null) {
             Log.error("room cannot be null");
             return;
@@ -46,12 +46,12 @@ public class RoomManager {
 
         _roomList.add(room);
 
-        for (AreaModel area: room.getAreas()) {
+        for (ParcelModel area: room.getAreas()) {
             _rooms[area.getX()][area.getY()] = room;
         }
     }
 
-    public Room putRoom(int startX, int startY, int fromX, int fromY, int toX, int toY, RoomType type, CharacterModel owner) {
+    public RoomModel putRoom(int startX, int startY, int fromX, int fromY, int toX, int toY, RoomType type, CharacterModel owner) {
         Log.info("RoomManager: put room from " + fromX + "x" + fromY + " to " + toX + "x" + toY);
 
         if (type == null) {
@@ -59,8 +59,8 @@ public class RoomManager {
             return null;
         }
 
-        Room existingRoom = null;
-        Room tempRoom = null;
+        RoomModel existingRoom = null;
+        RoomModel tempRoom = null;
         int existingRoomPosX = 0;
         int existingRoomPosY = 0;
 
@@ -98,7 +98,7 @@ public class RoomManager {
                     StructureModel struct = ServiceManager.getWorldMap().getStructure(x, y);
                     if (struct == null || struct.roomCanBeSet()) {
                         if (_rooms[x][y] == null || _rooms[x][y].getType() != tempRoom.getType()) {
-                            AreaModel area = ServiceManager.getWorldMap().getArea(x, y);
+                            ParcelModel area = ServiceManager.getWorldMap().getParcel(x, y);
                             area.setRoom(tempRoom);
                             tempRoom.addArea(area);
                             _rooms[x][y] = tempRoom;
@@ -118,9 +118,9 @@ public class RoomManager {
         int leftRoom = Integer.MAX_VALUE;
         while (tempRoom.getAreas().size() != 0 && tempRoom.getAreas().size() < leftRoom) {
             leftRoom = tempRoom.getAreas().size();
-            Room newRoom = createRoom(tempRoom.getType(), owner);
+            RoomModel newRoom = createRoom(tempRoom.getType(), owner);
             _roomList.add(newRoom);
-            AreaModel area = tempRoom.getAreas().get(0);
+            ParcelModel area = tempRoom.getAreas().get(0);
             replaceArea(newRoom, tempRoom, area.getX(), area.getY());
             _currentDiffuseRoom = newRoom;
             diffuseRoom(tempRoom, area.getX(), area.getY());
@@ -137,15 +137,15 @@ public class RoomManager {
         return tempRoom;
     }
 
-    private Room createRoom(RoomType type, CharacterModel owner) {
-        Room room = null;
+    private RoomModel createRoom(RoomType type, CharacterModel owner) {
+        RoomModel room = null;
 
         if (type == RoomType.GARDEN) {
             room = new GardenRoom();
         } else if (type == RoomType.QUARTER) {
             room = new QuarterRoom();
         } else {
-            room = new Room(type);
+            room = new RoomModel(type);
         }
         room.setOwner(owner);
         room.refreshPosition();
@@ -153,14 +153,14 @@ public class RoomManager {
         return room;
     }
 
-    private void diffuseRoom(Room tempRoom, int x, int y) {
-        Room neighboorRoom = getRoom(x+1, y);
+    private void diffuseRoom(RoomModel tempRoom, int x, int y) {
+        RoomModel neighboorRoom = getRoom(x+1, y);
 
         // If neighboorRoom IS NOT tempRoom AND IS NOT _currentDiffuseRoom, it's an old existing room
         // so we replace all room previously set to _currentDiffuseRoom by this new room
         if (neighboorRoom != null && neighboorRoom != tempRoom && neighboorRoom != _currentDiffuseRoom) {
-            List<AreaModel> areasCopy = new ArrayList<AreaModel>(_currentDiffuseRoom.getAreas());
-            for (AreaModel area: areasCopy) {
+            List<ParcelModel> areasCopy = new ArrayList<ParcelModel>(_currentDiffuseRoom.getAreas());
+            for (ParcelModel area: areasCopy) {
                 replaceArea(neighboorRoom, _currentDiffuseRoom, area.getX(), area.getY());
             }
             _currentDiffuseRoom = neighboorRoom;
@@ -188,28 +188,28 @@ public class RoomManager {
         }
     }
 
-    private void replaceArea(Room room, Room neighboorRoom, int x, int y) {
-        AreaModel area = ServiceManager.getWorldMap().getArea(x, y);
+    private void replaceArea(RoomModel room, RoomModel neighboorRoom, int x, int y) {
+        ParcelModel area = ServiceManager.getWorldMap().getParcel(x, y);
         room.addArea(area);
         neighboorRoom.removeArea(area);
         _rooms[x][y] = room;
     }
 
-    private Room getRoom(int x, int y) {
+    private RoomModel getRoom(int x, int y) {
         if (x >= 0 && x < Constant.WORLD_WIDTH && y >= 0 && y < Constant.WORLD_HEIGHT) {
             return _rooms[x][y];
         }
         return null;
     }
 
-    public Room get(int x, int y) {
+    public RoomModel get(int x, int y) {
         if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
             return _rooms[x][y];
         }
         return null;
     }
 
-    public Room getNearFreeStorage(int fromX, int fromY) {
+    public RoomModel getNearFreeStorage(int fromX, int fromY) {
         for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
             for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
                 if (hasRoomTypeAtPos(RoomType.STORAGE, fromX + i, fromY + j)) return _rooms[fromX + i][fromY + j];
@@ -232,7 +232,7 @@ public class RoomManager {
     }
 
     public void removeRoom(int fromX, int fromY, int toX, int toY) {
-        Set<Room> updatedRooms = new HashSet<Room>();
+        Set<RoomModel> updatedRooms = new HashSet<RoomModel>();
         boolean hasGarden = false;
 
         // Set room for each area
@@ -257,13 +257,13 @@ public class RoomManager {
         }
 
         // Refresh start position
-        for (Room room: _roomList) {
+        for (RoomModel room: _roomList) {
             room.refreshPosition();
         }
 
         // Remove non existing room
-        List<Room> toRemove = new ArrayList<Room>();
-        for (Room room: _roomList) {
+        List<RoomModel> toRemove = new ArrayList<RoomModel>();
+        for (RoomModel room: _roomList) {
             if (room.getAreas().size() == 0) {
                 toRemove.add(room);
             }
@@ -276,18 +276,18 @@ public class RoomManager {
         }
     }
 
-    public Room[][] getRooms() {
+    public RoomModel[][] getRooms() {
         return _rooms;
     }
 
-    public List<Room> getRoomList() {
+    public List<RoomModel> getRoomList() {
         return _roomList;
     }
 
-    public Room getNeerRoom(int x, int y, RoomType type) {
+    public RoomModel getNeerRoom(int x, int y, RoomType type) {
         int bestDistance = Integer.MAX_VALUE;
-        Room bestRoom = null;
-        for (Room room: _roomList) {
+        RoomModel bestRoom = null;
+        for (RoomModel room: _roomList) {
             if (room.isType(type)) {
                 int distance = Math.abs(room.getX() - x) + Math.abs(room.getY() - y);
                 if (distance < bestDistance) {
@@ -299,7 +299,7 @@ public class RoomManager {
         return bestRoom;
     }
 
-    public Room take(CharacterModel character, RoomType type) {
+    public RoomModel take(CharacterModel character, RoomType type) {
         if (character.getQuarter() != null) {
             return character.getQuarter();
         }
@@ -309,7 +309,7 @@ public class RoomManager {
         for (CharacterRelation relation: relations) {
 
             // Check if relation have there own quarters
-            Room relationQuarter = relation.getSecond().getQuarter();
+            RoomModel relationQuarter = relation.getSecond().getQuarter();
             if (relationQuarter != null) {
 
                 // Live in parent's quarters
@@ -335,7 +335,7 @@ public class RoomManager {
             }
         }
 
-        for (Room room: _roomList) {
+        for (RoomModel room: _roomList) {
             if (room.isType(type) && room.getOwner() == null) {
                 room.setOwner(character);
                 room.addOccupant(character);
@@ -348,7 +348,7 @@ public class RoomManager {
     }
 
     public void removeFromRooms(CharacterModel character) {
-        for (Room room: _roomList) {
+        for (RoomModel room: _roomList) {
             if (room.getOccupants().contains(character)) {
                 room.removeOccupant(character);
             }
@@ -356,7 +356,7 @@ public class RoomManager {
     }
 
     public void update() {
-        for (Room room: _roomList) {
+        for (RoomModel room: _roomList) {
             room.update();
         }
     }
@@ -377,11 +377,19 @@ public class RoomManager {
             newRoomFound = false;
             for (int x = 0; x < _width; x++) {
                 for (int y = 0; y < _height; y++) {
-                    AreaModel area = _areas[x][y][0];
-                    if (area.getRoom() == null && area.getStructure() != null && (area.getStructure().isFloor() || area.getStructure().isGround())) {
+                    ParcelModel area = _areas[x][y][0];
+                    boolean isPassable = true;
+                    if (area.getStructure() != null && (area.getStructure().isSolid() || area.getStructure().isDoor())) {
+                        isPassable = false;
+                    }
+                    if (area.getResource() != null && area.getResource().isSolid()) {
+                        isPassable = false;
+                    }
+                    if (area.getRoom() == null && isPassable) {
                         newRoomFound = true;
-                        Room room = new Room(RoomType.NONE);
+                        RoomModel room = new RoomModel(RoomType.NONE);
                         room.setExterior(false);
+                        _roomList.add(room);
                         try {
                             exploreRoom(room, x, y);
                         } catch (StackOverflowError e) {
@@ -392,10 +400,17 @@ public class RoomManager {
         } while (newRoomFound);
     }
 
-    private void exploreRoom(Room room, int x, int y) {
+    private void exploreRoom(RoomModel room, int x, int y) {
         if (x >= 0 && x < _width && y >= 0 && y < _height && _areas[x][y][0] != null) {
-            AreaModel area = _areas[x][y][0];
-            if (area.getRoom() == null && (area.getStructure() == null || area.getStructure().isFloor() || area.getStructure().isGround())) {
+            ParcelModel area = _areas[x][y][0];
+            boolean isPassable = true;
+            if (area.getStructure() != null && (area.getStructure().isSolid() || area.getStructure().isDoor())) {
+                isPassable = false;
+            }
+            if (area.getResource() != null && area.getResource().isSolid()) {
+                isPassable = false;
+            }
+            if (area.getRoom() == null && isPassable) {
                 area.setRoom(room);
                 room.addArea(area);
 
@@ -423,4 +438,29 @@ public class RoomManager {
         }
         return false;
     }
+
+    @Override
+    public void onAddStructure(StructureModel structure){
+        _roomList.clear();
+        makeRooms();
+    }
+
+    @Override
+    public void onAddItem(ItemModel item){
+        if (item.isLight() && item.getArea() != null && item.getArea().getRoom() != null) {
+            int lightValue = 0;
+            for (ParcelModel area: item.getArea().getRoom().getAreas()) {
+                if (area != null && area.getItem() != null && area.getItem().isLight()) {
+                    lightValue += area.getItem().getInfo().light;
+                }
+            }
+            item.getArea().getRoom().setLight(lightValue);
+        }
+    }
+
+    @Override
+    public void onRemoveStructure(StructureModel structure){
+        makeRooms();
+    }
+
 }

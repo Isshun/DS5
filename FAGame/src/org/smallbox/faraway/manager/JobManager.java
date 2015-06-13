@@ -254,7 +254,7 @@ public class JobManager {
 	}
 
 	public void addDestroyJob(MapObjectModel item) {
-		JobModel job = JobDestroy.create(item);
+		JobModel job = JobDump.create(item);
 		addJob(job);
 	}
 
@@ -380,16 +380,6 @@ public class JobManager {
 		return job;
 	}
 
-	public JobModel createDumpJob(int x, int y) {
-		ItemModel item = ServiceManager.getWorldMap().getItem(x, y);
-		if (item == null) {
-			return null;
-		}
-
-		JobModel job = JobDestroy.create(item);
-		return job;
-	}
-
 	public void onLongUpdate() {
 		// Remove invalid job
 		_jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
@@ -476,11 +466,6 @@ public class JobManager {
 
 	public void quit(JobModel job, JobAbortReason reason) {
 		Log.debug("Job quit: " + job.getId());
-
-		// Already aborted
-		if (job.getStatus() == JobStatus.ABORTED) {
-			return;
-		}
 
 		job.setStatus(JobStatus.ABORTED);
 		job.setFail(reason, MainRenderer.getFrame());

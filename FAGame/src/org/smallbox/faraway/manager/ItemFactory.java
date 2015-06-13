@@ -8,7 +8,7 @@ public class ItemFactory {
 		return create(manager, null, info, value);
 	}
 
-	public static MapObjectModel create(WorldManager manager, AreaModel area, ItemInfo info, int value) {
+	public static MapObjectModel create(WorldManager manager, ParcelModel area, ItemInfo info, int value) {
 //		// Base light item
 //		if ("base.light".equals(info.name)) {
 //			area.setLightSource(info.light);
@@ -25,33 +25,32 @@ public class ItemFactory {
 		}
 		// Structure item
 		else if (info.isStructure) {
-			return createStructure(area, info, value);
+			return createStructure(area, info, value == -1);
 		}
 		// User item
 		else {
-			return createUserItem(manager, area, info, value);
+			return createUserItem(manager, area, info, value == -1);
 		}
 	}
 
-	private static ItemModel createUserItem(WorldManager manager, AreaModel area, ItemInfo info, int matterSupply) {
+	private static ItemModel createUserItem(WorldManager manager, ParcelModel area, ItemInfo info, boolean isComplete) {
 		ItemModel item = new ItemModel(info);
-		item.setMatterSupply(matterSupply);
+		item.addProgress(isComplete ? info.cost : 0);
 
 		// Set world areas
 		for (int i = 0; i < item.getWidth(); i++) {
 			for (int j = 0; j < item.getHeight(); j++) {
-				manager.getArea(area.getX() + i, area.getY() + j).setItem(item);
+				manager.getParcel(area.getX() + i, area.getY() + j).setItem(item);
 			}
 		}
 
 		return item;
 	}
 
-	private static ConsumableModel createConsumable(AreaModel area, ItemInfo info, int quantity) {
+	private static ConsumableModel createConsumable(ParcelModel area, ItemInfo info, int quantity) {
 		ConsumableModel consumable = new ConsumableModel(info);
 
 		consumable.setQuantity(quantity);
-		consumable.setMatterSupply(100);
 
 		if (area != null) {
 			area.setConsumable(consumable);
@@ -60,16 +59,16 @@ public class ItemFactory {
 		return consumable;
 	}
 
-	private static StructureModel createStructure(AreaModel area, ItemInfo info, int matterSupply) {
+	private static StructureModel createStructure(ParcelModel area, ItemInfo info, boolean isComplete) {
 		StructureModel structure = new StructureModel(info);
 
-		structure.setMatterSupply(matterSupply);
+		structure.addProgress(isComplete ? info.cost : 0);
 		area.setStructure(structure);
 
 		return structure;
 	}
 
-	private static MapObjectModel createResource(AreaModel area, ItemInfo info, int matterSupply) {
+	private static MapObjectModel createResource(ParcelModel area, ItemInfo info, int matterSupply) {
 		ResourceModel resource = new ResourceModel(info);
 
 		resource.setValue(matterSupply);

@@ -50,9 +50,9 @@ public class ToolTips {
 	public static final ToolTip STATE_OK = new ToolTip("Everythings goes right", "Everythings goes right");
 	public static final ToolTip STATE_SLEEPING = new ToolTip("Sleeping", "Sleeping");
 	
-	public static final ToolTip GENDER = new ToolTip("Gender", "Gender doesn't really matter, except if you want children");
+	public static final ToolTip GENDER = new ToolTip("Gender", "Gender doesn't really progress, except if you want children");
 	
-	public static final ToolTip RES_MATTER = new ToolTip("Matter", "matter");
+	public static final ToolTip RES_MATTER = new ToolTip("Matter", "progress");
 	public static final ToolTip RES_POWER = new ToolTip("Power", "power");
 	public static final ToolTip RES_SPICE = new ToolTip("Spice", "spice");
 	public static final ToolTip RES_FOOD = new ToolTip("Food", "food");

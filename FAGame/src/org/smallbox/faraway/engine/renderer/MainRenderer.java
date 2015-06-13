@@ -17,6 +17,7 @@ public class MainRenderer implements IRenderer {
 //	private RoomRenderer 			_roomRenderer;
 	private DebugRenderer 			_debugRenderer;
 	private JobRenderer				_jobRenderer;
+	private AreaRenderer			_areaRenderer;
 	private Viewport 				_viewport;
 	private Mode 					_mode;
 
@@ -25,11 +26,11 @@ public class MainRenderer implements IRenderer {
 	private static int 				_fps;
 	private static long 			_renderTime;
 	private static int 				_frame;
-	
+
 	public static int getFrame() { return _frame; }
 	public static long getRenderTime() { return _renderTime; }
 
-	public MainRenderer() {
+	public MainRenderer(GFXRenderer renderer) {
 		_self = this;
 		_spriteManager = SpriteManager.getInstance();
 
@@ -39,6 +40,7 @@ public class MainRenderer implements IRenderer {
 //		_roomRenderer = new RoomRenderer();
 		_debugRenderer = new DebugRenderer();
 		_jobRenderer = new JobRenderer();
+		_areaRenderer = renderer.createAreaRenderer();
 	}
 
 	public void onRefresh(int frame) {
@@ -63,9 +65,12 @@ public class MainRenderer implements IRenderer {
 //		if (_mode == Mode.ROOM) {
 //			_roomRenderer.onDraw(renderer, effect, animProgress);
 //		}
+		if (_areaRenderer != null) {
+			_areaRenderer.onDraw(renderer, effect, animProgress);
+		}
 		_jobRenderer.onDraw(renderer, effect, animProgress);
 		_characterRenderer.onDraw(renderer, effect, animProgress);
-		
+
 		// Draw debug
 		if (Settings.getInstance().isDebug()) {
 			_debugRenderer.onDraw(renderer, effect, animProgress);

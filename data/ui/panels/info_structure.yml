@@ -1,29 +1,64 @@
 entries:
+       
+    -   type: frame
+        position: [24, 10]
+        size: [370, 1]
+        background: 0x888888
+       
+    -   type: frame
+        id: frame_room_info
+        position: [0, 10]
+       
+    -   type: frame
+        position: [24, 140]
+        size: [370, 1]
+        background: 0x888888
 
-    -   type: label
-        id: lb_label
-        textsize: 24
-        position: [24, 24]
+    -   type: frame
+        id: frame_item_info
+        position: [0, 144]
+        entries:
 
-    -   type: label
-        id: lb_name
-        textsize: 24
-        position: [224, 24]
+        -   type: label
+            id: lb_label
+            textsize: 24
+            position: [24, 24]
 
-    -   type: label
-        id: lb_durability
-        text: durability
-        textsize: 14
-        position: [24, 58]
+        -   type: label
+            id: lb_name
+            textsize: 24
+            position: [224, 24]
 
-    -   type: label
-        id: lb_matter
-        text: matter
-        textsize: 14
-        position: [24, 80]
+        -   type: label
+            id: lb_durability
+            text: durability
+            textsize: 14
+            position: [24, 58]
 
-    -   type: label
-        id: lb_pos
-        text: pos
-        textsize: 14
-        position: [24, 102]
+        -   type: label
+            id: lb_matter
+            text: matter
+            textsize: 14
+            position: [24, 80]
+
+        -   type: label
+            id: lb_pos
+            text: pos
+            textsize: 14
+            position: [24, 102]
+
+        -   type: label
+            id: lb_health
+            text: health
+            textsize: 14
+            position: [24, 130]
+
+        -   type: label
+            id: lb_work
+            text: work
+            textsize: 14
+            position: [24, 160]
+           
+        -   type: frame
+            id: frame_room_info
+            position: [0, 300]

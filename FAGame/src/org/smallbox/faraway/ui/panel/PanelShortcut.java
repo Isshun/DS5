@@ -48,7 +48,8 @@ public class PanelShortcut extends BaseRightPanel {
             new PanelEntry("bt_debug",      "[ EBUG]", 		"D", 	1, Mode.DEBUG),
             new PanelEntry("bt_plan",       "[ LAN]", 		"P",	1, Mode.PLAN),
             new PanelEntry("bt_manage",     "[ ANAGE]", 	"M",	1, Mode.MANAGER),
-            new PanelEntry("bt_stats",      "[ TATS]", 		"S",	1, Mode.STATS)
+            new PanelEntry("bt_stats",      "[ TATS]", 		"S",	1, Mode.STATS),
+            new PanelEntry("bt_area",       "[ AREAS]",     "A",	1, Mode.AREA)
     };
 
     // TODO

@@ -114,9 +114,6 @@ public class PathManager {
 
                 synchronized(_paths) {
                     _paths.add(() -> {
-						if (listener != null) {
-							listener.onReach(job, character);
-						}
 						character.onPathComplete(rawpath, job);
 					});
                 }

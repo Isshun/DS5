@@ -1,15 +1,18 @@
 package org.smallbox.faraway.model.job;
 
+import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.ServiceManager;
+import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.StructureModel;
 import org.smallbox.faraway.ui.UserInterface;
 
 public class JobBuild extends JobModel {
+	private static final SpriteModel ICON = SpriteManager.getInstance().getIcon("data/res/ic_build.png");
 
 	private JobBuild(int x, int y) {
 		super(null, x, y);
@@ -18,6 +21,7 @@ public class JobBuild extends JobModel {
 	public static JobModel create(MapObjectModel item) {
 		JobModel job = new JobBuild(item.getX(), item.getY());
 		job.setItem(item);
+		job.setCost(item.getInfo().cost);
 		return job;
 	}
 
@@ -57,32 +61,24 @@ public class JobBuild extends JobModel {
 			return true;
 		}
 
-
-		Log.debug("Character #" + character.getId() + ": actionBuild");
-
 		// Build
-		ResourceManager.Message result = ResourceManager.getInstance().build(_item);
-
-		if (result == ResourceManager.Message.NO_MATTER) {
-			UserInterface.getInstance().displayMessage("not enough matter", _posX, _posY);
-			Log.debug("Character #" + character.getId() + ": not enough matter");
-			JobManager.getInstance().quit(this, JobModel.JobAbortReason.NO_BUILD_RESOURCES);
-			return true;
-		}
-
-		if (result == ResourceManager.Message.BUILD_COMPLETE) {
-			Log.debug("Character #" + character.getId() + ": build close");
-			JobManager.getInstance().close(this);
-			return true;
-		}
-
-		if (result == ResourceManager.Message.BUILD_PROGRESS) {
+        CharacterModel.TalentEntry talent = character.getTalent(CharacterModel.TalentType.BUILD);
+        _item.addProgress(talent.work());
+		if (!_item.isComplete()) {
 			Log.debug("Character #" + character.getId() + ": build progress");
+			return false;
 		}
-		return false;
+
+		// Build complete
+		Log.info("Character #" + character.getId() + ": build close");
+		JobManager.getInstance().close(this);
+		return true;
 	}
 
-	@Override
+    @Override
+    public double getProgress() { return (double)_item.getProgress() / _item.getInfo().cost; }
+
+    @Override
 	public String getType() {
 		return "build";
 	}
@@ -105,5 +101,10 @@ public class JobBuild extends JobModel {
 	@Override
 	public String getShortLabel() {
 		return "build " + _item.getLabel();
+	}
+
+	@Override
+	public SpriteModel getIcon() {
+		return ICON;
 	}
 }

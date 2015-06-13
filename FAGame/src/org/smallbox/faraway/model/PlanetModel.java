@@ -31,4 +31,7 @@ public class PlanetModel {
 	public double 	            pressure;
 	public double 	            greenhouse;
 	public double 	            incomingEnergy;
+
+	public int 					dayDuration = 24;
+	public int 					yearDuration = 365;
 }

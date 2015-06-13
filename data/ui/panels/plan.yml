@@ -45,3 +45,12 @@ entries:
             size: [180, 40]
             align: center
             background: 0x005560
+
+        -   type: label
+            id: bt_haul
+            text: "[Haul]"
+            textsize: 20
+            position: [20, 200]
+            size: [180, 40]
+            align: center
+            background: 0x005560

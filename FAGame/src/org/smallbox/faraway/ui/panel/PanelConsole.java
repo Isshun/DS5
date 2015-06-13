@@ -16,7 +16,13 @@ public class PanelConsole extends BasePanel {
 	private static final int 	NB_LINES = 8;
 	private static final int 	FRAME_HEIGHT = 64 + LINE_INTERVAL * NB_LINES;
 	private static final int	FRAME_WIDTH = 440;
-	
+	private static final Color 	COLOR_DEBUG = new Color(0xdddddd);
+	private static final Color 	COLOR_INFO = new Color(0xffffff);
+	private static final Color 	COLOR_WARNING = new Color(0xffdd00);
+	private static final Color 	COLOR_ERROR = new Color(0xdd0000);
+	private static final Color 	COLOR_FATAL = new Color(0xff0000);
+
+	private String[][] 		_data = new String[5][NB_LINES];
 	private TextView[] 		_texts;
 	private int 			_level = Log.LEVEL_DEBUG;
 
@@ -58,14 +64,38 @@ public class PanelConsole extends BasePanel {
 		findById(frameName).setVisible(true);
 
 		_level = level;
+
+		refreshLabels();
 	}
 
 	public void addMessage(int level, String message) {
 		if (_level < level) return;
 
-		for (int i = 0; i < NB_LINES - 1; i++) {
-			_texts[i].setString(_texts[i + 1].getString());
+		message = Log.getPrefix(level) + StringUtils.getDashedString(message, "", 52);
+
+		// Store message
+		for (int l = Log.LEVEL_FATAL; l <= Log.LEVEL_DEBUG; l++) {
+			if (l >= level) {
+				for (int i = 0; i < NB_LINES - 1; i++) {
+					_data[l][i] = _data[l][i + 1];
+				}
+				_data[l][NB_LINES - 1] = message;
+			}
 		}
-		_texts[NB_LINES - 1].setString(StringUtils.getDashedString(message, "", 52));
+
+		refreshLabels();
+	}
+
+	private void refreshLabels() {
+		for (int i = 0; i <= NB_LINES - 1; i++) {
+			_texts[i].setString(_data[_level][i]);
+
+			// Set color
+			if (_data[_level][i] != null && _data[_level][i].startsWith("[D]")) _texts[i].setColor(COLOR_DEBUG);
+			if (_data[_level][i] != null && _data[_level][i].startsWith("[I]")) _texts[i].setColor(COLOR_INFO);
+			if (_data[_level][i] != null && _data[_level][i].startsWith("[W]")) _texts[i].setColor(COLOR_WARNING);
+			if (_data[_level][i] != null && _data[_level][i].startsWith("[E]")) _texts[i].setColor(COLOR_ERROR);
+			if (_data[_level][i] != null && _data[_level][i].startsWith("[F]")) _texts[i].setColor(COLOR_FATAL);
+		}
 	}
 }

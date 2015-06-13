@@ -16,7 +16,6 @@ public abstract class MapObjectModel {
     private int			    _y;
     private int			    _id;
     private boolean 	    _isSolid;
-    private double          _matterSupply;
     private int 		    _zoneIdRequired;
     private CharacterModel  _owner;
     private String 		    _name;
@@ -43,10 +42,11 @@ public abstract class MapObjectModel {
     private int 		    _animFrameInterval;
     private boolean 	    _selected;
     private int 		    _lastBlocked;
-    private AreaModel       _area;
+    private ParcelModel _area;
     private int             _health;
-    private List<JobModel>   _jobs;
+    private List<JobModel>  _jobs;
     protected boolean       _needRefresh;
+    private double          _progress;
 
     public MapObjectModel(ItemInfo info) {
         init(info, ++_maxId);
@@ -64,7 +64,6 @@ public abstract class MapObjectModel {
         _health = info.maxHealth;
         _lastBlocked = -1;
         _isSolid = false;
-        _matterSupply = 0;
         _zoneIdRequired = 0;
         _owner = null;
         _id = id;
@@ -172,21 +171,17 @@ public abstract class MapObjectModel {
         _owner = character;
     }
 
-    void					addMatter(int value) { _matterSupply += _matter; }
-
     // Sets
     public void				setPosition(int x, int y) { _x = x; _y = y; }
-    public void 			setMatterSupply(double matterSupply) { _matterSupply = matterSupply; }
     public void 			setPowerSupply(int i) { _powerSupply = i; }
     public void 			setSolid(boolean isSolid) { _isSolid = isSolid; }
     public void 			setMode(int mode) { _mode = mode; }
     public void 			setWorking(boolean working) { _isWorking = working; }
-    public void 			setArea(AreaModel area) { _area = area; }
+    public void 			setArea(ParcelModel area) { _area = area; }
     public void 			setX(int x) { _x = x; }
     public void 			setY(int y) { _y = y; }
 
     // Gets
-    public double           getMatterSupply() { return Math.min(_matterSupply, _matter); }
     public CharacterModel   getOwner() { return _owner; }
     public int				getWidth() { return _width; }
     public int				getHeight() { return _height; }
@@ -206,12 +201,12 @@ public abstract class MapObjectModel {
     public int 				getTotalUse() { return _nbTotalUsed; }
     public int 				getMatter() { return _matter; }
     public int 				getLastBlocked() { return _lastBlocked; }
-    public AreaModel getArea() { return _area; }
+    public ParcelModel getArea() { return _area; }
 
     // Boolean
     public boolean			isSolid() { return _isSolid; }
     public boolean			isWorking() { return _isWorking; }
-    public boolean			isComplete() { return _matterSupply >= _matter; }
+    public boolean			isComplete() { return _progress >= _info.cost; }
     public boolean			isSupply() { return _power == _powerSupply; }
     public boolean			isSleepingItem() { return _info.isSleeping; }
     public boolean			isStructure() { return _info.isStructure; }
@@ -378,5 +373,32 @@ public abstract class MapObjectModel {
 
     public void addComponent(ConsumableModel consumable) {
         throw new RuntimeException("add inventory on MapObjectItem is not allowed");
+    }
+
+    public void setHealth(int health) {
+        _health = health;
+        _needRefresh = true;
+    }
+
+    public void addHealth(int health) {
+        _health = _health + health;
+        _needRefresh = true;
+    }
+
+    public void addProgress(double value) {
+        _progress += value;
+        _needRefresh = true;
+    }
+
+    public int getProgress() {
+        return (int)_progress;
+    }
+
+    public boolean isDestroy() {
+        return _health <= 0;
+    }
+
+    public boolean isDump() {
+        return _progress <= 0;
     }
 }

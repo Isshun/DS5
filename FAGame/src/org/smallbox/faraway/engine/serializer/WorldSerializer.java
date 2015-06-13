@@ -22,7 +22,8 @@ public class WorldSerializer implements SerializerInterface {
 	private static class WorldSaveBaseItem {
 		public int 					id;
 		public String 				name;
-		public int 					matter;
+		public int progress;
+		public int 					health;
 	}
 
 	private static class WorldSaveUserItem extends WorldSaveBaseItem {
@@ -46,7 +47,7 @@ public class WorldSerializer implements SerializerInterface {
 		public int value;
 	}
 
-	private static void saveArea(List<WorldSaveArea> areas, AreaModel area) {
+	private static void saveArea(List<WorldSaveArea> areas, ParcelModel area) {
 		if (area.getItem() == null && area.getResource() == null && area.getStructure() == null) {
 			return;
 		}
@@ -62,7 +63,7 @@ public class WorldSerializer implements SerializerInterface {
 			areaSave.item = new WorldSaveUserItem();
 			areaSave.item.id = item.getId();
 			areaSave.item.name = item.getName();
-			areaSave.item.matter = (int)item.getMatterSupply();
+			areaSave.item.progress = item.getProgress();
 		}
 
         ConsumableModel consumable = area.getConsumable();
@@ -77,17 +78,17 @@ public class WorldSerializer implements SerializerInterface {
 		if (structure != null) {
 			areaSave.structure = new WorldSaveStructure();
 			areaSave.structure.name = structure.getName();
-			areaSave.structure.matter = (int)structure.getMatterSupply();
+			areaSave.structure.progress = structure.getProgress();
 			areaSave.structure.id = structure.getId();
+			areaSave.structure.health = structure.getHealth();
 		}
 
 		ResourceModel resource = area.getResource();
 		if (resource != null) {
 			areaSave.resource = new WorldSaveResource();
 			areaSave.resource.name = resource.getName();
-			areaSave.resource.matter = (int)resource.getMatterSupply();
 			areaSave.resource.tile = resource.getTile();
-			areaSave.resource.value = (int)resource.getQuantity();
+			areaSave.resource.value = resource.getQuantity();
 			areaSave.resource.id = resource.getId();
 		}
 
@@ -101,7 +102,7 @@ public class WorldSerializer implements SerializerInterface {
 		for (int z = 0; z < 1; z++) {
 			for (int x = 0; x < manager.getWidth(); x++) {
 				for (int y = 0; y < manager.getHeight(); y++) {
-					AreaModel area = manager.getArea(z, x, y);
+					ParcelModel area = manager.getParcel(z, x, y);
 					saveArea(save.areas, area);
 				}
 			}
@@ -116,20 +117,21 @@ public class WorldSerializer implements SerializerInterface {
 			if (area != null) {
 				// Light
 				if (area.lightSource > 0) {
-					manager.getArea(area.z, area.x, area.y).setLightSource(area.lightSource);
+					manager.getParcel(area.z, area.x, area.y).setLightSource(area.lightSource);
 				}
 
 				// UserItem
 				if (area.item != null) {
-					ItemModel item = (ItemModel) manager.putObject(area.item.name, area.x, area.y, area.z, area.item.matter);
+					ItemModel item = (ItemModel)manager.putObject(area.item.name, area.x, area.y, area.z, area.item.progress);
 					if (item != null) {
 						item.setId(area.item.id);
+						item.setHealth(area.item.health);
 					}
 				}
 
 				// Consumable
 				if (area.consumable != null) {
-					ConsumableModel consumable = (ConsumableModel) manager.putObject(area.consumable.name, area.x, area.y, area.z, area.consumable.quantity);
+					ConsumableModel consumable = (ConsumableModel)manager.putObject(area.consumable.name, area.x, area.y, area.z, area.consumable.quantity);
 					if (consumable != null) {
 						consumable.setId(area.consumable.id);
                         consumable.setQuantity(area.consumable.quantity);
@@ -138,13 +140,14 @@ public class WorldSerializer implements SerializerInterface {
 
 				// Structure
 				if (area.structure != null) {
-					MapObjectModel item = manager.putObject(area.structure.name, area.x, area.y, area.z, area.structure.matter);
-					item.setId(area.structure.id);
+					StructureModel structure = (StructureModel)manager.putObject(area.structure.name, area.x, area.y, area.z, area.structure.progress);
+					structure.setId(area.structure.id);
+					structure.setHealth(area.structure.health);
 				}
 
 				// Resource
 				if (area.resource != null) {
-					MapObjectModel item = manager.putObject(area.resource.name, area.x, area.y, area.z, area.resource.matter);
+					MapObjectModel item = manager.putObject(area.resource.name, area.x, area.y, area.z, area.resource.progress);
 					if (item != null) {
 						((ResourceModel)item).setTile(area.resource.tile);
 						((ResourceModel)item).setValue(area.resource.value);
@@ -153,11 +156,13 @@ public class WorldSerializer implements SerializerInterface {
 				}
 			}
 		}
+
+//		WorldFactory.addMountain(manager);
 //
 //		for (int x = 0; x < manager.getWidth(); x++) {
 //			for (int y = 0; y < manager.getHeight(); y++) {
-//				if (Math.random() > 0.995 && manager.getArea(x, y).isEmpty()) {
-//					manager.getArea(x, y).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
+//				if (Math.random() > 0.995 && manager.getParcel(x, y).isEmpty()) {
+//					manager.getParcel(x, y).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
 //				}
 //			}
 //		}
@@ -165,15 +170,15 @@ public class WorldSerializer implements SerializerInterface {
 //		for (int i = 0; i < 5; i++) {
 //			for (int x = 0; x < manager.getWidth(); x++) {
 //				for (int y = 0; y < manager.getHeight(); y++) {
-//					if (manager.getArea(x, y).getResource() != null && manager.getArea(x, y).getResource().getInfo().name.equals("base.res_rock")) {
-//						if (Math.random() > 0.5 && x < manager.getWidth() && manager.getArea(x + 1, y) != null && manager.getArea(x + 1, y).isEmpty())
-//							manager.getArea(x + 1, y).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
-//						if (Math.random() > 0.5 && x > 0 && manager.getArea(x - 1, y) != null && manager.getArea(x - 1, y).isEmpty())
-//							manager.getArea(x - 1, y).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
-//						if (Math.random() > 0.5 && y < manager.getHeight() && manager.getArea(x, y + 1) != null && manager.getArea(x, y + 1).isEmpty())
-//							manager.getArea(x, y + 1).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
-//						if (Math.random() > 0.5 && y > 0 && manager.getArea(x, y - 1) != null && manager.getArea(x, y - 1).isEmpty())
-//							manager.getArea(x, y - 1).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
+//					if (manager.getParcel(x, y).getResource() != null && manager.getParcel(x, y).getResource().getInfo().name.equals("base.res_rock")) {
+//						if (Math.random() > 0.5 && x < manager.getWidth() && manager.getParcel(x + 1, y) != null && manager.getParcel(x + 1, y).isEmpty())
+//							manager.getParcel(x + 1, y).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
+//						if (Math.random() > 0.5 && x > 0 && manager.getParcel(x - 1, y) != null && manager.getParcel(x - 1, y).isEmpty())
+//							manager.getParcel(x - 1, y).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
+//						if (Math.random() > 0.5 && y < manager.getHeight() && manager.getParcel(x, y + 1) != null && manager.getParcel(x, y + 1).isEmpty())
+//							manager.getParcel(x, y + 1).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
+//						if (Math.random() > 0.5 && y > 0 && manager.getParcel(x, y - 1) != null && manager.getParcel(x, y - 1).isEmpty())
+//							manager.getParcel(x, y - 1).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
 //					}
 //				}
 //			}
@@ -181,8 +186,8 @@ public class WorldSerializer implements SerializerInterface {
 //
 //		for (int x = 0; x < manager.getWidth(); x++) {
 //			for (int y = 0; y < manager.getHeight(); y++) {
-//				if (manager.getArea(x, y) != null && manager.getArea(x, y).getResource() != null) {
-//					manager.getArea(x, y).getResource().setMatterSupply(100);
+//				if (manager.getParcel(x, y) != null && manager.getParcel(x, y).getResource() != null) {
+//					manager.getParcel(x, y).getResource().setMatterSupply(100);
 //				}
 //			}
 //		}

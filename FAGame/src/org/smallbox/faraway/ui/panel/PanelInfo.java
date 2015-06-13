@@ -7,7 +7,7 @@ import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.job.JobModel;
-import org.smallbox.faraway.model.room.Room;
+import org.smallbox.faraway.model.room.RoomModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class PanelInfo extends BaseRightPanel {
 	private static final int 		INVENTORY_ITEM_SPACE = 4;
 	private static final int 		NB_SLOTS_MAX = 10;
 
-	private AreaModel _area;
+	private ParcelModel _area;
 	private int						_line;
 	private TextView 				_itemName;
 	private TextView 				_itemMatter;
@@ -407,7 +407,7 @@ public class PanelInfo extends BaseRightPanel {
 //		ObjectPool.release(text);
 	}
 	
-	public void displayArea(AreaModel area) {
+	public void displayArea(ParcelModel area) {
 		_area = area;
 		if (area == null) {
 			return;
@@ -433,7 +433,7 @@ public class PanelInfo extends BaseRightPanel {
 
 		_areaLight.setString("luminosity: " + (int)Math.min(area.getLight() * 100, 100));
 
-		Room room = null;
+		RoomModel room = null;
 //		Room room = Game.getRoomManager().get(area.getX(), area.getY());
 		_lbRoom.setString(room != null ? room.getName() : "");
 		if (area.getItem() != null) {
@@ -462,7 +462,7 @@ public class PanelInfo extends BaseRightPanel {
 
 		_itemName.setString(resource.getLabel() != null ? resource.getLabel() : resource.getName());
 		_itemCategory.setString("(" + resource.getLabelCategory() + ")");
-		_itemMatterSupply.setString("Matter supply: " + String.valueOf(resource.getMatterSupply()));
+//		_itemMatterSupply.setString("Matter supply: " + String.valueOf(resource.getMatterSupply()));
 		_itemMatter.setString("Value: " + String.valueOf(resource.getQuantity()));
 		if (resource.getOwner() != null) {
 			_itemOwner.setString("Owner: " + resource.getOwner().getName());
@@ -644,7 +644,7 @@ public class PanelInfo extends BaseRightPanel {
 
 		// Configure new item
 		_itemMatter.setString("Matter2: " + String.valueOf(item.getMatter()));
-		_itemMatterSupply.setString("Matter supply: " + String.valueOf(item.getMatterSupply()));
+//		_itemMatterSupply.setString("Matter supply: " + String.valueOf(item.getMatterSupply()));
 		_itemPower.setString("Power: " + String.valueOf(item.getPower()));
 		_itemOwner.setString("Owner: " + (item.getOwner() != null ? item.getOwner().getName() : Strings.LB_NONE));
 
@@ -676,7 +676,7 @@ public class PanelInfo extends BaseRightPanel {
 	@Override
 	public void onRefresh(int frame) {
 		// Area
-		AreaModel area = _ui.getSelectedArea();
+		ParcelModel area = _ui.getSelectedArea();
 		if (area != null && _area != area) {
 			clean();
 			displayArea(area);

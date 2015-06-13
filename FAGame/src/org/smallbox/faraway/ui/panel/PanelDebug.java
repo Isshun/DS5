@@ -272,11 +272,11 @@ public class PanelDebug extends BaseRightPanel {
 //			int x = UserInterface.getInstance().getMouseX();
 //			int y = UserInterface.getInstance().getMouseY();
 //			Log.info("x: " + x + ", y: " + y);
-//			int matter = 0;
+//			int progress = 0;
 //			if (_currentItem.cost != null) {
-//				matter = _currentItem.cost.matter;
+//				progress = _currentItem.cost.progress;
 //			}
-//			Game.getWorldManager().putObject(_currentItem, x, y, 0, matter);
+//			Game.getWorldManager().putObject(_currentItem, x, y, 0, progress);
 
 			exec(_search);
 

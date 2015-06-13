@@ -23,9 +23,11 @@ public class GameConfig {
         public EffectValues     starve;
         public EffectValues     exhausted;
     }
+
     public static class GameConfigCharacter {
         public CharacterEffects effects;
     }
+
     public static class GameConfigRender {
         public boolean          floor;
         public boolean          structure;
@@ -34,8 +36,16 @@ public class GameConfig {
         public boolean          consumable;
     }
 
+    public static class GameConfigManager {
+        public boolean          room;
+        public boolean          temperature;
+        public boolean          weather;
+    }
+
     public GameConfigRender     render;
+    public GameConfigManager    manager;
     public GameConfigCharacter  character;
     public String               weather;
     public String               time;
+    public int                  tickPerHour;
 }

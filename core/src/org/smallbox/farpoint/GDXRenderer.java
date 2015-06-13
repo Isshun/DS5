@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.*;
+import org.smallbox.faraway.engine.renderer.AreaRenderer;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.engine.util.Constant;
@@ -126,6 +127,11 @@ public class GDXRenderer implements GFXRenderer {
     @Override
     public void draw(View view, int x, int y) {
         view.draw(this, x, y);
+    }
+
+    @Override
+    public AreaRenderer createAreaRenderer() {
+        return new GDXAreaRenderer();
     }
 
     public void setGameEventListener(GameEventListener listener) {

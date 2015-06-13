@@ -9,16 +9,17 @@ import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.StructureModel;
 import org.smallbox.faraway.model.item.ItemModel;
 import org.smallbox.faraway.model.item.ResourceModel;
+import org.smallbox.faraway.model.job.JobDump;
 import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.model.job.JobTake;
-import org.smallbox.faraway.model.room.Room.RoomType;
+import org.smallbox.faraway.model.room.RoomModel.RoomType;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.PanelPlan.Planning;
 
-public class
-		UserInteraction {
+public class UserInteraction {
+
 	public enum Action {
-		NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_ROOM, SET_PLAN
+		NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_ROOM, SET_AREA, SET_PLAN
 	}
 
 	Action					_action;
@@ -29,8 +30,9 @@ public class
 	GameEventListener.MouseButton _button;
 	
 	private Planning 					_selectedPlan;
-	private RoomType _selectedRoomType;
+	private RoomType 					_selectedRoomType;
 	private ItemInfo 					_selectedItemInfo;
+	private AreaType 					_selectedAreaType;
 	private UserInterface				_ui;
 
 	UserInteraction(UserInterface ui) {
@@ -151,10 +153,19 @@ public class
 	public void planDump(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				JobModel job = JobManager.getInstance().createDumpJob(x, y);
-				if (job != null) {
-					JobManager.getInstance().addJob(job);
+				if (ServiceManager.getWorldMap().getItem(x, y) != null) {
+					JobManager.getInstance().addJob(JobDump.create(ServiceManager.getWorldMap().getItem(x, y)));
 				}
+				if (ServiceManager.getWorldMap().getStructure(x, y) != null) {
+					JobManager.getInstance().addJob(JobDump.create(ServiceManager.getWorldMap().getStructure(x, y)));
+				}
+			}
+		}
+	}
+
+	public void planHaul(int startX, int startY, int toX, int toY) {
+		for (int x = startX; x <= toX; x++) {
+			for (int y = startY; y <= toY; y++) {
 			}
 		}
 	}
@@ -177,18 +188,23 @@ public class
 		if (_selectedRoomType == null) {
 			return;
 		}
-		
+
 //		if (_selectedRoomType == Room.Type.NONE) {
 //			Game.getRoomManager().removeRoom(fromX, fromY, toX, toY);
 //		} else {
 //			Game.getRoomManager().putRoom(clickX, clickY, fromX, fromY, toX, toY, _selectedRoomType, null);
 //		}
-		
+
 	}
 
 	public void set(Action action, RoomType roomType) {
 		_action = action;
 		_selectedRoomType = roomType;
+	}
+
+	public void set(Action action, AreaType areaType) {
+		_action = action;
+		_selectedAreaType = areaType;
 	}
 
 	public boolean isAction(Action action) {
@@ -245,4 +261,9 @@ public class
 	public boolean hasAction() {
 		return _action != null && _action != Action.NONE;
 	}
+
+	public AreaType getSelectedAreaType() {
+		return _selectedAreaType;
+	}
+
 }

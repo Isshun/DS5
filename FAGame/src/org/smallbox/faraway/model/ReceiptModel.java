@@ -65,7 +65,7 @@ public class ReceiptModel {
     }
 
     public void reset() {
-        _components.clear();
+        _components.forEach(component -> component.item.setQuantity(0));
     }
 
 }

@@ -3,6 +3,7 @@ package org.smallbox.faraway;
 import org.smallbox.faraway.engine.dataLoader.CategoryLoader;
 import org.smallbox.faraway.engine.dataLoader.ItemLoader;
 import org.smallbox.faraway.engine.dataLoader.StringsLoader;
+import org.smallbox.faraway.engine.renderer.AreaRenderer;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.serializer.LoadListener;
 import org.smallbox.faraway.engine.ui.Colors;
@@ -12,8 +13,6 @@ import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.loader.PlanetLoader;
 import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.item.StructureModel;
-import org.smallbox.faraway.model.item.ItemModel;
 import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.MenuLoad;
 import org.smallbox.faraway.ui.UserInterface;
@@ -72,11 +71,11 @@ public class Application implements GameEventListener {
         _data = data;
 		_renderer = renderer;
 		_isFullscreen = true;
-		_gameRenderer = new MainRenderer();
+		_gameRenderer = new MainRenderer(renderer);
         _lightRenderer = lightRenderer;
         _particleRenderer = particleRenderer;
 		_gameInterface = new UserInterface(new LayoutFactory(), ViewFactory.getInstance());
-        _mainMenu = new MainMenu(new LayoutFactory(), ViewFactory.getInstance(), renderer);
+//        _mainMenu = new MainMenu(new LayoutFactory(), ViewFactory.getInstance(), renderer);
     }
 
     public GameData loadResources() {
@@ -161,7 +160,7 @@ public class Application implements GameEventListener {
                     try {
                         _menu = new MenuLoad(path -> {
                             // TODO NULL
-                            _game = new Game(null);
+                            _game = new Game(null, _particleRenderer, _lightRenderer);
                             _game.load(path, _loadListener);
                         });
                     } catch (IOException e) {
@@ -206,7 +205,7 @@ public class Application implements GameEventListener {
     }
 
     public void newGame() {
-        _game = new Game(_data);
+        _game = new Game(_data, _particleRenderer, _lightRenderer);
         _game.onCreate();
         _game.newGame(null, _loadListener);
         _gameRenderer.init(_game);
@@ -214,7 +213,7 @@ public class Application implements GameEventListener {
     }
 
     public void loadGame() {
-        _game = new Game(_data);
+        _game = new Game(_data, _particleRenderer, _lightRenderer);
         _game.onCreate();
 
         _loadListener.onUpdate("Load save");
@@ -226,14 +225,11 @@ public class Application implements GameEventListener {
 
         _lightRenderer.init();
 
-        _game.setListener(new GameListener() {
-            @Override
-            public void onAddItem(ItemModel item) {
-                if (_lightRenderer != null && item.isLight()) {
-                    _lightRenderer.init();
-                }
-            }
-        });
+        startGame();
+    }
+
+    private void startGame() {
+        _game.getWorldManager().addObserver(_lightRenderer);
     }
 
     public void renderMenu(final GFXRenderer renderer, RenderEffect effect) {

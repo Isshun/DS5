@@ -160,7 +160,7 @@ public class PanelBuild extends BaseRightPanel {
 			int x = (index % 4) * GRID_WIDTH;
 			int y = (index / 4) * GRID_HEIGHT;
 
-			ViewFactory.getInstance().load("data/ui/panels/build_entry.yml", view -> {
+			ViewFactory.getInstance().load("data/ui/panels/view_build_entry.yml", view -> {
                 String label = info.label.length() > 9 ? info.label.substring(0, 9) : info.label;
                 ((TextView)view.findById("lb_item")).setString(label);
                 ((ImageView)view.findById("img_item")).setImage(SpriteManager.getInstance().getIcon(info));

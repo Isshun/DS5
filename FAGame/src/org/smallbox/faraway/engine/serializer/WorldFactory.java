@@ -201,7 +201,7 @@ public class WorldFactory {
         }
     }
 
-    private static void addMountain(WorldManager worldMap) {
+    public static void addMountain(WorldManager worldMap) {
         int[][] map = new int[Constant.WORLD_HEIGHT][Constant.WORLD_WIDTH];
         for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
             for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
@@ -255,7 +255,7 @@ public class WorldFactory {
         for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
             for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
                 if (map[i][j] > 15) {
-                    worldMap.putObject(info, i, j, 0, 999);
+                    worldMap.putObject(info, i, j, 0, (int)(10 + Math.random() * 10));
                 }
             }
         }
@@ -323,17 +323,17 @@ public class WorldFactory {
         for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
             for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
                 if (map[i][j] >= 15) {
-                    worldMap.putObject(info, offsetX + i, offsetY + j, 0, 999);
+                    worldMap.putObject(info, offsetX + i, offsetY + j, 0, -1);
 
-                    worldMap.putObject(info, offsetX + i + 1, offsetY + j, 0, 999);
-                    worldMap.putObject(info, offsetX + i - 1, offsetY + j, 0, 999);
-                    worldMap.putObject(info, offsetX + i, offsetY + j + 1, 0, 999);
-                    worldMap.putObject(info, offsetX + i, offsetY + j - 1, 0, 999);
+                    worldMap.putObject(info, offsetX + i + 1, offsetY + j, 0, -1);
+                    worldMap.putObject(info, offsetX + i - 1, offsetY + j, 0, -1);
+                    worldMap.putObject(info, offsetX + i, offsetY + j + 1, 0, -1);
+                    worldMap.putObject(info, offsetX + i, offsetY + j - 1, 0, -1);
 
-                    worldMap.putObject(info, offsetX + i + 1, offsetY + j + 1, 0, 999);
-                    worldMap.putObject(info, offsetX + i + 1, offsetY + j - 1, 0, 999);
-                    worldMap.putObject(info, offsetX + i - 1, offsetY + j + 1, 0, 999);
-                    worldMap.putObject(info, offsetX + i - 1, offsetY + j - 1, 0, 999);
+                    worldMap.putObject(info, offsetX + i + 1, offsetY + j + 1, 0, -1);
+                    worldMap.putObject(info, offsetX + i + 1, offsetY + j - 1, 0, -1);
+                    worldMap.putObject(info, offsetX + i - 1, offsetY + j + 1, 0, -1);
+                    worldMap.putObject(info, offsetX + i - 1, offsetY + j - 1, 0, -1);
                 }
             }
         }
@@ -422,17 +422,17 @@ public class WorldFactory {
                         resource.setTile(4);
                         for (int i = 0; i < TILE_POSITIONS.length; i++) {
                             if (
-                                    (TILE_POSITIONS[i][0] == 2 || TILE_POSITIONS[i][0] == cheackRock(x-1, y-1)) &&
-                                            (TILE_POSITIONS[i][1] == 2 || TILE_POSITIONS[i][1] == cheackRock(x,   y-1)) &&
-                                            (TILE_POSITIONS[i][2] == 2 || TILE_POSITIONS[i][2] == cheackRock(x+1, y-1)) &&
+                                    (TILE_POSITIONS[i][0] == 2 || TILE_POSITIONS[i][0] == checkRock(x - 1, y - 1)) &&
+                                            (TILE_POSITIONS[i][1] == 2 || TILE_POSITIONS[i][1] == checkRock(x, y - 1)) &&
+                                            (TILE_POSITIONS[i][2] == 2 || TILE_POSITIONS[i][2] == checkRock(x + 1, y - 1)) &&
 
-                                            (TILE_POSITIONS[i][3] == 2 || TILE_POSITIONS[i][3] == cheackRock(x-1, y)) &&
-                                            (TILE_POSITIONS[i][4] == 2 || TILE_POSITIONS[i][4] == cheackRock(x,   y)) &&
-                                            (TILE_POSITIONS[i][5] == 2 || TILE_POSITIONS[i][5] == cheackRock(x+1, y)) &&
+                                            (TILE_POSITIONS[i][3] == 2 || TILE_POSITIONS[i][3] == checkRock(x - 1, y)) &&
+                                            (TILE_POSITIONS[i][4] == 2 || TILE_POSITIONS[i][4] == checkRock(x, y)) &&
+                                            (TILE_POSITIONS[i][5] == 2 || TILE_POSITIONS[i][5] == checkRock(x + 1, y)) &&
 
-                                            (TILE_POSITIONS[i][6] == 2 || TILE_POSITIONS[i][6] == cheackRock(x-1, y+1)) &&
-                                            (TILE_POSITIONS[i][7] == 2 || TILE_POSITIONS[i][7] == cheackRock(x,   y+1)) &&
-                                            (TILE_POSITIONS[i][8] == 2 || TILE_POSITIONS[i][8] == cheackRock(x+1, y+1))
+                                            (TILE_POSITIONS[i][6] == 2 || TILE_POSITIONS[i][6] == checkRock(x - 1, y + 1)) &&
+                                            (TILE_POSITIONS[i][7] == 2 || TILE_POSITIONS[i][7] == checkRock(x, y + 1)) &&
+                                            (TILE_POSITIONS[i][8] == 2 || TILE_POSITIONS[i][8] == checkRock(x + 1, y + 1))
                                     ) {
                                 resource.setTile(i);
                             }
@@ -652,7 +652,7 @@ public class WorldFactory {
         return false;
     }
 
-    private static int cheackRock(int x, int y) {
+    private static int checkRock(int x, int y) {
         if (x < 0 || x >= Constant.WORLD_WIDTH || y < 0 || y >= Constant.WORLD_HEIGHT) {
             return 1;
         }

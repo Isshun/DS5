@@ -129,7 +129,7 @@ public class PanelJobs extends BaseRightPanel {
 			case BLOCKED: left = "(blocked: #" + job.getNbBlocked() + ")"; break;
 			case INTERRUPT: left = "(interrupte)"; break;
 			case NO_BUILD_RESOURCES:
-			case NO_COMPONENTS: left = "(no matter)"; break;
+			case NO_COMPONENTS: left = "(no progress)"; break;
 			case INVALID: left = "(invalide)"; break;
 			case NO_LEFT_CARRY: left = "(no left carry)"; break;
 			default: break;
