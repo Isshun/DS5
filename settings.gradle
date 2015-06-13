@@ -1,0 +1,8 @@
+include 'core'
+include 'desktop'
+include 'FACore'
+include 'FAGame'
+include 'SFMLRender'
+include 'GeoGen'
+include 'PathFinding'
+include 'gdx-smart-font'

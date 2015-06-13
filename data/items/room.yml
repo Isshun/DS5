@@ -2,5 +2,4 @@ label: Category
 width: 2
 height: 2
 type: structure
-cost:
-  matter: 1
+cost: 1

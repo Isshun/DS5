@@ -1,0 +1,155 @@
+entries:
+
+    -   type: label
+        id: lb_time
+        textsize: 14
+        position: [24, 24]
+
+    -   type: frame
+        position: [0, 244]
+        entries:
+            
+        -   type: label
+            text: Resources
+            textsize: 24
+            position: [24, 0]
+
+        -   type: label
+            id: lb_food
+            textsize: 14
+            size: [180, 20]
+            position: [24, 40]
+
+        -   type: label
+            id: lb_water
+            textsize: 14
+            position: [220, 40]
+
+        -   type: label
+            id: lb_gas
+            textsize: 14
+            position: [24, 70]
+
+        -   type: label
+            id: lb_matter
+            textsize: 14
+            position: [220, 70]
+
+        -   type: label
+            id: lb_o2
+            textsize: 14
+            position: [24, 100]
+
+        -   type: label
+            id: lb_power
+            textsize: 14
+            position: [220, 100]
+
+    -   type: frame
+        position: [0, 380]
+        entries:
+        
+        -   type: label
+            text: Actions
+            textsize: 24
+            position: [24, 0]
+
+        -   type: label
+            id: bt_build
+            text: '[_BUILD]'
+            textsize: 18
+            textcolor: 0x78ffff
+            position: [24, 45]
+            size: [175, 45]
+            align: center
+            background: 0x1d5560
+
+        -   type: label
+            id: bt_occupation
+            text: '[_OCCUPATION]'
+            textsize: 18
+            textcolor: 0x78ffff
+            position: [220, 45]
+            size: [175, 45]
+            align: center
+            background: 0x1d5560
+
+        -   type: label
+            id: bt_crew
+            text: '[_CREW]'
+            textsize: 18
+            textcolor: 0x78ffff
+            position: [24, 115]
+            size: [175, 45]
+            align: center
+            background: 0x1d5560
+
+        -   type: label
+            id: bt_room
+            text: '[_ROOMS]'
+            textsize: 18
+            textcolor: 0x78ffff
+            position: [220, 115]
+            size: [175, 45]
+            align: center
+            background: 0x1d5560
+
+        -   type: label
+            id: bt_debug
+            text: '[_DEBUG]'
+            textsize: 18
+            textcolor: 0x78ffff
+            position: [24, 185]
+            size: [175, 45]
+            align: center
+            background: 0x1d5560
+
+        -   type: label
+            id: bt_plan
+            text: '[_PLAN]'
+            textsize: 18
+            textcolor: 0x78ffff
+            position: [220, 185]
+            size: [175, 45]
+            align: center
+            background: 0x1d5560
+
+        -   type: label
+            id: bt_manage
+            text: '[_MANAGE]'
+            textsize: 18
+            textcolor: 0x78ffff
+            position: [24, 255]
+            size: [175, 45]
+            align: center
+            background: 0x1d5560
+
+        -   type: label
+            id: bt_stats
+            text: '[_STATS]'
+            textsize: 18
+            textcolor: 0x78ffff
+            position: [220, 255]
+            size: [175, 45]
+            align: center
+            background: 0x1d5560
+
+        -   type: label
+            id: bt_display
+            text: '[_DISPLAY]'
+            textsize: 18
+            textcolor: 0x78ffff
+            position: [24, 325]
+            size: [175, 45]
+            align: center
+            background: 0x1d5560
+
+        -   type: label
+            id: bt_area
+            text: '[_AREAS]'
+            textsize: 18
+            textcolor: 0x78ffff
+            position: [220, 325]
+            size: [175, 45]
+            align: center
+            background: 0x1d5560

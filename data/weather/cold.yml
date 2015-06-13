@@ -1,0 +1,11 @@
+sun:
+    dawn: 0xddc8b2
+    twilight: 0xE79651
+    midnight: 0x181819
+    noon: 0xffffff
+
+temperatureChange: [-15, -5]
+
+duration: [100, 500]
+
+unique: false

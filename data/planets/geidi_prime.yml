@@ -1,0 +1,19 @@
+name: Giedi Prime
+type: Industrial
+desc: |
+    Giedi Prime is a median-viable planet with a low
+    active-photosynthesis range.
+    
+    Bleak and dark, it is heavily industrialized and its
+    people can be oppressed to work in your colony.
+
+stats:
+    water: -3
+    fertility: -3
+    atmosphere: -2
+    fauna: -3
+    flora: -3
+    hostile_fauna: 0
+    hostile_humankind: 2
+image:
+    thumb: data/planets/geidi_thumb.png

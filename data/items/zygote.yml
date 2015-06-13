@@ -4,5 +4,4 @@ width: 2
 height: 2
 type: item
 category: system
-cost:
-  matter: 42
+cost: 42
