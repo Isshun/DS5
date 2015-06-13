@@ -7,7 +7,7 @@ import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.item.ItemInfo.ItemInfoAction;
 
-public abstract class BaseJob {
+public abstract class JobModel {
 
     public boolean canBeResume() {
         return true;
@@ -23,7 +23,7 @@ public abstract class BaseJob {
 		return null;
 	}
 
-	public ConsumableItem getIngredient() {
+	public ConsumableModel getIngredient() {
 		return null;
 	}
 
@@ -41,7 +41,7 @@ public abstract class BaseJob {
     protected int               _totalCount;
     protected int				_posY;
 	protected int 				_posX;
-	protected ItemBase			_item;
+	protected MapObjectModel 	_item;
 	protected ItemFilter 		_filter;
 	protected ItemInfoAction    _actionInfo;
 	protected CharacterModel    _character;
@@ -54,21 +54,21 @@ public abstract class BaseJob {
 	protected int 				_nbUsed;
 	protected JobStatus			_status;
 	private int 				_nbBlocked;
-    protected double _cost;
-    protected int _totalCost;
+    protected double _progress;
+    protected int _cost;
 
-	public BaseJob(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
+	public JobModel(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
 		init();
 		_posY = y;
 		_posX = x;
 		if (actionInfo != null) {
 			_actionInfo = actionInfo;
-			_totalCost = actionInfo.cost;
-			_cost = 0;
+			_cost = actionInfo.cost;
+			_progress = 0;
 		}
 	}
 
-	public BaseJob() {
+	public JobModel() {
 		init();
 	}
 
@@ -88,7 +88,7 @@ public abstract class BaseJob {
 	public int					getX() { return _posX; }
 	public int					getY() { return _posY; }
 	public int					getId() { return _id; }
-	public ItemBase				getItem() { return _item; }
+	public MapObjectModel getItem() { return _item; }
 	public CharacterModel       getCharacter() { return _character; }
 	public CharacterModel       getCharacterRequire() { return _characterRequire; }
 	public int 					getFail() { return _fail; }
@@ -98,20 +98,20 @@ public abstract class BaseJob {
 	public ItemSlot 			getSlot() { return _slot; }
 	public ItemFilter			getItemFilter() { return _filter; }
 	public int 					getNbUsed() { return _nbUsed; }
-	public double               getQuantity() { return _cost; }
-	public int 					getQuantityTotal() { return _totalCost; }
-	public int 					getProgressPercent() { return (int)((double) _cost / _totalCost * 100); }
-	public double               getProgress() { return (double) _cost / _totalCost; }
+	public double               getQuantity() { return _progress; }
+	public int 					getQuantityTotal() { return _cost; }
+	public int 					getProgressPercent() { return (int)((double) _progress / _cost * 100); }
+	public double               getProgress() { return (double) _progress / _cost; }
 	public JobStatus			getStatus() { return _status; }
 
-    public void                 setQuantity(int quantity) { _cost = quantity; }
-    public void                 setQuantityTotal(int quantityTotal) { _totalCost = quantityTotal; }
+    public void                 setQuantity(int quantity) { _progress = quantity; }
+    public void setCost(int quantityTotal) { _cost = quantityTotal; }
     public void					setCharacterRequire(CharacterModel character) { _characterRequire = character; }
 	public void					setFail(JobAbortReason reason, int frame) { _reason = reason; _fail = frame; }
 	public void					setBlocked(int frame) { _blocked = frame; _nbBlocked++; }
 	public void 				setPosition(int x, int y) { _posX = x; _posY = y; }
 	public void 				setSlot(ItemSlot slot) { _slot = slot; }
-	public void					setItem(ItemBase item) { _item = item; }
+	public void					setItem(MapObjectModel item) { _item = item; }
 	public void 				setItemFilter(ItemFilter filter) { _filter = filter; }
 	public void 				setStatus(JobStatus status) { _status = status; }
 
@@ -130,7 +130,12 @@ public abstract class BaseJob {
 		if (_item != null) {
 			_item.setOwner(character);
 		}
+
+		onCharacterAssign(character);
 	}
+
+	// TODO abstract
+	protected void onCharacterAssign(CharacterModel character){}
 
 	public boolean isFinish() {
 		return _status == JobStatus.COMPLETE || _status == JobStatus.ABORTED;
@@ -168,6 +173,7 @@ public abstract class BaseJob {
 
 	public void setActionInfo(ItemInfo.ItemInfoAction action) {
 		_actionInfo = action;
+		_cost = action.cost;
 	}
 
 	public void setCount(int count) {

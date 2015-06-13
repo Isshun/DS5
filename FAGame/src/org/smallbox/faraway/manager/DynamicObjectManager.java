@@ -6,16 +6,16 @@ import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.TempItem;
-import org.smallbox.faraway.model.item.UserItem;
+import org.smallbox.faraway.model.item.ItemModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DynamicObjectManager {
-	private ArrayList<ItemBase>	 		_objects;
+	private ArrayList<MapObjectModel>	 		_objects;
 	private ArrayList<TempItem>	 		_tempItems;
 	private int 						_count;
 	private int 						_countFire;
@@ -24,7 +24,7 @@ public class DynamicObjectManager {
 	public DynamicObjectManager() {
 	  Log.debug("FoeManager");
 	  
-	  _objects = new ArrayList<ItemBase>();
+	  _objects = new ArrayList<MapObjectModel>();
 	  _tempItems = new ArrayList<TempItem>();
 	  _tempItems.add(new TempItem(0, 0, 100));
 	  _toTempItemDestroy = new ArrayList<TempItem>();
@@ -35,7 +35,7 @@ public class DynamicObjectManager {
 	}
 	
 	public void	refresh(GFXRenderer renderer, RenderEffect effect, double animProgress) throws IOException {
-		for (ItemBase o: _objects) {
+		for (MapObjectModel o: _objects) {
 			SpriteModel sprite = SpriteManager.getInstance().getItem(o);
 			renderer.draw(sprite, effect);
 		}
@@ -49,7 +49,7 @@ public class DynamicObjectManager {
 		return _count;
 	}
 
-	public void add(UserItem item) {
+	public void add(ItemModel item) {
 		_objects.add(item);
 	}
 

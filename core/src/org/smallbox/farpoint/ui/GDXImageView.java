@@ -19,11 +19,16 @@ public class GDXImageView extends ImageView {
 
     @Override
     public void draw(GFXRenderer renderer, RenderEffect effect) {
+        draw(renderer, 0, 0);
+    }
+
+    @Override
+    public void draw(GFXRenderer renderer, int x, int y) {
         if (_sprite == null && _image != null) {
             _sprite = ((GDXSpriteModel)_image).getData();
 
-            _finalX = 0;
-            _finalY = 0;
+            _finalX = x;
+            _finalY = y;
             View view = this;
             while (view != null) {
                 _finalX += view.getPosX();

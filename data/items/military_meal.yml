@@ -3,9 +3,7 @@ width: 1
 height: 1
 isFood: true
 type: consumable
-craftedQuantitfy: 1
-receipts:
-    -   base.military_ration
+
 actions:
     -   type: use
         cost: 1

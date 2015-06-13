@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.model.item.WorldArea;
+import org.smallbox.faraway.model.item.AreaModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 
@@ -21,7 +21,7 @@ public class PanelInfoArea extends BaseRightPanel {
         _lbName = (TextView)findById("lb_name");
     }
 
-    public void select(WorldArea area) {
+    public void select(AreaModel area) {
         _lbName.setString("Ground");
     }
 }

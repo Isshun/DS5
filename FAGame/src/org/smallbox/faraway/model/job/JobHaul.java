@@ -24,7 +24,7 @@
 //			return null;
 //		}
 //
-//		if (character.getInventory().size() == 0) {
+//		if (character.getComponents().size() == 0) {
 //			Log.error("addStoreJob: character inventory cannot be empty");
 //			return null;
 //		}
@@ -43,7 +43,7 @@
 //			return null;
 //		}
 //
-//		ItemBase itemToStore = character.getInventory().get(0);
+//		ItemBase itemToStore = character.getComponents().get(0);
 //		StorageRoom storage = Game.getRoomManager().getNearestStorage(character.getX(), character.getY(), itemToStore);
 //		if (storage == null) {
 //			return null;
@@ -75,7 +75,7 @@
 //			return true;
 //		}
 //
-//		_storage.store(character.getInventory());
+//		_storage.store(character.getComponents());
 //		character.clearInventory();
 //		JobManager.getInstance().close(this);
 //		return true;

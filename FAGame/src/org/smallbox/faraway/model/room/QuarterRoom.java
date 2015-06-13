@@ -1,8 +1,8 @@
 package org.smallbox.faraway.model.room;
 
 import org.smallbox.faraway.engine.util.StringUtils;
-import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.item.WorldArea;
+import org.smallbox.faraway.model.item.ItemModel;
+import org.smallbox.faraway.model.item.AreaModel;
 import org.smallbox.faraway.model.room.RoomOptions.RoomOption;
 
 public class QuarterRoom extends Room {
@@ -39,8 +39,8 @@ public class QuarterRoom extends Room {
 		_nbStorage = 0;
 		_nbBed = 0;
 		
-		for (WorldArea area: _areas) {
-			UserItem item = area.getItem();
+		for (AreaModel area: _areas) {
+			ItemModel item = area.getItem();
 			if (item != null) {
 				if (item.isBed()) { _nbBed++; }
 				//if (item.isStorage()) { _nbStorage++; }

@@ -12,8 +12,8 @@ import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.loader.PlanetLoader;
 import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.item.StructureItem;
-import org.smallbox.faraway.model.item.UserItem;
+import org.smallbox.faraway.model.item.StructureModel;
+import org.smallbox.faraway.model.item.ItemModel;
 import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.MenuLoad;
 import org.smallbox.faraway.ui.UserInterface;
@@ -27,8 +27,7 @@ public class Application implements GameEventListener {
     public static final int 		UPDATE_INTERVAL = 50;
     public static final int		    REFRESH_INTERVAL = 200;
     public static final int 		LONG_UPDATE_INTERVAL = 1000;
-    public static final String 	    SAVE_FILE = "data/saves/3.sav";
-	
+
 	private static Game				_game;
 	private static MenuBase			_menu;
 	private static int 				_updateInterval = UPDATE_INTERVAL;
@@ -149,8 +148,8 @@ public class Application implements GameEventListener {
             // Save
             case S:
                 if (modifier == Modifier.CONTROL) {
-                    _loadListener.onUpdate("saving [" + SAVE_FILE + "]");
-                    _game.save(SAVE_FILE);
+                    _loadListener.onUpdate("saving [3]");
+                    _game.save("4");
                     _loadListener.onUpdate("save done");
                     return;
                 }
@@ -219,7 +218,7 @@ public class Application implements GameEventListener {
         _game.onCreate();
 
         _loadListener.onUpdate("Load save");
-        _game.load(Application.SAVE_FILE, _loadListener);
+        _game.load("4", _loadListener);
 
         _loadListener.onUpdate("Start game");
         _gameRenderer.init(_game);
@@ -229,11 +228,7 @@ public class Application implements GameEventListener {
 
         _game.setListener(new GameListener() {
             @Override
-            public void onStructureBuild(StructureItem structure) {
-            }
-
-            @Override
-            public void onItemBuild(UserItem item) {
+            public void onAddItem(ItemModel item) {
                 if (_lightRenderer != null && item.isLight()) {
                     _lightRenderer.init();
                 }

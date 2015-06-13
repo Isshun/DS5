@@ -6,12 +6,13 @@ import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Step;
 import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
+import org.smallbox.faraway.OnMoveListener;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.Movable;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.job.BaseJob;
+import org.smallbox.faraway.model.job.JobModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +34,8 @@ public class PathManager {
 	}
 	
 	public interface PathManagerCallback {
-		  void	onPathComplete(Path path, BaseJob item);
-		  void	onPathFailed(BaseJob item);
+		  void	onPathComplete(Path path, JobModel item);
+		  void	onPathFailed(JobModel item);
 	}
 
 	public static class FinderPool {
@@ -82,11 +83,11 @@ public class PathManager {
 	public void init() {
 	}
 
-	public void getPathAsync(final CharacterModel character, final BaseJob job) {
-		getPathAsync(character, job, job.getX(), job.getY());
+	public void getPathAsync(final OnMoveListener listener, final CharacterModel character, final JobModel job) {
+		getPathAsync(listener, character, job, job.getX(), job.getY());
 	}
 
-	public void getPathAsync(final CharacterModel character, final BaseJob job, final int x, final int y) {
+	public void getPathAsync(final OnMoveListener listener, final CharacterModel character, final JobModel job, final int x, final int y) {
 		final int fromX = character.getX();
 		final int fromY = character.getY();
 		final int toX = x;
@@ -97,6 +98,9 @@ public class PathManager {
 
             AStarPathFinder finder = FinderPool.getFinder();
             if (finder == null) {
+				if (listener != null) {
+					listener.onFail(job, character);
+				}
                 character.onPathFailed(job);
                 throw new RuntimeException("no more AStarPathFinder in FinderPool");
             }
@@ -109,14 +113,22 @@ public class PathManager {
                 Log.debug("character: path close (" + fromX + "x" + fromY + " to " + toX + "x" + toY + ")");
 
                 synchronized(_paths) {
-                    _paths.add(() -> character.onPathComplete(rawpath, job));
+                    _paths.add(() -> {
+						if (listener != null) {
+							listener.onReach(job, character);
+						}
+						character.onPathComplete(rawpath, job);
+					});
                 }
 
             } else {
-                Log.info("character: path fail");
+				Log.info("character: path fail");
 
                 // TODO
                 job.setBlocked(MainRenderer.getFrame());
+				if (listener != null) {
+					listener.onFail(job, character);
+				}
                 character.onPathFailed(job);
             }
         });

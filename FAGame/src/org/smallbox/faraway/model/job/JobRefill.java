@@ -64,7 +64,7 @@
 //		}
 //
 //		// Character inventory is empty
-//		if (_character.getInventory().size() == 0) {
+//		if (_character.getComponents().size() == 0) {
 //			_reason = JobAbortReason.NO_COMPONENTS;
 //			return false;
 //		}
@@ -124,7 +124,7 @@
 //
 //	private boolean actionStore(CharacterModel character) {
 //		if (_carryItems != null) {
-//			_factory.addInventory(_carryItems);
+//			_factory.addComponent(_carryItems);
 //			character.removeInventory(_carryItems);
 //		}
 //
@@ -135,7 +135,7 @@
 //	private boolean actionTake(CharacterModel character) {
 //		while (character.hasInventorySpaceLeft() && _storage.contains(_filter)) {
 //			UserItem item = _storage.take(_filter);
-//			character.addInventory(item);
+//			character.addComponent(item);
 //			_carryItems.add(item);
 //		}
 //

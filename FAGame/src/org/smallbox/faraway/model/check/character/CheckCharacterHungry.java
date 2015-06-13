@@ -4,43 +4,38 @@ import org.smallbox.faraway.Game;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.check.old.CharacterCheck;
-import org.smallbox.faraway.model.item.ConsumableItem;
-import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.ConsumableModel;
 import org.smallbox.faraway.model.item.ItemFilter;
-import org.smallbox.faraway.model.job.JobUse;
 import org.smallbox.faraway.model.job.JobConsume;
+import org.smallbox.faraway.model.job.JobModel;
 
 /**
  * Created by Alex on 01/06/2015.
  */
 public class CheckCharacterHungry extends CharacterCheck {
-    public CheckCharacterHungry(CharacterModel character) {
-        super(character);
-    }
 
-    // TODO: change name by filter
-    @Override
-    public boolean create(JobManager jobManager) {
-		if (_character.getNeeds().isHungry()) {
-			ItemFilter filter = ItemFilter.createConsomableFilter();
-			filter.effectFood = true;
+	@Override
+	public boolean check(CharacterModel character) {
+		return character.getNeeds().isHungry();
+	}
 
-			// Take item on floor
-			ConsumableItem nearestItem = (ConsumableItem)Game.getWorldFinder().getNearest(filter, _character);
-			if (nearestItem != null && nearestItem.hasFreeSlot()) {
-				jobManager.addJob(JobConsume.create(_character, nearestItem), _character);
-				return true;
-			}
+	// TODO: change name by filter
+	@Override
+	public JobModel create(CharacterModel character) {
+		ItemFilter filter = ItemFilter.createConsomableFilter();
+		filter.effectFood = true;
 
-//			// Looking for food dispenser
-//			ItemFilter factoryFilter = ItemFilter.createFactoryFilter();
-//			factoryFilter.effectFood = true;
-//			item = Game.getWorldFinder().getNearest(factoryFilter, _character);
-//			if (item != null) {
-//				jobManager.addJob(JobUse.create(item), _character);
-//				return true;
-//			}
+		// Get consumable on inventory
+		if (character.getInventory() != null && character.getInventory().matchFilter(filter)) {
+			return JobConsume.create(character, character.getInventory());
 		}
-		return false;
-    }
+
+		// Get consumable on map
+		ConsumableModel nearestItem = (ConsumableModel)Game.getWorldFinder().getNearest(filter, character);
+		if (nearestItem != null && nearestItem.hasFreeSlot()) {
+			return JobConsume.create(character, nearestItem);
+		}
+
+		return null;
+	}
 }

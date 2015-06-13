@@ -6,7 +6,5 @@ type: item
 category: system
 slots:
     - [-1, 0]
-cost:
-  matter: 42
-  power: 10
-  o2: 100
+cost:  42
+power: 10

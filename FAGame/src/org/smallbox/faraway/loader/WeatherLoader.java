@@ -1,5 +1,6 @@
 package org.smallbox.faraway.loader;
 
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.GameDataListener;
 import org.smallbox.faraway.model.WeatherModel;
@@ -42,7 +43,7 @@ public class WeatherLoader {
 
         _listener.onDataLoaded();
 
-        System.out.println("Weather loaded");
+        Log.debug("Weather loaded");
     }
 
     public void reloadIfNeeded(GameData data) {

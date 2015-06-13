@@ -5,9 +5,9 @@ light: 2
 type: resource
 actions:
     -   type: gather
+        cost: 10
         products:
-            -   base.seaweed
+            -   item: base.seaweed
+                quantity: 1
+                dropRate: 1
         mature: 5
-cost:
-    matter: 10
-    power: 1

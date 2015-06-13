@@ -3,14 +3,14 @@ package org.smallbox.faraway.model.job;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 
-public class JobMove extends BaseJob {
+public class JobMove extends JobModel {
 
 	private JobMove(int x, int y) {
 		super(null, x, y);
 	}
 
-	public static BaseJob create(CharacterModel character, int x, int y, int stay) {
-		BaseJob job = new JobMove(x, y);
+	public static JobModel create(CharacterModel character, int x, int y, int stay) {
+		JobModel job = new JobMove(x, y);
 		job.setCharacterRequire(character);
 		return job;
 	}

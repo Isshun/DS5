@@ -3,5 +3,4 @@ width: 1
 height: 2
 type: item
 category: sickbay
-cost:
-  matter: 12
+cost: 12

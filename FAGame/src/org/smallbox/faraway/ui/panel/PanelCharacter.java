@@ -5,7 +5,6 @@ import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Settings;
 import org.smallbox.faraway.engine.util.StringUtils;
-import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.ToolTips;
 import org.smallbox.faraway.model.character.CharacterModel;
@@ -14,8 +13,7 @@ import org.smallbox.faraway.model.character.CharacterNeeds;
 import org.smallbox.faraway.model.character.CharacterRelation;
 import org.smallbox.faraway.model.character.CharacterStatus;
 import org.smallbox.faraway.model.character.CharacterStatus.Level;
-import org.smallbox.faraway.model.item.ItemBase;
-import org.smallbox.faraway.model.job.BaseJob;
+import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
@@ -510,12 +508,15 @@ public class PanelCharacter extends BaseRightPanel {
         }
     }
 
-    private void refreshJob(final BaseJob job) {
+    private void refreshJob(final JobModel job) {
         if (job != null) {
             _lbJob.setString(StringUtils.getDashedString(job.getLabel(), job.getProgressPercent() + "%", NB_COLUMNS));
             if (job.getItem() != null) {
                 _lbJob.setOnClickListener(view -> _ui.select(job.getItem()));
             }
+        } else if (_character.isSleeping()) {
+            _lbJob.setString("Sleep on floor");
+            _lbJob.setOnClickListener(null);
         } else {
             _lbJob.setString(Strings.LN_NO_JOB);
             _lbJob.setOnClickListener(null);
@@ -534,16 +535,20 @@ public class PanelCharacter extends BaseRightPanel {
 
     private void refreshInventory() {
         _lbInventory.setString(StringUtils.getDashedString(Strings.LB_INVENTORY,
-                _character.getInventorySpace() - _character.getInventoryLeftSpace() + "/" + _character.getInventorySpace(), 29));
+            _character.getInventorySpace() - _character.getInventoryLeftSpace() + "/" + _character.getInventorySpace(), 29));
 
-        for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
-            if (_character.getInventory().size() > i) {
-                ItemBase item = _character.getInventory().get(i);
-                _lbInventoryEntries[i].setImage(SpriteManager.getInstance().getIcon(item.getInfo()));
-            } else {
-                _lbInventoryEntries[i].setImage(null);
-            }
+        if (_character.getInventory() != null) {
+            ((TextView) findById("lb_inventory_entry")).setString(_character.getInventory().getLabel() + " (" + _character.getInventory().getQuantity() + ")");
         }
+
+//        for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
+//            if (_character.getInventory().size() > i) {
+//                MapObjectModel item = _character.getInventory().get(i);
+//                _lbInventoryEntries[i].setImage(SpriteManager.getInstance().getIcon(item.getInfo()));
+//            } else {
+//                _lbInventoryEntries[i].setImage(null);
+//            }
+//        }
     }
 
     private void refreshNeeds() {

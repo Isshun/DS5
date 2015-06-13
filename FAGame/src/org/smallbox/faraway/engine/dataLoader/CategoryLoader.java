@@ -1,5 +1,6 @@
 package org.smallbox.faraway.engine.dataLoader;
 
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.CategoryInfo;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
@@ -36,7 +37,7 @@ public class CategoryLoader {
 			category.items.add(itemInfo);
 		}
 
-		System.out.println("category loaded: " + _categories.size());
+		Log.debug("category loaded: " + _categories.size());
 	}
 
 	private CategoryInfo getOrCreateCategory(GameData data, String categoryName) {

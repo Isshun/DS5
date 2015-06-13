@@ -35,6 +35,11 @@ public class CheckBoxView extends TextView {
 	}
 
 	@Override
+	public void draw(GFXRenderer renderer, int x, int y) {
+
+	}
+
+	@Override
 	public void refresh() {
 
 	}

@@ -2,6 +2,7 @@ package org.smallbox.faraway.model;
 
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.Game;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.loader.WeatherLoader;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.yaml.snakeyaml.Yaml;
@@ -119,7 +120,7 @@ public class GameData implements GameDataListener {
             InputStream input = new FileInputStream(new File("data/config.yml"));
             Yaml yaml = new Yaml(new Constructor(GameConfig.class));
             config = (GameConfig)yaml.load(input);
-            System.out.println("Config loaded");
+            Log.debug("Config loaded");
             onDataLoaded();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

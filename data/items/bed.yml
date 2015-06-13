@@ -13,5 +13,3 @@ actions:
             energy: 80
             happiness: 10
             relation: 10
-cost:
-  matter: 42

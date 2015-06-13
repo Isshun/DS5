@@ -9,10 +9,10 @@ public class WorldFinder {
 
 	private int 				_width;
 	private int 				_height;
-	private WorldArea[][][] 	_areas;
+	private AreaModel[][][] 	_areas;
 	private WorldManager 		_worldManager;
 
-	public WorldFinder(WorldManager worldManager, WorldArea[][][] areas) {
+	public WorldFinder(WorldManager worldManager, AreaModel[][][] areas) {
 		_areas = areas;
 		_width = worldManager.getWidth();
 		_height = worldManager.getHeight();
@@ -20,14 +20,14 @@ public class WorldFinder {
 		Game.setWorldFinder(this);
 	}
 
-	public ItemBase getNearest(ItemFilter filter, CharacterModel character) {
+	public MapObjectModel getNearest(ItemFilter filter, CharacterModel character) {
 		int startX = character.getX();
 		int startY = character.getY();
 		int maxX = Math.max(startX, _width - startX);
 		int maxY = Math.max(startY, _height - startY);
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
-				WorldArea area = _worldManager.getArea(startX + offsetX, startY + offsetY);
+				AreaModel area = _worldManager.getArea(startX + offsetX, startY + offsetY);
 
 				// Check on non-existing area
 				if (area == null) {
@@ -40,7 +40,7 @@ public class WorldFinder {
 //				}
 
 				if (filter.isConsomable) {
-					ConsumableItem consumable = _worldManager.getConsumable(startX + offsetX, startY + offsetY);
+					ConsumableModel consumable = _worldManager.getConsumable(startX + offsetX, startY + offsetY);
                     if (getNearestItemCheck(consumable, filter)) { return consumable; }
 
                     consumable = _worldManager.getConsumable(startX - offsetX, startY - offsetY);
@@ -52,7 +52,7 @@ public class WorldFinder {
                     consumable = _worldManager.getConsumable(startX - offsetX, startY + offsetY);
                     if (getNearestItemCheck(consumable, filter)) { return consumable; }
 				} else {
-					UserItem item = _worldManager.getItem(startX + offsetX, startY + offsetY);
+					ItemModel item = _worldManager.getItem(startX + offsetX, startY + offsetY);
 					if (getNearestItemCheck(item, filter)) { return item; }
 
 					item = _worldManager.getItem(startX - offsetX, startY - offsetY);
@@ -69,7 +69,7 @@ public class WorldFinder {
 		return null;
 	}
 
-	private boolean getNearestItemCheck(ItemBase item, ItemFilter filter) {
+	private boolean getNearestItemCheck(MapObjectModel item, ItemFilter filter) {
 		// Item not exists
 		if (item == null) {
 			return false;
@@ -98,10 +98,10 @@ public class WorldFinder {
 	}
 
 	// TODO
-	public UserItem 			find(ItemFilter filter) {
+	public ItemModel find(ItemFilter filter) {
 		for (int x = 0; x < _width; x++) {
 			for (int y = 0; y < _height; y++) {
-				UserItem item = _areas[x][y][0].getItem();
+				ItemModel item = _areas[x][y][0].getItem();
 				if (item != null && item.matchFilter(filter)) {
 					return item;
 				}
@@ -110,12 +110,12 @@ public class WorldFinder {
 		return null;
 	}
 
-	public ConsumableItem getNearest(ItemInfo info, int startX, int startY) {
+	public ConsumableModel getNearest(ItemInfo info, int startX, int startY) {
 		int maxX = Math.max(startX, _width - startX);
 		int maxY = Math.max(startY, _height - startY);
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
-				WorldArea area = _worldManager.getArea(startX + offsetX, startY + offsetY);
+				AreaModel area = _worldManager.getArea(startX + offsetX, startY + offsetY);
 				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info) {
 					return area.getConsumable();
 				}

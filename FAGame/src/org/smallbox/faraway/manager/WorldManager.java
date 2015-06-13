@@ -9,18 +9,12 @@ import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.PathManager.MyMover;
 import org.smallbox.faraway.model.item.*;
-import org.smallbox.faraway.model.room.Room;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class WorldManager implements TileBasedMap {
 
     private GameListener _gameListener;
 
-    public WorldArea[][][] getAreas() {
+    public AreaModel[][][] getAreas() {
         return _areas;
     }
 
@@ -40,39 +34,25 @@ public class WorldManager implements TileBasedMap {
         return count;
     }
 
-    public static class DebugPos {
-        public int 			x;
-        public int 			y;
-        public int 			z;
-        public boolean 		inPath;
-    }
-
     private static final int 	NB_FLOOR = 10;
 
-    private Map<Integer, Room>	_rooms;
-    private WorldArea[][][]		_areas;
+    private AreaModel[][][]		_areas;
     private int					_width;
     private int					_height;
-    //	private Vector<DebugPos> 	_debugPath;
-//	private DebugPos 			_debugPathStart;
-//	private DebugPos 			_debugPathStop;
     private int 				_floor;
-    private List<FactoryItem> 	_factoryItems;
     private WorldFinder		 	_finder;
 
     public WorldManager() {
         _width = Constant.WORLD_WIDTH;
         _height = Constant.WORLD_HEIGHT;
-        _factoryItems = new ArrayList<>();
 
-        _rooms = new HashMap<>();
-        _areas = new WorldArea[_width][_height][NB_FLOOR];
+        _areas = new AreaModel[_width][_height][NB_FLOOR];
         for (int x = 0; x < _width; x++) {
-            _areas[x] = new WorldArea[_height][NB_FLOOR];
+            _areas[x] = new AreaModel[_height][NB_FLOOR];
             for (int y = 0; y < _height; y++) {
-                _areas[x][y] = new WorldArea[NB_FLOOR];
+                _areas[x][y] = new AreaModel[NB_FLOOR];
                 for (int f = 0; f < NB_FLOOR; f++) {
-                    _areas[x][y][f] = new WorldArea(x, y, f);
+                    _areas[x][y][f] = new AreaModel(x, y, f);
                 }
             }
         }
@@ -80,205 +60,309 @@ public class WorldManager implements TileBasedMap {
         _finder = new WorldFinder(this, _areas);
     }
 
-    public ItemBase putItem(String name, int x, int y, int z, int i) {
-        return putItem(Game.getData().getItemInfo(name), x, y, z, i);
+    public MapObjectModel putObject(String name, int x, int y, int z, int i) {
+        return putObject(Game.getData().getItemInfo(name), x, y, z, i);
     }
 
-    public void	addRandomSeed() {
-        int startX = (int)(Math.random() * 10000) % _width;
-        int startY = (int)(Math.random() * 10000) % _height;
+//    public void	addRandomSeed() {
+//        int startX = (int)(Math.random() * 10000) % _width;
+//        int startY = (int)(Math.random() * 10000) % _height;
+//
+//        for (int x = 0; x < 5; x++) {
+//            for (int y = 0; y < 5; y++) {
+//                if (addRandomSeed(startX + x, startY + y)) return;
+//                if (addRandomSeed(startX - x, startY - y)) return;
+//                if (addRandomSeed(startX + x, startY - y)) return;
+//                if (addRandomSeed(startX - x, startY + y)) return;
+//            }
+//        }
+//    }
+//
+//    private boolean addRandomSeed(int i, int j) {
+//        int realX = i % _width;
+//        int realY = j % _height;
+//        if (_areas[realX][realY][0].getStructure() == null) {
+//            WorldResource ressource = (WorldResource) putObject("base.res", 0, realX, realY, 10);
+//            JobManager.getInstance().addGather(ressource);
+//            return true;
+//        }
+//        return false;
+//    }
 
-        for (int x = 0; x < 5; x++) {
-            for (int y = 0; y < 5; y++) {
-                if (addRandomSeed(startX + x, startY + y)) return;
-                if (addRandomSeed(startX - x, startY - y)) return;
-                if (addRandomSeed(startX + x, startY - y)) return;
-                if (addRandomSeed(startX - x, startY + y)) return;
+//    public int	gather(WorldResource resource, int maxValue) {
+//        if (resource == null || maxValue == 0) {
+//            Log.error("gather: wrong call");
+//            return 0;
+//        }
+//
+//        int value = resource.gatherMatter(maxValue);
+//        int x = resource.getX();
+//        int y = resource.getY();
+//
+//        if (resource.isDepleted()) {
+//            _areas[x][y][0].setResource(null);
+//        }
+//
+//        MainRenderer.getInstance().invalidate(x, y);
+//
+//        return value;
+//    }
+
+    public void removeItem(ItemModel item) {
+        if (item != null && item.getArea() != null) {
+            item.getArea().setItem(null);
+
+            if (_gameListener != null) {
+                _gameListener.onRemoveItem();
             }
         }
     }
 
-    private boolean addRandomSeed(int i, int j) {
-        int realX = i % _width;
-        int realY = j % _height;
-        if (_areas[realX][realY][0].getStructure() == null) {
-            WorldResource ressource = (WorldResource)putItem("base.res", 0, realX, realY, 10);
-            JobManager.getInstance().addGather(ressource);
-            return true;
+    public void removeConsumable(ConsumableModel consumable) {
+        if (consumable != null && consumable.getArea() != null) {
+            consumable.getArea().setConsumable(null);
+
+            if (_gameListener != null) {
+                _gameListener.onRemoveConsumable();
+            }
+        }
+    }
+
+    public void removeStructure(int x, int y) {
+        if (!inMapBounds(x, y)) {
+            return;
+        }
+
+        if (_areas[x][y][0].getStructure() != null) {
+            _areas[x][y][0].setStructure(null);
+
+            if (_gameListener != null) {
+                _gameListener.onRemoveStructure();
+            }
+        }
+    }
+
+    public void removeStructure(StructureModel structure) {
+        if (structure != null && structure.getArea() != null) {
+            structure.getArea().setStructure(null);
+
+            if (_gameListener != null) {
+                _gameListener.onRemoveStructure();
+            }
+        }
+    }
+
+    public ConsumableModel putConsumable(ItemInfo itemInfo, int quantity, int x, int y, int z) {
+        if (!inMapBounds(x, y)) {
+            return null;
+        }
+
+        AreaModel area = getNearestFreeArea(itemInfo, x, y);
+        if (area == null) {
+            return null;
+        }
+
+        // Put consumable on free area
+        if (area.getConsumable() != null) {
+            area.getConsumable().addQuantity(1);
+        } else {
+            area.setConsumable((ConsumableModel) ItemFactory.create(this, _areas[x][y][0], itemInfo, 1));
+        }
+        return area.getConsumable();
+    }
+
+    public ConsumableModel putConsumable(ConsumableModel consumable, int x, int y) {
+        if (!inMapBounds(x, y)) {
+            return null;
+        }
+
+        AreaModel area = getNearestFreeArea(consumable.getInfo(), x, y);
+        if (area == null) {
+            return null;
+        }
+
+        // Put consumable on free area
+        if (area.getConsumable() != null) {
+            area.getConsumable().addQuantity(1);
+        } else {
+            area.setConsumable(consumable);
+        }
+
+        if (_gameListener != null) {
+            _gameListener.onAddConsumable(consumable);
+        }
+
+        return consumable;
+    }
+
+    /**
+     * Search for area free to receive a ConsumableItem
+     * @param itemInfo
+     * @param x
+     * @param y
+     * @return nearest free area
+     */
+    private AreaModel getNearestFreeArea(ItemInfo itemInfo, int x, int y) {
+        if (itemInfo.isUserItem || itemInfo.isConsumable) {
+            for (int i = 0; i < 10; i++) {
+                if (areaFreeForConsumable(x + 0, y + 0, itemInfo)) return _areas[x + 0][y + 0][0];
+                if (areaFreeForConsumable(x + i, y + 0, itemInfo)) return _areas[x + i][y + 0][0];
+                if (areaFreeForConsumable(x + 0, y + i, itemInfo)) return _areas[x + 0][y + i][0];
+                if (areaFreeForConsumable(x - i, y + 0, itemInfo)) return _areas[x - i][y + 0][0];
+                if (areaFreeForConsumable(x + 0, y - i, itemInfo)) return _areas[x + 0][y - i][0];
+                if (areaFreeForConsumable(x + i, y + i, itemInfo)) return _areas[x + i][y + i][0];
+                if (areaFreeForConsumable(x - 0, y - i, itemInfo)) return _areas[x - 0][y - i][0];
+                if (areaFreeForConsumable(x + i, y - i, itemInfo)) return _areas[x + i][y - i][0];
+                if (areaFreeForConsumable(x - i, y + i, itemInfo)) return _areas[x - i][y + i][0];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Check if current area is free for consumable
+     * @param x
+     * @param y
+     * @param info
+     * @return
+     */
+    private boolean areaFreeForConsumable(int x, int y, ItemInfo info) {
+        if (inMapBounds(x, y)) {
+            AreaModel area = _areas[x][y][0];
+            if (area.getStructure() == null || area.getStructure().isFloor()) {
+                return area.getItem() == null && (area.getConsumable() == null || area.getConsumable().getInfo() == info);
+            }
         }
         return false;
     }
 
-    public int	gather(WorldResource resource, int maxValue) {
-        if (resource == null || maxValue == 0) {
-            Log.error("gather: wrong call");
-            return 0;
+    /**
+     * Check if position is in map bounds
+     * @param x
+     * @param y
+     * @return true if position in bounds
+     */
+    private boolean inMapBounds(int x, int y) {
+        //z < 0 || z >= NB_FLOOR ||
+        if (x < 0 || y < 0 || x >= _width || y >= _height) {
+            //Log.error("put item out of bound, type: " + itemInfo.name + ", x: " + x + ", y: " + y + ")");
+            return false;
         }
-
-        int value = resource.gatherMatter(maxValue);
-        int x = resource.getX();
-        int y = resource.getY();
-
-        if (resource.isDepleted()) {
-            _areas[x][y][0].setResource(null);
-        }
-
-        MainRenderer.getInstance().invalidate(x, y);
-
-        return value;
+        return true;
     }
 
-    public void removeItem(ItemBase item) {
-        if (item != null && item.getArea() != null) {
-            item.getArea().setItem(null);
-        }
-    }
-
-    public void removeConsumable(ConsumableItem consumable) {
-        if (consumable != null && consumable.getArea() != null) {
-            consumable.getArea().setConsumable(null);
-        }
-    }
-
-    // TODO: call job listener
-    public void removeStructure(int x, int y) {
-        if (x >= 0 && y >= 0 && x < _width && y < _height) {
-            if (_areas[x][y][0].getItem() != null) {
-                _areas[x][y][0].setItem(null);
-            }
-            _areas[x][y][0].setStructure(null);
-            MainRenderer.getInstance().invalidate(x, y);
-        }
-    }
-
-    public ItemBase putItem(ItemInfo itemInfo, int x, int y, int z, int matterSupply) {
-        // Return if out of bound
-        if (z < 0 || z >= NB_FLOOR || x < 0 || y < 0 || x >= _width || y >= _height) {
-            Log.error("put item out of bound, type: " + itemInfo.name + ", x: " + x + ", y: " + y + ")");
+    public MapObjectModel putObject(ItemInfo itemInfo, int x, int y, int z, int matterSupply) {
+        if (!inMapBounds(x, y)) {
             return null;
         }
 
-        // Return if same item already exists at this position
-        WorldArea area = _areas[x][y][z];
-        if (area == null) {
-            area = new WorldArea(x, y, z);
-            _areas[x][y][z] = area;
+        if (itemInfo.isConsumable) {
+            return putConsumable(itemInfo, matterSupply, x, y, z);
         }
 
-        // Put item on nearest empty area / similar item
-        if (itemInfo.isUserItem || itemInfo.isConsomable) {
-            for (int i = 0; i < 10; i++) {
-                if (areaFreeForItem(area.getX() + 0, area.getY() + 0, itemInfo)) return putItemOnArea(area.getX() + 0, area.getY() + 0, itemInfo);
-                if (areaFreeForItem(area.getX() + i, area.getY() + 0, itemInfo)) return putItemOnArea(area.getX() + i, area.getY() + 0, itemInfo);
-                if (areaFreeForItem(area.getX() + 0, area.getY() + i, itemInfo)) return putItemOnArea(area.getX() + 0, area.getY() + i, itemInfo);
-                if (areaFreeForItem(area.getX() - i, area.getY() + 0, itemInfo)) return putItemOnArea(area.getX() - i, area.getY() + 0, itemInfo);
-                if (areaFreeForItem(area.getX() + 0, area.getY() - i, itemInfo)) return putItemOnArea(area.getX() + 0, area.getY() - i, itemInfo);
-                if (areaFreeForItem(area.getX() + i, area.getY() + i, itemInfo)) return putItemOnArea(area.getX() + i, area.getY() + i, itemInfo);
-                if (areaFreeForItem(area.getX() - 0, area.getY() - i, itemInfo)) return putItemOnArea(area.getX() - 0, area.getY() - i, itemInfo);
-                if (areaFreeForItem(area.getX() + i, area.getY() - i, itemInfo)) return putItemOnArea(area.getX() + i, area.getY() - i, itemInfo);
-                if (areaFreeForItem(area.getX() - i, area.getY() + i, itemInfo)) return putItemOnArea(area.getX() - i, area.getY() + i, itemInfo);
-            }
+        if (itemInfo.isStructure) {
+            return putStructure(itemInfo, matterSupply, x, y, z);
         }
 
-        // Put structure on area
-        else {
-            // TODO
-            if (area.getStructure() == null || area.getStructure().isGround()) {
-                ItemBase item = ItemFactory.create(this, area, itemInfo, matterSupply);
-                if (item != null) {
-                    item.setPosition(x, y);
-                    if (item.isStructure()) {
-                        if (_gameListener != null) {
-                            _gameListener.onStructureBuild((StructureItem) item);
-                        }
-                    }
-                    MainRenderer.getInstance().invalidate(x, y);
-                }
-                return item;
-            }
+        if (itemInfo.isUserItem) {
+            return putItem(itemInfo, matterSupply, x, y, z);
+        }
+
+        if (itemInfo.isResource) {
+            return putResource(itemInfo, matterSupply, x, y, z);
         }
 
         return null;
     }
 
-    private ItemBase putItemOnArea(int x, int y, ItemInfo itemInfo) {
-
-        // Put UserItem on floor
-        if (itemInfo.isConsomable) {
-            if (_areas[x][y][0].getConsumable() != null) {
-                _areas[x][y][0].getConsumable().addQuantity(1);
-            } else {
-                _areas[x][y][0].setConsumable((ConsumableItem)ItemFactory.create(this, _areas[x][y][0], itemInfo, 1));
-            }
-            return _areas[x][y][0].getConsumable();
+    private ResourceModel putResource(ItemInfo itemInfo, int matterSupply, int x, int y, int z) {
+        if (!inMapBounds(x, y)) {
+            return null;
         }
 
-        // Put ConsumableItem on floor / or in existing stack
-        else {
-            UserItem item = (UserItem)ItemFactory.create(this, _areas[x][y][0], itemInfo, 100);
-            for (int i = 0; i < item.getWidth(); i++) {
-                for (int j = 0; j < item.getHeight(); j++) {
-                    _areas[x][y][0].setItem(item);
-                }
+        // Put item on floor
+        ResourceModel resource = (ResourceModel)ItemFactory.create(this, _areas[x][y][z], itemInfo, matterSupply);
+        for (int i = 0; i < resource.getWidth(); i++) {
+            for (int j = 0; j < resource.getHeight(); j++) {
+                _areas[x][y][z].setResource(resource);
             }
-            if (_gameListener != null) {
-                _gameListener.onItemBuild(item);
-            }
-            return _areas[x][y][0].getItem();
         }
-//        MainRenderer.getInstance().invalidate(x, y);
-//        System.out.println("put item on floor: " + itemInfo.name + " (" + x + "x" + y + ")");
+        if (_gameListener != null) {
+            _gameListener.onAddResource(resource);
+        }
+
+        return resource;
     }
 
-    private boolean areaFreeForItem(int x, int y, ItemInfo info) {
-        if (x >= 0 && x < _width && y >= 0 && y < _height) {
-            WorldArea area = _areas[x][y][0];
-            if (area.getStructure() == null || area.getStructure().isFloor()) {
+    private ItemModel putItem(ItemInfo itemInfo, int matterSupply, int x, int y, int z) {
+        if (!inMapBounds(x, y)) {
+            return null;
+        }
 
-                // If item is UserItem floor need to be clear
-                if (info.isUserItem) {
-                    return area.getItem() == null && area.getConsumable() == null;
-                }
-
-                // If item is consumable check for empty floor or similar item
-                else if (info.isConsomable) {
-                    return area.getItem() == null && (area.getConsumable() == null || area.getConsumable().getInfo() == info);
-                }
+        // Put item on floor
+        ItemModel item = (ItemModel)ItemFactory.create(this, _areas[x][y][z], itemInfo, matterSupply);
+        for (int i = 0; i < item.getWidth(); i++) {
+            for (int j = 0; j < item.getHeight(); j++) {
+                _areas[x][y][z].setItem(item);
             }
         }
-        return false;
+        if (_gameListener != null) {
+            _gameListener.onAddItem(item);
+        }
+
+        return item;
     }
 
-    public UserItem 			getItem(int x, int y) {
+    private StructureModel putStructure(ItemInfo itemInfo, int matterSupply, int x, int y, int z) {
+        if (!inMapBounds(x, y)) {
+            return null;
+        }
+
+        // TODO
+        if (_areas[x][y][z].getStructure() == null || _areas[x][y][z].getStructure().isGround()) {
+            MapObjectModel item = ItemFactory.create(this, _areas[x][y][z], itemInfo, matterSupply);
+            if (item != null) {
+                item.setPosition(x, y);
+                if (item.isStructure()) {
+                    if (_gameListener != null) {
+                        _gameListener.onAddStructure((StructureModel) item);
+                    }
+                }
+            }
+            return (StructureModel)item;
+        }
+
+        return null;
+    }
+
+    public ItemModel getItem(int x, int y) {
         return (x < 0 || x >= _width || y < 0 || y >= _height) || _areas[x][y] == null ? null : _areas[x][y][0].getItem();
     }
 
-    public WorldResource getResource(int x, int y, int z) {
+    public ResourceModel getResource(int x, int y, int z) {
         return (z < 0 || z >= NB_FLOOR || x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y][z].getResource();
     }
 
-    public StructureItem getStructure(int x, int y, int z) {
+    public StructureModel getStructure(int x, int y, int z) {
         return (z < 0 || z >= NB_FLOOR || x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y][z].getStructure();
     }
 
-    public ConsumableItem getConsumable(int x, int y) {
+    public ConsumableModel getConsumable(int x, int y) {
         return (x < 0 || x >= _width || y < 0 || y >= _height) || _areas[x][y] == null ? null : _areas[x][y][0].getConsumable();
     }
 
-    public StructureItem 		getStructure(int x, int y) {
+    public StructureModel getStructure(int x, int y) {
         return getStructure(x, y, _floor);
     }
 
-    public WorldResource getResource(int x, int y) {
+    public ResourceModel getResource(int x, int y) {
         return getResource(x, y, _floor);
     }
 
-    public WorldArea			getArea(int x, int y) {
+    public AreaModel getArea(int x, int y) {
         return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y][0];
     }
 
-    public Room					getRoom(int id) { return _rooms.get(id); }
-    public int					getRoomCount() { return _rooms.size(); }
     public int					getWidth() { return _width; }
     public int					getHeight() { return _height; }
     public WorldFinder			getFinder() { return _finder; }
@@ -302,21 +386,6 @@ public class WorldManager implements TileBasedMap {
         //Log.info("visite: " + x + ", " + y);
     }
 
-    public List<FactoryItem> getFactories() { return _factoryItems; }
-
-//	public void stopDebug(int x, int y) {
-//		_debugPathStop = new DebugPos();
-//		_debugPathStop.x = x;
-//		_debugPathStop.y = y;
-//	}
-//
-//	public void startDebug(int posX, int posY) {
-//		_debugPath = new Vector<DebugPos>();
-//		_debugPathStart = new DebugPos();
-//		_debugPathStart.x = posX;
-//		_debugPathStart.y = posY;
-//	}
-
     public void replaceItem(ItemInfo info, int x, int y, int matterSupply) {
         replaceItem(info, x, y, _floor, matterSupply);
     }
@@ -329,62 +398,53 @@ public class WorldManager implements TileBasedMap {
         } else {
             _areas[x][y][z].setItem(null);
         }
-        putItem(info, x, y, z, matterSupply);
+        putObject(info, x, y, z, matterSupply);
     }
+//
+//    public int getFloor() {
+//        return _floor;
+//    }
+//
+//    public void upFloor() {
+//        setFloor(_floor + 1);
+//    }
+//
+//    private void setFloor(int floor) {
+//        if (floor < 0 || floor >= NB_FLOOR) {
+//            return;
+//        }
+//
+//        _floor = floor;
+//        MainRenderer.getInstance().invalidate();
+//    }
+//
+//    public void downFloor() {
+//        setFloor(_floor - 1);
+//    }
 
-    public int getFloor() {
-        return _floor;
-    }
+//    // TODO: heavy
+//    public ItemModel getRandomToy(int posX, int posY) {
+//        List<ItemModel> items = new ArrayList<ItemModel>();
+//        for (int offsetX = 0; offsetX < 14; offsetX++) {
+//            for (int offsetY = 0; offsetY < 14; offsetY++) {
+//                ItemModel item = null;
+//                item = getItem(posX + offsetX, posY + offsetY);
+//                if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
+//                item = getItem(posX - offsetX, posY - offsetY);
+//                if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
+//                item = getItem(posX + offsetX, posY - offsetY);
+//                if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
+//                item = getItem(posX - offsetX, posY + offsetY);
+//                if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
+//            }
+//        }
+//        if (items.size() > 0) {
+//            return items.get((int)(Math.random() * items.size()));
+//        }
+//        return null;
+//    }
 
-    public void upFloor() {
-        setFloor(_floor + 1);
-    }
-
-    private void setFloor(int floor) {
-        if (floor < 0 || floor >= NB_FLOOR) {
-            return;
-        }
-
-        _floor = floor;
-        MainRenderer.getInstance().invalidate();
-    }
-
-    public void downFloor() {
-        setFloor(_floor - 1);
-    }
-
-    // TODO: heavy
-    public UserItem getRandomToy(int posX, int posY) {
-        List<UserItem> items = new ArrayList<UserItem>();
-        for (int offsetX = 0; offsetX < 14; offsetX++) {
-            for (int offsetY = 0; offsetY < 14; offsetY++) {
-                UserItem item = null;
-                item = getItem(posX + offsetX, posY + offsetY);
-                if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
-                item = getItem(posX - offsetX, posY - offsetY);
-                if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
-                item = getItem(posX + offsetX, posY - offsetY);
-                if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
-                item = getItem(posX - offsetX, posY + offsetY);
-                if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
-            }
-        }
-        if (items.size() > 0) {
-            return items.get((int)(Math.random() * items.size()));
-        }
-        return null;
-    }
-
-    // TODO
-    public List<Room> getRooms() {
-        return new ArrayList<>(_rooms.values());
-    }
-
-    public void addRoom(Room room) {
-        _rooms.put(room.getId(), room);
-    }
-
-    public void removeResource(WorldResource resource) {
+    public void removeResource(ResourceModel resource) {
         if (resource == null) {
             return;
         }
@@ -401,7 +461,7 @@ public class WorldManager implements TileBasedMap {
         MainRenderer.getInstance().invalidate();
     }
 
-    public WorldArea getArea(int z, int x, int y) {
+    public AreaModel getArea(int z, int x, int y) {
         return _areas[x][y][z];
     }
 
@@ -422,7 +482,7 @@ public class WorldManager implements TileBasedMap {
     public float getCost(PathFindingContext context, int tx, int ty) {
         float cost = context.getSourceX() != tx && context.getSourceY() != ty ? 1.5f : 1f;
 
-        WorldArea area = _areas[tx][ty][0];
+        AreaModel area = _areas[tx][ty][0];
         if (area != null && area.getItem() != null) {
             cost *= 4;
         }
@@ -430,9 +490,9 @@ public class WorldManager implements TileBasedMap {
         return cost;
     }
 
-    public UserItem takeItem(UserItem item) {
+    public ItemModel takeItem(ItemModel item) {
         if (item != null) {
-            WorldArea area = getArea(item.getX(), item.getY());
+            AreaModel area = getArea(item.getX(), item.getY());
             if (area != null) {
                 if (area.getItem() != item) {
                     Log.error("Area not contains desired item");
@@ -445,7 +505,7 @@ public class WorldManager implements TileBasedMap {
         return null;
     }
 
-    private UserItem takeItem(UserItem item, WorldArea area) {
+    private ItemModel takeItem(ItemModel item, AreaModel area) {
         if (area != null && item != null) {
             area.setItem(null);
             MainRenderer.getInstance().invalidate(area.getX(), area.getY());
@@ -455,17 +515,13 @@ public class WorldManager implements TileBasedMap {
         return null;
     }
 
-    public UserItem takeItem(int x, int y) {
-        UserItem item = getItem(x, y);
-        WorldArea area = getArea(x, y);
+    public ItemModel takeItem(int x, int y) {
+        ItemModel item = getItem(x, y);
+        AreaModel area = getArea(x, y);
         return takeItem(item, area);
     }
 
-    public void addFactory(FactoryItem factory) {
-        _factoryItems.add(factory);
-    }
-
-    public void destroy(ItemBase item) {
+    public void destroy(MapObjectModel item) {
         if (item == null) {
             Log.error("Cannot destroy null item");
             return;
@@ -474,7 +530,7 @@ public class WorldManager implements TileBasedMap {
         // Get area
         int x = item.getX();
         int y = item.getY();
-        WorldArea area = getArea(x, y);
+        AreaModel area = getArea(x, y);
         if (area == null) {
             Log.error("Item position not matching existing area");
             return;
@@ -496,7 +552,7 @@ public class WorldManager implements TileBasedMap {
     }
 
     // TODO
-    public UserItem getItemById(int itemId) {
+    public ItemModel getItemById(int itemId) {
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
                 if (_areas[x][y][0].getItem() != null && _areas[x][y][0].getItem().getId() == itemId) {

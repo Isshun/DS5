@@ -6,7 +6,7 @@ import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.Movable.Direction;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.job.BaseJob.JobAbortReason;
+import org.smallbox.faraway.model.job.JobModel.JobAbortReason;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +32,8 @@ public class CharacterManager {
 	public CharacterManager() {
 		Log.debug("CharacterManager");
 
-		_characters = new ArrayList<CharacterModel>();
-		_addOnUpdate = new ArrayList<CharacterModel>();
+		_characters = new ArrayList<>();
+		_addOnUpdate = new ArrayList<>();
 		new ArrayList<CharacterModel>();
 		_count = 0;
 
@@ -72,7 +72,7 @@ public class CharacterManager {
 	}
 
 	public void    onUpdate(int update) {
-		Log.debug("CharacterManager: update");
+//		Log.debug("CharacterManager: update");
 		
 		// Add new born
 		_characters.addAll(_addOnUpdate);
@@ -114,7 +114,7 @@ public class CharacterManager {
 			_characters.remove(characterToRemove);
 		}
 
-		Log.debug("CharacterManager: update done");
+//		Log.debug("CharacterManager: update done");
 	}
 
 	public void onLongUpdate() {

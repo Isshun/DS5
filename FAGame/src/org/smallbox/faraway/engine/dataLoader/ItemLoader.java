@@ -1,18 +1,20 @@
 package org.smallbox.faraway.engine.dataLoader;
 
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class ItemLoader {
-	
-	public static void load(GameData data, String path, String packageName) {
-	    System.out.println("load items...");
+
+    private static boolean _hasErrors;
+
+    public static void load(GameData data, String path, String packageName) {
+	    Log.debug("load items...");
 
 	    // List files
 		File itemFiles[] = (new File(path)).listFiles(new FilenameFilter() {
@@ -28,7 +30,7 @@ public class ItemLoader {
 			ItemInfo info = null;
 			
 			try {
-			    System.out.println(" - load: " + itemFile.getName());
+			    Log.debug(" - load: " + itemFile.getName());
 			    InputStream input = new FileInputStream(itemFile);
 			    Yaml yaml = new Yaml(new Constructor(ItemInfo.class));
 			    info = (ItemInfo)yaml.load(input);
@@ -46,7 +48,7 @@ public class ItemLoader {
 
 			    // Get category
 			    if ("consumable".equals(info.type)) {
-				    info.isConsomable = true;
+				    info.isConsumable = true;
 			    } else if ("structure".equals(info.type)) {
 				    info.isStructure = true; 
 			    } else if ("item".equals(info.type)) {
@@ -65,66 +67,24 @@ public class ItemLoader {
 			i++;
 		}
 		
-	    System.out.println("items loaded: " + i);
+	    Log.debug("items loaded: " + i);
 	}
 
 	public static void load(final GameData data) {
+        _hasErrors = false;
+
+		// First pass
 		ItemLoader.load(data, "data/items/", "base");
 		ItemLoader.load(data, "data/mods/garden/items/", "garden");
-		
-		// First pass
-		for (ItemInfo item: data.items) {
-			// Init crafted item
-			if (item.receipts != null) {
-				item.craftedFromItems = new ArrayList<ItemInfo>();
-				for (String name: item.receipts) {
-					item.craftedFromItems.add(data.getItemInfo(name));
-				}
-			}
-		}
 
-		// Second pass
-		for (ItemInfo item: data.items) {
-			item.isSleeping = "base.bed".equals(item.name);
+        secondPass(data);
 
-			if (item.actions != null) {
-				for (ItemInfo.ItemInfoAction action: item.actions) {
+        thirdPass(data);
 
-					// Set product items
-					if (action.products != null && !action.products.isEmpty()) {
-						action.productsItem = action.products.stream().map(data::getItemInfo).collect(Collectors.toList());
-					}
+        if (_hasErrors) {
+            throw new RuntimeException("Errors loading items");
+        }
 
-                    if (action.dropRate == 0) {
-                        action.dropRate = 1;
-                    }
-
-					switch (action.type) {
-                        case "use":
-                            if (item.actions.size() > 1) {
-                                throw new RuntimeException("action type \"use\" need to be unique");
-                            }
-                            break;
-
-						case "cook":
-                            break;
-
-						case "gather":
-                            if (item.actions.size() > 1) {
-                                throw new RuntimeException("action type \"gather\" need to be unique");
-                            }
-                            data.gatherItems.add(item);
-                            break;
-
-						case "mine":
-                            if (item.actions.size() > 1) {
-                                throw new RuntimeException("action type \"mine\" need to be unique");
-                            }
-//                            data.gatherItems.add(item);
-                            break;
-					}
-				}
-			}
 
 //			// Init action item
 //			if (item.actions != null) {
@@ -145,6 +105,94 @@ public class ItemLoader {
 //				}
 //			}
 		}
-	}
+
+    private static void thirdPass(GameData data) {
+        for (ItemInfo item: data.items) {
+            if (!item.isUserItem && !item.isStructure && item.cost > 0) {
+                error(item, "Only UserItem and StructureItem can have cost attribute");
+            }
+        }
+    }
+
+    private static void error(ItemInfo item, String message) {
+//        throw new RuntimeException(message + " (" + item.name + ")");
+        _hasErrors = true;
+        Log.error(message + " (" + item.name + ")");
+    }
+
+    private static void secondPass(GameData data) {
+        for (ItemInfo item: data.items) {
+            item.isSleeping = "base.bed".equals(item.name);
+
+            if (item.receipts != null) {
+                for (ItemInfo.ItemInfoReceipt receipt: item.receipts) {
+                    for (ItemInfo.ItemComponentInfo component: receipt.components) {
+                        component.itemInfo = data.getItemInfo(component.item);
+                    }
+                    for (ItemInfo.ItemProductInfo product: receipt.products) {
+                        product.itemInfo = data.getItemInfo(product.item);
+                    }
+                }
+            }
+
+            if (item.actions != null) {
+                for (ItemInfo.ItemInfoAction action: item.actions) {
+
+                    // Set product items (for self-product item, like res_rock)
+                    if (action.products != null && !action.products.isEmpty()) {
+                        for (ItemInfo.ItemProductInfo productInfo: action.products) {
+                            productInfo.itemInfo = data.getItemInfo(productInfo.item);
+                            productInfo.dropRate = productInfo.dropRate == 0 ? 1 : productInfo.dropRate;
+                        }
+                    }
+
+                    // Set receipts (for factory items, like cooker)
+                    if (action.receipts != null) {
+                        for (ItemInfo.ItemInfoReceipt receiptInfo: action.receipts) {
+                            if (receiptInfo.products != null) {
+                                for (ItemInfo.ItemProductInfo productInfo : receiptInfo.products) {
+                                    productInfo.itemInfo = data.getItemInfo(productInfo.item);
+                                }
+                            }
+                            if (receiptInfo.components != null) {
+                                for (ItemInfo.ItemComponentInfo componentInfo : receiptInfo.components) {
+                                    componentInfo.itemInfo = data.getItemInfo(componentInfo.item);
+                                }
+                            }
+                        }
+                    }
+
+                    if (action.dropRate == 0) {
+                        action.dropRate = 1;
+                    }
+
+                    switch (action.type) {
+                        case "use":
+                            if (item.actions.size() > 1) {
+                                throw new RuntimeException("action type \"use\" need to be unique");
+                            }
+                            break;
+
+                        case "cook":
+                            break;
+
+                        case "gather":
+                            if (item.actions.size() > 1) {
+                                throw new RuntimeException("action type \"gather\" need to be unique");
+                            }
+                            data.gatherItems.add(item);
+                            break;
+
+                        case "mine":
+                            if (item.actions.size() > 1) {
+                                throw new RuntimeException("action type \"mine\" need to be unique");
+                            }
+//                            data.gatherItems.add(item);
+                            break;
+                    }
+                }
+            }
+        }
+}
 
 }

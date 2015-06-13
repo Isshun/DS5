@@ -3,7 +3,6 @@ entries:
     -   type: frame
         position: [0, 0]
         size: [360, 260]
-        align: center
         background: 0xf889955
         entries:
 

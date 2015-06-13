@@ -3,12 +3,6 @@ width: 1
 height: 1
 isFood: true
 type: consumable
-craftedQuantitfy: 10
-receipts:
-    - base.seaweed
-    - base.seafood
-    - base.vegetable
-
 actions:
     -   type: use
         label: Eat easy meal

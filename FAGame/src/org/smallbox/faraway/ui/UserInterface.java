@@ -6,6 +6,7 @@ import org.smallbox.faraway.engine.ui.UIEventManager;
 import org.smallbox.faraway.engine.ui.UIMessage;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.CharacterManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.manager.SpriteManager;
@@ -43,13 +44,13 @@ public class UserInterface implements GameEventListener {
     private PanelConsole                _panelMessage;
     private ToolTip 					_selectedTooltip;
     private CharacterModel              _selectedCharacter;
-    private UserItem 					_selectedItem;
-    private StructureItem 				_selectedStructure;
-    private WorldResource				_selectedResource;
-    private WorldArea 					_selectedArea;
+    private ItemModel _selectedItem;
+    private StructureModel _selectedStructure;
+    private ResourceModel _selectedResource;
+    private AreaModel _selectedArea;
     private Room 						_selectedRoom;
     private ItemInfo 					_selectedItemInfo;
-    private ConsumableItem              _selectedConsumable;
+    private ConsumableModel _selectedConsumable;
     private int 						_update;
     private long                        _lastModified;
     private PanelInfoStructure          _panelInfoStructure;
@@ -236,7 +237,7 @@ public class UserInterface implements GameEventListener {
         // right button pressed
         if (_keyRightPressed || rightPressed) {
             _viewport.update(x, y);
-            System.out.println("pos: " + _viewport.getPosX() + "x" + _viewport.getPosY());
+            Log.debug("pos: " + _viewport.getPosX() + "x" + _viewport.getPosY());
             if (_menu != null && _menu.isVisible()) {
                 //_menu.move(_viewport.getPosX(), _viewport.getPosY());
                 _menu.setViewPortPosition(_viewport.getPosX(), _viewport.getPosY());
@@ -280,10 +281,10 @@ public class UserInterface implements GameEventListener {
     public int 				getRelativePosYMin(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
     public ToolTip			getSelectedTooltip() { return _selectedTooltip; }
     public CharacterModel   getSelectedCharacter() { return _selectedCharacter; }
-    public WorldArea		getSelectedArea() { return _selectedArea; }
-    public UserItem			getSelectedItem() { return _selectedItem; }
-    public WorldResource	getSelectedResource() { return _selectedResource; }
-    public StructureItem	getSelectedStructure() { return _selectedStructure; }
+    public AreaModel getSelectedArea() { return _selectedArea; }
+    public ItemModel getSelectedItem() { return _selectedItem; }
+    public ResourceModel getSelectedResource() { return _selectedResource; }
+    public StructureModel getSelectedStructure() { return _selectedStructure; }
     public ItemInfo			getSelectedItemInfo() { return _selectedItemInfo; }
     public Room 			getSelectedRoom() { return _selectedRoom; }
 
@@ -357,12 +358,12 @@ public class UserInterface implements GameEventListener {
                     || _interaction.isAction(UserInteraction.Action.SET_PLAN)
                     || _interaction.isAction(UserInteraction.Action.BUILD_ITEM)) {
                 if (_keyLeftPressed) {
-                    _cursor.draw(renderer, _viewport.getRenderEffect(), Math.min(_keyPressPosX, _keyMovePosX),
+                    _cursor.draw(renderer, _viewport, Math.min(_keyPressPosX, _keyMovePosX),
                             Math.min(_keyPressPosY, _keyMovePosY),
                             Math.max(_keyPressPosX, _keyMovePosX),
                             Math.max(_keyPressPosY, _keyMovePosY));
                 } else {
-                    _cursor.draw(renderer, _viewport.getRenderEffect(), Math.min(_keyMovePosX, _keyMovePosX),
+                    _cursor.draw(renderer, _viewport, Math.min(_keyMovePosX, _keyMovePosX),
                             Math.min(_keyMovePosY, _keyMovePosY),
                             Math.max(_keyMovePosX, _keyMovePosX),
                             Math.max(_keyMovePosY, _keyMovePosY));
@@ -420,14 +421,6 @@ public class UserInterface implements GameEventListener {
                 }
                 return true;
 
-            case PAGEUP:
-                ServiceManager.getWorldMap().upFloor();
-                return true;
-
-            case PAGEDOWN:
-                ServiceManager.getWorldMap().downFloor();
-                return true;
-
             case SPACE:
                 _game.setRunning(!_game.isRunning());
                 return true;
@@ -462,10 +455,10 @@ public class UserInterface implements GameEventListener {
     public void onDoubleClick(int x, int y) {
         _keyLeftPressed = false;
 
-        WorldArea area = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
+        AreaModel area = ServiceManager.getWorldMap().getArea(getRelativePosX(x), getRelativePosY(y));
         if (area != null) {
-            ItemBase item = area.getItem();
-            ItemBase structure = area.getStructure();
+            MapObjectModel item = area.getItem();
+            MapObjectModel structure = area.getStructure();
 
             if (item != null) {
                 item.nextMode();
@@ -541,7 +534,7 @@ public class UserInterface implements GameEventListener {
 
                 int relX = getRelativePosX(x);
                 int relY = getRelativePosY(y);
-                WorldArea a = ServiceManager.getWorldMap().getArea(relX, relY);
+                AreaModel a = ServiceManager.getWorldMap().getArea(relX, relY);
                 if (a != null) {
                     if (a.getResource() != null) { select(a.getResource()); return true; }
                     else if (a.getItem() != null) { select(a.getItem()); return true; }
@@ -551,7 +544,7 @@ public class UserInterface implements GameEventListener {
                 }
                 for (int x2 = 0; x2 < Constant.ITEM_MAX_WIDTH; x2++) {
                     for (int y2 = 0; y2 < Constant.ITEM_MAX_HEIGHT; y2++) {
-                        UserItem item = ServiceManager.getWorldMap().getItem(relX - x2, relY - y2);
+                        ItemModel item = ServiceManager.getWorldMap().getItem(relX - x2, relY - y2);
                         if (item != null && item.getWidth() > x2 && item.getHeight() > y2) {
                             select(item);
                             return true;
@@ -631,14 +624,14 @@ public class UserInterface implements GameEventListener {
         _selectedRoom = room;
     }
 
-    public void select(WorldResource resource) {
+    public void select(ResourceModel resource) {
         clean();
         setMode(Mode.INFO_RESOURCE);
         _selectedResource = resource;
         _panelInfoResource.select(resource);
     }
 
-    public void select(UserItem item) {
+    public void select(ItemModel item) {
         clean();
         setMode(Mode.INFO);
         setMode(Mode.INFO_ITEM);
@@ -646,7 +639,7 @@ public class UserInterface implements GameEventListener {
         _panelInfoItem.select(item);
     }
 
-    public void select(ConsumableItem consumable) {
+    public void select(ConsumableModel consumable) {
         clean();
         setMode(Mode.INFO);
         setMode(Mode.INFO_CONSUMABLE);
@@ -654,7 +647,7 @@ public class UserInterface implements GameEventListener {
         _panelInfoConsumable.select(consumable);
     }
 
-    public void select(StructureItem structure) {
+    public void select(StructureModel structure) {
         clean();
         setMode(Mode.INFO_STRUCTURE);
         _selectedStructure = structure;
@@ -663,7 +656,7 @@ public class UserInterface implements GameEventListener {
         dumpRoomInfo(structure.getArea());
     }
 
-    public void select(WorldArea area) {
+    public void select(AreaModel area) {
         clean();
         setMode(Mode.INFO_AREA);
         _selectedArea = area;
@@ -672,13 +665,13 @@ public class UserInterface implements GameEventListener {
         dumpRoomInfo(area);
     }
 
-    private void dumpRoomInfo(WorldArea area) {
+    private void dumpRoomInfo(AreaModel area) {
         if (area.getRoom() != null) {
-            for (WorldArea a: area.getRoom().getAreas()) {
-                System.out.println("in room: " + a.getX() + "x" + a.getY());
+            for (AreaModel a: area.getRoom().getAreas()) {
+                Log.debug("in room: " + a.getX() + "x" + a.getY());
             }
-            System.out.println("room size: " + area.getRoom().getAreas().size());
-            System.out.println("room exterior: " + area.getRoom().isExterior());
+            Log.debug("room size: " + area.getRoom().getAreas().size());
+            Log.debug("room exterior: " + area.getRoom().isExterior());
         }
     }
 
@@ -705,12 +698,12 @@ public class UserInterface implements GameEventListener {
         _selectedTooltip = null;
     }
 
-    public void select(ItemBase item) {
+    public void select(MapObjectModel item) {
         if (item.isUserItem()) {
-            select((UserItem)item);
+            select((ItemModel)item);
         }
         else if (item.isStructure()) {
-            select((StructureItem)item);
+            select((StructureModel)item);
         }
     }
 }

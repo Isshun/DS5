@@ -7,5 +7,4 @@ slots:
     -   [0, 0]
 type: item
 category: system
-cost:
-    matter: 42
+cost: 42

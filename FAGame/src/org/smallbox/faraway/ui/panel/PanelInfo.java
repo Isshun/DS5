@@ -6,7 +6,7 @@ import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.*;
-import org.smallbox.faraway.model.job.BaseJob;
+import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.model.room.Room;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
@@ -21,7 +21,7 @@ public class PanelInfo extends BaseRightPanel {
 	private static final int 		INVENTORY_ITEM_SPACE = 4;
 	private static final int 		NB_SLOTS_MAX = 10;
 
-	private WorldArea				_area;
+	private AreaModel _area;
 	private int						_line;
 	private TextView 				_itemName;
 	private TextView 				_itemMatter;
@@ -59,7 +59,7 @@ public class PanelInfo extends BaseRightPanel {
 	private CheckBoxView 			_cbConsomable;
 	private CheckBoxView 			_cbGarbage;
 	private ItemInfo				_itemInfo;
-	private WorldResource 			_resource;
+	private ResourceModel _resource;
 	private FrameLayout 			_layoutItemProduce;
 	private FrameLayout 			_layoutStorageSimpleFilter;
 	private FrameLayout 			_layoutSlot;
@@ -407,7 +407,7 @@ public class PanelInfo extends BaseRightPanel {
 //		ObjectPool.release(text);
 	}
 	
-	public void displayArea(WorldArea area) {
+	public void displayArea(AreaModel area) {
 		_area = area;
 		if (area == null) {
 			return;
@@ -451,7 +451,7 @@ public class PanelInfo extends BaseRightPanel {
 		}
 	}
 
-	private void displayResource(WorldResource resource) {
+	private void displayResource(ResourceModel resource) {
 		_resource = resource;
 		if (_resource == null) {
 			return;
@@ -496,7 +496,7 @@ public class PanelInfo extends BaseRightPanel {
 
 		_itemAction.setVisible(false);
 	}
-	private void  setStructure(final StructureItem structure) {
+	private void  setStructure(final StructureModel structure) {
 
 //		if (_structureOptions != null) {
 //			List<TextView> texts = _structureOptions.getOptions();
@@ -614,7 +614,7 @@ public class PanelInfo extends BaseRightPanel {
 //		}
 //	}
 
-	public void refreshItem(final UserItem item) {
+	public void refreshItem(final ItemModel item) {
 		if (item == null) {
 			return;
 		}
@@ -676,7 +676,7 @@ public class PanelInfo extends BaseRightPanel {
 	@Override
 	public void onRefresh(int frame) {
 		// Area
-		WorldArea area = _ui.getSelectedArea();
+		AreaModel area = _ui.getSelectedArea();
 		if (area != null && _area != area) {
 			clean();
 			displayArea(area);
@@ -721,12 +721,12 @@ public class PanelInfo extends BaseRightPanel {
 //		// Set new entries
 //		int i = 0;
 //		for (ItemInfo storedItemInfo: inventoryInfo.keySet()) {
-//			int count = inventoryInfo.get(storedItemInfo);
+//			int quantity = inventoryInfo.get(storedItemInfo);
 //			
 //			_lbCarry[i].setVisible(true);
 //			_lbCarry[i].setImage(SpriteManager.getInstance().getIcon(storedItemInfo));
 //			_lbCarryCount[i].setVisible(true);
-//			_lbCarryCount[i].setString("x"+count);
+//			_lbCarryCount[i].setString("x"+quantity);
 //			i++;
 //		}
 //	}
@@ -735,7 +735,7 @@ public class PanelInfo extends BaseRightPanel {
 		int i = 0;
 		int used = 0;
 		for (ItemSlot slot: slots) {
-			BaseJob job = slot.getJob();
+			JobModel job = slot.getJob();
 			if (i < NB_SLOTS_MAX && job != null) {
 				used++;
 				final CharacterModel character = job.getCharacter();

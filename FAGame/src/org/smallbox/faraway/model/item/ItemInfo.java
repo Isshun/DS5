@@ -1,6 +1,5 @@
 package org.smallbox.faraway.model.item;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemInfo {
@@ -16,73 +15,88 @@ public class ItemInfo {
 		return false;
 	}
 
-	public static class ItemInfoCost {
-		public int matter;
-		public int power;
-		public int o2;
+	public static class ItemInfoStorage {
+		public int[]				components;
+		public int[]				crafts;
 	}
 
 	public static class ItemInfoAction {
 		public int 					storage;
 		public String 				type;
 		public String 				label;
-		public List<String> 		products;
-		public List<ItemInfo> 		productsItem;
+		public List<ItemInfoReceipt>receipts;
 		public ItemInfoEffects		effects;
-		public ArrayList<ItemInfo> 	itemAccept;
 		public int 					mature;
 		public int                  cost;
 		public String 				name;
 		public float                dropRate;
+		public List<ItemProductInfo>products;
+	}
+
+	public static class ItemInfoReceipt {
+		public String 					name;
+		public String 					label;
+		public List<ItemComponentInfo>	components;
+		public List<ItemProductInfo> 	products;
+	}
+
+	public static class ItemProductInfo {
+		public String 				item;
+		public ItemInfo 			itemInfo;
+		public int 					quantity;
+		public float 				dropRate;
+	}
+
+	public static class ItemComponentInfo {
+		public String 				item;
+		public ItemInfo 			itemInfo;
+		public int 					quantity;
 	}
 
 	public static class ItemInfoEffects {
-		public int		food;
-		public int 		drink;
-		public int 		energy;
-		public int 		happiness;
-		public int 		health;
-		public int 		relation;
-		public int 		oxygen;
-		public int 		socialize;
-		public int 		security;
+		public int					food;
+		public int 					drink;
+		public int 					energy;
+		public int 					happiness;
+		public int 					health;
+		public int 					relation;
+		public int 					oxygen;
+		public int 					socialize;
+		public int 					security;
 	}
 
-	public String 				name;
-	public String 				inherits;
-	public String 				label;
-	public String 				category;
-	public String 				type;
-	public List<int[]>			slots;
-	public List<String>         receipts;
-	public int[]				tiles;
-	public int					craftedQuantitfy;
-	public boolean 				isWalkable;
-	public int 					frames;
-	public int 					framesInterval;
-	public int 					width;
-	public int 					height;
-	public int 					light;
-	public ItemInfoCost 		cost;
-	public List<ItemInfoAction> actions;
-	public boolean 				isStructure;
-	public boolean 				isResource;
-	public boolean 				isConsomable;
-	public boolean 				isUserItem;
-	public boolean 				isFood;
-	public boolean 				isToy;
-	public boolean 				isBed;
-	public int 					storage;
-	public int 					spriteId;
-	public String				fileName;
-	public String 				packageName;
-	public List<ItemInfo> 		craftedFromItems;
-	public boolean 				isFactory;
-	public boolean 				isStorage;
-	public boolean 				isDrink;
-	public boolean 				isSleeping;
-	public boolean 				isStack;
-	public int 					maxHealth;
+	public String 					name;
+	public String 					inherits;
+	public String 					label;
+	public String 					category;
+	public String 					type;
+	public ItemInfoStorage			storage;
+	public List<int[]>				slots;
+	public List<ItemInfoReceipt>	receipts;
+	public int[]					tiles;
+	public boolean 					isWalkable;
+	public int 						frames;
+	public int 						framesInterval;
+	public int 						width;
+	public int 						height;
+	public int 						light;
+	public int 						cost;
+	public List<ItemInfoAction> 	actions;
+	public boolean 					isStructure;
+	public boolean 					isResource;
+	public boolean 					isConsumable;
+	public boolean 					isUserItem;
+	public boolean 					isFood;
+	public boolean 					isToy;
+	public boolean 					isBed;
+	public int 						spriteId;
+	public String					fileName;
+	public String 					packageName;
+	public boolean 					isFactory;
+	public boolean 					isDrink;
+	public boolean 					isSleeping;
+	public int 						maxHealth;
+	public int 						power;
 
 	public ItemInfo() {
 		width = 1;

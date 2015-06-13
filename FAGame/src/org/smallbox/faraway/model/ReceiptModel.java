@@ -1,6 +1,6 @@
 package org.smallbox.faraway.model;
 
-import org.smallbox.faraway.model.item.ConsumableItem;
+import org.smallbox.faraway.model.item.ConsumableModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 
 import java.util.ArrayList;
@@ -10,12 +10,14 @@ import java.util.List;
  * Created by Alex on 07/06/2015.
  */
 public class ReceiptModel {
-    public static class ReceiptComponentModel {
-        public final ConsumableItem    item;
-        public final ItemInfo          itemInfo;
-        public final int               count;
+    public final ItemInfo.ItemInfoReceipt receiptInfo;
 
-        public ReceiptComponentModel(ConsumableItem item, int count) {
+    public static class ReceiptComponentModel {
+        public final ConsumableModel    item;
+        public final ItemInfo           itemInfo;
+        public int                      count;
+
+        public ReceiptComponentModel(ConsumableModel item, int count) {
             this.item = item;
             this.itemInfo = item.getInfo();
             this.count = count;
@@ -24,10 +26,14 @@ public class ReceiptModel {
 
     private List<ReceiptComponentModel> _components = new ArrayList<>();
 
-    public void addReceiptComponent(ItemInfo itemInfo, int count) {
-        ConsumableItem component = new ConsumableItem(itemInfo);
-        component.setQuantity(0);
-        _components.add(new ReceiptComponentModel(component, count));
+    public ReceiptModel(ItemInfo.ItemInfoReceipt receiptInfo) {
+        this.receiptInfo = receiptInfo;
+
+        for (ItemInfo.ItemComponentInfo componentInfo: receiptInfo.components) {
+            ConsumableModel component = new ConsumableModel(componentInfo.itemInfo);
+            component.setQuantity(0);
+            _components.add(new ReceiptComponentModel(component, componentInfo.quantity));
+        }
     }
 
     public void addComponent(ItemInfo itemInfo, int count) {
@@ -49,7 +55,7 @@ public class ReceiptModel {
         return null;
     }
 
-    public boolean isComplete() {
+    public boolean hasComponents() {
         for (ReceiptComponentModel component: _components) {
             if (component.item.getQuantity() < component.count) {
                 return false;
@@ -59,9 +65,7 @@ public class ReceiptModel {
     }
 
     public void reset() {
-        for (ReceiptComponentModel component: _components) {
-            component.item.setQuantity(0);
-        }
+        _components.clear();
     }
 
 }

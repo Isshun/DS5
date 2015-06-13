@@ -6,10 +6,10 @@ import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.StructureItem;
-import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.item.WorldResource;
-import org.smallbox.faraway.model.job.BaseJob;
+import org.smallbox.faraway.model.item.StructureModel;
+import org.smallbox.faraway.model.item.ItemModel;
+import org.smallbox.faraway.model.item.ResourceModel;
+import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.model.job.JobTake;
 import org.smallbox.faraway.model.room.Room.RoomType;
 import org.smallbox.faraway.ui.UserInterface.Mode;
@@ -54,7 +54,7 @@ public class
 			for (int y = toY; y >= startY; y--) {
 
 				// Check if resource is present on area
-				WorldResource res = ServiceManager.getWorldMap().getResource(x, y);
+				ResourceModel res = ServiceManager.getWorldMap().getResource(x, y);
 				if (res != null) {
 					if (res.canBeMined()) {
 						JobManager.getInstance().addMineJob(x, y);
@@ -69,24 +69,24 @@ public class
 					if (x == startX || x == toX || y == startY || y == toY) {
 						Log.warning("1");
 						// TODO
-						StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
+						StructureModel structure = ServiceManager.getWorldMap().getStructure(x, y);
 						if (structure == null || structure.getName().equals("base.door") == false) {
 							JobManager.getInstance().build(Game.getData().getItemInfo("base.wall"), x, y);
 						}
-						// item = ServiceManager.getWorldMap().putItem(x, y, BaseItem.STRUCTURE_WALL);
+						// item = ServiceManager.getWorldMap().putObject(x, y, BaseItem.STRUCTURE_WALL);
 					} else {
 						Log.warning("2");
 						// TODO
 						JobManager.getInstance().build(Game.getData().getItemInfo("base.floor"), x, y);
-						// item = ServiceManager.getWorldMap().putItem(x, y, BaseItem.STRUCTURE_FLOOR);
+						// item = ServiceManager.getWorldMap().putObject(x, y, BaseItem.STRUCTURE_FLOOR);
 					}
 				} else {
-					// item = ServiceManager.getWorldMap().putItem(x, y, _menu.getBuildItemType());
+					// item = ServiceManager.getWorldMap().putObject(x, y, _menu.getBuildItemType());
 					if (_selectedItemInfo != null) {
 						Log.warning("3 " + _selectedItemInfo.name);
 						// TODO
 						JobManager.getInstance().build(_selectedItemInfo, x, y);
-						// item = ServiceManager.getWorldMap().putItem(x, y, type);
+						// item = ServiceManager.getWorldMap().putObject(x, y, type);
 					}
 				}
 
@@ -115,7 +115,7 @@ public class
 	public void planGather(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				BaseJob job = JobManager.getInstance().createGatherJob(x, y);
+				JobModel job = JobManager.getInstance().createGatherJob(x, y);
 				if (job != null) {
 					JobManager.getInstance().addJob(job);
 				}
@@ -126,7 +126,7 @@ public class
 	public void planMining(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				BaseJob job = JobManager.getInstance().createMiningJob(x, y);
+				JobModel job = JobManager.getInstance().createMiningJob(x, y);
 				if (job != null) {
 					JobManager.getInstance().addJob(job);
 				}
@@ -137,9 +137,9 @@ public class
 	public void planPick(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				UserItem item = Game.getWorldManager().getItem(x, y);
+				ItemModel item = Game.getWorldManager().getItem(x, y);
 				if (item != null) {
-					BaseJob job = JobTake.create(item);
+					JobModel job = JobTake.create(item);
 					if (job != null) {
 						JobManager.getInstance().addJob(job);
 					}
@@ -151,7 +151,7 @@ public class
 	public void planDump(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				BaseJob job = JobManager.getInstance().createDumpJob(x, y);
+				JobModel job = JobManager.getInstance().createDumpJob(x, y);
 				if (job != null) {
 					JobManager.getInstance().addJob(job);
 				}

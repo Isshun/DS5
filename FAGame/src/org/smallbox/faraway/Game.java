@@ -115,7 +115,9 @@ public class Game {
 		ResourceManager.getInstance().addMatter(5000);
 	}
 
-	public void	load(final String filePath, LoadListener loadListener) {
+	public void	load(final String fileName, LoadListener loadListener) {
+		String filePath = "data/saves/" + fileName + ".sav";
+
 		loadListener.onUpdate("Load game");
 		GameSerializer.load(filePath, loadListener);
 
@@ -126,7 +128,9 @@ public class Game {
 		ResourceManager.getInstance().addMatter(5000);
 	}
 
-	public void	save(final String filePath) {
+	public void	save(final String fileName) {
+		String filePath = "data/saves/" + fileName + ".sav";
+
 		Log.info("Save game: " + filePath);
 
 		GameSerializer.save(filePath);

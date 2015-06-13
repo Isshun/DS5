@@ -4,7 +4,7 @@ import org.smallbox.faraway.Game;
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.model.ToolTips;
-import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 
 public class ResourceManager {
@@ -41,7 +41,7 @@ public class ResourceManager {
 		return _self;
 	}
 
-	public Message build(ItemBase item) {
+	public Message build(MapObjectModel item) {
 		if (_matter.value == 0) {
 			return Message.NO_MATTER;
 		}
@@ -62,10 +62,10 @@ public class ResourceManager {
 				_power.value -= item.getPower();
 			}
 
-			// O2
-			if (item.getInfo().cost != null) {
-				//_o2Supply.value -= item.getInfo().cost.o2;
-			}
+//			// O2
+//			if (item.getInfo().cost != null) {
+//				//_o2Supply.value -= item.getInfo().cost.o2;
+//			}
 
 			if (item.getLight() > 0) {
 				((MainRenderer)MainRenderer.getInstance()).refreshLight(item);

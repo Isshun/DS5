@@ -8,8 +8,8 @@ import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.character.CharacterRelation;
 import org.smallbox.faraway.model.character.CharacterRelation.Relation;
-import org.smallbox.faraway.model.item.StructureItem;
-import org.smallbox.faraway.model.item.WorldArea;
+import org.smallbox.faraway.model.item.StructureModel;
+import org.smallbox.faraway.model.item.AreaModel;
 import org.smallbox.faraway.model.room.GardenRoom;
 import org.smallbox.faraway.model.room.QuarterRoom;
 import org.smallbox.faraway.model.room.Room;
@@ -26,7 +26,7 @@ public class RoomManager {
     private Room _currentDiffuseRoom;
     private int _width;
     private int _height;
-    private WorldArea[][][] _areas;
+    private AreaModel[][][] _areas;
 
     public RoomManager() {
         _rooms = new Room[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
@@ -46,7 +46,7 @@ public class RoomManager {
 
         _roomList.add(room);
 
-        for (WorldArea area: room.getAreas()) {
+        for (AreaModel area: room.getAreas()) {
             _rooms[area.getX()][area.getY()] = room;
         }
     }
@@ -95,10 +95,10 @@ public class RoomManager {
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
                 if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
-                    StructureItem struct = ServiceManager.getWorldMap().getStructure(x, y);
+                    StructureModel struct = ServiceManager.getWorldMap().getStructure(x, y);
                     if (struct == null || struct.roomCanBeSet()) {
                         if (_rooms[x][y] == null || _rooms[x][y].getType() != tempRoom.getType()) {
-                            WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
+                            AreaModel area = ServiceManager.getWorldMap().getArea(x, y);
                             area.setRoom(tempRoom);
                             tempRoom.addArea(area);
                             _rooms[x][y] = tempRoom;
@@ -120,7 +120,7 @@ public class RoomManager {
             leftRoom = tempRoom.getAreas().size();
             Room newRoom = createRoom(tempRoom.getType(), owner);
             _roomList.add(newRoom);
-            WorldArea area = tempRoom.getAreas().get(0);
+            AreaModel area = tempRoom.getAreas().get(0);
             replaceArea(newRoom, tempRoom, area.getX(), area.getY());
             _currentDiffuseRoom = newRoom;
             diffuseRoom(tempRoom, area.getX(), area.getY());
@@ -159,8 +159,8 @@ public class RoomManager {
         // If neighboorRoom IS NOT tempRoom AND IS NOT _currentDiffuseRoom, it's an old existing room
         // so we replace all room previously set to _currentDiffuseRoom by this new room
         if (neighboorRoom != null && neighboorRoom != tempRoom && neighboorRoom != _currentDiffuseRoom) {
-            List<WorldArea> areasCopy = new ArrayList<WorldArea>(_currentDiffuseRoom.getAreas());
-            for (WorldArea area: areasCopy) {
+            List<AreaModel> areasCopy = new ArrayList<AreaModel>(_currentDiffuseRoom.getAreas());
+            for (AreaModel area: areasCopy) {
                 replaceArea(neighboorRoom, _currentDiffuseRoom, area.getX(), area.getY());
             }
             _currentDiffuseRoom = neighboorRoom;
@@ -189,7 +189,7 @@ public class RoomManager {
     }
 
     private void replaceArea(Room room, Room neighboorRoom, int x, int y) {
-        WorldArea area = ServiceManager.getWorldMap().getArea(x, y);
+        AreaModel area = ServiceManager.getWorldMap().getArea(x, y);
         room.addArea(area);
         neighboorRoom.removeArea(area);
         _rooms[x][y] = room;
@@ -377,7 +377,7 @@ public class RoomManager {
             newRoomFound = false;
             for (int x = 0; x < _width; x++) {
                 for (int y = 0; y < _height; y++) {
-                    WorldArea area = _areas[x][y][0];
+                    AreaModel area = _areas[x][y][0];
                     if (area.getRoom() == null && area.getStructure() != null && (area.getStructure().isFloor() || area.getStructure().isGround())) {
                         newRoomFound = true;
                         Room room = new Room(RoomType.NONE);
@@ -394,7 +394,7 @@ public class RoomManager {
 
     private void exploreRoom(Room room, int x, int y) {
         if (x >= 0 && x < _width && y >= 0 && y < _height && _areas[x][y][0] != null) {
-            WorldArea area = _areas[x][y][0];
+            AreaModel area = _areas[x][y][0];
             if (area.getRoom() == null && (area.getStructure() == null || area.getStructure().isFloor() || area.getStructure().isGround())) {
                 area.setRoom(room);
                 room.addArea(area);

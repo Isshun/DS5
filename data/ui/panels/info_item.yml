@@ -23,6 +23,18 @@ entries:
         position: [24, 80]
 
     -   type: label
+        id: lb_components
+        text: components
+        textsize: 14
+        position: [24, 100]
+
+    -   type: label
+        id: lb_crafts
+        text: crafts
+        textsize: 14
+        position: [24, 120]
+
+    -   type: label
         id: lb_pos
         text: pos
         textsize: 14

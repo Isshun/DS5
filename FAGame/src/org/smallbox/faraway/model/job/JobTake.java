@@ -5,15 +5,15 @@ import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemFilter;
-import org.smallbox.faraway.model.item.UserItem;
+import org.smallbox.faraway.model.item.ItemModel;
 
-public class JobTake extends BaseJob {
+public class JobTake extends JobModel {
 
 	private JobTake(int x, int y) {
 		super(null, x, y);
 	}
 
-	public static BaseJob create(UserItem item) {
+	public static JobModel create(ItemModel item) {
 		Log.debug("create take job");
 
 		JobTake job = new JobTake(item.getX(), item.getY());
@@ -22,7 +22,7 @@ public class JobTake extends BaseJob {
 		return job;
 	}
 
-	public static BaseJob create(CharacterModel character, ItemFilter filter) {
+	public static JobModel create(CharacterModel character, ItemFilter filter) {
 		Log.debug("create take job");
 
 		JobTake job = new JobTake(0, 0);
@@ -96,7 +96,7 @@ public class JobTake extends BaseJob {
 //
 //			if (character.hasInventorySpaceLeft() && _storage.contains(_filter)) {
 //				UserItem neededItem = _storage.take(_filter);
-//				character.addInventory(neededItem);
+//				character.addComponent(neededItem);
 //			}
 //
 //			JobManager.getInstance().close(this);
@@ -107,14 +107,14 @@ public class JobTake extends BaseJob {
 //		else if (_item != null) {
 //			if (character.hasInventorySpaceLeft() && _item == Game.getWorldManager().getItem(_posX, _posY)) {
 //				UserItem neededItem = Game.getWorldManager().takeItem(_posX, _posY);
-//				character.addInventory(neededItem);
+//				character.addComponent(neededItem);
 //			}
 //
 //			JobManager.getInstance().close(this);
 //			return true;
 //		}
 
-		JobManager.getInstance().quit(this, BaseJob.JobAbortReason.INVALID);
+		JobManager.getInstance().quit(this, JobModel.JobAbortReason.INVALID);
 		Log.error("actionTake: invalid job");
 		return true;
 	}

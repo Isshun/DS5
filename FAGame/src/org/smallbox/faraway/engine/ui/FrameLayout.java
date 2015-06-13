@@ -32,6 +32,27 @@ public abstract class FrameLayout extends View {
 	protected void onDraw(GFXRenderer renderer, RenderEffect effect) {
 	}
 
+	@Override
+	public void draw(GFXRenderer renderer, int x, int y) {
+		if (_isVisible == false) {
+			return;
+		}
+
+		if (_renderEffect == null) {
+			createRender();
+		}
+
+		if (_background != null) {
+			renderer.draw(_background, _renderEffect);
+		}
+
+		for (View view: _views) {
+			view.draw(renderer, _renderEffect);
+		}
+
+		onDraw(renderer, _renderEffect);
+	}
+
 	/**
 	 * FrameLayout have there own draw() method because _renderEffect parameter
 	 * is RenderStates for root element View and don't contains the right
@@ -39,23 +60,7 @@ public abstract class FrameLayout extends View {
 	 */
 	@Override
 	public void draw(GFXRenderer renderer, RenderEffect effect) {
-		if (_isVisible == false) {
-			return;
-		}
-		
-		if (_renderEffect == null) {
-			createRender();
-		}
-
-        if (_background != null) {
-            renderer.draw(_background, _renderEffect);
-        }
-
-		for (View view: _views) {
-			view.draw(renderer, _renderEffect);
-		}
-		
-		onDraw(renderer, _renderEffect);
+		draw(renderer, 0, 0);
 	}
 
 	protected abstract void createRender();

@@ -12,10 +12,10 @@ import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.StructureItem;
-import org.smallbox.faraway.model.item.WorldResource;
+import org.smallbox.faraway.model.item.StructureModel;
+import org.smallbox.faraway.model.item.ResourceModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -117,14 +117,14 @@ public class GDXSpriteManager extends SpriteManager {
 
     // TODO
     @Override
-    public SpriteModel getItem(ItemBase item, int tile) {
+    public SpriteModel getItem(MapObjectModel item, int tile) {
         if (item == null) {
             return null;
         }
 
         if (item.isStructure() == false) {
             if (item.isResource()) {
-                return getResource((WorldResource) item);
+                return getResource((ResourceModel) item);
             }
 
             int alpha = Math.min(item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * (int)item.getMatterSupply(), 255);
@@ -136,7 +136,7 @@ public class GDXSpriteManager extends SpriteManager {
     }
 
     @Override
-    public SpriteModel getItem(ItemBase item) {
+    public SpriteModel getItem(MapObjectModel item) {
         return getItem(item, 0);
     }
 
@@ -308,7 +308,7 @@ public class GDXSpriteManager extends SpriteManager {
     }
 
     @Override
-    public SpriteModel getResource(WorldResource resource) {
+    public SpriteModel getResource(ResourceModel resource) {
         ItemInfo info = resource.getInfo();
 
         if ("base.res_rock".equals(info.name)) {
@@ -328,7 +328,7 @@ public class GDXSpriteManager extends SpriteManager {
     }
 
     @Override
-    public SpriteModel getFloor(StructureItem item, int zone, int room) {
+    public SpriteModel getFloor(StructureModel item, int zone, int room) {
         if (item != null && item.getName().equals("base.floor")) {
             int choice = 1;
             int texture = 4;
@@ -362,7 +362,7 @@ public class GDXSpriteManager extends SpriteManager {
     }
 
     @Override
-    public SpriteModel getWall(StructureItem item, int special, int index, int zone) {
+    public SpriteModel getWall(StructureModel item, int special, int index, int zone) {
         // Door
         if (item.getName().equals("base.door")) {
             int alpha = 75 + 180 / item.getMatter() * (int)item.getMatterSupply();
@@ -541,7 +541,7 @@ public class GDXSpriteManager extends SpriteManager {
     }
 
     @Override
-    public SpriteModel getSelector(ItemBase item, int frame) {
+    public SpriteModel getSelector(MapObjectModel item, int frame) {
         return _itemSelectors[frame % NB_ITEM_SELECTOR_TILE];
     }
 
@@ -552,6 +552,6 @@ public class GDXSpriteManager extends SpriteManager {
 
     @Override
     public Viewport createViewport() {
-        return new GDXViewport(-Constant.WORLD_WIDTH * Constant.TILE_WIDTH / 2, -Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT / 2);
+        return new GDXViewport(0, 0);
     }
 }

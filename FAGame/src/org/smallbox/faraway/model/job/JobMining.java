@@ -1,5 +1,6 @@
 package org.smallbox.faraway.model.job;
 
+import org.smallbox.faraway.Game;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
@@ -8,17 +9,16 @@ import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.WorldResource;
+import org.smallbox.faraway.model.item.ResourceModel;
 
-public class JobMining extends BaseJob {
-
+public class JobMining extends JobModel {
     private static final SpriteModel ICON = SpriteManager.getInstance().getIcon("data/res/ic_mine.png");
 
 	private JobMining(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
 		super(actionInfo, x, y);
 	}
 
-	public static BaseJob create(WorldResource res) {
+	public static JobModel create(ResourceModel res) {
 		// Resource is not minable
 		if (res == null) {
 			return null;
@@ -27,7 +27,7 @@ public class JobMining extends BaseJob {
 		if (res.getInfo().actions != null) {
 			for (ItemInfo.ItemInfoAction action: res.getInfo().actions) {
 				if ("mine".equals(action.type)) {
-					BaseJob job = new JobMining(action, res.getX(), res.getY());
+					JobModel job = new JobMining(action, res.getX(), res.getY());
 					job.setItem(res);
 					return job;
 				}
@@ -93,20 +93,27 @@ public class JobMining extends BaseJob {
 //			return true;
 //		}
 
-		// TODO
-		int value = ServiceManager.getWorldMap().gather((WorldResource)_item, character.getProfessionScore(ProfessionModel.Type.NONE));
+//        if (resource == null || maxValue == 0) {
+//            Log.error("gather: wrong call");
+//            return 0;
+//        }
+//
+        int value = ((ResourceModel)_item).gatherMatter(character.getProfessionScore(ProfessionModel.Type.NONE));
+		if (((ResourceModel)_item).isDepleted()) {
+			Game.getWorldManager().removeResource((ResourceModel)_item);
+		}
 
 		Log.debug("mine: " + value);
 
 //		ResourceManager.getInstance().addMatter(value);
 
-        WorldResource gatheredItem = (WorldResource)_item;
+        ResourceModel gatheredItem = (ResourceModel)_item;
 
         if (_character.work(CharacterModel.TalentType.MINE, gatheredItem)) {
 			ServiceManager.getWorldMap().removeResource(gatheredItem);
             if (_actionInfo.dropRate >= Math.random()) {
-                for (ItemInfo item : _actionInfo.productsItem) {
-                    ServiceManager.getWorldMap().putItem(item, gatheredItem.getX(), gatheredItem.getY(), 0, 100);
+                for (ItemInfo.ItemProductInfo productInfo : _actionInfo.products) {
+                    ServiceManager.getWorldMap().putObject(productInfo.itemInfo, gatheredItem.getX(), gatheredItem.getY(), 0, 100);
                 }
             }
             JobManager.getInstance().close(this);
@@ -114,7 +121,7 @@ public class JobMining extends BaseJob {
 		}
 
 //        for (ItemInfo itemInfo: _actionInfo.productsItem) {
-//            character.addInventory(new UserItem(itemInfo));
+//            character.addComponent(new UserItem(itemInfo));
 //        }
 
 		return false;
@@ -140,6 +147,7 @@ public class JobMining extends BaseJob {
         return CharacterModel.TalentType.MINE;
     }
 
+	@Override
     public SpriteModel getIcon() {
         return ICON;
     }

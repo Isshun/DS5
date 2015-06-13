@@ -6,7 +6,7 @@ import org.smallbox.faraway.engine.ui.Colors;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.ToolTips;
 import org.smallbox.faraway.model.ToolTips.ToolTip;
-import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.MapObjectModel;
 
 public class CharacterStatus {
 
@@ -60,7 +60,7 @@ public class CharacterStatus {
 		}
 
 		if (_needs.isSleeping()) {
-			ItemBase item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
+			MapObjectModel item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
 			if (item == null || item.isSleepingItem() == false) {
 				_color = COLOR_BAD;
 				_level = Level.BAD;
@@ -118,7 +118,7 @@ public class CharacterStatus {
 		}
 		if (_needs.isSleeping()) {
 			// TODO
-			ItemBase item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
+			MapObjectModel item = ServiceManager.getWorldMap().getItem(_character.getX(), _character.getY());
 			if (item != null && item.isSleepingItem()) {
 				_color = COLOR_GOOD;
 				_level = Level.GOOD;

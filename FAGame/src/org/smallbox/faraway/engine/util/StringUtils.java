@@ -62,6 +62,7 @@ public class StringUtils {
 		case D_7: return "7";
 		case D_8: return "8";
 		case D_9: return "9";
+		case PERIOD: return ".";
 		case SPACE: return " ";
 		default: return null;
 		}

@@ -1,16 +1,20 @@
 package org.smallbox.faraway.model.job;
 
+import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
+import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.item.WorldResource;
+import org.smallbox.faraway.model.item.ResourceModel;
 
-public class JobGather extends BaseJob {
+public class JobGather extends JobModel {
+	private static final SpriteModel ICON = SpriteManager.getInstance().getIcon("data/res/ic_gather.png");
 
-	private WorldResource	_resource;
+	private ResourceModel 	_resource;
+	private int 			_totalCost;
+	private int 			_totalProgress;
 
 	@Override
 	public CharacterModel.TalentType getTalentNeeded() {
@@ -21,7 +25,7 @@ public class JobGather extends BaseJob {
 		super(action, x, y);
 	}
 
-	public static BaseJob create(WorldResource resource) {
+	public static JobModel create(ResourceModel resource) {
 		// Resource is not gatherable
 		if (resource == null || !"gather".equals(resource.getInfo().actions.get(0).type)) {
 			return null;
@@ -34,6 +38,21 @@ public class JobGather extends BaseJob {
 		job._resource.setJob(job);
 
 		return job;
+	}
+
+	@Override
+	public void onCharacterAssign(CharacterModel character) {
+		if (_resource != null) {
+			_totalCost = _cost * _resource.getQuantity();
+		}
+	}
+
+	@Override
+	public int getProgressPercent() {
+		if (_resource != null) {
+			return _totalProgress * 100 / _totalCost;
+		}
+		return 0;
 	}
 
 	@Override
@@ -80,43 +99,31 @@ public class JobGather extends BaseJob {
 			return true;
 		}
 
-		// Work continue
-		if (_resource.getQuantity() > 0) {
+        Log.debug(character.getName() + ": gathering (" + _totalProgress + "/" + _totalCost + ")");
 
-			for (ItemInfo info: _resource.getInfo().actions.get(0).productsItem) {
-				ServiceManager.getWorldMap().putItem(info, _posX, _posY, 0, 100);
-				//character.addInventory(new UserItem(info));
-			}
-
-			_resource.addQuantity(-1);
-
-			//_cost = Math.min(_totalCost, _cost + character.work(CharacterModel.TalentType.COOK));
-			Log.debug("Character #" + character.getId() + ": working");
+        ++_totalProgress;
+		if (++_progress < _cost) {
 			return false;
 		}
 
-//		// Character is full: cancel current job
-//		if (character.getInventoryLeftSpace() <= 0) {
-//			JobManager.getInstance().quit(this, JobAbortReason.NO_LEFT_CARRY);
-//			return true;
-//		}
-//
-//		// TODO
-//		int value = ServiceManager.getWorldMap().gather(_resource, Math.max(character.getProfessionScore(ProfessionModel.Type.NONE), character.getLeftSpace()));
-//
-//		Log.debug("gather: " + value);
-//
-//		ResourceManager.getInstance().addMatter(value);
-//
-//
-//		if (_resource.isDepleted()) {
-		_resource.setJob(null);
-		JobManager.getInstance().close(this);
-		ServiceManager.getWorldMap().removeResource(_resource);
-//			return true;
-//		}
+        // Add product items
+        _progress = 0;
+        for (ItemInfo.ItemProductInfo productInfo: _resource.getInfo().actions.get(0).products) {
+            ServiceManager.getWorldMap().putObject(productInfo.itemInfo, _posX, _posY, 0, 100);
+            //character.addComponent(new UserItem(info));
+            Log.info(character.getName() + ": product " + productInfo.itemInfo.name);
+        }
+        _resource.addQuantity(-1);
 
-		return false;
+        // Close job if resource is depleted
+        if (_resource.getQuantity() <= 0) {
+            _resource.setJob(null);
+            JobManager.getInstance().close(this);
+            ServiceManager.getWorldMap().removeResource(_resource);
+            return true;
+        }
+
+        return false;
 	}
 
     @Override
@@ -132,5 +139,10 @@ public class JobGather extends BaseJob {
 	@Override
 	public String getShortLabel() {
 		return "gather" + _item.getLabel();
+	}
+
+	@Override
+	public SpriteModel getIcon() {
+		return ICON;
 	}
 }

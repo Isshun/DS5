@@ -3,10 +3,10 @@ package org.smallbox.faraway.model.room;
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.manager.Utils;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemFilter;
-import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.item.WorldArea;
+import org.smallbox.faraway.model.item.ItemModel;
+import org.smallbox.faraway.model.item.AreaModel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,7 +37,7 @@ public class Room {
 
 	int						_id;
 	int						_zoneId;
-	List<ItemBase>			_doors;
+	List<MapObjectModel>			_doors;
 	private RoomType _type;
 	private CharacterModel _owner;
 	private int 			_x;
@@ -47,7 +47,7 @@ public class Room {
 	private int 			_maxX;
 	private boolean 		_isCommon;
 	private Set<CharacterModel> 	_occupants;
-	protected List<WorldArea> 	_areas;
+	protected List<AreaModel> 	_areas;
 
 	public Room(int id, RoomType type) {
 		init(id, type);
@@ -59,14 +59,14 @@ public class Room {
 
 	private void init(int id, RoomType type) {
 		_color = new Color((int)(Math.random() * 200), (int)(Math.random() * 200), (int)(Math.random() * 200));
-		_areas = new ArrayList<WorldArea>();
+		_areas = new ArrayList<AreaModel>();
 		_id = id;
 		_isCommon = true;
 		_maxX = Integer.MIN_VALUE;
 		_minX = Integer.MAX_VALUE;
 		_zoneId = 0;
 		_type = type;
-		_doors = new ArrayList<ItemBase>();
+		_doors = new ArrayList<MapObjectModel>();
 		_occupants = new HashSet<CharacterModel>();
 	}
 
@@ -248,11 +248,11 @@ public class Room {
 		}
 	}
 
-	public void addArea(WorldArea area) {
+	public void addArea(AreaModel area) {
 		_areas.add(area);
 	}
 
-	public List<WorldArea> getAreas() {
+	public List<AreaModel> getAreas() {
 		return _areas;
 	}
 
@@ -281,9 +281,9 @@ public class Room {
 	 * @param filter
 	 * @return
 	 */
-	public ItemBase find(ItemFilter filter) {
-		for (WorldArea area: _areas) {
-			UserItem item = area.getItem();
+	public MapObjectModel find(ItemFilter filter) {
+		for (AreaModel area: _areas) {
+			ItemModel item = area.getItem();
 			if (item != null && item.matchFilter(filter)) {
 				return item;
 			}
@@ -291,12 +291,12 @@ public class Room {
 		return null;
 	}
 
-	public void removeArea(WorldArea area) {
+	public void removeArea(AreaModel area) {
 		_areas.remove(area);
 	}
 
 	public void removeArea(int x, int y) {
-		for (WorldArea area: _areas) {
+		for (AreaModel area: _areas) {
 			if (area.getX() == x && area.getY() == y) {
 				removeArea(area);
 				return;
@@ -308,7 +308,7 @@ public class Room {
 		_x = Integer.MAX_VALUE;
 		_y = Integer.MAX_VALUE;
 		
-		for (WorldArea area: _areas) {
+		for (AreaModel area: _areas) {
 			if (area.getX() <= _x  && area.getY() <= _y) {
 				_x = area.getX();
 				_y = area.getY();

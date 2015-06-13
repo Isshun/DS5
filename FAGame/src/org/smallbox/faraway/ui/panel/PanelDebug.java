@@ -8,12 +8,13 @@ import org.smallbox.faraway.engine.ui.FrameLayout;
 import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.engine.util.Settings;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.job.BaseJob;
+import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
@@ -21,6 +22,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PanelDebug extends BaseRightPanel {
+	private static class CommandModel {
+		private final String 		cmd;
+		private final OnCommandExec onCommandExec;
+
+		public interface OnCommandExec {
+			void onCommandExec();
+		}
+
+		public CommandModel(String cmd, OnCommandExec onCommandExec) {
+			this.cmd = cmd;
+			this.onCommandExec = onCommandExec;
+		}
+	}
 
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
@@ -36,6 +50,17 @@ public class PanelDebug extends BaseRightPanel {
     private FrameLayout         _entries;
     private int                 _index;
 
+
+	private CommandModel[] COMMANDS = new CommandModel[] {
+			new CommandModel("jobs.list", () -> JobManager.getInstance().getJobs().forEach(job -> println(job.toString()))),
+			new CommandModel("crew.add", () -> Game.getCharacterManager().addRandom(25, 25)),
+			new CommandModel("world.add seaweed", () -> {
+				for (int i = 0; i < 10; i++) {
+					Game.getWorldManager().putObject("base.seaweed1", (int)(Math.random() * Game.getWorldManager().getWidth()), (int)(Math.random() * Game.getWorldManager().getHeight()), 0, 10);
+				}
+			})
+	};
+
     public PanelDebug(Mode mode, GameEventListener.Key shortcut) {
 //		super(mode, shortcut, Constant.WINDOW_WIDTH - FRAME_WIDTH, 32, FRAME_WIDTH, FRAME_HEIGHT, null);
 		super(mode, shortcut);
@@ -50,11 +75,11 @@ public class PanelDebug extends BaseRightPanel {
 //            for (int x = 0; x < width; x++) {
 //                for (int y = 0; y < height; y++) {
 //                    StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
-//                    if (structure != null && !structure.isComplete()) {
+//                    if (structure != null && !structure.hasComponents()) {
 //                        JobManager.getInstance().addBuild(structure);
 //                    }
 //                    UserItem item = ServiceManager.getWorldMap().getItem(x, y);
-//                    if (item != null && !item.isComplete()) {
+//                    if (item != null && !item.hasComponents()) {
 //                        JobManager.getInstance().addBuild(item);
 //                    }
 //                }
@@ -122,13 +147,13 @@ public class PanelDebug extends BaseRightPanel {
 //                for (double i = 0; i < Math.PI * 2; i += 0.01) {
 //                    double offsetX = (int)Math.round(Math.cos(i) * j);
 //                    double offsetY = (int)Math.round(Math.sin(i) * j);
-//                    ServiceManager.getWorldMap().putItem("base.floor", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
+//                    ServiceManager.getWorldMap().putObject("base.floor", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
 //                }
 //            }
 //            for (double i = 0; i < Math.PI * 2; i += 0.01) {
 //                double offsetX = (int)Math.round(Math.cos(i) * 20);
 //                double offsetY = (int)Math.round(Math.sin(i) * 20);
-//                ServiceManager.getWorldMap().putItem("base.wall", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
+//                ServiceManager.getWorldMap().putObject("base.wall", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
 //            }
 //        });
 //		lbDome.setString("Dome");
@@ -251,7 +276,7 @@ public class PanelDebug extends BaseRightPanel {
 //			if (_currentItem.cost != null) {
 //				matter = _currentItem.cost.matter;
 //			}
-//			Game.getWorldManager().putItem(_currentItem, x, y, 0, matter);
+//			Game.getWorldManager().putObject(_currentItem, x, y, 0, matter);
 
 			exec(_search);
 
@@ -281,26 +306,23 @@ public class PanelDebug extends BaseRightPanel {
 		return true;
 	}
 
-	private void exec(String command) {
-		command = command.trim();
+	private void exec(String cmd) {
+		cmd = cmd.trim();
         clear();
 
-		if (command.startsWith("job")) {
-
-			if (command.equals("job")) {
-				for (BaseJob job: JobManager.getInstance().getJobs()) {
-					println(job.toString());
-				}
+		for (CommandModel command: COMMANDS) {
+			if (command.cmd.equals(cmd)) {
+				command.onCommandExec.onCommandExec();
+				return;
 			}
+		}
 
-            else {
-                Matcher m = Pattern.compile("job (\\d+)").matcher(command);
-                if (m.matches()) {
-                    int jobId = Integer.valueOf(m.group(1));
-                    JobManager.getInstance().getJobs().stream().filter(job -> job.getId() == jobId).forEach(job -> dumpJob(job));
-                }
-            }
-
+		if (cmd.startsWith("job")) {
+			Matcher m = Pattern.compile("job (\\d+)").matcher(cmd);
+			if (m.matches()) {
+				int jobId = Integer.valueOf(m.group(1));
+				JobManager.getInstance().getJobs().stream().filter(job -> job.getId() == jobId).forEach(job -> dumpJob(job));
+			}
 		}
 	}
 
@@ -310,7 +332,7 @@ public class PanelDebug extends BaseRightPanel {
     }
 
     private void println(String text) {
-        System.out.println(text);
+        Log.debug(text);
 
 
         TextView lbEntry = ViewFactory.getInstance().createTextView();
@@ -321,7 +343,7 @@ public class PanelDebug extends BaseRightPanel {
         _entries.addView(lbEntry);
     }
 
-    public void dumpJob(BaseJob job) {
+    public void dumpJob(JobModel job) {
         println(job.getLabel());
         println("char: " + (job.getCharacter() != null ? job.getCharacter().toString() : "none"));
     }

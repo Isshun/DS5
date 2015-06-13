@@ -63,11 +63,11 @@
 //		_inventory.remove(item);
 //	}
 //	
-//	public void addInventory(List<ItemBase> items) {
+//	public void addComponent(List<ItemBase> items) {
 //		_inventory.addAll(items);
 //	}
 //
-//	public void addInventory(UserItem item) {
+//	public void addComponent(UserItem item) {
 //		_inventory.add(item);
 //		
 //		if (item.isFood()) {
@@ -84,7 +84,7 @@
 //		return false;
 //	}
 //
-//	public List<ItemBase> getInventory() {
+//	public List<ItemBase> getComponents() {
 //		return _inventory;
 //	}
 //
@@ -147,7 +147,7 @@
 //		
 //		if (!_acceptFood && item.isFood()) {return false; }
 //		if (!_acceptDrink && item.isDrink()) {return false; }
-//		if (!_acceptConsomable && item.isConsomable()) {return false; }
+//		if (!_acceptConsomable && item.isConsumable()) {return false; }
 //		if (!_acceptGarbage && item.isGarbage()) {return false; }
 //		if (_accepts != null && !_accepts.isEmpty() && !_accepts.contains(item.getInfo())) { return false; }
 //		

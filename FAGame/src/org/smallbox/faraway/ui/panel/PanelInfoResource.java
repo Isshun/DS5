@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.model.item.WorldResource;
+import org.smallbox.faraway.model.item.ResourceModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 
@@ -11,7 +11,7 @@ import org.smallbox.faraway.ui.UserInterface;
  */
 public class PanelInfoResource extends BaseRightPanel {
     private TextView        _lbName;
-    private WorldResource   _resource;
+    private ResourceModel _resource;
 
     public PanelInfoResource(UserInterface.Mode mode, GameEventListener.Key shortcut) {
         super(mode, shortcut, "data/ui/panels/info_resource.yml");
@@ -29,7 +29,7 @@ public class PanelInfoResource extends BaseRightPanel {
         }
     }
 
-    public void select(WorldResource resource) {
+    public void select(ResourceModel resource) {
         _resource = resource;
 
         if (resource != null) {

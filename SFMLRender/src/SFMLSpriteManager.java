@@ -9,10 +9,10 @@ import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.StructureItem;
-import org.smallbox.faraway.model.item.WorldResource;
+import org.smallbox.faraway.model.item.StructureModel;
+import org.smallbox.faraway.model.item.ResourceModel;
 import org.smallbox.faraway.manager.SpriteManager;
 
 import java.io.*;
@@ -164,14 +164,14 @@ public class SFMLSpriteManager extends SpriteManager {
 
 	// TODO
 	@Override
-	public SpriteModel getItem(ItemBase item, int tile) {
+	public SpriteModel getItem(MapObjectModel item, int tile) {
 		if (item == null) {
 			return null;
 		}
 		
 		if (item.isStructure() == false) {
 			if (item.isResource()) {
-				return getResource((WorldResource) item);
+				return getResource((ResourceModel) item);
 			}
 
 			int alpha = Math.min(item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * (int)item.getMatterSupply(), 255);
@@ -183,7 +183,7 @@ public class SFMLSpriteManager extends SpriteManager {
 	}
 
     @Override
-	public SpriteModel getItem(ItemBase item) {
+	public SpriteModel getItem(MapObjectModel item) {
 		return getItem(item, 0);
 	}
 
@@ -367,7 +367,7 @@ public class SFMLSpriteManager extends SpriteManager {
 	}
 
     @Override
-	public SpriteModel getResource(WorldResource resource) {
+	public SpriteModel getResource(ResourceModel resource) {
 		ItemInfo info = resource.getInfo();
 
 		if ("base.res_rock".equals(info.name)) {
@@ -387,7 +387,7 @@ public class SFMLSpriteManager extends SpriteManager {
 	}
 
     @Override
-	public SpriteModel getFloor(StructureItem item, int zone, int room) {
+	public SpriteModel getFloor(StructureModel item, int zone, int room) {
 		if (item != null && item.getName().equals("base.floor")) {
 			int choice = 1;
 			int texture = 4;
@@ -421,7 +421,7 @@ public class SFMLSpriteManager extends SpriteManager {
 	}
 
     @Override
-	public SpriteModel getWall(StructureItem item, int special, int index, int zone) {
+	public SpriteModel getWall(StructureModel item, int special, int index, int zone) {
 		// Door
 		if (item.getName().equals("base.door")) {
 			int alpha = 75 + 180 / item.getMatter() * (int)item.getMatterSupply();
@@ -598,7 +598,7 @@ public class SFMLSpriteManager extends SpriteManager {
 	}
 
     @Override
-	public SpriteModel getSelector(ItemBase item, int frame) {
+	public SpriteModel getSelector(MapObjectModel item, int frame) {
 		return _itemSelectors[frame % NB_ITEM_SELECTOR_TILE];
 	}
 

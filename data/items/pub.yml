@@ -4,5 +4,4 @@ width: 1
 category: kitchen
 height: 1
 type: item
-cost:
-    matter: 42
+cost: 42

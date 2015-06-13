@@ -4,10 +4,10 @@ import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 
-public class JobCraft extends BaseJob {
+public class JobCraft extends JobModel {
 
 	@Override
 	public CharacterModel.TalentType getTalentNeeded() {
@@ -18,7 +18,7 @@ public class JobCraft extends BaseJob {
 		super(action, x, y);
 	}
 
-	public static JobCraft create(ItemInfo.ItemInfoAction action, ItemBase item) {
+	public static JobCraft create(ItemInfo.ItemInfoAction action, MapObjectModel item) {
         if (item == null) {
             throw new RuntimeException("Cannot add cook job (item is null)");
         }
@@ -45,14 +45,14 @@ public class JobCraft extends BaseJob {
 		// Wrong call
 		if (_item == null) {
 			Log.error("Character: actionUse on null job or null job's item");
-			JobManager.getInstance().quit(this, BaseJob.JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, JobModel.JobAbortReason.INVALID);
 			return false;
 		}
 
 		// Item is no longer exists
 		if (_item != ServiceManager.getWorldMap().getItem(_posX, _posY)) {
 			Log.warning("Character #" + character.getId() + ": actionUse on invalide item");
-			JobManager.getInstance().quit(this, BaseJob.JobAbortReason.INVALID);
+			JobManager.getInstance().quit(this, JobModel.JobAbortReason.INVALID);
 			return true;
 		}
 
@@ -63,15 +63,15 @@ public class JobCraft extends BaseJob {
 		}
 
 		// Work continue
-		if (_cost < _totalCost) {
-            _cost = Math.min(_totalCost, _cost + character.work(CharacterModel.TalentType.CRAFT));
+		if (_progress < _cost) {
+            _progress = Math.min(_cost, _progress + character.work(CharacterModel.TalentType.CRAFT));
 			Log.debug("Character #" + character.getId() + ": working");
 			return false;
 		}
 
         // Current item is close but some remains
         if (--_count != 0) {
-            _cost = 0;
+            _progress = 0;
             setCharacter(null);
             return false;
         }

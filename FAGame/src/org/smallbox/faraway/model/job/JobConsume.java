@@ -10,7 +10,7 @@ import org.smallbox.faraway.model.item.*;
 
 import java.util.List;
 
-public class JobConsume extends BaseJob {
+public class JobConsume extends JobModel {
 
 	@Override
 	public boolean canBeResume() {
@@ -26,37 +26,26 @@ public class JobConsume extends BaseJob {
 		super();
 	}
 
-	public static JobConsume create(ItemBase item) {
-		if (item == null || !item.hasFreeSlot()) {
+	public static JobConsume create(CharacterModel character, ConsumableModel item) {
+		if (character == null) {
+			Log.error("Create ConsumeJob with null character");
 			return null;
 		}
 
-		ItemInfo.ItemInfoAction infoAction = item.getInfo().actions.get(0);
+		if (item == null) {
+			Log.error("Create ConsumeJob with null item");
+			return null;
+		}
 
 		JobConsume job = new JobConsume();
-		ItemSlot slot = item.takeSlot(job);
-		if (slot != null) {
-			job.setSlot(slot);
-			job.setPosition(slot.getX(), slot.getY());
+		job.setCharacterRequire(character);
+		if (character.getInventory() == item) {
+			job.setPosition(character.getX(), character.getY());
 		} else {
 			job.setPosition(item.getX(), item.getY());
 		}
-		job.setActionInfo(infoAction);
+		job.setActionInfo(item.getInfo().actions.get(0));
 		job.setItem(item);
-		job.setQuantityTotal(infoAction.cost);
-
-		return job;
-	}
-
-	public static JobConsume create(CharacterModel character, ConsumableItem item) {
-		if (character == null) {
-			return null;
-		}
-
-		JobConsume job = create(item);
-		if (job != null) {
-			job.setCharacterRequire(character);
-		}
 
 		return job;
 	}
@@ -88,10 +77,10 @@ public class JobConsume extends BaseJob {
 			return true;
 		}
 
-		Log.debug("Character #" + character.getName() + ": actionUse");
+		Log.debug("Character #" + character.getName() + ": actionUse (" + _progress + ")");
 
 		// Character using item
-		if (_cost++ < _totalCost) {
+		if (_progress++ < _cost) {
 			// Set running
 			_status = JobStatus.RUNNING;
 
@@ -112,15 +101,15 @@ public class JobConsume extends BaseJob {
 			if (_item.getY() < _posY) { character.setDirection(Direction.BOTTOM); }
 
 			// Use item
-			_item.use(_character, (int) (_totalCost - _cost));
+			_item.use(_character, (int) (_cost - _progress));
 
 			return false;
 		}
 
-		if (_item.getInfo().isConsomable) {
-			((ConsumableItem)_item).addQuantity(-1);
+		if (_item.getInfo().isConsumable) {
+			((ConsumableModel)_item).addQuantity(-1);
 			if (_item.getQuantity() <= 0) {
-				Game.getWorldManager().removeConsumable((ConsumableItem) _item);
+				Game.getWorldManager().removeConsumable((ConsumableModel) _item);
 			}
 		}
 
@@ -143,8 +132,8 @@ public class JobConsume extends BaseJob {
 		}
 
 		// Item is no longer exists
-		if (_item.isConsomable()) {
-			if (_item != ServiceManager.getWorldMap().getConsumable(_item.getX(), _item.getY())) {
+		if (_item.isConsumable()) {
+			if (_item != _character.getInventory() && _item != ServiceManager.getWorldMap().getConsumable(_item.getX(), _item.getY())) {
 				_reason = JobAbortReason.INVALID;
 				return false;
 			}
@@ -164,12 +153,6 @@ public class JobConsume extends BaseJob {
 //			_reason = JobAbortReason.NO_LEFT_CARRY;
 //			return false;
 //		}
-
-		// Factory is empty
-		if (_item.isFactory() && ((FactoryItem)_item).getInventory().size() == 0) {
-			_reason = JobAbortReason.NO_COMPONENTS;
-			return false;
-		}
 
 		return true;
 	}

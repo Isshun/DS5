@@ -7,8 +7,8 @@ import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.WorldArea;
-import org.smallbox.faraway.model.item.WorldResource;
+import org.smallbox.faraway.model.item.AreaModel;
+import org.smallbox.faraway.model.item.ResourceModel;
 import org.smallbox.faraway.model.room.RoomOptions.RoomOption;
 
 import java.util.List;
@@ -55,7 +55,7 @@ public class GardenRoom extends Room {
 		if (culture != _currentCulture) {
 			_state = State.RAW;
 			_currentCulture = culture;
-			for (WorldArea area: _areas) {
+			for (AreaModel area: _areas) {
 				ServiceManager.getWorldMap().replaceItem(_currentCulture, area.getX(), area.getY(), 0);
 			}
 		}
@@ -65,12 +65,12 @@ public class GardenRoom extends Room {
 
 	@Override
 	public void update() {
-		for (WorldArea area: _areas) {
+		for (AreaModel area: _areas) {
 			if (area.getResource() == null) {
-				ServiceManager.getWorldMap().putItem(_currentCulture, area.getX(), area.getY(), 0, 0);
+				ServiceManager.getWorldMap().putObject(_currentCulture, area.getX(), area.getY(), 0, 0);
 			}
 
-			WorldResource res = area.getResource();
+			ResourceModel res = area.getResource();
 			if (res != null && res.isType(_currentCulture) && res.isMature() == false) {
 				if ((int)res.getQuantity() != (int)(res.getQuantity() + GROW_VALUE)) {
 					MainRenderer.getInstance().invalidate(res.getX(), res.getY());

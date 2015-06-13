@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.model.item.StructureItem;
+import org.smallbox.faraway.model.item.StructureModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 
@@ -10,7 +10,7 @@ import org.smallbox.faraway.ui.UserInterface;
  * Created by Alex on 01/06/2015.
  */
 public class PanelInfoStructure extends BaseRightPanel {
-    private StructureItem _structure;
+    private StructureModel _structure;
 
     public PanelInfoStructure(UserInterface.Mode mode, GameEventListener.Key shortcut) {
         super(mode, shortcut, "data/ui/panels/info_structure.yml");
@@ -23,7 +23,7 @@ public class PanelInfoStructure extends BaseRightPanel {
         }
     }
 
-    public void select(StructureItem structure) {
+    public void select(StructureModel structure) {
         _structure = structure;
 
         if (isLoaded()) {

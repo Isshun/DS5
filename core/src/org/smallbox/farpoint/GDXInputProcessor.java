@@ -110,6 +110,7 @@ public class GDXInputProcessor implements InputProcessor {
             case Keys.F11: key = GameEventListener.Key.F11; break;
             case Keys.F12: key = GameEventListener.Key.F12; break;
             case Keys.GRAVE: key = GameEventListener.Key.TILDE; break;
+            case Keys.PERIOD: key = GameEventListener.Key.PERIOD; break;
 //            case Input.Keys.LCONTROL:
 //            case Input.Keys.LSHIFT:
 //            case Input.Keys.LALT:
@@ -223,9 +224,9 @@ public class GDXInputProcessor implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int x, int y) {
-//        if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
-//            _application.onMouseEvent(_timer, GameEventListener.Action.MOVE, null, x, y, false);
-//        }
+        if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
+            _application.onMouseEvent(_timer, GameEventListener.Action.MOVE, null, x, y, false);
+        }
         return false;
     }
 

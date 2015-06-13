@@ -3,7 +3,7 @@ package org.smallbox.faraway.ui.panel;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.model.item.ConsumableItem;
+import org.smallbox.faraway.model.item.ConsumableModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
@@ -12,7 +12,7 @@ import org.smallbox.faraway.ui.UserInterface;
  * Created by Alex on 01/06/2015.
  */
 public class PanelInfoConsumable extends BaseRightPanel {
-    private ConsumableItem _consumable;
+    private ConsumableModel _consumable;
     private ItemInfo    _itemInfo;
 
     public PanelInfoConsumable(UserInterface.Mode mode, GameEventListener.Key shortcut) {
@@ -39,7 +39,7 @@ public class PanelInfoConsumable extends BaseRightPanel {
         }
     }
 
-    public void select(ConsumableItem consumable) {
+    public void select(ConsumableModel consumable) {
         _consumable = consumable;
         _itemInfo = consumable.getInfo();
         select(consumable.getInfo());

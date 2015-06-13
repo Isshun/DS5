@@ -6,8 +6,7 @@ framesInterval: 18
 type: item
 category: recreation
 isToy: true
-cost:
-    matter: 42
+cost: 42
 slots:
     - [-1, 0]
     - [1, 0]

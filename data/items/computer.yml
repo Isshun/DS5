@@ -3,8 +3,7 @@ type: item
 frames: 4
 framesInterval: 2
 category: common
-cost:
-  matter: 42
+cost: 42
 slots:
     - [0, 1]
 actions:

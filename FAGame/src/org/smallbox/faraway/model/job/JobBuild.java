@@ -5,18 +5,18 @@ import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.ItemBase;
-import org.smallbox.faraway.model.item.StructureItem;
+import org.smallbox.faraway.model.item.MapObjectModel;
+import org.smallbox.faraway.model.item.StructureModel;
 import org.smallbox.faraway.ui.UserInterface;
 
-public class JobBuild extends BaseJob {
+public class JobBuild extends JobModel {
 
 	private JobBuild(int x, int y) {
 		super(null, x, y);
 	}
 
-	public static BaseJob create(ItemBase item) {
-		BaseJob job = new JobBuild(item.getX(), item.getY());
+	public static JobModel create(MapObjectModel item) {
+		JobModel job = new JobBuild(item.getX(), item.getY());
 		job.setItem(item);
 		return job;
 	}
@@ -45,8 +45,8 @@ public class JobBuild extends BaseJob {
 		}
 
 		// Item is no longer exists
-		StructureItem currentStructure = ServiceManager.getWorldMap().getStructure(_posX, _posY);
-		ItemBase currentItem = ServiceManager.getWorldMap().getItem(_posX, _posY);
+		StructureModel currentStructure = ServiceManager.getWorldMap().getStructure(_posX, _posY);
+		MapObjectModel currentItem = ServiceManager.getWorldMap().getItem(_posX, _posY);
 		if (_item != currentStructure && _item != currentItem) {
 			if (_item != currentStructure) {
 				Log.warning("Character #" + character.getId() + ": actionBuild on invalide structure");
@@ -66,7 +66,7 @@ public class JobBuild extends BaseJob {
 		if (result == ResourceManager.Message.NO_MATTER) {
 			UserInterface.getInstance().displayMessage("not enough matter", _posX, _posY);
 			Log.debug("Character #" + character.getId() + ": not enough matter");
-			JobManager.getInstance().quit(this, BaseJob.JobAbortReason.NO_BUILD_RESOURCES);
+			JobManager.getInstance().quit(this, JobModel.JobAbortReason.NO_BUILD_RESOURCES);
 			return true;
 		}
 

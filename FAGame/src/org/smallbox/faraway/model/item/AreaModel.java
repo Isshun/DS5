@@ -2,11 +2,11 @@ package org.smallbox.faraway.model.item;
 
 import org.smallbox.faraway.model.room.Room;
 
-public class WorldArea {
-	private UserItem 		_item;
-	private ConsumableItem 	_consumable;
-	private StructureItem 	_structure;
-	private WorldResource 	_resource;
+public class AreaModel {
+	private ItemModel _item;
+	private ConsumableModel _consumable;
+	private StructureModel _structure;
+	private ResourceModel _resource;
 	private int				_oxygen;
 	private int				_x;
 	private int				_y;
@@ -17,7 +17,7 @@ public class WorldArea {
 	private boolean 		_isStorage;
 	private int				_lightSource;
 
-	public WorldArea(int x, int y, int z) {
+	public AreaModel(int x, int y, int z) {
 		_oxygen = (int) (Math.random() % 100);
 		_light = 0;
 		_x = x;
@@ -34,9 +34,9 @@ public class WorldArea {
 	public void 			setRoom(Room room) { _room = room; }
 	public void 			setStorage(boolean isStorage) { _isStorage = isStorage; }
 
-	public UserItem			getItem() { return _item; }
-	public StructureItem	getStructure() { return _structure; }
-	public WorldResource 	getResource() { return _resource; }
+	public ItemModel getItem() { return _item; }
+	public StructureModel getStructure() { return _structure; }
+	public ResourceModel getResource() { return _resource; }
 	public int				getOxygen() { return _oxygen; }
 	public int				getX() { return _x; }
 	public int				getY() { return _y; }
@@ -50,7 +50,7 @@ public class WorldArea {
 	public void				setLightSource(int value) { _lightSource = value; }
 	public boolean 			canSupportRoof() { return (_structure != null && (_structure.isWall() || _structure.isDoor())) || (_resource != null && _resource.isRock()); }
 
-	public void				setItem(UserItem item) {
+	public void				setItem(ItemModel item) {
 		_item = item;
 		if (item != null) {
 			item.setArea(this);
@@ -59,7 +59,7 @@ public class WorldArea {
 		}
 	}
 
-	public void				setStructure(StructureItem structure) {
+	public void				setStructure(StructureModel structure) {
 		_structure = structure;
 		if (structure != null) {
 			structure.setArea(this);
@@ -68,7 +68,7 @@ public class WorldArea {
 		}
 	}
 
-	public void 			setResource(WorldResource resource) {
+	public void 			setResource(ResourceModel resource) {
 		_resource = resource;
 		if (resource != null) {
 			resource.setArea(this);
@@ -77,7 +77,7 @@ public class WorldArea {
 		}
 	}
 
-	public void setConsumable(ConsumableItem consumable) {
+	public void setConsumable(ConsumableModel consumable) {
 		_consumable = consumable;
 		if (consumable != null) {
 			consumable.setArea(this);
@@ -90,14 +90,14 @@ public class WorldArea {
 		return _resource == null && _item == null && _structure == null;
 	}
 
-	public UserItem getRootItem() {
+	public ItemModel getRootItem() {
 		if (_item != null && _item.getX() == _x && _item.getY() == _y) {
 			return _item;
 		}
 		return null;
 	}
 
-	public ConsumableItem getConsumable() {
+	public ConsumableModel getConsumable() {
 		return _consumable;
 	}
 }

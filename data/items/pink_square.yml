@@ -3,8 +3,7 @@ width: 1
 height: 1
 type: item
 category: recreation
-cost:
-    matter: 42
+cost: 42
 actions:
     -   type: use
         cost: 10

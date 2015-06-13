@@ -6,7 +6,7 @@ import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.JobManager;
-import org.smallbox.faraway.model.job.BaseJob;
+import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
@@ -52,13 +52,13 @@ public class PanelJobs extends BaseRightPanel {
 
 	@Override
 	public void onRefresh(int update) {
-        List<BaseJob> jobs = JobManager.getInstance().getJobs();
+        List<JobModel> jobs = JobManager.getInstance().getJobs();
 
         FrameLayout frameJobs = (FrameLayout)findById("frame_jobs");
         frameJobs.clearAllViews();
 
 		// Display jobs
-		for (BaseJob job: jobs) {
+		for (JobModel job: jobs) {
             TextView lbJob = ViewFactory.getInstance().createTextView(200, 30);
             lbJob.setString(job.getLabel());
             lbJob.setCharacterSize(14);
@@ -104,7 +104,7 @@ public class PanelJobs extends BaseRightPanel {
 //		}
 	}
 
-	private void refreshJob(final BaseJob job, TextView text, int x, int y) {
+	private void refreshJob(final JobModel job, TextView text, int x, int y) {
 		text.setVisible(true);
 		text.setPosition(x, y);
 		text.resetPos();

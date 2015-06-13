@@ -63,15 +63,23 @@ public class CharacterRenderer implements IRenderer {
 				renderer.draw(_redBackground, effect);
 			}
 			
-			// Draw sprite
-			SpriteModel sprite = _spriteManager.getCharacter(c, dirIndex, frame);
-			sprite.setPosition(posX, posY + (c.isSleeping() ? 20 : 0));
-			renderer.draw(sprite, effect);
+			// Draw character
+			{
+				SpriteModel sprite = _spriteManager.getCharacter(c, dirIndex, frame);
+				sprite.setPosition(posX, posY + (c.isSleeping() ? 20 : 0));
+				renderer.draw(sprite, effect);
+			}
 						
 			// Selection
 			if (c.isSelected()) {
-				sprite = _spriteManager.getSelector(_update);
+				SpriteModel sprite = _spriteManager.getSelector(_update);
 				sprite.setPosition(posX - 2, posY + (c.isSleeping() ? 20 : 0) - 2);
+				renderer.draw(sprite, effect);
+			}
+
+			if (c.getInventory() != null) {
+				SpriteModel sprite = SpriteManager.getInstance().getItem(c.getInventory());
+				sprite.setPosition(posX - 2, posY - 2);
 				renderer.draw(sprite, effect);
 			}
 		}

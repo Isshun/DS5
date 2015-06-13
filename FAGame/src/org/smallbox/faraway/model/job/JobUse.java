@@ -10,7 +10,7 @@ import org.smallbox.faraway.model.item.*;
 
 import java.util.List;
 
-public class JobUse extends BaseJob {
+public class JobUse extends JobModel {
 
     @Override
     public boolean canBeResume() {
@@ -26,7 +26,7 @@ public class JobUse extends BaseJob {
 		super();
 	}
 
-	public static JobUse create(ItemBase item) {
+	public static JobUse create(MapObjectModel item) {
 		if (item == null || !item.hasFreeSlot()) {
 			return null;
 		}
@@ -43,12 +43,12 @@ public class JobUse extends BaseJob {
 		}
 		job.setActionInfo(infoAction);
 		job.setItem(item);
-        job.setQuantityTotal(infoAction.cost);
+        job.setCost(infoAction.cost);
 
 		return job;
 	}
 
-	public static JobUse create(ItemBase item, CharacterModel character) {
+	public static JobUse create(MapObjectModel item, CharacterModel character) {
 		if (character == null) {
 			return null;
 		}
@@ -91,7 +91,7 @@ public class JobUse extends BaseJob {
 		Log.debug("Character #" + character.getName() + ": actionUse");
 
 		// Character using item
-		if (_cost++ < _totalCost) {
+		if (_progress++ < _cost) {
 			// Set running
 			_status = JobStatus.RUNNING;
 			
@@ -112,7 +112,7 @@ public class JobUse extends BaseJob {
 			if (_item.getY() < _posY) { character.setDirection(Direction.BOTTOM); }
 
             // Use item
-            _item.use(_character, (int) (_totalCost - _cost));
+            _item.use(_character, (int) (_cost - _progress));
 
             return false;
 		}
@@ -140,7 +140,7 @@ public class JobUse extends BaseJob {
 		}
 		
 		// Item is no longer exists
-		if (_item.isConsomable()) {
+		if (_item.isConsumable()) {
 			if (_item != ServiceManager.getWorldMap().getConsumable(_item.getX(), _item.getY())) {
 				_reason = JobAbortReason.INVALID;
 				return false;
@@ -161,12 +161,6 @@ public class JobUse extends BaseJob {
 //			_reason = JobAbortReason.NO_LEFT_CARRY;
 //			return false;
 //		}
-		
-		// Factory is empty
-		if (_item.isFactory() && ((FactoryItem)_item).getInventory().size() == 0) {
-			_reason = JobAbortReason.NO_COMPONENTS;
-			return false;
-		}
 		
 		return true;
 	}

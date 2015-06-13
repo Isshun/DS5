@@ -1,6 +1,7 @@
 package org.smallbox.faraway.engine.dataLoader;
 
 import org.smallbox.faraway.Strings;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.GameData;
 import org.yaml.snakeyaml.Yaml;
 
@@ -14,7 +15,7 @@ import java.util.Map;
 public class StringsLoader {
 
 	public static void load(GameData data, String path, String fileName) {
-	    System.out.println("load strings...");
+	    Log.debug("load strings...");
 
 	    File itemFile = new File(path + fileName + ".yml");
 		try {
@@ -31,6 +32,6 @@ public class StringsLoader {
 			e.printStackTrace();
 		}
 		
-	    System.out.println("strings loaded");
+	    Log.debug("strings loaded");
 	}
 }

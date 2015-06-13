@@ -6,8 +6,7 @@ type: resource
 light: 0
 actions:
     -   type: mine
-        dropRate: 0.5
         products:
-            -   base.rock
-cost:
-    matter: 10
+            -   item: base.rock
+                quantity: 1
+                dropRate: 0.5

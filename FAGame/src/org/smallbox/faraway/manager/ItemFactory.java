@@ -1,15 +1,14 @@
 package org.smallbox.faraway.manager;
 
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.model.item.*;
 
 public class ItemFactory {
 
-	public static ItemBase create(WorldManager manager, ItemInfo info, int value) {
+	public static MapObjectModel create(WorldManager manager, ItemInfo info, int value) {
 		return create(manager, null, info, value);
 	}
 
-	public static ItemBase create(WorldManager manager, WorldArea area, ItemInfo info, int value) {
+	public static MapObjectModel create(WorldManager manager, AreaModel area, ItemInfo info, int value) {
 //		// Base light item
 //		if ("base.light".equals(info.name)) {
 //			area.setLightSource(info.light);
@@ -17,7 +16,7 @@ public class ItemFactory {
 //			return null;
 //		}
 		// Consumable item
-		if (info.isConsomable) {
+		if (info.isConsumable) {
 			return createConsumable(area, info, value);
 		}
 		// World resource
@@ -34,20 +33,8 @@ public class ItemFactory {
 		}
 	}
 
-	private static UserItem createUserItem(WorldManager manager, WorldArea area, ItemInfo info, int matterSupply) {
-		UserItem item = null;
-
-		// Factory item
-		if (info.isFactory) {
-			FactoryItem factory = new FactoryItem(info);
-			Game.getWorldManager().addFactory(factory);
-			item = factory;
-		}
-		// Regular user item
-		else {
-			item = new UserItem(info);
-		}
-		
+	private static ItemModel createUserItem(WorldManager manager, AreaModel area, ItemInfo info, int matterSupply) {
+		ItemModel item = new ItemModel(info);
 		item.setMatterSupply(matterSupply);
 
 		// Set world areas
@@ -60,8 +47,8 @@ public class ItemFactory {
 		return item;
 	}
 
-	private static ConsumableItem createConsumable(WorldArea area, ItemInfo info, int quantity) {
-		ConsumableItem consumable = new ConsumableItem(info);
+	private static ConsumableModel createConsumable(AreaModel area, ItemInfo info, int quantity) {
+		ConsumableModel consumable = new ConsumableModel(info);
 
 		consumable.setQuantity(quantity);
 		consumable.setMatterSupply(100);
@@ -73,21 +60,21 @@ public class ItemFactory {
 		return consumable;
 	}
 
-	private static StructureItem createStructure(WorldArea area, ItemInfo info, int matterSupply) {
-		StructureItem structure = new StructureItem(info);
-		
+	private static StructureModel createStructure(AreaModel area, ItemInfo info, int matterSupply) {
+		StructureModel structure = new StructureModel(info);
+
 		structure.setMatterSupply(matterSupply);
 		area.setStructure(structure);
 
 		return structure;
 	}
 
-	private static ItemBase createResource(WorldArea area, ItemInfo info, int matterSupply) {
-		WorldResource resource = new WorldResource(info);
-		
+	private static MapObjectModel createResource(AreaModel area, ItemInfo info, int matterSupply) {
+		ResourceModel resource = new ResourceModel(info);
+
 		resource.setValue(matterSupply);
 		area.setResource(resource);
-		
+
 		return resource;
 	}
 }

@@ -1,19 +1,19 @@
 package org.smallbox.faraway.model.item;
 
-import org.smallbox.faraway.model.job.BaseJob;
+import org.smallbox.faraway.model.job.JobModel;
 
 
-public class WorldResource extends UserItem {
+public class ResourceModel extends ItemModel {
 	private double 	_quantity;
 	private int 	_tile;
 	private int 	_doubleRender;
-	private BaseJob _job;
+	private JobModel _job;
 
-	public WorldResource(ItemInfo info, int id) {
+	public ResourceModel(ItemInfo info, int id) {
 		super(info, id);
 	}
 
-	public WorldResource(ItemInfo info) {
+	public ResourceModel(ItemInfo info) {
 		super(info);
 	}
 
@@ -71,7 +71,7 @@ public class WorldResource extends UserItem {
 		return _quantity >= _info.actions.get(0).mature;
 	}
 
-	public void setJob(BaseJob job) {
+	public void setJob(JobModel job) {
 		_job = job;
 	}
 

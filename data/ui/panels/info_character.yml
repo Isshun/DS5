@@ -240,8 +240,14 @@ entries:
             textsize: 22
             position: [20, 245]
 
+        -   type: label
+            id: lb_inventory_entry
+            textsize: 22
+            position: [20, 285]
+
         -   type: frame
             id: frame_inventory_entries
+            textsize: 16
             position: [20, 265]
                       
     -   type: frame

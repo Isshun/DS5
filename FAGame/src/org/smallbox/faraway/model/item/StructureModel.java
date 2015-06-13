@@ -1,13 +1,13 @@
 package org.smallbox.faraway.model.item;
 
 
-public class StructureItem extends ItemBase {
+public class StructureModel extends MapObjectModel {
 
-	public StructureItem(ItemInfo info, int id) {
+	public StructureModel(ItemInfo info, int id) {
 		super(info, id);
 	}
 
-	public StructureItem(ItemInfo info) {
+	public StructureModel(ItemInfo info) {
 		super(info);
 	}
 

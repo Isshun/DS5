@@ -6,5 +6,4 @@ width: 1
 height: 2
 slots: 
     - [0, 0]
-cost:
-  matter: 42
+cost: 42

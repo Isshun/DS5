@@ -3,13 +3,13 @@ package org.smallbox.faraway.engine.renderer;
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.util.Settings;
 import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 public class MainRenderer implements IRenderer {
 	private static IRenderer 		_self;
 	
-	private SpriteManager _spriteManager;
+	private SpriteManager 			_spriteManager;
 	private CharacterRenderer 		_characterRenderer;
 	private WorldRenderer 			_worldRenderer;
     // TODO
@@ -112,7 +112,7 @@ public class MainRenderer implements IRenderer {
 //		}
 	}
 
-	public void refreshLight(ItemBase item) {
+	public void refreshLight(MapObjectModel item) {
         // TODO
 //		if (_lightRenderer != null) {
 //			_lightRenderer.refreshGame(item);

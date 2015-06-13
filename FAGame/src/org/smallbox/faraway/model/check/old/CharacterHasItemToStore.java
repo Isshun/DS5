@@ -10,7 +10,7 @@
 //
 //	@Override
 //	public boolean create(JobManager jobManager, CharacterModel character) {
-//		if (character.getInventory().size() > 0) {
+//		if (character.getComponents().size() > 0) {
 //			JobModel job = JobStore.create(character);
 //			if (job != null) {
 //				jobManager.addJob(job, character);

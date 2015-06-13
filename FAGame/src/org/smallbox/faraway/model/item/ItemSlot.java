@@ -1,22 +1,22 @@
 package org.smallbox.faraway.model.item;
 
-import org.smallbox.faraway.model.job.BaseJob;
+import org.smallbox.faraway.model.job.JobModel;
 
 public class ItemSlot {
-	private BaseJob _job;
-	private ItemBase	_item;
+	private JobModel _job;
+	private MapObjectModel _item;
 	private int			_relX;
 	private int			_relY;
 	private boolean		_isFree;
 
-	public ItemSlot(ItemBase item, int x, int y) {
+	public ItemSlot(MapObjectModel item, int x, int y) {
 		_item = item;
 		_relX = x;
 		_relY = y;
 		_isFree = true;
 	}
 
-	public void take(BaseJob job) {
+	public void take(JobModel job) {
 		_job = job;
 		_isFree = false;
 	}
@@ -33,11 +33,11 @@ public class ItemSlot {
 		return _item.getY() + _relY;
 	}
 
-	public BaseJob getJob() {
+	public JobModel getJob() {
 		return _job;
 	}
 
-	public ItemBase getItem() {
+	public MapObjectModel getItem() {
 		return _item;
 	}
 

@@ -6,12 +6,12 @@ import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.PathManager.PathManagerCallback;
 import org.smallbox.faraway.manager.Utils;
 import org.smallbox.faraway.model.character.CharacterNeeds;
-import org.smallbox.faraway.model.job.BaseJob;
+import org.smallbox.faraway.model.job.JobModel;
 
 public abstract class Movable implements PathManagerCallback {
 	public interface OnPathComplete {
-		void	onPathFailed(BaseJob job);
-		void	onPathComplete(Path rawpath, BaseJob job);
+		void	onPathFailed(JobModel job);
+		void	onPathComplete(Path rawpath, JobModel job);
 	}
 	
 	public enum Direction {
@@ -38,7 +38,7 @@ public abstract class Movable implements PathManagerCallback {
 	protected Direction 		_move;
 	protected Path				_path;
 	protected int				_steps;
-	protected BaseJob _job;
+	protected JobModel _job;
 	protected OnPathComplete	_onPathComplete;
 
 //	private HashMap<Integer, Integer> 	_points;
@@ -106,11 +106,11 @@ public abstract class Movable implements PathManagerCallback {
 //		double x2 = offsetX / 2 + fromX - offsetY;
 //		double y2 = offsetY / 2 + fromY - offsetX;
 //		
-//		System.out.println("-------------------");
-//		System.out.println("from: " + fromX + " x " + fromY);
-//		System.out.println("to: " + toX + " x " + toY);
-//		System.out.println("offset: " + offsetX + " x " + offsetY);
-//		System.out.println("point: " + x + " x " + y);
+//		Log.debug("-------------------");
+//		Log.debug("from: " + fromX + " x " + fromY);
+//		Log.debug("to: " + toX + " x " + toY);
+//		Log.debug("offset: " + offsetX + " x " + offsetY);
+//		Log.debug("point: " + x + " x " + y);
 //
 ////		Sprite sprite = null;
 ////		
@@ -141,9 +141,9 @@ public abstract class Movable implements PathManagerCallback {
 ////			sprite.setPosition((int)(x+radOffsetX*r)*32, (int)((y+radOffsetY*r)*32));
 ////			app.draw(sprite, _renderEffect);
 //			
-////			System.out.println("r: " + r);
-////			System.out.println("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
-//			System.out.println("rad: " + rad2OffsetX + " x " + rad2OffsetY + " = " + rad2 + " x " + rad2);
+////			Log.debug("r: " + r);
+////			Log.debug("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
+//			Log.debug("rad: " + rad2OffsetX + " x " + rad2OffsetY + " = " + rad2 + " x " + rad2);
 //		
 //			double rad1OffsetX = (x - toX)/r;
 //			double rad1OffsetY = (y - toY)/r;
@@ -154,8 +154,8 @@ public abstract class Movable implements PathManagerCallback {
 ////			sprite.setPosition((int)(x+radOffsetX*r)*32, (int)((y+radOffsetY*r)*32));
 ////			app.draw(sprite, _renderEffect);
 ////
-////			System.out.println("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
-//			System.out.println("rad: " + rad1OffsetX + " x " + rad1OffsetY + " = " + rad1 + " x " + rad1);
+////			Log.debug("bornes: " + (Math.PI-1.7 )+ " x " + (Math.PI-0.7));
+//			Log.debug("rad: " + rad1OffsetX + " x " + rad1OffsetY + " = " + rad1 + " x " + rad1);
 //		
 //		
 //		double from = Math.min(Math.PI-rad1, Math.PI-rad2);
@@ -166,7 +166,7 @@ public abstract class Movable implements PathManagerCallback {
 ////				app.draw(sprite, _renderEffect);
 //			
 //			//_points.add(new Position((float)(x*32 + Math.cos(i)*r*32), (float)(y*32 + Math.sin(i)*r*32)));
-////			System.out.println("x: " + x*32 + ", y: " + y);
+////			Log.debug("x: " + x*32 + ", y: " + y);
 //			_points.put((int)(x*32 + Math.cos(i)*r*32), (int)(y*32 + Math.sin(i)*r*32));
 //		}
 //
@@ -183,7 +183,7 @@ public abstract class Movable implements PathManagerCallback {
 	}
 
 	protected void  addMessage(CharacterNeeds.Message msgBlocked, int count) {
-	  //_messages[msgBlocked] = count;
+	  //_messages[msgBlocked] = quantity;
 	}
 	
 	protected void  removeMessage(int msg) {

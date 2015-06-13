@@ -8,17 +8,20 @@ import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.manager.JobManager;
+import org.smallbox.faraway.model.item.ConsumableModel;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.UserItem;
-import org.smallbox.faraway.model.job.BaseJob;
+import org.smallbox.faraway.model.item.ItemModel;
+import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
+
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 01/06/2015.
  */
 public class PanelInfoItem extends BaseRightPanel {
-    private UserItem    _item;
+    private ItemModel _item;
     private ItemInfo    _itemInfo;
     private ViewFactory _viewFactory;
     private FrameLayout _frameCraft;
@@ -61,7 +64,7 @@ public class PanelInfoItem extends BaseRightPanel {
         }
     }
 
-    public void select(UserItem item) {
+    public void select(ItemModel item) {
         _item = item;
         _itemInfo = item.getInfo();
         select(item.getInfo());
@@ -71,6 +74,8 @@ public class PanelInfoItem extends BaseRightPanel {
             ((TextView)findById("lb_durability")).setString("Durability: " + _item.getHealth());
             ((TextView)findById("lb_matter")).setString("Matter: " + _item.getMatter());
             ((TextView)findById("lb_pos")).setString("Pos: " + _item.getX() + "x" + _item.getY());
+            ((TextView)findById("lb_components")).setString("Components: " + String.join(", ", _item.getComponents().stream().map(ConsumableModel::getFullLabel).collect(Collectors.toList())));
+            ((TextView)findById("lb_crafts")).setString("Crafts: " + String.join(", ", _item.getCrafts().stream().map(ConsumableModel::getFullLabel).collect(Collectors.toList())));
         }
 
         if (_itemInfo.hasCraftAction()) {
@@ -87,7 +92,7 @@ public class PanelInfoItem extends BaseRightPanel {
             // Create actions list
             index = 0;
             if (_item.hasJobs()) {
-                for (BaseJob job : _item.getJobs()) {
+                for (JobModel job : _item.getJobs()) {
                     addJobListEntry(job, index++);
                 }
             }
@@ -104,7 +109,7 @@ public class PanelInfoItem extends BaseRightPanel {
         }
     }
 
-    private void addJobListEntry(BaseJob job, int index) {
+    private void addJobListEntry(JobModel job, int index) {
         _viewFactory.load("data/ui/panels/info_item_craft_entry.yml", view -> {
             view.findById("bt_suspend");
             view.findById("bt_cancel").setOnClickListener(v -> JobManager.getInstance().removeJob(job));

@@ -113,7 +113,7 @@ public class PanelDebugItem extends BasePanel {
 		
 		{
 			TextView text = ViewFactory.getInstance().createTextView();
-			text.setString("Is consomable: " + item.isConsomable);
+			text.setString("Is consomable: " + item.isConsumable);
 			text.setPosition(x, y);
 			text.setCharacterSize(16);
 			_itemView.addView(text);
@@ -189,24 +189,6 @@ public class PanelDebugItem extends BasePanel {
 //			}
 		}
 		
-		if (item.craftedFromItems != null) {
-			TextView text = ViewFactory.getInstance().createTextView();
-			String str = "Crafted from: ";
-			int i = 0;
-			for (String name: item.receipts) {
-				if (i++ > 0) {
-					str += " / ";
-				}
-				str += name;
-			}
-			text.setString(str);
-			text.setPosition(x, y);
-			text.setCharacterSize(16);
-			_itemView.addView(text);
-			y += 22;
-		}
-		
-
 	}
 
 	public void reset() {

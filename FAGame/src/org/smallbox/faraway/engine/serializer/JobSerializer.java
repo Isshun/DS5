@@ -3,7 +3,7 @@ package org.smallbox.faraway.engine.serializer;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.job.BaseJob;
+import org.smallbox.faraway.model.job.JobModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class JobSerializer implements SerializerInterface {
         private final String    actionPath;
         private final int       itemId;
 
-        public JobSave(BaseJob job) {
+        public JobSave(JobModel job) {
             this.type = job.getType();
             this.itemId = job.getItem() != null ? job.getItem().getId() : -1;
             this.actionPath = job.getItem() != null && job.getActionInfo() != null ? job.getItem().getName() + ":" + job.getActionInfo().name : null;

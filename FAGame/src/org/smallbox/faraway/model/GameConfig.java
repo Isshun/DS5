@@ -31,6 +31,7 @@ public class GameConfig {
         public boolean          structure;
         public boolean          resource;
         public boolean          item;
+        public boolean          consumable;
     }
 
     public GameConfigRender     render;

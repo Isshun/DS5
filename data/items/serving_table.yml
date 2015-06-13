@@ -2,8 +2,7 @@ label: Serving table
 width: 3
 height: 1
 category: kitchen
-cost:
-    matter: 8
+cost: 8
 type: item
 slots:
     - [0, 1]

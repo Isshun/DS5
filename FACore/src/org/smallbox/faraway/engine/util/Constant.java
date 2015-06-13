@@ -43,8 +43,8 @@ public class Constant {
 	public static final int 	FONT_SIZE 				= 20;
 	public static final int 	PANEL_WIDTH 			= 420;
 	public static final int 	PANEL_HEIGHT 			= WINDOW_HEIGHT;
-	public static final int 	WORLD_WIDTH 			= 250;
-	public static final int 	WORLD_HEIGHT 			= 250;
+	public static final int 	WORLD_WIDTH 			= 50;
+	public static final int 	WORLD_HEIGHT 			= 50;
 	public static final double 	LIMITE_RELATION_LONELY 	= 20;
 	public static final double 	LIMITE_LOW_OXYGEN 		= 20;
 	public static final double 	LIMITE_NO_OXYGEN 		= 0;

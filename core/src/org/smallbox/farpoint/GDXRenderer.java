@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.ui.ColorView;
+import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.engine.util.Constant;
 
 /**
@@ -122,6 +123,11 @@ public class GDXRenderer implements GFXRenderer {
         return Constant.WINDOW_HEIGHT;
     }
 
+    @Override
+    public void draw(View view, int x, int y) {
+        view.draw(this, x, y);
+    }
+
     public void setGameEventListener(GameEventListener listener) {
         _listener = listener;
     }
@@ -162,7 +168,6 @@ public class GDXRenderer implements GFXRenderer {
             Matrix4 matrix = new Matrix4();
             matrix.translate(x, y, 0);
 
-            _cameraWorld.translate(10, 10);
             cache.setProjectionMatrix(_cameraWorld.combined);
             cache.setTransformMatrix(matrix);
             cache.begin();

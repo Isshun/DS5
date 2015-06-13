@@ -7,10 +7,9 @@ import org.smallbox.faraway.model.character.CharacterModel.Gender;
 import org.smallbox.faraway.model.character.CharacterNeeds;
 import org.smallbox.faraway.model.character.CharacterRelation;
 import org.smallbox.faraway.model.character.CharacterRelation.Relation;
-import org.smallbox.faraway.model.item.ConsumableItem;
-import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.ConsumableModel;
+import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.UserItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,9 +90,9 @@ public class CharacterSerializer implements SerializerInterface {
 			this.nextChildAtOld = character.getNextChildAtOld();
 			this.nbChild = character.getNbChild();
 			this.inventory = new ArrayList<String>();
-			for (ItemBase item: character.getInventory()) {
-				this.inventory.add(item.getInfo().name);
-			}
+//			for (MapObjectModel item: character.getInventory()) {
+//				this.inventory.add(item.getInfo().name);
+//			}
 			this.needs = new CharacterNeedsSave(character.getNeeds());
 			for (CharacterRelation relation: character.getRelations()) {
 				this.relations.add(new CharacterRelationSave(relation));
@@ -143,13 +142,13 @@ public class CharacterSerializer implements SerializerInterface {
 		CharacterModel character = new CharacterModel(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
 		character.setGender(characterSave.gender);
 
-		// Load inventory
-		if (characterSave.inventory != null) {
-			for (String name: characterSave.inventory) {
-				ItemInfo info = Game.getData().getItemInfo(name);
-				character.addInventory(new ConsumableItem(info));
-			}
-		}
+//		// Load inventory
+//		if (characterSave.inventory != null) {
+//			for (String name: characterSave.inventory) {
+//				ItemInfo info = Game.getData().getItemInfo(name);
+//				character.addInventory(new ConsumableModel(info));
+//			}
+//		}
 		
 		// Load needs
 		if (characterSave.needs != null) {

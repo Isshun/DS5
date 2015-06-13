@@ -46,7 +46,7 @@ public class WorldSerializer implements SerializerInterface {
 		public int value;
 	}
 
-	private static void saveArea(List<WorldSaveArea> areas, WorldArea area) {
+	private static void saveArea(List<WorldSaveArea> areas, AreaModel area) {
 		if (area.getItem() == null && area.getResource() == null && area.getStructure() == null) {
 			return;
 		}
@@ -57,7 +57,7 @@ public class WorldSerializer implements SerializerInterface {
 		areaSave.z = area.getZ();
 		areaSave.lightSource = area.getLightSource();
 
-		UserItem item = area.getRootItem();
+		ItemModel item = area.getRootItem();
 		if (item != null) {
 			areaSave.item = new WorldSaveUserItem();
 			areaSave.item.id = item.getId();
@@ -65,7 +65,7 @@ public class WorldSerializer implements SerializerInterface {
 			areaSave.item.matter = (int)item.getMatterSupply();
 		}
 
-        ConsumableItem consumable = area.getConsumable();
+        ConsumableModel consumable = area.getConsumable();
 		if (consumable != null) {
 			areaSave.consumable = new WorldSaveConsumableItem();
 			areaSave.consumable.id = consumable.getId();
@@ -73,7 +73,7 @@ public class WorldSerializer implements SerializerInterface {
 			areaSave.consumable.quantity = consumable.getQuantity();
 		}
 
-		StructureItem structure = area.getStructure();
+		StructureModel structure = area.getStructure();
 		if (structure != null) {
 			areaSave.structure = new WorldSaveStructure();
 			areaSave.structure.name = structure.getName();
@@ -81,7 +81,7 @@ public class WorldSerializer implements SerializerInterface {
 			areaSave.structure.id = structure.getId();
 		}
 
-		WorldResource resource = area.getResource();
+		ResourceModel resource = area.getResource();
 		if (resource != null) {
 			areaSave.resource = new WorldSaveResource();
 			areaSave.resource.name = resource.getName();
@@ -101,7 +101,7 @@ public class WorldSerializer implements SerializerInterface {
 		for (int z = 0; z < 1; z++) {
 			for (int x = 0; x < manager.getWidth(); x++) {
 				for (int y = 0; y < manager.getHeight(); y++) {
-					WorldArea area = manager.getArea(z, x, y);
+					AreaModel area = manager.getArea(z, x, y);
 					saveArea(save.areas, area);
 				}
 			}
@@ -121,7 +121,7 @@ public class WorldSerializer implements SerializerInterface {
 
 				// UserItem
 				if (area.item != null) {
-					UserItem item = (UserItem) manager.putItem(area.item.name, area.x, area.y, area.z, area.item.matter);
+					ItemModel item = (ItemModel) manager.putObject(area.item.name, area.x, area.y, area.z, area.item.matter);
 					if (item != null) {
 						item.setId(area.item.id);
 					}
@@ -129,7 +129,7 @@ public class WorldSerializer implements SerializerInterface {
 
 				// Consumable
 				if (area.consumable != null) {
-					ConsumableItem consumable = (ConsumableItem) manager.putItem(area.consumable.name, area.x, area.y, area.z, area.consumable.quantity);
+					ConsumableModel consumable = (ConsumableModel) manager.putObject(area.consumable.name, area.x, area.y, area.z, area.consumable.quantity);
 					if (consumable != null) {
 						consumable.setId(area.consumable.id);
                         consumable.setQuantity(area.consumable.quantity);
@@ -138,16 +138,16 @@ public class WorldSerializer implements SerializerInterface {
 
 				// Structure
 				if (area.structure != null) {
-					ItemBase item = manager.putItem(area.structure.name, area.x, area.y, area.z, area.structure.matter);
+					MapObjectModel item = manager.putObject(area.structure.name, area.x, area.y, area.z, area.structure.matter);
 					item.setId(area.structure.id);
 				}
 
 				// Resource
 				if (area.resource != null) {
-					ItemBase item = manager.putItem(area.resource.name, area.x, area.y, area.z, area.resource.matter);
+					MapObjectModel item = manager.putObject(area.resource.name, area.x, area.y, area.z, area.resource.matter);
 					if (item != null) {
-						((WorldResource)item).setTile(area.resource.tile);
-						((WorldResource)item).setValue(area.resource.value);
+						((ResourceModel)item).setTile(area.resource.tile);
+						((ResourceModel)item).setValue(area.resource.value);
 						item.setId(area.resource.id);
 					}
 				}

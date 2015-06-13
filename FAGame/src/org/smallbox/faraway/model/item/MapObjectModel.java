@@ -2,21 +2,23 @@ package org.smallbox.faraway.model.item;
 
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.job.BaseJob;
+import org.smallbox.faraway.model.job.JobModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-public abstract class ItemBase {
+public abstract class MapObjectModel {
+    private static int 		_maxId;
+
     private int			    _x;
     private int			    _y;
     private int			    _id;
     private boolean 	    _isSolid;
     private double          _matterSupply;
     private int 		    _zoneIdRequired;
-    private CharacterModel _owner;
+    private CharacterModel  _owner;
     private String 		    _name;
     private int 		    _width;
     private int 		    _height;
@@ -26,7 +28,6 @@ public abstract class ItemBase {
     private int 		    _mode;
     private int			    _light;
     private int 		    _nbMode;
-    private int 		    _maxId;
     protected ItemInfo	    _info;
     private boolean		    _isWorking;
     private String 		    _label;
@@ -42,16 +43,16 @@ public abstract class ItemBase {
     private int 		    _animFrameInterval;
     private boolean 	    _selected;
     private int 		    _lastBlocked;
-    private WorldArea	    _area;
+    private AreaModel       _area;
     private int             _health;
-    private List<BaseJob>   _jobs;
-    protected boolean         _needRefresh;
+    private List<JobModel>   _jobs;
+    protected boolean       _needRefresh;
 
-    public ItemBase(ItemInfo info) {
+    public MapObjectModel(ItemInfo info) {
         init(info, ++_maxId);
     }
 
-    public ItemBase(ItemInfo info, int id) {
+    public MapObjectModel(ItemInfo info, int id) {
         if (_maxId < id) {
             _maxId = id;
         }
@@ -110,10 +111,10 @@ public abstract class ItemBase {
 
             // TODO: zone
             //_zoneIdRequired = info.zone;
-            if (info.cost != null) {
-                _matter = info.cost.matter;
-                _power = info.cost.power;
-            }
+//            if (info.cost != null) {
+                _matter = info.cost;
+//                _power = info.cost.power;
+//            }
 
             _isSolid = !info.isWalkable;
         }
@@ -141,7 +142,7 @@ public abstract class ItemBase {
         }
     }
 
-    public ItemSlot takeSlot(BaseJob job) {
+    public ItemSlot takeSlot(JobModel job) {
         if (_nbFreeSlot != -1) {
             for (ItemSlot slot : _slots) {
                 if (slot.isFree()) {
@@ -180,7 +181,7 @@ public abstract class ItemBase {
     public void 			setSolid(boolean isSolid) { _isSolid = isSolid; }
     public void 			setMode(int mode) { _mode = mode; }
     public void 			setWorking(boolean working) { _isWorking = working; }
-    public void 			setArea(WorldArea area) { _area = area; }
+    public void 			setArea(AreaModel area) { _area = area; }
     public void 			setX(int x) { _x = x; }
     public void 			setY(int y) { _y = y; }
 
@@ -205,7 +206,7 @@ public abstract class ItemBase {
     public int 				getTotalUse() { return _nbTotalUsed; }
     public int 				getMatter() { return _matter; }
     public int 				getLastBlocked() { return _lastBlocked; }
-    public WorldArea		getArea() { return _area; }
+    public AreaModel getArea() { return _area; }
 
     // Boolean
     public boolean			isSolid() { return _isSolid; }
@@ -235,7 +236,7 @@ public abstract class ItemBase {
         _mode = _nbMode > 0 ? (_mode + 1) % _nbMode : 0;
     }
 
-    public UserItem use(CharacterModel character, int durationLeft) {
+    public ItemModel use(CharacterModel character, int durationLeft) {
         // Add effect on character
         character.getNeeds().use(this, _info.actions.get(0));
 
@@ -248,7 +249,7 @@ public abstract class ItemBase {
     }
 
     public String getLabelType() {
-        if (_info.isConsomable) { return Strings.LB_ITEM_CONSOMABLE; }
+        if (_info.isConsumable) { return Strings.LB_ITEM_CONSOMABLE; }
         if (_info.isStructure) { return Strings.LB_ITEM_STRUCTURE; }
         if (_info.isResource) { return Strings.LB_ITEM_RESSOURCE; }
         return Strings.LB_ITEM_USER;
@@ -284,7 +285,7 @@ public abstract class ItemBase {
 
     public String getLabelCategory() {
         if (_info.isUserItem) { return "item"; }
-        if (_info.isConsomable) { return "consomable"; }
+        if (_info.isConsumable) { return "consomable"; }
         if (_info.isStructure) { return "structure"; }
         if (_info.isResource) { return "resource"; }
         if (_info.isFood) { return "food"; }
@@ -295,8 +296,8 @@ public abstract class ItemBase {
         return _info.isDrink;
     }
 
-    public boolean isConsomable() {
-        return _info.isConsomable;
+    public boolean isConsumable() {
+        return _info.isConsumable;
     }
 
     public boolean isGarbage() {
@@ -335,7 +336,7 @@ public abstract class ItemBase {
         return _info.maxHealth;
     }
 
-    public void addJob(BaseJob job) {
+    public void addJob(JobModel job) {
         _needRefresh = true;
 
         if (_jobs == null) {
@@ -349,7 +350,7 @@ public abstract class ItemBase {
         return _jobs != null && !_jobs.isEmpty();
     }
 
-    public List<BaseJob> getJobs() {
+    public List<JobModel> getJobs() {
         return _jobs;
     }
 
@@ -361,7 +362,7 @@ public abstract class ItemBase {
         _needRefresh = true;
     }
 
-    public void removeJob(BaseJob job) {
+    public void removeJob(JobModel job) {
         _needRefresh = true;
 
         if (_jobs != null) {
@@ -374,4 +375,8 @@ public abstract class ItemBase {
     }
 
     public int getQuantity() { return 1; }
+
+    public void addComponent(ConsumableModel consumable) {
+        throw new RuntimeException("add inventory on MapObjectItem is not allowed");
+    }
 }

@@ -62,7 +62,7 @@ public class GDXLabel extends TextView {
 
     @Override
     public String getString() {
-        return null;
+        return _string;
     }
 
     @Override
@@ -72,9 +72,14 @@ public class GDXLabel extends TextView {
 
     @Override
     public void draw(GFXRenderer renderer, RenderEffect effect) {
+        draw(renderer, 0, 0);
+    }
+
+    @Override
+    public void draw(GFXRenderer renderer, int x, int y) {
         if (_needResetPos) {
-            _finalX = 0;
-            _finalY = 0;
+            _finalX = x;
+            _finalY = y;
             View view = this;
             while (view != null) {
                 _finalX += view.getPosX();

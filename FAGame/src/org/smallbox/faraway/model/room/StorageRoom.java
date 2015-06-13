@@ -78,7 +78,7 @@
 //		return false;
 //	}
 //
-////	public List<UserItem> getInventory() {
+////	public List<UserItem> getComponents() {
 ////		return _inventory;
 ////	}
 //
@@ -101,7 +101,7 @@
 //
 //		if (!_acceptFood && item.isFood()) {return false; }
 //		if (!_acceptDrink && item.isDrink()) {return false; }
-//		if (!_acceptConsomable && item.isConsomable()) {return false; }
+//		if (!_acceptConsomable && item.isConsumable()) {return false; }
 //		if (!_acceptGarbage && item.isGarbage()) {return false; }
 //		if (_accepts != null && !_accepts.isEmpty() && !_accepts.contains(item.getInfo())) { return false; }
 //
@@ -132,14 +132,14 @@
 //			_options = new RoomOptions();
 //			_options.title = StringUtils.getDashedString("Storage", _nbItem + "/" + _inventorySize, Constant.NB_COLUMNS_TITLE);
 //			for (UserItem item: _inventory) {
-//				int count = 1;
+//				int quantity = 1;
 //				ItemInfo info = item.getInfo();
 //				if (item.isStack()) {
-//					count = ((StackItem)item).size();
+//					quantity = ((StackItem)item).size();
 //					info = ((StackItem)item).getStackedInfo();
 //				}
 //				if (info != null) {
-//					itemInfos.put(info, itemInfos.containsKey(info) ? itemInfos.get(info) + count : count);
+//					itemInfos.put(info, itemInfos.containsKey(info) ? itemInfos.get(info) + quantity : quantity);
 //				}
 //			}
 //			for (ItemInfo info: itemInfos.keySet()) {
@@ -157,20 +157,20 @@
 //	}
 //
 //	/**
-//	 * Store a collection of item and return accepted item count
+//	 * Store a collection of item and return accepted item quantity
 //	 *
 //	 * @param items
 //	 * @return number of item stored
 //	 */
 //	public int store(List<UserItem> items) {
-//		int count = 0;
+//		int quantity = 0;
 //		for (UserItem item: items) {
 //			if (store(item) == false) {
-//				return count;
+//				return quantity;
 //			}
-//			count++;
+//			quantity++;
 //		}
-//		return count;
+//		return quantity;
 //	}
 //
 //	/**

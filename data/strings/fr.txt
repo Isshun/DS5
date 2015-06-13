@@ -16,7 +16,7 @@ Bedside Table: Table de chevet
 Chair: Fauteuil
 Chest: Coffre
 Desk: Bureau
-Wardrobe: Garderobe
+Wardrobe: Garde robe
 Computer: Ordinateur
 Laptop: Ordinateur portable
 Cooker: Cuisinière
@@ -27,10 +27,10 @@ Serving table: Buffet
 #Action
 Eat easy meal: Mange un repas simple
 Eat advanced meal: Mange un bon repas
-Eat military ration: Mange des rations militaire
+Eat military ration: Mange des rations militaires
 Cook easy meal: Cuisine un repas simple
 Cook advanced meal: Cuisine un bon repas
-Cook military ration: Cuisine des rations militaire
+Cook military ration: Cuisine des rations militaires
 Sleep in bed: Dors dans un lit
 
 #Room
@@ -80,10 +80,10 @@ Staff record: Informations
 Inventory: Inventaire
 Relationship: Relations
 Health: Santé
-Security: Securité
+Security: Sécurité
 Energy: Energie
 Oxygen: Oxygène
-Happiness: Bonheurs
+Happiness: Bonheur
 
 #Relations
 parent: parent
@@ -106,7 +106,7 @@ Child: Enfant
 
 I'm starving: Je meurs de faim
 I feel lonely: Je me sens seul
-Everything goes right: Tous va bien
+Everything goes right: Tout va bien
 I sleep well: Je dors bien
 bad: mauvais
 good: bon

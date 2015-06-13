@@ -5,9 +5,10 @@ import hoten.voronoi.VoronoiGraph;
 import hoten.voronoi.nodename.as3delaunay.Voronoi;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.WorldManager;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.WorldResource;
+import org.smallbox.faraway.model.item.ResourceModel;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -184,7 +185,7 @@ public class WorldFactory {
 
     private static void addRandomResources(WorldManager world) {
         int resInterval = RES_INTERVAL_HEAVY;
-        List<ItemInfo> resourceItemsInfo = new ArrayList<ItemInfo>();
+        List<ItemInfo> resourceItemsInfo = new ArrayList<>();
         Game.getData().items.stream().filter(info -> info.actions != null).forEach(info -> {
             resourceItemsInfo.addAll(info.actions.stream()
                     .filter(action -> "gather".equals(action.type))
@@ -196,7 +197,7 @@ public class WorldFactory {
             int x = (int)(Math.random() * Constant.WORLD_WIDTH);
             int y = (int)(Math.random() * Constant.WORLD_HEIGHT);
             ItemInfo info = resourceItemsInfo.get((int)(Math.random() * resourceItemsInfo.size()));
-            world.putItem(info, x, y, 0, 10);
+            world.putObject(info, x, y, 0, 10);
         }
     }
 
@@ -211,7 +212,7 @@ public class WorldFactory {
         final int numSites = 10000;
         final long seed = 42;//System.nanoTime();
         final Random r = new Random(seed);
-        System.out.println("seed: " + seed);
+        Log.debug("seed: " + seed);
 
         //make the intial underlying voronoi structure
         final Voronoi v = new Voronoi(numSites, Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT, r, null);
@@ -254,7 +255,7 @@ public class WorldFactory {
         for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
             for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
                 if (map[i][j] > 15) {
-                    worldMap.putItem(info, i, j, 0, 999);
+                    worldMap.putObject(info, i, j, 0, 999);
                 }
             }
         }
@@ -277,7 +278,7 @@ public class WorldFactory {
         final int numSites = 5000;
         final long seed = System.nanoTime();
         final Random r = new Random();
-        System.out.println("seed: " + seed);
+        Log.debug("seed: " + seed);
 
         //make the intial underlying voronoi structure
         final Voronoi v = new Voronoi(numSites, width, height, r, null);
@@ -322,17 +323,17 @@ public class WorldFactory {
         for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
             for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
                 if (map[i][j] >= 15) {
-                    worldMap.putItem(info, offsetX + i, offsetY + j, 0, 999);
+                    worldMap.putObject(info, offsetX + i, offsetY + j, 0, 999);
 
-                    worldMap.putItem(info, offsetX + i + 1, offsetY + j, 0, 999);
-                    worldMap.putItem(info, offsetX + i - 1, offsetY + j, 0, 999);
-                    worldMap.putItem(info, offsetX + i, offsetY + j + 1, 0, 999);
-                    worldMap.putItem(info, offsetX + i, offsetY + j - 1, 0, 999);
+                    worldMap.putObject(info, offsetX + i + 1, offsetY + j, 0, 999);
+                    worldMap.putObject(info, offsetX + i - 1, offsetY + j, 0, 999);
+                    worldMap.putObject(info, offsetX + i, offsetY + j + 1, 0, 999);
+                    worldMap.putObject(info, offsetX + i, offsetY + j - 1, 0, 999);
 
-                    worldMap.putItem(info, offsetX + i + 1, offsetY + j + 1, 0, 999);
-                    worldMap.putItem(info, offsetX + i + 1, offsetY + j - 1, 0, 999);
-                    worldMap.putItem(info, offsetX + i - 1, offsetY + j + 1, 0, 999);
-                    worldMap.putItem(info, offsetX + i - 1, offsetY + j - 1, 0, 999);
+                    worldMap.putObject(info, offsetX + i + 1, offsetY + j + 1, 0, 999);
+                    worldMap.putObject(info, offsetX + i + 1, offsetY + j - 1, 0, 999);
+                    worldMap.putObject(info, offsetX + i - 1, offsetY + j + 1, 0, 999);
+                    worldMap.putObject(info, offsetX + i - 1, offsetY + j - 1, 0, 999);
                 }
             }
         }
@@ -362,7 +363,7 @@ public class WorldFactory {
         for (double x = fromX; x < toX; x += offsetX / maxOffset) {
             for (double y = fromY; y < toY; y += offsetY / maxOffset) {
                 map[(int)x][(int)y] = (int)(e * 100);
-                System.out.println("x: " + x + ", y: " + y);
+                Log.debug("x: " + x + ", y: " + y);
             }
         }
     }
@@ -416,7 +417,7 @@ public class WorldFactory {
         for (int f = 0; f < 1; f++) {
             for (int x = Constant.WORLD_WIDTH; x >= 0; x--) {
                 for (int y = Constant.WORLD_HEIGHT; y >= 0; y--) {
-                    WorldResource resource = worldManager.getResource(x, y, f);
+                    ResourceModel resource = worldManager.getResource(x, y, f);
                     if (resource != null && resource.isRock()) {
                         resource.setTile(4);
                         for (int i = 0; i < TILE_POSITIONS.length; i++) {
@@ -585,7 +586,7 @@ public class WorldFactory {
         for (int f = 0; f < 1; f++) {
             for (int x = Constant.WORLD_WIDTH; x >= 0; x--) {
                 for (int y = Constant.WORLD_HEIGHT; y >= 0; y--) {
-                    WorldResource structure = worldManager.getResource(x, y, f);
+                    ResourceModel structure = worldManager.getResource(x, y, f);
                     if (structure != null && structure.isGrass()) {
                         // 4 faces
                         if (isGrass(x, y-1) && isGrass(x, y+1) && isGrass(x-1, y) && isGrass(x+1, y)) {
@@ -615,7 +616,7 @@ public class WorldFactory {
     }
 
     private static void setTop(int f, int x, int y, int tile) {
-        WorldResource topres = Game.getWorldManager().getResource(x, y, f);
+        ResourceModel topres = Game.getWorldManager().getResource(x, y, f);
         if (topres != null && topres.isRock() && topres.getTile() == 0) {
             topres.setTile(tile);
         }

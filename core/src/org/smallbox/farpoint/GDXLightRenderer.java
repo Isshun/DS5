@@ -19,7 +19,7 @@ import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.LightRenderer;
 import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.model.item.WorldArea;
+import org.smallbox.faraway.model.item.AreaModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,8 +77,8 @@ public class GDXLightRenderer extends LightRenderer {
 //        camera.translate(4000, 0);
         camera.update();
         this.batch = new SpriteBatch();
-        textureRegion = new TextureRegion(new Texture(Gdx.files.internal("data/items/chest.png")));
-        bg = new Texture(Gdx.files.internal("data/tilea4mackeditFBU.png"));
+//        textureRegion = new TextureRegion(new Texture(Gdx.files.internal("data/items/chest.png")));
+//        bg = new Texture(Gdx.files.internal("data/tilea4mackeditFBU.png"));
         createPhysicsWorld();
 
         normalProjection.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -215,7 +215,7 @@ public class GDXLightRenderer extends LightRenderer {
         if (Game.getWorldManager() != null) {
             int width = Game.getWorldManager().getWidth();
             int height = Game.getWorldManager().getHeight();
-            WorldArea[][][] areas = Game.getWorldManager().getAreas();
+            AreaModel[][][] areas = Game.getWorldManager().getAreas();
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (areas[x][y][0] != null && areas[x][y][0].getItem() != null && areas[x][y][0].getItem().getInfo().light > 0) {
@@ -248,7 +248,7 @@ public class GDXLightRenderer extends LightRenderer {
         if (Game.getWorldManager() != null) {
             int width = Game.getWorldManager().getWidth();
             int height = Game.getWorldManager().getHeight();
-            WorldArea[][][] areas = Game.getWorldManager().getAreas();
+            AreaModel[][][] areas = Game.getWorldManager().getAreas();
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (areas[x][y][0] != null && areas[x][y][0].getStructure() != null && areas[x][y][0].getStructure().isSolid()) {

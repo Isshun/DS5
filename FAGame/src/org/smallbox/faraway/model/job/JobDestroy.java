@@ -4,20 +4,20 @@ import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.MapObjectModel;
 
-public class JobDestroy extends BaseJob {
+public class JobDestroy extends JobModel {
 
 	private JobDestroy(int x, int y) {
 		super(null, x, y);
 	}
 
-	public static BaseJob create(ItemBase item) {
+	public static JobModel create(MapObjectModel item) {
 		if (item == null) {
 			return null;
 		}
 		
-		BaseJob job = new JobDestroy(item.getX(), item.getY());
+		JobModel job = new JobDestroy(item.getX(), item.getY());
 		job.setItem(item);
 		return job;
 	}

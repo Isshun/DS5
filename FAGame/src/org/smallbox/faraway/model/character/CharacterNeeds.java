@@ -1,11 +1,9 @@
 package org.smallbox.faraway.model.character;
 
 import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.GameConfig;
 import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.item.ItemBase;
-import org.smallbox.faraway.model.item.ItemInfo;
+import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo.ItemInfoAction;
 
 public class CharacterNeeds {
@@ -40,7 +38,7 @@ public class CharacterNeeds {
 	private double	_injuries;
 	private double	_satiety;
 
-	private ItemBase 	_sleepItem;
+	private MapObjectModel _sleepItem;
 
 	public CharacterNeeds(CharacterModel character) {
         _data = GameData.getData();
@@ -133,15 +131,15 @@ public class CharacterNeeds {
 		//   removeMessage(MSG_SLEEP_ON_CHAIR);
 		// } else if (_item && _item->isType(BaseItem.Type.QUARTER_CHAIR)) {
 		//   _hapiness -= 0.1;
-		//   addMessage(MSG_SLEEP_ON_CHAIR, count);
+		//   addMessage(MSG_SLEEP_ON_CHAIR, quantity);
 		//   removeMessage(MSG_SLEEP_ON_FLOOR);
 		// } else {
-		//   addMessage(MSG_SLEEP_ON_FLOOR, count);
+		//   addMessage(MSG_SLEEP_ON_FLOOR, quantity);
 		//   _hapiness -= 0.25;
 		// }
 
 		// 	// If current item is not under construction: quit
-		// 	if (_sleep == 0 && _item != NULL && _item->isComplete()) {
+		// 	if (_sleep == 0 && _item != NULL && _item->hasComponents()) {
 		// 	  _item->setOwner(NULL);
 		// 	  _item = NULL;
 		// 	  _job = NULL;
@@ -149,7 +147,7 @@ public class CharacterNeeds {
 		// 	return;
 		// }
 
-//			// addMessage(MSG_STARVE, count);
+//			// addMessage(MSG_STARVE, quantity);
 //			// removeMessage(MSG_HUNGRY);
 //			_happiness = Math.max(_happiness - 0.5f, 0.0f);
 //			_health = Math.max(_health - 0.1f, 0.0f);
@@ -160,7 +158,7 @@ public class CharacterNeeds {
 //
 //		// Food: hungry
 //		else if (isHungry()) {
-//			// addMessage(MSG_HUNGRY, count);
+//			// addMessage(MSG_HUNGRY, quantity);
 //			_happiness = Math.max(_happiness - 0.2f, 0.0f);
 //		} else {
 //			// removeMessage(MSG_STARVE);
@@ -181,7 +179,7 @@ public class CharacterNeeds {
 		// }
 
 		// if (_oxygen == 0) {
-		// 	addMessage(MSG_NEED_OXYGEN, count);
+		// 	addMessage(MSG_NEED_OXYGEN, quantity);
 		// 	_oxygen = 0;
 		// } else {
 		// 	removeMessage(MSG_NEED_OXYGEN);
@@ -233,7 +231,7 @@ public class CharacterNeeds {
 		_relation = Math.min(_relation + 1, 100);
 	}
 
-	public void use(ItemBase item, ItemInfoAction action) {
+	public void use(MapObjectModel item, ItemInfoAction action) {
 		if (item.isSleepingItem()) {
 			_sleepItem = item;
 			_isSleeping = true;

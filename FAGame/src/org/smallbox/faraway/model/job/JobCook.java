@@ -1,19 +1,20 @@
 package org.smallbox.faraway.model.job;
 
+import org.smallbox.faraway.Game;
+import org.smallbox.faraway.OnMoveListener;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
-import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.ReceiptModel;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.ConsumableItem;
-import org.smallbox.faraway.model.item.ItemBase;
+import org.smallbox.faraway.model.item.ConsumableModel;
+import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobCook extends BaseJob {
+public class JobCook extends JobModel {
     private List<ReceiptModel>  _receipts;
     private ReceiptModel        _receipt;
     private int                 _itemPosX;
@@ -27,16 +28,16 @@ public class JobCook extends BaseJob {
 
     Status _status = Status.MOVE_TO_INGREDIENT;
 
-    ConsumableItem _targetIngredient;
-    ConsumableItem _ingredient;
+    ConsumableModel _targetIngredient;
+    ConsumableModel _ingredient;
 
     @Override
-    public ConsumableItem getIngredient() {
+    public ConsumableModel getIngredient() {
         return _ingredient;
     }
 
     @Override
-    public void					setItem(ItemBase item) {
+    public void					setItem(MapObjectModel item) {
         super.setItem(item);
 
         if (item != null) {
@@ -54,7 +55,7 @@ public class JobCook extends BaseJob {
         super(action, x, y);
     }
 
-    public static JobCook create(ItemInfo.ItemInfoAction action, ItemBase item) {
+    public static JobCook create(ItemInfo.ItemInfoAction action, MapObjectModel item) {
         if (item == null) {
             throw new RuntimeException("Cannot add cook job (item is null)");
         }
@@ -67,12 +68,8 @@ public class JobCook extends BaseJob {
         JobCook job = new JobCook(action, item.getX(), item.getY());
         job.setItem(item);
         job._receipts = new ArrayList<>();
-        for (ItemInfo itemInfo: action.productsItem) {
-            for (String r: itemInfo.receipts) {
-                ReceiptModel receipt = new ReceiptModel();
-                receipt.addReceiptComponent(GameData.getData().getItemInfo(r), 5);
-                job._receipts.add(receipt);
-            }
+        for (ItemInfo.ItemInfoReceipt receiptInfo: action.receipts) {
+            job._receipts.add(new ReceiptModel(receiptInfo));
         }
 
         item.addJob(job);
@@ -118,7 +115,7 @@ public class JobCook extends BaseJob {
 
         if (_receipt == null) {
             findWorkableReceipt(character);
-            return false;
+            return _receipt != null;
         }
 
         // Move to ingredient
@@ -151,7 +148,7 @@ public class JobCook extends BaseJob {
             }
 
             // Components still missing
-            if (!_receipt.isComplete()) {
+            if (!_receipt.hasComponents()) {
                 findNearestIngredient(character);
                 return false;
             }
@@ -160,7 +157,23 @@ public class JobCook extends BaseJob {
             _status = Status.MOVE_TO_COOKER;
             _posX = _item.getX();
             _posY = _item.getY();
-            character.moveTo(this, _item.getX(), _item.getY());
+            character.moveTo(this, _item.getX(), _item.getY(), new OnMoveListener() {
+                @Override
+                public void onReach(JobModel job, CharacterModel character) {
+                    for (ReceiptModel.ReceiptComponentModel component: _receipt.getComponents()) {
+                        character.setInventory(null);
+                        _item.addComponent(component.item);
+                    }
+                }
+
+                @Override
+                public void onFail(JobModel job, CharacterModel character) {
+                    for (ReceiptModel.ReceiptComponentModel component: _receipt.getComponents()) {
+                        character.setInventory(null);
+                        Game.getWorldManager().putConsumable(component.item, character.getX(), character.getY());
+                    }
+                }
+            });
         }
 
         // Work on cooker
@@ -174,36 +187,49 @@ public class JobCook extends BaseJob {
 //            }
 
             // Work continue
-            if (_cost < _totalCost) {
-                _cost = Math.min(_totalCost, _cost + character.work(CharacterModel.TalentType.COOK));
-                Log.debug("Character #" + character.getId() + ": working");
+            if (_progress < _cost) {
+                _progress = Math.min(_cost, _progress + character.work(CharacterModel.TalentType.COOK));
+                Log.debug("Character #" + character.getName() + ": cooking (" + _progress + ")");
                 return false;
             }
 
-            // Switch status to MOVE_TO_INGREDIENT
-            _targetIngredient = null;
-            _ingredient = null;
-            _receipt.reset();
-            _receipt = null;
-            _status = Status.MOVE_TO_INGREDIENT;
-
-            // Current item is done but some remains
-            _cost = 0;
-            for (ItemInfo itemInfo: _actionInfo.productsItem) {
-                ServiceManager.getWorldMap().putItem(itemInfo, _itemPosX, _itemPosY, 0, 100);
+            // Current item is done
+            _progress = 0;
+            for (ItemInfo.ItemProductInfo productInfo: _receipt.receiptInfo.products) {
+                ConsumableModel consumable = new ConsumableModel(productInfo.itemInfo);
+                consumable.setQuantity(productInfo.quantity);
+                character.setInventory(consumable);
+                //((ItemModel)_item).addCraft(consumable);
+                //ServiceManager.getWorldMap().putObject(itemInfo, _itemPosX, _itemPosY, 0, 100);
             }
 
-            JobManager.getInstance().quit(this);
-
-            // Work is complete
-            if (_count++ >= _totalCount) {
-                Log.debug("Character #" + character.getId() + ": work close");
-                JobManager.getInstance().close(this);
-                return true;
-            }
+            return closeOrQuit(character);
         }
 
         return false;
+    }
+
+    private boolean closeOrQuit(CharacterModel character) {
+
+        // Switch status to MOVE_TO_INGREDIENT
+        _targetIngredient = null;
+        _ingredient = null;
+        _receipt.reset();
+        _receipt = null;
+        _status = Status.MOVE_TO_INGREDIENT;
+
+        // Work is complete
+        if (_count++ >= _totalCount) {
+            //Log.debug("Character #" + character.getId() + ": work close");
+            JobManager.getInstance().close(this);
+            return true;
+        }
+
+        // Som remains
+        else {
+            JobManager.getInstance().quit(this);
+            return false;
+        }
     }
 
     private void findNearestIngredient(CharacterModel character) {
@@ -212,13 +238,24 @@ public class JobCook extends BaseJob {
             for (ReceiptModel.ReceiptComponentModel component : _receipt.getComponents()) {
                 if (component.item.getQuantity() < component.count) {
                     _targetIngredient = ServiceManager.getWorldMap().getFinder().getNearest(component.itemInfo, _item.getX(), _item.getY());
-                    _targetX = _targetIngredient.getX();
-                    _targetY = _targetIngredient.getY();
-                    _posX = _targetX;
-                    _posY = _targetY;
                     if (_targetIngredient != null) {
+                        _targetX = _targetIngredient.getX();
+                        _targetY = _targetIngredient.getY();
+                        _posX = _targetX;
+                        _posY = _targetY;
                         _status = Status.MOVE_TO_INGREDIENT;
-                        character.moveTo(this, _targetIngredient.getX(), _targetIngredient.getY());
+                        character.moveTo(this, _targetIngredient.getX(), _targetIngredient.getY(), new OnMoveListener() {
+                            @Override
+                            public void onReach(JobModel job, CharacterModel character) {
+                                for (ReceiptModel.ReceiptComponentModel component : _receipt.getComponents()) {
+                                    _item.addComponent(component.item);
+                                }
+                            }
+
+                            @Override
+                            public void onFail(JobModel job, CharacterModel character) {
+                            }
+                        });
                         return;
                     }
                 }

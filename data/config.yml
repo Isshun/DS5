@@ -1,10 +1,11 @@
-weather: snow
-time: midnight
+weather: regular
+time: noon
 render:
     floor:      true
     structure:  true
     resource:   true
     item:       true
+    consumable: true
 character:
     effects:
         regular:
@@ -14,7 +15,7 @@ character:
             relation: 100
             security: 100
         sleepOnFloor:
-            energy: -0.0
+            energy: 30.0
             food: -1
         starve:
             energy: 0.0

@@ -4,6 +4,7 @@ import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.ui.UIEventManager;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.manager.Utils;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.LandingSiteModel;
 import org.smallbox.faraway.model.PlanetModel;
 import org.smallbox.faraway.model.TeamModel;
@@ -66,7 +67,7 @@ public class MainMenu {
 
         long lastResModified = Utils.getLastUIModified();
         if (update % 8 == 0 && lastResModified > _lastModified) {
-            Game.getData().loadStrings();
+            GameData.getData().loadStrings();
             _lastModified = lastResModified;
             reload();
         }

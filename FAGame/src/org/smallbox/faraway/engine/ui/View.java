@@ -72,6 +72,7 @@ public abstract class View {
 
     protected abstract void onDraw(GFXRenderer renderer, RenderEffect effect);
     public abstract void draw(GFXRenderer renderer, RenderEffect effect);
+    public abstract void draw(GFXRenderer renderer, int x, int y);
     public abstract void refresh();
 
     public void setBackgroundColor(org.smallbox.faraway.Color color) {
