@@ -1,11 +1,13 @@
 label: Seaweed
 width: 1
 height: 1
-light: 2
+light: 100
 type: resource
-onGather:
-  produce: base.seaweed
-  mature: 5
-cost:
-  matter: 10
-  power: 1
+actions:
+    -   type: gather
+        cost: 10
+        products:
+            -   item: base.seaweed
+                quantity: 1
+                dropRate: 1
+        mature: 5

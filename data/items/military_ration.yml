@@ -1,10 +1,12 @@
 label: Military ration
 width: 1
 height: 1
-type: consomable
-onAction:
-  duration: 1
-  effects:
-    food: 100
-    drink: 100
-    hapiness: -1
+isFood: true
+type: consumable
+actions:
+    -   type: use
+        cost: 1
+        effects:
+            food: 100
+            drink: 100
+            happiness: -1

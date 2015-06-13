@@ -2,9 +2,7 @@ name: light
 label: Light
 width: 1
 height: 1
-light: 10
+light: 340
 type: item
-isStructure: true
-cost:
-  matter: 10
-  power: 1
+cost: 10
+power: 1

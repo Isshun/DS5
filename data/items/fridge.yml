@@ -1,5 +1,4 @@
 label: Fridge
 type: item
 category: kitchen
-cost:
-  matter: 42
+cost: 42

@@ -521,9 +521,9 @@ public abstract class VoronoiGraph {
     private void calculateDownslopes() {
         for (Corner c : corners) {
             Corner down = c;
-            //System.out.println("ME: " + c.elevation);
+            //Log.debug("ME: " + c.elevation);
             for (Corner a : c.adjacent) {
-                //System.out.println(a.elevation);
+                //Log.debug(a.elevation);
                 if (a.elevation <= down.elevation) {
                     down = a;
                 }

@@ -1,0 +1,6 @@
+entries:
+
+    -   type: label
+        id: lb_area
+        textsize: 24
+        position: [24, 24]

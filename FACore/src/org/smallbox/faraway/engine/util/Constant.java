@@ -1,9 +1,14 @@
 package org.smallbox.faraway.engine.util;
 
+import org.smallbox.faraway.Color;
+
 public class Constant {
 
-	public static String 		NAME	= "Exodus";
+	public static String 		NAME	= "FarPoint";
 	public static String 		VERSION	= "0.1";
+
+	public static final int 	BASE_WIDTH			= 1280;
+	public static final int 	BASE_HEIGHT			= 800;
 
 	public static final int 	WINDOW_WIDTH			= 1920;
 	public static final int 	WINDOW_HEIGHT			= 1200;
@@ -38,12 +43,13 @@ public class Constant {
 	public static final int 	FONT_SIZE 				= 20;
 	public static final int 	PANEL_WIDTH 			= 420;
 	public static final int 	PANEL_HEIGHT 			= WINDOW_HEIGHT;
-	public static final int 	WORLD_WIDTH 			= 250;
-	public static final int 	WORLD_HEIGHT 			= 250;
+	public static final int 	WORLD_WIDTH 			= 50;
+	public static final int 	WORLD_HEIGHT 			= 50;
 	public static final double 	LIMITE_RELATION_LONELY 	= 20;
 	public static final double 	LIMITE_LOW_OXYGEN 		= 20;
 	public static final double 	LIMITE_NO_OXYGEN 		= 0;
 	public static final double 	LIMITE_TIRED 			= 20;
+	public static final int 	SLEEP_DURATION = 10;
 	public static final int 	SLEEP_ON_FLOOR_DURATION = 10;
 	public static final double 	SLEEP_ON_FLOOR_ENERGY_RESTORE = 60;
 	public static final double 	SLEEP_ON_FLOOR_HAPINESS_RESTORE = -10;
@@ -67,5 +73,19 @@ public class Constant {
 	public static final int 	ITEM_MAX_HEIGHT = 4;
 	public static final int 	COUNT_BEFORE_REUSE_BLOCKED_ITEM = 10;
 	public static final int 	DELAY_TO_RESTART_BLOCKED_JOB = COUNT_BEFORE_REUSE_BLOCKED_ITEM;
-	public static final int NB_COLUMNS_TITLE = 29;
+	public static final int     NB_COLUMNS_TITLE = 29;
+
+	public static final Color COLOR_JOB_BUILD = new Color(170, 128, 64);
+	public static final Color COLOR_JOB_MOVE = Color.CYAN;
+	public static final Color COLOR_JOB_GATHER = Color.GREEN;
+	public static final Color COLOR_JOB_MINING = Color.GREEN;
+	public static final Color COLOR_JOB_WORK = Color.GREEN;
+	public static final Color COLOR_JOB_REFILL = Color.GREEN;
+	public static final Color COLOR_JOB_NONE = Color.BLACK;
+	public static final Color COLOR_JOB_USE_INVENTORY = Color.BLUE;
+	public static final Color COLOR_JOB_USE = Color.BLUE;
+	public static final Color COLOR_JOB_DESTROY = new Color(200, 20, 20);
+	public static final Color COLOR_JOB_STORE = new Color(180, 100, 255);
+	public static final Color COLOR_JOB_TAKE = new Color(180, 100, 255);
+
 }

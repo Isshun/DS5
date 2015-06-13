@@ -1,13 +1,13 @@
 label: Military "meal"
 width: 1
 height: 1
-type: consomable
-craftedQuantitfy: 1
-craftedFrom:
-  - base.military_ration
-onAction:
-  duration: 1
-  effects:
-    food: 100
-    drink: 100
-    hapiness: 5
+isFood: true
+type: consumable
+
+actions:
+    -   type: use
+        cost: 1
+        effects:
+            food: 100
+            drink: 100
+            happiness: 5

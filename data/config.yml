@@ -1,0 +1,31 @@
+weather: regular
+time: midnight
+tickPerHour: 42
+
+render:
+    floor:          true
+    structure:      true
+    resource:       true
+    item:           true
+    consumable:     true
+
+manager:
+    room:           true
+    temperature:    true
+    weather:        true
+
+character:
+    effects:
+        regular:
+            energy: -0.25
+            food: -0.5
+            happiness: 100
+            relation: 100
+            security: 100
+        sleepOnFloor:
+            energy: 30.0
+            food: -1
+        starve:
+            energy: 0.0
+        exhausted:
+            energy: 0.0

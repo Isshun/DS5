@@ -5,7 +5,5 @@ height: 2
 light: 10
 type: item
 category: system
-cost:
-  matter: 42
-  power: 10
-  o2: 100
+cost: 42
+power: 10

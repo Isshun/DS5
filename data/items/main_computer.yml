@@ -4,11 +4,7 @@ height: 2
 light: 10
 type: item
 category: system
-onAction:
-  slots:
-    - x: -1
-      y: 0
-cost:
-  matter: 42
-  power: 10
-  o2: 100
+slots:
+    - [-1, 0]
+cost:  42
+power: 10

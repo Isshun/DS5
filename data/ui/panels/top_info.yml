@@ -1,0 +1,26 @@
+entries:
+
+    -   type: label
+        id: lb_world_tmp
+        textsize: 14
+        position: [10, 12]
+
+    -   type: label
+        id: lb_weather
+        textsize: 14
+        position: [180, 12]
+
+    -   type: label
+        id: lb_hour
+        textsize: 14
+        position: [360, 12]
+
+    -   type: label
+        id: lb_day
+        textsize: 14
+        position: [460, 12]
+
+    -   type: label
+        id: lb_year
+        textsize: 14
+        position: [580, 12]

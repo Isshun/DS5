@@ -1,0 +1,100 @@
+entries:
+
+    -   type: frame
+        id: frame_planet_list
+        background: 0x1d5560
+        size: [300, 760]
+        position: [20, 20]
+
+    -   type: frame
+        id: frame_planet_detail
+        background: 0x1d5560
+        size: [920, 760]
+        position: [340, 20]
+        entries:
+
+        -   type: label
+            id: lb_detail_planet
+            text: lb_planet
+            textsize: 32
+            position: [20, 14]
+            
+        -   type: label
+            id: lb_detail_desc
+            text: lb_desc
+            textsize: 20
+            position: [20, 68]
+
+        -   type: frame
+            position: [0, 340]
+            entries:
+                
+            -   type: label
+                text: Resources
+                style: bold
+                textsize: 18
+                position: [20, 40]
+
+            -   type: label
+                id: lb_detail_fertility
+                text: lb_fertility
+                textsize: 18
+                position: [20, 74]
+
+            -   type: label
+                id: lb_detail_water
+                text: lb_water
+                textsize: 18
+                position: [472, 74]
+
+            -   type: label
+                id: lb_detail_flora
+                text: lb_flora
+                textsize: 18
+                position: [20, 104]
+
+            -   type: label
+                id: lb_detail_fauna
+                text: lb_fauna
+                textsize: 18
+                position: [472, 104]
+
+            -   type: label
+                id: lb_detail_atmosphere
+                text: lb_atmosphere
+                textsize: 18
+                position: [20, 134]
+
+        -   type: frame
+            position: [0, 360]
+            entries:
+                    
+            -   type: label
+                text: Hostile forces
+                style: bold
+                textsize: 18
+                position: [20, 170]
+
+            -   type: label
+                id: lb_detail_hostile_fauna
+                textsize: 18
+                position: [20, 204]
+
+            -   type: label
+                id: lb_detail_hostile_humankind
+                textsize: 18
+                position: [472, 204]
+
+            -   type: label
+                id: lb_detail_hostile_mechanic
+                textsize: 18
+                position: [472, 234]
+
+    -   type: label
+        id: bt_colonize
+        text: Colonize
+        textsize: 32
+        position: [695, 675]
+        size: [200, 65]
+        align: center
+        background: 0xb0cd35

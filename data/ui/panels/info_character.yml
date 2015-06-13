@@ -1,0 +1,273 @@
+entries:
+
+    -   type: label
+        id: lb_name
+        textsize: 32
+        position: [20, 10]
+
+    -   type: label
+        id: bt_monitoring
+        text: "[Monitoring]"
+        textsize: 20
+        position: [20, 68]
+        align: center
+        size: [180, 40]
+        background: 0x298596
+
+    -   type: label
+        id: bt_personal_report
+        text: "[Private life]"
+        textsize: 20
+        position: [218, 68]
+        size: [180, 40]
+        background: 0x298596
+        align: center
+
+    -   type: label
+        id: bt_priorities
+        text: "[Priorities]"
+        textsize: 20
+        position: [20, 126]
+        size: [180, 40]
+        background: 0x298596
+        align: center
+
+    -   type: label
+        id: bt_inventory
+        text: "[Inventory]"
+        textsize: 20
+        position: [218, 126]
+        size: [180, 40]
+        background: 0x298596
+        align: center
+
+    -   type: label
+        id: bt_health
+        text: "[Health]"
+        textsize: 20
+        position: [20, 184]
+        size: [180, 40]
+        background: 0x298596
+        align: center
+
+    -   type: frame
+        id: frame_monitoring
+        entries:
+
+        -   type: label
+            text: "[Monitoring]"
+            textsize: 20
+            position: [20, 68]
+            size: [180, 40]
+            align: center
+            background: 0xb0cd35
+            
+        -   type: frame
+            position: [0, 245]
+            entries:
+            
+            -   type: frame
+                position: [0, 0]
+                entries:
+                
+                -   type: label
+                    text: Current occupation
+                    textsize: 22
+                    position: [20, 0]
+                    
+                -   type: label
+                    id: lb_current_job
+                    textsize: 14
+                    position: [20, 30]
+
+            -   type: frame
+                position: [0, 60]
+                entries:
+                
+                -   type: label
+                    text: Status
+                    textsize: 22
+                    position: [20, 10]
+                    size: [175, 18]
+                
+                -   type: label
+                    id: lb_status_food
+                    textsize: 14
+                    position: [216, 50]
+                    size: [175, 18]
+                    
+                -   type: label
+                    id: lb_status_o2
+                    textsize: 14
+                    position: [216, 100]
+                    size: [175, 18]
+                
+                -   type: label
+                    id: lb_status_happiness
+                    textsize: 14
+                    position: [20, 100]
+                    size: [175, 18]
+                    
+                -   type: label
+                    id: lb_status_power
+                    textsize: 14
+                    position: [20, 50]
+                    size: [175, 18]
+                
+                -   type: label
+                    id: lb_status_relation
+                    textsize: 14
+                    position: [20, 150]
+                    size: [175, 18]
+                    
+                -   type: label
+                    id: lb_status_security
+                    textsize: 14
+                    position: [216, 150]
+                    size: [175, 18]
+                
+                -   type: label
+                    id: lb_status_health
+                    textsize: 14
+                    position: [20, 200]
+                    size: [175, 18]
+                    
+            -   type: frame
+                position: [0, 340]
+                entries:
+                    
+                -   type: label
+                    text: Last reports
+                    textsize: 22
+                    position: [20, 0]
+                
+                -   type: label
+                    id: lb_last_report
+                    textsize: 14
+                    position: [20, 40]
+
+    -   type: frame
+        id: frame_personal_report
+        entries:
+
+        -   type: label
+            text: "[Private life]"
+            textsize: 20
+            position: [218, 68]
+            size: [180, 40]
+            align: center
+            background: 0xb0cd35
+
+        -   type: frame
+            position: [0, 245]
+            entries:
+                
+            -   type: frame
+                position: [0, 0]
+                entries:
+                
+                -   type: label
+                    text: Staff record
+                    textsize: 22
+                    position: [20, 10]
+                
+                -   type: label
+                    id: lb_info_gender
+                    textsize: 14
+                    position: [20, 70]
+                
+                -   type: label
+                    id: lb_info_profession
+                    textsize: 14
+                    position: [20, 90]
+                
+                -   type: label
+                    id: lb_info_enlisted
+                    textsize: 14
+                    position: [20, 110]
+                
+                -   type: label
+                    id: lb_info_birthname
+                    textsize: 14
+                    position: [20, 130]
+                
+                -   type: label
+                    id: lb_info_old
+                    textsize: 14
+                    position: [20, 50]
+
+            -   type: frame
+                id: frame_relationship
+                position: [0, 210]
+                entries:
+                
+                -   type: label
+                    text: Relationship
+                    textsize: 22
+                    position: [20, 10]
+                
+    -   type: frame
+        id: frame_priorities
+        entries:
+
+        -   type: label
+            text: "[Priorities]"
+            textsize: 20
+            position: [20, 126]
+            size: [180, 40]
+            align: center
+            background: 0xb0cd35
+
+        -   type: frame
+            id: frame_priorities_entries
+            position: [20, 245]
+                
+    -   type: frame
+        id: frame_inventory
+        entries:
+
+        -   type: label
+            id: bt_inventory
+            text: "[Inventory]"
+            textsize: 20
+            position: [218, 126]
+            size: [180, 40]
+            align: center
+            background: 0xb0cd35
+            
+        -   type: label
+            id: lb_inventory
+            textsize: 22
+            position: [20, 245]
+
+        -   type: label
+            id: lb_inventory_entry
+            textsize: 22
+            position: [20, 285]
+
+        -   type: frame
+            id: frame_inventory_entries
+            textsize: 16
+            position: [20, 265]
+                      
+    -   type: frame
+        id: frame_health
+        entries:
+
+        -   type: label
+            text: "[Health]"
+            textsize: 20
+            position: [20, 184]
+            size: [180, 40]
+            align: center
+            background: 0xb0cd35
+
+        -   type: label
+            id: lb_health
+            text: Health
+            textsize: 22
+            position: [20, 245]
+
+        -   type: frame
+            id: frame_health_entries
+            position: [20, 265]

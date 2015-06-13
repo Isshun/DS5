@@ -1,0 +1,38 @@
+entries:
+
+    -   type: frame
+        position: [20, 0]
+        entries:
+
+        -   type: label
+            id: bt_suspend
+            text: "[s]"
+            textsize: 14
+            position: [0, 0]
+
+        -   type: label
+            id: bt_cancel
+            text: "[c]"
+            textsize: 14
+            position: [30, 0]
+
+        -   type: label
+            id: lb_label
+            textsize: 14
+            position: [60, 0]
+
+        -   type: label
+            id: lb_count
+            textsize: 14
+            position: [300, 0]
+            size: [32, 24]
+
+        -   type: label
+            id: lb_progress
+            textsize: 14
+            position: [0, 20]
+
+        -   type: label
+            id: lb_ingredient
+            textsize: 14
+            position: [0, 40]
