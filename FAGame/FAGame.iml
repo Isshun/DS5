@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":FAGame" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" external.system.module.group="FarAway" external.system.module.version="1.0" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/build/classes/main" />
+    <output-test url="file://$MODULE_DIR$/build/classes/test" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="GeoGen" exported="" />
+    <orderEntry type="module" module-name="PathFinding" exported="" />
+    <orderEntry type="library" exported="" name="Gradle: xmlpull:xmlpull:1.1.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.ogce:xpp3:1.1.6" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.thoughtworks.xstream:xstream:1.4.8" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.yaml:snakeyaml:1.15" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: junit:junit:4.7" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jakarta-regexp:jakarta-regexp:1.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: xpp3:xpp3_min:1.1.4c" level="project" />
+    <orderEntry type="module" module-name="FACore" exported="" />
+  </component>
+</module>

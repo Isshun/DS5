@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/FACore/FACore.iml" filepath="$PROJECT_DIR$/FACore/FACore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FAGame/FAGame.iml" filepath="$PROJECT_DIR$/FAGame/FAGame.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FarAway.iml" filepath="$PROJECT_DIR$/FarAway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GeoGen/GeoGen.iml" filepath="$PROJECT_DIR$/GeoGen/GeoGen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PathFinding/PathFinding.iml" filepath="$PROJECT_DIR$/PathFinding/PathFinding.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SFMLRender/SFMLRender.iml" filepath="$PROJECT_DIR$/SFMLRender/SFMLRender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/desktop/desktop.iml" filepath="$PROJECT_DIR$/desktop/desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gdx-smart-font/gdx-smart-font.iml" filepath="$PROJECT_DIR$/gdx-smart-font/gdx-smart-font.iml" />
+    </modules>
+  </component>
+</project>
