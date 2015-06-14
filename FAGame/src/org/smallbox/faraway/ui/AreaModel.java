@@ -11,8 +11,8 @@ import java.util.Set;
  * Created by Alex on 13/06/2015.
  */
 public class AreaModel {
-    private final Set<ParcelModel>  _parcels = new HashSet<>();
-    private final AreaType          _type;
+    protected final Set<ParcelModel>    _parcels = new HashSet<>();
+    private final AreaType              _type;
 
     public AreaModel(AreaType type) {
         _type = type;
@@ -37,5 +37,13 @@ public class AreaModel {
 
     public String getName() {
         return "Storage Area #n";
+    }
+
+    public boolean isStorage() {
+        return false;
+    }
+
+    public AreaType getType() {
+        return _type;
     }
 }

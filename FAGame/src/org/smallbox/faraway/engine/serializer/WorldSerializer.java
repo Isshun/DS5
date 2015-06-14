@@ -4,11 +4,12 @@ import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.manager.WorldManager;
 import org.smallbox.faraway.model.item.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WorldSerializer implements SerializerInterface {
 
-	public static class WorldSaveArea {
+	public static class WorldSaveParcel {
 		public WorldSaveStructure 	structure;
 		public WorldSaveResource 	resource;
 		public WorldSaveUserItem 	item;
@@ -47,11 +48,11 @@ public class WorldSerializer implements SerializerInterface {
 		public int value;
 	}
 
-	private static void saveArea(List<WorldSaveArea> areas, ParcelModel area) {
+	private static void saveParcel(List<WorldSaveParcel> parcels, ParcelModel area) {
 		if (area.getItem() == null && area.getResource() == null && area.getStructure() == null) {
 			return;
 		}
-		WorldSaveArea areaSave = new WorldSaveArea();
+		WorldSaveParcel areaSave = new WorldSaveParcel();
 
 		areaSave.x = area.getX();
 		areaSave.y = area.getY();
@@ -92,18 +93,19 @@ public class WorldSerializer implements SerializerInterface {
 			areaSave.resource.id = resource.getId();
 		}
 
-		areas.add(areaSave);
+		parcels.add(areaSave);
 	}
 
 	@Override
 	public void save(GameSerializer.GameSave save) {
 		WorldManager manager = ServiceManager.getWorldMap();
 
+		save.parcels = new ArrayList<>();
 		for (int z = 0; z < 1; z++) {
 			for (int x = 0; x < manager.getWidth(); x++) {
 				for (int y = 0; y < manager.getHeight(); y++) {
 					ParcelModel area = manager.getParcel(z, x, y);
-					saveArea(save.areas, area);
+					saveParcel(save.parcels, area);
 				}
 			}
 		}
@@ -113,7 +115,7 @@ public class WorldSerializer implements SerializerInterface {
 	public void load(GameSerializer.GameSave save) {
 		WorldManager manager = ServiceManager.getWorldMap();
 
-		for (WorldSaveArea area: save.areas) {
+		for (WorldSaveParcel area: save.parcels) {
 			if (area != null) {
 				// Light
 				if (area.lightSource > 0) {

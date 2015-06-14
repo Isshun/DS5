@@ -20,32 +20,53 @@ public class WeatherManager implements WorldObserver {
     private WeatherModel            _weather;
     private String                  _dayTime;
 
+    private double                  _sunTransitionProgress;
+    private Color                   _previousSunColor;
+    private Color                   _nextSunColor;
+    private float                   _progressValue;
+
     public WeatherManager(LightRenderer lightRenderer, ParticleRenderer particleRenderer, WorldManager worldManager) {
         _lightRenderer = lightRenderer;
         _particleRenderer = particleRenderer;
         _worldManager = worldManager;
-        _dayTime = "noon";
+        _dayTime = "midnight";
     }
 
     public void onHourChange(PlanetModel planet, int hour) {
-        if (hour == 6) {
+        if (hour == 5) {
+            _progressValue = 0.75f / GameData.config.tickPerHour;
+            _sunTransitionProgress = 0;
             switchSunColor("dawn");
         }
-        if (hour == 7) {
+        if (hour == 6) {
+            _progressValue = 0.75f / GameData.config.tickPerHour;
+            _sunTransitionProgress = 0;
             switchSunColor("noon");
         }
-        if (hour == 20) {
+        if (hour == 19) {
+            _progressValue = 1f / GameData.config.tickPerHour;
+            _sunTransitionProgress = 0;
             switchSunColor("twilight");
         }
-        if (hour == 21) {
+        if (hour == 20) {
+            _progressValue = 0.5f / GameData.config.tickPerHour;
+            _sunTransitionProgress = 0;
             switchSunColor("midnight");
         }
     }
 
     public void update(int update) {
         if (_duration-- <= 0) {
-            _duration = 100;
+            _duration = 250;
             loadWeather(new ArrayList<>(GameData.getData().weathers.values()).get((int)(Math.random() * GameData.getData().weathers.size())));
+        }
+
+        if (_sunTransitionProgress < 1) {
+            _sunTransitionProgress += _progressValue;
+            _lightRenderer.setSunColor(new Color(
+                    (int)((_previousSunColor.r * (1-_sunTransitionProgress)) + (_nextSunColor.r * _sunTransitionProgress)),
+                    (int)((_previousSunColor.g * (1-_sunTransitionProgress)) + (_nextSunColor.g * _sunTransitionProgress)),
+                    (int)((_previousSunColor.b * (1-_sunTransitionProgress)) + (_nextSunColor.b * _sunTransitionProgress))));
         }
     }
 
@@ -80,10 +101,22 @@ public class WeatherManager implements WorldObserver {
         _dayTime = dayTime;
 
         switch (dayTime) {
-            case "dawn": _lightRenderer.setSunColor(new Color(_weather.sun.dawn)); break;
-            case "twilight": _lightRenderer.setSunColor(new Color(_weather.sun.twilight)); break;
-            case "midnight": _lightRenderer.setSunColor(new Color(_weather.sun.midnight)); break;
-            default: _lightRenderer.setSunColor(new Color(_weather.sun.noon)); break;
+            case "dawn":
+                _previousSunColor = new Color(_weather.sun.midnight);
+                _nextSunColor = new Color(_weather.sun.dawn);
+                break;
+            case "twilight":
+                _previousSunColor = new Color(_weather.sun.noon);
+                _nextSunColor = new Color(_weather.sun.twilight);
+                break;
+            case "midnight":
+                _previousSunColor = new Color(_weather.sun.twilight);
+                _nextSunColor = new Color(_weather.sun.midnight);
+                break;
+            default:
+                _previousSunColor = new Color(_weather.sun.dawn);
+                _nextSunColor = new Color(_weather.sun.noon);
+                break;
         }
     }
 
