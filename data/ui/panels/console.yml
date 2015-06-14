@@ -2,7 +2,7 @@ entries:
 
     -   type: frame
         id: frame_debug
-        position: [10, 8]
+        position: [6, 8]
         size: [100, 24]
         background: 0xb0cd35
 
@@ -10,7 +10,7 @@ entries:
         id: bt_debug
         text: debug
         textsize: 14
-        position: [10, 8]
+        position: [6, 8]
         size: [100, 24]
         align: center
 
@@ -58,4 +58,4 @@ entries:
 
     -   type: frame
         id: frame_entries
-        position: [0, 30]
+        position: [5, 42]

@@ -5,6 +5,8 @@ import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Settings;
 import org.smallbox.faraway.engine.util.StringUtils;
+import org.smallbox.faraway.model.BuffModel;
+import org.smallbox.faraway.model.CharacterBuffModel;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.ToolTips;
 import org.smallbox.faraway.model.character.CharacterModel;
@@ -20,6 +22,7 @@ import org.smallbox.faraway.ui.UserInterface.Mode;
 import java.util.List;
 
 public class PanelCharacter extends BaseRightPanel {
+    private static final int NB_MAX_BUFFS = 20;
     private ViewFactory _viewFactory;
 
     private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "unused", "Work"};
@@ -44,7 +47,7 @@ public class PanelCharacter extends BaseRightPanel {
     private TextView[] 			_values = new TextView[NB_GAUGE];
     private TextView 			_lbJob;
     private ImageView[] 		_lbInventoryEntries;
-    private TextView 			_lbState;
+    private TextView[] 			_lbBuffs = new TextView[NB_MAX_BUFFS];
     private FrameLayout 		_layoutFamily;
     private TextView[] 			_familyEntries;
     private FrameLayout 		_layoutProfession;
@@ -95,8 +98,15 @@ public class PanelCharacter extends BaseRightPanel {
         findById("frame_health").setVisible(false);
 
         _lbName = (TextView) findById("lb_name");
-        _lbState = (TextView) findById("lb_last_report");
         _lbJob = (TextView) findById("lb_current_job");
+
+        FrameLayout frameBuffs = (FrameLayout)findById("frame_buffs_entries");
+        for (int i = 0; i < NB_MAX_BUFFS; i++) {
+            _lbBuffs[i] = ViewFactory.getInstance().createTextView();
+            _lbBuffs[i].setCharacterSize(14);
+            _lbBuffs[i].setPosition(0, 20 * i);
+            frameBuffs.addView(_lbBuffs[i]);
+        }
     }
 
     private void switchView(String viewId) {
@@ -438,17 +448,29 @@ public class PanelCharacter extends BaseRightPanel {
     }
 
     private void refreshLastReports() {
-        _lastStatus = _character.getStatus();
-        String status = _character.getStatus().getThoughts();
-        String time = _character.getStatus().getLastReportDelay() + "sec. ago";
-        _lbState.setString(StringUtils.getDashedString(status, time, NB_COLUMNS));
-        Level level = _character.getStatus().getLevel();
-        switch (level) {
-            case GOOD: _lbState.setColor(COLOR_0); break;
-            case MEDIUM: _lbState.setColor(COLOR_1); break;
-            case BAD: _lbState.setColor(COLOR_2); break;
-            case REALLY_BAD: _lbState.setColor(COLOR_3); break;
+        int i = 0;
+        for (CharacterBuffModel characterBuff: _character.getBuffs()) {
+            if (characterBuff.isActive() && i < NB_MAX_BUFFS) {
+                BuffModel.BuffLevelModel level = characterBuff.getActiveLevel();
+                _lbBuffs[i].setString(StringUtils.getDashedString(
+                        level.label,
+                        (level.effects.mood > 0 ? "+" : "") + level.effects.mood, NB_COLUMNS));
+                _lbBuffs[i].setColor(level.effects.mood < 0 ? COLOR_2 : COLOR_0);
+                i++;
+            }
         }
+
+//        _lastStatus = _character.getStatus();
+//        String status = _character.getStatus().getThoughts();
+//        String time = _character.getStatus().getLastReportDelay() + "sec. ago";
+//        _lbState.setString(StringUtils.getDashedString(status, time, NB_COLUMNS));
+//        Level level = _character.getStatus().getLevel();
+//        switch (level) {
+//            case GOOD: _lbState.setColor(COLOR_0); break;
+//            case MEDIUM: _lbState.setColor(COLOR_1); break;
+//            case BAD: _lbState.setColor(COLOR_2); break;
+//            case REALLY_BAD: _lbState.setColor(COLOR_3); break;
+//        }
     }
 
     private void refreshInfos() {
@@ -472,19 +494,16 @@ public class PanelCharacter extends BaseRightPanel {
         final ProfessionModel profession = _character.getProfession();
         if (!profession.equals(_lastProfession)) {
             _lastProfession = profession;
-            _lbProfession.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    switch (profession.getType()) {
-                        case CHILD: _ui.select(ToolTips.PROFESSION_CHILD); break;
-                        case DOCTOR: _ui.select(ToolTips.PROFESSION_DOCTOR); break;
-                        case ENGINEER: _ui.select(ToolTips.PROFESSION_ENGINEER); break;
-                        case NONE: _ui.select(ToolTips.PROFESSION_NONE); break;
-                        case OPERATION: _ui.select(ToolTips.PROFESSION_OPERATION); break;
-                        case SCIENCE: _ui.select(ToolTips.PROFESSION_SCIENCE); break;
-                        case SECURITY: _ui.select(ToolTips.PROFESSION_SECURITY); break;
-                        case STUDENT: _ui.select(ToolTips.PROFESSION_STUDENT); break;
-                    }
+            _lbProfession.setOnClickListener(view -> {
+                switch (profession.getType()) {
+                    case CHILD: _ui.select(ToolTips.PROFESSION_CHILD); break;
+                    case DOCTOR: _ui.select(ToolTips.PROFESSION_DOCTOR); break;
+                    case ENGINEER: _ui.select(ToolTips.PROFESSION_ENGINEER); break;
+                    case NONE: _ui.select(ToolTips.PROFESSION_NONE); break;
+                    case OPERATION: _ui.select(ToolTips.PROFESSION_OPERATION); break;
+                    case SCIENCE: _ui.select(ToolTips.PROFESSION_SCIENCE); break;
+                    case SECURITY: _ui.select(ToolTips.PROFESSION_SECURITY); break;
+                    case STUDENT: _ui.select(ToolTips.PROFESSION_STUDENT); break;
                 }
             });
             startAnim(_lbProfession, StringUtils.getDashedString("Profession:", profession.getName(), NB_COLUMNS));

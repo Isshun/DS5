@@ -9,6 +9,7 @@ entries:
         id: lb_weather
         textsize: 14
         position: [180, 12]
+        size: [160, 30]
 
     -   type: label
         id: lb_hour

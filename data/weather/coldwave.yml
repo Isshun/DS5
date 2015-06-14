@@ -4,7 +4,7 @@ sun:
     midnight: 0x181819
     noon: 0xffffff
 
-temperatureChange: [-15, -5]
+temperatureChange: [-15, -10]
 
 duration: [100, 500]
 

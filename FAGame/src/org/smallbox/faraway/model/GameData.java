@@ -9,10 +9,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameData implements GameDataListener {
 
@@ -27,6 +24,7 @@ public class GameData implements GameDataListener {
     private Map<String, String> _strings;
 	public static GameConfig 	config;
 	public List<ItemInfo> 		items;
+	public List<BuffModel> 		buffs;
 	public List<ItemInfo> 		gatherItems;
 	public List<CategoryInfo> 	categories;
 	public List<PlanetModel> 	planets;
@@ -41,11 +39,12 @@ public class GameData implements GameDataListener {
 
 		loadStrings();
         loadConfig();
+        loadBuffs();
         gatherItems = new ArrayList<>();
 		items = new ArrayList<>();
 		categories = new ArrayList<>();
 	}
-	
+
 	public ItemInfo getItemInfo(String name) {
 		for (ItemInfo info: items) {
 			if (info.name.equals(name)) {
@@ -119,10 +118,36 @@ public class GameData implements GameDataListener {
             InputStream input = new FileInputStream(new File("data/config.yml"));
             Yaml yaml = new Yaml(new Constructor(GameConfig.class));
             config = (GameConfig)yaml.load(input);
-            Log.debug("Config loaded");
+            Log.info("Config loaded");
             onDataLoaded();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
+
+	private void loadBuffs() {
+		buffs = new ArrayList<>();
+		try {
+			for (File file: new File("data/buffs/").listFiles()) {
+				if (file.getName().endsWith(".yml")) {
+					Log.debug("Load active: " + file.getName());
+					InputStream input = new FileInputStream(file);
+					Yaml yaml = new Yaml(new Constructor(BuffModel.class));
+                    BuffModel buff = (BuffModel)yaml.load(input);
+                    buff.name = file.getName().replace(".yml", "");
+					buffs.add(buff);
+				}
+			}
+            for (BuffModel buff: buffs) {
+                for (BuffModel.BuffLevelModel level: buff.levels) {
+                    level.index = buff.levels.indexOf(level);
+                }
+            }
+//            Collections.sort(buffs, (b1, b2) -> b2.effects.mood - b1.effects.mood);
+            Log.info("Buffs loaded");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

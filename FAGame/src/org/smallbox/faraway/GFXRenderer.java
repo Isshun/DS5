@@ -1,6 +1,7 @@
 package org.smallbox.faraway;
 
 import org.smallbox.faraway.engine.renderer.AreaRenderer;
+import org.smallbox.faraway.engine.renderer.TemperatureRenderer;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.View;
 
@@ -26,4 +27,5 @@ public interface GFXRenderer {
     void draw(View view, int x, int y);
 
     AreaRenderer createAreaRenderer();
+    TemperatureRenderer createTemperatureRenderer();
 }

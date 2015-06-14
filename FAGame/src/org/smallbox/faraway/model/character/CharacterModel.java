@@ -9,22 +9,20 @@ import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.CharacterManager;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.PathManager;
-import org.smallbox.faraway.model.Movable;
-import org.smallbox.faraway.model.ProfessionModel;
+import org.smallbox.faraway.model.*;
 import org.smallbox.faraway.model.character.CharacterRelation.Relation;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.model.room.RoomModel;
 import org.smallbox.faraway.ui.UserInterface;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CharacterModel extends Movable {
 	private ConsumableModel _inventory;
 	private OnMoveListener 	_moveListener;
+	private List<CharacterBuffModel> 	_buffs;
 //	public boolean hasInInventory(ConsumableModel consumable) {
 //		return _inventory.contains(consumable);
 //	}
@@ -54,6 +52,59 @@ public class CharacterModel extends Movable {
 
 	public ConsumableModel getInventory() {
 		return _inventory;
+	}
+
+	public void checkBuffs() {
+        boolean needSort = false;
+		for (CharacterBuffModel characterBuff: _buffs) {
+            int maxLevel = 0;
+            for (BuffModel.BuffLevelModel level: characterBuff.buff.levels) {
+                if (characterBuff.level >= level.index && checkBuff(level)) {
+                    maxLevel = characterBuff.buff.levels.indexOf(level);
+                    if (characterBuff.level == level.index) {
+                        if (characterBuff.duration++ > level.delay && maxLevel < characterBuff.buff.levels.size() - 1) {
+                            characterBuff.duration = 0;
+                            maxLevel++;
+                            needSort = true;
+                            Log.info("New buff level: " + characterBuff.buff.levels.get(maxLevel).label + " (" + characterBuff.buff.name + ":" + maxLevel + ")");
+                        }
+                    }
+                }
+            }
+            characterBuff.level = maxLevel;
+		}
+        if (needSort) {
+            sortBuffs();
+        }
+	}
+
+	private boolean checkBuff(BuffModel.BuffLevelModel level) {
+		if (level.conditions.minFood != Integer.MIN_VALUE && _needs.getFood() < level.conditions.minFood) {
+			return false;
+		}
+		if (level.conditions.maxFood != Integer.MIN_VALUE && _needs.getFood() > level.conditions.maxFood) {
+			return false;
+		}
+		if (level.conditions.minDay != Integer.MIN_VALUE && Game.getInstance().getDay() < level.conditions.minDay) {
+			return false;
+		}
+		if (level.conditions.maxDay != Integer.MIN_VALUE && Game.getInstance().getDay() > level.conditions.maxDay) {
+			return false;
+		}
+		return true;
+	}
+
+	private CharacterBuffModel getBuff(String buffName) {
+		for (CharacterBuffModel characterBuff: _buffs) {
+			if (characterBuff.buff.name.equals(buffName)) {
+				return characterBuff;
+			}
+		}
+		return null;
+	}
+
+	public Collection<CharacterBuffModel> getBuffs() {
+		return _buffs;
 	}
 
 	public enum TalentType {
@@ -140,6 +191,8 @@ public class CharacterModel extends Movable {
 		Log.info("Character #" + id);
 
 		_old = old;
+		_buffs = GameData.getData().buffs.stream().map(buff -> new CharacterBuffModel(buff)).collect(Collectors.toList());
+        sortBuffs();
 		_profession = CharacterManager.professions[id % CharacterManager.professions.length];
 		_relations = new ArrayList<>();
 //		_inventory = new ArrayList<>();
@@ -180,7 +233,15 @@ public class CharacterModel extends Movable {
 		Log.info("Character done: " + _firstName + _lastName + " (" + x + ", " + y + ")");
 	}
 
-	public void				setSelected(boolean selected) { _isSelected = selected; }
+    private void sortBuffs() {
+        Collections.sort(_buffs, (b1, b2) -> {
+            if (b2.getActiveLevel() == null) return -1;
+            if (b1.getActiveLevel() == null) return 1;
+            return b2.getActiveLevel().effects.mood - b1.getActiveLevel().effects.mood;
+        });
+    }
+
+    public void				setSelected(boolean selected) { _isSelected = selected; }
 	public void				setName(String name) { _firstName = name; }
 	public void 			setGender(Gender gender) {
 		_gender = gender;

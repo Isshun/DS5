@@ -3,13 +3,17 @@ package org.smallbox.faraway.manager;
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.util.Log;
+import org.smallbox.faraway.model.BuffModel;
+import org.smallbox.faraway.model.CharacterBuffModel;
 import org.smallbox.faraway.model.Movable.Direction;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.job.JobModel.JobAbortReason;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CharacterManager {
 
@@ -25,16 +29,15 @@ public class CharacterManager {
 	public static ProfessionModel professionsChild = new ProfessionModel(ProfessionModel.Type.CHILD, "Child", new Color(0, 0, 0), new Color(0, 0, 0));
 	public static ProfessionModel professionsStudent = new ProfessionModel(ProfessionModel.Type.STUDENT, "Student", new Color(0, 0, 0), new Color(0, 0, 0));
 
-	private ArrayList<CharacterModel> 	_characters;
-	private int 					_count;
-	private List<CharacterModel> 		_addOnUpdate;
-	
+	private List<CharacterModel>				_characters;
+	private List<CharacterModel> 				_addOnUpdate;
+	private int 								_count;
+
 	public CharacterManager() {
 		Log.debug("CharacterManager");
 
 		_characters = new ArrayList<>();
 		_addOnUpdate = new ArrayList<>();
-		new ArrayList<CharacterModel>();
 		_count = 0;
 
 		Log.debug("CharacterManager done");
@@ -94,6 +97,9 @@ public class CharacterManager {
 			}
 			
 			else {
+				// Check buffs
+				c.checkBuffs();
+
 				// Assign job
 				if (c.getJob() == null && update % 10 == c.getLag() && c.isSleeping() == false) {
 					JobManager.getInstance().assignJob(c);

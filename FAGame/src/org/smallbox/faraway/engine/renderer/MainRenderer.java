@@ -18,6 +18,7 @@ public class MainRenderer implements IRenderer {
 	private DebugRenderer 			_debugRenderer;
 	private JobRenderer				_jobRenderer;
 	private AreaRenderer			_areaRenderer;
+	private TemperatureRenderer		_temperatureRenderer;
 	private Viewport 				_viewport;
 	private Mode 					_mode;
 
@@ -41,6 +42,7 @@ public class MainRenderer implements IRenderer {
 		_debugRenderer = new DebugRenderer();
 		_jobRenderer = new JobRenderer();
 		_areaRenderer = renderer.createAreaRenderer();
+		_temperatureRenderer = renderer.createTemperatureRenderer();
 	}
 
 	public void onRefresh(int frame) {
@@ -53,8 +55,6 @@ public class MainRenderer implements IRenderer {
 	public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
 //		_renderTime = renderTime;
 
-		renderer.clear(new Color(0, 0, 50));
-		
 		_worldRenderer.onDraw(renderer, effect, animProgress);
 		// TODO
 		//_lightRenderer.onDraw(renderer, effect, animProgress);
@@ -65,8 +65,16 @@ public class MainRenderer implements IRenderer {
 //		if (_mode == Mode.ROOM) {
 //			_roomRenderer.onDraw(renderer, effect, animProgress);
 //		}
+
+		_frame++;
+	}
+
+	public void onDrawHUD(GFXRenderer renderer, RenderEffect effect, double animProgress) {
 		if (_areaRenderer != null) {
 			_areaRenderer.onDraw(renderer, effect, animProgress);
+		}
+		if (_temperatureRenderer != null) {
+			_temperatureRenderer.onDraw(renderer, effect, animProgress);
 		}
 		_jobRenderer.onDraw(renderer, effect, animProgress);
 		_characterRenderer.onDraw(renderer, effect, animProgress);
@@ -75,8 +83,6 @@ public class MainRenderer implements IRenderer {
 		if (Settings.getInstance().isDebug()) {
 			_debugRenderer.onDraw(renderer, effect, animProgress);
 		}
-		
-		_frame++;
 	}
 
 	public void init(Game game) {

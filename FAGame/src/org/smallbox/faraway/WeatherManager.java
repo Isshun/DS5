@@ -57,7 +57,7 @@ public class WeatherManager implements WorldObserver {
 
     public void update(int update) {
         if (_duration-- <= 0) {
-            _duration = 250;
+            _duration = 2500;
             loadWeather(new ArrayList<>(GameData.getData().weathers.values()).get((int)(Math.random() * GameData.getData().weathers.size())));
         }
 
@@ -122,5 +122,9 @@ public class WeatherManager implements WorldObserver {
 
     public WeatherModel getWeather() {
         return _weather;
+    }
+
+    public void next() {
+        loadWeather(new ArrayList<>(GameData.getData().weathers.values()).get((int)(Math.random() * GameData.getData().weathers.size())));
     }
 }

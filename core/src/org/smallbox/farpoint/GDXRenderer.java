@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.renderer.AreaRenderer;
+import org.smallbox.faraway.engine.renderer.TemperatureRenderer;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.engine.util.Constant;
@@ -134,6 +135,11 @@ public class GDXRenderer implements GFXRenderer {
         return new GDXAreaRenderer();
     }
 
+    @Override
+    public TemperatureRenderer createTemperatureRenderer() {
+        return new GDXTemperatureRenderer();
+    }
+
     public void setGameEventListener(GameEventListener listener) {
         _listener = listener;
     }
@@ -158,6 +164,7 @@ public class GDXRenderer implements GFXRenderer {
     public void draw(Color color, int x, int y, int width, int height) {
         if (color != null) {
             _batch.begin();
+            Gdx.gl.glEnable(GL20.GL_BLEND);
             _shapeRenderer.setProjectionMatrix(_camera.combined);
             _shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             _shapeRenderer.setColor(color);

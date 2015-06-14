@@ -701,10 +701,10 @@ public class UserInterface implements GameEventListener {
 
     private void dumpRoomInfo(ParcelModel area) {
         if (area.getRoom() != null) {
-            for (ParcelModel a: area.getRoom().getAreas()) {
+            for (ParcelModel a: area.getRoom().getParcels()) {
                 Log.info("in room: " + a.getX() + "x" + a.getY());
             }
-            Log.info("room size: " + area.getRoom().getAreas().size());
+            Log.info("room size: " + area.getRoom().getParcels().size());
             Log.info("room exterior: " + area.getRoom().isExterior());
         }
     }

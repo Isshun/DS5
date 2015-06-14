@@ -141,9 +141,8 @@ entries:
                     textsize: 22
                     position: [20, 0]
                 
-                -   type: label
-                    id: lb_last_report
-                    textsize: 14
+                -   type: frame
+                    id: frame_buffs_entries
                     position: [20, 40]
 
     -   type: frame

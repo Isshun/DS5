@@ -254,9 +254,11 @@ public class Application implements GameEventListener {
     public void renderGame(double animProgress, int update, long renderTime, GFXRenderer renderer, RenderEffect effect) {
         _frame++;
         if (_game != null) {
+            renderer.clear(new Color(0, 0, 0));
             _gameRenderer.onDraw(renderer, effect, animProgress);
             _lightRenderer.onDraw(renderer, -effect.getViewport().getPosX(), -effect.getViewport().getPosY());
             _particleRenderer.onDraw(renderer, -effect.getViewport().getPosX(), -effect.getViewport().getPosY());
+            _gameRenderer.onDrawHUD(renderer, effect, animProgress);
             _gameInterface.onDraw(renderer, update, renderTime);
             renderer.finish();
         }

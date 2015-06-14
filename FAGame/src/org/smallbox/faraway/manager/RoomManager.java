@@ -15,10 +15,7 @@ import org.smallbox.faraway.model.room.QuarterRoom;
 import org.smallbox.faraway.model.room.RoomModel;
 import org.smallbox.faraway.model.room.RoomModel.RoomType;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class RoomManager implements WorldObserver {
     private RoomModel[][] 			_rooms;
@@ -46,7 +43,7 @@ public class RoomManager implements WorldObserver {
 
         _roomList.add(room);
 
-        for (ParcelModel area: room.getAreas()) {
+        for (ParcelModel area: room.getParcels()) {
             _rooms[area.getX()][area.getY()] = room;
         }
     }
@@ -116,11 +113,11 @@ public class RoomManager implements WorldObserver {
         }
 
         int leftRoom = Integer.MAX_VALUE;
-        while (tempRoom.getAreas().size() != 0 && tempRoom.getAreas().size() < leftRoom) {
-            leftRoom = tempRoom.getAreas().size();
+        while (tempRoom.getParcels().size() != 0 && tempRoom.getParcels().size() < leftRoom) {
+            leftRoom = tempRoom.getParcels().size();
             RoomModel newRoom = createRoom(tempRoom.getType(), owner);
             _roomList.add(newRoom);
-            ParcelModel area = tempRoom.getAreas().get(0);
+            ParcelModel area = tempRoom.getParcels().get(0);
             replaceArea(newRoom, tempRoom, area.getX(), area.getY());
             _currentDiffuseRoom = newRoom;
             diffuseRoom(tempRoom, area.getX(), area.getY());
@@ -159,7 +156,7 @@ public class RoomManager implements WorldObserver {
         // If neighboorRoom IS NOT tempRoom AND IS NOT _currentDiffuseRoom, it's an old existing room
         // so we replace all room previously set to _currentDiffuseRoom by this new room
         if (neighboorRoom != null && neighboorRoom != tempRoom && neighboorRoom != _currentDiffuseRoom) {
-            List<ParcelModel> areasCopy = new ArrayList<ParcelModel>(_currentDiffuseRoom.getAreas());
+            List<ParcelModel> areasCopy = new ArrayList<ParcelModel>(_currentDiffuseRoom.getParcels());
             for (ParcelModel area: areasCopy) {
                 replaceArea(neighboorRoom, _currentDiffuseRoom, area.getX(), area.getY());
             }
@@ -264,7 +261,7 @@ public class RoomManager implements WorldObserver {
         // Remove non existing room
         List<RoomModel> toRemove = new ArrayList<RoomModel>();
         for (RoomModel room: _roomList) {
-            if (room.getAreas().size() == 0) {
+            if (room.getParcels().size() == 0) {
                 toRemove.add(room);
             }
         }
@@ -441,15 +438,53 @@ public class RoomManager implements WorldObserver {
 
     @Override
     public void onAddStructure(StructureModel structure){
+        refreshRooms();
+    }
+
+    private void refreshRooms() {
         _roomList.clear();
         makeRooms();
+        makeNeighborhood();
+    }
+
+    private void makeNeighborhood() {
+        WorldManager manager = Game.getWorldManager();
+
+        for (RoomModel room: _roomList) {
+            // Init neighborhood
+            Map<RoomModel, Integer> neighborhood = new HashMap<>();
+            for (RoomModel neighbor: _roomList) {
+                if (neighbor != room) {
+                    neighborhood.put(neighbor, 0);
+                }
+            }
+
+            for (ParcelModel parcel: room.getParcels()) {
+                checkAndAddNeighbor(manager, neighborhood, room, parcel, -1, 0);
+                checkAndAddNeighbor(manager, neighborhood, room, parcel, +1, 0);
+                checkAndAddNeighbor(manager, neighborhood, room, parcel, 0, -1);
+                checkAndAddNeighbor(manager, neighborhood, room, parcel, 0, +1);
+            }
+
+            room.setNeighborhoods(neighborhood);
+        }
+    }
+
+    private void checkAndAddNeighbor(WorldManager manager, Map<RoomModel, Integer> neighborhood, RoomModel room, ParcelModel parcel, int offsetX, int offsetY) {
+        ParcelModel p1 = manager.getParcel(parcel.getX() + offsetX, parcel.getY() + offsetY);
+        if (p1 != null && (p1.getStructure() != null && !p1.getStructure().isFloor() || p1.getResource() != null && p1.getResource().isRock())) {
+            ParcelModel p2 = manager.getParcel(p1.getX() + offsetX, p1.getY() + offsetY);
+            if (p2 != null && p2.getRoom() != null && p2.getRoom() != room) {
+                neighborhood.put(p2.getRoom(), neighborhood.get(p2.getRoom()) + 1);
+            }
+        }
     }
 
     @Override
     public void onAddItem(ItemModel item){
         if (item.isLight() && item.getArea() != null && item.getArea().getRoom() != null) {
             int lightValue = 0;
-            for (ParcelModel area: item.getArea().getRoom().getAreas()) {
+            for (ParcelModel area: item.getArea().getRoom().getParcels()) {
                 if (area != null && area.getItem() != null && area.getItem().isLight()) {
                     lightValue += area.getItem().getInfo().light;
                 }
@@ -460,7 +495,7 @@ public class RoomManager implements WorldObserver {
 
     @Override
     public void onRemoveStructure(StructureModel structure){
-        makeRooms();
+        refreshRooms();
     }
 
 }

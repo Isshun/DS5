@@ -44,6 +44,9 @@ public class PanelTopInfo extends BasePanel {
 
         if (Game.getWeatherManager() != null && Game.getWeatherManager().getWeather() != null) {
             ((TextView) findById("lb_weather")).setString("Weather: " + Game.getWeatherManager().getWeather().name);
+            if (Constant.DEBUG) {
+                findById("lb_weather").setOnClickListener(view -> Game.getWeatherManager().next());
+            }
         }
     }
 }

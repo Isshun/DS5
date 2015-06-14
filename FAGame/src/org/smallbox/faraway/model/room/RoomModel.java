@@ -8,15 +8,14 @@ import org.smallbox.faraway.model.item.ItemFilter;
 import org.smallbox.faraway.model.item.ItemModel;
 import org.smallbox.faraway.model.item.ParcelModel;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class RoomModel {
 	private boolean _isExterior;
-	private double 	_temperature;
 	private int 	_lightValue;
+	private int 	_targetHeat;
+	private Map<RoomModel, Integer> _neighborhood;
+	private RoomTemperatureModel _temperatureInfo = new RoomTemperatureModel();
 
 	public void setExterior(boolean isExterior) {
 		_isExterior = isExterior;
@@ -26,16 +25,8 @@ public class RoomModel {
 		return _isExterior;
 	}
 
-	public double getTemperature() {
-		return _temperature;
-	}
-
 	public int getSize() {
 		return _areas.size();
-	}
-
-	public void setTemperature(double temperature) {
-		_temperature = temperature;
 	}
 
 	public void setLight(int lightValue) {
@@ -44,6 +35,22 @@ public class RoomModel {
 
 	public int getLight() {
 		return _lightValue;
+	}
+
+	public void setTargetHeat(int targetHeat) {
+		_targetHeat = targetHeat;
+	}
+
+	public Map<RoomModel, Integer> getNeighborhoods() {
+		return _neighborhood;
+	}
+
+	public void setNeighborhoods(Map<RoomModel, Integer> neighborhood) {
+		_neighborhood = neighborhood;
+	}
+
+	public RoomTemperatureModel getTemperatureInfo() {
+		return _temperatureInfo;
 	}
 
 	public enum RoomType {
@@ -274,7 +281,7 @@ public class RoomModel {
 		_areas.add(area);
 	}
 
-	public List<ParcelModel> getAreas() {
+	public List<ParcelModel> getParcels() {
 		return _areas;
 	}
 
@@ -342,4 +349,16 @@ public class RoomModel {
 		return _type == RoomType.STORAGE;
 	}
 
+	public class RoomTemperatureModel {
+		public int heatPotency;
+		public int coldPotency;
+		public int targetHeat;
+		public int targetHeatTotal;
+		public int targetCold;
+		public int targetColdTotal;
+		public int heatPotencyLeft;
+		public int coldPotencyLeft;
+		public double temperatureTotal;
+		public double temperature;
+	}
 }

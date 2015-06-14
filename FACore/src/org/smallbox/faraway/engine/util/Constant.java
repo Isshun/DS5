@@ -4,6 +4,7 @@ import org.smallbox.faraway.Color;
 
 public class Constant {
 
+	public static final boolean DEBUG = true;
 	public static String 		NAME	= "FarPoint";
 	public static String 		VERSION	= "0.1";
 
