@@ -33,7 +33,7 @@ public class ItemFactory {
 		}
 	}
 
-	private static ItemModel createUserItem(WorldManager manager, ParcelModel area, ItemInfo info, boolean isComplete) {
+	public static ItemModel createUserItem(WorldManager manager, ParcelModel area, ItemInfo info, boolean isComplete) {
 		ItemModel item = new ItemModel(info);
 		item.addProgress(isComplete ? info.cost : 0);
 
@@ -47,7 +47,7 @@ public class ItemFactory {
 		return item;
 	}
 
-	private static ConsumableModel createConsumable(ParcelModel area, ItemInfo info, int quantity) {
+	public static ConsumableModel createConsumable(ParcelModel area, ItemInfo info, int quantity) {
 		ConsumableModel consumable = new ConsumableModel(info);
 
 		consumable.setQuantity(quantity);
@@ -59,7 +59,7 @@ public class ItemFactory {
 		return consumable;
 	}
 
-	private static StructureModel createStructure(ParcelModel area, ItemInfo info, boolean isComplete) {
+	public static StructureModel createStructure(ParcelModel area, ItemInfo info, boolean isComplete) {
 		StructureModel structure = new StructureModel(info);
 
 		structure.addProgress(isComplete ? info.cost : 0);
@@ -68,7 +68,7 @@ public class ItemFactory {
 		return structure;
 	}
 
-	private static MapObjectModel createResource(ParcelModel area, ItemInfo info, int matterSupply) {
+	public static MapObjectModel createResource(ParcelModel area, ItemInfo info, int matterSupply) {
 		ResourceModel resource = new ResourceModel(info);
 
 		resource.setValue(matterSupply);

@@ -18,7 +18,10 @@ public class AreaModel {
     }
 
     public void addParcel(ParcelModel parcel) {
-        _parcels.add(parcel);
+        if (!_parcels.contains(parcel)) {
+            _parcels.add(parcel);
+            parcel.setArea(this);
+        }
     }
 
     public boolean contains(int x, int y) {

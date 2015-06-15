@@ -1,9 +1,6 @@
 package org.smallbox.faraway.model.room;
 
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.engine.ui.OnClickListener;
-import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.GameData;
@@ -42,12 +39,7 @@ public class GardenRoom extends RoomModel {
 			final ItemInfo culture = c;
 			_options.options.add(new RoomOption("Set " + culture.label,
 					SpriteManager.getInstance().getIcon(culture),
-					new OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					setCulture(culture);
-				}
-			}));
+					view -> setCulture(culture)));
 		}
 		_currentCulture = GameData.getData().getRandomGatherItem();
 	}

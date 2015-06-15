@@ -9,10 +9,7 @@ import org.smallbox.faraway.model.check.CheckCharacterUse;
 import org.smallbox.faraway.model.check.character.CheckCharacterExhausted;
 import org.smallbox.faraway.model.check.character.CheckCharacterHungry;
 import org.smallbox.faraway.model.check.old.CharacterCheck;
-import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.ItemModel;
-import org.smallbox.faraway.model.item.MapObjectModel;
-import org.smallbox.faraway.model.item.ResourceModel;
+import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.job.*;
 import org.smallbox.faraway.model.job.JobModel.JobAbortReason;
 import org.smallbox.faraway.model.job.JobModel.JobStatus;
@@ -42,7 +39,27 @@ public class JobManager extends BaseManager {
         Log.debug("JobManager done");
 	}
 
-	public void addJob(ItemModel item, ItemInfo.ItemInfoAction action) {
+    @Override
+    protected void onCreate() {
+    }
+
+    @Override
+    protected void onUpdate(int tick) {
+        cleanJobs();
+
+        if (tick % 10 == 0) {
+            // Create haul jobs
+            _jobs.stream().filter(job -> job instanceof  JobHaul).forEach(job -> ((JobHaul)job).getItemAround());
+            Game.getWorldManager().getConsumables().stream().filter(consumable -> consumable.getHaul() == null && consumable.getParcel().getArea() == null).forEach(consumable -> {
+                addJob(JobHaul.create(consumable));
+            });
+
+            // Remove invalid job
+            _jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
+        }
+    }
+
+    public void addJob(ItemModel item, ItemInfo.ItemInfoAction action) {
 		switch (action.type) {
 			case "cook":
 				addJob(JobCook.create(action, item));
@@ -349,16 +366,6 @@ public class JobManager extends BaseManager {
 
 		JobModel job = JobMining.create(res);
 		return job;
-	}
-
-	@Override
-	protected void onUpdate(int tick) {
-		cleanJobs();
-
-		// Remove invalid job
-		if (tick % 10 == 0) {
-			_jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
-		}
 	}
 
 	public void addGatherJob(int x, int y) {

@@ -142,7 +142,7 @@
 //		// Change to STORE job
 //		setPosition(_factory.getX(), _factory.getY());
 //		setSubAction(ActionType.STORE);
-//		character.setJob(this);
+//		character.setHaul(this);
 //
 //		return false;
 //	}

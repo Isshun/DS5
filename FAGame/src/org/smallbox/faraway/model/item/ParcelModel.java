@@ -1,21 +1,23 @@
 package org.smallbox.faraway.model.item;
 
 import org.smallbox.faraway.model.room.RoomModel;
+import org.smallbox.faraway.ui.AreaModel;
 
 public class ParcelModel {
-	private ItemModel _item;
+	private ItemModel 		_item;
 	private ConsumableModel _consumable;
-	private StructureModel _structure;
-	private ResourceModel _resource;
+	private StructureModel 	_structure;
+	private ResourceModel 	_resource;
 	private int				_oxygen;
 	private int				_x;
 	private int				_y;
+	private int 			_z;
 	private double 			_light;
 	private int 			_lightPass;
-	private int 			_z;
-	private RoomModel _room;
+	private RoomModel 		_room;
 	private boolean 		_isStorage;
 	private int				_lightSource;
+	private AreaModel 		_area;
 
 	public ParcelModel(int x, int y, int z) {
 		_oxygen = (int) (Math.random() % 100);
@@ -53,7 +55,7 @@ public class ParcelModel {
 	public void				setItem(ItemModel item) {
 		_item = item;
 		if (item != null) {
-			item.setArea(this);
+			item.setParcel(this);
 			item.setX(_x);
 			item.setY(_y);
 		}
@@ -62,7 +64,7 @@ public class ParcelModel {
 	public void				setStructure(StructureModel structure) {
 		_structure = structure;
 		if (structure != null) {
-			structure.setArea(this);
+			structure.setParcel(this);
 			structure.setX(_x);
 			structure.setY(_y);
 		}
@@ -71,7 +73,7 @@ public class ParcelModel {
 	public void 			setResource(ResourceModel resource) {
 		_resource = resource;
 		if (resource != null) {
-			resource.setArea(this);
+			resource.setParcel(this);
 			resource.setX(_x);
 			resource.setY(_y);
 		}
@@ -80,7 +82,7 @@ public class ParcelModel {
 	public void setConsumable(ConsumableModel consumable) {
 		_consumable = consumable;
 		if (consumable != null) {
-			consumable.setArea(this);
+			consumable.setParcel(this);
 			consumable.setX(_x);
 			consumable.setY(_y);
 		}
@@ -99,5 +101,13 @@ public class ParcelModel {
 
 	public ConsumableModel getConsumable() {
 		return _consumable;
+	}
+
+	public void setArea(AreaModel area) {
+		_area = area;
+	}
+
+	public AreaModel getArea() {
+		return _area;
 	}
 }

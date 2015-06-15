@@ -1,14 +1,16 @@
 package org.smallbox.faraway.model.item;
 
+import org.smallbox.faraway.model.job.JobHaul;
 import org.smallbox.faraway.model.job.JobModel;
 
 /**
  * Created by Alex on 03/06/2015.
  */
 public class ConsumableModel extends MapObjectModel {
-    private ItemSlot _slot;
-    private int _quantity = 1;
-    private int _slots = 1;
+    private ItemSlot    _slot;
+    private int         _quantity = 1;
+    private int         _slots = 1;
+    private JobHaul     _job;
 
     public ConsumableModel(ItemInfo info) {
         super(info);
@@ -52,5 +54,13 @@ public class ConsumableModel extends MapObjectModel {
 
     public String getFullLabel() {
         return getLabel() + " (" + _quantity + ")";
+    }
+
+    public JobHaul getHaul() {
+        return _job;
+    }
+
+    public void setHaul(JobHaul job) {
+        _job = job;
     }
 }

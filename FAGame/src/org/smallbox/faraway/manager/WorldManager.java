@@ -10,6 +10,8 @@ import org.smallbox.faraway.manager.PathManager.MyMover;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.*;
 
+import java.util.*;
+
 public class WorldManager extends BaseManager implements TileBasedMap {
     private static final int 	    NB_FLOOR = 10;
 
@@ -22,6 +24,7 @@ public class WorldManager extends BaseManager implements TileBasedMap {
     private WorldObserverTemporizer _temporizer = new WorldObserverTemporizer();
     private int                     _temperatureOffset;
     private final Game              _game;
+    private Set<ConsumableModel>    _consumables = new HashSet<>();
 
     public ParcelModel[][][] getAreas() {
         return _parcels;
@@ -108,8 +111,8 @@ public class WorldManager extends BaseManager implements TileBasedMap {
 //    }
 
     public void removeItem(ItemModel item) {
-        if (item != null && item.getArea() != null) {
-            item.getArea().setItem(null);
+        if (item != null && item.getParcel() != null) {
+            item.getParcel().setItem(null);
 
             _temporizer.onRemoveItem(item);
             _game.notify(observer -> observer.onRemoveItem(item));
@@ -117,11 +120,12 @@ public class WorldManager extends BaseManager implements TileBasedMap {
     }
 
     public void removeConsumable(ConsumableModel consumable) {
-        if (consumable != null && consumable.getArea() != null) {
-            consumable.getArea().setConsumable(null);
+        if (consumable != null && consumable.getParcel() != null) {
+            consumable.getParcel().setConsumable(null);
 
             _temporizer.onRemoveConsumable(consumable);
             _game.notify(observer -> observer.onRemoveConsumable(consumable));
+            _consumables.remove(consumable);
         }
     }
 
@@ -140,8 +144,8 @@ public class WorldManager extends BaseManager implements TileBasedMap {
     }
 
     public void removeStructure(StructureModel structure) {
-        if (structure != null && structure.getArea() != null) {
-            structure.getArea().setStructure(null);
+        if (structure != null && structure.getParcel() != null) {
+            structure.getParcel().setStructure(null);
 
             _temporizer.onRemoveStructure(structure);
             _game.notify(observer -> observer.onRemoveStructure(structure));
@@ -153,16 +157,17 @@ public class WorldManager extends BaseManager implements TileBasedMap {
             return null;
         }
 
-        ParcelModel area = getNearestFreeArea(itemInfo, x, y);
+        ParcelModel area = getNearestFreeArea(itemInfo, x, y, quantity);
         if (area == null) {
             return null;
         }
 
         // Put consumable on free area
         if (area.getConsumable() != null) {
-            area.getConsumable().addQuantity(1);
+            area.getConsumable().addQuantity(quantity);
         } else {
-            area.setConsumable((ConsumableModel) ItemFactory.create(this, _parcels[x][y][0], itemInfo, 1));
+            area.setConsumable(ItemFactory.createConsumable(area, itemInfo, quantity));
+            _consumables.add(area.getConsumable());
         }
         return area.getConsumable();
     }
@@ -172,7 +177,7 @@ public class WorldManager extends BaseManager implements TileBasedMap {
             return null;
         }
 
-        ParcelModel area = getNearestFreeArea(consumable.getInfo(), x, y);
+        ParcelModel area = getNearestFreeArea(consumable.getInfo(), x, y, consumable.getQuantity());
         if (area == null) {
             return null;
         }
@@ -197,18 +202,18 @@ public class WorldManager extends BaseManager implements TileBasedMap {
      * @param y
      * @return nearest free area
      */
-    private ParcelModel getNearestFreeArea(ItemInfo itemInfo, int x, int y) {
-        if (itemInfo.isUserItem || itemInfo.isConsumable) {
+    private ParcelModel getNearestFreeArea(ItemInfo itemInfo, int x, int y, int quantity) {
+        if (itemInfo.isConsumable) {
             for (int i = 0; i < 10; i++) {
-                if (areaFreeForConsumable(x + 0, y + 0, itemInfo)) return _parcels[x + 0][y + 0][0];
-                if (areaFreeForConsumable(x + i, y + 0, itemInfo)) return _parcels[x + i][y + 0][0];
-                if (areaFreeForConsumable(x + 0, y + i, itemInfo)) return _parcels[x + 0][y + i][0];
-                if (areaFreeForConsumable(x - i, y + 0, itemInfo)) return _parcels[x - i][y + 0][0];
-                if (areaFreeForConsumable(x + 0, y - i, itemInfo)) return _parcels[x + 0][y - i][0];
-                if (areaFreeForConsumable(x + i, y + i, itemInfo)) return _parcels[x + i][y + i][0];
-                if (areaFreeForConsumable(x - 0, y - i, itemInfo)) return _parcels[x - 0][y - i][0];
-                if (areaFreeForConsumable(x + i, y - i, itemInfo)) return _parcels[x + i][y - i][0];
-                if (areaFreeForConsumable(x - i, y + i, itemInfo)) return _parcels[x - i][y + i][0];
+                if (areaFreeForConsumable(x + 0, y + 0, itemInfo, quantity)) return _parcels[x + 0][y + 0][0];
+                if (areaFreeForConsumable(x + i, y + 0, itemInfo, quantity)) return _parcels[x + i][y + 0][0];
+                if (areaFreeForConsumable(x + 0, y + i, itemInfo, quantity)) return _parcels[x + 0][y + i][0];
+                if (areaFreeForConsumable(x - i, y + 0, itemInfo, quantity)) return _parcels[x - i][y + 0][0];
+                if (areaFreeForConsumable(x + 0, y - i, itemInfo, quantity)) return _parcels[x + 0][y - i][0];
+                if (areaFreeForConsumable(x + i, y + i, itemInfo, quantity)) return _parcels[x + i][y + i][0];
+                if (areaFreeForConsumable(x - 0, y - i, itemInfo, quantity)) return _parcels[x - 0][y - i][0];
+                if (areaFreeForConsumable(x + i, y - i, itemInfo, quantity)) return _parcels[x + i][y - i][0];
+                if (areaFreeForConsumable(x - i, y + i, itemInfo, quantity)) return _parcels[x - i][y + i][0];
             }
         }
         return null;
@@ -221,11 +226,11 @@ public class WorldManager extends BaseManager implements TileBasedMap {
      * @param info
      * @return
      */
-    private boolean areaFreeForConsumable(int x, int y, ItemInfo info) {
+    private boolean areaFreeForConsumable(int x, int y, ItemInfo info, int quantity) {
         if (inMapBounds(x, y)) {
             ParcelModel area = _parcels[x][y][0];
             if (area.getStructure() == null || area.getStructure().isFloor()) {
-                return area.getItem() == null && (area.getConsumable() == null || area.getConsumable().getInfo() == info);
+                return area.getItem() == null && (area.getConsumable() == null || (area.getConsumable().getInfo() == info && area.getConsumable().getQuantity() + quantity <= GameData.config.storageMaxQuantity));
             }
         }
         return false;
@@ -238,12 +243,7 @@ public class WorldManager extends BaseManager implements TileBasedMap {
      * @return true if position in bounds
      */
     private boolean inMapBounds(int x, int y) {
-        //z < 0 || z >= NB_FLOOR ||
-        if (x < 0 || y < 0 || x >= _width || y >= _height) {
-            //Log.error("put item out of bound, type: " + itemInfo.name + ", x: " + x + ", y: " + y + ")");
-            return false;
-        }
-        return true;
+        return !(x < 0 || y < 0 || x >= _width || y >= _height);
     }
 
     public MapObjectModel putObject(ItemInfo itemInfo, int x, int y, int z, int value) {
@@ -313,15 +313,15 @@ public class WorldManager extends BaseManager implements TileBasedMap {
 
         // TODO
         if (_parcels[x][y][z].getStructure() == null || _parcels[x][y][z].getStructure().isGround()) {
-            MapObjectModel item = ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
-            if (item != null) {
-                item.setPosition(x, y);
-                if (item.isStructure()) {
-                    _temporizer.onAddStructure((StructureModel) item);
-                    _game.notify(observer -> observer.onAddStructure((StructureModel) item));
+            StructureModel structure = (StructureModel)ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
+            if (structure != null) {
+                structure.setPosition(x, y);
+                if (structure.isStructure()) {
+                    _temporizer.onAddStructure(structure);
+                    _game.notify(observer -> observer.onAddStructure(structure));
                 }
             }
-            return (StructureModel)item;
+            return structure;
         }
 
         return null;
@@ -449,8 +449,7 @@ public class WorldManager extends BaseManager implements TileBasedMap {
         }
 
         _parcels[resource.getX()][resource.getY()][0].setResource(null);
-        MainRenderer.getInstance().invalidate(x, y);
-        MainRenderer.getInstance().invalidate();
+        _game.notify(observer -> observer.onRemoveResource(resource));
     }
 
     public ParcelModel getParcel(int z, int x, int y) {
@@ -464,7 +463,7 @@ public class WorldManager extends BaseManager implements TileBasedMap {
             return false;
         }
 
-        if (x >= 0 && y >= 0 && x < _width && y < _height) {
+        if (inMapBounds(x, y)) {
             return _parcels[x][y][0].getStructure() != null && _parcels[x][y][0].getStructure().isComplete() && _parcels[x][y][0].getStructure().isSolid();
         }
         return false;
@@ -567,5 +566,9 @@ public class WorldManager extends BaseManager implements TileBasedMap {
     @Override
     protected void onUpdate(int tick) {
 
+    }
+
+    public Collection<ConsumableModel> getConsumables() {
+        return _consumables;
     }
 }

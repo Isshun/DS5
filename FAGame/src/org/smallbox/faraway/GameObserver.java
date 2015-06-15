@@ -16,6 +16,6 @@ public interface GameObserver {
     default void onRemoveItem(ItemModel item){}
     default void onRemoveConsumable(ConsumableModel consumable){}
     default void onRemoveStructure(StructureModel structure){}
-    default void onRemoveResource(){}
+    default void onRemoveResource(ResourceModel resource){}
     default void onHourChange(int hour){}
 }

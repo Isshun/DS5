@@ -197,7 +197,7 @@ public class JobCraft extends JobModel {
             component.item.addQuantity(1);
         }
         if (_targetIngredient.getQuantity() <= 0) {
-            _targetIngredient.getArea().setConsumable(null);
+            _targetIngredient.getParcel().setConsumable(null);
         }
 
         // Components still missing

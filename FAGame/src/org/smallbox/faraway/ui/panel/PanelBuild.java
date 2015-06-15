@@ -1,7 +1,6 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.Color;
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.StringUtils;
@@ -233,7 +232,7 @@ public class PanelBuild extends BaseRightPanel {
 		if (_animRunning) {
 			int i = 0;
 			for (View icon: _iconsList) {
-				if (icon.isVisible() == false) {
+				if (!icon.isVisible()) {
 					icon.setVisible(true);
 					if (++i == 4) {
 						return;

@@ -10,6 +10,7 @@ import org.smallbox.faraway.model.character.CharacterRelation;
 import org.smallbox.faraway.model.character.CharacterRelation.Relation;
 import org.smallbox.faraway.model.item.ItemModel;
 import org.smallbox.faraway.model.item.ParcelModel;
+import org.smallbox.faraway.model.item.ResourceModel;
 import org.smallbox.faraway.model.item.StructureModel;
 import org.smallbox.faraway.model.room.RoomModel;
 import org.smallbox.faraway.model.room.RoomModel.RoomType;
@@ -240,19 +241,24 @@ public class RoomManager extends BaseManager implements GameObserver {
 
     @Override
     public void onAddItem(ItemModel item){
-        if (item.isLight() && item.getArea() != null && item.getArea().getRoom() != null) {
+        if (item.isLight() && item.getParcel() != null && item.getParcel().getRoom() != null) {
             int lightValue = 0;
-            for (ParcelModel area: item.getArea().getRoom().getParcels()) {
+            for (ParcelModel area: item.getParcel().getRoom().getParcels()) {
                 if (area != null && area.getItem() != null && area.getItem().isLight()) {
                     lightValue += area.getItem().getInfo().light;
                 }
             }
-            item.getArea().getRoom().setLight(lightValue);
+            item.getParcel().getRoom().setLight(lightValue);
         }
     }
 
     @Override
     public void onRemoveStructure(StructureModel structure){
+        refreshRooms();
+    }
+
+    @Override
+    public void onRemoveResource(ResourceModel resource){
         refreshRooms();
     }
 }

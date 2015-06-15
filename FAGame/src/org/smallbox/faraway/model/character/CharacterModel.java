@@ -27,9 +27,6 @@ public class CharacterModel extends Movable {
 	private double 						_bodyHeat = Constant.BODY_TEMPERATURE;
 	private double                      _coldAbsorb;
 	private double                      _coldResist;
-//	public boolean hasInInventory(ConsumableModel consumable) {
-//		return _inventory.contains(consumable);
-//	}
 
 	public void moveTo(JobModel job, int toX, int toY, OnMoveListener onMoveListener) {
 		_toX = toX;

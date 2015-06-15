@@ -1,7 +1,6 @@
 package org.smallbox.faraway.model;
 
 import org.smallbox.faraway.Application;
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.loader.WeatherLoader;
 import org.smallbox.faraway.model.item.ItemInfo;

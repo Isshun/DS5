@@ -9,6 +9,12 @@ public abstract class BaseManager implements GameObserver {
     public void update(int tick) {
         onUpdate(tick);
     }
+    public void create() {
+        onCreate();
+    }
 
     protected abstract void onUpdate(int tick);
+
+    protected void onCreate() {
+    }
 }

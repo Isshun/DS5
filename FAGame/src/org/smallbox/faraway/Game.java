@@ -87,10 +87,6 @@ public class Game {
         _lightRenderer = lightRenderer;
         _tick = 0;
 
-		Log.info("Game:\tdone");
-	}
-
-    public void	onCreate() {
         Log.info("Game: create");
 
         _managers = new ArrayList<>();
@@ -142,6 +138,12 @@ public class Game {
         _managers.add(_jobManager);
 
         _observers.addAll(_managers);
+
+		Log.info("Game:\tdone");
+	}
+
+    public void	onCreate() {
+        _managers.forEach(BaseManager::create);
     }
 
 	public void onUpdate(int tick) {

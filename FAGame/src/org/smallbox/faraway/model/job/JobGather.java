@@ -27,7 +27,7 @@ public class JobGather extends JobModel {
 
 	public static JobModel create(ResourceModel resource) {
 		// Resource is not gatherable
-		if (resource == null || !"gather".equals(resource.getInfo().actions.get(0).type)) {
+		if (resource == null || resource.getInfo().actions == null || resource.getInfo().actions.isEmpty() || !"gather".equals(resource.getInfo().actions.get(0).type)) {
 			return null;
 		}
 

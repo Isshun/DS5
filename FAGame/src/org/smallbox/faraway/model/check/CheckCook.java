@@ -26,7 +26,7 @@
 //        }
 //
 //        if (bestJob != null) {
-//            _character.setJob(bestJob);
+//            _character.setHaul(bestJob);
 //            return true;
 //        }
 //

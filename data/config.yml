@@ -1,6 +1,8 @@
 weather: regular
 time: midnight
 tickPerHour: 42
+inventoryMaxQuantity: 20
+storageMaxQuantity: 30
 
 render:
     floor:          true

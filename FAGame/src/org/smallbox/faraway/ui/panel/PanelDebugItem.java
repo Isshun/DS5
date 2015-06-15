@@ -1,9 +1,11 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.Color;
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.engine.ui.*;
+import org.smallbox.faraway.engine.ui.FrameLayout;
+import org.smallbox.faraway.engine.ui.TextView;
+import org.smallbox.faraway.engine.ui.View;
+import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
@@ -52,12 +54,7 @@ public class PanelDebugItem extends BasePanel {
 		FrameLayout layout = ViewFactory.getInstance().createFrameLayout(COL_WIDTH, ROW_HEIGHT);
 		layout.setBackgroundColor(new Color(255, 255, 255, 50));
 		layout.setPosition(SPACING + col * (COL_WIDTH + SPACING), SPACING + row * (ROW_HEIGHT + SPACING));
-		layout.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				initItem(item);
-			}
-		});
+		layout.setOnClickListener(view -> initItem(item));
 		
 		TextView lbName = ViewFactory.getInstance().createTextView();
 		lbName.setString(item.name);

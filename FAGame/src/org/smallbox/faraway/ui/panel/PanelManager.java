@@ -1,6 +1,5 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.Colors;

@@ -206,18 +206,18 @@ public class Application implements GameEventListener {
 
     public void newGame(String fileName) {
         _game = new Game(_data, _data.config, fileName, _particleRenderer, _lightRenderer);
-        _game.onCreate();
         _game.newGame(_loadListener);
+        _game.onCreate();
         _gameRenderer.init(_game);
         _gameInterface.onCreate(_game);
     }
 
     public void loadGame(String fileName) {
         _game = new Game(_data, _data.config, fileName, _particleRenderer, _lightRenderer);
-        _game.onCreate();
 
         _loadListener.onUpdate("Load save");
         _game.load(_loadListener);
+        _game.onCreate();
 
         _loadListener.onUpdate("Start game");
         _gameRenderer.init(_game);

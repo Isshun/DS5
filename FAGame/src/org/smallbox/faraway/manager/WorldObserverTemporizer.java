@@ -33,5 +33,5 @@ public class WorldObserverTemporizer implements GameObserver {
     public void onRemoveStructure(StructureModel structure){}
 
     @Override
-    public void onRemoveResource(){}
+    public void onRemoveResource(ResourceModel resource){}
 }

@@ -24,7 +24,7 @@ public class PanelConsole extends BasePanel {
 
 	private String[][] 		_data = new String[5][NB_LINES];
 	private TextView[] 		_texts;
-	private int 			_level = Log.LEVEL_DEBUG;
+	private int 			_level;
 
 	public PanelConsole() {
 		super(Mode.NONE, null, 0, Constant.WINDOW_HEIGHT - FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT, "data/ui/panels/console.yml");
@@ -52,7 +52,7 @@ public class PanelConsole extends BasePanel {
 			frameEntries.addView(_texts[i]);
 		}
 
-		select("frame_debug", Log.LEVEL_DEBUG);
+		select("frame_debug", Log.LEVEL_INFO);
 	}
 
 	private void select(String frameName, int level) {

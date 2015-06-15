@@ -14,7 +14,7 @@ import org.smallbox.faraway.ui.AreaModel;
  * Created by Alex on 13/06/2015.
  */
 public class GDXAreaRenderer extends AreaRenderer {
-    private Color COLOR = new Color(1, 1, 0, 0.2f);
+    private Color COLOR = new Color(1, 1, 0, 0.4f);
 
     @Override
     public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
@@ -24,8 +24,8 @@ public class GDXAreaRenderer extends AreaRenderer {
                 ((GDXRenderer)renderer).draw(COLOR,
                         parcel.getX() * Constant.TILE_WIDTH + effect.getViewport().getPosX(),
                         parcel.getY() * Constant.TILE_HEIGHT + effect.getViewport().getPosY(),
-                        8,
-                        8);
+                        32,
+                        32);
             }
         }
     }

@@ -30,6 +30,7 @@ public class GDXApplication extends ApplicationAdapter {
     private int             _nextUpdate;
     private int             _nextRefresh;
     private int             _nextLongUpdate;
+    private long            _startTime = -1;
 
     @Override
     public void create () {
@@ -58,7 +59,7 @@ public class GDXApplication extends ApplicationAdapter {
         }
 
         _batch = new SpriteBatch();
-        _renderer = new GDXRenderer(_batch, timer, fonts);
+        _renderer = new GDXRenderer(_batch, fonts);
         _application = new Application(_renderer);
 
         // Load resources
@@ -99,7 +100,10 @@ public class GDXApplication extends ApplicationAdapter {
 
         Game game = _application.getGame();
 
-        long elapsed = _renderer.getTimer().getElapsedTime();
+        if (_startTime == -1) {
+            _startTime = System.currentTimeMillis();
+        }
+        long elapsed = System.currentTimeMillis() - _startTime;
 
         // Sleep
         if (elapsed < _nextDraw) {

@@ -20,7 +20,6 @@ public interface GFXRenderer {
     void refresh();
     void setFullScreen(boolean isFullscreen);
     void drawLight();
-    GameTimer getTimer();
     int getWidth();
     int getHeight();
 

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.model.job;
 
 import org.smallbox.faraway.manager.Utils;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ConsumableModel;
 import org.smallbox.faraway.model.item.ParcelModel;
 import org.smallbox.faraway.ui.AreaModel;
@@ -19,7 +20,7 @@ public class StorageModel extends AreaModel {
         int bestDistance = Integer.MAX_VALUE;
         ParcelModel bestParcel = null;
         for (ParcelModel parcel: _parcels) {
-            if (parcel.getConsumable() == null || parcel.getConsumable().getInfo() == consumable.getInfo()) {
+            if (parcel.getConsumable() == null || (parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() + consumable.getQuantity() <= GameData.config.storageMaxQuantity)) {
                 int distance = Utils.getDistance(parcel, x, y);
                 if (distance < bestDistance) {
                     bestDistance = distance;

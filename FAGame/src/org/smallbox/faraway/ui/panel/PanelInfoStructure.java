@@ -26,7 +26,7 @@ public class PanelInfoStructure extends BaseInfoRightPanel {
     }
 
     public void select(StructureModel structure) {
-        super.select(structure.getArea());
+        super.select(structure.getParcel());
 
         _structure = structure;
 

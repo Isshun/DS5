@@ -70,7 +70,7 @@ public class TemperatureManager extends BaseManager implements GameObserver {
                     int totalColdTarget = 0;
 
                     for (ItemModel item : _items) {
-                        if (item.getArea() != null && item.getArea().getRoom() == room) {
+                        if (item.getParcel() != null && item.getParcel().getRoom() == room) {
                             if (item.getInfo().effects.heatPotency != 0) {
                                 totalHeatTarget += item.getTargetTemperature() * item.getInfo().effects.heatPotency;
                                 temperatureInfo.heatPotency += item.getInfo().effects.heatPotency;

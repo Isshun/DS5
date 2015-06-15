@@ -12,10 +12,10 @@ import org.smallbox.faraway.model.item.ResourceModel;
 import org.smallbox.faraway.model.item.StructureModel;
 import org.smallbox.faraway.model.job.JobDump;
 import org.smallbox.faraway.model.job.JobModel;
-import org.smallbox.faraway.model.job.JobTake;
 import org.smallbox.faraway.model.room.RoomModel.RoomType;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.PanelPlan.Planning;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class UserInteraction {
 
@@ -138,17 +138,18 @@ public class UserInteraction {
 	}
 
 	public void planPick(int startX, int startY, int toX, int toY) {
-		for (int x = startX; x <= toX; x++) {
-			for (int y = startY; y <= toY; y++) {
-				ItemModel item = Game.getWorldManager().getItem(x, y);
-				if (item != null) {
-					JobModel job = JobTake.create(item);
-					if (job != null) {
-						JobManager.getInstance().addJob(job);
-					}
-				}
-			}
-		}
+//		for (int x = startX; x <= toX; x++) {
+//			for (int y = startY; y <= toY; y++) {
+//				ItemModel item = Game.getWorldManager().getItem(x, y);
+//				if (item != null) {
+//					JobModel job = JobTake.create(item);
+//					if (job != null) {
+//						JobManager.getInstance().addJob(job);
+//					}
+//				}
+//			}
+//		}
+		throw new NotImplementedException();
 	}
 
 	public void planDump(int startX, int startY, int toX, int toY) {

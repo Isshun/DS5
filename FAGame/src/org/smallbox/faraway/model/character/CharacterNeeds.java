@@ -216,8 +216,8 @@ public class CharacterNeeds {
 	}
 
 //	public void	sleep(ItemBase item) {
-//        if (_character.getJob() != null) {
-//            JobManager.getInstance().removeJob(_character.getJob());
+//        if (_character.getHaul() != null) {
+//            JobManager.getInstance().removeJob(_character.getHaul());
 //        }
 //
 //		_sleepItem = item;
