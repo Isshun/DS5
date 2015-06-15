@@ -68,6 +68,7 @@ public class GameSerializer {
     }
 
     public static void save(String filePath) {
+        Log.info("Save game: " + filePath);
         System.gc();
 
         // Construct save object
@@ -87,11 +88,18 @@ public class GameSerializer {
             output.write(xml);
             output.close();
             fs.close();
+
+            System.gc();
+            Log.info("Save game: " + filePath + " done");
+
+            return;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Log.error("Save game: " + filePath + " failed");
     }
 
 }

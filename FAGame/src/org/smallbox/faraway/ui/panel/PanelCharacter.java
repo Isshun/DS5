@@ -3,8 +3,8 @@ package org.smallbox.faraway.ui.panel;
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Settings;
 import org.smallbox.faraway.engine.util.StringUtils;
+import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.BuffModel;
 import org.smallbox.faraway.model.CharacterBuffModel;
 import org.smallbox.faraway.model.ProfessionModel;
@@ -13,7 +13,6 @@ import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.character.CharacterModel.Gender;
 import org.smallbox.faraway.model.character.CharacterNeeds;
 import org.smallbox.faraway.model.character.CharacterRelation;
-import org.smallbox.faraway.model.character.CharacterStatus;
 import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
@@ -27,7 +26,6 @@ public class PanelCharacter extends BaseRightPanel {
 
     private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "unused", "Work"};
 
-    private static final int LINE_HEIGHT = 28;
     private static final int NB_GAUGE = 7;
     private static final int NB_MAX_RELATION = 18;
     private static final int NB_INVENTORY_PER_LINE = 10;
@@ -43,20 +41,14 @@ public class PanelCharacter extends BaseRightPanel {
     private TextView 			_lbName;
     private TextView 			_lbProfession;
     private ColorView 			_cursor;
-    private ColorView[] 		_shapes = new ColorView[NB_GAUGE];
+    private ImageView[] 		_shapes = new ImageView[NB_GAUGE];
     private TextView[] 			_values = new TextView[NB_GAUGE];
     private TextView 			_lbJob;
-    private ImageView[] 		_lbInventoryEntries;
     private TextView[] 			_lbBuffs = new TextView[NB_MAX_BUFFS];
-    private FrameLayout 		_layoutFamily;
     private TextView[] 			_familyEntries;
-    private FrameLayout 		_layoutProfession;
     private TextView[] 			_familyRelationEntries;
     private int 				_nbRelation;
     private TextView 			_lbOld;
-    private FrameLayout 		_layoutDebug;
-    private TextView[] 			_debugEntries;
-    private FrameLayout 		_layoutInventory;
 
     private int 				_animRemain;
     private TextView	 		_lbGender;
@@ -71,7 +63,6 @@ public class PanelCharacter extends BaseRightPanel {
     private TextView 			_lbEnlisted;
     private String 				_lastBirthName;
     private TextView 			_lbBirthName;
-    private CharacterStatus 	_lastStatus;
     private TextView 			_lbInventory;
 
     public PanelCharacter(Mode mode, GameEventListener.Key shortcut) {
@@ -86,10 +77,10 @@ public class PanelCharacter extends BaseRightPanel {
         findById("bt_inventory").setOnClickListener(view -> switchView("frame_inventory"));
         findById("bt_health").setOnClickListener(view -> switchView("frame_health"));
 
-        createNeedsInfo(0, 0);
-        createBasicInformation(0, 0);
-        createRelationShip(0, 0);
-        createInventoryInfo(0, 0);
+        createNeedsInfo();
+        createBasicInformation();
+        createRelationShip();
+        createInventoryInfo();
 
         findById("frame_monitoring").setVisible(true);
         findById("frame_personal_report").setVisible(false);
@@ -147,10 +138,6 @@ public class PanelCharacter extends BaseRightPanel {
         }
     }
 
-    private void movePriority(CharacterModel.TalentEntry priority, int index) {
-
-    }
-
     @Override
     protected void onCreate(ViewFactory factory) {
         _viewFactory = factory;
@@ -165,13 +152,9 @@ public class PanelCharacter extends BaseRightPanel {
 //        _lbTip.setBackgroundColor(new Color(255, 255, 255, 100));
 //        _lbTip.setVisible(false);
 //        addView(_lbTip);
-
-        if (Settings.getInstance().isDebug()) {
-            //createDebug(20, 850);
-        }
     }
 
-    private void createBasicInformation(int x, int y) {
+    private void createBasicInformation() {
         _lbOld = (TextView) findById("lb_info_old");
 
         _lbGender = (TextView) findById("lb_info_gender");
@@ -184,89 +167,29 @@ public class PanelCharacter extends BaseRightPanel {
         _lbBirthName = (TextView) findById("lb_info_birthname");
     }
 
-    private void createDebug(int x, int y) {
-        _layoutDebug = ViewFactory.getInstance().createFrameLayout(200, 200);
-        _layoutDebug.setVisible(true);
-        _layoutDebug.setPosition(x, y);
-        addView(_layoutDebug);
-
-        TextView lbDebug = ViewFactory.getInstance().createTextView();
-        lbDebug.setCharacterSize(FONT_SIZE_TITLE);
-        lbDebug.setPosition(0, 0);
-        lbDebug.setString("Debug");
-        _layoutDebug.addView(lbDebug);
-
-        _debugEntries = new TextView[NB_MAX_RELATION];
-        for (int i = 0; i < NB_MAX_RELATION; i++) {
-            _debugEntries[i] = ViewFactory.getInstance().createTextView(400, 22);
-            _debugEntries[i].setCharacterSize(FONT_SIZE);
-            _debugEntries[i].setPosition(0, 32 + 22 * i);
-            _layoutDebug.addView(_debugEntries[i]);
-
-//			_debugEntriesValue[i] = new TextView(new Vector2f(100, 32));
-//			_debugEntriesValue[i].setCharacterSize(FONT_SIZE_SMALL);
-//			_debugEntriesValue[i].setPosition(280, 32 + 22 * i);
-//			_layoutDebug.addView(_debugEntriesValue[i]);
-        }
-    }
-
-    private void createInventoryInfo(int x, int y) {
+    private void createInventoryInfo() {
         _lbInventory = (TextView) findById("lb_inventory");
 
         FrameLayout frameInventoryEntries = (FrameLayout)findById("frame_inventory_entries");
         frameInventoryEntries.clearAllViews();
-        _lbInventoryEntries = new ImageView[Constant.CHARACTER_INVENTORY_SPACE];
+        ImageView[] lbInventoryEntries = new ImageView[Constant.CHARACTER_INVENTORY_SPACE];
         for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
             final int x2 = i % NB_INVENTORY_PER_LINE;
             final int y2 = i / NB_INVENTORY_PER_LINE;
-            _lbInventoryEntries[i] = ViewFactory.getInstance().createImageView();
-            _lbInventoryEntries[i].setPosition(x2 * 28, 32 + y2 * 28);
-//            _lbInventoryEntries[i].setOnFocusListener(new OnFocusListener() {
-//                @Override
-//                public void onExit(View view) {
-//                    _lbTip.setVisible(false);
-//                }
-//
-//                @Override
-//                public void onEnter(View view) {
-//                    _lbTip.setVisible(true);
-//                    _lbTip.setPosition(x2 * 28 + 16, 32 + y2 * 28 + 16);
-//                }
-//            });
-            frameInventoryEntries.addView(_lbInventoryEntries[i]);
+            lbInventoryEntries[i] = ViewFactory.getInstance().createImageView();
+            lbInventoryEntries[i].setPosition(x2 * 28, 32 + y2 * 28);
+            frameInventoryEntries.addView(lbInventoryEntries[i]);
         }
     }
 
-    private void createProfessionInfo(int x, int y) {
-        _layoutProfession = ViewFactory.getInstance().createFrameLayout(FRAME_WIDTH, 80);
-        _layoutProfession.setPosition(x, y);
-        addView(_layoutProfession);
-
-        TextView lbTitle = ViewFactory.getInstance().createTextView();
-        lbTitle.setCharacterSize(FONT_SIZE_TITLE);
-        lbTitle.setPosition(Constant.UI_PADDING_H, Constant.UI_PADDING_V);
-        lbTitle.setString(Strings.LB_PROFESSION);
-        _layoutProfession.addView(lbTitle);
-
-        _lbProfession = ViewFactory.getInstance().createTextView();
-        _lbProfession.setCharacterSize(FONT_SIZE);
-        _lbProfession.setString(Strings.LB_PROFESSION);
-        _lbProfession.setPosition(Constant.UI_PADDING_H * 2, Constant.UI_PADDING_V + 32);
-        _layoutProfession.addView(_lbProfession);
-    }
-
-    private void createNeedsInfo(int x, int y) {
+    private void createNeedsInfo() {
         for (int i = 0; i < NB_GAUGE; i++) {
-            addGauge(x + 200 * (i % 2),
-                    y + 50 * (i / 2) + (FONT_SIZE_TITLE + 24),
-                    160,
-                    12,
-                    i);
+            addGauge(i);
         }
     }
 
-    private void createRelationShip(int x, int y) {
-        _layoutFamily = (FrameLayout) findById("frame_relationship");
+    private void createRelationShip() {
+        FrameLayout layoutFamily = (FrameLayout) findById("frame_relationship");
 
         _familyEntries = new TextView[NB_MAX_RELATION];
         _familyRelationEntries = new TextView[NB_MAX_RELATION];
@@ -274,12 +197,12 @@ public class PanelCharacter extends BaseRightPanel {
             _familyEntries[i] = ViewFactory.getInstance().createTextView(400, 22);
             _familyEntries[i].setCharacterSize(FONT_SIZE);
             _familyEntries[i].setPosition(0, 32 + 22 * i);
-            _layoutFamily.addView(_familyEntries[i]);
+            layoutFamily.addView(_familyEntries[i]);
 
             _familyRelationEntries[i] = ViewFactory.getInstance().createTextView(100, 32);
             _familyRelationEntries[i].setCharacterSize(FONT_SIZE);
             _familyRelationEntries[i].setPosition(280, 32 + 22 * i);
-            _layoutFamily.addView(_familyRelationEntries[i]);
+            layoutFamily.addView(_familyRelationEntries[i]);
         }
     }
 
@@ -324,79 +247,48 @@ public class PanelCharacter extends BaseRightPanel {
 
     public CharacterModel getCharacter() { return _character; }
 
-    //	void	addMessage(int posX, int posY, int width, int height, CharacterNeeds.Message value, RenderStates _renderEffect) {
-    //	  String msg = null;
-    //
-    //	  switch (value) {
-    //	  case MSG_HUNGRY:
-    //		msg = "MSG_HUNGRY";
-    //		break;
-    //	  case MSG_STARVE:
-    //		msg = "MSG_STARVE";
-    //		break;
-    //	  case MSG_NEED_OXYGEN:
-    //		msg = "MSG_NEED_OXYGEN";
-    //		break;
-    //	  case MSG_SLEEP_ON_FLOOR:
-    //		msg = "SLEEP_ON_FLOOR";
-    //		break;
-    //	  case MSG_SLEEP_ON_CHAIR:
-    //		msg = "SLEEP_ON_CHAIR";
-    //		break;
-    //	  case MSG_NO_WINDOW:
-    //		msg = "MSG_NO_WINDOW";
-    //		break;
-    //	  case MSG_BLOCKED:
-    //		msg = "MSG_BLOCKED";
-    //		break;
-    //	  default:
-    //		return;
-    //	  }
-    //
-    //	  Text text = new Text();
-    //	  text.setString(msg);
-    //	  text.setFont(_font);
-    //	  text.setCharacterSize(MENU_CHARACTER_MESSAGE_FONT_SIZE);
-    //	  text.setStyle(Text.REGULAR);
-    //	  text.setPosition(posX, posY);
-    //	  _app.draw(text, _renderEffect);
-    //	}
-
-    void  addGauge(int posX, int posY, int width, int height, int index) {
-        _shapes[index] = ViewFactory.getInstance().createColorView(width, height);
-        // TODO
-        //_shapes[index].getData().setTexture(SpriteManager.getInstance().getTexture());
-        _shapes[index].setPosition(posX, posY + 42 + FONT_SIZE_TITLE + 2);
-
+    void  addGauge(int index) {
         switch (index) {
-            case 0: _values[index] = (TextView)findById("lb_status_food"); break;
-            case 1: _values[index] = (TextView)findById("lb_status_o2"); break;
-            case 2: _values[index] = (TextView)findById("lb_status_happiness"); break;
-            case 3: _values[index] = (TextView)findById("lb_status_power"); break;
+            case 0:
+                _values[index] = (TextView)findById("lb_status_food");
+                _shapes[index] = (ImageView)findById("img_status_food");
+                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
+                break;
+            case 1:
+                _values[index] = (TextView)findById("lb_status_o2");
+                _shapes[index] = (ImageView)findById("img_status_o2");
+                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
+                break;
+            case 2:
+                _values[index] = (TextView)findById("lb_status_happiness");
+                _shapes[index] = (ImageView)findById("img_status_happiness");
+                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
+                break;
+            case 3:
+                _values[index] = (TextView)findById("lb_status_power");
+                _shapes[index] = (ImageView)findById("img_status_power");
+                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
+                break;
             case 4:
                 _values[index] = (TextView)findById("lb_status_relation");
                 _values[index].setOnFocusListener(null);
                 _values[index].setOnClickListener(view -> switchView("frame_personal_report"));
+                _shapes[index] = (ImageView)findById("img_status_relation");
+                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
                 break;
-            case 5: _values[index] = (TextView)findById("lb_status_security"); break;
+            case 5:
+                _values[index] = (TextView)findById("lb_status_security");
+                _shapes[index] = (ImageView)findById("img_status_security");
+                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
+                break;
             case 6:
                 _values[index] = (TextView)findById("lb_status_health");
                 _values[index].setOnFocusListener(null);
                 _values[index].setOnClickListener(view -> switchView("frame_health"));
+                _shapes[index] = (ImageView)findById("img_status_health");
+                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
                 break;
         }
-
-        //	    RectangleShape shapeBg = new RectangleShape();
-        //	    shapeBg.setSize(new Vector2f(width, height));
-        //	    shapeBg.setFillColor(new Color(100, 200, 0));
-        //	    shapeBg.setPosition(posX, posY + MENU_CHARACTER_FONT_SIZE + 8);
-        //	    _app.draw(shapeBg, _renderEffect);
-        //
-        //	    RectangleShape shape = new RectangleShape();
-        //	    shape.setSize(new Vector2f(width * value / 100, height));
-        //	    shape.setFillColor(new Color(200, 255, 0));
-        //	    shape.setPosition(posX, posY + MENU_CHARACTER_FONT_SIZE + 8);
-        //	    _app.draw(shape, _renderEffect);
     }
 
     @Override
@@ -435,7 +327,6 @@ public class PanelCharacter extends BaseRightPanel {
             refreshJob(_character.getJob());
             refreshNeeds();
             refreshInventory();
-            refreshDebug();
 
             // Relations
             if (update % 20 == 0 || _nbRelation != _character.getNbRelations()) {
@@ -452,7 +343,7 @@ public class PanelCharacter extends BaseRightPanel {
     private void refreshLastReports() {
         // TODO: heavy
         List<BuffModel.BuffLevelModel> buffs = _character.getBuffs().stream()
-                .filter(characterBuff -> characterBuff.isActive())
+                .filter(CharacterBuffModel::isActive)
                 .map(CharacterBuffModel::getActiveLevel)
                 .collect(Collectors.toList());
 
@@ -462,8 +353,9 @@ public class PanelCharacter extends BaseRightPanel {
                         buffs.get(i).label,
                         (buffs.get(i).effects.mood > 0 ? "+" : "") + buffs.get(i).effects.mood, NB_COLUMNS));
                 _lbBuffs[i].setColor(buffs.get(i).effects.mood < 0 ? COLOR_2 : COLOR_0);
+                _lbBuffs[i].setVisible(true);
             } else {
-                _lbBuffs[i].setString("hello");
+                _lbBuffs[i].setVisible(false);
             }
         }
     }
@@ -537,16 +429,6 @@ public class PanelCharacter extends BaseRightPanel {
         }
     }
 
-    private void refreshDebug() {
-        if (Settings.getInstance().isDebug() && _debugEntries != null) {
-            _debugEntries[0].setString(StringUtils.getDashedString("Old", String.valueOf(_character.getOld()), NB_COLUMNS));
-            _debugEntries[1].setString(StringUtils.getDashedString("NextChild", String.valueOf(_character.getNextChildAtOld()), NB_COLUMNS));
-            _debugEntries[2].setString(StringUtils.getDashedString("IsGay", String.valueOf(_character.isGay()), NB_COLUMNS));
-            _debugEntries[3].setString(StringUtils.getDashedString("Gender", String.valueOf(_character.getGender()), NB_COLUMNS));
-        }
-
-    }
-
     private void refreshInventory() {
         _lbInventory.setString(StringUtils.getDashedString(Strings.LB_INVENTORY,
             _character.getInventorySpace() - _character.getInventoryLeftSpace() + "/" + _character.getInventorySpace(), 29));
@@ -588,12 +470,16 @@ public class PanelCharacter extends BaseRightPanel {
             Color color = COLOR_0;
             if (value < 10) { level = 3; color = COLOR_2; }
             else if (value < 50) { level = 2; color = COLOR_1; }
-            _shapes[i].setSize((int)size, 12);
-            // TODO
-//			_shapes[i].setTextureRect(new IntRect(0, level * 16, (int)size, 12));
 
-            _values[i].setString(StringUtils.getDashedString(texts[i], String.valueOf(value), NB_COLUMNS_NEEDS));
-            _values[i].setColor(color);
+            if (_shapes[i] != null) {
+                _shapes[i].setSize((int) size, 12);
+                _shapes[i].setTextureRect(0, level * 16, (int) size, 12);
+            }
+
+            if (_values[i] != null) {
+                _values[i].setString(StringUtils.getDashedString(texts[i], String.valueOf(value), NB_COLUMNS_NEEDS));
+                _values[i].setColor(color);
+            }
         }
     }
 
@@ -620,11 +506,11 @@ public class PanelCharacter extends BaseRightPanel {
             }
         }
 
-        if (_character != null) {
-            for (int i = 0; i < _animGauge && i < NB_GAUGE; i++) {
-                _values[i].setVisible(true);
-                renderer.draw(_shapes[i], this._effect);
-            }
-        }
+//        if (_character != null) {
+//            for (int i = 0; i < _animGauge && i < NB_GAUGE; i++) {
+//                _values[i].setVisible(true);
+//                renderer.draw(_shapes[i], this._effect);
+//            }
+//        }
     }
 }

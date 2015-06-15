@@ -2,25 +2,28 @@
 package org.smallbox.faraway.manager;
 
 import org.smallbox.faraway.Game;
-import org.smallbox.faraway.WorldObserver;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
+import org.smallbox.faraway.GameObserver;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.character.CharacterRelation;
 import org.smallbox.faraway.model.character.CharacterRelation.Relation;
-import org.smallbox.faraway.model.item.*;
-import org.smallbox.faraway.model.room.GardenRoom;
-import org.smallbox.faraway.model.room.QuarterRoom;
+import org.smallbox.faraway.model.item.ItemModel;
+import org.smallbox.faraway.model.item.ParcelModel;
+import org.smallbox.faraway.model.item.StructureModel;
 import org.smallbox.faraway.model.room.RoomModel;
 import org.smallbox.faraway.model.room.RoomModel.RoomType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class RoomManager implements WorldObserver {
+public class RoomManager extends BaseManager implements GameObserver {
+    private static final int    UPDATE_INTERVAL = 10;
+
     private RoomModel[][] 		_rooms;
     private List<RoomModel>		_roomList;
-    private RoomModel           _currentDiffuseRoom;
     private int                 _width;
     private int                 _height;
     private ParcelModel[][][]   _areas;
@@ -48,150 +51,6 @@ public class RoomManager implements WorldObserver {
         }
     }
 
-    public RoomModel putRoom(int startX, int startY, int fromX, int fromY, int toX, int toY, RoomType type, CharacterModel owner) {
-        Log.info("RoomManager: put room from " + fromX + "x" + fromY + " to " + toX + "x" + toY);
-
-        if (type == null) {
-            Log.error("RoomManager: cannot put new room with NULL type");
-            return null;
-        }
-
-        RoomModel existingRoom = null;
-        RoomModel tempRoom = null;
-        int existingRoomPosX = 0;
-        int existingRoomPosY = 0;
-
-        // Check if room already exists on start area
-        if (startX > 0 && startY > 0 && startX < Constant.WORLD_WIDTH && startY < Constant.WORLD_HEIGHT && _rooms[startX][startY] != null) {
-            existingRoom = _rooms[startX][startY];
-            existingRoomPosX = startX;
-            existingRoomPosY = startY;
-        }
-
-        // Check on others areas
-        else {
-            for (int x = fromX - 1; x <= toX + 1; x++) {
-                for (int y = fromY - 1; y <= toY + 1; y++) {
-                    if ((x >= fromX && x <= toX || y >= fromY && y <= toY) && x > 0 && y > 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT && _rooms[x][y] != null && _rooms[x][y].getType() == type) {
-                        existingRoom = _rooms[x][y];
-//						tempRoom = existingRoom;
-                        existingRoomPosX = x;
-                        existingRoomPosY = y;
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Create new room if not exist
-        if (tempRoom == null) {
-            tempRoom = createRoom(type, owner);
-        }
-
-        // Set room for each area
-        for (int x = fromX; x <= toX; x++) {
-            for (int y = fromY; y <= toY; y++) {
-                if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
-                    StructureModel struct = ServiceManager.getWorldMap().getStructure(x, y);
-                    if (struct == null || struct.roomCanBeSet()) {
-                        if (_rooms[x][y] == null || _rooms[x][y].getType() != tempRoom.getType()) {
-                            ParcelModel area = ServiceManager.getWorldMap().getParcel(x, y);
-                            area.setRoom(tempRoom);
-                            tempRoom.addArea(area);
-                            _rooms[x][y] = tempRoom;
-                            MainRenderer.getInstance().invalidate(x, y);
-                        }
-                    }
-                }
-            }
-        }
-
-        // If already existing room
-        if (existingRoom != null) {
-            _currentDiffuseRoom = existingRoom;
-            diffuseRoom(tempRoom, existingRoomPosX, existingRoomPosY);
-        }
-
-        int leftRoom = Integer.MAX_VALUE;
-        while (tempRoom.getParcels().size() != 0 && tempRoom.getParcels().size() < leftRoom) {
-            leftRoom = tempRoom.getParcels().size();
-            RoomModel newRoom = createRoom(tempRoom.getType(), owner);
-            _roomList.add(newRoom);
-            ParcelModel area = tempRoom.getParcels().get(0);
-            replaceArea(newRoom, tempRoom, area.getX(), area.getY());
-            _currentDiffuseRoom = newRoom;
-            diffuseRoom(tempRoom, area.getX(), area.getY());
-            newRoom.refreshPosition();
-        }
-
-        if (type == RoomType.GARDEN) {
-            ResourceManager.getInstance().refreshWater();
-        }
-
-        // Refresh start position
-        tempRoom.refreshPosition();
-
-        return tempRoom;
-    }
-
-    private RoomModel createRoom(RoomType type, CharacterModel owner) {
-        RoomModel room = null;
-
-        if (type == RoomType.GARDEN) {
-            room = new GardenRoom();
-        } else if (type == RoomType.QUARTER) {
-            room = new QuarterRoom();
-        } else {
-            room = new RoomModel(type);
-        }
-        room.setOwner(owner);
-        room.refreshPosition();
-
-        return room;
-    }
-
-    private void diffuseRoom(RoomModel tempRoom, int x, int y) {
-        RoomModel neighboorRoom = getRoom(x+1, y);
-
-        // If neighboorRoom IS NOT tempRoom AND IS NOT _currentDiffuseRoom, it's an old existing room
-        // so we replace all room previously set to _currentDiffuseRoom by this new room
-        if (neighboorRoom != null && neighboorRoom != tempRoom && neighboorRoom != _currentDiffuseRoom) {
-            List<ParcelModel> areasCopy = new ArrayList<ParcelModel>(_currentDiffuseRoom.getParcels());
-            for (ParcelModel area: areasCopy) {
-                replaceArea(neighboorRoom, _currentDiffuseRoom, area.getX(), area.getY());
-            }
-            _currentDiffuseRoom = neighboorRoom;
-        }
-
-        // If neighboorRoom IS NOT _currentDiffuseRoom, transform to _currentDiffuseRoom
-        if (neighboorRoom != null && neighboorRoom != _currentDiffuseRoom) {
-            replaceArea(_currentDiffuseRoom, neighboorRoom, x+1, y);
-            diffuseRoom(tempRoom, x+1, y);
-        }
-        neighboorRoom = getRoom(x-1, y);
-        if (neighboorRoom != null && neighboorRoom != _currentDiffuseRoom) {
-            replaceArea(_currentDiffuseRoom, neighboorRoom, x-1, y);
-            diffuseRoom(tempRoom, x-1, y);
-        }
-        neighboorRoom = getRoom(x, y+1);
-        if (neighboorRoom != null && neighboorRoom != _currentDiffuseRoom) {
-            replaceArea(_currentDiffuseRoom, neighboorRoom, x, y+1);
-            diffuseRoom(tempRoom, x, y+1);
-        }
-        neighboorRoom = getRoom(x, y-1);
-        if (neighboorRoom != null && neighboorRoom != _currentDiffuseRoom) {
-            replaceArea(_currentDiffuseRoom, neighboorRoom, x, y-1);
-            diffuseRoom(tempRoom, x, y-1);
-        }
-    }
-
-    private void replaceArea(RoomModel room, RoomModel neighborRoom, int x, int y) {
-        ParcelModel area = ServiceManager.getWorldMap().getParcel(x, y);
-        room.addArea(area);
-        neighborRoom.removeArea(area);
-        _rooms[x][y] = room;
-    }
-
     public RoomModel getRoom(int x, int y) {
         for (RoomModel room: _roomList) {
             if (room.containsParcel(x, y)) {
@@ -201,90 +60,7 @@ public class RoomManager implements WorldObserver {
         return null;
     }
 
-    public RoomModel getNearFreeStorage(int fromX, int fromY) {
-        for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
-            for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
-                if (hasRoomTypeAtPos(RoomType.STORAGE, fromX + i, fromY + j)) return _rooms[fromX + i][fromY + j];
-                if (hasRoomTypeAtPos(RoomType.STORAGE, fromX - i, fromY + j)) return _rooms[fromX - i][fromY + j];
-                if (hasRoomTypeAtPos(RoomType.STORAGE, fromX + i, fromY - j)) return _rooms[fromX + i][fromY - j];
-                if (hasRoomTypeAtPos(RoomType.STORAGE, fromX - i, fromY - j)) return _rooms[fromX - i][fromY - j];
-            }
-        }
-        return null;
-    }
-
-    private boolean hasRoomTypeAtPos(RoomType storage, int x, int y) {
-        if (x < 0 || x >= Constant.WORLD_WIDTH || y < 0 || y >= Constant.WORLD_HEIGHT) {
-            return false;
-        }
-        if (_rooms[x][y] == null || _rooms[x][y].getType() != storage) {
-            return false;
-        }
-        return true;
-    }
-
-    public void removeRoom(int fromX, int fromY, int toX, int toY) {
-        Set<RoomModel> updatedRooms = new HashSet<RoomModel>();
-        boolean hasGarden = false;
-
-        // Set room for each area
-        for (int x = fromX; x <= toX; x++) {
-            for (int y = fromY; y <= toY; y++) {
-                if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
-                    if (_rooms[x][y] != null) {
-                        updatedRooms.add(_rooms[x][y]);
-
-                        // Remove area from room
-                        _rooms[x][y].removeArea(x, y);
-
-                        // Flag garden
-                        if (_rooms[x][y].isType(RoomType.GARDEN)) {
-                            hasGarden = true;
-                        }
-                    }
-                    _rooms[x][y] = null;
-                    MainRenderer.getInstance().invalidate(x, y);
-                }
-            }
-        }
-
-        // Refresh start position
-        for (RoomModel room: _roomList) {
-            room.refreshPosition();
-        }
-
-        // Remove non existing room
-        List<RoomModel> toRemove = new ArrayList<RoomModel>();
-        for (RoomModel room: _roomList) {
-            if (room.getParcels().size() == 0) {
-                toRemove.add(room);
-            }
-        }
-        _roomList.removeAll(toRemove);
-
-        // Refresh water if garden was removed
-        if (hasGarden) {
-            ResourceManager.getInstance().refreshWater();
-        }
-    }
-
-    public RoomModel[][] getRooms() { return _rooms; }
     public List<RoomModel> getRoomList() { return _roomList; }
-
-    public RoomModel getNearRoom(int x, int y, RoomType type) {
-        int bestDistance = Integer.MAX_VALUE;
-        RoomModel bestRoom = null;
-        for (RoomModel room: _roomList) {
-            if (room.isType(type)) {
-                int distance = Math.abs(room.getX() - x) + Math.abs(room.getY() - y);
-                if (distance < bestDistance) {
-                    bestDistance = distance;
-                    bestRoom = room;
-                }
-            }
-        }
-        return bestRoom;
-    }
 
     public RoomModel take(CharacterModel character, RoomType type) {
         if (character.getQuarter() != null) {
@@ -334,17 +110,9 @@ public class RoomManager implements WorldObserver {
         return null;
     }
 
-    public void removeFromRooms(CharacterModel character) {
-        for (RoomModel room: _roomList) {
-            if (room.getOccupants().contains(character)) {
-                room.removeOccupant(character);
-            }
-        }
-    }
-
-    public void update() {
-        for (RoomModel room: _roomList) {
-            room.update();
+    protected void onUpdate(int tick) {
+        if (tick % UPDATE_INTERVAL == 0) {
+            _roomList.forEach(RoomModel::update);
         }
     }
 
@@ -487,5 +255,4 @@ public class RoomManager implements WorldObserver {
     public void onRemoveStructure(StructureModel structure){
         refreshRooms();
     }
-
 }

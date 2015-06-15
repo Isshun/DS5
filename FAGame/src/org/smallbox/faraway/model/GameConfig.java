@@ -34,6 +34,10 @@ public class GameConfig {
         public boolean          resource;
         public boolean          item;
         public boolean          consumable;
+        public boolean          temperature;
+        public boolean          job;
+        public boolean          area;
+        public boolean          debug;
     }
 
     public static class GameConfigManager {

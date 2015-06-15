@@ -5,6 +5,7 @@ import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
@@ -38,7 +39,7 @@ public class PanelDebugItem extends BasePanel {
 		_grid.setPosition(0, 0);
 		
 		int i = 0;
-		List<ItemInfo> items = Game.getData().items;
+		List<ItemInfo> items = GameData.getData().items;
 		for (ItemInfo item: items) {
 			_grid.addView(createGridItem(item, i % 10, i / 10));
 			i++;

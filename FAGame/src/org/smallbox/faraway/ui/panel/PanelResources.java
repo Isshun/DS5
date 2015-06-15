@@ -19,7 +19,7 @@ public class PanelResources extends BasePanel {
     private static final int FRAME_HEIGHT = 200;
 
     public PanelResources() {
-        super(UserInterface.Mode.NONE, null, 0, 32, FRAME_WIDTH, FRAME_HEIGHT, null);
+        super(UserInterface.Mode.NONE, null, 0, 64, FRAME_WIDTH, FRAME_HEIGHT, null);
         setBackgroundColor(new Color(55, 55, 55));
         setAlwaysVisible(true);
     }

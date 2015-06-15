@@ -19,17 +19,17 @@ import org.smallbox.faraway.model.GameData;
 import java.io.IOException;
 
 public class GDXApplication extends ApplicationAdapter {
-    private SpriteBatch batch;
-    private GDXRenderer renderer;
-    private Application application;
-    private int renderTime;
-    private int update;
-    private int refresh;
-    private int frame;
-    private int nextDraw;
-    private int nextUpdate;
-    private int nextRefresh;
-    private int nextLongUpdate;
+    private SpriteBatch     _batch;
+    private GDXRenderer     _renderer;
+    private Application     _application;
+    private int             _renderTime;
+    private int             _tick;
+    private int             _refresh;
+    private int             _frame;
+    private int             _nextDraw;
+    private int             _nextUpdate;
+    private int             _nextRefresh;
+    private int             _nextLongUpdate;
 
     @Override
     public void create () {
@@ -57,34 +57,34 @@ public class GDXApplication extends ApplicationAdapter {
             fonts[i] = fontGen.createFont(exoFile, "font-" + i, i);
         }
 
-        batch = new SpriteBatch();
-        renderer = new GDXRenderer(batch, timer, fonts);
-        application = new Application(renderer);
+        _batch = new SpriteBatch();
+        _renderer = new GDXRenderer(_batch, timer, fonts);
+        _application = new Application(_renderer);
 
         // Load resources
-        application.getLoadListener().onUpdate("Init resources");
-        GameData data = application.loadResources();
+        _application.getLoadListener().onUpdate("Init resources");
+        GameData data = _application.loadResources();
 
         // Create app
         GDXLightRenderer lightRenderer = new GDXLightRenderer();
-        application.create(renderer, lightRenderer, new GDXParticleRenderer(), data);
-        renderer.setGameEventListener(application);
+        _application.create(_renderer, lightRenderer, new GDXParticleRenderer(), data, data.config);
+        _renderer.setGameEventListener(_application);
 
-        application.loadGame();
+        _application.loadGame("4");
 
         //		//Limit the framerate
         //		window.setFramerateLimit(30);
 
-        renderTime = 0;
-        update = 0;
-        refresh = 0;
-        frame = 0;
-        nextDraw = 0;
-        nextUpdate = 0;
-        nextRefresh = 0;
-        nextLongUpdate = 0;
+        _renderTime = 0;
+        _tick = 0;
+        _refresh = 0;
+        _frame = 0;
+        _nextDraw = 0;
+        _nextUpdate = 0;
+        _nextRefresh = 0;
+        _nextLongUpdate = 0;
 
-        Gdx.input.setInputProcessor(new GDXInputProcessor(application, timer));
+        Gdx.input.setInputProcessor(new GDXInputProcessor(_application, timer));
         Gdx.graphics.setContinuousRendering(true);
         Gdx.graphics.requestRendering();
     }
@@ -94,28 +94,28 @@ public class GDXApplication extends ApplicationAdapter {
         Gdx.gl.glClearColor(.5f, 0.8f, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        renderer.clear();
-        renderer.refresh();
+        _renderer.clear();
+        _renderer.refresh();
 
-        Game game = application.getGame();
+        Game game = _application.getGame();
 
-        long elapsed = renderer.getTimer().getElapsedTime();
+        long elapsed = _renderer.getTimer().getElapsedTime();
 
         // Sleep
-        if (elapsed < nextDraw) {
-            //int currentRenderTime = (int) (DRAW_INTERVAL - (nextDraw - elapsed));
-            //renderTime = (renderTime * 7 + currentRenderTime) / 8;
-//                Thread.sleep(nextDraw - elapsed);
+        if (elapsed < _nextDraw) {
+            //int currentRenderTime = (int) (DRAW_INTERVAL - (_nextDraw - elapsed));
+            //_renderTime = (_renderTime * 7 + currentRenderTime) / 8;
+//                Thread.sleep(_nextDraw - elapsed);
         }
 
         // Render menu
         if (game == null || !game.isRunning()) {
-            application.renderMenu(renderer, SpriteManager.getInstance().createRenderEffect());
+            _application.renderMenu(_renderer, SpriteManager.getInstance().createRenderEffect());
 
             // Refresh
-            if (elapsed >= nextRefresh) {
-                application.refreshMenu(refresh++);
-                nextRefresh += Application.REFRESH_INTERVAL;
+            if (elapsed >= _nextRefresh) {
+                _application.refreshMenu(_refresh++);
+                _nextRefresh += Application.REFRESH_INTERVAL;
             }
         }
 
@@ -125,37 +125,37 @@ public class GDXApplication extends ApplicationAdapter {
             RenderEffect effect = SpriteManager.getInstance().createRenderEffect();
             effect.setViewport(game.getViewport());
 
-            double animProgress = (1 - (double) (nextUpdate - elapsed) / Application.getUpdateInterval());
-            application.renderGame(animProgress, update, renderTime, renderer, effect);
+            double animProgress = (1 - (double) (_nextUpdate - elapsed) / Application.getUpdateInterval());
+            _application.renderGame(animProgress, _tick, _renderTime, _renderer, effect);
 
             // Refresh
-            if (elapsed >= nextRefresh) {
-                application.refreshGame(refresh++);
-                nextRefresh += Application.REFRESH_INTERVAL;
+            if (elapsed >= _nextRefresh) {
+                _application.refreshGame(_refresh++);
+                _nextRefresh += Application.REFRESH_INTERVAL;
             }
 
             // Update
-            if (elapsed >= nextUpdate) {
-                application.update(update++);
-                nextUpdate += Application.getUpdateInterval();
+            if (elapsed >= _nextUpdate) {
+                _application.update(_tick++);
+                _nextUpdate += Application.getUpdateInterval();
             }
 
-            // Long update
-            if (elapsed >= nextLongUpdate) {
-                application.longUpdate(frame);
-                nextLongUpdate += Application.getLongUpdateInterval();
+            // Long _tick
+            if (elapsed >= _nextLongUpdate) {
+                _application.longUpdate(_frame);
+                _nextLongUpdate += Application.getLongUpdateInterval();
             }
         }
 
-        renderer.display();
+        _renderer.display();
 
-        nextDraw += Application.DRAW_INTERVAL;
-        frame++;
+        _nextDraw += Application.DRAW_INTERVAL;
+        _frame++;
     }
 
     @Override
     public void dispose () {
-        renderer.close();
+        _renderer.close();
         PathManager.getInstance().close();
     }
 

@@ -63,8 +63,8 @@ public class GDXSpriteManager extends SpriteManager {
         _textureCharacters[1] = new Texture("data/res/Characters/soldat3.png");
         _textureCharacters[2] = new Texture("data/res/Characters/gallery_84826_3_2787.png");
         _textureCharacters[3] = new Texture("data/res/Characters/NuChara01.png");
-        _textureNeedBar = new Texture("data/res/Tilesets/needbar.png");
-        _textureSelector = new Texture("data/res/Tilesets/selector.png");
+        _textureNeedBar = new Texture("data/res/needbar.png");
+        _textureSelector = new Texture("data/res/selector.png");
         _selectors = new GDXSpriteModel[NB_SELECTOR_TILE];
         for (int i = 0; i < NB_SELECTOR_TILE; i++) {
             _selectors[i] = new GDXSpriteModel(_textureSelector, i * 34, 0, 34, 48);

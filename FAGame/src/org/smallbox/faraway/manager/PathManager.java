@@ -19,7 +19,16 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class PathManager {
+public class PathManager extends BaseManager {
+
+	@Override
+	protected void onUpdate(int tick) {
+		// Close non running paths
+		synchronized (_paths) {
+			_paths.forEach(java.lang.Runnable::run);
+			_paths.clear();
+		}
+	}
 
 	public static class MyMover implements Mover {
 		public final Movable	movable;
@@ -70,11 +79,12 @@ public class PathManager {
 	private static final int 			THREAD_POOL_SIZE = 4;
 	protected static final int 			REGION_SIZE = 10;
 
-	private static PathManager 			sSelf;
+	private static PathManager 			_self;
 	final private ArrayList<Runnable> 	_paths;
 	private ExecutorService 			_threadPool;
 
 	public PathManager() {
+		_self = this;
 		_threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 		_paths = new ArrayList<>();
 		FinderPool.init();
@@ -132,10 +142,7 @@ public class PathManager {
 	}
 	
 	public static PathManager getInstance() {
-		if (sSelf == null) {
-			sSelf = new PathManager();
-		}
-		return sSelf;
+		return _self;
 	}
 
 	public void close() {

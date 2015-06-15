@@ -9,7 +9,10 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GameData implements GameDataListener {
 
@@ -56,8 +59,8 @@ public class GameData implements GameDataListener {
 	}
 
 	public ItemInfo getRandomGatherItem() {
-		if (Game.getData().gatherItems.size() > 0) {
-			return gatherItems.get((int)(Math.random() * Game.getData().gatherItems.size()));
+		if (gatherItems.size() > 0) {
+			return gatherItems.get((int)(Math.random() * gatherItems.size()));
 		}
 		return null;
 	}
@@ -107,7 +110,7 @@ public class GameData implements GameDataListener {
 
         long lastConfigModified = new File("data/config.yml").lastModified();
         if (lastConfigModified > _lastConfigModified) {
-            Game.getData().loadStrings();
+			loadStrings();
             _lastConfigModified = lastConfigModified;
             loadConfig();
         }

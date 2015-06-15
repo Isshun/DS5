@@ -11,7 +11,8 @@ import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.PathManager;
 import org.smallbox.faraway.model.*;
 import org.smallbox.faraway.model.character.CharacterRelation.Relation;
-import org.smallbox.faraway.model.item.*;
+import org.smallbox.faraway.model.item.ConsumableModel;
+import org.smallbox.faraway.model.item.ParcelModel;
 import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.model.room.RoomModel;
 import org.smallbox.faraway.ui.UserInterface;
@@ -141,7 +142,7 @@ public class CharacterModel extends Movable {
 
     private void applyBuff(BuffModel.BuffLevelModel level) {
         if (level.effects.fainting != 0 && Math.random() < level.effects.fainting) {
-            Log.error("fainting");
+            Log.warning("fainting");
         }
         if (level.effects.mood != 0) {
             _needs.updateHappiness(level.effects.mood * 0.1);
@@ -159,12 +160,12 @@ public class CharacterModel extends Movable {
             if (minHeat >= Constant.BODY_TEMPERATURE) {
                 _bodyHeat = Constant.BODY_TEMPERATURE;
             } else if (minHeat < _bodyHeat) {
-                Log.info("_bodyHeat: " + _bodyHeat + ", (min: " + minHeat + ")");
+                Log.debug("_bodyHeat: " + _bodyHeat + ", (min: " + minHeat + ")");
 //                _bodyHeat -= diffCold * (1 - _coldResist);
                 _bodyHeat -= 0.1 * (1 - _coldResist);
             }
 		} else {
-            Log.info("_bodyHeat: " + _bodyHeat);
+            Log.debug("_bodyHeat: " + _bodyHeat);
         }
 	}
 

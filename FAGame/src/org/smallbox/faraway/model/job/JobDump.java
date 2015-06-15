@@ -1,7 +1,6 @@
 package org.smallbox.faraway.model.job;
 
 import org.smallbox.faraway.manager.JobManager;
-import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.MapObjectModel;

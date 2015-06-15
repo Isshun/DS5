@@ -16,7 +16,7 @@ public class HomeScene extends MainMenuScene {
     @Override
     public void onLayoutLoaded(LayoutModel layout) {
         findById("bt_new_colony").setOnClickListener(view -> _mainMenu.select(MainMenu.Scene.PLANETS));
-        findById("bt_load_colony").setOnClickListener(view -> Application.getInstance().loadGame());
+        findById("bt_load_colony").setOnClickListener(view -> Application.getInstance().loadGame("4"));
         findById("bt_exit").setOnClickListener(view -> _renderer.close());
     }
 }

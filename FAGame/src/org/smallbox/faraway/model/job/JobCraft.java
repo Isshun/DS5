@@ -8,8 +8,8 @@ import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.ReceiptModel;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ConsumableModel;
-import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo;
+import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ParcelModel;
 
 import java.util.ArrayList;

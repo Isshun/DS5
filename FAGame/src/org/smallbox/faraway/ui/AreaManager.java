@@ -1,6 +1,7 @@
 package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.Game;
+import org.smallbox.faraway.manager.BaseManager;
 import org.smallbox.faraway.manager.Utils;
 import org.smallbox.faraway.manager.WorldManager;
 import org.smallbox.faraway.model.item.ConsumableModel;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by Alex on 13/06/2015.
  */
-public class AreaManager {
+public class AreaManager extends BaseManager {
     private List<AreaModel> _areas = new ArrayList<>();
 
     public void createArea(AreaType type, int fromX, int fromY, int toX, int toY) {
@@ -81,5 +82,9 @@ public class AreaManager {
 
     public void addArea(AreaModel area) {
         _areas.add(area);
+    }
+
+    @Override
+    protected void onUpdate(int tick) {
     }
 }

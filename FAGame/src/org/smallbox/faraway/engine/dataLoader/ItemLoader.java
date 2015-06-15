@@ -7,7 +7,6 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
-import java.util.stream.Collectors;
 
 public class ItemLoader {
 

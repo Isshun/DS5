@@ -1,14 +1,14 @@
 package org.smallbox.faraway;
 
 import org.smallbox.faraway.model.item.ConsumableModel;
+import org.smallbox.faraway.model.item.ItemModel;
 import org.smallbox.faraway.model.item.ResourceModel;
 import org.smallbox.faraway.model.item.StructureModel;
-import org.smallbox.faraway.model.item.ItemModel;
 
 /**
  * Created by Alex on 06/06/2015.
  */
-public interface WorldObserver {
+public interface GameObserver {
     default void onAddStructure(StructureModel structure){}
     default void onAddItem(ItemModel item){}
     default void onAddConsumable(ConsumableModel consumable){}
@@ -17,4 +17,5 @@ public interface WorldObserver {
     default void onRemoveConsumable(ConsumableModel consumable){}
     default void onRemoveStructure(StructureModel structure){}
     default void onRemoveResource(){}
+    default void onHourChange(int hour){}
 }

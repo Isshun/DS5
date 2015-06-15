@@ -59,7 +59,7 @@ public class CharacterRenderer implements IRenderer {
 
 			// Bad status
 			if (c.getStatus().getLevel() == Level.BAD || c.getStatus().getLevel() == Level.REALLY_BAD) {
-				_redBackground.setPosition(posX, posY);
+				_redBackground.setPosition(posX + effect.getViewport().getPosX(), posY + effect.getViewport().getPosY());
 				renderer.draw(_redBackground, effect);
 			}
 			

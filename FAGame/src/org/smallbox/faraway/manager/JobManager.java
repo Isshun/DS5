@@ -1,6 +1,5 @@
 package org.smallbox.faraway.manager;
 
-import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.util.Constant;
@@ -10,7 +9,10 @@ import org.smallbox.faraway.model.check.CheckCharacterUse;
 import org.smallbox.faraway.model.check.character.CheckCharacterExhausted;
 import org.smallbox.faraway.model.check.character.CheckCharacterHungry;
 import org.smallbox.faraway.model.check.old.CharacterCheck;
-import org.smallbox.faraway.model.item.*;
+import org.smallbox.faraway.model.item.ItemInfo;
+import org.smallbox.faraway.model.item.ItemModel;
+import org.smallbox.faraway.model.item.MapObjectModel;
+import org.smallbox.faraway.model.item.ResourceModel;
 import org.smallbox.faraway.model.job.*;
 import org.smallbox.faraway.model.job.JobModel.JobAbortReason;
 import org.smallbox.faraway.model.job.JobModel.JobStatus;
@@ -18,54 +20,12 @@ import org.smallbox.faraway.model.job.JobModel.JobStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobManager {
-	public final static Color COLOR_BUILD = new Color(170, 128, 64);
-	public final static Color COLOR_MOVE = Color.CYAN;
-	public final static Color COLOR_GATHER = Color.GREEN;
-	public final static Color COLOR_MINING = Color.GREEN;
-	public final static Color COLOR_WORK = Color.GREEN;
-	public final static Color COLOR_REFILL = Color.GREEN;
-	public final static Color COLOR_NONE = Color.BLACK;
-	public final static Color COLOR_USE_INVENTORY = Color.BLUE;
-	public final static Color COLOR_USE = Color.BLUE;
-	public final static Color COLOR_DESTROY = new Color(200, 20, 20);
-	public final static Color COLOR_STORE = new Color(180, 100, 255);
-	public final static Color COLOR_TAKE = new Color(180, 100, 255);
-
-    public void addJob(ItemModel item, ItemInfo.ItemInfoAction action) {
-        switch (action.type) {
-            case "cook":
-                addJob(JobCook.create(action, item));
-                break;
-            case "craft":
-                addJob(JobCraft.create(action, item));
-                break;
-        }
-    }
-
+public class JobManager extends BaseManager {
 	private static JobManager		_self;
 	private List<JobModel> 			_jobs;
 	private int 					_nbVisibleJob;
 	private List<JobModel> 			_toRemove;
     private List<CharacterCheck>    _priorities;
-
-//	private CharacterCheck[]		_priorityJobsCheck = {
-//			new CharacterIsTired(),
-//			new CharacterIsFull(),
-//			new CharacterIsHungry(),
-//	};
-//
-//	private Check[]				    _jobsCheck = {
-////			new CheckLowFood(),
-////			new CheckEmptyFactory(),
-////			new CheckGardenIsMature()
-//	};
-//
-//	private CharacterCheck[]		_routineJobsCheck = {
-//			new CharacterHasItemToStore(),
-//			new CharacterPlayTime(),
-//			new CharacterGoToMettingRoom()
-//	};
 
 	public JobManager() {
 		Log.debug("JobManager");
@@ -80,6 +40,17 @@ public class JobManager {
         _priorities.add(new CheckCharacterHungry());
 
         Log.debug("JobManager done");
+	}
+
+	public void addJob(ItemModel item, ItemInfo.ItemInfoAction action) {
+		switch (action.type) {
+			case "cook":
+				addJob(JobCook.create(action, item));
+				break;
+			case "craft":
+				addJob(JobCraft.create(action, item));
+				break;
+		}
 	}
 
 	public List<JobModel>	getJobs() { return _jobs; };
@@ -380,9 +351,14 @@ public class JobManager {
 		return job;
 	}
 
-	public void onLongUpdate() {
+	@Override
+	protected void onUpdate(int tick) {
+		cleanJobs();
+
 		// Remove invalid job
-		_jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
+		if (tick % 10 == 0) {
+			_jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
+		}
 	}
 
 	public void addGatherJob(int x, int y) {
@@ -406,10 +382,6 @@ public class JobManager {
 //		}
 //		return job;
         throw new RuntimeException("not implemented");
-	}
-
-	public int getNbVisibleJob() {
-		return _nbVisibleJob;
 	}
 
 	public JobModel addUseJob(MapObjectModel item) {

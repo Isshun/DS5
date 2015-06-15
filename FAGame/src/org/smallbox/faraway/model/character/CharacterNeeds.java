@@ -3,8 +3,8 @@ package org.smallbox.faraway.model.character;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.model.GameConfig;
 import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo.ItemInfoAction;
+import org.smallbox.faraway.model.item.MapObjectModel;
 
 public class CharacterNeeds {
     private final CharacterModel 	_character;
@@ -84,7 +84,7 @@ public class CharacterNeeds {
 	public void setEnergy(double energy) { _energy = energy; }
 	public void setFood(double food) { _food = food; }
 	public void setHappiness(double happiness) { _happiness = happiness; }
-	public void updateHappiness(double change) { _happiness = Math.max(0, Math.min(100, _happiness + change)); }
+	public void updateHappiness(double change) { _happiness = _happiness + change; }
 	public void setHealth(double health) { _health = health; }
 	public void setInjuries(double injuries) { _injuries = injuries; }
 	public void setOxygen(double oxygen) { _oxygen = oxygen; }

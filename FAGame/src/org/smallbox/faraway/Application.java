@@ -3,7 +3,6 @@ package org.smallbox.faraway;
 import org.smallbox.faraway.engine.dataLoader.CategoryLoader;
 import org.smallbox.faraway.engine.dataLoader.ItemLoader;
 import org.smallbox.faraway.engine.dataLoader.StringsLoader;
-import org.smallbox.faraway.engine.renderer.AreaRenderer;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.serializer.LoadListener;
 import org.smallbox.faraway.engine.ui.Colors;
@@ -12,6 +11,7 @@ import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.loader.PlanetLoader;
+import org.smallbox.faraway.model.GameConfig;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.MenuLoad;
@@ -67,11 +67,11 @@ public class Application implements GameEventListener {
         };
     }
 
-	public void create(GFXRenderer renderer, LightRenderer lightRenderer, ParticleRenderer particleRenderer, GameData data) {
+	public void create(GFXRenderer renderer, LightRenderer lightRenderer, ParticleRenderer particleRenderer, GameData data, GameConfig config) {
         _data = data;
 		_renderer = renderer;
 		_isFullscreen = true;
-		_gameRenderer = new MainRenderer(renderer);
+		_gameRenderer = new MainRenderer(renderer, config);
         _lightRenderer = lightRenderer;
         _particleRenderer = particleRenderer;
 		_gameInterface = new UserInterface(new LayoutFactory(), ViewFactory.getInstance());
@@ -160,8 +160,8 @@ public class Application implements GameEventListener {
                     try {
                         _menu = new MenuLoad(path -> {
                             // TODO NULL
-                            _game = new Game(null, _particleRenderer, _lightRenderer);
-                            _game.load(path, _loadListener);
+                            _game = new Game(null, null, null, _particleRenderer, _lightRenderer);
+                            _game.load(_loadListener);
                         });
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -204,20 +204,20 @@ public class Application implements GameEventListener {
         return _loadListener;
     }
 
-    public void newGame() {
-        _game = new Game(_data, _particleRenderer, _lightRenderer);
+    public void newGame(String fileName) {
+        _game = new Game(_data, _data.config, fileName, _particleRenderer, _lightRenderer);
         _game.onCreate();
-        _game.newGame(null, _loadListener);
+        _game.newGame(_loadListener);
         _gameRenderer.init(_game);
         _gameInterface.onCreate(_game);
     }
 
-    public void loadGame() {
-        _game = new Game(_data, _particleRenderer, _lightRenderer);
+    public void loadGame(String fileName) {
+        _game = new Game(_data, _data.config, fileName, _particleRenderer, _lightRenderer);
         _game.onCreate();
 
         _loadListener.onUpdate("Load save");
-        _game.load("4", _loadListener);
+        _game.load(_loadListener);
 
         _loadListener.onUpdate("Start game");
         _gameRenderer.init(_game);
@@ -229,7 +229,7 @@ public class Application implements GameEventListener {
     }
 
     private void startGame() {
-        _game.getWorldManager().addObserver(_lightRenderer);
+        _game.addObserver(_lightRenderer);
     }
 
     public void renderMenu(final GFXRenderer renderer, RenderEffect effect) {
@@ -281,18 +281,16 @@ public class Application implements GameEventListener {
         _mainMenu.refresh(refreshCount);
     }
 
-    public void update(int updateCount) {
+    public void update(int tick) {
         long time = System.currentTimeMillis();
-        _game.onUpdate();
+        _game.onUpdate(tick);
         _lastUpdateDelay = System.currentTimeMillis() - time;
     }
 
-    public void longUpdate(int frame) {
+    public void longUpdate(int longTick) {
         long time = System.currentTimeMillis();
-        _game.onLongUpdate();
-        _gameRenderer.setFPS(frame, _longUpdateInterval);
+        _gameRenderer.setFPS(longTick, _longUpdateInterval);
         _lastLongUpdateDelay = System.currentTimeMillis() - time;
-
         GameData.getData().reloadConfig();
     }
 

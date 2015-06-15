@@ -3,25 +3,25 @@ entries:
     -   type: label
         id: lb_render_time
         textsize: 14
-        position: [10, 8]
+        position: [10, 12]
 
     -   type: label
         id: lb_memory
         textsize: 14
-        position: [200, 8]
+        position: [200, 12]
 
     -   type: label
         id: lb_update
         textsize: 14
         size: [180, 20]
-        position: [380, 8]
+        position: [380, 12]
 
     -   type: label
         id: lb_floor
         textsize: 14
-        position: [550, 8]
+        position: [550, 12]
 
     -   type: label
         id: lb_frame
         textsize: 14
-        position: [650, 8]
+        position: [650, 12]

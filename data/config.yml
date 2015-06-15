@@ -8,6 +8,10 @@ render:
     resource:       true
     item:           true
     consumable:     true
+    temperature:    false
+    job:            true
+    area:           true
+    debug:          true
 
 manager:
     room:           true

@@ -6,7 +6,9 @@ import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.Movable.Direction;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.*;
+import org.smallbox.faraway.model.item.ItemInfo;
+import org.smallbox.faraway.model.item.ItemSlot;
+import org.smallbox.faraway.model.item.MapObjectModel;
 
 import java.util.List;
 

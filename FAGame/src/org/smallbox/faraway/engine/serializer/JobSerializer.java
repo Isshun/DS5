@@ -2,14 +2,13 @@ package org.smallbox.faraway.engine.serializer;
 
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.manager.JobManager;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.job.JobModel;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.smallbox.faraway.engine.serializer.AreaSerializer.*;
 
 /**
  * Created by Alex on 01/06/2015.
@@ -35,7 +34,7 @@ public class JobSerializer implements SerializerInterface {
     @Override
     public void load(GameSerializer.GameSave save) {
         Map<String, ItemInfo.ItemInfoAction> actions = new HashMap<>();
-        Game.getData().items.stream().filter(itemInfo -> itemInfo.actions != null && !itemInfo.actions.isEmpty()).forEach(itemInfo -> {
+        GameData.getData().items.stream().filter(itemInfo -> itemInfo.actions != null && !itemInfo.actions.isEmpty()).forEach(itemInfo -> {
             itemInfo.actions.stream().filter(action -> action.name != null).forEach(action -> {
                 actions.put(itemInfo.name + ":" + action.name, action);
             });

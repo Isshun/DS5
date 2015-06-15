@@ -5,6 +5,10 @@ import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.SpriteModel;
 
 public abstract class ImageView extends View {
+	protected int _textureX;
+	protected int _textureY;
+	protected int _textureWidth;
+	protected int _textureHeight;
 
 	protected SpriteModel	_image;
 	protected String 		_path;
@@ -54,6 +58,13 @@ public abstract class ImageView extends View {
 	public void setScale(double scaleX, double scaleY) {
 		_scaleX = scaleX;
 		_scaleY = scaleY;
+	}
+
+	public void setTextureRect(int textureX, int textureY, int textureWidth, int textureHeight) {
+		_textureX = textureX;
+		_textureY = textureY;
+		_textureWidth = textureWidth;
+		_textureHeight = textureHeight;
 	}
 }
 

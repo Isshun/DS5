@@ -1,0 +1,23 @@
+levels:
+    -   label: It's too hot
+        delay: 100
+        conditions:
+            maxCharacterTemperature: 40
+            minFood: 0
+        effects:
+            mood: -5
+
+    -   label: It's much too hot
+        delay: 100
+        conditions:
+            maxCharacterTemperature: 42
+        effects:
+            mood: -10
+
+    -   label: Suffering for heat stroke
+        disease: heat_stroke
+        delay: 100
+        conditions:
+            maxCharacterTemperature: 42
+        effects:
+            mood: -15

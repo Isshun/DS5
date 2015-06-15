@@ -1,6 +1,9 @@
 package org.smallbox.faraway.ui.mainMenu;
 
-import org.smallbox.faraway.*;
+import org.smallbox.faraway.GFXRenderer;
+import org.smallbox.faraway.GameEventListener;
+import org.smallbox.faraway.GameTimer;
+import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.engine.ui.UIEventManager;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.manager.Utils;

@@ -12,7 +12,7 @@ public class SpriteResource {
 	public int				textureIndex;
 	
 	public SpriteResource(String name, int x, int y, int texture) {
-		this.info = Game.getData().getItemInfo(name);
+		this.info = GameData.getData().getItemInfo(name);
 		this.posX = x;
 		this.posY = y;
 		this.textureIndex = texture;

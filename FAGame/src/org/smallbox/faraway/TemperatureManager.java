@@ -1,6 +1,9 @@
 package org.smallbox.faraway;
 
 import org.smallbox.faraway.engine.util.Log;
+import org.smallbox.faraway.manager.BaseManager;
+import org.smallbox.faraway.manager.RoomManager;
+import org.smallbox.faraway.manager.WorldManager;
 import org.smallbox.faraway.model.item.ItemModel;
 import org.smallbox.faraway.model.room.RoomModel;
 
@@ -11,10 +14,20 @@ import java.util.Map;
 /**
  * Created by Alex on 13/06/2015.
  */
-public class TemperatureManager implements WorldObserver {
-    private List<ItemModel> _items = new ArrayList<>();
-    private double          _exteriorTemperature;
-    private int             _count;
+public class TemperatureManager extends BaseManager implements GameObserver {
+    private static final int    UPDATE_INTERVAL = 25;
+
+    private final WorldManager  _worldManager;
+    private final RoomManager   _roomManager;
+    private List<ItemModel>     _items;
+    private double              _exteriorTemperature;
+    private int                 _count;
+
+    public TemperatureManager(WorldManager worldManager, RoomManager roomManager) {
+        _worldManager = worldManager;
+        _roomManager = roomManager;
+        _items = new ArrayList<>();
+    }
 
     @Override
     public void onAddItem(ItemModel item) {
@@ -28,11 +41,14 @@ public class TemperatureManager implements WorldObserver {
         _items.remove(item);
     }
 
-    public void update(int exteriorTemperature, List<RoomModel> rooms) {
-        if (++_count % 25 == 0) {
+    public void onUpdate(int tick) {
+        if (tick % UPDATE_INTERVAL == 0) {
+            List<RoomModel> rooms = _roomManager.getRoomList();
+            int exteriorTemperature = _worldManager.getTemperature();
+
             _exteriorTemperature += (exteriorTemperature - _exteriorTemperature) / 10;
 
-            Log.info("update temperature (" + _exteriorTemperature + ")");
+            Log.debug("update temperature (" + _exteriorTemperature + ")");
 
             // First pass
             // Check heat / cold effects and room heatPotency then apply to room

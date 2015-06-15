@@ -7,6 +7,7 @@ import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.CategoryInfo;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface.Mode;
@@ -65,7 +66,7 @@ public class PanelBuild extends BaseRightPanel {
 
 		// TODO
 		int posY = 0;
-		List<CategoryInfo> categories = Game.getData().categories;
+		List<CategoryInfo> categories = GameData.getData().categories;
 		_iconsList.clear();
 		_layouts.clear();
 
@@ -247,7 +248,7 @@ public class PanelBuild extends BaseRightPanel {
 	protected boolean onKey(GameEventListener.Key key) {
 		String shortcut = StringUtils.getStringFromKey(key);
 		if (shortcut != null) {
-			List<CategoryInfo> categories = Game.getData().categories;
+			List<CategoryInfo> categories = GameData.getData().categories;
 			for (CategoryInfo category: categories) {
 				if (shortcut.equals(category.shortcut)) {
 					refreshPanel(category);

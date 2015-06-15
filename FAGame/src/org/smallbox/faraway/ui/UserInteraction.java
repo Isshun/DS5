@@ -5,10 +5,11 @@ import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.StructureModel;
 import org.smallbox.faraway.model.item.ItemModel;
 import org.smallbox.faraway.model.item.ResourceModel;
+import org.smallbox.faraway.model.item.StructureModel;
 import org.smallbox.faraway.model.job.JobDump;
 import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.model.job.JobTake;
@@ -73,13 +74,13 @@ public class UserInteraction {
 						// TODO
 						StructureModel structure = ServiceManager.getWorldMap().getStructure(x, y);
 						if (structure == null || structure.getName().equals("base.door") == false) {
-							JobManager.getInstance().build(Game.getData().getItemInfo("base.wall"), x, y);
+							JobManager.getInstance().build(GameData.getData().getItemInfo("base.wall"), x, y);
 						}
 						// item = ServiceManager.getWorldMap().putObject(x, y, BaseItem.STRUCTURE_WALL);
 					} else {
 						Log.warning("2");
 						// TODO
-						JobManager.getInstance().build(Game.getData().getItemInfo("base.floor"), x, y);
+						JobManager.getInstance().build(GameData.getData().getItemInfo("base.floor"), x, y);
 						// item = ServiceManager.getWorldMap().putObject(x, y, BaseItem.STRUCTURE_FLOOR);
 					}
 				} else {

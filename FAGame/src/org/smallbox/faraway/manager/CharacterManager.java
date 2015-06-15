@@ -3,19 +3,15 @@ package org.smallbox.faraway.manager;
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.model.BuffModel;
-import org.smallbox.faraway.model.CharacterBuffModel;
 import org.smallbox.faraway.model.Movable.Direction;
 import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.job.JobModel.JobAbortReason;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class CharacterManager {
+public class CharacterManager extends BaseManager {
 
 	public static final ProfessionModel professions[] = {
 		new ProfessionModel(ProfessionModel.Type.ENGINEER, "Engineer", new Color(255, 255, 50), new Color(50, 50, 50)),
@@ -74,7 +70,7 @@ public class CharacterManager {
 		return professions;
 	}
 
-	public void    onUpdate(int tick) {
+	public void onUpdate(int tick) {
 //		Log.debug("CharacterManager: update");
 		
 		// Add new born
@@ -119,13 +115,13 @@ public class CharacterManager {
 			_characters.remove(characterToRemove);
 		}
 
-//		Log.debug("CharacterManager: update done");
-	}
-
-	public void onLongUpdate() {
-		for (CharacterModel c: _characters) {
-			c.longUpdate();
+		if (tick % 10 == 0) {
+			for (CharacterModel c: _characters) {
+				c.longUpdate();
+			}
 		}
+
+//		Log.debug("CharacterManager: update done");
 	}
 
 	// TODO: heavy

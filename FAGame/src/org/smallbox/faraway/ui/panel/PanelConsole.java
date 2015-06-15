@@ -3,7 +3,6 @@ package org.smallbox.faraway.ui.panel;
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.engine.ui.FrameLayout;
 import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;

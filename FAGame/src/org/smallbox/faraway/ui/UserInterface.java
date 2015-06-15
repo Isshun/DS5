@@ -11,6 +11,7 @@ import org.smallbox.faraway.manager.CharacterManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.manager.Utils;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.ToolTips.ToolTip;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.*;
@@ -348,7 +349,7 @@ public class UserInterface implements GameEventListener {
 
         long lastResModified = Utils.getLastUIModified();
         if (update % 8 == 0 && lastResModified > _lastModified) {
-            Game.getData().loadStrings();
+            GameData.getData().loadStrings();
             _lastModified = lastResModified;
             reload();
         }
