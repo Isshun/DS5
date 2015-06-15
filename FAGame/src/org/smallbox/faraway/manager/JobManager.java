@@ -259,7 +259,7 @@ public class JobManager {
 	}
 
     /**
-     * Create priority job for characters (eat / sleep / get oxygen / move to temperate area)
+     * Create priority job for characters (eat / sleep / getRoom oxygen / move to temperate area)
      *
      * @param character
      * @return

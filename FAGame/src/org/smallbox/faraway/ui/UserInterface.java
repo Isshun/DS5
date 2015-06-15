@@ -510,7 +510,7 @@ public class UserInterface implements GameEventListener {
         // Set room
         if (_mode == Mode.ROOM) {
 //            if (_keyPressPosX == _keyMovePosX && _keyPressPosY == _keyMovePosY) {
-//                final Room room = Game.getRoomManager().get(getRelativePosX(x), getRelativePosY(y));
+//                final Room room = Game.getRoomManager().getRoom(getRelativePosX(x), getRelativePosY(y));
 //                select(room);
 //                return true;
 //            }
@@ -596,7 +596,7 @@ public class UserInterface implements GameEventListener {
         }
 
         else if (_mode == Mode.ROOM && _interaction.getSelectedRoomType() == RoomModel.RoomType.NONE) {
-//            final Room room = Game.getRoomManager().get(getRelativePosX(x), getRelativePosY(y));
+//            final Room room = Game.getRoomManager().getRoom(getRelativePosX(x), getRelativePosY(y));
 //            if (room != null) {
 //                throw new RuntimeException("not implemented");
 //                //_menu = new RoomContextualMenu(_app, 0, new Vector2f(x, y), new Vector2f(100, 120), _viewport, room);

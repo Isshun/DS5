@@ -50,7 +50,7 @@ public class DebugRenderer implements IRenderer {
 //		List<Door> doors = PathManager.getInstance()._doors;
 //		for (Door door : doors) {
 //			text.setString(String.valueOf(door.id));
-//			boolean flag = visited.containsKey(door.x  << 16 + door.y) && visited.get(door.x  << 16 + door.y);
+//			boolean flag = visited.containsKey(door.x  << 16 + door.y) && visited.getRoom(door.x  << 16 + door.y);
 //			text.setPosition(door.x * Constant.TILE_SIZE, door.y * Constant.TILE_SIZE + (flag ? Constant.TILE_SIZE / 2 : 0));
 //			visited.put(door.x  << 16 + door.y, true);
 //			_app.draw(text, _renderEffect);

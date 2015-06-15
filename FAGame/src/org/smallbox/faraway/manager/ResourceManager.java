@@ -52,7 +52,7 @@ public class ResourceManager {
 //		for (int x = 0; x < width; x++) {
 //			for (int y = 0; y < height; y++) {
 //				StructureItem structure = worldmap.getStructure(x, y);
-//				Room room = RoomManager.getInstance().get(x, y);
+//				Room room = RoomManager.getInstance().getRoom(x, y);
 //				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() && room != null && room.isType(Type.GARDEN)) {
 //					structure.setWorking(water-- > 0);
 //					MainRenderer.getInstance().invalidate(x, y);
@@ -64,7 +64,7 @@ public class ResourceManager {
 //		for (int x = 0; x < width; x++) {
 //			for (int y = 0; y < height; y++) {
 //				StructureItem structure = worldmap.getStructure(x, y);
-//				Room room = RoomManager.getInstance().get(x, y);
+//				Room room = RoomManager.getInstance().getRoom(x, y);
 //				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() == false && room != null && room.isType(Type.GARDEN)) {
 //					structure.setWorking(water-- > 0);
 //					MainRenderer.getInstance().invalidate(x, y);
@@ -76,7 +76,7 @@ public class ResourceManager {
 //		for (int x = 0; x < width; x++) {
 //			for (int y = 0; y < height; y++) {
 //				StructureItem structure = worldmap.getStructure(x, y);
-//				Room room = RoomManager.getInstance().get(x, y);
+//				Room room = RoomManager.getInstance().getRoom(x, y);
 //				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && (room == null || room.isType(Type.GARDEN) == false)) {
 //					structure.setWorking(water-- > 0);
 //					MainRenderer.getInstance().invalidate(x, y);

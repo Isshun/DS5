@@ -32,14 +32,14 @@
 //	public ItemModel use(CharacterModel character, int durationLeft) {
 //		super.use(character, durationLeft);
 //
-//		if (_info.actions != null && _info.actions.get(0).productsItem != null) {
-//			ItemInfo itemToProduce = _info.actions.get(0).productsItem.get(0);
-//			_itemProduceState += (double)itemToProduce.craftedQuantitfy / _info.actions.get(0).cost;
+//		if (_info.actions != null && _info.actions.getRoom(0).productsItem != null) {
+//			ItemInfo itemToProduce = _info.actions.getRoom(0).productsItem.getRoom(0);
+//			_itemProduceState += (double)itemToProduce.craftedQuantitfy / _info.actions.getRoom(0).cost;
 //			if (_itemProduceState >= 1) {
 //				_itemProduceState -= 1;
 //
-//				// TODO: get most common component
-//				MapObjectModel component = takeFromInventory(itemToProduce.craftedFromItems.get(0));
+//				// TODO: getRoom most common component
+//				MapObjectModel component = takeFromInventory(itemToProduce.craftedFromItems.getRoom(0));
 //				if (component != null) {
 //					ResourceManager.getInstance().remove(component.getInfo());
 //					ResourceManager.getInstance().add(itemToProduce);

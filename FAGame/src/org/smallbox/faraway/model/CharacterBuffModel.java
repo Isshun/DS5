@@ -6,17 +6,20 @@ package org.smallbox.faraway.model;
 public class CharacterBuffModel {
     public final BuffModel  buff;
     public int              duration;
-    public int              level;
+    public int              level = -1;
 
     public CharacterBuffModel(BuffModel buff) {
         this.buff = buff;
     }
 
     public boolean isActive() {
-        return level > 0 || duration >= buff.levels.get(level).delay;
+        return level > -1 && (level > 0 || duration >= buff.levels.get(level).delay);
     }
 
     public BuffModel.BuffLevelModel getActiveLevel() {
+        if (level < 0) {
+            return null;
+        }
         if (duration >= buff.levels.get(level).delay) {
             return buff.levels.get(level);
         }

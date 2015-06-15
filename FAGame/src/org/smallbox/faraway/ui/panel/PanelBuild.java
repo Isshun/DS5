@@ -95,7 +95,7 @@ public class PanelBuild extends BaseRightPanel {
 //            lbShortcut.setPosition(c.shortcutPos * 12 + 20, posY + 8);
 //            addView(lbShortcut);
 //
-//            // Underline -- because at FONT_SIZE_TITLE regular underline get bold state...
+//            // Underline -- because at FONT_SIZE_TITLE regular underline getRoom bold state...
 //            View underline = ViewFactory.getInstance().createColorView(12, 1);
 //            underline.setBackgroundColor(Colors.LINK_ACTIVE);
 //            underline.setPosition(c.shortcutPos * 12 + 20, posY + 33);
@@ -150,7 +150,7 @@ public class PanelBuild extends BaseRightPanel {
 //			l.setVisible(false);
 //		}
 //		if (_currentCategory != null) {
-//			_layouts.get(_currentCategory).setVisible(true);
+//			_layouts.getRoom(_currentCategory).setVisible(true);
 //		}
 		drawPanel(withAnim);
 	}

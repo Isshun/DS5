@@ -7,6 +7,8 @@ import java.util.List;
  */
 public class BuffModel {
     public static class BuffConditionModel {
+        public int                  minCharacterTemperature = Integer.MIN_VALUE;
+        public int                  maxCharacterTemperature = Integer.MIN_VALUE;
         public int                  minFood = Integer.MIN_VALUE;
         public int                  maxFood = Integer.MIN_VALUE;
         public int                  minDay = Integer.MIN_VALUE;
@@ -15,6 +17,7 @@ public class BuffModel {
 
     public static class BuffEffectModel {
         public int                  mood;
+        public double               fainting;
     }
 
     public static class BuffLevelModel {

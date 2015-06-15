@@ -74,7 +74,7 @@ public class CharacterManager {
 		return professions;
 	}
 
-	public void    onUpdate(int update) {
+	public void    onUpdate(int tick) {
 //		Log.debug("CharacterManager: update");
 		
 		// Add new born
@@ -97,17 +97,16 @@ public class CharacterManager {
 			}
 			
 			else {
-				// Check buffs
-				c.checkBuffs();
+				c.update(tick);
 
 				// Assign job
-				if (c.getJob() == null && update % 10 == c.getLag() && c.isSleeping() == false) {
+				if (c.getJob() == null && tick % 10 == c.getLag() && c.isSleeping() == false) {
 					JobManager.getInstance().assignJob(c);
 				}
 
 				// Update needs
-				if (update % 10 == 0) {
-					c.updateNeeds(update);
+				if (tick % 10 == 0) {
+					c.updateNeeds(tick);
 				}
 				
 				c.setDirection(Direction.NONE);

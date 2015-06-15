@@ -14,12 +14,12 @@ import org.smallbox.faraway.model.character.CharacterModel.Gender;
 import org.smallbox.faraway.model.character.CharacterNeeds;
 import org.smallbox.faraway.model.character.CharacterRelation;
 import org.smallbox.faraway.model.character.CharacterStatus;
-import org.smallbox.faraway.model.character.CharacterStatus.Level;
 import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PanelCharacter extends BaseRightPanel {
     private static final int NB_MAX_BUFFS = 20;
@@ -443,37 +443,32 @@ public class PanelCharacter extends BaseRightPanel {
             }
 
             refreshLastReports();
-            refreshInfos();
+            refreshInfo();
+
+            ((TextView)findById("lb_body_heat")).setString("Body heat: " + (int)(_character.getBodyHeat() * 10) / 10f);
         }
     }
 
     private void refreshLastReports() {
-        int i = 0;
-        for (CharacterBuffModel characterBuff: _character.getBuffs()) {
-            if (characterBuff.isActive() && i < NB_MAX_BUFFS) {
-                BuffModel.BuffLevelModel level = characterBuff.getActiveLevel();
+        // TODO: heavy
+        List<BuffModel.BuffLevelModel> buffs = _character.getBuffs().stream()
+                .filter(characterBuff -> characterBuff.isActive())
+                .map(CharacterBuffModel::getActiveLevel)
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < NB_MAX_BUFFS; i++) {
+            if (i < buffs.size()) {
                 _lbBuffs[i].setString(StringUtils.getDashedString(
-                        level.label,
-                        (level.effects.mood > 0 ? "+" : "") + level.effects.mood, NB_COLUMNS));
-                _lbBuffs[i].setColor(level.effects.mood < 0 ? COLOR_2 : COLOR_0);
-                i++;
+                        buffs.get(i).label,
+                        (buffs.get(i).effects.mood > 0 ? "+" : "") + buffs.get(i).effects.mood, NB_COLUMNS));
+                _lbBuffs[i].setColor(buffs.get(i).effects.mood < 0 ? COLOR_2 : COLOR_0);
+            } else {
+                _lbBuffs[i].setString("hello");
             }
         }
-
-//        _lastStatus = _character.getStatus();
-//        String status = _character.getStatus().getThoughts();
-//        String time = _character.getStatus().getLastReportDelay() + "sec. ago";
-//        _lbState.setString(StringUtils.getDashedString(status, time, NB_COLUMNS));
-//        Level level = _character.getStatus().getLevel();
-//        switch (level) {
-//            case GOOD: _lbState.setColor(COLOR_0); break;
-//            case MEDIUM: _lbState.setColor(COLOR_1); break;
-//            case BAD: _lbState.setColor(COLOR_2); break;
-//            case REALLY_BAD: _lbState.setColor(COLOR_3); break;
-//        }
     }
 
-    private void refreshInfos() {
+    private void refreshInfo() {
         // Old
         int old = (int)_character.getOld();
         if (old != _lastOld) {
@@ -562,7 +557,7 @@ public class PanelCharacter extends BaseRightPanel {
 
 //        for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
 //            if (_character.getInventory().size() > i) {
-//                MapObjectModel item = _character.getInventory().get(i);
+//                MapObjectModel item = _character.getInventory().getRoom(i);
 //                _lbInventoryEntries[i].setImage(SpriteManager.getInstance().getIcon(item.getInfo()));
 //            } else {
 //                _lbInventoryEntries[i].setImage(null);

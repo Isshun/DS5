@@ -434,7 +434,7 @@ public class PanelInfo extends BaseRightPanel {
 		_areaLight.setString("luminosity: " + (int)Math.min(area.getLight() * 100, 100));
 
 		RoomModel room = null;
-//		Room room = Game.getRoomManager().get(area.getX(), area.getY());
+//		Room room = Game.getRoomManager().getRoom(area.getX(), area.getY());
 		_lbRoom.setString(room != null ? room.getName() : "");
 		if (area.getItem() != null) {
 		} else {
@@ -477,7 +477,7 @@ public class PanelInfo extends BaseRightPanel {
 		// Gatherable item
 		if (!resource.getInfo().actions.isEmpty() && "gather".equals(resource.getInfo().actions.get(0).type)) {
 			_itemGather.setVisible(true);
-//			_itemGatherProduce.setString(resource.getInfo().actions.get(0).productsItem.label);
+//			_itemGatherProduce.setString(resource.getInfo().actions.getRoom(0).productsItem.label);
 			_itemGatherProduce.setString("TODO");
 //			_itemGatherIcon.setIcon(SpriteManager.getInstance().getIcon(resource.getInfo().onGather.itemProduce));
 		} else {
@@ -487,7 +487,7 @@ public class PanelInfo extends BaseRightPanel {
 		// Minable item
 		if (!resource.getInfo().actions.isEmpty() && "mine".equals(resource.getInfo().actions.get(0).type)) {
 			_itemMine.setVisible(true);
-//			_itemMineProduce.setString(resource.getInfo().actions.get(0).productsItem.label);
+//			_itemMineProduce.setString(resource.getInfo().actions.getRoom(0).productsItem.label);
 			_itemMineProduce.setString("TODO");
 //			_itemMineIcon.setIcon(SpriteManager.getInstance().getIcon(resource.getInfo().onMine.itemProduce));
 		} else {
@@ -594,7 +594,7 @@ public class PanelInfo extends BaseRightPanel {
 //					_ui.select(finalProduce);
 //				}
 //			});
-//			_itemProduceIcon.setIcon(SpriteManager.getInstance().getIcon(action.itemsProduce.get(0)));
+//			_itemProduceIcon.setIcon(SpriteManager.getInstance().getIcon(action.itemsProduce.getRoom(0)));
 //		}
 //
 //		// Item action effects
@@ -708,7 +708,7 @@ public class PanelInfo extends BaseRightPanel {
 //		for (ItemBase storredItem: storage.getItems()) {
 //			ItemInfo storedInfo = storredItem.getInfo();
 //			if (inventoryInfo.containsKey(storedInfo)) {
-//				inventoryInfo.put(storedInfo, inventoryInfo.get(storedInfo) + 1);
+//				inventoryInfo.put(storedInfo, inventoryInfo.getRoom(storedInfo) + 1);
 //			} else {
 //				inventoryInfo.put(storedInfo, 1);
 //			}
@@ -721,7 +721,7 @@ public class PanelInfo extends BaseRightPanel {
 //		// Set new entries
 //		int i = 0;
 //		for (ItemInfo storedItemInfo: inventoryInfo.keySet()) {
-//			int quantity = inventoryInfo.get(storedItemInfo);
+//			int quantity = inventoryInfo.getRoom(storedItemInfo);
 //			
 //			_lbCarry[i].setVisible(true);
 //			_lbCarry[i].setImage(SpriteManager.getInstance().getIcon(storedItemInfo));

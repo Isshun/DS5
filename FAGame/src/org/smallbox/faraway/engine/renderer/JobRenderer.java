@@ -54,14 +54,14 @@ public class JobRenderer implements IRenderer {
 		for (JobModel job: jobs) {
 			int x = job.getX();
 			int y = job.getY();
-//			if (_areas[x][y] != frame && job.isFinish() == false) {
+//			if (_parcels[x][y] != frame && job.isFinish() == false) {
 			if (job.isFinish() == false) {
                 SpriteModel sprite = job.getIcon();
                 if (sprite != null) {
                     sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
                     renderer.draw(sprite, effect);
                 }
-//				_areas[x][y] = frame;
+//				_parcels[x][y] = frame;
 			}
 		}
 	}

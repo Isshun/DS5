@@ -55,7 +55,7 @@ public class GardenRoom extends RoomModel {
 		if (culture != _currentCulture) {
 			_state = State.RAW;
 			_currentCulture = culture;
-			for (ParcelModel area: _areas) {
+			for (ParcelModel area: _parcels) {
 				ServiceManager.getWorldMap().replaceItem(_currentCulture, area.getX(), area.getY(), 0);
 			}
 		}
@@ -65,7 +65,7 @@ public class GardenRoom extends RoomModel {
 
 	@Override
 	public void update() {
-		for (ParcelModel area: _areas) {
+		for (ParcelModel area: _parcels) {
 			if (area.getResource() == null) {
 				ServiceManager.getWorldMap().putObject(_currentCulture, area.getX(), area.getY(), 0, 0);
 			}

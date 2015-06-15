@@ -164,7 +164,7 @@ public class PanelDebugItem extends BasePanel {
 //				text.setOnClickListener(new OnClickListener() {
 //					@Override
 //					public void onClick(View view) {
-//						initItem(item.actions.itemsProduce.get(0));
+//						initItem(item.actions.itemsProduce.getRoom(0));
 //					}
 //				});
 //				text.setPosition(x, y);

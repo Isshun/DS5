@@ -20,9 +20,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CharacterModel extends Movable {
-	private ConsumableModel _inventory;
-	private OnMoveListener 	_moveListener;
+	private ConsumableModel 			_inventory;
+	private OnMoveListener 				_moveListener;
 	private List<CharacterBuffModel> 	_buffs;
+	private double 						_bodyHeat = Constant.BODY_TEMPERATURE;
+	private double                      _coldAbsorb;
+	private double                      _coldResist;
 //	public boolean hasInInventory(ConsumableModel consumable) {
 //		return _inventory.contains(consumable);
 //	}
@@ -57,21 +60,23 @@ public class CharacterModel extends Movable {
 	public void checkBuffs() {
         boolean needSort = false;
 		for (CharacterBuffModel characterBuff: _buffs) {
-            int maxLevel = 0;
+            int maxLevel = -1;
             for (BuffModel.BuffLevelModel level: characterBuff.buff.levels) {
-                if (characterBuff.level >= level.index && checkBuff(level)) {
-                    maxLevel = characterBuff.buff.levels.indexOf(level);
-                    if (characterBuff.level == level.index) {
-                        if (characterBuff.duration++ > level.delay && maxLevel < characterBuff.buff.levels.size() - 1) {
-                            characterBuff.duration = 0;
-                            maxLevel++;
-                            needSort = true;
-                            Log.info("New buff level: " + characterBuff.buff.levels.get(maxLevel).label + " (" + characterBuff.buff.name + ":" + maxLevel + ")");
-                        }
-                    }
+                if (checkBuff(level)) {
+                    maxLevel = level.index;
                 }
             }
-            characterBuff.level = maxLevel;
+            if (characterBuff.level > maxLevel) {
+                characterBuff.level = maxLevel;
+            }
+            if (maxLevel >= 0) {
+                characterBuff.duration++;
+                if (maxLevel > characterBuff.level && characterBuff.duration > characterBuff.buff.levels.get(characterBuff.level + 1).delay) {
+                    characterBuff.duration = 0;
+                    characterBuff.level++;
+                    needSort = true;
+                }
+            }
 		}
         if (needSort) {
             sortBuffs();
@@ -79,10 +84,16 @@ public class CharacterModel extends Movable {
 	}
 
 	private boolean checkBuff(BuffModel.BuffLevelModel level) {
-		if (level.conditions.minFood != Integer.MIN_VALUE && _needs.getFood() < level.conditions.minFood) {
+		if (level.conditions.minFood != Integer.MIN_VALUE && _needs.getFood() > level.conditions.minFood) {
 			return false;
 		}
-		if (level.conditions.maxFood != Integer.MIN_VALUE && _needs.getFood() > level.conditions.maxFood) {
+		if (level.conditions.maxFood != Integer.MIN_VALUE && _needs.getFood() < level.conditions.maxFood) {
+			return false;
+		}
+		if (level.conditions.minCharacterTemperature != Integer.MIN_VALUE && _bodyHeat > level.conditions.minCharacterTemperature) {
+			return false;
+		}
+		if (level.conditions.maxCharacterTemperature != Integer.MIN_VALUE && _bodyHeat < level.conditions.maxCharacterTemperature) {
 			return false;
 		}
 		if (level.conditions.minDay != Integer.MIN_VALUE && Game.getInstance().getDay() < level.conditions.minDay) {
@@ -107,7 +118,61 @@ public class CharacterModel extends Movable {
 		return _buffs;
 	}
 
-	public enum TalentType {
+	public void update(int tick) {
+        // Check buffs
+        checkBuffs();
+
+        if (tick % 10 == 0) {
+            applyBuffs();
+
+            // Check room temperature
+            updateColdProtection();
+            updateBodyHeat(Game.getRoomManager().getRoom(_posX, _posY));
+        }
+	}
+
+    private void applyBuffs() {
+        for (CharacterBuffModel characterBuff: _buffs) {
+            if (characterBuff.isActive()) {
+                applyBuff(characterBuff.getActiveLevel());
+            }
+        }
+    }
+
+    private void applyBuff(BuffModel.BuffLevelModel level) {
+        if (level.effects.fainting != 0 && Math.random() < level.effects.fainting) {
+            Log.error("fainting");
+        }
+        if (level.effects.mood != 0) {
+            _needs.updateHappiness(level.effects.mood * 0.1);
+        }
+    }
+
+    private void updateColdProtection() {
+        _coldAbsorb = Constant.BODY_COLD_ABSORB;
+        _coldResist = Constant.BODY_COLD_RESIST;
+    }
+
+    private void updateBodyHeat(RoomModel room) {
+		if (room != null) {
+            double minHeat = room.getTemperatureInfo().temperature + _coldAbsorb;
+            if (minHeat >= Constant.BODY_TEMPERATURE) {
+                _bodyHeat = Constant.BODY_TEMPERATURE;
+            } else if (minHeat < _bodyHeat) {
+                Log.info("_bodyHeat: " + _bodyHeat + ", (min: " + minHeat + ")");
+//                _bodyHeat -= diffCold * (1 - _coldResist);
+                _bodyHeat -= 0.1 * (1 - _coldResist);
+            }
+		} else {
+            Log.info("_bodyHeat: " + _bodyHeat);
+        }
+	}
+
+    public double getBodyHeat() {
+        return _bodyHeat;
+    }
+
+    public enum TalentType {
         HEAL,
         CRAFT,
         COOK,
@@ -582,7 +647,7 @@ public class CharacterModel extends Movable {
 		}
 
 		if (_job.action(this)) {
-			// If job is close, get new one
+			// If job is close, getRoom new one
 			JobManager.getInstance().assignJob(this);
 		}
 	}

@@ -43,7 +43,7 @@
 //			return null;
 //		}
 //
-//		ItemBase itemToStore = character.getComponents().get(0);
+//		ItemBase itemToStore = character.getComponents().getRoom(0);
 //		StorageRoom storage = Game.getRoomManager().getNearestFreeStorage(character.getX(), character.getY(), itemToStore);
 //		if (storage == null) {
 //			return null;

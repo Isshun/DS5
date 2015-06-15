@@ -267,6 +267,12 @@ entries:
             textsize: 22
             position: [20, 245]
 
+        -   type: label
+            id: lb_body_heat
+            text: Health
+            textsize: 22
+            position: [20, 265]
+
         -   type: frame
             id: frame_health_entries
-            position: [20, 265]
+            position: [20, 285]

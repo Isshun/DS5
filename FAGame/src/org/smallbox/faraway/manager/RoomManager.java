@@ -18,12 +18,12 @@ import org.smallbox.faraway.model.room.RoomModel.RoomType;
 import java.util.*;
 
 public class RoomManager implements WorldObserver {
-    private RoomModel[][] 			_rooms;
-    private List<RoomModel>			_roomList;
-    private RoomModel _currentDiffuseRoom;
+    private RoomModel[][] 		_rooms;
+    private List<RoomModel>		_roomList;
+    private RoomModel           _currentDiffuseRoom;
     private int                 _width;
     private int                 _height;
-    private ParcelModel[][][]     _areas;
+    private ParcelModel[][][]   _areas;
 
     public RoomManager() {
         _rooms = new RoomModel[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
@@ -185,23 +185,18 @@ public class RoomManager implements WorldObserver {
         }
     }
 
-    private void replaceArea(RoomModel room, RoomModel neighboorRoom, int x, int y) {
+    private void replaceArea(RoomModel room, RoomModel neighborRoom, int x, int y) {
         ParcelModel area = ServiceManager.getWorldMap().getParcel(x, y);
         room.addArea(area);
-        neighboorRoom.removeArea(area);
+        neighborRoom.removeArea(area);
         _rooms[x][y] = room;
     }
 
-    private RoomModel getRoom(int x, int y) {
-        if (x >= 0 && x < Constant.WORLD_WIDTH && y >= 0 && y < Constant.WORLD_HEIGHT) {
-            return _rooms[x][y];
-        }
-        return null;
-    }
-
-    public RoomModel get(int x, int y) {
-        if (x >= 0 && y >= 0 && x < Constant.WORLD_WIDTH && y < Constant.WORLD_HEIGHT) {
-            return _rooms[x][y];
+    public RoomModel getRoom(int x, int y) {
+        for (RoomModel room: _roomList) {
+            if (room.containsParcel(x, y)) {
+                return room;
+            }
         }
         return null;
     }
@@ -273,15 +268,10 @@ public class RoomManager implements WorldObserver {
         }
     }
 
-    public RoomModel[][] getRooms() {
-        return _rooms;
-    }
+    public RoomModel[][] getRooms() { return _rooms; }
+    public List<RoomModel> getRoomList() { return _roomList; }
 
-    public List<RoomModel> getRoomList() {
-        return _roomList;
-    }
-
-    public RoomModel getNeerRoom(int x, int y, RoomType type) {
+    public RoomModel getNearRoom(int x, int y, RoomType type) {
         int bestDistance = Integer.MAX_VALUE;
         RoomModel bestRoom = null;
         for (RoomModel room: _roomList) {

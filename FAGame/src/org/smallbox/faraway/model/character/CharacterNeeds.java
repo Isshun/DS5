@@ -83,7 +83,8 @@ public class CharacterNeeds {
 	public void setEating(int eating) { _eating = eating; }
 	public void setEnergy(double energy) { _energy = energy; }
 	public void setFood(double food) { _food = food; }
-	public void setHapiness(double happiness) { _happiness = happiness; }
+	public void setHappiness(double happiness) { _happiness = happiness; }
+	public void updateHappiness(double change) { _happiness = Math.max(0, Math.min(100, _happiness + change)); }
 	public void setHealth(double health) { _health = health; }
 	public void setInjuries(double injuries) { _injuries = injuries; }
 	public void setOxygen(double oxygen) { _oxygen = oxygen; }

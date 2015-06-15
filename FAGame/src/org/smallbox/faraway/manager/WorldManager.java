@@ -82,7 +82,7 @@ public class WorldManager implements TileBasedMap {
 //    private boolean addRandomSeed(int i, int j) {
 //        int realX = i % _width;
 //        int realY = j % _height;
-//        if (_areas[realX][realY][0].getStructure() == null) {
+//        if (_parcels[realX][realY][0].getStructure() == null) {
 //            WorldResource ressource = (WorldResource) putObject("base.res", 0, realX, realY, 10);
 //            JobManager.getInstance().addGather(ressource);
 //            return true;
@@ -101,7 +101,7 @@ public class WorldManager implements TileBasedMap {
 //        int y = resource.getY();
 //
 //        if (resource.isDepleted()) {
-//            _areas[x][y][0].setResource(null);
+//            _parcels[x][y][0].setResource(null);
 //        }
 //
 //        MainRenderer.getInstance().invalidate(x, y);
@@ -433,7 +433,7 @@ public class WorldManager implements TileBasedMap {
 //            }
 //        }
 //        if (items.size() > 0) {
-//            return items.get((int)(Math.random() * items.size()));
+//            return items.getRoom((int)(Math.random() * items.size()));
 //        }
 //        return null;
 //    }

@@ -11,7 +11,7 @@
 //
 //	@Override
 //	public boolean create(JobManager jobManager, CharacterModel character) {
-//		Room room = Game.getRoomManager().getNeerRoom(character.getX(), character.getY(), Room.Type.METTING);
+//		Room room = Game.getRoomManager().getNearRoom(character.getX(), character.getY(), Room.Type.METTING);
 //		if (room != null) {
 //			jobManager.addJob(JobMove.create(character, room.getX(), room.getY(), Constant.CHARACTER_STAY_IN_METTING_ROOM * Constant.DURATION_MULTIPLIER), character);
 //			return true;
