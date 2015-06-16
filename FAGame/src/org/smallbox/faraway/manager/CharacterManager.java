@@ -11,7 +11,7 @@ import org.smallbox.faraway.model.job.JobModel.JobAbortReason;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CharacterManager {
+public class CharacterManager extends BaseManager {
 
 	public static final ProfessionModel professions[] = {
 		new ProfessionModel(ProfessionModel.Type.ENGINEER, "Engineer", new Color(255, 255, 50), new Color(50, 50, 50)),
@@ -25,16 +25,15 @@ public class CharacterManager {
 	public static ProfessionModel professionsChild = new ProfessionModel(ProfessionModel.Type.CHILD, "Child", new Color(0, 0, 0), new Color(0, 0, 0));
 	public static ProfessionModel professionsStudent = new ProfessionModel(ProfessionModel.Type.STUDENT, "Student", new Color(0, 0, 0), new Color(0, 0, 0));
 
-	private ArrayList<CharacterModel> 	_characters;
-	private int 					_count;
-	private List<CharacterModel> 		_addOnUpdate;
-	
+	private List<CharacterModel>				_characters;
+	private List<CharacterModel> 				_addOnUpdate;
+	private int 								_count;
+
 	public CharacterManager() {
 		Log.debug("CharacterManager");
 
 		_characters = new ArrayList<>();
 		_addOnUpdate = new ArrayList<>();
-		new ArrayList<CharacterModel>();
 		_count = 0;
 
 		Log.debug("CharacterManager done");
@@ -71,7 +70,7 @@ public class CharacterManager {
 		return professions;
 	}
 
-	public void    onUpdate(int update) {
+	public void onUpdate(int tick) {
 //		Log.debug("CharacterManager: update");
 		
 		// Add new born
@@ -94,14 +93,16 @@ public class CharacterManager {
 			}
 			
 			else {
+				c.update(tick);
+
 				// Assign job
-				if (c.getJob() == null && update % 10 == c.getLag() && c.isSleeping() == false) {
+				if (c.getJob() == null && tick % 10 == c.getLag() && c.isSleeping() == false) {
 					JobManager.getInstance().assignJob(c);
 				}
 
 				// Update needs
-				if (update % 10 == 0) {
-					c.updateNeeds(update);
+				if (tick % 10 == 0) {
+					c.updateNeeds(tick);
 				}
 				
 				c.setDirection(Direction.NONE);
@@ -114,13 +115,13 @@ public class CharacterManager {
 			_characters.remove(characterToRemove);
 		}
 
-//		Log.debug("CharacterManager: update done");
-	}
-
-	public void onLongUpdate() {
-		for (CharacterModel c: _characters) {
-			c.longUpdate();
+		if (tick % 10 == 0) {
+			for (CharacterModel c: _characters) {
+				c.longUpdate();
+			}
 		}
+
+//		Log.debug("CharacterManager: update done");
 	}
 
 	// TODO: heavy

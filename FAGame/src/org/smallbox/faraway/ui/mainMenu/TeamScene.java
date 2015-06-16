@@ -15,7 +15,7 @@ public class TeamScene extends MainMenuScene {
 
     @Override
     public void onLayoutLoaded(LayoutModel layout) {
-        findById("bt_land_site").setOnClickListener(view -> Application.getInstance().newGame());
+        findById("bt_land_site").setOnClickListener(view -> Application.getInstance().newGame("5"));
     }
 
     @Override

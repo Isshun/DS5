@@ -48,7 +48,7 @@
 //			RoomSave roomSave = new RoomSave();
 //			roomSave.id = room.getId();
 //			roomSave.type = room.getType();
-//			for (WorldArea area: room.getAreas()) {
+//			for (WorldArea area: room.getParcels()) {
 //				roomSave.areas.add(new RoomSaveArea(area.getX(), area.getY()));
 //			}
 //

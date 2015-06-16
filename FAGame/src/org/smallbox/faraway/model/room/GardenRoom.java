@@ -1,11 +1,9 @@
 package org.smallbox.faraway.model.room;
 
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.engine.ui.OnClickListener;
-import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.ParcelModel;
 import org.smallbox.faraway.model.item.ResourceModel;
@@ -36,26 +34,21 @@ public class GardenRoom extends RoomModel {
 
 	private void init() {
 		_options = new RoomOptions();
-		_cultures  = Game.getData().gatherItems;
+		_cultures  = GameData.getData().gatherItems;
 		for (ItemInfo c: _cultures) {
 			final ItemInfo culture = c;
 			_options.options.add(new RoomOption("Set " + culture.label,
 					SpriteManager.getInstance().getIcon(culture),
-					new OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					setCulture(culture);
-				}
-			}));
+					view -> setCulture(culture)));
 		}
-		_currentCulture = Game.getData().getRandomGatherItem();
+		_currentCulture = GameData.getData().getRandomGatherItem();
 	}
 
 	public void setCulture(ItemInfo culture) {
 		if (culture != _currentCulture) {
 			_state = State.RAW;
 			_currentCulture = culture;
-			for (ParcelModel area: _areas) {
+			for (ParcelModel area: _parcels) {
 				ServiceManager.getWorldMap().replaceItem(_currentCulture, area.getX(), area.getY(), 0);
 			}
 		}
@@ -65,7 +58,7 @@ public class GardenRoom extends RoomModel {
 
 	@Override
 	public void update() {
-		for (ParcelModel area: _areas) {
+		for (ParcelModel area: _parcels) {
 			if (area.getResource() == null) {
 				ServiceManager.getWorldMap().putObject(_currentCulture, area.getX(), area.getY(), 0, 0);
 			}

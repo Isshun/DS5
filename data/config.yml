@@ -1,6 +1,8 @@
 weather: regular
 time: midnight
 tickPerHour: 42
+inventoryMaxQuantity: 20
+storageMaxQuantity: 30
 
 render:
     floor:          true
@@ -8,6 +10,10 @@ render:
     resource:       true
     item:           true
     consumable:     true
+    temperature:    false
+    job:            true
+    area:           true
+    debug:          true
 
 manager:
     room:           true
@@ -19,9 +25,6 @@ character:
         regular:
             energy: -0.25
             food: -0.5
-            happiness: 100
-            relation: 100
-            security: 100
         sleepOnFloor:
             energy: 30.0
             food: -1

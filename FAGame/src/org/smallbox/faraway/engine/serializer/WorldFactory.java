@@ -7,6 +7,7 @@ import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.WorldManager;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.ResourceModel;
 
@@ -186,7 +187,7 @@ public class WorldFactory {
     private static void addRandomResources(WorldManager world) {
         int resInterval = RES_INTERVAL_HEAVY;
         List<ItemInfo> resourceItemsInfo = new ArrayList<>();
-        Game.getData().items.stream().filter(info -> info.actions != null).forEach(info -> {
+        GameData.getData().items.stream().filter(info -> info.actions != null).forEach(info -> {
             resourceItemsInfo.addAll(info.actions.stream()
                     .filter(action -> "gather".equals(action.type))
                     .map(action -> info)
@@ -251,7 +252,7 @@ public class WorldFactory {
 //        clean(map);
 //        clean(map);
 
-        ItemInfo info = Game.getData().getItemInfo("base.res_rock");
+        ItemInfo info = GameData.getData().getItemInfo("base.res_rock");
         for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
             for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
                 if (map[i][j] > 15) {
@@ -317,7 +318,7 @@ public class WorldFactory {
 //        clean(map);
 //        clean(map);
 
-        ItemInfo info = Game.getData().getItemInfo("base.grass");
+        ItemInfo info = GameData.getData().getItemInfo("base.grass");
         int offsetX = (int)(Math.random() * Constant.WINDOW_WIDTH / DIV);
         int offsetY = (int)(Math.random() * Constant.WINDOW_HEIGHT / DIV);
         for (int i = 0; i < Constant.WORLD_WIDTH; i++) {

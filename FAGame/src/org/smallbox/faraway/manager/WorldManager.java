@@ -3,31 +3,31 @@ package org.smallbox.faraway.manager;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 import org.smallbox.faraway.Game;
-import org.smallbox.faraway.WorldObserver;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.PathManager.MyMover;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class WorldManager implements TileBasedMap {
+public class WorldManager extends BaseManager implements TileBasedMap {
     private static final int 	    NB_FLOOR = 10;
 
-    private ParcelModel[][][]		    _areas;
+    private ParcelModel[][][]       _parcels;
     private int					    _width;
     private int					    _height;
     private int 				    _floor;
     private int                     _temperature;
     private WorldFinder		 	    _finder;
     private WorldObserverTemporizer _temporizer = new WorldObserverTemporizer();
-    private List<WorldObserver>     _observers = new ArrayList<>();
     private int                     _temperatureOffset;
+    private final Game              _game;
+    private Set<ConsumableModel>    _consumables = new HashSet<>();
 
     public ParcelModel[][][] getAreas() {
-        return _areas;
+        return _parcels;
     }
 
     // TODO: arraylist
@@ -35,34 +35,35 @@ public class WorldManager implements TileBasedMap {
         int count = 0;
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
-                if (_areas[x][y][0] != null && _areas[x][y][0].getConsumable() != null && _areas[x][y][0].getConsumable().getInfo() == itemInfo) {
-                    count += _areas[x][y][0].getConsumable().getQuantity();
+                if (_parcels[x][y][0] != null && _parcels[x][y][0].getConsumable() != null && _parcels[x][y][0].getConsumable().getInfo() == itemInfo) {
+                    count += _parcels[x][y][0].getConsumable().getQuantity();
                 }
             }
         }
         return count;
     }
 
-    public WorldManager() {
+    public WorldManager(Game game) {
+        _game = game;
         _width = Constant.WORLD_WIDTH;
         _height = Constant.WORLD_HEIGHT;
 
-        _areas = new ParcelModel[_width][_height][NB_FLOOR];
+        _parcels = new ParcelModel[_width][_height][NB_FLOOR];
         for (int x = 0; x < _width; x++) {
-            _areas[x] = new ParcelModel[_height][NB_FLOOR];
+            _parcels[x] = new ParcelModel[_height][NB_FLOOR];
             for (int y = 0; y < _height; y++) {
-                _areas[x][y] = new ParcelModel[NB_FLOOR];
+                _parcels[x][y] = new ParcelModel[NB_FLOOR];
                 for (int f = 0; f < NB_FLOOR; f++) {
-                    _areas[x][y][f] = new ParcelModel(x, y, f);
+                    _parcels[x][y][f] = new ParcelModel(x, y, f);
                 }
             }
         }
 
-        _finder = new WorldFinder(this, _areas);
+        _finder = new WorldFinder(this, _parcels);
     }
 
     public MapObjectModel putObject(String name, int x, int y, int z, int i) {
-        return putObject(Game.getData().getItemInfo(name), x, y, z, i);
+        return putObject(GameData.getData().getItemInfo(name), x, y, z, i);
     }
 
 //    public void	addRandomSeed() {
@@ -82,7 +83,7 @@ public class WorldManager implements TileBasedMap {
 //    private boolean addRandomSeed(int i, int j) {
 //        int realX = i % _width;
 //        int realY = j % _height;
-//        if (_areas[realX][realY][0].getStructure() == null) {
+//        if (_parcels[realX][realY][0].getStructure() == null) {
 //            WorldResource ressource = (WorldResource) putObject("base.res", 0, realX, realY, 10);
 //            JobManager.getInstance().addGather(ressource);
 //            return true;
@@ -101,7 +102,7 @@ public class WorldManager implements TileBasedMap {
 //        int y = resource.getY();
 //
 //        if (resource.isDepleted()) {
-//            _areas[x][y][0].setResource(null);
+//            _parcels[x][y][0].setResource(null);
 //        }
 //
 //        MainRenderer.getInstance().invalidate(x, y);
@@ -110,20 +111,21 @@ public class WorldManager implements TileBasedMap {
 //    }
 
     public void removeItem(ItemModel item) {
-        if (item != null && item.getArea() != null) {
-            item.getArea().setItem(null);
+        if (item != null && item.getParcel() != null) {
+            item.getParcel().setItem(null);
 
             _temporizer.onRemoveItem(item);
-            _observers.forEach(observer -> observer.onRemoveItem(item));
+            _game.notify(observer -> observer.onRemoveItem(item));
         }
     }
 
     public void removeConsumable(ConsumableModel consumable) {
-        if (consumable != null && consumable.getArea() != null) {
-            consumable.getArea().setConsumable(null);
+        if (consumable != null && consumable.getParcel() != null) {
+            consumable.getParcel().setConsumable(null);
 
             _temporizer.onRemoveConsumable(consumable);
-            _observers.forEach(observer -> observer.onRemoveConsumable(consumable));
+            _game.notify(observer -> observer.onRemoveConsumable(consumable));
+            _consumables.remove(consumable);
         }
     }
 
@@ -132,21 +134,21 @@ public class WorldManager implements TileBasedMap {
             return;
         }
 
-        StructureModel structure = _areas[x][y][0].getStructure();
+        StructureModel structure = _parcels[x][y][0].getStructure();
         if (structure != null) {
-            _areas[x][y][0].setStructure(null);
+            _parcels[x][y][0].setStructure(null);
 
             _temporizer.onRemoveStructure(structure);
-            _observers.forEach(observer -> observer.onRemoveStructure(structure));
+            _game.notify(observer -> observer.onRemoveStructure(structure));
         }
     }
 
     public void removeStructure(StructureModel structure) {
-        if (structure != null && structure.getArea() != null) {
-            structure.getArea().setStructure(null);
+        if (structure != null && structure.getParcel() != null) {
+            structure.getParcel().setStructure(null);
 
             _temporizer.onRemoveStructure(structure);
-            _observers.forEach(observer -> observer.onRemoveStructure(structure));
+            _game.notify(observer -> observer.onRemoveStructure(structure));
         }
     }
 
@@ -155,16 +157,17 @@ public class WorldManager implements TileBasedMap {
             return null;
         }
 
-        ParcelModel area = getNearestFreeArea(itemInfo, x, y);
+        ParcelModel area = getNearestFreeArea(itemInfo, x, y, quantity);
         if (area == null) {
             return null;
         }
 
         // Put consumable on free area
         if (area.getConsumable() != null) {
-            area.getConsumable().addQuantity(1);
+            area.getConsumable().addQuantity(quantity);
         } else {
-            area.setConsumable((ConsumableModel) ItemFactory.create(this, _areas[x][y][0], itemInfo, 1));
+            area.setConsumable(ItemFactory.createConsumable(area, itemInfo, quantity));
+            _consumables.add(area.getConsumable());
         }
         return area.getConsumable();
     }
@@ -174,7 +177,7 @@ public class WorldManager implements TileBasedMap {
             return null;
         }
 
-        ParcelModel area = getNearestFreeArea(consumable.getInfo(), x, y);
+        ParcelModel area = getNearestFreeArea(consumable.getInfo(), x, y, consumable.getQuantity());
         if (area == null) {
             return null;
         }
@@ -187,7 +190,7 @@ public class WorldManager implements TileBasedMap {
         }
 
         _temporizer.onAddConsumable(consumable);
-        _observers.forEach(observer -> observer.onAddConsumable(consumable));
+        _game.notify(observer -> observer.onAddConsumable(consumable));
 
         return consumable;
     }
@@ -199,18 +202,18 @@ public class WorldManager implements TileBasedMap {
      * @param y
      * @return nearest free area
      */
-    private ParcelModel getNearestFreeArea(ItemInfo itemInfo, int x, int y) {
-        if (itemInfo.isUserItem || itemInfo.isConsumable) {
+    private ParcelModel getNearestFreeArea(ItemInfo itemInfo, int x, int y, int quantity) {
+        if (itemInfo.isConsumable) {
             for (int i = 0; i < 10; i++) {
-                if (areaFreeForConsumable(x + 0, y + 0, itemInfo)) return _areas[x + 0][y + 0][0];
-                if (areaFreeForConsumable(x + i, y + 0, itemInfo)) return _areas[x + i][y + 0][0];
-                if (areaFreeForConsumable(x + 0, y + i, itemInfo)) return _areas[x + 0][y + i][0];
-                if (areaFreeForConsumable(x - i, y + 0, itemInfo)) return _areas[x - i][y + 0][0];
-                if (areaFreeForConsumable(x + 0, y - i, itemInfo)) return _areas[x + 0][y - i][0];
-                if (areaFreeForConsumable(x + i, y + i, itemInfo)) return _areas[x + i][y + i][0];
-                if (areaFreeForConsumable(x - 0, y - i, itemInfo)) return _areas[x - 0][y - i][0];
-                if (areaFreeForConsumable(x + i, y - i, itemInfo)) return _areas[x + i][y - i][0];
-                if (areaFreeForConsumable(x - i, y + i, itemInfo)) return _areas[x - i][y + i][0];
+                if (areaFreeForConsumable(x + 0, y + 0, itemInfo, quantity)) return _parcels[x + 0][y + 0][0];
+                if (areaFreeForConsumable(x + i, y + 0, itemInfo, quantity)) return _parcels[x + i][y + 0][0];
+                if (areaFreeForConsumable(x + 0, y + i, itemInfo, quantity)) return _parcels[x + 0][y + i][0];
+                if (areaFreeForConsumable(x - i, y + 0, itemInfo, quantity)) return _parcels[x - i][y + 0][0];
+                if (areaFreeForConsumable(x + 0, y - i, itemInfo, quantity)) return _parcels[x + 0][y - i][0];
+                if (areaFreeForConsumable(x + i, y + i, itemInfo, quantity)) return _parcels[x + i][y + i][0];
+                if (areaFreeForConsumable(x - 0, y - i, itemInfo, quantity)) return _parcels[x - 0][y - i][0];
+                if (areaFreeForConsumable(x + i, y - i, itemInfo, quantity)) return _parcels[x + i][y - i][0];
+                if (areaFreeForConsumable(x - i, y + i, itemInfo, quantity)) return _parcels[x - i][y + i][0];
             }
         }
         return null;
@@ -223,11 +226,11 @@ public class WorldManager implements TileBasedMap {
      * @param info
      * @return
      */
-    private boolean areaFreeForConsumable(int x, int y, ItemInfo info) {
+    private boolean areaFreeForConsumable(int x, int y, ItemInfo info, int quantity) {
         if (inMapBounds(x, y)) {
-            ParcelModel area = _areas[x][y][0];
+            ParcelModel area = _parcels[x][y][0];
             if (area.getStructure() == null || area.getStructure().isFloor()) {
-                return area.getItem() == null && (area.getConsumable() == null || area.getConsumable().getInfo() == info);
+                return area.getItem() == null && (area.getConsumable() == null || (area.getConsumable().getInfo() == info && area.getConsumable().getQuantity() + quantity <= GameData.config.storageMaxQuantity));
             }
         }
         return false;
@@ -240,12 +243,7 @@ public class WorldManager implements TileBasedMap {
      * @return true if position in bounds
      */
     private boolean inMapBounds(int x, int y) {
-        //z < 0 || z >= NB_FLOOR ||
-        if (x < 0 || y < 0 || x >= _width || y >= _height) {
-            //Log.error("put item out of bound, type: " + itemInfo.name + ", x: " + x + ", y: " + y + ")");
-            return false;
-        }
-        return true;
+        return !(x < 0 || y < 0 || x >= _width || y >= _height);
     }
 
     public MapObjectModel putObject(ItemInfo itemInfo, int x, int y, int z, int value) {
@@ -278,14 +276,14 @@ public class WorldManager implements TileBasedMap {
         }
 
         // Put item on floor
-        ResourceModel resource = (ResourceModel)ItemFactory.create(this, _areas[x][y][z], itemInfo, matterSupply);
+        ResourceModel resource = (ResourceModel)ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
         for (int i = 0; i < resource.getWidth(); i++) {
             for (int j = 0; j < resource.getHeight(); j++) {
-                _areas[x][y][z].setResource(resource);
+                _parcels[x][y][z].setResource(resource);
             }
         }
         _temporizer.onAddResource(resource);
-        _observers.forEach(observer -> observer.onAddResource(resource));
+        _game.notify(observer -> observer.onAddResource(resource));
 
         return resource;
     }
@@ -296,14 +294,14 @@ public class WorldManager implements TileBasedMap {
         }
 
         // Put item on floor
-        ItemModel item = (ItemModel)ItemFactory.create(this, _areas[x][y][z], itemInfo, progress);
+        ItemModel item = (ItemModel)ItemFactory.create(this, _parcels[x][y][z], itemInfo, progress);
         for (int i = 0; i < item.getWidth(); i++) {
             for (int j = 0; j < item.getHeight(); j++) {
-                _areas[x][y][z].setItem(item);
+                _parcels[x][y][z].setItem(item);
             }
         }
         _temporizer.onAddItem(item);
-        _observers.forEach(observer -> observer.onAddItem(item));
+        _game.notify(observer -> observer.onAddItem(item));
 
         return item;
     }
@@ -314,35 +312,35 @@ public class WorldManager implements TileBasedMap {
         }
 
         // TODO
-        if (_areas[x][y][z].getStructure() == null || _areas[x][y][z].getStructure().isGround()) {
-            MapObjectModel item = ItemFactory.create(this, _areas[x][y][z], itemInfo, matterSupply);
-            if (item != null) {
-                item.setPosition(x, y);
-                if (item.isStructure()) {
-                    _temporizer.onAddStructure((StructureModel) item);
-                    _observers.forEach(observer -> observer.onAddStructure((StructureModel)item));
+        if (_parcels[x][y][z].getStructure() == null || _parcels[x][y][z].getStructure().isGround()) {
+            StructureModel structure = (StructureModel)ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
+            if (structure != null) {
+                structure.setPosition(x, y);
+                if (structure.isStructure()) {
+                    _temporizer.onAddStructure(structure);
+                    _game.notify(observer -> observer.onAddStructure(structure));
                 }
             }
-            return (StructureModel)item;
+            return structure;
         }
 
         return null;
     }
 
     public ItemModel getItem(int x, int y) {
-        return (x < 0 || x >= _width || y < 0 || y >= _height) || _areas[x][y] == null ? null : _areas[x][y][0].getItem();
+        return (x < 0 || x >= _width || y < 0 || y >= _height) || _parcels[x][y] == null ? null : _parcels[x][y][0].getItem();
     }
 
     public ResourceModel getResource(int x, int y, int z) {
-        return (z < 0 || z >= NB_FLOOR || x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y][z].getResource();
+        return (z < 0 || z >= NB_FLOOR || x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][z].getResource();
     }
 
     public StructureModel getStructure(int x, int y, int z) {
-        return (z < 0 || z >= NB_FLOOR || x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y][z].getStructure();
+        return (z < 0 || z >= NB_FLOOR || x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][z].getStructure();
     }
 
     public ConsumableModel getConsumable(int x, int y) {
-        return (x < 0 || x >= _width || y < 0 || y >= _height) || _areas[x][y] == null ? null : _areas[x][y][0].getConsumable();
+        return (x < 0 || x >= _width || y < 0 || y >= _height) || _parcels[x][y] == null ? null : _parcels[x][y][0].getConsumable();
     }
 
     public StructureModel getStructure(int x, int y) {
@@ -354,7 +352,7 @@ public class WorldManager implements TileBasedMap {
     }
 
     public ParcelModel getParcel(int x, int y) {
-        return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _areas[x][y][0];
+        return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][0];
     }
 
     public int					getWidth() { return _width; }
@@ -386,11 +384,11 @@ public class WorldManager implements TileBasedMap {
 
     private void replaceItem(ItemInfo info, int x, int y, int z, int matterSupply) {
         if (info.isResource) {
-            _areas[x][y][z].setResource(null);
+            _parcels[x][y][z].setResource(null);
         } else if (info.isStructure) {
-            _areas[x][y][z].setStructure(null);
+            _parcels[x][y][z].setStructure(null);
         } else {
-            _areas[x][y][z].setItem(null);
+            _parcels[x][y][z].setItem(null);
         }
         putObject(info, x, y, z, matterSupply);
     }
@@ -433,7 +431,7 @@ public class WorldManager implements TileBasedMap {
 //            }
 //        }
 //        if (items.size() > 0) {
-//            return items.get((int)(Math.random() * items.size()));
+//            return items.getRoom((int)(Math.random() * items.size()));
 //        }
 //        return null;
 //    }
@@ -446,17 +444,16 @@ public class WorldManager implements TileBasedMap {
         int x = resource.getX();
         int y = resource.getY();
 
-        if (_areas[x][y][0].getResource() != resource) {
+        if (_parcels[x][y][0].getResource() != resource) {
             return;
         }
 
-        _areas[resource.getX()][resource.getY()][0].setResource(null);
-        MainRenderer.getInstance().invalidate(x, y);
-        MainRenderer.getInstance().invalidate();
+        _parcels[resource.getX()][resource.getY()][0].setResource(null);
+        _game.notify(observer -> observer.onRemoveResource(resource));
     }
 
     public ParcelModel getParcel(int z, int x, int y) {
-        return _areas[x][y][z];
+        return _parcels[x][y][z];
     }
 
     @Override
@@ -466,8 +463,8 @@ public class WorldManager implements TileBasedMap {
             return false;
         }
 
-        if (x >= 0 && y >= 0 && x < _width && y < _height) {
-            return _areas[x][y][0].getStructure() != null && _areas[x][y][0].getStructure().isComplete() && _areas[x][y][0].getStructure().isSolid();
+        if (inMapBounds(x, y)) {
+            return _parcels[x][y][0].getStructure() != null && _parcels[x][y][0].getStructure().isComplete() && _parcels[x][y][0].getStructure().isSolid();
         }
         return false;
     }
@@ -476,7 +473,7 @@ public class WorldManager implements TileBasedMap {
     public float getCost(PathFindingContext context, int tx, int ty) {
         float cost = context.getSourceX() != tx && context.getSourceY() != ty ? 1.5f : 1f;
 
-        ParcelModel area = _areas[tx][ty][0];
+        ParcelModel area = _parcels[tx][ty][0];
         if (area != null && area.getItem() != null) {
             cost *= 4;
         }
@@ -549,16 +546,12 @@ public class WorldManager implements TileBasedMap {
     public ItemModel getItemById(int itemId) {
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
-                if (_areas[x][y][0].getItem() != null && _areas[x][y][0].getItem().getId() == itemId) {
-                    return _areas[x][y][0].getItem();
+                if (_parcels[x][y][0].getItem() != null && _parcels[x][y][0].getItem().getId() == itemId) {
+                    return _parcels[x][y][0].getItem();
                 }
             }
         }
         return null;
-    }
-
-    public void addObserver(WorldObserver observer) {
-        _observers.add(observer);
     }
 
     public int getTemperature() {
@@ -568,5 +561,14 @@ public class WorldManager implements TileBasedMap {
     public void setTemperatureOffset(int temperatureOffset) {
         Log.info("Set world temperature offset: " + temperatureOffset);
         _temperatureOffset = temperatureOffset;
+    }
+
+    @Override
+    protected void onUpdate(int tick) {
+
+    }
+
+    public Collection<ConsumableModel> getConsumables() {
+        return _consumables;
     }
 }

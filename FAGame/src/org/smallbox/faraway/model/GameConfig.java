@@ -4,7 +4,6 @@ package org.smallbox.faraway.model;
  * Created by Alex on 04/06/2015.
  */
 public class GameConfig {
-
     public static class EffectValues {
         public double		    food;
         public double 		    drink;
@@ -34,6 +33,10 @@ public class GameConfig {
         public boolean          resource;
         public boolean          item;
         public boolean          consumable;
+        public boolean          temperature;
+        public boolean          job;
+        public boolean          area;
+        public boolean          debug;
     }
 
     public static class GameConfigManager {
@@ -48,4 +51,6 @@ public class GameConfig {
     public String               weather;
     public String               time;
     public int                  tickPerHour;
+    public int                  inventoryMaxQuantity;
+    public int                  storageMaxQuantity;
 }

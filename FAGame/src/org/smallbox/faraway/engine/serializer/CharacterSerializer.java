@@ -7,9 +7,6 @@ import org.smallbox.faraway.model.character.CharacterModel.Gender;
 import org.smallbox.faraway.model.character.CharacterNeeds;
 import org.smallbox.faraway.model.character.CharacterRelation;
 import org.smallbox.faraway.model.character.CharacterRelation.Relation;
-import org.smallbox.faraway.model.item.ConsumableModel;
-import org.smallbox.faraway.model.item.MapObjectModel;
-import org.smallbox.faraway.model.item.ItemInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,7 +153,7 @@ public class CharacterSerializer implements SerializerInterface {
 			character.getNeeds().setEating(characterSave.needs.eating);
 			character.getNeeds().setEnergy(characterSave.needs.energy);
 			character.getNeeds().setFood(characterSave.needs.food);
-			character.getNeeds().setHapiness(characterSave.needs.happiness);
+			character.getNeeds().setHappiness(characterSave.needs.happiness);
 			character.getNeeds().setHealth(characterSave.needs.health);
 			character.getNeeds().setInjuries(characterSave.needs.injuries);
 			character.getNeeds().setOxygen(characterSave.needs.oxygen);

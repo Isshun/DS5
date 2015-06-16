@@ -66,10 +66,13 @@ public class GDXLightRenderer extends LightRenderer {
     /** BOX2D LIGHT STUFF */
     RayHandler rayHandler;
     List<Light> lights = new ArrayList<>();
+    List<Light> _sunLights = new ArrayList<>();
     float sunDirection = -90f;
     private List<Body>  _bodies = new ArrayList<>();
     private Body        _sunBody;
-    private PointLight  _sunLight;
+    private PointLight  _sunLight1;
+    private PointLight  _sunLight2;
+    private List<Body> _sunBodies = new ArrayList<>();
 
     public GDXLightRenderer() {
 //        _camera = new OrthographicCamera(viewportWidth, viewportHeight);
@@ -153,7 +156,11 @@ public class GDXLightRenderer extends LightRenderer {
 
     @Override
     public void setSunColor(Color color) {
-        _sunLight.setColor(new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f));
+//        for (Light light: _sunLights) {
+//            light.setColor(new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f));
+//        }
+        _sunLight1.setColor(new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f * 0.75f));
+        _sunLight2.setColor(new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f * 0.25f));
     }
 
     void clearLights() {
@@ -167,14 +174,31 @@ public class GDXLightRenderer extends LightRenderer {
     void initPointLights() {
         clearLights();
 
-        _sunLight = new PointLight(rayHandler, RAYS_PER_BALL, null, 100000, 0f, 0f);
-        _sunLight.setSoft(false);
-        _sunLight.setPosition(0, 0);
-        _sunLight.setXray(true);
-        _sunLight.attachToBody(_sunBody, RADIUS / 2f, RADIUS / 2f);
-        _sunLight.setPosition(viewportWidth / 2, viewportHeight / 2);
-        _sunLight.setColor(255, 255, 255, 0.11f);
-        lights.add(_sunLight);
+//        for (Body sunBody: _sunBodies) {
+//            _sunLight = new PointLight(rayHandler, RAYS_PER_BALL, null, 1000, sunBody.getPosition().x, sunBody.getPosition().y);
+//            _sunLight.setSoft(false);
+//            _sunLight.setPosition(sunBody.getPosition().x, sunBody.getPosition().y);
+////            _sunLight.setXray(true);
+//            _sunLight.attachToBody(sunBody, RADIUS / 2f, RADIUS / 2f);
+////            _sunLight.attachToBody(_sunBody, RADIUS / 2f, RADIUS / 2f);
+////                _sunLight.setPosition(viewportWidth / 2, viewportHeight / 2);
+//            _sunLight.setColor(255, 255, 255, 0.11f);
+//            _sunLights.add(_sunLight);
+//            lights.add(_sunLight);
+//        }
+        _sunLight1 = new PointLight(rayHandler, RAYS_PER_BALL, null, 10000, 0, 0);
+        _sunLight1.setSoft(false);
+        _sunLight1.setXray(true);
+        _sunLight1.attachToBody(_sunBody, RADIUS / 2f, RADIUS / 2f);
+        _sunLight1.setColor(255, 255, 255, 0.11f);
+        lights.add(_sunLight1);
+
+        _sunLight2 = new PointLight(rayHandler, RAYS_PER_BALL, null, 10000, 0, 0);
+        _sunLight2.setSoft(false);
+        _sunLight2.setXray(false);
+        _sunLight2.attachToBody(_sunBody, RADIUS / 2f, RADIUS / 2f);
+        _sunLight2.setColor(255, 255, 255, 0.11f);
+        lights.add(_sunLight2);
 
         for (Body ball: balls) {
             PointLight light = new PointLight(rayHandler, RAYS_PER_BALL, null, (int)ball.getUserData(), 0f, 0f);
@@ -217,6 +241,22 @@ public class GDXLightRenderer extends LightRenderer {
         def.density = 1f;
         BodyDef boxBodyDef = new BodyDef();
         boxBodyDef.type = BodyDef.BodyType.DynamicBody;
+
+        for (int x = 0; x < Game.getWorldManager().getWidth(); x += 5) {
+            for (int y = 0; y < Game.getWorldManager().getHeight(); y += 5) {
+                ParcelModel parcel = Game.getWorldManager().getParcel(x, y);
+                if (parcel != null) {
+                    if (parcel.getRoom() != null && parcel.getRoom().isExterior()) {
+                        if (parcel.getStructure() == null || parcel.getStructure().isFloor()) {
+                            int posX = x * 32 - Constant.WINDOW_WIDTH / 2;
+                            int posY = y * 32;
+                            _sunBody = createLight(boxBodyDef, def, posX, posY);
+                            _sunBodies.add(_sunBody);
+                        }
+                    }
+                }
+            }
+        }
 
         _sunBody = createLight(boxBodyDef, def, 0, 0);
 
@@ -271,6 +311,11 @@ public class GDXLightRenderer extends LightRenderer {
                         int posY = y * 32 - 0 + 24;
                         createBox(bodyDef, fixtureDef, posX, posY);
                     }
+                    if (areas[x][y][0] != null && areas[x][y][0].getResource() != null && areas[x][y][0].getResource().isRock()) {
+                        int posX = x * 32 - 0 - Constant.WINDOW_WIDTH / 2 + 16;
+                        int posY = y * 32 - 0 + 24;
+                        createBox(bodyDef, fixtureDef, posX, posY);
+                    }
                 }
             }
         }
@@ -299,10 +344,6 @@ public class GDXLightRenderer extends LightRenderer {
      * GC
      **/
     Vector3 testPoint = new Vector3();
-
-    public Light getSun() {
-        return _sunLight;
-    }
 
     @Override
     public void onAddItem(ItemModel item) {

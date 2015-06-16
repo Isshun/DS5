@@ -176,8 +176,8 @@ public abstract class Movable implements PathManagerCallback {
 	public int getSmoothY(int posX) {
 		return _posY * 32;
 		
-//		if (_points != null && _points.get(posX) != null) {
-//			_lastY = _points.get(posX);
+//		if (_points != null && _points.getRoom(posX) != null) {
+//			_lastY = _points.getRoom(posX);
 //		}
 //		return _lastY;
 	}

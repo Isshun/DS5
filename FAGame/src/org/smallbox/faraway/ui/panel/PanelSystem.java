@@ -21,7 +21,7 @@ public class PanelSystem extends BasePanel {
 	private TextView 		_lbFrame;
 
 	public PanelSystem() {
-		super(Mode.NONE, null, 0, 0, FRAME_WIDTH, FRAME_HEIGHT, "data/ui/panels/system.yml");
+		super(Mode.NONE, null, 0, 32, FRAME_WIDTH, FRAME_HEIGHT, "data/ui/panels/system.yml");
 	}
 	
 	@Override

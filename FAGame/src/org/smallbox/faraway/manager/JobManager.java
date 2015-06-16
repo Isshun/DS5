@@ -1,6 +1,5 @@
 package org.smallbox.faraway.manager;
 
-import org.smallbox.faraway.Color;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.util.Constant;
@@ -18,54 +17,12 @@ import org.smallbox.faraway.model.job.JobModel.JobStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobManager {
-	public final static Color COLOR_BUILD = new Color(170, 128, 64);
-	public final static Color COLOR_MOVE = Color.CYAN;
-	public final static Color COLOR_GATHER = Color.GREEN;
-	public final static Color COLOR_MINING = Color.GREEN;
-	public final static Color COLOR_WORK = Color.GREEN;
-	public final static Color COLOR_REFILL = Color.GREEN;
-	public final static Color COLOR_NONE = Color.BLACK;
-	public final static Color COLOR_USE_INVENTORY = Color.BLUE;
-	public final static Color COLOR_USE = Color.BLUE;
-	public final static Color COLOR_DESTROY = new Color(200, 20, 20);
-	public final static Color COLOR_STORE = new Color(180, 100, 255);
-	public final static Color COLOR_TAKE = new Color(180, 100, 255);
-
-    public void addJob(ItemModel item, ItemInfo.ItemInfoAction action) {
-        switch (action.type) {
-            case "cook":
-                addJob(JobCook.create(action, item));
-                break;
-            case "craft":
-                addJob(JobCraft.create(action, item));
-                break;
-        }
-    }
-
+public class JobManager extends BaseManager {
 	private static JobManager		_self;
 	private List<JobModel> 			_jobs;
 	private int 					_nbVisibleJob;
 	private List<JobModel> 			_toRemove;
     private List<CharacterCheck>    _priorities;
-
-//	private CharacterCheck[]		_priorityJobsCheck = {
-//			new CharacterIsTired(),
-//			new CharacterIsFull(),
-//			new CharacterIsHungry(),
-//	};
-//
-//	private Check[]				    _jobsCheck = {
-////			new CheckLowFood(),
-////			new CheckEmptyFactory(),
-////			new CheckGardenIsMature()
-//	};
-//
-//	private CharacterCheck[]		_routineJobsCheck = {
-//			new CharacterHasItemToStore(),
-//			new CharacterPlayTime(),
-//			new CharacterGoToMettingRoom()
-//	};
 
 	public JobManager() {
 		Log.debug("JobManager");
@@ -80,6 +37,37 @@ public class JobManager {
         _priorities.add(new CheckCharacterHungry());
 
         Log.debug("JobManager done");
+	}
+
+    @Override
+    protected void onCreate() {
+    }
+
+    @Override
+    protected void onUpdate(int tick) {
+        cleanJobs();
+
+        if (tick % 10 == 0) {
+            // Create haul jobs
+            _jobs.stream().filter(job -> job instanceof  JobHaul).forEach(job -> ((JobHaul)job).getItemAround());
+            Game.getWorldManager().getConsumables().stream().filter(consumable -> consumable.getHaul() == null && consumable.getParcel().getArea() == null).forEach(consumable -> {
+                addJob(JobHaul.create(consumable));
+            });
+
+            // Remove invalid job
+            _jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
+        }
+    }
+
+    public void addJob(ItemModel item, ItemInfo.ItemInfoAction action) {
+		switch (action.type) {
+			case "cook":
+				addJob(JobCook.create(action, item));
+				break;
+			case "craft":
+				addJob(JobCraft.create(action, item));
+				break;
+		}
 	}
 
 	public List<JobModel>	getJobs() { return _jobs; };
@@ -259,7 +247,7 @@ public class JobManager {
 	}
 
     /**
-     * Create priority job for characters (eat / sleep / get oxygen / move to temperate area)
+     * Create priority job for characters (eat / sleep / getRoom oxygen / move to temperate area)
      *
      * @param character
      * @return
@@ -380,11 +368,6 @@ public class JobManager {
 		return job;
 	}
 
-	public void onLongUpdate() {
-		// Remove invalid job
-		_jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
-	}
-
 	public void addGatherJob(int x, int y) {
 		JobModel job = createGatherJob(x, y);
 		if (job != null) {
@@ -406,10 +389,6 @@ public class JobManager {
 //		}
 //		return job;
         throw new RuntimeException("not implemented");
-	}
-
-	public int getNbVisibleJob() {
-		return _nbVisibleJob;
 	}
 
 	public JobModel addUseJob(MapObjectModel item) {

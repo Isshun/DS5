@@ -52,7 +52,7 @@ public class ObjectPool {
 //		sum = sum << 16;
 //		sum += l;
 //
-//		IntRect intRect = mIntRect.get(sum);
+//		IntRect intRect = mIntRect.getRoom(sum);
 //		if (intRect == null) {
 //			intRect = new IntRect(i, j, k, l);
 //			mIntRect.put(new Integer(sum), new IntRect(i, j, k, l));

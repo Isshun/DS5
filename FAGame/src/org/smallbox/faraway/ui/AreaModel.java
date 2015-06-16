@@ -4,22 +4,24 @@ import org.smallbox.faraway.model.item.ParcelModel;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
  * Created by Alex on 13/06/2015.
  */
 public class AreaModel {
-    private final Set<ParcelModel>  _parcels = new HashSet<>();
-    private final AreaType          _type;
+    protected final Set<ParcelModel>    _parcels = new HashSet<>();
+    private final AreaType              _type;
 
     public AreaModel(AreaType type) {
         _type = type;
     }
 
     public void addParcel(ParcelModel parcel) {
-        _parcels.add(parcel);
+        if (!_parcels.contains(parcel)) {
+            _parcels.add(parcel);
+            parcel.setArea(this);
+        }
     }
 
     public boolean contains(int x, int y) {
@@ -37,5 +39,13 @@ public class AreaModel {
 
     public String getName() {
         return "Storage Area #n";
+    }
+
+    public boolean isStorage() {
+        return false;
+    }
+
+    public AreaType getType() {
+        return _type;
     }
 }

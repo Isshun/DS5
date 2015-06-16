@@ -1,12 +1,12 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.Color;
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.CategoryInfo;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface.Mode;
@@ -65,7 +65,7 @@ public class PanelBuild extends BaseRightPanel {
 
 		// TODO
 		int posY = 0;
-		List<CategoryInfo> categories = Game.getData().categories;
+		List<CategoryInfo> categories = GameData.getData().categories;
 		_iconsList.clear();
 		_layouts.clear();
 
@@ -95,7 +95,7 @@ public class PanelBuild extends BaseRightPanel {
 //            lbShortcut.setPosition(c.shortcutPos * 12 + 20, posY + 8);
 //            addView(lbShortcut);
 //
-//            // Underline -- because at FONT_SIZE_TITLE regular underline get bold state...
+//            // Underline -- because at FONT_SIZE_TITLE regular underline getRoom bold state...
 //            View underline = ViewFactory.getInstance().createColorView(12, 1);
 //            underline.setBackgroundColor(Colors.LINK_ACTIVE);
 //            underline.setPosition(c.shortcutPos * 12 + 20, posY + 33);
@@ -150,7 +150,7 @@ public class PanelBuild extends BaseRightPanel {
 //			l.setVisible(false);
 //		}
 //		if (_currentCategory != null) {
-//			_layouts.get(_currentCategory).setVisible(true);
+//			_layouts.getRoom(_currentCategory).setVisible(true);
 //		}
 		drawPanel(withAnim);
 	}
@@ -232,7 +232,7 @@ public class PanelBuild extends BaseRightPanel {
 		if (_animRunning) {
 			int i = 0;
 			for (View icon: _iconsList) {
-				if (icon.isVisible() == false) {
+				if (!icon.isVisible()) {
 					icon.setVisible(true);
 					if (++i == 4) {
 						return;
@@ -247,7 +247,7 @@ public class PanelBuild extends BaseRightPanel {
 	protected boolean onKey(GameEventListener.Key key) {
 		String shortcut = StringUtils.getStringFromKey(key);
 		if (shortcut != null) {
-			List<CategoryInfo> categories = Game.getData().categories;
+			List<CategoryInfo> categories = GameData.getData().categories;
 			for (CategoryInfo category: categories) {
 				if (shortcut.equals(category.shortcut)) {
 					refreshPanel(category);

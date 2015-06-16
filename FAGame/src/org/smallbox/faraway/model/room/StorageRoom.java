@@ -139,12 +139,12 @@
 //					info = ((StackItem)item).getStackedInfo();
 //				}
 //				if (info != null) {
-//					itemInfos.put(info, itemInfos.containsKey(info) ? itemInfos.get(info) + quantity : quantity);
+//					itemInfos.put(info, itemInfos.containsKey(info) ? itemInfos.getRoom(info) + quantity : quantity);
 //				}
 //			}
 //			for (ItemInfo info: itemInfos.keySet()) {
 //				final ItemInfo finalInfo = info;
-//				String str = StringUtils.getDashedString(info.label, String.valueOf(itemInfos.get(info)), Constant.NB_COLUMNS - 4);
+//				String str = StringUtils.getDashedString(info.label, String.valueOf(itemInfos.getRoom(info)), Constant.NB_COLUMNS - 4);
 //				_options.options.add(new RoomOption(str, SpriteManager.getInstance().getIcon(info), new OnClickListener() {
 //					@Override
 //					public void onClick(View view) {
@@ -225,7 +225,7 @@
 //	}
 //
 //	private void addItemOnFirstArea(UserItem item) {
-//		for (WorldArea area: _areas) {
+//		for (WorldArea area: _parcels) {
 //			if (area.getItem() == null) {
 //				area.setItem(item);
 //				break;
@@ -252,7 +252,7 @@
 //		_inventory.remove(item);
 //
 //		// Remove item from area
-//		for (WorldArea area: _areas) {
+//		for (WorldArea area: _parcels) {
 //			if (area.getItem() == item) {
 //				area.setItem(null);
 //			}
@@ -274,7 +274,7 @@
 //		// Remove stack if now empty
 //		if (stack.size() == 0) {
 //			_inventory.remove(item);
-//			for (WorldArea area: _areas) {
+//			for (WorldArea area: _parcels) {
 //				if (area.getItem() == stack) {
 //					area.setItem(null);
 //				}

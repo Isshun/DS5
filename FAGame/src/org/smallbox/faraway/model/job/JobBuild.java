@@ -3,13 +3,11 @@ package org.smallbox.faraway.model.job;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
-import org.smallbox.faraway.manager.ResourceManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.StructureModel;
-import org.smallbox.faraway.ui.UserInterface;
 
 public class JobBuild extends JobModel {
 	private static final SpriteModel ICON = SpriteManager.getInstance().getIcon("data/res/ic_build.png");

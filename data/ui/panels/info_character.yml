@@ -95,43 +95,85 @@ entries:
                     textsize: 14
                     position: [216, 50]
                     size: [175, 18]
-                    
+
+                -   type: image
+                    id: img_status_food
+                    textsize: 14
+                    position: [216, 70]
+                    size: [175, 18]
+
                 -   type: label
                     id: lb_status_o2
                     textsize: 14
                     position: [216, 100]
                     size: [175, 18]
-                
+
+                -   type: image
+                    id: img_status_o2
+                    textsize: 14
+                    position: [216, 120]
+                    size: [175, 18]
+
                 -   type: label
                     id: lb_status_happiness
                     textsize: 14
                     position: [20, 100]
                     size: [175, 18]
-                    
+
+                -   type: image
+                    id: img_status_happiness
+                    textsize: 14
+                    position: [20, 120]
+                    size: [175, 18]
+
                 -   type: label
                     id: lb_status_power
                     textsize: 14
                     position: [20, 50]
                     size: [175, 18]
-                
+
+                -   type: image
+                    id: img_status_power
+                    textsize: 14
+                    position: [20, 70]
+                    size: [175, 18]
+
                 -   type: label
                     id: lb_status_relation
                     textsize: 14
                     position: [20, 150]
                     size: [175, 18]
-                    
+
+                -   type: image
+                    id: img_status_relation
+                    textsize: 14
+                    position: [20, 170]
+                    size: [175, 18]
+
                 -   type: label
                     id: lb_status_security
                     textsize: 14
                     position: [216, 150]
                     size: [175, 18]
-                
+
+                -   type: image
+                    id: img_status_security
+                    textsize: 14
+                    position: [216, 170]
+                    size: [175, 18]
+
                 -   type: label
                     id: lb_status_health
                     textsize: 14
                     position: [20, 200]
                     size: [175, 18]
-                    
+
+                -   type: image
+                    id: img_status_health
+                    textsize: 14
+                    position: [20, 220]
+                    size: [175, 18]
+
             -   type: frame
                 position: [0, 340]
                 entries:
@@ -141,9 +183,8 @@ entries:
                     textsize: 22
                     position: [20, 0]
                 
-                -   type: label
-                    id: lb_last_report
-                    textsize: 14
+                -   type: frame
+                    id: frame_buffs_entries
                     position: [20, 40]
 
     -   type: frame
@@ -235,20 +276,132 @@ entries:
             align: center
             background: 0xb0cd35
             
-        -   type: label
-            id: lb_inventory
-            textsize: 22
-            position: [20, 245]
+        -   type: frame
+            position: [0, 245]
+            entries:
+                
+            -   type: label
+                text: Equipments
+                textsize: 22
+                position: [20, 0]
 
-        -   type: label
-            id: lb_inventory_entry
-            textsize: 22
-            position: [20, 285]
+            -   type: image
+                path: data/res/body.png
+                position: [10, 30]
+                size: [420, 300]
+            
+            -   type: label
+                id: bt_head
+                text: head
+                textsize: 14
+                position: [72, 45]
+                size: [92, 25]
+                align: center
+            
+            -   type: label
+                id: bt_face
+                text: face
+                textsize: 14
+                position: [257, 68]
+                size: [92, 25]
+                align: center
+            
+            -   type: label
+                id: bt_top
+                text: top
+                textsize: 14
+                position: [254, 150]
+                size: [92, 25]
+                align: center
+            
+            -   type: label
+                id: bt_hand
+                text: hand
+                textsize: 14
+                position: [26, 162]
+                size: [92, 25]
+                align: center
+            
+            -   type: label
+                id: bt_bottom
+                text: bottom
+                textsize: 14
+                position: [63, 251]
+                size: [92, 25]
+                align: center
+            
+            -   type: label
+                id: bt_feet
+                text: feet
+                textsize: 14
+                position: [260, 277]
+                size: [92, 25]
+                align: center
+                        
+        -   type: frame
+            id: frame_equipment_detail
+            position: [0, 605]
+            size: [180, 60]
+            background: 0xf80c1314
+            entries:
+            
+            -   type: label
+                id: lb_equipment_resist
+                textsize: 14
+                position: [0, 0]
+            
+            -   type: label
+                id: lb_equipment_absorb
+                textsize: 14
+                position: [0, 20]
+            
+            -   type: label
+                id: lb_equipment_buff
+                textsize: 14
+                position: [0, 40]
+                        
+        -   type: frame
+            position: [0, 600]
+            entries:
+            
+            -   type: label
+                text: total stats
+                textsize: 18
+                position: [20, 0]
+            
+            -   type: label
+                id: lb_equipment_total_resist
+                textsize: 14
+                position: [20, 30]
+
+            -   type: label
+                id: lb_equipment_total_absorb
+                textsize: 14
+                position: [20, 50]
+
+            -   type: label
+                id: lb_equipment_total_buff
+                textsize: 14
+                position: [20, 70]
 
         -   type: frame
-            id: frame_inventory_entries
-            textsize: 16
-            position: [20, 265]
+            position: [0, 760]
+            entries:
+                
+            -   type: label
+                id: lb_inventory
+                textsize: 22
+                position: [20, 0]
+
+            -   type: label
+                id: lb_inventory_entry
+                textsize: 22
+                position: [20, 45]
+
+            -   type: frame
+                id: frame_inventory_entries
+                textsize: 16
+                position: [20, 25]
                       
     -   type: frame
         id: frame_health
@@ -268,6 +421,12 @@ entries:
             textsize: 22
             position: [20, 245]
 
+        -   type: label
+            id: lb_body_heat
+            text: Health
+            textsize: 18
+            position: [20, 265]
+
         -   type: frame
             id: frame_health_entries
-            position: [20, 265]
+            position: [20, 285]

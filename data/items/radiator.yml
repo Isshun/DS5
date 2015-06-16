@@ -6,4 +6,4 @@ category: temperature
 cost: 42
 effects:
     heat: 50
-    heatPotency: 40
+    heatPotency: 1800

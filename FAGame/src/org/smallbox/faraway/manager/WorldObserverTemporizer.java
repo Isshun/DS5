@@ -1,6 +1,6 @@
 package org.smallbox.faraway.manager;
 
-import org.smallbox.faraway.WorldObserver;
+import org.smallbox.faraway.GameObserver;
 import org.smallbox.faraway.model.item.ConsumableModel;
 import org.smallbox.faraway.model.item.ItemModel;
 import org.smallbox.faraway.model.item.ResourceModel;
@@ -9,7 +9,7 @@ import org.smallbox.faraway.model.item.StructureModel;
 /**
  * Created by Alex on 13/06/2015.
  */
-public class WorldObserverTemporizer implements WorldObserver {
+public class WorldObserverTemporizer implements GameObserver {
 
     @Override
     public void onAddStructure(StructureModel structure){}
@@ -33,5 +33,5 @@ public class WorldObserverTemporizer implements WorldObserver {
     public void onRemoveStructure(StructureModel structure){}
 
     @Override
-    public void onRemoveResource(){}
+    public void onRemoveResource(ResourceModel resource){}
 }

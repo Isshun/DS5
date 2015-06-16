@@ -4,7 +4,6 @@ import org.smallbox.faraway.Color;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.FrameLayout;
 import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.ui.panel.BasePanel;
 import org.smallbox.faraway.ui.panel.BaseRightPanel;
 
 /**

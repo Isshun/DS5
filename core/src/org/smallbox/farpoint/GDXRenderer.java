@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.renderer.AreaRenderer;
+import org.smallbox.faraway.engine.renderer.TemperatureRenderer;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.engine.util.Constant;
@@ -21,14 +22,13 @@ public class GDXRenderer implements GFXRenderer {
     private static final Color TEXT_COLOR = Color.WHITE;
 
     private final SpriteBatch           _batch;
-    private final GameTimer             _timer;
     public static BitmapFont[]          _fonts;
     private final OrthographicCamera    _camera;
     private final OrthographicCamera    _cameraWorld;
     private GameEventListener           _listener;
     private ShapeRenderer               _shapeRenderer;
 
-    public GDXRenderer(SpriteBatch batch, GameTimer timer, BitmapFont[] fonts) {
+    public GDXRenderer(SpriteBatch batch, BitmapFont[] fonts) {
         _fonts = fonts;
         _batch = batch;
         _shapeRenderer = new ShapeRenderer();
@@ -37,7 +37,6 @@ public class GDXRenderer implements GFXRenderer {
         _camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _cameraWorld = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _cameraWorld.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _timer = timer;
     }
 
     @Override
@@ -110,11 +109,6 @@ public class GDXRenderer implements GFXRenderer {
     }
 
     @Override
-    public GameTimer getTimer() {
-        return _timer;
-    }
-
-    @Override
     public int getWidth() {
         return Constant.WINDOW_WIDTH;
     }
@@ -132,6 +126,11 @@ public class GDXRenderer implements GFXRenderer {
     @Override
     public AreaRenderer createAreaRenderer() {
         return new GDXAreaRenderer();
+    }
+
+    @Override
+    public TemperatureRenderer createTemperatureRenderer() {
+        return new GDXTemperatureRenderer();
     }
 
     public void setGameEventListener(GameEventListener listener) {
@@ -158,6 +157,7 @@ public class GDXRenderer implements GFXRenderer {
     public void draw(Color color, int x, int y, int width, int height) {
         if (color != null) {
             _batch.begin();
+            Gdx.gl.glEnable(GL20.GL_BLEND);
             _shapeRenderer.setProjectionMatrix(_camera.combined);
             _shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             _shapeRenderer.setColor(color);

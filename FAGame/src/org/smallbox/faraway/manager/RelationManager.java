@@ -10,7 +10,7 @@ import org.smallbox.faraway.model.character.CharacterRelation.Relation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RelationManager {
+public class RelationManager extends BaseManager {
 
 	public void meet(CharacterModel c1, CharacterModel c2) {
 		if (c1 == null || c2 == null || c1 == c2) {
@@ -117,4 +117,7 @@ public class RelationManager {
 		}
 	}
 
+	@Override
+	protected void onUpdate(int tick) {
+	}
 }

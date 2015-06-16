@@ -5,7 +5,7 @@ import org.smallbox.faraway.Color;
 public class Colors {
 
 	protected static final Color BT_ACTIVE = new Color(29, 85, 96, 180);
-	public static final Color BT_INACTIVE = new Color(29, 85, 96, 100);
+	public static final Color BT_INACTIVE = new Color(29, 85, 96, 255);
 	public static final Color BT_TEXT = new Color(120, 255, 255);
 
 	public static final Color LINK_INACTIVE = new Color(120, 255, 255);

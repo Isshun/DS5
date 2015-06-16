@@ -3,8 +3,8 @@ package org.smallbox.faraway.model.character;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.model.GameConfig;
 import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo.ItemInfoAction;
+import org.smallbox.faraway.model.item.MapObjectModel;
 
 public class CharacterNeeds {
     private final CharacterModel 	_character;
@@ -83,7 +83,8 @@ public class CharacterNeeds {
 	public void setEating(int eating) { _eating = eating; }
 	public void setEnergy(double energy) { _energy = energy; }
 	public void setFood(double food) { _food = food; }
-	public void setHapiness(double happiness) { _happiness = happiness; }
+	public void setHappiness(double happiness) { _happiness = happiness; }
+	public void updateHappiness(double change) { _happiness = _happiness + change; }
 	public void setHealth(double health) { _health = health; }
 	public void setInjuries(double injuries) { _injuries = injuries; }
 	public void setOxygen(double oxygen) { _oxygen = oxygen; }
@@ -215,8 +216,8 @@ public class CharacterNeeds {
 	}
 
 //	public void	sleep(ItemBase item) {
-//        if (_character.getJob() != null) {
-//            JobManager.getInstance().removeJob(_character.getJob());
+//        if (_character.getHaul() != null) {
+//            JobManager.getInstance().removeJob(_character.getHaul());
 //        }
 //
 //		_sleepItem = item;

@@ -2,17 +2,13 @@ package org.smallbox.faraway.manager;
 
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.Strings;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.model.ToolTips;
-import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 
-public class ResourceManager {
+public class ResourceManager extends BaseManager {
 
 	private static ResourceManager _self;
 
-//	private ResourceData	_o2Use;
-//	private ResourceData	_o2Supply;
 	private ResourceData	_matter;
 	private ResourceData	_power;
 	private ResourceData	_food;
@@ -43,49 +39,8 @@ public class ResourceManager {
 
 	// TODO
 	public void refreshWater() {
-//		WorldMap worldmap = ServiceManager.getWorldMap();
-//		int width = worldmap.getWidth();
-//		int height = ServiceManager.getWorldMap().getWidth();
-//		int water = _water;
-//
-//		// Re-active working garden
-//		for (int x = 0; x < width; x++) {
-//			for (int y = 0; y < height; y++) {
-//				StructureItem structure = worldmap.getStructure(x, y);
-//				Room room = RoomManager.getInstance().get(x, y);
-//				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() && room != null && room.isType(Type.GARDEN)) {
-//					structure.setWorking(water-- > 0);
-//					MainRenderer.getInstance().invalidate(x, y);
-//				}
-//			}
-//		}
-//
-//		// Active non-working garden
-//		for (int x = 0; x < width; x++) {
-//			for (int y = 0; y < height; y++) {
-//				StructureItem structure = worldmap.getStructure(x, y);
-//				Room room = RoomManager.getInstance().get(x, y);
-//				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && structure.isWorking() == false && room != null && room.isType(Type.GARDEN)) {
-//					structure.setWorking(water-- > 0);
-//					MainRenderer.getInstance().invalidate(x, y);
-//				}
-//			}
-//		}
-//
-//		// Active other areas
-//		for (int x = 0; x < width; x++) {
-//			for (int y = 0; y < height; y++) {
-//				StructureItem structure = worldmap.getStructure(x, y);
-//				Room room = RoomManager.getInstance().get(x, y);
-//				if (structure != null && structure.isType(BaseItem.Type.STRUCTURE_GREENHOUSE) && (room == null || room.isType(Type.GARDEN) == false)) {
-//					structure.setWorking(water-- > 0);
-//					MainRenderer.getInstance().invalidate(x, y);
-//				}
-//			}
-//		}
 	}
 
-//	public int 	getO2() { return (int) (_o2Use == 0 ? 100 : _o2Supply >= _o2Use ? 100 : _o2Supply * 100.0f / _o2Use); }
 	public ResourceData getMatter() { return _matter; }
 	public ResourceData	getPower() { return _power; }
 	public ResourceData	getSpice() { return _spice; }
@@ -111,7 +66,8 @@ public class ResourceManager {
 		if (info.isFood) { _food.value++; }
 	}
 
-	public void onLongUpdate() {
+	@Override
+	protected void onUpdate(int tick) {
 	}
 
 	public ResourceData getGasoline() {

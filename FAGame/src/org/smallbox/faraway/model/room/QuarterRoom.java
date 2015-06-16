@@ -39,7 +39,7 @@ public class QuarterRoom extends RoomModel {
 		_nbStorage = 0;
 		_nbBed = 0;
 		
-		for (ParcelModel area: _areas) {
+		for (ParcelModel area: _parcels) {
 			ItemModel item = area.getItem();
 			if (item != null) {
 				if (item.isBed()) { _nbBed++; }

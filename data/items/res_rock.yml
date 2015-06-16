@@ -10,9 +10,9 @@ actions:
         cost: 100
         products:
             -   item: base.rock
-                quantity: 1
+                quantity: 10
                 dropRate: 0.5
 
             -   item: base.seaweed
-                quantity: 10
+                quantity: 5
                 dropRate: 0.1

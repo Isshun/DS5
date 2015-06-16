@@ -8,7 +8,7 @@ import org.smallbox.faraway.model.Foe;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class FoeManager {
+public class FoeManager extends BaseManager {
 	private ArrayList<Foe>		 	_foes;
 	
 	public FoeManager() {
@@ -164,4 +164,7 @@ public class FoeManager {
 		
 	}
 
+	@Override
+	protected void onUpdate(int tick) {
+	}
 }

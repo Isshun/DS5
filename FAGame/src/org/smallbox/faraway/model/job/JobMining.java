@@ -1,12 +1,10 @@
 package org.smallbox.faraway.model.job;
 
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.ProfessionModel;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.ResourceModel;
@@ -58,7 +56,7 @@ public class JobMining extends JobModel {
 //		}
 
 		// No space left in inventory
-		if (character.hasInventorySpaceLeft() == false) {
+		if (!character.hasInventorySpaceLeft()) {
 			_reason = JobAbortReason.NO_LEFT_CARRY;
 			return false;
 		}
@@ -75,7 +73,7 @@ public class JobMining extends JobModel {
 			return true;
 		}
 		
-		if (_item.isResource() == false) {
+		if (!_item.isResource()) {
 			Log.error("Character: actionMine on non resource");
 			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 			return true;
@@ -99,14 +97,12 @@ public class JobMining extends JobModel {
 		// Resource is depleted
 		Log.info("Mine complete");
 		ServiceManager.getWorldMap().removeResource(resource);
-        for (ItemInfo.ItemProductInfo productInfo : _actionInfo.products) {
-            if (productInfo.dropRate > Math.random()) {
-                ServiceManager.getWorldMap().putObject(productInfo.itemInfo, resource.getX(), resource.getY(), 0, 100);
-            }
-        }
+		_actionInfo.products.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo -> {
+			ServiceManager.getWorldMap().putObject(productInfo.itemInfo, resource.getX(), resource.getY(), 0, productInfo.quantity);
+		});
 		JobManager.getInstance().close(this);
 
-		return false;
+		return true;
 	}
 
 	@Override

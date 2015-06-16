@@ -1,11 +1,10 @@
 package org.smallbox.faraway.model.check.character;
 
 import org.smallbox.faraway.Game;
-import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.check.old.CharacterCheck;
-import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemFilter;
+import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.model.job.JobUse;
 

@@ -1,0 +1,33 @@
+levels:
+    -   label: I'm cold
+        disease: mild_hypothermia
+        delay: 20
+        conditions:
+            minCharacterTemperature: 34
+        effects:
+            mood: -5
+
+    -   label: I have lost the feeling in my fingers
+        disease: moderate_hypothermia
+        delay: 20
+        conditions:
+            minCharacterTemperature: 32
+        effects:
+            mood: -7
+
+    -   label: I'm frozen
+        disease: severe_hypothermia
+        delay: 20
+        conditions:
+            minCharacterTemperature: 25
+        effects:
+            mood: -15
+
+    -   label: I am dying of cold
+        disease: extrem_hypothermia
+        delay: 20
+        conditions:
+            minCharacterTemperature: 20
+        effects:
+            mood: -25
+            fainting: 0.25

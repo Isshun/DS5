@@ -9,10 +9,10 @@ import java.util.List;
 
 public class GameSerializer {
     public static class GameSave {
-        public List<WorldSerializer.WorldSaveArea>      areas;
-//        public List<RoomSerializer.RoomSave>			rooms;
+        public List<WorldSerializer.WorldSaveParcel>    parcels;
         public List<CharacterSerializer.CharacterSave>	characters;
         public List<JobSerializer.JobSave> 				jobs;
+        public List<AreaSerializer.AreaSave> 		    areas;
 
         public GameSave() {
             areas = new ArrayList<>();
@@ -49,32 +49,33 @@ public class GameSerializer {
                     (new CharacterSerializer()).load(save);
                 }
 
-                if (save.areas != null) {
-                    loadListener.onUpdate("Loading areas");
+                if (save.parcels != null) {
+                    loadListener.onUpdate("Loading world");
                     (new WorldSerializer()).load(save);
                 }
-
-//                if (save.rooms != null) {
-//                    loadListener.onUpdate("Loading rooms");
-//                    (new RoomSerializer()).load(save);
-//                }
 
                 if (save.jobs != null) {
                     loadListener.onUpdate("Loading jobs");
                     (new JobSerializer()).load(save);
+                }
+
+                if (save.areas != null) {
+                    loadListener.onUpdate("Loading areas");
+                    (new AreaSerializer()).load(save);
                 }
             }
         }
     }
 
     public static void save(String filePath) {
+        Log.info("Save game: " + filePath);
         System.gc();
 
         // Construct save object
         GameSave save = new GameSave();
-//        (new RoomSerializer()).save(save);
         (new CharacterSerializer()).save(save);
         (new JobSerializer()).save(save);
+        (new AreaSerializer()).save(save);
         (new WorldSerializer()).save(save);
 
         // Write XML
@@ -87,11 +88,18 @@ public class GameSerializer {
             output.write(xml);
             output.close();
             fs.close();
+
+            System.gc();
+            Log.info("Save game: " + filePath + " done");
+
+            return;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Log.error("Save game: " + filePath + " failed");
     }
 
 }

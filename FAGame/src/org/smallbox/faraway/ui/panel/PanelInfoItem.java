@@ -70,7 +70,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
     }
 
     public void select(ItemModel item) {
-        super.select(item.getArea());
+        super.select(item.getParcel());
 
         _item = item;
         _itemInfo = item.getInfo();

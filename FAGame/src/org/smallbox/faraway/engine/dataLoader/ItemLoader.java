@@ -7,7 +7,6 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
-import java.util.stream.Collectors;
 
 public class ItemLoader {
 
@@ -17,12 +16,9 @@ public class ItemLoader {
 	    Log.debug("load items...");
 
 	    // List files
-		File itemFiles[] = (new File(path)).listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File file, String name) {
-				return name.contains(".yml");
-			}
-		});
+		File itemFiles[] = (new File(path)).listFiles((file, name) -> {
+            return name.contains(".yml");
+        });
 		
 		// Load files
 		int i = 0;

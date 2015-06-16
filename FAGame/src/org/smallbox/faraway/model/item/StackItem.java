@@ -45,7 +45,7 @@
 //		}
 //
 //		_size--;
-//		return _items.get(0);
+//		return _items.getRoom(0);
 //	}
 //
 //	/**

@@ -177,7 +177,7 @@ public abstract class MapObjectModel {
     public void 			setSolid(boolean isSolid) { _isSolid = isSolid; }
     public void 			setMode(int mode) { _mode = mode; }
     public void 			setWorking(boolean working) { _isWorking = working; }
-    public void 			setArea(ParcelModel area) { _area = area; }
+    public void             setParcel(ParcelModel area) { _area = area; }
     public void 			setX(int x) { _x = x; }
     public void 			setY(int y) { _y = y; }
 
@@ -201,7 +201,7 @@ public abstract class MapObjectModel {
     public int 				getTotalUse() { return _nbTotalUsed; }
     public int 				getMatter() { return _matter; }
     public int 				getLastBlocked() { return _lastBlocked; }
-    public ParcelModel getArea() { return _area; }
+    public ParcelModel getParcel() { return _area; }
 
     // Boolean
     public boolean			isSolid() { return _isSolid; }
@@ -400,5 +400,9 @@ public abstract class MapObjectModel {
 
     public boolean isDump() {
         return _progress <= 0;
+    }
+
+    public boolean matchPosition(int x, int y) {
+        return _area != null && _area.getX() == x && _area.getY() == y;
     }
 }

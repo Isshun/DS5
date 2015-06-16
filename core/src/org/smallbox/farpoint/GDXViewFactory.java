@@ -49,7 +49,12 @@ public class GDXViewFactory extends ViewFactory {
 
     @Override
     public ImageView createImageView() {
-        return new GDXImageView();
+        return new GDXImageView(0, 0);
+    }
+
+    @Override
+    public ImageView createImageView(int width, int height) {
+        return new GDXImageView(width, height);
     }
 
     @Override

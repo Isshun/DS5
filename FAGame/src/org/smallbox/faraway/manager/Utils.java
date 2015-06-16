@@ -1,5 +1,7 @@
 package org.smallbox.faraway.manager;
 
+import org.smallbox.faraway.model.item.ParcelModel;
+
 import java.io.File;
 
 public class Utils {
@@ -39,5 +41,9 @@ public class Utils {
 		}
 
 		return lastModified;
+	}
+
+	public static int getDistance(ParcelModel parcel, int x, int y) {
+		return Math.abs(parcel.getX() - x) + Math.abs(parcel.getY() - y);
 	}
 }

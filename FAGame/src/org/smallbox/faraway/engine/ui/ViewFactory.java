@@ -36,6 +36,7 @@ public abstract class ViewFactory {
     public abstract FrameLayout createFrameLayout();
     public abstract FrameLayout createFrameLayout(int width, int height);
     public abstract ImageView createImageView();
+    public abstract ImageView createImageView(int width, int height);
     public abstract RenderLayer createRenderLayer(int width, int height);
 
     public void load(String path, ViewFactoryLoadListener listener) {

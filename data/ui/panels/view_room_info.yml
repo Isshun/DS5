@@ -26,3 +26,44 @@ entries:
         text: light
         textsize: 14
         position: [24, 94]
+
+    -   type: label
+        id: lb_neighborhood
+        textsize: 14
+        position: [24, 114]
+
+    -   type: label
+        id: lb_heat
+        text: heat
+        textsize: 14
+        position: [280, 54]
+
+    -   type: label
+        id: lb_cold
+        text: cold
+        textsize: 14
+        position: [280, 74]
+
+    -   type: label
+        id: lb_heat_potency
+        text: heat potency
+        textsize: 14
+        position: [280, 94]
+
+    -   type: label
+        id: lb_cold_potency
+        text: cold potency
+        textsize: 14
+        position: [280, 114]
+
+    -   type: label
+        id: lb_heat_left
+        text: heat left
+        textsize: 14
+        position: [280, 14]
+
+    -   type: label
+        id: lb_cold_left
+        text: cold left
+        textsize: 14
+        position: [280, 34]

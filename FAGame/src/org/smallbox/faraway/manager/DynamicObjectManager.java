@@ -6,15 +6,15 @@ import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.item.ItemModel;
 import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.TempItem;
-import org.smallbox.faraway.model.item.ItemModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DynamicObjectManager {
+public class DynamicObjectManager extends BaseManager {
 	private ArrayList<MapObjectModel>	 		_objects;
 	private ArrayList<TempItem>	 		_tempItems;
 	private int 						_count;
@@ -53,7 +53,8 @@ public class DynamicObjectManager {
 		_objects.add(item);
 	}
 
-	public void update() {
+	@Override
+	protected void onUpdate(int tick) {
 //		for (BaseItem o: _objects) {
 //			Sprite sprite = SpriteManager.getInstance().getItem(o);
 //			app.draw(sprite, _renderEffect);

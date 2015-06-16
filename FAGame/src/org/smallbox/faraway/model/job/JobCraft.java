@@ -8,8 +8,9 @@ import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.ReceiptModel;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ConsumableModel;
-import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo;
+import org.smallbox.faraway.model.item.MapObjectModel;
+import org.smallbox.faraway.model.item.ParcelModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,7 +160,7 @@ public class JobCraft extends JobModel {
             ConsumableModel consumable = new ConsumableModel(productInfo.itemInfo);
             consumable.setQuantity(productInfo.quantity);
 
-            StorageModel storage = findNearestStorage(character);
+            StorageModel storage = findNearestStorage(character, consumable);
             if (storage != null) {
                 character.setInventory(consumable);
                 _status = Status.MOVE_TO_STORAGE;
@@ -196,7 +197,7 @@ public class JobCraft extends JobModel {
             component.item.addQuantity(1);
         }
         if (_targetIngredient.getQuantity() <= 0) {
-            _targetIngredient.getArea().setConsumable(null);
+            _targetIngredient.getParcel().setConsumable(null);
         }
 
         // Components still missing
@@ -285,22 +286,43 @@ public class JobCraft extends JobModel {
 		}
 	}
 
-	private StorageModel findNearestStorage(CharacterModel character) {
-        _posX = 10;
-        _posY = 10;
+	private StorageModel findNearestStorage(CharacterModel character, ConsumableModel consumable) {
+		// Looking for free storage area for consumable
+		StorageModel storage = Game.getAreaManager().getNearestFreeStorage(consumable, character.getX(), character.getY());
+		if (storage == null) {
+			return null;
+		}
+
+		// Get free parcel from storage
+		ParcelModel parcel = storage.getNearestFreeParcel(consumable, character.getX(), character.getY());
+		if (parcel == null) {
+			return null;
+		}
+
+		// Move to parcel
+		_posX = parcel.getX();
+		_posY = parcel.getY();
+
         _status = Status.MOVE_TO_STORAGE;
         character.moveTo(this, _posX, _posY, new OnMoveListener() {
             @Override
             public void onReach(JobModel job, CharacterModel character) {
-                Game.getWorldManager().putConsumable(character.getInventory(), _posX, _posY);
-                character.setInventory(null);
+				ParcelModel parcel = storage.getNearestFreeParcel(consumable, character.getX(), character.getY());
+				if (parcel != null) {
+					Game.getWorldManager().putConsumable(consumable, parcel.getX(), parcel.getY());
+				} else {
+					Log.warning("No free space in storage area");
+					Game.getWorldManager().putConsumable(consumable, _posX, _posY);
+				}
+				character.setInventory(null);
             }
 
             @Override
             public void onFail(JobModel job, CharacterModel character) {
             }
         });
-        return new StorageModel();
+
+		return storage;
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.Colors;
@@ -8,6 +7,7 @@ import org.smallbox.faraway.engine.ui.TextView;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.engine.util.StringUtils;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
@@ -42,7 +42,7 @@ public class PanelManager extends BaseRightPanel {
 	@Override
 	protected void onCreate(ViewFactory factory) {
 		_entries = new ArrayList<>();
-		List<ItemInfo> items = Game.getData().items;
+		List<ItemInfo> items = GameData.getData().items;
 		for (ItemInfo item: items) {
 			if (item.isFood && item.receipts != null) {
 				_entries.add(new PanelEntry("Cooking " + item.label));

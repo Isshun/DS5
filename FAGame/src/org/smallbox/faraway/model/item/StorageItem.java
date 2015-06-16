@@ -32,7 +32,7 @@
 //	
 //	public ItemBase getFirst() {
 //		if (_inventory.size() > 0) {
-//			return _inventory.get(0);
+//			return _inventory.getRoom(0);
 //		}
 //		return null;
 //	}
@@ -50,7 +50,7 @@
 //		return false;
 //	}
 //
-//	public ItemBase get(ItemFilter filter) {
+//	public ItemBase getRoom(ItemFilter filter) {
 //		for (ItemBase item: _inventory) {
 //			if (item.matchFilter(filter)) {
 //				return item;

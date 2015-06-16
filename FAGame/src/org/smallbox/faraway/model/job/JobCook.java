@@ -1,18 +1,9 @@
 package org.smallbox.faraway.model.job;
 
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.OnMoveListener;
-import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.manager.JobManager;
-import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.ReceiptModel;
 import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.ConsumableModel;
-import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.smallbox.faraway.model.item.MapObjectModel;
 
 public class JobCook extends JobCraft {
 

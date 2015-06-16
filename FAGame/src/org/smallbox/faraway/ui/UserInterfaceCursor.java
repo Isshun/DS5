@@ -2,7 +2,6 @@ package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.Viewport;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.View;

@@ -17,6 +17,11 @@ public class GDXImageView extends ImageView {
     private int     _finalX;
     private int     _finalY;
 
+    public GDXImageView(int width, int height) {
+        _width = width;
+        _height = height;
+    }
+
     @Override
     public void draw(GFXRenderer renderer, RenderEffect effect) {
         draw(renderer, 0, 0);
@@ -25,7 +30,7 @@ public class GDXImageView extends ImageView {
     @Override
     public void draw(GFXRenderer renderer, int x, int y) {
         if (_sprite == null && _image != null) {
-            _sprite = ((GDXSpriteModel)_image).getData();
+            _sprite = ((GDXSpriteModel) _image).getData();
 
             _finalX = x;
             _finalY = y;
@@ -35,8 +40,12 @@ public class GDXImageView extends ImageView {
                 _finalY += view.getPosY();
                 view = view.getParent();
             }
-//            _sprite.setPosition(x, y);
-            ((GDXRenderer)renderer).draw(_sprite, _finalX, _finalY);
+            // TODO
+            if (_textureHeight != 0) {
+                _sprite.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
+                _sprite.setRegion(_textureX, _textureY, _textureWidth, _textureHeight);
+            }
+            ((GDXRenderer) renderer).draw(_sprite, _finalX, _finalY);
             return;
         }
 
@@ -44,22 +53,27 @@ public class GDXImageView extends ImageView {
             Texture texture = new Texture(_path);
 
             _sprite = new Sprite();
+            _sprite.setTexture(texture);
+            _sprite.setRegion(0, 0, _width, _height);
+            _sprite.flip(false, true);
 
-            _finalX = 0;
-            _finalY = 0;
+            _finalX = x;
+            _finalY = y;
             View view = this;
             while (view != null) {
                 _finalX += view.getPosX();
                 _finalY += view.getPosY();
                 view = view.getParent();
             }
-//            _sprite.setPosition(_finalX, _finalY);
-            _sprite.setTexture(texture);
-            //_sprite.setTextureRect(new IntRect(0, 0, _width, _height));
-            _sprite.setScale((float)_scaleX, (float)_scaleY);
+            //_sprite.setScale((float) _scaleX, (float) _scaleY);
         }
         if (_sprite != null) {
-            ((GDXRenderer)renderer).draw(_sprite, _finalX, _finalY);
+            // TODO
+            if (_textureHeight != 0) {
+                _sprite.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
+                _sprite.setRegion(_textureX, _textureY, _textureWidth, _textureHeight);
+            }
+            ((GDXRenderer) renderer).draw(_sprite, _finalX, _finalY);
         }
     }
 

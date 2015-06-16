@@ -1,7 +1,6 @@
 package org.smallbox.faraway.model;
 
 import org.smallbox.faraway.Application;
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.loader.WeatherLoader;
 import org.smallbox.faraway.model.item.ItemInfo;
@@ -9,14 +8,11 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameData implements GameDataListener {
 
-    @Override
+	@Override
     public void onDataLoaded() {
         Application.getInstance().refreshConfig();
     }
@@ -27,8 +23,10 @@ public class GameData implements GameDataListener {
     private Map<String, String> _strings;
 	public static GameConfig 	config;
 	public List<ItemInfo> 		items;
+	public List<BuffModel> 		buffs;
 	public List<ItemInfo> 		gatherItems;
 	public List<CategoryInfo> 	categories;
+	public List<EquipmentModel> equipments;
 	public List<PlanetModel> 	planets;
     private long                _lastConfigModified;
     public Map<String, WeatherModel> weathers;
@@ -41,11 +39,13 @@ public class GameData implements GameDataListener {
 
 		loadStrings();
         loadConfig();
+        loadBuffs();
+        loadEquipments();
         gatherItems = new ArrayList<>();
 		items = new ArrayList<>();
 		categories = new ArrayList<>();
 	}
-	
+
 	public ItemInfo getItemInfo(String name) {
 		for (ItemInfo info: items) {
 			if (info.name.equals(name)) {
@@ -57,8 +57,8 @@ public class GameData implements GameDataListener {
 	}
 
 	public ItemInfo getRandomGatherItem() {
-		if (Game.getData().gatherItems.size() > 0) {
-			return gatherItems.get((int)(Math.random() * Game.getData().gatherItems.size()));
+		if (gatherItems.size() > 0) {
+			return gatherItems.get((int)(Math.random() * gatherItems.size()));
 		}
 		return null;
 	}
@@ -108,7 +108,7 @@ public class GameData implements GameDataListener {
 
         long lastConfigModified = new File("data/config.yml").lastModified();
         if (lastConfigModified > _lastConfigModified) {
-            Game.getData().loadStrings();
+			loadStrings();
             _lastConfigModified = lastConfigModified;
             loadConfig();
         }
@@ -119,10 +119,75 @@ public class GameData implements GameDataListener {
             InputStream input = new FileInputStream(new File("data/config.yml"));
             Yaml yaml = new Yaml(new Constructor(GameConfig.class));
             config = (GameConfig)yaml.load(input);
-            Log.debug("Config loaded");
+            Log.info("Config loaded");
             onDataLoaded();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
+
+	private void loadBuffs() {
+		buffs = new ArrayList<>();
+		try {
+			for (File file: new File("data/buffs/").listFiles()) {
+				if (file.getName().endsWith(".yml")) {
+					Log.debug("Load active: " + file.getName());
+					InputStream input = new FileInputStream(file);
+					Yaml yaml = new Yaml(new Constructor(BuffModel.class));
+                    BuffModel buff = (BuffModel)yaml.load(input);
+                    buff.name = file.getName().replace(".yml", "");
+					buffs.add(buff);
+				}
+			}
+            for (BuffModel buff: buffs) {
+                for (BuffModel.BuffLevelModel level: buff.levels) {
+                    level.index = buff.levels.indexOf(level);
+                }
+            }
+//            Collections.sort(buffs, (b1, b2) -> b2.effects.mood - b1.effects.mood);
+            Log.info("Buffs loaded");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void loadEquipments() {
+        equipments = new ArrayList<>();
+		try {
+			for (File file: new File("data/equipments/").listFiles()) {
+				if (file.getName().endsWith(".yml")) {
+					Log.debug("Load equipment: " + file.getName());
+					InputStream input = new FileInputStream(file);
+					Yaml yaml = new Yaml(new Constructor(EquipmentModel.class));
+					EquipmentModel equipment = (EquipmentModel)yaml.load(input);
+					equipment.name = "base.equipments." + file.getName().replace(".yml", "");
+
+                    if (equipment.location == null) {
+                        Log.error("Equipment has no location: " + equipment.name);
+                        break;
+                    }
+
+                    equipments.add(equipment);
+				}
+			}
+			for (BuffModel buff: buffs) {
+				for (BuffModel.BuffLevelModel level: buff.levels) {
+					level.index = buff.levels.indexOf(level);
+				}
+			}
+//            Collections.sort(buffs, (b1, b2) -> b2.effects.mood - b1.effects.mood);
+			Log.info("Buffs loaded");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public EquipmentModel getEquipment(String name) {
+		for (EquipmentModel equipment: equipments) {
+			if (equipment.name.equals(name)) {
+				return equipment;
+			}
+		}
+		return null;
+	}
 }

@@ -3,7 +3,6 @@ package org.smallbox.faraway.ui.panel;
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.engine.ui.FrameLayout;
 import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
 import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
@@ -14,9 +13,10 @@ import org.smallbox.faraway.ui.UserInterface.Mode;
 public class PanelConsole extends BasePanel {
 	private static final int 	LINE_INTERVAL = 20;
 	private static final int 	NB_LINES = 8;
-	private static final int 	FRAME_HEIGHT = 64 + LINE_INTERVAL * NB_LINES;
-	private static final int	FRAME_WIDTH = 440;
-	private static final Color 	COLOR_DEBUG = new Color(0xdddddd);
+	private static final int 	FRAME_HEIGHT = 65 + LINE_INTERVAL * NB_LINES;
+	private static final int	FRAME_WIDTH = 540;
+	private static final int 	NB_CONSOLE_COLUMNS = 62;
+	private static final Color 	COLOR_DEBUG = new Color(0x888888);
 	private static final Color 	COLOR_INFO = new Color(0xffffff);
 	private static final Color 	COLOR_WARNING = new Color(0xffdd00);
 	private static final Color 	COLOR_ERROR = new Color(0xdd0000);
@@ -24,12 +24,12 @@ public class PanelConsole extends BasePanel {
 
 	private String[][] 		_data = new String[5][NB_LINES];
 	private TextView[] 		_texts;
-	private int 			_level = Log.LEVEL_DEBUG;
+	private int 			_level;
 
 	public PanelConsole() {
 		super(Mode.NONE, null, 0, Constant.WINDOW_HEIGHT - FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT, "data/ui/panels/console.yml");
 		setAlwaysVisible(true);
-	}		  
+	}
 
 	@Override
 	protected void onCreate(ViewFactory factory) {
@@ -48,11 +48,11 @@ public class PanelConsole extends BasePanel {
 		for (int i = 0; i < NB_LINES; i++) {
 			_texts[i] = ViewFactory.getInstance().createTextView();
 			_texts[i].setCharacterSize(FONT_SIZE);
-			_texts[i].setPosition(14, 8 + i * LINE_INTERVAL);
+			_texts[i].setPosition(0, i * LINE_INTERVAL);
 			frameEntries.addView(_texts[i]);
 		}
 
-		select("frame_debug", Log.LEVEL_DEBUG);
+		select("frame_debug", Log.LEVEL_INFO);
 	}
 
 	private void select(String frameName, int level) {
@@ -71,7 +71,7 @@ public class PanelConsole extends BasePanel {
 	public void addMessage(int level, String message) {
 		if (_level < level) return;
 
-		message = Log.getPrefix(level) + StringUtils.getDashedString(message, "", 52);
+		message = Log.getPrefix(level) + StringUtils.getDashedString(message, "", NB_CONSOLE_COLUMNS);
 
 		// Store message
 		for (int l = Log.LEVEL_FATAL; l <= Log.LEVEL_DEBUG; l++) {

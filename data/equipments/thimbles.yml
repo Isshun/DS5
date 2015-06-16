@@ -1,0 +1,5 @@
+label: Thimbles
+location: hands
+effects:
+    -   buff:
+            tailoring: 10

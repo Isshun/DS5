@@ -4,6 +4,10 @@ import org.smallbox.faraway.Color;
 
 public class Constant {
 
+	public static final boolean DEBUG = true;
+	public static final double 	BODY_COLD_ABSORB = 32;
+	public static final double 	BODY_TEMPERATURE = 37.6;
+	public static final double 	BODY_COLD_RESIST = 0.25;
 	public static String 		NAME	= "FarPoint";
 	public static String 		VERSION	= "0.1";
 
