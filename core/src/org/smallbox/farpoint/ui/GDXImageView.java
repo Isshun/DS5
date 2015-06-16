@@ -53,20 +53,19 @@ public class GDXImageView extends ImageView {
             Texture texture = new Texture(_path);
 
             _sprite = new Sprite();
+            _sprite.setTexture(texture);
+            _sprite.setRegion(0, 0, _width, _height);
+            _sprite.flip(false, true);
 
-            _finalX = 0;
-            _finalY = 0;
+            _finalX = x;
+            _finalY = y;
             View view = this;
             while (view != null) {
                 _finalX += view.getPosX();
                 _finalY += view.getPosY();
                 view = view.getParent();
             }
-//            _sprite.setPosition(_finalX, _finalY);
-            _sprite.setRegion(_textureX, _textureY, _textureWidth, _textureHeight);
-            _sprite.setTexture(texture);
-            //_sprite.setTextureRect(new IntRect(0, 0, _width, _height));
-            _sprite.setScale((float) _scaleX, (float) _scaleY);
+            //_sprite.setScale((float) _scaleX, (float) _scaleY);
         }
         if (_sprite != null) {
             // TODO

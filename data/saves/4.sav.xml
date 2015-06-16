@@ -3982,7 +3982,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>9</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -3996,7 +3996,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>5</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -4010,7 +4010,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>12</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -4024,7 +4024,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>12</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -4038,7 +4038,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>12</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -4052,7 +4052,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>5</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -4066,7 +4066,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>15</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -4416,7 +4416,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>9</tile>
+        <tile>7</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -4428,16 +4428,9 @@
       <structure>
         <id>960</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>974</id>
-        <name>base.rock</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>1</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>22</x>
       <y>22</y>
@@ -4447,7 +4440,7 @@
       <structure>
         <id>959</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -4459,7 +4452,7 @@
       <structure>
         <id>958</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -4471,7 +4464,7 @@
       <structure>
         <id>957</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -4483,16 +4476,9 @@
       <structure>
         <id>956</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>975</id>
-        <name>base.rock</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>1</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>22</x>
       <y>26</y>
@@ -4504,7 +4490,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>1</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -4684,7 +4670,7 @@
       <structure>
         <id>645</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -4850,7 +4836,7 @@
       <structure>
         <id>955</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -4862,7 +4848,7 @@
       <structure>
         <id>954</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -4874,7 +4860,7 @@
       <structure>
         <id>953</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -4886,7 +4872,7 @@
       <structure>
         <id>952</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -4898,16 +4884,9 @@
       <structure>
         <id>951</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>976</id>
-        <name>base.rock</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>1</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>23</x>
       <y>26</y>
@@ -4919,7 +4898,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>15</tile>
+        <tile>2</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -4933,7 +4912,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>12</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -4947,7 +4926,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>12</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -4961,7 +4940,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>12</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -4975,7 +4954,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>5</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -4989,7 +4968,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>15</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -5127,16 +5106,9 @@
       <structure>
         <id>644</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
-      <consumable>
-        <id>646</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>24</x>
       <y>10</y>
@@ -5146,7 +5118,7 @@
       <structure>
         <id>950</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5158,7 +5130,7 @@
       <structure>
         <id>949</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5170,7 +5142,7 @@
       <structure>
         <id>948</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5182,7 +5154,7 @@
       <structure>
         <id>947</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5194,7 +5166,7 @@
       <structure>
         <id>946</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5206,7 +5178,7 @@
       <structure>
         <id>945</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5218,7 +5190,7 @@
       <structure>
         <id>944</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5230,7 +5202,7 @@
       <structure>
         <id>943</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5242,7 +5214,7 @@
       <structure>
         <id>942</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5254,7 +5226,7 @@
       <structure>
         <id>941</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5266,7 +5238,7 @@
       <structure>
         <id>940</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5278,7 +5250,7 @@
       <structure>
         <id>939</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5290,7 +5262,7 @@
       <structure>
         <id>938</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5302,7 +5274,7 @@
       <structure>
         <id>937</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5314,7 +5286,7 @@
       <structure>
         <id>936</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5326,7 +5298,7 @@
       <structure>
         <id>935</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5338,16 +5310,9 @@
       <structure>
         <id>934</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>977</id>
-        <name>base.rock</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>1</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>24</x>
       <y>27</y>
@@ -5357,16 +5322,9 @@
       <structure>
         <id>933</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>972</id>
-        <name>base.rock</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>1</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>24</x>
       <y>28</y>
@@ -5376,16 +5334,9 @@
       <structure>
         <id>932</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>971</id>
-        <name>base.rock</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>1</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>24</x>
       <y>29</y>
@@ -5395,16 +5346,9 @@
       <structure>
         <id>931</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>970</id>
-        <name>base.rock</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>1</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>24</x>
       <y>30</y>
@@ -5414,7 +5358,7 @@
       <structure>
         <id>930</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5428,7 +5372,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>4</tile>
+        <tile>1</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -5599,13 +5543,6 @@
         <tile>22</tile>
         <value>10</value>
       </resource>
-      <consumable>
-        <id>646</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>25</x>
       <y>10</y>
@@ -5615,7 +5552,7 @@
       <structure>
         <id>929</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5627,7 +5564,7 @@
       <structure>
         <id>928</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5639,7 +5576,7 @@
       <structure>
         <id>927</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5651,7 +5588,7 @@
       <structure>
         <id>926</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5663,7 +5600,7 @@
       <structure>
         <id>925</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5675,7 +5612,7 @@
       <structure>
         <id>924</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5687,7 +5624,7 @@
       <structure>
         <id>923</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5699,7 +5636,7 @@
       <structure>
         <id>922</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5711,7 +5648,7 @@
       <structure>
         <id>921</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5723,7 +5660,7 @@
       <structure>
         <id>920</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5735,7 +5672,7 @@
       <structure>
         <id>919</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5747,7 +5684,7 @@
       <structure>
         <id>918</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5759,7 +5696,7 @@
       <structure>
         <id>917</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5771,7 +5708,7 @@
       <structure>
         <id>916</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5783,7 +5720,7 @@
       <structure>
         <id>915</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5795,7 +5732,7 @@
       <structure>
         <id>914</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5807,7 +5744,7 @@
       <structure>
         <id>913</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5819,7 +5756,7 @@
       <structure>
         <id>912</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5831,7 +5768,7 @@
       <structure>
         <id>911</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5843,7 +5780,7 @@
       <structure>
         <id>910</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5855,7 +5792,7 @@
       <structure>
         <id>909</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -5869,7 +5806,7 @@
         <name>base.res_rock</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>15</tile>
+        <tile>1</tile>
         <value>10</value>
       </resource>
       <lightSource>0</lightSource>
@@ -6021,7 +5958,7 @@
       <structure>
         <id>908</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6033,7 +5970,7 @@
       <structure>
         <id>907</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6045,7 +5982,7 @@
       <structure>
         <id>906</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6057,7 +5994,7 @@
       <structure>
         <id>905</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6069,7 +6006,7 @@
       <structure>
         <id>904</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6081,7 +6018,7 @@
       <structure>
         <id>903</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6093,7 +6030,7 @@
       <structure>
         <id>902</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6105,7 +6042,7 @@
       <structure>
         <id>901</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6117,7 +6054,7 @@
       <structure>
         <id>900</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6129,7 +6066,7 @@
       <structure>
         <id>899</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6141,7 +6078,7 @@
       <structure>
         <id>898</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6153,7 +6090,7 @@
       <structure>
         <id>897</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6165,7 +6102,7 @@
       <structure>
         <id>896</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6177,7 +6114,7 @@
       <structure>
         <id>895</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6189,7 +6126,7 @@
       <structure>
         <id>894</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6201,7 +6138,7 @@
       <structure>
         <id>893</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6213,7 +6150,7 @@
       <structure>
         <id>892</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6225,7 +6162,7 @@
       <structure>
         <id>891</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6237,16 +6174,9 @@
       <structure>
         <id>890</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>963</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>11</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>26</x>
       <y>29</y>
@@ -6256,7 +6186,7 @@
       <structure>
         <id>889</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6268,16 +6198,9 @@
       <structure>
         <id>888</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>964</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>26</x>
       <y>31</y>
@@ -6455,7 +6378,7 @@
       <structure>
         <id>887</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6467,7 +6390,7 @@
       <structure>
         <id>886</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6479,7 +6402,7 @@
       <structure>
         <id>744</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6491,7 +6414,7 @@
       <structure>
         <id>743</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6503,7 +6426,7 @@
       <structure>
         <id>742</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6515,7 +6438,7 @@
       <structure>
         <id>741</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6527,7 +6450,7 @@
       <structure>
         <id>885</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6539,7 +6462,7 @@
       <structure>
         <id>884</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6551,7 +6474,7 @@
       <structure>
         <id>883</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6563,7 +6486,7 @@
       <structure>
         <id>882</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6575,7 +6498,7 @@
       <structure>
         <id>881</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6587,16 +6510,9 @@
       <structure>
         <id>880</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>962</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>27</x>
       <y>22</y>
@@ -6606,7 +6522,7 @@
       <structure>
         <id>879</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6618,7 +6534,7 @@
       <structure>
         <id>878</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6630,7 +6546,7 @@
       <structure>
         <id>877</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6642,7 +6558,7 @@
       <structure>
         <id>876</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6654,7 +6570,7 @@
       <structure>
         <id>875</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6666,7 +6582,7 @@
       <structure>
         <id>874</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6678,7 +6594,7 @@
       <structure>
         <id>873</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6690,7 +6606,7 @@
       <structure>
         <id>872</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6702,7 +6618,7 @@
       <structure>
         <id>871</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6868,7 +6784,7 @@
       <structure>
         <id>870</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6880,7 +6796,7 @@
       <structure>
         <id>869</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6892,7 +6808,7 @@
       <structure>
         <id>740</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6904,7 +6820,7 @@
       <structure>
         <id>739</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6916,7 +6832,7 @@
       <structure>
         <id>738</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6928,7 +6844,7 @@
       <structure>
         <id>737</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6940,7 +6856,7 @@
       <structure>
         <id>868</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6952,7 +6868,7 @@
       <structure>
         <id>867</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6964,7 +6880,7 @@
       <structure>
         <id>866</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6976,7 +6892,7 @@
       <structure>
         <id>865</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -6988,7 +6904,7 @@
       <structure>
         <id>864</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7000,7 +6916,7 @@
       <structure>
         <id>863</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7012,7 +6928,7 @@
       <structure>
         <id>862</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7024,7 +6940,7 @@
       <structure>
         <id>861</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7036,7 +6952,7 @@
       <structure>
         <id>860</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7048,7 +6964,7 @@
       <structure>
         <id>859</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7060,7 +6976,7 @@
       <structure>
         <id>858</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7072,7 +6988,7 @@
       <structure>
         <id>857</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7084,7 +7000,7 @@
       <structure>
         <id>856</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7096,16 +7012,9 @@
       <structure>
         <id>855</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>965</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>28</x>
       <y>30</y>
@@ -7115,7 +7024,7 @@
       <structure>
         <id>854</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7211,7 +7120,7 @@
       <structure>
         <id>652</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7223,7 +7132,7 @@
       <structure>
         <id>853</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7235,7 +7144,7 @@
       <structure>
         <id>852</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7247,7 +7156,7 @@
       <structure>
         <id>736</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7259,7 +7168,7 @@
       <structure>
         <id>735</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7271,7 +7180,7 @@
       <structure>
         <id>698</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7283,7 +7192,7 @@
       <structure>
         <id>697</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7295,7 +7204,7 @@
       <structure>
         <id>696</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7307,7 +7216,7 @@
       <structure>
         <id>695</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7319,7 +7228,7 @@
       <structure>
         <id>694</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7331,7 +7240,7 @@
       <structure>
         <id>693</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7343,7 +7252,7 @@
       <structure>
         <id>692</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7355,7 +7264,7 @@
       <structure>
         <id>691</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7367,7 +7276,7 @@
       <structure>
         <id>690</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7379,7 +7288,7 @@
       <structure>
         <id>689</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7391,7 +7300,7 @@
       <structure>
         <id>688</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7403,7 +7312,7 @@
       <structure>
         <id>687</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7415,7 +7324,7 @@
       <structure>
         <id>851</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7427,7 +7336,7 @@
       <structure>
         <id>850</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7439,7 +7348,7 @@
       <structure>
         <id>849</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7451,7 +7360,7 @@
       <structure>
         <id>848</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7463,7 +7372,7 @@
       <structure>
         <id>847</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7601,7 +7510,7 @@
       <structure>
         <id>651</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7613,7 +7522,7 @@
       <structure>
         <id>846</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7625,7 +7534,7 @@
       <structure>
         <id>845</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7637,7 +7546,7 @@
       <structure>
         <id>734</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7649,7 +7558,7 @@
       <structure>
         <id>733</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7661,7 +7570,7 @@
       <structure>
         <id>732</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7673,7 +7582,7 @@
       <structure>
         <id>731</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7685,7 +7594,7 @@
       <structure>
         <id>844</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7697,7 +7606,7 @@
       <structure>
         <id>843</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7709,7 +7618,7 @@
       <structure>
         <id>842</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7721,7 +7630,7 @@
       <structure>
         <id>841</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7733,7 +7642,7 @@
       <structure>
         <id>840</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7745,7 +7654,7 @@
       <structure>
         <id>839</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7757,7 +7666,7 @@
       <structure>
         <id>838</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7769,7 +7678,7 @@
       <structure>
         <id>837</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7781,7 +7690,7 @@
       <structure>
         <id>836</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7793,7 +7702,7 @@
       <structure>
         <id>835</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7805,7 +7714,7 @@
       <structure>
         <id>834</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7817,7 +7726,7 @@
       <structure>
         <id>833</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7829,7 +7738,7 @@
       <structure>
         <id>832</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7841,7 +7750,7 @@
       <structure>
         <id>831</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7853,7 +7762,7 @@
       <structure>
         <id>830</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7949,7 +7858,7 @@
       <structure>
         <id>650</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7961,7 +7870,7 @@
       <structure>
         <id>829</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7973,7 +7882,7 @@
       <structure>
         <id>828</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7985,7 +7894,7 @@
       <structure>
         <id>827</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -7997,7 +7906,7 @@
       <structure>
         <id>826</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8009,7 +7918,7 @@
       <structure>
         <id>825</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8021,7 +7930,7 @@
       <structure>
         <id>824</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8033,7 +7942,7 @@
       <structure>
         <id>823</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8045,7 +7954,7 @@
       <structure>
         <id>822</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8057,7 +7966,7 @@
       <structure>
         <id>821</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8069,7 +7978,7 @@
       <structure>
         <id>820</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8081,7 +7990,7 @@
       <structure>
         <id>819</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8093,7 +8002,7 @@
       <structure>
         <id>818</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8105,7 +8014,7 @@
       <structure>
         <id>817</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8117,7 +8026,7 @@
       <structure>
         <id>816</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8129,7 +8038,7 @@
       <structure>
         <id>815</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8141,7 +8050,7 @@
       <structure>
         <id>814</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8153,7 +8062,7 @@
       <structure>
         <id>813</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8165,7 +8074,7 @@
       <structure>
         <id>812</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8177,7 +8086,7 @@
       <structure>
         <id>811</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8189,16 +8098,9 @@
       <structure>
         <id>810</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>966</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>31</x>
       <y>30</y>
@@ -8208,7 +8110,7 @@
       <structure>
         <id>809</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8360,7 +8262,7 @@
       <structure>
         <id>649</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8372,7 +8274,7 @@
       <structure>
         <id>808</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8384,7 +8286,7 @@
       <structure>
         <id>807</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8396,7 +8298,7 @@
       <structure>
         <id>806</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8408,7 +8310,7 @@
       <structure>
         <id>805</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8420,7 +8322,7 @@
       <structure>
         <id>804</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8432,7 +8334,7 @@
       <structure>
         <id>803</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8444,7 +8346,7 @@
       <structure>
         <id>802</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8456,7 +8358,7 @@
       <structure>
         <id>801</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8468,7 +8370,7 @@
       <structure>
         <id>800</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8480,7 +8382,7 @@
       <structure>
         <id>799</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8492,7 +8394,7 @@
       <structure>
         <id>798</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8504,7 +8406,7 @@
       <structure>
         <id>797</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8516,7 +8418,7 @@
       <structure>
         <id>796</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8528,7 +8430,7 @@
       <structure>
         <id>795</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8540,7 +8442,7 @@
       <structure>
         <id>794</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8552,7 +8454,7 @@
       <structure>
         <id>793</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8564,7 +8466,7 @@
       <structure>
         <id>792</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8576,7 +8478,7 @@
       <structure>
         <id>791</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8588,7 +8490,7 @@
       <structure>
         <id>790</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8600,7 +8502,7 @@
       <structure>
         <id>789</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8612,7 +8514,7 @@
       <structure>
         <id>788</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8624,7 +8526,7 @@
       <structure>
         <id>667</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8678,7 +8580,7 @@
       <structure>
         <id>648</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8690,7 +8592,7 @@
       <structure>
         <id>787</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8702,7 +8604,7 @@
       <structure>
         <id>786</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8714,7 +8616,7 @@
       <structure>
         <id>785</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8726,7 +8628,7 @@
       <structure>
         <id>784</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8738,7 +8640,7 @@
       <structure>
         <id>783</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8750,7 +8652,7 @@
       <structure>
         <id>782</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8762,16 +8664,9 @@
       <structure>
         <id>781</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>961</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>33</x>
       <y>17</y>
@@ -8781,7 +8676,7 @@
       <structure>
         <id>780</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8793,7 +8688,7 @@
       <structure>
         <id>779</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8805,7 +8700,7 @@
       <structure>
         <id>778</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8817,7 +8712,7 @@
       <structure>
         <id>777</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8829,7 +8724,7 @@
       <structure>
         <id>776</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8841,7 +8736,7 @@
       <structure>
         <id>775</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8853,7 +8748,7 @@
       <structure>
         <id>774</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8865,7 +8760,7 @@
       <structure>
         <id>773</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8877,7 +8772,7 @@
       <structure>
         <id>772</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8889,7 +8784,7 @@
       <structure>
         <id>771</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8901,7 +8796,7 @@
       <structure>
         <id>770</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8913,7 +8808,7 @@
       <structure>
         <id>769</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8925,7 +8820,7 @@
       <structure>
         <id>768</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8937,7 +8832,7 @@
       <structure>
         <id>767</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8949,7 +8844,7 @@
       <structure>
         <id>666</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8975,7 +8870,7 @@
       <structure>
         <id>647</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8987,7 +8882,7 @@
       <structure>
         <id>766</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -8999,7 +8894,7 @@
       <structure>
         <id>765</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9011,7 +8906,7 @@
       <structure>
         <id>764</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9023,7 +8918,7 @@
       <structure>
         <id>763</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9035,7 +8930,7 @@
       <structure>
         <id>762</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9047,7 +8942,7 @@
       <structure>
         <id>761</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9059,7 +8954,7 @@
       <structure>
         <id>760</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9071,7 +8966,7 @@
       <structure>
         <id>759</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9083,7 +8978,7 @@
       <structure>
         <id>758</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9095,7 +8990,7 @@
       <structure>
         <id>757</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9107,7 +9002,7 @@
       <structure>
         <id>756</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9119,7 +9014,7 @@
       <structure>
         <id>755</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9131,7 +9026,7 @@
       <structure>
         <id>754</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9143,7 +9038,7 @@
       <structure>
         <id>753</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9155,7 +9050,7 @@
       <structure>
         <id>752</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9167,7 +9062,7 @@
       <structure>
         <id>751</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9179,7 +9074,7 @@
       <structure>
         <id>750</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9191,7 +9086,7 @@
       <structure>
         <id>749</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9203,16 +9098,9 @@
       <structure>
         <id>748</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>967</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>34</x>
       <y>29</y>
@@ -9222,7 +9110,7 @@
       <structure>
         <id>747</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9234,7 +9122,7 @@
       <structure>
         <id>746</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9246,7 +9134,7 @@
       <structure>
         <id>665</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9396,7 +9284,7 @@
       <structure>
         <id>653</id>
         <name>base.wall</name>
-        <progress>104</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9408,16 +9296,9 @@
       <structure>
         <id>671</id>
         <name>base.door</name>
-        <progress>42</progress>
-        <health>0</health>
-      </structure>
-      <consumable>
-        <id>672</id>
-        <name>base.seaweed</name>
         <progress>0</progress>
         <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
+      </structure>
       <lightSource>0</lightSource>
       <x>35</x>
       <y>19</y>
@@ -9427,16 +9308,9 @@
       <structure>
         <id>663</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
-      <consumable>
-        <id>668</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>35</x>
       <y>20</y>
@@ -9446,7 +9320,7 @@
       <structure>
         <id>662</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9458,7 +9332,7 @@
       <structure>
         <id>661</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9470,7 +9344,7 @@
       <structure>
         <id>660</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9482,7 +9356,7 @@
       <structure>
         <id>659</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9494,7 +9368,7 @@
       <structure>
         <id>658</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9506,7 +9380,7 @@
       <structure>
         <id>657</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9518,7 +9392,7 @@
       <structure>
         <id>656</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9530,7 +9404,7 @@
       <structure>
         <id>655</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9542,7 +9416,7 @@
       <structure>
         <id>654</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9554,7 +9428,7 @@
       <structure>
         <id>670</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9566,7 +9440,7 @@
       <structure>
         <id>669</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9578,7 +9452,7 @@
       <structure>
         <id>664</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9674,7 +9548,7 @@
       <item>
         <id>699</id>
         <name>base.radiator</name>
-        <progress>45</progress>
+        <progress>0</progress>
         <health>0</health>
       </item>
       <lightSource>0</lightSource>
@@ -9698,7 +9572,7 @@
       <structure>
         <id>729</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9710,16 +9584,9 @@
       <structure>
         <id>728</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>672</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>36</x>
       <y>19</y>
@@ -9729,16 +9596,9 @@
       <structure>
         <id>727</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>668</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>36</x>
       <y>20</y>
@@ -9748,7 +9608,7 @@
       <structure>
         <id>683</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9918,7 +9778,7 @@
       <structure>
         <id>726</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9930,16 +9790,9 @@
       <structure>
         <id>725</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>745</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>37</x>
       <y>19</y>
@@ -9949,7 +9802,7 @@
       <structure>
         <id>724</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -9961,7 +9814,7 @@
       <structure>
         <id>682</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10125,7 +9978,7 @@
       <structure>
         <id>723</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10137,7 +9990,7 @@
       <structure>
         <id>722</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10149,7 +10002,7 @@
       <structure>
         <id>721</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10161,7 +10014,7 @@
       <structure>
         <id>681</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10325,7 +10178,7 @@
       <structure>
         <id>720</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10337,7 +10190,7 @@
       <structure>
         <id>719</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10349,7 +10202,7 @@
       <structure>
         <id>718</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10361,7 +10214,7 @@
       <structure>
         <id>680</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10525,7 +10378,7 @@
       <structure>
         <id>717</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10537,7 +10390,7 @@
       <structure>
         <id>716</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10549,7 +10402,7 @@
       <structure>
         <id>715</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10561,7 +10414,7 @@
       <structure>
         <id>679</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10644,6 +10497,13 @@
         <progress>0</progress>
         <health>100</health>
       </structure>
+      <consumable>
+        <id>668</id>
+        <name>base.seaweed</name>
+        <progress>0</progress>
+        <health>0</health>
+        <quantity>30</quantity>
+      </consumable>
       <lightSource>0</lightSource>
       <x>41</x>
       <y>11</y>
@@ -10738,7 +10598,7 @@
       <structure>
         <id>714</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10750,7 +10610,7 @@
       <structure>
         <id>713</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10762,7 +10622,7 @@
       <structure>
         <id>712</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10774,7 +10634,7 @@
       <structure>
         <id>678</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10829,6 +10689,13 @@
         <progress>0</progress>
         <health>100</health>
       </structure>
+      <consumable>
+        <id>646</id>
+        <name>base.seaweed</name>
+        <progress>0</progress>
+        <health>0</health>
+        <quantity>20</quantity>
+      </consumable>
       <lightSource>0</lightSource>
       <x>42</x>
       <y>11</y>
@@ -10841,6 +10708,13 @@
         <progress>0</progress>
         <health>100</health>
       </structure>
+      <consumable>
+        <id>961</id>
+        <name>base.seaweed</name>
+        <progress>0</progress>
+        <health>0</health>
+        <quantity>30</quantity>
+      </consumable>
       <lightSource>0</lightSource>
       <x>42</x>
       <y>12</y>
@@ -10910,7 +10784,7 @@
       <structure>
         <id>711</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10922,7 +10796,7 @@
       <structure>
         <id>710</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10934,7 +10808,7 @@
       <structure>
         <id>709</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -10946,7 +10820,7 @@
       <structure>
         <id>677</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11113,6 +10987,13 @@
         <progress>0</progress>
         <health>100</health>
       </structure>
+      <consumable>
+        <id>974</id>
+        <name>base.rock</name>
+        <progress>0</progress>
+        <health>0</health>
+        <quantity>7</quantity>
+      </consumable>
       <lightSource>0</lightSource>
       <x>43</x>
       <y>11</y>
@@ -11125,6 +11006,13 @@
         <progress>0</progress>
         <health>100</health>
       </structure>
+      <consumable>
+        <id>730</id>
+        <name>base.seaweed</name>
+        <progress>0</progress>
+        <health>0</health>
+        <quantity>20</quantity>
+      </consumable>
       <lightSource>0</lightSource>
       <x>43</x>
       <y>12</y>
@@ -11194,7 +11082,7 @@
       <structure>
         <id>708</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11206,7 +11094,7 @@
       <structure>
         <id>707</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11218,16 +11106,9 @@
       <structure>
         <id>706</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
-      <consumable>
-        <id>730</id>
-        <name>base.seaweed</name>
-        <progress>0</progress>
-        <health>0</health>
-        <quantity>10</quantity>
-      </consumable>
       <lightSource>0</lightSource>
       <x>43</x>
       <y>20</y>
@@ -11237,7 +11118,7 @@
       <structure>
         <id>676</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11320,6 +11201,13 @@
         <progress>0</progress>
         <health>100</health>
       </structure>
+      <consumable>
+        <id>964</id>
+        <name>base.seaweed</name>
+        <progress>0</progress>
+        <health>0</health>
+        <quantity>20</quantity>
+      </consumable>
       <lightSource>0</lightSource>
       <x>44</x>
       <y>11</y>
@@ -11332,6 +11220,13 @@
         <progress>0</progress>
         <health>100</health>
       </structure>
+      <consumable>
+        <id>966</id>
+        <name>base.seaweed</name>
+        <progress>0</progress>
+        <health>0</health>
+        <quantity>20</quantity>
+      </consumable>
       <lightSource>0</lightSource>
       <x>44</x>
       <y>12</y>
@@ -11401,7 +11296,7 @@
       <structure>
         <id>705</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11413,7 +11308,7 @@
       <structure>
         <id>704</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11425,7 +11320,7 @@
       <structure>
         <id>703</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11437,7 +11332,7 @@
       <structure>
         <id>675</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11560,6 +11455,13 @@
         <progress>0</progress>
         <health>100</health>
       </structure>
+      <consumable>
+        <id>963</id>
+        <name>base.seaweed</name>
+        <progress>0</progress>
+        <health>0</health>
+        <quantity>11</quantity>
+      </consumable>
       <lightSource>0</lightSource>
       <x>45</x>
       <y>12</y>
@@ -11635,7 +11537,7 @@
       <structure>
         <id>702</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11647,7 +11549,7 @@
       <structure>
         <id>701</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11659,7 +11561,7 @@
       <structure>
         <id>700</id>
         <name>base.floor</name>
-        <progress>5</progress>
+        <progress>0</progress>
         <health>100</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11671,7 +11573,7 @@
       <structure>
         <id>674</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11905,7 +11807,7 @@
       <structure>
         <id>686</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11917,7 +11819,7 @@
       <structure>
         <id>685</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11929,7 +11831,7 @@
       <structure>
         <id>684</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -11941,7 +11843,7 @@
       <structure>
         <id>673</id>
         <name>base.wall</name>
-        <progress>100</progress>
+        <progress>0</progress>
         <health>250</health>
       </structure>
       <lightSource>0</lightSource>
@@ -12278,9 +12180,9 @@
       <lastname>Goodman</lastname>
       <firstname>Lorie </firstname>
       <relations/>
-      <old>38.180000000000625</old>
-      <x>36</x>
-      <y>19</y>
+      <old>52.060000000002795</old>
+      <x>44</x>
+      <y>11</y>
       <gender>FEMALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
@@ -12290,11 +12192,11 @@
         <drinking>0</drinking>
         <socialize>0</socialize>
         <food>0.0</food>
-        <happiness>100.0</happiness>
+        <happiness>0.0</happiness>
         <relation>0.0</relation>
         <security>100.0</security>
         <oxygen>90.0</oxygen>
-        <energy>91.0</energy>
+        <energy>19.0</energy>
         <health>87.0</health>
         <sickness>0.0</sickness>
         <injuries>0.0</injuries>
@@ -12308,8 +12210,24 @@
     <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave>
       <parcels>
         <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+          <x>45</x>
+          <y>12</y>
+        </org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+        <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
           <x>43</x>
           <y>12</y>
+        </org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+        <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+          <x>44</x>
+          <y>12</y>
+        </org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+        <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+          <x>42</x>
+          <y>11</y>
+        </org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+        <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+          <x>43</x>
+          <y>11</y>
         </org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
         <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
           <x>41</x>
@@ -12317,7 +12235,7 @@
         </org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
         <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
           <x>44</x>
-          <y>12</y>
+          <y>11</y>
         </org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
         <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
           <x>45</x>
@@ -12328,24 +12246,8 @@
           <y>12</y>
         </org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
         <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>45</x>
-          <y>12</y>
-        </org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-        <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>44</x>
-          <y>11</y>
-        </org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-        <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
           <x>42</x>
           <y>12</y>
-        </org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-        <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>42</x>
-          <y>11</y>
-        </org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-        <org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>43</x>
-          <y>11</y>
         </org.smallbox.faraway.engine.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
       </parcels>
       <type>STORAGE</type>

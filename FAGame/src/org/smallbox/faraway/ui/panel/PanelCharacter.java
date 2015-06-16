@@ -5,10 +5,7 @@ import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.BuffModel;
-import org.smallbox.faraway.model.CharacterBuffModel;
-import org.smallbox.faraway.model.ProfessionModel;
-import org.smallbox.faraway.model.ToolTips;
+import org.smallbox.faraway.model.*;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.character.CharacterModel.Gender;
 import org.smallbox.faraway.model.character.CharacterNeeds;
@@ -17,11 +14,13 @@ import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PanelCharacter extends BaseRightPanel {
     private static final int NB_MAX_BUFFS = 20;
+    private static final Color COLOR_BUTTON_INACTIVE = new Color(0x298596);
+    private static final Color COLOR_BUTTON_ACTIVE = new Color(0xafcd35);
     private ViewFactory _viewFactory;
 
     private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "unused", "Work"};
@@ -98,6 +97,8 @@ public class PanelCharacter extends BaseRightPanel {
             _lbBuffs[i].setPosition(0, 20 * i);
             frameBuffs.addView(_lbBuffs[i]);
         }
+
+        findById("frame_equipment_detail").setVisible(false);
     }
 
     private void switchView(String viewId) {
@@ -437,6 +438,69 @@ public class PanelCharacter extends BaseRightPanel {
             ((TextView) findById("lb_inventory_entry")).setString(_character.getInventory().getLabel() + " (" + _character.getInventory().getQuantity() + ")");
         }
 
+        // Equipments
+        setEquipment((TextView) findById("bt_top"), "top");
+        setEquipment((TextView) findById("bt_head"), "head");
+        setEquipment((TextView) findById("bt_hand"), "hand");
+        setEquipment((TextView) findById("bt_bottom"), "bottom");
+        setEquipment((TextView) findById("bt_feet"), "feet");
+        setEquipment((TextView) findById("bt_face"), "face");
+
+        Map<String, Integer> totalResist = new HashMap<>();
+        Map<String, Integer> totalAbsorb = new HashMap<>();
+        Map<String, Integer> totalBuff = new HashMap<>();
+        for (EquipmentModel equipment: _character.getEquipments()) {
+            if (equipment.effects != null) {
+                for (EquipmentModel.EquipmentEffect effect : equipment.effects) {
+                    // Check resist
+                    if (effect.resist != null) {
+                        checkAndAddEquipmentEffect(totalResist, "cold", effect.resist.cold);
+                        checkAndAddEquipmentEffect(totalResist, "heat", effect.resist.heat);
+                        checkAndAddEquipmentEffect(totalResist, "damage", effect.resist.damage);
+                    }
+
+                    // Check absorb
+                    if (effect.absorb != null) {
+                        checkAndAddEquipmentEffect(totalAbsorb, "cold", effect.absorb.cold);
+                        checkAndAddEquipmentEffect(totalAbsorb, "heat", effect.absorb.heat);
+                        checkAndAddEquipmentEffect(totalAbsorb, "damage", effect.absorb.damage);
+                    }
+
+                    // Check buff
+                    if (effect.buff != null) {
+                        checkAndAddEquipmentEffect(totalBuff, "sight", effect.buff.sight);
+                        checkAndAddEquipmentEffect(totalBuff, "grow", effect.buff.grow);
+                        checkAndAddEquipmentEffect(totalBuff, "repair", effect.buff.repair);
+                        checkAndAddEquipmentEffect(totalBuff, "build", effect.buff.build);
+                        checkAndAddEquipmentEffect(totalBuff, "craft", effect.buff.craft);
+                        checkAndAddEquipmentEffect(totalBuff, "cook", effect.buff.cook);
+                        checkAndAddEquipmentEffect(totalBuff, "speed", effect.buff.speed);
+                        checkAndAddEquipmentEffect(totalBuff, "tailoring", effect.buff.tailoring);
+                    }
+                }
+            }
+        }
+
+        List<String> resists = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry: totalResist.entrySet()) {
+            resists.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" +  entry.getValue() : entry.getValue()));
+        }
+        ((TextView) findById("lb_equipment_total_resist")).setString("Resists: " + String.join(", ", resists));
+
+        List<String> absorb = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry: totalAbsorb.entrySet()) {
+            absorb.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" +  entry.getValue() : entry.getValue()));
+        }
+        ((TextView) findById("lb_equipment_total_absorb")).setString("Absorbs: " + String.join(", ", absorb));
+
+        List<String> buff = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry: totalBuff.entrySet()) {
+            buff.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" +  entry.getValue() : entry.getValue()));
+        }
+        ((TextView) findById("lb_equipment_total_buff")).setString("Buffs: " + String.join(", ", buff));
+
+
+
 //        for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
 //            if (_character.getInventory().size() > i) {
 //                MapObjectModel item = _character.getInventory().getRoom(i);
@@ -445,6 +509,91 @@ public class PanelCharacter extends BaseRightPanel {
 //                _lbInventoryEntries[i].setImage(null);
 //            }
 //        }
+    }
+
+    private void selectEquipment(View view, EquipmentModel equipment) {
+        findById("bt_top").setBackgroundColor(COLOR_BUTTON_INACTIVE);
+        findById("bt_head").setBackgroundColor(COLOR_BUTTON_INACTIVE);
+        findById("bt_hand").setBackgroundColor(COLOR_BUTTON_INACTIVE);
+        findById("bt_bottom").setBackgroundColor(COLOR_BUTTON_INACTIVE);
+        findById("bt_feet").setBackgroundColor(COLOR_BUTTON_INACTIVE);
+        findById("bt_face").setBackgroundColor(COLOR_BUTTON_INACTIVE);
+
+        view.setBackgroundColor(COLOR_BUTTON_ACTIVE);
+
+        findById("frame_equipment_detail").setPosition(view.getPosX(), view.getPosY() + 280);
+        findById("frame_equipment_detail").setVisible(false);
+
+        if (equipment != null) {
+            findById("frame_equipment_detail").setVisible(true);
+
+            if (equipment.effects != null) {
+                for (EquipmentModel.EquipmentEffect effect: equipment.effects) {
+                    // Check resist
+                    if (effect.resist != null) {
+                        Map<String, Integer> totalStats = new HashMap<>();
+                        checkAndAddEquipmentEffect(totalStats, "cold", effect.resist.cold);
+                        checkAndAddEquipmentEffect(totalStats, "heat", effect.resist.heat);
+                        checkAndAddEquipmentEffect(totalStats, "damage", effect.resist.damage);
+
+                        List<String> resists = new ArrayList<>();
+                        for (Map.Entry<String, Integer> entry: totalStats.entrySet()) {
+                            resists.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
+                        }
+                        ((TextView)findById("lb_equipment_resist")).setString("[R]: " + String.join(", ", resists));
+                    }
+
+                    // Check absorb
+                    if (effect.absorb != null) {
+                        Map<String, Integer> totalStats = new HashMap<>();
+                        checkAndAddEquipmentEffect(totalStats, "cold", effect.absorb.cold);
+                        checkAndAddEquipmentEffect(totalStats, "heat", effect.absorb.heat);
+                        checkAndAddEquipmentEffect(totalStats, "damage", effect.absorb.damage);
+
+                        List<String> absorbs = new ArrayList<>();
+                        for (Map.Entry<String, Integer> entry: totalStats.entrySet()) {
+                            absorbs.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
+                        }
+                        ((TextView)findById("lb_equipment_absorb")).setString("[A]: " + String.join(", ", absorbs));
+                    }
+
+                    // Check buff
+                    if (effect.buff != null) {
+                        Map<String, Integer> totalStats = new HashMap<>();
+                        checkAndAddEquipmentEffect(totalStats, "sight", effect.buff.sight);
+                        checkAndAddEquipmentEffect(totalStats, "speed", effect.buff.speed);
+
+                        List<String> buffs = new ArrayList<>();
+                        for (Map.Entry<String, Integer> entry: totalStats.entrySet()) {
+                            buffs.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
+                        }
+                        ((TextView)findById("lb_equipment_resist")).setString("[B]: " + String.join(", ", buffs));
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkAndAddEquipmentEffect(Map<String, Integer> totalStats, String text, int value) {
+        if (value != 0) {
+            if (!totalStats.containsKey(text)) {
+                totalStats.put(text, 0);
+            }
+            totalStats.put(text, totalStats.get(text) + value);
+        }
+    }
+
+    private void setEquipment(TextView view, String location) {
+        EquipmentModel equipment = _character.getEquipment(location);
+        if (equipment != null) {
+            view.setString(equipment.label);
+//            view.setVisible(true);
+        } else {
+            view.setString("");
+//            view.setVisible(false);
+        }
+
+        view.setOnClickListener(v -> selectEquipment(v, equipment));
     }
 
     private void refreshNeeds() {

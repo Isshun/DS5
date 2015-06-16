@@ -8,14 +8,11 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameData implements GameDataListener {
 
-    @Override
+	@Override
     public void onDataLoaded() {
         Application.getInstance().refreshConfig();
     }
@@ -29,6 +26,7 @@ public class GameData implements GameDataListener {
 	public List<BuffModel> 		buffs;
 	public List<ItemInfo> 		gatherItems;
 	public List<CategoryInfo> 	categories;
+	public List<EquipmentModel> equipments;
 	public List<PlanetModel> 	planets;
     private long                _lastConfigModified;
     public Map<String, WeatherModel> weathers;
@@ -42,6 +40,7 @@ public class GameData implements GameDataListener {
 		loadStrings();
         loadConfig();
         loadBuffs();
+        loadEquipments();
         gatherItems = new ArrayList<>();
 		items = new ArrayList<>();
 		categories = new ArrayList<>();
@@ -152,4 +151,43 @@ public class GameData implements GameDataListener {
 		}
 	}
 
+	private void loadEquipments() {
+        equipments = new ArrayList<>();
+		try {
+			for (File file: new File("data/equipments/").listFiles()) {
+				if (file.getName().endsWith(".yml")) {
+					Log.debug("Load equipment: " + file.getName());
+					InputStream input = new FileInputStream(file);
+					Yaml yaml = new Yaml(new Constructor(EquipmentModel.class));
+					EquipmentModel equipment = (EquipmentModel)yaml.load(input);
+					equipment.name = "base.equipments." + file.getName().replace(".yml", "");
+
+                    if (equipment.location == null) {
+                        Log.error("Equipment has no location: " + equipment.name);
+                        break;
+                    }
+
+                    equipments.add(equipment);
+				}
+			}
+			for (BuffModel buff: buffs) {
+				for (BuffModel.BuffLevelModel level: buff.levels) {
+					level.index = buff.levels.indexOf(level);
+				}
+			}
+//            Collections.sort(buffs, (b1, b2) -> b2.effects.mood - b1.effects.mood);
+			Log.info("Buffs loaded");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public EquipmentModel getEquipment(String name) {
+		for (EquipmentModel equipment: equipments) {
+			if (equipment.name.equals(name)) {
+				return equipment;
+			}
+		}
+		return null;
+	}
 }

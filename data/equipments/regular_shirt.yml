@@ -1,0 +1,8 @@
+label: Regular shirt
+location: top
+effects:
+    -   absorb:
+            cold: 10
+        resist:
+            cold: 10
+            damage: 10
