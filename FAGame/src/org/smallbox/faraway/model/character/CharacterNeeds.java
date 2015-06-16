@@ -10,20 +10,6 @@ public class CharacterNeeds {
     private final CharacterModel 	_character;
 	private final GameData      	_data;
 
-    public void setSleeping(boolean isSleeping) {
-        _isSleeping = true;
-    }
-
-    public enum Message {
-		MSG_HUNGRY,
-		MSG_STARVE,
-		MSG_NEED_OXYGEN,
-		MSG_SLEEP_ON_FLOOR,
-		MSG_SLEEP_ON_CHAIR,
-		MSG_NO_WINDOW,
-		MSG_BLOCKED
-	}
-
 	// Actions
 	private boolean _isSleeping;
 	private int	_eating;
@@ -42,10 +28,12 @@ public class CharacterNeeds {
     public double injuries;
     public double satiety;
 
-	private MapObjectModel _sleepItem;
+	private MapObjectModel 	_sleepItem;
+	private CharacterStats	_stats;
 
 	public CharacterNeeds(CharacterModel character) {
         _data = GameData.getData();
+		_stats = character.getStats();
         _character = character;
 		_sleepItem = null;
 		food = (int) (Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);
@@ -180,7 +168,16 @@ public class CharacterNeeds {
     private void updateNeeds(GameConfig.EffectValues effects) {
         food += effects.food;
         energy += effects.energy;
-        oxygen += effects.oxygen;
+
+		// Increase oxygen
+		if (effects.oxygen > 0) {
+			oxygen += effects.oxygen;
+		}
+		// Decrease oxygen, use resist
+		else {
+			oxygen += effects.oxygen * (1 - _stats.resist.oxygen / 100f);
+		}
+
         happiness += effects.happiness;
         relation += effects.relation;
         security += effects.security;
@@ -233,5 +230,9 @@ public class CharacterNeeds {
 			health = Math.min(health + (double)action.effects.health / action.cost, 100);
 			relation = Math.min(relation + (double)action.effects.relation / action.cost, 100);
 		}
+	}
+
+	public void setSleeping(boolean isSleeping) {
+		_isSleeping = isSleeping;
 	}
 }

@@ -358,7 +358,31 @@ entries:
                 position: [260, 277]
                 size: [92, 25]
                 align: center
-                        
+            
+            -   type: label
+                id: bt_tool_1
+                text: tool
+                textsize: 14
+                position: [20, 332]
+                size: [92, 25]
+                align: center
+            
+            -   type: label
+                id: bt_tool_2
+                text: tool
+                textsize: 14
+                position: [160, 332]
+                size: [92, 25]
+                align: center
+            
+            -   type: label
+                id: bt_tool_3
+                text: tool
+                textsize: 14
+                position: [300, 332]
+                size: [92, 25]
+                align: center
+
         -   type: frame
             id: frame_equipment_detail
             position: [0, 605]
@@ -382,7 +406,7 @@ entries:
                 position: [0, 40]
                         
         -   type: frame
-            position: [0, 600]
+            position: [0, 640]
             entries:
             
             -   type: label

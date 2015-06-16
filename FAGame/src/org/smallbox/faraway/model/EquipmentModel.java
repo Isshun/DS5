@@ -15,6 +15,7 @@ public class EquipmentModel {
         public int                      cook;
         public int                      speed;
         public int                      tailoring;
+        public double                   oxygen;
     }
 
     public static class EquipmentEffectAbsorb {
@@ -27,6 +28,7 @@ public class EquipmentModel {
         public int                      cold;
         public int                      heat;
         public int                      damage;
+        public int                      oxygen;
     }
 
     public static class EquipmentEffectCondition {
@@ -43,6 +45,7 @@ public class EquipmentModel {
 
     public String                       name;
     public String                       label;
+    public String                       desc;
     public String                       location;
     public List<EquipmentEffect>        effects;
 }

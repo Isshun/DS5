@@ -14,59 +14,61 @@ public class ItemLoader {
 
     public static void load(GameData data, String path, String packageName) {
 	    Log.debug("load items...");
-
-	    // List files
-		File itemFiles[] = (new File(path)).listFiles((file, name) -> {
-            return name.contains(".yml");
-        });
-		
-		// Load files
-		int i = 0;
-		for (File itemFile: itemFiles) {
-			ItemInfo info = null;
-			
-			try {
-			    Log.debug(" - load: " + itemFile.getName());
-			    InputStream input = new FileInputStream(itemFile);
-			    Yaml yaml = new Yaml(new Constructor(ItemInfo.class));
-			    info = (ItemInfo)yaml.load(input);
-			    input.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			if (info != null) {
-			    info.fileName = itemFile.getName().substring(0, itemFile.getName().length() - 4);
-			    info.packageName = packageName;
-			    info.name = info.packageName +  '.' + info.fileName;
-
-			    // Get category
-			    if ("consumable".equals(info.type)) {
-				    info.isConsumable = true;
-			    } else if ("structure".equals(info.type)) {
-				    info.isStructure = true; 
-			    } else if ("item".equals(info.type)) {
-				    info.isUserItem = true; 
-			    } else if ("resource".equals(info.type)) {
-				    info.isResource = true; 
-			    } else {
-			    	throw new RuntimeException("unknow item type: " + info.type);
-			    }
-			    
-//			    info.isStorage = info.storage > 0 || info.actions != null && info.actions.storage > 0;
-//			    info.isFood = info.actions != null && info.actions.effects != null && info.actions.effects.food > 0;
-			    data.items.add(info);
-			}
-			
-			i++;
-		}
-		
-	    Log.debug("items loaded: " + i);
+        loadDirectory(data, path, packageName, new File(path));
+        Log.debug("load items: done");
 	}
 
-	public static void load(final GameData data) {
+    private static void loadDirectory(GameData data, String path, String packageName, File directory) {
+        for (File file: directory.listFiles()) {
+            if (file.isDirectory()) {
+                loadDirectory(data, path, packageName, file);
+            }
+            if (file.getName().endsWith(".yml")) {
+                loadFile(data, path, packageName, file);
+            }
+        }
+    }
+
+    private static void loadFile(GameData data, String path, String packageName, File itemFile) {
+        ItemInfo info = null;
+
+        try {
+            Log.debug(" - load: " + itemFile.getName());
+            InputStream input = new FileInputStream(itemFile);
+            Yaml yaml = new Yaml(new Constructor(ItemInfo.class));
+            info = (ItemInfo)yaml.load(input);
+            input.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (info != null) {
+            info.fileName = itemFile.getName().substring(0, itemFile.getName().length() - 4);
+            info.packageName = packageName;
+            info.name = info.packageName +  '.' + info.fileName;
+
+            // Get category
+            if ("consumable".equals(info.type)) {
+                info.isConsumable = true;
+            } else if ("structure".equals(info.type)) {
+                info.isStructure = true;
+            } else if ("item".equals(info.type)) {
+                info.isUserItem = true;
+            } else if ("resource".equals(info.type)) {
+                info.isResource = true;
+            } else {
+                throw new RuntimeException("unknow item type: " + info.type);
+            }
+
+//			    info.isStorage = info.storage > 0 || info.actions != null && info.actions.storage > 0;
+//			    info.isFood = info.actions != null && info.actions.effects != null && info.actions.effects.food > 0;
+            data.items.add(info);
+        }
+    }
+
+    public static void load(final GameData data) {
         _hasErrors = false;
 
 		// First pass

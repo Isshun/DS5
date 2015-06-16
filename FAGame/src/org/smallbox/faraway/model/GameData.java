@@ -154,32 +154,37 @@ public class GameData implements GameDataListener {
 	private void loadEquipments() {
         equipments = new ArrayList<>();
 		try {
-			for (File file: new File("data/equipments/").listFiles()) {
-				if (file.getName().endsWith(".yml")) {
-					Log.debug("Load equipment: " + file.getName());
-					InputStream input = new FileInputStream(file);
-					Yaml yaml = new Yaml(new Constructor(EquipmentModel.class));
-					EquipmentModel equipment = (EquipmentModel)yaml.load(input);
-					equipment.name = "base.equipments." + file.getName().replace(".yml", "");
-
-                    if (equipment.location == null) {
-                        Log.error("Equipment has no location: " + equipment.name);
-                        break;
-                    }
-
-                    equipments.add(equipment);
-				}
-			}
-			for (BuffModel buff: buffs) {
-				for (BuffModel.BuffLevelModel level: buff.levels) {
-					level.index = buff.levels.indexOf(level) + 1;
-				}
-			}
-//            Collections.sort(buffs, (b1, b2) -> b2.effects.mood - b1.effects.mood);
-			Log.info("Buffs loaded");
+			loadDirectory(equipments, new File("data/equipments/"));
+			Log.info("Equipments loaded");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void loadDirectory(List<EquipmentModel> equipments, File directory) throws FileNotFoundException {
+		for (File file: directory.listFiles()) {
+			if (file.isDirectory()) {
+				loadDirectory(equipments, file);
+			}
+			if (file.getName().endsWith(".yml")) {
+				loadEquipment(equipments, file);
+			}
+		}
+	}
+
+	private void loadEquipment(List<EquipmentModel> equipments, File file) throws FileNotFoundException {
+		Log.debug("Load equipment: " + file.getName());
+		InputStream input = new FileInputStream(file);
+		Yaml yaml = new Yaml(new Constructor(EquipmentModel.class));
+		EquipmentModel equipment = (EquipmentModel)yaml.load(input);
+		equipment.name = "base.equipments." + file.getName().replace(".yml", "");
+
+		if (equipment.location == null) {
+			Log.error("Equipment has no location: " + equipment.name);
+			return;
+		}
+
+		equipments.add(equipment);
 	}
 
 	public EquipmentModel getEquipment(String name) {

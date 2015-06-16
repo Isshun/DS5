@@ -5,7 +5,6 @@ import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.BuffModel;
 import org.smallbox.faraway.model.CharacterBuffModel;
 import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.room.RoomModel;
 
 /**
  * Created by Alex on 16/06/2015.
@@ -18,15 +17,19 @@ public class CharacterBuffManager {
                 // Level checked successfully
                 if (checkBuff(character, level)) {
                     // Is current level and not the last
-                    if (characterBuff.levelIndex + 1 == level.index && characterBuff.maxLevelIndex > characterBuff.levelIndex) {
-                        if (characterBuff.buff.levels.get(characterBuff.levelIndex).delay > 0) {
-                            characterBuff.progress += 1f / characterBuff.buff.levels.get(characterBuff.levelIndex).delay / GameData.config.tickPerHour;
+                    if (characterBuff.levelIndex < characterBuff.maxLevelIndex && (!characterBuff.buff.levels.get(characterBuff.levelIndex + 1).conditions.previous || characterBuff.levelIndex + 1 == level.index)) {
+                        // Upgrade progress to current level if too low
+                        if (characterBuff.progress < level.index - 1) {
+                            characterBuff.progress = level.index - 1;
+                        }
+                        if (characterBuff.buff.levels.get(characterBuff.levelIndex + 1).delay > 0) {
+                            characterBuff.progress += 1f / characterBuff.buff.levels.get(characterBuff.levelIndex + 1).delay / GameData.config.tickPerHour;
                         } else {
                             characterBuff.progress++;
                         }
                         if (characterBuff.progress >= characterBuff.levelIndex + 1) {
+                            characterBuff.levelIndex = (int)characterBuff.progress;
                             characterBuff.level = characterBuff.buff.levels.get(characterBuff.levelIndex);
-                            characterBuff.levelIndex = characterBuff.level.index;
                             needSort = true;
                         }
                     }
@@ -37,7 +40,7 @@ public class CharacterBuffManager {
                     if (characterBuff.progress >= level.index) {
                         characterBuff.progress = level.index - 1;
                         characterBuff.levelIndex = level.index - 1;
-                        characterBuff.level = characterBuff.levelIndex == 0 ? null : characterBuff.buff.levels.get(characterBuff.levelIndex);
+                        characterBuff.level = characterBuff.levelIndex == -1 ? null : characterBuff.buff.levels.get(characterBuff.levelIndex);
                     }
                 }
             }
@@ -49,50 +52,28 @@ public class CharacterBuffManager {
     }
 
     private static boolean checkBuff(CharacterModel character, BuffModel.BuffLevelModel level) {
-        if (level.conditions.minFood != Integer.MIN_VALUE && character.getNeeds().food >= level.conditions.minFood) {
-            return false;
-        }
-        if (level.conditions.maxFood != Integer.MIN_VALUE && character.getNeeds().food <= level.conditions.maxFood) {
-            return false;
-        }
-        if (level.conditions.minSocial != Integer.MIN_VALUE && character.getNeeds().relation >= level.conditions.minSocial) {
-            return false;
-        }
-        if (level.conditions.maxSocial != Integer.MIN_VALUE && character.getNeeds().relation <= level.conditions.maxSocial) {
-            return false;
-        }
+        // Character
+        if (!checkBuffValue(level.conditions.minFood, level.conditions.maxFood, character.getNeeds().food))     return false;
+        if (!checkBuffValue(level.conditions.minSocial, level.conditions.maxSocial, character.getNeeds().relation)) return false;
+        if (!checkBuffValue(level.conditions.minOxygen, level.conditions.maxOxygen, character.getNeeds().oxygen)) return false;
+        if (!checkBuffValue(level.conditions.minCharacterTemperature, level.conditions.maxCharacterTemperature, character.getBodyHeat())) return false;
 
-        // Check light
-        if (level.conditions.minLight != Integer.MIN_VALUE || level.conditions.maxLight != Integer.MIN_VALUE) {
-            RoomModel room = Game.getRoomManager().getRoom(character.getX(), character.getY());
-            if (level.conditions.minLight != Integer.MIN_VALUE && room != null && room.getLight() <= level.conditions.minLight) {
-                return false;
-            }
-            if (level.conditions.maxLight != Integer.MIN_VALUE && room != null && room.getLight() >= level.conditions.maxLight) {
-                return false;
-            }
-        }
+        // World
+        if (!checkBuffValue(level.conditions.minDay, level.conditions.maxDay, Game.getInstance().getDay())) return false;
+        if (!checkBuffValue(level.conditions.minLight, level.conditions.maxLight, Game.getRoomManager().getLight(character.getX(), character.getY()))) return false;
+        if (!checkBuffValue(level.conditions.minEnvironment, level.conditions.maxEnvironment, Game.getWorldManager().getEnvironmentValue(character.getX(), character.getY(), GameData.config.environmentDistance))) return false;
 
-        // Check environment
-        if (level.conditions.minEnvironment != Integer.MIN_VALUE || level.conditions.maxEnvironment != Integer.MIN_VALUE) {
-            int value = Game.getWorldManager().getEnvironmentValue(character.getX(), character.getY(), GameData.config.environmentDistance);
-            if (level.conditions.minEnvironment != Integer.MIN_VALUE && value <= level.conditions.minEnvironment) {
-                return false;
+        return true;
+    }
+
+    private static boolean checkBuffValue(int minValue, double maxValue, double currentValue) {
+        if (minValue != Integer.MIN_VALUE || maxValue != Integer.MIN_VALUE) {
+            if (minValue != Integer.MIN_VALUE && currentValue <= minValue) {
+                return true;
             }
-            if (level.conditions.maxEnvironment != Integer.MIN_VALUE && value >= level.conditions.maxEnvironment) {
-                return false;
+            if (maxValue != Integer.MIN_VALUE && currentValue >= maxValue) {
+                return true;
             }
-        }
-        if (level.conditions.minCharacterTemperature != Integer.MIN_VALUE && character.getBodyHeat() >= level.conditions.minCharacterTemperature) {
-            return false;
-        }
-        if (level.conditions.maxCharacterTemperature != Integer.MIN_VALUE && character.getBodyHeat() <= level.conditions.maxCharacterTemperature) {
-            return false;
-        }
-        if (level.conditions.minDay != Integer.MIN_VALUE && Game.getInstance().getDay() <= level.conditions.minDay) {
-            return false;
-        }
-        if (level.conditions.maxDay != Integer.MIN_VALUE && Game.getInstance().getDay() >= level.conditions.maxDay) {
             return false;
         }
         return true;
@@ -106,11 +87,16 @@ public class CharacterBuffManager {
 
     private static void applyBuff(CharacterModel character, BuffModel.BuffLevelModel level) {
         if (level != null) {
-            if (level.effects.fainting != 0 && Math.random() < level.effects.fainting) {
-                Log.warning("fainting");
-            }
-            if (level.effects.mood != 0) {
-                character.getNeeds().updateHappiness(level.effects.mood * 0.1);
+            if (level.effects != null) {
+                if (level.effects.fainting != 0) {
+                    Log.warning(Math.random() < level.effects.fainting? "fainting" : "about to faint");
+                }
+                if (level.effects.death != 0) {
+                    Log.warning(Math.random() < level.effects.death ? "dying" : "about to death");
+                }
+                if (level.effects.mood != 0) {
+                    character.getNeeds().updateHappiness(level.effects.mood * 0.1);
+                }
             }
         }
     }

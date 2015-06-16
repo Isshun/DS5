@@ -9,6 +9,7 @@ levels:
     -   label: Environment
         delay: 10
         conditions:
+            previous: true
             minEnvironment: -40
         effects:
             mood: -10
@@ -16,6 +17,7 @@ levels:
     -   label: Environment
         delay: 10
         conditions:
+            previous: true
             minEnvironment: -60
         effects:
             mood: -15

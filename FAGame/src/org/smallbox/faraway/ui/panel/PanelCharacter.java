@@ -353,10 +353,9 @@ public class PanelCharacter extends BaseRightPanel {
         int i = 0;
         for (CharacterBuffModel characterBuff: _character.getBuffs()) {
             if (characterBuff.level != null) {
-                _lbBuffs[i].setString(StringUtils.getDashedString(
-                        characterBuff.level.label,
-                        (characterBuff.level.effects.mood > 0 ? "+" : "") + characterBuff.level.effects.mood, NB_COLUMNS));
-                _lbBuffs[i].setColor(characterBuff.level.effects.mood < 0 ? COLOR_2 : COLOR_0);
+                int mood = characterBuff.level.effects != null ? characterBuff.level.effects.mood : 0;
+                _lbBuffs[i].setString(StringUtils.getDashedString(characterBuff.level.label, (mood > 0 ? "+" : "") + mood, NB_COLUMNS));
+                _lbBuffs[i].setColor(mood < 0 ? COLOR_2 : COLOR_0);
                 i++;
             }
         }
@@ -449,6 +448,9 @@ public class PanelCharacter extends BaseRightPanel {
         setEquipment((TextView) findById("bt_bottom"), "bottom");
         setEquipment((TextView) findById("bt_feet"), "feet");
         setEquipment((TextView) findById("bt_face"), "face");
+        setEquipment((TextView) findById("bt_tool_1"), "tool");
+        setEquipment((TextView) findById("bt_tool_2"), "tool");
+        setEquipment((TextView) findById("bt_tool_3"), "tool");
 
         Map<String, Integer> totalResist = new HashMap<>();
         Map<String, Integer> totalAbsorb = new HashMap<>();
@@ -522,6 +524,9 @@ public class PanelCharacter extends BaseRightPanel {
         findById("bt_bottom").setBackgroundColor(COLOR_BUTTON_INACTIVE);
         findById("bt_feet").setBackgroundColor(COLOR_BUTTON_INACTIVE);
         findById("bt_face").setBackgroundColor(COLOR_BUTTON_INACTIVE);
+        findById("bt_tool_1").setBackgroundColor(COLOR_BUTTON_INACTIVE);
+        findById("bt_tool_2").setBackgroundColor(COLOR_BUTTON_INACTIVE);
+        findById("bt_tool_3").setBackgroundColor(COLOR_BUTTON_INACTIVE);
 
         view.setBackgroundColor(COLOR_BUTTON_ACTIVE);
 
@@ -591,10 +596,8 @@ public class PanelCharacter extends BaseRightPanel {
         EquipmentModel equipment = _character.getEquipment(location);
         if (equipment != null) {
             view.setString(equipment.label);
-//            view.setVisible(true);
         } else {
             view.setString("");
-//            view.setVisible(false);
         }
 
         view.setOnClickListener(v -> selectEquipment(v, equipment));

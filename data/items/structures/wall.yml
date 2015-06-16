@@ -6,3 +6,4 @@ type: structure
 isWalkable: false
 maxHealth: 250
 cost: 100
+sealing: 0.8

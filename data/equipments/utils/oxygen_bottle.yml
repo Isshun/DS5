@@ -1,0 +1,6 @@
+label: Oxygen bottle
+desc: Provide oxygen for 2h
+location: tool
+effects:
+    -   resist:
+            oxygen: 80

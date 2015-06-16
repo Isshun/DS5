@@ -70,7 +70,7 @@ public class CharacterSerializer implements SerializerInterface {
 		private double 						nextChildAtOld;
 		public int							nbChild;
 		public CharacterNeedsSave 			needs;
-		private ArrayList<String> inventory;
+		private ArrayList<String> 			inventory;
 		
 		public CharacterSave(CharacterModel character) {
 			this.id = character.getId();

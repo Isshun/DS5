@@ -21,7 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CharacterModel extends Movable {
-    public enum TalentType {
+	public enum TalentType {
         HEAL,
         CRAFT,
         COOK,
@@ -155,6 +155,7 @@ public class CharacterModel extends Movable {
 		_equipments.add(GameData.getData().getEquipment("base.equipments.regular_shirt"));
 		_equipments.add(GameData.getData().getEquipment("base.equipments.regular_pants"));
 		_equipments.add(GameData.getData().getEquipment("base.equipments.regular_shoes"));
+		_equipments.add(GameData.getData().getEquipment("base.equipments.oxygen_bottle"));
 
 		Log.info("Character done: " + _firstName + _lastName + " (" + x + ", " + y + ")");
 	}
@@ -233,6 +234,8 @@ public class CharacterModel extends Movable {
     public double getBodyHeat() {
         return _bodyHeat;
     }
+
+	public CharacterStats getStats() { return _stats; }
 
     public EquipmentModel getEquipment(String location) {
         for (EquipmentModel equipment: _equipments) {
@@ -666,7 +669,6 @@ public class CharacterModel extends Movable {
 	@Override
 	public void	onPathFailed(JobModel job) {
 		Log.warning("Job failed (no path)");
-		sendEvent(CharacterNeeds.Message.MSG_BLOCKED);
 		UserInterface.getInstance().displayMessage("blocked", _posX, _posY);
 
 		// Abort job
@@ -683,7 +685,6 @@ public class CharacterModel extends Movable {
 	  Log.debug("Charactere #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
 
 	  if (rawpath.getLength() == 0) {
-		sendEvent(CharacterNeeds.Message.MSG_BLOCKED);
 		return;
 	  }
 

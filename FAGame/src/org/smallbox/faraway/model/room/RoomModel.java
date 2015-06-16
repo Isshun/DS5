@@ -2,6 +2,7 @@ package org.smallbox.faraway.model.room;
 
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.manager.Utils;
+import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.character.CharacterModel;
 import org.smallbox.faraway.model.item.ItemFilter;
 import org.smallbox.faraway.model.item.ItemModel;
@@ -13,6 +14,7 @@ import java.util.*;
 public class RoomModel {
 	private boolean                     _isExterior;
 	private int 	                    _lightValue;
+	private double 						_permeability;
 	private Map<RoomModel, Integer>     _neighborhood;
 	private RoomTemperatureModel        _temperatureInfo = new RoomTemperatureModel();
 
@@ -51,15 +53,16 @@ public class RoomModel {
 
 	private void init(int id, RoomType type) {
 		_color = new Color((int)(Math.random() * 200), (int)(Math.random() * 200), (int)(Math.random() * 200));
-		_parcels = new ArrayList<ParcelModel>();
+		_parcels = new ArrayList<>();
 		_id = id;
 		_isCommon = true;
 		_maxX = Integer.MIN_VALUE;
 		_minX = Integer.MAX_VALUE;
 		_zoneId = 0;
+		_permeability = 0.8;
 		_type = type;
-		_doors = new ArrayList<MapObjectModel>();
-		_occupants = new HashSet<CharacterModel>();
+		_doors = new ArrayList<>();
+		_occupants = new HashSet<>();
 	}
 
 	public int				        getId() { return _id; }

@@ -1,0 +1,33 @@
+levels:
+    -   label: It's hard to breath
+        delay: 2
+        conditions:
+            minOxygen: 40
+        effects:
+            mood: -10
+
+    -   label: It's hard to breath (2)
+        delay: 1
+        conditions:
+            minOxygen: 20
+        effects:
+            mood: -10
+
+    -   label: Suffocating
+        delay: 1
+        disease: suffocating
+        conditions:
+            minOxygen: 0
+        effects:
+            mood: -100
+            fainting: 0.25
+            death: 0.1
+
+    -   label: Suffocating (2)
+        delay: 2
+        disease: suffocating
+        conditions:
+            minOxygen: 0
+        effects:
+            mood: -100
+            death: 1

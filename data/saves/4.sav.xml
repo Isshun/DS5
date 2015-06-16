@@ -4197,7 +4197,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>396</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -4211,7 +4211,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>397</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>3</tile>
@@ -4225,7 +4225,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>398</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>14</tile>
@@ -4239,7 +4239,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>399</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>6</tile>
@@ -4591,7 +4591,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>400</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>2</tile>
@@ -4605,7 +4605,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>401</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>15</tile>
@@ -4619,7 +4619,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>402</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>11</tile>
@@ -4633,7 +4633,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>403</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>3</tile>
@@ -4647,7 +4647,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>404</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>14</tile>
@@ -4661,7 +4661,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>405</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>6</tile>
@@ -5017,7 +5017,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>406</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>16</tile>
@@ -5031,7 +5031,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>407</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -5045,7 +5045,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>408</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -5059,7 +5059,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>409</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -5073,7 +5073,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>410</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>11</tile>
@@ -5087,7 +5087,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>411</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>6</tile>
@@ -5407,7 +5407,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>412</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>0</tile>
@@ -5421,7 +5421,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>413</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>17</tile>
@@ -5435,7 +5435,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>414</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -5449,7 +5449,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>415</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -5463,7 +5463,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>416</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -5477,7 +5477,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>417</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -5491,7 +5491,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>418</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>7</tile>
@@ -5795,7 +5795,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>419</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>1</tile>
@@ -5809,7 +5809,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>420</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -5823,7 +5823,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>421</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -5837,7 +5837,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>422</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -5851,7 +5851,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>423</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -5865,7 +5865,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>424</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -5879,7 +5879,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>425</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>11</tile>
@@ -5893,7 +5893,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>426</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>6</tile>
@@ -6123,7 +6123,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>427</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>0</tile>
@@ -6137,7 +6137,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>428</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>6</tile>
@@ -6223,7 +6223,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>429</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>1</tile>
@@ -6237,7 +6237,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>430</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -6251,7 +6251,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>431</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -6265,7 +6265,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>432</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -6279,7 +6279,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>433</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -6293,7 +6293,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>434</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -6307,7 +6307,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>435</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -6321,7 +6321,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>436</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>7</tile>
@@ -6615,7 +6615,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>437</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>1</tile>
@@ -6629,7 +6629,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>438</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>11</tile>
@@ -6643,7 +6643,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>439</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>3</tile>
@@ -6657,7 +6657,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>440</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>14</tile>
@@ -6671,7 +6671,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>441</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>6</tile>
@@ -6717,7 +6717,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>442</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>0</tile>
@@ -6731,7 +6731,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>443</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>17</tile>
@@ -6745,7 +6745,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>444</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -6759,7 +6759,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>445</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -6773,7 +6773,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>446</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -6787,7 +6787,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>447</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -6801,7 +6801,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>448</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -6815,7 +6815,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>449</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -6829,7 +6829,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>450</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>7</tile>
@@ -7103,7 +7103,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>451</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>0</tile>
@@ -7117,7 +7117,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>452</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>3</tile>
@@ -7131,7 +7131,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>453</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>17</tile>
@@ -7145,7 +7145,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>454</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7159,7 +7159,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>455</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7173,7 +7173,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>456</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7187,7 +7187,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>457</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>7</tile>
@@ -7221,7 +7221,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>458</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>0</tile>
@@ -7235,7 +7235,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>459</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>3</tile>
@@ -7249,7 +7249,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>460</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>17</tile>
@@ -7263,7 +7263,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>461</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7277,7 +7277,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>462</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7291,7 +7291,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>463</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7305,7 +7305,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>464</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7319,7 +7319,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>465</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7333,7 +7333,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>466</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7347,7 +7347,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>467</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7361,7 +7361,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>468</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>11</tile>
@@ -7375,7 +7375,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>469</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>6</tile>
@@ -7619,7 +7619,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>470</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>1</tile>
@@ -7633,7 +7633,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>471</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7647,7 +7647,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>472</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7661,7 +7661,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>473</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7675,7 +7675,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>474</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7689,7 +7689,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>475</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7703,7 +7703,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>476</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>11</tile>
@@ -7717,7 +7717,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>477</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>3</tile>
@@ -7731,7 +7731,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>478</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>3</tile>
@@ -7745,7 +7745,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>479</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>17</tile>
@@ -7759,7 +7759,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>480</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7773,7 +7773,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>481</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7787,7 +7787,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>482</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7801,7 +7801,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>483</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7815,7 +7815,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>484</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7829,7 +7829,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>485</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7843,7 +7843,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>486</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7857,7 +7857,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>487</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7871,7 +7871,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>488</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7885,7 +7885,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>489</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -7899,7 +7899,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>490</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>7</tile>
@@ -8135,7 +8135,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>491</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>1</tile>
@@ -8149,7 +8149,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>492</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8163,7 +8163,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>493</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8177,7 +8177,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>494</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8191,7 +8191,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>495</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8205,7 +8205,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>496</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8219,7 +8219,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>497</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8233,7 +8233,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>498</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8247,7 +8247,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>499</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8261,7 +8261,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>500</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8275,7 +8275,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>501</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8289,7 +8289,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>502</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8303,7 +8303,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>503</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8317,7 +8317,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>504</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8331,7 +8331,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>505</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8345,7 +8345,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>506</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8359,7 +8359,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>507</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8373,7 +8373,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>508</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8387,7 +8387,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>509</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8401,7 +8401,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>510</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8415,7 +8415,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>511</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>7</tile>
@@ -8617,7 +8617,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>512</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>0</tile>
@@ -8631,7 +8631,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>513</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>14</tile>
@@ -8645,7 +8645,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>514</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>3</tile>
@@ -8659,7 +8659,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>515</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>17</tile>
@@ -8673,7 +8673,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>516</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8687,7 +8687,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>517</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8701,7 +8701,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>518</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>9</tile>
@@ -8715,7 +8715,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>519</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>5</tile>
@@ -8729,7 +8729,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>520</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>12</tile>
@@ -8743,7 +8743,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>521</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>12</tile>
@@ -8757,7 +8757,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>522</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>12</tile>
@@ -8771,7 +8771,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>523</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>5</tile>
@@ -8785,7 +8785,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>524</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>15</tile>
@@ -8799,7 +8799,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>525</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8813,7 +8813,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>526</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8827,7 +8827,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>527</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8841,7 +8841,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>528</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8855,7 +8855,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>529</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8869,7 +8869,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>530</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8883,7 +8883,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>531</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8897,7 +8897,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>532</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8911,7 +8911,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>533</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8925,7 +8925,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>534</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -8939,7 +8939,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>535</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>7</tile>
@@ -9137,7 +9137,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>536</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>0</tile>
@@ -9151,7 +9151,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>537</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>3</tile>
@@ -9165,7 +9165,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>538</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>17</tile>
@@ -9179,7 +9179,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>539</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9193,7 +9193,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>540</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9207,7 +9207,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>541</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9221,7 +9221,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>542</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9235,7 +9235,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>543</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9249,7 +9249,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>544</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>7</tile>
@@ -9323,7 +9323,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>550</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>1</tile>
@@ -9337,7 +9337,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>551</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9351,7 +9351,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>552</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9365,7 +9365,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>553</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9379,7 +9379,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>554</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9393,7 +9393,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>555</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9407,7 +9407,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>556</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9421,7 +9421,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>557</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9435,7 +9435,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>558</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9449,7 +9449,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>559</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9463,7 +9463,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>560</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9477,7 +9477,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>561</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9491,7 +9491,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>562</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>21</tile>
@@ -9637,7 +9637,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>563</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>18</tile>
@@ -9651,7 +9651,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>564</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>23</tile>
@@ -9665,7 +9665,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>565</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9679,7 +9679,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>566</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>12</tile>
@@ -9693,7 +9693,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>567</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>12</tile>
@@ -9707,7 +9707,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>568</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>12</tile>
@@ -9721,7 +9721,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>569</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>12</tile>
@@ -9735,7 +9735,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>570</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>12</tile>
@@ -9749,7 +9749,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>571</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>12</tile>
@@ -9763,7 +9763,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>572</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>12</tile>
@@ -9777,7 +9777,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>573</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>8</tile>
@@ -9851,7 +9851,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>575</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>2</tile>
@@ -9865,7 +9865,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>576</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>12</tile>
@@ -9879,7 +9879,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>577</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>12</tile>
@@ -9893,7 +9893,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>578</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>12</tile>
@@ -9907,7 +9907,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>579</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>5</tile>
@@ -9921,7 +9921,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>580</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>15</tile>
@@ -9935,7 +9935,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>581</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9949,7 +9949,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>582</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9963,7 +9963,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>583</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9977,7 +9977,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>584</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -9991,7 +9991,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>585</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -10005,7 +10005,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>586</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>7</tile>
@@ -10433,7 +10433,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>602</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>1</tile>
@@ -10447,7 +10447,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>603</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -10461,7 +10461,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>604</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -10475,7 +10475,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>605</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -10489,7 +10489,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>606</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -10503,7 +10503,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>607</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -10517,7 +10517,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>608</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>7</tile>
@@ -10697,7 +10697,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>609</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>22</tile>
@@ -10963,7 +10963,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>622</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>1</tile>
@@ -10977,7 +10977,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>623</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -10991,7 +10991,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>624</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -11005,7 +11005,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>625</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -11019,7 +11019,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>626</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -11033,7 +11033,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>627</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -11047,7 +11047,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>628</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>7</tile>
@@ -11211,7 +11211,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>629</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>20</tile>
@@ -11477,7 +11477,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>637</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>1</tile>
@@ -11491,7 +11491,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>638</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -11505,7 +11505,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>639</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -11519,7 +11519,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>640</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -11533,7 +11533,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>641</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -11547,7 +11547,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>642</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>9</tile>
@@ -11561,7 +11561,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>643</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>8</tile>
@@ -11733,7 +11733,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>644</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>20</tile>
@@ -11999,7 +11999,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>652</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>1</tile>
@@ -12013,7 +12013,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>653</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -12027,7 +12027,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>654</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -12041,7 +12041,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>655</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -12055,7 +12055,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>656</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>9</tile>
@@ -12069,7 +12069,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>657</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>8</tile>
@@ -12247,7 +12247,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>658</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>19</tile>
@@ -12513,7 +12513,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>666</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>1</tile>
@@ -12527,7 +12527,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>667</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -12541,7 +12541,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>668</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -12555,7 +12555,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>669</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>9</tile>
@@ -12569,7 +12569,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>670</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>8</tile>
@@ -12993,7 +12993,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>677</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>1</tile>
@@ -13007,7 +13007,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>678</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -13021,7 +13021,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>679</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>9</tile>
@@ -13035,7 +13035,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>680</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>8</tile>
@@ -13497,7 +13497,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>683</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>4</tile>
@@ -13511,7 +13511,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>684</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>5</tile>
@@ -13525,7 +13525,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>685</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>7</tile>
@@ -13977,7 +13977,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>686</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>19</tile>
@@ -14005,7 +14005,7 @@
     <org.smallbox.faraway.engine.serializer.WorldSerializer_-WorldSaveParcel>
       <resource>
         <id>687</id>
-        <name>base.res_rock</name>
+        <name>base.rock</name>
         <progress>0</progress>
         <health>0</health>
         <tile>19</tile>
@@ -18108,7 +18108,7 @@
       </structure>
       <consumable>
         <id>697</id>
-        <name>base.rock_brick</name>
+        <name>base.brick_rock</name>
         <progress>0</progress>
         <health>0</health>
         <quantity>13</quantity>
@@ -18963,7 +18963,7 @@
       </structure>
       <consumable>
         <id>974</id>
-        <name>base.rock</name>
+        <name>base.rubble</name>
         <progress>0</progress>
         <health>0</health>
         <quantity>7</quantity>

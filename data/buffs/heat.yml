@@ -10,6 +10,7 @@ levels:
     -   label: It's much too hot
         delay: 100
         conditions:
+            previous: true
             maxCharacterTemperature: 42
         effects:
             mood: -10
@@ -18,6 +19,7 @@ levels:
         disease: heat_stroke
         delay: 100
         conditions:
+            previous: true
             maxCharacterTemperature: 42
         effects:
             mood: -15

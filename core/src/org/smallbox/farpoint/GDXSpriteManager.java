@@ -26,17 +26,21 @@ import java.util.Map;
  * Created by Alex on 04/06/2015.
  */
 public class GDXSpriteManager extends SpriteManager {
-    private static final int WALL_HEIGHT = 48;
-    private static final int WALL_WIDTH = 32;
-    private static final int NB_SELECTOR_TILE = 4;
-    private static final int NB_ITEM_SELECTOR_TILE = 4;
-    private static int 				_count;
-    private static GDXSpriteManager _self;
-    private Map<Integer, GDXSpriteModel> _spritesCharacters;
+    private static final int                WALL_HEIGHT = 48;
+    private static final int                WALL_WIDTH = 32;
+    private static final int                NB_SELECTOR_TILE = 4;
+    private static final int                NB_ITEM_SELECTOR_TILE = 4;
+
+    private static int 				        _count;
+    private Map<Integer, GDXSpriteModel>    _spritesCharacters;
     private Map<Long, GDXSpriteModel> 		_sprites;
-    private Texture[] 				_textureCharacters;
-    private Texture[]				_texture;
-    private BitmapFont _font;
+    private Texture[] 				        _textureCharacters;
+    private Texture[]				        _texture;
+    private Texture                         _textureSelector;
+    private GDXSpriteModel[]                _selectors;
+    private Texture                         _textureItemSelector;
+    private GDXSpriteModel[]                _itemSelectors;
+    private Map<String, SpriteModel>        _icons;
 
     private int[] _random = {
             0, 0, 1, 3, 2, 3, 1, 3, 0, 1,
@@ -44,12 +48,6 @@ public class GDXSpriteManager extends SpriteManager {
             0, 1, 2, 1, 3, 0, 1, 3, 0, 1,
             0, 0, 1, 3, 2, 2, 1, 3, 2, 1,
             3, 1, 1, 0, 3, 2, 0, 1, 0, 1};
-    private Texture _textureNeedBar;
-    private Texture _textureSelector;
-    private GDXSpriteModel[] _selectors;
-    private Texture _textureItemSelector;
-    private GDXSpriteModel[] _itemSelectors;
-    private Map<String, SpriteModel> _icons;
 
     public GDXSpriteManager() throws IOException {
         _icons = new HashMap<>();
@@ -63,7 +61,6 @@ public class GDXSpriteManager extends SpriteManager {
         _textureCharacters[1] = new Texture("data/res/Characters/soldat3.png");
         _textureCharacters[2] = new Texture("data/res/Characters/gallery_84826_3_2787.png");
         _textureCharacters[3] = new Texture("data/res/Characters/NuChara01.png");
-        _textureNeedBar = new Texture("data/res/needbar.png");
         _textureSelector = new Texture("data/res/selector.png");
         _selectors = new GDXSpriteModel[NB_SELECTOR_TILE];
         for (int i = 0; i < NB_SELECTOR_TILE; i++) {
@@ -86,19 +83,6 @@ public class GDXSpriteManager extends SpriteManager {
         _texture[5] = new Texture("data/res/Tilesets/Futuristic_A3.png");
         _texture[6] = new Texture("data/res/Tilesets/walls.png");
         _texture[7] = new Texture("data/res/Tilesets/icons.png");
-
-        // Font
-        _font = new BitmapFont(new FileHandle("data/res/fonts/font.fnt"));
-
-        //		// IC battery
-        //		{
-        //			Texture texture = new Texture();
-        //			texture.loadFromFile((new File("res/battery.png").toPath()));
-        //
-        //			_spriteBattery = _temp;
-        //			_spriteBattery.setTexture(texture);
-        //			_spriteBattery.setTextureRect(ObjectPool.getIntRect(0, 0, 24, 24));
-        //		}
     }
 
     @Override
@@ -109,10 +93,6 @@ public class GDXSpriteManager extends SpriteManager {
             _icons.put(path, sprite);
         }
         return _icons.get(path);
-    }
-
-    public BitmapFont getFont() {
-        return _font;
     }
 
     // TODO
@@ -143,47 +123,7 @@ public class GDXSpriteManager extends SpriteManager {
 
     @Override
     public SpriteModel getIcon(ItemInfo info) {
-        //		switch (type) {
-        //
-        //		case STRUCTURE_FLOOR:
-        //			return _spriteFloor[0];
-        //
-        //		case IC_BATTERY:
-        //			return _spriteBattery;
-        //		}
-
-//		for (int i = 0; spritesRes[i].type != BaseItem.Type.NONE; i++) {
-//			if (spritesRes[i].type == type) {
-//				res = spritesRes[i];
-//			}
-//		}
-
         return getSprite(info, 0, 0, 255, true);
-
-//		if (res != null) {
-//			if (info.isResource) {
-//				return getSprite(res.textureIndex,
-//						res.posX * Constant.TILE_SIZE,
-//						res.posY * Constant.TILE_SIZE,
-//						info.width * Constant.TILE_SIZE,
-//						info.height * Constant.TILE_SIZE);
-//			} else {
-//				//				int size = Math.max(info.width, info.height);
-//				//				if (size == 2)
-//				//					sprite.setScale(0.75f, 0.75f);
-//				//				if (size == 3)
-//				//					sprite.setScale(0.5f, 0.5f);
-//
-//				int texture = res.textureIndex;
-//				int x = res.posX * Constant.TILE_SIZE;
-//				int y = res.posY * Constant.TILE_SIZE;
-//				int width = info.width * Constant.TILE_SIZE;
-//				int height = info.height * Constant.TILE_SIZE;
-//				return getSprite(texture, x, y, width, height);
-//			}
-//		}
-//
-//		return null;
     }
 
     @Override
@@ -242,7 +182,7 @@ public class GDXSpriteManager extends SpriteManager {
 
             File imgFile;
             if ("base".equals(item.packageName)) {
-                imgFile = new File("data/items/" + item.fileName + ".png");
+                imgFile = foundImageFile(item.fileName + ".png");
             } else {
                 imgFile = new File("mods/" + item.packageName + "/items/" + item.fileName + ".png");
             }
@@ -268,6 +208,23 @@ public class GDXSpriteManager extends SpriteManager {
             }
         }
         return sprite;
+    }
+
+    private File foundImageFile(String fileName) {
+        // TODO: clean
+        for (File file: new File("data/items/").listFiles()) {
+            if (file.isDirectory() && !file.getName().equals("24")) {
+                for (File subFile: file.listFiles()) {
+                    if (subFile.getName().equals(fileName)) {
+                        return subFile;
+                    }
+                }
+            }
+            if (file.getName().equals(fileName)) {
+                return file;
+            }
+        }
+        return null;
     }
 
     private long getSum(int spriteId, int tile, int state, int extra) {
@@ -312,7 +269,7 @@ public class GDXSpriteManager extends SpriteManager {
     public SpriteModel getResource(ResourceModel resource) {
         ItemInfo info = resource.getInfo();
 
-        if ("base.res_rock".equals(info.name)) {
+        if ("base.rock".equals(info.name)) {
             return getSprite(info, resource.getTile(), 0, 255, false);
         }
 

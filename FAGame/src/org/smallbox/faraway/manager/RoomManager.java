@@ -261,4 +261,9 @@ public class RoomManager extends BaseManager implements GameObserver {
     public void onRemoveResource(ResourceModel resource){
         refreshRooms();
     }
+
+    public int getLight(int x, int y) {
+        RoomModel room = getRoom(x, y);
+        return room != null ? room.getLight() : -1;
+    }
 }

@@ -2,7 +2,6 @@ package org.smallbox.faraway;
 
 import org.smallbox.faraway.engine.dataLoader.CategoryLoader;
 import org.smallbox.faraway.engine.dataLoader.ItemLoader;
-import org.smallbox.faraway.engine.dataLoader.StringsLoader;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.serializer.LoadListener;
 import org.smallbox.faraway.engine.ui.Colors;
@@ -83,7 +82,6 @@ public class Application implements GameEventListener {
 
         ItemLoader.load(data);
         PlanetLoader.load(data);
-        StringsLoader.load(data, "data/strings/", "fr");
         CategoryLoader.load(data);
 
         return data;

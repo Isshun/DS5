@@ -11,6 +11,7 @@ levels:
         disease: malnutrition
         delay: 16
         conditions:
+            previous: true
             minFood: 0
         effects:
             mood: -10
@@ -19,6 +20,7 @@ levels:
         disease: malnutrition
         delay: 32
         conditions:
+            previous: true
             minFood: 0
         effects:
             mood: -15
@@ -27,6 +29,7 @@ levels:
         disease: malnutrition
         delay: 64
         conditions:
+            previous: true
             minFood: 0
         effects:
             mood: -25

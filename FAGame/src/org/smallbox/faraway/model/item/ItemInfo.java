@@ -20,21 +20,21 @@ public class ItemInfo {
 	}
 
 	public static class ItemInfoStorage {
-		public int[]				components;
-		public int[]				crafts;
+		public int[]					components;
+		public int[]					crafts;
 	}
 
 	public static class ItemInfoAction {
-		public int 					storage;
-		public String 				type;
-		public String 				label;
-		public List<ItemInfoReceipt>receipts;
-		public ItemInfoEffects		effects;
-		public int 					mature;
-		public int                  cost;
-		public String 				name;
-		public float                dropRate;
-		public List<ItemProductInfo>products;
+		public int 						storage;
+		public String 					type;
+		public String 					label;
+		public List<ItemInfoReceipt>	receipts;
+		public ItemInfoEffects			effects;
+		public int 						mature;
+		public int                  	cost;
+		public String 					name;
+		public float                	dropRate;
+		public List<ItemProductInfo>	products;
 	}
 
 	public static class ItemInfoReceipt {
@@ -45,69 +45,70 @@ public class ItemInfo {
 	}
 
 	public static class ItemProductInfo {
-		public String 				item;
-		public ItemInfo 			itemInfo;
-		public int 					quantity;
-		public float 				dropRate;
+		public String 					item;
+		public ItemInfo 				itemInfo;
+		public int 						quantity;
+		public float 					dropRate;
 	}
 
 	public static class ItemComponentInfo {
-		public String 				item;
-		public ItemInfo 			itemInfo;
-		public int 					quantity;
+		public String 					item;
+		public ItemInfo 				itemInfo;
+		public int 						quantity;
 	}
 
 	public static class ItemInfoEffects {
-		public int					food;
-		public int 					drink;
-		public int 					energy;
-		public int 					happiness;
-		public int 					health;
-		public int 					relation;
-		public int 					oxygen;
-		public int 					socialize;
-		public int 					security;
-		public int 					heat;
-		public int 					heatPotency;
-		public int 					cold;
-		public int 					coldPotency;
-		public int 					temperature;
-		public int 					temperaturePotency;
+		public int						food;
+		public int 						drink;
+		public int 						energy;
+		public int 						happiness;
+		public int 						health;
+		public int 						relation;
+		public int 						oxygen;
+		public int 						socialize;
+		public int 						security;
+		public int 						heat;
+		public int 						heatPotency;
+		public int 						cold;
+		public int 						coldPotency;
+		public int 						temperature;
+		public int 						temperaturePotency;
 	}
 
-	public String 					name;
-	public String 					inherits;
-	public String 					label;
-	public String 					category;
-	public String 					type;
-	public ItemInfoStorage			storage;
-	public List<int[]>				slots;
-	public List<ItemInfoReceipt>	receipts;
-	public int[]					tiles;
-	public boolean 					isWalkable;
-	public int 						frames;
-	public int 						framesInterval;
-	public int 						width;
-	public int 						height;
-	public int 						light;
-	public int 						cost;
-	public List<ItemInfoAction> 	actions;
-	public ItemInfoEffects 			effects;
-	public boolean 					isStructure;
-	public boolean 					isResource;
-	public boolean 					isConsumable;
-	public boolean 					isUserItem;
-	public boolean 					isFood;
-	public boolean 					isToy;
-	public boolean 					isBed;
-	public int 						spriteId;
-	public String					fileName;
-	public String 					packageName;
-	public boolean 					isFactory;
-	public boolean 					isDrink;
-	public boolean 					isSleeping;
-	public int 						maxHealth;
-	public int 						power;
+	public String 						name;
+	public String 						inherits;
+	public String 						label;
+	public String 						category;
+	public String 						type;
+	public ItemInfoStorage				storage;
+	public List<int[]>					slots;
+	public List<ItemInfoReceipt>		receipts;
+	public int[]						tiles;
+	public boolean 						isWalkable;
+	public int 							frames;
+	public int 							framesInterval;
+	public int 							width;
+	public int 							height;
+	public int 							light;
+	public int 							cost;
+	public List<ItemInfoAction> 		actions;
+	public ItemInfoEffects 				effects;
+	public boolean 						isStructure;
+	public boolean 						isResource;
+	public boolean 						isConsumable;
+	public boolean 						isUserItem;
+	public boolean 						isFood;
+	public boolean 						isToy;
+	public boolean 						isBed;
+	public int 							spriteId;
+	public String						fileName;
+	public String 						packageName;
+	public boolean 						isFactory;
+	public boolean 						isDrink;
+	public boolean 						isSleeping;
+	public int 							maxHealth;
+	public int 							power;
+	public double 						sealing;
 
 	public ItemInfo() {
 		width = 1;
