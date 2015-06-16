@@ -453,7 +453,13 @@ public class WorldManager extends BaseManager implements TileBasedMap {
     }
 
     public ParcelModel getParcel(int z, int x, int y) {
-        return _parcels[x][y][z];
+        if (inMapBounds(x, y)) {
+            if (_parcels[x][y][z] == null) {
+                _parcels[x][y][z] = new ParcelModel(x, y, z);
+            }
+            return _parcels[x][y][z];
+        }
+        return null;
     }
 
     @Override
@@ -570,5 +576,35 @@ public class WorldManager extends BaseManager implements TileBasedMap {
 
     public Collection<ConsumableModel> getConsumables() {
         return _consumables;
+    }
+
+    public int getEnvironmentValue(int startX, int startY, int distance) {
+        int fromX = startX - distance;
+        int fromY = startY - distance;
+        int toX = startX + distance;
+        int toY = startY + distance;
+        int value = 0;
+        for (int x = fromX; x < toX; x++) {
+            for (int y = fromY; y < toY; y++) {
+                if (inMapBounds(x, y)) {
+                    if (_parcels[x][y][0].hasSnow()) {
+                        value += 1;
+                    }
+                    if (_parcels[x][y][0].hasBlood()) {
+                        value += -5;
+                    }
+                    if (_parcels[x][y][0].hasDirt()) {
+                        value += -5;
+                    }
+                    if (_parcels[x][y][0].hasRubble()) {
+                        value += -5;
+                    }
+                    if (_parcels[x][y][0].getItem() != null) {
+                        value += _parcels[x][y][0].getItem().getValue();
+                    }
+                }
+            }
+        }
+        return value;
     }
 }

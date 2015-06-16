@@ -336,28 +336,32 @@ public class PanelCharacter extends BaseRightPanel {
 
             refreshLastReports();
             refreshInfo();
+            refreshDebug();
 
             ((TextView)findById("lb_body_heat")).setString("Body heat: " + (int)(_character.getBodyHeat() * 10) / 10f);
         }
     }
 
-    private void refreshLastReports() {
-        // TODO: heavy
-        List<BuffModel.BuffLevelModel> buffs = _character.getBuffs().stream()
-                .filter(CharacterBuffModel::isActive)
-                .map(CharacterBuffModel::getActiveLevel)
-                .collect(Collectors.toList());
+    private void refreshDebug() {
+        if (_character != null) {
+            ((TextView)findById("lb_environment")).setString("Environment: " + Game.getWorldManager().getEnvironmentValue(_character.getX(), _character.getY(), GameData.config.environmentDistance));
+//            ((TextView)findById("lb_light")).setString();
+        }
+    }
 
-        for (int i = 0; i < NB_MAX_BUFFS; i++) {
-            if (i < buffs.size()) {
+    private void refreshLastReports() {
+        int i = 0;
+        for (CharacterBuffModel characterBuff: _character.getBuffs()) {
+            if (characterBuff.level != null) {
                 _lbBuffs[i].setString(StringUtils.getDashedString(
-                        buffs.get(i).label,
-                        (buffs.get(i).effects.mood > 0 ? "+" : "") + buffs.get(i).effects.mood, NB_COLUMNS));
-                _lbBuffs[i].setColor(buffs.get(i).effects.mood < 0 ? COLOR_2 : COLOR_0);
-                _lbBuffs[i].setVisible(true);
-            } else {
-                _lbBuffs[i].setVisible(false);
+                        characterBuff.level.label,
+                        (characterBuff.level.effects.mood > 0 ? "+" : "") + characterBuff.level.effects.mood, NB_COLUMNS));
+                _lbBuffs[i].setColor(characterBuff.level.effects.mood < 0 ? COLOR_2 : COLOR_0);
+                i++;
             }
+        }
+        for (; i < NB_MAX_BUFFS; i++) {
+            _lbBuffs[i].setString("");
         }
     }
 
@@ -601,13 +605,13 @@ public class PanelCharacter extends BaseRightPanel {
         for (int i = 0; i < NB_GAUGE; i++) {
             int value = 0;
             switch (i) {
-                case 0: value = Math.min(Math.max(needs.getFood(), 0), 100); break;
-                case 1: value = Math.min(Math.max(needs.getOxygen(), 0), 100); break;
-                case 2: value = Math.min(Math.max(needs.getHappiness(), 0), 100); break;
-                case 3: value = Math.min(Math.max(needs.getEnergy(), 0), 100); break;
-                case 4: value = Math.min(Math.max(needs.getRelation(), 0), 100); break;
-                case 5: value = Math.min(Math.max(needs.getSecurity(), 0), 100); break;
-                case 6: value = Math.min(Math.max(needs.getHealth(), 0), 100); break;
+                case 0: value = Math.min(Math.max((int)needs.getFood(), 0), 100); break;
+                case 1: value = Math.min(Math.max((int)needs.oxygen, 0), 100); break;
+                case 2: value = Math.min(Math.max((int)needs.happiness, 0), 100); break;
+                case 3: value = Math.min(Math.max((int)needs.energy, 0), 100); break;
+                case 4: value = Math.min(Math.max((int)needs.relation, 0), 100); break;
+                case 5: value = Math.min(Math.max((int)needs.security, 0), 100); break;
+                case 6: value = Math.min(Math.max((int)needs.health, 0), 100); break;
 //			case 7: value = Math.min(Math.max(needs.getSickness(), 0), 100); break;
 //			case 8: value = Math.min(Math.max(needs.getInjuries(), 0), 100); break;
 //			case 9: value = Math.min(Math.max(needs.getSatiety(), 0), 100); break;

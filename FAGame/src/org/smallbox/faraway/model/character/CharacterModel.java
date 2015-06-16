@@ -190,54 +190,6 @@ public class CharacterModel extends Movable {
         return _inventory;
     }
 
-    public void checkBuffs() {
-        boolean needSort = false;
-        for (CharacterBuffModel characterBuff: _buffs) {
-            int maxLevel = -1;
-            for (BuffModel.BuffLevelModel level: characterBuff.buff.levels) {
-                if (checkBuff(level)) {
-                    maxLevel = level.index;
-                }
-            }
-            if (characterBuff.level > maxLevel) {
-                characterBuff.level = maxLevel;
-            }
-            if (maxLevel >= 0) {
-                characterBuff.duration++;
-                if (maxLevel > characterBuff.level && characterBuff.duration > characterBuff.buff.levels.get(characterBuff.level + 1).delay) {
-                    characterBuff.duration = 0;
-                    characterBuff.level++;
-                    needSort = true;
-                }
-            }
-        }
-        if (needSort) {
-            sortBuffs();
-        }
-    }
-
-    private boolean checkBuff(BuffModel.BuffLevelModel level) {
-        if (level.conditions.minFood != Integer.MIN_VALUE && _needs.getFood() > level.conditions.minFood) {
-            return false;
-        }
-        if (level.conditions.maxFood != Integer.MIN_VALUE && _needs.getFood() < level.conditions.maxFood) {
-            return false;
-        }
-        if (level.conditions.minCharacterTemperature != Integer.MIN_VALUE && _bodyHeat > level.conditions.minCharacterTemperature) {
-            return false;
-        }
-        if (level.conditions.maxCharacterTemperature != Integer.MIN_VALUE && _bodyHeat < level.conditions.maxCharacterTemperature) {
-            return false;
-        }
-        if (level.conditions.minDay != Integer.MIN_VALUE && Game.getInstance().getDay() < level.conditions.minDay) {
-            return false;
-        }
-        if (level.conditions.maxDay != Integer.MIN_VALUE && Game.getInstance().getDay() > level.conditions.maxDay) {
-            return false;
-        }
-        return true;
-    }
-
     private CharacterBuffModel getBuff(String buffName) {
         for (CharacterBuffModel characterBuff: _buffs) {
             if (characterBuff.buff.name.equals(buffName)) {
@@ -247,37 +199,20 @@ public class CharacterModel extends Movable {
         return null;
     }
 
-    public Collection<CharacterBuffModel> getBuffs() {
+    public List<CharacterBuffModel> getBuffs() {
         return _buffs;
     }
 
     public void update(int tick) {
         // Check buffs
-        checkBuffs();
+        CharacterBuffManager.checkBuffs(this);
 
         if (tick % 10 == 0) {
-            applyBuffs();
+            CharacterBuffManager.applyBuffs(this);
 
             // Check room temperature
             _stats.update(_equipments);
             updateBodyHeat(Game.getRoomManager().getRoom(_posX, _posY));
-        }
-    }
-
-    private void applyBuffs() {
-        for (CharacterBuffModel characterBuff: _buffs) {
-            if (characterBuff.isActive()) {
-                applyBuff(characterBuff.getActiveLevel());
-            }
-        }
-    }
-
-    private void applyBuff(BuffModel.BuffLevelModel level) {
-        if (level.effects.fainting != 0 && Math.random() < level.effects.fainting) {
-            Log.warning("fainting");
-        }
-        if (level.effects.mood != 0) {
-            _needs.updateHappiness(level.effects.mood * 0.1);
         }
     }
 
@@ -310,9 +245,9 @@ public class CharacterModel extends Movable {
 
     private void sortBuffs() {
         Collections.sort(_buffs, (b1, b2) -> {
-            if (b2.getActiveLevel() == null) return -1;
-            if (b1.getActiveLevel() == null) return 1;
-            return b2.getActiveLevel().effects.mood - b1.getActiveLevel().effects.mood;
+            if (b2.level == null) return -1;
+            if (b1.level == null) return 1;
+            return b2.level.effects.mood - b1.level.effects.mood;
         });
     }
 

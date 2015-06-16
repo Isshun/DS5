@@ -37,8 +37,8 @@ public class GameData implements GameDataListener {
         _weatherLoader = new WeatherLoader(this);
         _weatherLoader.load(this);
 
-		loadStrings();
         loadConfig();
+		loadStrings(GameData.config.lang);
         loadBuffs();
         loadEquipments();
         gatherItems = new ArrayList<>();
@@ -63,10 +63,10 @@ public class GameData implements GameDataListener {
 		return null;
 	}
 
-	public void loadStrings() {
+	public void loadStrings(String lang) {
 		try {
 			_strings = new HashMap<>();
-			File file = new File("data/strings/fr.txt");
+			File file = new File("data/strings/" + lang + ".txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"));
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -108,7 +108,7 @@ public class GameData implements GameDataListener {
 
         long lastConfigModified = new File("data/config.yml").lastModified();
         if (lastConfigModified > _lastConfigModified) {
-			loadStrings();
+			loadStrings(GameData.config.lang);
             _lastConfigModified = lastConfigModified;
             loadConfig();
         }
@@ -172,7 +172,7 @@ public class GameData implements GameDataListener {
 			}
 			for (BuffModel buff: buffs) {
 				for (BuffModel.BuffLevelModel level: buff.levels) {
-					level.index = buff.levels.indexOf(level);
+					level.index = buff.levels.indexOf(level) + 1;
 				}
 			}
 //            Collections.sort(buffs, (b1, b2) -> b2.effects.mood - b1.effects.mood);

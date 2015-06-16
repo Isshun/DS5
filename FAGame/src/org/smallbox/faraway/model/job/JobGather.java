@@ -113,7 +113,7 @@ public class JobGather extends JobModel {
         // Add product items
         _progress = 0;
         for (ItemInfo.ItemProductInfo productInfo: _resource.getInfo().actions.get(0).products) {
-            ServiceManager.getWorldMap().putObject(productInfo.itemInfo, _posX, _posY, 0, 100);
+            ServiceManager.getWorldMap().putObject(productInfo.itemInfo, _posX, _posY, 0, productInfo.quantity);
             //character.addComponent(new UserItem(info));
             Log.info(character.getName() + ": product " + productInfo.itemInfo.name);
         }

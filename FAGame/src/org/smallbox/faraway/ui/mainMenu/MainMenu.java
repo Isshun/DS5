@@ -70,7 +70,7 @@ public class MainMenu {
 
         long lastResModified = Utils.getLastUIModified();
         if (update % 8 == 0 && lastResModified > _lastModified) {
-            GameData.getData().loadStrings();
+            GameData.getData().loadStrings(GameData.config.lang);
             _lastModified = lastResModified;
             reload();
         }

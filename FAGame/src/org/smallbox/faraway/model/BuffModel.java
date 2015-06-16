@@ -11,8 +11,14 @@ public class BuffModel {
         public int                  maxCharacterTemperature = Integer.MIN_VALUE;
         public int                  minFood = Integer.MIN_VALUE;
         public int                  maxFood = Integer.MIN_VALUE;
+        public int                  minEnvironment = Integer.MIN_VALUE;
+        public int                  maxEnvironment = Integer.MIN_VALUE;
         public int                  minDay = Integer.MIN_VALUE;
         public int                  maxDay = Integer.MIN_VALUE;
+        public int                  minSocial = Integer.MIN_VALUE;
+        public int                  maxSocial = Integer.MIN_VALUE;
+        public int                  minLight = Integer.MIN_VALUE;
+        public int                  maxLight = Integer.MIN_VALUE;
     }
 
     public static class BuffEffectModel {
@@ -25,7 +31,7 @@ public class BuffModel {
         public String               disease;
         public BuffConditionModel   conditions;
         public BuffEffectModel      effects;
-        public int                  delay;
+        public double               delay;
         public int                  index;
     }
 

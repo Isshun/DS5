@@ -23,7 +23,7 @@ public class WorldSerializer implements SerializerInterface {
 	private static class WorldSaveBaseItem {
 		public int 					id;
 		public String 				name;
-		public int progress;
+		public int 					progress;
 		public int 					health;
 	}
 
@@ -48,52 +48,52 @@ public class WorldSerializer implements SerializerInterface {
 		public int value;
 	}
 
-	private static void saveParcel(List<WorldSaveParcel> parcels, ParcelModel area) {
-		if (area.getItem() == null && area.getResource() == null && area.getStructure() == null) {
-			return;
-		}
-		WorldSaveParcel areaSave = new WorldSaveParcel();
+	private static void saveParcel(List<WorldSaveParcel> parcels, ParcelModel parcel) {
+//		if (parcel.getItem() == null && parcel.getResource() == null && parcel.getStructure() == null) {
+//			return;
+//		}
+		WorldSaveParcel parcelSave = new WorldSaveParcel();
 
-		areaSave.x = area.getX();
-		areaSave.y = area.getY();
-		areaSave.z = area.getZ();
-		areaSave.lightSource = area.getLightSource();
+		parcelSave.x = parcel.getX();
+		parcelSave.y = parcel.getY();
+		parcelSave.z = parcel.getZ();
+		parcelSave.lightSource = parcel.getLightSource();
 
-		ItemModel item = area.getRootItem();
+		ItemModel item = parcel.getRootItem();
 		if (item != null) {
-			areaSave.item = new WorldSaveUserItem();
-			areaSave.item.id = item.getId();
-			areaSave.item.name = item.getName();
-			areaSave.item.progress = item.getProgress();
+			parcelSave.item = new WorldSaveUserItem();
+			parcelSave.item.id = item.getId();
+			parcelSave.item.name = item.getName();
+			parcelSave.item.progress = item.getProgress();
 		}
 
-        ConsumableModel consumable = area.getConsumable();
+        ConsumableModel consumable = parcel.getConsumable();
 		if (consumable != null) {
-			areaSave.consumable = new WorldSaveConsumableItem();
-			areaSave.consumable.id = consumable.getId();
-			areaSave.consumable.name = consumable.getName();
-			areaSave.consumable.quantity = consumable.getQuantity();
+			parcelSave.consumable = new WorldSaveConsumableItem();
+			parcelSave.consumable.id = consumable.getId();
+			parcelSave.consumable.name = consumable.getName();
+			parcelSave.consumable.quantity = consumable.getQuantity();
 		}
 
-		StructureModel structure = area.getStructure();
+		StructureModel structure = parcel.getStructure();
 		if (structure != null) {
-			areaSave.structure = new WorldSaveStructure();
-			areaSave.structure.name = structure.getName();
-			areaSave.structure.progress = structure.getProgress();
-			areaSave.structure.id = structure.getId();
-			areaSave.structure.health = structure.getHealth();
+			parcelSave.structure = new WorldSaveStructure();
+			parcelSave.structure.name = structure.getName();
+			parcelSave.structure.progress = structure.getProgress();
+			parcelSave.structure.id = structure.getId();
+			parcelSave.structure.health = structure.getHealth();
 		}
 
-		ResourceModel resource = area.getResource();
+		ResourceModel resource = parcel.getResource();
 		if (resource != null) {
-			areaSave.resource = new WorldSaveResource();
-			areaSave.resource.name = resource.getName();
-			areaSave.resource.tile = resource.getTile();
-			areaSave.resource.value = resource.getQuantity();
-			areaSave.resource.id = resource.getId();
+			parcelSave.resource = new WorldSaveResource();
+			parcelSave.resource.name = resource.getName();
+			parcelSave.resource.tile = resource.getTile();
+			parcelSave.resource.value = resource.getQuantity();
+			parcelSave.resource.id = resource.getId();
 		}
 
-		parcels.add(areaSave);
+		parcels.add(parcelSave);
 	}
 
 	@Override
@@ -104,8 +104,8 @@ public class WorldSerializer implements SerializerInterface {
 		for (int z = 0; z < 1; z++) {
 			for (int x = 0; x < manager.getWidth(); x++) {
 				for (int y = 0; y < manager.getHeight(); y++) {
-					ParcelModel area = manager.getParcel(z, x, y);
-					saveParcel(save.parcels, area);
+					ParcelModel parcel = manager.getParcel(z, x, y);
+					saveParcel(save.parcels, parcel);
 				}
 			}
 		}
@@ -115,45 +115,45 @@ public class WorldSerializer implements SerializerInterface {
 	public void load(GameSerializer.GameSave save) {
 		WorldManager manager = ServiceManager.getWorldMap();
 
-		for (WorldSaveParcel area: save.parcels) {
-			if (area != null) {
-				// Light
-				if (area.lightSource > 0) {
-					manager.getParcel(area.z, area.x, area.y).setLightSource(area.lightSource);
-				}
+		for (WorldSaveParcel parcel: save.parcels) {
+			if (parcel != null) {
+				manager.getParcel(parcel.z, parcel.x, parcel.y).setBlood(Math.max(0, Math.random() * 10 - 5));
+				manager.getParcel(parcel.z, parcel.x, parcel.y).setSnow(Math.max(0, Math.random() * 10 - 5));
+				manager.getParcel(parcel.z, parcel.x, parcel.y).setDirt(Math.max(0, Math.random() * 10 - 5));
+				manager.getParcel(parcel.z, parcel.x, parcel.y).setRubble(Math.max(0, Math.random() * 10 - 5));
 
 				// UserItem
-				if (area.item != null) {
-					ItemModel item = (ItemModel)manager.putObject(area.item.name, area.x, area.y, area.z, area.item.progress);
+				if (parcel.item != null) {
+					ItemModel item = (ItemModel)manager.putObject(parcel.item.name, parcel.x, parcel.y, parcel.z, parcel.item.progress);
 					if (item != null) {
-						item.setId(area.item.id);
-						item.setHealth(area.item.health);
+						item.setId(parcel.item.id);
+						item.setHealth(parcel.item.health);
 					}
 				}
 
 				// Consumable
-				if (area.consumable != null) {
-					ConsumableModel consumable = (ConsumableModel)manager.putObject(area.consumable.name, area.x, area.y, area.z, area.consumable.quantity);
+				if (parcel.consumable != null) {
+					ConsumableModel consumable = (ConsumableModel)manager.putObject(parcel.consumable.name, parcel.x, parcel.y, parcel.z, parcel.consumable.quantity);
 					if (consumable != null) {
-						consumable.setId(area.consumable.id);
-                        consumable.setQuantity(area.consumable.quantity);
+						consumable.setId(parcel.consumable.id);
+                        consumable.setQuantity(parcel.consumable.quantity);
 					}
 				}
 
 				// Structure
-				if (area.structure != null) {
-					StructureModel structure = (StructureModel)manager.putObject(area.structure.name, area.x, area.y, area.z, area.structure.progress);
-					structure.setId(area.structure.id);
-					structure.setHealth(area.structure.health);
+				if (parcel.structure != null) {
+					StructureModel structure = (StructureModel)manager.putObject(parcel.structure.name, parcel.x, parcel.y, parcel.z, parcel.structure.progress);
+					structure.setId(parcel.structure.id);
+					structure.setHealth(parcel.structure.health);
 				}
 
 				// Resource
-				if (area.resource != null) {
-					MapObjectModel item = manager.putObject(area.resource.name, area.x, area.y, area.z, area.resource.progress);
+				if (parcel.resource != null) {
+					MapObjectModel item = manager.putObject(parcel.resource.name, parcel.x, parcel.y, parcel.z, parcel.resource.progress);
 					if (item != null) {
-						((ResourceModel)item).setTile(area.resource.tile);
-						((ResourceModel)item).setValue(area.resource.value);
-						item.setId(area.resource.id);
+						((ResourceModel)item).setTile(parcel.resource.tile);
+						((ResourceModel)item).setValue(parcel.resource.value);
+						item.setId(parcel.resource.id);
 					}
 				}
 			}

@@ -3,6 +3,8 @@ time: midnight
 tickPerHour: 42
 inventoryMaxQuantity: 20
 storageMaxQuantity: 30
+environmentDistance: 5
+lang: it
 
 render:
     floor:          true

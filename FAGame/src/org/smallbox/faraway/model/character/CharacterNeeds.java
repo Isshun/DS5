@@ -10,7 +10,11 @@ public class CharacterNeeds {
     private final CharacterModel 	_character;
 	private final GameData      	_data;
 
-	public enum Message {
+    public void setSleeping(boolean isSleeping) {
+        _isSleeping = true;
+    }
+
+    public enum Message {
 		MSG_HUNGRY,
 		MSG_STARVE,
 		MSG_NEED_OXYGEN,
@@ -23,20 +27,20 @@ public class CharacterNeeds {
 	// Actions
 	private boolean _isSleeping;
 	private int	_eating;
-	private int	_drinking;
-	private int	_socialize;
 
 	// Stats
-	private double	_food;
-	private double 	_happiness;
-	private double	_relation;
-	private double	_security;
-	private double	_oxygen;
-	private double	_energy;
-	private double	_health;
-	private double	_sickness;
-	private double	_injuries;
-	private double	_satiety;
+    public double socialize;
+    public double drinking;
+    public double food;
+    public double happiness;
+	public double relation;
+    public double security;
+    public double oxygen;
+    public double energy;
+    public double health;
+    public double sickness;
+    public double injuries;
+    public double satiety;
 
 	private MapObjectModel _sleepItem;
 
@@ -44,56 +48,40 @@ public class CharacterNeeds {
         _data = GameData.getData();
         _character = character;
 		_sleepItem = null;
-		_food = (int) (Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);
-		_oxygen = (int) (Constant.CHARACTER_INIT_OXYGEN + (Math.random() * 100) % 20 - 10);
-		_happiness = (Constant.CHARACTER_INIT_HAPPINESS + (Math.random() * 100) % 20 - 10);
-		_health = (float) (Constant.CHARACTER_INIT_HEALTH + (Math.random() * 100) % 20 - 10);
-		_energy = (int) (Constant.CHARACTER_INIT_ENERGY + (Math.random() * 100) % 100);
-		_energy = 100;
-		_relation = 0;
-		_security = 0;
-		_injuries = 0;
-		_sickness = 0;
-		_satiety = 0;
+		food = (int) (Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);
+		oxygen = (int) (Constant.CHARACTER_INIT_OXYGEN + (Math.random() * 100) % 20 - 10);
+		happiness = (Constant.CHARACTER_INIT_HAPPINESS + (Math.random() * 100) % 20 - 10);
+		health = (float) (Constant.CHARACTER_INIT_HEALTH + (Math.random() * 100) % 20 - 10);
+		energy = (int) (Constant.CHARACTER_INIT_ENERGY + (Math.random() * 100) % 100);
+		energy = 100;
+		relation = 0;
+		security = 0;
+		injuries = 0;
+		sickness = 0;
+		satiety = 0;
 	}
 
-	public int	getEating() { return _eating; }
-	public int	getDrinking() { return _drinking; }
-	public int	getSocialize() { return _socialize; }
-	public int	getFood() { return (int)Math.ceil(_food); }
-	public int	getEnergy() { return (int)Math.ceil(_energy); }
-	public int	getHappiness() { return (int)Math.ceil(_happiness); }
-	public int	getRelation() { return (int)_relation; }
-	public int	getSecurity() { return (int)_security; }
-	public int	getOxygen() { return (int)_oxygen; }
-	public int	getHealth() { return (int)_health; }
-	public int	getSickness() { return (int)_sickness; }
-	public int	getInjuries() { return (int)_injuries; }
-	public int	getSatiety() { return (int)_satiety; }
+//	public int	getEating() { return _eating; }
+//	public int	getDrinking() { return _drinking; }
+//	public int	getSocialize() { return _socialize; }
+	public int	getFood() { return (int)Math.ceil(food); }
+	public int	getEnergy() { return (int)Math.ceil(energy); }
+	public int	getHappiness() { return (int)Math.ceil(happiness); }
 
-	public boolean  isExhausted() { return _energy <= Constant.LIMITE_TIRED; }
-	public boolean	isStarved() { return _food <= Constant.LIMITE_FOOD_STARVE; }
-	public boolean	isHungry() { return _food <= Constant.LIMITE_FOOD_HUNGRY; }
+	public boolean  isExhausted() { return energy <= Constant.LIMITE_TIRED; }
+	public boolean	isStarved() { return food <= Constant.LIMITE_FOOD_STARVE; }
+	public boolean	isHungry() { return food <= Constant.LIMITE_FOOD_HUNGRY; }
 	public boolean	isSleeping() { return _isSleeping; }
-	public boolean 	isLonely() { return _relation <= Constant.LIMITE_RELATION_LONELY; }
-	public boolean 	isLowOxygen() { return _oxygen <= Constant.LIMITE_LOW_OXYGEN; }
-	public boolean 	isSuffocating() { return _oxygen <= Constant.LIMITE_NO_OXYGEN; }
+	public boolean 	isLonely() { return relation <= Constant.LIMITE_RELATION_LONELY; }
+	public boolean 	isLowOxygen() { return oxygen <= Constant.LIMITE_LOW_OXYGEN; }
+	public boolean 	isSuffocating() { return oxygen <= Constant.LIMITE_NO_OXYGEN; }
 
-	public void setDrinking(int drinking) { _drinking = drinking; }
-	public void setEating(int eating) { _eating = eating; }
-	public void setEnergy(double energy) { _energy = energy; }
-	public void setFood(double food) { _food = food; }
-	public void setHappiness(double happiness) { _happiness = happiness; }
-	public void updateHappiness(double change) { _happiness = _happiness + change; }
-	public void setHealth(double health) { _health = health; }
-	public void setInjuries(double injuries) { _injuries = injuries; }
-	public void setOxygen(double oxygen) { _oxygen = oxygen; }
-	public void setRelation(double relation) { _relation = relation; }
-	public void setSatiety(double satiety) { _satiety = satiety; }
-	public void setSecurity(double security) { _security = security; }
-	public void setSickness(double sickness) { _sickness = sickness; }
-	public void setSleeping(boolean sleeping) { _isSleeping = sleeping; }
-	public void setSocialize(int socialize) { _socialize = socialize; }
+	public void updateHappiness(double change) {
+//		double modifier = 1f - Math.abs((50 - happiness) / 50f);
+//		happiness = happiness + change * modifier;
+//		Log.info("hapi: " + happiness + ", modif: " + modifier);
+        happiness = happiness + change;
+	}
 
 	public void	update() {
         updateNeeds(_data.config.character.effects.regular);
@@ -114,17 +102,17 @@ public class CharacterNeeds {
             updateNeeds(_data.config.character.effects.sleepOnFloor);
         }
 
-        if (_energy >= 100) {
+        if (energy >= 100) {
             _isSleeping = false;
         }
 
         // Set needs bounds
-        _food = Math.max(0, Math.min(100, _food));
-        _energy = Math.max(0, Math.min(100, _energy));
-        _oxygen = Math.max(0, Math.min(100, _oxygen));
-        _happiness = Math.max(0, Math.min(100, _happiness));
-        _relation = Math.max(0, Math.min(100, _relation));
-        _security = Math.max(0, Math.min(100, _security));
+        food = Math.max(0, Math.min(100, food));
+        energy = Math.max(0, Math.min(100, energy));
+        oxygen = Math.max(0, Math.min(100, oxygen));
+        happiness = Math.max(0, Math.min(100, happiness));
+        relation = Math.max(0, Math.min(100, relation));
+        security = Math.max(0, Math.min(100, security));
 
         // // Set happiness
 		// if (_item && _item->isType(BaseItem.Type.QUARTER_BED)) {
@@ -150,17 +138,17 @@ public class CharacterNeeds {
 
 //			// addMessage(MSG_STARVE, quantity);
 //			// removeMessage(MSG_HUNGRY);
-//			_happiness = Math.max(_happiness - 0.5f, 0.0f);
-//			_health = Math.max(_health - 0.1f, 0.0f);
+//			happiness = Math.max(happiness - 0.5f, 0.0f);
+//			health = Math.max(health - 0.1f, 0.0f);
 //			if (_isSleeping <= 0) {
-//				_energy = (int) Math.max(_energy - 1.0f, 0.0f);
+//				energy = (int) Math.max(energy - 1.0f, 0.0f);
 //			}
 //		}
 //
 //		// Food: hungry
 //		else if (isHungry()) {
 //			// addMessage(MSG_HUNGRY, quantity);
-//			_happiness = Math.max(_happiness - 0.2f, 0.0f);
+//			happiness = Math.max(happiness - 0.2f, 0.0f);
 //		} else {
 //			// removeMessage(MSG_STARVE);
 //			// removeMessage(MSG_HUNGRY);
@@ -170,18 +158,18 @@ public class CharacterNeeds {
 		// // Oxygen
 		// WorldArea* area = WorldMap.Type.getInstance()->getParcel(_x, _y);
 		// if (area != NULL) {
-		// 	if (area->getOxygen() > _oxygen) {
-		// 	  _oxygen = min(area->getOxygen(), _oxygen + 5);
+		// 	if (area->getOxygen() > oxygen) {
+		// 	  oxygen = min(area->getOxygen(), oxygen + 5);
 		// 	} else {
-		// 	  _oxygen = max(area->getOxygen(), _oxygen - 5);
+		// 	  oxygen = max(area->getOxygen(), oxygen - 5);
 		// 	}
 		// } else {
-		// 	_oxygen = max(0, _oxygen - 5);
+		// 	oxygen = max(0, oxygen - 5);
 		// }
 
-		// if (_oxygen == 0) {
+		// if (oxygen == 0) {
 		// 	addMessage(MSG_NEED_OXYGEN, quantity);
-		// 	_oxygen = 0;
+		// 	oxygen = 0;
 		// } else {
 		// 	removeMessage(MSG_NEED_OXYGEN);
 		// }
@@ -190,29 +178,29 @@ public class CharacterNeeds {
 	}
 
     private void updateNeeds(GameConfig.EffectValues effects) {
-        _food += effects.food;
-        _energy += effects.energy;
-        _oxygen += effects.oxygen;
-        _happiness += effects.happiness;
-        _relation += effects.relation;
-        _security += effects.security;
+        food += effects.food;
+        energy += effects.energy;
+        oxygen += effects.oxygen;
+        happiness += effects.happiness;
+        relation += effects.relation;
+        security += effects.security;
     }
 
     private void updateNeeds(ItemInfoAction action) {
-        _food += action.effects.food / (double)action.cost;
-        _energy += action.effects.energy / (double)action.cost;
-        _oxygen += action.effects.oxygen / (double)action.cost;
-        _happiness += action.effects.happiness / (double)action.cost;
-        _relation += action.effects.relation / (double)action.cost;
-        _security += action.effects.security / (double)action.cost;
+        food += action.effects.food / (double)action.cost;
+        energy += action.effects.energy / (double)action.cost;
+        oxygen += action.effects.oxygen / (double)action.cost;
+        happiness += action.effects.happiness / (double)action.cost;
+        relation += action.effects.relation / (double)action.cost;
+        security += action.effects.security / (double)action.cost;
     }
 
 	public void	eat() {
-		_food = 100;
+		food = 100;
 	}
 
 	void	drink() {
-		_satiety = 100;
+		satiety = 100;
 	}
 
 //	public void	sleep(ItemBase item) {
@@ -229,7 +217,7 @@ public class CharacterNeeds {
 //	}
 
 	public void addRelation(int i) {
-		_relation = Math.min(_relation + 1, 100);
+		relation = Math.min(relation + 1, 100);
 	}
 
 	public void use(MapObjectModel item, ItemInfoAction action) {
@@ -239,11 +227,11 @@ public class CharacterNeeds {
 		}
 		
 		if (action != null && action.effects != null) {
-			_energy = Math.min(_energy + (double)action.effects.energy / action.cost, 100);
-			_food = Math.min(_food + (double)action.effects.food / action.cost, 100);
-			_happiness = Math.min(_happiness + (double)action.effects.happiness / action.cost, 100);
-			_health = Math.min(_health + (double)action.effects.health / action.cost, 100);
-			_relation = Math.min(_relation + (double)action.effects.relation / action.cost, 100);
+			energy = Math.min(energy + (double)action.effects.energy / action.cost, 100);
+			food = Math.min(food + (double)action.effects.food / action.cost, 100);
+			happiness = Math.min(happiness + (double)action.effects.happiness / action.cost, 100);
+			health = Math.min(health + (double)action.effects.health / action.cost, 100);
+			relation = Math.min(relation + (double)action.effects.relation / action.cost, 100);
 		}
 	}
 }

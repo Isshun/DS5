@@ -17,11 +17,10 @@ public class CharacterSerializer implements SerializerInterface {
 	public static class CharacterNeedsSave {
 		// Actions
 		public boolean	isSleeping;
-		public int	eating;
-		public int	drinking;
-		public int	socialize;
 
 		// Stats
+		public double 	drinking;
+		public double 	socialize;
 		public double	food;
 		public double 	happiness;
 		public double	relation;
@@ -35,19 +34,17 @@ public class CharacterSerializer implements SerializerInterface {
 		
 		public CharacterNeedsSave(CharacterNeeds needs) {
 			this.isSleeping = needs.isSleeping();
-			this.eating = needs.getEating();
-			this.drinking = needs.getDrinking();
-			this.socialize = needs.getSocialize();
-			
+			this.drinking = needs.drinking;
+			this.socialize = needs.socialize;
 			this.food = needs.getFood();
 			this.happiness = needs.getHappiness();
-			this.security = needs.getSecurity();
-			this.oxygen = needs.getOxygen();
-			this.energy = needs.getEnergy();
-			this.health = needs.getHealth();
-			this.sickness = needs.getSickness();
-			this.injuries = needs.getInjuries();
-			this.satiety = needs.getSatiety();
+			this.security = needs.security;
+			this.oxygen = needs.oxygen;
+			this.energy = needs.energy;
+			this.health = needs.health;
+			this.sickness = needs.sickness;
+			this.injuries = needs.injuries;
+			this.satiety = needs.satiety;
 		}
 	}
 
@@ -149,20 +146,19 @@ public class CharacterSerializer implements SerializerInterface {
 		
 		// Load needs
 		if (characterSave.needs != null) {
-			character.getNeeds().setDrinking(characterSave.needs.drinking);
-			character.getNeeds().setEating(characterSave.needs.eating);
-			character.getNeeds().setEnergy(characterSave.needs.energy);
-			character.getNeeds().setFood(characterSave.needs.food);
-			character.getNeeds().setHappiness(characterSave.needs.happiness);
-			character.getNeeds().setHealth(characterSave.needs.health);
-			character.getNeeds().setInjuries(characterSave.needs.injuries);
-			character.getNeeds().setOxygen(characterSave.needs.oxygen);
-			character.getNeeds().setRelation(characterSave.needs.relation);
-			character.getNeeds().setSatiety(characterSave.needs.satiety);
-			character.getNeeds().setSecurity(characterSave.needs.security);
-			character.getNeeds().setSickness(characterSave.needs.sickness);
+			character.getNeeds().drinking = characterSave.needs.drinking;
+			character.getNeeds().energy = characterSave.needs.energy;
+			character.getNeeds().food = characterSave.needs.food;
+			character.getNeeds().happiness = characterSave.needs.happiness;
+			character.getNeeds().health = characterSave.needs.health;
+			character.getNeeds().injuries = characterSave.needs.injuries;
+			character.getNeeds().oxygen = characterSave.needs.oxygen;
+			character.getNeeds().relation = characterSave.needs.relation;
+			character.getNeeds().satiety = characterSave.needs.satiety;
+			character.getNeeds().security = characterSave.needs.security;
+			character.getNeeds().sickness = characterSave.needs.sickness;
 			character.getNeeds().setSleeping(characterSave.needs.isSleeping);
-			character.getNeeds().setSocialize(characterSave.needs.socialize);
+			character.getNeeds().socialize = characterSave.needs.socialize;
 		}
 		Game.getCharacterManager().add(character);
 		_characters.add(character);

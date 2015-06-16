@@ -1,0 +1,15 @@
+levels:
+    -   label: Feeling lonely
+        delay: 20
+        conditions:
+            minSocial: 20
+        effects:
+            mood: -5
+
+    -   label: Need someone to talk
+        disease: depression
+        delay: 180
+        conditions:
+            minSocial: 0
+        effects:
+            mood: -10

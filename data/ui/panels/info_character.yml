@@ -63,7 +63,7 @@ entries:
             background: 0xb0cd35
             
         -   type: frame
-            position: [0, 245]
+            position: [0, 255]
             entries:
             
             -   type: frame
@@ -81,7 +81,7 @@ entries:
                     position: [20, 30]
 
             -   type: frame
-                position: [0, 60]
+                position: [0, 65]
                 entries:
                 
                 -   type: label
@@ -175,7 +175,7 @@ entries:
                     size: [175, 18]
 
             -   type: frame
-                position: [0, 340]
+                position: [0, 335]
                 entries:
                     
                 -   type: label
@@ -186,6 +186,27 @@ entries:
                 -   type: frame
                     id: frame_buffs_entries
                     position: [20, 40]
+
+            -   type: frame
+                position: [0, 580]
+                entries:
+                    
+                -   type: label
+                    text: Debug
+                    textsize: 22
+                    position: [20, 0]
+                    
+                -   type: label
+                    id: lb_environment
+                    text: environment
+                    textsize: 14
+                    position: [20, 30]
+                    
+                -   type: label
+                    id: lb_light
+                    text: light
+                    textsize: 14
+                    position: [20, 50]
 
     -   type: frame
         id: frame_personal_report
@@ -277,7 +298,7 @@ entries:
             background: 0xb0cd35
             
         -   type: frame
-            position: [0, 245]
+            position: [0, 255]
             entries:
                 
             -   type: label

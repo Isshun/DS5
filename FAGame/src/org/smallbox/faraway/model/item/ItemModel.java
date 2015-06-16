@@ -58,4 +58,8 @@ public class ItemModel extends MapObjectModel {
 	public void setTargetTemperature(int targetTemperature) {
 		_targetTemperature = targetTemperature;
 	}
+
+	public int getValue() {
+		return 15;
+	}
 }

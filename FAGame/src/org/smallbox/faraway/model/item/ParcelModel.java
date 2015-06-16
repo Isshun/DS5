@@ -18,6 +18,10 @@ public class ParcelModel {
 	private boolean 		_isStorage;
 	private int				_lightSource;
 	private AreaModel 		_area;
+	private double 			_rubble;
+	private double 			_dirt;
+	private double 			_blood;
+	private double 			_snow;
 
 	public ParcelModel(int x, int y, int z) {
 		_oxygen = (int) (Math.random() % 100);
@@ -110,4 +114,19 @@ public class ParcelModel {
 	public AreaModel getArea() {
 		return _area;
 	}
+
+	public boolean hasSnow() { return _snow > 0; }
+	public boolean hasRubble() { return _rubble > 0; }
+	public boolean hasDirt() { return _dirt > 0; }
+	public boolean hasBlood() { return _blood > 0; }
+
+	public void setBlood(double blood) { _blood = blood; }
+	public void setDirt(double dirt) { _dirt = dirt; }
+	public void setRubble(double rubble) { _rubble = rubble; }
+	public void setSnow(double snow) { _snow = snow; }
+
+	public double getBlood() { return _blood; }
+	public double getDirt() { return _dirt; }
+	public double getRubble() { return _rubble; }
+	public double getSnow() { return _snow; }
 }

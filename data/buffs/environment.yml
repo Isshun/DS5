@@ -1,0 +1,21 @@
+levels:
+    -   label: Environment
+        delay: 10
+        conditions:
+            minEnvironment: -20
+        effects:
+            mood: -5
+
+    -   label: Environment
+        delay: 10
+        conditions:
+            minEnvironment: -40
+        effects:
+            mood: -10
+
+    -   label: Environment
+        delay: 10
+        conditions:
+            minEnvironment: -60
+        effects:
+            mood: -15
