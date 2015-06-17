@@ -1,6 +1,5 @@
 package org.smallbox.faraway.model.character.base;
 
-import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.model.EquipmentModel;
 
 import java.util.List;

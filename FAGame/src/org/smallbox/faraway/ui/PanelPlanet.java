@@ -9,8 +9,6 @@ import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.model.PlanetAreaModel;
 import org.smallbox.faraway.ui.panel.BasePanel;
 
-import static org.smallbox.faraway.ui.UserInterface.Mode;
-
 /**
  * Created by Alex on 17/06/2015.
  */

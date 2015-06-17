@@ -4,13 +4,14 @@ import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.PathManager.MyMover;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.*;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class WorldManager extends BaseManager implements TileBasedMap {
     private static final int 	    NB_FLOOR = 10;

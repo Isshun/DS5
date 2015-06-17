@@ -1,13 +1,11 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameEventListener;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.ItemModel;
 import org.smallbox.faraway.model.item.ResourceModel;
 import org.smallbox.faraway.model.item.StructureModel;
 import org.smallbox.faraway.model.job.JobDump;

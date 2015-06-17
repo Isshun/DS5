@@ -6,8 +6,10 @@ import org.smallbox.faraway.model.character.base.CharacterModel;
 
 public class JobMove extends JobModel {
 	private GameConfig.EffectValues _effects;
+    private int _distance;
+    private double _speedModifier;
 
-	private JobMove(int x, int y) {
+    private JobMove(int x, int y) {
 		super(null, x, y);
 	}
 
@@ -71,4 +73,25 @@ public class JobMove extends JobModel {
 	public void setEffects(GameConfig.EffectValues effects) {
 		_effects = effects;
 	}
+
+    protected void onCharacterAssign(CharacterModel character){
+        _distance = character != null ? Math.abs(character.getX() - _posX) + Math.abs(character.getY() - _posY) : 0;
+    }
+
+    public double               getProgress() {
+        if (_character != null && _distance != 0) {
+            int distance = Math.abs(_character.getX() - _posX) + Math.abs(_character.getY() - _posY);
+            return (double)distance / _distance;
+        }
+        return 0;
+    }
+
+    @Override
+    public double getSpeedModifier() {
+        return _speedModifier;
+    }
+
+    public void setSpeedModifier(double speedModifier) {
+        _speedModifier = speedModifier;
+    }
 }

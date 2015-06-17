@@ -8,7 +8,6 @@ import org.newdawn.slick.util.pathfinding.Step;
 import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
 import org.smallbox.faraway.OnMoveListener;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.Movable;
 import org.smallbox.faraway.model.character.base.CharacterModel;

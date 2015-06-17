@@ -1,6 +1,5 @@
 package org.smallbox.faraway.ui.mainMenu;
 
-import org.smallbox.faraway.Application;
 import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.ui.LayoutModel;
 

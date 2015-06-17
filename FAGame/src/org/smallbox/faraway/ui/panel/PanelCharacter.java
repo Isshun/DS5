@@ -14,7 +14,10 @@ import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PanelCharacter extends BaseRightPanel {
     private static final int    NB_MAX_BUFFS = 20;
@@ -351,17 +354,13 @@ public class PanelCharacter extends BaseRightPanel {
         // Display need frame
         FrameLayout frameNeeds = (FrameLayout) findById("frame_needs");
         frameNeeds.removeAllViews();
-        ViewFactory.getInstance().load(character.getNeedViewPath(), view -> {
-            frameNeeds.addView(view);
-        });
+        ViewFactory.getInstance().load(character.getNeedViewPath(), frameNeeds::addView);
         createNeedsInfo();
 
         // Display equipment frame
         FrameLayout frameEquipmentBody = (FrameLayout) findById("frame_equipment_body");
         frameEquipmentBody.removeAllViews();
-        ViewFactory.getInstance().load(character.getEquipmentViewPath(), view -> {
-            frameEquipmentBody.addView(view);
-        });
+        ViewFactory.getInstance().load(character.getEquipmentViewPath(), frameEquipmentBody::addView);
     }
 
     private void refreshEquipments() {

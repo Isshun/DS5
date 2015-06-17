@@ -23,11 +23,12 @@ public class CheckJoyWalk extends CharacterCheck {
         job.setCharacter(character);
         job.setLabel("Move for a walk");
         job.setEffects(_effects);
+        job.setSpeedModifier(0.15);
         return job;
     }
 
     @Override
     public boolean check(CharacterModel character) {
-        return false;
+        return true;
     }
 }

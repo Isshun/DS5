@@ -10,11 +10,10 @@ import org.smallbox.faraway.model.character.base.CharacterStats;
  * Created by Alex on 17/06/2015.
  */
 public class AndroidModel extends CharacterModel {
-    private static final Color COLOR = new Color(0xc57de6);
-    private static final double BODY_COLD_ABSORB = 64;
-    private static final double BODY_COLD_RESIST = 0.5;
-
-    public static final String[][] EQUIPMENT_VIEW_IDS = new String[][] {
+    private static final Color      COLOR = new Color(0xc57de6);
+    private static final double     BODY_COLD_ABSORB = 64;
+    private static final double     BODY_COLD_RESIST = 0.5;
+    private static final String[][] EQUIPMENT_VIEW_IDS = new String[][] {
             new String[] {"bt_top", "top"},
             new String[] {"bt_head", "head"},
             new String[] {"bt_hand", "hand"},
@@ -37,32 +36,35 @@ public class AndroidModel extends CharacterModel {
     }
 
     @Override
-    public String[][] getEquipmentViewIds() {
-        return EQUIPMENT_VIEW_IDS;
-    }
-
-    @Override
-    public String getEquipmentViewPath() {
-        return "data/ui/panels/view_equipment_android.yml";
-    }
-
-    @Override
-    public String getNeedViewPath() {
-        return "data/ui/panels/view_need_android.yml";
-    }
-
-    @Override
-    public String getTypeName() {
-        return "android";
-    }
-
-    @Override
     public GameConfig.EffectValues getNeedEffects() {
         return GameData.config.character.effects.android;
     }
 
     @Override
-    public Color getColor() {
+    public String		getName() { return _firstName; }
+
+    @Override
+    public String[][]   getEquipmentViewIds() {
+        return EQUIPMENT_VIEW_IDS;
+    }
+
+    @Override
+    public String       getEquipmentViewPath() {
+        return "data/ui/panels/view_equipment_android.yml";
+    }
+
+    @Override
+    public String       getNeedViewPath() {
+        return "data/ui/panels/view_need_android.yml";
+    }
+
+    @Override
+    public String       getTypeName() {
+        return "android";
+    }
+
+    @Override
+    public Color        getColor() {
         return COLOR;
     }
 }

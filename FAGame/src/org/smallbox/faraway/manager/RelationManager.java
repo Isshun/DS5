@@ -73,7 +73,7 @@ public class RelationManager extends BaseManager {
 		Game.getCharacterManager().add(child);
 
 		if ("potter".equals(child.getLastName().toLowerCase()) && child.getRelations().size() == 2) {
-			child.setFirstname("Harry");
+			child.setFirstName("Harry");
 		}
 		
 		return child;

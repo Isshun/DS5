@@ -11,7 +11,6 @@ import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.PathManager;
 import org.smallbox.faraway.model.*;
 import org.smallbox.faraway.model.item.ConsumableModel;
-import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.ParcelModel;
 import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.model.job.JobMove;
@@ -22,8 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class CharacterModel extends Movable {
-
-	public enum TalentType {
+    public enum TalentType {
         HEAL,
         CRAFT,
         COOK,
@@ -38,7 +36,6 @@ public abstract class CharacterModel extends Movable {
         NONE,
         MALE,
         FEMALE,
-        BOTH
     }
 
     public static class TalentEntry {
@@ -64,7 +61,7 @@ public abstract class CharacterModel extends Movable {
 	private static final Color COLOR_FEMALE = new Color(255, 180, 220);
 	private static final Color COLOR_MALE = new Color(110, 200, 255);
 
-	private final TalentEntry[] TALENTS = new TalentEntry[] {
+	private static final TalentEntry[] TALENTS = new TalentEntry[] {
 			new TalentEntry(TalentType.HEAL, 	"Heal"),
 			new TalentEntry(TalentType.CRAFT, 	"Craft"),
 			new TalentEntry(TalentType.COOK, 	"Cook"),
@@ -76,33 +73,33 @@ public abstract class CharacterModel extends Movable {
 	};
 
 	CharacterNeeds						_needs;
-	private Gender						_gender;
-	private String						_firstName;
-	private ProfessionModel         	_profession;
-	private boolean						_isSelected;
-	private Color 						_color;
-	private int 						_lag;
-	private double 						_old;
-//	private List<ConsumableModel> 		_inventory;
-	private int 						_inventorySpace;
-	private int 						_inventorySpaceLeft;
-	private int 						_nbChild;
-	private double 						_nextChildAtOld;
-	private List<CharacterRelation> 	_relations;
-	private CharacterModel 				_mate;
-	private boolean 					_isGay;
-	private String 						_lastName;
-	private String 						_birthName;
-	private RoomModel 					_quarter;
-	private boolean 					_isDead;
-	private boolean 					_needRefresh;
-    private ConsumableModel 			_inventory;
-    private OnMoveListener 				_moveListener;
-    private List<CharacterBuffModel> 	_buffs;
-    private List<EquipmentModel> 		_equipments;
-    private double 						_bodyHeat = Constant.BODY_TEMPERATURE;
-    private CharacterStats              _stats;
-	private boolean 					_isFaint;
+    protected Gender					_gender;
+	protected String					_firstName;
+    protected ProfessionModel         	_profession;
+    protected boolean					_isSelected;
+    protected Color 					_color;
+    protected int 						_lag;
+    protected double 					_old;
+    protected int 						_inventorySpace;
+    protected int 						_inventorySpaceLeft;
+    protected int 						_nbChild;
+    protected double 					_nextChildAtOld;
+    protected List<CharacterRelation> 	_relations;
+    protected CharacterModel 			_mate;
+    protected boolean 					_isGay;
+    protected String 					_lastName;
+    protected String 					_birthName;
+    protected RoomModel 				_quarter;
+    protected boolean 					_isDead;
+    protected boolean 					_needRefresh;
+    protected ConsumableModel 			_inventory;
+    protected OnMoveListener 			_moveListener;
+    protected List<CharacterBuffModel> 	_buffs;
+    protected List<EquipmentModel> 		_equipments;
+    protected double 					_bodyHeat = Constant.BODY_TEMPERATURE;
+    protected CharacterStats            _stats;
+    protected boolean 					_isFaint;
+    protected double                    _moveProgress;
 
 	private Map<TalentType, TalentEntry> _talentsMap;
 	private List<TalentEntry>       	_talents;
@@ -114,7 +111,7 @@ public abstract class CharacterModel extends Movable {
 
         _stats = new CharacterStats();
 		_old = old;
-		_buffs = GameData.getData().buffs.stream().map(buff -> new CharacterBuffModel(buff)).collect(Collectors.toList());
+		_buffs = GameData.getData().buffs.stream().map(CharacterBuffModel::new).collect(Collectors.toList());
         sortBuffs();
 		_profession = CharacterManager.professions[id % CharacterManager.professions.length];
 		_relations = new ArrayList<>();
@@ -133,14 +130,8 @@ public abstract class CharacterModel extends Movable {
 		_isGay = (int)(Math.random() * 100) % 10 == 0;
 		_lastName = lastName;
 		if (name == null) {
-//			if ((int)(Math.random() * 1000) % 2 == 0) {
-//				_firstName = CharacterName.getShortFirstname(_gender)
-//						+ " \"" + CharacterName.getMiddlename() + "\" ";
-//				_lastName = lastName != null ? lastName : CharacterName.getShortLastName();
-//			} else {
-				_firstName = CharacterName.getFirstname(_gender) + " ";
-				_lastName = lastName != null ? lastName : CharacterName.getLastName();
-//			}
+            _firstName = CharacterName.getFirstname(_gender) + " ";
+            _lastName = lastName != null ? lastName : CharacterName.getLastName();
 		}
 		_birthName = _lastName;
 
@@ -161,6 +152,69 @@ public abstract class CharacterModel extends Movable {
 		Log.info("Character done: " + _firstName + _lastName + " (" + x + ", " + y + ")");
 	}
 
+    public ProfessionModel          getProfession() { return _profession; }
+    public ProfessionModel.Type	    getProfessionId() { return _profession.getType(); }
+    public JobModel                 getJob() { return _job; }
+    public String			        getName() { return _firstName + _lastName; }
+    public CharacterNeeds	        getNeeds() { return _needs; }
+    //	  int[]				        getMessages() { return _messages; }
+//    public int				        getProfessionScore(ProfessionModel.Type professionEngineer) { return 42; }
+    //	public List<ConsumableModel> 	getInventory() { return _inventory; }
+    public Path 			        getPath() { return _path; }
+    public Color 			        getColor() { return _color; }
+    public int 				        getLag() { return _lag; }
+    public int 				        getSpace() { return _inventorySpaceLeft; }
+    public Gender 			        getGender() { return _gender; }
+    public CharacterModel           getMate() { return _mate; }
+    public String 			        getLastName() { return _lastName; }
+    public List<CharacterRelation>  getRelations() { return _relations; }
+    public double			        getOld() { return _old; }
+    public double 			        getNextChildAtOld() { return _nextChildAtOld; }
+    public double                   getMoveProgress() { return _moveProgress; }
+//    public List<CharacterRelation>  getFamilyMembers() { return _relations; }
+    public RoomModel                getQuarter() { return _quarter; }
+    public void                     setQuarter(RoomModel quarter) { _quarter = quarter; }
+    public String                   getEnlisted() { return "april 25"; }
+    public String                   getBirthName() { return _birthName; }
+    public String                   getFirstName() { return _firstName; }
+    public int                      getNbRelations() { return _relations.size(); }
+    public int                      getInventoryLeftSpace() { return Math.max(_inventorySpaceLeft, 0); }
+    public int                      getInventorySpace() { return _inventorySpace; }
+    public int                      getNbChild() { return _nbChild; }
+    public List<TalentEntry>        getTalents() { return _talents; }
+    public TalentEntry              getTalent(TalentType type) { return _talentsMap.get(type); }
+    public double                   getBodyHeat() { return _bodyHeat; }
+    public CharacterStats           getStats() { return _stats; }
+    public List<EquipmentModel>     getEquipments() { return _equipments; }
+    public ParcelModel              getArea() { return Game.getWorldManager().getParcel(_posX, _posY); }
+    public ConsumableModel          getInventory() { return _inventory; }
+    public abstract String[][]      getEquipmentViewIds();
+    public abstract String          getEquipmentViewPath();
+    public abstract String          getNeedViewPath();
+    public abstract String          getTypeName();
+    public abstract GameConfig.EffectValues getNeedEffects();
+
+    public void				        setSelected(boolean selected) { _isSelected = selected; }
+    public void				        setName(String name) { _firstName = name; }
+    public void 			        setProfession(ProfessionModel profession) { _profession = profession; }
+    public void                     setFirstName(String firstName) { _firstName = firstName + " "; }
+    public void                     setIsDead() { _isDead = true; }
+    public void                     setIsFaint() { _isFaint = true; }
+    public void                     setNbChild(int nbChild) { _nbChild = nbChild; }
+    public void                     setInventory(ConsumableModel consumable) { _inventory = consumable; }
+//    public void                     quitJob() { _job = null; }
+//    public void 			        addFriend(CharacterModel friend) { _relations.add(new CharacterRelation(this, friend, CharacterRelation.Relation.FRIEND)); }
+    public abstract void            addBodyStats(CharacterStats stats);
+
+    public boolean                  hasInventorySpaceLeft() { return _inventorySpaceLeft > 0; }
+    public boolean			        isSelected() { return _isSelected; }
+    public boolean                  isDead() { return _isDead; }
+//    	public boolean			    isFull() { return _inventory.size() == Constant.CHARACTER_INVENTORY_SPACE; }
+    public boolean 			        isSleeping() { return _needs.isSleeping(); }
+    public boolean 			        isGay() { return _isGay; }
+//    public boolean                  isMoving() { return _node != null; }
+    public boolean 			        needRefresh() { return _needRefresh; }
+
     public void moveTo(JobModel job, int toX, int toY, OnMoveListener onMoveListener) {
         _toX = toX;
         _toY = toY;
@@ -174,22 +228,6 @@ public abstract class CharacterModel extends Movable {
                 onMoveListener.onReach(job, this);
             }
         }
-    }
-
-    public List<EquipmentModel> getEquipments() {
-        return _equipments;
-    }
-
-    public ParcelModel getArea() {
-        return Game.getWorldManager().getParcel(_posX, _posY);
-    }
-
-    public void setInventory(ConsumableModel consumable) {
-        _inventory = consumable;
-    }
-
-    public ConsumableModel getInventory() {
-        return _inventory;
     }
 
     private CharacterBuffModel getBuff(String buffName) {
@@ -233,19 +271,6 @@ public abstract class CharacterModel extends Movable {
         }
     }
 
-	public abstract void addBodyStats(CharacterStats stats);
-	public abstract GameConfig.EffectValues getNeedEffects();
-	public abstract String[][] getEquipmentViewIds();
-	public abstract String getEquipmentViewPath();
-	public abstract String getNeedViewPath();
-	public abstract String getTypeName();
-
-	public double getBodyHeat() {
-        return _bodyHeat;
-    }
-
-	public CharacterStats getStats() { return _stats; }
-
     public EquipmentModel getEquipment(String location) {
         for (EquipmentModel equipment: _equipments) {
             if (equipment.location.equals(location)) {
@@ -263,8 +288,6 @@ public abstract class CharacterModel extends Movable {
         });
     }
 
-    public void				setSelected(boolean selected) { _isSelected = selected; }
-	public void				setName(String name) { _firstName = name; }
 	public void 			setGender(Gender gender) {
 		_gender = gender;
 		_color = _gender == Gender.FEMALE ? COLOR_FEMALE : COLOR_MALE;
@@ -329,43 +352,11 @@ public abstract class CharacterModel extends Movable {
 			}
 		}
 	}
-	public void 			addFriend(CharacterModel friend) {
-		_relations.add(new CharacterRelation(this, friend, CharacterRelation.Relation.FRIEND));
-	}
-	public void 			setProfession(ProfessionModel profession) { _profession = profession; }
 
-	public ProfessionModel getProfession() { return _profession; }
-	public ProfessionModel.Type	getProfessionId() { return _profession.getType(); }
-	public JobModel getJob() { return _job; }
-	public String			getName() { return _firstName + _lastName; }
-	public CharacterNeeds	getNeeds() { return _needs; }
-	//	  int[]				getMessages() { return _messages; }
-	public boolean			isSelected() { return _isSelected; }
-	public int				getProfessionScore(ProfessionModel.Type professionEngineer) { return 42; }
-//	public List<ConsumableModel> 	getInventory() { return _inventory; }
-	public Path 			getPath() { return _path; }
-	public Color 			getColor() { return _color; }
-	public int 				getLag() { return _lag; }
-	public int 				getSpace() { return _inventorySpaceLeft; }
-	public Gender 			getGender() { return _gender; }
-	public CharacterModel getMate() { return _mate; }
-	public String 			getLastName() { return _lastName; }
-	public List<CharacterRelation> getRelations() { return _relations; }
-	public double			getOld() { return _old; }
-	public double 			getNextChildAtOld() { return _nextChildAtOld; }
-
-//	public boolean			isFull() { return _inventory.size() == Constant.CHARACTER_INVENTORY_SPACE; }
-	public boolean 			isSleeping() { return _needs.isSleeping(); }
-	public boolean 			isGay() { return _isGay; }
-	public boolean 			needRefresh() { return _needRefresh; }
-
-    public void quitJob() {
-        _job = null;
-    }
 
     public void	setJob(JobModel job) {
 		// Cancel previous job
-		if (_job != job && _job != null && _job != job && !_job.isFinish()) {
+		if (_job != job && _job != null && !_job.isFinish()) {
 			JobManager.getInstance().quit(_job, JobModel.JobAbortReason.INTERRUPT);
 		}
 
@@ -387,87 +378,20 @@ public abstract class CharacterModel extends Movable {
 		_job = job;
 	}
 
-	public void	setProfession(ProfessionModel.Type professionId) {
-		ProfessionModel[] professions = Game.getCharacterManager().getProfessions();
-
-		for (int i = 0; i < professions.length; i++) {
-			ProfessionModel profession = professions[i];
-			if (profession.getType() == professionId) {
-				Log.debug("setProfession: " + professions[i].getName());
-				setProfession(professions[i]);
-			}
-		}
-	}
-
-	// void		go(AStarSearch<MapSearchNode> astarsearch, Job job) {
-	//   if (astarsearch == null) {
-	// 	sendEvent(MSG_BLOCKED);
-	// 	return;
-	//   }
-
-	//   _blocked = 0;
-
-	//   _toX = job.getX();
-	//   _toY = job.getY();
-
-	//   Debug() + "Charactere #" + _id + ": go(" + _x + ", " + _y + " to " + toX + ", " + toY + ")";
-
-	//   if (_astarsearch != null) {
-	//   	_astarsearch.FreeSolutionNodes();
-	//   	Debug() + "free 1";
-	//   	_astarsearch.EnsureMemoryFreed();
-	//   	delete _astarsearch;
-	//   	_astarsearch = null;
-	//   }
-
-	//   _astarsearch = astarsearch;
-	//   _steps = 0;
-	// }
-
-	// void	use(AStarSearch<MapSearchNode> path, Job job) {
-	//   Info() + "Character #" + _id +": use item type: " + item.getSceneType();
-
-	//   // If character currently building item: quit
-	//   if (_job != null && _job.getItem() != null && _job.getItem().hasComponents() == false) {
-	// 	ServiceManager.getWorldMap().buildAbort(_job.getItem());
-	// 	_job = null;
-	//   }
-
-	//   // Go to new item
-	//   int toX = item.getX();
-	//   int toY = item.getY();
-	//   _item = item;
-	//   go(path, toX, toY);
-	// }
-
-	// void	build(AStarSearch<MapSearchNode> path, Job job) {
-	//   Info() + "Character #" + _id + ": build item type: " + item.getSceneType();
-
-	//   _build = item;
-	//   _build.setOwner(this);
-	//   int toX = item.getX();
-	//   int toY = item.getY();
-	//   go(path, toX, toY);
-	// }
-
-	// void	setItem(BaseItem item) {
-	//   BaseItem currentItem = _item;
-
-	//   _item = item;
-
-	//   if (currentItem != null && currentItem.getOwner() != null) {
-	// 	currentItem.setOwner(null);
-	//   }
-
-	//   if (item != null && item.getOwner() != this) {
-	// 	item.setOwner(this);
-	//   }
-	// }
+//	public void	setProfession(ProfessionModel.Type professionId) {
+//		ProfessionModel[] professions = Game.getCharacterManager().getProfessions();
+//
+//        for (ProfessionModel profession : professions) {
+//            if (profession.getType() == professionId) {
+//                Log.debug("setProfession: " + profession.getName());
+//                setProfession(profession);
+//            }
+//        }
+//	}
 
 	public void  updateNeeds(int count) {
 		_needs.update();
 	}
-
 
 	public void  longUpdate() {
 		_old += Constant.CHARACTER_GROW_PER_UPDATE * Constant.SLOW_UPDATE_INTERVAL;
@@ -504,10 +428,6 @@ public abstract class CharacterModel extends Movable {
 		}
 	}
 
-	public boolean isMoving() {
-		return _node != null;
-	}
-
 	public void		move() {
 		_move = Direction.NONE;
 
@@ -533,32 +453,25 @@ public abstract class CharacterModel extends Movable {
 			else if (y > _posY) setMove(Direction.BOTTOM);
 			else if (y < _posY) setMove(Direction.TOP);
 
-			_posX = (int) x;
-			_posY = (int) y;
+            // Increase move progress
+            _moveProgress += 1 * (_job != null ? _job.getSpeedModifier() : 1);
+            if (_moveProgress < 1) {
+                return;
+            }
+            _moveProgress = 0;
+
+            _posX = x;
+			_posY = y;
 			_steps++;
 			Log.debug("Character #" + _id + ": goto " + _posX + " x " + _posY + ", step: " + _steps);
 		}
 
 		// Next node
-		if (_path != null && (int)_path.getLength() > _steps) {
+		if (_path != null && _path.getLength() > _steps) {
 			Log.debug("Character #" + _id + ": move");
 
 			_node = _path.getStep(_steps);
 
-			// if (_steps == 0) {
-			// } else {
-			//   _node = _path.GetSolutionNext();
-			// }
-
-			// // clear path
-			// if (_node == null) {
-			//   Debug() + "Character #" + _id + ": reached";
-			//   _path.FreeSolutionNodes();
-			//   Debug() + "free 3";
-			//   _path.EnsureMemoryFreed();
-			//   delete _path;
-			//   _path = null;
-			// }
 		} else {
 			if (_path != null) {
 				Log.debug("Character #" + _id + ": reached");
@@ -570,6 +483,7 @@ public abstract class CharacterModel extends Movable {
 				_steps = 0;
 				_path = null;
 				_node = null;
+                _moveProgress = 0;
 
 				// TODO: why character sometimes not reach job location
 				if (_posX != _toX || _posY != _toY) {
@@ -578,12 +492,6 @@ public abstract class CharacterModel extends Movable {
 			}
 		}
 	}
-
-//	public void removeInventory(ConsumableModel item) {
-//		if (item != null && _inventory.remove(item)) {
-//			_inventorySpaceLeft++;
-//		}
-//	}
 
 	public void			action() {
 		if (_job == null) {
@@ -615,72 +523,6 @@ public abstract class CharacterModel extends Movable {
 		}
 	}
 
-	public List<CharacterRelation> getFamilyMembers() {
-		return _relations;
-	}
-
-	public RoomModel getQuarter() {
-		return _quarter;
-	}
-
-	public void setQuarter(RoomModel quarter) {
-		_quarter = quarter;
-	}
-
-//	public void addInventory(ConsumableModel item) {
-//		if (item != null) {
-//			_inventory.add(item);
-//			_inventorySpaceLeft--;
-//		}
-//	}
-//
-//	public MapObjectModel find(ItemFilter filter) {
-//		for (MapObjectModel item: _inventory) {
-//			if (item.matchFilter(filter)) {
-//				return item;
-//			}
-//		}
-//		return null;
-//	}
-
-	public String getEnlisted() {
-		return "april 25";
-	}
-
-	public String getBirthName() {
-		return _birthName;
-	}
-
-	public String getFirstName() {
-		return _firstName;
-	}
-
-	public int getNbRelations() {
-		return _relations.size();
-	}
-
-	public int getInventoryLeftSpace() {
-		return Math.max(_inventorySpaceLeft, 0);
-	}
-
-	public int getInventorySpace() {
-		return _inventorySpace;
-	}
-
-	public boolean hasInventorySpaceLeft() {
-		return _inventorySpaceLeft > 0;
-	}
-
-//	public void clearInventory() {
-//		_inventory.clear();
-//		_inventorySpaceLeft = _inventorySpace;
-//	}
-//
-//	public void removeInventory(List<ItemModel> items) {
-//		_inventory.removeAll(items);
-//		_inventorySpaceLeft = _inventorySpace - _inventory.size();
-//	}
-
 	@Override
 	public void	onPathFailed(JobModel job) {
 		Log.warning("Job failed (no path)");
@@ -696,10 +538,10 @@ public abstract class CharacterModel extends Movable {
 	}
 
 	@Override
-	public void	onPathComplete(Path rawpath, JobModel job) {
-	  Log.debug("Charactere #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
+	public void	onPathComplete(Path rawPath, JobModel job) {
+	  Log.debug("Character #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
 
-	  if (rawpath.getLength() == 0) {
+	  if (rawPath.getLength() == 0) {
 		return;
 	  }
 
@@ -707,57 +549,12 @@ public abstract class CharacterModel extends Movable {
 
 	  _toX = job.getX();
 	  _toY = job.getY();
-
-	  // if (_path != null) {
-	  // 	_path.FreeSolutionNodes();
-	  // 	Debug() + "free 1";
-	  // 	_path.EnsureMemoryFreed();
-	  // 	delete _path;
-	  // 	_path = null;
-	  // }
-
-	  _path = rawpath;
+	  _path = rawPath;
 	  _steps = 0;
 
 	  if (_onPathComplete != null) {
-		  _onPathComplete.onPathComplete(rawpath, job);
+		  _onPathComplete.onPathComplete(rawPath, job);
 	  }
-	}
-
-	public void setFirstname(String firstName) {
-		_firstName = firstName + " ";
-	}
-
-	public int getLeftSpace() {
-		return _inventorySpaceLeft;
-	}
-
-	public boolean isDead() {
-		return _isDead;
-	}
-
-	public void setIsDead() {
-		_isDead = true;
-	}
-
-	public void setIsFaint() {
-		_isFaint = true;
-	}
-
-	public void setNextChildAtOld(double nextChildAtOld) {
-		_nextChildAtOld = nextChildAtOld;
-	}
-
-	public int getNbChild() {
-		return _nbChild;
-	}
-
-	public void setNbChild(int nbChild) {
-		_nbChild = nbChild;
-	}
-
-	public List<TalentEntry> getTalents() {
-		return _talents;
 	}
 
 	public void movePriority(TalentEntry priority, int index) {
@@ -767,8 +564,4 @@ public abstract class CharacterModel extends Movable {
 		_talents.add(index, priority);
 		_needRefresh = true;
 	}
-
-    public TalentEntry getTalent(TalentType type) {
-        return _talentsMap.get(type);
-    }
 }

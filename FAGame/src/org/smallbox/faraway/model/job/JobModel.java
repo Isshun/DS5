@@ -31,6 +31,10 @@ public abstract class JobModel {
 		_label = label;
 	}
 
+	public double getSpeedModifier() {
+		return 1;
+	}
+
 	public static enum JobStatus {
 		WAITING, RUNNING, COMPLETE, ABORTED
 	}

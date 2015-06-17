@@ -5,7 +5,9 @@ import org.smallbox.faraway.engine.serializer.LoadListener;
 import org.smallbox.faraway.engine.serializer.WorldFactory;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.*;
-import org.smallbox.faraway.model.*;
+import org.smallbox.faraway.model.GameConfig;
+import org.smallbox.faraway.model.GameData;
+import org.smallbox.faraway.model.PlanetModel;
 import org.smallbox.faraway.ui.AreaManager;
 
 import java.util.ArrayList;

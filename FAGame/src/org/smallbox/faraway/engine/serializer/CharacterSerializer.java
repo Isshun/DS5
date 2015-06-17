@@ -3,8 +3,6 @@ package org.smallbox.faraway.engine.serializer;
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.manager.Utils;
 import org.smallbox.faraway.model.character.AndroidModel;
-import org.smallbox.faraway.model.character.DroidModel;
-import org.smallbox.faraway.model.character.HumanModel;
 import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.character.base.CharacterModel.Gender;
 import org.smallbox.faraway.model.character.base.CharacterNeeds;

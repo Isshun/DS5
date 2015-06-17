@@ -14,10 +14,10 @@ import org.smallbox.faraway.model.character.base.CharacterModel;
 import java.util.List;
 
 public class CharacterRenderer implements IRenderer {
-	private List<CharacterModel> _characters;
-	private SpriteManager _spriteManager;
-	private int 			_update;
-	private ColorView _redBackground;
+	private List<CharacterModel> 	_characters;
+	private SpriteManager 			_spriteManager;
+	private int 					_update;
+	private ColorView 				_redBackground;
 
 	public CharacterRenderer(List<CharacterModel> characters) {
 		_characters = characters;
@@ -38,21 +38,22 @@ public class CharacterRenderer implements IRenderer {
 			int offset = 0;
 			int frame = 0;
 			if (move != Direction.NONE) {
-				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
+//				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
+				offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
 				frame = c.getFrameIndex() / 20 % 4;
 			}
 
 			// Get exact position
 			int dirIndex = 0;
 			switch (direction) {
-			case BOTTOM: posY -= offset; dirIndex = 0; break;
-			case LEFT: posX += offset; dirIndex = 1; break;
-			case RIGHT: posX -= offset; dirIndex = 2; break;
-			case TOP: posY += offset; dirIndex = 3; break;
-			case TOP_LEFT: posY += offset; posX += offset; dirIndex = 1; direction = Direction.LEFT; break;
-			case TOP_RIGHT: posY += offset; posX -= offset; dirIndex = 2; direction = Direction.RIGHT; break;
-			case BOTTOM_LEFT: posY -= offset; posX += offset; dirIndex = 1; direction = Direction.LEFT; break;
-			case BOTTOM_RIGHT: posY -= offset; posX -= offset; dirIndex = 2; direction = Direction.RIGHT; break;
+			case BOTTOM: posY += offset; dirIndex = 0; break;
+			case LEFT: posX -= offset; dirIndex = 1; break;
+			case RIGHT: posX += offset; dirIndex = 2; break;
+			case TOP: posY -= offset; dirIndex = 3; break;
+			case TOP_LEFT: posY -= offset; posX -= offset; dirIndex = 1; direction = Direction.LEFT; break;
+			case TOP_RIGHT: posY -= offset; posX += offset; dirIndex = 2; direction = Direction.RIGHT; break;
+			case BOTTOM_LEFT: posY += offset; posX -= offset; dirIndex = 1; direction = Direction.LEFT; break;
+			case BOTTOM_RIGHT: posY += offset; posX += offset; dirIndex = 2; direction = Direction.RIGHT; break;
 			default: break;
 			}
 
