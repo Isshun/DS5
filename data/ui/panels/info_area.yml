@@ -4,3 +4,9 @@ entries:
         id: lb_area
         textsize: 24
         position: [24, 24]
+
+    -   type: label
+        id: bt_remove_area
+        text: remove area
+        textsize: 14
+        position: [24, 48]

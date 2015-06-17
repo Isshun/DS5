@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.engine.util.Constant;
 //import org.smallbox.faraway.manager.ServiceManager;
 //import org.smallbox.faraway.manager.WorldManager;
-//import org.smallbox.faraway.model.character.CharacterModel;
+//import org.smallbox.faraway.model.character.base.CharacterModel;
 //
 //import java.util.List;
 //

@@ -11,7 +11,7 @@ import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.Movable;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.job.JobModel;
 
 import java.util.ArrayList;
@@ -51,11 +51,11 @@ public class PathManager extends BaseManager {
 		private static List<AStarPathFinder> 	_finderPool;
 		private static Step[][] 				_steps;
 
-		public static void init() {
-			_steps = new Step[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
+		public static void init(int width, int height) {
+			_steps = new Step[width][height];
 			_finderPool = new ArrayList<>();
 			for (int i = 0; i < THREAD_POOL_SIZE; i++) {
-				Node[][] nodes = new Node[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
+				Node[][] nodes = new Node[width][height];
 				_finderPool.add(new AStarPathFinder(ServiceManager.getWorldMap(), 500, true, nodes, _steps, new ManhattanHeuristic(1)));
 			}
 		}
@@ -87,10 +87,14 @@ public class PathManager extends BaseManager {
 		_self = this;
 		_threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 		_paths = new ArrayList<>();
-		FinderPool.init();
 	}
 	
-	public void init() {
+	public void init(int width, int height) {
+		if (width == 0 || height == 0) {
+			throw new RuntimeException("PathManager init with 0 width/height");
+		}
+
+		FinderPool.init(width, height);
 	}
 
 	public void getPathAsync(final OnMoveListener listener, final CharacterModel character, final JobModel job) {

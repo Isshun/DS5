@@ -1,6 +1,7 @@
 package org.smallbox.faraway;
 
 import org.smallbox.faraway.engine.renderer.AreaRenderer;
+import org.smallbox.faraway.engine.renderer.IRenderer;
 import org.smallbox.faraway.engine.renderer.TemperatureRenderer;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.View;
@@ -16,10 +17,8 @@ public interface GFXRenderer {
     void display();
     void finish();
     void close();
-    boolean isOpen();
     void refresh();
     void setFullScreen(boolean isFullscreen);
-    void drawLight();
     int getWidth();
     int getHeight();
 
@@ -27,4 +26,5 @@ public interface GFXRenderer {
 
     AreaRenderer createAreaRenderer();
     TemperatureRenderer createTemperatureRenderer();
+    IRenderer createRoomRenderer();
 }

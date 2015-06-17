@@ -22,6 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PanelDebug extends BaseRightPanel {
+
 	private static class CommandModel {
 		private final String 		cmd;
 		private final OnCommandExec onCommandExec;
@@ -49,11 +50,14 @@ public class PanelDebug extends BaseRightPanel {
 	private ItemInfo 			_currentItem;
     private FrameLayout         _entries;
     private int                 _index;
+	private String 					_cmd;
 
 
 	private CommandModel[] COMMANDS = new CommandModel[] {
 			new CommandModel("jobs.list", () -> JobManager.getInstance().getJobs().forEach(job -> println(job.toString()))),
-			new CommandModel("crew.add", () -> Game.getCharacterManager().addRandom(25, 25)),
+			new CommandModel("crew.add", () -> Game.getCharacterManager().addRandom(5, 5)),
+//			new CommandModel("crew.remove", () -> Game.getCharacterManager().addRandom(5, 5)),
+			new CommandModel("crew.removeAll", () -> Game.getCharacterManager().getCharacters().removeAll(Game.getCharacterManager().getCharacters())),
 			new CommandModel("world.add seaweed", () -> {
 				for (int i = 0; i < 10; i++) {
 					Game.getWorldManager().putObject("base.seaweed1", (int)(Math.random() * Game.getWorldManager().getWidth()), (int)(Math.random() * Game.getWorldManager().getHeight()), 0, 10);
@@ -167,7 +171,7 @@ public class PanelDebug extends BaseRightPanel {
 	public void onLayoutLoaded(LayoutModel layout) {
 		findById("bt_add_character").setOnClickListener(view -> Game.getCharacterManager().addRandom(150, 150));
 		findById("bt_add_matter").setOnClickListener(view -> ResourceManager.getInstance().addMatter(500));
-		findById("bt_toggle_debug").setOnClickListener(view -> _ui.toogleMode(Mode.DEBUGITEMS));
+		findById("bt_toggle_debug").setOnClickListener(view -> _ui.toggleMode(Mode.DEBUGITEMS));
 		findById("bt_make_room").setOnClickListener(view -> Game.getRoomManager().makeRooms());
 		findById("bt_kill_all").setOnClickListener(view -> {
 			Game.getCharacterManager().clear();
@@ -283,10 +287,11 @@ public class PanelDebug extends BaseRightPanel {
 			_search = "";
 		}
 		else if (key == GameEventListener.Key.UP) {
-			_line = _line - 1 < 0 ? _nbResults : _line - 1;
+			_search = _cmd;
+//			_line = _line - 1 < 0 ? _nbResults : _line - 1;
 		}
 		else if (key == GameEventListener.Key.DOWN) {
-			_line = _line + 1 > _nbResults ? 0 : _line + 1;
+//			_line = _line + 1 > _nbResults ? 0 : _line + 1;
 		}
 		else if (key == GameEventListener.Key.BACKSPACE) {
 			if (_search.length() > 0) {
@@ -308,10 +313,11 @@ public class PanelDebug extends BaseRightPanel {
 
 	private void exec(String cmd) {
 		cmd = cmd.trim();
+        _cmd = cmd;
         clear();
 
 		for (CommandModel command: COMMANDS) {
-			if (command.cmd.equals(cmd)) {
+			if (command.cmd.toLowerCase().equals(cmd.toLowerCase())) {
 				command.onCommandExec.onCommandExec();
 				return;
 			}
@@ -328,7 +334,7 @@ public class PanelDebug extends BaseRightPanel {
 
     private void clear() {
         _index = 0;
-        _entries.clearAllViews();
+        _entries.removeAllViews();
     }
 
     private void println(String text) {

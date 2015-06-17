@@ -67,7 +67,6 @@ public class GDXLabel extends TextView {
 
     @Override
     protected void onDraw(GFXRenderer renderer, RenderEffect effect) {
-
     }
 
     @Override
@@ -113,7 +112,7 @@ public class GDXLabel extends TextView {
     @Override
     public int getContentWidth() {
         if (_string != null) {
-            return (int) GDXRenderer._fonts[_textSize].getBounds(_string).width;
+            return (int) GDXRenderer.getInstance().getFont(_textSize).getBounds(_string).width;
         }
         return 0;
     }
@@ -121,7 +120,7 @@ public class GDXLabel extends TextView {
     @Override
     public int getContentHeight() {
         if (_string != null) {
-            return (int) GDXRenderer._fonts[_textSize].getBounds(_string).height;
+            return (int) GDXRenderer.getInstance().getFont(_textSize).getBounds(_string).height;
         }
         return 0;
     }

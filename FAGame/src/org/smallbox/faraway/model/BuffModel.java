@@ -8,6 +8,7 @@ import java.util.List;
 public class BuffModel {
     public static class BuffConditionModel {
         public boolean              previous;
+        public List<String>         character;
         public int                  minCharacterTemperature = Integer.MIN_VALUE;
         public int                  maxCharacterTemperature = Integer.MIN_VALUE;
         public int                  minFood = Integer.MIN_VALUE;

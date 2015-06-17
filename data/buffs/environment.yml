@@ -2,6 +2,7 @@ levels:
     -   label: Environment
         delay: 10
         conditions:
+            character: [human, android]
             minEnvironment: -20
         effects:
             mood: -5
@@ -10,6 +11,7 @@ levels:
         delay: 10
         conditions:
             previous: true
+            character: [human, android]
             minEnvironment: -40
         effects:
             mood: -10
@@ -18,6 +20,7 @@ levels:
         delay: 10
         conditions:
             previous: true
+            character: [human, android]
             minEnvironment: -60
         effects:
             mood: -15

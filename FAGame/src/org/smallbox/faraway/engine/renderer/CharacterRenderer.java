@@ -9,8 +9,7 @@ import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.Movable.Direction;
-import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.character.CharacterStatus.Level;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class CharacterRenderer implements IRenderer {
 			}
 
 			// Bad status
-			if (c.getStatus().getLevel() == Level.BAD || c.getStatus().getLevel() == Level.REALLY_BAD) {
+			if (c.getNeeds().happiness < 20) {
 				_redBackground.setPosition(posX + effect.getViewport().getPosX(), posY + effect.getViewport().getPosY());
 				renderer.draw(_redBackground, effect);
 			}

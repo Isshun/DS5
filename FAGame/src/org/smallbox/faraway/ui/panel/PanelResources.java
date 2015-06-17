@@ -44,7 +44,7 @@ public class PanelResources extends BasePanel {
                 }
             }
 
-            clearAllViews();
+            removeAllViews();
             int index = 0;
             for (ItemInfo itemInfo: items.keySet()) {
                 TextView lbItem = ViewFactory.getInstance().createTextView();

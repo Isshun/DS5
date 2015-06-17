@@ -6,30 +6,28 @@ import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.*;
-import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.character.CharacterModel.Gender;
-import org.smallbox.faraway.model.character.CharacterNeeds;
-import org.smallbox.faraway.model.character.CharacterRelation;
+import org.smallbox.faraway.model.character.base.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel.Gender;
+import org.smallbox.faraway.model.character.base.CharacterNeeds;
+import org.smallbox.faraway.model.character.base.CharacterRelation;
 import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class PanelCharacter extends BaseRightPanel {
-    private static final int NB_MAX_BUFFS = 20;
-    private static final Color COLOR_BUTTON_INACTIVE = new Color(0x298596);
-    private static final Color COLOR_BUTTON_ACTIVE = new Color(0xafcd35);
+    private static final int    NB_MAX_BUFFS = 20;
+    private static final int    NB_GAUGE = 8;
+    private static final int    NB_MAX_RELATION = 18;
+    private static final int    NB_INVENTORY_PER_LINE = 10;
+    private static final int    NB_COLUMNS_NEEDS = 22;
+
+    private static final Color  COLOR_BUTTON_INACTIVE = new Color(0x298596);
+    private static final Color  COLOR_BUTTON_ACTIVE = new Color(0xafcd35);
     private ViewFactory _viewFactory;
 
-    private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Sickness", "Injuries", "Satiety", "unused", "Work"};
-
-    private static final int NB_GAUGE = 7;
-    private static final int NB_MAX_RELATION = 18;
-    private static final int NB_INVENTORY_PER_LINE = 10;
-
-    private static final int NB_COLUMNS_NEEDS = 22;
+    private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Amusement", "Injuries", "Satiety", "unused", "Work"};
 
     private static final Color COLOR_0 = new Color(120, 255, 255);
     private static final Color COLOR_1 = new Color(209, 203, 69);
@@ -111,7 +109,7 @@ public class PanelCharacter extends BaseRightPanel {
 
     private void createPriorities() {
         FrameLayout frameEntries = (FrameLayout) findById("frame_priorities_entries");
-        frameEntries.clearAllViews();
+        frameEntries.removeAllViews();
 
         for (CharacterModel.TalentEntry priority: _character.getTalents()) {
             TextView lbPriority = _viewFactory.createTextView();
@@ -172,7 +170,7 @@ public class PanelCharacter extends BaseRightPanel {
         _lbInventory = (TextView) findById("lb_inventory");
 
         FrameLayout frameInventoryEntries = (FrameLayout)findById("frame_inventory_entries");
-        frameInventoryEntries.clearAllViews();
+        frameInventoryEntries.removeAllViews();
         ImageView[] lbInventoryEntries = new ImageView[Constant.CHARACTER_INVENTORY_SPACE];
         for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
             final int x2 = i % NB_INVENTORY_PER_LINE;
@@ -185,7 +183,53 @@ public class PanelCharacter extends BaseRightPanel {
 
     private void createNeedsInfo() {
         for (int i = 0; i < NB_GAUGE; i++) {
-            addGauge(i);
+            switch (i) {
+                case 0:
+                    _values[i] = (TextView)findById("lb_status_food");
+                    _shapes[i] = (ImageView)findById("img_status_food");
+                    break;
+                case 1:
+                    _values[i] = (TextView)findById("lb_status_o2");
+                    _shapes[i] = (ImageView)findById("img_status_o2");
+                    break;
+                case 2:
+                    _values[i] = (TextView)findById("lb_status_happiness");
+                    _shapes[i] = (ImageView)findById("img_status_happiness");
+                    break;
+                case 3:
+                    _values[i] = (TextView)findById("lb_status_power");
+                    _shapes[i] = (ImageView)findById("img_status_power");
+                    break;
+                case 4:
+                    _values[i] = (TextView)findById("lb_status_relation");
+                    if (_values[i] != null) {
+                        _values[i].setOnFocusListener(null);
+                        _values[i].setOnClickListener(view -> switchView("frame_personal_report"));
+                    }
+                    _shapes[i] = (ImageView)findById("img_status_relation");
+                    break;
+                case 5:
+                    _values[i] = (TextView)findById("lb_status_security");
+                    _shapes[i] = (ImageView)findById("img_status_security");
+                    break;
+                case 6:
+                    _values[i] = (TextView)findById("lb_status_health");
+                    if (_values[i] != null) {
+                        _values[i].setOnFocusListener(null);
+                        _values[i].setOnClickListener(view -> switchView("frame_health"));
+                    }
+                    _shapes[i] = (ImageView)findById("img_status_health");
+                    break;
+                case 7:
+                    _values[i] = (TextView)findById("lb_status_joy");
+                    _shapes[i] = (ImageView)findById("img_status_joy");
+                    break;
+            }
+
+            // Set texture
+            if (_shapes[i] != null) {
+                _shapes[i].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
+            }
         }
     }
 
@@ -248,53 +292,13 @@ public class PanelCharacter extends BaseRightPanel {
 
     public CharacterModel getCharacter() { return _character; }
 
-    void  addGauge(int index) {
-        switch (index) {
-            case 0:
-                _values[index] = (TextView)findById("lb_status_food");
-                _shapes[index] = (ImageView)findById("img_status_food");
-                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
-                break;
-            case 1:
-                _values[index] = (TextView)findById("lb_status_o2");
-                _shapes[index] = (ImageView)findById("img_status_o2");
-                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
-                break;
-            case 2:
-                _values[index] = (TextView)findById("lb_status_happiness");
-                _shapes[index] = (ImageView)findById("img_status_happiness");
-                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
-                break;
-            case 3:
-                _values[index] = (TextView)findById("lb_status_power");
-                _shapes[index] = (ImageView)findById("img_status_power");
-                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
-                break;
-            case 4:
-                _values[index] = (TextView)findById("lb_status_relation");
-                _values[index].setOnFocusListener(null);
-                _values[index].setOnClickListener(view -> switchView("frame_personal_report"));
-                _shapes[index] = (ImageView)findById("img_status_relation");
-                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
-                break;
-            case 5:
-                _values[index] = (TextView)findById("lb_status_security");
-                _shapes[index] = (ImageView)findById("img_status_security");
-                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
-                break;
-            case 6:
-                _values[index] = (TextView)findById("lb_status_health");
-                _values[index].setOnFocusListener(null);
-                _values[index].setOnClickListener(view -> switchView("frame_health"));
-                _shapes[index] = (ImageView)findById("img_status_health");
-                _shapes[index].setImage(SpriteManager.getInstance().getIcon("data/res/needbar.png"));
-                break;
-        }
-    }
-
     @Override
     public void onRefresh(int update) {
         CharacterModel character = _ui.getSelectedCharacter();
+        if (character != null && character != _character) {
+            onCharacterSelect(character);
+        }
+
         if (character != null && (_character != character || character.needRefresh())) {
 
             if (_character != null) {
@@ -328,6 +332,7 @@ public class PanelCharacter extends BaseRightPanel {
             refreshJob(_character.getJob());
             refreshNeeds();
             refreshInventory();
+            refreshEquipments();
 
             // Relations
             if (update % 20 == 0 || _nbRelation != _character.getNbRelations()) {
@@ -339,6 +344,84 @@ public class PanelCharacter extends BaseRightPanel {
             refreshDebug();
 
             ((TextView)findById("lb_body_heat")).setString("Body heat: " + (int)(_character.getBodyHeat() * 10) / 10f);
+        }
+    }
+
+    private void onCharacterSelect(CharacterModel character) {
+        // Display need frame
+        FrameLayout frameNeeds = (FrameLayout) findById("frame_needs");
+        frameNeeds.removeAllViews();
+        ViewFactory.getInstance().load(character.getNeedViewPath(), view -> {
+            frameNeeds.addView(view);
+        });
+        createNeedsInfo();
+
+        // Display equipment frame
+        FrameLayout frameEquipmentBody = (FrameLayout) findById("frame_equipment_body");
+        frameEquipmentBody.removeAllViews();
+        ViewFactory.getInstance().load(character.getEquipmentViewPath(), view -> {
+            frameEquipmentBody.addView(view);
+        });
+    }
+
+    private void refreshEquipments() {
+        if (_character.getEquipmentViewIds() != null) {
+            for (String[] equipmentViewId : _character.getEquipmentViewIds()) {
+                setEquipment((TextView) findById(equipmentViewId[0]), equipmentViewId[1]);
+            }
+
+            Map<String, Integer> totalResist = new HashMap<>();
+            Map<String, Integer> totalAbsorb = new HashMap<>();
+            Map<String, Integer> totalBuff = new HashMap<>();
+            for (EquipmentModel equipment : _character.getEquipments()) {
+                if (equipment.effects != null) {
+                    for (EquipmentModel.EquipmentEffect effect : equipment.effects) {
+                        // Check resist
+                        if (effect.resist != null) {
+                            checkAndAddEquipmentEffect(totalResist, "cold", effect.resist.cold);
+                            checkAndAddEquipmentEffect(totalResist, "heat", effect.resist.heat);
+                            checkAndAddEquipmentEffect(totalResist, "damage", effect.resist.damage);
+                        }
+
+                        // Check absorb
+                        if (effect.absorb != null) {
+                            checkAndAddEquipmentEffect(totalAbsorb, "cold", effect.absorb.cold);
+                            checkAndAddEquipmentEffect(totalAbsorb, "heat", effect.absorb.heat);
+                            checkAndAddEquipmentEffect(totalAbsorb, "damage", effect.absorb.damage);
+                        }
+
+                        // Check buff
+                        if (effect.buff != null) {
+                            checkAndAddEquipmentEffect(totalBuff, "sight", effect.buff.sight);
+                            checkAndAddEquipmentEffect(totalBuff, "grow", effect.buff.grow);
+                            checkAndAddEquipmentEffect(totalBuff, "repair", effect.buff.repair);
+                            checkAndAddEquipmentEffect(totalBuff, "build", effect.buff.build);
+                            checkAndAddEquipmentEffect(totalBuff, "craft", effect.buff.craft);
+                            checkAndAddEquipmentEffect(totalBuff, "cook", effect.buff.cook);
+                            checkAndAddEquipmentEffect(totalBuff, "speed", effect.buff.speed);
+                            checkAndAddEquipmentEffect(totalBuff, "tailoring", effect.buff.tailoring);
+                        }
+                    }
+                }
+            }
+
+            List<String> resists = new ArrayList<>();
+            for (Map.Entry<String, Integer> entry : totalResist.entrySet()) {
+                resists.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
+            }
+            ((TextView) findById("lb_equipment_total_resist")).setString("Resists: " + String.join(", ", resists));
+
+            List<String> absorb = new ArrayList<>();
+            for (Map.Entry<String, Integer> entry : totalAbsorb.entrySet()) {
+                absorb.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
+            }
+            ((TextView) findById("lb_equipment_total_absorb")).setString("Absorbs: " + String.join(", ", absorb));
+
+            List<String> buff = new ArrayList<>();
+            for (Map.Entry<String, Integer> entry : totalBuff.entrySet()) {
+                buff.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
+            }
+            ((TextView) findById("lb_equipment_total_buff")).setString("Buffs: " + String.join(", ", buff));
         }
     }
 
@@ -435,76 +518,11 @@ public class PanelCharacter extends BaseRightPanel {
 
     private void refreshInventory() {
         _lbInventory.setString(StringUtils.getDashedString(Strings.LB_INVENTORY,
-            _character.getInventorySpace() - _character.getInventoryLeftSpace() + "/" + _character.getInventorySpace(), 29));
+                _character.getInventorySpace() - _character.getInventoryLeftSpace() + "/" + _character.getInventorySpace(), 29));
 
         if (_character.getInventory() != null) {
             ((TextView) findById("lb_inventory_entry")).setString(_character.getInventory().getLabel() + " (" + _character.getInventory().getQuantity() + ")");
         }
-
-        // Equipments
-        setEquipment((TextView) findById("bt_top"), "top");
-        setEquipment((TextView) findById("bt_head"), "head");
-        setEquipment((TextView) findById("bt_hand"), "hand");
-        setEquipment((TextView) findById("bt_bottom"), "bottom");
-        setEquipment((TextView) findById("bt_feet"), "feet");
-        setEquipment((TextView) findById("bt_face"), "face");
-        setEquipment((TextView) findById("bt_tool_1"), "tool");
-        setEquipment((TextView) findById("bt_tool_2"), "tool");
-        setEquipment((TextView) findById("bt_tool_3"), "tool");
-
-        Map<String, Integer> totalResist = new HashMap<>();
-        Map<String, Integer> totalAbsorb = new HashMap<>();
-        Map<String, Integer> totalBuff = new HashMap<>();
-        for (EquipmentModel equipment: _character.getEquipments()) {
-            if (equipment.effects != null) {
-                for (EquipmentModel.EquipmentEffect effect : equipment.effects) {
-                    // Check resist
-                    if (effect.resist != null) {
-                        checkAndAddEquipmentEffect(totalResist, "cold", effect.resist.cold);
-                        checkAndAddEquipmentEffect(totalResist, "heat", effect.resist.heat);
-                        checkAndAddEquipmentEffect(totalResist, "damage", effect.resist.damage);
-                    }
-
-                    // Check absorb
-                    if (effect.absorb != null) {
-                        checkAndAddEquipmentEffect(totalAbsorb, "cold", effect.absorb.cold);
-                        checkAndAddEquipmentEffect(totalAbsorb, "heat", effect.absorb.heat);
-                        checkAndAddEquipmentEffect(totalAbsorb, "damage", effect.absorb.damage);
-                    }
-
-                    // Check buff
-                    if (effect.buff != null) {
-                        checkAndAddEquipmentEffect(totalBuff, "sight", effect.buff.sight);
-                        checkAndAddEquipmentEffect(totalBuff, "grow", effect.buff.grow);
-                        checkAndAddEquipmentEffect(totalBuff, "repair", effect.buff.repair);
-                        checkAndAddEquipmentEffect(totalBuff, "build", effect.buff.build);
-                        checkAndAddEquipmentEffect(totalBuff, "craft", effect.buff.craft);
-                        checkAndAddEquipmentEffect(totalBuff, "cook", effect.buff.cook);
-                        checkAndAddEquipmentEffect(totalBuff, "speed", effect.buff.speed);
-                        checkAndAddEquipmentEffect(totalBuff, "tailoring", effect.buff.tailoring);
-                    }
-                }
-            }
-        }
-
-        List<String> resists = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry: totalResist.entrySet()) {
-            resists.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" +  entry.getValue() : entry.getValue()));
-        }
-        ((TextView) findById("lb_equipment_total_resist")).setString("Resists: " + String.join(", ", resists));
-
-        List<String> absorb = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry: totalAbsorb.entrySet()) {
-            absorb.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" +  entry.getValue() : entry.getValue()));
-        }
-        ((TextView) findById("lb_equipment_total_absorb")).setString("Absorbs: " + String.join(", ", absorb));
-
-        List<String> buff = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry: totalBuff.entrySet()) {
-            buff.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" +  entry.getValue() : entry.getValue()));
-        }
-        ((TextView) findById("lb_equipment_total_buff")).setString("Buffs: " + String.join(", ", buff));
-
 
 
 //        for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
@@ -518,15 +536,9 @@ public class PanelCharacter extends BaseRightPanel {
     }
 
     private void selectEquipment(View view, EquipmentModel equipment) {
-        findById("bt_top").setBackgroundColor(COLOR_BUTTON_INACTIVE);
-        findById("bt_head").setBackgroundColor(COLOR_BUTTON_INACTIVE);
-        findById("bt_hand").setBackgroundColor(COLOR_BUTTON_INACTIVE);
-        findById("bt_bottom").setBackgroundColor(COLOR_BUTTON_INACTIVE);
-        findById("bt_feet").setBackgroundColor(COLOR_BUTTON_INACTIVE);
-        findById("bt_face").setBackgroundColor(COLOR_BUTTON_INACTIVE);
-        findById("bt_tool_1").setBackgroundColor(COLOR_BUTTON_INACTIVE);
-        findById("bt_tool_2").setBackgroundColor(COLOR_BUTTON_INACTIVE);
-        findById("bt_tool_3").setBackgroundColor(COLOR_BUTTON_INACTIVE);
+        for (String[] equipmentViewId: _character.getEquipmentViewIds()) {
+            findById(equipmentViewId[0]).setBackgroundColor(COLOR_BUTTON_INACTIVE);
+        }
 
         view.setBackgroundColor(COLOR_BUTTON_ACTIVE);
 
@@ -615,6 +627,7 @@ public class PanelCharacter extends BaseRightPanel {
                 case 4: value = Math.min(Math.max((int)needs.relation, 0), 100); break;
                 case 5: value = Math.min(Math.max((int)needs.security, 0), 100); break;
                 case 6: value = Math.min(Math.max((int)needs.health, 0), 100); break;
+                case 7: value = Math.min(Math.max((int)needs.joy, 0), 100); break;
 //			case 7: value = Math.min(Math.max(needs.getSickness(), 0), 100); break;
 //			case 8: value = Math.min(Math.max(needs.getInjuries(), 0), 100); break;
 //			case 9: value = Math.min(Math.max(needs.getSatiety(), 0), 100); break;

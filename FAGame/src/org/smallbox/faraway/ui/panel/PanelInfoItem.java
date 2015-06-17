@@ -99,8 +99,8 @@ public class PanelInfoItem extends BaseInfoRightPanel {
         // Craft actions
         if (_itemInfo.hasCraftAction()) {
             _frameCraft.setVisible(true);
-            _frameCraftEntries.clearAllViews();
-            _menuAddCraftEntries.clearAllViews();
+            _frameCraftEntries.removeAllViews();
+            _menuAddCraftEntries.removeAllViews();
 
             // Create menu
             int index = 0;

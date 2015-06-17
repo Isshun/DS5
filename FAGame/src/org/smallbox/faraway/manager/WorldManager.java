@@ -30,23 +30,13 @@ public class WorldManager extends BaseManager implements TileBasedMap {
         return _parcels;
     }
 
-    // TODO: arraylist
-    public int getConsumableCount(ItemInfo itemInfo) {
-        int count = 0;
-        for (int x = 0; x < _width; x++) {
-            for (int y = 0; y < _height; y++) {
-                if (_parcels[x][y][0] != null && _parcels[x][y][0].getConsumable() != null && _parcels[x][y][0].getConsumable().getInfo() == itemInfo) {
-                    count += _parcels[x][y][0].getConsumable().getQuantity();
-                }
-            }
-        }
-        return count;
-    }
-
     public WorldManager(Game game) {
         _game = game;
-        _width = Constant.WORLD_WIDTH;
-        _height = Constant.WORLD_HEIGHT;
+    }
+
+    public void init(int width, int height) {
+        _width = width;
+        _height = height;
 
         _parcels = new ParcelModel[_width][_height][NB_FLOOR];
         for (int x = 0; x < _width; x++) {
@@ -60,6 +50,19 @@ public class WorldManager extends BaseManager implements TileBasedMap {
         }
 
         _finder = new WorldFinder(this, _parcels);
+    }
+
+    // TODO: arraylist
+    public int getConsumableCount(ItemInfo itemInfo) {
+        int count = 0;
+        for (int x = 0; x < _width; x++) {
+            for (int y = 0; y < _height; y++) {
+                if (_parcels[x][y][0] != null && _parcels[x][y][0].getConsumable() != null && _parcels[x][y][0].getConsumable().getInfo() == itemInfo) {
+                    count += _parcels[x][y][0].getConsumable().getQuantity();
+                }
+            }
+        }
+        return count;
     }
 
     public MapObjectModel putObject(String name, int x, int y, int z, int i) {

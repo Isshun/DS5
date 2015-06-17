@@ -2,6 +2,7 @@ levels:
     -   label: Feeling lonely
         delay: 20
         conditions:
+            character: [human, android]
             minSocial: 20
         effects:
             mood: -5
@@ -11,6 +12,7 @@ levels:
         delay: 180
         conditions:
             previous: true
+            character: [human, android]
             minSocial: 0
         effects:
             mood: -10

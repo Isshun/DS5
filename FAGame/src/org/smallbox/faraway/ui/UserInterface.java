@@ -13,7 +13,7 @@ import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.manager.Utils;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.model.ToolTips.ToolTip;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.room.RoomModel;
 import org.smallbox.faraway.ui.panel.*;
@@ -66,6 +66,8 @@ public class UserInterface implements GameEventListener {
             new PanelSystem(),
             new PanelTopInfo(),
             new PanelResources(),
+            new PanelPlanet(),
+            new PanelDev(),
             new PanelCharacter(	    Mode.CHARACTER,         null),
             new PanelInfo(		    Mode.INFO, 		        null),
             new PanelInfoStructure(	Mode.INFO_STRUCTURE, 	null),
@@ -167,7 +169,7 @@ public class UserInterface implements GameEventListener {
 
     public void reload() {
         for (BasePanel panel: _panels) {
-            panel.clearAllViews();
+            panel.removeAllViews();
             panel.init(_viewFactory, _factory, this, _interaction, null);
             panel.refresh(0);
         }
@@ -211,25 +213,27 @@ public class UserInterface implements GameEventListener {
         for (BasePanel panel: _panels) {
             panel.init(_viewFactory, _factory, this, _interaction, SpriteManager.getInstance().createRenderEffect());
 
-            switch (panel.getMode()) {
-                case INFO_STRUCTURE:
-                    _panelInfoStructure = (PanelInfoStructure) panel;
-                    break;
-                case INFO_ITEM:
-                    _panelInfoItem = (PanelInfoItem) panel;
-                    break;
-                case INFO_CONSUMABLE:
-                    _panelInfoConsumable = (PanelInfoConsumable) panel;
-                    break;
-                case INFO_PARCEL:
-                    _panelInfoParcel = (PanelInfoParcel) panel;
-                    break;
-                case INFO_RESOURCE:
-                    _panelInfoResource = (PanelInfoResource) panel;
-                    break;
-                case INFO_AREA:
-                    _panelInfoArea = (PanelInfoArea) panel;
-                    break;
+            if (panel.getMode() != null) {
+                switch (panel.getMode()) {
+                    case INFO_STRUCTURE:
+                        _panelInfoStructure = (PanelInfoStructure) panel;
+                        break;
+                    case INFO_ITEM:
+                        _panelInfoItem = (PanelInfoItem) panel;
+                        break;
+                    case INFO_CONSUMABLE:
+                        _panelInfoConsumable = (PanelInfoConsumable) panel;
+                        break;
+                    case INFO_PARCEL:
+                        _panelInfoParcel = (PanelInfoParcel) panel;
+                        break;
+                    case INFO_RESOURCE:
+                        _panelInfoResource = (PanelInfoResource) panel;
+                        break;
+                    case INFO_AREA:
+                        _panelInfoArea = (PanelInfoArea) panel;
+                        break;
+                }
             }
         }
 
@@ -299,7 +303,7 @@ public class UserInterface implements GameEventListener {
     public int				getMouseX() { return _keyMovePosX; }
     public int				getMouseY() { return _keyMovePosY; }
 
-    public void toogleMode(Mode mode) {
+    public void toggleMode(Mode mode) {
         setMode(_mode != mode ? mode : Mode.NONE);
     }
 
@@ -320,7 +324,7 @@ public class UserInterface implements GameEventListener {
             if (_mode.equals(panel.getMode())) {
                 _currentPanel = panel;
                 panel.setVisible(true);
-            } else if (panel.isAlwaysVisible() == false) {
+            } else if (!panel.isAlwaysVisible()) {
                 panel.setVisible(false);
             }
         }
@@ -439,7 +443,7 @@ public class UserInterface implements GameEventListener {
 
         for (BasePanel panel: _panels) {
             if (key.equals(panel.getShortcut())) {
-                toogleMode(panel.getMode());
+                toggleMode(panel.getMode());
                 return true;
             }
         }
@@ -617,7 +621,7 @@ public class UserInterface implements GameEventListener {
                 return;
             }
             _interaction.clean();
-            toogleMode(Mode.NONE);
+            toggleMode(Mode.NONE);
         }
 
         _keyRightPressed = false;

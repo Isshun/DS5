@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.engine.util.Constant;
 //import org.smallbox.faraway.manager.JobManager;
 //import org.smallbox.faraway.manager.ServiceManager;
-//import org.smallbox.faraway.model.character.CharacterModel;
+//import org.smallbox.faraway.model.character.base.CharacterModel;
 //import org.smallbox.faraway.model.item.UserItem;
 //import org.smallbox.faraway.model.job.JobUse;
 //

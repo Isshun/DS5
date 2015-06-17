@@ -3,6 +3,7 @@ levels:
         disease: malnutrition
         delay: 8
         conditions:
+            character: [human]
             minFood: 0
         effects:
             mood: -5
@@ -12,6 +13,7 @@ levels:
         delay: 16
         conditions:
             previous: true
+            character: [human]
             minFood: 0
         effects:
             mood: -10
@@ -21,6 +23,7 @@ levels:
         delay: 32
         conditions:
             previous: true
+            character: [human]
             minFood: 0
         effects:
             mood: -15
@@ -30,6 +33,7 @@ levels:
         delay: 64
         conditions:
             previous: true
+            character: [human]
             minFood: 0
         effects:
             mood: -25

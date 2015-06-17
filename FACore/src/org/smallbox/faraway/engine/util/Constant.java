@@ -5,9 +5,7 @@ import org.smallbox.faraway.Color;
 public class Constant {
 
 	public static final boolean DEBUG = true;
-	public static final double 	BODY_COLD_ABSORB = 32;
 	public static final double 	BODY_TEMPERATURE = 37.6;
-	public static final double 	BODY_COLD_RESIST = 0.25;
 	public static String 		NAME	= "FarPoint";
 	public static String 		VERSION	= "0.1";
 
@@ -39,24 +37,11 @@ public class Constant {
 	public static final int 	CHARACTER_INIT_HAPPINESS =80;
 	public static final int 	CHARACTER_INIT_HEALTH 	= 80;
 	public static final int 	CHARACTER_INIT_ENERGY 	= 0;
-	public static final int 	CHARACTER_MAX_MESSAGE 	= 10;
-	public static final int 	LIMITE_FOOD_STARVE 		= 0;
-	public static final int 	LIMITE_FOOD_HUNGRY 		= 20;
-	public static final int 	BLOCKED_COUNT_BEFORE_MESSAGE = 2;
-	public static final int 	MOVE_VIEW_OFFSET 		= 10;
 	public static final int 	FONT_SIZE 				= 20;
 	public static final int 	PANEL_WIDTH 			= 420;
 	public static final int 	PANEL_HEIGHT 			= WINDOW_HEIGHT;
-	public static final int 	WORLD_WIDTH 			= 50;
-	public static final int 	WORLD_HEIGHT 			= 50;
-	public static final double 	LIMITE_RELATION_LONELY 	= 20;
-	public static final double 	LIMITE_LOW_OXYGEN 		= 20;
-	public static final double 	LIMITE_NO_OXYGEN 		= 0;
-	public static final double 	LIMITE_TIRED 			= 20;
-	public static final int 	SLEEP_DURATION = 10;
-	public static final int 	SLEEP_ON_FLOOR_DURATION = 10;
-	public static final double 	SLEEP_ON_FLOOR_ENERGY_RESTORE = 60;
-	public static final double 	SLEEP_ON_FLOOR_HAPINESS_RESTORE = -10;
+	public static final int 	WORLD_WIDTH 			= 20;
+	public static final int 	WORLD_HEIGHT 			= 20;
 	public static final int 	DURATION_MULTIPLIER 	= 10;
 	public static final int 	CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS = 0;
 	public static final int 	CHARACTER_INVENTORY_SPACE = 20;

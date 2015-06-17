@@ -5,7 +5,7 @@
 //import org.smallbox.faraway.engine.ui.OnClickListener;
 //import org.smallbox.faraway.engine.ui.TextView;
 //import org.smallbox.faraway.engine.ui.View;
-//import org.smallbox.faraway.model.character.CharacterModel;
+//import org.smallbox.faraway.model.character.base.CharacterModel;
 //import org.smallbox.faraway.model.room.Room;
 //
 //import java.util.List;

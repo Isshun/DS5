@@ -34,8 +34,8 @@ public class GDXColorView extends ColorView {
     @Override
     public void draw(GFXRenderer renderer, int x, int y) {
         if (_needResetPos) {
-            _finalX = x;
-            _finalY = y;
+            _finalX = 0;
+            _finalY = 0;
             View view = this;
             while (view != null) {
                 _finalX += view.getPosX();
@@ -45,7 +45,7 @@ public class GDXColorView extends ColorView {
         }
 
         if (_gdxBackgroundColor != null) {
-            ((GDXRenderer) renderer).draw(_gdxBackgroundColor, _finalX, _finalY, _width, _height);
+            ((GDXRenderer) renderer).draw(_gdxBackgroundColor, _finalX + x, _finalY + y, _width, _height);
         }
     }
 

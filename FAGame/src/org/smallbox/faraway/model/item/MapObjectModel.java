@@ -1,7 +1,7 @@
 package org.smallbox.faraway.model.item;
 
 import org.smallbox.faraway.Strings;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.job.JobModel;
 
 import java.util.ArrayList;
@@ -212,7 +212,7 @@ public abstract class MapObjectModel {
     public boolean			isStructure() { return _info.isStructure; }
     public boolean          isResource() { return _info.isResource; }
     public boolean			isWalkable() { return !_info.isWalkable; }
-    public boolean 			isFloor() { return getName().equals("base.floor") || getName().equals("base.res_rock") || getName().equals("base.ground"); }
+    public boolean 			isFloor() { return getName().equals("base.floor") || getName().equals("base.rock") || getName().equals("base.ground"); }
     public boolean 			isDoor() { return getName().equals("base.door"); }
     public boolean 			isWall() { return getName().equals("base.wall") || getName().equals("base.window"); }
     public boolean 			isWindow() { return getName().equals("base.window"); }

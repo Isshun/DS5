@@ -2,7 +2,7 @@ package org.smallbox.faraway.model.job;
 
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.item.MapObjectModel;
 
 public class JobDump extends JobModel {

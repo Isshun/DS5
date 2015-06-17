@@ -4,10 +4,11 @@ import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.check.CheckCharacterUse;
 import org.smallbox.faraway.model.check.character.CheckCharacterExhausted;
 import org.smallbox.faraway.model.check.character.CheckCharacterHungry;
+import org.smallbox.faraway.model.check.joy.CheckJoySleep;
 import org.smallbox.faraway.model.check.old.CharacterCheck;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.job.*;
@@ -23,6 +24,7 @@ public class JobManager extends BaseManager {
 	private int 					_nbVisibleJob;
 	private List<JobModel> 			_toRemove;
     private List<CharacterCheck>    _priorities;
+	private List<CharacterCheck> 	_joys;
 
 	public JobManager() {
 		Log.debug("JobManager");
@@ -35,6 +37,11 @@ public class JobManager extends BaseManager {
         _priorities.add(new CheckCharacterUse());
         _priorities.add(new CheckCharacterExhausted());
         _priorities.add(new CheckCharacterHungry());
+
+		_joys = new ArrayList<>();
+		_joys.add(new CheckJoySleep());
+		_joys.add(new CheckJoyTalk());
+		_joys.add(new CheckJoyWalk());
 
         Log.debug("JobManager done");
 	}
@@ -177,6 +184,13 @@ public class JobManager extends BaseManager {
 	 * @param character
 	 */
 	public void assignJob(CharacterModel character) {
+		// Joy jobs
+		// TODO: magic number
+		if (character.getNeeds().joy < 20 && assignJoyJob(character)) {
+			Log.debug("assign joy job (" + character.getName() + " -> " + character.getJob().getLabel() + ")");
+			return;
+		}
+
 		// Priority jobs
 		if (assignPriorityJob(character)) {
             Log.debug("assign priority job (" + character.getName() + " -> " + character.getJob().getLabel() + ")");
@@ -193,6 +207,13 @@ public class JobManager extends BaseManager {
             Log.debug("assign failed job (" + character.getName() + " -> " + character.getJob().getLabel() + ")");
             return;
         }
+
+		// Joy jobs
+		// TODO: magic number
+		if (assignJoyJob(character)) {
+			Log.debug("assign joy job (" + character.getName() + " -> " + character.getJob().getLabel() + ")");
+			return;
+		}
 	}
 
 	public void removeJob(JobModel job) {
@@ -246,7 +267,27 @@ public class JobManager extends BaseManager {
 		addJob(job);
 	}
 
-    /**
+	/**
+	 * Create joy job for characters
+	 *
+	 * @param character
+	 * @return
+	 */
+	private boolean assignJoyJob(CharacterModel character) {
+		for (CharacterCheck jobCheck: _joys) {
+			if (jobCheck.check(character)) {
+				JobModel job = jobCheck.create(character);
+				if (job != null) {
+					assignJobToCharacter(job, character);
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
      * Create priority job for characters (eat / sleep / getRoom oxygen / move to temperate area)
      *
      * @param character

@@ -27,7 +27,7 @@ public class GameData implements GameDataListener {
 	public List<ItemInfo> 		gatherItems;
 	public List<CategoryInfo> 	categories;
 	public List<EquipmentModel> equipments;
-	public List<PlanetModel> 	planets;
+	public List<PlanetInfo> 	planets;
     private long                _lastConfigModified;
     public Map<String, WeatherModel> weathers;
 

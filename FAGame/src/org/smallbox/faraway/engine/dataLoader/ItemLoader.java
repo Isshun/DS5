@@ -143,7 +143,7 @@ public class ItemLoader {
             if (item.actions != null) {
                 for (ItemInfo.ItemInfoAction action: item.actions) {
 
-                    // Set product items (for self-product item, like res_rock)
+                    // Set product items (for self-product item, like rock)
                     if (action.products != null && !action.products.isEmpty()) {
                         for (ItemInfo.ItemProductInfo productInfo: action.products) {
                             productInfo.itemInfo = data.getItemInfo(productInfo.item);

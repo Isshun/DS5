@@ -8,7 +8,7 @@ import org.smallbox.faraway.Viewport;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.ProfessionModel;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.StructureModel;
@@ -370,7 +370,7 @@ public class SFMLSpriteManager extends SpriteManager {
 	public SpriteModel getResource(ResourceModel resource) {
 		ItemInfo info = resource.getInfo();
 
-		if ("base.res_rock".equals(info.name)) {
+		if ("base.rock".equals(info.name)) {
 			return getSprite(info, resource.getTile(), 0, 255, false);
 		}
 

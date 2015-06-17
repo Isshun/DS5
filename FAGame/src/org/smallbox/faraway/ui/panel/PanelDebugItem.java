@@ -67,7 +67,7 @@ public class PanelDebugItem extends BasePanel {
 
 	protected void initItem(final ItemInfo item) {
 		_grid.setVisible(false);
-		_itemView.clearAllViews();
+		_itemView.removeAllViews();
 		_itemView.setVisible(true);
 
 		int y = 6;

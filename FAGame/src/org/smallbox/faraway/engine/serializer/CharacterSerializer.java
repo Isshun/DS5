@@ -2,11 +2,14 @@ package org.smallbox.faraway.engine.serializer;
 
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.manager.Utils;
-import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.character.CharacterModel.Gender;
-import org.smallbox.faraway.model.character.CharacterNeeds;
-import org.smallbox.faraway.model.character.CharacterRelation;
-import org.smallbox.faraway.model.character.CharacterRelation.Relation;
+import org.smallbox.faraway.model.character.AndroidModel;
+import org.smallbox.faraway.model.character.DroidModel;
+import org.smallbox.faraway.model.character.HumanModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel.Gender;
+import org.smallbox.faraway.model.character.base.CharacterNeeds;
+import org.smallbox.faraway.model.character.base.CharacterRelation;
+import org.smallbox.faraway.model.character.base.CharacterRelation.Relation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +136,7 @@ public class CharacterSerializer implements SerializerInterface {
 
 	private void loadCharacter(CharacterSave characterSave) {
 		Utils.useUUID(characterSave.id);
-		CharacterModel character = new CharacterModel(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
+		CharacterModel character = new AndroidModel(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
 		character.setGender(characterSave.gender);
 
 //		// Load inventory

@@ -13,6 +13,8 @@ public class GameSerializer {
         public List<CharacterSerializer.CharacterSave>	characters;
         public List<JobSerializer.JobSave> 				jobs;
         public List<AreaSerializer.AreaSave> 		    areas;
+        public int                                      width;
+        public int                                      height;
 
         public GameSave() {
             areas = new ArrayList<>();
@@ -28,7 +30,7 @@ public class GameSerializer {
 
         // Open XML
         try {
-            InputStream input = new FileInputStream(filePath + ".xml");
+            InputStream input = new FileInputStream(filePath);
             XStream xstream = new XStream();
             load((GameSave)xstream.fromXML(input), loadListener);
             input.close();
@@ -83,7 +85,7 @@ public class GameSerializer {
         String xml = xstream.toXML(save);
 
         try {
-            FileOutputStream fs = new FileOutputStream(filePath + ".xml");
+            FileOutputStream fs = new FileOutputStream(filePath);
             OutputStreamWriter output = new OutputStreamWriter(fs);
             output.write(xml);
             output.close();

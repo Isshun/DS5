@@ -70,7 +70,7 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 	}
 
 	public void init(ViewFactory viewFactory, LayoutFactory layoutFactory, UserInterface ui, UserInteraction interaction, RenderEffect effect) {
-		clearAllViews();
+		removeAllViews();
 		_ui = ui;
 		_interaction = interaction;
 		onCreate(viewFactory);
@@ -143,6 +143,7 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 			onClose();
 		}
 	}
+
 	protected void onClose() {
 	}
 

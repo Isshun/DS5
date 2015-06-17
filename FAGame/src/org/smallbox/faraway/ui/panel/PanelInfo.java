@@ -4,7 +4,7 @@ import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.job.JobModel;
 import org.smallbox.faraway.model.room.RoomModel;

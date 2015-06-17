@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.model.item;
 //
 //import org.smallbox.faraway.manager.ResourceManager;
-//import org.smallbox.faraway.model.character.CharacterModel;
+//import org.smallbox.faraway.model.character.base.CharacterModel;
 //import org.smallbox.faraway.model.job.BaseJob;
 //
 //import java.util.ArrayList;

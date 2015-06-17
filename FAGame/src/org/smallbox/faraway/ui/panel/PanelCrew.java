@@ -8,7 +8,7 @@ import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.CharacterManager;
 import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
@@ -198,13 +198,6 @@ public class PanelCrew extends BaseRightPanel {
 			// Name
 			viewHolder.lbName.setDashedString(character.getName(), "", NB_COLUMNS);
 			viewHolder.lbName.setColor(viewHolder.frame.isFocus() ? Colors.LINK_ACTIVE : new Color(120, 255, 255));
-
-			// Status
-			viewHolder.lbStatus.setString(character.getStatus().getThoughts());
-			viewHolder.lbStatus.setColor(character.getStatus().getColor());
-			viewHolder.lbStatusShort.setString(character.getStatus().getThoughtsShort());
-			viewHolder.lbStatusShort.setColor(character.getStatus().getColor());
-			viewHolder.lbStatusShort.setPosition(376 - character.getStatus().getThoughtsShort().length() * 8, 2);
 
 			// Job
 			if (character.getJob() != null) {

@@ -9,7 +9,7 @@ actions:
     -   type: mine
         cost: 100
         products:
-            -   item: base.rock
+            -   item: base.rubble
                 quantity: 10
                 dropRate: 0.5
 

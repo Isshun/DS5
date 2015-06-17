@@ -6,7 +6,7 @@ import org.smallbox.faraway.GFXRenderer;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.StringUtils;
 import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.PlanetModel;
+import org.smallbox.faraway.model.PlanetInfo;
 import org.smallbox.faraway.ui.LayoutModel;
 
 /**
@@ -34,10 +34,10 @@ public class PlanetScene extends MainMenuScene {
     @Override
     public void onLayoutLoaded(LayoutModel layout) {
         FrameLayout framePlanetList = (FrameLayout) findById("frame_planet_list");
-        framePlanetList.clearAllViews();
+        framePlanetList.removeAllViews();
 
         int index = 0;
-        for (PlanetModel planet: Application.getData().planets) {
+        for (PlanetInfo planet: Application.getData().planets) {
             addPlanetListView(framePlanetList, planet, index++);
         }
 
@@ -50,7 +50,7 @@ public class PlanetScene extends MainMenuScene {
         select(Application.getData().planets.get(0));
     }
 
-    private void addPlanetListView(FrameLayout framePlanetList, PlanetModel planet, int index) {
+    private void addPlanetListView(FrameLayout framePlanetList, PlanetInfo planet, int index) {
         _viewFactory.load("data/ui/menu/planet_list_entry.yml", view -> {
             view.findById("frame_background").setVisible(false);
             ((TextView)view.findById("lb_planet")).setString(planet.name);
@@ -70,7 +70,7 @@ public class PlanetScene extends MainMenuScene {
         });
     }
 
-    private void select(PlanetModel planet) {
+    private void select(PlanetInfo planet) {
         _mainMenu.select(planet);
 
         ((TextView)findById("lb_detail_planet")).setString(planet.name);

@@ -105,7 +105,7 @@ public abstract class FrameLayout extends View {
         return null;
     }
 
-    public void clearAllViews() {
+    public void removeAllViews() {
         _views.forEach(org.smallbox.faraway.engine.ui.View::remove);
 		_views.clear();
 	}

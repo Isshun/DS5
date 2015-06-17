@@ -2,10 +2,11 @@ package org.smallbox.faraway.manager;
 
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.character.CharacterModel.Gender;
-import org.smallbox.faraway.model.character.CharacterRelation;
-import org.smallbox.faraway.model.character.CharacterRelation.Relation;
+import org.smallbox.faraway.model.character.HumanModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel.Gender;
+import org.smallbox.faraway.model.character.base.CharacterRelation;
+import org.smallbox.faraway.model.character.base.CharacterRelation.Relation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class RelationManager extends BaseManager {
 
 	public CharacterModel createChildren(CharacterModel c1, CharacterModel c2) {
 		String lastName = c1.getGender() == Gender.MALE ? c1.getLastName() : c2.getLastName();
-		CharacterModel child = new CharacterModel(Utils.getUUID(), c1.getX(), c2.getY(), null, lastName, 0);
+		CharacterModel child = new HumanModel(Utils.getUUID(), c1.getX(), c2.getY(), null, lastName, 0);
 		child.setProfession(CharacterManager.professionsChild);
 
 		// Set child's parents

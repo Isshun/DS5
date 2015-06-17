@@ -100,6 +100,9 @@ public class WorldSerializer implements SerializerInterface {
 	public void save(GameSerializer.GameSave save) {
 		WorldManager manager = ServiceManager.getWorldMap();
 
+        save.width = manager.getWidth();
+        save.height = manager.getHeight();
+
 		save.parcels = new ArrayList<>();
 		for (int z = 0; z < 1; z++) {
 			for (int x = 0; x < manager.getWidth(); x++) {
@@ -114,6 +117,8 @@ public class WorldSerializer implements SerializerInterface {
 	@Override
 	public void load(GameSerializer.GameSave save) {
 		WorldManager manager = ServiceManager.getWorldMap();
+
+		manager.init(save.width, save.height);
 
 		for (WorldSaveParcel parcel: save.parcels) {
 			if (parcel != null) {
@@ -164,7 +169,7 @@ public class WorldSerializer implements SerializerInterface {
 //		for (int x = 0; x < manager.getWidth(); x++) {
 //			for (int y = 0; y < manager.getHeight(); y++) {
 //				if (Math.random() > 0.995 && manager.getParcel(x, y).isEmpty()) {
-//					manager.getParcel(x, y).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
+//					manager.getParcel(x, y).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
 //				}
 //			}
 //		}
@@ -172,15 +177,15 @@ public class WorldSerializer implements SerializerInterface {
 //		for (int i = 0; i < 5; i++) {
 //			for (int x = 0; x < manager.getWidth(); x++) {
 //				for (int y = 0; y < manager.getHeight(); y++) {
-//					if (manager.getParcel(x, y).getResource() != null && manager.getParcel(x, y).getResource().getInfo().name.equals("base.res_rock")) {
+//					if (manager.getParcel(x, y).getResource() != null && manager.getParcel(x, y).getResource().getInfo().name.equals("base.rock")) {
 //						if (Math.random() > 0.5 && x < manager.getWidth() && manager.getParcel(x + 1, y) != null && manager.getParcel(x + 1, y).isEmpty())
-//							manager.getParcel(x + 1, y).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
+//							manager.getParcel(x + 1, y).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
 //						if (Math.random() > 0.5 && x > 0 && manager.getParcel(x - 1, y) != null && manager.getParcel(x - 1, y).isEmpty())
-//							manager.getParcel(x - 1, y).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
+//							manager.getParcel(x - 1, y).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
 //						if (Math.random() > 0.5 && y < manager.getHeight() && manager.getParcel(x, y + 1) != null && manager.getParcel(x, y + 1).isEmpty())
-//							manager.getParcel(x, y + 1).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
+//							manager.getParcel(x, y + 1).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
 //						if (Math.random() > 0.5 && y > 0 && manager.getParcel(x, y - 1) != null && manager.getParcel(x, y - 1).isEmpty())
-//							manager.getParcel(x, y - 1).setResource(new WorldResource(Game.getData().getItemInfo("base.res_rock")));
+//							manager.getParcel(x, y - 1).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
 //					}
 //				}
 //			}

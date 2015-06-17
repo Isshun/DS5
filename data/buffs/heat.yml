@@ -2,6 +2,7 @@ levels:
     -   label: It's too hot
         delay: 100
         conditions:
+            character: [human, android]
             maxCharacterTemperature: 40
             minFood: 0
         effects:
@@ -11,6 +12,7 @@ levels:
         delay: 100
         conditions:
             previous: true
+            character: [human, android]
             maxCharacterTemperature: 42
         effects:
             mood: -10
@@ -20,6 +22,7 @@ levels:
         delay: 100
         conditions:
             previous: true
+            character: [human, android]
             maxCharacterTemperature: 42
         effects:
             mood: -15

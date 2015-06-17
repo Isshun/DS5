@@ -6,7 +6,7 @@ import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.JobManager;
 import org.smallbox.faraway.manager.ServiceManager;
 import org.smallbox.faraway.model.ReceiptModel;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.item.ConsumableModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.MapObjectModel;

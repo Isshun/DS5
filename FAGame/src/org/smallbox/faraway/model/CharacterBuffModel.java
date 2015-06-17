@@ -8,7 +8,7 @@ public class CharacterBuffModel {
     public BuffModel.BuffLevelModel         level;
     public int                              maxLevelIndex;
     public double                           progress;
-    public int                              levelIndex;
+    public int                              levelIndex = -1;
 
     public CharacterBuffModel(BuffModel buff) {
         this.buff = buff;

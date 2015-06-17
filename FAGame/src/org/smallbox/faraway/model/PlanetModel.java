@@ -1,37 +1,27 @@
 package org.smallbox.faraway.model;
 
+/**
+ * Created by Alex on 17/06/2015.
+ */
 public class PlanetModel {
-	public static class PlanetStatsModel {
-		public int water;
-		public int fertility;
-		public int atmosphere;
-		public int fauna;
-		public int flora;
-		public int hostile_fauna;
-		public int hostile_humankind;
-		public int hostile_mechanic;
-	}
+    private final PlanetAreaModel[][]   _areas;
+    private final PlanetInfo            _info;
 
-    public static class PlanetImageModel {
-        public String thumb;
+    public PlanetModel() {
+        _info = new PlanetInfo();
+        _areas = new PlanetAreaModel[100][80];
+        for (int x = 0; x < 100; x++) {
+            for (int y = 0; y < 80; y++) {
+                _areas[x][y] = new PlanetAreaModel();
+            }
+        }
     }
 
-    public static class PlanetCreditModel {
-        public String author;
-        public String site;
+    public PlanetInfo getInfo() {
+        return _info;
     }
 
-	public String	            name;
-	public String	            type;
-	public String	            desc;
-	public PlanetStatsModel     stats;
-	public PlanetImageModel     image;
-	public PlanetCreditModel    credit;
-	public double	            albedo;
-	public double 	            pressure;
-	public double 	            greenhouse;
-	public double 	            incomingEnergy;
-
-	public int 					dayDuration = 24;
-	public int 					yearDuration = 365;
+    public PlanetAreaModel getAreas(int x, int y) {
+        return _areas[x][y];
+    }
 }

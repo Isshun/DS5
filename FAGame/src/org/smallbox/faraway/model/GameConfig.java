@@ -13,15 +13,15 @@ public class GameConfig {
         public double 		    health;
         public double 		    relation;
         public double           oxygen;
-        public int              socialize;
+        public double           socialize;
         public double           security;
+        public double           joy;
     }
 
     public static class CharacterEffects {
-        public EffectValues     regular;
-        public EffectValues     sleepOnFloor;
-        public EffectValues     starve;
-        public EffectValues     exhausted;
+        public EffectValues     human;
+        public EffectValues     android;
+        public EffectValues     droid;
     }
 
     public static class GameConfigCharacter {
@@ -38,6 +38,7 @@ public class GameConfig {
         public boolean          job;
         public boolean          area;
         public boolean          debug;
+        public boolean          room;
     }
 
     public static class GameConfigManager {
@@ -56,4 +57,5 @@ public class GameConfig {
     public int                  inventoryMaxQuantity;
     public int                  storageMaxQuantity;
     public int                  environmentDistance;
+    public boolean              byPassMenu;
 }

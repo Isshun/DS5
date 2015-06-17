@@ -5,9 +5,12 @@ import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.model.Movable.Direction;
 import org.smallbox.faraway.model.ProfessionModel;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.HumanModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.job.JobModel.JobAbortReason;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -179,8 +182,24 @@ public class CharacterManager extends BaseManager {
 	}
 
 	public void addRandom(int x, int y) {
-		CharacterModel character = new CharacterModel(Utils.getUUID(), x, y, null, null, 16);
+		CharacterModel character = new HumanModel(Utils.getUUID(), x, y, null, null, 16);
 		add(character);
+	}
+
+	public void addRandom(Class<? extends CharacterModel> cls) {
+		try {
+			Constructor<? extends CharacterModel> ctor = cls.getConstructor(int.class, int.class, int.class, String.class, String.class, double.class);
+			CharacterModel character = ctor.newInstance(new Object[] { Utils.getUUID(), 0, 0, null, null, 16 });
+			add(character);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public List<CharacterModel> getCharacters() {

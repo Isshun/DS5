@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.renderer.AreaRenderer;
+import org.smallbox.faraway.engine.renderer.IRenderer;
 import org.smallbox.faraway.engine.renderer.TemperatureRenderer;
 import org.smallbox.faraway.engine.ui.ColorView;
 import org.smallbox.faraway.engine.ui.View;
@@ -21,14 +22,15 @@ import org.smallbox.faraway.engine.util.Constant;
 public class GDXRenderer implements GFXRenderer {
     private static final Color TEXT_COLOR = Color.WHITE;
 
+    private static GDXRenderer          _self;
     private final SpriteBatch           _batch;
-    public static BitmapFont[]          _fonts;
+    private final BitmapFont[]          _fonts;
     private final OrthographicCamera    _camera;
     private final OrthographicCamera    _cameraWorld;
-    private GameEventListener           _listener;
     private ShapeRenderer               _shapeRenderer;
 
     public GDXRenderer(SpriteBatch batch, BitmapFont[] fonts) {
+        _self = this;
         _fonts = fonts;
         _batch = batch;
         _shapeRenderer = new ShapeRenderer();
@@ -86,26 +88,13 @@ public class GDXRenderer implements GFXRenderer {
     }
 
     @Override
-    public boolean isOpen() {
-        return true;
-    }
-
-    @Override
     public void refresh() {
         _camera.update();
         _batch.setProjectionMatrix(_camera.combined);
-
-        _batch.begin();
-        _fonts[10].draw(_batch, "hello", 100, 100);
-        _batch.end();
     }
 
     @Override
     public void setFullScreen(boolean isFullscreen) {
-    }
-
-    @Override
-    public void drawLight() {
     }
 
     @Override
@@ -133,8 +122,9 @@ public class GDXRenderer implements GFXRenderer {
         return new GDXTemperatureRenderer();
     }
 
-    public void setGameEventListener(GameEventListener listener) {
-        _listener = listener;
+    @Override
+    public IRenderer createRoomRenderer() {
+        return new GDXRoomRenderer();
     }
 
     public void draw(Sprite sprite, int x, int y) {
@@ -186,12 +176,11 @@ public class GDXRenderer implements GFXRenderer {
         return _batch;
     }
 
-//    public void draw(SpriteBatch batch) {
-//        if (batch != null) {
-//            _batch.begin();
-//            _batch.draw(, 0, 0);
-//            _batch.end();
-//        }
-//    }
+    public BitmapFont getFont(int size) {
+        return _fonts[size];
+    }
 
+    public static GDXRenderer getInstance() {
+        return _self;
+    }
 }

@@ -44,7 +44,7 @@ public class PanelBuild extends BaseRightPanel {
 
 	@Override
 	protected void onCreate(ViewFactory factory) {
-        clearAllViews();
+        removeAllViews();
 		_iconShortcut = new TextView[10];
 		_layouts = new HashMap<>();
 		_iconsList = new ArrayList<>();
@@ -60,7 +60,7 @@ public class PanelBuild extends BaseRightPanel {
 	// TODO: ugly
 	protected void	drawPanel(boolean anim) {
 		_animRunning = true;
-		clearAllViews();
+		removeAllViews();
 		_icons.clear();
 
 		// TODO

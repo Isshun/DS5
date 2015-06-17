@@ -149,6 +149,10 @@ public class WorldFactory {
     };
 
     public static void create(WorldManager world, LoadListener loadListener) {
+        if (world.getWidth() == 0 || world.getHeight() == 0) {
+            world.init(Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);
+        }
+
         loadListener.onUpdate("Create grass 1");
         addGrass(world);
         loadListener.onUpdate("Create grass 2");
@@ -252,7 +256,7 @@ public class WorldFactory {
 //        clean(map);
 //        clean(map);
 
-        ItemInfo info = GameData.getData().getItemInfo("base.res_rock");
+        ItemInfo info = GameData.getData().getItemInfo("base.rock");
         for (int i = 0; i < Constant.WORLD_WIDTH; i++) {
             for (int j = 0; j < Constant.WORLD_HEIGHT; j++) {
                 if (map[i][j] > 15) {

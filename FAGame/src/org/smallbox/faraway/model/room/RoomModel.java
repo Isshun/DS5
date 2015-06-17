@@ -2,8 +2,7 @@ package org.smallbox.faraway.model.room;
 
 import org.smallbox.faraway.Color;
 import org.smallbox.faraway.manager.Utils;
-import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.item.ItemFilter;
 import org.smallbox.faraway.model.item.ItemModel;
 import org.smallbox.faraway.model.item.MapObjectModel;

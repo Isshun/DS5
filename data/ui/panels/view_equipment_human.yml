@@ -1,0 +1,92 @@
+entries:
+
+    -   type: label
+        text: Equipments
+        textsize: 22
+        position: [20, 0]
+
+    -   type: image
+        path: data/res/body_human.png
+        position: [10, 30]
+        size: [420, 300]
+    
+    -   type: label
+        id: bt_head
+        text: head
+        textsize: 14
+        position: [72, 45]
+        size: [92, 25]
+        align: center
+        background: 0x298596
+    
+    -   type: label
+        id: bt_face
+        text: face
+        textsize: 14
+        position: [257, 68]
+        size: [92, 25]
+        align: center
+        background: 0x298596
+    
+    -   type: label
+        id: bt_top
+        text: top
+        textsize: 14
+        position: [254, 150]
+        size: [92, 25]
+        align: center
+        background: 0x298596
+    
+    -   type: label
+        id: bt_hand
+        text: hand
+        textsize: 14
+        position: [26, 162]
+        size: [92, 25]
+        align: center
+        background: 0x298596
+    
+    -   type: label
+        id: bt_bottom
+        text: bottom
+        textsize: 14
+        position: [63, 251]
+        size: [92, 25]
+        align: center
+        background: 0x298596
+    
+    -   type: label
+        id: bt_feet
+        text: feet
+        textsize: 14
+        position: [260, 277]
+        size: [92, 25]
+        align: center
+        background: 0x298596
+    
+    -   type: label
+        id: bt_tool_1
+        text: tool
+        textsize: 14
+        position: [20, 332]
+        size: [92, 25]
+        align: center
+        background: 0x298596
+    
+    -   type: label
+        id: bt_tool_2
+        text: tool
+        textsize: 14
+        position: [160, 332]
+        size: [92, 25]
+        align: center
+        background: 0x298596
+    
+    -   type: label
+        id: bt_tool_3
+        text: tool
+        textsize: 14
+        position: [300, 332]
+        size: [92, 25]
+        align: center
+        background: 0x298596

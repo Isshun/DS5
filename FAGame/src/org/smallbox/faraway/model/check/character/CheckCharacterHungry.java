@@ -1,7 +1,7 @@
 package org.smallbox.faraway.model.check.character;
 
 import org.smallbox.faraway.Game;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.check.old.CharacterCheck;
 import org.smallbox.faraway.model.item.ConsumableModel;
 import org.smallbox.faraway.model.item.ItemFilter;

@@ -40,7 +40,6 @@ public class Main {
         renderer.setGameEventListener(application);
 
         try {
-            application.loadGame();
             loop(window, application, renderer);
         } catch (IOException e) {
             e.printStackTrace();

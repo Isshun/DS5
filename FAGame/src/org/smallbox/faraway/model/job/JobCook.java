@@ -1,7 +1,7 @@
 package org.smallbox.faraway.model.job;
 
 import org.smallbox.faraway.model.ReceiptModel;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.MapObjectModel;
 

@@ -5,9 +5,9 @@ import org.smallbox.faraway.Game;
 import org.smallbox.faraway.GameObserver;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.character.CharacterRelation;
-import org.smallbox.faraway.model.character.CharacterRelation.Relation;
+import org.smallbox.faraway.model.character.base.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterRelation;
+import org.smallbox.faraway.model.character.base.CharacterRelation.Relation;
 import org.smallbox.faraway.model.item.ItemModel;
 import org.smallbox.faraway.model.item.ParcelModel;
 import org.smallbox.faraway.model.item.ResourceModel;
@@ -169,7 +169,6 @@ public class RoomManager extends BaseManager implements GameObserver {
             if (area.getRoom() == null && isPassable) {
                 area.setRoom(room);
                 room.addArea(area);
-
 
                 boolean isUnsupported = true;
                 for (int i = 0; i < 6; i++) {

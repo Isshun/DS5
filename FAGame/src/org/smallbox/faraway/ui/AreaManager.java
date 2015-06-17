@@ -87,4 +87,11 @@ public class AreaManager extends BaseManager {
     @Override
     protected void onUpdate(int tick) {
     }
+
+    public void remove(AreaModel area) {
+        if (area != null) {
+            area.getParcels().forEach(parcel -> parcel.setArea(null));
+            _areas.remove(area);
+        }
+    }
 }

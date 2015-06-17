@@ -3,7 +3,6 @@ package org.smallbox.farpoint;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.Viewport;
@@ -11,7 +10,7 @@ import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.SpriteManager;
 import org.smallbox.faraway.model.ProfessionModel;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.StructureModel;
@@ -186,7 +185,7 @@ public class GDXSpriteManager extends SpriteManager {
             } else {
                 imgFile = new File("mods/" + item.packageName + "/items/" + item.fileName + ".png");
             }
-            if (imgFile.exists()) {
+            if (imgFile != null && imgFile.exists()) {
                 sprite = new GDXSpriteModel(new Texture(new FileHandle(imgFile)), tileX * item.width * Constant.TILE_WIDTH,
                         tileY * item.height * Constant.TILE_HEIGHT + offsetY,
                         item.width * Constant.TILE_WIDTH,

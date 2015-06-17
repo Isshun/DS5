@@ -55,7 +55,7 @@ public class PanelJobs extends BaseRightPanel {
         List<JobModel> jobs = JobManager.getInstance().getJobs();
 
         FrameLayout frameJobs = (FrameLayout)findById("frame_jobs");
-        frameJobs.clearAllViews();
+        frameJobs.removeAllViews();
 
 		// Display jobs
 		for (JobModel job: jobs) {

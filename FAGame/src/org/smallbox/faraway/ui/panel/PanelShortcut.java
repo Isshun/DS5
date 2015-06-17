@@ -76,7 +76,7 @@ public class PanelShortcut extends BaseRightPanel {
 
         for (PanelEntry entry : _entries) {
             findById(entry.buttonId).setOnClickListener(view -> {
-                _ui.toogleMode(entry.mode);
+                _ui.toggleMode(entry.mode);
             });
             findById(entry.buttonId).setBackgroundColor(new Color(29, 85, 96, 100));
             findById(entry.buttonId).setOnFocusListener(new OnFocusListener() {

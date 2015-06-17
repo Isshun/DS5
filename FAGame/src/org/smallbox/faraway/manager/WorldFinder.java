@@ -2,7 +2,7 @@ package org.smallbox.faraway.manager;
 
 import org.smallbox.faraway.Game;
 import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.item.*;
 
 public class WorldFinder {

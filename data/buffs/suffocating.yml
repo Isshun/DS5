@@ -2,6 +2,7 @@ levels:
     -   label: It's hard to breath
         delay: 2
         conditions:
+            character: [human]
             minOxygen: 40
         effects:
             mood: -10
@@ -9,6 +10,7 @@ levels:
     -   label: It's hard to breath (2)
         delay: 1
         conditions:
+            character: [human]
             minOxygen: 20
         effects:
             mood: -10
@@ -17,6 +19,7 @@ levels:
         delay: 1
         disease: suffocating
         conditions:
+            character: [human]
             minOxygen: 0
         effects:
             mood: -100
@@ -27,6 +30,7 @@ levels:
         delay: 2
         disease: suffocating
         conditions:
+            character: [human]
             minOxygen: 0
         effects:
             mood: -100

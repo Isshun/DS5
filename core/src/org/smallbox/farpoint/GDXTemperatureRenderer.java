@@ -39,7 +39,7 @@ public class GDXTemperatureRenderer extends TemperatureRenderer {
                 }
 
                 String text = room.getTemperatureInfo().temperature + "°";
-                BitmapFont.TextBounds bounds = ((GDXRenderer) renderer)._fonts[24].getWrappedBounds(text, 0);
+                BitmapFont.TextBounds bounds = ((GDXRenderer)renderer).getFont(24).getWrappedBounds(text, 0);
                 ((GDXRenderer) renderer).draw(text, 24,
                         (minX + (maxX - minX) / 2) * Constant.TILE_WIDTH + effect.getViewport().getPosX(),
                         (minY + (maxY - minY) / 2) * Constant.TILE_HEIGHT + effect.getViewport().getPosY(),

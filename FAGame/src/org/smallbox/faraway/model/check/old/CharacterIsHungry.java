@@ -2,7 +2,7 @@
 //
 //import org.smallbox.faraway.Game;
 //import org.smallbox.faraway.manager.JobManager;
-//import org.smallbox.faraway.model.character.CharacterModel;
+//import org.smallbox.faraway.model.character.base.CharacterModel;
 //import org.smallbox.faraway.model.item.ItemBase;
 //import org.smallbox.faraway.model.item.ItemFilter;
 //import org.smallbox.faraway.model.job.JobTake;

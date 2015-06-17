@@ -6,7 +6,7 @@ import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.ui.*;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.room.RoomModel;
 import org.smallbox.faraway.model.room.RoomModel.RoomType;
 import org.smallbox.faraway.model.room.RoomOptions;
@@ -135,7 +135,7 @@ public class PanelRoom extends BaseRightPanel {
 	}
 
 	private void createRoomInfoOption(RoomModel room) {
-		_layoutRoomOption.clearAllViews();
+		_layoutRoomOption.removeAllViews();
 		int i = 0;
 		RoomOptions options = room.getOptions();
 		if (options != null) {

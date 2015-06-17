@@ -4,7 +4,7 @@ import org.smallbox.faraway.RenderEffect;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.Viewport;
 import org.smallbox.faraway.model.ProfessionModel;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.item.ItemInfo;
 import org.smallbox.faraway.model.item.MapObjectModel;
 import org.smallbox.faraway.model.item.ResourceModel;

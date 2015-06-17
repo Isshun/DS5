@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.model.check;
 //
 //import org.smallbox.faraway.manager.JobManager;
-//import org.smallbox.faraway.model.character.CharacterModel;
+//import org.smallbox.faraway.model.character.base.CharacterModel;
 //import org.smallbox.faraway.model.check.old.CharacterCheck;
 //
 ///**

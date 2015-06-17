@@ -10,6 +10,7 @@ import org.smallbox.faraway.engine.ui.ViewFactory;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.loader.PlanetLoader;
+import org.smallbox.faraway.manager.PathManager;
 import org.smallbox.faraway.model.GameConfig;
 import org.smallbox.faraway.model.GameData;
 import org.smallbox.faraway.ui.MenuBase;
@@ -42,7 +43,16 @@ public class Application implements GameEventListener {
     private MainMenu                _mainMenu;
     private static long             _lastUpdateDelay;
     private static long             _lastLongUpdateDelay;
-    private static int              _frame;
+
+    private static int      _frame;
+    private int             _tick;
+    private int             _nextUpdate;
+    private int             _nextRefresh;
+    private int             _nextLongUpdate;
+    private int             _renderTime;
+    private int             _refresh;
+    private long            _startTime = -1;
+    private long            _elapsed = 0;
 
     public Application(GFXRenderer renderer) {
         _self = this;
@@ -74,7 +84,8 @@ public class Application implements GameEventListener {
         _lightRenderer = lightRenderer;
         _particleRenderer = particleRenderer;
 		_gameInterface = new UserInterface(new LayoutFactory(), ViewFactory.getInstance());
-//        _mainMenu = new MainMenu(new LayoutFactory(), ViewFactory.getInstance(), renderer);
+        _mainMenu = new MainMenu(new LayoutFactory(), ViewFactory.getInstance(), renderer);
+        _mainMenu.open();
     }
 
     public GameData loadResources() {
@@ -117,7 +128,7 @@ public class Application implements GameEventListener {
                 break;
 
             case ESCAPE:
-                _game.togglePaused();
+                _game.toggleRunning();
                 break;
 
             case D_1:
@@ -145,8 +156,8 @@ public class Application implements GameEventListener {
             // Save
             case S:
                 if (modifier == Modifier.CONTROL) {
-                    _loadListener.onUpdate("saving [3]");
-                    _game.save("4");
+                    _loadListener.onUpdate("saving");
+                    _game.save(_game.getFileName());
                     _loadListener.onUpdate("save done");
                     return;
                 }
@@ -195,6 +206,7 @@ public class Application implements GameEventListener {
             _gameInterface.onMouseEvent(timer, action, button, x, y, rightPressed);
         } else {
             _mainMenu.onMouseEvent(timer, action, button, x, y);
+
         }
     }
 
@@ -205,16 +217,20 @@ public class Application implements GameEventListener {
     public void newGame(String fileName) {
         _game = new Game(_data, _data.config, fileName, _particleRenderer, _lightRenderer);
         _game.newGame(_loadListener);
+        PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
         _game.onCreate();
         _gameRenderer.init(_game);
         _gameInterface.onCreate(_game);
     }
 
     public void loadGame(String fileName) {
+        _mainMenu.close();
+
         _game = new Game(_data, _data.config, fileName, _particleRenderer, _lightRenderer);
 
         _loadListener.onUpdate("Load save");
         _game.load(_loadListener);
+        PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
         _game.onCreate();
 
         _loadListener.onUpdate("Start game");
@@ -230,36 +246,60 @@ public class Application implements GameEventListener {
         _game.addObserver(_lightRenderer);
     }
 
-    public void renderMenu(final GFXRenderer renderer, RenderEffect effect) {
-        _mainMenu.draw(renderer, effect);
+    public void render(GFXRenderer renderer, RenderEffect effect, long lastRenderInterval) {
+        if (_startTime == -1) {
+            _startTime = System.currentTimeMillis();
+        }
+//        long _elapsed = System.currentTimeMillis() - _startTime;
 
-//		if (_menu == null) {
-//			MenuGame menu = new MenuGame(path -> {
-//            });
-//			menu.addEntry("New game", 0, view -> {
-//            });
-//			menu.addEntry("Load", 1, view -> {
-//            });
-//			menu.addEntry("Save", 2, view -> _menu = new MenuSave(_game));
-//			menu.addEntry("Feedback", 3, view -> {
-//            });
-//			menu.addEntry("Exit", 4, view -> renderer.close());
-//			_menu = menu;
-//		}
-//		_menu.draw(renderer, null);
-    }
+//        Log.info("elapsed: " + (_elapsed / 1000));
 
-    public void renderGame(double animProgress, int update, long renderTime, GFXRenderer renderer, RenderEffect effect) {
-        _frame++;
+        if (_mainMenu != null && _mainMenu.isOpen()) {
+            _mainMenu.draw(renderer, effect);
+            return;
+        }
+
         if (_game != null) {
+            double animProgress = 0;
+            if (_game.isRunning()) {
+                _elapsed += lastRenderInterval;
+                animProgress = (1 - (double) (_nextUpdate - _elapsed) / Application.getUpdateInterval());
+            }
+
             renderer.clear(new Color(0, 0, 0));
             _gameRenderer.onDraw(renderer, effect, animProgress);
             _lightRenderer.onDraw(renderer, -effect.getViewport().getPosX(), -effect.getViewport().getPosY());
             _particleRenderer.onDraw(renderer, -effect.getViewport().getPosX(), -effect.getViewport().getPosY());
             _gameRenderer.onDrawHUD(renderer, effect, animProgress);
-            _gameInterface.onDraw(renderer, update, renderTime);
+            _gameInterface.onDraw(renderer, _tick, 0);
             renderer.finish();
+
+            if (_game.isRunning()) {
+
+                // Refresh
+                if (_elapsed >= _nextRefresh) {
+                    refreshGame(_refresh++);
+                    _nextRefresh += Application.REFRESH_INTERVAL;
+                }
+
+                // Update
+                if (_elapsed >= _nextUpdate) {
+                    update(_tick++);
+                    _nextUpdate += Application.getUpdateInterval();
+                }
+
+                // Long _tick
+                if (_elapsed >= _nextLongUpdate) {
+                    longUpdate(_frame);
+                    _nextLongUpdate += Application.getLongUpdateInterval();
+                }
+            }
         }
+
+        _frame++;
+    }
+
+    public void renderGame(double animProgress, int update, long renderTime, GFXRenderer renderer, RenderEffect effect) {
     }
 
     public void refreshConfig() {

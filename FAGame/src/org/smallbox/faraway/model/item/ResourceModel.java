@@ -30,7 +30,7 @@ public class ResourceModel extends ItemModel {
 	
 
 	public boolean isRock() {
-		return "base.res_rock".equals(_info.name);
+		return "base.rock".equals(_info.name);
 	}
 
 	public void setTile(int tile) {
@@ -50,7 +50,7 @@ public class ResourceModel extends ItemModel {
 	}
 
 	public boolean canBeMined() {
-		return "base.res_rock".equals(_info.name);
+		return "base.rock".equals(_info.name);
 	}
 
 	public boolean canBeHarvested() {

@@ -3,7 +3,7 @@ package org.smallbox.faraway.model.job;
 import org.smallbox.faraway.SpriteModel;
 import org.smallbox.faraway.engine.util.Constant;
 import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.item.*;
 import org.smallbox.faraway.model.item.ItemInfo.ItemInfoAction;
 
@@ -25,6 +25,10 @@ public abstract class JobModel {
 
 	public ConsumableModel getIngredient() {
 		return null;
+	}
+
+	public void setLabel(String label) {
+		_label = label;
 	}
 
 	public static enum JobStatus {
@@ -51,11 +55,12 @@ public abstract class JobModel {
 	protected JobAbortReason 	_reason;
 	protected int 				_durationLeft;
 	private ItemSlot 			_slot;
+	private String 				_label;
 	protected int 				_nbUsed;
 	protected JobStatus			_status;
 	private int 				_nbBlocked;
-    protected double _progress;
-    protected int _cost;
+    protected double 			_progress;
+    protected int 				_cost;
 
 	public JobModel(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
 		init();
@@ -83,7 +88,7 @@ public abstract class JobModel {
 		Log.debug("Job #" + _id + " create");
 	}
 
-	public abstract String 		getLabel();
+	public String 				getLabel() { return _label; }
 	public abstract String 		getShortLabel();
 	public int					getX() { return _posX; }
 	public int					getY() { return _posY; }

@@ -5,7 +5,7 @@
 //import org.smallbox.faraway.manager.Utils;
 //import org.smallbox.faraway.manager.WorldManager;
 //import org.smallbox.faraway.model.GameData;
-//import org.smallbox.faraway.model.character.CharacterModel;
+//import org.smallbox.faraway.model.character.base.CharacterModel;
 //import org.smallbox.faraway.model.item.ItemInfo;
 //import org.smallbox.faraway.model.item.UserItem;
 //import org.smallbox.faraway.model.item.WorldArea;

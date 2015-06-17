@@ -5,9 +5,7 @@ import org.smallbox.faraway.engine.serializer.LoadListener;
 import org.smallbox.faraway.engine.serializer.WorldFactory;
 import org.smallbox.faraway.engine.util.Log;
 import org.smallbox.faraway.manager.*;
-import org.smallbox.faraway.model.GameConfig;
-import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.PlanetModel;
+import org.smallbox.faraway.model.*;
 import org.smallbox.faraway.ui.AreaManager;
 
 import java.util.ArrayList;
@@ -35,20 +33,18 @@ public class Game {
     private static Game 				_self;
     private final PlanetModel           _planet;
     private final String                _fileName;
-    private boolean 					_paused;
 	private int 						_speed;
     private GameConfig                  _config;
 	private List<BaseManager>			_managers;
 	private List<GameObserver>			_observers;
 
-    public void                         togglePaused() { _paused = !_paused; }
+    public void                         toggleRunning() { _isRunning = !_isRunning; }
     public void                         addObserver(GameObserver observer) { _observers.add(observer); }
     public void                         setRunning(boolean running) { _isRunning = running; }
     public static void                  setWorldFinder(WorldFinder worldFinder) { _worldFinder = worldFinder; }
     public void                         setSpeed(int speed) { _speed = speed; }
 
     public boolean                      isRunning() { return _isRunning; }
-    public boolean                      isPaused() { return _paused; }
 
     public static StatsManager 			getStatsManager() { return _statsManager; }
 	public static RoomManager 			getRoomManager() { return _roomManager; }
@@ -61,9 +57,9 @@ public class Game {
 	public static RelationManager		getRelationManager() { return _relationManager; }
 	public static JobManager			getJobManager() { return _jobManager; }
     public static Game                  getInstance() { return _self; }
-    public int                          getHour() { return _tick / _config.tickPerHour % _planet.dayDuration; }
-    public int                          getDay() { return _tick / _config.tickPerHour / _planet.dayDuration & _planet.yearDuration; }
-    public int                          getYear() { return _tick / _config.tickPerHour / _planet.dayDuration / _planet.yearDuration; }
+    public int                          getHour() { return _tick / _config.tickPerHour % _planet.getInfo().dayDuration; }
+    public int                          getDay() { return _tick / _config.tickPerHour / _planet.getInfo().dayDuration & _planet.getInfo().yearDuration; }
+    public int                          getYear() { return _tick / _config.tickPerHour / _planet.getInfo().dayDuration / _planet.getInfo().yearDuration; }
     public Viewport                     getViewport() { return _viewport; }
     public static int                   getUpdate() { return _tick; }
     public static WorldFinder           getWorldFinder() { return _worldFinder; }
@@ -156,7 +152,7 @@ public class Game {
         }
 
 		if (_tick % _config.tickPerHour == 0) {
-            notify(observer -> observer.onHourChange(_tick / _config.tickPerHour % _planet.dayDuration));
+            notify(observer -> observer.onHourChange(_tick / _config.tickPerHour % _planet.getInfo().dayDuration));
 		}
 
         _tick++;
@@ -172,7 +168,7 @@ public class Game {
 	}
 
 	public void	load(LoadListener loadListener) {
-		String filePath = "data/saves/" + _fileName + ".sav";
+		String filePath = "data/saves/" + _fileName;
 
 		loadListener.onUpdate("Load game");
 		GameSerializer.load(filePath, loadListener);
@@ -185,11 +181,19 @@ public class Game {
 	}
 
 	public void	save(final String fileName) {
-		GameSerializer.save("data/saves/" + fileName + ".sav");
+		GameSerializer.save("data/saves/" + fileName);
 	}
 
     public void notify(Consumer<GameObserver> action) {
         Objects.requireNonNull(action);
         _observers.forEach(action::accept);
+    }
+
+    public PlanetModel getPlanet() {
+        return _planet;
+    }
+
+    public String getFileName() {
+        return _fileName;
     }
 }

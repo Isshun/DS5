@@ -48,6 +48,9 @@ public class MainRenderer implements IRenderer {
 		if (config.render.temperature) {
 			_hudRenders.add(renderer.createTemperatureRenderer());
 		}
+		if (config.render.room) {
+			_hudRenders.add(renderer.createRoomRenderer());
+		}
 	}
 
 	public void onRefresh(int frame) {

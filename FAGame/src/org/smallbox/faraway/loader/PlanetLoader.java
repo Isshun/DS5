@@ -1,7 +1,7 @@
 package org.smallbox.faraway.loader;
 
 import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.PlanetModel;
+import org.smallbox.faraway.model.PlanetInfo;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -18,13 +18,13 @@ import java.util.List;
 public class PlanetLoader {
     public static void load(GameData data) {
         try {
-            List<PlanetModel> planets = new ArrayList<>();
+            List<PlanetInfo> planets = new ArrayList<>();
 
             for (File file: new File("data/planets/").listFiles()) {
                 if (file.getName().endsWith(".yml")) {
                     InputStream input = new FileInputStream(file);
-                    Yaml yaml = new Yaml(new Constructor(PlanetModel.class));
-                    planets.add((PlanetModel) yaml.load(input));
+                    Yaml yaml = new Yaml(new Constructor(PlanetInfo.class));
+                    planets.add((PlanetInfo) yaml.load(input));
                 }
             }
 

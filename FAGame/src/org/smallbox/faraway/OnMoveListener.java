@@ -1,6 +1,6 @@
 package org.smallbox.faraway;
 
-import org.smallbox.faraway.model.character.CharacterModel;
+import org.smallbox.faraway.model.character.base.CharacterModel;
 import org.smallbox.faraway.model.job.JobModel;
 
 /**

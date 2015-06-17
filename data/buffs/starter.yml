@@ -2,6 +2,7 @@ levels:
 
     -   label: Excited by new colony
         conditions:
-            maxDay: 10
+            character: [human, android]
+            minDay: 10
         effects:
             mood: +15
