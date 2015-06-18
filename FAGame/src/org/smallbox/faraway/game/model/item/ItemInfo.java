@@ -3,7 +3,6 @@ package org.smallbox.faraway.game.model.item;
 import java.util.List;
 
 public class ItemInfo {
-
 	public boolean hasCraftAction() {
 		if (actions != null) {
 			for (ItemInfoAction action : actions) {
@@ -56,6 +55,47 @@ public class ItemInfo {
 		public ItemInfo 				itemInfo;
 		public int 						quantity;
 	}
+	public static class EquipmentEffectBuff {
+		public int                      sight;
+		public int                      grow;
+		public int                      repair;
+		public int                      build;
+		public int                      craft;
+		public int                      cook;
+		public int                      speed;
+		public int                      tailoring;
+		public double                   oxygen;
+	}
+
+	public static class EquipmentEffectAbsorb {
+		public int                      cold;
+		public int                      heat;
+		public int                      damage;
+	}
+
+	public static class EquipmentEffectResist {
+		public int                      cold;
+		public int                      heat;
+		public int                      damage;
+		public int                      oxygen;
+	}
+
+	public static class ItemEquipmentInfo {
+		public String 					location;
+		public List<EquipmentEffect>	effects;
+	}
+
+	public static class EquipmentEffectCondition {
+		public int                      minSight;
+		public int                      maxSight;
+	}
+
+	public static class EquipmentEffect {
+		public EquipmentEffectCondition condition;
+		public EquipmentEffectAbsorb    absorb;
+		public EquipmentEffectResist    resist;
+		public EquipmentEffectBuff      buff;
+	}
 
 	public static class ItemInfoEffects {
 		public int						food;
@@ -76,6 +116,7 @@ public class ItemInfo {
 	}
 
 	public String 						name;
+	public String 						desc;
 	public String 						inherits;
 	public String 						label;
 	public String 						category;
@@ -92,7 +133,9 @@ public class ItemInfo {
 	public int 							light;
 	public int 							cost;
 	public List<ItemInfoAction> 		actions;
+	public ItemEquipmentInfo 			equipment;
 	public ItemInfoEffects 				effects;
+	public boolean 						isEquipment;
 	public boolean 						isStructure;
 	public boolean 						isResource;
 	public boolean 						isConsumable;

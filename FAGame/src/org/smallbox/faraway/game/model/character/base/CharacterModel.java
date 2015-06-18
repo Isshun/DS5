@@ -9,6 +9,7 @@ import org.smallbox.faraway.game.manager.CharacterManager;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.*;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
+import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.JobModel;
 import org.smallbox.faraway.game.model.job.JobMove;
@@ -95,7 +96,7 @@ public abstract class CharacterModel extends Movable {
     protected ConsumableModel 			_inventory;
     protected OnMoveListener 			_moveListener;
     protected List<CharacterBuffModel> 	_buffs;
-    protected List<EquipmentModel> 		_equipments;
+    protected List<ItemInfo> 			_equipments;
     protected double 					_bodyHeat = Constant.BODY_TEMPERATURE;
     protected CharacterStats            _stats;
     protected boolean 					_isFaint;
@@ -180,7 +181,7 @@ public abstract class CharacterModel extends Movable {
     public TalentEntry              getTalent(TalentType type) { return _talentsMap.get(type); }
     public double                   getBodyHeat() { return _bodyHeat; }
     public CharacterStats           getStats() { return _stats; }
-    public List<EquipmentModel>     getEquipments() { return _equipments; }
+    public List<ItemInfo>     		getEquipments() { return _equipments; }
     public ParcelModel 				getParcel() { return Game.getWorldManager().getParcel(_posX, _posY); }
     public ConsumableModel          getInventory() { return _inventory; }
     public abstract String[][]      getEquipmentViewIds();
@@ -264,9 +265,9 @@ public abstract class CharacterModel extends Movable {
         }
     }
 
-    public EquipmentModel getEquipment(String location) {
-        for (EquipmentModel equipment: _equipments) {
-            if (equipment.location.equals(location)) {
+    public ItemInfo getEquipment(String location) {
+        for (ItemInfo equipment: _equipments) {
+            if (equipment.equipment.location.equals(location)) {
                 return equipment;
             }
         }

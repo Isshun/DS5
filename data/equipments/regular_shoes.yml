@@ -1,9 +1,0 @@
-label: Regular shoes
-location: feet
-effects:
-    -   absorb:
-            cold: 5
-        resist:
-            cold: 5
-        buff:
-            speed: 5

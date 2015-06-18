@@ -15,8 +15,14 @@ import java.util.List;
 /**
  * Created by Alex on 02/06/2015.
  */
-public class PlanetLoader {
-    public static void load(GameData data) {
+public class PlanetLoader implements IDataLoader {
+    @Override
+    public void reloadIfNeeded(GameData data) {
+
+    }
+
+    @Override
+    public void load(GameData data) {
         try {
             List<PlanetInfo> planets = new ArrayList<>();
 

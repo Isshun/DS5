@@ -91,16 +91,6 @@ public class Application implements GameEventListener {
         _mainMenu.open();
     }
 
-    public GameData loadResources() {
-        GameData data = new GameData();
-
-        ItemLoader.load(data);
-        PlanetLoader.load(data);
-        CategoryLoader.load(data);
-
-        return data;
-    }
-
 	public static int getUpdateInterval() {
 		return _updateInterval;
 	}

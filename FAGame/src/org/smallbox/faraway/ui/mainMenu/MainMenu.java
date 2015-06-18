@@ -82,9 +82,15 @@ public class MainMenu {
             panel.refresh(update);
         }
 
+        // Refresh UI if needed by GameData (strings)
+        if (GameData.getData().needUIRefresh) {
+            GameData.getData().needUIRefresh = false;
+            reload();
+        }
+
+        // Refresh UI if needed by UI files
         long lastResModified = Utils.getLastUIModified();
         if (update % 8 == 0 && lastResModified > _lastModified) {
-            GameData.getData().loadStrings(GameData.config.lang);
             _lastModified = lastResModified;
             reload();
         }

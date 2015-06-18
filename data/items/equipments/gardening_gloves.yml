@@ -1,0 +1,6 @@
+label: Gardening_gloves
+equipment:
+    location: hand
+    effects:
+        -   buff:
+                grow: 10

@@ -2,6 +2,7 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.*;
+import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.StringUtils;
 import org.smallbox.faraway.game.Game;
@@ -373,9 +374,9 @@ public class PanelCharacter extends BaseRightPanel {
             Map<String, Integer> totalResist = new HashMap<>();
             Map<String, Integer> totalAbsorb = new HashMap<>();
             Map<String, Integer> totalBuff = new HashMap<>();
-            for (EquipmentModel equipment : _character.getEquipments()) {
-                if (equipment.effects != null) {
-                    for (EquipmentModel.EquipmentEffect effect : equipment.effects) {
+            for (ItemInfo equipment : _character.getEquipments()) {
+                if (equipment.equipment.effects != null) {
+                    for (ItemInfo.EquipmentEffect effect: equipment.equipment.effects) {
                         // Check resist
                         if (effect.resist != null) {
                             checkAndAddEquipmentEffect(totalResist, "cold", effect.resist.cold);
@@ -535,7 +536,7 @@ public class PanelCharacter extends BaseRightPanel {
 //        }
     }
 
-    private void selectEquipment(View view, EquipmentModel equipment) {
+    private void selectEquipment(View view, ItemInfo info) {
         for (String[] equipmentViewId: _character.getEquipmentViewIds()) {
             findById(equipmentViewId[0]).setBackgroundColor(COLOR_BUTTON_INACTIVE);
         }
@@ -545,11 +546,11 @@ public class PanelCharacter extends BaseRightPanel {
         findById("frame_equipment_detail").setPosition(view.getPosX(), view.getPosY() + 280);
         findById("frame_equipment_detail").setVisible(false);
 
-        if (equipment != null) {
+        if (info != null) {
             findById("frame_equipment_detail").setVisible(true);
 
-            if (equipment.effects != null) {
-                for (EquipmentModel.EquipmentEffect effect: equipment.effects) {
+            if (info.effects != null) {
+                for (ItemInfo.EquipmentEffect effect: info.equipment.effects) {
                     // Check resist
                     if (effect.resist != null) {
                         Map<String, Integer> totalStats = new HashMap<>();
@@ -605,7 +606,7 @@ public class PanelCharacter extends BaseRightPanel {
     }
 
     private void setEquipment(TextView view, String location) {
-        EquipmentModel equipment = _character.getEquipment(location);
+        ItemInfo equipment = _character.getEquipment(location);
         if (equipment != null) {
             view.setString(equipment.label);
         } else {

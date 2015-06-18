@@ -8,23 +8,20 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CategoryLoader {
+public class CategoryLoader implements IDataLoader {
 	private HashMap<String, CategoryInfo> 	_categories;
 	private ArrayList<Character> 			_usedShortcut;
 
-	public static void load(GameData data) {
-		(new CategoryLoader()).init(data);
+	@Override
+	public void reloadIfNeeded(GameData data) {
 	}
 
-	// TODO
-	private CategoryLoader() {
-		_categories = new HashMap<String, CategoryInfo>();
-		_usedShortcut = new ArrayList<Character>();
-	}
-	
-	private void init(GameData data) {
+	@Override
+	public void load(GameData data) {
+		data.categories =  new ArrayList<>();
+
 		getOrCreateCategory(data, "structure");
-		
+
 		for (ItemInfo itemInfo: data.items) {
 			String categoryName = "default";
 			if (itemInfo.isStructure) {
@@ -40,6 +37,12 @@ public class CategoryLoader {
 		Log.debug("category loaded: " + _categories.size());
 	}
 
+	// TODO
+	public CategoryLoader() {
+		_categories = new HashMap<>();
+		_usedShortcut = new ArrayList<>();
+	}
+	
 	private CategoryInfo getOrCreateCategory(GameData data, String categoryName) {
 		if (_categories.containsKey(categoryName)) {
 			return _categories.get(categoryName);

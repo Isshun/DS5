@@ -7,29 +7,30 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
+import java.util.ArrayList;
 
-public class ItemLoader {
+public class ItemLoader implements IDataLoader {
 
-    private static boolean _hasErrors;
+    private boolean _hasErrors;
 
-    public static void load(GameData data, String path, String packageName) {
-	    Log.debug("load items...");
+    public void load(GameData data, String path, String packageName) {
+        Log.debug("load items...");
         loadDirectory(data, path, packageName, new File(path));
         Log.debug("load items: done");
-	}
+    }
 
-    private static void loadDirectory(GameData data, String path, String packageName, File directory) {
+    private void loadDirectory(GameData data, String path, String packageName, File directory) {
         for (File file: directory.listFiles()) {
             if (file.isDirectory()) {
                 loadDirectory(data, path, packageName, file);
             }
             if (file.getName().endsWith(".yml")) {
-                loadFile(data, path, packageName, file);
+                loadFile(data, packageName, file);
             }
         }
     }
 
-    private static void loadFile(GameData data, String path, String packageName, File itemFile) {
+    private void loadFile(GameData data, String packageName, File itemFile) {
         ItemInfo info = null;
 
         try {
@@ -38,8 +39,6 @@ public class ItemLoader {
             Yaml yaml = new Yaml(new Constructor(ItemInfo.class));
             info = (ItemInfo)yaml.load(input);
             input.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,74 +57,46 @@ public class ItemLoader {
                 info.isUserItem = true;
             } else if ("resource".equals(info.type)) {
                 info.isResource = true;
+            } else if ("equipment".equals(info.type) || info.equipment != null) {
+                info.isEquipment = true;
+                info.isConsumable = true;
             } else {
-                throw new RuntimeException("unknow item type: " + info.type);
+                throw new RuntimeException("unknown item type: " + info.type);
             }
 
-//			    info.isStorage = info.storage > 0 || info.actions != null && info.actions.storage > 0;
-//			    info.isFood = info.actions != null && info.actions.effects != null && info.actions.effects.food > 0;
             data.items.add(info);
         }
     }
 
-    public static void load(final GameData data) {
+    @Override
+    public void reloadIfNeeded(GameData data) {
+    }
+
+    @Override
+    public void load(final GameData data) {
         _hasErrors = false;
 
-		// First pass
-		ItemLoader.load(data, "data/items/", "base");
-		ItemLoader.load(data, "data/mods/garden/items/", "garden");
+        data.items = new ArrayList<>();
+        data.gatherItems = new ArrayList<>();
+
+        // First pass
+        load(data, "data/items/", "base");
+        load(data, "data/mods/garden/items/", "garden");
 
         secondPass(data);
-
         thirdPass(data);
 
         if (_hasErrors) {
             throw new RuntimeException("Errors loading items");
         }
-
-
-//			// Init action item
-//			if (item.actions != null) {
-//				item.actions.duration *= Constant.DURATION_MULTIPLIER;
-//				if (item.actions.products != null) {
-//					// Items products
-//					item.actions.itemsProduce = new ArrayList<>();
-//					for (String itemProduceName: item.actions.products) {
-//						item.actions.itemsProduce.add(data.getItemInfo(itemProduceName));
-//					}
-//
-//					// Item accepted for craft
-//					item.actions.itemAccept = new ArrayList<>();
-//					for (ItemInfo itemProduce: item.actions.itemsProduce) {
-//						item.actions.itemAccept.addAll(itemProduce.craftedFromItems);
-//					}
-//					item.isFactory = item.actions.itemAccept.size() > 0;
-//				}
-//			}
-		}
-
-    private static void thirdPass(GameData data) {
-        for (ItemInfo item: data.items) {
-            if (!item.isUserItem && !item.isStructure && item.cost > 0) {
-                error(item, "Only UserItem and StructureItem can have cost attribute");
-            }
-            if (item.receipts != null) {
-                for (ItemInfo.ItemInfoReceipt receipt: item.receipts) {
-                    if (receipt.products != null && receipt.products.size() > 1) {
-                        throw new RuntimeException("Receipt cannot produce multiple items");
-                    }
-                }
-            }
-        }
     }
 
-    private static void error(ItemInfo item, String message) {
-//        throw new RuntimeException(message + " (" + item.name + ")");
+    private void error(ItemInfo item, String message) {
         _hasErrors = true;
         Log.error(message + " (" + item.name + ")");
     }
 
-    private static void secondPass(GameData data) {
+    private void secondPass(GameData data) {
         for (ItemInfo item: data.items) {
             item.isSleeping = "base.bed".equals(item.name);
 
@@ -198,6 +169,20 @@ public class ItemLoader {
                 }
             }
         }
-}
+    }
 
+    private void thirdPass(GameData data) {
+        for (ItemInfo item: data.items) {
+            if (!item.isUserItem && !item.isStructure && item.cost > 0) {
+                error(item, "Only UserItem and StructureItem can have cost attribute");
+            }
+            if (item.receipts != null) {
+                for (ItemInfo.ItemInfoReceipt receipt: item.receipts) {
+                    if (receipt.products != null && receipt.products.size() > 1) {
+                        throw new RuntimeException("Receipt cannot produce multiple items");
+                    }
+                }
+            }
+        }
+    }
 }

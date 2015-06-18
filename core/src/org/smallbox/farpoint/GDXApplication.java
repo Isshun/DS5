@@ -58,7 +58,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         // Load resources
         _application.getLoadListener().onUpdate("Init resources");
-        GameData data = _application.loadResources();
+        GameData data = new GameData();
 
         // Create app
         GDXLightRenderer lightRenderer = new GDXLightRenderer();

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.model.character.base;
 
-import org.smallbox.faraway.game.model.EquipmentModel;
+import org.smallbox.faraway.game.model.item.ItemInfo;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class CharacterStats {
     public CharacterStatsResist resist = new CharacterStatsResist();
     public CharacterStatsBuff buff = new CharacterStatsBuff();
 
-    public void reset(CharacterModel character, List<EquipmentModel> equipments) {
+    public void reset(CharacterModel character, List<ItemInfo> equipments) {
         this.absorb.cold = 0;
         this.resist.cold = 0;
         this.resist.oxygen = 0;
@@ -33,9 +33,9 @@ public class CharacterStats {
 
         character.addBodyStats(this);
 
-        for (EquipmentModel equipment: equipments) {
+        for (ItemInfo equipment: equipments) {
             if (equipment.effects != null) {
-                for (EquipmentModel.EquipmentEffect effect: equipment.effects) {
+                for (ItemInfo.EquipmentEffect effect: equipment.equipment.effects) {
                     // Check absorb
                     if (effect.absorb != null) {
                         this.absorb.cold += effect.absorb.cold;
