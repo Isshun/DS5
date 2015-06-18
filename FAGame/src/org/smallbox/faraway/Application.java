@@ -1,45 +1,42 @@
 package org.smallbox.faraway;
 
-import org.smallbox.faraway.data.loader.CategoryLoader;
-import org.smallbox.faraway.data.loader.ItemLoader;
+import org.smallbox.faraway.data.serializer.LoadListener;
 import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.data.serializer.LoadListener;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.ui.engine.Colors;
-import org.smallbox.faraway.ui.engine.TextView;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.data.loader.PlanetLoader;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.MenuLoad;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.Colors;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.mainMenu.MainMenu;
 import org.smallbox.faraway.ui.panel.LayoutFactory;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
 
 import java.io.IOException;
 
 public class Application implements GameEventListener {
-	public static final int 		DRAW_INTERVAL = (1000/60);
+    public static final int 		DRAW_INTERVAL = (1000/60);
     public static final int 		UPDATE_INTERVAL = 50;
     public static final int		    REFRESH_INTERVAL = 200;
     public static final int 		LONG_UPDATE_INTERVAL = 1000;
 
-	private static Game             _game;
-	private static MenuBase			_menu;
-	private static int 				_updateInterval = UPDATE_INTERVAL;
+    private static Game             _game;
+    private static MenuBase			_menu;
+    private static int 				_updateInterval = UPDATE_INTERVAL;
     private static int 				_longUpdateInterval = LONG_UPDATE_INTERVAL;
-	private static MainRenderer     _gameRenderer;
-	private static LightRenderer    _lightRenderer;
+    private static MainRenderer     _gameRenderer;
+    private static LightRenderer    _lightRenderer;
     private static ParticleRenderer _particleRenderer;
-	private static UserInterface    _gameInterface;
-	private static LoadListener 	_loadListener;
-	private static boolean			_isFullscreen;
+    private static UserInterface    _gameInterface;
+    private static LoadListener 	_loadListener;
+    private static boolean			_isFullscreen;
     private static GFXRenderer      _renderer;
     private static GameData         _data;
     private static Application      _self;
@@ -79,33 +76,33 @@ public class Application implements GameEventListener {
         };
     }
 
-	public void create(GFXRenderer renderer, LightRenderer lightRenderer, ParticleRenderer particleRenderer, GameData data, GameConfig config) {
+    public void create(GFXRenderer renderer, LightRenderer lightRenderer, ParticleRenderer particleRenderer, GameData data, GameConfig config) {
         _data = data;
-		_renderer = renderer;
-		_isFullscreen = true;
-		_gameRenderer = new MainRenderer(renderer, config);
+        _renderer = renderer;
+        _isFullscreen = true;
+        _gameRenderer = new MainRenderer(renderer, config);
         _lightRenderer = lightRenderer;
         _particleRenderer = particleRenderer;
-		_gameInterface = new UserInterface(new LayoutFactory(), ViewFactory.getInstance());
+        _gameInterface = new UserInterface(new LayoutFactory(), ViewFactory.getInstance());
         _mainMenu = new MainMenu(new LayoutFactory(), ViewFactory.getInstance(), renderer);
         _mainMenu.open();
     }
 
-	public static int getUpdateInterval() {
-		return _updateInterval;
-	}
+    public static int getUpdateInterval() {
+        return _updateInterval;
+    }
 
-	public static int getLongUpdateInterval() {
-		return _longUpdateInterval;
-	}
+    public static int getLongUpdateInterval() {
+        return _longUpdateInterval;
+    }
 
-	public static void setUpdateInterval(int updateInterval) {
-		_updateInterval = updateInterval;
-	}
+    public static void setUpdateInterval(int updateInterval) {
+        _updateInterval = updateInterval;
+    }
 
     @Override
     public void onKeyEvent(GameTimer timer, Action action, Key key, Modifier modifier) {
-        // Events for menu
+// Events for menu
         if (_game != null && _game.isRunning() == false) {
             if (_menu != null && _menu.isVisible()) {
                 if (_menu.checkKey(key)) {
@@ -136,17 +133,17 @@ public class Application implements GameEventListener {
                 _game.setSpeed(3);
                 break;
 
-            // Reload UI
+// Reload UI
             case F5:
                 _gameInterface.reload();
                 return;
 
-            // Kill
+// Kill
             case F4:
                 _renderer.close();
                 return;
 
-            // Save
+// Save
             case S:
                 if (modifier == Modifier.CONTROL) {
                     _loadListener.onUpdate("saving");
@@ -156,12 +153,12 @@ public class Application implements GameEventListener {
                 }
                 break;
 
-            // Load
+// Load
             case L:
                 if (modifier == Modifier.CONTROL) {
                     try {
                         _menu = new MenuLoad(path -> {
-                            // TODO NULL
+// TODO NULL
                             _game = new Game(null, null, null, _particleRenderer, _lightRenderer);
                             _game.load(_loadListener);
                         });
@@ -172,7 +169,7 @@ public class Application implements GameEventListener {
                 }
                 break;
 
-            // Fullscreen
+// Fullscreen
             case ENTER:
                 if (modifier == Modifier.ALT) {
                     _isFullscreen = !_isFullscreen;
@@ -208,7 +205,7 @@ public class Application implements GameEventListener {
     }
 
     public void newGame(String fileName) {
-        _game = new Game(_data, _data.config, fileName, _particleRenderer, _lightRenderer);
+        _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer);
         _game.init(false);
         _game.newGame(_loadListener);
         PathHelper.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
@@ -219,7 +216,7 @@ public class Application implements GameEventListener {
     public void loadGame(String fileName) {
         _mainMenu.close();
 
-        _game = new Game(_data, _data.config, fileName, _particleRenderer, _lightRenderer);
+        _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer);
         _game.init(true);
         _loadListener.onUpdate("Load save");
         _game.load(_loadListener);
@@ -268,19 +265,19 @@ public class Application implements GameEventListener {
 
             if (_game.isRunning()) {
 
-                // Refresh
+// Refresh
                 if (_elapsed >= _nextRefresh) {
                     refreshGame(_refresh++);
                     _nextRefresh += Application.REFRESH_INTERVAL;
                 }
 
-                // Update
+// Update
                 if (_elapsed >= _nextUpdate) {
                     update(_tick++);
                     _nextUpdate += Application.getUpdateInterval();
                 }
 
-                // Long _tick
+// Long _tick
                 if (_elapsed >= _nextLongUpdate) {
                     longUpdate(_frame);
                     _nextLongUpdate += Application.getLongUpdateInterval();
