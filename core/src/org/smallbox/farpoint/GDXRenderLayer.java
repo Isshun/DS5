@@ -1,12 +1,12 @@
 package org.smallbox.farpoint;
 
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.SpriteModel;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.engine.renderer.RenderLayer;
-import org.smallbox.faraway.engine.ui.TextView;
+import org.smallbox.faraway.ui.engine.TextView;
 
 /**
  * Created by Alex on 04/06/2015.

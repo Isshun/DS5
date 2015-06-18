@@ -1,8 +1,8 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.model.item.ParcelModel;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.ui.UserInterface;
 
 /**

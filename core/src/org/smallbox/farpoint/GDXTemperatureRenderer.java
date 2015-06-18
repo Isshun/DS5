@@ -2,19 +2,19 @@ package org.smallbox.farpoint;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.renderer.TemperatureRenderer;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.manager.RoomManager;
-import org.smallbox.faraway.model.item.ParcelModel;
-import org.smallbox.faraway.model.room.RoomModel;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.renderer.IRenderer;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.game.manager.RoomManager;
+import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.room.RoomModel;
 
 /**
  * Created by Alex on 14/06/2015.
  */
-public class GDXTemperatureRenderer extends TemperatureRenderer {
+public class GDXTemperatureRenderer implements IRenderer {
     @Override
     public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
         RoomManager roomManager = Game.getRoomManager();

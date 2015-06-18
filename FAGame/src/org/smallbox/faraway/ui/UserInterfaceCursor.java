@@ -1,20 +1,20 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.Viewport;
-import org.smallbox.faraway.engine.ui.ColorView;
-import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.manager.ServiceManager;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.Viewport;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.ui.engine.ColorView;
+import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 
 public class UserInterfaceCursor {
 
 	void	draw(GFXRenderer renderer, Viewport viewport, int startX, int startY, int toX, int toY) {
 		startX = Math.max(startX, 0);
 		startY = Math.max(startY, 0);
-		toX = Math.min(toX, ServiceManager.getWorldMap().getWidth());
-		toY = Math.min(toY, ServiceManager.getWorldMap().getHeight());
+		toX = Math.min(toX, Game.getWorldManager().getWidth());
+		toY = Math.min(toY, Game.getWorldManager().getHeight());
 
 		int border = 3;
 
@@ -53,7 +53,7 @@ public class UserInterfaceCursor {
 //					rectangle2.draw(renderer, effect);
 				}
 				
-				if (ServiceManager.getWorldMap().getResource(x, y) != null) {
+				if (Game.getWorldManager().getResource(x, y) != null) {
 					viewItem.setPosition(x * 32, y * 32);
 					viewItem.draw(renderer, viewport.getPosX(), viewport.getPosY());
 				}

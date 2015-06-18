@@ -1,15 +1,15 @@
 package org.smallbox.faraway.engine.renderer;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.engine.ui.ColorView;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.Movable.Direction;
-import org.smallbox.faraway.model.character.base.CharacterModel;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteModel;
+import org.smallbox.faraway.ui.engine.ColorView;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.engine.SpriteManager;
+import org.smallbox.faraway.game.model.Movable.Direction;
+import org.smallbox.faraway.game.model.character.base.CharacterModel;
 
 import java.util.List;
 

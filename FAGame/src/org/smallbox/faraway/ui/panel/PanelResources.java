@@ -1,11 +1,11 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.model.item.ConsumableModel;
-import org.smallbox.faraway.model.item.ItemInfo;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.game.model.item.ConsumableModel;
+import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.HashMap;

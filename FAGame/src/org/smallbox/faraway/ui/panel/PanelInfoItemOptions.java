@@ -1,8 +1,8 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.engine.ui.OnClickListener;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.ViewFactory;
+import org.smallbox.faraway.ui.engine.OnClickListener;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 
 import java.util.ArrayList;
 import java.util.List;

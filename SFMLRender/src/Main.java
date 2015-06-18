@@ -2,14 +2,14 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 import org.smallbox.faraway.Application;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.manager.PathManager;
-import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.GameData;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.PathHelper;
+import org.smallbox.faraway.engine.SpriteManager;
+import org.smallbox.faraway.game.model.GameData;
 
 import java.io.IOException;
 
@@ -51,7 +51,7 @@ public class Main {
         //		window.setFramerateLimit(30);
 
         renderer.close();
-        PathManager.getInstance().close();
+        PathHelper.getInstance().close();
     }
 
     private static void loop(RenderWindow window, Application application, final GFXRenderer renderer) throws IOException, InterruptedException {

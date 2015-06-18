@@ -8,7 +8,6 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 
 dependencies {
 //    compile project(":SFMLRender")
-    compile project(":FACore")
     compile project(":GeoGen")
     compile project(":PathFinding")
     compile 'com.thoughtworks.xstream:xstream:1.4.8'

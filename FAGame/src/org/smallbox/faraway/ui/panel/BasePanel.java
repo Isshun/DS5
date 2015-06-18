@@ -1,12 +1,11 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.*;
-import org.smallbox.faraway.engine.ui.ColorView;
-import org.smallbox.faraway.engine.ui.FrameLayout;
-import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.engine.*;
+import org.smallbox.faraway.ui.engine.ColorView;
+import org.smallbox.faraway.ui.engine.FrameLayout;
+import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;

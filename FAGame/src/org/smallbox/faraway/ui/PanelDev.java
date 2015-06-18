@@ -1,14 +1,14 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.engine.ui.FrameLayout;
-import org.smallbox.faraway.engine.ui.OnClickListener;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.model.character.AndroidModel;
-import org.smallbox.faraway.model.character.DroidModel;
-import org.smallbox.faraway.model.character.HumanModel;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.ui.engine.FrameLayout;
+import org.smallbox.faraway.ui.engine.OnClickListener;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.game.model.character.AndroidModel;
+import org.smallbox.faraway.game.model.character.DroidModel;
+import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.ui.panel.BasePanel;
 
 /**

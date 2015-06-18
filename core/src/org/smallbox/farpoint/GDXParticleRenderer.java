@@ -1,12 +1,9 @@
 package org.smallbox.farpoint;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.ParticleRenderer;
-import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.WeatherModel;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.renderer.ParticleRenderer;
 
 /**
  * Created by Alex on 05/06/2015.

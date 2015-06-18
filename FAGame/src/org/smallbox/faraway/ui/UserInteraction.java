@@ -1,16 +1,16 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.manager.JobManager;
-import org.smallbox.faraway.manager.ServiceManager;
-import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.ResourceModel;
-import org.smallbox.faraway.model.item.StructureModel;
-import org.smallbox.faraway.model.job.JobDump;
-import org.smallbox.faraway.model.job.JobModel;
-import org.smallbox.faraway.model.room.RoomModel.RoomType;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.game.manager.JobManager;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.model.item.ResourceModel;
+import org.smallbox.faraway.game.model.item.StructureModel;
+import org.smallbox.faraway.game.model.job.JobDump;
+import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.room.RoomModel.RoomType;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.PanelPlan.Planning;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -55,7 +55,7 @@ public class UserInteraction {
 			for (int y = toY; y >= startY; y--) {
 
 				// Check if resource is present on area
-				ResourceModel res = ServiceManager.getWorldMap().getResource(x, y);
+				ResourceModel res = Game.getWorldManager().getResource(x, y);
 				if (res != null) {
 					if (res.canBeMined()) {
 						JobManager.getInstance().addMineJob(x, y);
@@ -70,24 +70,24 @@ public class UserInteraction {
 					if (x == startX || x == toX || y == startY || y == toY) {
 						Log.warning("1");
 						// TODO
-						StructureModel structure = ServiceManager.getWorldMap().getStructure(x, y);
+						StructureModel structure = Game.getWorldManager().getStructure(x, y);
 						if (structure == null || structure.getName().equals("base.door") == false) {
 							JobManager.getInstance().build(GameData.getData().getItemInfo("base.wall"), x, y);
 						}
-						// item = ServiceManager.getWorldMap().putObject(x, y, BaseItem.STRUCTURE_WALL);
+						// item = Game.getWorldManager().putObject(x, y, BaseItem.STRUCTURE_WALL);
 					} else {
 						Log.warning("2");
 						// TODO
 						JobManager.getInstance().build(GameData.getData().getItemInfo("base.floor"), x, y);
-						// item = ServiceManager.getWorldMap().putObject(x, y, BaseItem.STRUCTURE_FLOOR);
+						// item = Game.getWorldManager().putObject(x, y, BaseItem.STRUCTURE_FLOOR);
 					}
 				} else {
-					// item = ServiceManager.getWorldMap().putObject(x, y, _menu.getBuildItemType());
+					// item = Game.getWorldManager().putObject(x, y, _menu.getBuildItemType());
 					if (_selectedItemInfo != null) {
 						Log.warning("3 " + _selectedItemInfo.name);
 						// TODO
 						JobManager.getInstance().build(_selectedItemInfo, x, y);
-						// item = ServiceManager.getWorldMap().putObject(x, y, type);
+						// item = Game.getWorldManager().putObject(x, y, type);
 					}
 				}
 
@@ -100,7 +100,7 @@ public class UserInteraction {
 	public void removeItem(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				ServiceManager.getWorldMap().takeItem(x, y);
+				Game.getWorldManager().takeItem(x, y);
 			}
 		}
 	}
@@ -108,7 +108,7 @@ public class UserInteraction {
 	public void removeStructure(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				ServiceManager.getWorldMap().removeStructure(x, y);
+				Game.getWorldManager().removeStructure(x, y);
 			}
 		}
 	}
@@ -153,11 +153,11 @@ public class UserInteraction {
 	public void planDump(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				if (ServiceManager.getWorldMap().getItem(x, y) != null) {
-					JobManager.getInstance().addJob(JobDump.create(ServiceManager.getWorldMap().getItem(x, y)));
+				if (Game.getWorldManager().getItem(x, y) != null) {
+					JobManager.getInstance().addJob(JobDump.create(Game.getWorldManager().getItem(x, y)));
 				}
-				if (ServiceManager.getWorldMap().getStructure(x, y) != null) {
-					JobManager.getInstance().addJob(JobDump.create(ServiceManager.getWorldMap().getStructure(x, y)));
+				if (Game.getWorldManager().getStructure(x, y) != null) {
+					JobManager.getInstance().addJob(JobDump.create(Game.getWorldManager().getStructure(x, y)));
 				}
 			}
 		}

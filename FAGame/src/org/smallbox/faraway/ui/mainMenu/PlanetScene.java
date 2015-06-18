@@ -1,13 +1,13 @@
 package org.smallbox.faraway.ui.mainMenu;
 
 import org.smallbox.faraway.Application;
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.engine.ui.*;
-import org.smallbox.faraway.engine.util.StringUtils;
-import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.PlanetInfo;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.util.StringUtils;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.ui.LayoutModel;
+import org.smallbox.faraway.ui.engine.*;
 
 /**
  * Created by Alex on 02/06/2015.
@@ -37,7 +37,7 @@ public class PlanetScene extends MainMenuScene {
         framePlanetList.removeAllViews();
 
         int index = 0;
-        for (PlanetInfo planet: Application.getData().planets) {
+        for (PlanetInfo planet: GameData.getData().planets) {
             addPlanetListView(framePlanetList, planet, index++);
         }
 
@@ -47,7 +47,7 @@ public class PlanetScene extends MainMenuScene {
             }
         });
 
-        select(Application.getData().planets.get(0));
+        select(GameData.getData().planets.get(0));
     }
 
     private void addPlanetListView(FrameLayout framePlanetList, PlanetInfo planet, int index) {

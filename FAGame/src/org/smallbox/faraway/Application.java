@@ -1,18 +1,21 @@
 package org.smallbox.faraway;
 
-import org.smallbox.faraway.engine.dataLoader.CategoryLoader;
-import org.smallbox.faraway.engine.dataLoader.ItemLoader;
+import org.smallbox.faraway.data.loader.CategoryLoader;
+import org.smallbox.faraway.data.loader.ItemLoader;
+import org.smallbox.faraway.engine.*;
+import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.engine.serializer.LoadListener;
-import org.smallbox.faraway.engine.ui.Colors;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.loader.PlanetLoader;
-import org.smallbox.faraway.manager.PathManager;
-import org.smallbox.faraway.model.GameConfig;
-import org.smallbox.faraway.model.GameData;
+import org.smallbox.faraway.data.serializer.LoadListener;
+import org.smallbox.faraway.engine.renderer.ParticleRenderer;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.ui.engine.Colors;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.data.loader.PlanetLoader;
+import org.smallbox.faraway.game.model.GameConfig;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.MenuLoad;
 import org.smallbox.faraway.ui.UserInterface;
@@ -27,7 +30,7 @@ public class Application implements GameEventListener {
     public static final int		    REFRESH_INTERVAL = 200;
     public static final int 		LONG_UPDATE_INTERVAL = 1000;
 
-	private static Game				_game;
+	private static Game             _game;
 	private static MenuBase			_menu;
 	private static int 				_updateInterval = UPDATE_INTERVAL;
     private static int 				_longUpdateInterval = LONG_UPDATE_INTERVAL;
@@ -44,15 +47,15 @@ public class Application implements GameEventListener {
     private static long             _lastUpdateDelay;
     private static long             _lastLongUpdateDelay;
 
-    private static int      _frame;
-    private int             _tick;
-    private int             _nextUpdate;
-    private int             _nextRefresh;
-    private int             _nextLongUpdate;
-    private int             _renderTime;
-    private int             _refresh;
-    private long            _startTime = -1;
-    private long            _elapsed = 0;
+    private static int              _frame;
+    private int                     _tick;
+    private int                     _nextUpdate;
+    private int                     _nextRefresh;
+    private int                     _nextLongUpdate;
+    private int                     _renderTime;
+    private int                     _refresh;
+    private long                    _startTime = -1;
+    private long                    _elapsed = 0;
 
     public Application(GFXRenderer renderer) {
         _self = this;
@@ -216,9 +219,9 @@ public class Application implements GameEventListener {
 
     public void newGame(String fileName) {
         _game = new Game(_data, _data.config, fileName, _particleRenderer, _lightRenderer);
+        _game.init(false);
         _game.newGame(_loadListener);
-        PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
-        _game.onCreate();
+        PathHelper.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
         _gameRenderer.init(_game);
         _gameInterface.onCreate(_game);
     }
@@ -227,11 +230,10 @@ public class Application implements GameEventListener {
         _mainMenu.close();
 
         _game = new Game(_data, _data.config, fileName, _particleRenderer, _lightRenderer);
-
+        _game.init(true);
         _loadListener.onUpdate("Load save");
         _game.load(_loadListener);
-        PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
-        _game.onCreate();
+        PathHelper.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
 
         _loadListener.onUpdate("Start game");
         _gameRenderer.init(_game);
@@ -332,24 +334,8 @@ public class Application implements GameEventListener {
         GameData.getData().reloadConfig();
     }
 
-    public static int getWindowWidth() {
-        return _renderer.getWidth();
-    }
-
-    public static int getWindowHeight() {
-        return _renderer.getHeight();
-    }
-
-    public static GameData getData() {
-        return _data;
-    }
-
     public static Application getInstance() {
         return _self;
-    }
-
-    public Game getGame() {
-        return _game;
     }
 
     public static long getLastUpdateDelay() {

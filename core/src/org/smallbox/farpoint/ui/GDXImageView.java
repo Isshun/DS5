@@ -2,10 +2,10 @@ package org.smallbox.farpoint.ui;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.ui.ImageView;
-import org.smallbox.faraway.engine.ui.View;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.ui.engine.ImageView;
+import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.farpoint.GDXRenderer;
 import org.smallbox.farpoint.GDXSpriteModel;
 

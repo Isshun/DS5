@@ -3,13 +3,13 @@
 //import org.jsfml.graphics.Image;
 //import org.jsfml.graphics.Texture;
 //import org.jsfml.graphics.TextureCreationException;
-//import org.smallbox.faraway.Color;
-//import org.smallbox.faraway.Game;
-//import org.smallbox.faraway.GameEventListener;
+//import org.smallbox.faraway.engine.Color;
+//import org.smallbox.faraway.game.Game;
+//import org.smallbox.faraway.engine.GameEventListener;
 //import org.smallbox.faraway.StatsData;
-//import org.smallbox.faraway.engine.ui.ImageView;
-//import org.smallbox.faraway.engine.ui.TextView;
-//import org.smallbox.faraway.manager.StatsManager;
+//import org.smallbox.faraway.ui.engine.ImageView;
+//import org.smallbox.faraway.ui.engine.TextView;
+//import org.smallbox.faraway.game.manager.StatsManager;
 //import org.smallbox.faraway.ui.UserInterface.Mode;
 //
 //public class PanelStats extends BaseRightPanel {

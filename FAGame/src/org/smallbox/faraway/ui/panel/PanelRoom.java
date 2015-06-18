@@ -1,18 +1,18 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.GameEventListener;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.Strings;
-import org.smallbox.faraway.engine.ui.*;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.character.base.CharacterModel;
-import org.smallbox.faraway.model.room.RoomModel;
-import org.smallbox.faraway.model.room.RoomModel.RoomType;
-import org.smallbox.faraway.model.room.RoomOptions;
-import org.smallbox.faraway.model.room.RoomOptions.RoomOption;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.engine.SpriteManager;
+import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.room.RoomModel;
+import org.smallbox.faraway.game.model.room.RoomModel.RoomType;
+import org.smallbox.faraway.game.model.room.RoomOptions;
+import org.smallbox.faraway.game.model.room.RoomOptions.RoomOption;
 import org.smallbox.faraway.ui.UserInteraction.Action;
 import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.ui.engine.*;
 
 import java.util.*;
 
@@ -54,7 +54,7 @@ public class PanelRoom extends BaseRightPanel {
 	private FrameLayout 				_layoutRoom;
 	private TextView 					_lbRoomName;
 	private TextView[] 					_lbRoomOccupants;
-	private FrameLayout 				_layoutButtons;
+	private FrameLayout _layoutButtons;
 	private TextView[] 					_lbRoomOccupantsOld;
 	private List<View> 					_buttons;
 	private FrameLayout 				_layoutRoomOption;

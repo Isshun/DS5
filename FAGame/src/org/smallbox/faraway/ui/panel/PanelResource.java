@@ -1,10 +1,10 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.manager.ResourceManager;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.game.manager.ResourceManager;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 public class PanelResource extends BasePanel {

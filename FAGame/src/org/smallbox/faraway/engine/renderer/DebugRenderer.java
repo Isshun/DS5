@@ -1,7 +1,7 @@
 package org.smallbox.faraway.engine.renderer;
 
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
 
 public class DebugRenderer implements IRenderer {
 //	private RenderTexture 	_cache;
@@ -25,9 +25,9 @@ public class DebugRenderer implements IRenderer {
 //		Text text = ObjectPool.getText();
 //		text.setFont(SpriteManager.getInstance().getFont());
 //		text.setCharacterSize(10);
-//		for (int x = 0; x < ServiceManager.getWorldMap().getWidth(); x++) {
-//			for (int y = 0; y < ServiceManager.getWorldMap().getHeight(); y++) {
-//				WorldArea res = ServiceManager.getWorldMap().getParcel(x, y);
+//		for (int x = 0; x < Game.getWorldManager().getWidth(); x++) {
+//			for (int y = 0; y < Game.getWorldManager().getHeight(); y++) {
+//				WorldArea res = Game.getWorldManager().getParcel(x, y);
 //				if (res != null) {
 //					text.setString(""+(int)(res.getLightSource()));
 //					text.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
@@ -78,9 +78,9 @@ public class DebugRenderer implements IRenderer {
 //		
 //		for (int i = toX-1; i >= fromX; i--) {
 //			for (int j = toY-1; j >= fromY; j--) {
-//				WorldArea item = ServiceManager.getWorldMap().getParcel(i, j);
-//				StructureItem structure = ServiceManager.getWorldMap().getStructure(i, j);
-//				StructureItem structureBellow = ServiceManager.getWorldMap().getStructure(i, j+1);
+//				WorldArea item = Game.getWorldManager().getParcel(i, j);
+//				StructureItem structure = Game.getWorldManager().getStructure(i, j);
+//				StructureItem structureBellow = Game.getWorldManager().getStructure(i, j+1);
 //
 //				if (structure != null && structure.isFloor() && structureBellow != null && structureBellow.isFloor() == false) {
 //					shape = halfShape;
@@ -93,7 +93,7 @@ public class DebugRenderer implements IRenderer {
 //
 //				//				//
 ////				if (item == null) {
-////					item = ServiceManager.getWorldMap().getParcel(i, j);
+////					item = Game.getWorldManager().getParcel(i, j);
 ////				}
 ////
 ////				if (item != null) {

@@ -1,16 +1,16 @@
 package org.smallbox.faraway.ui.mainMenu;
 
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.GameTimer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.ui.UIEventManager;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.manager.Utils;
-import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.LandingSiteModel;
-import org.smallbox.faraway.model.PlanetInfo;
-import org.smallbox.faraway.model.TeamModel;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.engine.GameTimer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.ui.engine.UIEventManager;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Utils;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.LandingSiteModel;
+import org.smallbox.faraway.game.model.planet.PlanetInfo;
+import org.smallbox.faraway.game.model.TeamModel;
 import org.smallbox.faraway.ui.panel.BasePanel;
 import org.smallbox.faraway.ui.panel.LayoutFactory;
 

@@ -1,12 +1,11 @@
 package org.smallbox.farpoint.ui;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.engine.util.StringUtils;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.util.StringUtils;
 import org.smallbox.farpoint.GDXRenderer;
 
 /**

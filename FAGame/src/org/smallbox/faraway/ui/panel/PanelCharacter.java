@@ -1,18 +1,19 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.*;
-import org.smallbox.faraway.engine.ui.*;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.StringUtils;
-import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.*;
-import org.smallbox.faraway.model.character.base.CharacterModel;
-import org.smallbox.faraway.model.character.base.CharacterModel.Gender;
-import org.smallbox.faraway.model.character.base.CharacterNeeds;
-import org.smallbox.faraway.model.character.base.CharacterRelation;
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.engine.*;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.StringUtils;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.*;
+import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.character.base.CharacterModel.Gender;
+import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
+import org.smallbox.faraway.game.model.character.base.CharacterRelation;
+import org.smallbox.faraway.game.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.ui.engine.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

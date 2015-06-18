@@ -1,28 +1,28 @@
 package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.*;
+import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.engine.ui.UIEventManager;
-import org.smallbox.faraway.engine.ui.UIMessage;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.manager.CharacterManager;
-import org.smallbox.faraway.manager.ServiceManager;
-import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.manager.Utils;
-import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.ToolTips.ToolTip;
-import org.smallbox.faraway.model.character.base.CharacterModel;
-import org.smallbox.faraway.model.item.*;
-import org.smallbox.faraway.model.room.RoomModel;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.ui.engine.UIEventManager;
+import org.smallbox.faraway.ui.engine.UIMessage;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.game.manager.CharacterManager;
+import org.smallbox.faraway.util.Utils;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.ToolTips.ToolTip;
+import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.panel.*;
 
 public class UserInterface implements GameEventListener {
     private static UserInterface		_self;
     private final LayoutFactory         _factory;
     private final ViewFactory           _viewFactory;
-    private Viewport                    _viewport;
+    private Viewport _viewport;
     private boolean						_keyLeftPressed;
     private boolean						_keyRightPressed;
     private int							_mouseRightPressX;
@@ -468,7 +468,7 @@ public class UserInterface implements GameEventListener {
     public void onDoubleClick(int x, int y) {
         _keyLeftPressed = false;
 
-        ParcelModel area = ServiceManager.getWorldMap().getParcel(getRelativePosX(x), getRelativePosY(y));
+        ParcelModel area = Game.getWorldManager().getParcel(getRelativePosX(x), getRelativePosY(y));
         if (area != null) {
             MapObjectModel item = area.getItem();
             MapObjectModel structure = area.getStructure();
@@ -560,7 +560,7 @@ public class UserInterface implements GameEventListener {
                 int relY = getRelativePosY(y);
 
                 AreaModel area = Game.getAreaManager().getArea(relX, relY);
-                ParcelModel parcel = ServiceManager.getWorldMap().getParcel(relX, relY);
+                ParcelModel parcel = Game.getWorldManager().getParcel(relX, relY);
 
                 // Select resource
                 if (parcel != null && parcel.getResource() != null) { select(parcel.getResource()); return true; }
@@ -568,7 +568,7 @@ public class UserInterface implements GameEventListener {
                 // Select item
                 for (int x2 = 0; x2 < Constant.ITEM_MAX_WIDTH; x2++) {
                     for (int y2 = 0; y2 < Constant.ITEM_MAX_HEIGHT; y2++) {
-                        ItemModel item = ServiceManager.getWorldMap().getItem(relX - x2, relY - y2);
+                        ItemModel item = Game.getWorldManager().getItem(relX - x2, relY - y2);
                         if (item != null && item.getWidth() > x2 && item.getHeight() > y2) {
                             select(item);
                             return true;

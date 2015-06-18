@@ -1,20 +1,19 @@
 package org.smallbox.farpoint;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import org.smallbox.faraway.*;
-import org.smallbox.faraway.engine.renderer.AreaRenderer;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.engine.renderer.IRenderer;
-import org.smallbox.faraway.engine.renderer.TemperatureRenderer;
-import org.smallbox.faraway.engine.ui.ColorView;
-import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.ui.engine.ColorView;
+import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.util.Constant;
 
 /**
  * Created by Alex on 04/06/2015.
@@ -64,7 +63,7 @@ public class GDXRenderer implements GFXRenderer {
     }
 
     @Override
-    public void clear(org.smallbox.faraway.Color color) {
+    public void clear(org.smallbox.faraway.engine.Color color) {
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
@@ -113,12 +112,12 @@ public class GDXRenderer implements GFXRenderer {
     }
 
     @Override
-    public AreaRenderer createAreaRenderer() {
+    public IRenderer createAreaRenderer() {
         return new GDXAreaRenderer();
     }
 
     @Override
-    public TemperatureRenderer createTemperatureRenderer() {
+    public IRenderer createTemperatureRenderer() {
         return new GDXTemperatureRenderer();
     }
 

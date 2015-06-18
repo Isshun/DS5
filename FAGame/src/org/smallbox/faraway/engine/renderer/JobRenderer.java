@@ -1,11 +1,11 @@
 package org.smallbox.faraway.engine.renderer;
 
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.manager.JobManager;
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteModel;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.game.manager.JobManager;
+import org.smallbox.faraway.game.model.job.JobModel;
 
 import java.util.List;
 

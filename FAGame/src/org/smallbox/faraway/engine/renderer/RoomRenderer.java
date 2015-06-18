@@ -3,13 +3,13 @@
 //import org.jsfml.graphics.RenderTexture;
 //import org.jsfml.graphics.Text;
 //import org.jsfml.graphics.TextureCreationException;
-//import org.smallbox.faraway.Color;
-//import org.smallbox.faraway.GFXRenderer;
-//import org.smallbox.faraway.Game;
-//import org.smallbox.faraway.RenderEffect;
-//import org.smallbox.faraway.engine.ui.ColorView;
-//import org.smallbox.faraway.engine.util.Constant;
-//import org.smallbox.faraway.model.room.Room;
+//import org.smallbox.faraway.engine.Color;
+//import org.smallbox.faraway.engine.GFXRenderer;
+//import org.smallbox.faraway.game.Game;
+//import org.smallbox.faraway.engine.RenderEffect;
+//import org.smallbox.faraway.ui.engine.ColorView;
+//import org.smallbox.faraway.util.Constant;
+//import org.smallbox.faraway.game.model.room.Room;
 //
 //import java.util.HashMap;
 //import java.util.List;

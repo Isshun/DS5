@@ -1,12 +1,12 @@
 package org.smallbox.farpoint;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.RenderEffect;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.renderer.IRenderer;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.model.item.ParcelModel;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 
 /**
  * Created by Alex on 17/06/2015.

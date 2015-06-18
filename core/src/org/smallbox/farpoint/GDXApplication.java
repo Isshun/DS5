@@ -8,13 +8,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.Application;
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.GameTimer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.manager.PathManager;
-import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.GameData;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.engine.GameTimer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.PathHelper;
+import org.smallbox.faraway.engine.SpriteManager;
+import org.smallbox.faraway.game.model.GameData;
 
 import java.io.IOException;
 
@@ -92,7 +92,7 @@ public class GDXApplication extends ApplicationAdapter {
         _renderer.clear();
         _renderer.refresh();
 
-        Game game = _application.getGame();
+        Game game = Game.getInstance();
         long elapsed = System.currentTimeMillis() - _startTime;
 
         // Sleep
@@ -128,7 +128,7 @@ public class GDXApplication extends ApplicationAdapter {
     @Override
     public void dispose () {
         _renderer.close();
-        PathManager.getInstance().close();
+        PathHelper.getInstance().close();
     }
 
 }

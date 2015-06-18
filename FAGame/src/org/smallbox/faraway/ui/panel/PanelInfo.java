@@ -1,14 +1,14 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.*;
-import org.smallbox.faraway.engine.ui.*;
-import org.smallbox.faraway.engine.util.StringUtils;
-import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.character.base.CharacterModel;
-import org.smallbox.faraway.model.item.*;
-import org.smallbox.faraway.model.job.JobModel;
-import org.smallbox.faraway.model.room.RoomModel;
+import org.smallbox.faraway.engine.*;
+import org.smallbox.faraway.util.StringUtils;
+import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.ui.engine.*;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class PanelInfo extends BaseRightPanel {
 	private TextView 				_areaLight;
 	private TextView 				_areaPos;
 	private TextView 				_itemPower;
-	private FrameLayout 			_itemAction;
+	private FrameLayout _itemAction;
 	private TextView 				_itemProduceName;
 	private TextView			 	_itemProduceIcon;
 	private FrameLayout 			_layoutStorage;
@@ -55,7 +55,7 @@ public class PanelInfo extends BaseRightPanel {
 	private TextView[] 				_lbCarryCount;
 	private FrameLayout 			_layoutStorageAdvancedFilter;
 	private CheckBoxView 			_cbFood;
-	private CheckBoxView 			_cbDrink;
+	private CheckBoxView _cbDrink;
 	private CheckBoxView 			_cbConsomable;
 	private CheckBoxView 			_cbGarbage;
 	private ItemInfo				_itemInfo;

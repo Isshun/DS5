@@ -1,5 +1,5 @@
 import org.jsfml.graphics.Sprite;
-import org.smallbox.faraway.SpriteModel;
+import org.smallbox.faraway.engine.SpriteModel;
 
 /**
  * Created by Alex on 27/05/2015.

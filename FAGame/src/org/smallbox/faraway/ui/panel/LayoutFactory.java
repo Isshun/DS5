@@ -1,8 +1,8 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.engine.ui.*;
+import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.ui.LayoutModel;
+import org.smallbox.faraway.ui.engine.*;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
