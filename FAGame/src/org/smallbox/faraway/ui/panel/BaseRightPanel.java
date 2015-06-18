@@ -1,12 +1,12 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.ui.*;
-import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.ui.engine.*;
 
 public abstract class BaseRightPanel extends BasePanel {
 	protected static final int FRAME_WIDTH = Constant.PANEL_WIDTH;

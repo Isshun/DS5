@@ -1,20 +1,19 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.engine.ui.Colors;
-import org.smallbox.faraway.engine.ui.FrameLayout;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.engine.util.Settings;
-import org.smallbox.faraway.engine.util.StringUtils;
-import org.smallbox.faraway.manager.JobManager;
-import org.smallbox.faraway.manager.ResourceManager;
-import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.ui.engine.Colors;
+import org.smallbox.faraway.ui.engine.FrameLayout;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.StringUtils;
+import org.smallbox.faraway.game.manager.JobManager;
+import org.smallbox.faraway.game.manager.ResourceManager;
+import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
@@ -22,6 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PanelDebug extends BaseRightPanel {
+
 	private static class CommandModel {
 		private final String 		cmd;
 		private final OnCommandExec onCommandExec;
@@ -49,11 +49,14 @@ public class PanelDebug extends BaseRightPanel {
 	private ItemInfo 			_currentItem;
     private FrameLayout         _entries;
     private int                 _index;
+	private String 					_cmd;
 
 
 	private CommandModel[] COMMANDS = new CommandModel[] {
 			new CommandModel("jobs.list", () -> JobManager.getInstance().getJobs().forEach(job -> println(job.toString()))),
-			new CommandModel("crew.add", () -> Game.getCharacterManager().addRandom(25, 25)),
+			new CommandModel("crew.add", () -> Game.getCharacterManager().addRandom(5, 5)),
+//			new CommandModel("crew.remove", () -> Game.getCharacterManager().addRandom(5, 5)),
+			new CommandModel("crew.removeAll", () -> Game.getCharacterManager().getCharacters().removeAll(Game.getCharacterManager().getCharacters())),
 			new CommandModel("world.add seaweed", () -> {
 				for (int i = 0; i < 10; i++) {
 					Game.getWorldManager().putObject("base.seaweed1", (int)(Math.random() * Game.getWorldManager().getWidth()), (int)(Math.random() * Game.getWorldManager().getHeight()), 0, 10);
@@ -70,15 +73,15 @@ public class PanelDebug extends BaseRightPanel {
 //		// Re-launch jobs
 //		TextView lbReLaunchJob = ViewFactory.getInstance().createTextView(200, 32);
 //		lbReLaunchJob.setOnClickListener(view -> {
-//            int width = ServiceManager.getWorldMap().getWidth();
-//            int height = ServiceManager.getWorldMap().getHeight();
+//            int width = Game.getWorldManager().getWidth();
+//            int height = Game.getWorldManager().getHeight();
 //            for (int x = 0; x < width; x++) {
 //                for (int y = 0; y < height; y++) {
-//                    StructureItem structure = ServiceManager.getWorldMap().getStructure(x, y);
+//                    StructureItem structure = Game.getWorldManager().getStructure(x, y);
 //                    if (structure != null && !structure.hasComponents()) {
 //                        JobManager.getInstance().addBuild(structure);
 //                    }
-//                    UserItem item = ServiceManager.getWorldMap().getItem(x, y);
+//                    UserItem item = Game.getWorldManager().getItem(x, y);
 //                    if (item != null && !item.hasComponents()) {
 //                        JobManager.getInstance().addBuild(item);
 //                    }
@@ -103,18 +106,18 @@ public class PanelDebug extends BaseRightPanel {
 //		// Add seed
 //		TextView lbAddSeed = ViewFactory.getInstance().createTextView(200, 32);
 //		lbAddSeed.setOnClickListener(view -> {
-//            ServiceManager.getWorldMap().addRandomSeed();
-//            ServiceManager.getWorldMap().addRandomSeed();
-//            ServiceManager.getWorldMap().addRandomSeed();
-//            ServiceManager.getWorldMap().addRandomSeed();
-//            ServiceManager.getWorldMap().addRandomSeed();
-//            ServiceManager.getWorldMap().addRandomSeed();
-//            ServiceManager.getWorldMap().addRandomSeed();
-//            ServiceManager.getWorldMap().addRandomSeed();
-//            ServiceManager.getWorldMap().addRandomSeed();
-//            ServiceManager.getWorldMap().addRandomSeed();
-//            ServiceManager.getWorldMap().addRandomSeed();
-//            ServiceManager.getWorldMap().addRandomSeed();
+//            Game.getWorldManager().addRandomSeed();
+//            Game.getWorldManager().addRandomSeed();
+//            Game.getWorldManager().addRandomSeed();
+//            Game.getWorldManager().addRandomSeed();
+//            Game.getWorldManager().addRandomSeed();
+//            Game.getWorldManager().addRandomSeed();
+//            Game.getWorldManager().addRandomSeed();
+//            Game.getWorldManager().addRandomSeed();
+//            Game.getWorldManager().addRandomSeed();
+//            Game.getWorldManager().addRandomSeed();
+//            Game.getWorldManager().addRandomSeed();
+//            Game.getWorldManager().addRandomSeed();
 //        });
 //		lbAddSeed.setString("Add seed");
 //		lbAddSeed.setCharacterSize(20);
@@ -147,13 +150,13 @@ public class PanelDebug extends BaseRightPanel {
 //                for (double i = 0; i < Math.PI * 2; i += 0.01) {
 //                    double offsetX = (int)Math.round(Math.cos(i) * j);
 //                    double offsetY = (int)Math.round(Math.sin(i) * j);
-//                    ServiceManager.getWorldMap().putObject("base.floor", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
+//                    Game.getWorldManager().putObject("base.floor", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
 //                }
 //            }
 //            for (double i = 0; i < Math.PI * 2; i += 0.01) {
 //                double offsetX = (int)Math.round(Math.cos(i) * 20);
 //                double offsetY = (int)Math.round(Math.sin(i) * 20);
-//                ServiceManager.getWorldMap().putObject("base.wall", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
+//                Game.getWorldManager().putObject("base.wall", (int)(80 + offsetX), (int)(80 + offsetY), 0, 500);
 //            }
 //        });
 //		lbDome.setString("Dome");
@@ -167,7 +170,7 @@ public class PanelDebug extends BaseRightPanel {
 	public void onLayoutLoaded(LayoutModel layout) {
 		findById("bt_add_character").setOnClickListener(view -> Game.getCharacterManager().addRandom(150, 150));
 		findById("bt_add_matter").setOnClickListener(view -> ResourceManager.getInstance().addMatter(500));
-		findById("bt_toggle_debug").setOnClickListener(view -> _ui.toogleMode(Mode.DEBUGITEMS));
+		findById("bt_toggle_debug").setOnClickListener(view -> _ui.toggleMode(Mode.DEBUGITEMS));
 		findById("bt_make_room").setOnClickListener(view -> Game.getRoomManager().makeRooms());
 		findById("bt_kill_all").setOnClickListener(view -> {
 			Game.getCharacterManager().clear();
@@ -208,12 +211,10 @@ public class PanelDebug extends BaseRightPanel {
 
 	@Override
 	protected void onOpen() {
-		Settings.getInstance().setDebug(true);
 	}
 
 	@Override
 	protected void onClose() {
-		Settings.getInstance().setDebug(false);
 	}
 
 	@Override
@@ -283,10 +284,11 @@ public class PanelDebug extends BaseRightPanel {
 			_search = "";
 		}
 		else if (key == GameEventListener.Key.UP) {
-			_line = _line - 1 < 0 ? _nbResults : _line - 1;
+			_search = _cmd;
+//			_line = _line - 1 < 0 ? _nbResults : _line - 1;
 		}
 		else if (key == GameEventListener.Key.DOWN) {
-			_line = _line + 1 > _nbResults ? 0 : _line + 1;
+//			_line = _line + 1 > _nbResults ? 0 : _line + 1;
 		}
 		else if (key == GameEventListener.Key.BACKSPACE) {
 			if (_search.length() > 0) {
@@ -308,10 +310,11 @@ public class PanelDebug extends BaseRightPanel {
 
 	private void exec(String cmd) {
 		cmd = cmd.trim();
+        _cmd = cmd;
         clear();
 
 		for (CommandModel command: COMMANDS) {
-			if (command.cmd.equals(cmd)) {
+			if (command.cmd.toLowerCase().equals(cmd.toLowerCase())) {
 				command.onCommandExec.onCommandExec();
 				return;
 			}
@@ -328,7 +331,7 @@ public class PanelDebug extends BaseRightPanel {
 
     private void clear() {
         _index = 0;
-        _entries.clearAllViews();
+        _entries.removeAllViews();
     }
 
     private void println(String text) {

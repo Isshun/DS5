@@ -1,8 +1,8 @@
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.Transform;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.Viewport;
-import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.Viewport;
+import org.smallbox.faraway.util.Constant;
 
 public class SFMLViewport extends Viewport {
 	private static final int ANIM_FRAME = 10;

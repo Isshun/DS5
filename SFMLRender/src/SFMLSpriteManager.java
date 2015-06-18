@@ -2,18 +2,18 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.Texture;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.Viewport;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.model.ProfessionModel;
-import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.MapObjectModel;
-import org.smallbox.faraway.model.item.ItemInfo;
-import org.smallbox.faraway.model.item.StructureModel;
-import org.smallbox.faraway.model.item.ResourceModel;
-import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteModel;
+import org.smallbox.faraway.engine.Viewport;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.game.model.ProfessionModel;
+import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.item.MapObjectModel;
+import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.model.item.StructureModel;
+import org.smallbox.faraway.game.model.item.ResourceModel;
+import org.smallbox.faraway.engine.SpriteManager;
 
 import java.io.*;
 import java.util.HashMap;
@@ -370,7 +370,7 @@ public class SFMLSpriteManager extends SpriteManager {
 	public SpriteModel getResource(ResourceModel resource) {
 		ItemInfo info = resource.getInfo();
 
-		if ("base.res_rock".equals(info.name)) {
+		if ("base.rock".equals(info.name)) {
 			return getSprite(info, resource.getTile(), 0, 255, false);
 		}
 

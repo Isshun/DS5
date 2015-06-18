@@ -2,9 +2,9 @@ package org.smallbox.farpoint;
 
 import com.badlogic.gdx.InputProcessor;
 import org.smallbox.faraway.Application;
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.GameTimer;
-import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.engine.GameTimer;
+import org.smallbox.faraway.util.Constant;
 
 import static com.badlogic.gdx.Input.Buttons;
 import static com.badlogic.gdx.Input.Keys;

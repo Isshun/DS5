@@ -1,12 +1,12 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.engine.ui.*;
-import org.smallbox.faraway.manager.ResourceData;
-import org.smallbox.faraway.manager.ResourceManager;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.game.manager.ResourceData;
+import org.smallbox.faraway.game.manager.ResourceManager;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.ui.engine.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -76,7 +76,7 @@ public class PanelShortcut extends BaseRightPanel {
 
         for (PanelEntry entry : _entries) {
             findById(entry.buttonId).setOnClickListener(view -> {
-                _ui.toogleMode(entry.mode);
+                _ui.toggleMode(entry.mode);
             });
             findById(entry.buttonId).setBackgroundColor(new Color(29, 85, 96, 100));
             findById(entry.buttonId).setOnFocusListener(new OnFocusListener() {

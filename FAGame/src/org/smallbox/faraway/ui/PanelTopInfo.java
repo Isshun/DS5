@@ -1,11 +1,11 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.engine.ui.Colors;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.ui.engine.Colors;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.ui.panel.BasePanel;
 
 /**
@@ -41,6 +41,7 @@ public class PanelTopInfo extends BasePanel {
         ((TextView)findById("lb_hour")).setString("Hour: " + Game.getInstance().getHour() + "h");
         ((TextView)findById("lb_day")).setString("Day: " + Game.getInstance().getDay());
         ((TextView)findById("lb_year")).setString("Year: " + Game.getInstance().getYear());
+        ((TextView)findById("lb_planet")).setString("Planet: " + Game.getInstance().getPlanet().getInfo().name);
 
         if (Game.getWeatherManager() != null && Game.getWeatherManager().getWeather() != null) {
             ((TextView) findById("lb_weather")).setString("Weather: " + Game.getWeatherManager().getWeather().name);

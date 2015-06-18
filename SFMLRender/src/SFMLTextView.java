@@ -1,15 +1,12 @@
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.ui.Colors;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.util.StringUtils;
-import org.smallbox.faraway.manager.SpriteManager;
-
-import java.io.File;
-import java.io.IOException;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.ui.engine.Colors;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.util.StringUtils;
+import org.smallbox.faraway.engine.SpriteManager;
 
 public class SFMLTextView extends TextView {
 	protected Text 			_text;

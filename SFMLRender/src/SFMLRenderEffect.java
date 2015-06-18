@@ -1,6 +1,6 @@
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.Transform;
-import org.smallbox.faraway.RenderEffect;
+import org.smallbox.faraway.engine.RenderEffect;
 
 /**
  * Created by Alex on 27/05/2015.

@@ -1,16 +1,16 @@
 package org.smallbox.faraway.ui.mainMenu;
 
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.GameTimer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.ui.UIEventManager;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.manager.Utils;
-import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.LandingSiteModel;
-import org.smallbox.faraway.model.PlanetModel;
-import org.smallbox.faraway.model.TeamModel;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.engine.GameTimer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.ui.engine.UIEventManager;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Utils;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.LandingSiteModel;
+import org.smallbox.faraway.game.model.planet.PlanetInfo;
+import org.smallbox.faraway.game.model.TeamModel;
 import org.smallbox.faraway.ui.panel.BasePanel;
 import org.smallbox.faraway.ui.panel.LayoutFactory;
 
@@ -24,11 +24,12 @@ public class MainMenu {
     private MainMenuScene[]     _scenes;
     private int                 _refresh;
     private long                _lastModified;
-    private PlanetModel         _planet;
+    private PlanetInfo          _planet;
     private LandingSiteModel    _landingSite;
     private TeamModel           _team;
+    private boolean             _isOpen;
 
-    public PlanetModel getPlanet() {
+    public PlanetInfo getPlanet() {
         return _planet;
     }
 
@@ -40,13 +41,26 @@ public class MainMenu {
         _landingSite = landingSite;
     }
 
-    public enum Scene {HOME, PLANETS, LAND_SITE, TEAM}
+    public boolean isOpen() {
+        return _isOpen;
+    }
+
+    public void open() {
+        _isOpen = true;
+    }
+
+    public void close() {
+        _isOpen = false;
+    }
+
+    public enum Scene {HOME, PLANETS, LAND_SITE, LOAD, TEAM}
 
     public MainMenu(LayoutFactory layoutFactory, ViewFactory viewFactory, GFXRenderer renderer) {
         _layoutFactory = layoutFactory;
         _viewFactory = viewFactory;
         _scenes = new MainMenuScene[] {
                 new HomeScene(this, renderer, Scene.HOME),
+                new LoadScene(this, renderer, Scene.LOAD),
                 new PlanetScene(this, renderer, Scene.PLANETS),
                 new TeamScene(this, renderer, Scene.TEAM),
                 new LandingSiteScene(this, renderer, Scene.LAND_SITE)
@@ -68,9 +82,15 @@ public class MainMenu {
             panel.refresh(update);
         }
 
+        // Refresh UI if needed by GameData (strings)
+        if (GameData.getData().needUIRefresh) {
+            GameData.getData().needUIRefresh = false;
+            reload();
+        }
+
+        // Refresh UI if needed by UI files
         long lastResModified = Utils.getLastUIModified();
         if (update % 8 == 0 && lastResModified > _lastModified) {
-            GameData.getData().loadStrings();
             _lastModified = lastResModified;
             reload();
         }
@@ -78,7 +98,7 @@ public class MainMenu {
 
     private void reload() {
         for (MainMenuScene scene: _scenes) {
-            scene.clearAllViews();
+            scene.removeAllViews();
             scene.init(_viewFactory, _layoutFactory, null, null, null);
             scene.refresh(0);
         }
@@ -128,7 +148,7 @@ public class MainMenu {
         }
     }
 
-    public void select(PlanetModel planet) {
+    public void select(PlanetInfo planet) {
         _planet = planet;
     }
 

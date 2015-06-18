@@ -1,7 +1,8 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.engine.ui.TextView;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.ui.engine.TextView;
 import org.smallbox.faraway.ui.panel.BaseInfoRightPanel;
 
 /**
@@ -20,5 +21,6 @@ public class PanelInfoArea extends BaseInfoRightPanel {
 
     public void select(AreaModel area) {
         ((TextView)findById("lb_area")).setString(area.getName());
+        findById("bt_remove_area").setOnClickListener(view -> Game.getAreaManager().remove(area));
     }
 }

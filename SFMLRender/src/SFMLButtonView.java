@@ -1,5 +1,5 @@
-//import org.smallbox.faraway.GFXRenderer;
-//import org.smallbox.faraway.RenderEffect;
+//import org.smallbox.faraway.engine.GFXRenderer;
+//import org.smallbox.faraway.engine.RenderEffect;
 //import org.smallbox.faraway.engine.ui.ButtonView;
 //
 //public class SFMLButtonView extends ButtonView {

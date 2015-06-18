@@ -1,11 +1,11 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.Viewport;
-import org.smallbox.faraway.engine.ui.*;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.ui.engine.*;
 import org.smallbox.faraway.ui.panel.BasePanel;
 
 import java.util.ArrayList;

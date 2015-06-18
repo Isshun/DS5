@@ -63,7 +63,7 @@ entries:
             background: 0xb0cd35
             
         -   type: frame
-            position: [0, 245]
+            position: [0, 255]
             entries:
             
             -   type: frame
@@ -81,101 +81,11 @@ entries:
                     position: [20, 30]
 
             -   type: frame
-                position: [0, 60]
-                entries:
-                
-                -   type: label
-                    text: Status
-                    textsize: 22
-                    position: [20, 10]
-                    size: [175, 18]
-                
-                -   type: label
-                    id: lb_status_food
-                    textsize: 14
-                    position: [216, 50]
-                    size: [175, 18]
-
-                -   type: image
-                    id: img_status_food
-                    textsize: 14
-                    position: [216, 70]
-                    size: [175, 18]
-
-                -   type: label
-                    id: lb_status_o2
-                    textsize: 14
-                    position: [216, 100]
-                    size: [175, 18]
-
-                -   type: image
-                    id: img_status_o2
-                    textsize: 14
-                    position: [216, 120]
-                    size: [175, 18]
-
-                -   type: label
-                    id: lb_status_happiness
-                    textsize: 14
-                    position: [20, 100]
-                    size: [175, 18]
-
-                -   type: image
-                    id: img_status_happiness
-                    textsize: 14
-                    position: [20, 120]
-                    size: [175, 18]
-
-                -   type: label
-                    id: lb_status_power
-                    textsize: 14
-                    position: [20, 50]
-                    size: [175, 18]
-
-                -   type: image
-                    id: img_status_power
-                    textsize: 14
-                    position: [20, 70]
-                    size: [175, 18]
-
-                -   type: label
-                    id: lb_status_relation
-                    textsize: 14
-                    position: [20, 150]
-                    size: [175, 18]
-
-                -   type: image
-                    id: img_status_relation
-                    textsize: 14
-                    position: [20, 170]
-                    size: [175, 18]
-
-                -   type: label
-                    id: lb_status_security
-                    textsize: 14
-                    position: [216, 150]
-                    size: [175, 18]
-
-                -   type: image
-                    id: img_status_security
-                    textsize: 14
-                    position: [216, 170]
-                    size: [175, 18]
-
-                -   type: label
-                    id: lb_status_health
-                    textsize: 14
-                    position: [20, 200]
-                    size: [175, 18]
-
-                -   type: image
-                    id: img_status_health
-                    textsize: 14
-                    position: [20, 220]
-                    size: [175, 18]
+                id: frame_needs
+                position: [0, 65]
 
             -   type: frame
-                position: [0, 340]
+                position: [0, 335]
                 entries:
                     
                 -   type: label
@@ -186,6 +96,27 @@ entries:
                 -   type: frame
                     id: frame_buffs_entries
                     position: [20, 40]
+
+            -   type: frame
+                position: [0, 580]
+                entries:
+                    
+                -   type: label
+                    text: Debug
+                    textsize: 22
+                    position: [20, 0]
+                    
+                -   type: label
+                    id: lb_environment
+                    text: environment
+                    textsize: 14
+                    position: [20, 30]
+                    
+                -   type: label
+                    id: lb_light
+                    text: light
+                    textsize: 14
+                    position: [20, 50]
 
     -   type: frame
         id: frame_personal_report
@@ -275,69 +206,11 @@ entries:
             size: [180, 40]
             align: center
             background: 0xb0cd35
-            
-        -   type: frame
-            position: [0, 245]
-            entries:
-                
-            -   type: label
-                text: Equipments
-                textsize: 22
-                position: [20, 0]
 
-            -   type: image
-                path: data/res/body.png
-                position: [10, 30]
-                size: [420, 300]
+        -   type: frame
+            id: frame_equipment_body
+            position: [0, 255]
             
-            -   type: label
-                id: bt_head
-                text: head
-                textsize: 14
-                position: [72, 45]
-                size: [92, 25]
-                align: center
-            
-            -   type: label
-                id: bt_face
-                text: face
-                textsize: 14
-                position: [257, 68]
-                size: [92, 25]
-                align: center
-            
-            -   type: label
-                id: bt_top
-                text: top
-                textsize: 14
-                position: [254, 150]
-                size: [92, 25]
-                align: center
-            
-            -   type: label
-                id: bt_hand
-                text: hand
-                textsize: 14
-                position: [26, 162]
-                size: [92, 25]
-                align: center
-            
-            -   type: label
-                id: bt_bottom
-                text: bottom
-                textsize: 14
-                position: [63, 251]
-                size: [92, 25]
-                align: center
-            
-            -   type: label
-                id: bt_feet
-                text: feet
-                textsize: 14
-                position: [260, 277]
-                size: [92, 25]
-                align: center
-                        
         -   type: frame
             id: frame_equipment_detail
             position: [0, 605]
@@ -361,7 +234,7 @@ entries:
                 position: [0, 40]
                         
         -   type: frame
-            position: [0, 600]
+            position: [0, 640]
             entries:
             
             -   type: label

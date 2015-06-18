@@ -18,11 +18,11 @@ actions:
         label: Craft brick
         cost: 150
         receipts:
-            -   name: rock_brick
+            -   name: brick_rock
                 label: Rock brick
                 components:
                     -   item: base.rock
                         quantity: 5
                 products:
-                    -   item: base.rock_brick
+                    -   item: base.brick_rock
                         quantity: 5

@@ -1,12 +1,12 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.manager.BaseManager;
-import org.smallbox.faraway.manager.Utils;
-import org.smallbox.faraway.manager.WorldManager;
-import org.smallbox.faraway.model.item.ConsumableModel;
-import org.smallbox.faraway.model.item.ParcelModel;
-import org.smallbox.faraway.model.job.StorageModel;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.BaseManager;
+import org.smallbox.faraway.util.Utils;
+import org.smallbox.faraway.game.manager.WorldManager;
+import org.smallbox.faraway.game.model.item.ConsumableModel;
+import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.job.StorageModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,5 +86,12 @@ public class AreaManager extends BaseManager {
 
     @Override
     protected void onUpdate(int tick) {
+    }
+
+    public void remove(AreaModel area) {
+        if (area != null) {
+            area.getParcels().forEach(parcel -> parcel.setArea(null));
+            _areas.remove(area);
+        }
     }
 }

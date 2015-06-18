@@ -1,10 +1,10 @@
 //package org.smallbox.faraway.engine.renderer;
 //
 //import org.smallbox.faraway.*;
-//import org.smallbox.faraway.engine.util.Constant;
-//import org.smallbox.faraway.manager.ServiceManager;
-//import org.smallbox.faraway.manager.WorldManager;
-//import org.smallbox.faraway.model.character.CharacterModel;
+//import org.smallbox.faraway.util.Constant;
+//import org.smallbox.faraway.game.manager.ServiceManager;
+//import org.smallbox.faraway.game.manager.WorldManager;
+//import org.smallbox.faraway.game.model.character.base.CharacterModel;
 //
 //import java.util.List;
 //
@@ -38,7 +38,7 @@
 //	}
 //
 //	public void onDraw(int frame) {
-//		WorldManager worldManager = ServiceManager.getWorldMap();
+//		WorldManager worldManager = Game.getWorldManager();
 //		for (int x = 0; x < _width; x++) {
 //			for (int y = 0; y < _height; y++) {
 //				Color color = _colors[(int)(Math.random() * 42)];

@@ -1,7 +1,6 @@
 package org.smallbox.faraway.ui.mainMenu;
 
-import org.smallbox.faraway.Application;
-import org.smallbox.faraway.GFXRenderer;
+import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.ui.LayoutModel;
 
 /**
@@ -16,7 +15,7 @@ public class HomeScene extends MainMenuScene {
     @Override
     public void onLayoutLoaded(LayoutModel layout) {
         findById("bt_new_colony").setOnClickListener(view -> _mainMenu.select(MainMenu.Scene.PLANETS));
-        findById("bt_load_colony").setOnClickListener(view -> Application.getInstance().loadGame("4"));
+        findById("bt_load_colony").setOnClickListener(view -> _mainMenu.select(MainMenu.Scene.LOAD));
         findById("bt_exit").setOnClickListener(view -> _renderer.close());
     }
 }

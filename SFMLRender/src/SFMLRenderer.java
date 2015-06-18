@@ -4,17 +4,16 @@ import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 import org.jsfml.window.event.Event;
 import org.jsfml.window.event.KeyEvent;
-import org.smallbox.faraway.*;
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.engine.ui.*;
-import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.*;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.ui.engine.ColorView;
 
 /**
  * Created by Alex on 27/05/2015.
  */
 public class SFMLRenderer implements GFXRenderer {
     private final RenderWindow  _window;
-    private final GameTimer     _timer;
+    private final GameTimer _timer;
     private GameEventListener   _listener;
     private Shader              _blur;
     private SpriteModel         _lightSpriteCache;
@@ -84,7 +83,7 @@ public class SFMLRenderer implements GFXRenderer {
         _window.draw(((SFMLSprite)sprite).getData(), renderStates);
     }
 
-    public void clear(Color color) {
+    public void clear(org.smallbox.faraway.engine.Color color) {
         _window.clear(new org.jsfml.graphics.Color(color.r, color.g, color.b));
     }
 

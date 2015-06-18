@@ -1,10 +1,10 @@
 package org.smallbox.farpoint.ui;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.ui.ColorView;
-import org.smallbox.faraway.engine.ui.View;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.ui.engine.ColorView;
+import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.farpoint.GDXRenderer;
 
 /**
@@ -34,8 +34,8 @@ public class GDXColorView extends ColorView {
     @Override
     public void draw(GFXRenderer renderer, int x, int y) {
         if (_needResetPos) {
-            _finalX = x;
-            _finalY = y;
+            _finalX = 0;
+            _finalY = 0;
             View view = this;
             while (view != null) {
                 _finalX += view.getPosX();
@@ -45,7 +45,7 @@ public class GDXColorView extends ColorView {
         }
 
         if (_gdxBackgroundColor != null) {
-            ((GDXRenderer) renderer).draw(_gdxBackgroundColor, _finalX, _finalY, _width, _height);
+            ((GDXRenderer) renderer).draw(_gdxBackgroundColor, _finalX + x, _finalY + y, _width, _height);
         }
     }
 

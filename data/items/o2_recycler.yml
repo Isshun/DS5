@@ -5,5 +5,7 @@ height: 2
 light: 10
 type: item
 category: system
+effects:
+    oxygen: 2
 cost: 42
-power: 10
+power: -10

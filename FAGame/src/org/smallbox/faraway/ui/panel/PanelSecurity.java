@@ -1,7 +1,7 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.engine.ui.ViewFactory;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
 public class PanelSecurity extends BaseRightPanel {

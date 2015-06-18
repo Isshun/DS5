@@ -2,7 +2,7 @@ package org.smallbox.farpoint;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.SpriteModel;
+import org.smallbox.faraway.engine.SpriteModel;
 
 /**
  * Created by Alex on 04/06/2015.

@@ -1,11 +1,11 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.engine.ui.*;
-import org.smallbox.faraway.model.ToolTips;
-import org.smallbox.faraway.model.ToolTips.ToolTip;
-import org.smallbox.faraway.model.ToolTips.ToolTipCategory;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.game.model.ToolTips;
+import org.smallbox.faraway.game.model.ToolTips.ToolTip;
+import org.smallbox.faraway.game.model.ToolTips.ToolTipCategory;
 import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.ui.engine.*;
 
 public class PanelTooltip extends BasePanel {
 

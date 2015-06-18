@@ -1,28 +1,28 @@
 package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.*;
+import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.engine.ui.UIEventManager;
-import org.smallbox.faraway.engine.ui.UIMessage;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.engine.util.Log;
-import org.smallbox.faraway.manager.CharacterManager;
-import org.smallbox.faraway.manager.ServiceManager;
-import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.manager.Utils;
-import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.ToolTips.ToolTip;
-import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.item.*;
-import org.smallbox.faraway.model.room.RoomModel;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.ui.engine.UIEventManager;
+import org.smallbox.faraway.ui.engine.UIMessage;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.game.manager.CharacterManager;
+import org.smallbox.faraway.util.Utils;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.ToolTips.ToolTip;
+import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.panel.*;
 
 public class UserInterface implements GameEventListener {
     private static UserInterface		_self;
     private final LayoutFactory         _factory;
     private final ViewFactory           _viewFactory;
-    private Viewport                    _viewport;
+    private Viewport _viewport;
     private boolean						_keyLeftPressed;
     private boolean						_keyRightPressed;
     private int							_mouseRightPressX;
@@ -66,6 +66,8 @@ public class UserInterface implements GameEventListener {
             new PanelSystem(),
             new PanelTopInfo(),
             new PanelResources(),
+            new PanelPlanet(),
+            new PanelDev(),
             new PanelCharacter(	    Mode.CHARACTER,         null),
             new PanelInfo(		    Mode.INFO, 		        null),
             new PanelInfoStructure(	Mode.INFO_STRUCTURE, 	null),
@@ -167,7 +169,7 @@ public class UserInterface implements GameEventListener {
 
     public void reload() {
         for (BasePanel panel: _panels) {
-            panel.clearAllViews();
+            panel.removeAllViews();
             panel.init(_viewFactory, _factory, this, _interaction, null);
             panel.refresh(0);
         }
@@ -211,25 +213,27 @@ public class UserInterface implements GameEventListener {
         for (BasePanel panel: _panels) {
             panel.init(_viewFactory, _factory, this, _interaction, SpriteManager.getInstance().createRenderEffect());
 
-            switch (panel.getMode()) {
-                case INFO_STRUCTURE:
-                    _panelInfoStructure = (PanelInfoStructure) panel;
-                    break;
-                case INFO_ITEM:
-                    _panelInfoItem = (PanelInfoItem) panel;
-                    break;
-                case INFO_CONSUMABLE:
-                    _panelInfoConsumable = (PanelInfoConsumable) panel;
-                    break;
-                case INFO_PARCEL:
-                    _panelInfoParcel = (PanelInfoParcel) panel;
-                    break;
-                case INFO_RESOURCE:
-                    _panelInfoResource = (PanelInfoResource) panel;
-                    break;
-                case INFO_AREA:
-                    _panelInfoArea = (PanelInfoArea) panel;
-                    break;
+            if (panel.getMode() != null) {
+                switch (panel.getMode()) {
+                    case INFO_STRUCTURE:
+                        _panelInfoStructure = (PanelInfoStructure) panel;
+                        break;
+                    case INFO_ITEM:
+                        _panelInfoItem = (PanelInfoItem) panel;
+                        break;
+                    case INFO_CONSUMABLE:
+                        _panelInfoConsumable = (PanelInfoConsumable) panel;
+                        break;
+                    case INFO_PARCEL:
+                        _panelInfoParcel = (PanelInfoParcel) panel;
+                        break;
+                    case INFO_RESOURCE:
+                        _panelInfoResource = (PanelInfoResource) panel;
+                        break;
+                    case INFO_AREA:
+                        _panelInfoArea = (PanelInfoArea) panel;
+                        break;
+                }
             }
         }
 
@@ -299,7 +303,7 @@ public class UserInterface implements GameEventListener {
     public int				getMouseX() { return _keyMovePosX; }
     public int				getMouseY() { return _keyMovePosY; }
 
-    public void toogleMode(Mode mode) {
+    public void toggleMode(Mode mode) {
         setMode(_mode != mode ? mode : Mode.NONE);
     }
 
@@ -320,7 +324,7 @@ public class UserInterface implements GameEventListener {
             if (_mode.equals(panel.getMode())) {
                 _currentPanel = panel;
                 panel.setVisible(true);
-            } else if (panel.isAlwaysVisible() == false) {
+            } else if (!panel.isAlwaysVisible()) {
                 panel.setVisible(false);
             }
         }
@@ -346,9 +350,15 @@ public class UserInterface implements GameEventListener {
         }
         _panelMessage.refresh(update);
 
+        // Refresh UI if needed by GameData (strings)
+        if (GameData.getData().needUIRefresh) {
+            GameData.getData().needUIRefresh = false;
+            reload();
+        }
+
+        // Refresh UI if needed by UI files
         long lastResModified = Utils.getLastUIModified();
         if (update % 8 == 0 && lastResModified > _lastModified) {
-            GameData.getData().loadStrings();
             _lastModified = lastResModified;
             reload();
         }
@@ -439,7 +449,7 @@ public class UserInterface implements GameEventListener {
 
         for (BasePanel panel: _panels) {
             if (key.equals(panel.getShortcut())) {
-                toogleMode(panel.getMode());
+                toggleMode(panel.getMode());
                 return true;
             }
         }
@@ -464,7 +474,7 @@ public class UserInterface implements GameEventListener {
     public void onDoubleClick(int x, int y) {
         _keyLeftPressed = false;
 
-        ParcelModel area = ServiceManager.getWorldMap().getParcel(getRelativePosX(x), getRelativePosY(y));
+        ParcelModel area = Game.getWorldManager().getParcel(getRelativePosX(x), getRelativePosY(y));
         if (area != null) {
             MapObjectModel item = area.getItem();
             MapObjectModel structure = area.getStructure();
@@ -556,7 +566,7 @@ public class UserInterface implements GameEventListener {
                 int relY = getRelativePosY(y);
 
                 AreaModel area = Game.getAreaManager().getArea(relX, relY);
-                ParcelModel parcel = ServiceManager.getWorldMap().getParcel(relX, relY);
+                ParcelModel parcel = Game.getWorldManager().getParcel(relX, relY);
 
                 // Select resource
                 if (parcel != null && parcel.getResource() != null) { select(parcel.getResource()); return true; }
@@ -564,7 +574,7 @@ public class UserInterface implements GameEventListener {
                 // Select item
                 for (int x2 = 0; x2 < Constant.ITEM_MAX_WIDTH; x2++) {
                     for (int y2 = 0; y2 < Constant.ITEM_MAX_HEIGHT; y2++) {
-                        ItemModel item = ServiceManager.getWorldMap().getItem(relX - x2, relY - y2);
+                        ItemModel item = Game.getWorldManager().getItem(relX - x2, relY - y2);
                         if (item != null && item.getWidth() > x2 && item.getHeight() > y2) {
                             select(item);
                             return true;
@@ -617,7 +627,7 @@ public class UserInterface implements GameEventListener {
                 return;
             }
             _interaction.clean();
-            toogleMode(Mode.NONE);
+            toggleMode(Mode.NONE);
         }
 
         _keyRightPressed = false;

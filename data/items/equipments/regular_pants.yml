@@ -1,0 +1,9 @@
+label: Regular pants
+equipment:
+    location: bottom
+    effects:
+        -   absorb:
+                cold: 10
+            resist:
+                cold: 10
+                damage: 10

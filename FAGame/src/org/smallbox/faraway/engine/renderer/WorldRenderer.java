@@ -1,15 +1,15 @@
 package org.smallbox.faraway.engine.renderer;
 
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.manager.WorldManager;
-import org.smallbox.faraway.model.GameData;
-import org.smallbox.faraway.model.item.*;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteModel;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.engine.SpriteManager;
+import org.smallbox.faraway.game.manager.WorldManager;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.item.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -375,6 +375,13 @@ public class WorldRenderer implements IRenderer {
             // Display selection
             if (item.isSelected()) {
                 _itemSelected = item;
+            }
+
+            // Display selection
+            if (!item.isFunctional()) {
+                sprite = _spriteManager.getIcon("data/res/ic_power.png");
+                sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
+                _layerStructure.draw(sprite);
             }
         }
     }

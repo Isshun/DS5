@@ -1,12 +1,11 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.*;
-import org.smallbox.faraway.engine.ui.ColorView;
-import org.smallbox.faraway.engine.ui.FrameLayout;
-import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.manager.SpriteManager;
+import org.smallbox.faraway.engine.*;
+import org.smallbox.faraway.ui.engine.ColorView;
+import org.smallbox.faraway.ui.engine.FrameLayout;
+import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
@@ -70,7 +69,7 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 	}
 
 	public void init(ViewFactory viewFactory, LayoutFactory layoutFactory, UserInterface ui, UserInteraction interaction, RenderEffect effect) {
-		clearAllViews();
+		removeAllViews();
 		_ui = ui;
 		_interaction = interaction;
 		onCreate(viewFactory);
@@ -143,6 +142,7 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 			onClose();
 		}
 	}
+
 	protected void onClose() {
 	}
 

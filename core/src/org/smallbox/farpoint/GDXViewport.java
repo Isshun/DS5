@@ -1,8 +1,8 @@
 package org.smallbox.farpoint;
 
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.Viewport;
-import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.Viewport;
+import org.smallbox.faraway.util.Constant;
 
 /**
  * Created by Alex on 04/06/2015.

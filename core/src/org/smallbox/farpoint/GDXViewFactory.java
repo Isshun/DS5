@@ -1,7 +1,7 @@
 package org.smallbox.farpoint;
 
 import org.smallbox.faraway.engine.renderer.RenderLayer;
-import org.smallbox.faraway.engine.ui.*;
+import org.smallbox.faraway.ui.engine.*;
 import org.smallbox.farpoint.ui.GDXColorView;
 import org.smallbox.farpoint.ui.GDXFrameLayout;
 import org.smallbox.farpoint.ui.GDXImageView;

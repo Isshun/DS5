@@ -1,24 +1,23 @@
 package org.smallbox.faraway.engine.renderer;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.engine.ui.ColorView;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.Movable.Direction;
-import org.smallbox.faraway.model.character.CharacterModel;
-import org.smallbox.faraway.model.character.CharacterStatus.Level;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteModel;
+import org.smallbox.faraway.ui.engine.ColorView;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.engine.SpriteManager;
+import org.smallbox.faraway.game.model.Movable.Direction;
+import org.smallbox.faraway.game.model.character.base.CharacterModel;
 
 import java.util.List;
 
 public class CharacterRenderer implements IRenderer {
-	private List<CharacterModel> _characters;
-	private SpriteManager _spriteManager;
-	private int 			_update;
-	private ColorView _redBackground;
+	private List<CharacterModel> 	_characters;
+	private SpriteManager 			_spriteManager;
+	private int 					_update;
+	private ColorView 				_redBackground;
 
 	public CharacterRenderer(List<CharacterModel> characters) {
 		_characters = characters;
@@ -39,26 +38,27 @@ public class CharacterRenderer implements IRenderer {
 			int offset = 0;
 			int frame = 0;
 			if (move != Direction.NONE) {
-				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
+//				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
+				offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
 				frame = c.getFrameIndex() / 20 % 4;
 			}
 
 			// Get exact position
 			int dirIndex = 0;
 			switch (direction) {
-			case BOTTOM: posY -= offset; dirIndex = 0; break;
-			case LEFT: posX += offset; dirIndex = 1; break;
-			case RIGHT: posX -= offset; dirIndex = 2; break;
-			case TOP: posY += offset; dirIndex = 3; break;
-			case TOP_LEFT: posY += offset; posX += offset; dirIndex = 1; direction = Direction.LEFT; break;
-			case TOP_RIGHT: posY += offset; posX -= offset; dirIndex = 2; direction = Direction.RIGHT; break;
-			case BOTTOM_LEFT: posY -= offset; posX += offset; dirIndex = 1; direction = Direction.LEFT; break;
-			case BOTTOM_RIGHT: posY -= offset; posX -= offset; dirIndex = 2; direction = Direction.RIGHT; break;
+			case BOTTOM: posY += offset; dirIndex = 0; break;
+			case LEFT: posX -= offset; dirIndex = 1; break;
+			case RIGHT: posX += offset; dirIndex = 2; break;
+			case TOP: posY -= offset; dirIndex = 3; break;
+			case TOP_LEFT: posY -= offset; posX -= offset; dirIndex = 1; direction = Direction.LEFT; break;
+			case TOP_RIGHT: posY -= offset; posX += offset; dirIndex = 2; direction = Direction.RIGHT; break;
+			case BOTTOM_LEFT: posY += offset; posX -= offset; dirIndex = 1; direction = Direction.LEFT; break;
+			case BOTTOM_RIGHT: posY += offset; posX += offset; dirIndex = 2; direction = Direction.RIGHT; break;
 			default: break;
 			}
 
 			// Bad status
-			if (c.getStatus().getLevel() == Level.BAD || c.getStatus().getLevel() == Level.REALLY_BAD) {
+			if (c.getNeeds().happiness < 20) {
 				_redBackground.setPosition(posX + effect.getViewport().getPosX(), posY + effect.getViewport().getPosY());
 				renderer.draw(_redBackground, effect);
 			}

@@ -1,8 +1,8 @@
 package org.smallbox.faraway.ui.mainMenu;
 
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.model.LandingSiteModel;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.game.model.LandingSiteModel;
 import org.smallbox.faraway.ui.LayoutModel;
 
 /**

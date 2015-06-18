@@ -1,0 +1,19 @@
+label: Rock
+width: 1
+height: 1
+tiles: [3, 8]
+type: resource
+isWalkable: false
+light: 0
+sealing: 1
+actions:
+    -   type: mine
+        cost: 100
+        products:
+            -   item: base.rubble
+                quantity: 10
+                dropRate: 0.5
+
+            -   item: base.seaweed
+                quantity: 5
+                dropRate: 0.1

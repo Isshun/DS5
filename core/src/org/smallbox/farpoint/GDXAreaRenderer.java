@@ -1,19 +1,19 @@
 package org.smallbox.farpoint;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.renderer.AreaRenderer;
-import org.smallbox.faraway.engine.util.Constant;
-import org.smallbox.faraway.model.item.ParcelModel;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.renderer.IRenderer;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.ui.AreaManager;
 import org.smallbox.faraway.ui.AreaModel;
 
 /**
  * Created by Alex on 13/06/2015.
  */
-public class GDXAreaRenderer extends AreaRenderer {
+public class GDXAreaRenderer implements IRenderer {
     private Color COLOR = new Color(1, 1, 0, 0.4f);
 
     @Override

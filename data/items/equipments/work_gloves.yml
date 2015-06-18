@@ -1,0 +1,8 @@
+label: Work gloves
+equipment:
+    location: hands
+    effects:
+        -   buff:
+                build: 10
+                repair: 10
+                craft: 10

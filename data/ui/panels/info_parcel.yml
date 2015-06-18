@@ -45,3 +45,27 @@ entries:
         -   type: frame
             id: frame_room_info
             position: [0, 300]
+
+        -   type: label
+            id: lb_blood
+            text: matter
+            textsize: 14
+            position: [24, 580]
+
+        -   type: label
+            id: lb_snow
+            text: snow
+            textsize: 14
+            position: [24, 600]
+
+        -   type: label
+            id: lb_dirt
+            text: dirt
+            textsize: 14
+            position: [24, 620]
+
+        -   type: label
+            id: lb_rubble
+            text: rubble
+            textsize: 14
+            position: [24, 640]

@@ -1,3 +1,19 @@
+#Reports
+Feeling a little peckish: A une petite faim
+Feeling hungry: A faim
+Suffering from hunger: Souffre de la faim
+Is starving to death: Meurs de faim
+
+I'm cold: A froid
+I have lost the feeling in my fingers: Ne sens plus ses doigts
+I'm frozen: Est gelé
+I am dying of cold: Meurs de froid
+
+Excited by new colony: Excité par la nouvelle colonie
+In the dark for a long time: Dans le noir depuis longtemps
+Feeling lonely: Se sent seul
+Need someone to talk: A besoin de parler à quelqu'un
+
 #Structure
 Door: Porte
 Ground: Sol
@@ -25,6 +41,7 @@ Pub: Bar
 Serving table: Buffet
 
 #Action
+None: Aucune
 Eat easy meal: Mange un repas simple
 Eat advanced meal: Mange un bon repas
 Eat military ration: Mange des rations militaires

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.engine.renderer;
 
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
 
 public interface IRenderer {
 	void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress);

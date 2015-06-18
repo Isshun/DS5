@@ -1,10 +1,10 @@
 package org.smallbox.faraway.engine.renderer;
 
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.Game;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.manager.SpriteManager;
-import org.smallbox.faraway.model.GameConfig;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteManager;
+import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.ArrayList;
@@ -47,6 +47,9 @@ public class MainRenderer implements IRenderer {
 		}
 		if (config.render.temperature) {
 			_hudRenders.add(renderer.createTemperatureRenderer());
+		}
+		if (config.render.room) {
+			_hudRenders.add(renderer.createRoomRenderer());
 		}
 	}
 

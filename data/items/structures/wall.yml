@@ -1,0 +1,9 @@
+name: wall
+label: Wall
+width: 1
+height: 1
+type: structure
+isWalkable: false
+maxHealth: 250
+cost: 100
+sealing: 1

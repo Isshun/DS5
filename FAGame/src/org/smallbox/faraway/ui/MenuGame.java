@@ -1,11 +1,11 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.serializer.GameLoadListener;
-import org.smallbox.faraway.engine.ui.*;
-import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.data.serializer.GameLoadListener;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.ui.engine.*;
 
 import java.io.IOException;
 import java.util.List;

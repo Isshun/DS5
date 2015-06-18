@@ -1,7 +1,7 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.engine.ui.ViewFactory;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.BasePanel;
 

@@ -3,6 +3,7 @@ levels:
         disease: mild_hypothermia
         delay: 20
         conditions:
+            character: [human, android]
             minCharacterTemperature: 34
         effects:
             mood: -5
@@ -11,6 +12,8 @@ levels:
         disease: moderate_hypothermia
         delay: 20
         conditions:
+            previous: true
+            character: [human, android]
             minCharacterTemperature: 32
         effects:
             mood: -7
@@ -19,6 +22,8 @@ levels:
         disease: severe_hypothermia
         delay: 20
         conditions:
+            previous: true
+            character: [human, android]
             minCharacterTemperature: 25
         effects:
             mood: -15
@@ -27,6 +32,8 @@ levels:
         disease: extrem_hypothermia
         delay: 20
         conditions:
+            previous: true
+            character: [human, android]
             minCharacterTemperature: 20
         effects:
             mood: -25

@@ -1,12 +1,12 @@
 //package org.smallbox.faraway.ui;
 //
-//import org.smallbox.faraway.Game;
+//import org.smallbox.faraway.game.Game;
 //import org.smallbox.faraway.Strings;
-//import org.smallbox.faraway.engine.ui.OnClickListener;
-//import org.smallbox.faraway.engine.ui.TextView;
-//import org.smallbox.faraway.engine.ui.View;
-//import org.smallbox.faraway.model.character.CharacterModel;
-//import org.smallbox.faraway.model.room.Room;
+//import org.smallbox.faraway.ui.engine.OnClickListener;
+//import org.smallbox.faraway.ui.engine.TextView;
+//import org.smallbox.faraway.ui.engine.View;
+//import org.smallbox.faraway.game.model.character.base.CharacterModel;
+//import org.smallbox.faraway.game.model.room.Room;
 //
 //import java.util.List;
 //

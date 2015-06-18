@@ -25,3 +25,8 @@ entries:
         id: lb_year
         textsize: 14
         position: [580, 12]
+
+    -   type: label
+        id: lb_planet
+        textsize: 14
+        position: [660, 12]

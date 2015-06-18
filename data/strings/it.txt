@@ -1,0 +1,139 @@
+#Reports
+Feeling a little peckish: Un languorino
+Feeling hungry: Una fame
+Suffering from hunger: Affamato
+Is starving to death: Will morire di fame
+
+I'm cold: Freddo
+I have lost the feeling in my fingers: Non si sentono più le dita
+I'm frozen: È congelato
+I am dying of cold: Cold Die
+
+Excited by new colony: Eccitato dalla nuova colonia
+In the dark for a long time: Nel buio per lungo tempo
+Feeling lonely: Solitario
+Need someone to talk: Un bisogno di parlare con qualcuno
+
+#Structure
+Door: Porte
+Ground: Sol
+Floor: Sol
+Light: Lumière
+Hull: Coque
+Wall: Mur
+Window: Fenêtre
+Hubble: Hublot
+
+#Item
+Bed: Lit
+Chess tab: Échequier
+Pink square: Carré rose
+Bedside Table: Table de chevet
+Chair: Fauteuil
+Chest: Coffre
+Desk: Bureau
+Wardrobe: Garde robe
+Computer: Ordinateur
+Laptop: Ordinateur portable
+Cooker: Cuisinière
+Fridge: Frigo
+Pub: Bar
+Serving table: Buffet
+
+#Action
+None: No
+Eat easy meal: Mangiare un pasto semplice
+Eat advanced meal: Mangiare un buon pasto
+Eat military ration: Mangiare razioni militari
+Cook easy meal: Cucinare un pasto semplice
+Cook advanced meal: Cucinare un buon pasto
+Cook military ration: Cucinare razioni militari
+Sleep in bed: Dormire in un letto
+
+#Room
+Quarter: Quartiere
+Sickbay: Infermeria
+Garden: Giardino
+Storage: Riserva
+Enginering: Sala macchine
+
+#Menu
+New colony: Nouvelle colonie
+Load colony: Charger une colonie
+Quit: Quitter
+
+[Monitoring]: [Sorveglianza]
+[Private life]: [Vita privata]
+[Priorities]: [Perizia]
+[Inventory]: [Inventario]
+[Health]: [Salute]
+
+Resources: Risorse
+
+Food: Cibo
+Gasoline: Benzina
+Matter: Materiale
+Water: Acqua
+Power: Energia
+Effects: Effetti
+
+Back: Retour
+[    ]: [      ]
+IN QUEUE: ATTESA
+
+[_BUILD]: [_COSTRUZIONE]
+[_CREW]: [_CREW]
+[_ROOMS]: [_PARTI]
+[_MANAGE]: [_GESTIONE]
+[_STATS]: [_STATISTICHE]
+[_PLAN]: [_PIANIFICAZIONE]
+
+"Rendering: %dms": "Tempo di rendering: %dms"
+
+#Character
+Last reports: Eecenti rapporti
+Monitoring: Sorveglianza
+Staff record: Informazioni
+Inventory: Inventario
+Relationship: Eelazione
+Health: Salute
+Security: Sicurezza
+Energy: Energia
+Oxygen: Ossigeno
+Happiness: Felicità
+
+#Relations
+parent: relativo
+sister: sorella
+half-sister: sorellastra
+brother: fratello
+half-brother: fratellastro
+children: bambino
+mate: fidanzato
+
+GATHER: VENDEMMIA
+MINING: MINER
+DUMP: RID
+PICK UP: PRENDERE
+Count: Numero
+Technician: Tecnico
+Engineer: Ingegnere
+Doctor: Medico
+Child: Bambino
+
+I'm starving: Sto morendo di fame
+I feel lonely: Mi sento solo
+Everything goes right: Tutto bene
+I sleep well: Dormo bene
+bad: male
+good: buono
+
+#Build menu
+STRUCTURE: _STRUTTURA
+QUARTER: _QUARTIERE
+SICKBAY: _NURSING
+RECREATION: _ENTERTAINMENT
+COMMON: _VARIE
+KITCHEN: _CUCINA
+DEFAULT: _VARIE
+SYSTEM: _SISTEMA

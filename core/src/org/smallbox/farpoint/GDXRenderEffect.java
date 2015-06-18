@@ -1,6 +1,6 @@
 package org.smallbox.farpoint;
 
-import org.smallbox.faraway.RenderEffect;
+import org.smallbox.faraway.engine.RenderEffect;
 
 /**
  * Created by Alex on 04/06/2015.

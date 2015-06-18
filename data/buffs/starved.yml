@@ -1,32 +1,39 @@
 levels:
     -   label: Feeling a little peckish
         disease: malnutrition
-        delay: 100
+        delay: 8
         conditions:
+            character: [human]
             minFood: 0
         effects:
             mood: -5
 
     -   label: Feeling hungry
         disease: malnutrition
-        delay: 100
+        delay: 16
         conditions:
+            previous: true
+            character: [human]
             minFood: 0
         effects:
             mood: -10
 
     -   label: Suffering from hunger
         disease: malnutrition
-        delay: 100
+        delay: 32
         conditions:
+            previous: true
+            character: [human]
             minFood: 0
         effects:
             mood: -15
 
     -   label: Is starving to death
         disease: malnutrition
-        delay: 100
+        delay: 64
         conditions:
+            previous: true
+            character: [human]
             minFood: 0
         effects:
             mood: -25

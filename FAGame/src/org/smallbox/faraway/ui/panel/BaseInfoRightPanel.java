@@ -1,16 +1,14 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.engine.ui.FrameLayout;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.model.item.ParcelModel;
-import org.smallbox.faraway.model.room.RoomModel;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.ui.engine.FrameLayout;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.room.NeighborModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
-
-import java.util.Map;
 
 /**
  * Created by Alex on 13/06/2015.
@@ -47,11 +45,11 @@ public class BaseInfoRightPanel extends BaseRightPanel {
             ((TextView)_frame_room_info.findById("lb_cold")).setString("C: " + area.getRoom().getTemperatureInfo().targetCold);
             ((TextView)_frame_room_info.findById("lb_heat_left")).setString("HL: " + area.getRoom().getTemperatureInfo().heatPotencyLeft);
             ((TextView)_frame_room_info.findById("lb_cold_left")).setString("CL: " + area.getRoom().getTemperatureInfo().coldPotencyLeft);
+            ((TextView)_frame_room_info.findById("lb_oxygen")).setString("O2: " + area.getRoom().getOxygen());
 
             int count = 0;
-            Map<RoomModel, Integer> neighborhoods = area.getRoom().getNeighborhoods();
-            for (Integer i: neighborhoods.values()) {
-                count += i;
+            for (NeighborModel neighbor: area.getRoom().getNeighbors()) {
+                count += neighbor.parcels.size();
             }
             ((TextView)_frame_room_info.findById("lb_neighborhood")).setString("Neighborhood: " + count);
         }

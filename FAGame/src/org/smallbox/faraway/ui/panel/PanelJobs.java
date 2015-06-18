@@ -1,12 +1,12 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.GameEventListener;
-import org.smallbox.faraway.engine.ui.FrameLayout;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.ViewFactory;
-import org.smallbox.faraway.engine.util.StringUtils;
-import org.smallbox.faraway.manager.JobManager;
-import org.smallbox.faraway.model.job.JobModel;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.ui.engine.FrameLayout;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.StringUtils;
+import org.smallbox.faraway.game.manager.JobManager;
+import org.smallbox.faraway.game.model.job.JobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
@@ -55,7 +55,7 @@ public class PanelJobs extends BaseRightPanel {
         List<JobModel> jobs = JobManager.getInstance().getJobs();
 
         FrameLayout frameJobs = (FrameLayout)findById("frame_jobs");
-        frameJobs.clearAllViews();
+        frameJobs.removeAllViews();
 
 		// Display jobs
 		for (JobModel job: jobs) {

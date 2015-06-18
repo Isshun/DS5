@@ -1,6 +1,6 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 
 import java.util.Collection;
 import java.util.HashSet;

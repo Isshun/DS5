@@ -2,11 +2,11 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderTexture;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.TextureCreationException;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.SpriteModel;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteModel;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.engine.renderer.RenderLayer;
 
 public class SFMLRenderLayer extends RenderLayer {

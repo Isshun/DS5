@@ -2,7 +2,7 @@ package org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import org.smallbox.faraway.engine.util.Constant;
+import org.smallbox.faraway.util.Constant;
 import org.smallbox.farpoint.GDXApplication;
 
 public class DesktopLauncher {

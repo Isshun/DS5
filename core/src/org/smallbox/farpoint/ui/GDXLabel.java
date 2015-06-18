@@ -1,12 +1,11 @@
 package org.smallbox.farpoint.ui;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import org.smallbox.faraway.Color;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.RenderEffect;
-import org.smallbox.faraway.engine.ui.TextView;
-import org.smallbox.faraway.engine.ui.View;
-import org.smallbox.faraway.engine.util.StringUtils;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.util.StringUtils;
 import org.smallbox.farpoint.GDXRenderer;
 
 /**
@@ -67,7 +66,6 @@ public class GDXLabel extends TextView {
 
     @Override
     protected void onDraw(GFXRenderer renderer, RenderEffect effect) {
-
     }
 
     @Override
@@ -113,7 +111,7 @@ public class GDXLabel extends TextView {
     @Override
     public int getContentWidth() {
         if (_string != null) {
-            return (int) GDXRenderer._fonts[_textSize].getBounds(_string).width;
+            return (int) GDXRenderer.getInstance().getFont(_textSize).getBounds(_string).width;
         }
         return 0;
     }
@@ -121,7 +119,7 @@ public class GDXLabel extends TextView {
     @Override
     public int getContentHeight() {
         if (_string != null) {
-            return (int) GDXRenderer._fonts[_textSize].getBounds(_string).height;
+            return (int) GDXRenderer.getInstance().getFont(_textSize).getBounds(_string).height;
         }
         return 0;
     }

@@ -1,8 +1,8 @@
 package org.smallbox.faraway.ui.mainMenu;
 
 import org.smallbox.faraway.Application;
-import org.smallbox.faraway.GFXRenderer;
-import org.smallbox.faraway.engine.ui.TextView;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.ui.engine.TextView;
 import org.smallbox.faraway.ui.LayoutModel;
 
 /**
@@ -15,7 +15,7 @@ public class TeamScene extends MainMenuScene {
 
     @Override
     public void onLayoutLoaded(LayoutModel layout) {
-        findById("bt_land_site").setOnClickListener(view -> Application.getInstance().newGame("5"));
+        findById("bt_land_site").setOnClickListener(view -> Application.getInstance().newGame("5.sav"));
     }
 
     @Override

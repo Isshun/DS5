@@ -1,8 +1,11 @@
 weather: regular
 time: midnight
-tickPerHour: 42
+tickPerHour: 64
 inventoryMaxQuantity: 20
 storageMaxQuantity: 30
+environmentDistance: 5
+byPassMenu: true
+lang: fr
 
 render:
     floor:          true
@@ -14,6 +17,7 @@ render:
     job:            true
     area:           true
     debug:          true
+    room:           false
 
 manager:
     room:           true
@@ -22,13 +26,13 @@ manager:
 
 character:
     effects:
-        regular:
-            energy: -0.25
-            food: -0.5
-        sleepOnFloor:
-            energy: 30.0
-            food: -1
-        starve:
-            energy: 0.0
-        exhausted:
-            energy: 0.0
+        human:
+            energy: -0.85
+            food: -10.5
+            oxygen: -10
+            joy: -0.2
+        android:
+            energy: -0.85
+            joy: -0.2
+        droid:
+            energy: -0.55
