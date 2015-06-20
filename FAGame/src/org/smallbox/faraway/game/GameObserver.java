@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game;
 
+import org.smallbox.faraway.game.manager.QuestManager;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
@@ -19,4 +20,6 @@ public interface GameObserver {
     default void onRemoveResource(ResourceModel resource){}
     default void onHourChange(int hour){}
     default boolean hasBeenInitialized() {return true;}
+    default void onOpenQuest(QuestManager.QuestModel quest) {}
+    default void onCloseQuest(QuestManager.QuestModel quest) {}
 }

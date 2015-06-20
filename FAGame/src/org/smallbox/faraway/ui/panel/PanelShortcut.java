@@ -2,6 +2,7 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.ResourceData;
 import org.smallbox.faraway.game.manager.ResourceManager;
 import org.smallbox.faraway.ui.LayoutModel;
@@ -18,6 +19,7 @@ import java.util.List;
 public class PanelShortcut extends BaseRightPanel {
     private static final int NB_COLUMNS_STATS = NB_COLUMNS / 2 - 1;
     private static final int NB_RESOURCE_MAX = 10;
+    private ResourceManager _resourceManager;
 
     private static class ResourceEntry {
         public ResourceData	data;
@@ -66,13 +68,14 @@ public class PanelShortcut extends BaseRightPanel {
     public void onLayoutLoaded(LayoutModel layout) {
         _lbTime = (TextView) findById("lb_time");
 
+        _resourceManager = (ResourceManager)Game.getInstance().getManager(ResourceManager.class);
         _resources = new ArrayList<>();
-        addResource((TextView) findById("lb_food"), ResourceManager.getInstance().getFood());
-        addResource((TextView) findById("lb_water"), ResourceManager.getInstance().getWater());
-        addResource((TextView) findById("lb_gas"), ResourceManager.getInstance().getGasoline());
-        addResource((TextView) findById("lb_matter"), ResourceManager.getInstance().getMatter());
-        addResource((TextView) findById("lb_o2"), ResourceManager.getInstance().getO2());
-        addResource((TextView) findById("lb_power"), ResourceManager.getInstance().getPower());
+        addResource((TextView) findById("lb_food"), _resourceManager.getFood());
+        addResource((TextView) findById("lb_water"), _resourceManager.getWater());
+        addResource((TextView) findById("lb_gas"), _resourceManager.getGasoline());
+        addResource((TextView) findById("lb_science"), _resourceManager.getScience());
+        addResource((TextView) findById("lb_o2"), _resourceManager.getO2());
+        addResource((TextView) findById("lb_power"), _resourceManager.getPower());
 
         for (PanelEntry entry : _entries) {
             findById(entry.buttonId).setOnClickListener(view -> {

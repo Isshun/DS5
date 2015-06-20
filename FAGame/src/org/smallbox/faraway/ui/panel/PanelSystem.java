@@ -54,7 +54,7 @@ public class PanelSystem extends BasePanel {
         
 //        _used = (_used * 7 + used) / 8;
 
-        _lbRenderTime.setString("Rendering: %dms", (int)MainRenderer.getRenderTime());
+        _lbRenderTime.setString("Rendering: %dms", (int)Application.getRenderTime());
         _lbMemoryUsed.setString("Heap: " + String.valueOf(used) + " / " + String.valueOf(total) + " Mo");
         _lbUpdate.setString(String.format("Update: %d/%d", Application.getLastUpdateDelay(), Application.getLastLongUpdateDelay()));
         _lbFloor.setString("FPS: " + MainRenderer.getFPS());

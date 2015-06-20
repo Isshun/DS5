@@ -104,6 +104,7 @@ public class ItemInfo {
 		public int 						happiness;
 		public int 						health;
 		public int 						relation;
+		public int 						joy;
 		public double 					oxygen;
 		public int 						socialize;
 		public int 						security;
@@ -161,10 +162,11 @@ public class ItemInfo {
 	
 	boolean matchFilter(ItemInfoEffects effects, ItemFilter filter) {
 		if (effects != null) {
+			if (filter.effectJoy && effects.joy > 0) { return true; }
 			if (filter.effectDrink && effects.drink > 0) { return true; }
 			if (filter.effectEnergy && effects.energy > 0) { return true; }
 			if (filter.effectFood && effects.food > 0) { return true; }
-			if (filter.effectHapiness && effects.happiness > 0) { return true; }
+			if (filter.effectHappiness && effects.happiness > 0) { return true; }
 			if (filter.effectHealth && effects.health > 0) { return true; }
 			if (filter.effectRelation && effects.relation > 0) { return true; }
 		}

@@ -21,7 +21,7 @@ public class FoeManager extends BaseManager {
 	}
 
 //	public void	load(final String filePath) {
-//		Log.error("Load characters: " + filePath);
+//		Log.error("Load list: " + filePath);
 //
 //		int x, y, professionType;
 //		boolean	inBlock = false;
@@ -75,7 +75,7 @@ public class FoeManager extends BaseManager {
 //
 //
 //	public void	save(final String filePath) {
-//		Log.info("Save characters: " + filePath);
+//		Log.info("Save list: " + filePath);
 //
 //		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
 //			bw.write("BEGIN CHARACTERS\n");
@@ -90,7 +90,7 @@ public class FoeManager extends BaseManager {
 //			e.printStackTrace();
 //		}
 //
-//		Log.info("Save characters: " + filePath + " done");
+//		Log.info("Save list: " + filePath + " done");
 //	}
 	
 	public void	onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) throws IOException {

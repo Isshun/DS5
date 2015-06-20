@@ -49,7 +49,7 @@ public class Application implements GameEventListener {
     private int                     _nextUpdate;
     private int                     _nextRefresh;
     private int                     _nextLongUpdate;
-    private int                     _renderTime;
+    private static int                     _renderTime;
     private int                     _refresh;
     private long                    _startTime = -1;
     private long                    _elapsed = 0;
@@ -236,6 +236,8 @@ public class Application implements GameEventListener {
     }
 
     public void render(GFXRenderer renderer, RenderEffect effect, long lastRenderInterval) {
+        long time = System.currentTimeMillis();
+
         if (_startTime == -1) {
             _startTime = System.currentTimeMillis();
         }
@@ -257,35 +259,42 @@ public class Application implements GameEventListener {
 
             renderer.clear(new Color(0, 0, 0));
             _gameRenderer.onDraw(renderer, effect, animProgress);
+//            Log.debug("Render time: " + (System.currentTimeMillis() - time));
             _lightRenderer.onDraw(renderer, -effect.getViewport().getPosX(), -effect.getViewport().getPosY());
+//            Log.debug("Render time: " + (System.currentTimeMillis() - time));
             _particleRenderer.onDraw(renderer, -effect.getViewport().getPosX(), -effect.getViewport().getPosY());
+//            Log.debug("Render time: " + (System.currentTimeMillis() - time));
             _gameRenderer.onDrawHUD(renderer, effect, animProgress);
+//            Log.debug("Render time: " + (System.currentTimeMillis() - time));
             _gameInterface.onDraw(renderer, _tick, 0);
+//            Log.debug("Render time: " + (System.currentTimeMillis() - time));
             renderer.finish();
+//            Log.debug("Render finish: " + (System.currentTimeMillis() - time));
 
             if (_game.isRunning()) {
-
-// Refresh
+                // Refresh
                 if (_elapsed >= _nextRefresh) {
                     refreshGame(_refresh++);
                     _nextRefresh += Application.REFRESH_INTERVAL;
                 }
 
-// Update
+                // Update
                 if (_elapsed >= _nextUpdate) {
                     update(_tick++);
                     _nextUpdate += Application.getUpdateInterval();
                 }
 
-// Long _tick
+                // Long _tick
                 if (_elapsed >= _nextLongUpdate) {
                     longUpdate(_frame);
                     _nextLongUpdate += Application.getLongUpdateInterval();
                 }
             }
-        }
 
-        _frame++;
+            _frame++;
+            _renderTime = (int)(System.currentTimeMillis() - time);
+//            Log.debug("Render finish: " + _renderTime);
+        }
     }
 
     public void renderGame(double animProgress, int update, long renderTime, GFXRenderer renderer, RenderEffect effect) {
@@ -335,5 +344,9 @@ public class Application implements GameEventListener {
 
     public static int getFrame() {
         return _frame;
+    }
+
+    public static int getRenderTime() {
+        return _renderTime;
     }
 }

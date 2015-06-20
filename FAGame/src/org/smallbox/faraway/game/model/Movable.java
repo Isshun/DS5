@@ -1,16 +1,15 @@
 package org.smallbox.faraway.game.model;
 
-import org.newdawn.slick.util.pathfinding.Path;
-import org.newdawn.slick.util.pathfinding.Step;
-import org.smallbox.faraway.PathHelper.PathManagerCallback;
+import com.badlogic.gdx.ai.pfa.GraphPath;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.game.model.job.JobModel;
 
-public abstract class Movable implements PathManagerCallback {
+public abstract class Movable {
 
 	public interface OnPathComplete {
 		void	onPathFailed(JobModel job);
-		void	onPathComplete(Path rawpath, JobModel job);
+		void	onPathComplete(GraphPath<ParcelModel> path, JobModel job);
 	}
 	
 	public enum Direction {
@@ -25,7 +24,7 @@ public abstract class Movable implements PathManagerCallback {
 		NONE
 	};
 
-	protected Step				_node;
+	protected ParcelModel 		_node;
 	protected int				_posX;
 	protected int				_posY;
 	protected int				_toX;
@@ -35,7 +34,7 @@ public abstract class Movable implements PathManagerCallback {
 	protected int				_blocked;
 	protected Direction			_direction;
 	protected Direction 		_move;
-	protected Path				_path;
+	protected GraphPath<ParcelModel> _path;
 	protected int				_steps;
 	protected JobModel 			_job;
 	protected OnPathComplete	_onPathComplete;

@@ -75,32 +75,34 @@ public class GDXLabel extends TextView {
 
     @Override
     public void draw(GFXRenderer renderer, int x, int y) {
-        if (_needResetPos) {
-            _finalX = x;
-            _finalY = y;
-            View view = this;
-            while (view != null) {
-                _finalX += view.getPosX();
-                _finalY += view.getPosY();
-                view = view.getParent();
+        if (_isVisible) {
+            if (_needResetPos) {
+                _finalX = x;
+                _finalY = y;
+                View view = this;
+                while (view != null) {
+                    _finalX += view.getPosX();
+                    _finalY += view.getPosY();
+                    view = view.getParent();
+                }
+
+                if (_align == Align.CENTER) {
+                    _offsetX = (_width - getContentWidth()) / 2;
+                    _offsetY = (_height - getContentHeight()) / 2;
+                }
+
+                if (_align == Align.CENTER_VERTICAL) {
+                    _offsetY = (_height - getContentHeight()) / 2;
+                }
             }
 
-            if (_align == Align.CENTER) {
-                _offsetX = (_width - getContentWidth()) / 2;
-                _offsetY = (_height - getContentHeight()) / 2;
+            if (_gdxBackgroundColor != null) {
+                ((GDXRenderer) renderer).draw(_gdxBackgroundColor, _finalX, _finalY, _width, _height);
             }
-
-            if (_align == Align.CENTER_VERTICAL) {
-                _offsetY = (_height - getContentHeight()) / 2;
-            }
-        }
-
-        if (_gdxBackgroundColor != null) {
-            ((GDXRenderer) renderer).draw(_gdxBackgroundColor, _finalX, _finalY, _width, _height);
-        }
 
 //        ((GDXRenderer) renderer).draw(com.badlogic.gdx.graphics.Color.RED, _finalX, _finalY, _width, _height);
-        ((GDXRenderer)renderer).draw(_string, _textSize, _finalX + _offsetX + _paddingLeft, _finalY + _offsetY + _paddingTop, _gdxColor);
+            ((GDXRenderer) renderer).draw(_string, _textSize, _finalX + _offsetX + _paddingLeft, _finalY + _offsetY + _paddingTop, _gdxColor);
+        }
     }
 
     @Override

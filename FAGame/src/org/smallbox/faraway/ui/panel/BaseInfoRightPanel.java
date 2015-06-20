@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui.panel;
 
+import com.badlogic.gdx.ai.pfa.Connection;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.TextView;
@@ -31,24 +32,31 @@ public class BaseInfoRightPanel extends BaseRightPanel {
         }
     }
 
-    public void select(ParcelModel area) {
-        _area = area;
-        if (area != null && area.getRoom() != null && _frame_room_info != null) {
-            ((TextView)_frame_room_info.findById("lb_room")).setString(area.getRoom().isExterior() ? "Exterior" : "Room");
-            ((TextView)_frame_room_info.findById("lb_room_size")).setString("Size: " + area.getRoom().getParcels().size());
-            ((TextView)_frame_room_info.findById("lb_room_temperature")).setString("Temperature: " + (int)area.getRoom().getTemperatureInfo().temperature + "°");
-            ((TextView)_frame_room_info.findById("lb_room_light")).setString("Light: " + area.getRoom().getLight());
+    public void select(ParcelModel parcel) {
+        _area = parcel;
+        if (parcel != null && parcel.getRoom() != null && _frame_room_info != null) {
+            ((TextView)_frame_room_info.findById("lb_room")).setString(parcel.getRoom().isExterior() ? "Exterior" : "Room");
+            ((TextView)_frame_room_info.findById("lb_room_size")).setString("Size: " + parcel.getRoom().getParcels().size());
+            ((TextView)_frame_room_info.findById("lb_room_temperature")).setString("Temperature: " + (int)parcel.getRoom().getTemperatureInfo().temperature + "°");
+            ((TextView)_frame_room_info.findById("lb_room_light")).setString("Light: " + parcel.getRoom().getLight());
 
-            ((TextView)_frame_room_info.findById("lb_heat_potency")).setString("HP: " + area.getRoom().getTemperatureInfo().heatPotency);
-            ((TextView)_frame_room_info.findById("lb_cold_potency")).setString("CP: " + area.getRoom().getTemperatureInfo().coldPotency);
-            ((TextView)_frame_room_info.findById("lb_heat")).setString("H: " + area.getRoom().getTemperatureInfo().targetHeat);
-            ((TextView)_frame_room_info.findById("lb_cold")).setString("C: " + area.getRoom().getTemperatureInfo().targetCold);
-            ((TextView)_frame_room_info.findById("lb_heat_left")).setString("HL: " + area.getRoom().getTemperatureInfo().heatPotencyLeft);
-            ((TextView)_frame_room_info.findById("lb_cold_left")).setString("CL: " + area.getRoom().getTemperatureInfo().coldPotencyLeft);
-            ((TextView)_frame_room_info.findById("lb_oxygen")).setString("O2: " + area.getRoom().getOxygen());
+            ((TextView)_frame_room_info.findById("lb_heat_potency")).setString("HP: " + parcel.getRoom().getTemperatureInfo().heatPotency);
+            ((TextView)_frame_room_info.findById("lb_cold_potency")).setString("CP: " + parcel.getRoom().getTemperatureInfo().coldPotency);
+            ((TextView)_frame_room_info.findById("lb_heat")).setString("H: " + parcel.getRoom().getTemperatureInfo().targetHeat);
+            ((TextView)_frame_room_info.findById("lb_cold")).setString("C: " + parcel.getRoom().getTemperatureInfo().targetCold);
+            ((TextView)_frame_room_info.findById("lb_heat_left")).setString("HL: " + parcel.getRoom().getTemperatureInfo().heatPotencyLeft);
+            ((TextView)_frame_room_info.findById("lb_cold_left")).setString("CL: " + parcel.getRoom().getTemperatureInfo().coldPotencyLeft);
+            ((TextView)_frame_room_info.findById("lb_oxygen")).setString("O2: " + parcel.getRoom().getOxygen());
+
+            String strConnexion = "";
+            for (Connection<ParcelModel> connection: parcel.getConnections()) {
+                strConnexion += strConnexion.isEmpty() ? "Connexion: " : ", ";
+                strConnexion += connection.getToNode().getX() + "x" + connection.getToNode().getY();
+            }
+            ((TextView)_frame_room_info.findById("lb_connexion")).setString(strConnexion);
 
             int count = 0;
-            for (NeighborModel neighbor: area.getRoom().getNeighbors()) {
+            for (NeighborModel neighbor: parcel.getRoom().getNeighbors()) {
                 count += neighbor.parcels.size();
             }
             ((TextView)_frame_room_info.findById("lb_neighborhood")).setString("Neighborhood: " + count);

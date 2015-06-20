@@ -21,6 +21,7 @@ import org.smallbox.faraway.game.model.job.JobModel.JobAbortReason;
 import org.smallbox.faraway.game.model.job.JobModel.JobStatus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class JobManager extends BaseManager {
@@ -47,6 +48,7 @@ public class JobManager extends BaseManager {
 		_joys.add(new CheckJoySleep());
 		_joys.add(new CheckJoyTalk());
 		_joys.add(new CheckJoyWalk());
+		_joys.add(new CheckJoyItem());
 
         Log.debug("JobManager done");
 	}
@@ -273,12 +275,13 @@ public class JobManager extends BaseManager {
 	}
 
 	/**
-	 * Create joy job for characters
+	 * Create joy job for list
 	 *
 	 * @param character
 	 * @return
 	 */
 	private boolean assignJoyJob(CharacterModel character) {
+		Collections.shuffle(_joys);
 		for (CharacterCheck jobCheck: _joys) {
 			if (jobCheck.check(character)) {
 				JobModel job = jobCheck.create(character);
@@ -293,7 +296,7 @@ public class JobManager extends BaseManager {
 	}
 
 	/**
-     * Create priority job for characters (eat / sleep / getRoom oxygen / move to temperate area)
+     * Create priority job for list (eat / sleep / getRoom oxygen / move to temperate area)
      *
      * @param character
      * @return
@@ -505,6 +508,9 @@ public class JobManager extends BaseManager {
 		if (reason == JobAbortReason.BLOCKED) {
 			if (job.getItem() != null) {
 				job.getItem().setBlocked(Game.getUpdate());
+				if (!job.canBeResume()) {
+					removeJob(job);
+				}
 			}
 		}
 

@@ -106,7 +106,7 @@ public class GDXSpriteManager extends SpriteManager {
                 return getResource((ResourceModel) item);
             }
 
-//            int alpha = Math.min(item.getMatter() == 0 ? 255 : 75 + 180 / item.getMatter() * (int)item.getProgress(), 255);
+//            int alpha = Math.min(item.getScience() == 0 ? 255 : 75 + 180 / item.getScience() * (int)item.getProgress(), 255);
             int alpha = 255;
 
             return getSprite(item.getInfo(), tile, 0, alpha, false);
@@ -292,7 +292,7 @@ public class GDXSpriteManager extends SpriteManager {
             int x = (room % choice) * Constant.TILE_WIDTH;
             int y = zone * (Constant.TILE_HEIGHT + 2) + 1;
             int alpha = 255;
-//            int alpha = Math.min(item != null ? 75 + 180 / item.getMatter() * (int)item.getMatterSupply() : 255, 255);
+//            int alpha = Math.min(item != null ? 75 + 180 / item.getScience() * (int)item.getMatterSupply() : 255, 255);
             return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT, alpha);
         } else if (item != null) {
             return getSprite(item.getInfo(), 0, 0, 255, false);
@@ -324,7 +324,7 @@ public class GDXSpriteManager extends SpriteManager {
         // Door
         if (item.getName().equals("base.door")) {
             int alpha = 255;
-//            int alpha = 75 + 180 / item.getMatter() * (int)item.getMatterSupply();
+//            int alpha = 75 + 180 / item.getScience() * (int)item.getMatterSupply();
             return getSprite(6,
                     WALL_WIDTH * item.getMode(),
                     WALL_HEIGHT * 7,
@@ -336,7 +336,7 @@ public class GDXSpriteManager extends SpriteManager {
         // Wall
         else {
             if (item.isWall()) {
-//                int alpha = 75 + 180 / item.getMatter() * (int)item.getMatterSupply();
+//                int alpha = 75 + 180 / item.getScience() * (int)item.getMatterSupply();
                 int alpha = 255;
                 int texture = 6;
                 int x = 0;

@@ -31,7 +31,7 @@ entries:
             position: [24, 70]
 
         -   type: label
-            id: lb_matter
+            id: lb_science
             textsize: 14
             position: [220, 70]
 

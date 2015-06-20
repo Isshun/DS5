@@ -10,7 +10,6 @@ import org.smallbox.faraway.engine.renderer.ParticleRenderer;
  */
 public class GDXParticleRenderer extends ParticleRenderer {
     private ParticleEffect          _effect;
-    private String                  _particle;
 
     public GDXParticleRenderer() {
         refresh();
@@ -31,16 +30,22 @@ public class GDXParticleRenderer extends ParticleRenderer {
 
     @Override
     public void refresh() {
+    }
+
+    @Override
+    public void setParticle(String name) {
+        loadEffect(name);
+    }
+
+    private void loadEffect(String name) {
         // Dispose old effect
         if (_effect != null) {
             _effect.dispose();
             _effect = null;
         }
-
-        // Create effect
-        if (_particle != null) {
+        if (name != null) {
             _effect = new ParticleEffect();
-            _effect.load(Gdx.files.internal("data/particles/" + _particle), Gdx.files.internal("data/particles/"));
+            _effect.load(Gdx.files.internal("data/particles/" + name), Gdx.files.internal("data/particles/"));
             _effect.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
             _effect.getEmitters().first().getSpawnWidth().setHigh(Gdx.graphics.getWidth());
             _effect.getEmitters().first().getSpawnWidth().setLow(Gdx.graphics.getWidth());
@@ -49,12 +54,6 @@ public class GDXParticleRenderer extends ParticleRenderer {
             _effect.flipY();
             _effect.start();
         }
-    }
-
-    @Override
-    public void setParticle(String particle) {
-        _particle = particle;
-        refresh();
     }
 
     @Override

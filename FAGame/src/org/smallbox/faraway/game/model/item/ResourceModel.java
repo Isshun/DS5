@@ -6,7 +6,6 @@ import org.smallbox.faraway.game.model.job.JobModel;
 public class ResourceModel extends ItemModel {
 	private double 	_quantity;
 	private int 	_tile;
-	private int 	_doubleRender;
 	private JobModel _job;
 
 	public ResourceModel(ItemInfo info, int id) {
@@ -27,9 +26,12 @@ public class ResourceModel extends ItemModel {
 
 	@Override
 	public int getQuantity() { return (int)_quantity; }
-	
 
 	public boolean isRock() {
+		return "base.rock".equals(_info.name);
+	}
+
+	public boolean isSolid() {
 		return "base.rock".equals(_info.name);
 	}
 
@@ -39,14 +41,6 @@ public class ResourceModel extends ItemModel {
 
 	public int getTile() {
 		return _tile;
-	}
-
-	public void setDoubleRender(int b) {
-		_doubleRender = b;
-	}
-
-	public int getDoubleRender() {
-		return _doubleRender;
 	}
 
 	public boolean canBeMined() {

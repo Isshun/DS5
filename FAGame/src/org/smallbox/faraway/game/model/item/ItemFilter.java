@@ -5,9 +5,10 @@ public class ItemFilter {
 	public boolean 	effectFood;
 	public boolean 	effectDrink;
 	public boolean 	effectEnergy;
-	public boolean 	effectHapiness;
+	public boolean 	effectHappiness;
 	public boolean 	effectRelation;
 	public boolean 	effectHealth;
+	public boolean 	effectJoy;
 	public boolean 	lookingForFactory;
 	public boolean 	lookingForItem;
 	public ItemInfo	itemMatched;

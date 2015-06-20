@@ -9,7 +9,7 @@ public class ResourceManager extends BaseManager {
 
 	private static ResourceManager _self;
 
-	private ResourceData	_matter;
+	private ResourceData 	_science;
 	private ResourceData	_power;
 	private ResourceData	_food;
 	private ResourceData 	_water;
@@ -21,7 +21,7 @@ public class ResourceManager extends BaseManager {
 	public enum Message {NONE, NO_MATTER, BUILD_COMPLETE, BUILD_PROGRESS};
 
 	public ResourceManager() {
-		_matter = new ResourceData(Strings.LB_MATTER, ToolTips.RES_MATTER);
+		_science = new ResourceData(Strings.LB_SCIENCE, ToolTips.RES_SCIENCE);
 		_power = new ResourceData(Strings.LB_POWER, ToolTips.RES_POWER);
 		_spice = new ResourceData("spice", ToolTips.RES_SPICE);
 		_food = new ResourceData(Strings.LB_FOOD, ToolTips.RES_FOOD);
@@ -30,18 +30,11 @@ public class ResourceManager extends BaseManager {
 		_oxygen = new ResourceData("o2", ToolTips.RES_OXYGEN);
 	}
 
-	public static ResourceManager	getInstance() {
-		if (_self == null) {
-			_self = new ResourceManager();
-		}
-		return _self;
-	}
-
 	// TODO
 	public void refreshWater() {
 	}
 
-	public ResourceData getMatter() { return _matter; }
+	public ResourceData getScience() { return _science; }
 	public ResourceData	getPower() { return _power; }
 	public ResourceData	getSpice() { return _spice; }
 	public ResourceData	getWater() { return _water; }
@@ -49,9 +42,8 @@ public class ResourceManager extends BaseManager {
 
 	public void setSpice(int spice) { _spice.value = spice; }
 	public void setWater(int water) { _water.value = water; refreshWater(); }
-	public void	setMatter(int matter) { _matter.value = matter; }
-
-	public void addMatter(int value) { _matter.value += value; }
+	public void setScience(int science) { _science.value = science; }
+	public void addScience(int science) { _science.value += science; }
 	public void addWater(int value) { _water.value += value; refreshWater(); }
 
 	public boolean isLowFood() {

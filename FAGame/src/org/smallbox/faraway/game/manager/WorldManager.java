@@ -1,12 +1,13 @@
 package org.smallbox.faraway.game.manager;
 
-import org.newdawn.slick.util.pathfinding.PathFindingContext;
-import org.newdawn.slick.util.pathfinding.TileBasedMap;
+import com.badlogic.gdx.ai.pfa.Connection;
+import com.badlogic.gdx.ai.pfa.DefaultConnection;
+import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
+import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.data.factory.ItemFactory;
-import org.smallbox.faraway.PathHelper.MyMover;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
 
@@ -14,7 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class WorldManager extends BaseManager implements TileBasedMap {
+public class WorldManager extends BaseManager implements IndexedGraph<ParcelModel> {
     private static final int 	    NB_FLOOR = 10;
 
     private ParcelModel[][][]       _parcels;
@@ -46,11 +47,29 @@ public class WorldManager extends BaseManager implements TileBasedMap {
                 _parcels[x][y] = new ParcelModel[NB_FLOOR];
                 for (int f = 0; f < NB_FLOOR; f++) {
                     _parcels[x][y][f] = new ParcelModel(x, y, f);
+                    _parcels[x][y][f].setIndex(x * _width + y);
+                }
+            }
+        }
+
+        for (int x = 0; x < _width; x++) {
+            for (int y = 0; y < _height; y++) {
+                for (int f = 0; f < NB_FLOOR; f++) {
+                    createConnection(_parcels[x][y][f]);
                 }
             }
         }
 
         _finder = new WorldFinder(this, _parcels);
+    }
+
+    private void createConnection(ParcelModel parcel) {
+        Array<Connection<ParcelModel>> connections = new Array<>();
+        createConnection(connections, parcel, parcel.getX() + 1, parcel.getY());
+        createConnection(connections, parcel, parcel.getX() - 1, parcel.getY());
+        createConnection(connections, parcel, parcel.getX(), parcel.getY() + 1);
+        createConnection(connections, parcel, parcel.getX(), parcel.getY() - 1);
+        parcel.setConnections(connections);
     }
 
     // TODO: arraylist
@@ -348,25 +367,25 @@ public class WorldManager extends BaseManager implements TileBasedMap {
     public int					getWidth() { return _width; }
     public int					getHeight() { return _height; }
     public WorldFinder			getFinder() { return _finder; }
-
-    @Override
-    public int getWidthInTiles() {
-        return _width;
-    }
-
-    @Override
-    public int getHeightInTiles() {
-        return _height;
-    }
-
-    @Override
-    public void pathFinderVisited(int x, int y) {
-//		DebugPos pos = new DebugPos();
-//		pos.x = x;
-//		pos.y = y;
-//		_debugPath.add(pos);
-        //Log.info("visite: " + x + ", " + y);
-    }
+//
+//    @Override
+//    public int getWidthInTiles() {
+//        return _width;
+//    }
+//
+//    @Override
+//    public int getHeightInTiles() {
+//        return _height;
+//    }
+//
+//    @Override
+//    public void pathFinderVisited(int x, int y) {
+////		DebugPos pos = new DebugPos();
+////		pos.x = x;
+////		pos.y = y;
+////		_debugPath.add(pos);
+//        //Log.info("visite: " + x + ", " + y);
+//    }
 
     public void replaceItem(ItemInfo info, int x, int y, int matterSupply) {
         replaceItem(info, x, y, _floor, matterSupply);
@@ -446,36 +465,51 @@ public class WorldManager extends BaseManager implements TileBasedMap {
         if (inMapBounds(x, y)) {
             if (_parcels[x][y][z] == null) {
                 _parcels[x][y][z] = new ParcelModel(x, y, z);
+                _parcels[x][y][z].setIndex(x * _width + y);
+                throw new RuntimeException("todo");
             }
             return _parcels[x][y][z];
         }
         return null;
     }
-
-    @Override
-    public boolean blocked(PathFindingContext context, int x, int y) {
-        MyMover mover = (MyMover)context.getMover();
-        if (mover.targetX == x && mover.targetY == y) {
-            return false;
-        }
-
-        if (inMapBounds(x, y)) {
-            return _parcels[x][y][0].getStructure() != null && _parcels[x][y][0].getStructure().isComplete() && _parcels[x][y][0].getStructure().isSolid();
-        }
-        return false;
-    }
-
-    @Override
-    public float getCost(PathFindingContext context, int tx, int ty) {
-        float cost = context.getSourceX() != tx && context.getSourceY() != ty ? 1.5f : 1f;
-
-        ParcelModel area = _parcels[tx][ty][0];
-        if (area != null && area.getItem() != null) {
-            cost *= 4;
-        }
-
-        return cost;
-    }
+//
+//    @Override
+//    public boolean blocked(PathFindingContext context, int x, int y) {
+//        MyMover mover = (MyMover)context.getMover();
+//        if (mover.targetX == x && mover.targetY == y) {
+//            return false;
+//        }
+//
+//        if (!inMapBounds(x, y)) {
+//            return true;
+//        }
+//
+//        // Check structure (wall, closed door)
+//        if (_parcels[x][y][0].getStructure() != null && _parcels[x][y][0].getStructure().isSolid()) {
+//            return true;
+//        }
+//
+//        // Check structure (wall, closed door)
+//        if (_parcels[x][y][0].getResource() != null && _parcels[x][y][0].getResource().isSolid()) {
+//            return true;
+//        }
+//
+//        return false;
+//    }
+//
+//    @Override
+//    public float getCost(PathFindingContext context, int tx, int ty) {
+//        MyMover mover = (MyMover)context.getMover();
+//
+////        float cost = context.getSourceX() != tx && context.getSourceY() != ty ? 1.5f : 1f;
+////
+////        ParcelModel area = _parcels[tx][ty][0];
+////        if (area != null && area.getItem() != null) {
+////            cost *= 4;
+////        }
+////
+//        return 1;
+//    }
 
     public ItemModel takeItem(ItemModel item) {
         if (item != null) {
@@ -594,4 +628,41 @@ public class WorldManager extends BaseManager implements TileBasedMap {
         }
         return value;
     }
+
+    @Override
+    public int getNodeCount() {
+        return _width * _height;
+    }
+
+    @Override
+    public Array<Connection<ParcelModel>> getConnections(ParcelModel parcel) {
+        return parcel.getConnections();
+    }
+
+    private void createConnection(Array<Connection<ParcelModel>> array, ParcelModel parcel, int x, int y) {
+        if (inMapBounds(x, y) && !parcel.isBlocked()) {
+            array.add(new DefaultConnection(parcel, _parcels[x][y][0]));
+        }
+    }
+
+    @Override
+    public void onAddStructure(StructureModel structure){
+        createConnection(structure.getParcel());
+    }
+
+    @Override
+    public void onAddResource(ResourceModel resource) {
+        createConnection(resource.getParcel());
+    }
+
+    @Override
+    public void onRemoveStructure(StructureModel structure){
+        createConnection(structure.getParcel());
+    }
+
+    @Override
+    public void onRemoveResource(ResourceModel resource){
+        createConnection(resource.getParcel());
+    }
+
 }

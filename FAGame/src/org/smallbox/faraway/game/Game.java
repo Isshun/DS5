@@ -73,7 +73,7 @@ public class Game {
     public static WorldFinder           getWorldFinder() { return _worldFinder; }
     public static AreaManager           getAreaManager() { return _areaManager; }
 
-	private static int _tick;
+	private static int                  _tick;
 	private static WorldFinder 			_worldFinder;
 	private Viewport 					_viewport;
 	private boolean 					_isRunning;
@@ -155,6 +155,7 @@ public class Game {
         _managers.add(new OxygenManager());
         _managers.add(new PowerManager());
         _managers.add(new WorldItemManager());
+        _managers.add(new QuestManager());
 
         _observers.addAll(_managers);
 
@@ -180,8 +181,6 @@ public class Game {
 	public void	newGame(LoadListener loadListener) {
 		loadListener.onUpdate("Create new game");
 		WorldFactory.create(Game.getWorldManager(), loadListener);
-		ResourceManager.getInstance().refreshWater();
-		ResourceManager.getInstance().addMatter(5000);
 
         save(_fileName);
 	}
@@ -196,9 +195,6 @@ public class Game {
 
         loadListener.onUpdate("Init world map");
 		WorldFactory.cleanRock();
-		
-		ResourceManager.getInstance().refreshWater();
-		ResourceManager.getInstance().addMatter(5000);
 	}
 
 	public void	save(final String fileName) {
@@ -216,5 +212,18 @@ public class Game {
 
     public String getFileName() {
         return _fileName;
+    }
+
+    public BaseManager getManager(Class<? extends BaseManager> cls) {
+        for (BaseManager manager: _managers) {
+            if (cls.isInstance(manager)) {
+                return manager;
+            }
+        }
+        return null;
+    }
+
+    public long getTick() {
+        return _tick;
     }
 }

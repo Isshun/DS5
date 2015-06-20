@@ -73,3 +73,9 @@ entries:
         text: cold left
         textsize: 14
         position: [280, 204]
+
+    -   type: label
+        id: lb_connexion
+        text: connexion
+        textsize: 14
+        position: [24, 304]

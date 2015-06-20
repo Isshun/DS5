@@ -2,14 +2,15 @@ label: Pink square
 width: 1
 height: 1
 type: item
-category: recreation
+category: amusement
 cost: 42
 actions:
     -   type: use
-        cost: 10
+        cost: 100
         effects:
             happiness: 10
             relation: 10
+            joy: 10
 slots:
     - [1, -1]
     - [-1, 1]

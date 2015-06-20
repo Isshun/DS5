@@ -169,7 +169,7 @@ public class PanelDebug extends BaseRightPanel {
 	@Override
 	public void onLayoutLoaded(LayoutModel layout) {
 		findById("bt_add_character").setOnClickListener(view -> Game.getCharacterManager().addRandom(150, 150));
-		findById("bt_add_matter").setOnClickListener(view -> ResourceManager.getInstance().addMatter(500));
+//		findById("bt_add_matter").setOnClickListener(view -> ResourceManager.getInstance().addScience(500));
 		findById("bt_toggle_debug").setOnClickListener(view -> _ui.toggleMode(Mode.DEBUGITEMS));
 		findById("bt_make_room").setOnClickListener(view -> Game.getRoomManager().makeRooms());
 		findById("bt_kill_all").setOnClickListener(view -> {

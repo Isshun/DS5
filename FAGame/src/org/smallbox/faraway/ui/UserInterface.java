@@ -68,6 +68,7 @@ public class UserInterface implements GameEventListener {
             new PanelResources(),
             new PanelPlanet(),
             new PanelDev(),
+            new PanelQuest(),
             new PanelCharacter(	    Mode.CHARACTER,         null),
             new PanelInfo(		    Mode.INFO, 		        null),
             new PanelInfoStructure(	Mode.INFO_STRUCTURE, 	null),
@@ -212,6 +213,7 @@ public class UserInterface implements GameEventListener {
 
         for (BasePanel panel: _panels) {
             panel.init(_viewFactory, _factory, this, _interaction, SpriteManager.getInstance().createRenderEffect());
+            _game.addObserver(panel);
 
             if (panel.getMode() != null) {
                 switch (panel.getMode()) {

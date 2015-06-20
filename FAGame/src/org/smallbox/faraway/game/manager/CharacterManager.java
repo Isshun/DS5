@@ -182,9 +182,10 @@ public class CharacterManager extends BaseManager {
 		return null;
 	}
 
-	public void addRandom(int x, int y) {
+	public CharacterModel addRandom(int x, int y) {
 		CharacterModel character = new HumanModel(Utils.getUUID(), x, y, null, null, 16);
 		add(character);
+		return character;
 	}
 
 	public void addRandom(Class<? extends CharacterModel> cls) {

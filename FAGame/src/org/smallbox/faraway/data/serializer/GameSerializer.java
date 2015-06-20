@@ -74,7 +74,7 @@ public class GameSerializer {
         if (save != null) {
             if (save != null) {
                 if (save.characters != null) {
-                    loadListener.onUpdate("Loading characters");
+                    loadListener.onUpdate("Loading list");
                     (new CharacterSerializer()).load(save);
                 }
 

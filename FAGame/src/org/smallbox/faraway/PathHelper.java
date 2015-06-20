@@ -1,147 +1,80 @@
 package org.smallbox.faraway;
 
-import org.newdawn.slick.util.pathfinding.AStarPathFinder;
-import org.newdawn.slick.util.pathfinding.AStarPathFinder.Node;
-import org.newdawn.slick.util.pathfinding.Mover;
-import org.newdawn.slick.util.pathfinding.Path;
-import org.newdawn.slick.util.pathfinding.Step;
-import org.newdawn.slick.util.pathfinding.heuristics.ManhattanHeuristic;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
+import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
+import com.badlogic.gdx.ai.pfa.GraphPath;
+import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import org.smallbox.faraway.game.OnMoveListener;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.BaseManager;
-import org.smallbox.faraway.game.model.Movable;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.job.JobModel;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class PathHelper extends BaseManager {
 
-	@Override
+    private IndexedAStarPathFinder<ParcelModel> _finder;
+
+    @Override
 	protected void onUpdate(int tick) {
-		// Close non running paths
-		synchronized (_paths) {
-			_paths.forEach(java.lang.Runnable::run);
-			_paths.clear();
-		}
+        _runnable.forEach(java.lang.Runnable::run);
+        _runnable.clear();
 	}
 
-	public static class MyMover implements Mover {
-		public final Movable	movable;
-		public final int 		targetX;
-		public final int 		targetY;
-
-		public MyMover(Movable movable, int targetX, int targetY) {
-			this.movable = movable;
-			this.targetX = targetX;
-			this.targetY = targetY;
-		}
-	}
-	
-	public interface PathManagerCallback {
-		  void	onPathComplete(Path path, JobModel item);
-		  void	onPathFailed(JobModel item);
-	}
-
-	public static class FinderPool {
-		private static List<AStarPathFinder> 	_finderPool;
-		private static Step[][] 				_steps;
-
-		public static void init(int width, int height) {
-			_steps = new Step[width][height];
-			_finderPool = new ArrayList<>();
-			for (int i = 0; i < THREAD_POOL_SIZE; i++) {
-				Node[][] nodes = new Node[width][height];
-				_finderPool.add(new AStarPathFinder(Game.getWorldManager(), 500, true, nodes, _steps, new ManhattanHeuristic(1)));
-			}
-		}
-
-		public static AStarPathFinder getFinder() {
-			synchronized(_finderPool) {
-				if (_finderPool.size() > 0) {
-					return _finderPool.remove(0);
-				}
-			}
-			return null;
-		}
-
-		public static void recycle(AStarPathFinder finder) {
-			synchronized(_finderPool) {
-				_finderPool.add(finder);
-			}
-		}
-	}
-
-	private static final int 			THREAD_POOL_SIZE = 4;
-	protected static final int 			REGION_SIZE = 10;
+	private static final int 			THREAD_POOL_SIZE = 1;
 
 	private static PathHelper _self;
-	final private ArrayList<Runnable> 	_paths;
+	final private ArrayList<Runnable>   _runnable;
 	private ExecutorService 			_threadPool;
 
 	public PathHelper() {
 		_self = this;
 		_threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-		_paths = new ArrayList<>();
+		_runnable = new ArrayList<>();
 	}
 	
 	public void init(int width, int height) {
 		if (width == 0 || height == 0) {
 			throw new RuntimeException("PathManager init with 0 width/height");
 		}
-
-		FinderPool.init(width, height);
-	}
-
-	public void getPathAsync(final OnMoveListener listener, final CharacterModel character, final JobModel job) {
-		getPathAsync(listener, character, job, job.getX(), job.getY());
+        _finder = new IndexedAStarPathFinder<>(Game.getWorldManager());
 	}
 
 	public void getPathAsync(final OnMoveListener listener, final CharacterModel character, final JobModel job, final int x, final int y) {
-		final int fromX = character.getX();
-		final int fromY = character.getY();
-		final int toX = x;
-		final int toY = y;
-
 		_threadPool.execute(() -> {
             Log.debug("getPathAsync");
 
-            AStarPathFinder finder = FinderPool.getFinder();
-            if (finder == null) {
-				if (listener != null) {
-					listener.onFail(job, character);
-				}
-                character.onPathFailed(job);
-                throw new RuntimeException("no more AStarPathFinder in FinderPool");
-            }
+            GraphPath<ParcelModel> path = new DefaultGraphPath<>();
 
-            MyMover mover = new MyMover(character, x, y);
-            final Path rawpath = finder.findPath(mover, fromX, fromY, toX, toY);
-            FinderPool.recycle(finder);
+            if (_finder.searchNodePath(
+                    Game.getWorldManager().getParcel(character.getX(), character.getY()),
+                    Game.getWorldManager().getParcel(x, y),
+                    (node, endNode) -> 10 * (Math.abs(node.getX() - endNode.getX()) + Math.abs(node.getY() - endNode.getY())),
+                    path)) {
 
-            if (rawpath != null) {
-                Log.debug("character: path close (" + fromX + "x" + fromY + " to " + toX + "x" + toY + ")");
-
-                synchronized(_paths) {
-                    _paths.add(() -> {
-						character.onPathComplete(rawpath, job);
-					});
+                Log.debug("character: path find (" + character.getX() + "x" + character.getY() + " to " + x + "x" + y + ")");
+                synchronized (_runnable) {
+                    _runnable.add(() -> {
+                        character.onPathComplete(path, job);
+                        if (listener != null) {
+                            listener.onReach(job, character);
+                        }
+                    });
                 }
-
             } else {
-				Log.info("character: path fail");
-
-                // TODO
-                job.setBlocked(MainRenderer.getFrame());
-				if (listener != null) {
-					listener.onFail(job, character);
-				}
-                character.onPathFailed(job);
+                Log.info("character: path fail");
+                synchronized (_runnable) {
+                    _runnable.add(() -> {
+                        character.onPathFailed(job);
+                        if (listener != null) {
+                            listener.onFail(job, character);
+                        }
+                    });
+                }
             }
         });
 	}
@@ -152,9 +85,5 @@ public class PathHelper extends BaseManager {
 
 	public void close() {
 		_threadPool.shutdownNow();		
-	}
-
-	public List<Runnable> getPaths() {
-		return _paths;
 	}
 }

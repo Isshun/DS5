@@ -1,7 +1,7 @@
 package org.smallbox.faraway;
 
 public class Strings {
-	public static final String LB_MATTER = "Matter";
+	public static final String LB_SCIENCE = "Science";
 	public static final String LB_POWER = "Power";
 	public static final String LB_FOOD = "Food";
 	public static final String LB_WATER = "Water";

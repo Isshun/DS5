@@ -85,12 +85,12 @@ public class WorldFinder {
 		}
 
 		// Item is not completed
-		if (item.isComplete() == false) {
+		if (!item.isComplete()) {
 			return false;
 		}
 
 		// Item don't match filter
-		if (item.matchFilter(filter) == false) {
+		if (!item.matchFilter(filter)) {
 			return false;
 		}
 

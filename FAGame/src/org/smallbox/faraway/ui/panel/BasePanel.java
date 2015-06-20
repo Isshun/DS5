@@ -1,6 +1,8 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.*;
+import org.smallbox.faraway.game.GameObserver;
+import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.ui.engine.ColorView;
 import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.View;
@@ -13,7 +15,7 @@ import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.ArrayList;
 
-public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnLayoutLoaded {
+public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnLayoutLoaded, GameObserver {
     protected static final int 	LINE_HEIGHT = 20;
 	protected static final int 	FONT_SIZE_TITLE = 22;
 	protected static final int 	FONT_SIZE = 14;
@@ -26,7 +28,7 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 	private boolean 				_alwaysVisible;
 	private GameEventListener.Key 	_shortcut;
 	protected UserInteraction 		_interaction;
-	private boolean 				_isVisible;
+	protected boolean 				_isVisible;
 	private ColorView 				_background;
 	private boolean 				_isLoaded;
     private final String            _layoutPath;

@@ -138,7 +138,8 @@ public class GDXRenderer implements GFXRenderer {
         if (string != null) {
             _batch.begin();
             _fonts[textSize].setColor(color != null ? color : TEXT_COLOR);
-            _fonts[textSize].draw(_batch, string, x, y);
+//            _fonts[textSize].draw(_batch, string, x, y);
+            _fonts[textSize].drawMultiLine(_batch, string, x, y);
             _batch.end();
         }
     }

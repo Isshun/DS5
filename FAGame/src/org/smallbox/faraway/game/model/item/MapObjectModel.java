@@ -206,7 +206,9 @@ public abstract class MapObjectModel {
     // Boolean
     public boolean			isSolid() { return _isSolid; }
     public boolean			isWorking() { return _isWorking; }
-    public boolean			isComplete() { return _progress >= _info.cost; }
+    // TODO
+//    public boolean			isComplete() { return _progress >= _info.cost; }
+    public boolean			isComplete() { return true; }
     public boolean			isSupply() { return _power == _powerSupply; }
     public boolean			isSleepingItem() { return _info.isSleeping; }
     public boolean			isStructure() { return _info.isStructure; }

@@ -214,7 +214,7 @@ public class RoomManager extends BaseManager implements GameObserver {
     }
 
     private void refreshRooms() {
-        Log.info("RoomManager: refresh");
+//        Log.info("RoomManager: refresh");
 
         // Store o2 levels
         for (RoomModel room: _roomList) {

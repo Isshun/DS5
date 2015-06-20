@@ -26,7 +26,7 @@ public class MainRenderer implements IRenderer {
     private UserInterface.Mode      _mode;
 
     public static int getFrame() { return _frame; }
-	public static long getRenderTime() { return _renderTime; }
+	public static long getRenderTime() { return _frame > 0 ? _renderTime / _frame : 0; }
 
 	public MainRenderer(GFXRenderer renderer, GameConfig config) {
 		_self = this;
@@ -64,7 +64,7 @@ public class MainRenderer implements IRenderer {
 	}
 	
 	public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
-//		_renderTime = renderTime;
+		long time = System.currentTimeMillis();
 
 		_worldRenderer.onDraw(renderer, effect, animProgress);
 		_worldRenderer.onDrawSelected(renderer, effect, animProgress);
@@ -72,6 +72,7 @@ public class MainRenderer implements IRenderer {
         _characterRenderer.onDraw(renderer, effect, animProgress);
 
         _frame++;
+		_renderTime += System.currentTimeMillis() - time;
 	}
 
 	public void onDrawHUD(GFXRenderer renderer, RenderEffect effect, double animProgress) {

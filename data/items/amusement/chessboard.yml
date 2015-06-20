@@ -4,7 +4,7 @@ height: 1
 frames: 7
 framesInterval: 18
 type: item
-category: recreation
+category: amusement
 isToy: true
 cost: 42
 slots:
@@ -15,4 +15,5 @@ actions:
         cost: 10
         effects:
             happiness: 10
+            joy: 10
             relation: 10

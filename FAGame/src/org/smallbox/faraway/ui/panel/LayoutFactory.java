@@ -46,6 +46,7 @@ public class LayoutFactory {
         if (entry.align != null) {
             switch (entry.align) {
                 case "center": lbText.setAlign(TextView.Align.CENTER); break;
+                case "center_vertical": lbText.setAlign(TextView.Align.CENTER_VERTICAL); break;
             }
         }
 
