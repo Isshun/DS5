@@ -16,17 +16,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class WorldManager extends BaseManager implements IndexedGraph<ParcelModel> {
-    private static final int 	    NB_FLOOR = 10;
+    private static final int NB_FLOOR = 10;
 
-    private ParcelModel[][][]       _parcels;
-    private int					    _width;
-    private int					    _height;
-    private int 				    _floor;
-    private int                     _temperature;
-    private WorldFinder		 	    _finder;
-    private int                     _temperatureOffset;
-    private final Game              _game;
-    private Set<ConsumableModel>    _consumables = new HashSet<>();
+    private ParcelModel[][][] _parcels;
+    private int _width;
+    private int _height;
+    private int _floor;
+    private int _temperature;
+    private WorldFinder _finder;
+    private int _temperatureOffset;
+    private final Game _game;
+    private Set<ConsumableModel> _consumables = new HashSet<>();
 
     public ParcelModel[][][] getAreas() {
         return _parcels;
@@ -211,6 +211,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
     /**
      * Search for area free to receive a ConsumableItem
+     *
      * @param itemInfo
      * @param x
      * @param y
@@ -235,6 +236,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
     /**
      * Check if current area is free for consumable
+     *
      * @param x
      * @param y
      * @param info
@@ -252,6 +254,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
     /**
      * Check if position is in map bounds
+     *
      * @param x
      * @param y
      * @return true if position in bounds
@@ -290,7 +293,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         }
 
         // Put item on floor
-        ResourceModel resource = (ResourceModel)ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
+        ResourceModel resource = (ResourceModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
         for (int i = 0; i < resource.getWidth(); i++) {
             for (int j = 0; j < resource.getHeight(); j++) {
                 _parcels[x][y][z].setResource(resource);
@@ -307,7 +310,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         }
 
         // Put item on floor
-        ItemModel item = (ItemModel)ItemFactory.create(this, _parcels[x][y][z], itemInfo, progress);
+        ItemModel item = (ItemModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, progress);
         for (int i = 0; i < item.getWidth(); i++) {
             for (int j = 0; j < item.getHeight(); j++) {
                 _parcels[x][y][z].setItem(item);
@@ -325,7 +328,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
         // TODO
         if (_parcels[x][y][z].getStructure() == null || _parcels[x][y][z].getStructure().isGround()) {
-            StructureModel structure = (StructureModel)ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
+            StructureModel structure = (StructureModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
             if (structure != null) {
                 structure.setPosition(x, y);
                 _game.notify(observer -> observer.onAddStructure(structure));
@@ -364,9 +367,17 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][0];
     }
 
-    public int					getWidth() { return _width; }
-    public int					getHeight() { return _height; }
-    public WorldFinder			getFinder() { return _finder; }
+    public int getWidth() {
+        return _width;
+    }
+
+    public int getHeight() {
+        return _height;
+    }
+
+    public WorldFinder getFinder() {
+        return _finder;
+    }
 //
 //    @Override
 //    public int getWidthInTiles() {
@@ -549,17 +560,17 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         }
 
         if (object.isStructure()) {
-            removeStructure((StructureModel)object);
+            removeStructure((StructureModel) object);
             return;
         }
 
         if (object.isResource()) {
-            removeResource((ResourceModel)object);
+            removeResource((ResourceModel) object);
             return;
         }
 
         if (object.isUserItem()) {
-            removeItem((ItemModel)object);
+            removeItem((ItemModel) object);
             return;
         }
 
@@ -646,7 +657,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     }
 
     @Override
-    public void onAddStructure(StructureModel structure){
+    public void onAddStructure(StructureModel structure) {
         createConnection(structure.getParcel());
     }
 
@@ -656,13 +667,46 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     }
 
     @Override
-    public void onRemoveStructure(StructureModel structure){
+    public void onRemoveStructure(StructureModel structure) {
         createConnection(structure.getParcel());
     }
 
     @Override
-    public void onRemoveResource(ResourceModel resource){
+    public void onRemoveResource(ResourceModel resource) {
         createConnection(resource.getParcel());
     }
 
+    public ParcelModel getNearestFreeSpace(int x, int y, boolean isExterior) {
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
+                if (isFreeSpace(x + i, y, isExterior)) return _parcels[x + i][y][0];
+                if (isFreeSpace(x - i, y, isExterior)) return _parcels[x - i][y][0];
+                if (isFreeSpace(x, y + j, isExterior)) return _parcels[x][y + j][0];
+                if (isFreeSpace(x, y - j, isExterior)) return _parcels[x][y - j][0];
+            }
+        }
+        return null;
+    }
+
+    private boolean isFreeSpace(int x, int y, boolean isExterior) {
+        if (!inMapBounds(x, y)) {
+            return false;
+        }
+        if (isExterior && _parcels[x][y][0].getRoom() != null && !_parcels[x][y][0].getRoom().isExterior()) {
+            return false;
+        }
+        if (_parcels[x][y][0].getStructure() != null && _parcels[x][y][0].getStructure().isSolid()) {
+            return false;
+        }
+        if (_parcels[x][y][0].getResource() != null) {
+            return false;
+        }
+        if (_parcels[x][y][0].getItem() != null) {
+            return false;
+        }
+        if (_parcels[x][y][0].getConsumable() != null) {
+            return false;
+        }
+        return true;
+    }
 }

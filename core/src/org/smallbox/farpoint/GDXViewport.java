@@ -42,8 +42,8 @@ public class GDXViewport extends Viewport {
 
     @Override
     public void moveTo(int x, int y) {
-        _posX = (x + 15) * Constant.TILE_WIDTH;
-        _posY = (y + 10) * Constant.TILE_HEIGHT;
+        _posX = (-x * Constant.TILE_WIDTH) + (50/2 * Constant.TILE_WIDTH);
+        _posY = (-y * Constant.TILE_HEIGHT) + (40/2 * Constant.TILE_HEIGHT);
     }
 
     @Override

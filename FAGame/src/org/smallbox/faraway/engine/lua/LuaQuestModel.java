@@ -1,9 +1,9 @@
 package org.smallbox.faraway.engine.lua;
 
-import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.QuestManager;
 import org.smallbox.faraway.game.manager.ResourceManager;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 
 /**
  * Created by Alex on 20/06/2015.
@@ -17,6 +17,14 @@ public class LuaQuestModel {
 
         public void addConsumable(LuaConsumableModel luaConsumable) {
             Game.getWorldManager().putConsumable(luaConsumable.itemInfo, luaConsumable.quantity, 5, 5, 0);
+            throw new RuntimeException("not allowed");
+        }
+
+        public void addConsumable(LuaConsumableModel luaConsumable, int x, int y) {
+            ParcelModel parcel = Game.getWorldManager().getNearestFreeSpace(x + (int) (Math.random() * 6) - 3, y + (int) (Math.random() * 6) - 3, true);
+            if (parcel != null) {
+                Game.getWorldManager().putConsumable(luaConsumable.itemInfo, luaConsumable.quantity, parcel.getX(), parcel.getY(), 0);
+            }
         }
 
         public void addResource(String resource, int quantity) {

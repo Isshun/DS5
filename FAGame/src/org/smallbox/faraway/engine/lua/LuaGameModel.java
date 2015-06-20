@@ -10,6 +10,7 @@ public class LuaGameModel {
     public final int                day;
     public final int                hour;
     public final int                year;
+    public final LuaMapModel        map;
     public final LuaCameraModel     camera;
     public final LuaCrewModel       crew;
     public final LuaVisitorModel    friendly;
@@ -18,6 +19,7 @@ public class LuaGameModel {
     public final LuaFactoryModel    factory;
 
     public LuaGameModel(Game game) {
+        this.map = new LuaMapModel();
         this.tick = game.getTick();
         this.hour = game.getHour();
         this.day = game.getDay();
