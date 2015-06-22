@@ -31,7 +31,7 @@ public class Application implements GameEventListener {
     private static MenuBase			_menu;
     private static int 				_updateInterval = UPDATE_INTERVAL;
     private static int 				_longUpdateInterval = LONG_UPDATE_INTERVAL;
-    private static MainRenderer     _gameRenderer;
+    private static MainRenderer     _mainRenderer;
     private static LightRenderer    _lightRenderer;
     private static ParticleRenderer _particleRenderer;
     private static UserInterface    _gameInterface;
@@ -49,10 +49,11 @@ public class Application implements GameEventListener {
     private int                     _nextUpdate;
     private int                     _nextRefresh;
     private int                     _nextLongUpdate;
-    private static int                     _renderTime;
+    private static int              _renderTime;
     private int                     _refresh;
     private long                    _startTime = -1;
     private long                    _elapsed = 0;
+    private boolean[]               _directions;
 
     public Application(GFXRenderer renderer) {
         _self = this;
@@ -80,7 +81,7 @@ public class Application implements GameEventListener {
         _data = data;
         _renderer = renderer;
         _isFullscreen = true;
-        _gameRenderer = new MainRenderer(renderer, config);
+        _mainRenderer = new MainRenderer(renderer, config);
         _lightRenderer = lightRenderer;
         _particleRenderer = particleRenderer;
         _gameInterface = new UserInterface(new LayoutFactory(), ViewFactory.getInstance());
@@ -193,11 +194,34 @@ public class Application implements GameEventListener {
     @Override
     public void onMouseEvent(GameTimer timer, Action action, MouseButton button, int x, int y, boolean rightPressed) {
         if (_game != null) {
-            _gameInterface.onMouseEvent(timer, action, button, x, y, rightPressed);
+            if (button == MouseButton.RIGHT && action == Action.PRESSED) {
+                _game.getViewport().startMove(x, y);
+                return;
+            }
+            if (button == MouseButton.WHEEL_UP) {
+                _renderer.zoomUp();
+            }
+            else if (button == MouseButton.WHEEL_DOWN) {
+                _renderer.zoomDown();
+            }
+            else {
+                _gameInterface.onMouseEvent(timer, action, button, x, y, rightPressed);
+            }
         } else {
             _mainMenu.onMouseEvent(timer, action, button, x, y);
-
         }
+    }
+
+    public boolean onDrag(int x, int y) {
+        if (_game != null) {
+            // Move viewport
+//            if (_keyRightPressed && Math.abs(_mouseRightPressX - x) > 5 || Math.abs(_mouseRightPressY - y) > 5) {
+                _game.getViewport().update(x, y);
+//            }
+
+            return true;
+        }
+        return false;
     }
 
     public LoadListener getLoadListener() {
@@ -205,12 +229,21 @@ public class Application implements GameEventListener {
     }
 
     public void newGame(String fileName) {
+        _mainMenu.close();
+
         _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer);
-        _game.init(false);
         _game.newGame(_loadListener);
+        _game.init(false);
+        _game.save(_game.getFileName());
         PathHelper.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
-        _gameRenderer.init(_game);
+        _mainRenderer.init(_renderer, GameData.config, _game, _lightRenderer, _particleRenderer);
         _gameInterface.onCreate(_game);
+
+        if (_lightRenderer != null) {
+            _lightRenderer.init();
+        }
+
+        startGame();
     }
 
     public void loadGame(String fileName) {
@@ -223,16 +256,20 @@ public class Application implements GameEventListener {
         PathHelper.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
 
         _loadListener.onUpdate("Start game");
-        _gameRenderer.init(_game);
+        _mainRenderer.init(_renderer, GameData.config, _game, _lightRenderer, _particleRenderer);
         _gameInterface.onCreate(_game);
 
-        _lightRenderer.init();
+        if (_lightRenderer != null) {
+            _lightRenderer.init();
+        }
 
         startGame();
     }
 
     private void startGame() {
-        _game.addObserver(_lightRenderer);
+        if (_lightRenderer != null) {
+            _game.addObserver(_lightRenderer);
+        }
     }
 
     public void render(GFXRenderer renderer, RenderEffect effect, long lastRenderInterval) {
@@ -258,20 +295,13 @@ public class Application implements GameEventListener {
             }
 
             renderer.clear(new Color(0, 0, 0));
-            _gameRenderer.onDraw(renderer, effect, animProgress);
-//            Log.debug("Render time: " + (System.currentTimeMillis() - time));
-            _lightRenderer.onDraw(renderer, -effect.getViewport().getPosX(), -effect.getViewport().getPosY());
-//            Log.debug("Render time: " + (System.currentTimeMillis() - time));
-            _particleRenderer.onDraw(renderer, -effect.getViewport().getPosX(), -effect.getViewport().getPosY());
-//            Log.debug("Render time: " + (System.currentTimeMillis() - time));
-            _gameRenderer.onDrawHUD(renderer, effect, animProgress);
-//            Log.debug("Render time: " + (System.currentTimeMillis() - time));
+            _mainRenderer.onDraw(renderer, effect, animProgress);
             _gameInterface.onDraw(renderer, _tick, 0);
-//            Log.debug("Render time: " + (System.currentTimeMillis() - time));
             renderer.finish();
-//            Log.debug("Render finish: " + (System.currentTimeMillis() - time));
 
             if (_game.isRunning()) {
+                updateLocation();
+
                 // Refresh
                 if (_elapsed >= _nextRefresh) {
                     refreshGame(_refresh++);
@@ -297,18 +327,27 @@ public class Application implements GameEventListener {
         }
     }
 
-    public void renderGame(double animProgress, int update, long renderTime, GFXRenderer renderer, RenderEffect effect) {
+    private void updateLocation() {
+        if (_directions[0]) {
+            _game.getViewport().move(20, 0);
+        }
+        if (_directions[1]) {
+            _game.getViewport().move(0, 20);
+        }
+        if (_directions[2]) {
+            _game.getViewport().move(-20, 0);
+        }
+        if (_directions[3]) {
+            _game.getViewport().move(0, -20);
+        }
     }
 
-    public void refreshConfig() {
-        if (_particleRenderer != null) {
-            _particleRenderer.refresh();
-        }
+    public void renderGame(double animProgress, int update, long renderTime, GFXRenderer renderer, RenderEffect effect) {
     }
 
     public void refreshGame(int refreshCount) {
         if (_game != null) {
-            _gameRenderer.onRefresh(refreshCount);
+            _mainRenderer.onRefresh(refreshCount);
             _gameInterface.onRefresh(refreshCount);
         }
     }
@@ -325,7 +364,7 @@ public class Application implements GameEventListener {
 
     public void longUpdate(int longTick) {
         long time = System.currentTimeMillis();
-        _gameRenderer.setFPS(longTick, _longUpdateInterval);
+        _mainRenderer.setFPS(longTick, _longUpdateInterval);
         _lastLongUpdateDelay = System.currentTimeMillis() - time;
         GameData.getData().reloadConfig();
     }
@@ -348,5 +387,9 @@ public class Application implements GameEventListener {
 
     public static int getRenderTime() {
         return _renderTime;
+    }
+
+    public void setInputDirection(boolean[] directions) {
+        _directions = directions;
     }
 }

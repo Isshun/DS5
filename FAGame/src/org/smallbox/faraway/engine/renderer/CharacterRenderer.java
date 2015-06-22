@@ -13,7 +13,7 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 
 import java.util.List;
 
-public class CharacterRenderer implements IRenderer {
+public class CharacterRenderer extends BaseRenderer {
 	private List<CharacterModel> 	_characters;
 	private SpriteManager 			_spriteManager;
 	private int 					_update;

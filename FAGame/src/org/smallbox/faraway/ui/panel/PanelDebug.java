@@ -11,9 +11,8 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.StringUtils;
 import org.smallbox.faraway.game.manager.JobManager;
-import org.smallbox.faraway.game.manager.ResourceManager;
 import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 
@@ -346,7 +345,7 @@ public class PanelDebug extends BaseRightPanel {
         _entries.addView(lbEntry);
     }
 
-    public void dumpJob(JobModel job) {
+    public void dumpJob(BaseJobModel job) {
         println(job.getLabel());
         println("char: " + (job.getCharacter() != null ? job.getCharacter().toString() : "none"));
     }

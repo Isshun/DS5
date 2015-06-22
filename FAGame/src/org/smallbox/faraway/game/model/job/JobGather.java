@@ -9,7 +9,7 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 
-public class JobGather extends JobModel {
+public class JobGather extends BaseJobModel {
 	private static final SpriteModel ICON = SpriteManager.getInstance().getIcon("data/res/ic_gather.png");
 
 	private ResourceModel 	_resource;
@@ -25,7 +25,7 @@ public class JobGather extends JobModel {
 		super(action, x, y);
 	}
 
-	public static JobModel create(ResourceModel resource) {
+	public static BaseJobModel create(ResourceModel resource) {
 		// Resource is not gatherable
 		if (resource == null || resource.getInfo().actions == null || resource.getInfo().actions.isEmpty() || !"gather".equals(resource.getInfo().actions.get(0).type)) {
 			return null;
@@ -131,11 +131,6 @@ public class JobGather extends JobModel {
 	}
 
     @Override
-    public String getType() {
-        return "gather";
-    }
-
-    @Override
 	public String getLabel() {
 		return "gather " + _item.getLabel();
 	}
@@ -148,5 +143,10 @@ public class JobGather extends JobModel {
 	@Override
 	public SpriteModel getIcon() {
 		return ICON;
+	}
+
+	@Override
+	public void onQuit(CharacterModel character) {
+
 	}
 }

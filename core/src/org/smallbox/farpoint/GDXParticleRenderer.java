@@ -3,6 +3,7 @@ package org.smallbox.farpoint;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
 
 /**
@@ -11,12 +12,8 @@ import org.smallbox.faraway.engine.renderer.ParticleRenderer;
 public class GDXParticleRenderer extends ParticleRenderer {
     private ParticleEffect          _effect;
 
-    public GDXParticleRenderer() {
-        refresh();
-    }
-
     @Override
-    public void onDraw(GFXRenderer renderer, int x, int y) {
+    public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
         if (_effect != null) {
             _effect.update(Gdx.graphics.getDeltaTime());
             ((GDXRenderer) renderer).getBatch().begin();
@@ -26,10 +23,6 @@ public class GDXParticleRenderer extends ParticleRenderer {
                 _effect.reset();
             }
         }
-    }
-
-    @Override
-    public void refresh() {
     }
 
     @Override
@@ -58,5 +51,20 @@ public class GDXParticleRenderer extends ParticleRenderer {
 
     @Override
     public void init() {
+    }
+
+    @Override
+    public void onRefresh(int frame) {
+
+    }
+
+    @Override
+    public void invalidate(int x, int y) {
+
+    }
+
+    @Override
+    public void invalidate() {
+
     }
 }

@@ -11,7 +11,7 @@ import org.smallbox.faraway.game.model.*;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobMove;
 import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.UserInterface;
@@ -87,6 +87,7 @@ public abstract class CharacterModel extends Movable {
 	protected double 					_nextChildAtOld;
 	protected List<CharacterRelation> 	_relations;
 	protected CharacterModel 			_mate;
+	protected ParcelModel 				_parcel;
 	protected boolean 					_isGay;
 	protected String 					_lastName;
 	protected String 					_birthName;
@@ -155,7 +156,7 @@ public abstract class CharacterModel extends Movable {
 
 	public ProfessionModel          getProfession() { return _profession; }
 	public ProfessionModel.Type	    getProfessionId() { return _profession.getType(); }
-	public JobModel                 getJob() { return _job; }
+	public BaseJobModel getJob() { return _job; }
 	public String			        getName() { return _firstName + _lastName; }
 	public CharacterNeeds	        getNeeds() { return _needs; }
 	public GraphPath<ParcelModel> 	getPath() { return _path; }
@@ -183,7 +184,7 @@ public abstract class CharacterModel extends Movable {
 	public double                   getBodyHeat() { return _bodyHeat; }
 	public CharacterStats           getStats() { return _stats; }
 	public List<ItemInfo>     		getEquipments() { return _equipments; }
-	public ParcelModel 				getParcel() { return Game.getWorldManager().getParcel(_posX, _posY); }
+	public ParcelModel 				getParcel() { return _parcel; }
 	public ConsumableModel          getInventory() { return _inventory; }
 	public abstract String[][]      getEquipmentViewIds();
 	public abstract String          getEquipmentViewPath();
@@ -213,7 +214,7 @@ public abstract class CharacterModel extends Movable {
 	//    public boolean                  isMoving() { return _node != null; }
 	public boolean 			        needRefresh() { return _needRefresh; }
 
-	public void moveTo(JobModel job, int toX, int toY, OnMoveListener onMoveListener) {
+	public void moveTo(BaseJobModel job, int toX, int toY, OnMoveListener onMoveListener) {
 		_toX = toX;
 		_toY = toY;
 		_job = job;
@@ -350,10 +351,10 @@ public abstract class CharacterModel extends Movable {
 	}
 
 
-	public void	setJob(JobModel job) {
+	public void	setJob(BaseJobModel job) {
 		// Cancel previous job
 		if (_job != job && _job != null && !_job.isFinish()) {
-			JobManager.getInstance().quit(_job, JobModel.JobAbortReason.INTERRUPT);
+			JobManager.getInstance().quit(_job, BaseJobModel.JobAbortReason.INTERRUPT);
 		}
 
 		// Launch new job if not null
@@ -361,11 +362,11 @@ public abstract class CharacterModel extends Movable {
 			job.setCharacter(this);
 			moveTo(job, job.getX(), job.getY(), new OnMoveListener() {
 				@Override
-				public void onReach(JobModel job, CharacterModel character) {
+				public void onReach(BaseJobModel job, CharacterModel character) {
 				}
 
 				@Override
-				public void onFail(JobModel job, CharacterModel character) {
+				public void onFail(BaseJobModel job, CharacterModel character) {
 				}
 			});
 		}
@@ -378,7 +379,7 @@ public abstract class CharacterModel extends Movable {
 //		ProfessionModel[] professions = Game.getCharacterManager().getProfessions();
 //
 //        for (ProfessionModel profession : professions) {
-//            if (profession.getType() == professionId) {
+//            if (profession.getElevation() == professionId) {
 //                Log.debug("setProfession: " + profession.getName());
 //                setProfession(profession);
 //            }
@@ -456,6 +457,7 @@ public abstract class CharacterModel extends Movable {
 			}
 			_moveProgress = 0;
 
+			_parcel = _node;
 			_posX = x;
 			_posY = y;
 			_steps++;
@@ -520,12 +522,12 @@ public abstract class CharacterModel extends Movable {
 	}
 
 	//	@Override
-	public void	onPathFailed(JobModel job) {
+	public void	onPathFailed(BaseJobModel job) {
 		Log.warning("Job failed (no path)");
 		UserInterface.getInstance().displayMessage("blocked", _posX, _posY);
 
 		// Abort job
-		JobManager.getInstance().quit(job, JobModel.JobAbortReason.BLOCKED);
+		JobManager.getInstance().quit(job, BaseJobModel.JobAbortReason.BLOCKED);
 		_job = null;
 
 		if (_onPathComplete != null) {
@@ -534,7 +536,7 @@ public abstract class CharacterModel extends Movable {
 	}
 
 	//	@Override
-	public void	onPathComplete(GraphPath<ParcelModel> path, JobModel job) {
+	public void	onPathComplete(GraphPath<ParcelModel> path, BaseJobModel job) {
 		Log.debug("Character #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
 
 		if (path.getCount() == 0) {

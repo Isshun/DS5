@@ -1,22 +1,28 @@
 entries:
        
+    -   type: label
+        text: info structure
+        textsize: 24
+        position: [0, 0]
+
+    -   type: label
+        id: lb_pos
+        text: pos
+        textsize: 24
+        position: [200, 0]
+
     -   type: frame
-        position: [24, 10]
+        position: [24, 400]
         size: [370, 1]
         background: 0x888888
        
     -   type: frame
         id: frame_room_info
-        position: [0, 10]
+        position: [0, 400]
        
     -   type: frame
-        position: [24, 140]
-        size: [370, 1]
-        background: 0x888888
-
-    -   type: frame
         id: frame_item_info
-        position: [0, 144]
+        position: [0, 0]
         entries:
 
         -   type: label
@@ -62,3 +68,28 @@ entries:
         -   type: frame
             id: frame_room_info
             position: [0, 300]
+
+    -   type: frame
+        position: [0, 280]
+        entries:
+        
+        -   type: frame
+            id: bt_destroy
+            position: [20, 0]
+            size: [80, 100]
+            background: 0x007b66
+            entries:
+
+            -   type: label
+                text: Destroy
+                textsize: 14
+                position: [0, 0]
+                size: [80, 100]
+                align: center
+
+            -   type: image
+                path: data/res/ic_destroy.png
+                textsize: 14
+                position: [0, 0]
+                size: [80, 100]
+                align: center

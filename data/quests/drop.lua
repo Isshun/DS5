@@ -31,6 +31,6 @@ function OnClose(game, quest)
     return true
 end
 
-function IsOpen(game)
+function OnUpdate(game)
     return false
 end

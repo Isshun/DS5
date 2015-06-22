@@ -28,7 +28,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     private final Game _game;
     private Set<ConsumableModel> _consumables = new HashSet<>();
 
-    public ParcelModel[][][] getAreas() {
+    public ParcelModel[][][] getParcels() {
         return _parcels;
     }
 

@@ -3,13 +3,13 @@ package org.smallbox.faraway.game.model;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.util.Utils;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 
 public abstract class Movable {
 
 	public interface OnPathComplete {
-		void	onPathFailed(JobModel job);
-		void	onPathComplete(GraphPath<ParcelModel> path, JobModel job);
+		void	onPathFailed(BaseJobModel job);
+		void	onPathComplete(GraphPath<ParcelModel> path, BaseJobModel job);
 	}
 	
 	public enum Direction {
@@ -36,7 +36,7 @@ public abstract class Movable {
 	protected Direction 		_move;
 	protected GraphPath<ParcelModel> _path;
 	protected int				_steps;
-	protected JobModel 			_job;
+	protected BaseJobModel _job;
 	protected OnPathComplete	_onPathComplete;
 
 	public Movable(int id, int x, int y) {

@@ -11,7 +11,7 @@ import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 
@@ -111,7 +111,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
             // Create actions list
             index = 0;
             if (_item.hasJobs()) {
-                for (JobModel job : _item.getJobs()) {
+                for (BaseJobModel job : _item.getJobs()) {
                     addJobListEntry(job, index++);
                 }
             }
@@ -128,7 +128,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
         }
     }
 
-    private void addJobListEntry(JobModel job, int index) {
+    private void addJobListEntry(BaseJobModel job, int index) {
         _viewFactory.load("data/ui/panels/info_item_craft_entry.yml", view -> {
             view.findById("bt_suspend");
             view.findById("bt_cancel").setOnClickListener(v -> JobManager.getInstance().removeJob(job));

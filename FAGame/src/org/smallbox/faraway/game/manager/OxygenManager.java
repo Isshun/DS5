@@ -12,13 +12,14 @@ import java.util.List;
 public class OxygenManager extends BaseManager {
     @Override
     protected void onUpdate(int tick) {
-        List<RoomModel> rooms = Game.getRoomManager().getRoomList();
-        for (RoomModel room: rooms) {
-            if (room.isExterior()) {
-                room.setOxygen(Game.getInstance().getPlanet().getOxygen());
-            } else {
-                for (NeighborModel neighbor: room.getNeighbors()) {
-                    room.setOxygen(room.getOxygen() + (neighbor.room.getOxygen() - room.getOxygen()) * (1 - neighbor.sealing) * 0.05);
+        if (Game.getRoomManager() != null) {
+            for (RoomModel room : Game.getRoomManager().getRoomList()) {
+                if (room.isExterior()) {
+                    room.setOxygen(Game.getInstance().getPlanet().getOxygen());
+                } else {
+                    for (NeighborModel neighbor : room.getNeighbors()) {
+                        room.setOxygen(room.getOxygen() + (neighbor.room.getOxygen() - room.getOxygen()) * (1 - neighbor.sealing) * 0.05);
+                    }
                 }
             }
         }

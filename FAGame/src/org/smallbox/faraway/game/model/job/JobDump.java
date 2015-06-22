@@ -5,18 +5,18 @@ import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 
-public class JobDump extends JobModel {
+public class JobDump extends BaseJobModel {
 
 	private JobDump(int x, int y) {
 		super(null, x, y);
 	}
 
-	public static JobModel create(MapObjectModel objectModel) {
+	public static BaseJobModel create(MapObjectModel objectModel) {
 		if (objectModel == null) {
 			return null;
 		}
 		
-		JobModel job = new JobDump(objectModel.getX(), objectModel.getY());
+		BaseJobModel job = new JobDump(objectModel.getX(), objectModel.getY());
 		job.setItem(objectModel);
 		job.setCost(objectModel.getInfo().cost);
 		return job;
@@ -53,11 +53,6 @@ public class JobDump extends JobModel {
 	}
 
 	@Override
-	public String getType() {
-		return "remove";
-	}
-
-	@Override
 	public boolean canBeResume() {
 		return false;
 	}
@@ -65,6 +60,11 @@ public class JobDump extends JobModel {
 	@Override
 	public CharacterModel.TalentType getTalentNeeded() {
 		return CharacterModel.TalentType.BUILD;
+	}
+
+	@Override
+	public void onQuit(CharacterModel character) {
+
 	}
 
 	@Override

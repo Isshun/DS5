@@ -8,7 +8,7 @@ import org.smallbox.faraway.game.model.Movable.Direction;
 import org.smallbox.faraway.game.model.ProfessionModel;
 import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.job.JobModel.JobAbortReason;
+import org.smallbox.faraway.game.model.job.BaseJobModel.JobAbortReason;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

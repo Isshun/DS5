@@ -33,10 +33,10 @@ public class GDXRenderLayer extends RenderLayer {
     }
 
     @Override
-    public void onDraw(GFXRenderer renderer, RenderEffect renderEffect) {
+    public void onDraw(GFXRenderer renderer, RenderEffect renderEffect, int x, int y) {
         if (_cacheId != -1) {
 //            ((GDXRenderer)renderer).draw(_cache, _cacheId, renderEffect.getViewport().getPosX(), renderEffect.getViewport().getPosY());
-            ((GDXRenderer)renderer).draw(_cache, _cacheId, Game.getInstance().getViewport().getPosX(), Game.getInstance().getViewport().getPosY());
+            ((GDXRenderer)renderer).draw(_cache, _cacheId, Game.getInstance().getViewport().getPosX() + x, Game.getInstance().getViewport().getPosY() + y);
         }
     }
 

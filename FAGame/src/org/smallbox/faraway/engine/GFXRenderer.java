@@ -1,6 +1,6 @@
 package org.smallbox.faraway.engine;
 
-import org.smallbox.faraway.engine.renderer.IRenderer;
+import org.smallbox.faraway.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.ui.engine.ColorView;
 import org.smallbox.faraway.ui.engine.View;
 
@@ -21,7 +21,10 @@ public interface GFXRenderer {
     int getWidth();
     int getHeight();
 
-    IRenderer createAreaRenderer();
-    IRenderer createTemperatureRenderer();
-    IRenderer createRoomRenderer();
+    BaseRenderer createAreaRenderer();
+    BaseRenderer createTemperatureRenderer();
+    BaseRenderer createRoomRenderer();
+
+    void zoomUp();
+    void zoomDown();
 }

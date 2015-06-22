@@ -39,6 +39,6 @@ function OnClose(game, quest)
     return false
 end
 
-function IsOpen(game)
+function OnUpdate(game)
     return _accepted and game.tick < _tick + 100
 end

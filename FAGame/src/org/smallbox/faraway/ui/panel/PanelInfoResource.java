@@ -36,6 +36,10 @@ public class PanelInfoResource extends BaseRightPanel {
             ((TextView) findById("lb_label")).setString(resource.getLabel());
             ((TextView) findById("lb_name")).setString(resource.getName());
             ((TextView) findById("lb_quantity")).setString("Quantity: %d", resource.getQuantity());
+
+            if (findById("lb_pos") != null) {
+                ((TextView) findById("lb_pos")).setString(resource.getX() + "x" + resource.getY());
+            }
         }
     }
 }

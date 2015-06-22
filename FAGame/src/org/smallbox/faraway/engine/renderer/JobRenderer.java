@@ -3,19 +3,19 @@ package org.smallbox.faraway.engine.renderer;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteModel;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.game.manager.JobManager;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 
 import java.util.List;
 
-public class JobRenderer implements IRenderer {
+public class JobRenderer extends BaseRenderer {
 //	private RenderTexture 					_cache;
 //	private HashMap<ActionType, ColorView> 		_rectangles;
 	private int[][] 						_areas;
 
 	public JobRenderer() {
-		_areas = new int[Constant.WORLD_WIDTH][Constant.WORLD_HEIGHT];
 
 		// TODO
 //		try {
@@ -49,9 +49,13 @@ public class JobRenderer implements IRenderer {
 //	}
 
 	public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
+		if (_areas == null) {
+			_areas = new int[Game.getWorldManager().getWidth()][Game.getWorldManager().getHeight()];
+		}
+
 		int frame = MainRenderer.getFrame();
-		List<JobModel> jobs = JobManager.getInstance().getJobs();
-		for (JobModel job: jobs) {
+		List<BaseJobModel> jobs = JobManager.getInstance().getJobs();
+		for (BaseJobModel job: jobs) {
 			int x = job.getX();
 			int y = job.getY();
 //			if (_parcels[x][y] != frame && job.isFinish() == false) {

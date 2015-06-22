@@ -3,7 +3,7 @@ package org.smallbox.farpoint;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import org.smallbox.faraway.engine.GFXRenderer;
-import org.smallbox.faraway.engine.renderer.IRenderer;
+import org.smallbox.faraway.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.util.Constant;
@@ -14,7 +14,7 @@ import org.smallbox.faraway.game.model.room.RoomModel;
 /**
  * Created by Alex on 14/06/2015.
  */
-public class GDXTemperatureRenderer implements IRenderer {
+public class GDXTemperatureRenderer extends BaseRenderer {
     @Override
     public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
         RoomManager roomManager = Game.getRoomManager();

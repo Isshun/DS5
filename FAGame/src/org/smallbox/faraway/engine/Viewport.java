@@ -4,6 +4,7 @@ package org.smallbox.faraway.engine;
  * Created by Alex on 27/05/2015.
  */
 public abstract class Viewport {
+    public abstract void setZoom(int zoom);
     public abstract void update(int x, int y);
     public abstract void moveTo(int x, int y);
     public abstract int getPosX();
@@ -14,4 +15,5 @@ public abstract class Viewport {
     public abstract float getMinScale();
     public abstract float getMaxScale();
     public abstract void startMove(int x, int y);
+    public abstract void move(int x, int y);
 }

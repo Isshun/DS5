@@ -1,5 +1,16 @@
 entries:
 
+    -   type: label
+        text: info parcel
+        textsize: 24
+        position: [0, 0]
+
+    -   type: label
+        id: lb_pos
+        text: pos
+        textsize: 24
+        position: [200, 0]
+
     -   type: frame
         position: [24, 10]
         size: [370, 1]

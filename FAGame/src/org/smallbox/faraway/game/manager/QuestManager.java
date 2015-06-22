@@ -61,7 +61,7 @@ public class QuestManager extends BaseManager {
         Log.info("Check quests (open: " + _quests.size() + ")");
 
         LuaValue luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
-        _quests.stream().filter(quest -> quest.isOpen && !quest.globals.get("IsOpen").call(luaGame).toboolean()).forEach(quest -> {
+        _quests.stream().filter(quest -> quest.isOpen && !quest.globals.get("OnUpdate").call(luaGame).toboolean()).forEach(quest -> {
             LuaValue luaQuest = CoerceJavaToLua.coerce(new LuaQuestModel(quest));
 
             if (quest.globals.get("OnClose").call(luaGame, luaQuest, LuaValue.valueOf(quest.optionIndex)).toboolean()) {

@@ -2,7 +2,7 @@ package org.smallbox.faraway.game.model.check;
 
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 
 /**
  * Created by Alex on 05/06/2015.
@@ -10,7 +10,7 @@ import org.smallbox.faraway.game.model.job.JobModel;
 public class CheckCharacterUse extends CharacterCheck {
 
     @Override
-    public JobModel create(CharacterModel character) {
+    public BaseJobModel create(CharacterModel character) {
         return null;
     }
 

@@ -1,22 +1,27 @@
 package org.smallbox.faraway.engine.renderer;
 
+import org.smallbox.faraway.data.factory.map.AsteroidBeltFactory;
+import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.ColorView;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainRenderer implements IRenderer {
-	private static IRenderer 		_self;
+public class MainRenderer {
+	private static MainRenderer         _self;
 
-	private SpriteManager 			_spriteManager;
-	private CharacterRenderer 		_characterRenderer;
-	private WorldRenderer 			_worldRenderer;
-	private final List<IRenderer> 	_hudRenders;
+	private SpriteManager 			    _spriteManager;
+	private CharacterRenderer 		    _characterRenderer;
+	private WorldRenderer 			    _worldRenderer;
+	private final List<BaseRenderer>    _renders;
 
 	private int _lastSavedFrame;
 
@@ -32,61 +37,89 @@ public class MainRenderer implements IRenderer {
 		_self = this;
 		_spriteManager = SpriteManager.getInstance();
 
-		_worldRenderer = new WorldRenderer(_spriteManager);
-
-		_hudRenders = new ArrayList<>();
-
-		if (config.render.debug) {
-			_hudRenders.add(new DebugRenderer());
-		}
-		if (config.render.job) {
-			_hudRenders.add(new JobRenderer());
-		}
-		if (config.render.area) {
-			_hudRenders.add(renderer.createAreaRenderer());
-		}
-		if (config.render.temperature) {
-			_hudRenders.add(renderer.createTemperatureRenderer());
-		}
-		if (config.render.room) {
-			_hudRenders.add(renderer.createRoomRenderer());
-		}
+		_renders = new ArrayList<>();
 	}
 
 	public void onRefresh(int frame) {
-		if (_worldRenderer != null) {
-			_worldRenderer.onRefresh(frame);
-		}
 
-		if (_characterRenderer != null) {
-			_characterRenderer.onRefresh(frame);
-		}
+        for (BaseRenderer render: _renders) {
+            render.onRefresh(frame);
+        }
+
+//        if (_worldRenderer != null) {
+//			_worldRenderer.onRefresh(frame);
+//		}
+//
+//		if (_characterRenderer != null) {
+//			_characterRenderer.onRefresh(frame);
+//		}
 	}
 	
 	public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
 		long time = System.currentTimeMillis();
 
-		_worldRenderer.onDraw(renderer, effect, animProgress);
-		_worldRenderer.onDrawSelected(renderer, effect, animProgress);
+		for (BaseRenderer render: _renders) {
+			render.draw(renderer, effect, animProgress);
+		}
 
-        _characterRenderer.onDraw(renderer, effect, animProgress);
+//        if (AsteroidBeltFactory.sData != null) {
+//            ColorView colorView = ViewFactory.getInstance().createColorView(1, 1);
+//            for (int x = 0; x < AsteroidBeltFactory.sData.length; x++) {
+//                for (int y = 0; y < AsteroidBeltFactory.sData[0].length; y++) {
+//                    int value = (int) (AsteroidBeltFactory.sData[x][y] * 255);
+//                    colorView.setPosition(x, y);
+//                    colorView.setBackgroundColor(new Color(value, value, value));
+//                    renderer.draw(colorView, null);
+//                }
+//            }
+//        }
+
+//        Log.debug("[Render time: " + (System.currentTimeMillis() - time));
+
+//		_worldRenderer.onDraw(renderer, effect, animProgress);
+//		_worldRenderer.onDrawSelected(renderer, effect, animProgress);
+
+//        _characterRenderer.onDraw(renderer, effect, animProgress);
 
         _frame++;
 		_renderTime += System.currentTimeMillis() - time;
 	}
 
-	public void onDrawHUD(GFXRenderer renderer, RenderEffect effect, double animProgress) {
-		for (IRenderer render: _hudRenders) {
-			render.onDraw(renderer, effect, animProgress);
+	public void init(GFXRenderer renderer, GameConfig config, Game game, LightRenderer lightRenderer, ParticleRenderer particleRenderer) {
+		_frame = 0;
+
+		_worldRenderer = new WorldRenderer(_spriteManager);
+		_renders.add(_worldRenderer);
+
+		_characterRenderer = new CharacterRenderer(game.getCharacterManager().getList());
+		_renders.add(_characterRenderer);
+
+		if (lightRenderer != null) {
+			_renders.add(lightRenderer);
+		}
+
+		if (particleRenderer != null) {
+			_renders.add(particleRenderer);
+		}
+
+		if (config.render.debug) {
+			_renders.add(new DebugRenderer());
+		}
+		if (config.render.job) {
+			_renders.add(new JobRenderer());
+		}
+		if (config.render.area) {
+			_renders.add(renderer.createAreaRenderer());
+		}
+		if (config.render.temperature) {
+			_renders.add(renderer.createTemperatureRenderer());
+		}
+		if (config.render.room) {
+			_renders.add(renderer.createRoomRenderer());
 		}
 	}
 
-	public void init(Game game) {
-		_frame = 0;
-		_characterRenderer = new CharacterRenderer(game.getCharacterManager().getList());
-	}
-
-	public static IRenderer getInstance() {
+	public static MainRenderer getInstance() {
 		return _self;
 	}
 

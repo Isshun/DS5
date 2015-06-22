@@ -61,18 +61,30 @@ public class GDXApplication extends ApplicationAdapter {
         GameData data = new GameData();
 
         // Create app
-        GDXLightRenderer lightRenderer = new GDXLightRenderer();
-        _application.create(_renderer, lightRenderer, new GDXParticleRenderer(), data, data.config);
+        GDXLightRenderer lightRenderer = null;
+        if (data.config.render.light) {
+            lightRenderer = new GDXLightRenderer();
+        }
+
+        GDXParticleRenderer particleRenderer = null;
+        if (data.config.render.particle) {
+            particleRenderer = new GDXParticleRenderer();
+        }
+        _application.create(_renderer, lightRenderer, particleRenderer, data, data.config);
 
         //		//Limit the framerate
         //		window.setFramerateLimit(30);
 
-        Gdx.input.setInputProcessor(new GDXInputProcessor(_application, timer));
+        GDXInputProcessor inputProcessor = new GDXInputProcessor(_application, timer);
+        Gdx.input.setInputProcessor(inputProcessor);
         Gdx.graphics.setContinuousRendering(true);
         Gdx.graphics.requestRendering();
 
+        _application.setInputDirection(inputProcessor.getDirection());
+
         if (data.config.byPassMenu) {
-            _application.loadGame("4.sav");
+            _application.newGame("6.sav");
+//            _application.loadGame("4.sav");
         }
     }
 

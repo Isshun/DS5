@@ -10,7 +10,7 @@ import org.smallbox.faraway.game.model.item.ItemSlot;
 
 import java.util.List;
 
-public class JobConsume extends JobModel {
+public class JobConsume extends BaseJobModel {
 
 	@Override
 	public boolean canBeResume() {
@@ -20,6 +20,11 @@ public class JobConsume extends JobModel {
 	@Override
 	public CharacterModel.TalentType getTalentNeeded() {
 		return null;
+	}
+
+	@Override
+	public void onQuit(CharacterModel character) {
+
 	}
 
 	private JobConsume() {
@@ -116,11 +121,6 @@ public class JobConsume extends JobModel {
 		JobManager.getInstance().close(this);
 
 		return true;
-	}
-
-	@Override
-	public String getType() {
-		return "use";
 	}
 
 	@Override

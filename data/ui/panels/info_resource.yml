@@ -1,6 +1,17 @@
 entries:
 
     -   type: label
+        text: info resource
+        textsize: 24
+        position: [0, 0]
+
+    -   type: label
+        id: lb_pos
+        text: pos
+        textsize: 24
+        position: [200, 0]
+
+    -   type: label
         id: lb_label
         textsize: 24
         position: [24, 24]

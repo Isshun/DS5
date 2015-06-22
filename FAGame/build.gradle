@@ -9,6 +9,7 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 dependencies {
 //    compile project(":SFMLRender")
     compile project(":GeoGen")
+    compile 'org.apache.commons:commons-math3:3.5'
     compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
     compile 'org.luaj:luaj-jse:3.0.1'
 //    compile project(":PathFinding")

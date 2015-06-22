@@ -2,7 +2,7 @@ package org.smallbox.faraway.game.model.item;
 
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public abstract class MapObjectModel {
     private int 		    _lastBlocked;
     private ParcelModel _area;
     private int             _health;
-    private List<JobModel>  _jobs;
+    private List<BaseJobModel>  _jobs;
     protected boolean       _needRefresh;
     private double          _progress;
 
@@ -141,7 +141,7 @@ public abstract class MapObjectModel {
         }
     }
 
-    public ItemSlot takeSlot(JobModel job) {
+    public ItemSlot takeSlot(BaseJobModel job) {
         if (_nbFreeSlot != -1) {
             for (ItemSlot slot : _slots) {
                 if (slot.isFree()) {
@@ -333,7 +333,7 @@ public abstract class MapObjectModel {
         return _info.maxHealth;
     }
 
-    public void addJob(JobModel job) {
+    public void addJob(BaseJobModel job) {
         _needRefresh = true;
 
         if (_jobs == null) {
@@ -347,7 +347,7 @@ public abstract class MapObjectModel {
         return _jobs != null && !_jobs.isEmpty();
     }
 
-    public List<JobModel> getJobs() {
+    public List<BaseJobModel> getJobs() {
         return _jobs;
     }
 
@@ -359,7 +359,7 @@ public abstract class MapObjectModel {
         _needRefresh = true;
     }
 
-    public void removeJob(JobModel job) {
+    public void removeJob(BaseJobModel job) {
         _needRefresh = true;
 
         if (_jobs != null) {

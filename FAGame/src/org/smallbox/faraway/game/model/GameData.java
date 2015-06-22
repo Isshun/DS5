@@ -46,7 +46,7 @@ public class GameData {
 	}
 
 	public void onDataLoaded() {
-		Application.getInstance().refreshConfig();
+		//Application.getInstance().refreshConfig();
 	}
 
 	public ItemInfo getItemInfo(String name) {

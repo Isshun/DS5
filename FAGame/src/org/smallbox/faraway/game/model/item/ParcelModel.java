@@ -26,7 +26,9 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private double 			_blood;
     private double 			_snow;
     private int 			_index;
+    private int 			_type = 1;
     private Array<Connection<ParcelModel>> 	_connections;
+    private double          _elevation;
 
     public ParcelModel(int x, int y, int z) {
         _oxygen = (int) (Math.random() % 100);
@@ -68,6 +70,10 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public int				getLightSource() { return _lightSource; }
     public ConsumableModel 	getConsumable() { return _consumable; }
     public AreaModel 		getArea() { return _area; }
+    public double           getElevation() { return _elevation; }
+    public void             setElevation(double elevation) { _elevation = elevation; }
+    public int              getType() { return _type; }
+    public void             setType(int type) { _type = type; }
     public boolean			isStorage() { return _isStorage; }
     public boolean 			isEmpty() { return _resource == null && _item == null && _structure == null; }
     public boolean 			canSupportRoof() { return (_structure != null && (_structure.isWall() || _structure.isDoor())) || (_resource != null && _resource.isRock()); }

@@ -6,7 +6,7 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ItemFilter;
 import org.smallbox.faraway.game.model.item.ItemModel;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobUse;
 
 /**
@@ -21,7 +21,7 @@ public class CheckJoyItem extends CharacterCheck {
     }
 
     @Override
-    public JobModel create(CharacterModel character) {
+    public BaseJobModel create(CharacterModel character) {
         ItemModel item = getItem(character);
         if (item != null) {
             JobUse job = JobUse.create(item, character);

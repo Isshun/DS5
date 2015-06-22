@@ -10,7 +10,7 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
  */
 public class LuaMapModel {
     public LuaValue getDropLocation() {
-        ParcelModel[][][] parcels = Game.getWorldManager().getAreas();
+        ParcelModel[][][] parcels = Game.getWorldManager().getParcels();
         int width = Game.getWorldManager().getWidth();
         int height = Game.getWorldManager().getHeight();
 

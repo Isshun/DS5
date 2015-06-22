@@ -69,6 +69,7 @@ public class PanelShortcut extends BaseRightPanel {
         _lbTime = (TextView) findById("lb_time");
 
         _resourceManager = (ResourceManager)Game.getInstance().getManager(ResourceManager.class);
+
         _resources = new ArrayList<>();
         addResource((TextView) findById("lb_food"), _resourceManager.getFood());
         addResource((TextView) findById("lb_water"), _resourceManager.getWater());

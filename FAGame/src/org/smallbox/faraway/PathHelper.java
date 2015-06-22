@@ -2,6 +2,7 @@ package org.smallbox.faraway;
 
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.GraphPath;
+import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import org.smallbox.faraway.game.OnMoveListener;
 import org.smallbox.faraway.game.model.item.ParcelModel;
@@ -9,7 +10,7 @@ import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.BaseManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -18,6 +19,7 @@ import java.util.concurrent.Executors;
 public class PathHelper extends BaseManager {
 
     private IndexedAStarPathFinder<ParcelModel> _finder;
+    private Heuristic<ParcelModel>              _heuristic;
 
     @Override
 	protected void onUpdate(int tick) {
@@ -42,21 +44,15 @@ public class PathHelper extends BaseManager {
 			throw new RuntimeException("PathManager init with 0 width/height");
 		}
         _finder = new IndexedAStarPathFinder<>(Game.getWorldManager());
-	}
+        _heuristic = (node, endNode) -> 10 * (Math.abs(node.getX() - endNode.getX()) + Math.abs(node.getY() - endNode.getY()));
+    }
 
-	public void getPathAsync(final OnMoveListener listener, final CharacterModel character, final JobModel job, final int x, final int y) {
+	public void getPathAsync(final OnMoveListener listener, final CharacterModel character, final BaseJobModel job, final int x, final int y) {
 		_threadPool.execute(() -> {
             Log.debug("getPathAsync");
-
-            GraphPath<ParcelModel> path = new DefaultGraphPath<>();
-
-            if (_finder.searchNodePath(
-                    Game.getWorldManager().getParcel(character.getX(), character.getY()),
-                    Game.getWorldManager().getParcel(x, y),
-                    (node, endNode) -> 10 * (Math.abs(node.getX() - endNode.getX()) + Math.abs(node.getY() - endNode.getY())),
-                    path)) {
-
-                Log.debug("character: path find (" + character.getX() + "x" + character.getY() + " to " + x + "x" + y + ")");
+            GraphPath<ParcelModel> path = getPath(Game.getWorldManager().getParcel(character.getX(), character.getY()), Game.getWorldManager().getParcel(x, y));
+            if (path != null) {
+                Log.info("character: path success");
                 synchronized (_runnable) {
                     _runnable.add(() -> {
                         character.onPathComplete(path, job);
@@ -86,4 +82,15 @@ public class PathHelper extends BaseManager {
 	public void close() {
 		_threadPool.shutdownNow();		
 	}
+
+    public GraphPath<ParcelModel> getPath(ParcelModel fromParcel, ParcelModel toParcel) {
+        Log.debug("GetPath (from: " + fromParcel.getX() + "x" + fromParcel.getY() + " to: " + toParcel.getX() + "x" + toParcel.getY() + ")");
+
+        GraphPath<ParcelModel> path = new DefaultGraphPath<>();
+        if (_finder.searchNodePath(fromParcel, toParcel, _heuristic, path)) {
+            return path;
+        }
+
+        return null;
+    }
 }

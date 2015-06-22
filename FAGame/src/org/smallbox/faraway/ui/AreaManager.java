@@ -1,12 +1,13 @@
 package org.smallbox.faraway.ui;
 
+import org.smallbox.faraway.PathHelper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.BaseManager;
 import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.game.manager.WorldManager;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.game.model.job.StorageModel;
+import org.smallbox.faraway.game.model.StorageModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,12 +68,14 @@ public class AreaManager extends BaseManager {
         return null;
     }
 
-    public StorageModel getNearestFreeStorage(ConsumableModel consumable, int x, int y) {
+    public StorageModel getNearestFreeStorage(ConsumableModel consumable, ParcelModel fromParcel) {
+        int x = fromParcel.getX();
+        int y = fromParcel.getY();
         int bestDistance = Integer.MAX_VALUE;
         AreaModel bestArea = null;
         for (AreaModel area: _areas) {
             ParcelModel parcel = ((StorageModel)area).getNearestFreeParcel(consumable, x, y);
-            if (area.isStorage() && parcel != null && Utils.getDistance(parcel, x, y) < bestDistance) {
+            if (area.isStorage() && parcel != null && Utils.getDistance(parcel, x, y) < bestDistance && PathHelper.getInstance().getPath(fromParcel, parcel) != null) {
                 bestArea = area;
                 bestDistance = Utils.getDistance(parcel, x, y);
             }

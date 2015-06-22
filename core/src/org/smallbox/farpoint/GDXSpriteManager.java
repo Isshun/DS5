@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.engine.Viewport;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.engine.SpriteManager;
@@ -40,6 +42,7 @@ public class GDXSpriteManager extends SpriteManager {
     private Texture                         _textureItemSelector;
     private GDXSpriteModel[]                _itemSelectors;
     private Map<String, SpriteModel>        _icons;
+    private ItemInfo                        _groundItemInfo;
 
     private int[] _random = {
             0, 0, 1, 3, 2, 3, 1, 3, 0, 1,
@@ -55,6 +58,17 @@ public class GDXSpriteManager extends SpriteManager {
         _spritesCharacters = new HashMap<>();
 
         _textureCharacters = new Texture[4];
+
+//        //you have an instance of Image
+//        Image image = createInstanceOfImage();
+//
+////These lines will resize your sprite to half of screen's width while keeping the ratio
+//        image.width = .5f * Gdx.graphics.getWidth();
+//        image.setScaling(Scaling.fillX);
+//
+////To resize in height's scale
+//        image.width = .5f * Gdx.graphics.getHeight();
+//        image.setScaling(Scaling.fillY);
 
         _textureCharacters[0] = new Texture("data/res/Characters/scientifique.png");
         _textureCharacters[1] = new Texture("data/res/Characters/soldat3.png");
@@ -285,6 +299,14 @@ public class GDXSpriteManager extends SpriteManager {
     }
 
     @Override
+    public SpriteModel getGround(int type) {
+        if (_groundItemInfo == null) {
+            _groundItemInfo = GameData.getData().getItemInfo("base.ground");
+        }
+        return getSprite(_groundItemInfo, 0, 0, 255, false);
+    }
+
+    @Override
     public SpriteModel getFloor(StructureModel item, int zone, int room) {
         if (item != null && item.getName().equals("base.floor")) {
             int choice = 1;
@@ -512,6 +534,6 @@ public class GDXSpriteManager extends SpriteManager {
 
     @Override
     public Viewport createViewport() {
-        return new GDXViewport(0, 0);
+        return new GDXViewport(300, 200);
     }
 }

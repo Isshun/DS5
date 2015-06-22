@@ -23,5 +23,9 @@ public class PanelInfoParcel extends BaseInfoRightPanel {
         ((TextView)findById("lb_dirt")).setString("dirt: " + parcel.getDirt());
         ((TextView)findById("lb_rubble")).setString("rubble: " + parcel.getRubble());
         ((TextView)findById("lb_snow")).setString("snow: " + parcel.getSnow());
+
+        if (findById("lb_pos") != null) {
+            ((TextView) findById("lb_pos")).setString(parcel.getX() + "x" + parcel.getY());
+        }
     }
 }

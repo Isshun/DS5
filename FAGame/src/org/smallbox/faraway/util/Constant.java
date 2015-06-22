@@ -40,8 +40,6 @@ public class Constant {
 	public static final int 	FONT_SIZE 				= 20;
 	public static final int 	PANEL_WIDTH 			= 420;
 	public static final int 	PANEL_HEIGHT 			= WINDOW_HEIGHT;
-	public static final int 	WORLD_WIDTH 			= 20;
-	public static final int 	WORLD_HEIGHT 			= 20;
 	public static final int 	DURATION_MULTIPLIER 	= 10;
 	public static final int 	CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS = 0;
 	public static final int 	CHARACTER_INVENTORY_SPACE = 20;

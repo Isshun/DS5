@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game;
 
+import org.smallbox.faraway.data.factory.map.AsteroidBeltFactory;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.PathHelper;
@@ -7,7 +8,7 @@ import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.data.serializer.GameSerializer;
 import org.smallbox.faraway.data.serializer.LoadListener;
-import org.smallbox.faraway.data.factory.WorldFactory;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.manager.*;
 import org.smallbox.faraway.game.model.GameConfig;
@@ -34,8 +35,8 @@ public class Game {
     private static WeatherManager       _weatherManager;
     private static JobManager 			_jobManager;
 
-    private final ParticleRenderer _particleRenderer;
-    private final LightRenderer _lightRenderer;
+    private final ParticleRenderer      _particleRenderer;
+    private final LightRenderer         _lightRenderer;
 
     private static Game 				_self;
     private final PlanetModel           _planet;
@@ -155,7 +156,10 @@ public class Game {
         _managers.add(new OxygenManager());
         _managers.add(new PowerManager());
         _managers.add(new WorldItemManager());
-        _managers.add(new QuestManager());
+
+        if (GameData.config.manager.quest) {
+            _managers.add(new QuestManager());
+        }
 
         _observers.addAll(_managers);
 
@@ -179,10 +183,32 @@ public class Game {
 	}
 
 	public void	newGame(LoadListener loadListener) {
-		loadListener.onUpdate("Create new game");
-		WorldFactory.create(Game.getWorldManager(), loadListener);
+		//loadListener.onUpdate("Create new game");
 
-        save(_fileName);
+        int width = 250;
+        int height = 250;
+
+        Game.getWorldManager().init(width, height);
+        ParcelModel[][][] parcels = Game.getWorldManager().getParcels();
+        (new AsteroidBeltFactory()).create(parcels, width, height, loadListener);
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                final ParcelModel parcel = parcels[x][y][0];
+                if (parcel.getStructure() != null) {
+                    Game.getInstance().notify(observer -> observer.onAddStructure(parcel.getStructure()));
+                }
+                if (parcel.getResource() != null) {
+                    Game.getInstance().notify(observer -> observer.onAddResource(parcel.getResource()));
+                }
+                if (parcel.getItem() != null) {
+                    Game.getInstance().notify(observer -> observer.onAddItem(parcel.getItem()));
+                }
+                if (parcel.getConsumable() != null) {
+                    Game.getInstance().notify(observer -> observer.onAddConsumable(parcel.getConsumable()));
+                }
+            }
+        }
 	}
 
 	public void	load(LoadListener loadListener) {
@@ -194,7 +220,7 @@ public class Game {
         System.gc();
 
         loadListener.onUpdate("Init world map");
-		WorldFactory.cleanRock();
+//		WorldFactory.cleanRock();
 	}
 
 	public void	save(final String fileName) {

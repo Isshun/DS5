@@ -17,11 +17,13 @@ public class GDXInputProcessor implements InputProcessor {
     private final GameTimer     _timer;
     private GameEventListener.Modifier _modifier;
     private int                 _lastMouseButton;
+    private boolean[]           _keyDirection;
 
     public GDXInputProcessor(Application application, GameTimer timer) {
         _application = application;
         _timer = timer;
         _modifier = GameEventListener.Modifier.NONE;
+        _keyDirection = new boolean[4];
     }
 
     @Override
@@ -38,11 +40,47 @@ public class GDXInputProcessor implements InputProcessor {
             _modifier = GameEventListener.Modifier.SHIFT;
         }
 
+        if (keycode == Keys.A) {
+            _keyDirection[0] = true;
+        }
+
+        if (keycode == Keys.W) {
+            _keyDirection[1] = true;
+        }
+
+        if (keycode == Keys.D) {
+            _keyDirection[2] = true;
+        }
+
+        if (keycode == Keys.S) {
+            _keyDirection[3] = true;
+        }
+
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        if (keycode == Keys.A) {
+            _keyDirection[0] = false;
+            return true;
+        }
+
+        if (keycode == Keys.W) {
+            _keyDirection[1] = false;
+            return true;
+        }
+
+        if (keycode == Keys.D) {
+            _keyDirection[2] = false;
+            return true;
+        }
+
+        if (keycode == Keys.S) {
+            _keyDirection[3] = false;
+            return true;
+        }
+
         if (keycode == Keys.CONTROL_LEFT) {
             _modifier = GameEventListener.Modifier.NONE;
         }
@@ -218,7 +256,11 @@ public class GDXInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDragged(int x, int y, int pointer) {
-        _application.onMouseEvent(_timer, GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
+        if (_lastMouseButton == Buttons.RIGHT) {
+            _application.onDrag(x, y);
+        } else {
+            _application.onMouseEvent(_timer, GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
+        }
         return false;
     }
 
@@ -232,6 +274,18 @@ public class GDXInputProcessor implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
+        if (amount > 0) {
+            _application.onMouseEvent(_timer, GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_UP, 0, 0, false);
+            return true;
+        }
+        if (amount < 0) {
+            _application.onMouseEvent(_timer, GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_DOWN, 0, 0, false);
+            return true;
+        }
         return false;
+    }
+
+    public boolean[] getDirection() {
+        return _keyDirection;
     }
 }

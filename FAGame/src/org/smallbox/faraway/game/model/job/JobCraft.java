@@ -2,6 +2,7 @@ package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
+import org.smallbox.faraway.game.model.StorageModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.ReceiptModel;
@@ -14,7 +15,7 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobCraft extends JobModel {
+public class JobCraft extends BaseJobModel {
 	protected List<ReceiptModel>_receipts = new ArrayList<>();
 	private ReceiptModel        _receipt;
 	private int                 _itemPosX;
@@ -34,6 +35,11 @@ public class JobCraft extends JobModel {
 	@Override
 	public ConsumableModel getIngredient() {
 		return _ingredient;
+	}
+
+	@Override
+	public void onQuit(CharacterModel character) {
+
 	}
 
 	@Override
@@ -211,7 +217,7 @@ public class JobCraft extends JobModel {
         _posY = _item.getY();
         character.moveTo(this, _item.getX(), _item.getY(), new OnMoveListener() {
             @Override
-            public void onReach(JobModel job, CharacterModel character) {
+            public void onReach(BaseJobModel job, CharacterModel character) {
                 for (ReceiptModel.ReceiptComponentModel component: _receipt.getComponents()) {
                     character.setInventory(null);
                     _item.addComponent(component.item);
@@ -219,7 +225,7 @@ public class JobCraft extends JobModel {
             }
 
             @Override
-            public void onFail(JobModel job, CharacterModel character) {
+            public void onFail(BaseJobModel job, CharacterModel character) {
                 for (ReceiptModel.ReceiptComponentModel component: _receipt.getComponents()) {
                     character.setInventory(null);
                     Game.getWorldManager().putConsumable(component.item, character.getX(), character.getY());
@@ -267,7 +273,7 @@ public class JobCraft extends JobModel {
 						_status = Status.MOVE_TO_INGREDIENT;
 						character.moveTo(this, _targetIngredient.getX(), _targetIngredient.getY(), new OnMoveListener() {
 							@Override
-							public void onReach(JobModel job, CharacterModel character) {
+							public void onReach(BaseJobModel job, CharacterModel character) {
 								for (ReceiptModel.ReceiptComponentModel component : _receipt.getComponents()) {
                                     character.setInventory(component.item);
 									_item.addComponent(component.item);
@@ -275,7 +281,7 @@ public class JobCraft extends JobModel {
 							}
 
 							@Override
-							public void onFail(JobModel job, CharacterModel character) {
+							public void onFail(BaseJobModel job, CharacterModel character) {
 							}
 						});
 						return;
@@ -287,7 +293,7 @@ public class JobCraft extends JobModel {
 
 	private StorageModel findNearestStorage(CharacterModel character, ConsumableModel consumable) {
 		// Looking for free storage area for consumable
-		StorageModel storage = Game.getAreaManager().getNearestFreeStorage(consumable, character.getX(), character.getY());
+		StorageModel storage = Game.getAreaManager().getNearestFreeStorage(consumable, character.getParcel());
 		if (storage == null) {
 			return null;
 		}
@@ -305,7 +311,7 @@ public class JobCraft extends JobModel {
         _status = Status.MOVE_TO_STORAGE;
         character.moveTo(this, _posX, _posY, new OnMoveListener() {
             @Override
-            public void onReach(JobModel job, CharacterModel character) {
+            public void onReach(BaseJobModel job, CharacterModel character) {
 				ParcelModel parcel = storage.getNearestFreeParcel(consumable, character.getX(), character.getY());
 				if (parcel != null) {
 					Game.getWorldManager().putConsumable(consumable, parcel.getX(), parcel.getY());
@@ -317,16 +323,11 @@ public class JobCraft extends JobModel {
             }
 
             @Override
-            public void onFail(JobModel job, CharacterModel character) {
+            public void onFail(BaseJobModel job, CharacterModel character) {
             }
         });
 
 		return storage;
-	}
-
-	@Override
-	public String getType() {
-		return "craft";
 	}
 
 	@Override

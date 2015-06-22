@@ -10,7 +10,8 @@ import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteModel;
-import org.smallbox.faraway.engine.renderer.IRenderer;
+import org.smallbox.faraway.engine.renderer.BaseRenderer;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.ui.engine.ColorView;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.util.Constant;
@@ -27,6 +28,7 @@ public class GDXRenderer implements GFXRenderer {
     private final OrthographicCamera    _camera;
     private final OrthographicCamera    _cameraWorld;
     private ShapeRenderer               _shapeRenderer;
+    private int                         _zoom = GDXViewport.ZOOM_LEVELS.length - 1;
 
     public GDXRenderer(SpriteBatch batch, BitmapFont[] fonts) {
         _self = this;
@@ -47,9 +49,16 @@ public class GDXRenderer implements GFXRenderer {
             if (effect != null) {
                 if (effect.getViewport() != null) {
                     Sprite s = ((GDXSpriteModel) sprite).getData();
-                    _batch.draw(s, s.getX() + effect.getViewport().getPosX(), s.getY() + effect.getViewport().getPosY());
+                    s.setScale(effect.getViewport().getScale());
+                    _batch.draw(s,
+                            s.getX() + effect.getViewport().getPosX() * effect.getViewport().getScale(),
+                            s.getY() + effect.getViewport().getPosY() * effect.getViewport().getScale(),
+                            s.getWidth() * effect.getViewport().getScale(),
+                            s.getHeight() * effect.getViewport().getScale());
+                } else {
+                    Sprite s = ((GDXSpriteModel) sprite).getData();
+                    _batch.draw(s, ((GDXRenderEffect) effect).getPosX(), ((GDXRenderEffect) effect).getPosY());
                 }
-                _batch.draw(((GDXSpriteModel) sprite).getData(), ((GDXRenderEffect) effect).getPosX(), ((GDXRenderEffect) effect).getPosY());
             } else {
                 ((GDXSpriteModel) sprite).getData().draw(_batch);
             }
@@ -112,18 +121,30 @@ public class GDXRenderer implements GFXRenderer {
     }
 
     @Override
-    public IRenderer createAreaRenderer() {
+    public BaseRenderer createAreaRenderer() {
         return new GDXAreaRenderer();
     }
 
     @Override
-    public IRenderer createTemperatureRenderer() {
+    public BaseRenderer createTemperatureRenderer() {
         return new GDXTemperatureRenderer();
     }
 
     @Override
-    public IRenderer createRoomRenderer() {
+    public BaseRenderer createRoomRenderer() {
         return new GDXRoomRenderer();
+    }
+
+    @Override
+    public void zoomUp() {
+        _zoom = Math.max(0, _zoom - 1);
+        Game.getInstance().getViewport().setZoom(_zoom);
+    }
+
+    @Override
+    public void zoomDown() {
+        _zoom = Math.min(GDXViewport.ZOOM_LEVELS.length - 1, _zoom + 1);
+        Game.getInstance().getViewport().setZoom(_zoom);
     }
 
     public void draw(Sprite sprite, int x, int y) {
@@ -162,7 +183,8 @@ public class GDXRenderer implements GFXRenderer {
             Gdx.gl.glEnable(GL20.GL_BLEND);
 
             Matrix4 matrix = new Matrix4();
-            matrix.translate(x, y, 0);
+            matrix.translate(x * Game.getInstance().getViewport().getScale(), y * Game.getInstance().getViewport().getScale(), 0);
+            matrix.scale(Game.getInstance().getViewport().getScale(), Game.getInstance().getViewport().getScale(), 1f);
 
             cache.setProjectionMatrix(_cameraWorld.combined);
             cache.setTransformMatrix(matrix);

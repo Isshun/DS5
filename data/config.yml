@@ -14,15 +14,18 @@ render:
     item:           true
     consumable:     true
     temperature:    false
-    job:            true
+    job:            false
     area:           true
-    debug:          true
+    debug:          false
     room:           false
+    light:          false
+    particle:       false
 
 manager:
+    quest:          false
     room:           true
-    temperature:    true
-    weather:        true
+    temperature:    false
+    weather:        false
 
 character:
     effects:

@@ -9,14 +9,14 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 
-public class JobMining extends JobModel {
+public class JobMining extends BaseJobModel {
     private static final SpriteModel ICON = SpriteManager.getInstance().getIcon("data/res/ic_mine.png");
 
 	private JobMining(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
 		super(actionInfo, x, y);
 	}
 
-	public static JobModel create(ResourceModel res) {
+	public static BaseJobModel create(ResourceModel res) {
 		// Resource is not minable
 		if (res == null) {
 			return null;
@@ -106,11 +106,6 @@ public class JobMining extends JobModel {
 	}
 
 	@Override
-	public String getType() {
-		return "mine";
-	}
-
-	@Override
 	public String getLabel() {
 		return "Mine " + _item.getLabel();
 	}
@@ -129,4 +124,9 @@ public class JobMining extends JobModel {
     public SpriteModel getIcon() {
         return ICON;
     }
+
+	@Override
+	public void onQuit(CharacterModel character) {
+
+	}
 }

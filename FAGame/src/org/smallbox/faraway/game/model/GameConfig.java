@@ -39,9 +39,12 @@ public class GameConfig {
         public boolean          area;
         public boolean          debug;
         public boolean          room;
+        public boolean          light;
+        public boolean          particle;
     }
 
     public static class GameConfigManager {
+        public boolean          quest;
         public boolean          room;
         public boolean          temperature;
         public boolean          weather;

@@ -1,12 +1,12 @@
 package org.smallbox.faraway.game.model.item;
 
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 
 
 public class ResourceModel extends ItemModel {
 	private double 	_quantity;
 	private int 	_tile;
-	private JobModel _job;
+	private BaseJobModel _job;
 
 	public ResourceModel(ItemInfo info, int id) {
 		super(info, id);
@@ -65,7 +65,7 @@ public class ResourceModel extends ItemModel {
 		return _quantity >= _info.actions.get(0).mature;
 	}
 
-	public void setJob(JobModel job) {
+	public void setJob(BaseJobModel job) {
 		_job = job;
 	}
 

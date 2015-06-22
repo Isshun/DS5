@@ -3,7 +3,7 @@ package org.smallbox.faraway.game.model.check.joy;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobMove;
 
 /**
@@ -18,7 +18,7 @@ public class CheckJoyWalk extends CharacterCheck {
     }
 
     @Override
-    public JobModel create(CharacterModel character) {
+    public BaseJobModel create(CharacterModel character) {
         JobMove job = JobMove.create(character, (int)(Math.random() * 42), (int)(Math.random() * 42));
         job.setCharacter(character);
         job.setLabel("Move for a walk");

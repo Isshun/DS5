@@ -9,15 +9,15 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.item.StructureModel;
 
-public class JobBuild extends JobModel {
+public class JobBuild extends BaseJobModel {
 	private static final SpriteModel ICON = SpriteManager.getInstance().getIcon("data/res/ic_build.png");
 
 	private JobBuild(int x, int y) {
 		super(null, x, y);
 	}
 
-	public static JobModel create(MapObjectModel item) {
-		JobModel job = new JobBuild(item.getX(), item.getY());
+	public static BaseJobModel create(MapObjectModel item) {
+		BaseJobModel job = new JobBuild(item.getX(), item.getY());
 		job.setItem(item);
 		job.setCost(item.getInfo().cost);
 		return job;
@@ -76,11 +76,6 @@ public class JobBuild extends JobModel {
     @Override
     public double getProgress() { return (double)_item.getProgress() / _item.getInfo().cost; }
 
-    @Override
-	public String getType() {
-		return "build";
-	}
-
 	@Override
 	public boolean canBeResume() {
 		return false;
@@ -104,5 +99,10 @@ public class JobBuild extends JobModel {
 	@Override
 	public SpriteModel getIcon() {
 		return ICON;
+	}
+
+	@Override
+	public void onQuit(CharacterModel character) {
+
 	}
 }

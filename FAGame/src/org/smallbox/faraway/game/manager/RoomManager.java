@@ -3,11 +3,6 @@ package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.character.base.CharacterRelation;
-import org.smallbox.faraway.game.model.character.base.CharacterRelation.Relation;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
@@ -15,6 +10,7 @@ import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.room.NeighborModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.game.model.room.RoomModel.RoomType;
+import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +26,7 @@ public class RoomManager extends BaseManager implements GameObserver {
     private int                 _height;
     private ParcelModel[][][]   _parcels;
     private double[][]          _oxygenLevels;
+    private boolean             _needRefresh;
 
     @Override
     protected void onCreate() {
@@ -53,24 +50,6 @@ public class RoomManager extends BaseManager implements GameObserver {
         refreshRooms();
     }
 
-    public void add(RoomModel room) {
-        if (room == null) {
-            Log.error("room cannot be null");
-            return;
-        }
-
-        if (_roomList.contains(room)) {
-            Log.error("room already exists");
-            return;
-        }
-
-        _roomList.add(room);
-
-        for (ParcelModel area: room.getParcels()) {
-            _rooms[area.getX()][area.getY()] = room;
-        }
-    }
-
     public RoomModel getRoom(int x, int y) {
         for (RoomModel room: _roomList) {
             if (room.containsParcel(x, y)) {
@@ -82,55 +61,10 @@ public class RoomManager extends BaseManager implements GameObserver {
 
     public List<RoomModel> getRoomList() { return _roomList; }
 
-    public RoomModel take(CharacterModel character, RoomType type) {
-        if (character.getQuarter() != null) {
-            return character.getQuarter();
-        }
-
-        // Check relations
-        List<CharacterRelation> relations = character.getRelations();
-        for (CharacterRelation relation: relations) {
-
-            // Check if relation have there own quarters
-            RoomModel relationQuarter = relation.getSecond().getQuarter();
-            if (relationQuarter != null) {
-
-                // Live in parent's quarters
-                if (relation.getRelation() == Relation.PARENT && character.getOld() <= Constant.CHARACTER_LEAVE_HOME_OLD) {
-                    character.setQuarter(relationQuarter);
-                    relationQuarter.addOccupant(character);
-                    return relationQuarter;
-                }
-
-                // Live with mate
-                if (relation.getRelation() == Relation.MATE && character.getOld() > Constant.CHARACTER_LEAVE_HOME_OLD) {
-                    character.setQuarter(relationQuarter);
-                    relationQuarter.addOccupant(character);
-                    return relationQuarter;
-                }
-
-                // Children take the quarters first
-                if (relation.getRelation() == Relation.CHILDREN && relation.getSecond().getOld() <= Constant.CHARACTER_LEAVE_HOME_OLD) {
-                    character.setQuarter(relationQuarter);
-                    relationQuarter.addOccupant(character);
-                    return relationQuarter;
-                }
-            }
-        }
-
-        for (RoomModel room: _roomList) {
-            if (room.isType(type) && room.getOwner() == null) {
-                room.setOwner(character);
-                room.addOccupant(character);
-                character.setQuarter(room);
-                return room;
-            }
-        }
-
-        return null;
-    }
-
     protected void onUpdate(int tick) {
+        if (_needRefresh) {
+            refreshRooms();
+        }
         if (tick % UPDATE_INTERVAL == 0) {
             _roomList.forEach(RoomModel::update);
         }
@@ -139,71 +73,110 @@ public class RoomManager extends BaseManager implements GameObserver {
     public void makeRooms() {
         _width = Game.getWorldManager().getWidth();
         _height = Game.getWorldManager().getHeight();
-        _parcels = Game.getWorldManager().getAreas();
+        _parcels = Game.getWorldManager().getParcels();
 
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
                 _parcels[x][y][0].setRoom(null);
             }
         }
+        _roomList.clear();
 
         boolean newRoomFound;
         do {
             newRoomFound = false;
             for (int x = 0; x < _width; x++) {
                 for (int y = 0; y < _height; y++) {
-                    ParcelModel area = _parcels[x][y][0];
-                    boolean isPassable = true;
-                    if (area.getStructure() != null && (area.getStructure().isSolid() || area.getStructure().isDoor())) {
-                        isPassable = false;
+                    ParcelModel parcel = _parcels[x][y][0];
+                    if (parcel.getRoom() != null) {
+                        continue;
                     }
-                    if (area.getResource() != null && area.getResource().isSolid()) {
-                        isPassable = false;
+                    if (parcel.getStructure() != null && (parcel.getStructure().isSolid() || parcel.getStructure().isDoor())) {
+                        continue;
                     }
-                    if (area.getRoom() == null && isPassable) {
-                        newRoomFound = true;
-                        RoomModel room = new RoomModel(RoomType.NONE);
-                        room.setExterior(false);
-                        _roomList.add(room);
-                        try {
-                            exploreRoom(room, x, y);
-                        } catch (StackOverflowError e) {
-                        }
+                    if (parcel.getResource() != null && parcel.getResource().isSolid()) {
+                        continue;
                     }
+
+                    newRoomFound = true;
+                    RoomModel room = new RoomModel(RoomType.NONE);
+                    room.setExterior(false);
+                    room.addParcel(parcel);
+                    parcel.setRoom(room);
+                    _roomList.add(room);
+                    exploreRoom(room, x, y);
+                    checkRoof(room);
                 }
             }
         } while (newRoomFound);
     }
 
-    private void exploreRoom(RoomModel room, int x, int y) {
-        if (x >= 0 && x < _width && y >= 0 && y < _height && _parcels[x][y][0] != null) {
-            ParcelModel parcel = _parcels[x][y][0];
-            boolean isPassable = true;
-            if (parcel.getStructure() != null && (parcel.getStructure().isSolid() || parcel.getStructure().isDoor())) {
-                isPassable = false;
+    private void checkRoof(RoomModel room) {
+        Log.info("[RoomManager] Check roof: " + room.getName());
+        for (ParcelModel parcel: room.getParcels()) {
+            boolean isUnsupported = true;
+            for (int i = 0; i < 6; i++) {
+                if (checkAreaCanSupportRoof(parcel.getX() + i, parcel.getY())) isUnsupported = false;
+                if (checkAreaCanSupportRoof(parcel.getX() - i, parcel.getY())) isUnsupported = false;
+                if (checkAreaCanSupportRoof(parcel.getX(), parcel.getY() + i)) isUnsupported = false;
+                if (checkAreaCanSupportRoof(parcel.getX(), parcel.getY() - i)) isUnsupported = false;
             }
-            if (parcel.getResource() != null && parcel.getResource().isSolid()) {
-                isPassable = false;
-            }
-            if (parcel.getRoom() == null && isPassable) {
-                parcel.setRoom(room);
-                room.addParcel(parcel);
-
-                boolean isUnsupported = true;
-                for (int i = 0; i < 6; i++) {
-                    if (checkAreaCanSupportRoof(x + i, y)) isUnsupported = false;
-                    if (checkAreaCanSupportRoof(x - i, y)) isUnsupported = false;
-                    if (checkAreaCanSupportRoof(x, y + i)) isUnsupported = false;
-                    if (checkAreaCanSupportRoof(x, y - i)) isUnsupported = false;
-                }
-                if (isUnsupported) room.setExterior(true);
-
-                exploreRoom(room, x - 1, y);
-                exploreRoom(room, x + 1, y);
-                exploreRoom(room, x, y - 1);
-                exploreRoom(room, x, y + 1);
+            if (isUnsupported) {
+                room.setExterior(true);
+                return;
             }
         }
+    }
+
+    private void exploreRoom(RoomModel room, int x, int y) {
+        Log.info("[RoomManager] Explore room: " + room.getName());
+        for (int i = 0; i < 500; i++) {
+            for (int j = 0; j < 500; j++) {
+                // Cross
+                addToRoomIfFree(x + i, y, room);
+                addToRoomIfFree(x - i, y, room);
+                addToRoomIfFree(x, y + j, room);
+                addToRoomIfFree(x, y - j, room);
+
+                // Corners
+                addToRoomIfFree(x + i, y + j, room);
+                addToRoomIfFree(x - i, y - j, room);
+                addToRoomIfFree(x + i, y - j, room);
+                addToRoomIfFree(x - i, y + j, room);
+            }
+        }
+    }
+
+    private void addToRoomIfFree(int x, int y, RoomModel room) {
+        if (x < 0 || x >= _width || y < 0 || y >= _height || _parcels[x][y][0] == null) {
+            return;
+        }
+
+        if (_parcels[x][y][0].getRoom() != null) {
+            return;
+        }
+
+        if (_parcels[x][y][0].getStructure() != null && _parcels[x][y][0].getStructure().isSolid()) {
+            return;
+        }
+
+        if (_parcels[x][y][0].getResource() != null && _parcels[x][y][0].getResource().isSolid()) {
+            return;
+        }
+
+        if (!matchRoom(x - 1, y, room) && !matchRoom(x + 1, y, room) && !matchRoom(x, y - 1, room) && !matchRoom(x, y + 1, room)) {
+            return;
+        }
+
+        _parcels[x][y][0].setRoom(room);
+        room.addParcel(_parcels[x][y][0]);
+    }
+
+    private boolean matchRoom(int x, int y, RoomModel room) {
+        if (x < 0 || x >= _width || y < 0 || y >= _height || _parcels[x][y][0] == null || _parcels[x][y][0].getRoom() != room) {
+            return false;
+        }
+        return true;
     }
 
     private boolean checkAreaCanSupportRoof(int x, int y) {
@@ -302,21 +275,21 @@ public class RoomManager extends BaseManager implements GameObserver {
     @Override
     public void onAddStructure(StructureModel structure){
         if (!structure.isFloor()) {
-            refreshRooms();
+            _needRefresh = true;
         }
     }
 
     @Override
     public void onRemoveStructure(StructureModel structure) {
         if (!structure.isFloor()) {
-            refreshRooms();
+            _needRefresh = true;
         }
     }
 
     @Override
     public void onRemoveResource(ResourceModel resource){
         if (resource.isRock()) {
-            refreshRooms();
+            _needRefresh = true;
         }
     }
 

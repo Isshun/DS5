@@ -4,7 +4,8 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.model.job.JobCraft;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,8 +20,8 @@ public class JobSerializer implements SerializerInterface {
         private final String    actionPath;
         private final int       itemId;
 
-        public JobSave(JobModel job) {
-            this.type = job.getType();
+        public JobSave(BaseJobModel job) {
+            this.type = job.getClass().getName();
             this.itemId = job.getItem() != null ? job.getItem().getId() : -1;
             this.actionPath = job.getItem() != null && job.getActionInfo() != null ? job.getItem().getName() + ":" + job.getActionInfo().name : null;
         }
@@ -41,12 +42,11 @@ public class JobSerializer implements SerializerInterface {
         });
 
         for (JobSave job: save.jobs) {
-            switch (job.type) {
-                case "craft":
-                    if (job.itemId != -1 && job.actionPath != null) {
-                        JobManager.getInstance().addJob(Game.getWorldManager().getItemById(job.itemId), actions.get(job.actionPath));
-                    }
-                    break;
+            // Create JobCraft
+            if (job.type.equals(JobCraft.class.getName())) {
+                if (job.itemId != -1 && job.actionPath != null) {
+                    JobManager.getInstance().addJob(Game.getWorldManager().getItemById(job.itemId), actions.get(job.actionPath));
+                }
             }
         }
     }

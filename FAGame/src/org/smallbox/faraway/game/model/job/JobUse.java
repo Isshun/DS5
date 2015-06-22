@@ -11,7 +11,7 @@ import org.smallbox.faraway.game.model.item.MapObjectModel;
 
 import java.util.List;
 
-public class JobUse extends JobModel {
+public class JobUse extends BaseJobModel {
 
     @Override
     public boolean canBeResume() {
@@ -21,6 +21,11 @@ public class JobUse extends JobModel {
 	@Override
 	public CharacterModel.TalentType getTalentNeeded() {
 		return null;
+	}
+
+	@Override
+	public void onQuit(CharacterModel character) {
+
 	}
 
 	private JobUse() {
@@ -125,11 +130,6 @@ public class JobUse extends JobModel {
         JobManager.getInstance().close(this);
 
 		return true;
-	}
-
-	@Override
-	public String getType() {
-		return "use";
 	}
 
 	@Override

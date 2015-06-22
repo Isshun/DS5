@@ -9,7 +9,7 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.job.JobDump;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.room.RoomModel.RoomType;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.PanelPlan.Planning;
@@ -116,7 +116,7 @@ public class UserInteraction {
 	public void planGather(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				JobModel job = JobManager.getInstance().createGatherJob(x, y);
+				BaseJobModel job = JobManager.getInstance().createGatherJob(x, y);
 				if (job != null) {
 					JobManager.getInstance().addJob(job);
 				}
@@ -127,7 +127,7 @@ public class UserInteraction {
 	public void planMining(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				JobModel job = JobManager.getInstance().createMiningJob(x, y);
+				BaseJobModel job = JobManager.getInstance().createMiningJob(x, y);
 				if (job != null) {
 					JobManager.getInstance().addJob(job);
 				}

@@ -3,7 +3,7 @@ package org.smallbox.faraway.engine.renderer;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 
-public class DebugRenderer implements IRenderer {
+public class DebugRenderer extends BaseRenderer {
 //	private RenderTexture 	_cache;
 //
 //	public DebugRenderer() {

@@ -10,7 +10,7 @@ public interface GameEventListener {
         A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
         D_0, D_1, D_2, D_3, D_4, D_5, D_6, D_7, D_8, PERIOD, D_9};
     enum Action {PRESSED, RELEASED, MOVE, EXIT};
-    enum MouseButton {LEFT, MIDDLE, RIGHT};
+    enum MouseButton {LEFT, MIDDLE, WHEEL_UP, WHEEL_DOWN, RIGHT};
     enum Modifier {NONE, CONTROL, ALT, SHIFT};
 
     void onKeyEvent(GameTimer timer, Action action, Key key, Modifier modifier);

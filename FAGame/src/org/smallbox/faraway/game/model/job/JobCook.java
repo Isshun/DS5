@@ -37,11 +37,6 @@ public class JobCook extends JobCraft {
     }
 
     @Override
-    public String getType() {
-        return "cook";
-    }
-
-    @Override
     public String getLabel() {
         return _actionInfo.label;
     }

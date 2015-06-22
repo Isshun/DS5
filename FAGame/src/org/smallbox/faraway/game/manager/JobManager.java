@@ -17,8 +17,8 @@ import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.job.*;
-import org.smallbox.faraway.game.model.job.JobModel.JobAbortReason;
-import org.smallbox.faraway.game.model.job.JobModel.JobStatus;
+import org.smallbox.faraway.game.model.job.BaseJobModel.JobAbortReason;
+import org.smallbox.faraway.game.model.job.BaseJobModel.JobStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,9 +26,9 @@ import java.util.List;
 
 public class JobManager extends BaseManager {
 	private static JobManager		_self;
-	private List<JobModel> 			_jobs;
+	private List<BaseJobModel> 			_jobs;
 	private int 					_nbVisibleJob;
-	private List<JobModel> 			_toRemove;
+	private List<BaseJobModel> 			_toRemove;
     private List<CharacterCheck>    _priorities;
 	private List<CharacterCheck> 	_joys;
 
@@ -84,9 +84,9 @@ public class JobManager extends BaseManager {
 		}
 	}
 
-	public List<JobModel>	getJobs() { return _jobs; };
+	public List<BaseJobModel>	getJobs() { return _jobs; };
 
-	public JobModel addBuild(MapObjectModel item) {
+	public BaseJobModel addBuild(MapObjectModel item) {
 		if (item == null) {
 			Log.error("JobManager: build on null item");
 			return null;
@@ -97,46 +97,46 @@ public class JobManager extends BaseManager {
 			return null;
 		}
 
-		JobModel job = JobBuild.create(item);
+		BaseJobModel job = JobBuild.create(item);
 		addJob(job);
 
 		return job;
 	}
 
-	public JobModel addGather(ResourceModel ressource) {
+	public BaseJobModel addGather(ResourceModel ressource) {
 		if (ressource == null) {
 			Log.error("JobManager: gather on null area");
 			return null;
 		}
 
 		// return if job already exist for this item
-		for (JobModel job: _jobs) {
+		for (BaseJobModel job: _jobs) {
 			if (job.getItem() == ressource) {
 				return null;
 			}
 		}
 
-		JobModel job = JobGather.create(ressource);
+		BaseJobModel job = JobGather.create(ressource);
 		addJob(job);
 
 		return job;
 	}
 
 	public void	removeJob(MapObjectModel item) {
-		List<JobModel> toRemove = new ArrayList<>();
+		List<BaseJobModel> toRemove = new ArrayList<>();
 
-		for (JobModel job: _jobs) {
+		for (BaseJobModel job: _jobs) {
 			if (job.getItem() == item) {
 				toRemove.add(job);
 			}
 		}
 
-		for (JobModel job: toRemove) {
+		for (BaseJobModel job: toRemove) {
 			removeJob(job);
 		}
 	}
 
-	public JobModel build(ItemInfo info, int x, int y) {
+	public BaseJobModel build(ItemInfo info, int x, int y) {
 		MapObjectModel item = null;
 
 		// Structure
@@ -223,7 +223,7 @@ public class JobManager extends BaseManager {
 		}
 	}
 
-	public void removeJob(JobModel job) {
+	public void removeJob(BaseJobModel job) {
         Log.debug("remove job: " + job.getLabel() + " (" + job.getReasonString() + ")");
 
 		if (job.getCharacter() != null) {
@@ -246,7 +246,7 @@ public class JobManager extends BaseManager {
 		}
 	}
 
-	public void	addJob(JobModel job) {
+	public void	addJob(BaseJobModel job) {
 		if (job == null || _jobs.contains(job)) {
 			Log.error("Trying to add null or already existing job to JobManager");
 			return;
@@ -270,7 +270,7 @@ public class JobManager extends BaseManager {
 	}
 
 	public void addDestroyJob(MapObjectModel item) {
-		JobModel job = JobDump.create(item);
+		BaseJobModel job = JobDump.create(item);
 		addJob(job);
 	}
 
@@ -284,7 +284,7 @@ public class JobManager extends BaseManager {
 		Collections.shuffle(_joys);
 		for (CharacterCheck jobCheck: _joys) {
 			if (jobCheck.check(character)) {
-				JobModel job = jobCheck.create(character);
+				BaseJobModel job = jobCheck.create(character);
 				if (job != null) {
 					assignJobToCharacter(job, character);
 					return true;
@@ -304,7 +304,7 @@ public class JobManager extends BaseManager {
 	private boolean assignPriorityJob(CharacterModel character) {
 		for (CharacterCheck jobCheck: _priorities) {
 			if (jobCheck.check(character)) {
-				JobModel job = jobCheck.create(character);
+				BaseJobModel job = jobCheck.create(character);
 				if (job != null) {
                     assignJobToCharacter(job, character);
 					return true;
@@ -325,11 +325,11 @@ public class JobManager extends BaseManager {
         int x = character.getX();
         int y = character.getY();
         int bestDistance = Integer.MAX_VALUE;
-        JobModel bestJob = null;
+        BaseJobModel bestJob = null;
 
         // Regular jobs
         for (CharacterModel.TalentEntry talent: character.getTalents()) {
-            for (JobModel job: _jobs) {
+            for (BaseJobModel job: _jobs) {
                 if (talent.type == job.getTalentNeeded() && !job.isFinish() && job.getCharacter() == null && job.getFail() <= 0) {
                     int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
                     if (distance < bestDistance && job.check(character)) {
@@ -358,9 +358,9 @@ public class JobManager extends BaseManager {
         int x = character.getX();
         int y = character.getY();
         int bestDistance = Integer.MAX_VALUE;
-        JobModel bestJob = null;
+        BaseJobModel bestJob = null;
 
-        for (JobModel job: _jobs) {
+        for (BaseJobModel job: _jobs) {
             if (job.getCharacter() == null && job.getFail() > 0) {
                 if (job.getReason() == JobAbortReason.BLOCKED && job.getBlocked() < Game.getUpdate() + Constant.DELAY_TO_RESTART_BLOCKED_JOB) {
                     continue;
@@ -389,13 +389,13 @@ public class JobManager extends BaseManager {
      * @param job
      * @param character
      */
-    private void assignJobToCharacter(JobModel job, CharacterModel character) {
+    private void assignJobToCharacter(BaseJobModel job, CharacterModel character) {
         job.setStatus(JobStatus.RUNNING);
         job.setCharacter(character);
         character.setJob(job);
     }
 
-    public JobModel createGatherJob(int x, int y) {
+    public BaseJobModel createGatherJob(int x, int y) {
 		Log.debug("gather: " + x + " x " + y);
 
 		ResourceModel res = Game.getWorldManager().getResource(x, y);
@@ -403,35 +403,35 @@ public class JobManager extends BaseManager {
 			return null;
 		}
 
-		JobModel job = JobGather.create(res);
+		BaseJobModel job = JobGather.create(res);
 		return job;
 	}
 
-	public JobModel createMiningJob(int x, int y) {
+	public BaseJobModel createMiningJob(int x, int y) {
 		ResourceModel res = Game.getWorldManager().getResource(x, y);
 		if (res == null) {
 			return null;
 		}
 
-		JobModel job = JobMining.create(res);
+		BaseJobModel job = JobMining.create(res);
 		return job;
 	}
 
 	public void addGatherJob(int x, int y) {
-		JobModel job = createGatherJob(x, y);
+		BaseJobModel job = createGatherJob(x, y);
 		if (job != null) {
 			addJob(job);
 		}
 	}
 
 	public void addMineJob(int x, int y) {
-		JobModel job = createMiningJob(x, y);
+		BaseJobModel job = createMiningJob(x, y);
 		if (job != null) {
 			addJob(job);
 		}
 	}
 
-	public JobModel addStoreJob(CharacterModel character) {
+	public BaseJobModel addStoreJob(CharacterModel character) {
 //		BaseJob job = JobHaul.create(character);
 //		if (job != null) {
 //			addJob(job);
@@ -440,15 +440,15 @@ public class JobManager extends BaseManager {
         throw new RuntimeException("not implemented");
 	}
 
-	public JobModel addUseJob(MapObjectModel item) {
-		JobModel job = JobUse.create(item);
+	public BaseJobModel addUseJob(MapObjectModel item) {
+		BaseJobModel job = JobUse.create(item);
 		if (job != null) {
 			addJob(job);
 		}
 		return job;
 	}
 
-	public void addJob(JobModel job, CharacterModel character) {
+	public void addJob(BaseJobModel job, CharacterModel character) {
 		addJob(job);
 		if (job != null) {
 			job.setCharacter(character);
@@ -463,28 +463,35 @@ public class JobManager extends BaseManager {
 		}
 	}
 
-	public void close(JobModel job) {
+	public void close(BaseJobModel job) {
 		Log.debug("Job close: " + job.getId());
 
 		job.setStatus(JobStatus.COMPLETE);
+		if (job.getCharacter() != null) {
+			job.onQuit(job.getCharacter());
+		}
 
 		removeJob(job);
 	}
 
-	public void close(JobModel job, JobAbortReason reason) {
+	public void close(BaseJobModel job, JobAbortReason reason) {
 		Log.debug("Job close: " + job.getId());
 
 		job.setStatus(JobStatus.COMPLETE);
+		if (job.getCharacter() != null) {
+            job.quit(job.getCharacter());
+		}
 
 		removeJob(job);
 	}
 
-    public void quit(JobModel job) {
+    public void quit(BaseJobModel job) {
         if (job != null) {
-            if (job.getCharacter() != null) {
+			if (job.getCharacter() != null) {
+				job.quit(job.getCharacter());
                 job.getCharacter().setJob(null);
             }
-            job.setCharacter(null);
+			job.setCharacter(null);
 
             if (!job.canBeResume()) {
                 close(job);
@@ -492,12 +499,16 @@ public class JobManager extends BaseManager {
         }
     }
 
-	public void quit(JobModel job, JobAbortReason reason) {
+	public void quit(BaseJobModel job, JobAbortReason reason) {
 		Log.debug("Job quit: " + job.getId());
 
 		job.setStatus(JobStatus.ABORTED);
 		job.setFail(reason, MainRenderer.getFrame());
-		job.setCharacter(null);
+
+		if (job.getCharacter() != null) {
+			job.quit(job.getCharacter());
+			job.setCharacter(null);
+		}
 
 		// Remove character lock from item
 		if (job.getItem() != null && job.getItem().getOwner() == job.getCharacter()) {

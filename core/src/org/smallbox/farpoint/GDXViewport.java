@@ -3,12 +3,18 @@ package org.smallbox.farpoint;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
 
 /**
  * Created by Alex on 04/06/2015.
  */
 public class GDXViewport extends Viewport {
-    private static final int ANIM_FRAME = 10;
+    private static final int    ANIM_FRAME = 10;
+    public static float[]       ZOOM_LEVELS = new float[] {
+            0.25f,
+            0.5f,
+            1f
+    };
 
     private int 		_posX;
     private int 		_posY;
@@ -19,6 +25,7 @@ public class GDXViewport extends Viewport {
     private int 		_height;
     private int 		_fromScale;
     private int 		_scaleAnim;
+    private int         _zoom = ZOOM_LEVELS.length - 1;
 
     public GDXViewport(int x, int y) {
         _posX = x;
@@ -27,12 +34,15 @@ public class GDXViewport extends Viewport {
         _lastPosY = 0;
         _width = Constant.WINDOW_WIDTH - Constant.PANEL_WIDTH;
         _height = Constant.WINDOW_HEIGHT;
-        _toScale = 0;
     }
 
     @Override
     public void update(int x, int y) {
+        x *= (1 + (1 - ZOOM_LEVELS[_zoom])) * 4;
+        y *= (1 + (1 - ZOOM_LEVELS[_zoom])) * 4;
         if (x != 0 || y != 0) {
+            Log.info("drag: " + (_lastPosX - x) + "x" + (_lastPosY - y));
+
             _posX -= (_lastPosX - x);
             _posY -= (_lastPosY - y);
             _lastPosX = x;
@@ -60,13 +70,20 @@ public class GDXViewport extends Viewport {
     }
 
     @Override
+    public void setZoom(int zoom) {
+        _posX += ((ZOOM_LEVELS[_zoom] * 1500) - (ZOOM_LEVELS[zoom] * 1500));
+        _posY += ((ZOOM_LEVELS[_zoom] * 1200) - (ZOOM_LEVELS[zoom] * 1200));
+        _zoom = zoom;
+    }
+
+    @Override
     public RenderEffect getRenderEffect() {
         return null;
     }
 
     @Override
     public float getScale() {
-        return 1;
+        return ZOOM_LEVELS[_zoom];
     }
 
     @Override
@@ -81,8 +98,14 @@ public class GDXViewport extends Viewport {
 
     @Override
     public void startMove(int x, int y) {
-        _lastPosX = x;
-        _lastPosY = y;
+        _lastPosX = (int) ((x * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 4);
+        _lastPosY = (int) ((y * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 4);
+    }
+
+    @Override
+    public void move(int x, int y) {
+        _posX += (int) ((x * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 1);
+        _posY += (int) ((y * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 1);
     }
 
     public void getRender() {

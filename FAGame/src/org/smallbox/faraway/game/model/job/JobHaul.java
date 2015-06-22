@@ -1,6 +1,8 @@
 package org.smallbox.faraway.game.model.job;
 
+import org.smallbox.faraway.PathHelper;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.StorageModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.GameData;
@@ -12,11 +14,11 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobHaul extends JobModel {
+public class JobHaul extends BaseJobModel {
     private enum Mode {MOVE_TO_CONSUMABLE, MOVE_TO_STORAGE}
 
     private List<ConsumableModel>   _consumables = new ArrayList<>();
-    private StorageModel	        _storage;
+    private StorageModel _storage;
     private ParcelModel 	        _parcel;
     private Mode 			        _mode;
     private int                     _quantity;
@@ -70,7 +72,7 @@ public class JobHaul extends JobModel {
     }
 
     private boolean foundStorageParcel(ConsumableModel consumable) {
-        _storage = Game.getInstance().getAreaManager().getNearestFreeStorage(consumable, consumable.getX(), consumable.getY());
+        _storage = Game.getInstance().getAreaManager().getNearestFreeStorage(consumable, consumable.getParcel());
         if (_storage != null) {
             _parcel = _storage.getNearestFreeParcel(consumable, consumable.getX(), consumable.getY());
             if (_parcel != null) {
@@ -100,7 +102,7 @@ public class JobHaul extends JobModel {
         }
 
         // Unable to find free storage
-        _reason = JobModel.JobAbortReason.INVALID;
+        _reason = BaseJobModel.JobAbortReason.INVALID;
         return false;
     }
 
@@ -205,11 +207,6 @@ public class JobHaul extends JobModel {
     }
 
     @Override
-    public String getType() {
-        return "store";
-    }
-
-    @Override
     public boolean canBeResume() {
         return false;
     }
@@ -217,6 +214,14 @@ public class JobHaul extends JobModel {
     @Override
     public CharacterModel.TalentType getTalentNeeded() {
         return CharacterModel.TalentType.HAUL;
+    }
+
+    @Override
+    public void onQuit(CharacterModel character) {
+        if (character.getInventory() != null) {
+            Game.getWorldManager().putConsumable(character.getInventory(), character.getX(), character.getY());
+            character.setInventory(null);
+        }
     }
 
     @Override

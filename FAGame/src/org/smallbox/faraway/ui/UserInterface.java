@@ -25,8 +25,6 @@ public class UserInterface implements GameEventListener {
     private Viewport _viewport;
     private boolean						_keyLeftPressed;
     private boolean						_keyRightPressed;
-    private int							_mouseRightPressX;
-    private int							_mouseRightPressY;
     private int							_keyPressPosX;
     private int							_keyPressPosY;
     private int							_keyMovePosX;
@@ -283,9 +281,6 @@ public class UserInterface implements GameEventListener {
         }
 
         _keyRightPressed = true;
-        _mouseRightPressX = x;
-        _mouseRightPressY = y;
-        _viewport.startMove(x, y);
     }
 
     public int 				getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
@@ -603,12 +598,7 @@ public class UserInterface implements GameEventListener {
 
     public void onRightClick(int x, int y) {
 
-        // Move viewport
-        if (_keyRightPressed && Math.abs(_mouseRightPressX - x) > 5 || Math.abs(_mouseRightPressY - y) > 5) {
-            _viewport.update(x, y);
-        }
-
-        else if (_interaction.isAction(UserInteraction.Action.SET_ROOM)) {
+        if (_interaction.isAction(UserInteraction.Action.SET_ROOM)) {
             _interaction.clean();
         }
 
@@ -718,9 +708,9 @@ public class UserInterface implements GameEventListener {
 
     private void dumpRoomInfo(ParcelModel area) {
         if (area.getRoom() != null) {
-            for (ParcelModel a: area.getRoom().getParcels()) {
-                Log.info("in room: " + a.getX() + "x" + a.getY());
-            }
+//            for (ParcelModel a: area.getRoom().getParcels()) {
+//                Log.info("in room: " + a.getX() + "x" + a.getY());
+//            }
             Log.info("room size: " + area.getRoom().getParcels().size());
             Log.info("room exterior: " + area.getRoom().isExterior());
         }

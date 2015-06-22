@@ -4,7 +4,7 @@ import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 
-public class JobMove extends JobModel {
+public class JobMove extends BaseJobModel {
 	private GameConfig.EffectValues _effects;
     private int _distance;
     private double _speedModifier;
@@ -43,11 +43,6 @@ public class JobMove extends JobModel {
 		}
 
 		return false;
-	}
-
-	@Override
-	public String getType() {
-		return "move";
 	}
 
 	@Override
@@ -91,7 +86,12 @@ public class JobMove extends JobModel {
         return _speedModifier;
     }
 
-    public void setSpeedModifier(double speedModifier) {
+	@Override
+	public void onQuit(CharacterModel character) {
+
+	}
+
+	public void setSpeedModifier(double speedModifier) {
         _speedModifier = speedModifier;
     }
 }

@@ -5,7 +5,7 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ItemFilter;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobUse;
 
 /**
@@ -19,7 +19,7 @@ public class CheckCharacterExhausted extends CharacterCheck {
     }
 
     @Override
-    public JobModel create(CharacterModel character) {
+    public BaseJobModel create(CharacterModel character) {
         ItemFilter filter = ItemFilter.createUsableFilter();
         filter.effectEnergy = true;
 

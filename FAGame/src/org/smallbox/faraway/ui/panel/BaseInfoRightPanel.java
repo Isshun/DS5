@@ -48,6 +48,8 @@ public class BaseInfoRightPanel extends BaseRightPanel {
             ((TextView)_frame_room_info.findById("lb_cold_left")).setString("CL: " + parcel.getRoom().getTemperatureInfo().coldPotencyLeft);
             ((TextView)_frame_room_info.findById("lb_oxygen")).setString("O2: " + parcel.getRoom().getOxygen());
 
+            ((TextView)_frame_room_info.findById("lb_type")).setString("Type: " + parcel.getElevation());
+
             String strConnexion = "";
             for (Connection<ParcelModel> connection: parcel.getConnections()) {
                 strConnexion += strConnexion.isEmpty() ? "Connexion: " : ", ";

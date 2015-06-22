@@ -79,3 +79,9 @@ entries:
         text: connexion
         textsize: 14
         position: [24, 304]
+
+    -   type: label
+        id: lb_type
+        text: type
+        textsize: 14
+        position: [24, 324]

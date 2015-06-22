@@ -6,7 +6,7 @@ import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemFilter;
 import org.smallbox.faraway.game.model.job.JobConsume;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 
 /**
  * Created by Alex on 01/06/2015.
@@ -20,7 +20,7 @@ public class CheckCharacterHungry extends CharacterCheck {
 
 	// TODO: change name by filter
 	@Override
-	public JobModel create(CharacterModel character) {
+	public BaseJobModel create(CharacterModel character) {
 		ItemFilter filter = ItemFilter.createConsomableFilter();
 		filter.effectFood = true;
 

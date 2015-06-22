@@ -1,0 +1,6 @@
+label: Ground
+width: 1
+height: 1
+type: structure
+isWalkable: true
+cost: 1

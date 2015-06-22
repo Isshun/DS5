@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.model.item;
 
 import org.smallbox.faraway.game.model.job.JobHaul;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 
 /**
  * Created by Alex on 03/06/2015.
@@ -39,7 +39,7 @@ public class ConsumableModel extends MapObjectModel {
     public boolean 			hasFreeSlot() { return _slots > 0; }
 
     @Override
-    public ItemSlot takeSlot(JobModel job) {
+    public ItemSlot takeSlot(BaseJobModel job) {
         if (_slots > 0) {
             _slots--;
             return _slot;

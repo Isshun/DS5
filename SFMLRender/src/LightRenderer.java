@@ -6,12 +6,12 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.engine.renderer.IRenderer;
+import org.smallbox.faraway.engine.renderer.BaseRenderer;
 
 import java.io.File;
 import java.io.IOException;
 
-public class LightRenderer implements IRenderer {
+public class LightRenderer implements BaseRenderer {
 	private static final int	LIGHT_DISTANCE = 10;
 
 	private RenderTexture 		_cache;

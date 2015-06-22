@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.util.Constant;
@@ -23,6 +24,7 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.item.StructureModel;
+import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +74,7 @@ public class GDXLightRenderer extends LightRenderer {
     private Body        _sunBody;
     private PointLight  _sunLight1;
     private PointLight  _sunLight2;
-    private List<Body> _sunBodies = new ArrayList<>();
+    private List<Body>  _sunBodies = new ArrayList<>();
 
     public GDXLightRenderer() {
 //        _camera = new OrthographicCamera(viewportWidth, viewportHeight);
@@ -103,8 +105,15 @@ public class GDXLightRenderer extends LightRenderer {
     }
 
     @Override
-    public void onDraw(GFXRenderer renderer, int x, int y) {
-        _camera.position.set(x, y + viewportHeight / 2f, 0);
+    public void onRefresh(int frame) {
+
+    }
+
+    @Override
+    public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
+        _camera.position.set(
+                -effect.getViewport().getPosX() * effect.getViewport().getScale(),
+                -effect.getViewport().getPosY() * effect.getViewport().getScale() + viewportHeight / 2f, 0);
         _camera.update();
 
 //        _batch.setProjectionMatrix(_camera.combined);
@@ -159,8 +168,17 @@ public class GDXLightRenderer extends LightRenderer {
 //        for (Light light: _sunLights) {
 //            light.setColor(new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f));
 //        }
-        _sunLight1.setColor(new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f * 0.75f));
-        _sunLight2.setColor(new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f * 0.25f));
+        if (_sunLight1 != null) {
+            _sunLight1.setColor(new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f * 0.75f));
+        }
+
+        if (_sunLight2 != null) {
+            _sunLight2.setColor(new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f * 0.25f));
+        }
+
+        if (_sunLight1 == null || _sunLight2 == null) {
+            Log.error("SunLight missing");
+        }
     }
 
     void clearLights() {
@@ -186,14 +204,14 @@ public class GDXLightRenderer extends LightRenderer {
 //            _sunLights.add(_sunLight);
 //            lights.add(_sunLight);
 //        }
-        _sunLight1 = new PointLight(rayHandler, RAYS_PER_BALL, null, 10000, 0, 0);
+        _sunLight1 = new PointLight(rayHandler, RAYS_PER_BALL, null, 20000, 0, 0);
         _sunLight1.setSoft(false);
         _sunLight1.setXray(true);
         _sunLight1.attachToBody(_sunBody, RADIUS / 2f, RADIUS / 2f);
         _sunLight1.setColor(255, 255, 255, 0.11f);
         lights.add(_sunLight1);
 
-        _sunLight2 = new PointLight(rayHandler, RAYS_PER_BALL, null, 10000, 0, 0);
+        _sunLight2 = new PointLight(rayHandler, RAYS_PER_BALL, null, 20000, 0, 0);
         _sunLight2.setSoft(false);
         _sunLight2.setXray(false);
         _sunLight2.attachToBody(_sunBody, RADIUS / 2f, RADIUS / 2f);
@@ -263,7 +281,7 @@ public class GDXLightRenderer extends LightRenderer {
         if (Game.getWorldManager() != null) {
             int width = Game.getWorldManager().getWidth();
             int height = Game.getWorldManager().getHeight();
-            ParcelModel[][][] areas = Game.getWorldManager().getAreas();
+            ParcelModel[][][] areas = Game.getWorldManager().getParcels();
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (areas[x][y][0] != null && areas[x][y][0].getItem() != null && areas[x][y][0].getItem().getInfo().light > 0) {
@@ -303,7 +321,7 @@ public class GDXLightRenderer extends LightRenderer {
         if (Game.getWorldManager() != null) {
             int width = Game.getWorldManager().getWidth();
             int height = Game.getWorldManager().getHeight();
-            ParcelModel[][][] areas = Game.getWorldManager().getAreas();
+            ParcelModel[][][] areas = Game.getWorldManager().getParcels();
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (areas[x][y][0] != null && areas[x][y][0].getStructure() != null && areas[x][y][0].getStructure().isSolid()) {
@@ -366,4 +384,13 @@ public class GDXLightRenderer extends LightRenderer {
         }
     }
 
+    @Override
+    public void invalidate(int x, int y) {
+
+    }
+
+    @Override
+    public void invalidate() {
+
+    }
 }

@@ -29,15 +29,12 @@ public class PanelRoom extends BaseRightPanel {
 			this.shortcut = shortcut;
 			this.label = label;
 			this.roomType = roomType;
-			this.onClickListener = new OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					_interaction.set(Action.SET_ROOM, roomType);
-					clearButtons();
-					view.setBackgroundColor(new Color(29, 85, 96));
-					view.setBorderColor(new Color(161, 255, 255));
-				}
-			};
+			this.onClickListener = view -> {
+                _interaction.set(Action.SET_ROOM, roomType);
+                clearButtons();
+                view.setBackgroundColor(new Color(29, 85, 96));
+                view.setBorderColor(new Color(161, 255, 255));
+            };
 		}
 
 		public void click() {

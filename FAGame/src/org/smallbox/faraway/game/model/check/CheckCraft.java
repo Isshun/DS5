@@ -15,7 +15,7 @@
 //        int bestDistance = Integer.MAX_VALUE;
 //        JobModel bestJob = null;
 //        for (JobModel job: jobManager.getJobs()) {
-//            if (job.isFree() && !job.isFinish() && "craft".equals(job.getType()) && job.getDistance(_character) < bestDistance) {
+//            if (job.isFree() && !job.isFinish() && "craft".equals(job.getElevation()) && job.getDistance(_character) < bestDistance) {
 //                bestDistance = job.getDistance(_character);
 //                bestJob = job;
 //            }

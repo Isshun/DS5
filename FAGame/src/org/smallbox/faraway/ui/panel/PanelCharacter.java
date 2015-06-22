@@ -11,7 +11,7 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel.Gender;
 import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
 import org.smallbox.faraway.game.model.character.base.CharacterRelation;
-import org.smallbox.faraway.game.model.job.JobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.*;
@@ -502,7 +502,7 @@ public class PanelCharacter extends BaseRightPanel {
         }
     }
 
-    private void refreshJob(final JobModel job) {
+    private void refreshJob(final BaseJobModel job) {
         if (job != null) {
             _lbJob.setString(StringUtils.getDashedString(job.getLabel(), job.getProgressPercent() + "%", NB_COLUMNS));
             if (job.getItem() != null) {
