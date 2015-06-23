@@ -35,7 +35,7 @@ public class BuffManager {
                     }
                 }
 
-                // Level check failed
+                // Level onCheck failed
                 else {
                     if (characterBuff.progress >= level.index) {
                         characterBuff.progress = level.index - 1;

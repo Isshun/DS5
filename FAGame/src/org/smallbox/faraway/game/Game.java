@@ -153,7 +153,10 @@ public class Game {
         _jobManager = new JobManager();
         _managers.add(_jobManager);
 
-        _managers.add(new OxygenManager());
+        if (GameData.config.manager.oxygen) {
+            _managers.add(new OxygenManager());
+        }
+
         _managers.add(new PowerManager());
         _managers.add(new WorldItemManager());
 

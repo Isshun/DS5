@@ -31,7 +31,7 @@ public class PanelArea extends BaseRightPanel {
         }
         selectedView.setBackgroundColor(COLOR_SELECTED);
 
-        // Set action
+        // Set onAction
         _interaction.set(UserInteraction.Action.SET_AREA, AreaType.STORAGE);
     }
 }

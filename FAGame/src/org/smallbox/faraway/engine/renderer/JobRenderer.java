@@ -41,10 +41,10 @@ public class JobRenderer extends BaseRenderer {
 	}
 
 
-//	private void addRectangle(ActionType action, Color color) {
+//	private void addRectangle(ActionType onAction, Color color) {
 //		ColorView rectangle = ViewFactory.getInstance().createColorView(Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
 //		rectangle.setBackgroundColor(new Color((int) (color.r * 1.2), (int) (color.g * 1.2), (int) (color.b * 1.2), 42));
-//		_rectangles.put(action, rectangle);
+//		_rectangles.put(onAction, rectangle);
 //
 //	}
 

@@ -226,6 +226,7 @@ public class CharacterNeeds {
 			happiness = Math.min(happiness + (double)action.effects.happiness / action.cost, 100);
 			health = Math.min(health + (double)action.effects.health / action.cost, 100);
 			relation = Math.min(relation + (double)action.effects.relation / action.cost, 100);
+			joy = Math.min(joy + (double)action.effects.joy / action.cost, 100);
 		}
 	}
 

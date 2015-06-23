@@ -195,8 +195,8 @@
 //        List<ItemInfo> resourceItemsInfo = new ArrayList<>();
 //        GameData.getData().items.stream().filter(info -> info.actions != null).forEach(info -> {
 //            resourceItemsInfo.addAll(info.actions.stream()
-//                    .filter(action -> "gather".equals(action.type))
-//                    .map(action -> info)
+//                    .filter(onAction -> "gather".equals(onAction.type))
+//                    .map(onAction -> info)
 //                    .collect(Collectors.toList()));
 //        });
 //        int nbResource = Constant.WORLD_WIDTH * Constant.WORLD_HEIGHT / resInterval;

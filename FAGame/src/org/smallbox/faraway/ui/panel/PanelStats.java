@@ -28,7 +28,7 @@
 //	}
 //
 //	@Override
-//	protected void onCreate() {
+//	protected void create() {
 //		_image = new Image();
 //		_image.create(300, 200);
 //

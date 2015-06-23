@@ -83,8 +83,8 @@ public class GDXApplication extends ApplicationAdapter {
         _application.setInputDirection(inputProcessor.getDirection());
 
         if (data.config.byPassMenu) {
-            _application.newGame("6.sav");
-//            _application.loadGame("4.sav");
+//            _application.newGame("6.sav");
+            _application.loadGame("4.sav");
         }
     }
 

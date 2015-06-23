@@ -88,6 +88,12 @@ public class CharacterRenderer extends BaseRenderer {
 				sprite.setPosition(posX - 2, posY - 2);
 				renderer.draw(sprite, effect);
 			}
+
+			if (c.getJob() != null && c.getJob().getActionIcon() != null && c.getJob().getX() == c.getX() && c.getJob().getY() == c.getY()) {
+				SpriteModel sprite = c.getJob().getActionIcon();
+				sprite.setPosition(posX - 2, posY - 2);
+				renderer.draw(sprite, effect);
+			}
 		}
 	}
 

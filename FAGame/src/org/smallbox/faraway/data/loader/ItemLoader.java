@@ -145,7 +145,7 @@ public class ItemLoader implements IDataLoader {
                     switch (action.type) {
                         case "use":
                             if (item.actions.size() > 1) {
-                                throw new RuntimeException("action type \"use\" need to be unique");
+                                throw new RuntimeException("onAction type \"use\" need to be unique");
                             }
                             break;
 
@@ -154,14 +154,14 @@ public class ItemLoader implements IDataLoader {
 
                         case "gather":
                             if (item.actions.size() > 1) {
-                                throw new RuntimeException("action type \"gather\" need to be unique");
+                                throw new RuntimeException("onAction type \"gather\" need to be unique");
                             }
                             data.gatherItems.add(item);
                             break;
 
                         case "mine":
                             if (item.actions.size() > 1) {
-                                throw new RuntimeException("action type \"mine\" need to be unique");
+                                throw new RuntimeException("onAction type \"mine\" need to be unique");
                             }
 //                            data.gatherItems.add(item);
                             break;

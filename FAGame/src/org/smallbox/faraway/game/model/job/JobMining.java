@@ -11,9 +11,10 @@ import org.smallbox.faraway.game.model.item.ResourceModel;
 
 public class JobMining extends BaseJobModel {
     private static final SpriteModel ICON = SpriteManager.getInstance().getIcon("data/res/ic_mine.png");
+	private ResourceModel _resource;
 
 	private JobMining(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
-		super(actionInfo, x, y);
+		super(actionInfo, x, y, "data/res/ic_mining.png", "data/res/ic_action_mining.png");
 	}
 
 	public static BaseJobModel create(ResourceModel res) {
@@ -27,6 +28,7 @@ public class JobMining extends BaseJobModel {
 				if ("mine".equals(action.type)) {
 					JobMining job = new JobMining(action, res.getX(), res.getY());
 					job.setItem(res);
+					job._resource = res;
 					return job;
 				}
 			}
@@ -36,7 +38,7 @@ public class JobMining extends BaseJobModel {
 	}
 
 	@Override
-	public boolean check(CharacterModel character) {
+	public boolean onCheck(CharacterModel character) {
 		// Item is null
 		if (_item == null) {
 			_reason = JobAbortReason.INVALID;
@@ -65,44 +67,44 @@ public class JobMining extends BaseJobModel {
 	}
 
 	@Override
-	public boolean action(CharacterModel character) {
+	protected void onFinish() {
+		Log.info("Mine complete");
+		Game.getWorldManager().removeResource(_resource);
+		_actionInfo.products.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo -> {
+			Game.getWorldManager().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, productInfo.quantity);
+		});
+	}
+
+	@Override
+	public JobActionReturn onAction(CharacterModel character) {
 		// Wrong call
 		if (_item == null) {
 			Log.error("Character: actionMine on null job or null job's item");
-			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
-			return true;
+			return JobActionReturn.ABORT;
 		}
 		
 		if (!_item.isResource()) {
 			Log.error("Character: actionMine on non resource");
-			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
-			return true;
+			return JobActionReturn.ABORT;
 		}
 
 		if (!"mine".equals(_actionInfo.type)) {
 			Log.error("Character: actionMine on non minable item");
-			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
-			return true;
+			return JobActionReturn.ABORT;
 		}
 
         ResourceModel resource = (ResourceModel)_item;
 
         CharacterModel.TalentEntry talent = character.getTalent(CharacterModel.TalentType.MINE);
         resource.addQuantity(-talent.work());
+
+		// Check if resource is depleted
         if (!resource.isDepleted()) {
 			Log.debug("Mine progress");
-			return false;
+			return JobActionReturn.CONTINUE;
 		}
 
-		// Resource is depleted
-		Log.info("Mine complete");
-		Game.getWorldManager().removeResource(resource);
-		_actionInfo.products.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo -> {
-			Game.getWorldManager().putObject(productInfo.itemInfo, resource.getX(), resource.getY(), 0, productInfo.quantity);
-		});
-		JobManager.getInstance().close(this);
-
-		return true;
+		return JobActionReturn.FINISH;
 	}
 
 	@Override
@@ -126,7 +128,10 @@ public class JobMining extends BaseJobModel {
     }
 
 	@Override
-	public void onQuit(CharacterModel character) {
+	protected void onStart(CharacterModel character) {
+	}
 
+	@Override
+	public void onQuit(CharacterModel character) {
 	}
 }

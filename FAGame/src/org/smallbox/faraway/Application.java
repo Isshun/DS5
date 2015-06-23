@@ -136,7 +136,9 @@ public class Application implements GameEventListener {
 
 // Reload UI
             case F5:
-                _gameInterface.reload();
+                _loadListener.onUpdate("saving");
+                _game.save(_game.getFileName());
+                _loadListener.onUpdate("save done");
                 return;
 
 // Kill

@@ -10,7 +10,7 @@ actions:
         effects:
             happiness: 10
             relation: 10
-            joy: 10
+            joy: 50
 slots:
     - [1, -1]
     - [-1, 1]

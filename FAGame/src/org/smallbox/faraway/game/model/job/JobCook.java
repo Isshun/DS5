@@ -22,7 +22,7 @@ public class JobCook extends JobCraft {
         }
 
         if (action == null) {
-            throw new RuntimeException("Cannot add cook job (action is null)");
+            throw new RuntimeException("Cannot add cook job (onAction is null)");
         }
 
         JobCook job = new JobCook(action, item.getX(), item.getY());

@@ -38,8 +38,11 @@ public class JobCraft extends BaseJobModel {
 	}
 
 	@Override
-	public void onQuit(CharacterModel character) {
+	protected void onStart(CharacterModel character) {
+	}
 
+	@Override
+	public void onQuit(CharacterModel character) {
 	}
 
 	@Override
@@ -58,7 +61,7 @@ public class JobCraft extends BaseJobModel {
 	}
 
 	protected JobCraft(ItemInfo.ItemInfoAction action, int x, int y) {
-		super(action, x, y);
+		super(action, x, y, "data/res/ic_craft.png", "data/res/ic_action_craft.png");
 	}
 
 	public static JobCraft create(ItemInfo.ItemInfoAction action, MapObjectModel item) {
@@ -67,7 +70,7 @@ public class JobCraft extends BaseJobModel {
 		}
 
 		if (action == null) {
-			throw new RuntimeException("Cannot add Craft job (action is null)");
+			throw new RuntimeException("Cannot add Craft job (onAction is null)");
 		}
 
 
@@ -84,12 +87,17 @@ public class JobCraft extends BaseJobModel {
 	}
 
 	@Override
-	public boolean check(CharacterModel character) {
+	public boolean onCheck(CharacterModel character) {
 		if (_receipt == null) {
 			findWorkableReceipt(character);
 		}
 
 		return _receipt != null;
+	}
+
+	@Override
+	protected void onFinish() {
+
 	}
 
 	private void findWorkableReceipt(CharacterModel character) {
@@ -112,7 +120,7 @@ public class JobCraft extends BaseJobModel {
 	}
 
 	@Override
-	public boolean action(CharacterModel character) {
+	public JobActionReturn onAction(CharacterModel character) {
         if (_character == null) {
             Log.error("Action on job with null character");
         }
@@ -121,12 +129,14 @@ public class JobCraft extends BaseJobModel {
 		if (_item == null || _item != Game.getWorldManager().getItem(_itemPosX, _itemPosY)) {
 			Log.error("Character: actionUse on null job or null job's item or invalid item");
 			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
-			return false;
+			return JobActionReturn.ABORT;
 		}
 
 		if (_receipt == null) {
 			findWorkableReceipt(character);
-			return _receipt != null;
+			if (_receipt == null) {
+				return JobActionReturn.QUIT;
+			}
 		}
 
 		// Move to ingredient
@@ -144,19 +154,19 @@ public class JobCraft extends BaseJobModel {
             return actionMoveToStorage(character);
 		}
 
-		return true;
+		return JobActionReturn.ABORT;
 	}
 
-    private boolean actionMoveToStorage(CharacterModel character) {
+    private JobActionReturn actionMoveToStorage(CharacterModel character) {
         return closeOrQuit(character);
     }
 
-    private boolean actionMoveToFactory(CharacterModel character) {
+    private JobActionReturn actionMoveToFactory(CharacterModel character) {
         // Work continue
         _progress += character.getTalent(CharacterModel.TalentType.CRAFT).work();
         if (_progress < _cost) {
             Log.debug("Character #" + character.getName() + ": Crafting (" + _progress + ")");
-            return false;
+            return JobActionReturn.CONTINUE;
         }
 
         // Current item is done
@@ -169,7 +179,7 @@ public class JobCraft extends BaseJobModel {
             if (storage != null) {
                 character.setInventory(consumable);
                 _status = Status.MOVE_TO_STORAGE;
-                return false;
+                return JobActionReturn.CONTINUE;
             } else {
                 Game.getWorldManager().putConsumable(consumable, character.getX(), character.getY());
             }
@@ -178,7 +188,7 @@ public class JobCraft extends BaseJobModel {
         return closeOrQuit(character);
     }
 
-    private boolean actionMoveToIngredient(CharacterModel character) {
+    private JobActionReturn actionMoveToIngredient(CharacterModel character) {
         //if (character.getX() != _targetX || character.getY() != _targetY)
 
         if (_targetIngredient == null) {
@@ -192,7 +202,7 @@ public class JobCraft extends BaseJobModel {
         if (_targetIngredient != Game.getWorldManager().getConsumable(_targetX, _targetY)) {
             _targetIngredient = null;
             _status = Status.MOVE_TO_INGREDIENT;
-            return false;
+            return JobActionReturn.CONTINUE;
         }
 
         // Move ingredient to Crafter
@@ -208,7 +218,7 @@ public class JobCraft extends BaseJobModel {
         // Components still missing
         if (!_receipt.hasComponents()) {
             findNearestIngredient(character);
-            return false;
+            return JobActionReturn.CONTINUE;
         }
 
         // Receipt is complete
@@ -233,10 +243,10 @@ public class JobCraft extends BaseJobModel {
             }
         });
 
-        return false;
+        return JobActionReturn.CONTINUE;
     }
 
-    private boolean closeOrQuit(CharacterModel character) {
+    private JobActionReturn closeOrQuit(CharacterModel character) {
 
 		// Switch status to MOVE_TO_INGREDIENT
 		_targetIngredient = null;
@@ -249,13 +259,13 @@ public class JobCraft extends BaseJobModel {
 		if (_count++ >= _totalCount) {
 			//Log.debug("Character #" + character.getId() + ": work close");
 			JobManager.getInstance().close(this);
-			return true;
+			return JobActionReturn.FINISH;
 		}
 
-		// Som remains
+		// Some remains
 		else {
 			JobManager.getInstance().quit(this);
-			return false;
+			return JobActionReturn.CONTINUE;
 		}
 	}
 

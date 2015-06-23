@@ -76,8 +76,8 @@
 //			}
 //
 //			if (_stackedInfo.actions != null) {
-//				for (ItemInfo.ItemInfoAction action: _stackedInfo.actions) {
-//					if (_stackedInfo.matchFilter(action.effects, filter)) {
+//				for (ItemInfo.ItemInfoAction onAction: _stackedInfo.actions) {
+//					if (_stackedInfo.matchFilter(onAction.effects, filter)) {
 //						filter.itemMatched = _stackedInfo;
 //						return true;
 //					}

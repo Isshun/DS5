@@ -33,7 +33,7 @@ public class PanelPlan extends BaseRightPanel {
 		}
 		view.setBackgroundColor(new Color(176, 205, 53));
 
-		// Set action
+		// Set onAction
 		_interaction.set(Action.SET_PLAN, planning);
 	}
 

@@ -11,6 +11,7 @@ import org.smallbox.faraway.game.model.item.ResourceModel;
 
 public class JobGather extends BaseJobModel {
 	private static final SpriteModel ICON = SpriteManager.getInstance().getIcon("data/res/ic_gather.png");
+	private static final SpriteModel ICON_ACTION = SpriteManager.getInstance().getIcon("data/res/ic_action_gather.png");
 
 	private ResourceModel 	_resource;
 	private int 			_totalCost;
@@ -22,7 +23,7 @@ public class JobGather extends BaseJobModel {
 	}
 
 	private JobGather(ItemInfo.ItemInfoAction action, int x, int y) {
-		super(action, x, y);
+		super(action, x, y, "data/res/ic_gather.png", "data/res/ic_action_gather.png");
 	}
 
 	public static BaseJobModel create(ResourceModel resource) {
@@ -41,7 +42,7 @@ public class JobGather extends BaseJobModel {
 	}
 
 	@Override
-	public void onCharacterAssign(CharacterModel character) {
+	public void onStart(CharacterModel character) {
 		if (_resource != null) {
 			_totalCost = _cost * _resource.getQuantity();
 		}
@@ -56,7 +57,7 @@ public class JobGather extends BaseJobModel {
 	}
 
 	@Override
-	public boolean check(CharacterModel character) {
+	public boolean onCheck(CharacterModel character) {
 		// Item is null
 		if (_resource == null) {
 			_reason = JobAbortReason.INVALID;
@@ -84,19 +85,25 @@ public class JobGather extends BaseJobModel {
 		return true;
 	}
 
-	@Override
-	public boolean action(CharacterModel character) {
+    @Override
+    protected void onFinish() {
+        _resource.setJob(null);
+        Game.getWorldManager().removeResource(_resource);
+    }
+
+    @Override
+	public JobActionReturn onAction(CharacterModel character) {
 		// Wrong call
 		if (_resource == null) {
 			Log.error("Character: actionGather on null job or null job's item");
 			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
-			return true;
+			return JobActionReturn.ABORT;
 		}
 
 		if (_resource.getInfo().actions.get(0) == null) {
 			Log.error("Character: actionGather on non gatherable item");
 			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
-			return true;
+			return JobActionReturn.ABORT;
 		}
 
         Log.debug(character.getName() + ": gathering (" + _totalProgress + "/" + _totalCost + ")");
@@ -107,7 +114,7 @@ public class JobGather extends BaseJobModel {
 
 		++_totalProgress;
 		if (++_progress < _cost) {
-			return false;
+			return JobActionReturn.CONTINUE;
 		}
 
         // Add product items
@@ -120,14 +127,11 @@ public class JobGather extends BaseJobModel {
         _resource.addQuantity(-1);
 
         // Close job if resource is depleted
-        if (_resource.getQuantity() <= 0) {
-            _resource.setJob(null);
-            JobManager.getInstance().close(this);
-            Game.getWorldManager().removeResource(_resource);
-            return true;
+        if (_resource.getQuantity() > 0) {
+			return JobActionReturn.CONTINUE;
         }
 
-        return false;
+		return JobActionReturn.FINISH;
 	}
 
     @Override
@@ -144,6 +148,9 @@ public class JobGather extends BaseJobModel {
 	public SpriteModel getIcon() {
 		return ICON;
 	}
+
+    @Override
+    public SpriteModel getActionIcon() { return ICON_ACTION; }
 
 	@Override
 	public void onQuit(CharacterModel character) {

@@ -25,7 +25,7 @@ public class CheckJoyItem extends CharacterCheck {
         ItemModel item = getItem(character);
         if (item != null) {
             JobUse job = JobUse.create(item, character);
-            job.setCharacter(character);
+            job.start(character);
             job.setCharacterRequire(character);
             return job;
         }
@@ -35,7 +35,7 @@ public class CheckJoyItem extends CharacterCheck {
     private ItemModel getItem(CharacterModel character) {
         ItemFilter filter = ItemFilter.createUsableFilter();
         filter.effectJoy = true;
-        return (ItemModel) Game.getWorldManager().getFinder().getNearest(filter, character);
+        return Game.getWorldManager().getFinder().getRandomNearest(filter, character);
     }
 
     @Override

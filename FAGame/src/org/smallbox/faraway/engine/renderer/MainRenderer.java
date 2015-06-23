@@ -90,6 +90,7 @@ public class MainRenderer {
 
 		_worldRenderer = new WorldRenderer(_spriteManager);
 		_renders.add(_worldRenderer);
+		game.addObserver(_worldRenderer);
 
 		_characterRenderer = new CharacterRenderer(game.getCharacterManager().getList());
 		_renders.add(_characterRenderer);

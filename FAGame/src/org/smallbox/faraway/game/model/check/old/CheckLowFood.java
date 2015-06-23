@@ -7,7 +7,7 @@
 //import org.smallbox.faraway.game.model.item.UserItem;
 //import org.smallbox.faraway.game.model.job.JobModel;
 //import org.smallbox.faraway.game.model.job.JobUse;
-//import org.smallbox.faraway.game.model.check.Check;
+//import org.smallbox.faraway.game.model.onCheck.Check;
 //
 ///**
 // * Launch jobs if low food

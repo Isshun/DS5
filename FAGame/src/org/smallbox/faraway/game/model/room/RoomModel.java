@@ -26,6 +26,10 @@ public class RoomModel {
 		_oxygen = Math.max(0, Math.min(1, _oxygen + oxygen / _parcels.size()));
 	}
 
+	public void addParcels(List<ParcelModel> parcels) {
+		_parcels.addAll(parcels);
+	}
+
 	public enum RoomType {
 		NONE,
 		QUARTER,

@@ -10135,14 +10135,13 @@
       <z>0</z>
     </org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
     <org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
-      <resource>
-        <id>1</id>
-        <name>base.seaweed3</name>
+      <consumable>
+        <id>947</id>
+        <name>base.seaweed</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>0</tile>
-        <value>10</value>
-      </resource>
+        <quantity>10</quantity>
+      </consumable>
       <lightSource>0</lightSource>
       <x>24</x>
       <y>6</y>
@@ -10629,42 +10628,25 @@
       <z>0</z>
     </org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
     <org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
-      <resource>
-        <id>1</id>
-        <name>base.seaweed5</name>
-        <progress>0</progress>
-        <health>0</health>
-        <tile>0</tile>
-        <value>10</value>
-      </resource>
       <lightSource>0</lightSource>
       <x>25</x>
       <y>3</y>
       <z>0</z>
     </org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
     <org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
-      <resource>
-        <id>1</id>
-        <name>base.seaweed4</name>
-        <progress>0</progress>
-        <health>0</health>
-        <tile>0</tile>
-        <value>10</value>
-      </resource>
       <lightSource>0</lightSource>
       <x>25</x>
       <y>4</y>
       <z>0</z>
     </org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
     <org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
-      <resource>
-        <id>1</id>
-        <name>base.seaweed5</name>
+      <consumable>
+        <id>948</id>
+        <name>base.seaweed</name>
         <progress>0</progress>
         <health>0</health>
-        <tile>0</tile>
-        <value>10</value>
-      </resource>
+        <quantity>10</quantity>
+      </consumable>
       <lightSource>0</lightSource>
       <x>25</x>
       <y>5</y>
@@ -11159,14 +11141,6 @@
       <z>0</z>
     </org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
     <org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
-      <resource>
-        <id>1</id>
-        <name>base.seaweed4</name>
-        <progress>0</progress>
-        <health>0</health>
-        <tile>0</tile>
-        <value>10</value>
-      </resource>
       <lightSource>0</lightSource>
       <x>26</x>
       <y>3</y>
@@ -11673,14 +11647,6 @@
       <z>0</z>
     </org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
     <org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
-      <resource>
-        <id>1</id>
-        <name>base.seaweed3</name>
-        <progress>0</progress>
-        <health>0</health>
-        <tile>0</tile>
-        <value>10</value>
-      </resource>
       <lightSource>0</lightSource>
       <x>27</x>
       <y>2</y>
@@ -11693,14 +11659,6 @@
       <z>0</z>
     </org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
     <org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
-      <resource>
-        <id>1</id>
-        <name>base.seaweed3</name>
-        <progress>0</progress>
-        <health>0</health>
-        <tile>0</tile>
-        <value>10</value>
-      </resource>
       <lightSource>0</lightSource>
       <x>27</x>
       <y>4</y>
@@ -12199,14 +12157,6 @@
       <z>0</z>
     </org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
     <org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
-      <resource>
-        <id>1</id>
-        <name>base.seaweed4</name>
-        <progress>0</progress>
-        <health>0</health>
-        <tile>0</tile>
-        <value>10</value>
-      </resource>
       <lightSource>0</lightSource>
       <x>28</x>
       <y>4</y>
@@ -12677,14 +12627,6 @@
       <z>0</z>
     </org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
     <org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
-      <resource>
-        <id>1</id>
-        <name>base.seaweed5</name>
-        <progress>0</progress>
-        <health>0</health>
-        <tile>0</tile>
-        <value>10</value>
-      </resource>
       <lightSource>0</lightSource>
       <x>29</x>
       <y>2</y>
@@ -13661,14 +13603,6 @@
       <z>0</z>
     </org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
     <org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
-      <resource>
-        <id>1</id>
-        <name>base.seaweed4</name>
-        <progress>0</progress>
-        <health>0</health>
-        <tile>0</tile>
-        <value>10</value>
-      </resource>
       <lightSource>0</lightSource>
       <x>31</x>
       <y>2</y>
@@ -18233,12 +18167,6 @@
       <z>0</z>
     </org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
     <org.smallbox.faraway.data.serializer.WorldSerializer_-WorldSaveParcel>
-      <structure>
-        <id>678</id>
-        <name>base.wall</name>
-        <progress>0</progress>
-        <health>250</health>
-      </structure>
       <lightSource>0</lightSource>
       <x>41</x>
       <y>21</y>
@@ -21666,9 +21594,9 @@
       <lastname>Mcintyre</lastname>
       <firstname>Bruce </firstname>
       <relations/>
-      <old>16.45999999999999</old>
-      <x>28</x>
-      <y>0</y>
+      <old>19.839999999999918</old>
+      <x>24</x>
+      <y>3</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
@@ -21681,7 +21609,7 @@
         <relation>0.0</relation>
         <security>0.0</security>
         <oxygen>99.0</oxygen>
-        <energy>80.45000000000013</energy>
+        <energy>46.45000000000021</energy>
         <health>81.05213928222656</health>
         <sickness>0.0</sickness>
         <injuries>0.0</injuries>
@@ -21690,13 +21618,32 @@
       <inventory/>
     </org.smallbox.faraway.data.serializer.CharacterSerializer_-CharacterSave>
   </characters>
-  <jobs/>
+  <jobs>
+    <org.smallbox.faraway.data.serializer.JobSerializer_-JobSave>
+      <type>org.smallbox.faraway.game.model.job.JobGather</type>
+      <actionPath>base.seaweed2:null</actionPath>
+      <itemId>1</itemId>
+    </org.smallbox.faraway.data.serializer.JobSerializer_-JobSave>
+    <org.smallbox.faraway.data.serializer.JobSerializer_-JobSave>
+      <type>org.smallbox.faraway.game.model.job.JobHaul</type>
+      <itemId>-1</itemId>
+    </org.smallbox.faraway.data.serializer.JobSerializer_-JobSave>
+    <org.smallbox.faraway.data.serializer.JobSerializer_-JobSave>
+      <type>org.smallbox.faraway.game.model.job.JobCraft</type>
+      <actionPath>base.rock_workshop:action_craft</actionPath>
+      <itemId>514</itemId>
+    </org.smallbox.faraway.data.serializer.JobSerializer_-JobSave>
+  </jobs>
   <areas>
     <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave>
       <parcels>
         <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+          <x>44</x>
+          <y>11</y>
+        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
           <x>42</x>
-          <y>12</y>
+          <y>11</y>
         </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
         <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
           <x>41</x>
@@ -21707,31 +21654,27 @@
           <y>12</y>
         </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
         <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>45</x>
-          <y>11</y>
-        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>43</x>
-          <y>12</y>
-        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>43</x>
-          <y>11</y>
-        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>44</x>
-          <y>11</y>
-        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>45</x>
-          <y>12</y>
-        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
           <x>44</x>
           <y>12</y>
         </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
         <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
           <x>42</x>
+          <y>12</y>
+        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+          <x>43</x>
+          <y>12</y>
+        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+          <x>45</x>
+          <y>12</y>
+        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+          <x>45</x>
+          <y>11</y>
+        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+          <x>43</x>
           <y>11</y>
         </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
       </parcels>

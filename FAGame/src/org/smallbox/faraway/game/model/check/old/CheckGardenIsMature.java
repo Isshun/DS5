@@ -5,7 +5,7 @@
 //import org.smallbox.faraway.game.model.item.WorldArea;
 //import org.smallbox.faraway.game.model.item.WorldResource;
 //import org.smallbox.faraway.game.model.job.JobGather;
-//import org.smallbox.faraway.game.model.check.Check;
+//import org.smallbox.faraway.game.model.onCheck.Check;
 //import org.smallbox.faraway.game.model.room.Room;
 //
 //import java.util.List;

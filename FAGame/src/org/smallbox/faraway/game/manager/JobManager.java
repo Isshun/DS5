@@ -227,8 +227,7 @@ public class JobManager extends BaseManager {
         Log.debug("remove job: " + job.getLabel() + " (" + job.getReasonString() + ")");
 
 		if (job.getCharacter() != null) {
-			job.getCharacter().setJob(null);
-			job.setCharacter(null);
+			job.quit(job.getCharacter());
 		}
 
 		if (job.getItem() != null) {
@@ -320,7 +319,7 @@ public class JobManager extends BaseManager {
      *
      * @param character
      */
-    // TODO: one pass + check profession
+    // TODO: one pass + onCheck profession
     private boolean assignRegularJob(CharacterModel character) {
         int x = character.getX();
         int y = character.getY();
@@ -391,8 +390,7 @@ public class JobManager extends BaseManager {
      */
     private void assignJobToCharacter(BaseJobModel job, CharacterModel character) {
         job.setStatus(JobStatus.RUNNING);
-        job.setCharacter(character);
-        character.setJob(job);
+        job.start(character);
     }
 
     public BaseJobModel createGatherJob(int x, int y) {
@@ -451,7 +449,7 @@ public class JobManager extends BaseManager {
 	public void addJob(BaseJobModel job, CharacterModel character) {
 		addJob(job);
 		if (job != null) {
-			job.setCharacter(character);
+			job.start(character);
 		}
 	}
 
@@ -468,8 +466,10 @@ public class JobManager extends BaseManager {
 
 		job.setStatus(JobStatus.COMPLETE);
 		if (job.getCharacter() != null) {
-			job.onQuit(job.getCharacter());
+			job.quit(job.getCharacter());
 		}
+
+		job.close();
 
 		removeJob(job);
 	}
@@ -489,9 +489,8 @@ public class JobManager extends BaseManager {
         if (job != null) {
 			if (job.getCharacter() != null) {
 				job.quit(job.getCharacter());
-                job.getCharacter().setJob(null);
             }
-			job.setCharacter(null);
+			job.start(null);
 
             if (!job.canBeResume()) {
                 close(job);
@@ -507,7 +506,7 @@ public class JobManager extends BaseManager {
 
 		if (job.getCharacter() != null) {
 			job.quit(job.getCharacter());
-			job.setCharacter(null);
+			job.start(null);
 		}
 
 		// Remove character lock from item
@@ -541,7 +540,7 @@ public class JobManager extends BaseManager {
 			return;
 		}
 
-		// Job is USE / USE_INVENTORY / MOVE / TAKE / STORE / REFILL action, don't resume
+		// Job is USE / USE_INVENTORY / MOVE / TAKE / STORE / REFILL onAction, don't resume
 		if (!job.canBeResume()) {
 			removeJob(job);
 			return;

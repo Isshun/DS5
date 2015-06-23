@@ -24,8 +24,11 @@ public class JobUse extends BaseJobModel {
 	}
 
 	@Override
-	public void onQuit(CharacterModel character) {
+	protected void onStart(CharacterModel character) {
+	}
 
+	@Override
+	public void onQuit(CharacterModel character) {
 	}
 
 	private JobUse() {
@@ -69,29 +72,28 @@ public class JobUse extends BaseJobModel {
 
 	// TODO: make objects stats table instead switch
 	@Override
-	public boolean action(CharacterModel character) {
+	public JobActionReturn onAction(CharacterModel character) {
 		// Wrong call
 		if (_item == null || character == null) {
 			Log.error("wrong call");
 			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
-			return true;
+			return JobActionReturn.ABORT;
 		}
 		
 		// Item not reached
 		if (character.getX() != _posX || character.getY() != _posY) {
-			return false;
+			return JobActionReturn.ABORT;
 		}
 
 		// Character is sleeping
-		if (character.isSleeping() && _item.isSleepingItem() == false) {
+		if (character.isSleeping() && !_item.isSleepingItem()) {
 			Log.debug("use: sleeping . use canceled");
             JobManager.getInstance().close(this, _reason);
-			return false;
+			return JobActionReturn.CONTINUE;
 		}
 		
-		if (check(character) == false) {
-			JobManager.getInstance().close(this, _reason);
-			return true;
+		if (!check(character)) {
+			return JobActionReturn.ABORT;
 		}
 		
 		Log.debug("Character #" + character.getName() + ": actionUse");
@@ -120,20 +122,18 @@ public class JobUse extends BaseJobModel {
             // Use item
             _item.use(_character, (int) (_cost - _progress));
 
-            return false;
+            return JobActionReturn.CONTINUE;
 		}
 
         if (_item.isSleepingItem()) {
             _character.getNeeds().setSleeping(false);
         }
 
-        JobManager.getInstance().close(this);
-
-		return true;
+		return JobActionReturn.FINISH;
 	}
 
 	@Override
-	public boolean check(CharacterModel character) {
+	public boolean onCheck(CharacterModel character) {
 		// Item is null
 		if (_item == null) {
 			_reason = JobAbortReason.INVALID;
@@ -164,6 +164,11 @@ public class JobUse extends BaseJobModel {
 //		}
 		
 		return true;
+	}
+
+	@Override
+	protected void onFinish() {
+
 	}
 
 	@Override

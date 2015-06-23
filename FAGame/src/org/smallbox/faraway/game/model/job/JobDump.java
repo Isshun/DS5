@@ -8,7 +8,7 @@ import org.smallbox.faraway.game.model.item.MapObjectModel;
 public class JobDump extends BaseJobModel {
 
 	private JobDump(int x, int y) {
-		super(null, x, y);
+		super(null, x, y, "data/res/ic_dump.png", "data/res/ic_action_dump.png");
 	}
 
 	public static BaseJobModel create(MapObjectModel objectModel) {
@@ -23,7 +23,7 @@ public class JobDump extends BaseJobModel {
 	}
 
 	@Override
-	public boolean check(CharacterModel character) {
+	public boolean onCheck(CharacterModel character) {
 		// Item is null
 		if (_item == null) {
 			_reason = JobAbortReason.INVALID;
@@ -40,16 +40,15 @@ public class JobDump extends BaseJobModel {
 	}
 
 	@Override
-	public boolean action(CharacterModel character) {
+	protected void onFinish() {
+		Game.getWorldManager().remove(_item);
+	}
+
+	@Override
+	public JobActionReturn onAction(CharacterModel character) {
         _item.addProgress(-character.getTalent(CharacterModel.TalentType.BUILD).work());
         _progress = _cost - _item.getProgress();
-		if (!_item.isDump()) {
-			return false;
-		}
-
-		Game.getWorldManager().remove(_item);
-		JobManager.getInstance().close(this);
-		return true;
+		return _item.isDump() ? JobActionReturn.FINISH : JobActionReturn.CONTINUE;
 	}
 
 	@Override
@@ -63,8 +62,11 @@ public class JobDump extends BaseJobModel {
 	}
 
 	@Override
-	public void onQuit(CharacterModel character) {
+	protected void onStart(CharacterModel character) {
+	}
 
+	@Override
+	public void onQuit(CharacterModel character) {
 	}
 
 	@Override

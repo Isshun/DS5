@@ -26,6 +26,7 @@ manager:
     room:           true
     temperature:    false
     weather:        false
+    oxygen:         false
 
 character:
     effects:

@@ -352,23 +352,16 @@ public abstract class CharacterModel extends Movable {
 
 
 	public void	setJob(BaseJobModel job) {
-		// Cancel previous job
-		if (_job != job && _job != null && !_job.isFinish()) {
-			JobManager.getInstance().quit(_job, BaseJobModel.JobAbortReason.INTERRUPT);
+		// This character already working on this job
+		if (_job == job) {
+			Log.warning("This job already exists on character");
+			return;
 		}
 
-		// Launch new job if not null
-		if (job != null && (_toX != job.getX() || _toY != job.getY())) {
-			job.setCharacter(this);
-			moveTo(job, job.getX(), job.getY(), new OnMoveListener() {
-				@Override
-				public void onReach(BaseJobModel job, CharacterModel character) {
-				}
-
-				@Override
-				public void onFail(BaseJobModel job, CharacterModel character) {
-				}
-			});
+		// Character has already a job
+		if (_job != null && job != null) {
+			Log.error("Character already working on other job");
+			return;
 		}
 
 		// Set new job
@@ -502,22 +495,17 @@ public abstract class CharacterModel extends Movable {
 			return;
 		}
 
-		// If JobMove, call action during moving
-		if (_job instanceof JobMove) {
-			// If job is close, getRoom new one
-			if (_job.action(this)) {
+		// Check if job location is reached or instance of JobMove
+		if ((_posX == _toX && _posY == _toY) || _job instanceof JobMove) {
+			BaseJobModel.JobActionReturn ret = _job.action(this);
+			if (ret == BaseJobModel.JobActionReturn.FINISH || ret == BaseJobModel.JobActionReturn.ABORT) {
+				JobManager.getInstance().close(_job);
 				JobManager.getInstance().assignJob(this);
 			}
-			return;
-		}
-
-		if (_posX != _toX || _posY != _toY) {
-			return;
-		}
-
-		// If job is close, get new one
-		if (_job.action(this)) {
-			JobManager.getInstance().assignJob(this);
+            if (ret == BaseJobModel.JobActionReturn.QUIT) {
+                JobManager.getInstance().quit(_job);
+                JobManager.getInstance().assignJob(this);
+            }
 		}
 	}
 

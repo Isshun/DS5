@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.game.manager.JobManager;
 //import org.smallbox.faraway.game.manager.ServiceManager;
 //import org.smallbox.faraway.game.model.item.FactoryItem;
-//import org.smallbox.faraway.game.model.check.Check;
+//import org.smallbox.faraway.game.model.onCheck.Check;
 //
 //import java.util.List;
 //

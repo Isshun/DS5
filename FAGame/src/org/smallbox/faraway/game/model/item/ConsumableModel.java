@@ -63,4 +63,6 @@ public class ConsumableModel extends MapObjectModel {
     public void setHaul(JobHaul job) {
         _job = job;
     }
+
+    public boolean isEmpty() { return _quantity <= 0; }
 }

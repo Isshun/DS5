@@ -2,7 +2,7 @@
 //
 //import org.smallbox.faraway.game.manager.JobManager;
 //import org.smallbox.faraway.game.model.character.base.CharacterModel;
-//import org.smallbox.faraway.game.model.check.old.CharacterCheck;
+//import org.smallbox.faraway.game.model.onCheck.old.CharacterCheck;
 //import org.smallbox.faraway.game.model.job.JobModel;
 //
 ///**
@@ -36,7 +36,7 @@
 //    }
 //
 //    @Override
-//    public boolean check(CharacterModel character) {
+//    public boolean onCheck(CharacterModel character) {
 //        return false;
 //    }
 //}

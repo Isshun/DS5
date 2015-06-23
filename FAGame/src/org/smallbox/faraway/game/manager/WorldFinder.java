@@ -4,6 +4,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class WorldFinder {
 
@@ -134,5 +135,9 @@ public class WorldFinder {
 			}
 		}
 		return null;
+	}
+
+	public ItemModel getRandomNearest(ItemFilter filter, CharacterModel character) {
+		throw new NotImplementedException();
 	}
 }

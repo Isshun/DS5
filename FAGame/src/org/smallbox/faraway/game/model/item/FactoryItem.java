@@ -20,8 +20,8 @@
 //		_inventory = new ArrayList<>();
 //		if (info.actions != null && info.storage > 0) {
 //			_accepts = new ArrayList<>();
-//			for (ItemInfo.ItemInfoAction action: info.actions) {
-//				for (ItemInfo itemProduce : action.productsItem) {
+//			for (ItemInfo.ItemInfoAction onAction: info.actions) {
+//				for (ItemInfo itemProduce : onAction.productsItem) {
 //					_accepts.addAll(itemProduce.craftedFromItems);
 //				}
 //			}
@@ -59,15 +59,15 @@
 //
 //		// Filter looking for factory
 //		if (filter.lookingForFactory && _info.actions != null) {
-//            for (ItemInfo.ItemInfoAction action: _info.actions) {
-//                if (action.productsItem != null) {
+//            for (ItemInfo.ItemInfoAction onAction: _info.actions) {
+//                if (onAction.productsItem != null) {
 //                    // Factory has no free slots
 //                    if (filter.needFreeSlot && hasFreeSlot() == false) {
 //                        return false;
 //                    }
 //
-//                    for (ItemInfo productsItem: action.productsItem) {
-//                        if (productsItem != null && productsItem.actions != null && (filter.itemNeeded == productsItem || _info.matchFilter(action.effects, filter))) {
+//                    for (ItemInfo productsItem: onAction.productsItem) {
+//                        if (productsItem != null && productsItem.actions != null && (filter.itemNeeded == productsItem || _info.matchFilter(onAction.effects, filter))) {
 //                            // Have components
 //                            for (ItemInfo component: productsItem.craftedFromItems) {
 //                                if (inventoryContains(component)) {

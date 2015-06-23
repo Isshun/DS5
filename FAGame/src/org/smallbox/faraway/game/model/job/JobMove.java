@@ -1,16 +1,19 @@
 package org.smallbox.faraway.game.model.job;
 
+import org.smallbox.faraway.engine.SpriteManager;
+import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.util.Log;
 
 public class JobMove extends BaseJobModel {
 	private GameConfig.EffectValues _effects;
-    private int _distance;
-    private double _speedModifier;
+    private int 					_distance;
+    private double 					_speedModifier;
 
     private JobMove(int x, int y) {
-		super(null, x, y);
+		super(null, x, y, "data/res/ic_dump.png", "data/res/ic_action_dump.png");
 	}
 
 	public static JobMove create(CharacterModel character, int x, int y) {
@@ -20,12 +23,17 @@ public class JobMove extends BaseJobModel {
 	}
 
 	@Override
-	public boolean check(CharacterModel character) {
+	public boolean onCheck(CharacterModel character) {
 		return true;
 	}
 
 	@Override
-	public boolean action(CharacterModel character) {
+	protected void onFinish() {
+		Log.info("JobMove: character reach position");
+	}
+
+	@Override
+	public JobActionReturn onAction(CharacterModel character) {
 
 		// If job has EffectValues, update character needs
 		if (_effects != null) {
@@ -37,12 +45,11 @@ public class JobMove extends BaseJobModel {
 //		}
 
 		// Job is done
-		if (character.getX() == _posX && character.getY() == _posY) {
-			JobManager.getInstance().close(this);
-			return true;
+		if (character.getX() != _posX || character.getY() != _posY) {
+			return JobActionReturn.CONTINUE;
 		}
 
-		return false;
+		return JobActionReturn.FINISH;
 	}
 
 	@Override
@@ -69,17 +76,11 @@ public class JobMove extends BaseJobModel {
 		_effects = effects;
 	}
 
-    protected void onCharacterAssign(CharacterModel character){
+    protected void onStart(CharacterModel character){
         _distance = character != null ? Math.abs(character.getX() - _posX) + Math.abs(character.getY() - _posY) : 0;
     }
 
-    public double               getProgress() {
-        if (_character != null && _distance != 0) {
-            int distance = Math.abs(_character.getX() - _posX) + Math.abs(_character.getY() - _posY);
-            return (double)distance / _distance;
-        }
-        return 0;
-    }
+    public double               getProgress() { return (double)(_limit - _currentLimit) / _limit; }
 
     @Override
     public double getSpeedModifier() {

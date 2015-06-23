@@ -2,6 +2,7 @@ package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.PathHelper;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.WorldManager;
 import org.smallbox.faraway.game.model.StorageModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.manager.JobManager;
@@ -18,14 +19,14 @@ public class JobHaul extends BaseJobModel {
     private enum Mode {MOVE_TO_CONSUMABLE, MOVE_TO_STORAGE}
 
     private List<ConsumableModel>   _consumables = new ArrayList<>();
-    private StorageModel _storage;
+    private StorageModel            _storage;
     private ParcelModel 	        _parcel;
     private Mode 			        _mode;
     private int                     _quantity;
     private ItemInfo                _itemInfo;
 
     private JobHaul(int x, int y) {
-        super(null, x, y);
+        super(null, x, y, "data/res/ic_haul.png", "data/res/ic_action_haul.png");
     }
 
     public static JobHaul create(ConsumableModel consumable) {
@@ -72,6 +73,7 @@ public class JobHaul extends BaseJobModel {
     }
 
     private boolean foundStorageParcel(ConsumableModel consumable) {
+        _parcel = null;
         _storage = Game.getInstance().getAreaManager().getNearestFreeStorage(consumable, consumable.getParcel());
         if (_storage != null) {
             _parcel = _storage.getNearestFreeParcel(consumable, consumable.getX(), consumable.getY());
@@ -80,110 +82,6 @@ public class JobHaul extends BaseJobModel {
             }
         }
         return false;
-    }
-
-    @Override
-    public boolean check(CharacterModel character) {
-        // Consumable has moved
-        if (_mode == Mode.MOVE_TO_CONSUMABLE && !_consumables.get(0).matchPosition(_posX, _posY)) {
-            _consumables.remove(0);
-            refreshJob();
-            return true;
-        }
-
-        // Check storage area
-        if (_storage != null && _parcel != null) {
-            return true;
-        }
-
-        // Get storage area
-        if (foundStorageParcel(_consumables.get(0))) {
-            return true;
-        }
-
-        // Unable to find free storage
-        _reason = BaseJobModel.JobAbortReason.INVALID;
-        return false;
-    }
-
-    // TODO: add inventory filter
-    @Override
-    public boolean action(CharacterModel character) {
-        if (_storage == null) {
-            Log.error("JobHaul: null storage");
-            JobManager.getInstance().quit(this, JobAbortReason.INVALID);
-            return true;
-        }
-
-        // Reach consumable
-        if (_mode == Mode.MOVE_TO_CONSUMABLE) {
-            ConsumableModel consumable = _consumables.get(0);
-            Log.info("Haul consumable: " + consumable.getInfo().label);
-
-            consumable.getParcel().setConsumable(null);
-            if (_character.getInventory() == null) {
-                _character.setInventory(consumable);
-            } else if (_character.getInventory().getInfo() == consumable.getInfo()) {
-                _character.getInventory().addQuantity(consumable.getQuantity());
-            } else {
-                Log.error("JobHaul: character inventory must be empty");
-                JobManager.getInstance().quit(this, JobAbortReason.INVALID);
-                return true;
-            }
-            _consumables.remove(0);
-
-            refreshJob();
-
-            return false;
-        }
-
-        // Reach storage
-        if (_mode == Mode.MOVE_TO_STORAGE) {
-            if (_character.getInventory() == null) {
-                Log.error("Character reach storage with empty inventory");
-                JobManager.getInstance().close(this);
-                return true;
-            }
-            if (_parcel != null && _parcel.getConsumable() == null) {
-                Game.getWorldManager().putConsumable(_character.getInventory(), _parcel.getX(), _parcel.getY());
-                _character.setInventory(null);
-                JobManager.getInstance().close(this);
-                return true;
-            }
-            if (_parcel != null && _parcel.getConsumable().getInfo() == _character.getInventory().getInfo()) {
-                int freeQuantity = GameData.config.storageMaxQuantity - _parcel.getConsumable().getQuantity();
-                // Store all inventory consumables on storage area
-                if (freeQuantity >= _character.getInventory().getQuantity()) {
-                    _parcel.getConsumable().addQuantity(_character.getInventory().getQuantity());
-                    _character.setInventory(null);
-                    JobManager.getInstance().close(this);
-                    return true;
-                }
-                // Store some inventory consumables
-                else {
-                    _parcel.getConsumable().addQuantity(freeQuantity);
-                    _character.getInventory().addQuantity(-freeQuantity);
-                }
-            }
-
-            // Found another free storage area
-            if (foundStorageParcel(_character.getInventory())) {
-                _posX = _parcel.getX();
-                _posY = _parcel.getY();
-                Log.info("Continue job to: " + _posX + "x" + _posY + ", left: " + _character.getInventory().getQuantity());
-                _character.moveTo(this, _posX, _posY, null);
-                return false;
-            }
-            // No empty space in any storage
-            else {
-                Log.error("No empty space in any storage");
-                Game.getWorldManager().putConsumable(_character.getInventory(), _character.getX(), _character.getY());
-                _character.setInventory(null);
-                JobManager.getInstance().close(this);
-            }
-        }
-
-        return true;
     }
 
     private void refreshJob() {
@@ -217,11 +115,126 @@ public class JobHaul extends BaseJobModel {
     }
 
     @Override
+    protected void onStart(CharacterModel character) {
+    }
+
+    @Override
     public void onQuit(CharacterModel character) {
         if (character.getInventory() != null) {
             Game.getWorldManager().putConsumable(character.getInventory(), character.getX(), character.getY());
             character.setInventory(null);
         }
+    }
+
+    @Override
+    public boolean onCheck(CharacterModel character) {
+        // Consumable has moved
+        if (_mode == Mode.MOVE_TO_CONSUMABLE && !_consumables.get(0).matchPosition(_posX, _posY)) {
+            _consumables.remove(0);
+            refreshJob();
+            return true;
+        }
+
+        // Check storage area
+        if (_storage != null && _parcel != null) {
+            return true;
+        }
+
+        // Get storage area
+        if (foundStorageParcel(_consumables.get(0))) {
+            return true;
+        }
+
+        // Unable to find free storage
+        _reason = BaseJobModel.JobAbortReason.INVALID;
+        return false;
+    }
+
+    @Override
+    protected void onFinish() {
+
+    }
+
+    // TODO: add inventory filter
+    @Override
+    public JobActionReturn onAction(CharacterModel character) {
+        if (_storage == null) {
+            Log.error("JobHaul: null storage");
+            JobManager.getInstance().quit(this, JobAbortReason.INVALID);
+            return JobActionReturn.ABORT;
+        }
+
+        // Reach consumable
+        if (_mode == Mode.MOVE_TO_CONSUMABLE) {
+            ConsumableModel consumable = _consumables.get(0);
+            Log.info("Haul consumable: " + consumable.getInfo().label);
+
+            // TODO: check character inventory free space
+            if (_character.getInventory() == null) {
+                _character.setInventory(consumable);
+                Game.getWorldManager().removeConsumable(consumable);
+            } else if (_character.getInventory().getInfo() == consumable.getInfo()) {
+                _character.getInventory().addQuantity(consumable.getQuantity());
+                consumable.setQuantity(0);
+                if (consumable.isEmpty()) {
+                    Game.getWorldManager().removeConsumable(consumable);
+                }
+            } else {
+                Log.error("JobHaul: character inventory must be empty");
+                JobManager.getInstance().quit(this, JobAbortReason.INVALID);
+                return JobActionReturn.ABORT;
+            }
+            _consumables.remove(0);
+
+            refreshJob();
+
+            return JobActionReturn.CONTINUE;
+        }
+
+        // Reach storage
+        if (_mode == Mode.MOVE_TO_STORAGE) {
+            if (_character.getInventory() == null) {
+                Log.error("Character reach storage with empty inventory");
+                return JobActionReturn.ABORT;
+            }
+            if (_parcel != null && _parcel.getConsumable() == null) {
+                Game.getWorldManager().putConsumable(_character.getInventory(), _parcel.getX(), _parcel.getY());
+                _character.setInventory(null);
+                return JobActionReturn.FINISH;
+            }
+            if (_parcel != null && _parcel.getConsumable().getInfo() == _character.getInventory().getInfo()) {
+                int freeQuantity = GameData.config.storageMaxQuantity - _parcel.getConsumable().getQuantity();
+                // Store all inventory consumables on storage area
+                if (freeQuantity >= _character.getInventory().getQuantity()) {
+                    _parcel.getConsumable().addQuantity(_character.getInventory().getQuantity());
+                    _character.setInventory(null);
+                    return JobActionReturn.FINISH;
+                }
+                // Store some inventory consumables
+                else {
+                    _parcel.getConsumable().addQuantity(freeQuantity);
+                    _character.getInventory().addQuantity(-freeQuantity);
+                }
+            }
+
+            // Found another free storage area
+            if (foundStorageParcel(_character.getInventory())) {
+                _posX = _parcel.getX();
+                _posY = _parcel.getY();
+                Log.info("Continue job to: " + _posX + "x" + _posY + ", left: " + _character.getInventory().getQuantity());
+                _character.moveTo(this, _posX, _posY, null);
+                return JobActionReturn.CONTINUE;
+            }
+            // No empty space in any storage
+            else {
+                Log.error("No empty space in any storage");
+                Game.getWorldManager().putConsumable(_character.getInventory(), _character.getX(), _character.getY());
+                _character.setInventory(null);
+                return JobActionReturn.ABORT;
+            }
+        }
+
+        return JobActionReturn.FINISH;
     }
 
     @Override

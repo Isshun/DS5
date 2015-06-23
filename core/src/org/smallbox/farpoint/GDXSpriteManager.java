@@ -420,7 +420,7 @@ public class GDXSpriteManager extends SpriteManager {
                     }
                 }
 
-                return getSprite(texture, x, y, width, height, alpha);
+                return getSprite(texture, 0, 0, 32, 32, alpha);
             }
 
             else if (item.isHull()) {

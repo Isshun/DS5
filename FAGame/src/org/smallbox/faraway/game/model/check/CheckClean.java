@@ -2,7 +2,7 @@
 //
 //import org.smallbox.faraway.game.manager.JobManager;
 //import org.smallbox.faraway.game.model.character.base.CharacterModel;
-//import org.smallbox.faraway.game.model.check.old.CharacterCheck;
+//import org.smallbox.faraway.game.model.onCheck.old.CharacterCheck;
 //
 ///**
 // * Created by Alex on 01/06/2015.

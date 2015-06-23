@@ -564,25 +564,25 @@ public class PanelInfo extends BaseRightPanel {
 		}
 	}
 //
-//	private void displayItemAction(ItemInfoAction action) {
+//	private void displayItemAction(ItemInfoAction onAction) {
 //		_itemAction.setVisible(true);
 //
-//		if (action.itemAccept != null) {
+//		if (onAction.itemAccept != null) {
 //			String str = new String();
-//			for (ItemInfo info: action.itemAccept) {
+//			for (ItemInfo info: onAction.itemAccept) {
 //				str += info.label + "\n";
 //			}
 //			_itemAccept.setString(str);
 //			_itemAccept.setVisible(true);
 //		}
 //
-//		// Item action products
-//		if (action.itemsProduce != null) {
+//		// Item onAction products
+//		if (onAction.itemsProduce != null) {
 //			_layoutItemProduce.setVisible(true);
 //
 //			String str = "";
 //			ItemInfo produce = null;
-//			for (ItemInfo itemProduce: action.itemsProduce) {
+//			for (ItemInfo itemProduce: onAction.itemsProduce) {
 //				str += StringUtils.getDashedString(itemProduce.label, "x" + itemProduce.craftedQuantitfy, NB_COLUMNS - 4) + "\n";
 //				produce = itemProduce;
 //			}
@@ -594,13 +594,13 @@ public class PanelInfo extends BaseRightPanel {
 //					_ui.select(finalProduce);
 //				}
 //			});
-//			_itemProduceIcon.setIcon(SpriteManager.getInstance().getIcon(action.itemsProduce.getRoom(0)));
+//			_itemProduceIcon.setIcon(SpriteManager.getInstance().getIcon(onAction.itemsProduce.getRoom(0)));
 //		}
 //
-//		// Item action effects
-//		if (action.effects != null) {
+//		// Item onAction effects
+//		if (onAction.effects != null) {
 //			_layoutEffects.setVisible(false);
-//			ItemInfoEffects effects = action.effects;
+//			ItemInfoEffects effects = onAction.effects;
 //			int line = 0;
 //			if (effects.drink > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_DRINK, (effects.drink > 0 ? "+" : "") + effects.drink, NB_COLUMNS); }
 //			if (effects.energy > 0) { _itemEffects[line++].setDashedString(Strings.LB_EFFECT_ENERGY, (effects.energy> 0 ? "+" : "") + effects.energy, NB_COLUMNS); }
@@ -740,7 +740,7 @@ public class PanelInfo extends BaseRightPanel {
 				used++;
 				final CharacterModel character = job.getCharacter();
 				String left = character != null ? character.getName() : "used";
-				String right = job.getFormatedDuration();
+				String right = job.getFormattedDuration();
 				_lbSlots[i].setVisible(true);
 				_lbSlots[i].setDashedString(left, right, NB_COLUMNS);
 				_lbSlots[i].setOnClickListener(new OnClickListener() {

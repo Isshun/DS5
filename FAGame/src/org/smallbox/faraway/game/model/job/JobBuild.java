@@ -10,10 +10,8 @@ import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.item.StructureModel;
 
 public class JobBuild extends BaseJobModel {
-	private static final SpriteModel ICON = SpriteManager.getInstance().getIcon("data/res/ic_build.png");
-
 	private JobBuild(int x, int y) {
-		super(null, x, y);
+		super(null, x, y, "data/res/ic_build.png", "data/res/ic_action_build.png");
 	}
 
 	public static BaseJobModel create(MapObjectModel item) {
@@ -24,7 +22,7 @@ public class JobBuild extends BaseJobModel {
 	}
 
 	@Override
-	public boolean check(CharacterModel character) {
+	public boolean onCheck(CharacterModel character) {
 		// Item is null
 		if (_item == null) {
 			_reason = JobAbortReason.INVALID;
@@ -38,12 +36,17 @@ public class JobBuild extends BaseJobModel {
 	}
 
 	@Override
-	public boolean action(CharacterModel character) {
+	protected void onFinish() {
+		Log.info("Character #" + _character.getId() + ": build close");
+	}
+
+	@Override
+	public JobActionReturn onAction(CharacterModel character) {
 		// Wrong call
 		if (_item == null) {
 			Log.error("Character: actionBuild on null job or null job's item");
 			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
-			return true;
+			return JobActionReturn.ABORT;
 		}
 
 		// Item is no longer exists
@@ -56,7 +59,7 @@ public class JobBuild extends BaseJobModel {
 				Log.warning("Character #" + character.getId() + ": actionBuild on invalid item");
 			}
 			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
-			return true;
+			return JobActionReturn.ABORT;
 		}
 
 		// Build
@@ -64,13 +67,10 @@ public class JobBuild extends BaseJobModel {
         _item.addProgress(talent.work());
 		if (!_item.isComplete()) {
 			Log.debug("Character #" + character.getId() + ": build progress");
-			return false;
+			return JobActionReturn.CONTINUE;
 		}
 
-		// Build complete
-		Log.info("Character #" + character.getId() + ": build close");
-		JobManager.getInstance().close(this);
-		return true;
+		return JobActionReturn.FINISH;
 	}
 
     @Override
@@ -97,12 +97,10 @@ public class JobBuild extends BaseJobModel {
 	}
 
 	@Override
-	public SpriteModel getIcon() {
-		return ICON;
+	protected void onStart(CharacterModel character) {
 	}
 
 	@Override
 	public void onQuit(CharacterModel character) {
-
 	}
 }

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.job;
 
+import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
@@ -8,75 +9,57 @@ import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoAction;
 
 public abstract class BaseJobModel {
-
-	public boolean canBeResume() {
-        return true;
+    public SpriteModel getActionIcon() {
+        return null;
     }
 
-    public abstract CharacterModel.TalentType getTalentNeeded();
-
-    public boolean isVisibleInUI() {
-        return true;
-    }
-
-	public SpriteModel getIcon() {
-		return null;
-	}
-
-	public ConsumableModel getIngredient() {
-		return null;
-	}
-
-	public void setLabel(String label) {
-		_label = label;
-	}
-
-	public double getSpeedModifier() {
-		return 1;
-	}
-
-	public abstract void onQuit(CharacterModel character);
-
-	public void quit(CharacterModel character) {
-		onQuit(character);
-		_character = null;
-	}
-
-	public static enum JobStatus {
-		WAITING, RUNNING, COMPLETE, ABORTED
+    public enum JobActionReturn {
+		CONTINUE, QUIT, FINISH, ABORT
 	}
 	
-	public static enum JobAbortReason {
+    public enum JobStatus {
+		WAITING, RUNNING, COMPLETE, ABORTED
+	}
+
+	public enum JobAbortReason {
 		NO_COMPONENTS, INTERRUPT, BLOCKED, NO_LEFT_CARRY, INVALID, DIED, NO_BUILD_RESOURCES
 	};
 
 	private static int 			_countInstance;
-	private int 				_id;
+
+    protected int 				_id;
 	protected int 				_count;
     protected int               _totalCount;
     protected int				_posY;
 	protected int 				_posX;
+    protected int 	            _limit;
+    protected int               _currentLimit;
+    protected int 				_fail;
+    protected int 				_blocked;
+    protected int 				_nbBlocked;
+    protected int 				_nbUsed;
+    protected int 				_cost;
+    protected int 				_durationLeft;
+    protected boolean           _isClose;
+    protected double 			_progress;
 	protected MapObjectModel 	_item;
 	protected ItemFilter 		_filter;
 	protected ItemInfoAction    _actionInfo;
 	protected CharacterModel    _character;
-	private CharacterModel      _characterRequire;
-	private int 				_fail;
-	public int 					_blocked;
+    protected CharacterModel    _characterRequire;
 	protected JobAbortReason 	_reason;
-	protected int 				_durationLeft;
-	private ItemSlot 			_slot;
-	private String 				_label;
-	protected int 				_nbUsed;
+    protected ItemSlot 			_slot;
+    protected String 			_label;
 	protected JobStatus			_status;
-	private int 				_nbBlocked;
-    protected double 			_progress;
-    protected int 				_cost;
+    private SpriteModel         _icon;
+    private SpriteModel         _iconAction;
 
-	public BaseJobModel(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
+	public BaseJobModel(ItemInfo.ItemInfoAction actionInfo, int x, int y, String iconPath, String iconActionPath) {
 		init();
 		_posY = y;
 		_posX = x;
+        _icon = SpriteManager.getInstance().getIcon(iconPath);
+        _iconAction = SpriteManager.getInstance().getIcon(iconActionPath);
 		if (actionInfo != null) {
 			_actionInfo = actionInfo;
 			_cost = actionInfo.cost;
@@ -95,6 +78,7 @@ public abstract class BaseJobModel {
 		_character = null;
 		_status = JobStatus.WAITING;
 		_count = 1;
+        _limit = -1;
 
 		Log.debug("Job #" + _id + " create");
 	}
@@ -119,7 +103,19 @@ public abstract class BaseJobModel {
 	public int 					getProgressPercent() { return (int)(getProgress() * 100); }
 	public double               getProgress() { return (double) _progress / _cost; }
 	public JobStatus			getStatus() { return _status; }
+    public SpriteModel          getIcon() { return _icon; }
+    public SpriteModel          getIconAction() { return _iconAction; }
+    public ConsumableModel      getIngredient() { return null; }
+    public double               getSpeedModifier() { return 1; }
+    public String               getFormattedDuration() { return "" + _durationLeft / Constant.DURATION_MULTIPLIER + "s left"; }
+    public int                  getNbBlocked() { return _nbBlocked; }
+    public int                  getCount() { return _count; }
+    public int                  getTotalCount() { return _totalCount; }
+    public ItemInfo.ItemInfoAction getActionInfo() { return _actionInfo; }
 
+    public void                 setActionInfo(ItemInfo.ItemInfoAction action) { _actionInfo = action; _cost = action.cost; }
+    public void                 setLabel(String label) { _label = label; }
+    public void                 setLimit(int limit) { _currentLimit = _limit = limit; }
     public void                 setQuantity(int quantity) { _progress = quantity; }
     public void 				setCost(int quantityTotal) { _cost = quantityTotal; }
     public void					setCharacterRequire(CharacterModel character) { _characterRequire = character; }
@@ -130,10 +126,15 @@ public abstract class BaseJobModel {
 	public void					setItem(MapObjectModel item) { _item = item; }
 	public void 				setItemFilter(ItemFilter filter) { _filter = filter; }
 	public void 				setStatus(JobStatus status) { _status = status; }
+    public void                 setCount(int count) { _count = count; }
+    public void                 setTotalCount(int count) { _totalCount = count; }
 
-	public boolean 				hasCharacter() { return _character != null; }
+    public boolean 				hasCharacter() { return _character != null; }
+    public boolean              canBeResume() { return true; }
+    public boolean              isVisibleInUI() { return true; }
+    public boolean              isFinish() { return _status == JobStatus.COMPLETE || _status == JobStatus.ABORTED; }
 
-	public void	setCharacter(CharacterModel character) {
+    public void start(CharacterModel character) {
 		if (_character == character) {
 			return;
 		}
@@ -143,75 +144,84 @@ public abstract class BaseJobModel {
 			_character.setJob(null);
 		}
 
-		// Set job to new character
-		_character = character;
+        // Lock item
+        if (_item != null) {
+            _item.setOwner(character);
+        }
+
+        // Set job to new character
+        _character = character;
 		if (character != null) {
-			character.setJob(this);
-		}
+            character.setJob(this);
 
-		// Lock item
-		if (_item != null) {
-			_item.setOwner(character);
-		}
+            // Start job
+            onStart(character);
 
-		onCharacterAssign(character);
+            // Move character to job location
+            if (_posX != character.getX() || _posY != character.getY()) {
+                character.moveTo(this, _posX, _posY, null);
+            }
+        }
 	}
 
-	// TODO abstract
-	protected void onCharacterAssign(CharacterModel character){}
+    protected abstract void onStart(CharacterModel character);
 
-	public boolean isFinish() {
-		return _status == JobStatus.COMPLETE || _status == JobStatus.ABORTED;
-	}
-	
-	public String getFormatedDuration() {
-		return "" + _durationLeft / Constant.DURATION_MULTIPLIER + "s left";
-	}
+    public abstract CharacterModel.TalentType getTalentNeeded();
 
-	public abstract boolean check(CharacterModel character);
+    /**
+     *
+     * @param character
+     */
+    public void quit(CharacterModel character) {
+        onQuit(character);
+        character.setJob(null);
+        _character = null;
+    }
 
-	/**
-	 * Launch job action
+    public abstract void onQuit(CharacterModel character);
+
+    public void close() {
+        if (_isClose) {
+            Log.error("Try to close already closed job");
+            return;
+        }
+        _isClose = true;
+    }
+
+	public boolean check(CharacterModel character) {
+        return onCheck(character);
+    }
+
+    /**
+     *
+     * @param character
+     * @return
+     */
+	public abstract boolean onCheck(CharacterModel character);
+
+    public JobActionReturn action(CharacterModel character) {
+        if (_limit != -1 && _currentLimit-- == 0) {
+            return JobActionReturn.FINISH;
+        }
+
+        JobActionReturn ret = onAction(character);
+
+        if (ret == JobActionReturn.FINISH) {
+            onFinish();
+        }
+
+        return ret;
+    }
+
+    protected abstract void onFinish();
+
+    /**
+	 * Launch job onAction
 	 * 
 	 * @param character
 	 * @return true if job is finish (completed or aborted)
 	 */
-	public abstract boolean action(CharacterModel character);
-
-	public int getNbBlocked() { return _nbBlocked; }
-
-    public ItemInfo.ItemInfoAction getActionInfo() {
-        return _actionInfo;
-    }
-
-	public boolean isFree() {
-		return _character == null;
-	}
-
-	public int getDistance(CharacterModel character) {
-		return Math.abs(character.getX() - _posX) + Math.abs(character.getY() - _posY);
-	}
-
-	public void setActionInfo(ItemInfo.ItemInfoAction action) {
-		_actionInfo = action;
-		_cost = action.cost;
-	}
-
-	public void setCount(int count) {
-		_count = count;
-	}
-
-	public int getCount() {
-		return _count;
-	}
-
-	public void setTotalCount(int count) {
-        _totalCount = count;
-	}
-
-	public int getTotalCount() {
-		return _totalCount;
-	}
+	public abstract JobActionReturn onAction(CharacterModel character);
 
 	@Override
 	public String toString() {

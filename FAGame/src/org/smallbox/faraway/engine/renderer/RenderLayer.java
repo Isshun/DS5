@@ -16,10 +16,15 @@ public abstract class RenderLayer {
     public abstract void onDraw(GFXRenderer renderer, RenderEffect renderEffect, int x, int y);
     public abstract void draw(SpriteModel sprite);
     public abstract void draw(TextView text);
+    public void begin() {}
     public void end() {}
 
     public void setPosition(int x, int y) {
         _x = x;
         _y = y;
     }
+
+    public abstract int getCount();
+
+    public abstract boolean isEmpty();
 }

@@ -48,6 +48,7 @@ public class GameConfig {
         public boolean          room;
         public boolean          temperature;
         public boolean          weather;
+        public boolean          oxygen;
     }
 
     public GameConfigRender     render;

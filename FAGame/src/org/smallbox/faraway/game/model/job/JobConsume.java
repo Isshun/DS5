@@ -12,25 +12,6 @@ import java.util.List;
 
 public class JobConsume extends BaseJobModel {
 
-	@Override
-	public boolean canBeResume() {
-		return false;
-	}
-
-	@Override
-	public CharacterModel.TalentType getTalentNeeded() {
-		return null;
-	}
-
-	@Override
-	public void onQuit(CharacterModel character) {
-
-	}
-
-	private JobConsume() {
-		super();
-	}
-
 	public static JobConsume create(CharacterModel character, ConsumableModel item) {
 		if (character == null) {
 			Log.error("Create ConsumeJob with null character");
@@ -55,40 +36,51 @@ public class JobConsume extends BaseJobModel {
 		return job;
 	}
 
+	@Override
+	protected void onStart(CharacterModel character) {
+	}
+
+	@Override
+	public void onQuit(CharacterModel character) {
+	}
+
+	@Override
+	public boolean onCheck(CharacterModel character) {
+		// Item is null
+		if (_item == null || !_item.isConsumable() || _item.getQuantity() <= 0) {
+			Log.error("JobConsume: item cannot be null, non consumable or empty");
+			_reason = JobAbortReason.INVALID;
+			return false;
+		}
+
+		// Item is no longer exists
+		if (_item != _character.getInventory() && _item != Game.getWorldManager().getConsumable(_item.getX(), _item.getY())) {
+			_reason = JobAbortReason.INVALID;
+			return false;
+		}
+
+		return true;
+	}
+
 	// TODO: make objects stats table instead switch
 	@Override
-	public boolean action(CharacterModel character) {
+	public JobActionReturn onAction(CharacterModel character) {
 		// Wrong call
 		if (_item == null || character == null) {
 			Log.error("wrong call");
 			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
-			return true;
+			return JobActionReturn.ABORT;
 		}
 
-		// Item not reached
-		if (character.getX() != _posX || character.getY() != _posY) {
-			return false;
-		}
-
-		// Character is sleeping
-		if (character.isSleeping() && _item.isSleepingItem() == false) {
-			Log.debug("use: sleeping . use canceled");
+		if (!check(character)) {
 			JobManager.getInstance().close(this, _reason);
-			return false;
-		}
-
-		if (check(character) == false) {
-			JobManager.getInstance().close(this, _reason);
-			return true;
+			return JobActionReturn.ABORT;
 		}
 
 		Log.debug("Character #" + character.getName() + ": actionUse (" + _progress + ")");
 
 		// Character using item
 		if (_progress++ < _cost) {
-			// Set running
-			_status = JobStatus.RUNNING;
-
 			// Item is use by 2 or more character
 			if (_item.getNbFreeSlots() + 1 < _item.getNbSlots()) {
 				character.getNeeds().addRelation(1);
@@ -108,53 +100,20 @@ public class JobConsume extends BaseJobModel {
 			// Use item
 			_item.use(_character, (int) (_cost - _progress));
 
-			return false;
+			return JobActionReturn.CONTINUE;
 		}
 
+		return JobActionReturn.FINISH;
+	}
+
+	@Override
+	protected void onFinish() {
 		if (_item.getInfo().isConsumable) {
 			((ConsumableModel)_item).addQuantity(-1);
 			if (_item.getQuantity() <= 0) {
 				Game.getWorldManager().removeConsumable((ConsumableModel) _item);
 			}
 		}
-
-		JobManager.getInstance().close(this);
-
-		return true;
-	}
-
-	@Override
-	public boolean check(CharacterModel character) {
-		// Item is null
-		if (_item == null) {
-			_reason = JobAbortReason.INVALID;
-			return false;
-		}
-
-		// Item is no longer exists
-		if (_item.isConsumable()) {
-			if (_item != _character.getInventory() && _item != Game.getWorldManager().getConsumable(_item.getX(), _item.getY())) {
-				_reason = JobAbortReason.INVALID;
-				return false;
-			}
-		} else {
-			if (_item != Game.getWorldManager().getItem(_item.getX(), _item.getY())) {
-				_reason = JobAbortReason.INVALID;
-				return false;
-			}
-		}
-
-		if (_item.getQuantity() <= 0) {
-			return false;
-		}
-
-//		// No space left in inventory
-//		if (_item.isFactory() && character.hasInventorySpaceLeft() == false) {
-//			_reason = JobAbortReason.NO_LEFT_CARRY;
-//			return false;
-//		}
-
-		return true;
 	}
 
 	@Override
@@ -170,4 +129,13 @@ public class JobConsume extends BaseJobModel {
 		return "use " + _item.getLabel();
 	}
 
+	@Override
+	public boolean canBeResume() {
+		return false;
+	}
+
+	@Override
+	public CharacterModel.TalentType getTalentNeeded() {
+		return null;
+	}
 }

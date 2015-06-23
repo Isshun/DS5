@@ -24,6 +24,10 @@ public class GDXRenderLayer extends RenderLayer {
     public void clear() {
         _count = 0;
         _cache.clear();
+    }
+
+    @Override
+    public void begin() {
         _cache.beginCache();
     }
 
@@ -43,7 +47,7 @@ public class GDXRenderLayer extends RenderLayer {
     @Override
     public void draw(SpriteModel sprite) {
         if (sprite != null) {
-            if (_count++ < 5000) {
+            if (_count < 5000) {
 //            Texture texture = new Texture("data/minerals_blue-128.png");
 //            _cache.add(texture, 100, 100, 0, 0, 128, 128);
 //            _cache.add(((GDXSpriteModel) sprite).getData());
@@ -52,12 +56,22 @@ public class GDXRenderLayer extends RenderLayer {
 //            Sprite s2 = new Sprite(new Texture("data/res/Characters/scientifique.png"), 0, 0, 128, 128);
 //            s2.setPosition(100, 100);
                 _cache.add(((GDXSpriteModel)sprite).getData());
+                _count++;
             }
         }
     }
 
     @Override
     public void draw(TextView text) {
+    }
 
+    @Override
+    public int getCount() {
+        return _count;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return _count == 0;
     }
 }
