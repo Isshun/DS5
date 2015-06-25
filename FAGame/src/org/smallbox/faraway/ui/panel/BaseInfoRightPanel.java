@@ -64,7 +64,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
 
         // Refresh room info
         if (parcel != null && parcel.getRoom() != null && _frame_room_info != null) {
-            ((TextView)_frame_room_info.findById("lb_room")).setString(parcel.getRoom().isExterior() ? "Exterior" : "Room");
+            ((TextView)_frame_room_info.findById("lb_room")).setString(parcel.getRoom().isExterior() ? "Exterior" : parcel.getRoom().getName());
             ((TextView)_frame_room_info.findById("lb_room_size")).setString("Size: " + (parcel.getRoom().getParcels().size() / 2) + "m²");
             ((TextView)_frame_room_info.findById("lb_room_temperature")).setString("Temperature: " + (int)parcel.getRoom().getTemperatureInfo().temperature + "°");
             ((TextView)_frame_room_info.findById("lb_room_light")).setString("Light: " + parcel.getRoom().getLight());

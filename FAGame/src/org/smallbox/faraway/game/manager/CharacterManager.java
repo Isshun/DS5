@@ -97,18 +97,19 @@ public class CharacterManager extends BaseManager {
 			}
 			
 			else {
-				c.update(tick);
+				if (tick % 10 == c.getLag()) {
+					// Assign job
+					if (c.getJob() == null && !c.isSleeping()) {
+						JobManager.getInstance().assignJob(c);
+					}
 
-				// Assign job
-				if (c.getJob() == null && tick % 10 == c.getLag() && c.isSleeping() == false) {
-					JobManager.getInstance().assignJob(c);
+					// Update character (buffs, stats)
+					c.update();
+
+					// Update needs
+					c.getNeeds().update();
 				}
 
-				// Update needs
-				if (tick % 10 == 0) {
-					c.updateNeeds(tick);
-				}
-				
 				c.setDirection(Direction.NONE);
 				c.action();
 				c.move();

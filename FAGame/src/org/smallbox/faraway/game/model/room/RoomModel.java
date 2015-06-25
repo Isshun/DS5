@@ -17,7 +17,9 @@ public class RoomModel {
 	private double 						_permeability;
 	private List<NeighborModel>     	_neighborhood;
 	private RoomTemperatureModel        _temperatureInfo = new RoomTemperatureModel();
-	private double _oxygen;
+	private String 						_autoName;
+	private String 						_name;
+	private double 						_oxygen;
 
 	public double getOxygen() { return _oxygen; }
 	public void setOxygen(double oxygen) { _oxygen = oxygen; }
@@ -28,6 +30,10 @@ public class RoomModel {
 
 	public void addParcels(List<ParcelModel> parcels) {
 		_parcels.addAll(parcels);
+	}
+
+	public void setAutoName(String autoName) {
+		_autoName = autoName;
 	}
 
 	public enum RoomType {
@@ -159,16 +165,7 @@ public class RoomModel {
 	}
 
 	public String getName() {
-		switch (_type) {
-		case QUARTER:		return "Quarter";
-		case SICKBAY: 		return "Sickbay";
-		case ENGINEERING: 	return "Engineering";
-		case METTING: 		return "Pub";
-		case HOLODECK: 		return "Holodeck";
-		case STORAGE: 		return "Storage";
-		case GARDEN: 		return "Garden";
-		default: 			return "";
-		}
+		return _name != null ? _name : _autoName;
 	}
 
 	public void update() {

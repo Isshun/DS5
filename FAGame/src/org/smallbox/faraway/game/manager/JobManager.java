@@ -22,12 +22,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class JobManager extends BaseManager {
-	private static JobManager		_self;
-	private List<BaseJobModel> 		_jobs;
-	private int 					_nbVisibleJob;
-	private List<BaseJobModel>		_toRemove;
-    private List<CharacterCheck>    _priorities;
-	private List<CharacterCheck> 	_joys;
+	private static JobManager			_self;
+	private final List<CharacterCheck> 	_joys;
+	private final List<CharacterCheck>  _priorities;
+	private final List<BaseJobModel> 	_jobs;
+	private final List<BaseJobModel>	_toRemove;
+	private int 						_nbVisibleJob;
 
 	public JobManager() {
 		Log.debug("JobManager");
@@ -39,13 +39,13 @@ public class JobManager extends BaseManager {
         _priorities = new ArrayList<>();
         _priorities.add(new CheckCharacterUse());
         _priorities.add(new CheckCharacterExhausted());
-        _priorities.add(new CheckCharacterHungry());
+		_priorities.add(new CheckCharacterHungry());
 
 		_joys = new ArrayList<>();
-		_joys.add(new CheckJoySleep());
 		_joys.add(new CheckJoyTalk());
 		_joys.add(new CheckJoyWalk());
 		_joys.add(new CheckJoyItem());
+		_joys.add(new CheckJoySleep());
 
         Log.debug("JobManager done");
 	}

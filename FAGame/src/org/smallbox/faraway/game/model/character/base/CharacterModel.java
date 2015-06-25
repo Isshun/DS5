@@ -215,16 +215,14 @@ public abstract class CharacterModel extends Movable {
         return _buffs;
     }
 
-    public void update(int tick) {
-        if (tick % 10 == 0) {
-            // Check buffs
-            BuffManager.checkBuffs(this);
-            BuffManager.applyBuffs(this);
+    public void update() {
+        // Check buffs
+        BuffManager.checkBuffs(this);
+        BuffManager.applyBuffs(this);
 
-            // Check room temperature
-            _stats.reset(this, _equipments);
-            updateBodyHeat(Game.getRoomManager().getRoom(_posX, _posY));
-        }
+        // Check room temperature
+        _stats.reset(this, _equipments);
+        updateBodyHeat(Game.getRoomManager().getRoom(_posX, _posY));
     }
 
     private void updateBodyHeat(RoomModel room) {
@@ -285,10 +283,6 @@ public abstract class CharacterModel extends Movable {
 //            }
 //        }
 //	}
-
-    public void  updateNeeds(int count) {
-        _needs.update();
-    }
 
     public void  longUpdate() {
         _old += Constant.CHARACTER_GROW_PER_UPDATE * Constant.SLOW_UPDATE_INTERVAL;

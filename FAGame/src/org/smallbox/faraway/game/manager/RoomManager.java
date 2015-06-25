@@ -10,6 +10,7 @@ import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.room.NeighborModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.game.model.room.RoomModel.RoomType;
+import org.smallbox.faraway.ui.AreaModel;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -75,6 +76,7 @@ public class RoomManager extends BaseManager implements GameObserver {
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
                 _parcels[x][y][0].setRoom(null);
+                _parcels[x][y][0].tmpData = 0;
             }
         }
         _roomList.clear();
@@ -104,12 +106,58 @@ public class RoomManager extends BaseManager implements GameObserver {
                         _roomList.add(room);
                         exploreRoom(room);
                         checkRoof(room);
+                        room.setAutoName(autoName(room));
                     }
                 }
             }
         } while (newRoomFound);
 
         Log.info("[RoomManager] " + _roomList.size() + " rooms found");
+    }
+
+    private String autoName(RoomModel room) {
+
+        // Check item
+        ItemModel bed = null;
+        AreaModel storageArea = null;
+        int nbBed = 0;
+        int bestCount = 0;
+        String bestCategory = null;
+        Map<String, Integer>    itemCategory = new HashMap<>();
+
+        for (ParcelModel parcel: room.getParcels()) {
+            ItemModel item = parcel.getItem();
+            if (item != null) {
+                String category = item.getInfo().category;
+                int itemCategoryCount = itemCategory.containsKey(category) ? itemCategory.get(category) + 1 : 1;
+                itemCategory.put(category, itemCategoryCount);
+                if (bestCount < itemCategoryCount) {
+                    bestCount = itemCategoryCount;
+                    bestCategory = category;
+                }
+                if (item.isBed()) {
+                    bed = item;
+                    nbBed++;
+                }
+            }
+            if (parcel.getArea() != null) {
+                storageArea = parcel.getArea();
+            }
+        }
+
+        if ("kitchen".equals(bestCategory)) {
+            return "Kitchen";
+        }
+
+        if ("quarter".equals(bestCategory)) {
+            return nbBed == 1 && bed.getOwner() != null ? bed.getOwner().getName() + "'s quarter" : "Common quarter";
+        }
+
+        if (storageArea != null) {
+            return "Storage room";
+        }
+
+        return "Room";
     }
 
     private void checkRoof(RoomModel room) {

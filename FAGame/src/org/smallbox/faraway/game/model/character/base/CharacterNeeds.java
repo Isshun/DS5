@@ -218,6 +218,8 @@ public class CharacterNeeds {
 		if (item.isSleepingItem()) {
 			_sleepItem = item;
 			_isSleeping = true;
+		} else {
+			_sleepItem = null;
 		}
 		
 		if (action != null && action.effects != null) {
