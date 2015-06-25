@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * Created by Alex on 01/06/2015.
  */
 public class PanelInfoItem extends BaseInfoRightPanel {
-    private ItemModel _item;
+    private ItemModel   _item;
     private ItemInfo    _itemInfo;
     private ViewFactory _viewFactory;
     private FrameLayout _frameCraft;
@@ -80,7 +80,6 @@ public class PanelInfoItem extends BaseInfoRightPanel {
             ((TextView)findById("lb_id")).setString("(" + _item.getId() + ")");
             ((TextView)findById("lb_durability")).setString("Durability: " + _item.getHealth());
             ((TextView)findById("lb_matter")).setString("Matter: " + _item.getMatter());
-            ((TextView)findById("lb_pos")).setString("Pos: " + _item.getX() + "x" + _item.getY());
             ((TextView)findById("lb_components")).setString("Components: " + String.join(", ", _item.getComponents().stream().map(ConsumableModel::getFullLabel).collect(Collectors.toList())));
             ((TextView)findById("lb_crafts")).setString("Crafts: " + String.join(", ", _item.getCrafts().stream().map(ConsumableModel::getFullLabel).collect(Collectors.toList())));
         }
@@ -136,7 +135,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
             ((TextView)view.findById("lb_ingredient")).setString(job.getIngredient() != null ? job.getIngredient().getLabel() + " (" + job.getIngredient().getQuantity() + ")" : "no components");
 
             if (job.getProgressPercent() > 0) {
-                ((TextView) view.findById("lb_progress")).setString(job.getProgressPercent() + "%");
+                ((TextView) view.findById("lb_progress")).setString(job.getMessage() + ": " + job.getProgressPercent() + "%");
             } else {
                 ((TextView) view.findById("lb_progress")).setString(job.getMessage());
             }
@@ -152,7 +151,6 @@ public class PanelInfoItem extends BaseInfoRightPanel {
 
             view.setPosition(0, 40 + index * 80);
             _frameCraftEntries.addView(view);
-//            _frameCraftEntries.resetAllPos();
         });
     }
 

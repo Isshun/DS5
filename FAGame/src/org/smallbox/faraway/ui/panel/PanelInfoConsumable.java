@@ -45,10 +45,8 @@ public class PanelInfoConsumable extends BaseRightPanel {
         select(consumable.getInfo());
 
         if (isLoaded()) {
-            ((TextView)findById("lb_id")).setString("(" + _consumable.getId() + ")");
             ((TextView)findById("lb_durability")).setString("Durability: " + _consumable.getHealth());
             ((TextView)findById("lb_matter")).setString("Matter: " + _consumable.getMatter());
-            ((TextView)findById("lb_pos")).setString("Pos: " + _consumable.getX() + "x" + _consumable.getY());
             ((TextView)findById("lb_quantity")).setString("Quantity: %d", _consumable.getQuantity());
         }
     }

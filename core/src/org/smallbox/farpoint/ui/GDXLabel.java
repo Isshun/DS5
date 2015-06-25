@@ -53,32 +53,6 @@ public class GDXLabel extends TextView {
     }
 
     @Override
-    public void setOnFocusListener(final OnFocusListener onFocusListener) {
-        super.setOnFocusListener(new OnFocusListener() {
-            @Override
-            public void onExit(View view) {
-                if (_onClickListener != null) {
-                    setColor(Colors.LINK_INACTIVE);
-                    setStyle(TextView.REGULAR);
-                }
-                if (onFocusListener != null) {
-                    onFocusListener.onExit(view);
-                }
-            }
-            @Override
-            public void onEnter(View view) {
-                if (_onClickListener != null) {
-                    setStyle(TextView.UNDERLINED);
-                    setColor(Colors.LINK_ACTIVE);
-                }
-                if (onFocusListener != null) {
-                    onFocusListener.onEnter(view);
-                }
-            }
-        });
-    }
-
-    @Override
     public Color getColor() {
         return _color;
     }

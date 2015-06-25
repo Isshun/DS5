@@ -2,4 +2,8 @@ entries:
 
     -   type: frame
         id: frame_parcel_info
+        position: [0, 800]
+           
+    -   type: frame
+        id: frame_room_info
         position: [0, 600]

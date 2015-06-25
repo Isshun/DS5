@@ -21,14 +21,12 @@ import java.util.stream.Collectors;
 public class RoomManager extends BaseManager implements GameObserver {
     private static final int    UPDATE_INTERVAL = 10;
 
-    private RoomModel[][] 		_rooms;
     private List<RoomModel>		_roomList;
     private int                 _width;
     private int                 _height;
     private ParcelModel[][][]   _parcels;
     private double[][]          _oxygenLevels;
     private boolean             _needRefresh;
-    private Runnable            _runable;
 
     @Override
     protected void onCreate() {
@@ -41,15 +39,12 @@ public class RoomManager extends BaseManager implements GameObserver {
 
         double oxygenLevel = Game.getInstance().getPlanet().getOxygen();
         _roomList = new ArrayList<>();
-        _rooms = new RoomModel[width][height];
         _oxygenLevels = new double[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 _oxygenLevels[x][y] = oxygenLevel;
             }
         }
-
-//        refreshRooms();
     }
 
     public RoomModel getRoom(int x, int y) {
@@ -117,14 +112,6 @@ public class RoomManager extends BaseManager implements GameObserver {
         Log.info("[RoomManager] " + _roomList.size() + " rooms found");
     }
 
-    private boolean neighborParcelFromOtherRoomTouchCurrentParcel(int x, int y) {
-        if (x < 0 || x >= _width || y < 0 || y >= _height || _parcels[x][y][0] == null || _parcels[x][y][0].getRoom() == null) {
-            return false;
-        }
-
-        return true;
-    }
-
     private void checkRoof(RoomModel room) {
         Log.info("[RoomManager] Check roof: " + room.getName());
         for (ParcelModel parcel: room.getParcels()) {
@@ -160,35 +147,6 @@ public class RoomManager extends BaseManager implements GameObserver {
             room.addParcels(openList);
             openList.clear();
         }
-//        boolean hasFreeParcelOnDistance = true;
-//        boolean hasFreeParcelOnLine = true;
-//
-//        Log.info("[RoomManager] Explore room: " + room.getName());
-//        for (int d = 1; d < 500 && hasFreeParcelOnDistance; d++) {
-//            hasFreeParcelOnDistance = false;
-//
-//            do {
-//                hasFreeParcelOnLine = false;
-//                for (int i = 0; i <= d; i++) {
-//                    // Top
-//                    if (addToRoomIfFree(x + i, y + d, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-//                    if (addToRoomIfFree(x - i, y + d, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-//
-//                    // Bottom
-//                    if (addToRoomIfFree(x + i, y - d, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-//                    if (addToRoomIfFree(x - i, y - d, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-//
-//                    // Right
-//                    if (addToRoomIfFree(x + d, y + i, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-//                    if (addToRoomIfFree(x + d, y - i, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-//
-//                    // Left
-//                    if (addToRoomIfFree(x - d, y + i, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-//                    if (addToRoomIfFree(x - d, y - i, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-//                }
-//
-//            } while (hasFreeParcelOnLine);
-//        }
     }
 
     private boolean addToRoomIfFree(RoomModel room, List<ParcelModel> openList, int i, int x, int y) {
@@ -222,6 +180,8 @@ public class RoomManager extends BaseManager implements GameObserver {
     }
 
     public void refreshRooms() {
+        _needRefresh = false;
+
         Log.info("RoomManager: refresh");
         long time = System.currentTimeMillis();
 

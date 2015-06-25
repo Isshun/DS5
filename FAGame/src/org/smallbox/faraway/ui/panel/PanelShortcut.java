@@ -6,6 +6,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.ResourceData;
 import org.smallbox.faraway.game.manager.ResourceManager;
 import org.smallbox.faraway.ui.LayoutModel;
+import org.smallbox.faraway.ui.LinkFocusListener;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.*;
 
@@ -83,17 +84,7 @@ public class PanelShortcut extends BaseRightPanel {
                 _ui.toggleMode(entry.mode);
             });
             findById(entry.buttonId).setBackgroundColor(new Color(29, 85, 96, 100));
-            findById(entry.buttonId).setOnFocusListener(new OnFocusListener() {
-                @Override
-                public void onEnter(View view) {
-                    view.setBackgroundColor(new Color(29, 85, 96, 180));
-                }
-
-                @Override
-                public void onExit(View view) {
-                    view.setBackgroundColor(new Color(29, 85, 96, 100));
-                }
-            });
+            findById(entry.buttonId).setOnFocusListener(new LinkFocusListener());
         }
     }
 

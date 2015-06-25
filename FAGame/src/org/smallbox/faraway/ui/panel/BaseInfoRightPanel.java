@@ -15,8 +15,9 @@ import org.smallbox.faraway.ui.UserInterface;
  * Created by Alex on 13/06/2015.
  */
 public class BaseInfoRightPanel extends BaseRightPanel {
+    private View        _frame_parcel_info;
     private View        _frame_room_info;
-    private ParcelModel _area;
+    private ParcelModel _parcel;
 
     public BaseInfoRightPanel(UserInterface.Mode mode, GameEventListener.Key shortcut, String path) {
         super(mode, shortcut, path);
@@ -24,6 +25,15 @@ public class BaseInfoRightPanel extends BaseRightPanel {
 
     @Override
     public void onLayoutLoaded(LayoutModel layout) {
+        // Load parcel layout
+        if (findById("frame_parcel_info") != null) {
+            ViewFactory.getInstance().load("data/ui/panels/view_parcel_info.yml", view -> {
+                _frame_parcel_info = view;
+                ((FrameLayout) findById("frame_parcel_info")).addView(view);
+            });
+        }
+
+        // Load room layout
         if (findById("frame_room_info") != null) {
             ViewFactory.getInstance().load("data/ui/panels/view_room_info.yml", view -> {
                 _frame_room_info = view;
@@ -33,10 +43,29 @@ public class BaseInfoRightPanel extends BaseRightPanel {
     }
 
     public void select(ParcelModel parcel) {
-        _area = parcel;
+        _parcel = parcel;
+
+        // Refresh parcel info
+        if (parcel != null && _frame_parcel_info != null) {
+            ((TextView) _frame_parcel_info.findById("lb_parcel_name")).setString("Ground");
+            ((TextView) _frame_parcel_info.findById("lb_parcel_pos")).setString(parcel.getX() + "x" + parcel.getY());
+            ((TextView) _frame_parcel_info.findById("lb_blood")).setString("blood: " + parcel.getBlood());
+            ((TextView) _frame_parcel_info.findById("lb_dirt")).setString("dirt: " + parcel.getDirt());
+            ((TextView) _frame_parcel_info.findById("lb_rubble")).setString("rubble: " + parcel.getRubble());
+            ((TextView) _frame_parcel_info.findById("lb_snow")).setString("snow: " + parcel.getSnow());
+
+            String strConnexion = "";
+            for (Connection<ParcelModel> connection: parcel.getConnections()) {
+                strConnexion += strConnexion.isEmpty() ? "Connexion: " : ", ";
+                strConnexion += connection.getToNode().getX() + "x" + connection.getToNode().getY();
+            }
+            ((TextView)_frame_parcel_info.findById("lb_connexion")).setString(strConnexion);
+        }
+
+        // Refresh room info
         if (parcel != null && parcel.getRoom() != null && _frame_room_info != null) {
             ((TextView)_frame_room_info.findById("lb_room")).setString(parcel.getRoom().isExterior() ? "Exterior" : "Room");
-            ((TextView)_frame_room_info.findById("lb_room_size")).setString("Size: " + parcel.getRoom().getParcels().size());
+            ((TextView)_frame_room_info.findById("lb_room_size")).setString("Size: " + (parcel.getRoom().getParcels().size() / 2) + "m²");
             ((TextView)_frame_room_info.findById("lb_room_temperature")).setString("Temperature: " + (int)parcel.getRoom().getTemperatureInfo().temperature + "°");
             ((TextView)_frame_room_info.findById("lb_room_light")).setString("Light: " + parcel.getRoom().getLight());
 
@@ -50,13 +79,6 @@ public class BaseInfoRightPanel extends BaseRightPanel {
 
             ((TextView)_frame_room_info.findById("lb_type")).setString("Type: " + parcel.getElevation());
 
-            String strConnexion = "";
-            for (Connection<ParcelModel> connection: parcel.getConnections()) {
-                strConnexion += strConnexion.isEmpty() ? "Connexion: " : ", ";
-                strConnexion += connection.getToNode().getX() + "x" + connection.getToNode().getY();
-            }
-            ((TextView)_frame_room_info.findById("lb_connexion")).setString(strConnexion);
-
             int count = 0;
             for (NeighborModel neighbor: parcel.getRoom().getNeighbors()) {
                 count += neighbor.parcels.size();
@@ -67,7 +89,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
 
     @Override
     protected void onRefresh(int update) {
-        select(_area);
+        select(_parcel);
     }
 
 }

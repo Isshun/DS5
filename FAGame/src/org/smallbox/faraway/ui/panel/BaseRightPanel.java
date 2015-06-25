@@ -1,7 +1,9 @@
 package org.smallbox.faraway.ui.panel;
 
+import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.ui.LinkFocusListener;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
@@ -30,26 +32,17 @@ public abstract class BaseRightPanel extends BasePanel {
 		addView(border);
 		
 		if (_mode != Mode.NONE) {
-			TextView btBack = ViewFactory.getInstance().createTextView(100, 32);
-			btBack.setTextPadding(1, 6);
-			btBack.setCharacterSize(FONT_SIZE_TITLE);
-			btBack.setString("[    ]");
-			btBack.setPosition(25, -32);
-			btBack.setOnClickListener(view -> _ui.back());
-			addView(btBack);
-			
 			TextView lbBack = ViewFactory.getInstance().createTextView();
-			lbBack.setString("Back");
+			lbBack.setString("[Back]");
 			lbBack.setCharacterSize(FONT_SIZE_TITLE);
-			lbBack.setColor(Colors.LINK_ACTIVE);
-			lbBack.setPosition(20, -32);
-			lbBack.setPadding(1, 20);
+			lbBack.setColor(Colors.LINK_INACTIVE);
+			lbBack.setPosition(22, -22);
+			lbBack.setSize(120, 32);
+			lbBack.setAlign(Align.CENTER);
+			lbBack.setBackgroundColor(new Color(0x1d5560));
+			lbBack.setOnClickListener(view -> _ui.back());
+			lbBack.setOnFocusListener(new LinkFocusListener());
 			addView(lbBack);
-			
-			ColorView rectangleUnderline = ViewFactory.getInstance().createColorView((int)(4 * 12.5), 1);
-			rectangleUnderline.setPosition(40, 36);
-			rectangleUnderline.setBackgroundColor(Colors.LINK_ACTIVE);
-			addView(rectangleUnderline);
 		}
 	}
 

@@ -1,44 +1,52 @@
 entries:
 
     -   type: frame
+        id: frame_parcel_info
+        position: [0, 800]
+
+    -   type: frame
         id: frame_room_info
         position: [0, 600]
 
-    -   type: label
-        text: info resource
-        textsize: 24
-        position: [0, 0]
+    -   type: frame
+        position: [0, 46]
+        entries:
 
-    -   type: label
-        id: lb_pos
-        text: pos
-        textsize: 24
-        position: [200, 0]
+        -   type: label
+            text: Resource
+            textsize: 14
+            position: [24, -16]
 
-    -   type: label
-        id: lb_label
-        textsize: 24
-        position: [24, 24]
+        -   type: label
+            id: lb_name
+            text: name
+            textsize: 14
+            position: [280, -16]
+           
+        -   type: frame
+            position: [24, 0]
+            size: [370, 1]
+            background: 0x888888
 
-    -   type: label
-        id: lb_name
-        textsize: 24
-        position: [224, 24]
+        -   type: label
+            id: lb_label
+            textsize: 24
+            position: [24, 12]
 
-    -   type: label
-        id: lb_durability
-        text: durability
-        textsize: 14
-        position: [24, 58]
+        -   type: label
+            id: lb_durability
+            text: durability
+            textsize: 14
+            position: [24, 42]
 
-    -   type: label
-        id: lb_quantity
-        text: matter
-        textsize: 14
-        position: [24, 80]
+        -   type: label
+            id: lb_quantity
+            text: matter
+            textsize: 14
+            position: [24, 62]
 
-    -   type: label
-        id: lb_pos
-        text: pos
-        textsize: 14
-        position: [24, 102]
+        -   type: label
+            id: lb_pos
+            text: pos
+            textsize: 14
+            position: [24, 82]

@@ -1,45 +1,48 @@
 entries:
 
-    -   type: label
-        id: lb_label
-        textsize: 24
-        position: [24, 24]
+    -   type: frame
+        position: [0, 46]
+        entries:
 
-    -   type: label
-        id: lb_name
-        textsize: 24
-        position: [224, 24]
+        -   type: label
+            text: Resource
+            textsize: 14
+            position: [24, -16]
 
-    -   type: label
-        id: lb_id
-        textsize: 14
-        position: [280, 28]
+        -   type: label
+            id: lb_name
+            textsize: 14
+            position: [280, -16]
 
-    -   type: label
-        id: lb_durability
-        text: durability
-        textsize: 14
-        position: [24, 58]
+        -   type: frame
+            position: [24, 0]
+            size: [370, 1]
+            background: 0x888888
 
-    -   type: label
-        id: lb_matter
-        text: matter
-        textsize: 14
-        position: [24, 80]
+        -   type: label
+            id: lb_label
+            textsize: 24
+            position: [24, 12]
 
-    -   type: label
-        id: lb_quantity
-        text: matter
-        textsize: 14
-        position: [24, 102]
+        -   type: label
+            id: lb_durability
+            text: durability
+            textsize: 14
+            position: [24, 42]
 
-    -   type: label
-        id: lb_pos
-        text: pos
-        textsize: 14
-        position: [280, 46]
+        -   type: label
+            id: lb_matter
+            text: matter
+            textsize: 14
+            position: [24, 62]
 
-    -   type: label
-        text: Effects
-        textsize: 20
-        position: [24, 200]
+        -   type: label
+            id: lb_quantity
+            text: matter
+            textsize: 14
+            position: [24, 82]
+
+        -   type: label
+            text: Effects
+            textsize: 20
+            position: [24, 182]

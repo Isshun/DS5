@@ -192,6 +192,7 @@ public class JobCraft extends BaseJobModel {
         // Work continue
         _progress += character.getTalent(CharacterModel.TalentType.CRAFT).work();
         if (_progress < _cost) {
+            _message = _actionInfo.label;
             Log.debug("Character #" + character.getInfo().getName() + ": Crafting (" + _progress + ")");
             return JobActionReturn.CONTINUE;
         }
@@ -236,33 +237,6 @@ public class JobCraft extends BaseJobModel {
 
 		return closeOrQuit(character);
     }
-//
-//    private void moveToFactory(CharacterModel character) {
-//        _status = Status.MOVE_TO_FACTORY;
-//        _posX = _item.getX();
-//        _posY = _item.getY();
-//        character.moveTo(this, _item.getX(), _item.getY(), new OnMoveListener() {
-//            @Override
-//            public void onReach(BaseJobModel job, CharacterModel character) {
-//                for (ReceiptModel.ReceiptComponentModel component : _receipt.getComponents()) {
-//                    _item.addComponent(component.item);
-//                    character.setInventory(null);
-//                }
-//            }
-//
-//            @Override
-//            public void onFail(BaseJobModel job, CharacterModel character) {
-//                for (ReceiptModel.ReceiptComponentModel component : _receipt.getComponents()) {
-//                    Game.getWorldManager().putConsumable(component.item, character.getX(), character.getY());
-//                    character.setInventory(null);
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(BaseJobModel job, CharacterModel character) {
-//            }
-//        });
-//    }
 
     /**
      * Action when character reach ingredient
