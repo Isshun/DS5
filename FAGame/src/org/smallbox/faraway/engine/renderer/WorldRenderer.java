@@ -3,11 +3,11 @@ package org.smallbox.faraway.engine.renderer;
 import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.game.manager.WorldManager;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,27 +18,16 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
     private int                 _cacheCols;
     private boolean             _needRefresh;
 
-    private static class Vector2i {
-        public final int x;
-        public final int y;
-        public Vector2i(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-
     private SpriteManager 			_spriteManager;
     private RenderLayer[][] 		_layerStructure;
     private boolean 				_hasChanged;
 
-    private Set<Vector2i> 			_changed;
     private WorldManager 			_worldMap;
     private MapObjectModel          _itemSelected;
     private int 					_frame;
 
     public WorldRenderer(SpriteManager spriteManager) {
         _spriteManager = spriteManager;
-        _changed = new HashSet<>();
 
 //		_layerItem = ViewFactory.getInstance().createRenderLayer(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
 
@@ -112,8 +101,8 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
         }
 
         if (_layerStructure != null) {
-            for (int i = 0; i < _cacheCols; i++) {
-                for (int j = 0; j < _cacheCols; j++) {
+            for (int i = _cacheCols - 1; i >= 0; i--) {
+                for (int j = _cacheCols - 1; j >= 0; j--) {
                     if (onScreen(i, j)) {
                         _layerStructure[i][j].onDraw(renderer, effect, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
                     }

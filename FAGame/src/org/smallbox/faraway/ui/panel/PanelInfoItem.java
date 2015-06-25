@@ -3,10 +3,6 @@ package org.smallbox.faraway.ui.panel;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.GameTimer;
-import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.TextView;
-import org.smallbox.faraway.ui.engine.View;
-import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -14,6 +10,10 @@ import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.FrameLayout;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 
 import java.util.stream.Collectors;
 
@@ -88,7 +88,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
         if (_itemInfo.hasTemperatureEffect()) {
             _frameTmp.setVisible(true);
             ((TextView)findById("lb_tmp_target")).setString("Targeted: " + _item.getTargetTemperature());
-            ((TextView)findById("lb_potency")).setString("Potency: " + _item.getInfo().effects.heatPotency);
+            ((TextView)findById("lb_potency")).setString("Potency: " + _item.getPotencyUse() + "/" + _item.getInfo().effects.heatPotency);
             findById("bt_tmp_add").setOnClickListener(view -> _item.setTargetTemperature(_item.getTargetTemperature() + 1));
             findById("bt_tmp_sub").setOnClickListener(view -> _item.setTargetTemperature(_item.getTargetTemperature() - 1));
         } else {

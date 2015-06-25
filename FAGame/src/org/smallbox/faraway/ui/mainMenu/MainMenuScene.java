@@ -2,13 +2,13 @@ package org.smallbox.faraway.ui.mainMenu;
 
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
-import org.smallbox.faraway.ui.engine.ImageView;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.ImageView;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.BasePanel;
 import org.smallbox.faraway.ui.panel.LayoutFactory;
+import org.smallbox.faraway.util.Constant;
 
 /**
  * Created by Alex on 02/06/2015.

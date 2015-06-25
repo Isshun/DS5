@@ -1,7 +1,7 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.ui.engine.TextView;
 import org.smallbox.faraway.ui.panel.BaseInfoRightPanel;
 

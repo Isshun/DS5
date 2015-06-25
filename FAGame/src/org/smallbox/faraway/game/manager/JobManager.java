@@ -1,10 +1,7 @@
 package org.smallbox.faraway.game.manager;
 
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.game.model.item.*;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.CheckCharacterUse;
 import org.smallbox.faraway.game.model.check.character.CheckCharacterExhausted;
@@ -13,9 +10,12 @@ import org.smallbox.faraway.game.model.check.joy.CheckJoySleep;
 import org.smallbox.faraway.game.model.check.joy.CheckJoyTalk;
 import org.smallbox.faraway.game.model.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
+import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.job.*;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobAbortReason;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobStatus;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;

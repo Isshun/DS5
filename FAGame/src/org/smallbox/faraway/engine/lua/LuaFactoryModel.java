@@ -1,6 +1,5 @@
 package org.smallbox.faraway.engine.lua;
 
-import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.AndroidModel;
 import org.smallbox.faraway.game.model.character.DroidModel;

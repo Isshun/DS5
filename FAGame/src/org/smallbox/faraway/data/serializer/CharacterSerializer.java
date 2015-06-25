@@ -1,13 +1,13 @@
 package org.smallbox.faraway.data.serializer;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
-import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.game.model.character.AndroidModel;
+import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
 import org.smallbox.faraway.game.model.character.base.CharacterRelation;
 import org.smallbox.faraway.game.model.character.base.CharacterRelation.Relation;
+import org.smallbox.faraway.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;

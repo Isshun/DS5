@@ -5,13 +5,13 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.QuestManager;
 import org.smallbox.faraway.game.manager.RoomManager;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.character.AndroidModel;
+import org.smallbox.faraway.game.model.character.DroidModel;
+import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.TextView;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.game.model.character.AndroidModel;
-import org.smallbox.faraway.game.model.character.DroidModel;
-import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.ui.panel.BasePanel;
 
 /**

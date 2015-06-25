@@ -4,12 +4,12 @@ import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.DefaultConnection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.utils.Array;
-import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.data.factory.ItemFactory;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
 import java.util.HashSet;

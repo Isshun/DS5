@@ -4,13 +4,13 @@ import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
-import org.smallbox.faraway.game.OnMoveListener;
-import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.OnMoveListener;
 import org.smallbox.faraway.game.manager.BaseManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;

@@ -1,8 +1,8 @@
 package org.smallbox.faraway.data.loader;
 
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.WeatherModel;
+import org.smallbox.faraway.util.Log;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 

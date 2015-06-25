@@ -1,10 +1,10 @@
 package org.smallbox.faraway.game.model.character.base;
 
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
+import org.smallbox.faraway.util.Constant;
 
 public class CharacterNeeds {
     private final CharacterModel 	_character;

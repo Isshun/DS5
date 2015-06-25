@@ -2,17 +2,17 @@ package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.item.StructureModel;
-import org.smallbox.faraway.game.model.job.JobDump;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.model.job.JobDump;
 import org.smallbox.faraway.game.model.room.RoomModel.RoomType;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.panel.PanelPlan.Planning;
+import org.smallbox.faraway.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class UserInteraction {

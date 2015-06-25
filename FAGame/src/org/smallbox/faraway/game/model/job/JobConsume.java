@@ -1,12 +1,12 @@
 package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.Movable.Direction;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemSlot;
+import org.smallbox.faraway.util.Log;
 
 import java.util.List;
 

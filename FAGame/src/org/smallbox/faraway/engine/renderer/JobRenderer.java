@@ -4,9 +4,9 @@ import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.util.Constant;
 
 import java.util.List;
 

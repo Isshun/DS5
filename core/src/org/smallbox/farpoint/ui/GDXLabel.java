@@ -39,10 +39,10 @@ public class GDXLabel extends TextView {
 
     @Override
     public void setColor(Color color) {
-        if (color != null) {
-            _color = color;
+        if (color != null && _color != color) {
             _gdxColor = new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f);
         }
+        _color = color;
     }
 
     @Override

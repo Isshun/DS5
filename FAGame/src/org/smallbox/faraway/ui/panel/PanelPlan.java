@@ -2,11 +2,11 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInteraction.Action;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.FrameLayout;
+import org.smallbox.faraway.ui.engine.View;
 
 public class PanelPlan extends BaseRightPanel {
 	public enum Planning {

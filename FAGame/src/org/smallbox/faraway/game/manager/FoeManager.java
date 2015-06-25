@@ -2,8 +2,8 @@ package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.model.Foe;
+import org.smallbox.faraway.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;

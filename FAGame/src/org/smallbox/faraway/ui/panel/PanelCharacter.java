@@ -1,20 +1,22 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.*;
+import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.*;
-import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
-import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.StringUtils;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.*;
+import org.smallbox.faraway.game.model.CharacterBuffModel;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.ToolTips;
+import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
 import org.smallbox.faraway.game.model.character.base.CharacterRelation;
+import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +58,6 @@ public class PanelCharacter extends BaseRightPanel {
     private TextView	 		_lbGender;
     private int 				_lastOld;
     private CharacterInfoModel.Gender _lastGender;
-    private ProfessionModel     _lastProfession;
     private TextView 			_animLabel;
     private String 				_animValue;
     private int 				_animFrame;
@@ -462,26 +463,6 @@ public class PanelCharacter extends BaseRightPanel {
         if (!gender.equals(_lastGender)) {
             _lastGender = gender;
             startAnim(_lbGender, StringUtils.getDashedString("Gender:", CharacterInfoModel.Gender.MALE.equals(gender) ? "male" : "female", NB_COLUMNS));
-            return;
-        }
-
-        // Profession
-        final ProfessionModel profession = _character.getProfession();
-        if (!profession.equals(_lastProfession)) {
-            _lastProfession = profession;
-            _lbProfession.setOnClickListener(view -> {
-                switch (profession.getType()) {
-                    case CHILD: _ui.select(ToolTips.PROFESSION_CHILD); break;
-                    case DOCTOR: _ui.select(ToolTips.PROFESSION_DOCTOR); break;
-                    case ENGINEER: _ui.select(ToolTips.PROFESSION_ENGINEER); break;
-                    case NONE: _ui.select(ToolTips.PROFESSION_NONE); break;
-                    case OPERATION: _ui.select(ToolTips.PROFESSION_OPERATION); break;
-                    case SCIENCE: _ui.select(ToolTips.PROFESSION_SCIENCE); break;
-                    case SECURITY: _ui.select(ToolTips.PROFESSION_SECURITY); break;
-                    case STUDENT: _ui.select(ToolTips.PROFESSION_STUDENT); break;
-                }
-            });
-            startAnim(_lbProfession, StringUtils.getDashedString("Profession:", profession.getName(), NB_COLUMNS));
             return;
         }
 

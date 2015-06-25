@@ -1,11 +1,10 @@
 package org.smallbox.faraway.game.model;
 
-import org.smallbox.faraway.util.Utils;
-import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.ui.AreaModel;
 import org.smallbox.faraway.ui.AreaType;
+import org.smallbox.faraway.util.Utils;
 
 /**
  * Created by Alex on 13/06/2015.

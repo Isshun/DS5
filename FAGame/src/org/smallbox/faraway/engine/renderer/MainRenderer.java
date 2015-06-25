@@ -1,16 +1,11 @@
 package org.smallbox.faraway.engine.renderer;
 
-import org.smallbox.faraway.data.factory.map.AsteroidBeltFactory;
-import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteManager;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.ColorView;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;

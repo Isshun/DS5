@@ -4,15 +4,15 @@ import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.GameTimer;
 import org.smallbox.faraway.engine.RenderEffect;
-import org.smallbox.faraway.ui.engine.UIEventManager;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.LandingSiteModel;
-import org.smallbox.faraway.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.game.model.TeamModel;
+import org.smallbox.faraway.game.model.planet.PlanetInfo;
+import org.smallbox.faraway.ui.engine.UIEventManager;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.BasePanel;
 import org.smallbox.faraway.ui.panel.LayoutFactory;
+import org.smallbox.faraway.util.Utils;
 
 /**
  * Created by Alex on 02/06/2015.

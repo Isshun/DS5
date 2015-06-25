@@ -1,8 +1,7 @@
 package org.smallbox.faraway.game.manager;
 
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.StatsData;
-import org.smallbox.faraway.game.model.ProfessionModel.Type;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 
 import java.util.List;
@@ -42,14 +41,14 @@ public class StatsManager extends BaseManager {
 					nbSingleValue++;
 				}
 
-				// Is child
-				if (character.getProfessionId() == Type.CHILD) {
-					nbChildValue++;
-				}
-
-				if (character.getProfessionId() == Type.STUDENT) {
-					nbStudentValue++;
-				}
+//				// Is child
+//				if (character.getProfessionId() == Type.CHILD) {
+//					nbChildValue++;
+//				}
+//
+//				if (character.getProfessionId() == Type.STUDENT) {
+//					nbStudentValue++;
+//				}
 
 				nbCharacterValue++;
 			}

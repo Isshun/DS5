@@ -1,8 +1,8 @@
 package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.engine.GFXRenderer;
-import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.BasePanel;
 
 import java.io.IOException;

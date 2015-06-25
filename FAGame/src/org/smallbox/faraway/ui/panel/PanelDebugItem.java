@@ -2,14 +2,14 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.TextView;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.List;
 

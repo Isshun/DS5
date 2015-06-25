@@ -1,8 +1,8 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 
 public class PanelScience extends BaseRightPanel {
 	

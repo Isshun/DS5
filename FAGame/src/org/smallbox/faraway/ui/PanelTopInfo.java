@@ -1,12 +1,13 @@
 package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.PowerManager;
 import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.TextView;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.ui.panel.BasePanel;
+import org.smallbox.faraway.util.Constant;
 
 /**
  * Created by Alex on 13/06/2015.
@@ -48,6 +49,12 @@ public class PanelTopInfo extends BasePanel {
             if (Constant.DEBUG) {
                 findById("lb_weather").setOnClickListener(view -> Game.getWeatherManager().next());
             }
+        }
+
+        PowerManager powerManager = (PowerManager)Game.getInstance().getManager(PowerManager.class);
+        if (powerManager != null) {
+            ((TextView)findById("lb_power_production")).setString((int)powerManager.getProduce() + "kW/h");
+            ((TextView)findById("lb_power_storage")).setString((int)powerManager.getStored() + "kW");
         }
     }
 }

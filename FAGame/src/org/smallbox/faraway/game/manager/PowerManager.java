@@ -12,11 +12,12 @@ import java.util.List;
 public class PowerManager extends BaseManager {
     private static final int    UPDATE_INTERVAL = 40;
 
-    private double              _power;
     private List<ItemModel>     _items;
+    private double              _produce;
+    private double              _stored;
 
     public PowerManager() {
-        _power = 100;
+        _stored = 1000;
         _items = new ArrayList<>();
     }
 
@@ -24,7 +25,7 @@ public class PowerManager extends BaseManager {
     protected void onUpdate(int tick) {
         if (tick % UPDATE_INTERVAL == 0) {
             Collections.shuffle(_items);
-            double powerLeft = _power;
+            double powerLeft = _stored;
             for (ItemModel item : _items) {
                 if (powerLeft + item.getInfo().power > 0) {
                     powerLeft += item.getInfo().power;
@@ -33,6 +34,8 @@ public class PowerManager extends BaseManager {
                     item.setFunctional(false);
                 }
             }
+            _produce = powerLeft - _stored;
+            _stored = powerLeft;
         }
     }
 
@@ -50,4 +53,11 @@ public class PowerManager extends BaseManager {
         _items.remove(item);
     }
 
+    public double getProduce() {
+        return _produce;
+    }
+
+    public double getStored() {
+        return _stored;
+    }
 }

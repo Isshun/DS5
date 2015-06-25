@@ -1,16 +1,16 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.engine.Color;
-import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.Strings;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.game.manager.CharacterManager;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.SpriteManager;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.CharacterManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -166,7 +166,7 @@ public class PanelCrew extends BaseRightPanel {
 			viewHolder.frame.addView(viewHolder.lbProfession);
 
 			viewHolder.thumb = ViewFactory.getInstance().createImageView();
-			viewHolder.thumb.setImage(SpriteManager.getInstance().getCharacter(character.getProfession(), 0, 0, 0));
+			viewHolder.thumb.setImage(SpriteManager.getInstance().getCharacter(character, 0, 0));
 			viewHolder.thumb.setPosition(0, 5);
 			viewHolder.frame.addView(viewHolder.thumb);
 
@@ -209,8 +209,8 @@ public class PanelCrew extends BaseRightPanel {
 				viewHolder.lbJob.setColor(new Color(255, 255, 255, 100));
 				viewHolder.lbJob.setPosition(376 - Strings.LB_NO_JOB.length() * 8, 6);
 			}
-			// Profession
-			viewHolder.lbProfession.setString(character.getProfession().getName());
+//			// Profession
+//			viewHolder.lbProfession.setString(character.getProfession().getName());
 		}
 
 	}

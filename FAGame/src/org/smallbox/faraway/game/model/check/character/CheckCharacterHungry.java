@@ -6,8 +6,8 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemFilter;
-import org.smallbox.faraway.game.model.job.JobConsume;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.model.job.JobConsume;
 
 /**
  * Created by Alex on 01/06/2015.

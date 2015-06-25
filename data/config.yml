@@ -25,9 +25,9 @@ render:
 manager:
     quest:          false
     room:           true
-    temperature:    false
-    weather:        false
-    oxygen:         false
+    temperature:    true
+    weather:        true
+    oxygen:         true
 
 character:
     effects:

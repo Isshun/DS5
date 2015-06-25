@@ -1,13 +1,12 @@
 package org.smallbox.faraway.ui.mainMenu;
 
-import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
-import org.smallbox.faraway.util.StringUtils;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.util.StringUtils;
 
 /**
  * Created by Alex on 02/06/2015.

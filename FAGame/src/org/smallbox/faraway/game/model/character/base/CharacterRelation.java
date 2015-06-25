@@ -53,4 +53,6 @@ public class CharacterRelation {
 	public Relation getRelation() {
 		return _relation;
 	}
+
+	//    public void 			        addFriend(CharacterModel friend) { _relations.add(new CharacterRelation(this, friend, CharacterRelation.Relation.FRIEND)); }
 }

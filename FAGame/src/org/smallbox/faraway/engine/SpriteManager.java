@@ -1,6 +1,5 @@
 package org.smallbox.faraway.engine;
 
-import org.smallbox.faraway.game.model.ProfessionModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
@@ -25,7 +24,6 @@ public abstract class SpriteManager {
 	public abstract SpriteModel     getSimpleWall(int zone);
 	public abstract SpriteModel     getWall(StructureModel item, int special, int index, int zone);
 	public abstract SpriteModel     getCharacter(CharacterModel c, int dirIndex, int frame);
-	public abstract SpriteModel     getCharacter(ProfessionModel profession, int direction, int frame, int extra);
     public abstract SpriteModel     getItem(MapObjectModel item, int tile);
     public abstract SpriteModel     getItem(MapObjectModel item);
     public abstract SpriteModel     getFoe(Object object, int direction, int frame);

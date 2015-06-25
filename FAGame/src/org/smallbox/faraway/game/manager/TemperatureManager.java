@@ -1,10 +1,10 @@
 package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.game.GameObserver;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.room.NeighborModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
+import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,23 +64,12 @@ public class TemperatureManager extends BaseManager implements GameObserver {
                     temperatureInfo.coldPotency = 0;
                     temperatureInfo.coldPotencyLeft = 0;
 
-                    int totalHeatTarget = 0;
-                    int totalColdTarget = 0;
-
-                    for (ItemModel item : _items) {
-                        if (item.getParcel() != null && item.getParcel().getRoom() == room) {
-                            if (item.getInfo().effects.heatPotency != 0) {
-                                totalHeatTarget += item.getTargetTemperature() * item.getInfo().effects.heatPotency;
-                                temperatureInfo.heatPotency += item.getInfo().effects.heatPotency;
-                            }
-                            if (item.getInfo().effects.coldPotency != 0) {
-                                temperatureInfo.targetCold += item.getTargetTemperature() * item.getInfo().effects.coldPotency;
-                                temperatureInfo.coldPotency += item.getInfo().effects.coldPotency;
-                            }
-                        }
-                    }
-
                     // Apply heat to room
+                    int totalHeatTarget = 0;
+                    for (ItemModel item : room.getHeatItems()) {
+                        totalHeatTarget += item.getTargetTemperature() * item.getInfo().effects.heatPotency;
+                        temperatureInfo.heatPotency += item.getInfo().effects.heatPotency;
+                    }
                     if (temperatureInfo.heatPotency > 0) {
                         temperatureInfo.targetHeat = totalHeatTarget / temperatureInfo.heatPotency;
                         temperatureInfo.targetHeatTotal = temperatureInfo.targetHeat * room.getSize();
@@ -88,6 +77,11 @@ public class TemperatureManager extends BaseManager implements GameObserver {
                     }
 
                     // Apply cold to room
+                    int totalColdTarget = 0;
+                    for (ItemModel item : room.getColdItems()) {
+                        temperatureInfo.targetCold += item.getTargetTemperature() * item.getInfo().effects.coldPotency;
+                        temperatureInfo.coldPotency += item.getInfo().effects.coldPotency;
+                    }
                     if (temperatureInfo.coldPotency > 0) {
                         temperatureInfo.targetCold = totalColdTarget / temperatureInfo.coldPotency;
                         temperatureInfo.targetColdTotal = temperatureInfo.targetHeat * room.getSize();
@@ -98,7 +92,7 @@ public class TemperatureManager extends BaseManager implements GameObserver {
 
             // Second pass
             // Diffuse temperature to neighborhood
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 16; i++) {
                 for (RoomModel room : rooms) {
                     int roomSize = room.getSize();
                     if (!room.isExterior()) {
@@ -107,7 +101,7 @@ public class TemperatureManager extends BaseManager implements GameObserver {
                         // Diffuse temperature to room
                         for (NeighborModel neighbor: room.getNeighbors()) {
                             RoomModel.RoomTemperatureModel t2 = neighbor.room.getTemperatureInfo();
-                            double neighborRatio = (double) neighbor.parcels.size() / room.getSize();
+                            double neighborRatio = (double) neighbor.parcels.size() * 2 / room.getSize();
                             t1.temperatureTotal += (t2.temperatureTotal / neighbor.room.getSize() - t1.temperatureTotal / roomSize) * neighborRatio;
                         }
 
@@ -125,6 +119,20 @@ public class TemperatureManager extends BaseManager implements GameObserver {
                 }
             }
 
+            // Set potency use on each items
+            for (RoomModel room: rooms) {
+                if (!room.getHeatItems().isEmpty()) {
+                    int heatPotencyUsePerItem = (room.getTemperatureInfo().heatPotency - room.getTemperatureInfo().heatPotencyLeft) / room.getHeatItems().size();
+                    room.getHeatItems().forEach(item -> item.setPotencyUse(heatPotencyUsePerItem));
+                }
+
+                if (!room.getColdItems().isEmpty()) {
+                    int coldPotencyUsePerItem = (room.getTemperatureInfo().coldPotency - room.getTemperatureInfo().coldPotencyLeft) / room.getColdItems().size();
+                    room.getColdItems().forEach(item -> item.setPotencyUse(coldPotencyUsePerItem));
+                }
+            }
+
+            // Set final room temperature
             for (RoomModel room : rooms) {
                 room.getTemperatureInfo().temperature = Math.round(room.getTemperatureInfo().temperatureTotal / room.getSize());
             }

@@ -2,12 +2,12 @@ package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
-import org.smallbox.faraway.game.model.StorageModel;
-import org.smallbox.faraway.game.model.item.*;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.ReceiptModel;
+import org.smallbox.faraway.game.model.StorageModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;

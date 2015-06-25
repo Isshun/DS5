@@ -2,11 +2,11 @@ package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.engine.SpriteModel;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoAction;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
 
 public abstract class BaseJobModel {
     public SpriteModel getActionIcon() {

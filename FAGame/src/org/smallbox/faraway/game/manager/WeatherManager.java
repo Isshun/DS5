@@ -1,12 +1,12 @@
 package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.engine.Color;
-import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.WeatherModel;
+import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -69,10 +69,12 @@ public class WeatherManager extends BaseManager implements GameObserver {
 
         if (_sunTransitionProgress < 1) {
             _sunTransitionProgress += _progressValue;
-            _lightRenderer.setSunColor(new Color(
-                    (int)((_previousSunColor.r * (1-_sunTransitionProgress)) + (_nextSunColor.r * _sunTransitionProgress)),
-                    (int)((_previousSunColor.g * (1-_sunTransitionProgress)) + (_nextSunColor.g * _sunTransitionProgress)),
-                    (int)((_previousSunColor.b * (1-_sunTransitionProgress)) + (_nextSunColor.b * _sunTransitionProgress))));
+            if (_lightRenderer != null) {
+                _lightRenderer.setSunColor(new Color(
+                        (int) ((_previousSunColor.r * (1 - _sunTransitionProgress)) + (_nextSunColor.r * _sunTransitionProgress)),
+                        (int) ((_previousSunColor.g * (1 - _sunTransitionProgress)) + (_nextSunColor.g * _sunTransitionProgress)),
+                        (int) ((_previousSunColor.b * (1 - _sunTransitionProgress)) + (_nextSunColor.b * _sunTransitionProgress))));
+            }
         }
     }
 
@@ -85,7 +87,9 @@ public class WeatherManager extends BaseManager implements GameObserver {
         switchSunColor(_dayTime);
 
         // Particle effect
-        _particleRenderer.setParticle(_weather.particle);
+        if (_particleRenderer != null) {
+            _particleRenderer.setParticle(_weather.particle);
+        }
 
         // World temperature
         if (_weather.temperatureChange != null) {

@@ -11,7 +11,6 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.engine.SpriteManager;
-import org.smallbox.faraway.game.model.ProfessionModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -431,39 +430,21 @@ public class GDXSpriteManager extends SpriteManager {
     }
 
     @Override
-    public SpriteModel getCharacter(CharacterModel c, int dirIndex, int frame) {
-        return getCharacter(c.getProfession(), dirIndex, frame, c.isSleeping() ? 1 : 0);
-    }
-
-    @Override
-    public SpriteModel getCharacter(ProfessionModel profession, int direction, int frame, int extra) {
-        int sum = profession.getType().ordinal();
+    public SpriteModel getCharacter(CharacterModel c, int direction, int frame) {
+        int extra = 0;
+        int sum = 0;
         sum = sum << 8;
         sum += direction;
         sum = sum << 8;
         sum += frame;
         sum = sum << 8;
-        sum += extra;
+//        sum += extra;
 
         GDXSpriteModel sprite = _spritesCharacters.get(sum);
         if (sprite == null) {
             Texture texture;
 
-            switch (profession.getType()) {
-                case ENGINEER:
-                    texture = _textureCharacters[2];
-//                    sprite.getData().setScale(0.8f, 0.8f);
-//				sprite.setTextureRect(new IntRect(0, 0, Constant.CHAR_WIDTH, 32));
-                    break;
-                case SECURITY:
-                    texture = _textureCharacters[1];
-//                    sprite.getData().setScale(0.8f, 0.8f);
-                    break;
-                default:
-                    texture = _textureCharacters[0];
-//                    sprite.getData().setScale(0.8f, 0.8f);
-                    break;
-            }
+            texture = _textureCharacters[0];
 
             sprite = new GDXSpriteModel(texture,
                     Constant.CHAR_WIDTH * frame + (extra * 128),

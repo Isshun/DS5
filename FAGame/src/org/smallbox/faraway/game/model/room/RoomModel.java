@@ -2,20 +2,27 @@ package org.smallbox.faraway.game.model.room;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemFilter;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.util.Utils;
 
-import java.util.*;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class RoomModel {
 	private boolean                     _isExterior;
 	private int 	                    _lightValue;
 	private double 						_permeability;
 	private List<NeighborModel>     	_neighborhood;
+	private List<ItemModel>     	    _heatItems = new ArrayList<>();
+	private List<ItemModel>     	    _coldItems = new ArrayList<>();
+	private List<ItemModel>     	    _oxygenItems = new ArrayList<>();
 	private RoomTemperatureModel        _temperatureInfo = new RoomTemperatureModel();
 	private String 						_autoName;
 	private String 						_name;
@@ -36,7 +43,19 @@ public class RoomModel {
 		_autoName = autoName;
 	}
 
-	public enum RoomType {
+    public List<ItemModel> getHeatItems() {
+        return _heatItems;
+    }
+
+    public List<ItemModel> getColdItems() {
+        return _coldItems;
+    }
+
+    public List<ItemModel> getOxygenItems() {
+        return _oxygenItems;
+    }
+
+    public enum RoomType {
 		NONE,
 		QUARTER,
 		SICKBAY,
@@ -169,7 +188,7 @@ public class RoomModel {
 	}
 
 	public void update() {
-		if (_owner != null && _owner.isDead()) {
+		if (_owner != null && !_owner.isAlive()) {
 			_owner = null;
 		}
 	}

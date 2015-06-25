@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.manager;
 
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.Strings;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.ToolTips;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 

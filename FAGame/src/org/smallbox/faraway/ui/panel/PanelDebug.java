@@ -1,8 +1,14 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.Color;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.JobManager;
+import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.ui.LayoutModel;
+import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.TextView;
@@ -10,11 +16,6 @@ import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.StringUtils;
-import org.smallbox.faraway.game.manager.JobManager;
-import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.job.BaseJobModel;
-import org.smallbox.faraway.ui.LayoutModel;
-import org.smallbox.faraway.ui.UserInterface.Mode;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -172,8 +173,7 @@ public class PanelDebug extends BaseRightPanel {
 		findById("bt_toggle_debug").setOnClickListener(view -> _ui.toggleMode(Mode.DEBUGITEMS));
 		findById("bt_make_room").setOnClickListener(view -> Game.getRoomManager().makeRooms());
 		findById("bt_kill_all").setOnClickListener(view -> {
-			Game.getCharacterManager().clear();
-			JobManager.getInstance().clear();
+			Game.getCharacterManager().getCharacters().forEach(CharacterModel::setIsDead);
 		});
 	}
 

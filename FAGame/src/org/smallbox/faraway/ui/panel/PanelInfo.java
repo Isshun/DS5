@@ -1,14 +1,14 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.*;
+import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.*;
-import org.smallbox.faraway.util.StringUtils;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.util.StringUtils;
 
 import java.util.List;
 

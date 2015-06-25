@@ -2,11 +2,11 @@ package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.planet.PlanetAreaModel;
 import org.smallbox.faraway.ui.engine.ColorView;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.game.model.planet.PlanetAreaModel;
 import org.smallbox.faraway.ui.panel.BasePanel;
 
 /**

@@ -6,4 +6,4 @@ entries:
            
     -   type: frame
         id: frame_room_info
-        position: [0, 600]
+        position: [0, 550]

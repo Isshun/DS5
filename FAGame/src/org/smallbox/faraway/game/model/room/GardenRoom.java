@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.model.room;
 
-import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.SpriteManager;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;

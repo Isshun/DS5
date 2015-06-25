@@ -1,8 +1,5 @@
 package org.smallbox.faraway.game.model.job;
 
-import org.smallbox.faraway.engine.SpriteManager;
-import org.smallbox.faraway.engine.SpriteModel;
-import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.util.Log;

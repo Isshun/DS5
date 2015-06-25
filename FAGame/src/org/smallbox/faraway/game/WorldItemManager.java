@@ -3,8 +3,6 @@ package org.smallbox.faraway.game;
 import org.smallbox.faraway.game.manager.BaseManager;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
-import org.smallbox.faraway.game.model.room.RoomModel;
-import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;

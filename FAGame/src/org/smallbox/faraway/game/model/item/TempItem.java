@@ -2,9 +2,9 @@ package org.smallbox.faraway.game.model.item;
 
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.engine.SpriteManager;
 
 public class TempItem {
 	SpriteModel 	sprite;

@@ -1,15 +1,16 @@
 package org.smallbox.faraway.ui.panel;
 
 import com.badlogic.gdx.ai.pfa.Connection;
+import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.TextView;
-import org.smallbox.faraway.ui.engine.View;
-import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.room.NeighborModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.FrameLayout;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 
 /**
  * Created by Alex on 13/06/2015.
@@ -18,6 +19,18 @@ public class BaseInfoRightPanel extends BaseRightPanel {
     private View        _frame_parcel_info;
     private View        _frame_room_info;
     private ParcelModel _parcel;
+
+    private static Object[][] TEMPERATURE_COLOR = new Object[][] {
+            new Object[] { 80,  0,   new Color(0xf3a000) },
+            new Object[] { 60,  25,  new Color(0xce0201) },
+            new Object[] { 40,  50,  new Color(0x991d32) },
+            new Object[] { 20,  75,  new Color(0x653963) },
+            new Object[] {  0,  100, new Color(0x305594) },
+            new Object[] { -20, 125, new Color(0x0e67b3) },
+            new Object[] { -40, 150, new Color(0x4b8dc6) },
+            new Object[] { -60, 175, new Color(0x8cb6db) },
+            new Object[] { -80, 200, new Color(0xcbdeee) },
+    };
 
     public BaseInfoRightPanel(UserInterface.Mode mode, GameEventListener.Key shortcut, String path) {
         super(mode, shortcut, path);
@@ -77,7 +90,20 @@ public class BaseInfoRightPanel extends BaseRightPanel {
             ((TextView)_frame_room_info.findById("lb_cold_left")).setString("CL: " + parcel.getRoom().getTemperatureInfo().coldPotencyLeft);
             ((TextView)_frame_room_info.findById("lb_oxygen")).setString("O2: " + parcel.getRoom().getOxygen());
 
-            ((TextView)_frame_room_info.findById("lb_type")).setString("Type: " + parcel.getElevation());
+            // Temperature cursor
+            int temperature = (int) parcel.getRoom().getTemperatureInfo().temperature;
+            int position = 100 - Math.min(80, Math.max(-80, temperature)) * 80 / 100;
+            ((TextView)_frame_room_info.findById("lb_temperature_cursor")).setString(temperature + "°");
+            for (Object[] obj: TEMPERATURE_COLOR) {
+                if (temperature + 10 > (int)obj[0]) {
+                    _frame_room_info.findById("temperature_cursor").setPosition(0, position - 10);
+                    _frame_room_info.findById("bg_1_temperature_cursor").setBackgroundColor((Color)obj[2]);
+                    _frame_room_info.findById("bg_2_temperature_cursor").setBackgroundColor((Color)obj[2]);
+                    ((TextView)_frame_room_info.findById("lb_temperature_cursor")).setColor(Color.WHITE);
+                    break;
+                }
+            }
+
 
             int count = 0;
             for (NeighborModel neighbor: parcel.getRoom().getNeighbors()) {

@@ -1,9 +1,9 @@
 package org.smallbox.faraway.data.loader;
 
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.model.CategoryInfo;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;

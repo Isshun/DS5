@@ -4,11 +4,14 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.ui.LinkFocusListener;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.ui.engine.Colors;
+import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Constant;
 
 public abstract class BaseRightPanel extends BasePanel {
 	protected static final int FRAME_WIDTH = Constant.PANEL_WIDTH;

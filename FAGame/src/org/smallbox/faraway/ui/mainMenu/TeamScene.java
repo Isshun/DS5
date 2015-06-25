@@ -2,8 +2,8 @@ package org.smallbox.faraway.ui.mainMenu;
 
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.GFXRenderer;
-import org.smallbox.faraway.ui.engine.TextView;
 import org.smallbox.faraway.ui.LayoutModel;
+import org.smallbox.faraway.ui.engine.TextView;
 
 /**
  * Created by Alex on 02/06/2015.

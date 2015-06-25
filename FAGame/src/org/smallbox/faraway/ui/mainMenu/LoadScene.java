@@ -2,10 +2,10 @@ package org.smallbox.faraway.ui.mainMenu;
 
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.TextView;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.LayoutModel;
 
 import java.io.File;
 

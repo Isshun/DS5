@@ -2,13 +2,13 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
+import org.smallbox.faraway.ui.LayoutModel;
+import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.TextView;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.ui.LayoutModel;
-import org.smallbox.faraway.ui.UserInterface.Mode;
 
 public class PanelSystem extends BasePanel {
 	private static final int FRAME_WIDTH = Constant.WINDOW_WIDTH;

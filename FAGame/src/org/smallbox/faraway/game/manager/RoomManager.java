@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class RoomManager extends BaseManager implements GameObserver {
     private static final int    UPDATE_INTERVAL = 10;
@@ -106,6 +105,7 @@ public class RoomManager extends BaseManager implements GameObserver {
                         _roomList.add(room);
                         exploreRoom(room);
                         checkRoof(room);
+                        addSpecialsItems(room);
                         room.setAutoName(autoName(room));
                     }
                 }
@@ -113,6 +113,26 @@ public class RoomManager extends BaseManager implements GameObserver {
         } while (newRoomFound);
 
         Log.info("[RoomManager] " + _roomList.size() + " rooms found");
+    }
+
+    private void addSpecialsItems(RoomModel room) {
+        for (ParcelModel parcel: room.getParcels()) {
+            ItemModel item = parcel.getItem();
+            if (item != null && item.getInfo().effects != null) {
+                // Add heat item
+                if (item.getInfo().effects.heatPotency > 0) {
+                    room.getHeatItems().add(item);
+                }
+                // Add cold item
+                if (item.getInfo().effects.coldPotency > 0) {
+                    room.getHeatItems().add(item);
+                }
+                // Add oxygen item
+                if (item.getInfo().effects.oxygen > 0) {
+                    room.getOxygenItems().add(item);
+                }
+            }
+        }
     }
 
     private String autoName(RoomModel room) {
@@ -150,7 +170,12 @@ public class RoomManager extends BaseManager implements GameObserver {
         }
 
         if ("quarter".equals(bestCategory)) {
-            return nbBed == 1 && bed.getOwner() != null ? bed.getOwner().getName() + "'s quarter" : "Common quarter";
+            if (nbBed == 1 && bed.getOwner() != null) {
+                bed.getOwner().setQuarter(room);
+                room.setOwner(bed.getOwner());
+                return bed.getOwner().getName() + "'s quarter";
+            }
+            return "Common quarter";
         }
 
         if (storageArea != null) {

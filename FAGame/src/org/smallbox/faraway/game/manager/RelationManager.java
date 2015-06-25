@@ -1,13 +1,13 @@
 package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
-import org.smallbox.faraway.util.Utils;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.game.model.character.HumanModel;
+import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterRelation;
 import org.smallbox.faraway.game.model.character.base.CharacterRelation.Relation;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class RelationManager extends BaseManager {
 		}
 		
 		// Gender mismatch
-		if (c1.getInfo().isGay() != c2.getInfo().isGay() || (c1.getInfo().isGay() && c1.getInfo().getGender() != c2.getInfo().getGender()) || (c1.getInfo().isGay() == false && c1.getInfo().getGender() == c2.getInfo().getGender())) {
+		if (c1.getInfo().isGay() != c2.getInfo().isGay() || (c1.getInfo().isGay() && c1.getInfo().getGender() != c2.getInfo().getGender()) || (!c1.getInfo().isGay() && c1.getInfo().getGender() == c2.getInfo().getGender())) {
 			return;
 		}
 
@@ -59,7 +59,6 @@ public class RelationManager extends BaseManager {
 	public CharacterModel createChildren(CharacterModel c1, CharacterModel c2) {
 		String lastName = c1.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? c1.getInfo().getLastName() : c2.getInfo().getLastName();
 		CharacterModel child = new HumanModel(Utils.getUUID(), c1.getX(), c2.getY(), null, lastName, 0);
-		child.setProfession(CharacterManager.professionsChild);
 
 		// Set child's parents
 		child.getRelations().getRelations().add(new CharacterRelation(child, c1, Relation.PARENT));
@@ -82,7 +81,7 @@ public class RelationManager extends BaseManager {
 
 	private void addExistingChildrensToNewBorn(CharacterModel child, CharacterModel c1, CharacterModel c2) {
 		// Get children from first parent
-		List<CharacterModel> childrensFirstParent = new ArrayList<CharacterModel>();
+		List<CharacterModel> childrensFirstParent = new ArrayList<>();
 		for (CharacterRelation relation: c1.getRelations().getRelations()) {
 			if (relation.getRelation() == Relation.CHILDREN) {
 				childrensFirstParent.add(relation.getSecond());
@@ -112,7 +111,7 @@ public class RelationManager extends BaseManager {
 
 		for (CharacterModel c: childrensSecondParent) {
 			// Add half-brother for second parent
-			if (childrensFirstParent.contains(c) == false) {
+			if (!childrensFirstParent.contains(c)) {
 				child.getRelations().getRelations().add(new CharacterRelation(child, c, c.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
 				c.getRelations().getRelations().add(new CharacterRelation(c, child, child.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
 			}

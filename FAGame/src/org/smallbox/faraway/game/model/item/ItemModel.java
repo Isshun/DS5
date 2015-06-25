@@ -9,8 +9,9 @@ public class ItemModel extends MapObjectModel {
 	private int 					_targetTemperature = 21;
 	private boolean 				_isFunctional = true;
     private boolean                 _isActive = true;
+	private int 					_potencyUse;
 
-    public ItemModel(ItemInfo info, int id) {
+	public ItemModel(ItemInfo info, int id) {
 		super(info, id);
 	}
 
@@ -69,4 +70,12 @@ public class ItemModel extends MapObjectModel {
 	public void setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }
 	public boolean isFunctional() { return _isFunctional; }
 	public boolean isActive() { return _isActive; }
+
+	public void setPotencyUse(int potencyUse) {
+		_potencyUse = potencyUse;
+	}
+
+	public int getPotencyUse() {
+		return _potencyUse;
+	}
 }

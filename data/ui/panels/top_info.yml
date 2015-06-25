@@ -30,3 +30,18 @@ entries:
         id: lb_planet
         textsize: 14
         position: [660, 12]
+
+    -   type: label
+        text: Power
+        textsize: 14
+        position: [820, 12]
+
+    -   type: label
+        id: lb_power_production
+        textsize: 14
+        position: [900, 12]
+        
+    -   type: label
+        id: lb_power_storage
+        textsize: 14
+        position: [980, 12]

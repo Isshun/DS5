@@ -1,10 +1,10 @@
 package org.smallbox.faraway.game.model.character.base;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.model.BuffModel;
 import org.smallbox.faraway.game.model.CharacterBuffModel;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.util.Log;
 
 /**
  * Created by Alex on 16/06/2015.

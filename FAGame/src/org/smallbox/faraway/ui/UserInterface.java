@@ -1,22 +1,22 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.*;
+import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.ui.engine.UIEventManager;
-import org.smallbox.faraway.ui.engine.UIMessage;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.manager.CharacterManager;
-import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.ToolTips.ToolTip;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.room.RoomModel;
+import org.smallbox.faraway.ui.engine.UIEventManager;
+import org.smallbox.faraway.ui.engine.UIMessage;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.*;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.Utils;
 
 public class UserInterface implements GameEventListener {
     private static UserInterface		_self;

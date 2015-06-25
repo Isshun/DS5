@@ -1,13 +1,13 @@
 package org.smallbox.faraway.game.model.job;
 
+import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.manager.JobManager;
-import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ResourceModel;
+import org.smallbox.faraway.util.Log;
 
 public class JobGather extends BaseJobModel {
 	private static final SpriteModel ICON = SpriteManager.getInstance().getIcon("data/res/ic_gather.png");

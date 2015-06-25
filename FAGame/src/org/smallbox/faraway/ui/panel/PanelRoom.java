@@ -1,9 +1,8 @@
 package org.smallbox.faraway.ui.panel;
 
+import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.Strings;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
@@ -13,6 +12,7 @@ import org.smallbox.faraway.game.model.room.RoomOptions.RoomOption;
 import org.smallbox.faraway.ui.UserInteraction.Action;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.util.Constant;
 
 import java.util.*;
 

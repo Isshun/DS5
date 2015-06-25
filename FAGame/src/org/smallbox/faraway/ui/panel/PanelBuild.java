@@ -2,7 +2,6 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.util.StringUtils;
 import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.game.model.CategoryInfo;
 import org.smallbox.faraway.game.model.GameData;
@@ -10,6 +9,7 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

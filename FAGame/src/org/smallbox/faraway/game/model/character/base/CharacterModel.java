@@ -5,9 +5,11 @@ import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
-import org.smallbox.faraway.game.manager.CharacterManager;
 import org.smallbox.faraway.game.manager.JobManager;
-import org.smallbox.faraway.game.model.*;
+import org.smallbox.faraway.game.model.CharacterBuffModel;
+import org.smallbox.faraway.game.model.GameConfig;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.Movable;
 import org.smallbox.faraway.game.model.character.CharacterRelationModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -77,7 +79,6 @@ public abstract class CharacterModel extends Movable {
     };
 
     CharacterNeeds						_needs;
-    protected ProfessionModel         	_profession;
     protected boolean					_isSelected;
     protected int 						_lag;
     protected double 					_old;
@@ -110,7 +111,6 @@ public abstract class CharacterModel extends Movable {
         _isAlive = true;
         _buffs = GameData.getData().buffs.stream().map(CharacterBuffModel::new).collect(Collectors.toList());
         sortBuffs();
-        _profession = CharacterManager.professions[id % CharacterManager.professions.length];
         _relations = new CharacterRelationModel();
         _lag = (int)(Math.random() * 10);
         _isSelected = false;
@@ -138,9 +138,7 @@ public abstract class CharacterModel extends Movable {
         Log.info("Character done: " + _info.getName() + " (" + x + ", " + y + ")");
     }
 
-    public ProfessionModel          getProfession() { return _profession; }
-    public ProfessionModel.Type	    getProfessionId() { return _profession.getType(); }
-    public BaseJobModel getJob() { return _job; }
+    public BaseJobModel             getJob() { return _job; }
     public CharacterNeeds	        getNeeds() { return _needs; }
     public GraphPath<ParcelModel> 	getPath() { return _path; }
     public int 				        getLag() { return _lag; }
@@ -164,19 +162,14 @@ public abstract class CharacterModel extends Movable {
     public abstract Color           getColor();
 
     public void				        setSelected(boolean selected) { _isSelected = selected; }
-    public void 			        setProfession(ProfessionModel profession) { _profession = profession; }
     public void                     setIsDead() { _isAlive = false; }
     public void                     setIsFaint() { _isFaint = true; }
     public void                     setInventory(ConsumableModel consumable) { _inventory = consumable; }
-    //    public void 			        addFriend(CharacterModel friend) { _relations.add(new CharacterRelation(this, friend, CharacterRelation.Relation.FRIEND)); }
     public abstract void            addBodyStats(CharacterStats stats);
 
     public boolean			        isSelected() { return _isSelected; }
-    public boolean                  isDead() { return !_isAlive; }
     public boolean                  isAlive() { return _isAlive; }
-    //    	public boolean			    isFull() { return _inventory.size() == Constant.CHARACTER_INVENTORY_SPACE; }
     public boolean 			        isSleeping() { return _needs.isSleeping(); }
-    //    public boolean                  isMoving() { return _node != null; }
     public boolean 			        needRefresh() { return _needRefresh; }
 
     public void moveTo(BaseJobModel job, int toX, int toY, OnMoveListener onMoveListener) {

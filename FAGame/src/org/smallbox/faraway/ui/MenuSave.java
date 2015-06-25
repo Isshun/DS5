@@ -4,9 +4,9 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.RenderEffect;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.util.Constant;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -1,0 +1,8 @@
+name: antimatter_reactor
+label: Antimatter Reactor
+width: 2
+height: 3
+type: item
+category: power
+cost: 42
+power: 100
