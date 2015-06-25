@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.model.character.base;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
-import org.smallbox.faraway.PathHelper;
+import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
@@ -198,7 +198,7 @@ public abstract class CharacterModel extends Movable {
         } else {
             _moveListener = onMoveListener;
             Log.debug("move to: " + _toX + "x" + _toY);
-            PathHelper.getInstance().getPathAsync(onMoveListener, this, job, _toX, _toY);
+            PathManager.getInstance().getPathAsync(onMoveListener, this, job, _toX, _toY);
         }
     }
 

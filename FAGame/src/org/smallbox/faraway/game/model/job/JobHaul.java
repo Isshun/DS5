@@ -1,8 +1,6 @@
 package org.smallbox.faraway.game.model.job;
 
-import org.smallbox.faraway.PathHelper;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.WorldManager;
 import org.smallbox.faraway.game.model.StorageModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.manager.JobManager;

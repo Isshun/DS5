@@ -3,4 +3,5 @@ label: Window
 width: 1
 height: 1
 type: structure
+isCloseRoom: true
 cost: 1

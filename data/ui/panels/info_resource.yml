@@ -1,5 +1,9 @@
 entries:
 
+    -   type: frame
+        id: frame_room_info
+        position: [0, 600]
+
     -   type: label
         text: info resource
         textsize: 24

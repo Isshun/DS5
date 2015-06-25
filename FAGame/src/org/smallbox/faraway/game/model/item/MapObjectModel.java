@@ -412,4 +412,7 @@ public abstract class MapObjectModel {
         return _info.sealing;
     }
 
+    public boolean isCloseRoom() {
+        return _info.isCloseRoom;
+    }
 }

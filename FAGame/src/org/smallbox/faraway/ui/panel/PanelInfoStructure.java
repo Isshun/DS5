@@ -27,6 +27,13 @@ public class PanelInfoStructure extends BaseInfoRightPanel {
         }
     }
 
+    @Override
+    protected void onRefresh(int update) {
+        if (_structure != null && _structure.needRefresh()) {
+            select(_structure);
+        }
+    }
+
     public void select(StructureModel structure) {
         super.select(structure.getParcel());
 

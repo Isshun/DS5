@@ -1,12 +1,11 @@
 package org.smallbox.faraway.game.manager;
 
-import org.smallbox.faraway.PathHelper;
+import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.util.Constant;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +16,7 @@ public class WorldFinder extends BaseManager {
 	private int 					_width;
 	private int 					_height;
 	private WorldManager 			_worldManager;
-	private PathHelper 				_pathManager;
+	private PathManager _pathManager;
 	private List<ConsumableModel> 	_consumables;
 	private List<ItemModel> 		_items;
 
@@ -25,7 +24,7 @@ public class WorldFinder extends BaseManager {
     protected void onCreate() {
         _items = new ArrayList<>();
         _consumables = new ArrayList<>();
-        _pathManager = (PathHelper) Game.getInstance().getManager(PathHelper.class);
+        _pathManager = (PathManager) Game.getInstance().getManager(PathManager.class);
         _worldManager = (WorldManager) Game.getInstance().getManager(WorldManager.class);
         _width = _worldManager.getWidth();
         _height = _worldManager.getHeight();

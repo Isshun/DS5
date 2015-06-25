@@ -3,5 +3,6 @@ label: Door
 width: 1
 height: 1
 type: structure
+isCloseRoom: true
 isWalkable: true
 cost: 42

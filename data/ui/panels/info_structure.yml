@@ -1,5 +1,9 @@
 entries:
-       
+
+    -   type: frame
+        id: frame_room_info
+        position: [0, 600]
+        
     -   type: label
         text: info structure
         textsize: 24
@@ -10,15 +14,6 @@ entries:
         text: pos
         textsize: 24
         position: [200, 0]
-
-    -   type: frame
-        position: [24, 400]
-        size: [370, 1]
-        background: 0x888888
-       
-    -   type: frame
-        id: frame_room_info
-        position: [0, 400]
        
     -   type: frame
         id: frame_item_info

@@ -9,9 +9,8 @@ import org.smallbox.faraway.ui.UserInterface;
 /**
  * Created by Alex on 01/06/2015.
  */
-public class PanelInfoResource extends BaseRightPanel {
-    private TextView        _lbName;
-    private ResourceModel _resource;
+public class PanelInfoResource extends BaseInfoRightPanel {
+    private ResourceModel   _resource;
 
     public PanelInfoResource(UserInterface.Mode mode, GameEventListener.Key shortcut) {
         super(mode, shortcut, "data/ui/panels/info_resource.yml");
@@ -19,7 +18,11 @@ public class PanelInfoResource extends BaseRightPanel {
 
     @Override
     public void onLayoutLoaded(LayoutModel layout) {
-        select(_resource);
+        super.onLayoutLoaded(layout);
+
+        if (_resource != null) {
+            select(_resource);
+        }
     }
 
     @Override
@@ -30,9 +33,11 @@ public class PanelInfoResource extends BaseRightPanel {
     }
 
     public void select(ResourceModel resource) {
+        super.select(resource.getParcel());
+
         _resource = resource;
 
-        if (resource != null) {
+        if (isLoaded()) {
             ((TextView) findById("lb_label")).setString(resource.getLabel());
             ((TextView) findById("lb_name")).setString(resource.getName());
             ((TextView) findById("lb_quantity")).setString("Quantity: %d", resource.getQuantity());

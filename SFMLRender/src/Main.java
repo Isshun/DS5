@@ -7,7 +7,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.PathHelper;
+import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.game.model.GameData;
 
@@ -51,7 +51,7 @@ public class Main {
         //		window.setFramerateLimit(30);
 
         renderer.close();
-        PathHelper.getInstance().close();
+        PathManager.getInstance().close();
     }
 
     private static void loop(RenderWindow window, Application application, final GFXRenderer renderer) throws IOException, InterruptedException {

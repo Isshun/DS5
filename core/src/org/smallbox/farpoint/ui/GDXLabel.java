@@ -3,6 +3,8 @@ package org.smallbox.farpoint.ui;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.ui.engine.Colors;
+import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.TextView;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.util.StringUtils;
@@ -19,6 +21,7 @@ public class GDXLabel extends TextView {
     private int         _textSize;
     private com.badlogic.gdx.graphics.Color _gdxColor;
     private com.badlogic.gdx.graphics.Color _gdxBackgroundColor;
+    private Color       _color;
 
     @Override
     public void setStringValue(String string) {
@@ -32,12 +35,12 @@ public class GDXLabel extends TextView {
 
     @Override
     public void setStyle(int style) {
-
     }
 
     @Override
     public void setColor(Color color) {
         if (color != null) {
+            _color = color;
             _gdxColor = new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f);
         }
     }
@@ -50,8 +53,34 @@ public class GDXLabel extends TextView {
     }
 
     @Override
+    public void setOnFocusListener(final OnFocusListener onFocusListener) {
+        super.setOnFocusListener(new OnFocusListener() {
+            @Override
+            public void onExit(View view) {
+                if (_onClickListener != null) {
+                    setColor(Colors.LINK_INACTIVE);
+                    setStyle(TextView.REGULAR);
+                }
+                if (onFocusListener != null) {
+                    onFocusListener.onExit(view);
+                }
+            }
+            @Override
+            public void onEnter(View view) {
+                if (_onClickListener != null) {
+                    setStyle(TextView.UNDERLINED);
+                    setColor(Colors.LINK_ACTIVE);
+                }
+                if (onFocusListener != null) {
+                    onFocusListener.onEnter(view);
+                }
+            }
+        });
+    }
+
+    @Override
     public Color getColor() {
-        return null;
+        return _color;
     }
 
     @Override

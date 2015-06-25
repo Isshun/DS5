@@ -3,7 +3,7 @@ package org.smallbox.faraway.game;
 import org.smallbox.faraway.data.factory.map.AsteroidBeltFactory;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
-import org.smallbox.faraway.PathHelper;
+import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.data.serializer.GameSerializer;
@@ -126,7 +126,7 @@ public class Game {
 
         _managers.add(new WorldFinder());
 
-        _managers.add(new PathHelper());
+        _managers.add(new PathManager());
 
         _areaManager = new AreaManager();
         _managers.add(_areaManager);

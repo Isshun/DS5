@@ -6,17 +6,17 @@ import java.util.Map;
 
 
 public class UIEventManager {
-	private static UIEventManager _self;
-	private Map<View, OnClickListener> _onClickListeners;
-	private Map<View, OnClickListener> _onRightClickListeners;
-	private Map<View, OnFocusListener> _onFocusListeners;
+	private static UIEventManager 		_self;
+	private Map<View, OnClickListener> 	_onClickListeners;
+	private Map<View, OnClickListener> 	_onRightClickListeners;
+	private Map<View, OnFocusListener> 	_onFocusListeners;
 
 	private UIEventManager() {
 		_onClickListeners = new HashMap<>();
 		_onRightClickListeners = new HashMap<>();
 		_onFocusListeners = new HashMap<>();
 	}
-	
+
 	public static UIEventManager getInstance() {
 		if (_self == null) {
 			_self = new UIEventManager();
@@ -31,7 +31,7 @@ public class UIEventManager {
 			_onFocusListeners.put(view, onFocusListener);
 		}
 	}
-	
+
 	public void setOnClickListener(View view, OnClickListener onClickListener) {
 		if (onClickListener == null) {
 			_onClickListeners.remove(view);
@@ -39,7 +39,7 @@ public class UIEventManager {
 			_onClickListeners.put(view, onClickListener);
 		}
 	}
-	
+
 	public void setOnRightClickListener(View view, OnClickListener onClickListener) {
 		if (onClickListener == null) {
 			_onRightClickListeners.remove(view);
@@ -79,7 +79,7 @@ public class UIEventManager {
 
 	private boolean hasVisibleHierarchy(View view) {
 		while (view != null) {
-			if (view.isVisible() == false) {
+			if (!view.isVisible()) {
 				return false;
 			}
 			view = view.getParent();
@@ -89,17 +89,12 @@ public class UIEventManager {
 
 	public void onMouseMove(int x, int y) {
 		for (View view: _onFocusListeners.keySet()) {
-			if (view.getRect().contains(x, y) && (view.getParent() == null || view.getParent().isVisible())) {
-				if (view.isFocus() == false) {
-					view.onEnter();
-					view.resetPos();
-					view.getRect();
-				}
-			} else {
-				if (view.isFocus()) {
-					view.onExit();
-				}
+			if (hasVisibleHierarchy(view) && view.getRect().contains(x, y)) {
+                view.onEnter();
 			}
+            else if (view.isFocus()) {
+                view.onExit();
+            }
 		}
 	}
 

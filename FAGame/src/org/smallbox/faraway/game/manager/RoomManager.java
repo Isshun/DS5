@@ -65,14 +65,7 @@ public class RoomManager extends BaseManager implements GameObserver {
 
     protected void onUpdate(int tick) {
         if (_needRefresh) {
-//            _runable = new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                }
-//            };
-
-            //refreshRooms();
+            refreshRooms();
         }
         if (tick % UPDATE_INTERVAL == 0) {
             _roomList.forEach(RoomModel::update);
@@ -114,45 +107,12 @@ public class RoomManager extends BaseManager implements GameObserver {
                         room.addParcel(parcel);
                         parcel.setRoom(room);
                         _roomList.add(room);
-                        exploreRoom(room, x, y);
+                        exploreRoom(room);
                         checkRoof(room);
                     }
                 }
             }
         } while (newRoomFound);
-
-        for (RoomModel room: _roomList) {
-            for (ParcelModel parcel: room.getParcels()) {
-                int x = parcel.getX();
-                int y = parcel.getY();
-
-                if (neighborParcelFromOtherRoomTouchCurrentParcel(x + 1, y)) {
-                    _parcels[x + 1][y][0].getRoom().addParcels(room.getParcels());
-                    room.getParcels().clear();
-                    break;
-                }
-
-                if (neighborParcelFromOtherRoomTouchCurrentParcel(x - 1, y)) {
-                    _parcels[x - 1][y][0].getRoom().addParcels(room.getParcels());
-                    room.getParcels().clear();
-                    break;
-                }
-
-                if (neighborParcelFromOtherRoomTouchCurrentParcel(x, y + 1)) {
-                    _parcels[x][y + 1][0].getRoom().addParcels(room.getParcels());
-                    room.getParcels().clear();
-                    break;
-                }
-
-                if (neighborParcelFromOtherRoomTouchCurrentParcel(x, y - 1)) {
-                    _parcels[x][y - 1][0].getRoom().addParcels(room.getParcels());
-                    room.getParcels().clear();
-                    break;
-                }
-            }
-        }
-
-        _roomList = _roomList.stream().filter(room -> !room.getParcels().isEmpty()).collect(Collectors.toList());
 
         Log.info("[RoomManager] " + _roomList.size() + " rooms found");
     }
@@ -182,39 +142,56 @@ public class RoomManager extends BaseManager implements GameObserver {
         }
     }
 
-    private void exploreRoom(RoomModel room, int x, int y) {
-        boolean hasFreeParcelOnDistance = true;
-        boolean hasFreeParcelOnLine = true;
-
-        Log.info("[RoomManager] Explore room: " + room.getName());
-        for (int d = 1; d < 500 && hasFreeParcelOnDistance; d++) {
-            hasFreeParcelOnDistance = false;
-
-            do {
-                hasFreeParcelOnLine = false;
-                for (int i = 0; i <= d; i++) {
-                    // Top
-                    if (addToRoomIfFree(x + i, y + d, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-                    if (addToRoomIfFree(x - i, y + d, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-
-                    // Bottom
-                    if (addToRoomIfFree(x + i, y - d, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-                    if (addToRoomIfFree(x - i, y - d, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-
-                    // Right
-                    if (addToRoomIfFree(x + d, y + i, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-                    if (addToRoomIfFree(x + d, y - i, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-
-                    // Left
-                    if (addToRoomIfFree(x - d, y + i, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
-                    if (addToRoomIfFree(x - d, y - i, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
+    private void exploreRoom(RoomModel room) {
+        List<ParcelModel> openList = new ArrayList<>();
+        boolean parcelFound = true;
+        for (int i = 1; parcelFound; i++) {
+            parcelFound = false;
+            for (ParcelModel parcel : room.getParcels()) {
+                if (parcel.tmpData == i - 1) {
+                    int x = parcel.getX();
+                    int y = parcel.getY();
+                    if (addToRoomIfFree(room, openList, i, x + 1, y)) { parcelFound = true; }
+                    if (addToRoomIfFree(room, openList, i, x - 1, y)) { parcelFound = true; }
+                    if (addToRoomIfFree(room, openList, i, x, y + 1)) { parcelFound = true; }
+                    if (addToRoomIfFree(room, openList, i, x, y - 1)) { parcelFound = true; }
                 }
-
-            } while (hasFreeParcelOnLine);
+            }
+            room.addParcels(openList);
+            openList.clear();
         }
+//        boolean hasFreeParcelOnDistance = true;
+//        boolean hasFreeParcelOnLine = true;
+//
+//        Log.info("[RoomManager] Explore room: " + room.getName());
+//        for (int d = 1; d < 500 && hasFreeParcelOnDistance; d++) {
+//            hasFreeParcelOnDistance = false;
+//
+//            do {
+//                hasFreeParcelOnLine = false;
+//                for (int i = 0; i <= d; i++) {
+//                    // Top
+//                    if (addToRoomIfFree(x + i, y + d, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
+//                    if (addToRoomIfFree(x - i, y + d, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
+//
+//                    // Bottom
+//                    if (addToRoomIfFree(x + i, y - d, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
+//                    if (addToRoomIfFree(x - i, y - d, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
+//
+//                    // Right
+//                    if (addToRoomIfFree(x + d, y + i, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
+//                    if (addToRoomIfFree(x + d, y - i, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
+//
+//                    // Left
+//                    if (addToRoomIfFree(x - d, y + i, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
+//                    if (addToRoomIfFree(x - d, y - i, room)) hasFreeParcelOnDistance = hasFreeParcelOnLine = true;
+//                }
+//
+//            } while (hasFreeParcelOnLine);
+//        }
     }
 
-    private boolean addToRoomIfFree(int x, int y, RoomModel room) {
+    private boolean addToRoomIfFree(RoomModel room, List<ParcelModel> openList, int i, int x, int y) {
         if (x < 0 || x >= _width || y < 0 || y >= _height || _parcels[x][y][0] == null) {
             return false;
         }
@@ -223,27 +200,17 @@ public class RoomManager extends BaseManager implements GameObserver {
             return false;
         }
 
-        if (_parcels[x][y][0].getStructure() != null && _parcels[x][y][0].getStructure().isSolid()) {
+        if (_parcels[x][y][0].getStructure() != null && _parcels[x][y][0].getStructure().isCloseRoom()) {
             return false;
         }
 
-        if (_parcels[x][y][0].getResource() != null && _parcels[x][y][0].getResource().isSolid()) {
+        if (_parcels[x][y][0].getResource() != null && _parcels[x][y][0].getResource().isCloseRoom()) {
             return false;
         }
 
-        if (!matchRoom(x - 1, y, room) && !matchRoom(x + 1, y, room) && !matchRoom(x, y - 1, room) && !matchRoom(x, y + 1, room)) {
-            return false;
-        }
-
+        _parcels[x][y][0].tmpData = i;
         _parcels[x][y][0].setRoom(room);
-        room.addParcel(_parcels[x][y][0]);
-        return true;
-    }
-
-    private boolean matchRoom(int x, int y, RoomModel room) {
-        if (x < 0 || x >= _width || y < 0 || y >= _height || _parcels[x][y][0] == null || _parcels[x][y][0].getRoom() != room) {
-            return false;
-        }
+        openList.add(_parcels[x][y][0]);
         return true;
     }
 
@@ -268,7 +235,7 @@ public class RoomManager extends BaseManager implements GameObserver {
         }
         _roomList.clear();
         makeRooms();
-//        makeNeighborhood();
+        makeNeighborhood();
 
         // Restore o2 levels
         if (!Thread.currentThread().isInterrupted()) {

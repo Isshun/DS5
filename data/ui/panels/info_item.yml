@@ -1,6 +1,10 @@
 entries:
 
     -   type: frame
+        id: frame_room_info
+        position: [0, 600]
+
+    -   type: frame
         id: frame_item_info
         position: [0, 0]
         entries:
@@ -122,8 +126,3 @@ entries:
                     id: menu_add_craft_entries
                     position: [0, 0]
                     size: [100, 100]
-
-                           
-    -   type: frame
-        id: frame_room_info
-        position: [0, 400]

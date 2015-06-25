@@ -1,6 +1,6 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.PathHelper;
+import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.BaseManager;
 import org.smallbox.faraway.util.Utils;
@@ -75,7 +75,7 @@ public class AreaManager extends BaseManager {
         AreaModel bestArea = null;
         for (AreaModel area: _areas) {
             ParcelModel parcel = ((StorageModel)area).getNearestFreeParcel(consumable, x, y);
-            if (area.isStorage() && parcel != null && Utils.getDistance(parcel, x, y) < bestDistance && PathHelper.getInstance().getPath(fromParcel, parcel) != null) {
+            if (area.isStorage() && parcel != null && Utils.getDistance(parcel, x, y) < bestDistance && PathManager.getInstance().getPath(fromParcel, parcel) != null) {
                 bestArea = area;
                 bestDistance = Utils.getDistance(parcel, x, y);
             }

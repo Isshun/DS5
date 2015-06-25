@@ -237,7 +237,7 @@ public class Application implements GameEventListener {
         _game.newGame(_loadListener);
         _game.init(false);
         _game.save(_game.getFileName());
-        PathHelper.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
+        PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
         _mainRenderer.init(_renderer, GameData.config, _game, _lightRenderer, _particleRenderer);
         _gameInterface.onCreate(_game);
 
@@ -255,7 +255,7 @@ public class Application implements GameEventListener {
         _game.init(true);
         _loadListener.onUpdate("Load save");
         _game.load(_loadListener);
-        PathHelper.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
+        PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
 
         _loadListener.onUpdate("Start game");
         _mainRenderer.init(_renderer, GameData.config, _game, _lightRenderer, _particleRenderer);

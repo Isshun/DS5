@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
-import org.smallbox.faraway.PathHelper;
+import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -59,7 +59,7 @@ public class ReceiptModel {
         Game.getWorldManager().getConsumables().stream()
                 .filter(consumable -> _infoComponents.containsKey(consumable.getInfo()))
                 .forEach(consumable -> {
-                    GraphPath<ParcelModel> path = PathHelper.getInstance().getPath(_factory.getParcel(), consumable.getParcel());
+                    GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_factory.getParcel(), consumable.getParcel());
                     if (path != null) {
                         _potentialComponents.add(new PotentialConsumable(consumable, path.getCount()));
                     }
@@ -145,7 +145,7 @@ public class ReceiptModel {
     public void addConsumable(ConsumableModel consumable) {
         for (ItemInfo info: _infoComponents.keySet()) {
             if (consumable.getInfo() == info) {
-                GraphPath<ParcelModel> path = PathHelper.getInstance().getPath(_factory.getParcel(), consumable.getParcel());
+                GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_factory.getParcel(), consumable.getParcel());
                 if (path != null) {
                     _potentialComponents.add(new PotentialConsumable(consumable, path.getCount()));
                     Collections.sort(_potentialComponents, (c1, c2) -> c2.distance - c1.distance);

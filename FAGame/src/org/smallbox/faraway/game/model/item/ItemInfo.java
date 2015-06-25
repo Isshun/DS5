@@ -3,6 +3,7 @@ package org.smallbox.faraway.game.model.item;
 import java.util.List;
 
 public class ItemInfo {
+
 	public boolean hasCraftAction() {
 		if (actions != null) {
 			for (ItemInfoAction action : actions) {
@@ -150,6 +151,7 @@ public class ItemInfo {
 	public boolean 						isFactory;
 	public boolean 						isDrink;
 	public boolean 						isSleeping;
+	public boolean 						isCloseRoom;
 	public int 							maxHealth;
 	public int 							power;
 	public double 						sealing;

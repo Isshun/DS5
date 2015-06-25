@@ -29,6 +29,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private int 			_type = 1;
     private Array<Connection<ParcelModel>> 	_connections;
     private double          _elevation;
+    public int              tmpData;
 
     public ParcelModel(int x, int y, int z) {
         _oxygen = (int) (Math.random() % 100);

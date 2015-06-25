@@ -10,7 +10,6 @@ public abstract class TextView extends View {
 	public static final int	BOLD = 1;
 	public static final int	ITALIC = 2;
 	public static final int	UNDERLINED = 3;
-	protected Color _colorBak;
 
 	public TextView() {
 		super(0, 0);
@@ -43,31 +42,6 @@ public abstract class TextView extends View {
 	public abstract Color getColor();
 	public abstract void setDashedString(String label, String value, int nbColumns);
 	public abstract String getString();
-
-	@Override
-	public void setOnFocusListener(final OnFocusListener onFocusListener) {
-		super.setOnFocusListener(new OnFocusListener() {
-			@Override
-			public void onExit(View view) {
-				setColor(_colorBak);
-				setStyle(TextView.REGULAR);
-				if (onFocusListener != null) {
-					onFocusListener.onExit(view);
-				}
-			}
-			@Override
-			public void onEnter(View view) {
-				_colorBak = getColor();
-				if (_onClickListener != null) {
-					setStyle(TextView.UNDERLINED);
-					setColor(Colors.LINK_ACTIVE);
-				}
-				if (onFocusListener != null) {
-					onFocusListener.onEnter(view);
-				}
-			}
-		});
-	}
 
 	public void setShortcut(int i) {
 		//TODO

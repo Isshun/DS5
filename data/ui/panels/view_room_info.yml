@@ -1,5 +1,10 @@
 entries:
 
+    -   type: frame
+        position: [24, 0]
+        size: [370, 1]
+        background: 0x888888
+
     -   type: label
         id: lb_room
         text: Room

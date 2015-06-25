@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class PathHelper extends BaseManager {
+public class PathManager extends BaseManager {
 
     private IndexedAStarPathFinder<ParcelModel> _finder;
     private Heuristic<ParcelModel>              _heuristic;
@@ -29,11 +29,11 @@ public class PathHelper extends BaseManager {
 
 	private static final int 			THREAD_POOL_SIZE = 1;
 
-	private static PathHelper           _self;
+	private static PathManager _self;
 	final private ArrayList<Runnable>   _runnable;
     final private ExecutorService 		_threadPool;
 
-	public PathHelper() {
+	public PathManager() {
 		_self = this;
 		_threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 		_runnable = new ArrayList<>();
@@ -78,7 +78,7 @@ public class PathHelper extends BaseManager {
 //        });
 	}
 	
-	public static PathHelper getInstance() {
+	public static PathManager getInstance() {
 		return _self;
 	}
 
