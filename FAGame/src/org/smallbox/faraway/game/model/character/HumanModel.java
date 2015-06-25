@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.character;
 
+import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
@@ -57,5 +58,15 @@ public class HumanModel extends CharacterModel {
     @Override
     public GameConfig.EffectValues getNeedEffects() {
         return GameData.config.character.effects.human;
+    }
+
+    @Override
+    public String getName() {
+        return _info.getFirstName() + " " + _info.getLastName();
+    }
+
+    @Override
+    public Color getColor() {
+        return _info.getColor();
     }
 }

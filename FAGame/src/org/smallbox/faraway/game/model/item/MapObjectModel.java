@@ -201,7 +201,7 @@ public abstract class MapObjectModel {
     public int 				getTotalUse() { return _nbTotalUsed; }
     public int 				getMatter() { return _matter; }
     public int 				getLastBlocked() { return _lastBlocked; }
-    public ParcelModel getParcel() { return _area; }
+    public ParcelModel      getParcel() { return _area; }
 
     // Boolean
     public boolean			isSolid() { return _isSolid; }

@@ -29,9 +29,9 @@ public class PathHelper extends BaseManager {
 
 	private static final int 			THREAD_POOL_SIZE = 1;
 
-	private static PathHelper _self;
+	private static PathHelper           _self;
 	final private ArrayList<Runnable>   _runnable;
-	private ExecutorService 			_threadPool;
+    final private ExecutorService 		_threadPool;
 
 	public PathHelper() {
 		_self = this;
@@ -48,16 +48,19 @@ public class PathHelper extends BaseManager {
     }
 
 	public void getPathAsync(final OnMoveListener listener, final CharacterModel character, final BaseJobModel job, final int x, final int y) {
-		_threadPool.execute(() -> {
+//		_threadPool.execute(() -> {
+            ParcelModel fromParcel = Game.getWorldManager().getParcel(character.getX(), character.getY());
+            ParcelModel toParcel = Game.getWorldManager().getParcel(x, y);
+
             Log.debug("getPathAsync");
-            GraphPath<ParcelModel> path = getPath(Game.getWorldManager().getParcel(character.getX(), character.getY()), Game.getWorldManager().getParcel(x, y));
+            GraphPath<ParcelModel> path = getPath(fromParcel, toParcel);
             if (path != null) {
-                Log.info("character: path success");
+                Log.info("character: path success (" + fromParcel.getX() + "x" + fromParcel.getY() + " to " + toParcel.getX() + "x" + toParcel.getY() + "), job: " + job);
                 synchronized (_runnable) {
                     _runnable.add(() -> {
-                        character.onPathComplete(path, job);
+                        character.onPathComplete(path, job, fromParcel, toParcel);
                         if (listener != null) {
-                            listener.onReach(job, character);
+                            listener.onSuccess(job, character);
                         }
                     });
                 }
@@ -65,14 +68,14 @@ public class PathHelper extends BaseManager {
                 Log.info("character: path fail");
                 synchronized (_runnable) {
                     _runnable.add(() -> {
-                        character.onPathFailed(job);
+                        character.onPathFailed(job, fromParcel, toParcel);
                         if (listener != null) {
                             listener.onFail(job, character);
                         }
                     });
                 }
             }
-        });
+//        });
 	}
 	
 	public static PathHelper getInstance() {

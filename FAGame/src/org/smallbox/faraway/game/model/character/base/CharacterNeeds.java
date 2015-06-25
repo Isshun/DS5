@@ -112,7 +112,7 @@ public class CharacterNeeds {
 		// }
 
 		// 	// If current item is not under construction: quit
-		// 	if (_sleep == 0 && _item != NULL && _item->hasComponents()) {
+		// 	if (_sleep == 0 && _item != NULL && _item->hasComponentsOnMap()) {
 		// 	  _item->setOwner(NULL);
 		// 	  _item = NULL;
 		// 	  _job = NULL;

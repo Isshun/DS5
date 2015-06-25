@@ -137,18 +137,4 @@ public class DebugRenderer extends BaseRenderer {
 		
 	}
 
-
-	@Override
-	public void invalidate(int x, int y) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void invalidate() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

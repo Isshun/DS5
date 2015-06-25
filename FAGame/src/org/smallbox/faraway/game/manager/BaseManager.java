@@ -12,13 +12,13 @@ public abstract class BaseManager implements GameObserver {
         onUpdate(tick);
     }
     public void create() {
+        _hasBeenInitialized = true;
         onCreate();
     }
 
     protected abstract void onUpdate(int tick);
 
     protected void onCreate() {
-        _hasBeenInitialized = true;
     }
 
     @Override

@@ -36,7 +36,7 @@ public class StatsManager extends BaseManager {
 			for (CharacterModel character : characters) {
 
 				// In relation or single
-				if (character.getMate() != null) {
+				if (character.getRelations().getMate() != null) {
 					nbCoupleValue++;
 				} else {
 					nbSingleValue++;

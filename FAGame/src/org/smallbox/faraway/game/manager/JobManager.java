@@ -2,6 +2,7 @@ package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
+import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
@@ -12,10 +13,6 @@ import org.smallbox.faraway.game.model.check.joy.CheckJoySleep;
 import org.smallbox.faraway.game.model.check.joy.CheckJoyTalk;
 import org.smallbox.faraway.game.model.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
-import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.item.ItemModel;
-import org.smallbox.faraway.game.model.item.MapObjectModel;
-import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.job.*;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobAbortReason;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobStatus;
@@ -26,9 +23,9 @@ import java.util.List;
 
 public class JobManager extends BaseManager {
 	private static JobManager		_self;
-	private List<BaseJobModel> 			_jobs;
+	private List<BaseJobModel> 		_jobs;
 	private int 					_nbVisibleJob;
-	private List<BaseJobModel> 			_toRemove;
+	private List<BaseJobModel>		_toRemove;
     private List<CharacterCheck>    _priorities;
 	private List<CharacterCheck> 	_joys;
 
@@ -194,31 +191,31 @@ public class JobManager extends BaseManager {
 		// Joy jobs
 		// TODO: magic number
 		if (character.getNeeds().joy < 20 && assignJoyJob(character)) {
-			Log.debug("assign joy job (" + character.getName() + " -> " + character.getJob().getLabel() + ")");
+			Log.debug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
 			return;
 		}
 
 		// Priority jobs
 		if (assignPriorityJob(character)) {
-            Log.debug("assign priority job (" + character.getName() + " -> " + character.getJob().getLabel() + ")");
+            Log.debug("assign priority job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
 			return;
 		}
 
 		// Regular jobs
         if (assignRegularJob(character)) {
-            Log.debug("assign regular job (" + character.getName() + " -> " + character.getJob().getLabel() + ")");
+            Log.debug("assign regular job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
             return;
         }
 
         if (assignFailJob(character)) {
-            Log.debug("assign failed job (" + character.getName() + " -> " + character.getJob().getLabel() + ")");
+            Log.debug("assign failed job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
             return;
         }
 
 		// Joy jobs
 		// TODO: magic number
 		if (assignJoyJob(character)) {
-			Log.debug("assign joy job (" + character.getName() + " -> " + character.getJob().getLabel() + ")");
+			Log.debug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
 			return;
 		}
 	}
@@ -547,6 +544,24 @@ public class JobManager extends BaseManager {
 		}
 
 		// Regular job, reset
+	}
+
+	@Override
+	public void onAddConsumable(ConsumableModel consumable) {
+		for (BaseJobModel job: _jobs) {
+			if (job instanceof JobCraft) {
+				((JobCraft)job).addConsumable(consumable);
+			}
+		}
+	}
+
+	@Override
+	public void onRemoveConsumable(ConsumableModel consumable){
+		for (BaseJobModel job: _jobs) {
+			if (job instanceof JobCraft) {
+				((JobCraft)job).removeConsumable(consumable);
+			}
+		}
 	}
 
 }

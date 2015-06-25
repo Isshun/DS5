@@ -13,6 +13,10 @@ public abstract class BaseJobModel {
         return null;
     }
 
+    public String getMessage() {
+        return null;
+    }
+
     public enum JobActionReturn {
 		CONTINUE, QUIT, FINISH, ABORT
 	}

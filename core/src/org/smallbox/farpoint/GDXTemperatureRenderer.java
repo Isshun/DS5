@@ -52,14 +52,4 @@ public class GDXTemperatureRenderer extends BaseRenderer {
     public void onRefresh(int frame) {
 
     }
-
-    @Override
-    public void invalidate(int x, int y) {
-
-    }
-
-    @Override
-    public void invalidate() {
-
-    }
 }

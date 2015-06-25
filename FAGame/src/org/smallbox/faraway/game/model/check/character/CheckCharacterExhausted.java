@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.model.check.character;
 
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.WorldFinder;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ItemFilter;
@@ -24,7 +25,7 @@ public class CheckCharacterExhausted extends CharacterCheck {
         filter.effectEnergy = true;
 
         // Get nearest bed
-        MapObjectModel item = Game.getWorldFinder().getNearest(filter, character);
+        MapObjectModel item = ((WorldFinder)Game.getInstance().getManager(WorldFinder.class)).getNearest(filter, character);
         if (item == null) {
             return null;
         }

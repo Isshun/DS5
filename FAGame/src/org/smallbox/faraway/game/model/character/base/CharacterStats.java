@@ -8,6 +8,8 @@ import java.util.List;
  * Created by Alex on 16/06/2015.
  */
 public class CharacterStats {
+    public double speed;
+
     public static class CharacterStatsAbsorb {
         public double cold;
     }

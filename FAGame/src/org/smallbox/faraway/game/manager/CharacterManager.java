@@ -150,7 +150,7 @@ public class CharacterManager extends BaseManager {
 	
 	public void remove(CharacterModel c) {
 		c.setIsDead();
-		c.setName(Strings.LB_DECEADED);
+		c.getInfo().setName(Strings.LB_DECEADED);
 	}
 
 	CharacterModel getUnemployed(ProfessionModel.Type professionId) {

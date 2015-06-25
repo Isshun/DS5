@@ -134,7 +134,12 @@ public class PanelInfoItem extends BaseInfoRightPanel {
             view.findById("bt_cancel").setOnClickListener(v -> JobManager.getInstance().removeJob(job));
             ((TextView)view.findById("lb_label")).setString(job.getLabel());
             ((TextView)view.findById("lb_ingredient")).setString(job.getIngredient() != null ? job.getIngredient().getLabel() + " (" + job.getIngredient().getQuantity() + ")" : "no components");
-            ((TextView)view.findById("lb_progress")).setString(job.getProgressPercent() + "%");
+
+            if (job.getProgressPercent() > 0) {
+                ((TextView) view.findById("lb_progress")).setString(job.getProgressPercent() + "%");
+            } else {
+                ((TextView) view.findById("lb_progress")).setString(job.getMessage());
+            }
 
             TextView lbCraftCount = (TextView)view.findById("lb_count");
             lbCraftCount.setString(job.getTotalCount() == Integer.MAX_VALUE ? "xx" : "x" + job.getCount());

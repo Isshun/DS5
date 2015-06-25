@@ -13,7 +13,7 @@ public class LuaCharacterModel {
 
     public LuaCharacterModel(CharacterModel character) {
         this.id = character.getId();
-        this.name = character.getName();
+        this.name = character.getInfo().getName();
         this.character = character;
     }
 

@@ -1,10 +1,10 @@
 package org.smallbox.faraway.data.serializer;
 
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
 import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.game.model.character.AndroidModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.character.base.CharacterModel.Gender;
 import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
 import org.smallbox.faraway.game.model.character.base.CharacterRelation;
 import org.smallbox.faraway.game.model.character.base.CharacterRelation.Relation;
@@ -67,7 +67,7 @@ public class CharacterSerializer implements SerializerInterface {
 		public double 						old;
 		public int 							x;
 		public int 							y;
-		public Gender						gender;
+		public CharacterInfoModel.Gender 	gender;
 		private double 						nextChildAtOld;
 		public int							nbChild;
 		public CharacterNeedsSave 			needs;
@@ -78,18 +78,18 @@ public class CharacterSerializer implements SerializerInterface {
 			this.old = character.getOld();
 			this.x = character.getX();
 			this.y = character.getY();
-			this.gender = character.getGender();
-			this.lastname = character.getLastName();
-			this.firstname = character.getFirstName();
-			this.relations = new ArrayList<CharacterRelationSave>();
-			this.nextChildAtOld = character.getNextChildAtOld();
-			this.nbChild = character.getNbChild();
+			this.gender = character.getInfo().getGender();
+			this.lastname = character.getInfo().getLastName();
+			this.firstname = character.getInfo().getFirstName();
+			this.relations = new ArrayList<>();
+			this.nextChildAtOld = character.getRelations().getNextChildAtOld();
+			this.nbChild = character.getRelations().getNbChild();
 			this.inventory = new ArrayList<String>();
 //			for (MapObjectModel item: character.getInventory()) {
 //				this.inventory.add(item.getInfo().name);
 //			}
 			this.needs = new CharacterNeedsSave(character.getNeeds());
-			for (CharacterRelation relation: character.getRelations()) {
+			for (CharacterRelation relation: character.getRelations().getRelations()) {
 				this.relations.add(new CharacterRelationSave(relation));
 			}
 		}
@@ -113,14 +113,14 @@ public class CharacterSerializer implements SerializerInterface {
 		
 		for (CharacterRelationSave relationSave: characterSave.relations) {
 			if (relationSave.relation == Relation.MATE) {
-				character.addMateRelation(getCharacterById(relationSave.id));
+				character.getRelations().addMateRelation(character, getCharacterById(relationSave.id));
 			} else {
-				character.getRelations().add(new CharacterRelation(character, getCharacterById(relationSave.id), relationSave.relation));
+				character.getRelations().getRelations().add(new CharacterRelation(character, getCharacterById(relationSave.id), relationSave.relation));
 			}
 		}
 		
-		character.setNextChildAtOld(characterSave.nextChildAtOld);
-		character.setNbChild(characterSave.nbChild);
+		character.getRelations().setNextChildAtOld(characterSave.nextChildAtOld);
+		character.getRelations().setNbChild(characterSave.nbChild);
 	}
 
 	private CharacterModel getCharacterById(int id) {
@@ -135,7 +135,7 @@ public class CharacterSerializer implements SerializerInterface {
 	private void loadCharacter(CharacterSave characterSave) {
 		Utils.useUUID(characterSave.id);
 		CharacterModel character = new AndroidModel(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
-		character.setGender(characterSave.gender);
+		character.getInfo().setGender(characterSave.gender);
 
 //		// Load inventory
 //		if (characterSave.inventory != null) {

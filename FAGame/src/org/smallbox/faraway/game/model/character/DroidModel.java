@@ -58,6 +58,11 @@ public class DroidModel extends CharacterModel {
     }
 
     @Override
+    public String getName() {
+        return "B5";
+    }
+
+    @Override
     public Color getColor() {
         return COLOR;
     }

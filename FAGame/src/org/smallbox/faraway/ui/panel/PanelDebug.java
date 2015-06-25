@@ -77,11 +77,11 @@ public class PanelDebug extends BaseRightPanel {
 //            for (int x = 0; x < width; x++) {
 //                for (int y = 0; y < height; y++) {
 //                    StructureItem structure = Game.getWorldManager().getStructure(x, y);
-//                    if (structure != null && !structure.hasComponents()) {
+//                    if (structure != null && !structure.hasComponentsOnMap()) {
 //                        JobManager.getInstance().addBuild(structure);
 //                    }
 //                    UserItem item = Game.getWorldManager().getItem(x, y);
-//                    if (item != null && !item.hasComponents()) {
+//                    if (item != null && !item.hasComponentsOnMap()) {
 //                        JobManager.getInstance().addBuild(item);
 //                    }
 //                }

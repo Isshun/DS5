@@ -1,22 +1,8 @@
 entries:
-       
-    -   type: frame
-        position: [24, 10]
-        size: [370, 1]
-        background: 0x888888
-       
-    -   type: frame
-        id: frame_room_info
-        position: [0, 10]
-       
-    -   type: frame
-        position: [24, 120]
-        size: [370, 1]
-        background: 0x888888
 
     -   type: frame
         id: frame_item_info
-        position: [0, 124]
+        position: [0, 0]
         entries:
 
         -   type: label
@@ -136,3 +122,8 @@ entries:
                     id: menu_add_craft_entries
                     position: [0, 0]
                     size: [100, 100]
+
+                           
+    -   type: frame
+        id: frame_room_info
+        position: [0, 400]

@@ -106,7 +106,7 @@ public class JobGather extends BaseJobModel {
 			return JobActionReturn.ABORT;
 		}
 
-        Log.debug(character.getName() + ": gathering (" + _totalProgress + "/" + _totalCost + ")");
+        Log.debug(character.getInfo().getName() + ": gathering (" + _totalProgress + "/" + _totalCost + ")");
 
 //		CharacterModel.TalentEntry talent = character.getTalent(CharacterModel.TalentType.GATHER);
 //		double quantity = -talent.work();
@@ -122,7 +122,7 @@ public class JobGather extends BaseJobModel {
         for (ItemInfo.ItemProductInfo productInfo: _resource.getInfo().actions.get(0).products) {
             Game.getWorldManager().putObject(productInfo.itemInfo, _posX, _posY, 0, productInfo.quantity);
             //character.addComponent(new UserItem(info));
-            Log.info(character.getName() + ": product " + productInfo.itemInfo.name);
+            Log.info(character.getInfo().getName() + ": product " + productInfo.itemInfo.name);
         }
         _resource.addQuantity(-1);
 

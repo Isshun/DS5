@@ -2,13 +2,13 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.*;
 import org.smallbox.faraway.engine.*;
+import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.StringUtils;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.*;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.character.base.CharacterModel.Gender;
 import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
 import org.smallbox.faraway.game.model.character.base.CharacterRelation;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
@@ -55,7 +55,7 @@ public class PanelCharacter extends BaseRightPanel {
     private int 				_animRemain;
     private TextView	 		_lbGender;
     private int 				_lastOld;
-    private Gender				_lastGender;
+    private CharacterInfoModel.Gender _lastGender;
     private ProfessionModel     _lastProfession;
     private TextView 			_animLabel;
     private String 				_animValue;
@@ -257,12 +257,12 @@ public class PanelCharacter extends BaseRightPanel {
     }
 
     private void refreshRelations() {
-        List<CharacterRelation> relations = _character.getRelations();
+        List<CharacterRelation> relations = _character.getRelations().getRelations();
         _nbRelation = relations.size();
         int i = 0;
         for (final CharacterRelation relation: relations) {
             if (i < NB_MAX_RELATION) {
-                String left = relation.getSecond().getName();
+                String left = relation.getSecond().getInfo().getName();
 //				_familyEntries[i].setStyle(TextView.UNDERLINED);
                 _familyEntries[i].setOnClickListener(view -> _ui.select(relation.getSecond()));
 
@@ -312,8 +312,8 @@ public class PanelCharacter extends BaseRightPanel {
 
             _character = character;
             _character.setSelected(true);
-            _lbName.setString(_character.getName().toUpperCase());
-            _lbName.setColor(_character.getColor());
+            _lbName.setString(_character.getInfo().getName().toUpperCase());
+            _lbName.setColor(_character.getInfo().getColor());
             _nbRelation = -1;
 
 //            // Reset gauges
@@ -340,7 +340,7 @@ public class PanelCharacter extends BaseRightPanel {
             refreshEquipments();
 
             // Relations
-            if (update % 20 == 0 || _nbRelation != _character.getNbRelations()) {
+            if (update % 20 == 0 || _nbRelation != _character.getRelations().getRelations().size()) {
                 refreshRelations();
             }
 
@@ -458,10 +458,10 @@ public class PanelCharacter extends BaseRightPanel {
         }
 
         // Gender
-        Gender gender = _character.getGender();
+        CharacterInfoModel.Gender gender = _character.getInfo().getGender();
         if (!gender.equals(_lastGender)) {
             _lastGender = gender;
-            startAnim(_lbGender, StringUtils.getDashedString("Gender:", Gender.MALE.equals(gender) ? "male" : "female", NB_COLUMNS));
+            startAnim(_lbGender, StringUtils.getDashedString("Gender:", CharacterInfoModel.Gender.MALE.equals(gender) ? "male" : "female", NB_COLUMNS));
             return;
         }
 
@@ -486,7 +486,7 @@ public class PanelCharacter extends BaseRightPanel {
         }
 
         // Enlist
-        String enlisted = _character.getEnlisted();
+        String enlisted = _character.getInfo().getEnlisted();
         if (!enlisted.equals(_lastEnlisted)) {
             _lastEnlisted = enlisted;
             startAnim(_lbEnlisted, StringUtils.getDashedString("Enlisted since:", enlisted, NB_COLUMNS));
@@ -494,7 +494,7 @@ public class PanelCharacter extends BaseRightPanel {
         }
 
         // BirthName
-        String birthName = _character.getFirstName() + _character.getBirthName();
+        String birthName = _character.getInfo().getFirstName() + _character.getInfo().getBirthName();
         if (!birthName.equals(_lastBirthName)) {
             _lastBirthName = birthName;
             startAnim(_lbBirthName, StringUtils.getDashedString("Birth name:", birthName, NB_COLUMNS));
@@ -518,11 +518,14 @@ public class PanelCharacter extends BaseRightPanel {
     }
 
     private void refreshInventory() {
-        _lbInventory.setString(StringUtils.getDashedString(Strings.LB_INVENTORY,
-                _character.getInventorySpace() - _character.getInventoryLeftSpace() + "/" + _character.getInventorySpace(), 29));
+        _lbInventory.setString(Strings.LB_INVENTORY);
+//        _lbInventory.setString(StringUtils.getDashedString(Strings.LB_INVENTORY,
+//                _character.getInventorySpace() - _character.getInventoryLeftSpace() + "/" + _character.getInventorySpace(), 29));
 
         if (_character.getInventory() != null) {
             ((TextView) findById("lb_inventory_entry")).setString(_character.getInventory().getLabel() + " (" + _character.getInventory().getQuantity() + ")");
+        } else {
+            ((TextView) findById("lb_inventory_entry")).setString("");
         }
 
 

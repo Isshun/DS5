@@ -9,4 +9,5 @@ import org.smallbox.faraway.game.model.job.BaseJobModel;
 public interface OnMoveListener {
     void onReach(BaseJobModel job, CharacterModel character);
     void onFail(BaseJobModel job, CharacterModel character);
+    void onSuccess(BaseJobModel job, CharacterModel character);
 }

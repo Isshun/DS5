@@ -50,7 +50,6 @@ public class Game {
     public void                         toggleRunning() { _isRunning = !_isRunning; }
     public void                         addObserver(GameObserver observer) { _observers.add(observer); }
     public void                         setRunning(boolean running) { _isRunning = running; }
-    public static void                  setWorldFinder(WorldFinder worldFinder) { _worldFinder = worldFinder; }
     public void                         setSpeed(int speed) { _speed = speed; }
 
     public boolean                      isRunning() { return _isRunning; }
@@ -71,11 +70,9 @@ public class Game {
     public int                          getYear() { return _tick / _config.tickPerHour / _planet.getInfo().dayDuration / _planet.getInfo().yearDuration; }
     public Viewport getViewport() { return _viewport; }
     public static int                   getUpdate() { return _tick; }
-    public static WorldFinder           getWorldFinder() { return _worldFinder; }
     public static AreaManager           getAreaManager() { return _areaManager; }
 
 	private static int                  _tick;
-	private static WorldFinder 			_worldFinder;
 	private Viewport 					_viewport;
 	private boolean 					_isRunning;
 
@@ -126,6 +123,8 @@ public class Game {
             _weatherManager = new WeatherManager(_lightRenderer, _particleRenderer, _worldManager);
             _managers.add(_weatherManager);
         }
+
+        _managers.add(new WorldFinder());
 
         _managers.add(new PathHelper());
 

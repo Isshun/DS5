@@ -24,26 +24,26 @@ public abstract class Movable {
 		NONE
 	};
 
-	protected ParcelModel 		_node;
-	protected int				_posX;
-	protected int				_posY;
-	protected int				_toX;
-	protected int				_toY;
-	protected int				_id;
-	protected int				_frameIndex;
-	protected int				_blocked;
-	protected Direction			_direction;
-	protected Direction 		_move;
-	protected GraphPath<ParcelModel> _path;
-	protected int				_steps;
-	protected BaseJobModel _job;
-	protected OnPathComplete	_onPathComplete;
+	protected ParcelModel 				_node;
+	protected int						_posX;
+	protected int						_posY;
+	protected int						_toX;
+	protected int						_toY;
+	protected int						_id;
+	protected int						_frameIndex;
+	protected int						_blocked;
+	protected Direction					_direction;
+	protected Direction 				_move;
+	protected GraphPath<ParcelModel> 	_path;
+	protected int						_steps;
+	protected BaseJobModel 				_job;
+	protected OnPathComplete			_onPathComplete;
 
 	public Movable(int id, int x, int y) {
 		Utils.useUUID(id);
 		_id = id;
-		_posY = _toX = y;
-		_posX = _toY = x;
+		_posX = _toX = x;
+		_posY = _toY = y;
 		_frameIndex = (int) (Math.random() * 1000 % 20);
 	}
 	

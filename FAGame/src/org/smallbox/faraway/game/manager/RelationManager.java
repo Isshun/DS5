@@ -1,11 +1,11 @@
 package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
 import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.character.base.CharacterModel.Gender;
 import org.smallbox.faraway.game.model.character.base.CharacterRelation;
 import org.smallbox.faraway.game.model.character.base.CharacterRelation.Relation;
 
@@ -30,7 +30,7 @@ public class RelationManager extends BaseManager {
 
 	private void date(CharacterModel c1, CharacterModel c2) {
 		// Not single
-		if (c1.getMate() != null || c2.getMate() != null) {
+		if (c1.getRelations().getMate() != null || c2.getRelations().getMate() != null) {
 			return;
 		}
 
@@ -40,41 +40,41 @@ public class RelationManager extends BaseManager {
 		}
 		
 		// Gender mismatch
-		if (c1.isGay() != c2.isGay() || (c1.isGay() && c1.getGender() != c2.getGender()) || (c1.isGay() == false && c1.getGender() == c2.getGender())) {
+		if (c1.getInfo().isGay() != c2.getInfo().isGay() || (c1.getInfo().isGay() && c1.getInfo().getGender() != c2.getInfo().getGender()) || (c1.getInfo().isGay() == false && c1.getInfo().getGender() == c2.getInfo().getGender())) {
 			return;
 		}
 
 		// Same family
-		List<CharacterRelation> relations = c1.getRelations();
+		List<CharacterRelation> relations = c1.getRelations().getRelations();
 		for (CharacterRelation relation: relations) {
 			if (relation.getSecond() == c2) {
 				return;
 			}
 		}
 
-		c1.addMateRelation(c2);
-		c2.addMateRelation(c1);
+		c1.getRelations().addMateRelation(c1, c2);
+		c2.getRelations().addMateRelation(c2, c1);
 	}
 
 	public CharacterModel createChildren(CharacterModel c1, CharacterModel c2) {
-		String lastName = c1.getGender() == Gender.MALE ? c1.getLastName() : c2.getLastName();
+		String lastName = c1.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? c1.getInfo().getLastName() : c2.getInfo().getLastName();
 		CharacterModel child = new HumanModel(Utils.getUUID(), c1.getX(), c2.getY(), null, lastName, 0);
 		child.setProfession(CharacterManager.professionsChild);
 
 		// Set child's parents
-		child.getRelations().add(new CharacterRelation(child, c1, Relation.PARENT));
-		child.getRelations().add(new CharacterRelation(child, c2, Relation.PARENT));
+		child.getRelations().getRelations().add(new CharacterRelation(child, c1, Relation.PARENT));
+		child.getRelations().getRelations().add(new CharacterRelation(child, c2, Relation.PARENT));
 
 		// Update brothers / sisters
 		addExistingChildrensToNewBorn(child, c1, c2);
 
 		// Set parents' child
-		c1.getRelations().add(new CharacterRelation(c1, child, Relation.CHILDREN));
-		c2.getRelations().add(new CharacterRelation(c2, child, Relation.CHILDREN));
+		c1.getRelations().getRelations().add(new CharacterRelation(c1, child, Relation.CHILDREN));
+		c2.getRelations().getRelations().add(new CharacterRelation(c2, child, Relation.CHILDREN));
 		Game.getCharacterManager().add(child);
 
-		if ("potter".equals(child.getLastName().toLowerCase()) && child.getRelations().size() == 2) {
-			child.setFirstName("Harry");
+		if ("potter".equals(child.getInfo().getLastName().toLowerCase()) && child.getRelations().getRelations().size() == 2) {
+			child.getInfo().setFirstName("Harry");
 		}
 		
 		return child;
@@ -83,7 +83,7 @@ public class RelationManager extends BaseManager {
 	private void addExistingChildrensToNewBorn(CharacterModel child, CharacterModel c1, CharacterModel c2) {
 		// Get children from first parent
 		List<CharacterModel> childrensFirstParent = new ArrayList<CharacterModel>();
-		for (CharacterRelation relation: c1.getRelations()) {
+		for (CharacterRelation relation: c1.getRelations().getRelations()) {
 			if (relation.getRelation() == Relation.CHILDREN) {
 				childrensFirstParent.add(relation.getSecond());
 			}
@@ -91,7 +91,7 @@ public class RelationManager extends BaseManager {
 
 		// Get children from second parent
 		List<CharacterModel> childrensSecondParent = new ArrayList<CharacterModel>();
-		for (CharacterRelation relation: c1.getRelations()) {
+		for (CharacterRelation relation: c1.getRelations().getRelations()) {
 			if (relation.getRelation() == Relation.CHILDREN) {
 				childrensSecondParent.add(relation.getSecond());
 			}
@@ -100,21 +100,21 @@ public class RelationManager extends BaseManager {
 		for (CharacterModel c: childrensFirstParent) {
 			// Add real brother
 			if (childrensSecondParent.contains(c)) {
-				child.getRelations().add(new CharacterRelation(child, c, c.getGender() == Gender.MALE ? Relation.BROTHER : Relation.SISTER));
-				c.getRelations().add(new CharacterRelation(c, child, child.getGender() == Gender.MALE ? Relation.BROTHER : Relation.SISTER));
+				child.getRelations().getRelations().add(new CharacterRelation(child, c, c.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.BROTHER : Relation.SISTER));
+				c.getRelations().getRelations().add(new CharacterRelation(c, child, child.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.BROTHER : Relation.SISTER));
 			}
 			// Add half-brother
 			else {
-				child.getRelations().add(new CharacterRelation(child, c, c.getGender() == Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
-				c.getRelations().add(new CharacterRelation(c, child, child.getGender() == Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
+				child.getRelations().getRelations().add(new CharacterRelation(child, c, c.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
+				c.getRelations().getRelations().add(new CharacterRelation(c, child, child.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
 			}
 		}
 
 		for (CharacterModel c: childrensSecondParent) {
 			// Add half-brother for second parent
 			if (childrensFirstParent.contains(c) == false) {
-				child.getRelations().add(new CharacterRelation(child, c, c.getGender() == Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
-				c.getRelations().add(new CharacterRelation(c, child, child.getGender() == Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
+				child.getRelations().getRelations().add(new CharacterRelation(child, c, c.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
+				c.getRelations().getRelations().add(new CharacterRelation(c, child, child.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
 			}
 		}
 	}

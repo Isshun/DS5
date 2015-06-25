@@ -3,7 +3,10 @@ package org.smallbox.faraway.game.model.job;
 import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
+
+import java.util.stream.Collectors;
 
 public class JobCook extends JobCraft {
 
@@ -27,9 +30,8 @@ public class JobCook extends JobCraft {
 
         JobCook job = new JobCook(action, item.getX(), item.getY());
         job.setItem(item);
-        for (ItemInfo.ItemInfoReceipt receiptInfo: action.receipts) {
-            job._receipts.add(new ReceiptModel(receiptInfo));
-        }
+        job._factory = (ItemModel)item;
+        job._receipts = action.receipts.stream().map(receiptInfo -> new ReceiptModel((ItemModel) item, receiptInfo)).collect(Collectors.toList());
 
         item.addJob(job);
 

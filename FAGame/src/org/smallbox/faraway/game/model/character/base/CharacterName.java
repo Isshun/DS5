@@ -1,7 +1,5 @@
 package org.smallbox.faraway.game.model.character.base;
 
-import org.smallbox.faraway.game.model.character.base.CharacterModel.Gender;
-
 public class CharacterName {
 
 	final static String[] maleFirstName = {
@@ -2777,8 +2775,8 @@ public class CharacterName {
 	};
 
 
-	public static String getFirstname(Gender gender) {
-		if (gender == CharacterModel.Gender.MALE) {
+	public static String getFirstname(CharacterInfoModel.Gender gender) {
+		if (gender == CharacterInfoModel.Gender.MALE) {
 			return maleFirstName[(int)(Math.random() * 10000) % maleFirstName.length];
 		} else {
 			return femaleFirstName[(int)(Math.random() * 10000) % femaleFirstName.length];

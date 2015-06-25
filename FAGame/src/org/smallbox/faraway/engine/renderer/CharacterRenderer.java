@@ -29,8 +29,8 @@ public class CharacterRenderer extends BaseRenderer {
 	public void	onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
 		for (CharacterModel c: _characters) {
 			// Get game position and direction
-			int posX = c.getX() * Constant.TILE_WIDTH - (Constant.CHAR_WIDTH - Constant.TILE_WIDTH) + 2;
-			int posY = c.getY() * Constant.TILE_HEIGHT - (Constant.CHAR_HEIGHT - Constant.TILE_HEIGHT) + 0;
+			int posX = (int) ((c.getX() * Constant.TILE_WIDTH - (Constant.CHAR_WIDTH - Constant.TILE_WIDTH) + 2) * effect.getViewport().getScale());
+			int posY = (int) ((c.getY() * Constant.TILE_HEIGHT - (Constant.CHAR_HEIGHT - Constant.TILE_HEIGHT) + 0) * effect.getViewport().getScale());
 			Direction direction = c.getDirection();
 			Direction move = c.getMove();
 
@@ -99,18 +99,6 @@ public class CharacterRenderer extends BaseRenderer {
 
 	public void onRefresh(int update) {
 		_update = update;
-	}
-
-	@Override
-	public void invalidate(int x, int y) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void invalidate() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

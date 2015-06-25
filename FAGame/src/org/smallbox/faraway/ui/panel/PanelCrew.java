@@ -196,7 +196,7 @@ public class PanelCrew extends BaseRightPanel {
             });
 
 			// Name
-			viewHolder.lbName.setDashedString(character.getName(), "", NB_COLUMNS);
+			viewHolder.lbName.setDashedString(character.getInfo().getName(), "", NB_COLUMNS);
 			viewHolder.lbName.setColor(viewHolder.frame.isFocus() ? Colors.LINK_ACTIVE : new Color(120, 255, 255));
 
 			// Job

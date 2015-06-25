@@ -23,7 +23,6 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     private int _height;
     private int _floor;
     private int _temperature;
-    private WorldFinder _finder;
     private int _temperatureOffset;
     private final Game _game;
     private Set<ConsumableModel> _consumables = new HashSet<>();
@@ -59,8 +58,6 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
                 }
             }
         }
-
-        _finder = new WorldFinder(this, _parcels);
     }
 
     private void createConnection(ParcelModel parcel) {
@@ -184,6 +181,9 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
             area.setConsumable(ItemFactory.createConsumable(area, itemInfo, quantity));
             _consumables.add(area.getConsumable());
         }
+
+        _game.notify(observer -> observer.onAddConsumable(area.getConsumable()));
+
         return area.getConsumable();
     }
 
@@ -192,16 +192,16 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
             return null;
         }
 
-        ParcelModel area = getNearestFreeArea(consumable.getInfo(), x, y, consumable.getQuantity());
-        if (area == null) {
+        ParcelModel parcel = getNearestFreeArea(consumable.getInfo(), x, y, consumable.getQuantity());
+        if (parcel == null) {
             return null;
         }
 
         // Put consumable on free area
-        if (area.getConsumable() != null) {
-            area.getConsumable().addQuantity(1);
+        if (parcel.getConsumable() != null) {
+            parcel.getConsumable().addQuantity(consumable.getQuantity());
         } else {
-            area.setConsumable(consumable);
+            parcel.setConsumable(consumable);
         }
 
         _game.notify(observer -> observer.onAddConsumable(consumable));
@@ -375,9 +375,6 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         return _height;
     }
 
-    public WorldFinder getFinder() {
-        return _finder;
-    }
 //
 //    @Override
 //    public int getWidthInTiles() {

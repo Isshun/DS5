@@ -1,27 +1,37 @@
 package org.smallbox.faraway.game.manager;
 
+import org.smallbox.faraway.PathHelper;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.util.Constant;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class WorldFinder {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-	private int 				_width;
-	private int 				_height;
-	private ParcelModel[][][] 	_areas;
-	private WorldManager 		_worldManager;
+public class WorldFinder extends BaseManager {
+	private int 					_width;
+	private int 					_height;
+	private WorldManager 			_worldManager;
+	private PathHelper 				_pathManager;
+	private List<ConsumableModel> 	_consumables;
+	private List<ItemModel> 		_items;
 
-	public WorldFinder(WorldManager worldManager, ParcelModel[][][] areas) {
-		_areas = areas;
-		_width = worldManager.getWidth();
-		_height = worldManager.getHeight();
-		_worldManager = worldManager;
-		Game.setWorldFinder(this);
-	}
+    @Override
+    protected void onCreate() {
+        _items = new ArrayList<>();
+        _consumables = new ArrayList<>();
+        _pathManager = (PathHelper) Game.getInstance().getManager(PathHelper.class);
+        _worldManager = (WorldManager) Game.getInstance().getManager(WorldManager.class);
+        _width = _worldManager.getWidth();
+        _height = _worldManager.getHeight();
+    }
 
-	public MapObjectModel getNearest(ItemFilter filter, CharacterModel character) {
+    public MapObjectModel getNearest(ItemFilter filter, CharacterModel character) {
 		int startX = character.getX();
 		int startY = character.getY();
 		int maxX = Math.max(startX, _width - startX);
@@ -98,19 +108,6 @@ public class WorldFinder {
 		return true;
 	}
 
-	// TODO
-	public ItemModel find(ItemFilter filter) {
-		for (int x = 0; x < _width; x++) {
-			for (int y = 0; y < _height; y++) {
-				ItemModel item = _areas[x][y][0].getItem();
-				if (item != null && item.matchFilter(filter)) {
-					return item;
-				}
-			}
-		}
-		return null;
-	}
-
 	public ConsumableModel getNearest(ItemInfo info, int startX, int startY) {
 		int maxX = Math.max(startX, _width - startX);
 		int maxY = Math.max(startY, _height - startY);
@@ -137,7 +134,61 @@ public class WorldFinder {
 		return null;
 	}
 
-	public ItemModel getRandomNearest(ItemFilter filter, CharacterModel character) {
-		throw new NotImplementedException();
+	public MapObjectModel getRandomNearest(ItemFilter filter, CharacterModel character) {
+		return getRandomNearest(filter, character.getX(), character.getY());
+	}
+
+	public MapObjectModel getRandomNearest(ItemFilter filter, int x, int y) {
+        ParcelModel fromParcel = _worldManager.getParcel(x, y);
+        List<? extends MapObjectModel> list = filter.isConsomable ? _consumables : _items;
+
+        // Get matching items
+        int start = (int) (Math.random() * list.size());
+        int length = list.size();
+        int bestDistance = Integer.MAX_VALUE;
+        Map<MapObjectModel, Integer> ObjectsMatchingFilter = new HashMap<>();
+        for (int i = 0; i < length; i++) {
+            MapObjectModel mapObject = list.get((i + start) % length);
+            int distance = Math.abs(mapObject.getX() - x) + Math.abs(mapObject.getY() - y);
+            if (mapObject.matchFilter(filter) && _pathManager.getPath(fromParcel, mapObject.getParcel()) != null) {
+                ObjectsMatchingFilter.put(mapObject, distance);
+                if (bestDistance > distance) {
+                    bestDistance = distance;
+                }
+            }
+        }
+
+        // Take first item at acceptable distance
+        for (Map.Entry<MapObjectModel, Integer> entry: ObjectsMatchingFilter.entrySet()) {
+            if (entry.getValue() <= bestDistance + GameData.config.maxNearDistance) {
+                return entry.getKey();
+            }
+        }
+
+        return null;
+	}
+
+	@Override
+	protected void onUpdate(int tick) {
+	}
+
+	@Override
+	public void onAddItem(ItemModel item) {
+		_items.add(item);
+	}
+
+	@Override
+	public void onAddConsumable(ConsumableModel consumable) {
+		_consumables.add(consumable);
+	}
+
+	@Override
+	public void onRemoveItem(ItemModel item) {
+		_items.remove(item);
+	}
+
+	@Override
+	public void onRemoveConsumable(ConsumableModel consumable) {
+		_consumables.remove(consumable);
 	}
 }

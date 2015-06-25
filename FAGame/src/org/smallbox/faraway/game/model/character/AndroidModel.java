@@ -41,7 +41,7 @@ public class AndroidModel extends CharacterModel {
     }
 
     @Override
-    public String		getName() { return _firstName; }
+    public String		getName() { return _info.getFirstName(); }
 
     @Override
     public String[][]   getEquipmentViewIds() {

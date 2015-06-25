@@ -147,56 +147,66 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
 
     // TODO: random
     void	refreshFloor(RenderLayer layer, ParcelModel parcel, int x, int y) {
-        StructureModel structure = parcel.getStructure();
+//        StructureModel structure = parcel.getStructure();
+//
+//        if (structure != null && structure.isFloor()) {
+//            if (structure.getName().equals("base.greenhouse")) {
+//                int index = 2;
+//                SpriteModel sprite = _spriteManager.getGreenHouse(index + (structure.isWorking() ? 1 : 0));
+//                sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+//                layer.draw(sprite);
+//
+//                ResourceModel resource = _worldMap.getResource(x, y);
+//                if (resource != null) {
+//                    sprite = _spriteManager.getResource(resource);
+//                    sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+//                    layer.draw(sprite);
+//                }
+//            }
+//
+//            // Floor
+//            else {
+//                int roomId = 0;
+//                SpriteModel sprite = _spriteManager.getFloor(structure, roomId, 0);
+//                if (sprite != null) {
+//                    sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+//                    layer.draw(sprite);
+//                }
+//
+//                ResourceModel ressource = _worldMap.getResource(x, y);
+//                if (ressource != null) {
+//                    sprite = _spriteManager.getResource(ressource);
+//                    sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+//                    layer.draw(sprite);
+//                }
+//
+//
+////							RectangleShape shape = new RectangleShape(new Vector2f(32, 32));
+////							shape.setFillColor(new Color(0, 0, 0, 155 * (12 - area.getLight()) / 12));
+////							shape.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
+////							_texture.draw(shape);
+//            }
+//
+//        // No floor
+//        } else if (parcel.getType() != 0) {
+//            SpriteModel sprite = _spriteManager.getGround(parcel.getType());
+//            sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+//            layer.draw(sprite);
+//        }
 
-        if (structure != null && structure.isFloor()) {
-            if (structure.getName().equals("base.greenhouse")) {
-                int index = 2;
-                SpriteModel sprite = _spriteManager.getGreenHouse(index + (structure.isWorking() ? 1 : 0));
-                sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-                layer.draw(sprite);
-
-                ResourceModel resource = _worldMap.getResource(x, y);
-                if (resource != null) {
-                    sprite = _spriteManager.getResource(resource);
-                    sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-                    layer.draw(sprite);
-                }
-            }
-
-            // Floor
-            else {
-                int roomId = 0;
-                SpriteModel sprite = _spriteManager.getFloor(structure, roomId, 0);
-                if (sprite != null) {
-                    sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-                    layer.draw(sprite);
-                }
-
-                ResourceModel ressource = _worldMap.getResource(x, y);
-                if (ressource != null) {
-                    sprite = _spriteManager.getResource(ressource);
-                    sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-                    layer.draw(sprite);
-                }
-
-
-//							RectangleShape shape = new RectangleShape(new Vector2f(32, 32));
-//							shape.setFillColor(new Color(0, 0, 0, 155 * (12 - area.getLight()) / 12));
-//							shape.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-//							_texture.draw(shape);
-            }
-
-        // No floor
-        } else if (parcel.getType() != 0) {
+        // Draw ground
+        if (parcel.getType() != 0) {
             SpriteModel sprite = _spriteManager.getGround(parcel.getType());
             sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             layer.draw(sprite);
         }
 
-        SpriteModel sprite = _spriteManager.getGround(parcel.getType());
-        sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-        layer.draw(sprite);
+        // Draw floor
+        if (parcel.getStructure() != null && parcel.getStructure().isFloor()) {
+            SpriteModel sprite = _spriteManager.getFloor(parcel.getStructure(), 0, 0);
+            sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+            layer.draw(sprite);
+        }
 
 //
 //        else {

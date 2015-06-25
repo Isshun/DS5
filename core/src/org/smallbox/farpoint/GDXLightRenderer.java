@@ -383,14 +383,4 @@ public class GDXLightRenderer extends LightRenderer {
             init();
         }
     }
-
-    @Override
-    public void invalidate(int x, int y) {
-
-    }
-
-    @Override
-    public void invalidate() {
-
-    }
 }

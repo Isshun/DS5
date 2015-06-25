@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.item;
 
+import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.job.JobHaul;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 
@@ -7,10 +8,11 @@ import org.smallbox.faraway.game.model.job.BaseJobModel;
  * Created by Alex on 03/06/2015.
  */
 public class ConsumableModel extends MapObjectModel {
-    private ItemSlot    _slot;
-    private int         _quantity = 1;
-    private int         _slots = 1;
-    private JobHaul     _job;
+    private ItemSlot        _slot;
+    private int             _quantity = 1;
+    private int             _slots = 1;
+    private JobHaul         _job;
+    private ReceiptModel    _lock;
 
     public ConsumableModel(ItemInfo info) {
         super(info);
@@ -65,4 +67,12 @@ public class ConsumableModel extends MapObjectModel {
     }
 
     public boolean isEmpty() { return _quantity <= 0; }
+
+    public void lockForReceipt(ReceiptModel receiptModel) {
+        _lock = receiptModel;
+    }
+
+    public ReceiptModel getLock() {
+        return _lock;
+    }
 }

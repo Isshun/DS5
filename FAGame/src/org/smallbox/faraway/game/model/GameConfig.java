@@ -62,4 +62,5 @@ public class GameConfig {
     public int                  storageMaxQuantity;
     public int                  environmentDistance;
     public boolean              byPassMenu;
+    public int                  maxNearDistance;
 }

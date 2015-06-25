@@ -77,7 +77,7 @@ public class JobConsume extends BaseJobModel {
 			return JobActionReturn.ABORT;
 		}
 
-		Log.debug("Character #" + character.getName() + ": actionUse (" + _progress + ")");
+		Log.debug("Character #" + character.getInfo().getName() + ": actionUse (" + _progress + ")");
 
 		// Character using item
 		if (_progress++ < _cost) {
