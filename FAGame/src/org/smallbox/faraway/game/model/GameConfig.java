@@ -50,6 +50,7 @@ public class GameConfig {
         public boolean          weather;
         public boolean          oxygen;
         public boolean          power;
+        public boolean          fauna;
     }
 
     public GameConfigRender     render;

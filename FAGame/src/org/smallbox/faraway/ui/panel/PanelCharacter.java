@@ -16,6 +16,7 @@ import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.*;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.StringUtils;
 
 import java.util.ArrayList;
@@ -67,6 +68,12 @@ public class PanelCharacter extends BaseRightPanel {
     private String 				_lastBirthName;
     private TextView 			_lbBirthName;
     private TextView 			_lbInventory;
+    private View                _selectedPriority;
+    private FrameLayout         _priorityOverlay;
+    private int                 _priorityOverlayOffset;
+    private List<View>          _priorityViews;
+    private int                 _framePrioritiesPosY;
+    private int                 _priorityOverlayPosition;
 
     public PanelCharacter(Mode mode, GameEventListener.Key shortcut) {
         super(mode, shortcut, "data/ui/panels/info_character.yml");
@@ -113,33 +120,59 @@ public class PanelCharacter extends BaseRightPanel {
         findById("frame_health").setVisible("frame_health".equals(viewId));
     }
 
-    private void createPriorities() {
-        FrameLayout frameEntries = (FrameLayout) findById("frame_priorities_entries");
-        frameEntries.removeAllViews();
+    private void createTalents() {
+        _priorityViews = new ArrayList<>();
+
+        FrameLayout framePriorities = (FrameLayout) findById("frame_priorities_entries");
+        framePriorities.removeAllViews();
+        _framePrioritiesPosY = framePriorities.getRect().y;
+
+        _priorityOverlay = ViewFactory.getInstance().createFrameLayout(340, 24);
+        _priorityOverlay.setBackgroundColor(new Color(0x323c3e));
+//        _priorityOverlay.setBackgroundColor(new Color(255, 255, 255, 100));
+        _priorityOverlay.setVisible(false);
+        framePriorities.addView(_priorityOverlay);
 
         for (CharacterModel.TalentEntry priority: _character.getTalents()) {
+            FrameLayout framePriority = _viewFactory.createFrameLayout(300, 24);
+            framePriority.setPosition(0, priority.index * 28);
+//            framePriority.setBackgroundColor(new Color(0x88121c1e));
+            framePriority.setData(priority);
+
             TextView lbPriority = _viewFactory.createTextView();
-            lbPriority.setString(priority.name + " (" + (int)priority.level + ")");
+            lbPriority.setString(priority.name + " (" + (int) priority.level + ")");
             lbPriority.setCharacterSize(16);
+            lbPriority.setPosition(0, 8);
             lbPriority.resetSize();
-            lbPriority.setPosition(0, priority.index * 28);
-            frameEntries.addView(lbPriority);
+            framePriority.addView(lbPriority);
 
-            TextView btPriorityUp = _viewFactory.createTextView();
-            btPriorityUp.setString("[up]");
-            btPriorityUp.setCharacterSize(16);
-            btPriorityUp.resetSize();
-            btPriorityUp.setPosition(240, priority.index * 28);
-            btPriorityUp.setOnClickListener(view -> _character.movePriority(priority, priority.index - 1));
-            frameEntries.addView(btPriorityUp);
+            ColorView bgProgress = _viewFactory.createColorView(32, 2);
+            bgProgress.setPosition(240, 21);
+            bgProgress.setBackgroundColor(new Color(0x555555));
+            framePriority.addView(bgProgress);
 
-            TextView btPriorityDown = _viewFactory.createTextView();
-            btPriorityDown.setString("[down]");
-            btPriorityDown.setCharacterSize(16);
-            btPriorityDown.resetSize();
-            btPriorityDown.setPosition(280, priority.index * 28);
-            btPriorityDown.setOnClickListener(view -> _character.movePriority(priority, priority.index + 1));
-            frameEntries.addView(btPriorityDown);
+            ColorView frameProgress = _viewFactory.createColorView(20, 2);
+            frameProgress.setPosition(240, 21);
+            frameProgress.setBackgroundColor(new Color(0x298596));
+            framePriority.addView(frameProgress);
+
+            TextView lbProgress = _viewFactory.createTextView(32, 14);
+            lbProgress.setString(String.valueOf((int)priority.level));
+            lbProgress.setCharacterSize(14);
+            lbProgress.setPosition(240, 5);
+            lbProgress.setAlign(Align.CENTER);
+            framePriority.addView(lbProgress);
+
+//            TextView btPriorityDown = _viewFactory.createTextView();
+//            btPriorityDown.setString("[down]");
+//            btPriorityDown.setCharacterSize(16);
+//            btPriorityDown.resetSize();
+//            btPriorityDown.setPosition(280, 0);
+//            btPriorityDown.setOnClickListener(view -> _character.movePriority(priority, priority.index + 1));
+//            framePriority.addView(btPriorityDown);
+
+            framePriorities.addView(framePriority);
+            _priorityViews.add(framePriority);
         }
     }
 
@@ -323,7 +356,7 @@ public class PanelCharacter extends BaseRightPanel {
 //            }
 //            _animGauge = 0;
 
-            createPriorities();
+            createTalents();
         }
 
         _cursor.setVisible(!_cursor.isVisible());
@@ -350,6 +383,39 @@ public class PanelCharacter extends BaseRightPanel {
             refreshDebug();
 
             ((TextView)findById("lb_body_heat")).setString("Body heat: " + (int)(_character.getBodyHeat() * 10) / 10f);
+        }
+
+        refreshTalents();
+    }
+
+    private void refreshTalents() {
+        if (_selectedPriority != null) {
+            int posY = _priorityOverlayPosition - _framePrioritiesPosY;
+            Log.info("pos: " + posY);
+            int i = 0;
+
+            if (posY < 0) {
+                _priorityOverlay.setPosition(0, i * 28 + 2);
+                i++;
+            }
+
+            for (View view: _priorityViews) {
+                if (posY > (i * 28 - _priorityOverlayOffset - 8) && posY <= ((i+1) * 28 - _priorityOverlayOffset - 8)) {
+                    _priorityOverlay.setPosition(0, i * 28 + 2);
+//                    _selectedPriority.setPosition(0, i * 28);
+                    i++;
+                }
+                if (view != _selectedPriority) {
+                    view.setPosition(0, i * 28);
+                    i++;
+                }
+            }
+
+            if (posY > (i) * 28 - _priorityOverlayOffset - 8) {
+                _priorityOverlay.setPosition(0, i * 28 + 2);
+                i++;
+            }
+
         }
     }
 
@@ -667,4 +733,67 @@ public class PanelCharacter extends BaseRightPanel {
 //            }
 //        }
     }
+
+    @Override
+    public boolean onMouseEvent(GameTimer timer, GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
+        if (findById("frame_priorities").isVisible()) {
+            // Pressed
+            if (action == GameEventListener.Action.PRESSED) {
+                for (View view: _priorityViews) {
+                    if (view.isVisible() && view.getRect().contains(x, y)) {
+                        _selectedPriority = view;
+//                        _selectedPriority.setVisible(false);
+                        _priorityOverlayOffset = y - _selectedPriority.getRect().y;
+                        _priorityOverlay.setVisible(true);
+                        _priorityOverlay.setPosition(0, y - _framePrioritiesPosY - _priorityOverlayOffset + 2);
+                        _priorityOverlayPosition = y - _priorityOverlayOffset;
+                        _selectedPriority.setPosition(0, y - _framePrioritiesPosY - _priorityOverlayOffset);
+                        return true;
+                    }
+                }
+            }
+
+            if (action == GameEventListener.Action.RELEASED) {
+                if (_selectedPriority != null) {
+                    int posY = _priorityOverlayPosition - _framePrioritiesPosY;
+                    int index = Math.max(0, Math.min(_character.getTalents().size() - 1, (posY + 14) / 28));
+                    Log.info("release: " + index);
+
+                    CharacterModel.TalentEntry priority = (CharacterModel.TalentEntry)_selectedPriority.getData();
+                    _character.getTalents().remove(priority);
+                    _character.getTalents().add(index, priority);
+
+                    _priorityViews.remove(_selectedPriority);
+                    _priorityViews.add(index, _selectedPriority);
+
+                    int i = 0;
+                    for (View view: _priorityViews) {
+                        view.setPosition(0, 28 * i++);
+                        view.resetPos();
+                    }
+
+                    _priorityOverlay.setVisible(false);
+                    _selectedPriority.setVisible(true);
+                    _selectedPriority = null;
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean	onMouseMove(int x, int y) {
+        if (_selectedPriority != null) {
+            _selectedPriority.setPosition(0, y - _framePrioritiesPosY - _priorityOverlayOffset);
+            _priorityOverlayPosition = y - _priorityOverlayOffset;
+        }
+//        if (_isVisible && x > _x && x < _x + 800 && y > _y && y < _y + 600) {
+//            return true;
+//        }
+
+        return false;
+    }
+
 }

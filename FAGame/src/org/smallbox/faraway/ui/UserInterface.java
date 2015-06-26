@@ -75,6 +75,7 @@ public class UserInterface implements GameEventListener {
             new PanelInfoParcel(	Mode.INFO_PARCEL, 	    null),
             new PanelInfoArea(	    Mode.INFO_AREA, 	    null),
             new PanelInfoResource(	Mode.INFO_RESOURCE, 	null),
+            new PanelInfoAnimal(	Mode.INFO_ANIMAL, 	    null),
             new PanelDebug(		    Mode.DEBUG, 	        Key.TILDE),
             new PanelPlan(		    Mode.PLAN, 		        Key.P),
             new PanelRoom(		    Mode.ROOM, 		        Key.R),
@@ -103,12 +104,15 @@ public class UserInterface implements GameEventListener {
     @Override
     public void onMouseEvent(GameTimer timer, Action action, MouseButton button, int x, int y, boolean rightPressed) {
         if (action == Action.MOVE) {
+            if (_currentPanel != null) {
+                _currentPanel.onMouseMove(x, y);
+            }
             onMouseMove(x, y, rightPressed);
             UIEventManager.getInstance().onMouseMove(x, y);
         }
 
         for (BasePanel panel: _panels) {
-            if (panel.onMouseEvent(timer, action, button, x, y)) {
+            if (panel.isVisible() && panel.onMouseEvent(timer, action, button, x, y)) {
                 return;
             }
         }
@@ -199,7 +203,7 @@ public class UserInterface implements GameEventListener {
         NONE,
         TOOLTIP,
         STATS,
-        INFO_STRUCTURE, INFO_ITEM, INFO_PARCEL, INFO_RESOURCE, INFO_CONSUMABLE, AREA, INFO_AREA, MANAGER
+        INFO_STRUCTURE, INFO_ITEM, INFO_PARCEL, INFO_RESOURCE, INFO_CONSUMABLE, AREA, INFO_AREA, INFO_ANIMAL, MANAGER
     }
 
     public UserInterface(LayoutFactory layoutFactory, ViewFactory viewFactory) {

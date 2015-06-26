@@ -210,7 +210,7 @@ public abstract class MapObjectModel {
 //    public boolean			isComplete() { return _progress >= _info.cost; }
     public boolean			isComplete() { return true; }
     public boolean			isSupply() { return _power == _powerSupply; }
-    public boolean			isSleepingItem() { return _info.isSleeping; }
+    public boolean			isSleepingItem() { return _info.isBed; }
     public boolean			isStructure() { return _info.isStructure; }
     public boolean          isResource() { return _info.isResource; }
     public boolean			isWalkable() { return !_info.isWalkable; }
@@ -254,7 +254,7 @@ public abstract class MapObjectModel {
 
     public boolean matchFilter(ItemFilter filter) {
         // Filter need free slots but item is busy
-        if (filter.needFreeSlot && hasFreeSlot() == false) {
+        if (filter.needFreeSlot && !hasFreeSlot()) {
             return false;
         }
 

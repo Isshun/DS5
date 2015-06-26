@@ -15,7 +15,7 @@ render:
     item:           true
     consumable:     true
     temperature:    false
-    job:            false
+    job:            true
     area:           true
     debug:          false
     room:           false
@@ -29,6 +29,7 @@ manager:
     weather:        true
     oxygen:         true
     power:          true
+    fauna:          false
 
 character:
     effects:

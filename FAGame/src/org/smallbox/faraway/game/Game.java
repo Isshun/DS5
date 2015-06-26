@@ -116,7 +116,11 @@ public class Game {
         _managers.add(new AreaManager());
         _managers.add(new ResourceManager());
         _managers.add(new StatsManager());
-        _managers.add(new FaunaManager());
+
+        if (GameData.config.manager.fauna) {
+            _managers.add(new FaunaManager());
+        }
+
         _managers.add(new DynamicObjectManager());
 
         _characterManager = new CharacterManager();

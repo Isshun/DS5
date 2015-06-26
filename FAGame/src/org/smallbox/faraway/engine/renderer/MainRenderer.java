@@ -5,6 +5,7 @@ import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.ArrayList;
@@ -114,7 +115,9 @@ public class MainRenderer {
 			_renders.add(renderer.createRoomRenderer());
 		}
 
-		_renders.add(renderer.createFaunaRenderer());
+		if (GameData.config.manager.fauna) {
+			_renders.add(renderer.createFaunaRenderer());
+		}
 	}
 
 	public static MainRenderer getInstance() {

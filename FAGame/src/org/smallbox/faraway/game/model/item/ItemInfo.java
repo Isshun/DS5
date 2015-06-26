@@ -150,7 +150,6 @@ public class ItemInfo {
 	public String 						packageName;
 	public boolean 						isFactory;
 	public boolean 						isDrink;
-	public boolean 						isSleeping;
 	public boolean 						isCloseRoom;
 	public int 							maxHealth;
 	public int 							power;
