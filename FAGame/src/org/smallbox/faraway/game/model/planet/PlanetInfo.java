@@ -1,5 +1,9 @@
 package org.smallbox.faraway.game.model.planet;
 
+import org.smallbox.faraway.engine.Color;
+
+import java.util.List;
+
 public class PlanetInfo {
 	public static class PlanetStats {
 		public int water;
@@ -13,25 +17,26 @@ public class PlanetInfo {
 	}
 
     public static class PlanetImage {
-        public String thumb;
+        public String 					thumb;
     }
 
     public static class PlanetCredit {
-        public String author;
-        public String site;
+        public String 					author;
+        public String 					site;
     }
 
-	public String	            name;
-	public String	            type;
-	public String	            desc;
-	public PlanetStats 			stats;
-	public PlanetImage 			image;
-	public PlanetCredit 		credit;
-	public double	            albedo;
-	public double 	            pressure;
-	public double 	            greenhouse;
-	public double 	            incomingEnergy;
+	public String	            		name;
+	public String	            		type;
+	public String	            		desc;
+	public PlanetStats 					stats;
+	public PlanetImage 					image;
+	public PlanetCredit 				credit;
+	public List<RegionInfo> 			regions;
+	public double	            		albedo;
+	public double 	            		pressure;
+	public double 	            		greenhouse;
+	public double 	            		incomingEnergy;
 
-	public int 					dayDuration = 24;
-	public int 					yearDuration = 365;
+	public int 							dayDuration = 24;
+	public int 							yearDuration = 365;
 }

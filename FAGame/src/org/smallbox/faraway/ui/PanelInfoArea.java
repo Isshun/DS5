@@ -21,6 +21,6 @@ public class PanelInfoArea extends BaseInfoRightPanel {
 
     public void select(AreaModel area) {
         ((TextView)findById("lb_area")).setString(area.getName());
-        findById("bt_remove_area").setOnClickListener(view -> Game.getAreaManager().remove(area));
+        findById("bt_remove_area").setOnClickListener(view -> ((AreaManager)Game.getInstance().getManager(AreaManager.class)).remove(area));
     }
 }

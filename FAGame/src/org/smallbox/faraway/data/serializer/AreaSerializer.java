@@ -34,7 +34,7 @@ public class AreaSerializer implements SerializerInterface {
 
     @Override
     public void save(GameSerializer.GameSave save) {
-        save.areas = Game.getAreaManager().getAreas().stream().map(AreaSave::new).collect(Collectors.toList());
+        save.areas = ((AreaManager)Game.getInstance().getManager(AreaManager.class)).getAreas().stream().map(AreaSave::new).collect(Collectors.toList());
     }
 
     @Override
@@ -44,7 +44,7 @@ public class AreaSerializer implements SerializerInterface {
             for (AreaSave.AreaParcelSave parcelSave: areaSave.parcels) {
                 area.addParcel(Game.getWorldManager().getParcel(parcelSave.x, parcelSave.y));
             }
-            Game.getAreaManager().addArea(area);
+            ((AreaManager)Game.getInstance().getManager(AreaManager.class)).addArea(area);
         }
     }
 }

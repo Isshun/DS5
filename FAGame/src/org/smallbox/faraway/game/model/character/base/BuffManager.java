@@ -1,9 +1,11 @@
 package org.smallbox.faraway.game.model.character.base;
 
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.RoomManager;
 import org.smallbox.faraway.game.model.BuffModel;
 import org.smallbox.faraway.game.model.CharacterBuffModel;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.ui.AreaManager;
 import org.smallbox.faraway.util.Log;
 
 /**
@@ -62,7 +64,7 @@ public class BuffManager {
 
         // World
         if (!checkBuffValue(level.conditions.minDay, level.conditions.maxDay, Game.getInstance().getDay())) return false;
-        if (!checkBuffValue(level.conditions.minLight, level.conditions.maxLight, Game.getRoomManager().getLight(character.getX(), character.getY()))) return false;
+        if (!checkBuffValue(level.conditions.minLight, level.conditions.maxLight, ((RoomManager)Game.getInstance().getManager(RoomManager.class)).getLight(character.getX(), character.getY()))) return false;
         if (!checkBuffValue(level.conditions.minEnvironment, level.conditions.maxEnvironment, Game.getWorldManager().getEnvironmentValue(character.getX(), character.getY(), GameData.config.environmentDistance))) return false;
 
         return true;

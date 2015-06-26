@@ -165,19 +165,27 @@ public class RoomManager extends BaseManager implements GameObserver {
             }
         }
 
-        if ("kitchen".equals(bestCategory)) {
-            return "Kitchen";
-        }
-
-        if ("quarter".equals(bestCategory)) {
+        // Bedroom
+        if (nbBed >= 1) {
             if (nbBed == 1 && bed.getOwner() != null) {
                 bed.getOwner().setQuarter(room);
                 room.setOwner(bed.getOwner());
                 return bed.getOwner().getName() + "'s quarter";
             }
-            return "Common quarter";
+            return "Common bedroom";
         }
 
+        // Kitchen
+        if (itemCategory.containsKey("kitchen")) {
+            return "Kitchen";
+        }
+
+        // Common room
+        if (itemCategory.containsKey("amusement")) {
+            return "Common room";
+        }
+
+        // Storage
         if (storageArea != null) {
             return "Storage room";
         }

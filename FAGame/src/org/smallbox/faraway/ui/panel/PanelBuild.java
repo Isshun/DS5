@@ -64,7 +64,7 @@ public class PanelBuild extends BaseRightPanel {
 		_icons.clear();
 
 		// TODO
-		int posY = 0;
+		int posY = 40;
 		List<CategoryInfo> categories = GameData.getData().categories;
 		_iconsList.clear();
 		_layouts.clear();

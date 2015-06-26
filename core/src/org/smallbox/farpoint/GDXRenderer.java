@@ -136,6 +136,11 @@ public class GDXRenderer implements GFXRenderer {
     }
 
     @Override
+    public BaseRenderer createFaunaRenderer() {
+        return new GDXFaunaRenderer();
+    }
+
+    @Override
     public void zoomUp() {
         _zoom = Math.max(0, _zoom - 1);
         Game.getInstance().getViewport().setZoom(_zoom);

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.Strings;
-import org.smallbox.faraway.game.model.Movable.Direction;
+import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobAbortReason;

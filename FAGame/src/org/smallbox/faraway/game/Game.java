@@ -11,6 +11,7 @@ import org.smallbox.faraway.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.game.manager.*;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.RegionModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.planet.PlanetModel;
 import org.smallbox.faraway.ui.AreaManager;
@@ -22,30 +23,22 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 public class Game {
-	private static RoomManager 			_roomManager;
-	private static StatsManager			_statsManager;
-	private static ResourceManager 		_resourceManager;
 	private static CharacterManager 	_characterManager;
 	private static WorldManager 		_worldManager;
-	private static FoeManager 			_foeManager;
-	private static DynamicObjectManager	_dynamicObjectManager;
-	private static RelationManager 		_relationManager;
-	private static AreaManager          _areaManager;
-    private static TemperatureManager   _temperatureManager;
-    private static WeatherManager       _weatherManager;
     private static JobManager 			_jobManager;
 
     private final ParticleRenderer      _particleRenderer;
     private final LightRenderer         _lightRenderer;
 
     private static Game 				_self;
-    private final PlanetModel           _planet;
     private final String                _fileName;
 	private int 						_speed;
     private GameConfig                  _config;
 	private List<BaseManager>			_managers;
 	private List<GameObserver>			_observers;
     private GameSerializer.GameSave     _save;
+    private PlanetModel                 _planet;
+    private RegionModel                 _region;
 
     public void                         toggleRunning() { _isRunning = !_isRunning; }
     public void                         addObserver(GameObserver observer) { _observers.add(observer); }
@@ -54,23 +47,19 @@ public class Game {
 
     public boolean                      isRunning() { return _isRunning; }
 
-    public static StatsManager 			getStatsManager() { return _statsManager; }
-	public static RoomManager 			getRoomManager() { return _roomManager; }
-	public static ResourceManager 		get() { return _resourceManager ; }
 	public static CharacterManager 		getCharacterManager() { return _characterManager; }
 	public static WorldManager 			getWorldManager() { return _worldManager; }
-	public static WeatherManager        getWeatherManager() { return _weatherManager; }
-	public static FoeManager 			getFoeManager() { return _foeManager; }
-	public static DynamicObjectManager 	getDynamicObjectManager() { return _dynamicObjectManager; }
-	public static RelationManager		getRelationManager() { return _relationManager; }
 	public static JobManager			getJobManager() { return _jobManager; }
     public static Game                  getInstance() { return _self; }
     public int                          getHour() { return _tick / _config.tickPerHour % _planet.getInfo().dayDuration; }
     public int                          getDay() { return _tick / _config.tickPerHour / _planet.getInfo().dayDuration & _planet.getInfo().yearDuration; }
     public int                          getYear() { return _tick / _config.tickPerHour / _planet.getInfo().dayDuration / _planet.getInfo().yearDuration; }
-    public Viewport getViewport() { return _viewport; }
+    public Viewport                     getViewport() { return _viewport; }
     public static int                   getUpdate() { return _tick; }
-    public static AreaManager           getAreaManager() { return _areaManager; }
+    public PlanetModel                  getPlanet() { return _planet; }
+    public String                       getFileName() { return _fileName; }
+    public long                         getTick() { return _tick; }
+    public RegionModel                  getRegion() { return _region; }
 
 	private static int                  _tick;
 	private Viewport 					_viewport;
@@ -83,6 +72,7 @@ public class Game {
         _config = config;
         _fileName = fileName;
         _planet = new PlanetModel(GameData.getData().planets.get(0));
+        _region = new RegionModel(_planet, _planet.getInfo().regions.get(0));
 		_isRunning = true;
 		_viewport = SpriteManager.getInstance().createViewport();
         _particleRenderer = particleRenderer;
@@ -110,53 +100,40 @@ public class Game {
         }
 
         if (GameData.config.manager.room) {
-            _roomManager = new RoomManager();
-            _managers.add(_roomManager);
+            _managers.add(new RoomManager());
         }
 
         if (GameData.config.manager.room && GameData.config.manager.temperature) {
-            _temperatureManager = new TemperatureManager(_worldManager, _roomManager);
-            _managers.add(_temperatureManager);
+            _managers.add(new TemperatureManager(_worldManager));
         }
 
         if (GameData.config.manager.weather) {
-            _weatherManager = new WeatherManager(_lightRenderer, _particleRenderer, _worldManager);
-            _managers.add(_weatherManager);
+            _managers.add(new WeatherManager(_lightRenderer, _particleRenderer, _worldManager));
         }
 
         _managers.add(new WorldFinder());
-
         _managers.add(new PathManager());
-
-        _areaManager = new AreaManager();
-        _managers.add(_areaManager);
-
-        _resourceManager = new ResourceManager();
-        _managers.add(_resourceManager);
-
-        _statsManager = new StatsManager();
-        _managers.add(_statsManager);
-
-        _dynamicObjectManager = new DynamicObjectManager();
-        _managers.add(_dynamicObjectManager);
+        _managers.add(new AreaManager());
+        _managers.add(new ResourceManager());
+        _managers.add(new StatsManager());
+        _managers.add(new FaunaManager());
+        _managers.add(new DynamicObjectManager());
 
         _characterManager = new CharacterManager();
         _managers.add(_characterManager);
 
-        _foeManager = new FoeManager();
-        _managers.add(_foeManager);
-
-        _relationManager = new RelationManager();
-        _managers.add(_relationManager);
-
         _jobManager = new JobManager();
         _managers.add(_jobManager);
+
+        _managers.add(new RelationManager());
 
         if (GameData.config.manager.oxygen) {
             _managers.add(new OxygenManager());
         }
 
-        _managers.add(new PowerManager());
+        if (GameData.config.manager.power) {
+            _managers.add(new PowerManager());
+        }
         _managers.add(new WorldItemManager());
 
         if (GameData.config.manager.quest) {
@@ -234,14 +211,6 @@ public class Game {
         _observers.stream().forEach(action::accept);
     }
 
-    public PlanetModel getPlanet() {
-        return _planet;
-    }
-
-    public String getFileName() {
-        return _fileName;
-    }
-
     public BaseManager getManager(Class<? extends BaseManager> cls) {
         for (BaseManager manager: _managers) {
             if (cls.isInstance(manager)) {
@@ -249,9 +218,5 @@ public class Game {
             }
         }
         return null;
-    }
-
-    public long getTick() {
-        return _tick;
     }
 }

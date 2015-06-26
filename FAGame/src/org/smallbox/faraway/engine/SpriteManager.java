@@ -43,4 +43,6 @@ public abstract class SpriteManager {
     public abstract Viewport        createViewport();
 
     public abstract SpriteModel     getGround(int type);
+
+    public abstract SpriteModel getAnimal(String path);
 }

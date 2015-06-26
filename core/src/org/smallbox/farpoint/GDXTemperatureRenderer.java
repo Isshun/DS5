@@ -17,7 +17,7 @@ import org.smallbox.faraway.game.model.room.RoomModel;
 public class GDXTemperatureRenderer extends BaseRenderer {
     @Override
     public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
-        RoomManager roomManager = Game.getRoomManager();
+        RoomManager roomManager = (RoomManager) Game.getInstance().getManager(RoomManager.class);
         for (RoomModel room: roomManager.getRoomList()) {
             if (!room.isExterior()) {
                 int minX = Integer.MAX_VALUE;

@@ -65,7 +65,7 @@ public class LayoutFactory {
         }
         lbText.setString(entry.text);
 
-        lbText.setSize(lbText.getContentWidth() + 10, lbText.getContentHeight() + 10);
+//        lbText.setSize(lbText.getContentWidth() + 10, lbText.getContentHeight() + 10);
 
         if (entry.size != null) {
             lbText.setSize(

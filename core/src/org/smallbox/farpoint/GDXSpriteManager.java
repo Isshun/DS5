@@ -306,6 +306,16 @@ public class GDXSpriteManager extends SpriteManager {
     }
 
     @Override
+    public SpriteModel getAnimal(String path) {
+        if (!_icons.containsKey(path)) {
+            Texture texture = new Texture(path);
+            GDXSpriteModel sprite = new GDXSpriteModel(texture, 0, 0, texture.getWidth(), texture.getHeight());
+            _icons.put(path, sprite);
+        }
+        return _icons.get(path);
+    }
+
+    @Override
     public SpriteModel getFloor(StructureModel item, int zone, int room) {
         if (item != null && item.getName().equals("base.floor")) {
             int choice = 1;

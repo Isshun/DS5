@@ -7,6 +7,7 @@ import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.StorageModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.ui.AreaManager;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -279,7 +280,7 @@ public class JobCraft extends BaseJobModel {
         _message = "Carry " + currentComponent.consumable.getInfo().label + " to " + _factory.getInfo().label;
 
         // Store component in factory
-        character.moveTo(this, _factory.getParcel(), new OnMoveListener() {
+        character.moveTo(this, _factory.getParcel(), new OnMoveListener<CharacterModel>() {
             @Override
             public void onReach(BaseJobModel job, CharacterModel character) {
                 _factory.addComponent(character.getInventory());
@@ -351,7 +352,7 @@ public class JobCraft extends BaseJobModel {
 
     private boolean findNearestStorage(CharacterModel character, ConsumableModel consumable) {
 		// Looking for free _storage area for consumable
-		_storage = Game.getAreaManager().getNearestFreeStorage(consumable, character.getParcel());
+		_storage = ((AreaManager)Game.getInstance().getManager(AreaManager.class)).getNearestFreeStorage(consumable, character.getParcel());
 		if (_storage == null) {
 			return false;
 		}

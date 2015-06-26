@@ -5,7 +5,11 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.util.Utils;
 
-public abstract class Movable {
+public abstract class MovableModel {
+
+	public double getMoveProgress() {
+		return _moveProgress;
+	}
 
 	public interface OnPathComplete {
 		void	onPathFailed(BaseJobModel job);
@@ -38,8 +42,9 @@ public abstract class Movable {
 	protected int						_steps;
 	protected BaseJobModel 				_job;
 	protected OnPathComplete			_onPathComplete;
+	protected double                    _moveProgress;
 
-	public Movable(int id, int x, int y) {
+	public MovableModel(int id, int x, int y) {
 		Utils.useUUID(id);
 		_id = id;
 		_posX = _toX = x;
@@ -64,4 +69,8 @@ public abstract class Movable {
 		_move = move;
 		setDirection(move);
 	}
+
+	public abstract void	onPathFailed(BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel);
+	public abstract void	onPathComplete(GraphPath<ParcelModel> path, BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel);
+
 }

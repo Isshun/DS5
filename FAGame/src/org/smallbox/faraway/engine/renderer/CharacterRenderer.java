@@ -1,7 +1,7 @@
 package org.smallbox.faraway.engine.renderer;
 
 import org.smallbox.faraway.engine.*;
-import org.smallbox.faraway.game.model.Movable.Direction;
+import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.ui.engine.ColorView;
 import org.smallbox.faraway.ui.engine.ViewFactory;

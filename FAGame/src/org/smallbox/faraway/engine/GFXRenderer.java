@@ -24,7 +24,9 @@ public interface GFXRenderer {
     BaseRenderer createAreaRenderer();
     BaseRenderer createTemperatureRenderer();
     BaseRenderer createRoomRenderer();
+    BaseRenderer createFaunaRenderer();
 
     void zoomUp();
     void zoomDown();
+
 }

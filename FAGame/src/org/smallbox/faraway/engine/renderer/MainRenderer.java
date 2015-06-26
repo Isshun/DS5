@@ -113,6 +113,8 @@ public class MainRenderer {
 		if (config.render.room) {
 			_renders.add(renderer.createRoomRenderer());
 		}
+
+		_renders.add(renderer.createFaunaRenderer());
 	}
 
 	public static MainRenderer getInstance() {

@@ -18,7 +18,7 @@ public class GDXAreaRenderer extends BaseRenderer {
 
     @Override
     public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
-        AreaManager areaManager = Game.getAreaManager();
+        AreaManager areaManager = (AreaManager) Game.getInstance().getManager(AreaManager.class);
         for (AreaModel area: areaManager.getAreas()) {
             for (ParcelModel parcel: area.getParcels()) {
                 ((GDXRenderer)renderer).draw(COLOR,

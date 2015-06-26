@@ -15,9 +15,11 @@ public class PowerManager extends BaseManager {
     private List<ItemModel>     _items;
     private double              _produce;
     private double              _stored;
+    private double              _maxStorage;
 
     public PowerManager() {
         _stored = 1000;
+        _maxStorage = 3500;
         _items = new ArrayList<>();
     }
 
@@ -35,7 +37,7 @@ public class PowerManager extends BaseManager {
                 }
             }
             _produce = powerLeft - _stored;
-            _stored = powerLeft;
+            _stored = Math.min(_maxStorage, powerLeft);
         }
     }
 

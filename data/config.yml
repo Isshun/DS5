@@ -19,8 +19,8 @@ render:
     area:           true
     debug:          false
     room:           false
-    light:          false
-    particle:       false
+    light:          true
+    particle:       true
 
 manager:
     quest:          false
@@ -28,6 +28,7 @@ manager:
     temperature:    true
     weather:        true
     oxygen:         true
+    power:          true
 
 character:
     effects:

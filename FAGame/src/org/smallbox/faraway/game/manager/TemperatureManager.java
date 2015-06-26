@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.manager;
 
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.room.NeighborModel;
@@ -21,9 +22,9 @@ public class TemperatureManager extends BaseManager implements GameObserver {
     private double              _exteriorTemperature;
     private int                 _count;
 
-    public TemperatureManager(WorldManager worldManager, RoomManager roomManager) {
+    public TemperatureManager(WorldManager worldManager) {
+        _roomManager = (RoomManager)Game.getInstance().getManager(RoomManager.class);
         _worldManager = worldManager;
-        _roomManager = roomManager;
         _items = new ArrayList<>();
     }
 

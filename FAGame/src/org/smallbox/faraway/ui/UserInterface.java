@@ -5,6 +5,7 @@ import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.CharacterManager;
+import org.smallbox.faraway.game.manager.RelationManager;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.ToolTips.ToolTip;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
@@ -64,7 +65,6 @@ public class UserInterface implements GameEventListener {
             new PanelSystem(),
             new PanelTopInfo(),
             new PanelResources(),
-            new PanelPlanet(),
             new PanelDev(),
             new PanelQuest(),
             new PanelCharacter(	    Mode.CHARACTER,         null),
@@ -88,6 +88,7 @@ public class UserInterface implements GameEventListener {
 //			new PanelStats(		    Mode.STATS, 	        Key.S),
             new PanelManager(	    Mode.MANAGER, 	        Key.M),
             new PanelShortcut(	    Mode.NONE, 		        null),
+            new PanelPlanet(),
     };
 
     @Override
@@ -172,6 +173,15 @@ public class UserInterface implements GameEventListener {
             panel.init(_viewFactory, _factory, this, _interaction, null);
             panel.refresh(0);
         }
+    }
+
+    public BasePanel getPanel(Class<? extends BasePanel> panelCls) {
+        for (BasePanel panel: _panels) {
+            if (panel.getClass() == panelCls) {
+                return panel;
+            }
+        }
+        return null;
     }
 
     public enum Mode {
@@ -505,7 +515,7 @@ public class UserInterface implements GameEventListener {
 
         // Set area
         if (_interaction.isAction(UserInteraction.Action.SET_AREA)) {
-            Game.getAreaManager().createArea(
+            ((AreaManager)Game.getInstance().getManager(AreaManager.class)).createArea(
                     _interaction.getSelectedAreaType(),
                     Math.min(_keyPressPosX, _keyMovePosX),
                     Math.min(_keyPressPosY, _keyMovePosY),
@@ -562,7 +572,7 @@ public class UserInterface implements GameEventListener {
                 int relX = getRelativePosX(x);
                 int relY = getRelativePosY(y);
 
-                AreaModel area = Game.getAreaManager().getArea(relX, relY);
+                AreaModel area = ((AreaManager)Game.getInstance().getManager(AreaManager.class)).getArea(relX, relY);
                 ParcelModel parcel = Game.getWorldManager().getParcel(relX, relY);
 
                 // Select resource

@@ -49,6 +49,7 @@ public class GameConfig {
         public boolean          temperature;
         public boolean          weather;
         public boolean          oxygen;
+        public boolean          power;
     }
 
     public GameConfigRender     render;

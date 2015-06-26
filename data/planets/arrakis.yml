@@ -3,6 +3,7 @@ type: Desertic
 desc: |
     Arrakis is a hostile desertic planet, its sands contains rare resource
     carefully kept by strong local forces
+
 stats:
     water: -2
     fertility: -1
@@ -11,6 +12,187 @@ stats:
     flora: -2
     hostile_fauna: 2
     hostile_humankind: 1
+
+regions:
+    -   name: mountain
+        label: mountain
+        color: 0x804f15
+
+        distribution:
+            -   latitude: [40, 90]
+                frequency: 1
+
+        resources:
+            -   name: base.spice
+                frequency: 0.1
+                size: [5, 10]
+                quantity: [5, 10]
+                terrain: ground
+
+            -   name: base.iron
+                frequency: 0.2
+                size: [8, 30]
+                quantity: [10, 10]
+                terrain: rock
+
+        weather:
+            -   name: dust_storm
+                frequency: [2, 10]
+                duration: [1, 1]
+
+            -   name: el_sayal
+                frequency: [2, 10]
+                duration: [0.5, 0.5]
+
+        fauna:
+            -   name: kulon
+                frequency: 0.4
+                number: [5, 8]
+                group: unusual
+
+            -   name: muad_dib
+                frequency: 1
+                number: [1, 1]
+                group: common
+
+            -   name: desert_hare
+                frequency: 1
+                number: [1, 1]
+                group: common
+
+            -   name: desert_owl
+                frequency: 0.8
+                number: [1, 1]
+                group: common
+
+            -   name: desert_hawk
+                frequency: 0.8
+                number: [1, 1]
+                group: common
+
+    -   name: valley
+        label: Valley
+        color: 0xa06f35
+
+        distribution:
+            -   latitude: [40, 90]
+                frequency: 0.5
+            -   latitude: [-90, 40]
+                frequency: 0.2
+
+        resources:
+            -   name: base.spice
+                frequency: 0.1
+                size: [5, 10]
+                quantity: [5, 10]
+                terrain: ground
+
+            -   name: base.iron
+                frequency: 0.2
+                size: [8, 30]
+                quantity: [10, 10]
+                terrain: rock
+
+        weather:
+            -   name: dust_storm
+                frequency: [2, 10]
+                duration: [1, 1]
+
+            -   name: el_sayal
+                frequency: [2, 10]
+                duration: [0.5, 0.5]
+
+        fauna:
+            -   name: kulon
+                frequency: 0.4
+                number: [5, 8]
+                group: unusual
+
+            -   name: muad_dib
+                frequency: 1
+                number: [1, 1]
+                group: common
+
+            -   name: desert_hare
+                frequency: 1
+                number: [1, 1]
+                group: common
+
+            -   name: desert_owl
+                frequency: 0.8
+                number: [1, 1]
+                group: common
+
+            -   name: desert_hawk
+                frequency: 0.8
+                number: [1, 1]
+                group: common
+
+    -   name: desert
+        label: Desert
+        color: 0xffda3b
+
+        distribution:
+            -   latitude: [-90, 40]
+                frequency: 1
+
+        resources:
+            -   name: base.spice
+                frequency: 0.2
+                size: [10, 20]
+                quantity: [100, 1000]
+                terrain: ground
+
+            -   name: base.iron
+                frequency: 0.2
+                size: [8, 30]
+                quantity: [10, 10]
+                terrain: rock
+
+        weather:
+            -   name: dust_whirl
+                frequency: [2, 10]
+                duration: [0.5, 2]
+
+            -   name: dust_storm
+                frequency: [2, 10]
+                duration: [1, 1]
+
+            -   name: el_sayal
+                frequency: [2, 10]
+                duration: [0.5, 0.5]
+
+        fauna:
+            -   name: sandworm
+                frequency: 0.5
+                number: [1, 1]
+                group: unusual
+
+            -   name: kulon
+                frequency: 0.4
+                number: [5, 8]
+                group: unusual
+
+            -   name: muad_dib
+                frequency: 1
+                number: [1, 1]
+                group: common
+
+            -   name: desert_hare
+                frequency: 1
+                number: [1, 1]
+                group: common
+
+            -   name: desert_owl
+                frequency: 0.8
+                number: [1, 1]
+                group: common
+
+            -   name: desert_hawk
+                frequency: 0.8
+                number: [1, 1]
+                group: common
+
 image:
     thumb: data/planets/arrakis_thumb.png
 credit:

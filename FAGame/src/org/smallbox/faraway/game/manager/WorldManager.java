@@ -706,4 +706,17 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         }
         return true;
     }
+
+    public ParcelModel getRandomFreeSpace(boolean isExterior) {
+        int startX = (int) (Math.random() * _width);
+        int startY = (int) (Math.random() * _height);
+        for (int i = 0; i < _width; i++) {
+            for (int j = 0; j < _height; j++) {
+                if (isFreeSpace((startX + i) % _width, (startY + j) % _height, isExterior)) {
+                    return _parcels[(startX + i) % _width][(startY + j) % _height][0];
+                }
+            }
+        }
+        return null;
+    }
 }

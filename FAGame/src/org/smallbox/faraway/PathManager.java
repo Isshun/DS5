@@ -7,7 +7,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
 import org.smallbox.faraway.game.manager.BaseManager;
-import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.util.Log;
@@ -47,9 +47,9 @@ public class PathManager extends BaseManager {
         _heuristic = (node, endNode) -> 10 * (Math.abs(node.getX() - endNode.getX()) + Math.abs(node.getY() - endNode.getY()));
     }
 
-	public void getPathAsync(final OnMoveListener listener, final CharacterModel character, final BaseJobModel job, final int x, final int y) {
+	public void getPathAsync(final OnMoveListener listener, final MovableModel movable, final BaseJobModel job, final int x, final int y) {
 //		_threadPool.execute(() -> {
-            ParcelModel fromParcel = Game.getWorldManager().getParcel(character.getX(), character.getY());
+            ParcelModel fromParcel = Game.getWorldManager().getParcel(movable.getX(), movable.getY());
             ParcelModel toParcel = Game.getWorldManager().getParcel(x, y);
 
             Log.debug("getPathAsync");
@@ -58,9 +58,9 @@ public class PathManager extends BaseManager {
                 Log.info("character: path success (" + fromParcel.getX() + "x" + fromParcel.getY() + " to " + toParcel.getX() + "x" + toParcel.getY() + "), job: " + job);
                 synchronized (_runnable) {
                     _runnable.add(() -> {
-                        character.onPathComplete(path, job, fromParcel, toParcel);
+                        movable.onPathComplete(path, job, fromParcel, toParcel);
                         if (listener != null) {
-                            listener.onSuccess(job, character);
+                            listener.onSuccess(job, movable);
                         }
                     });
                 }
@@ -68,9 +68,9 @@ public class PathManager extends BaseManager {
                 Log.info("character: path fail");
                 synchronized (_runnable) {
                     _runnable.add(() -> {
-                        character.onPathFailed(job, fromParcel, toParcel);
+                        movable.onPathFailed(job, fromParcel, toParcel);
                         if (listener != null) {
-                            listener.onFail(job, character);
+                            listener.onFail(job, movable);
                         }
                     });
                 }

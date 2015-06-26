@@ -1,5 +1,4 @@
 entries:
-
     -   type: label
         id: lb_planet
         text: Planet

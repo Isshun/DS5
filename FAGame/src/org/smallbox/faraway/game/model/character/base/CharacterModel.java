@@ -6,10 +6,11 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
 import org.smallbox.faraway.game.manager.JobManager;
+import org.smallbox.faraway.game.manager.RoomManager;
 import org.smallbox.faraway.game.model.CharacterBuffModel;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.Movable;
+import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.character.CharacterRelationModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -24,7 +25,7 @@ import org.smallbox.faraway.util.Log;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class CharacterModel extends Movable {
+public abstract class CharacterModel extends MovableModel {
     private ParcelModel _toParcel;
     private ParcelModel _fromParcel;
 
@@ -95,7 +96,6 @@ public abstract class CharacterModel extends Movable {
     protected double 					_bodyHeat = Constant.BODY_TEMPERATURE;
     protected CharacterStats            _stats;
     protected boolean 					_isFaint;
-    protected double                    _moveProgress;
 
     private Map<TalentType, TalentEntry> _talentsMap;
     private List<TalentEntry>       	_talents;
@@ -143,7 +143,6 @@ public abstract class CharacterModel extends Movable {
     public GraphPath<ParcelModel> 	getPath() { return _path; }
     public int 				        getLag() { return _lag; }
     public double			        getOld() { return _old; }
-    public double                   getMoveProgress() { return _moveProgress; }
     public RoomModel                getQuarter() { return _quarter; }
     public void                     setQuarter(RoomModel quarter) { _quarter = quarter; }
     public List<TalentEntry>        getTalents() { return _talents; }
@@ -215,7 +214,7 @@ public abstract class CharacterModel extends Movable {
 
         // Check room temperature
         _stats.reset(this, _equipments);
-        updateBodyHeat(Game.getRoomManager().getRoom(_posX, _posY));
+        updateBodyHeat(((RoomManager)Game.getInstance().getManager(RoomManager.class)).getRoom(_posX, _posY));
     }
 
     private void updateBodyHeat(RoomModel room) {
@@ -399,7 +398,7 @@ public abstract class CharacterModel extends Movable {
         }
     }
 
-    //	@Override
+    @Override
     public void	onPathFailed(BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
         if (_fromParcel == fromParcel && _toParcel == toParcel) {
             Log.warning("Job failed (no path)");
@@ -415,7 +414,7 @@ public abstract class CharacterModel extends Movable {
         }
     }
 
-    //	@Override
+    @Override
     public void	onPathComplete(GraphPath<ParcelModel> path, BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
         if (_fromParcel == fromParcel && _toParcel == toParcel) {
             Log.debug("Character #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");

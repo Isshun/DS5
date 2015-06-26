@@ -4,9 +4,11 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.JobManager;
+import org.smallbox.faraway.game.manager.RoomManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.ui.AreaManager;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.Colors;
@@ -171,7 +173,7 @@ public class PanelDebug extends BaseRightPanel {
 		findById("bt_add_character").setOnClickListener(view -> Game.getCharacterManager().addRandom(150, 150));
 //		findById("bt_add_matter").setOnClickListener(view -> ResourceManager.getInstance().addScience(500));
 		findById("bt_toggle_debug").setOnClickListener(view -> _ui.toggleMode(Mode.DEBUGITEMS));
-		findById("bt_make_room").setOnClickListener(view -> Game.getRoomManager().makeRooms());
+		findById("bt_make_room").setOnClickListener(view -> ((RoomManager)Game.getInstance().getManager(RoomManager.class)).makeRooms());
 		findById("bt_kill_all").setOnClickListener(view -> {
 			Game.getCharacterManager().getCharacters().forEach(CharacterModel::setIsDead);
 		});
