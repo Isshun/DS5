@@ -297,8 +297,15 @@ public class Application implements GameEventListener {
             }
 
             renderer.clear(new Color(0, 0, 0));
+
+            long timeGameRenderer = System.nanoTime();
             _mainRenderer.onDraw(renderer, effect, animProgress);
+            Log.debug("MainRenderer: " + ((double)((System.nanoTime() - timeGameRenderer) / 100000) / 10) + "ms");
+
+            long timeUIRenderer = System.nanoTime();
             _gameInterface.onDraw(renderer, _tick, 0);
+            Log.debug("UIRenderer: " + ((double)((System.nanoTime() - timeUIRenderer) / 100000) / 10) + "ms");
+
             renderer.finish();
 
             if (_game.isRunning()) {

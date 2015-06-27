@@ -78,6 +78,7 @@ public class GDXApplication extends ApplicationAdapter {
         GDXInputProcessor inputProcessor = new GDXInputProcessor(_application, timer);
         Gdx.input.setInputProcessor(inputProcessor);
         Gdx.graphics.setContinuousRendering(true);
+        Gdx.graphics.setVSync(true);
         Gdx.graphics.requestRendering();
 
         _application.setInputDirection(inputProcessor.getDirection());

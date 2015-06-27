@@ -5,12 +5,14 @@ import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.CharacterManager;
-import org.smallbox.faraway.game.manager.RelationManager;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.ToolTips.ToolTip;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.room.RoomModel;
+import org.smallbox.faraway.ui.cursor.BuildCursor;
+import org.smallbox.faraway.ui.cursor.DefaultCursor;
+import org.smallbox.faraway.ui.cursor.MineCursor;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.UIMessage;
 import org.smallbox.faraway.ui.engine.ViewFactory;
@@ -188,6 +190,15 @@ public class UserInterface implements GameEventListener {
         return null;
     }
 
+    public void putDebug(ItemInfo itemInfo) {
+        _interaction.set(UserInteraction.Action.PUT_ITEM_FREE, itemInfo);
+        setCursor(new BuildCursor());
+    }
+
+    public void setCursor(UserInterfaceCursor cursor) {
+        _cursor = cursor;
+    }
+
     public enum Mode {
         INFO,
         DEBUG,
@@ -221,7 +232,7 @@ public class UserInterface implements GameEventListener {
         _characters = Game.getCharacterManager();
         _keyLeftPressed = false;
         _keyRightPressed = false;
-        _cursor = new UserInterfaceCursor();
+        _cursor = new DefaultCursor();
 
         for (BasePanel panel: _panels) {
             panel.init(_viewFactory, _factory, this, _interaction, SpriteManager.getInstance().createRenderEffect());
@@ -384,6 +395,7 @@ public class UserInterface implements GameEventListener {
 
         if (_mouseOnMap) {
             if (_interaction.isAction(UserInteraction.Action.SET_ROOM)
+                    || _interaction.isAction(UserInteraction.Action.PUT_ITEM_FREE)
                     || _interaction.isAction(UserInteraction.Action.SET_AREA)
                     || _interaction.isAction(UserInteraction.Action.SET_PLAN)
                     || _interaction.isAction(UserInteraction.Action.BUILD_ITEM)) {

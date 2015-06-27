@@ -23,6 +23,7 @@ public class JobHaul extends BaseJobModel {
     private Mode 			        _mode;
     private int                     _quantity;
     private ItemInfo                _itemInfo;
+    private String                  _message;
 
     private JobHaul(int x, int y) {
         super(null, x, y, "data/res/ic_haul.png", "data/res/ic_action_haul.png");
@@ -145,7 +146,7 @@ public class JobHaul extends BaseJobModel {
         }
 
         // Unable to find free storage
-        _reason = BaseJobModel.JobAbortReason.INVALID;
+        _message = "Unable to find free storage";
         return false;
     }
 

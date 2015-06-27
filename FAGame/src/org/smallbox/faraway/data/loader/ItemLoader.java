@@ -101,7 +101,6 @@ public class ItemLoader implements IDataLoader {
 
     private void secondPass(GameData data) {
         for (ItemInfo item: data.items) {
-            item.isSleeping = "base.bed".equals(item.name);
 
             if (item.receipts != null) {
                 for (ItemInfo.ItemInfoReceipt receipt: item.receipts) {

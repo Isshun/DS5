@@ -9,8 +9,10 @@ import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobDump;
+import org.smallbox.faraway.game.model.job.JobHaul;
 import org.smallbox.faraway.game.model.room.RoomModel.RoomType;
 import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.ui.cursor.*;
 import org.smallbox.faraway.ui.panel.PanelPlan.Planning;
 import org.smallbox.faraway.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -18,7 +20,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class UserInteraction {
 
 	public enum Action {
-		NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_ROOM, SET_AREA, SET_PLAN
+		NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_ROOM, SET_AREA, PUT_ITEM_FREE, SET_PLAN
 	}
 
 	Action					_action;
@@ -97,6 +99,21 @@ public class UserInteraction {
 		}
 	}
 
+	public void	planPutForFree(int startX, int startY, int toX, int toY) {
+		if (_selectedItemInfo == null) {
+			return;
+		}
+
+		for (int x = toX; x >= startX; x--) {
+			for (int y = toY; y >= startY; y--) {
+				if (_selectedItemInfo != null) {
+					Log.warning("3 " + _selectedItemInfo.name);
+					Game.getWorldManager().putObject(_selectedItemInfo, x, y, 0, 10);
+				}
+			}
+		}
+	}
+
 	public void removeItem(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
@@ -166,6 +183,9 @@ public class UserInteraction {
 	public void planHaul(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
+				if (Game.getWorldManager().getConsumable(x, y) != null) {
+					JobManager.getInstance().addJob(JobHaul.create(Game.getWorldManager().getConsumable(x, y)));
+				}
 			}
 		}
 	}
@@ -180,6 +200,7 @@ public class UserInteraction {
 		case GATHER: planGather(startX, startY, toX, toY); break;
 		case MINING: planMining(startX, startY, toX, toY); break;
 		case PICK: planPick(startX, startY, toX, toY); break;
+		case HAUL: planHaul(startX, startY, toX, toY); break;
 		default: break;
 		}
 	}
@@ -234,6 +255,23 @@ public class UserInteraction {
 	public void set(Action action, Planning plan) {
 		_action = action;
 		_selectedPlan = plan;
+		switch (plan) {
+			case GATHER:
+				UserInterface.getInstance().setCursor(new GatherCursor());
+				break;
+			case MINING:
+				UserInterface.getInstance().setCursor(new MineCursor());
+				break;
+			case DUMP:
+				UserInterface.getInstance().setCursor(new DumpCursor());
+				break;
+			case PICK:
+				UserInterface.getInstance().setCursor(new PickCursor());
+				break;
+			case HAUL:
+				UserInterface.getInstance().setCursor(new PickCursor());
+				break;
+		}
 	}
 
 	public void set(Action action, ItemInfo info) {
@@ -255,6 +293,11 @@ public class UserInteraction {
 		// Build item
 		if (_action == Action.BUILD_ITEM) {
 			planBuild(fromX, fromY, toX, toY);
+		}
+
+		// Build item free
+		if (_action == Action.PUT_ITEM_FREE) {
+			planPutForFree(fromX, fromY, toX, toY);
 		}
 	}
 

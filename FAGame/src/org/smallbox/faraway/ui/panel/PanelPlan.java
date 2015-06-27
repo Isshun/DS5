@@ -5,6 +5,7 @@ import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInteraction.Action;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.cursor.MineCursor;
 import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.View;
 
