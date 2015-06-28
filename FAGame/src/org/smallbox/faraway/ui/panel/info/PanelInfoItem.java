@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui.panel;
+package org.smallbox.faraway.ui.panel.info;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
@@ -8,10 +8,11 @@ import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.model.job.JobCraft;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 
@@ -77,18 +78,26 @@ public class PanelInfoItem extends BaseInfoRightPanel {
         select(item.getInfo());
 
         if (isLoaded()) {
-            ((TextView)findById("lb_id")).setString("(" + _item.getId() + ")");
-            ((TextView)findById("lb_durability")).setString("Durability: " + _item.getHealth());
-            ((TextView)findById("lb_matter")).setString("Matter: " + _item.getMatter());
-            ((TextView)findById("lb_components")).setString("Components: " + String.join(", ", _item.getComponents().stream().map(ConsumableModel::getFullLabel).collect(Collectors.toList())));
-            ((TextView)findById("lb_crafts")).setString("Crafts: " + String.join(", ", _item.getCrafts().stream().map(ConsumableModel::getFullLabel).collect(Collectors.toList())));
+            ((UILabel)findById("lb_id")).setString("(" + _item.getId() + ")");
+            ((UILabel)findById("lb_durability")).setString("Durability: " + _item.getHealth());
+            ((UILabel)findById("lb_matter")).setString("Matter: " + _item.getMatter());
+            ((UILabel)findById("lb_components")).setString("Components: " + String.join(", ", _item.getComponents().stream().map(ConsumableModel::getFullLabel).collect(Collectors.toList())));
+
+            JobCraft jobCraft = (JobCraft)(_item.getJobs() != null && !_item.getJobs().isEmpty() && _item.getJobs().get(0) instanceof JobCraft ? _item.getJobs().get(0) : null);
+            if (jobCraft != null && jobCraft.isRunning() && jobCraft.getReceipt() != null) {
+                ((UILabel)findById("lb_crafts")).setString("Crafts: " + String.join(", ", jobCraft.getReceipt().getInfo().products.stream().map(product -> product.itemInfo.label).collect(Collectors.toList())));
+                ((UILabel) findById("lb_users")).setString("User: " + jobCraft.getCharacter().getName());
+            } else {
+                ((UILabel)findById("lb_crafts")).setString("Crafts: none");
+                ((UILabel) findById("lb_users")).setString("Users: none");
+            }
         }
 
         // Temperature
         if (_itemInfo.hasTemperatureEffect()) {
             _frameTmp.setVisible(true);
-            ((TextView)findById("lb_tmp_target")).setString("Targeted: " + _item.getTargetTemperature());
-            ((TextView)findById("lb_potency")).setString("Potency: " + _item.getPotencyUse() + "/" + _item.getInfo().effects.heatPotency);
+            ((UILabel)findById("lb_tmp_target")).setString("Targeted: " + _item.getTargetTemperature());
+            ((UILabel)findById("lb_potency")).setString("Potency: " + _item.getPotencyUse() + "/" + _item.getInfo().effects.heatPotency);
             findById("bt_tmp_add").setOnClickListener(view -> _item.setTargetTemperature(_item.getTargetTemperature() + 1));
             findById("bt_tmp_sub").setOnClickListener(view -> _item.setTargetTemperature(_item.getTargetTemperature() - 1));
         } else {
@@ -123,7 +132,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
         _itemInfo = info;
 
         if (isLoaded()) {
-            ((TextView)findById("lb_name")).setString(_itemInfo.label);
+            ((UILabel)findById("lb_name")).setString(_itemInfo.label);
         }
     }
 
@@ -131,16 +140,16 @@ public class PanelInfoItem extends BaseInfoRightPanel {
         _viewFactory.load("data/ui/panels/info_item_craft_entry.yml", view -> {
             view.findById("bt_suspend");
             view.findById("bt_cancel").setOnClickListener(v -> JobManager.getInstance().removeJob(job));
-            ((TextView)view.findById("lb_label")).setString(job.getLabel());
-            ((TextView)view.findById("lb_ingredient")).setString(job.getIngredient() != null ? job.getIngredient().getLabel() + " (" + job.getIngredient().getQuantity() + ")" : "no components");
+            ((UILabel)view.findById("lb_label")).setString(job.getLabel());
+            ((UILabel)view.findById("lb_ingredient")).setString(job.getIngredient() != null ? job.getIngredient().getLabel() + " (" + job.getIngredient().getQuantity() + ")" : "no components");
 
             if (job.getProgressPercent() > 0) {
-                ((TextView) view.findById("lb_progress")).setString(job.getMessage() + ": " + job.getProgressPercent() + "%");
+                ((UILabel) view.findById("lb_progress")).setString(job.getMessage() + ": " + job.getProgressPercent() + "%");
             } else {
-                ((TextView) view.findById("lb_progress")).setString(job.getMessage());
+                ((UILabel) view.findById("lb_progress")).setString(job.getMessage());
             }
 
-            TextView lbCraftCount = (TextView)view.findById("lb_count");
+            UILabel lbCraftCount = (UILabel)view.findById("lb_count");
             lbCraftCount.setString(job.getTotalCount() == Integer.MAX_VALUE ? "xx" : "x" + job.getCount());
             lbCraftCount.setOnClickListener(v -> {
                 job.setTotalCount(job.getTotalCount() == Integer.MAX_VALUE ? 1 : Integer.MAX_VALUE);
@@ -155,7 +164,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
     }
 
     private void addActionMenuEntry(ItemInfo.ItemInfoAction action, int index) {
-        TextView lbCraft = _viewFactory.createTextView();
+        UILabel lbCraft = _viewFactory.createTextView();
         lbCraft.setString(action.label);
         lbCraft.setCharacterSize(14);
         lbCraft.setPosition(0, 0 + 28 * index);

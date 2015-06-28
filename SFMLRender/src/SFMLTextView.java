@@ -4,11 +4,11 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.ui.engine.Colors;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.util.StringUtils;
 import org.smallbox.faraway.engine.SpriteManager;
 
-public class SFMLTextView extends TextView {
+public class SFMLTextView extends UILabel {
 	protected Text 			_text;
 	protected Text 			_shortcut;
 	protected Text 			_shortcutUnderline;
@@ -92,9 +92,9 @@ public class SFMLTextView extends TextView {
 
     private int getSFMLStyle(int style) {
         switch (style) {
-            case TextView.BOLD: return Text.BOLD;
-            case TextView.ITALIC: return Text.ITALIC;
-            case TextView.UNDERLINED: return Text.UNDERLINED;
+            case UILabel.BOLD: return Text.BOLD;
+            case UILabel.ITALIC: return Text.ITALIC;
+            case UILabel.UNDERLINED: return Text.UNDERLINED;
         }
         return Text.REGULAR;
     }

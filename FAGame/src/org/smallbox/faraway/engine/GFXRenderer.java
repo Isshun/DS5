@@ -11,6 +11,7 @@ public interface GFXRenderer {
     void draw(View view, int x, int y);
     void draw(SpriteModel sprite, RenderEffect effect);
     void draw(ColorView view, RenderEffect effect);
+    void draw(Color color, int x, int y, int width, int height);
     void clear(Color color);
     void clear();
     void display();

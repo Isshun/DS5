@@ -24,12 +24,12 @@ public class GDXViewFactory extends ViewFactory {
     }
 
     @Override
-    public TextView createTextView() {
+    public UILabel createTextView() {
         return new GDXLabel();
     }
 
     @Override
-    public TextView createTextView(int width, int height) {
+    public UILabel createTextView(int width, int height) {
         GDXLabel label = new GDXLabel();
         label.setSize(width, height);
         return label;
@@ -48,12 +48,12 @@ public class GDXViewFactory extends ViewFactory {
     }
 
     @Override
-    public ImageView createImageView() {
+    public UIImage createImageView() {
         return new GDXImageView(0, 0);
     }
 
     @Override
-    public ImageView createImageView(int width, int height) {
+    public UIImage createImageView(int width, int height) {
         return new GDXImageView(width, height);
     }
 

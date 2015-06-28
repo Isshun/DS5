@@ -1,3 +1,5 @@
+position: [-400, 32]
+align: [right, top]
 entries:
 
     -   type: label
@@ -10,3 +12,7 @@ entries:
         text: remove area
         textsize: 14
         position: [24, 48]
+
+    -   type: frame
+        id: frame_entries
+        position: [24, 68]

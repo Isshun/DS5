@@ -6,7 +6,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.engine.renderer.RenderLayer;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 
 /**
  * Created by Alex on 04/06/2015.
@@ -62,7 +62,7 @@ public class GDXRenderLayer extends RenderLayer {
     }
 
     @Override
-    public void draw(TextView text) {
+    public void draw(UILabel text) {
     }
 
     @Override

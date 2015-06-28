@@ -12,6 +12,7 @@ import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.ui.engine.ColorView;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.util.Constant;
@@ -69,6 +70,11 @@ public class GDXRenderer implements GFXRenderer {
     @Override
     public void draw(ColorView view, RenderEffect effect) {
         view.draw(this, effect);
+    }
+
+    @Override
+    public void draw(org.smallbox.faraway.engine.Color color, int x, int y, int width, int height) {
+        draw(new Color(color.r / 255f, color.g / 255f, color.b / 255f, 1f), x, y, width, height);
     }
 
     @Override
@@ -161,6 +167,8 @@ public class GDXRenderer implements GFXRenderer {
     }
 
     public void draw(String string, int textSize, int x, int y, Color color) {
+        textSize *= GameData.config.uiScale;
+
         if (string != null) {
             _batch.begin();
             _fonts[textSize].setColor(color != null ? color : TEXT_COLOR);

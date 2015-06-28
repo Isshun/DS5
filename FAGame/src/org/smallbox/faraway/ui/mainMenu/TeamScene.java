@@ -3,7 +3,7 @@ package org.smallbox.faraway.ui.mainMenu;
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.ui.LayoutModel;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 
 /**
  * Created by Alex on 02/06/2015.
@@ -20,7 +20,7 @@ public class TeamScene extends MainMenuScene {
 
     @Override
     protected void onOpen() {
-        ((TextView)findById("lb_planet")).setString(_mainMenu.getPlanet().name);
-        ((TextView)findById("lb_landing_site")).setString(_mainMenu.getLandingSite().name);
+        ((UILabel)findById("lb_planet")).setString(_mainMenu.getPlanet().name);
+        ((UILabel)findById("lb_landing_site")).setString(_mainMenu.getLandingSite().name);
     }
 }

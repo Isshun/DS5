@@ -5,7 +5,7 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.ui.engine.OnClickListener;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
@@ -19,7 +19,7 @@ public class MenuLoad extends MenuBase {
 	private static final int 	FRAME_WIDTH = 640;
 	private static final int 	FRAME_HEIGHT = 480;
 	private int 				_index;
-	private List<TextView>		_lbFiles;
+	private List<UILabel>		_lbFiles;
 	private int 				_nbFiles;
 	
 	public MenuLoad(final GameLoadListener onLoadListener) throws IOException {
@@ -29,14 +29,14 @@ public class MenuLoad extends MenuBase {
 		
 		setBackgroundColor(new Color(200, 50, 140, 150));
 		
-		_lbFiles = new ArrayList<TextView>();
+		_lbFiles = new ArrayList<UILabel>();
 		File[] files = null;
 		File directoryToScan = new File("saves");
 		files = directoryToScan.listFiles();
 		_nbFiles = files.length;
 		int i = 0;
 		for (final File file: files) {
-			TextView lbFile = ViewFactory.getInstance().createTextView(200, 32);
+			UILabel lbFile = ViewFactory.getInstance().createTextView(200, 32);
 			lbFile.setCharacterSize(16);
 			lbFile.setString(file.getName());
 			lbFile.setColor(Color.WHITE);
@@ -59,7 +59,7 @@ public class MenuLoad extends MenuBase {
 	@Override
 	public void onDraw(GFXRenderer renderer, RenderEffect effect) {
 		int i = 0;
-		for (TextView lbFile: _lbFiles) {
+		for (UILabel lbFile: _lbFiles) {
 			lbFile.setColor(i++ == _index ? Color.YELLOW : Color.WHITE);
 		}
 	}

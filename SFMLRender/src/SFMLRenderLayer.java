@@ -5,7 +5,7 @@ import org.jsfml.graphics.TextureCreationException;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteModel;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.engine.renderer.RenderLayer;
 
@@ -47,7 +47,7 @@ public class SFMLRenderLayer extends RenderLayer {
 		_textureCache.draw(((SFMLSprite) sprite).getData());
 	}
 
-	public void draw(TextView text) {
+	public void draw(UILabel text) {
 		_textureCache.draw(((SFMLTextView)text).getText());
 	}
 }

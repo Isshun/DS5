@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui.panel;
+package org.smallbox.faraway.ui.panel.right;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
@@ -8,13 +8,13 @@ import org.smallbox.faraway.game.manager.RoomManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
-import org.smallbox.faraway.ui.AreaManager;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.panel.BaseRightPanel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.StringUtils;
@@ -41,9 +41,9 @@ public class PanelDebug extends BaseRightPanel {
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int	FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 
-	private TextView 			_lbSearch;
-	private TextView[] 			_labels;
-	private TextView[] 			_shortcuts;
+	private UILabel _lbSearch;
+	private UILabel[] 			_labels;
+	private UILabel[] 			_shortcuts;
 	private int 				_nbEntries;
 	private int 				_line;
 	private String 				_search = "";
@@ -339,7 +339,7 @@ public class PanelDebug extends BaseRightPanel {
         Log.debug(text);
 
 
-        TextView lbEntry = ViewFactory.getInstance().createTextView();
+        UILabel lbEntry = ViewFactory.getInstance().createTextView();
         lbEntry.setColor(Color.WHITE);
         lbEntry.setCharacterSize(14);
         lbEntry.setString(text);

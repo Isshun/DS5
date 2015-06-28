@@ -7,6 +7,8 @@ environmentDistance: 5
 byPassMenu: true
 lang: fr
 maxNearDistance: 32
+resolution: [1800, 1100]
+uiScale: 1
 
 render:
     floor:          true

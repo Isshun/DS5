@@ -3,6 +3,8 @@ package org.smallbox.faraway.ui.engine;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.util.Constant;
 
 import java.awt.*;
 
@@ -10,10 +12,19 @@ import java.awt.*;
  * Created by Alex on 27/05/2015.
  */
 public abstract class View {
-    private String _name;
+    private String      _name;
+    protected boolean   _isAlignLeft = true;
+    protected boolean   _isAlignTop = true;
+    protected int       _finalX;
+    protected int       _finalY;
 
     public void setName(String name) {
         _name = name;
+    }
+
+    public void setAlign(boolean isAlignLeft, boolean isAlignTop) {
+        _isAlignLeft = isAlignLeft;
+        _isAlignTop = isAlignTop;
     }
 
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };
@@ -37,7 +48,6 @@ public abstract class View {
     protected int 				_borderSize;
     protected boolean 			_invalid;
     protected Object 			_data;
-    protected ColorView         _background;
     protected Align             _align = Align.LEFT;
     protected int               _offsetX;
     protected int               _offsetY;
@@ -59,9 +69,6 @@ public abstract class View {
     public void         setAlign(Align align) { _align = align; }
     public void 		setFocus(boolean focus) { _isFocus = focus; }
     public void 		setParent(FrameLayout parent) {
-        if (_background != null) {
-            _background.setParent(parent);
-        }
         _parent = parent;
     }
 
@@ -80,12 +87,6 @@ public abstract class View {
     }
 
     public void setBorderColor(Color color) {
-    }
-
-    public void setSize(int width, int height) {
-        _width = width;
-        _height = height;
-        _invalid = true;
     }
 
     public void setVisible(boolean visible) {
@@ -122,9 +123,6 @@ public abstract class View {
 
     public void resetPos() {
         _rect = computeRect();
-        if (_background != null) {
-            _background.resetPos();
-        }
     }
 
     public void setPadding(int t, int r, int b, int l) {
@@ -143,26 +141,29 @@ public abstract class View {
         _invalid = true;
     }
 
-    public void setPosition(int x, int y) {
-        if (_background != null) {
-            _background.setPosition(x, y);
-        }
+    public void setSize(int width, int height) {
+        _width = (int) (width * GameData.config.uiScale);
+        _height = (int) (height * GameData.config.uiScale);
+        _invalid = true;
+    }
 
-        _x = x;
-        _y = y;
+    public void setPosition(int x, int y) {
+        _x = (int) (x * GameData.config.uiScale) + (_isAlignLeft ? 0 : GameData.config.resolution[0]);
+        _y = (int) (y * GameData.config.uiScale) + (_isAlignTop ? 0 : GameData.config.resolution[1]);
+
         _invalid = true;
     }
 
     protected Rectangle computeRect() {
-        int x = 0;
-        int y = 0;
+        _finalX = 0;
+        _finalY = 0;
         View view = this;
         while (view != null) {
-            x += view.getPosX() + view.getOffsetX();
-            y += view.getPosY() + view.getOffsetY();
+            _finalX += view.getPosX() + view.getOffsetX();
+            _finalY += view.getPosY() + view.getOffsetY();
             view = view.getParent();
         }
-        return new Rectangle(x, y, _width == 0 ? getContentWidth() : _width, _height == 0 ? getContentHeight() : _height);
+        return new Rectangle(_finalX, _finalY, _width == 0 ? getContentWidth() : _width, _height == 0 ? getContentHeight() : _height);
     }
 
     private int getOffsetX() {

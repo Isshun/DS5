@@ -1,3 +1,5 @@
+position: [0, -200]
+align: [left, bottom]
 entries:
 
     -   type: frame

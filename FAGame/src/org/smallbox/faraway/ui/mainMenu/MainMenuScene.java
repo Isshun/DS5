@@ -4,7 +4,7 @@ import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.ImageView;
+import org.smallbox.faraway.ui.engine.UIImage;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.BasePanel;
 import org.smallbox.faraway.ui.panel.LayoutFactory;
@@ -32,7 +32,7 @@ public class MainMenuScene extends BasePanel {
 
         int width = 1920;
         int height = 1080;
-        ImageView imageView = viewFactory.createImageView();
+        UIImage imageView = viewFactory.createImageView();
         imageView.setImagePath("data/planets/background.jpg");
         imageView.setPosition(-_x, -_y);
         imageView.setSize(width, height);

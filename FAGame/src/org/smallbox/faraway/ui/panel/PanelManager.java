@@ -6,7 +6,7 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.ColorView;
 import org.smallbox.faraway.ui.engine.Colors;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.StringUtils;
@@ -22,12 +22,12 @@ public class PanelManager extends BaseRightPanel {
 		}
 	}
 	
-	private TextView[] 			_labels;
-	private TextView[] 			_shortcuts;
+	private UILabel[] 			_labels;
+	private UILabel[] 			_shortcuts;
 	private String 				_search = "";
 	
 	private List<PanelEntry> _entries;
-	private TextView 		_lbSearch;
+	private UILabel _lbSearch;
 
 	private ColorView 		_cursor;
 	private int				_line;
@@ -63,7 +63,7 @@ public class PanelManager extends BaseRightPanel {
 		_cursor.setPosition(86, 60);
 		addView(_cursor);
 
-		TextView lbOrder = ViewFactory.getInstance().createTextView();
+		UILabel lbOrder = ViewFactory.getInstance().createTextView();
 		lbOrder.setString("Select order");
 		lbOrder.setCharacterSize(FONT_SIZE_TITLE);
 		lbOrder.setPosition(20, 20);
@@ -76,8 +76,8 @@ public class PanelManager extends BaseRightPanel {
 		_lbSearch.setColor(Colors.LINK_INACTIVE);
 		addView(_lbSearch);
 
-		_labels = new TextView[_nbEntries];
-		_shortcuts = new TextView[_nbEntries];
+		_labels = new UILabel[_nbEntries];
+		_shortcuts = new UILabel[_nbEntries];
 		for (int i = 0; i < _nbEntries; i++) {
 			_labels[i] = ViewFactory.getInstance().createTextView();
 			_labels[i].setPosition(20, 100 + i * LINE_HEIGHT);

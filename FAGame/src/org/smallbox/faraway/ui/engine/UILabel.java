@@ -4,18 +4,18 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.model.GameData;
 
-public abstract class TextView extends View {
+public abstract class UILabel extends View {
 
 	public static final int	REGULAR = 0;
 	public static final int	BOLD = 1;
 	public static final int	ITALIC = 2;
 	public static final int	UNDERLINED = 3;
 
-	public TextView() {
+	public UILabel() {
 		super(0, 0);
 	}
 
-	public TextView(int width, int height) {
+	public UILabel(int width, int height) {
 		super(width, height);
 	}
 
@@ -61,9 +61,6 @@ public abstract class TextView extends View {
 
 	@Override
 	public void init() {
-		if (_background != null) {
-			_background.setPosition(_x, _y);
-		}
 	}
 
 	@Override

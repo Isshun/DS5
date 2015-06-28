@@ -231,4 +231,6 @@ public abstract class BaseJobModel {
 	public String toString() {
 		return "#" + _id + " (" + getLabel() + ")";
 	}
+
+    public boolean isRunning() { return _character != null; }
 }

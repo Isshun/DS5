@@ -14,7 +14,7 @@ public class MenuGame extends MenuBase {
 	private static final int 	FRAME_WIDTH = 640;
 	private static final int 	FRAME_HEIGHT = 480;
 	private int 				_index;
-	private List<TextView>		_lbFiles;
+	private List<UILabel>		_lbFiles;
 	private int 				_nbFiles;
 	private FrameLayout 		_menu;
 	protected int 				_selected = -1;
@@ -46,7 +46,7 @@ public class MenuGame extends MenuBase {
 	}
 
 	private void refreshEntry(GFXRenderer renderer, String str, int pos) {
-		TextView text = ViewFactory.getInstance().createTextView();
+		UILabel text = ViewFactory.getInstance().createTextView();
 		text.setString(str);
 		text.setCharacterSize(42);
 		text.setColor(Color.CYAN);
@@ -66,7 +66,7 @@ public class MenuGame extends MenuBase {
 
 	public void addEntry(String str, final int pos, OnClickListener listener) {
 		{
-			TextView text = ViewFactory.getInstance().createTextView(300, 52);
+			UILabel text = ViewFactory.getInstance().createTextView(300, 52);
 			text.setString(str);
 			text.setCharacterSize(42);
 			text.setColor(Color.WHITE);

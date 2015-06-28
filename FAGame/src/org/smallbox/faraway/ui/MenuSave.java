@@ -16,11 +16,11 @@ public class MenuSave extends MenuBase {
 	private static final int 	FRAME_WIDTH = 640;
 	private static final int 	FRAME_HEIGHT = 480;
 	private int 				_index;
-	private List<TextView>		_lbFiles;
+	private List<UILabel>		_lbFiles;
 	private int 				_nbFiles;
 	private FrameLayout _menu;
 	private String _saveName = "";
-	private TextView _textEntry;
+	private UILabel _textEntry;
 
 	public MenuSave(final Game game) {
 		super(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
@@ -45,7 +45,7 @@ public class MenuSave extends MenuBase {
 		_nbFiles = files.length;
 		int i = 0;
 		for (final File file: files) {
-			TextView lbFile = ViewFactory.getInstance().createTextView(200, 32);
+			UILabel lbFile = ViewFactory.getInstance().createTextView(200, 32);
 			lbFile.setCharacterSize(16);
 			lbFile.setString(file.getName());
 			lbFile.setColor(Color.WHITE);
@@ -110,7 +110,7 @@ public class MenuSave extends MenuBase {
 	@Override
 	public void onDraw(GFXRenderer renderer, RenderEffect effect) {
 		int i = 0;
-		for (TextView lbFile: _lbFiles) {
+		for (UILabel lbFile: _lbFiles) {
 			lbFile.setColor(i++ == _index ? Color.YELLOW : Color.WHITE);
 		}
 		_textEntry.setString(_saveName);

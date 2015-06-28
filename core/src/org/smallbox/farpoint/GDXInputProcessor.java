@@ -40,19 +40,19 @@ public class GDXInputProcessor implements InputProcessor {
             _modifier = GameEventListener.Modifier.SHIFT;
         }
 
-        if (keycode == Keys.A) {
+        if (keycode == Keys.A || keycode == Keys.LEFT) {
             _keyDirection[0] = true;
         }
 
-        if (keycode == Keys.W) {
+        if (keycode == Keys.W || keycode == Keys.UP) {
             _keyDirection[1] = true;
         }
 
-        if (keycode == Keys.D) {
+        if (keycode == Keys.D || keycode == Keys.RIGHT) {
             _keyDirection[2] = true;
         }
 
-        if (keycode == Keys.S) {
+        if (keycode == Keys.S || keycode == Keys.DOWN) {
             _keyDirection[3] = true;
         }
 
@@ -61,22 +61,22 @@ public class GDXInputProcessor implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keycode == Keys.A) {
+        if (keycode == Keys.A || keycode == Keys.LEFT) {
             _keyDirection[0] = false;
             return true;
         }
 
-        if (keycode == Keys.W) {
+        if (keycode == Keys.W || keycode == Keys.UP) {
             _keyDirection[1] = false;
             return true;
         }
 
-        if (keycode == Keys.D) {
+        if (keycode == Keys.D || keycode == Keys.RIGHT) {
             _keyDirection[2] = false;
             return true;
         }
 
-        if (keycode == Keys.S) {
+        if (keycode == Keys.S || keycode == Keys.DOWN) {
             _keyDirection[3] = false;
             return true;
         }

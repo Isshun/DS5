@@ -5,7 +5,7 @@ import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.Colors;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
@@ -14,11 +14,11 @@ public class PanelSystem extends BasePanel {
 	private static final int FRAME_WIDTH = Constant.WINDOW_WIDTH;
 	private static final int FRAME_HEIGHT = 32;
 
-	private TextView 	    _lbRenderTime;
-	private TextView 	    _lbMemoryUsed;
-	private TextView 	    _lbUpdate;
-	private TextView 	    _lbFloor;
-	private TextView 		_lbFrame;
+	private UILabel _lbRenderTime;
+	private UILabel _lbMemoryUsed;
+	private UILabel _lbUpdate;
+	private UILabel _lbFloor;
+	private UILabel _lbFrame;
 
 	public PanelSystem() {
 		super(Mode.NONE, null, 0, 32, FRAME_WIDTH, FRAME_HEIGHT, "data/ui/panels/system.yml");
@@ -38,11 +38,11 @@ public class PanelSystem extends BasePanel {
 
 	@Override
 	public void onLayoutLoaded(LayoutModel layout) {
-		_lbRenderTime = (TextView)findById("lb_render_time");
-		_lbMemoryUsed = (TextView)findById("lb_memory");
-		_lbUpdate = (TextView)findById("lb_update");
-		_lbFloor = (TextView)findById("lb_floor");
-		_lbFrame = (TextView)findById("lb_frame");
+		_lbRenderTime = (UILabel)findById("lb_render_time");
+		_lbMemoryUsed = (UILabel)findById("lb_memory");
+		_lbUpdate = (UILabel)findById("lb_update");
+		_lbFloor = (UILabel)findById("lb_floor");
+		_lbFrame = (UILabel)findById("lb_frame");
 	}
 
 	@Override

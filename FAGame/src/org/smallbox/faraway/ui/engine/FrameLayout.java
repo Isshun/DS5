@@ -2,13 +2,13 @@ package org.smallbox.faraway.ui.engine;
 
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.game.model.GameData;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class FrameLayout extends View {
     protected List<View> 		_views = new ArrayList<>();;
-	protected RenderEffect _renderEffect;
 
 	public FrameLayout(int width, int height) {
 		super(width, height);
@@ -34,23 +34,19 @@ public abstract class FrameLayout extends View {
 
 	@Override
 	public void draw(GFXRenderer renderer, int x, int y) {
-		if (_isVisible == false) {
+		if (!_isVisible) {
 			return;
 		}
 
-		if (_renderEffect == null) {
-			createRender();
-		}
-
-		if (_background != null) {
-			renderer.draw(_background, _renderEffect);
+		if (_backgroundColor != null) {
+			renderer.draw(_backgroundColor, _x, _y, _width, _height);
 		}
 
 		for (View view: _views) {
-			view.draw(renderer, _renderEffect);
+			view.draw(renderer, null);
 		}
 
-		onDraw(renderer, _renderEffect);
+		onDraw(renderer, null);
 	}
 
 	/**
@@ -62,8 +58,6 @@ public abstract class FrameLayout extends View {
 	public void draw(GFXRenderer renderer, RenderEffect effect) {
 		draw(renderer, 0, 0);
 	}
-
-	protected abstract void createRender();
 
 	public void addView(View view) {
 		if (this.equals(view)) {
@@ -113,16 +107,6 @@ public abstract class FrameLayout extends View {
 	public void removeView(View view) {
 		view.remove();
 		_views.remove(view);
-	}
-
-	public void setPosition(int x, int y) {
-		_x = x;
-		_y = y;
-		
-		_renderEffect = null;
-//		for (View view: _views) {
-//			view.setPosition(view.getPosX() + x, y);
-//		}
 	}
 
 	public void resetAllPos() {

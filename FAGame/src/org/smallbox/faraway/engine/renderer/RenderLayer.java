@@ -3,7 +3,7 @@ package org.smallbox.faraway.engine.renderer;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteModel;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 
 /**
  * Created by Alex on 28/05/2015.
@@ -15,7 +15,7 @@ public abstract class RenderLayer {
     public abstract void clear();
     public abstract void onDraw(GFXRenderer renderer, RenderEffect renderEffect, int x, int y);
     public abstract void draw(SpriteModel sprite);
-    public abstract void draw(TextView text);
+    public abstract void draw(UILabel text);
     public void begin() {}
     public void end() {}
 

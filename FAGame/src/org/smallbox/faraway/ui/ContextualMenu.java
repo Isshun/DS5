@@ -18,7 +18,7 @@ public class ContextualMenu extends BasePanel {
 	private int					ENTRY_WIDTH;
 	private int					ENTRY_HEIGHT = LINE_HEIGHT;
 	
-	private List<TextView>		_entries;
+	private List<UILabel>		_entries;
 	private ContextualMenu 		_subMenu;
 	private int 				_initPosX;
 	private int 				_initPosY;
@@ -40,7 +40,7 @@ public class ContextualMenu extends BasePanel {
 	}
 	
 	public void addEntry(String label, OnClickListener listener, final OnFocusListener onFocusListener) {
-		final TextView text = ViewFactory.getInstance().createTextView(ENTRY_WIDTH, ENTRY_HEIGHT);
+		final UILabel text = ViewFactory.getInstance().createTextView(ENTRY_WIDTH, ENTRY_HEIGHT);
 		text.setString(label);
 		text.setCharacterSize(12);
 		text.setPadding(2, 4);

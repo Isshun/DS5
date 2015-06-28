@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui.panel;
+package org.smallbox.faraway.ui.panel.right;
 
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.manager.JobManager;
@@ -6,8 +6,9 @@ import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.panel.BaseRightPanel;
 import org.smallbox.faraway.util.StringUtils;
 
 import java.util.List;
@@ -16,9 +17,9 @@ public class PanelJobs extends BaseRightPanel {
 	private static final int 	NB_COLUMNS = 47;
 	private static final int 	RESIZE_RUNNING_JOB_OCCURENCE = 20;
 	
-	private TextView 			_lbTitle;
-	private TextView 			_lbTitle2;
-	private TextView[] 			_entries;
+	private UILabel _lbTitle;
+	private UILabel _lbTitle2;
+	private UILabel[] 			_entries;
 	private int 				_nbRunningJob;
 	private int 				_nbRunningJobCandidat;
 
@@ -38,7 +39,7 @@ public class PanelJobs extends BaseRightPanel {
 		_lbTitle2.setPosition(20, 18);
 		addView(_lbTitle2);
 
-		_entries = new TextView[75];
+		_entries = new UILabel[75];
 		for (int i = 0; i < 75; i++) {
 			_entries[i] = viewFactory.createTextView(FRAME_WIDTH - 42, 16);
 			_entries[i].setCharacterSize(14);
@@ -59,7 +60,7 @@ public class PanelJobs extends BaseRightPanel {
 
 		// Display jobs
 		for (BaseJobModel job: jobs) {
-            TextView lbJob = ViewFactory.getInstance().createTextView(200, 30);
+            UILabel lbJob = ViewFactory.getInstance().createTextView(200, 30);
             lbJob.setString(job.getLabel());
             lbJob.setCharacterSize(14);
             lbJob.setPosition(0, 30 * jobs.indexOf(job));
@@ -104,7 +105,7 @@ public class PanelJobs extends BaseRightPanel {
 //		}
 	}
 
-	private void refreshJob(final BaseJobModel job, TextView text, int x, int y) {
+	private void refreshJob(final BaseJobModel job, UILabel text, int x, int y) {
 		text.setVisible(true);
 		text.setPosition(x, y);
 		text.resetPos();

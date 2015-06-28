@@ -4,7 +4,7 @@ import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 
 import java.io.File;
@@ -24,7 +24,7 @@ public class LoadScene extends MainMenuScene {
         int index = 0;
         for (File saveFile: new File("data/saves/").listFiles()) {
             if (saveFile.getName().endsWith(".sav")) {
-                TextView lbSave = ViewFactory.getInstance().createTextView(200, 30);
+                UILabel lbSave = ViewFactory.getInstance().createTextView(200, 30);
                 lbSave.setCharacterSize(16);
                 lbSave.setString(saveFile.getName());
                 lbSave.setPosition(0, 30 * index++);

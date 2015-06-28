@@ -19,11 +19,11 @@ import java.util.*;
 public class PanelRoom extends BaseRightPanel {
 
 	private class PanelEntry {
-		public GameEventListener.Key				shortcut;
-		public String			label;
-		public RoomType roomType;
-		public OnClickListener 	onClickListener;
-		public View 			view;
+		public GameEventListener.Key		shortcut;
+		public String						label;
+		public RoomType 					roomType;
+		public OnClickListener 				onClickListener;
+		public View 						view;
 
 		public PanelEntry(final String label, final RoomType roomType, final GameEventListener.Key shortcut) {
 			this.shortcut = shortcut;
@@ -46,13 +46,13 @@ public class PanelRoom extends BaseRightPanel {
 	private static final int 		FRAME_HEIGHT = Constant.WINDOW_HEIGHT;
 	private static final int 		MAX_OCCUPANTS = 10;
 
-	private Map<Integer, TextView> 		_icons;
+	private Map<Integer, UILabel> 		_icons;
 	private RoomModel _room;
 	private FrameLayout 				_layoutRoom;
-	private TextView 					_lbRoomName;
-	private TextView[] 					_lbRoomOccupants;
+	private UILabel _lbRoomName;
+	private UILabel[] 					_lbRoomOccupants;
 	private FrameLayout _layoutButtons;
-	private TextView[] 					_lbRoomOccupantsOld;
+	private UILabel[] 					_lbRoomOccupantsOld;
 	private List<View> 					_buttons;
 	private FrameLayout 				_layoutRoomOption;
 
@@ -116,8 +116,8 @@ public class PanelRoom extends BaseRightPanel {
 		_lbRoomName.setPosition(0, 12);
 		_layoutRoom.addView(_lbRoomName);
 
-		_lbRoomOccupants = new TextView[MAX_OCCUPANTS];
-		_lbRoomOccupantsOld = new TextView[MAX_OCCUPANTS];
+		_lbRoomOccupants = new UILabel[MAX_OCCUPANTS];
+		_lbRoomOccupantsOld = new UILabel[MAX_OCCUPANTS];
 		for (int i = 0; i < MAX_OCCUPANTS; i++) {
 			_lbRoomOccupants[i] = ViewFactory.getInstance().createTextView();
 			_lbRoomOccupants[i].setCharacterSize(14);
@@ -137,7 +137,7 @@ public class PanelRoom extends BaseRightPanel {
 		RoomOptions options = room.getOptions();
 		if (options != null) {
 			if (options.title != null) {
-				TextView lbOptionTitle = ViewFactory.getInstance().createTextView();
+				UILabel lbOptionTitle = ViewFactory.getInstance().createTextView();
 				lbOptionTitle.setPosition(0, 0);
 				lbOptionTitle.setCharacterSize(FONT_SIZE_TITLE);
 				lbOptionTitle.setString(options.title);
@@ -146,14 +146,14 @@ public class PanelRoom extends BaseRightPanel {
 			
 			for (RoomOption option: options.options) {
 				if (option.icon != null) {
-					ImageView iconOption = ViewFactory.getInstance().createImageView();
+					UIImage iconOption = ViewFactory.getInstance().createImageView();
 					iconOption.setPosition(0, 42 + i * 32);
 					iconOption.setImage(option.icon);
 					iconOption.setOnClickListener(option.onClickListener);
 					_layoutRoomOption.addView(iconOption);
 				}
 
-				TextView lbOption = ViewFactory.getInstance().createTextView();
+				UILabel lbOption = ViewFactory.getInstance().createTextView();
 				lbOption.setPosition(option.icon != null ? 40 : 0, 42 + i * 32);
 				lbOption.setCharacterSize(FONT_SIZE);
 				lbOption.setString(option.label);
@@ -193,7 +193,7 @@ public class PanelRoom extends BaseRightPanel {
 	}
 
 	void	createIconEntry(final PanelEntry entry, int index) {
-		TextView icon = _icons.get(index);
+		UILabel icon = _icons.get(index);
 		if (icon == null) {
 			icon = ViewFactory.getInstance().createTextView(62, 80);
 			icon.setString(entry.label);

@@ -1,11 +1,11 @@
-package org.smallbox.faraway.ui.panel;
+package org.smallbox.faraway.ui.panel.info;
 
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 
 /**
  * Created by Alex on 01/06/2015.
@@ -39,18 +39,18 @@ public class PanelInfoStructure extends BaseInfoRightPanel {
         _structure = structure;
 
         if (isLoaded()) {
-            ((TextView)findById("lb_name")).setString(structure.getName());
-            ((TextView)findById("lb_label")).setString(structure.getLabel());
-            ((TextView)findById("lb_durability")).setString("Durability: " + structure.getHealth());
-            ((TextView)findById("lb_matter")).setString("Matter: " + structure.getMatter());
-            ((TextView)findById("lb_pos")).setString("Pos: " + structure.getX() + "x" + structure.getY());
-            ((TextView)findById("lb_health")).setString("Health: " + structure.getHealth() + "/" + structure.getMaxHealth());
-            ((TextView)findById("lb_work")).setString("Work remaining: " + structure.getProgress() + "/" + structure.getInfo().cost);
+            ((UILabel)findById("lb_name")).setString(structure.getName());
+            ((UILabel)findById("lb_label")).setString(structure.getLabel());
+            ((UILabel)findById("lb_durability")).setString("Durability: " + structure.getHealth());
+            ((UILabel)findById("lb_matter")).setString("Matter: " + structure.getMatter());
+            ((UILabel)findById("lb_pos")).setString("Pos: " + structure.getX() + "x" + structure.getY());
+            ((UILabel)findById("lb_health")).setString("Health: " + structure.getHealth() + "/" + structure.getMaxHealth());
+            ((UILabel)findById("lb_work")).setString("Work remaining: " + structure.getProgress() + "/" + structure.getInfo().cost);
 
             findById("bt_destroy").setOnClickListener(view -> JobManager.getInstance().addDestroyJob(structure));
 
             if (findById("lb_pos") != null) {
-                ((TextView) findById("lb_pos")).setString(structure.getX() + "x" + structure.getY());
+                ((UILabel) findById("lb_pos")).setString(structure.getX() + "x" + structure.getY());
             }
         }
     }

@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui.panel;
+package org.smallbox.faraway.ui.panel.right;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
@@ -9,6 +9,7 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.ui.panel.BaseRightPanel;
 import org.smallbox.faraway.util.StringUtils;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class PanelBuild extends BaseRightPanel {
 	private boolean 						_animRunning;
 	private Map<CategoryInfo, FrameLayout>	_layouts;
 	private CategoryInfo 					_currentCategory;
-	private TextView[] 						_iconShortcut;
+	private UILabel[] 						_iconShortcut;
 
 	public PanelBuild(Mode mode, GameEventListener.Key shortcut) {
 		super(mode, shortcut, "data/ui/panels/build.yml");
@@ -45,7 +46,7 @@ public class PanelBuild extends BaseRightPanel {
 	@Override
 	protected void onCreate(ViewFactory factory) {
         removeAllViews();
-		_iconShortcut = new TextView[10];
+		_iconShortcut = new UILabel[10];
 		_layouts = new HashMap<>();
 		_iconsList = new ArrayList<>();
 		_icons = new HashMap<>();
@@ -79,7 +80,7 @@ public class PanelBuild extends BaseRightPanel {
 			_layouts.put(category, layout);
 
 			// Title
-			TextView lbTitle = ViewFactory.getInstance().createTextView(380, 28);
+			UILabel lbTitle = ViewFactory.getInstance().createTextView(380, 28);
 			lbTitle.setDashedString(c.label.toUpperCase(), c.items.size() + " items", NB_COLUMNS_TITLE);
 			lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 			lbTitle.setPosition(20, posY + 8);
@@ -162,8 +163,8 @@ public class PanelBuild extends BaseRightPanel {
 
 			ViewFactory.getInstance().load("data/ui/panels/view_build_entry.yml", view -> {
                 String label = info.label.length() > 9 ? info.label.substring(0, 9) : info.label;
-                ((TextView)view.findById("lb_item")).setString(label);
-                ((ImageView)view.findById("img_item")).setImage(SpriteManager.getInstance().getIcon(info));
+                ((UILabel)view.findById("lb_item")).setString(label);
+                ((UIImage)view.findById("img_item")).setImage(SpriteManager.getInstance().getIcon(info));
                 view.findById("frame_select").setVisible(false);
                 view.findById("frame_material").setVisible(false);
 

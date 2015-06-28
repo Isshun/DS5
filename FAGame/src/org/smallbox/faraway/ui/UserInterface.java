@@ -12,11 +12,12 @@ import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.cursor.DefaultCursor;
-import org.smallbox.faraway.ui.cursor.MineCursor;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.UIMessage;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.*;
+import org.smallbox.faraway.ui.panel.info.*;
+import org.smallbox.faraway.ui.panel.right.*;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
@@ -65,7 +66,6 @@ public class UserInterface implements GameEventListener {
 
     private	BasePanel[]					_panels = new BasePanel[] {
             new PanelSystem(),
-            new PanelTopInfo(),
             new PanelResources(),
             new PanelDev(),
             new PanelQuest(),
@@ -92,6 +92,8 @@ public class UserInterface implements GameEventListener {
             new PanelManager(	    Mode.MANAGER, 	        Key.M),
             new PanelShortcut(	    Mode.NONE, 		        null),
             new PanelPlanet(),
+            new PanelTopInfo(),
+            new PanelTopRight(),
     };
 
     @Override
@@ -431,7 +433,7 @@ public class UserInterface implements GameEventListener {
     public boolean checkKeyboard(Key key, int lastInput) {
 
         for (BasePanel panel: _panels) {
-            if (panel.checkKey(key)) {
+            if (panel.isVisible() && panel.checkKey(key)) {
                 return true;
             }
         }

@@ -6,7 +6,7 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
@@ -56,7 +56,7 @@ public class PanelDebugItem extends BasePanel {
 		layout.setPosition(SPACING + col * (COL_WIDTH + SPACING), SPACING + row * (ROW_HEIGHT + SPACING));
 		layout.setOnClickListener(view -> initItem(item));
 		
-		TextView lbName = ViewFactory.getInstance().createTextView();
+		UILabel lbName = ViewFactory.getInstance().createTextView();
 		lbName.setString(item.name);
 		lbName.setPosition(6, 6);
 		lbName.setCharacterSize(12);
@@ -74,7 +74,7 @@ public class PanelDebugItem extends BasePanel {
 		int x = 6;
 		
 		{
-			TextView text = ViewFactory.getInstance().createTextView();
+			UILabel text = ViewFactory.getInstance().createTextView();
 			text.setString(item.name);
 			text.setPosition(x, y);
 			text.setCharacterSize(32);
@@ -83,7 +83,7 @@ public class PanelDebugItem extends BasePanel {
 		}
 		
 		{
-			TextView text = ViewFactory.getInstance().createTextView();
+			UILabel text = ViewFactory.getInstance().createTextView();
 			text.setString("Label: " + item.label);
 			text.setPosition(x, y);
 			text.setCharacterSize(16);
@@ -92,7 +92,7 @@ public class PanelDebugItem extends BasePanel {
 		}
 
 		{
-			TextView text = ViewFactory.getInstance().createTextView();
+			UILabel text = ViewFactory.getInstance().createTextView();
 			text.setString("Is structure: " + item.isStructure);
 			text.setPosition(x, y);
 			text.setCharacterSize(16);
@@ -101,7 +101,7 @@ public class PanelDebugItem extends BasePanel {
 		}
 		
 		{
-			TextView text = ViewFactory.getInstance().createTextView();
+			UILabel text = ViewFactory.getInstance().createTextView();
 			text.setString("Is ressource: " + item.isResource);
 			text.setPosition(x, y);
 			text.setCharacterSize(16);
@@ -110,7 +110,7 @@ public class PanelDebugItem extends BasePanel {
 		}
 		
 		{
-			TextView text = ViewFactory.getInstance().createTextView();
+			UILabel text = ViewFactory.getInstance().createTextView();
 			text.setString("Is consomable: " + item.isConsumable);
 			text.setPosition(x, y);
 			text.setCharacterSize(16);
@@ -119,7 +119,7 @@ public class PanelDebugItem extends BasePanel {
 		}
 		
 		{
-			TextView text = ViewFactory.getInstance().createTextView();
+			UILabel text = ViewFactory.getInstance().createTextView();
 			text.setString("Is user item: " + item.isUserItem);
 			text.setPosition(x, y);
 			text.setCharacterSize(16);
@@ -130,7 +130,7 @@ public class PanelDebugItem extends BasePanel {
 		if (item.actions != null) {
 
 			{
-				TextView text = ViewFactory.getInstance().createTextView();
+				UILabel text = ViewFactory.getInstance().createTextView();
 				text.setString("Action:");
 				text.setPosition(x, y);
 				text.setCharacterSize(16);
@@ -141,7 +141,7 @@ public class PanelDebugItem extends BasePanel {
 			
 			// Action duration
 			{
-				TextView text = ViewFactory.getInstance().createTextView();
+				UILabel text = ViewFactory.getInstance().createTextView();
 				//text.setString("duration: " + item.actions.duration);
 				text.setString("duration: TODO");
 				text.setPosition(x, y);

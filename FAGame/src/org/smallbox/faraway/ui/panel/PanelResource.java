@@ -4,7 +4,7 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.ResourceManager;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
 
@@ -12,10 +12,10 @@ public class PanelResource extends BasePanel {
 	private static final int 	FRAME_WIDTH = Constant.PANEL_WIDTH;
 	private static final int 	FRAME_HEIGHT = 32;
 
-	private TextView 	_spice;
-	private TextView 	_energy;
-	private TextView 	_matter;
-	private TextView 	_o2;
+	private UILabel _spice;
+	private UILabel _energy;
+	private UILabel _matter;
+	private UILabel _o2;
 	private ResourceManager _resourceManager;
 
 	public PanelResource() {

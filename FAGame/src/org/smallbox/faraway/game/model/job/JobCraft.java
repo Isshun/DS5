@@ -32,11 +32,17 @@ public class JobCraft extends BaseJobModel {
         for (ReceiptModel receipt: _receipts) {
             receipt.addConsumable(consumable);
         }
+        if (_receipt == null) {
+            onCheck(null);
+        }
     }
 
     public void removeConsumable(ConsumableModel consumable) {
         for (ReceiptModel receipt: _receipts) {
             receipt.removeConsumable(consumable);
+        }
+        if (_receipt == null) {
+            onCheck(null);
         }
     }
 
@@ -94,24 +100,26 @@ public class JobCraft extends BaseJobModel {
 			throw new RuntimeException("Cannot add Craft job (onAction is null)");
 		}
 
-
 		JobCraft job = new JobCraft(action, item.getX(), item.getY());
 		job.setItem(item);
 		job._factory = (ItemModel)item;
 		job._receipts = action.receipts.stream().map(receiptInfo -> new ReceiptModel((ItemModel) item, receiptInfo)).collect(Collectors.toList());
+        job.onCheck(null);
 
 		item.addJob(job);
 
-		return job;
+        return job;
 	}
 
 	@Override
 	public boolean onCheck(CharacterModel character) {
         for (ReceiptModel receipt: _receipts) {
             if (receipt.hasComponentsOnMap()) {
+                _message = "Waiting";
                 return true;
             }
         }
+        _message = "Missing components";
         return false;
 	}
 
@@ -392,6 +400,10 @@ public class JobCraft extends BaseJobModel {
     @Override
     public String getMessage() {
         return _message;
+    }
+
+    public ReceiptModel getReceipt() {
+        return _receipt;
     }
 
 }

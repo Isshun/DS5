@@ -42,7 +42,7 @@ public abstract class MapObjectModel {
     private int 		    _animFrameInterval;
     private boolean 	    _selected;
     private int 		    _lastBlocked;
-    private ParcelModel _area;
+    private ParcelModel     _area;
     private int             _health;
     private List<BaseJobModel>  _jobs;
     protected boolean       _needRefresh;

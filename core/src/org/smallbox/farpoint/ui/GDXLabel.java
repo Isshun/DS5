@@ -3,9 +3,7 @@ package org.smallbox.farpoint.ui;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
-import org.smallbox.faraway.ui.engine.Colors;
-import org.smallbox.faraway.ui.engine.OnFocusListener;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.util.StringUtils;
 import org.smallbox.farpoint.GDXRenderer;
@@ -13,10 +11,8 @@ import org.smallbox.farpoint.GDXRenderer;
 /**
  * Created by Alex on 04/06/2015.
  */
-public class GDXLabel extends TextView {
+public class GDXLabel extends UILabel {
     private boolean     _needResetPos = true;
-    private int         _finalX;
-    private int         _finalY;
     private String      _string;
     private int         _textSize;
     private com.badlogic.gdx.graphics.Color _gdxColor;

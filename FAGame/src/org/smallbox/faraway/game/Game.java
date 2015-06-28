@@ -223,4 +223,8 @@ public class Game {
         }
         return null;
     }
+
+    public int getSpeed() {
+        return _speed;
+    }
 }

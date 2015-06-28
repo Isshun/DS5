@@ -52,9 +52,9 @@ public class PlanetScene extends MainMenuScene {
     private void addPlanetListView(FrameLayout framePlanetList, PlanetInfo planet, int index) {
         _viewFactory.load("data/ui/menu/planet_list_entry.yml", view -> {
             view.findById("frame_background").setVisible(false);
-            ((TextView)view.findById("lb_planet")).setString(planet.name);
-            ((TextView)view.findById("lb_type")).setString(planet.type);
-            ((ImageView)view.findById("img_planet")).setImagePath(planet.image.thumb);
+            ((UILabel)view.findById("lb_planet")).setString(planet.name);
+            ((UILabel)view.findById("lb_type")).setString(planet.type);
+            ((UIImage)view.findById("img_planet")).setImagePath(planet.image.thumb);
             view.setOnClickListener(v -> {
                 for (View v1: framePlanetList.getViews()) {
                     v1.findById("frame_background").setVisible(false);
@@ -72,21 +72,21 @@ public class PlanetScene extends MainMenuScene {
     private void select(PlanetInfo planet) {
         _mainMenu.select(planet);
 
-        ((TextView)findById("lb_detail_planet")).setString(planet.name);
-        ((TextView)findById("lb_detail_desc")).setString(planet.desc);
+        ((UILabel)findById("lb_detail_planet")).setString(planet.name);
+        ((UILabel)findById("lb_detail_desc")).setString(planet.desc);
 
-        formatPlanetStats((TextView)findById("lb_detail_water"), "Water", planet.stats.water);
-        formatPlanetStats((TextView)findById("lb_detail_fertility"), "Fertility", planet.stats.fertility);
-        formatPlanetStats((TextView)findById("lb_detail_atmosphere"), "Atmosphere", planet.stats.atmosphere);
-        formatPlanetStats((TextView)findById("lb_detail_fauna"), "Fauna", planet.stats.fauna);
-        formatPlanetStats((TextView)findById("lb_detail_flora"), "Flora", planet.stats.flora);
+        formatPlanetStats((UILabel)findById("lb_detail_water"), "Water", planet.stats.water);
+        formatPlanetStats((UILabel)findById("lb_detail_fertility"), "Fertility", planet.stats.fertility);
+        formatPlanetStats((UILabel)findById("lb_detail_atmosphere"), "Atmosphere", planet.stats.atmosphere);
+        formatPlanetStats((UILabel)findById("lb_detail_fauna"), "Fauna", planet.stats.fauna);
+        formatPlanetStats((UILabel)findById("lb_detail_flora"), "Flora", planet.stats.flora);
 
-        formatPlanetHostileStats((TextView)findById("lb_detail_hostile_fauna"), "Hostile fauna", planet.stats.hostile_fauna);
-        formatPlanetHostileStats((TextView)findById("lb_detail_hostile_humankind"), "Hostile humankind", planet.stats.hostile_humankind);
-        formatPlanetHostileStats((TextView)findById("lb_detail_hostile_mechanic"), "Hostile mechanic", planet.stats.hostile_mechanic);
+        formatPlanetHostileStats((UILabel)findById("lb_detail_hostile_fauna"), "Hostile fauna", planet.stats.hostile_fauna);
+        formatPlanetHostileStats((UILabel)findById("lb_detail_hostile_humankind"), "Hostile humankind", planet.stats.hostile_humankind);
+        formatPlanetHostileStats((UILabel)findById("lb_detail_hostile_mechanic"), "Hostile mechanic", planet.stats.hostile_mechanic);
     }
 
-    private void formatPlanetHostileStats(TextView textView, String label, int value) {
+    private void formatPlanetHostileStats(UILabel textView, String label, int value) {
         if (value == 0) {
             textView.setString(StringUtils.getDashedString(GameData.getData().getString(label), "no", 39));
         } else {
@@ -99,7 +99,7 @@ public class PlanetScene extends MainMenuScene {
         }
     }
 
-    private void formatPlanetStats(TextView textView, String label, int value) {
+    private void formatPlanetStats(UILabel textView, String label, int value) {
         textView.setString(StringUtils.getDashedString(
                 GameData.getData().getString(label),
                 StringUtils.getPlanetStatsText(value) + " (" + StringUtils.getPlanetStatsSymbol(value) + ")", 39));

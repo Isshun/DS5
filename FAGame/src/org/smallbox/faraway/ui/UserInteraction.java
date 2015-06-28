@@ -13,7 +13,7 @@ import org.smallbox.faraway.game.model.job.JobHaul;
 import org.smallbox.faraway.game.model.room.RoomModel.RoomType;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.cursor.*;
-import org.smallbox.faraway.ui.panel.PanelPlan.Planning;
+import org.smallbox.faraway.ui.panel.right.PanelPlan.Planning;
 import org.smallbox.faraway.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 

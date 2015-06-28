@@ -63,6 +63,8 @@ public class GameConfig {
     public int                  inventoryMaxQuantity;
     public int                  storageMaxQuantity;
     public int                  environmentDistance;
+    public int[]                resolution;
     public boolean              byPassMenu;
     public int                  maxNearDistance;
+    public double               uiScale;
 }

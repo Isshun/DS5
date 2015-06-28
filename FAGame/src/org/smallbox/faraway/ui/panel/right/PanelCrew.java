@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui.panel;
+package org.smallbox.faraway.ui.panel.right;
 
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.Color;
@@ -10,6 +10,7 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.ui.panel.BaseRightPanel;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;
@@ -17,13 +18,13 @@ import java.util.List;
 
 public class PanelCrew extends BaseRightPanel {
 	private static class ViewHolder {
-		public TextView lbName;
-		public TextView 	lbProfession;
-		public ImageView thumb;
+		public UILabel lbName;
+		public UILabel lbProfession;
+		public UIImage thumb;
 		public FrameLayout 	frame;
-		public TextView 	lbStatus;
-		public TextView 	lbJob;
-		public TextView 	lbStatusShort;
+		public UILabel lbStatus;
+		public UILabel lbJob;
+		public UILabel lbStatusShort;
 	}
 
 	private static final int	MODE_SMALL = 0;
@@ -37,11 +38,11 @@ public class PanelCrew extends BaseRightPanel {
 
 	private CharacterManager    		_characterManager;
 	private List<ViewHolder> 			_viewHolderList;
-	private TextView 					_lbCount;
+	private UILabel _lbCount;
 	protected int 						_mode;
 
 	public PanelCrew(Mode mode, GameEventListener.Key shortcut) {
-		super(mode, shortcut);
+		super(mode, shortcut, "data/ui/panels/crew.yml");
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class PanelCrew extends BaseRightPanel {
 		_characterManager = Game.getCharacterManager();
 
 		// Button small
-		TextView btModeSmall = factory.createTextView(50, 20);
+		UILabel btModeSmall = factory.createTextView(50, 20);
 		btModeSmall.setString("small");
 		btModeSmall.setCharacterSize(FONT_SIZE);
 		btModeSmall.setPosition(300, -32);
@@ -58,7 +59,7 @@ public class PanelCrew extends BaseRightPanel {
 		addView(btModeSmall);
 
 		// Button detail
-		TextView btModeDetail = factory.createTextView(50, 20);
+		UILabel btModeDetail = factory.createTextView(50, 20);
 		btModeDetail.setString("detail");
 		btModeDetail.setCharacterSize(FONT_SIZE);
 		btModeDetail.setPosition(360, -32);
@@ -121,14 +122,14 @@ public class PanelCrew extends BaseRightPanel {
 				@Override
 				public void onExit(View view) {
 					viewHolder.lbName.setColor(Colors.LINK_INACTIVE);
-					viewHolder.lbName.setStyle(TextView.REGULAR);
+					viewHolder.lbName.setStyle(UILabel.REGULAR);
 					//view.setBackgroundColor(null);
 				}
 
 				@Override
 				public void onEnter(View view) {
 					viewHolder.lbName.setColor(Colors.LINK_ACTIVE);
-					viewHolder.lbName.setStyle(TextView.UNDERLINED);
+					viewHolder.lbName.setStyle(UILabel.UNDERLINED);
 					//view.setBackgroundColor(new Color(40, 40, 80));
 				}
 			});

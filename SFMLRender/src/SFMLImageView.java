@@ -3,7 +3,7 @@ import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
-import org.smallbox.faraway.ui.engine.ImageView;
+import org.smallbox.faraway.ui.engine.UIImage;
 import org.smallbox.faraway.ui.engine.View;
 
 import java.io.File;
@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Created by Alex on 28/05/2015.
  */
-public class SFMLImageView extends ImageView {
+public class SFMLImageView extends UIImage {
     private Sprite _sprite;
 
     @Override
@@ -65,6 +65,11 @@ public class SFMLImageView extends ImageView {
         if (_sprite != null) {
             ((SFMLRenderer)renderer).draw(_sprite);
         }
+    }
+
+    @Override
+    public void draw(GFXRenderer renderer, int x, int y) {
+
     }
 
     @Override

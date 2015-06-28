@@ -6,12 +6,12 @@ import org.smallbox.faraway.ui.engine.*;
  */
 public class SFMLViewFactory extends ViewFactory {
     @Override
-    public TextView createTextView() {
+    public UILabel createTextView() {
         return new SFMLTextView();
     }
 
     @Override
-    public TextView createTextView(int width, int height) {
+    public UILabel createTextView(int width, int height) {
         return new SFMLTextView(width, height);
     }
 
@@ -36,7 +36,7 @@ public class SFMLViewFactory extends ViewFactory {
     }
 
     @Override
-    public ImageView createImageView() {
+    public UIImage createImageView() {
         return new SFMLImageView();
     }
 

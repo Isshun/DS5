@@ -45,7 +45,7 @@ public class GDXColorView extends ColorView {
         }
 
         if (_gdxBackgroundColor != null) {
-            ((GDXRenderer) renderer).draw(_gdxBackgroundColor, _finalX + x, _finalY + y, _width, _height);
+            ((GDXRenderer)renderer).draw(_gdxBackgroundColor, _finalX + x, _finalY + y, _width, _height);
         }
     }
 

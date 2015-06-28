@@ -5,7 +5,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.QuestManager;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 
 /**
@@ -24,7 +24,7 @@ public class PanelQuest extends BasePanel {
     public void onLayoutLoaded(LayoutModel layout) {
         findById("frame_message").setVisible(false);
 
-        TextView lbQuest = ViewFactory.getInstance().createTextView();
+        UILabel lbQuest = ViewFactory.getInstance().createTextView();
         lbQuest.setString("quest");
         lbQuest.setCharacterSize(14);
         ((FrameLayout) findById("frame_list")).addView(lbQuest);
@@ -41,7 +41,7 @@ public class PanelQuest extends BasePanel {
             String[] options = quest.options;
             for (int i = 0; i < options.length; i++) {
                 final int optionIndex = i + 1;
-                final TextView lbOption = (TextView) findById("lb_opt_" + (i + 1));
+                final UILabel lbOption = (UILabel) findById("lb_opt_" + (i + 1));
                 lbOption.setString(" [" + (i + 1) + "] " + options[i]);
                 lbOption.setVisible(true);
                 lbOption.setOnClickListener(view -> selectOption(quest, optionIndex));
@@ -59,7 +59,7 @@ public class PanelQuest extends BasePanel {
             displayMessage(quest);
 
             // Display 'OK' option
-            final TextView lbOption = (TextView) findById("lb_opt_1");
+            final UILabel lbOption = (UILabel) findById("lb_opt_1");
             lbOption.setString(" [1] OK");
             lbOption.setVisible(true);
             lbOption.setOnClickListener(view -> findById("frame_message").setVisible(false));
@@ -73,7 +73,7 @@ public class PanelQuest extends BasePanel {
         findById("frame_message").setVisible(true);
 
         // Display message
-        ((TextView) findById("lb_message")).setString(quest.message);
+        ((UILabel) findById("lb_message")).setString(quest.message);
 
         // Clear options
         for (int i = 0; i < 5; i++) {
@@ -84,11 +84,11 @@ public class PanelQuest extends BasePanel {
     private void selectOption(QuestManager.QuestModel quest, int optionIndex) {
         findById("frame_message").setVisible(false);
 
-        ((QuestManager) Game.getInstance().getManager(QuestManager.class)).selectQuestionOption(quest, optionIndex);
+        ((QuestManager)Game.getInstance().getManager(QuestManager.class)).selectQuestionOption(quest, optionIndex);
     }
 
     public boolean	checkKey(GameEventListener.Key key) {
-        if (_isVisible) {
+        if (findById("frame_message").isVisible()) {
             switch (key) {
                 case D_1:
                     selectOption(_quest, 1);

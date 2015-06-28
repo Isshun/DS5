@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui;
+package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;

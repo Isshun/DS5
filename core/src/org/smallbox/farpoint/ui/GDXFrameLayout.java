@@ -22,22 +22,6 @@ public class GDXFrameLayout extends FrameLayout {
     }
 
     @Override
-    protected void createRender() {
-        int posX = _x;
-        int posY = _y;
-
-        View parent = _parent;
-        while (parent != null) {
-            posX += parent._x;
-            posY += parent._y;
-            parent = parent._parent;
-        }
-
-        _renderEffect = new GDXRenderEffect();
-        _renderEffect.setTranslate(posX + _offsetX, posY + _offsetY);
-    }
-
-    @Override
     public void setPosition(int x, int y) {
         super.setPosition(x, y);
         _needResetPos = true;

@@ -12,7 +12,7 @@ import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.MenuLoad;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.Colors;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.mainMenu.MainMenu;
 import org.smallbox.faraway.ui.panel.LayoutFactory;
@@ -60,7 +60,7 @@ public class Application implements GameEventListener {
         _renderer = renderer;
         _loadListener = message -> {
             renderer.clear();
-            TextView text = ViewFactory.getInstance().createTextView();
+            UILabel text = ViewFactory.getInstance().createTextView();
             text.setString(message);
             text.setCharacterSize(42);
             text.setColor(Colors.LINK_INACTIVE);
@@ -104,7 +104,7 @@ public class Application implements GameEventListener {
     @Override
     public void onKeyEvent(GameTimer timer, Action action, Key key, Modifier modifier) {
 // Events for menu
-        if (_game != null && _game.isRunning() == false) {
+        if (_game != null && !_game.isRunning()) {
             if (_menu != null && _menu.isVisible()) {
                 if (_menu.checkKey(key)) {
                     return;

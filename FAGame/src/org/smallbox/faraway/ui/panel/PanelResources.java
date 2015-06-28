@@ -5,7 +5,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 
 import java.util.HashMap;
@@ -47,7 +47,7 @@ public class PanelResources extends BasePanel {
             removeAllViews();
             int index = 0;
             for (ItemInfo itemInfo: items.keySet()) {
-                TextView lbItem = ViewFactory.getInstance().createTextView();
+                UILabel lbItem = ViewFactory.getInstance().createTextView();
                 lbItem.setCharacterSize(14);
                 lbItem.setString(itemInfo.label + " (" + items.get(itemInfo) + ")");
                 lbItem.setPosition(10, 10 + 20 * index++);

@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui.panel;
+package org.smallbox.faraway.ui.panel.right;
 
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.*;
@@ -15,6 +15,7 @@ import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.ui.panel.BaseRightPanel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.StringUtils;
@@ -43,31 +44,29 @@ public class PanelCharacter extends BaseRightPanel {
     private static final Color COLOR_3 = new Color(247, 57, 57);
 
     private CharacterModel 		_character;
-    private TextView 			_lbName;
-    private TextView 			_lbProfession;
+    private UILabel             _lbName;
     private ColorView 			_cursor;
-    private ImageView[] 		_shapes = new ImageView[NB_GAUGE];
-    private TextView[] 			_values = new TextView[NB_GAUGE];
-    private TextView 			_lbJob;
-    private TextView[] 			_lbBuffs = new TextView[NB_MAX_BUFFS];
-    private TextView[] 			_familyEntries;
-    private TextView[] 			_familyRelationEntries;
+    private UIImage[] 		_shapes = new UIImage[NB_GAUGE];
+    private UILabel[] 			_values = new UILabel[NB_GAUGE];
+    private UILabel             _lbJob;
+    private UILabel[] 			_lbBuffs = new UILabel[NB_MAX_BUFFS];
+    private UILabel[] 			_familyEntries;
+    private UILabel[] 			_familyRelationEntries;
     private int 				_nbRelation;
-    private TextView 			_lbOld;
+    private UILabel             _lbOld;
 
     private int 				_animRemain;
-    private TextView	 		_lbGender;
     private int 				_lastOld;
     private CharacterInfoModel.Gender _lastGender;
-    private TextView 			_animLabel;
+    private UILabel             _animLabel;
     private String 				_animValue;
     private int 				_animFrame;
     private int 				_animGauge;
     private String 				_lastEnlisted;
-    private TextView 			_lbEnlisted;
+    private UILabel             _lbEnlisted;
     private String 				_lastBirthName;
-    private TextView 			_lbBirthName;
-    private TextView 			_lbInventory;
+    private UILabel             _lbBirthName;
+    private UILabel             _lbInventory;
     private View                _selectedPriority;
     private FrameLayout         _priorityOverlay;
     private int                 _priorityOverlayOffset;
@@ -98,8 +97,8 @@ public class PanelCharacter extends BaseRightPanel {
         findById("frame_inventory").setVisible(false);
         findById("frame_health").setVisible(false);
 
-        _lbName = (TextView) findById("lb_name");
-        _lbJob = (TextView) findById("lb_current_job");
+        _lbName = (UILabel) findById("lb_name");
+        _lbJob = (UILabel) findById("lb_current_job");
 
         FrameLayout frameBuffs = (FrameLayout)findById("frame_buffs_entries");
         for (int i = 0; i < NB_MAX_BUFFS; i++) {
@@ -139,7 +138,7 @@ public class PanelCharacter extends BaseRightPanel {
 //            framePriority.setBackgroundColor(new Color(0x88121c1e));
             framePriority.setData(priority);
 
-            TextView lbPriority = _viewFactory.createTextView();
+            UILabel lbPriority = _viewFactory.createTextView();
             lbPriority.setString(priority.name + " (" + (int) priority.level + ")");
             lbPriority.setCharacterSize(16);
             lbPriority.setPosition(0, 8);
@@ -156,7 +155,7 @@ public class PanelCharacter extends BaseRightPanel {
             frameProgress.setBackgroundColor(new Color(0x298596));
             framePriority.addView(frameProgress);
 
-            TextView lbProgress = _viewFactory.createTextView(32, 14);
+            UILabel lbProgress = _viewFactory.createTextView(32, 14);
             lbProgress.setString(String.valueOf((int)priority.level));
             lbProgress.setCharacterSize(14);
             lbProgress.setPosition(240, 5);
@@ -193,24 +192,21 @@ public class PanelCharacter extends BaseRightPanel {
     }
 
     private void createBasicInformation() {
-        _lbOld = (TextView) findById("lb_info_old");
+        _lbOld = (UILabel) findById("lb_info_old");
 
-        _lbGender = (TextView) findById("lb_info_gender");
-        _lbGender.setOnClickListener(view -> _ui.select(ToolTips.GENDER));
+        findById("lb_info_gender").setOnClickListener(view -> _ui.select(ToolTips.GENDER));
 
-        _lbProfession = (TextView) findById("lb_info_profession");
+        _lbEnlisted = (UILabel) findById("lb_info_enlisted");
 
-        _lbEnlisted = (TextView) findById("lb_info_enlisted");
-
-        _lbBirthName = (TextView) findById("lb_info_birthname");
+        _lbBirthName = (UILabel) findById("lb_info_birthname");
     }
 
     private void createInventoryInfo() {
-        _lbInventory = (TextView) findById("lb_inventory");
+        _lbInventory = (UILabel) findById("lb_inventory");
 
         FrameLayout frameInventoryEntries = (FrameLayout)findById("frame_inventory_entries");
         frameInventoryEntries.removeAllViews();
-        ImageView[] lbInventoryEntries = new ImageView[Constant.CHARACTER_INVENTORY_SPACE];
+        UIImage[] lbInventoryEntries = new UIImage[Constant.CHARACTER_INVENTORY_SPACE];
         for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
             final int x2 = i % NB_INVENTORY_PER_LINE;
             final int y2 = i / NB_INVENTORY_PER_LINE;
@@ -224,44 +220,44 @@ public class PanelCharacter extends BaseRightPanel {
         for (int i = 0; i < NB_GAUGE; i++) {
             switch (i) {
                 case 0:
-                    _values[i] = (TextView)findById("lb_status_food");
-                    _shapes[i] = (ImageView)findById("img_status_food");
+                    _values[i] = (UILabel)findById("lb_status_food");
+                    _shapes[i] = (UIImage)findById("img_status_food");
                     break;
                 case 1:
-                    _values[i] = (TextView)findById("lb_status_o2");
-                    _shapes[i] = (ImageView)findById("img_status_o2");
+                    _values[i] = (UILabel)findById("lb_status_o2");
+                    _shapes[i] = (UIImage)findById("img_status_o2");
                     break;
                 case 2:
-                    _values[i] = (TextView)findById("lb_status_happiness");
-                    _shapes[i] = (ImageView)findById("img_status_happiness");
+                    _values[i] = (UILabel)findById("lb_status_happiness");
+                    _shapes[i] = (UIImage)findById("img_status_happiness");
                     break;
                 case 3:
-                    _values[i] = (TextView)findById("lb_status_power");
-                    _shapes[i] = (ImageView)findById("img_status_power");
+                    _values[i] = (UILabel)findById("lb_status_power");
+                    _shapes[i] = (UIImage)findById("img_status_power");
                     break;
                 case 4:
-                    _values[i] = (TextView)findById("lb_status_relation");
+                    _values[i] = (UILabel)findById("lb_status_relation");
                     if (_values[i] != null) {
                         _values[i].setOnFocusListener(null);
                         _values[i].setOnClickListener(view -> switchView("frame_personal_report"));
                     }
-                    _shapes[i] = (ImageView)findById("img_status_relation");
+                    _shapes[i] = (UIImage)findById("img_status_relation");
                     break;
                 case 5:
-                    _values[i] = (TextView)findById("lb_status_security");
-                    _shapes[i] = (ImageView)findById("img_status_security");
+                    _values[i] = (UILabel)findById("lb_status_security");
+                    _shapes[i] = (UIImage)findById("img_status_security");
                     break;
                 case 6:
-                    _values[i] = (TextView)findById("lb_status_health");
+                    _values[i] = (UILabel)findById("lb_status_health");
                     if (_values[i] != null) {
                         _values[i].setOnFocusListener(null);
                         _values[i].setOnClickListener(view -> switchView("frame_health"));
                     }
-                    _shapes[i] = (ImageView)findById("img_status_health");
+                    _shapes[i] = (UIImage)findById("img_status_health");
                     break;
                 case 7:
-                    _values[i] = (TextView)findById("lb_status_joy");
-                    _shapes[i] = (ImageView)findById("img_status_joy");
+                    _values[i] = (UILabel)findById("lb_status_joy");
+                    _shapes[i] = (UIImage)findById("img_status_joy");
                     break;
             }
 
@@ -275,8 +271,8 @@ public class PanelCharacter extends BaseRightPanel {
     private void createRelationShip() {
         FrameLayout layoutFamily = (FrameLayout) findById("frame_relationship");
 
-        _familyEntries = new TextView[NB_MAX_RELATION];
-        _familyRelationEntries = new TextView[NB_MAX_RELATION];
+        _familyEntries = new UILabel[NB_MAX_RELATION];
+        _familyRelationEntries = new UILabel[NB_MAX_RELATION];
         for (int i = 0; i < NB_MAX_RELATION; i++) {
             _familyEntries[i] = ViewFactory.getInstance().createTextView(400, 22);
             _familyEntries[i].setCharacterSize(FONT_SIZE);
@@ -320,7 +316,7 @@ public class PanelCharacter extends BaseRightPanel {
         for (; i < NB_MAX_RELATION; i++) {
             if (i == 0) {
                 _familyEntries[i].setString("no results");
-                _familyEntries[i].setStyle(TextView.REGULAR);
+                _familyEntries[i].setStyle(UILabel.REGULAR);
                 _familyRelationEntries[i].setString("");
             } else {
                 _familyEntries[i].setString("");
@@ -382,7 +378,7 @@ public class PanelCharacter extends BaseRightPanel {
             refreshInfo();
             refreshDebug();
 
-            ((TextView)findById("lb_body_heat")).setString("Body heat: " + (int)(_character.getBodyHeat() * 10) / 10f);
+            ((UILabel)findById("lb_body_heat")).setString("Body heat: " + (int)(_character.getBodyHeat() * 10) / 10f);
         }
 
         refreshTalents();
@@ -435,7 +431,7 @@ public class PanelCharacter extends BaseRightPanel {
     private void refreshEquipments() {
         if (_character.getEquipmentViewIds() != null) {
             for (String[] equipmentViewId : _character.getEquipmentViewIds()) {
-                setEquipment((TextView) findById(equipmentViewId[0]), equipmentViewId[1]);
+                setEquipment((UILabel) findById(equipmentViewId[0]), equipmentViewId[1]);
             }
 
             Map<String, Integer> totalResist = new HashMap<>();
@@ -477,25 +473,25 @@ public class PanelCharacter extends BaseRightPanel {
             for (Map.Entry<String, Integer> entry : totalResist.entrySet()) {
                 resists.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
             }
-            ((TextView) findById("lb_equipment_total_resist")).setString("Resists: " + String.join(", ", resists));
+            ((UILabel) findById("lb_equipment_total_resist")).setString("Resists: " + String.join(", ", resists));
 
             List<String> absorb = new ArrayList<>();
             for (Map.Entry<String, Integer> entry : totalAbsorb.entrySet()) {
                 absorb.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
             }
-            ((TextView) findById("lb_equipment_total_absorb")).setString("Absorbs: " + String.join(", ", absorb));
+            ((UILabel) findById("lb_equipment_total_absorb")).setString("Absorbs: " + String.join(", ", absorb));
 
             List<String> buff = new ArrayList<>();
             for (Map.Entry<String, Integer> entry : totalBuff.entrySet()) {
                 buff.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
             }
-            ((TextView) findById("lb_equipment_total_buff")).setString("Buffs: " + String.join(", ", buff));
+            ((UILabel) findById("lb_equipment_total_buff")).setString("Buffs: " + String.join(", ", buff));
         }
     }
 
     private void refreshDebug() {
         if (_character != null) {
-            ((TextView)findById("lb_environment")).setString("Environment: " + Game.getWorldManager().getEnvironmentValue(_character.getX(), _character.getY(), GameData.config.environmentDistance));
+            ((UILabel)findById("lb_environment")).setString("Environment: " + Game.getWorldManager().getEnvironmentValue(_character.getX(), _character.getY(), GameData.config.environmentDistance));
 //            ((TextView)findById("lb_light")).setString();
         }
     }
@@ -528,7 +524,7 @@ public class PanelCharacter extends BaseRightPanel {
         CharacterInfoModel.Gender gender = _character.getInfo().getGender();
         if (!gender.equals(_lastGender)) {
             _lastGender = gender;
-            startAnim(_lbGender, StringUtils.getDashedString("Gender:", CharacterInfoModel.Gender.MALE.equals(gender) ? "male" : "female", NB_COLUMNS));
+            startAnim((UILabel)findById("lb_info_gender"), StringUtils.getDashedString("Gender:", CharacterInfoModel.Gender.MALE.equals(gender) ? "male" : "female", NB_COLUMNS));
             return;
         }
 
@@ -570,9 +566,9 @@ public class PanelCharacter extends BaseRightPanel {
 //                _character.getInventorySpace() - _character.getInventoryLeftSpace() + "/" + _character.getInventorySpace(), 29));
 
         if (_character.getInventory() != null) {
-            ((TextView) findById("lb_inventory_entry")).setString(_character.getInventory().getLabel() + " (" + _character.getInventory().getQuantity() + ")");
+            ((UILabel) findById("lb_inventory_entry")).setString(_character.getInventory().getLabel() + " (" + _character.getInventory().getQuantity() + ")");
         } else {
-            ((TextView) findById("lb_inventory_entry")).setString("");
+            ((UILabel) findById("lb_inventory_entry")).setString("");
         }
 
 
@@ -612,7 +608,7 @@ public class PanelCharacter extends BaseRightPanel {
                         for (Map.Entry<String, Integer> entry: totalStats.entrySet()) {
                             resists.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
                         }
-                        ((TextView)findById("lb_equipment_resist")).setString("[R]: " + String.join(", ", resists));
+                        ((UILabel)findById("lb_equipment_resist")).setString("[R]: " + String.join(", ", resists));
                     }
 
                     // Check absorb
@@ -626,7 +622,7 @@ public class PanelCharacter extends BaseRightPanel {
                         for (Map.Entry<String, Integer> entry: totalStats.entrySet()) {
                             absorbs.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
                         }
-                        ((TextView)findById("lb_equipment_absorb")).setString("[A]: " + String.join(", ", absorbs));
+                        ((UILabel)findById("lb_equipment_absorb")).setString("[A]: " + String.join(", ", absorbs));
                     }
 
                     // Check buff
@@ -639,7 +635,7 @@ public class PanelCharacter extends BaseRightPanel {
                         for (Map.Entry<String, Integer> entry: totalStats.entrySet()) {
                             buffs.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
                         }
-                        ((TextView)findById("lb_equipment_resist")).setString("[B]: " + String.join(", ", buffs));
+                        ((UILabel)findById("lb_equipment_resist")).setString("[B]: " + String.join(", ", buffs));
                     }
                 }
             }
@@ -655,7 +651,7 @@ public class PanelCharacter extends BaseRightPanel {
         }
     }
 
-    private void setEquipment(TextView view, String location) {
+    private void setEquipment(UILabel view, String location) {
         ItemInfo equipment = _character.getEquipment(location);
         if (equipment != null) {
             view.setString(equipment.label);
@@ -692,8 +688,8 @@ public class PanelCharacter extends BaseRightPanel {
             else if (value < 50) { level = 2; color = COLOR_1; }
 
             if (_shapes[i] != null) {
-                _shapes[i].setSize((int) size, 12);
-                _shapes[i].setTextureRect(0, level * 16, (int) size, 12);
+                _shapes[i].setSize((int) (size * GameData.config.uiScale), (int) (12 * GameData.config.uiScale));
+                _shapes[i].setTextureRect(0, (int)(level * 16), (int) (size * GameData.config.uiScale), (int)(12 * GameData.config.uiScale));
             }
 
             if (_values[i] != null) {
@@ -703,7 +699,7 @@ public class PanelCharacter extends BaseRightPanel {
         }
     }
 
-    private void startAnim(TextView text, String value) {
+    private void startAnim(UILabel text, String value) {
         _animFrame = 0;
         _animLabel = text;
         _animValue = value;

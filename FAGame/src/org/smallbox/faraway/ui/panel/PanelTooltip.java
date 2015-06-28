@@ -15,10 +15,10 @@ public class PanelTooltip extends BasePanel {
 	private static final int NB_MAX_LINK = 10;
 	private static final int CHARACTER_WIDTH = 8;
 
-	private TextView 	_lbToolTip;
-	private TextView 	_lbContent;
-	private TextView 	_lbCategory;
-	private TextView[] 	_lbCategories;
+	private UILabel _lbToolTip;
+	private UILabel _lbContent;
+	private UILabel _lbCategory;
+	private UILabel[] 	_lbCategories;
 	private ToolTip 	_tooltips;
 
 	public PanelTooltip(Mode mode, GameEventListener.Key shortcut) {
@@ -46,7 +46,7 @@ public class PanelTooltip extends BasePanel {
 		_lbCategory.setPosition(0, 0);
 		layoutCategory.addView(_lbCategory);
 		
-		_lbCategories = new TextView[NB_MAX_LINK];
+		_lbCategories = new UILabel[NB_MAX_LINK];
 		for (int i = 0; i < NB_MAX_LINK; i++) {
 			_lbCategories[i] = viewFactory.createTextView();
 			_lbCategories[i].setCharacterSize(FONT_SIZE);

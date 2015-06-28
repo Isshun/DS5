@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui;
+package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.Game;
@@ -9,12 +9,12 @@ import org.smallbox.faraway.game.model.character.AndroidModel;
 import org.smallbox.faraway.game.model.character.DroidModel;
 import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.item.MapObjectModel;
+import org.smallbox.faraway.ui.LayoutModel;
+import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.OnClickListener;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.panel.BasePanel;
 
 /**
  * Created by Alex on 17/06/2015.
@@ -59,7 +59,7 @@ public class PanelDev extends BasePanel {
 
         int index = 0;
         for (CommandEntry entry: COMMANDS) {
-            TextView lbCommand = ViewFactory.getInstance().createTextView(100, 30);
+            UILabel lbCommand = ViewFactory.getInstance().createTextView(100, 30);
             lbCommand.setCharacterSize(14);
             lbCommand.setAlign(Align.CENTER_VERTICAL);
             lbCommand.setPosition(10, index++ * 30);
@@ -75,7 +75,7 @@ public class PanelDev extends BasePanel {
         frameConsumable.setVisible(false);
         for (ItemInfo itemInfo: GameData.getData().items) {
             if (itemInfo.isConsumable) {
-                TextView lbConsumable = ViewFactory.getInstance().createTextView(100, 30);
+                UILabel lbConsumable = ViewFactory.getInstance().createTextView(100, 30);
                 lbConsumable.setCharacterSize(14);
                 lbConsumable.setAlign(Align.CENTER_VERTICAL);
                 lbConsumable.setPosition(10, index++ * 30);
@@ -96,7 +96,7 @@ public class PanelDev extends BasePanel {
         frameItems.setVisible(false);
         for (ItemInfo itemInfo: GameData.getData().items) {
             if (itemInfo.isUserItem) {
-                TextView lbItem = ViewFactory.getInstance().createTextView(100, 30);
+                UILabel lbItem = ViewFactory.getInstance().createTextView(100, 30);
                 lbItem.setCharacterSize(14);
                 lbItem.setAlign(Align.CENTER_VERTICAL);
                 lbItem.setPosition(10, index++ * 30);

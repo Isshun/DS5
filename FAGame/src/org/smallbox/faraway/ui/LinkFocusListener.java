@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.View;
 
 /**
@@ -11,12 +11,12 @@ import org.smallbox.faraway.ui.engine.View;
 public class LinkFocusListener implements OnFocusListener {
     @Override
     public void onExit(View view) {
-        ((TextView)view).setColor(Colors.LINK_INACTIVE);
-        ((TextView)view).setStyle(TextView.REGULAR);
+        ((UILabel)view).setColor(Colors.LINK_INACTIVE);
+        ((UILabel)view).setStyle(UILabel.REGULAR);
     }
     @Override
     public void onEnter(View view) {
-        ((TextView)view).setStyle(TextView.UNDERLINED);
-        ((TextView)view).setColor(Colors.LINK_ACTIVE);
+        ((UILabel)view).setStyle(UILabel.UNDERLINED);
+        ((UILabel)view).setColor(Colors.LINK_ACTIVE);
     }
 }

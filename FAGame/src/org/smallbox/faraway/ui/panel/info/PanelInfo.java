@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui.panel;
+package org.smallbox.faraway.ui.panel.info;
 
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.*;
@@ -8,6 +8,7 @@ import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.ui.panel.BaseRightPanel;
 import org.smallbox.faraway.util.StringUtils;
 
 import java.util.List;
@@ -23,36 +24,36 @@ public class PanelInfo extends BaseRightPanel {
 
 	private ParcelModel _area;
 	private int						_line;
-	private TextView 				_itemName;
-	private TextView 				_itemMatter;
-	private TextView 				_lbRoom;
-	private ImageView[]				_lbCarry;
+	private UILabel _itemName;
+	private UILabel _itemMatter;
+	private UILabel _lbRoom;
+	private UIImage[]				_lbCarry;
 	private FrameLayout 			_itemGather;
-	private TextView 				_itemGatherProduce;
+	private UILabel _itemGatherProduce;
 	private FrameLayout 			_itemMine;
-	private TextView 				_itemMineProduce;
-	private TextView 				_itemGatherIcon;
-	private TextView 				_itemMineIcon;
-	private TextView 				_itemStorage;
+	private UILabel _itemMineProduce;
+	private UILabel _itemGatherIcon;
+	private UILabel _itemMineIcon;
+	private UILabel _itemStorage;
 	private FrameLayout 			_layoutItem;
-	private ImageView 				_itemIcon;
-	private TextView 				_itemOwner;
-	private TextView 				_itemCategory;
-	private TextView 				_areaName;
-	private TextView 				_areaCategory;
-	private ImageView 				_areaIcon;
+	private UIImage _itemIcon;
+	private UILabel _itemOwner;
+	private UILabel _itemCategory;
+	private UILabel _areaName;
+	private UILabel _areaCategory;
+	private UIImage _areaIcon;
 	private FrameLayout 			_layoutArea;
-	private TextView 				_areaLight;
-	private TextView 				_areaPos;
-	private TextView 				_itemPower;
+	private UILabel _areaLight;
+	private UILabel _areaPos;
+	private UILabel _itemPower;
 	private FrameLayout _itemAction;
-	private TextView 				_itemProduceName;
-	private TextView			 	_itemProduceIcon;
+	private UILabel _itemProduceName;
+	private UILabel _itemProduceIcon;
 	private FrameLayout 			_layoutStorage;
 	private FrameLayout 			_layoutEffects;
-	private TextView[] 				_itemEffects;
-	private TextView 				_itemAccept;
-	private TextView[] 				_lbCarryCount;
+	private UILabel[] 				_itemEffects;
+	private UILabel _itemAccept;
+	private UILabel[] 				_lbCarryCount;
 	private FrameLayout 			_layoutStorageAdvancedFilter;
 	private CheckBoxView 			_cbFood;
 	private CheckBoxView _cbDrink;
@@ -63,9 +64,9 @@ public class PanelInfo extends BaseRightPanel {
 	private FrameLayout 			_layoutItemProduce;
 	private FrameLayout 			_layoutStorageSimpleFilter;
 	private FrameLayout 			_layoutSlot;
-	private TextView 				_lbSlot;
-	private TextView[] 				_lbSlots;
-	private TextView 				_itemMatterSupply;
+	private UILabel _lbSlot;
+	private UILabel[] 				_lbSlots;
+	private UILabel _itemMatterSupply;
 
 	public PanelInfo(Mode mode, GameEventListener.Key shortcut) {
 		super(mode, shortcut);
@@ -94,7 +95,7 @@ public class PanelInfo extends BaseRightPanel {
 		_lbSlot.setCharacterSize(FONT_SIZE_TITLE);
 		_layoutSlot.addView(_lbSlot);
 		
-		_lbSlots = new TextView[NB_SLOTS_MAX];
+		_lbSlots = new UILabel[NB_SLOTS_MAX];
 		for (int i = 0; i < NB_SLOTS_MAX; i++) {
 			_lbSlots[i] = ViewFactory.getInstance().createTextView();
 			_lbSlots[i].setCharacterSize(FONT_SIZE);
@@ -197,7 +198,7 @@ public class PanelInfo extends BaseRightPanel {
 		_layoutStorage.setPosition(x, y);
 		addView(_layoutStorage);
 
-		TextView lbAccept = ViewFactory.getInstance().createTextView();
+		UILabel lbAccept = ViewFactory.getInstance().createTextView();
 		lbAccept.setPosition(0, 100);
 		lbAccept.setString("Items accepted");
 		lbAccept.setCharacterSize(FONT_SIZE_TITLE);
@@ -211,8 +212,8 @@ public class PanelInfo extends BaseRightPanel {
 		createStorageFilterSimpleView(0, 120);
 //		createStorageFilterAdvancedView(0, 120);
 
-		_lbCarry = new ImageView[42];
-		_lbCarryCount = new TextView[42];
+		_lbCarry = new UIImage[42];
+		_lbCarryCount = new UILabel[42];
 		for (int i = 0; i < 42; i++) {
 			int x2 = i % INVENTORY_NB_COLS;
 			int y2 = i / INVENTORY_NB_COLS;
@@ -233,13 +234,13 @@ public class PanelInfo extends BaseRightPanel {
 		_layoutEffects.setPosition(x, y);
 		addView(_layoutEffects);
 
-		TextView lbEffect = ViewFactory.getInstance().createTextView();
+		UILabel lbEffect = ViewFactory.getInstance().createTextView();
 		lbEffect.setPosition(0, 0);
 		lbEffect.setCharacterSize(FONT_SIZE_TITLE);
 		lbEffect.setString(Strings.LB_EFFECTS);
 		_layoutEffects.addView(lbEffect);
 
-		_itemEffects = new TextView[10];
+		_itemEffects = new UILabel[10];
 		for (int i = 0; i < 10; i++) {
 			_itemEffects[i] = ViewFactory.getInstance().createTextView();
 			_itemEffects[i].setPosition(0, 34 + i * LINE_HEIGHT);
@@ -330,7 +331,7 @@ public class PanelInfo extends BaseRightPanel {
 		_layoutItemProduce.setPosition(0, 200);
 		_layoutItem.addView(_layoutItemProduce);
 
-		TextView lbTitle = ViewFactory.getInstance().createTextView();
+		UILabel lbTitle = ViewFactory.getInstance().createTextView();
 		lbTitle.setString(Strings.PROVIDE);
 		lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 		_layoutItemProduce.addView(lbTitle);
@@ -351,7 +352,7 @@ public class PanelInfo extends BaseRightPanel {
 		_itemGather.setPosition(0, 200);
 		_layoutItem.addView(_itemGather);
 
-		TextView lbTitle = ViewFactory.getInstance().createTextView();
+		UILabel lbTitle = ViewFactory.getInstance().createTextView();
 		lbTitle.setString(Strings.PRODUCT_WHEN_GATHERED);
 		lbTitle.setCharacterSize(FONT_SIZE_TITLE);
 		_itemGather.addView(lbTitle);
@@ -372,7 +373,7 @@ public class PanelInfo extends BaseRightPanel {
 		_itemMine.setVisible(false);
 		_layoutItem.addView(_itemMine);
 
-		TextView lbTitle = ViewFactory.getInstance().createTextView();
+		UILabel lbTitle = ViewFactory.getInstance().createTextView();
 		lbTitle.setString(Strings.PRODUCT_WHEN_MINED);
 		lbTitle.setCharacterSize(16);
 		_itemMine.addView(lbTitle);

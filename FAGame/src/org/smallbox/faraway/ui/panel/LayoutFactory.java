@@ -30,6 +30,22 @@ public class LayoutFactory {
                 }
             }
 
+            if (layout.align != null) {
+                panel.setAlign("left".equals(layout.align[0]), "top".equals(layout.align[1]));
+            }
+
+            if (layout.position != null) {
+                panel.setPosition(layout.position[0], layout.position[1]);
+            }
+
+            if (layout.size != null) {
+                panel.setSize(layout.size[0], layout.size[1]);
+            }
+
+            if (layout.background != 0) {
+                panel.setBackgroundColor(new Color(layout.background));
+            }
+
             panel.init();
             panel.setLoaded();
             panel.resetAllPos();
@@ -41,18 +57,18 @@ public class LayoutFactory {
     }
 
     private static View createLabel(View parent, LayoutModel.LayoutEntry entry) {
-        TextView lbText = ViewFactory.getInstance().createTextView();
+        UILabel lbText = ViewFactory.getInstance().createTextView();
 
         if (entry.align != null) {
             switch (entry.align) {
-                case "center": lbText.setAlign(TextView.Align.CENTER); break;
-                case "center_vertical": lbText.setAlign(TextView.Align.CENTER_VERTICAL); break;
+                case "center": lbText.setAlign(UILabel.Align.CENTER); break;
+                case "center_vertical": lbText.setAlign(UILabel.Align.CENTER_VERTICAL); break;
             }
         }
 
         if (entry.style != null) {
             switch (entry.style) {
-                case "bold": lbText.setStyle(TextView.BOLD); break;
+                case "bold": lbText.setStyle(UILabel.BOLD); break;
             }
         }
 
@@ -91,7 +107,7 @@ public class LayoutFactory {
 
         if (entry.align != null) {
             switch (entry.align) {
-                case "center": frame.setAlign(TextView.Align.CENTER); break;
+                case "center": frame.setAlign(UILabel.Align.CENTER); break;
             }
         }
 
@@ -119,7 +135,7 @@ public class LayoutFactory {
     }
 
     private static View createImage(View parent, LayoutModel.LayoutEntry entry) {
-        ImageView imageView = ViewFactory.getInstance().createImageView();
+        UIImage imageView = ViewFactory.getInstance().createImageView();
 
         if (entry.position != null) {
             imageView.setPosition(entry.position[0], entry.position[1]);

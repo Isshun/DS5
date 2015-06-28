@@ -4,7 +4,7 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
@@ -23,7 +23,7 @@ public class PanelConsole extends BasePanel {
 	private static final Color 	COLOR_FATAL = new Color(0xff0000);
 
 	private String[][] 		_data = new String[5][NB_LINES];
-	private TextView[] 		_texts;
+	private UILabel[] 		_texts;
 	private int 			_level;
 
 	public PanelConsole() {
@@ -44,7 +44,7 @@ public class PanelConsole extends BasePanel {
 		findById("bt_error").setOnClickListener(view -> select("frame_error", Log.LEVEL_ERROR));
 
 		FrameLayout frameEntries = (FrameLayout) findById("frame_entries");
-		_texts = new TextView[NB_LINES];
+		_texts = new UILabel[NB_LINES];
 		for (int i = 0; i < NB_LINES; i++) {
 			_texts[i] = ViewFactory.getInstance().createTextView();
 			_texts[i].setCharacterSize(FONT_SIZE);

@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui.panel;
+package org.smallbox.faraway.ui.panel.right;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
@@ -8,9 +8,10 @@ import org.smallbox.faraway.game.manager.ResourceManager;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.LinkFocusListener;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.ui.engine.ImageView;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UIImage;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.panel.BaseRightPanel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,7 +27,7 @@ public class PanelShortcut extends BaseRightPanel {
 
     private static class ResourceEntry {
         public ResourceData	data;
-        public TextView		text;
+        public UILabel text;
     }
 
     private static class PanelEntry {
@@ -59,9 +60,9 @@ public class PanelShortcut extends BaseRightPanel {
 
     // TODO
 //	private MiniMapRenderer		_miniMapRenderer;
-    private TextView 			_lbTime;
+    private UILabel _lbTime;
     private List<ResourceEntry> _resources;
-    private ImageView _map;
+    private UIImage _map;
 
     public PanelShortcut(Mode mode, GameEventListener.Key shortcut) {
         super(mode, shortcut, "data/ui/panels/shortcut.yml");
@@ -69,17 +70,17 @@ public class PanelShortcut extends BaseRightPanel {
 
     @Override
     public void onLayoutLoaded(LayoutModel layout) {
-        _lbTime = (TextView) findById("lb_time");
+        _lbTime = (UILabel) findById("lb_time");
 
         _resourceManager = (ResourceManager)Game.getInstance().getManager(ResourceManager.class);
 
         _resources = new ArrayList<>();
-        addResource((TextView) findById("lb_food"), _resourceManager.getFood());
-        addResource((TextView) findById("lb_water"), _resourceManager.getWater());
-        addResource((TextView) findById("lb_gas"), _resourceManager.getGasoline());
-        addResource((TextView) findById("lb_science"), _resourceManager.getScience());
-        addResource((TextView) findById("lb_o2"), _resourceManager.getO2());
-        addResource((TextView) findById("lb_power"), _resourceManager.getPower());
+        addResource((UILabel) findById("lb_food"), _resourceManager.getFood());
+        addResource((UILabel) findById("lb_water"), _resourceManager.getWater());
+        addResource((UILabel) findById("lb_gas"), _resourceManager.getGasoline());
+        addResource((UILabel) findById("lb_science"), _resourceManager.getScience());
+        addResource((UILabel) findById("lb_o2"), _resourceManager.getO2());
+        addResource((UILabel) findById("lb_power"), _resourceManager.getPower());
 
         for (PanelEntry entry : _entries) {
             findById(entry.buttonId).setOnClickListener(view -> {
@@ -101,7 +102,7 @@ public class PanelShortcut extends BaseRightPanel {
 //		addView(_map);
     }
 
-    private void addResource(final TextView text, final ResourceData data) {
+    private void addResource(final UILabel text, final ResourceData data) {
         ResourceEntry res = new ResourceEntry();
         res.data = data;
         res.text = text;

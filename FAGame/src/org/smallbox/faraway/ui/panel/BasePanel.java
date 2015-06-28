@@ -2,6 +2,7 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.game.GameObserver;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
@@ -28,7 +29,6 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 	private GameEventListener.Key 	_shortcut;
 	protected UserInteraction 		_interaction;
 	protected boolean 				_isVisible;
-	private ColorView 				_background;
 	private boolean 				_isLoaded;
     private final String            _layoutPath;
 
@@ -47,22 +47,25 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
         setPosition(x, y);
 	}
 
-	public void setBackgroundColor(Color color) {
-		if (color != null) {
-			_background = ViewFactory.getInstance().createColorView(_width, _height);
-			_background.setBackgroundColor(color);
-			_background.setPosition(_x, _y);
-		} else {
-			_background = null;
-		}
-    }
+	public BasePanel(Mode mode, GameEventListener.Key shortcut, String layoutPath) {
+        _layoutPath = layoutPath;
+        _shortcut = shortcut;
+		_mode = mode;
+		_isVisible = false;
+        _views = new ArrayList<>();
+	}
 
+    @Override
     public void setPosition(int x, int y) {
         super.setPosition(x, y);
         _effect = SpriteManager.getInstance().createRenderEffect();
         _effect.setTranslate(_x, _y);
         resetPos();
     }
+
+//    public void setSize(int width, int height) {
+//        super.setSize(width * GameData.config.resolution[0] / Constant.BASE_WIDTH, height * GameData.config.resolution[1] / Constant.BASE_HEIGHT);
+//    }
 
     protected void setAlwaysVisible(boolean alwaysVisible) {
 		_alwaysVisible = alwaysVisible;
@@ -160,8 +163,8 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 
     public void draw(GFXRenderer renderer, RenderEffect effect) {
         if (_isVisible) {
-            if (_background != null) {
-                _background.draw(renderer, _effect);
+            if (_backgroundColor != null) {
+                renderer.draw(_backgroundColor, _x, _y, _width, _height);
             }
 
             for (View view : _views) {
@@ -174,11 +177,6 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 
     @Override
     protected void onDraw(GFXRenderer renderer, RenderEffect effect) {
-    }
-
-    @Override
-    protected void createRender() {
-
     }
 
     @Override

@@ -6,7 +6,7 @@ public class UIMessage {
 	public int 				posX;
 	public int 				posY;
 	public int 				frame;
-	public TextView 		text;
+	public UILabel text;
 	public ColorView		shape;
 	public ColorView 		border;
 

@@ -74,10 +74,12 @@ public class AreaManager extends BaseManager {
         int bestDistance = Integer.MAX_VALUE;
         AreaModel bestArea = null;
         for (AreaModel area: _areas) {
-            ParcelModel parcel = ((StorageModel)area).getNearestFreeParcel(consumable, x, y);
-            if (area.isStorage() && parcel != null && Utils.getDistance(parcel, x, y) < bestDistance && PathManager.getInstance().getPath(fromParcel, parcel) != null) {
-                bestArea = area;
-                bestDistance = Utils.getDistance(parcel, x, y);
+            if (area.accept(consumable.getInfo())) {
+                ParcelModel parcel = ((StorageModel) area).getNearestFreeParcel(consumable, x, y);
+                if (area.isStorage() && parcel != null && Utils.getDistance(parcel, x, y) < bestDistance && PathManager.getInstance().getPath(fromParcel, parcel) != null) {
+                    bestArea = area;
+                    bestDistance = Utils.getDistance(parcel, x, y);
+                }
             }
         }
         return (StorageModel)bestArea;

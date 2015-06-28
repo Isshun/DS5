@@ -8,7 +8,7 @@ import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.Colors;
-import org.smallbox.faraway.ui.engine.TextView;
+import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
@@ -19,10 +19,12 @@ public abstract class BaseRightPanel extends BasePanel {
 
     public BaseRightPanel(Mode mode, GameEventListener.Key shortcut) {
 		super(mode, shortcut, Constant.WINDOW_WIDTH - FRAME_WIDTH, 0, FRAME_WIDTH, FRAME_HEIGHT, null);
+		setSize(FRAME_WIDTH, FRAME_HEIGHT);
 	}
 
     public BaseRightPanel(Mode mode, GameEventListener.Key shortcut, String layoutPath) {
-        super(mode, shortcut, Constant.WINDOW_WIDTH - FRAME_WIDTH, 0, FRAME_WIDTH, FRAME_HEIGHT, layoutPath);
+        super(mode, shortcut, layoutPath);
+		setSize(FRAME_WIDTH, FRAME_HEIGHT);
     }
 
     @Override
@@ -35,7 +37,7 @@ public abstract class BaseRightPanel extends BasePanel {
 		addView(border);
 		
 		if (_mode != Mode.NONE) {
-			TextView lbBack = ViewFactory.getInstance().createTextView();
+			UILabel lbBack = ViewFactory.getInstance().createTextView();
 			lbBack.setString("[Back]");
 			lbBack.setCharacterSize(FONT_SIZE_TITLE);
 			lbBack.setColor(Colors.LINK_INACTIVE);
@@ -47,13 +49,5 @@ public abstract class BaseRightPanel extends BasePanel {
 			lbBack.setOnFocusListener(new LinkFocusListener());
 			addView(lbBack);
 		}
-	}
-
-    @Override
-	public void addView(View view) {
-		if (_mode != Mode.NONE) {
-			view.setPosition(view.getPosX(), view.getPosY() + 42);
-		}
-		super.addView(view);
 	}
 }

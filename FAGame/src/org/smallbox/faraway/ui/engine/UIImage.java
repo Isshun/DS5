@@ -4,7 +4,7 @@ import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteModel;
 
-public abstract class ImageView extends View {
+public abstract class UIImage extends View {
 	protected int _textureX;
 	protected int _textureY;
 	protected int _textureWidth;
@@ -15,11 +15,11 @@ public abstract class ImageView extends View {
 	protected double 		_scaleX = 1;
 	protected double 		_scaleY = 1;
 
-	public ImageView() {
+	public UIImage() {
 		super(0, 0);
 	}
 	
-	public ImageView(SpriteModel icon) {
+	public UIImage(SpriteModel icon) {
 		super(icon.getWidth(), icon.getHeight());
 		
 		_image = icon;
@@ -36,7 +36,7 @@ public abstract class ImageView extends View {
 	public void setPosition(int x, int y) {
 		super.setPosition(x, y);
 		if (_image != null) {
-			_image.setPosition(x, y);
+			_image.setPosition(_x, _y);
 		}
 	}
 
@@ -52,6 +52,9 @@ public abstract class ImageView extends View {
 	}
 
 	public void setImagePath(String path) {
+		if (!path.equals(_path)) {
+			_image = null;
+		}
 		_path = path;
 	}
 

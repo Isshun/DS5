@@ -21,5 +21,9 @@ public class LayoutModel {
         public String   align;
     }
 
-    public List<LayoutEntry> entries;
+    public List<LayoutEntry>    entries;
+    public int                  background;
+    public int[]                position;
+    public int[]                size;
+    public String[]             align;
 }

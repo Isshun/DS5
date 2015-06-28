@@ -5,7 +5,7 @@ import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 //import org.smallbox.faraway.util.StringUtils;
 
-public class CheckBoxView extends TextView {
+public class CheckBoxView extends UILabel {
 	
 	private static final int NB_COLUMNS_NEEDS = 22;
 
