@@ -12,7 +12,7 @@ import java.util.List;
 public class CharacterRenderer extends BaseRenderer {
 	private List<CharacterModel> 	_characters;
 	private SpriteManager 			_spriteManager;
-	private int 					_update;
+	private int _frame;
 	private ColorView 				_redBackground;
 
 	public CharacterRenderer(List<CharacterModel> characters) {
@@ -69,7 +69,7 @@ public class CharacterRenderer extends BaseRenderer {
 						
 			// Selection
 			if (c.isSelected()) {
-				SpriteModel sprite = _spriteManager.getSelector(_update);
+				SpriteModel sprite = _spriteManager.getSelector(_frame / 10);
 				sprite.setPosition(posX - 2, posY + (c.isSleeping() ? 20 : 0) - 2);
 				renderer.draw(sprite, effect);
 			}
@@ -94,8 +94,8 @@ public class CharacterRenderer extends BaseRenderer {
 		}
 	}
 
-	public void onRefresh(int update) {
-		_update = update;
+	public void onRefresh(int frame) {
+		_frame = frame;
 	}
 
 }
