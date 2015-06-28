@@ -32,7 +32,7 @@ public class CheckJoyWalk extends CharacterCheck {
         job.start(character);
         job.setLabel("Move for a walk");
         job.setEffects(_effects);
-        job.setSpeedModifier(0.15);
+        job.setSpeedModifier(0.5);
         job.setLimit(50);
         return job;
     }

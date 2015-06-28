@@ -13,4 +13,4 @@ entries:
     -   type: image
         id: img_speed
         size: [32, 32]
-        position: [100, 0]
+        position: [100, 6]

@@ -21955,14 +21955,14 @@
       <lastname>Mcintyre</lastname>
       <firstname>Bruce </firstname>
       <relations/>
-      <old>38.98000000000075</old>
+      <old>39.200000000000784</old>
       <x>30</x>
       <y>21</y>
       <gender>MALE</gender>
       <nextChildAtOld>-1.0</nextChildAtOld>
       <nbChild>0</nbChild>
       <needs>
-        <isSleeping>false</isSleeping>
+        <isSleeping>true</isSleeping>
         <drinking>0.0</drinking>
         <socialize>0.0</socialize>
         <food>98.0</food>
@@ -21970,7 +21970,7 @@
         <relation>0.0</relation>
         <security>0.0</security>
         <oxygen>99.0</oxygen>
-        <energy>0.0</energy>
+        <energy>91.5</energy>
         <health>81.05213928222656</health>
         <sickness>0.0</sickness>
         <injuries>0.0</injuries>
@@ -21994,27 +21994,27 @@
     <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave>
       <parcels>
         <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+          <x>43</x>
+          <y>12</y>
+        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
           <x>44</x>
           <y>12</y>
         </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
         <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>45</x>
-          <y>11</y>
-        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>43</x>
-          <y>11</y>
-        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>45</x>
-          <y>12</y>
-        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>43</x>
-          <y>12</y>
-        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
           <x>41</x>
+          <y>12</y>
+        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+          <x>45</x>
+          <y>12</y>
+        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+          <x>42</x>
+          <y>12</y>
+        </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+        <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
+          <x>45</x>
           <y>11</y>
         </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
         <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
@@ -22023,11 +22023,11 @@
         </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
         <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
           <x>41</x>
-          <y>12</y>
+          <y>11</y>
         </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
         <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
-          <x>42</x>
-          <y>12</y>
+          <x>43</x>
+          <y>11</y>
         </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
         <org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
           <x>44</x>
@@ -22035,28 +22035,28 @@
         </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave_-AreaParcelSave>
       </parcels>
       <accepts>
-        <string>base.seaweed5</string>
-        <string>base.regular_shirt</string>
-        <string>base.gardening_gloves</string>
-        <string>base.res</string>
-        <string>base.grass</string>
-        <string>base.seaweed</string>
         <string>base.regular_pants</string>
-        <string>base.work_gloves</string>
-        <string>base.seaweed2</string>
-        <string>base.rock</string>
-        <string>base.military_meal</string>
-        <string>base.vegetable</string>
-        <string>base.thimbles</string>
-        <string>base.glasses</string>
-        <string>base.seaweed3</string>
-        <string>base.seaweed4</string>
         <string>base.oxygen_bottle</string>
-        <string>base.easy_meal</string>
-        <string>base.advance_meal</string>
-        <string>base.rubble</string>
+        <string>base.seaweed</string>
+        <string>base.work_gloves</string>
         <string>base.seaweed1</string>
+        <string>base.grass</string>
+        <string>base.seaweed5</string>
+        <string>base.glasses</string>
+        <string>base.rock</string>
+        <string>base.rubble</string>
+        <string>base.easy_meal</string>
+        <string>base.military_meal</string>
+        <string>base.seaweed2</string>
+        <string>base.seaweed4</string>
+        <string>base.thimbles</string>
+        <string>base.res</string>
+        <string>base.seaweed3</string>
+        <string>base.advance_meal</string>
+        <string>base.vegetable</string>
+        <string>base.gardening_gloves</string>
         <string>base.matter</string>
+        <string>base.regular_shirt</string>
       </accepts>
       <type>STORAGE</type>
     </org.smallbox.faraway.data.serializer.AreaSerializer_-AreaSave>

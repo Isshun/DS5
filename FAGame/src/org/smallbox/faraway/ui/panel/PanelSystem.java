@@ -2,6 +2,7 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.Colors;
@@ -46,7 +47,7 @@ public class PanelSystem extends BasePanel {
 	}
 
 	@Override
-	public void onRefresh(int tick) {
+	public void onRefresh(int frame) {
 		int mb = 1024 * 1024;
         Runtime runtime = Runtime.getRuntime();
         int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
@@ -58,6 +59,6 @@ public class PanelSystem extends BasePanel {
         _lbMemoryUsed.setString("Heap: " + String.valueOf(used) + " / " + String.valueOf(total) + " Mo");
         _lbUpdate.setString(String.format("Update: %d/%d", Application.getLastUpdateDelay(), Application.getLastLongUpdateDelay()));
         _lbFloor.setString("FPS: " + MainRenderer.getFPS());
-        _lbFrame.setString("tick: " + tick + " / frame: " + Application.getFrame());
+        _lbFrame.setString("tick: " + Game.getInstance().getTick() + " / frame: " + frame);
 	}
 }

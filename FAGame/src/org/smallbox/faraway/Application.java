@@ -24,7 +24,7 @@ import java.io.IOException;
 public class Application implements GameEventListener {
     public static final int 		DRAW_INTERVAL = (1000/60);
     public static final int 		UPDATE_INTERVAL = 50;
-    public static final int		    REFRESH_INTERVAL = 200;
+    public static final int		    REFRESH_INTERVAL = 16;
     public static final int 		LONG_UPDATE_INTERVAL = 1000;
 
     private static Game             _game;
@@ -46,14 +46,14 @@ public class Application implements GameEventListener {
 
     private static int              _frame;
     private int                     _tick;
-    private int                     _nextUpdate;
-    private int                     _nextRefresh;
     private int                     _nextLongUpdate;
     private static int              _renderTime;
-    private int                     _refresh;
     private long                    _startTime = -1;
     private long                    _elapsed = 0;
     private boolean[]               _directions;
+    private long                    _nextTick;
+    private long                    _lastTick;
+    private int                     _tickInterval = 100 * 1000000;
 
     public Application(GFXRenderer renderer) {
         _self = this;
@@ -123,14 +123,17 @@ public class Application implements GameEventListener {
                 break;
 
             case D_1:
+                _tickInterval = 300 * 1000000;
                 _game.setSpeed(1);
                 break;
 
             case D_2:
+                _tickInterval = 200 * 1000000;
                 _game.setSpeed(2);
                 break;
 
             case D_3:
+                _tickInterval = 100 * 1000000;
                 _game.setSpeed(3);
                 break;
 
@@ -293,18 +296,19 @@ public class Application implements GameEventListener {
             double animProgress = 0;
             if (_game.isRunning()) {
                 _elapsed += lastRenderInterval;
-                animProgress = (1 - (double) (_nextUpdate - _elapsed) / Application.getUpdateInterval());
+                animProgress = ((double) (System.nanoTime() - _nextTick) / _tickInterval);
+                System.out.println("animProgress: " + animProgress);
             }
 
             renderer.clear(new Color(0, 0, 0));
 
             long timeGameRenderer = System.nanoTime();
             _mainRenderer.onDraw(renderer, effect, animProgress);
-            Log.debug("MainRenderer: " + ((double)((System.nanoTime() - timeGameRenderer) / 100000) / 10) + "ms");
+//            Log.debug("MainRenderer: " + ((double) ((System.nanoTime() - timeGameRenderer) / 100000) / 10) + "ms");
 
             long timeUIRenderer = System.nanoTime();
             _gameInterface.onDraw(renderer, _tick, 0);
-            Log.debug("UIRenderer: " + ((double)((System.nanoTime() - timeUIRenderer) / 100000) / 10) + "ms");
+//            Log.debug("UIRenderer: " + ((double) ((System.nanoTime() - timeUIRenderer) / 100000) / 10) + "ms");
 
             renderer.finish();
 
@@ -312,15 +316,16 @@ public class Application implements GameEventListener {
                 updateLocation();
 
                 // Refresh
-                if (_elapsed >= _nextRefresh) {
-                    refreshGame(_refresh++);
-                    _nextRefresh += Application.REFRESH_INTERVAL;
-                }
+//                if (_frame % 10 == 0) {
+                    refreshGame(_frame);
+//                }
 
-                // Update
-                if (_elapsed >= _nextUpdate) {
+                if (System.nanoTime() > _nextTick) {
+                    _lastTick = System.nanoTime();
+                    _nextTick = _lastTick + _tickInterval;
+                    long timeU = System.currentTimeMillis();
                     update(_tick++);
-                    _nextUpdate += Application.getUpdateInterval();
+                    Log.info("update: " + (System.currentTimeMillis() - timeU));
                 }
 
                 // Long _tick
@@ -351,9 +356,6 @@ public class Application implements GameEventListener {
         }
     }
 
-    public void renderGame(double animProgress, int update, long renderTime, GFXRenderer renderer, RenderEffect effect) {
-    }
-
     public void refreshGame(int refreshCount) {
         if (_game != null) {
             _mainRenderer.onRefresh(refreshCount);
@@ -361,8 +363,8 @@ public class Application implements GameEventListener {
         }
     }
 
-    public void refreshMenu(int refreshCount) {
-        _mainMenu.refresh(refreshCount);
+    public void refreshMenu(int frame) {
+        _mainMenu.refresh(frame);
     }
 
     public void update(int tick) {

@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 public abstract class CharacterModel extends MovableModel {
     private ParcelModel _toParcel;
     private ParcelModel _fromParcel;
+    private double _moveStep;
 
     public CharacterInfoModel getInfo() {
         return _info;
@@ -35,6 +36,10 @@ public abstract class CharacterModel extends MovableModel {
 
     public CharacterRelationModel getRelations() {
         return _relations;
+    }
+
+    public double getMoveStep() {
+        return _moveStep;
     }
 
     public enum TalentType {
@@ -336,7 +341,8 @@ public abstract class CharacterModel extends MovableModel {
             else if (y < _posY) setMove(Direction.TOP);
 
             // Increase move progress
-            _moveProgress += 0.75 * _stats.speed * (_job != null ? _job.getSpeedModifier() : 1);
+            _moveStep = 1 * _stats.speed * (_job != null ? _job.getSpeedModifier() : 1);
+            _moveProgress += _moveStep;
             if (_moveProgress < 1) {
                 return;
             }

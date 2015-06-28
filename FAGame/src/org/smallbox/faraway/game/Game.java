@@ -32,7 +32,7 @@ public class Game {
 
     private static Game 				_self;
     private final String                _fileName;
-	private int 						_speed;
+	private int 						_speed = 1;
     private GameConfig                  _config;
 	private List<BaseManager>			_managers;
 	private List<GameObserver>			_observers;

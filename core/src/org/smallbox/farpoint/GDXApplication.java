@@ -120,7 +120,19 @@ public class GDXApplication extends ApplicationAdapter {
             effect.setViewport(game.getViewport());
         }
 
+        long time = System.currentTimeMillis();
+
         _application.render(_renderer, effect, lastRenderInterval);
+
+        long sleepTime = 16 - (System.currentTimeMillis() - time) - 1;
+//        System.out.println("sleep: " + sleepTime);
+        if (sleepTime > 0) {
+            try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
 //        // Render menu
 //        if (game == null || !game.isRunning()) {

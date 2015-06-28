@@ -13,7 +13,7 @@ public class DesktopLauncher {
 		new ConfigLoader().load(data);
 
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.samples = 2;
+//		config.samples = 2;
 		config.x = 1920;
 		config.y = 0;
 		config.width = data.config.resolution[0];

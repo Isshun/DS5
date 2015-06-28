@@ -34,8 +34,9 @@ public class CharacterRenderer extends BaseRenderer {
 			int offset = 0;
 			int frame = 0;
 			if (move != Direction.NONE) {
-//				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
-				offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
+                System.out.println("_moveStep: " + c.getMoveStep());
+				offset = (int) ((c.getMoveProgress() + c.getMoveStep() * animProgress) * Constant.TILE_WIDTH);
+//				offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
 				frame = c.getFrameIndex() / 20 % 4;
 			}
 

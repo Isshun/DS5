@@ -76,10 +76,10 @@ public class MainMenu {
         _currentScene.draw(renderer, effect);
     }
 
-    public void refresh(int update) {
-        _refresh = update;
+    public void refresh(int frame) {
+        _refresh = frame;
         for (BasePanel panel: _scenes) {
-            panel.refresh(update);
+            panel.refresh(frame);
         }
 
         // Refresh UI if needed by GameData (strings)
@@ -90,7 +90,7 @@ public class MainMenu {
 
         // Refresh UI if needed by UI files
         long lastResModified = Utils.getLastUIModified();
-        if (update % 8 == 0 && lastResModified > _lastModified) {
+        if (frame % 8 == 0 && lastResModified > _lastModified) {
             _lastModified = lastResModified;
             reload();
         }

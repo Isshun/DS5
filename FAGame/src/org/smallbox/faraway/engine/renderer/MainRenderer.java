@@ -137,7 +137,7 @@ public class MainRenderer {
 	}
 
 	public void setFPS(int frame, int interval) {
-		_fps = (frame - _lastSavedFrame) / (interval / 1000);
+//		_fps = (frame - _lastSavedFrame) / (interval / 1000);
 		_lastSavedFrame = frame;
 	}
 

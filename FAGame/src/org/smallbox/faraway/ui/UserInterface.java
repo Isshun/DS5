@@ -5,7 +5,6 @@ import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.CharacterManager;
-import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.ToolTips.ToolTip;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
@@ -20,7 +19,6 @@ import org.smallbox.faraway.ui.panel.info.*;
 import org.smallbox.faraway.ui.panel.right.*;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.util.Utils;
 
 public class UserInterface implements GameEventListener {
     private static UserInterface		_self;
@@ -44,7 +42,7 @@ public class UserInterface implements GameEventListener {
     private UserInterfaceCursor			_cursor;
     private long 						_lastLeftClick;
     private int 						_lastInput;
-    private PanelConsole                _panelMessage;
+    private PanelConsole                _panelConsole;
     private ToolTip 					_selectedTooltip;
     private CharacterModel              _selectedCharacter;
     private ItemModel                   _selectedItem;
@@ -224,8 +222,8 @@ public class UserInterface implements GameEventListener {
         _factory = layoutFactory;
         _viewFactory = viewFactory;
         _interaction = new UserInteraction(this);
-        _panelMessage = new PanelConsole();
-        _panelMessage.init(viewFactory, layoutFactory, this, _interaction, null);
+        _panelConsole = new PanelConsole();
+        _panelConsole.init(viewFactory, layoutFactory, this, _interaction, null);
     }
 
     public void onCreate(Game game) {
@@ -372,20 +370,20 @@ public class UserInterface implements GameEventListener {
         for (BasePanel panel: _panels) {
             panel.refresh(update);
         }
-        _panelMessage.refresh(update);
+        _panelConsole.refresh(update);
 
-        // Refresh UI if needed by GameData (strings)
-        if (GameData.getData().needUIRefresh) {
-            GameData.getData().needUIRefresh = false;
-            reload();
-        }
-
-        // Refresh UI if needed by UI files
-        long lastResModified = Utils.getLastUIModified();
-        if (update % 8 == 0 && lastResModified > _lastModified) {
-            _lastModified = lastResModified;
-            reload();
-        }
+//        // Refresh UI if needed by GameData (strings)
+//        if (GameData.getData().needUIRefresh) {
+//            GameData.getData().needUIRefresh = false;
+//            reload();
+//        }
+//
+//        // Refresh UI if needed by UI files
+//        long lastResModified = Utils.getLastUIModified();
+//        if (update % 8 == 0 && lastResModified > _lastModified) {
+//            _lastModified = lastResModified;
+//            reload();
+//        }
     }
 
     public void onDraw(GFXRenderer renderer, int update, long renderTime) {
@@ -393,7 +391,7 @@ public class UserInterface implements GameEventListener {
             panel.draw(renderer, null);
         }
 
-        _panelMessage.draw(renderer, null);
+        //_panelConsole.draw(renderer, null);
 
         if (_mouseOnMap) {
             if (_interaction.isAction(UserInteraction.Action.SET_ROOM)
@@ -658,7 +656,7 @@ public class UserInterface implements GameEventListener {
     }
 
     public void addMessage(int level, String message) {
-        _panelMessage.addMessage(level, message);
+        _panelConsole.addMessage(level, message);
     }
 
     public void back() {
