@@ -3,7 +3,6 @@ package org.smallbox.faraway.game.manager;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.room.NeighborModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
-import org.smallbox.faraway.ui.AreaManager;
 
 /**
  * Created by Alex on 18/06/2015.

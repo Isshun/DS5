@@ -165,33 +165,6 @@ public class PanelRoom extends BaseRightPanel {
 		}
 	}
 
-	@Override
-	public void onRefresh(int frame) {
-		if (_interaction.getSelectedRoomType() == null) {
-			clearButtons();
-		}
-
-		// New room is selected
-		RoomModel selectedRoom = _ui.getSelectedRoom();
-		if (selectedRoom != _room) {
-			setRoom(selectedRoom);
-		}
-
-		// Room is selected
-		if (_room != null) {
-			displayRoom(selectedRoom);
-		} else {
-			_layoutRoom.setVisible(false);
-		}
-	}
-
-	private void setRoom(RoomModel room) {
-		_room = room;
-		if (room != null) {
-			createRoomInfoOption(room);
-		}
-	}
-
 	void	createIconEntry(final PanelEntry entry, int index) {
 		UILabel icon = _icons.get(index);
 		if (icon == null) {
@@ -218,7 +191,7 @@ public class PanelRoom extends BaseRightPanel {
 		for (CharacterModel character: occupants) {
 			if (i < MAX_OCCUPANTS) {
 				_lbRoomOccupants[i].setString(character.getName());
-				_lbRoomOccupants[i].setColor(character.getColor());
+				_lbRoomOccupants[i].setColor(character.getInfo().getColor());
 				_lbRoomOccupantsOld[i].setString((int)character.getOld() + "yo.");
 				i++;
 			}
@@ -234,6 +207,15 @@ public class PanelRoom extends BaseRightPanel {
 			button.setBackgroundColor(new Color(29, 85, 96, 100));
 			button.setBorderColor(null);
 		}
+	}
+
+	public void select(RoomModel room) {
+		if (_interaction.getSelectedRoomType() == null) {
+			clearButtons();
+		}
+
+		createRoomInfoOption(room);
+		displayRoom(room);
 	}
 
 }

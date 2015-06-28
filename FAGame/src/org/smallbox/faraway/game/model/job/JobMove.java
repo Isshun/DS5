@@ -7,7 +7,7 @@ import org.smallbox.faraway.util.Log;
 public class JobMove extends BaseJobModel {
 	private GameConfig.EffectValues _effects;
     private int 					_distance;
-    private double 					_speedModifier;
+    private double 					_speedModifier = 1;
 
     private JobMove(int x, int y) {
 		super(null, x, y, "data/res/ic_dump.png", "data/res/ic_action_dump.png");

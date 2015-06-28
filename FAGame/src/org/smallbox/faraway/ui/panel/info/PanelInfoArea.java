@@ -5,7 +5,10 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.ui.*;
-import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.ui.engine.Colors;
+import org.smallbox.faraway.ui.engine.FrameLayout;
+import org.smallbox.faraway.ui.engine.UILabel;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,11 +108,16 @@ public class PanelInfoArea extends BaseInfoRightPanel {
     public void select(AreaModel area) {
         _area = area;
         ((UILabel)findById("lb_area")).setString(area.getName());
-        findById("bt_remove_area").setOnClickListener(view -> ((AreaManager)Game.getInstance().getManager(AreaManager.class)).remove(area));
+        findById("bt_remove_area").setOnClickListener(view -> ((AreaManager) Game.getInstance().getManager(AreaManager.class)).remove(area));
 
-        for (UILabel lbEntry: _entries) {
-            ItemInfo itemInfo = (ItemInfo)lbEntry.getData();
-            lbEntry.setString((_area.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);
+        if (area.isStorage()) {
+            findById("frame_entries").setVisible(true);
+            for (UILabel lbEntry : _entries) {
+                ItemInfo itemInfo = (ItemInfo) lbEntry.getData();
+                lbEntry.setString((_area.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);
+            }
+        } else {
+            findById("frame_entries").setVisible(false);
         }
     }
 }

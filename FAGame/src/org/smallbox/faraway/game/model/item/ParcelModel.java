@@ -11,7 +11,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private ConsumableModel _consumable;
     private StructureModel 	_structure;
     private ResourceModel 	_resource;
-    private int				_oxygen;
+    private double          _oxygen;
     private int				_x;
     private int				_y;
     private int 			_z;
@@ -20,7 +20,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private RoomModel 		_room;
     private boolean 		_isStorage;
     private int				_lightSource;
-    private AreaModel 		_area;
+    private AreaModel       _area;
     private double 			_rubble;
     private double 			_dirt;
     private double 			_blood;
@@ -32,7 +32,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public int              tmpData;
 
     public ParcelModel(int x, int y, int z) {
-        _oxygen = (int) (Math.random() % 100);
+        _oxygen = 0;
         _light = 0;
         _x = x;
         _y = y;
@@ -42,7 +42,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 
     public void 			addLight(double value) { _light += value; }
 
-    public void				setOxygen(int oxygen) { _oxygen = oxygen; }
+    public void				setOxygen(double oxygen) { _oxygen = oxygen; }
     public void 			setLight(double value) { _light = value; }
     public void 			setLightPass(int pass) { _lightPass = pass; }
     public void 			setRoom(RoomModel room) { _room = room; }
@@ -57,7 +57,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public ItemModel 		getItem() { return _item; }
     public StructureModel 	getStructure() { return _structure; }
     public ResourceModel 	getResource() { return _resource; }
-    public int				getOxygen() { return _oxygen; }
+    public double   		getOxygen() { return _oxygen; }
     public int				getX() { return _x; }
     public int				getY() { return _y; }
     public int				getZ() { return _z; }
@@ -70,7 +70,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public double 			getSnow() { return _snow; }
     public int				getLightSource() { return _lightSource; }
     public ConsumableModel 	getConsumable() { return _consumable; }
-    public AreaModel 		getArea() { return _area; }
+    public AreaModel getArea() { return _area; }
     public double           getElevation() { return _elevation; }
     public void             setElevation(double elevation) { _elevation = elevation; }
     public int              getType() { return _type; }

@@ -3,7 +3,7 @@ package org.smallbox.faraway.game.model.job;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.StorageModel;
+import org.smallbox.faraway.game.model.StorageAreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -18,7 +18,7 @@ public class JobHaul extends BaseJobModel {
     private enum Mode {MOVE_TO_CONSUMABLE, MOVE_TO_STORAGE}
 
     private List<ConsumableModel>   _consumables = new ArrayList<>();
-    private StorageModel            _storage;
+    private StorageAreaModel _storage;
     private ParcelModel 	        _parcel;
     private Mode 			        _mode;
     private int                     _quantity;

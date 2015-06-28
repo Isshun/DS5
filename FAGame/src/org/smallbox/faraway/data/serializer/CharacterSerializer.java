@@ -2,6 +2,8 @@ package org.smallbox.faraway.data.serializer;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.AndroidModel;
+import org.smallbox.faraway.game.model.character.DroidModel;
+import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
@@ -60,10 +62,11 @@ public class CharacterSerializer implements SerializerInterface {
 	}
 	
 	public static class CharacterSave {
-		public int							id;
+        public int							id;
 		public String						lastname;
 		public String 						firstname;
 		public List<CharacterRelationSave>	relations;
+        public final String                 type;
 		public double 						old;
 		public int 							x;
 		public int 							y;
@@ -78,6 +81,7 @@ public class CharacterSerializer implements SerializerInterface {
 			this.old = character.getOld();
 			this.x = character.getX();
 			this.y = character.getY();
+			this.type = character.getTypeName();
 			this.gender = character.getInfo().getGender();
 			this.lastname = character.getInfo().getLastName();
 			this.firstname = character.getInfo().getFirstName();
@@ -134,8 +138,24 @@ public class CharacterSerializer implements SerializerInterface {
 
 	private void loadCharacter(CharacterSave characterSave) {
 		Utils.useUUID(characterSave.id);
-		CharacterModel character = new AndroidModel(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
-		character.getInfo().setGender(characterSave.gender);
+
+		CharacterModel character;
+
+        switch (characterSave.type) {
+            case "android":
+                character = new AndroidModel(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
+                break;
+            case "droid":
+                character = new DroidModel(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
+                break;
+            default:
+                character = new HumanModel(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
+                break;
+        }
+
+		if (characterSave.gender != null) {
+			character.getInfo().setGender(characterSave.gender);
+		}
 
 //		// Load inventory
 //		if (characterSave.inventory != null) {

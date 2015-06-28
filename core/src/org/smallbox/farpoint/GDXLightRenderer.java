@@ -204,14 +204,17 @@ public class GDXLightRenderer extends LightRenderer {
 //            _sunLights.add(_sunLight);
 //            lights.add(_sunLight);
 //        }
-        _sunLight1 = new PointLight(rayHandler, RAYS_PER_BALL, null, 20000, 0, 0);
+        int centerX = Game.getWorldManager().getWidth() / 2 * Constant.TILE_WIDTH;
+        int centerY = Game.getWorldManager().getHeight() / 2 * Constant.TILE_HEIGHT;
+
+        _sunLight1 = new PointLight(rayHandler, RAYS_PER_BALL, null, 200000, centerX, centerY);
         _sunLight1.setSoft(false);
         _sunLight1.setXray(true);
         _sunLight1.attachToBody(_sunBody, RADIUS / 2f, RADIUS / 2f);
         _sunLight1.setColor(255, 255, 255, 0.11f);
         lights.add(_sunLight1);
 
-        _sunLight2 = new PointLight(rayHandler, RAYS_PER_BALL, null, 20000, 0, 0);
+        _sunLight2 = new PointLight(rayHandler, RAYS_PER_BALL, null, 200000, centerX, centerY);
         _sunLight2.setSoft(false);
         _sunLight2.setXray(false);
         _sunLight2.attachToBody(_sunBody, RADIUS / 2f, RADIUS / 2f);

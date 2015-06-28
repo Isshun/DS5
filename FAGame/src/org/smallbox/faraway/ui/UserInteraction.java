@@ -12,24 +12,78 @@ import org.smallbox.faraway.game.model.job.JobDump;
 import org.smallbox.faraway.game.model.job.JobHaul;
 import org.smallbox.faraway.game.model.room.RoomModel.RoomType;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.ui.cursor.*;
+import org.smallbox.faraway.ui.cursor.DumpCursor;
+import org.smallbox.faraway.ui.cursor.GatherCursor;
+import org.smallbox.faraway.ui.cursor.MineCursor;
+import org.smallbox.faraway.ui.cursor.PickCursor;
 import org.smallbox.faraway.ui.panel.right.PanelPlan.Planning;
 import org.smallbox.faraway.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class UserInteraction {
 
-	public enum Action {
-		NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_ROOM, SET_AREA, PUT_ITEM_FREE, SET_PLAN
+	public boolean onKeyLeft(int x, int y, int fromX, int fromY, int toX, int toY) {
+		// Set plan
+		if (_action == Action.SET_PLAN) {
+			plan(fromX, fromY, toX, toY);
+			return true;
+		}
+
+		// Set area
+		if (_action == Action.SET_AREA) {
+			((AreaManager)Game.getInstance().getManager(AreaManager.class)).createArea(_selectedAreaType, fromX, fromY, toX, toY);
+			return true;
+		}
+
+		// Set area
+		if (_action == Action.REMOVE_AREA) {
+			((AreaManager)Game.getInstance().getManager(AreaManager.class)).removeArea(_selectedAreaType, fromX, fromY, toX, toY);
+			return true;
+		}
+
+		// Set room
+		if (_action == Action.SET_ROOM) {
+			roomType(x, y, fromX, fromY, toX, toY);
+			return true;
+		}
+
+		// Remove item
+		if (_action == Action.REMOVE_ITEM) {
+			removeItem(fromX, fromY, toX, toY);
+			return true;
+		}
+
+		// Remove structure
+		if (_action == Action.REMOVE_STRUCTURE) {
+			removeStructure(fromX, fromY, toX, toY);
+			return true;
+		}
+
+		// Build item
+		if (_action == Action.BUILD_ITEM) {
+			planBuild(fromX, fromY, toX, toY);
+			return true;
+		}
+
+		// Build item free
+		if (_action == Action.PUT_ITEM_FREE) {
+			planPutForFree(fromX, fromY, toX, toY);
+			return true;
+		}
+
+		return false;
 	}
 
-	Action					_action;
-	int						_startPressX;
-	int						_startPressY;
-	int						_mouseMoveX;
-	int						_mouseMoveY;
-	GameEventListener.MouseButton _button;
-	
+	public enum Action {
+		NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_ROOM, SET_AREA, PUT_ITEM_FREE, REMOVE_AREA, SET_PLAN
+	}
+
+	Action					            _action;
+	int						            _startPressX;
+	int						            _startPressY;
+	int						            _mouseMoveX;
+	int						            _mouseMoveY;
+	GameEventListener.MouseButton       _button;
 	private Planning 					_selectedPlan;
 	private RoomType 					_selectedRoomType;
 	private ItemInfo 					_selectedItemInfo;
@@ -73,7 +127,7 @@ public class UserInteraction {
 						Log.warning("1");
 						// TODO
 						StructureModel structure = Game.getWorldManager().getStructure(x, y);
-						if (structure == null || structure.getName().equals("base.door") == false) {
+						if (structure == null || !structure.isDoor()) {
 							JobManager.getInstance().build(GameData.getData().getItemInfo("base.wall"), x, y);
 						}
 						// item = Game.getWorldManager().putObject(x, y, BaseItem.STRUCTURE_WALL);
@@ -218,16 +272,6 @@ public class UserInteraction {
 
 	}
 
-	public void set(Action action, RoomType roomType) {
-		_action = action;
-		_selectedRoomType = roomType;
-	}
-
-	public void set(Action action, AreaType areaType) {
-		_action = action;
-		_selectedAreaType = areaType;
-	}
-
 	public boolean isAction(Action action) {
 		return _action.equals(action);
 	}
@@ -279,34 +323,13 @@ public class UserInteraction {
 		_selectedItemInfo = info;
 	}
 
-	public void action(int fromX, int fromY, int toX, int toY) {
-		// Remove item
-		if (_action == Action.REMOVE_ITEM) {
-			removeItem(fromX, fromY, toX, toY);
-		}
+    public void set(Action action, RoomType roomType) {
+        _action = action;
+        _selectedRoomType = roomType;
+    }
 
-		// Remove structure
-		if (_action == Action.REMOVE_STRUCTURE) {
-			removeStructure(fromX, fromY, toX, toY);
-		}
-
-		// Build item
-		if (_action == Action.BUILD_ITEM) {
-			planBuild(fromX, fromY, toX, toY);
-		}
-
-		// Build item free
-		if (_action == Action.PUT_ITEM_FREE) {
-			planPutForFree(fromX, fromY, toX, toY);
-		}
-	}
-
-	public boolean hasAction() {
-		return _action != null && _action != Action.NONE;
-	}
-
-	public AreaType getSelectedAreaType() {
-		return _selectedAreaType;
-	}
-
+    public void set(Action action, AreaType areaType) {
+        _action = action;
+        _selectedAreaType = areaType;
+    }
 }

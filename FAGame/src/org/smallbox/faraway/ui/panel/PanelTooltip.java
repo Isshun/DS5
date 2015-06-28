@@ -15,11 +15,10 @@ public class PanelTooltip extends BasePanel {
 	private static final int NB_MAX_LINK = 10;
 	private static final int CHARACTER_WIDTH = 8;
 
-	private UILabel _lbToolTip;
-	private UILabel _lbContent;
-	private UILabel _lbCategory;
-	private UILabel[] 	_lbCategories;
-	private ToolTip 	_tooltips;
+	private UILabel 		_lbToolTip;
+	private UILabel 		_lbContent;
+	private UILabel 		_lbCategory;
+	private UILabel[] 		_lbCategories;
 
 	public PanelTooltip(Mode mode, GameEventListener.Key shortcut) {
 		super(mode, shortcut, 200, 200, FRAME_WIDTH, FRAME_HEIGHT, null);
@@ -70,48 +69,38 @@ public class PanelTooltip extends BasePanel {
 		return sb.toString();
 	}
 
-	@Override
-	public void onRefresh(int frame) {
-		ToolTip tooltip = _ui.getSelectedTooltip();
-		if (tooltip != null && tooltip != _tooltips) {
-			_tooltips = tooltip;
+	public void select(ToolTip tooltip) {
 
-			// Title
-			_lbToolTip.setString(tooltip.title);
+		// Title
+		_lbToolTip.setString(tooltip.title);
 
-			// Content
-			_lbContent.setString(getFormatedContent(tooltip.content));
-			
-			// Category
-			ToolTipCategory category = null;
-			for (ToolTipCategory c: ToolTips.categories) {
-				if (c.contains(tooltip)) {
-					category = c;
-				}
+		// Content
+		_lbContent.setString(getFormatedContent(tooltip.content));
+
+		// Category
+		ToolTipCategory category = null;
+		for (ToolTipCategory c: ToolTips.categories) {
+			if (c.contains(tooltip)) {
+				category = c;
 			}
-			if (category != null) {
-				_lbCategory.setString("See other tags for [" + category.title + "]");
-				int i = 0;
-				int posX = 0;
-				for (ToolTip t: category.tooltips) {
-					final ToolTip ft = t;
-					_lbCategories[i].setString("[" + t.title + "]");
-					_lbCategories[i].setVisible(true);
-					_lbCategories[i].setPosition(posX, 32);
-					_lbCategories[i].setSize((t.title.length() + 2) * CHARACTER_WIDTH, LINE_HEIGHT);
-					_lbCategories[i].resetPos();
-					_lbCategories[i].setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							_ui.select(ft);
-						}
-					});
-					posX += (t.title.length() + 2) * CHARACTER_WIDTH + 12;
-					i++;
-				}
-				for (; i < NB_MAX_LINK; i++) {
-					_lbCategories[i].setVisible(false);
-				}
+		}
+		if (category != null) {
+			_lbCategory.setString("See other tags for [" + category.title + "]");
+			int i = 0;
+			int posX = 0;
+			for (ToolTip t: category.tooltips) {
+				final ToolTip ft = t;
+				_lbCategories[i].setString("[" + t.title + "]");
+				_lbCategories[i].setVisible(true);
+				_lbCategories[i].setPosition(posX, 32);
+				_lbCategories[i].setSize((t.title.length() + 2) * CHARACTER_WIDTH, LINE_HEIGHT);
+				_lbCategories[i].resetPos();
+				_lbCategories[i].setOnClickListener(view -> _ui.getSelector().select(ft));
+				posX += (t.title.length() + 2) * CHARACTER_WIDTH + 12;
+				i++;
+			}
+			for (; i < NB_MAX_LINK; i++) {
+				_lbCategories[i].setVisible(false);
 			}
 		}
 	}

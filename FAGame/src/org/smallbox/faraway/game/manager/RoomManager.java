@@ -288,6 +288,7 @@ public class RoomManager extends BaseManager implements GameObserver {
                     }
                 }
                 room.setOxygen(oxygen / room.getParcels().size());
+                Log.info("Set room oxygen: " + oxygen / room.getParcels().size());
             }
         }
 
@@ -314,19 +315,23 @@ public class RoomManager extends BaseManager implements GameObserver {
             }
 
             // Compute sealing
+            List<NeighborModel> neighborList = new ArrayList<>();
             for (NeighborModel neighbor: neighborhood.values()) {
-                boolean isOpen = false;
-                neighbor.sealing = 0;
-                for (ParcelModel parcel : neighbor.parcels) {
-                    neighbor.sealing += parcel.getSealing();
-                    if (parcel.getSealing() == 0) {
-                        isOpen = true;
+                if (!neighbor.parcels.isEmpty()) {
+                    boolean isOpen = false;
+                    neighbor.sealing = 0;
+                    for (ParcelModel parcel : neighbor.parcels) {
+                        neighbor.sealing += parcel.getSealing();
+                        if (parcel.getSealing() == 0) {
+                            isOpen = true;
+                        }
                     }
+                    neighbor.sealing = isOpen ? 0.1 : neighbor.sealing / neighbor.parcels.size();
+                    neighborList.add(neighbor);
                 }
-                neighbor.sealing = isOpen ? 0.1 : neighbor.sealing / neighbor.parcels.size();
             }
 
-            room.setNeighborhoods(new ArrayList<>(neighborhood.values()));
+            room.setNeighborhoods(neighborList);
         }
     }
 

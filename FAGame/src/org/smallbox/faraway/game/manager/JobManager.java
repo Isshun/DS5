@@ -3,6 +3,7 @@ package org.smallbox.faraway.game.manager;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.check.CheckCharacterOxygen;
 import org.smallbox.faraway.game.model.check.CheckCharacterUse;
 import org.smallbox.faraway.game.model.check.character.CheckCharacterExhausted;
 import org.smallbox.faraway.game.model.check.character.CheckCharacterHungry;
@@ -37,6 +38,7 @@ public class JobManager extends BaseManager {
 		_toRemove = new ArrayList<>();
 
         _priorities = new ArrayList<>();
+		_priorities.add(new CheckCharacterOxygen());
         _priorities.add(new CheckCharacterUse());
         _priorities.add(new CheckCharacterExhausted());
 		_priorities.add(new CheckCharacterHungry());

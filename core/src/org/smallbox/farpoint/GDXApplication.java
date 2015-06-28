@@ -85,7 +85,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         if (data.config.byPassMenu) {
 //            _application.newGame("6.sav");
-            _application.loadGame("4.sav");
+            _application.loadGame("6.sav");
         }
     }
 

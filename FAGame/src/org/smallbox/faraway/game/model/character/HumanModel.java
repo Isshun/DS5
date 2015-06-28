@@ -1,8 +1,8 @@
 package org.smallbox.faraway.game.model.character;
 
-import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterStats;
 
@@ -27,6 +27,7 @@ public class HumanModel extends CharacterModel {
 
     public HumanModel(int id, int x, int y, String name, String lastName, double old) {
         super(id, x, y, name, lastName, old);
+        _info.setGender((int) (Math.random() * 1000) % 2 == 0 ? CharacterInfoModel.Gender.MALE : CharacterInfoModel.Gender.FEMALE);
     }
 
     @Override
@@ -63,10 +64,5 @@ public class HumanModel extends CharacterModel {
     @Override
     public String getName() {
         return _info.getFirstName() + " " + _info.getLastName();
-    }
-
-    @Override
-    public Color getColor() {
-        return _info.getColor();
     }
 }

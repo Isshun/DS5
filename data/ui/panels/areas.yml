@@ -22,6 +22,15 @@ entries:
             background: 0x005560
 
         -   type: label
+            id: bt_area_remove_storage
+            text: "Remove Storage"
+            textsize: 20
+            position: [220, 0]
+            size: [180, 40]
+            align: center
+            background: 0x005560
+
+        -   type: label
             id: bt_area_dump
             text: "Dump"
             textsize: 20
@@ -35,6 +44,15 @@ entries:
             text: "Home"
             textsize: 20
             position: [20, 100]
+            size: [180, 40]
+            align: center
+            background: 0x005560
+
+        -   type: label
+            id: bt_area_remove_home
+            text: "Remove Home"
+            textsize: 20
+            position: [220, 100]
             size: [180, 40]
             align: center
             background: 0x005560

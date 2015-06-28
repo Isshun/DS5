@@ -53,7 +53,7 @@ public class Application implements GameEventListener {
     private boolean[]               _directions;
     private long                    _nextTick;
     private long                    _lastTick;
-    private int                     _tickInterval = 100 * 1000000;
+    private int                     _tickInterval = 300 * 1000000;
 
     public Application(GFXRenderer renderer) {
         _self = this;
@@ -297,7 +297,6 @@ public class Application implements GameEventListener {
             if (_game.isRunning()) {
                 _elapsed += lastRenderInterval;
                 animProgress = ((double) (System.nanoTime() - _nextTick) / _tickInterval);
-                System.out.println("animProgress: " + animProgress);
             }
 
             renderer.clear(new Color(0, 0, 0));

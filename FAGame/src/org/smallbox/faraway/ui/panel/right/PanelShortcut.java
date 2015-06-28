@@ -106,7 +106,7 @@ public class PanelShortcut extends BaseRightPanel {
         ResourceEntry res = new ResourceEntry();
         res.data = data;
         res.text = text;
-        res.text.setOnClickListener(view -> _ui.select(data.tooltip));
+        res.text.setOnClickListener(view -> _ui.getSelector().select(data.tooltip));
         _resources.add(res);
     }
 

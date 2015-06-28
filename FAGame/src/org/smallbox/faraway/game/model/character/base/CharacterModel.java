@@ -2,7 +2,6 @@ package org.smallbox.faraway.game.model.character.base;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.PathManager;
-import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
 import org.smallbox.faraway.game.manager.JobManager;
@@ -124,7 +123,6 @@ public abstract class CharacterModel extends MovableModel {
         _needs = new CharacterNeeds(this);
         _steps = 0;
         _info = new CharacterInfoModel(name, lastName);
-        _info.setGender((int) (Math.random() * 1000) % 2 == 0 ? CharacterInfoModel.Gender.MALE : CharacterInfoModel.Gender.FEMALE);
 
         _talentsMap = new HashMap<>();
         _talents = new ArrayList<>();
@@ -163,7 +161,6 @@ public abstract class CharacterModel extends MovableModel {
     public abstract String          getTypeName();
     public abstract GameConfig.EffectValues getNeedEffects();
     public abstract String		    getName();
-    public abstract Color           getColor();
 
     public void				        setSelected(boolean selected) { _isSelected = selected; }
     public void                     setIsDead() { _isAlive = false; }

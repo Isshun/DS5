@@ -2,7 +2,6 @@ package org.smallbox.faraway.data.serializer;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.ui.AreaManager;
 import org.smallbox.faraway.ui.AreaModel;
 import org.smallbox.faraway.ui.AreaType;

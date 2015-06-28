@@ -6,7 +6,6 @@ import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.ui.engine.ColorView;
-import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 
 public abstract class UserInterfaceCursor {

@@ -5,7 +5,10 @@ import org.smallbox.faraway.game.manager.PowerManager;
 import org.smallbox.faraway.game.manager.WeatherManager;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.ui.engine.Colors;
+import org.smallbox.faraway.ui.engine.UILabel;
+import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
 
 /**

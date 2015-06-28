@@ -10,7 +10,6 @@ import org.smallbox.faraway.game.model.character.base.CharacterStats;
  * Created by Alex on 17/06/2015.
  */
 public class DroidModel extends CharacterModel {
-    private static final Color COLOR = new Color(0xf1f1f1);
     private static final double 	BODY_COLD_ABSORB = 100;
     private static final double 	BODY_COLD_RESIST = 1;
 
@@ -24,6 +23,7 @@ public class DroidModel extends CharacterModel {
 
     public DroidModel(int id, int x, int y, String name, String lastName, double old) {
         super(id, x, y, name, lastName, old);
+        _info.setColor(new Color(0xf1f1f1));
     }
 
     @Override
@@ -60,10 +60,5 @@ public class DroidModel extends CharacterModel {
     @Override
     public String getName() {
         return "B5";
-    }
-
-    @Override
-    public Color getColor() {
-        return COLOR;
     }
 }

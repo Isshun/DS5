@@ -52,6 +52,18 @@ public class PathManager extends BaseManager {
             ParcelModel fromParcel = Game.getWorldManager().getParcel(movable.getX(), movable.getY());
             ParcelModel toParcel = Game.getWorldManager().getParcel(x, y);
 
+            if (Game.getWorldManager().isBlocked(x+1, y) &&
+                    Game.getWorldManager().isBlocked(x-1, y) &&
+                    Game.getWorldManager().isBlocked(x, y+1) &&
+                    Game.getWorldManager().isBlocked(x, y-1)) {
+                Log.info("character: path fail (surrounded by solid parcel)");
+                movable.onPathFailed(job, fromParcel, toParcel);
+                if (listener != null) {
+                    listener.onFail(job, movable);
+                }
+                return;
+            }
+
             Log.debug("getPathAsync");
             GraphPath<ParcelModel> path = getPath(fromParcel, toParcel);
             if (path != null) {

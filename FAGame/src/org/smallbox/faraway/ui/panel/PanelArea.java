@@ -8,7 +8,6 @@ import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.View;
-import org.smallbox.faraway.ui.panel.BaseRightPanel;
 
 /**
  * Created by Alex on 13/06/2015.
@@ -23,19 +22,21 @@ public class PanelArea extends BaseRightPanel {
 
     @Override
     public void onLayoutLoaded(LayoutModel layout) {
-        findById("bt_area_storage").setOnClickListener(view -> select(view));
-        findById("bt_area_home").setOnClickListener(view -> select(view));
-        findById("bt_area_dump").setOnClickListener(view -> select(view));
-        findById("bt_area_safe").setOnClickListener(view -> select(view));
+        findById("bt_area_storage").setOnClickListener(view -> select(UserInteraction.Action.SET_AREA, view, AreaType.STORAGE));
+        findById("bt_area_remove_storage").setOnClickListener(view -> select(UserInteraction.Action.REMOVE_AREA, view, AreaType.STORAGE));
+        findById("bt_area_home").setOnClickListener(view -> select(UserInteraction.Action.SET_AREA, view, AreaType.HOME));
+        findById("bt_area_remove_home").setOnClickListener(view -> select(UserInteraction.Action.REMOVE_AREA, view, AreaType.HOME));
+        findById("bt_area_dump").setOnClickListener(view -> select(UserInteraction.Action.SET_AREA, view, null));
+        findById("bt_area_safe").setOnClickListener(view -> select(UserInteraction.Action.SET_AREA, view, AreaType.SAFE));
     }
 
-    private void select(View selectedView) {
+    private void select(UserInteraction.Action action, View selectedView, AreaType type) {
         for (View view: ((FrameLayout)findById("frame_entries")).getViews()) {
             view.setBackgroundColor(COLOR_DEFAULT);
         }
         selectedView.setBackgroundColor(COLOR_SELECTED);
 
         // Set onAction
-        _interaction.set(UserInteraction.Action.SET_AREA, AreaType.STORAGE);
+        _interaction.set(action, type);
     }
 }

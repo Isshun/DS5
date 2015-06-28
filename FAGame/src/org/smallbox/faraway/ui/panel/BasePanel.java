@@ -2,12 +2,10 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.game.GameObserver;
-import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.ui.engine.ColorView;
 import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.engine.ViewFactory;

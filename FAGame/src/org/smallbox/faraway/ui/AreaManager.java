@@ -4,13 +4,15 @@ import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.BaseManager;
 import org.smallbox.faraway.game.manager.WorldManager;
-import org.smallbox.faraway.game.model.StorageModel;
+import org.smallbox.faraway.game.model.HomeAreaModel;
+import org.smallbox.faraway.game.model.StorageAreaModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 13/06/2015.
@@ -24,7 +26,7 @@ public class AreaManager extends BaseManager {
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
                 for (AreaModel area: _areas) {
-                    if (area.contains(x, y)) {
+                    if (area.getType() == type && area.contains(x, y)) {
                         addParcelToArea(area, fromX, fromY, toX, toY);
                         return;
                     }
@@ -38,9 +40,27 @@ public class AreaManager extends BaseManager {
         addParcelToArea(area, fromX, fromY, toX, toY);
     }
 
+    public void removeArea(AreaType type, int fromX, int fromY, int toX, int toY) {
+
+        // Search existing area for current position
+        for (int x = fromX; x <= toX; x++) {
+            for (int y = fromY; y <= toY; y++) {
+                for (AreaModel area: _areas) {
+                    if (area.getType() == type && area.contains(x, y)) {
+                        area.removeParcel(Game.getWorldManager().getParcel(x, y));
+                    }
+                }
+            }
+        }
+
+        // Delete empty areas
+        _areas.removeAll(_areas.stream().filter(area -> area.getParcels().isEmpty()).collect(Collectors.toList()));
+    }
+
     public static AreaModel createArea(AreaType type) {
         switch (type) {
-            case STORAGE: return new StorageModel(type);
+            case STORAGE: return new StorageAreaModel(type);
+            case HOME: return new HomeAreaModel(type);
             default: return new AreaModel(type);
         }
     }
@@ -68,21 +88,21 @@ public class AreaManager extends BaseManager {
         return null;
     }
 
-    public StorageModel getNearestFreeStorage(ConsumableModel consumable, ParcelModel fromParcel) {
+    public StorageAreaModel getNearestFreeStorage(ConsumableModel consumable, ParcelModel fromParcel) {
         int x = fromParcel.getX();
         int y = fromParcel.getY();
         int bestDistance = Integer.MAX_VALUE;
         AreaModel bestArea = null;
         for (AreaModel area: _areas) {
-            if (area.accept(consumable.getInfo())) {
-                ParcelModel parcel = ((StorageModel) area).getNearestFreeParcel(consumable, x, y);
-                if (area.isStorage() && parcel != null && Utils.getDistance(parcel, x, y) < bestDistance && PathManager.getInstance().getPath(fromParcel, parcel) != null) {
+            if (area.isStorage() && area.accept(consumable.getInfo())) {
+                ParcelModel parcel = ((StorageAreaModel)area).getNearestFreeParcel(consumable, x, y);
+                if (parcel != null && Utils.getDistance(parcel, x, y) < bestDistance && PathManager.getInstance().getPath(fromParcel, parcel) != null) {
                     bestArea = area;
                     bestDistance = Utils.getDistance(parcel, x, y);
                 }
             }
         }
-        return (StorageModel)bestArea;
+        return (StorageAreaModel)bestArea;
     }
 
     public void addArea(AreaModel area) {

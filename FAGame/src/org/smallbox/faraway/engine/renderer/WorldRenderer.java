@@ -9,9 +9,6 @@ import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class WorldRenderer extends BaseRenderer implements GameObserver {
     private static final int    CACHE_SIZE = 25;
 

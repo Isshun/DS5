@@ -14,10 +14,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   inkscape:export-filename="C:\Users\Alex\Projects\FarAway\data\res\ic_speed_1.png"
-   inkscape:export-xdpi="356"
-   inkscape:export-ydpi="356"
-   sodipodi:docname="Nouveau document 1">
+   inkscape:export-filename="C:\Users\Alex\Projects\FarAway\data\res\ic_speed_3.png"
+   inkscape:export-xdpi="6"
+   inkscape:export-ydpi="6"
+   sodipodi:docname="ic_speed.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -71,7 +71,7 @@
      id="layer1"
      transform="translate(0,-752.36217)">
     <path
-       style="fill:#d4ff2a;stroke:none"
+       style="fill:#ff2a2a;stroke:none"
        d="m 32.958261,801.82405 85.407409,100.0051 -85.407409,100.00505 88.978839,0 83.14417,-100.00505 -83.14417,-100.0051 z"
        id="path2985"
        inkscape:connector-curvature="0"
@@ -84,13 +84,13 @@
        x="6.8204498"
        y="776.13525" />
     <path
-       style="fill:#d4ff2a;stroke:none"
+       style="fill:#ff2a2a;stroke:none"
        d="m 165.75895,801.55874 85.40741,100.0051 -85.40741,100.00506 88.97884,0 83.14417,-100.00506 -83.14417,-100.0051 z"
        id="path2985-4"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccc" />
     <path
-       style="fill:#d4ff2a;stroke:none"
+       style="fill:#ff2a2a;stroke:none"
        d="m 299.75895,801.70161 85.40741,100.0051 -85.40741,100.00509 88.97884,0 83.14417,-100.00509 -83.14417,-100.0051 z"
        id="path2985-4-0"
        inkscape:connector-curvature="0"

@@ -5,7 +5,6 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 13/06/2015.
@@ -47,10 +46,14 @@ public class AreaModel {
     }
 
     public String getName() {
-        return "Storage Area #n";
+        return "Area #n";
     }
 
     public boolean isStorage() {
+        return false;
+    }
+
+    public boolean isHome() {
         return false;
     }
 
@@ -68,5 +71,9 @@ public class AreaModel {
 
     public Map<ItemInfo, Boolean> getItemsAccepts() {
         return _items;
+    }
+
+    public void removeParcel(ParcelModel parcel) {
+        _parcels.remove(parcel);
     }
 }

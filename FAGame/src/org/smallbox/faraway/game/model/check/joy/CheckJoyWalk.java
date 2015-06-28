@@ -7,7 +7,11 @@ import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobMove;
+import org.smallbox.faraway.ui.AreaManager;
+import org.smallbox.faraway.ui.AreaModel;
 import org.smallbox.faraway.util.Log;
+
+import java.util.Optional;
 
 /**
  * Created by Alex on 17/06/2015.
@@ -34,12 +38,20 @@ public class CheckJoyWalk extends CharacterCheck {
         job.setEffects(_effects);
         job.setSpeedModifier(0.5);
         job.setLimit(50);
+
         return job;
     }
 
     @Override
     public boolean check(CharacterModel character) {
-        _parcel = Game.getWorldManager().getNearestFreeSpace((int) (Math.random() * 32), (int) (Math.random() * 30), false);
-        return _parcel != null;
+        Optional<AreaModel> area = ((AreaManager)Game.getInstance().getManager(AreaManager.class)).getAreas().stream().filter(AreaModel::isHome).findAny();
+        if (area.isPresent()) {
+            Optional<ParcelModel> parcel = area.get().getParcels().stream().filter(ParcelModel::isEmpty).findAny();
+            if (parcel.isPresent()) {
+                _parcel = parcel.get();
+                return true;
+            }
+        }
+        return false;
     }
 }

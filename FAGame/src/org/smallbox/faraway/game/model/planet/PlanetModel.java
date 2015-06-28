@@ -1,9 +1,7 @@
 package org.smallbox.faraway.game.model.planet;
 
-import org.smallbox.faraway.game.model.RegionModel;
 import org.smallbox.faraway.util.Constant;
 
-import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -5,9 +5,11 @@ import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.CharacterManager;
-import org.smallbox.faraway.game.model.ToolTips.ToolTip;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.model.item.ItemModel;
+import org.smallbox.faraway.game.model.item.MapObjectModel;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.cursor.DefaultCursor;
@@ -24,7 +26,7 @@ public class UserInterface implements GameEventListener {
     private static UserInterface		_self;
     private final LayoutFactory         _factory;
     private final ViewFactory           _viewFactory;
-    private Viewport _viewport;
+    private Viewport                    _viewport;
     private boolean						_keyLeftPressed;
     private boolean						_keyRightPressed;
     private int							_keyPressPosX;
@@ -43,24 +45,9 @@ public class UserInterface implements GameEventListener {
     private long 						_lastLeftClick;
     private int 						_lastInput;
     private PanelConsole                _panelConsole;
-    private ToolTip 					_selectedTooltip;
-    private CharacterModel              _selectedCharacter;
-    private ItemModel                   _selectedItem;
-    private StructureModel              _selectedStructure;
-    private ResourceModel               _selectedResource;
-    private ParcelModel                 _selectedParcel;
-    private RoomModel                   _selectedRoom;
-    private AreaModel                   _selectedArea;
-    private ItemInfo 					_selectedItemInfo;
-    private ConsumableModel             _selectedConsumable;
+    private UserInterfaceSelector       _selector;
     private int 						_update;
     private long                        _lastModified;
-    private PanelInfoStructure          _panelInfoStructure;
-    private PanelInfoItem               _panelInfoItem;
-    private PanelInfoParcel             _panelInfoParcel;
-    private PanelInfoResource           _panelInfoResource;
-    private PanelInfoConsumable         _panelInfoConsumable;
-    private PanelInfoArea               _panelInfoArea;
 
     private	BasePanel[]					_panels = new BasePanel[] {
             new PanelSystem(),
@@ -68,7 +55,7 @@ public class UserInterface implements GameEventListener {
             new PanelDev(),
             new PanelQuest(),
             new PanelCharacter(	    Mode.CHARACTER,         null),
-            new PanelInfo(		    Mode.INFO, 		        null),
+//            new PanelInfo(		    Mode.INFO, 		        null),
             new PanelInfoStructure(	Mode.INFO_STRUCTURE, 	null),
             new PanelInfoItem(	    Mode.INFO_ITEM, 	    null),
             new PanelInfoConsumable(Mode.INFO_CONSUMABLE,   null),
@@ -93,6 +80,34 @@ public class UserInterface implements GameEventListener {
             new PanelTopInfo(),
             new PanelTopRight(),
     };
+
+    public enum Mode {
+        INFO,
+        DEBUG,
+        BUILD,
+        CREW,
+        JOBS,
+        CHARACTER,
+        SCIENCE,
+        SECURITY,
+        ROOM,
+        PLAN,
+        DEBUGITEMS,
+        NONE,
+        TOOLTIP,
+        STATS,
+        INFO_STRUCTURE, INFO_ITEM, INFO_PARCEL, INFO_RESOURCE, INFO_CONSUMABLE, AREA, INFO_AREA, INFO_ANIMAL, MANAGER
+    }
+
+    public UserInterface(LayoutFactory layoutFactory, ViewFactory viewFactory) {
+        _self = this;
+        _factory = layoutFactory;
+        _viewFactory = viewFactory;
+        _interaction = new UserInteraction(this);
+        _selector = new UserInterfaceSelector(this);
+        _panelConsole = new PanelConsole();
+        _panelConsole.init(viewFactory, layoutFactory, this, _interaction, null);
+    }
 
     @Override
     public void onKeyEvent(GameTimer timer, Action action, Key key, Modifier modifier) {
@@ -199,33 +214,6 @@ public class UserInterface implements GameEventListener {
         _cursor = cursor;
     }
 
-    public enum Mode {
-        INFO,
-        DEBUG,
-        BUILD,
-        CREW,
-        JOBS,
-        CHARACTER,
-        SCIENCE,
-        SECURITY,
-        ROOM,
-        PLAN,
-        DEBUGITEMS,
-        NONE,
-        TOOLTIP,
-        STATS,
-        INFO_STRUCTURE, INFO_ITEM, INFO_PARCEL, INFO_RESOURCE, INFO_CONSUMABLE, AREA, INFO_AREA, INFO_ANIMAL, MANAGER
-    }
-
-    public UserInterface(LayoutFactory layoutFactory, ViewFactory viewFactory) {
-        _self = this;
-        _factory = layoutFactory;
-        _viewFactory = viewFactory;
-        _interaction = new UserInteraction(this);
-        _panelConsole = new PanelConsole();
-        _panelConsole.init(viewFactory, layoutFactory, this, _interaction, null);
-    }
-
     public void onCreate(Game game) {
         _game = game;
         _viewport = game.getViewport();
@@ -237,29 +225,6 @@ public class UserInterface implements GameEventListener {
         for (BasePanel panel: _panels) {
             panel.init(_viewFactory, _factory, this, _interaction, SpriteManager.getInstance().createRenderEffect());
             _game.addObserver(panel);
-
-            if (panel.getMode() != null) {
-                switch (panel.getMode()) {
-                    case INFO_STRUCTURE:
-                        _panelInfoStructure = (PanelInfoStructure) panel;
-                        break;
-                    case INFO_ITEM:
-                        _panelInfoItem = (PanelInfoItem) panel;
-                        break;
-                    case INFO_CONSUMABLE:
-                        _panelInfoConsumable = (PanelInfoConsumable) panel;
-                        break;
-                    case INFO_PARCEL:
-                        _panelInfoParcel = (PanelInfoParcel) panel;
-                        break;
-                    case INFO_RESOURCE:
-                        _panelInfoResource = (PanelInfoResource) panel;
-                        break;
-                    case INFO_AREA:
-                        _panelInfoArea = (PanelInfoArea) panel;
-                        break;
-                }
-            }
         }
 
         setMode(Mode.NONE);
@@ -308,20 +273,13 @@ public class UserInterface implements GameEventListener {
         _keyRightPressed = true;
     }
 
+    public UserInterfaceSelector getSelector() { return _selector; }
     public int 				getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
     public int 				getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
     public int 				getRelativePosXMax(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getMinScale() / Constant.TILE_WIDTH); }
     public int 				getRelativePosYMax(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getMinScale() / Constant.TILE_HEIGHT); }
     public int 				getRelativePosXMin(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
     public int 				getRelativePosYMin(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
-    public ToolTip			getSelectedTooltip() { return _selectedTooltip; }
-    public CharacterModel   getSelectedCharacter() { return _selectedCharacter; }
-    public ParcelModel      getSelectedArea() { return _selectedParcel; }
-    public ItemModel        getSelectedItem() { return _selectedItem; }
-    public ResourceModel    getSelectedResource() { return _selectedResource; }
-    public StructureModel   getSelectedStructure() { return _selectedStructure; }
-    public ItemInfo			getSelectedItemInfo() { return _selectedItemInfo; }
-    public RoomModel        getSelectedRoom() { return _selectedRoom; }
     public int				getMouseX() { return _keyMovePosX; }
     public int				getMouseY() { return _keyMovePosY; }
 
@@ -339,7 +297,7 @@ public class UserInterface implements GameEventListener {
 
         if (mode == Mode.NONE) {
             _interaction.clean();
-            clean();
+            _selector.clean();
         }
 
         for (BasePanel panel: _panels) {
@@ -397,6 +355,7 @@ public class UserInterface implements GameEventListener {
             if (_interaction.isAction(UserInteraction.Action.SET_ROOM)
                     || _interaction.isAction(UserInteraction.Action.PUT_ITEM_FREE)
                     || _interaction.isAction(UserInteraction.Action.SET_AREA)
+                    || _interaction.isAction(UserInteraction.Action.REMOVE_AREA)
                     || _interaction.isAction(UserInteraction.Action.SET_PLAN)
                     || _interaction.isAction(UserInteraction.Action.BUILD_ITEM)) {
                 if (_keyLeftPressed) {
@@ -458,8 +417,8 @@ public class UserInterface implements GameEventListener {
                 return true;
 
             case TAB:
-                if (_selectedCharacter != null) {
-                    _selectedCharacter = _characters.getNext(_selectedCharacter);
+                if (_selector.getSelectedCharacter() != null) {
+                    _selector.select(_characters.getNext(_selector.getSelectedCharacter()));
                 }
                 return true;
 
@@ -514,57 +473,18 @@ public class UserInterface implements GameEventListener {
     }
 
     public boolean onLeftClick(int x, int y) {
-        if (_keyLeftPressed == false) {
+        if (!_keyLeftPressed) {
             return false;
         }
         _keyLeftPressed = false;
 
-        // Set plan
-        if (_interaction.isAction(UserInteraction.Action.SET_PLAN)) {
-            _interaction.plan(
-                    Math.min(_keyPressPosX, _keyMovePosX),
-                    Math.min(_keyPressPosY, _keyMovePosY),
-                    Math.max(_keyPressPosX, _keyMovePosX),
-                    Math.max(_keyPressPosY, _keyMovePosY));
-            return true;
-        }
-
-        // Set area
-        if (_interaction.isAction(UserInteraction.Action.SET_AREA)) {
-            ((AreaManager)Game.getInstance().getManager(AreaManager.class)).createArea(
-                    _interaction.getSelectedAreaType(),
-                    Math.min(_keyPressPosX, _keyMovePosX),
-                    Math.min(_keyPressPosY, _keyMovePosY),
-                    Math.max(_keyPressPosX, _keyMovePosX),
-                    Math.max(_keyPressPosY, _keyMovePosY));
-            return true;
-        }
-
-        // Set room
-        if (_mode == Mode.ROOM) {
-//            if (_keyPressPosX == _keyMovePosX && _keyPressPosY == _keyMovePosY) {
-//                final Room room = Game.getRoomManager().getRoom(getRelativePosX(x), getRelativePosY(y));
-//                select(room);
-//                return true;
-//            }
-
-            if (_interaction.isAction(UserInteraction.Action.SET_ROOM)) {
-                _interaction.roomType(
-                        _keyPressPosX, _keyPressPosY,
-                        Math.min(_keyPressPosX, _keyMovePosX),
-                        Math.min(_keyPressPosY, _keyMovePosY),
-                        Math.max(_keyPressPosX, _keyMovePosX),
-                        Math.max(_keyPressPosY, _keyMovePosY));
-            }
-            return true;
-        }
-
-        if (_interaction.hasAction()) {
-            _interaction.action(
-                    Math.min(_keyPressPosX, _keyMovePosX),
-                    Math.min(_keyPressPosY, _keyMovePosY),
-                    Math.max(_keyPressPosX, _keyMovePosX),
-                    Math.max(_keyPressPosY, _keyMovePosY));
+        // Check user actions
+        if (_interaction.onKeyLeft(
+                _keyPressPosX, _keyPressPosY,
+                Math.min(_keyPressPosX, _keyMovePosX),
+                Math.min(_keyPressPosY, _keyMovePosY),
+                Math.max(_keyPressPosX, _keyMovePosX),
+                Math.max(_keyPressPosY, _keyMovePosY))) {
             return true;
         }
 
@@ -576,13 +496,13 @@ public class UserInterface implements GameEventListener {
         // Select character
         if (_interaction.isAction(UserInteraction.Action.NONE)) {
             CharacterModel c = _characters.getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
-            if (c != null && c != _selectedCharacter) {
-                select(c);
+            if (c != null && c != _selector.getSelectedCharacter()) {
+                _selector.select(c);
             }
             else  {
-                if (_selectedCharacter != null) {
-                    _selectedCharacter.setSelected(false);
-                    clean();
+                if (_selector.getSelectedCharacter() != null) {
+                    _selector.getSelectedCharacter().setSelected(false);
+                    _selector.clean();
                 }
 
                 int relX = getRelativePosX(x);
@@ -592,30 +512,30 @@ public class UserInterface implements GameEventListener {
                 ParcelModel parcel = Game.getWorldManager().getParcel(relX, relY);
 
                 // Select resource
-                if (parcel != null && parcel.getResource() != null) { select(parcel.getResource()); return true; }
+                if (parcel != null && parcel.getResource() != null) { _selector.select(parcel.getResource()); return true; }
 
                 // Select item
                 for (int x2 = 0; x2 < Constant.ITEM_MAX_WIDTH; x2++) {
                     for (int y2 = 0; y2 < Constant.ITEM_MAX_HEIGHT; y2++) {
                         ItemModel item = Game.getWorldManager().getItem(relX - x2, relY - y2);
                         if (item != null && item.getWidth() > x2 && item.getHeight() > y2) {
-                            select(item);
+                            _selector.select(item);
                             return true;
                         }
                     }
                 }
 
                 // Select consumable
-                if (parcel != null && parcel.getConsumable() != null) { select(parcel.getConsumable()); return true; }
+                if (_mode != Mode.INFO_CONSUMABLE && parcel != null && parcel.getConsumable() != null) { _selector.select(parcel.getConsumable()); return true; }
 
                 // Select area
-                if (area != null) { select(area); return true; }
+                if (_mode != Mode.INFO_AREA && area != null) { _selector.select(area); return true; }
 
                 // Select structure
-                if (parcel != null && parcel.getStructure() != null) { select(parcel.getStructure()); return true; }
+                if (_mode != Mode.INFO_STRUCTURE && parcel != null && parcel.getStructure() != null) { _selector.select(parcel.getStructure()); return true; }
 
                 // Select parcel
-                if (parcel != null) { select(parcel); return true; }
+                if (_mode != Mode.INFO_PARCEL && parcel != null) { _selector.select(parcel); return true; }
             }
         }
 
@@ -663,75 +583,6 @@ public class UserInterface implements GameEventListener {
         setMode(Mode.NONE);
     }
 
-    public void select(ToolTip tooltip) {
-        _interaction.clean();
-        _selectedTooltip = tooltip;
-        setMode(Mode.TOOLTIP);
-    }
-
-    public void select(CharacterModel character) {
-        clean();
-        setMode(Mode.CHARACTER);
-        _selectedCharacter = character;
-        if (_selectedCharacter != null) {
-            _selectedCharacter.setSelected(true);
-        }
-    }
-
-    public void select(RoomModel room) {
-        clean();
-        setMode(Mode.ROOM);
-        _selectedRoom = room;
-    }
-
-    public void select(AreaModel area) {
-        clean();
-        setMode(Mode.INFO_AREA);
-        _selectedArea = area;
-        _panelInfoArea.select(area);
-    }
-
-    public void select(ResourceModel resource) {
-        clean();
-        setMode(Mode.INFO_RESOURCE);
-        _selectedResource = resource;
-        _panelInfoResource.select(resource);
-    }
-
-    public void select(ItemModel item) {
-        clean();
-        setMode(Mode.INFO);
-        setMode(Mode.INFO_ITEM);
-        _selectedItem = item;
-        _panelInfoItem.select(item);
-    }
-
-    public void select(ConsumableModel consumable) {
-        clean();
-        setMode(Mode.INFO);
-        setMode(Mode.INFO_CONSUMABLE);
-        _selectedConsumable = consumable;
-        _panelInfoConsumable.select(consumable);
-    }
-
-    public void select(StructureModel structure) {
-        clean();
-        setMode(Mode.INFO_STRUCTURE);
-        _selectedStructure = structure;
-        _panelInfoStructure.select(structure);
-
-        dumpRoomInfo(structure.getParcel());
-    }
-
-    public void select(ParcelModel area) {
-        clean();
-        setMode(Mode.INFO_PARCEL);
-        _selectedParcel = area;
-        _panelInfoParcel.select(area);
-
-        dumpRoomInfo(area);
-    }
-
     private void dumpRoomInfo(ParcelModel area) {
         if (area.getRoom() != null) {
 //            for (ParcelModel a: area.getRoom().getParcels()) {
@@ -742,35 +593,4 @@ public class UserInterface implements GameEventListener {
         }
     }
 
-    public void select(ItemInfo itemInfo) {
-        clean();
-        setMode(Mode.INFO_ITEM);
-        _selectedItemInfo = itemInfo;
-        _panelInfoItem.select(itemInfo);
-    }
-
-    public void clean() {
-        _selectedParcel = null;
-        _selectedStructure = null;
-        _selectedItemInfo = null;
-        if (_selectedCharacter != null) {
-            _selectedCharacter.setSelected(false);
-        }
-        _selectedCharacter = null;
-        if (_selectedItem != null) {
-            _selectedItem.setSelected(false);
-        }
-        _selectedItem = null;
-        _selectedResource = null;
-        _selectedTooltip = null;
-    }
-
-    public void select(MapObjectModel item) {
-        if (item.isUserItem()) {
-            select((ItemModel)item);
-        }
-        else if (item.isStructure()) {
-            select((StructureModel)item);
-        }
-    }
 }

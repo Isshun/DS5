@@ -1,7 +1,6 @@
 package org.smallbox.faraway.game.manager;
 
 import com.badlogic.gdx.ai.pfa.Connection;
-import com.badlogic.gdx.ai.pfa.DefaultConnection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.data.factory.ItemFactory;
@@ -11,9 +10,7 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.util.Log;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class WorldManager extends BaseManager implements IndexedGraph<ParcelModel> {
     private static final int NB_FLOOR = 10;
@@ -26,6 +23,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     private int _temperatureOffset;
     private final Game _game;
     private Set<ConsumableModel> _consumables = new HashSet<>();
+    private List<ParcelModel> _parcelList;
 
     public ParcelModel[][][] getParcels() {
         return _parcels;
@@ -39,6 +37,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         _width = width;
         _height = height;
 
+        List<ParcelModel> parcelList = new ArrayList<>();
         _parcels = new ParcelModel[_width][_height][NB_FLOOR];
         for (int x = 0; x < _width; x++) {
             _parcels[x] = new ParcelModel[_height][NB_FLOOR];
@@ -47,9 +46,11 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
                 for (int f = 0; f < NB_FLOOR; f++) {
                     _parcels[x][y][f] = new ParcelModel(x, y, f);
                     _parcels[x][y][f].setIndex(x * _width + y);
+                    parcelList.add(_parcels[x][y][f]);
                 }
             }
         }
+        _parcelList = parcelList;
 
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
@@ -66,69 +67,18 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         createConnection(connections, parcel, parcel.getX() - 1, parcel.getY());
         createConnection(connections, parcel, parcel.getX(), parcel.getY() + 1);
         createConnection(connections, parcel, parcel.getX(), parcel.getY() - 1);
-        parcel.setConnections(connections);
-    }
 
-    // TODO: arraylist
-    public int getConsumableCount(ItemInfo itemInfo) {
-        int count = 0;
-        for (int x = 0; x < _width; x++) {
-            for (int y = 0; y < _height; y++) {
-                if (_parcels[x][y][0] != null && _parcels[x][y][0].getConsumable() != null && _parcels[x][y][0].getConsumable().getInfo() == itemInfo) {
-                    count += _parcels[x][y][0].getConsumable().getQuantity();
-                }
-            }
-        }
-        return count;
+        // Corners
+        createConnection(connections, parcel, parcel.getX() + 1, parcel.getY() + 1);
+        createConnection(connections, parcel, parcel.getX() + 1, parcel.getY() - 1);
+        createConnection(connections, parcel, parcel.getX() - 1, parcel.getY() + 1);
+        createConnection(connections, parcel, parcel.getX() - 1, parcel.getY() - 1);
+        parcel.setConnections(connections);
     }
 
     public MapObjectModel putObject(String name, int x, int y, int z, int i) {
         return putObject(GameData.getData().getItemInfo(name), x, y, z, i);
     }
-
-//    public void	addRandomSeed() {
-//        int startX = (int)(Math.random() * 10000) % _width;
-//        int startY = (int)(Math.random() * 10000) % _height;
-//
-//        for (int x = 0; x < 5; x++) {
-//            for (int y = 0; y < 5; y++) {
-//                if (addRandomSeed(startX + x, startY + y)) return;
-//                if (addRandomSeed(startX - x, startY - y)) return;
-//                if (addRandomSeed(startX + x, startY - y)) return;
-//                if (addRandomSeed(startX - x, startY + y)) return;
-//            }
-//        }
-//    }
-//
-//    private boolean addRandomSeed(int i, int j) {
-//        int realX = i % _width;
-//        int realY = j % _height;
-//        if (_parcels[realX][realY][0].getStructure() == null) {
-//            WorldResource ressource = (WorldResource) putObject("base.res", 0, realX, realY, 10);
-//            JobManager.getInstance().addGather(ressource);
-//            return true;
-//        }
-//        return false;
-//    }
-
-//    public int	gather(WorldResource resource, int maxValue) {
-//        if (resource == null || maxValue == 0) {
-//            Log.error("gather: wrong call");
-//            return 0;
-//        }
-//
-//        int value = resource.gatherMatter(maxValue);
-//        int x = resource.getX();
-//        int y = resource.getY();
-//
-//        if (resource.isDepleted()) {
-//            _parcels[x][y][0].setResource(null);
-//        }
-//
-//        MainRenderer.getInstance().invalidate(x, y);
-//
-//        return value;
-//    }
 
     public void removeItem(ItemModel item) {
         if (item != null && item.getParcel() != null) {
@@ -375,26 +325,6 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         return _height;
     }
 
-//
-//    @Override
-//    public int getWidthInTiles() {
-//        return _width;
-//    }
-//
-//    @Override
-//    public int getHeightInTiles() {
-//        return _height;
-//    }
-//
-//    @Override
-//    public void pathFinderVisited(int x, int y) {
-////		DebugPos pos = new DebugPos();
-////		pos.x = x;
-////		pos.y = y;
-////		_debugPath.add(pos);
-//        //Log.info("visite: " + x + ", " + y);
-//    }
-
     public void replaceItem(ItemInfo info, int x, int y, int matterSupply) {
         replaceItem(info, x, y, _floor, matterSupply);
     }
@@ -416,41 +346,6 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 //
 //    public void upFloor() {
 //        setFloor(_floor + 1);
-//    }
-//
-//    private void setFloor(int floor) {
-//        if (floor < 0 || floor >= NB_FLOOR) {
-//            return;
-//        }
-//
-//        _floor = floor;
-//        MainRenderer.getInstance().invalidate();
-//    }
-//
-//    public void downFloor() {
-//        setFloor(_floor - 1);
-//    }
-
-//    // TODO: heavy
-//    public ItemModel getRandomToy(int posX, int posY) {
-//        List<ItemModel> items = new ArrayList<ItemModel>();
-//        for (int offsetX = 0; offsetX < 14; offsetX++) {
-//            for (int offsetY = 0; offsetY < 14; offsetY++) {
-//                ItemModel item = null;
-//                item = getItem(posX + offsetX, posY + offsetY);
-//                if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
-//                item = getItem(posX - offsetX, posY - offsetY);
-//                if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
-//                item = getItem(posX + offsetX, posY - offsetY);
-//                if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
-//                item = getItem(posX - offsetX, posY + offsetY);
-//                if (item != null && item.isToy() && item.hasFreeSlot()) { items.add(item); }
-//            }
-//        }
-//        if (items.size() > 0) {
-//            return items.getRoom((int)(Math.random() * items.size()));
-//        }
-//        return null;
 //    }
 
     public void removeResource(ResourceModel resource) {
@@ -480,44 +375,6 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         }
         return null;
     }
-//
-//    @Override
-//    public boolean blocked(PathFindingContext context, int x, int y) {
-//        MyMover mover = (MyMover)context.getMover();
-//        if (mover.targetX == x && mover.targetY == y) {
-//            return false;
-//        }
-//
-//        if (!inMapBounds(x, y)) {
-//            return true;
-//        }
-//
-//        // Check structure (wall, closed door)
-//        if (_parcels[x][y][0].getStructure() != null && _parcels[x][y][0].getStructure().isSolid()) {
-//            return true;
-//        }
-//
-//        // Check structure (wall, closed door)
-//        if (_parcels[x][y][0].getResource() != null && _parcels[x][y][0].getResource().isSolid()) {
-//            return true;
-//        }
-//
-//        return false;
-//    }
-//
-//    @Override
-//    public float getCost(PathFindingContext context, int tx, int ty) {
-//        MyMover mover = (MyMover)context.getMover();
-//
-////        float cost = context.getSourceX() != tx && context.getSourceY() != ty ? 1.5f : 1f;
-////
-////        ParcelModel area = _parcels[tx][ty][0];
-////        if (area != null && area.getItem() != null) {
-////            cost *= 4;
-////        }
-////
-//        return 1;
-//    }
 
     public ItemModel takeItem(ItemModel item) {
         if (item != null) {
@@ -649,7 +506,29 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
     private void createConnection(Array<Connection<ParcelModel>> array, ParcelModel parcel, int x, int y) {
         if (inMapBounds(x, y) && !parcel.isBlocked()) {
-            array.add(new DefaultConnection(parcel, _parcels[x][y][0]));
+            array.add(new Connection() {
+                @Override
+                public float getCost() {
+                    if (_parcels[x][y][0].getItem() != null) {
+                        return 10;
+                    }
+                    if (_parcels[x][y][0].getResource() != null) {
+                        return 5;
+                    }
+
+                    return parcel.getX() == x || parcel.getY() == y ? 1 : 3;
+                }
+
+                @Override
+                public Object getFromNode() {
+                    return parcel;
+                }
+
+                @Override
+                public Object getToNode() {
+                    return _parcels[x][y][0];
+                }
+            });
         }
     }
 
@@ -718,5 +597,14 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
             }
         }
         return null;
+    }
+
+    public List<ParcelModel> getParcelList() {
+        return _parcelList;
+    }
+
+    public boolean isBlocked(int x, int y) {
+        ParcelModel parcel = getParcel(x, y);
+        return parcel != null && parcel.isBlocked();
     }
 }

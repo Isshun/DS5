@@ -191,10 +191,7 @@ public class PanelCrew extends BaseRightPanel {
 			viewHolder.frame.setVisible(true);
 
 			// Action
-			viewHolder.frame.setOnClickListener(view -> {
-                close();
-                _ui.select(character);
-            });
+			viewHolder.frame.setOnClickListener(view -> _ui.getSelector().select(character));
 
 			// Name
 			viewHolder.lbName.setDashedString(character.getInfo().getName(), "", NB_COLUMNS);

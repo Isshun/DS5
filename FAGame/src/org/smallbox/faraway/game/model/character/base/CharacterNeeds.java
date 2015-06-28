@@ -166,12 +166,15 @@ public class CharacterNeeds {
         energy += effects.energy;
 
 		// Increase oxygen
-		if (effects.oxygen > 0) {
-			oxygen += effects.oxygen;
-		}
-		// Decrease oxygen, use resist
-		else {
-			oxygen += effects.oxygen * (1 - _stats.resist.oxygen / 100f);
+		if (_character.getParcel() != null) {
+			double oxygenLevel = _character.getParcel().getOxygen();
+			if (oxygenLevel > 0.75) {
+				oxygen += (oxygenLevel - 0.75) * 10;
+			}
+			// Decrease oxygen, use resist
+			else {
+				oxygen += (oxygenLevel - 0.75) * 10 * (1 - _stats.resist.oxygen / 100f);
+			}
 		}
 
         happiness += effects.happiness;

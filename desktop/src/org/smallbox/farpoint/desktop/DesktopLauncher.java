@@ -16,9 +16,24 @@ public class DesktopLauncher {
 //		config.samples = 2;
 		config.x = 1920;
 		config.y = 0;
-		config.width = data.config.resolution[0];
-		config.height = data.config.resolution[1];
+		config.width = data.config.screen.resolution[0];
+		config.height = data.config.screen.resolution[1];
+		config.fullscreen = false;
 		config.title = Constant.NAME + " " + Constant.VERSION;
 		new LwjglApplication(new GDXApplication(), config);
+
+        switch (data.config.screen.mode) {
+            case "window":
+                config.fullscreen = false;
+                System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
+                break;
+            case "borderless":
+                config.fullscreen = false;
+                System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+                break;
+            case "fullscreen":
+                config.fullscreen = true;
+                break;
+        }
 	}
 }

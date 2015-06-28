@@ -112,7 +112,7 @@ public class PanelJobs extends BaseRightPanel {
 		text.setOnClickListener(view -> {
             if (job.getCharacter() != null) {
                 close();
-                _ui.select(job.getCharacter());
+                _ui.getSelector().select(job.getCharacter());
             }
         });
 		

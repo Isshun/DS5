@@ -9,7 +9,6 @@ import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.util.Utils;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -29,7 +28,12 @@ public class RoomModel {
 	private double 						_oxygen;
 
 	public double getOxygen() { return _oxygen; }
-	public void setOxygen(double oxygen) { _oxygen = oxygen; }
+	public void setOxygen(double oxygen) {
+		if (_oxygen != oxygen) {
+			_oxygen = oxygen;
+			_parcels.forEach(parcel -> parcel.setOxygen(oxygen));
+		}
+	}
 
 	public void addOxygen(double oxygen) {
 		_oxygen = Math.max(0, Math.min(1, _oxygen + oxygen / _parcels.size()));

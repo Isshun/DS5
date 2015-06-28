@@ -4,7 +4,6 @@ package org.smallbox.faraway.game.model;
  * Created by Alex on 04/06/2015.
  */
 public class GameConfig {
-
     public static class EffectValues {
         public double		    food;
         public double 		    drink;
@@ -16,6 +15,11 @@ public class GameConfig {
         public double           socialize;
         public double           security;
         public double           joy;
+    }
+
+    public static class ScreenValues {
+        public int[]            resolution;
+        public String           mode;
     }
 
     public static class CharacterEffects {
@@ -63,8 +67,8 @@ public class GameConfig {
     public int                  inventoryMaxQuantity;
     public int                  storageMaxQuantity;
     public int                  environmentDistance;
-    public int[]                resolution;
     public boolean              byPassMenu;
     public int                  maxNearDistance;
     public double               uiScale;
+    public ScreenValues         screen;
 }

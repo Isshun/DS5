@@ -4,7 +4,6 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.util.Constant;
 
 import java.awt.*;
 
@@ -148,8 +147,8 @@ public abstract class View {
     }
 
     public void setPosition(int x, int y) {
-        _x = (int) (x * GameData.config.uiScale) + (_isAlignLeft ? 0 : GameData.config.resolution[0]);
-        _y = (int) (y * GameData.config.uiScale) + (_isAlignTop ? 0 : GameData.config.resolution[1]);
+        _x = (int) (x * GameData.config.uiScale) + (_isAlignLeft ? 0 : GameData.config.screen.resolution[0]);
+        _y = (int) (y * GameData.config.uiScale) + (_isAlignTop ? 0 : GameData.config.screen.resolution[1]);
 
         _invalid = true;
     }

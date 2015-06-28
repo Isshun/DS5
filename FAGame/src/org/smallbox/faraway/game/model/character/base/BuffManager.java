@@ -5,7 +5,6 @@ import org.smallbox.faraway.game.manager.RoomManager;
 import org.smallbox.faraway.game.model.BuffModel;
 import org.smallbox.faraway.game.model.CharacterBuffModel;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.ui.AreaManager;
 import org.smallbox.faraway.util.Log;
 
 /**
@@ -42,7 +41,7 @@ public class BuffManager {
                     if (characterBuff.progress >= level.index) {
                         characterBuff.progress = level.index - 1;
                         characterBuff.levelIndex = level.index - 1;
-                        characterBuff.level = characterBuff.levelIndex == -1 ? null : characterBuff.buff.levels.get(characterBuff.levelIndex - 1);
+                        characterBuff.level = characterBuff.levelIndex == -1 ? null : characterBuff.buff.levels.get(characterBuff.levelIndex);
                     }
                 }
             }

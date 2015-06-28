@@ -2,7 +2,6 @@ package org.smallbox.faraway.ui.engine;
 
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
-import org.smallbox.faraway.game.model.GameData;
 
 import java.util.ArrayList;
 import java.util.List;

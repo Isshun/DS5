@@ -1,7 +1,5 @@
 package org.smallbox.faraway.game.model.planet;
 
-import org.smallbox.faraway.engine.Color;
-
 import java.util.List;
 
 public class PlanetInfo {

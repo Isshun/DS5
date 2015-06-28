@@ -23,7 +23,7 @@ public class WeatherManager extends BaseManager implements GameObserver {
     private String                  _dayTime;
 
     private double                  _sunTransitionProgress;
-    private Color _previousSunColor;
+    private Color                   _previousSunColor;
     private Color                   _nextSunColor;
     private float                   _progressValue;
 
@@ -32,7 +32,7 @@ public class WeatherManager extends BaseManager implements GameObserver {
         _particleRenderer = particleRenderer;
         _worldManager = worldManager;
 
-        _dayTime = "midnight";
+        _dayTime = GameData.config.time;
         _sunTransitionProgress = 1;
     }
 

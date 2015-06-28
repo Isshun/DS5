@@ -27,7 +27,7 @@ public class CharacterStats {
     public CharacterStatsResist resist = new CharacterStatsResist();
     public CharacterStatsBuff buff = new CharacterStatsBuff();
 
-    public void reset(CharacterModel character, List<ItemInfo> equipments) {
+    public void reset(CharacterModel character, List<ItemInfo> equipmentInfos) {
         this.absorb.cold = 0;
         this.resist.cold = 0;
         this.resist.oxygen = 0;
@@ -35,9 +35,9 @@ public class CharacterStats {
 
         character.addBodyStats(this);
 
-        for (ItemInfo equipment: equipments) {
-            if (equipment.effects != null) {
-                for (ItemInfo.EquipmentEffect effect: equipment.equipment.effects) {
+        for (ItemInfo itemInfo: equipmentInfos) {
+            if (itemInfo.equipment.effects != null) {
+                for (ItemInfo.EquipmentEffect effect: itemInfo.equipment.effects) {
                     // Check absorb
                     if (effect.absorb != null) {
                         this.absorb.cold += effect.absorb.cold;

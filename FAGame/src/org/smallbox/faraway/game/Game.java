@@ -39,6 +39,9 @@ public class Game {
     private GameSerializer.GameSave     _save;
     private PlanetModel                 _planet;
     private RegionModel                 _region;
+    private int                         _hour = 6;
+    private int                         _day;
+    private int                         _year;
 
     public void                         toggleRunning() { _isRunning = !_isRunning; }
     public void                         addObserver(GameObserver observer) { _observers.add(observer); }
@@ -51,9 +54,9 @@ public class Game {
 	public static WorldManager 			getWorldManager() { return _worldManager; }
 	public static JobManager			getJobManager() { return _jobManager; }
     public static Game                  getInstance() { return _self; }
-    public int                          getHour() { return _tick / _config.tickPerHour % _planet.getInfo().dayDuration; }
-    public int                          getDay() { return _tick / _config.tickPerHour / _planet.getInfo().dayDuration & _planet.getInfo().yearDuration; }
-    public int                          getYear() { return _tick / _config.tickPerHour / _planet.getInfo().dayDuration / _planet.getInfo().yearDuration; }
+    public int                          getHour() { return _hour; }
+    public int                          getDay() { return _day; }
+    public int                          getYear() { return _year; }
     public Viewport                     getViewport() { return _viewport; }
     public static int                   getUpdate() { return _tick; }
     public PlanetModel                  getPlanet() { return _planet; }
@@ -158,11 +161,19 @@ public class Game {
             manager.update(tick);
         }
 
-		if (_tick % _config.tickPerHour == 0) {
+		if (tick % _config.tickPerHour == 0) {
             notify(observer -> observer.onHourChange(_tick / _config.tickPerHour % _planet.getInfo().dayDuration));
+
+            if (++_hour >= _planet.getInfo().dayDuration) {
+                _hour = 0;
+                if (++_day >= _planet.getInfo().yearDuration) {
+                    _day = 1;
+                    _year++;
+                }
+            }
 		}
 
-        _tick++;
+        _tick = tick;
 	}
 
 	public void	newGame(LoadListener loadListener) {

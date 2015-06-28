@@ -46,7 +46,7 @@ public class PanelCharacter extends BaseRightPanel {
     private CharacterModel 		_character;
     private UILabel             _lbName;
     private ColorView 			_cursor;
-    private UIImage[] 		_shapes = new UIImage[NB_GAUGE];
+    private UIImage[] 		    _shapes = new UIImage[NB_GAUGE];
     private UILabel[] 			_values = new UILabel[NB_GAUGE];
     private UILabel             _lbJob;
     private UILabel[] 			_lbBuffs = new UILabel[NB_MAX_BUFFS];
@@ -194,7 +194,7 @@ public class PanelCharacter extends BaseRightPanel {
     private void createBasicInformation() {
         _lbOld = (UILabel) findById("lb_info_old");
 
-        findById("lb_info_gender").setOnClickListener(view -> _ui.select(ToolTips.GENDER));
+        findById("lb_info_gender").setOnClickListener(view -> _ui.getSelector().select(ToolTips.GENDER));
 
         _lbEnlisted = (UILabel) findById("lb_info_enlisted");
 
@@ -294,7 +294,7 @@ public class PanelCharacter extends BaseRightPanel {
             if (i < NB_MAX_RELATION) {
                 String left = relation.getSecond().getInfo().getName();
 //				_familyEntries[i].setStyle(TextView.UNDERLINED);
-                _familyEntries[i].setOnClickListener(view -> _ui.select(relation.getSecond()));
+                _familyEntries[i].setOnClickListener(view -> _ui.getSelector().select(relation.getSecond()));
 
                 String relationName = relation.getRelationLabel();
                 switch (relation.getRelation()) {
@@ -329,30 +329,8 @@ public class PanelCharacter extends BaseRightPanel {
 
     @Override
     public void onRefresh(int update) {
-        CharacterModel character = _ui.getSelectedCharacter();
-        if (character != null && character != _character) {
-            onCharacterSelect(character);
-        }
-
-        if (character != null && (_character != character || character.needRefresh())) {
-
-            if (_character != null) {
-                _character.setSelected(false);
-            }
-
-            _character = character;
-            _character.setSelected(true);
-            _lbName.setString(_character.getInfo().getName().toUpperCase());
-            _lbName.setColor(_character.getInfo().getColor());
-            _nbRelation = -1;
-
-//            // Reset gauges
-//            for (int i = 0; i < NB_GAUGE; i++) {
-//                _values[i].setVisible(false);
-//            }
-//            _animGauge = 0;
-
-            createTalents();
+        if (_character != null && _character.needRefresh()) {
+            initCharacter();
         }
 
         _cursor.setVisible(!_cursor.isVisible());
@@ -382,6 +360,13 @@ public class PanelCharacter extends BaseRightPanel {
         }
 
         refreshTalents();
+    }
+
+    private void initCharacter() {
+        _lbName.setString(_character.getInfo().getName().toUpperCase());
+        _lbName.setColor(_character.getInfo().getColor());
+        _nbRelation = -1;
+        createTalents();
     }
 
     private void refreshTalents() {
@@ -522,7 +507,7 @@ public class PanelCharacter extends BaseRightPanel {
 
         // Gender
         CharacterInfoModel.Gender gender = _character.getInfo().getGender();
-        if (!gender.equals(_lastGender)) {
+        if (gender != null && !gender.equals(_lastGender)) {
             _lastGender = gender;
             startAnim((UILabel)findById("lb_info_gender"), StringUtils.getDashedString("Gender:", CharacterInfoModel.Gender.MALE.equals(gender) ? "male" : "female", NB_COLUMNS));
             return;
@@ -549,7 +534,7 @@ public class PanelCharacter extends BaseRightPanel {
         if (job != null) {
             _lbJob.setString(StringUtils.getDashedString(job.getLabel(), job.getProgressPercent() + "%", NB_COLUMNS));
             if (job.getItem() != null) {
-                _lbJob.setOnClickListener(view -> _ui.select(job.getItem()));
+                _lbJob.setOnClickListener(view -> _ui.getSelector().select(job.getItem()));
             }
         } else if (_character.isSleeping()) {
             _lbJob.setString("Sleep on floor");
@@ -792,4 +777,9 @@ public class PanelCharacter extends BaseRightPanel {
         return false;
     }
 
+    public void select(CharacterModel character) {
+        _character = character;
+        initCharacter();
+        onCharacterSelect(character);
+    }
 }

@@ -44,6 +44,7 @@ public class CharacterInfoModel {
     public void				        setName(String name) { _firstName = name; }
     public void                     setFirstName(String firstName) { _firstName = firstName + " "; }
     public void                     setLastName(String lastName) { _lastName = lastName; }
+    public void                     setColor(Color color) { _color = color; }
 
     public void 			setGender(Gender gender) {
         _gender = gender;
