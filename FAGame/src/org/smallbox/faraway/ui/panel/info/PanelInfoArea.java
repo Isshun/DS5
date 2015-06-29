@@ -4,6 +4,7 @@ import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.ui.*;
 import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.FrameLayout;
@@ -105,7 +106,9 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         lbEntry.setString((_area.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);
     }
 
-    public void select(AreaModel area) {
+    public void select(AreaModel area, ParcelModel parcel) {
+        super.select(parcel);
+
         _area = area;
         ((UILabel)findById("lb_area")).setString(area.getName());
         findById("bt_remove_area").setOnClickListener(view -> ((AreaManager) Game.getInstance().getManager(AreaManager.class)).remove(area));

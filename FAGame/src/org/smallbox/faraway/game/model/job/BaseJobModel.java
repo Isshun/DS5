@@ -9,7 +9,7 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
 public abstract class BaseJobModel {
-    public SpriteModel getActionIcon() {
+    public String getActionIcon() {
         return null;
     }
 
@@ -55,15 +55,15 @@ public abstract class BaseJobModel {
     protected ItemSlot 			_slot;
     protected String 			_label;
 	protected JobStatus			_status;
-    private SpriteModel         _icon;
-    private SpriteModel         _iconAction;
+    private String              _icon;
+    private String              _iconAction;
 
 	public BaseJobModel(ItemInfo.ItemInfoAction actionInfo, int x, int y, String iconPath, String iconActionPath) {
 		init();
 		_posY = y;
 		_posX = x;
-        _icon = SpriteManager.getInstance().getIcon(iconPath);
-        _iconAction = SpriteManager.getInstance().getIcon(iconActionPath);
+        _icon = iconPath;
+        _iconAction = iconActionPath;
 		if (actionInfo != null) {
 			_actionInfo = actionInfo;
 			_cost = actionInfo.cost;
@@ -107,8 +107,8 @@ public abstract class BaseJobModel {
 	public int 					getProgressPercent() { return (int)(getProgress() * 100); }
 	public double               getProgress() { return (double) _progress / _cost; }
 	public JobStatus			getStatus() { return _status; }
-    public SpriteModel          getIcon() { return _icon; }
-    public SpriteModel          getIconAction() { return _iconAction; }
+    public String               getIcon() { return _icon; }
+    public String               getIconAction() { return _iconAction; }
     public ConsumableModel      getIngredient() { return null; }
     public double               getSpeedModifier() { return 1; }
     public String               getFormattedDuration() { return "" + _durationLeft / Constant.DURATION_MULTIPLIER + "s left"; }

@@ -314,7 +314,7 @@ public class JobManager extends BaseManager {
 	}
 
     /**
-     * Get job from queue matching character talents
+     * Get job from _queue matching character talents
      *
      * @param character
      */

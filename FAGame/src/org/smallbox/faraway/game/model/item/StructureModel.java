@@ -20,7 +20,7 @@ public class StructureModel extends MapObjectModel {
 		return getName().equals("base.hull");
 	}
 
-	public boolean isGround() {
-		return getName().equals("base.ground");
+	public boolean isFloor() {
+		return getName().equals("base.floor");
 	}
 }

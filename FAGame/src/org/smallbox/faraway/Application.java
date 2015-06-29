@@ -20,11 +20,13 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
 import java.io.IOException;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class Application implements GameEventListener {
     public static final int 		DRAW_INTERVAL = (1000/60);
     public static final int 		UPDATE_INTERVAL = 50;
-    public static final int		    REFRESH_INTERVAL = 16;
     public static final int 		LONG_UPDATE_INTERVAL = 1000;
 
     private static Game             _game;
@@ -35,14 +37,11 @@ public class Application implements GameEventListener {
     private static LightRenderer    _lightRenderer;
     private static ParticleRenderer _particleRenderer;
     private static UserInterface    _gameInterface;
-    private static LoadListener 	_loadListener;
     private static boolean			_isFullscreen;
     private static GFXRenderer      _renderer;
     private static GameData         _data;
     private static Application      _self;
     private MainMenu                _mainMenu;
-    private static long             _lastUpdateDelay;
-    private static long             _lastLongUpdateDelay;
 
     private static int              _frame;
     private int                     _tick;
@@ -55,26 +54,12 @@ public class Application implements GameEventListener {
     private long                    _lastTick;
     private int                     _tickInterval = 300 * 1000000;
 
+    public static final BlockingQueue<Runnable> _queue = new LinkedBlockingQueue<>();
+    private boolean _isRunning = true;
+
     public Application(GFXRenderer renderer) {
         _self = this;
         _renderer = renderer;
-        _loadListener = message -> {
-            renderer.clear();
-            UILabel text = ViewFactory.getInstance().createTextView();
-            text.setString(message);
-            text.setCharacterSize(42);
-            text.setColor(Colors.LINK_INACTIVE);
-            text.setPosition(Constant.WINDOW_WIDTH / 2 - message.length() * 20 / 2, Constant.WINDOW_HEIGHT / 2 - 40);
-            text.draw(renderer, null);
-
-            if (_gameInterface != null) {
-                _gameInterface.addMessage(Log.LEVEL_INFO, message);
-                _gameInterface.onRefresh(0);
-                _gameInterface.onDraw(renderer, 0, 0);
-            }
-
-            renderer.display();
-        };
     }
 
     public void create(GFXRenderer renderer, LightRenderer lightRenderer, ParticleRenderer particleRenderer, GameData data, GameConfig config) {
@@ -102,7 +87,7 @@ public class Application implements GameEventListener {
     }
 
     @Override
-    public void onKeyEvent(GameTimer timer, Action action, Key key, Modifier modifier) {
+    public void onKeyEvent(Action action, Key key, Modifier modifier) {
 // Events for menu
         if (_game != null && !_game.isRunning()) {
             if (_menu != null && _menu.isVisible()) {
@@ -139,9 +124,7 @@ public class Application implements GameEventListener {
 
 // Reload UI
             case F5:
-                _loadListener.onUpdate("saving");
                 _game.save(_game.getFileName());
-                _loadListener.onUpdate("save done");
                 return;
 
 // Kill
@@ -152,9 +135,7 @@ public class Application implements GameEventListener {
 // Save
             case S:
                 if (modifier == Modifier.CONTROL) {
-                    _loadListener.onUpdate("saving");
                     _game.save(_game.getFileName());
-                    _loadListener.onUpdate("save done");
                     return;
                 }
                 break;
@@ -166,7 +147,7 @@ public class Application implements GameEventListener {
                         _menu = new MenuLoad(path -> {
 // TODO NULL
                             _game = new Game(null, null, null, _particleRenderer, _lightRenderer);
-                            _game.load(_loadListener);
+                            _game.load();
                         });
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -188,16 +169,16 @@ public class Application implements GameEventListener {
                 break;
         }
 
-        _gameInterface.onKeyEvent(timer, action, key, modifier);
+        _gameInterface.onKeyEvent(action, key, modifier);
     }
 
     @Override
-    public void onWindowEvent(GameTimer timer, Action action) {
-        _gameInterface.onWindowEvent(timer, action);
+    public void onWindowEvent(Action action) {
+        _gameInterface.onWindowEvent(action);
     }
 
     @Override
-    public void onMouseEvent(GameTimer timer, Action action, MouseButton button, int x, int y, boolean rightPressed) {
+    public void onMouseEvent(Action action, MouseButton button, int x, int y, boolean rightPressed) {
         if (_game != null) {
             if (button == MouseButton.RIGHT && action == Action.PRESSED) {
                 _game.getViewport().startMove(x, y);
@@ -210,10 +191,10 @@ public class Application implements GameEventListener {
                 _renderer.zoomDown();
             }
             else {
-                _gameInterface.onMouseEvent(timer, action, button, x, y, rightPressed);
+                _gameInterface.onMouseEvent(action, button, x, y, rightPressed);
             }
         } else {
-            _mainMenu.onMouseEvent(timer, action, button, x, y);
+            _mainMenu.onMouseEvent(action, button, x, y);
         }
     }
 
@@ -229,15 +210,11 @@ public class Application implements GameEventListener {
         return false;
     }
 
-    public LoadListener getLoadListener() {
-        return _loadListener;
-    }
-
     public void newGame(String fileName) {
         _mainMenu.close();
 
         _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer);
-        _game.newGame(_loadListener);
+        _game.newGame(null);
         _game.init(false);
         _game.save(_game.getFileName());
         PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
@@ -256,11 +233,9 @@ public class Application implements GameEventListener {
 
         _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer);
         _game.init(true);
-        _loadListener.onUpdate("Load save");
-        _game.load(_loadListener);
+        _game.load();
         PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
 
-        _loadListener.onUpdate("Start game");
         _mainRenderer.init(_renderer, GameData.config, _game, _lightRenderer, _particleRenderer);
         _gameInterface.onCreate(_game);
 
@@ -313,30 +288,47 @@ public class Application implements GameEventListener {
 
             if (_game.isRunning()) {
                 updateLocation();
-
-                // Refresh
-//                if (_frame % 10 == 0) {
-                    refreshGame(_frame);
-//                }
-
-                if (System.nanoTime() > _nextTick) {
-                    _lastTick = System.nanoTime();
-                    _nextTick = _lastTick + _tickInterval;
-                    long timeU = System.currentTimeMillis();
-                    update(_tick++);
-                    Log.info("update: " + (System.currentTimeMillis() - timeU));
-                }
-
-                // Long _tick
-                if (_elapsed >= _nextLongUpdate) {
-                    longUpdate(_frame);
-                    _nextLongUpdate += Application.getLongUpdateInterval();
-                }
+                refreshGame(_frame);
             }
 
             _frame++;
             _renderTime = (int)(System.currentTimeMillis() - time);
 //            Log.debug("Render finish: " + _renderTime);
+
+            try {
+                if (!_queue.isEmpty()) {
+                    System.out.println("--------------- take from queue ---------------");
+                    _queue.take().run();
+                    System.out.println("------------------ it's done ------------------");
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void update() {
+        if (_game.isRunning()) {
+
+            // Update
+            if (System.nanoTime() > _nextTick) {
+                _lastTick = System.nanoTime();
+                _nextTick = _lastTick + _tickInterval;
+                long timeU = System.currentTimeMillis();
+                _game.onUpdate(_tick++);
+                Log.info("update time: " + (System.currentTimeMillis() - timeU) + "ms");
+            }
+
+            // TODO
+            // Long update
+            if (_elapsed >= _nextLongUpdate) {
+                addTask(() -> {
+                    System.out.println("Reload config");
+                    GameData.getData().reloadConfig();
+                    UserInterface.getInstance().reloadTemplates();
+                });
+                _nextLongUpdate += Application.getLongUpdateInterval();
+            }
         }
     }
 
@@ -366,29 +358,8 @@ public class Application implements GameEventListener {
         _mainMenu.refresh(frame);
     }
 
-    public void update(int tick) {
-        long time = System.currentTimeMillis();
-        _game.onUpdate(tick);
-        _lastUpdateDelay = System.currentTimeMillis() - time;
-    }
-
-    public void longUpdate(int longTick) {
-        long time = System.currentTimeMillis();
-        _mainRenderer.setFPS(longTick, _longUpdateInterval);
-        _lastLongUpdateDelay = System.currentTimeMillis() - time;
-        GameData.getData().reloadConfig();
-    }
-
     public static Application getInstance() {
         return _self;
-    }
-
-    public static long getLastUpdateDelay() {
-        return _lastUpdateDelay;
-    }
-
-    public static long getLastLongUpdateDelay() {
-        return _lastLongUpdateDelay;
     }
 
     public static int getFrame() {
@@ -401,5 +372,13 @@ public class Application implements GameEventListener {
 
     public void setInputDirection(boolean[] directions) {
         _directions = directions;
+    }
+
+    public void addTask(Runnable runnable) {
+        _queue.add(runnable);
+    }
+
+    public boolean isRunning() {
+        return _isRunning;
     }
 }

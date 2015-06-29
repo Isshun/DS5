@@ -36,8 +36,6 @@ public class GameData {
 		_loaders.add(new ItemLoader());
 		_loaders.add(new PlanetLoader());
 		_loaders.add(new CategoryLoader());
-
-		_loaders.forEach(dataLoader -> dataLoader.load(this));
 	}
 
 	public void onDataLoaded() {
@@ -84,5 +82,9 @@ public class GameData {
 			}
 		}
 		return null;
+	}
+
+	public void loadAll() {
+		_loaders.forEach(dataLoader -> dataLoader.load(this));
 	}
 }

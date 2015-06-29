@@ -2,6 +2,7 @@ package org.smallbox.faraway.engine.renderer;
 
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.JobManager;
@@ -60,7 +61,7 @@ public class JobRenderer extends BaseRenderer {
 			int y = job.getY();
 //			if (_parcels[x][y] != frame && job.isFinish() == false) {
 			if (job.isFinish() == false) {
-                SpriteModel sprite = job.getIcon();
+                SpriteModel sprite = SpriteManager.getInstance().getIcon(job.getIcon());
                 if (sprite != null) {
                     sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
                     renderer.draw(sprite, effect);

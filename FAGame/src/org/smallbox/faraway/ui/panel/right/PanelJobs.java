@@ -140,7 +140,7 @@ public class PanelJobs extends BaseRightPanel {
 			case ABORTED: left = "(aborted)"; break;
 			case COMPLETE: left = "(close)"; break;
 			case RUNNING: left = "(running)"; break;
-			case WAITING: left = "(on queue)"; break;
+			case WAITING: left = "(on _queue)"; break;
 			default: left = "(unknow)"; break;
 			}
 		}

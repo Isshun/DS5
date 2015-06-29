@@ -179,7 +179,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
     }
 
     @Override
-    public boolean onMouseEvent(GameTimer timer, GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
+    public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
         if (action == GameEventListener.Action.RELEASED && _menuAddCraft.isVisible()) {
             _menuAddCraft.setVisible(false);
 

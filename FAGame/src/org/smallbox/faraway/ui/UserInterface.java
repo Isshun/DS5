@@ -5,6 +5,7 @@ import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.CharacterManager;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
@@ -21,6 +22,7 @@ import org.smallbox.faraway.ui.panel.info.*;
 import org.smallbox.faraway.ui.panel.right.*;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.Utils;
 
 public class UserInterface implements GameEventListener {
     private static UserInterface		_self;
@@ -81,6 +83,21 @@ public class UserInterface implements GameEventListener {
             new PanelTopRight(),
     };
 
+    public void reloadTemplates() {
+        // Refresh UI if needed by GameData (strings)
+        if (GameData.getData().needUIRefresh) {
+            GameData.getData().needUIRefresh = false;
+            reload();
+        }
+
+        // Refresh UI if needed by UI files
+        long lastResModified = Utils.getLastUIModified();
+        if (lastResModified > _lastModified) {
+            _lastModified = lastResModified;
+            reload();
+        }
+    }
+
     public enum Mode {
         INFO,
         DEBUG,
@@ -110,7 +127,7 @@ public class UserInterface implements GameEventListener {
     }
 
     @Override
-    public void onKeyEvent(GameTimer timer, Action action, Key key, Modifier modifier) {
+    public void onKeyEvent(Action action, Key key, Modifier modifier) {
         if (action == Action.RELEASED) {
             if (checkKeyboard(key, _lastInput)) {
                 return;
@@ -119,7 +136,7 @@ public class UserInterface implements GameEventListener {
     }
 
     @Override
-    public void onMouseEvent(GameTimer timer, Action action, MouseButton button, int x, int y, boolean rightPressed) {
+    public void onMouseEvent(Action action, MouseButton button, int x, int y, boolean rightPressed) {
         if (action == Action.MOVE) {
             if (_currentPanel != null) {
                 _currentPanel.onMouseMove(x, y);
@@ -129,7 +146,7 @@ public class UserInterface implements GameEventListener {
         }
 
         for (BasePanel panel: _panels) {
-            if (panel.isVisible() && panel.onMouseEvent(timer, action, button, x, y)) {
+            if (panel.isVisible() && panel.onMouseEvent(action, button, x, y)) {
                 return;
             }
         }
@@ -145,7 +162,7 @@ public class UserInterface implements GameEventListener {
                             // Nothing to do !
                         }
                         // Is double click
-                        else if (_lastLeftClick + 200 > timer.getElapsedTime()) {
+                        else if (_lastLeftClick + 200 > System.currentTimeMillis()) {
                             onDoubleClick(x, y);
                         }
                         // Is simple click
@@ -155,7 +172,7 @@ public class UserInterface implements GameEventListener {
                                 onRefresh(_update);
                             }
                         }
-                        _lastLeftClick = timer.getElapsedTime();
+                        _lastLeftClick = System.currentTimeMillis();
                     }
                     break;
 
@@ -185,7 +202,7 @@ public class UserInterface implements GameEventListener {
     }
 
     @Override
-    public void onWindowEvent(GameTimer timer, Action action) {
+    public void onWindowEvent(Action action) {
     }
 
     public void reload() {
@@ -329,19 +346,6 @@ public class UserInterface implements GameEventListener {
             panel.refresh(update);
         }
         _panelConsole.refresh(update);
-
-//        // Refresh UI if needed by GameData (strings)
-//        if (GameData.getData().needUIRefresh) {
-//            GameData.getData().needUIRefresh = false;
-//            reload();
-//        }
-//
-//        // Refresh UI if needed by UI files
-//        long lastResModified = Utils.getLastUIModified();
-//        if (update % 8 == 0 && lastResModified > _lastModified) {
-//            _lastModified = lastResModified;
-//            reload();
-//        }
     }
 
     public void onDraw(GFXRenderer renderer, int update, long renderTime) {
@@ -529,7 +533,7 @@ public class UserInterface implements GameEventListener {
                 if (_mode != Mode.INFO_CONSUMABLE && parcel != null && parcel.getConsumable() != null) { _selector.select(parcel.getConsumable()); return true; }
 
                 // Select area
-                if (_mode != Mode.INFO_AREA && area != null) { _selector.select(area); return true; }
+                if (_mode != Mode.INFO_AREA && area != null) { _selector.select(area, parcel); return true; }
 
                 // Select structure
                 if (_mode != Mode.INFO_STRUCTURE && parcel != null && parcel.getStructure() != null) { _selector.select(parcel.getStructure()); return true; }

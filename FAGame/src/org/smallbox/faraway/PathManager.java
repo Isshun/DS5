@@ -8,11 +8,13 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
 import org.smallbox.faraway.game.manager.BaseManager;
 import org.smallbox.faraway.game.model.MovableModel;
-import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,6 +22,7 @@ public class PathManager extends BaseManager {
 
     private IndexedAStarPathFinder<ParcelModel> _finder;
     private Heuristic<ParcelModel>              _heuristic;
+    private Map<ParcelModel, ParcelPathCache>   _paths;
 
     @Override
 	protected void onUpdate(int tick) {
@@ -45,6 +48,12 @@ public class PathManager extends BaseManager {
 		}
         _finder = new IndexedAStarPathFinder<>(Game.getWorldManager());
         _heuristic = (node, endNode) -> 10 * (Math.abs(node.getX() - endNode.getX()) + Math.abs(node.getY() - endNode.getY()));
+
+        // Create cache
+        _paths = new HashMap<>();
+        for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
+            _paths.put(parcel, new ParcelPathCache());
+        }
     }
 
 	public void getPathAsync(final OnMoveListener listener, final MovableModel movable, final BaseJobModel job, final int x, final int y) {
@@ -65,7 +74,7 @@ public class PathManager extends BaseManager {
             }
 
             Log.debug("getPathAsync");
-            GraphPath<ParcelModel> path = getPath(fromParcel, toParcel);
+            GraphPath<ParcelModel> path = findPath(fromParcel, toParcel);
             if (path != null) {
                 Log.info("character: path success (" + fromParcel.getX() + "x" + fromParcel.getY() + " to " + toParcel.getX() + "x" + toParcel.getY() + "), job: " + job);
                 synchronized (_runnable) {
@@ -101,11 +110,69 @@ public class PathManager extends BaseManager {
     public GraphPath<ParcelModel> getPath(ParcelModel fromParcel, ParcelModel toParcel) {
         Log.debug("GetPath (from: " + fromParcel.getX() + "x" + fromParcel.getY() + " to: " + toParcel.getX() + "x" + toParcel.getY() + ")");
 
+        return findPath(fromParcel, toParcel);
+//
+//        // Return path cache
+//        {
+//            PathCacheModel cache = _paths.get(fromParcel).getPath(toParcel);
+//            if (cache != null && cache.isValid()) {
+//                return cache.getPath();
+//            }
+//        }
+//
+//        // Find path
+////        _threadPool.execute(() -> {
+//            if (Game.getWorldManager().isSurroundedByBlocked(toParcel.getX(), toParcel.getY())) {
+//                Log.info("character: path fail (surrounded by solid parcel)");
+//                return null;
+//            }
+//
+//            Log.debug("getPath path");
+//            GraphPath<ParcelModel> path = findPath(fromParcel, toParcel);
+//            if (path != null) {
+//                Log.info("character: path success (" + fromParcel.getX() + "x" + fromParcel.getY() + " to " + toParcel.getX() + "x" + toParcel.getY() + ")");
+//                synchronized (_runnable) {
+//                    _runnable.add(() -> {
+//                        PathCacheModel cache = new PathCacheModel(fromParcel, toParcel, path);
+//                        ParcelPathCache ppc = _paths.get(fromParcel);
+//                        path.forEach(parcel -> ppc.addPathBy(cache));
+//                        ppc.addPath(toParcel, cache);
+//                    });
+//                }
+//                return path;
+//            } else {
+//                Log.info("cache path fail");
+//                synchronized (_runnable) {
+//                    _runnable.add(() -> {
+//                        _paths.get(fromParcel).addPath(toParcel, null);
+//                    });
+//                }
+//            }
+////        });
+//
+//        return null;
+    }
+
+    public GraphPath<ParcelModel> findPath(ParcelModel fromParcel, ParcelModel toParcel) {
         GraphPath<ParcelModel> path = new DefaultGraphPath<>();
         if (_finder.searchNodePath(fromParcel, toParcel, _heuristic, path)) {
             return path;
         }
-
         return null;
     }
+
+    @Override
+    public void onAddStructure(StructureModel structure) {
+        if (_paths != null && structure != null) {
+            _paths.get(structure.getParcel()).getPathsBy().forEach(PathCacheModel::invalidate);
+        }
+    }
+
+    @Override
+    public void onRemoveStructure(StructureModel structure) {
+        if (_paths != null && structure != null) {
+            _paths.get(structure.getParcel()).getPathsBy().forEach(PathCacheModel::invalidate);
+        }
+    }
+
 }

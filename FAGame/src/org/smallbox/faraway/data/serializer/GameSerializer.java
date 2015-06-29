@@ -70,26 +70,26 @@ public class GameSerializer {
 //        }
 //    }
 
-    public static void load(GameSave save, LoadListener loadListener) {
+    public static void load(GameSave save) {
         if (save != null) {
             if (save != null) {
                 if (save.characters != null) {
-                    loadListener.onUpdate("Loading list");
+//                    loadListener.onUpdate("Loading list");
                     (new CharacterSerializer()).load(save);
                 }
 
                 if (save.parcels != null) {
-                    loadListener.onUpdate("Loading world");
+//                    loadListener.onUpdate("Loading world");
                     (new WorldSerializer()).load(save);
                 }
 
                 if (save.jobs != null) {
-                    loadListener.onUpdate("Loading jobs");
+//                    loadListener.onUpdate("Loading jobs");
                     (new JobSerializer()).load(save);
                 }
 
                 if (save.areas != null) {
-                    loadListener.onUpdate("Loading areas");
+//                    loadListener.onUpdate("Loading areas");
                     (new AreaSerializer()).load(save);
                 }
             }

@@ -71,7 +71,7 @@ entries:
             text: '[_OCCUPATION]'
             textsize: 18
             textcolor: 0x78ffff
-            position: [220, 45]
+            position: [220, 185]
             size: [175, 45]
             align: center
             background: 0x1d5560
@@ -111,7 +111,7 @@ entries:
             text: '[_PLAN]'
             textsize: 18
             textcolor: 0x78ffff
-            position: [220, 185]
+            position: [220, 45]
             size: [175, 45]
             align: center
             background: 0x1d5560

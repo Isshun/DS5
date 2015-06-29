@@ -10,9 +10,6 @@ import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.util.Log;
 
 public class JobGather extends BaseJobModel {
-	private static final SpriteModel ICON = SpriteManager.getInstance().getIcon("data/res/ic_gather.png");
-	private static final SpriteModel ICON_ACTION = SpriteManager.getInstance().getIcon("data/res/ic_action_gather.png");
-
 	private ResourceModel 	_resource;
 	private int 			_totalCost;
 	private int 			_totalProgress;
@@ -145,12 +142,12 @@ public class JobGather extends BaseJobModel {
 	}
 
 	@Override
-	public SpriteModel getIcon() {
-		return ICON;
+	public String getIcon() {
+		return "data/res/ic_gather.png";
 	}
 
     @Override
-    public SpriteModel getActionIcon() { return ICON_ACTION; }
+    public String getActionIcon() { return "data/res/ic_action_gather.png"; }
 
 	@Override
 	public void onQuit(CharacterModel character) {

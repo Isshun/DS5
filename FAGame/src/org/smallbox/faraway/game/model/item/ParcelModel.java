@@ -83,6 +83,9 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public boolean 			hasRubble() { return _rubble > 0; }
     public boolean 			hasDirt() { return _dirt > 0; }
     public boolean 			hasBlood() { return _blood > 0; }
+    public boolean          hasItem() { return _item != null; }
+    public boolean          hasStructure() { return _structure != null; }
+    public boolean          hasResource() { return _resource != null; }
 
     public void				setItem(ItemModel item) {
         _item = item;
@@ -167,5 +170,17 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         }
 
         return false;
+    }
+
+    public boolean isFree(int filter) {
+        return !isBlocked();
+    }
+
+    public boolean isFree() {
+        return !isBlocked();
+    }
+
+    public boolean isWalkable() {
+        return !isBlocked();
     }
 }

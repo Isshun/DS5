@@ -9,7 +9,6 @@ import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.util.Log;
 
 public class JobMining extends BaseJobModel {
-    private static final SpriteModel ICON = SpriteManager.getInstance().getIcon("data/res/ic_mine.png");
 	private ResourceModel _resource;
 
 	private JobMining(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
@@ -122,8 +121,8 @@ public class JobMining extends BaseJobModel {
     }
 
 	@Override
-    public SpriteModel getIcon() {
-        return ICON;
+    public String getIcon() {
+        return "data/res/ic_mine.png";
     }
 
 	@Override

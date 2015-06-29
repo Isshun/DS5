@@ -2,6 +2,7 @@ package org.smallbox.farpoint;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
@@ -37,15 +38,17 @@ public class GDXParticleRenderer extends ParticleRenderer {
             _effect = null;
         }
         if (name != null) {
-            _effect = new ParticleEffect();
-            _effect.load(Gdx.files.internal("data/particles/" + name), Gdx.files.internal("data/particles/"));
-            _effect.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-            _effect.getEmitters().first().getSpawnWidth().setHigh(Gdx.graphics.getWidth());
-            _effect.getEmitters().first().getSpawnWidth().setLow(Gdx.graphics.getWidth());
-            _effect.getEmitters().first().getSpawnHeight().setHigh(Gdx.graphics.getHeight());
-            _effect.getEmitters().first().getSpawnHeight().setLow(Gdx.graphics.getHeight());
-            _effect.flipY();
-            _effect.start();
+            Application.getInstance().addTask(() -> {
+                _effect = new ParticleEffect();
+                _effect.load(Gdx.files.internal("data/particles/" + name), Gdx.files.internal("data/particles/"));
+                _effect.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+                _effect.getEmitters().first().getSpawnWidth().setHigh(Gdx.graphics.getWidth());
+                _effect.getEmitters().first().getSpawnWidth().setLow(Gdx.graphics.getWidth());
+                _effect.getEmitters().first().getSpawnHeight().setHigh(Gdx.graphics.getHeight());
+                _effect.getEmitters().first().getSpawnHeight().setLow(Gdx.graphics.getHeight());
+                _effect.flipY();
+                _effect.start();
+            });
         }
     }
 

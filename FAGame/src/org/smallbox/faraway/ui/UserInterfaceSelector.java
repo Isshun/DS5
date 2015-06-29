@@ -93,11 +93,11 @@ public class UserInterfaceSelector {
         ((PanelRoom)_userInterface.getPanel(PanelRoom.class)).select(room);
     }
 
-    public void select(AreaModel area) {
+    public void select(AreaModel area, ParcelModel parcel) {
         clean();
         _userInterface.setMode(UserInterface.Mode.INFO_AREA);
         _selectedArea = area;
-        ((PanelInfoArea)_userInterface.getPanel(PanelInfoArea.class)).select(area);
+        ((PanelInfoArea)_userInterface.getPanel(PanelInfoArea.class)).select(area, parcel);
     }
 
     public void select(ResourceModel resource) {

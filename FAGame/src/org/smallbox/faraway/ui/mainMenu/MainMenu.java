@@ -115,9 +115,9 @@ public class MainMenu {
         _currentScene.open();
     }
 
-    public void onMouseEvent(GameTimer timer, GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
+    public void onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
         for (MainMenuScene scene: _scenes) {
-            if (scene.onMouseEvent(timer, action, button, x, y)) {
+            if (scene.onMouseEvent(action, button, x, y)) {
                 return;
             }
         }

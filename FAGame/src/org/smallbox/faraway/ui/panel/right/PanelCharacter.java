@@ -716,7 +716,7 @@ public class PanelCharacter extends BaseRightPanel {
     }
 
     @Override
-    public boolean onMouseEvent(GameTimer timer, GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
+    public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
         if (findById("frame_priorities").isVisible()) {
             // Pressed
             if (action == GameEventListener.Action.PRESSED) {

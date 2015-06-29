@@ -13,6 +13,8 @@ public class AreaModel {
     private Map<ItemInfo, Boolean>      _items;
     protected final Set<ParcelModel>    _parcels = new HashSet<>();
     private final AreaType              _type;
+    private int                         _x;
+    private int                         _y;
 
     public AreaModel(AreaType type) {
         _type = type;
@@ -29,6 +31,8 @@ public class AreaModel {
         if (!_parcels.contains(parcel)) {
             _parcels.add(parcel);
             parcel.setArea(this);
+            _x = parcel.getX();
+            _y = parcel.getY();
         }
     }
 
@@ -75,5 +79,13 @@ public class AreaModel {
 
     public void removeParcel(ParcelModel parcel) {
         _parcels.remove(parcel);
+    }
+
+    public int getX() {
+        return _x;
+    }
+
+    public int getY() {
+        return _y;
     }
 }

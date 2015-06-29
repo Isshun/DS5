@@ -277,7 +277,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         }
 
         // TODO
-        if (_parcels[x][y][z].getStructure() == null || _parcels[x][y][z].getStructure().isGround()) {
+        if (_parcels[x][y][z].getStructure() == null || _parcels[x][y][z].getStructure().isFloor()) {
             StructureModel structure = (StructureModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
             if (structure != null) {
                 structure.setPosition(x, y);
@@ -606,5 +606,13 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     public boolean isBlocked(int x, int y) {
         ParcelModel parcel = getParcel(x, y);
         return parcel != null && parcel.isBlocked();
+    }
+
+    public boolean isSurroundedByBlocked(int x, int y) {
+        if (!isBlocked(x+1, y)) return false;
+        if (!isBlocked(x-1, y)) return false;
+        if (!isBlocked(x, y+1)) return false;
+        if (!isBlocked(x, y-1)) return false;
+        return true;
     }
 }

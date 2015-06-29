@@ -205,15 +205,15 @@ public class Game {
         }
 	}
 
-	public void	load(LoadListener loadListener) {
+	public void	load() {
 		String filePath = "data/saves/" + _fileName;
 
-		loadListener.onUpdate("Load game");
-		GameSerializer.load(_save, loadListener);
+//		loadListener.onUpdate("Load game");
+		GameSerializer.load(_save);
         _save = null;
         System.gc();
 
-        loadListener.onUpdate("Init world map");
+//        loadListener.onUpdate("Init world map");
 //		WorldFactory.cleanRock();
 	}
 

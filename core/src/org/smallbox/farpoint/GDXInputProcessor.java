@@ -14,14 +14,12 @@ import static com.badlogic.gdx.Input.Keys;
  */
 public class GDXInputProcessor implements InputProcessor {
     private final Application   _application;
-    private final GameTimer     _timer;
     private GameEventListener.Modifier _modifier;
     private int                 _lastMouseButton;
     private boolean[]           _keyDirection;
 
-    public GDXInputProcessor(Application application, GameTimer timer) {
+    public GDXInputProcessor(Application application) {
         _application = application;
-        _timer = timer;
         _modifier = GameEventListener.Modifier.NONE;
         _keyDirection = new boolean[4];
     }
@@ -200,7 +198,7 @@ public class GDXInputProcessor implements InputProcessor {
 //            case Input.Keys.F15:
 //            case Input.Keys.PAUSE: key = GameEventListener.Key.UNKNOWN; break;
         }
-        _application.onKeyEvent(_timer, GameEventListener.Action.RELEASED, key, _modifier);
+        _application.onKeyEvent(GameEventListener.Action.RELEASED, key, _modifier);
 
         return false;
     }
@@ -228,7 +226,7 @@ public class GDXInputProcessor implements InputProcessor {
                     break;
             }
 
-            _application.onMouseEvent(_timer, GameEventListener.Action.PRESSED, mouseButton, x, y, false);
+            _application.onMouseEvent(GameEventListener.Action.PRESSED, mouseButton, x, y, false);
         }
         return false;
     }
@@ -249,7 +247,7 @@ public class GDXInputProcessor implements InputProcessor {
                     break;
             }
 
-            _application.onMouseEvent(_timer, GameEventListener.Action.RELEASED, mouseButton, x, y, false);
+            _application.onMouseEvent(GameEventListener.Action.RELEASED, mouseButton, x, y, false);
         }
         return false;
     }
@@ -259,7 +257,7 @@ public class GDXInputProcessor implements InputProcessor {
         if (_lastMouseButton == Buttons.RIGHT) {
             _application.onDrag(x, y);
         } else {
-            _application.onMouseEvent(_timer, GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
+            _application.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
         }
         return false;
     }
@@ -267,7 +265,7 @@ public class GDXInputProcessor implements InputProcessor {
     @Override
     public boolean mouseMoved(int x, int y) {
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
-            _application.onMouseEvent(_timer, GameEventListener.Action.MOVE, null, x, y, false);
+            _application.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, false);
         }
         return false;
     }
@@ -275,11 +273,11 @@ public class GDXInputProcessor implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         if (amount > 0) {
-            _application.onMouseEvent(_timer, GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_UP, 0, 0, false);
+            _application.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_UP, 0, 0, false);
             return true;
         }
         if (amount < 0) {
-            _application.onMouseEvent(_timer, GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_DOWN, 0, 0, false);
+            _application.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_DOWN, 0, 0, false);
             return true;
         }
         return false;

@@ -34,7 +34,6 @@ public class CharacterRenderer extends BaseRenderer {
 			int offset = 0;
 			int frame = 0;
 			if (move != Direction.NONE) {
-                System.out.println("_moveStep: " + c.getMoveStep());
 				offset = (int) ((c.getMoveProgress() + c.getMoveStep() * animProgress) * Constant.TILE_WIDTH);
 //				offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
 				frame = c.getFrameIndex() / 20 % 4;
@@ -87,7 +86,7 @@ public class CharacterRenderer extends BaseRenderer {
 			}
 
 			if (c.getJob() != null && c.getJob().getActionIcon() != null && c.getJob().getX() == c.getX() && c.getJob().getY() == c.getY()) {
-				SpriteModel sprite = c.getJob().getActionIcon();
+				SpriteModel sprite = SpriteManager.getInstance().getIcon(c.getJob().getActionIcon());
 				sprite.setPosition(posX - 2, posY - 2);
 				renderer.draw(sprite, effect);
 			}

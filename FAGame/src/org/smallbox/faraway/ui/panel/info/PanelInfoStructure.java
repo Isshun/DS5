@@ -39,13 +39,15 @@ public class PanelInfoStructure extends BaseInfoRightPanel {
         _structure = structure;
 
         if (isLoaded()) {
-            ((UILabel)findById("lb_name")).setString(structure.getName());
-            ((UILabel)findById("lb_label")).setString(structure.getLabel());
-            ((UILabel)findById("lb_durability")).setString("Durability: " + structure.getHealth());
-            ((UILabel)findById("lb_matter")).setString("Matter: " + structure.getMatter());
-            ((UILabel)findById("lb_pos")).setString("Pos: " + structure.getX() + "x" + structure.getY());
-            ((UILabel)findById("lb_health")).setString("Health: " + structure.getHealth() + "/" + structure.getMaxHealth());
-            ((UILabel)findById("lb_work")).setString("Work remaining: " + structure.getProgress() + "/" + structure.getInfo().cost);
+            findById("frame_info").setVisible(true);
+
+            ((UILabel) findById("lb_name")).setString(structure.getName());
+            ((UILabel) findById("lb_label")).setString(structure.getLabel());
+            ((UILabel) findById("lb_durability")).setString("Durability: " + structure.getHealth());
+            ((UILabel) findById("lb_matter")).setString("Matter: " + structure.getMatter());
+            ((UILabel) findById("lb_pos")).setString("Pos: " + structure.getX() + "x" + structure.getY());
+            ((UILabel) findById("lb_health")).setString("Health: " + structure.getHealth() + "/" + structure.getMaxHealth());
+            ((UILabel) findById("lb_work")).setString("Work remaining: " + structure.getProgress() + "/" + structure.getInfo().cost);
 
             findById("bt_destroy").setOnClickListener(view -> JobManager.getInstance().addDestroyJob(structure));
 

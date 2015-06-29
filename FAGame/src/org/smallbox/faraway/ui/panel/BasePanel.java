@@ -209,7 +209,7 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
     public void onLayoutLoaded(LayoutModel layout) {
     }
 
-	public boolean onMouseEvent(GameTimer timer, GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
+	public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
 		return false;
 	}
 }

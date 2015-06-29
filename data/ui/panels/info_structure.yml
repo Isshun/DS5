@@ -11,6 +11,7 @@ entries:
         position: [0, 550]
 
     -   type: frame
+        id: frame_info
         position: [0, 46]
         entries:
 

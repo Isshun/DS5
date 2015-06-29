@@ -60,57 +60,68 @@ public class BaseInfoRightPanel extends BaseRightPanel {
         _parcel = parcel;
 
         // Refresh parcel info
-        if (parcel != null && _frame_parcel_info != null) {
-            ((UILabel) _frame_parcel_info.findById("lb_parcel_name")).setString("Ground");
-            ((UILabel) _frame_parcel_info.findById("lb_parcel_pos")).setString(parcel.getX() + "x" + parcel.getY());
-            ((UILabel) _frame_parcel_info.findById("lb_blood")).setString("blood: " + parcel.getBlood());
-            ((UILabel) _frame_parcel_info.findById("lb_dirt")).setString("dirt: " + parcel.getDirt());
-            ((UILabel) _frame_parcel_info.findById("lb_rubble")).setString("rubble: " + parcel.getRubble());
-            ((UILabel) _frame_parcel_info.findById("lb_snow")).setString("snow: " + parcel.getSnow());
+        if (_frame_parcel_info != null) {
+            if (parcel != null) {
+                _frame_parcel_info.setVisible(true);
+                boolean isBuildGround = parcel.getStructure() != null && parcel.getStructure().isFloor();
+                ((UILabel) _frame_parcel_info.findById("lb_parcel_name")).setString(isBuildGround ? "Build ground" : "Ground");
+                ((UILabel) _frame_parcel_info.findById("lb_parcel_pos")).setString(parcel.getX() + "x" + parcel.getY());
+                ((UILabel) _frame_parcel_info.findById("lb_blood")).setString("blood: " + parcel.getBlood());
+                ((UILabel) _frame_parcel_info.findById("lb_dirt")).setString("dirt: " + parcel.getDirt());
+                ((UILabel) _frame_parcel_info.findById("lb_rubble")).setString("rubble: " + parcel.getRubble());
+                ((UILabel) _frame_parcel_info.findById("lb_snow")).setString("snow: " + parcel.getSnow());
 
-            String strConnexion = "";
-            for (Connection<ParcelModel> connection: parcel.getConnections()) {
-                strConnexion += strConnexion.isEmpty() ? "Connexion: " : ", ";
-                strConnexion += connection.getToNode().getX() + "x" + connection.getToNode().getY();
+                String strConnexion = "";
+                for (Connection<ParcelModel> connection : parcel.getConnections()) {
+                    strConnexion += strConnexion.isEmpty() ? "Connexion: " : ", ";
+                    strConnexion += connection.getToNode().getX() + "x" + connection.getToNode().getY();
+                }
+                ((UILabel) _frame_parcel_info.findById("lb_connexion")).setString(strConnexion);
+            } else {
+                _frame_parcel_info.setVisible(false);
             }
-            ((UILabel)_frame_parcel_info.findById("lb_connexion")).setString(strConnexion);
         }
 
         // Refresh room info
-        if (parcel != null && parcel.getRoom() != null && _frame_room_info != null) {
-            ((UILabel)_frame_room_info.findById("lb_room")).setString(parcel.getRoom().isExterior() ? "Exterior" : parcel.getRoom().getName());
-            ((UILabel)_frame_room_info.findById("lb_room_size")).setString("Size: " + (parcel.getRoom().getParcels().size() / 2) + "m²");
-            ((UILabel)_frame_room_info.findById("lb_room_temperature")).setString("Temperature: " + (int)parcel.getRoom().getTemperatureInfo().temperature + "°");
-            ((UILabel)_frame_room_info.findById("lb_room_light")).setString("Light: " + parcel.getRoom().getLight());
+        if (_frame_room_info != null) {
+            if (parcel != null && parcel.getRoom() != null) {
+                _frame_room_info.setVisible(true);
+                ((UILabel) _frame_room_info.findById("lb_room")).setString(parcel.getRoom().isExterior() ? "Exterior" : parcel.getRoom().getName());
+                ((UILabel) _frame_room_info.findById("lb_room_size")).setString("Size: " + (parcel.getRoom().getParcels().size() / 2) + "m²");
+                ((UILabel) _frame_room_info.findById("lb_room_temperature")).setString("Temperature: " + (int) parcel.getRoom().getTemperatureInfo().temperature + "°");
+                ((UILabel) _frame_room_info.findById("lb_room_light")).setString("Light: " + parcel.getRoom().getLight());
 
-            ((UILabel)_frame_room_info.findById("lb_heat_potency")).setString("HP: " + parcel.getRoom().getTemperatureInfo().heatPotency);
-            ((UILabel)_frame_room_info.findById("lb_cold_potency")).setString("CP: " + parcel.getRoom().getTemperatureInfo().coldPotency);
-            ((UILabel)_frame_room_info.findById("lb_heat")).setString("H: " + parcel.getRoom().getTemperatureInfo().targetHeat);
-            ((UILabel)_frame_room_info.findById("lb_cold")).setString("C: " + parcel.getRoom().getTemperatureInfo().targetCold);
-            ((UILabel)_frame_room_info.findById("lb_heat_left")).setString("HL: " + parcel.getRoom().getTemperatureInfo().heatPotencyLeft);
-            ((UILabel)_frame_room_info.findById("lb_cold_left")).setString("CL: " + parcel.getRoom().getTemperatureInfo().coldPotencyLeft);
-            ((UILabel)_frame_room_info.findById("lb_oxygen")).setString("O2: " + parcel.getRoom().getOxygen());
+                ((UILabel) _frame_room_info.findById("lb_heat_potency")).setString("HP: " + parcel.getRoom().getTemperatureInfo().heatPotency);
+                ((UILabel) _frame_room_info.findById("lb_cold_potency")).setString("CP: " + parcel.getRoom().getTemperatureInfo().coldPotency);
+                ((UILabel) _frame_room_info.findById("lb_heat")).setString("H: " + parcel.getRoom().getTemperatureInfo().targetHeat);
+                ((UILabel) _frame_room_info.findById("lb_cold")).setString("C: " + parcel.getRoom().getTemperatureInfo().targetCold);
+                ((UILabel) _frame_room_info.findById("lb_heat_left")).setString("HL: " + parcel.getRoom().getTemperatureInfo().heatPotencyLeft);
+                ((UILabel) _frame_room_info.findById("lb_cold_left")).setString("CL: " + parcel.getRoom().getTemperatureInfo().coldPotencyLeft);
+                ((UILabel) _frame_room_info.findById("lb_oxygen")).setString("O2: " + parcel.getRoom().getOxygen());
 
-            // Temperature cursor
-            int temperature = (int) parcel.getRoom().getTemperatureInfo().temperature;
-            int position = 100 - Math.min(80, Math.max(-80, temperature)) * 80 / 100;
-            ((UILabel)_frame_room_info.findById("lb_temperature_cursor")).setString(temperature + "°");
-            for (Object[] obj: TEMPERATURE_COLOR) {
-                if (temperature + 10 > (int)obj[0]) {
-                    _frame_room_info.findById("temperature_cursor").setPosition(0, position - 10);
-                    _frame_room_info.findById("bg_1_temperature_cursor").setBackgroundColor((Color)obj[2]);
-                    _frame_room_info.findById("bg_2_temperature_cursor").setBackgroundColor((Color)obj[2]);
-                    ((UILabel)_frame_room_info.findById("lb_temperature_cursor")).setColor(Color.WHITE);
-                    break;
+                // Temperature cursor
+                int temperature = (int) parcel.getRoom().getTemperatureInfo().temperature;
+                int position = 100 - Math.min(80, Math.max(-80, temperature)) * 80 / 100;
+                ((UILabel) _frame_room_info.findById("lb_temperature_cursor")).setString(temperature + "°");
+                for (Object[] obj : TEMPERATURE_COLOR) {
+                    if (temperature + 10 > (int) obj[0]) {
+                        _frame_room_info.findById("temperature_cursor").setPosition(0, position - 10);
+                        _frame_room_info.findById("bg_1_temperature_cursor").setBackgroundColor((Color) obj[2]);
+                        _frame_room_info.findById("bg_2_temperature_cursor").setBackgroundColor((Color) obj[2]);
+                        ((UILabel) _frame_room_info.findById("lb_temperature_cursor")).setColor(Color.WHITE);
+                        break;
+                    }
                 }
-            }
 
 
-            int count = 0;
-            for (NeighborModel neighbor: parcel.getRoom().getNeighbors()) {
-                count += neighbor.parcels.size();
+                int count = 0;
+                for (NeighborModel neighbor : parcel.getRoom().getNeighbors()) {
+                    count += neighbor.parcels.size();
+                }
+                ((UILabel) _frame_room_info.findById("lb_neighborhood")).setString("Neighborhood: " + count);
+            } else {
+                _frame_room_info.setVisible(false);
             }
-            ((UILabel)_frame_room_info.findById("lb_neighborhood")).setString("Neighborhood: " + count);
         }
     }
 
