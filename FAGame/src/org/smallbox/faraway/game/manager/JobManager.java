@@ -19,14 +19,18 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class JobManager extends BaseManager {
 	private static JobManager			_self;
 	private final List<CharacterCheck> 	_joys;
 	private final List<CharacterCheck>  _priorities;
-	private final List<BaseJobModel> 	_jobs;
+	private final BlockingQueue<BaseJobModel> _jobs;
 	private final List<BaseJobModel>	_toRemove;
 	private int 						_nbVisibleJob;
 
@@ -34,7 +38,7 @@ public class JobManager extends BaseManager {
 		Log.debug("JobManager");
 
 		_self = this;
-		_jobs = new ArrayList<>();
+		_jobs = new LinkedBlockingQueue<BaseJobModel>();
 		_toRemove = new ArrayList<>();
 
         _priorities = new ArrayList<>();
@@ -83,7 +87,7 @@ public class JobManager extends BaseManager {
 		}
 	}
 
-	public List<BaseJobModel>	getJobs() { return _jobs; };
+	public Collection<BaseJobModel> getJobs() { return _jobs; };
 
 	public BaseJobModel addBuild(MapObjectModel item) {
 		if (item == null) {

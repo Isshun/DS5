@@ -34,7 +34,8 @@ public class CharacterSerializer implements SerializerInterface {
 		public double	sickness;
 		public double	injuries;
 		public double	satiety;
-		
+		public double	joy;
+
 		public CharacterNeedsSave(CharacterNeeds needs) {
 			this.isSleeping = needs.isSleeping();
 			this.drinking = needs.drinking;
@@ -48,6 +49,7 @@ public class CharacterSerializer implements SerializerInterface {
 			this.sickness = needs.sickness;
 			this.injuries = needs.injuries;
 			this.satiety = needs.satiety;
+			this.joy = needs.joy;
 		}
 	}
 
@@ -102,8 +104,7 @@ public class CharacterSerializer implements SerializerInterface {
 	private List<CharacterModel> _characters;
 	
 	public void save(GameSerializer.GameSave save) {
-		List<CharacterModel> characters = Game.getCharacterManager().getList();
-		save.characters = characters.stream().map(CharacterSave::new).collect(Collectors.toList());
+		save.characters = Game.getCharacterManager().getCharacters().stream().map(CharacterSave::new).collect(Collectors.toList());
 	}
 
 	public void load(GameSerializer.GameSave save) {
@@ -180,6 +181,7 @@ public class CharacterSerializer implements SerializerInterface {
 			character.getNeeds().sickness = characterSave.needs.sickness;
 			character.getNeeds().setSleeping(characterSave.needs.isSleeping);
 			character.getNeeds().socialize = characterSave.needs.socialize;
+			character.getNeeds().joy = characterSave.needs.joy;
 		}
 		Game.getCharacterManager().add(character);
 		_characters.add(character);

@@ -35,18 +35,6 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         int index = 0;
         FrameLayout frameEntries = (FrameLayout)findById("frame_entries");
 
-        // Add resources
-        addTitle(frameEntries, "Resources", posY);
-        posY += 40;
-        for (ItemInfo itemInfo: GameData.getData().items) {
-            if (itemInfo.isResource) {
-                addEntry(frameEntries, itemInfo, posX, posY);
-                posY = index++ % 2 == 0 ? posY : posY + 20;
-                posX = posX == 0 ? 200 : 0;
-            }
-        }
-        posY += 40;
-
         // Add consumable
         addTitle(frameEntries, "Consumables", posY);
         posX = 0;

@@ -47,8 +47,7 @@ public class GDXApplication extends ApplicationAdapter {
     public void create () {
         _batch = new SpriteBatch();
 
-        _font = new BitmapFont();
-        _font.setScale(2);
+        _font = new BitmapFont(Gdx.files.internal("data/font-42.fnt"), Gdx.files.internal("data/font-42.png"), false);
 
         _queue.add(new LoadRunnable("Load sprites", () -> {
             try {
@@ -182,7 +181,6 @@ public class GDXApplication extends ApplicationAdapter {
             _effect = SpriteManager.getInstance().createRenderEffect();
             _effect.setViewport(game.getViewport());
         }
-
 
         _application.render(_renderer, _effect, lastRenderInterval);
 

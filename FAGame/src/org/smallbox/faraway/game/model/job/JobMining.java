@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.job;
 
+import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.Game;
@@ -37,6 +38,8 @@ public class JobMining extends BaseJobModel {
 
 	@Override
 	public boolean onCheck(CharacterModel character) {
+		System.out.println("check job: " + this);
+
 		// Item is null
 		if (_item == null) {
 			_reason = JobAbortReason.INVALID;
@@ -46,6 +49,10 @@ public class JobMining extends BaseJobModel {
 		// Item is no longer exists
 		if (_item != Game.getWorldManager().getResource(_item.getX(), _item.getY())) {
 			_reason = JobAbortReason.INVALID;
+			return false;
+		}
+
+		if (!PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel())) {
 			return false;
 		}
 		

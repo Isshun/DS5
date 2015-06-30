@@ -123,6 +123,7 @@ public abstract class CharacterModel extends MovableModel {
         _needs = new CharacterNeeds(this);
         _steps = 0;
         _info = new CharacterInfoModel(name, lastName);
+        _parcel = Game.getWorldManager().getParcel(x, y);
 
         _talentsMap = new HashMap<>();
         _talents = new ArrayList<>();
@@ -178,6 +179,8 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void moveTo(BaseJobModel job, ParcelModel toParcel, OnMoveListener onMoveListener) {
+        fixPosition();
+
         _toX = toParcel.getX();
         _toY = toParcel.getY();
 
@@ -193,6 +196,17 @@ public abstract class CharacterModel extends MovableModel {
             _moveListener = onMoveListener;
             Log.debug("move to: " + _toX + "x" + _toY);
             PathManager.getInstance().getPathAsync(onMoveListener, this, job, _toX, _toY);
+        }
+    }
+
+    private void fixPosition() {
+        if (_parcel != null && !_parcel.isWalkable()) {
+            ParcelModel parcel = Game.getWorldManager().getNearestFreeSpace(_posX, _posY, false);
+            if (parcel != null) {
+                _parcel = parcel;
+                _posX = parcel.getX();
+                _posY = parcel.getY();
+            }
         }
     }
 

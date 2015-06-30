@@ -88,7 +88,7 @@ public class MainRenderer {
 		_renders.add(_worldRenderer);
 		game.addObserver(_worldRenderer);
 
-		_characterRenderer = new CharacterRenderer(game.getCharacterManager().getList());
+		_characterRenderer = new CharacterRenderer();
 		_renders.add(_characterRenderer);
 
 		if (lightRenderer != null) {

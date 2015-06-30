@@ -31,8 +31,7 @@ public class StatsManager extends BaseManager {
 			int nbSingleValue = 0;
 			int nbChildValue = 0;
 			int nbStudentValue = 0;
-			List<CharacterModel> characters = Game.getCharacterManager().getList();
-			for (CharacterModel character : characters) {
+			for (CharacterModel character : Game.getCharacterManager().getCharacters()) {
 
 				// In relation or single
 				if (character.getRelations().getMate() != null) {

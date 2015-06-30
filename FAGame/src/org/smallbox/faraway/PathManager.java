@@ -11,6 +11,7 @@ import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.MapUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class PathManager extends BaseManager {
 
     private IndexedAStarPathFinder<ParcelModel> _finder;
     private Heuristic<ParcelModel>              _heuristic;
-    private Map<ParcelModel, ParcelPathCache>   _paths;
+    private Map<ParcelModel, ParcelPathCache> _cache;
 
     @Override
 	protected void onUpdate(int tick) {
@@ -50,9 +51,9 @@ public class PathManager extends BaseManager {
         _heuristic = (node, endNode) -> 10 * (Math.abs(node.getX() - endNode.getX()) + Math.abs(node.getY() - endNode.getY()));
 
         // Create cache
-        _paths = new HashMap<>();
+        _cache = new HashMap<>();
         for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
-            _paths.put(parcel, new ParcelPathCache());
+            _cache.put(parcel, new ParcelPathCache(parcel));
         }
     }
 
@@ -107,14 +108,27 @@ public class PathManager extends BaseManager {
 		_threadPool.shutdownNow();		
 	}
 
+    public boolean hasPath(ParcelModel fromParcel, ParcelModel toParcel) {
+        PathCacheModel pathCache = _cache.get(fromParcel).getPath(toParcel);
+        if (pathCache != null && pathCache.isValid()) {
+            return true;
+        }
+        return findPath(fromParcel, toParcel) != null;
+    }
+
     public GraphPath<ParcelModel> getPath(ParcelModel fromParcel, ParcelModel toParcel) {
         Log.debug("GetPath (from: " + fromParcel.getX() + "x" + fromParcel.getY() + " to: " + toParcel.getX() + "x" + toParcel.getY() + ")");
+
+        PathCacheModel pathCache = _cache.get(fromParcel).getPath(toParcel);
+        if (pathCache != null && pathCache.isValid()) {
+            return pathCache.getPath();
+        }
 
         return findPath(fromParcel, toParcel);
 //
 //        // Return path cache
 //        {
-//            PathCacheModel cache = _paths.get(fromParcel).getPath(toParcel);
+//            PathCacheModel cache = _cache.get(fromParcel).getPath(toParcel);
 //            if (cache != null && cache.isValid()) {
 //                return cache.getPath();
 //            }
@@ -134,7 +148,7 @@ public class PathManager extends BaseManager {
 //                synchronized (_runnable) {
 //                    _runnable.add(() -> {
 //                        PathCacheModel cache = new PathCacheModel(fromParcel, toParcel, path);
-//                        ParcelPathCache ppc = _paths.get(fromParcel);
+//                        ParcelPathCache ppc = _cache.get(fromParcel);
 //                        path.forEach(parcel -> ppc.addPathBy(cache));
 //                        ppc.addPath(toParcel, cache);
 //                    });
@@ -144,7 +158,7 @@ public class PathManager extends BaseManager {
 //                Log.info("cache path fail");
 //                synchronized (_runnable) {
 //                    _runnable.add(() -> {
-//                        _paths.get(fromParcel).addPath(toParcel, null);
+//                        _cache.get(fromParcel).addPath(toParcel, null);
 //                    });
 //                }
 //            }
@@ -154,24 +168,39 @@ public class PathManager extends BaseManager {
     }
 
     public GraphPath<ParcelModel> findPath(ParcelModel fromParcel, ParcelModel toParcel) {
+        long time = System.currentTimeMillis();
+
+        // Check if target parcel is not surrounded by non-walkable area
+        if (MapUtils.isSurroundedByBlocked(toParcel)) {
+            _cache.get(fromParcel).addPath(toParcel, null);
+            System.out.println("Path resolved in " + (System.currentTimeMillis() - time) + "ms (surrounded)");
+            return null;
+        }
+
+        // Find path to target parcel
         GraphPath<ParcelModel> path = new DefaultGraphPath<>();
         if (_finder.searchNodePath(fromParcel, toParcel, _heuristic, path)) {
+            _cache.get(fromParcel).addPath(toParcel, path);
+            System.out.println("Path resolved in " + (System.currentTimeMillis() - time) + "ms (success)");
             return path;
         }
+
+        // No path found
+        System.out.println("Path resolved in " + (System.currentTimeMillis() - time) + "ms (fail)");
         return null;
     }
 
     @Override
     public void onAddStructure(StructureModel structure) {
-        if (_paths != null && structure != null) {
-            _paths.get(structure.getParcel()).getPathsBy().forEach(PathCacheModel::invalidate);
+        if (_cache != null && structure != null) {
+            _cache.get(structure.getParcel()).getPathsBy().forEach(PathCacheModel::invalidate);
         }
     }
 
     @Override
     public void onRemoveStructure(StructureModel structure) {
-        if (_paths != null && structure != null) {
-            _paths.get(structure.getParcel()).getPathsBy().forEach(PathCacheModel::invalidate);
+        if (_cache != null && structure != null) {
+            _cache.get(structure.getParcel()).getPathsBy().forEach(PathCacheModel::invalidate);
         }
     }
 

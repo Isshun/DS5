@@ -5,6 +5,7 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.room.NeighborModel;
+import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.FrameLayout;
@@ -85,22 +86,24 @@ public class BaseInfoRightPanel extends BaseRightPanel {
         // Refresh room info
         if (_frame_room_info != null) {
             if (parcel != null && parcel.getRoom() != null) {
-                _frame_room_info.setVisible(true);
-                ((UILabel) _frame_room_info.findById("lb_room")).setString(parcel.getRoom().isExterior() ? "Exterior" : parcel.getRoom().getName());
-                ((UILabel) _frame_room_info.findById("lb_room_size")).setString("Size: " + (parcel.getRoom().getParcels().size() / 2) + "m²");
-                ((UILabel) _frame_room_info.findById("lb_room_temperature")).setString("Temperature: " + (int) parcel.getRoom().getTemperatureInfo().temperature + "°");
-                ((UILabel) _frame_room_info.findById("lb_room_light")).setString("Light: " + parcel.getRoom().getLight());
+                RoomModel room = parcel.getRoom();
 
-                ((UILabel) _frame_room_info.findById("lb_heat_potency")).setString("HP: " + parcel.getRoom().getTemperatureInfo().heatPotency);
-                ((UILabel) _frame_room_info.findById("lb_cold_potency")).setString("CP: " + parcel.getRoom().getTemperatureInfo().coldPotency);
-                ((UILabel) _frame_room_info.findById("lb_heat")).setString("H: " + parcel.getRoom().getTemperatureInfo().targetHeat);
-                ((UILabel) _frame_room_info.findById("lb_cold")).setString("C: " + parcel.getRoom().getTemperatureInfo().targetCold);
-                ((UILabel) _frame_room_info.findById("lb_heat_left")).setString("HL: " + parcel.getRoom().getTemperatureInfo().heatPotencyLeft);
-                ((UILabel) _frame_room_info.findById("lb_cold_left")).setString("CL: " + parcel.getRoom().getTemperatureInfo().coldPotencyLeft);
-                ((UILabel) _frame_room_info.findById("lb_oxygen")).setString("O2: " + parcel.getRoom().getOxygen());
+                _frame_room_info.setVisible(true);
+                ((UILabel) _frame_room_info.findById("lb_room")).setString(room.isExterior() ? "Exterior" : room.getName());
+                ((UILabel) _frame_room_info.findById("lb_room_size")).setString("Size: " + (room.getParcels().size() / 2) + "m²");
+                ((UILabel) _frame_room_info.findById("lb_room_temperature")).setString("Temperature: " + (int) room.getTemperatureInfo().temperature + "°");
+                ((UILabel) _frame_room_info.findById("lb_room_light")).setString("Light: " + room.getLight());
+
+                ((UILabel) _frame_room_info.findById("lb_heat_potency")).setString("HP: " + room.getTemperatureInfo().heatPotency);
+                ((UILabel) _frame_room_info.findById("lb_cold_potency")).setString("CP: " + room.getTemperatureInfo().coldPotency);
+                ((UILabel) _frame_room_info.findById("lb_heat")).setString("H: " + room.getTemperatureInfo().targetHeat);
+                ((UILabel) _frame_room_info.findById("lb_cold")).setString("C: " + room.getTemperatureInfo().targetCold);
+                ((UILabel) _frame_room_info.findById("lb_heat_left")).setString("HL: " + room.getTemperatureInfo().heatPotencyLeft);
+                ((UILabel) _frame_room_info.findById("lb_cold_left")).setString("CL: " + room.getTemperatureInfo().coldPotencyLeft);
+                ((UILabel) _frame_room_info.findById("lb_oxygen")).setString("O2: " + room.getOxygen());
 
                 // Temperature cursor
-                int temperature = (int) parcel.getRoom().getTemperatureInfo().temperature;
+                int temperature = (int) room.getTemperatureInfo().temperature;
                 int position = 100 - Math.min(80, Math.max(-80, temperature)) * 80 / 100;
                 ((UILabel) _frame_room_info.findById("lb_temperature_cursor")).setString(temperature + "°");
                 for (Object[] obj : TEMPERATURE_COLOR) {
@@ -114,11 +117,13 @@ public class BaseInfoRightPanel extends BaseRightPanel {
                 }
 
 
-                int count = 0;
-                for (NeighborModel neighbor : parcel.getRoom().getNeighbors()) {
-                    count += neighbor.parcels.size();
+                if (room.hasNeighbors()) {
+                    int count = 0;
+                    for (NeighborModel neighbor : room.getNeighbors()) {
+                        count += neighbor.parcels.size();
+                    }
+                    ((UILabel) _frame_room_info.findById("lb_neighborhood")).setString("Neighborhood: " + count);
                 }
-                ((UILabel) _frame_room_info.findById("lb_neighborhood")).setString("Neighborhood: " + count);
             } else {
                 _frame_room_info.setVisible(false);
             }

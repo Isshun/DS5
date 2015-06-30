@@ -83,6 +83,7 @@ public abstract class BaseJobModel {
 		_status = JobStatus.WAITING;
 		_count = 1;
         _limit = -1;
+        _label = "none";
 
 		Log.debug("Job #" + _id + " create");
 	}

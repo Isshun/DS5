@@ -59,7 +59,11 @@ public class RoomModel {
         return _oxygenItems;
     }
 
-    public enum RoomType {
+	public boolean hasNeighbors() {
+		return _neighborhood != null && !_neighborhood.isEmpty();
+	}
+
+	public enum RoomType {
 		NONE,
 		QUARTER,
 		SICKBAY,

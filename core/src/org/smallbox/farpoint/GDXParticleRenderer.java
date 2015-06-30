@@ -32,13 +32,14 @@ public class GDXParticleRenderer extends ParticleRenderer {
     }
 
     private void loadEffect(String name) {
-        // Dispose old effect
-        if (_effect != null) {
-            _effect.dispose();
-            _effect = null;
-        }
-        if (name != null) {
-            Application.getInstance().addTask(() -> {
+        Application.getInstance().addTask(() -> {
+            // Dispose old effect
+            if (_effect != null) {
+                _effect.dispose();
+                _effect = null;
+            }
+            // Load new one
+            if (name != null) {
                 _effect = new ParticleEffect();
                 _effect.load(Gdx.files.internal("data/particles/" + name), Gdx.files.internal("data/particles/"));
                 _effect.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
@@ -48,8 +49,8 @@ public class GDXParticleRenderer extends ParticleRenderer {
                 _effect.getEmitters().first().getSpawnHeight().setLow(Gdx.graphics.getHeight());
                 _effect.flipY();
                 _effect.start();
-            });
-        }
+            }
+        });
     }
 
     @Override

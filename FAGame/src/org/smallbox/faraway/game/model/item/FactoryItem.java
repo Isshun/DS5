@@ -138,7 +138,7 @@
 //			return false;
 //		}
 //
-//		if (_accepts != null && !_accepts.isEmpty() && !_accepts.contains(item.getInfo())) { return false; }
+//		if (_accepts != null && !_accepts.needRefresh() && !_accepts.contains(item.getInfo())) { return false; }
 //
 //		return true;
 //	}

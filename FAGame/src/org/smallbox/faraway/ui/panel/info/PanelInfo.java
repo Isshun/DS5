@@ -476,7 +476,7 @@
 //		_itemIcon.setPosition(FRAME_WIDTH - 32 - icon.getWidth(), 20);
 //
 //		// Gatherable item
-//		if (!resource.getInfo().actions.isEmpty() && "gather".equals(resource.getInfo().actions.get(0).type)) {
+//		if (!resource.getInfo().actions.needRefresh() && "gather".equals(resource.getInfo().actions.get(0).type)) {
 //			_itemGather.setVisible(true);
 ////			_itemGatherProduce.setString(resource.getInfo().actions.getRoom(0).productsItem.label);
 //			_itemGatherProduce.setString("TODO");
@@ -486,7 +486,7 @@
 //		}
 //
 //		// Minable item
-//		if (!resource.getInfo().actions.isEmpty() && "mine".equals(resource.getInfo().actions.get(0).type)) {
+//		if (!resource.getInfo().actions.needRefresh() && "mine".equals(resource.getInfo().actions.get(0).type)) {
 //			_itemMine.setVisible(true);
 ////			_itemMineProduce.setString(resource.getInfo().actions.getRoom(0).productsItem.label);
 //			_itemMineProduce.setString("TODO");

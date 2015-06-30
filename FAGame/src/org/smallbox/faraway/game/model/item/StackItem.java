@@ -39,7 +39,7 @@
 //	}
 //
 //	public UserItem take() {
-//		if (_items.isEmpty()) {
+//		if (_items.needRefresh()) {
 //			Log.error("Cannot take item on empty stack");
 //			return null;
 //		}

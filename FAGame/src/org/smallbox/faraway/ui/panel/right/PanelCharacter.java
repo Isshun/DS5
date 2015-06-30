@@ -532,7 +532,7 @@ public class PanelCharacter extends BaseRightPanel {
 
     private void refreshJob(final BaseJobModel job) {
         if (job != null) {
-            _lbJob.setString(StringUtils.getDashedString(job.getLabel(), job.getProgressPercent() + "%", NB_COLUMNS));
+            _lbJob.setDashedString(job.getLabel(), job.getProgressPercent() + "%", NB_COLUMNS);
             if (job.getItem() != null) {
                 _lbJob.setOnClickListener(view -> _ui.getSelector().select(job.getItem()));
             }

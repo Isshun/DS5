@@ -8,6 +8,7 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
 
 public class WorldRenderer extends BaseRenderer implements GameObserver {
     private static final int    CACHE_SIZE = 25;
@@ -42,29 +43,33 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
         if (_layerStructure == null) {
             _cacheCols = (250 / CACHE_SIZE);
             _layerStructure = new RenderLayer[_cacheCols][_cacheCols];
+            int index = 0;
             for (int i = 0; i < _cacheCols; i++) {
                 for (int j = 0; j < _cacheCols; j++) {
-                    _layerStructure[i][j] = ViewFactory.getInstance().createRenderLayer(CACHE_SIZE * Constant.TILE_WIDTH, CACHE_SIZE * Constant.TILE_HEIGHT);
+                    _layerStructure[i][j] = ViewFactory.getInstance().createRenderLayer(index++, CACHE_SIZE * Constant.TILE_WIDTH, CACHE_SIZE * Constant.TILE_HEIGHT);
                 }
             }
+            refreshLayers();
         }
-
-        refreshLayers();
     }
 
     private void refreshLayers() {
+        Log.info("Refresh layers");
+
         for (int i = 0; i < _cacheCols; i++) {
             for (int j = 0; j < _cacheCols; j++) {
-                if (_layerStructure[i][j].isEmpty()) {
-                    _layerStructure[i][j].begin();
+                if (_layerStructure[i][j].needRefresh()) {
                     refreshLayer(_layerStructure[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
-                    _layerStructure[i][j].end();
                 }
             }
         }
     }
 
     private void refreshLayer(RenderLayer layer, int fromX, int fromY, int toX, int toY) {
+        Log.info("Refresh layer: " + layer.getIndex());
+
+        layer.begin();
+        layer.setRefresh();
         for (int x = toX; x >= fromX; x--) {
             for (int y = toY; y >= fromY; y--) {
 //                if (onScreen(x / CACHE_SIZE, y / CACHE_SIZE)) {
@@ -89,6 +94,7 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
                 }
             }
         }
+        layer.end();
     }
 
     public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
@@ -100,7 +106,7 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
         if (_layerStructure != null) {
             for (int i = _cacheCols - 1; i >= 0; i--) {
                 for (int j = _cacheCols - 1; j >= 0; j--) {
-                    if (onScreen(i, j)) {
+                    if (onScreen(i, j) && !_layerStructure[i][j].needRefresh()) {
                         _layerStructure[i][j].onDraw(renderer, effect, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
                     }
                 }

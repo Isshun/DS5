@@ -128,26 +128,6 @@ public class JobCraft extends BaseJobModel {
 
 	}
 
-	private boolean findWorkableReceipt(CharacterModel character) {
-//		_status = Status.MOVE_TO_INGREDIENT;
-//		_receipt = null;
-//		for (ReceiptModel receipt: _receipts) {
-//			boolean hasComponentsOnMap = true;
-//			for (ReceiptModel.ReceiptComponentModel component: receipt.getComponents()) {
-//                int inInventory = character.getInventory() != null && character.getInventory().getInfo() == component.item.getInfo() ? character.getInventory().getQuantity() : 0;
-//				if (component.item.getQuantity() < component.count && (Game.getWorldManager().getConsumableCount(component.itemInfo) + inInventory) < component.count) {
-//					hasComponentsOnMap = false;
-//				}
-//			}
-//			if (hasComponentsOnMap) {
-//				_receipt = receipt;
-//				findNearestIngredient(character);
-//				return true;
-//			}
-//		}
-        return false;
-	}
-
 	@Override
 	public JobActionReturn onAction(CharacterModel character) {
         if (_character == null) {

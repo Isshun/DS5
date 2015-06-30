@@ -29,15 +29,15 @@ public abstract class ViewFactory {
         return _factory;
     }
 
-    public abstract UILabel createTextView();
-    public abstract UILabel createTextView(int width, int height);
+    public abstract UILabel     createTextView();
+    public abstract UILabel     createTextView(int width, int height);
     public abstract ColorView   createColorView();
     public abstract ColorView   createColorView(int width, int height);
     public abstract FrameLayout createFrameLayout();
     public abstract FrameLayout createFrameLayout(int width, int height);
-    public abstract UIImage createImageView();
-    public abstract UIImage createImageView(int width, int height);
-    public abstract RenderLayer createRenderLayer(int width, int height);
+    public abstract UIImage     createImageView();
+    public abstract UIImage     createImageView(int width, int height);
+    public abstract RenderLayer createRenderLayer(int index, int width, int height);
 
     public void load(String path, ViewFactoryLoadListener listener) {
         try {

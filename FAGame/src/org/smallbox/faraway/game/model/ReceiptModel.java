@@ -58,6 +58,7 @@ public class ReceiptModel {
         _potentialComponents.clear();
         Game.getWorldManager().getConsumables().stream()
                 .filter(consumable -> _infoComponents.containsKey(consumable.getInfo()))
+                .filter(consumable -> consumable.getParcel().isWalkable())
                 .forEach(consumable -> {
                     GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_factory.getParcel(), consumable.getParcel());
                     if (path != null) {

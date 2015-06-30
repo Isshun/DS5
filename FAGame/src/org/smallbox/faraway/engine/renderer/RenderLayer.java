@@ -9,8 +9,14 @@ import org.smallbox.faraway.ui.engine.UILabel;
  * Created by Alex on 28/05/2015.
  */
 public abstract class RenderLayer {
-    private int _x;
-    private int _y;
+    protected int _x;
+    protected int _y;
+    protected int _index;
+    protected boolean     _needRefresh;
+
+    public RenderLayer(int index) {
+        _index = index;
+    }
 
     public abstract void clear();
     public abstract void onDraw(GFXRenderer renderer, RenderEffect renderEffect, int x, int y);
@@ -24,7 +30,11 @@ public abstract class RenderLayer {
         _y = y;
     }
 
-    public abstract int getCount();
+    public abstract boolean needRefresh();
 
-    public abstract boolean isEmpty();
+    public int getIndex() { return _index; }
+
+    public void setRefresh() {
+        _needRefresh = false;
+    }
 }

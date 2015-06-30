@@ -79,7 +79,10 @@ public class LayoutFactory {
         if (entry.textcolor != 0) {
             lbText.setColor(new Color(entry.textcolor));
         }
-        lbText.setString(entry.text);
+
+        if (entry.text != null) {
+            lbText.setString(entry.text.replace("_", ""));
+        }
 
 //        lbText.setSize(lbText.getContentWidth() + 10, lbText.getContentHeight() + 10);
 

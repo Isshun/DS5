@@ -525,6 +525,6 @@ public class GDXSpriteManager extends SpriteManager {
 
     @Override
     public Viewport createViewport() {
-        return new GDXViewport(300, 200);
+        return new GDXViewport(-4400, -5200);
     }
 }

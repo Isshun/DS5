@@ -166,7 +166,7 @@ public class WorldSerializer implements SerializerInterface {
 //
 //		for (int x = 0; x < manager.getWidth(); x++) {
 //			for (int y = 0; y < manager.getHeight(); y++) {
-//				if (Math.random() > 0.995 && manager.getParcel(x, y).isEmpty()) {
+//				if (Math.random() > 0.995 && manager.getParcel(x, y).needRefresh()) {
 //					manager.getParcel(x, y).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
 //				}
 //			}
@@ -176,13 +176,13 @@ public class WorldSerializer implements SerializerInterface {
 //			for (int x = 0; x < manager.getWidth(); x++) {
 //				for (int y = 0; y < manager.getHeight(); y++) {
 //					if (manager.getParcel(x, y).getResource() != null && manager.getParcel(x, y).getResource().getInfo().name.equals("base.rock")) {
-//						if (Math.random() > 0.5 && x < manager.getWidth() && manager.getParcel(x + 1, y) != null && manager.getParcel(x + 1, y).isEmpty())
+//						if (Math.random() > 0.5 && x < manager.getWidth() && manager.getParcel(x + 1, y) != null && manager.getParcel(x + 1, y).needRefresh())
 //							manager.getParcel(x + 1, y).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
-//						if (Math.random() > 0.5 && x > 0 && manager.getParcel(x - 1, y) != null && manager.getParcel(x - 1, y).isEmpty())
+//						if (Math.random() > 0.5 && x > 0 && manager.getParcel(x - 1, y) != null && manager.getParcel(x - 1, y).needRefresh())
 //							manager.getParcel(x - 1, y).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
-//						if (Math.random() > 0.5 && y < manager.getHeight() && manager.getParcel(x, y + 1) != null && manager.getParcel(x, y + 1).isEmpty())
+//						if (Math.random() > 0.5 && y < manager.getHeight() && manager.getParcel(x, y + 1) != null && manager.getParcel(x, y + 1).needRefresh())
 //							manager.getParcel(x, y + 1).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
-//						if (Math.random() > 0.5 && y > 0 && manager.getParcel(x, y - 1) != null && manager.getParcel(x, y - 1).isEmpty())
+//						if (Math.random() > 0.5 && y > 0 && manager.getParcel(x, y - 1) != null && manager.getParcel(x, y - 1).needRefresh())
 //							manager.getParcel(x, y - 1).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
 //					}
 //				}

@@ -78,7 +78,7 @@
 //			}
 //		}
 //
-//		List<CharacterModel> list = Game.getCharacterManager().getList();
+//		List<CharacterModel> list = Game.getCharacterManager().getCharacters();
 //		for (CharacterModel character: list) {
 //			_image.setPixel(character.getX(), character.getY(), Color.RED);
 //		}

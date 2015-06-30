@@ -16,13 +16,16 @@ public class GDXRenderLayer extends RenderLayer {
     int                 _cacheId = -1;
     private int         _count;
 
-    public GDXRenderLayer() {
+    public GDXRenderLayer(int index) {
+        super(index);
         _cache = new SpriteCache(5000, true);
+        _needRefresh = true;
     }
 
     @Override
     public void clear() {
         _count = 0;
+        _needRefresh = true;
         _cache.clear();
     }
 
@@ -38,9 +41,11 @@ public class GDXRenderLayer extends RenderLayer {
 
     @Override
     public void onDraw(GFXRenderer renderer, RenderEffect renderEffect, int x, int y) {
-        if (_cacheId != -1) {
-//            ((GDXRenderer)renderer).draw(_cache, _cacheId, renderEffect.getViewport().getPosX(), renderEffect.getViewport().getPosY());
-            ((GDXRenderer)renderer).draw(_cache, _cacheId, Game.getInstance().getViewport().getPosX() + x, Game.getInstance().getViewport().getPosY() + y);
+        synchronized (this) {
+            if (_cacheId != -1) {
+//                System.out.println("draw cache #" + _index + " (cacheId: " + _cacheId + ", count: " + _count + ")");
+                ((GDXRenderer) renderer).draw(_cache, _cacheId, Game.getInstance().getViewport().getPosX() + x, Game.getInstance().getViewport().getPosY() + y);
+            }
         }
     }
 
@@ -66,12 +71,7 @@ public class GDXRenderLayer extends RenderLayer {
     }
 
     @Override
-    public int getCount() {
-        return _count;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return _count == 0;
+    public boolean needRefresh() {
+        return _needRefresh;
     }
 }

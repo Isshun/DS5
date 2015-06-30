@@ -11,7 +11,10 @@ import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.BaseRightPanel;
 import org.smallbox.faraway.util.StringUtils;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
 
 public class PanelJobs extends BaseRightPanel {
 	private static final int 	NB_COLUMNS = 47;
@@ -53,17 +56,18 @@ public class PanelJobs extends BaseRightPanel {
 
 	@Override
 	public void onRefresh(int update) {
-        List<BaseJobModel> jobs = JobManager.getInstance().getJobs();
+        Collection<BaseJobModel> jobs = JobManager.getInstance().getJobs();
 
         FrameLayout frameJobs = (FrameLayout)findById("frame_jobs");
         frameJobs.removeAllViews();
 
 		// Display jobs
+		int index = 0;
 		for (BaseJobModel job: jobs) {
             UILabel lbJob = ViewFactory.getInstance().createTextView(200, 30);
             lbJob.setString(job.getLabel());
             lbJob.setCharacterSize(14);
-            lbJob.setPosition(0, 30 * jobs.indexOf(job));
+            lbJob.setPosition(0, 30 * index++);
             frameJobs.addView(lbJob);
 //			if (job.getCharacter() != null && job.isVisibleInUI()) {
 //				if (i < 75) {

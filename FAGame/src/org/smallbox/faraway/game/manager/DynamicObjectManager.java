@@ -79,8 +79,7 @@ public class DynamicObjectManager extends BaseManager {
 		int range = 20;
 
 		if (_countFire++ % 4 != 0) {
-			List<CharacterModel> characters = Game.getCharacterManager().getList();
-			for (CharacterModel c: characters) {
+			for (CharacterModel c: Game.getCharacterManager().getCharacters()) {
 				if (c.getX() > x - range && c.getX() < x + range && c.getY() > y - range && c.getY() < y + range ) {
 					int offsetX = Math.abs(c.getX() - x);
 					int offsetY = Math.abs(c.getY() - y);

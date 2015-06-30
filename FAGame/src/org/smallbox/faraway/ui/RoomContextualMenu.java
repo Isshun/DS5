@@ -15,7 +15,7 @@
 //	public RoomContextualMenu(int tileIndex, int x, int y, int width, int height, Viewport viewport, final Room room) {
 //		super(tileIndex, x, y, width, height, viewport);
 //
-//		List<CharacterModel> list = Game.getCharacterManager().getList();
+//		List<CharacterModel> list = Game.getCharacterManager().getCharacters();
 //		final ContextualMenu subMenu = new ContextualMenu(0, 100, 0, 160, (list.size() + 1) * ContextualMenu.LINE_HEIGHT + ContextualMenu.PADDING_V * 2, viewport);
 //		subMenu.addEntry(Strings.LB_NOBODY, new OnClickListener() {
 //			@Override

@@ -11,25 +11,28 @@ import org.smallbox.faraway.util.Utils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class CharacterManager extends BaseManager {
-	private List<CharacterModel>				_characters;
+	private BlockingQueue<CharacterModel> 		_characters;
 	private List<CharacterModel> 				_addOnUpdate;
 	private int 								_count;
 
 	public CharacterManager() {
 		Log.debug("CharacterManager");
 
-		_characters = new ArrayList<>();
+		_characters = new LinkedBlockingQueue<>();
 		_addOnUpdate = new ArrayList<>();
 		_count = 0;
 
 		Log.debug("CharacterManager done");
 	}
 
-	public List<CharacterModel> 	getList() { return _characters; }
-	public int 				getCount() { return _count; }
+	public Collection<CharacterModel> 	getCharacters() { return _characters; }
+	public int 							getCount() { return _count; }
 
 	// TODO
 	public CharacterModel getNext(CharacterModel character) {
@@ -140,14 +143,11 @@ public class CharacterManager extends BaseManager {
 	public void addRandom(Class<? extends CharacterModel> cls) {
 		try {
 			Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, int.class, int.class, String.class, String.class, double.class);
-			CharacterModel character = constructor.newInstance(Utils.getUUID(), 0, 0, null, null, 16);
+			CharacterModel character = constructor.newInstance(Utils.getUUID(), 150, 150, null, null, 16);
 			add(character);
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 			e.printStackTrace();
 		}
     }
 
-	public List<CharacterModel> getCharacters() {
-		return _characters;
-	}
 }

@@ -58,7 +58,7 @@ public class GDXViewFactory extends ViewFactory {
     }
 
     @Override
-    public RenderLayer createRenderLayer(int width, int height) {
-        return new GDXRenderLayer();
+    public RenderLayer createRenderLayer(int index, int width, int height) {
+        return new GDXRenderLayer(index);
     }
 }

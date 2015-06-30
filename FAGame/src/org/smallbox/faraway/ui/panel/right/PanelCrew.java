@@ -221,13 +221,12 @@ public class PanelCrew extends BaseRightPanel {
 				holder.frame.setVisible(false);
 			}
 			
-			List<CharacterModel> characters = _characterManager.getList();
 			int i = 0;
-			for (CharacterModel c: characters) {
+			for (CharacterModel c: _characterManager.getCharacters()) {
 				addCharacter(i++, c);
 			}
 
-			_lbCount.setDashedString("Count", String.valueOf(characters.size()), NB_COLUMNS_TITLE);
+			_lbCount.setDashedString("Count", String.valueOf(_characterManager.getCharacters().size()), NB_COLUMNS_TITLE);
 		}
 	}
 

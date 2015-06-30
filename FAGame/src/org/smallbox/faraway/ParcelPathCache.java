@@ -1,5 +1,6 @@
 package org.smallbox.faraway;
 
+import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 
 import java.util.ArrayList;
@@ -13,8 +14,10 @@ import java.util.Map;
 public class ParcelPathCache {
     private final Map<ParcelModel, PathCacheModel>  _paths;
     private final List<PathCacheModel>              _pathsBy;
+    private final ParcelModel                       _fromParcel;
 
-    public ParcelPathCache() {
+    public ParcelPathCache(ParcelModel fromParcel) {
+        _fromParcel = fromParcel;
         _paths = new HashMap<>();
         _pathsBy = new ArrayList<>();
     }
@@ -23,8 +26,8 @@ public class ParcelPathCache {
         return _paths.get(toParcel);
     }
 
-    public void addPath(ParcelModel toParcel, PathCacheModel path) {
-        _paths.put(toParcel, path);
+    public void addPath(ParcelModel toParcel, GraphPath<ParcelModel> path) {
+        _paths.put(toParcel, new PathCacheModel(_fromParcel, toParcel, path));
     }
 
     public void addPathBy(PathCacheModel path) {

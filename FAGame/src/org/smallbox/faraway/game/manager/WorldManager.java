@@ -607,12 +607,4 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         ParcelModel parcel = getParcel(x, y);
         return parcel != null && parcel.isBlocked();
     }
-
-    public boolean isSurroundedByBlocked(int x, int y) {
-        if (!isBlocked(x+1, y)) return false;
-        if (!isBlocked(x-1, y)) return false;
-        if (!isBlocked(x, y+1)) return false;
-        if (!isBlocked(x, y-1)) return false;
-        return true;
-    }
 }

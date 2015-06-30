@@ -149,7 +149,7 @@
 //		if (!_acceptDrink && item.isDrink()) {return false; }
 //		if (!_acceptConsomable && item.isConsumable()) {return false; }
 //		if (!_acceptGarbage && item.isGarbage()) {return false; }
-//		if (_accepts != null && !_accepts.isEmpty() && !_accepts.contains(item.getInfo())) { return false; }
+//		if (_accepts != null && !_accepts.needRefresh() && !_accepts.contains(item.getInfo())) { return false; }
 //		
 //		return true;
 //	}
