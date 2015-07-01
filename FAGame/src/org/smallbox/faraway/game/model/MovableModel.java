@@ -11,6 +11,14 @@ public abstract class MovableModel {
 		return _moveProgress;
 	}
 
+	public void setY(int y) {
+		_posY = y;
+	}
+
+	public void setX(int x) {
+		_posX = x;
+	}
+
 	public interface OnPathComplete {
 		void	onPathFailed(BaseJobModel job);
 		void	onPathComplete(GraphPath<ParcelModel> path, BaseJobModel job);

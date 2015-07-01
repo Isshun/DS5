@@ -1,6 +1,7 @@
 package org.smallbox.faraway.data.serializer;
 
 import com.thoughtworks.xstream.XStream;
+import com.ximpleware.*;
 import org.smallbox.faraway.util.Log;
 
 import java.io.*;
@@ -9,12 +10,13 @@ import java.util.List;
 
 public class GameSerializer {
     public static class GameSave {
-        public List<WorldSerializer.WorldSaveParcel>    parcels;
-        public List<CharacterSerializer.CharacterSave>	characters;
+//        public List<WorldSerializer.WorldSaveParcel>    parcels;
+//        public List<CharacterSerializer.CharacterSave>	characters;
         public List<JobSerializer.JobSave> 				jobs;
         public List<AreaSerializer.AreaSave> 		    areas;
         public int                                      width;
         public int                                      height;
+//        public List<ParcelTypeSave>                     types;
 
         public GameSave() {
             areas = new ArrayList<>();
@@ -22,29 +24,14 @@ public class GameSerializer {
     }
 
     public static GameSave preLoad(String filePath, LoadListener loadListener) {
+        long time = System.currentTimeMillis();
         System.gc();
 
         if (loadListener != null) {
             loadListener.onUpdate("Load savegame [" + filePath + "]");
         }
         Log.info("Load savegame [" + filePath + "]");
-        long time = System.currentTimeMillis();
 
-        // Open XML
-        try {
-            InputStream input = new FileInputStream(filePath);
-            XStream xstream = new XStream();
-            GameSave save = (GameSave)xstream.fromXML(input);
-            input.close();
-            System.gc();
-            Log.info("Game loaded: " + (System.currentTimeMillis() - time) + "ms");
-            return save;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Log.error("Unable to load saved game: " + filePath);
         return null;
     }
 //
@@ -70,30 +57,82 @@ public class GameSerializer {
 //        }
 //    }
 
-    public static void load(GameSave save) {
-        if (save != null) {
-            if (save != null) {
-                if (save.characters != null) {
-//                    loadListener.onUpdate("Loading list");
-                    (new CharacterSerializer()).load(save);
-                }
+    public static void load(String filePath, GameSave save) {
+//        // Open XML
+//        try {
+//            long time = System.currentTimeMillis();
+//            InputStream input = new FileInputStream(filePath);
+//            save = (GameSave)new XStream().fromXML(input);
+//            input.close();
+//            System.gc();
+//            Log.info("Game loaded: " + (System.currentTimeMillis() - time) + "ms");
+//
+////            new WorldSerializer().load(save);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Log.error("Unable to load saved game: " + filePath);
+//        Log.info("Game loaded: " + (System.currentTimeMillis() - time) + "ms");
 
-                if (save.parcels != null) {
-//                    loadListener.onUpdate("Loading world");
-                    (new WorldSerializer()).load(save);
-                }
 
-                if (save.jobs != null) {
-//                    loadListener.onUpdate("Loading jobs");
-                    (new JobSerializer()).load(save);
-                }
+        try {
+            // open a file and read the content into a byte array
+            File f = new File(filePath);
+            FileInputStream fis =  new FileInputStream(f);
+            byte[] b = new byte[(int) f.length()];
+            fis.read(b);
+            //
+            VTDGen vg = new VTDGen();
+            vg.setDoc(b);
+            vg.parse(true);  // set namespace awareness to true
+            VTDNav vn = vg.getNav();
+            AutoPilot ap = new AutoPilot(vn);
+            ap.selectXPath("/org.smallbox.faraway.data.serializer.GameSerializer_-GameSave/width|/org.smallbox.faraway.data.serializer.GameSerializer_-GameSave/height");
 
-                if (save.areas != null) {
-//                    loadListener.onUpdate("Loading areas");
-                    (new AreaSerializer()).load(save);
-                }
-            }
+            new NewWorldSerializer().load(vn.duplicateNav());
+            new NewCharacterSerializer().load(vn.duplicateNav());
         }
+        catch (ParseException e){
+            System.out.println(" XML file parsing error \n"+e);
+        }
+        catch (NavException e){
+            System.out.println(" Exception during navigation "+e);
+        }
+        catch (java.io.IOException e){
+            System.out.println(" IO exception condition"+e);
+        } catch (XPathEvalException e) {
+            e.printStackTrace();
+        } catch (XPathParseException e) {
+            e.printStackTrace();
+        }
+
+//
+//
+//        if (save != null) {
+//            if (save != null) {
+//                if (save.characters != null) {
+////                    loadListener.onUpdate("Loading list");
+//                    (new NewCharacterSerializer()).load(save);
+//                }
+//
+////                if (save.parcels != null) {
+//////                    loadListener.onUpdate("Loading world");
+////                    (new NewWorldSerializer()).load(save);
+////                }
+//
+//                if (save.jobs != null) {
+////                    loadListener.onUpdate("Loading jobs");
+//                    (new JobSerializer()).load(save);
+//                }
+//
+//                if (save.areas != null) {
+////                    loadListener.onUpdate("Loading areas");
+//                    (new AreaSerializer()).load(save);
+//                }
+//            }
+//        }
     }
 
     public static void save(String filePath) {
@@ -102,10 +141,10 @@ public class GameSerializer {
 
         // Construct save object
         GameSave save = new GameSave();
-        (new CharacterSerializer()).save(save);
+        (new NewCharacterSerializer()).save(save);
         (new JobSerializer()).save(save);
         (new AreaSerializer()).save(save);
-        (new WorldSerializer()).save(save);
+        (new NewWorldSerializer()).save(save);
 
         // Write XML
         XStream xstream = new XStream();

@@ -16,6 +16,7 @@ import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.game.model.GameData;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -33,6 +34,7 @@ public class GDXApplication extends ApplicationAdapter {
 
     public static final BlockingQueue<LoadRunnable> _queue = new LinkedBlockingQueue<>();
     private Runnable        _currentRunnable;
+    private String          _currentMessage;
     private SpriteBatch     _batch;
     private GDXRenderer     _renderer;
     private Application     _application;
@@ -59,8 +61,8 @@ public class GDXApplication extends ApplicationAdapter {
         _queue.add(new LoadRunnable("Generate fonts", () -> {
             SmartFontGenerator fontGen = new SmartFontGenerator();
             FileHandle exoFile = Gdx.files.local("data/res/fonts/font.ttf");
-            _fonts = new BitmapFont[100];
-            for (int i = 0; i < 100; i++) {
+            _fonts = new BitmapFont[50];
+            for (int i = 10; i < 50; i++) {
                 _fonts[i] = fontGen.createFont(exoFile, "font-" + i, i);
             }
         }));
@@ -103,7 +105,7 @@ public class GDXApplication extends ApplicationAdapter {
             _application.setInputDirection(inputProcessor.getDirection());
         }));
 
-        _queue.add(new LoadRunnable("Resume game save", () -> {
+        _queue.add(new LoadRunnable("Resume game", () -> {
             if (GameData.config.byPassMenu) {
 //            _application.newGame("6.sav");
                 _application.loadGame("6.sav");
@@ -136,8 +138,10 @@ public class GDXApplication extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (_currentRunnable != null) {
+            long loadTime = System.currentTimeMillis();
             _currentRunnable.run();
             _currentRunnable = null;
+            System.out.println(_currentMessage + " (" + (System.currentTimeMillis() - loadTime) + "ms)");
         }
 
         if (!_queue.isEmpty()) {
@@ -154,9 +158,8 @@ public class GDXApplication extends ApplicationAdapter {
                 _batch.end();
 
                 // Runnable
-                long loadTime = System.currentTimeMillis();
                 _currentRunnable = loadRunnable.runnable;
-                System.out.println(loadRunnable.message + " (" + (System.currentTimeMillis() - loadTime) + "ms)");
+                _currentMessage = loadRunnable.message;
 
                 return;
             } catch (InterruptedException e) {

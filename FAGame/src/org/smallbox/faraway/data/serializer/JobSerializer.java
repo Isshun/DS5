@@ -1,5 +1,6 @@
 package org.smallbox.faraway.data.serializer;
 
+import com.ximpleware.VTDNav;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.GameData;
@@ -33,21 +34,21 @@ public class JobSerializer implements SerializerInterface {
     }
 
     @Override
-    public void load(GameSerializer.GameSave save) {
-        Map<String, ItemInfo.ItemInfoAction> actions = new HashMap<>();
-        GameData.getData().items.stream().filter(itemInfo -> itemInfo.actions != null && !itemInfo.actions.isEmpty()).forEach(itemInfo -> {
-            itemInfo.actions.stream().filter(action -> action.name != null).forEach(action -> {
-                actions.put(itemInfo.name + ":" + action.name, action);
-            });
-        });
-
-        for (JobSave job: save.jobs) {
-            // Create JobCraft
-            if (job.type.equals(JobCraft.class.getName())) {
-                if (job.itemId != -1 && job.actionPath != null) {
-                    JobManager.getInstance().addJob(Game.getWorldManager().getItemById(job.itemId), actions.get(job.actionPath));
-                }
-            }
-        }
+    public void load(VTDNav save) {
+//        Map<String, ItemInfo.ItemInfoAction> actions = new HashMap<>();
+//        GameData.getData().items.stream().filter(itemInfo -> itemInfo.actions != null && !itemInfo.actions.isEmpty()).forEach(itemInfo -> {
+//            itemInfo.actions.stream().filter(action -> action.name != null).forEach(action -> {
+//                actions.put(itemInfo.name + ":" + action.name, action);
+//            });
+//        });
+//
+//        for (JobSave job: save.jobs) {
+//            // Create JobCraft
+//            if (job.type.equals(JobCraft.class.getName())) {
+//                if (job.itemId != -1 && job.actionPath != null) {
+//                    JobManager.getInstance().addJob(Game.getWorldManager().getItemById(job.itemId), actions.get(job.actionPath));
+//                }
+//            }
+//        }
     }
 }

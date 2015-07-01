@@ -40,6 +40,12 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         _isStorage = false;
     }
 
+    public ParcelModel() {
+        _oxygen = 0;
+        _light = 0;
+        _isStorage = false;
+    }
+
     public void 			addLight(double value) { _light += value; }
 
     public void				setOxygen(double oxygen) { _oxygen = oxygen; }
@@ -53,6 +59,9 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public void 			setDirt(double dirt) { _dirt = dirt; }
     public void 			setRubble(double rubble) { _rubble = rubble; }
     public void 			setSnow(double snow) { _snow = snow; }
+    public void             setX(int x) { _x = x; }
+    public void             setY(int y) { _y = y; }
+    public void             setZ(int z) { _z = z; }
 
     public ItemModel 		getItem() { return _item; }
     public StructureModel 	getStructure() { return _structure; }

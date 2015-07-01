@@ -41,6 +41,14 @@ public abstract class CharacterModel extends MovableModel {
         return _moveStep;
     }
 
+    public void setId(int id) {
+        _id = id;
+    }
+
+    public void setOld(int old) {
+        _old = old;
+    }
+
     public enum TalentType {
         HEAL,
         CRAFT,
@@ -163,11 +171,21 @@ public abstract class CharacterModel extends MovableModel {
     public abstract GameConfig.EffectValues getNeedEffects();
     public abstract String		    getName();
 
+    public abstract void            addBodyStats(CharacterStats stats);
     public void				        setSelected(boolean selected) { _isSelected = selected; }
-    public void                     setIsDead() { _isAlive = false; }
     public void                     setIsFaint() { _isFaint = true; }
     public void                     setInventory(ConsumableModel consumable) { _inventory = consumable; }
-    public abstract void            addBodyStats(CharacterStats stats);
+
+    public void                     setIsDead() {
+        _isAlive = false;
+
+        // Cancel job
+        if (_job != null) {
+            JobManager.getInstance().quit(_job, BaseJobModel.JobAbortReason.DIED);
+        }
+
+        _buffs.clear();
+    }
 
     public boolean			        isSelected() { return _isSelected; }
     public boolean                  isAlive() { return _isAlive; }

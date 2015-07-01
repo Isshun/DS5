@@ -16,6 +16,7 @@ public class GDXParticleRenderer extends ParticleRenderer {
     @Override
     public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
         if (_effect != null) {
+            long time = System.currentTimeMillis();
             _effect.update(Gdx.graphics.getDeltaTime());
             ((GDXRenderer) renderer).getBatch().begin();
             _effect.draw(((GDXRenderer) renderer).getBatch());
@@ -23,6 +24,7 @@ public class GDXParticleRenderer extends ParticleRenderer {
             if (_effect.isComplete()) {
                 _effect.reset();
             }
+            System.out.println("Particles: " + (System.currentTimeMillis() - time));
         }
     }
 

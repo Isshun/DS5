@@ -1,5 +1,6 @@
 package org.smallbox.faraway.data.serializer;
 
+import com.ximpleware.VTDNav;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.ui.AreaManager;
@@ -42,21 +43,21 @@ public class AreaSerializer implements SerializerInterface {
     }
 
     @Override
-    public void load(GameSerializer.GameSave save) {
-        for (AreaSave areaSave: save.areas) {
-            AreaModel area = AreaManager.createArea(AreaType.valueOf(areaSave.type));
-
-            // Add parcel
-            for (AreaSave.AreaParcelSave parcelSave: areaSave.parcels) {
-                area.addParcel(Game.getWorldManager().getParcel(parcelSave.x, parcelSave.y));
-            }
-
-            // Add accepted items
-            for (String itemName: areaSave.accepts) {
-                area.setAccept(GameData.getData().getItemInfo(itemName), true);
-            }
-
-            ((AreaManager)Game.getInstance().getManager(AreaManager.class)).addArea(area);
-        }
+    public void load(VTDNav save) {
+//        for (AreaSave areaSave: save.areas) {
+//            AreaModel area = AreaManager.createArea(AreaType.valueOf(areaSave.type));
+//
+//            // Add parcel
+//            for (AreaSave.AreaParcelSave parcelSave: areaSave.parcels) {
+//                area.addParcel(Game.getWorldManager().getParcel(parcelSave.x, parcelSave.y));
+//            }
+//
+//            // Add accepted items
+//            for (String itemName: areaSave.accepts) {
+//                area.setAccept(GameData.getData().getItemInfo(itemName), true);
+//            }
+//
+//            ((AreaManager)Game.getInstance().getManager(AreaManager.class)).addArea(area);
+//        }
     }
 }

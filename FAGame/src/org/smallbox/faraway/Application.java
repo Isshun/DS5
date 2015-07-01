@@ -231,16 +231,28 @@ public class Application implements GameEventListener {
     public void loadGame(String fileName) {
         _mainMenu.close();
 
+        long time = System.currentTimeMillis();
         _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer);
         _game.init(true);
         _game.load();
-        PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
+        Log.notice("Load save: " + (System.currentTimeMillis() - time) + "ms");
 
+        time = System.currentTimeMillis();
+        PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
+        Log.notice("Init paths: " + (System.currentTimeMillis() - time) + "ms");
+
+        time = System.currentTimeMillis();
         _mainRenderer.init(_renderer, GameData.config, _game, _lightRenderer, _particleRenderer);
+        Log.notice("Init renderers: " + (System.currentTimeMillis() - time) + "ms");
+
+        time = System.currentTimeMillis();
         _gameInterface.onCreate(_game);
+        Log.notice("Create UI: " + (System.currentTimeMillis() - time) + "ms");
 
         if (_lightRenderer != null) {
+            time = System.currentTimeMillis();
             _lightRenderer.init();
+            Log.notice("Init light: " + (System.currentTimeMillis() - time) + "ms");
         }
 
         startGame();

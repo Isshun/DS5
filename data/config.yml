@@ -25,7 +25,7 @@ render:
     debug:          false
     room:           false
     light:          true
-    particle:       true
+    particle:       false
 
 manager:
     quest:          false

@@ -3,12 +3,13 @@ package org.smallbox.faraway.util;
 import org.smallbox.faraway.ui.UserInterface;
 
 public class Log {
-	public static int LEVEL_FATAL = 0;
-	public static int LEVEL_ERROR = 1;
-	public static int LEVEL_WARNING = 2;
-	public static int LEVEL_INFO = 3;
-	public static int LEVEL_DEBUG = 4;
-	public static int LEVEL = LEVEL_DEBUG;
+	public static int LEVEL_NOTICE = 0;
+	public static int LEVEL_FATAL = 1;
+	public static int LEVEL_ERROR = 2;
+	public static int LEVEL_WARNING = 3;
+	public static int LEVEL_INFO = 4;
+	public static int LEVEL_DEBUG = 5;
+	public static int LEVEL = LEVEL_WARNING;
 	
 	public static void debug(String str) {
 		if (LEVEL < LEVEL_DEBUG) return;
@@ -41,12 +42,17 @@ public class Log {
 		}
 	}
 
-	private static void println(int strLevel, String str) {
+	public static void notice(String str) {
+		if (LEVEL < LEVEL_NOTICE) return;
+		println(LEVEL_NOTICE, str);
+	}
+
+	private static void println(int level, String str) {
 		if (str != null) {
-			System.out.println(str);
+			System.out.println(getPrefix(level) + str);
 
 			if (UserInterface.getInstance() != null) {
-				UserInterface.getInstance().addMessage(strLevel, str);
+				UserInterface.getInstance().addMessage(level, str);
 			}
 		}
 	}
@@ -57,6 +63,7 @@ public class Log {
 		if (level == LEVEL_WARNING) return "[W] ";
 		if (level == LEVEL_ERROR) return "[E] ";
 		if (level == LEVEL_FATAL) return "[F] ";
+		if (level == LEVEL_NOTICE) return "[N] ";
 		return null;
 	}
 }

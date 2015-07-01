@@ -38,6 +38,7 @@ public class PanelCharacter extends BaseRightPanel {
 
     private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Amusement", "Injuries", "Satiety", "unused", "Work"};
 
+    private static final Color COLOR_DEAD = new Color(180, 180, 180);
     private static final Color COLOR_0 = new Color(120, 255, 255);
     private static final Color COLOR_1 = new Color(209, 203, 69);
     private static final Color COLOR_2 = new Color(247, 57, 57);
@@ -671,6 +672,13 @@ public class PanelCharacter extends BaseRightPanel {
             Color color = COLOR_0;
             if (value < 10) { level = 3; color = COLOR_2; }
             else if (value < 50) { level = 2; color = COLOR_1; }
+
+            if (!_character.isAlive()) {
+                value = 0;
+                size = 10;
+                color = COLOR_DEAD;
+                level = 4;
+            }
 
             if (_shapes[i] != null) {
                 _shapes[i].setSize((int) (size * GameData.config.uiScale), (int) (12 * GameData.config.uiScale));

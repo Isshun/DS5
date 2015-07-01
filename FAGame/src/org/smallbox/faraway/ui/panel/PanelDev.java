@@ -34,6 +34,7 @@ public class PanelDev extends BasePanel {
             new CommandEntry("Add crew (human)", view -> Game.getCharacterManager().addRandom(HumanModel.class)),
             new CommandEntry("Add crew (android)", view -> Game.getCharacterManager().addRandom(AndroidModel.class)),
             new CommandEntry("Add crew (droid)", view -> Game.getCharacterManager().addRandom(DroidModel.class)),
+            new CommandEntry("Kill selected", view -> UserInterface.getInstance().getSelector().getSelectedCharacter().setIsDead()),
             new CommandEntry("Launch quest", view -> ((QuestManager)Game.getInstance().getManager(QuestManager.class)).launchRandomQuest()),
             new CommandEntry("Refresh rooms", view -> ((RoomManager)Game.getInstance().getManager(RoomManager.class)).refreshRooms()),
             new CommandEntry("Add item...", view -> {

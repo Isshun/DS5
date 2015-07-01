@@ -21,8 +21,9 @@ public class PanelConsole extends BasePanel {
 	private static final Color 	COLOR_WARNING = new Color(0xffdd00);
 	private static final Color 	COLOR_ERROR = new Color(0xdd0000);
 	private static final Color 	COLOR_FATAL = new Color(0xff0000);
+	private static final Color 	COLOR_NOTICE = new Color(0xff0000);
 
-	private String[][] 		_data = new String[5][NB_LINES];
+	private String[][] 		_data = new String[6][NB_LINES];
 	private UILabel[] 		_texts;
 	private int 			_level;
 
@@ -69,21 +70,21 @@ public class PanelConsole extends BasePanel {
 	}
 
 	public void addMessage(int level, String message) {
-		if (_level < level) return;
-
-		message = Log.getPrefix(level) + StringUtils.getDashedString(message, "", NB_CONSOLE_COLUMNS);
-
-		// Store message
-		for (int l = Log.LEVEL_FATAL; l <= Log.LEVEL_DEBUG; l++) {
-			if (l >= level) {
-				for (int i = 0; i < NB_LINES - 1; i++) {
-					_data[l][i] = _data[l][i + 1];
-				}
-				_data[l][NB_LINES - 1] = message;
-			}
-		}
-
-		refreshLabels();
+//		if (_level < level) return;
+//
+//		message = Log.getPrefix(level) + StringUtils.getDashedString(message, "", NB_CONSOLE_COLUMNS);
+//
+//		// Store message
+//		for (int l = Log.LEVEL_FATAL; l <= Log.LEVEL_DEBUG; l++) {
+//			if (l >= level) {
+//				for (int i = 0; i < NB_LINES - 1; i++) {
+//					_data[l][i] = _data[l][i + 1];
+//				}
+//				_data[l][NB_LINES - 1] = message;
+//			}
+//		}
+//
+//		refreshLabels();
 	}
 
 	private void refreshLabels() {
@@ -96,6 +97,7 @@ public class PanelConsole extends BasePanel {
 			if (_data[_level][i] != null && _data[_level][i].startsWith("[W]")) _texts[i].setColor(COLOR_WARNING);
 			if (_data[_level][i] != null && _data[_level][i].startsWith("[E]")) _texts[i].setColor(COLOR_ERROR);
 			if (_data[_level][i] != null && _data[_level][i].startsWith("[F]")) _texts[i].setColor(COLOR_FATAL);
+			if (_data[_level][i] != null && _data[_level][i].startsWith("[N]")) _texts[i].setColor(COLOR_NOTICE);
 		}
 	}
 }
