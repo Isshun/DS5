@@ -11,7 +11,7 @@
 //public class CheckHeal extends CharacterCheck {
 //
 //    @Override
-//    public JobModel create(CharacterModel character) {
+//    public JobModel onCreate(CharacterModel character) {
 //        return null;
 //    }
 //

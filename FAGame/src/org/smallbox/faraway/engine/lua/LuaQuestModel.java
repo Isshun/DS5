@@ -21,7 +21,7 @@ public class LuaQuestModel {
         }
 
         public void addConsumable(LuaConsumableModel luaConsumable, int x, int y) {
-            ParcelModel parcel = Game.getWorldManager().getNearestFreeSpace(x + (int) (Math.random() * 6) - 3, y + (int) (Math.random() * 6) - 3, true);
+            ParcelModel parcel = Game.getWorldManager().getNearestFreeSpace(x + (int) (Math.random() * 6) - 3, y + (int) (Math.random() * 6) - 3, false, true);
             if (parcel != null) {
                 Game.getWorldManager().putConsumable(luaConsumable.itemInfo, luaConsumable.quantity, parcel.getX(), parcel.getY(), 0);
             }

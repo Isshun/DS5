@@ -16,7 +16,7 @@
 //
 //	private JobModel _job;
 //
-//	public void create(JobManager jobManager) {
+//	public void onCreate(JobManager jobManager) {
 //		if (_job != null && _job.isFinish() == false) {
 //			return;
 //		}
@@ -34,7 +34,7 @@
 //		}
 //
 //		// Create job
-//		jobManager.addJob(JobUse.create(item));
+//		jobManager.addJob(JobUse.onCreate(item));
 //	}
 //
 //}

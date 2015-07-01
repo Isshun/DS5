@@ -21,12 +21,11 @@ public class JobCraft extends BaseJobModel {
 	private int                     _itemPosY;
 	private int                     _targetX;
 	private int                     _targetY;
-	private StorageAreaModel _storage;
+	private StorageAreaModel        _storage;
 	private ParcelModel 		    _storageParcel;
     private List<ConsumableModel>   _potentialConsumables;
     protected ItemModel             _factory;
     protected Status                _status;
-    protected String                _message;
 
     public void addConsumable(ConsumableModel consumable) {
         for (ReceiptModel receipt: _receipts) {
@@ -295,10 +294,13 @@ public class JobCraft extends BaseJobModel {
             Game.getWorldManager().putConsumable(component, _factory.getX(), _factory.getY());
         }
 
+        // TODO: wrong location
 		// Switch status to MOVE_TO_INGREDIENT
 		_receipt.reset();
 		_receipt = null;
 		_status = Status.MOVE_TO_INGREDIENT;
+
+        onCheck(character);
 
 		// Work is complete
 		if (_count++ >= _totalCount) {

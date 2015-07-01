@@ -149,7 +149,7 @@
 //                    2, 1, 2},
 //    };
 //
-//    public static void create(WorldManager world, LoadListener loadListener) {
+//    public static void onCreate(WorldManager world, LoadListener loadListener) {
 //        if (world.getWidth() == 0 || world.getHeight() == 0) {
 //            // TODO
 //            //world.init(Constant.WORLD_WIDTH, Constant.WORLD_HEIGHT);

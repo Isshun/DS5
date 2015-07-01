@@ -7,7 +7,7 @@ entries:
         entries:
 
         -   type: label
-            text: Resource
+            text: Consumable
             textsize: 14
             position: [24, -16]
 

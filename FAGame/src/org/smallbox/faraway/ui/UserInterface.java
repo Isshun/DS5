@@ -499,47 +499,8 @@ public class UserInterface implements GameEventListener {
 
         // Select character
         if (_interaction.isAction(UserInteraction.Action.NONE)) {
-            CharacterModel c = _characters.getCharacterAtPos(getRelativePosX(x), getRelativePosY(y));
-            if (c != null && c != _selector.getSelectedCharacter()) {
-                _selector.select(c);
-            }
-            else  {
-                if (_selector.getSelectedCharacter() != null) {
-                    _selector.getSelectedCharacter().setSelected(false);
-                    _selector.clean();
-                }
-
-                int relX = getRelativePosX(x);
-                int relY = getRelativePosY(y);
-
-                AreaModel area = ((AreaManager)Game.getInstance().getManager(AreaManager.class)).getArea(relX, relY);
-                ParcelModel parcel = Game.getWorldManager().getParcel(relX, relY);
-
-                // Select resource
-                if (parcel != null && parcel.getResource() != null) { _selector.select(parcel.getResource()); return true; }
-
-                // Select item
-                for (int x2 = 0; x2 < Constant.ITEM_MAX_WIDTH; x2++) {
-                    for (int y2 = 0; y2 < Constant.ITEM_MAX_HEIGHT; y2++) {
-                        ItemModel item = Game.getWorldManager().getItem(relX - x2, relY - y2);
-                        if (item != null && item.getWidth() > x2 && item.getHeight() > y2) {
-                            _selector.select(item);
-                            return true;
-                        }
-                    }
-                }
-
-                // Select consumable
-                if (_mode != Mode.INFO_CONSUMABLE && parcel != null && parcel.getConsumable() != null) { _selector.select(parcel.getConsumable()); return true; }
-
-                // Select area
-                if (_mode != Mode.INFO_AREA && area != null) { _selector.select(area, parcel); return true; }
-
-                // Select structure
-                if (_mode != Mode.INFO_STRUCTURE && parcel != null && parcel.getStructure() != null) { _selector.select(parcel.getStructure()); return true; }
-
-                // Select parcel
-                if (_mode != Mode.INFO_PARCEL && parcel != null) { _selector.select(parcel); return true; }
+            if (_selector.selectAt(_mode, getRelativePosX(x), getRelativePosY(y))) {
+                return true;
             }
         }
 

@@ -15,7 +15,7 @@
 // */
 //public class CheckGardenIsMature implements Check {
 //
-//	public void create(JobManager jobManager) {
+//	public void onCreate(JobManager jobManager) {
 //		List<Room> rooms = Game.getRoomManager().getRoomList();
 //		for (Room room: rooms) {
 //			if (room.isGarden()) {
@@ -23,7 +23,7 @@
 //				for (WorldArea area: areas) {
 //					WorldResource res = area.getResource();
 //					if (res != null && res.isMature() && res.hasNoJob()) {
-//						jobManager.addJob(JobGather.create(res));
+//						jobManager.addJob(JobGather.onCreate(res));
 //					}
 //				}
 //			}

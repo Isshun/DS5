@@ -201,7 +201,7 @@ public abstract class CharacterModel extends MovableModel {
 
     private void fixPosition() {
         if (_parcel != null && !_parcel.isWalkable()) {
-            ParcelModel parcel = Game.getWorldManager().getNearestFreeSpace(_posX, _posY, false);
+            ParcelModel parcel = Game.getWorldManager().getNearestFreeSpace(_posX, _posY, true, false);
             if (parcel != null) {
                 _parcel = parcel;
                 _posX = parcel.getX();

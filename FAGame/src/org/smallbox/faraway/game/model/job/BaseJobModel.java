@@ -9,6 +9,7 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
 public abstract class BaseJobModel {
+
     public String getActionIcon() {
         return null;
     }
@@ -57,6 +58,7 @@ public abstract class BaseJobModel {
 	protected JobStatus			_status;
     private String              _icon;
     private String              _iconAction;
+    protected String            _message;
 
 	public BaseJobModel(ItemInfo.ItemInfoAction actionInfo, int x, int y, String iconPath, String iconActionPath) {
 		init();
@@ -85,7 +87,7 @@ public abstract class BaseJobModel {
         _limit = -1;
         _label = "none";
 
-		Log.debug("Job #" + _id + " create");
+		Log.debug("Job #" + _id + " onCreate");
 	}
 
 	public String 				getLabel() { return _label; }

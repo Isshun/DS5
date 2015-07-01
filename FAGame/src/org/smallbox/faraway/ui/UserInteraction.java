@@ -211,7 +211,7 @@ public class UserInteraction {
 //			for (int y = startY; y <= toY; y++) {
 //				ItemModel item = Game.getWorldManager().getItem(x, y);
 //				if (item != null) {
-//					JobModel job = JobTake.create(item);
+//					JobModel job = JobTake.onCreate(item);
 //					if (job != null) {
 //						JobManager.getInstance().addJob(job);
 //					}

@@ -3,7 +3,6 @@ package org.smallbox.farpoint;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -32,22 +31,22 @@ public class GDXApplication extends ApplicationAdapter {
         }
     }
 
+    public static final BlockingQueue<LoadRunnable> _queue = new LinkedBlockingQueue<>();
+    private Runnable        _currentRunnable;
     private SpriteBatch     _batch;
     private GDXRenderer     _renderer;
     private Application     _application;
     private long            _startTime = -1;
     private long            _lastRender;
-    public static final BlockingQueue<LoadRunnable> _queue = new LinkedBlockingQueue<>();
     private BitmapFont[]    _fonts;
-    private BitmapFont      _font;
-    private Runnable        _runnable;
+    private BitmapFont      _systemFont;
     private RenderEffect    _effect;
 
     @Override
     public void create () {
         _batch = new SpriteBatch();
 
-        _font = new BitmapFont(Gdx.files.internal("data/font-42.fnt"), Gdx.files.internal("data/font-42.png"), false);
+        _systemFont = new BitmapFont(Gdx.files.internal("data/font-42.fnt"), Gdx.files.internal("data/font-42.png"), false);
 
         _queue.add(new LoadRunnable("Load sprites", () -> {
             try {
@@ -59,7 +58,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         _queue.add(new LoadRunnable("Generate fonts", () -> {
             SmartFontGenerator fontGen = new SmartFontGenerator();
-            FileHandle exoFile = Gdx.files.local("data/res/_fonts/font.ttf");
+            FileHandle exoFile = Gdx.files.local("data/res/fonts/font.ttf");
             _fonts = new BitmapFont[100];
             for (int i = 0; i < 100; i++) {
                 _fonts[i] = fontGen.createFont(exoFile, "font-" + i, i);
@@ -136,9 +135,9 @@ public class GDXApplication extends ApplicationAdapter {
         Gdx.gl.glClearColor(.07f, 0.1f, 0.12f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (_runnable != null) {
-            _runnable.run();
-            _runnable = null;
+        if (_currentRunnable != null) {
+            _currentRunnable.run();
+            _currentRunnable = null;
         }
 
         if (!_queue.isEmpty()) {
@@ -150,13 +149,13 @@ public class GDXApplication extends ApplicationAdapter {
                 OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 _batch.setProjectionMatrix(camera.combined);
-                BitmapFont.TextBounds bounds = _font.getBounds(loadRunnable.message);
-                _font.drawMultiLine(_batch, loadRunnable.message, Gdx.graphics.getWidth() / 2 - bounds.width / 2, Gdx.graphics.getHeight() / 2 - bounds.height / 2);
+                BitmapFont.TextBounds bounds = _systemFont.getBounds(loadRunnable.message);
+                _systemFont.drawMultiLine(_batch, loadRunnable.message, Gdx.graphics.getWidth() / 2 - bounds.width / 2, Gdx.graphics.getHeight() / 2 - bounds.height / 2);
                 _batch.end();
 
                 // Runnable
                 long loadTime = System.currentTimeMillis();
-                _runnable = loadRunnable.runnable;
+                _currentRunnable = loadRunnable.runnable;
                 System.out.println(loadRunnable.message + " (" + (System.currentTimeMillis() - loadTime) + "ms)");
 
                 return;

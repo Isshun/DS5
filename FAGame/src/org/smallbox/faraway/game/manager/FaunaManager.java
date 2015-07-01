@@ -72,7 +72,7 @@ public class FaunaManager extends BaseManager {
 
         for (AnimalModel animal: _animals) {
             if (!animal.isMoving()) {
-                ParcelModel parcel = _worldManager.getRandomFreeSpace(true);
+                ParcelModel parcel = _worldManager.getRandomFreeSpace(false, true);
                 animal.moveTo(parcel.getX(), parcel.getY());
             }
             animal.move();
@@ -82,7 +82,7 @@ public class FaunaManager extends BaseManager {
     }
 
     private void addFauna(RegionInfo.RegionFauna faunaInfo, int count) {
-        ParcelModel parcel = _worldManager.getRandomFreeSpace(true);
+        ParcelModel parcel = _worldManager.getRandomFreeSpace(false, true);
         if (parcel != null) {
             _animals.add(new AnimalModel(Utils.getUUID(), faunaInfo, parcel.getX(), parcel.getY()));
         } else {

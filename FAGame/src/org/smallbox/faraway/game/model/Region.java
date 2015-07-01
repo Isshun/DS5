@@ -35,7 +35,7 @@ public class Region {
 	}
 
 	public Region(int id, int fromX, int fromY, int toX, int toY) {
-//		Log.info("create region: " + id);
+//		Log.info("onCreate region: " + id);
 //		
 //		this._doors = new ArrayList<Door>();
 //		this.id = id;

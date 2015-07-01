@@ -31,7 +31,7 @@ public class JobHaul extends BaseJobModel {
 
     public static JobHaul create(ConsumableModel consumable) {
         if (consumable == null) {
-            Log.error("create JobHaul: consumable cannot be null");
+            Log.error("onCreate JobHaul: consumable cannot be null");
             return null;
         }
 

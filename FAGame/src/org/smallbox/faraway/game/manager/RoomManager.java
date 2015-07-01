@@ -34,7 +34,7 @@ public class RoomManager extends BaseManager implements GameObserver {
         int height = Game.getWorldManager().getHeight();
 
         if (width == 0 || height == 0) {
-            throw new RuntimeException("Cannot create RoomManager with 0 sized world map");
+            throw new RuntimeException("Cannot onCreate RoomManager with 0 sized world map");
         }
 
         double oxygenLevel = Game.getInstance().getPlanet().getOxygen();

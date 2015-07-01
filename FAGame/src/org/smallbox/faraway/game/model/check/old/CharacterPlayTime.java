@@ -11,7 +11,7 @@
 //public class CharacterPlayTime implements CharacterCheck {
 //
 //	@Override
-//	public boolean create(JobManager jobManager, CharacterModel character) {
+//	public boolean onCreate(JobManager jobManager, CharacterModel character) {
 //		if ((int)(Math.random() * 100) <= Constant.CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS) {
 //			return false;
 //		}
@@ -21,7 +21,7 @@
 //			return false;
 //		}
 //
-//		jobManager.addJob(JobUse.create(toy, character), character);
+//		jobManager.addJob(JobUse.onCreate(toy, character), character);
 //		return true;
 //	}
 //}

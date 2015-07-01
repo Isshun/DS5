@@ -25,7 +25,7 @@
 //		_viewport = viewport;
 //
 //		_image = new Image();
-//		_image.create(_width, _height);
+//		_image.onCreate(_width, _height);
 //
 //		int i1 = 40;
 //		int i2 = 20;

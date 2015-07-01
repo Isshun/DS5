@@ -1,6 +1,7 @@
 package org.smallbox.faraway.ui.panel.info;
 
 import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.ui.LayoutModel;
@@ -31,6 +32,8 @@ public class PanelInfoConsumable extends BaseRightPanel {
         } else if (_itemInfo != null) {
             select(_itemInfo);
         }
+
+        addDebugView("Remove item", 24, 400, view -> Game.getWorldManager().removeConsumable(_consumable));
     }
 
     @Override

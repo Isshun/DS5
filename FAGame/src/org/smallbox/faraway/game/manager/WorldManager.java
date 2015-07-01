@@ -552,23 +552,37 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         createConnection(resource.getParcel());
     }
 
-    public ParcelModel getNearestFreeSpace(int x, int y, boolean isExterior) {
+    public ParcelModel getNearestFreeSpace(int x, int y, boolean acceptInterior, boolean acceptExterior) {
         for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
-                if (isFreeSpace(x + i, y, isExterior)) return _parcels[x + i][y][0];
-                if (isFreeSpace(x - i, y, isExterior)) return _parcels[x - i][y][0];
-                if (isFreeSpace(x, y + j, isExterior)) return _parcels[x][y + j][0];
-                if (isFreeSpace(x, y - j, isExterior)) return _parcels[x][y - j][0];
+            for (int j = 0; j < i; j++) {
+                // Top
+                if (isFreeSpace(x + j, y + i, acceptInterior, acceptExterior)) return _parcels[x + j][y + i][0];
+                if (isFreeSpace(x - j, y + i, acceptInterior, acceptExterior)) return _parcels[x - j][y + i][0];
+
+                // Bottom
+                if (isFreeSpace(x + j, y - i, acceptInterior, acceptExterior)) return _parcels[x + j][y - i][0];
+                if (isFreeSpace(x - j, y - i, acceptInterior, acceptExterior)) return _parcels[x - j][y - i][0];
+
+                // Right
+                if (isFreeSpace(x + i, y + j, acceptInterior, acceptExterior)) return _parcels[x + i][y + j][0];
+                if (isFreeSpace(x + i, y - j, acceptInterior, acceptExterior)) return _parcels[x + i][y + j][0];
+
+                // Left
+                if (isFreeSpace(x - i, y + j, acceptInterior, acceptExterior)) return _parcels[x - i][y + j][0];
+                if (isFreeSpace(x - i, y - j, acceptInterior, acceptExterior)) return _parcels[x - i][y - j][0];
             }
         }
         return null;
     }
 
-    private boolean isFreeSpace(int x, int y, boolean isExterior) {
+    private boolean isFreeSpace(int x, int y, boolean acceptInterior, boolean acceptExterior) {
         if (!inMapBounds(x, y)) {
             return false;
         }
-        if (isExterior && _parcels[x][y][0].getRoom() != null && !_parcels[x][y][0].getRoom().isExterior()) {
+        if (!acceptInterior && _parcels[x][y][0].getRoom() != null && !_parcels[x][y][0].getRoom().isExterior()) {
+            return false;
+        }
+        if (!acceptExterior && (_parcels[x][y][0].getRoom() == null || _parcels[x][y][0].getRoom().isExterior())) {
             return false;
         }
         if (_parcels[x][y][0].getStructure() != null && _parcels[x][y][0].getStructure().isSolid()) {
@@ -586,12 +600,12 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         return true;
     }
 
-    public ParcelModel getRandomFreeSpace(boolean isExterior) {
+    public ParcelModel getRandomFreeSpace(boolean acceptInterior, boolean acceptExterior) {
         int startX = (int) (Math.random() * _width);
         int startY = (int) (Math.random() * _height);
         for (int i = 0; i < _width; i++) {
             for (int j = 0; j < _height; j++) {
-                if (isFreeSpace((startX + i) % _width, (startY + j) % _height, isExterior)) {
+                if (isFreeSpace((startX + i) % _width, (startY + j) % _height, acceptInterior, acceptExterior)) {
                     return _parcels[(startX + i) % _width][(startY + j) % _height][0];
                 }
             }

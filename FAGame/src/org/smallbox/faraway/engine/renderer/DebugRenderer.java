@@ -9,7 +9,7 @@ public class DebugRenderer extends BaseRenderer {
 //	public DebugRenderer() {
 //		try {
 //			_cache = new RenderTexture();
-//			_cache.create(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
+//			_cache.onCreate(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
 //			_cache.display();
 //		} catch (TextureCreationException e) {
 //			e.printStackTrace();

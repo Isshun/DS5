@@ -433,7 +433,7 @@ public class JobManager extends BaseManager {
 	}
 
 	public BaseJobModel addStoreJob(CharacterModel character) {
-//		BaseJob job = JobHaul.create(character);
+//		BaseJob job = JobHaul.onCreate(character);
 //		if (job != null) {
 //			addJob(job);
 //		}

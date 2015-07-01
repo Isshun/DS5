@@ -9,14 +9,14 @@ import org.smallbox.faraway.game.model.item.ResourceModel;
 /**
  * Created by Alex on 20/06/2015.
  */
-public class AsteroidBeltFactory implements IMapFactory {
+public class AsteroidBeltFactory extends MapFactory {
     private ParcelModel[][][]   _parcels;
     private int                 _width;
     private int                 _height;
     public static float[][]     sData;
 
     @Override
-    public void create(ParcelModel[][][] parcels, int width, int height, LoadListener loadListener) {
+    public void onCreate(ParcelModel[][][] parcels, int width, int height, LoadListener loadListener) {
         _parcels = parcels;
         _width = width;
         _height = height;

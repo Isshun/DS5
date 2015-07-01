@@ -28,9 +28,9 @@
 //	}
 //
 //	@Override
-//	protected void create() {
+//	protected void onCreate() {
 //		_image = new Image();
-//		_image.create(300, 200);
+//		_image.onCreate(300, 200);
 //
 //		_imageView = new ImageView();
 //		_imageView.setPosition(20, 42);

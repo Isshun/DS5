@@ -74,7 +74,7 @@ public class Game {
 		_self = this;
         _config = config;
         _fileName = fileName;
-        _planet = new PlanetModel(GameData.getData().planets.get(0));
+        _planet = new PlanetModel(data.planets.get(0));
         _region = new RegionModel(_planet, _planet.getInfo().regions.get(0));
 		_isRunning = true;
 		_viewport = SpriteManager.getInstance().createViewport();
@@ -82,7 +82,7 @@ public class Game {
         _lightRenderer = lightRenderer;
         _tick = 0;
 
-        Log.info("Game: create");
+        Log.info("Game: onCreate");
 
         _managers = new ArrayList<>();
         _observers = new ArrayList<>();
@@ -179,30 +179,7 @@ public class Game {
 	public void	newGame(LoadListener loadListener) {
 		//loadListener.onUpdate("Create new game");
 
-        int width = 250;
-        int height = 250;
-
-        Game.getWorldManager().init(width, height);
-        ParcelModel[][][] parcels = Game.getWorldManager().getParcels();
-        (new AsteroidBeltFactory()).create(parcels, width, height, loadListener);
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                final ParcelModel parcel = parcels[x][y][0];
-                if (parcel.getStructure() != null) {
-                    Game.getInstance().notify(observer -> observer.onAddStructure(parcel.getStructure()));
-                }
-                if (parcel.getResource() != null) {
-                    Game.getInstance().notify(observer -> observer.onAddResource(parcel.getResource()));
-                }
-                if (parcel.getItem() != null) {
-                    Game.getInstance().notify(observer -> observer.onAddItem(parcel.getItem()));
-                }
-                if (parcel.getConsumable() != null) {
-                    Game.getInstance().notify(observer -> observer.onAddConsumable(parcel.getConsumable()));
-                }
-            }
-        }
+        (new AsteroidBeltFactory()).create(Game.getWorldManager(), 250, 250, loadListener);
 	}
 
 	public void	load() {

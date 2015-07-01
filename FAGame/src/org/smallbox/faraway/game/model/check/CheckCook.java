@@ -15,7 +15,7 @@
 //    }
 //
 //    @Override
-//    public boolean create(JobManager jobManager) {
+//    public boolean onCreate(JobManager jobManager) {
 //        int bestDistance = Integer.MAX_VALUE;
 //        JobModel bestJob = null;
 //        for (JobModel job: jobManager.getJobs()) {

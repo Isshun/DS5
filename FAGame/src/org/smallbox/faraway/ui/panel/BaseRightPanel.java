@@ -7,10 +7,7 @@ import org.smallbox.faraway.ui.LinkFocusListener;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.ui.engine.Colors;
-import org.smallbox.faraway.ui.engine.UILabel;
-import org.smallbox.faraway.ui.engine.View;
-import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.*;
 import org.smallbox.faraway.util.Constant;
 
 public abstract class BaseRightPanel extends BasePanel {
@@ -50,4 +47,15 @@ public abstract class BaseRightPanel extends BasePanel {
 			addView(lbBack);
 		}
 	}
+
+	protected void addDebugView(String text, int x, int y, OnClickListener clickListener) {
+		UILabel lbCommand = ViewFactory.getInstance().createTextView();
+		lbCommand.setString("[DEV] " + text);
+		lbCommand.setCharacterSize(14);
+		lbCommand.setPosition(x, y);
+		lbCommand.setOnClickListener(clickListener);
+		lbCommand.resetSize();
+		addView(lbCommand);
+	}
+
 }

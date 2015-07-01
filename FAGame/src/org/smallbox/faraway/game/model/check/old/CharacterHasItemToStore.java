@@ -9,9 +9,9 @@
 //public class CharacterHasItemToStore implements CharacterCheck {
 //
 //	@Override
-//	public boolean create(JobManager jobManager, CharacterModel character) {
+//	public boolean onCreate(JobManager jobManager, CharacterModel character) {
 //		if (character.getComponents().size() > 0) {
-//			JobModel job = JobStore.create(character);
+//			JobModel job = JobStore.onCreate(character);
 //			if (job != null) {
 //				jobManager.addJob(job, character);
 //				return true;

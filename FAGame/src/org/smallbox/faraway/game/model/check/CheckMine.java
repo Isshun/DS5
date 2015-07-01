@@ -14,7 +14,7 @@
 //    }
 //
 //    @Override
-//    public boolean create(JobManager jobManager) {
+//    public boolean onCreate(JobManager jobManager) {
 //        return false;
 //    }
 //}

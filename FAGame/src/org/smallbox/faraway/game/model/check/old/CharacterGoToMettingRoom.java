@@ -10,10 +10,10 @@
 //public class CharacterGoToMettingRoom implements CharacterCheck {
 //
 //	@Override
-//	public boolean create(JobManager jobManager, CharacterModel character) {
+//	public boolean onCreate(JobManager jobManager, CharacterModel character) {
 //		Room room = Game.getRoomManager().getNearRoom(character.getX(), character.getY(), Room.Type.METTING);
 //		if (room != null) {
-//			jobManager.addJob(JobMove.create(character, room.getX(), room.getY(), Constant.CHARACTER_STAY_IN_METTING_ROOM * Constant.DURATION_MULTIPLIER), character);
+//			jobManager.addJob(JobMove.onCreate(character, room.getX(), room.getY(), Constant.CHARACTER_STAY_IN_METTING_ROOM * Constant.DURATION_MULTIPLIER), character);
 //			return true;
 //		}
 //		return false;
