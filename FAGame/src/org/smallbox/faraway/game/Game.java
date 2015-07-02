@@ -12,6 +12,7 @@ import org.smallbox.faraway.game.manager.*;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.RegionModel;
+import org.smallbox.faraway.game.model.character.base.BuffManager;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.planet.PlanetModel;
 import org.smallbox.faraway.ui.AreaManager;
@@ -120,6 +121,7 @@ public class Game {
         _managers.add(new AreaManager());
         _managers.add(new ResourceManager());
         _managers.add(new StatsManager());
+        _managers.add(new BuffManager());
 
         if (GameData.config.manager.fauna) {
             _managers.add(new FaunaManager());
@@ -219,5 +221,9 @@ public class Game {
 
     public int getSpeed() {
         return _speed;
+    }
+
+    public List<BaseManager> getManagers() {
+        return _managers;
     }
 }

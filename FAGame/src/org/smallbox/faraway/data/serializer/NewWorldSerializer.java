@@ -1,9 +1,16 @@
 package org.smallbox.faraway.data.serializer;
 
 import com.ximpleware.*;
+import com.ximpleware.EOFException;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.WorldManager;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.util.Log;
+
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
 
 public class NewWorldSerializer implements SerializerInterface {
 
@@ -60,34 +67,92 @@ public class NewWorldSerializer implements SerializerInterface {
 
     @Override
     public void save(GameSerializer.GameSave save) {
-//        WorldManager manager = Game.getWorldManager();
-//
-//        save.width = manager.getWidth();
-//        save.height = manager.getHeight();
-//
-//        save.parcels = new ArrayList<>();
-//        Map<Integer, List<ParcelModel>> types = new HashMap<>();
-//        for (int t = 0; t < 10; t++) {
-//            types.put(t, new ArrayList<>());
-//        }
-//        for (int z = 0; z < 1; z++) {
-//            for (int x = 0; x < manager.getWidth(); x++) {
-//                for (int y = 0; y < manager.getHeight(); y++) {
-//                    ParcelModel parcel = manager.getParcel(z, x, y);
-//                    saveParcel(save.parcels, parcel);
-//                    types.get(parcel.getType()).add(parcel);
-//                }
-//            }
-//        }
-//
-////		for (Map.Entry<Integer, List<ParcelModel>> entry: types.entrySet()) {
-////			save.types.add()
-////		}
+
+        try {
+            File f = new File("data/saves/6.sav");
+            FileOutputStream fos = new FileOutputStream(f);
+
+            write(fos, "<?xml version='1.0' encoding='UTF-8'?>");
+            write(fos, "<save>");
+
+            write(fos, "<parcels>");
+            for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
+                writeParcel(fos, parcel);
+            }
+            write(fos, "</parcels>");
+
+            write(fos, "</save>");
+
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeParcel(FileOutputStream fos, ParcelModel parcel) throws IOException {
+        if (parcel.getItem() != null || parcel.getResource() != null || parcel.getStructure() != null || parcel.getConsumable() != null) {
+            write(fos, "<parcel x='" + parcel.getX() + "' y='" + parcel.getY() + "' z='" + parcel.getZ() + "' type='" + parcel.getType() + "'>");
+
+            if (parcel.getItem() != null) {
+                writeItem(fos, parcel.getItem());
+            }
+
+            if (parcel.getStructure() != null) {
+                writeStructure(fos, parcel.getStructure());
+            }
+
+            if (parcel.getResource() != null) {
+                writeResource(fos, parcel.getResource());
+            }
+
+            if (parcel.getConsumable() != null) {
+                writeConsumable(fos, parcel.getConsumable());
+            }
+
+            write(fos, "</parcel>");
+        } else {
+            write(fos, "<parcel x='" + parcel.getX() + "' y='" + parcel.getY() + "' z='" + parcel.getZ() + "' type='" + parcel.getType() + "' />");
+        }
+    }
+
+    private void writeItem(FileOutputStream fos, ItemModel item) throws IOException {
+        write(fos, "<item id='" + item.getId() + "' name='" + item.getInfo().name + "'>");
+        write(fos, "<health>" + item.getHealth() + "</health>");
+        write(fos, "<progress>" + item.getProgress() + "</progress>");
+        write(fos, "</item>");
+    }
+
+    private void writeStructure(FileOutputStream fos, StructureModel structure) throws IOException {
+        write(fos, "<structure id='" + structure.getId() + "' name='" + structure.getInfo().name + "'>");
+        write(fos, "<health>" + structure.getHealth() + "</health>");
+        write(fos, "<progress>" + structure.getProgress() + "</progress>");
+        write(fos, "</structure>");
+    }
+
+    private void writeResource(FileOutputStream fos, ResourceModel resource) throws IOException {
+        write(fos, "<resource id='" + resource.getId() + "' name='" + resource.getInfo().name + "'>");
+        write(fos, "<health>" + resource.getHealth() + "</health>");
+        write(fos, "<progress>" + resource.getProgress() + "</progress>");
+        write(fos, "</resource>");
+    }
+
+    private void writeConsumable(FileOutputStream fos, ConsumableModel consumable) throws IOException {
+        write(fos, "<consumable id='" + consumable.getId() + "' name='" + consumable.getInfo().name + "'>");
+        write(fos, "<quantity>" + consumable.getQuantity() + "</quantity>");
+        write(fos, "</consumable>");
+    }
+
+    private static void write(FileOutputStream fos, String str) throws IOException {
+        fos.write(str.getBytes("UTF-8"));
+        fos.write('\n');
+        fos.flush();
     }
 
     public void load(VTDNav vn) throws XPathParseException, NavException, XPathEvalException {
         AutoPilot ap = new AutoPilot(vn);
-        ap.selectXPath("/org.smallbox.faraway.data.serializer.GameSerializer_-GameSave/parcels/*");
+        ap.selectXPath("/save/parcels/*");
 
         AutoPilot apItem = new AutoPilot(vn);
         apItem.selectXPath("item|resource|structure|consumable");
@@ -95,27 +160,15 @@ public class NewWorldSerializer implements SerializerInterface {
         AutoPilot apElement = new AutoPilot(vn);
         apElement.selectXPath("*");
 
-        AutoPilot apPosition = new AutoPilot(vn);
-        apPosition.selectXPath("x|y|z");
-
-
         WorldManager manager = Game.getWorldManager();
 
         while (ap.evalXPath() != -1) {
-            int x = -1;
-            int y = -1;
-            int z = -1;
-
             vn.push();
-            int j;
-            while ((j = apPosition.evalXPath()) != -1) {
-                switch (vn.toString(vn.getCurrentIndex())) {
-                    case "x": x = vn.parseInt(vn.getText()); break;
-                    case "y": y = vn.parseInt(vn.getText()); break;
-                    case "z": z = vn.parseInt(vn.getText()); break;
-                }
-            }
-            apPosition.resetXPath();
+
+            int x = vn.parseInt(vn.getAttrVal("x"));
+            int y = vn.parseInt(vn.getAttrVal("y"));
+            int z = vn.parseInt(vn.getAttrVal("z"));
+            int type = vn.parseInt(vn.getAttrVal("type"));
 
             while (apItem.evalXPath() != -1) {
                 switch (vn.toString(vn.getCurrentIndex())) {
@@ -139,22 +192,14 @@ public class NewWorldSerializer implements SerializerInterface {
     }
 
     private void createConsumable(AutoPilot apElement, VTDNav vn, WorldManager manager, int x, int y, int z) throws NavException, XPathEvalException {
-        String name = null;
-        int id = 0;
+        String name = vn.toString(vn.getAttrVal("name"));
+        int id = vn.parseInt(vn.getAttrVal("id"));
         int quantity = 0;
 
         while (apElement.evalXPath() != -1) {
             switch (vn.toString(vn.getCurrentIndex())) {
-                case "name":
-                    name = vn.toString(vn.getText());
-                    break;
-
                 case "quantity":
                     quantity = (int)vn.parseDouble(vn.getText());
-                    break;
-
-                case "id":
-                    id = vn.parseInt(vn.getText());
                     break;
             }
         }
@@ -168,23 +213,15 @@ public class NewWorldSerializer implements SerializerInterface {
     }
 
     private void createStructure(AutoPilot apElement, VTDNav vn, WorldManager manager, int x, int y, int z) throws NavException, XPathEvalException {
-        String name = null;
-        int id = 0;
+        String name = vn.toString(vn.getAttrVal("name"));
+        int id = vn.parseInt(vn.getAttrVal("id"));
         int health = 0;
         int progress = 0;
 
         while (apElement.evalXPath() != -1) {
             switch (vn.toString(vn.getCurrentIndex())) {
-                case "name":
-                    name = vn.toString(vn.getText());
-                    break;
-
                 case "health":
                     health = (int)vn.parseDouble(vn.getText());
-                    break;
-
-                case "id":
-                    id = vn.parseInt(vn.getText());
                     break;
 
                 case "progress":
@@ -194,7 +231,7 @@ public class NewWorldSerializer implements SerializerInterface {
         }
         apElement.resetXPath();
 
-            StructureModel structure = (StructureModel)manager.putObject(name, x, y, z, progress);
+        StructureModel structure = (StructureModel)manager.putObject(name, x, y, z, progress);
         if (structure != null) {
             structure.setId(id);
             structure.setHealth(health);
@@ -202,25 +239,15 @@ public class NewWorldSerializer implements SerializerInterface {
     }
 
     private void createResource(AutoPilot apElement, VTDNav vn, WorldManager manager, int x, int y, int z) throws NavException, XPathEvalException {
-        String name = null;
-        int id = 0;
+        String name = vn.toString(vn.getAttrVal("name"));
+        int id = vn.parseInt(vn.getAttrVal("id"));
         int health = 0;
         int progress = 0;
 
         while (apElement.evalXPath() != -1) {
-//            System.out.println(vn.toString(vn.getCurrentIndex()) + " ==> " + vn.toString(vn.getText()));
-
             switch (vn.toString(vn.getCurrentIndex())) {
-                case "name":
-                    name = vn.toString(vn.getText());
-                    break;
-
                 case "health":
                     health = (int)vn.parseDouble(vn.getText());
-                    break;
-
-                case "id":
-                    id = vn.parseInt(vn.getText());
                     break;
 
                 case "progress":
@@ -239,25 +266,15 @@ public class NewWorldSerializer implements SerializerInterface {
     }
 
     private void createItem(AutoPilot apElement, VTDNav vn, WorldManager manager, int x, int y, int z) throws NavException, XPathEvalException {
-        String name = null;
-        int id = 0;
+        String name = vn.toString(vn.getAttrVal("name"));
+        int id = vn.parseInt(vn.getAttrVal("id"));
         int health = 0;
         int progress = 0;
 
         while (apElement.evalXPath() != -1) {
-//            System.out.println(vn.toString(vn.getCurrentIndex()) + " ==> " + vn.toString(vn.getText()));
-
             switch (vn.toString(vn.getCurrentIndex())) {
-                case "name":
-                    name = vn.toString(vn.getText());
-                    break;
-
                 case "health":
                     health = (int)vn.parseDouble(vn.getText());
-                    break;
-
-                case "id":
-                    id = vn.parseInt(vn.getText());
                     break;
 
                 case "progress":

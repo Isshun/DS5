@@ -6,10 +6,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.CharacterBuffModel;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.ToolTips;
-import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
-import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
-import org.smallbox.faraway.game.model.character.base.CharacterRelation;
+import org.smallbox.faraway.game.model.character.base.*;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
@@ -483,17 +480,33 @@ public class PanelCharacter extends BaseRightPanel {
     }
 
     private void refreshLastReports() {
-        int i = 0;
-        for (CharacterBuffModel characterBuff: _character.getBuffs()) {
-            if (characterBuff.level != null) {
-                int mood = characterBuff.level.effects != null ? characterBuff.level.effects.mood : 0;
-                _lbBuffs[i].setString(StringUtils.getDashedString(characterBuff.level.label, (mood > 0 ? "+" : "") + mood, NB_COLUMNS));
-                _lbBuffs[i].setColor(mood < 0 ? COLOR_2 : COLOR_0);
-                i++;
+//        int i = 0;
+//        for (CharacterBuffModel characterBuff: _character.getBuffs()) {
+//            if (characterBuff.level != null) {
+//                int mood = characterBuff.level.effects != null ? characterBuff.level.effects.mood : 0;
+//                _lbBuffs[i].setString(StringUtils.getDashedString(characterBuff.level.label, (mood > 0 ? "+" : "") + mood, NB_COLUMNS));
+//                _lbBuffs[i].setColor(mood < 0 ? COLOR_2 : COLOR_0);
+//                i++;
+//            }
+//        }
+//        for (; i < NB_MAX_BUFFS; i++) {
+//            _lbBuffs[i].setString("");
+//        }
+
+        // Don't use foreach for CME reason
+        int line = 0;
+        int length = _character._buffsScript.size();
+        for (int i = 0; i < length; i++) {
+            BuffManager.BuffScriptModel buff = _character._buffsScript.get(i);
+            if (buff.level > 0) {
+                int mood = buff.mood;
+                _lbBuffs[line].setString(StringUtils.getDashedString(buff.message, (mood > 0 ? "+" : "") + mood, NB_COLUMNS));
+                _lbBuffs[line].setColor(mood < 0 ? COLOR_2 : COLOR_0);
+                line++;
             }
         }
-        for (; i < NB_MAX_BUFFS; i++) {
-            _lbBuffs[i].setString("");
+        for (; line < NB_MAX_BUFFS; line++) {
+            _lbBuffs[line].setString("");
         }
     }
 

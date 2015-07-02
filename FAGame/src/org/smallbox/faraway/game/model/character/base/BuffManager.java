@@ -1,16 +1,49 @@
 package org.smallbox.faraway.game.model.character.base;
 
+import org.luaj.vm2.LuaError;
+import org.luaj.vm2.LuaTable;
+import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.luaj.vm2.lib.jse.JsePlatform;
+import org.smallbox.faraway.engine.lua.LuaCharacterModel;
+import org.smallbox.faraway.engine.lua.LuaGameModel;
+import org.smallbox.faraway.engine.lua.LuaQuestModel;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.BaseManager;
 import org.smallbox.faraway.game.manager.RoomManager;
 import org.smallbox.faraway.game.model.BuffModel;
 import org.smallbox.faraway.game.model.CharacterBuffModel;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.util.Log;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Created by Alex on 16/06/2015.
  */
-public class BuffManager {
+public class BuffManager extends BaseManager {
+
+    public static class BuffScriptModel {
+        public final LuaValue globals;
+        public final String     fileName;
+        public boolean          isOpen;
+        public String           message;
+        public String[]         options;
+        public int              optionIndex;
+        public int              level;
+        public int              mood;
+
+        public BuffScriptModel(String fileName) {
+            this.globals = JsePlatform.standardGlobals();
+            this.fileName = fileName;
+            this.isOpen = true;
+        }
+    }
+
     public static void checkBuffs(CharacterModel character) {
         boolean needSort = false;
         for (CharacterBuffModel characterBuff: character.getBuffs()) {
@@ -84,7 +117,7 @@ public class BuffManager {
 
     public static void applyBuffs(CharacterModel character) {
         character.getBuffs().stream()
-                .filter(characterBuff -> characterBuff.isActive())
+                .filter(CharacterBuffModel::isActive)
                 .forEach(characterBuff -> applyBuff(character, characterBuff.level));
     }
 
@@ -107,6 +140,50 @@ public class BuffManager {
                     character.getNeeds().updateHappiness(level.effects.mood * 0.1);
                 }
             }
+        }
+    }
+
+    @Override
+    protected void onUpdate(int tick) {
+        LuaValue luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
+
+        for (CharacterModel character: Game.getCharacterManager().getCharacters()) {
+            Log.debug("Check buff for " + character.getName());
+
+            LuaValue luaCharacter = CoerceJavaToLua.coerce(new LuaCharacterModel(character));
+            for (BuffScriptModel buff: character._buffsScript) {
+                LuaValue ret = buff.globals.get("OnUpdate").call(luaGame, luaCharacter);
+                buff.message = ret.isnil() ? null : ret.get(1).toString();
+                buff.level = ret.isnil() ? 0 : ret.get(2).toint();
+                buff.mood = ret.isnil() ? 0 : ret.get(3).toint();
+
+                LuaValue effects = ret.isnil() || ret.get(4).isnil() ? null : ret.get(4);
+                if (effects != null) {
+                    Log.notice("apply effects");
+                    for (int i = 0; i < effects.length(); i++) {
+                        Log.notice("effect: " + effects.get(i+1).get(1).toString() + " rand: " + effects.get(i+1).get(2).todouble());
+                    }
+                }
+            }
+            Collections.sort(character._buffsScript, (b1, b2) -> b2.mood - b1.mood);
+        }
+//        Game.getInstance().notify(observer -> observer.onCloseQuest(quest));
+    }
+
+    @Override
+    public void onAddCharacter(CharacterModel character) {
+        try {
+            for (File file : new File("data/buffs/scripted/").listFiles()) {
+                if (file.getName().endsWith(".lua")) {
+                    // Load lua script
+                    BuffScriptModel buff = new BuffScriptModel(file.getName());
+                    buff.globals.get("dofile").call(LuaValue.valueOf("data/buffs/scripted/" + file.getName()));
+                    character.addBuff(buff);
+                }
+            }
+        } catch (LuaError error) {
+            error.printStackTrace();
+            Log.error(error.getMessage());
         }
     }
 }

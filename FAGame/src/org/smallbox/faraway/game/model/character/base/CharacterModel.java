@@ -2,6 +2,7 @@ package org.smallbox.faraway.game.model.character.base;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.PathManager;
+import org.smallbox.faraway.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
 import org.smallbox.faraway.game.manager.JobManager;
@@ -28,6 +29,7 @@ public abstract class CharacterModel extends MovableModel {
     private ParcelModel _toParcel;
     private ParcelModel _fromParcel;
     private double _moveStep;
+    public List<BuffManager.BuffScriptModel> _buffsScript = new ArrayList<>();
 
     public CharacterInfoModel getInfo() {
         return _info;
@@ -47,6 +49,10 @@ public abstract class CharacterModel extends MovableModel {
 
     public void setOld(int old) {
         _old = old;
+    }
+
+    public void addBuff(BuffManager.BuffScriptModel buff) {
+        _buffsScript.add(buff);
     }
 
     public enum TalentType {
@@ -105,7 +111,6 @@ public abstract class CharacterModel extends MovableModel {
     protected OnMoveListener 			_moveListener;
     protected List<CharacterBuffModel> 	_buffs;
     protected List<ItemInfo> 			_equipments;
-    protected double 					_bodyHeat = Constant.BODY_TEMPERATURE;
     protected CharacterStats            _stats;
     protected boolean 					_isFaint;
 
@@ -159,7 +164,7 @@ public abstract class CharacterModel extends MovableModel {
     public void                     setQuarter(RoomModel quarter) { _quarter = quarter; }
     public List<TalentEntry>        getTalents() { return _talents; }
     public TalentEntry              getTalent(TalentType type) { return _talentsMap.get(type); }
-    public double                   getBodyHeat() { return _bodyHeat; }
+    public double                   getBodyHeat() { return _stats.bodyHeat; }
     public CharacterStats           getStats() { return _stats; }
     public List<ItemInfo>     		getEquipments() { return _equipments; }
     public ParcelModel 				getParcel() { return _parcel; }
@@ -242,6 +247,9 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void update() {
+        _needs.environment = _parcel.getEnvironment();
+        _needs.light = ((RoomManager)Game.getInstance().getManager(RoomManager.class)).getLight(_posX, _posY);
+
         // Check buffs
         BuffManager.checkBuffs(this);
         BuffManager.applyBuffs(this);
@@ -255,13 +263,13 @@ public abstract class CharacterModel extends MovableModel {
         if (room != null) {
             double minHeat = room.getTemperatureInfo().temperature + _stats.absorb.cold;
             if (minHeat >= Constant.BODY_TEMPERATURE) {
-                _bodyHeat = Constant.BODY_TEMPERATURE;
-            } else if (minHeat < _bodyHeat) {
-                Log.debug("_bodyHeat: " + _bodyHeat + ", (min: " + minHeat + ")");
-                _bodyHeat -= 0.1 * (1 - _stats.resist.cold);
+                _stats.bodyHeat = Constant.BODY_TEMPERATURE;
+            } else if (minHeat < _stats.bodyHeat) {
+                Log.debug("_bodyHeat: " + _stats.bodyHeat + ", (min: " + minHeat + ")");
+                _stats.bodyHeat -= 0.1 * (1 - _stats.resist.cold);
             }
         } else {
-            Log.debug("_bodyHeat: " + _bodyHeat);
+            Log.debug("_bodyHeat: " + _stats.bodyHeat);
         }
     }
 

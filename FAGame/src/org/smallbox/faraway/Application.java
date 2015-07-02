@@ -1,5 +1,7 @@
 package org.smallbox.faraway;
 
+import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.data.serializer.LoadListener;
 import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
@@ -25,6 +27,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class Application implements GameEventListener {
+
     public static final int 		DRAW_INTERVAL = (1000/60);
     public static final int 		UPDATE_INTERVAL = 50;
     public static final int 		LONG_UPDATE_INTERVAL = 1000;
@@ -235,24 +238,24 @@ public class Application implements GameEventListener {
         _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer);
         _game.init(true);
         _game.load();
-        Log.notice("Load save: " + (System.currentTimeMillis() - time) + "ms");
+        Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
 
         time = System.currentTimeMillis();
         PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
-        Log.notice("Init paths: " + (System.currentTimeMillis() - time) + "ms");
+        Log.notice("Init paths (" + (System.currentTimeMillis() - time) + "ms)");
 
         time = System.currentTimeMillis();
         _mainRenderer.init(_renderer, GameData.config, _game, _lightRenderer, _particleRenderer);
-        Log.notice("Init renderers: " + (System.currentTimeMillis() - time) + "ms");
+        Log.notice("Init renderers (" + (System.currentTimeMillis() - time) + "ms)");
 
         time = System.currentTimeMillis();
         _gameInterface.onCreate(_game);
-        Log.notice("Create UI: " + (System.currentTimeMillis() - time) + "ms");
+        Log.notice("Create UI (" + (System.currentTimeMillis() - time) + "ms)");
 
         if (_lightRenderer != null) {
             time = System.currentTimeMillis();
             _lightRenderer.init();
-            Log.notice("Init light: " + (System.currentTimeMillis() - time) + "ms");
+            Log.notice("Init light (" + (System.currentTimeMillis() - time) + "ms)");
         }
 
         startGame();
@@ -309,9 +312,9 @@ public class Application implements GameEventListener {
 
             try {
                 if (!_queue.isEmpty()) {
-                    System.out.println("--------------- take from queue ---------------");
+                    Log.info("--------------- take from queue ---------------");
                     _queue.take().run();
-                    System.out.println("------------------ it's done ------------------");
+                    Log.info("------------------ it's done ------------------");
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -335,7 +338,7 @@ public class Application implements GameEventListener {
             // Long update
             if (_elapsed >= _nextLongUpdate) {
                 addTask(() -> {
-                    System.out.println("Reload config");
+                    Log.info("Reload config");
                     GameData.getData().reloadConfig();
                     UserInterface.getInstance().reloadTemplates();
                 });

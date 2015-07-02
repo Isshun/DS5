@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 public class RoomManager extends BaseManager implements GameObserver {
-    private static final int    UPDATE_INTERVAL = 10;
-
     private List<RoomModel>		_roomList;
     private int                 _width;
     private int                 _height;
@@ -30,6 +28,8 @@ public class RoomManager extends BaseManager implements GameObserver {
 
     @Override
     protected void onCreate() {
+        _updateInterval = 10;
+
         int width = Game.getWorldManager().getWidth();
         int height = Game.getWorldManager().getHeight();
 
@@ -62,9 +62,9 @@ public class RoomManager extends BaseManager implements GameObserver {
         if (_needRefresh) {
             refreshRooms();
         }
-        if (tick % UPDATE_INTERVAL == 0) {
-            _roomList.forEach(RoomModel::update);
-        }
+//        if (tick % UPDATE_INTERVAL == 0) {
+//            _roomList.forEach(RoomModel::update);
+//        }
     }
 
     public void makeRooms() {

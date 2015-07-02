@@ -15,24 +15,27 @@ public class CharacterNeeds {
 	private int	_eating;
 
 	// Stats
-    public double socialize;
-    public double drinking;
-    public double food;
-    public double happiness;
-	public double relation;
-    public double security;
-    public double oxygen;
-    public double energy;
-    public double health;
-    public double sickness;
-    public double injuries;
-    public double satiety;
-    public double joy;
+    public double 	socialize;
+    public double 	drinking;
+    public double 	food;
+    public double 	happiness;
+	public double 	relation;
+    public double 	security;
+    public double 	oxygen;
+    public double 	energy;
+    public double 	health;
+    public double 	sickness;
+    public double 	injuries;
+    public double 	satiety;
+    public double 	joy;
+	public int 		environment;
+	public int 		light;
+	public int 		pain = 80;
 
 	private MapObjectModel 	_sleepItem;
 	private CharacterStats	_stats;
 
-    public CharacterNeeds(CharacterModel character) {
+	public CharacterNeeds(CharacterModel character) {
         _data = GameData.getData();
 		_stats = character.getStats();
         _character = character;

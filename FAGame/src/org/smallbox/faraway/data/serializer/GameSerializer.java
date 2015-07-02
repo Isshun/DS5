@@ -89,7 +89,7 @@ public class GameSerializer {
             vg.parse(true);  // set namespace awareness to true
             VTDNav vn = vg.getNav();
             AutoPilot ap = new AutoPilot(vn);
-            ap.selectXPath("/org.smallbox.faraway.data.serializer.GameSerializer_-GameSave/width|/org.smallbox.faraway.data.serializer.GameSerializer_-GameSave/height");
+            ap.selectXPath("/save/width|/save/height");
 
             new NewWorldSerializer().load(vn.duplicateNav());
             new NewCharacterSerializer().load(vn.duplicateNav());
@@ -136,38 +136,40 @@ public class GameSerializer {
     }
 
     public static void save(String filePath) {
-        Log.info("Save game: " + filePath);
-        System.gc();
+        (new NewWorldSerializer()).save(null);
 
-        // Construct save object
-        GameSave save = new GameSave();
-        (new NewCharacterSerializer()).save(save);
-        (new JobSerializer()).save(save);
-        (new AreaSerializer()).save(save);
-        (new NewWorldSerializer()).save(save);
-
-        // Write XML
-        XStream xstream = new XStream();
-        String xml = xstream.toXML(save);
-
-        try {
-            FileOutputStream fs = new FileOutputStream(filePath);
-            OutputStreamWriter output = new OutputStreamWriter(fs);
-            output.write(xml);
-            output.close();
-            fs.close();
-
-            System.gc();
-            Log.info("Save game: " + filePath + " done");
-
-            return;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Log.error("Save game: " + filePath + " failed");
+//        Log.info("Save game: " + filePath);
+//        System.gc();
+//
+//        // Construct save object
+//        GameSave save = new GameSave();
+//        (new NewCharacterSerializer()).save(save);
+//        (new JobSerializer()).save(save);
+//        (new AreaSerializer()).save(save);
+//        (new NewWorldSerializer()).save(save);
+//
+//        // Write XML
+//        XStream xstream = new XStream();
+//        String xml = xstream.toXML(save);
+//
+//        try {
+//            FileOutputStream fs = new FileOutputStream(filePath);
+//            OutputStreamWriter output = new OutputStreamWriter(fs);
+//            output.write(xml);
+//            output.close();
+//            fs.close();
+//
+//            System.gc();
+//            Log.info("Save game: " + filePath + " done");
+//
+//            return;
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Log.error("Save game: " + filePath + " failed");
     }
 
 }

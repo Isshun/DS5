@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.model.character.base;
 
 import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.util.Constant;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  */
 public class CharacterStats {
     public double speed;
+    public double bodyHeat = Constant.BODY_TEMPERATURE;
 
     public static class CharacterStatsAbsorb {
         public double cold;

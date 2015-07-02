@@ -15,6 +15,7 @@ import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.util.Log;
 
 /**
  * Created by Alex on 17/06/2015.
@@ -44,6 +45,10 @@ public class PanelDev extends BasePanel {
             new CommandEntry("Add consumable...", view -> {
                 findById("frame_dev_commands").setVisible(false);
                 findById("frame_dev_consumables").setVisible(true);
+            }),
+            new CommandEntry("Dump managers", view -> {
+                Log.notice("----------- dump -----------");
+                Game.getInstance().getManagers().forEach(manager -> manager.dump());
             }),
     };
 

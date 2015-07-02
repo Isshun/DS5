@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.Strings;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
@@ -114,10 +115,13 @@ public class CharacterManager extends BaseManager {
 		return null;
 	}
 
-	public CharacterModel add(CharacterModel c) {
+	public CharacterModel add(CharacterModel character) {
 		_count++;
-		_addOnUpdate.add(c);
-		return c;
+		_addOnUpdate.add(character);
+
+		Game.getInstance().notify(observer -> observer.onAddCharacter(character));
+
+		return character;
 	}
 	
 	public void remove(CharacterModel c) {

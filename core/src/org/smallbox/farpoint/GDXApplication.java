@@ -15,6 +15,7 @@ import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -141,7 +142,7 @@ public class GDXApplication extends ApplicationAdapter {
             long loadTime = System.currentTimeMillis();
             _currentRunnable.run();
             _currentRunnable = null;
-            System.out.println(_currentMessage + " (" + (System.currentTimeMillis() - loadTime) + "ms)");
+            Log.notice(_currentMessage + " (" + (System.currentTimeMillis() - loadTime) + "ms)");
         }
 
         if (!_queue.isEmpty()) {

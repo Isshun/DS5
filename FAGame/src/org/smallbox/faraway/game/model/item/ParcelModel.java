@@ -30,6 +30,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private Array<Connection<ParcelModel>> 	_connections;
     private double          _elevation;
     public int              tmpData;
+    private int             _environment;
 
     public ParcelModel(int x, int y, int z) {
         _oxygen = 0;
@@ -191,5 +192,24 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 
     public boolean isWalkable() {
         return !isBlocked();
+    }
+
+    public int getEnvironment() {
+        if (_snow > 0) {
+            _environment += 1;
+        }
+        if (_blood > 0) {
+            _environment += -5;
+        }
+        if (_dirt > 0) {
+            _environment += -5;
+        }
+        if (_rubble > 0) {
+            _environment += -5;
+        }
+        if (_item != null) {
+            _environment += _item.getValue();
+        }
+        return _environment;
     }
 }
