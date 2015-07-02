@@ -11,6 +11,7 @@ import java.util.List;
 public class CharacterStats {
     public double speed;
     public double bodyHeat = Constant.BODY_TEMPERATURE;
+    public boolean isAlive = true;
 
     public static class CharacterStatsAbsorb {
         public double cold;

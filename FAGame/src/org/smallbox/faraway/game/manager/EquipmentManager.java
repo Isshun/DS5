@@ -20,9 +20,9 @@
 //    }
 //
 //    private static void applyEquipment(EquipmentModel equipment) {
-//        for (EquipmentModel.EquipmentEffect effect: equipment.effects) {
-//            //if (effect.condition.)
-//            _stats.resist.cold += effect.resist.cold;
+//        for (EquipmentModel.EquipmentEffect buffEffect: equipment.effects) {
+//            //if (buffEffect.condition.)
+//            _stats.resist.cold += buffEffect.resist.cold;
 //        }
 //    }
 //

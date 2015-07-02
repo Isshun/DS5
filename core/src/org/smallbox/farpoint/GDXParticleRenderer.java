@@ -35,7 +35,7 @@ public class GDXParticleRenderer extends ParticleRenderer {
 
     private void loadEffect(String name) {
         Application.getInstance().addTask(() -> {
-            // Dispose old effect
+            // Dispose old buffEffect
             if (_effect != null) {
                 _effect.dispose();
                 _effect = null;

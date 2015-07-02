@@ -31,7 +31,6 @@ public class RoomModel {
 	public void setOxygen(double oxygen) {
 		if (_oxygen != oxygen) {
 			_oxygen = oxygen;
-			_parcels.forEach(parcel -> parcel.setOxygen(oxygen));
 		}
 	}
 

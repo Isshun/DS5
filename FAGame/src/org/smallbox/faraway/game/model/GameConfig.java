@@ -28,8 +28,18 @@ public class GameConfig {
         public EffectValues     droid;
     }
 
+    public static class CharacterNeeds {
+        public int[]            food;
+        public int[]            oxygen;
+    }
+
+    public static class CharacterType {
+        public CharacterNeeds   needs;
+    }
+
     public static class GameConfigCharacter {
         public CharacterEffects effects;
+        public CharacterType    human;
     }
 
     public static class GameConfigRender {

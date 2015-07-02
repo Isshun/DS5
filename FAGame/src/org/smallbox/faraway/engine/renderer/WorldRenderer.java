@@ -114,7 +114,7 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
 
             onDrawSelected(renderer, effect, animProgress);
         }
-        //_layerItem.onDraw(renderer, effect);
+        //_layerItem.onDraw(renderer, buffEffect);
     }
 
     private boolean onScreen(int i, int j) {

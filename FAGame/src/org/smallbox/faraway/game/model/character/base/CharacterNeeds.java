@@ -11,7 +11,7 @@ public class CharacterNeeds {
 	private final GameData      	_data;
 
 	// Actions
-	private boolean _isSleeping;
+	public boolean isSleeping;
 	private int	_eating;
 
 	// Stats
@@ -19,6 +19,7 @@ public class CharacterNeeds {
     public double 	drinking;
     public double 	food;
     public double 	happiness;
+    public double   happinessChange;
 	public double 	relation;
     public double 	security;
     public double 	oxygen;
@@ -34,8 +35,9 @@ public class CharacterNeeds {
 
 	private MapObjectModel 	_sleepItem;
 	private CharacterStats	_stats;
+    private boolean isFainting;
 
-	public CharacterNeeds(CharacterModel character) {
+    public CharacterNeeds(CharacterModel character) {
         _data = GameData.getData();
 		_stats = character.getStats();
         _character = character;
@@ -54,21 +56,10 @@ public class CharacterNeeds {
 		joy = 0;
 	}
 
-//	public int	getEating() { return _eating; }
-//	public int	getDrinking() { return _drinking; }
-//	public int	getSocialize() { return _socialize; }
 	public int	getFood() { return (int)Math.ceil(food); }
 	public int	getEnergy() { return (int)Math.ceil(energy); }
-	public int	getHappiness() { return (int)Math.ceil(happiness); }
 
-	public boolean	isSleeping() { return _isSleeping; }
-
-	public void updateHappiness(double change) {
-//		double modifier = 1f - Math.abs((50 - happiness) / 50f);
-//		happiness = happiness + change * modifier;
-//		Log.info("hapi: " + happiness + ", modif: " + modifier);
-        happiness = happiness + change;
-	}
+	public boolean	isSleeping() { return isSleeping; }
 
 	public void	update() {
         updateNeeds(_character.getNeedEffects());
@@ -82,6 +73,8 @@ public class CharacterNeeds {
 //            updateNeeds(_data.config.character.effects.exhausted);
 //        }
 
+        happiness += happinessChange / 10;
+
         // Character is sleeping
         if (isSleeping() && _sleepItem != null) {
             updateNeeds(_sleepItem.getInfo().actions.get(0));
@@ -90,7 +83,7 @@ public class CharacterNeeds {
         }
 
         if (energy >= 100) {
-            _isSleeping = false;
+            isSleeping = false;
         }
 
         // Set needs bounds
@@ -100,19 +93,6 @@ public class CharacterNeeds {
         happiness = Math.max(0, Math.min(100, happiness));
         relation = Math.max(0, Math.min(100, relation));
         security = Math.max(0, Math.min(100, security));
-
-        // // Set happiness
-		// if (_item && _item->isType(BaseItem.Type.QUARTER_BED)) {
-			//   removeMessage(MSG_SLEEP_ON_FLOOR);
-		//   removeMessage(MSG_SLEEP_ON_CHAIR);
-		// } else if (_item && _item->isType(BaseItem.Type.QUARTER_CHAIR)) {
-		//   _hapiness -= 0.1;
-		//   addMessage(MSG_SLEEP_ON_CHAIR, quantity);
-		//   removeMessage(MSG_SLEEP_ON_FLOOR);
-		// } else {
-		//   addMessage(MSG_SLEEP_ON_FLOOR, quantity);
-		//   _hapiness -= 0.25;
-		// }
 
 		// 	// If current item is not under construction: quit
 		// 	if (_sleep == 0 && _item != NULL && _item->hasComponentsOnMap()) {
@@ -127,7 +107,7 @@ public class CharacterNeeds {
 //			// removeMessage(MSG_HUNGRY);
 //			happiness = Math.max(happiness - 0.5f, 0.0f);
 //			health = Math.max(health - 0.1f, 0.0f);
-//			if (_isSleeping <= 0) {
+//			if (isSleeping <= 0) {
 //				energy = (int) Math.max(energy - 1.0f, 0.0f);
 //			}
 //		}
@@ -170,13 +150,13 @@ public class CharacterNeeds {
 
 		// Increase oxygen
 		if (_character.getParcel() != null) {
-			double oxygenLevel = _character.getParcel().getOxygen();
-			if (oxygenLevel > 0.75) {
-				oxygen += (oxygenLevel - 0.75) * 10;
+			int oxygenLevel = (int)(_character.getParcel().getOxygen() * 100);
+			if (oxygen < oxygenLevel) {
+				oxygen += 1;
 			}
 			// Decrease oxygen, use resist
 			else {
-				oxygen += (oxygenLevel - 0.75) * 10 * (1 - _stats.resist.oxygen / 100f);
+				oxygen -= 1 * (1 - _stats.resist.oxygen / 100f);
 			}
 		}
 
@@ -210,9 +190,9 @@ public class CharacterNeeds {
 //
 //		_sleepItem = item;
 //		if (item != null) {
-//            _isSleeping = Constant.SLEEP_DURATION * Constant.DURATION_MULTIPLIER;
+//            isSleeping = Constant.SLEEP_DURATION * Constant.DURATION_MULTIPLIER;
 //		} else {
-//			_isSleeping = Constant.SLEEP_ON_FLOOR_DURATION * Constant.DURATION_MULTIPLIER;
+//			isSleeping = Constant.SLEEP_ON_FLOOR_DURATION * Constant.DURATION_MULTIPLIER;
 //		}
 //	}
 
@@ -223,7 +203,7 @@ public class CharacterNeeds {
 	public void use(MapObjectModel item, ItemInfoAction action) {
 		if (item.isSleepingItem()) {
 			_sleepItem = item;
-			_isSleeping = true;
+			isSleeping = true;
 		} else {
 			_sleepItem = null;
 		}
@@ -239,7 +219,7 @@ public class CharacterNeeds {
 	}
 
 	public void setSleeping(boolean isSleeping) {
-		_isSleeping = isSleeping;
+		this.isSleeping = isSleeping;
 	}
 
     // TODO: magic number
@@ -250,5 +230,9 @@ public class CharacterNeeds {
     // TODO: magic number
     public boolean isExhausted() {
         return this.energy < 20;
+    }
+
+    public void setFainting(boolean isFainting) {
+        this.isFainting = isFainting;
     }
 }

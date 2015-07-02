@@ -58,13 +58,16 @@ public class CharacterManager extends BaseManager {
 		for (CharacterModel c: _characters) {
 			// Check if character is dead
 			if (!c.isAlive()) {
-//				if (c.getJob() != null) {
-//					// Cancel job
-//					JobManager.getInstance().quit(c.getJob(), JobAbortReason.DIED);
-////
-////					// Remove from rooms
-////					Game.getRoomManager().removeFromRooms(c);
-//				}
+
+				// Cancel job
+				if (c.getJob() != null) {
+					JobManager.getInstance().quit(c.getJob(), JobAbortReason.DIED);
+				}
+
+				if (!c.getBuffs().isEmpty()) {
+					c.getBuffs().clear();
+				}
+
 //				characterToRemove = c;
 			}
 			

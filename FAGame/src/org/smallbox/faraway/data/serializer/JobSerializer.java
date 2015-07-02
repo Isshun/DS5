@@ -2,14 +2,9 @@ package org.smallbox.faraway.data.serializer;
 
 import com.ximpleware.VTDNav;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.JobManager;
-import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
-import org.smallbox.faraway.game.model.job.JobCraft;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.FileOutputStream;
 import java.util.stream.Collectors;
 
 /**
@@ -29,8 +24,8 @@ public class JobSerializer implements SerializerInterface {
     }
 
     @Override
-    public void save(GameSerializer.GameSave save) {
-        save.jobs = Game.getJobManager().getJobs().stream().map(JobSave::new).collect(Collectors.toList());
+    public void save(FileOutputStream save) {
+//        save.jobs = Game.getJobManager().getJobs().stream().map(JobSave::new).collect(Collectors.toList());
     }
 
     @Override

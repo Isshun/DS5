@@ -12,8 +12,7 @@ import org.smallbox.faraway.game.manager.*;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.RegionModel;
-import org.smallbox.faraway.game.model.character.base.BuffManager;
-import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.manager.BuffManager;
 import org.smallbox.faraway.game.model.planet.PlanetModel;
 import org.smallbox.faraway.ui.AreaManager;
 import org.smallbox.faraway.util.Log;
@@ -97,6 +96,8 @@ public class Game {
     public void init(boolean loadSave) {
         if (loadSave) {
             String filePath = "data/saves/" + _fileName;
+
+            // TODO magic
             _worldManager.init(250, 250);
             _save = GameSerializer.preLoad(filePath, null);
             if (_save != null) {
@@ -121,6 +122,7 @@ public class Game {
         _managers.add(new AreaManager());
         _managers.add(new ResourceManager());
         _managers.add(new StatsManager());
+        _managers.add(new DiseaseManager());
         _managers.add(new BuffManager());
 
         if (GameData.config.manager.fauna) {

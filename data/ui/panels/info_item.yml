@@ -140,3 +140,29 @@ entries:
                     id: menu_add_craft_entries
                     position: [0, 0]
                     size: [100, 100]
+
+    # Action buttons
+    -   type: frame
+        position: [0, 280]
+        entries:
+
+        -   type: frame
+            id: bt_destroy
+            position: [20, 0]
+            size: [80, 100]
+            background: 0x007b66
+            entries:
+
+            -   type: label
+                text: Destroy
+                textsize: 14
+                position: [0, 0]
+                size: [80, 100]
+                align: center
+
+            -   type: image
+                path: data/res/ic_destroy.png
+                textsize: 14
+                position: [0, 0]
+                size: [80, 100]
+                align: center

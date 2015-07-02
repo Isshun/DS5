@@ -4,24 +4,43 @@ function OnCreate(game, character)
 end
 
 function OnUpdate(game, character)
-    _duration = _duration + 1
 
-    if character.needs.food <= 0 and _duration > 64 then
+    if character.needs.food <= 0 then
+        _duration = _duration + 1
+    else
+        _duration = 0
+    end
+
+    if _duration > 720 then
         return {"Is starving to death", 4, -25, {
-                {"faint", 0.25},
-                {"death", 0.05},
-            }}
+            {"malnutrition", 1, {4, "extreme"}},
+            {"death", 0.05, "Dead from malnutrition"}
+        }}
     end
 
-    if character.needs.food <= 0 and _duration > 32 then
-        return {"Suffering from hunger", 3, -15}
+    if _duration > 720 then
+        return {"Is starving to death", 4, -25, {
+            {"malnutrition", 1, {3, "severe"}}
+        }}
     end
 
-    if character.needs.food <= 0 and _duration > 16 then
+    if _duration > 576 then
+        return {"Is starving to death", 4, -25, {
+            {"malnutrition", 1, {2, "moderate"}}
+        }}
+    end
+
+    if _duration > 28 then
+        return {"Suffering from hunger", 3, -15, {
+            {"malnutrition", 1, {1, "slight"}}
+        }}
+    end
+
+    if _duration > 14 then
         return {"Feeling hungry", 2, -10}
     end
 
-    if character.needs.food <= 0 and _duration > 8 then
+    if character.needs.food < 10 then
         return {"Feeling a little peckish", 1, -5}
     end
 

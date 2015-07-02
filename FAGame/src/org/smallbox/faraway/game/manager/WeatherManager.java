@@ -86,7 +86,7 @@ public class WeatherManager extends BaseManager implements GameObserver {
         // Sun color
         switchSunColor(_dayTime);
 
-        // Particle effect
+        // Particle buffEffect
         if (_particleRenderer != null) {
             _particleRenderer.setParticle(_weather.particle);
         }

@@ -3,7 +3,8 @@ package org.smallbox.faraway.ui.panel.right;
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.CharacterBuffModel;
+import org.smallbox.faraway.game.model.BuffModel;
+import org.smallbox.faraway.game.model.DiseaseModel;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.ToolTips;
 import org.smallbox.faraway.game.model.character.base.*;
@@ -24,6 +25,7 @@ import java.util.Map;
 
 public class PanelCharacter extends BaseRightPanel {
     private static final int    NB_MAX_BUFFS = 20;
+    private static final int    NB_MAX_DISEASES = 20;
     private static final int    NB_GAUGE = 8;
     private static final int    NB_MAX_RELATION = 18;
     private static final int    NB_INVENTORY_PER_LINE = 10;
@@ -48,6 +50,7 @@ public class PanelCharacter extends BaseRightPanel {
     private UILabel[] 			_values = new UILabel[NB_GAUGE];
     private UILabel             _lbJob;
     private UILabel[] 			_lbBuffs = new UILabel[NB_MAX_BUFFS];
+    private UILabel[] 			_lbDiseases = new UILabel[NB_MAX_DISEASES];
     private UILabel[] 			_familyEntries;
     private UILabel[] 			_familyRelationEntries;
     private int 				_nbRelation;
@@ -104,6 +107,14 @@ public class PanelCharacter extends BaseRightPanel {
             _lbBuffs[i].setCharacterSize(14);
             _lbBuffs[i].setPosition(0, 20 * i);
             frameBuffs.addView(_lbBuffs[i]);
+        }
+
+        FrameLayout frameDiseases = (FrameLayout)findById("frame_health_entries");
+        for (int i = 0; i < NB_MAX_DISEASES; i++) {
+            _lbDiseases[i] = ViewFactory.getInstance().createTextView();
+            _lbDiseases[i].setCharacterSize(14);
+            _lbDiseases[i].setPosition(0, 20 * i);
+            frameDiseases.addView(_lbDiseases[i]);
         }
 
         findById("frame_equipment_detail").setVisible(false);
@@ -351,6 +362,7 @@ public class PanelCharacter extends BaseRightPanel {
             }
 
             refreshLastReports();
+            refreshHealth();
             refreshInfo();
             refreshDebug();
 
@@ -476,28 +488,30 @@ public class PanelCharacter extends BaseRightPanel {
         if (_character != null) {
             ((UILabel)findById("lb_environment")).setString("Environment: " + Game.getWorldManager().getEnvironmentValue(_character.getX(), _character.getY(), GameData.config.environmentDistance));
 //            ((TextView)findById("lb_light")).setString();
+            ((UILabel)findById("lb_mood_change")).setString("Mood change: " + _character.getNeeds().happinessChange);
+        }
+    }
+
+    private void refreshHealth() {
+        // Don't use foreach for CME reason
+        int line = 0;
+        int length = _character._diseases.size();
+        for (int i = 0; i < length; i++) {
+            DiseaseModel disease = _character._diseases.get(i);
+            _lbDiseases[line].setString(disease.message);
+            line++;
+        }
+        for (; line < NB_MAX_DISEASES; line++) {
+            _lbDiseases[line].setString("");
         }
     }
 
     private void refreshLastReports() {
-//        int i = 0;
-//        for (CharacterBuffModel characterBuff: _character.getBuffs()) {
-//            if (characterBuff.level != null) {
-//                int mood = characterBuff.level.effects != null ? characterBuff.level.effects.mood : 0;
-//                _lbBuffs[i].setString(StringUtils.getDashedString(characterBuff.level.label, (mood > 0 ? "+" : "") + mood, NB_COLUMNS));
-//                _lbBuffs[i].setColor(mood < 0 ? COLOR_2 : COLOR_0);
-//                i++;
-//            }
-//        }
-//        for (; i < NB_MAX_BUFFS; i++) {
-//            _lbBuffs[i].setString("");
-//        }
-
         // Don't use foreach for CME reason
         int line = 0;
-        int length = _character._buffsScript.size();
+        int length = _character._buffs.size();
         for (int i = 0; i < length; i++) {
-            BuffManager.BuffScriptModel buff = _character._buffsScript.get(i);
+            BuffModel buff = _character._buffs.get(i);
             if (buff.level > 0) {
                 int mood = buff.mood;
                 _lbBuffs[line].setString(StringUtils.getDashedString(buff.message, (mood > 0 ? "+" : "") + mood, NB_COLUMNS));
@@ -663,11 +677,21 @@ public class PanelCharacter extends BaseRightPanel {
 
     private void refreshNeeds() {
         CharacterNeeds needs = _character.getNeeds();
+        int valueLevel3 = 10;
+        int valueLevel2 = 50;
         for (int i = 0; i < NB_GAUGE; i++) {
             int value = 0;
             switch (i) {
-                case 0: value = Math.min(Math.max((int)needs.getFood(), 0), 100); break;
-                case 1: value = Math.min(Math.max((int)needs.oxygen, 0), 100); break;
+                case 0:
+                    value = Math.min(Math.max((int)needs.getFood(), 0), 100);
+                    valueLevel2 = GameData.config.character.human.needs.food[0];
+                    valueLevel3 = GameData.config.character.human.needs.food[1];
+                    break;
+                case 1:
+                    value = Math.min(Math.max((int)needs.oxygen, 0), 100);
+                    valueLevel2 = GameData.config.character.human.needs.oxygen[0];
+                    valueLevel3 = GameData.config.character.human.needs.oxygen[1];
+                    break;
                 case 2: value = Math.min(Math.max((int)needs.happiness, 0), 100); break;
                 case 3: value = Math.min(Math.max((int)needs.energy, 0), 100); break;
                 case 4: value = Math.min(Math.max((int)needs.relation, 0), 100); break;
@@ -682,9 +706,10 @@ public class PanelCharacter extends BaseRightPanel {
             }
             float size = Math.max(Math.round(180.0f / 100 * value / 10) * 10, 10);
             int level = 0;
+
             Color color = COLOR_0;
-            if (value < 10) { level = 3; color = COLOR_2; }
-            else if (value < 50) { level = 2; color = COLOR_1; }
+            if (value < valueLevel3) { level = 3; color = COLOR_2; }
+            else if (value < valueLevel2) { level = 2; color = COLOR_1; }
 
             if (!_character.isAlive()) {
                 value = 0;
