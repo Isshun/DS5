@@ -12,7 +12,7 @@ import org.smallbox.faraway.game.manager.*;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.RegionModel;
-import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.manager.BuffManager;
 import org.smallbox.faraway.game.model.planet.PlanetModel;
 import org.smallbox.faraway.ui.AreaManager;
 import org.smallbox.faraway.util.Log;
@@ -96,6 +96,9 @@ public class Game {
     public void init(boolean loadSave) {
         if (loadSave) {
             String filePath = "data/saves/" + _fileName;
+
+            // TODO magic
+            _worldManager.init(250, 250);
             _save = GameSerializer.preLoad(filePath, null);
             if (_save != null) {
                 _worldManager.init(_save.width, _save.height);
@@ -119,6 +122,8 @@ public class Game {
         _managers.add(new AreaManager());
         _managers.add(new ResourceManager());
         _managers.add(new StatsManager());
+        _managers.add(new DiseaseManager());
+        _managers.add(new BuffManager());
 
         if (GameData.config.manager.fauna) {
             _managers.add(new FaunaManager());
@@ -185,10 +190,14 @@ public class Game {
 	public void	load() {
 		String filePath = "data/saves/" + _fileName;
 
+        long time = System.currentTimeMillis();
+
 //		loadListener.onUpdate("Load game");
-		GameSerializer.load(_save);
+		GameSerializer.load(filePath, _save);
         _save = null;
         System.gc();
+
+        Log.info("Game loaded (2): " + (System.currentTimeMillis() - time) + "ms");
 
 //        loadListener.onUpdate("Init world map");
 //		WorldFactory.cleanRock();
@@ -214,5 +223,9 @@ public class Game {
 
     public int getSpeed() {
         return _speed;
+    }
+
+    public List<BaseManager> getManagers() {
+        return _managers;
     }
 }

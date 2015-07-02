@@ -1,5 +1,6 @@
 package org.smallbox.faraway.data.serializer;
 
+import com.ximpleware.*;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.AndroidModel;
 import org.smallbox.faraway.game.model.character.DroidModel;
@@ -7,184 +8,169 @@ import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
-import org.smallbox.faraway.game.model.character.base.CharacterRelation;
-import org.smallbox.faraway.game.model.character.base.CharacterRelation.Relation;
-import org.smallbox.faraway.util.Utils;
+import org.smallbox.faraway.util.FileUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
+/**
+ * Created by Alex on 01/07/2015.
+ */
 public class CharacterSerializer implements SerializerInterface {
+    @Override
+    public void save(FileOutputStream fos) throws IOException {
+        FileUtils.write(fos, "<characters>");
+        for (CharacterModel character: Game.getCharacterManager().getCharacters()) {
+            writeCharacter(fos, character);
+        }
+        FileUtils.write(fos, "</characters>");
+    }
 
-	public static class CharacterNeedsSave {
-		// Actions
-		public boolean	isSleeping;
+    private void writeCharacter(FileOutputStream fos, CharacterModel character) throws IOException {
+        FileUtils.write(fos, "<character id='" + character.getId() + "' type='" + character.getTypeName() + "'>");
 
-		// Stats
-		public double 	drinking;
-		public double 	socialize;
-		public double	food;
-		public double 	happiness;
-		public double	relation;
-		public double	security;
-		public double	oxygen;
-		public double	energy;
-		public double	health;
-		public double	sickness;
-		public double	injuries;
-		public double	satiety;
-		public double	joy;
+        FileUtils.write(fos, "<lastname>" + character.getInfo().getLastName() + "</lastname>");
+        FileUtils.write(fos, "<firstname>" + character.getInfo().getFirstName() + "</firstname>");
+        FileUtils.write(fos, "<old>" + character.getInfo().getLastName() + "</old>");
+        FileUtils.write(fos, "<x>" + character.getX() + "</x>");
+        FileUtils.write(fos, "<y>" + character.getY() + "</y>");
+        FileUtils.write(fos, "<gender>" + character.getInfo().getGender() + "</gender>");
 
-		public CharacterNeedsSave(CharacterNeeds needs) {
-			this.isSleeping = needs.isSleeping();
-			this.drinking = needs.drinking;
-			this.socialize = needs.socialize;
-			this.food = needs.getFood();
-			this.happiness = needs.getHappiness();
-			this.security = needs.security;
-			this.oxygen = needs.oxygen;
-			this.energy = needs.energy;
-			this.health = needs.health;
-			this.sickness = needs.sickness;
-			this.injuries = needs.injuries;
-			this.satiety = needs.satiety;
-			this.joy = needs.joy;
-		}
-	}
+        writeCharacterNeeds(fos, character.getNeeds());
 
-	public static class CharacterRelationSave {
-		public int			id;
-		private Relation 	relation;
-		
-		public CharacterRelationSave(CharacterRelation relation) {
-			this.id = relation.getSecond().getId();
-			this.relation = relation.getRelation();
-		}
-	}
-	
-	public static class CharacterSave {
-        public int							id;
-		public String						lastname;
-		public String 						firstname;
-		public List<CharacterRelationSave>	relations;
-        public final String                 type;
-		public double 						old;
-		public int 							x;
-		public int 							y;
-		public CharacterInfoModel.Gender 	gender;
-		private double 						nextChildAtOld;
-		public int							nbChild;
-		public CharacterNeedsSave 			needs;
-		private ArrayList<String> 			inventory;
-		
-		public CharacterSave(CharacterModel character) {
-			this.id = character.getId();
-			this.old = character.getOld();
-			this.x = character.getX();
-			this.y = character.getY();
-			this.type = character.getTypeName();
-			this.gender = character.getInfo().getGender();
-			this.lastname = character.getInfo().getLastName();
-			this.firstname = character.getInfo().getFirstName();
-			this.relations = new ArrayList<>();
-			this.nextChildAtOld = character.getRelations().getNextChildAtOld();
-			this.nbChild = character.getRelations().getNbChild();
-			this.inventory = new ArrayList<String>();
-//			for (MapObjectModel item: character.getInventory()) {
-//				this.inventory.add(item.getInfo().name);
-//			}
-			this.needs = new CharacterNeedsSave(character.getNeeds());
-			for (CharacterRelation relation: character.getRelations().getRelations()) {
-				this.relations.add(new CharacterRelationSave(relation));
-			}
-		}
-	}
+        FileUtils.write(fos, "</character>");
+    }
 
-	private List<CharacterModel> _characters;
-	
-	public void save(GameSerializer.GameSave save) {
-		save.characters = Game.getCharacterManager().getCharacters().stream().map(CharacterSave::new).collect(Collectors.toList());
-	}
+    private void writeCharacterNeeds(FileOutputStream fos, CharacterNeeds needs) throws IOException {
+        FileUtils.write(fos, "<needs>");
 
-	public void load(GameSerializer.GameSave save) {
-		_characters = new ArrayList<>();
-		save.characters.forEach(this::loadCharacter);
-		save.characters.forEach(this::loadCharacterRelation);
-	}
+        FileUtils.write(fos, "<isSleeping>" + needs.isSleeping() + "</isSleeping>");
+        FileUtils.write(fos, "<drinking>" + needs.drinking + "</drinking>");
+        FileUtils.write(fos, "<socialize>" + needs.socialize + "</socialize>");
+        FileUtils.write(fos, "<food>" + needs.food + "</food>");
+        FileUtils.write(fos, "<happiness>" + needs.happiness + "</happiness>");
+        FileUtils.write(fos, "<relation>" + needs.relation + "</relation>");
+        FileUtils.write(fos, "<security>" + needs.security + "</security>");
+        FileUtils.write(fos, "<oxygen>" + needs.oxygen + "</oxygen>");
+        FileUtils.write(fos, "<energy>" + needs.energy + "</energy>");
+        FileUtils.write(fos, "<health>" + needs.health + "</health>");
+        FileUtils.write(fos, "<sickness>" + needs.sickness + "</sickness>");
+        FileUtils.write(fos, "<injuries>" + needs.injuries + "</injuries>");
+        FileUtils.write(fos, "<satiety>" + needs.satiety + "</satiety>");
+        FileUtils.write(fos, "<joy>" + needs.joy + "</joy>");
 
-	private void loadCharacterRelation(CharacterSave characterSave) {
-		CharacterModel character = getCharacterById(characterSave.id);
-		
-		for (CharacterRelationSave relationSave: characterSave.relations) {
-			if (relationSave.relation == Relation.MATE) {
-				character.getRelations().addMateRelation(character, getCharacterById(relationSave.id));
-			} else {
-				character.getRelations().getRelations().add(new CharacterRelation(character, getCharacterById(relationSave.id), relationSave.relation));
-			}
-		}
-		
-		character.getRelations().setNextChildAtOld(characterSave.nextChildAtOld);
-		character.getRelations().setNbChild(characterSave.nbChild);
-	}
+        FileUtils.write(fos, "</needs>");
+    }
 
-	private CharacterModel getCharacterById(int id) {
-		for (CharacterModel character: _characters) {
-			if (character.getId() == id) {
-				return character;
-			}
-		}
-		return null;
-	}
+    @Override
+    public void load(VTDNav vn) throws XPathParseException, NavException, XPathEvalException {
+        AutoPilot ap = new AutoPilot(vn);
+        ap.selectXPath("/save/characters/*");
 
-	private void loadCharacter(CharacterSave characterSave) {
-		Utils.useUUID(characterSave.id);
+        AutoPilot ap2 = new AutoPilot(vn);
+        ap2.selectXPath("*");
 
-		CharacterModel character;
+        AutoPilot ap3 = new AutoPilot(vn);
+        ap3.selectXPath("*");
 
-        switch (characterSave.type) {
+        while (ap.evalXPath() != -1) {
+            readCharacter(ap2, ap3, vn);
+        }
+    }
+
+    private void readCharacter(AutoPilot ap2, AutoPilot ap3, VTDNav vn) throws NavException, XPathEvalException {
+        CharacterModel character;
+
+        switch (vn.toString(vn.getCurrentIndex())) {
+            default:
+                character = new HumanModel(0, 0, 0, null, null, 0);
+                break;
             case "android":
-                character = new AndroidModel(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
+                character = new AndroidModel(0, 0, 0, null, null, 0);
                 break;
             case "droid":
-                character = new DroidModel(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
-                break;
-            default:
-                character = new HumanModel(characterSave.id, characterSave.x, characterSave.y, characterSave.firstname, characterSave.lastname, characterSave.old);
+                character = new DroidModel(0, 0, 0, null, null, 0);
                 break;
         }
 
-		if (characterSave.gender != null) {
-			character.getInfo().setGender(characterSave.gender);
-		}
+        vn.push();
+        while (ap2.evalXPath() != -1) {
+            switch (vn.toString(vn.getCurrentIndex())) {
+                case "id":
+                    character.setId(vn.parseInt(vn.getText()));
+                    break;
+                case "lastname":
+                    character.getInfo().setLastName(vn.toString(vn.getText()));
+                    break;
+                case "firstname":
+                    character.getInfo().setFirstName(vn.toString(vn.getText()));
+                    break;
+                case "old":
+                    character.setOld((int)vn.parseDouble(vn.getText()));
+                    break;
+                case "x":
+                    character.setX(vn.parseInt(vn.getText()));
+                    break;
+                case "y":
+                    character.setY(vn.parseInt(vn.getText()));
+                    break;
+                case "gender":
+                    character.getInfo().setGender(CharacterInfoModel.Gender.valueOf(vn.toString(vn.getText())));
+                    break;
+                case "needs":
+                    while (ap3.evalXPath() != -1) {
+                        switch (vn.toString(vn.getCurrentIndex())) {
+                            case "isSleeping":
+                                character.getNeeds().setSleeping("true".equals(vn.toString(vn.getText())));
+                                break;
+                            case "drinking":
+                                character.getNeeds().drinking = vn.parseDouble(vn.getText());
+                                break;
+                            case "socialize":
+                                character.getNeeds().socialize = vn.parseDouble(vn.getText());
+                                break;
+                            case "food":
+                                character.getNeeds().food = vn.parseDouble(vn.getText());
+                                break;
+                            case "happiness":
+                                character.getNeeds().happiness = vn.parseDouble(vn.getText());
+                                break;
+                            case "relation":
+                                character.getNeeds().relation = vn.parseDouble(vn.getText());
+                                break;
+                            case "security":
+                                character.getNeeds().security = vn.parseDouble(vn.getText());
+                                break;
+                            case "oxygen":
+                                character.getNeeds().oxygen = vn.parseDouble(vn.getText());
+                                break;
+                            case "energy":
+                                character.getNeeds().energy = vn.parseDouble(vn.getText());
+                                break;
+                            case "health":
+                                character.getNeeds().health = vn.parseDouble(vn.getText());
+                                break;
+                            case "sickness":
+                                character.getNeeds().sickness = vn.parseDouble(vn.getText());
+                                break;
+                            case "injuries":
+                                character.getNeeds().injuries = vn.parseDouble(vn.getText());
+                                break;
+                            case "satiety":
+                                character.getNeeds().satiety = vn.parseDouble(vn.getText());
+                                break;
+                            case "joy":
+                                character.getNeeds().joy = vn.parseDouble(vn.getText());
+                                break;
+                        }
+                    }
+                    ap3.resetXPath();
+                    break;
+            }
+        }
+        ap2.resetXPath();
+        vn.pop();
 
-//		// Load inventory
-//		if (characterSave.inventory != null) {
-//			for (String name: characterSave.inventory) {
-//				ItemInfo info = Game.getData().getItemInfo(name);
-//				character.addInventory(new ConsumableModel(info));
-//			}
-//		}
-		
-		// Load needs
-		if (characterSave.needs != null) {
-			character.getNeeds().drinking = characterSave.needs.drinking;
-			character.getNeeds().energy = characterSave.needs.energy;
-			character.getNeeds().food = characterSave.needs.food;
-			character.getNeeds().happiness = characterSave.needs.happiness;
-			character.getNeeds().health = characterSave.needs.health;
-			character.getNeeds().injuries = characterSave.needs.injuries;
-			character.getNeeds().oxygen = characterSave.needs.oxygen;
-			character.getNeeds().relation = characterSave.needs.relation;
-			character.getNeeds().satiety = characterSave.needs.satiety;
-			character.getNeeds().security = characterSave.needs.security;
-			character.getNeeds().sickness = characterSave.needs.sickness;
-			character.getNeeds().setSleeping(characterSave.needs.isSleeping);
-			character.getNeeds().socialize = characterSave.needs.socialize;
-			character.getNeeds().joy = characterSave.needs.joy;
-		}
-		Game.getCharacterManager().add(character);
-		_characters.add(character);
-	}
-
+        Game.getCharacterManager().add(character);
+    }
 }

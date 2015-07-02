@@ -1,19 +1,29 @@
 package org.smallbox.faraway.engine.lua;
 
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
+import org.smallbox.faraway.game.model.character.base.CharacterStats;
+import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.model.item.ItemModel;
 
 /**
  * Created by Alex on 19/06/2015.
  */
 public class LuaCharacterModel {
-    public final int        id;
-    public final String     name;
-    public final CharacterModel character;
+    public final int                id;
+    public final String             name;
+    public final CharacterNeeds     needs;
+    public final CharacterStats     stats;
+    public final CharacterModel     character;
+    public final ItemInfo           item;
 
     public LuaCharacterModel(CharacterModel character) {
         this.id = character.getId();
         this.name = character.getInfo().getName();
+        this.needs = character.getNeeds();
+        this.stats = character.getStats();
         this.character = character;
+        this.item = character.getJob() != null && character.getJob().getItem() != null ? character.getJob().getItem().getInfo() : null;
     }
 
     public boolean isAlive() {

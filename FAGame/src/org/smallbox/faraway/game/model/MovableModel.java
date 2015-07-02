@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.util.Utils;
@@ -9,6 +10,16 @@ public abstract class MovableModel {
 
 	public double getMoveProgress() {
 		return _moveProgress;
+	}
+
+	public void setY(int y) {
+		_posY = y;
+		_parcel = Game.getWorldManager().getParcel(_posX, _posY);
+	}
+
+	public void setX(int x) {
+		_posX = x;
+		_parcel = Game.getWorldManager().getParcel(_posX, _posY);
 	}
 
 	public interface OnPathComplete {
@@ -43,6 +54,7 @@ public abstract class MovableModel {
 	protected BaseJobModel 				_job;
 	protected OnPathComplete			_onPathComplete;
 	protected double                    _moveProgress;
+	protected ParcelModel 				_parcel;
 
 	public MovableModel(int id, int x, int y) {
 		Utils.useUUID(id);

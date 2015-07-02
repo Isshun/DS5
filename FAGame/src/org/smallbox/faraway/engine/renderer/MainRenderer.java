@@ -72,10 +72,10 @@ public class MainRenderer {
 
 //        Log.debug("[Render time: " + (System.currentTimeMillis() - time));
 
-//		_worldRenderer.onDraw(renderer, effect, animProgress);
-//		_worldRenderer.onDrawSelected(renderer, effect, animProgress);
+//		_worldRenderer.onDraw(renderer, buffEffect, animProgress);
+//		_worldRenderer.onDrawSelected(renderer, buffEffect, animProgress);
 
-//        _characterRenderer.onDraw(renderer, effect, animProgress);
+//        _characterRenderer.onDraw(renderer, buffEffect, animProgress);
 
         _frame++;
 		_renderTime += System.currentTimeMillis() - time;

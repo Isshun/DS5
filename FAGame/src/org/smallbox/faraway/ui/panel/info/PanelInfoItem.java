@@ -126,6 +126,8 @@ public class PanelInfoItem extends BaseInfoRightPanel {
         } else {
             _frameCraft.setVisible(false);
         }
+
+        findById("bt_destroy").setOnClickListener(view -> JobManager.getInstance().addDestroyJob(item));
     }
 
     public void select(ItemInfo info) {

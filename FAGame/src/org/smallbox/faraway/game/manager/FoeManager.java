@@ -92,7 +92,7 @@
 ////		Log.info("Save list: " + filePath + " done");
 ////	}
 //
-//	public void	onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) throws IOException {
+//	public void	onDraw(GFXRenderer renderer, RenderEffect buffEffect, double animProgress) throws IOException {
 //		// TODO
 ////
 ////		for (Foe c: _foes) {

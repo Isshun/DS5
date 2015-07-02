@@ -11,7 +11,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private ConsumableModel _consumable;
     private StructureModel 	_structure;
     private ResourceModel 	_resource;
-    private double          _oxygen;
     private int				_x;
     private int				_y;
     private int 			_z;
@@ -30,9 +29,9 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private Array<Connection<ParcelModel>> 	_connections;
     private double          _elevation;
     public int              tmpData;
+    private int             _environment;
 
     public ParcelModel(int x, int y, int z) {
-        _oxygen = 0;
         _light = 0;
         _x = x;
         _y = y;
@@ -40,9 +39,13 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         _isStorage = false;
     }
 
+    public ParcelModel() {
+        _light = 0;
+        _isStorage = false;
+    }
+
     public void 			addLight(double value) { _light += value; }
 
-    public void				setOxygen(double oxygen) { _oxygen = oxygen; }
     public void 			setLight(double value) { _light = value; }
     public void 			setLightPass(int pass) { _lightPass = pass; }
     public void 			setRoom(RoomModel room) { _room = room; }
@@ -53,11 +56,14 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public void 			setDirt(double dirt) { _dirt = dirt; }
     public void 			setRubble(double rubble) { _rubble = rubble; }
     public void 			setSnow(double snow) { _snow = snow; }
+    public void             setX(int x) { _x = x; }
+    public void             setY(int y) { _y = y; }
+    public void             setZ(int z) { _z = z; }
 
     public ItemModel 		getItem() { return _item; }
     public StructureModel 	getStructure() { return _structure; }
     public ResourceModel 	getResource() { return _resource; }
-    public double   		getOxygen() { return _oxygen; }
+    public double   		getOxygen() { return _room != null ? _room.getOxygen() : -1; }
     public int				getX() { return _x; }
     public int				getY() { return _y; }
     public int				getZ() { return _z; }
@@ -182,5 +188,24 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 
     public boolean isWalkable() {
         return !isBlocked();
+    }
+
+    public int getEnvironment() {
+        if (_snow > 0) {
+            _environment += 1;
+        }
+        if (_blood > 0) {
+            _environment += -5;
+        }
+        if (_dirt > 0) {
+            _environment += -5;
+        }
+        if (_rubble > 0) {
+            _environment += -5;
+        }
+        if (_item != null) {
+            _environment += _item.getValue();
+        }
+        return _environment;
     }
 }

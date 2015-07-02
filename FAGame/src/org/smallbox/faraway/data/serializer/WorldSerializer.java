@@ -1,201 +1,216 @@
 package org.smallbox.faraway.data.serializer;
 
+import com.ximpleware.*;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.WorldManager;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.util.FileUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
 
 public class WorldSerializer implements SerializerInterface {
 
-	public static class WorldSaveParcel {
-		public WorldSaveStructure 	structure;
-		public WorldSaveResource 	resource;
-		public WorldSaveUserItem 	item;
-		public WorldSaveConsumableItem consumable;
-		public int					lightSource;
-		public int 					x;
-		public int 					y;
-		public int 					z;
-	}
+    @Override
+    public void save(FileOutputStream fos) throws IOException {
+        FileUtils.write(fos, "<parcels>");
+        for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
+            writeParcel(fos, parcel);
+        }
+        FileUtils.write(fos, "</parcels>");
+    }
 
-	private static class WorldSaveBaseItem {
-		public int 					id;
-		public String 				name;
-		public int 					progress;
-		public int 					health;
-	}
+    private void writeParcel(FileOutputStream fos, ParcelModel parcel) throws IOException {
+        if (parcel.getItem() != null || parcel.getResource() != null || parcel.getStructure() != null || parcel.getConsumable() != null) {
+            FileUtils.write(fos, "<parcel x='" + parcel.getX() + "' y='" + parcel.getY() + "' z='" + parcel.getZ() + "' type='" + parcel.getType() + "'>");
 
-	private static class WorldSaveUserItem extends WorldSaveBaseItem {
-//		public WorldSaveStackInfo	stack;
-	}
+            if (parcel.getItem() != null && parcel.getItem().getX() == parcel.getX() && parcel.getItem().getY() == parcel.getY()) {
+                writeItem(fos, parcel.getItem());
+            }
 
-	private static class WorldSaveConsumableItem extends WorldSaveBaseItem {
-        public int 					quantity;
-	}
+            if (parcel.getStructure() != null) {
+                writeStructure(fos, parcel.getStructure());
+            }
 
-	private static class WorldSaveStackInfo {
-		public String				item;
-		public int					count;
-	}
+            if (parcel.getResource() != null) {
+                writeResource(fos, parcel.getResource());
+            }
 
-	private static class WorldSaveStructure extends WorldSaveBaseItem {
-	}
+            if (parcel.getConsumable() != null) {
+                writeConsumable(fos, parcel.getConsumable());
+            }
 
-	private static class WorldSaveResource extends WorldSaveBaseItem {
-		public int tile;
-		public int value;
-	}
+            FileUtils.write(fos, "</parcel>");
+        } else {
+            FileUtils.write(fos, "<parcel x='" + parcel.getX() + "' y='" + parcel.getY() + "' z='" + parcel.getZ() + "' type='" + parcel.getType() + "' />");
+        }
+    }
 
-	private static void saveParcel(List<WorldSaveParcel> parcels, ParcelModel parcel) {
-//		if (parcel.getItem() == null && parcel.getResource() == null && parcel.getStructure() == null) {
-//			return;
-//		}
-		WorldSaveParcel parcelSave = new WorldSaveParcel();
+    private void writeItem(FileOutputStream fos, ItemModel item) throws IOException {
+        FileUtils.write(fos, "<item id='" + item.getId() + "' name='" + item.getInfo().name + "'>");
+        FileUtils.write(fos, "<health>" + item.getHealth() + "</health>");
+        FileUtils.write(fos, "<progress>" + item.getProgress() + "</progress>");
+        FileUtils.write(fos, "</item>");
+    }
 
-		parcelSave.x = parcel.getX();
-		parcelSave.y = parcel.getY();
-		parcelSave.z = parcel.getZ();
-		parcelSave.lightSource = parcel.getLightSource();
+    private void writeStructure(FileOutputStream fos, StructureModel structure) throws IOException {
+        FileUtils.write(fos, "<structure id='" + structure.getId() + "' name='" + structure.getInfo().name + "'>");
+        FileUtils.write(fos, "<health>" + structure.getHealth() + "</health>");
+        FileUtils.write(fos, "<progress>" + structure.getProgress() + "</progress>");
+        FileUtils.write(fos, "</structure>");
+    }
 
-		ItemModel item = parcel.getRootItem();
-		if (item != null) {
-			parcelSave.item = new WorldSaveUserItem();
-			parcelSave.item.id = item.getId();
-			parcelSave.item.name = item.getName();
-			parcelSave.item.progress = item.getProgress();
-		}
+    private void writeResource(FileOutputStream fos, ResourceModel resource) throws IOException {
+        FileUtils.write(fos, "<resource id='" + resource.getId() + "' name='" + resource.getInfo().name + "'>");
+        FileUtils.write(fos, "<health>" + resource.getHealth() + "</health>");
+        FileUtils.write(fos, "<progress>" + resource.getProgress() + "</progress>");
+        FileUtils.write(fos, "</resource>");
+    }
 
-        ConsumableModel consumable = parcel.getConsumable();
-		if (consumable != null) {
-			parcelSave.consumable = new WorldSaveConsumableItem();
-			parcelSave.consumable.id = consumable.getId();
-			parcelSave.consumable.name = consumable.getName();
-			parcelSave.consumable.quantity = consumable.getQuantity();
-		}
+    private void writeConsumable(FileOutputStream fos, ConsumableModel consumable) throws IOException {
+        FileUtils.write(fos, "<consumable id='" + consumable.getId() + "' name='" + consumable.getInfo().name + "'>");
+        FileUtils.write(fos, "<quantity>" + consumable.getQuantity() + "</quantity>");
+        FileUtils.write(fos, "</consumable>");
+    }
 
-		StructureModel structure = parcel.getStructure();
-		if (structure != null) {
-			parcelSave.structure = new WorldSaveStructure();
-			parcelSave.structure.name = structure.getName();
-			parcelSave.structure.progress = structure.getProgress();
-			parcelSave.structure.id = structure.getId();
-			parcelSave.structure.health = structure.getHealth();
-		}
+    public void load(VTDNav vn) throws XPathParseException, NavException, XPathEvalException {
+        AutoPilot ap = new AutoPilot(vn);
+        ap.selectXPath("/save/parcels/*");
 
-		ResourceModel resource = parcel.getResource();
-		if (resource != null) {
-			parcelSave.resource = new WorldSaveResource();
-			parcelSave.resource.name = resource.getName();
-			parcelSave.resource.tile = resource.getTile();
-			parcelSave.resource.value = resource.getQuantity();
-			parcelSave.resource.id = resource.getId();
-		}
+        AutoPilot apItem = new AutoPilot(vn);
+        apItem.selectXPath("item|resource|structure|consumable");
 
-		parcels.add(parcelSave);
-	}
+        AutoPilot apElement = new AutoPilot(vn);
+        apElement.selectXPath("*");
 
-	@Override
-	public void save(GameSerializer.GameSave save) {
-		WorldManager manager = Game.getWorldManager();
+        WorldManager manager = Game.getWorldManager();
 
-        save.width = manager.getWidth();
-        save.height = manager.getHeight();
+        while (ap.evalXPath() != -1) {
+            vn.push();
 
-		save.parcels = new ArrayList<>();
-		for (int z = 0; z < 1; z++) {
-			for (int x = 0; x < manager.getWidth(); x++) {
-				for (int y = 0; y < manager.getHeight(); y++) {
-					ParcelModel parcel = manager.getParcel(z, x, y);
-					saveParcel(save.parcels, parcel);
-				}
-			}
-		}
-	}
+            int x = vn.parseInt(vn.getAttrVal("x"));
+            int y = vn.parseInt(vn.getAttrVal("y"));
+            int z = vn.parseInt(vn.getAttrVal("z"));
+            int type = vn.parseInt(vn.getAttrVal("type"));
 
-	@Override
-	public void load(GameSerializer.GameSave save) {
-		WorldManager manager = Game.getWorldManager();
+            while (apItem.evalXPath() != -1) {
+                switch (vn.toString(vn.getCurrentIndex())) {
+                    case "item":
+                        readItem(apElement, vn, manager, x, y, z);
+                        break;
+                    case "resource":
+                        readResource(apElement, vn, manager, x, y, z);
+                        break;
+                    case "structure":
+                        readStructure(apElement, vn, manager, x, y, z);
+                        break;
+                    case "consumable":
+                        readConsumable(apElement, vn, manager, x, y, z);
+                        break;
+                }
+            }
+            apItem.resetXPath();
+            vn.pop();
+        }
+    }
 
-		for (WorldSaveParcel parcel: save.parcels) {
-			if (parcel != null) {
-				manager.getParcel(parcel.z, parcel.x, parcel.y).setBlood(Math.max(0, Math.random() * 10 - 5));
-				manager.getParcel(parcel.z, parcel.x, parcel.y).setSnow(Math.max(0, Math.random() * 10 - 5));
-				manager.getParcel(parcel.z, parcel.x, parcel.y).setDirt(Math.max(0, Math.random() * 10 - 5));
-				manager.getParcel(parcel.z, parcel.x, parcel.y).setRubble(Math.max(0, Math.random() * 10 - 5));
+    private void readConsumable(AutoPilot apElement, VTDNav vn, WorldManager manager, int x, int y, int z) throws NavException, XPathEvalException {
+        String name = vn.toString(vn.getAttrVal("name"));
+        int id = vn.parseInt(vn.getAttrVal("id"));
+        int quantity = 0;
 
-				// UserItem
-				if (parcel.item != null) {
-					ItemModel item = (ItemModel)manager.putObject(parcel.item.name, parcel.x, parcel.y, parcel.z, parcel.item.progress);
-					if (item != null) {
-						item.setId(parcel.item.id);
-						item.setHealth(parcel.item.health);
-					}
-				}
+        while (apElement.evalXPath() != -1) {
+            switch (vn.toString(vn.getCurrentIndex())) {
+                case "quantity":
+                    quantity = (int)vn.parseDouble(vn.getText());
+                    break;
+            }
+        }
+        apElement.resetXPath();
 
-				// Consumable
-				if (parcel.consumable != null) {
-					ConsumableModel consumable = (ConsumableModel)manager.putObject(parcel.consumable.name, parcel.x, parcel.y, parcel.z, parcel.consumable.quantity);
-					if (consumable != null) {
-						consumable.setId(parcel.consumable.id);
-                        consumable.setQuantity(parcel.consumable.quantity);
-					}
-				}
+        ConsumableModel consumable = (ConsumableModel)manager.putObject(name, x, y, z, quantity);
+        if (consumable != null) {
+            consumable.setId(id);
+            consumable.setQuantity(quantity);
+        }
+    }
 
-				// Structure
-				if (parcel.structure != null) {
-					StructureModel structure = (StructureModel)manager.putObject(parcel.structure.name, parcel.x, parcel.y, parcel.z, parcel.structure.progress);
-					structure.setId(parcel.structure.id);
-					structure.setHealth(parcel.structure.health);
-				}
+    private void readStructure(AutoPilot apElement, VTDNav vn, WorldManager manager, int x, int y, int z) throws NavException, XPathEvalException {
+        String name = vn.toString(vn.getAttrVal("name"));
+        int id = vn.parseInt(vn.getAttrVal("id"));
+        int health = 0;
+        int progress = 0;
 
-				// Resource
-				if (parcel.resource != null) {
-					MapObjectModel item = manager.putObject(parcel.resource.name, parcel.x, parcel.y, parcel.z, parcel.resource.progress);
-					if (item != null) {
-						((ResourceModel)item).setTile(parcel.resource.tile);
-						((ResourceModel)item).setValue(parcel.resource.value);
-						item.setId(parcel.resource.id);
-					}
-				}
-			}
-		}
+        while (apElement.evalXPath() != -1) {
+            switch (vn.toString(vn.getCurrentIndex())) {
+                case "health":
+                    health = (int)vn.parseDouble(vn.getText());
+                    break;
 
-//		WorldFactory.addMountain(manager);
-//
-//		for (int x = 0; x < manager.getWidth(); x++) {
-//			for (int y = 0; y < manager.getHeight(); y++) {
-//				if (Math.random() > 0.995 && manager.getParcel(x, y).needRefresh()) {
-//					manager.getParcel(x, y).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
-//				}
-//			}
-//		}
-//
-//		for (int i = 0; i < 5; i++) {
-//			for (int x = 0; x < manager.getWidth(); x++) {
-//				for (int y = 0; y < manager.getHeight(); y++) {
-//					if (manager.getParcel(x, y).getResource() != null && manager.getParcel(x, y).getResource().getInfo().name.equals("base.rock")) {
-//						if (Math.random() > 0.5 && x < manager.getWidth() && manager.getParcel(x + 1, y) != null && manager.getParcel(x + 1, y).needRefresh())
-//							manager.getParcel(x + 1, y).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
-//						if (Math.random() > 0.5 && x > 0 && manager.getParcel(x - 1, y) != null && manager.getParcel(x - 1, y).needRefresh())
-//							manager.getParcel(x - 1, y).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
-//						if (Math.random() > 0.5 && y < manager.getHeight() && manager.getParcel(x, y + 1) != null && manager.getParcel(x, y + 1).needRefresh())
-//							manager.getParcel(x, y + 1).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
-//						if (Math.random() > 0.5 && y > 0 && manager.getParcel(x, y - 1) != null && manager.getParcel(x, y - 1).needRefresh())
-//							manager.getParcel(x, y - 1).setResource(new WorldResource(Game.getData().getItemInfo("base.rock")));
-//					}
-//				}
-//			}
-//		}
-//
-//		for (int x = 0; x < manager.getWidth(); x++) {
-//			for (int y = 0; y < manager.getHeight(); y++) {
-//				if (manager.getParcel(x, y) != null && manager.getParcel(x, y).getResource() != null) {
-//					manager.getParcel(x, y).getResource().setMatterSupply(100);
-//				}
-//			}
-//		}
-	}
+                case "progress":
+                    progress = vn.parseInt(vn.getText());
+                    break;
+            }
+        }
+        apElement.resetXPath();
+
+        StructureModel structure = (StructureModel)manager.putObject(name, x, y, z, progress);
+        if (structure != null) {
+            structure.setId(id);
+            structure.setHealth(health);
+        }
+    }
+
+    private void readResource(AutoPilot apElement, VTDNav vn, WorldManager manager, int x, int y, int z) throws NavException, XPathEvalException {
+        String name = vn.toString(vn.getAttrVal("name"));
+        int id = vn.parseInt(vn.getAttrVal("id"));
+        int health = 0;
+        int progress = 0;
+
+        while (apElement.evalXPath() != -1) {
+            switch (vn.toString(vn.getCurrentIndex())) {
+                case "health":
+                    health = (int)vn.parseDouble(vn.getText());
+                    break;
+
+                case "progress":
+                    progress = vn.parseInt(vn.getText());
+                    break;
+            }
+        }
+        apElement.resetXPath();
+
+        ResourceModel resource = (ResourceModel)manager.putObject(name, x, y, z, progress);
+        if (resource != null) {
+//            resource.setTile(tile);
+//            resource.setValue(value);
+            resource.setId(id);
+        }
+    }
+
+    private void readItem(AutoPilot apElement, VTDNav vn, WorldManager manager, int x, int y, int z) throws NavException, XPathEvalException {
+        String name = vn.toString(vn.getAttrVal("name"));
+        int id = vn.parseInt(vn.getAttrVal("id"));
+        int health = 0;
+        int progress = 0;
+
+        while (apElement.evalXPath() != -1) {
+            switch (vn.toString(vn.getCurrentIndex())) {
+                case "health":
+                    health = (int)vn.parseDouble(vn.getText());
+                    break;
+
+                case "progress":
+                    progress = vn.parseInt(vn.getText());
+                    break;
+            }
+        }
+        apElement.resetXPath();
+
+        ItemModel item = (ItemModel)manager.putObject(name, x, y, z, progress);
+        if (item != null) {
+            item.setId(id);
+            item.setHealth(health);
+        }
+    }
 
 }

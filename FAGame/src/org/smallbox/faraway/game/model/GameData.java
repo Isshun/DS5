@@ -13,7 +13,6 @@ public class GameData {
     public static GameData      		_data;
 	public static GameConfig 			config;
 	public List<ItemInfo> 				items;
-	public List<BuffModel> 				buffs;
 	public List<ItemInfo> 				gatherItems;
 	public List<CategoryInfo> 			categories;
 	public List<ItemInfo> 				equipments;
@@ -29,7 +28,6 @@ public class GameData {
 		_loaders = new ArrayList<>();
 
 		_loaders.add(new ConfigLoader());
-		_loaders.add(new BuffLoader());
 		_loaders.add(new WeatherLoader());
 		_loaders.add(new EquipmentLoader());
 		_loaders.add(new StringLoader());

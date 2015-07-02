@@ -1,6 +1,6 @@
 levels:
 
-    -   label: Excited by new colony
+    -   label:
         conditions:
             character: [human, android]
             minDay: 10

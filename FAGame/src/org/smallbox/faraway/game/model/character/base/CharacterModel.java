@@ -4,12 +4,9 @@ import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
+import org.smallbox.faraway.game.model.*;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.manager.RoomManager;
-import org.smallbox.faraway.game.model.CharacterBuffModel;
-import org.smallbox.faraway.game.model.GameConfig;
-import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.character.CharacterRelationModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -22,24 +19,8 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public abstract class CharacterModel extends MovableModel {
-    private ParcelModel _toParcel;
-    private ParcelModel _fromParcel;
-    private double _moveStep;
-
-    public CharacterInfoModel getInfo() {
-        return _info;
-    }
-
-    public CharacterRelationModel getRelations() {
-        return _relations;
-    }
-
-    public double getMoveStep() {
-        return _moveStep;
-    }
 
     public enum TalentType {
         HEAL,
@@ -89,32 +70,32 @@ public abstract class CharacterModel extends MovableModel {
     protected double 					_old;
     protected CharacterRelationModel    _relations;
     protected CharacterInfoModel        _info;
-    protected ParcelModel 				_parcel;
     protected RoomModel 				_quarter;
-    protected boolean 					_isAlive;
     protected boolean 					_needRefresh;
     protected ConsumableModel 			_inventory;
     protected OnMoveListener 			_moveListener;
-    protected List<CharacterBuffModel> 	_buffs;
     protected List<ItemInfo> 			_equipments;
-    protected double 					_bodyHeat = Constant.BODY_TEMPERATURE;
     protected CharacterStats            _stats;
     protected boolean 					_isFaint;
 
-    private Map<TalentType, TalentEntry> _talentsMap;
+    private HashMap<TalentType, TalentEntry> _talentsMap;
     private List<TalentEntry>       	_talents;
+    private ParcelModel                 _toParcel;
+    private ParcelModel                 _fromParcel;
+    private double                      _moveStep;
+    public List<BuffModel>              _buffs;
+    public List<DiseaseModel>           _diseases;
 
     public CharacterModel(int id, int x, int y, String name, String lastName, double old) {
         super(id, x, y);
 
         Log.info("Character #" + id);
 
+        _buffs = new ArrayList<>();
+        _diseases = new ArrayList<>();
         _stats = new CharacterStats();
         _stats.speed = 1;
         _old = old;
-        _isAlive = true;
-        _buffs = GameData.getData().buffs.stream().map(CharacterBuffModel::new).collect(Collectors.toList());
-        sortBuffs();
         _relations = new CharacterRelationModel();
         _lag = (int)(Math.random() * 10);
         _isSelected = false;
@@ -151,7 +132,7 @@ public abstract class CharacterModel extends MovableModel {
     public void                     setQuarter(RoomModel quarter) { _quarter = quarter; }
     public List<TalentEntry>        getTalents() { return _talents; }
     public TalentEntry              getTalent(TalentType type) { return _talentsMap.get(type); }
-    public double                   getBodyHeat() { return _bodyHeat; }
+    public double                   getBodyHeat() { return _stats.bodyHeat; }
     public CharacterStats           getStats() { return _stats; }
     public List<ItemInfo>     		getEquipments() { return _equipments; }
     public ParcelModel 				getParcel() { return _parcel; }
@@ -163,14 +144,54 @@ public abstract class CharacterModel extends MovableModel {
     public abstract GameConfig.EffectValues getNeedEffects();
     public abstract String		    getName();
 
+    public abstract void            addBodyStats(CharacterStats stats);
     public void				        setSelected(boolean selected) { _isSelected = selected; }
-    public void                     setIsDead() { _isAlive = false; }
     public void                     setIsFaint() { _isFaint = true; }
     public void                     setInventory(ConsumableModel consumable) { _inventory = consumable; }
-    public abstract void            addBodyStats(CharacterStats stats);
+
+    public DiseaseModel getDisease(String name) {
+        for (DiseaseModel disease: _diseases) {
+            if (disease.name.equals(name)) {
+                return disease;
+            }
+        }
+        return null;
+    }
+
+    public void addDisease(DiseaseModel disease) {
+        _diseases.add(disease);
+    }
+
+    public CharacterInfoModel getInfo() {
+        return _info;
+    }
+
+    public CharacterRelationModel getRelations() {
+        return _relations;
+    }
+
+    public double getMoveStep() {
+        return _moveStep;
+    }
+
+    public void setId(int id) {
+        _id = id;
+    }
+
+    public void setOld(int old) {
+        _old = old;
+    }
+
+    public void addBuff(BuffModel buff) {
+        _buffs.add(buff);
+    }
+
+    public void                     setIsDead() {
+        _stats.isAlive = false;
+    }
 
     public boolean			        isSelected() { return _isSelected; }
-    public boolean                  isAlive() { return _isAlive; }
+    public boolean                  isAlive() { return _stats.isAlive; }
     public boolean 			        isSleeping() { return _needs.isSleeping(); }
     public boolean 			        needRefresh() { return _needRefresh; }
 
@@ -210,23 +231,13 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    private CharacterBuffModel getBuff(String buffName) {
-        for (CharacterBuffModel characterBuff: _buffs) {
-            if (characterBuff.buff.name.equals(buffName)) {
-                return characterBuff;
-            }
-        }
-        return null;
-    }
-
-    public List<CharacterBuffModel> getBuffs() {
+    public List<BuffModel> getBuffs() {
         return _buffs;
     }
 
     public void update() {
-        // Check buffs
-        BuffManager.checkBuffs(this);
-        BuffManager.applyBuffs(this);
+        _needs.environment = _parcel.getEnvironment();
+        _needs.light = ((RoomManager)Game.getInstance().getManager(RoomManager.class)).getLight(_posX, _posY);
 
         // Check room temperature
         _stats.reset(this, _equipments);
@@ -237,13 +248,13 @@ public abstract class CharacterModel extends MovableModel {
         if (room != null) {
             double minHeat = room.getTemperatureInfo().temperature + _stats.absorb.cold;
             if (minHeat >= Constant.BODY_TEMPERATURE) {
-                _bodyHeat = Constant.BODY_TEMPERATURE;
-            } else if (minHeat < _bodyHeat) {
-                Log.debug("_bodyHeat: " + _bodyHeat + ", (min: " + minHeat + ")");
-                _bodyHeat -= 0.1 * (1 - _stats.resist.cold);
+                _stats.bodyHeat = Constant.BODY_TEMPERATURE;
+            } else if (minHeat < _stats.bodyHeat) {
+                Log.debug("_bodyHeat: " + _stats.bodyHeat + ", (min: " + minHeat + ")");
+                _stats.bodyHeat -= 0.1 * (1 - _stats.resist.cold);
             }
         } else {
-            Log.debug("_bodyHeat: " + _bodyHeat);
+            Log.debug("_bodyHeat: " + _stats.bodyHeat);
         }
     }
 
@@ -254,14 +265,6 @@ public abstract class CharacterModel extends MovableModel {
             }
         }
         return null;
-    }
-
-    private void sortBuffs() {
-        Collections.sort(_buffs, (b1, b2) -> {
-            if (b2.level == null) return -1;
-            if (b1.level == null) return 1;
-            return b2.level.effects.mood - b1.level.effects.mood;
-        });
     }
 
     public void	setJob(BaseJobModel job) {
@@ -296,7 +299,7 @@ public abstract class CharacterModel extends MovableModel {
         _old += Constant.CHARACTER_GROW_PER_UPDATE * Constant.SLOW_UPDATE_INTERVAL;
 
         if (_old > Constant.CHARACTER_MAX_OLD) {
-            _isAlive = false;
+            _stats.isAlive = false;
         }
 
         // Leave parent quarters

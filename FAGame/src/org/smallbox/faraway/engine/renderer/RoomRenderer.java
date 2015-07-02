@@ -41,7 +41,7 @@
 //	}
 //
 //
-//	public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
+//	public void onDraw(GFXRenderer renderer, RenderEffect buffEffect, double animProgress) {
 //		ColorView rectangleItem = new ColorView(Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
 //
 //		Room[][] rooms = Game.getRoomManager().getRooms();
@@ -58,19 +58,19 @@
 //					Color color = room.getColor();
 //					rectangleItem.setBackgroundColor(new Color(50 + color.r, 50 + color.g, 50 + color.b, 100));
 //					rectangleItem.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-//					renderer.draw(rectangleItem, effect);
+//					renderer.draw(rectangleItem, buffEffect);
 //				}
 //			}
 //		}
 //
 //		List<Room> roomList = Game.getRoomManager().getRoomList();
 //		for (Room room: roomList) {
-//			displayRoomInfo(renderer, effect, room, room.getX() * Constant.TILE_WIDTH, room.getY() * Constant.TILE_HEIGHT);
+//			displayRoomInfo(renderer, buffEffect, room, room.getX() * Constant.TILE_WIDTH, room.getY() * Constant.TILE_HEIGHT);
 //		}
 //	}
 //
 //
-//	private void displayRoomInfo(GFXRenderer renderer, RenderEffect effect, Room room, int x, int y) {
+//	private void displayRoomInfo(GFXRenderer renderer, RenderEffect buffEffect, Room room, int x, int y) {
 //		int characterSize = 11;
 //		int characterSubSize = 8;
 //		int height = 20;
@@ -104,24 +104,24 @@
 //		text.setCharacterSize(characterSize);
 //
 //		text.setPosition(x + padding - 1, y + 1);
-//		renderer.draw(text, effect);
+//		renderer.draw(text, buffEffect);
 //		text.setPosition(x + padding + 1, y + 1);
-//		renderer.draw(text, effect);
+//		renderer.draw(text, buffEffect);
 //		text.setPosition(x + padding - 1, y - 1);
-//		renderer.draw(text, effect);
+//		renderer.draw(text, buffEffect);
 //		text.setPosition(x + padding + 1, y - 1);
-//		renderer.draw(text, effect);
+//		renderer.draw(text, buffEffect);
 //
 //		text.setPosition(x + padding, y);
 //		//text.setColor(Color.WHITE);
-//		renderer.draw(text, effect);
+//		renderer.draw(text, buffEffect);
 //
 //		// Owner
 //		if (room.getOwner() != null) {
 //			text.setPosition(x + padding, y + height);
 //			text.setCharacterSize(characterSubSize);
 //			text.setString("(" + room.getOwner().getLastName() + ")");
-//			renderer.draw(text, effect);
+//			renderer.draw(text, buffEffect);
 //		}
 //
 //	}

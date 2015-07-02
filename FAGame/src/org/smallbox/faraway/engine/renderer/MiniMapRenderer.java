@@ -95,7 +95,7 @@
 //	}
 //
 //	@Override
-//	public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
+//	public void onDraw(GFXRenderer renderer, RenderEffect buffEffect, double animProgress) {
 ////		if (_sprite != null) {
 ////			app.draw(_sprite, _renderEffect);
 ////		}

@@ -100,7 +100,7 @@ entries:
                     position: [20, 40]
 
             -   type: frame
-                position: [0, 580]
+                position: [0, 780]
                 entries:
                     
                 -   type: label
@@ -119,6 +119,12 @@ entries:
                     text: light
                     textsize: 14
                     position: [20, 50]
+
+                -   type: label
+                    id: lb_mood_change
+                    text: mood change
+                    textsize: 14
+                    position: [20, 70]
 
     -   type: frame
         id: frame_personal_report
@@ -302,6 +308,11 @@ entries:
             textsize: 18
             position: [20, 265]
 
+        -   type: label
+            text: Medical concerns
+            textsize: 24
+            position: [20, 300]
+
         -   type: frame
             id: frame_health_entries
-            position: [20, 285]
+            position: [20, 332]

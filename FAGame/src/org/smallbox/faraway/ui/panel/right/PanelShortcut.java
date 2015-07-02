@@ -112,8 +112,8 @@ public class PanelShortcut extends BaseRightPanel {
 
     // TODO
 //	@Override
-//	public void onDraw(GFXRenderer renderer, RenderEffect effect) {
-////		_miniMapRenderer.onDraw(renderer, effect, 0);
+//	public void onDraw(GFXRenderer renderer, RenderEffect buffEffect) {
+////		_miniMapRenderer.onDraw(renderer, buffEffect, 0);
 //	}
 
     @Override

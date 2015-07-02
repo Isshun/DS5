@@ -1,6 +1,6 @@
 weather: regular
 time: noon
-tickPerHour: 64
+tickPerHour: 60
 inventoryMaxQuantity: 20
 storageMaxQuantity: 30
 environmentDistance: 5
@@ -25,7 +25,7 @@ render:
     debug:          false
     room:           false
     light:          true
-    particle:       true
+    particle:       false
 
 manager:
     quest:          false
@@ -37,6 +37,11 @@ manager:
     fauna:          false
 
 character:
+    human:
+        needs:
+            food: [25, 5]
+            oxygen: [75, 25]
+
     effects:
         human:
             energy: -0.85
