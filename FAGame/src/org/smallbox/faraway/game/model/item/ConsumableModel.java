@@ -12,7 +12,7 @@ public class ConsumableModel extends MapObjectModel {
     private int             _quantity = 1;
     private int             _slots = 1;
     private JobHaul         _job;
-    private ReceiptModel    _lock;
+    private BaseJobModel    _lock;
 
     public ConsumableModel(ItemInfo info) {
         super(info);
@@ -68,11 +68,11 @@ public class ConsumableModel extends MapObjectModel {
 
     public boolean isEmpty() { return _quantity <= 0; }
 
-    public void lockForReceipt(ReceiptModel receiptModel) {
-        _lock = receiptModel;
+    public void lock(BaseJobModel lock) {
+        _lock = lock;
     }
 
-    public ReceiptModel getLock() {
+    public BaseJobModel getLock() {
         return _lock;
     }
 }

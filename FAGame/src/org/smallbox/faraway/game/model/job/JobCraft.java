@@ -63,12 +63,16 @@ public class JobCraft extends BaseJobModel {
             throw new RuntimeException("Try to start JobCraft but no receipt have enough component");
         }
 
-        _receipt.start();
+        _receipt.start(this);
         moveToIngredient(character, _receipt.getCurrentComponent().consumable);
     }
 
 	@Override
 	public void onQuit(CharacterModel character) {
+        if (_receipt != null) {
+            _receipt.reset();
+            _receipt = null;
+        }
 	}
 
 	@Override
@@ -246,7 +250,8 @@ public class JobCraft extends BaseJobModel {
 
         // Ingredient no longer exists
         if (currentComponent.consumable != Game.getWorldManager().getConsumable(_targetX, _targetY)) {
-            throw new RuntimeException("Consumable no longer exists, JobCraft have to lock consumable !!");
+//            throw new RuntimeException("Consumable no longer exists, JobCraft have to lock consumable !!");
+            return JobActionReturn.QUIT;
 //            _status = Status.MOVE_TO_INGREDIENT;
 //            return JobActionReturn.CONTINUE;
         }
@@ -296,8 +301,8 @@ public class JobCraft extends BaseJobModel {
 
         // TODO: wrong location
 		// Switch status to MOVE_TO_INGREDIENT
-		_receipt.reset();
-		_receipt = null;
+//		_receipt.reset();
+//		_receipt = null;
 		_status = Status.MOVE_TO_INGREDIENT;
 
         onCheck(character);

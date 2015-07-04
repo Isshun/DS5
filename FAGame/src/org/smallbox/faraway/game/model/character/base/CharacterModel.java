@@ -15,6 +15,7 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobMove;
+import org.smallbox.faraway.game.model.job.JobUse;
 import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.util.Constant;
@@ -387,7 +388,7 @@ public abstract class CharacterModel extends MovableModel {
             return;
         }
 
-        if (getNeeds().isSleeping) {
+        if (getNeeds().isSleeping && (!(_job instanceof JobUse) || _job.getItem() == null || !_job.getItem().isSleepingItem())) {
             return;
         }
 

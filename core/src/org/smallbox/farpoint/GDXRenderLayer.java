@@ -20,15 +20,8 @@ public class GDXRenderLayer extends RenderLayer {
 
     public GDXRenderLayer(int index) {
         super(index);
-        _cache = new SpriteCache(5000, true);
+        _cache = new SpriteCache(50000, false);
         _needRefresh = true;
-    }
-
-    @Override
-    public void clear() {
-        _count = 0;
-        _needRefresh = true;
-        _cache.clear();
     }
 
     @Override
@@ -43,11 +36,9 @@ public class GDXRenderLayer extends RenderLayer {
 
     @Override
     public void onDraw(GFXRenderer renderer, RenderEffect renderEffect, int x, int y) {
-        synchronized (this) {
-            if (_cacheId != -1) {
+        if (_cacheId != -1) {
 //                System.out.println("draw cache #" + _index + " (cacheId: " + _cacheId + ", count: " + _count + ")");
-                ((GDXRenderer)renderer).draw(_cache, _cacheId, Game.getInstance().getViewport().getPosX() + x, Game.getInstance().getViewport().getPosY() + y);
-            }
+            ((GDXRenderer)renderer).draw(_cache, _cacheId, Game.getInstance().getViewport().getPosX() + x, Game.getInstance().getViewport().getPosY() + y);
         }
     }
 
@@ -55,6 +46,8 @@ public class GDXRenderLayer extends RenderLayer {
     public void draw(SpriteModel sprite) {
         if (sprite != null) {
             if (_count < 5000) {
+                // TODO: BOF
+                System.out.println("count: " + _count);
                 _cache.add(((GDXSpriteModel)sprite).getData());
                 _count++;
             }
@@ -65,10 +58,6 @@ public class GDXRenderLayer extends RenderLayer {
     public void draw(UILabel text) {
         if (text != null) {
             if (_count < 5000) {
-                //GDXRenderer.getInstance().getFont(14).draw(_cache, "", 0, 0);
-//                ((GDXRenderer)SpriteManager.getInstance()).getF
-//                _cache.add();
-//                _count++;
             }
         }
     }
@@ -76,5 +65,22 @@ public class GDXRenderLayer extends RenderLayer {
     @Override
     public boolean needRefresh() {
         return _needRefresh;
+    }
+
+    @Override
+    public boolean isDrawable() {
+        return _count > 0;
+    }
+
+    @Override
+    public void planRefresh() {
+        _needRefresh = true;
+    }
+
+    @Override
+    public void refresh() {
+        _count = 0;
+        _cache.clear();
+        _needRefresh = false;
     }
 }

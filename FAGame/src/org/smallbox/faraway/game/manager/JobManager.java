@@ -27,12 +27,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class JobManager extends BaseManager {
-	private static JobManager			_self;
-	private final List<CharacterCheck> 	_joys;
-	private final List<CharacterCheck>  _priorities;
-	private final BlockingQueue<BaseJobModel> _jobs;
-	private final List<BaseJobModel>	_toRemove;
-	private int 						_nbVisibleJob;
+	private static JobManager					_self;
+	private final List<CharacterCheck> 			_joys;
+	private final List<CharacterCheck>  		_priorities;
+	private final BlockingQueue<BaseJobModel> 	_jobs;
+	private final List<BaseJobModel>			_toRemove;
+	private int 								_nbVisibleJob;
 
 	public JobManager() {
 		Log.debug("JobManager");
@@ -66,7 +66,7 @@ public class JobManager extends BaseManager {
 
         if (tick % 10 == 0) {
             // Create haul jobs
-            _jobs.stream().filter(job -> job instanceof  JobHaul).forEach(job -> ((JobHaul)job).getItemAround());
+            _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).getItemAround());
             Game.getWorldManager().getConsumables().stream().filter(consumable -> consumable.getHaul() == null && consumable.getParcel().getArea() == null).forEach(consumable -> {
                 addJob(JobHaul.create(consumable));
             });

@@ -24,4 +24,4 @@ needs:
     joy:
         warning: 25
         critical: 5
-        change: -0.2
+        change: +0.2

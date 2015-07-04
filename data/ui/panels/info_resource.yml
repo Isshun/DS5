@@ -48,7 +48,13 @@ entries:
             position: [24, 62]
 
         -   type: label
+            id: lb_grow_state
+            text: grow
+            textsize: 14
+            position: [24, 82]
+
+        -   type: label
             id: lb_pos
             text: pos
             textsize: 14
-            position: [24, 82]
+            position: [24, 102]

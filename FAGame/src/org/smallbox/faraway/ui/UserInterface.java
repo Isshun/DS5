@@ -305,8 +305,6 @@ public class UserInterface implements GameEventListener {
     public void setMode(Mode mode) {
         _interaction.clean();
 
-        ((MainRenderer)MainRenderer.getInstance()).setMode(mode);
-
         _mode = mode;
         _menu = null;
 
@@ -331,11 +329,6 @@ public class UserInterface implements GameEventListener {
 
     public void	onMouseWheel(int delta, int x, int y) {
         _viewport.setScale(delta, x, y);
-
-//		_keyMovePosX = getRelativePosX(-_viewport.getPosX());
-//		_keyMovePosY = getRelativePosY(-_viewport.getPosY());
-
-//		MainRenderer.getInstance().invalidate();
     }
 
     public void onRefresh(int update) {

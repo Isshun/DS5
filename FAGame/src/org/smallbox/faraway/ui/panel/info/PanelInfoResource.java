@@ -41,6 +41,7 @@ public class PanelInfoResource extends BaseInfoRightPanel {
             ((UILabel) findById("lb_label")).setString(resource.getLabel());
             ((UILabel) findById("lb_name")).setString(resource.getName());
             ((UILabel) findById("lb_quantity")).setString("Quantity: %d", resource.getQuantity());
+            ((UILabel) findById("lb_grow_state")).setString("Grow: " + (int)(resource.getRealQuantity() * 100 / resource.getTotalQuantity()) + "%");
 
             if (findById("lb_pos") != null) {
                 ((UILabel) findById("lb_pos")).setString(resource.getX() + "x" + resource.getY());

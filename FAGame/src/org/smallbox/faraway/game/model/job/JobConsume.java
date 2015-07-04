@@ -69,12 +69,10 @@ public class JobConsume extends BaseJobModel {
 		// Wrong call
 		if (_item == null || character == null) {
 			Log.error("wrong call");
-			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 
 		if (!check(character)) {
-			JobManager.getInstance().close(this, _reason);
 			return JobActionReturn.ABORT;
 		}
 

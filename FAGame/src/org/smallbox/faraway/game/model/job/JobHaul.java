@@ -63,8 +63,9 @@ public class JobHaul extends BaseJobModel {
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
                 ConsumableModel c = Game.getWorldManager().getConsumable(x, y);
-                if (c != null && c.getInfo() == _itemInfo && c.getHaul() == null && _quantity + c.getQuantity() <= GameData.config.inventoryMaxQuantity) {
+                if (c != null && c.getLock() == null && c.getInfo() == _itemInfo && c.getHaul() == null && _quantity + c.getQuantity() <= GameData.config.inventoryMaxQuantity) {
                     c.setHaul(this);
+                    c.lock(this);
                     _quantity += c.getQuantity();
                     _consumables.add(c);
                 }
@@ -124,6 +125,8 @@ public class JobHaul extends BaseJobModel {
             Game.getWorldManager().putConsumable(character.getInventory(), character.getX(), character.getY());
             character.setInventory(null);
         }
+        _consumables.forEach(consumable -> consumable.lock(null));
+        _consumables.clear();
     }
 
     @Override

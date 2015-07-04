@@ -154,6 +154,7 @@ public class ItemInfo {
 	public int 							maxHealth;
 	public int 							power;
 	public double 						sealing;
+	public boolean 						isLive;
 
 	public ItemInfo() {
 		width = 1;

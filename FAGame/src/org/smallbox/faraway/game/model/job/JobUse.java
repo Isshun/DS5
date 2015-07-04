@@ -77,7 +77,6 @@ public class JobUse extends BaseJobModel {
 		// Wrong call
 		if (_item == null || character == null) {
 			Log.error("wrong call");
-			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 		
@@ -89,8 +88,7 @@ public class JobUse extends BaseJobModel {
 		// Character is sleeping
 		if (character.isSleeping() && !_item.isSleepingItem()) {
 			Log.debug("use: sleeping . use canceled");
-            JobManager.getInstance().close(this, _reason);
-			return JobActionReturn.CONTINUE;
+			return JobActionReturn.QUIT;
 		}
 		
 		if (!check(character)) {

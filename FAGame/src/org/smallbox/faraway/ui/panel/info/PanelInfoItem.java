@@ -86,10 +86,10 @@ public class PanelInfoItem extends BaseInfoRightPanel {
             JobCraft jobCraft = (JobCraft)(_item.getJobs() != null && !_item.getJobs().isEmpty() && _item.getJobs().get(0) instanceof JobCraft ? _item.getJobs().get(0) : null);
             if (jobCraft != null && jobCraft.isRunning() && jobCraft.getReceipt() != null) {
                 ((UILabel)findById("lb_crafts")).setString("Crafts: " + String.join(", ", jobCraft.getReceipt().getInfo().products.stream().map(product -> product.itemInfo.label).collect(Collectors.toList())));
-                ((UILabel) findById("lb_users")).setString("User: " + jobCraft.getCharacter().getName());
+                ((UILabel)findById("lb_users")).setString("User: " + jobCraft.getCharacter().getName());
             } else {
                 ((UILabel)findById("lb_crafts")).setString("Crafts: none");
-                ((UILabel) findById("lb_users")).setString("Users: none");
+                ((UILabel)findById("lb_users")).setString("Users: none");
             }
         }
 

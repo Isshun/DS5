@@ -59,6 +59,7 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
         for (int i = 0; i < _cacheCols; i++) {
             for (int j = 0; j < _cacheCols; j++) {
                 if (_layerStructure[i][j].needRefresh()) {
+                    _layerStructure[i][j].refresh();
                     refreshLayer(_layerStructure[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
                 }
             }
@@ -67,6 +68,12 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
 
     private void refreshLayer(RenderLayer layer, int fromX, int fromY, int toX, int toY) {
         Log.info("Refresh layer: " + layer.getIndex());
+
+        int mb = 1024 * 1024;
+        Runtime runtime = Runtime.getRuntime();
+        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
+        int total = (int) (runtime.totalMemory() / mb);
+        System.out.println("RefreshLayer: " + used + "/" + total);
 
         layer.begin();
         layer.setRefresh();
@@ -106,7 +113,7 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
         if (_layerStructure != null) {
             for (int i = _cacheCols - 1; i >= 0; i--) {
                 for (int j = _cacheCols - 1; j >= 0; j--) {
-                    if (onScreen(i, j) && !_layerStructure[i][j].needRefresh()) {
+                    if (onScreen(i, j) && !_layerStructure[i][j].needRefresh() && _layerStructure[i][j].isDrawable()) {
                         _layerStructure[i][j].onDraw(renderer, effect, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
                     }
                 }
@@ -114,7 +121,20 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
 
             onDrawSelected(renderer, effect, animProgress);
         }
-        //_layerItem.onDraw(renderer, buffEffect);
+
+        // Draw live item
+        SpriteModel sprite;
+        int offsetX = effect.getViewport().getPosX();
+        int offsetY = effect.getViewport().getPosY();
+        for (ResourceModel resource: Game.getWorldManager().getResources()) {
+            if (resource.getInfo().isLive) {
+                sprite = _spriteManager.getResource(resource);
+                if (sprite != null) {
+                    sprite.setPosition(resource.getX() * Constant.TILE_WIDTH + offsetX, resource.getY() * Constant.TILE_HEIGHT + offsetY);
+                    renderer.draw(sprite, null);
+                }
+            }
+        }
     }
 
     private boolean onScreen(int i, int j) {
@@ -128,7 +148,7 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
 
     private void refreshResource(RenderLayer layer, ParcelModel area, int x, int y) {
         ResourceModel resource = area.getResource();
-        if (resource != null) {
+        if (resource != null && !resource.getInfo().isLive) {
             SpriteModel sprite = _spriteManager.getResource(resource);
             if (sprite != null) {
                 sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
@@ -494,49 +514,49 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
 
     @Override
     public void onAddStructure(StructureModel structure){
-        _layerStructure[structure.getX() / CACHE_SIZE][structure.getY() / CACHE_SIZE].clear();
+        _layerStructure[structure.getX() / CACHE_SIZE][structure.getY() / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 
     @Override
     public void onAddItem(ItemModel item){
-        _layerStructure[item.getX() / CACHE_SIZE][item.getY() / CACHE_SIZE].clear();
+        _layerStructure[item.getX() / CACHE_SIZE][item.getY() / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 
     @Override
     public void onAddConsumable(ConsumableModel consumable){
-        _layerStructure[consumable.getX() / CACHE_SIZE][consumable.getY() / CACHE_SIZE].clear();
+        _layerStructure[consumable.getX() / CACHE_SIZE][consumable.getY() / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 
     @Override
     public void onAddResource(ResourceModel resource) {
-        _layerStructure[resource.getX() / CACHE_SIZE][resource.getY() / CACHE_SIZE].clear();
+        _layerStructure[resource.getX() / CACHE_SIZE][resource.getY() / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 
     @Override
     public void onRemoveItem(ItemModel item){
-        _layerStructure[item.getX() / CACHE_SIZE][item.getY() / CACHE_SIZE].clear();
+        _layerStructure[item.getX() / CACHE_SIZE][item.getY() / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 
     @Override
     public void onRemoveConsumable(ConsumableModel consumable){
-        _layerStructure[consumable.getX() / CACHE_SIZE][consumable.getY() / CACHE_SIZE].clear();
+        _layerStructure[consumable.getX() / CACHE_SIZE][consumable.getY() / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 
     @Override
     public void onRemoveStructure(StructureModel structure){
-        _layerStructure[structure.getX() / CACHE_SIZE][structure.getY() / CACHE_SIZE].clear();
+        _layerStructure[structure.getX() / CACHE_SIZE][structure.getY() / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 
     @Override
     public void onRemoveResource(ResourceModel resource){
-        _layerStructure[resource.getX() / CACHE_SIZE][resource.getY() / CACHE_SIZE].clear();
+        _layerStructure[resource.getX() / CACHE_SIZE][resource.getY() / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 

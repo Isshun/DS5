@@ -1,9 +1,9 @@
 package org.smallbox.faraway;
 
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.jse.JsePlatform;
-import org.smallbox.faraway.data.serializer.LoadListener;
-import org.smallbox.faraway.engine.*;
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
@@ -13,23 +13,23 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.MenuLoad;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.Colors;
-import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.mainMenu.MainMenu;
 import org.smallbox.faraway.ui.panel.LayoutFactory;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 public class Application implements GameEventListener {
-
     public static final int 		UPDATE_INTERVAL = 50;
     public static final int 		LONG_UPDATE_INTERVAL = 1000;
+
+    public static final int 		SPEED_1_TICK_INTERVAL = 320;
+    public static final int 		SPEED_2_TICK_INTERVAL = 200;
+    public static final int 		SPEED_3_TICK_INTERVAL = 75;
+    public static final int 		SPEED_4_TICK_INTERVAL = 10;
 
     private static Game             _game;
     private static MenuBase			_menu;
@@ -43,9 +43,9 @@ public class Application implements GameEventListener {
     private static GFXRenderer      _renderer;
     private static GameData         _data;
     private static Application      _self;
-    private MainMenu                _mainMenu;
-
     private static int              _frame;
+
+    private MainMenu                _mainMenu;
     private int                     _tick;
     private int                     _nextLongUpdate;
     private static int              _renderTime;
@@ -54,10 +54,9 @@ public class Application implements GameEventListener {
     private boolean[]               _directions;
     private long                    _nextTick;
     private long                    _lastTick;
-    private int                     _tickInterval = 300;
-
-    public static final BlockingQueue<Runnable> _queue = new LinkedBlockingQueue<>();
-    private boolean _isRunning = true;
+    private int                     _tickInterval = SPEED_3_TICK_INTERVAL;
+    private boolean                 _isRunning = true;
+    private final BlockingQueue<Runnable> _queue = new LinkedBlockingQueue<>();
 
     public Application(GFXRenderer renderer) {
         _self = this;
@@ -110,18 +109,23 @@ public class Application implements GameEventListener {
                 break;
 
             case D_1:
-                _tickInterval = 300;
+                _tickInterval = SPEED_1_TICK_INTERVAL;
                 _game.setSpeed(1);
                 break;
 
             case D_2:
-                _tickInterval = 200;
+                _tickInterval = SPEED_2_TICK_INTERVAL;
                 _game.setSpeed(2);
                 break;
 
             case D_3:
-                _tickInterval = 100;
+                _tickInterval = SPEED_3_TICK_INTERVAL;
                 _game.setSpeed(3);
+                break;
+
+            case D_4:
+                _tickInterval = SPEED_4_TICK_INTERVAL;
+                _game.setSpeed(4);
                 break;
 
 // Reload UI
@@ -204,7 +208,7 @@ public class Application implements GameEventListener {
         if (_game != null) {
             // Move viewport
 //            if (_keyRightPressed && Math.abs(_mouseRightPressX - x) > 5 || Math.abs(_mouseRightPressY - y) > 5) {
-                _game.getViewport().update(x, y);
+            _game.getViewport().update(x, y);
 //            }
 
             return true;
@@ -273,7 +277,6 @@ public class Application implements GameEventListener {
             _startTime = System.currentTimeMillis();
         }
 //        long _elapsed = System.currentTimeMillis() - _startTime;
-
 //        Log.info("elapsed: " + (_elapsed / 1000));
 
         if (_mainMenu != null && _mainMenu.isOpen()) {
@@ -359,7 +362,12 @@ public class Application implements GameEventListener {
     public void refreshGame(int refreshCount) {
         if (_game != null) {
             _mainRenderer.onRefresh(refreshCount);
-            _gameInterface.onRefresh(refreshCount);
+
+            try {
+                _gameInterface.onRefresh(refreshCount);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

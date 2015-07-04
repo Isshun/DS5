@@ -7,6 +7,7 @@ import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.job.JobCraft;
 
 import java.util.*;
 
@@ -42,6 +43,7 @@ public class ReceiptModel {
     private final ItemInfo.ItemInfoReceipt      _receiptInfo;
     private final ItemModel                     _factory;
     private int                                 _totalDistance;
+    private boolean                             _isRunning;
 
     public ReceiptModel(ItemModel factory, ItemInfo.ItemInfoReceipt receiptInfo) {
         _factory = factory;
@@ -69,13 +71,13 @@ public class ReceiptModel {
     }
 
     public void reset() {
-        _components.forEach(neededComponent -> neededComponent.consumable.lockForReceipt(null));
+        _components.forEach(neededComponent -> neededComponent.consumable.lock(null));
         _components.clear();
     }
 
     private void searchBestConsumables() {
         _totalDistance = 0;
-        _components.forEach(neededComponent -> neededComponent.consumable.lockForReceipt(null));
+        _components.forEach(neededComponent -> neededComponent.consumable.lock(null));
         _components.clear();
         for (Map.Entry<ItemInfo, Integer> entry: _infoComponents.entrySet()) {
             int quantityLeft = entry.getValue();
@@ -166,10 +168,10 @@ public class ReceiptModel {
         }
     }
 
-    public void start() {
+    public void start(JobCraft job) {
         searchBestConsumables();
         for (NeededComponent neededComponent: _components) {
-            neededComponent.consumable.lockForReceipt(this);
+            neededComponent.consumable.lock(job);
         }
     }
 

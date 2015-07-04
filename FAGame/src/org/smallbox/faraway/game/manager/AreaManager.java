@@ -18,7 +18,6 @@ public class AreaManager extends BaseManager {
     private List<AreaModel> _areas = new ArrayList<>();
 
     public void createArea(AreaType type, int fromX, int fromY, int toX, int toY) {
-
         // Search existing area for current position
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
@@ -38,7 +37,6 @@ public class AreaManager extends BaseManager {
     }
 
     public void removeArea(AreaType type, int fromX, int fromY, int toX, int toY) {
-
         // Search existing area for current position
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
@@ -118,8 +116,12 @@ public class AreaManager extends BaseManager {
 
     private void updateGarden(GardenAreaModel garden) {
         for (ParcelModel parcel: garden.getParcels()) {
-            if (parcel.getResource() != null && parcel.getResource().canBeHarvested() && !parcel.getResource().isMature()) {
-                parcel.getResource().addQuantity(0.05);
+            if (parcel.getResource() != null && parcel.getResource().canBeHarvested()) {
+                if (!parcel.getResource().isMature()) {
+                    parcel.getResource().addQuantity(0.005);
+                } else {
+                    JobManager.getInstance().addGather(parcel.getResource());
+                }
             }
         }
     }

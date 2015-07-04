@@ -11,6 +11,8 @@ import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.util.Log;
 
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class WorldManager extends BaseManager implements IndexedGraph<ParcelModel> {
     private static final int NB_FLOOR = 10;
@@ -23,8 +25,9 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     private int _temperatureOffset;
     private final Game _game;
     private Set<ConsumableModel> _consumables = new HashSet<>();
-    private List<ParcelModel> _parcelList;
+    private BlockingQueue<ResourceModel> _resources = new LinkedBlockingQueue<>();
     private Set<ItemModel>     _items = new HashSet<>();
+    private List<ParcelModel> _parcelList;
 
     public ParcelModel[][][] getParcels() {
         return _parcels;
@@ -251,6 +254,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
                 _parcels[x][y][z].setResource(resource);
             }
         }
+        _resources.add(resource);
         _game.notify(observer -> observer.onAddResource(resource));
 
         return resource;
@@ -363,6 +367,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
             return;
         }
 
+        _resources.remove(resource);
         _parcels[resource.getX()][resource.getY()][0].setResource(null);
         _game.notify(observer -> observer.onRemoveResource(resource));
     }
@@ -627,5 +632,9 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
     public Set<ItemModel> getItems() {
         return _items;
+    }
+
+    public Collection<ResourceModel> getResources() {
+        return _resources;
     }
 }

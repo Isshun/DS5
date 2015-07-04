@@ -13,42 +13,23 @@ import java.util.List;
 
 public class MainRenderer {
 	private static MainRenderer         _self;
-
+	private static long 				_renderTime;
+	private static int 					_frame;
 	private SpriteManager 			    _spriteManager;
 	private CharacterRenderer 		    _characterRenderer;
 	private WorldRenderer 			    _worldRenderer;
 	private final List<BaseRenderer>    _renders;
 
-	private int _lastSavedFrame;
-
-	private static int 				_fps;
-	private static long 			_renderTime;
-	private static int 				_frame;
-    private UserInterface.Mode      _mode;
-
-    public static int getFrame() { return _frame; }
-	public static long getRenderTime() { return _frame > 0 ? _renderTime / _frame : 0; }
-
 	public MainRenderer(GFXRenderer renderer, GameConfig config) {
 		_self = this;
 		_spriteManager = SpriteManager.getInstance();
-
 		_renders = new ArrayList<>();
 	}
 
 	public void onRefresh(int frame) {
-
         for (BaseRenderer render: _renders) {
             render.onRefresh(frame);
         }
-
-//        if (_worldRenderer != null) {
-//			_worldRenderer.onRefresh(frame);
-//		}
-//
-//		if (_characterRenderer != null) {
-//			_characterRenderer.onRefresh(frame);
-//		}
 	}
 	
 	public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
@@ -96,7 +77,7 @@ public class MainRenderer {
 			_renders.add(renderer.createRoomRenderer());
 		}
 
-		if (GameData.config.manager.fauna) {
+		if (config.manager.fauna) {
 			_renders.add(renderer.createFaunaRenderer());
 		}
 
@@ -105,32 +86,16 @@ public class MainRenderer {
 		}
 	}
 
-	public static MainRenderer getInstance() {
-		return _self;
-	}
-
 	public void invalidate(int x, int y) {
 		if (_worldRenderer != null) {
 			_worldRenderer.invalidate(x, y);
 		}
 	}
 
-	public void invalidate() {
-		if (_worldRenderer != null) {
-			_worldRenderer.invalidate();
-		}
-	}
+	public static MainRenderer getInstance() { return _self; }
 
-	public void setFPS(int frame, int interval) {
-//		_fps = (frame - _lastSavedFrame) / (interval / 1000);
-		_lastSavedFrame = frame;
-	}
+	public static int getFrame() { return _frame; }
 
-	public static int getFPS() {
-		return _fps;
-	}
+	public static long getRenderTime() { return _frame > 0 ? _renderTime / _frame : 0; }
 
-    public void setMode(UserInterface.Mode mode) {
-        _mode = mode;
-    }
 }

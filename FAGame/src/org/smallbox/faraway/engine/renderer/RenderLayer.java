@@ -18,7 +18,6 @@ public abstract class RenderLayer {
         _index = index;
     }
 
-    public abstract void clear();
     public abstract void onDraw(GFXRenderer renderer, RenderEffect renderEffect, int x, int y);
     public abstract void draw(SpriteModel sprite);
     public abstract void draw(UILabel text);
@@ -31,10 +30,15 @@ public abstract class RenderLayer {
     }
 
     public abstract boolean needRefresh();
+    public abstract boolean isDrawable();
 
     public int getIndex() { return _index; }
 
     public void setRefresh() {
         _needRefresh = false;
     }
+
+    public abstract void planRefresh();
+
+    public abstract void refresh();
 }
