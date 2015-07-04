@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Application implements GameEventListener {
 
-    public static final int 		DRAW_INTERVAL = (1000/60);
     public static final int 		UPDATE_INTERVAL = 50;
     public static final int 		LONG_UPDATE_INTERVAL = 1000;
 
@@ -55,7 +54,7 @@ public class Application implements GameEventListener {
     private boolean[]               _directions;
     private long                    _nextTick;
     private long                    _lastTick;
-    private int                     _tickInterval = 300 * 1000000;
+    private int                     _tickInterval = 300;
 
     public static final BlockingQueue<Runnable> _queue = new LinkedBlockingQueue<>();
     private boolean _isRunning = true;
@@ -111,17 +110,17 @@ public class Application implements GameEventListener {
                 break;
 
             case D_1:
-                _tickInterval = 300 * 1000000;
+                _tickInterval = 300;
                 _game.setSpeed(1);
                 break;
 
             case D_2:
-                _tickInterval = 200 * 1000000;
+                _tickInterval = 200;
                 _game.setSpeed(2);
                 break;
 
             case D_3:
-                _tickInterval = 100 * 1000000;
+                _tickInterval = 100;
                 _game.setSpeed(3);
                 break;
 
@@ -286,18 +285,13 @@ public class Application implements GameEventListener {
             double animProgress = 0;
             if (_game.isRunning()) {
                 _elapsed += lastRenderInterval;
-                animProgress = ((double) (System.nanoTime() - _nextTick) / _tickInterval);
+                animProgress = ((double) (System.currentTimeMillis() - _nextTick) / _tickInterval);
             }
 
             renderer.clear(new Color(0, 0, 0));
 
-            long timeGameRenderer = System.nanoTime();
             _mainRenderer.onDraw(renderer, effect, animProgress);
-//            Log.debug("MainRenderer: " + ((double) ((System.nanoTime() - timeGameRenderer) / 100000) / 10) + "ms");
-
-            long timeUIRenderer = System.nanoTime();
             _gameInterface.onDraw(renderer, _tick, 0);
-//            Log.debug("UIRenderer: " + ((double) ((System.nanoTime() - timeUIRenderer) / 100000) / 10) + "ms");
 
             renderer.finish();
 
@@ -326,8 +320,8 @@ public class Application implements GameEventListener {
         if (_game.isRunning()) {
 
             // Update
-            if (System.nanoTime() > _nextTick) {
-                _lastTick = System.nanoTime();
+            if (System.currentTimeMillis() > _nextTick) {
+                _lastTick = System.currentTimeMillis();
                 _nextTick = _lastTick + _tickInterval;
                 long timeU = System.currentTimeMillis();
                 _game.onUpdate(_tick++);

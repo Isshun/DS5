@@ -1,18 +1,27 @@
-package org.smallbox.faraway.game.model;
+package org.smallbox.faraway.game.model.area;
 
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
+import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.ui.AreaModel;
-import org.smallbox.faraway.ui.AreaType;
 import org.smallbox.faraway.util.Utils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Alex on 13/06/2015.
  */
 public class StorageAreaModel extends AreaModel {
 
-    public StorageAreaModel(AreaType type) {
-        super(type);
+    public StorageAreaModel() {
+        super(AreaType.STORAGE);
+
+        for (ItemInfo itemInfo: GameData.getData().items) {
+            if (itemInfo.isConsumable || itemInfo.isResource) {
+                setAccept(itemInfo, false);
+            }
+        }
     }
 
     public ParcelModel getNearestFreeParcel(ConsumableModel consumable, int x, int y) {

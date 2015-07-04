@@ -81,9 +81,9 @@ public class PlanetScene extends MainMenuScene {
         formatPlanetStats((UILabel)findById("lb_detail_fauna"), "Fauna", planet.stats.fauna);
         formatPlanetStats((UILabel)findById("lb_detail_flora"), "Flora", planet.stats.flora);
 
-        formatPlanetHostileStats((UILabel)findById("lb_detail_hostile_fauna"), "Hostile fauna", planet.stats.hostile_fauna);
-        formatPlanetHostileStats((UILabel)findById("lb_detail_hostile_humankind"), "Hostile humankind", planet.stats.hostile_humankind);
-        formatPlanetHostileStats((UILabel)findById("lb_detail_hostile_mechanic"), "Hostile mechanic", planet.stats.hostile_mechanic);
+        formatPlanetHostileStats((UILabel)findById("lb_detail_hostile_fauna"),      "Hostile fauna",        planet.stats.hostile_fauna);
+        formatPlanetHostileStats((UILabel)findById("lb_detail_hostile_humankind"),  "Hostile humankind",    planet.stats.hostile_humankind);
+        formatPlanetHostileStats((UILabel)findById("lb_detail_hostile_mechanic"),   "Hostile mechanic",     planet.stats.hostile_mechanic);
     }
 
     private void formatPlanetHostileStats(UILabel textView, String label, int value) {

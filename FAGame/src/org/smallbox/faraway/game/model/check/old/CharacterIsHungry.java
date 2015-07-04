@@ -2,7 +2,7 @@
 //
 //import org.smallbox.faraway.game.Game;
 //import org.smallbox.faraway.game.manager.JobManager;
-//import org.smallbox.faraway.game.model.character.base.CharacterModel;
+//import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //import org.smallbox.faraway.game.model.item.ItemBase;
 //import org.smallbox.faraway.game.model.item.ItemFilter;
 //import org.smallbox.faraway.game.model.job.JobTake;
@@ -14,31 +14,31 @@
 //public class CharacterIsHungry implements CharacterCheck {
 //
 //	@Override
-//	public boolean onCreate(JobManager jobManager, CharacterModel character) {
-//		if (character.getNeeds().isHungry()) {
+//	public boolean onCreate(JobManager jobManager, CharacterModel characters) {
+//		if (characters.getNeeds().isHungry()) {
 //			ItemFilter consomableItemFilter = ItemFilter.createConsomableFilter();
 //			consomableItemFilter.effectFood = true;
 //
 //			// Have item in inventory
-//			ItemBase item = character.find(consomableItemFilter);
+//			ItemBase item = characters.find(consomableItemFilter);
 //			if (item != null) {
-//				jobManager.addJob(JobUseInventory.onCreate(character, item), character);
+//				jobManager.addJob(JobUseInventory.onCreate(characters, item), characters);
 //				return true;
 //			}
 //
 //			// Take item from storage
-//			StorageRoom storage = Game.getRoomManager().findStorageContains(consomableItemFilter, character.getX(), character.getY());
+//			StorageRoom storage = Game.getRoomManager().findStorageContains(consomableItemFilter, characters.getX(), characters.getY());
 //			if (storage != null) {
-//				jobManager.addJob(JobTake.onCreate(character, storage, consomableItemFilter), character);
+//				jobManager.addJob(JobTake.onCreate(characters, storage, consomableItemFilter), characters);
 //				return true;
 //			}
 //
 //			// Looking for food dispenser
 //			ItemFilter factoryFilter = ItemFilter.createFactoryFilter();
 //			factoryFilter.effectFood = true;
-//			item = Game.getWorldFinder().getNearest(factoryFilter, character);
+//			item = Game.getWorldFinder().getNearest(factoryFilter, characters);
 //			if (item != null) {
-//				jobManager.addJob(JobUse.onCreate(item), character);
+//				jobManager.addJob(JobUse.onCreate(item), characters);
 //				return true;
 //			}
 //		}

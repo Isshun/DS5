@@ -3,12 +3,12 @@ package org.smallbox.faraway.game.model.job;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.StorageAreaModel;
+import org.smallbox.faraway.game.model.area.StorageAreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.ui.AreaManager;
+import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -169,7 +169,7 @@ public class JobHaul extends BaseJobModel {
             ConsumableModel consumable = _consumables.get(0);
             Log.info("Haul consumable: " + consumable.getInfo().label);
 
-            // TODO: check character inventory free space
+            // TODO: check characters inventory free space
             if (_character.getInventory() == null) {
                 _character.setInventory(consumable);
                 Game.getWorldManager().removeConsumable(consumable);
@@ -180,7 +180,7 @@ public class JobHaul extends BaseJobModel {
                     Game.getWorldManager().removeConsumable(consumable);
                 }
             } else {
-                Log.error("JobHaul: character inventory must be empty");
+                Log.error("JobHaul: characters inventory must be empty");
                 JobManager.getInstance().quit(this, JobAbortReason.INVALID);
                 return JobActionReturn.ABORT;
             }

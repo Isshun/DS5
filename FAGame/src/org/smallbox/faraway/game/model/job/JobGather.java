@@ -74,7 +74,7 @@ public class JobGather extends BaseJobModel {
 //		}
 
 //		// No space left in inventory
-//		if (character.hasInventorySpaceLeft() == false) {
+//		if (characters.hasInventorySpaceLeft() == false) {
 //			_reason = JobAbortReason.NO_LEFT_CARRY;
 //			return false;
 //		}
@@ -105,7 +105,7 @@ public class JobGather extends BaseJobModel {
 
         Log.debug(character.getInfo().getName() + ": gathering (" + _totalProgress + "/" + _totalCost + ")");
 
-//		CharacterModel.TalentEntry talent = character.getTalent(CharacterModel.TalentType.GATHER);
+//		CharacterModel.TalentEntry talent = characters.getTalent(CharacterModel.TalentType.GATHER);
 //		double quantity = -talent.work();
 //		_resource.addQuantity(quantity);
 
@@ -118,7 +118,7 @@ public class JobGather extends BaseJobModel {
         _progress = 0;
         for (ItemInfo.ItemProductInfo productInfo: _resource.getInfo().actions.get(0).products) {
             Game.getWorldManager().putObject(productInfo.itemInfo, _posX, _posY, 0, productInfo.quantity);
-            //character.addComponent(new UserItem(info));
+            //characters.addComponent(new UserItem(info));
             Log.info(character.getInfo().getName() + ": product " + productInfo.itemInfo.name);
         }
         _resource.addQuantity(-1);

@@ -178,7 +178,7 @@ public class PanelCrew extends BaseRightPanel {
 			}
 
 			//		  // Function
-			//		  Profession function = character.getProfession();
+			//		  Profession function = characters.getProfession();
 			//		  text.setString(function.getName());
 			//		  text.setPosition(_x + Constant.UI_PADDING + Constant.CHAR_WIDTH + Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
 			//						   _y + Constant.UI_PADDING + (CREW_LINE_HEIGHT * y) + 22);
@@ -208,7 +208,7 @@ public class PanelCrew extends BaseRightPanel {
 				viewHolder.lbJob.setPosition(376 - Strings.LB_NO_JOB.length() * 8, 6);
 			}
 //			// Profession
-//			viewHolder.lbProfession.setString(character.getProfession().getName());
+//			viewHolder.lbProfession.setString(characters.getProfession().getName());
 		}
 
 	}

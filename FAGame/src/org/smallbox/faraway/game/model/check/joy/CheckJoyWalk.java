@@ -1,32 +1,21 @@
 package org.smallbox.faraway.game.model.check.joy;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobMove;
-import org.smallbox.faraway.ui.AreaManager;
-import org.smallbox.faraway.ui.AreaModel;
+import org.smallbox.faraway.game.manager.AreaManager;
+import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.util.Log;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
 
 /**
  * Created by Alex on 17/06/2015.
  */
 public class CheckJoyWalk extends CharacterCheck {
-    private GameConfig.EffectValues _effects;
     private ParcelModel             _parcel;
     private AreaModel               _area;
-
-    public CheckJoyWalk() {
-        _effects = new GameConfig.EffectValues();
-        _effects.joy = 0.25;
-    }
 
     @Override
     public BaseJobModel create(CharacterModel character) {
@@ -38,9 +27,10 @@ public class CheckJoyWalk extends CharacterCheck {
         JobMove job = JobMove.create(character, _parcel.getX(), _parcel.getY());
         job.start(character);
         job.setLabel("Move for a walk");
-        job.setEffects(_effects);
+        job.setStrategy(j -> j.getCharacter().getNeeds().joy += 0.25);
         job.setSpeedModifier(0.5);
         job.setLimit(50);
+        job.setJoy(true);
 
         return job;
     }
@@ -76,5 +66,10 @@ public class CheckJoyWalk extends CharacterCheck {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean need(CharacterModel character) {
+        return character.getNeeds().joy < character.getType().needs.joy.critical;
     }
 }

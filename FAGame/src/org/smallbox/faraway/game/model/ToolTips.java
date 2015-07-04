@@ -35,7 +35,7 @@ public class ToolTips {
 	public static final ToolTip PROFESSION_CHILD = new ToolTip("Children", "play and study, can help for basic task like deliveries or gathering");
 	public static final ToolTip PROFESSION_DOCTOR = new ToolTip("Doctor", "A polyvalent medic, cure your people and make some medicines");
 	public static final ToolTip PROFESSION_ENGINEER = new ToolTip("Engineer", "Engineer are experts in building and technical crafting");
-	public static final ToolTip PROFESSION_NONE = new ToolTip("Unqualified", "This character as no qualification");
+	public static final ToolTip PROFESSION_NONE = new ToolTip("Unqualified", "This characters as no qualification");
 	public static final ToolTip PROFESSION_OPERATION = new ToolTip("Technician", "People from operation assits others by refill dispenser and delivering items");
 	public static final ToolTip PROFESSION_SCIENCE = new ToolTip("Scientist", "Scientist use there brains to ensure the future of the colony");
 	public static final ToolTip PROFESSION_SECURITY = new ToolTip("Guard", "Help to secure the perimeter and fight zoombies");

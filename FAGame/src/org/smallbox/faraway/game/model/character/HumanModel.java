@@ -26,7 +26,7 @@ public class HumanModel extends CharacterModel {
     };
 
     public HumanModel(int id, int x, int y, String name, String lastName, double old) {
-        super(id, x, y, name, lastName, old);
+        super(id, x, y, name, lastName, old, GameData.getData().characters.get("human"));
         _info.setGender((int) (Math.random() * 1000) % 2 == 0 ? CharacterInfoModel.Gender.MALE : CharacterInfoModel.Gender.FEMALE);
     }
 
@@ -49,16 +49,6 @@ public class HumanModel extends CharacterModel {
     @Override
     public String getNeedViewPath() {
         return "data/ui/panels/view_need_human.yml";
-    }
-
-    @Override
-    public String getTypeName() {
-        return "human";
-    }
-
-    @Override
-    public GameConfig.EffectValues getNeedEffects() {
-        return GameData.config.character.effects.human;
     }
 
     @Override

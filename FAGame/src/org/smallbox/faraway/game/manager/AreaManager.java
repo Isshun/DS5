@@ -1,11 +1,8 @@
-package org.smallbox.faraway.ui;
+package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.BaseManager;
-import org.smallbox.faraway.game.manager.WorldManager;
-import org.smallbox.faraway.game.model.HomeAreaModel;
-import org.smallbox.faraway.game.model.StorageAreaModel;
+import org.smallbox.faraway.game.model.area.*;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.util.Utils;
@@ -59,8 +56,9 @@ public class AreaManager extends BaseManager {
 
     public static AreaModel createArea(AreaType type) {
         switch (type) {
-            case STORAGE: return new StorageAreaModel(type);
-            case HOME: return new HomeAreaModel(type);
+            case STORAGE: return new StorageAreaModel();
+            case GARDEN: return new GardenAreaModel();
+            case HOME: return new HomeAreaModel();
             default: return new AreaModel(type);
         }
     }
@@ -111,6 +109,19 @@ public class AreaManager extends BaseManager {
 
     @Override
     protected void onUpdate(int tick) {
+        for (AreaModel area: _areas) {
+            if (area.getType() == AreaType.GARDEN) {
+                updateGarden((GardenAreaModel)area);
+            }
+        }
+    }
+
+    private void updateGarden(GardenAreaModel garden) {
+        for (ParcelModel parcel: garden.getParcels()) {
+            if (parcel.getResource() != null && parcel.getResource().canBeHarvested() && !parcel.getResource().isMature()) {
+                parcel.getResource().addQuantity(0.05);
+            }
+        }
     }
 
     public void remove(AreaModel area) {

@@ -2,7 +2,9 @@ package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.game.manager.JobManager;
+import org.smallbox.faraway.game.model.area.AreaType;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ResourceModel;
@@ -87,7 +89,7 @@ public class UserInteraction {
 	private Planning 					_selectedPlan;
 	private RoomType 					_selectedRoomType;
 	private ItemInfo 					_selectedItemInfo;
-	private AreaType 					_selectedAreaType;
+	private AreaType _selectedAreaType;
 	private UserInterface				_ui;
 
 	UserInteraction(UserInterface ui) {

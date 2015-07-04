@@ -7,7 +7,7 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.engine.lua.LuaCharacterModel;
 import org.smallbox.faraway.engine.lua.LuaGameModel;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.BuffModel;
+import org.smallbox.faraway.game.model.character.BuffModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.util.Log;
 
@@ -20,24 +20,24 @@ import java.util.Map;
  * Created by Alex on 16/06/2015.
  */
 public class BuffManager extends BaseManager {
-
-    private Map<BuffModel, LuaValue> _buffs;
+    private final LuaValue                  _luaGame;
+    private Map<BuffModel, LuaValue>        _buffs;
+    private Map<CharacterModel, LuaValue>   _luaCharacters;
 
     public BuffManager() {
+        _luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
+        _luaCharacters = new HashMap<>();
         _buffs = new HashMap<>();
         _updateInterval = 10;
     }
 
     @Override
     protected void onUpdate(int tick) {
-        LuaValue luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
-
         for (CharacterModel character: Game.getCharacterManager().getCharacters()) {
             if (character.isAlive()) {
                 character.getNeeds().happinessChange = 0;
-                LuaValue luaCharacter = CoerceJavaToLua.coerce(new LuaCharacterModel(character));
                 for (BuffModel buff : character._buffs) {
-                    LuaValue ret = _buffs.get(buff).get("OnUpdate").call(luaGame, luaCharacter);
+                    LuaValue ret = _buffs.get(buff).get("OnUpdate").call(_luaGame, _luaCharacters.get(character));
                     if (!ret.isnil()) {
                         buff.message = ret.get(1).toString();
                         buff.level = ret.get(2).toint();
@@ -52,10 +52,6 @@ public class BuffManager extends BaseManager {
                                             character,
                                             effects.get(i + 1).get(1).toString(),
                                             effects.get(i + 1).get(3));
-//                                    BuffEffect effect = getEffect(effects.get(i + 1).get(1).toString());
-//                                    if (effect != null) {
-//                                        effect.buffEffect.onEffect(character);
-//                                    }
                                 }
                             }
                         }
@@ -71,24 +67,22 @@ public class BuffManager extends BaseManager {
 //        Game.getInstance().notify(observer -> observer.onCloseQuest(quest));
     }
 
-//    private BuffEffect getEffect(String effectName) {
-//        for (BuffEffect effect: EFFECTS) {
-//            if (effect.name.equals(effectName)) {
-//                return effect;
-//            }
-//        }
-//        return null;
-//    }
-
     @Override
     public void onAddCharacter(CharacterModel character) {
+        _luaCharacters.put(character, CoerceJavaToLua.coerce(new LuaCharacterModel(character)));
+
         try {
-            for (File file : new File("data/buffs/scripted/").listFiles()) {
+            for (File file : new File("data/buffs/").listFiles()) {
                 if (file.getName().endsWith(".lua")) {
                     // Load lua script
                     BuffModel buff = new BuffModel();
                     LuaValue globals = JsePlatform.standardGlobals();
-                    globals.get("dofile").call(LuaValue.valueOf("data/buffs/scripted/" + file.getName()));
+                    globals.get("dofile").call(LuaValue.valueOf("data/buffs/" + file.getName()));
+
+                    LuaValue onStart = globals.get("OnStart");
+                    if (!onStart.isnil()) {
+                        onStart.call(_luaGame, _luaCharacters.get(character));
+                    }
 
                     _buffs.put(buff, globals);
                     character.addBuff(buff);

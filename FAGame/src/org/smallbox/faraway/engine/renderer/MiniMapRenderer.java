@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.util.Constant;
 //import org.smallbox.faraway.game.manager.ServiceManager;
 //import org.smallbox.faraway.game.manager.WorldManager;
-//import org.smallbox.faraway.game.model.character.base.CharacterModel;
+//import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //
 //import java.util.List;
 //
@@ -79,8 +79,8 @@
 //		}
 //
 //		List<CharacterModel> list = Game.getCharacterManager().getCharacters();
-//		for (CharacterModel character: list) {
-//			_image.setPixel(character.getX(), character.getY(), Color.RED);
+//		for (CharacterModel characters: list) {
+//			_image.setPixel(characters.getX(), characters.getY(), Color.RED);
 //		}
 //
 //		try {

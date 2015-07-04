@@ -66,7 +66,7 @@ public class PathManager extends BaseManager {
                     Game.getWorldManager().isBlocked(x-1, y) &&
                     Game.getWorldManager().isBlocked(x, y+1) &&
                     Game.getWorldManager().isBlocked(x, y-1)) {
-                Log.info("character: path fail (surrounded by solid parcel)");
+                Log.info("characters: path fail (surrounded by solid parcel)");
                 movable.onPathFailed(job, fromParcel, toParcel);
                 if (listener != null) {
                     listener.onFail(job, movable);
@@ -77,7 +77,7 @@ public class PathManager extends BaseManager {
             Log.debug("getPathAsync");
             GraphPath<ParcelModel> path = findPath(fromParcel, toParcel);
             if (path != null) {
-                Log.info("character: path success (" + fromParcel.getX() + "x" + fromParcel.getY() + " to " + toParcel.getX() + "x" + toParcel.getY() + "), job: " + job);
+                Log.info("characters: path success (" + fromParcel.getX() + "x" + fromParcel.getY() + " to " + toParcel.getX() + "x" + toParcel.getY() + "), job: " + job);
                 synchronized (_runnable) {
                     _runnable.add(() -> {
                         movable.onPathComplete(path, job, fromParcel, toParcel);
@@ -87,7 +87,7 @@ public class PathManager extends BaseManager {
                     });
                 }
             } else {
-                Log.info("character: path fail");
+                Log.info("characters: path fail");
                 synchronized (_runnable) {
                     _runnable.add(() -> {
                         movable.onPathFailed(job, fromParcel, toParcel);
@@ -137,14 +137,14 @@ public class PathManager extends BaseManager {
 //        // Find path
 ////        _threadPool.execute(() -> {
 //            if (Game.getWorldManager().isSurroundedByBlocked(toParcel.getX(), toParcel.getY())) {
-//                Log.info("character: path fail (surrounded by solid parcel)");
+//                Log.info("characters: path fail (surrounded by solid parcel)");
 //                return null;
 //            }
 //
 //            Log.debug("getPath path");
 //            GraphPath<ParcelModel> path = findPath(fromParcel, toParcel);
 //            if (path != null) {
-//                Log.info("character: path success (" + fromParcel.getX() + "x" + fromParcel.getY() + " to " + toParcel.getX() + "x" + toParcel.getY() + ")");
+//                Log.info("characters: path success (" + fromParcel.getX() + "x" + fromParcel.getY() + " to " + toParcel.getX() + "x" + toParcel.getY() + ")");
 //                synchronized (_runnable) {
 //                    _runnable.add(() -> {
 //                        PathCacheModel cache = new PathCacheModel(fromParcel, toParcel, path);

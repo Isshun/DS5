@@ -9,7 +9,7 @@ entries:
         id: lb_parcel_pos
         text: pos
         textsize: 14
-        position: [360, -16]
+        position: [340, -16]
        
     -   type: frame
         position: [24, 0]
@@ -50,3 +50,10 @@ entries:
         text: rubble
         textsize: 14
         position: [220, 102]
+
+    -   type: label
+        id: lb_light
+        text: light
+        textsize: 14
+        position: [24, 102]
+

@@ -1,10 +1,13 @@
 package org.smallbox.faraway.game.model.character;
 
 import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterStats;
+import org.smallbox.faraway.game.model.item.ItemInfo;
 
 /**
  * Created by Alex on 17/06/2015.
@@ -22,7 +25,7 @@ public class DroidModel extends CharacterModel {
     };
 
     public DroidModel(int id, int x, int y, String name, String lastName, double old) {
-        super(id, x, y, name, lastName, old);
+        super(id, x, y, name, lastName, old, GameData.getData().characters.get("droid"));
         _info.setColor(new Color(0xf1f1f1));
     }
 
@@ -50,11 +53,6 @@ public class DroidModel extends CharacterModel {
     @Override
     public String getTypeName() {
         return "droid";
-    }
-
-    @Override
-    public GameConfig.EffectValues getNeedEffects() {
-        return GameData.config.character.effects.droid;
     }
 
     @Override

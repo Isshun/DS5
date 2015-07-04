@@ -4,10 +4,10 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.ReceiptModel;
-import org.smallbox.faraway.game.model.StorageAreaModel;
+import org.smallbox.faraway.game.model.area.StorageAreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
-import org.smallbox.faraway.ui.AreaManager;
+import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -130,7 +130,7 @@ public class JobCraft extends BaseJobModel {
 	@Override
 	public JobActionReturn onAction(CharacterModel character) {
         if (_character == null) {
-            Log.error("Action on job with null character");
+            Log.error("Action on job with null characters");
         }
 
 		// Wrong call
@@ -146,7 +146,7 @@ public class JobCraft extends BaseJobModel {
 //        }
 //
 //        if (_status == Status.FIND_RECEIPT) {
-//            findWorkableReceipt(character);
+//            findWorkableReceipt(characters);
 //            if (_receipt == null) {
 //                return JobActionReturn.QUIT;
 //            }
@@ -227,20 +227,20 @@ public class JobCraft extends BaseJobModel {
     }
 
     /**
-     * Action when character reach ingredient
+     * Action when characters reach ingredient
      *
      * @param character
      * @return
      */
     private JobActionReturn onActionIngredient(CharacterModel character) {
-        //if (character.getX() != _targetX || character.getY() != _targetY)
+        //if (characters.getX() != _targetX || characters.getY() != _targetY)
 
         ReceiptModel.NeededComponent currentComponent = _receipt.getCurrentComponent();
 
 //        if (currentComponent == null) {
-//            findNearestIngredient(character);
+//            findNearestIngredient(characters);
 //            if (currentComponent == null) {
-//                return closeOrQuit(character);
+//                return closeOrQuit(characters);
 //            }
 //        }
 
@@ -304,7 +304,7 @@ public class JobCraft extends BaseJobModel {
 
 		// Work is complete
 		if (_count++ >= _totalCount) {
-			//Log.debug("Character #" + character.getId() + ": work close");
+			//Log.debug("Character #" + characters.getId() + ": work close");
 			return JobActionReturn.FINISH;
 		}
 
@@ -314,14 +314,14 @@ public class JobCraft extends BaseJobModel {
 		}
 	}
 //
-//	private void findNearestIngredient(CharacterModel character) {
+//	private void findNearestIngredient(CharacterModel characters) {
 //		_targetIngredient = null;
 //		if (_receipt != null) {
 //			for (ReceiptModel.ReceiptComponentModel component : _receipt.getComponents()) {
 //				if (component.item.getQuantity() < component.count) {
 //					_targetIngredient = ((WorldFinder)Game.getInstance().getManager(WorldFinder.class)).getNearest(component.itemInfo, _item.getX(), _item.getY());
 //					if (_targetIngredient != null) {
-//                        moveToIngredient(character, _targetIngredient);
+//                        moveToIngredient(characters, _targetIngredient);
 //						return;
 //					}
 //				}

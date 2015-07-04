@@ -15,7 +15,7 @@ public class JobConsume extends BaseJobModel {
 
 	public static JobConsume create(CharacterModel character, ConsumableModel item) {
 		if (character == null) {
-			Log.error("Create ConsumeJob with null character");
+			Log.error("Create ConsumeJob with null characters");
 			return null;
 		}
 
@@ -82,7 +82,7 @@ public class JobConsume extends BaseJobModel {
 
 		// Character using item
 		if (_progress++ < _cost) {
-			// Item is use by 2 or more character
+			// Item is use by 2 or more characters
 			if (_item.getNbFreeSlots() + 1 < _item.getNbSlots()) {
 				character.getNeeds().addRelation(1);
 				List<ItemSlot> slots = _item.getSlots();
@@ -92,7 +92,7 @@ public class JobConsume extends BaseJobModel {
 				}
 			}
 
-			// Set character direction
+			// Set characters direction
 			if (_item.getX() > _posX) { character.setDirection(Direction.RIGHT); }
 			if (_item.getX() < _posX) { character.setDirection(Direction.LEFT); }
 			if (_item.getY() > _posY) { character.setDirection(Direction.TOP); }

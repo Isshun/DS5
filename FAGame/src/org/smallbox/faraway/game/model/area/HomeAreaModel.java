@@ -1,14 +1,11 @@
-package org.smallbox.faraway.game.model;
-
-import org.smallbox.faraway.ui.AreaModel;
-import org.smallbox.faraway.ui.AreaType;
+package org.smallbox.faraway.game.model.area;
 
 /**
  * Created by Alex on 28/06/2015.
  */
 public class HomeAreaModel extends AreaModel {
-    public HomeAreaModel(AreaType type) {
-        super(type);
+    public HomeAreaModel() {
+        super(AreaType.HOME);
     }
 
     @Override

@@ -24,6 +24,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     private final Game _game;
     private Set<ConsumableModel> _consumables = new HashSet<>();
     private List<ParcelModel> _parcelList;
+    private Set<ItemModel>     _items = new HashSet<>();
 
     public ParcelModel[][][] getParcels() {
         return _parcels;
@@ -83,6 +84,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     public void removeItem(ItemModel item) {
         if (item != null && item.getParcel() != null) {
             item.getParcel().setItem(null);
+            _items.remove(item);
             _game.notify(observer -> observer.onRemoveItem(item));
         }
     }
@@ -266,6 +268,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
                 _parcels[x][y][z].setItem(item);
             }
         }
+        _items.add(item);
         _game.notify(observer -> observer.onAddItem(item));
 
         return item;
@@ -620,5 +623,9 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     public boolean isBlocked(int x, int y) {
         ParcelModel parcel = getParcel(x, y);
         return parcel != null && parcel.isBlocked();
+    }
+
+    public Set<ItemModel> getItems() {
+        return _items;
     }
 }

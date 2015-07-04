@@ -233,7 +233,7 @@ public abstract class MapObjectModel {
     }
 
     public ItemModel use(CharacterModel character, int durationLeft) {
-        // Add buffEffect on character
+        // Add buffEffect on characters
         character.getNeeds().use(this, _info.actions.get(0));
 
         // Play animation

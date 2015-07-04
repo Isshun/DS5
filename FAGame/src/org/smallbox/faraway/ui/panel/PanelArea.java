@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.ui.AreaType;
+import org.smallbox.faraway.game.model.area.AreaType;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
@@ -26,6 +26,8 @@ public class PanelArea extends BaseRightPanel {
         findById("bt_area_remove_storage").setOnClickListener(view -> select(UserInteraction.Action.REMOVE_AREA, view, AreaType.STORAGE));
         findById("bt_area_home").setOnClickListener(view -> select(UserInteraction.Action.SET_AREA, view, AreaType.HOME));
         findById("bt_area_remove_home").setOnClickListener(view -> select(UserInteraction.Action.REMOVE_AREA, view, AreaType.HOME));
+        findById("bt_area_garden").setOnClickListener(view -> select(UserInteraction.Action.SET_AREA, view, AreaType.GARDEN));
+        findById("bt_area_remove_garden").setOnClickListener(view -> select(UserInteraction.Action.REMOVE_AREA, view, AreaType.GARDEN));
         findById("bt_area_dump").setOnClickListener(view -> select(UserInteraction.Action.SET_AREA, view, null));
         findById("bt_area_safe").setOnClickListener(view -> select(UserInteraction.Action.SET_AREA, view, AreaType.SAFE));
     }

@@ -71,6 +71,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
                 ((UILabel) _frame_parcel_info.findById("lb_dirt")).setString("dirt: " + parcel.getDirt());
                 ((UILabel) _frame_parcel_info.findById("lb_rubble")).setString("rubble: " + parcel.getRubble());
                 ((UILabel) _frame_parcel_info.findById("lb_snow")).setString("snow: " + parcel.getSnow());
+                ((UILabel) _frame_parcel_info.findById("lb_light")).setString("light: " + parcel.getLight());
 
                 String strConnexion = "";
                 for (Connection<ParcelModel> connection : parcel.getConnections()) {
@@ -92,7 +93,6 @@ public class BaseInfoRightPanel extends BaseRightPanel {
                 ((UILabel) _frame_room_info.findById("lb_room")).setString(room.isExterior() ? "Exterior" : room.getName());
                 ((UILabel) _frame_room_info.findById("lb_room_size")).setString("Size: " + (room.getParcels().size() / 2) + "m²");
                 ((UILabel) _frame_room_info.findById("lb_room_temperature")).setString("Temperature: " + (int) room.getTemperatureInfo().temperature + "°");
-                ((UILabel) _frame_room_info.findById("lb_room_light")).setString("Light: " + room.getLight());
 
                 ((UILabel) _frame_room_info.findById("lb_heat_potency")).setString("HP: " + room.getTemperatureInfo().heatPotency);
                 ((UILabel) _frame_room_info.findById("lb_cold_potency")).setString("CP: " + room.getTemperatureInfo().coldPotency);

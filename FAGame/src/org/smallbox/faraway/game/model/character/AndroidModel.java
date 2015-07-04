@@ -25,7 +25,7 @@ public class AndroidModel extends CharacterModel {
     };
 
     public AndroidModel(int id, int x, int y, String name, String lastName, double old) {
-        super(id, x, y, name, lastName, old);
+        super(id, x, y, name, lastName, old, GameData.getData().characters.get("android"));
         _info.setColor(new Color(0xc57de6));
     }
 
@@ -33,11 +33,6 @@ public class AndroidModel extends CharacterModel {
     public void addBodyStats(CharacterStats stats) {
         stats.absorb.cold += BODY_COLD_ABSORB;
         stats.resist.cold += BODY_COLD_RESIST;
-    }
-
-    @Override
-    public GameConfig.EffectValues getNeedEffects() {
-        return GameData.config.character.effects.android;
     }
 
     @Override
@@ -56,10 +51,5 @@ public class AndroidModel extends CharacterModel {
     @Override
     public String       getNeedViewPath() {
         return "data/ui/panels/view_need_android.yml";
-    }
-
-    @Override
-    public String       getTypeName() {
-        return "android";
     }
 }

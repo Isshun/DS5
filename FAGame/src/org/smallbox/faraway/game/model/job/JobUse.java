@@ -104,7 +104,7 @@ public class JobUse extends BaseJobModel {
 			// Set running
 			_status = JobStatus.RUNNING;
 			
-			// Item is use by 2 or more character
+			// Item is use by 2 or more characters
 			if (_item.getNbFreeSlots() + 1 < _item.getNbSlots()) {
 				character.getNeeds().addRelation(1);
 				List<ItemSlot> slots = _item.getSlots();
@@ -114,7 +114,7 @@ public class JobUse extends BaseJobModel {
 				}
 			}
 
-			// Set character direction
+			// Set characters direction
 			if (_item.getX() > _posX) { character.setDirection(Direction.RIGHT); }
 			if (_item.getX() < _posX) { character.setDirection(Direction.LEFT); }
 			if (_item.getY() > _posY) { character.setDirection(Direction.TOP); }
@@ -159,7 +159,7 @@ public class JobUse extends BaseJobModel {
 		}
 
 //		// No space left in inventory
-//		if (_item.isFactory() && character.hasInventorySpaceLeft() == false) {
+//		if (_item.isFactory() && characters.hasInventorySpaceLeft() == false) {
 //			_reason = JobAbortReason.NO_LEFT_CARRY;
 //			return false;
 //		}

@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.game.model.check;
 //
 //import org.smallbox.faraway.game.manager.JobManager;
-//import org.smallbox.faraway.game.model.character.base.CharacterModel;
+//import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //import org.smallbox.faraway.game.model.onCheck.old.CharacterCheck;
 //
 ///**
@@ -9,8 +9,8 @@
 // */
 //public class CheckGather extends CharacterCheck {
 //
-//    public CheckGather(CharacterModel character) {
-//        super(character);
+//    public CheckGather(CharacterModel characters) {
+//        super(characters);
 //    }
 //
 //    @Override

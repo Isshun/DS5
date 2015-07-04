@@ -1,4 +1,4 @@
-package org.smallbox.faraway.game.model;
+package org.smallbox.faraway.game.model.planet;
 
 import org.smallbox.faraway.game.model.planet.PlanetModel;
 import org.smallbox.faraway.game.model.planet.RegionInfo;

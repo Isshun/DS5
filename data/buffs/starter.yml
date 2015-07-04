@@ -1,8 +1,0 @@
-levels:
-
-    -   label:
-        conditions:
-            character: [human, android]
-            minDay: 10
-        effects:
-            mood: +15

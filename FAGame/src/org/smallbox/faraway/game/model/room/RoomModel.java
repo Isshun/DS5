@@ -59,7 +59,7 @@ public class RoomModel {
     }
 
 	public boolean hasNeighbors() {
-		return _neighborhood != null && !_neighborhood.isEmpty();
+		return !_neighborhood.isEmpty();
 	}
 
 	public enum RoomType {
@@ -108,6 +108,7 @@ public class RoomModel {
 		_doors = new ArrayList<>();
 		_occupants = new HashSet<>();
 		_oxygen = Game.getInstance().getPlanet().getOxygen();
+		_neighborhood = new ArrayList<>();
 	}
 
 	public int				        getId() { return _id; }

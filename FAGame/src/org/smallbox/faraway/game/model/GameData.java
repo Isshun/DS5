@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.model;
 
 import org.smallbox.faraway.data.loader.*;
+import org.smallbox.faraway.game.CharacterLoader;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.planet.PlanetInfo;
 
@@ -21,6 +22,7 @@ public class GameData {
 	public HashMap<String, String> 		strings;
 	public boolean 						needUIRefresh;
 	public List<IDataLoader> 			_loaders;
+	public HashMap<String, CharacterTypeInfo> characters;
 
 	public GameData() {
         _data = this;
@@ -34,6 +36,7 @@ public class GameData {
 		_loaders.add(new ItemLoader());
 		_loaders.add(new PlanetLoader());
 		_loaders.add(new CategoryLoader());
+		_loaders.add(new CharacterLoader());
 	}
 
 	public void onDataLoaded() {

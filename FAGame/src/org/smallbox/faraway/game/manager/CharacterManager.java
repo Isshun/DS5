@@ -48,15 +48,15 @@ public class CharacterManager extends BaseManager {
 
 	public void onUpdate(int tick) {
 //		Log.debug("CharacterManager: update");
-		
+
 		// Add new born
 		_characters.addAll(_addOnUpdate);
 		_addOnUpdate.clear();
 
 		CharacterModel characterToRemove = null;
-		
+
 		for (CharacterModel c: _characters) {
-			// Check if character is dead
+			// Check if characters is dead
 			if (!c.isAlive()) {
 
 				// Cancel job
@@ -70,7 +70,7 @@ public class CharacterManager extends BaseManager {
 
 //				characterToRemove = c;
 			}
-			
+
 			else {
 				if (tick % 10 == c.getLag()) {
 					// Assign job
@@ -78,19 +78,19 @@ public class CharacterManager extends BaseManager {
 						JobManager.getInstance().assignJob(c);
 					}
 
-					// Update character (buffs, stats)
+					// Update characters (buffs, stats)
 					c.update();
-
-					// Update needs
-					c.getNeeds().update();
 				}
+
+				// Update needs
+				c.getNeeds().update();
 
 				c.setDirection(Direction.NONE);
 				c.action();
 				c.move();
 			}
 		}
-		
+
 		if (characterToRemove != null) {
 			_characters.remove(characterToRemove);
 		}
@@ -126,7 +126,7 @@ public class CharacterManager extends BaseManager {
 
 		return character;
 	}
-	
+
 	public void remove(CharacterModel c) {
 		c.setIsDead();
 		c.getInfo().setName(Strings.LB_DECEADED);
@@ -155,6 +155,14 @@ public class CharacterManager extends BaseManager {
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 			e.printStackTrace();
 		}
-    }
+	}
 
+	public boolean havePeopleOnProximity(CharacterModel character) {
+		for (CharacterModel c: _characters) {
+			if (c != character && Math.abs(c.getX() - character.getX()) + Math.abs(c.getY() - character.getY()) < 4) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

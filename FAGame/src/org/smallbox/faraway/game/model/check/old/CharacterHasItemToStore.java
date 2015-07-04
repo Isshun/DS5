@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.game.model.check.old;
 //
 //import org.smallbox.faraway.game.manager.JobManager;
-//import org.smallbox.faraway.game.model.character.base.CharacterModel;
+//import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //import org.smallbox.faraway.game.model.job.JobModel;
 //import org.smallbox.faraway.game.model.job.JobStore;
 //
@@ -9,11 +9,11 @@
 //public class CharacterHasItemToStore implements CharacterCheck {
 //
 //	@Override
-//	public boolean onCreate(JobManager jobManager, CharacterModel character) {
-//		if (character.getComponents().size() > 0) {
-//			JobModel job = JobStore.onCreate(character);
+//	public boolean onCreate(JobManager jobManager, CharacterModel characters) {
+//		if (characters.getComponents().size() > 0) {
+//			JobModel job = JobStore.onCreate(characters);
 //			if (job != null) {
-//				jobManager.addJob(job, character);
+//				jobManager.addJob(job, characters);
 //				return true;
 //			}
 //		}

@@ -27,7 +27,7 @@ public class CharacterSerializer implements SerializerInterface {
     }
 
     private void writeCharacter(FileOutputStream fos, CharacterModel character) throws IOException {
-        FileUtils.write(fos, "<character id='" + character.getId() + "' type='" + character.getTypeName() + "'>");
+        FileUtils.write(fos, "<characters id='" + character.getId() + "' type='" + character.getType().name + "'>");
 
         FileUtils.write(fos, "<lastname>" + character.getInfo().getLastName() + "</lastname>");
         FileUtils.write(fos, "<firstname>" + character.getInfo().getFirstName() + "</firstname>");
@@ -38,7 +38,7 @@ public class CharacterSerializer implements SerializerInterface {
 
         writeCharacterNeeds(fos, character.getNeeds());
 
-        FileUtils.write(fos, "</character>");
+        FileUtils.write(fos, "</characters>");
     }
 
     private void writeCharacterNeeds(FileOutputStream fos, CharacterNeeds needs) throws IOException {

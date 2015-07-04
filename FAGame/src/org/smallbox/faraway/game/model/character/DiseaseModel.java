@@ -1,4 +1,4 @@
-package org.smallbox.faraway.game.model;
+package org.smallbox.faraway.game.model.character;
 
 import org.luaj.vm2.LuaValue;
 

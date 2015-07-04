@@ -38,7 +38,7 @@ public class JobManager extends BaseManager {
 		Log.debug("JobManager");
 
 		_self = this;
-		_jobs = new LinkedBlockingQueue<BaseJobModel>();
+		_jobs = new LinkedBlockingQueue<>();
 		_toRemove = new ArrayList<>();
 
         _priorities = new ArrayList<>();
@@ -48,10 +48,10 @@ public class JobManager extends BaseManager {
 		_priorities.add(new CheckCharacterHungry());
 
 		_joys = new ArrayList<>();
-		_joys.add(new CheckJoyTalk());
+//		_joys.add(new CheckJoyTalk());
 		_joys.add(new CheckJoyWalk());
 		_joys.add(new CheckJoyItem());
-		_joys.add(new CheckJoySleep());
+//		_joys.add(new CheckJoySleep());
 
         Log.debug("JobManager done");
 	}
@@ -189,21 +189,21 @@ public class JobManager extends BaseManager {
 	}
 
 	/**
-	 * Looking for best job to fit character
+	 * Looking for best job to fit characters
 	 * 
 	 * @param character
 	 */
 	public void assignJob(CharacterModel character) {
-		// Joy jobs
-		// TODO: magic number
-		if (character.getNeeds().joy < 20 && assignJoyJob(character)) {
-			Log.debug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
-			return;
-		}
 
 		// Priority jobs
 		if (assignPriorityJob(character)) {
-            Log.debug("assign priority job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
+			Log.debug("assign priority job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
+			return;
+		}
+
+		// Joy jobs
+		if (assignJoyJob(character, true)) {
+			Log.debug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
 			return;
 		}
 
@@ -219,8 +219,7 @@ public class JobManager extends BaseManager {
         }
 
 		// Joy jobs
-		// TODO: magic number
-		if (assignJoyJob(character)) {
+		if (assignJoyJob(character, false)) {
 			Log.debug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
 			return;
 		}
@@ -282,10 +281,10 @@ public class JobManager extends BaseManager {
 	 * @param character
 	 * @return
 	 */
-	private boolean assignJoyJob(CharacterModel character) {
+	private boolean assignJoyJob(CharacterModel character, boolean onlyNeeded) {
 		Collections.shuffle(_joys);
 		for (CharacterCheck jobCheck: _joys) {
-			if (jobCheck.check(character)) {
+			if ((!onlyNeeded || jobCheck.need(character)) && jobCheck.check(character)) {
 				BaseJobModel job = jobCheck.create(character);
 				if (job != null) {
 					assignJobToCharacter(job, character);
@@ -305,7 +304,7 @@ public class JobManager extends BaseManager {
      */
 	private boolean assignPriorityJob(CharacterModel character) {
 		for (CharacterCheck jobCheck: _priorities) {
-			if (jobCheck.check(character)) {
+			if (jobCheck.need(character) && jobCheck.check(character)) {
 				BaseJobModel job = jobCheck.create(character);
 				if (job != null) {
                     assignJobToCharacter(job, character);
@@ -318,7 +317,7 @@ public class JobManager extends BaseManager {
 	}
 
     /**
-     * Get job from _queue matching character talents
+     * Get job from _queue matching characters talents
      *
      * @param character
      */
@@ -386,7 +385,7 @@ public class JobManager extends BaseManager {
     }
 
     /**
-     * Assign and start job for designed character
+     * Assign and start job for designed characters
      *
      * @param job
      * @param character
@@ -433,7 +432,7 @@ public class JobManager extends BaseManager {
 	}
 
 	public BaseJobModel addStoreJob(CharacterModel character) {
-//		BaseJob job = JobHaul.onCreate(character);
+//		BaseJob job = JobHaul.onCreate(characters);
 //		if (job != null) {
 //			addJob(job);
 //		}
@@ -512,7 +511,7 @@ public class JobManager extends BaseManager {
 			job.start(null);
 		}
 
-		// Remove character lock from item
+		// Remove characters lock from item
 		if (job.getItem() != null && job.getItem().getOwner() == job.getCharacter()) {
 			job.getItem().setOwner(null);
 		}
@@ -527,7 +526,7 @@ public class JobManager extends BaseManager {
 			}
 		}
 
-		// Abort because character inventory is full
+		// Abort because characters inventory is full
 		if (reason == JobAbortReason.NO_LEFT_CARRY) {
 			addStoreJob(job.getCharacter());
 		}

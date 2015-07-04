@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.game.model.check;
 //
 //import org.smallbox.faraway.game.manager.JobManager;
-//import org.smallbox.faraway.game.model.character.base.CharacterModel;
+//import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //import org.smallbox.faraway.game.model.onCheck.old.CharacterCheck;
 //import org.smallbox.faraway.game.model.job.JobModel;
 //
@@ -11,12 +11,12 @@
 //public class CheckHeal extends CharacterCheck {
 //
 //    @Override
-//    public JobModel onCreate(CharacterModel character) {
+//    public JobModel onCreate(CharacterModel characters) {
 //        return null;
 //    }
 //
 //    @Override
-//    public boolean onCheck(CharacterModel character) {
+//    public boolean onCheck(CharacterModel characters) {
 //        return false;
 //    }
 //}

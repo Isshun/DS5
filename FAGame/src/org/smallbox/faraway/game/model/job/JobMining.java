@@ -63,7 +63,7 @@ public class JobMining extends BaseJobModel {
 //		}
 
 //		// No space left in inventory
-//		if (!character.hasInventorySpaceLeft()) {
+//		if (!characters.hasInventorySpaceLeft()) {
 //			_reason = JobAbortReason.NO_LEFT_CARRY;
 //			return false;
 //		}

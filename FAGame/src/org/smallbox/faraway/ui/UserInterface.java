@@ -37,7 +37,6 @@ public class UserInterface implements GameEventListener {
     private int							_keyMovePosY;
     private UserInteraction				_interaction;
     private CharacterManager            _characters;
-    private UIMessage 					_message;
     private Mode 						_mode;
     private ContextualMenu 				_menu;
     private Game 						_game;
@@ -237,7 +236,6 @@ public class UserInterface implements GameEventListener {
         _characters = Game.getCharacterManager();
         _keyLeftPressed = false;
         _keyRightPressed = false;
-        _cursor = new DefaultCursor();
 
         for (BasePanel panel: _panels) {
             panel.init(_viewFactory, _factory, this, _interaction, SpriteManager.getInstance().createRenderEffect());
@@ -293,10 +291,10 @@ public class UserInterface implements GameEventListener {
     public UserInterfaceSelector getSelector() { return _selector; }
     public int 				getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
     public int 				getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
-    public int 				getRelativePosXMax(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getMinScale() / Constant.TILE_WIDTH); }
-    public int 				getRelativePosYMax(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getMinScale() / Constant.TILE_HEIGHT); }
-    public int 				getRelativePosXMin(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
-    public int 				getRelativePosYMin(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
+    //    public int 				getRelativePosXMax(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getMinScale() / Constant.TILE_WIDTH); }
+//    public int 				getRelativePosYMax(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getMinScale() / Constant.TILE_HEIGHT); }
+//    public int 				getRelativePosXMin(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getMaxScale() / Constant.TILE_WIDTH); }
+//    public int 				getRelativePosYMin(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getMaxScale() / Constant.TILE_HEIGHT); }
     public int				getMouseX() { return _keyMovePosX; }
     public int				getMouseY() { return _keyMovePosY; }
 
@@ -355,35 +353,12 @@ public class UserInterface implements GameEventListener {
 
         //_panelConsole.draw(renderer, null);
 
-        if (_mouseOnMap) {
-            if (_interaction.isAction(UserInteraction.Action.SET_ROOM)
-                    || _interaction.isAction(UserInteraction.Action.PUT_ITEM_FREE)
-                    || _interaction.isAction(UserInteraction.Action.SET_AREA)
-                    || _interaction.isAction(UserInteraction.Action.REMOVE_AREA)
-                    || _interaction.isAction(UserInteraction.Action.SET_PLAN)
-                    || _interaction.isAction(UserInteraction.Action.BUILD_ITEM)) {
-                if (_keyLeftPressed) {
-                    _cursor.draw(renderer, _viewport, Math.min(_keyPressPosX, _keyMovePosX),
-                            Math.min(_keyPressPosY, _keyMovePosY),
-                            Math.max(_keyPressPosX, _keyMovePosX),
-                            Math.max(_keyPressPosY, _keyMovePosY));
-                } else {
-                    _cursor.draw(renderer, _viewport, Math.min(_keyMovePosX, _keyMovePosX),
-                            Math.min(_keyMovePosY, _keyMovePosY),
-                            Math.max(_keyMovePosX, _keyMovePosX),
-                            Math.max(_keyMovePosY, _keyMovePosY));
-                }
-            }
-        }
-
-        if (_message != null && renderer != null && _viewport != null) {
-            _message.border.draw(renderer, _viewport.getRenderEffect());
-            _message.shape.draw(renderer, _viewport.getRenderEffect());
-            _message.text.draw(renderer, _viewport.getRenderEffect());
-            if (--_message.frame < 0) {
-                _message = null;
-            }
-
+        if (_mouseOnMap && _keyLeftPressed && _cursor != null) {
+            _cursor.draw(renderer, _viewport,
+                    Math.min(_keyPressPosX, _keyMovePosX),
+                    Math.min(_keyPressPosY, _keyMovePosY),
+                    Math.max(_keyPressPosX, _keyMovePosX),
+                    Math.max(_keyPressPosY, _keyMovePosY));
         }
 
         if (_menu != null) {
@@ -447,16 +422,6 @@ public class UserInterface implements GameEventListener {
         return _self;
     }
 
-    public void displayMessage(String msg) {
-        //		_message = new UIMessage(msg, _mouseRealPosX, _mouseRealPosY);
-        _message = new UIMessage(msg, 10, 30);
-    }
-
-    public void displayMessage(String msg, int x, int y) {
-//		_message = new UIMessage(msg, _viewport.getRealPosX(x) + 20, _viewport.getRealPosY(y) + 12);
-        _message = new UIMessage(msg, x * Constant.TILE_WIDTH + 20, y * Constant.TILE_HEIGHT + 12);
-    }
-
     public void onDoubleClick(int x, int y) {
         _keyLeftPressed = false;
 
@@ -497,9 +462,9 @@ public class UserInterface implements GameEventListener {
             return true;
         }
 
-        // Select character
+        // Select characters
         if (_interaction.isAction(UserInteraction.Action.NONE)) {
-            if (_selector.selectAt(_mode, getRelativePosX(x), getRelativePosY(y))) {
+            if (_selector.selectAt(getRelativePosX(x), getRelativePosY(y))) {
                 return true;
             }
         }
@@ -508,7 +473,6 @@ public class UserInterface implements GameEventListener {
     }
 
     public void onRightClick(int x, int y) {
-
         if (_interaction.isAction(UserInteraction.Action.SET_ROOM)) {
             _interaction.clean();
         }
@@ -530,6 +494,7 @@ public class UserInterface implements GameEventListener {
                 return;
             }
             _interaction.clean();
+            _cursor = null;
             toggleMode(Mode.NONE);
         }
 
@@ -546,16 +511,6 @@ public class UserInterface implements GameEventListener {
 
     public void back() {
         setMode(Mode.NONE);
-    }
-
-    private void dumpRoomInfo(ParcelModel area) {
-        if (area.getRoom() != null) {
-//            for (ParcelModel a: area.getRoom().getParcels()) {
-//                Log.info("in room: " + a.getX() + "x" + a.getY());
-//            }
-            Log.info("room size: " + area.getRoom().getParcels().size());
-            Log.info("room exterior: " + area.getRoom().isExterior());
-        }
     }
 
 }

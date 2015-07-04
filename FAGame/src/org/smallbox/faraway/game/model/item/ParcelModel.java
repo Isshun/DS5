@@ -4,7 +4,7 @@ import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedNode;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.game.model.room.RoomModel;
-import org.smallbox.faraway.ui.AreaModel;
+import org.smallbox.faraway.game.model.area.AreaModel;
 
 public class ParcelModel implements IndexedNode<ParcelModel> {
     private ItemModel 		_item;
@@ -30,6 +30,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private double          _elevation;
     public int              tmpData;
     private int             _environment;
+    public double           light;
 
     public ParcelModel(int x, int y, int z) {
         _light = 0;
@@ -44,13 +45,9 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         _isStorage = false;
     }
 
-    public void 			addLight(double value) { _light += value; }
-
-    public void 			setLight(double value) { _light = value; }
-    public void 			setLightPass(int pass) { _lightPass = pass; }
+    public void 			setLight(double light) { _light = light; this.light = light; }
     public void 			setRoom(RoomModel room) { _room = room; }
     public void 			setStorage(boolean isStorage) { _isStorage = isStorage; }
-    public void				setLightSource(int value) { _lightSource = value; }
     public void 			setArea(AreaModel area) { _area = area; }
     public void 			setBlood(double blood) { _blood = blood; }
     public void 			setDirt(double dirt) { _dirt = dirt; }

@@ -41,11 +41,11 @@ public class StatsManager extends BaseManager {
 				}
 
 //				// Is child
-//				if (character.getProfessionId() == Type.CHILD) {
+//				if (characters.getProfessionId() == Type.CHILD) {
 //					nbChildValue++;
 //				}
 //
-//				if (character.getProfessionId() == Type.STUDENT) {
+//				if (characters.getProfessionId() == Type.STUDENT) {
 //					nbStudentValue++;
 //				}
 

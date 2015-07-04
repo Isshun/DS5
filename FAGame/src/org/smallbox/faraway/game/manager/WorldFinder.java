@@ -44,8 +44,8 @@ public class WorldFinder extends BaseManager {
 					continue;
 				}
 
-//				// Private room exists and character is not allowed
-//				if (area.getRoom() != null && area.getRoom().isPrivate() && area.getRoom().getOccupants().contains(character) == false) {
+//				// Private room exists and characters is not allowed
+//				if (area.getRoom() != null && area.getRoom().isPrivate() && area.getRoom().getOccupants().contains(characters) == false) {
 //					continue;
 //				}
 

@@ -7,7 +7,9 @@ import org.smallbox.faraway.game.OnMoveListener;
 import org.smallbox.faraway.game.model.*;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.manager.RoomManager;
+import org.smallbox.faraway.game.model.character.BuffModel;
 import org.smallbox.faraway.game.model.character.CharacterRelationModel;
+import org.smallbox.faraway.game.model.character.DiseaseModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
@@ -85,12 +87,14 @@ public abstract class CharacterModel extends MovableModel {
     private double                      _moveStep;
     public List<BuffModel>              _buffs;
     public List<DiseaseModel>           _diseases;
+    protected CharacterTypeInfo         _type;
 
-    public CharacterModel(int id, int x, int y, String name, String lastName, double old) {
+    public CharacterModel(int id, int x, int y, String name, String lastName, double old, CharacterTypeInfo type) {
         super(id, x, y);
 
         Log.info("Character #" + id);
 
+        _type = type;
         _buffs = new ArrayList<>();
         _diseases = new ArrayList<>();
         _stats = new CharacterStats();
@@ -104,7 +108,7 @@ public abstract class CharacterModel extends MovableModel {
         _needs = new CharacterNeeds(this);
         _steps = 0;
         _info = new CharacterInfoModel(name, lastName);
-        _parcel = Game.getWorldManager().getParcel(x, y);
+        parcel = Game.getWorldManager().getParcel(x, y);
 
         _talentsMap = new HashMap<>();
         _talents = new ArrayList<>();
@@ -135,16 +139,18 @@ public abstract class CharacterModel extends MovableModel {
     public double                   getBodyHeat() { return _stats.bodyHeat; }
     public CharacterStats           getStats() { return _stats; }
     public List<ItemInfo>     		getEquipments() { return _equipments; }
-    public ParcelModel 				getParcel() { return _parcel; }
+    public ParcelModel 				getParcel() { return parcel; }
     public ConsumableModel          getInventory() { return _inventory; }
     public abstract String[][]      getEquipmentViewIds();
     public abstract String          getEquipmentViewPath();
     public abstract String          getNeedViewPath();
-    public abstract String          getTypeName();
-    public abstract GameConfig.EffectValues getNeedEffects();
+    public CharacterTypeInfo        getType() { return _type; }
+    public String                   getTypeName() { return _type.name; }
     public abstract String		    getName();
 
     public abstract void            addBodyStats(CharacterStats stats);
+    public void                     addDisease(DiseaseModel disease) { _diseases.add(disease); }
+    public void                     addBuff(BuffModel buff) { _buffs.add(buff); }
     public void				        setSelected(boolean selected) { _isSelected = selected; }
     public void                     setIsFaint() { _isFaint = true; }
     public void                     setInventory(ConsumableModel consumable) { _inventory = consumable; }
@@ -158,34 +164,11 @@ public abstract class CharacterModel extends MovableModel {
         return null;
     }
 
-    public void addDisease(DiseaseModel disease) {
-        _diseases.add(disease);
-    }
-
-    public CharacterInfoModel getInfo() {
-        return _info;
-    }
-
-    public CharacterRelationModel getRelations() {
-        return _relations;
-    }
-
-    public double getMoveStep() {
-        return _moveStep;
-    }
-
-    public void setId(int id) {
-        _id = id;
-    }
-
-    public void setOld(int old) {
-        _old = old;
-    }
-
-    public void addBuff(BuffModel buff) {
-        _buffs.add(buff);
-    }
-
+    public CharacterInfoModel       getInfo() { return _info; }
+    public CharacterRelationModel   getRelations() { return _relations; }
+    public double                   getMoveStep() { return _moveStep; }
+    public void                     setId(int id) { _id = id; }
+    public void                     setOld(int old) { _old = old; }
     public void                     setIsDead() {
         _stats.isAlive = false;
     }
@@ -221,10 +204,10 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     private void fixPosition() {
-        if (_parcel != null && !_parcel.isWalkable()) {
+        if (parcel != null && !parcel.isWalkable()) {
             ParcelModel parcel = Game.getWorldManager().getNearestFreeSpace(_posX, _posY, true, false);
             if (parcel != null) {
-                _parcel = parcel;
+                this.parcel = parcel;
                 _posX = parcel.getX();
                 _posY = parcel.getY();
             }
@@ -236,7 +219,7 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void update() {
-        _needs.environment = _parcel.getEnvironment();
+        _needs.environment = parcel.getEnvironment();
         _needs.light = ((RoomManager)Game.getInstance().getManager(RoomManager.class)).getLight(_posX, _posY);
 
         // Check room temperature
@@ -268,9 +251,9 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void	setJob(BaseJobModel job) {
-        // This character already working on this job
+        // This characters already working on this job
         if (_job == job) {
-            Log.warning("This job already exists on character");
+            Log.warning("This job already exists on characters");
             return;
         }
 
@@ -362,7 +345,7 @@ public abstract class CharacterModel extends MovableModel {
             }
             _moveProgress = 0;
 
-            _parcel = _node;
+            parcel = _node;
             _posX = x;
             _posY = y;
             _steps++;
@@ -386,7 +369,7 @@ public abstract class CharacterModel extends MovableModel {
             _node = null;
             _moveProgress = 0;
 
-            // TODO: why character sometimes not reach job location
+            // TODO: why characters sometimes not reach job location
             if (_posX != _toX || _posY != _toY) {
                 setJob(null);
             }
@@ -398,9 +381,13 @@ public abstract class CharacterModel extends MovableModel {
             return;
         }
 
-        if (_job.getCharacter() != null && _job.getCharacter() != this) {
+        if (!_job.hasCharacter(this)) {
             _job = null;
-            Log.error("Job not owned by this character");
+            Log.error("Job not owned by this characters");
+            return;
+        }
+
+        if (getNeeds().isSleeping) {
             return;
         }
 
@@ -422,7 +409,6 @@ public abstract class CharacterModel extends MovableModel {
     public void	onPathFailed(BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
         if (_fromParcel == fromParcel && _toParcel == toParcel) {
             Log.warning("Job failed (no path)");
-            UserInterface.getInstance().displayMessage("blocked", _posX, _posY);
 
             // Abort job
             JobManager.getInstance().quit(job, BaseJobModel.JobAbortReason.BLOCKED);
@@ -456,11 +442,4 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public void movePriority(TalentEntry priority, int index) {
-        _talents.get(index).index = priority.index;
-        priority.index = index;
-        _talents.remove(priority);
-        _talents.add(index, priority);
-        _needRefresh = true;
-    }
 }

@@ -93,7 +93,7 @@ public class CharacterRenderer extends BaseRenderer {
 				renderer.draw(_redBackground, effect);
 			}
 
-			// Draw character
+			// Draw characters
 			{
 				SpriteModel sprite = _spriteManager.getCharacter(c, dirIndex, frame);
 				sprite.setPosition(posX, posY + (c.isSleeping() ? 20 : 0));

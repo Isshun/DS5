@@ -99,7 +99,6 @@ public class AnimalModel extends MovableModel {
     public void	onPathFailed(BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
         if (_fromParcel == fromParcel && _toParcel == toParcel) {
             Log.warning("Job failed (no path)");
-            UserInterface.getInstance().displayMessage("blocked", _posX, _posY);
 
             if (_onPathComplete != null) {
                 _onPathComplete.onPathFailed(job);

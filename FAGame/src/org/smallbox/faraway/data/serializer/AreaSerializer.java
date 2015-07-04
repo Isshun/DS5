@@ -3,25 +3,15 @@ package org.smallbox.faraway.data.serializer;
 import com.ximpleware.*;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.StorageAreaModel;
-import org.smallbox.faraway.game.model.character.AndroidModel;
-import org.smallbox.faraway.game.model.character.DroidModel;
-import org.smallbox.faraway.game.model.character.HumanModel;
-import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
-import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.area.*;
 import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.ui.AreaManager;
-import org.smallbox.faraway.ui.AreaModel;
-import org.smallbox.faraway.ui.AreaType;
+import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.util.FileUtils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 01/06/2015.
@@ -34,13 +24,15 @@ public class AreaSerializer implements SerializerInterface {
             FileUtils.write(fos, "<area id='" + 0 + "' name='" + area.getName() + "' type='" + area.getType() + "'>");
 
             // Write accepted items
-            FileUtils.write(fos, "<accept>");
-            for (Map.Entry<ItemInfo, Boolean> entry: area.getItemsAccepts().entrySet()) {
-                if (entry.getValue()) {
-                    FileUtils.write(fos, "<item>" + entry.getKey().name + "</item>");
+            if (area.isStorage()) {
+                FileUtils.write(fos, "<accept>");
+                for (Map.Entry<ItemInfo, Boolean> entry : ((StorageAreaModel) area).getItemsAccepts().entrySet()) {
+                    if (entry.getValue()) {
+                        FileUtils.write(fos, "<item>" + entry.getKey().name + "</item>");
+                    }
                 }
+                FileUtils.write(fos, "</accept>");
             }
-            FileUtils.write(fos, "</accept>");
 
             // Write parcels
             FileUtils.write(fos, "<parcels>");
@@ -74,7 +66,13 @@ public class AreaSerializer implements SerializerInterface {
         vn.push();
 
         AreaType type = AreaType.valueOf(vn.toString(vn.getAttrVal("type")));
-        AreaModel area = type == AreaType.STORAGE ? new StorageAreaModel(type) : new AreaModel(type);
+        AreaModel area;
+        switch (type) {
+            case STORAGE: area = new StorageAreaModel(); break;
+            case GARDEN: area = new GardenAreaModel(); break;
+            case HOME: area = new HomeAreaModel(); break;
+            default: area = new AreaModel(type); break;
+        }
 
         while (ap2.evalXPath() != -1) {
             switch (vn.toString(vn.getCurrentIndex())) {

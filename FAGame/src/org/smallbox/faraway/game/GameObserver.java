@@ -24,4 +24,6 @@ public interface GameObserver {
     default boolean hasBeenInitialized() {return true;}
     default void onOpenQuest(QuestManager.QuestModel quest) {}
     default void onCloseQuest(QuestManager.QuestModel quest) {}
+
+    default void onSelectCharacter(CharacterModel character) {}
 }

@@ -1,0 +1,27 @@
+name: human
+label: Human
+needs:
+
+    food:
+        warning: 25
+        critical: 5
+        change: -0.2
+
+    oxygen:
+        warning: 75
+        critical: 5
+        change: -5
+
+    relation:
+        warning: 80
+        critical: 50
+
+    energy:
+        warning: 25
+        critical: 5
+        change: -0.1
+
+    joy:
+        warning: 25
+        critical: 5
+        change: -0.2

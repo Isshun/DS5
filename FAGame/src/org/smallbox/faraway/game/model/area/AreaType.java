@@ -1,9 +1,9 @@
-package org.smallbox.faraway.ui;
+package org.smallbox.faraway.game.model.area;
 
 /**
  * Created by Alex on 13/06/2015.
  */
 public enum AreaType {
     STORAGE,
-    SAFE, HOME
+    SAFE, GARDEN, HOME
 }

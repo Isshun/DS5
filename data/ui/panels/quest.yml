@@ -2,8 +2,8 @@ entries:
 
     -   type: frame
         id: frame_list
-        position: [0, 650]
-        size: [200, 250]
+        position: [0, 1100]
+        size: [200, 100]
         background: 0x121c1e
 
     -   type: frame

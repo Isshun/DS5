@@ -2,14 +2,15 @@ package org.smallbox.faraway.ui.panel.info;
 
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.area.AreaModel;
+import org.smallbox.faraway.game.model.area.GardenAreaModel;
+import org.smallbox.faraway.game.model.area.StorageAreaModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.ui.*;
-import org.smallbox.faraway.ui.engine.Colors;
-import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.UILabel;
-import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,49 +19,12 @@ import java.util.List;
  * Created by Alex on 01/06/2015.
  */
 public class PanelInfoArea extends BaseInfoRightPanel {
-    private AreaModel _area;
-    private List<UILabel>          _entries;
+    private AreaModel       _area;
+    private List<UILabel>   _entries;
 
     public PanelInfoArea(UserInterface.Mode mode, GameEventListener.Key shortcut) {
         super(mode, shortcut, "data/ui/panels/info_area.yml");
         _entries = new ArrayList<>();
-    }
-
-    @Override
-    public void onLayoutLoaded(LayoutModel layout) {
-        super.onLayoutLoaded(layout);
-
-        int posX = 0;
-        int posY = 0;
-        int index = 0;
-        FrameLayout frameEntries = (FrameLayout)findById("frame_entries");
-
-        // Add consumable
-        addTitle(frameEntries, "Consumables", posY);
-        posX = 0;
-        posY += 40;
-        index = 0;
-        for (ItemInfo itemInfo: GameData.getData().items) {
-            if (itemInfo.isConsumable && !itemInfo.isEquipment) {
-                addEntry(frameEntries, itemInfo, posX, posY);
-                posY = index++ % 2 == 0 ? posY : posY + 20;
-                posX = posX == 0 ? 200 : 0;
-            }
-        }
-        posY += 40;
-
-        // Add equipments
-        addTitle(frameEntries, "Equipments", posY);
-        posX = 0;
-        posY += 40;
-        index = 0;
-        for (ItemInfo itemInfo: GameData.getData().items) {
-            if (itemInfo.isEquipment) {
-                addEntry(frameEntries, itemInfo, posX, posY);
-                posY = index++ % 2 == 0 ? posY : posY + 20;
-                posX = posX == 0 ? 200 : 0;
-            }
-        }
     }
 
     @Override
@@ -75,23 +39,17 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         frameEntries.addView(lbTitle);
     }
 
-    private void addEntry(FrameLayout frameEntries, ItemInfo itemInfo, int posX, int posY) {
+    private void addEntry(FrameLayout frameEntries, int posX, int posY, String label, OnClickListener clickListener) {
         UILabel lbEntry = ViewFactory.getInstance().createTextView(180, 20);
-        lbEntry.setString("[x] " + itemInfo.label);
+        lbEntry.setString(label);
         lbEntry.setCharacterSize(14);
         lbEntry.setPosition(posX, posY);
         lbEntry.setColor(Colors.LINK_INACTIVE);
         lbEntry.setOnFocusListener(new LinkFocusListener());
-        lbEntry.setOnClickListener(view -> toggleItem(itemInfo, lbEntry));
+        lbEntry.setOnClickListener(clickListener);
         lbEntry.setAlign(Align.CENTER_VERTICAL);
-        lbEntry.setData(itemInfo);
         frameEntries.addView(lbEntry);
         _entries.add(lbEntry);
-    }
-
-    private void toggleItem(ItemInfo itemInfo, UILabel lbEntry) {
-        _area.setAccept(itemInfo, !_area.accept(itemInfo));
-        lbEntry.setString((_area.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);
     }
 
     public void select(AreaModel area, ParcelModel parcel) {
@@ -101,14 +59,80 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         ((UILabel)findById("lb_area")).setString(area.getName());
         findById("bt_remove_area").setOnClickListener(view -> ((AreaManager) Game.getInstance().getManager(AreaManager.class)).remove(area));
 
-        if (area.isStorage()) {
-            findById("frame_entries").setVisible(true);
-            for (UILabel lbEntry : _entries) {
-                ItemInfo itemInfo = (ItemInfo) lbEntry.getData();
-                lbEntry.setString((_area.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);
+        findById("frame_entries").setVisible(false);
+
+        switch (area.getType()) {
+            case STORAGE:
+                createStorageEntries((StorageAreaModel)area);
+                break;
+            case GARDEN:
+                createGardenEntries((GardenAreaModel)area, parcel);
+                break;
+        }
+    }
+
+    private void createGardenEntries(GardenAreaModel garden, ParcelModel parcel) {
+        int posX = 0;
+        int posY = 0;
+        int index = 0;
+        FrameLayout frameEntries = (FrameLayout)findById("frame_entries");
+        frameEntries.removeAllViews();
+        frameEntries.setVisible(true);
+
+        // Add resources
+        addTitle(frameEntries, "Vegetables", posY);
+        posY += 40;
+        for (ItemInfo itemInfo: GameData.getData().items) {
+            if (itemInfo.isResource && itemInfo.actions != null && !itemInfo.actions.isEmpty() && "gather".equals(itemInfo.actions.get(0).type)) {
+                addEntry(frameEntries, posX, posY, (garden.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label, view -> {
+                    garden.setAccept(itemInfo, true);
+                    select(garden, parcel);
+                });
+                posY = index++ % 2 == 0 ? posY : posY + 20;
+                posX = posX == 0 ? 200 : 0;
             }
-        } else {
-            findById("frame_entries").setVisible(false);
+        }
+    }
+
+    private void createStorageEntries(StorageAreaModel storage) {
+        int posX = 0;
+        int posY = 0;
+        int index = 0;
+        FrameLayout frameEntries = (FrameLayout)findById("frame_entries");
+        frameEntries.removeAllViews();
+        frameEntries.setVisible(true);
+
+        // Add consumable
+        addTitle(frameEntries, "Consumables", posY);
+        posX = 0;
+        posY += 40;
+        index = 0;
+        for (ItemInfo itemInfo: GameData.getData().items) {
+            if (itemInfo.isConsumable && !itemInfo.isEquipment) {
+                addEntry(frameEntries, posX, posY, (storage.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label, view -> {
+                    storage.setAccept(itemInfo, !storage.accept(itemInfo));
+                    ((UILabel)view).setString((storage.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);
+                });
+                posY = index++ % 2 == 0 ? posY : posY + 20;
+                posX = posX == 0 ? 200 : 0;
+            }
+        }
+        posY += 40;
+
+        // Add equipments
+        addTitle(frameEntries, "Equipments", posY);
+        posX = 0;
+        posY += 40;
+        index = 0;
+        for (ItemInfo itemInfo: GameData.getData().items) {
+            if (itemInfo.isEquipment) {
+                addEntry(frameEntries, posX, posY, (storage.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label, view -> {
+                    storage.setAccept(itemInfo, !storage.accept(itemInfo));
+                    ((UILabel)view).setString((storage.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);
+                });
+                posY = index++ % 2 == 0 ? posY : posY + 20;
+                posX = posX == 0 ? 200 : 0;
+            }
         }
     }
 }

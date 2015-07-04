@@ -2,11 +2,13 @@ package org.smallbox.farpoint;
 
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.engine.renderer.RenderLayer;
 import org.smallbox.faraway.ui.engine.UILabel;
+import org.smallbox.farpoint.ui.GDXLabel;
 
 /**
  * Created by Alex on 04/06/2015.
@@ -44,7 +46,7 @@ public class GDXRenderLayer extends RenderLayer {
         synchronized (this) {
             if (_cacheId != -1) {
 //                System.out.println("draw cache #" + _index + " (cacheId: " + _cacheId + ", count: " + _count + ")");
-                ((GDXRenderer) renderer).draw(_cache, _cacheId, Game.getInstance().getViewport().getPosX() + x, Game.getInstance().getViewport().getPosY() + y);
+                ((GDXRenderer)renderer).draw(_cache, _cacheId, Game.getInstance().getViewport().getPosX() + x, Game.getInstance().getViewport().getPosY() + y);
             }
         }
     }
@@ -53,13 +55,6 @@ public class GDXRenderLayer extends RenderLayer {
     public void draw(SpriteModel sprite) {
         if (sprite != null) {
             if (_count < 5000) {
-//            Texture texture = new Texture("data/minerals_blue-128.png");
-//            _cache.add(texture, 100, 100, 0, 0, 128, 128);
-//            _cache.add(((GDXSpriteModel) sprite).getData());
-//            Sprite s = ((GDXSpriteModel) SpriteManager.getInstance().getCharacter(new ProfessionModel(ProfessionModel.Type.ENGINEER, "", null, null), 0, 0, 0)).getData();
-//            _cache.add(s.getTexture(), 100, 100, 0, 0, 128, 128);
-//            Sprite s2 = new Sprite(new Texture("data/res/Characters/scientifique.png"), 0, 0, 128, 128);
-//            s2.setPosition(100, 100);
                 _cache.add(((GDXSpriteModel)sprite).getData());
                 _count++;
             }
@@ -68,6 +63,14 @@ public class GDXRenderLayer extends RenderLayer {
 
     @Override
     public void draw(UILabel text) {
+        if (text != null) {
+            if (_count < 5000) {
+                //GDXRenderer.getInstance().getFont(14).draw(_cache, "", 0, 0);
+//                ((GDXRenderer)SpriteManager.getInstance()).getF
+//                _cache.add();
+//                _count++;
+            }
+        }
     }
 
     @Override

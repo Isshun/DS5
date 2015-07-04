@@ -313,6 +313,11 @@ entries:
             textsize: 24
             position: [20, 300]
 
+        -   type: label
+            text: All systems functioning within normal parameters
+            textsize: 18
+            position: [20, 330]
+
         -   type: frame
             id: frame_health_entries
-            position: [20, 332]
+            position: [20, 362]

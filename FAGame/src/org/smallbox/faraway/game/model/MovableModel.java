@@ -14,12 +14,12 @@ public abstract class MovableModel {
 
 	public void setY(int y) {
 		_posY = y;
-		_parcel = Game.getWorldManager().getParcel(_posX, _posY);
+		parcel = Game.getWorldManager().getParcel(_posX, _posY);
 	}
 
 	public void setX(int x) {
 		_posX = x;
-		_parcel = Game.getWorldManager().getParcel(_posX, _posY);
+		parcel = Game.getWorldManager().getParcel(_posX, _posY);
 	}
 
 	public interface OnPathComplete {
@@ -54,7 +54,8 @@ public abstract class MovableModel {
 	protected BaseJobModel 				_job;
 	protected OnPathComplete			_onPathComplete;
 	protected double                    _moveProgress;
-	protected ParcelModel 				_parcel;
+
+	public ParcelModel 					parcel;
 
 	public MovableModel(int id, int x, int y) {
 		Utils.useUUID(id);

@@ -9,10 +9,10 @@ import org.smallbox.faraway.ui.engine.UILabel;
  * Created by Alex on 28/05/2015.
  */
 public abstract class RenderLayer {
-    protected int _x;
-    protected int _y;
-    protected int _index;
-    protected boolean     _needRefresh;
+    protected int       _x;
+    protected int       _y;
+    protected int       _index;
+    protected boolean   _needRefresh;
 
     public RenderLayer(int index) {
         _index = index;

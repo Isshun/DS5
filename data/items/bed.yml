@@ -8,8 +8,8 @@ category: quarter
 actions:
     -   type: use
         label: Sleep in bed
-        cost: 600
+        cost: 400
         effects:
-            energy: 90
+            energy: 80
             happiness: 10
             relation: 10

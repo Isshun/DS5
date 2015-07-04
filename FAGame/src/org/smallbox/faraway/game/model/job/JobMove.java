@@ -5,7 +5,6 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.util.Log;
 
 public class JobMove extends BaseJobModel {
-	private GameConfig.EffectValues _effects;
     private int 					_distance;
     private double 					_speedModifier = 1;
 
@@ -26,15 +25,15 @@ public class JobMove extends BaseJobModel {
 
 	@Override
 	protected void onFinish() {
-		Log.info("JobMove: character reach position");
+		Log.info("JobMove: characters reach position");
 	}
 
 	@Override
 	public JobActionReturn onAction(CharacterModel character) {
 
-		// If job has EffectValues, update character needs
-		if (_effects != null) {
-			character.getNeeds().updateNeeds(_effects);
+		// If job has EffectValues, update characters needs
+		if (_strategy != null) {
+			_strategy.onAction(this);
 		}
 
 //		if (_durationLeft > 0) {
@@ -67,10 +66,6 @@ public class JobMove extends BaseJobModel {
 	@Override
 	public String getShortLabel() {
 		return "move";
-	}
-
-	public void setEffects(GameConfig.EffectValues effects) {
-		_effects = effects;
 	}
 
     protected void onStart(CharacterModel character){

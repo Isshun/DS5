@@ -58,25 +58,6 @@ public class MainRenderer {
 			render.draw(renderer, effect, animProgress);
 		}
 
-//        if (AsteroidBeltFactory.sData != null) {
-//            ColorView colorView = ViewFactory.getInstance().createColorView(1, 1);
-//            for (int x = 0; x < AsteroidBeltFactory.sData.length; x++) {
-//                for (int y = 0; y < AsteroidBeltFactory.sData[0].length; y++) {
-//                    int value = (int) (AsteroidBeltFactory.sData[x][y] * 255);
-//                    colorView.setPosition(x, y);
-//                    colorView.setBackgroundColor(new Color(value, value, value));
-//                    renderer.draw(colorView, null);
-//                }
-//            }
-//        }
-
-//        Log.debug("[Render time: " + (System.currentTimeMillis() - time));
-
-//		_worldRenderer.onDraw(renderer, buffEffect, animProgress);
-//		_worldRenderer.onDrawSelected(renderer, buffEffect, animProgress);
-
-//        _characterRenderer.onDraw(renderer, buffEffect, animProgress);
-
         _frame++;
 		_renderTime += System.currentTimeMillis() - time;
 	}
@@ -99,24 +80,28 @@ public class MainRenderer {
 			_renders.add(particleRenderer);
 		}
 
-		if (config.render.debug) {
-			_renders.add(new DebugRenderer());
-		}
 		if (config.render.job) {
 			_renders.add(new JobRenderer());
 		}
+
 		if (config.render.area) {
 			_renders.add(renderer.createAreaRenderer());
 		}
+
 		if (config.render.temperature) {
 			_renders.add(renderer.createTemperatureRenderer());
 		}
+
 		if (config.render.room) {
 			_renders.add(renderer.createRoomRenderer());
 		}
 
 		if (GameData.config.manager.fauna) {
 			_renders.add(renderer.createFaunaRenderer());
+		}
+
+		if (config.render.debug) {
+			_renders.add(new DebugRenderer());
 		}
 	}
 

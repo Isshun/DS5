@@ -14,6 +14,8 @@ In the dark for a long time: Dans le noir depuis longtemps
 Feeling lonely: Se sent seul
 Need someone to talk: A besoin de parler à quelqu'un
 
+All systems functioning within normal parameters: Tous les systèmes fonctionnent selon des paramètres normaux
+
 #Structure
 Door: Porte
 Ground: Sol

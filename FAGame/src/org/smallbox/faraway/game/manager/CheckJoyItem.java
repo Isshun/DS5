@@ -2,6 +2,7 @@ package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ItemFilter;
@@ -13,12 +14,6 @@ import org.smallbox.faraway.game.model.job.JobUse;
  * Created by Alex on 17/06/2015.
  */
 public class CheckJoyItem extends CharacterCheck {
-    private GameConfig.EffectValues _effects;
-
-    public CheckJoyItem() {
-        _effects = new GameConfig.EffectValues();
-        _effects.joy = 0.25;
-    }
 
     @Override
     public BaseJobModel create(CharacterModel character) {
@@ -41,6 +36,11 @@ public class CheckJoyItem extends CharacterCheck {
     @Override
     public boolean check(CharacterModel character) {
         return getItem(character) != null;
+    }
+
+    @Override
+    public boolean need(CharacterModel character) {
+        return character.getNeeds().joy < character.getType().needs.joy.warning;
     }
 }
 

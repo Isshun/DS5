@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.util.Constant;
 //import org.smallbox.faraway.game.manager.JobManager;
 //import org.smallbox.faraway.game.manager.ServiceManager;
-//import org.smallbox.faraway.game.model.character.base.CharacterModel;
+//import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //import org.smallbox.faraway.game.model.item.UserItem;
 //import org.smallbox.faraway.game.model.job.JobUse;
 //
@@ -11,17 +11,17 @@
 //public class CharacterPlayTime implements CharacterCheck {
 //
 //	@Override
-//	public boolean onCreate(JobManager jobManager, CharacterModel character) {
+//	public boolean onCreate(JobManager jobManager, CharacterModel characters) {
 //		if ((int)(Math.random() * 100) <= Constant.CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS) {
 //			return false;
 //		}
 //
-//		UserItem toy = Game.getWorldManager().getRandomToy(character.getX(), character.getY());
+//		UserItem toy = Game.getWorldManager().getRandomToy(characters.getX(), characters.getY());
 //		if (toy == null) {
 //			return false;
 //		}
 //
-//		jobManager.addJob(JobUse.onCreate(toy, character), character);
+//		jobManager.addJob(JobUse.onCreate(toy, characters), characters);
 //		return true;
 //	}
 //}

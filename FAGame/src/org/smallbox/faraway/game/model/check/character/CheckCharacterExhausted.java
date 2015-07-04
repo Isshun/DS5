@@ -2,9 +2,11 @@ package org.smallbox.faraway.game.model.check.character;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.WorldFinder;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ItemFilter;
+import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobUse;
@@ -16,7 +18,17 @@ public class CheckCharacterExhausted extends CharacterCheck {
 
     @Override
     public boolean check(CharacterModel character) {
-        return character.getNeeds().isExhausted();
+        for (ItemModel item: Game.getWorldManager().getItems()) {
+            if (item.isBed()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean need(CharacterModel character) {
+        return character.getNeeds().energy < character.getType().needs.energy.warning;
     }
 
     @Override

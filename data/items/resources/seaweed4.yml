@@ -1,7 +1,6 @@
 label: Seaweed
 width: 1
 height: 1
-light: 0
 type: resource
 actions:
     -   type: gather

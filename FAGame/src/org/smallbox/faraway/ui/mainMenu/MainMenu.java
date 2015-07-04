@@ -2,10 +2,9 @@ package org.smallbox.faraway.ui.mainMenu;
 
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.engine.GameTimer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.LandingSiteModel;
+import org.smallbox.faraway.game.model.planet.LandingSiteModel;
 import org.smallbox.faraway.game.model.TeamModel;
 import org.smallbox.faraway.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.ui.engine.UIEventManager;
@@ -47,10 +46,12 @@ public class MainMenu {
 
     public void open() {
         _isOpen = true;
+        _currentScene.setVisible(true);
     }
 
     public void close() {
         _isOpen = false;
+        _currentScene.setVisible(false);
     }
 
     public enum Scene {HOME, PLANETS, LAND_SITE, LOAD, TEAM}

@@ -1,6 +1,6 @@
 weather: regular
 time: noon
-tickPerHour: 60
+tickPerHour: 50
 inventoryMaxQuantity: 20
 storageMaxQuantity: 30
 environmentDistance: 5
@@ -35,21 +35,3 @@ manager:
     oxygen:         true
     power:          true
     fauna:          false
-
-character:
-    human:
-        needs:
-            food: [25, 5]
-            oxygen: [75, 25]
-
-    effects:
-        human:
-            energy: -0.85
-            food: -10.5
-            oxygen: -10
-            joy: -0.2
-        android:
-            energy: -0.85
-            joy: -0.2
-        droid:
-            energy: -0.55

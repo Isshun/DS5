@@ -7,13 +7,11 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.engine.lua.LuaCharacterModel;
 import org.smallbox.faraway.engine.lua.LuaGameModel;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.BuffModel;
-import org.smallbox.faraway.game.model.DiseaseModel;
+import org.smallbox.faraway.game.model.character.DiseaseModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.util.Log;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,24 +19,24 @@ import java.util.Map;
  * Created by Alex on 16/06/2015.
  */
 public class DiseaseManager extends BaseManager {
-
-    private Map<DiseaseModel, LuaValue> _diseases;
+    private final LuaValue                  _luaGame;
+    private Map<DiseaseModel, LuaValue>     _diseases;
+    private Map<CharacterModel, LuaValue>   _luaCharacters;
 
     public DiseaseManager() {
+        _luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
+        _luaCharacters = new HashMap<>();
         _diseases = new HashMap<>();
         _updateInterval = 10;
     }
 
     @Override
     protected void onUpdate(int tick) {
-        LuaValue luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
-
         for (CharacterModel character: Game.getCharacterManager().getCharacters()) {
             if (character.isAlive()) {
                 character.getNeeds().happinessChange = 0;
-                LuaValue luaCharacter = CoerceJavaToLua.coerce(new LuaCharacterModel(character));
                 for (DiseaseModel disease : character._diseases) {
-                    LuaValue ret = _diseases.get(disease).get("OnUpdate").call(luaGame, luaCharacter, disease.data);
+                    LuaValue ret = _diseases.get(disease).get("OnUpdate").call(_luaGame, _luaCharacters.get(character), disease.data);
                     if (!ret.isnil()) {
                         disease.message = ret.toString();
                     }
@@ -65,11 +63,9 @@ public class DiseaseManager extends BaseManager {
                         _diseases.put(disease, globals);
                         character.addDisease(disease);
 
-                        LuaValue luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
-                        LuaValue luaCharacter = CoerceJavaToLua.coerce(new LuaCharacterModel(character));
                         LuaValue onStart = globals.get("OnStart");
                         if (!onStart.isnil()) {
-                            onStart.call(luaGame, luaCharacter, data);
+                            onStart.call(_luaGame, _luaCharacters.get(character), data);
                         }
                     }
                 }
@@ -82,5 +78,6 @@ public class DiseaseManager extends BaseManager {
 
     @Override
     public void onAddCharacter(CharacterModel character) {
+        _luaCharacters.put(character, CoerceJavaToLua.coerce(new LuaCharacterModel(character)));
     }
 }

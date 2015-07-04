@@ -2,7 +2,7 @@
 //
 //import org.smallbox.faraway.Strings;
 //import org.smallbox.faraway.engine.*;
-//import org.smallbox.faraway.game.model.character.base.CharacterModel;
+//import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //import org.smallbox.faraway.game.model.item.*;
 //import org.smallbox.faraway.game.model.job.BaseJobModel;
 //import org.smallbox.faraway.game.model.room.RoomModel;
@@ -739,15 +739,15 @@
 //			BaseJobModel job = slot.getJob();
 //			if (i < NB_SLOTS_MAX && job != null) {
 //				used++;
-//				final CharacterModel character = job.getCharacter();
-//				String left = character != null ? character.getName() : "used";
+//				final CharacterModel characters = job.getCharacter();
+//				String left = characters != null ? characters.getName() : "used";
 //				String right = job.getFormattedDuration();
 //				_lbSlots[i].setVisible(true);
 //				_lbSlots[i].setDashedString(left, right, NB_COLUMNS);
 //				_lbSlots[i].setOnClickListener(new OnClickListener() {
 //					@Override
 //					public void onClick(View view) {
-//						_ui.select(character);
+//						_ui.select(characters);
 //					}
 //				});
 //				i++;

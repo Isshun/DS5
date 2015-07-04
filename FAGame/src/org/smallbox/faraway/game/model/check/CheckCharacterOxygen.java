@@ -2,6 +2,7 @@ package org.smallbox.faraway.game.model.check;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.RoomManager;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ParcelModel;
@@ -46,5 +47,10 @@ public class CheckCharacterOxygen extends CharacterCheck {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean need(CharacterModel character) {
+        return character.getNeeds().oxygen < character.getType().needs.oxygen.critical;
     }
 }

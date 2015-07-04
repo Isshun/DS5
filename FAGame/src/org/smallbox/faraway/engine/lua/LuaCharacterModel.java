@@ -5,6 +5,7 @@ import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
 import org.smallbox.faraway.game.model.character.base.CharacterStats;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 
 /**
  * Created by Alex on 19/06/2015.
@@ -16,6 +17,7 @@ public class LuaCharacterModel {
     public final CharacterStats     stats;
     public final CharacterModel     character;
     public final ItemInfo           item;
+    private final ParcelModel       parcel;
 
     public LuaCharacterModel(CharacterModel character) {
         this.id = character.getId();
@@ -23,6 +25,7 @@ public class LuaCharacterModel {
         this.needs = character.getNeeds();
         this.stats = character.getStats();
         this.character = character;
+        this.parcel = character.getParcel();
         this.item = character.getJob() != null && character.getJob().getItem() != null ? character.getJob().getItem().getInfo() : null;
     }
 

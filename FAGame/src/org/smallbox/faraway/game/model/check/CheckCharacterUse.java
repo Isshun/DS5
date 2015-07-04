@@ -18,4 +18,9 @@ public class CheckCharacterUse extends CharacterCheck {
     public boolean check(CharacterModel character) {
         return false;
     }
+
+    @Override
+    public boolean need(CharacterModel character) {
+        return false;
+    }
 }

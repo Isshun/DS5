@@ -3,7 +3,7 @@ package org.smallbox.faraway.ui.panel;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
-import org.smallbox.faraway.game.model.RegionModel;
+import org.smallbox.faraway.game.model.planet.RegionModel;
 import org.smallbox.faraway.game.model.planet.PlanetAreaModel;
 import org.smallbox.faraway.game.model.planet.PlanetModel;
 import org.smallbox.faraway.ui.engine.ColorView;

@@ -3,8 +3,8 @@ package org.smallbox.faraway.ui.panel.right;
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.BuffModel;
-import org.smallbox.faraway.game.model.DiseaseModel;
+import org.smallbox.faraway.game.model.character.BuffModel;
+import org.smallbox.faraway.game.model.character.DiseaseModel;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.ToolTips;
 import org.smallbox.faraway.game.model.character.base.*;
@@ -562,7 +562,7 @@ public class PanelCharacter extends BaseRightPanel {
         if (job != null) {
             _lbJob.setDashedString(job.getLabel(), job.getProgressPercent() + "%", NB_COLUMNS);
             if (job.getItem() != null) {
-                _lbJob.setOnClickListener(view -> _ui.getSelector().select(job.getItem()));
+                //_lbJob.setOnClickListener(view -> _ui.getSelector().select(job.getItem()));
             }
         } else if (_character.isSleeping()) {
             _lbJob.setString("Sleep on floor");
@@ -684,25 +684,28 @@ public class PanelCharacter extends BaseRightPanel {
             switch (i) {
                 case 0:
                     value = Math.min(Math.max((int)needs.getFood(), 0), 100);
-                    valueLevel2 = GameData.config.character.human.needs.food[0];
-                    valueLevel3 = GameData.config.character.human.needs.food[1];
+                    valueLevel2 = _character.getType().needs.food.warning;
+                    valueLevel3 = _character.getType().needs.food.critical;
                     break;
                 case 1:
                     value = Math.min(Math.max((int)needs.oxygen, 0), 100);
-                    valueLevel2 = GameData.config.character.human.needs.oxygen[0];
-                    valueLevel3 = GameData.config.character.human.needs.oxygen[1];
+                    valueLevel2 = _character.getType().needs.oxygen.warning;
+                    valueLevel3 = _character.getType().needs.oxygen.critical;
                     break;
                 case 2: value = Math.min(Math.max((int)needs.happiness, 0), 100); break;
                 case 3: value = Math.min(Math.max((int)needs.energy, 0), 100); break;
-                case 4: value = Math.min(Math.max((int)needs.relation, 0), 100); break;
+                case 4:
+                    value = Math.min(Math.max((int)needs.relation, 0), 100);
+                    valueLevel2 = _character.getType().needs.relation.warning;
+                    valueLevel3 = _character.getType().needs.relation.critical;
+                    break;
                 case 5: value = Math.min(Math.max((int)needs.security, 0), 100); break;
                 case 6: value = Math.min(Math.max((int)needs.health, 0), 100); break;
-                case 7: value = Math.min(Math.max((int)needs.joy, 0), 100); break;
-//			case 7: value = Math.min(Math.max(needs.getSickness(), 0), 100); break;
-//			case 8: value = Math.min(Math.max(needs.getInjuries(), 0), 100); break;
-//			case 9: value = Math.min(Math.max(needs.getSatiety(), 0), 100); break;
-//			case 10: value = Math.min(Math.max(needs.getSleeping(), 0), 100); break;
-//			case 11: value = Math.min(Math.max(needs.getWorkRemain(), 0), 100); break;
+                case 7:
+                    value = Math.min(Math.max((int)needs.joy, 0), 100);
+                    valueLevel2 = _character.getType().needs.joy.warning;
+                    valueLevel3 = _character.getType().needs.joy.critical;
+                    break;
             }
             float size = Math.max(Math.round(180.0f / 100 * value / 10) * 10, 10);
             int level = 0;

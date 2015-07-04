@@ -3,17 +3,17 @@
 //import org.smallbox.faraway.game.Game;
 //import org.smallbox.faraway.util.Constant;
 //import org.smallbox.faraway.game.manager.JobManager;
-//import org.smallbox.faraway.game.model.character.base.CharacterModel;
+//import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //import org.smallbox.faraway.game.model.job.JobMove;
 //import org.smallbox.faraway.game.model.room.Room;
 //
 //public class CharacterGoToMettingRoom implements CharacterCheck {
 //
 //	@Override
-//	public boolean onCreate(JobManager jobManager, CharacterModel character) {
-//		Room room = Game.getRoomManager().getNearRoom(character.getX(), character.getY(), Room.Type.METTING);
+//	public boolean onCreate(JobManager jobManager, CharacterModel characters) {
+//		Room room = Game.getRoomManager().getNearRoom(characters.getX(), characters.getY(), Room.Type.METTING);
 //		if (room != null) {
-//			jobManager.addJob(JobMove.onCreate(character, room.getX(), room.getY(), Constant.CHARACTER_STAY_IN_METTING_ROOM * Constant.DURATION_MULTIPLIER), character);
+//			jobManager.addJob(JobMove.onCreate(characters, room.getX(), room.getY(), Constant.CHARACTER_STAY_IN_METTING_ROOM * Constant.DURATION_MULTIPLIER), characters);
 //			return true;
 //		}
 //		return false;

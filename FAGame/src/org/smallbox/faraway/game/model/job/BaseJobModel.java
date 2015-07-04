@@ -1,7 +1,5 @@
 package org.smallbox.faraway.game.model.job;
 
-import org.smallbox.faraway.engine.SpriteManager;
-import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoAction;
@@ -10,12 +8,31 @@ import org.smallbox.faraway.util.Log;
 
 public abstract class BaseJobModel {
 
+    private boolean _isJoy;
+    protected JobStrategy _strategy;
+
     public String getActionIcon() {
         return null;
     }
 
     public String getMessage() {
         return null;
+    }
+
+    public void setJoy(boolean isJoy) {
+        _isJoy = isJoy;
+    }
+
+    public boolean isJoy() {
+        return _isJoy;
+    }
+
+    public boolean hasCharacter(CharacterModel character) {
+        return _character != null && _character == character;
+    }
+
+    public void setStrategy(JobStrategy strategy) {
+        _strategy = strategy;
     }
 
     public enum JobActionReturn {
@@ -35,8 +52,8 @@ public abstract class BaseJobModel {
     protected int 				_id;
 	protected int 				_count;
     protected int               _totalCount;
-    protected int				_posY;
-	protected int 				_posX;
+    protected int				_posY = -1;
+	protected int 				_posX = -1;
     protected int 	            _limit;
     protected int               _currentLimit;
     protected int 				_fail;
@@ -146,7 +163,7 @@ public abstract class BaseJobModel {
 			return;
 		}
 
-		// Remove job from old character
+		// Remove job from old characters
 		if (_character != null) {
 			_character.setJob(null);
 		}
@@ -156,7 +173,7 @@ public abstract class BaseJobModel {
             _item.setOwner(character);
         }
 
-        // Set job to new character
+        // Set job to new characters
         _character = character;
 		if (character != null) {
             character.setJob(this);
@@ -164,10 +181,10 @@ public abstract class BaseJobModel {
             // Start job
             onStart(character);
 
-            // Move character to job location
-            if (_posX != character.getX() || _posY != character.getY()) {
+            // Move characters to job location
+//            if (_posX != -1 && _posY != -1 && (_posX != character.getX() || _posY != character.getY())) {
                 character.moveTo(this, _posX, _posY, null);
-            }
+//            }
         }
 	}
 
@@ -236,4 +253,8 @@ public abstract class BaseJobModel {
 	}
 
     public boolean isRunning() { return _character != null; }
+
+    public interface JobStrategy {
+        void onAction(BaseJobModel job);
+    }
 }

@@ -8,19 +8,24 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.AndroidModel;
 import org.smallbox.faraway.game.model.character.DroidModel;
 import org.smallbox.faraway.game.model.character.HumanModel;
+import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.OnClickListener;
-import org.smallbox.faraway.ui.engine.UILabel;
-import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.*;
 import org.smallbox.faraway.util.Log;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 17/06/2015.
  */
 public class PanelDev extends BasePanel {
+    private CharacterModel _character;
+
     private static class CommandEntry {
         public final OnClickListener    listener;
         public final String             label;
@@ -35,22 +40,70 @@ public class PanelDev extends BasePanel {
             new CommandEntry("Add crew (human)", view -> Game.getCharacterManager().addRandom(HumanModel.class)),
             new CommandEntry("Add crew (android)", view -> Game.getCharacterManager().addRandom(AndroidModel.class)),
             new CommandEntry("Add crew (droid)", view -> Game.getCharacterManager().addRandom(DroidModel.class)),
-            new CommandEntry("Kill selected", view -> UserInterface.getInstance().getSelector().getSelectedCharacter().setIsDead()),
+            new CommandEntry("Kill selected", view -> _character.setIsDead()),
             new CommandEntry("Launch quest", view -> ((QuestManager)Game.getInstance().getManager(QuestManager.class)).launchRandomQuest()),
             new CommandEntry("Refresh rooms", view -> ((RoomManager)Game.getInstance().getManager(RoomManager.class)).refreshRooms()),
-            new CommandEntry("Add item...", view -> {
-                findById("frame_dev_commands").setVisible(false);
-                findById("frame_dev_items").setVisible(true);
-            }),
-            new CommandEntry("Add consumable...", view -> {
-                findById("frame_dev_commands").setVisible(false);
-                findById("frame_dev_consumables").setVisible(true);
-            }),
+            new CommandEntry("Add item...", view ->
+                    openSubFrame(
+                            GameData.getData().items.stream()
+                                    .filter(item -> item.isUserItem)
+                                    .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().putDebug(info)))
+                                    .collect(Collectors.toList()))
+            ),
+            new CommandEntry("Add consumable...", view ->
+                    openSubFrame(
+                            GameData.getData().items.stream()
+                                    .filter(item -> item.isConsumable)
+                                    .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().putDebug(info)))
+                                    .collect(Collectors.toList()))
+            ),
+            new CommandEntry("Set need...", view ->
+                    openSubFrame(
+                            Arrays.asList(new CommandEntry[]{
+                                    new CommandEntry("Energy (f)", v -> _character.getNeeds().energy = 100),
+                                    new CommandEntry("Energy (w)", v -> _character.getNeeds().energy = _character.getType().needs.energy.warning),
+                                    new CommandEntry("Energy (c)", v -> _character.getNeeds().energy = _character.getType().needs.energy.critical),
+                                    new CommandEntry("Food (f)", v -> _character.getNeeds().food = 100),
+                                    new CommandEntry("Food (w)", v -> _character.getNeeds().food = _character.getType().needs.food.warning),
+                                    new CommandEntry("Food (c)", v -> _character.getNeeds().food = _character.getType().needs.food.critical),
+                                    new CommandEntry("Relation (f)", v -> _character.getNeeds().relation = 100),
+                                    new CommandEntry("Relation (w)", v -> _character.getNeeds().relation = _character.getType().needs.relation.warning),
+                                    new CommandEntry("Relation (c)", v -> _character.getNeeds().relation = _character.getType().needs.relation.critical),
+                                    new CommandEntry("Joy (f)", v -> _character.getNeeds().joy = 100),
+                                    new CommandEntry("Joy (w)", v -> _character.getNeeds().joy = _character.getType().needs.joy.warning),
+                                    new CommandEntry("Joy (c)", v -> _character.getNeeds().joy = _character.getType().needs.joy.critical),
+                            }))
+            ),
             new CommandEntry("Dump managers", view -> {
                 Log.notice("----------- dump -----------");
                 Game.getInstance().getManagers().forEach(manager -> manager.dump());
             }),
     };
+
+    private void openSubFrame(Collection<CommandEntry> commands) {
+        final FrameLayout frameCommands = (FrameLayout) findById("frame_dev_commands");
+        frameCommands.setVisible(false);
+
+        final FrameLayout frameConsumable = (FrameLayout) findById("frame_dev_sub");
+        frameConsumable.setVisible(true);
+        frameConsumable.removeAllViews();
+
+        int index = 0;
+        for (CommandEntry command: commands) {
+            UILabel lbConsumable = ViewFactory.getInstance().createTextView(100, 26);
+            lbConsumable.setCharacterSize(14);
+            lbConsumable.setAlign(Align.CENTER_VERTICAL);
+            lbConsumable.setPosition(10, index++ * 26);
+            lbConsumable.setOnClickListener(view -> {
+                command.listener.onClick(view);
+//                frameCommands.setVisible(true);
+//                frameConsumable.setVisible(false);
+            });
+            lbConsumable.setString(command.label);
+            lbConsumable.setSize(200, 26);
+            frameConsumable.addView(lbConsumable);
+        }
+    }
 
     public PanelDev() {
         super(null, null, 0, 0, 0, 0, "data/ui/panels/dev.yml");
@@ -65,57 +118,31 @@ public class PanelDev extends BasePanel {
 
         int index = 0;
         for (CommandEntry entry: COMMANDS) {
-            UILabel lbCommand = ViewFactory.getInstance().createTextView(100, 30);
+            UILabel lbCommand = ViewFactory.getInstance().createTextView(100, 26);
             lbCommand.setCharacterSize(14);
             lbCommand.setAlign(Align.CENTER_VERTICAL);
-            lbCommand.setPosition(10, index++ * 30);
+            lbCommand.setPosition(10, index++ * 26);
             lbCommand.setOnClickListener(entry.listener);
             lbCommand.setString(entry.label);
-            lbCommand.setSize(200, 30);
+            lbCommand.setSize(200, 26);
             frameCommands.addView(lbCommand);
         }
 
-        // Create frame consumable
-        index = 0;
-        FrameLayout frameConsumable = (FrameLayout) findById("frame_dev_consumables");
-        frameConsumable.setVisible(false);
-        for (ItemInfo itemInfo: GameData.getData().items) {
-            if (itemInfo.isConsumable) {
-                UILabel lbConsumable = ViewFactory.getInstance().createTextView(100, 30);
-                lbConsumable.setCharacterSize(14);
-                lbConsumable.setAlign(Align.CENTER_VERTICAL);
-                lbConsumable.setPosition(10, index++ * 30);
-                lbConsumable.setOnClickListener(view -> {
-                    UserInterface.getInstance().putDebug(itemInfo);
-                    frameCommands.setVisible(true);
-                    frameConsumable.setVisible(false);
-                });
-                lbConsumable.setString(itemInfo.label);
-                lbConsumable.setSize(200, 30);
-                frameConsumable.addView(lbConsumable);
-            }
-        }
+        findById("bt_back").setOnClickListener(view -> {
+            findById("frame_dev_commands").setVisible(true);
+            findById("frame_dev_sub").setVisible(false);
+        });
+    }
 
-        // Create frame items
-        index = 0;
-        FrameLayout frameItems = (FrameLayout) findById("frame_dev_items");
-        frameItems.setVisible(false);
-        for (ItemInfo itemInfo: GameData.getData().items) {
-            if (itemInfo.isUserItem) {
-                UILabel lbItem = ViewFactory.getInstance().createTextView(100, 30);
-                lbItem.setCharacterSize(14);
-                lbItem.setAlign(Align.CENTER_VERTICAL);
-                lbItem.setPosition(10, index++ * 30);
-                lbItem.setOnClickListener(view -> {
-                    UserInterface.getInstance().putDebug(itemInfo);
-                    frameCommands.setVisible(true);
-                    frameItems.setVisible(false);
-                });
-                lbItem.setString(itemInfo.label);
-                lbItem.setSize(200, 30);
-                frameItems.addView(lbItem);
-            }
-        }
+    @Override
+    public void onSelectCharacter(CharacterModel character) {
+        _character = character;
+    }
+
+    @Override
+    protected void onRefresh(int update) {
+        ((UILabel)findById("lb_mouse")).setString(
+                UserInterface.getInstance().getMouseX() + "x" + UserInterface.getInstance().getMouseY());
     }
 
 }

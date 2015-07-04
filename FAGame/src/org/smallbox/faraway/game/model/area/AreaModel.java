@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui;
+package org.smallbox.faraway.game.model.area;
 
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -10,8 +10,8 @@ import java.util.*;
  * Created by Alex on 13/06/2015.
  */
 public class AreaModel {
-    private Map<ItemInfo, Boolean>      _items;
     protected final Set<ParcelModel>    _parcels = new HashSet<>();
+    protected Map<ItemInfo, Boolean>    _items;
     private final AreaType              _type;
     private int                         _x;
     private int                         _y;
@@ -19,12 +19,6 @@ public class AreaModel {
     public AreaModel(AreaType type) {
         _type = type;
         _items = new HashMap<>();
-
-        for (ItemInfo itemInfo: GameData.getData().items) {
-            if (itemInfo.isConsumable || itemInfo.isResource) {
-                _items.put(itemInfo, false);
-            }
-        }
     }
 
     public void addParcel(ParcelModel parcel) {
@@ -65,6 +59,18 @@ public class AreaModel {
         return _type;
     }
 
+    public void removeParcel(ParcelModel parcel) {
+        _parcels.remove(parcel);
+    }
+
+    public int getX() {
+        return _x;
+    }
+
+    public int getY() {
+        return _y;
+    }
+
     public boolean accept(ItemInfo itemInfo) {
         return _items.containsKey(itemInfo) && _items.get(itemInfo);
     }
@@ -77,15 +83,4 @@ public class AreaModel {
         return _items;
     }
 
-    public void removeParcel(ParcelModel parcel) {
-        _parcels.remove(parcel);
-    }
-
-    public int getX() {
-        return _x;
-    }
-
-    public int getY() {
-        return _y;
-    }
 }

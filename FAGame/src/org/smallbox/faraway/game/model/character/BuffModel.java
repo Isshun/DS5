@@ -1,4 +1,4 @@
-package org.smallbox.faraway.game.model;
+package org.smallbox.faraway.game.model.character;
 
 /**
  * Created by Alex on 02/07/2015.

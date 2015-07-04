@@ -14,7 +14,9 @@ public class WorldSerializer implements SerializerInterface {
     public void save(FileOutputStream fos) throws IOException {
         FileUtils.write(fos, "<parcels>");
         for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
-            writeParcel(fos, parcel);
+            if (parcel.getZ() == 0) {
+                writeParcel(fos, parcel);
+            }
         }
         FileUtils.write(fos, "</parcels>");
     }

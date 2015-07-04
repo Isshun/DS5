@@ -2,22 +2,31 @@ entries:
 
     -   type: frame
         position: [0, 300]
-        size: [200, 600]
+        size: [200, 800]
         background: 0x885522
         entries:
 
+        -   type: label
+            id: bt_back
+            text: back
+            textsize: 14
+            size: [52, 28]
+            align: center
+            background: 0xdd000000
+
+        -   type: label
+            id: lb_mouse
+            textsize: 14
+            size: [52, 28]
+            position: [100, 0]
+            align: center
+
         -   type: frame
             id: frame_dev_commands
+            position: [0, 32]
             size: [200, 600]
 
         -   type: frame
-            id: frame_dev_consumables
-            size: [200, 600]
-
-        -   type: frame
-            id: frame_dev_items
-            size: [200, 600]
-
-        -   type: frame
-            id: frame_dev_structures
+            id: frame_dev_sub
+            position: [0, 32]
             size: [200, 600]
