@@ -1,8 +1,25 @@
-label: Seaweed
+label: Euglena Bloom
 width: 1
 height: 1
 type: resource
+category: Algae
 isLive: true
+plant:
+    mature: 5
+    growing:
+        stasis:
+            temperature: [0, 50]
+            light: [0, 100]
+        partial:
+            temperature: [14, 50]
+            light: [0, 60]
+        regular:
+            temperature: [20, 50]
+            light: [0, 60]
+        exceptional:
+            temperature: [20, 50]
+            light: [0, 60]
+
 actions:
     -   type: gather
         cost: 20

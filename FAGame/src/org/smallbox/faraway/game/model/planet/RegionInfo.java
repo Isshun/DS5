@@ -39,4 +39,5 @@ public class RegionInfo {
     public List<RegionResource>		resources;
     public List<RegionWeather>		weather;
     public List<RegionFauna>		fauna;
+    public int                      temperature;
 }

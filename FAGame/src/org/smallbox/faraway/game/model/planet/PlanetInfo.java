@@ -3,6 +3,11 @@ package org.smallbox.faraway.game.model.planet;
 import java.util.List;
 
 public class PlanetInfo {
+
+	public static class PlanetFarming {
+		public int[]	growing;
+	}
+
 	public static class PlanetStats {
 		public int water;
 		public int fertility;
@@ -30,6 +35,7 @@ public class PlanetInfo {
 	public PlanetImage 					image;
 	public PlanetCredit 				credit;
 	public List<RegionInfo> 			regions;
+	public PlanetFarming 				farming;
 	public double	            		albedo;
 	public double 	            		pressure;
 	public double 	            		greenhouse;

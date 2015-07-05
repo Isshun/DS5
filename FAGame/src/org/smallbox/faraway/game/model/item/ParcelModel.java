@@ -31,6 +31,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public int              tmpData;
     private int             _environment;
     public double           light;
+    private boolean         _isExterior;
 
     public ParcelModel(int x, int y, int z) {
         _light = 0;
@@ -204,5 +205,13 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
             _environment += _item.getValue();
         }
         return _environment;
+    }
+
+    public boolean isExterior() {
+        return _isExterior;
+    }
+
+    public void setExterior(boolean isExterior) {
+        _isExterior = isExterior;
     }
 }

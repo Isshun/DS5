@@ -106,6 +106,9 @@ public class RoomManager extends BaseManager implements GameObserver {
                         exploreRoom(room);
                         checkRoof(room);
                         addSpecialsItems(room);
+                        if (room.isExterior()) {
+                            room.getParcels().forEach(p -> p.setExterior(true));
+                        }
                         room.setAutoName(autoName(room));
                     }
                 }

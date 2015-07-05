@@ -67,7 +67,7 @@ public class JobManager extends BaseManager {
         if (tick % 10 == 0) {
             // Create haul jobs
             _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).getItemAround());
-            Game.getWorldManager().getConsumables().stream().filter(consumable -> consumable.getHaul() == null && consumable.getParcel().getArea() == null).forEach(consumable -> {
+            Game.getWorldManager().getConsumables().stream().filter(consumable -> consumable.getHaul() == null && !consumable.inValidStorage()).forEach(consumable -> {
                 addJob(JobHaul.create(consumable));
             });
 
@@ -196,30 +196,30 @@ public class JobManager extends BaseManager {
 	public void assignJob(CharacterModel character) {
 
 		// Priority jobs
-		if (assignPriorityJob(character)) {
+		if (assignPriorityJob(character) && character.getJob() != null) {
 			Log.debug("assign priority job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
 			return;
 		}
 
 		// Joy jobs
-		if (assignJoyJob(character, true)) {
+		if (assignJoyJob(character, true) && character.getJob() != null) {
 			Log.debug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
 			return;
 		}
 
 		// Regular jobs
-        if (assignRegularJob(character)) {
+        if (assignRegularJob(character) && character.getJob() != null) {
             Log.debug("assign regular job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
             return;
         }
 
-        if (assignFailJob(character)) {
+        if (assignFailJob(character) && character.getJob() != null) {
             Log.debug("assign failed job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
             return;
         }
 
 		// Joy jobs
-		if (assignJoyJob(character, false)) {
+		if (assignJoyJob(character, false) && character.getJob() != null) {
 			Log.debug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
 			return;
 		}
@@ -288,6 +288,9 @@ public class JobManager extends BaseManager {
 				BaseJobModel job = jobCheck.create(character);
 				if (job != null) {
 					assignJobToCharacter(job, character);
+					if (character.getJob() != job) {
+						Log.error("Fail to assign job");
+					}
 					return true;
 				}
 			}
@@ -308,6 +311,9 @@ public class JobManager extends BaseManager {
 				BaseJobModel job = jobCheck.create(character);
 				if (job != null) {
                     assignJobToCharacter(job, character);
+					if (character.getJob() != job) {
+						Log.error("Fail to assign job");
+					}
 					return true;
 				}
 			}
@@ -342,6 +348,9 @@ public class JobManager extends BaseManager {
             // Job found for current talent
             if (bestJob != null) {
                 assignJobToCharacter(bestJob, character);
+				if (character.getJob() != bestJob) {
+					Log.error("Fail to assign job");
+				}
                 return true;
             }
         }

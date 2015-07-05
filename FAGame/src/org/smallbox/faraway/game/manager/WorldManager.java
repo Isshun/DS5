@@ -28,6 +28,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     private BlockingQueue<ResourceModel> _resources = new LinkedBlockingQueue<>();
     private Set<ItemModel>     _items = new HashSet<>();
     private List<ParcelModel> _parcelList;
+    private int                 _light;
 
     public ParcelModel[][][] getParcels() {
         return _parcels;
@@ -35,6 +36,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
     public WorldManager(Game game) {
         _game = game;
+        _temperature = game.getRegion().getInfo().temperature;
     }
 
     public void init(int width, int height) {
@@ -201,7 +203,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         if (inMapBounds(x, y)) {
             ParcelModel area = _parcels[x][y][0];
             if (area.getStructure() == null || area.getStructure().isFloor()) {
-                return area.getItem() == null && (area.getConsumable() == null || (area.getConsumable().getInfo() == info && area.getConsumable().getQuantity() + quantity <= GameData.config.storageMaxQuantity));
+                return area.getItem() == null && (area.getConsumable() == null || (area.getConsumable().getInfo() == info && area.getConsumable().getQuantity() + quantity <= Math.max(GameData.config.storageMaxQuantity, area.getConsumable().getInfo().stack)));
             }
         }
         return false;
@@ -636,5 +638,13 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
     public Collection<ResourceModel> getResources() {
         return _resources;
+    }
+
+    public void setLight(int light) {
+        _light = light;
+    }
+
+    public int getLight() {
+        return _light;
     }
 }

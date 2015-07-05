@@ -3,6 +3,7 @@ width: 1
 height: 1
 isFood: true
 type: consumable
+
 actions:
     -   type: use
         label: Eat easy meal

@@ -6,16 +6,12 @@ import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.CharacterManager;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.cursor.BuildCursor;
-import org.smallbox.faraway.ui.cursor.DefaultCursor;
 import org.smallbox.faraway.ui.engine.UIEventManager;
-import org.smallbox.faraway.ui.engine.UIMessage;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.*;
 import org.smallbox.faraway.ui.panel.info.*;
@@ -53,7 +49,7 @@ public class UserInterface implements GameEventListener {
     private	BasePanel[]					_panels = new BasePanel[] {
             new PanelSystem(),
             new PanelResources(),
-            new PanelDev(),
+            new PanelDebug(),
             new PanelQuest(),
             new PanelCharacter(	    Mode.CHARACTER,         null),
 //            new PanelInfo(		    Mode.INFO, 		        null),
@@ -64,7 +60,6 @@ public class UserInterface implements GameEventListener {
             new PanelInfoArea(	    Mode.INFO_AREA, 	    null),
             new PanelInfoResource(	Mode.INFO_RESOURCE, 	null),
             new PanelInfoAnimal(	Mode.INFO_ANIMAL, 	    null),
-            new PanelDebug(		    Mode.DEBUG, 	        Key.TILDE),
             new PanelPlan(		    Mode.PLAN, 		        Key.P),
             new PanelRoom(		    Mode.ROOM, 		        Key.R),
             new PanelTooltip(	    Mode.TOOLTIP, 	        Key.F1),

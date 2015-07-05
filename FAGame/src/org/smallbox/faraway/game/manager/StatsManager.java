@@ -1,12 +1,28 @@
 package org.smallbox.faraway.game.manager;
 
-import org.smallbox.faraway.StatsData;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StatsManager extends BaseManager {
+	public static class StatsData {
+
+		public List<Integer> 	values;
+		public String 			label;
+
+		public StatsData(String label) {
+			this.label = label;
+			this.values = new ArrayList<>();
+		}
+
+		public void add(int value) {
+			values.add(value);
+		}
+
+	}
+
 	private static final int 	UPDATE_INTERVAL = 10;
 
 	public StatsData 			nbCharacter;

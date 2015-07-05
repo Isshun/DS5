@@ -20,5 +20,6 @@ public class CharacterTypeInfo {
 
     public String           name;
     public String           label;
-    public Needs needs;
+    public Needs            needs;
+    public int              index;
 }

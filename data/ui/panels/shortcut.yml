@@ -97,16 +97,6 @@ entries:
             background: 0x1d5560
 
         -   type: label
-            id: bt_debug
-            text: '[_DEBUG]'
-            textsize: 18
-            textcolor: 0x78ffff
-            position: [24, 185]
-            size: [175, 45]
-            align: center
-            background: 0x1d5560
-
-        -   type: label
             id: bt_plan
             text: '[_PLAN]'
             textsize: 18

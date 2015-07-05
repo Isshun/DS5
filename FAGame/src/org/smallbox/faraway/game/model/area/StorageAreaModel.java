@@ -28,7 +28,7 @@ public class StorageAreaModel extends AreaModel {
         int bestDistance = Integer.MAX_VALUE;
         ParcelModel bestParcel = null;
         for (ParcelModel parcel: _parcels) {
-            if (parcel.getConsumable() == null || (parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() + consumable.getQuantity() <= GameData.config.storageMaxQuantity)) {
+            if (parcel.getConsumable() == null || (parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() + consumable.getQuantity() <= Math.max(GameData.config.storageMaxQuantity, consumable.getInfo().stack))) {
                 int distance = Utils.getDistance(parcel, x, y);
                 if (distance < bestDistance) {
                     bestDistance = distance;

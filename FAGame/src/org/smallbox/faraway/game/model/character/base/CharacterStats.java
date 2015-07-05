@@ -9,6 +9,7 @@ import java.util.List;
  * Created by Alex on 16/06/2015.
  */
 public class CharacterStats {
+    public String deathMessage;
     public double speed;
     public double bodyHeat = Constant.BODY_TEMPERATURE;
     public boolean isAlive = true;

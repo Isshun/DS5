@@ -47,7 +47,6 @@ public class GDXRenderLayer extends RenderLayer {
         if (sprite != null) {
             if (_count < 5000) {
                 // TODO: BOF
-                System.out.println("count: " + _count);
                 _cache.add(((GDXSpriteModel)sprite).getData());
                 _count++;
             }

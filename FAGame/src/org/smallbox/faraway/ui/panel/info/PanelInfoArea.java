@@ -9,6 +9,7 @@ import org.smallbox.faraway.game.model.area.GardenAreaModel;
 import org.smallbox.faraway.game.model.area.StorageAreaModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.ui.*;
 import org.smallbox.faraway.ui.engine.*;
 
@@ -59,6 +60,8 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         ((UILabel)findById("lb_area")).setString(area.getName());
         findById("bt_remove_area").setOnClickListener(view -> ((AreaManager) Game.getInstance().getManager(AreaManager.class)).remove(area));
 
+        findById("frame_info_garden").setVisible(false);
+        findById("frame_info_storage").setVisible(false);
         findById("frame_entries").setVisible(false);
 
         switch (area.getType()) {
@@ -91,6 +94,20 @@ public class PanelInfoArea extends BaseInfoRightPanel {
                 posY = index++ % 2 == 0 ? posY : posY + 20;
                 posX = posX == 0 ? 200 : 0;
             }
+        }
+
+        findById("frame_info_garden").setVisible(true);
+
+        PlanetInfo planetInfo = Game.getInstance().getPlanet().getInfo();
+        ((UILabel)findById("lb_growing_period")).setString("Growing period: " + planetInfo.farming.growing[0] + " to " + planetInfo.farming.growing[1]);
+
+        if (parcel.getResource() != null) {
+            double growRate = parcel.getResource().getGrowRate();
+            UILabel lbGrowRate = (UILabel)findById("lb_growing_status");
+            if (growRate < 0) { lbGrowRate.setString("Status: plant is dying"); }
+            if (growRate > 0.025) { lbGrowRate.setString("Status: partial grow"); }
+            if (growRate < 0.05) { lbGrowRate.setString("Status: regular grow"); }
+            if (growRate < 0.075) { lbGrowRate.setString("Status: exceptional grow"); }
         }
     }
 

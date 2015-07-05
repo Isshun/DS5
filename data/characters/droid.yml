@@ -3,8 +3,8 @@ label: Human
 needs:
 
     food:
-        warning: 25
-        critical: 5
+        warning: 35
+        critical: 25
         change: -5
 
     oxygen:

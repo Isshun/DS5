@@ -493,6 +493,10 @@ public class PanelCharacter extends BaseRightPanel {
     }
 
     private void refreshHealth() {
+        if (_character.getStats().deathMessage != null) {
+            ((UILabel) findById("lb_health")).setString(_character.getStats().deathMessage);
+        }
+
         // Don't use foreach for CME reason
         int line = 0;
         int length = _character._diseases.size();

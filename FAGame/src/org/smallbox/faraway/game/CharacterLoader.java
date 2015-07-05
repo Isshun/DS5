@@ -33,6 +33,7 @@ public class CharacterLoader implements IDataLoader {
 
     @Override
     public void load(GameData data) {
+        int index = 0;
         data.characters =  new HashMap<>();
         for (File file: new File("data/characters/").listFiles()) {
             if (file.getName().endsWith(".yml")) {
@@ -40,6 +41,7 @@ public class CharacterLoader implements IDataLoader {
                     InputStream input = new FileInputStream(file);
                     Yaml yaml = new Yaml(new Constructor(CharacterTypeInfo.class));
                     CharacterTypeInfo info = (CharacterTypeInfo) yaml.load(input);
+                    info.index = index++;
                     info.name = file.getName().replace(".yml", "");
                     data.characters.put(info.name, info);
                 } catch (FileNotFoundException e) {

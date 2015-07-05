@@ -14,32 +14,53 @@ entries:
         position: [0, 46]
         entries:
 
-        -   type: label
-            text: Area
-            textsize: 14
-            position: [24, -16]
+            -   type: label
+                text: Area
+                textsize: 14
+                position: [24, -16]
 
-        -   type: label
-            text: id
-            textsize: 14
-            position: [300, -16]
+            -   type: label
+                text: id
+                textsize: 14
+                position: [300, -16]
 
-        -   type: frame
-            position: [24, 0]
-            size: [370, 1]
-            background: 0x888888
+            -   type: frame
+                position: [24, 0]
+                size: [370, 1]
+                background: 0x888888
 
-        -   type: label
-            id: lb_area
-            textsize: 24
-            position: [24, 24]
+            -   type: label
+                id: lb_area
+                textsize: 24
+                position: [24, 24]
 
-        -   type: label
-            id: bt_remove_area
-            text: remove area
-            textsize: 14
-            position: [24, 48]
+            -   type: label
+                id: bt_remove_area
+                text: remove area
+                textsize: 14
+                position: [24, 48]
 
-        -   type: frame
-            id: frame_entries
-            position: [24, 68]
+            -   type: frame
+                id: frame_info_garden
+                position: [24, 68]
+                entries:
+
+                    -   type: label
+                        id: lb_growing_status
+                        text: status
+                        textsize: 14
+                        position: [0, 0]
+
+                    -   type: label
+                        id: lb_growing_period
+                        text: growing
+                        textsize: 14
+                        position: [0, 20]
+
+            -   type: frame
+                id: frame_info_storage
+                position: [24, 68]
+
+            -   type: frame
+                id: frame_entries
+                position: [24, 128]

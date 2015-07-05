@@ -75,4 +75,8 @@ public class ConsumableModel extends MapObjectModel {
     public BaseJobModel getLock() {
         return _lock;
     }
+
+    public boolean inValidStorage() {
+        return _parcel.getArea() != null && _parcel.getArea().accept(_info);
+    }
 }

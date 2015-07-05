@@ -31,7 +31,7 @@ public class Constant {
 	public static final int 	UI_FONT_SIZE			= 32;
 	public static final int 	TILE_WIDTH				= 32;
 	public static final int 	TILE_HEIGHT				= 32;
-	public static final int 	CHAR_HEIGHT				= 48;
+	public static final int 	CHAR_HEIGHT				= 32;
 	public static final int 	CHAR_WIDTH				= 32;
 	public static final int 	RESSOURCE_MATTER_START 	= 50000;
 	public static final int 	CHARACTER_INIT_FOOD 	= 80;

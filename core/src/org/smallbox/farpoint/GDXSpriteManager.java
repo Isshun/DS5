@@ -441,27 +441,31 @@ public class GDXSpriteManager extends SpriteManager {
 
     @Override
     public SpriteModel getCharacter(CharacterModel c, int direction, int frame) {
-        int extra = 0;
+        int extra = c.getType().index;
         int sum = 0;
         sum = sum << 8;
         sum += direction;
         sum = sum << 8;
         sum += frame;
         sum = sum << 8;
-//        sum += extra;
+        sum += extra;
 
         GDXSpriteModel sprite = _spritesCharacters.get(sum);
         if (sprite == null) {
-            Texture texture;
-
-            texture = _textureCharacters[0];
+            Texture texture = new Texture("data/characters/" + c.getType().name + ".png");
 
             sprite = new GDXSpriteModel(texture,
-                    Constant.CHAR_WIDTH * frame + (extra * 128),
-                    Constant.CHAR_HEIGHT * direction,
+                    0,
+                    0,
                     Constant.CHAR_WIDTH,
                     Constant.CHAR_HEIGHT);
 
+//            sprite = new GDXSpriteModel(texture,
+//                    Constant.CHAR_WIDTH * frame + (extra * 128),
+//                    Constant.CHAR_HEIGHT * direction,
+//                    Constant.CHAR_WIDTH,
+//                    Constant.CHAR_HEIGHT);
+//
             _spritesCharacters.put(sum, sprite);
         }
 

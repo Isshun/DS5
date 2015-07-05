@@ -24,7 +24,6 @@ public class UserInterfaceSelector {
     private final UserInterface _userInterface;
     private CharacterModel      _selectedCharacter;
     private ItemModel           _selectedItem;
-
     private ParcelModel         _lastSelectedParcel;
     private int                 _lastSelectedIndex;
 
@@ -109,23 +108,23 @@ public class UserInterfaceSelector {
     public CharacterModel       getSelectedCharacter() { return _selectedCharacter; }
 
     public boolean selectAt(int x, int y) {
-        CharacterModel character = Game.getCharacterManager().getCharacterAtPos(x, y);
-        AreaModel area = ((AreaManager) Game.getInstance().getManager(AreaManager.class)).getArea(x, y);
         ParcelModel parcel = Game.getWorldManager().getParcel(x, y);
-
-        _lastSelectedIndex = _lastSelectedParcel == parcel ? _lastSelectedIndex + 1 : 0;
-        _lastSelectedParcel = parcel;
-
-        // Select best items on parcel
-        for (int i = 0; i < SELECTORS.length; i++) {
-            if (SELECTORS[(i + _lastSelectedIndex) % SELECTORS.length].onSelect(character, parcel, area)) {
-                _lastSelectedIndex = (i + _lastSelectedIndex) % SELECTORS.length;
-                return true;
-            }
-        }
-
-        // Select parcel
         if (parcel != null) {
+            CharacterModel character = Game.getCharacterManager().getCharacterAtPos(x, y);
+            AreaModel area = ((AreaManager) Game.getInstance().getManager(AreaManager.class)).getArea(x, y);
+
+            _lastSelectedIndex = _lastSelectedParcel == parcel ? _lastSelectedIndex + 1 : 0;
+            _lastSelectedParcel = parcel;
+
+            // Select best items on parcel
+            for (int i = 0; i < SELECTORS.length; i++) {
+                if (SELECTORS[(i + _lastSelectedIndex) % SELECTORS.length].onSelect(character, parcel, area)) {
+                    _lastSelectedIndex = (i + _lastSelectedIndex) % SELECTORS.length;
+                    return true;
+                }
+            }
+
+            // Select parcel
             select(parcel);
             return true;
         }

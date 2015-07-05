@@ -3,6 +3,7 @@ package org.smallbox.faraway.game.manager;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.WeatherModel;
@@ -26,6 +27,7 @@ public class WeatherManager extends BaseManager implements GameObserver {
     private Color                   _previousSunColor;
     private Color                   _nextSunColor;
     private float                   _progressValue;
+    private double                  _light;
 
     public WeatherManager(LightRenderer lightRenderer, ParticleRenderer particleRenderer, WorldManager worldManager) {
         _lightRenderer = lightRenderer;
@@ -41,21 +43,25 @@ public class WeatherManager extends BaseManager implements GameObserver {
         if (hour == 5) {
             _progressValue = 1f / GameData.config.tickPerHour;
             _sunTransitionProgress = 0;
+            _light = 0.5;
             switchSunColor("dawn");
         }
         if (hour == 6) {
             _progressValue = 0.5f / GameData.config.tickPerHour;
             _sunTransitionProgress = 0;
+            _light = 1;
             switchSunColor("noon");
         }
         if (hour == 19) {
             _progressValue = 1f / GameData.config.tickPerHour;
             _sunTransitionProgress = 0;
+            _light = 0.5;
             switchSunColor("twilight");
         }
         if (hour == 20) {
             _progressValue = 0.5f / GameData.config.tickPerHour;
             _sunTransitionProgress = 0;
+            _light = 0.2;
             switchSunColor("midnight");
         }
     }
@@ -67,8 +73,9 @@ public class WeatherManager extends BaseManager implements GameObserver {
             loadWeather(new ArrayList<>(GameData.getData().weathers.values()).get((int)(Math.random() * GameData.getData().weathers.size())));
         }
 
-        if (_sunTransitionProgress < 1) {
+        if (_sunTransitionProgress <= 1) {
             _sunTransitionProgress += _progressValue;
+            Game.getWorldManager().setLight((int)(_light * _sunTransitionProgress));
             if (_lightRenderer != null) {
                 _lightRenderer.setSunColor(new Color(
                         (int) ((_previousSunColor.r * (1 - _sunTransitionProgress)) + (_nextSunColor.r * _sunTransitionProgress)),

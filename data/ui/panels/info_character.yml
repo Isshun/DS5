@@ -290,14 +290,13 @@ entries:
 
         -   type: label
             text: "[Health]"
-            textsize: 20
+            textsize: 24
             position: [20, 184]
             size: [180, 40]
             align: center
             background: 0xb0cd35
 
         -   type: label
-            id: lb_health
             text: Health
             textsize: 22
             position: [20, 245]
@@ -314,6 +313,7 @@ entries:
             position: [20, 300]
 
         -   type: label
+            id: lb_health
             text: All systems functioning within normal parameters
             textsize: 18
             position: [20, 330]

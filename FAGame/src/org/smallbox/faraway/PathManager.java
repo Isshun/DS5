@@ -8,6 +8,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
 import org.smallbox.faraway.game.manager.BaseManager;
 import org.smallbox.faraway.game.model.MovableModel;
+import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.util.Log;
@@ -114,6 +115,13 @@ public class PathManager extends BaseManager {
             return true;
         }
         return findPath(fromParcel, toParcel) != null;
+    }
+
+    public GraphPath<ParcelModel> getPath(AreaModel fromArea, ParcelModel toParcel) {
+        for (ParcelModel parcel: fromArea.getParcels()) {
+            return getPath(parcel, toParcel);
+        }
+        return null;
     }
 
     public GraphPath<ParcelModel> getPath(ParcelModel fromParcel, ParcelModel toParcel) {

@@ -51,7 +51,6 @@ public class PanelShortcut extends BaseRightPanel {
             new PanelEntry("bt_occupation", "[ CCUPATION]", "O",	1, Mode.JOBS),
             new PanelEntry("bt_crew",       "[ REW]", 		"C", 	1, Mode.CREW),
             new PanelEntry("bt_room",       "[ OOM]", 		"R", 	1, Mode.ROOM),
-            new PanelEntry("bt_debug",      "[ EBUG]", 		"D", 	1, Mode.DEBUG),
             new PanelEntry("bt_plan",       "[ LAN]", 		"P",	1, Mode.PLAN),
             new PanelEntry("bt_manage",     "[ ANAGE]", 	"M",	1, Mode.MANAGER),
             new PanelEntry("bt_stats",      "[ TATS]", 		"S",	1, Mode.STATS),

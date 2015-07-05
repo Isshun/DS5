@@ -5,6 +5,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.area.*;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.util.Utils;
 
 import java.util.ArrayList;
@@ -16,6 +17,10 @@ import java.util.stream.Collectors;
  */
 public class AreaManager extends BaseManager {
     private List<AreaModel> _areas = new ArrayList<>();
+
+    public AreaManager() {
+        _updateInterval = 10;
+    }
 
     public void createArea(AreaType type, int fromX, int fromY, int toX, int toY) {
         // Search existing area for current position
@@ -90,9 +95,9 @@ public class AreaManager extends BaseManager {
         int bestDistance = Integer.MAX_VALUE;
         AreaModel bestArea = null;
         for (AreaModel area: _areas) {
-            if (area.isStorage() && area.accept(consumable.getInfo())) {
+            if (area.isStorage() && area.accept(consumable.getInfo()) && PathManager.getInstance().getPath(area, fromParcel) != null) {
                 ParcelModel parcel = ((StorageAreaModel)area).getNearestFreeParcel(consumable, x, y);
-                if (parcel != null && Utils.getDistance(parcel, x, y) < bestDistance && PathManager.getInstance().getPath(fromParcel, parcel) != null) {
+                if (parcel != null && Utils.getDistance(parcel, x, y) < bestDistance) {
                     bestArea = area;
                     bestDistance = Utils.getDistance(parcel, x, y);
                 }
@@ -107,23 +112,6 @@ public class AreaManager extends BaseManager {
 
     @Override
     protected void onUpdate(int tick) {
-        for (AreaModel area: _areas) {
-            if (area.getType() == AreaType.GARDEN) {
-                updateGarden((GardenAreaModel)area);
-            }
-        }
-    }
-
-    private void updateGarden(GardenAreaModel garden) {
-        for (ParcelModel parcel: garden.getParcels()) {
-            if (parcel.getResource() != null && parcel.getResource().canBeHarvested()) {
-                if (!parcel.getResource().isMature()) {
-                    parcel.getResource().addQuantity(0.005);
-                } else {
-                    JobManager.getInstance().addGather(parcel.getResource());
-                }
-            }
-        }
     }
 
     public void remove(AreaModel area) {

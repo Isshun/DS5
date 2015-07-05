@@ -1,8 +1,8 @@
 weather: regular
 time: noon
 tickPerHour: 50
-inventoryMaxQuantity: 20
-storageMaxQuantity: 30
+inventoryMaxQuantity: 100
+storageMaxQuantity: 50
 environmentDistance: 5
 byPassMenu: true
 lang: fr

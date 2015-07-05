@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.job;
 
+import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.GameData;
@@ -18,12 +19,13 @@ public class JobHaul extends BaseJobModel {
     private enum Mode {MOVE_TO_CONSUMABLE, MOVE_TO_STORAGE}
 
     private List<ConsumableModel>   _consumables = new ArrayList<>();
-    private StorageAreaModel _storage;
+    private StorageAreaModel        _storage;
     private ParcelModel 	        _parcel;
     private Mode 			        _mode;
     private int                     _quantity;
     private ItemInfo                _itemInfo;
     private String                  _message;
+    private ParcelModel             _consumableParcel;
 
     private JobHaul(int x, int y) {
         super(null, x, y, "data/res/ic_haul.png", "data/res/ic_action_haul.png");
@@ -36,6 +38,7 @@ public class JobHaul extends BaseJobModel {
         }
 
         JobHaul job = new JobHaul(consumable.getX(), consumable.getY());
+        job._consumableParcel = consumable.getParcel();
         job._mode = Mode.MOVE_TO_CONSUMABLE;
         job._itemInfo = consumable.getInfo();
         job.getItemAround();
@@ -45,10 +48,17 @@ public class JobHaul extends BaseJobModel {
             return null;
         }
 
-        job.foundStorageParcel(job._consumables.get(0));
-        job.refreshJob();
+        if (job.foundStorageParcel(job._consumables.get(0))) {
+            // Lock items
+            job._consumables.forEach(c -> {
+                c.lock(job);
+                c.setHaul(job);
+            });
+            job.refreshJob();
+            return job;
+        }
 
-        return job;
+        return null;
     }
 
     public void getItemAround() {
@@ -63,9 +73,12 @@ public class JobHaul extends BaseJobModel {
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
                 ConsumableModel c = Game.getWorldManager().getConsumable(x, y);
-                if (c != null && c.getLock() == null && c.getInfo() == _itemInfo && c.getHaul() == null && _quantity + c.getQuantity() <= GameData.config.inventoryMaxQuantity) {
-                    c.setHaul(this);
-                    c.lock(this);
+                if (c != null
+                        && c.getLock() == null
+                        && c.getInfo() == _itemInfo
+                        && c.getHaul() == null
+                        && _quantity + c.getQuantity() <= GameData.config.inventoryMaxQuantity
+                        && (c.getParcel() == _consumableParcel || PathManager.getInstance().getPath(c.getParcel(), _consumableParcel) != null)) {
                     _quantity += c.getQuantity();
                     _consumables.add(c);
                 }
@@ -206,7 +219,7 @@ public class JobHaul extends BaseJobModel {
                 return JobActionReturn.FINISH;
             }
             if (_parcel != null && _parcel.getConsumable().getInfo() == _character.getInventory().getInfo()) {
-                int freeQuantity = GameData.config.storageMaxQuantity - _parcel.getConsumable().getQuantity();
+                int freeQuantity = Math.max(GameData.config.storageMaxQuantity, _parcel.getConsumable().getInfo().stack) - _parcel.getConsumable().getQuantity();
                 // Store all inventory consumables on storage area
                 if (freeQuantity >= _character.getInventory().getQuantity()) {
                     _parcel.getConsumable().addQuantity(_character.getInventory().getQuantity());

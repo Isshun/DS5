@@ -30,61 +30,63 @@ public class CharacterRenderer extends BaseRenderer {
 			int posY = (int) ((c.getY() * Constant.TILE_HEIGHT - (Constant.CHAR_HEIGHT - Constant.TILE_HEIGHT) + 0) * effect.getViewport().getScale());
 			Direction direction = c.getDirection();
 			Direction move = c.getMove();
+			int frame = 0;
+			int dirIndex = 0;
 
 			// Get offset based on current frame
-			int offset = 0;
-			int frame = 0;
-			if (move != Direction.NONE) {
-				offset = (int) ((c.getMoveProgress() + c.getMoveStep() * animProgress) * Constant.TILE_WIDTH);
+			if (c.isAlive()) {
+				int offset = 0;
+				if (move != Direction.NONE) {
+					offset = (int) ((c.getMoveProgress() + (1 - c.getMoveStep() * animProgress)) * Constant.TILE_WIDTH);
 //				offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
-				frame = c.getFrameIndex() / 20 % 4;
-			}
+					frame = c.getFrameIndex() / 20 % 4;
+				}
 
-			// Get exact position
-			int dirIndex = 0;
-			switch (direction) {
-				case BOTTOM:
-					posY += offset;
-					dirIndex = 0;
-					break;
-				case LEFT:
-					posX -= offset;
-					dirIndex = 1;
-					break;
-				case RIGHT:
-					posX += offset;
-					dirIndex = 2;
-					break;
-				case TOP:
-					posY -= offset;
-					dirIndex = 3;
-					break;
-				case TOP_LEFT:
-					posY -= offset;
-					posX -= offset;
-					dirIndex = 1;
-					direction = Direction.LEFT;
-					break;
-				case TOP_RIGHT:
-					posY -= offset;
-					posX += offset;
-					dirIndex = 2;
-					direction = Direction.RIGHT;
-					break;
-				case BOTTOM_LEFT:
-					posY += offset;
-					posX -= offset;
-					dirIndex = 1;
-					direction = Direction.LEFT;
-					break;
-				case BOTTOM_RIGHT:
-					posY += offset;
-					posX += offset;
-					dirIndex = 2;
-					direction = Direction.RIGHT;
-					break;
-				default:
-					break;
+				// Get exact position
+				switch (direction) {
+					case BOTTOM:
+						posY += offset;
+						dirIndex = 0;
+						break;
+					case LEFT:
+						posX -= offset;
+						dirIndex = 1;
+						break;
+					case RIGHT:
+						posX += offset;
+						dirIndex = 2;
+						break;
+					case TOP:
+						posY -= offset;
+						dirIndex = 3;
+						break;
+					case TOP_LEFT:
+						posY -= offset;
+						posX -= offset;
+						dirIndex = 1;
+						direction = Direction.LEFT;
+						break;
+					case TOP_RIGHT:
+						posY -= offset;
+						posX += offset;
+						dirIndex = 2;
+						direction = Direction.RIGHT;
+						break;
+					case BOTTOM_LEFT:
+						posY += offset;
+						posX -= offset;
+						dirIndex = 1;
+						direction = Direction.LEFT;
+						break;
+					case BOTTOM_RIGHT:
+						posY += offset;
+						posX += offset;
+						dirIndex = 2;
+						direction = Direction.RIGHT;
+						break;
+					default:
+						break;
+				}
 			}
 
 			// Bad status
@@ -100,7 +102,15 @@ public class CharacterRenderer extends BaseRenderer {
 				renderer.draw(sprite, effect);
 			}
 
-			// Selection
+            // Is dead
+            if (!c.isAlive()) {
+                SpriteModel sprite = SpriteManager.getInstance().getIcon("data/res/ic_dead.png");
+                sprite.setPosition(posX - 2, posY - 2);
+                renderer.draw(sprite, effect);
+                continue;
+            }
+
+            // Selection
 			if (c.isSelected()) {
 				SpriteModel sprite = _spriteManager.getSelector(_frame / 10);
 				sprite.setPosition(posX - 2, posY + (c.isSleeping() ? 20 : 0) - 2);

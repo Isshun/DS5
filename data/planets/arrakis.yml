@@ -4,6 +4,9 @@ desc: |
     Arrakis is a hostile desertic planet, its sands contains rare resource
     carefully kept by strong local forces
 
+farming:
+    growing: [20, 80]
+
 stats:
     water: -2
     fertility: -1
@@ -17,6 +20,7 @@ regions:
     -   name: mountain
         label: mountain
         color: 0x804f15
+        temperature: 30
 
         distribution:
             -   latitude: [40, 90]
@@ -73,6 +77,7 @@ regions:
     -   name: valley
         label: Valley
         color: 0xa06f35
+        temperature: 35
 
         distribution:
             -   latitude: [40, 90]
@@ -131,6 +136,7 @@ regions:
     -   name: desert
         label: Desert
         color: 0xffda3b
+        temperature: 42
 
         distribution:
             -   latitude: [-90, 40]

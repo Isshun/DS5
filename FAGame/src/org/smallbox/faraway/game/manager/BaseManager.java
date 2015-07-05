@@ -7,7 +7,6 @@ import org.smallbox.faraway.util.Log;
  * Created by Alex on 15/06/2015.
  */
 public abstract class BaseManager implements GameObserver {
-    private boolean _hasBeenInitialized;
     private int     _nbUpdate;
     private long    _totalTime;
     protected int   _updateInterval = 1;
@@ -21,18 +20,12 @@ public abstract class BaseManager implements GameObserver {
         }
     }
     public void create() {
-        _hasBeenInitialized = true;
         onCreate();
     }
 
     protected abstract void onUpdate(int tick);
 
     protected void onCreate() {
-    }
-
-    @Override
-    public boolean hasBeenInitialized() {
-        return _hasBeenInitialized;
     }
 
     public void dump() {

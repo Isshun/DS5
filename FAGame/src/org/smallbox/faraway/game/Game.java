@@ -125,6 +125,7 @@ public class Game {
         _managers.add(new DiseaseManager());
         _managers.add(new BuffManager());
         _managers.add(new LightManager());
+        _managers.add(new PlantManager());
 
         if (GameData.config.manager.fauna) {
             _managers.add(new FaunaManager());
@@ -168,15 +169,16 @@ public class Game {
         }
 
 		if (tick % _config.tickPerHour == 0) {
-            notify(observer -> observer.onHourChange(_tick / _config.tickPerHour % _planet.getInfo().dayDuration));
-
             if (++_hour >= _planet.getInfo().dayDuration) {
                 _hour = 0;
                 if (++_day >= _planet.getInfo().yearDuration) {
                     _day = 1;
                     _year++;
+                    notify(observer -> observer.onYearChange(_year));
                 }
+                notify(observer -> observer.onDayChange(_day));
             }
+            notify(observer -> observer.onHourChange(_hour));
 		}
 
         _tick = tick;

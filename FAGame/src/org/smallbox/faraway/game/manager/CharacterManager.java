@@ -23,13 +23,9 @@ public class CharacterManager extends BaseManager {
 	private int 								_count;
 
 	public CharacterManager() {
-		Log.debug("CharacterManager");
-
 		_characters = new LinkedBlockingQueue<>();
 		_addOnUpdate = new ArrayList<>();
 		_count = 0;
-
-		Log.debug("CharacterManager done");
 	}
 
 	public Collection<CharacterModel> 	getCharacters() { return _characters; }
@@ -47,8 +43,6 @@ public class CharacterManager extends BaseManager {
 	}
 
 	public void onUpdate(int tick) {
-//		Log.debug("CharacterManager: update");
-
 		// Add new born
 		_characters.addAll(_addOnUpdate);
 		_addOnUpdate.clear();
@@ -100,8 +94,6 @@ public class CharacterManager extends BaseManager {
 				c.longUpdate();
 			}
 		}
-
-//		Log.debug("CharacterManager: update done");
 	}
 
 	// TODO: heavy

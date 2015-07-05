@@ -2,12 +2,16 @@ package org.smallbox.faraway.game.model.item;
 
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 
+import static org.smallbox.faraway.game.model.item.ItemInfo.*;
+import static org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoPlant.*;
+
 
 public class ResourceModel extends ItemModel {
 	private double 	        _quantity;
 	private int 	        _tile;
 	private int 	        _totalQuantity;
 	private BaseJobModel    _job;
+    private double          _growRate;
 
     public ResourceModel(ItemInfo info, int id) {
 		super(info, id);
@@ -20,7 +24,7 @@ public class ResourceModel extends ItemModel {
     }
 
 	public void addQuantity(double quantity) {
-		_quantity += quantity;
+		_quantity = Math.max(0, _quantity + quantity);
 		_needRefresh = true;
 	}
 
@@ -77,4 +81,12 @@ public class ResourceModel extends ItemModel {
 	public boolean hasNoJob() {
 		return _job == null;
 	}
+
+    public void setGrowRate(double growRate) {
+        _growRate = growRate;
+    }
+
+    public double getGrowRate() {
+        return _growRate;
+    }
 }

@@ -21,9 +21,9 @@ public interface GameObserver {
     default void onRemoveStructure(StructureModel structure){}
     default void onRemoveResource(ResourceModel resource){}
     default void onHourChange(int hour){}
-    default boolean hasBeenInitialized() {return true;}
+    default void onDayChange(int day) {}
+    default void onYearChange(int year) {}
     default void onOpenQuest(QuestManager.QuestModel quest) {}
     default void onCloseQuest(QuestManager.QuestModel quest) {}
-
     default void onSelectCharacter(CharacterModel character) {}
 }

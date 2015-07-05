@@ -1,14 +1,13 @@
-label: Advance meal
+label: Lasvish meal
 width: 1
 height: 1
 isFood: true
 type: consumable
 
 actions:
-
     -   type: use
         label: Eat advanced meal
-        cost: 10
+        cost: 150
         effects:
             food: 100
             drink: 100

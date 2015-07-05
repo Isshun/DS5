@@ -8,7 +8,7 @@ function OnUpdate(game, character)
         _duration = 0
     end
 
-    if _duration > 720 then
+    if _duration > 52 then
         return {"Is starving to death", 4, -25, {
             {"malnutrition", 1, {4, "extreme"}},
             {"death", 0.05, "Dead from malnutrition"}

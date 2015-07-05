@@ -3,8 +3,7 @@ package org.smallbox.faraway.game.model.item;
 import java.util.List;
 
 public class ItemInfo {
-
-	public boolean hasCraftAction() {
+    public boolean hasCraftAction() {
 		if (actions != null) {
 			for (ItemInfoAction action : actions) {
 				if ("craft".equals(action.type) || "cook".equals(action.type)) {
@@ -35,6 +34,21 @@ public class ItemInfo {
 		public String 					name;
 		public float                	dropRate;
 		public List<ItemProductInfo>	products;
+	}
+
+	public static class ItemInfoPlant {
+        public static class GrowingInfoEntry {
+			public int[]				temperature;
+			public int[]				light;
+		}
+		public static class GrowingInfo {
+			public GrowingInfoEntry		stasis;
+			public GrowingInfoEntry	    partial;
+			public GrowingInfoEntry	    regular;
+			public GrowingInfoEntry	    exceptional;
+		}
+		public GrowingInfo              growing;
+        public int                      mature;
 	}
 
 	public static class ItemInfoReceipt {
@@ -137,6 +151,7 @@ public class ItemInfo {
 	public List<ItemInfoAction> 		actions;
 	public ItemEquipmentInfo 			equipment;
 	public ItemInfoEffects 				effects;
+	public ItemInfoPlant 				plant;
 	public boolean 						isEquipment;
 	public boolean 						isStructure;
 	public boolean 						isResource;
@@ -148,6 +163,7 @@ public class ItemInfo {
 	public int 							spriteId;
 	public String						fileName;
 	public String 						packageName;
+	public String 						sciLabel;
 	public boolean 						isFactory;
 	public boolean 						isDrink;
 	public boolean 						isCloseRoom;
@@ -155,6 +171,7 @@ public class ItemInfo {
 	public int 							power;
 	public double 						sealing;
 	public boolean 						isLive;
+    public int                          stack;
 
 	public ItemInfo() {
 		width = 1;
