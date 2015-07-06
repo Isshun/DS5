@@ -27,17 +27,17 @@ regions:
                 frequency: 1
 
         resources:
-            -   name: base.spice
-                frequency: 0.1
-                size: [5, 10]
-                quantity: [5, 10]
-                terrain: ground
+            -   name: base.rock
+                pattern: mountain
 
             -   name: base.iron
-                frequency: 0.2
-                size: [8, 30]
-                quantity: [10, 10]
+                pattern: mineral_common_light
                 terrain: rock
+
+            -   name: base.raw_spice
+                pattern: mineral_rare_light
+                terrain: ground
+                quantity: [100, 100]
 
         weather:
             -   name: dust_storm
@@ -86,17 +86,17 @@ regions:
                 frequency: 0.2
 
         resources:
-            -   name: base.spice
-                frequency: 0.1
-                size: [5, 10]
-                quantity: [5, 10]
-                terrain: ground
+            -   name: base.rock
+                pattern: valley
 
             -   name: base.iron
-                frequency: 0.2
-                size: [8, 30]
-                quantity: [10, 10]
+                pattern: mineral_common_light
                 terrain: rock
+
+            -   name: base.raw_spice
+                pattern: mineral_rare_light
+                terrain: ground
+                quantity: [100, 100]
 
         weather:
             -   name: dust_storm
@@ -143,17 +143,17 @@ regions:
                 frequency: 1
 
         resources:
-            -   name: base.spice
-                frequency: 0.2
-                size: [10, 20]
-                quantity: [100, 1000]
-                terrain: ground
+            -   name: base.rock
+                pattern: mineral_rare_large
 
             -   name: base.iron
-                frequency: 0.2
-                size: [8, 30]
-                quantity: [10, 10]
+                pattern: mineral_common_light
                 terrain: rock
+
+            -   name: base.raw_spice
+                pattern: mineral_rare_large
+                terrain: ground
+                quantity: [50, 50]
 
         weather:
             -   name: dust_whirl

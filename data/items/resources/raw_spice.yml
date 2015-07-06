@@ -1,0 +1,21 @@
+label: Raw spice
+width: 1
+height: 1
+tiles: [3, 8]
+type: resource
+isWalkable: true
+isCloseRoom: false
+plant:
+    mature: 100
+    growing:
+        regular:
+            value: 0.1
+            temperature: [-100, 100]
+            light: [0, 100]
+actions:
+    -   type: mine
+        cost: 100
+        products:
+            -   item: base.spice
+                quantity: 10
+                dropRate: 0.5

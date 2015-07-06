@@ -382,6 +382,11 @@ public class RoomManager extends BaseManager implements GameObserver {
         }
     }
 
+    @Override
+    public void onStartGame() {
+        refreshRooms();
+    }
+
     public int getLight(int x, int y) {
         RoomModel room = getRoom(x, y);
         return room != null ? room.getLight() : -1;

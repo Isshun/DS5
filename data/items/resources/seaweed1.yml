@@ -8,15 +8,19 @@ plant:
     mature: 5
     growing:
         stasis:
+            value: 0
             temperature: [0, 50]
             light: [0, 100]
         partial:
+            value: 0.025
             temperature: [14, 50]
             light: [0, 60]
         regular:
+            value: 0.05
             temperature: [20, 50]
             light: [0, 60]
         exceptional:
+            value: 0.075
             temperature: [20, 50]
             light: [0, 60]
 

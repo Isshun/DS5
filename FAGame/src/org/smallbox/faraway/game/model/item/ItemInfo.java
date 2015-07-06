@@ -38,6 +38,7 @@ public class ItemInfo {
 
 	public static class ItemInfoPlant {
         public static class GrowingInfoEntry {
+			public double 				value;
 			public int[]				temperature;
 			public int[]				light;
 		}
@@ -160,6 +161,7 @@ public class ItemInfo {
 	public boolean 						isFood;
 	public boolean 						isToy;
 	public boolean 						isBed;
+	public boolean 						isRock;
 	public int 							spriteId;
 	public String						fileName;
 	public String 						packageName;

@@ -2,12 +2,16 @@ package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.JobManagerHelper;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.area.GardenAreaModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoPlant;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoPlant.*;
 
 /**
  * Created by Alex on 05/07/2015.
@@ -17,6 +21,15 @@ public class PlantManager extends BaseManager {
 
     public PlantManager() {
         _updateInterval = 10;
+    }
+
+    @Override
+    protected void onCreate() {
+        Game.getWorldManager().getResources().forEach(resource -> {
+            if (resource.getInfo().plant != null) {
+                _plants.add(resource);
+            }
+        });
     }
 
     @Override
@@ -30,7 +43,7 @@ public class PlantManager extends BaseManager {
                     grow(resource.getParcel(), resource, light, temperature);
                 }
                 // Plan to gather
-                else {
+                else if (resource.getParcel().getArea() != null && resource.getParcel().getArea() instanceof GardenAreaModel) {
                     JobManagerHelper.addGather(resource);
                 }
             }
@@ -38,30 +51,33 @@ public class PlantManager extends BaseManager {
     }
 
     public void grow(ParcelModel parcel, ResourceModel resource, double light, double temperature) {
-        if (canGrow(resource.getInfo().plant.growing.exceptional, light, temperature)) {
-            parcel.getResource().addQuantity(0.075);
-            parcel.getResource().setGrowRate(0.075);
+        GrowingInfo info = resource.getInfo().plant.growing;
+
+        if (info.exceptional != null && canGrow(info.exceptional, light, temperature)) {
+            parcel.getResource().addQuantity(info.exceptional.value);
+            parcel.getResource().setGrowRate(info.exceptional.value);
             return;
         }
-        if (canGrow(resource.getInfo().plant.growing.regular, light, temperature)) {
-            parcel.getResource().addQuantity(0.05);
-            parcel.getResource().setGrowRate(0.05);
+        if (info.regular != null && canGrow(info.regular, light, temperature)) {
+            parcel.getResource().addQuantity(info.regular.value);
+            parcel.getResource().setGrowRate(info.regular.value);
             return;
         }
-        if (canGrow(resource.getInfo().plant.growing.partial, light, temperature)) {
-            parcel.getResource().addQuantity(0.025);
-            parcel.getResource().setGrowRate(0.025);
+        if (info.partial != null && canGrow(info.partial, light, temperature)) {
+            parcel.getResource().addQuantity(info.partial.value);
+            parcel.getResource().setGrowRate(info.partial.value);
             return;
         }
-        if (canGrow(resource.getInfo().plant.growing.stasis, light, temperature)) {
-            parcel.getResource().setGrowRate(0);
+        if (info.stasis != null && canGrow(info.stasis, light, temperature)) {
+            parcel.getResource().addQuantity(info.stasis.value);
+            parcel.getResource().setGrowRate(info.stasis.value);
             return;
         }
         parcel.getResource().addQuantity(-0.1);
         parcel.getResource().setGrowRate(-0.1);
     }
 
-    private boolean canGrow(ItemInfo.ItemInfoPlant.GrowingInfoEntry infoEntry, double light, double temperature) {
+    private boolean canGrow(GrowingInfoEntry infoEntry, double light, double temperature) {
         return light >= infoEntry.light[0] && light <= infoEntry.light[1]
                 && temperature >= infoEntry.temperature[0] && temperature <= infoEntry.temperature[1];
     }

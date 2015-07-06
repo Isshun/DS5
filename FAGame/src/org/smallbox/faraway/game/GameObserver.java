@@ -28,4 +28,5 @@ public interface GameObserver {
     default void onOpenQuest(QuestManager.QuestModel quest) {}
     default void onCloseQuest(QuestManager.QuestModel quest) {}
     default void onSelectCharacter(CharacterModel character) {}
+    default void onStartGame() {}
 }

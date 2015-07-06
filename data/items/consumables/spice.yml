@@ -1,34 +1,29 @@
-label: Chlorella
+label: Spice
 width: 1
 height: 1
-type: resource
-category: Algae
-isLive: true
+tiles: [3, 8]
+type: consumable
+isWalkable: true
+isCloseRoom: false
 plant:
-    mature: 5
+    mature: 100
     growing:
         stasis:
-            value: 0
             temperature: [0, 50]
             light: [0, 100]
         partial:
-            value: 0.025
             temperature: [14, 50]
             light: [0, 60]
         regular:
-            value: 0.05
             temperature: [20, 50]
             light: [0, 60]
         exceptional:
-            value: 0.075
             temperature: [20, 50]
             light: [0, 60]
-
 actions:
-    -   type: gather
-        cost: 10
+    -   type: mine
+        cost: 100
         products:
-            -   item: base.seaweed
-                quantity: 1
-                dropRate: 1
-        mature: 5
+            -   item: base.spice
+                quantity: 10
+                dropRate: 0.5

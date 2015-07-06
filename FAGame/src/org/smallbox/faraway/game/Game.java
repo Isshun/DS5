@@ -73,7 +73,7 @@ public class Game {
         _config = config;
         _fileName = fileName;
         _planet = new PlanetModel(data.planets.get(0));
-        _region = new RegionModel(_planet, _planet.getInfo().regions.get(0));
+        _region = new RegionModel(_planet, _planet.getInfo().regions.get(2));
 		_isRunning = true;
 		_viewport = SpriteManager.getInstance().createViewport();
         _particleRenderer = particleRenderer;

@@ -40,7 +40,7 @@ public class ResourceModel extends ItemModel {
 	public double getRealQuantity() { return _quantity; }
 
 	public boolean isRock() {
-		return "base.rock".equals(_info.name);
+		return _info.isRock;
 	}
 
 	public boolean isSolid() {

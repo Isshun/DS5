@@ -220,8 +220,10 @@ public class Application implements GameEventListener {
         _mainMenu.close();
 
         _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer);
-        _game.newGame(null);
+        // TODO: magick
+        _game.getWorldManager().init(250, 250);
         _game.init(false);
+        _game.newGame(null);
         _game.save(_game.getFileName());
         PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
         _mainRenderer.init(_renderer, GameData.config, _game, _lightRenderer, _particleRenderer);
@@ -265,9 +267,10 @@ public class Application implements GameEventListener {
     }
 
     private void startGame() {
-        if (_lightRenderer != null) {
-            _game.addObserver(_lightRenderer);
-        }
+//        if (_lightRenderer != null) {
+//            _game.addObserver(_lightRenderer);
+//        }
+        Game.getInstance().notify(observer -> observer.onStartGame());
     }
 
     public void render(GFXRenderer renderer, RenderEffect effect, long lastRenderInterval) {

@@ -13,10 +13,9 @@ public class RegionInfo {
 
     public static class RegionResource {
         public String 				name;
-        public double 				frequency;
-        public int[]				size;
-        public int[]				quantity;
+        public String 				pattern;
         public String				terrain;
+        public int[]                quantity;
     }
 
     public static class RegionWeather {
