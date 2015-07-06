@@ -9,7 +9,8 @@ import org.smallbox.faraway.game.OnMoveListener;
 import org.smallbox.faraway.game.manager.BaseManager;
 import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.area.AreaModel;
-import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.MapUtils;
@@ -181,7 +182,7 @@ public class PathManager extends BaseManager {
         // Check if target parcel is not surrounded by non-walkable area
         if (MapUtils.isSurroundedByBlocked(toParcel)) {
             _cache.get(fromParcel).addPath(toParcel, null);
-            System.out.println("Path resolved in " + (System.currentTimeMillis() - time) + "ms (surrounded)");
+            Log.debug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (surrounded)");
             return null;
         }
 
@@ -189,12 +190,12 @@ public class PathManager extends BaseManager {
         GraphPath<ParcelModel> path = new DefaultGraphPath<>();
         if (_finder.searchNodePath(fromParcel, toParcel, _heuristic, path)) {
             _cache.get(fromParcel).addPath(toParcel, path);
-            System.out.println("Path resolved in " + (System.currentTimeMillis() - time) + "ms (success)");
+            Log.debug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (success)");
             return path;
         }
 
         // No path found
-        System.out.println("Path resolved in " + (System.currentTimeMillis() - time) + "ms (fail)");
+        Log.debug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (fail)");
         return null;
     }
 

@@ -2,7 +2,6 @@ package org.smallbox.faraway.game.model.check.character;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.WorldFinder;
-import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
@@ -22,7 +21,7 @@ public class CheckCharacterHungry extends CharacterCheck {
 
 	@Override
 	public boolean need(CharacterModel character) {
-		return character.getNeeds().food < character.getType().needs.food.critical;
+		return character.getNeeds().food < character.getType().needs.food.warning;
 	}
 
 	// TODO: change name by filter

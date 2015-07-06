@@ -1,13 +1,13 @@
 package org.smallbox.faraway.game.model.check.joy;
 
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.AreaManager;
+import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobMove;
-import org.smallbox.faraway.game.manager.AreaManager;
-import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.util.Log;
 
 /**
@@ -27,9 +27,9 @@ public class CheckJoyWalk extends CharacterCheck {
         JobMove job = JobMove.create(character, _parcel.getX(), _parcel.getY());
         job.start(character);
         job.setLabel("Move for a walk");
-        job.setStrategy(j -> j.getCharacter().getNeeds().joy += 0.25);
+        job.setStrategy(j -> j.getCharacter().getNeeds().joy += 1);
         job.setSpeedModifier(0.5);
-        job.setLimit(50);
+        job.setLimit(150);
         job.setJoy(true);
 
         return job;
@@ -70,6 +70,6 @@ public class CheckJoyWalk extends CharacterCheck {
 
     @Override
     public boolean need(CharacterModel character) {
-        return character.getNeeds().joy < character.getType().needs.joy.critical;
+        return true;
     }
 }

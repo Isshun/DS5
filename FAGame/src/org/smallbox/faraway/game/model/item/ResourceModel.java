@@ -2,9 +2,6 @@ package org.smallbox.faraway.game.model.item;
 
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 
-import static org.smallbox.faraway.game.model.item.ItemInfo.*;
-import static org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoPlant.*;
-
 
 public class ResourceModel extends ItemModel {
 	private double 	        _quantity;

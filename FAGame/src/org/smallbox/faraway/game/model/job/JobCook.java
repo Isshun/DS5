@@ -32,6 +32,11 @@ public class JobCook extends JobCraft {
         job.setItem(item);
         job._factory = (ItemModel)item;
         job._receipts = action.receipts.stream().map(receiptInfo -> new ReceiptModel((ItemModel) item, receiptInfo)).collect(Collectors.toList());
+        job.setStrategy(j -> {
+            if (j.getCharacter().getType().needs.joy != null) {
+                j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+            }
+        });
         job.onCheck(null);
 
         item.addJob(job);

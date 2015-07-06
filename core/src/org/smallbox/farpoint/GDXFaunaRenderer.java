@@ -52,9 +52,7 @@ public class GDXFaunaRenderer extends BaseRenderer {
                 default: break;
             }
 
-            SpriteModel sprite = SpriteManager.getInstance().getAnimal("data/res/animals/sand_worm.png");
-            sprite.setPosition(posX - 2, posY - 2);
-            renderer.draw(sprite, effect);
+            renderer.draw(SpriteManager.getInstance().getAnimal("data/res/animals/sand_worm.png"), posX - 2, posY - 2);
         }
     }
 

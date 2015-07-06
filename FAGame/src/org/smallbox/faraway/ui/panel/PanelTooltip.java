@@ -5,7 +5,9 @@ import org.smallbox.faraway.game.model.ToolTips;
 import org.smallbox.faraway.game.model.ToolTips.ToolTip;
 import org.smallbox.faraway.game.model.ToolTips.ToolTipCategory;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.ui.engine.FrameLayout;
+import org.smallbox.faraway.ui.engine.UILabel;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 
 public class PanelTooltip extends BasePanel {
 

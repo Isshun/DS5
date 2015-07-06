@@ -4,7 +4,6 @@ import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.data.factory.ItemFactory;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
@@ -348,14 +347,6 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         }
         putObject(info, x, y, z, matterSupply);
     }
-//
-//    public int getFloor() {
-//        return _floor;
-//    }
-//
-//    public void upFloor() {
-//        setFloor(_floor + 1);
-//    }
 
     public void removeResource(ResourceModel resource) {
         if (resource == null) {
@@ -386,25 +377,10 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         return null;
     }
 
-    public ItemModel takeItem(ItemModel item) {
-        if (item != null) {
-            ParcelModel area = getParcel(item.getX(), item.getY());
-            if (area != null) {
-                if (area.getItem() != item) {
-                    Log.error("Area not contains desired item");
-                    return null;
-                }
-                return takeItem(item, area);
-            }
-        }
-        Log.error("Cannot take null item");
-        return null;
-    }
-
     private ItemModel takeItem(ItemModel item, ParcelModel area) {
         if (area != null && item != null) {
             area.setItem(null);
-            MainRenderer.getInstance().invalidate(area.getX(), area.getY());
+            Game.getInstance().notify(observer -> observer.onRefreshItem(item));
             return item;
         }
         Log.error("Area or item is null");

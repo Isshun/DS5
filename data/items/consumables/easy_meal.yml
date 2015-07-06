@@ -9,6 +9,7 @@ actions:
         label: Eat easy meal
         cost: 150
         effects:
-            food: 100
+            food: 120
             drink: 100
             happiness: 10
+            joy: 15

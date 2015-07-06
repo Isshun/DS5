@@ -11,10 +11,8 @@ import org.smallbox.faraway.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.game.manager.*;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.planet.RegionModel;
-import org.smallbox.faraway.game.manager.BuffManager;
 import org.smallbox.faraway.game.model.planet.PlanetModel;
-import org.smallbox.faraway.game.manager.AreaManager;
+import org.smallbox.faraway.game.model.planet.RegionModel;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -130,8 +128,6 @@ public class Game {
         if (GameData.config.manager.fauna) {
             _managers.add(new FaunaManager());
         }
-
-        _managers.add(new DynamicObjectManager());
 
         _characterManager = new CharacterManager();
         _managers.add(_characterManager);

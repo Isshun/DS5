@@ -2,12 +2,12 @@ package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
+import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.area.StorageAreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
-import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -107,6 +107,11 @@ public class JobCraft extends BaseJobModel {
 		job.setItem(item);
 		job._factory = (ItemModel)item;
 		job._receipts = action.receipts.stream().map(receiptInfo -> new ReceiptModel((ItemModel) item, receiptInfo)).collect(Collectors.toList());
+        job.setStrategy(j -> {
+            if (j.getCharacter().getType().needs.joy != null) {
+                j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+            }
+        });
         job.onCheck(null);
 
 		item.addJob(job);

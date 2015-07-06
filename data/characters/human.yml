@@ -3,14 +3,22 @@ label: Human
 needs:
 
     food:
-        warning: 25
-        critical: 5
-        change: -0.2
+        warning: 35
+        critical: 15
+        change:
+            wake: -0.2
+            sleep: -0.05
+
+    happiness:
+        warning: 35
+        critical: 15
 
     oxygen:
         warning: 75
-        critical: 5
-        change: -5
+        critical: 25
+        change:
+            wake: -1
+            sleep: -1
 
     relation:
         warning: 80
@@ -19,9 +27,15 @@ needs:
     energy:
         warning: 25
         critical: 5
-        change: -0.1
+        change:
+            wake: -0.1
+            sleep: 0.22
 
     joy:
         warning: 25
         critical: 5
-        change: +0.2
+        change:
+            work: -0.2
+            wake: 0
+            sleep: 0
+            sleepOnFloor: -0.25

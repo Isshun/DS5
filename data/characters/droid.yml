@@ -2,27 +2,9 @@ name: human
 label: Human
 needs:
 
-    food:
-        warning: 35
-        critical: 25
-        change: -5
-
-    oxygen:
-        warning: 25
-        critical: 5
-        change: -5
-
-    relation:
-        warning: 25
-        critical: 5
-        change: -5
-
     energy:
         warning: 25
         critical: 5
-        change: -5
-
-    joy:
-        warning: 25
-        critical: 5
-        change: -5
+        change:
+            wake: -0.1
+            sleep: 0.15

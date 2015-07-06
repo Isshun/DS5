@@ -43,15 +43,6 @@ entries:
         background: 0x298596
         align: center
 
-    -   type: label
-        id: bt_health
-        text: "[Health]"
-        textsize: 20
-        position: [20, 184]
-        size: [180, 40]
-        background: 0x298596
-        align: center
-
     -   type: frame
         id: frame_monitoring
         entries:
@@ -65,7 +56,7 @@ entries:
             background: 0xb0cd35
             
         -   type: frame
-            position: [0, 255]
+            position: [0, 195]
             entries:
             
             -   type: frame
@@ -87,7 +78,7 @@ entries:
                 position: [0, 65]
 
             -   type: frame
-                position: [0, 335]
+                position: [0, 305]
                 entries:
                     
                 -   type: label
@@ -98,6 +89,31 @@ entries:
                 -   type: frame
                     id: frame_buffs_entries
                     position: [20, 40]
+
+            -   type: frame
+                position: [0, 400]
+                entries:
+
+                -   type: label
+                    id: lb_body_heat
+                    text: Health
+                    textsize: 18
+                    position: [20, 265]
+
+                -   type: label
+                    text: Medical concerns
+                    textsize: 24
+                    position: [20, 300]
+
+                -   type: label
+                    id: lb_health
+                    text: All systems functioning within normal parameters
+                    textsize: 18
+                    position: [20, 330]
+
+                -   type: frame
+                    id: frame_health_entries
+                    position: [20, 362]
 
             -   type: frame
                 position: [0, 780]
@@ -283,41 +299,3 @@ entries:
                 id: frame_inventory_entries
                 textsize: 16
                 position: [20, 25]
-                      
-    -   type: frame
-        id: frame_health
-        entries:
-
-        -   type: label
-            text: "[Health]"
-            textsize: 24
-            position: [20, 184]
-            size: [180, 40]
-            align: center
-            background: 0xb0cd35
-
-        -   type: label
-            text: Health
-            textsize: 22
-            position: [20, 245]
-
-        -   type: label
-            id: lb_body_heat
-            text: Health
-            textsize: 18
-            position: [20, 265]
-
-        -   type: label
-            text: Medical concerns
-            textsize: 24
-            position: [20, 300]
-
-        -   type: label
-            id: lb_health
-            text: All systems functioning within normal parameters
-            textsize: 18
-            position: [20, 330]
-
-        -   type: frame
-            id: frame_health_entries
-            position: [20, 362]

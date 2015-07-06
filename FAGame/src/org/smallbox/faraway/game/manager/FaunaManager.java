@@ -2,9 +2,9 @@ package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.AnimalModel;
-import org.smallbox.faraway.game.model.planet.RegionModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
+import org.smallbox.faraway.game.model.planet.RegionModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 

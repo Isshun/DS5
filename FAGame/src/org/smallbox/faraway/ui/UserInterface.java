@@ -1,14 +1,17 @@
 package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.Application;
-import org.smallbox.faraway.engine.*;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.engine.SpriteManager;
+import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.CharacterManager;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.item.MapObjectModel;
+import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.engine.UIEventManager;
@@ -19,6 +22,8 @@ import org.smallbox.faraway.ui.panel.right.*;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
+
+import java.util.List;
 
 public class UserInterface implements GameEventListener {
     private static UserInterface		_self;
@@ -61,7 +66,7 @@ public class UserInterface implements GameEventListener {
             new PanelInfoResource(	Mode.INFO_RESOURCE, 	null),
             new PanelInfoAnimal(	Mode.INFO_ANIMAL, 	    null),
             new PanelPlan(		    Mode.PLAN, 		        Key.P),
-            new PanelRoom(		    Mode.ROOM, 		        Key.R),
+//            new PanelRoom(		    Mode.ROOM, 		        Key.R),
             new PanelTooltip(	    Mode.TOOLTIP, 	        Key.F1),
             new PanelBuild(		    Mode.BUILD, 	        Key.B),
             new PanelScience(	    Mode.SCIENCE, 	        null),
@@ -90,6 +95,10 @@ public class UserInterface implements GameEventListener {
             _lastModified = lastResModified;
             reload();
         }
+    }
+
+    public BasePanel[] getPanels() {
+        return _panels;
     }
 
     public enum Mode {
@@ -415,16 +424,16 @@ public class UserInterface implements GameEventListener {
 
         ParcelModel area = Game.getWorldManager().getParcel(getRelativePosX(x), getRelativePosY(y));
         if (area != null) {
-            MapObjectModel item = area.getItem();
-            MapObjectModel structure = area.getStructure();
+            ItemModel item = area.getItem();
+            StructureModel structure = area.getStructure();
 
             if (item != null) {
                 item.nextMode();
-                MainRenderer.getInstance().invalidate(item.getX(), item.getY());
+                Game.getInstance().notify(observer -> observer.onRefreshItem(item));
             }
             else if (structure != null) {
                 structure.nextMode();
-                MainRenderer.getInstance().invalidate(structure.getX(), structure.getY());
+                Game.getInstance().notify(observer -> observer.onRefreshStructure(structure));
             }
         }
     }

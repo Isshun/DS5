@@ -16,11 +16,6 @@ public class GDXSpriteModel implements SpriteModel {
     }
 
     @Override
-    public void setPosition(int x, int y) {
-        _data.setPosition(x, y);
-    }
-
-    @Override
     public int getWidth() {
         return 0;
     }

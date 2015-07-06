@@ -35,7 +35,7 @@ public class GDXSpriteManager extends SpriteManager {
     private Map<Integer, GDXSpriteModel>    _spritesCharacters;
     private Map<Long, GDXSpriteModel> 		_sprites;
     private Texture[] 				        _textureCharacters;
-    private Texture[]				        _texture;
+//    private Texture[]				        _texture;
     private Texture                         _textureSelector;
     private GDXSpriteModel[]                _selectors;
     private Texture                         _textureItemSelector;
@@ -85,16 +85,16 @@ public class GDXSpriteManager extends SpriteManager {
             _itemSelectors[i] = new GDXSpriteModel(_textureItemSelector, i * 32, 0, 32, 32);
         }
 
-        _texture = new Texture[8];
-
-        _texture[0] = new Texture("data/res/Tilesets/Futuristic_A5.png");
-        _texture[1] = new Texture("data/res/Tilesets/Futuristic_TileC.png");
-        _texture[2] = new Texture("data/res/Tilesets/Futuristic_TileB.png");
-        _texture[3] = new Texture("data/res/Tilesets/Futuristic_TileE.png");
-        _texture[4] = new Texture("data/res/Tilesets/zones.png");
-        _texture[5] = new Texture("data/res/Tilesets/Futuristic_A3.png");
-        _texture[6] = new Texture("data/res/Tilesets/walls.png");
-        _texture[7] = new Texture("data/res/Tilesets/icons.png");
+//        _texture = new Texture[8];
+//
+//        _texture[0] = new Texture("data/res/Tilesets/Futuristic_A5.png");
+//        _texture[1] = new Texture("data/res/Tilesets/Futuristic_TileC.png");
+//        _texture[2] = new Texture("data/res/Tilesets/Futuristic_TileB.png");
+//        _texture[3] = new Texture("data/res/Tilesets/Futuristic_TileE.png");
+//        _texture[4] = new Texture("data/res/Tilesets/zones.png");
+//        _texture[5] = new Texture("data/res/Tilesets/Futuristic_A3.png");
+//        _texture[6] = new Texture("data/res/Tilesets/walls.png");
+//        _texture[7] = new Texture("data/res/Tilesets/icons.png");
     }
 
     @Override
@@ -138,47 +138,6 @@ public class GDXSpriteManager extends SpriteManager {
         return getSprite(info, 0, 0, 255, true);
     }
 
-    @Override
-    public SpriteModel getGreenHouse(int index) {
-        int texture = 4;
-//		int offset = _random[index % 50];
-        int x = (int) (index * (Constant.TILE_WIDTH + 2) + 1);
-        int y = (int) (10 * (Constant.TILE_HEIGHT + 2) + 1);
-
-        return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
-    }
-
-    @Override
-    public SpriteModel getExterior(int index, int floor) {
-        int texture = 4;
-        return getSprite(texture, Math.min(floor, 4) * Constant.TILE_WIDTH, 12 * Constant.TILE_HEIGHT, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
-//		if (bottom) {
-//		} else {
-//			int offset = _random[index % 50];
-//			int x = (int) (offset * Constant.TILE_WIDTH);
-//			int y = (int) (7 * (Constant.TILE_HEIGHT + 2) + 1);
-//			return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
-//		}
-    }
-
-    private SpriteModel getSprite(int textureIndex, int i, int j, int k, int l) {
-        return getSprite(textureIndex, i, j, k, l, 255);
-    }
-
-    private SpriteModel getSprite(int texture, int x, int y, int width, int height, int alpha) {
-        long sum = getSum(texture, x, y, width, height, alpha);
-        GDXSpriteModel sprite = _sprites.get(sum);
-        if (sprite == null) {
-            sprite = new GDXSpriteModel(_texture[texture], x, y, width, height);
-            sprite.getData().setColor(new Color(255, 255, 255, alpha));
-            _sprites.put(sum, sprite);
-        }
-        return sprite;
-    }
-
-    //	private Sprite getSprite(ItemInfo item, int tile, int alpha, boolean isIcon) {
-//	}
-//
     private SpriteModel getSprite(ItemInfo item, int tile, int state, int alpha, boolean isIcon) {
         if (item.spriteId == 0) {
             item.spriteId = ++_count;
@@ -316,130 +275,6 @@ public class GDXSpriteManager extends SpriteManager {
     }
 
     @Override
-    public SpriteModel getFloor(StructureModel item, int zone, int room) {
-        if (item != null && item.getName().equals("base.floor")) {
-            int choice = 1;
-            int texture = 4;
-            int x = (room % choice) * Constant.TILE_WIDTH;
-            int y = zone * (Constant.TILE_HEIGHT + 2) + 1;
-            int alpha = 255;
-//            int alpha = Math.min(item != null ? 75 + 180 / item.getScience() * (int)item.getMatterSupply() : 255, 255);
-            return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT, alpha);
-        } else if (item != null) {
-            return getSprite(item.getInfo(), 0, 0, 255, false);
-        }
-        return null;
-    }
-
-    @Override
-    public SpriteModel getNoOxygen() {
-        int texture = 4;
-        int x = 0;
-        int y = 8 * (Constant.TILE_HEIGHT + 2) + 1;
-        return getSprite(texture, x, y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
-    }
-
-    @Override
-    public SpriteModel getSimpleWall(int zone) {
-        int texture = 6;
-        int x = 0;
-        int y = WALL_HEIGHT * zone;
-        int width = WALL_WIDTH;
-        int height = WALL_HEIGHT;
-
-        return getSprite(texture, x, y, width, height, 255);
-    }
-
-    @Override
-    public SpriteModel getWall(StructureModel item, int special, int index, int zone) {
-        // Door
-        if (item.getName().equals("base.door")) {
-            int alpha = 255;
-//            int alpha = 75 + 180 / item.getScience() * (int)item.getMatterSupply();
-            return getSprite(6,
-                    WALL_WIDTH * item.getMode(),
-                    WALL_HEIGHT * 7,
-                    WALL_WIDTH,
-                    WALL_HEIGHT,
-                    alpha);
-        }
-
-        // Wall
-        else {
-            if (item.isWall()) {
-//                int alpha = 75 + 180 / item.getScience() * (int)item.getMatterSupply();
-                int alpha = 255;
-                int texture = 6;
-                int x = 0;
-                int y = 0;
-                int width = 0;
-                int height = 0;
-
-                // Normal
-                if (special == 0) {
-                    x = 0;
-                    y = WALL_HEIGHT * zone;
-                    width = WALL_WIDTH;
-                    height = WALL_HEIGHT;
-                }
-
-                // Wall bellow
-                if (special == 1) {
-                    x = (WALL_WIDTH + 2) * index + 1;
-                    y = (WALL_HEIGHT + 2) * 8 + 1;
-                    width = WALL_WIDTH;
-                    height = WALL_HEIGHT;
-                }
-
-                // Double normal
-                if (special == 4) {
-                    x = 64;
-                    y = WALL_HEIGHT * zone;
-                    width = WALL_WIDTH * 2;
-                    height = WALL_HEIGHT;
-                }
-
-                // Double special
-                if (special == 2) {
-                    index = _random[index % 20];
-                    x = 256 + 64 * (index % 4);
-                    y = WALL_HEIGHT * zone;
-                    width = WALL_WIDTH * 2;
-                    height = WALL_HEIGHT;
-                }
-
-                // Single special
-                if (special == 3) {
-                    index = _random[index % 20];
-                    x = 128 + WALL_WIDTH * (index % 4);
-                    y = WALL_HEIGHT * zone;
-                    width = WALL_WIDTH;
-                    height = WALL_HEIGHT;
-                }
-
-                // Wall above
-                if (special == 5) {
-                    x = (WALL_WIDTH + 2) * index + 1;
-                    y = (WALL_HEIGHT + 2) * 9 + 1;
-                    width = WALL_WIDTH;
-                    if (index == 0) {
-                        height = WALL_HEIGHT - 6;
-                    } else {
-                        height = WALL_HEIGHT;
-                    }
-                }
-
-                return getSprite(texture, 0, 0, 32, 32, alpha);
-            }
-
-            else if (item.isHull()) {
-                return getSprite(item.getInfo(), 0, 0, 255, false);
-            }
-        }
-        return null;
-    }
-
-    @Override
     public SpriteModel getCharacter(CharacterModel c, int direction, int frame) {
         int extra = c.getType().index;
         int sum = 0;
@@ -473,41 +308,6 @@ public class GDXSpriteManager extends SpriteManager {
     }
 
     @Override
-    public SpriteModel getFoe(Object object, int direction, int frame) {
-        GDXSpriteModel sprite = _spritesCharacters.get(9999);
-        if (sprite == null) {
-            sprite = new GDXSpriteModel(_textureCharacters[3],
-                    Constant.CHAR_WIDTH * frame,
-                    Constant.CHAR_HEIGHT * direction,
-                    Constant.CHAR_WIDTH,
-                    Constant.CHAR_HEIGHT);
-            //			sprite.setScale(0.8f, 0.8f);
-            _spritesCharacters.put(9999, sprite);
-
-        }
-        return sprite;
-    }
-
-    @Override
-    public SpriteModel getBullet(int i) {
-        return getSprite(1,
-                i * Constant.TILE_WIDTH,
-                17 * Constant.TILE_HEIGHT,
-                Constant.TILE_WIDTH,
-                Constant.TILE_HEIGHT);
-    }
-
-    @Override
-    public SpriteModel getIconChecked() {
-        return getSprite(7, 0, 0, 16, 16, 255);
-    }
-
-    @Override
-    public SpriteModel getIconUnChecked() {
-        return getSprite(7, 32, 0, 16, 16, 255);
-    }
-
-    @Override
     public SpriteModel getSelector(int tile) {
         return _selectors[tile % NB_SELECTOR_TILE];
     }
@@ -515,11 +315,6 @@ public class GDXSpriteManager extends SpriteManager {
     @Override
     public SpriteModel getSelectorCorner(int corner) {
         return _itemSelectors[corner];
-    }
-
-    @Override
-    public SpriteModel getSelector(MapObjectModel item, int frame) {
-        return _itemSelectors[frame % NB_ITEM_SELECTOR_TILE];
     }
 
     @Override

@@ -28,15 +28,7 @@ public abstract class UIImage extends View {
 	@Override
 	public void onDraw(GFXRenderer renderer, RenderEffect effect) {
 		if (_image != null) {
-			_image.setPosition((int)(_x + _paddingLeft), (int)(_y + _paddingTop));
-			renderer.draw(_image, effect);
-		}
-	}
-
-	public void setPosition(int x, int y) {
-		super.setPosition(x, y);
-		if (_image != null) {
-			_image.setPosition(_x, _y);
+			renderer.draw(_image, _x + _paddingLeft, _y + _paddingTop);
 		}
 	}
 

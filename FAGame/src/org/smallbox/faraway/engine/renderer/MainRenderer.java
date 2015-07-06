@@ -5,8 +5,6 @@ import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
-import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,16 +84,13 @@ public class MainRenderer {
 		}
 	}
 
-	public void invalidate(int x, int y) {
-		if (_worldRenderer != null) {
-			_worldRenderer.invalidate(x, y);
-		}
-	}
-
 	public static MainRenderer getInstance() { return _self; }
 
 	public static int getFrame() { return _frame; }
 
 	public static long getRenderTime() { return _frame > 0 ? _renderTime / _frame : 0; }
 
+	public List<BaseRenderer> getRenders() {
+		return _renders;
+	}
 }

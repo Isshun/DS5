@@ -6,7 +6,6 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
-import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.util.Log;
 
 /**

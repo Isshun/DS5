@@ -8,7 +8,6 @@ import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.util.StringUtils;
 
 public class PanelConsole extends BasePanel {
 	private static final int 	LINE_INTERVAL = 20;

@@ -6,8 +6,6 @@ import org.smallbox.faraway.game.model.ToolTips;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
-import org.smallbox.faraway.game.model.room.RoomModel;
-import org.smallbox.faraway.ui.panel.PanelRoom;
 import org.smallbox.faraway.ui.panel.PanelTooltip;
 import org.smallbox.faraway.ui.panel.info.*;
 import org.smallbox.faraway.ui.panel.right.PanelCharacter;
@@ -172,12 +170,6 @@ public class UserInterfaceSelector {
         }
         ((PanelCharacter)_userInterface.getPanel(PanelCharacter.class)).select(character);
         Game.getInstance().notify(observer -> observer.onSelectCharacter(character));
-    }
-
-    public void select(RoomModel room) {
-        clean();
-        _userInterface.setMode(UserInterface.Mode.ROOM);
-        ((PanelRoom)_userInterface.getPanel(PanelRoom.class)).select(room);
     }
 
     public void select(AreaModel area, ParcelModel parcel) {

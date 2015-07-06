@@ -1,7 +1,6 @@
 package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.manager.RelationManager;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;

@@ -1,11 +1,9 @@
 package org.smallbox.faraway.data.serializer;
 
 import com.ximpleware.VTDNav;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 
 import java.io.FileOutputStream;
-import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 01/06/2015.

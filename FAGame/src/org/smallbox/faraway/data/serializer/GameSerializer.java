@@ -4,7 +4,10 @@ import com.ximpleware.*;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class GameSerializer {
     public static class GameSave {

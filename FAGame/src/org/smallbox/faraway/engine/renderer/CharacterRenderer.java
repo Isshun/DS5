@@ -24,6 +24,9 @@ public class CharacterRenderer extends BaseRenderer {
 	}
 
 	public void	onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
+        int viewPortX = effect.getViewport().getPosX();
+        int viewPortY = effect.getViewport().getPosY();
+
 		for (CharacterModel c : _characters) {
 			// Get game position and direction
 			int posX = (int) ((c.getX() * Constant.TILE_WIDTH - (Constant.CHAR_WIDTH - Constant.TILE_WIDTH) + 2) * effect.getViewport().getScale());
@@ -37,7 +40,10 @@ public class CharacterRenderer extends BaseRenderer {
 			if (c.isAlive()) {
 				int offset = 0;
 				if (move != Direction.NONE) {
-					offset = (int) ((c.getMoveProgress() + (1 - c.getMoveStep() * animProgress)) * Constant.TILE_WIDTH);
+//					offset = (int) ((c.getMoveProgress() + (c.getMoveStep() * animProgress)) * Constant.TILE_WIDTH);
+//                    if ("rhea".equals(c.getInfo().getFirstName().toLowerCase().trim())) {
+//                        Log.notice("offset: " + offset);
+//                    }
 //				offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
 					frame = c.getFrameIndex() / 20 % 4;
 				}
@@ -98,41 +104,35 @@ public class CharacterRenderer extends BaseRenderer {
 			// Draw characters
 			{
 				SpriteModel sprite = _spriteManager.getCharacter(c, dirIndex, frame);
-				sprite.setPosition(posX, posY + (c.isSleeping() ? 20 : 0));
-				renderer.draw(sprite, effect);
+				renderer.draw(sprite, viewPortX + posX, viewPortY + posY + (c.isSleeping() ? 20 : 0));
 			}
 
             // Is dead
             if (!c.isAlive()) {
                 SpriteModel sprite = SpriteManager.getInstance().getIcon("data/res/ic_dead.png");
-                sprite.setPosition(posX - 2, posY - 2);
-                renderer.draw(sprite, effect);
+                renderer.draw(sprite, viewPortX + posX - 2, viewPortY + posY - 2);
                 continue;
             }
 
             // Selection
 			if (c.isSelected()) {
 				SpriteModel sprite = _spriteManager.getSelector(_frame / 10);
-				sprite.setPosition(posX - 2, posY + (c.isSleeping() ? 20 : 0) - 2);
-				renderer.draw(sprite, effect);
+				renderer.draw(sprite, viewPortX + posX - 2, posY + (c.isSleeping() ? 20 : 0) - 2);
 			}
 
 			if (c.getInventory() != null) {
 				SpriteModel sprite = SpriteManager.getInstance().getItem(c.getInventory());
-				sprite.setPosition(posX - 2, posY - 2);
-				renderer.draw(sprite, effect);
+				renderer.draw(sprite, viewPortX + posX - 2, viewPortY + posY - 2);
 			}
 
 			if (c.isSleeping()) {
 				SpriteModel sprite = SpriteManager.getInstance().getIcon("data/res/ic_sleep.png");
-				sprite.setPosition(posX - 2, posY - 2);
-				renderer.draw(sprite, effect);
+				renderer.draw(sprite, viewPortX + posX - 2, viewPortY + posY - 2);
 			}
 
 			if (c.getJob() != null && c.getJob().getActionIcon() != null && c.getJob().getX() == c.getX() && c.getJob().getY() == c.getY()) {
 				SpriteModel sprite = SpriteManager.getInstance().getIcon(c.getJob().getActionIcon());
-				sprite.setPosition(posX - 2, posY - 2);
-				renderer.draw(sprite, effect);
+				renderer.draw(sprite, viewPortX + posX - 2, viewPortY + posY - 2);
 			}
 		}
 	}

@@ -2,11 +2,11 @@ package org.smallbox.faraway.data.serializer;
 
 import com.ximpleware.*;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.area.*;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.util.FileUtils;
 
 import java.io.FileOutputStream;

@@ -6,9 +6,6 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.util.Utils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by Alex on 13/06/2015.
  */

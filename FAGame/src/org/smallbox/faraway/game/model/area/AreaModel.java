@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.model.area;
 
-import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 

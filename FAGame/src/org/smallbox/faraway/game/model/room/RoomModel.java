@@ -123,7 +123,6 @@ public class RoomModel {
 	public RoomType                 getType() { return _type; }
     public int                      getSize() { return _parcels.size(); }
     public int                      getLight() { return _lightValue; }
-    public RoomOptions              getOptions() { return null; }
     public Set<CharacterModel>	    getOccupants() { return _occupants; }
     public RoomTemperatureModel     getTemperatureInfo() { return _temperatureInfo; }
     public List<NeighborModel>      getNeighbors() { return _neighborhood; }

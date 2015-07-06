@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.model.item;
 
-import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobHaul;
 

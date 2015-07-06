@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.model.check.joy;
 
-import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.job.BaseJobModel;

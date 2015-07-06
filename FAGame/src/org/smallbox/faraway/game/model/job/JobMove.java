@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.model.job;
 
-import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.util.Log;
 
@@ -30,11 +29,6 @@ public class JobMove extends BaseJobModel {
 
 	@Override
 	public JobActionReturn onAction(CharacterModel character) {
-
-		// If job has EffectValues, update characters needs
-		if (_strategy != null) {
-			_strategy.onAction(this);
-		}
 
 //		if (_durationLeft > 0) {
 //			return false;

@@ -1,7 +1,7 @@
 _duration = 0;
 
 function OnUpdate(game, character)
-    if character.needs.oxygen <= 20 and _duration > 10 then
+    if character.needs.oxygen <= 25 and _duration > 10 then
         _duration = _duration + 1
         return {"Suffocating (2)", 4, -100, {
             {"faint", 0.25},
@@ -9,19 +9,19 @@ function OnUpdate(game, character)
         }}
     end
 
-    if character.needs.oxygen <= 20 then
+    if character.needs.oxygen <= 25 then
         _duration = _duration + 1
         return {"Suffocating", 3, -100}
     end
 
-    if character.needs.oxygen < 50 then
+    if character.needs.oxygen < 55 then
         _duration = 0
-        return {"It's hard to breath (2)", 2, -25}
+        return {"It's hard to breath (2)", 2, -10}
     end
 
     if character.needs.oxygen < 75 then
         _duration = 0
-        return {"It's hard to breath", 1, -10}
+        return {"It's hard to breath", 1, -5}
     end
 
 end

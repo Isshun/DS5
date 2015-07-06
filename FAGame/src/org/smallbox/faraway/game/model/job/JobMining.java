@@ -1,8 +1,6 @@
 package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.PathManager;
-import org.smallbox.faraway.engine.SpriteManager;
-import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -26,6 +24,11 @@ public class JobMining extends BaseJobModel {
 			for (ItemInfo.ItemInfoAction action: res.getInfo().actions) {
 				if ("mine".equals(action.type)) {
 					JobMining job = new JobMining(action, res.getX(), res.getY());
+					job.setStrategy(j -> {
+						if (j.getCharacter().getType().needs.joy != null) {
+							j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+						}
+					});
 					job.setItem(res);
 					job._resource = res;
 					return job;

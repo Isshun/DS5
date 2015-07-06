@@ -20,6 +20,8 @@ public interface GameObserver {
     default void onRemoveConsumable(ConsumableModel consumable){}
     default void onRemoveStructure(StructureModel structure){}
     default void onRemoveResource(ResourceModel resource){}
+    default void onRefreshItem(ItemModel item) {}
+    default void onRefreshStructure(StructureModel structure) {}
     default void onHourChange(int hour){}
     default void onDayChange(int day) {}
     default void onYearChange(int year) {}

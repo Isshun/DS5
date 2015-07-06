@@ -45,8 +45,6 @@ public class GDXImageView extends UIImage {
                 _sprite.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
                 _sprite.setRegion(_textureX, _textureY, _textureWidth, _textureHeight);
             }
-            ((GDXRenderer) renderer).draw(_sprite, _finalX, _finalY);
-            return;
         }
 
         if (_sprite == null && _path != null) {
@@ -65,8 +63,8 @@ public class GDXImageView extends UIImage {
                 _finalY += view.getPosY();
                 view = view.getParent();
             }
-            //_sprite.setScale((float) _scaleX, (float) _scaleY);
         }
+
         if (_sprite != null) {
             // TODO
             if (_textureHeight != 0) {

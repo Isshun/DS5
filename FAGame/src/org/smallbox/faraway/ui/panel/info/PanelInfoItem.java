@@ -2,7 +2,6 @@ package org.smallbox.faraway.ui.panel.info;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.engine.GameTimer;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;

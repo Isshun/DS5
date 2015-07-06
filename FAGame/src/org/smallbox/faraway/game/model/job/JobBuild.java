@@ -16,6 +16,11 @@ public class JobBuild extends BaseJobModel {
 		BaseJobModel job = new JobBuild(item.getX(), item.getY());
 		job.setItem(item);
 		job.setCost(item.getInfo().cost);
+		job.setStrategy(j -> {
+			if (j.getCharacter().getType().needs.joy != null) {
+				j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+			}
+		});
 		return job;
 	}
 

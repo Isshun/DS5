@@ -44,25 +44,27 @@ public class GDXRenderer implements GFXRenderer {
     }
 
     @Override
-    public void draw(SpriteModel sprite, RenderEffect effect) {
+    public void draw(SpriteModel sprite, int x, int y) {
         if (sprite != null) {
             _batch.begin();
-            if (effect != null) {
-                if (effect.getViewport() != null) {
-                    Sprite s = ((GDXSpriteModel) sprite).getData();
-                    s.setScale(effect.getViewport().getScale());
-                    _batch.draw(s,
-                            s.getX() + effect.getViewport().getPosX() * effect.getViewport().getScale(),
-                            s.getY() + effect.getViewport().getPosY() * effect.getViewport().getScale(),
-                            s.getWidth() * effect.getViewport().getScale(),
-                            s.getHeight() * effect.getViewport().getScale());
-                } else {
-                    Sprite s = ((GDXSpriteModel) sprite).getData();
-                    _batch.draw(s, ((GDXRenderEffect) effect).getPosX(), ((GDXRenderEffect) effect).getPosY());
-                }
-            } else {
-                ((GDXSpriteModel) sprite).getData().draw(_batch);
-            }
+            ((GDXSpriteModel)sprite).getData().setPosition(x, y);
+            ((GDXSpriteModel)sprite).getData().draw(_batch);
+//            if (effect != null) {
+//                if (effect.getViewport() != null) {
+//                    Sprite s = ((GDXSpriteModel) sprite).getData();
+//                    s.setScale(effect.getViewport().getScale());
+//                    _batch.draw(s,
+//                            s.getX() + effect.getViewport().getPosX() * effect.getViewport().getScale(),
+//                            s.getY() + effect.getViewport().getPosY() * effect.getViewport().getScale(),
+//                            s.getWidth() * effect.getViewport().getScale(),
+//                            s.getHeight() * effect.getViewport().getScale());
+//                } else {
+//                    Sprite s = ((GDXSpriteModel) sprite).getData();
+//                    _batch.draw(s, ((GDXRenderEffect) effect).getPosX(), ((GDXRenderEffect) effect).getPosY());
+//                }
+//            } else {
+//                ((GDXSpriteModel) sprite).getData().draw(_batch);
+//            }
             _batch.end();
         }
     }

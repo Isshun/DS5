@@ -1,7 +1,5 @@
 package org.smallbox.faraway.game.model.job;
 
-import org.smallbox.faraway.engine.SpriteManager;
-import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
@@ -32,6 +30,11 @@ public class JobGather extends BaseJobModel {
 
 		JobGather job = new JobGather(resource.getInfo().actions.get(0), resource.getX(), resource.getY());
 		job.setItem(resource);
+		job.setStrategy(j -> {
+			if (j.getCharacter().getType().needs.joy != null) {
+				j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+			}
+		});
 		job._resource = resource;
 		job._resource.setJob(job);
 

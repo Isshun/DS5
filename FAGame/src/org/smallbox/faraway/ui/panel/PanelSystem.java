@@ -1,7 +1,6 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.Application;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;

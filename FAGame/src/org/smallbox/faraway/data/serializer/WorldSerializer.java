@@ -6,7 +6,8 @@ import org.smallbox.faraway.game.manager.WorldManager;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.util.FileUtils;
 
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class WorldSerializer implements SerializerInterface {
 

@@ -6,7 +6,6 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
 
 public class CharacterNeeds {
     private final CharacterModel 	_character;
@@ -75,18 +74,6 @@ public class CharacterNeeds {
 
         happiness += happinessChange / 100;
 
-        // Character is sleeping
-        if (isSleeping()) {
-            // In bed
-            if (_sleepItem != null) {
-                updateNeeds(_sleepItem.getInfo().actions.get(0));
-            }
-            // On floor
-            else {
-                energy += 0.4;
-            }
-        }
-
         if (energy >= 100) {
             isSleeping = false;
         }
@@ -101,8 +88,17 @@ public class CharacterNeeds {
     }
 
     public void updateNeeds(CharacterTypeInfo.Needs needs) {
-        food += needs.food.change;
-        energy += needs.energy.change;
+        if (needs.energy != null) {
+            energy += isSleeping ? needs.energy.change.sleep : needs.energy.change.wake;
+        }
+
+        if (needs.food != null) {
+            food += isSleeping ? needs.food.change.sleep : needs.food.change.wake;
+        }
+
+        if (needs.joy != null) {
+            joy += isSleeping ? isSleeping && _sleepItem == null ? needs.joy.change.sleepOnFloor : needs.joy.change.sleep : needs.joy.change.wake;
+        }
 
         // Increase oxygen
         if (_character.getParcel() != null) {
@@ -119,7 +115,6 @@ public class CharacterNeeds {
 //        happiness += needs.happiness.change;
 //        relation += effects.relation;
 //        security += needs.security.cha;
-        joy += needs.joy.change;
     }
 
     private void updateNeeds(ItemInfoAction action) {

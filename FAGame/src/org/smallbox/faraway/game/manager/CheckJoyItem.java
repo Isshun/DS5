@@ -1,8 +1,6 @@
 package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.GameConfig;
-import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ItemFilter;

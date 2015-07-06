@@ -228,6 +228,11 @@ public abstract class BaseJobModel {
             return JobActionReturn.FINISH;
         }
 
+        // Launch strategy
+        if (_strategy != null) {
+            _strategy.onAction(this);
+        }
+
         JobActionReturn ret = onAction(character);
 
         if (ret == JobActionReturn.FINISH) {

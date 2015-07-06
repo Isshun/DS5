@@ -3,6 +3,7 @@ package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
+import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
@@ -10,7 +11,6 @@ import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.room.NeighborModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.game.model.room.RoomModel.RoomType;
-import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;

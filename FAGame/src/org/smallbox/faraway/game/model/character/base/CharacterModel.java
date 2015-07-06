@@ -4,9 +4,11 @@ import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
-import org.smallbox.faraway.game.model.*;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.manager.RoomManager;
+import org.smallbox.faraway.game.model.CharacterTypeInfo;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.character.BuffModel;
 import org.smallbox.faraway.game.model.character.CharacterRelationModel;
 import org.smallbox.faraway.game.model.character.DiseaseModel;
@@ -17,11 +19,12 @@ import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobMove;
 import org.smallbox.faraway.game.model.job.JobUse;
 import org.smallbox.faraway.game.model.room.RoomModel;
-import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public abstract class CharacterModel extends MovableModel {
 
@@ -345,6 +348,7 @@ public abstract class CharacterModel extends MovableModel {
                 return;
             }
             _moveProgress = 0;
+            _moveStep = 1;
 
             parcel = _node;
             _posX = x;

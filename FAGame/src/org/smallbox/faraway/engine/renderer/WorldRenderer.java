@@ -15,21 +15,14 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
 
     private int                 _cacheCols;
     private boolean             _needRefresh;
-
-    private SpriteManager 			_spriteManager;
-    private RenderLayer[][] 		_layerStructure;
-    private boolean 				_hasChanged;
-
-    private WorldManager 			_worldMap;
-    private MapObjectModel          _itemSelected;
-    private int 					_frame;
+    private SpriteManager 	    _spriteManager;
+    private RenderLayer[][] 	_layerStructure;
+    private WorldManager 		_worldMap;
+    private MapObjectModel      _itemSelected;
+    private int 				_frame;
 
     public WorldRenderer(SpriteManager spriteManager) {
         _spriteManager = spriteManager;
-
-//		_layerItem = ViewFactory.getInstance().createRenderLayer(Constant.WORLD_WIDTH * Constant.TILE_WIDTH, Constant.WORLD_HEIGHT * Constant.TILE_HEIGHT);
-
-        _hasChanged = true;
         _needRefresh = true;
     }
 
@@ -81,22 +74,22 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
             for (int y = toY; y >= fromY; y--) {
 //                if (onScreen(x / CACHE_SIZE, y / CACHE_SIZE)) {
 //                }
-                ParcelModel area = Game.getWorldManager().getParcel(x, y);
-                if (area != null) {
+                ParcelModel parcel = Game.getWorldManager().getParcel(x, y);
+                if (parcel != null) {
                     if (GameData.config.render.floor) {
-                        refreshFloor(layer, area, x, y);
+                        refreshFloor(layer, parcel.getType(), x, y);
                     }
                     if (GameData.config.render.structure) {
-                        refreshStructure(layer, area, x, y);
+                        refreshStructure(layer, parcel.getStructure(), x, y);
                     }
                     if (GameData.config.render.resource) {
-                        refreshResource(layer, area, x, y);
+                        refreshResource(layer, parcel.getResource(), x, y);
                     }
                     if (GameData.config.render.item) {
-                        refreshItems(layer, area, x, y);
+                        refreshItems(layer, parcel.getItem(), x, y);
                     }
                     if (GameData.config.render.consumable) {
-                        refreshConsumable(layer, area, x, y);
+                        refreshConsumable(layer, parcel.getConsumable(), x, y);
                     }
                 }
             }
@@ -130,8 +123,7 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
             if (resource.getInfo().isLive) {
                 sprite = _spriteManager.getResource(resource);
                 if (sprite != null) {
-                    sprite.setPosition(resource.getX() * Constant.TILE_WIDTH + offsetX, resource.getY() * Constant.TILE_HEIGHT + offsetY);
-                    renderer.draw(sprite, null);
+                    renderer.draw(sprite, resource.getX() * Constant.TILE_WIDTH + offsetX, resource.getY() * Constant.TILE_HEIGHT + offsetY);
                 }
             }
         }
@@ -146,257 +138,60 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
         return (posX < 1500 && posY < 1200 && posX + width > 0 && posY + height > 0);
     }
 
-    private void refreshResource(RenderLayer layer, ParcelModel area, int x, int y) {
-        ResourceModel resource = area.getResource();
+    private void refreshResource(RenderLayer layer, ResourceModel resource, int x, int y) {
         if (resource != null && !resource.getInfo().isLive) {
             SpriteModel sprite = _spriteManager.getResource(resource);
             if (sprite != null) {
-                sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-                layer.draw(sprite);
+                layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }
         }
     }
 
     // TODO: random
-    void	refreshFloor(RenderLayer layer, ParcelModel parcel, int x, int y) {
-//        StructureModel structure = parcel.getStructure();
-//
-//        if (structure != null && structure.isFloor()) {
-//            if (structure.getName().equals("base.greenhouse")) {
-//                int index = 2;
-//                SpriteModel sprite = _spriteManager.getGreenHouse(index + (structure.isWorking() ? 1 : 0));
-//                sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-//                layer.draw(sprite);
-//
-//                ResourceModel resource = _worldMap.getResource(x, y);
-//                if (resource != null) {
-//                    sprite = _spriteManager.getResource(resource);
-//                    sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-//                    layer.draw(sprite);
-//                }
-//            }
-//
-//            // Floor
-//            else {
-//                int roomId = 0;
-//                SpriteModel sprite = _spriteManager.getFloor(structure, roomId, 0);
-//                if (sprite != null) {
-//                    sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-//                    layer.draw(sprite);
-//                }
-//
-//                ResourceModel ressource = _worldMap.getResource(x, y);
-//                if (ressource != null) {
-//                    sprite = _spriteManager.getResource(ressource);
-//                    sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-//                    layer.draw(sprite);
-//                }
-//
-//
-////							RectangleShape shape = new RectangleShape(new Vector2f(32, 32));
-////							shape.setFillColor(new Color(0, 0, 0, 155 * (12 - area.getLight()) / 12));
-////							shape.setPosition(i * Constant.TILE_SIZE, j * Constant.TILE_SIZE);
-////							_texture.draw(shape);
-//            }
-//
-//        // No floor
-//        } else if (parcel.getType() != 0) {
-//            SpriteModel sprite = _spriteManager.getGround(parcel.getType());
-//            sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-//            layer.draw(sprite);
-//        }
-
+    void	refreshFloor(RenderLayer layer, int type, int x, int y) {
         // Draw ground
-        if (parcel.getType() != 0) {
-            SpriteModel sprite = _spriteManager.getGround(parcel.getType());
-            sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-            layer.draw(sprite);
+        if (type != 0) {
+            SpriteModel sprite = _spriteManager.getGround(type);
+            layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
         }
-
-        // Draw floor
-        if (parcel.getStructure() != null && parcel.getStructure().isFloor()) {
-            SpriteModel sprite = _spriteManager.getFloor(parcel.getStructure(), 0, 0);
-            sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-            layer.draw(sprite);
-        }
-
-//
-//        else {
-//            SpriteModel sprite = _spriteManager.getExterior(x + y * 42, 0);
-//            sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-//            _layerStructure.draw(sprite);
-//        }
     }
 
     //TODO: random
-    void	refreshStructure(RenderLayer layer, ParcelModel area, int x, int y) {
+    void	refreshStructure(RenderLayer layer, StructureModel structure, int x, int y) {
         int offsetWall = (Constant.TILE_WIDTH / 2 * 3) - Constant.TILE_HEIGHT;
 
-        StructureModel structure = area.getStructure();
         if (structure != null) {
-
             // Door
             if (structure.isDoor()) {
-                SpriteModel sprite = _spriteManager.getSimpleWall(0);
-                if (sprite != null) {
-                    sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT - offsetWall);
-                    layer.draw(sprite);
-                }
-
-                sprite = _spriteManager.getItem(structure);
-                if (sprite != null) {
-                    sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT - 4);
-                    layer.draw(sprite);
-                }
+                layer.draw(_spriteManager.getItem(structure), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT - offsetWall);
             }
 
             // Floor
             else if (structure.isFloor()) {
+                layer.draw(_spriteManager.getItem(structure), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }
 
             // Wall
             else if (structure.isWall()) {
-                SpriteModel sprite = drawWall(structure, x, y, offsetWall);
-                layer.draw(sprite);
+                layer.draw(drawWall(structure, x, y, offsetWall), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }
 
             // Hull
             else if (structure.isHull()) {
-                SpriteModel sprite = drawWall(structure, x, y, offsetWall);
-                layer.draw(sprite);
+                layer.draw(drawWall(structure, x, y, offsetWall), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }
 
             else {
-                SpriteModel sprite = SpriteManager.getInstance().getItem(structure);
-                sprite.setPosition(structure.getX() * Constant.TILE_WIDTH, structure.getY() * Constant.TILE_HEIGHT);
-                layer.draw(sprite);
+                layer.draw(SpriteManager.getInstance().getItem(structure), (structure.getX() % CACHE_SIZE) * Constant.TILE_WIDTH, (structure.getY() % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }
         }
     }
 
-    private SpriteModel drawWall(StructureModel item, int i, int j, int offsetWall) {
-        SpriteModel sprite = null;
-        sprite = _spriteManager.getWall(item, 1, 1, 0);
-        sprite.setPosition((i % CACHE_SIZE) * Constant.TILE_WIDTH, (j % CACHE_SIZE) * Constant.TILE_HEIGHT);
-        return sprite;
-//
-//        StructureModel bellow = _worldMap.getStructure(i, j+1);
-//        StructureModel right = _worldMap.getStructure(i+1, j);
-//        StructureModel left = _worldMap.getStructure(i-1, j);
-//
-//        int zone = 0;
-//        // bellow is a wall
-//        if (bellow != null && (bellow.isWall() || bellow.isDoor())) {
-//            StructureModel bellowBellow = _worldMap.getStructure(i, j+2);
-//            if (bellow.isDoor() || bellowBellow == null || (!bellowBellow.isWall() && !bellowBellow.isDoor())) {
-//                StructureModel bellowRight = _worldMap.getStructure(i+1, j+1);
-//                StructureModel bellowLeft = _worldMap.getStructure(i-1, j+1);
-//                boolean wallOnRight = bellowRight != null && (bellowRight.isWall() || bellowRight.isDoor());
-//                boolean wallOnLeft = bellowLeft != null && (bellowLeft.isWall() || bellowLeft.isDoor());
-//
-//                if (wallOnRight && wallOnLeft) {
-//                    sprite = _spriteManager.getWall(item, 5, 0, zone);
-//                } else if (wallOnLeft) {
-//                    boolean wallOnSupRight = right != null && (right.isWall() || right.isDoor());
-//                    if (wallOnSupRight) {
-//                        sprite = _spriteManager.getWall(item, 1, 5, zone);
-//                    } else {
-//                        sprite = _spriteManager.getWall(item, 5, 2, zone);
-//                    }
-//                } else if (wallOnRight) {
-//                    boolean wallOnSupLeft = left != null && (left.isWall() || left.isDoor());
-//                    if (wallOnSupLeft) {
-//                        sprite = _spriteManager.getWall(item, 1, 4, zone);
-//                    } else {
-//                        sprite = _spriteManager.getWall(item, 5, 1, zone);
-//                    }
-//                } else {
-//                    sprite = _spriteManager.getWall(item, 5, 3, zone);
-//                }
-//            } else {
-//                boolean wallOnRight = right != null && (right.isWall() || right.isDoor());
-//                boolean wallOnLeft = left != null && (left.isWall() || left.isDoor());
-//                if (wallOnRight && wallOnLeft) {
-//                    sprite = _spriteManager.getWall(item, 1, 0, zone);
-//                } else if (wallOnLeft) {
-//                    sprite = _spriteManager.getWall(item, 1, 2, zone);
-//                } else if (wallOnRight) {
-//                    sprite = _spriteManager.getWall(item, 1, 1, zone);
-//                } else {
-//                    sprite = _spriteManager.getWall(item, 1, 3, zone);
-//                }
-//            }
-//
-//            if (sprite != null) {
-//                sprite.setPosition((i % CACHE_SIZE) * Constant.TILE_WIDTH, (j % CACHE_SIZE) * Constant.TILE_HEIGHT);
-//            }
-//        }
-//
-//        // No wall above or bellow
-//        else if (bellow == null || bellow.isWall() == false) {
-//
-//            // Check double wall
-//            boolean doubleWall = false;
-//            if (right != null && right.isComplete() && right.isWall() &&
-//                    (_lastSpecialY != j || _lastSpecialX != i+1)) {
-//                StructureModel aboveRight = _worldMap.getStructure(i+1, j-1);
-//                StructureModel bellowRight = _worldMap.getStructure(i+1, j+1);
-//                if ((aboveRight == null || aboveRight.isWall() == false) &&
-//                        (bellowRight == null || bellowRight.isWall() == false)) {
-//                    doubleWall = true;
-//                }
-//            }
-//
-//            // Normal
-//            if (bellow == null) {
-//                // Double wall
-//                if (doubleWall) {
-//                    sprite = _spriteManager.getWall(item, 4, i+j, zone);
-//                    _lastSpecialX = i;
-//                    _lastSpecialY = j;
-//                }
-//                // Single wall
-//                else {
-//                    sprite = _spriteManager.getWall(item, 0, 0, zone);
-//                }
-//            }
-//            // Special
-//            else {
-//                // Double wall
-//                if (doubleWall) {
-//                    sprite = _spriteManager.getWall(item, 2, i+j, zone);
-//                    _lastSpecialX = i;
-//                    _lastSpecialY = j;
-//                }
-//                // Single wall
-//                else {
-//                    sprite = _spriteManager.getWall(item, 3, i+j, zone);
-//                }
-//            }
-//            if (sprite != null) {
-//                sprite.setPosition((i % CACHE_SIZE) * Constant.TILE_WIDTH, (j % CACHE_SIZE) * Constant.TILE_HEIGHT);
-////                sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT - offsetWall);
-//            }
-//        }
-//
-//        // // left is a wall
-//        // else if (left != null && left.type == BaseItem.STRUCTURE_WALL) {
-//        // 	_spriteManager.getWall(item, 2, &sprite);
-//        // 	sprite.setPosition(i * TILE_SIZE - TILE_SIZE, j * TILE_SIZE - offset);
-//        // }
-//
-//        // single wall
-//        else {
-//            sprite = _spriteManager.getWall(item, 0, 0, 0);
-//            sprite.setPosition((i % CACHE_SIZE) * Constant.TILE_WIDTH, (j % CACHE_SIZE) * Constant.TILE_HEIGHT);
-////            sprite.setPosition(i * Constant.TILE_WIDTH, j * Constant.TILE_HEIGHT - offsetWall);
-//        }
-//
-//        return sprite;
+    private SpriteModel drawWall(StructureModel structure, int x, int y, int offsetWall) {
+        return _spriteManager.getItem(structure);
     }
 
-    void	refreshItems(RenderLayer layer, ParcelModel area, int x, int y) {
-        ItemModel item = area.getItem();
+    void	refreshItems(RenderLayer layer, ItemModel item, int x, int y) {
         if (item != null && item.getX() == x && item.getY() == y) {
 
             // Display components
@@ -404,13 +199,12 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
                 SpriteModel sprite = _spriteManager.getItem(component, component.getCurrentFrame());
                 if (sprite != null) {
                     if (item.getInfo().storage != null && item.getInfo().storage.components != null) {
-                        sprite.setPosition(
+                        layer.draw(sprite,
                                 (x + item.getInfo().storage.components[0]) * Constant.TILE_WIDTH,
                                 (y + item.getInfo().storage.components[1]) * Constant.TILE_HEIGHT);
                     } else {
-                        sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+                        layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
                     }
-                    layer.draw(sprite);
                 }
             }
 
@@ -419,22 +213,17 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
                 SpriteModel sprite = _spriteManager.getItem(component, component.getCurrentFrame());
                 if (sprite != null) {
                     if (item.getInfo().storage != null && item.getInfo().storage.crafts != null) {
-                        sprite.setPosition(
+                        layer.draw(sprite,
                                 (x + item.getInfo().storage.crafts[0]) * Constant.TILE_WIDTH,
                                 (y + item.getInfo().storage.crafts[1]) * Constant.TILE_HEIGHT);
                     } else {
-                        sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+                        layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
                     }
-                    layer.draw(sprite);
                 }
             }
 
             // Display item
-            SpriteModel sprite = _spriteManager.getItem(item, item.getCurrentFrame());
-            if (sprite != null) {
-                sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-                layer.draw(sprite);
-            }
+            layer.draw(_spriteManager.getItem(item, item.getCurrentFrame()), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
 
             // Display selection
             if (item.isSelected()) {
@@ -443,22 +232,18 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
 
             // Display selection
             if (!item.isFunctional()) {
-                sprite = _spriteManager.getIcon("data/res/ic_power.png");
-                sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-                layer.draw(sprite);
+                layer.draw(_spriteManager.getIcon("data/res/ic_power.png"), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }
         }
     }
 
-    void	refreshConsumable(RenderLayer layer, ParcelModel area, int x, int y) {
-        ConsumableModel consumable = area.getConsumable();
+    void	refreshConsumable(RenderLayer layer, ConsumableModel consumable, int x, int y) {
         if (consumable != null) {
 
             // Regular item
             SpriteModel sprite = _spriteManager.getItem(consumable, consumable.getCurrentFrame());
             if (sprite != null) {
-                sprite.setPosition((x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-                layer.draw(sprite);
+                layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }
 
             // Selection
@@ -469,8 +254,6 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
     }
 
     private void refreshSelected(GFXRenderer renderer, RenderEffect effect, int frame, MapObjectModel item) {
-        int x = item.getX();
-        int y = item.getY();
         int offset = 0;
         switch (frame % 5) {
             case 1: offset = 1; break;
@@ -480,30 +263,12 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
             case 5: offset = 1; break;
         }
 
-        SpriteModel sprite = _spriteManager.getSelectorCorner(0);
-        sprite.setPosition(x * Constant.TILE_WIDTH - offset, y * Constant.TILE_HEIGHT - offset);
-        renderer.draw(sprite, effect);
-
-        sprite = _spriteManager.getSelectorCorner(1);
-        sprite.setPosition((x + item.getWidth()) * Constant.TILE_WIDTH - 6 + offset, y * Constant.TILE_HEIGHT - offset);
-        renderer.draw(sprite, effect);
-
-        sprite = _spriteManager.getSelectorCorner(2);
-        sprite.setPosition(x * Constant.TILE_WIDTH - offset, (y + item.getHeight()) * Constant.TILE_HEIGHT - 6 + offset);
-        renderer.draw(sprite, effect);
-
-        sprite = _spriteManager.getSelectorCorner(3);
-        sprite.setPosition((x + item.getWidth()) * Constant.TILE_WIDTH - 6 + offset, (y + item.getHeight()) * Constant.TILE_HEIGHT - 6 + offset);
-        renderer.draw(sprite, effect);
-    }
-
-    public void invalidate(int x, int y) {
-//		_changed.add(new Vector2i(x, y));
-        _hasChanged = true;
-    }
-
-    public void invalidate() {
-        _hasChanged = true;
+        int x = item.getX();
+        int y = item.getY();
+        renderer.draw(_spriteManager.getSelectorCorner(0), x * Constant.TILE_WIDTH - offset, y * Constant.TILE_HEIGHT - offset);
+        renderer.draw(_spriteManager.getSelectorCorner(1), (x + item.getWidth()) * Constant.TILE_WIDTH - 6 + offset, y * Constant.TILE_HEIGHT - offset);
+        renderer.draw(_spriteManager.getSelectorCorner(2), x * Constant.TILE_WIDTH - offset, (y + item.getHeight()) * Constant.TILE_HEIGHT - 6 + offset);
+        renderer.draw(_spriteManager.getSelectorCorner(3), (x + item.getWidth()) * Constant.TILE_WIDTH - 6 + offset, (y + item.getHeight()) * Constant.TILE_HEIGHT - 6 + offset);
     }
 
     public void onDrawSelected(GFXRenderer renderer, RenderEffect effect, double animProgress) {
@@ -560,5 +325,16 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
         _needRefresh = true;
     }
 
+    @Override
+    public void onRefreshItem(ItemModel item) {
+        _layerStructure[item.getX() / CACHE_SIZE][item.getY() / CACHE_SIZE].planRefresh();
+        _needRefresh = true;
+    }
+
+    @Override
+    public void onRefreshStructure(StructureModel structure) {
+        _layerStructure[structure.getX() / CACHE_SIZE][structure.getY() / CACHE_SIZE].planRefresh();
+        _needRefresh = true;
+    }
 
 }

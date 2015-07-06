@@ -12,9 +12,6 @@ import org.smallbox.faraway.ui.panel.BaseRightPanel;
 import org.smallbox.faraway.util.StringUtils;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.BlockingQueue;
 
 public class PanelJobs extends BaseRightPanel {
 	private static final int 	NB_COLUMNS = 47;

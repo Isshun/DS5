@@ -1,5 +1,5 @@
 function OnUpdate(game, character)
-    if character.needs.relation <= 0 then
+    if character.needs.relation < 1 then
         return {"About to going crazy", 3, -15 }
     end
 

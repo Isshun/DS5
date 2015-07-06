@@ -3,12 +3,10 @@ package org.smallbox.faraway.game.model.check.joy;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
-import org.smallbox.faraway.game.model.job.JobMove;
 
 /**
  * Created by Alex on 17/06/2015.

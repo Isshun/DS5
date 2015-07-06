@@ -3,12 +3,11 @@ package org.smallbox.faraway.game.manager;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.check.CheckCharacterJoyDepleted;
 import org.smallbox.faraway.game.model.check.CheckCharacterOxygen;
 import org.smallbox.faraway.game.model.check.CheckCharacterUse;
 import org.smallbox.faraway.game.model.check.character.CheckCharacterExhausted;
 import org.smallbox.faraway.game.model.check.character.CheckCharacterHungry;
-import org.smallbox.faraway.game.model.check.joy.CheckJoySleep;
-import org.smallbox.faraway.game.model.check.joy.CheckJoyTalk;
 import org.smallbox.faraway.game.model.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.*;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -46,10 +44,11 @@ public class JobManager extends BaseManager {
         _priorities.add(new CheckCharacterUse());
         _priorities.add(new CheckCharacterExhausted());
 		_priorities.add(new CheckCharacterHungry());
+		_priorities.add(new CheckCharacterJoyDepleted());
 
 		_joys = new ArrayList<>();
 //		_joys.add(new CheckJoyTalk());
-		_joys.add(new CheckJoyWalk());
+//		_joys.add(new CheckJoyWalk());
 		_joys.add(new CheckJoyItem());
 //		_joys.add(new CheckJoySleep());
 
@@ -68,8 +67,8 @@ public class JobManager extends BaseManager {
             // Create haul jobs
             _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).getItemAround());
             Game.getWorldManager().getConsumables().stream().filter(consumable -> consumable.getHaul() == null && !consumable.inValidStorage()).forEach(consumable -> {
-                addJob(JobHaul.create(consumable));
-            });
+				addJob(JobHaul.create(consumable));
+			});
 
             // Remove invalid job
             _jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
@@ -201,12 +200,6 @@ public class JobManager extends BaseManager {
 			return;
 		}
 
-		// Joy jobs
-		if (assignJoyJob(character, true) && character.getJob() != null) {
-			Log.debug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
-			return;
-		}
-
 		// Regular jobs
         if (assignRegularJob(character) && character.getJob() != null) {
             Log.debug("assign regular job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
@@ -219,7 +212,7 @@ public class JobManager extends BaseManager {
         }
 
 		// Joy jobs
-		if (assignJoyJob(character, false) && character.getJob() != null) {
+		if (assignJoyJob(character) && character.getJob() != null) {
 			Log.debug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
 			return;
 		}
@@ -281,10 +274,10 @@ public class JobManager extends BaseManager {
 	 * @param character
 	 * @return
 	 */
-	private boolean assignJoyJob(CharacterModel character, boolean onlyNeeded) {
+	private boolean assignJoyJob(CharacterModel character) {
 		Collections.shuffle(_joys);
 		for (CharacterCheck jobCheck: _joys) {
-			if ((!onlyNeeded || jobCheck.need(character)) && jobCheck.check(character)) {
+			if (jobCheck.check(character)) {
 				BaseJobModel job = jobCheck.create(character);
 				if (job != null) {
 					assignJobToCharacter(job, character);
@@ -578,4 +571,7 @@ public class JobManager extends BaseManager {
 		}
 	}
 
+	public List<CharacterCheck> getJoys() {
+		return _joys;
+	}
 }

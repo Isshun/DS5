@@ -3,11 +3,15 @@ package org.smallbox.faraway.ui.panel.right;
 import org.smallbox.faraway.Strings;
 import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.character.BuffModel;
-import org.smallbox.faraway.game.model.character.DiseaseModel;
+import org.smallbox.faraway.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.ToolTips;
-import org.smallbox.faraway.game.model.character.base.*;
+import org.smallbox.faraway.game.model.character.BuffModel;
+import org.smallbox.faraway.game.model.character.DiseaseModel;
+import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
+import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
+import org.smallbox.faraway.game.model.character.base.CharacterRelation;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
@@ -24,9 +28,12 @@ import java.util.List;
 import java.util.Map;
 
 public class PanelCharacter extends BaseRightPanel {
+    private interface OnGaugeRefresh {
+        void onGaugeRefresh(UILabel label, UIImage image, CharacterModel character, CharacterNeeds needs, CharacterTypeInfo type);
+    }
+
     private static final int    NB_MAX_BUFFS = 20;
     private static final int    NB_MAX_DISEASES = 20;
-    private static final int    NB_GAUGE = 8;
     private static final int    NB_MAX_RELATION = 18;
     private static final int    NB_INVENTORY_PER_LINE = 10;
     private static final int    NB_COLUMNS_NEEDS = 22;
@@ -35,7 +42,14 @@ public class PanelCharacter extends BaseRightPanel {
     private static final Color  COLOR_BUTTON_ACTIVE = new Color(0xafcd35);
     private ViewFactory _viewFactory;
 
-    private static final String[] texts = {"Food", "Oxygen", "Happiness", "Energy", "Relation", "Security", "Health", "Amusement", "Injuries", "Satiety", "unused", "Work"};
+    private static final OnGaugeRefresh[] GAUGES = new OnGaugeRefresh[] {
+            (label, image, character, needs, type) -> refreshNeed(label, image, "Energy", character, needs.energy, type.needs.energy),
+            (label, image, character, needs, type) -> refreshNeed(label, image, "Food", character, needs.food, type.needs.food),
+            (label, image, character, needs, type) -> refreshNeed(label, image, "Oxygen", character, needs.oxygen, type.needs.oxygen),
+            (label, image, character, needs, type) -> refreshNeed(label, image, "Happiness", character, needs.happiness, type.needs.happiness),
+            (label, image, character, needs, type) -> refreshNeed(label, image, "Relation", character, needs.relation, type.needs.relation),
+            (label, image, character, needs, type) -> refreshNeed(label, image, "Amusement", character, needs.joy, type.needs.joy),
+    };
 
     private static final Color COLOR_DEAD = new Color(180, 180, 180);
     private static final Color COLOR_0 = new Color(120, 255, 255);
@@ -46,8 +60,8 @@ public class PanelCharacter extends BaseRightPanel {
     private CharacterModel 		_character;
     private UILabel             _lbName;
     private ColorView 			_cursor;
-    private UIImage[] 		    _shapes = new UIImage[NB_GAUGE];
-    private UILabel[] 			_values = new UILabel[NB_GAUGE];
+    private UIImage[] 		    _shapes = new UIImage[GAUGES.length];
+    private UILabel[] 			_values = new UILabel[GAUGES.length];
     private UILabel             _lbJob;
     private UILabel[] 			_lbBuffs = new UILabel[NB_MAX_BUFFS];
     private UILabel[] 			_lbDiseases = new UILabel[NB_MAX_DISEASES];
@@ -85,7 +99,6 @@ public class PanelCharacter extends BaseRightPanel {
         findById("bt_personal_report").setOnClickListener(view -> switchView("frame_personal_report"));
         findById("bt_priorities").setOnClickListener(view -> switchView("frame_priorities"));
         findById("bt_inventory").setOnClickListener(view -> switchView("frame_inventory"));
-        findById("bt_health").setOnClickListener(view -> switchView("frame_health"));
 
         createNeedsInfo();
         createBasicInformation();
@@ -96,7 +109,6 @@ public class PanelCharacter extends BaseRightPanel {
         findById("frame_personal_report").setVisible(false);
         findById("frame_priorities").setVisible(false);
         findById("frame_inventory").setVisible(false);
-        findById("frame_health").setVisible(false);
 
         _lbName = (UILabel) findById("lb_name");
         _lbJob = (UILabel) findById("lb_current_job");
@@ -125,7 +137,6 @@ public class PanelCharacter extends BaseRightPanel {
         findById("frame_priorities").setVisible("frame_priorities".equals(viewId));
         findById("frame_personal_report").setVisible("frame_personal_report".equals(viewId));
         findById("frame_inventory").setVisible("frame_inventory".equals(viewId));
-        findById("frame_health").setVisible("frame_health".equals(viewId));
     }
 
     private void createTalents() {
@@ -226,7 +237,7 @@ public class PanelCharacter extends BaseRightPanel {
     }
 
     private void createNeedsInfo() {
-        for (int i = 0; i < NB_GAUGE; i++) {
+        for (int i = 0; i < GAUGES.length; i++) {
             switch (i) {
                 case 0:
                     _values[i] = (UILabel)findById("lb_status_food");
@@ -519,7 +530,13 @@ public class PanelCharacter extends BaseRightPanel {
             if (buff.level > 0) {
                 int mood = buff.mood;
                 _lbBuffs[line].setString(StringUtils.getDashedString(buff.message, (mood > 0 ? "+" : "") + mood, NB_COLUMNS));
-                _lbBuffs[line].setColor(mood < 0 ? COLOR_2 : COLOR_0);
+                if (mood < -10) {
+                    _lbBuffs[line].setColor(COLOR_2);
+                } else if (mood < 0) {
+                    _lbBuffs[line].setColor(COLOR_1);
+                } else {
+                    _lbBuffs[line].setColor(COLOR_0);
+                }
                 line++;
             }
         }
@@ -681,60 +698,36 @@ public class PanelCharacter extends BaseRightPanel {
 
     private void refreshNeeds() {
         CharacterNeeds needs = _character.getNeeds();
+        CharacterTypeInfo type = _character.getType();
         int valueLevel3 = 10;
         int valueLevel2 = 50;
-        for (int i = 0; i < NB_GAUGE; i++) {
-            int value = 0;
-            switch (i) {
-                case 0:
-                    value = Math.min(Math.max((int)needs.getFood(), 0), 100);
-                    valueLevel2 = _character.getType().needs.food.warning;
-                    valueLevel3 = _character.getType().needs.food.critical;
-                    break;
-                case 1:
-                    value = Math.min(Math.max((int)needs.oxygen, 0), 100);
-                    valueLevel2 = _character.getType().needs.oxygen.warning;
-                    valueLevel3 = _character.getType().needs.oxygen.critical;
-                    break;
-                case 2: value = Math.min(Math.max((int)needs.happiness, 0), 100); break;
-                case 3: value = Math.min(Math.max((int)needs.energy, 0), 100); break;
-                case 4:
-                    value = Math.min(Math.max((int)needs.relation, 0), 100);
-                    valueLevel2 = _character.getType().needs.relation.warning;
-                    valueLevel3 = _character.getType().needs.relation.critical;
-                    break;
-                case 5: value = Math.min(Math.max((int)needs.security, 0), 100); break;
-                case 6: value = Math.min(Math.max((int)needs.health, 0), 100); break;
-                case 7:
-                    value = Math.min(Math.max((int)needs.joy, 0), 100);
-                    valueLevel2 = _character.getType().needs.joy.warning;
-                    valueLevel3 = _character.getType().needs.joy.critical;
-                    break;
-            }
-            float size = Math.max(Math.round(180.0f / 100 * value / 10) * 10, 10);
-            int level = 0;
-
-            Color color = COLOR_0;
-            if (value < valueLevel3) { level = 3; color = COLOR_2; }
-            else if (value < valueLevel2) { level = 2; color = COLOR_1; }
-
-            if (!_character.isAlive()) {
-                value = 0;
-                size = 10;
-                color = COLOR_DEAD;
-                level = 4;
-            }
-
-            if (_shapes[i] != null) {
-                _shapes[i].setSize((int) (size * GameData.config.uiScale), (int) (12 * GameData.config.uiScale));
-                _shapes[i].setTextureRect(0, (int)(level * 16), (int) (size * GameData.config.uiScale), (int)(12 * GameData.config.uiScale));
-            }
-
-            if (_values[i] != null) {
-                _values[i].setString(StringUtils.getDashedString(texts[i], String.valueOf(value), NB_COLUMNS_NEEDS));
-                _values[i].setColor(color);
-            }
+        int index = 0;
+        for (OnGaugeRefresh gauge: GAUGES){
+            gauge.onGaugeRefresh(_values[index], _shapes[index], _character, needs, type);
+            index++;
         }
+    }
+
+    private static void refreshNeed(UILabel lbNeed, UIImage imgNeed, String label, CharacterModel character, double value, CharacterTypeInfo.NeedInfo needInfo) {
+        value = Math.min(Math.max(value, 0), 100);
+        int level = 0;
+        Color color = COLOR_0;
+        if (value < needInfo.critical) { level = 3; color = COLOR_2; }
+        else if (value < needInfo.warning) { level = 2; color = COLOR_1; }
+        float size = Math.max(Math.round(180.0f / 100 * value / 10) * 10, 10);
+
+        if (!character.isAlive()) {
+            value = 0;
+            size = 10;
+            color = COLOR_DEAD;
+            level = 4;
+        }
+
+        imgNeed.setSize((int) (size * GameData.config.uiScale), (int) (12 * GameData.config.uiScale));
+        imgNeed.setTextureRect(0, (int) (level * 16), (int) (size * GameData.config.uiScale), (int) (12 * GameData.config.uiScale));
+
+        lbNeed.setString(StringUtils.getDashedString(label, String.valueOf((int) value), NB_COLUMNS_NEEDS));
+        lbNeed.setColor(color);
     }
 
     private void startAnim(UILabel text, String value) {

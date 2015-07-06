@@ -1,8 +1,5 @@
 package org.smallbox.faraway.game.model.planet;
 
-import org.smallbox.faraway.game.model.planet.PlanetModel;
-import org.smallbox.faraway.game.model.planet.RegionInfo;
-
 /**
  * Created by Alex on 26/06/2015.
  */

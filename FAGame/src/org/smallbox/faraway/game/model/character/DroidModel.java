@@ -1,13 +1,9 @@
 package org.smallbox.faraway.game.model.character;
 
 import org.smallbox.faraway.engine.Color;
-import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.CharacterTypeInfo;
-import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterStats;
-import org.smallbox.faraway.game.model.item.ItemInfo;
 
 /**
  * Created by Alex on 17/06/2015.

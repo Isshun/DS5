@@ -1,8 +1,6 @@
 package org.smallbox.faraway.game.manager;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.area.AreaModel;
-import org.smallbox.faraway.game.model.area.GardenAreaModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;

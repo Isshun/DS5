@@ -2,6 +2,7 @@ package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.area.StorageAreaModel;
@@ -9,7 +10,6 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -41,6 +41,11 @@ public class JobHaul extends BaseJobModel {
         job._consumableParcel = consumable.getParcel();
         job._mode = Mode.MOVE_TO_CONSUMABLE;
         job._itemInfo = consumable.getInfo();
+        job.setStrategy(j -> {
+            if (j.getCharacter().getType().needs.joy != null) {
+                j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+            }
+        });
         job.getItemAround();
 
         // No consumables to haul

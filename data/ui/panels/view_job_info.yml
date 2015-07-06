@@ -1,0 +1,127 @@
+entries:
+
+    -   type: label
+        text: Room
+        textsize: 14
+        position: [24, -16]
+
+    -   type: label
+        id: lb_room_id
+        textsize: 14
+        position: [360, -16]
+
+    -   type: frame
+        position: [24, 0]
+        size: [370, 1]
+        background: 0x888888
+
+    -   type: label
+        id: lb_room
+        text: Room
+        textsize: 24
+        position: [24, 12]
+
+    -   type: label
+        id: lb_room_size
+        textsize: 14
+        position: [24, 42]
+
+    -   type: label
+        id: lb_room_temperature
+        textsize: 14
+        position: [24, 62]
+
+    -   type: label
+        id: lb_neighborhood
+        textsize: 14
+        position: [24, 102]
+
+    -   type: frame
+        position: [175, 0]
+        entries:
+
+        -   type: label
+            id: lb_heat_left
+            text: heat left
+            textsize: 14
+            position: [0, 14]
+
+        -   type: label
+            id: lb_cold_left
+            text: cold left
+            textsize: 14
+            position: [0, 34]
+            
+        -   type: label
+            id: lb_heat
+            text: heat
+            textsize: 14
+            position: [0, 54]
+
+        -   type: label
+            id: lb_cold
+            text: cold
+            textsize: 14
+            position: [0, 74]
+
+        -   type: label
+            id: lb_heat_potency
+            text: heat potency
+            textsize: 14
+            position: [0, 94]
+
+        -   type: label
+            id: lb_cold_potency
+            text: cold potency
+            textsize: 14
+            position: [0, 114]
+
+    -   type: label
+        id: lb_oxygen
+        text: cold left
+        textsize: 14
+        position: [24, 122]
+
+    -   type: label
+        id: lb_type
+        text: type
+        textsize: 14
+        position: [24, 324]
+        
+    # Temperature
+    -   type: frame
+        position: [328, 12]
+        entries:
+
+        -   type: image
+            path: data/res/bg_temperature.png
+            position: [52, 0]
+            size: [14, 200]
+        
+        -   type: frame
+            id: temperature_cursor
+            entries:
+            
+            -   type: frame
+                id: bg_1_temperature_cursor
+                position: [40, 10]
+                size: [7, 1]
+                background: 0xbbff0000
+
+            -   type: frame
+                id: bg_2_temperature_cursor
+                position: [0, 0]
+                size: [36, 20]
+                background: 0xbbff0000
+
+            -   type: frame
+                position: [1, 1]
+                size: [34, 18]
+                background: 0x33121c1e
+
+            -   type: label
+                id: lb_temperature_cursor
+                text: NaN
+                textsize: 14
+                align: center
+                size: [38, 20]

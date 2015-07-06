@@ -18,6 +18,11 @@ public class JobDump extends BaseJobModel {
 		BaseJobModel job = new JobDump(objectModel.getX(), objectModel.getY());
 		job.setItem(objectModel);
 		job.setCost(objectModel.getInfo().cost);
+		job.setStrategy(j -> {
+			if (j.getCharacter().getType().needs.joy != null) {
+				j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+			}
+		});
 		return job;
 	}
 

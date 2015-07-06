@@ -5,7 +5,6 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.area.*;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.util.Utils;
 
 import java.util.ArrayList;

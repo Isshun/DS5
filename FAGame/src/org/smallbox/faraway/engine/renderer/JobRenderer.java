@@ -9,9 +9,6 @@ import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.util.Constant;
 
-import java.util.Collection;
-import java.util.List;
-
 public class JobRenderer extends BaseRenderer {
 	//	private RenderTexture 					_cache;
 //	private HashMap<ActionType, ColorView> 		_rectangles;
@@ -62,8 +59,7 @@ public class JobRenderer extends BaseRenderer {
 			if (!job.isFinish()) {
 				SpriteModel sprite = SpriteManager.getInstance().getIcon(job.getIcon());
 				if (sprite != null) {
-					sprite.setPosition(x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
-					renderer.draw(sprite, effect);
+					renderer.draw(sprite, x * Constant.TILE_WIDTH, y * Constant.TILE_HEIGHT);
 				}
 //				_parcels[x][y] = frame;
 			}

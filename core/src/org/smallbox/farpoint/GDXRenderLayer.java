@@ -43,10 +43,11 @@ public class GDXRenderLayer extends RenderLayer {
     }
 
     @Override
-    public void draw(SpriteModel sprite) {
+    public void draw(SpriteModel sprite, int x, int y) {
         if (sprite != null) {
             if (_count < 5000) {
                 // TODO: BOF
+                ((GDXSpriteModel)sprite).getData().setPosition(x, y);
                 _cache.add(((GDXSpriteModel)sprite).getData());
                 _count++;
             }

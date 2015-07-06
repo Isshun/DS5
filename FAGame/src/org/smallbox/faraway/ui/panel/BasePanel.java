@@ -1,6 +1,9 @@
 package org.smallbox.faraway.ui.panel;
 
-import org.smallbox.faraway.engine.*;
+import org.smallbox.faraway.engine.GFXRenderer;
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInteraction;
@@ -10,6 +13,7 @@ import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 
@@ -29,6 +33,10 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 	protected boolean 				_isVisible;
 	private boolean 				_isLoaded;
     private final String            _layoutPath;
+	private int 					_nbDraw;
+	private long 					_totalDrawTime;
+	private int 					_nbRefresh;
+	private long 					_totalRefreshTime;
 
 	public void			toogle() { _isVisible = !_isVisible; }
 	public void			open() { _isVisible = true; }
@@ -116,7 +124,10 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 	
 	public void refresh(int update) {
 		if (_isVisible) {
+			long time = System.currentTimeMillis();
 			onRefresh(update);
+			_totalRefreshTime += (System.currentTimeMillis() - time);
+			_nbRefresh++;
 		}
 	}
 	
@@ -161,7 +172,9 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 
     public void draw(GFXRenderer renderer, RenderEffect effect) {
         if (_isVisible) {
-            if (_backgroundColor != null) {
+			long time = System.currentTimeMillis();
+
+			if (_backgroundColor != null) {
                 renderer.draw(_backgroundColor, _x, _y, _width, _height);
             }
 
@@ -170,7 +183,10 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
             }
 
             onDraw(renderer, effect);
-        }
+
+			_totalDrawTime += (System.currentTimeMillis() - time);
+			_nbDraw++;
+		}
     }
 
     @Override
@@ -211,5 +227,14 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 
 	public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
 		return false;
+	}
+
+	public void dump() {
+		if (_nbRefresh != 0) {
+			Log.notice("Manager: " + this.getClass().getSimpleName() + ",\trefresh: " + _nbRefresh + ",\tavg time: " + _totalRefreshTime / _nbRefresh);
+		}
+		if (_nbDraw != 0) {
+			Log.notice("Manager: " + this.getClass().getSimpleName() + ",\tdraw: " + _nbDraw + ",\tavg time: " + _totalDrawTime / _nbDraw);
+		}
 	}
 }

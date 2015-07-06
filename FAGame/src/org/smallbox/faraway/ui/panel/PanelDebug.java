@@ -1,6 +1,7 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.QuestManager;
 import org.smallbox.faraway.game.manager.RoomManager;
@@ -10,16 +11,16 @@ import org.smallbox.faraway.game.model.character.DroidModel;
 import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
-import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.ui.engine.FrameLayout;
+import org.smallbox.faraway.ui.engine.OnClickListener;
+import org.smallbox.faraway.ui.engine.UILabel;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -92,8 +93,16 @@ public class PanelDebug extends BasePanel {
                             }))
             ),
             new CommandEntry("Dump managers",       view -> {
-                Log.notice("----------- dump -----------");
+                Log.notice("\n----------- dump -----------");
                 Game.getInstance().getManagers().forEach(manager -> manager.dump());
+            }),
+            new CommandEntry("Dump renders",       view -> {
+                Log.notice("\n----------- dump -----------");
+                MainRenderer.getInstance().getRenders().forEach(renderer -> renderer.dump());
+            }),
+            new CommandEntry("Dump panels",       view -> {
+                Log.notice("\n----------- dump -----------");
+                Arrays.asList(UserInterface.getInstance().getPanels()).forEach(panel -> panel.dump());
             }),
     };
 

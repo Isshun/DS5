@@ -19,7 +19,7 @@ public abstract class RenderLayer {
     }
 
     public abstract void onDraw(GFXRenderer renderer, RenderEffect renderEffect, int x, int y);
-    public abstract void draw(SpriteModel sprite);
+    public abstract void draw(SpriteModel sprite, int x, int y);
     public abstract void draw(UILabel text);
     public void begin() {}
     public void end() {}

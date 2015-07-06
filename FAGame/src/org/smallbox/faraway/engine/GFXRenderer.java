@@ -9,7 +9,7 @@ import org.smallbox.faraway.ui.engine.View;
  */
 public interface GFXRenderer {
     void draw(View view, int x, int y);
-    void draw(SpriteModel sprite, RenderEffect effect);
+    void draw(SpriteModel sprite, int x, int y);
     void draw(ColorView view, RenderEffect effect);
     void draw(Color color, int x, int y, int width, int height);
     void clear(Color color);

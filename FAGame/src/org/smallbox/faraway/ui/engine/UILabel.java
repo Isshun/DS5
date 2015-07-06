@@ -1,7 +1,6 @@
 package org.smallbox.faraway.ui.engine;
 
 import org.smallbox.faraway.engine.Color;
-import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.model.GameData;
 
 public abstract class UILabel extends View {
@@ -44,10 +43,6 @@ public abstract class UILabel extends View {
 	public abstract String getString();
 
 	public void setShortcut(int i) {
-		//TODO
-	}
-
-	public void setIcon(SpriteModel sprite) {
 		//TODO
 	}
 
