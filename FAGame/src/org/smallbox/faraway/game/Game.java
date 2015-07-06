@@ -183,7 +183,8 @@ public class Game {
 	public void	newGame(LoadListener loadListener) {
 		//loadListener.onUpdate("Create new game");
 
-        (new AsteroidBeltFactory()).create(Game.getWorldManager(), 250, 250, loadListener);
+//        (new AsteroidBeltFactory()).create(Game.getWorldManager(), 250, 250, loadListener);
+        (new TestFactory()).create(Game.getWorldManager(), 250, 250, loadListener);
 	}
 
 	public void	load() {

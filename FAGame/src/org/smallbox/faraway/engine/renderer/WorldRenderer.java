@@ -59,6 +59,15 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
         }
     }
 
+    public void refreshAll() {
+        for (int i = 0; i < _cacheCols; i++) {
+            for (int j = 0; j < _cacheCols; j++) {
+                _layerStructure[i][j].planRefresh();
+            }
+        }
+        _needRefresh = true;
+    }
+
     private void refreshLayer(RenderLayer layer, int fromX, int fromY, int toX, int toY) {
         Log.info("Refresh layer: " + layer.getIndex());
 
@@ -70,8 +79,8 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
 
         layer.begin();
         layer.setRefresh();
-        for (int x = toX; x >= fromX; x--) {
-            for (int y = toY; y >= fromY; y--) {
+        for (int x = toX - 1; x >= fromX; x--) {
+            for (int y = toY - 1; y >= fromY; y--) {
 //                if (onScreen(x / CACHE_SIZE, y / CACHE_SIZE)) {
 //                }
                 ParcelModel parcel = Game.getWorldManager().getParcel(x, y);

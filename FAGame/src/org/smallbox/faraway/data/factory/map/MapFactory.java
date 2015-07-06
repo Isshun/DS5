@@ -12,12 +12,12 @@ public abstract class MapFactory {
     public abstract void onCreate(ParcelModel[][][] parcels, int width, int height, LoadListener loadListener);
 
     public void create(WorldManager worldManager, int width, int height, LoadListener loadListener) {
-        if (worldManager.getParcels() != null) {
-            throw new RuntimeException("WorldManager as already been initialized");
+        if (worldManager.getParcels() == null) {
+            // Initialize world map
+            worldManager.init(width, height);
+//            throw new RuntimeException("WorldManager as already been initialized");
         }
 
-        // Initialize world map
-        worldManager.init(width, height);
         ParcelModel[][][] parcels = worldManager.getParcels();
 
         // Call factory method

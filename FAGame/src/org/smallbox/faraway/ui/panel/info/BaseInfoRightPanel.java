@@ -72,6 +72,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
                 ((UILabel) _frame_parcel_info.findById("lb_rubble")).setString("rubble: " + parcel.getRubble());
                 ((UILabel) _frame_parcel_info.findById("lb_snow")).setString("snow: " + parcel.getSnow());
                 ((UILabel) _frame_parcel_info.findById("lb_light")).setString("light: " + parcel.getLight());
+                ((UILabel) _frame_parcel_info.findById("lb_type")).setString("type: " + parcel.getType());
 
                 String strConnexion = "";
                 for (Connection<ParcelModel> connection : parcel.getConnections()) {

@@ -57,3 +57,10 @@ entries:
         textsize: 14
         position: [24, 102]
 
+
+    -   type: label
+        id: lb_type
+        text: type
+        textsize: 14
+        position: [24, 122]
+

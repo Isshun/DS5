@@ -93,4 +93,8 @@ public class MainRenderer {
 	public List<BaseRenderer> getRenders() {
 		return _renders;
 	}
+
+	public WorldRenderer getWorldRenderer() {
+		return _worldRenderer;
+	}
 }

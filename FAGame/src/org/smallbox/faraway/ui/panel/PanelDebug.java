@@ -2,7 +2,9 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
+import org.smallbox.faraway.engine.renderer.WorldRenderer;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.TestFactory;
 import org.smallbox.faraway.game.manager.QuestManager;
 import org.smallbox.faraway.game.manager.RoomManager;
 import org.smallbox.faraway.game.model.GameData;
@@ -40,6 +42,10 @@ public class PanelDebug extends BasePanel {
     }
 
     private CommandEntry[] COMMANDS = new CommandEntry[] {
+            new CommandEntry("Re-gen",              view -> {
+                new TestFactory().create(Game.getWorldManager(), 250, 250, null);
+                MainRenderer.getInstance().getWorldRenderer().refreshAll();
+            }),
             new CommandEntry("Add crew (human)",    view -> Game.getCharacterManager().addRandom(HumanModel.class)),
             new CommandEntry("Add crew (android)",  view -> Game.getCharacterManager().addRandom(AndroidModel.class)),
             new CommandEntry("Add crew (droid)",    view -> Game.getCharacterManager().addRandom(DroidModel.class)),

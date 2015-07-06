@@ -11,6 +11,7 @@ import org.smallbox.faraway.util.Log;
 public class GDXViewport extends Viewport {
     private static final int    ANIM_FRAME = 10;
     public static float[]       ZOOM_LEVELS = new float[] {
+            0.1f,
             0.25f,
             0.5f,
             1f

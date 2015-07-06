@@ -50,12 +50,19 @@ public class DebugRenderer extends BaseRenderer {
         int relY = UserInterface.getInstance().getMouseY();
 
         for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
-            if (parcel.getZ() == 0 && parcel.getX() > relX - 8 && parcel.getX() < relX + 8 && parcel.getY() > relY - 8 && parcel.getY() < relY + 8) {
-                lbDebug.setString(String.valueOf((int)(parcel.getLight() * 10)));
-//                lbDebug.setString(parcel.getX() + "x" + parcel.getY());
-                renderer.draw(lbDebug, (int) (parcel.getX() * Constant.TILE_WIDTH + effect.getViewport().getPosX()), (int) (parcel.getY() * Constant.TILE_HEIGHT + effect.getViewport().getPosY()));
+            if (parcel.getZ() == 0) {
+                Color color = new Color(parcel.getResource().getQuantity() * 250 / 1300, 0, 0);
+                renderer.draw(color, (int) (parcel.getX() * Constant.TILE_WIDTH + effect.getViewport().getPosX()), (int) (parcel.getY() * Constant.TILE_HEIGHT + effect.getViewport().getPosY()), 32, 32);
             }
         }
+
+//        for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
+//            if (parcel.getZ() == 0 && parcel.getX() > relX - 8 && parcel.getX() < relX + 8 && parcel.getY() > relY - 8 && parcel.getY() < relY + 8) {
+//                lbDebug.setString(String.valueOf((int)(parcel.getLight() * 10)));
+////                lbDebug.setString(parcel.getX() + "x" + parcel.getY());
+//                renderer.draw(lbDebug, (int) (parcel.getX() * Constant.TILE_WIDTH + effect.getViewport().getPosX()), (int) (parcel.getY() * Constant.TILE_HEIGHT + effect.getViewport().getPosY()));
+//            }
+//        }
 	}
 
 }

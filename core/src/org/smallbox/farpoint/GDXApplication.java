@@ -108,8 +108,8 @@ public class GDXApplication extends ApplicationAdapter {
 
         _queue.add(new LoadRunnable("Resume game", () -> {
             if (GameData.config.byPassMenu) {
-//            _application.newGame("6.sav");
-                _application.loadGame("6.sav");
+            _application.newGame("7.sav");
+//                _application.loadGame("6.sav");
             }
         }));
 

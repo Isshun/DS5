@@ -158,7 +158,8 @@ public class GDXSpriteManager extends SpriteManager {
                 imgFile = new File("mods/" + item.packageName + "/items/" + item.fileName + ".png");
             }
             if (imgFile != null && imgFile.exists()) {
-                sprite = new GDXSpriteModel(new Texture(new FileHandle(imgFile)), tileX * item.width * Constant.TILE_WIDTH,
+                sprite = new GDXSpriteModel(new Texture(new FileHandle(imgFile)),
+                        tileX * item.width * Constant.TILE_WIDTH,
                         tileY * item.height * Constant.TILE_HEIGHT + offsetY,
                         item.width * Constant.TILE_WIDTH,
                         item.height * Constant.TILE_HEIGHT);
@@ -261,7 +262,7 @@ public class GDXSpriteManager extends SpriteManager {
         if (_groundItemInfo == null) {
             _groundItemInfo = GameData.getData().getItemInfo("base.ground");
         }
-        return getSprite(_groundItemInfo, 0, 0, 255, false);
+        return getSprite(_groundItemInfo, type, 0, 255, false);
     }
 
     @Override
@@ -324,6 +325,7 @@ public class GDXSpriteManager extends SpriteManager {
 
     @Override
     public Viewport createViewport() {
-        return new GDXViewport(-4400, -5200);
+        return new GDXViewport(800, 600);
+//        return new GDXViewport(-4400, -5200);
     }
 }
