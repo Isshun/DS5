@@ -381,6 +381,11 @@ public class PanelCharacter extends BaseRightPanel {
         }
 
         refreshTalents();
+        refreshTimeTable();
+    }
+
+    private void refreshTimeTable() {
+
     }
 
     private void initCharacter() {
@@ -388,6 +393,36 @@ public class PanelCharacter extends BaseRightPanel {
         _lbName.setColor(_character.getInfo().getColor());
         _nbRelation = -1;
         createTalents();
+        createTimeTable();
+    }
+
+    private void createTimeTable() {
+        FrameLayout frame = (FrameLayout)findById("frame_timetable_entries");
+        frame.removeAllViews();
+        for (int h = 0; h < Game.getInstance().getPlanet().getInfo().dayDuration; h++) {
+            final int finalH = h;
+            UILabel lbRow = ViewFactory.getInstance().createTextView(350, 20);
+            lbRow.setString(" " + (h < 9 ? " " : "") + (h + 1) + "h");
+            lbRow.setCharacterSize(14);
+            lbRow.setPosition(0, 21 * h);
+            lbRow.setAlign(Align.CENTER_VERTICAL);
+            lbRow.setOnClickListener(view -> {
+                int mode = (_character.getTimetable().get(finalH) + 1) % 4;
+                _character.getTimetable().set(finalH, mode);
+                setTimetableMode(view, mode);
+            });
+            setTimetableMode(lbRow, _character.getTimetable().get(finalH));
+            frame.addView(lbRow);
+        }
+    }
+
+    private void setTimetableMode(View view, int mode) {
+        switch (mode) {
+            case 0: view.setBackgroundColor(new Color(0x263b3f)); break;
+            case 1: view.setBackgroundColor(new Color(0x298596)); break;
+            case 2: view.setBackgroundColor(new Color(0xb0cd35)); break;
+            case 3: view.setBackgroundColor(new Color(0x882246)); break;
+        }
     }
 
     private void refreshTalents() {

@@ -24,7 +24,6 @@ public class JobHaul extends BaseJobModel {
     private Mode 			        _mode;
     private int                     _quantity;
     private ItemInfo                _itemInfo;
-    private String                  _message;
     private ParcelModel             _consumableParcel;
 
     private JobHaul(int x, int y) {
@@ -97,6 +96,7 @@ public class JobHaul extends BaseJobModel {
         if (_storage != null) {
             _parcel = _storage.getNearestFreeParcel(consumable, consumable.getX(), consumable.getY());
             if (_parcel != null) {
+                _message = "Move to " + _storage.getName();
                 return true;
             }
         }
@@ -181,7 +181,7 @@ public class JobHaul extends BaseJobModel {
     public JobActionReturn onAction(CharacterModel character) {
         if (_storage == null) {
             Log.error("JobHaul: null storage");
-            JobManager.getInstance().quit(this, JobAbortReason.INVALID);
+            JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
             return JobActionReturn.ABORT;
         }
 
@@ -202,7 +202,7 @@ public class JobHaul extends BaseJobModel {
                 }
             } else {
                 Log.error("JobHaul: characters inventory must be empty");
-                JobManager.getInstance().quit(this, JobAbortReason.INVALID);
+                JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
                 return JobActionReturn.ABORT;
             }
             _consumables.remove(0);
@@ -260,7 +260,7 @@ public class JobHaul extends BaseJobModel {
 
     @Override
     public String getLabel() {
-        return "store";
+        return "Store " + _itemInfo.label;
     }
 
     @Override

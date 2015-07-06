@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.manager;
 
+import org.smallbox.faraway.JobManagerHelper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
@@ -30,7 +31,7 @@ public class PlantManager extends BaseManager {
                 }
                 // Plan to gather
                 else {
-                    JobManager.getInstance().addGather(resource);
+                    JobManagerHelper.addGather(resource);
                 }
             }
         }

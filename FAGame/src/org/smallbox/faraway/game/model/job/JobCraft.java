@@ -145,7 +145,7 @@ public class JobCraft extends BaseJobModel {
 		// Wrong call
 		if (_item == null || _item != Game.getWorldManager().getItem(_itemPosX, _itemPosY)) {
 			Log.error("Character: actionUse on null job or null job's item or invalid item");
-			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 

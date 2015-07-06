@@ -70,6 +70,6 @@ public class CheckJoyWalk extends CharacterCheck {
 
     @Override
     public boolean need(CharacterModel character) {
-        return true;
+        return character.getNeeds().joy < character.getType().needs.joy.warning;
     }
 }

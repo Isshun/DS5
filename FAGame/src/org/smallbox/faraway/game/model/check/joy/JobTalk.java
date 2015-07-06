@@ -16,7 +16,7 @@ public class JobTalk extends BaseJobModel {
     public static JobTalk create(CharacterModel character, CharacterModel friend) {
 
         if (friend.getJob() != null && friend.getJob().isJoy()) {
-            Game.getJobManager().close(friend.getJob());
+            Game.getJobManager().closeJob(friend.getJob());
         }
 
         GraphPath<ParcelModel> path = PathManager.getInstance().getPath(character.getParcel(), friend.getParcel());

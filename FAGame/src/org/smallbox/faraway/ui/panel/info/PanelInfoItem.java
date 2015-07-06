@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui.panel.info;
 
+import org.smallbox.faraway.JobManagerHelper;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.manager.JobManager;
@@ -126,7 +127,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
             _frameCraft.setVisible(false);
         }
 
-        findById("bt_destroy").setOnClickListener(view -> JobManager.getInstance().addDestroyJob(item));
+        findById("bt_destroy").setOnClickListener(view -> JobManagerHelper.addDumpJob(item));
     }
 
     public void select(ItemInfo info) {
@@ -174,7 +175,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
         lbCraft.setBackgroundColor(new Color(0x1d5560));
         lbCraft.setAlign(Align.CENTER_VERTICAL);
         lbCraft.setOnClickListener(view -> {
-            JobManager.getInstance().addJob(_item, action);
+            JobManagerHelper.addJob(_item, action);
         });
         _menuAddCraftEntries.addView(lbCraft);
     }

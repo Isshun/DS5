@@ -12,6 +12,7 @@ import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.character.BuffModel;
 import org.smallbox.faraway.game.model.character.CharacterRelationModel;
 import org.smallbox.faraway.game.model.character.DiseaseModel;
+import org.smallbox.faraway.game.model.character.TimeTableModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
@@ -70,7 +71,8 @@ public abstract class CharacterModel extends MovableModel {
             new TalentEntry(TalentType.BUILD, 	"Build")
     };
 
-    CharacterNeeds						_needs;
+    private CharacterNeeds				_needs;
+    private TimeTableModel              _timeTable;
     protected boolean					_isSelected;
     protected int 						_lag;
     protected double 					_old;
@@ -102,6 +104,7 @@ public abstract class CharacterModel extends MovableModel {
         _buffs = new ArrayList<>();
         _diseases = new ArrayList<>();
         _stats = new CharacterStats();
+        _timeTable = new TimeTableModel(Game.getInstance().getPlanet().getInfo().dayDuration);
         _stats.speed = 1;
         _old = old;
         _relations = new CharacterRelationModel();
@@ -150,6 +153,8 @@ public abstract class CharacterModel extends MovableModel {
     public abstract String          getNeedViewPath();
     public CharacterTypeInfo        getType() { return _type; }
     public String                   getTypeName() { return _type.name; }
+    public TimeTableModel getTimetable() { return _timeTable; }
+
     public abstract String		    getName();
 
     public abstract void            addBodyStats(CharacterStats stats);
@@ -229,6 +234,16 @@ public abstract class CharacterModel extends MovableModel {
         // Check room temperature
         _stats.reset(this, _equipments);
         updateBodyHeat(((RoomManager)Game.getInstance().getManager(RoomManager.class)).getRoom(_posX, _posY));
+
+        // TODO: create JobSleep class with auto-cancel capability
+        // Cancel character sleeping
+        int timetable = _timeTable.get(Game.getInstance().getHour());
+        if (timetable != 0 && timetable != 1 && _needs.isSleeping && _needs.energy > 75) {
+            _needs.isSleeping = false;
+            if (_job != null && _job instanceof JobUse && _job.getItem() != null && _job.getItem().isSleepingItem()) {
+                JobManager.getInstance().quitJob(_job);
+            }
+        }
     }
 
     private void updateBodyHeat(RoomModel room) {
@@ -400,12 +415,12 @@ public abstract class CharacterModel extends MovableModel {
         if ((_posX == _toX && _posY == _toY) || _job instanceof JobMove) {
             BaseJobModel.JobActionReturn ret = _job.action(this);
             if (ret == BaseJobModel.JobActionReturn.FINISH || ret == BaseJobModel.JobActionReturn.ABORT) {
-                JobManager.getInstance().close(_job);
-                JobManager.getInstance().assignJob(this);
+                JobManager.getInstance().closeJob(_job);
+                JobManager.getInstance().assign(this);
             }
             if (ret == BaseJobModel.JobActionReturn.QUIT) {
-                JobManager.getInstance().quit(_job);
-                JobManager.getInstance().assignJob(this);
+                JobManager.getInstance().quitJob(_job);
+                JobManager.getInstance().assign(this);
             }
         }
     }
@@ -416,7 +431,7 @@ public abstract class CharacterModel extends MovableModel {
             Log.warning("Job failed (no path)");
 
             // Abort job
-            JobManager.getInstance().quit(job, BaseJobModel.JobAbortReason.BLOCKED);
+            JobManager.getInstance().quitJob(job, BaseJobModel.JobAbortReason.BLOCKED);
             _job = null;
 
             if (_onPathComplete != null) {

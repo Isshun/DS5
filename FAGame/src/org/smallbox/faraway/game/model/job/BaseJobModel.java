@@ -16,7 +16,7 @@ public abstract class BaseJobModel {
     }
 
     public String getMessage() {
-        return null;
+        return _message;
     }
 
     public void setJoy(boolean isJoy) {

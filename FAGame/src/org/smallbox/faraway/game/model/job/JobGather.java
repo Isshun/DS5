@@ -96,13 +96,13 @@ public class JobGather extends BaseJobModel {
 		// Wrong call
 		if (_resource == null) {
 			Log.error("Character: actionGather on null job or null job's item");
-			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 
 		if (_resource.getInfo().actions.get(0) == null) {
 			Log.error("Character: actionGather on non gatherable item");
-			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 

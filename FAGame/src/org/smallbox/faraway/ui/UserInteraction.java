@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui;
 
+import org.smallbox.faraway.JobManagerHelper;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.AreaManager;
@@ -116,9 +117,9 @@ public class UserInteraction {
 				ResourceModel res = Game.getWorldManager().getResource(x, y);
 				if (res != null) {
 					if (res.canBeMined()) {
-						JobManager.getInstance().addMineJob(x, y);
+						JobManagerHelper.addMineJob(x, y);
 					} else if (res.canBeHarvested()) {
-						JobManager.getInstance().addGatherJob(x, y);
+						JobManagerHelper.addGatherJob(x, y);
 					}
 				}
 				
@@ -130,13 +131,13 @@ public class UserInteraction {
 						// TODO
 						StructureModel structure = Game.getWorldManager().getStructure(x, y);
 						if (structure == null || !structure.isDoor()) {
-							JobManager.getInstance().build(GameData.getData().getItemInfo("base.wall"), x, y);
+							JobManagerHelper.addBuildJob(GameData.getData().getItemInfo("base.wall"), x, y);
 						}
 						// item = Game.getWorldManager().putObject(x, y, BaseItem.STRUCTURE_WALL);
 					} else {
 						Log.warning("2");
 						// TODO
-						JobManager.getInstance().build(GameData.getData().getItemInfo("base.floor"), x, y);
+						JobManagerHelper.addBuildJob(GameData.getData().getItemInfo("base.floor"), x, y);
 						// item = Game.getWorldManager().putObject(x, y, BaseItem.STRUCTURE_FLOOR);
 					}
 				} else {
@@ -144,7 +145,7 @@ public class UserInteraction {
 					if (_selectedItemInfo != null) {
 						Log.warning("3 " + _selectedItemInfo.name);
 						// TODO
-						JobManager.getInstance().build(_selectedItemInfo, x, y);
+						JobManagerHelper.addBuildJob(_selectedItemInfo, x, y);
 						// item = Game.getWorldManager().putObject(x, y, type);
 					}
 				}
@@ -189,7 +190,7 @@ public class UserInteraction {
 	public void planGather(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				BaseJobModel job = JobManager.getInstance().createGatherJob(x, y);
+				BaseJobModel job = JobManagerHelper.createGatherJob(x, y);
 				if (job != null) {
 					JobManager.getInstance().addJob(job);
 				}
@@ -200,7 +201,7 @@ public class UserInteraction {
 	public void planMining(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				BaseJobModel job = JobManager.getInstance().createMiningJob(x, y);
+				BaseJobModel job = JobManagerHelper.createMiningJob(x, y);
 				if (job != null) {
 					JobManager.getInstance().addJob(job);
 				}

@@ -3,7 +3,6 @@ package org.smallbox.faraway.game.manager;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.check.CheckCharacterJoyDepleted;
 import org.smallbox.faraway.game.model.check.CheckCharacterOxygen;
 import org.smallbox.faraway.game.model.check.CheckCharacterUse;
 import org.smallbox.faraway.game.model.check.character.CheckCharacterExhausted;
@@ -30,6 +29,7 @@ public class JobManager extends BaseManager {
 	private final List<CharacterCheck>  		_priorities;
 	private final BlockingQueue<BaseJobModel> 	_jobs;
 	private final List<BaseJobModel>			_toRemove;
+	private final CharacterCheck 				_bedCheck;
 	private int 								_nbVisibleJob;
 
 	public JobManager() {
@@ -38,17 +38,20 @@ public class JobManager extends BaseManager {
 		_self = this;
 		_jobs = new LinkedBlockingQueue<>();
 		_toRemove = new ArrayList<>();
+        _updateInterval = 10;
 
         _priorities = new ArrayList<>();
 		_priorities.add(new CheckCharacterOxygen());
         _priorities.add(new CheckCharacterUse());
         _priorities.add(new CheckCharacterExhausted());
 		_priorities.add(new CheckCharacterHungry());
-		_priorities.add(new CheckCharacterJoyDepleted());
+//		_priorities.add(new CheckCharacterJoyDepleted());
+
+		_bedCheck = new CheckCharacterExhausted();
 
 		_joys = new ArrayList<>();
 //		_joys.add(new CheckJoyTalk());
-//		_joys.add(new CheckJoyWalk());
+		_joys.add(new CheckJoyWalk());
 		_joys.add(new CheckJoyItem());
 //		_joys.add(new CheckJoySleep());
 
@@ -56,166 +59,84 @@ public class JobManager extends BaseManager {
 	}
 
     @Override
-    protected void onCreate() {
-    }
-
-    @Override
     protected void onUpdate(int tick) {
         cleanJobs();
 
-        if (tick % 10 == 0) {
-            // Create haul jobs
-            _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).getItemAround());
-            Game.getWorldManager().getConsumables().stream().filter(consumable -> consumable.getHaul() == null && !consumable.inValidStorage()).forEach(consumable -> {
-				addJob(JobHaul.create(consumable));
-			});
+        // Create haul jobs
+        _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).getItemAround());
+        Game.getWorldManager().getConsumables().stream().filter(consumable -> consumable.getHaul() == null && !consumable.inValidStorage()).forEach(consumable ->
+                addJob(JobHaul.create(consumable)));
 
-            // Remove invalid job
-            _jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
-        }
+        // Remove invalid job
+        _jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
     }
 
-    public void addJob(ItemModel item, ItemInfo.ItemInfoAction action) {
-		switch (action.type) {
-			case "cook":
-				addJob(JobCook.create(action, item));
-				break;
-			case "craft":
-				addJob(JobCraft.create(action, item));
-				break;
-		}
-	}
-
 	public Collection<BaseJobModel> getJobs() { return _jobs; };
-
-	public BaseJobModel addBuild(MapObjectModel item) {
-		if (item == null) {
-			Log.error("JobManager: build on null item");
-			return null;
-		}
-
-		if (item.isComplete()) {
-			Log.error("Build item: already close, nothing to do");
-			return null;
-		}
-
-		BaseJobModel job = JobBuild.create(item);
-		addJob(job);
-
-		return job;
-	}
-
-	public BaseJobModel addGather(ResourceModel ressource) {
-		if (ressource == null) {
-			Log.error("JobManager: gather on null area");
-			return null;
-		}
-
-		// return if job already exist for this item
-		for (BaseJobModel job: _jobs) {
-			if (job.getItem() == ressource) {
-				return null;
-			}
-		}
-
-		BaseJobModel job = JobGather.create(ressource);
-		addJob(job);
-
-		return job;
-	}
-
-	public void	removeJob(MapObjectModel item) {
-		List<BaseJobModel> toRemove = new ArrayList<>();
-
-		for (BaseJobModel job: _jobs) {
-			if (job.getItem() == item) {
-				toRemove.add(job);
-			}
-		}
-
-		for (BaseJobModel job: toRemove) {
-			removeJob(job);
-		}
-	}
-
-	public BaseJobModel build(ItemInfo info, int x, int y) {
-		MapObjectModel item = null;
-
-		// Structure
-		if (info.isStructure) {
-			MapObjectModel current = Game.getWorldManager().getStructure(x, y);
-			if (current != null && current.getInfo().equals(info)) {
-				Log.error("Build structure: already exist on this area");
-				return null;
-			}
-			item = Game.getWorldManager().putObject(info, x, y, 0, 0);
-		}
-
-		// Item
-		else if (info.isUserItem) {
-			MapObjectModel current = Game.getWorldManager().getItem(x, y);
-			if (current != null && current.getInfo().equals(info)) {
-				Log.error("Build item: already exist on this area");
-				return null;
-			} else if (current != null) {
-				Log.error("JobManager: add build on non null item");
-				return null;
-			} else if (Game.getWorldManager().getStructure(x, y) == null
-					|| Game.getWorldManager().getStructure(x, y).isFloor() == false) {
-				Log.error("JobManager: add build on non invalid structure (null or not STRUCTURE_FLOOR)");
-				return null;
-			} else {
-				item = Game.getWorldManager().putObject(info, x, y, 0, 0);
-			}
-		}
-
-		// Resource
-		else if (info.isResource) {
-			MapObjectModel currentItem = Game.getWorldManager().getItem(x, y);
-			MapObjectModel currentRessource = Game.getWorldManager().getResource(x, y);
-			if (currentRessource != null && currentRessource.getInfo().equals(info)) {
-				Log.error("Build item: already exist on this area");
-				return null;
-			} else if (currentItem != null) {
-				Log.error("JobManager: add build on non null item");
-				return null;
-			} else {
-				item = Game.getWorldManager().putObject(info, x, y, 0, 0);
-			}
-		}
-
-		return addBuild(item);
-	}
 
 	/**
 	 * Looking for best job to fit characters
 	 * 
 	 * @param character
 	 */
-	public void assignJob(CharacterModel character) {
+	public void assign(CharacterModel character) {
+		int timetable = character.getTimetable().get(Game.getInstance().getHour());
 
 		// Priority jobs
-		if (assignPriorityJob(character) && character.getJob() != null) {
+		if (assignBestPriority(character) && character.getJob() != null) {
 			Log.debug("assign priority job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
 			return;
 		}
 
-		// Regular jobs
-        if (assignRegularJob(character) && character.getJob() != null) {
-            Log.debug("assign regular job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
-            return;
-        }
-
-        if (assignFailJob(character) && character.getJob() != null) {
-            Log.debug("assign failed job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
-            return;
-        }
-
-		// Joy jobs
-		if (assignJoyJob(character) && character.getJob() != null) {
-			Log.debug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
-			return;
+		// Sleep time
+		if (timetable == 1) {
+			if (assignBestSleep(character)) {
+				Log.debug("assign sleep job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
+				return;
+			}
 		}
+
+		// Free and regular jobs
+		if (timetable == 0 || timetable == 3) {
+			// Check joy depleted
+			if (timetable == 0) {
+				if (assignBestJoy(character, false)) {
+					Log.debug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
+					return;
+				}
+			}
+
+			if (assignBestRegular(character) && character.getJob() != null) {
+				Log.debug("assign regular job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
+				return;
+			}
+
+			if (assignFailedJob(character) && character.getJob() != null) {
+				Log.debug("assign failed job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
+				return;
+			}
+		}
+
+		// Free time
+		if (timetable == 2) {
+			if (assignBestJoy(character, true) && character.getJob() != null) {
+				Log.debug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
+				return;
+			}
+		}
+	}
+
+	private boolean assignBestSleep(CharacterModel character) {
+		if (_bedCheck.check(character)) {
+			BaseJobModel job = _bedCheck.create(character);
+			if (job != null) {
+				assignJob(character, job);
+				if (character.getJob() != job) {
+					Log.error("Fail to assign job");
+				}
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void removeJob(BaseJobModel job) {
@@ -233,6 +154,8 @@ public class JobManager extends BaseManager {
 		if (job.getSlot() != null) {
 			job.getSlot().getItem().releaseSlot(job.getSlot());
 		}
+
+        job.close();
 
 		_toRemove.add(job);
 		if (job.isVisibleInUI()) {
@@ -263,24 +186,19 @@ public class JobManager extends BaseManager {
 		_jobs.clear();
 	}
 
-	public void addDestroyJob(MapObjectModel item) {
-		BaseJobModel job = JobDump.create(item);
-		addJob(job);
-	}
-
 	/**
 	 * Create joy job for list
 	 *
 	 * @param character
 	 * @return
 	 */
-	private boolean assignJoyJob(CharacterModel character) {
+	private boolean assignBestJoy(CharacterModel character, boolean force) {
 		Collections.shuffle(_joys);
 		for (CharacterCheck jobCheck: _joys) {
-			if (jobCheck.check(character)) {
+			if ((force || jobCheck.need(character)) && jobCheck.check(character)) {
 				BaseJobModel job = jobCheck.create(character);
 				if (job != null) {
-					assignJobToCharacter(job, character);
+					assignJob(character, job);
 					if (character.getJob() != job) {
 						Log.error("Fail to assign job");
 					}
@@ -298,12 +216,12 @@ public class JobManager extends BaseManager {
      * @param character
      * @return
      */
-	private boolean assignPriorityJob(CharacterModel character) {
+	private boolean assignBestPriority(CharacterModel character) {
 		for (CharacterCheck jobCheck: _priorities) {
 			if (jobCheck.need(character) && jobCheck.check(character)) {
 				BaseJobModel job = jobCheck.create(character);
 				if (job != null) {
-                    assignJobToCharacter(job, character);
+                    assignJob(character, job);
 					if (character.getJob() != job) {
 						Log.error("Fail to assign job");
 					}
@@ -321,7 +239,7 @@ public class JobManager extends BaseManager {
      * @param character
      */
     // TODO: one pass + onCheck profession
-    private boolean assignRegularJob(CharacterModel character) {
+    private boolean assignBestRegular(CharacterModel character) {
         int x = character.getX();
         int y = character.getY();
         int bestDistance = Integer.MAX_VALUE;
@@ -340,7 +258,7 @@ public class JobManager extends BaseManager {
             }
             // Job found for current talent
             if (bestJob != null) {
-                assignJobToCharacter(bestJob, character);
+                assignJob(character, bestJob);
 				if (character.getJob() != bestJob) {
 					Log.error("Fail to assign job");
 				}
@@ -352,12 +270,23 @@ public class JobManager extends BaseManager {
     }
 
     /**
+     * Assign and start job for designed characters
+     *
+     * @param job
+     * @param character
+     */
+    private void assignJob(CharacterModel character, BaseJobModel job) {
+        job.setStatus(JobStatus.RUNNING);
+        job.start(character);
+    }
+
+    /**
      * Assign failed job
      *
      * @param character
      * @return
      */
-    private boolean assignFailJob(CharacterModel character) {
+    private boolean assignFailedJob(CharacterModel character) {
         int x = character.getX();
         int y = character.getY();
         int bestDistance = Integer.MAX_VALUE;
@@ -379,76 +308,12 @@ public class JobManager extends BaseManager {
 
         // Job found
         if (bestJob != null) {
-            assignJobToCharacter(bestJob, character);
+            assignJob(character, bestJob);
             return true;
         }
 
         return false;
     }
-
-    /**
-     * Assign and start job for designed characters
-     *
-     * @param job
-     * @param character
-     */
-    private void assignJobToCharacter(BaseJobModel job, CharacterModel character) {
-        job.setStatus(JobStatus.RUNNING);
-        job.start(character);
-    }
-
-    public BaseJobModel createGatherJob(int x, int y) {
-		Log.debug("gather: " + x + " x " + y);
-
-		ResourceModel res = Game.getWorldManager().getResource(x, y);
-		if (res == null) {
-			return null;
-		}
-
-		BaseJobModel job = JobGather.create(res);
-		return job;
-	}
-
-	public BaseJobModel createMiningJob(int x, int y) {
-		ResourceModel res = Game.getWorldManager().getResource(x, y);
-		if (res == null) {
-			return null;
-		}
-
-		BaseJobModel job = JobMining.create(res);
-		return job;
-	}
-
-	public void addGatherJob(int x, int y) {
-		BaseJobModel job = createGatherJob(x, y);
-		if (job != null) {
-			addJob(job);
-		}
-	}
-
-	public void addMineJob(int x, int y) {
-		BaseJobModel job = createMiningJob(x, y);
-		if (job != null) {
-			addJob(job);
-		}
-	}
-
-	public BaseJobModel addStoreJob(CharacterModel character) {
-//		BaseJob job = JobHaul.onCreate(characters);
-//		if (job != null) {
-//			addJob(job);
-//		}
-//		return job;
-        throw new RuntimeException("not implemented");
-	}
-
-	public BaseJobModel addUseJob(MapObjectModel item) {
-		BaseJobModel job = JobUse.create(item);
-		if (job != null) {
-			addJob(job);
-		}
-		return job;
-	}
 
 	public void addJob(BaseJobModel job, CharacterModel character) {
 		addJob(job);
@@ -459,13 +324,13 @@ public class JobManager extends BaseManager {
 
 	// Remove finished jobs
 	public void cleanJobs() {
-		if (_toRemove.isEmpty() == false) {
+		if (!_toRemove.isEmpty()) {
 			_jobs.removeAll(_toRemove);
 			_toRemove.clear();
 		}
 	}
 
-	public void close(BaseJobModel job) {
+	public void closeJob(BaseJobModel job) {
 		Log.debug("Job close: " + job.getId());
 
 		job.setStatus(JobStatus.COMPLETE);
@@ -473,23 +338,10 @@ public class JobManager extends BaseManager {
 			job.quit(job.getCharacter());
 		}
 
-		job.close();
-
 		removeJob(job);
 	}
 
-	public void close(BaseJobModel job, JobAbortReason reason) {
-		Log.debug("Job close: " + job.getId());
-
-		job.setStatus(JobStatus.COMPLETE);
-		if (job.getCharacter() != null) {
-            job.quit(job.getCharacter());
-		}
-
-		removeJob(job);
-	}
-
-    public void quit(BaseJobModel job) {
+    public void quitJob(BaseJobModel job) {
         if (job != null) {
 			if (job.getCharacter() != null) {
 				job.quit(job.getCharacter());
@@ -497,12 +349,12 @@ public class JobManager extends BaseManager {
 			job.start(null);
 
             if (!job.canBeResume()) {
-                close(job);
+                closeJob(job);
             }
         }
     }
 
-	public void quit(BaseJobModel job, JobAbortReason reason) {
+	public void quitJob(BaseJobModel job, JobAbortReason reason) {
 		Log.debug("Job quit: " + job.getId());
 
 		job.setStatus(JobStatus.ABORTED);
@@ -527,16 +379,6 @@ public class JobManager extends BaseManager {
 				}
 			}
 		}
-
-		// Abort because characters inventory is full
-		if (reason == JobAbortReason.NO_LEFT_CARRY) {
-			addStoreJob(job.getCharacter());
-		}
-
-//		// Abort because factory is out of components
-//		if (reason == JobAbortReason.NO_COMPONENTS) {
-//			addRefillJob((FactoryItem)job.getItem());
-//		}
 
 		// Job is invalid, don't resume
 		if (reason == JobAbortReason.INVALID) {
@@ -569,9 +411,5 @@ public class JobManager extends BaseManager {
 				((JobCraft)job).removeConsumable(consumable);
 			}
 		}
-	}
-
-	public List<CharacterCheck> getJoys() {
-		return _joys;
 	}
 }

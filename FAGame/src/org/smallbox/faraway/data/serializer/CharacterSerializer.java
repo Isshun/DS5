@@ -5,6 +5,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.AndroidModel;
 import org.smallbox.faraway.game.model.character.DroidModel;
 import org.smallbox.faraway.game.model.character.HumanModel;
+import org.smallbox.faraway.game.model.character.TimeTableModel;
 import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
@@ -12,6 +13,7 @@ import org.smallbox.faraway.util.FileUtils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by Alex on 01/07/2015.
@@ -37,8 +39,19 @@ public class CharacterSerializer implements SerializerInterface {
         FileUtils.write(fos, "<gender>" + character.getInfo().getGender() + "</gender>");
 
         writeCharacterNeeds(fos, character.getNeeds());
+        writeCharacterTimetable(fos, character.getTimetable());
 
         FileUtils.write(fos, "</characters>");
+    }
+
+    private void writeCharacterTimetable(FileOutputStream fos, TimeTableModel timetable) throws IOException {
+        FileUtils.write(fos, "<timetable>");
+
+        for (Map.Entry<Integer, Integer> entry: timetable.getHours().entrySet()) {
+            FileUtils.write(fos, "<period h='" + entry.getKey() + "'>" + entry.getValue() + "</period>");
+        }
+
+        FileUtils.write(fos, "</timetable>");
     }
 
     private void writeCharacterNeeds(FileOutputStream fos, CharacterNeeds needs) throws IOException {
@@ -116,6 +129,12 @@ public class CharacterSerializer implements SerializerInterface {
                     break;
                 case "gender":
                     character.getInfo().setGender(CharacterInfoModel.Gender.valueOf(vn.toString(vn.getText())));
+                    break;
+                case "timetable":
+                    while (ap3.evalXPath() != -1) {
+                        character.getTimetable().set(vn.parseInt(vn.getAttrVal("h")), vn.parseInt(vn.getText()));
+                    }
+                    ap3.resetXPath();
                     break;
                 case "needs":
                     while (ap3.evalXPath() != -1) {

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui.panel.info;
 
+import org.smallbox.faraway.JobManagerHelper;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.item.StructureModel;
@@ -49,7 +50,7 @@ public class PanelInfoStructure extends BaseInfoRightPanel {
             ((UILabel) findById("lb_health")).setString("Health: " + structure.getHealth() + "/" + structure.getMaxHealth());
             ((UILabel) findById("lb_work")).setString("Work remaining: " + structure.getProgress() + "/" + structure.getInfo().cost);
 
-            findById("bt_destroy").setOnClickListener(view -> JobManager.getInstance().addDestroyJob(structure));
+            findById("bt_destroy").setOnClickListener(view -> JobManagerHelper.addDumpJob(structure));
 
             if (findById("lb_pos") != null) {
                 ((UILabel) findById("lb_pos")).setString(structure.getX() + "x" + structure.getY());

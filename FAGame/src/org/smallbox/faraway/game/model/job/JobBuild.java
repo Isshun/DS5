@@ -32,7 +32,7 @@ public class JobBuild extends BaseJobModel {
 			return false;
 		}
 		
-		// TODO: item build on structure
+		// TODO: item addBuildJob on structure
 		// TODO: OR item is structure
 		
 		return true;
@@ -48,7 +48,7 @@ public class JobBuild extends BaseJobModel {
 		// Wrong call
 		if (_item == null) {
 			Log.error("Character: actionBuild on null job or null job's item");
-			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 
@@ -61,7 +61,7 @@ public class JobBuild extends BaseJobModel {
 			} else if (_item != currentItem) {
 				Log.warning("Character #" + character.getId() + ": actionBuild on invalid item");
 			}
-			JobManager.getInstance().quit(this, JobAbortReason.INVALID);
+			JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 

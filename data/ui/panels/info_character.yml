@@ -216,8 +216,65 @@ entries:
 
         -   type: frame
             id: frame_priorities_entries
-            position: [20, 245]
-                
+            position: [20, 185]
+
+        -   type: label
+            text: "Timetable"
+            textsize: 22
+            position: [20, 430]
+
+        -   type: frame
+            position: [22, 457]
+            size: [20, 20]
+            background: 0x263b3f
+
+        -   type: label
+            text: "None"
+            textsize: 18
+            size: [100, 24]
+            align: center_vertical
+            position: [48, 455]
+
+        -   type: frame
+            position: [252, 457]
+            size: [20, 20]
+            background: 0x298596
+
+        -   type: label
+            text: "Sleep"
+            textsize: 18
+            size: [100, 24]
+            align: center_vertical
+            position: [278, 455]
+
+        -   type: frame
+            position: [22, 487]
+            size: [20, 20]
+            background: 0xb0cd35
+
+        -   type: label
+            text: "Free"
+            textsize: 18
+            size: [100, 24]
+            align: center_vertical
+            position: [48, 485]
+
+        -   type: frame
+            position: [252, 487]
+            size: [20, 20]
+            background: 0x882246
+
+        -   type: label
+            text: "Work"
+            textsize: 18
+            size: [100, 24]
+            align: center_vertical
+            position: [278, 485]
+
+        -   type: frame
+            id: frame_timetable_entries
+            position: [20, 520]
+
     -   type: frame
         id: frame_inventory
         entries:

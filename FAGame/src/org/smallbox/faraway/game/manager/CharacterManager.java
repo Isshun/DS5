@@ -55,7 +55,7 @@ public class CharacterManager extends BaseManager {
 
 				// Cancel job
 				if (c.getJob() != null) {
-					JobManager.getInstance().quit(c.getJob(), JobAbortReason.DIED);
+					JobManager.getInstance().quitJob(c.getJob(), JobAbortReason.DIED);
 				}
 
 				if (!c.getBuffs().isEmpty()) {
@@ -69,7 +69,7 @@ public class CharacterManager extends BaseManager {
 				if (tick % 10 == c.getLag()) {
 					// Assign job
 					if (c.getJob() == null && !c.isSleeping()) {
-						JobManager.getInstance().assignJob(c);
+						JobManager.getInstance().assign(c);
 					}
 
 					// Update characters (buffs, stats)

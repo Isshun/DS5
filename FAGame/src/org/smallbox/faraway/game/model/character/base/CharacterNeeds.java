@@ -100,15 +100,17 @@ public class CharacterNeeds {
             joy += isSleeping ? isSleeping && _sleepItem == null ? needs.joy.change.sleepOnFloor : needs.joy.change.sleep : needs.joy.change.wake;
         }
 
-        // Increase oxygen
         if (_character.getParcel() != null) {
             int oxygenLevel = (int)(_character.getParcel().getOxygen() * 100);
-            if (oxygen < oxygenLevel) {
-                oxygen += 1;
-            }
-            // Decrease oxygen, use resist
-            else {
-                oxygen -= 1 * (1 - _stats.resist.oxygen / 100f);
+            if (oxygen < oxygenLevel || oxygen > oxygenLevel + 1) {
+                // Increase oxygen
+                if (oxygen < oxygenLevel) {
+                    oxygen += 1;
+                }
+                // Decrease oxygen, use resist
+                else {
+                    oxygen -= 1 * (1 - _stats.resist.oxygen / 100f);
+                }
             }
         }
 
