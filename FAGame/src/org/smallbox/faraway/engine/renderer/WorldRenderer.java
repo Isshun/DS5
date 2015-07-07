@@ -86,7 +86,9 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
                 ParcelModel parcel = Game.getWorldManager().getParcel(x, y);
                 if (parcel != null) {
                     if (GameData.config.render.floor) {
-                        refreshFloor(layer, parcel.getType(), x, y);
+//                        if (x % 2 == 0 && y % 2 == 0) {
+                            refreshFloor(layer, parcel.getType(), x, y);
+//                        }
                     }
                     if (GameData.config.render.structure) {
                         refreshStructure(layer, parcel.getStructure(), x, y);

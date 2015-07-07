@@ -1,6 +1,8 @@
 package org.smallbox.faraway.data.serializer;
 
 import com.ximpleware.*;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
@@ -42,6 +44,8 @@ public class GameSerializer {
             VTDNav vn = vg.getNav();
             AutoPilot ap = new AutoPilot(vn);
             ap.selectXPath("/save/width|/save/height");
+
+            Game.getInstance().setRegion(GameData.getData().getRegion("arrakis", "desert"));
 
             new WorldSerializer().load(vn.duplicateNav());
             new CharacterSerializer().load(vn.duplicateNav());

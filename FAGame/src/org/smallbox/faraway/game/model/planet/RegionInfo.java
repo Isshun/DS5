@@ -11,10 +11,12 @@ public class RegionInfo {
         public double 				frequency;
     }
 
-    public static class RegionResource {
-        public String 				name;
+    public static class RegionTerrain {
+        public String               type;
+        public int                  typeId;
+        public String 				resource;
         public String 				pattern;
-        public String				terrain;
+        public String               condition;
         public int[]                quantity;
     }
 
@@ -31,11 +33,12 @@ public class RegionInfo {
         public int[]				number;
     }
 
+    public PlanetInfo               planet;
     public String	    			name;
     public String	        		label;
     public int                      color;
     public List<RegionDistribution> distribution;
-    public List<RegionResource>		resources;
+    public List<RegionTerrain>		terrains;
     public List<RegionWeather>		weather;
     public List<RegionFauna>		fauna;
     public int                      temperature;

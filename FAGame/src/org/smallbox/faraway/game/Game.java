@@ -12,6 +12,7 @@ import org.smallbox.faraway.game.manager.*;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.planet.PlanetModel;
+import org.smallbox.faraway.game.model.planet.RegionInfo;
 import org.smallbox.faraway.game.model.planet.RegionModel;
 import org.smallbox.faraway.util.Log;
 
@@ -66,14 +67,12 @@ public class Game {
 	private Viewport 					_viewport;
 	private boolean 					_isRunning;
 
-	public Game(GameData data, GameConfig config, String fileName, ParticleRenderer particleRenderer, LightRenderer lightRenderer) {
+	public Game(GameData data, GameConfig config, String fileName, ParticleRenderer particleRenderer, LightRenderer lightRenderer, RegionInfo regionInfo) {
 		Log.debug("Game");
 
 		_self = this;
         _config = config;
         _fileName = fileName;
-        _planet = new PlanetModel(data.planets.get(0));
-        _region = new RegionModel(_planet, _planet.getInfo().regions.get(2));
 		_isRunning = true;
 		_viewport = SpriteManager.getInstance().createViewport();
         _particleRenderer = particleRenderer;
@@ -88,8 +87,17 @@ public class Game {
         _worldManager = new WorldManager(this);
         _managers.add(_worldManager);
 
+        setRegion(regionInfo);
+
 		Log.info("Game:\tdone");
 	}
+
+    public void setRegion(RegionInfo regionInfo) {
+        if (regionInfo != null) {
+            _planet = new PlanetModel(regionInfo.planet);
+            _region = new RegionModel(_planet, regionInfo);
+        }
+    }
 
     public void init(boolean loadSave) {
         if (loadSave) {

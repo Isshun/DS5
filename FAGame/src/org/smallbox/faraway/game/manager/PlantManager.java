@@ -40,7 +40,7 @@ public class PlantManager extends BaseManager {
             if (resource.getParcel().isExterior()) {
                 // Growing
                 if (resource.getQuantity() < resource.getInfo().plant.mature) {
-                    grow(resource.getParcel(), resource, light, temperature);
+                    grow(resource, light, temperature);
                 }
                 // Plan to gather
                 else if (resource.getParcel().getArea() != null && resource.getParcel().getArea() instanceof GardenAreaModel) {
@@ -50,31 +50,31 @@ public class PlantManager extends BaseManager {
         }
     }
 
-    public void grow(ParcelModel parcel, ResourceModel resource, double light, double temperature) {
+    public void grow(ResourceModel resource, double light, double temperature) {
         GrowingInfo info = resource.getInfo().plant.growing;
 
         if (info.exceptional != null && canGrow(info.exceptional, light, temperature)) {
-            parcel.getResource().addQuantity(info.exceptional.value);
-            parcel.getResource().setGrowRate(info.exceptional.value);
+            resource.addQuantity(info.exceptional.value);
+            resource.setGrowRate(info.exceptional.value);
             return;
         }
         if (info.regular != null && canGrow(info.regular, light, temperature)) {
-            parcel.getResource().addQuantity(info.regular.value);
-            parcel.getResource().setGrowRate(info.regular.value);
+            resource.addQuantity(info.regular.value);
+            resource.setGrowRate(info.regular.value);
             return;
         }
         if (info.partial != null && canGrow(info.partial, light, temperature)) {
-            parcel.getResource().addQuantity(info.partial.value);
-            parcel.getResource().setGrowRate(info.partial.value);
+            resource.addQuantity(info.partial.value);
+            resource.setGrowRate(info.partial.value);
             return;
         }
         if (info.stasis != null && canGrow(info.stasis, light, temperature)) {
-            parcel.getResource().addQuantity(info.stasis.value);
-            parcel.getResource().setGrowRate(info.stasis.value);
+            resource.addQuantity(info.stasis.value);
+            resource.setGrowRate(info.stasis.value);
             return;
         }
-        parcel.getResource().addQuantity(-0.1);
-        parcel.getResource().setGrowRate(-0.1);
+        resource.addQuantity(-0.1);
+        resource.setGrowRate(-0.1);
     }
 
     private boolean canGrow(GrowingInfoEntry infoEntry, double light, double temperature) {

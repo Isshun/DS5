@@ -19,8 +19,8 @@ import org.smallbox.faraway.util.Utils;
 public class MainMenu {
     private final LayoutFactory _layoutFactory;
     private final ViewFactory   _viewFactory;
-    private MainMenuScene       _currentScene;
-    private MainMenuScene[]     _scenes;
+    private MainMenuPage _currentScene;
+    private MainMenuPage[]     _scenes;
     private int                 _refresh;
     private long                _lastModified;
     private PlanetInfo          _planet;
@@ -59,15 +59,15 @@ public class MainMenu {
     public MainMenu(LayoutFactory layoutFactory, ViewFactory viewFactory, GFXRenderer renderer) {
         _layoutFactory = layoutFactory;
         _viewFactory = viewFactory;
-        _scenes = new MainMenuScene[] {
-                new HomeScene(this, renderer, Scene.HOME),
-                new LoadScene(this, renderer, Scene.LOAD),
-                new PlanetScene(this, renderer, Scene.PLANETS),
-                new TeamScene(this, renderer, Scene.TEAM),
-                new LandingSiteScene(this, renderer, Scene.LAND_SITE)
+        _scenes = new MainMenuPage[] {
+                new HomePage(this, renderer, Scene.HOME),
+                new LoadPage(this, renderer, Scene.LOAD),
+                new PlanetPage(this, renderer, Scene.PLANETS),
+                new LandingSitePage(this, renderer, Scene.LAND_SITE),
+                new TeamPage(this, renderer, Scene.TEAM),
         };
         _currentScene = _scenes[0];
-        for (MainMenuScene scene: _scenes) {
+        for (MainMenuPage scene: _scenes) {
             scene.init(viewFactory, layoutFactory, null, null, null);
         }
     }
@@ -98,7 +98,7 @@ public class MainMenu {
     }
 
     private void reload() {
-        for (MainMenuScene scene: _scenes) {
+        for (MainMenuPage scene: _scenes) {
             scene.removeAllViews();
             scene.init(_viewFactory, _layoutFactory, null, null, null);
             scene.refresh(0);
@@ -107,7 +107,7 @@ public class MainMenu {
 
     public void select(Scene sceneType) {
         _currentScene.setVisible(false);
-        for (MainMenuScene scene: _scenes) {
+        for (MainMenuPage scene: _scenes) {
             if (scene.getSceneType() == sceneType) {
                 _currentScene = scene;
             }
@@ -117,7 +117,7 @@ public class MainMenu {
     }
 
     public void onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
-        for (MainMenuScene scene: _scenes) {
+        for (MainMenuPage scene: _scenes) {
             if (scene.onMouseEvent(action, button, x, y)) {
                 return;
             }

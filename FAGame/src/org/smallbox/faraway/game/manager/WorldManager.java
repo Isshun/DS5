@@ -35,12 +35,12 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
     public WorldManager(Game game) {
         _game = game;
-        _temperature = game.getRegion().getInfo().temperature;
     }
 
     public void init(int width, int height) {
         _width = width;
         _height = height;
+        _temperature = _game.getRegion().getInfo().temperature;
 
         List<ParcelModel> parcelList = new ArrayList<>();
         _parcels = new ParcelModel[_width][_height][NB_FLOOR];

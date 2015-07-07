@@ -21,8 +21,8 @@ public class MapFactoryConfig {
         }
     }
 
-    int                     perlinOctave;
-    List<AdjustmentValue> adjustments = new ArrayList<>();
+    public int                     perlinOctave;
+    public List<AdjustmentValue> adjustments = new ArrayList<>();
 
     public static MapFactoryConfig createValleys() {
         MapFactoryConfig config = new MapFactoryConfig();
@@ -48,15 +48,8 @@ public class MapFactoryConfig {
 
     public static MapFactoryConfig createMountains() {
         MapFactoryConfig config = new MapFactoryConfig();
-        config.perlinOctave = 9;
-        config.addAdjustment(0.2f, 0.8f);
-        config.addAdjustment(0.2f, 0.8f);
-        config.addAdjustment(0.2f, 0.8f);
-        config.addAdjustment(0.2f, 0.8f);
-        config.addAdjustment(0.2f, 0.8f);
-        config.addAdjustment(0.2f, 0.8f);
-        config.addAdjustment(0.2f, 0.8f);
-        config.addAdjustment(0.2f, 0.8f);
+        config.perlinOctave = 8;
+        config.addAdjustment(0.25f, 0.55f);
         return config;
     }
 

@@ -2,6 +2,7 @@ package org.smallbox.faraway.data.loader;
 
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.planet.PlanetInfo;
+import org.smallbox.faraway.game.model.planet.RegionInfo;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -30,7 +31,37 @@ public class PlanetLoader implements IDataLoader {
                 if (file.getName().endsWith(".yml")) {
                     InputStream input = new FileInputStream(file);
                     Yaml yaml = new Yaml(new Constructor(PlanetInfo.class));
-                    planets.add((PlanetInfo) yaml.load(input));
+                    PlanetInfo planet = (PlanetInfo)yaml.load(input);
+
+                    if (planet.regions != null) {
+                        for (RegionInfo region : planet.regions) {
+                            // Set planet
+                            region.planet = planet;
+
+                            // Set terrain type id
+                            for (RegionInfo.RegionTerrain terrain : region.terrains) {
+                                terrain.typeId = -1;
+                                if (terrain.type != null) {
+                                    switch (terrain.type) {
+                                        case "sand":
+                                            terrain.typeId = 1;
+                                            break;
+                                        case "underwater_sand":
+                                            terrain.typeId = 2;
+                                            break;
+                                        case "grass":
+                                            terrain.typeId = 3;
+                                            break;
+                                        case "ice":
+                                            terrain.typeId = 4;
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    planets.add(planet);
                 }
             }
 

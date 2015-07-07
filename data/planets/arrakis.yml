@@ -1,4 +1,5 @@
-name: Arrakis
+name: arrakis
+label: Arrakis
 type: Desertic
 desc: |
     Arrakis is a hostile desertic planet, its sands contains rare resource
@@ -26,17 +27,19 @@ regions:
             -   latitude: [40, 90]
                 frequency: 1
 
-        resources:
-            -   name: base.rock
+        terrains:
+            -   type: sand
+
+            -   resource: base.rock
                 pattern: mountain
 
-            -   name: base.iron
+            -   resource: base.iron
                 pattern: mineral_common_light
-                terrain: rock
+                condition: rock
 
-            -   name: base.raw_spice
+            -   resource: base.raw_spice
                 pattern: mineral_rare_light
-                terrain: ground
+                condition: ground
                 quantity: [100, 100]
 
         weather:
@@ -85,17 +88,19 @@ regions:
             -   latitude: [-90, 40]
                 frequency: 0.2
 
-        resources:
-            -   name: base.rock
+        terrains:
+            -   type: sand
+
+            -   resource: base.rock
                 pattern: valley
 
-            -   name: base.iron
+            -   resource: base.iron
                 pattern: mineral_common_light
-                terrain: rock
+                condition: rock
 
-            -   name: base.raw_spice
+            -   resource: base.raw_spice
                 pattern: mineral_rare_light
-                terrain: ground
+                condition: ground
                 quantity: [100, 100]
 
         weather:
@@ -142,17 +147,19 @@ regions:
             -   latitude: [-90, 40]
                 frequency: 1
 
-        resources:
-            -   name: base.rock
+        terrains:
+            -   type: sand
+
+            -   resource: base.rock
                 pattern: mineral_rare_large
 
-            -   name: base.iron
+            -   resource: base.iron
                 pattern: mineral_common_light
-                terrain: rock
+                condition: rock
 
-            -   name: base.raw_spice
+            -   resource: base.raw_spice
                 pattern: mineral_rare_large
-                terrain: ground
+                condition: ground
                 quantity: [50, 50]
 
         weather:

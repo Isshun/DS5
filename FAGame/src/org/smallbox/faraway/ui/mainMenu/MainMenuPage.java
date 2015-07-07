@@ -13,12 +13,12 @@ import org.smallbox.faraway.util.Constant;
 /**
  * Created by Alex on 02/06/2015.
  */
-public class MainMenuScene extends BasePanel {
+public class MainMenuPage extends BasePanel {
     protected final MainMenu.Scene  _scene;
     protected final MainMenu        _mainMenu;
     protected final GFXRenderer     _renderer;
 
-    public MainMenuScene(MainMenu mainMenu, GFXRenderer renderer, MainMenu.Scene scene, String layoutPath) {
+    public MainMenuPage(MainMenu mainMenu, GFXRenderer renderer, MainMenu.Scene scene, String layoutPath) {
         super(null, null, 0, 0, renderer.getWidth(), renderer.getHeight(), layoutPath);
         setPosition((renderer.getWidth() - Constant.BASE_WIDTH) / 2, (renderer.getHeight() - Constant.BASE_HEIGHT) / 2);
         _scene = scene;

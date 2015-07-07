@@ -8,8 +8,8 @@ import org.smallbox.faraway.ui.engine.UILabel;
 /**
  * Created by Alex on 02/06/2015.
  */
-public class LandingSiteScene extends MainMenuScene {
-    public LandingSiteScene(MainMenu mainMenu, GFXRenderer renderer, MainMenu.Scene scene) {
+public class LandingSitePage extends MainMenuPage {
+    public LandingSitePage(MainMenu mainMenu, GFXRenderer renderer, MainMenu.Scene scene) {
         super(mainMenu, renderer, scene, "data/ui/menu/land_site.yml");
 
         _mainMenu.select(new LandingSiteModel());

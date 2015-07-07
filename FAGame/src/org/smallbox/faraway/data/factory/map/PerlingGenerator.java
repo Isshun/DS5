@@ -50,7 +50,7 @@ public class PerlingGenerator {
         return smoothNoise;
     }
 
-    static float[][] AdjustLevels(float[][] image, float low, float high)
+    public static float[][] AdjustLevels(float[][] image, float low, float high)
     {
         int width = image.length;
         int height = image[0].length;
@@ -76,7 +76,7 @@ public class PerlingGenerator {
         return newImage;
     }
 
-    static float[][] GeneratePerlinNoise(float[][] baseNoise, int octaveCount)
+    public static float[][] GeneratePerlinNoise(float[][] baseNoise, int octaveCount)
     {
         int width = baseNoise.length;
         int height = baseNoise[0].length;
@@ -122,7 +122,7 @@ public class PerlingGenerator {
         return perlinNoise;
     }
 
-    static float[][] GenerateWhiteNoise(int width, int height)
+    public static float[][] GenerateWhiteNoise(int width, int height)
     {
         Random random = new Random(0); //Seed to 0 for testing
         float[][] noise = new float[width][height];

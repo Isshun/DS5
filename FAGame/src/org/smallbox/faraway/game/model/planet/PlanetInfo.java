@@ -29,6 +29,7 @@ public class PlanetInfo {
     }
 
 	public String	            		name;
+	public String	            		label;
 	public String	            		type;
 	public String	            		desc;
 	public PlanetStats 					stats;

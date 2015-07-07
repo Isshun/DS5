@@ -12,8 +12,8 @@ import java.io.File;
 /**
  * Created by Alex on 17/06/2015.
  */
-public class LoadScene extends MainMenuScene {
-    public LoadScene(MainMenu mainMenu, GFXRenderer renderer, MainMenu.Scene scene) {
+public class LoadPage extends MainMenuPage {
+    public LoadPage(MainMenu mainMenu, GFXRenderer renderer, MainMenu.Scene scene) {
         super(mainMenu, renderer, scene, "data/ui/menu/load.yml");
     }
 

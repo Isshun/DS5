@@ -24,7 +24,7 @@ public class MidpointDisplacement {
 
     public MidpointDisplacement(MapGenConfig config) {
 
-        // the thresholds which determine cutoffs for different terrain types
+        // the thresholds which determine cutoffs for different condition types
         mountainsThreshold = config.threshold;
 //        deepWaterThreshold = 0.5f;
 //        shallowWaterThreshold = 0.55f;

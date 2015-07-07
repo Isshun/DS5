@@ -11,7 +11,7 @@ import org.smallbox.faraway.util.StringUtils;
 /**
  * Created by Alex on 02/06/2015.
  */
-public class PlanetScene extends MainMenuScene {
+public class PlanetPage extends MainMenuPage {
     private static final Color COLOR_S3 = new Color(188, 28, 28);
     private static final Color COLOR_S2 = new Color(255, 137, 33);
     private static final Color COLOR_S1 = new Color(255, 238, 33);
@@ -21,7 +21,7 @@ public class PlanetScene extends MainMenuScene {
 
     private ViewFactory _viewFactory;
 
-    public PlanetScene(MainMenu mainMenu, GFXRenderer renderer, MainMenu.Scene scene) {
+    public PlanetPage(MainMenu mainMenu, GFXRenderer renderer, MainMenu.Scene scene) {
         super(mainMenu, renderer, scene, "data/ui/menu/planet_list.yml");
     }
 

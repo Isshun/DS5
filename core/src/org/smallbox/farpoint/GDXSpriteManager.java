@@ -139,6 +139,10 @@ public class GDXSpriteManager extends SpriteManager {
     }
 
     private SpriteModel getSprite(ItemInfo item, int tile, int state, int alpha, boolean isIcon) {
+        return getSprite(item, tile, state, alpha, isIcon, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
+    }
+
+    private SpriteModel getSprite(ItemInfo item, int tile, int state, int alpha, boolean isIcon, int width, int height) {
         if (item.spriteId == 0) {
             item.spriteId = ++_count;
         }
@@ -147,9 +151,12 @@ public class GDXSpriteManager extends SpriteManager {
 
         GDXSpriteModel sprite = _sprites.get(sum);
         if (sprite == null) {
-            int tileX = item.tiles != null ? tile % item.tiles[0] : 0;
-            int tileY = item.tiles != null ? tile / item.tiles[0] : 0;
-            int offsetY = state * item.height * Constant.TILE_HEIGHT;
+//            int tileX = item.tiles != null ? tile % item.tiles[0] : 0;
+//            int tileY = item.tiles != null ? tile / item.tiles[0] : 0;
+            int tileX = state * width;
+            int tileY = tile * height;
+//            int offsetY = state * item.height * height;
+            int offsetY = 0;
 
             File imgFile;
             if ("base".equals(item.packageName)) {
@@ -159,10 +166,12 @@ public class GDXSpriteManager extends SpriteManager {
             }
             if (imgFile != null && imgFile.exists()) {
                 sprite = new GDXSpriteModel(new Texture(new FileHandle(imgFile)),
-                        tileX * item.width * Constant.TILE_WIDTH,
-                        tileY * item.height * Constant.TILE_HEIGHT + offsetY,
-                        item.width * Constant.TILE_WIDTH,
-                        item.height * Constant.TILE_HEIGHT);
+//                        tileX * item.width * width,
+//                        tileY * item.height * height + offsetY,
+                        tileX,
+                        tileY,
+                        item.width * width,
+                        item.height * height);
                 sprite.getData().setColor(new Color(255, 255, 255, alpha));
                 if (isIcon) {
                     switch (Math.max(item.width, item.height)) {
@@ -262,7 +271,7 @@ public class GDXSpriteManager extends SpriteManager {
         if (_groundItemInfo == null) {
             _groundItemInfo = GameData.getData().getItemInfo("base.ground");
         }
-        return getSprite(_groundItemInfo, type, 0, 255, false);
+        return getSprite(_groundItemInfo, type, (int)(Math.random() * 2), 255, false, 32, 32);
     }
 
     @Override

@@ -4,6 +4,7 @@ import org.smallbox.faraway.data.loader.*;
 import org.smallbox.faraway.game.CharacterLoader;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.planet.PlanetInfo;
+import org.smallbox.faraway.game.model.planet.RegionInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,5 +88,17 @@ public class GameData {
 
 	public void loadAll() {
 		_loaders.forEach(dataLoader -> dataLoader.load(this));
+	}
+
+	public RegionInfo getRegion(String planetName, String regionName) {
+		for (PlanetInfo planet: planets) {
+			if (planet.name.equals(planetName))
+			for (RegionInfo region: planet.regions) {
+				if (region.name.equals(regionName)) {
+					return region;
+				}
+			}
+		}
+		return null;
 	}
 }

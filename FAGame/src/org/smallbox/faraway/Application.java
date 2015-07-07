@@ -10,6 +10,7 @@ import org.smallbox.faraway.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.planet.RegionInfo;
 import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.MenuLoad;
 import org.smallbox.faraway.ui.UserInterface;
@@ -152,7 +153,7 @@ public class Application implements GameEventListener {
                     try {
                         _menu = new MenuLoad(path -> {
 // TODO NULL
-                            _game = new Game(null, null, null, _particleRenderer, _lightRenderer);
+                            _game = new Game(null, null, null, _particleRenderer, _lightRenderer, null);
                             _game.load();
                         });
                     } catch (IOException e) {
@@ -216,10 +217,10 @@ public class Application implements GameEventListener {
         return false;
     }
 
-    public void newGame(String fileName) {
+    public void newGame(String fileName, RegionInfo  regionInfo) {
         _mainMenu.close();
 
-        _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer);
+        _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer, regionInfo);
         // TODO: magick
         _game.getWorldManager().init(250, 250);
         _game.init(false);
@@ -240,7 +241,10 @@ public class Application implements GameEventListener {
         _mainMenu.close();
 
         long time = System.currentTimeMillis();
-        _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer);
+        _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer, null);
+
+        // TODO
+        _game.setRegion(GameData.getData().getRegion("arrakis", "desert"));
         _game.init(true);
         _game.load();
         Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
@@ -323,7 +327,7 @@ public class Application implements GameEventListener {
     }
 
     public void update() {
-        if (_game.isRunning()) {
+        if (_game != null && _game.isRunning()) {
 
             // Update
             if (System.currentTimeMillis() > _nextTick) {
