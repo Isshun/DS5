@@ -32,6 +32,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private int             _environment;
     public double           light;
     private boolean         _isExterior;
+    private double          _oxygen;
 
     public ParcelModel(int x, int y, int z) {
         _light = 0;
@@ -61,7 +62,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public ItemModel 		getItem() { return _item; }
     public StructureModel 	getStructure() { return _structure; }
     public ResourceModel 	getResource() { return _resource; }
-    public double   		getOxygen() { return _room != null ? _room.getOxygen() : -1; }
+    public double   		getOxygen() { return _oxygen; }
     public int				getX() { return _x; }
     public int				getY() { return _y; }
     public int				getZ() { return _z; }
@@ -213,5 +214,9 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 
     public void setExterior(boolean isExterior) {
         _isExterior = isExterior;
+    }
+
+    public void setOxygen(double oxygen) {
+        _oxygen = oxygen;
     }
 }

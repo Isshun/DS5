@@ -59,8 +59,14 @@ entries:
 
 
     -   type: label
+        id: lb_oxygen
+        text: oxygen
+        textsize: 14
+        position: [24, 122]
+
+    -   type: label
         id: lb_type
         text: type
         textsize: 14
-        position: [24, 122]
+        position: [24, 142]
 

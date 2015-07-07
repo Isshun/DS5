@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RoomManager extends BaseManager implements GameObserver {
     private List<RoomModel>		_roomList;
@@ -25,6 +26,7 @@ public class RoomManager extends BaseManager implements GameObserver {
     private ParcelModel[][][]   _parcels;
     private double[][]          _oxygenLevels;
     private boolean             _needRefresh;
+    private List<ParcelModel>   _roomlessParcels;
 
     @Override
     protected void onCreate() {
@@ -295,6 +297,8 @@ public class RoomManager extends BaseManager implements GameObserver {
             }
         }
 
+        _roomlessParcels = Game.getWorldManager().getParcelList().stream().filter(parcel -> parcel.getRoom() == null).collect(Collectors.toList());
+
         Log.info("RoomManager: refresh done " + (System.currentTimeMillis() - time));
     }
 
@@ -390,5 +394,9 @@ public class RoomManager extends BaseManager implements GameObserver {
     public int getLight(int x, int y) {
         RoomModel room = getRoom(x, y);
         return room != null ? room.getLight() : -1;
+    }
+
+    public List<ParcelModel> getRoomlessParcels() {
+        return _roomlessParcels;
     }
 }
