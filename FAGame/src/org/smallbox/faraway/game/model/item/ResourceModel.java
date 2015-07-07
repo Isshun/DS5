@@ -50,7 +50,7 @@ public class ResourceModel extends ItemModel {
 	}
 
 	public boolean isSolid() {
-		return "base.rock".equals(_info.name);
+		return _info.isRock;
 	}
 
 	public void setTile(int tile) {

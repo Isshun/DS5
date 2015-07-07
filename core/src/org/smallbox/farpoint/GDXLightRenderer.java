@@ -4,17 +4,13 @@ import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
-import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.game.Game;
@@ -24,7 +20,6 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.item.StructureModel;
-import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +29,11 @@ import java.util.List;
  */
 public class GDXLightRenderer extends LightRenderer {
     static final int RAYS_PER_BALL = 128;
-    static final float RADIUS = 1f;
 
     static final float viewportWidth = 1920;
     static final float viewportHeight = 1200;
-    private final SpriteBatch _batch;
 
     OrthographicCamera _camera;
-
-    TextureRegion textureRegion;
 
     /** our box2D world **/
     World world;
@@ -53,59 +44,32 @@ public class GDXLightRenderer extends LightRenderer {
     /** our ground box **/
     Body groundBody;
 
-    /** our mouse joint **/
-    MouseJoint mouseJoint = null;
-
-    /** a hit body **/
-    Body hitBody = null;
-
-    /** pixel perfect projection for font rendering */
-    Matrix4 normalProjection = new Matrix4();
-    boolean showText = true;
-
     /** BOX2D LIGHT STUFF */
-    RayHandler rayHandler;
+    RayHandler _rayHandler;
     List<Light> lights = new ArrayList<>();
-    List<Light> _sunLights = new ArrayList<>();
-    float sunDirection = -90f;
     private List<Body>  _bodies = new ArrayList<>();
     private Body        _sunBody;
-    private PointLight  _sunLight1;
-    private PointLight  _sunLight2;
     private List<Body>  _sunBodies = new ArrayList<>();
     private boolean     _needRefresh;
 
     public GDXLightRenderer() {
-//        _camera = new OrthographicCamera(viewportWidth, viewportHeight);
         _camera = new OrthographicCamera();
-//        _camera.setToOrtho(true);
         _camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _camera.position.set(4000, viewportHeight / 2f, 0);
-//        _camera.translate(4000, 0);
         _camera.update();
-        _batch = new SpriteBatch();
-//        textureRegion = new TextureRegion(new Texture(Gdx.files.internal("data/items/chest.png")));
-//        bg = new Texture(Gdx.files.internal("data/tilea4mackeditFBU.png"));
+
         createPhysicsWorld();
 
-        normalProjection.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        /** BOX2D LIGHT STUFF BEGIN */
         RayHandler.setGammaCorrection(true);
         RayHandler.useDiffuseLight(true);
 
-        rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(0f, 0f, 0f, 0.5f);
-        rayHandler.setBlurNum(3);
-        rayHandler.pointAtShadow(testPoint.x, testPoint.y);
-
-//        initPointLights();
-        /** BOX2D LIGHT STUFF END */
+        _rayHandler = new RayHandler(world);
+        _rayHandler.setAmbientLight(0f, 0f, 0f, 0.5f);
+        _rayHandler.setBlurNum(3);
     }
 
     @Override
     public void onRefresh(int frame) {
-
     }
 
     @Override
@@ -151,12 +115,12 @@ public class GDXLightRenderer extends LightRenderer {
 //        _batch.end();
 
         /** BOX2D LIGHT STUFF BEGIN */
-//        rayHandler.setBlur(false);
-        rayHandler.setCombinedMatrix(_camera);
+//        _rayHandler.setBlur(false);
+        _rayHandler.setCombinedMatrix(_camera);
 
-//        if (stepped) rayHandler.update();
-        rayHandler.update();
-        rayHandler.render();
+//        if (stepped) _rayHandler.update();
+        _rayHandler.update();
+        _rayHandler.render();
         /** BOX2D LIGHT STUFF END */
     }
 
@@ -168,21 +132,8 @@ public class GDXLightRenderer extends LightRenderer {
     }
 
     @Override
-    public void setSunColor(Color color) {
-//        for (Light light: _sunLights) {
-//            light.setColor(new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f));
-//        }
-        if (_sunLight1 != null) {
-            _sunLight1.setColor(new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f * 0.75f));
-        }
-
-        if (_sunLight2 != null) {
-            _sunLight2.setColor(new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f * 0.25f));
-        }
-
-        if (_sunLight1 == null || _sunLight2 == null) {
-            Log.error("SunLight missing");
-        }
+    public void setSunColor(org.smallbox.faraway.engine.Color color) {
+        _rayHandler.setAmbientLight(new Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f * 0.75f));
     }
 
     void clearLights() {
@@ -196,39 +147,9 @@ public class GDXLightRenderer extends LightRenderer {
     void initPointLights() {
         clearLights();
 
-//        for (Body sunBody: _sunBodies) {
-//            _sunLight = new PointLight(rayHandler, RAYS_PER_BALL, null, 1000, sunBody.getPosition().x, sunBody.getPosition().y);
-//            _sunLight.setSoft(false);
-//            _sunLight.setPosition(sunBody.getPosition().x, sunBody.getPosition().y);
-////            _sunLight.setXray(true);
-//            _sunLight.attachToBody(sunBody, RADIUS / 2f, RADIUS / 2f);
-////            _sunLight.attachToBody(_sunBody, RADIUS / 2f, RADIUS / 2f);
-////                _sunLight.setPosition(viewportWidth / 2, viewportHeight / 2);
-//            _sunLight.setColor(255, 255, 255, 0.11f);
-//            _sunLights.add(_sunLight);
-//            lights.add(_sunLight);
-//        }
-        int centerX = Game.getWorldManager().getWidth() / 2 * Constant.TILE_WIDTH;
-        int centerY = Game.getWorldManager().getHeight() / 2 * Constant.TILE_HEIGHT;
-
-        _sunLight1 = new PointLight(rayHandler, RAYS_PER_BALL, null, 200000, centerX, centerY);
-        _sunLight1.setSoft(false);
-        _sunLight1.setXray(true);
-        _sunLight1.attachToBody(_sunBody, RADIUS / 2f, RADIUS / 2f);
-        _sunLight1.setColor(255, 255, 255, 0.11f);
-        lights.add(_sunLight1);
-
-        _sunLight2 = new PointLight(rayHandler, RAYS_PER_BALL, null, 200000, centerX, centerY);
-        _sunLight2.setSoft(false);
-        _sunLight2.setXray(false);
-        _sunLight2.attachToBody(_sunBody, RADIUS / 2f, RADIUS / 2f);
-        _sunLight2.setColor(255, 255, 255, 0.11f);
-        lights.add(_sunLight2);
-
         for (Body ball: balls) {
-            PointLight light = new PointLight(rayHandler, RAYS_PER_BALL, null, (int)ball.getUserData(), 0f, 0f);
+            PointLight light = new PointLight(_rayHandler, RAYS_PER_BALL, null, (int)ball.getUserData(), 0f, 0f);
             light.attachToBody(ball, 32 / 2f, 32 / 2f);
-//            light.setColor((float)Math.random(), (float)Math.random(), (float)Math.random(), 1);
             lights.add(light);
         }
     }
@@ -363,12 +284,6 @@ public class GDXLightRenderer extends LightRenderer {
         boxBody.createFixture(def);
         return boxBody;
     }
-
-    /**
-     * we instantiate this vector and the callback here so we don't irritate the
-     * GC
-     **/
-    Vector3 testPoint = new Vector3();
 
     @Override
     public void onAddItem(ItemModel item) {

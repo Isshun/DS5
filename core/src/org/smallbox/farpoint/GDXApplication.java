@@ -5,27 +5,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.Application;
-import org.smallbox.faraway.data.factory.map.AsteroidBeltFactory;
-import org.smallbox.faraway.data.factory.map.MapFactoryConfig;
-import org.smallbox.faraway.data.factory.map.PerlingGenerator;
-import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.engine.RenderEffect;
-import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.PathManager;
+import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.engine.SpriteManager;
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Log;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -115,8 +107,8 @@ public class GDXApplication extends ApplicationAdapter {
 
         _queue.add(new LoadRunnable("Resume game", () -> {
             if (GameData.config.byPassMenu) {
-//                _application.newGame("7.sav", null);
-                _application.loadGame("8.sav");
+                _application.newGame("8.sav", GameData.getData().getRegion("arrakis", "desert"));
+//                _application.loadGame("8.sav");
             }
         }));
 

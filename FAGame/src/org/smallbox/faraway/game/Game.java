@@ -1,7 +1,6 @@
 package org.smallbox.faraway.game;
 
 import org.smallbox.faraway.PathManager;
-import org.smallbox.faraway.data.factory.map.AsteroidBeltFactory;
 import org.smallbox.faraway.data.serializer.GameSerializer;
 import org.smallbox.faraway.data.serializer.LoadListener;
 import org.smallbox.faraway.engine.SpriteManager;
@@ -181,7 +180,7 @@ public class Game {
 		//loadListener.onUpdate("Create new game");
 
 //        (new AsteroidBeltFactory()).create(Game.getWorldManager(), 250, 250, loadListener);
-        (new TestFactory()).create(Game.getWorldManager(), 250, 250, loadListener);
+        (new WorldFactory()).create(Game.getWorldManager(), 250, 250, loadListener);
 	}
 
 	public void	load() {
