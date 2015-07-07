@@ -85,11 +85,17 @@ public class JobGather extends BaseJobModel {
 		return true;
 	}
 
-    @Override
-    protected void onFinish() {
-        _resource.setJob(null);
-        Game.getWorldManager().removeResource(_resource);
-    }
+	@Override
+	protected void onFinish() {
+		Log.info("Gather complete");
+		_resource.setJob(null);
+
+		if (_actionInfo.finalProducts != null) {
+			_actionInfo.finalProducts.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo -> {
+				Game.getWorldManager().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, productInfo.quantity);
+			});
+		}
+	}
 
     @Override
 	public JobActionReturn onAction(CharacterModel character) {
@@ -108,28 +114,26 @@ public class JobGather extends BaseJobModel {
 
         Log.debug(character.getInfo().getName() + ": gathering (" + _totalProgress + "/" + _totalCost + ")");
 
-//		CharacterModel.TalentEntry talent = characters.getTalent(CharacterModel.TalentType.GATHER);
-//		double quantity = -talent.work();
-//		_resource.addQuantity(quantity);
+		ResourceModel resource = (ResourceModel)_item;
 
-		++_totalProgress;
-		if (++_progress < _cost) {
+        _totalProgress++;
+		_progress += character.getTalent(CharacterModel.TalentType.GATHER).work();
+		if (_progress < _cost) {
 			return JobActionReturn.CONTINUE;
 		}
 
-        // Add product items
-        _progress = 0;
-        for (ItemInfo.ItemProductInfo productInfo: _resource.getInfo().actions.get(0).finalProducts) {
-            Game.getWorldManager().putObject(productInfo.itemInfo, _posX, _posY, 0, productInfo.quantity);
-            //characters.addComponent(new UserItem(info));
-            Log.info(character.getInfo().getName() + ": product " + productInfo.itemInfo.name);
-        }
-        _resource.addQuantity(-1);
+		// Remove a single unit
+		_progress = 0;
+		resource.addQuantity(-1);
+		if (_actionInfo.products != null) {
+			_actionInfo.products.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo ->
+					Game.getWorldManager().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, productInfo.quantity));
+		}
 
-        // Close job if resource is depleted
-        if (_resource.getQuantity() > 0) {
+		// Check if resource is depleted
+		if (!resource.isDepleted()) {
 			return JobActionReturn.CONTINUE;
-        }
+		}
 
 		return JobActionReturn.FINISH;
 	}

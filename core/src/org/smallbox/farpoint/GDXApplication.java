@@ -107,8 +107,8 @@ public class GDXApplication extends ApplicationAdapter {
 
         _queue.add(new LoadRunnable("Resume game", () -> {
             if (GameData.config.byPassMenu) {
-                _application.newGame("8.sav", GameData.getData().getRegion("arrakis", "desert"));
-//                _application.loadGame("8.sav");
+//                _application.newGame("8.sav", GameData.getData().getRegion("arrakis", "desert"));
+                _application.loadGame("8.sav");
             }
         }));
 
