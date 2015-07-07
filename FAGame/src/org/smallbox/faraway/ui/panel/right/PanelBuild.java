@@ -7,7 +7,9 @@ import org.smallbox.faraway.game.model.CategoryInfo;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInteraction;
+import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.engine.*;
 import org.smallbox.faraway.ui.panel.BaseRightPanel;
 import org.smallbox.faraway.util.StringUtils;
@@ -18,14 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 public class PanelBuild extends BaseRightPanel {
-	public enum PanelMode {
-		NONE,
-		BUILD_STRUCTURE,
-		BUILD_ITEM,
-		REMOVE_STRUCTURE,
-		REMOVE_ITEM
-	};
-
 	private static final Color				COLOR_INACTIVE = new Color(29, 85, 96, 100);
 	private static final int 				GRID_WIDTH = 90;
 	private static final int 				GRID_HEIGHT = 110;
@@ -33,7 +27,6 @@ public class PanelBuild extends BaseRightPanel {
 	private Map<ItemInfo, View> 	        _icons;
 	private List<View>						_iconsList;
 	protected ItemInfo 						_currentSelected;
-	protected PanelMode 					_panelMode;
 	private boolean 						_animRunning;
 	private Map<CategoryInfo, FrameLayout>	_layouts;
 	private CategoryInfo 					_currentCategory;
@@ -50,13 +43,9 @@ public class PanelBuild extends BaseRightPanel {
 		_layouts = new HashMap<>();
 		_iconsList = new ArrayList<>();
 		_icons = new HashMap<>();
-		_panelMode = PanelMode.NONE;
 
 		drawPanel(true);
 	}
-
-	public PanelMode getPanelMode() { return _panelMode; }
-	public ItemInfo getSelectedItem() { return _currentSelected; }
 
 	// TODO: ugly
 	protected void	drawPanel(boolean anim) {
@@ -146,13 +135,7 @@ public class PanelBuild extends BaseRightPanel {
 		boolean withAnim = _currentCategory != category;
 
 		_currentCategory = category;
-		
-//		for (FrameLayout l: _layouts.values()) {
-//			l.setVisible(false);
-//		}
-//		if (_currentCategory != null) {
-//			_layouts.getRoom(_currentCategory).setVisible(true);
-//		}
+
 		drawPanel(withAnim);
 	}
 
@@ -181,6 +164,7 @@ public class PanelBuild extends BaseRightPanel {
 //                });
                 view.setOnClickListener(v -> {
                     _interaction.set(UserInteraction.Action.BUILD_ITEM, info);
+					UserInterface.getInstance().setCursor(new BuildCursor());
                     _icons.values().forEach(view1 -> view1.findById("frame_select").setVisible(false));
                     v.findById("frame_select").setVisible(true);
                 });

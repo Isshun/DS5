@@ -20,7 +20,7 @@ public abstract class UserInterfaceCursor {
 	}
 
 
-	void	draw(GFXRenderer renderer, Viewport viewport, int startX, int startY, int toX, int toY) {
+	void	draw(GFXRenderer renderer, Viewport viewport, int startX, int startY, int toX, int toY, boolean isPressed) {
 		startX = Math.max(startX, 0);
 		startY = Math.max(startY, 0);
 		toX = Math.min(toX, Game.getWorldManager().getWidth());
@@ -28,11 +28,11 @@ public abstract class UserInterfaceCursor {
 
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				onDraw(renderer, Game.getWorldManager().getParcel(x, y), x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY(), (x + y) % 2 == 0);
+				onDraw(renderer, Game.getWorldManager().getParcel(x, y), x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY(), (x + y) % 2 == 0, isPressed);
 			}
 		}
 	}
 
-	protected abstract void onDraw(GFXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd);
+	protected abstract void onDraw(GFXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd, boolean isPressed);
 
 }

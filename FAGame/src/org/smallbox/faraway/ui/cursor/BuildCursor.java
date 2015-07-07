@@ -21,7 +21,11 @@ public class BuildCursor extends UserInterfaceCursor {
     }
 
     @Override
-    protected void onDraw(GFXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd) {
-        renderer.draw(odd ? RES_ODD : RES_EDEN, x, y);
+    protected void onDraw(GFXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd, boolean isPressed) {
+        if (isPressed) {
+            renderer.draw(odd ? RES_ODD : RES_EDEN, x, y);
+        } else {
+            renderer.draw(RES_ITEM, x, y);
+        }
     }
 }

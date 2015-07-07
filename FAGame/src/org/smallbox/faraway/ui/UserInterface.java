@@ -350,12 +350,17 @@ public class UserInterface implements GameEventListener {
 
         //_panelConsole.draw(renderer, null);
 
-        if (_mouseOnMap && _keyLeftPressed && _cursor != null) {
-            _cursor.draw(renderer, _viewport,
-                    Math.min(_keyPressPosX, _keyMovePosX),
-                    Math.min(_keyPressPosY, _keyMovePosY),
-                    Math.max(_keyPressPosX, _keyMovePosX),
-                    Math.max(_keyPressPosY, _keyMovePosY));
+        if (_mouseOnMap && _cursor != null) {
+            if (_keyLeftPressed) {
+                _cursor.draw(renderer, _viewport,
+                        Math.min(_keyPressPosX, _keyMovePosX),
+                        Math.min(_keyPressPosY, _keyMovePosY),
+                        Math.max(_keyPressPosX, _keyMovePosX),
+                        Math.max(_keyPressPosY, _keyMovePosY),
+                        true);
+            } else {
+                _cursor.draw(renderer, _viewport, _keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY, false);
+            }
         }
 
         if (_menu != null) {

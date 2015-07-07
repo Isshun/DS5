@@ -21,7 +21,7 @@ public class DefaultCursor extends UserInterfaceCursor {
     }
 
     @Override
-    protected void onDraw(GFXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd) {
+    protected void onDraw(GFXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd, boolean isPressed) {
         renderer.draw(odd ? RES_ODD : RES_EDEN, x, y);
     }
 }
