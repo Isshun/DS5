@@ -48,6 +48,14 @@ public class MainRenderer {
 		_renders.add(_worldRenderer);
 		game.addObserver(_worldRenderer);
 
+		if (lightRenderer != null) {
+			game.addObserver(lightRenderer);
+		}
+
+//		if (particleRenderer != null) {
+//			game.addObserver(particleRenderer);
+//		}
+
 		_characterRenderer = new CharacterRenderer();
 		_renders.add(_characterRenderer);
 

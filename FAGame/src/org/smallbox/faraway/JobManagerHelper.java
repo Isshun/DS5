@@ -154,10 +154,6 @@ public class JobManagerHelper {
             } else if (current != null) {
                 Log.error("JobManager: add build on non null item");
                 return null;
-            } else if (Game.getWorldManager().getStructure(x, y) == null
-                    || Game.getWorldManager().getStructure(x, y).isFloor() == false) {
-                Log.error("JobManager: add build on non invalid structure (null or not STRUCTURE_FLOOR)");
-                return null;
             } else {
                 item = Game.getWorldManager().putObject(info, x, y, 0, 0);
             }

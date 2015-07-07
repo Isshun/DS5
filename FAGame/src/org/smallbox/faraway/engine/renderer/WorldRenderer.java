@@ -71,11 +71,11 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
     private void refreshLayer(RenderLayer layer, int fromX, int fromY, int toX, int toY) {
         Log.info("Refresh layer: " + layer.getIndex());
 
-        int mb = 1024 * 1024;
-        Runtime runtime = Runtime.getRuntime();
-        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
-        int total = (int) (runtime.totalMemory() / mb);
-        System.out.println("RefreshLayer: " + used + "/" + total);
+//        int mb = 1024 * 1024;
+//        Runtime runtime = Runtime.getRuntime();
+//        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
+//        int total = (int) (runtime.totalMemory() / mb);
+//        System.out.println("RefreshLayer: " + used + "/" + total);
 
         layer.begin();
         layer.setRefresh();

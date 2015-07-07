@@ -42,9 +42,7 @@ public class GDXLightRenderer extends LightRenderer {
 
     OrthographicCamera _camera;
 
-    BitmapFont font;
     TextureRegion textureRegion;
-    Texture bg;
 
     /** our box2D world **/
     World world;
@@ -75,6 +73,7 @@ public class GDXLightRenderer extends LightRenderer {
     private PointLight  _sunLight1;
     private PointLight  _sunLight2;
     private List<Body>  _sunBodies = new ArrayList<>();
+    private boolean     _needRefresh;
 
     public GDXLightRenderer() {
 //        _camera = new OrthographicCamera(viewportWidth, viewportHeight);
@@ -111,6 +110,11 @@ public class GDXLightRenderer extends LightRenderer {
 
     @Override
     public void onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
+        if (_needRefresh) {
+            _needRefresh = false;
+            init();
+        }
+
         _camera.position.set(
                 -effect.getViewport().getPosX() * effect.getViewport().getScale(),
                 -effect.getViewport().getPosY() * effect.getViewport().getScale() + viewportHeight / 2f, 0);
@@ -369,21 +373,35 @@ public class GDXLightRenderer extends LightRenderer {
     @Override
     public void onAddItem(ItemModel item) {
         if (item.isLight()) {
-            init();
+            _needRefresh = true;
+        }
+    }
+
+    @Override
+    public void onRemoveItem(ItemModel item) {
+        if (item.isLight()) {
+            _needRefresh = true;
         }
     }
 
     @Override
     public void onAddResource(ResourceModel resource) {
         if (resource.isLight()) {
-            init();
+            _needRefresh = true;
+        }
+    }
+
+    @Override
+    public void onRemoveResource(ResourceModel resource) {
+        if (resource.isLight()) {
+            _needRefresh = true;
         }
     }
 
     @Override
     public void onAddStructure(StructureModel structure) {
         if (structure.isSolid()) {
-            init();
+            _needRefresh = true;
         }
     }
 }
