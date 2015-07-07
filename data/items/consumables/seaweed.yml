@@ -4,3 +4,10 @@ height: 1
 type: consumable
 stack: 100
 
+actions:
+    -   type: use
+        label: Eat seaweed
+        cost: 150
+        effects:
+            food: 80
+            drink: 100

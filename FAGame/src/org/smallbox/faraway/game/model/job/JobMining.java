@@ -108,7 +108,6 @@ public class JobMining extends BaseJobModel {
 
         _progress += character.getTalent(CharacterModel.TalentType.MINE).work();
         if (_progress < _cost) {
-            Log.debug("Mine progress");
             return JobActionReturn.CONTINUE;
         }
 
@@ -122,7 +121,6 @@ public class JobMining extends BaseJobModel {
 
 		// Check if resource is depleted
         if (!resource.isDepleted()) {
-			Log.debug("Mine progress");
 			return JobActionReturn.CONTINUE;
 		}
 

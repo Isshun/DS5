@@ -117,7 +117,7 @@ public class CharacterRenderer extends BaseRenderer {
             // Selection
 			if (c.isSelected()) {
 				SpriteModel sprite = _spriteManager.getSelector(_frame / 10);
-				renderer.draw(sprite, viewPortX + posX - 2, posY + (c.isSleeping() ? 20 : 0) - 2);
+				renderer.draw(sprite, viewPortX + posX - 2, viewPortY + posY - 2);
 			}
 
 			if (c.getInventory() != null) {

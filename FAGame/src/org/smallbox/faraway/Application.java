@@ -334,9 +334,9 @@ public class Application implements GameEventListener {
             if (System.currentTimeMillis() > _nextTick) {
                 _lastTick = System.currentTimeMillis();
                 _nextTick = _lastTick + _tickInterval;
-                long timeU = System.currentTimeMillis();
+//                long timeU = System.currentTimeMillis();
                 _game.onUpdate(_tick++);
-                Log.info("update time: " + (System.currentTimeMillis() - timeU) + "ms");
+//                Log.info("update time: " + (System.currentTimeMillis() - timeU) + "ms");
             }
 
             // TODO
