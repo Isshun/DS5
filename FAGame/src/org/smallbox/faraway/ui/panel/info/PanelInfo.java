@@ -326,7 +326,7 @@
 //		_itemAction.setPosition(0, 200);
 //		_layoutItem.addView(_itemAction);
 //
-//		// Item products
+//		// Item finalProducts
 //		_layoutItemProduce = ViewFactory.getInstance().createFrameLayout(120, 200);
 //		_layoutItemProduce.setPosition(0, 200);
 //		_layoutItem.addView(_layoutItemProduce);
@@ -577,7 +577,7 @@
 ////			_itemAccept.setVisible(true);
 ////		}
 ////
-////		// Item onAction products
+////		// Item onAction finalProducts
 ////		if (onAction.itemsProduce != null) {
 ////			_layoutItemProduce.setVisible(true);
 ////

@@ -142,7 +142,7 @@ public class CharacterManager extends BaseManager {
 	public void addRandom(Class<? extends CharacterModel> cls) {
 		try {
 			Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, int.class, int.class, String.class, String.class, double.class);
-			CharacterModel character = constructor.newInstance(Utils.getUUID(), 150, 150, null, null, 16);
+			CharacterModel character = constructor.newInstance(Utils.getUUID(), 0, 0, null, null, 16);
 			add(character);
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 			e.printStackTrace();

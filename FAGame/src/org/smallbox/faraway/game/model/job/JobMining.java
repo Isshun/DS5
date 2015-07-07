@@ -25,10 +25,10 @@ public class JobMining extends BaseJobModel {
 				if ("mine".equals(action.type)) {
 					JobMining job = new JobMining(action, res.getX(), res.getY());
 					job.setStrategy(j -> {
-						if (j.getCharacter().getType().needs.joy != null) {
-							j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
-						}
-					});
+                        if (j.getCharacter().getType().needs.joy != null) {
+                            j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+                        }
+                    });
 					job.setItem(res);
 					job._resource = res;
 					return job;
@@ -78,9 +78,12 @@ public class JobMining extends BaseJobModel {
 	protected void onFinish() {
 		Log.info("Mine complete");
 		Game.getWorldManager().removeResource(_resource);
-		_actionInfo.products.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo -> {
-			Game.getWorldManager().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, productInfo.quantity);
-		});
+
+        if (_actionInfo.finalProducts != null) {
+            _actionInfo.finalProducts.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo -> {
+                Game.getWorldManager().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, productInfo.quantity);
+            });
+        }
 	}
 
 	@Override
@@ -103,8 +106,19 @@ public class JobMining extends BaseJobModel {
 
         ResourceModel resource = (ResourceModel)_item;
 
-        CharacterModel.TalentEntry talent = character.getTalent(CharacterModel.TalentType.MINE);
-        resource.addQuantity(-talent.work());
+        _progress += character.getTalent(CharacterModel.TalentType.MINE).work();
+        if (_progress < _cost) {
+            Log.debug("Mine progress");
+            return JobActionReturn.CONTINUE;
+        }
+
+        // Remove a single unit
+        _progress = 0;
+        resource.addQuantity(-1);
+        if (_actionInfo.products != null) {
+            _actionInfo.products.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo ->
+                    Game.getWorldManager().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, productInfo.quantity));
+        }
 
 		// Check if resource is depleted
         if (!resource.isDepleted()) {

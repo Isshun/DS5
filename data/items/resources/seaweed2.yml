@@ -31,4 +31,3 @@ actions:
             -   item: base.seaweed
                 quantity: 1
                 dropRate: 1
-        mature: 5

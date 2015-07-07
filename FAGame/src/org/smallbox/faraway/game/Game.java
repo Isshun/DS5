@@ -99,18 +99,7 @@ public class Game {
         }
     }
 
-    public void init(boolean loadSave) {
-        if (loadSave) {
-            String filePath = "data/saves/" + _fileName;
-
-            // TODO magic
-            _worldManager.init(250, 250);
-            _save = GameSerializer.preLoad(filePath, null);
-            if (_save != null) {
-                _worldManager.init(_save.width, _save.height);
-            }
-        }
-
+    public void init() {
         if (GameData.config.manager.room) {
             _managers.add(new RoomManager());
         }
@@ -235,5 +224,16 @@ public class Game {
 
     public List<BaseManager> getManagers() {
         return _managers;
+    }
+
+    public void preload() {
+        String filePath = "data/saves/" + _fileName;
+
+        // TODO magic
+        _worldManager.init(250, 250);
+        _save = GameSerializer.preLoad(filePath, null);
+        if (_save != null) {
+            _worldManager.init(_save.width, _save.height);
+        }
     }
 }

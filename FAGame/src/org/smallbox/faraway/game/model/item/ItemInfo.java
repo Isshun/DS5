@@ -29,11 +29,11 @@ public class ItemInfo {
 		public String 					label;
 		public List<ItemInfoReceipt>	receipts;
 		public ItemInfoEffects			effects;
-		public int 						mature;
 		public int                  	cost;
 		public String 					name;
 		public float                	dropRate;
-		public List<ItemProductInfo>	products;
+		public List<ItemProductInfo> 	products;
+		public List<ItemProductInfo> 	finalProducts;
 	}
 
 	public static class ItemInfoPlant {
@@ -162,6 +162,7 @@ public class ItemInfo {
 	public boolean 						isToy;
 	public boolean 						isBed;
 	public boolean 						isRock;
+	public boolean 						isPlant;
 	public int 							spriteId;
 	public String						fileName;
 	public String 						packageName;

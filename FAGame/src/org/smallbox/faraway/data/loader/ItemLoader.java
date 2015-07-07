@@ -67,6 +67,10 @@ public class ItemLoader implements IDataLoader {
                 throw new RuntimeException("unknown item type: " + info.type);
             }
 
+            if (info.plant != null) {
+                info.isPlant = true;
+            }
+
             data.items.add(info);
         }
     }
@@ -117,6 +121,12 @@ public class ItemLoader implements IDataLoader {
                 for (ItemInfo.ItemInfoAction action: item.actions) {
 
                     // Set product items (for self-product item, like rock)
+                    if (action.finalProducts != null && !action.finalProducts.isEmpty()) {
+                        for (ItemInfo.ItemProductInfo productInfo: action.finalProducts) {
+                            productInfo.itemInfo = data.getItemInfo(productInfo.item);
+                            productInfo.dropRate = productInfo.dropRate == 0 ? 1 : productInfo.dropRate;
+                        }
+                    }
                     if (action.products != null && !action.products.isEmpty()) {
                         for (ItemInfo.ItemProductInfo productInfo: action.products) {
                             productInfo.itemInfo = data.getItemInfo(productInfo.item);

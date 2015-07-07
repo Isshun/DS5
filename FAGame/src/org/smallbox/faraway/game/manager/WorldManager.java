@@ -81,8 +81,8 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         parcel.setConnections(connections);
     }
 
-    public MapObjectModel putObject(String name, int x, int y, int z, int i) {
-        return putObject(GameData.getData().getItemInfo(name), x, y, z, i);
+    public MapObjectModel putObject(String name, int x, int y, int z, int data) {
+        return putObject(GameData.getData().getItemInfo(name), x, y, z, data);
     }
 
     public void removeItem(ItemModel item) {
@@ -219,25 +219,25 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         return !(x < 0 || y < 0 || x >= _width || y >= _height);
     }
 
-    public MapObjectModel putObject(ItemInfo itemInfo, int x, int y, int z, int value) {
+    public MapObjectModel putObject(ItemInfo itemInfo, int x, int y, int z, int data) {
         if (!inMapBounds(x, y)) {
             return null;
         }
 
         if (itemInfo.isConsumable) {
-            return putConsumable(itemInfo, value, x, y, z);
+            return putConsumable(itemInfo, data, x, y, z);
         }
 
         if (itemInfo.isStructure) {
-            return putStructure(itemInfo, value, x, y, z);
+            return putStructure(itemInfo, data, x, y, z);
         }
 
         if (itemInfo.isUserItem) {
-            return putItem(itemInfo, value, x, y, z);
+            return putItem(itemInfo, data, x, y, z);
         }
 
         if (itemInfo.isResource) {
-            return putResource(itemInfo, value, x, y, z);
+            return putResource(itemInfo, data, x, y, z);
         }
 
         return null;

@@ -119,7 +119,7 @@ public class JobGather extends BaseJobModel {
 
         // Add product items
         _progress = 0;
-        for (ItemInfo.ItemProductInfo productInfo: _resource.getInfo().actions.get(0).products) {
+        for (ItemInfo.ItemProductInfo productInfo: _resource.getInfo().actions.get(0).finalProducts) {
             Game.getWorldManager().putObject(productInfo.itemInfo, _posX, _posY, 0, productInfo.quantity);
             //characters.addComponent(new UserItem(info));
             Log.info(character.getInfo().getName() + ": product " + productInfo.itemInfo.name);

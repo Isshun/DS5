@@ -5,11 +5,13 @@ tiles: [3, 8]
 type: resource
 isWalkable: true
 isCloseRoom: false
+isPlant: true
+isRock: true
 plant:
-    mature: 100
+    mature: 50
     growing:
         regular:
-            value: 0.1
+            value: 0.01
             temperature: [-100, 100]
             light: [0, 100]
 actions:
@@ -17,5 +19,5 @@ actions:
         cost: 100
         products:
             -   item: base.spice
-                quantity: 10
+                quantity: 1
                 dropRate: 0.5

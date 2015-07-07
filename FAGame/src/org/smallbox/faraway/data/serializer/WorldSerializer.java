@@ -66,6 +66,7 @@ public class WorldSerializer implements SerializerInterface {
         FileUtils.write(fos, "<resource id='" + resource.getId() + "' name='" + resource.getInfo().name + "'>");
         FileUtils.write(fos, "<health>" + resource.getHealth() + "</health>");
         FileUtils.write(fos, "<progress>" + resource.getProgress() + "</progress>");
+        FileUtils.write(fos, "<quantity>" + resource.getQuantity() + "</quantity>");
         FileUtils.write(fos, "</resource>");
     }
 
@@ -167,6 +168,7 @@ public class WorldSerializer implements SerializerInterface {
         String name = vn.toString(vn.getAttrVal("name"));
         int id = vn.parseInt(vn.getAttrVal("id"));
         int health = 0;
+        int quantity = 10;
         int progress = 0;
 
         while (apElement.evalXPath() != -1) {
@@ -178,11 +180,15 @@ public class WorldSerializer implements SerializerInterface {
                 case "progress":
                     progress = vn.parseInt(vn.getText());
                     break;
+
+                case "quantity":
+                    quantity = vn.parseInt(vn.getText());
+                    break;
             }
         }
         apElement.resetXPath();
 
-        ResourceModel resource = (ResourceModel)manager.putObject(name, x, y, z, progress);
+        ResourceModel resource = (ResourceModel)manager.putObject(name, x, y, z, quantity);
         if (resource != null) {
 //            resource.setTile(tile);
 //            resource.setValue(value);

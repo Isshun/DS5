@@ -223,8 +223,8 @@ public class Application implements GameEventListener {
         _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer, regionInfo);
         // TODO: magick
         _game.getWorldManager().init(250, 250);
-        _game.init(false);
         _game.newGame(null);
+        _game.init();
         _game.save(_game.getFileName());
         PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
         _mainRenderer.init(_renderer, GameData.config, _game, _lightRenderer, _particleRenderer);
@@ -245,8 +245,9 @@ public class Application implements GameEventListener {
 
         // TODO
         _game.setRegion(GameData.getData().getRegion("arrakis", "desert"));
-        _game.init(true);
+        _game.preload();
         _game.load();
+        _game.init();
         Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
 
         time = System.currentTimeMillis();

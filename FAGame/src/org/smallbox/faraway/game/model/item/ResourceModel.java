@@ -12,12 +12,18 @@ public class ResourceModel extends ItemModel {
 
     public ResourceModel(ItemInfo info, int id) {
 		super(info, id);
-        _totalQuantity = _info.actions.get(0).mature;
+
+		if (_info.plant != null) {
+			_totalQuantity = _info.plant.mature;
+		}
     }
 
 	public ResourceModel(ItemInfo info) {
 		super(info);
-        _totalQuantity = _info.actions.get(0).mature;
+
+		if (_info.plant != null) {
+			_totalQuantity = _info.plant.mature;
+		}
     }
 
 	public void addQuantity(double quantity) {
@@ -56,11 +62,11 @@ public class ResourceModel extends ItemModel {
 	}
 
 	public boolean canBeMined() {
-		return "base.rock".equals(_info.name);
+		return _info.isRock;
 	}
 
 	public boolean canBeHarvested() {
-		return _info.name.contains("base.seaweed");
+		return _info.isPlant;
 	}
 
     public boolean isDepleted() {
