@@ -19,14 +19,14 @@ public abstract class BaseManager implements GameObserver {
             _nbUpdate++;
         }
     }
+
+    protected abstract void onUpdate(int tick);
+
     public void create() {
         onCreate();
     }
 
-    protected abstract void onUpdate(int tick);
-
-    protected void onCreate() {
-    }
+    protected void onCreate() {}
 
     public void dump() {
         if (_nbUpdate != 0) {

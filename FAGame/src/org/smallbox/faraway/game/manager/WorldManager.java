@@ -5,6 +5,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.data.factory.ItemFactory;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.WorldFactory;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.util.Log;
@@ -14,32 +15,36 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class WorldManager extends BaseManager implements IndexedGraph<ParcelModel> {
-    private static final int NB_FLOOR = 10;
+    private static final int    NB_FLOOR = 10;
 
-    private ParcelModel[][][] _parcels;
-    private int _width;
-    private int _height;
-    private int _floor;
-    private int _temperature;
-    private int _temperatureOffset;
-    private final Game _game;
-    private Set<ConsumableModel> _consumables = new HashSet<>();
-    private BlockingQueue<ResourceModel> _resources = new LinkedBlockingQueue<>();
-    private Set<ItemModel>     _items = new HashSet<>();
-    private List<ParcelModel> _parcelList;
-    private int                 _light;
+    private boolean                         _callWorldFactory;
+    private ParcelModel[][][]               _parcels;
+    private int                             _width;
+    private int                             _height;
+    private int                             _floor;
+    private int                             _temperature;
+    private int                             _temperatureOffset;
+    private Game                            _game;
+    private Set<ConsumableModel>            _consumables = new HashSet<>();
+    private BlockingQueue<ResourceModel>    _resources = new LinkedBlockingQueue<>();
+    private Set<ItemModel>                  _items = new HashSet<>();
+    private List<ParcelModel>               _parcelList;
+    private int                             _light;
+
+    public WorldManager(boolean callWorldFactory) {
+        _callWorldFactory = callWorldFactory;
+    }
 
     public ParcelModel[][][] getParcels() {
         return _parcels;
     }
 
-    public WorldManager(Game game) {
-        _game = game;
-    }
-
-    public void init(int width, int height) {
-        _width = width;
-        _height = height;
+    @Override
+    public void onCreate() {
+        _game = Game.getInstance();
+        _game.setWorldManager(this);
+        _width = _game.getWidth();
+        _height = _game.getHeight();
         _temperature = _game.getRegion().getInfo().temperature;
 
         List<ParcelModel> parcelList = new ArrayList<>();
@@ -63,6 +68,10 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
                     createConnection(_parcels[x][y][f]);
                 }
             }
+        }
+
+        if (_callWorldFactory) {
+            new WorldFactory().create(this);
         }
     }
 

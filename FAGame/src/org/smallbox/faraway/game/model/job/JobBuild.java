@@ -8,13 +8,15 @@ import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.util.Log;
 
 public class JobBuild extends BaseJobModel {
+	private MapObjectModel _buildItem;
+
 	private JobBuild(int x, int y) {
 		super(null, x, y, "data/res/ic_build.png", "data/res/ic_action_build.png");
 	}
 
 	public static BaseJobModel create(MapObjectModel item) {
-		BaseJobModel job = new JobBuild(item.getX(), item.getY());
-		job.setItem(item);
+		JobBuild job = new JobBuild(item.getX(), item.getY());
+		job.setBuildItem(item);
 		job.setCost(item.getInfo().cost);
 		job.setStrategy(j -> {
 			if (j.getCharacter().getType().needs.joy != null) {
@@ -24,10 +26,14 @@ public class JobBuild extends BaseJobModel {
 		return job;
 	}
 
+	private void setBuildItem(MapObjectModel buildItem) {
+		_buildItem = buildItem;
+	}
+
 	@Override
 	public boolean onCheck(CharacterModel character) {
 		// Item is null
-		if (_item == null) {
+		if (_buildItem == null) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}
@@ -46,7 +52,7 @@ public class JobBuild extends BaseJobModel {
 	@Override
 	public JobActionReturn onAction(CharacterModel character) {
 		// Wrong call
-		if (_item == null) {
+		if (_buildItem == null) {
 			Log.error("Character: actionBuild on null job or null job's item");
 			JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
@@ -55,8 +61,8 @@ public class JobBuild extends BaseJobModel {
 		// Item is no longer exists
 		StructureModel currentStructure = Game.getWorldManager().getStructure(_posX, _posY);
 		MapObjectModel currentItem = Game.getWorldManager().getItem(_posX, _posY);
-		if (_item != currentStructure && _item != currentItem) {
-			if (_item != currentStructure) {
+		if (_buildItem != currentStructure && _buildItem != currentItem) {
+			if (_buildItem != currentStructure) {
 				Log.warning("Character #" + character.getId() + ": actionBuild on invalid structure");
 			} else if (_item != currentItem) {
 				Log.warning("Character #" + character.getId() + ": actionBuild on invalid item");
@@ -67,8 +73,8 @@ public class JobBuild extends BaseJobModel {
 
 		// Build
         CharacterModel.TalentEntry talent = character.getTalent(CharacterModel.TalentType.BUILD);
-        _item.addProgress(talent.work());
-		if (!_item.isComplete()) {
+		_buildItem.addProgress(talent.work());
+		if (!_buildItem.isComplete()) {
 			Log.debug("Character #" + character.getId() + ": build progress");
 			return JobActionReturn.CONTINUE;
 		}
@@ -77,7 +83,7 @@ public class JobBuild extends BaseJobModel {
 	}
 
     @Override
-    public double getProgress() { return (double)_item.getProgress() / _item.getInfo().cost; }
+    public double getProgress() { return (double)_buildItem.getProgress() / _buildItem.getInfo().cost; }
 
 	@Override
 	public boolean canBeResume() {
@@ -91,12 +97,12 @@ public class JobBuild extends BaseJobModel {
 
 	@Override
 	public String getLabel() {
-		return "build " + _item.getLabel();
+		return "build " + _buildItem.getLabel();
 	}
 
 	@Override
 	public String getShortLabel() {
-		return "build " + _item.getLabel();
+		return "build " + _buildItem.getLabel();
 	}
 
 	@Override

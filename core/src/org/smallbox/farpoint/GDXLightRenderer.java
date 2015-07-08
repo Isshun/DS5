@@ -6,11 +6,8 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
 import org.smallbox.faraway.game.Game;
@@ -35,11 +32,11 @@ public class GDXLightRenderer extends LightRenderer {
 
     OrthographicCamera _camera;
 
-    /** our box2D world **/
-    World world;
+    /** our box2D _world **/
+    World _world;
 
     /** our boxes **/
-    ArrayList<Body> balls = new ArrayList<>();
+    ArrayList<Body> _balls = new ArrayList<>();
 
     /** our ground box **/
     Body groundBody;
@@ -48,8 +45,6 @@ public class GDXLightRenderer extends LightRenderer {
     RayHandler _rayHandler;
     List<Light> lights = new ArrayList<>();
     private List<Body>  _bodies = new ArrayList<>();
-    private Body        _sunBody;
-    private List<Body>  _sunBodies = new ArrayList<>();
     private boolean     _needRefresh;
 
     public GDXLightRenderer() {
@@ -63,7 +58,7 @@ public class GDXLightRenderer extends LightRenderer {
         RayHandler.setGammaCorrection(true);
         RayHandler.useDiffuseLight(true);
 
-        _rayHandler = new RayHandler(world);
+        _rayHandler = new RayHandler(_world);
         _rayHandler.setAmbientLight(0f, 0f, 0f, 0.5f);
         _rayHandler.setBlurNum(3);
     }
@@ -100,7 +95,7 @@ public class GDXLightRenderer extends LightRenderer {
 //                        1f, 1f,
 //                        angle);
 //            }
-//            for (Body body: balls) {
+//            for (Body body: _balls) {
 //                Vector2 position = body.getPosition();
 //                float angle = MathUtils.radiansToDegrees * body.getAngle();
 //                _batch.draw(
@@ -115,10 +110,7 @@ public class GDXLightRenderer extends LightRenderer {
 //        _batch.end();
 
         /** BOX2D LIGHT STUFF BEGIN */
-//        _rayHandler.setBlur(false);
         _rayHandler.setCombinedMatrix(_camera);
-
-//        if (stepped) _rayHandler.update();
         _rayHandler.update();
         _rayHandler.render();
         /** BOX2D LIGHT STUFF END */
@@ -133,7 +125,7 @@ public class GDXLightRenderer extends LightRenderer {
 
     @Override
     public void setSunColor(org.smallbox.faraway.engine.Color color) {
-        _rayHandler.setAmbientLight(new Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f * 0.75f));
+        _rayHandler.setAmbientLight(new Color(color.r / 255f * 0.75f + 0.25f, color.g / 255f * 0.75f + 0.25f, color.b / 255f * 0.75f + 0.25f, 1f));
     }
 
     void clearLights() {
@@ -147,16 +139,15 @@ public class GDXLightRenderer extends LightRenderer {
     void initPointLights() {
         clearLights();
 
-        for (Body ball: balls) {
-            PointLight light = new PointLight(_rayHandler, RAYS_PER_BALL, null, (int)ball.getUserData(), 0f, 0f);
+        for (Body ball: _balls) {
+            PointLight light = new PointLight(_rayHandler, RAYS_PER_BALL, null, (int)ball.getUserData() * 2, 0f, 0f);
             light.attachToBody(ball, 32 / 2f, 32 / 2f);
             lights.add(light);
         }
     }
 
     private void createPhysicsWorld() {
-
-        world = new World(new Vector2(0, 0), true);
+        _world = new World(new Vector2(0, 0), true);
 
         float halfWidth = viewportWidth / 2f;
         ChainShape chainShape = new ChainShape();
@@ -167,14 +158,14 @@ public class GDXLightRenderer extends LightRenderer {
                 new Vector2(-halfWidth, viewportHeight) });
         BodyDef chainBodyDef = new BodyDef();
         chainBodyDef.type = BodyDef.BodyType.DynamicBody;
-        groundBody = world.createBody(chainBodyDef);
+        groundBody = _world.createBody(chainBodyDef);
         groundBody.createFixture(chainShape, 0);
         chainShape.dispose();
     }
 
     private void createLightObjects() {
-        balls.forEach(body -> world.destroyBody(body));
-        balls.clear();
+        _balls.forEach(body -> _world.destroyBody(body));
+        _balls.clear();
 
         CircleShape ballShape = new CircleShape();
         ballShape.setRadius(0);
@@ -188,24 +179,6 @@ public class GDXLightRenderer extends LightRenderer {
         BodyDef boxBodyDef = new BodyDef();
         boxBodyDef.type = BodyDef.BodyType.DynamicBody;
 
-        for (int x = 0; x < Game.getWorldManager().getWidth(); x += 5) {
-            for (int y = 0; y < Game.getWorldManager().getHeight(); y += 5) {
-                ParcelModel parcel = Game.getWorldManager().getParcel(x, y);
-                if (parcel != null) {
-                    if (parcel.getRoom() != null && parcel.getRoom().isExterior()) {
-                        if (parcel.getStructure() == null || parcel.getStructure().isFloor()) {
-                            int posX = x * 32 - Constant.WINDOW_WIDTH / 2;
-                            int posY = y * 32;
-                            _sunBody = createLight(boxBodyDef, def, posX, posY);
-                            _sunBodies.add(_sunBody);
-                        }
-                    }
-                }
-            }
-        }
-
-        _sunBody = createLight(boxBodyDef, def, 0, 0);
-
         if (Game.getWorldManager() != null) {
             int width = Game.getWorldManager().getWidth();
             int height = Game.getWorldManager().getHeight();
@@ -217,14 +190,14 @@ public class GDXLightRenderer extends LightRenderer {
                         int posY = y * 32 - 0;
                         Body body = createLight(boxBodyDef, def, posX, posY);
                         body.setUserData(areas[x][y][0].getItem().getInfo().light);
-                        balls.add(body);
+                        _balls.add(body);
                     }
                     if (areas[x][y][0] != null && areas[x][y][0].getResource() != null && areas[x][y][0].getResource().getInfo().light > 0) {
                         int posX = x * 32 - 0 - Constant.WINDOW_WIDTH / 2;
                         int posY = y * 32 - 0;
                         Body body = createLight(boxBodyDef, def, posX, posY);
                         body.setUserData(areas[x][y][0].getResource().getInfo().light);
-                        balls.add(body);
+                        _balls.add(body);
                     }
                 }
             }
@@ -232,7 +205,7 @@ public class GDXLightRenderer extends LightRenderer {
     }
 
     private void createWallObjects() {
-        _bodies.forEach(body -> world.destroyBody(body));
+        _bodies.forEach(body -> _world.destroyBody(body));
         _bodies.clear();
 
         PolygonShape boxShape = new PolygonShape();
@@ -272,7 +245,7 @@ public class GDXLightRenderer extends LightRenderer {
     private void createBox(BodyDef boxBodyDef, FixtureDef def, int x, int y) {
         boxBodyDef.position.x = x;
         boxBodyDef.position.y = y;
-        Body boxBody = world.createBody(boxBodyDef);
+        Body boxBody = _world.createBody(boxBodyDef);
         boxBody.createFixture(def);
         _bodies.add(boxBody);
     }
@@ -280,7 +253,7 @@ public class GDXLightRenderer extends LightRenderer {
     private Body createLight(BodyDef boxBodyDef, FixtureDef def, int x, int y) {
         boxBodyDef.position.x = x;
         boxBodyDef.position.y = y;
-        Body boxBody = world.createBody(boxBodyDef);
+        Body boxBody = _world.createBody(boxBodyDef);
         boxBody.createFixture(def);
         return boxBody;
     }

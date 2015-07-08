@@ -64,7 +64,10 @@ public class JobCraft extends BaseJobModel {
         }
 
         _receipt.start(this);
-        moveToIngredient(character, _receipt.getCurrentComponent().consumable);
+
+        if (!_receipt.hasComponentsInFactory() && _receipt.getCurrentComponent() != null) {
+            moveToIngredient(character, _receipt.getCurrentComponent().consumable);
+        }
     }
 
 	@Override
@@ -76,7 +79,7 @@ public class JobCraft extends BaseJobModel {
 	}
 
 	@Override
-	public void					setItem(MapObjectModel item) {
+	public void					setItem(ItemModel item) {
 		super.setItem(item);
 
 		if (item != null) {
@@ -94,7 +97,7 @@ public class JobCraft extends BaseJobModel {
         super(action, x, y, "data/res/ic_craft.png", "data/res/ic_action_craft.png");
 	}
 
-	public static JobCraft create(ItemInfo.ItemInfoAction action, MapObjectModel item) {
+	public static JobCraft create(ItemInfo.ItemInfoAction action, ItemModel item) {
 		if (item == null) {
 			throw new RuntimeException("Cannot add Craft job (item is null)");
 		}
@@ -105,8 +108,8 @@ public class JobCraft extends BaseJobModel {
 
 		JobCraft job = new JobCraft(action, item.getX(), item.getY());
 		job.setItem(item);
-		job._factory = (ItemModel)item;
-		job._receipts = action.receipts.stream().map(receiptInfo -> new ReceiptModel((ItemModel) item, receiptInfo)).collect(Collectors.toList());
+		job._factory = item;
+		job._receipts = action.receipts.stream().map(receiptInfo -> new ReceiptModel(item, receiptInfo)).collect(Collectors.toList());
         job.setStrategy(j -> {
             if (j.getCharacter().getType().needs.joy != null) {
                 j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
@@ -133,7 +136,6 @@ public class JobCraft extends BaseJobModel {
 
 	@Override
 	protected void onFinish() {
-
 	}
 
 	@Override
@@ -182,8 +184,12 @@ public class JobCraft extends BaseJobModel {
 
     private JobActionReturn onActionFactory(CharacterModel character) {
         if (!_receipt.hasComponentsInFactory()) {
-            moveToIngredient(character, _receipt.getCurrentComponent().consumable);
-            return JobActionReturn.CONTINUE;
+            if (_receipt.getCurrentComponent() != null) {
+                moveToIngredient(character, _receipt.getCurrentComponent().consumable);
+                return JobActionReturn.CONTINUE;
+            } else {
+                return JobActionReturn.QUIT;
+            }
         }
 
         // Work continue

@@ -2,8 +2,8 @@
 //
 //import org.luaj.vm2.*;
 //import org.luaj.vm2.compiler.LuaC;
-//import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-//import org.luaj.vm2.lib.jse.JsePlatform;
+//import org.luaj.vm2.lib.globals.CoerceJavaToLua;
+//import org.luaj.vm2.lib.globals.JsePlatform;
 //import org.smallbox.faraway.game.Game;
 //
 ///**

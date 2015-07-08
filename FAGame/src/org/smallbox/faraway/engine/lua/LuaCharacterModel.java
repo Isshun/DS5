@@ -16,7 +16,8 @@ public class LuaCharacterModel {
     public final CharacterStats     stats;
     public final CharacterModel     character;
     public final ItemInfo           item;
-    private final ParcelModel       parcel;
+    public final ParcelModel        parcel;
+    public final String             type;
 
     public LuaCharacterModel(CharacterModel character) {
         this.id = character.getId();
@@ -25,6 +26,7 @@ public class LuaCharacterModel {
         this.stats = character.getStats();
         this.character = character;
         this.parcel = character.getParcel();
+        this.type = character.getType().name;
         this.item = character.getJob() != null && character.getJob().getItem() != null ? character.getJob().getItem().getInfo() : null;
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by Alex on 06/07/2015.
  */
-public class JobManagerHelper {
+public class JobHelper {
 
     public static BaseJobModel createGatherJob(int x, int y) {
         ResourceModel res = Game.getWorldManager().getResource(x, y);
@@ -57,7 +57,7 @@ public class JobManagerHelper {
         throw new RuntimeException("not implemented");
     }
 
-    public static void addUseJob(MapObjectModel item) {
+    public static void addUseJob(ItemModel item) {
         BaseJobModel job = JobUse.create(item);
         if (job != null) {
             JobManager.getInstance().addJob(job);

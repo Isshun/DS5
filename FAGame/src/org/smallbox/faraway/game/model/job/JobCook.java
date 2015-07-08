@@ -19,7 +19,7 @@ public class JobCook extends JobCraft {
         super(action, x, y);
     }
 
-    public static JobCook create(ItemInfo.ItemInfoAction action, MapObjectModel item) {
+    public static JobCook create(ItemInfo.ItemInfoAction action, ItemModel item) {
         if (item == null) {
             throw new RuntimeException("Cannot add cook job (item is null)");
         }
@@ -30,8 +30,8 @@ public class JobCook extends JobCraft {
 
         JobCook job = new JobCook(action, item.getX(), item.getY());
         job.setItem(item);
-        job._factory = (ItemModel)item;
-        job._receipts = action.receipts.stream().map(receiptInfo -> new ReceiptModel((ItemModel) item, receiptInfo)).collect(Collectors.toList());
+        job._factory = item;
+        job._receipts = action.receipts.stream().map(receiptInfo -> new ReceiptModel(item, receiptInfo)).collect(Collectors.toList());
         job.setStrategy(j -> {
             if (j.getCharacter().getType().needs.joy != null) {
                 j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;

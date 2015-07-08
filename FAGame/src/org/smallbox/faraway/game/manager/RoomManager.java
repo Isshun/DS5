@@ -20,13 +20,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RoomManager extends BaseManager implements GameObserver {
-    private List<RoomModel>		_roomList;
-    private int                 _width;
-    private int                 _height;
-    private ParcelModel[][][]   _parcels;
-    private double[][]          _oxygenLevels;
-    private boolean             _needRefresh;
-    private List<ParcelModel>   _roomlessParcels;
+    private List<RoomModel>		        _roomList;
+    private double[][]                  _oxygenLevels;
+    private boolean                     _needRefresh;
+    private List<ParcelModel>           _roomlessParcels;
+    private AsyncTask<List<RoomModel>>  _task;
 
     @Override
     protected void onCreate() {
@@ -41,6 +39,7 @@ public class RoomManager extends BaseManager implements GameObserver {
 
         double oxygenLevel = Game.getInstance().getPlanet().getOxygen();
         _roomList = new ArrayList<>();
+        _roomlessParcels = new ArrayList<>();
         _oxygenLevels = new double[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -64,31 +63,28 @@ public class RoomManager extends BaseManager implements GameObserver {
         if (_needRefresh) {
             refreshRooms();
         }
-//        if (tick % UPDATE_INTERVAL == 0) {
-//            _roomList.forEach(RoomModel::update);
-//        }
+
+        if (_task != null && _task.isComplete()) {
+            _task.complete();
+            _task = null;
+        }
     }
 
-    public void makeRooms() {
-        _width = Game.getWorldManager().getWidth();
-        _height = Game.getWorldManager().getHeight();
-        _parcels = Game.getWorldManager().getParcels();
-
-        for (int x = 0; x < _width; x++) {
-            for (int y = 0; y < _height; y++) {
-                _parcels[x][y][0].setRoom(null);
-                _parcels[x][y][0].tmpData = 0;
+    public void makeRooms(List<RoomModel> rooms, ParcelModel[][][] parcels) {
+        for (int x = 0; x < parcels.length; x++) {
+            for (int y = 0; y < parcels[x].length; y++) {
+                parcels[x][y][0].setRoom(null);
+                parcels[x][y][0].tmpData = 0;
             }
         }
-        _roomList.clear();
 
         boolean newRoomFound;
         do {
             newRoomFound = false;
-            for (int x = 0; x < _width; x++) {
-                for (int y = 0; y < _height; y++) {
+            for (int x = 0; x < parcels.length; x++) {
+                for (int y = 0; y < parcels[x].length; y++) {
                     if (!Thread.currentThread().isInterrupted()) {
-                        ParcelModel parcel = _parcels[x][y][0];
+                        ParcelModel parcel = parcels[x][y][0];
                         if (parcel.getRoom() != null) {
                             continue;
                         }
@@ -104,9 +100,9 @@ public class RoomManager extends BaseManager implements GameObserver {
                         room.setExterior(false);
                         room.addParcel(parcel);
                         parcel.setRoom(room);
-                        _roomList.add(room);
-                        exploreRoom(room);
-                        checkRoof(room);
+                        rooms.add(room);
+                        exploreRoom(parcels, room);
+                        checkRoof(parcels, room);
                         addSpecialsItems(room);
                         if (room.isExterior()) {
                             room.getParcels().forEach(p -> p.setExterior(true));
@@ -198,15 +194,15 @@ public class RoomManager extends BaseManager implements GameObserver {
         return "Room";
     }
 
-    private void checkRoof(RoomModel room) {
+    private void checkRoof(ParcelModel[][][] parcels, RoomModel room) {
         Log.info("[RoomManager] Check roof: " + room.getName());
         for (ParcelModel parcel: room.getParcels()) {
             boolean isUnsupported = true;
             for (int i = 0; i < 6; i++) {
-                if (checkAreaCanSupportRoof(parcel.getX() + i, parcel.getY())) isUnsupported = false;
-                if (checkAreaCanSupportRoof(parcel.getX() - i, parcel.getY())) isUnsupported = false;
-                if (checkAreaCanSupportRoof(parcel.getX(), parcel.getY() + i)) isUnsupported = false;
-                if (checkAreaCanSupportRoof(parcel.getX(), parcel.getY() - i)) isUnsupported = false;
+                if (checkAreaCanSupportRoof(parcels, parcel.getX() + i, parcel.getY())) isUnsupported = false;
+                if (checkAreaCanSupportRoof(parcels, parcel.getX() - i, parcel.getY())) isUnsupported = false;
+                if (checkAreaCanSupportRoof(parcels, parcel.getX(), parcel.getY() + i)) isUnsupported = false;
+                if (checkAreaCanSupportRoof(parcels, parcel.getX(), parcel.getY() - i)) isUnsupported = false;
             }
             if (isUnsupported) {
                 room.setExterior(true);
@@ -215,7 +211,7 @@ public class RoomManager extends BaseManager implements GameObserver {
         }
     }
 
-    private void exploreRoom(RoomModel room) {
+    private void exploreRoom(ParcelModel[][][] parcels, RoomModel room) {
         List<ParcelModel> openList = new ArrayList<>();
         boolean parcelFound = true;
         for (int i = 1; parcelFound; i++) {
@@ -224,10 +220,10 @@ public class RoomManager extends BaseManager implements GameObserver {
                 if (parcel.tmpData == i - 1) {
                     int x = parcel.getX();
                     int y = parcel.getY();
-                    if (addToRoomIfFree(room, openList, i, x + 1, y)) { parcelFound = true; }
-                    if (addToRoomIfFree(room, openList, i, x - 1, y)) { parcelFound = true; }
-                    if (addToRoomIfFree(room, openList, i, x, y + 1)) { parcelFound = true; }
-                    if (addToRoomIfFree(room, openList, i, x, y - 1)) { parcelFound = true; }
+                    if (addToRoomIfFree(parcels, room, openList, i, x + 1, y)) { parcelFound = true; }
+                    if (addToRoomIfFree(parcels, room, openList, i, x - 1, y)) { parcelFound = true; }
+                    if (addToRoomIfFree(parcels, room, openList, i, x, y + 1)) { parcelFound = true; }
+                    if (addToRoomIfFree(parcels, room, openList, i, x, y - 1)) { parcelFound = true; }
                 }
             }
             room.addParcels(openList);
@@ -235,32 +231,32 @@ public class RoomManager extends BaseManager implements GameObserver {
         }
     }
 
-    private boolean addToRoomIfFree(RoomModel room, List<ParcelModel> openList, int i, int x, int y) {
-        if (x < 0 || x >= _width || y < 0 || y >= _height || _parcels[x][y][0] == null) {
+    private boolean addToRoomIfFree(ParcelModel[][][] parcels, RoomModel room, List<ParcelModel> openList, int i, int x, int y) {
+        if (x < 0 || x >= parcels.length || y < 0 || y >= parcels[0].length || parcels[x][y][0] == null) {
             return false;
         }
 
-        if (_parcels[x][y][0].getRoom() != null) {
+        if (parcels[x][y][0].getRoom() != null) {
             return false;
         }
 
-        if (_parcels[x][y][0].getStructure() != null && _parcels[x][y][0].getStructure().isCloseRoom()) {
+        if (parcels[x][y][0].getStructure() != null && parcels[x][y][0].getStructure().isCloseRoom()) {
             return false;
         }
 
-        if (_parcels[x][y][0].getResource() != null && _parcels[x][y][0].getResource().isCloseRoom()) {
+        if (parcels[x][y][0].getResource() != null && parcels[x][y][0].getResource().isCloseRoom()) {
             return false;
         }
 
-        _parcels[x][y][0].tmpData = i;
-        _parcels[x][y][0].setRoom(room);
-        openList.add(_parcels[x][y][0]);
+        parcels[x][y][0].tmpData = i;
+        parcels[x][y][0].setRoom(room);
+        openList.add(parcels[x][y][0]);
         return true;
     }
 
-    private boolean checkAreaCanSupportRoof(int x, int y) {
-        if (x >= 0 && x < _width && y >= 0 && y < _height && _parcels[x][y][0] != null) {
-            return _parcels[x][y][0].canSupportRoof();
+    private boolean checkAreaCanSupportRoof(ParcelModel[][][] parcels, int x, int y) {
+        if (x >= 0 && x < parcels.length && y >= 0 && y < parcels[0].length && parcels[x][y][0] != null) {
+            return parcels[x][y][0].canSupportRoof();
         }
         return false;
     }
@@ -271,44 +267,70 @@ public class RoomManager extends BaseManager implements GameObserver {
         Log.info("RoomManager: refresh");
         long time = System.currentTimeMillis();
 
-        // Store o2 levels
-        for (RoomModel room: _roomList) {
-            for (ParcelModel parcel: room.getParcels()) {
-                if (parcel != null) {
-                    _oxygenLevels[parcel.getX()][parcel.getY()] = room.getOxygen();
-                }
-            }
-        }
-        _roomList.clear();
-        makeRooms();
-        makeNeighborhood();
-
-        // Restore o2 levels
-        if (!Thread.currentThread().isInterrupted()) {
-            for (RoomModel room : _roomList) {
-                double oxygen = 0;
-                for (ParcelModel parcel : room.getParcels()) {
-                    if (parcel != null) {
-                        oxygen += _oxygenLevels[parcel.getX()][parcel.getY()];
+        _task = new AsyncTask<List<RoomModel>>() {
+            @Override
+            public void onStart() {
+                // Store o2 levels
+                ParcelModel[][][] parcels = Game.getWorldManager().getParcels();
+                for (int x = 0; x < parcels.length; x++) {
+                    for (int y = 0; y < parcels[x].length; y++) {
+                        _oxygenLevels[x][x] = parcels[x][y][0].getOxygen();
                     }
                 }
-                room.setOxygen(oxygen / room.getParcels().size());
-                Log.info("Set room oxygen: " + oxygen / room.getParcels().size());
-            }
-        }
 
-        _roomlessParcels = Game.getWorldManager().getParcelList().stream().filter(parcel -> parcel.getRoom() == null).collect(Collectors.toList());
+                // Clear rooms
+                Game.getWorldManager().getParcelList().forEach(parcel -> {
+                    parcel.setRoom(null);
+                    parcel.tmpData = 0;
+                });
+            }
+
+            @Override
+            public List<RoomModel> onBackground() {
+                List<RoomModel> rooms = new ArrayList<>();
+                makeRooms(rooms, Game.getWorldManager().getParcels());
+                makeNeighborhood(rooms);
+                return rooms;
+            }
+
+            @Override
+            public void onComplete(List<RoomModel> rooms) {
+                long time = System.currentTimeMillis();
+
+                _roomList = rooms;
+
+                // Restore o2 levels
+                if (!Thread.currentThread().isInterrupted()) {
+                    for (RoomModel room : _roomList) {
+                        double oxygen = 0;
+                        for (ParcelModel parcel : room.getParcels()) {
+                            if (parcel != null) {
+                                oxygen += _oxygenLevels[parcel.getX()][parcel.getY()];
+                            }
+                        }
+                        room.setOxygen(oxygen / room.getParcels().size());
+                        Log.info("Set room oxygen: " + oxygen / room.getParcels().size());
+                    }
+                }
+
+                _roomlessParcels = Game.getWorldManager().getParcelList().stream().filter(parcel -> parcel.getRoom() == null).collect(Collectors.toList());
+
+                Log.notice("complete done in " + (System.currentTimeMillis() - time));
+            }
+        };
+
+        _task.start();
 
         Log.info("RoomManager: refresh done " + (System.currentTimeMillis() - time));
     }
 
-    private void makeNeighborhood() {
+    private void makeNeighborhood(List<RoomModel> rooms) {
         WorldManager manager = Game.getWorldManager();
 
-        for (RoomModel room: _roomList) {
+        for (RoomModel room: rooms) {
             // Init neighborhood
             Map<RoomModel, NeighborModel> neighborhood = new HashMap<>();
-            for (RoomModel neighbor: _roomList) {
+            for (RoomModel neighbor: rooms) {
                 if (neighbor != room) {
                     neighborhood.put(neighbor, new NeighborModel(neighbor));
                 }

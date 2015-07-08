@@ -9,7 +9,7 @@ public class Log {
 	public static int LEVEL_WARNING = 3;
 	public static int LEVEL_INFO = 4;
 	public static int LEVEL_DEBUG = 5;
-	public static int LEVEL = LEVEL_DEBUG;
+	public static int LEVEL = LEVEL_INFO;
 	
 	public static void debug(String str) {
 		if (LEVEL < LEVEL_DEBUG) return;

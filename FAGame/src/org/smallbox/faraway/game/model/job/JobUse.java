@@ -5,11 +5,9 @@ import org.smallbox.faraway.game.manager.RelationManager;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ItemSlot;
-import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.util.Log;
-
-import java.util.List;
 
 public class JobUse extends BaseJobModel {
 
@@ -35,7 +33,7 @@ public class JobUse extends BaseJobModel {
 		super();
 	}
 
-	public static JobUse create(MapObjectModel item) {
+	public static JobUse create(ItemModel item) {
 		if (item == null || !item.hasFreeSlot()) {
 			return null;
 		}
@@ -57,7 +55,7 @@ public class JobUse extends BaseJobModel {
 		return job;
 	}
 
-	public static JobUse create(MapObjectModel item, CharacterModel character) {
+	public static JobUse create(ItemModel item, CharacterModel character) {
 		if (character == null) {
 			return null;
 		}
@@ -104,8 +102,7 @@ public class JobUse extends BaseJobModel {
 			// Item is use by 2 or more characters
 			if (_item.getNbFreeSlots() + 1 < _item.getNbSlots()) {
 				character.getNeeds().addRelation(1);
-				List<ItemSlot> slots = _item.getSlots();
-				for (ItemSlot slot: slots) {
+				for (ItemSlot slot: _item.getSlots()) {
 					CharacterModel slotCharacter = slot.getJob() != null ? slot.getJob().getCharacter() : null;
 					((RelationManager)Game.getInstance().getManager(RelationManager.class)).meet(character, slotCharacter);
 				}
@@ -139,28 +136,11 @@ public class JobUse extends BaseJobModel {
 		}
 		
 		// Item is no longer exists
-		if (_item.isConsumable()) {
-			if (_item != Game.getWorldManager().getConsumable(_item.getX(), _item.getY())) {
-				_reason = JobAbortReason.INVALID;
-				return false;
-			}
-		} else {
-			if (_item != Game.getWorldManager().getItem(_item.getX(), _item.getY())) {
-				_reason = JobAbortReason.INVALID;
-				return false;
-			}
-		}
-
-		if (_item.getQuantity() <= 0) {
+		if (_item != Game.getWorldManager().getItem(_item.getX(), _item.getY())) {
+			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 
-//		// No space left in inventory
-//		if (_item.isFactory() && characters.hasInventorySpaceLeft() == false) {
-//			_reason = JobAbortReason.NO_LEFT_CARRY;
-//			return false;
-//		}
-		
 		return true;
 	}
 

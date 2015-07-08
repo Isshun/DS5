@@ -50,6 +50,6 @@ public class CheckCharacterOxygen extends CharacterCheck {
 
     @Override
     public boolean need(CharacterModel character) {
-        return character.getNeeds().oxygen < character.getType().needs.oxygen.critical;
+        return character.getType().needs.oxygen != null && character.getNeeds().oxygen < character.getType().needs.oxygen.critical;
     }
 }

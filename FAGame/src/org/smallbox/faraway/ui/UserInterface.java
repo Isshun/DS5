@@ -425,22 +425,22 @@ public class UserInterface implements GameEventListener {
     }
 
     public void onDoubleClick(int x, int y) {
-        _keyLeftPressed = false;
-
-        ParcelModel area = Game.getWorldManager().getParcel(getRelativePosX(x), getRelativePosY(y));
-        if (area != null) {
-            ItemModel item = area.getItem();
-            StructureModel structure = area.getStructure();
-
-            if (item != null) {
-                item.nextMode();
-                Game.getInstance().notify(observer -> observer.onRefreshItem(item));
-            }
-            else if (structure != null) {
-                structure.nextMode();
-                Game.getInstance().notify(observer -> observer.onRefreshStructure(structure));
-            }
-        }
+//        _keyLeftPressed = false;
+//
+//        ParcelModel area = Game.getWorldManager().getParcel(getRelativePosX(x), getRelativePosY(y));
+//        if (area != null) {
+//            ItemModel item = area.getItem();
+//            StructureModel structure = area.getStructure();
+//
+//            if (item != null) {
+//                item.nextMode();
+//                Game.getInstance().notify(observer -> observer.onRefreshItem(item));
+//            }
+//            else if (structure != null) {
+//                structure.nextMode();
+//                Game.getInstance().notify(observer -> observer.onRefreshStructure(structure));
+//            }
+//        }
     }
 
     public boolean onLeftClick(int x, int y) {

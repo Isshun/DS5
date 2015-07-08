@@ -1,9 +1,10 @@
 package org.smallbox.faraway.game.model.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemInfo {
-    public boolean hasCraftAction() {
+	public boolean hasCraftAction() {
 		if (actions != null) {
 			for (ItemInfoAction action : actions) {
 				if ("craft".equals(action.type) || "cook".equals(action.type)) {
@@ -136,6 +137,7 @@ public class ItemInfo {
 	public String 						desc;
 	public String 						inherits;
 	public String 						label;
+	public String 						labelChild;
 	public String 						category;
 	public String 						type;
 	public ItemInfoStorage				storage;
@@ -175,6 +177,9 @@ public class ItemInfo {
 	public double 						sealing;
 	public boolean 						isLive;
     public int                          stack;
+    public String 						parent;
+	public ItemInfo 					parentInfo;
+	public List<ItemInfo> 				childs = new ArrayList<>();
 
 	public ItemInfo() {
 		width = 1;

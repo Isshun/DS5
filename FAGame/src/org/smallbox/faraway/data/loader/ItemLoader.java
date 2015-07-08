@@ -90,8 +90,9 @@ public class ItemLoader implements IDataLoader {
         load(data, "data/items/", "base");
         load(data, "data/mods/garden/items/", "garden");
 
-        secondPass(data);
-        thirdPass(data);
+        pass1(data);
+        pass2(data);
+        pass3(data);
 
         if (_hasErrors) {
             throw new RuntimeException("Errors loading items");
@@ -103,7 +104,7 @@ public class ItemLoader implements IDataLoader {
         Log.error(message + " (" + item.name + ")");
     }
 
-    private void secondPass(GameData data) {
+    private void pass1(GameData data) {
         for (ItemInfo item: data.items) {
 
             if (item.receipts != null) {
@@ -183,7 +184,7 @@ public class ItemLoader implements IDataLoader {
         }
     }
 
-    private void thirdPass(GameData data) {
+    private void pass2(GameData data) {
         for (ItemInfo item: data.items) {
             if (!item.isUserItem && !item.isStructure && item.cost > 0) {
                 error(item, "Only UserItem and StructureItem can have cost attribute");
@@ -197,4 +198,14 @@ public class ItemLoader implements IDataLoader {
             }
         }
     }
+
+    private void pass3(GameData data) {
+        for (ItemInfo item: data.items) {
+            if (item.parent != null) {
+                item.parentInfo = data.getItemInfo(item.parent);
+                item.parentInfo.childs.add(item);
+            }
+        }
+    }
+
 }

@@ -8,6 +8,7 @@ import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.WorldFactory;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
@@ -218,39 +219,39 @@ public class Application implements GameEventListener {
     }
 
     public void newGame(String fileName, RegionInfo  regionInfo) {
+        long time = System.currentTimeMillis();
+
         _mainMenu.close();
 
         _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer, regionInfo);
-        // TODO: magick
-        _game.getWorldManager().init(250, 250);
-        _game.newGame(null);
-        _game.init();
-        _game.save(_game.getFileName());
-        PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
-        _mainRenderer.init(_renderer, GameData.config, _game, _lightRenderer, _particleRenderer);
-        _gameInterface.onCreate(_game);
-
-        if (_lightRenderer != null) {
-            _lightRenderer.init();
-        }
+        _game.init(true);
 
         startGame();
+
+        Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
     }
 
     public void loadGame(String fileName) {
+        long time = System.currentTimeMillis();
+
         _mainMenu.close();
 
-        long time = System.currentTimeMillis();
         _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer, null);
 
         // TODO
-        _game.setRegion(GameData.getData().getRegion("arrakis", "desert"));
+        _game.setRegion(GameData.getData().getRegion("arrakis", "mountain"));
         _game.preload();
+        _game.init(false);
         _game.load();
-        _game.init();
-        Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
 
-        time = System.currentTimeMillis();
+        startGame();
+
+        Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
+    }
+
+    private void startGame() {
+
+        long time = System.currentTimeMillis();
         PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
         Log.notice("Init paths (" + (System.currentTimeMillis() - time) + "ms)");
 
@@ -268,13 +269,6 @@ public class Application implements GameEventListener {
             Log.notice("Init light (" + (System.currentTimeMillis() - time) + "ms)");
         }
 
-        startGame();
-    }
-
-    private void startGame() {
-//        if (_lightRenderer != null) {
-//            _game.addObserver(_lightRenderer);
-//        }
         Game.getInstance().notify(observer -> observer.onStartGame());
     }
 

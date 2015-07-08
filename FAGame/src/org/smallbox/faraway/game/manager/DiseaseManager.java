@@ -7,8 +7,10 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.engine.lua.LuaCharacterModel;
 import org.smallbox.faraway.engine.lua.LuaGameModel;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.character.BuffModel;
 import org.smallbox.faraway.game.model.character.DiseaseModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
 import java.io.File;
@@ -20,64 +22,48 @@ import java.util.Map;
  */
 public class DiseaseManager extends BaseManager {
     private final LuaValue                  _luaGame;
-    private Map<DiseaseModel, LuaValue>     _diseases;
-    private Map<CharacterModel, LuaValue>   _luaCharacters;
 
     public DiseaseManager() {
         _luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
-        _luaCharacters = new HashMap<>();
-        _diseases = new HashMap<>();
         _updateInterval = 10;
     }
 
     @Override
     protected void onUpdate(int tick) {
-        for (CharacterModel character: Game.getCharacterManager().getCharacters()) {
-            if (character.isAlive()) {
-                character.getNeeds().happinessChange = 0;
-                for (DiseaseModel disease : character._diseases) {
-                    LuaValue ret = _diseases.get(disease).get("OnUpdate").call(_luaGame, _luaCharacters.get(character), disease.data);
+        Game.getCharacterManager().getCharacters().stream().filter(CharacterModel::isAlive).forEach(character -> {
+            character.getNeeds().happinessChange = 0;
+            for (DiseaseModel disease : character._diseases) {
+                LuaValue onUpdate = disease.globals.get("OnUpdate");
+                if (!onUpdate.isnil()) {
+                    LuaValue ret = disease.globals.get("OnUpdate").call(_luaGame, disease.luaCharacter, disease.data);
                     if (!ret.isnil()) {
                         disease.message = ret.toString();
                     }
                 }
             }
-        }
+        });
 //        Game.getInstance().notify(observer -> observer.onCloseQuest(quest));
     }
 
     public void apply(CharacterModel character, String name, LuaValue data) {
-        DiseaseModel disease = character.getDisease(name);
-        if (disease != null) {
-            disease.data = data;
+        if (character.getDisease(name) != null) {
+            character.getDisease(name).data = data;
         } else {
-            try {
-                for (File file : new File("data/diseases/").listFiles()) {
-                    if (file.getName().equals(name + ".lua")) {
-                        // Load lua script
-                        disease = new DiseaseModel(name);
-                        disease.data = data;
-                        LuaValue globals = JsePlatform.standardGlobals();
-                        globals.get("dofile").call(LuaValue.valueOf("data/diseases/" + file.getName()));
+            // Load lua scripts
+            FileUtils.listRecursively("data/diseases/").stream().filter(file -> file.getName().equals(name + ".lua")).forEach(file -> {
+                DiseaseModel disease = new DiseaseModel(name);
+                disease.globals = JsePlatform.standardGlobals();
+                disease.globals.get("dofile").call(LuaValue.valueOf(file.getAbsolutePath()));
+                disease.luaCharacter = CoerceJavaToLua.coerce(new LuaCharacterModel(character));
+                disease.data = data;
 
-                        _diseases.put(disease, globals);
-                        character.addDisease(disease);
-
-                        LuaValue onStart = globals.get("OnStart");
-                        if (!onStart.isnil()) {
-                            onStart.call(_luaGame, _luaCharacters.get(character), data);
-                        }
-                    }
+                LuaValue onStart = disease.globals.get("OnStart");
+                if (!onStart.isnil()) {
+                    onStart.call(_luaGame, disease.luaCharacter, data);
                 }
-            } catch (LuaError error) {
-                error.printStackTrace();
-                Log.error(error.getMessage());
-            }
-        }
-    }
 
-    @Override
-    public void onAddCharacter(CharacterModel character) {
-        _luaCharacters.put(character, CoerceJavaToLua.coerce(new LuaCharacterModel(character)));
+                character.addDisease(disease);
+            });
+        }
     }
 }

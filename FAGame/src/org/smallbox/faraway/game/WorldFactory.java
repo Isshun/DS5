@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game;
 
 import org.smallbox.faraway.data.serializer.LoadListener;
+import org.smallbox.faraway.game.manager.BaseManager;
 import org.smallbox.faraway.game.manager.WorldManager;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ParcelModel;
@@ -15,12 +16,9 @@ import java.util.Random;
  */
 public class WorldFactory {
 
-    public void create(WorldManager worldManager, int mapWidth, int mapHeight, LoadListener loadListener) {
-        if (worldManager.getParcels() == null) {
-            // Initialize world map
-            worldManager.init(mapWidth, mapHeight);
-//            throw new RuntimeException("WorldManager as already been initialized");
-        }
+    public void create(WorldManager worldManager) {
+        int mapWidth = worldManager.getWidth();
+        int mapHeight = worldManager.getHeight();
 
         // Initialize game map
         worldManager.getParcelList().forEach(parcel -> {
@@ -143,5 +141,4 @@ public class WorldFactory {
             }
         }
     }
-
 }

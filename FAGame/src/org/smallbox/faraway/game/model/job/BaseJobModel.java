@@ -8,8 +8,8 @@ import org.smallbox.faraway.util.Log;
 
 public abstract class BaseJobModel {
 
-    private boolean _isJoy;
-    protected JobStrategy _strategy;
+    private boolean         _isJoy;
+    protected JobStrategy   _strategy;
 
     public String getActionIcon() {
         return null;
@@ -64,13 +64,13 @@ public abstract class BaseJobModel {
     protected int 				_durationLeft;
     protected boolean           _isClose;
     protected double 			_progress;
-	protected MapObjectModel 	_item;
+	protected ItemModel         _item;
 	protected ItemFilter 		_filter;
 	protected ItemInfoAction    _actionInfo;
 	protected CharacterModel    _character;
     protected CharacterModel    _characterRequire;
 	protected JobAbortReason 	_reason;
-    protected ItemSlot 			_slot;
+    protected ItemSlot          _slot;
     protected String 			_label;
 	protected JobStatus			_status;
     private String              _icon;
@@ -119,7 +119,7 @@ public abstract class BaseJobModel {
 	public int 					getBlocked() { return _blocked; }
 	public JobAbortReason		getReason() { return _reason; }
 	public String 				getReasonString() { return _reason != null ? _reason.toString() : "no reason"; }
-	public ItemSlot 			getSlot() { return _slot; }
+	public ItemSlot             getSlot() { return _slot; }
 	public ItemFilter			getItemFilter() { return _filter; }
 	public int 					getNbUsed() { return _nbUsed; }
 	public double               getQuantity() { return _progress; }
@@ -147,7 +147,7 @@ public abstract class BaseJobModel {
 	public void					setBlocked(int frame) { _blocked = frame; _nbBlocked++; }
 	public void 				setPosition(int x, int y) { _posX = x; _posY = y; }
 	public void 				setSlot(ItemSlot slot) { _slot = slot; }
-	public void					setItem(MapObjectModel item) { _item = item; }
+	public void					setItem(ItemModel item) { _item = item; }
 	public void 				setItemFilter(ItemFilter filter) { _filter = filter; }
 	public void 				setStatus(JobStatus status) { _status = status; }
     public void                 setCount(int count) { _count = count; }

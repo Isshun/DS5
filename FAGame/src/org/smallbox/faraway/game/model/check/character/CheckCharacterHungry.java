@@ -16,12 +16,12 @@ public class CheckCharacterHungry extends CharacterCheck {
 
 	@Override
 	public boolean check(CharacterModel character) {
-		return character.getNeeds().food < character.getType().needs.food.warning;
+		return character.getType().needs.food != null && character.getNeeds().food < character.getType().needs.food.warning;
 	}
 
 	@Override
 	public boolean need(CharacterModel character) {
-		return character.getNeeds().food < character.getType().needs.food.warning;
+		return character.getType().needs.food != null && character.getNeeds().food < character.getType().needs.food.warning;
 	}
 
 	// TODO: change name by filter

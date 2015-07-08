@@ -12,15 +12,15 @@ plant:
             temperature: [0, 50]
             light: [0, 100]
         partial:
-            value: 0.025
+            value: 0.0025
             temperature: [14, 50]
             light: [0, 60]
         regular:
-            value: 0.05
+            value: 0.005
             temperature: [20, 50]
             light: [0, 60]
         exceptional:
-            value: 0.075
+            value: 0.0075
             temperature: [20, 50]
             light: [0, 60]
 

@@ -1,39 +1,41 @@
 package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.RelationManager;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
-import org.smallbox.faraway.game.model.item.ItemSlot;
 import org.smallbox.faraway.util.Log;
-
-import java.util.List;
 
 public class JobConsume extends BaseJobModel {
 
-	public static JobConsume create(CharacterModel character, ConsumableModel item) {
+	private ConsumableModel _consumable;
+
+	public static JobConsume create(CharacterModel character, ConsumableModel consumable) {
 		if (character == null) {
 			Log.error("Create ConsumeJob with null characters");
 			return null;
 		}
 
-		if (item == null) {
+		if (consumable == null) {
 			Log.error("Create ConsumeJob with null item");
 			return null;
 		}
 
 		JobConsume job = new JobConsume();
 		job.setCharacterRequire(character);
-		if (character.getInventory() == item) {
+		if (character.getInventory() == consumable) {
 			job.setPosition(character.getX(), character.getY());
 		} else {
-			job.setPosition(item.getX(), item.getY());
+			job.setPosition(consumable.getX(), consumable.getY());
 		}
-		job.setActionInfo(item.getInfo().actions.get(0));
-		job.setItem(item);
+		job.setActionInfo(consumable.getInfo().actions.get(0));
+		job.setConsumable(consumable);
 
 		return job;
+	}
+
+	private void setConsumable(ConsumableModel consumable) {
+		_consumable = consumable;
 	}
 
 	@Override
@@ -47,14 +49,14 @@ public class JobConsume extends BaseJobModel {
 	@Override
 	public boolean onCheck(CharacterModel character) {
 		// Item is null
-		if (_item == null || !_item.isConsumable() || _item.getQuantity() <= 0) {
+		if (_consumable == null || !_consumable.isConsumable() || _consumable.getQuantity() <= 0) {
 			Log.error("JobConsume: item cannot be null, non consumable or empty");
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 
 		// Item is no longer exists
-		if (_item != _character.getInventory() && _item != Game.getWorldManager().getConsumable(_item.getX(), _item.getY())) {
+		if (_consumable != _character.getInventory() && _consumable != Game.getWorldManager().getConsumable(_consumable.getX(), _consumable.getY())) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}
@@ -66,7 +68,7 @@ public class JobConsume extends BaseJobModel {
 	@Override
 	public JobActionReturn onAction(CharacterModel character) {
 		// Wrong call
-		if (_item == null || character == null) {
+		if (_consumable == null || character == null) {
 			Log.error("wrong call");
 			return JobActionReturn.ABORT;
 		}
@@ -79,24 +81,14 @@ public class JobConsume extends BaseJobModel {
 
 		// Character using item
 		if (_progress++ < _cost) {
-			// Item is use by 2 or more characters
-			if (_item.getNbFreeSlots() + 1 < _item.getNbSlots()) {
-				character.getNeeds().addRelation(1);
-				List<ItemSlot> slots = _item.getSlots();
-				for (ItemSlot slot: slots) {
-					CharacterModel slotCharacter = slot.getJob() != null ? slot.getJob().getCharacter() : null;
-					((RelationManager)Game.getInstance().getManager(RelationManager.class)).meet(character, slotCharacter);
-				}
-			}
-
 			// Set characters direction
-			if (_item.getX() > _posX) { character.setDirection(Direction.RIGHT); }
-			if (_item.getX() < _posX) { character.setDirection(Direction.LEFT); }
-			if (_item.getY() > _posY) { character.setDirection(Direction.TOP); }
-			if (_item.getY() < _posY) { character.setDirection(Direction.BOTTOM); }
+			if (_consumable.getX() > _posX) { character.setDirection(Direction.RIGHT); }
+			if (_consumable.getX() < _posX) { character.setDirection(Direction.LEFT); }
+			if (_consumable.getY() > _posY) { character.setDirection(Direction.TOP); }
+			if (_consumable.getY() < _posY) { character.setDirection(Direction.BOTTOM); }
 
 			// Use item
-			_item.use(_character, (int) (_cost - _progress));
+			_consumable.use(_character, (int) (_cost - _progress));
 
 			return JobActionReturn.CONTINUE;
 		}
@@ -106,10 +98,10 @@ public class JobConsume extends BaseJobModel {
 
 	@Override
 	protected void onFinish() {
-		if (_item.getInfo().isConsumable) {
-			((ConsumableModel)_item).addQuantity(-1);
-			if (_item.getQuantity() <= 0) {
-				Game.getWorldManager().removeConsumable((ConsumableModel) _item);
+		if (_consumable.getInfo().isConsumable) {
+			_consumable.addQuantity(-1);
+			if (_consumable.getQuantity() <= 0) {
+				Game.getWorldManager().removeConsumable(_consumable);
 			}
 		}
 	}
@@ -119,12 +111,12 @@ public class JobConsume extends BaseJobModel {
 		if (_actionInfo != null && _actionInfo.label != null) {
 			return _actionInfo.label;
 		}
-		return "use " + _item.getLabel();
+		return "use " + _consumable.getLabel();
 	}
 
 	@Override
 	public String getShortLabel() {
-		return "use " + _item.getLabel();
+		return "consume " + _consumable.getLabel();
 	}
 
 	@Override

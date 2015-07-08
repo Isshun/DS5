@@ -85,10 +85,6 @@ public class WorldFinder extends BaseManager {
 			return false;
 		}
 
-        if (item.getQuantity() <= 0) {
-			return false;
-		}
-
 		// Item is blocked
 		if (item.getLastBlocked() != -1 && item.getLastBlocked() < Game.getUpdate() + Constant.COUNT_BEFORE_REUSE_BLOCKED_ITEM) {
 			return false;

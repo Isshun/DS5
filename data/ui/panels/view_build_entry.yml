@@ -6,58 +6,27 @@ entries:
         entries:
         
             -   type: frame
-                id: frame_select
+                id: frame_item
                 size: [72, 96]
-                background: 0xb0cd35
-        
-            -   type: label
-                id: lb_item
-                textsize: 14
-                size: [72, 40]
-                align: center
-                
-            -   type: image
-                id: img_item
-                size: [32, 32]
-                position: [20, 42]
-                        
+                entries:
+
+                -   type: frame
+                    id: frame_select
+                    size: [72, 96]
+                    background: 0xb0cd35
+
+                -   type: label
+                    id: lb_item
+                    textsize: 14
+                    size: [72, 40]
+                    align: center
+
+                -   type: image
+                    id: img_item
+                    size: [32, 32]
+                    position: [20, 42]
+
             -   type: frame
                 id: frame_material
                 size: [72, 96]
                 background: 0xb0cd35
-                entries:
-                            
-                -   type: image
-                    path: data/items/24/rock.png
-                    size: [24, 24]
-                    position: [0, 0]
-                            
-                -   type: image
-                    path: data/items/24/rock.png
-                    size: [24, 24]
-                    position: [24, 0]
-                            
-                -   type: frame
-                    size: [24, 24]
-                    position: [24, 0]
-                    background: 0xdd000000
-                            
-                -   type: image
-                    path: data/items/24/rock.png
-                    size: [24, 24]
-                    position: [48, 0]
-                                      
-                -   type: frame
-                    size: [24, 24]
-                    position: [48, 0]
-                    background: 0xdd000000
-                            
-                -   type: image
-                    path: data/items/24/rock.png
-                    size: [48, 24]
-                    position: [0, 24]
-                            
-                -   type: frame
-                    size: [24, 24]
-                    position: [0, 24]
-                    background: 0xdd000000

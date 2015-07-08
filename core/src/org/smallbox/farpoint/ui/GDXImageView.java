@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.ui.engine.UIImage;
 import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.farpoint.GDXRenderer;
@@ -88,6 +89,14 @@ public class GDXImageView extends UIImage {
     @Override
     public int getContentHeight() {
         return 0;
+    }
+
+    @Override
+    public void setImage(SpriteModel image) {
+        if (_image != image) {
+            _sprite = null;
+        }
+        super.setImage(image);
     }
 
     @Override

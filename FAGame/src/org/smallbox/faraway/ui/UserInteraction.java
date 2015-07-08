@@ -1,6 +1,6 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.JobManagerHelper;
+import org.smallbox.faraway.JobHelper;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.AreaManager;
@@ -117,41 +117,24 @@ public class UserInteraction {
 				ResourceModel res = Game.getWorldManager().getResource(x, y);
 				if (res != null) {
 					if (res.canBeMined()) {
-						JobManagerHelper.addMineJob(x, y);
+						JobHelper.addMineJob(x, y);
 					} else if (res.canBeHarvested()) {
-						JobManagerHelper.addGatherJob(x, y);
-					}
-				}
-				
-				//TODO
-				// Structure
-				if (_selectedItemInfo.name.equals("base.room")) {
-					if (x == startX || x == toX || y == startY || y == toY) {
-						Log.warning("1");
-						// TODO
-						StructureModel structure = Game.getWorldManager().getStructure(x, y);
-						if (structure == null || !structure.isDoor()) {
-							JobManagerHelper.addBuildJob(GameData.getData().getItemInfo("base.wall"), x, y);
-						}
-						// item = Game.getWorldManager().putObject(x, y, BaseItem.STRUCTURE_WALL);
-					} else {
-						Log.warning("2");
-						// TODO
-						JobManagerHelper.addBuildJob(GameData.getData().getItemInfo("base.floor"), x, y);
-						// item = Game.getWorldManager().putObject(x, y, BaseItem.STRUCTURE_FLOOR);
-					}
-				} else {
-					// item = Game.getWorldManager().putObject(x, y, _menu.getBuildItemType());
-					if (_selectedItemInfo != null) {
-						Log.warning("3 " + _selectedItemInfo.name);
-						// TODO
-						JobManagerHelper.addBuildJob(_selectedItemInfo, x, y);
-						// item = Game.getWorldManager().putObject(x, y, type);
+						JobHelper.addGatherJob(x, y);
 					}
 				}
 
-				// if (item != NULL) {
-				// }
+				JobHelper.addBuildJob(_selectedItemInfo, x, y);
+
+//				if (_selectedItemInfo.name.equals("base.room")) {
+//					if (x == startX || x == toX || y == startY || y == toY) {
+//						StructureModel structure = Game.getWorldManager().getStructure(x, y);
+//						if (structure == null || !structure.isDoor()) {
+//							JobHelper.addBuildJob(GameData.getData().getItemInfo("base.wall"), x, y);
+//						}
+//					} else {
+//						JobHelper.addBuildJob(GameData.getData().getItemInfo("base.floor"), x, y);
+//					}
+//				}
 			}
 		}
 	}
@@ -190,7 +173,7 @@ public class UserInteraction {
 	public void planGather(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				BaseJobModel job = JobManagerHelper.createGatherJob(x, y);
+				BaseJobModel job = JobHelper.createGatherJob(x, y);
 				if (job != null) {
 					JobManager.getInstance().addJob(job);
 				}
@@ -201,7 +184,7 @@ public class UserInteraction {
 	public void planMining(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				BaseJobModel job = JobManagerHelper.createMiningJob(x, y);
+				BaseJobModel job = JobHelper.createMiningJob(x, y);
 				if (job != null) {
 					JobManager.getInstance().addJob(job);
 				}

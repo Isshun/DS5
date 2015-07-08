@@ -738,8 +738,10 @@ public class PanelCharacter extends BaseRightPanel {
         int valueLevel2 = 50;
         int index = 0;
         for (OnGaugeRefresh gauge: GAUGES){
-            gauge.onGaugeRefresh(_values[index], _shapes[index], _character, needs, type);
-            index++;
+            if (_values[index] != null) {
+                gauge.onGaugeRefresh(_values[index], _shapes[index], _character, needs, type);
+                index++;
+            }
         }
     }
 

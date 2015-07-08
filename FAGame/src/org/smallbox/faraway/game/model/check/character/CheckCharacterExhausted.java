@@ -4,10 +4,12 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.WorldFinder;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
+import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemFilter;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.model.job.JobConsume;
 import org.smallbox.faraway.game.model.job.JobUse;
 
 /**
@@ -41,6 +43,14 @@ public class CheckCharacterExhausted extends CharacterCheck {
             return null;
         }
 
-        return JobUse.create(item, character);
+        if (item instanceof ItemModel) {
+            return JobUse.create((ItemModel)item, character);
+        }
+
+        if (item instanceof ConsumableModel) {
+            return JobConsume.create(character, (ConsumableModel)item);
+        }
+
+        return null;
     }
 }

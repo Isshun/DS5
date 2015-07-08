@@ -40,6 +40,8 @@ public class Game {
     private int                         _hour = 6;
     private int                         _day;
     private int                         _year;
+    private int                         _width = 250;
+    private int                         _height = 250;
 
     public void                         toggleRunning() { _isRunning = !_isRunning; }
     public void                         addObserver(GameObserver observer) { _observers.add(observer); }
@@ -61,6 +63,8 @@ public class Game {
     public String                       getFileName() { return _fileName; }
     public long                         getTick() { return _tick; }
     public RegionModel                  getRegion() { return _region; }
+    public int                          getWidth() { return _width; }
+    public int                          getHeight() { return _height; }
 
 	private static int                  _tick;
 	private Viewport 					_viewport;
@@ -83,9 +87,6 @@ public class Game {
         _managers = new ArrayList<>();
         _observers = new ArrayList<>();
 
-        _worldManager = new WorldManager(this);
-        _managers.add(_worldManager);
-
         setRegion(regionInfo);
 
 		Log.info("Game:\tdone");
@@ -98,7 +99,16 @@ public class Game {
         }
     }
 
-    public void init() {
+    public void init(boolean callWorldFactory) {
+        _worldManager = new WorldManager(callWorldFactory);
+        _managers.add(_worldManager);
+
+        _characterManager = new CharacterManager();
+        _managers.add(_characterManager);
+
+        _jobManager = new JobManager();
+        _managers.add(_jobManager);
+
         if (GameData.config.manager.room) {
             _managers.add(new RoomManager());
         }
@@ -124,12 +134,6 @@ public class Game {
         if (GameData.config.manager.fauna) {
             _managers.add(new FaunaManager());
         }
-
-        _characterManager = new CharacterManager();
-        _managers.add(_characterManager);
-
-        _jobManager = new JobManager();
-        _managers.add(_jobManager);
 
         _managers.add(new RelationManager());
 
@@ -176,13 +180,6 @@ public class Game {
         _tick = tick;
 	}
 
-	public void	newGame(LoadListener loadListener) {
-		//loadListener.onUpdate("Create new game");
-
-//        (new AsteroidBeltFactory()).create(Game.getWorldManager(), 250, 250, loadListener);
-        (new WorldFactory()).create(Game.getWorldManager(), 250, 250, loadListener);
-	}
-
 	public void	load() {
 		String filePath = "data/saves/" + _fileName;
 
@@ -226,13 +223,10 @@ public class Game {
     }
 
     public void preload() {
-        String filePath = "data/saves/" + _fileName;
-
         // TODO magic
-        _worldManager.init(250, 250);
-        _save = GameSerializer.preLoad(filePath, null);
-        if (_save != null) {
-            _worldManager.init(_save.width, _save.height);
-        }
+    }
+
+    public void setWorldManager(WorldManager worldManager) {
+        _worldManager = worldManager;
     }
 }

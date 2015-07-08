@@ -40,7 +40,6 @@ public class ResourceModel extends ItemModel {
 
 	public double getTotalQuantity() {return _totalQuantity;}
 
-	@Override
 	public int getQuantity() { return (int)_quantity; }
 
 	public double getRealQuantity() { return _quantity; }

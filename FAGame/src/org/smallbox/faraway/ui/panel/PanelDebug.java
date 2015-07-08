@@ -42,7 +42,7 @@ public class PanelDebug extends BasePanel {
 
     private CommandEntry[] COMMANDS = new CommandEntry[] {
             new CommandEntry("Re-gen",              view -> {
-                new WorldFactory().create(Game.getWorldManager(), 250, 250, null);
+                new WorldFactory().create(Game.getWorldManager());
                 MainRenderer.getInstance().getWorldRenderer().refreshAll();
             }),
             new CommandEntry("Add crew (human)",    view -> Game.getCharacterManager().addRandom(HumanModel.class)),

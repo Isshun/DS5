@@ -14,6 +14,7 @@ import org.smallbox.faraway.ui.engine.*;
 import org.smallbox.faraway.ui.panel.BaseRightPanel;
 import org.smallbox.faraway.util.StringUtils;
 
+import javax.swing.text.html.ImageView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,18 +106,18 @@ public class PanelBuild extends BaseRightPanel {
 	}
 
 	private int refreshCategory(CategoryInfo category, FrameLayout layout, int posY, boolean anim) {
-		int i = 0;
+		int index = 0;
 		for (ItemInfo info: category.items) {
-			if (info.isUserItem || info.isStructure) {
-				drawIcon(layout, i, info, posY > 42);
+			if (info.parent == null && (info.isUserItem || info.isStructure)) {
+				drawIcon(layout, index, info, posY > 42);
                 _icons.get(info).setVisible(!anim);
 				_iconsList.add(_icons.get(info));
-				i++;
+				index++;
 			}
 		}
-		posY += Math.ceil((double)i / 4) * GRID_HEIGHT;
-		for (; i < 10; i++) {
-			_iconShortcut[i] = null;
+		posY += Math.ceil((double)index / 4) * GRID_HEIGHT;
+		for (; index < 10; index++) {
+			_iconShortcut[index] = null;
 		}
         return posY;
 	}
@@ -145,74 +146,72 @@ public class PanelBuild extends BaseRightPanel {
 			int y = (index / 4) * GRID_HEIGHT;
 
 			ViewFactory.getInstance().load("data/ui/panels/view_build_entry.yml", view -> {
-                String label = info.label.length() > 9 ? info.label.substring(0, 9) : info.label;
-                ((UILabel)view.findById("lb_item")).setString(label);
-                ((UIImage)view.findById("img_item")).setImage(SpriteManager.getInstance().getIcon(info));
-                view.findById("frame_select").setVisible(false);
-                view.findById("frame_material").setVisible(false);
+                FrameLayout frameItem = (FrameLayout) view.findById("frame_item");
+                updateParentButton(frameItem, info);
 
-//                view.setOnFocusListener(new OnFocusListener() {
-//                    @Override
-//                    public void onEnter(View view) {
-//                        view.findById("frame_select").setVisible(true);
-//                    }
-//
-//                    @Override
-//                    public void onExit(View view) {
-//                        view.findById("frame_select").setVisible(true);
-//                    }
-//                });
-                view.setOnClickListener(v -> {
-                    _interaction.set(UserInteraction.Action.BUILD_ITEM, info);
-					UserInterface.getInstance().setCursor(new BuildCursor());
-                    _icons.values().forEach(view1 -> view1.findById("frame_select").setVisible(false));
-                    v.findById("frame_select").setVisible(true);
-                });
-                view.setOnRightClickListener(v -> {
-                    FrameLayout frameMaterial = (FrameLayout)v.findById("frame_material");
-                    frameMaterial.setVisible(!frameMaterial.isVisible());
-                });
-			    view.setData(info);
+                frameItem.findById("frame_select").setVisible(false);
+
+                // Create child
+                FrameLayout frameMaterial = (FrameLayout) view.findById("frame_material");
+                frameMaterial.setVisible(false);
+                if (!info.childs.isEmpty()) {
+                    int childIndex = 0;
+                    for (ItemInfo child : info.childs) {
+                        FrameLayout frameChild = ViewFactory.getInstance().createFrameLayout(72, 24);
+                        frameChild.setBackgroundColor(Color.CYAN);
+                        frameChild.setPosition(0, childIndex * 24);
+
+//						UIImage img = ViewFactory.getInstance().createImageView(32, 32);
+//						img.setImage(SpriteManager.getInstance().getIcon(child));
+//                        frameChild.addView(img);
+
+                        UILabel lbChild = ViewFactory.getInstance().createTextView(72, 24);
+                        lbChild.setAlign(Align.CENTER_VERTICAL);
+                        lbChild.setString(child.labelChild);
+                        lbChild.setCharacterSize(14);
+                        lbChild.setOnClickListener(v -> {
+                            updateParentButton(frameItem, child);
+                            frameMaterial.getViews().forEach(childView -> childView.setBackgroundColor(Color.CYAN));
+                            frameChild.setBackgroundColor(Color.RED);
+                            _interaction.set(UserInteraction.Action.BUILD_ITEM, child);
+                            UserInterface.getInstance().setCursor(new BuildCursor());
+                            frameMaterial.setVisible(false);
+                            frameItem.setVisible(true);
+                        });
+                        frameChild.addView(lbChild);
+
+                        frameMaterial.addView(frameChild);
+                        childIndex++;
+                    }
+                    view.setOnRightClickListener(v -> {
+                        frameMaterial.setVisible(!frameMaterial.isVisible());
+                        frameItem.setVisible(!frameMaterial.isVisible());
+                    });
+                }
+
+                view.setData(info);
                 view.setPosition(x, y);
                 view.setSize(72, 96);
                 layout.addView(view);
                 layout.resetAllPos();
                 _icons.put(info, view);
             });
-
-//			icon.setOnFocusListener(new OnFocusListener() {
-//				@Override
-//				public void onEnter(View view) {
-//					view.setBackgroundColor(new Color(29, 85, 96, 180));
-//				}
-//
-//				@Override
-//				public void onExit(View view) {
-//					view.setBackgroundColor(info.equals(_currentSelected) ? new Color(29, 85, 96) : new Color(29, 85, 96, 100));
-//				}
-//			});
-//			icon.setOnClickListener(view -> {
-//                clickOnIcon(view);
-//                _interaction.set(Action.BUILD_ITEM, info);
-//            });
-//			if (index < 10) {
-//				_iconShortcut[index] = icon;
-//			}
-
-//			TextView lbIndex = ViewFactory.getInstance().createTextView();
-//			lbIndex.setString(String.valueOf(index+1));
-//			lbIndex.setColor(Colors.LINK_ACTIVE);
-//			lbIndex.setStyle(TextView.UNDERLINED);
-//			lbIndex.setCharacterSize(FONT_SIZE);
-//			lbIndex.setPosition(x+4, y);
-//			layout.addView(lbIndex);
-
-//			frame.addView(icon);
 		}
-//		frame.resetPos();
 	}
 
-	@Override
+    private void updateParentButton(FrameLayout frameItem, ItemInfo info) {
+//        String label = info.label.length() > 9 ? info.label.substring(0, 9) : info.label;
+        ((UILabel) frameItem.findById("lb_item")).setString(info.label.replace(" ", "\n"));
+        ((UIImage) frameItem.findById("img_item")).setImage(SpriteManager.getInstance().getIcon(info));
+        frameItem.setOnClickListener(v -> {
+            _interaction.set(UserInteraction.Action.BUILD_ITEM, info);
+            UserInterface.getInstance().setCursor(new BuildCursor());
+            _icons.values().forEach(view1 -> view1.findById("frame_select").setVisible(false));
+            v.findById("frame_select").setVisible(true);
+        });
+    }
+
+    @Override
 	protected void onRefresh(int frame) {
 		if (_animRunning) {
 			int i = 0;

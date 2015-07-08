@@ -1,5 +1,9 @@
 _duration = 0;
 
+function OnStart(game, character)
+    return character.type == "human"
+end
+
 function OnUpdate(game, character)
     if character.needs.oxygen <= 25 and _duration > 10 then
         _duration = _duration + 1

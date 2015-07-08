@@ -16,8 +16,8 @@ import java.util.*;
  */
 public class ReceiptModel {
     private static class PotentialConsumable {
-        public ConsumableModel consumable;
-        public int distance;
+        public ConsumableModel          consumable;
+        public int                      distance;
 
         public PotentialConsumable(ConsumableModel consumable, int distance) {
             this.consumable = consumable;
@@ -26,9 +26,9 @@ public class ReceiptModel {
     }
 
     public static class NeededComponent {
-        public final ConsumableModel consumable;
-        public final int quantity;
-        public boolean inFactory;
+        public final ConsumableModel    consumable;
+        public final int                quantity;
+        public boolean                  inFactory;
 
         public NeededComponent(ConsumableModel consumable, int quantity) {
             this.consumable = consumable;

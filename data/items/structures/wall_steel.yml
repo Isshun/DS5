@@ -1,0 +1,12 @@
+name: wall
+label: Steel wall
+labelChild: Steel
+parent: base.wall
+width: 1
+height: 1
+type: structure
+isWalkable: false
+isCloseRoom: true
+maxHealth: 250
+cost: 100
+sealing: 1

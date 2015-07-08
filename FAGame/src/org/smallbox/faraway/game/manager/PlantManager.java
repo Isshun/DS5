@@ -1,11 +1,8 @@
 package org.smallbox.faraway.game.manager;
 
-import org.smallbox.faraway.JobManagerHelper;
+import org.smallbox.faraway.JobHelper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.area.GardenAreaModel;
-import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoPlant;
-import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 
 import java.util.ArrayList;
@@ -44,7 +41,7 @@ public class PlantManager extends BaseManager {
                 }
                 // Plan to gather
                 else if (resource.getParcel().getArea() != null && resource.getParcel().getArea() instanceof GardenAreaModel) {
-                    JobManagerHelper.addGather(resource);
+                    JobHelper.addGather(resource);
                 }
             }
         }

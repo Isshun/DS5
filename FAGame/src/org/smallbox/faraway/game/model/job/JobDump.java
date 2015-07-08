@@ -5,6 +5,7 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 
 public class JobDump extends BaseJobModel {
+	private MapObjectModel 	_dumpObject;
 
 	private JobDump(int x, int y) {
 		super(null, x, y, "data/res/ic_dump.png", "data/res/ic_action_dump.png");
@@ -15,8 +16,8 @@ public class JobDump extends BaseJobModel {
 			return null;
 		}
 		
-		BaseJobModel job = new JobDump(objectModel.getX(), objectModel.getY());
-		job.setItem(objectModel);
+		JobDump job = new JobDump(objectModel.getX(), objectModel.getY());
+		job.setDumpObject(objectModel);
 		job.setCost(objectModel.getInfo().cost);
 		job.setStrategy(j -> {
 			if (j.getCharacter().getType().needs.joy != null) {
@@ -26,16 +27,20 @@ public class JobDump extends BaseJobModel {
 		return job;
 	}
 
+	public void setDumpObject(MapObjectModel dumpObject) {
+		_dumpObject = dumpObject;
+	}
+
 	@Override
 	public boolean onCheck(CharacterModel character) {
 		// Item is null
-		if (_item == null) {
+		if (_dumpObject == null) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}
 		
 		// Item is no longer exists
-		if (_item != Game.getWorldManager().getItem(_posX, _posY) && _item != Game.getWorldManager().getStructure(_posX, _posY)) {
+		if (_dumpObject != Game.getWorldManager().getItem(_posX, _posY) && _dumpObject != Game.getWorldManager().getStructure(_posX, _posY)) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}
@@ -45,14 +50,14 @@ public class JobDump extends BaseJobModel {
 
 	@Override
 	protected void onFinish() {
-		Game.getWorldManager().remove(_item);
+		Game.getWorldManager().remove(_dumpObject);
 	}
 
 	@Override
 	public JobActionReturn onAction(CharacterModel character) {
-        _item.addProgress(-character.getTalent(CharacterModel.TalentType.BUILD).work());
-        _progress = _cost - _item.getProgress();
-		return _item.isDump() ? JobActionReturn.FINISH : JobActionReturn.CONTINUE;
+		_dumpObject.addProgress(-character.getTalent(CharacterModel.TalentType.BUILD).work());
+        _progress = _cost - _dumpObject.getProgress();
+		return _dumpObject.isDump() ? JobActionReturn.FINISH : JobActionReturn.CONTINUE;
 	}
 
 	@Override
@@ -75,12 +80,12 @@ public class JobDump extends BaseJobModel {
 
 	@Override
 	public String getLabel() {
-		return "Dump " + _item.getLabel();
+		return "Dump " + _dumpObject.getLabel();
 	}
 
 	@Override
 	public String getShortLabel() {
-		return "Dump " + _item.getLabel();
+		return "Dump " + _dumpObject.getLabel();
 	}
 
 }
