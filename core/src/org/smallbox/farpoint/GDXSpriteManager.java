@@ -114,18 +114,18 @@ public class GDXSpriteManager extends SpriteManager {
             return null;
         }
 
-        if (item.isStructure() == false) {
+        if (!item.isStructure()) {
             if (item.isResource()) {
-                return getResource((ResourceModel) item);
+                return getResource((ResourceModel)item);
             }
 
 //            int alpha = Math.min(item.getScience() == 0 ? 255 : 75 + 180 / item.getScience() * (int)item.getProgress(), 255);
             int alpha = 255;
 
-            return getSprite(item.getInfo(), tile, 0, alpha, false);
+            return getSprite(item.getInfo(), 0, 0, alpha, false);
         }
 
-        return getSprite(item.getInfo(), tile, 0, 255, false);
+        return getSprite(item.getInfo(), 0, 0, 255, false);
     }
 
     @Override
@@ -260,7 +260,7 @@ public class GDXSpriteManager extends SpriteManager {
 
         else if (!info.actions.isEmpty() && "gather".equals(info.actions.get(0).type)) {
             int state = (int)(Math.min(resource.getQuantity(), info.plant.mature) + 1);
-            return getSprite(info, 0, state, 255, false);
+            return getSprite(info, state, 0, 255, false);
         }
 
         return getSprite(info, 0, 1, 255, false);

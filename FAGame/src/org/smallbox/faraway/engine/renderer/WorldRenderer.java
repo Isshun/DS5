@@ -1,5 +1,6 @@
 package org.smallbox.faraway.engine.renderer;
 
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.engine.*;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
@@ -86,15 +87,13 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
                 ParcelModel parcel = Game.getWorldManager().getParcel(x, y);
                 if (parcel != null) {
                     if (GameData.config.render.floor) {
-//                        if (x % 2 == 0 && y % 2 == 0) {
-                            refreshFloor(layer, parcel.getType(), x, y);
-//                        }
+                        refreshFloor(layer, parcel.getType(), x, y);
                     }
                     if (GameData.config.render.structure) {
                         refreshStructure(layer, parcel.getStructure(), x, y);
                     }
                     if (GameData.config.render.resource) {
-                        refreshResource(layer, parcel.getResource(), x, y);
+                        refreshResource(layer, parcel, parcel.getResource(), x, y);
                     }
                     if (GameData.config.render.item) {
                         refreshItems(layer, parcel.getItem(), x, y);
@@ -149,9 +148,10 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
         return (posX < 1500 && posY < 1200 && posX + width > 0 && posY + height > 0);
     }
 
-    private void refreshResource(RenderLayer layer, ResourceModel resource, int x, int y) {
-        if (resource != null && !resource.getInfo().isLive) {
-            SpriteModel sprite = _spriteManager.getResource(resource);
+    private void refreshResource(RenderLayer layer, ParcelModel parcel, ResourceModel resource, int x, int y) {
+//        if (resource != null && !resource.getInfo().isLive) {
+        if (resource != null && parcel != null) {
+            SpriteModel sprite = WorldHelper.isSurroundedByRock(parcel) ? _spriteManager.getGround(12) : _spriteManager.getResource(resource);
             if (sprite != null) {
                 layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }

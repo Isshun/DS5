@@ -162,6 +162,14 @@ regions:
                 condition: ground
                 quantity: [50, 50]
 
+            -   resource: base.desert_laitue
+                pattern: random_light
+                condition: ground
+
+            -   resource: base.seaweed3
+                pattern: random_large
+                condition: ground
+
         weather:
             -   name: dust_whirl
                 frequency: [2, 10]

@@ -2,6 +2,7 @@ package org.smallbox.faraway.data.loader;
 
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.WeatherModel;
+import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -22,21 +23,17 @@ public class WeatherLoader implements IDataLoader {
     public void load(GameData data) {
         data.weathers = new HashMap<>();
 
-        for (File file: new File("data/weather/").listFiles()) {
-            if (file.getName().endsWith(".yml")) {
-                try {
-                    InputStream input = new FileInputStream(file);
-                    Yaml yaml = new Yaml(new Constructor(WeatherModel.class));
-                    WeatherModel model = (WeatherModel) yaml.load(input);
-                    model.name = file.getName().replace(".yml", "");
-                    data.weathers.put(model.name, model);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+        FileUtils.listRecursively("data/weather/").stream().filter(file -> file.getName().endsWith(".yml")).forEach(file -> {
+            try {
+                InputStream input = new FileInputStream(file);
+                Yaml yaml = new Yaml(new Constructor(WeatherModel.class));
+                WeatherModel model = (WeatherModel) yaml.load(input);
+                model.name = file.getName().replace(".yml", "");
+                data.weathers.put(model.name, model);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-        }
-
-        data.onDataLoaded();
+        });
 
         Log.debug("Weather loaded");
     }

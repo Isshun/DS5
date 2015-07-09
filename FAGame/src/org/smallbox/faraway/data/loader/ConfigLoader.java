@@ -23,7 +23,6 @@ public class ConfigLoader implements IDataLoader {
             InputStream input = new FileInputStream(new File("data/config.yml"));
             Yaml yaml = new Yaml(new Constructor(GameConfig.class));
             data.config = (GameConfig)yaml.load(input);
-            data.onDataLoaded();
             Log.info("Config loaded");
         } catch (FileNotFoundException e) {
             e.printStackTrace();

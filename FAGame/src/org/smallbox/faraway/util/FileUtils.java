@@ -22,7 +22,7 @@ public class FileUtils {
         return list;
     }
 
-    public static List<File> listDirectory(String filePath) {
+    public static List<File> list(String filePath) {
         List<File> list = new ArrayList<>();
         listDirectory(list, new File(filePath), false);
         return list;

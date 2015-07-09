@@ -2,6 +2,7 @@ package org.smallbox.faraway.data.loader;
 
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -18,19 +19,9 @@ public class ItemLoader implements IDataLoader {
 
     public void load(GameData data, String path, String packageName) {
         Log.debug("load items...");
-        loadDirectory(data, path, packageName, new File(path));
+        FileUtils.listRecursively(path).stream().filter(file -> file.getName().endsWith(".yml")).forEach(file ->
+                loadFile(data, packageName, file));
         Log.debug("load items: done");
-    }
-
-    private void loadDirectory(GameData data, String path, String packageName, File directory) {
-        for (File file: directory.listFiles()) {
-            if (file.isDirectory()) {
-                loadDirectory(data, path, packageName, file);
-            }
-            if (file.getName().endsWith(".yml")) {
-                loadFile(data, packageName, file);
-            }
-        }
     }
 
     private void loadFile(GameData data, String packageName, File itemFile) {

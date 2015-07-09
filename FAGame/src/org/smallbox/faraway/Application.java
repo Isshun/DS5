@@ -239,7 +239,7 @@ public class Application implements GameEventListener {
         _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer, null);
 
         // TODO
-        _game.setRegion(GameData.getData().getRegion("arrakis", "mountain"));
+        _game.setRegion(GameData.getData().getRegion("arrakis", "desert"));
         _game.preload();
         _game.init(false);
         _game.load();

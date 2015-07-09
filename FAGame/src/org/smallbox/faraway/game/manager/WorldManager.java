@@ -60,6 +60,17 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
                 }
             }
         }
+
+        for (int x = 0; x < _width; x++) {
+            for (int y = 0; y < _height; y++) {
+                _parcels[x][y][0]._neighbors = new ParcelModel[4];
+                _parcels[x][y][0]._neighbors[0] = getParcel(x+1, y);
+                _parcels[x][y][0]._neighbors[1] = getParcel(x-1, y);
+                _parcels[x][y][0]._neighbors[2] = getParcel(x, y+1);
+                _parcels[x][y][0]._neighbors[3] = getParcel(x, y-1);
+            }
+        }
+
         _parcelList = parcelList;
 
         for (int x = 0; x < _width; x++) {
@@ -71,7 +82,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         }
 
         if (_callWorldFactory) {
-            new WorldFactory().create(this);
+            new WorldFactory().create(this, _game.getRegion().getInfo());
         }
     }
 
@@ -184,16 +195,13 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
      */
     private ParcelModel getNearestFreeArea(ItemInfo itemInfo, int x, int y, int quantity) {
         if (itemInfo.isConsumable) {
-            for (int i = 0; i < 10; i++) {
-                if (areaFreeForConsumable(x + 0, y + 0, itemInfo, quantity)) return _parcels[x + 0][y + 0][0];
-                if (areaFreeForConsumable(x + i, y + 0, itemInfo, quantity)) return _parcels[x + i][y + 0][0];
-                if (areaFreeForConsumable(x + 0, y + i, itemInfo, quantity)) return _parcels[x + 0][y + i][0];
-                if (areaFreeForConsumable(x - i, y + 0, itemInfo, quantity)) return _parcels[x - i][y + 0][0];
-                if (areaFreeForConsumable(x + 0, y - i, itemInfo, quantity)) return _parcels[x + 0][y - i][0];
-                if (areaFreeForConsumable(x + i, y + i, itemInfo, quantity)) return _parcels[x + i][y + i][0];
-                if (areaFreeForConsumable(x - 0, y - i, itemInfo, quantity)) return _parcels[x - 0][y - i][0];
-                if (areaFreeForConsumable(x + i, y - i, itemInfo, quantity)) return _parcels[x + i][y - i][0];
-                if (areaFreeForConsumable(x - i, y + i, itemInfo, quantity)) return _parcels[x - i][y + i][0];
+            for (int d = 0; d < 8; d++) {
+                for (int i = -d; i < d; i++) {
+                    if (areaFreeForConsumable(x + i, y + d, itemInfo, quantity)) return _parcels[x + i][y + d][0];
+                    if (areaFreeForConsumable(x + i, y - d, itemInfo, quantity)) return _parcels[x + i][y - d][0];
+                    if (areaFreeForConsumable(x + d, y + i, itemInfo, quantity)) return _parcels[x + d][y + i][0];
+                    if (areaFreeForConsumable(x - d, y + i, itemInfo, quantity)) return _parcels[x - d][y + i][0];
+                }
             }
         }
         return null;

@@ -16,7 +16,7 @@ import java.util.Random;
  */
 public class WorldFactory {
 
-    public void create(WorldManager worldManager) {
+    public void create(WorldManager worldManager, RegionInfo regionInfo) {
         int mapWidth = worldManager.getWidth();
         int mapHeight = worldManager.getHeight();
 
@@ -28,8 +28,14 @@ public class WorldFactory {
         ParcelModel[][][] parcels = worldManager.getParcels();
 
         // Add region terrains
-        for (RegionInfo.RegionTerrain terrain: Game.getInstance().getRegion().getInfo().terrains) {
-            if (terrain.pattern != null) {
+        for (RegionInfo.RegionTerrain terrain: regionInfo.terrains) {
+            if ("random_light".equals(terrain.pattern) || "random_large".equals(terrain.pattern)) {
+                Log.notice("Create map with random pattern: " + terrain.pattern);
+                worldManager.getParcelList().stream()
+                        .filter(parcel -> Math.random() < ("random_light".equals(terrain.pattern) ? 0.05f : 0.1f))
+                        .forEach(parcel -> applyToParcel(terrain, parcel));
+            }
+            else if (terrain.pattern != null) {
                 Log.notice("Create map with pattern: " + terrain.pattern);
                 new MidpointDisplacement(MapGenConfig.get(terrain.pattern)).create(parcel ->
                         applyToParcel(terrain, parcel));

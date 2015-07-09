@@ -3,6 +3,7 @@ package org.smallbox.faraway.game;
 import org.smallbox.faraway.data.loader.IDataLoader;
 import org.smallbox.faraway.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -18,6 +19,7 @@ import java.util.HashMap;
  */
 public class CharacterLoader implements IDataLoader {
     private long        _lastConfigModified;
+    private int         _index;
 
     @Override
     public void reloadIfNeeded(GameData data) {
@@ -32,25 +34,19 @@ public class CharacterLoader implements IDataLoader {
 
     @Override
     public void load(GameData data) {
-        int index = 0;
+        _index = 0;
         data.characters =  new HashMap<>();
-        for (File file: new File("data/characters/").listFiles()) {
-            if (file.getName().endsWith(".yml")) {
-                try {
-                    InputStream input = new FileInputStream(file);
-                    Yaml yaml = new Yaml(new Constructor(CharacterTypeInfo.class));
-                    CharacterTypeInfo info = (CharacterTypeInfo) yaml.load(input);
-                    info.index = index++;
-                    info.name = file.getName().replace(".yml", "");
-                    data.characters.put(info.name, info);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+        FileUtils.list("data/characters/").stream().filter(file -> file.getName().endsWith(".yml")).forEach(file -> {
+            try {
+                InputStream input = new FileInputStream(file);
+                Yaml yaml = new Yaml(new Constructor(CharacterTypeInfo.class));
+                CharacterTypeInfo info = (CharacterTypeInfo) yaml.load(input);
+                info.index = _index++;
+                info.name = file.getName().replace(".yml", "");
+                data.characters.put(info.name, info);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-        }
-
-        data.onDataLoaded();
-
-        Log.debug("Character loaded");
+        });
     }
 }

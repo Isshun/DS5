@@ -17,7 +17,7 @@ import java.util.Collections;
  * Created by Alex on 16/06/2015.
  */
 public class BuffManager extends BaseManager {
-    private final LuaValue                  _luaGame;
+    private final LuaValue  _luaGame;
 
     public BuffManager() {
         _luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
@@ -74,7 +74,7 @@ public class BuffManager extends BaseManager {
             LuaValue onStart = buff.globals.get("OnStart");
             if (!onStart.isnil()) {
                 LuaValue ret = onStart.call(_luaGame, buff.luaCharacter);
-                if (ret.isnil() && !ret.toboolean()) {
+                if (!ret.isnil() && !ret.toboolean()) {
                     return;
                 }
             }

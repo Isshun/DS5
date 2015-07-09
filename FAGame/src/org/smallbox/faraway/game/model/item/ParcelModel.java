@@ -7,6 +7,7 @@ import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
 
 public class ParcelModel implements IndexedNode<ParcelModel> {
+    public ParcelModel[]    _neighbors;
     private ItemModel 		_item;
     private ConsumableModel _consumable;
     private StructureModel 	_structure;

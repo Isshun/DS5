@@ -1,0 +1,33 @@
+label: Desert laitue
+width: 1
+height: 1
+type: resource
+category: Vegetable
+isLive: true
+plant:
+    mature: 5
+    growing:
+        stasis:
+            value: 0
+            temperature: [0, 50]
+            light: [0, 100]
+        partial:
+            value: 0.0025
+            temperature: [14, 50]
+            light: [0, 60]
+        regular:
+            value: 0.005
+            temperature: [20, 50]
+            light: [0, 60]
+        exceptional:
+            value: 0.0075
+            temperature: [20, 50]
+            light: [0, 60]
+
+actions:
+    -   type: gather
+        cost: 20
+        products:
+            -   item: base.vegetable
+                quantity: 1
+                dropRate: 1

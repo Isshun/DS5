@@ -40,10 +40,6 @@ public class GameData {
 		_loaders.add(new CharacterLoader());
 	}
 
-	public void onDataLoaded() {
-		//Application.getInstance().refreshConfig();
-	}
-
 	public ItemInfo getItemInfo(String name) {
 		for (ItemInfo info: items) {
 			if (info.name.equals(name)) {
