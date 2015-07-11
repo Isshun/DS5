@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.model.check.character;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.WorldFinder;
+import org.smallbox.faraway.game.manager.ItemFinder;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
@@ -36,7 +36,7 @@ public class CheckCharacterHungry extends CharacterCheck {
 		}
 
 		// Get consumable on map
-		ConsumableModel nearestItem = (ConsumableModel)((WorldFinder)Game.getInstance().getManager(WorldFinder.class)).getNearest(filter, character);
+		ConsumableModel nearestItem = (ConsumableModel)((ItemFinder)Game.getInstance().getManager(ItemFinder.class)).getNearest(filter, character);
 		if (nearestItem != null && nearestItem.hasFreeSlot()) {
 			return JobConsume.create(character, nearestItem);
 		}

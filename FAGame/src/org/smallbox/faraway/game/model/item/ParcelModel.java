@@ -12,9 +12,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private ConsumableModel _consumable;
     private StructureModel 	_structure;
     private ResourceModel 	_resource;
-    private int				_x;
-    private int				_y;
-    private int 			_z;
     private double 			_light;
     private int 			_lightPass;
     private RoomModel 		_room;
@@ -34,16 +31,14 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public double           light;
     private boolean         _isExterior;
     private double          _oxygen;
+    public final int        x;
+    public final int        y;
+    public final int        z;
 
     public ParcelModel(int x, int y, int z) {
-        _light = 0;
-        _x = x;
-        _y = y;
-        _z = z;
-        _isStorage = false;
-    }
-
-    public ParcelModel() {
+        this.x = x;
+        this.y = y;
+        this.z = z;
         _light = 0;
         _isStorage = false;
     }
@@ -56,17 +51,11 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public void 			setDirt(double dirt) { _dirt = dirt; }
     public void 			setRubble(double rubble) { _rubble = rubble; }
     public void 			setSnow(double snow) { _snow = snow; }
-    public void             setX(int x) { _x = x; }
-    public void             setY(int y) { _y = y; }
-    public void             setZ(int z) { _z = z; }
 
     public ItemModel 		getItem() { return _item; }
     public StructureModel 	getStructure() { return _structure; }
     public ResourceModel 	getResource() { return _resource; }
     public double   		getOxygen() { return _oxygen; }
-    public int				getX() { return _x; }
-    public int				getY() { return _y; }
-    public int				getZ() { return _z; }
     public double 			getLight() { return _light; }
     public int 				getLightPass() { return _lightPass; }
     public RoomModel 		getRoom() { return _room; }
@@ -97,8 +86,8 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         _item = item;
         if (item != null) {
             item.setParcel(this);
-            item.setX(_x);
-            item.setY(_y);
+            item.setX(x);
+            item.setY(y);
         }
     }
 
@@ -106,8 +95,8 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         _structure = structure;
         if (structure != null) {
             structure.setParcel(this);
-            structure.setX(_x);
-            structure.setY(_y);
+            structure.setX(x);
+            structure.setY(y);
         }
     }
 
@@ -115,8 +104,8 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         _resource = resource;
         if (resource != null) {
             resource.setParcel(this);
-            resource.setX(_x);
-            resource.setY(_y);
+            resource.setX(x);
+            resource.setY(y);
         }
     }
 
@@ -124,13 +113,13 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         _consumable = consumable;
         if (consumable != null) {
             consumable.setParcel(this);
-            consumable.setX(_x);
-            consumable.setY(_y);
+            consumable.setX(x);
+            consumable.setY(y);
         }
     }
 
     public ItemModel 		getRootItem() {
-        if (_item != null && _item.getX() == _x && _item.getY() == _y) {
+        if (_item != null && _item.getX() == x && _item.getY() == y) {
             return _item;
         }
         return null;

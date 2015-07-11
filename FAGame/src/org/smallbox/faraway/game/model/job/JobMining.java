@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.PathManager;
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -50,7 +51,7 @@ public class JobMining extends BaseJobModel {
 		}
 		
 		// Item is no longer exists
-		if (_item != Game.getWorldManager().getResource(_item.getX(), _item.getY())) {
+		if (_item != WorldHelper.getResource(_item.getX(), _item.getY())) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}
@@ -146,12 +147,4 @@ public class JobMining extends BaseJobModel {
     public String getIcon() {
         return "data/res/ic_mine.png";
     }
-
-	@Override
-	protected void onStart(CharacterModel character) {
-	}
-
-	@Override
-	public void onQuit(CharacterModel character) {
-	}
 }

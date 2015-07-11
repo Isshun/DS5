@@ -15,7 +15,7 @@ public class WorldSerializer implements SerializerInterface {
     public void save(FileOutputStream fos) throws IOException {
         FileUtils.write(fos, "<parcels>");
         for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
-            if (parcel.getZ() == 0) {
+            if (parcel.z == 0) {
                 writeParcel(fos, parcel);
             }
         }
@@ -24,9 +24,9 @@ public class WorldSerializer implements SerializerInterface {
 
     private void writeParcel(FileOutputStream fos, ParcelModel parcel) throws IOException {
         if (parcel.getItem() != null || parcel.getResource() != null || parcel.getStructure() != null || parcel.getConsumable() != null) {
-            FileUtils.write(fos, "<parcel x='" + parcel.getX() + "' y='" + parcel.getY() + "' z='" + parcel.getZ() + "' type='" + parcel.getType() + "'>");
+            FileUtils.write(fos, "<parcel x='" + parcel.x + "' y='" + parcel.y + "' z='" + parcel.z + "' type='" + parcel.getType() + "'>");
 
-            if (parcel.getItem() != null && parcel.getItem().getX() == parcel.getX() && parcel.getItem().getY() == parcel.getY()) {
+            if (parcel.getItem() != null && parcel.getItem().getX() == parcel.x && parcel.getItem().getY() == parcel.y) {
                 writeItem(fos, parcel.getItem());
             }
 
@@ -44,7 +44,7 @@ public class WorldSerializer implements SerializerInterface {
 
             FileUtils.write(fos, "</parcel>");
         } else {
-            FileUtils.write(fos, "<parcel x='" + parcel.getX() + "' y='" + parcel.getY() + "' z='" + parcel.getZ() + "' type='" + parcel.getType() + "' />");
+            FileUtils.write(fos, "<parcel x='" + parcel.x + "' y='" + parcel.y + "' z='" + parcel.z + "' type='" + parcel.getType() + "' />");
         }
     }
 

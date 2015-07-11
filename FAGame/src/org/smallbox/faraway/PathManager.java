@@ -50,7 +50,7 @@ public class PathManager extends BaseManager {
 			throw new RuntimeException("PathManager init with 0 width/height");
 		}
         _finder = new IndexedAStarPathFinder<>(Game.getWorldManager());
-        _heuristic = (node, endNode) -> 10 * (Math.abs(node.getX() - endNode.getX()) + Math.abs(node.getY() - endNode.getY()));
+        _heuristic = (node, endNode) -> 10 * (Math.abs(node.x - endNode.x) + Math.abs(node.y - endNode.y));
 
         // Create cache
         _cache = new HashMap<>();
@@ -64,10 +64,10 @@ public class PathManager extends BaseManager {
             ParcelModel fromParcel = Game.getWorldManager().getParcel(movable.getX(), movable.getY());
             ParcelModel toParcel = Game.getWorldManager().getParcel(x, y);
 
-            if (Game.getWorldManager().isBlocked(x+1, y) &&
-                    Game.getWorldManager().isBlocked(x-1, y) &&
-                    Game.getWorldManager().isBlocked(x, y+1) &&
-                    Game.getWorldManager().isBlocked(x, y-1)) {
+            if (WorldHelper.isBlocked(x + 1, y) &&
+                    WorldHelper.isBlocked(x - 1, y) &&
+                    WorldHelper.isBlocked(x, y + 1) &&
+                    WorldHelper.isBlocked(x, y - 1)) {
                 Log.info("characters: path fail (surrounded by solid parcel)");
                 movable.onPathFailed(job, fromParcel, toParcel);
                 if (listener != null) {
@@ -79,7 +79,7 @@ public class PathManager extends BaseManager {
             Log.debug("getPathAsync");
             GraphPath<ParcelModel> path = findPath(fromParcel, toParcel);
             if (path != null) {
-                Log.info("characters: path success (" + fromParcel.getX() + "x" + fromParcel.getY() + " to " + toParcel.getX() + "x" + toParcel.getY() + "), job: " + job);
+                Log.info("characters: path success (" + fromParcel.x + "x" + fromParcel.y + " to " + toParcel.x + "x" + toParcel.y + "), job: " + job);
                 synchronized (_runnable) {
                     _runnable.add(() -> {
                         movable.onPathComplete(path, job, fromParcel, toParcel);
@@ -126,7 +126,7 @@ public class PathManager extends BaseManager {
     }
 
     public GraphPath<ParcelModel> getPath(ParcelModel fromParcel, ParcelModel toParcel) {
-        Log.debug("GetPath (from: " + fromParcel.getX() + "x" + fromParcel.getY() + " to: " + toParcel.getX() + "x" + toParcel.getY() + ")");
+        Log.debug("GetPath (from: " + fromParcel.x + "x" + fromParcel.y + " to: " + toParcel.x + "x" + toParcel.y + ")");
 
         PathCacheModel pathCache = _cache.get(fromParcel).getPath(toParcel);
         if (pathCache != null && pathCache.isValid()) {
@@ -145,7 +145,7 @@ public class PathManager extends BaseManager {
 //
 //        // Find path
 ////        _threadPool.execute(() -> {
-//            if (Game.getWorldManager().isSurroundedByBlocked(toParcel.getX(), toParcel.getY())) {
+//            if (Game.getWorldManager().isSurroundedByBlocked(toParcel.x, toParcel.y)) {
 //                Log.info("characters: path fail (surrounded by solid parcel)");
 //                return null;
 //            }
@@ -153,7 +153,7 @@ public class PathManager extends BaseManager {
 //            Log.debug("getPath path");
 //            GraphPath<ParcelModel> path = findPath(fromParcel, toParcel);
 //            if (path != null) {
-//                Log.info("characters: path success (" + fromParcel.getX() + "x" + fromParcel.getY() + " to " + toParcel.getX() + "x" + toParcel.getY() + ")");
+//                Log.info("characters: path success (" + fromParcel.x + "x" + fromParcel.y + " to " + toParcel.x + "x" + toParcel.y + ")");
 //                synchronized (_runnable) {
 //                    _runnable.add(() -> {
 //                        PathCacheModel cache = new PathCacheModel(fromParcel, toParcel, path);
@@ -180,7 +180,7 @@ public class PathManager extends BaseManager {
         long time = System.currentTimeMillis();
 
         // Check if target parcel is not surrounded by non-walkable area
-        if (MapUtils.isSurroundedByBlocked(toParcel)) {
+        if (WorldHelper.isSurroundedByBlocked(toParcel)) {
             _cache.get(fromParcel).addPath(toParcel, null);
             Log.debug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (surrounded)");
             return null;

@@ -30,7 +30,7 @@ public class DebugRenderer extends BaseRenderer {
 //            lbDebug.setString(String.valueOf(parcel.getLight()));
 //            lbDebug.setCharacterSize(14);
 //            lbDebug.setColor(Color.WHITE);
-////            lbDebug.setPosition((int) (parcel.getX() * Constant.TILE_WIDTH), (int) (parcel.getY() * Constant.TILE_HEIGHT));
+////            lbDebug.setPosition((int) (parcel.x * Constant.TILE_WIDTH), (int) (parcel.y * Constant.TILE_HEIGHT));
 //            lbDebug.setPosition(0, 0);
 //            _cache.draw(lbDebug);
 //        }
@@ -50,17 +50,17 @@ public class DebugRenderer extends BaseRenderer {
         int relY = UserInterface.getInstance().getMouseY();
 
         for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
-            if (parcel.getZ() == 0) {
+            if (parcel.z == 0) {
                 Color color = new Color(parcel.getResource().getQuantity() * 250 / 1300, 0, 0);
-                renderer.draw(color, (int) (parcel.getX() * Constant.TILE_WIDTH + effect.getViewport().getPosX()), (int) (parcel.getY() * Constant.TILE_HEIGHT + effect.getViewport().getPosY()), 32, 32);
+                renderer.draw(color, (int) (parcel.x * Constant.TILE_WIDTH + effect.getViewport().getPosX()), (int) (parcel.y * Constant.TILE_HEIGHT + effect.getViewport().getPosY()), 32, 32);
             }
         }
 
 //        for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
-//            if (parcel.getZ() == 0 && parcel.getX() > relX - 8 && parcel.getX() < relX + 8 && parcel.getY() > relY - 8 && parcel.getY() < relY + 8) {
+//            if (parcel.getZ() == 0 && parcel.x > relX - 8 && parcel.x < relX + 8 && parcel.y > relY - 8 && parcel.y < relY + 8) {
 //                lbDebug.setString(String.valueOf((int)(parcel.getLight() * 10)));
-////                lbDebug.setString(parcel.getX() + "x" + parcel.getY());
-//                renderer.draw(lbDebug, (int) (parcel.getX() * Constant.TILE_WIDTH + effect.getViewport().getPosX()), (int) (parcel.getY() * Constant.TILE_HEIGHT + effect.getViewport().getPosY()));
+////                lbDebug.setString(parcel.x + "x" + parcel.y);
+//                renderer.draw(lbDebug, (int) (parcel.x * Constant.TILE_WIDTH + effect.getViewport().getPosX()), (int) (parcel.y * Constant.TILE_HEIGHT + effect.getViewport().getPosY()));
 //            }
 //        }
 	}

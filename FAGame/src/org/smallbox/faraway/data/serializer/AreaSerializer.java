@@ -37,7 +37,7 @@ public class AreaSerializer implements SerializerInterface {
             // Write parcels
             FileUtils.write(fos, "<parcels>");
             for (ParcelModel parcel: area.getParcels()) {
-                FileUtils.write(fos, "<parcel x='" + parcel.getX() + "' y='" + parcel.getY() + "' />");
+                FileUtils.write(fos, "<parcel x='" + parcel.x + "' y='" + parcel.y + "' />");
             }
             FileUtils.write(fos, "</parcels>");
 

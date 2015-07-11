@@ -187,6 +187,11 @@ public class ItemLoader implements IDataLoader {
                     }
                 }
             }
+            if (item.components != null) {
+                for (ItemInfo.ComponentInfo component: item.components) {
+                    component.info = data.getItemInfo(component.name);
+                }
+            }
         }
     }
 

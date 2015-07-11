@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.job;
 
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
@@ -43,6 +44,7 @@ public class JobGather extends BaseJobModel {
 
 	@Override
 	public void onStart(CharacterModel character) {
+		super.onStart(character);
 		if (_resource != null) {
 			_totalCost = _cost * _resource.getQuantity();
 		}
@@ -65,7 +67,7 @@ public class JobGather extends BaseJobModel {
 		}
 
 		// Item is no longer exists
-		if (_resource != Game.getWorldManager().getResource(_resource.getX(), _resource.getY())) {
+		if (_resource != WorldHelper.getResource(_resource.getX(), _resource.getY())) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}
@@ -155,9 +157,4 @@ public class JobGather extends BaseJobModel {
 
     @Override
     public String getActionIcon() { return "data/res/ic_action_gather.png"; }
-
-	@Override
-	public void onQuit(CharacterModel character) {
-
-	}
 }

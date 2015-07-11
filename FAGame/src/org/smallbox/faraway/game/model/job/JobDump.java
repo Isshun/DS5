@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.job;
 
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
@@ -40,7 +41,7 @@ public class JobDump extends BaseJobModel {
 		}
 		
 		// Item is no longer exists
-		if (_dumpObject != Game.getWorldManager().getItem(_posX, _posY) && _dumpObject != Game.getWorldManager().getStructure(_posX, _posY)) {
+		if (_dumpObject != WorldHelper.getItem(_posX, _posY) && _dumpObject != WorldHelper.getStructure(_posX, _posY)) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}
@@ -68,14 +69,6 @@ public class JobDump extends BaseJobModel {
 	@Override
 	public CharacterModel.TalentType getTalentNeeded() {
 		return CharacterModel.TalentType.BUILD;
-	}
-
-	@Override
-	protected void onStart(CharacterModel character) {
-	}
-
-	@Override
-	public void onQuit(CharacterModel character) {
 	}
 
 	@Override

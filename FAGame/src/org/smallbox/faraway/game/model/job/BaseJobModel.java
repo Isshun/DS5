@@ -1,5 +1,7 @@
 package org.smallbox.faraway.game.model.job;
 
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.ItemFinder;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoAction;
@@ -7,9 +9,9 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
 public abstract class BaseJobModel {
-
     private boolean         _isJoy;
     protected JobStrategy   _strategy;
+    protected ItemFinder    _finder;
 
     public String getActionIcon() {
         return null;
@@ -103,8 +105,9 @@ public abstract class BaseJobModel {
 		_count = 1;
         _limit = -1;
         _label = "none";
+        _finder = (ItemFinder)Game.getInstance().getManager(ItemFinder.class);
 
-		Log.debug("Job #" + _id + " onCreate");
+        Log.debug("Job #" + _id + " onCreate");
 	}
 
 	public String 				getLabel() { return _label; }
@@ -183,12 +186,13 @@ public abstract class BaseJobModel {
 
             // Move characters to job location
 //            if (_posX != -1 && _posY != -1 && (_posX != character.getX() || _posY != character.getY())) {
-                character.moveTo(this, _posX, _posY, null);
 //            }
         }
 	}
 
-    protected abstract void onStart(CharacterModel character);
+    protected void onStart(CharacterModel character) {
+        character.moveTo(this, _posX, _posY, null);
+    }
 
     public abstract CharacterModel.TalentType getTalentNeeded();
 
@@ -202,7 +206,8 @@ public abstract class BaseJobModel {
         _character = null;
     }
 
-    public abstract void onQuit(CharacterModel character);
+    protected void onQuit(CharacterModel character) {
+    }
 
     public void close() {
         if (_isClose) {

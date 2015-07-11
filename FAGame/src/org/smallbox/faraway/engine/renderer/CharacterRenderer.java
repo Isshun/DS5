@@ -26,11 +26,12 @@ public class CharacterRenderer extends BaseRenderer {
 	public void	onDraw(GFXRenderer renderer, RenderEffect effect, double animProgress) {
         int viewPortX = effect.getViewport().getPosX();
         int viewPortY = effect.getViewport().getPosY();
+		double viewPortScale = effect.getViewport().getScale();
 
 		for (CharacterModel c : _characters) {
 			// Get game position and direction
-			int posX = (int) ((c.getX() * Constant.TILE_WIDTH - (Constant.CHAR_WIDTH - Constant.TILE_WIDTH) + 2) * effect.getViewport().getScale());
-			int posY = (int) ((c.getY() * Constant.TILE_HEIGHT - (Constant.CHAR_HEIGHT - Constant.TILE_HEIGHT) + 0) * effect.getViewport().getScale());
+			int posX = c.getX() * Constant.TILE_WIDTH + viewPortX;
+			int posY = c.getY() * Constant.TILE_HEIGHT + viewPortY;
 			Direction direction = c.getDirection();
 			Direction move = c.getMove();
 			int frame = 0;
@@ -97,14 +98,14 @@ public class CharacterRenderer extends BaseRenderer {
 
 			// Bad status
 			if (c.getNeeds().happiness < 20) {
-				_redBackground.setPosition(posX + effect.getViewport().getPosX(), posY + effect.getViewport().getPosY());
+				_redBackground.setPosition(posX, posY);
 				renderer.draw(_redBackground, effect);
 			}
 
 			// Draw characters
 			{
 				SpriteModel sprite = _spriteManager.getCharacter(c, dirIndex, frame);
-				renderer.draw(sprite, viewPortX + posX, viewPortY + posY + (c.isSleeping() ? 20 : 0));
+				renderer.draw(sprite, posX, posY);
 			}
 
             // Is dead

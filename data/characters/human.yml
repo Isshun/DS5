@@ -35,7 +35,7 @@ needs:
         warning: 25
         critical: 5
         change:
-            work: -0.2
+            work: -0.05
             wake: 0
             sleep: 0
             sleepOnFloor: -0.25

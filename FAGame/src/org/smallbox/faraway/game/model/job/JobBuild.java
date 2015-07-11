@@ -1,14 +1,18 @@
 package org.smallbox.faraway.game.model.job;
 
-import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.item.MapObjectModel;
-import org.smallbox.faraway.game.model.item.StructureModel;
+import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class JobBuild extends BaseJobModel {
-	private MapObjectModel _buildItem;
+	protected List<ComponentModel> 	_components;
+	protected MapObjectModel 		_buildItem;
 
 	private JobBuild(int x, int y) {
 		super(null, x, y, "data/res/ic_build.png", "data/res/ic_action_build.png");
@@ -23,6 +27,9 @@ public class JobBuild extends BaseJobModel {
 				j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
 			}
 		});
+		if (item.getInfo().components != null) {
+			job._components = item.getInfo().components.stream().map(componentInfo -> new ComponentModel(componentInfo.info, componentInfo.quantity)).collect(Collectors.toList());
+		}
 		return job;
 	}
 
@@ -59,8 +66,8 @@ public class JobBuild extends BaseJobModel {
 		}
 
 		// Item is no longer exists
-		StructureModel currentStructure = Game.getWorldManager().getStructure(_posX, _posY);
-		MapObjectModel currentItem = Game.getWorldManager().getItem(_posX, _posY);
+		StructureModel currentStructure = WorldHelper.getStructure(_posX, _posY);
+		MapObjectModel currentItem = WorldHelper.getItem(_posX, _posY);
 		if (_buildItem != currentStructure && _buildItem != currentItem) {
 			if (_buildItem != currentStructure) {
 				Log.warning("Character #" + character.getId() + ": actionBuild on invalid structure");

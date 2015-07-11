@@ -25,7 +25,7 @@ public class GardenAreaModel extends AreaModel {
 
     private void resetFields() {
         for (ParcelModel parcel: _parcels) {
-            Game.getWorldManager().putObject(_resourceInfo, parcel.getX(), parcel.getY(), parcel.getZ(), 0);
+            Game.getWorldManager().putObject(_resourceInfo, parcel.x, parcel.y, parcel.z, 0);
         }
     }
 
@@ -34,7 +34,7 @@ public class GardenAreaModel extends AreaModel {
         super.addParcel(parcel);
 
         if (_resourceInfo != null && (parcel.getResource() == null || parcel.getResource().getInfo() != _resourceInfo)) {
-            Game.getWorldManager().putObject(_resourceInfo, parcel.getX(), parcel.getY(), parcel.getZ(), 0);
+            Game.getWorldManager().putObject(_resourceInfo, parcel.x, parcel.y, parcel.z, 0);
         }
     }
 

@@ -3,10 +3,7 @@ package org.smallbox.faraway.game.model;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.item.ConsumableModel;
-import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.item.ItemModel;
-import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.job.JobCraft;
 
 import java.util.*;
@@ -25,21 +22,11 @@ public class ReceiptModel {
         }
     }
 
-    public static class NeededComponent {
-        public final ConsumableModel    consumable;
-        public final int                quantity;
-        public boolean                  inFactory;
-
-        public NeededComponent(ConsumableModel consumable, int quantity) {
-            this.consumable = consumable;
-            this.inFactory = false;
-            this.quantity = quantity;
-        }
-    }
-
     private final Map<ItemInfo, Integer>        _infoComponents;
     private final List<PotentialConsumable>     _potentialComponents = new ArrayList<>();
-    private final List<NeededComponent>         _components = new ArrayList<>();
+    private final List<OrderModel>              _orders = new ArrayList<>();
+    private OrderModel                          _currentOrder;
+    private OrderModel                          _nextOrder;
     private final ItemInfo.ItemInfoReceipt      _receiptInfo;
     private final ItemModel                     _factory;
     private int                                 _totalDistance;
@@ -48,7 +35,6 @@ public class ReceiptModel {
     public ReceiptModel(ItemModel factory, ItemInfo.ItemInfoReceipt receiptInfo) {
         _factory = factory;
         _receiptInfo = receiptInfo;
-        reset();
 
         // Add components to receipt
         _infoComponents = new HashMap<>();
@@ -71,28 +57,29 @@ public class ReceiptModel {
     }
 
     public void reset() {
-        _components.forEach(neededComponent -> neededComponent.consumable.lock(null));
-        _components.clear();
-    }
+        close();
 
-    private void searchBestConsumables() {
+        // Looking for best nearest consumables
         _totalDistance = 0;
-        _components.forEach(neededComponent -> neededComponent.consumable.lock(null));
-        _components.clear();
         for (Map.Entry<ItemInfo, Integer> entry: _infoComponents.entrySet()) {
             int quantityLeft = entry.getValue();
             for (PotentialConsumable potentialConsumable: _potentialComponents) {
                 if (quantityLeft > 0 && potentialConsumable.consumable.getLock() == null && potentialConsumable.consumable.getInfo() == entry.getKey()) {
                     if (potentialConsumable.consumable.getQuantity() > quantityLeft) {
-                        _components.add(new NeededComponent(potentialConsumable.consumable, quantityLeft));
+                        _orders.add(new OrderModel(potentialConsumable.consumable, quantityLeft));
                     } else {
-                        _components.add(new NeededComponent(potentialConsumable.consumable, potentialConsumable.consumable.getQuantity()));
+                        _orders.add(new OrderModel(potentialConsumable.consumable, potentialConsumable.consumable.getQuantity()));
                     }
                     _totalDistance += potentialConsumable.distance;
                     quantityLeft -= potentialConsumable.consumable.getQuantity();
                 }
             }
         }
+    }
+
+    public void close() {
+        _orders.forEach(neededComponent -> neededComponent.consumable.lock(null));
+        _orders.clear();
     }
 
     public ItemInfo.ItemInfoReceipt getInfo() {
@@ -103,7 +90,7 @@ public class ReceiptModel {
         for (Map.Entry<ItemInfo, Integer> entry: _infoComponents.entrySet()) {
             int totalQuantity = 0;
             for (PotentialConsumable potentialConsumable: _potentialComponents) {
-                if (potentialConsumable.consumable.getInfo() == entry.getKey()) {
+                if (potentialConsumable.consumable.getInfo() == entry.getKey() && potentialConsumable.consumable.getLock() == null) {
                     totalQuantity += potentialConsumable.consumable.getQuantity();
                 }
             }
@@ -114,31 +101,30 @@ public class ReceiptModel {
         return true;
     }
 
-    public boolean hasComponentsInFactory() {
-        for (NeededComponent neededConsumable: _components) {
-            if (!neededConsumable.inFactory) {
+    public boolean isComplete() {
+        for (OrderModel order: _orders) {
+            if (order.status != OrderModel.Status.STORED) {
                 return false;
             }
         }
         return true;
     }
 
-    public NeededComponent getCurrentComponent() {
-        for (NeededComponent neededConsumable: _components) {
-            if (!neededConsumable.inFactory) {
-                return neededConsumable;
-            }
-        }
-        return null;
+    public OrderModel getCurrentOrder() {
+        return _currentOrder;
     }
 
-    public void nextComponent() {
-        for (NeededComponent neededConsumable: _components) {
-            if (!neededConsumable.inFactory) {
-                neededConsumable.inFactory = true;
-                return;
+    public OrderModel nextOrder() {
+        if (_currentOrder != null) {
+            int index = _orders.indexOf(_currentOrder);
+            if (index + 1 < _orders.size()) {
+                _currentOrder = _orders.get(index + 1);
+            }
+            if (index + 2 < _orders.size()) {
+                _nextOrder = _orders.get(index + 2);
             }
         }
+        return _currentOrder;
     }
 
     public int getTotalDistance() {
@@ -169,10 +155,38 @@ public class ReceiptModel {
     }
 
     public void start(JobCraft job) {
-        searchBestConsumables();
-        for (NeededComponent neededComponent: _components) {
-            neededComponent.consumable.lock(job);
+        for (OrderModel order: _orders) {
+            order.consumable.lock(job);
+        }
+        _currentOrder = _orders.get(0);
+        _nextOrder = _orders.size() > 1 ? _orders.get(1) : null;
+    }
+
+    public static class OrderModel {
+        public enum Status { NONE, CARRY, STORED }
+        public final ConsumableModel    consumable;
+        public final int                quantity;
+        public Status                   status;
+
+        public OrderModel(ConsumableModel consumable, int quantity) {
+            this.consumable = consumable;
+            this.quantity = quantity;
         }
     }
 
+    public List<OrderModel> getOrders() {
+        return _orders;
+    }
+
+    public void closeCarryingOrders() {
+        for (OrderModel order: _orders) {
+            if (order.status == OrderModel.Status.CARRY) {
+                order.status = OrderModel.Status.STORED;
+            }
+        }
+    }
+
+    public OrderModel getNextOrder() {
+        return _nextOrder;
+    }
 }

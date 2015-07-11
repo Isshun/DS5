@@ -6,7 +6,6 @@ type: resource
 isWalkable: true
 isCloseRoom: false
 isPlant: true
-isRock: true
 plant:
     mature: 50
     growing:

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.JobHelper;
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.AreaManager;
@@ -114,7 +115,7 @@ public class UserInteraction {
 			for (int y = toY; y >= startY; y--) {
 
 				// Check if resource is present on area
-				ResourceModel res = Game.getWorldManager().getResource(x, y);
+				ResourceModel res = WorldHelper.getResource(x, y);
 				if (res != null) {
 					if (res.canBeMined()) {
 						JobHelper.addMineJob(x, y);
@@ -210,11 +211,11 @@ public class UserInteraction {
 	public void planDump(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				if (Game.getWorldManager().getItem(x, y) != null) {
-					JobManager.getInstance().addJob(JobDump.create(Game.getWorldManager().getItem(x, y)));
+				if (WorldHelper.getItem(x, y) != null) {
+					JobManager.getInstance().addJob(JobDump.create(WorldHelper.getItem(x, y)));
 				}
-				if (Game.getWorldManager().getStructure(x, y) != null) {
-					JobManager.getInstance().addJob(JobDump.create(Game.getWorldManager().getStructure(x, y)));
+				if (WorldHelper.getStructure(x, y) != null) {
+					JobManager.getInstance().addJob(JobDump.create(WorldHelper.getStructure(x, y)));
 				}
 			}
 		}
@@ -223,8 +224,8 @@ public class UserInteraction {
 	public void planHaul(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				if (Game.getWorldManager().getConsumable(x, y) != null) {
-					JobManager.getInstance().addJob(JobHaul.create(Game.getWorldManager().getConsumable(x, y)));
+				if (WorldHelper.getConsumable(x, y) != null) {
+					JobManager.getInstance().addJob(JobHaul.create(WorldHelper.getConsumable(x, y)));
 				}
 			}
 		}

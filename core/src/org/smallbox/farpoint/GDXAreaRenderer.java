@@ -31,8 +31,8 @@ public class GDXAreaRenderer extends BaseRenderer {
             for (ParcelModel parcel: area.getParcels()) {
                 if (area instanceof GardenAreaModel || area.isStorage() || UserInterface.getInstance().getMode() == UserInterface.Mode.AREA) {
                     ((GDXRenderer) renderer).draw(COLORS[area.getType().ordinal()],
-                            (int) ((parcel.getX() * Constant.TILE_WIDTH + effect.getViewport().getPosX()) * effect.getViewport().getScale()),
-                            (int) ((parcel.getY() * Constant.TILE_HEIGHT + effect.getViewport().getPosY()) * effect.getViewport().getScale()),
+                            (int) ((parcel.x * Constant.TILE_WIDTH + effect.getViewport().getPosX()) * effect.getViewport().getScale()),
+                            (int) ((parcel.y * Constant.TILE_HEIGHT + effect.getViewport().getPosY()) * effect.getViewport().getScale()),
                             (int) (32 * effect.getViewport().getScale()),
                             (int) (32 * effect.getViewport().getScale()));
                 }

@@ -25,7 +25,7 @@ public class CheckCharacterOxygen extends CharacterCheck {
             return null;
         }
 
-        JobMove job = JobMove.create(character, _parcel.getX(), _parcel.getY());
+        JobMove job = JobMove.create(character, _parcel.x, _parcel.y);
         job.start(character);
         job.setLabel("Looking for oxygen");
         job.setLimit(50);

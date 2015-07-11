@@ -199,10 +199,10 @@ public class RoomManager extends BaseManager implements GameObserver {
         for (ParcelModel parcel: room.getParcels()) {
             boolean isUnsupported = true;
             for (int i = 0; i < 6; i++) {
-                if (checkAreaCanSupportRoof(parcels, parcel.getX() + i, parcel.getY())) isUnsupported = false;
-                if (checkAreaCanSupportRoof(parcels, parcel.getX() - i, parcel.getY())) isUnsupported = false;
-                if (checkAreaCanSupportRoof(parcels, parcel.getX(), parcel.getY() + i)) isUnsupported = false;
-                if (checkAreaCanSupportRoof(parcels, parcel.getX(), parcel.getY() - i)) isUnsupported = false;
+                if (checkAreaCanSupportRoof(parcels, parcel.x + i, parcel.y)) isUnsupported = false;
+                if (checkAreaCanSupportRoof(parcels, parcel.x - i, parcel.y)) isUnsupported = false;
+                if (checkAreaCanSupportRoof(parcels, parcel.x, parcel.y + i)) isUnsupported = false;
+                if (checkAreaCanSupportRoof(parcels, parcel.x, parcel.y - i)) isUnsupported = false;
             }
             if (isUnsupported) {
                 room.setExterior(true);
@@ -218,8 +218,8 @@ public class RoomManager extends BaseManager implements GameObserver {
             parcelFound = false;
             for (ParcelModel parcel : room.getParcels()) {
                 if (parcel.tmpData == i - 1) {
-                    int x = parcel.getX();
-                    int y = parcel.getY();
+                    int x = parcel.x;
+                    int y = parcel.y;
                     if (addToRoomIfFree(parcels, room, openList, i, x + 1, y)) { parcelFound = true; }
                     if (addToRoomIfFree(parcels, room, openList, i, x - 1, y)) { parcelFound = true; }
                     if (addToRoomIfFree(parcels, room, openList, i, x, y + 1)) { parcelFound = true; }
@@ -305,7 +305,7 @@ public class RoomManager extends BaseManager implements GameObserver {
                         double oxygen = 0;
                         for (ParcelModel parcel : room.getParcels()) {
                             if (parcel != null) {
-                                oxygen += _oxygenLevels[parcel.getX()][parcel.getY()];
+                                oxygen += _oxygenLevels[parcel.x][parcel.y];
                             }
                         }
                         room.setOxygen(oxygen / room.getParcels().size());
@@ -365,9 +365,9 @@ public class RoomManager extends BaseManager implements GameObserver {
     }
 
     private void checkAndAddNeighbor(WorldManager manager, Map<RoomModel, NeighborModel> neighborhood, RoomModel room, ParcelModel parcel, int offsetX, int offsetY) {
-        ParcelModel p1 = manager.getParcel(parcel.getX() + offsetX, parcel.getY() + offsetY);
+        ParcelModel p1 = manager.getParcel(parcel.x + offsetX, parcel.y + offsetY);
         if (p1 != null && (p1.getStructure() != null && !p1.getStructure().isFloor() || p1.getResource() != null && p1.getResource().isRock())) {
-            ParcelModel p2 = manager.getParcel(p1.getX() + offsetX, p1.getY() + offsetY);
+            ParcelModel p2 = manager.getParcel(p1.x + offsetX, p1.y + offsetY);
             if (p2 != null && p2.getRoom() != null && p2.getRoom() != room) {
                 neighborhood.get(p2.getRoom()).parcels.add(p1);
             }

@@ -34,14 +34,14 @@ public class ItemFactory {
 		}
 	}
 
-	public static ItemModel createUserItem(WorldManager manager, ParcelModel area, ItemInfo info, boolean isComplete) {
+	public static ItemModel createUserItem(WorldManager manager, ParcelModel parcel, ItemInfo info, boolean isComplete) {
 		ItemModel item = new ItemModel(info);
 		item.addProgress(isComplete ? info.cost : 0);
 
 		// Set world areas
 		for (int i = 0; i < item.getWidth(); i++) {
 			for (int j = 0; j < item.getHeight(); j++) {
-				manager.getParcel(area.getX() + i, area.getY() + j).setItem(item);
+				manager.getParcel(parcel.x + i, parcel.y + j).setItem(item);
 			}
 		}
 

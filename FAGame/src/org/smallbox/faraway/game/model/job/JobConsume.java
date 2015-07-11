@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.job;
 
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
@@ -39,10 +40,6 @@ public class JobConsume extends BaseJobModel {
 	}
 
 	@Override
-	protected void onStart(CharacterModel character) {
-	}
-
-	@Override
 	public void onQuit(CharacterModel character) {
 	}
 
@@ -56,7 +53,7 @@ public class JobConsume extends BaseJobModel {
 		}
 
 		// Item is no longer exists
-		if (_consumable != _character.getInventory() && _consumable != Game.getWorldManager().getConsumable(_consumable.getX(), _consumable.getY())) {
+		if (_consumable != _character.getInventory() && _consumable != WorldHelper.getConsumable(_consumable.getX(), _consumable.getY())) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}

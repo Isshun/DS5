@@ -21,8 +21,8 @@ public class GDXRoomRenderer extends BaseRenderer {
             for (ParcelModel parcel : room.getParcels()) {
                 Random random = new Random(room.getId());
                 ((GDXRenderer) renderer).draw(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat(), 1f),
-                        (int)((parcel.getX() * Constant.TILE_WIDTH + effect.getViewport().getPosX()) * effect.getViewport().getScale()),
-                        (int)((parcel.getY() * Constant.TILE_HEIGHT + effect.getViewport().getPosY()) * effect.getViewport().getScale()),
+                        (int)((parcel.x * Constant.TILE_WIDTH + effect.getViewport().getPosX()) * effect.getViewport().getScale()),
+                        (int)((parcel.y * Constant.TILE_HEIGHT + effect.getViewport().getPosY()) * effect.getViewport().getScale()),
                         32,
                         32);
             }

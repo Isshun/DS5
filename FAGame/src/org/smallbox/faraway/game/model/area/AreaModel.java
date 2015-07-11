@@ -24,14 +24,14 @@ public class AreaModel {
         if (!_parcels.contains(parcel)) {
             _parcels.add(parcel);
             parcel.setArea(this);
-            _x = parcel.getX();
-            _y = parcel.getY();
+            _x = parcel.x;
+            _y = parcel.y;
         }
     }
 
     public boolean contains(int x, int y) {
         for (ParcelModel parcel: _parcels) {
-            if (parcel.getX() == x && parcel.getY() == y) {
+            if (parcel.x == x && parcel.y == y) {
                 return true;
             }
         }

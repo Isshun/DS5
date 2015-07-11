@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui;
 
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.game.model.ToolTips;
@@ -38,11 +39,11 @@ public class UserInterfaceSelector {
 
             // Select item
             (character, parcel, area) -> {
-                int x = parcel.getX();
-                int y = parcel.getY();
+                int x = parcel.x;
+                int y = parcel.y;
                 for (int x2 = 0; x2 < Constant.ITEM_MAX_WIDTH; x2++) {
                     for (int y2 = 0; y2 < Constant.ITEM_MAX_HEIGHT; y2++) {
-                        ItemModel item = Game.getWorldManager().getItem(x - x2, y - y2);
+                        ItemModel item = WorldHelper.getItem(x - x2, y - y2);
                         if (item != null && item.getWidth() > x2 && item.getHeight() > y2) {
                             select(item);
                             return true;

@@ -223,8 +223,12 @@ public class Application implements GameEventListener {
 
         _mainMenu.close();
 
+        WorldFactory factory = new WorldFactory();
+
         _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer, regionInfo);
-        _game.init(true);
+        _game.init(factory);
+
+        factory.createLandSite(_game);
 
         startGame();
 
@@ -241,7 +245,7 @@ public class Application implements GameEventListener {
         // TODO
         _game.setRegion(GameData.getData().getRegion("arrakis", "desert"));
         _game.preload();
-        _game.init(false);
+        _game.init(null);
         _game.load();
 
         startGame();

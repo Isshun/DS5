@@ -24,7 +24,7 @@ public class CheckJoyWalk extends CharacterCheck {
             return null;
         }
 
-        JobMove job = JobMove.create(character, _parcel.getX(), _parcel.getY());
+        JobMove job = JobMove.create(character, _parcel.x, _parcel.y);
         job.start(character);
         job.setLabel("Move for a walk");
         job.setStrategy(j -> j.getCharacter().getNeeds().joy += 1);

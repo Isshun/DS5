@@ -145,7 +145,7 @@ public class RoomModel {
 
     public boolean containsParcel(int x, int y) {
         for (ParcelModel parcel: _parcels) {
-            if (parcel.getX() == x && parcel.getY() == y) {
+            if (parcel.x == x && parcel.y == y) {
                 return true;
             }
         }
@@ -221,9 +221,9 @@ public class RoomModel {
 	}
 
 	public void removeArea(int x, int y) {
-		for (ParcelModel area: _parcels) {
-			if (area.getX() == x && area.getY() == y) {
-				removeArea(area);
+		for (ParcelModel parcel: _parcels) {
+			if (parcel.x == x && parcel.y == y) {
+				removeArea(parcel);
 				return;
 			}
 		}
@@ -233,10 +233,10 @@ public class RoomModel {
 		_x = Integer.MAX_VALUE;
 		_y = Integer.MAX_VALUE;
 		
-		for (ParcelModel area: _parcels) {
-			if (area.getX() <= _x  && area.getY() <= _y) {
-				_x = area.getX();
-				_y = area.getY();
+		for (ParcelModel parcel: _parcels) {
+			if (parcel.x <= _x  && parcel.y <= _y) {
+				_x = parcel.x;
+				_y = parcel.y;
 			}
 		}
 	}

@@ -539,27 +539,27 @@
 ////		}
 //	}
 //
-//	public void displayItemInfo(ItemInfo itemInfo) {
-//		_itemInfo = itemInfo;
+//	public void displayItemInfo(ItemInfo info) {
+//		_itemInfo = info;
 //
 //		if (_itemInfo != null) {
 //			_layoutItem.setVisible(true);
 //
 //			// Basic info
-//			_itemName.setString(itemInfo.label != null ? itemInfo.label : itemInfo.name);
-//			_itemCategory.setString("(" + itemInfo.type + ")");
+//			_itemName.setString(info.label != null ? info.label : info.name);
+//			_itemCategory.setString("(" + info.type + ")");
 //
 //			// Icon
-//			SpriteModel icon = SpriteManager.getInstance().getIcon(itemInfo);
+//			SpriteModel icon = SpriteManager.getInstance().getIcon(info);
 //			if (icon != null) {
 //				_itemIcon.setImage(icon);
 //				_itemIcon.setPosition(FRAME_WIDTH - 32 - icon.getWidth(), 20);
 //			}
 //
 //			// Action item
-//			if (itemInfo.actions != null) {
+//			if (info.actions != null) {
 //				// TODO
-////				displayItemAction(itemInfo.actions);
+////				displayItemAction(info.actions);
 //			} else {
 //			}
 //		}
@@ -696,10 +696,10 @@
 //		}
 //
 //		// ItemInfo
-//		ItemInfo itemInfo = _ui.getSelector().getSelectedItemInfo();
-//		if (itemInfo != null && _itemInfo != itemInfo) {
+//		ItemInfo info = _ui.getSelector().getSelectedItemInfo();
+//		if (info != null && _itemInfo != info) {
 //			clean();
-//			displayItemInfo(itemInfo);
+//			displayItemInfo(info);
 //		}
 //	}
 //

@@ -44,6 +44,6 @@ public class Utils {
 	}
 
 	public static int getDistance(ParcelModel parcel, int x, int y) {
-		return Math.abs(parcel.getX() - x) + Math.abs(parcel.getY() - y);
+		return Math.abs(parcel.x - x) + Math.abs(parcel.y - y);
 	}
 }

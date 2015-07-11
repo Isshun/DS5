@@ -28,14 +28,14 @@ public class GDXTemperatureRenderer extends BaseRenderer {
                 Color color = offset > 0 ? new Color(1f - offset, 1f - offset, 1f, 0.8f) : new Color(1f, 1f - offset, 1f - offset, 0.8f);
                 for (ParcelModel parcel : room.getParcels()) {
                     ((GDXRenderer) renderer).draw(color,
-                            parcel.getX() * Constant.TILE_WIDTH + effect.getViewport().getPosX(),
-                            parcel.getY() * Constant.TILE_HEIGHT + effect.getViewport().getPosY(),
+                            parcel.x * Constant.TILE_WIDTH + effect.getViewport().getPosX(),
+                            parcel.y * Constant.TILE_HEIGHT + effect.getViewport().getPosY(),
                             32,
                             32);
-                    if (parcel.getX() > maxX) maxX = parcel.getX();
-                    if (parcel.getY() > maxY) maxY = parcel.getY();
-                    if (parcel.getX() < minX) minX = parcel.getX();
-                    if (parcel.getY() < minY) minY = parcel.getY();
+                    if (parcel.x > maxX) maxX = parcel.x;
+                    if (parcel.y > maxY) maxY = parcel.y;
+                    if (parcel.x < minX) minX = parcel.x;
+                    if (parcel.y < minY) minY = parcel.y;
                 }
 
                 String text = room.getTemperatureInfo().temperature + "°";

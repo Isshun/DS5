@@ -29,9 +29,9 @@ public class JobSerializer implements SerializerInterface {
     @Override
     public void load(VTDNav save) {
 //        Map<String, ItemInfo.ItemInfoAction> actions = new HashMap<>();
-//        GameData.getData().items.stream().filter(itemInfo -> itemInfo.actions != null && !itemInfo.actions.isEmpty()).forEach(itemInfo -> {
-//            itemInfo.actions.stream().filter(action -> action.name != null).forEach(action -> {
-//                actions.put(itemInfo.name + ":" + action.name, action);
+//        GameData.getData().items.stream().filter(info -> info.actions != null && !info.actions.isEmpty()).forEach(info -> {
+//            info.actions.stream().filter(action -> action.name != null).forEach(action -> {
+//                actions.put(info.name + ":" + action.name, action);
 //            });
 //        });
 //

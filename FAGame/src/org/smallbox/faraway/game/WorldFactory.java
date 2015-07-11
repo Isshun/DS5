@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game;
 
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.data.serializer.LoadListener;
 import org.smallbox.faraway.game.manager.BaseManager;
 import org.smallbox.faraway.game.manager.WorldManager;
@@ -9,7 +10,7 @@ import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
 import org.smallbox.faraway.util.Log;
 
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Alex on 06/07/2015.
@@ -73,10 +74,10 @@ public class WorldFactory {
 
     private void cleanMap() {
         Game.getWorldManager().getParcelList().forEach(parcel -> {
-            ParcelModel r = Game.getWorldManager().getParcel(parcel.getX() + 1, parcel.getY());
-            ParcelModel l = Game.getWorldManager().getParcel(parcel.getX() - 1, parcel.getY());
-            ParcelModel t = Game.getWorldManager().getParcel(parcel.getX(), parcel.getY() + 1);
-            ParcelModel b = Game.getWorldManager().getParcel(parcel.getX(), parcel.getY() - 1);
+            ParcelModel r = Game.getWorldManager().getParcel(parcel.x + 1, parcel.y);
+            ParcelModel l = Game.getWorldManager().getParcel(parcel.x - 1, parcel.y);
+            ParcelModel t = Game.getWorldManager().getParcel(parcel.x, parcel.y + 1);
+            ParcelModel b = Game.getWorldManager().getParcel(parcel.x, parcel.y - 1);
 
             // Add resource on empty parcel surrounded by resources
             if (parcel.getResource() == null) {
@@ -147,4 +148,50 @@ public class WorldFactory {
             }
         }
     }
+
+    public Queue<ParcelModel> getFreeParcels(ParcelModel startParcel) {
+        List<ParcelModel> freeParcels = new ArrayList<>();
+        for (int x = startParcel.x - 5; x < startParcel.x + 5; x++) {
+            for (int y = startParcel.y - 5; y < startParcel.y + 5; y++) {
+                ParcelModel parcel = WorldHelper.getParcel(x, y);
+                if (parcel != null && parcel.getResource() == null) {
+                    freeParcels.add(parcel);
+                }
+            }
+        }
+        Collections.shuffle(freeParcels);
+
+        Queue<ParcelModel> queue = new LinkedList<>(freeParcels);
+        return queue;
+    }
+
+    public void createLandSite(Game game) {
+        // Get free parcels
+        ParcelModel startParcel;
+        Queue<ParcelModel> freeParcels;
+        do {
+            startParcel = WorldHelper.getRandomFreeSpace(false, true);
+            freeParcels = getFreeParcels(startParcel);
+        } while (freeParcels.size() < 15);
+
+        // Put characters
+        Game.getCharacterManager().addRandom(freeParcels.poll());
+        Game.getCharacterManager().addRandom(freeParcels.poll());
+        Game.getCharacterManager().addRandom(freeParcels.poll());
+
+        // Put resources
+        Game.getWorldManager().putObject("base.wood", freeParcels.poll(), 50);
+        Game.getWorldManager().putObject("base.wood", freeParcels.poll(), 50);
+        Game.getWorldManager().putObject("base.wood", freeParcels.poll(), 50);
+
+        Game.getWorldManager().putObject("base.military_meal", freeParcels.poll(), 25);
+        Game.getWorldManager().putObject("base.military_meal", freeParcels.poll(), 25);
+        Game.getWorldManager().putObject("base.military_meal", freeParcels.poll(), 25);
+
+        Game.getWorldManager().putObject("base.iron", freeParcels.poll(), 25);
+        Game.getWorldManager().putObject("base.iron", freeParcels.poll(), 25);
+
+        game.getViewport().moveTo(startParcel.x, startParcel.y);
+    }
+
 }

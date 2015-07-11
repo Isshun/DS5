@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui.panel;
 
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
@@ -34,7 +35,7 @@ public class PanelResources extends BasePanel {
             Map<ItemInfo, Integer> items = new HashMap<>();
             for (int x = 0; x < Game.getWorldManager().getWidth(); x++) {
                 for (int y = 0; y < Game.getWorldManager().getHeight(); y++) {
-                    ConsumableModel consumable = Game.getWorldManager().getConsumable(x, y);
+                    ConsumableModel consumable = WorldHelper.getConsumable(x, y);
                     if (consumable != null) {
                         if (!items.containsKey(consumable.getInfo())) {
                             items.put(consumable.getInfo(), 0);

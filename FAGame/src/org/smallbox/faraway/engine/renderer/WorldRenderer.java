@@ -82,7 +82,7 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
         layer.setRefresh();
         for (int x = toX - 1; x >= fromX; x--) {
             for (int y = toY - 1; y >= fromY; y--) {
-//                if (onScreen(x / CACHE_SIZE, y / CACHE_SIZE)) {
+//                if (cacheOnScreen(x / CACHE_SIZE, y / CACHE_SIZE)) {
 //                }
                 ParcelModel parcel = Game.getWorldManager().getParcel(x, y);
                 if (parcel != null) {
@@ -116,7 +116,7 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
         if (_layerStructure != null) {
             for (int i = _cacheCols - 1; i >= 0; i--) {
                 for (int j = _cacheCols - 1; j >= 0; j--) {
-                    if (onScreen(i, j) && !_layerStructure[i][j].needRefresh() && _layerStructure[i][j].isDrawable()) {
+                    if (cacheOnScreen(i, j) && !_layerStructure[i][j].needRefresh() && _layerStructure[i][j].isDrawable()) {
                         _layerStructure[i][j].onDraw(renderer, effect, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
                     }
                 }
@@ -125,21 +125,21 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
             onDrawSelected(renderer, effect, animProgress);
         }
 
-        // Draw live item
-        SpriteModel sprite;
-        int offsetX = effect.getViewport().getPosX();
-        int offsetY = effect.getViewport().getPosY();
-        for (ResourceModel resource: Game.getWorldManager().getResources()) {
-            if (resource.getInfo().isLive) {
-                sprite = _spriteManager.getResource(resource);
-                if (sprite != null) {
-                    renderer.draw(sprite, resource.getX() * Constant.TILE_WIDTH + offsetX, resource.getY() * Constant.TILE_HEIGHT + offsetY);
-                }
-            }
-        }
+//        // Draw live item
+//        SpriteModel sprite;
+//        int offsetX = effect.getViewport().getPosX();
+//        int offsetY = effect.getViewport().getPosY();
+//        for (ResourceModel resource: Game.getWorldManager().getResources()) {
+//            if (resource.getInfo().isLive) {
+//                sprite = _spriteManager.getResource(resource);
+//                if (sprite != null) {
+//                    renderer.draw(sprite, resource.getX() * Constant.TILE_WIDTH + offsetX, resource.getY() * Constant.TILE_HEIGHT + offsetY);
+//                }
+//            }
+//        }
     }
 
-    private boolean onScreen(int i, int j) {
+    private boolean cacheOnScreen(int i, int j) {
         Viewport viewport = Game.getInstance().getViewport();
         int posX = (int) ((i * CACHE_SIZE * Constant.TILE_WIDTH + viewport.getPosX()) * viewport.getScale());
         int posY = (int) ((j * CACHE_SIZE * Constant.TILE_HEIGHT + viewport.getPosY()) * viewport.getScale());
@@ -148,10 +148,19 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
         return (posX < 1500 && posY < 1200 && posX + width > 0 && posY + height > 0);
     }
 
+    private boolean tileOnScreen(int i, int j) {
+        Viewport viewport = Game.getInstance().getViewport();
+        int posX = (int) ((i * 1 * Constant.TILE_WIDTH + viewport.getPosX()) * viewport.getScale());
+        int posY = (int) ((j * 1 * Constant.TILE_HEIGHT + viewport.getPosY()) * viewport.getScale());
+        int width = (int) (1 * Constant.TILE_WIDTH * viewport.getScale());
+        int height = (int) (1 * Constant.TILE_HEIGHT * viewport.getScale());
+        return (posX < 1500 && posY < 1200 && posX + width > 0 && posY + height > 0);
+    }
+
     private void refreshResource(RenderLayer layer, ParcelModel parcel, ResourceModel resource, int x, int y) {
 //        if (resource != null && !resource.getInfo().isLive) {
-        if (resource != null && parcel != null) {
-            SpriteModel sprite = WorldHelper.isSurroundedByRock(parcel) ? _spriteManager.getGround(12) : _spriteManager.getResource(resource);
+        if (parcel != null && resource != null) {
+            SpriteModel sprite = resource.isRock() && WorldHelper.isSurroundedByRock(parcel) ? _spriteManager.getGround(12) : _spriteManager.getResource(resource);
             if (sprite != null) {
                 layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }

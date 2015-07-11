@@ -2,7 +2,6 @@ package org.smallbox.faraway.game;
 
 import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.data.serializer.GameSerializer;
-import org.smallbox.faraway.data.serializer.LoadListener;
 import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
@@ -99,8 +98,8 @@ public class Game {
         }
     }
 
-    public void init(boolean callWorldFactory) {
-        _worldManager = new WorldManager(callWorldFactory);
+    public void init(WorldFactory factory) {
+        _worldManager = new WorldManager(factory);
         _managers.add(_worldManager);
 
         _characterManager = new CharacterManager();
@@ -121,7 +120,7 @@ public class Game {
             _managers.add(new WeatherManager(_lightRenderer, _particleRenderer, _worldManager));
         }
 
-        _managers.add(new WorldFinder());
+        _managers.add(new ItemFinder());
         _managers.add(new PathManager());
         _managers.add(new AreaManager());
         _managers.add(new ResourceManager());

@@ -179,6 +179,7 @@ public class ItemInfo {
     public int                          stack;
     public String 						parent;
 	public ItemInfo 					parentInfo;
+	public List<ComponentInfo>			components;
 	public List<ItemInfo> 				childs = new ArrayList<>();
 
 	public ItemInfo() {
@@ -198,5 +199,11 @@ public class ItemInfo {
 			if (filter.effectRelation && effects.relation > 0) { return true; }
 		}
 		return false;
+	}
+
+	public static class ComponentInfo {
+		public String 		name;
+		public ItemInfo		info;
+		public int			quantity;
 	}
 }

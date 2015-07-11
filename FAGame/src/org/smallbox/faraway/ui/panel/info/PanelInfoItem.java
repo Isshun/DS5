@@ -4,6 +4,7 @@ import org.smallbox.faraway.JobHelper;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.manager.JobManager;
+import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
@@ -17,6 +18,8 @@ import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 
 import java.util.stream.Collectors;
+
+import static org.smallbox.faraway.game.model.ReceiptModel.*;
 
 /**
  * Created by Alex on 01/06/2015.
@@ -67,6 +70,25 @@ public class PanelInfoItem extends BaseInfoRightPanel {
     protected void onRefresh(int update) {
         if (_item != null && _item.needRefresh()) {
             select(_item);
+        }
+
+        refreshDebug(_item);
+    }
+
+    private void refreshDebug(ItemModel item) {
+        FrameLayout frame = (FrameLayout) findById("item_debug");
+        frame.removeAllViews();
+
+        int index = 0;
+        if (item.getJobs() != null && !item.getJobs().isEmpty() && item.getJobs().get(0) instanceof JobCraft && ((JobCraft)item.getJobs().get(0)).getReceipt() != null) {
+            ReceiptModel receipt = ((JobCraft)item.getJobs().get(0)).getReceipt();
+            for (OrderModel order: receipt.getOrders()) {
+                UILabel lbDebug = ViewFactory.getInstance().createTextView();
+                lbDebug.setCharacterSize(14);
+                lbDebug.setString((order.status == OrderModel.Status.STORED ? "[x]" : order.status == OrderModel.Status.CARRY ? "[c]" : "[ ]") + order.consumable.getInfo().name + " -> " + order.quantity);
+                lbDebug.setPosition(0, index++ * 20);
+                frame.addView(lbDebug);
+            }
         }
     }
 

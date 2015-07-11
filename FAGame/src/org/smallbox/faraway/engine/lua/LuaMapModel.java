@@ -37,8 +37,8 @@ public class LuaMapModel {
 
                 // Return free space
                 LuaValue ret = new LuaTable();
-                ret.set("x", LuaValue.valueOf(parcel.getX()));
-                ret.set("y", LuaValue.valueOf(parcel.getY()));
+                ret.set("x", LuaValue.valueOf(parcel.x));
+                ret.set("y", LuaValue.valueOf(parcel.y));
                 return ret;
             }
         }

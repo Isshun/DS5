@@ -19,7 +19,7 @@ import java.util.List;
 public class JobHelper {
 
     public static BaseJobModel createGatherJob(int x, int y) {
-        ResourceModel res = Game.getWorldManager().getResource(x, y);
+        ResourceModel res = WorldHelper.getResource(x, y);
         if (res == null) {
             return null;
         }
@@ -27,7 +27,7 @@ public class JobHelper {
     }
 
     public static BaseJobModel createMiningJob(int x, int y) {
-        ResourceModel res = Game.getWorldManager().getResource(x, y);
+        ResourceModel res = WorldHelper.getResource(x, y);
         if (res == null) {
             return null;
         }
@@ -137,7 +137,7 @@ public class JobHelper {
 
         // Structure
         if (info.isStructure) {
-            MapObjectModel current = Game.getWorldManager().getStructure(x, y);
+            MapObjectModel current = WorldHelper.getStructure(x, y);
             if (current != null && current.getInfo().equals(info)) {
                 Log.error("Build structure: already exist on this area");
                 return null;
@@ -147,7 +147,7 @@ public class JobHelper {
 
         // Item
         else if (info.isUserItem) {
-            MapObjectModel current = Game.getWorldManager().getItem(x, y);
+            MapObjectModel current = WorldHelper.getItem(x, y);
             if (current != null && current.getInfo().equals(info)) {
                 Log.error("Build item: already exist on this area");
                 return null;
@@ -161,8 +161,8 @@ public class JobHelper {
 
         // Resource
         else if (info.isResource) {
-            MapObjectModel currentItem = Game.getWorldManager().getItem(x, y);
-            MapObjectModel currentRessource = Game.getWorldManager().getResource(x, y);
+            MapObjectModel currentItem = WorldHelper.getItem(x, y);
+            MapObjectModel currentRessource = WorldHelper.getResource(x, y);
             if (currentRessource != null && currentRessource.getInfo().equals(info)) {
                 Log.error("Build item: already exist on this area");
                 return null;

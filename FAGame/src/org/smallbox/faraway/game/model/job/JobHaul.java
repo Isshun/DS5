@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.PathManager;
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.game.manager.JobManager;
@@ -76,7 +77,7 @@ public class JobHaul extends BaseJobModel {
         int toY = startY + 5;
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
-                ConsumableModel c = Game.getWorldManager().getConsumable(x, y);
+                ConsumableModel c = WorldHelper.getConsumable(x, y);
                 if (c != null
                         && c.getLock() == null
                         && c.getInfo() == _itemInfo
@@ -114,8 +115,8 @@ public class JobHaul extends BaseJobModel {
         // Go to storage
         else {
             _mode = Mode.MOVE_TO_STORAGE;
-            _posX = _parcel.getX();
-            _posY = _parcel.getY();
+            _posX = _parcel.x;
+            _posY = _parcel.y;
         }
 
         if (_character != null) {
@@ -219,7 +220,7 @@ public class JobHaul extends BaseJobModel {
                 return JobActionReturn.ABORT;
             }
             if (_parcel != null && _parcel.getConsumable() == null) {
-                Game.getWorldManager().putConsumable(_character.getInventory(), _parcel.getX(), _parcel.getY());
+                Game.getWorldManager().putConsumable(_character.getInventory(), _parcel.x, _parcel.y);
                 _character.setInventory(null);
                 return JobActionReturn.FINISH;
             }
@@ -240,8 +241,8 @@ public class JobHaul extends BaseJobModel {
 
             // Found another free storage area
             if (foundStorageParcel(_character.getInventory())) {
-                _posX = _parcel.getX();
-                _posY = _parcel.getY();
+                _posX = _parcel.x;
+                _posY = _parcel.y;
                 Log.info("Continue job to: " + _posX + "x" + _posY + ", left: " + _character.getInventory().getQuantity());
                 _character.moveTo(this, _posX, _posY, null);
                 return JobActionReturn.CONTINUE;

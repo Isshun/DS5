@@ -5,6 +5,9 @@ height: 2
 type: item
 isBed: true
 category: quarter
+components:
+    -   name: base.wood
+        quantity: 10
 actions:
     -   type: use
         label: Sleep in bed

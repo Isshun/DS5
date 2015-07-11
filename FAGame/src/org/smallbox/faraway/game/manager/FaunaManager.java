@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.manager;
 
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.AnimalModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
@@ -72,8 +73,8 @@ public class FaunaManager extends BaseManager {
 
         for (AnimalModel animal: _animals) {
             if (!animal.isMoving()) {
-                ParcelModel parcel = _worldManager.getRandomFreeSpace(false, true);
-                animal.moveTo(parcel.getX(), parcel.getY());
+                ParcelModel parcel = WorldHelper.getRandomFreeSpace(false, true);
+                animal.moveTo(parcel.x, parcel.y);
             }
             animal.move();
             animal.action();
@@ -82,9 +83,9 @@ public class FaunaManager extends BaseManager {
     }
 
     private void addFauna(RegionInfo.RegionFauna faunaInfo, int count) {
-        ParcelModel parcel = _worldManager.getRandomFreeSpace(false, true);
+        ParcelModel parcel = WorldHelper.getRandomFreeSpace(false, true);
         if (parcel != null) {
-            _animals.add(new AnimalModel(Utils.getUUID(), faunaInfo, parcel.getX(), parcel.getY()));
+            _animals.add(new AnimalModel(Utils.getUUID(), faunaInfo, parcel.x, parcel.y));
         } else {
             Log.error("[FaunaManager] No space to proc fauna");
         }

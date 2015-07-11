@@ -2,6 +2,7 @@ package org.smallbox.faraway.game.model.character.base;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.PathManager;
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.OnMoveListener;
 import org.smallbox.faraway.game.manager.JobManager;
@@ -194,8 +195,8 @@ public abstract class CharacterModel extends MovableModel {
     public void moveTo(BaseJobModel job, ParcelModel toParcel, OnMoveListener onMoveListener) {
         fixPosition();
 
-        _toX = toParcel.getX();
-        _toY = toParcel.getY();
+        _toX = toParcel.x;
+        _toY = toParcel.y;
 
         _fromParcel = Game.getWorldManager().getParcel(_posX, _posY);
         _toParcel = toParcel;
@@ -214,11 +215,11 @@ public abstract class CharacterModel extends MovableModel {
 
     private void fixPosition() {
         if (parcel != null && !parcel.isWalkable()) {
-            ParcelModel parcel = Game.getWorldManager().getNearestFreeSpace(_posX, _posY, true, false);
+            ParcelModel parcel = WorldHelper.getNearestFreeSpace(_posX, _posY, true, false);
             if (parcel != null) {
                 this.parcel = parcel;
-                _posX = parcel.getX();
-                _posY = parcel.getY();
+                _posX = parcel.x;
+                _posY = parcel.y;
             }
         }
     }
@@ -345,8 +346,8 @@ public abstract class CharacterModel extends MovableModel {
             // _node.PrintNodeInfo();
 
             // Set direction
-            int x = _node.getX();
-            int y = _node.getY();
+            int x = _node.x;
+            int y = _node.y;
             if (x > _posX && y > _posY) setMove(Direction.BOTTOM_RIGHT);
             else if (x < _posX && y > _posY) setMove(Direction.BOTTOM_LEFT);
             else if (x > _posX && y < _posY) setMove(Direction.TOP_RIGHT);
@@ -379,11 +380,6 @@ public abstract class CharacterModel extends MovableModel {
         } else {
             Log.debug("Character #" + _id + ": reached");
 
-            if (_moveListener != null) {
-                _moveListener.onReach(_job, this);
-                _moveListener = null;
-            }
-
             _steps = 0;
             _path = null;
             _node = null;
@@ -392,6 +388,12 @@ public abstract class CharacterModel extends MovableModel {
             // TODO: why characters sometimes not reach job location
             if (_posX != _toX || _posY != _toY) {
                 setJob(null);
+            }
+
+            if (_moveListener != null) {
+                OnMoveListener listener = _moveListener;
+                _moveListener = null;
+                listener.onReach(_job, this);
             }
         }
     }
@@ -451,8 +453,8 @@ public abstract class CharacterModel extends MovableModel {
 
             _blocked = 0;
 
-            _toX = toParcel.getX();
-            _toY = toParcel.getY();
+            _toX = toParcel.x;
+            _toY = toParcel.y;
             _path = path;
             _steps = 0;
 
@@ -460,6 +462,22 @@ public abstract class CharacterModel extends MovableModel {
                 _onPathComplete.onPathComplete(path, job);
             }
         }
+    }
+
+    public void addInventory(ConsumableModel consumable, int quantity) {
+        if (_inventory != null && _inventory.getInfo() != consumable.getInfo()) {
+            Log.error("Character inventory has non-compatible item");
+            return;
+        }
+
+        // Create inventory item if empty
+        if (_inventory == null) {
+            _inventory = new ConsumableModel(consumable.getInfo());
+        }
+
+        // Add quantity
+        _inventory.addQuantity(quantity);
+        consumable.addQuantity(-quantity);
     }
 
 }

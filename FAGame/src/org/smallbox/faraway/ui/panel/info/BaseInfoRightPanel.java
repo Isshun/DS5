@@ -66,7 +66,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
                 _frame_parcel_info.setVisible(true);
                 boolean isBuildGround = parcel.getStructure() != null && parcel.getStructure().isFloor();
                 ((UILabel) _frame_parcel_info.findById("lb_parcel_name")).setString(isBuildGround ? "Build ground" : "Ground");
-                ((UILabel) _frame_parcel_info.findById("lb_parcel_pos")).setString(parcel.getX() + "x" + parcel.getY());
+                ((UILabel) _frame_parcel_info.findById("lb_parcel_pos")).setString(parcel.x + "x" + parcel.y);
                 ((UILabel) _frame_parcel_info.findById("lb_blood")).setString("blood: " + parcel.getBlood());
                 ((UILabel) _frame_parcel_info.findById("lb_dirt")).setString("dirt: " + parcel.getDirt());
                 ((UILabel) _frame_parcel_info.findById("lb_rubble")).setString("rubble: " + parcel.getRubble());
@@ -78,7 +78,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
                 String strConnexion = "";
                 for (Connection<ParcelModel> connection : parcel.getConnections()) {
                     strConnexion += strConnexion.isEmpty() ? "Connexion: " : ", ";
-                    strConnexion += connection.getToNode().getX() + "x" + connection.getToNode().getY();
+                    strConnexion += connection.getToNode().x + "x" + connection.getToNode().y;
                 }
                 ((UILabel) _frame_parcel_info.findById("lb_connexion")).setString(strConnexion);
             } else {

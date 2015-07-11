@@ -89,8 +89,8 @@ public class AreaManager extends BaseManager {
     }
 
     public StorageAreaModel getNearestFreeStorage(ConsumableModel consumable, ParcelModel fromParcel) {
-        int x = fromParcel.getX();
-        int y = fromParcel.getY();
+        int x = fromParcel.x;
+        int y = fromParcel.y;
         int bestDistance = Integer.MAX_VALUE;
         AreaModel bestArea = null;
         for (AreaModel area: _areas) {

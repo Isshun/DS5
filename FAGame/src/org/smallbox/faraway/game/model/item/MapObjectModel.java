@@ -130,7 +130,7 @@ public abstract class MapObjectModel {
     public boolean          isDestroy() { return _health <= 0; }
     public boolean          isDump() { return _progress <= 0; }
     public boolean          isCloseRoom() { return _info.isCloseRoom; }
-    public boolean          matchPosition(int x, int y) { return _parcel != null && _parcel.getX() == x && _parcel.getY() == y; }
+    public boolean          matchPosition(int x, int y) { return _parcel != null && _parcel.x == x && _parcel.y == y; }
     public boolean          hasJobs() { return _jobs != null && !_jobs.isEmpty(); }
 
     public ItemModel use(CharacterModel character, int durationLeft) {

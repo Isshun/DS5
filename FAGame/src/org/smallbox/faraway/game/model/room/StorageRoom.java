@@ -293,9 +293,9 @@
 //		return null;
 //	}
 //
-//	public UserItem take(ItemInfo itemInfo) {
+//	public UserItem take(ItemInfo info) {
 //		for (UserItem item: _inventory) {
-//			if (item.getInfo() == itemInfo) {
+//			if (item.getInfo() == info) {
 //				return take(item);
 //			}
 //		}

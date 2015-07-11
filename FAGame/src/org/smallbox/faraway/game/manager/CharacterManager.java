@@ -5,6 +5,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobAbortReason;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
@@ -135,6 +136,12 @@ public class CharacterManager extends BaseManager {
 
 	public CharacterModel addRandom(int x, int y) {
 		CharacterModel character = new HumanModel(Utils.getUUID(), x, y, null, null, 16);
+		add(character);
+		return character;
+	}
+
+	public CharacterModel addRandom(ParcelModel parcel) {
+		CharacterModel character = new HumanModel(Utils.getUUID(), parcel.x, parcel.y, null, null, 16);
 		add(character);
 		return character;
 	}

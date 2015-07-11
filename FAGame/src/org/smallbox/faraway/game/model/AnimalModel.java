@@ -56,8 +56,8 @@ public class AnimalModel extends MovableModel {
             // _node.PrintNodeInfo();
 
             // Set direction
-            int x = _node.getX();
-            int y = _node.getY();
+            int x = _node.x;
+            int y = _node.y;
             if (x > _posX && y > _posY) setMove(Direction.BOTTOM_RIGHT);
             else if (x < _posX && y > _posY) setMove(Direction.BOTTOM_LEFT);
             else if (x > _posX && y < _posY) setMove(Direction.TOP_RIGHT);
@@ -116,8 +116,8 @@ public class AnimalModel extends MovableModel {
 
             _blocked = 0;
 
-            _toX = toParcel.getX();
-            _toY = toParcel.getY();
+            _toX = toParcel.x;
+            _toY = toParcel.y;
             _path = path;
             _steps = 0;
 

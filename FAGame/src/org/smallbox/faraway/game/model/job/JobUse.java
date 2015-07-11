@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.job;
 
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.RelationManager;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
@@ -19,14 +20,6 @@ public class JobUse extends BaseJobModel {
 	@Override
 	public CharacterModel.TalentType getTalentNeeded() {
 		return null;
-	}
-
-	@Override
-	protected void onStart(CharacterModel character) {
-	}
-
-	@Override
-	public void onQuit(CharacterModel character) {
 	}
 
 	private JobUse() {
@@ -136,7 +129,7 @@ public class JobUse extends BaseJobModel {
 		}
 		
 		// Item is no longer exists
-		if (_item != Game.getWorldManager().getItem(_item.getX(), _item.getY())) {
+		if (_item != WorldHelper.getItem(_item.getX(), _item.getY())) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}
