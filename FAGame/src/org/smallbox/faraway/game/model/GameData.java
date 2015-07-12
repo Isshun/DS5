@@ -20,7 +20,7 @@ public class GameData {
 	public List<ItemInfo> 				equipments;
 	public List<PlanetInfo> 			planets;
     public Map<String, WeatherModel> 	weathers;
-	public HashMap<String, String> 		strings;
+	public HashMap<Integer, String> 	strings;
 	public boolean 						needUIRefresh;
 	public List<IDataLoader> 			_loaders;
 	public HashMap<String, CharacterTypeInfo> characters;
@@ -57,13 +57,13 @@ public class GameData {
 		return null;
 	}
 
-	public String getString(String string) {
-		String str = strings.get(string);
-		if (str != null) {
-			return str;
-		}
-		return string;
-	}
+//	public String getString(String string) {
+//		String str = strings.get(string);
+//		if (str != null) {
+//			return str;
+//		}
+//		return string;
+//	}
 
     public static GameData getData() {
         return _data;
@@ -96,5 +96,13 @@ public class GameData {
 			}
 		}
 		return null;
+	}
+
+	public boolean hasString(int hash) {
+		return _data.strings.containsKey(hash);
+	}
+
+	public String getString(int hash) {
+		return _data.strings.get(hash);
 	}
 }

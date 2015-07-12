@@ -15,7 +15,7 @@ public class StringLoader implements IDataLoader {
     public void load(GameData data) {
         try {
             data.strings = new HashMap<>();
-            File file = new File("data/strings/" + data.config.lang + ".txt");
+            File file = new File("data/lang/" + data.config.lang + ".txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"));
             String line;
             while ((line = br.readLine()) != null) {
@@ -25,7 +25,7 @@ public class StringLoader implements IDataLoader {
                         sep = line.indexOf(':', line.indexOf('"', line.indexOf('"')+1)+1);
                     }
 
-                    String key = line.substring(0, sep).trim().replace("\"", "");
+                    int key = line.substring(0, sep).trim().replace("\"", "").hashCode();
                     String value  = line.substring(sep + 1).trim().replace("\"", "");
                     data.strings.put(key, value);
                 }

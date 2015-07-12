@@ -88,9 +88,9 @@ public class PlanetPage extends MainMenuPage {
 
     private void formatPlanetHostileStats(UILabel textView, String label, int value) {
         if (value == 0) {
-            textView.setString(StringUtils.getDashedString(GameData.getData().getString(label), "no", 39));
+            textView.setString(StringUtils.getDashedString(label, "no", 39));
         } else {
-            textView.setString(StringUtils.getDashedString(GameData.getData().getString(label), "yes (" + (value == 1 ? "few" : "many") + ")", 39));
+            textView.setString(StringUtils.getDashedString(label, "yes (" + (value == 1 ? "few" : "many") + ")", 39));
         }
         switch (value) {
             case 0: textView.setColor(COLOR_0); break;
@@ -101,7 +101,7 @@ public class PlanetPage extends MainMenuPage {
 
     private void formatPlanetStats(UILabel textView, String label, int value) {
         textView.setString(StringUtils.getDashedString(
-                GameData.getData().getString(label),
+                label,
                 StringUtils.getPlanetStatsText(value) + " (" + StringUtils.getPlanetStatsSymbol(value) + ")", 39));
         switch (value) {
             case -3: textView.setColor(COLOR_S3); break;

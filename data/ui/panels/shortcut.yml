@@ -58,7 +58,7 @@ entries:
 
         -   type: label
             id: bt_build
-            text: '[_BUILD]'
+            text: MENU_SHORTCUT_BUILD
             textsize: 18
             textcolor: 0x78ffff
             position: [24, 45]
@@ -68,7 +68,7 @@ entries:
 
         -   type: label
             id: bt_occupation
-            text: '[_OCCUPATION]'
+            text: MENU_SHORTCUT_JOBS
             textsize: 18
             textcolor: 0x78ffff
             position: [220, 185]
@@ -78,7 +78,7 @@ entries:
 
         -   type: label
             id: bt_crew
-            text: '[_CREW]'
+            text: MENU_SHORTCUT_CREW
             textsize: 18
             textcolor: 0x78ffff
             position: [24, 115]
@@ -88,7 +88,6 @@ entries:
 
         -   type: label
             id: bt_room
-            text: '[_ROOMS]'
             textsize: 18
             textcolor: 0x78ffff
             position: [220, 115]
@@ -98,7 +97,7 @@ entries:
 
         -   type: label
             id: bt_plan
-            text: '[_PLAN]'
+            text: MENU_SHORTCUT_PLANS
             textsize: 18
             textcolor: 0x78ffff
             position: [220, 45]
@@ -108,7 +107,6 @@ entries:
 
         -   type: label
             id: bt_manage
-            text: '[_MANAGE]'
             textsize: 18
             textcolor: 0x78ffff
             position: [24, 255]
@@ -118,7 +116,6 @@ entries:
 
         -   type: label
             id: bt_stats
-            text: '[_STATS]'
             textsize: 18
             textcolor: 0x78ffff
             position: [220, 255]
@@ -128,7 +125,6 @@ entries:
 
         -   type: label
             id: bt_display
-            text: '[_DISPLAY]'
             textsize: 18
             textcolor: 0x78ffff
             position: [24, 325]
@@ -138,7 +134,7 @@ entries:
 
         -   type: label
             id: bt_area
-            text: '[_AREAS]'
+            text: MENU_SHORTCUT_AREAS
             textsize: 18
             textcolor: 0x78ffff
             position: [220, 325]

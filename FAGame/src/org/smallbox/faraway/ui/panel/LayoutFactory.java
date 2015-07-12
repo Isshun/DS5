@@ -86,7 +86,7 @@ public class LayoutFactory {
         }
 
         if (entry.text != null) {
-            lbText.setString(entry.text.replace("_", ""));
+            lbText.setString(entry.text);
         }
 
 //        lbText.setSize(lbText.getContentWidth() + 10, lbText.getContentHeight() + 10);

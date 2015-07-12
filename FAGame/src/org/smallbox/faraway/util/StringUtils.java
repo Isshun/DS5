@@ -6,7 +6,8 @@ import org.smallbox.faraway.game.model.GameData;
 public class StringUtils {
 
 	public static String getDashedString(String label, String value, int columns) {
-		label = GameData.getData().getString(label);
+		int hash = label.hashCode();
+		label = GameData.getData() != null && GameData.getData().hasString(hash) ? GameData.getData().getString(hash) : label;
 
 		StringBuilder sb = new StringBuilder();
 		sb.append(label);

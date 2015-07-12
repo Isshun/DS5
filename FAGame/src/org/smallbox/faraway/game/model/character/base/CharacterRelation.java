@@ -47,7 +47,7 @@ public class CharacterRelation {
 		case HALF_SISTER: string = Strings.LB_RELATION_HALF_SISTER; break;
 		}
 
-		return GameData.getData().getString(string);
+		return string;
 	}
 
 	public Relation getRelation() {

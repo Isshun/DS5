@@ -10,8 +10,33 @@ entries:
         id: frame_room_info
         position: [0, 550]
 
+    # Action buttons
     -   type: frame
-        position: [0, 46]
+        position: [0, 28]
+        entries:
+
+        -   type: frame
+            id: bt_destroy
+            position: [20, 0]
+            size: [95, 40]
+            background: 0x007b66
+            entries:
+
+            -   type: label
+                id: bt_remove_area
+                text: remove area
+                textsize: 14
+                position: [0, 0]
+
+            -   type: image
+                path: data/res/ic_destroy.png
+                textsize: 14
+                position: [0, 6]
+                size: [20, 20]
+                align: center
+
+    -   type: frame
+        position: [0, 110]
         entries:
 
             -   type: label
@@ -32,13 +57,7 @@ entries:
             -   type: label
                 id: lb_area
                 textsize: 24
-                position: [24, 24]
-
-            -   type: label
-                id: bt_remove_area
-                text: remove area
-                textsize: 14
-                position: [24, 48]
+                position: [24, 12]
 
             -   type: frame
                 id: frame_info_garden
@@ -63,4 +82,4 @@ entries:
 
             -   type: frame
                 id: frame_entries
-                position: [24, 128]
+                position: [24, 42]

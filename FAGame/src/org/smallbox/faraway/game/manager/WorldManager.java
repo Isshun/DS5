@@ -53,7 +53,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         _game.setWorldManager(this);
         _width = _game.getWidth();
         _height = _game.getHeight();
-        _temperature = _game.getRegion().getInfo().temperature;
+        _temperature = Game.getInstance().getRegion().getInfo().temperature[1];
 
         List<ParcelModel> parcelList = new ArrayList<>();
         _parcels = new ParcelModel[_width][_height][NB_FLOOR];
@@ -482,5 +482,9 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     @Override
     public void onRemoveResource(ResourceModel resource) {
         createConnection(resource.getParcel());
+    }
+
+    public void setTemperature(int temperature) {
+        _temperature = temperature;
     }
 }

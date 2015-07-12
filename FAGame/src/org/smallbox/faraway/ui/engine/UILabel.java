@@ -4,11 +4,11 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.model.GameData;
 
 public abstract class UILabel extends View {
-
 	public static final int	REGULAR = 0;
 	public static final int	BOLD = 1;
 	public static final int	ITALIC = 2;
 	public static final int	UNDERLINED = 3;
+	private int _hash;
 
 	public UILabel() {
 		super(0, 0);
@@ -19,19 +19,41 @@ public abstract class UILabel extends View {
 	}
 
 	public void setString(String string) {
-        setStringValue(GameData.getData() != null ? GameData.getData().getString(string) : string);
+        if (string == null) {
+            setStringValue("");
+            return;
+        }
+
+        int hash = string.hashCode();
+        if (hash != _hash) {
+            setStringValue(GameData.getData() != null && GameData.getData().hasString(hash) ? GameData.getData().getString(hash) : string);
+        }
 	}
 
     public void setString(String string, int value) {
-        string = GameData.getData().getString(string);
-        string = String.format(string, value);
-        setStringValue(string);
+        if (string == null) {
+            setStringValue("");
+            return;
+        }
+
+        int hash = string.hashCode();
+        if (hash != _hash) {
+            string = GameData.getData() != null && GameData.getData().hasString(hash) ? GameData.getData().getString(hash) : string;
+            setStringValue(String.format(string, value));
+        }
     }
 
     public void setString(String string, String value) {
-        string = GameData.getData().getString(string);
-        string = String.format(string, value);
-        setStringValue(string);
+        if (string == null) {
+            setStringValue("");
+            return;
+        }
+
+        int hash = string.hashCode();
+        if (hash != _hash) {
+            string = GameData.getData() != null && GameData.getData().hasString(hash) ? GameData.getData().getString(hash) : string;
+            setStringValue(String.format(string, value));
+        }
     }
 
 	public abstract void setStringValue(String string);

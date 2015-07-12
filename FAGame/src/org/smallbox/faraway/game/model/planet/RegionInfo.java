@@ -41,5 +41,5 @@ public class RegionInfo {
     public List<RegionTerrain>		terrains;
     public List<RegionWeather>		weather;
     public List<RegionFauna>		fauna;
-    public int                      temperature;
+    public int[]                    temperature;
 }

@@ -16,52 +16,66 @@ import java.util.Random;
  * Created by Alex on 13/06/2015.
  */
 public class WeatherManager extends BaseManager implements GameObserver {
-    private final LightRenderer _lightRenderer;
-    private final ParticleRenderer _particleRenderer;
+    private final LightRenderer     _lightRenderer;
+    private final ParticleRenderer  _particleRenderer;
     private final WorldManager      _worldManager;
     private int                     _duration;
     private WeatherModel            _weather;
     private String                  _dayTime;
 
-    private double                  _sunTransitionProgress;
-    private Color                   _previousSunColor;
-    private Color                   _nextSunColor;
-    private float                   _progressValue;
+    private Color                   _previousLightColor;
+    private Color                   _nextLightColor;
+    private double                  _lightChange;
+    private double                  _lightProgress;
     private double                  _light;
+
+    private double                  _temperature;
+    private double                  _temperatureChange;
+    private int                     _temperatureTarget;
 
     public WeatherManager(LightRenderer lightRenderer, ParticleRenderer particleRenderer, WorldManager worldManager) {
         _lightRenderer = lightRenderer;
         _particleRenderer = particleRenderer;
         _worldManager = worldManager;
-
         _dayTime = GameData.config.time;
-        _sunTransitionProgress = 1;
+        _lightProgress = 1;
+    }
+
+    @Override
+    protected void onCreate() {
+        _temperature = _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
     }
 
     @Override
     public void onHourChange(int hour) {
         if (hour == 5) {
-            _progressValue = 1f / GameData.config.tickPerHour;
-            _sunTransitionProgress = 0;
+            _lightChange = 1f / GameData.config.tickPerHour;
+            _lightProgress = 0;
             _light = 0.5;
             switchSunColor("dawn");
         }
         if (hour == 6) {
-            _progressValue = 0.5f / GameData.config.tickPerHour;
-            _sunTransitionProgress = 0;
+            _lightChange = 0.5f / GameData.config.tickPerHour;
+            _lightProgress = 0;
             _light = 1;
+            _temperature = Game.getInstance().getRegion().getInfo().temperature[0];
+            _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
+            _temperatureChange = (Game.getInstance().getRegion().getInfo().temperature[1] - Game.getInstance().getRegion().getInfo().temperature[0]) / 120.0;
             switchSunColor("noon");
         }
         if (hour == 19) {
-            _progressValue = 1f / GameData.config.tickPerHour;
-            _sunTransitionProgress = 0;
+            _lightChange = 1f / GameData.config.tickPerHour;
+            _lightProgress = 0;
             _light = 0.5;
             switchSunColor("twilight");
         }
         if (hour == 20) {
-            _progressValue = 0.5f / GameData.config.tickPerHour;
-            _sunTransitionProgress = 0;
+            _lightChange = 0.5f / GameData.config.tickPerHour;
+            _lightProgress = 0;
             _light = 0.2;
+            _temperature = Game.getInstance().getRegion().getInfo().temperature[1];
+            _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[0];
+            _temperatureChange = (Game.getInstance().getRegion().getInfo().temperature[0] - Game.getInstance().getRegion().getInfo().temperature[1]) / 120.0;
             switchSunColor("midnight");
         }
     }
@@ -73,15 +87,22 @@ public class WeatherManager extends BaseManager implements GameObserver {
             loadWeather(new ArrayList<>(GameData.getData().weathers.values()).get((int)(Math.random() * GameData.getData().weathers.size())));
         }
 
-        if (_sunTransitionProgress <= 1) {
-            _sunTransitionProgress += _progressValue;
-            Game.getWorldManager().setLight((int)(_light * _sunTransitionProgress));
+        // Set light
+        if (_lightProgress <= 1) {
+            _lightProgress += _lightChange;
+            Game.getWorldManager().setLight((int) (_light * _lightProgress));
             if (_lightRenderer != null) {
                 _lightRenderer.setSunColor(new Color(
-                        (int) ((_previousSunColor.r * (1 - _sunTransitionProgress)) + (_nextSunColor.r * _sunTransitionProgress)),
-                        (int) ((_previousSunColor.g * (1 - _sunTransitionProgress)) + (_nextSunColor.g * _sunTransitionProgress)),
-                        (int) ((_previousSunColor.b * (1 - _sunTransitionProgress)) + (_nextSunColor.b * _sunTransitionProgress))));
+                        (int) ((_previousLightColor.r * (1 - _lightProgress)) + (_nextLightColor.r * _lightProgress)),
+                        (int) ((_previousLightColor.g * (1 - _lightProgress)) + (_nextLightColor.g * _lightProgress)),
+                        (int) ((_previousLightColor.b * (1 - _lightProgress)) + (_nextLightColor.b * _lightProgress))));
             }
+        }
+
+        // Set temperature
+        if ((int)_temperature != _temperatureTarget) {
+            _temperature += _temperatureChange;
+            Game.getWorldManager().setTemperature((int) _temperature);
         }
     }
 
@@ -119,20 +140,20 @@ public class WeatherManager extends BaseManager implements GameObserver {
 
         switch (dayTime) {
             case "dawn":
-                _previousSunColor = new Color(_weather.sun.midnight);
-                _nextSunColor = new Color(_weather.sun.dawn);
+                _previousLightColor = new Color(_weather.sun.midnight);
+                _nextLightColor = new Color(_weather.sun.dawn);
                 break;
             case "twilight":
-                _previousSunColor = new Color(_weather.sun.noon);
-                _nextSunColor = new Color(_weather.sun.twilight);
+                _previousLightColor = new Color(_weather.sun.noon);
+                _nextLightColor = new Color(_weather.sun.twilight);
                 break;
             case "midnight":
-                _previousSunColor = new Color(_weather.sun.twilight);
-                _nextSunColor = new Color(_weather.sun.midnight);
+                _previousLightColor = new Color(_weather.sun.twilight);
+                _nextLightColor = new Color(_weather.sun.midnight);
                 break;
             default:
-                _previousSunColor = new Color(_weather.sun.dawn);
-                _nextSunColor = new Color(_weather.sun.noon);
+                _previousLightColor = new Color(_weather.sun.dawn);
+                _nextLightColor = new Color(_weather.sun.noon);
                 break;
         }
     }

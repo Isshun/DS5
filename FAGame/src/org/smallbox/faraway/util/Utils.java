@@ -34,7 +34,7 @@ public class Utils {
 			}
 		}
 
-		for (File file: new File("data/strings/").listFiles()) {
+		for (File file: new File("data/lang/").listFiles()) {
 			if (file.lastModified() > lastModified) {
 				lastModified = file.lastModified();
 			}

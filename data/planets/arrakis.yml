@@ -21,7 +21,7 @@ regions:
     -   name: mountain
         label: mountain
         color: 0x804f15
-        temperature: 30
+        temperature: [20, 40]
 
         distribution:
             -   latitude: [40, 90]
@@ -80,7 +80,7 @@ regions:
     -   name: valley
         label: Valley
         color: 0xa06f35
-        temperature: 35
+        temperature: [25, 45]
 
         distribution:
             -   latitude: [40, 90]
@@ -141,7 +141,7 @@ regions:
     -   name: desert
         label: Desert
         color: 0xffda3b
-        temperature: 42
+        temperature: [30, 50]
 
         distribution:
             -   latitude: [-90, 40]
