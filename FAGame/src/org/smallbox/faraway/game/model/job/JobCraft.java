@@ -17,40 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class JobCraft extends BaseJobModel {
-	protected List<ReceiptModel>    _receipts = new ArrayList<>();
-	private ReceiptModel            _receipt;
+public class JobCraft extends BaseBuildJobModel {
 	private int                     _itemPosX;
 	private int                     _itemPosY;
-	private int                     _targetX;
-	private int                     _targetY;
-	private StorageAreaModel        _storage;
-	private ParcelModel 		    _storageParcel;
-    private List<ConsumableModel>   _potentialConsumables;
-    protected ItemModel             _factory;
-    protected Status                _status;
+    private ParcelModel             _storageParcel;
+    private StorageAreaModel        _storage;
 
-    public void addConsumable(ConsumableModel consumable) {
-        for (ReceiptModel receipt: _receipts) {
-            receipt.addConsumable(consumable);
-        }
-        if (_receipt == null) {
-            onCheck(null);
-        }
+    protected JobCraft(ItemInfo.ItemInfoAction action, int x, int y) {
+        super(action, x, y, "data/res/ic_craft.png", "data/res/ic_action_craft.png");
     }
-
-    public void removeConsumable(ConsumableModel consumable) {
-        for (ReceiptModel receipt: _receipts) {
-            receipt.removeConsumable(consumable);
-        }
-        if (_receipt == null) {
-            onCheck(null);
-        }
-    }
-
-    public enum Status {
-		WAITING, CRAFTING, MOVE_TO_INGREDIENT, MOVE_TO_FACTORY, MOVE_TO_STORAGE
-	}
 
 	@Override
 	protected void onStart(CharacterModel character) {
@@ -95,10 +70,6 @@ public class JobCraft extends BaseJobModel {
 		return CharacterModel.TalentType.CRAFT;
 	}
 
-	protected JobCraft(ItemInfo.ItemInfoAction action, int x, int y) {
-        super(action, x, y, "data/res/ic_craft.png", "data/res/ic_action_craft.png");
-	}
-
 	public static JobCraft create(ItemInfo.ItemInfoAction action, ItemModel item) {
 		if (item == null) {
 			throw new RuntimeException("Cannot add Craft job (item is null)");
@@ -110,8 +81,8 @@ public class JobCraft extends BaseJobModel {
 
 		JobCraft job = new JobCraft(action, item.getX(), item.getY());
 		job.setItem(item);
-		job._factory = item;
-		job._receipts = action.receipts.stream().map(receiptInfo -> new ReceiptModel(item, receiptInfo)).collect(Collectors.toList());
+		job._mainItem = item;
+		job._receipts = action.receipts.stream().map(receiptInfo -> ReceiptModel.createFromReceiptInfo(item, receiptInfo)).collect(Collectors.toList());
         job.setStrategy(j -> {
             if (j.getCharacter().getType().needs.joy != null) {
                 j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
@@ -165,7 +136,7 @@ public class JobCraft extends BaseJobModel {
         }
 
 		// Work on factory
-        if (_status == Status.CRAFTING) {
+        if (_status == Status.MAIN_ACTION) {
             _progress += character.getTalent(CharacterModel.TalentType.CRAFT).work();
             if (_progress < _cost) {
                 _message = _actionInfo.label;
@@ -174,19 +145,20 @@ public class JobCraft extends BaseJobModel {
             }
 
             // Clear factory
-            _factory.getComponents().clear();
+            _mainItem.getComponents().clear();
 
             // Current item is done
             _progress = 0;
-            for (ItemInfo.ItemProductInfo productInfo : _receipt.getInfo().products) {
+            for (ItemInfo.ItemProductInfo productInfo : _receipt.getProductsInfo()) {
                 ConsumableModel productConsumable = new ConsumableModel(productInfo.itemInfo);
                 productConsumable.setQuantity(productInfo.quantity);
 
                 // Move to storage
-                ParcelModel parcel = findNearestStorage(character, productConsumable);
-                if (parcel != null) {
+                _storageParcel = ((AreaManager)Game.getInstance().getManager(AreaManager.class)).getNearestFreeStorageParcel(productConsumable, character.getParcel());
+                if (_storageParcel != null) {
+                    _storage = (StorageAreaModel)_storageParcel.getArea();
                     character.setInventory(productConsumable);
-                    moveToStorage(character, parcel);
+                    moveToStorage(character, _storageParcel);
                     return JobActionReturn.CONTINUE;
                 } else {
                     Game.getWorldManager().putConsumable(productConsumable, character.getX(), character.getY());
@@ -221,8 +193,8 @@ public class JobCraft extends BaseJobModel {
     private JobActionReturn closeOrQuit(CharacterModel character) {
 
         // Unload factory
-        for (ConsumableModel component: _factory.getComponents()) {
-            Game.getWorldManager().putConsumable(component, _factory.getX(), _factory.getY());
+        for (ConsumableModel component: _mainItem.getComponents()) {
+            Game.getWorldManager().putConsumable(component, _mainItem.getX(), _mainItem.getY());
         }
 
         // TODO: wrong location
@@ -245,95 +217,6 @@ public class JobCraft extends BaseJobModel {
 		}
 	}
 
-    private void moveToIngredient(CharacterModel character, ReceiptModel.OrderModel order) {
-        ParcelModel parcel = order.consumable.getParcel();
-        _posX = _targetX = parcel.x;
-        _posY = _targetY = parcel.y;
-        _status = Status.MOVE_TO_INGREDIENT;
-        character.moveTo(this, parcel, new OnMoveListener() {
-            @Override
-            public void onReach(BaseJobModel job, MovableModel movable) {
-                order.consumable.lock(null);
-                order.status = ReceiptModel.OrderModel.Status.CARRY;
-                character.addInventory(order.consumable, order.quantity);
-                if (order.consumable.getQuantity() == 0) {
-                    Game.getWorldManager().removeConsumable(order.consumable);
-                }
-
-                // Get next consumable (same ingredient)
-                if (_receipt.getNextOrder() != null && _receipt.getNextOrder().consumable.getInfo() == order.consumable.getInfo()
-                        && _receipt.getNextOrder().quantity + _character.getInventory().getQuantity() <= GameData.config.inventoryMaxQuantity) {
-                    _receipt.nextOrder();
-                    moveToIngredient(character, _receipt.getCurrentOrder());
-                } else {
-                    moveToFactory();
-                }
-            }
-
-            @Override
-            public void onFail(BaseJobModel job, MovableModel movable) {
-            }
-
-            @Override
-            public void onSuccess(BaseJobModel job, MovableModel movable) {
-            }
-        });
-        _message = "Move to " + order.consumable.getInfo().label;
-    }
-
-    private void moveToFactory() {
-        _status = Status.MOVE_TO_FACTORY;
-        _posX = _factory.getX();
-        _posY = _factory.getY();
-        _message = "Carry " + _character.getInventory().getInfo().label + " to " + _factory.getInfo().label;
-
-        // Store component in factory
-        _character.moveTo(this, _factory.getParcel(), new OnMoveListener<CharacterModel>() {
-            @Override
-            public void onReach(BaseJobModel job, CharacterModel character) {
-                _receipt.closeCarryingOrders();
-                _receipt.nextOrder();
-                _factory.addComponent(character.getInventory());
-                character.setInventory(null);
-                _status = _receipt.isComplete() ? Status.CRAFTING : Status.WAITING;
-            }
-
-            @Override
-            public void onFail(BaseJobModel job, CharacterModel character) {
-            }
-
-            @Override
-            public void onSuccess(BaseJobModel job, CharacterModel character) {
-            }
-        });
-    }
-
-    private ParcelModel findNearestStorage(CharacterModel character, ConsumableModel consumable) {
-		// Looking for free _storage area for consumable
-		_storage = ((AreaManager) Game.getInstance().getManager(AreaManager.class)).getNearestFreeStorage(consumable, character.getParcel());
-		if (_storage == null) {
-			return null;
-		}
-
-		// Get free _storageParcel from _storage
-		_storageParcel = _storage.getNearestFreeParcel(consumable, character.getX(), character.getY());
-		if (_storageParcel == null) {
-			return null;
-		}
-
-        return _storageParcel;
-	}
-
-    private void moveToStorage(CharacterModel character, ParcelModel storageParcel) {
-        _status = Status.MOVE_TO_STORAGE;
-        _posX = storageParcel.x;
-        _posY = storageParcel.y;
-
-        character.moveTo(this, _posX, _posY, null);
-
-        _message = "Move " + _receipt.getInfo().products.get(0).itemInfo.label + " to storage";
-    }
-
     @Override
 	public String getLabel() {
 		return _actionInfo.label;
@@ -351,6 +234,24 @@ public class JobCraft extends BaseJobModel {
 
     public ReceiptModel getReceipt() {
         return _receipt;
+    }
+
+    public void addConsumable(ConsumableModel consumable) {
+        for (ReceiptModel receipt: _receipts) {
+            receipt.addConsumable(consumable);
+        }
+        if (_receipt == null) {
+            onCheck(null);
+        }
+    }
+
+    public void removeConsumable(ConsumableModel consumable) {
+        for (ReceiptModel receipt: _receipts) {
+            receipt.removeConsumable(consumable);
+        }
+        if (_receipt == null) {
+            onCheck(null);
+        }
     }
 
 }

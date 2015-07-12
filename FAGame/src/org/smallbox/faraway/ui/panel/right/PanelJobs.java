@@ -37,12 +37,12 @@ public class PanelJobs extends BaseRightPanel {
                 _entries[index].lbStatus = (UILabel) view.findById("lb_job_status");
                 _entries[index].lbMessage = (UILabel) view.findById("lb_job_message");
                 view.setPosition(0, index * 24);
-                view.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                    }
-                });
-                view.setOnFocusListener(new LinkFocusListener());
+//                view.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                    }
+//                });
+//                view.setOnFocusListener(new LinkFocusListener());
                 frameEntries.addView(view);
             });
 		}

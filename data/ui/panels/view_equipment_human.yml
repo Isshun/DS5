@@ -1,10 +1,5 @@
 entries:
 
-    -   type: label
-        text: Equipments
-        textsize: 22
-        position: [20, 0]
-
     -   type: image
         path: data/res/body_human.png
         position: [10, 30]

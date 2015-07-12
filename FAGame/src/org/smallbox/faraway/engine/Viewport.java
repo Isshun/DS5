@@ -16,4 +16,5 @@ public abstract class Viewport {
     public abstract float getMaxScale();
     public abstract void startMove(int x, int y);
     public abstract void move(int x, int y);
+    public abstract void setPosition(int x, int y);
 }

@@ -72,7 +72,23 @@ public class ItemInfo {
 		public ItemInfo 				itemInfo;
 		public int 						quantity;
 	}
-	public static class EquipmentEffectBuff {
+//	public static class EquipmentEffectBuff {
+//		public int                      sight;
+//		public int                      grow;
+//		public int                      repair;
+//		public int                      build;
+//		public int                      craft;
+//		public int                      cook;
+//		public int                      speed;
+//		public int                      tailoring;
+//		public double                   oxygen;
+//	}
+
+	public static class EquipmentEffectValues {
+		public int                      cold;
+		public int                      heat;
+		public int                      damage;
+		public int                      oxygen;
 		public int                      sight;
 		public int                      grow;
 		public int                      repair;
@@ -81,20 +97,6 @@ public class ItemInfo {
 		public int                      cook;
 		public int                      speed;
 		public int                      tailoring;
-		public double                   oxygen;
-	}
-
-	public static class EquipmentEffectAbsorb {
-		public int                      cold;
-		public int                      heat;
-		public int                      damage;
-	}
-
-	public static class EquipmentEffectResist {
-		public int                      cold;
-		public int                      heat;
-		public int                      damage;
-		public int                      oxygen;
 	}
 
 	public static class ItemEquipmentInfo {
@@ -109,9 +111,9 @@ public class ItemInfo {
 
 	public static class EquipmentEffect {
 		public EquipmentEffectCondition condition;
-		public EquipmentEffectAbsorb    absorb;
-		public EquipmentEffectResist    resist;
-		public EquipmentEffectBuff      buff;
+		public EquipmentEffectValues 	resist;
+		public EquipmentEffectValues 	debuff;
+		public EquipmentEffectValues 	buff;
 	}
 
 	public static class ItemInfoEffects {
@@ -179,7 +181,7 @@ public class ItemInfo {
     public int                          stack;
     public String 						parent;
 	public ItemInfo 					parentInfo;
-	public List<ComponentInfo>			components;
+	public List<ItemComponentInfo>		components;
 	public List<ItemInfo> 				childs = new ArrayList<>();
 
 	public ItemInfo() {
@@ -199,11 +201,5 @@ public class ItemInfo {
 			if (filter.effectRelation && effects.relation > 0) { return true; }
 		}
 		return false;
-	}
-
-	public static class ComponentInfo {
-		public String 		name;
-		public ItemInfo		info;
-		public int			quantity;
 	}
 }

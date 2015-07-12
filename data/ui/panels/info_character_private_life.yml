@@ -1,0 +1,82 @@
+id: frame_personal_report
+entries:
+
+    -   type: label
+        text: "[Personal file]"
+        textsize: 20
+        position: [218, 68]
+        size: [180, 40]
+        align: center
+        background: 0xb0cd35
+
+        
+    # Private life
+    -   type: frame
+        position: [0, 180]
+        entries:
+        
+        -   type: label
+            text: Staff record
+            textsize: 24
+            position: [20, 10]
+        
+        -   type: label
+            id: lb_info_gender
+            text: gender
+            textsize: 14
+            position: [20, 70]
+        
+        -   type: label
+            id: lb_info_profession
+            text: profession
+            textsize: 14
+            position: [20, 90]
+        
+        -   type: label
+            id: lb_info_enlisted
+            text: enlisted
+            textsize: 14
+            position: [20, 110]
+        
+        -   type: label
+            id: lb_info_birtname
+            text: birtname
+            textsize: 14
+            position: [20, 130]
+        
+        -   type: label
+            id: lb_info_old
+            text: old
+            textsize: 14
+            position: [20, 50]
+
+            
+    # Relationship
+    -   type: frame
+        position: [0, 380]
+        entries:
+        
+            -   type: label
+                text: Relationship
+                textsize: 24
+                position: [20, 0]
+
+            -   type: frame
+                id: frame_relationship
+                position: [0, 32]
+
+    # Health
+    -   type: frame
+        position: [0, 520]
+        entries:
+            
+            -   type: label
+                text: Medical concerns
+                textsize: 24
+                position: [20, 0]
+
+            -   type: label
+                id: lb_body_heat
+                text: Health
+                textsize: 18
+                position: [20, 32]

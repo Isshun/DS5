@@ -30,6 +30,11 @@ public class LayoutFactory {
                 }
             }
 
+            if (layout.id != null) {
+                panel.setId(layout.id.hashCode());
+                panel.setName(layout.id);
+            }
+
             if (layout.align != null) {
                 panel.setAlign("left".equals(layout.align[0]), "top".equals(layout.align[1]));
             }
@@ -161,6 +166,9 @@ public class LayoutFactory {
         View view = null;
 
         switch (entry.type) {
+            case "include":
+                view = ViewFactory.getInstance().load(entry.file);
+                break;
             case "label":
                 view = createLabel(parent, entry);
                 break;

@@ -8,12 +8,10 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.ToolTips;
 import org.smallbox.faraway.game.model.character.BuffModel;
 import org.smallbox.faraway.game.model.character.DiseaseModel;
-import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
-import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
-import org.smallbox.faraway.game.model.character.base.CharacterRelation;
+import org.smallbox.faraway.game.model.character.base.*;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.model.job.JobUse;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.*;
@@ -130,6 +128,10 @@ public class PanelCharacter extends BaseRightPanel {
         }
 
         findById("frame_equipment_detail").setVisible(false);
+
+        if (_character != null) {
+            select(_character);
+        }
     }
 
     private void switchView(String viewId) {
@@ -218,7 +220,7 @@ public class PanelCharacter extends BaseRightPanel {
 
         _lbEnlisted = (UILabel) findById("lb_info_enlisted");
 
-        _lbBirthName = (UILabel) findById("lb_info_birthname");
+        _lbBirthName = (UILabel) findById("lb_info_birtname");
     }
 
     private void createInventoryInfo() {
@@ -364,6 +366,7 @@ public class PanelCharacter extends BaseRightPanel {
         if (_character != null) {
             refreshJob(_character.getJob());
             refreshNeeds();
+            refreshStats();
             refreshInventory();
             refreshEquipments();
 
@@ -382,6 +385,35 @@ public class PanelCharacter extends BaseRightPanel {
 
         refreshTalents();
         refreshTimeTable();
+    }
+
+    private void refreshStats() {
+        CharacterStats stats = _character.getStats();
+
+        String body = _character.getType().label;
+        ((UILabel) findById("lb_ethnic_group")).setString(null);
+        for (ItemInfo info: _character.getEquipments()) {
+            if ("body".equals(info.equipment.location)) {
+                body += " (" + info.label + ")";
+            }
+        }
+        ((UILabel) findById("lb_ethnic_group")).setString(body);
+
+        String buffValue = "Buff ";
+        if (stats.buff.oxygen != 0) buffValue += "o2: " + stats.buff.oxygen + ", ";
+        ((UILabel) findById("lb_stats_buff")).setString(buffValue);
+
+        String absorbValue = "Absorb ";
+        if (stats.debuff.cold != 0) absorbValue += "cold: " + stats.debuff.cold + ", ";
+        if (stats.debuff.heat != 0) absorbValue += "heat: " + stats.debuff.heat + ", ";
+        if (stats.debuff.oxygen != 0) absorbValue += "o2: " + stats.debuff.oxygen + ", ";
+        ((UILabel) findById("lb_stats_absorb")).setString(absorbValue);
+
+        String resistsValue = "Resists ";
+        if (stats.resist.cold != 0) resistsValue += "cold: " + stats.resist.cold + ", ";
+        if (stats.resist.heat != 0) resistsValue += "heat: " + stats.resist.heat + ", ";
+        if (stats.resist.oxygen != 0) resistsValue += "o2: " + stats.resist.oxygen + ", ";
+        ((UILabel) findById("lb_stats_resist")).setString(resistsValue);
     }
 
     private void refreshTimeTable() {
@@ -472,11 +504,11 @@ public class PanelCharacter extends BaseRightPanel {
     private void refreshEquipments() {
         if (_character.getEquipmentViewIds() != null) {
             for (String[] equipmentViewId : _character.getEquipmentViewIds()) {
-                setEquipment((UILabel) findById(equipmentViewId[0]), equipmentViewId[1]);
+                setEquipment((UILabel)findById(equipmentViewId[0]), equipmentViewId[1]);
             }
 
             Map<String, Integer> totalResist = new HashMap<>();
-            Map<String, Integer> totalAbsorb = new HashMap<>();
+            Map<String, Integer> totalDebuff = new HashMap<>();
             Map<String, Integer> totalBuff = new HashMap<>();
             for (ItemInfo equipment : _character.getEquipments()) {
                 if (equipment.equipment.effects != null) {
@@ -488,24 +520,31 @@ public class PanelCharacter extends BaseRightPanel {
                             checkAndAddEquipmentEffect(totalResist, "damage", effect.resist.damage);
                         }
 
-                        // Check absorb
-                        if (effect.absorb != null) {
-                            checkAndAddEquipmentEffect(totalAbsorb, "cold", effect.absorb.cold);
-                            checkAndAddEquipmentEffect(totalAbsorb, "heat", effect.absorb.heat);
-                            checkAndAddEquipmentEffect(totalAbsorb, "damage", effect.absorb.damage);
+                        // Check debuff
+                        if (effect.debuff != null) {
+                            checkAndAddEquipmentEffect(totalDebuff, "cold", effect.debuff.cold);
+                            checkAndAddEquipmentEffect(totalDebuff, "heat", effect.debuff.heat);
+                            checkAndAddEquipmentEffect(totalDebuff, "damage", effect.debuff.damage);
                         }
 
                         // Check buff
                         if (effect.buff != null) {
-                            checkAndAddEquipmentEffect(totalBuff, "sight", effect.buff.sight);
-                            checkAndAddEquipmentEffect(totalBuff, "grow", effect.buff.grow);
-                            checkAndAddEquipmentEffect(totalBuff, "repair", effect.buff.repair);
-                            checkAndAddEquipmentEffect(totalBuff, "build", effect.buff.build);
-                            checkAndAddEquipmentEffect(totalBuff, "craft", effect.buff.craft);
-                            checkAndAddEquipmentEffect(totalBuff, "cook", effect.buff.cook);
-                            checkAndAddEquipmentEffect(totalBuff, "speed", effect.buff.speed);
-                            checkAndAddEquipmentEffect(totalBuff, "tailoring", effect.buff.tailoring);
+                            checkAndAddEquipmentEffect(totalBuff, "cold", effect.buff.cold);
+                            checkAndAddEquipmentEffect(totalBuff, "heat", effect.buff.heat);
+                            checkAndAddEquipmentEffect(totalBuff, "damage", effect.buff.damage);
                         }
+//
+//                        // Check buff
+//                        if (effect.buff != null) {
+//                            checkAndAddEquipmentEffect(totalBuff, "sight", effect.buff.sight);
+//                            checkAndAddEquipmentEffect(totalBuff, "grow", effect.buff.grow);
+//                            checkAndAddEquipmentEffect(totalBuff, "repair", effect.buff.repair);
+//                            checkAndAddEquipmentEffect(totalBuff, "build", effect.buff.build);
+//                            checkAndAddEquipmentEffect(totalBuff, "craft", effect.buff.craft);
+//                            checkAndAddEquipmentEffect(totalBuff, "cook", effect.buff.cook);
+//                            checkAndAddEquipmentEffect(totalBuff, "speed", effect.buff.speed);
+//                            checkAndAddEquipmentEffect(totalBuff, "tailoring", effect.buff.tailoring);
+//                        }
                     }
                 }
             }
@@ -517,7 +556,7 @@ public class PanelCharacter extends BaseRightPanel {
             ((UILabel) findById("lb_equipment_total_resist")).setString("Resists: " + String.join(", ", resists));
 
             List<String> absorb = new ArrayList<>();
-            for (Map.Entry<String, Integer> entry : totalAbsorb.entrySet()) {
+            for (Map.Entry<String, Integer> entry : totalDebuff.entrySet()) {
                 absorb.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
             }
             ((UILabel) findById("lb_equipment_total_absorb")).setString("Absorbs: " + String.join(", ", absorb));
@@ -615,14 +654,18 @@ public class PanelCharacter extends BaseRightPanel {
     }
 
     private void refreshJob(final BaseJobModel job) {
-        if (job != null) {
+        if (_character.isSleeping()) {
+            if (_character.getJob() != null && _character.getJob() instanceof JobUse & _character.getJob().getItem() != null && _character.getJob().getItem().isSleepingItem()) {
+                _lbJob.setDashedString(job.getLabel(), job.getProgressPercent() + "%", NB_COLUMNS);
+            } else {
+                _lbJob.setString("Sleep on floor");
+                _lbJob.setOnClickListener(null);
+            }
+        } else if (job != null) {
             _lbJob.setDashedString(job.getLabel(), job.getProgressPercent() + "%", NB_COLUMNS);
             if (job.getItem() != null) {
                 //_lbJob.setOnClickListener(view -> _ui.getSelector().select(job.getItem()));
             }
-        } else if (_character.isSleeping()) {
-            _lbJob.setString("Sleep on floor");
-            _lbJob.setOnClickListener(null);
         } else {
             _lbJob.setString(Strings.LN_NO_JOB);
             _lbJob.setOnClickListener(null);
@@ -634,12 +677,8 @@ public class PanelCharacter extends BaseRightPanel {
 //        _lbInventory.setString(StringUtils.getDashedString(Strings.LB_INVENTORY,
 //                _character.getInventorySpace() - _character.getInventoryLeftSpace() + "/" + _character.getInventorySpace(), 29));
 
-        if (_character.getInventory() != null) {
-            ((UILabel) findById("lb_inventory_entry")).setString(_character.getInventory().getLabel() + " (" + _character.getInventory().getQuantity() + ")");
-        } else {
-            ((UILabel) findById("lb_inventory_entry")).setString("");
-        }
-
+        ((UILabel) findById("lb_inventory_entry")).setString(_character.getInventory() != null ?
+                _character.getInventory().getLabel() + " (" + _character.getInventory().getQuantity() + ")" : "");
 
 //        for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
 //            if (_character.getInventory().size() > i) {
@@ -663,51 +702,51 @@ public class PanelCharacter extends BaseRightPanel {
 
         if (info != null) {
             findById("frame_equipment_detail").setVisible(true);
-
-            if (info.effects != null) {
-                for (ItemInfo.EquipmentEffect effect: info.equipment.effects) {
-                    // Check resist
-                    if (effect.resist != null) {
-                        Map<String, Integer> totalStats = new HashMap<>();
-                        checkAndAddEquipmentEffect(totalStats, "cold", effect.resist.cold);
-                        checkAndAddEquipmentEffect(totalStats, "heat", effect.resist.heat);
-                        checkAndAddEquipmentEffect(totalStats, "damage", effect.resist.damage);
-
-                        List<String> resists = new ArrayList<>();
-                        for (Map.Entry<String, Integer> entry: totalStats.entrySet()) {
-                            resists.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
-                        }
-                        ((UILabel)findById("lb_equipment_resist")).setString("[R]: " + String.join(", ", resists));
-                    }
-
-                    // Check absorb
-                    if (effect.absorb != null) {
-                        Map<String, Integer> totalStats = new HashMap<>();
-                        checkAndAddEquipmentEffect(totalStats, "cold", effect.absorb.cold);
-                        checkAndAddEquipmentEffect(totalStats, "heat", effect.absorb.heat);
-                        checkAndAddEquipmentEffect(totalStats, "damage", effect.absorb.damage);
-
-                        List<String> absorbs = new ArrayList<>();
-                        for (Map.Entry<String, Integer> entry: totalStats.entrySet()) {
-                            absorbs.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
-                        }
-                        ((UILabel)findById("lb_equipment_absorb")).setString("[A]: " + String.join(", ", absorbs));
-                    }
-
-                    // Check buff
-                    if (effect.buff != null) {
-                        Map<String, Integer> totalStats = new HashMap<>();
-                        checkAndAddEquipmentEffect(totalStats, "sight", effect.buff.sight);
-                        checkAndAddEquipmentEffect(totalStats, "speed", effect.buff.speed);
-
-                        List<String> buffs = new ArrayList<>();
-                        for (Map.Entry<String, Integer> entry: totalStats.entrySet()) {
-                            buffs.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
-                        }
-                        ((UILabel)findById("lb_equipment_resist")).setString("[B]: " + String.join(", ", buffs));
-                    }
-                }
-            }
+//
+//            if (info.effects != null) {
+//                for (ItemInfo.EquipmentEffect effect: info.equipment.effects) {
+//                    // Check resist
+//                    if (effect.resist != null) {
+//                        Map<String, Integer> totalStats = new HashMap<>();
+//                        checkAndAddEquipmentEffect(totalStats, "cold", effect.resist.cold);
+//                        checkAndAddEquipmentEffect(totalStats, "heat", effect.resist.heat);
+//                        checkAndAddEquipmentEffect(totalStats, "damage", effect.resist.damage);
+//
+//                        List<String> resists = new ArrayList<>();
+//                        for (Map.Entry<String, Integer> entry: totalStats.entrySet()) {
+//                            resists.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
+//                        }
+//                        ((UILabel)findById("lb_equipment_resist")).setString("[R]: " + String.join(", ", resists));
+//                    }
+//
+//                    // Check debuff
+//                    if (effect.debuff != null) {
+//                        Map<String, Integer> totalStats = new HashMap<>();
+//                        checkAndAddEquipmentEffect(totalStats, "cold", effect.debuff.cold);
+//                        checkAndAddEquipmentEffect(totalStats, "heat", effect.debuff.heat);
+//                        checkAndAddEquipmentEffect(totalStats, "damage", effect.debuff.damage);
+//
+//                        List<String> absorbs = new ArrayList<>();
+//                        for (Map.Entry<String, Integer> entry: totalStats.entrySet()) {
+//                            absorbs.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
+//                        }
+//                        ((UILabel)findById("lb_equipment_absorb")).setString("[A]: " + String.join(", ", absorbs));
+//                    }
+//
+//                    // Check buff
+//                    if (effect.buff != null) {
+//                        Map<String, Integer> totalStats = new HashMap<>();
+//                        checkAndAddEquipmentEffect(totalStats, "sight", effect.buff.sight);
+//                        checkAndAddEquipmentEffect(totalStats, "speed", effect.buff.speed);
+//
+//                        List<String> buffs = new ArrayList<>();
+//                        for (Map.Entry<String, Integer> entry: totalStats.entrySet()) {
+//                            buffs.add(entry.getKey() + ": " + (entry.getValue() > 0 ? "+" + entry.getValue() : entry.getValue()));
+//                        }
+//                        ((UILabel)findById("lb_equipment_resist")).setString("[B]: " + String.join(", ", buffs));
+//                    }
+//                }
+//            }
         }
     }
 

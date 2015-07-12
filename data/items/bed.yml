@@ -5,8 +5,9 @@ height: 2
 type: item
 isBed: true
 category: quarter
+cost: 100
 components:
-    -   name: base.wood
+    -   item: base.wood
         quantity: 10
 actions:
     -   type: use

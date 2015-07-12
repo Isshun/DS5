@@ -18,10 +18,12 @@ public class LuaCharacterModel {
     public final ItemInfo           item;
     public final ParcelModel        parcel;
     public final String             type;
+    public final String             faction;
 
     public LuaCharacterModel(CharacterModel character) {
         this.id = character.getId();
         this.name = character.getInfo().getName();
+        this.faction = "fremen";
         this.needs = character.getNeeds();
         this.stats = character.getStats();
         this.character = character;

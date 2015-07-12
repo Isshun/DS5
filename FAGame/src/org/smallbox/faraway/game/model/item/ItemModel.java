@@ -28,8 +28,6 @@ public class ItemModel extends MapObjectModel {
         initSlots();
 	}
 
-
-	public List<ConsumableModel> 	getComponents() { return _components; }
 	public List<ConsumableModel> 	getCrafts() { return _crafts; }
 	public int 						getTargetTemperature() { return _targetTemperature; }
 	public int 						getValue() { return 15; }
@@ -48,6 +46,7 @@ public class ItemModel extends MapObjectModel {
 	public void 					setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }
 	public void 					setPotencyUse(int potencyUse) { _potencyUse = potencyUse; }
 
+	@Override
 	public void addComponent(ConsumableModel consumable) {
 		for (ConsumableModel component: _components) {
 			if (component.getInfo() == consumable.getInfo()) {
@@ -58,14 +57,9 @@ public class ItemModel extends MapObjectModel {
 		_components.add(consumable);
 	}
 
-	public void addCraft(ConsumableModel consumable) {
-		for (ConsumableModel craft: _crafts) {
-			if (craft.getInfo() == consumable.getInfo()) {
-				craft.addQuantity(consumable.getQuantity());
-				return;
-			}
-		}
-		_crafts.add(consumable);
+	@Override
+	public List<ConsumableModel> 	getComponents() {
+		return _components;
 	}
 
 	public void initSlots() {

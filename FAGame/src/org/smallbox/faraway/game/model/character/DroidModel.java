@@ -27,7 +27,7 @@ public class DroidModel extends CharacterModel {
 
     @Override
     public void addBodyStats(CharacterStats stats) {
-        stats.absorb.cold += BODY_COLD_ABSORB;
+        stats.debuff.cold += BODY_COLD_ABSORB;
         stats.resist.cold += BODY_COLD_RESIST;
     }
 

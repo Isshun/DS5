@@ -85,6 +85,7 @@ public class CharacterNeeds {
         happiness = Math.max(0, Math.min(100, happiness));
         relation = Math.max(0, Math.min(100, relation));
         security = Math.max(0, Math.min(100, security));
+        joy = Math.max(0, Math.min(100, joy));
     }
 
     public void updateNeeds(CharacterTypeInfo.Needs needs) {

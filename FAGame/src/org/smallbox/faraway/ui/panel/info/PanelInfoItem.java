@@ -34,6 +34,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
     private FrameLayout _menuAddCraftEntries;
     private View        _btAddCraft;
     private FrameLayout _frameTmp;
+    private FrameLayout _frameOwner;
 
     public PanelInfoItem(UserInterface.Mode mode, GameEventListener.Key shortcut) {
         super(mode, shortcut, "data/ui/panels/info_item.yml");
@@ -53,6 +54,8 @@ public class PanelInfoItem extends BaseInfoRightPanel {
         _frameCraft = (FrameLayout) findById("frame_craft");
         _frameCraft.setVisible(false);
         _frameCraftEntries = (FrameLayout) findById("frame_craft_entries");
+        _frameOwner = (FrameLayout) findById("frame_owner");
+        _frameOwner.setVisible(false);
         _menuAddCraft = (FrameLayout) findById("menu_add_craft");
         _menuAddCraft.setVisible(false);
         _menuAddCraftEntries = (FrameLayout) findById("menu_add_craft_entries");
@@ -107,7 +110,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
 
             JobCraft jobCraft = (JobCraft)(_item.getJobs() != null && !_item.getJobs().isEmpty() && _item.getJobs().get(0) instanceof JobCraft ? _item.getJobs().get(0) : null);
             if (jobCraft != null && jobCraft.isRunning() && jobCraft.getReceipt() != null) {
-                ((UILabel)findById("lb_crafts")).setString("Crafts: " + String.join(", ", jobCraft.getReceipt().getInfo().products.stream().map(product -> product.itemInfo.label).collect(Collectors.toList())));
+                ((UILabel)findById("lb_crafts")).setString("Crafts: " + String.join(", ", jobCraft.getReceipt().getProductsInfo().stream().map(product -> product.itemInfo.label).collect(Collectors.toList())));
                 ((UILabel)findById("lb_users")).setString("User: " + jobCraft.getCharacter().getName());
             } else {
                 ((UILabel)findById("lb_crafts")).setString("Crafts: none");
@@ -149,7 +152,23 @@ public class PanelInfoItem extends BaseInfoRightPanel {
             _frameCraft.setVisible(false);
         }
 
+        // Bed item
+        if (_itemInfo.isBed) {
+            _frameOwner.setVisible(true);
+            findById("bt_owner_common").setOnClickListener(view -> setOwner(0));
+            findById("bt_owner_selected").setOnClickListener(view -> setOwner(1));
+            findById("bt_owner_jail").setOnClickListener(view -> setOwner(2));
+        } else {
+            _frameOwner.setVisible(false);
+        }
+
         findById("bt_destroy").setOnClickListener(view -> JobHelper.addDumpJob(item));
+    }
+
+    private void setOwner(int index) {
+        ((UILabel)findById("bt_owner_common")).setString(index == 0 ? "> Common" : "  Common");
+        ((UILabel)findById("bt_owner_selected")).setString(index == 1 ? "> Personal" : "  Personal");
+        ((UILabel)findById("bt_owner_jail")).setString(index == 2 ? "> Jail" : "  Jail");
     }
 
     public void select(ItemInfo info) {

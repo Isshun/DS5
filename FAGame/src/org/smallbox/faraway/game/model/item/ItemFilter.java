@@ -14,8 +14,9 @@ public class ItemFilter {
 	public ItemInfo	itemMatched;
 	public ItemInfo itemNeeded;
 	public Boolean 	needFreeSlot;
-	public boolean isConsomable;
 	public boolean isFree;
+	public boolean needItem;
+	public boolean needConsumable;
 
 	private ItemFilter(boolean isFactory, boolean isImmediate) {
 		this.lookingForFactory = isFactory;
@@ -24,7 +25,7 @@ public class ItemFilter {
 
 	public static ItemFilter createConsomableFilter() {
 		ItemFilter filter = new ItemFilter(false, true);
-		filter.isConsomable = true;
+		filter.needConsumable = true;
 		filter.isFree = true;
 		filter.needFreeSlot = false;
 		return filter;
@@ -32,7 +33,7 @@ public class ItemFilter {
 
 	public static ItemFilter createConsomableFilter(ItemInfo neededItemInfo) {
 		ItemFilter filter = new ItemFilter(false, true);
-		filter.isConsomable = true;
+		filter.needConsumable = true;
 		filter.needFreeSlot = false;
 		filter.isFree = true;
 		filter.itemNeeded = neededItemInfo;
@@ -62,6 +63,13 @@ public class ItemFilter {
 		ItemFilter filter = new ItemFilter(false, true);
 		filter.needFreeSlot = true;
 		filter.itemNeeded = neededItemInfo;
+		return filter;
+	}
+
+	public static ItemFilter createItemFilter() {
+		ItemFilter filter = new ItemFilter(false, true);
+		filter.needFreeSlot = true;
+		filter.needItem = true;
 		return filter;
 	}
 }

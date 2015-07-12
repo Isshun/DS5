@@ -4,14 +4,24 @@ import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.model.job.BaseBuildJobModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobCraft;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 07/06/2015.
  */
 public class ReceiptModel {
+    private List<ItemInfo.ItemProductInfo> _products;
+    private List<ItemInfo.ItemComponentInfo> _componentsInfo;
+
+    public List<ItemInfo.ItemProductInfo> getProductsInfo() {
+        return _products;
+    }
+
     private static class PotentialConsumable {
         public ConsumableModel          consumable;
         public int                      distance;
@@ -22,30 +32,39 @@ public class ReceiptModel {
         }
     }
 
-    private final Map<ItemInfo, Integer>        _infoComponents;
     private final List<PotentialConsumable>     _potentialComponents = new ArrayList<>();
     private final List<OrderModel>              _orders = new ArrayList<>();
     private OrderModel                          _currentOrder;
     private OrderModel                          _nextOrder;
-    private final ItemInfo.ItemInfoReceipt      _receiptInfo;
-    private final ItemModel                     _factory;
+    private final MapObjectModel                _factory;
     private int                                 _totalDistance;
-    private boolean                             _isRunning;
 
-    public ReceiptModel(ItemModel factory, ItemInfo.ItemInfoReceipt receiptInfo) {
-        _factory = factory;
-        _receiptInfo = receiptInfo;
+    public static ReceiptModel createFromComponentInfo(MapObjectModel buildItem, List<ItemInfo.ItemComponentInfo> componentsInfo) {
+        ReceiptModel receipt = new ReceiptModel(buildItem);
+        receipt.scanComponents(componentsInfo);
+        return receipt;
+    }
+
+    public static ReceiptModel createFromReceiptInfo(ItemModel factory, ItemInfo.ItemInfoReceipt receiptInfo) {
+        ReceiptModel receipt = new ReceiptModel(factory);
+        receipt._products = receiptInfo.products;
+        receipt.scanComponents(receiptInfo.components);
+        return receipt;
+    }
+
+    // Get potential consumables on WorldManager
+    private void scanComponents(List<ItemInfo.ItemComponentInfo> componentsInfo) {
+        _componentsInfo = componentsInfo;
 
         // Add components to receipt
-        _infoComponents = new HashMap<>();
-        for (ItemInfo.ItemComponentInfo componentInfo: _receiptInfo.components) {
-            _infoComponents.put(componentInfo.itemInfo, componentInfo.quantity);
+        Map<ItemInfo, Integer> componentsDistance = new HashMap<>();
+        for (ItemInfo.ItemComponentInfo componentInfo: componentsInfo) {
+            componentsDistance.put(componentInfo.itemInfo, componentInfo.quantity);
         }
 
-        // Get potential consumables on WorldManager
         _potentialComponents.clear();
         Game.getWorldManager().getConsumables().stream()
-                .filter(consumable -> _infoComponents.containsKey(consumable.getInfo()))
+                .filter(consumable -> componentsDistance.containsKey(consumable.getInfo()))
                 .filter(consumable -> consumable.getParcel().isWalkable())
                 .forEach(consumable -> {
                     GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_factory.getParcel(), consumable.getParcel());
@@ -56,15 +75,19 @@ public class ReceiptModel {
         Collections.sort(_potentialComponents, (c1, c2) -> c2.distance - c1.distance);
     }
 
+    public ReceiptModel(MapObjectModel factory) {
+        _factory = factory;
+    }
+
     public void reset() {
         close();
 
         // Looking for best nearest consumables
         _totalDistance = 0;
-        for (Map.Entry<ItemInfo, Integer> entry: _infoComponents.entrySet()) {
-            int quantityLeft = entry.getValue();
+        for (ItemInfo.ItemComponentInfo componentInfo: _componentsInfo) {
+            int quantityLeft = componentInfo.quantity;
             for (PotentialConsumable potentialConsumable: _potentialComponents) {
-                if (quantityLeft > 0 && potentialConsumable.consumable.getLock() == null && potentialConsumable.consumable.getInfo() == entry.getKey()) {
+                if (quantityLeft > 0 && potentialConsumable.consumable.getLock() == null && potentialConsumable.consumable.getInfo() == componentInfo.itemInfo) {
                     if (potentialConsumable.consumable.getQuantity() > quantityLeft) {
                         _orders.add(new OrderModel(potentialConsumable.consumable, quantityLeft));
                     } else {
@@ -82,19 +105,15 @@ public class ReceiptModel {
         _orders.clear();
     }
 
-    public ItemInfo.ItemInfoReceipt getInfo() {
-        return _receiptInfo;
-    }
-
     public boolean hasComponentsOnMap() {
-        for (Map.Entry<ItemInfo, Integer> entry: _infoComponents.entrySet()) {
+        for (ItemInfo.ItemComponentInfo componentInfo: _componentsInfo) {
             int totalQuantity = 0;
             for (PotentialConsumable potentialConsumable: _potentialComponents) {
-                if (potentialConsumable.consumable.getInfo() == entry.getKey() && potentialConsumable.consumable.getLock() == null) {
+                if (potentialConsumable.consumable.getInfo() == componentInfo.itemInfo && potentialConsumable.consumable.getLock() == null) {
                     totalQuantity += potentialConsumable.consumable.getQuantity();
                 }
             }
-            if (totalQuantity < entry.getValue()) {
+            if (totalQuantity < componentInfo.quantity) {
                 return false;
             }
         }
@@ -132,8 +151,8 @@ public class ReceiptModel {
     }
 
     public void addConsumable(ConsumableModel consumable) {
-        for (ItemInfo info: _infoComponents.keySet()) {
-            if (consumable.getInfo() == info) {
+        for (ItemInfo.ItemComponentInfo componentInfo: _componentsInfo) {
+            if (consumable.getInfo() == componentInfo.itemInfo) {
                 GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_factory.getParcel(), consumable.getParcel());
                 if (path != null) {
                     _potentialComponents.add(new PotentialConsumable(consumable, path.getCount()));
@@ -154,7 +173,7 @@ public class ReceiptModel {
         }
     }
 
-    public void start(JobCraft job) {
+    public void start(BaseBuildJobModel job) {
         for (OrderModel order: _orders) {
             order.consumable.lock(job);
         }

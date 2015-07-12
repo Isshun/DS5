@@ -11,7 +11,7 @@ entries:
         position: [0, 550]
 
     -   type: frame
-        position: [0, 46]
+        position: [0, 110]
         entries:
 
         -   type: label
@@ -141,15 +141,44 @@ entries:
                     position: [0, 0]
                     size: [100, 100]
 
+        -   type: frame
+            id: frame_owner
+            position: [0, 180]
+            entries:
+            
+            -   type: label
+                text: Type
+                style: bold
+                position: [24, 0]
+                textsize: 20
+                
+            -   type: label
+                id: bt_owner_common
+                text: "> Common"
+                textsize: 14
+                position: [24, 32]
+                
+            -   type: label
+                id: bt_owner_selected
+                text: "  Personal"
+                textsize: 14
+                position: [24, 52]
+                
+            -   type: label
+                id: bt_owner_jail
+                text: "  Jail"
+                textsize: 14
+                position: [24, 72]
+
     # Action buttons
     -   type: frame
-        position: [0, 480]
+        position: [0, 28]
         entries:
 
         -   type: frame
             id: bt_destroy
             position: [20, 0]
-            size: [80, 100]
+            size: [95, 40]
             background: 0x007b66
             entries:
 
@@ -157,14 +186,35 @@ entries:
                 text: Destroy
                 textsize: 14
                 position: [0, 0]
-                size: [80, 100]
+                size: [95, 40]
                 align: center
 
             -   type: image
                 path: data/res/ic_destroy.png
                 textsize: 14
+                position: [0, 6]
+                size: [20, 20]
+                align: center
+
+        -   type: frame
+            id: bt_forbidden
+            position: [125, 0]
+            size: [95, 40]
+            background: 0x007b66
+            entries:
+
+            -   type: label
+                text: Lock
+                textsize: 14
                 position: [0, 0]
-                size: [80, 100]
+                size: [95, 40]
+                align: center
+
+            -   type: image
+                path: data/res/ic_destroy.png
+                textsize: 14
+                position: [0, 6]
+                size: [20, 20]
                 align: center
 
     -   type: frame

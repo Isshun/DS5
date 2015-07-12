@@ -131,6 +131,7 @@ public abstract class CharacterModel extends MovableModel {
         _equipments.add(GameData.getData().getEquipment("base.equipments.regular_pants"));
         _equipments.add(GameData.getData().getEquipment("base.equipments.regular_shoes"));
         _equipments.add(GameData.getData().getEquipment("base.equipments.oxygen_bottle"));
+        _equipments.add(GameData.getData().getEquipment("base.equipments.fremen_body"));
 
         Log.info("Character done: " + _info.getName() + " (" + x + ", " + y + ")");
     }
@@ -249,7 +250,7 @@ public abstract class CharacterModel extends MovableModel {
 
     private void updateBodyHeat(RoomModel room) {
         if (room != null) {
-            double minHeat = room.getTemperatureInfo().temperature + _stats.absorb.cold;
+            double minHeat = room.getTemperatureInfo().temperature + _stats.debuff.cold;
             if (minHeat >= Constant.BODY_TEMPERATURE) {
                 _stats.bodyHeat = Constant.BODY_TEMPERATURE;
             } else if (minHeat < _stats.bodyHeat) {
@@ -473,6 +474,7 @@ public abstract class CharacterModel extends MovableModel {
         // Create inventory item if empty
         if (_inventory == null) {
             _inventory = new ConsumableModel(consumable.getInfo());
+            _inventory.setQuantity(0);
         }
 
         // Add quantity

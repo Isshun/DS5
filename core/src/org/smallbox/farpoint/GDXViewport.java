@@ -58,6 +58,12 @@ public class GDXViewport extends Viewport {
     }
 
     @Override
+    public void setPosition(int x, int y) {
+        _posX = x;
+        _posY = y;
+    }
+
+    @Override
     public int   getPosX() { return _posX; }
 
     @Override

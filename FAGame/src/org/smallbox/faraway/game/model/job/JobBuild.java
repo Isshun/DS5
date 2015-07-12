@@ -1,7 +1,11 @@
 package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.WorldHelper;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.game.manager.JobManager;
+import org.smallbox.faraway.game.model.ReceiptModel;
+import org.smallbox.faraway.game.model.area.StorageAreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.util.Log;
@@ -10,45 +14,75 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class JobBuild extends BaseJobModel {
-	protected List<ComponentModel> 	_components;
-	protected MapObjectModel 		_buildItem;
+public class JobBuild extends BaseBuildJobModel {
 
 	private JobBuild(int x, int y) {
 		super(null, x, y, "data/res/ic_build.png", "data/res/ic_action_build.png");
 	}
 
+    @Override
+    protected void onStart(CharacterModel character) {
+        int bestDistance = Integer.MAX_VALUE;
+        for (ReceiptModel receipt: _receipts) {
+            receipt.reset();
+            if (bestDistance > receipt.getTotalDistance() && receipt.hasComponentsOnMap()) {
+                bestDistance = receipt.getTotalDistance();
+                _receipt = receipt;
+            }
+        }
+
+        if (_receipt == null) {
+            throw new RuntimeException("Try to start JobCraft but no receipt have enough component");
+        }
+
+        // Start receipt and get first component
+        _receipt.start(this);
+        moveToIngredient(character, _receipt.getCurrentOrder());
+    }
+
+    @Override
+    public void onQuit(CharacterModel character) {
+        if (_receipt != null) {
+            _receipt.close();
+            _receipt = null;
+        }
+    }
+
+    @Override
+    public CharacterModel.TalentType getTalentNeeded() {
+        return CharacterModel.TalentType.BUILD;
+    }
+
 	public static BaseJobModel create(MapObjectModel item) {
-		JobBuild job = new JobBuild(item.getX(), item.getY());
-		job.setBuildItem(item);
+        if (item == null) {
+            throw new RuntimeException("Cannot add Craft job (item is null)");
+        }
+
+        JobBuild job = new JobBuild(item.getX(), item.getY());
+        job._mainItem = item;
+        job._receipts = new ArrayList<>();
+        job._receipts.add(ReceiptModel.createFromComponentInfo(item, item.getInfo().components));
 		job.setCost(item.getInfo().cost);
 		job.setStrategy(j -> {
-			if (j.getCharacter().getType().needs.joy != null) {
-				j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
-			}
-		});
-		if (item.getInfo().components != null) {
-			job._components = item.getInfo().components.stream().map(componentInfo -> new ComponentModel(componentInfo.info, componentInfo.quantity)).collect(Collectors.toList());
-		}
-		return job;
-	}
+            if (j.getCharacter().getType().needs.joy != null) {
+                j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+            }
+        });
+        job.onCheck(null);
 
-	private void setBuildItem(MapObjectModel buildItem) {
-		_buildItem = buildItem;
+		return job;
 	}
 
 	@Override
 	public boolean onCheck(CharacterModel character) {
-		// Item is null
-		if (_buildItem == null) {
-			_reason = JobAbortReason.INVALID;
-			return false;
-		}
-		
-		// TODO: item addBuildJob on structure
-		// TODO: OR item is structure
-		
-		return true;
+        for (ReceiptModel receipt: _receipts) {
+            if (receipt.hasComponentsOnMap()) {
+                _message = "Waiting";
+                return true;
+            }
+        }
+        _message = "Missing components";
+        return false;
 	}
 
 	@Override
@@ -58,30 +92,34 @@ public class JobBuild extends BaseJobModel {
 
 	@Override
 	public JobActionReturn onAction(CharacterModel character) {
+		if (_character == null) {
+			Log.error("Action on job with null characters");
+		}
+
 		// Wrong call
-		if (_buildItem == null) {
+		if (_mainItem == null) {
 			Log.error("Character: actionBuild on null job or null job's item");
 			JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 
 		// Item is no longer exists
-		StructureModel currentStructure = WorldHelper.getStructure(_posX, _posY);
-		MapObjectModel currentItem = WorldHelper.getItem(_posX, _posY);
-		if (_buildItem != currentStructure && _buildItem != currentItem) {
-			if (_buildItem != currentStructure) {
-				Log.warning("Character #" + character.getId() + ": actionBuild on invalid structure");
-			} else if (_item != currentItem) {
-				Log.warning("Character #" + character.getId() + ": actionBuild on invalid item");
-			}
+		if (_mainItem != WorldHelper.getStructure(_posX, _posY) && _mainItem != WorldHelper.getItem(_posX, _posY)) {
+            Log.warning("Character #" + character.getId() + ": actionBuild on invalid mapObject");
 			JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 
+		// Move to ingredient
+		if (_status == Status.WAITING) {
+			moveToIngredient(_character, _receipt.getCurrentOrder());
+			return JobActionReturn.CONTINUE;
+		}
+
 		// Build
-        CharacterModel.TalentEntry talent = character.getTalent(CharacterModel.TalentType.BUILD);
-		_buildItem.addProgress(talent.work());
-		if (!_buildItem.isComplete()) {
+		CharacterModel.TalentEntry talent = character.getTalent(CharacterModel.TalentType.BUILD);
+		_mainItem.addProgress(talent.work());
+		if (!_mainItem.isComplete()) {
 			Log.debug("Character #" + character.getId() + ": build progress");
 			return JobActionReturn.CONTINUE;
 		}
@@ -90,7 +128,7 @@ public class JobBuild extends BaseJobModel {
 	}
 
     @Override
-    public double getProgress() { return (double)_buildItem.getProgress() / _buildItem.getInfo().cost; }
+    public double getProgress() { return (double)_mainItem.getProgress() / _mainItem.getInfo().cost; }
 
 	@Override
 	public boolean canBeResume() {
@@ -98,25 +136,12 @@ public class JobBuild extends BaseJobModel {
 	}
 
 	@Override
-	public CharacterModel.TalentType getTalentNeeded() {
-		return CharacterModel.TalentType.BUILD;
-	}
-
-	@Override
 	public String getLabel() {
-		return "build " + _buildItem.getLabel();
+		return "build " + _mainItem.getLabel();
 	}
 
 	@Override
 	public String getShortLabel() {
-		return "build " + _buildItem.getLabel();
-	}
-
-	@Override
-	protected void onStart(CharacterModel character) {
-	}
-
-	@Override
-	public void onQuit(CharacterModel character) {
+		return "build " + _mainItem.getLabel();
 	}
 }

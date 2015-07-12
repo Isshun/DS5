@@ -47,6 +47,7 @@ public class GameSerializer {
 
             Game.getInstance().setRegion(GameData.getData().getRegion("arrakis", "desert"));
 
+            new ParamSerializer().load(vn.duplicateNav());
             new WorldSerializer().load(vn.duplicateNav());
             new CharacterSerializer().load(vn.duplicateNav());
             new AreaSerializer().load(vn.duplicateNav());
@@ -69,6 +70,7 @@ public class GameSerializer {
             FileUtils.write(fos, "<?xml version='1.0' encoding='UTF-8'?>");
             FileUtils.write(fos, "<save>");
 
+            (new ParamSerializer()).save(fos);
             (new WorldSerializer()).save(fos);
             (new CharacterSerializer()).save(fos);
             (new AreaSerializer()).save(fos);

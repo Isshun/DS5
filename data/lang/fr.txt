@@ -1,0 +1,117 @@
+#Reports
+BUFF_STARVED_1: Feeling a little peckish
+BUFF_STARVED_2: Feeling hungry
+BUFF_STARVED_3: Suffering from hunger
+BUFF_STARVED_4: Is starving to death
+
+BUFF_HYPOTHERMIA_1: I'm cold
+BUFF_HYPOTHERMIA_2: I have lost the feeling in my fingers
+BUFF_HYPOTHERMIA_3: I'm frozen
+BUFF_HYPOTHERMIA_4: I am dying of cold
+
+BUFF_STARTER: Excited by new colony
+BUFF_DARK: In the dark for a long time
+BUFF_SOLITUDE_1: Feeling lonely
+BUFF_SOLITUDE_2: Need someone to talk
+
+ANDROID_GENERAL_HEALTH_OK: All systems functioning within normal parameters
+
+#Structure
+STRUCTURE_DOOR: Door
+STRUCTURE_GROUND: Ground
+STRUCTURE_FLOOR: Floor
+STRUCTURE_LIGHT: Light
+STRUCTURE_HULL: Hull
+STRUCTURE_WALL: Wall
+STRUCTURE_WINDOW: Window
+STRUCTURE_HUBBLE: Hubble
+
+#Item
+ITEM_BED: Bed: Lit
+ITEM_CHESS: Chess tab
+ITEM_PINK_SQUARE: Pink square
+ITEM_BEDSIDE_TABLE: Bedside Table
+Chair: Fauteuil
+Chest: Coffre
+Desk: Bureau
+Wardrobe: Garde robe
+Computer: Ordinateur
+Laptop: Ordinateur portable
+Cooker: Cuisinière
+Fridge: Frigo
+Pub: Bar
+Serving table: Buffet
+
+#Action
+None: Aucune
+Eat easy meal: Mange un repas simple
+Eat advanced meal: Mange un bon repas
+Eat military ration: Mange des rations militaires
+Cook easy meal: Cuisine un repas simple
+Cook advanced meal: Cuisine un bon repas
+Cook military ration: Cuisine des rations militaires
+Sleep in bed: Dors dans un lit
+
+#Room
+Quarter: Quartier
+Sickbay: Infirmerie
+Garden: Jardin
+Storage: Reserve
+Enginering: Salle des machines
+
+#Menu
+New colony: Nouvelle colonie
+Load colony: Charger une colonie
+Quit: Quitter
+
+MENU_CHARACTER_MONITORING: [Monitoring]
+MENU_CHARACTER_PRIVATE: [Private life]
+MENU_CHARACTER_PRIORITIES: [Priorities]
+MENU_CHARACTER_STATS: [Health]
+
+Food: Nourriture
+Gasoline: Essence
+Matter: Matériaux
+Water: Eau
+Power: Énergie
+Effects: Effets
+
+MENU_BACK: Back
+IN QUEUE: EN ATTENTE
+
+MENU_SHORTCUT_BUILD: [_BUILD]
+MENU_SHORTCUT_CREW: [_CREW]
+MENU_SHORTCUT_PLAN: [_PLAN]
+
+"Rendering: %dms": "Temps de rendu: %dms"
+
+#Character
+Last reports: Derniers rapports
+Monitoring: Surveillance
+Staff record: Informations
+Inventory: Inventaire
+Relationship: Relations
+Health: Santé
+Security: Sécurité
+Energy: Energie
+Oxygen: Oxygène
+Happiness: Bonheur
+
+#Relations
+parent: parent
+sister: soeur
+half-sister: demi-soeur
+brother: frère
+half-brother: demi-frère
+children: enfant
+mate: fiancé
+
+GATHER: RECOLTER
+MINING: MINER
+DUMP: DÉBARRASSER
+PICK UP: PRENDRE
+Count: Nombre
+Technician: Technicien
+Engineer: Ingénieur
+Doctor: Docteur
+Child: Enfant

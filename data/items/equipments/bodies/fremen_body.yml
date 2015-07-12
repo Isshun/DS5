@@ -1,0 +1,7 @@
+label: Fremen
+equipment:
+    location: body
+    effects:
+        -   buff:
+                oxygen: 20
+                heat: 20

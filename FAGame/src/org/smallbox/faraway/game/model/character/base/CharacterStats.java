@@ -14,52 +14,55 @@ public class CharacterStats {
     public double bodyHeat = Constant.BODY_TEMPERATURE;
     public boolean isAlive = true;
 
-    public static class CharacterStatsAbsorb {
+    public static class CharacterStatsValues {
         public double cold;
-    }
-
-    public static class CharacterStatsResist {
-        public double cold;
+        public double heat;
         public double oxygen;
     }
 
-    public static class CharacterStatsBuff {
-        public double oxygen;
-    }
+    public CharacterStatsValues debuff = new CharacterStatsValues();
+    public CharacterStatsValues resist = new CharacterStatsValues();
+    public CharacterStatsValues buff = new CharacterStatsValues();
 
-    public CharacterStatsAbsorb absorb = new CharacterStatsAbsorb();
-    public CharacterStatsResist resist = new CharacterStatsResist();
-    public CharacterStatsBuff buff = new CharacterStatsBuff();
-
-    public void reset(CharacterModel character, List<ItemInfo> equipmentInfos) {
-        this.absorb.cold = 0;
-        this.resist.cold = 0;
-        this.resist.oxygen = 0;
-        this.buff.oxygen = 0;
+    public void reset(CharacterModel character, List<ItemInfo> equipmentsInfo) {
+        reset(this.debuff);
+        reset(this.resist);
+        reset(this.buff);
 
         character.addBodyStats(this);
 
-        for (ItemInfo itemInfo: equipmentInfos) {
+        for (ItemInfo itemInfo: equipmentsInfo) {
             if (itemInfo.equipment.effects != null) {
                 for (ItemInfo.EquipmentEffect effect: itemInfo.equipment.effects) {
-                    // Check absorb
-                    if (effect.absorb != null) {
-                        this.absorb.cold += effect.absorb.cold;
+                    // Check debuff
+                    if (effect.debuff != null) {
+                        addValues(this.debuff, effect.debuff);
                     }
 
                     // Check resist
                     if (effect.resist != null) {
-                        this.resist.cold += effect.resist.cold / 4;
-                        this.resist.oxygen += effect.resist.oxygen;
+                        addValues(this.resist, effect.resist);
                     }
 
                     // Check buff
                     if (effect.buff != null) {
-                        this.buff.oxygen += effect.buff.oxygen;
+                        addValues(this.buff, effect.buff);
                     }
                 }
             }
         }
+    }
+
+    private void addValues(CharacterStatsValues values, ItemInfo.EquipmentEffectValues effect) {
+        values.cold += effect.cold;
+        values.heat += effect.heat;
+        values.oxygen += effect.oxygen;
+    }
+
+    private void reset(CharacterStatsValues values) {
+        values.cold = 0;
+        values.heat = 0;
+        values.oxygen = 0;
     }
 
 

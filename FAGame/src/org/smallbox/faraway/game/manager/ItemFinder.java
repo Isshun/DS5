@@ -32,51 +32,81 @@ public class ItemFinder extends BaseManager {
     }
 
     public MapObjectModel getNearest(ItemFilter filter, CharacterModel character) {
-		int startX = character.getX();
-		int startY = character.getY();
-		int maxX = Math.max(startX, _width - startX);
-		int maxY = Math.max(startY, _height - startY);
-		for (int offsetX = 0; offsetX < maxX; offsetX++) {
-			for (int offsetY = 0; offsetY < maxY; offsetY++) {
-				ParcelModel area = _worldManager.getParcel(startX + offsetX, startY + offsetY);
+		if (filter.needItem) {
+            int bestDistance = Integer.MAX_VALUE;
+            ItemModel bestItem = null;
+            for (ItemModel item: Game.getWorldManager().getItems()) {
+                if (item.matchFilter(filter)) {
+                    int distance = WorldHelper.getApproxDistance(item.getParcel(), character.getParcel());
+                    if (bestDistance > distance) {
+                        bestDistance = distance;
+                        bestItem = item;
+                    }
+                }
+            }
+			return bestItem;
+		}
 
-				// Check on non-existing area
-				if (area == null) {
-					continue;
-				}
-
-//				// Private room exists and characters is not allowed
-//				if (area.getRoom() != null && area.getRoom().isPrivate() && area.getRoom().getOccupants().contains(characters) == false) {
+        if (filter.needConsumable) {
+            int bestDistance = Integer.MAX_VALUE;
+            ConsumableModel bestConsumable = null;
+            for (ConsumableModel consumable: Game.getWorldManager().getConsumables()) {
+                if (consumable.matchFilter(filter)) {
+                    int distance = WorldHelper.getApproxDistance(consumable.getParcel(), character.getParcel());
+                    if (bestDistance > distance) {
+                        bestDistance = distance;
+                        bestConsumable = consumable;
+                    }
+                }
+            }
+            return bestConsumable;
+        }
+//
+//		int startX = character.getX();
+//		int startY = character.getY();
+//		int maxX = Math.max(startX, _width - startX);
+//		int maxY = Math.max(startY, _height - startY);
+//		for (int offsetX = 0; offsetX < maxX; offsetX++) {
+//			for (int offsetY = 0; offsetY < maxY; offsetY++) {
+//				ParcelModel area = _worldManager.getParcel(startX + offsetX, startY + offsetY);
+//
+//				// Check on non-existing area
+//				if (area == null) {
 //					continue;
 //				}
-
-				if (filter.isConsomable) {
-					ConsumableModel consumable = WorldHelper.getConsumable(startX + offsetX, startY + offsetY);
-                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
-
-                    consumable = WorldHelper.getConsumable(startX - offsetX, startY - offsetY);
-                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
-
-                    consumable = WorldHelper.getConsumable(startX + offsetX, startY - offsetY);
-                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
-
-                    consumable = WorldHelper.getConsumable(startX - offsetX, startY + offsetY);
-                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
-				} else {
-					ItemModel item = WorldHelper.getItem(startX + offsetX, startY + offsetY);
-					if (getNearestItemCheck(item, filter)) { return item; }
-
-					item = WorldHelper.getItem(startX - offsetX, startY - offsetY);
-					if (getNearestItemCheck(item, filter)) { return item; }
-
-					item = WorldHelper.getItem(startX + offsetX, startY - offsetY);
-					if (getNearestItemCheck(item, filter)) { return item; }
-
-					item = WorldHelper.getItem(startX - offsetX, startY + offsetY);
-					if (getNearestItemCheck(item, filter)) { return item; }
-				}
-			}
-		}
+//
+////				// Private room exists and characters is not allowed
+////				if (area.getRoom() != null && area.getRoom().isPrivate() && area.getRoom().getOccupants().contains(characters) == false) {
+////					continue;
+////				}
+//
+//				if (filter.isConsomable) {
+//					ConsumableModel consumable = WorldHelper.getConsumable(startX + offsetX, startY + offsetY);
+//                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
+//
+//                    consumable = WorldHelper.getConsumable(startX - offsetX, startY - offsetY);
+//                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
+//
+//                    consumable = WorldHelper.getConsumable(startX + offsetX, startY - offsetY);
+//                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
+//
+//                    consumable = WorldHelper.getConsumable(startX - offsetX, startY + offsetY);
+//                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
+//				} else {
+//					ItemModel item = WorldHelper.getItem(startX + offsetX, startY + offsetY);
+//					if (getNearestItemCheck(item, filter)) { return item; }
+//
+//					item = WorldHelper.getItem(startX - offsetX, startY - offsetY);
+//					if (getNearestItemCheck(item, filter)) { return item; }
+//
+//					item = WorldHelper.getItem(startX + offsetX, startY - offsetY);
+//					if (getNearestItemCheck(item, filter)) { return item; }
+//
+//					item = WorldHelper.getItem(startX - offsetX, startY + offsetY);
+//					if (getNearestItemCheck(item, filter)) { return item; }
+//				}
+//			}
+//		}
 		return null;
 	}
 
@@ -140,7 +170,7 @@ public class ItemFinder extends BaseManager {
 
 	public MapObjectModel getRandomNearest(ItemFilter filter, int x, int y) {
         ParcelModel fromParcel = _worldManager.getParcel(x, y);
-        List<? extends MapObjectModel> list = filter.isConsomable ? _consumables : _items;
+        List<? extends MapObjectModel> list = filter.needConsumable ? _consumables : _items;
 
         // Get matching items
         int start = (int) (Math.random() * list.size());

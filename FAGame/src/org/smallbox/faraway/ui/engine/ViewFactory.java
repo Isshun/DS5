@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui.engine;
 
+import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.renderer.RenderLayer;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.panel.LayoutFactory;
@@ -40,6 +41,13 @@ public abstract class ViewFactory {
     public abstract RenderLayer createRenderLayer(int index, int width, int height);
 
     public void load(String path, ViewFactoryLoadListener listener) {
+        FrameLayout rootView = load(path);
+        if (listener != null) {
+            listener.onLoad(rootView);
+        }
+    }
+
+    public FrameLayout load(String path) {
         try {
             FrameLayout rootView = createFrameLayout();
             InputStream input = new FileInputStream(new File(path));
@@ -50,10 +58,34 @@ public abstract class ViewFactory {
                     rootView.addView(LayoutFactory.createFromLayout(null, entry));
                 }
             }
+
+            if (layout.id != null) {
+                rootView.setId(layout.id.hashCode());
+                rootView.setName(layout.id);
+            }
+
+            if (layout.align != null) {
+                rootView.setAlign("left".equals(layout.align[0]), "top".equals(layout.align[1]));
+            }
+
+            if (layout.position != null) {
+                rootView.setPosition(layout.position[0], layout.position[1]);
+            }
+
+            if (layout.size != null) {
+                rootView.setSize(layout.size[0], layout.size[1]);
+            }
+
+            if (layout.background != 0) {
+                rootView.setBackgroundColor(new Color(layout.background));
+            }
+
             rootView.resetAllPos();
-            listener.onLoad(rootView);
+
+            return rootView;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }

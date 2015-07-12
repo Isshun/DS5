@@ -19,6 +19,7 @@ public class LayoutModel {
         public int[]    position;
         public List<LayoutEntry> entries;
         public String   align;
+        public String   file;
     }
 
     public List<LayoutEntry>    entries;
@@ -26,4 +27,5 @@ public class LayoutModel {
     public int[]                position;
     public int[]                size;
     public String[]             align;
+    public String               id;
 }

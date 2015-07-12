@@ -105,6 +105,23 @@ public class AreaManager extends BaseManager {
         return (StorageAreaModel)bestArea;
     }
 
+    public ParcelModel getNearestFreeStorageParcel(ConsumableModel consumable, ParcelModel fromParcel) {
+        int x = fromParcel.x;
+        int y = fromParcel.y;
+        int bestDistance = Integer.MAX_VALUE;
+        ParcelModel bestParcel = null;
+        for (AreaModel area: _areas) {
+            if (area.isStorage() && area.accept(consumable.getInfo()) && PathManager.getInstance().getPath(area, fromParcel) != null) {
+                ParcelModel parcel = ((StorageAreaModel)area).getNearestFreeParcel(consumable, x, y);
+                if (parcel != null && Utils.getDistance(parcel, x, y) < bestDistance) {
+                    bestParcel = parcel;
+                    bestDistance = Utils.getDistance(parcel, x, y);
+                }
+            }
+        }
+        return bestParcel;
+    }
+
     public void addArea(AreaModel area) {
         _areas.add(area);
     }

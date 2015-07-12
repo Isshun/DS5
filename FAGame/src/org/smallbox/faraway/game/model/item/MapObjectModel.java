@@ -187,7 +187,11 @@ public abstract class MapObjectModel {
     }
 
     public void addComponent(ConsumableModel consumable) {
-        throw new RuntimeException("add inventory on MapObjectItem is not allowed");
+        throw new RuntimeException("add component on MapObjectItem is not allowed");
+    }
+
+    public List<ConsumableModel> 	getComponents() {
+        throw new RuntimeException("get component on MapObjectItem is not allowed");
     }
 
     public void setHealth(int health) {

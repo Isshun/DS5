@@ -34,7 +34,7 @@ public class CheckCharacterExhausted extends CharacterCheck {
 
     @Override
     public BaseJobModel create(CharacterModel character) {
-        ItemFilter filter = ItemFilter.createUsableFilter();
+        ItemFilter filter = ItemFilter.createItemFilter();
         filter.effectEnergy = true;
 
         // Get nearest bed

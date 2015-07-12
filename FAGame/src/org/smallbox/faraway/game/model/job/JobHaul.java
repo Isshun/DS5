@@ -135,10 +135,6 @@ public class JobHaul extends BaseJobModel {
     }
 
     @Override
-    protected void onStart(CharacterModel character) {
-    }
-
-    @Override
     public void onQuit(CharacterModel character) {
         if (character.getInventory() != null) {
             Game.getWorldManager().putConsumable(character.getInventory(), character.getX(), character.getY());
