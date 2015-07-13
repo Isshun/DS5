@@ -366,9 +366,10 @@ public class PanelCharacter extends BaseRightPanel {
         if (_character != null) {
             refreshJob(_character.getJob());
             refreshNeeds();
-            refreshStats();
             refreshInventory();
-            refreshEquipments();
+            refreshStatsEquipments();
+            refreshStatsBody();
+            refreshStats();
 
             // Relations
             if (update % 20 == 0 || _nbRelation != _character.getRelations().getRelations().size()) {
@@ -387,33 +388,74 @@ public class PanelCharacter extends BaseRightPanel {
         refreshTimeTable();
     }
 
-    private void refreshStats() {
-        CharacterStats stats = _character.getStats();
+    private void refreshStatsBody() {
+        findById("frame_stats_body").setVisible(false);
 
         String body = _character.getType().label;
         ((UILabel) findById("lb_ethnic_group")).setString(null);
         for (ItemInfo info: _character.getEquipments()) {
             if ("body".equals(info.equipment.location)) {
+                findById("frame_stats_body").setVisible(true);
+
                 body += " (" + info.label + ")";
+
+                ItemInfo.EquipmentEffect effects = info.equipment.effects.get(0);
+
+                String buffValue = "Buff ";
+                if (effects.buff != null) {
+                    if (effects.buff.cold != 0) buffValue += "cold: " + effects.buff.cold + ", ";
+                    if (effects.buff.heat != 0) buffValue += "heat: " + effects.buff.heat + ", ";
+                    if (effects.buff.oxygen != 0) buffValue += "o2: " + effects.buff.oxygen + ", ";
+                }
+                ((UILabel) findById("lb_stats_buff")).setString(buffValue);
+
+                String absorbValue = "Absorb ";
+                if (effects.debuff != null) {
+                    if (effects.debuff.cold != 0) absorbValue += "cold: " + effects.debuff.cold + ", ";
+                    if (effects.debuff.heat != 0) absorbValue += "heat: " + effects.debuff.heat + ", ";
+                    if (effects.debuff.oxygen != 0) absorbValue += "o2: " + effects.debuff.oxygen + ", ";
+                }
+                ((UILabel) findById("lb_stats_absorb")).setString(absorbValue);
+
+                String resistsValue = "Resists ";
+                if (effects.resist != null) {
+                    if (effects.resist.cold != 0) resistsValue += "cold: " + effects.resist.cold + ", ";
+                    if (effects.resist.heat != 0) resistsValue += "heat: " + effects.resist.heat + ", ";
+                    if (effects.resist.oxygen != 0) resistsValue += "o2: " + effects.resist.oxygen + ", ";
+                }
+                ((UILabel) findById("lb_stats_resist")).setString(resistsValue);
+
+                ((UILabel) findById("lb_ethnic_group")).setString(body);
             }
         }
-        ((UILabel) findById("lb_ethnic_group")).setString(body);
+    }
+
+    private void refreshStats() {
+        CharacterStats stats = _character.getStats();
 
         String buffValue = "Buff ";
-        if (stats.buff.oxygen != 0) buffValue += "o2: " + stats.buff.oxygen + ", ";
-        ((UILabel) findById("lb_stats_buff")).setString(buffValue);
+        if (stats.buff != null) {
+            if (stats.buff.cold != 0) buffValue += "cold: " + stats.buff.coldScore + ", ";
+            if (stats.buff.heat != 0) buffValue += "heat: " + stats.buff.heatScore + ", ";
+            if (stats.buff.oxygen != 0) buffValue += "o2: " + stats.buff.oxygenScore + ", ";
+        }
+        ((UILabel) findById("lb_total_buff")).setString(buffValue);
 
         String absorbValue = "Absorb ";
-        if (stats.debuff.cold != 0) absorbValue += "cold: " + stats.debuff.cold + ", ";
-        if (stats.debuff.heat != 0) absorbValue += "heat: " + stats.debuff.heat + ", ";
-        if (stats.debuff.oxygen != 0) absorbValue += "o2: " + stats.debuff.oxygen + ", ";
-        ((UILabel) findById("lb_stats_absorb")).setString(absorbValue);
+        if (stats.debuff != null) {
+            if (stats.debuff.cold != 0) absorbValue += "cold: " + stats.debuff.coldScore + ", ";
+            if (stats.debuff.heat != 0) absorbValue += "heat: " + stats.debuff.heatScore + ", ";
+            if (stats.debuff.oxygen != 0) absorbValue += "o2: " + stats.debuff.oxygenScore + ", ";
+        }
+        ((UILabel) findById("lb_total_absorb")).setString(absorbValue);
 
         String resistsValue = "Resists ";
-        if (stats.resist.cold != 0) resistsValue += "cold: " + stats.resist.cold + ", ";
-        if (stats.resist.heat != 0) resistsValue += "heat: " + stats.resist.heat + ", ";
-        if (stats.resist.oxygen != 0) resistsValue += "o2: " + stats.resist.oxygen + ", ";
-        ((UILabel) findById("lb_stats_resist")).setString(resistsValue);
+        if (stats.resist != null) {
+            if (stats.resist.cold != 0) resistsValue += "cold: " + stats.resist.coldScore + " (" + (int)(stats.resist.cold * 100) + "%), ";
+            if (stats.resist.heat != 0) resistsValue += "heat: " + stats.resist.heatScore + " (" + (int)(stats.resist.heat * 100) + "%), ";
+            if (stats.resist.oxygen != 0) resistsValue += "o2: " + stats.resist.oxygenScore + " (" + (int)(stats.resist.oxygen * 100) + "%), ";
+        }
+        ((UILabel) findById("lb_total_resist")).setString(resistsValue);
     }
 
     private void refreshTimeTable() {
@@ -501,7 +543,7 @@ public class PanelCharacter extends BaseRightPanel {
         ViewFactory.getInstance().load(character.getEquipmentViewPath(), frameEquipmentBody::addView);
     }
 
-    private void refreshEquipments() {
+    private void refreshStatsEquipments() {
         if (_character.getEquipmentViewIds() != null) {
             for (String[] equipmentViewId : _character.getEquipmentViewIds()) {
                 setEquipment((UILabel)findById(equipmentViewId[0]), equipmentViewId[1]);
@@ -571,9 +613,14 @@ public class PanelCharacter extends BaseRightPanel {
 
     private void refreshDebug() {
         if (_character != null) {
-            ((UILabel)findById("lb_environment")).setString("Environment: " + Game.getWorldManager().getEnvironmentValue(_character.getX(), _character.getY(), GameData.config.environmentDistance));
-//            ((TextView)findById("lb_light")).setString();
-            ((UILabel)findById("lb_mood_change")).setString("Mood change: " + _character.getNeeds().happinessChange);
+            FrameLayout frame = (FrameLayout)findById("frame_debug");
+            frame.removeAllViews();
+            addDebugView(frame, "Environment: " + Game.getWorldManager().getEnvironmentValue(_character.getX(), _character.getY(), GameData.config.environmentDistance));
+            addDebugView(frame, "Mood change: " + _character.getNeeds().happinessChange);
+            addDebugView(frame, "Heat: " + _character.getNeeds().heat);
+            addDebugView(frame, "heat diff: " + (_character.getParcel().getTemperature() - (_character.getNeeds().heat - _character.getType().thermolysis)));
+            addDebugView(frame, "heat buff: " + _character.getStats().buff.heat);
+            addDebugView(frame, "heat diff real: " + _character.getNeeds().heatDifferenceReal);
         }
     }
 

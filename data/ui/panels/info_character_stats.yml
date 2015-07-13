@@ -12,6 +12,7 @@ entries:
 
     # Body
     -   type: frame
+        id: frame_stats_body
         position: [0, 200]
         entries:
 
@@ -74,23 +75,42 @@ entries:
         -   type: frame
             position: [0, 400]
             entries:
-            
-            -   type: label
-                text: total stats
-                textsize: 18
-                position: [20, 0]
-            
+
             -   type: label
                 id: lb_equipment_total_resist
                 textsize: 14
-                position: [20, 30]
+                position: [20, 0]
 
             -   type: label
                 id: lb_equipment_total_absorb
                 textsize: 14
-                position: [20, 50]
+                position: [20, 30]
 
             -   type: label
                 id: lb_equipment_total_buff
+                textsize: 14
+                position: [20, 50]
+
+        -   type: frame
+            position: [0, 500]
+            entries:
+
+            -   type: label
+                text: total stats
+                textsize: 24
+                position: [20, 0]
+
+            -   type: label
+                id: lb_total_resist
+                textsize: 14
+                position: [20, 30]
+
+            -   type: label
+                id: lb_total_absorb
+                textsize: 14
+                position: [20, 50]
+
+            -   type: label
+                id: lb_total_buff
                 textsize: 14
                 position: [20, 70]

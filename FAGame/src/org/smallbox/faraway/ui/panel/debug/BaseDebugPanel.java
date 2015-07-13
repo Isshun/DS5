@@ -11,7 +11,6 @@ import org.smallbox.faraway.ui.panel.BasePanel;
  */
 public abstract class BaseDebugPanel extends BasePanel {
     private FrameLayout         _frame;
-    private int                 _index;
     private UILabel             _lbClose;
     private UILabel             _lbTitle;
     private boolean             _isMoving;
@@ -53,9 +52,8 @@ public abstract class BaseDebugPanel extends BasePanel {
         _frame.addView(_lbClose);
         _lbClose.resetAllPos();
 
-        _index = 0;
         onAddDebug();
-        setSize(250, 38 + 20 * _index);
+        setSize(250, 38 + 20 * _debugIndex);
     }
 
     protected abstract String getTitle();
@@ -63,19 +61,11 @@ public abstract class BaseDebugPanel extends BasePanel {
     protected abstract void onAddDebug();
 
     protected void addDebugView(String text) {
-        addDebugView(text, null);
+        addDebugView(_frame, text, null);
     }
 
     protected void addDebugView(String text, OnClickListener clickListener) {
-        UILabel lbCommand = ViewFactory.getInstance().createTextView();
-        lbCommand.setString(text);
-        lbCommand.setCharacterSize(14);
-        lbCommand.setPosition(6, 38 + 20 * _index++);
-        lbCommand.setSize(230, 20);
-        lbCommand.setAlign(Align.CENTER_VERTICAL);
-        lbCommand.setOnClickListener(clickListener);
-        lbCommand.resetSize();
-        _frame.addView(lbCommand);
+        addDebugView(_frame, text, clickListener);
     }
 
     public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {

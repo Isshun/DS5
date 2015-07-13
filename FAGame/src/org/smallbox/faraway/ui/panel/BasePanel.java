@@ -9,9 +9,7 @@ import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.View;
-import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.*;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -37,6 +35,7 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 	private long 					_totalDrawTime;
 	private int 					_nbRefresh;
 	private long 					_totalRefreshTime;
+    protected int 					_debugIndex;
 
 	public void			toogle() { _isVisible = !_isVisible; }
 	public void			open() { _isVisible = true; }
@@ -124,13 +123,30 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 	
 	public void refresh(int update) {
 		if (_isVisible) {
+			_debugIndex = 0;
 			long time = System.currentTimeMillis();
 			onRefresh(update);
 			_totalRefreshTime += (System.currentTimeMillis() - time);
 			_nbRefresh++;
 		}
 	}
-	
+
+	protected void addDebugView(FrameLayout frame, String text) {
+		addDebugView(frame, text, null);
+	}
+
+	protected void addDebugView(FrameLayout frame, String text, OnClickListener clickListener) {
+		UILabel lbCommand = ViewFactory.getInstance().createTextView();
+		lbCommand.setString(text);
+		lbCommand.setCharacterSize(14);
+		lbCommand.setPosition(6, 38 + 20 * _debugIndex++);
+		lbCommand.setSize(230, 20);
+		lbCommand.setAlign(Align.CENTER_VERTICAL);
+		lbCommand.setOnClickListener(clickListener);
+		lbCommand.resetSize();
+		frame.addView(lbCommand);
+	}
+
 	protected void onRefresh(int update) {
 	}
 

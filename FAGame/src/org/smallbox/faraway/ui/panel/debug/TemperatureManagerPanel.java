@@ -25,6 +25,7 @@ public class TemperatureManagerPanel extends BaseDebugPanel {
     protected void onAddDebug() {
         addDebugView("increase", view -> _manager.increaseTemperature());
         addDebugView("decrease", view -> _manager.decreaseTemperature());
+        addDebugView("normalize", view -> _manager.normalize());
         addDebugView("temperature: " + StringUtils.formatNumber(_manager.getTemperature()));
         addDebugView("temperature target: " + StringUtils.formatNumber(_manager.getTemperatureTarget()));
         addDebugView("temperature offset: " + StringUtils.formatNumber(_manager.getTemperatureOffset()));

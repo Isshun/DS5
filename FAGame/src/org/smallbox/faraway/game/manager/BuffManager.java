@@ -29,7 +29,9 @@ public class BuffManager extends BaseManager {
         for (CharacterModel character: Game.getCharacterManager().getCharacters()) {
             if (character.isAlive()) {
                 character.getNeeds().happinessChange = 0;
-                for (BuffModel buff : character._buffs) {
+                int length = character._buffs.size();
+                for (int i = 0; i < length; i++) {
+                    BuffModel buff = character._buffs.get(i);
                     LuaValue ret = buff.globals.get("OnUpdate").call(_luaGame, buff.luaCharacter);
                     if (!ret.isnil()) {
                         buff.message = ret.get(1).toString();
@@ -38,13 +40,13 @@ public class BuffManager extends BaseManager {
 
                         LuaValue effects = ret.get(4).isnil() ? null : ret.get(4);
                         if (effects != null) {
-                            for (int i = 0; i < effects.length(); i++) {
-                                if (Math.random() <= effects.get(i + 1).get(2).todouble()) {
-                                    Log.notice("apply buff effect: " + effects.get(i + 1).get(1).toString() + " (" + buff.message + ")");
+                            for (int j = 0; j < effects.length(); j++) {
+                                if (Math.random() <= effects.get(j + 1).get(2).todouble()) {
+                                    Log.notice("apply buff effect: " + effects.get(j + 1).get(1).toString() + " (" + buff.message + ")");
                                     ((DiseaseManager)Game.getInstance().getManager(DiseaseManager.class)).apply(
                                             character,
-                                            effects.get(i + 1).get(1).toString(),
-                                            effects.get(i + 1).get(3));
+                                            effects.get(j + 1).get(1).toString(),
+                                            effects.get(j + 1).get(3));
                                 }
                             }
                         }

@@ -1,14 +1,11 @@
 package org.smallbox.faraway.game.model.character.base;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.RoomManager;
-import org.smallbox.faraway.game.manager.TemperatureManager;
 import org.smallbox.faraway.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
 
 public class CharacterNeeds {
     private final CharacterModel 	_character;
@@ -34,6 +31,7 @@ public class CharacterNeeds {
     public double 	satiety;
     public double 	joy;
     public double 	heat;
+    public double heatDifferenceReal;
     public int 		environment;
     public int 		light;
     public int 		pain;
@@ -122,28 +120,29 @@ public class CharacterNeeds {
         }
 
         // Body heat
-        double temperature = _character.getParcel().getRoom() != null ? _character.getParcel().getRoom().getTemperatureInfo().temperature :
-                ((TemperatureManager)Game.getInstance().getManager(TemperatureManager.class)).getTemperature();
-        double heatDifference = temperature - (this.heat - _character.getType().thermolysis);
-        System.out.println("heatDifference BB: " + heatDifference);
+        double heatDifference = _character.getParcel().getTemperature() - (this.heat - _character.getType().thermolysis);
+        double heatDifferenceReal = 0;
+        System.out.println("heatDifference: " + heatDifference);
 
         if (heatDifference < 0) {
-            heatDifference = Math.min(0, heatDifference + _stats.buff.heat);
+            heatDifferenceReal = Math.min(0, heatDifference + _stats.buff.heat);
         } else if (heatDifference > 0) {
-            heatDifference = Math.max(0, heatDifference - _stats.buff.cold);
+            heatDifferenceReal = Math.max(0, heatDifference - _stats.buff.cold);
         }
 
-        System.out.println("heatDifference AB: " + heatDifference);
+        this.heatDifferenceReal = heatDifferenceReal;
 
-        if (heatDifference < 0) {
-            this.heat += heatDifference * (1 - _stats.resist.cold / 100f) / 100f;
-        } else if (heatDifference > 0) {
-            this.heat += heatDifference * (1 - _stats.resist.heat / 100f) / 100f;
+        System.out.println("heatDifferenceReal: " + heatDifferenceReal);
+
+        if (heatDifferenceReal < 0) {
+            this.heat += heatDifferenceReal * (1 - _stats.resist.cold / 100f) / 100f;
+        } else if (heatDifferenceReal > 0) {
+            this.heat += heatDifferenceReal * (1 - _stats.resist.heat / 100f) / 100f;
         } else {
-            if (this.heat > _character.getType().needs.heat.optimal + 1) {
-                this.heat -= 1 / 100f;
-            } else if (this.heat < _character.getType().needs.heat.optimal - 1) {
-                this.heat += 1 / 100f;
+            if (this.heat > _character.getType().needs.heat.optimal + 0.25) {
+                this.heat -= (heatDifference - _stats.buff.cold) / 1000f;
+            } else if (this.heat < _character.getType().needs.heat.optimal - 0.25) {
+                this.heat += (heatDifference + _stats.buff.heat) / 1000f;
             } else {
                 this.heat = _character.getType().needs.heat.optimal;
             }

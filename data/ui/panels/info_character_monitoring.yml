@@ -65,30 +65,7 @@ entries:
 
         -   type: frame
             position: [0, 780]
-            entries:
-                
-            -   type: label
-                text: Debug
-                textsize: 22
-                position: [20, 0]
-                
-            -   type: label
-                id: lb_environment
-                text: environment
-                textsize: 14
-                position: [20, 30]
-                
-            -   type: label
-                id: lb_light
-                text: light
-                textsize: 14
-                position: [20, 50]
-
-            -   type: label
-                id: lb_mood_change
-                text: mood change
-                textsize: 14
-                position: [20, 70]
+            id: frame_debug
 
     # Inventory
     -   type: frame

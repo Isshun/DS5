@@ -17,9 +17,12 @@ public class CharacterStats {
     public boolean isAlive = true;
 
     public static class CharacterStatsValues {
-        public double cold;
-        public double heat;
-        public double oxygen;
+        public double   cold;
+        public int      coldScore;
+        public double   heat;
+        public int      heatScore;
+        public double   oxygen;
+        public int      oxygenScore;
     }
 
     public CharacterStatsValues debuff = new CharacterStatsValues();
@@ -54,21 +57,32 @@ public class CharacterStats {
             }
         }
 
-        this.resist.cold = Math.min(100, Math.max(0, this.resist.cold));
-        this.resist.heat = Math.min(100, Math.max(0, this.resist.heat));
-        this.resist.oxygen = Math.min(100, Math.max(0, this.resist.oxygen));
+        this.resist.cold = Math.min(100, Math.max(0, Math.log(this.resist.coldScore * 10))) / 10;
+        this.resist.heat = Math.min(100, Math.max(0, Math.log(this.resist.heatScore * 10))) / 10;
+        this.resist.oxygen = Math.min(100, Math.max(0, Math.log(this.resist.oxygenScore * 10))) / 10;
+
+        this.buff.cold = this.buff.coldScore;
+        this.buff.heat = this.buff.heatScore;
+        this.buff.oxygen = this.buff.oxygenScore;
+
+        this.debuff.cold = this.debuff.coldScore;
+        this.debuff.heat = this.debuff.heatScore;
+        this.debuff.oxygen = this.debuff.oxygenScore;
     }
 
     private void addValues(CharacterStatsValues values, ItemInfo.EquipmentEffectValues effect) {
-        values.cold += effect.cold;
-        values.heat += effect.heat;
-        values.oxygen += effect.oxygen;
+        values.coldScore += effect.cold;
+        values.heatScore += effect.heat;
+        values.oxygenScore += effect.oxygen;
     }
 
     private void reset(CharacterStatsValues values) {
         values.cold = 0;
+        values.coldScore = 0;
         values.heat = 0;
+        values.heatScore = 0;
         values.oxygen = 0;
+        values.oxygenScore = 0;
     }
 
 

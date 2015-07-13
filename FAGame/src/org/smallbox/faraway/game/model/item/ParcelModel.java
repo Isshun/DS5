@@ -3,6 +3,8 @@ package org.smallbox.faraway.game.model.item;
 import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedNode;
 import com.badlogic.gdx.utils.Array;
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.TemperatureManager;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
 
@@ -208,5 +210,9 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 
     public void setOxygen(double oxygen) {
         _oxygen = oxygen;
+    }
+
+    public double getTemperature() {
+        return _room != null ? _room.getTemperatureInfo().temperature : ((TemperatureManager)Game.getInstance().getManager(TemperatureManager.class)).getTemperature();
     }
 }
