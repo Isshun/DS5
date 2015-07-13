@@ -14,19 +14,30 @@ import java.util.List;
  * Created by Alex on 13/06/2015.
  */
 public class TemperatureManager extends BaseManager implements GameObserver {
-    private static final int    UPDATE_INTERVAL = 25;
-
-    private final WorldManager  _worldManager;
     private final RoomManager   _roomManager;
     private List<ItemModel>     _items;
-    private double              _exteriorTemperature;
-    private int                 _count;
+    private double              _temperature;
+    private double              _temperatureTarget;
+    private double              _temperatureOffset;
 
     public TemperatureManager(WorldManager worldManager) {
         _roomManager = (RoomManager)Game.getInstance().getManager(RoomManager.class);
-        _worldManager = worldManager;
         _items = new ArrayList<>();
     }
+
+    @Override
+    public void onCreate() {
+        _temperature = _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
+    }
+
+    public void     setTemperature(double temperature) { _temperatureTarget = temperature; }
+    public void     setTemperatureOffset(int temperatureOffset) { _temperatureOffset = temperatureOffset; }
+    public void     increaseTemperature() { _temperatureTarget++; }
+    public void     decreaseTemperature() { _temperatureTarget--; }
+    public void     normalize() { _temperature = _temperatureTarget; }
+    public double   getTemperature() { return _temperature; }
+    public double   getTemperatureTarget() { return _temperatureTarget; }
+    public double   getTemperatureOffset() { return _temperatureOffset; }
 
     @Override
     public void onAddItem(ItemModel item) {
@@ -41,103 +52,119 @@ public class TemperatureManager extends BaseManager implements GameObserver {
     }
 
     public void onUpdate(int tick) {
-        if (tick % UPDATE_INTERVAL == 0) {
-            List<RoomModel> rooms = _roomManager.getRoomList();
-            int exteriorTemperature = _worldManager.getTemperature();
+        double change = ((_temperatureTarget + _temperatureOffset) - _temperature) / 100;
+        if (change > -0.001 && change < 0.001) {
+            _temperature = _temperatureTarget + _temperatureOffset;
+        } else if (change > -0.01 && change < 0.01) {
+            _temperature += change < 0 ? -0.01 : 0.01;
+        } else {
+            _temperature += change;
+        }
 
-            _exteriorTemperature += (exteriorTemperature - _exteriorTemperature) / 10;
+        if (tick % 25 == 0) {
+            Log.debug("update temperature (" + _temperature + ")");
 
-            Log.debug("update temperature (" + _exteriorTemperature + ")");
-
-            // First pass
             // Check heat / cold effects and room heatPotency then apply to room
-            for (RoomModel room : rooms) {
-                RoomModel.RoomTemperatureModel temperatureInfo = room.getTemperatureInfo();
-                temperatureInfo.temperature = _exteriorTemperature;
-                temperatureInfo.temperatureTotal = _exteriorTemperature * room.getSize();
+            pass1();
 
-                if (room.isExterior()) {
-                    temperatureInfo.heatPotency = 1000;
-                    temperatureInfo.coldPotency = 1000;
-                } else {
-                    temperatureInfo.heatPotency = 0;
-                    temperatureInfo.heatPotencyLeft = 0;
-                    temperatureInfo.coldPotency = 0;
-                    temperatureInfo.coldPotencyLeft = 0;
-
-                    // Apply heat to room
-                    int totalHeatTarget = 0;
-                    for (ItemModel item : room.getHeatItems()) {
-                        totalHeatTarget += item.getTargetTemperature() * item.getInfo().effects.heatPotency;
-                        temperatureInfo.heatPotency += item.getInfo().effects.heatPotency;
-                    }
-                    if (temperatureInfo.heatPotency > 0) {
-                        temperatureInfo.targetHeat = totalHeatTarget / temperatureInfo.heatPotency;
-                        temperatureInfo.targetHeatTotal = temperatureInfo.targetHeat * room.getSize();
-                        temperatureInfo.heatPotencyLeft = temperatureInfo.heatPotency;
-                    }
-
-                    // Apply cold to room
-                    int totalColdTarget = 0;
-                    for (ItemModel item : room.getColdItems()) {
-                        temperatureInfo.targetCold += item.getTargetTemperature() * item.getInfo().effects.coldPotency;
-                        temperatureInfo.coldPotency += item.getInfo().effects.coldPotency;
-                    }
-                    if (temperatureInfo.coldPotency > 0) {
-                        temperatureInfo.targetCold = totalColdTarget / temperatureInfo.coldPotency;
-                        temperatureInfo.targetColdTotal = temperatureInfo.targetHeat * room.getSize();
-                        temperatureInfo.coldPotencyLeft = temperatureInfo.coldPotency;
-                    }
-                }
-            }
-
-            // Second pass
             // Diffuse temperature to neighborhood
-            for (int i = 0; i < 16; i++) {
-                for (RoomModel room : rooms) {
-                    int roomSize = room.getSize();
-                    if (!room.isExterior()) {
-                        RoomModel.RoomTemperatureModel t1 = room.getTemperatureInfo();
-
-                        // Diffuse temperature to room
-                        for (NeighborModel neighbor: room.getNeighbors()) {
-                            RoomModel.RoomTemperatureModel t2 = neighbor.room.getTemperatureInfo();
-                            double neighborRatio = (double) neighbor.parcels.size() * 2 / room.getSize();
-                            t1.temperatureTotal += (t2.temperatureTotal / neighbor.room.getSize() - t1.temperatureTotal / roomSize) * neighborRatio;
-                        }
-
-                        // Increase temperature of the room
-                        if (t1.targetHeatTotal > t1.temperatureTotal) {
-                            double change = (t1.targetHeatTotal - t1.temperatureTotal) / roomSize / 2;
-                            double value = change * roomSize;
-                            if (t1.heatPotencyLeft < value) {
-                                value = t1.heatPotencyLeft;
-                            }
-                            t1.heatPotencyLeft -= value;
-                            t1.temperatureTotal += value * 2;
-                        }
-                    }
-                }
-            }
+            pass2();
 
             // Set potency use on each items
-            for (RoomModel room: rooms) {
-                if (!room.getHeatItems().isEmpty()) {
-                    int heatPotencyUsePerItem = (room.getTemperatureInfo().heatPotency - room.getTemperatureInfo().heatPotencyLeft) / room.getHeatItems().size();
-                    room.getHeatItems().forEach(item -> item.setPotencyUse(heatPotencyUsePerItem));
-                }
-
-                if (!room.getColdItems().isEmpty()) {
-                    int coldPotencyUsePerItem = (room.getTemperatureInfo().coldPotency - room.getTemperatureInfo().coldPotencyLeft) / room.getColdItems().size();
-                    room.getColdItems().forEach(item -> item.setPotencyUse(coldPotencyUsePerItem));
-                }
-            }
+            pass3();
 
             // Set final room temperature
-            for (RoomModel room : rooms) {
+            for (RoomModel room : _roomManager.getRoomList()) {
                 room.getTemperatureInfo().temperature = Math.round(room.getTemperatureInfo().temperatureTotal / room.getSize());
             }
         }
+    }
+
+    private void pass3() {
+        for (RoomModel room : _roomManager.getRoomList()) {
+            if (!room.getHeatItems().isEmpty()) {
+                int heatPotencyUsePerItem = (room.getTemperatureInfo().heatPotency - room.getTemperatureInfo().heatPotencyLeft) / room.getHeatItems().size();
+                room.getHeatItems().forEach(item -> item.setPotencyUse(heatPotencyUsePerItem));
+            }
+
+            if (!room.getColdItems().isEmpty()) {
+                int coldPotencyUsePerItem = (room.getTemperatureInfo().coldPotency - room.getTemperatureInfo().coldPotencyLeft) / room.getColdItems().size();
+                room.getColdItems().forEach(item -> item.setPotencyUse(coldPotencyUsePerItem));
+            }
+        }
+    }
+
+    private void pass2() {
+        for (int i = 0; i < 16; i++) {
+            for (RoomModel room : _roomManager.getRoomList()) {
+                int roomSize = room.getSize();
+                if (!room.isExterior()) {
+                    RoomModel.RoomTemperatureModel t1 = room.getTemperatureInfo();
+
+                    // Diffuse temperature to room
+                    for (NeighborModel neighbor : room.getNeighbors()) {
+                        RoomModel.RoomTemperatureModel t2 = neighbor.room.getTemperatureInfo();
+                        double neighborRatio = (double) neighbor.parcels.size() * 2 / room.getSize();
+                        t1.temperatureTotal += (t2.temperatureTotal / neighbor.room.getSize() - t1.temperatureTotal / roomSize) * neighborRatio;
+                    }
+
+                    // Increase temperature of the room
+                    if (t1.targetHeatTotal > t1.temperatureTotal) {
+                        double change = (t1.targetHeatTotal - t1.temperatureTotal) / roomSize / 2;
+                        double value = change * roomSize;
+                        if (t1.heatPotencyLeft < value) {
+                            value = t1.heatPotencyLeft;
+                        }
+                        t1.heatPotencyLeft -= value;
+                        t1.temperatureTotal += value * 2;
+                    }
+                }
+            }
+        }
+    }
+
+    private void pass1() {
+        for (RoomModel room : _roomManager.getRoomList()) {
+            RoomModel.RoomTemperatureModel temperatureInfo = room.getTemperatureInfo();
+            temperatureInfo.temperature = _temperature;
+            temperatureInfo.temperatureTotal = _temperature * room.getSize();
+
+            if (room.isExterior()) {
+                temperatureInfo.heatPotency = 1000;
+                temperatureInfo.coldPotency = 1000;
+            } else {
+                temperatureInfo.heatPotency = 0;
+                temperatureInfo.heatPotencyLeft = 0;
+                temperatureInfo.coldPotency = 0;
+                temperatureInfo.coldPotencyLeft = 0;
+
+                // Apply heat to room
+                int totalHeatTarget = 0;
+                for (ItemModel item : room.getHeatItems()) {
+                    totalHeatTarget += item.getTargetTemperature() * item.getInfo().effects.heatPotency;
+                    temperatureInfo.heatPotency += item.getInfo().effects.heatPotency;
+                }
+                if (temperatureInfo.heatPotency > 0) {
+                    temperatureInfo.targetHeat = totalHeatTarget / temperatureInfo.heatPotency;
+                    temperatureInfo.targetHeatTotal = temperatureInfo.targetHeat * room.getSize();
+                    temperatureInfo.heatPotencyLeft = temperatureInfo.heatPotency;
+                }
+
+                // Apply cold to room
+                int totalColdTarget = 0;
+                for (ItemModel item : room.getColdItems()) {
+                    temperatureInfo.targetCold += item.getTargetTemperature() * item.getInfo().effects.coldPotency;
+                    temperatureInfo.coldPotency += item.getInfo().effects.coldPotency;
+                }
+                if (temperatureInfo.coldPotency > 0) {
+                    temperatureInfo.targetCold = totalColdTarget / temperatureInfo.coldPotency;
+                    temperatureInfo.targetColdTotal = temperatureInfo.targetHeat * room.getSize();
+                    temperatureInfo.coldPotencyLeft = temperatureInfo.coldPotency;
+                }
+            }
+        }
+    }
+
 //
 //        // Second pass: apply heat / cold to roms
 //        for (RoomModel room: rooms) {
@@ -156,5 +183,4 @@ public class TemperatureManager extends BaseManager implements GameObserver {
 ////                }
 ////            }
 //        }
-    }
 }

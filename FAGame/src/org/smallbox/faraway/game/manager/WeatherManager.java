@@ -7,6 +7,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.WeatherModel;
+import org.smallbox.faraway.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -29,9 +30,9 @@ public class WeatherManager extends BaseManager implements GameObserver {
     private double                  _lightProgress;
     private double                  _light;
 
-    private double                  _temperature;
-    private double                  _temperatureChange;
-    private int                     _temperatureTarget;
+    private PlanetInfo              _planetInfo;
+    private TemperatureManager      _temperatureManager;
+    private LightManager            _lightManager;
 
     public WeatherManager(LightRenderer lightRenderer, ParticleRenderer particleRenderer, WorldManager worldManager) {
         _lightRenderer = lightRenderer;
@@ -43,39 +44,38 @@ public class WeatherManager extends BaseManager implements GameObserver {
 
     @Override
     protected void onCreate() {
-        _temperature = _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
+        _planetInfo = Game.getInstance().getPlanet().getInfo();
+        _temperatureManager = (TemperatureManager)Game.getInstance().getManager(TemperatureManager.class);
+        _lightManager = (LightManager)Game.getInstance().getManager(LightManager.class);
     }
 
     @Override
     public void onHourChange(int hour) {
-        if (hour == 5) {
+        if (hour == _planetInfo.hours.dawn) {
             _lightChange = 1f / GameData.config.tickPerHour;
             _lightProgress = 0;
             _light = 0.5;
             switchSunColor("dawn");
         }
-        if (hour == 6) {
+        if (hour == _planetInfo.hours.noon) {
             _lightChange = 0.5f / GameData.config.tickPerHour;
             _lightProgress = 0;
             _light = 1;
-            _temperature = Game.getInstance().getRegion().getInfo().temperature[0];
-            _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
-            _temperatureChange = (Game.getInstance().getRegion().getInfo().temperature[1] - Game.getInstance().getRegion().getInfo().temperature[0]) / 120.0;
+            _temperatureManager.setTemperature(Game.getInstance().getRegion().getInfo().temperature[1]);
             switchSunColor("noon");
         }
-        if (hour == 19) {
+        if (hour == _planetInfo.hours.twilight) {
             _lightChange = 1f / GameData.config.tickPerHour;
             _lightProgress = 0;
             _light = 0.5;
             switchSunColor("twilight");
         }
-        if (hour == 20) {
+        if (hour == _planetInfo.hours.midnight) {
             _lightChange = 0.5f / GameData.config.tickPerHour;
             _lightProgress = 0;
             _light = 0.2;
-            _temperature = Game.getInstance().getRegion().getInfo().temperature[1];
-            _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[0];
-            _temperatureChange = (Game.getInstance().getRegion().getInfo().temperature[0] - Game.getInstance().getRegion().getInfo().temperature[1]) / 120.0;
+            _temperatureManager.setTemperature(Game.getInstance().getRegion().getInfo().temperature[0]);
+//            _temperatureChange = (Game.getInstance().getRegion().getInfo().temperature[0] - Game.getInstance().getRegion().getInfo().temperature[1]) / 120.0;
             switchSunColor("midnight");
         }
     }
@@ -84,7 +84,7 @@ public class WeatherManager extends BaseManager implements GameObserver {
     protected void onUpdate(int tick) {
         if (_duration-- <= 0) {
             _duration = 2500;
-            loadWeather(new ArrayList<>(GameData.getData().weathers.values()).get((int)(Math.random() * GameData.getData().weathers.size())));
+            loadWeather(new ArrayList<>(GameData.getData().weathers.values()).get((int) (Math.random() * GameData.getData().weathers.size())));
         }
 
         // Set light
@@ -97,12 +97,6 @@ public class WeatherManager extends BaseManager implements GameObserver {
                         (int) ((_previousLightColor.g * (1 - _lightProgress)) + (_nextLightColor.g * _lightProgress)),
                         (int) ((_previousLightColor.b * (1 - _lightProgress)) + (_nextLightColor.b * _lightProgress))));
             }
-        }
-
-        // Set temperature
-        if ((int)_temperature != _temperatureTarget) {
-            _temperature += _temperatureChange;
-            Game.getWorldManager().setTemperature((int) _temperature);
         }
     }
 
@@ -123,12 +117,12 @@ public class WeatherManager extends BaseManager implements GameObserver {
         if (_weather.temperatureChange != null) {
             if (_weather.temperatureChange[1] > _weather.temperatureChange[0]) {
                 Random random = new Random();
-                _worldManager.setTemperatureOffset(_weather.temperatureChange[0] + random.nextInt(Math.abs(_weather.temperatureChange[1] - _weather.temperatureChange[0])));
+                _temperatureManager.setTemperatureOffset(_weather.temperatureChange[0] + random.nextInt(Math.abs(_weather.temperatureChange[1] - _weather.temperatureChange[0])));
             } else {
-                _worldManager.setTemperatureOffset(_weather.temperatureChange[0]);
+                _temperatureManager.setTemperatureOffset(_weather.temperatureChange[0]);
             }
         } else {
-            _worldManager.setTemperatureOffset(0);
+            _temperatureManager.setTemperatureOffset(0);
         }
     }
 

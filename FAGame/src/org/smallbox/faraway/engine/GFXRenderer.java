@@ -29,5 +29,5 @@ public interface GFXRenderer {
 
     void zoomUp();
     void zoomDown();
-
+    void drawIcon(String path, int x, int y);
 }

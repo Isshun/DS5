@@ -111,29 +111,29 @@ public class CharacterRenderer extends BaseRenderer {
             // Is dead
             if (!c.isAlive()) {
                 SpriteModel sprite = SpriteManager.getInstance().getIcon("data/res/ic_dead.png");
-                renderer.draw(sprite, viewPortX + posX - 2, viewPortY + posY - 2);
+				renderer.draw(sprite, posX, posY);
                 continue;
             }
 
             // Selection
 			if (c.isSelected()) {
 				SpriteModel sprite = _spriteManager.getSelector(_frame / 10);
-				renderer.draw(sprite, viewPortX + posX - 2, viewPortY + posY - 2);
+				renderer.draw(sprite, posX, posY);
 			}
 
 			if (c.getInventory() != null) {
 				SpriteModel sprite = SpriteManager.getInstance().getItem(c.getInventory());
-				renderer.draw(sprite, viewPortX + posX - 2, viewPortY + posY - 2);
+				renderer.draw(sprite, posX, posY);
 			}
 
 			if (c.isSleeping()) {
 				SpriteModel sprite = SpriteManager.getInstance().getIcon("data/res/ic_sleep.png");
-				renderer.draw(sprite, viewPortX + posX - 2, viewPortY + posY - 2);
+				renderer.draw(sprite, posX, posY);
 			}
 
 			if (c.getJob() != null && c.getJob().getActionIcon() != null && c.getJob().getX() == c.getX() && c.getJob().getY() == c.getY()) {
 				SpriteModel sprite = SpriteManager.getInstance().getIcon(c.getJob().getActionIcon());
-				renderer.draw(sprite, viewPortX + posX - 2, viewPortY + posY - 2);
+				renderer.draw(sprite, posX, posY);
 			}
 		}
 	}

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.engine.RenderEffect;
+import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.game.Game;
@@ -158,6 +159,11 @@ public class GDXRenderer implements GFXRenderer {
     public void zoomDown() {
         _zoom = Math.min(GDXViewport.ZOOM_LEVELS.length - 1, _zoom + 1);
         Game.getInstance().getViewport().setZoom(_zoom);
+    }
+
+    @Override
+    public void drawIcon(String path, int x, int y) {
+        draw(SpriteManager.getInstance().getIcon(path), x, y);
     }
 
     public void draw(Sprite sprite, int x, int y) {

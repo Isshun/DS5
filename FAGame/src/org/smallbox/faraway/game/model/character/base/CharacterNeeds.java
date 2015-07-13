@@ -1,11 +1,14 @@
 package org.smallbox.faraway.game.model.character.base;
 
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.RoomManager;
+import org.smallbox.faraway.game.manager.TemperatureManager;
 import org.smallbox.faraway.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
 
 public class CharacterNeeds {
     private final CharacterModel 	_character;
@@ -30,6 +33,7 @@ public class CharacterNeeds {
     public double 	injuries;
     public double 	satiety;
     public double 	joy;
+    public double 	heat;
     public int 		environment;
     public int 		light;
     public int 		pain;
@@ -38,16 +42,17 @@ public class CharacterNeeds {
     private CharacterStats	_stats;
     private boolean isFainting;
 
-    public CharacterNeeds(CharacterModel character) {
+    public CharacterNeeds(CharacterModel character, CharacterStats stats) {
         _data = GameData.getData();
-        _stats = character.getStats();
         _character = character;
+        _stats = stats;
         _sleepItem = null;
         food = (int) (Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);
         oxygen = (int) (Constant.CHARACTER_INIT_OXYGEN + (Math.random() * 100) % 20 - 10);
         happiness = (Constant.CHARACTER_INIT_HAPPINESS + (Math.random() * 100) % 20 - 10);
         health = (float) (Constant.CHARACTER_INIT_HEALTH + (Math.random() * 100) % 20 - 10);
         energy = (int) (Constant.CHARACTER_INIT_ENERGY + (Math.random() * 100) % 100);
+        heat = character.getType().needs.heat.optimal;
         energy = 100;
         relation = 0;
         security = 0;
@@ -101,6 +106,7 @@ public class CharacterNeeds {
             joy += isSleeping ? isSleeping && _sleepItem == null ? needs.joy.change.sleepOnFloor : needs.joy.change.sleep : needs.joy.change.wake;
         }
 
+        // Oxygen
         if (_character.getParcel() != null) {
             int oxygenLevel = (int)(_character.getParcel().getOxygen() * 100);
             if (oxygen < oxygenLevel || oxygen > oxygenLevel + 1) {
@@ -115,9 +121,35 @@ public class CharacterNeeds {
             }
         }
 
-//        happiness += needs.happiness.change;
-//        relation += effects.relation;
-//        security += needs.security.cha;
+        // Body heat
+        double temperature = _character.getParcel().getRoom() != null ? _character.getParcel().getRoom().getTemperatureInfo().temperature :
+                ((TemperatureManager)Game.getInstance().getManager(TemperatureManager.class)).getTemperature();
+        double heatDifference = temperature - (this.heat - _character.getType().thermolysis);
+        System.out.println("heatDifference BB: " + heatDifference);
+
+        if (heatDifference < 0) {
+            heatDifference = Math.min(0, heatDifference + _stats.buff.heat);
+        } else if (heatDifference > 0) {
+            heatDifference = Math.max(0, heatDifference - _stats.buff.cold);
+        }
+
+        System.out.println("heatDifference AB: " + heatDifference);
+
+        if (heatDifference < 0) {
+            this.heat += heatDifference * (1 - _stats.resist.cold / 100f) / 100f;
+        } else if (heatDifference > 0) {
+            this.heat += heatDifference * (1 - _stats.resist.heat / 100f) / 100f;
+        } else {
+            if (this.heat > _character.getType().needs.heat.optimal + 1) {
+                this.heat -= 1 / 100f;
+            } else if (this.heat < _character.getType().needs.heat.optimal - 1) {
+                this.heat += 1 / 100f;
+            } else {
+                this.heat = _character.getType().needs.heat.optimal;
+            }
+        }
+
+        System.out.println("bodyHeat: " + this.heat);
     }
 
     private void updateNeeds(ItemInfoAction action) {

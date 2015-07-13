@@ -4,6 +4,7 @@ import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.UILabel;
@@ -52,6 +53,16 @@ public class PanelInfoConsumable extends BaseRightPanel {
             ((UILabel)findById("lb_durability")).setString("Durability: " + _consumable.getHealth());
             ((UILabel)findById("lb_matter")).setString("Matter: " + _consumable.getMatter());
             ((UILabel)findById("lb_quantity")).setString("Quantity: %d", _consumable.getQuantity());
+
+            if (consumable.getJobs() != null && !consumable.getJobs().isEmpty()) {
+                String str = "Job:\n";
+                for (BaseJobModel job: consumable.getJobs()) {
+                    str += job.getLabel() + " (" + job.getMessage() + ")\n";
+                }
+                ((UILabel)findById("lb_job")).setString(str);
+            } else {
+                ((UILabel)findById("lb_job")).setString("");
+            }
         }
     }
 

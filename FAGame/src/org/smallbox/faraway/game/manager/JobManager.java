@@ -9,10 +9,12 @@ import org.smallbox.faraway.game.model.check.character.CheckCharacterExhausted;
 import org.smallbox.faraway.game.model.check.character.CheckCharacterHungry;
 import org.smallbox.faraway.game.model.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
-import org.smallbox.faraway.game.model.item.*;
-import org.smallbox.faraway.game.model.job.*;
+import org.smallbox.faraway.game.model.item.ConsumableModel;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobAbortReason;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobStatus;
+import org.smallbox.faraway.game.model.job.JobCraft;
+import org.smallbox.faraway.game.model.job.JobHaul;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 

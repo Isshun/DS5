@@ -1,9 +1,9 @@
-position: [-400, 32]
-align: [right, top]
+size: [360, 120]
+background: 0x113333
 entries:
 
     -   type: frame
-        position: [20, 0]
+        position: [11, 10]
         entries:
 
         -   type: label
@@ -21,20 +21,15 @@ entries:
         -   type: label
             id: lb_label
             textsize: 14
-            position: [60, 0]
+            position: [60, 1]
 
         -   type: label
             id: lb_count
             textsize: 14
-            position: [300, 0]
+            position: [322, 0]
             size: [32, 24]
 
-        -   type: label
-            id: lb_progress
+        -   type: frame
+            id: frame_components_entries
             textsize: 14
-            position: [0, 20]
-
-        -   type: label
-            id: lb_ingredient
-            textsize: 14
-            position: [0, 40]
+            position: [0, 24]

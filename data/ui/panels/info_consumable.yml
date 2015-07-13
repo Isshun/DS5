@@ -45,6 +45,12 @@ entries:
             position: [24, 82]
 
         -   type: label
+            id: lb_job
+            text: matter
+            textsize: 14
+            position: [24, 102]
+
+        -   type: label
             text: Effects
             textsize: 20
             position: [24, 182]

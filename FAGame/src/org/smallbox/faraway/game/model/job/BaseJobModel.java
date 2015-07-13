@@ -9,6 +9,14 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
 public abstract class BaseJobModel {
+    public void onDraw(onDrawCallback callback) {
+        callback.onDraw(_posX, _posY);
+    }
+
+    public interface onDrawCallback {
+        void onDraw(int x, int y);
+    }
+
     private boolean         _isJoy;
     protected JobStrategy   _strategy;
     protected ItemFinder    _finder;

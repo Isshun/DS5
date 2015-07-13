@@ -3,7 +3,6 @@ package org.smallbox.faraway.ui.mainMenu;
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.GFXRenderer;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.planet.PlanetModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UILabel;

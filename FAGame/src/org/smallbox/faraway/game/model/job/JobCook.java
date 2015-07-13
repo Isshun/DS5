@@ -4,7 +4,6 @@ import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
-import org.smallbox.faraway.game.model.item.MapObjectModel;
 
 import java.util.stream.Collectors;
 

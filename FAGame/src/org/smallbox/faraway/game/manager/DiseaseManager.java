@@ -1,21 +1,14 @@
 package org.smallbox.faraway.game.manager;
 
-import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.engine.lua.LuaCharacterModel;
 import org.smallbox.faraway.engine.lua.LuaGameModel;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.character.BuffModel;
 import org.smallbox.faraway.game.model.character.DiseaseModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.util.FileUtils;
-import org.smallbox.faraway.util.Log;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Alex on 16/06/2015.

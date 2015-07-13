@@ -104,16 +104,13 @@ public abstract class CharacterModel extends MovableModel {
         _type = type;
         _buffs = new ArrayList<>();
         _diseases = new ArrayList<>();
-        _stats = new CharacterStats();
         _timeTable = new TimeTableModel(Game.getInstance().getPlanet().getInfo().dayDuration);
-        _stats.speed = 1;
         _old = old;
         _relations = new CharacterRelationModel();
         _lag = (int)(Math.random() * 10);
         _isSelected = false;
         _blocked = 0;
         _direction = Direction.NONE;
-        _needs = new CharacterNeeds(this);
         _steps = 0;
         _info = new CharacterInfoModel(name, lastName);
         parcel = Game.getWorldManager().getParcel(x, y);
@@ -133,6 +130,12 @@ public abstract class CharacterModel extends MovableModel {
         _equipments.add(GameData.getData().getEquipment("base.equipments.oxygen_bottle"));
         _equipments.add(GameData.getData().getEquipment("base.equipments.fremen_body"));
 
+        _stats = new CharacterStats();
+        _stats.speed = 1;
+        _stats.reset(this, _equipments);
+
+        _needs = new CharacterNeeds(this, _stats);
+
         Log.info("Character done: " + _info.getName() + " (" + x + ", " + y + ")");
     }
 
@@ -145,7 +148,7 @@ public abstract class CharacterModel extends MovableModel {
     public void                     setQuarter(RoomModel quarter) { _quarter = quarter; }
     public List<TalentEntry>        getTalents() { return _talents; }
     public TalentEntry              getTalent(TalentType type) { return _talentsMap.get(type); }
-    public double                   getBodyHeat() { return _stats.bodyHeat; }
+    public double                   getBodyHeat() { return _needs.heat; }
     public CharacterStats           getStats() { return _stats; }
     public List<ItemInfo>     		getEquipments() { return _equipments; }
     public ParcelModel 				getParcel() { return parcel; }
@@ -235,7 +238,6 @@ public abstract class CharacterModel extends MovableModel {
 
         // Check room temperature
         _stats.reset(this, _equipments);
-        updateBodyHeat(((RoomManager)Game.getInstance().getManager(RoomManager.class)).getRoom(_posX, _posY));
 
         // TODO: create JobSleep class with auto-cancel capability
         // Cancel character sleeping
@@ -245,20 +247,6 @@ public abstract class CharacterModel extends MovableModel {
             if (_job != null && _job instanceof JobUse && _job.getItem() != null && _job.getItem().isSleepingItem()) {
                 JobManager.getInstance().quitJob(_job);
             }
-        }
-    }
-
-    private void updateBodyHeat(RoomModel room) {
-        if (room != null) {
-            double minHeat = room.getTemperatureInfo().temperature + _stats.debuff.cold;
-            if (minHeat >= Constant.BODY_TEMPERATURE) {
-                _stats.bodyHeat = Constant.BODY_TEMPERATURE;
-            } else if (minHeat < _stats.bodyHeat) {
-                Log.debug("_bodyHeat: " + _stats.bodyHeat + ", (min: " + minHeat + ")");
-                _stats.bodyHeat -= 0.1 * (1 - _stats.resist.cold);
-            }
-        } else {
-            Log.debug("_bodyHeat: " + _stats.bodyHeat);
         }
     }
 

@@ -127,9 +127,8 @@ entries:
 
             -   type: frame
                 id: frame_craft_entries
-                position: [4, 0]
-                entries:
-            
+                size: [360, 180]
+                position: [20, 32]
 
             -   type: frame
                 id: menu_add_craft
@@ -190,7 +189,7 @@ entries:
                 align: center
 
             -   type: image
-                path: data/res/ic_destroy.png
+                path: data/res/ic_dump.png
                 textsize: 14
                 position: [0, 6]
                 size: [20, 20]
@@ -211,7 +210,7 @@ entries:
                 align: center
 
             -   type: image
-                path: data/res/ic_destroy.png
+                path: data/res/ic_dump.png
                 textsize: 14
                 position: [0, 6]
                 size: [20, 20]

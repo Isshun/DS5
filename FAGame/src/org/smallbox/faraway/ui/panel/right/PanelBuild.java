@@ -14,7 +14,6 @@ import org.smallbox.faraway.ui.engine.*;
 import org.smallbox.faraway.ui.panel.BaseRightPanel;
 import org.smallbox.faraway.util.StringUtils;
 
-import javax.swing.text.html.ImageView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -16,36 +16,59 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class WorldManager extends BaseManager implements IndexedGraph<ParcelModel> {
-    private static final int    NB_FLOOR = 10;
+    private static final int NB_FLOOR = 10;
 
-    private final WorldFactory              _factory;
-    private ParcelModel[][][]               _parcels;
-    private int                             _width;
-    private int                             _height;
-    private int                             _floor;
-    private int                             _temperature;
-    private int                             _temperatureOffset;
-    private Game                            _game;
-    private Set<ConsumableModel>            _consumables = new HashSet<>();
-    private BlockingQueue<ResourceModel>    _resources = new LinkedBlockingQueue<>();
-    private Set<ItemModel>                  _items = new HashSet<>();
-    private List<ParcelModel>               _parcelList;
-    private int                             _light;
+    private final WorldFactory _factory;
+    private ParcelModel[][][] _parcels;
+    private int _width;
+    private int _height;
+    private int _floor;
+    private Game _game;
+    private Set<ConsumableModel> _consumables = new HashSet<>();
+    private BlockingQueue<ResourceModel> _resources = new LinkedBlockingQueue<>();
+    private Set<ItemModel> _items = new HashSet<>();
+    private List<ParcelModel> _parcelList;
+    private int _light;
 
     public WorldManager(WorldFactory factory) {
         _factory = factory;
     }
 
-    public ParcelModel[][][]            getParcels() { return _parcels; }
-    public List<ParcelModel>            getParcelList() { return _parcelList; }
-    public Collection<ItemModel>        getItems() { return _items; }
-    public Collection<ResourceModel>    getResources() { return _resources; }
-    public int                          getLight() { return _light; }
-    public ParcelModel                  getParcel(int x, int y) { return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][0]; }
-    public int                          getWidth() { return _width; }
-    public int                          getHeight() { return _height; }
+    public ParcelModel[][][] getParcels() {
+        return _parcels;
+    }
 
-    public void                         setLight(int light) { _light = light; }
+    public List<ParcelModel> getParcelList() {
+        return _parcelList;
+    }
+
+    public Collection<ItemModel> getItems() {
+        return _items;
+    }
+
+    public Collection<ResourceModel> getResources() {
+        return _resources;
+    }
+
+    public int getLight() {
+        return _light;
+    }
+
+    public ParcelModel getParcel(int x, int y) {
+        return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][0];
+    }
+
+    public int getWidth() {
+        return _width;
+    }
+
+    public int getHeight() {
+        return _height;
+    }
+
+    public void setLight(int light) {
+        _light = light;
+    }
 
     @Override
     public void onCreate() {
@@ -53,7 +76,6 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         _game.setWorldManager(this);
         _width = _game.getWidth();
         _height = _game.getHeight();
-        _temperature = Game.getInstance().getRegion().getInfo().temperature[1];
 
         List<ParcelModel> parcelList = new ArrayList<>();
         _parcels = new ParcelModel[_width][_height][NB_FLOOR];
@@ -72,10 +94,10 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
                 _parcels[x][y][0]._neighbors = new ParcelModel[4];
-                _parcels[x][y][0]._neighbors[0] = getParcel(x+1, y);
-                _parcels[x][y][0]._neighbors[1] = getParcel(x-1, y);
-                _parcels[x][y][0]._neighbors[2] = getParcel(x, y+1);
-                _parcels[x][y][0]._neighbors[3] = getParcel(x, y-1);
+                _parcels[x][y][0]._neighbors[0] = getParcel(x + 1, y);
+                _parcels[x][y][0]._neighbors[1] = getParcel(x - 1, y);
+                _parcels[x][y][0]._neighbors[2] = getParcel(x, y + 1);
+                _parcels[x][y][0]._neighbors[3] = getParcel(x, y - 1);
             }
         }
 
@@ -378,18 +400,8 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         return null;
     }
 
-    public int getTemperature() {
-        return _temperature + _temperatureOffset;
-    }
-
-    public void setTemperatureOffset(int temperatureOffset) {
-        Log.info("Set world temperature offset: " + temperatureOffset);
-        _temperatureOffset = temperatureOffset;
-    }
-
     @Override
     protected void onUpdate(int tick) {
-
     }
 
     public Collection<ConsumableModel> getConsumables() {
@@ -482,9 +494,5 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     @Override
     public void onRemoveResource(ResourceModel resource) {
         createConnection(resource.getParcel());
-    }
-
-    public void setTemperature(int temperature) {
-        _temperature = temperature;
     }
 }

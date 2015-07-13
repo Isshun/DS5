@@ -3,6 +3,7 @@ package org.smallbox.faraway.game.model.job;
 import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.GameData;
@@ -16,7 +17,7 @@ import org.smallbox.faraway.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobHaul extends BaseJobModel {
+public class JobHaul extends BaseJobModel implements GameObserver {
     private enum Mode {MOVE_TO_CONSUMABLE, MOVE_TO_STORAGE}
 
     private List<ConsumableModel>   _consumables = new ArrayList<>();
@@ -53,17 +54,9 @@ public class JobHaul extends BaseJobModel {
             return null;
         }
 
-        if (job.foundStorageParcel(job._consumables.get(0))) {
-            // Lock items
-            job._consumables.forEach(c -> {
-                c.lock(job);
-                c.setHaul(job);
-            });
-            job.refreshJob();
-            return job;
-        }
+        job.foundStorageParcel(job._consumables.get(0));
 
-        return null;
+        return job;
     }
 
     public void getItemAround() {
@@ -77,17 +70,26 @@ public class JobHaul extends BaseJobModel {
         int toY = startY + 5;
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
-                ConsumableModel c = WorldHelper.getConsumable(x, y);
-                if (c != null
-                        && c.getLock() == null
-                        && c.getInfo() == _itemInfo
-                        && c.getHaul() == null
-                        && _quantity + c.getQuantity() <= GameData.config.inventoryMaxQuantity
-                        && (c.getParcel() == _consumableParcel || PathManager.getInstance().getPath(c.getParcel(), _consumableParcel) != null)) {
-                    _quantity += c.getQuantity();
-                    _consumables.add(c);
+                ConsumableModel consumable = WorldHelper.getConsumable(x, y);
+                if (consumable != null
+                        && consumable.getLock() == null
+                        && consumable.getInfo() == _itemInfo
+                        && consumable.getHaul() == null
+                        && consumable.getQuantity() + _quantity <= GameData.config.inventoryMaxQuantity
+                        && (consumable.getParcel() == _consumableParcel || PathManager.getInstance().getPath(consumable.getParcel(), _consumableParcel) != null)) {
+                    _quantity += consumable.getQuantity();
+                    _consumables.add(consumable);
+                    consumable.addJob(this);
+                    consumable.setHaul(this);
                 }
             }
+        }
+    }
+
+    @Override
+    public void onDraw(onDrawCallback callback) {
+        for (ConsumableModel consumable: _consumables) {
+            callback.onDraw(consumable.getX(), consumable.getY());
         }
     }
 
@@ -141,31 +143,34 @@ public class JobHaul extends BaseJobModel {
             character.setInventory(null);
         }
         _consumables.forEach(consumable -> consumable.lock(null));
-        _consumables.clear();
+    }
+
+    @Override
+    protected void onStart(CharacterModel character) {
+        super.onStart(character);
+
+        // Lock items
+        _consumables.forEach(c -> {
+            c.lock(this);
+            c.setHaul(this);
+        });
+        refreshJob();
     }
 
     @Override
     public boolean onCheck(CharacterModel character) {
-        // Consumable has moved
-        if (_mode == Mode.MOVE_TO_CONSUMABLE && !_consumables.get(0).matchPosition(_posX, _posY)) {
-            _consumables.remove(0);
-            refreshJob();
-            return true;
+        // No consumable  to haul
+        if (_consumables.isEmpty()) {
+            return false;
         }
 
-        // Check storage area
-        if (_storage != null && _parcel != null) {
-            return true;
+        // No available storage
+        if ((_storage == null || _parcel == null || (_parcel.getConsumable() != null && _parcel.getConsumable().getInfo() != _itemInfo)) && !foundStorageParcel(_consumables.get(0))) {
+            _message = "No storage area";
+            return false;
         }
 
-        // Get storage area
-        if (foundStorageParcel(_consumables.get(0))) {
-            return true;
-        }
-
-        // Unable to find free storage
-        _message = "Unable to find free storage";
-        return false;
+        return true;
     }
 
     @Override
@@ -202,6 +207,8 @@ public class JobHaul extends BaseJobModel {
                 JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
                 return JobActionReturn.ABORT;
             }
+            consumable.removeJob(this);
+            consumable.setHaul(null);
             _consumables.remove(0);
 
             refreshJob();
@@ -263,6 +270,20 @@ public class JobHaul extends BaseJobModel {
     @Override
     public String getShortLabel() {
         return "store";
+    }
+
+    // TODO
+    @Override
+    public void onAddConsumable(ConsumableModel consumable){
+    }
+
+    @Override
+    public void onRemoveConsumable(ConsumableModel consumable){
+        if (_consumables.contains(consumable)) {
+            _consumables.remove(consumable);
+            consumable.removeJob(this);
+            consumable.setHaul(null);
+        }
     }
 
 }

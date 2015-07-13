@@ -1,7 +1,6 @@
 package org.smallbox.faraway.game.model.character.base;
 
 import org.smallbox.faraway.Strings;
-import org.smallbox.faraway.game.model.GameData;
 
 public class CharacterRelation {
 	public enum Relation {

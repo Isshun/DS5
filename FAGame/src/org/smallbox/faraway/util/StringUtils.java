@@ -91,4 +91,7 @@ public class StringUtils {
         }
     }
 
+	public static double formatNumber(double value) {
+		return ((int)(value * 100)) / 100.0;
+	}
 }

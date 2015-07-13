@@ -1,8 +1,6 @@
 package org.smallbox.faraway.game;
 
 import org.smallbox.faraway.WorldHelper;
-import org.smallbox.faraway.data.serializer.LoadListener;
-import org.smallbox.faraway.game.manager.BaseManager;
 import org.smallbox.faraway.game.manager.WorldManager;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ParcelModel;

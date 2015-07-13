@@ -1,18 +1,13 @@
 package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.WorldHelper;
-import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.ReceiptModel;
-import org.smallbox.faraway.game.model.area.StorageAreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class JobBuild extends BaseBuildJobModel {
 

@@ -7,23 +7,19 @@ import org.smallbox.faraway.engine.SpriteManager;
 import org.smallbox.faraway.engine.Viewport;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.CharacterManager;
+import org.smallbox.faraway.game.manager.TemperatureManager;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.item.ItemModel;
-import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.game.model.item.StructureModel;
-import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.*;
+import org.smallbox.faraway.ui.panel.debug.TemperatureManagerPanel;
 import org.smallbox.faraway.ui.panel.info.*;
 import org.smallbox.faraway.ui.panel.right.*;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
-
-import java.util.List;
 
 public class UserInterface implements GameEventListener {
     private static UserInterface		_self;
@@ -55,6 +51,8 @@ public class UserInterface implements GameEventListener {
             new PanelSystem(),
             new PanelResources(),
             new PanelDebug(),
+            new PanelWhiteRoom(),
+
             new PanelQuest(),
             new PanelCharacter(	    Mode.CHARACTER,         null),
 //            new PanelInfo(		    Mode.INFO, 		        null),
@@ -80,6 +78,9 @@ public class UserInterface implements GameEventListener {
             new PanelPlanet(),
             new PanelTopInfo(),
             new PanelTopRight(),
+
+            // Manager debug
+            new TemperatureManagerPanel(),
     };
 
     public void reloadTemplates() {
@@ -475,30 +476,14 @@ public class UserInterface implements GameEventListener {
     }
 
     public void onRightClick(int x, int y) {
-        if (_interaction.isAction(UserInteraction.Action.SET_ROOM)) {
-            _interaction.clean();
-        }
-
-        else if (_mode == Mode.ROOM && _interaction.getSelectedRoomType() == RoomModel.RoomType.NONE) {
-//            final Room room = Game.getRoomManager().getRoom(getRelativePosX(x), getRelativePosY(y));
-//            if (room != null) {
-//                throw new RuntimeException("not implemented");
-//                //_menu = new RoomContextualMenu(_app, 0, new Vector2f(x, y), new Vector2f(100, 120), _viewport, room);
-//            } else {
-//                _menu = null;
-//            }
-        }
-
         // Cancel selected items
-        else {
-            if (_mode == Mode.CHARACTER) {
-                setMode(Mode.CREW);
-                return;
-            }
-            _interaction.clean();
-            _cursor = null;
-            toggleMode(Mode.NONE);
+        if (_mode == Mode.CHARACTER) {
+            setMode(Mode.CREW);
+            return;
         }
+        _interaction.clean();
+        _cursor = null;
+        toggleMode(Mode.NONE);
 
         _keyRightPressed = false;
     }

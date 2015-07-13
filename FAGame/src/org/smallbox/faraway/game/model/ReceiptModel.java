@@ -5,11 +5,8 @@ import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.job.BaseBuildJobModel;
-import org.smallbox.faraway.game.model.job.BaseJobModel;
-import org.smallbox.faraway.game.model.job.JobCraft;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 07/06/2015.
@@ -185,7 +182,7 @@ public class ReceiptModel {
         public enum Status { NONE, CARRY, STORED }
         public final ConsumableModel    consumable;
         public final int                quantity;
-        public Status                   status;
+        public Status                   status = Status.NONE;
 
         public OrderModel(ConsumableModel consumable, int quantity) {
             this.consumable = consumable;

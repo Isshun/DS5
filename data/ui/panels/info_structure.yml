@@ -86,7 +86,7 @@ entries:
                 align: center
 
             -   type: image
-                path: data/res/ic_destroy.png
+                path: data/res/ic_dump.png
                 textsize: 14
                 position: [0, 0]
                 size: [80, 100]

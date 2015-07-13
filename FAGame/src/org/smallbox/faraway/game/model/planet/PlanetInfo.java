@@ -28,6 +28,14 @@ public class PlanetInfo {
         public String 					site;
     }
 
+    public static class PlanetHours {
+        public int 						dawn;
+        public int 						noon;
+        public int 						twilight;
+        public int 						midnight;
+    }
+
+	public PlanetHours 					hours;
 	public String	            		name;
 	public String	            		label;
 	public String	            		type;

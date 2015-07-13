@@ -5,7 +5,6 @@ import org.smallbox.faraway.game.model.job.BaseJobModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class MapObjectModel {
     private static int 		    _maxId;

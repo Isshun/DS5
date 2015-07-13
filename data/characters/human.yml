@@ -1,5 +1,6 @@
 name: human
 label: Human
+thermolysis: 15
 needs:
 
     food:
@@ -14,6 +15,7 @@ needs:
         critical: 15
 
     oxygen:
+        optimal: 100
         warning: 75
         critical: 25
         change:
@@ -39,3 +41,6 @@ needs:
             wake: 0
             sleep: 0
             sleepOnFloor: -0.25
+
+    heat:
+        optimal: 38

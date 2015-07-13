@@ -18,6 +18,7 @@ import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.panel.debug.TemperatureManagerPanel;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Arrays;
@@ -109,6 +110,7 @@ public class PanelDebug extends BasePanel {
                 Log.notice("\n----------- dump -----------");
                 Arrays.asList(UserInterface.getInstance().getPanels()).forEach(panel -> panel.dump());
             }),
+            new CommandEntry("Temperature debug",       view -> UserInterface.getInstance().getPanel(TemperatureManagerPanel.class).setVisible(true)),
     };
 
     private void openSubFrame(Collection<CommandEntry> commands) {

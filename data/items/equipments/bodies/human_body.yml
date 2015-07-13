@@ -1,0 +1,7 @@
+label: Fremen
+equipment:
+    location: body
+    effects:
+        -   buff:
+                cold: 15
+                heat: 5

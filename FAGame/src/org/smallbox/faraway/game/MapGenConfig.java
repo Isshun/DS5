@@ -1,7 +1,5 @@
 package org.smallbox.faraway.game;
 
-import org.smallbox.faraway.game.model.item.ParcelModel;
-
 /**
  * Created by Alex on 06/07/2015.
  */

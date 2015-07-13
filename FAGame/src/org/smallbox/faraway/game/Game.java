@@ -39,8 +39,8 @@ public class Game {
     private int                         _hour = 6;
     private int                         _day;
     private int                         _year;
-    private int                         _width = 250;
-    private int                         _height = 250;
+    private final int                   _width;
+    private final int                   _height;
 
     public void                         toggleRunning() { _isRunning = !_isRunning; }
     public void                         addObserver(GameObserver observer) { _observers.add(observer); }
@@ -69,9 +69,11 @@ public class Game {
 	private Viewport 					_viewport;
 	private boolean 					_isRunning;
 
-	public Game(GameData data, GameConfig config, String fileName, ParticleRenderer particleRenderer, LightRenderer lightRenderer, RegionInfo regionInfo) {
+	public Game(int width, int height, GameData data, GameConfig config, String fileName, ParticleRenderer particleRenderer, LightRenderer lightRenderer, RegionInfo regionInfo) {
 		Log.debug("Game");
 
+        _width = width;
+        _height = height;
 		_self = this;
         _config = config;
         _fileName = fileName;

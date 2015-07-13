@@ -8,6 +8,7 @@ import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
+import org.smallbox.faraway.game.model.job.BaseBuildJobModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobCraft;
 import org.smallbox.faraway.ui.LayoutModel;
@@ -19,7 +20,7 @@ import org.smallbox.faraway.ui.engine.ViewFactory;
 
 import java.util.stream.Collectors;
 
-import static org.smallbox.faraway.game.model.ReceiptModel.*;
+import static org.smallbox.faraway.game.model.ReceiptModel.OrderModel;
 
 /**
  * Created by Alex on 01/06/2015.
@@ -183,14 +184,20 @@ public class PanelInfoItem extends BaseInfoRightPanel {
         _viewFactory.load("data/ui/panels/info_item_craft_entry.yml", view -> {
             view.findById("bt_suspend");
             view.findById("bt_cancel").setOnClickListener(v -> JobManager.getInstance().removeJob(job));
-            ((UILabel)view.findById("lb_label")).setString(job.getLabel());
-            ((UILabel)view.findById("lb_ingredient")).setString(job.getIngredient() != null ? job.getIngredient().getLabel() + " (" + job.getIngredient().getQuantity() + ")" : "no components");
 
             if (job.getProgressPercent() > 0) {
-                ((UILabel) view.findById("lb_progress")).setString(job.getMessage() + ": " + job.getProgressPercent() + "%");
+                ((UILabel)view.findById("lb_label")).setString(job.getLabel() + " (" + job.getProgressPercent() + "%)");
             } else {
-                ((UILabel) view.findById("lb_progress")).setString(job.getMessage());
+                ((UILabel)view.findById("lb_label")).setString(job.getLabel());
             }
+
+//            ((UILabel)view.findById("lb_ingredient")).setString(job.getIngredient() != null ? job.getIngredient().getLabel() + " (" + job.getIngredient().getQuantity() + ")" : "no components");
+//
+//            if (job.getProgressPercent() > 0) {
+//                ((UILabel) view.findById("lb_progress")).setString(job.getMessage() + ": " + job.getProgressPercent() + "%");
+//            } else {
+//                ((UILabel) view.findById("lb_progress")).setString(job.getMessage());
+//            }
 
             UILabel lbCraftCount = (UILabel)view.findById("lb_count");
             lbCraftCount.setString(job.getTotalCount() == Integer.MAX_VALUE ? "xx" : "x" + job.getCount());
@@ -201,9 +208,38 @@ public class PanelInfoItem extends BaseInfoRightPanel {
                 job.setTotalCount(job.getTotalCount() == Integer.MAX_VALUE ? 1 : Integer.MAX_VALUE);
             });
 
-            view.setPosition(0, 40 + index * 80);
+            if (job instanceof BaseBuildJobModel && ((BaseBuildJobModel)job).getReceipt() != null) {
+                int orderIndex = 0;
+                for (OrderModel order: ((BaseBuildJobModel) job).getReceipt().getOrders()) {
+                    addJobOrder((FrameLayout)view.findById("frame_components_entries"), order, orderIndex++);
+                }
+//                view.findById("lb_components").setVisible(true);
+                view.findById("frame_components_entries").setVisible(true);
+            } else {
+//                view.findById("lb_components").setVisible(false);
+                view.findById("frame_components_entries").setVisible(false);
+            }
+
+            view.setPosition(0, index * (view.getContentHeight() + 10));
             _frameCraftEntries.addView(view);
+            view.resetAllPos();
         });
+    }
+
+    private void addJobOrder(FrameLayout frame, OrderModel order, int index) {
+        UILabel lbOrder = ViewFactory.getInstance().createTextView();
+        lbOrder.setCharacterSize(14);
+        lbOrder.setPosition(0, index * 20);
+
+        String str = order.consumable.getInfo().label;
+        switch (order.status) {
+            case NONE: lbOrder.setDashedString(str, "waiting", 42); break;
+            case CARRY: lbOrder.setDashedString(str, "carrying", 42); break;
+            case STORED: lbOrder.setDashedString(str, "ok", 42); break;
+        }
+
+
+        frame.addView(lbOrder);
     }
 
     private void addActionMenuEntry(ItemInfo.ItemInfoAction action, int index) {

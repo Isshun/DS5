@@ -8,13 +8,15 @@ import org.smallbox.faraway.game.model.item.ResourceModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoPlant.*;
+import static org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoPlant.GrowingInfo;
+import static org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoPlant.GrowingInfoEntry;
 
 /**
  * Created by Alex on 05/07/2015.
  */
 public class PlantManager extends BaseManager {
-    private List<ResourceModel> _plants = new ArrayList<>();
+    private List<ResourceModel>     _plants = new ArrayList<>();
+    private TemperatureManager      _temperatureManager;
 
     public PlantManager() {
         _updateInterval = 10;
@@ -22,6 +24,7 @@ public class PlantManager extends BaseManager {
 
     @Override
     protected void onCreate() {
+        _temperatureManager = (TemperatureManager)Game.getInstance().getManager(TemperatureManager.class);
         Game.getWorldManager().getResources().forEach(resource -> {
             if (resource.getInfo().plant != null) {
                 _plants.add(resource);
@@ -32,7 +35,7 @@ public class PlantManager extends BaseManager {
     @Override
     protected void onUpdate(int tick) {
         double light = Game.getWorldManager().getLight() * 100;
-        double temperature = Game.getWorldManager().getTemperature();
+        double temperature = _temperatureManager.getTemperature();
         for (ResourceModel resource: _plants) {
             if (resource.getParcel().isExterior()) {
                 // Growing

@@ -6,8 +6,8 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 
@@ -25,6 +25,10 @@ public abstract class BaseBuildJobModel extends BaseJobModel {
 
     public BaseBuildJobModel(ItemInfo.ItemInfoAction actionInfo, int x, int y, String iconPath, String iconActionPath) {
         super(actionInfo, x, y, iconPath, iconActionPath);
+    }
+
+    public ReceiptModel getReceipt() {
+        return _receipt;
     }
 
     public enum Status {
@@ -77,11 +81,13 @@ public abstract class BaseBuildJobModel extends BaseJobModel {
         _character.moveTo(this, _mainItem.getParcel(), new OnMoveListener<CharacterModel>() {
             @Override
             public void onReach(BaseJobModel job, CharacterModel character) {
-                _receipt.closeCarryingOrders();
-                _receipt.nextOrder();
-                _mainItem.addComponent(character.getInventory());
-                character.setInventory(null);
-                _status = _receipt.isComplete() ? Status.MAIN_ACTION : Status.WAITING;
+                if (_receipt != null) {
+                    _receipt.closeCarryingOrders();
+                    _receipt.nextOrder();
+                    _mainItem.addComponent(character.getInventory());
+                    character.setInventory(null);
+                    _status = _receipt.isComplete() ? Status.MAIN_ACTION : Status.WAITING;
+                }
             }
 
             @Override
@@ -103,4 +109,10 @@ public abstract class BaseBuildJobModel extends BaseJobModel {
 
         _message = "Move " + _receipt.getProductsInfo().get(0).itemInfo.label + " to storage";
     }
+
+    @Override
+    public void onDraw(onDrawCallback callback) {
+        callback.onDraw(_mainItem.getX(), _mainItem.getY());
+    }
+
 }

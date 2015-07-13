@@ -7,12 +7,10 @@ import org.smallbox.faraway.util.FileUtils;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Alex on 02/06/2015.
@@ -53,6 +51,9 @@ public class PlanetLoader implements IDataLoader {
                                         break;
                                     case "ice":
                                         terrain.typeId = 4;
+                                        break;
+                                    case "white":
+                                        terrain.typeId = 13;
                                         break;
                                 }
                             }

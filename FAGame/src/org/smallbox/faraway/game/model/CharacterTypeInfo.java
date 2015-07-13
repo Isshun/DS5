@@ -12,6 +12,7 @@ public class CharacterTypeInfo {
     }
 
     public static class NeedInfo {
+        public double       optimal;
         public int          warning;
         public int          critical;
         public ChangeInfo   change;
@@ -24,10 +25,12 @@ public class CharacterTypeInfo {
         public NeedInfo     relation;
         public NeedInfo     joy;
         public NeedInfo     happiness;
+        public NeedInfo     heat;
     }
 
     public String           name;
     public String           label;
     public Needs            needs;
     public int              index;
+    public int              thermolysis;
 }

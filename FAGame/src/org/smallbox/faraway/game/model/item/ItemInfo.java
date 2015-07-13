@@ -114,6 +114,7 @@ public class ItemInfo {
 		public EquipmentEffectValues 	resist;
 		public EquipmentEffectValues 	debuff;
 		public EquipmentEffectValues 	buff;
+		public EquipmentEffectValues 	absorb;
 	}
 
 	public static class ItemInfoEffects {

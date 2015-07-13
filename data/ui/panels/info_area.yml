@@ -24,12 +24,14 @@ entries:
 
             -   type: label
                 id: bt_remove_area
-                text: remove area
+                text: remove
                 textsize: 14
+                align: center
+                size: [95, 40]
                 position: [0, 0]
 
             -   type: image
-                path: data/res/ic_destroy.png
+                path: data/res/ic_dump.png
                 textsize: 14
                 position: [0, 6]
                 size: [20, 20]

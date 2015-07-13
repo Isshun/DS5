@@ -4,7 +4,6 @@ import org.smallbox.faraway.data.loader.IDataLoader;
 import org.smallbox.faraway.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.util.FileUtils;
-import org.smallbox.faraway.util.Log;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 

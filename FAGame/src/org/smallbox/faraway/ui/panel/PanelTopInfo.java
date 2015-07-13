@@ -2,6 +2,7 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.PowerManager;
+import org.smallbox.faraway.game.manager.TemperatureManager;
 import org.smallbox.faraway.game.manager.WeatherManager;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
@@ -40,7 +41,7 @@ public class PanelTopInfo extends BasePanel {
 
     @Override
     public void onRefresh(int tick) {
-        ((UILabel)findById("lb_world_tmp")).setString("Temperature: " + Game.getWorldManager().getTemperature() + "°");
+        ((UILabel)findById("lb_world_tmp")).setString("Temperature: " + (int)((TemperatureManager)Game.getInstance().getManager(TemperatureManager.class)).getTemperature() + "°");
         ((UILabel)findById("lb_hour")).setString("Hour: " + Game.getInstance().getHour() + "h");
         ((UILabel)findById("lb_day")).setString("Day: " + Game.getInstance().getDay());
         ((UILabel)findById("lb_year")).setString("Year: " + Game.getInstance().getYear());

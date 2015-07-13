@@ -1,7 +1,10 @@
 package org.smallbox.faraway.game.model.character.base;
 
+import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.manager.RoomManager;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
 
 import java.util.List;
 
@@ -11,7 +14,6 @@ import java.util.List;
 public class CharacterStats {
     public String deathMessage;
     public double speed;
-    public double bodyHeat = Constant.BODY_TEMPERATURE;
     public boolean isAlive = true;
 
     public static class CharacterStatsValues {
@@ -51,6 +53,10 @@ public class CharacterStats {
                 }
             }
         }
+
+        this.resist.cold = Math.min(100, Math.max(0, this.resist.cold));
+        this.resist.heat = Math.min(100, Math.max(0, this.resist.heat));
+        this.resist.oxygen = Math.min(100, Math.max(0, this.resist.oxygen));
     }
 
     private void addValues(CharacterStatsValues values, ItemInfo.EquipmentEffectValues effect) {

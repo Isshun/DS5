@@ -13,7 +13,6 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.util.MapUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

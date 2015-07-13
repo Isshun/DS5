@@ -54,7 +54,11 @@ public class PlanetPage extends MainMenuPage {
             view.findById("frame_background").setVisible(false);
             ((UILabel)view.findById("lb_planet")).setString(planet.name);
             ((UILabel)view.findById("lb_type")).setString(planet.type);
-            ((UIImage)view.findById("img_planet")).setImagePath(planet.image.thumb);
+
+            if (planet.image != null) {
+                ((UIImage) view.findById("img_planet")).setImagePath(planet.image.thumb);
+            }
+
             view.setOnClickListener(v -> {
                 for (View v1: framePlanetList.getViews()) {
                     v1.findById("frame_background").setVisible(false);

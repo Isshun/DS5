@@ -4,10 +4,11 @@ import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.manager.JobManager;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
-import org.smallbox.faraway.ui.LinkFocusListener;
-import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.ui.engine.*;
+import org.smallbox.faraway.ui.engine.FrameLayout;
+import org.smallbox.faraway.ui.engine.UILabel;
+import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.BaseRightPanel;
 
 public class PanelJobs extends BaseRightPanel {

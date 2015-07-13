@@ -36,11 +36,12 @@ public abstract class UILabel extends View {
             return;
         }
 
+        // TODO
         int hash = string.hashCode();
-        if (hash != _hash) {
+//        if (hash != _hash) {
             string = GameData.getData() != null && GameData.getData().hasString(hash) ? GameData.getData().getString(hash) : string;
             setStringValue(String.format(string, value));
-        }
+//        }
     }
 
     public void setString(String string, String value) {
@@ -49,11 +50,12 @@ public abstract class UILabel extends View {
             return;
         }
 
+        // TODO
         int hash = string.hashCode();
-        if (hash != _hash) {
+//        if (hash != _hash) {
             string = GameData.getData() != null && GameData.getData().hasString(hash) ? GameData.getData().getString(hash) : string;
             setStringValue(String.format(string, value));
-        }
+//        }
     }
 
 	public abstract void setStringValue(String string);

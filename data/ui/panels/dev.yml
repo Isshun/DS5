@@ -1,7 +1,7 @@
 entries:
 
     -   type: frame
-        position: [0, 300]
+        position: [0, 68]
         size: [200, 800]
         background: 0x885522
         entries:

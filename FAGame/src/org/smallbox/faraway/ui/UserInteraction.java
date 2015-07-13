@@ -6,15 +6,12 @@ import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.manager.AreaManager;
 import org.smallbox.faraway.game.manager.JobManager;
-import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.area.AreaType;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ResourceModel;
-import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobDump;
 import org.smallbox.faraway.game.model.job.JobHaul;
-import org.smallbox.faraway.game.model.room.RoomModel.RoomType;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.cursor.DumpCursor;
 import org.smallbox.faraway.ui.cursor.GatherCursor;
@@ -42,12 +39,6 @@ public class UserInteraction {
 		// Set area
 		if (_action == Action.REMOVE_AREA) {
 			((AreaManager)Game.getInstance().getManager(AreaManager.class)).removeArea(_selectedAreaType, fromX, fromY, toX, toY);
-			return true;
-		}
-
-		// Set room
-		if (_action == Action.SET_ROOM) {
-			roomType(x, y, fromX, fromY, toX, toY);
 			return true;
 		}
 
@@ -79,7 +70,7 @@ public class UserInteraction {
 	}
 
 	public enum Action {
-		NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_ROOM, SET_AREA, PUT_ITEM_FREE, REMOVE_AREA, SET_PLAN
+		NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_AREA, PUT_ITEM_FREE, REMOVE_AREA, SET_PLAN
 	}
 
 	Action					            _action;
@@ -89,9 +80,8 @@ public class UserInteraction {
 	int						            _mouseMoveY;
 	GameEventListener.MouseButton       _button;
 	private Planning 					_selectedPlan;
-	private RoomType 					_selectedRoomType;
 	private ItemInfo 					_selectedItemInfo;
-	private AreaType _selectedAreaType;
+	private AreaType 					_selectedAreaType;
 	private UserInterface				_ui;
 
 	UserInteraction(UserInterface ui) {
@@ -224,7 +214,7 @@ public class UserInteraction {
 	public void planHaul(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				if (WorldHelper.getConsumable(x, y) != null) {
+				if (WorldHelper.getConsumable(x, y) != null && WorldHelper.getConsumable(x, y).getHaul() == null) {
 					JobManager.getInstance().addJob(JobHaul.create(WorldHelper.getConsumable(x, y)));
 				}
 			}
@@ -246,19 +236,6 @@ public class UserInteraction {
 		}
 	}
 
-	public void roomType(int clickX, int clickY, int fromX, int fromY, int toX, int toY) {
-		if (_selectedRoomType == null) {
-			return;
-		}
-
-//		if (_selectedRoomType == Room.Type.NONE) {
-//			Game.getRoomManager().removeRoom(fromX, fromY, toX, toY);
-//		} else {
-//			Game.getRoomManager().putRoom(clickX, clickY, fromX, fromY, toX, toY, _selectedRoomType, null);
-//		}
-
-	}
-
 	public boolean isAction(Action action) {
 		return _action.equals(action);
 	}
@@ -272,14 +249,9 @@ public class UserInteraction {
 		}
 	}
 
-	public RoomType getSelectedRoomType() {
-		return _selectedRoomType;
-	}
-
 	public void clean() {
 		_action = Action.NONE;
 		_selectedPlan = null;
-		_selectedRoomType = null;
 		_selectedItemInfo = null;
 	}
 
@@ -309,11 +281,6 @@ public class UserInteraction {
 		_action = action;
 		_selectedItemInfo = info;
 	}
-
-    public void set(Action action, RoomType roomType) {
-        _action = action;
-        _selectedRoomType = roomType;
-    }
 
     public void set(Action action, AreaType areaType) {
         _action = action;

@@ -17,6 +17,12 @@ stats:
     hostile_fauna: 2
     hostile_humankind: 1
 
+hours:
+    dawn: 5
+    noon: 6
+    twilight: 19
+    midnight: 20
+
 regions:
     -   name: mountain
         label: mountain

@@ -154,7 +154,7 @@ public class Application implements GameEventListener {
                     try {
                         _menu = new MenuLoad(path -> {
 // TODO NULL
-                            _game = new Game(null, null, null, _particleRenderer, _lightRenderer, null);
+                            _game = new Game(0, 0, null, null, null, _particleRenderer, _lightRenderer, null);
                             _game.load();
                         });
                     } catch (IOException e) {
@@ -218,6 +218,15 @@ public class Application implements GameEventListener {
         return false;
     }
 
+    public void whiteRoom() {
+        _mainMenu.close();
+
+        _game = new Game(25, 25, _data, GameData.config, null, _particleRenderer, _lightRenderer, GameData.getData().getRegion("white", "default"));
+        _game.init(new WorldFactory());
+
+        startGame();
+    }
+
     public void newGame(String fileName, RegionInfo  regionInfo) {
         long time = System.currentTimeMillis();
 
@@ -225,7 +234,7 @@ public class Application implements GameEventListener {
 
         WorldFactory factory = new WorldFactory();
 
-        _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer, regionInfo);
+        _game = new Game(250, 250, _data, GameData.config, fileName, _particleRenderer, _lightRenderer, regionInfo);
         _game.init(factory);
 
         factory.createLandSite(_game);
@@ -240,7 +249,7 @@ public class Application implements GameEventListener {
 
         _mainMenu.close();
 
-        _game = new Game(_data, GameData.config, fileName, _particleRenderer, _lightRenderer, null);
+        _game = new Game(250, 250, _data, GameData.config, fileName, _particleRenderer, _lightRenderer, null);
 
         // TODO
         _game.setRegion(GameData.getData().getRegion("arrakis", "desert"));
