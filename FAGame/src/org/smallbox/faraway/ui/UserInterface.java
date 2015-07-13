@@ -14,6 +14,7 @@ import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.*;
+import org.smallbox.faraway.ui.panel.debug.OxygenManagerPanel;
 import org.smallbox.faraway.ui.panel.debug.TemperatureManagerPanel;
 import org.smallbox.faraway.ui.panel.info.*;
 import org.smallbox.faraway.ui.panel.right.*;
@@ -81,6 +82,7 @@ public class UserInterface implements GameEventListener {
 
             // Manager debug
             new TemperatureManagerPanel(),
+            new OxygenManagerPanel(),
     };
 
     public void reloadTemplates() {

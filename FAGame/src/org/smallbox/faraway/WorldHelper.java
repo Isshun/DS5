@@ -45,11 +45,16 @@ public class WorldHelper {
     public static ParcelModel getNearestFreeArea(ItemInfo itemInfo, int x, int y, int quantity) {
         if (itemInfo.isConsumable) {
             for (int d = 0; d < 8; d++) {
-                for (int i = -d; i < d; i++) {
+                for (int i = 0; i <= d; i++) {
                     if (areaFreeForConsumable(x + i, y + d, itemInfo, quantity)) return _parcels[x + i][y + d][0];
                     if (areaFreeForConsumable(x + i, y - d, itemInfo, quantity)) return _parcels[x + i][y - d][0];
                     if (areaFreeForConsumable(x + d, y + i, itemInfo, quantity)) return _parcels[x + d][y + i][0];
                     if (areaFreeForConsumable(x - d, y + i, itemInfo, quantity)) return _parcels[x - d][y + i][0];
+
+                    if (areaFreeForConsumable(x - i, y + d, itemInfo, quantity)) return _parcels[x - i][y + d][0];
+                    if (areaFreeForConsumable(x - i, y - d, itemInfo, quantity)) return _parcels[x - i][y - d][0];
+                    if (areaFreeForConsumable(x + d, y - i, itemInfo, quantity)) return _parcels[x + d][y - i][0];
+                    if (areaFreeForConsumable(x - d, y - i, itemInfo, quantity)) return _parcels[x - d][y - i][0];
                 }
             }
         }

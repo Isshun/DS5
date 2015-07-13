@@ -8,7 +8,7 @@ import org.smallbox.faraway.game.model.room.RoomModel;
  * Created by Alex on 18/06/2015.
  */
 public class OxygenManager extends BaseManager {
-    private double _oxygen;
+    private int _oxygen;
 
     public OxygenManager() {
         _updateInterval = 10;
@@ -16,7 +16,7 @@ public class OxygenManager extends BaseManager {
 
     @Override
     protected void onCreate() {
-        _oxygen = Game.getInstance().getPlanet().getOxygen();
+        _oxygen = (int)(Game.getInstance().getPlanet().getOxygen() * 100);
     }
 
     @Override
@@ -39,10 +39,18 @@ public class OxygenManager extends BaseManager {
     }
 
     public void setOxygen(double oxygen) {
-        _oxygen = oxygen;
+        _oxygen = (int)(oxygen * 100);
     }
 
     public double getOxygen() {
-        return _oxygen;
+        return _oxygen / 100.0;
+    }
+
+    public void increaseOxygen() {
+        _oxygen += 10;
+    }
+
+    public void decreaseOxygen() {
+        _oxygen += 10;
     }
 }

@@ -18,6 +18,7 @@ import org.smallbox.faraway.ui.engine.FrameLayout;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.panel.debug.OxygenManagerPanel;
 import org.smallbox.faraway.ui.panel.debug.TemperatureManagerPanel;
 import org.smallbox.faraway.util.Log;
 
@@ -42,24 +43,6 @@ public class PanelDebug extends BasePanel {
     }
 
     private CommandEntry[] COMMANDS = new CommandEntry[] {
-            new CommandEntry("Re-gen",              view -> {
-                new WorldFactory().create(Game.getWorldManager(), Game.getInstance().getRegion().getInfo());
-                MainRenderer.getInstance().getWorldRenderer().refreshAll();
-            }),
-            new CommandEntry("Add crew (human)",    view -> Game.getCharacterManager().addRandom(HumanModel.class)),
-            new CommandEntry("Add crew (android)",  view -> Game.getCharacterManager().addRandom(AndroidModel.class)),
-            new CommandEntry("Add crew (droid)",    view -> Game.getCharacterManager().addRandom(DroidModel.class)),
-            new CommandEntry("Kill selected",       view -> _character.setIsDead()),
-            new CommandEntry("Kill all",            view -> Game.getCharacterManager().getCharacters().forEach(CharacterModel::setIsDead)),
-            new CommandEntry("remove characters",   view -> Game.getCharacterManager().getCharacters().clear()),
-            new CommandEntry("Launch quest",        view -> ((QuestManager)Game.getInstance().getManager(QuestManager.class)).launchRandomQuest()),
-            new CommandEntry("Refresh rooms",       view -> ((RoomManager)Game.getInstance().getManager(RoomManager.class)).refreshRooms()),
-            new CommandEntry("Remove rubbles",      view -> {
-                for (ConsumableModel consumable : Game.getWorldManager().getConsumables().stream().filter(res -> "base.rubble".equals(res.getInfo().name)).collect(Collectors.toList())) {
-                    Game.getWorldManager().removeConsumable(consumable);
-                }
-            }
-            ),
             new CommandEntry("Add item...",         view ->
                     openSubFrame(
                             GameData.getData().items.stream()
@@ -80,6 +63,24 @@ public class PanelDebug extends BasePanel {
                                     .filter(item -> item.isResource)
                                     .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().putDebug(info)))
                                     .collect(Collectors.toList()))
+            ),
+            new CommandEntry("Re-gen",              view -> {
+                new WorldFactory().create(Game.getWorldManager(), Game.getInstance().getRegion().getInfo());
+                MainRenderer.getInstance().getWorldRenderer().refreshAll();
+            }),
+            new CommandEntry("Add crew (human)",    view -> Game.getCharacterManager().addRandom(HumanModel.class)),
+            new CommandEntry("Add crew (android)",  view -> Game.getCharacterManager().addRandom(AndroidModel.class)),
+            new CommandEntry("Add crew (droid)",    view -> Game.getCharacterManager().addRandom(DroidModel.class)),
+            new CommandEntry("Kill selected",       view -> _character.setIsDead()),
+            new CommandEntry("Kill all",            view -> Game.getCharacterManager().getCharacters().forEach(CharacterModel::setIsDead)),
+            new CommandEntry("remove characters",   view -> Game.getCharacterManager().getCharacters().clear()),
+            new CommandEntry("Launch quest",        view -> ((QuestManager)Game.getInstance().getManager(QuestManager.class)).launchRandomQuest()),
+            new CommandEntry("Refresh rooms",       view -> ((RoomManager)Game.getInstance().getManager(RoomManager.class)).refreshRooms()),
+            new CommandEntry("Remove rubbles",      view -> {
+                for (ConsumableModel consumable : Game.getWorldManager().getConsumables().stream().filter(res -> "base.rubble".equals(res.getInfo().name)).collect(Collectors.toList())) {
+                    Game.getWorldManager().removeConsumable(consumable);
+                }
+            }
             ),
             new CommandEntry("Set need...",         view ->
                     openSubFrame(
@@ -111,6 +112,7 @@ public class PanelDebug extends BasePanel {
                 Arrays.asList(UserInterface.getInstance().getPanels()).forEach(panel -> panel.dump());
             }),
             new CommandEntry("Temperature debug",       view -> UserInterface.getInstance().getPanel(TemperatureManagerPanel.class).setVisible(true)),
+            new CommandEntry("Oxygen debug",            view -> UserInterface.getInstance().getPanel(OxygenManagerPanel.class).setVisible(true)),
     };
 
     private void openSubFrame(Collection<CommandEntry> commands) {
