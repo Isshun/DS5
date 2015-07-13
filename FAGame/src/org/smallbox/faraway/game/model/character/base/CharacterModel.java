@@ -200,8 +200,6 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void moveTo(BaseJobModel job, ParcelModel toParcel, OnMoveListener onMoveListener) {
-        fixPosition();
-
         _toX = toParcel.x;
         _toY = toParcel.y;
 
@@ -220,7 +218,7 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    private void fixPosition() {
+    public void fixPosition() {
         if (parcel != null && !parcel.isWalkable()) {
             ParcelModel parcel = WorldHelper.getNearestFreeSpace(_posX, _posY, true, false);
             if (parcel != null) {

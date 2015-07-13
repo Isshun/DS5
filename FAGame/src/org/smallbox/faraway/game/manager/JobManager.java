@@ -359,8 +359,9 @@ public class JobManager extends BaseManager {
 	public void quitJob(BaseJobModel job, JobAbortReason reason) {
 		Log.debug("Job quit: " + job.getId());
 
-		job.setStatus(JobStatus.ABORTED);
-		job.setFail(reason, MainRenderer.getFrame());
+        job.setStatus(JobStatus.WAITING);
+
+        job.setFail(reason, MainRenderer.getFrame());
 
 		if (job.getCharacter() != null) {
 			job.quit(job.getCharacter());
@@ -374,22 +375,19 @@ public class JobManager extends BaseManager {
 
 		// Abort because path to item is blocked
 		if (reason == JobAbortReason.BLOCKED) {
-			if (job.getItem() != null) {
-				job.getItem().setBlocked(Game.getUpdate());
-				if (!job.canBeResume()) {
-					removeJob(job);
-				}
-			}
+			return;
 		}
 
 		// Job is invalid, don't resume
 		if (reason == JobAbortReason.INVALID) {
+            job.setStatus(JobStatus.ABORTED);
 			removeJob(job);
 			return;
 		}
 
 		// Job is USE / USE_INVENTORY / MOVE / TAKE / STORE / REFILL onAction, don't resume
 		if (!job.canBeResume()) {
+            job.setStatus(JobStatus.ABORTED);
 			removeJob(job);
 			return;
 		}

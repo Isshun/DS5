@@ -83,6 +83,7 @@ public class CharacterManager extends BaseManager {
 				c.setDirection(Direction.NONE);
 				c.action();
 				c.move();
+				c.fixPosition();
 			}
 		}
 

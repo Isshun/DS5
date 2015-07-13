@@ -58,6 +58,8 @@ public abstract class BaseBuildJobModel extends BaseJobModel {
                 } else {
                     moveToMainItem();
                 }
+
+                _message = "Carry " + order.consumable.getInfo().label + " to " + _mainItem.getInfo().label;
             }
 
             @Override
@@ -75,17 +77,18 @@ public abstract class BaseBuildJobModel extends BaseJobModel {
         _status = Status.MOVE_TO_FACTORY;
         _posX = _mainItem.getX();
         _posY = _mainItem.getY();
-        _message = "Carry " + _character.getInventory().getInfo().label + " to " + _mainItem.getInfo().label;
 
         // Store component in factory
         _character.moveTo(this, _mainItem.getParcel(), new OnMoveListener<CharacterModel>() {
             @Override
             public void onReach(BaseJobModel job, CharacterModel character) {
                 if (_receipt != null) {
-                    _receipt.closeCarryingOrders();
-                    _receipt.nextOrder();
-                    _mainItem.addComponent(character.getInventory());
-                    character.setInventory(null);
+                    if (character.getInventory() != null && _receipt.getCurrentOrder() != null && character.getInventory().getInfo() == _receipt.getCurrentOrder().consumable.getInfo()) {
+                        _receipt.closeCarryingOrders();
+                        _receipt.nextOrder();
+                        _mainItem.addComponent(character.getInventory());
+                        character.setInventory(null);
+                    }
                     _status = _receipt.isComplete() ? Status.MAIN_ACTION : Status.WAITING;
                 }
             }

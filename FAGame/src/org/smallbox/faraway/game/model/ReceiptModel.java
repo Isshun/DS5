@@ -51,25 +51,27 @@ public class ReceiptModel {
 
     // Get potential consumables on WorldManager
     private void scanComponents(List<ItemInfo.ItemComponentInfo> componentsInfo) {
-        _componentsInfo = componentsInfo;
+        if (componentsInfo != null) {
+            _componentsInfo = componentsInfo;
 
-        // Add components to receipt
-        Map<ItemInfo, Integer> componentsDistance = new HashMap<>();
-        for (ItemInfo.ItemComponentInfo componentInfo: componentsInfo) {
-            componentsDistance.put(componentInfo.itemInfo, componentInfo.quantity);
+            // Add components to receipt
+            Map<ItemInfo, Integer> componentsDistance = new HashMap<>();
+            for (ItemInfo.ItemComponentInfo componentInfo : componentsInfo) {
+                componentsDistance.put(componentInfo.itemInfo, componentInfo.quantity);
+            }
+
+            _potentialComponents.clear();
+            Game.getWorldManager().getConsumables().stream()
+                    .filter(consumable -> componentsDistance.containsKey(consumable.getInfo()))
+                    .filter(consumable -> consumable.getParcel().isWalkable())
+                    .forEach(consumable -> {
+                        GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_factory.getParcel(), consumable.getParcel());
+                        if (path != null) {
+                            _potentialComponents.add(new PotentialConsumable(consumable, path.getCount()));
+                        }
+                    });
+            Collections.sort(_potentialComponents, (c1, c2) -> c2.distance - c1.distance);
         }
-
-        _potentialComponents.clear();
-        Game.getWorldManager().getConsumables().stream()
-                .filter(consumable -> componentsDistance.containsKey(consumable.getInfo()))
-                .filter(consumable -> consumable.getParcel().isWalkable())
-                .forEach(consumable -> {
-                    GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_factory.getParcel(), consumable.getParcel());
-                    if (path != null) {
-                        _potentialComponents.add(new PotentialConsumable(consumable, path.getCount()));
-                    }
-                });
-        Collections.sort(_potentialComponents, (c1, c2) -> c2.distance - c1.distance);
     }
 
     public ReceiptModel(MapObjectModel factory) {
@@ -81,17 +83,19 @@ public class ReceiptModel {
 
         // Looking for best nearest consumables
         _totalDistance = 0;
-        for (ItemInfo.ItemComponentInfo componentInfo: _componentsInfo) {
-            int quantityLeft = componentInfo.quantity;
-            for (PotentialConsumable potentialConsumable: _potentialComponents) {
-                if (quantityLeft > 0 && potentialConsumable.consumable.getLock() == null && potentialConsumable.consumable.getInfo() == componentInfo.itemInfo) {
-                    if (potentialConsumable.consumable.getQuantity() > quantityLeft) {
-                        _orders.add(new OrderModel(potentialConsumable.consumable, quantityLeft));
-                    } else {
-                        _orders.add(new OrderModel(potentialConsumable.consumable, potentialConsumable.consumable.getQuantity()));
+        if (_componentsInfo != null) {
+            for (ItemInfo.ItemComponentInfo componentInfo : _componentsInfo) {
+                int quantityLeft = componentInfo.quantity;
+                for (PotentialConsumable potentialConsumable : _potentialComponents) {
+                    if (quantityLeft > 0 && potentialConsumable.consumable.getLock() == null && potentialConsumable.consumable.getInfo() == componentInfo.itemInfo) {
+                        if (potentialConsumable.consumable.getQuantity() > quantityLeft) {
+                            _orders.add(new OrderModel(potentialConsumable.consumable, quantityLeft));
+                        } else {
+                            _orders.add(new OrderModel(potentialConsumable.consumable, potentialConsumable.consumable.getQuantity()));
+                        }
+                        _totalDistance += potentialConsumable.distance;
+                        quantityLeft -= potentialConsumable.consumable.getQuantity();
                     }
-                    _totalDistance += potentialConsumable.distance;
-                    quantityLeft -= potentialConsumable.consumable.getQuantity();
                 }
             }
         }
@@ -103,15 +107,17 @@ public class ReceiptModel {
     }
 
     public boolean hasComponentsOnMap() {
-        for (ItemInfo.ItemComponentInfo componentInfo: _componentsInfo) {
-            int totalQuantity = 0;
-            for (PotentialConsumable potentialConsumable: _potentialComponents) {
-                if (potentialConsumable.consumable.getInfo() == componentInfo.itemInfo && potentialConsumable.consumable.getLock() == null) {
-                    totalQuantity += potentialConsumable.consumable.getQuantity();
+        if (_componentsInfo != null) {
+            for (ItemInfo.ItemComponentInfo componentInfo: _componentsInfo) {
+                int totalQuantity = 0;
+                for (PotentialConsumable potentialConsumable : _potentialComponents) {
+                    if (potentialConsumable.consumable.getInfo() == componentInfo.itemInfo && potentialConsumable.consumable.getLock() == null) {
+                        totalQuantity += potentialConsumable.consumable.getQuantity();
+                    }
                 }
-            }
-            if (totalQuantity < componentInfo.quantity) {
-                return false;
+                if (totalQuantity < componentInfo.quantity) {
+                    return false;
+                }
             }
         }
         return true;
@@ -171,10 +177,10 @@ public class ReceiptModel {
     }
 
     public void start(BaseBuildJobModel job) {
-        for (OrderModel order: _orders) {
+        for (OrderModel order : _orders) {
             order.consumable.lock(job);
         }
-        _currentOrder = _orders.get(0);
+        _currentOrder = _orders.size() > 0 ? _orders.get(0) : null;
         _nextOrder = _orders.size() > 1 ? _orders.get(1) : null;
     }
 

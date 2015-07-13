@@ -52,7 +52,6 @@ public class UserInterface implements GameEventListener {
             new PanelSystem(),
             new PanelResources(),
             new PanelDebug(),
-            new PanelWhiteRoom(),
 
             new PanelQuest(),
             new PanelCharacter(	    Mode.CHARACTER,         null),

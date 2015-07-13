@@ -140,7 +140,7 @@ public class CharacterNeeds {
             this.heat += heatDifferenceReal * (1 - _stats.resist.heat / 100f) / 100f;
         } else {
             if (this.heat > _character.getType().needs.heat.optimal + 0.25) {
-                this.heat -= (heatDifference - _stats.buff.cold) / 1000f;
+                this.heat += (heatDifference - _stats.buff.cold) / 1000f;
             } else if (this.heat < _character.getType().needs.heat.optimal - 0.25) {
                 this.heat += (heatDifference + _stats.buff.heat) / 1000f;
             } else {

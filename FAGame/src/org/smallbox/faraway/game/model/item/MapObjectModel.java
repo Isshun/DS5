@@ -116,7 +116,7 @@ public abstract class MapObjectModel {
     // Boolean
     public boolean          isConsumable() { return _info.isConsumable; }
     public boolean          isSelected() { return _selected; }
-    public boolean			isSolid() { return _isSolid; }
+    public boolean			isSolid() { return _progress >= _info.cost && _isSolid; }
     public boolean			isComplete() { return _progress >= _info.cost; }
     public boolean			isSleepingItem() { return _info.isBed; }
     public boolean			isStructure() { return _info.isStructure; }

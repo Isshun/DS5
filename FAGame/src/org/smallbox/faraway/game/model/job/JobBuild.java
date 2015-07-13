@@ -32,7 +32,11 @@ public class JobBuild extends BaseBuildJobModel {
 
         // Start receipt and get first component
         _receipt.start(this);
-        moveToIngredient(character, _receipt.getCurrentOrder());
+		if (_receipt.getCurrentOrder() != null) {
+			moveToIngredient(character, _receipt.getCurrentOrder());
+		} else {
+			moveToMainItem();
+		}
     }
 
     @Override
