@@ -110,7 +110,7 @@ public class UserInteraction {
 					if (res.canBeMined()) {
 						JobHelper.addMineJob(x, y);
 					} else if (res.canBeHarvested()) {
-						JobHelper.addGatherJob(x, y);
+						JobHelper.addGatherJob(x, y, true);
 					}
 				}
 
@@ -161,10 +161,10 @@ public class UserInteraction {
 		}
 	}
 
-	public void planGather(int startX, int startY, int toX, int toY) {
+	public void planGather(int startX, int startY, int toX, int toY, boolean removeOnComplete) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				BaseJobModel job = JobHelper.createGatherJob(x, y);
+				BaseJobModel job = JobHelper.createGatherJob(x, y, removeOnComplete);
 				if (job != null) {
 					JobManager.getInstance().addJob(job);
 				}
@@ -228,7 +228,8 @@ public class UserInteraction {
 		
 		switch (_selectedPlan) {
 		case DUMP: planDump(startX, startY, toX, toY); break;
-		case GATHER: planGather(startX, startY, toX, toY); break;
+		case GATHER: planGather(startX, startY, toX, toY, false); break;
+		case CUT_PLANT: planGather(startX, startY, toX, toY, true); break;
 		case MINING: planMining(startX, startY, toX, toY); break;
 		case PICK: planPick(startX, startY, toX, toY); break;
 		case HAUL: planHaul(startX, startY, toX, toY); break;

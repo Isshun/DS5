@@ -56,3 +56,12 @@ entries:
             size: [180, 40]
             align: center
             background: 0x005560
+
+        -   type: label
+            id: bt_cut_plant
+            text: "[Remove plant]"
+            textsize: 20
+            position: [20, 250]
+            size: [180, 40]
+            align: center
+            background: 0x005560

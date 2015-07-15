@@ -4,12 +4,14 @@ import org.smallbox.faraway.PathManager;
 import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.util.Log;
 
 public class JobMining extends BaseJobModel {
-	private ResourceModel _resource;
+	private ResourceModel 	_resource;
 
 	private JobMining(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
 		super(actionInfo, x, y, "data/res/ic_mining.png", "data/res/ic_action_mining.png");
@@ -49,6 +51,11 @@ public class JobMining extends BaseJobModel {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}
+
+		if ((_parcel == null || _parcel.isBlocked()) && getFreeParcel() == null) {
+			_reason = JobAbortReason.BLOCKED;
+			return false;
+		}
 		
 		// Item is no longer exists
 		if (_item != WorldHelper.getResource(_item.getX(), _item.getY())) {
@@ -73,6 +80,32 @@ public class JobMining extends BaseJobModel {
 //		}
 
 		return true;
+	}
+
+	private ParcelModel getFreeParcel() {
+        int x = _item.getX();
+        int y = _item.getY();
+        ParcelModel parcel = null;
+
+        // Corner
+        if (!WorldHelper.isBlocked(x-1, y-1)) parcel = WorldHelper.getParcel(x-1, y-1);
+        if (!WorldHelper.isBlocked(x+1, y-1)) parcel = WorldHelper.getParcel(x+1, y-1);
+        if (!WorldHelper.isBlocked(x-1, y+1)) parcel = WorldHelper.getParcel(x-1, y+1);
+        if (!WorldHelper.isBlocked(x+1, y+1)) parcel = WorldHelper.getParcel(x+1, y+1);
+
+        // Cross
+        if (!WorldHelper.isBlocked(x, y-1)) parcel = WorldHelper.getParcel(x, y-1);
+        if (!WorldHelper.isBlocked(x, y+1)) parcel = WorldHelper.getParcel(x, y+1);
+        if (!WorldHelper.isBlocked(x-1, y)) parcel = WorldHelper.getParcel(x-1, y);
+        if (!WorldHelper.isBlocked(x+1, y)) parcel = WorldHelper.getParcel(x+1, y);
+
+        _parcel = parcel;
+        if (parcel != null) {
+            _posX = parcel.x;
+            _posY = parcel.y;
+        }
+
+		return parcel;
 	}
 
 	@Override
@@ -145,6 +178,12 @@ public class JobMining extends BaseJobModel {
 
 	@Override
     public String getIcon() {
-        return "data/res/ic_mine.png";
+        return "data/res/ic_mining.png";
     }
+
+    @Override
+    public void onDraw(onDrawCallback callback) {
+        callback.onDraw(_resource.getX(), _resource.getY());
+    }
+
 }

@@ -66,6 +66,10 @@ entries:
             textsize: 14
             position: [24, 122]
 
+        -   type: frame
+            id: frame_components_entries
+            position: [24, 142]
+
     # Action buttons
     -   type: frame
         position: [0, 280]

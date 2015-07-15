@@ -38,7 +38,7 @@ public class CheckCharacterOxygen extends CharacterCheck {
         if (character.getNeeds().oxygen < 20) {
             Optional<RoomModel> roomOpt = ((RoomManager)Game.getInstance().getManager(RoomManager.class)).getRoomList().stream().filter(room -> room.getOxygen() >= 0.75).findAny();
             if (roomOpt.isPresent()) {
-                Optional<ParcelModel> parcelOpt = roomOpt.get().getParcels().stream().filter(ParcelModel::isEmpty).findAny();
+                Optional<ParcelModel> parcelOpt = roomOpt.get().getParcels().stream().filter(ParcelModel::isWalkable).findAny();
                 if (parcelOpt.isPresent()) {
                     _parcel = parcelOpt.get();
                     return true;

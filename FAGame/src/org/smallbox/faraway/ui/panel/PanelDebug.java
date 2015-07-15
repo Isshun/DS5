@@ -12,6 +12,7 @@ import org.smallbox.faraway.game.model.character.DroidModel;
 import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
+import org.smallbox.faraway.ui.JobDebugPanel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.FrameLayout;
@@ -19,6 +20,7 @@ import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UILabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.debug.OxygenManagerPanel;
+import org.smallbox.faraway.ui.panel.debug.ParcelDebugPanel;
 import org.smallbox.faraway.ui.panel.debug.TemperatureManagerPanel;
 import org.smallbox.faraway.util.Log;
 
@@ -113,6 +115,8 @@ public class PanelDebug extends BasePanel {
             }),
             new CommandEntry("Temperature debug",       view -> UserInterface.getInstance().getPanel(TemperatureManagerPanel.class).setVisible(true)),
             new CommandEntry("Oxygen debug",            view -> UserInterface.getInstance().getPanel(OxygenManagerPanel.class).setVisible(true)),
+            new CommandEntry("Job detail",              view -> UserInterface.getInstance().getPanel(JobDebugPanel.class).setVisible(true)),
+            new CommandEntry("Parcel detail",           view -> UserInterface.getInstance().getPanel(ParcelDebugPanel.class).setVisible(true)),
     };
 
     private void openSubFrame(Collection<CommandEntry> commands) {

@@ -75,6 +75,7 @@ public class PanelBuild extends BaseRightPanel {
 			lbTitle.setPosition(20, posY + 8);
 			lbTitle.setColor(Colors.TEXT);
 			lbTitle.setOnClickListener(view -> toggleCategory(category));
+			lbTitle.setAlign(Align.CENTER_VERTICAL);
 			addView(lbTitle);
 
 //            // Shortcut

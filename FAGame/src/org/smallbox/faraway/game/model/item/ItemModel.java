@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ItemModel extends MapObjectModel {
-	private List<ConsumableModel> 	_components = new ArrayList<>();
-	private List<ConsumableModel> 	_crafts = new ArrayList<>();
+public class ItemModel extends BuildableMapObject {
 	private int 					_targetTemperature = 21;
 	private boolean 				_isFunctional = true;
     private boolean                 _isActive = true;
@@ -28,7 +26,6 @@ public class ItemModel extends MapObjectModel {
         initSlots();
 	}
 
-	public List<ConsumableModel> 	getCrafts() { return _crafts; }
 	public int 						getTargetTemperature() { return _targetTemperature; }
 	public int 						getValue() { return 15; }
 	public int 						getPotencyUse() { return _potencyUse; }
@@ -45,22 +42,6 @@ public class ItemModel extends MapObjectModel {
 	public void 					setTargetTemperature(int targetTemperature) { _targetTemperature = targetTemperature; }
 	public void 					setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }
 	public void 					setPotencyUse(int potencyUse) { _potencyUse = potencyUse; }
-
-	@Override
-	public void addComponent(ConsumableModel consumable) {
-		for (ConsumableModel component: _components) {
-			if (component.getInfo() == consumable.getInfo()) {
-				component.addQuantity(consumable.getQuantity());
-				return;
-			}
-		}
-		_components.add(consumable);
-	}
-
-	@Override
-	public List<ConsumableModel> 	getComponents() {
-		return _components;
-	}
 
 	public void initSlots() {
 		_nbFreeSlot = -1;

@@ -25,7 +25,7 @@ entries:
         -   type: label
             id: lb_water
             textsize: 14
-            position: [220, 40]
+            position: [215, 40]
 
         -   type: label
             id: lb_gas
@@ -35,7 +35,7 @@ entries:
         -   type: label
             id: lb_science
             textsize: 14
-            position: [220, 70]
+            position: [215, 70]
 
         -   type: label
             id: lb_o2
@@ -45,7 +45,7 @@ entries:
         -   type: label
             id: lb_power
             textsize: 14
-            position: [220, 100]
+            position: [215, 100]
 
     -   type: frame
         position: [0, 380]
@@ -62,36 +62,7 @@ entries:
             textsize: 18
             textcolor: 0x78ffff
             position: [24, 45]
-            size: [175, 45]
-            align: center
-            background: 0x1d5560
-
-        -   type: label
-            id: bt_occupation
-            text: MENU_SHORTCUT_JOBS
-            textsize: 18
-            textcolor: 0x78ffff
-            position: [220, 185]
-            size: [175, 45]
-            align: center
-            background: 0x1d5560
-
-        -   type: label
-            id: bt_crew
-            text: MENU_SHORTCUT_CREW
-            textsize: 18
-            textcolor: 0x78ffff
-            position: [24, 115]
-            size: [175, 45]
-            align: center
-            background: 0x1d5560
-
-        -   type: label
-            id: bt_room
-            textsize: 18
-            textcolor: 0x78ffff
-            position: [220, 115]
-            size: [175, 45]
+            size: [165, 45]
             align: center
             background: 0x1d5560
 
@@ -100,35 +71,18 @@ entries:
             text: MENU_SHORTCUT_PLANS
             textsize: 18
             textcolor: 0x78ffff
-            position: [220, 45]
-            size: [175, 45]
+            position: [215, 45]
+            size: [165, 45]
             align: center
             background: 0x1d5560
 
         -   type: label
-            id: bt_manage
+            id: bt_occupation
+            text: MENU_SHORTCUT_JOBS
             textsize: 18
             textcolor: 0x78ffff
-            position: [24, 255]
-            size: [175, 45]
-            align: center
-            background: 0x1d5560
-
-        -   type: label
-            id: bt_stats
-            textsize: 18
-            textcolor: 0x78ffff
-            position: [220, 255]
-            size: [175, 45]
-            align: center
-            background: 0x1d5560
-
-        -   type: label
-            id: bt_display
-            textsize: 18
-            textcolor: 0x78ffff
-            position: [24, 325]
-            size: [175, 45]
+            position: [24, 115]
+            size: [165, 45]
             align: center
             background: 0x1d5560
 
@@ -137,7 +91,17 @@ entries:
             text: MENU_SHORTCUT_AREAS
             textsize: 18
             textcolor: 0x78ffff
-            position: [220, 325]
-            size: [175, 45]
+            position: [215, 115]
+            size: [165, 45]
+            align: center
+            background: 0x1d5560
+
+        -   type: label
+            id: bt_crew
+            text: MENU_SHORTCUT_CREW
+            textsize: 18
+            textcolor: 0x78ffff
+            position: [24, 185]
+            size: [165, 45]
             align: center
             background: 0x1d5560

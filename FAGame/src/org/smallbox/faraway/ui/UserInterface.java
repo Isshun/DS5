@@ -15,6 +15,7 @@ import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.*;
 import org.smallbox.faraway.ui.panel.debug.OxygenManagerPanel;
+import org.smallbox.faraway.ui.panel.debug.ParcelDebugPanel;
 import org.smallbox.faraway.ui.panel.debug.TemperatureManagerPanel;
 import org.smallbox.faraway.ui.panel.info.*;
 import org.smallbox.faraway.ui.panel.right.*;
@@ -51,7 +52,6 @@ public class UserInterface implements GameEventListener {
     private	BasePanel[]					_panels = new BasePanel[] {
             new PanelSystem(),
             new PanelResources(),
-            new PanelDebug(),
 
             new PanelQuest(),
             new PanelCharacter(	    Mode.CHARACTER,         null),
@@ -79,9 +79,12 @@ public class UserInterface implements GameEventListener {
             new PanelTopInfo(),
             new PanelTopRight(),
 
-            // Manager debug
+            // Debug
+            new PanelDebug(),
             new TemperatureManagerPanel(),
             new OxygenManagerPanel(),
+            new JobDebugPanel(),
+            new ParcelDebugPanel(),
     };
 
     public void reloadTemplates() {

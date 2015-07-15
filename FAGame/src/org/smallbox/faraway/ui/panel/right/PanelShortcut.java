@@ -10,6 +10,7 @@ import org.smallbox.faraway.ui.LinkFocusListener;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.UIImage;
 import org.smallbox.faraway.ui.engine.UILabel;
+import org.smallbox.faraway.ui.engine.View;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.panel.BaseRightPanel;
 
@@ -21,8 +22,8 @@ import java.util.Date;
 import java.util.List;
 
 public class PanelShortcut extends BaseRightPanel {
-    private static final int NB_COLUMNS_STATS = NB_COLUMNS / 2 - 1;
-    private static final int NB_RESOURCE_MAX = 10;
+    private static final int NB_COLUMNS_STATS = 21;
+
     private ResourceManager _resourceManager;
 
     private static class ResourceEntry {
@@ -82,23 +83,13 @@ public class PanelShortcut extends BaseRightPanel {
         addResource((UILabel) findById("lb_power"), _resourceManager.getPower());
 
         for (PanelEntry entry : _entries) {
-            findById(entry.buttonId).setOnClickListener(view -> {
-                _ui.toggleMode(entry.mode);
-            });
-            findById(entry.buttonId).setBackgroundColor(new Color(29, 85, 96, 100));
-            findById(entry.buttonId).setOnFocusListener(new LinkFocusListener());
+            View button = findById(entry.buttonId);
+            if (button != null) {
+                findById(entry.buttonId).setOnClickListener(view -> _ui.toggleMode(entry.mode));
+                findById(entry.buttonId).setBackgroundColor(new Color(29, 85, 96, 100));
+                findById(entry.buttonId).setOnFocusListener(new LinkFocusListener());
+            }
         }
-    }
-
-    @Override
-    protected void onCreate(ViewFactory factory) {
-////		_miniMapRenderer = new MiniMapRenderer(_effect);
-//		int posX = 24;
-//		int posY = 244;
-//
-//		_map = ViewFactory.getInstance().createImageView();
-//		_map.setPosition(20, 20);
-//		addView(_map);
     }
 
     private void addResource(final UILabel text, final ResourceData data) {
@@ -108,12 +99,6 @@ public class PanelShortcut extends BaseRightPanel {
         res.text.setOnClickListener(view -> _ui.getSelector().select(data.tooltip));
         _resources.add(res);
     }
-
-    // TODO
-//	@Override
-//	public void onDraw(GFXRenderer renderer, RenderEffect buffEffect) {
-////		_miniMapRenderer.onDraw(renderer, buffEffect, 0);
-//	}
 
     @Override
     protected void onRefresh(int update) {

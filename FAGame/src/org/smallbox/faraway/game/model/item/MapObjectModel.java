@@ -2,6 +2,7 @@ package org.smallbox.faraway.game.model.item;
 
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.model.job.JobBuild;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +11,8 @@ public abstract class MapObjectModel {
     private static int 		    _maxId;
 
     private int			        _id;
-    private int			        _x;
-    private int			        _y;
+    protected int			        _x;
+    protected int			        _y;
     private boolean 	        _isSolid;
     private CharacterModel      _owner;
     private String 		        _name;
@@ -33,6 +34,7 @@ public abstract class MapObjectModel {
     private List<BaseJobModel>  _jobs;
     protected boolean           _needRefresh;
     private double              _progress;
+    private JobBuild            _jobBuild;
 
     public MapObjectModel(ItemInfo info) {
         init(info, ++_maxId);
@@ -90,6 +92,7 @@ public abstract class MapObjectModel {
     public void             setBlocked(int update) { _lastBlocked = update; }
     public void             setNeedRefresh() { _needRefresh = true; }
     public boolean          needRefresh() { return _needRefresh; }
+    public void             setJobBuild(JobBuild job) { _jobBuild = job; }
 
     // Gets
     public CharacterModel   getOwner() { return _owner; }
@@ -112,6 +115,7 @@ public abstract class MapObjectModel {
     public int              getHealth() { return _health; }
     public int              getMaxHealth() { return _info.maxHealth; }
     public List<BaseJobModel> getJobs() { return _jobs; }
+    public JobBuild         getJobBuild() { return _jobBuild; }
 
     // Boolean
     public boolean          isConsumable() { return _info.isConsumable; }

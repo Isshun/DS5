@@ -37,44 +37,24 @@ public class ItemFactory {
 	public static ItemModel createUserItem(WorldManager manager, ParcelModel parcel, ItemInfo info, boolean isComplete) {
 		ItemModel item = new ItemModel(info);
 		item.addProgress(isComplete ? info.cost : 0);
-
-		// Set world areas
-		for (int i = 0; i < item.getWidth(); i++) {
-			for (int j = 0; j < item.getHeight(); j++) {
-				manager.getParcel(parcel.x + i, parcel.y + j).setItem(item);
-			}
-		}
-
 		return item;
 	}
 
 	public static ConsumableModel createConsumable(ParcelModel area, ItemInfo info, int quantity) {
 		ConsumableModel consumable = new ConsumableModel(info);
-
 		consumable.setQuantity(quantity);
-
-		if (area != null) {
-			area.setConsumable(consumable);
-		}
-
 		return consumable;
 	}
 
 	public static StructureModel createStructure(ParcelModel area, ItemInfo info, boolean isComplete) {
 		StructureModel structure = new StructureModel(info);
-
 		structure.addProgress(isComplete ? info.cost : 0);
-		area.setStructure(structure);
-
 		return structure;
 	}
 
 	public static MapObjectModel createResource(ParcelModel area, ItemInfo info, int matterSupply) {
 		ResourceModel resource = new ResourceModel(info);
-
 		resource.setValue(matterSupply);
-		area.setResource(resource);
-
 		return resource;
 	}
 }

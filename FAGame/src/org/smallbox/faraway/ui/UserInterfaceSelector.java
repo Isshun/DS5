@@ -183,6 +183,8 @@ public class UserInterfaceSelector {
         clean();
         _userInterface.setMode(UserInterface.Mode.INFO_RESOURCE);
         ((PanelInfoResource)_userInterface.getPanel(PanelInfoResource.class)).select(resource);
+        Game.getInstance().notify(observer -> observer.onSelectResource(resource));
+        Game.getInstance().notify(observer -> observer.onSelectParcel(resource.getParcel()));
     }
 
     public void select(ItemModel item) {
@@ -191,6 +193,8 @@ public class UserInterfaceSelector {
         _userInterface.setMode(UserInterface.Mode.INFO_ITEM);
         _selectedItem = item;
         ((PanelInfoItem)_userInterface.getPanel(PanelInfoItem.class)).select(item);
+        Game.getInstance().notify(observer -> observer.onSelectItem(item));
+        Game.getInstance().notify(observer -> observer.onSelectParcel(item.getParcel()));
     }
 
     public void select(ConsumableModel consumable) {
@@ -198,18 +202,23 @@ public class UserInterfaceSelector {
         _userInterface.setMode(UserInterface.Mode.INFO);
         _userInterface.setMode(UserInterface.Mode.INFO_CONSUMABLE);
         ((PanelInfoConsumable)_userInterface.getPanel(PanelInfoConsumable.class)).select(consumable);
+        Game.getInstance().notify(observer -> observer.onSelectConsumable(consumable));
+        Game.getInstance().notify(observer -> observer.onSelectParcel(consumable.getParcel()));
     }
 
     public void select(StructureModel structure) {
         clean();
         _userInterface.setMode(UserInterface.Mode.INFO_STRUCTURE);
         ((PanelInfoStructure)_userInterface.getPanel(PanelInfoStructure.class)).select(structure);
+        Game.getInstance().notify(observer -> observer.onSelectStructure(structure));
+        Game.getInstance().notify(observer -> observer.onSelectParcel(structure.getParcel()));
     }
 
-    public void select(ParcelModel area) {
+    public void select(ParcelModel parcel) {
         clean();
         _userInterface.setMode(UserInterface.Mode.INFO_PARCEL);
-        ((PanelInfoParcel)_userInterface.getPanel(PanelInfoParcel.class)).select(area);
+        ((PanelInfoParcel)_userInterface.getPanel(PanelInfoParcel.class)).select(parcel);
+        Game.getInstance().notify(observer -> observer.onSelectParcel(parcel));
     }
 
 }

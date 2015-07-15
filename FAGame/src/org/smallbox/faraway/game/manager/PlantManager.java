@@ -44,7 +44,7 @@ public class PlantManager extends BaseManager {
                 }
                 // Plan to gather
                 else if (resource.getParcel().getArea() != null && resource.getParcel().getArea() instanceof GardenAreaModel) {
-                    JobHelper.addGather(resource);
+                    JobHelper.addGather(resource, false);
                 }
             }
         }

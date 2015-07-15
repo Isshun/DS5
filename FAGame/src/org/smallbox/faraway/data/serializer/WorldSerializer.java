@@ -26,16 +26,16 @@ public class WorldSerializer implements SerializerInterface {
         if (parcel.getItem() != null || parcel.getResource() != null || parcel.getStructure() != null || parcel.getConsumable() != null) {
             FileUtils.write(fos, "<parcel x='" + parcel.x + "' y='" + parcel.y + "' z='" + parcel.z + "' type='" + parcel.getType() + "'>");
 
-            if (parcel.getItem() != null && parcel.getItem().getX() == parcel.x && parcel.getItem().getY() == parcel.y) {
-                writeItem(fos, parcel.getItem());
-            }
-
             if (parcel.getStructure() != null) {
                 writeStructure(fos, parcel.getStructure());
             }
 
             if (parcel.getResource() != null) {
                 writeResource(fos, parcel.getResource());
+            }
+
+            if (parcel.getItem() != null && parcel.getItem().getX() == parcel.x && parcel.getItem().getY() == parcel.y) {
+                writeItem(fos, parcel.getItem());
             }
 
             if (parcel.getConsumable() != null) {

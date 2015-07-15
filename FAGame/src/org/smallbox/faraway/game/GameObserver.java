@@ -2,10 +2,7 @@ package org.smallbox.faraway.game;
 
 import org.smallbox.faraway.game.manager.QuestManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.item.ConsumableModel;
-import org.smallbox.faraway.game.model.item.ItemModel;
-import org.smallbox.faraway.game.model.item.ResourceModel;
-import org.smallbox.faraway.game.model.item.StructureModel;
+import org.smallbox.faraway.game.model.item.*;
 
 /**
  * Created by Alex on 06/06/2015.
@@ -28,5 +25,10 @@ public interface GameObserver {
     default void onOpenQuest(QuestManager.QuestModel quest) {}
     default void onCloseQuest(QuestManager.QuestModel quest) {}
     default void onSelectCharacter(CharacterModel character) {}
+    default void onSelectParcel(ParcelModel parcel) {}
+    default void onSelectItem(ItemModel item) {}
+    default void onSelectResource(ResourceModel resource) {}
+    default void onSelectConsumable(ConsumableModel consumable) {}
+    default void onSelectStructure(StructureModel structure) {}
     default void onStartGame() {}
 }

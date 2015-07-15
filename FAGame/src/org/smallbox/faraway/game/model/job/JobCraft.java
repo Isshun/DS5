@@ -230,26 +230,4 @@ public class JobCraft extends BaseBuildJobModel {
         return _message;
     }
 
-    public ReceiptModel getReceipt() {
-        return _receipt;
-    }
-
-    public void addConsumable(ConsumableModel consumable) {
-        for (ReceiptModel receipt: _receipts) {
-            receipt.addConsumable(consumable);
-        }
-        if (_receipt == null) {
-            onCheck(null);
-        }
-    }
-
-    public void removeConsumable(ConsumableModel consumable) {
-        for (ReceiptModel receipt: _receipts) {
-            receipt.removeConsumable(consumable);
-        }
-        if (_receipt == null) {
-            onCheck(null);
-        }
-    }
-
 }

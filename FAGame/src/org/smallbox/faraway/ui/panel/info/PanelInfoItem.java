@@ -226,22 +226,6 @@ public class PanelInfoItem extends BaseInfoRightPanel {
         });
     }
 
-    private void addJobOrder(FrameLayout frame, OrderModel order, int index) {
-        UILabel lbOrder = ViewFactory.getInstance().createTextView();
-        lbOrder.setCharacterSize(14);
-        lbOrder.setPosition(0, index * 20);
-
-        String str = order.consumable.getInfo().label;
-        switch (order.status) {
-            case NONE: lbOrder.setDashedString(str, "waiting", 42); break;
-            case CARRY: lbOrder.setDashedString(str, "carrying", 42); break;
-            case STORED: lbOrder.setDashedString(str, "ok", 42); break;
-        }
-
-
-        frame.addView(lbOrder);
-    }
-
     private void addActionMenuEntry(ItemInfo.ItemInfoAction action, int index) {
         UILabel lbCraft = _viewFactory.createTextView();
         lbCraft.setString(action.label);

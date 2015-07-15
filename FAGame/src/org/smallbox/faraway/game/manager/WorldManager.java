@@ -16,59 +16,33 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class WorldManager extends BaseManager implements IndexedGraph<ParcelModel> {
-    private static final int NB_FLOOR = 10;
+    private static final int                NB_FLOOR = 10;
 
-    private final WorldFactory _factory;
-    private ParcelModel[][][] _parcels;
-    private int _width;
-    private int _height;
-    private int _floor;
-    private Game _game;
-    private Set<ConsumableModel> _consumables = new HashSet<>();
-    private BlockingQueue<ResourceModel> _resources = new LinkedBlockingQueue<>();
-    private Set<ItemModel> _items = new HashSet<>();
-    private List<ParcelModel> _parcelList;
-    private int _light;
+    private final WorldFactory                          _factory;
+    private Map<ParcelModel, ParcelModel.ParcelContent>       _parcelsContent = new HashMap<>();
+    private ParcelModel[][][]                           _parcels;
+    private int                                         _width;
+    private int                                         _height;
+    private int                                         _floor;
+    private Game                                        _game;
+    private Set<ConsumableModel>                        _consumables = new HashSet<>();
+    private BlockingQueue<ResourceModel>                _resources = new LinkedBlockingQueue<>();
+    private Set<ItemModel>                              _items = new HashSet<>();
+    private List<ParcelModel>                           _parcelList;
+    private int                                         _light;
 
-    public WorldManager(WorldFactory factory) {
-        _factory = factory;
-    }
+    public WorldManager(WorldFactory factory) { _factory = factory; }
 
-    public ParcelModel[][][] getParcels() {
-        return _parcels;
-    }
+    public ParcelModel[][][]            getParcels() { return _parcels; }
+    public List<ParcelModel>            getParcelList() { return _parcelList; }
+    public Collection<ItemModel>        getItems() { return _items; }
+    public Collection<ResourceModel>    getResources() { return _resources; }
+    public int                          getLight() { return _light; }
+    public ParcelModel                  getParcel(int x, int y) { return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][0]; }
+    public int                          getWidth() { return _width; }
+    public int                          getHeight() { return _height; }
 
-    public List<ParcelModel> getParcelList() {
-        return _parcelList;
-    }
-
-    public Collection<ItemModel> getItems() {
-        return _items;
-    }
-
-    public Collection<ResourceModel> getResources() {
-        return _resources;
-    }
-
-    public int getLight() {
-        return _light;
-    }
-
-    public ParcelModel getParcel(int x, int y) {
-        return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][0];
-    }
-
-    public int getWidth() {
-        return _width;
-    }
-
-    public int getHeight() {
-        return _height;
-    }
-
-    public void setLight(int light) {
-        _light = light;
-    }
+    public void                         setLight(int light) { _light = light; }
 
     @Override
     public void onCreate() {
@@ -84,7 +58,10 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
             for (int y = 0; y < _height; y++) {
                 _parcels[x][y] = new ParcelModel[NB_FLOOR];
                 for (int f = 0; f < NB_FLOOR; f++) {
-                    _parcels[x][y][f] = new ParcelModel(x, y, f);
+                    ParcelModel.ParcelContent content = new ParcelModel.ParcelContent();
+                    ParcelModel parcel = new ParcelModel(x, y, f, content);
+                    _parcelsContent.put(parcel, content);
+                    _parcels[x][y][f] = parcel;
                     _parcels[x][y][f].setIndex(x * _width + y);
                     parcelList.add(_parcels[x][y][f]);
                 }
@@ -139,7 +116,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
     public void removeItem(ItemModel item) {
         if (item != null && item.getParcel() != null) {
-            item.getParcel().setItem(null);
+            moveItemToParcel(item.getParcel(), item);
             _items.remove(item);
             _game.notify(observer -> observer.onRemoveItem(item));
         }
@@ -147,7 +124,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
     public void removeConsumable(ConsumableModel consumable) {
         if (consumable != null && consumable.getParcel() != null) {
-            consumable.getParcel().setConsumable(null);
+            moveConsumableToParcel(consumable.getParcel(), null);
             _consumables.remove(consumable);
             _game.notify(observer -> observer.onRemoveConsumable(consumable));
         }
@@ -160,14 +137,14 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
         StructureModel structure = _parcels[x][y][0].getStructure();
         if (structure != null) {
-            _parcels[x][y][0].setStructure(null);
+            moveStructureToParcel(_parcels[x][y][0], null);
             _game.notify(observer -> observer.onRemoveStructure(structure));
         }
     }
 
     public void removeStructure(StructureModel structure) {
         if (structure != null && structure.getParcel() != null) {
-            structure.getParcel().setStructure(null);
+            moveStructureToParcel(structure.getParcel(), null);
             _game.notify(observer -> observer.onRemoveStructure(structure));
         }
     }
@@ -177,22 +154,22 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
             return null;
         }
 
-        ParcelModel area = WorldHelper.getNearestFreeArea(itemInfo, x, y, quantity);
-        if (area == null) {
+        ParcelModel parcel = WorldHelper.getNearestFreeArea(itemInfo, x, y, quantity);
+        if (parcel == null) {
             return null;
         }
 
         // Put consumable on free area
-        if (area.getConsumable() != null) {
-            area.getConsumable().addQuantity(quantity);
+        if (parcel.getConsumable() != null) {
+            parcel.getConsumable().addQuantity(quantity);
         } else {
-            area.setConsumable(ItemFactory.createConsumable(area, itemInfo, quantity));
-            _consumables.add(area.getConsumable());
+            moveConsumableToParcel(parcel, ItemFactory.createConsumable(parcel, itemInfo, quantity));
+            _consumables.add(parcel.getConsumable());
         }
 
-        _game.notify(observer -> observer.onAddConsumable(area.getConsumable()));
+        _game.notify(observer -> observer.onAddConsumable(parcel.getConsumable()));
 
-        return area.getConsumable();
+        return parcel.getConsumable();
     }
 
     public ConsumableModel putConsumable(ConsumableModel consumable, int x, int y) {
@@ -209,7 +186,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         if (parcel.getConsumable() != null) {
             parcel.getConsumable().addQuantity(consumable.getQuantity());
         } else {
-            parcel.setConsumable(consumable);
+            moveConsumableToParcel(parcel, consumable);
         }
 
         _game.notify(observer -> observer.onAddConsumable(consumable));
@@ -254,7 +231,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         ResourceModel resource = (ResourceModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
         for (int i = 0; i < resource.getWidth(); i++) {
             for (int j = 0; j < resource.getHeight(); j++) {
-                _parcels[x][y][z].setResource(resource);
+                moveResourceToParcel(_parcels[x][y][z], resource);
             }
         }
         _resources.add(resource);
@@ -270,11 +247,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
         // Put item on floor
         ItemModel item = (ItemModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, progress);
-        for (int i = 0; i < item.getWidth(); i++) {
-            for (int j = 0; j < item.getHeight(); j++) {
-                _parcels[x][y][z].setItem(item);
-            }
-        }
+        moveItemToParcel(_parcels[x][y][z], item);
         _items.add(item);
         _game.notify(observer -> observer.onAddItem(item));
 
@@ -290,7 +263,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         if (_parcels[x][y][z].getStructure() == null || _parcels[x][y][z].getStructure().isFloor()) {
             StructureModel structure = (StructureModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
             if (structure != null) {
-                structure.setPosition(x, y);
+                moveStructureToParcel(_parcels[x][y][z], structure);
                 _game.notify(observer -> observer.onAddStructure(structure));
             }
             return structure;
@@ -305,11 +278,11 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
     private void replaceItem(ItemInfo info, int x, int y, int z, int matterSupply) {
         if (info.isResource) {
-            _parcels[x][y][z].setResource(null);
+            moveResourceToParcel(_parcels[x][y][z], null);
         } else if (info.isStructure) {
-            _parcels[x][y][z].setStructure(null);
+            moveStructureToParcel(_parcels[x][y][z], null);
         } else {
-            _parcels[x][y][z].setItem(null);
+            moveItemToParcel(_parcels[x][y][z], null);
         }
         putObject(info, x, y, z, matterSupply);
     }
@@ -327,15 +300,15 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         }
 
         _resources.remove(resource);
-        _parcels[resource.getX()][resource.getY()][0].setResource(null);
+        moveResourceToParcel(_parcels[resource.getX()][resource.getY()][0], null);
         _game.notify(observer -> observer.onRemoveResource(resource));
     }
 
     public ParcelModel getParcel(int z, int x, int y) {
         if (WorldHelper.inMapBounds(x, y)) {
             if (_parcels[x][y][z] == null) {
-                _parcels[x][y][z] = new ParcelModel(x, y, z);
-                _parcels[x][y][z].setIndex(x * _width + y);
+//                _parcels[x][y][z] = new ParcelModel(x, y, z);
+//                _parcels[x][y][z].setIndex(x * _width + y);
                 throw new RuntimeException("todo");
             }
             return _parcels[x][y][z];
@@ -343,9 +316,9 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         return null;
     }
 
-    private ItemModel takeItem(ItemModel item, ParcelModel area) {
-        if (area != null && item != null) {
-            area.setItem(null);
+    private ItemModel takeItem(ItemModel item, ParcelModel parcel) {
+        if (parcel != null && item != null) {
+            moveItemToParcel(parcel, null);
             Game.getInstance().notify(observer -> observer.onRefreshItem(item));
             return item;
         }
@@ -402,6 +375,7 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
 
     @Override
     protected void onUpdate(int tick) {
+        _consumables.forEach(consumable -> consumable.fixPosition());
     }
 
     public Collection<ConsumableModel> getConsumables() {
@@ -417,16 +391,16 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         for (int x = fromX; x < toX; x++) {
             for (int y = fromY; y < toY; y++) {
                 if (WorldHelper.inMapBounds(x, y)) {
-                    if (_parcels[x][y][0].hasSnow()) {
+                    if (_parcels[x][y][0].getEnvironment().snow > 0) {
                         value += 1;
                     }
-                    if (_parcels[x][y][0].hasBlood()) {
+                    if (_parcels[x][y][0].getEnvironment().rubble > 0) {
                         value += -5;
                     }
-                    if (_parcels[x][y][0].hasDirt()) {
+                    if (_parcels[x][y][0].getEnvironment().dirt > 0) {
                         value += -5;
                     }
-                    if (_parcels[x][y][0].hasRubble()) {
+                    if (_parcels[x][y][0].getEnvironment().blood > 0) {
                         value += -5;
                     }
                     if (_parcels[x][y][0].getItem() != null) {
@@ -476,6 +450,48 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
         }
     }
 
+    private void moveItemToParcel(ParcelModel parcel, ItemModel item) {
+        _parcelsContent.get(parcel).item = item;
+        if (item != null) {
+            item.setParcel(parcel);
+            item.setPosition(parcel.x, parcel.y);
+            for (int i = 0; i < item.getWidth(); i++) {
+                for (int j = 0; j < item.getHeight(); j++) {
+                    if (WorldHelper.inMapBounds(parcel.x + i, parcel.y + j)) {
+                        _parcelsContent.get(_parcels[parcel.x + i][parcel.y + j][0]).item = item;
+                    }
+                }
+            }
+        }
+    }
+
+    private void moveStructureToParcel(ParcelModel parcel, StructureModel structure) {
+        _parcelsContent.get(parcel).structure = structure;
+        if (structure != null) {
+            structure.setParcel(parcel);
+            structure.setPosition(parcel.x, parcel.y);
+        }
+    }
+
+    private void moveConsumableToParcel(ParcelModel parcel, ConsumableModel consumable) {
+        _parcelsContent.get(parcel).consumable = consumable;
+        if (consumable != null && consumable.getParcel() != null) {
+            _parcelsContent.get(consumable.getParcel()).consumable = null;
+        }
+        if (consumable != null) {
+            consumable.setParcel(parcel);
+            consumable.setPosition(parcel.x, parcel.y);
+        }
+    }
+
+    private void moveResourceToParcel(ParcelModel parcel, ResourceModel resource) {
+        _parcelsContent.get(parcel).resource = resource;
+        if (resource != null) {
+            resource.setParcel(parcel);
+            resource.setPosition(parcel.x, parcel.y);
+        }
+    }
+
     @Override
     public void onAddStructure(StructureModel structure) {
         createConnection(structure.getParcel());
@@ -494,5 +510,9 @@ public class WorldManager extends BaseManager implements IndexedGraph<ParcelMode
     @Override
     public void onRemoveResource(ResourceModel resource) {
         createConnection(resource.getParcel());
+    }
+
+    public ParcelModel.ParcelContent getParcelContent(ParcelModel parcel) {
+        return _parcelsContent.get(parcel);
     }
 }

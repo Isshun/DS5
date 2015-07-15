@@ -59,6 +59,8 @@ public class JobBuild extends BaseBuildJobModel {
 
         JobBuild job = new JobBuild(item.getX(), item.getY());
         job._mainItem = item;
+        job._mainItem.addJob(job);
+        job._mainItem.setJobBuild(job);
         job._receipts = new ArrayList<>();
         job._receipts.add(ReceiptModel.createFromComponentInfo(item, item.getInfo().components));
 		job.setCost(item.getInfo().cost);
@@ -87,6 +89,8 @@ public class JobBuild extends BaseBuildJobModel {
 	@Override
 	protected void onFinish() {
 		Log.info("Character #" + _character.getId() + ": build close");
+        _mainItem.removeJob(this);
+        _mainItem.setJobBuild(null);
 	}
 
 	@Override

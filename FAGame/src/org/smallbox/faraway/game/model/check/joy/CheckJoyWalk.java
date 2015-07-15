@@ -57,7 +57,7 @@ public class CheckJoyWalk extends CharacterCheck {
             int r = (int)(Math.random() * size);
             int i = 0;
             for (ParcelModel parcel: _area.getParcels()) {
-                if (parcel.isWalkable() && !parcel.hasItem() && (i++ < r || _parcel == null)) {
+                if (parcel.isWalkable() && parcel.getItem() == null && (i++ < r || _parcel == null)) {
                     _parcel = parcel;
                 }
             }

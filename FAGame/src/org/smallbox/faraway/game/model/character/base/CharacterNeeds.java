@@ -122,7 +122,7 @@ public class CharacterNeeds {
         // Body heat
         double heatDifference = _character.getParcel().getTemperature() - (this.heat - _character.getType().thermolysis);
         double heatDifferenceReal = 0;
-        System.out.println("heatDifference: " + heatDifference);
+//        System.out.println("heatDifference: " + heatDifference);
 
         if (heatDifference < 0) {
             heatDifferenceReal = Math.min(0, heatDifference + _stats.buff.heat);
@@ -132,7 +132,7 @@ public class CharacterNeeds {
 
         this.heatDifferenceReal = heatDifferenceReal;
 
-        System.out.println("heatDifferenceReal: " + heatDifferenceReal);
+//        System.out.println("heatDifferenceReal: " + heatDifferenceReal);
 
         if (heatDifferenceReal < 0) {
             this.heat += heatDifferenceReal * (1 - _stats.resist.cold / 100f) / 100f;
@@ -148,7 +148,7 @@ public class CharacterNeeds {
             }
         }
 
-        System.out.println("bodyHeat: " + this.heat);
+//        System.out.println("bodyHeat: " + this.heat);
     }
 
     private void updateNeeds(ItemInfoAction action) {

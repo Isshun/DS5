@@ -10,11 +10,9 @@ import org.smallbox.faraway.game.model.check.character.CheckCharacterHungry;
 import org.smallbox.faraway.game.model.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
-import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.model.job.*;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobAbortReason;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobStatus;
-import org.smallbox.faraway.game.model.job.JobCraft;
-import org.smallbox.faraway.game.model.job.JobHaul;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -398,8 +396,8 @@ public class JobManager extends BaseManager {
 	@Override
 	public void onAddConsumable(ConsumableModel consumable) {
 		for (BaseJobModel job: _jobs) {
-			if (job instanceof JobCraft) {
-				((JobCraft)job).addConsumable(consumable);
+			if (job instanceof BaseBuildJobModel) {
+				((BaseBuildJobModel)job).addConsumable(consumable);
 			}
 		}
 	}
@@ -407,8 +405,8 @@ public class JobManager extends BaseManager {
 	@Override
 	public void onRemoveConsumable(ConsumableModel consumable){
 		for (BaseJobModel job: _jobs) {
-			if (job instanceof JobCraft) {
-				((JobCraft)job).removeConsumable(consumable);
+			if (job instanceof BaseBuildJobModel) {
+				((BaseBuildJobModel)job).removeConsumable(consumable);
 			}
 		}
 	}

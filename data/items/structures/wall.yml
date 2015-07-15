@@ -8,3 +8,6 @@ isCloseRoom: true
 maxHealth: 250
 cost: 100
 sealing: 1
+components:
+    -   item: base.brick_rock
+        quantity: 10

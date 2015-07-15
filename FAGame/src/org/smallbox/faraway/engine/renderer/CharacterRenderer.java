@@ -131,8 +131,8 @@ public class CharacterRenderer extends BaseRenderer {
 				renderer.draw(sprite, posX, posY);
 			}
 
-			if (c.getJob() != null && c.getJob().getActionIcon() != null && c.getJob().getX() == c.getX() && c.getJob().getY() == c.getY()) {
-				SpriteModel sprite = SpriteManager.getInstance().getIcon(c.getJob().getActionIcon());
+			if (c.getJob() != null && c.getJob().getIconAction() != null && c.getJob().getX() == c.getX() && c.getJob().getY() == c.getY()) {
+				SpriteModel sprite = SpriteManager.getInstance().getIcon(c.getJob().getIconAction());
 				renderer.draw(sprite, posX, posY);
 			}
 		}

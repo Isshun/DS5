@@ -25,11 +25,8 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public abstract class CharacterModel extends MovableModel {
 
@@ -234,7 +231,7 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void update() {
-        _needs.environment = parcel.getEnvironment();
+        _needs.environment = parcel.getEnvironment().getScore();
         _needs.light = ((RoomManager)Game.getInstance().getManager(RoomManager.class)).getLight(_posX, _posY);
 
         // Check room temperature

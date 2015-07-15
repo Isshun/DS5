@@ -70,13 +70,28 @@ public class WorldHelper {
      * @return
      */
     private static boolean areaFreeForConsumable(int x, int y, ItemInfo info, int quantity) {
-        if (inMapBounds(x, y)) {
-            ParcelModel area = _parcels[x][y][0];
-            if (area.getStructure() == null || area.getStructure().isFloor()) {
-                return area.getItem() == null && (area.getConsumable() == null || (area.getConsumable().getInfo() == info && area.getConsumable().getQuantity() + quantity <= Math.max(GameData.config.storageMaxQuantity, area.getConsumable().getInfo().stack)));
-            }
+        if (!inMapBounds(x, y)) {
+            return false;
         }
-        return false;
+
+        ParcelModel parcel = _parcels[x][y][0];
+        if (parcel.getStructure() != null && !parcel.getStructure().isFloor()) {
+            return false;
+        }
+
+        if (parcel.getResource() != null && parcel.getResource().isSolid()) {
+            return false;
+        }
+
+        if (parcel.getItem() != null) {
+            return false;
+        }
+
+        if (parcel.getConsumable() != null && (parcel.getConsumable().getInfo() != info || parcel.getConsumable().getQuantity() + quantity > Math.max(GameData.config.storageMaxQuantity, parcel.getConsumable().getInfo().stack))) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

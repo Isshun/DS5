@@ -3,6 +3,7 @@ package org.smallbox.faraway.ui.panel.info;
 import com.badlogic.gdx.ai.pfa.Connection;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.room.NeighborModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
@@ -67,10 +68,10 @@ public class BaseInfoRightPanel extends BaseRightPanel {
                 boolean isBuildGround = parcel.getStructure() != null && parcel.getStructure().isFloor();
                 ((UILabel) _frame_parcel_info.findById("lb_parcel_name")).setString(isBuildGround ? "Build ground" : "Ground");
                 ((UILabel) _frame_parcel_info.findById("lb_parcel_pos")).setString(parcel.x + "x" + parcel.y);
-                ((UILabel) _frame_parcel_info.findById("lb_blood")).setString("blood: " + parcel.getBlood());
-                ((UILabel) _frame_parcel_info.findById("lb_dirt")).setString("dirt: " + parcel.getDirt());
-                ((UILabel) _frame_parcel_info.findById("lb_rubble")).setString("rubble: " + parcel.getRubble());
-                ((UILabel) _frame_parcel_info.findById("lb_snow")).setString("snow: " + parcel.getSnow());
+                ((UILabel) _frame_parcel_info.findById("lb_blood")).setString("blood: " + parcel.getEnvironment().blood);
+                ((UILabel) _frame_parcel_info.findById("lb_dirt")).setString("dirt: " + parcel.getEnvironment().dirt);
+                ((UILabel) _frame_parcel_info.findById("lb_rubble")).setString("rubble: " + parcel.getEnvironment().rubble);
+                ((UILabel) _frame_parcel_info.findById("lb_snow")).setString("snow: " + parcel.getEnvironment().snow);
                 ((UILabel) _frame_parcel_info.findById("lb_light")).setString("light: " + parcel.getLight());
                 ((UILabel) _frame_parcel_info.findById("lb_oxygen")).setString("oxygen: " + parcel.getOxygen());
                 ((UILabel) _frame_parcel_info.findById("lb_type")).setString("type: " + parcel.getType());
@@ -135,6 +136,22 @@ public class BaseInfoRightPanel extends BaseRightPanel {
     @Override
     protected void onRefresh(int update) {
         select(_parcel);
+    }
+
+    protected void addJobOrder(FrameLayout frame, ReceiptModel.OrderModel order, int index) {
+        UILabel lbOrder = ViewFactory.getInstance().createTextView();
+        lbOrder.setCharacterSize(14);
+        lbOrder.setPosition(0, index * 20);
+
+        String str = order.consumable.getInfo().label;
+        switch (order.status) {
+            case NONE: lbOrder.setDashedString(str, "waiting", 42); break;
+            case CARRY: lbOrder.setDashedString(str, "carrying", 42); break;
+            case STORED: lbOrder.setDashedString(str, "ok", 42); break;
+        }
+
+
+        frame.addView(lbOrder);
     }
 
 }

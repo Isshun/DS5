@@ -21,10 +21,6 @@ public abstract class BaseJobModel {
     protected JobStrategy   _strategy;
     protected ItemFinder    _finder;
 
-    public String getActionIcon() {
-        return null;
-    }
-
     public String getMessage() {
         return _message;
     }
@@ -64,6 +60,7 @@ public abstract class BaseJobModel {
     protected int               _totalCount;
     protected int				_posY = -1;
 	protected int 				_posX = -1;
+	protected ParcelModel       _parcel;
     protected int 	            _limit;
     protected int               _currentLimit;
     protected int 				_fail;

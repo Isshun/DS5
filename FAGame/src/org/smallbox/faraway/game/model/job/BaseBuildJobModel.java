@@ -27,10 +27,6 @@ public abstract class BaseBuildJobModel extends BaseJobModel {
         super(actionInfo, x, y, iconPath, iconActionPath);
     }
 
-    public ReceiptModel getReceipt() {
-        return _receipt;
-    }
-
     public enum Status {
         WAITING, MAIN_ACTION, MOVE_TO_INGREDIENT, MOVE_TO_FACTORY, MOVE_TO_STORAGE
     }
@@ -116,6 +112,28 @@ public abstract class BaseBuildJobModel extends BaseJobModel {
     @Override
     public void onDraw(onDrawCallback callback) {
         callback.onDraw(_mainItem.getX(), _mainItem.getY());
+    }
+
+    public ReceiptModel getReceipt() {
+        return _receipt;
+    }
+
+    public void addConsumable(ConsumableModel consumable) {
+        for (ReceiptModel receipt: _receipts) {
+            receipt.addConsumable(consumable);
+        }
+        if (_receipt == null) {
+            onCheck(null);
+        }
+    }
+
+    public void removeConsumable(ConsumableModel consumable) {
+        for (ReceiptModel receipt: _receipts) {
+            receipt.removeConsumable(consumable);
+        }
+        if (_receipt == null) {
+            onCheck(null);
+        }
     }
 
 }

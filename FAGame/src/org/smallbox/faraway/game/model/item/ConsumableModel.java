@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.item;
 
+import org.smallbox.faraway.WorldHelper;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobHaul;
 
@@ -30,33 +31,24 @@ public class ConsumableModel extends MapObjectModel {
         _needRefresh = true;
     }
 
-    public String getFullLabel() {
-        return getLabel() + " (" + _quantity + ")";
-    }
-
-    public JobHaul getHaul() {
-        return _job;
-    }
-
-    public void setHaul(JobHaul job) {
-        _job = job;
-    }
-
+    public String getFullLabel() { return getLabel() + " (" + _quantity + ")"; }
+    public JobHaul getHaul() { return _job; }
+    public void setHaul(JobHaul job) { _job = job; }
     public boolean isEmpty() { return _quantity <= 0; }
+    public void lock(BaseJobModel lock) { _lock = lock; }
+    public BaseJobModel getLock() { return _lock; }
+    public boolean inValidStorage() { return _parcel.getArea() != null && _parcel.getArea().accept(_info); }
+    public boolean hasFreeSlot() { return _slots < _quantity; }
 
-    public void lock(BaseJobModel lock) {
-        _lock = lock;
+    public void fixPosition() {
+        if (_parcel != null && !_parcel.isWalkable()) {
+            ParcelModel parcel = WorldHelper.getNearestFreeSpace(_parcel.x, _parcel.y, true, false);
+            if (parcel != null) {
+                _parcel = parcel;
+                _x = parcel.x;
+                _y = parcel.y;
+            }
+        }
     }
 
-    public BaseJobModel getLock() {
-        return _lock;
-    }
-
-    public boolean inValidStorage() {
-        return _parcel.getArea() != null && _parcel.getArea().accept(_info);
-    }
-
-    public boolean hasFreeSlot() {
-        return _slots < _quantity;
-    }
 }

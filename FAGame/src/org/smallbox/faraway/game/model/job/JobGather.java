@@ -12,6 +12,7 @@ public class JobGather extends BaseJobModel {
 	private ResourceModel 	_resource;
 	private int 			_totalCost;
 	private int 			_totalProgress;
+	private boolean 		_removeOnComplete;
 
 	@Override
 	public CharacterModel.TalentType getTalentNeeded() {
@@ -22,7 +23,7 @@ public class JobGather extends BaseJobModel {
 		super(action, x, y, "data/res/ic_gather.png", "data/res/ic_action_gather.png");
 	}
 
-	public static BaseJobModel create(ResourceModel resource) {
+	public static BaseJobModel create(ResourceModel resource, boolean removeOnComplete) {
 		// Resource is not gatherable
 		if (resource == null || resource.getInfo().actions == null || resource.getInfo().actions.isEmpty() || !"gather".equals(resource.getInfo().actions.get(0).type)) {
 			return null;
@@ -37,7 +38,8 @@ public class JobGather extends BaseJobModel {
 			}
 		});
 		job._resource = resource;
-		job._resource.setJob(job);
+		job._resource.addJob(job);
+		job._removeOnComplete = removeOnComplete;
 
 		return job;
 	}
@@ -52,7 +54,7 @@ public class JobGather extends BaseJobModel {
 
 	@Override
 	public int getProgressPercent() {
-		if (_resource != null) {
+		if (_resource != null && _totalCost != 0) {
 			return _totalProgress * 100 / _totalCost;
 		}
 		return 0;
@@ -90,7 +92,11 @@ public class JobGather extends BaseJobModel {
 	@Override
 	protected void onFinish() {
 		Log.info("Gather complete");
-		_resource.setJob(null);
+		_resource.removeJob(null);
+
+		if (_removeOnComplete) {
+			Game.getWorldManager().removeResource(_resource);
+		}
 
 		if (_actionInfo.finalProducts != null) {
 			_actionInfo.finalProducts.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo -> {
@@ -156,5 +162,5 @@ public class JobGather extends BaseJobModel {
 	}
 
     @Override
-    public String getActionIcon() { return "data/res/ic_action_gather.png"; }
+    public String getIconAction() { return "data/res/ic_action_gather.png"; }
 }
