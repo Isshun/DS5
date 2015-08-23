@@ -13,9 +13,4 @@ actions:
         cost: 100
         products:
             -   item: base.iron_filings
-                quantity: 1
-
-        finalProducts:
-            -   item: base.seaweed
-                quantity: 5
-                dropRate: 0.1
+                quantity: [1, 1]

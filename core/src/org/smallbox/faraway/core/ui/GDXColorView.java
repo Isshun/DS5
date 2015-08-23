@@ -1,11 +1,10 @@
 package org.smallbox.faraway.core.ui;
 
-import org.smallbox.faraway.core.GDXRenderer;
+import org.smallbox.faraway.core.Viewport;
+import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.Color;
-import org.smallbox.faraway.engine.GFXRenderer;
-import org.smallbox.faraway.engine.RenderEffect;
-import org.smallbox.faraway.ui.engine.ColorView;
-import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.ui.engine.view.ColorView;
+import org.smallbox.faraway.ui.engine.view.View;
 
 /**
  * Created by Alex on 04/06/2015.
@@ -27,12 +26,12 @@ public class GDXColorView extends ColorView {
     }
 
     @Override
-    public void draw(GFXRenderer renderer, RenderEffect effect) {
+    public void draw(GDXRenderer renderer, Viewport viewport) {
         draw(renderer, 0, 0);
     }
 
     @Override
-    public void draw(GFXRenderer renderer, int x, int y) {
+    public void draw(GDXRenderer renderer, int x, int y) {
         if (_needResetPos) {
             _finalX = 0;
             _finalY = 0;

@@ -7,7 +7,7 @@ import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 /**
- * The builder responsible for converting a tile based map into
+ * The builder responsible for converting a tile based old into
  * a navigation mesh
  * 
  * @author kevin
@@ -23,9 +23,9 @@ public class NavMeshBuilder implements PathFindingContext {
 	private boolean tileBased;
 	
 	/**
-	 * Build a navigation mesh based on a tile map
+	 * Build a navigation mesh based on a tile old
 	 * 
-	 * @param map The map to build the navigation mesh from
+	 * @param map The old to build the navigation mesh from
 	 * 
 	 * @return The newly created navigation mesh 
 	 */
@@ -34,9 +34,9 @@ public class NavMeshBuilder implements PathFindingContext {
 	}
 	
 	/**
-	 * Build a navigation mesh based on a tile map
+	 * Build a navigation mesh based on a tile old
 	 * 
-	 * @param map The map to build the navigation mesh from
+	 * @param map The old to build the navigation mesh from
 	 * @param tileBased True if we'll use the tiles for the mesh initially 
 	 * rather than quad spacing
 	 * @return The newly created navigation mesh 
@@ -116,7 +116,7 @@ public class NavMeshBuilder implements PathFindingContext {
 	/**
 	 * Check if a particular space is clear of blockages
 	 * 
-	 * @param map The map the spaces are being built from
+	 * @param map The old the spaces are being built from
 	 * @param space The space to check
 	 * @return True if there are no blockages in the space
 	 */
@@ -162,7 +162,7 @@ public class NavMeshBuilder implements PathFindingContext {
 	 * Subsection a space into smaller spaces if required to find a non-blocked
 	 * area.
 	 * 
-	 * @param map The map being processed
+	 * @param map The old being processed
 	 * @param space The space being sections
 	 * @param spaces The list of spaces that have been created
 	 */

@@ -2,25 +2,25 @@ package org.newdawn.slick.util.pathfinding;
 
 /**
  * The description for the data we're pathfinding over. This provides the contract
- * between the data being searched (i.e. the in game map) and the path finding
+ * between the data being searched (i.e. the in game old) and the path finding
  * generic tools
  * 
  * @author Kevin Glass
  */
 public interface TileBasedMap {
 	/**
-	 * Get the width of the tile map. The slightly odd name is used
+	 * Get the width of the tile old. The slightly odd name is used
 	 * to distiguish this method from commonly used names in game maps.
 	 * 
-	 * @return The number of tiles across the map
+	 * @return The number of tiles across the old
 	 */
 	public int getWidthInTiles();
 
 	/**
-	 * Get the height of the tile map. The slightly odd name is used
+	 * Get the height of the tile old. The slightly odd name is used
 	 * to distiguish this method from commonly used names in game maps.
 	 * 
-	 * @return The number of tiles down the map
+	 * @return The number of tiles down the old
 	 */
 	public int getHeightInTiles();
 	

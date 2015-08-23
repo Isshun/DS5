@@ -6,8 +6,8 @@ package org.newdawn.slick.util.pathfinding;
  * information to determine whether a particular tile is blocked, or how much
  * cost to apply on a particular tile.
  * 
- * For instance, a Mover might represent a tank or plane on a game map. Passing round
- * this entity allows us to determine whether rough ground on a map should effect
+ * For instance, a Mover might represent a tank or plane on a game old. Passing round
+ * this entity allows us to determine whether rough ground on a old should effect
  * the unit's cost for moving through the tile.
  * 
  * @author Kevin Glass

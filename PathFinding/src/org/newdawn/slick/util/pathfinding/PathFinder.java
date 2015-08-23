@@ -2,8 +2,8 @@ package org.newdawn.slick.util.pathfinding;
 
 /**
  * A description of an implementation that can find a path from one 
- * location on a tile map to another based on information provided
- * by that tile map.
+ * location on a tile old to another based on information provided
+ * by that tile old.
  * 
  * @see TileBasedMap
  * @author Kevin Glass
@@ -13,7 +13,7 @@ public interface PathFinder {
 	/**
 	 * Find a path from the starting location provided (sx,sy) to the target
 	 * location (tx,ty) avoiding blockages and attempting to honour costs 
-	 * provided by the tile map.
+	 * provided by the tile old.
 	 * 
 	 * @param mover The entity that will be moving along the path. This provides
 	 * a place to pass context information about the game entity doing the moving, e.g.

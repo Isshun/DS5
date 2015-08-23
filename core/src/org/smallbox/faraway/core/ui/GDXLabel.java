@@ -1,23 +1,22 @@
 package org.smallbox.faraway.core.ui;
 
-import org.smallbox.faraway.core.GDXRenderer;
+import org.smallbox.faraway.core.Viewport;
+import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.Color;
-import org.smallbox.faraway.engine.GFXRenderer;
-import org.smallbox.faraway.engine.RenderEffect;
-import org.smallbox.faraway.ui.engine.UILabel;
-import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.ui.engine.view.UILabel;
+import org.smallbox.faraway.ui.engine.view.View;
 import org.smallbox.faraway.util.StringUtils;
 
 /**
  * Created by Alex on 04/06/2015.
  */
 public class GDXLabel extends UILabel {
-    private boolean     _needResetPos = true;
-    private String      _string;
-    private int         _textSize;
-    private com.badlogic.gdx.graphics.Color _gdxColor;
-    private com.badlogic.gdx.graphics.Color _gdxBackgroundColor;
-    private Color       _color;
+    private boolean                             _needResetPos = true;
+    private String                              _string;
+    private int                                 _textSize;
+    private com.badlogic.gdx.graphics.Color     _gdxColor;
+    private com.badlogic.gdx.graphics.Color     _gdxBackgroundColor;
+    private Color                               _color;
 
     @Override
     public void setStringValue(String string) {
@@ -48,6 +47,12 @@ public class GDXLabel extends UILabel {
         }
     }
 
+    public void setBackgroundColor(com.badlogic.gdx.graphics.Color color) {
+        if (color != null) {
+            _gdxBackgroundColor = color;
+        }
+    }
+
     @Override
     public Color getColor() {
         return _color;
@@ -64,16 +69,16 @@ public class GDXLabel extends UILabel {
     }
 
     @Override
-    protected void onDraw(GFXRenderer renderer, RenderEffect effect) {
+    protected void onDraw(GDXRenderer renderer, Viewport viewport) {
     }
 
     @Override
-    public void draw(GFXRenderer renderer, RenderEffect effect) {
+    public void draw(GDXRenderer renderer, Viewport viewport) {
         draw(renderer, 0, 0);
     }
 
     @Override
-    public void draw(GFXRenderer renderer, int x, int y) {
+    public void draw(GDXRenderer renderer, int x, int y) {
         if (_isVisible) {
             if (_needResetPos) {
                 _finalX = x;

@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import org.smallbox.faraway.data.factory.map.MapFactoryConfig;
-import org.smallbox.faraway.data.factory.map.PerlingGenerator;
+import org.smallbox.faraway.data.factory.old.MapFactoryConfig;
+import org.smallbox.faraway.data.factory.old.PerlingGenerator;
 
 import java.util.Random;
 

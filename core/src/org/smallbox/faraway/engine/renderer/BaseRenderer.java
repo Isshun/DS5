@@ -1,0 +1,25 @@
+package org.smallbox.faraway.engine.renderer;
+
+import org.smallbox.faraway.core.Viewport;
+import org.smallbox.faraway.core.renderer.GDXRenderer;
+import org.smallbox.faraway.util.Log;
+
+public abstract class BaseRenderer {
+	private long 	_totalTime;
+	private int 	_nbDraw;
+
+	public abstract void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress);
+	public abstract void onRefresh(int frame);
+	public void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+		long time = System.currentTimeMillis();
+		onDraw(renderer, viewport, animProgress);
+		_totalTime += (System.currentTimeMillis() - time);
+		_nbDraw++;
+	}
+
+	public void dump() {
+		if (_nbDraw != 0) {
+			Log.notice("Renderer: " + this.getClass().getSimpleName() + ",\tdraw: " + _nbDraw + ",\tavg time: " + _totalTime / _nbDraw);
+		}
+	}
+}

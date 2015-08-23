@@ -2,13 +2,12 @@ package org.smallbox.faraway.core.ui;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.engine.GFXRenderer;
-import org.smallbox.faraway.engine.RenderEffect;
-import org.smallbox.faraway.engine.SpriteModel;
-import org.smallbox.faraway.ui.engine.UIImage;
-import org.smallbox.faraway.ui.engine.View;
-import org.smallbox.faraway.core.GDXRenderer;
 import org.smallbox.faraway.core.GDXSpriteModel;
+import org.smallbox.faraway.core.Viewport;
+import org.smallbox.faraway.core.renderer.GDXRenderer;
+import org.smallbox.faraway.engine.SpriteModel;
+import org.smallbox.faraway.ui.engine.view.UIImage;
+import org.smallbox.faraway.ui.engine.view.View;
 
 /**
  * Created by Alex on 04/06/2015.
@@ -24,12 +23,12 @@ public class GDXImageView extends UIImage {
     }
 
     @Override
-    public void draw(GFXRenderer renderer, RenderEffect effect) {
+    public void draw(GDXRenderer renderer, Viewport viewport) {
         draw(renderer, 0, 0);
     }
 
     @Override
-    public void draw(GFXRenderer renderer, int x, int y) {
+    public void draw(GDXRenderer renderer, int x, int y) {
         if (_sprite == null && _image != null) {
             _sprite = ((GDXSpriteModel) _image).getData();
 

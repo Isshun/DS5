@@ -11,11 +11,7 @@ sealing: 1
 actions:
     -   type: mine
         cost: 100
-        products:
-            -   item: base.rubble
-                quantity: 1
 
         finalProducts:
-            -   item: base.seaweed
-                quantity: 5
-                dropRate: 0.1
+            -   item: base.rubble
+                quantity: [0, 5]

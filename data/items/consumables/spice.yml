@@ -5,25 +5,3 @@ tiles: [3, 8]
 type: consumable
 isWalkable: true
 isCloseRoom: false
-plant:
-    mature: 100
-    growing:
-        stasis:
-            temperature: [0, 50]
-            light: [0, 100]
-        partial:
-            temperature: [14, 50]
-            light: [0, 60]
-        regular:
-            temperature: [20, 50]
-            light: [0, 60]
-        exceptional:
-            temperature: [20, 50]
-            light: [0, 60]
-actions:
-    -   type: mine
-        cost: 100
-        products:
-            -   item: base.spice
-                quantity: 10
-                dropRate: 0.5

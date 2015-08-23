@@ -25,7 +25,7 @@ actions:
                         quantity: 5
                 products:
                     -   item: base.easy_meal
-                        quantity: 5
+                        quantity: [5, 5]
 
             -   name: easy_meal_r2
                 label: Small salad
@@ -34,7 +34,7 @@ actions:
                         quantity: 5
                 products:
                     -   item: base.easy_meal
-                        quantity: 5
+                        quantity: [5, 5]
 
     -   type: cook
         name: action_cook_advance
@@ -50,7 +50,7 @@ actions:
                         quantity: 5
                 products:
                     -   item: base.advance_meal
-                        quantity: 10
+                        quantity: [10, 10]
 
     -   type: cook
         name: action_cook_lavish
@@ -64,7 +64,7 @@ actions:
                         quantity: 15
                 products:
                     -   item: base.easy_meal
-                        quantity: 5
+                        quantity: [5, 5]
 
             -   name: lavish_meal_r2
                 label: Lavish salad
@@ -73,7 +73,7 @@ actions:
                         quantity: 15
                 products:
                     -   item: base.easy_meal
-                        quantity: 5
+                        quantity: [5, 5]
 
     -   type: cook
         name: action_cook_ration
@@ -87,4 +87,4 @@ actions:
                         quantity: 10
                 products:
                     -   item: base.military_ration
-                        quantity: 5
+                        quantity: [5, 5]

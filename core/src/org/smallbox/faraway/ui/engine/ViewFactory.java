@@ -1,0 +1,91 @@
+package org.smallbox.faraway.ui.engine;
+
+import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.ui.LayoutModel;
+import org.smallbox.faraway.ui.engine.view.ColorView;
+import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIImage;
+import org.smallbox.faraway.ui.engine.view.UILabel;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+/**
+ * Created by Alex on 27/05/2015.
+ */
+public abstract class ViewFactory {
+    public interface ViewFactoryLoadListener {
+        void onLoad(FrameLayout rootView);
+    }
+
+    private static ViewFactory  _factory;
+
+    public static void          setInstance(ViewFactory factory) {
+        _factory = factory;
+    }
+
+    public static ViewFactory   getInstance() {
+        return _factory;
+    }
+
+    public abstract UILabel     createTextView();
+    public abstract UILabel createTextView(int width, int height);
+    public abstract ColorView createColorView();
+    public abstract ColorView   createColorView(int width, int height);
+    public abstract FrameLayout createFrameLayout();
+    public abstract FrameLayout createFrameLayout(int width, int height);
+    public abstract UIImage createImageView();
+
+    public void load(String path, ViewFactoryLoadListener listener) {
+        FrameLayout rootView = load(path);
+        if (listener != null) {
+            listener.onLoad(rootView);
+        }
+    }
+
+    public FrameLayout load(String path) {
+        try {
+            FrameLayout rootView = createFrameLayout();
+            InputStream input = new FileInputStream(new File(path));
+            Yaml yaml = new Yaml(new Constructor(LayoutModel.class));
+            LayoutModel layout = (LayoutModel)yaml.load(input);
+            if (layout.entries != null && !layout.entries.isEmpty()) {
+                for (LayoutModel.LayoutEntry entry : layout.entries) {
+                    rootView.addView(LayoutFactory.createFromLayout(null, entry));
+                }
+            }
+
+            if (layout.id != null) {
+                rootView.setId(layout.id.hashCode());
+                rootView.setName(layout.id);
+            }
+
+            if (layout.align != null) {
+                rootView.setAlign("left".equals(layout.align[0]), "top".equals(layout.align[1]));
+            }
+
+            if (layout.position != null) {
+                rootView.setPosition(layout.position[0], layout.position[1]);
+            }
+
+            if (layout.size != null) {
+                rootView.setSize(layout.size[0], layout.size[1]);
+            }
+
+            if (layout.background != 0) {
+                rootView.setBackgroundColor(new Color(layout.background));
+            }
+
+            rootView.resetAllPos();
+
+            return rootView;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}

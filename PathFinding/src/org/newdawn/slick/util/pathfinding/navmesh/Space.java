@@ -18,7 +18,7 @@ public class Space {
 	/** The height of the space */
 	private float height;
 	
-	/** A map from spaces to the links that connect them to this space */
+	/** A old from spaces to the links that connect them to this space */
 	private HashMap links = new HashMap();
 	/** A list of the links from this space to others */
 	private ArrayList linksList = new ArrayList();
@@ -266,7 +266,7 @@ public class Space {
 	}
 	
 	/**
-	 * Clear the costing values across the whole map
+	 * Clear the costing values across the whole old
 	 */
 	public void clearCost() {
 		cost = Float.MAX_VALUE;

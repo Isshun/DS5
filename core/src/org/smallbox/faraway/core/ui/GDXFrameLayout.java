@@ -1,11 +1,10 @@
 package org.smallbox.faraway.core.ui;
 
-import org.smallbox.faraway.core.GDXRenderer;
+import org.smallbox.faraway.core.Viewport;
+import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.Color;
-import org.smallbox.faraway.engine.GFXRenderer;
-import org.smallbox.faraway.engine.RenderEffect;
-import org.smallbox.faraway.ui.engine.FrameLayout;
-import org.smallbox.faraway.ui.engine.View;
+import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.View;
 
 /**
  * Created by Alex on 04/06/2015.
@@ -34,7 +33,7 @@ public class GDXFrameLayout extends FrameLayout {
     }
 
     @Override
-    public void draw(GFXRenderer renderer, RenderEffect effect) {
+    public void draw(GDXRenderer renderer, Viewport viewport) {
         if (_needResetPos) {
             _finalX = 0;
             _finalY = 0;
@@ -47,10 +46,10 @@ public class GDXFrameLayout extends FrameLayout {
         }
 
         if (_isVisible && _gdxBackgroundColor != null) {
-            ((GDXRenderer) renderer).draw(_gdxBackgroundColor, _finalX, _finalY, _width, _height);
+            renderer.draw(_gdxBackgroundColor, _finalX, _finalY, _width, _height);
         }
 
-        super.draw(renderer, effect);
+        super.draw(renderer, viewport);
     }
 
     @Override

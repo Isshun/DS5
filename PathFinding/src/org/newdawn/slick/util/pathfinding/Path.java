@@ -38,7 +38,7 @@ public class Path implements Serializable {
 	 * 
 	 * @param index The index of the step to retrieve. Note this should
 	 * be >= 0 and < getLength();
-	 * @return The step information, the position on the map.
+	 * @return The step information, the position on the old.
 	 */
 	public Step getStep(int index) {
 		return (Step) steps.get(index);

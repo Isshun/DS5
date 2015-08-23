@@ -29,5 +29,5 @@ actions:
         cost: 20
         products:
             -   item: base.seaweed
-                quantity: 1
+                quantity: [1, 1]
                 dropRate: 1

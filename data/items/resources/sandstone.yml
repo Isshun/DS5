@@ -13,9 +13,4 @@ actions:
         cost: 100
         products:
             -   item: base.rubble
-                quantity: 10
-                dropRate: 0.5
-
-            -   item: base.seaweed
-                quantity: 5
-                dropRate: 0.1
+                quantity: [0, 10]

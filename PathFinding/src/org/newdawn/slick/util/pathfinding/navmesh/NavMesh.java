@@ -3,10 +3,10 @@ package org.newdawn.slick.util.pathfinding.navmesh;
 import java.util.ArrayList;
 
 /**
- * A nav-mesh is a set of shapes that describe the navigation of a map. These
+ * A nav-mesh is a set of shapes that describe the navigation of a old. These
  * shapes are linked together allow path finding but without the high
  * resolution that tile maps require. This leads to fast path finding and 
- * potentially much more accurate map definition.
+ * potentially much more accurate old definition.
  *  
  * @author kevin
  *

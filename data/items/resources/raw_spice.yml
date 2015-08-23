@@ -18,5 +18,4 @@ actions:
         cost: 100
         products:
             -   item: base.spice
-                quantity: 1
-                dropRate: 0.5
+                quantity: [1, 1]

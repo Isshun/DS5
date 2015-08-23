@@ -25,4 +25,4 @@ actions:
                         quantity: 5
                 products:
                     -   item: base.brick_rock
-                        quantity: 5
+                        quantity: [5, 5]

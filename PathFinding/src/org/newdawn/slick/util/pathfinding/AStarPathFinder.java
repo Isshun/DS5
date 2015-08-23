@@ -19,12 +19,12 @@ public class AStarPathFinder implements PathFinder, PathFindingContext {
 	/** The set of nodes that we do not yet consider fully searched */
 	private PriorityList open = new PriorityList();
 	
-	/** The map being searched */
+	/** The old being searched */
 	private TileBasedMap map;
 	/** The maximum depth of search we're willing to accept before giving up */
 	private int maxSearchDistance;
 	
-	/** The complete set of nodes across the map */
+	/** The complete set of nodes across the old */
 	private Node[][] nodes;
 	/** True if we allow diaganol movement */
 	private boolean allowDiagMovement;
@@ -46,7 +46,7 @@ public class AStarPathFinder implements PathFinder, PathFindingContext {
 	/**
 	 * Create a path finder with the default heuristic - closest to target.
 	 * 
-	 * @param map The map to be searched
+	 * @param map The old to be searched
 	 * @param maxSearchDistance The maximum depth we'll search before giving up
 	 * @param allowDiagMovement True if the search should try diaganol movement
 	 * @param manhattanHeuristic 
@@ -59,8 +59,8 @@ public class AStarPathFinder implements PathFinder, PathFindingContext {
 	/**
 	 * Create a path finder 
 	 * 
-	 * @param heuristic The heuristic used to determine the search order of the map
-	 * @param map The map to be searched
+	 * @param heuristic The heuristic used to determine the search order of the old
+	 * @param map The old to be searched
 	 * @param maxSearchDistance The maximum depth we'll search before giving up
 	 * @param allowDiagMovement True if the search should try diaganol movement
 	 */
@@ -79,7 +79,7 @@ public class AStarPathFinder implements PathFinder, PathFindingContext {
 				}
 			}
 		}
-		this.nodes = nodes;//new Node[map.getWidthInTiles()][map.getHeightInTiles()];
+		this.nodes = nodes;//new Node[old.getWidthInTiles()][old.getHeightInTiles()];
 		if (nodes[0][0] == null) {
 			for (int x=0;x<map.getWidthInTiles();x++) {
 				for (int y=0;y<map.getHeightInTiles();y++) {
