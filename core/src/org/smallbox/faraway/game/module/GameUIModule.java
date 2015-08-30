@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.module;
 
 import org.smallbox.faraway.core.renderer.GDXRenderer;
+import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.view.View;
 

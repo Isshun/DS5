@@ -4,12 +4,15 @@ import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
+import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.lua.LuaGameModel;
 import org.smallbox.faraway.engine.lua.LuaQuestModel;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.module.GameModule;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.game.module.GameUIModule;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UILabel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 19/06/2015.
  */
-public class QuestModule extends GameModule {
+public class QuestModule extends GameUIModule {
 
     public static class QuestModel {
         public final LuaValue   globals;
@@ -38,6 +41,7 @@ public class QuestModule extends GameModule {
         }
     }
 
+    private QuestModuleUI       _ui;
     private List<QuestModel>    _quests;
 
     public QuestModule() {
@@ -47,6 +51,27 @@ public class QuestModule extends GameModule {
     @Override
     protected boolean loadOnStart() {
         return GameData.config.manager.quest;
+    }
+
+    @Override
+    protected void onCreate() {
+        createPanel("panels/quest.yml", (layout, panel) -> {
+            _ui = new QuestModuleUI(panel);
+        });
+    }
+
+    @Override
+    public void onOpenQuest(QuestModule.QuestModel quest) {
+        if (_ui != null) {
+            _ui.onOpenQuest(quest);
+        }
+    }
+
+    @Override
+    public void onCloseQuest(QuestModule.QuestModel quest) {
+        if (_ui != null) {
+            _ui.onCloseQuest(quest);
+        }
     }
 
     @Override
@@ -141,5 +166,10 @@ public class QuestModule extends GameModule {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean	onKey(GameEventListener.Key key) {
+        return _ui != null && _ui.onKey(key);
     }
 }

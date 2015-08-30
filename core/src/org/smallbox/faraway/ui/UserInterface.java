@@ -76,7 +76,7 @@ public class UserInterface implements GameEventListener {
             new PanelSystem(),
             new PanelResources(),
 
-            new PanelQuest(),
+//            new PanelQuest(),
             new PanelCharacter(	    Mode.CHARACTER,         null),
 //            new PanelInfo(		    Mode.INFO, 		        null),
             new PanelInfoStructure(	Mode.INFO_STRUCTURE, 	null),
@@ -419,6 +419,12 @@ public class UserInterface implements GameEventListener {
 
         for (BasePanel panel: _panels) {
             if (panel.isVisible() && panel.checkKey(key)) {
+                return true;
+            }
+        }
+
+        for (GameModule module: Game.getInstance().getModules()) {
+            if (module.isLoaded() && module.onKey(key)) {
                 return true;
             }
         }
