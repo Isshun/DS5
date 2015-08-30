@@ -6,7 +6,9 @@ import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.character.CharacterManager;
+import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.GameUIModule;
+import org.smallbox.faraway.game.module.character.CharacterModule;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -54,7 +56,7 @@ public class UserInterface implements GameEventListener {
     private int							_keyMovePosX;
     private int							_keyMovePosY;
     private UserInteraction				_interaction;
-    private CharacterManager            _characters;
+    private CharacterModule _characters;
     private Mode 						_mode;
     private ContextualMenu 				_menu;
     private Game 						_game;
@@ -100,7 +102,6 @@ public class UserInterface implements GameEventListener {
             new PanelTopRight(),
 
             // Debug
-            new PanelDebug(),
             new TemperatureManagerPanel(),
             new OxygenManagerPanel(),
             new JobDebugPanel(),
@@ -377,8 +378,15 @@ public class UserInterface implements GameEventListener {
     }
 
     public void onDraw(GDXRenderer renderer, int update, long renderTime) {
+
         for (BasePanel panel: _panels) {
             panel.draw(renderer, null);
+        }
+
+        for (GameModule module: Game.getInstance().getModules()) {
+            if (module.isLoaded() && module instanceof GameUIModule) {
+                ((GameUIModule)module).draw(renderer);
+            }
         }
 
         if (_context.isVisible()) {
@@ -400,7 +408,7 @@ public class UserInterface implements GameEventListener {
             }
         }
 
-        ((GDXRenderer)renderer).draw(_selection, 100, 100);
+        renderer.draw(_selection, 100, 100);
 
         if (_menu != null) {
             _menu.draw(renderer, null);

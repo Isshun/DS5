@@ -23,6 +23,7 @@ public class GameConfig {
         public boolean          room;
         public boolean          light;
         public boolean          particle;
+        public boolean          fauna;
     }
 
     public static class GameConfigManager {
@@ -33,6 +34,9 @@ public class GameConfig {
         public boolean          oxygen;
         public boolean          power;
         public boolean          fauna;
+        public boolean          light;
+        public boolean          area;
+        public boolean          flora;
     }
 
     public GameConfigRender     render;

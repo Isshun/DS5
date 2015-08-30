@@ -2,7 +2,7 @@ package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.manager.character.RelationManager;
+import org.smallbox.faraway.game.module.character.RelationManager;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;

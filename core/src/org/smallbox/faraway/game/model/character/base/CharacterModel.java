@@ -5,9 +5,9 @@ import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.manager.character.JobManager;
-import org.smallbox.faraway.game.manager.path.PathManager;
-import org.smallbox.faraway.game.manager.world.RoomManager;
+import org.smallbox.faraway.game.module.character.JobManager;
+import org.smallbox.faraway.game.module.path.PathManager;
+import org.smallbox.faraway.game.module.world.RoomModule;
 import org.smallbox.faraway.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.MovableModel;
@@ -260,7 +260,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public void update() {
         _needs.environment = parcel.getEnvironmentScore();
-        _needs.light = ((RoomManager)Game.getInstance().getManager(RoomManager.class)).getLight(_posX, _posY);
+        _needs.light = ((RoomModule)Game.getInstance().getManager(RoomModule.class)).getLight(_posX, _posY);
 
         // Check room temperature
         _stats.reset(this, _equipments);

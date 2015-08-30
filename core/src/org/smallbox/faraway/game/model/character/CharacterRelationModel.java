@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.model.character;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.character.RelationManager;
+import org.smallbox.faraway.game.module.character.RelationManager;
 import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterRelation;

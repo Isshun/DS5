@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.core.drawable.IconDrawable;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.manager.path.PathManager;
+import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;

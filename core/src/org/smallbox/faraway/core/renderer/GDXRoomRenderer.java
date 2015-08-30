@@ -4,7 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.world.RoomManager;
+import org.smallbox.faraway.game.module.world.RoomModule;
+import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.util.Constant;
 
@@ -16,7 +17,7 @@ import java.util.Random;
 public class GDXRoomRenderer extends BaseRenderer {
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-        ((RoomManager)Game.getInstance().getManager(RoomManager.class)).getRoomList().stream().forEach(room -> {
+        ((RoomModule)Game.getInstance().getManager(RoomModule.class)).getRoomList().stream().forEach(room -> {
             for (ParcelModel parcel : room.getParcels()) {
                 Random random = new Random(room.getId());
                 renderer.draw(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat(), 1f),
@@ -31,5 +32,10 @@ public class GDXRoomRenderer extends BaseRenderer {
     @Override
     public void onRefresh(int frame) {
 
+    }
+
+    @Override
+    public boolean isActive(GameConfig config) {
+        return config.render.room;
     }
 }

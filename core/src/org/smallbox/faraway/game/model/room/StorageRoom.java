@@ -5,7 +5,7 @@
 //import org.smallbox.faraway.util.Constant;
 //import org.smallbox.faraway.util.Log;
 //import org.smallbox.faraway.util.StringUtils;
-//import org.smallbox.faraway.game.manager.extra.ResourceManager;
+//import org.smallbox.faraway.game.module.extra.ResourceManager;
 //import org.smallbox.faraway.game.model.item.*;
 //import org.smallbox.faraway.game.model.room.RoomOptions.RoomOption;
 //import org.smallbox.faraway.engine.renderer.MainRenderer;

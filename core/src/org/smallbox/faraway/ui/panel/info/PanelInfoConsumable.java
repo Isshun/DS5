@@ -8,6 +8,7 @@ import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.view.FrameLayout;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.panel.BaseRightPanel;
 
@@ -27,7 +28,7 @@ public class PanelInfoConsumable extends BaseRightPanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
         if (_consumable != null) {
             select(_consumable);
         } else if (_itemInfo != null) {

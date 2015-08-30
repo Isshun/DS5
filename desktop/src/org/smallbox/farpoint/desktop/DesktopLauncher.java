@@ -14,10 +14,12 @@ public class DesktopLauncher {
 
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 //		config.samples = 2;
-		config.x = 1920;
-		config.y = 0;
+		config.x = 1920 + 40;
+		config.y = 0 + 40;
 		config.width = data.config.screen.resolution[0];
 		config.height = data.config.screen.resolution[1];
+//		config.width = 100;
+//		config.height = 80;
 		config.fullscreen = false;
 		config.title = Constant.NAME + " " + Constant.VERSION;
 		new LwjglApplication(new GDXApplication(), config);

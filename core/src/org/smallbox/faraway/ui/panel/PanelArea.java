@@ -21,7 +21,7 @@ public class PanelArea extends BaseRightPanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
         findById("bt_area_storage").setOnClickListener(view -> select(UserInteraction.Action.SET_AREA, view, AreaType.STORAGE));
         findById("bt_area_remove_storage").setOnClickListener(view -> select(UserInteraction.Action.REMOVE_AREA, view, AreaType.STORAGE));
         findById("bt_area_home").setOnClickListener(view -> select(UserInteraction.Action.SET_AREA, view, AreaType.HOME));

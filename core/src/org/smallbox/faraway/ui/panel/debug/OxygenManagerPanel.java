@@ -1,23 +1,23 @@
 package org.smallbox.faraway.ui.panel.debug;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.world.OxygenManager;
+import org.smallbox.faraway.game.module.world.OxygenModule;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 
 /**
  * Created by Alex on 13/07/2015.
  */
 public class OxygenManagerPanel extends BaseDebugPanel {
-    private OxygenManager   _manager;
+    private OxygenModule _manager;
 
     @Override
     protected void onCreate(ViewFactory factory) {
-        _manager = (OxygenManager)Game.getInstance().getManager(OxygenManager.class);
+        _manager = (OxygenModule)Game.getInstance().getManager(OxygenModule.class);
     }
 
     @Override
     protected String getTitle() {
-        return "OxygenManager";
+        return "OxygenModule";
     }
 
     @Override

@@ -3,11 +3,12 @@ package org.smallbox.faraway.ui.panel.right;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.extra.ResourceManager;
-import org.smallbox.faraway.game.manager.extra.ResourceManager.ResourceData;
+import org.smallbox.faraway.game.module.extra.ResourceManager;
+import org.smallbox.faraway.game.module.extra.ResourceManager.ResourceData;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.LinkFocusListener;
 import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.ui.engine.view.FrameLayout;
 import org.smallbox.faraway.ui.engine.view.UIImage;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
@@ -68,7 +69,7 @@ public class PanelShortcut extends BaseRightPanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
         _lbTime = (UILabel) findById("lb_time");
 
         _resourceManager = (ResourceManager)Game.getInstance().getManager(ResourceManager.class);

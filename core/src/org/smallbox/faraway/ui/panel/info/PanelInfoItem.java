@@ -3,7 +3,7 @@ package org.smallbox.faraway.ui.panel.info;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.helper.JobHelper;
-import org.smallbox.faraway.game.manager.character.JobManager;
+import org.smallbox.faraway.game.module.character.JobManager;
 import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -47,8 +47,8 @@ public class PanelInfoItem extends BaseInfoRightPanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
-        super.onLayoutLoaded(layout);
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
+        super.onLayoutLoaded(layout, panel);
 
         _frameTmp = (FrameLayout) findById("frame_tmp");
         _frameTmp.setVisible(false);

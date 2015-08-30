@@ -16,7 +16,7 @@ import org.smallbox.faraway.core.renderer.GDXLightRenderer;
 import org.smallbox.faraway.core.renderer.GDXParticleRenderer;
 import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.path.PathManager;
+import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Log;
@@ -40,7 +40,7 @@ public class GDXApplication extends ApplicationAdapter {
     private Runnable        _currentRunnable;
     private String          _currentMessage;
     private SpriteBatch     _batch;
-    private GDXRenderer _renderer;
+    private GDXRenderer     _renderer;
     private Application     _application;
     private long            _startTime = -1;
     private long            _lastRender;

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game;
 
-import org.smallbox.faraway.game.manager.extra.QuestManager;
+import org.smallbox.faraway.game.module.extra.QuestManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 
@@ -32,4 +32,5 @@ public interface GameObserver {
     default void onSelectStructure(StructureModel structure) {}
     default void onDeselect() {}
     default void onStartGame() {}
+    default void onLog(String tag, String message) {}
 }

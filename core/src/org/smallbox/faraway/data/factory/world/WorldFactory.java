@@ -2,7 +2,7 @@ package org.smallbox.faraway.data.factory.world;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.manager.world.WorldManager;
+import org.smallbox.faraway.game.module.world.WorldModule;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
@@ -16,37 +16,37 @@ import java.util.*;
  */
 public class WorldFactory {
 
-    public void create(WorldManager worldManager, RegionInfo regionInfo) {
-        int mapWidth = worldManager.getWidth();
-        int mapHeight = worldManager.getHeight();
+    public void create(WorldModule worldModule, RegionInfo regionInfo) {
+        int mapWidth = Game.getInstance().getInfo().worldWidth;
+        int mapHeight = Game.getInstance().getInfo().worldHeight;
 
 //        // Initialize game old
-//        worldManager.getParcelList().forEach(parcel -> {
+//        worldModule.getParcelList().forEach(parcel -> {
 //            parcel.setType(0);
 //            parcel.setResource(null);
 //        });
-        ParcelModel[][][] parcels = worldManager.getParcels();
+        ParcelModel[][][] parcels = worldModule.getParcels();
 
         // Add region terrains
         for (RegionInfo.RegionTerrain terrain: regionInfo.terrains) {
             if ("random_light".equals(terrain.pattern) || "random_large".equals(terrain.pattern)) {
                 Log.notice("Create old with random pattern: " + terrain.pattern);
-                worldManager.getParcelList().stream()
+                worldModule.getParcelList().stream()
                         .filter(parcel -> Math.random() < ("random_light".equals(terrain.pattern) ? 0.05f : 0.1f))
-                        .forEach(parcel -> applyToParcel(worldManager, terrain, parcel));
+                        .forEach(parcel -> applyToParcel(worldModule, terrain, parcel));
             }
             else if (terrain.pattern != null) {
                 Log.notice("Create old with pattern: " + terrain.pattern);
                 new MidpointDisplacement(WorldFactoryConfig.get(terrain.pattern)).create(parcel ->
-                        applyToParcel(worldManager, terrain, parcel));
+                        applyToParcel(worldModule, terrain, parcel));
             } else {
-                worldManager.getParcelList().forEach(parcel ->
-                        applyToParcel(worldManager, terrain, parcel));
+                worldModule.getParcelList().forEach(parcel ->
+                        applyToParcel(worldModule, terrain, parcel));
             }
         }
 
         // Clean old
-        cleanMap(worldManager);
+        cleanMap(worldModule);
 
         // Notify world observers'
         for (int x = 0; x < mapWidth; x++) {
@@ -57,21 +57,21 @@ public class WorldFactory {
                 }
                 if (parcel.getResource() != null) {
                     Game.getInstance().notify(observer -> observer.onAddResource(parcel.getResource()));
-                    worldManager.getResources().add(parcel.getResource());
+                    worldModule.getResources().add(parcel.getResource());
                 }
                 if (parcel.getItem() != null) {
                     Game.getInstance().notify(observer -> observer.onAddItem(parcel.getItem()));
-                    worldManager.getItems().add(parcel.getItem());
+                    worldModule.getItems().add(parcel.getItem());
                 }
                 if (parcel.getConsumable() != null) {
                     Game.getInstance().notify(observer -> observer.onAddConsumable(parcel.getConsumable()));
-                    worldManager.getConsumables().add(parcel.getConsumable());
+                    worldModule.getConsumables().add(parcel.getConsumable());
                 }
             }
         }
     }
 
-    private void cleanMap(WorldManager worldManager) {
+    private void cleanMap(WorldModule worldModule) {
         Game.getWorldManager().getParcelList().forEach(parcel -> {
             ParcelModel r = Game.getWorldManager().getParcel(parcel.x + 1, parcel.y);
             ParcelModel l = Game.getWorldManager().getParcel(parcel.x - 1, parcel.y);
@@ -119,13 +119,13 @@ public class WorldFactory {
                 if (b != null && b.getResource() != null) isAlone = false;
 
                 if (isAlone) {
-                    worldManager.getParcelContent(parcel).resource = null;
+                    worldModule.getParcelContent(parcel).resource = null;
                 }
             }
         });
     }
 
-    private void applyToParcel(WorldManager worldManager, RegionInfo.RegionTerrain terrain, ParcelModel parcel) {
+    private void applyToParcel(WorldModule worldModule, RegionInfo.RegionTerrain terrain, ParcelModel parcel) {
         if (terrain.condition == null
                 || ("rock".equals(terrain.condition) && parcel.getResource() != null && parcel.getResource().isRock())
                 || ("ground".equals(terrain.condition) && (parcel.getResource() == null || !parcel.getResource().isRock()))) {
@@ -145,7 +145,7 @@ public class WorldFactory {
                 } else {
                     resource.setValue(10);
                 }
-                worldManager.getParcelContent(parcel).resource = resource;
+                worldModule.getParcelContent(parcel).resource = resource;
             }
         }
     }

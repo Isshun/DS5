@@ -4,6 +4,7 @@ import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.view.FrameLayout;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 /**
@@ -17,8 +18,8 @@ public class PanelInfoResource extends BaseInfoRightPanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
-        super.onLayoutLoaded(layout);
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
+        super.onLayoutLoaded(layout, panel);
 
         if (_resource != null) {
             select(_resource);

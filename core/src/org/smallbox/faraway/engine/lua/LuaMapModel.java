@@ -11,8 +11,8 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
 public class LuaMapModel {
     public LuaValue getDropLocation() {
         ParcelModel[][][] parcels = Game.getWorldManager().getParcels();
-        int width = Game.getWorldManager().getWidth();
-        int height = Game.getWorldManager().getHeight();
+        int width = Game.getInstance().getInfo().worldWidth;
+        int height = Game.getInstance().getInfo().worldHeight;
 
         int startX = (int) (Math.random() * width);
         int startY = (int) (Math.random() * height);

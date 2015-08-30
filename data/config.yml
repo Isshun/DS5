@@ -10,7 +10,7 @@ maxNearDistance: 32
 uiScale: 1
 
 screen:
-    resolution: [1920, 1200]
+    resolution: [1600, 1000]
     mode: borderless
 
 render:
@@ -26,6 +26,7 @@ render:
     room:           false
     light:          true
     particle:       false
+    fauna:          false
 
 manager:
     quest:          false
@@ -35,3 +36,6 @@ manager:
     oxygen:         true
     power:          true
     fauna:          false
+    flora:          true
+    light:          true
+    area:           true

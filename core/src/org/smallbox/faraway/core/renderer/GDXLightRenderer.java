@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
@@ -64,6 +65,11 @@ public class GDXLightRenderer extends LightRenderer {
 
     @Override
     public void onRefresh(int frame) {
+    }
+
+    @Override
+    public boolean isActive(GameConfig config) {
+        return false;
     }
 
     @Override
@@ -179,8 +185,8 @@ public class GDXLightRenderer extends LightRenderer {
         boxBodyDef.type = BodyDef.BodyType.DynamicBody;
 
         if (Game.getWorldManager() != null) {
-            int width = Game.getWorldManager().getWidth();
-            int height = Game.getWorldManager().getHeight();
+            int width = Game.getInstance().getInfo().worldWidth;
+            int height = Game.getInstance().getInfo().worldHeight;
             ParcelModel[][][] areas = Game.getWorldManager().getParcels();
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
@@ -219,8 +225,8 @@ public class GDXLightRenderer extends LightRenderer {
         bodyDef.type = BodyDef.BodyType.StaticBody;
 
         if (Game.getWorldManager() != null) {
-            int width = Game.getWorldManager().getWidth();
-            int height = Game.getWorldManager().getHeight();
+            int width = Game.getInstance().getInfo().worldWidth;
+            int height = Game.getInstance().getInfo().worldHeight;
             ParcelModel[][][] areas = Game.getWorldManager().getParcels();
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {

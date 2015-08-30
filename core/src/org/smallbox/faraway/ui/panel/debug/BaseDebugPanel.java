@@ -27,7 +27,7 @@ public abstract class BaseDebugPanel extends BasePanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
         _frame = (FrameLayout)findById("frame_dev_commands");
     }
 

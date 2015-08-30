@@ -4,8 +4,9 @@ import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.extra.FaunaManager;
+import org.smallbox.faraway.game.module.extra.FaunaManager;
 import org.smallbox.faraway.game.model.AnimalModel;
+import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.util.Constant;
 
@@ -56,5 +57,10 @@ public class GDXFaunaRenderer extends BaseRenderer {
 
     @Override
     public void onRefresh(int frame) {
+    }
+
+    @Override
+    public boolean isActive(GameConfig config) {
+        return config.render.fauna;
     }
 }

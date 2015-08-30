@@ -20,8 +20,8 @@ public class PanelInfoStructure extends BaseInfoRightPanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
-        super.onLayoutLoaded(layout);
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
+        super.onLayoutLoaded(layout, panel);
 
         if (_structure != null) {
             select(_structure);

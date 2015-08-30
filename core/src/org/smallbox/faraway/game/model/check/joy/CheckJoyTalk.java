@@ -2,7 +2,7 @@ package org.smallbox.faraway.game.model.check.joy;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.path.PathManager;
+import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ParcelModel;

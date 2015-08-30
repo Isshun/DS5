@@ -128,22 +128,6 @@ public class GDXRenderer {
         view.draw(this, x, y);
     }
 
-    public BaseRenderer createAreaRenderer() {
-        return new GDXAreaRenderer();
-    }
-
-    public BaseRenderer createTemperatureRenderer() {
-        return new GDXTemperatureRenderer();
-    }
-
-    public BaseRenderer createRoomRenderer() {
-        return new GDXRoomRenderer();
-    }
-
-    public BaseRenderer createFaunaRenderer() {
-        return new GDXFaunaRenderer();
-    }
-
     public void zoomUp() {
         _zoom = Math.max(0, _zoom - 1);
         Game.getInstance().getViewport().setZoom(_zoom);

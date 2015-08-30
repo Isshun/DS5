@@ -1,11 +1,16 @@
 package org.smallbox.faraway.engine.renderer;
 
+import org.reflections.Reflections;
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.util.Log;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,65 +39,50 @@ public class MainRenderer {
 		long time = System.currentTimeMillis();
 
 		for (BaseRenderer render: _renders) {
-			render.draw(renderer, viewport, animProgress);
+			if (render.isActive(GameData.config)) {
+				render.draw(renderer, viewport, animProgress);
+			}
 		}
 
         _frame++;
 		_renderTime += System.currentTimeMillis() - time;
 	}
 
-	public void init(GDXRenderer renderer, GameConfig config, Game game, LightRenderer lightRenderer, ParticleRenderer particleRenderer) {
+	public void init(GameConfig config, Game game) {
 		_frame = 0;
 
-		_worldRenderer = new WorldRenderer(_spriteManager, game.getViewport());
-		_renders.add(_worldRenderer);
+        for (Class<? extends BaseRenderer> cls : new Reflections("org.smallbox.faraway").getSubTypesOf(BaseRenderer.class)) {
+            if (!Modifier.isAbstract(cls.getModifiers())) {
+                try {
+                    Log.info("Load render: " + cls.getSimpleName());
+                    BaseRenderer render = cls.getConstructor().newInstance();
+                    if (render.isActive(config)) {
+                        _renders.add(render);
+                    }
+                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+		_worldRenderer = (WorldRenderer)getRender(WorldRenderer.class);
 		game.addObserver(_worldRenderer);
 
-		if (lightRenderer != null) {
-			game.addObserver(lightRenderer);
-		}
+        _characterRenderer = (CharacterRenderer)getRender(CharacterRenderer.class);
 
-//		if (particleRenderer != null) {
-//			game.addObserver(particleRenderer);
-//		}
-
-		_characterRenderer = new CharacterRenderer();
-		_renders.add(_characterRenderer);
-
-		if (lightRenderer != null) {
-			_renders.add(lightRenderer);
-		}
-
-		if (particleRenderer != null) {
-			_renders.add(particleRenderer);
-		}
-
-		if (config.render.job) {
-			_renders.add(new JobRenderer());
-		}
-
-		if (config.render.area) {
-			_renders.add(renderer.createAreaRenderer());
-		}
-
-		if (config.render.temperature) {
-			_renders.add(renderer.createTemperatureRenderer());
-		}
-
-		if (config.render.room) {
-			_renders.add(renderer.createRoomRenderer());
-		}
-
-		if (config.manager.fauna) {
-			_renders.add(renderer.createFaunaRenderer());
-		}
-
-		if (config.render.debug) {
-			_renders.add(new DebugRenderer());
-		}
+        _renders.forEach(BaseRenderer::init);
 	}
 
-	public static MainRenderer getInstance() { return _self; }
+    private BaseRenderer getRender(Class<? extends BaseRenderer> cls) {
+        for (BaseRenderer renderer: _renders) {
+            if (renderer.getClass() == cls) {
+                return renderer;
+            }
+        }
+        return null;
+    }
+
+    public static MainRenderer getInstance() { return _self; }
 
 	public static int getFrame() { return _frame; }
 

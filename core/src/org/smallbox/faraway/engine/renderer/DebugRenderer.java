@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.ViewFactory;
@@ -34,6 +35,11 @@ public class DebugRenderer extends BaseRenderer {
 //            _cache.draw(lbDebug);
 //        }
 //        _cache.end();
+    }
+
+    @Override
+    public boolean isActive(GameConfig config) {
+        return config.render.debug;
     }
 
     @Override

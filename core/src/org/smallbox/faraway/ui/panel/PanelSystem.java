@@ -6,6 +6,7 @@ import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.view.FrameLayout;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
 import org.smallbox.faraway.util.Constant;
@@ -37,7 +38,7 @@ public class PanelSystem extends BasePanel {
 	}
 
 	@Override
-	public void onLayoutLoaded(LayoutModel layout) {
+	public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
 		_lbRenderTime = (UILabel)findById("lb_render_time");
 		_lbMemoryUsed = (UILabel)findById("lb_memory");
 		_lbUpdate = (UILabel)findById("lb_update");

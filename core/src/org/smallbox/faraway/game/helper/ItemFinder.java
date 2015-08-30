@@ -1,9 +1,9 @@
 package org.smallbox.faraway.game.helper;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.BaseManager;
-import org.smallbox.faraway.game.manager.path.PathManager;
-import org.smallbox.faraway.game.manager.world.WorldManager;
+import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.path.PathManager;
+import org.smallbox.faraway.game.module.world.WorldModule;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
@@ -14,10 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ItemFinder extends BaseManager {
+public class ItemFinder extends GameModule {
 	private int 					_width;
 	private int 					_height;
-	private WorldManager _worldManager;
+	private WorldModule _worldModule;
 	private PathManager 			_pathManager;
 	private List<ConsumableModel> 	_consumables;
 	private List<ItemModel> 		_items;
@@ -27,9 +27,9 @@ public class ItemFinder extends BaseManager {
         _items = new ArrayList<>();
         _consumables = new ArrayList<>();
         _pathManager = (PathManager) Game.getInstance().getManager(PathManager.class);
-        _worldManager = (WorldManager) Game.getInstance().getManager(WorldManager.class);
-        _width = _worldManager.getWidth();
-        _height = _worldManager.getHeight();
+        _worldModule = (WorldModule) Game.getInstance().getManager(WorldModule.class);
+        _width = Game.getInstance().getInfo().worldWidth;
+        _height = Game.getInstance().getInfo().worldHeight;
     }
 
     public MapObjectModel getNearest(ItemFilter filter, CharacterModel character) {
@@ -69,7 +69,7 @@ public class ItemFinder extends BaseManager {
 //		int maxY = Math.max(startY, _height - startY);
 //		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 //			for (int offsetY = 0; offsetY < maxY; offsetY++) {
-//				ParcelModel area = _worldManager.getParcel(startX + offsetX, startY + offsetY);
+//				ParcelModel area = _worldModule.getParcel(startX + offsetX, startY + offsetY);
 //
 //				// Check on non-existing area
 //				if (area == null) {
@@ -144,19 +144,19 @@ public class ItemFinder extends BaseManager {
 		int maxY = Math.max(startY, _height - startY);
 		for (int offsetX = 0; offsetX < maxX; offsetX++) {
 			for (int offsetY = 0; offsetY < maxY; offsetY++) {
-				ParcelModel area = _worldManager.getParcel(startX + offsetX, startY + offsetY);
+				ParcelModel area = _worldModule.getParcel(startX + offsetX, startY + offsetY);
 				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
 					return area.getConsumable();
 				}
-				area = _worldManager.getParcel(startX - offsetX, startY + offsetY);
+				area = _worldModule.getParcel(startX - offsetX, startY + offsetY);
 				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
 					return area.getConsumable();
 				}
-				area = _worldManager.getParcel(startX + offsetX, startY - offsetY);
+				area = _worldModule.getParcel(startX + offsetX, startY - offsetY);
 				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
 					return area.getConsumable();
 				}
-				area = _worldManager.getParcel(startX - offsetX, startY - offsetY);
+				area = _worldModule.getParcel(startX - offsetX, startY - offsetY);
 				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
 					return area.getConsumable();
 				}
@@ -170,7 +170,7 @@ public class ItemFinder extends BaseManager {
 	}
 
 	public MapObjectModel getRandomNearest(ItemFilter filter, int x, int y) {
-        ParcelModel fromParcel = _worldManager.getParcel(x, y);
+        ParcelModel fromParcel = _worldModule.getParcel(x, y);
         List<? extends MapObjectModel> list = filter.needConsumable ? _consumables : _items;
 
         // Get matching items

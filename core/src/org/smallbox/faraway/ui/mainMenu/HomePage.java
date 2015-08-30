@@ -6,6 +6,7 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.view.FrameLayout;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 /**
@@ -33,7 +34,7 @@ public class HomePage extends MainMenuPage {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
         findById("bt_new_colony").setOnClickListener(view -> _mainMenu.select(MainMenu.Scene.PLANETS));
         findById("bt_load_colony").setOnClickListener(view -> _mainMenu.select(MainMenu.Scene.LOAD));
         findById("bt_exit").setOnClickListener(view -> _renderer.close());

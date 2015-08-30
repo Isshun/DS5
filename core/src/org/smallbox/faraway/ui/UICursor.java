@@ -23,8 +23,8 @@ public abstract class UICursor {
 	void	draw(GDXRenderer renderer, Viewport viewport, int startX, int startY, int toX, int toY, boolean isPressed) {
 		startX = Math.max(startX, 0);
 		startY = Math.max(startY, 0);
-		toX = Math.min(toX, Game.getWorldManager().getWidth());
-		toY = Math.min(toY, Game.getWorldManager().getHeight());
+		toX = Math.min(toX, Game.getInstance().getInfo().worldWidth);
+		toY = Math.min(toY, Game.getInstance().getInfo().worldHeight);
 
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {

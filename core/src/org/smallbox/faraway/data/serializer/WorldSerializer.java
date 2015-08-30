@@ -2,7 +2,7 @@ package org.smallbox.faraway.data.serializer;
 
 import com.ximpleware.*;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.world.WorldManager;
+import org.smallbox.faraway.game.module.world.WorldModule;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.util.FileUtils;
 
@@ -86,7 +86,7 @@ public class WorldSerializer implements SerializerInterface {
         AutoPilot apElement = new AutoPilot(vn);
         apElement.selectXPath("*");
 
-        WorldManager manager = Game.getWorldManager();
+        WorldModule manager = Game.getWorldManager();
 
         while (ap.evalXPath() != -1) {
             vn.push();
@@ -117,7 +117,7 @@ public class WorldSerializer implements SerializerInterface {
         }
     }
 
-    private void readConsumable(AutoPilot apElement, VTDNav vn, WorldManager manager, int x, int y, int z) throws NavException, XPathEvalException {
+    private void readConsumable(AutoPilot apElement, VTDNav vn, WorldModule manager, int x, int y, int z) throws NavException, XPathEvalException {
         String name = vn.toString(vn.getAttrVal("name"));
         int id = vn.parseInt(vn.getAttrVal("id"));
         int quantity = 0;
@@ -138,7 +138,7 @@ public class WorldSerializer implements SerializerInterface {
         }
     }
 
-    private void readStructure(AutoPilot apElement, VTDNav vn, WorldManager manager, int x, int y, int z) throws NavException, XPathEvalException {
+    private void readStructure(AutoPilot apElement, VTDNav vn, WorldModule manager, int x, int y, int z) throws NavException, XPathEvalException {
         String name = vn.toString(vn.getAttrVal("name"));
         int id = vn.parseInt(vn.getAttrVal("id"));
         int health = 0;
@@ -164,7 +164,7 @@ public class WorldSerializer implements SerializerInterface {
         }
     }
 
-    private void readResource(AutoPilot apElement, VTDNav vn, WorldManager manager, int x, int y, int z) throws NavException, XPathEvalException {
+    private void readResource(AutoPilot apElement, VTDNav vn, WorldModule manager, int x, int y, int z) throws NavException, XPathEvalException {
         String name = vn.toString(vn.getAttrVal("name"));
         int id = vn.parseInt(vn.getAttrVal("id"));
         int health = 0;
@@ -196,7 +196,7 @@ public class WorldSerializer implements SerializerInterface {
         }
     }
 
-    private void readItem(AutoPilot apElement, VTDNav vn, WorldManager manager, int x, int y, int z) throws NavException, XPathEvalException {
+    private void readItem(AutoPilot apElement, VTDNav vn, WorldModule manager, int x, int y, int z) throws NavException, XPathEvalException {
         String name = vn.toString(vn.getAttrVal("name"));
         int id = vn.parseInt(vn.getAttrVal("id"));
         int health = 0;

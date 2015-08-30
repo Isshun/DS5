@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui.panel.info;
 
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.world.AreaManager;
+import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.area.GardenAreaModel;
@@ -84,7 +84,7 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         _area = area;
         _parcel = parcel;
         ((UILabel)findById("lb_area")).setString(area.getName());
-        findById("bt_remove_area").setOnClickListener(view -> ((AreaManager) Game.getInstance().getManager(AreaManager.class)).remove(area));
+        findById("bt_remove_area").setOnClickListener(view -> ((AreaModule) Game.getInstance().getManager(AreaModule.class)).remove(area));
 
         findById("frame_info_garden").setVisible(false);
         findById("frame_info_storage").setVisible(false);

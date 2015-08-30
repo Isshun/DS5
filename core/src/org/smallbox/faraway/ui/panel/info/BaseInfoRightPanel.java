@@ -40,7 +40,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
         // Load parcel layout
         if (findById("frame_parcel_info") != null) {
             ViewFactory.getInstance().load("data/ui/panels/view_parcel_info.yml", view -> {

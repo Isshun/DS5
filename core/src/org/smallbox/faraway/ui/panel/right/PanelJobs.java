@@ -1,7 +1,7 @@
 package org.smallbox.faraway.ui.panel.right;
 
 import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.game.manager.character.JobManager;
+import org.smallbox.faraway.game.module.character.JobManager;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
@@ -26,7 +26,7 @@ public class PanelJobs extends BaseRightPanel {
 	}
 
 	@Override
-	public void onLayoutLoaded(LayoutModel layout) {
+	public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
 		FrameLayout frameEntries = (FrameLayout)findById("frame_jobs");
 		_entries = new JobEntry[75];
 		for (int i = 0; i < _entries.length; i++) {

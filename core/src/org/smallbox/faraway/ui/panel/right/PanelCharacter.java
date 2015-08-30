@@ -98,7 +98,7 @@ public class PanelCharacter extends BaseRightPanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
         findById("bt_monitoring").setOnClickListener(view -> switchView("frame_monitoring"));
         findById("bt_personal_report").setOnClickListener(view -> switchView("frame_personal_report"));
         findById("bt_priorities").setOnClickListener(view -> switchView("frame_priorities"));

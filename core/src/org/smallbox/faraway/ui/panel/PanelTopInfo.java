@@ -1,13 +1,14 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.world.PowerManager;
-import org.smallbox.faraway.game.manager.world.TemperatureManager;
-import org.smallbox.faraway.game.manager.world.WeatherManager;
+import org.smallbox.faraway.game.module.world.PowerModule;
+import org.smallbox.faraway.game.module.world.TemperatureModule;
+import org.smallbox.faraway.game.module.world.WeatherModule;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.view.FrameLayout;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
 import org.smallbox.faraway.util.Constant;
@@ -36,12 +37,12 @@ public class PanelTopInfo extends BasePanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
     }
 
     @Override
     public void onRefresh(int tick) {
-        ((UILabel)findById("lb_world_tmp")).setString("Temperature: " + (int)((TemperatureManager)Game.getInstance().getManager(TemperatureManager.class)).getTemperature() + "°");
+        ((UILabel)findById("lb_world_tmp")).setString("Temperature: " + (int)((TemperatureModule)Game.getInstance().getManager(TemperatureModule.class)).getTemperature() + "°");
         ((UILabel)findById("lb_hour")).setString("Hour: " + Game.getInstance().getHour() + "h");
         ((UILabel)findById("lb_day")).setString("Day: " + Game.getInstance().getDay());
         ((UILabel)findById("lb_year")).setString("Year: " + Game.getInstance().getYear());
@@ -53,18 +54,18 @@ public class PanelTopInfo extends BasePanel {
         });
         lbPlanet.resetAllPos();
 
-        WeatherManager weatherManager = (WeatherManager)Game.getInstance().getManager(WeatherManager.class);
-        if (weatherManager != null && weatherManager.getWeather() != null) {
-            ((UILabel) findById("lb_weather")).setString("Weather: " + weatherManager.getWeather().name);
+        WeatherModule weatherModule = (WeatherModule)Game.getInstance().getManager(WeatherModule.class);
+        if (weatherModule != null && weatherModule.getWeather() != null) {
+            ((UILabel) findById("lb_weather")).setString("Weather: " + weatherModule.getWeather().name);
             if (Constant.DEBUG) {
-                findById("lb_weather").setOnClickListener(view -> weatherManager.next());
+                findById("lb_weather").setOnClickListener(view -> weatherModule.next());
             }
         }
 
-        PowerManager powerManager = (PowerManager)Game.getInstance().getManager(PowerManager.class);
-        if (powerManager != null) {
-            ((UILabel)findById("lb_power_production")).setString((int)powerManager.getProduce() + "kW/h");
-            ((UILabel)findById("lb_power_storage")).setString((int)powerManager.getStored() + "kW");
+        PowerModule powerModule = (PowerModule)Game.getInstance().getManager(PowerModule.class);
+        if (powerModule != null) {
+            ((UILabel)findById("lb_power_production")).setString((int) powerModule.getProduce() + "kW/h");
+            ((UILabel)findById("lb_power_storage")).setString((int) powerModule.getStored() + "kW");
         }
     }
 }

@@ -35,7 +35,7 @@ public class PlanetPage extends MainMenuPage {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
         FrameLayout framePlanetList = (FrameLayout) findById("frame_planet_list");
         framePlanetList.removeAllViews();
 

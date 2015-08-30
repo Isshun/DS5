@@ -2,6 +2,7 @@ package org.smallbox.faraway.data.serializer;
 
 import com.ximpleware.*;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 
 public class GameSerializer {
     public static class GameSave {
@@ -63,7 +65,7 @@ public class GameSerializer {
         }
     }
 
-    public static void save(String filePath) {
+    public static void save(String filePath, Collection<GameModule> managers) {
         try {
             long time = System.currentTimeMillis();
             FileOutputStream fos = new FileOutputStream(new File(filePath));
@@ -71,10 +73,18 @@ public class GameSerializer {
             FileUtils.write(fos, "<?xml version='1.0' encoding='UTF-8'?>");
             FileUtils.write(fos, "<save>");
 
+            // Stock serializer
             (new ParamSerializer()).save(fos);
             (new WorldSerializer()).save(fos);
             (new CharacterSerializer()).save(fos);
-            (new AreaSerializer()).save(fos);
+
+            // Manager serializer
+            for (GameModule manager: managers) {
+                SerializerInterface serializer = manager.getSerializer();
+                if (serializer != null) {
+                    serializer.save(fos);
+                }
+            }
 
             FileUtils.write(fos, "</save>");
 

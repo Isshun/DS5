@@ -3,7 +3,7 @@ package org.smallbox.faraway.game.model.job;
 import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.core.drawable.IconDrawable;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.manager.character.JobManager;
+import org.smallbox.faraway.game.module.character.JobManager;
 import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;

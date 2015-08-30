@@ -1,15 +1,15 @@
 package org.smallbox.faraway.data.factory;
 
-import org.smallbox.faraway.game.manager.world.WorldManager;
+import org.smallbox.faraway.game.module.world.WorldModule;
 import org.smallbox.faraway.game.model.item.*;
 
 public class ItemFactory {
 
-	public static MapObjectModel create(WorldManager manager, ItemInfo info, int value) {
+	public static MapObjectModel create(WorldModule manager, ItemInfo info, int value) {
 		return create(manager, null, info, value);
 	}
 
-	public static MapObjectModel create(WorldManager manager, ParcelModel area, ItemInfo info, int value) {
+	public static MapObjectModel create(WorldModule manager, ParcelModel area, ItemInfo info, int value) {
 //		// Base light item
 //		if ("base.light".equals(info.name)) {
 //			area.setLightSource(info.light);
@@ -34,7 +34,7 @@ public class ItemFactory {
 		}
 	}
 
-	public static ItemModel createUserItem(WorldManager manager, ParcelModel parcel, ItemInfo info, boolean isComplete) {
+	public static ItemModel createUserItem(WorldModule manager, ParcelModel parcel, ItemInfo info, boolean isComplete) {
 		ItemModel item = new ItemModel(info);
 		item.addProgress(isComplete ? info.cost : 0);
 		return item;

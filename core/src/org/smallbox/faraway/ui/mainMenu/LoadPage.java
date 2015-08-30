@@ -18,7 +18,7 @@ public class LoadPage extends MainMenuPage {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
         FrameLayout frameSaves = (FrameLayout)findById("frame_saves");
 
         int index = 0;

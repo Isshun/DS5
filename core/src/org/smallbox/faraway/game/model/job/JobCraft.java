@@ -4,8 +4,8 @@ import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.core.drawable.IconDrawable;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.manager.character.JobManager;
-import org.smallbox.faraway.game.manager.world.AreaManager;
+import org.smallbox.faraway.game.module.character.JobManager;
+import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.area.StorageAreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
@@ -155,7 +155,7 @@ public class JobCraft extends BaseBuildJobModel {
                 productConsumable.setQuantity(Utils.getRandom(productInfo.quantity));
 
                 // Move to storage
-                _storageParcel = ((AreaManager)Game.getInstance().getManager(AreaManager.class)).getNearestFreeStorageParcel(productConsumable, character.getParcel());
+                _storageParcel = ((AreaModule)Game.getInstance().getManager(AreaModule.class)).getNearestFreeStorageParcel(productConsumable, character.getParcel());
                 if (_storageParcel != null) {
                     _storage = (StorageAreaModel)_storageParcel.getArea();
                     character.setInventory(productConsumable);

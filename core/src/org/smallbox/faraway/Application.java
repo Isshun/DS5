@@ -9,7 +9,10 @@ import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.path.PathManager;
+import org.smallbox.faraway.game.GameObserver;
+import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.dev.ModuleManagerModule;
+import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
@@ -141,6 +144,18 @@ public class Application implements GameEventListener {
                 _renderer.close();
                 return;
 
+// Open module manager
+            case F12:
+                if (Game.getInstance() != null) {
+                    GameModule module = Game.getInstance().getManager(ModuleManagerModule.class);
+                    if (module.isLoaded()) {
+                        Game.getInstance().removeModule(module);
+                    } else {
+                        Game.getInstance().insertModule(module);
+                    }
+                }
+                return;
+
 // Save
             case S:
                 if (modifier == Modifier.CONTROL) {
@@ -266,11 +281,11 @@ public class Application implements GameEventListener {
     private void startGame() {
 
         long time = System.currentTimeMillis();
-        PathManager.getInstance().init(Game.getWorldManager().getWidth(), Game.getWorldManager().getHeight());
+        PathManager.getInstance().init(Game.getInstance().getInfo().worldWidth, Game.getInstance().getInfo().worldHeight);
         Log.notice("Init paths (" + (System.currentTimeMillis() - time) + "ms)");
 
         time = System.currentTimeMillis();
-        _mainRenderer.init(_renderer, GameData.config, _game, _lightRenderer, _particleRenderer);
+        _mainRenderer.init(GameData.config, _game);
         Log.notice("Init renderers (" + (System.currentTimeMillis() - time) + "ms)");
 
         time = System.currentTimeMillis();
@@ -283,7 +298,7 @@ public class Application implements GameEventListener {
             Log.notice("Init light (" + (System.currentTimeMillis() - time) + "ms)");
         }
 
-        Game.getInstance().notify(observer -> observer.onStartGame());
+        Game.getInstance().notify(GameObserver::onStartGame);
     }
 
     public void render(GDXRenderer renderer, Viewport viewport, long lastRenderInterval) {
@@ -293,7 +308,7 @@ public class Application implements GameEventListener {
             _startTime = System.currentTimeMillis();
         }
 //        long _elapsed = System.currentTimeMillis() - _startTime;
-//        Log.info("elapsed: " + (_elapsed / 1000));
+//        printInfo("elapsed: " + (_elapsed / 1000));
 
         if (_mainMenu != null && _mainMenu.isOpen()) {
             _mainMenu.draw(renderer, viewport);
@@ -309,10 +324,10 @@ public class Application implements GameEventListener {
 
             renderer.clear(new Color(0, 0, 0));
 
-            ((GDXRenderer)renderer).begin();
+            renderer.begin();
             _mainRenderer.onDraw(renderer, viewport, animProgress);
             _gameInterface.onDraw(renderer, _tick, 0);
-            ((GDXRenderer)renderer).end();
+            renderer.end();
 
             renderer.finish();
 
@@ -346,7 +361,7 @@ public class Application implements GameEventListener {
                 _nextTick = _lastTick + _tickInterval;
 //                long timeU = System.currentTimeMillis();
                 _game.onUpdate(_tick++);
-//                Log.info("update time: " + (System.currentTimeMillis() - timeU) + "ms");
+//                printInfo("update time: " + (System.currentTimeMillis() - timeU) + "ms");
             }
 
             // TODO

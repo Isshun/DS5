@@ -4,8 +4,8 @@ import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.JobHelper;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.manager.character.JobManager;
-import org.smallbox.faraway.game.manager.world.AreaManager;
+import org.smallbox.faraway.game.module.character.JobManager;
+import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.game.model.area.AreaType;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ResourceModel;
@@ -32,13 +32,13 @@ public class UserInteraction {
 
 		// Set area
 		if (_action == Action.SET_AREA) {
-			((AreaManager)Game.getInstance().getManager(AreaManager.class)).createArea(_selectedAreaType, fromX, fromY, toX, toY);
+			((AreaModule)Game.getInstance().getManager(AreaModule.class)).createArea(_selectedAreaType, fromX, fromY, toX, toY);
 			return true;
 		}
 
 		// Set area
 		if (_action == Action.REMOVE_AREA) {
-			((AreaManager)Game.getInstance().getManager(AreaManager.class)).removeArea(_selectedAreaType, fromX, fromY, toX, toY);
+			((AreaModule)Game.getInstance().getManager(AreaModule.class)).removeArea(_selectedAreaType, fromX, fromY, toX, toY);
 			return true;
 		}
 

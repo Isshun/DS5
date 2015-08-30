@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.renderer;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.engine.renderer.BaseRenderer;
+import org.smallbox.faraway.game.model.GameConfig;
 
 /**
  * Created by Alex on 13/06/2015.
@@ -18,7 +19,7 @@ public class GDXAreaRenderer extends BaseRenderer {
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-//        AreaManager areaManager = (AreaManager) Game.getInstance().getManager(AreaManager.class);
+//        AreaModule areaManager = (AreaModule) Game.getInstance().getManager(AreaModule.class);
 //        for (AreaModel area: areaManager.getAreas()) {
 //            for (ParcelModel parcel: area.getParcels()) {
 //                if (area instanceof GardenAreaModel || area.isStorage() || UserInterface.getInstance().getMode() == UserInterface.Mode.AREA) {
@@ -35,5 +36,10 @@ public class GDXAreaRenderer extends BaseRenderer {
     @Override
     public void onRefresh(int frame) {
 
+    }
+
+    @Override
+    public boolean isActive(GameConfig config) {
+        return config.render.area;
     }
 }

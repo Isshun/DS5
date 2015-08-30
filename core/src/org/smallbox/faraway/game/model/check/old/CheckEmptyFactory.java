@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.game.model.check.old;
 //
-//import org.smallbox.faraway.game.manager.character.JobManager;
-//import org.smallbox.faraway.game.manager.ServiceManager;
+//import org.smallbox.faraway.game.module.character.JobManager;
+//import org.smallbox.faraway.game.module.ServiceManager;
 //import org.smallbox.faraway.game.model.item.FactoryItem;
 //import org.smallbox.faraway.game.model.onCheck.Check;
 //

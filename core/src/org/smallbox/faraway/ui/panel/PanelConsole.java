@@ -37,7 +37,7 @@ public class PanelConsole extends BasePanel {
 	}
 
 	@Override
-	public void onLayoutLoaded(LayoutModel layout) {
+	public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
 		findById("bt_debug").setOnClickListener(view -> select("frame_debug", Log.LEVEL_DEBUG));
 		findById("bt_info").setOnClickListener(view -> select("frame_info", Log.LEVEL_INFO));
 		findById("bt_warning").setOnClickListener(view -> select("frame_warning", Log.LEVEL_WARNING));

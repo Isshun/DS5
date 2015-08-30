@@ -1,18 +1,14 @@
 package org.smallbox.faraway.game;
 
+import org.reflections.Reflections;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.data.factory.world.WorldFactory;
 import org.smallbox.faraway.data.serializer.GameSerializer;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
-import org.smallbox.faraway.game.helper.ItemFinder;
-import org.smallbox.faraway.game.manager.BaseManager;
-import org.smallbox.faraway.game.manager.WorldItemManager;
-import org.smallbox.faraway.game.manager.bridge.BridgeManager;
-import org.smallbox.faraway.game.manager.character.*;
-import org.smallbox.faraway.game.manager.extra.*;
-import org.smallbox.faraway.game.manager.path.PathManager;
-import org.smallbox.faraway.game.manager.world.*;
+import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.character.*;
+import org.smallbox.faraway.game.module.world.*;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.planet.PlanetModel;
@@ -20,14 +16,16 @@ import org.smallbox.faraway.game.model.planet.RegionInfo;
 import org.smallbox.faraway.game.model.planet.RegionModel;
 import org.smallbox.faraway.util.Log;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 public class Game {
-	private static CharacterManager _characterManager;
-	private static WorldManager 		_worldManager;
+    private static CharacterModule _characterModule;
+    private static WorldModule _worldModule;
     private static JobManager 			_jobManager;
 
     private final ParticleRenderer      _particleRenderer;
@@ -35,18 +33,17 @@ public class Game {
 
     private static Game 				_self;
     private final String                _fileName;
-	private int 						_speed = 1;
+    private int 						_speed = 1;
     private GameConfig                  _config;
-	private List<BaseManager>			_managers;
-	private List<GameObserver>			_observers;
+    private List<GameModule>            _modules = new ArrayList<>();
+    private List<GameObserver>			_observers = new ArrayList<>();
     private GameSerializer.GameSave     _save;
     private PlanetModel                 _planet;
     private RegionModel                 _region;
     private int                         _hour = 6;
     private int                         _day;
     private int                         _year;
-    private final int                   _width;
-    private final int                   _height;
+    private GameInfo                    _info = new GameInfo();
 
     public void                         toggleRunning() { _isRunning = !_isRunning; }
     public void                         addObserver(GameObserver observer) { _observers.add(observer); }
@@ -55,9 +52,9 @@ public class Game {
 
     public boolean                      isRunning() { return _isRunning; }
 
-	public static CharacterManager 		getCharacterManager() { return _characterManager; }
-	public static WorldManager 			getWorldManager() { return _worldManager; }
-	public static JobManager            getJobManager() { return _jobManager; }
+    public static CharacterModule getCharacterManager() { return _characterModule; }
+    public static WorldModule getWorldManager() { return _worldModule; }
+    public static JobManager            getJobManager() { return _jobManager; }
     public static Game                  getInstance() { return _self; }
     public int                          getHour() { return _hour; }
     public int                          getDay() { return _day; }
@@ -68,36 +65,29 @@ public class Game {
     public String                       getFileName() { return _fileName; }
     public long                         getTick() { return _tick; }
     public RegionModel                  getRegion() { return _region; }
-    public int                          getWidth() { return _width; }
-    public int                          getHeight() { return _height; }
 
-	private static int                  _tick;
-	private Viewport 					_viewport;
-	private boolean 					_isRunning;
+    private static int                  _tick;
+    private Viewport 					_viewport;
+    private boolean 					_isRunning;
 
-	public Game(int width, int height, GameData data, GameConfig config, String fileName, ParticleRenderer particleRenderer, LightRenderer lightRenderer, RegionInfo regionInfo) {
-		Log.debug("Game");
+    public Game(int width, int height, GameData data, GameConfig config, String fileName, ParticleRenderer particleRenderer, LightRenderer lightRenderer, RegionInfo regionInfo) {
+        Log.debug("Game");
 
-        _width = width;
-        _height = height;
-		_self = this;
+        _self = this;
         _config = config;
         _fileName = fileName;
-		_isRunning = true;
-		_viewport = new Viewport(400, 300);
+        _isRunning = true;
+        _viewport = new Viewport(400, 300);
         _particleRenderer = particleRenderer;
         _lightRenderer = lightRenderer;
         _tick = 0;
 
         Log.info("Game: onCreate");
 
-        _managers = new ArrayList<>();
-        _observers = new ArrayList<>();
-
         setRegion(regionInfo);
 
-		Log.info("Game:\tdone");
-	}
+        Log.info("Game:\tdone");
+    }
 
     public void setRegion(RegionInfo regionInfo) {
         if (regionInfo != null) {
@@ -107,72 +97,37 @@ public class Game {
     }
 
     public void init(WorldFactory factory) {
-        _worldManager = new WorldManager(factory);
-        _managers.add(_worldManager);
-
-        _characterManager = new CharacterManager();
-        _managers.add(_characterManager);
-
-        _jobManager = new JobManager();
-        _managers.add(_jobManager);
-
-        if (GameData.config.manager.room) {
-            _managers.add(new RoomManager());
+        for (Class<? extends GameModule> cls : new Reflections("org.smallbox.faraway").getSubTypesOf(GameModule.class)) {
+            if (!Modifier.isAbstract(cls.getModifiers())) {
+                try {
+                    _modules.add(cls.getConstructor().newInstance());
+                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
-        if (GameData.config.manager.room && GameData.config.manager.temperature) {
-            _managers.add(new TemperatureManager(_worldManager));
-        }
+        _worldModule = (WorldModule)getManager(WorldModule.class);
+        _characterModule = (CharacterModule)getManager(CharacterModule.class);
+        _jobManager = (JobManager)getManager(JobManager.class);
+//
+//        if (GameData.config.module.room && GameData.config.module.temperature) {
+//            _modules.add(new TemperatureModule(_worldModule));
+//        }
+//
+        _observers.addAll(_modules);
 
-        if (GameData.config.manager.weather) {
-            _managers.add(new WeatherManager(_lightRenderer, _particleRenderer, _worldManager));
-        }
-
-        _managers.add(new ItemFinder());
-        _managers.add(new PathManager());
-        _managers.add(new AreaManager());
-        _managers.add(new ResourceManager());
-        _managers.add(new StatsManager());
-        _managers.add(new DiseaseManager());
-        _managers.add(new BuffManager());
-        _managers.add(new LightManager());
-        _managers.add(new PlantManager());
-        _managers.add(new BridgeManager());
-
-        if (GameData.config.manager.fauna) {
-            _managers.add(new FaunaManager());
-        }
-
-        _managers.add(new RelationManager());
-
-        if (GameData.config.manager.oxygen) {
-            _managers.add(new OxygenManager());
-        }
-
-        if (GameData.config.manager.power) {
-            _managers.add(new PowerManager());
-        }
-        _managers.add(new WorldItemManager());
-
-        if (GameData.config.manager.quest) {
-            _managers.add(new QuestManager());
-        }
-
-        _observers.addAll(_managers);
-
-        _managers.forEach(BaseManager::create);
+        _modules.stream().filter(GameModule::isLoaded).forEach(GameModule::create);
     }
 
-	public void onUpdate(int tick) {
-		if (!_isRunning) {
-			return;
-		}
-
-        for (BaseManager manager: _managers) {
-            manager.update(tick);
+    public void onUpdate(int tick) {
+        if (!_isRunning) {
+            return;
         }
 
-		if (tick % _config.tickPerHour == 0) {
+        _modules.stream().filter(GameModule::isLoaded).forEach(module -> module.update(tick));
+
+        if (tick % _config.tickPerHour == 0) {
             if (++_hour >= _planet.getInfo().dayDuration) {
                 _hour = 0;
                 if (++_day >= _planet.getInfo().yearDuration) {
@@ -183,18 +138,18 @@ public class Game {
                 notify(observer -> observer.onDayChange(_day));
             }
             notify(observer -> observer.onHourChange(_hour));
-		}
+        }
 
         _tick = tick;
-	}
+    }
 
-	public void	load() {
-		String filePath = "data/saves/" + _fileName;
+    public void	load() {
+        String filePath = "data/saves/" + _fileName;
 
         long time = System.currentTimeMillis();
 
 //		loadListener.onLoad("Load game");
-		GameSerializer.load(filePath, _save);
+        GameSerializer.load(filePath, _save);
         _save = null;
         System.gc();
 
@@ -202,19 +157,19 @@ public class Game {
 
 //        loadListener.onLoad("Init world old");
 //		WorldFactory.cleanRock();
-	}
+    }
 
-	public void	save(final String fileName) {
-		GameSerializer.save("data/saves/" + fileName);
-	}
+    public void	save(final String fileName) {
+        GameSerializer.save("data/saves/" + fileName, _modules);
+    }
 
     public void notify(Consumer<GameObserver> action) {
         Objects.requireNonNull(action);
         _observers.stream().forEach(action::accept);
     }
 
-    public BaseManager getManager(Class<? extends BaseManager> cls) {
-        for (BaseManager manager: _managers) {
+    public GameModule getManager(Class<? extends GameModule> cls) {
+        for (GameModule manager: _modules) {
             if (cls.isInstance(manager)) {
                 return manager;
             }
@@ -226,15 +181,31 @@ public class Game {
         return _speed;
     }
 
-    public List<BaseManager> getManagers() {
-        return _managers;
+    public List<GameModule> getModules() {
+        return _modules;
     }
 
     public void preload() {
         // TODO magic
     }
 
-    public void setWorldManager(WorldManager worldManager) {
-        _worldManager = worldManager;
+    public void setWorldManager(WorldModule worldModule) {
+        _worldModule = worldModule;
+    }
+
+    public GameInfo getInfo() {
+        return _info;
+    }
+
+    public void removeModule(GameModule module) {
+        module.destroy();
+//        _modules.remove(module);
+        _observers.remove(module);
+    }
+
+    public void insertModule(GameModule module) {
+        module.create();
+//        _modules.add(module);
+        _observers.add(module);
     }
 }

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui.engine;
 
+import org.smallbox.faraway.core.ui.GDXFrameLayout;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.view.FrameLayout;
@@ -20,10 +21,15 @@ import java.io.InputStream;
  */
 public class LayoutFactory {
     public interface OnLayoutLoaded {
-        void onLayoutLoaded(LayoutModel layout);
+        void onLayoutLoaded(LayoutModel layout, FrameLayout panel);
     }
 
-    public static void load(String path, BasePanel panel, OnLayoutLoaded listener) {
+    public static void load(String path, OnLayoutLoaded listener) {
+        FrameLayout panel = new GDXFrameLayout(100, 100);
+        load(path, panel, listener);
+    }
+
+    public static void load(String path, FrameLayout panel, OnLayoutLoaded listener) {
         try {
             InputStream input = new FileInputStream(new File(path));
             Yaml yaml = new Yaml(new Constructor(LayoutModel.class));
@@ -56,10 +62,12 @@ public class LayoutFactory {
             }
 
             panel.init();
-            panel.setLoaded();
+            if (panel instanceof BasePanel) {
+                ((BasePanel)panel).setLoaded();
+            }
             panel.resetAllPos();
 
-            listener.onLayoutLoaded(layout);
+            listener.onLayoutLoaded(layout, panel);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

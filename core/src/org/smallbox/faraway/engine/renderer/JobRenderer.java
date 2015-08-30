@@ -3,7 +3,8 @@ package org.smallbox.faraway.engine.renderer;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.character.JobManager;
+import org.smallbox.faraway.game.module.character.JobManager;
+import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.util.Constant;
 
 public class JobRenderer extends BaseRenderer {
@@ -11,7 +12,7 @@ public class JobRenderer extends BaseRenderer {
 
 	public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
 		if (_areas == null) {
-			_areas = new int[Game.getWorldManager().getWidth()][Game.getWorldManager().getHeight()];
+			_areas = new int[Game.getInstance().getInfo().worldWidth][Game.getInstance().getInfo().worldHeight];
 		}
 
 		int offsetX = viewport.getPosX();
@@ -23,6 +24,11 @@ public class JobRenderer extends BaseRenderer {
 
 	@Override
 	public void onRefresh(int frame) {
+	}
+
+	@Override
+	public boolean isActive(GameConfig config) {
+		return config.render.job;
 	}
 
 }

@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.extra.QuestManager;
+import org.smallbox.faraway.game.module.extra.QuestManager;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.engine.view.FrameLayout;
@@ -21,7 +21,7 @@ public class PanelQuest extends BasePanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout) {
+    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
         findById("frame_message").setVisible(false);
 
         UILabel lbQuest = ViewFactory.getInstance().createTextView();

@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.character.CharacterManager;
+import org.smallbox.faraway.game.module.character.CharacterModule;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.UserInterface.Mode;
@@ -42,7 +42,7 @@ public class PanelCrew extends BaseRightPanel {
 	private static final int 	CREW_LINE_HEIGHT = 22;
 	private static final int 	CREW_LINE_WIDTH  = FRAME_WIDTH - Constant.UI_PADDING * 2;
 
-	private CharacterManager    		_characterManager;
+	private CharacterModule _characterModule;
 	private List<ViewHolder> 			_viewHolderList;
 	private UILabel _lbCount;
 	protected int 						_mode;
@@ -54,7 +54,7 @@ public class PanelCrew extends BaseRightPanel {
 	@Override
 	protected void onCreate(ViewFactory factory) {
 		_viewHolderList = new ArrayList<>();
-		_characterManager = Game.getCharacterManager();
+		_characterModule = Game.getCharacterManager();
 
 		// Button small
 		UILabel btModeSmall = factory.createTextView(50, 20);
@@ -228,11 +228,11 @@ public class PanelCrew extends BaseRightPanel {
 			}
 			
 			int i = 0;
-			for (CharacterModel c: _characterManager.getCharacters()) {
+			for (CharacterModel c: _characterModule.getCharacters()) {
 				addCharacter(i++, c);
 			}
 
-			_lbCount.setDashedString("Count", String.valueOf(_characterManager.getCharacters().size()), NB_COLUMNS_TITLE);
+			_lbCount.setDashedString("Count", String.valueOf(_characterModule.getCharacters().size()), NB_COLUMNS_TITLE);
 		}
 	}
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedNode;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.manager.world.TemperatureManager;
+import org.smallbox.faraway.game.module.world.TemperatureModule;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
 
@@ -94,7 +94,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public RoomModel 		getRoom() { return _room; }
     public AreaModel        getArea() { return _area; }
     public int              getType() { return _type; }
-    public double           getTemperature() { return _room != null ? _room.getTemperatureInfo().temperature : ((TemperatureManager)Game.getInstance().getManager(TemperatureManager.class)).getTemperature(); }
+    public double           getTemperature() { return _room != null ? _room.getTemperatureInfo().temperature : ((TemperatureModule)Game.getInstance().getManager(TemperatureModule.class)).getTemperature(); }
     public ParcelEnvironment getEnvironment() { return _environment; }
 
     public boolean          isFree() { return !isBlocked(); }

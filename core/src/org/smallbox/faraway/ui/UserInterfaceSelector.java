@@ -3,7 +3,7 @@ package org.smallbox.faraway.ui;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.manager.world.AreaManager;
+import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.game.model.ToolTips;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
@@ -113,7 +113,7 @@ public class UserInterfaceSelector {
         ParcelModel parcel = Game.getWorldManager().getParcel(x, y);
         if (parcel != null) {
             CharacterModel character = Game.getCharacterManager().getCharacterAtPos(x, y);
-            AreaModel area = ((AreaManager) Game.getInstance().getManager(AreaManager.class)).getArea(x, y);
+            AreaModel area = ((AreaModule) Game.getInstance().getManager(AreaModule.class)).getArea(x, y);
 
             _lastSelectedIndex = _lastSelectedParcel == parcel ? _lastSelectedIndex + 1 : 0;
             _lastSelectedParcel = parcel;

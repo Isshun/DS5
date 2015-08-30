@@ -33,8 +33,8 @@ public class PanelResources extends BasePanel {
     public void onRefresh(int refresh) {
         if (refresh % 10 == 0) {
             Map<ItemInfo, Integer> items = new HashMap<>();
-            for (int x = 0; x < Game.getWorldManager().getWidth(); x++) {
-                for (int y = 0; y < Game.getWorldManager().getHeight(); y++) {
+            for (int x = 0; x < Game.getInstance().getInfo().worldWidth; x++) {
+                for (int y = 0; y < Game.getInstance().getInfo().worldHeight; y++) {
                     ConsumableModel consumable = WorldHelper.getConsumable(x, y);
                     if (consumable != null) {
                         if (!items.containsKey(consumable.getInfo())) {

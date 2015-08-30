@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.core.ui.GDXLabel;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
@@ -158,6 +159,11 @@ public class CharacterRenderer extends BaseRenderer {
 
     public void onRefresh(int frame) {
         _frame = frame;
+    }
+
+    @Override
+    public boolean isActive(GameConfig config) {
+        return true;
     }
 
 }

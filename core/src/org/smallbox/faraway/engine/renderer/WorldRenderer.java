@@ -9,7 +9,7 @@ import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.manager.world.WorldManager;
+import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.item.*;
@@ -23,24 +23,17 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
     private boolean             _needRefresh;
     private SpriteManager       _spriteManager;
     private RenderLayer[][]     _layers;
-    private WorldManager 		_worldMap;
     private MapObjectModel      _itemSelected;
-    private final Viewport      _viewport;
-    private int 				_frame;
+    private Viewport            _viewport;
 
-    public WorldRenderer(SpriteManager spriteManager, Viewport viewport) {
-        _spriteManager = spriteManager;
-        _viewport = viewport;
+    @Override
+    public void init() {
+        _spriteManager = SpriteManager.getInstance();
+        _viewport = Game.getInstance().getViewport();
         _needRefresh = true;
     }
 
     public void onRefresh(int frame) {
-        _frame = frame;
-
-        if (_worldMap == null) {
-            _worldMap = Game.getWorldManager();
-        }
-
         if (_layers == null) {
             _cacheCols = (250 / CACHE_SIZE);
             _layers = new RenderLayer[_cacheCols][_cacheCols];
@@ -56,6 +49,11 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
             }
             refreshLayers();
         }
+    }
+
+    @Override
+    public boolean isActive(GameConfig config) {
+        return true;
     }
 
     private void refreshLayers() {

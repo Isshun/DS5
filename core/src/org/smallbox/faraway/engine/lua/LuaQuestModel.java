@@ -2,8 +2,8 @@ package org.smallbox.faraway.engine.lua;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.manager.extra.QuestManager;
-import org.smallbox.faraway.game.manager.extra.ResourceManager;
+import org.smallbox.faraway.game.module.extra.QuestManager;
+import org.smallbox.faraway.game.module.extra.ResourceManager;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 
 /**

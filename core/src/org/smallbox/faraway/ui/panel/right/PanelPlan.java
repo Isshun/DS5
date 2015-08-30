@@ -19,7 +19,7 @@ public class PanelPlan extends BaseRightPanel {
 	}
 
 	@Override
-	public void onLayoutLoaded(LayoutModel layoutModel) {
+	public void onLayoutLoaded(LayoutModel layoutModel, FrameLayout panel) {
 		findById("bt_mine").setOnClickListener(view -> select(view, Planning.MINING));
 		findById("bt_gather").setOnClickListener(view -> select(view, Planning.GATHER));
 		findById("bt_dump").setOnClickListener(view -> select(view, Planning.DUMP));
