@@ -2,8 +2,8 @@ package org.smallbox.faraway.engine.lua;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.module.extra.QuestManager;
-import org.smallbox.faraway.game.module.extra.ResourceManager;
+import org.smallbox.faraway.game.module.extra.QuestModule;
+import org.smallbox.faraway.game.module.extra.ResourceModule;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 
 /**
@@ -31,20 +31,20 @@ public class LuaQuestModel {
         public void addResource(String resource, int quantity) {
             switch (resource) {
                 case "science":
-                    ((ResourceManager)Game.getInstance().getManager(ResourceManager.class)).addScience(quantity);
+                    ((ResourceModule)Game.getInstance().getModule(ResourceModule.class)).addScience(quantity);
                     break;
             }
         }
     }
 
-    public final QuestManager.QuestModel    quest;
+    public final QuestModule.QuestModel    quest;
     public final LuaQuestRewardsModel       rewards;
     public int                              option;
     public String                           closeMessage;
     public String                           openMessage;
     public String[]                         openOptions;
 
-    public LuaQuestModel(QuestManager.QuestModel quest) {
+    public LuaQuestModel(QuestModule.QuestModel quest) {
         this.quest = quest;
         this.rewards = new LuaQuestRewardsModel();
         this.option = quest.optionIndex;

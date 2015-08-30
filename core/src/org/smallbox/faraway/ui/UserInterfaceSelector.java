@@ -113,7 +113,7 @@ public class UserInterfaceSelector {
         ParcelModel parcel = Game.getWorldManager().getParcel(x, y);
         if (parcel != null) {
             CharacterModel character = Game.getCharacterManager().getCharacterAtPos(x, y);
-            AreaModel area = ((AreaModule) Game.getInstance().getManager(AreaModule.class)).getArea(x, y);
+            AreaModel area = ((AreaModule) Game.getInstance().getModule(AreaModule.class)).getArea(x, y);
 
             _lastSelectedIndex = _lastSelectedParcel == parcel ? _lastSelectedIndex + 1 : 0;
             _lastSelectedParcel = parcel;

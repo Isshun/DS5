@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.helper;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.character.JobManager;
+import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
@@ -37,14 +37,14 @@ public class JobHelper {
     public static void addGatherJob(int x, int y, boolean removeOnComplete) {
         BaseJobModel job = createGatherJob(x, y, removeOnComplete);
         if (job != null) {
-            JobManager.getInstance().addJob(job);
+            JobModule.getInstance().addJob(job);
         }
     }
 
     public static void addMineJob(int x, int y) {
         BaseJobModel job = createMiningJob(x, y);
         if (job != null) {
-            JobManager.getInstance().addJob(job);
+            JobModule.getInstance().addJob(job);
         }
     }
 
@@ -60,13 +60,13 @@ public class JobHelper {
     public static void addUseJob(ItemModel item) {
         BaseJobModel job = JobUse.create(item);
         if (job != null) {
-            JobManager.getInstance().addJob(job);
+            JobModule.getInstance().addJob(job);
         }
     }
 
     public static BaseJobModel addBuildJob(MapObjectModel item) {
         if (item == null) {
-            Log.error("JobManager: build on null item");
+            Log.error("JobModule: build on null item");
             return null;
         }
 
@@ -76,26 +76,26 @@ public class JobHelper {
         }
 
         BaseJobModel job = JobBuild.create(item);
-        JobManager.getInstance().addJob(job);
+        JobModule.getInstance().addJob(job);
 
         return job;
     }
 
     public static BaseJobModel addGather(ResourceModel resource, boolean removeOnComplete) {
         if (resource == null) {
-            Log.error("JobManager: gather on null area");
+            Log.error("JobModule: gather on null area");
             return null;
         }
 
         // return if job already exist for this item
-        for (BaseJobModel job: JobManager.getInstance().getJobs()) {
+        for (BaseJobModel job: JobModule.getInstance().getJobs()) {
             if (job.getItem() == resource) {
                 return null;
             }
         }
 
         BaseJobModel job = JobGather.create(resource, removeOnComplete);
-        JobManager.getInstance().addJob(job);
+        JobModule.getInstance().addJob(job);
 
         return job;
     }
@@ -103,17 +103,17 @@ public class JobHelper {
     public static void addDumpJob(MapObjectModel item) {
         BaseJobModel job = JobDump.create(item);
         if (job != null) {
-            JobManager.getInstance().addJob(job);
+            JobModule.getInstance().addJob(job);
         }
     }
 
     public static void addJob(ItemModel item, ItemInfo.ItemInfoAction action) {
         switch (action.type) {
             case "cook":
-                JobManager.getInstance().addJob(JobCook.create(action, item));
+                JobModule.getInstance().addJob(JobCook.create(action, item));
                 break;
             case "craft":
-                JobManager.getInstance().addJob(JobCraft.create(action, item));
+                JobModule.getInstance().addJob(JobCraft.create(action, item));
                 break;
         }
     }
@@ -121,14 +121,14 @@ public class JobHelper {
     public static void	removeJob(MapObjectModel item) {
         List<BaseJobModel> toRemove = new ArrayList<>();
 
-        for (BaseJobModel job: JobManager.getInstance().getJobs()) {
+        for (BaseJobModel job: JobModule.getInstance().getJobs()) {
             if (job.getItem() == item) {
                 toRemove.add(job);
             }
         }
 
         for (BaseJobModel job: toRemove) {
-            JobManager.getInstance().removeJob(job);
+            JobModule.getInstance().removeJob(job);
         }
     }
 
@@ -152,7 +152,7 @@ public class JobHelper {
                 Log.error("Build item: already exist on this area");
                 return null;
             } else if (current != null) {
-                Log.error("JobManager: add build on non null item");
+                Log.error("JobModule: add build on non null item");
                 return null;
             } else {
                 item = Game.getWorldManager().putObject(info, x, y, 0, 0);
@@ -167,7 +167,7 @@ public class JobHelper {
                 Log.error("Build item: already exist on this area");
                 return null;
             } else if (currentItem != null) {
-                Log.error("JobManager: add build on non null item");
+                Log.error("JobModule: add build on non null item");
                 return null;
             } else {
                 item = Game.getWorldManager().putObject(info, x, y, 0, 0);

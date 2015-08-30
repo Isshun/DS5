@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.extra.QuestManager;
+import org.smallbox.faraway.game.module.extra.QuestModule;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.engine.view.FrameLayout;
@@ -13,7 +13,7 @@ import org.smallbox.faraway.ui.engine.view.UILabel;
  */
 public class PanelQuest extends BasePanel {
     private int _nbOptions;
-    private QuestManager.QuestModel _quest;
+    private QuestModule.QuestModel _quest;
 
     public PanelQuest() {
         super(null, null, 0, 0, 0, 0, "data/ui/panels/quest.yml");
@@ -31,7 +31,7 @@ public class PanelQuest extends BasePanel {
     }
 
     @Override
-    public void onOpenQuest(QuestManager.QuestModel quest) {
+    public void onOpenQuest(QuestModule.QuestModel quest) {
         _quest = quest;
 
         if (quest != null && quest.message != null) {
@@ -52,7 +52,7 @@ public class PanelQuest extends BasePanel {
     }
 
     @Override
-    public void onCloseQuest(QuestManager.QuestModel quest) {
+    public void onCloseQuest(QuestModule.QuestModel quest) {
         _quest = quest;
 
         if (quest != null && quest.message != null) {
@@ -68,7 +68,7 @@ public class PanelQuest extends BasePanel {
         }
     }
 
-    private void displayMessage(QuestManager.QuestModel quest) {
+    private void displayMessage(QuestModule.QuestModel quest) {
         // Open frame
         findById("frame_message").setVisible(true);
 
@@ -81,10 +81,10 @@ public class PanelQuest extends BasePanel {
         }
     }
 
-    private void selectOption(QuestManager.QuestModel quest, int optionIndex) {
+    private void selectOption(QuestModule.QuestModel quest, int optionIndex) {
         findById("frame_message").setVisible(false);
 
-        ((QuestManager)Game.getInstance().getManager(QuestManager.class)).selectQuestionOption(quest, optionIndex);
+        ((QuestModule)Game.getInstance().getModule(QuestModule.class)).selectQuestionOption(quest, optionIndex);
     }
 
     public boolean	checkKey(GameEventListener.Key key) {

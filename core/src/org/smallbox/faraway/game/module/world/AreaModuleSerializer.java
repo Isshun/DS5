@@ -1,6 +1,7 @@
-package org.smallbox.faraway.data.serializer;
+package org.smallbox.faraway.game.module.world;
 
 import com.ximpleware.*;
+import org.smallbox.faraway.data.serializer.SerializerInterface;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.game.model.GameData;
@@ -16,11 +17,11 @@ import java.util.Map;
 /**
  * Created by Alex on 01/06/2015.
  */
-public class AreaSerializer implements SerializerInterface {
+public class AreaModuleSerializer implements SerializerInterface {
     @Override
     public void save(FileOutputStream fos) throws IOException {
         FileUtils.write(fos, "<areas>");
-        for (AreaModel area: ((AreaModule) Game.getInstance().getManager(AreaModule.class)).getAreas()) {
+        for (AreaModel area: ((AreaModule) Game.getInstance().getModule(AreaModule.class)).getAreas()) {
             FileUtils.write(fos, "<area id='" + 0 + "' name='" + area.getName() + "' type='" + area.getType() + "'>");
 
             // Write accepted items
@@ -94,7 +95,7 @@ public class AreaSerializer implements SerializerInterface {
         }
         ap2.resetXPath();
 
-        ((AreaModule)Game.getInstance().getManager(AreaModule.class)).addArea(area);
+        ((AreaModule)Game.getInstance().getModule(AreaModule.class)).addArea(area);
 
         vn.pop();
     }

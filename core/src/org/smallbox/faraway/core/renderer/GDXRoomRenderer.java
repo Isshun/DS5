@@ -17,7 +17,7 @@ import java.util.Random;
 public class GDXRoomRenderer extends BaseRenderer {
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-        ((RoomModule)Game.getInstance().getManager(RoomModule.class)).getRoomList().stream().forEach(room -> {
+        ((RoomModule)Game.getInstance().getModule(RoomModule.class)).getRoomList().stream().forEach(room -> {
             for (ParcelModel parcel : room.getParcels()) {
                 Random random = new Random(room.getId());
                 renderer.draw(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat(), 1f),

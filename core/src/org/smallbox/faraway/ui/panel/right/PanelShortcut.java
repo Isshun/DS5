@@ -3,8 +3,8 @@ package org.smallbox.faraway.ui.panel.right;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.extra.ResourceManager;
-import org.smallbox.faraway.game.module.extra.ResourceManager.ResourceData;
+import org.smallbox.faraway.game.module.extra.ResourceModule;
+import org.smallbox.faraway.game.module.extra.ResourceModule.ResourceData;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.LinkFocusListener;
 import org.smallbox.faraway.ui.UserInterface.Mode;
@@ -24,7 +24,7 @@ import java.util.List;
 public class PanelShortcut extends BaseRightPanel {
     private static final int NB_COLUMNS_STATS = 21;
 
-    private ResourceManager _resourceManager;
+    private ResourceModule _resourceModule;
 
     private static class ResourceEntry {
         public ResourceData data;
@@ -72,15 +72,15 @@ public class PanelShortcut extends BaseRightPanel {
     public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
         _lbTime = (UILabel) findById("lb_time");
 
-        _resourceManager = (ResourceManager)Game.getInstance().getManager(ResourceManager.class);
+        _resourceModule = (ResourceModule)Game.getInstance().getModule(ResourceModule.class);
 
         _resources = new ArrayList<>();
-        addResource((UILabel) findById("lb_food"), _resourceManager.getFood());
-        addResource((UILabel) findById("lb_water"), _resourceManager.getWater());
-        addResource((UILabel) findById("lb_gas"), _resourceManager.getGasoline());
-        addResource((UILabel) findById("lb_science"), _resourceManager.getScience());
-        addResource((UILabel) findById("lb_o2"), _resourceManager.getO2());
-        addResource((UILabel) findById("lb_power"), _resourceManager.getPower());
+        addResource((UILabel) findById("lb_food"), _resourceModule.getFood());
+        addResource((UILabel) findById("lb_water"), _resourceModule.getWater());
+        addResource((UILabel) findById("lb_gas"), _resourceModule.getGasoline());
+        addResource((UILabel) findById("lb_science"), _resourceModule.getScience());
+        addResource((UILabel) findById("lb_o2"), _resourceModule.getO2());
+        addResource((UILabel) findById("lb_power"), _resourceModule.getPower());
 
         for (PanelEntry entry : _entries) {
             View button = findById(entry.buttonId);

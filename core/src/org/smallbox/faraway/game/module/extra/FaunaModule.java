@@ -18,7 +18,7 @@ import java.util.Random;
 /**
  * Created by Alex on 26/06/2015.
  */
-public class FaunaManager extends GameModule {
+public class FaunaModule extends GameModule {
     private List<RegionInfo.RegionFauna>    FAUNA_COMMON_POOL = new ArrayList<>();
     private List<RegionInfo.RegionFauna>    FAUNA_UNUSUAL_POOL = new ArrayList<>();
 
@@ -63,7 +63,7 @@ public class FaunaManager extends GameModule {
             Random r = new Random();
             RegionInfo.RegionFauna faunaInfo = FAUNA_UNUSUAL_POOL.get(r.nextInt(100));
             int count = faunaInfo.number[0] == faunaInfo.number[1] ? faunaInfo.number[1] : faunaInfo.number[0] + r.nextInt(faunaInfo.number[1] - faunaInfo.number[0]);
-            printInfo("[FaunaManager] Add unusual " + faunaInfo.name + " x " + count);
+            printInfo("[FaunaModule] Add unusual " + faunaInfo.name + " x " + count);
             addFauna(faunaInfo, count);
         }
 
@@ -72,7 +72,7 @@ public class FaunaManager extends GameModule {
             Random r = new Random();
             RegionInfo.RegionFauna faunaInfo = FAUNA_COMMON_POOL.get(r.nextInt(100));
             int count = faunaInfo.number[0] == faunaInfo.number[1] ? faunaInfo.number[1] : faunaInfo.number[0] + r.nextInt(faunaInfo.number[1] - faunaInfo.number[0]);
-            printInfo("[FaunaManager] Add common " + faunaInfo.name + " x " + count);
+            printInfo("[FaunaModule] Add common " + faunaInfo.name + " x " + count);
             addFauna(faunaInfo, count);
         }
 
@@ -92,7 +92,7 @@ public class FaunaManager extends GameModule {
         if (parcel != null) {
             _animals.add(new AnimalModel(Utils.getUUID(), faunaInfo, parcel.x, parcel.y));
         } else {
-            printError("[FaunaManager] No space to proc fauna");
+            printError("[FaunaModule] No space to proc fauna");
         }
     }
 

@@ -110,7 +110,7 @@ public abstract class BaseJobModel {
 		_count = 1;
         _limit = -1;
         _label = "none";
-        _finder = (ItemFinder)Game.getInstance().getManager(ItemFinder.class);
+        _finder = (ItemFinder)Game.getInstance().getModule(ItemFinder.class);
 
         Log.debug("Job #" + _id + " onCreate");
 	}

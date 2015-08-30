@@ -42,7 +42,7 @@ public class PanelTopInfo extends BasePanel {
 
     @Override
     public void onRefresh(int tick) {
-        ((UILabel)findById("lb_world_tmp")).setString("Temperature: " + (int)((TemperatureModule)Game.getInstance().getManager(TemperatureModule.class)).getTemperature() + "°");
+        ((UILabel)findById("lb_world_tmp")).setString("Temperature: " + (int)((TemperatureModule)Game.getInstance().getModule(TemperatureModule.class)).getTemperature() + "°");
         ((UILabel)findById("lb_hour")).setString("Hour: " + Game.getInstance().getHour() + "h");
         ((UILabel)findById("lb_day")).setString("Day: " + Game.getInstance().getDay());
         ((UILabel)findById("lb_year")).setString("Year: " + Game.getInstance().getYear());
@@ -54,7 +54,7 @@ public class PanelTopInfo extends BasePanel {
         });
         lbPlanet.resetAllPos();
 
-        WeatherModule weatherModule = (WeatherModule)Game.getInstance().getManager(WeatherModule.class);
+        WeatherModule weatherModule = (WeatherModule)Game.getInstance().getModule(WeatherModule.class);
         if (weatherModule != null && weatherModule.getWeather() != null) {
             ((UILabel) findById("lb_weather")).setString("Weather: " + weatherModule.getWeather().name);
             if (Constant.DEBUG) {
@@ -62,7 +62,7 @@ public class PanelTopInfo extends BasePanel {
             }
         }
 
-        PowerModule powerModule = (PowerModule)Game.getInstance().getManager(PowerModule.class);
+        PowerModule powerModule = (PowerModule)Game.getInstance().getModule(PowerModule.class);
         if (powerModule != null) {
             ((UILabel)findById("lb_power_production")).setString((int) powerModule.getProduce() + "kW/h");
             ((UILabel)findById("lb_power_storage")).setString((int) powerModule.getStored() + "kW");

@@ -10,7 +10,7 @@ import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.game.module.path.ParcelConnection;
 
 import java.util.*;
 import java.util.concurrent.BlockingQueue;

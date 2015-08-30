@@ -6,7 +6,7 @@ import org.smallbox.faraway.game.model.ToolTips;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.util.Strings;
 
-public class ResourceManager extends GameModule {
+public class ResourceModule extends GameModule {
 
 	public static class ResourceData {
 		final public String label;
@@ -20,7 +20,7 @@ public class ResourceManager extends GameModule {
 
 	}
 
-	private static ResourceManager _self;
+	private static ResourceModule _self;
 
 	private ResourceData 	_science;
 	private ResourceData	_power;
@@ -33,7 +33,7 @@ public class ResourceManager extends GameModule {
 
 	public enum Message {NONE, NO_MATTER, BUILD_COMPLETE, BUILD_PROGRESS};
 
-	public ResourceManager() {
+	public ResourceModule() {
 		_science = new ResourceData(Strings.LB_SCIENCE, ToolTips.RES_SCIENCE);
 		_power = new ResourceData(Strings.LB_POWER, ToolTips.RES_POWER);
 		_spice = new ResourceData("spice", ToolTips.RES_SPICE);

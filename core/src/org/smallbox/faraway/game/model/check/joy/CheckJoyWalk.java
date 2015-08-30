@@ -40,7 +40,7 @@ public class CheckJoyWalk extends CharacterCheck {
         // LF area
         _area = null;
         int bestDistance = Integer.MAX_VALUE;
-        for (AreaModel area: ((AreaModule)Game.getInstance().getManager(AreaModule.class)).getAreas()) {
+        for (AreaModel area: ((AreaModule)Game.getInstance().getModule(AreaModule.class)).getAreas()) {
             if (area.isHome()) {
                 int distance = Math.abs(character.getX() - area.getX()) + Math.abs(character.getY() - area.getY());
                 if (bestDistance > distance) {

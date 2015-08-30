@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.game.model.check.old;
 //
 //import org.smallbox.faraway.game.Game;
-//import org.smallbox.faraway.game.module.character.JobManager;
+//import org.smallbox.faraway.game.module.character.JobModule;
 //import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //import org.smallbox.faraway.game.model.item.ItemBase;
 //import org.smallbox.faraway.game.model.item.ItemFilter;
@@ -14,7 +14,7 @@
 //public class CharacterIsTired implements CharacterCheck {
 //
 //	@Override
-//	public boolean onCreate(JobManager jobManager, CharacterModel characters) {
+//	public boolean onCreate(JobModule jobManager, CharacterModel characters) {
 //		if (characters.getNeeds().isExhausted()) {
 //			ItemFilter filter = ItemFilter.createUsableFilter();
 //			filter.effectEnergy = true;

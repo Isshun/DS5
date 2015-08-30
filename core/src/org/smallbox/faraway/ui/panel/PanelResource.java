@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.extra.ResourceManager;
+import org.smallbox.faraway.game.module.extra.ResourceModule;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.engine.view.UILabel;
@@ -16,7 +16,7 @@ public class PanelResource extends BasePanel {
 	private UILabel _energy;
 	private UILabel _matter;
 	private UILabel _o2;
-	private ResourceManager _resourceManager;
+	private ResourceModule _resourceModule;
 
 	public PanelResource() {
 		super(Mode.NONE, null, Constant.WINDOW_WIDTH - FRAME_WIDTH, 0, FRAME_WIDTH, FRAME_HEIGHT, null);
@@ -24,7 +24,7 @@ public class PanelResource extends BasePanel {
 
 	@Override
 	protected void onCreate(ViewFactory viewFactory) {
-		_resourceManager = (ResourceManager) Game.getInstance().getManager(ResourceManager.class);
+		_resourceModule = (ResourceModule) Game.getInstance().getModule(ResourceModule.class);
 
 		_spice = viewFactory.createTextView(10, 10);
 		_spice.setCharacterSize(14);
@@ -55,9 +55,9 @@ public class PanelResource extends BasePanel {
 	
 	@Override
 	public void onRefresh(int frame) {
-        _spice.setString("Food: " + String.valueOf(_resourceManager.getFood().value));
-        _o2.setString("O2: " + String.valueOf(_resourceManager.getO2().value));
-        _energy.setString("PW: " + String.valueOf(_resourceManager.getPower().value));
-        _matter.setString("M: " + String.valueOf(_resourceManager.getScience().value));
+        _spice.setString("Food: " + String.valueOf(_resourceModule.getFood().value));
+        _o2.setString("O2: " + String.valueOf(_resourceModule.getO2().value));
+        _energy.setString("PW: " + String.valueOf(_resourceModule.getPower().value));
+        _matter.setString("M: " + String.valueOf(_resourceModule.getScience().value));
 	}
 }

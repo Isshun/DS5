@@ -7,7 +7,6 @@ import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobAbortReason;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Strings;
 import org.smallbox.faraway.util.Utils;
 
@@ -57,7 +56,7 @@ public class CharacterModule extends GameModule {
 
 				// Cancel job
 				if (c.getJob() != null) {
-					JobManager.getInstance().quitJob(c.getJob(), JobAbortReason.DIED);
+					JobModule.getInstance().quitJob(c.getJob(), JobAbortReason.DIED);
 				}
 
 				if (!c.getBuffs().isEmpty()) {
@@ -71,7 +70,7 @@ public class CharacterModule extends GameModule {
 				if (tick % 10 == c.getLag()) {
 					// Assign job
 					if (c.getJob() == null && !c.isSleeping()) {
-						JobManager.getInstance().assign(c);
+						JobModule.getInstance().assign(c);
 					}
 
 					// Update characters (buffs, stats)

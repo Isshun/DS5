@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.module.world;
 
-import org.smallbox.faraway.data.serializer.AreaSerializer;
 import org.smallbox.faraway.data.serializer.SerializerInterface;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
@@ -143,7 +142,7 @@ public class AreaModule extends GameModule {
 
     @Override
     public SerializerInterface getSerializer() {
-        return new AreaSerializer();
+        return new AreaModuleSerializer();
     }
 
     @Override

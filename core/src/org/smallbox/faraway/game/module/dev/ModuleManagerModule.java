@@ -23,10 +23,10 @@ public class ModuleManagerModule extends GameUIModule {
                 lbModule.setPosition(0, index++ * 20);
                 lbModule.setOnClickListener(view1 -> {
                     if (module.isLoaded()) {
-                        Game.getInstance().removeModule(module);
+                        Game.getInstance().unloadModule(module);
                         lbModule.setString("[ ] " + module.getClass().getSimpleName());
                     } else {
-                        Game.getInstance().insertModule(module);
+                        Game.getInstance().loadModule(module);
                         lbModule.setString("[x] " + module.getClass().getSimpleName());
                     }
                 });

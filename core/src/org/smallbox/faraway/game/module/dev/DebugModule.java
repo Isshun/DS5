@@ -10,7 +10,7 @@ import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.module.GameUIModule;
-import org.smallbox.faraway.game.module.extra.QuestManager;
+import org.smallbox.faraway.game.module.extra.QuestModule;
 import org.smallbox.faraway.game.module.world.RoomModule;
 import org.smallbox.faraway.ui.JobDebugPanel;
 import org.smallbox.faraway.ui.UserInterface;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 30/08/2015.
  */
-public class DebugModuleGame extends GameUIModule {
+public class DebugModule extends GameUIModule {
     private CharacterModel _character;
 
     private FrameLayout         mView;
@@ -78,8 +78,8 @@ public class DebugModuleGame extends GameUIModule {
             new CommandEntry("Kill selected",       view -> _character.setIsDead()),
             new CommandEntry("Kill all",            view -> Game.getCharacterManager().getCharacters().forEach(CharacterModel::setIsDead)),
             new CommandEntry("remove characters",   view -> Game.getCharacterManager().getCharacters().clear()),
-            new CommandEntry("Launch quest",        view -> ((QuestManager)Game.getInstance().getManager(QuestManager.class)).launchRandomQuest()),
-            new CommandEntry("Refresh rooms",       view -> ((RoomModule)Game.getInstance().getManager(RoomModule.class)).refreshRooms()),
+            new CommandEntry("Launch quest",        view -> ((QuestModule)Game.getInstance().getModule(QuestModule.class)).launchRandomQuest()),
+            new CommandEntry("Refresh rooms",       view -> ((RoomModule)Game.getInstance().getModule(RoomModule.class)).refreshRooms()),
             new CommandEntry("Remove rubbles",      view -> {
                 for (ConsumableModel consumable : Game.getWorldManager().getConsumables().stream().filter(res -> "base.rubble".equals(res.getInfo().name)).collect(Collectors.toList())) {
                     Game.getWorldManager().removeConsumable(consumable);

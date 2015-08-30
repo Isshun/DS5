@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.game.model.check.old;
 //
 //import org.smallbox.faraway.util.Constant;
-//import org.smallbox.faraway.game.module.character.JobManager;
+//import org.smallbox.faraway.game.module.character.JobModule;
 //import org.smallbox.faraway.game.module.ServiceManager;
 //import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //import org.smallbox.faraway.game.model.item.UserItem;
@@ -11,7 +11,7 @@
 //public class CharacterPlayTime implements CharacterCheck {
 //
 //	@Override
-//	public boolean onCreate(JobManager jobManager, CharacterModel characters) {
+//	public boolean onCreate(JobModule jobManager, CharacterModel characters) {
 //		if ((int)(Math.random() * 100) <= Constant.CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS) {
 //			return false;
 //		}

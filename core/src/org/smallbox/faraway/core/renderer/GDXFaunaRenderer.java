@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.extra.FaunaManager;
+import org.smallbox.faraway.game.module.extra.FaunaModule;
 import org.smallbox.faraway.game.model.AnimalModel;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.MovableModel;
@@ -14,15 +14,15 @@ import org.smallbox.faraway.util.Constant;
  * Created by Alex on 26/06/2015.
  */
 public class GDXFaunaRenderer extends BaseRenderer {
-    private FaunaManager    _faunaManager;
+    private FaunaModule _faunaModule;
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-        if (_faunaManager == null) {
-            _faunaManager = (FaunaManager) Game.getInstance().getManager(FaunaManager.class);
+        if (_faunaModule == null) {
+            _faunaModule = (FaunaModule) Game.getInstance().getModule(FaunaModule.class);
         }
 
-        for (AnimalModel animal: _faunaManager.getAnimals()) {
+        for (AnimalModel animal: _faunaModule.getAnimals()) {
             int posX = (int) (animal.getX() * Constant.TILE_WIDTH * viewport.getScale());
             int posY = (int) (animal.getY() * Constant.TILE_HEIGHT * viewport.getScale());
             MovableModel.Direction direction = animal.getDirection();

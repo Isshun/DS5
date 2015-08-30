@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.game.model.check;
 //
-//import org.smallbox.faraway.game.module.character.JobManager;
+//import org.smallbox.faraway.game.module.character.JobModule;
 //import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //import org.smallbox.faraway.game.model.onCheck.old.CharacterCheck;
 //import org.smallbox.faraway.game.model.job.JobModel;
@@ -15,7 +15,7 @@
 //    }
 //
 //    @Override
-//    public boolean onCreate(JobManager jobManager) {
+//    public boolean onCreate(JobModule jobManager) {
 //        int bestDistance = Integer.MAX_VALUE;
 //        JobModel bestJob = null;
 //        for (JobModel job: jobManager.getJobs()) {

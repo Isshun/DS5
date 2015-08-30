@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.module.character.JobManager;
+import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.game.module.world.RoomModule;
 import org.smallbox.faraway.game.model.CharacterTypeInfo;
@@ -260,7 +260,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public void update() {
         _needs.environment = parcel.getEnvironmentScore();
-        _needs.light = ((RoomModule)Game.getInstance().getManager(RoomModule.class)).getLight(_posX, _posY);
+        _needs.light = ((RoomModule)Game.getInstance().getModule(RoomModule.class)).getLight(_posX, _posY);
 
         // Check room temperature
         _stats.reset(this, _equipments);
@@ -271,7 +271,7 @@ public abstract class CharacterModel extends MovableModel {
         if (timetable != 0 && timetable != 1 && _needs.isSleeping && _needs.energy > 75) {
             _needs.isSleeping = false;
             if (_job != null && _job instanceof JobUse && _job.getItem() != null && _job.getItem().isSleepingItem()) {
-                JobManager.getInstance().quitJob(_job);
+                JobModule.getInstance().quitJob(_job);
             }
         }
     }
@@ -432,12 +432,12 @@ public abstract class CharacterModel extends MovableModel {
         if ((_posX == _toX && _posY == _toY) || _job instanceof JobMove) {
             BaseJobModel.JobActionReturn ret = _job.action(this);
             if (ret == BaseJobModel.JobActionReturn.FINISH || ret == BaseJobModel.JobActionReturn.ABORT) {
-                JobManager.getInstance().closeJob(_job);
-                JobManager.getInstance().assign(this);
+                JobModule.getInstance().closeJob(_job);
+                JobModule.getInstance().assign(this);
             }
             if (ret == BaseJobModel.JobActionReturn.QUIT) {
-                JobManager.getInstance().quitJob(_job);
-                JobManager.getInstance().assign(this);
+                JobModule.getInstance().quitJob(_job);
+                JobModule.getInstance().assign(this);
             }
         }
     }
@@ -448,7 +448,7 @@ public abstract class CharacterModel extends MovableModel {
             Log.warning("Job failed (no path)");
 
             // Abort job
-            JobManager.getInstance().quitJob(job, BaseJobModel.JobAbortReason.BLOCKED);
+            JobModule.getInstance().quitJob(job, BaseJobModel.JobAbortReason.BLOCKED);
             _job = null;
 
             if (_onPathComplete != null) {

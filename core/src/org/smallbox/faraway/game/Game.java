@@ -20,16 +20,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 public class Game {
-    private static CharacterModule _characterModule;
-    private static WorldModule _worldModule;
-    private static JobManager 			_jobManager;
-
-    private final ParticleRenderer      _particleRenderer;
-    private final LightRenderer         _lightRenderer;
+    private static CharacterModule      _characterModule;
+    private static WorldModule          _worldModule;
+    private static JobModule _jobModule;
 
     private static Game 				_self;
     private final String                _fileName;
@@ -49,12 +45,15 @@ public class Game {
     public void                         addObserver(GameObserver observer) { _observers.add(observer); }
     public void                         setRunning(boolean running) { _isRunning = running; }
     public void                         setSpeed(int speed) { _speed = speed; }
+    public void                         setWorldManager(WorldModule worldModule) { _worldModule = worldModule; }
 
     public boolean                      isRunning() { return _isRunning; }
-
-    public static CharacterModule getCharacterManager() { return _characterModule; }
-    public static WorldModule getWorldManager() { return _worldModule; }
-    public static JobManager            getJobManager() { return _jobManager; }
+    public GameModule                   getModule(Class<? extends GameModule> cls) { return _modules.stream().filter(cls::isInstance).findFirst().get(); }
+    public List<GameModule>             getModules() { return _modules; }
+    public int                          getSpeed() { return _speed; }
+    public static CharacterModule       getCharacterManager() { return _characterModule; }
+    public static WorldModule           getWorldManager() { return _worldModule; }
+    public static JobModule getJobManager() { return _jobModule; }
     public static Game                  getInstance() { return _self; }
     public int                          getHour() { return _hour; }
     public int                          getDay() { return _day; }
@@ -78,8 +77,6 @@ public class Game {
         _fileName = fileName;
         _isRunning = true;
         _viewport = new Viewport(400, 300);
-        _particleRenderer = particleRenderer;
-        _lightRenderer = lightRenderer;
         _tick = 0;
 
         Log.info("Game: onCreate");
@@ -97,24 +94,18 @@ public class Game {
     }
 
     public void init(WorldFactory factory) {
-        for (Class<? extends GameModule> cls : new Reflections("org.smallbox.faraway").getSubTypesOf(GameModule.class)) {
-            if (!Modifier.isAbstract(cls.getModifiers())) {
-                try {
-                    _modules.add(cls.getConstructor().newInstance());
-                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
+        new Reflections("org.smallbox.faraway").getSubTypesOf(GameModule.class).stream().filter(cls -> !Modifier.isAbstract(cls.getModifiers())).forEach(cls -> {
+            try {
+                _modules.add(cls.getConstructor().newInstance());
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
             }
-        }
+        });
 
-        _worldModule = (WorldModule)getManager(WorldModule.class);
-        _characterModule = (CharacterModule)getManager(CharacterModule.class);
-        _jobManager = (JobManager)getManager(JobManager.class);
-//
-//        if (GameData.config.module.room && GameData.config.module.temperature) {
-//            _modules.add(new TemperatureModule(_worldModule));
-//        }
-//
+        _worldModule = (WorldModule) getModule(WorldModule.class);
+        _characterModule = (CharacterModule) getModule(CharacterModule.class);
+        _jobModule = (JobModule) getModule(JobModule.class);
+
         _observers.addAll(_modules);
 
         _modules.stream().filter(GameModule::isLoaded).forEach(GameModule::create);
@@ -164,48 +155,23 @@ public class Game {
     }
 
     public void notify(Consumer<GameObserver> action) {
-        Objects.requireNonNull(action);
         _observers.stream().forEach(action::accept);
-    }
-
-    public GameModule getManager(Class<? extends GameModule> cls) {
-        for (GameModule manager: _modules) {
-            if (cls.isInstance(manager)) {
-                return manager;
-            }
-        }
-        return null;
-    }
-
-    public int getSpeed() {
-        return _speed;
-    }
-
-    public List<GameModule> getModules() {
-        return _modules;
     }
 
     public void preload() {
         // TODO magic
     }
 
-    public void setWorldManager(WorldModule worldModule) {
-        _worldModule = worldModule;
-    }
 
-    public GameInfo getInfo() {
-        return _info;
-    }
+    public GameInfo getInfo() { return _info; }
 
-    public void removeModule(GameModule module) {
+    public void unloadModule(GameModule module) {
         module.destroy();
-//        _modules.remove(module);
         _observers.remove(module);
     }
 
-    public void insertModule(GameModule module) {
+    public void loadModule(GameModule module) {
         module.create();
-//        _modules.add(module);
         _observers.add(module);
     }
 }

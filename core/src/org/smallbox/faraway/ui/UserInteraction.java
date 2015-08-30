@@ -4,7 +4,7 @@ import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.JobHelper;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.module.character.JobManager;
+import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.game.model.area.AreaType;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -32,13 +32,13 @@ public class UserInteraction {
 
 		// Set area
 		if (_action == Action.SET_AREA) {
-			((AreaModule)Game.getInstance().getManager(AreaModule.class)).createArea(_selectedAreaType, fromX, fromY, toX, toY);
+			((AreaModule)Game.getInstance().getModule(AreaModule.class)).createArea(_selectedAreaType, fromX, fromY, toX, toY);
 			return true;
 		}
 
 		// Set area
 		if (_action == Action.REMOVE_AREA) {
-			((AreaModule)Game.getInstance().getManager(AreaModule.class)).removeArea(_selectedAreaType, fromX, fromY, toX, toY);
+			((AreaModule)Game.getInstance().getModule(AreaModule.class)).removeArea(_selectedAreaType, fromX, fromY, toX, toY);
 			return true;
 		}
 
@@ -166,7 +166,7 @@ public class UserInteraction {
 			for (int y = startY; y <= toY; y++) {
 				BaseJobModel job = JobHelper.createGatherJob(x, y, removeOnComplete);
 				if (job != null) {
-					JobManager.getInstance().addJob(job);
+					JobModule.getInstance().addJob(job);
 				}
 			}
 		}
@@ -177,7 +177,7 @@ public class UserInteraction {
 			for (int y = startY; y <= toY; y++) {
 				BaseJobModel job = JobHelper.createMiningJob(x, y);
 				if (job != null) {
-					JobManager.getInstance().addJob(job);
+					JobModule.getInstance().addJob(job);
 				}
 			}
 		}
@@ -190,7 +190,7 @@ public class UserInteraction {
 //				if (item != null) {
 //					JobModel job = JobTake.onCreate(item);
 //					if (job != null) {
-//						JobManager.getInstance().addJob(job);
+//						JobModule.getInstance().addJob(job);
 //					}
 //				}
 //			}
@@ -202,10 +202,10 @@ public class UserInteraction {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
 				if (WorldHelper.getItem(x, y) != null) {
-					JobManager.getInstance().addJob(JobDump.create(WorldHelper.getItem(x, y)));
+					JobModule.getInstance().addJob(JobDump.create(WorldHelper.getItem(x, y)));
 				}
 				if (WorldHelper.getStructure(x, y) != null) {
-					JobManager.getInstance().addJob(JobDump.create(WorldHelper.getStructure(x, y)));
+					JobModule.getInstance().addJob(JobDump.create(WorldHelper.getStructure(x, y)));
 				}
 			}
 		}
@@ -215,7 +215,7 @@ public class UserInteraction {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
 				if (WorldHelper.getConsumable(x, y) != null && WorldHelper.getConsumable(x, y).getHaul() == null) {
-					JobManager.getInstance().addJob(JobHaul.create(WorldHelper.getConsumable(x, y)));
+					JobModule.getInstance().addJob(JobHaul.create(WorldHelper.getConsumable(x, y)));
 				}
 			}
 		}

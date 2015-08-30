@@ -2,7 +2,7 @@ package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.module.character.RelationManager;
+import org.smallbox.faraway.game.module.character.RelationModule;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -98,7 +98,7 @@ public class JobUse extends BaseJobModel {
 				character.getNeeds().addRelation(1);
 				for (ItemSlot slot: _item.getSlots()) {
 					CharacterModel slotCharacter = slot.getJob() != null ? slot.getJob().getCharacter() : null;
-					((RelationManager)Game.getInstance().getManager(RelationManager.class)).meet(character, slotCharacter);
+					((RelationModule)Game.getInstance().getModule(RelationModule.class)).meet(character, slotCharacter);
 				}
 			}
 

@@ -5,7 +5,7 @@
 //import org.smallbox.faraway.util.Constant;
 //import org.smallbox.faraway.util.Log;
 //import org.smallbox.faraway.util.StringUtils;
-//import org.smallbox.faraway.game.module.extra.ResourceManager;
+//import org.smallbox.faraway.game.module.extra.ResourceModule;
 //import org.smallbox.faraway.game.model.item.*;
 //import org.smallbox.faraway.game.model.room.RoomOptions.RoomOption;
 //import org.smallbox.faraway.engine.renderer.MainRenderer;
@@ -187,7 +187,7 @@
 //				_invalidate = true;
 //				_inventory.add(item);
 //				addItemOnFirstArea(item);
-//				ResourceManager.getInstance().add(item.getInfo());
+//				ResourceModule.getInstance().add(item.getInfo());
 //				MainRenderer.getInstance().invalidate(item.getX(), item.getY());
 //				return true;
 //			}
@@ -201,7 +201,7 @@
 //				if (stack.contains(item.getInfo()) && stack.hasSpaceLeft()) {
 //					stack.add(item);
 //					_invalidate = true;
-//					ResourceManager.getInstance().add(item.getInfo());
+//					ResourceModule.getInstance().add(item.getInfo());
 //					MainRenderer.getInstance().invalidate(item.getX(), item.getY());
 //					return true;
 //				}
@@ -216,7 +216,7 @@
 //			_inventory.add(stack);
 //			_invalidate = true;
 //			addItemOnFirstArea(stack);
-//			ResourceManager.getInstance().add(item.getInfo());
+//			ResourceModule.getInstance().add(item.getInfo());
 //			MainRenderer.getInstance().invalidate(item.getX(), item.getY());
 //			return true;
 //		}

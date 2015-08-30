@@ -17,7 +17,7 @@ import org.smallbox.faraway.util.Constant;
 public class GDXTemperatureRenderer extends BaseRenderer {
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-        RoomModule roomModule = (RoomModule) Game.getInstance().getManager(RoomModule.class);
+        RoomModule roomModule = (RoomModule) Game.getInstance().getModule(RoomModule.class);
         for (RoomModel room: roomModule.getRoomList()) {
             if (!room.isExterior()) {
                 int minX = Integer.MAX_VALUE;

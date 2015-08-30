@@ -13,7 +13,7 @@ import org.smallbox.faraway.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RelationManager extends GameModule {
+public class RelationModule extends GameModule {
 
 	public void meet(CharacterModel c1, CharacterModel c2) {
 		if (c1 == null || c2 == null || c1 == c2) {

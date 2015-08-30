@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.game.model.check;
 //
-//import org.smallbox.faraway.game.module.character.JobManager;
+//import org.smallbox.faraway.game.module.character.JobModule;
 //import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //import org.smallbox.faraway.game.model.onCheck.old.CharacterCheck;
 //
@@ -14,7 +14,7 @@
 //    }
 //
 //    @Override
-//    public boolean onCreate(JobManager jobManager) {
+//    public boolean onCreate(JobModule jobManager) {
 //        return false;
 //    }
 //}

@@ -7,7 +7,7 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatsManager extends GameModule {
+public class StatsModule extends GameModule {
 	public static class StatsData {
 
 		public List<Integer> 	values;
@@ -32,7 +32,7 @@ public class StatsManager extends GameModule {
 	public StatsData 			nbChild;
 	public StatsData 			nbStudent;
 
-	public StatsManager() {
+	public StatsModule() {
 		nbCharacter = new StatsData("Character");
 		nbSingle = new StatsData("Single");
 		nbCouple = new StatsData("Couple");

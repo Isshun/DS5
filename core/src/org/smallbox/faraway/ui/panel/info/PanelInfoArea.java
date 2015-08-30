@@ -84,7 +84,7 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         _area = area;
         _parcel = parcel;
         ((UILabel)findById("lb_area")).setString(area.getName());
-        findById("bt_remove_area").setOnClickListener(view -> ((AreaModule) Game.getInstance().getManager(AreaModule.class)).remove(area));
+        findById("bt_remove_area").setOnClickListener(view -> ((AreaModule) Game.getInstance().getModule(AreaModule.class)).remove(area));
 
         findById("frame_info_garden").setVisible(false);
         findById("frame_info_storage").setVisible(false);

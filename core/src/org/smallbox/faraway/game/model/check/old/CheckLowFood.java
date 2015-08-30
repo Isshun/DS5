@@ -1,8 +1,8 @@
 //package org.smallbox.faraway.game.model.check.old;
 //
 //import org.smallbox.faraway.game.Game;
-//import org.smallbox.faraway.game.module.character.JobManager;
-//import org.smallbox.faraway.game.module.extra.ResourceManager;
+//import org.smallbox.faraway.game.module.character.JobModule;
+//import org.smallbox.faraway.game.module.extra.ResourceModule;
 //import org.smallbox.faraway.game.model.item.ItemFilter;
 //import org.smallbox.faraway.game.model.item.UserItem;
 //import org.smallbox.faraway.game.model.job.JobModel;
@@ -16,12 +16,12 @@
 //
 //	private JobModel _job;
 //
-//	public void onCreate(JobManager jobManager) {
+//	public void onCreate(JobModule jobManager) {
 //		if (_job != null && _job.isFinish() == false) {
 //			return;
 //		}
 //
-//		if (ResourceManager.getInstance().isLowFood() == false) {
+//		if (ResourceModule.getInstance().isLowFood() == false) {
 //			return;
 //		}
 //

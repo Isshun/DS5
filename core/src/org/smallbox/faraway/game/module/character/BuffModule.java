@@ -10,17 +10,16 @@ import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.character.BuffModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.util.FileUtils;
-import org.smallbox.faraway.util.Log;
 
 import java.util.Collections;
 
 /**
  * Created by Alex on 16/06/2015.
  */
-public class BuffManager extends GameModule {
+public class BuffModule extends GameModule {
     private final LuaValue  _luaGame;
 
-    public BuffManager() {
+    public BuffModule() {
         _luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
         _updateInterval = 10;
     }
@@ -44,7 +43,7 @@ public class BuffManager extends GameModule {
                             for (int j = 0; j < effects.length(); j++) {
                                 if (Math.random() <= effects.get(j + 1).get(2).todouble()) {
                                     printNotice("apply buff effect: " + effects.get(j + 1).get(1).toString() + " (" + buff.message + ")");
-                                    ((DiseaseManager)Game.getInstance().getManager(DiseaseManager.class)).apply(
+                                    ((DiseaseModule)Game.getInstance().getModule(DiseaseModule.class)).apply(
                                             character,
                                             effects.get(j + 1).get(1).toString(),
                                             effects.get(j + 1).get(3));

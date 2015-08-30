@@ -1,4 +1,4 @@
-package org.smallbox.faraway.game.module.world;
+package org.smallbox.faraway.game.module.path;
 
 import com.badlogic.gdx.ai.pfa.Connection;
 import org.smallbox.faraway.game.model.item.ParcelModel;

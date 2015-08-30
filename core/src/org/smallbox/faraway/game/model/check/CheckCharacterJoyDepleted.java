@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.game.model.check;
 //
-//import org.smallbox.faraway.game.module.character.JobManager;
+//import org.smallbox.faraway.game.module.character.JobModule;
 //import org.smallbox.faraway.game.model.character.base.CharacterModel;
 //import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 //import org.smallbox.faraway.game.model.job.BaseJobModel;
@@ -15,7 +15,7 @@
 //public class CheckCharacterJoyDepleted extends CharacterCheck {
 //    @Override
 //    public BaseJobModel create(CharacterModel character) {
-//        List<CharacterCheck> joys = JobManager.getInstance().getJoys();
+//        List<CharacterCheck> joys = JobModule.getInstance().getJoys();
 //
 //        Collections.shuffle(joys);
 //        for (CharacterCheck jobCheck: joys) {

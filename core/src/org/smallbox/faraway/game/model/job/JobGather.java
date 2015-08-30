@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.core.drawable.IconDrawable;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.module.character.JobManager;
+import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
@@ -113,13 +113,13 @@ public class JobGather extends BaseJobModel {
 		// Wrong call
 		if (_resource == null) {
 			Log.error("Character: actionGather on null job or null job's item");
-			JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
+			JobModule.getInstance().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 
 		if (_resource.getInfo().actions.get(0) == null) {
 			Log.error("Character: actionGather on non gatherable item");
-			JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
+			JobModule.getInstance().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 

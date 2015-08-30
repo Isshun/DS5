@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.module.bridge;
 
 import org.smallbox.faraway.game.module.GameModule;
-import org.smallbox.faraway.game.module.extra.QuestManager;
+import org.smallbox.faraway.game.module.extra.QuestModule;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.w3c.dom.Document;
@@ -183,12 +183,12 @@ public class BridgeModule extends GameModule {
     }
 
     @Override
-    public void onOpenQuest(QuestManager.QuestModel quest) {
+    public void onOpenQuest(QuestModule.QuestModel quest) {
 
     }
 
     @Override
-    public void onCloseQuest(QuestManager.QuestModel quest) {
+    public void onCloseQuest(QuestModule.QuestModel quest) {
 
     }
 

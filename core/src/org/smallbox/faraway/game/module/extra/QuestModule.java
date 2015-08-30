@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 19/06/2015.
  */
-public class QuestManager extends GameModule {
+public class QuestModule extends GameModule {
 
     public static class QuestModel {
         public final LuaValue   globals;
@@ -40,7 +40,7 @@ public class QuestManager extends GameModule {
 
     private List<QuestModel>    _quests;
 
-    public QuestManager() {
+    public QuestModule() {
         _quests = new ArrayList<>();
     }
 

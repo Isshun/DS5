@@ -4,6 +4,7 @@ import com.ximpleware.*;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.module.world.AreaModuleSerializer;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.OnLoadListener;
@@ -53,7 +54,7 @@ public class GameSerializer {
             new ParamSerializer().load(vn.duplicateNav());
             new WorldSerializer().load(vn.duplicateNav());
             new CharacterSerializer().load(vn.duplicateNav());
-            new AreaSerializer().load(vn.duplicateNav());
+            new AreaModuleSerializer().load(vn.duplicateNav());
         } catch (ParseException e){
             System.out.println(" XML file parsing error \n" + e);
         } catch (NavException e){

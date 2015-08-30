@@ -147,11 +147,11 @@ public class Application implements GameEventListener {
 // Open module manager
             case F12:
                 if (Game.getInstance() != null) {
-                    GameModule module = Game.getInstance().getManager(ModuleManagerModule.class);
+                    GameModule module = Game.getInstance().getModule(ModuleManagerModule.class);
                     if (module.isLoaded()) {
-                        Game.getInstance().removeModule(module);
+                        Game.getInstance().unloadModule(module);
                     } else {
-                        Game.getInstance().insertModule(module);
+                        Game.getInstance().loadModule(module);
                     }
                 }
                 return;

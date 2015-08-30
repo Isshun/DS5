@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.engine.Color;
 //import org.smallbox.faraway.engine.renderer.MainRenderer;
 //import org.smallbox.faraway.game.Game;
-//import org.smallbox.faraway.game.module.extra.QuestManager;
+//import org.smallbox.faraway.game.module.extra.QuestModule;
 //import org.smallbox.faraway.game.module.world.RoomModule;
 //import org.smallbox.faraway.game.model.GameData;
 //import org.smallbox.faraway.game.model.character.AndroidModel;

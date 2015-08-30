@@ -26,8 +26,8 @@ public class ItemFinder extends GameModule {
     protected void onCreate() {
         _items = new ArrayList<>();
         _consumables = new ArrayList<>();
-        _pathManager = (PathManager) Game.getInstance().getManager(PathManager.class);
-        _worldModule = (WorldModule) Game.getInstance().getManager(WorldModule.class);
+        _pathManager = (PathManager) Game.getInstance().getModule(PathManager.class);
+        _worldModule = (WorldModule) Game.getInstance().getModule(WorldModule.class);
         _width = Game.getInstance().getInfo().worldWidth;
         _height = Game.getInstance().getInfo().worldHeight;
     }

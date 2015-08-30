@@ -12,7 +12,7 @@ public class OxygenManagerPanel extends BaseDebugPanel {
 
     @Override
     protected void onCreate(ViewFactory factory) {
-        _manager = (OxygenModule)Game.getInstance().getManager(OxygenModule.class);
+        _manager = (OxygenModule)Game.getInstance().getModule(OxygenModule.class);
     }
 
     @Override

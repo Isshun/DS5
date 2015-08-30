@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.module.character;
 
+import org.smallbox.faraway.data.serializer.SerializerInterface;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.module.GameModule;
@@ -18,7 +19,6 @@ import org.smallbox.faraway.game.model.job.BaseJobModel.JobStatus;
 import org.smallbox.faraway.game.model.job.CheckJoyItem;
 import org.smallbox.faraway.game.model.job.JobHaul;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class JobManager extends GameModule {
-	private static JobManager					_self;
+public class JobModule extends GameModule {
+	private static JobModule _self;
 	private final List<CharacterCheck> 			_joys;
 	private final List<CharacterCheck>  		_priorities;
 	private final BlockingQueue<BaseJobModel> 	_jobs;
@@ -36,8 +36,8 @@ public class JobManager extends GameModule {
 	private final CharacterCheck 				_bedCheck;
 	private int 								_nbVisibleJob;
 
-	public JobManager() {
-		printDebug("JobManager");
+	public JobModule() {
+		printDebug("JobModule");
 
 		_self = this;
 		_jobs = new LinkedBlockingQueue<>();
@@ -59,7 +59,7 @@ public class JobManager extends GameModule {
 		_joys.add(new CheckJoyItem());
 //		_joys.add(new CheckJoySleep());
 
-        printDebug("JobManager done");
+        printDebug("JobModule done");
 	}
 
     @Override
@@ -169,7 +169,7 @@ public class JobManager extends GameModule {
 
 	public void	addJob(BaseJobModel job) {
 		if (job == null || _jobs.contains(job)) {
-			printError("Trying to add null or already existing job to JobManager");
+			printError("Trying to add null or already existing job to JobModule");
 			return;
 		}
 
@@ -182,7 +182,7 @@ public class JobManager extends GameModule {
 		_jobs.add(job);
 	}
 
-	public static JobManager getInstance() {
+	public static JobModule getInstance() {
 		return _self;
 	}
 
@@ -414,4 +414,9 @@ public class JobManager extends GameModule {
 			}
 		}
 	}
+
+	public SerializerInterface getSerializer() {
+		return new JobModuleSerializer(this);
+	}
+
 }

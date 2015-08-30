@@ -28,7 +28,7 @@ public class OxygenModule extends GameModule {
 
     @Override
     protected void onUpdate(int tick) {
-        RoomModule roomModule = (RoomModule)Game.getInstance().getManager(RoomModule.class);
+        RoomModule roomModule = (RoomModule)Game.getInstance().getModule(RoomModule.class);
         if (roomModule != null) {
             for (RoomModel room : roomModule.getRoomList()) {
                 if (room.isExterior()) {

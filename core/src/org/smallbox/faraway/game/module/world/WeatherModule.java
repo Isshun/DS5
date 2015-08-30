@@ -9,7 +9,6 @@ import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.WeatherModel;
 import org.smallbox.faraway.game.model.planet.PlanetInfo;
-import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -46,8 +45,8 @@ public class WeatherModule extends GameModule implements GameObserver {
     @Override
     protected void onCreate() {
         _planetInfo = Game.getInstance().getPlanet().getInfo();
-        _temperatureModule = (TemperatureModule)Game.getInstance().getManager(TemperatureModule.class);
-        _lightModule = (LightModule)Game.getInstance().getManager(LightModule.class);
+        _temperatureModule = (TemperatureModule)Game.getInstance().getModule(TemperatureModule.class);
+        _lightModule = (LightModule)Game.getInstance().getModule(LightModule.class);
     }
 
     @Override

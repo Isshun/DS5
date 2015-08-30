@@ -38,7 +38,7 @@ public class CheckCharacterExhausted extends CharacterCheck {
         filter.effectEnergy = true;
 
         // Get nearest bed
-        MapObjectModel item = ((ItemFinder)Game.getInstance().getManager(ItemFinder.class)).getNearest(filter, character);
+        MapObjectModel item = ((ItemFinder)Game.getInstance().getModule(ItemFinder.class)).getNearest(filter, character);
         if (item == null) {
             return null;
         }

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.ui.panel.right;
 
 import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.game.module.character.JobManager;
+import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
@@ -53,7 +53,7 @@ public class PanelJobs extends BaseRightPanel {
 	public void onRefresh(int update) {
 		// Display jobs
 		int index = 0;
-		for (BaseJobModel job: JobManager.getInstance().getJobs()) {
+		for (BaseJobModel job: JobModule.getInstance().getJobs()) {
             if (index < _entries.length) {
                 JobEntry entry = _entries[index];
                 entry.frameJob.setVisible(true);

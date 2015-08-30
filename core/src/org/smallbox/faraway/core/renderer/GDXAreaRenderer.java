@@ -19,7 +19,7 @@ public class GDXAreaRenderer extends BaseRenderer {
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-//        AreaModule areaManager = (AreaModule) Game.getInstance().getManager(AreaModule.class);
+//        AreaModule areaManager = (AreaModule) Game.getInstance().getModule(AreaModule.class);
 //        for (AreaModel area: areaManager.getAreas()) {
 //            for (ParcelModel parcel: area.getParcels()) {
 //                if (area instanceof GardenAreaModel || area.isStorage() || UserInterface.getInstance().getMode() == UserInterface.Mode.AREA) {

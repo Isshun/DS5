@@ -1,6 +1,7 @@
-package org.smallbox.faraway.data.serializer;
+package org.smallbox.faraway.game.module.character;
 
 import com.ximpleware.VTDNav;
+import org.smallbox.faraway.data.serializer.SerializerInterface;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 
 import java.io.FileOutputStream;
@@ -8,7 +9,13 @@ import java.io.FileOutputStream;
 /**
  * Created by Alex on 01/06/2015.
  */
-public class JobSerializer implements SerializerInterface {
+public class JobModuleSerializer implements SerializerInterface {
+    private final JobModule _jobModule;
+
+    public JobModuleSerializer(JobModule jobModule) {
+        _jobModule = jobModule;
+    }
+
     public static class JobSave {
         private final String    type;
         private final String    actionPath;
@@ -39,7 +46,7 @@ public class JobSerializer implements SerializerInterface {
 //            // Create JobCraft
 //            if (job.type.equals(JobCraft.class.getName())) {
 //                if (job.itemId != -1 && job.actionPath != null) {
-//                    JobManager.getInstance().addJob(Game.getWorldManager().getItemById(job.itemId), actions.get(job.actionPath));
+//                    JobModule.getInstance().addJob(Game.getWorldManager().getItemById(job.itemId), actions.get(job.actionPath));
 //                }
 //            }
 //        }

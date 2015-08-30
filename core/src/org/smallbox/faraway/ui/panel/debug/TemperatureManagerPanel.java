@@ -13,7 +13,7 @@ public class TemperatureManagerPanel extends BaseDebugPanel {
 
     @Override
     protected void onCreate(ViewFactory factory) {
-        _manager = (TemperatureModule)Game.getInstance().getManager(TemperatureModule.class);
+        _manager = (TemperatureModule)Game.getInstance().getModule(TemperatureModule.class);
     }
 
     @Override

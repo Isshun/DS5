@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.drawable.IconDrawable;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.module.character.JobManager;
+import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.game.model.GameData;
@@ -96,7 +96,7 @@ public class JobHaul extends BaseJobModel implements GameObserver {
 
     private boolean foundStorageParcel(ConsumableModel consumable) {
         _parcel = null;
-        _storage = ((AreaModule)Game.getInstance().getManager(AreaModule.class)).getNearestFreeStorage(consumable, consumable.getParcel());
+        _storage = ((AreaModule)Game.getInstance().getModule(AreaModule.class)).getNearestFreeStorage(consumable, consumable.getParcel());
         if (_storage != null) {
             _parcel = _storage.getNearestFreeParcel(consumable, consumable.getX(), consumable.getY());
             if (_parcel != null) {
@@ -184,7 +184,7 @@ public class JobHaul extends BaseJobModel implements GameObserver {
     public JobActionReturn onAction(CharacterModel character) {
         if (_storage == null) {
             Log.error("JobHaul: null storage");
-            JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
+            JobModule.getInstance().quitJob(this, JobAbortReason.INVALID);
             return JobActionReturn.ABORT;
         }
 
@@ -205,7 +205,7 @@ public class JobHaul extends BaseJobModel implements GameObserver {
                 }
             } else {
                 Log.error("JobHaul: characters inventory must be empty");
-                JobManager.getInstance().quitJob(this, JobAbortReason.INVALID);
+                JobModule.getInstance().quitJob(this, JobAbortReason.INVALID);
                 return JobActionReturn.ABORT;
             }
             consumable.removeJob(this);

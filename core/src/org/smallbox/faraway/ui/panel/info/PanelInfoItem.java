@@ -3,7 +3,7 @@ package org.smallbox.faraway.ui.panel.info;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.helper.JobHelper;
-import org.smallbox.faraway.game.module.character.JobManager;
+import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -183,7 +183,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
     private void addJobListEntry(BaseJobModel job, int index) {
         _viewFactory.load("data/ui/panels/info_item_craft_entry.yml", view -> {
             view.findById("bt_suspend");
-            view.findById("bt_cancel").setOnClickListener(v -> JobManager.getInstance().removeJob(job));
+            view.findById("bt_cancel").setOnClickListener(v -> JobModule.getInstance().removeJob(job));
 
             if (job.getProgressPercent() > 0) {
                 ((UILabel)view.findById("lb_label")).setString(job.getLabel() + " (" + job.getProgressPercent() + "%)");

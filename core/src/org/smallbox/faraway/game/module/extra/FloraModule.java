@@ -17,17 +17,17 @@ import static org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoPlant.Growin
 /**
  * Created by Alex on 05/07/2015.
  */
-public class PlantManager extends GameModule {
+public class FloraModule extends GameModule {
     private List<ResourceModel>     _plants = new ArrayList<>();
     private TemperatureModule _temperatureModule;
 
-    public PlantManager() {
+    public FloraModule() {
         _updateInterval = 10;
     }
 
     @Override
     protected void onCreate() {
-        _temperatureModule = (TemperatureModule)Game.getInstance().getManager(TemperatureModule.class);
+        _temperatureModule = (TemperatureModule)Game.getInstance().getModule(TemperatureModule.class);
         Game.getWorldManager().getResources().forEach(resource -> {
             if (resource.getInfo().plant != null) {
                 _plants.add(resource);

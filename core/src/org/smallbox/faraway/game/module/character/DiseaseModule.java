@@ -14,10 +14,10 @@ import org.smallbox.faraway.util.FileUtils;
 /**
  * Created by Alex on 16/06/2015.
  */
-public class DiseaseManager extends GameModule {
+public class DiseaseModule extends GameModule {
     private final LuaValue                  _luaGame;
 
-    public DiseaseManager() {
+    public DiseaseModule() {
         _luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
         _updateInterval = 10;
     }
