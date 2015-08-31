@@ -3,7 +3,8 @@ package org.smallbox.faraway.engine.lua;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.game.module.extra.QuestModule;
+import org.smallbox.faraway.game.module.quest.QuestModel;
+import org.smallbox.faraway.game.module.quest.QuestModule;
 import org.smallbox.faraway.game.module.extra.ResourceModule;
 
 /**
@@ -37,14 +38,14 @@ public class LuaQuestModel {
         }
     }
 
-    public final QuestModule.QuestModel    quest;
+    public final QuestModel                 quest;
     public final LuaQuestRewardsModel       rewards;
     public int                              option;
     public String                           closeMessage;
     public String                           openMessage;
     public String[]                         openOptions;
 
-    public LuaQuestModel(QuestModule.QuestModel quest) {
+    public LuaQuestModel(QuestModel quest) {
         this.quest = quest;
         this.rewards = new LuaQuestRewardsModel();
         this.option = quest.optionIndex;

@@ -16,40 +16,58 @@ public class ModuleManagerModule extends GameUIModule {
     }
 
     @Override
-    protected void onCreate() {
-        addWindow(WindowBuilder.create()
-                .setTitle("Module Manager")
-                .setMovable(true)
-                .setClosable(true)
-                .build(new WindowListener() {
-                    @Override
-                    public void onCreate(UIWindow window, FrameLayout view) {
-                        window.setPosition(500, 500);
-
-                        int index = 0;
-                        for (GameModule module : Game.getInstance().getModules()) {
-                            UILabel lbModule = new GDXLabel();
-                            lbModule.setString((module.isLoaded() ? "[x] " : "[ ] ") + module.getClass().getSimpleName());
-                            lbModule.setCharacterSize(14);
-                            lbModule.setPosition(0, index++ * 20);
-                            lbModule.setOnClickListener(view1 -> {
-                                Game.getInstance().toggleModule(module);
-                                lbModule.setString((module.isLoaded() ? "[x] " : "[ ] ") + module.getClass().getSimpleName());
-                            });
-                            view.addView(lbModule);
-                        }
-
-                        view.setSize(150, index * 20);
-                    }
-
-                    @Override
-                    public void onRefresh(int update) {
-                    }
-
-                    @Override
-            public void onClose() {
+    protected void onLoaded() {
+        addWindow(new UITitleWindow() {
+            @Override
+            protected String getTitle() {
+                return "Module Manager";
             }
-        }));
+
+            @Override
+            protected boolean isClosable() {
+                return true;
+            }
+
+            @Override
+            protected boolean isMovable() {
+                return true;
+            }
+
+            @Override
+            protected void onClose() {
+
+            }
+
+            @Override
+            protected void onCreate(UIWindow window, FrameLayout content) {
+                window.setPosition(500, 500);
+
+                int index = 0;
+                for (GameModule module : Game.getInstance().getModules()) {
+                    UILabel lbModule = new GDXLabel();
+                    lbModule.setString((module.isLoaded() ? "[x] " : "[ ] ") + module.getClass().getSimpleName());
+                    lbModule.setCharacterSize(14);
+                    lbModule.setPosition(0, index++ * 20);
+                    lbModule.setOnClickListener(view1 -> {
+                        Game.getInstance().toggleModule(module);
+                        lbModule.setString((module.isLoaded() ? "[x] " : "[ ] ") + module.getClass().getSimpleName());
+                    });
+                    content.addView(lbModule);
+                }
+
+                content.setSize(150, index * 20);
+            }
+
+            @Override
+            protected void onRefresh(int update) {
+
+            }
+
+            @Override
+            protected String getContentLayout() {
+                return null;
+            }
+        });
     }
 
     @Override

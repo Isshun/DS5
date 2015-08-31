@@ -11,8 +11,8 @@ public class WindowBuilder {
     protected boolean   _isMovable;
     protected boolean   _isClosable;
 
-    public FloatingWindow build(WindowListener listener) {
-        return new FloatingWindow() {
+    public UITitleWindow build(WindowListener listener) {
+        return new UITitleWindow() {
             @Override
             protected void onCreate(UIWindow window, FrameLayout content) {
                 listener.onCreate(window, content);

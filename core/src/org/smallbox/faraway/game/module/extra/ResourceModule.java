@@ -33,7 +33,9 @@ public class ResourceModule extends GameModule {
 
 	public enum Message {NONE, NO_MATTER, BUILD_COMPLETE, BUILD_PROGRESS};
 
-	public ResourceModule() {
+
+	@Override
+	protected void onLoaded() {
 		_science = new ResourceData(Strings.LB_SCIENCE, ToolTips.RES_SCIENCE);
 		_power = new ResourceData(Strings.LB_POWER, ToolTips.RES_POWER);
 		_spice = new ResourceData("spice", ToolTips.RES_SPICE);

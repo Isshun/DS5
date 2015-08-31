@@ -12,7 +12,8 @@ import java.util.List;
 public class WorldItemModule extends GameModule {
     private List<ItemModel> _items;
 
-    public WorldItemModule() {
+    @Override
+    protected void onLoaded() {
         _items = new ArrayList<>();
     }
 
@@ -45,6 +46,4 @@ public class WorldItemModule extends GameModule {
     public void onRemoveItem(ItemModel item){
         _items.remove(item);
     }
-
-
 }

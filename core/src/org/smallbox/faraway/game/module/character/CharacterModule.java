@@ -8,6 +8,7 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobAbortReason;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.GameUIModule;
+import org.smallbox.faraway.ui.engine.view.FrameLayout;
 import org.smallbox.faraway.util.Strings;
 import org.smallbox.faraway.util.Utils;
 
@@ -19,8 +20,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class CharacterModule extends GameUIModule {
-	private CharacterModuleWindow 		        _window;
+public class CharacterModule extends GameModule {
 	private BlockingQueue<CharacterModel> 		_characters;
 	private List<CharacterModel> 				_addOnUpdate;
 	private int 								_count;
@@ -51,10 +51,7 @@ public class CharacterModule extends GameUIModule {
 	}
 
     @Override
-	public void onCreate() {
-        _window = new CharacterModuleWindow();
-        _window.setVisible(false);
-        addWindow(_window);
+	public void onLoaded() {
     }
 
     @Override
@@ -181,15 +178,6 @@ public class CharacterModule extends GameUIModule {
 		return false;
 	}
 
-	public void onSelectCharacter(CharacterModel character) {
-        _window.setVisible(true);
-		_window.select(character);
-	}
-
-	public void onDeselect() {
-		_window.setVisible(false);
-	}
-
 	public int countCharacterAtPos(int posX, int posY) {
 		int count = 0;
 		for (CharacterModel character: _characters) {
@@ -199,4 +187,5 @@ public class CharacterModule extends GameUIModule {
 		}
 		return count;
 	}
+
 }

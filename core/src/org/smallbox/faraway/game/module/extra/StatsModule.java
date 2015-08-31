@@ -9,7 +9,6 @@ import java.util.List;
 
 public class StatsModule extends GameModule {
 	public static class StatsData {
-
 		public List<Integer> 	values;
 		public String 			label;
 
@@ -21,7 +20,6 @@ public class StatsModule extends GameModule {
 		public void add(int value) {
 			values.add(value);
 		}
-
 	}
 
 	private static final int 	UPDATE_INTERVAL = 10;
@@ -32,7 +30,8 @@ public class StatsModule extends GameModule {
 	public StatsData 			nbChild;
 	public StatsData 			nbStudent;
 
-	public StatsModule() {
+	@Override
+	protected void onLoaded() {
 		nbCharacter = new StatsData("Character");
 		nbSingle = new StatsData("Single");
 		nbCouple = new StatsData("Couple");

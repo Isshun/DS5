@@ -15,6 +15,11 @@ import java.util.List;
 
 public class RelationModule extends GameModule {
 
+	@Override
+	protected void onLoaded() {
+
+	}
+
 	public void meet(CharacterModel c1, CharacterModel c2) {
 		if (c1 == null || c2 == null || c1 == c2) {
 			return;

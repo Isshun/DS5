@@ -2,6 +2,7 @@ package org.smallbox.faraway.game.module;
 
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.ui.engine.view.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by Alex on 30/08/2015.
  */
 public abstract class GameUIModule extends GameModule {
-    private List<UIWindow> _windows = new ArrayList<>();
+    private List<UIWindow>  _windows = new ArrayList<>();
 
     public void draw(GDXRenderer renderer) {
         _windows.forEach(view -> view.draw(renderer, 0, 0));

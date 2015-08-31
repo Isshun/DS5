@@ -17,9 +17,10 @@ import java.util.Collections;
  * Created by Alex on 16/06/2015.
  */
 public class BuffModule extends GameModule {
-    private final LuaValue  _luaGame;
+    private LuaValue  _luaGame;
 
-    public BuffModule() {
+    @Override
+    protected void onLoaded() {
         _luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
         _updateInterval = 10;
     }

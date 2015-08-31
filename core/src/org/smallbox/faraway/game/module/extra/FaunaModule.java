@@ -24,7 +24,7 @@ public class FaunaModule extends GameModule {
     private List<AnimalModel>               _animals = new ArrayList<>();
 
     @Override
-    protected void onCreate() {
+    protected void onLoaded() {
         RegionModel region = Game.getInstance().getRegion();
 
         double commonTotalFrequency = 0;

@@ -19,6 +19,11 @@ public class LogModule extends GameModule {
     );
 
     @Override
+    protected void onLoaded() {
+
+    }
+
+    @Override
     protected void onUpdate(int tick) {
 
     }

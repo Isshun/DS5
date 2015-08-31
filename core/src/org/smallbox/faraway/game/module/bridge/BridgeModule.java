@@ -3,7 +3,8 @@ package org.smallbox.faraway.game.module.bridge;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.module.GameModule;
-import org.smallbox.faraway.game.module.extra.QuestModule;
+import org.smallbox.faraway.game.module.quest.QuestModel;
+import org.smallbox.faraway.game.module.quest.QuestModule;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -15,10 +16,15 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by Alex on 22/08/2015.
  */
 public class BridgeModule extends GameModule {
-    private final MerlinServer mServer;
+    private MerlinServer mServer;
 
-    public BridgeModule() {
+    @Override
+    protected void onLoaded() {
         mServer = new MerlinServer(4242);
+    }
+
+    protected void onDestroy() {
+        mServer.close();
     }
 
     @Override
@@ -183,12 +189,12 @@ public class BridgeModule extends GameModule {
     }
 
     @Override
-    public void onOpenQuest(QuestModule.QuestModel quest) {
+    public void onOpenQuest(QuestModel quest) {
 
     }
 
     @Override
-    public void onCloseQuest(QuestModule.QuestModel quest) {
+    public void onCloseQuest(QuestModel quest) {
 
     }
 

@@ -10,7 +10,7 @@ import org.smallbox.faraway.game.model.character.DroidModel;
 import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
-import org.smallbox.faraway.game.module.extra.QuestModule;
+import org.smallbox.faraway.game.module.quest.QuestModule;
 import org.smallbox.faraway.game.module.world.RoomModule;
 import org.smallbox.faraway.ui.JobDebugPanel;
 import org.smallbox.faraway.ui.UserInterface;
@@ -144,7 +144,7 @@ public class DebugModule extends GameUIModule {
     }
 
     @Override
-    protected void onCreate() {
+    protected void onLoaded() {
         addWindow(WindowBuilder.create().setTitle("Debug").setContentLayout("panels/dev.yml").build(new WindowListener() {
             @Override
             public void onCreate(UIWindow window, FrameLayout view) {
@@ -195,7 +195,7 @@ public class DebugModule extends GameUIModule {
     }
 
 //    @Override
-//    protected void onRefresh(int update) {
+//    protected void onWindowRefresh(int update) {
 //    }
 
 }

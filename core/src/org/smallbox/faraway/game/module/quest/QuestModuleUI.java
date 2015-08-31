@@ -1,4 +1,4 @@
-package org.smallbox.faraway.game.module.extra;
+package org.smallbox.faraway.game.module.quest;
 
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
@@ -10,9 +10,9 @@ import org.smallbox.faraway.ui.engine.view.UILabel;
  * Created by Alex on 30/08/2015.
  */
 public class QuestModuleUI {
-    private final FrameLayout       _panel;
-    private int                     _nbOptions;
-    private QuestModule.QuestModel  _quest;
+    private final FrameLayout   _panel;
+    private int                 _nbOptions;
+    private QuestModel          _quest;
 
     public QuestModuleUI(FrameLayout panel) {
         _panel = panel;
@@ -25,7 +25,7 @@ public class QuestModuleUI {
         ((FrameLayout)_panel.findById("frame_list")).addView(lbQuest);
     }
 
-    public void onOpenQuest(QuestModule.QuestModel quest) {
+    public void onOpenQuest(QuestModel quest) {
         _quest = quest;
 
         if (quest != null && quest.message != null) {
@@ -45,7 +45,7 @@ public class QuestModuleUI {
         }
     }
 
-    public void onCloseQuest(QuestModule.QuestModel quest) {
+    public void onCloseQuest(QuestModel quest) {
         _quest = quest;
 
         if (quest != null && quest.message != null) {
@@ -61,7 +61,7 @@ public class QuestModuleUI {
         }
     }
 
-    private void displayMessage(QuestModule.QuestModel quest) {
+    private void displayMessage(QuestModel quest) {
         // Open frame
         _panel.findById("frame_message").setVisible(true);
 
@@ -74,7 +74,7 @@ public class QuestModuleUI {
         }
     }
 
-    private void selectOption(QuestModule.QuestModel quest, int optionIndex) {
+    private void selectOption(QuestModel quest, int optionIndex) {
         _panel.findById("frame_message").setVisible(false);
 
         ((QuestModule) Game.getInstance().getModule(QuestModule.class)).selectQuestionOption(quest, optionIndex);

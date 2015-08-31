@@ -8,7 +8,8 @@ import org.smallbox.faraway.ui.engine.view.UILabel;
 /**
  * Created by Alex on 13/07/2015.
  */
-public abstract class FloatingWindow extends UIWindow {
+public abstract class UITitleWindow extends UIWindow {
+//    private FrameLayout             _frameContent;
     private final boolean           _isMovable;
     private UILabel                 _lbClose;
     private UILabel                 _lbTitle;
@@ -16,7 +17,7 @@ public abstract class FloatingWindow extends UIWindow {
     private int                     _movingOffsetX;
     private int                     _movingOffsetY;
 
-    public FloatingWindow() {
+    public UITitleWindow() {
         final String title = getTitle();
         final String mainLayout = title != null ? "data/ui/base/floating_title_window.yml" : "data/ui/base/floating_window.yml";
         final String contentLayout = getContentLayout();
@@ -25,12 +26,12 @@ public abstract class FloatingWindow extends UIWindow {
             _frameMain = p1;
 
             if (title != null) {
-                _lbClose = (UILabel)findById("lb_close");
+                _lbClose = (UILabel) findById("lb_close");
                 _lbClose.setVisible(isClosable());
                 if (isClosable()) {
                     _lbClose.setOnClickListener(view -> onClose());
                 }
-                _lbTitle = (UILabel)findById("lb_title");
+                _lbTitle = (UILabel) findById("lb_title");
                 _lbTitle.setString(" " + title);
             }
 
@@ -41,11 +42,6 @@ public abstract class FloatingWindow extends UIWindow {
             }
         });
     }
-
-    protected abstract void onClose();
-    protected abstract boolean isClosable();
-    protected abstract boolean isMovable();
-    protected abstract String getTitle();
 
     public void create() {
         super.create();
@@ -99,4 +95,9 @@ public abstract class FloatingWindow extends UIWindow {
         }
         return false;
     }
+
+    protected abstract String getTitle();
+    protected abstract boolean isClosable();
+    protected abstract boolean isMovable();
+    protected abstract void onClose();
 }

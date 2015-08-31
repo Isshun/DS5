@@ -43,7 +43,7 @@ public class WeatherModule extends GameModule implements GameObserver {
 //    }
 
     @Override
-    protected void onCreate() {
+    protected void onLoaded() {
         _planetInfo = Game.getInstance().getPlanet().getInfo();
         _temperatureModule = (TemperatureModule)Game.getInstance().getModule(TemperatureModule.class);
         _lightModule = (LightModule)Game.getInstance().getModule(LightModule.class);

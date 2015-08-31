@@ -13,6 +13,7 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.GameUIModule;
 import org.smallbox.faraway.game.module.character.CharacterModule;
+import org.smallbox.faraway.game.module.info.ResourceInfoModule;
 import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.OnClickListener;
@@ -83,7 +84,6 @@ public class UserInterface implements GameEventListener {
             new PanelInfoConsumable(Mode.INFO_CONSUMABLE,   null),
             new PanelInfoParcel(	Mode.INFO_PARCEL, 	    null),
             new PanelInfoArea(	    Mode.INFO_AREA, 	    null),
-            new PanelInfoResource(	Mode.INFO_RESOURCE, 	null),
             new PanelInfoAnimal(	Mode.INFO_ANIMAL, 	    null),
             new PanelPlan(		    Mode.PLAN, 		        Key.P),
 //            new PanelRoom(		    Mode.ROOM, 		        Key.R),

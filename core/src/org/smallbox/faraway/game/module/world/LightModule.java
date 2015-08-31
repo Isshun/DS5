@@ -15,7 +15,8 @@ import java.util.List;
 public class LightModule extends GameModule {
     private List<ItemModel> _items = new ArrayList<>();
 
-    public LightModule() {
+    @Override
+    protected void onLoaded() {
         _updateInterval = 10;
     }
 

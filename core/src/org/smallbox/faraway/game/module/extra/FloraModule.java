@@ -25,7 +25,7 @@ public class FloraModule extends GameModule {
     }
 
     @Override
-    protected void onCreate() {
+    protected void onLoaded() {
         _temperatureModule = (TemperatureModule)Game.getInstance().getModule(TemperatureModule.class);
         Game.getWorldManager().getResources().forEach(resource -> {
             if (resource.getInfo().plant != null) {

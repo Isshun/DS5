@@ -19,7 +19,8 @@ public class PowerModule extends GameModule {
     private double              _stored;
     private double              _maxStorage;
 
-    public PowerModule() {
+    @Override
+    protected void onLoaded() {
         _stored = 1000;
         _maxStorage = 3500;
         _items = new ArrayList<>();

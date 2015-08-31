@@ -3,7 +3,8 @@ package org.smallbox.faraway.game;
 import org.smallbox.faraway.game.model.area.AreaType;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
-import org.smallbox.faraway.game.module.extra.QuestModule;
+import org.smallbox.faraway.game.module.quest.QuestModel;
+import org.smallbox.faraway.game.module.quest.QuestModule;
 
 /**
  * Created by Alex on 06/06/2015.
@@ -23,8 +24,8 @@ public interface GameObserver {
     default void onHourChange(int hour){}
     default void onDayChange(int day) {}
     default void onYearChange(int year) {}
-    default void onOpenQuest(QuestModule.QuestModel quest) {}
-    default void onCloseQuest(QuestModule.QuestModel quest) {}
+    default void onOpenQuest(QuestModel quest) {}
+    default void onCloseQuest(QuestModel quest) {}
     default void onSelectCharacter(CharacterModel character) {}
     default void onSelectParcel(ParcelModel parcel) {}
     default void onSelectItem(ItemModel item) {}

@@ -25,6 +25,11 @@ public class AreaModule extends GameModule {
     }
 
     @Override
+    protected void onLoaded() {
+
+    }
+
+    @Override
     public void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY) {
         // Search existing area for current position
         for (int x = fromX; x <= toX; x++) {

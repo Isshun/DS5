@@ -4,7 +4,6 @@ import org.smallbox.faraway.data.serializer.SerializerInterface;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
-import org.smallbox.faraway.game.model.area.AreaType;
 
 /**
  * Created by Alex on 15/06/2015.
@@ -12,10 +11,10 @@ import org.smallbox.faraway.game.model.area.AreaType;
 public abstract class GameModule implements GameObserver {
     private final String TAG = getClass().getSimpleName();
 
-    private int _nbUpdate;
-    private long _totalTime;
-    protected int _updateInterval = 1;
-    private boolean _isLoaded;
+    private int         _nbUpdate;
+    private long        _totalTime;
+    protected int       _updateInterval = 1;
+    private boolean     _isLoaded;
 
     public void update(int tick) {
         if (tick % _updateInterval == 0) {
@@ -26,19 +25,17 @@ public abstract class GameModule implements GameObserver {
         }
     }
 
-    protected abstract void onUpdate(int tick);
-
     public GameModule() {
         _isLoaded = loadOnStart();
     }
 
     public void create() {
-        onCreate();
+        onLoaded();
         _isLoaded = true;
     }
 
-    protected void onCreate() {
-    }
+    protected abstract void onLoaded();
+    protected abstract void onUpdate(int tick);
 
     public void dump() {
         if (_nbUpdate != 0) {

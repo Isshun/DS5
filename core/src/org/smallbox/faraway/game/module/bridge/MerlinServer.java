@@ -76,6 +76,10 @@ public class MerlinServer extends Server {
 //        }
 //    }
 
+    public void close() {
+        _run = false;
+    }
+
     @Override
     protected void onSocketChannelClosed(SocketChannel sc) {
 //        PlayerModel player = mPlayers.get(sc);

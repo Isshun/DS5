@@ -29,7 +29,7 @@ public class RoomModule extends GameModule implements GameObserver {
     private AsyncTask<List<RoomModel>> _task;
 
     @Override
-    protected void onCreate() {
+    protected void onLoaded() {
         _updateInterval = 10;
 
         int width = Game.getInstance().getInfo().worldWidth;

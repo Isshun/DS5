@@ -27,6 +27,11 @@ public class PathManager extends GameModule {
     private Map<ParcelModel, ParcelPathCache> _cache;
 
     @Override
+    protected void onLoaded() {
+
+    }
+
+    @Override
 	protected void onUpdate(int tick) {
         _runnable.forEach(java.lang.Runnable::run);
         _runnable.clear();
@@ -43,8 +48,8 @@ public class PathManager extends GameModule {
 		_threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 		_runnable = new ArrayList<>();
 	}
-	
-	public void init(int width, int height) {
+
+    public void init(int width, int height) {
 		if (width == 0 || height == 0) {
 			throw new RuntimeException("PathManager init with 0 width/height");
 		}

@@ -41,7 +41,7 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
     public void                         setLight(int light) { _light = light; }
 
     @Override
-    public void onCreate() {
+    public void onLoaded() {
         _game = Game.getInstance();
         _game.setWorldManager(this);
         _width = _game.getInfo().worldWidth;

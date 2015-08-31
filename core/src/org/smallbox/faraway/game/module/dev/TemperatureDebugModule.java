@@ -16,7 +16,7 @@ public class TemperatureDebugModule extends GameUIModule {
     }
 
     @Override
-    protected void onCreate() {
+    protected void onLoaded() {
         DebugWindow window = (DebugWindow)WindowDebugBuilder.create().setTitle("Temperature Debug").build(new WindowListener() {
             @Override
             public void onCreate(UIWindow window, FrameLayout view) {

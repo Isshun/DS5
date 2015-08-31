@@ -13,9 +13,8 @@ import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
-import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.dev.ModuleManagerModule;
-import org.smallbox.faraway.game.module.dev.RenderManagerModule;
+import org.smallbox.faraway.game.module.dev.RenderDebugModule;
 import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.MenuLoad;
@@ -148,7 +147,7 @@ public class Application implements GameEventListener {
 // Open render manager
             case F11:
                 if (Game.getInstance() != null) {
-                    Game.getInstance().toggleModule(RenderManagerModule.class);
+                    Game.getInstance().toggleModule(RenderDebugModule.class);
                 }
                 return;
 

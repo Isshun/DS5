@@ -16,6 +16,7 @@ public class WindowDebugBuilder extends WindowBuilder {
             @Override
             public void onCreate(UIWindow window, FrameLayout view) {
                 listener.onCreate(window, view);
+                _frameContent = view;
             }
 
             @Override

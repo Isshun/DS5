@@ -1,9 +1,8 @@
-package org.smallbox.faraway.game.module.extra;
+package org.smallbox.faraway.game.module.quest;
 
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.lua.LuaGameModel;
 import org.smallbox.faraway.engine.lua.LuaQuestModel;
@@ -24,21 +23,6 @@ import java.util.stream.Collectors;
  */
 public class QuestModule extends GameUIModule {
 
-    public static class QuestModel {
-        public final LuaValue   globals;
-        public final String     fileName;
-        public boolean          isOpen;
-        public String           message;
-        public String[]         options;
-        public int              optionIndex;
-
-        public QuestModel(String fileName) {
-            this.globals = JsePlatform.standardGlobals();
-            this.fileName = fileName;
-            this.isOpen = true;
-        }
-    }
-
     private QuestModuleUI       _ui;
     private List<QuestModel>    _quests;
 
@@ -52,32 +36,20 @@ public class QuestModule extends GameUIModule {
     }
 
     @Override
-    protected void onCreate() {
-        addWindow(WindowBuilder.create().build(new WindowListener() {
-            @Override
-            public void onCreate(UIWindow window, FrameLayout view) {
-                _ui = new QuestModuleUI(view);
-            }
-
-            @Override
-            public void onRefresh(int update) {
-            }
-
-            @Override
-            public void onClose() {
-            }
-        }));
+    protected void onLoaded() {
+        //TODO
+//        _ui = new QuestModuleUI(content);
     }
 
     @Override
-    public void onOpenQuest(QuestModule.QuestModel quest) {
+    public void onOpenQuest(QuestModel quest) {
         if (_ui != null) {
             _ui.onOpenQuest(quest);
         }
     }
 
     @Override
-    public void onCloseQuest(QuestModule.QuestModel quest) {
+    public void onCloseQuest(QuestModel quest) {
         if (_ui != null) {
             _ui.onCloseQuest(quest);
         }

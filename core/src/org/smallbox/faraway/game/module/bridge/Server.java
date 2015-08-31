@@ -15,8 +15,9 @@ public abstract class Server {
     private static final Charset CHARSET = Charset.forName("UTF-8");
 
     private final int               mPort;
-    private final ByteBuffer mReadBuffer;
-    private final ByteBuffer mWriteBuffer;
+    private final ByteBuffer        mReadBuffer;
+    private final ByteBuffer        mWriteBuffer;
+    protected boolean               _run;
 
     public Server(int port) {
         mPort = port;
@@ -48,7 +49,7 @@ public abstract class Server {
                     ssc.register( selector, SelectionKey.OP_ACCEPT );
 //                    System.out.println( "Listening on mPort "+ mPort);
 
-                    while (true) {
+                    while (_run) {
                         // See if we've had any activity -- either
                         // an incoming connection, or incoming data on an
                         // existing connection

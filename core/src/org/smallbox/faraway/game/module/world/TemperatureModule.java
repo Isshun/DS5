@@ -22,7 +22,7 @@ public class TemperatureModule extends GameModule implements GameObserver {
     private double              _temperatureOffset;
 
     @Override
-    public void onCreate() {
+    public void onLoaded() {
         _temperature = _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
         _roomModule = (RoomModule)Game.getInstance().getModule(RoomModule.class);
     }

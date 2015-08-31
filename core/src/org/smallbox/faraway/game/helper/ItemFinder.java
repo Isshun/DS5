@@ -23,7 +23,7 @@ public class ItemFinder extends GameModule {
 	private List<ItemModel> 		_items;
 
     @Override
-    protected void onCreate() {
+    protected void onLoaded() {
         _items = new ArrayList<>();
         _consumables = new ArrayList<>();
         _pathManager = (PathManager) Game.getInstance().getModule(PathManager.class);

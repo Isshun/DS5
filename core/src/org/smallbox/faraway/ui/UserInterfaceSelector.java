@@ -7,10 +7,10 @@ import org.smallbox.faraway.game.model.ToolTips;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.module.info.ResourceInfoModule;
 import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.ui.panel.PanelTooltip;
 import org.smallbox.faraway.ui.panel.info.*;
-import org.smallbox.faraway.ui.panel.right.PanelCharacter;
 import org.smallbox.faraway.util.Constant;
 
 /**
@@ -201,7 +201,6 @@ public class UserInterfaceSelector {
     public void select(ResourceModel resource) {
         clean();
         _userInterface.setMode(UserInterface.Mode.INFO_RESOURCE);
-        ((PanelInfoResource)_userInterface.getPanel(PanelInfoResource.class)).select(resource);
         Game.getInstance().notify(observer -> observer.onSelectResource(resource));
         Game.getInstance().notify(observer -> observer.onSelectParcel(resource.getParcel()));
     }

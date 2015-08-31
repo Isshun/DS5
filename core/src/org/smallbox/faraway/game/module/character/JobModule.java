@@ -37,7 +37,7 @@ public class JobModule extends GameModule {
 	private int 							_nbVisibleJob;
 
     @Override
-    public void onCreate() {
+    public void onLoaded() {
         printDebug("JobModule");
 
         _self = this;

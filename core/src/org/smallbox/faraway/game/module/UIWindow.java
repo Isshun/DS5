@@ -8,11 +8,10 @@ import org.smallbox.faraway.ui.engine.view.FrameLayout;
  * Created by Alex on 31/08/2015.
  */
 public abstract class UIWindow extends FrameLayout {
-    protected FrameLayout           _frameMain;
-    protected FrameLayout           _frameContent;
+    protected FrameLayout             _frameMain;
+    protected FrameLayout             _frameContent;
 
     public UIWindow() {
-        _frameMain = this;
         _frameContent = this;
         if (getContentLayout() != null) {
             LayoutFactory.load("data/ui/" + getContentLayout(), this, null);
