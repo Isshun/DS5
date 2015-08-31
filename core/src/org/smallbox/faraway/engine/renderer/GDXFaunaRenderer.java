@@ -1,13 +1,12 @@
-package org.smallbox.faraway.core.renderer;
+package org.smallbox.faraway.engine.renderer;
 
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.extra.FaunaModule;
 import org.smallbox.faraway.game.model.AnimalModel;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.MovableModel;
+import org.smallbox.faraway.game.module.extra.FaunaModule;
 import org.smallbox.faraway.util.Constant;
 
 /**

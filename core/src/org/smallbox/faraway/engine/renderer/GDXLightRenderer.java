@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.renderer;
+package org.smallbox.faraway.engine.renderer;
 
 import box2dLight.Light;
 import box2dLight.PointLight;
@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.item.ItemModel;

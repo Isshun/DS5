@@ -2,17 +2,17 @@ package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.GameModule;
-import org.smallbox.faraway.game.module.GameUIModule;
-import org.smallbox.faraway.game.module.character.CharacterModule;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.GameUIModule;
+import org.smallbox.faraway.game.module.character.CharacterModule;
 import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.OnClickListener;
@@ -24,7 +24,6 @@ import org.smallbox.faraway.ui.engine.view.View;
 import org.smallbox.faraway.ui.panel.*;
 import org.smallbox.faraway.ui.panel.debug.OxygenManagerPanel;
 import org.smallbox.faraway.ui.panel.debug.ParcelDebugPanel;
-import org.smallbox.faraway.ui.panel.debug.TemperatureManagerPanel;
 import org.smallbox.faraway.ui.panel.info.*;
 import org.smallbox.faraway.ui.panel.right.*;
 import org.smallbox.faraway.util.Constant;
@@ -77,7 +76,7 @@ public class UserInterface implements GameEventListener {
             new PanelResources(),
 
 //            new PanelQuest(),
-            new PanelCharacter(	    Mode.CHARACTER,         null),
+//            new PanelCharacter(	    Mode.CHARACTER,         null),
 //            new PanelInfo(		    Mode.INFO, 		        null),
             new PanelInfoStructure(	Mode.INFO_STRUCTURE, 	null),
             new PanelInfoItem(	    Mode.INFO_ITEM, 	    null),
@@ -102,7 +101,7 @@ public class UserInterface implements GameEventListener {
             new PanelTopRight(),
 
             // Debug
-            new TemperatureManagerPanel(),
+//            new TemperatureManagerPanel(),
             new OxygenManagerPanel(),
             new JobDebugPanel(),
             new ParcelDebugPanel(),
@@ -171,6 +170,12 @@ public class UserInterface implements GameEventListener {
     public void onMouseEvent(Action action, MouseButton button, int x, int y, boolean rightPressed) {
         for (BasePanel panel: _panels) {
             if (panel.isVisible() && panel.onMouseEvent(action, button, x, y)) {
+                return;
+            }
+        }
+
+        for (GameModule module: Game.getInstance().getModules()) {
+            if (module.isLoaded() && module.onMouseEvent(action, button, x, y)) {
                 return;
             }
         }
@@ -373,6 +378,11 @@ public class UserInterface implements GameEventListener {
         _update = update;
         for (BasePanel panel: _panels) {
             panel.refresh(update);
+        }
+        for (GameModule module: _game.getModules()) {
+            if (module.isLoaded()) {
+                module.refresh(update);
+            }
         }
         _panelConsole.refresh(update);
     }

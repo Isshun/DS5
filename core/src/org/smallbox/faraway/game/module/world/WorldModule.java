@@ -7,9 +7,9 @@ import org.smallbox.faraway.data.factory.ItemFactory;
 import org.smallbox.faraway.data.factory.world.WorldFactory;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.path.ParcelConnection;
 
 import java.util.*;
@@ -91,6 +91,11 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
         if (_factory != null) {
             _factory.create(this, _game.getRegion().getInfo());
         }
+    }
+
+    @Override
+    public boolean isMandatory() {
+        return true;
     }
 
     private void createConnection(ParcelModel parcel) {

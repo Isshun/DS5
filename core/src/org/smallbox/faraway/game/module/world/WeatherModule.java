@@ -5,10 +5,10 @@ import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
-import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.WeatherModel;
 import org.smallbox.faraway.game.model.planet.PlanetInfo;
+import org.smallbox.faraway.game.module.GameModule;
 
 import java.util.ArrayList;
 import java.util.Random;

@@ -2,9 +2,9 @@ package org.smallbox.faraway.game.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.job.BaseBuildJobModel;
+import org.smallbox.faraway.game.module.path.PathManager;
 
 import java.util.*;
 

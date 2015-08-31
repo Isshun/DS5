@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.ui;
 
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.Color;
+import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
 import org.smallbox.faraway.util.StringUtils;

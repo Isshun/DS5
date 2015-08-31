@@ -6,9 +6,9 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.engine.lua.LuaCharacterModel;
 import org.smallbox.faraway.engine.lua.LuaGameModel;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.character.BuffModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.util.FileUtils;
 
 import java.util.Collections;

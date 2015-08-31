@@ -1,12 +1,15 @@
 package org.smallbox.faraway.game.model.item;
 
-public class ResourceModel extends ItemModel {
-	private double 	        _quantity;
-	private int 	        _tile;
-	private int 	        _totalQuantity;
-    private double          _growRate;
+import static org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoPlant.GrowingInfo;
 
-    public ResourceModel(ItemInfo info, int id) {
+public class ResourceModel extends ItemModel {
+	private double 	        	_quantity;
+	private int 	        	_tile;
+	private int 	        	_totalQuantity;
+    private double          	_growRate;
+	private GrowingInfo _growState;
+
+	public ResourceModel(ItemInfo info, int id) {
 		super(info, id);
 
 		if (_info.plant != null) {
@@ -38,6 +41,7 @@ public class ResourceModel extends ItemModel {
 	public double 	getRealQuantity() { return _quantity; }
 	public int 		getTile() { return _tile; }
 	public double 	getGrowRate() { return _growRate; }
+	public GrowingInfo getGrowState() { return _growState; }
 
 	public boolean 	canBeMined() { return _info.isRock; }
 	public boolean 	canBeHarvested() { return _info.isPlant; }
@@ -45,7 +49,9 @@ public class ResourceModel extends ItemModel {
 	public boolean 	isMature() { return _quantity >= _totalQuantity; }
 	public boolean 	isRock() { return _info.isRock; }
 	public boolean 	isSolid() { return _info.isRock; }
+    public boolean  isPlant() { return _info.isPlant; }
 
     public void 	setGrowRate(double growRate) { _growRate = growRate; }
+	public void 	setGrowState(GrowingInfo growState) { _growState = growState; }
 	public void 	setTile(int tile) { _tile = tile; }
 }

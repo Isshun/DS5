@@ -12,12 +12,12 @@ import org.smallbox.faraway.core.GDXInputProcessor;
 import org.smallbox.faraway.core.GDXViewFactory;
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.renderer.GDXLightRenderer;
-import org.smallbox.faraway.core.renderer.GDXParticleRenderer;
-import org.smallbox.faraway.core.renderer.GDXRenderer;
+import org.smallbox.faraway.engine.renderer.GDXLightRenderer;
+import org.smallbox.faraway.engine.renderer.GDXParticleRenderer;
+import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Log;
 

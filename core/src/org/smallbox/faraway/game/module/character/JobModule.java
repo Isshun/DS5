@@ -3,7 +3,6 @@ package org.smallbox.faraway.game.module.character;
 import org.smallbox.faraway.data.serializer.SerializerInterface;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.CheckCharacterOxygen;
 import org.smallbox.faraway.game.model.check.CheckCharacterUse;
@@ -18,6 +17,7 @@ import org.smallbox.faraway.game.model.job.BaseJobModel.JobAbortReason;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobStatus;
 import org.smallbox.faraway.game.model.job.CheckJoyItem;
 import org.smallbox.faraway.game.model.job.JobHaul;
+import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;
@@ -28,39 +28,40 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class JobModule extends GameModule {
-	private static JobModule _self;
-	private final List<CharacterCheck> 			_joys;
-	private final List<CharacterCheck>  		_priorities;
-	private final BlockingQueue<BaseJobModel> 	_jobs;
-	private final List<BaseJobModel>			_toRemove;
-	private final CharacterCheck 				_bedCheck;
-	private int 								_nbVisibleJob;
+	private static JobModule                _self;
+	private List<CharacterCheck> 			_joys;
+	private List<CharacterCheck>  		    _priorities;
+	private BlockingQueue<BaseJobModel> 	_jobs;
+	private List<BaseJobModel>			    _toRemove;
+	private CharacterCheck 				    _bedCheck;
+	private int 							_nbVisibleJob;
 
-	public JobModule() {
-		printDebug("JobModule");
+    @Override
+    public void onCreate() {
+        printDebug("JobModule");
 
-		_self = this;
-		_jobs = new LinkedBlockingQueue<>();
-		_toRemove = new ArrayList<>();
+        _self = this;
+        _jobs = new LinkedBlockingQueue<>();
+        _toRemove = new ArrayList<>();
         _updateInterval = 10;
 
         _priorities = new ArrayList<>();
-		_priorities.add(new CheckCharacterOxygen());
+        _priorities.add(new CheckCharacterOxygen());
         _priorities.add(new CheckCharacterUse());
         _priorities.add(new CheckCharacterExhausted());
-		_priorities.add(new CheckCharacterHungry());
+        _priorities.add(new CheckCharacterHungry());
 //		_priorities.add(new CheckCharacterJoyDepleted());
 
-		_bedCheck = new CheckCharacterExhausted();
+        _bedCheck = new CheckCharacterExhausted();
 
-		_joys = new ArrayList<>();
+        _joys = new ArrayList<>();
 //		_joys.add(new CheckJoyTalk());
-		_joys.add(new CheckJoyWalk());
-		_joys.add(new CheckJoyItem());
+        _joys.add(new CheckJoyWalk());
+        _joys.add(new CheckJoyItem());
 //		_joys.add(new CheckJoySleep());
 
         printDebug("JobModule done");
-	}
+    }
 
     @Override
     protected void onUpdate(int tick) {
@@ -129,7 +130,12 @@ public class JobModule extends GameModule {
 		}
 	}
 
-	private boolean assignBestSleep(CharacterModel character) {
+    @Override
+    public boolean isMandatory() {
+        return true;
+    }
+
+    private boolean assignBestSleep(CharacterModel character) {
 		if (_bedCheck.check(character)) {
 			BaseJobModel job = _bedCheck.create(character);
 			if (job != null) {

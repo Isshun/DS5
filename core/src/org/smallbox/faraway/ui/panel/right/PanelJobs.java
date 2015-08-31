@@ -1,8 +1,8 @@
 package org.smallbox.faraway.ui.panel.right;
 
 import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.ViewFactory;

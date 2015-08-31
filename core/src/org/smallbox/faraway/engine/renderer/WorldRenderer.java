@@ -4,14 +4,12 @@ import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.core.RenderLayer;
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
@@ -31,6 +29,10 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
         _spriteManager = SpriteManager.getInstance();
         _viewport = Game.getInstance().getViewport();
         _needRefresh = true;
+    }
+
+    public int getLevel() {
+        return -100;
     }
 
     public void onRefresh(int frame) {
@@ -101,9 +103,6 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
                     if (GameData.config.render.structure) {
                         refreshStructure(layer, parcel.getStructure(), x, y);
                     }
-                    if (GameData.config.render.area) {
-                        refreshArea(layer, parcel.getArea(), x, y);
-                    }
                     if (GameData.config.render.resource) {
                         refreshResource(layer, parcel, parcel.getResource(), x, y);
                     }
@@ -158,14 +157,6 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
             if (sprite != null) {
                 layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }
-        }
-    }
-
-    private void refreshArea(RenderLayer layer, AreaModel area, int x, int y) {
-        if (area != null) {
-            layer.draw(_spriteManager.getTexture("data/res/bg_area.png"),
-                    (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT,
-                    Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
         }
     }
 

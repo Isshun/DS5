@@ -1,10 +1,9 @@
 package org.smallbox.faraway.engine.renderer;
 
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.game.model.GameConfig;
+import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.util.Constant;
 
 public class JobRenderer extends BaseRenderer {

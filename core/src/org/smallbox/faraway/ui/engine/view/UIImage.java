@@ -1,8 +1,8 @@
 package org.smallbox.faraway.ui.engine.view;
 
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.SpriteModel;
+import org.smallbox.faraway.engine.renderer.GDXRenderer;
 
 public abstract class UIImage extends View {
 	protected int _textureX;

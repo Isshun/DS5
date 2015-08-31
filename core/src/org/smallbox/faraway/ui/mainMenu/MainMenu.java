@@ -1,8 +1,8 @@
 package org.smallbox.faraway.ui.mainMenu;
 
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.TeamModel;
 import org.smallbox.faraway.game.model.planet.LandingSiteModel;

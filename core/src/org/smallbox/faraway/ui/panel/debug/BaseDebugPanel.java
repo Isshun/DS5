@@ -13,8 +13,8 @@ import org.smallbox.faraway.ui.panel.BasePanel;
  * Created by Alex on 13/07/2015.
  */
 public abstract class BaseDebugPanel extends BasePanel {
-    private FrameLayout _frame;
-    private UILabel _lbClose;
+    private FrameLayout         _frame;
+    private UILabel             _lbClose;
     private UILabel             _lbTitle;
     private boolean             _isMoving;
     private int                 _movingOffsetX;

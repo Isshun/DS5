@@ -1,7 +1,7 @@
 package org.smallbox.faraway.ui.mainMenu;
 
 import org.smallbox.faraway.Application;
-import org.smallbox.faraway.core.renderer.GDXRenderer;
+import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.view.FrameLayout;
 import org.smallbox.faraway.ui.engine.view.UILabel;

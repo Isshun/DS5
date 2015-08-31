@@ -1,10 +1,10 @@
 package org.smallbox.faraway.game.model.character;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.character.RelationModule;
 import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterRelation;
+import org.smallbox.faraway.game.module.character.RelationModule;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;

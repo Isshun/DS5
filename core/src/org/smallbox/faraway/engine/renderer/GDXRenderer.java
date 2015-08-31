@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.renderer;
+package org.smallbox.faraway.engine.renderer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.core.GDXSpriteModel;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.engine.SpriteModel;
-import org.smallbox.faraway.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.job.GDXDrawable;
@@ -31,6 +30,7 @@ public class GDXRenderer {
     private final OrthographicCamera    _cameraWorld;
     private ShapeRenderer               _shapeRenderer;
     private int                         _zoom = Viewport.ZOOM_LEVELS.length - 1;
+    private Viewport                    _viewport;
 
     public GDXRenderer(SpriteBatch batch, BitmapFont[] fonts) {
         _self = this;
@@ -205,5 +205,13 @@ public class GDXRenderer {
 
     public void end() {
 //        _batch.end();
+    }
+
+    public void drawOnMap(TextureRegion region, int x, int y) {
+        draw(region, _viewport.getPosX() + (x * Constant.TILE_WIDTH), _viewport.getPosY() + (y * Constant.TILE_HEIGHT));
+    }
+
+    public void setViewport(Viewport viewport) {
+        _viewport = viewport;
     }
 }

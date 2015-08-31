@@ -1,13 +1,13 @@
 package org.smallbox.faraway.game.model.check;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.world.RoomModule;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobMove;
 import org.smallbox.faraway.game.model.room.RoomModel;
+import org.smallbox.faraway.game.module.world.RoomModule;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Optional;

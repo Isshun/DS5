@@ -1,21 +1,22 @@
 package org.smallbox.faraway;
 
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.data.factory.world.WorldFactory;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
-import org.smallbox.faraway.game.module.GameModule;
-import org.smallbox.faraway.game.module.dev.ModuleManagerModule;
-import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
+import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.dev.ModuleManagerModule;
+import org.smallbox.faraway.game.module.dev.RenderManagerModule;
+import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.MenuLoad;
 import org.smallbox.faraway.ui.UserInterface;
@@ -144,15 +145,17 @@ public class Application implements GameEventListener {
                 _renderer.close();
                 return;
 
+// Open render manager
+            case F11:
+                if (Game.getInstance() != null) {
+                    Game.getInstance().toggleModule(RenderManagerModule.class);
+                }
+                return;
+
 // Open module manager
             case F12:
                 if (Game.getInstance() != null) {
-                    GameModule module = Game.getInstance().getModule(ModuleManagerModule.class);
-                    if (module.isLoaded()) {
-                        Game.getInstance().unloadModule(module);
-                    } else {
-                        Game.getInstance().loadModule(module);
-                    }
+                    Game.getInstance().toggleModule(ModuleManagerModule.class);
                 }
                 return;
 

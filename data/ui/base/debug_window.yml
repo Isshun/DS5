@@ -1,0 +1,5 @@
+background: 0x194c74
+entries:
+
+    -   type: frame
+        id: frame_dev_commands

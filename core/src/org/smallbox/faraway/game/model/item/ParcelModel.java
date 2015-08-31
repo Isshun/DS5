@@ -4,9 +4,9 @@ import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedNode;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.world.TemperatureModule;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
+import org.smallbox.faraway.game.module.world.TemperatureModule;
 
 public class ParcelModel implements IndexedNode<ParcelModel> {
     public static class ParcelContent {

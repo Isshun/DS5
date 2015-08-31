@@ -1,7 +1,6 @@
 package org.smallbox.faraway.util;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.ui.UserInterface;
 
 public class Log {
 	public static int LEVEL_NOTICE = 0;

@@ -2,9 +2,9 @@ package org.smallbox.faraway.engine.lua;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
+import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.module.extra.QuestModule;
 import org.smallbox.faraway.game.module.extra.ResourceModule;
-import org.smallbox.faraway.game.model.item.ParcelModel;
 
 /**
  * Created by Alex on 20/06/2015.

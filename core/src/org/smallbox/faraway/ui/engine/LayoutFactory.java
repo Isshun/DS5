@@ -67,7 +67,9 @@ public class LayoutFactory {
             }
             panel.resetAllPos();
 
-            listener.onLayoutLoaded(layout, panel);
+            if (listener != null) {
+                listener.onLayoutLoaded(layout, panel);
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

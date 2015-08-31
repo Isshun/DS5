@@ -9,10 +9,8 @@ import org.smallbox.faraway.engine.lua.LuaGameModel;
 import org.smallbox.faraway.engine.lua.LuaQuestModel;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.module.GameUIModule;
-import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.game.module.*;
 import org.smallbox.faraway.ui.engine.view.FrameLayout;
-import org.smallbox.faraway.ui.engine.view.UILabel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,9 +53,20 @@ public class QuestModule extends GameUIModule {
 
     @Override
     protected void onCreate() {
-        createPanel("panels/quest.yml", (layout, panel) -> {
-            _ui = new QuestModuleUI(panel);
-        });
+        addWindow(WindowBuilder.create().build(new WindowListener() {
+            @Override
+            public void onCreate(UIWindow window, FrameLayout view) {
+                _ui = new QuestModuleUI(view);
+            }
+
+            @Override
+            public void onRefresh(int update) {
+            }
+
+            @Override
+            public void onClose() {
+            }
+        }));
     }
 
     @Override

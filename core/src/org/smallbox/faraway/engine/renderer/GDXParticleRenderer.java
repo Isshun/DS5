@@ -1,10 +1,9 @@
-package org.smallbox.faraway.core.renderer;
+package org.smallbox.faraway.engine.renderer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.game.model.GameConfig;
 
 /**

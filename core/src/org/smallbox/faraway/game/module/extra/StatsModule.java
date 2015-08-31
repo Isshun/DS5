@@ -1,8 +1,8 @@
 package org.smallbox.faraway.game.module.extra;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.module.GameModule;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,12 +1,13 @@
 package org.smallbox.faraway.game.module.character;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobAbortReason;
+import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.GameUIModule;
 import org.smallbox.faraway.util.Strings;
 import org.smallbox.faraway.util.Utils;
 
@@ -18,7 +19,8 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class CharacterModule extends GameModule {
+public class CharacterModule extends GameUIModule {
+	private CharacterModuleWindow 		        _window;
 	private BlockingQueue<CharacterModel> 		_characters;
 	private List<CharacterModel> 				_addOnUpdate;
 	private int 								_count;
@@ -29,7 +31,12 @@ public class CharacterModule extends GameModule {
 		_count = 0;
 	}
 
-	public Collection<CharacterModel> 	getCharacters() { return _characters; }
+    @Override
+    public boolean isMandatory() {
+        return true;
+    }
+
+    public Collection<CharacterModel> 	getCharacters() { return _characters; }
 	public int 							getCount() { return _count; }
 
 	// TODO
@@ -43,6 +50,14 @@ public class CharacterModule extends GameModule {
 		return null;
 	}
 
+    @Override
+	public void onCreate() {
+        _window = new CharacterModuleWindow();
+        _window.setVisible(false);
+        addWindow(_window);
+    }
+
+    @Override
 	public void onUpdate(int tick) {
 		// Add new born
 		_characters.addAll(_addOnUpdate);
@@ -165,4 +180,14 @@ public class CharacterModule extends GameModule {
 		}
 		return false;
 	}
+
+	public void onSelectCharacter(CharacterModel character) {
+        _window.setVisible(true);
+		_window.select(character);
+	}
+
+	public void onDeselect() {
+		_window.setVisible(false);
+	}
+
 }

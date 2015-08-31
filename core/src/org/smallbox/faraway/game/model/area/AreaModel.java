@@ -10,6 +10,7 @@ import java.util.*;
  */
 public class AreaModel {
     protected final Set<ParcelModel>    _parcels = new HashSet<>();
+    private final int                   _typeIndex;
     protected Map<ItemInfo, Boolean>    _items;
     private final AreaType              _type;
     private int                         _x;
@@ -17,6 +18,7 @@ public class AreaModel {
 
     public AreaModel(AreaType type) {
         _type = type;
+        _typeIndex = type.ordinal();
         _items = new HashMap<>();
     }
 
@@ -54,9 +56,8 @@ public class AreaModel {
         return false;
     }
 
-    public AreaType getType() {
-        return _type;
-    }
+    public AreaType getType() { return _type; }
+    public int getTypeIndex() { return _typeIndex; }
 
     public void removeParcel(ParcelModel parcel) {
         _parcels.remove(parcel);

@@ -1,9 +1,9 @@
 package org.smallbox.faraway.game.module.bridge;
 
-import org.smallbox.faraway.game.module.GameModule;
-import org.smallbox.faraway.game.module.extra.QuestModule;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.extra.QuestModule;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

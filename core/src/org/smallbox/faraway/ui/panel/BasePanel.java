@@ -1,8 +1,8 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInteraction;

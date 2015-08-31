@@ -3,13 +3,13 @@ package org.smallbox.faraway.game.module.dev;
 import org.smallbox.faraway.data.factory.world.WorldFactory;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.module.*;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.AndroidModel;
 import org.smallbox.faraway.game.model.character.DroidModel;
 import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
-import org.smallbox.faraway.game.module.GameUIModule;
 import org.smallbox.faraway.game.module.extra.QuestModule;
 import org.smallbox.faraway.game.module.world.RoomModule;
 import org.smallbox.faraway.ui.JobDebugPanel;
@@ -21,7 +21,6 @@ import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
 import org.smallbox.faraway.ui.panel.debug.OxygenManagerPanel;
 import org.smallbox.faraway.ui.panel.debug.ParcelDebugPanel;
-import org.smallbox.faraway.ui.panel.debug.TemperatureManagerPanel;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Arrays;
@@ -115,7 +114,7 @@ public class DebugModule extends GameUIModule {
                 Log.notice("\n----------- dump -----------");
                 Arrays.asList(UserInterface.getInstance().getPanels()).forEach(panel -> panel.dump());
             }),
-            new CommandEntry("Temperature debug",       view -> UserInterface.getInstance().getPanel(TemperatureManagerPanel.class).setVisible(true)),
+            new CommandEntry("Temperature debug",       view -> Game.getInstance().toggleModule(TemperatureDebugModule.class)),
             new CommandEntry("Oxygen debug",            view -> UserInterface.getInstance().getPanel(OxygenManagerPanel.class).setVisible(true)),
             new CommandEntry("Job detail",              view -> UserInterface.getInstance().getPanel(JobDebugPanel.class).setVisible(true)),
             new CommandEntry("Parcel detail",           view -> UserInterface.getInstance().getPanel(ParcelDebugPanel.class).setVisible(true)),
@@ -146,33 +145,48 @@ public class DebugModule extends GameUIModule {
 
     @Override
     protected void onCreate() {
-        createPanel("panels/dev.yml", (layout, view) -> {
-            mView = view;
-            FrameLayout frameCommands = (FrameLayout)view.findById("frame_dev_commands");
+        addWindow(WindowBuilder.create().setTitle("Debug").setContentLayout("panels/dev.yml").build(new WindowListener() {
+            @Override
+            public void onCreate(UIWindow window, FrameLayout view) {
+                mView = view;
+                FrameLayout frameCommands = (FrameLayout) view.findById("frame_dev_commands");
 
-            int index = 0;
-            for (CommandEntry entry: COMMANDS) {
-                UILabel lbCommand = ViewFactory.getInstance().createTextView(100, 26);
-                lbCommand.setCharacterSize(14);
-                lbCommand.setAlign(View.Align.CENTER_VERTICAL);
-                lbCommand.setPosition(10, index++ * 26);
-                lbCommand.setOnClickListener(entry.listener);
-                lbCommand.setString(entry.label);
-                lbCommand.setSize(200, 26);
-                frameCommands.addView(lbCommand);
+                int index = 0;
+                for (CommandEntry entry : COMMANDS) {
+                    UILabel lbCommand = ViewFactory.getInstance().createTextView(100, 26);
+                    lbCommand.setCharacterSize(14);
+                    lbCommand.setAlign(View.Align.CENTER_VERTICAL);
+                    lbCommand.setPosition(10, index++ * 26);
+                    lbCommand.setOnClickListener(entry.listener);
+                    lbCommand.setString(entry.label);
+                    lbCommand.setSize(200, 26);
+                    frameCommands.addView(lbCommand);
+                }
+
+                view.findById("bt_back").setOnClickListener(v -> {
+                    view.findById("frame_dev_commands").setVisible(true);
+                    view.findById("frame_dev_sub").setVisible(false);
+                });
             }
 
-            view.findById("bt_back").setOnClickListener(v -> {
-                view.findById("frame_dev_commands").setVisible(true);
-                view.findById("frame_dev_sub").setVisible(false);
-            });
-        });
+            @Override
+            public void onRefresh(int update) {
+
+            }
+
+            @Override
+            public void onClose() {
+
+            }
+        }));
     }
 
     @Override
     protected void onUpdate(int tick) {
-        ((UILabel)mView.findById("lb_mouse")).setString(
-                UserInterface.getInstance().getMouseX() + "x" + UserInterface.getInstance().getMouseY());
+        if (mView != null) {
+            ((UILabel) mView.findById("lb_mouse")).setString(
+                    UserInterface.getInstance().getMouseX() + "x" + UserInterface.getInstance().getMouseY());
+        }
     }
 
     @Override

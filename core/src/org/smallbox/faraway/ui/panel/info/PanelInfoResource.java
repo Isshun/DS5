@@ -42,7 +42,23 @@ public class PanelInfoResource extends BaseInfoRightPanel {
             ((UILabel) findById("lb_label")).setString(resource.getLabel());
             ((UILabel) findById("lb_name")).setString(resource.getName());
             ((UILabel) findById("lb_quantity")).setString("Quantity: %d", resource.getQuantity());
-            ((UILabel) findById("lb_grow_state")).setString("Grow: " + (int)(resource.getRealQuantity() * 100 / resource.getTotalQuantity()) + "%");
+
+            UILabel lbGrowState = (UILabel) findById("lb_grow_state");
+            UILabel lbGrowSpeed = (UILabel) findById("lb_grow_speed");
+            if (resource.isPlant()) {
+                lbGrowState.setString("Grow: " + (int) (resource.getRealQuantity() * 100 / resource.getTotalQuantity()) + "%");
+                lbGrowState.setVisible(true);
+
+                if (resource.getGrowState().name != null) {
+                    lbGrowSpeed.setString("Grow speed: " + (int) (resource.getGrowRate() * 100) + "% (" + resource.getGrowState().name + ")");
+                } else {
+                    lbGrowSpeed.setString("Grow speed: " + (int) (resource.getGrowRate() * 100) + "%");
+                }
+                lbGrowSpeed.setVisible(true);
+            } else {
+                lbGrowState.setVisible(false);
+                lbGrowSpeed.setVisible(false);
+            }
 
             if (findById("lb_pos") != null) {
                 ((UILabel) findById("lb_pos")).setString(resource.getX() + "x" + resource.getY());

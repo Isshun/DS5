@@ -1,9 +1,7 @@
 package org.smallbox.faraway.game.module;
 
-import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.ui.engine.LayoutFactory;
-import org.smallbox.faraway.ui.engine.view.View;
+import org.smallbox.faraway.engine.renderer.GDXRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,23 +10,34 @@ import java.util.List;
  * Created by Alex on 30/08/2015.
  */
 public abstract class GameUIModule extends GameModule {
-    private List<View> _panels = new ArrayList<>();
+    private List<UIWindow> _windows = new ArrayList<>();
 
     public void draw(GDXRenderer renderer) {
-        _panels.forEach(view -> view.draw(renderer, 0, 0));
+        _windows.forEach(view -> view.draw(renderer, 0, 0));
     }
 
-    protected void createPanel(String layoutPath, LayoutFactory.OnLayoutLoaded onLayoutLoaded) {
-        LayoutFactory.load("data/ui/" + layoutPath, (layout, panel) -> {
-            _panels.add(panel);
-            onLayoutLoaded.onLayoutLoaded(layout, panel);
-        });
+    protected void addWindow(UIWindow window) {
+        _windows.add(window);
+        window.create();
     }
-
 
     @Override
-    protected void onDestroy() {
-        _panels.clear();
+    public void destroy() {
+        super.destroy();
+        _windows.clear();
     }
 
+    @Override
+    public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
+        for (UIWindow window: _windows) {
+            if (window.onMouseEvent(action, button, x, y)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void refresh(int update) {
+        _windows.forEach(window -> window.refresh(update));
+    }
 }

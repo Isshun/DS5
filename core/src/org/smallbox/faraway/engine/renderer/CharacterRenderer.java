@@ -2,7 +2,6 @@ package org.smallbox.faraway.engine.renderer;
 
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.core.ui.GDXLabel;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
@@ -164,6 +163,10 @@ public class CharacterRenderer extends BaseRenderer {
     @Override
     public boolean isActive(GameConfig config) {
         return true;
+    }
+
+    public int getLevel() {
+        return 100;
     }
 
 }

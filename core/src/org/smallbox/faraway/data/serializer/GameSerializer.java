@@ -2,8 +2,8 @@ package org.smallbox.faraway.data.serializer;
 
 import com.ximpleware.*;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.world.AreaModuleSerializer;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;

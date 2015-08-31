@@ -6,13 +6,12 @@ import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.util.OnMoveListener;
 
 import java.util.ArrayList;

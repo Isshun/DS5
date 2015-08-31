@@ -1,13 +1,13 @@
 package org.smallbox.faraway.game.model.check.joy;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobMove;
+import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.util.Log;
 
 /**

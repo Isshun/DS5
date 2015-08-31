@@ -3,11 +3,11 @@ package org.smallbox.faraway.ui;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.game.model.ToolTips;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.ui.panel.PanelTooltip;
 import org.smallbox.faraway.ui.panel.info.*;
 import org.smallbox.faraway.ui.panel.right.PanelCharacter;
@@ -151,6 +151,7 @@ public class UserInterfaceSelector {
     }
 
     public void clean() {
+        Game.getInstance().notify(observer -> observer.onDeselect());
         if (_selectedCharacter != null) {
             _selectedCharacter.setSelected(false);
         }
@@ -188,7 +189,6 @@ public class UserInterfaceSelector {
         if (_selectedCharacter != null) {
             _selectedCharacter.setSelected(true);
         }
-        ((PanelCharacter)_userInterface.getPanel(PanelCharacter.class)).select(character);
         Game.getInstance().notify(observer -> observer.onSelectCharacter(character));
     }
 

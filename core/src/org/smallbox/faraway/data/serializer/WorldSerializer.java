@@ -2,8 +2,8 @@ package org.smallbox.faraway.data.serializer;
 
 import com.ximpleware.*;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.world.WorldModule;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.module.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
 
 import java.io.FileOutputStream;

@@ -2,10 +2,10 @@ package org.smallbox.faraway.game.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
+import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.util.Log;
 
 /**

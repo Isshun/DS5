@@ -1,9 +1,9 @@
 package org.smallbox.faraway.game.module.extra;
 
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.ToolTips;
 import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.util.Strings;
 
 public class ResourceModule extends GameModule {

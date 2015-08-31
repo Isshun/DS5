@@ -2,8 +2,7 @@ package org.smallbox.faraway.game.module.dev;
 
 import org.smallbox.faraway.core.ui.GDXLabel;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.GameModule;
-import org.smallbox.faraway.game.module.GameUIModule;
+import org.smallbox.faraway.game.module.*;
 import org.smallbox.faraway.ui.engine.view.FrameLayout;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
@@ -12,28 +11,45 @@ import org.smallbox.faraway.ui.engine.view.UILabel;
  */
 public class ModuleManagerModule extends GameUIModule {
     @Override
+    protected boolean loadOnStart() {
+        return false;
+    }
+
+    @Override
     protected void onCreate() {
-        createPanel("test.yml", (layout, view) -> {
-            int index = 0;
-            FrameLayout frameContent = (FrameLayout)view.findById("content");
-            for (GameModule module: Game.getInstance().getModules()) {
-                UILabel lbModule = new GDXLabel();
-                lbModule.setString((module.isLoaded() ? "[x] " : "[ ] ") + module.getClass().getSimpleName());
-                lbModule.setCharacterSize(14);
-                lbModule.setPosition(0, index++ * 20);
-                lbModule.setOnClickListener(view1 -> {
-                    if (module.isLoaded()) {
-                        Game.getInstance().unloadModule(module);
-                        lbModule.setString("[ ] " + module.getClass().getSimpleName());
-                    } else {
-                        Game.getInstance().loadModule(module);
-                        lbModule.setString("[x] " + module.getClass().getSimpleName());
+        addWindow(WindowBuilder.create()
+                .setTitle("Module Manager")
+                .setMovable(true)
+                .setClosable(true)
+                .build(new WindowListener() {
+                    @Override
+                    public void onCreate(UIWindow window, FrameLayout view) {
+                        window.setPosition(500, 500);
+
+                        int index = 0;
+                        for (GameModule module : Game.getInstance().getModules()) {
+                            UILabel lbModule = new GDXLabel();
+                            lbModule.setString((module.isLoaded() ? "[x] " : "[ ] ") + module.getClass().getSimpleName());
+                            lbModule.setCharacterSize(14);
+                            lbModule.setPosition(0, index++ * 20);
+                            lbModule.setOnClickListener(view1 -> {
+                                Game.getInstance().toggleModule(module);
+                                lbModule.setString((module.isLoaded() ? "[x] " : "[ ] ") + module.getClass().getSimpleName());
+                            });
+                            view.addView(lbModule);
+                        }
+
+                        view.setSize(150, index * 20);
                     }
-                });
-                frameContent.addView(lbModule);
+
+                    @Override
+                    public void onRefresh(int update) {
+                    }
+
+                    @Override
+            public void onClose() {
             }
-            frameContent.setSize(150, index * 20);
-        });
+        }));
     }
 
     @Override

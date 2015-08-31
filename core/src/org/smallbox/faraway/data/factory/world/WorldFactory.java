@@ -2,11 +2,11 @@ package org.smallbox.faraway.data.factory.world;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.module.world.WorldModule;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
+import org.smallbox.faraway.game.module.world.WorldModule;
 import org.smallbox.faraway.util.Log;
 
 import java.util.*;

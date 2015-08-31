@@ -4,21 +4,25 @@ import org.reflections.Reflections;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.data.factory.world.WorldFactory;
 import org.smallbox.faraway.data.serializer.GameSerializer;
+import org.smallbox.faraway.engine.renderer.BaseRenderer;
+import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
-import org.smallbox.faraway.game.module.GameModule;
-import org.smallbox.faraway.game.module.character.*;
-import org.smallbox.faraway.game.module.world.*;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.planet.PlanetModel;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
 import org.smallbox.faraway.game.model.planet.RegionModel;
+import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.character.CharacterModule;
+import org.smallbox.faraway.game.module.character.JobModule;
+import org.smallbox.faraway.game.module.world.WorldModule;
 import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -77,6 +81,7 @@ public class Game {
         _fileName = fileName;
         _isRunning = true;
         _viewport = new Viewport(400, 300);
+        GDXRenderer.getInstance().setViewport(_viewport);
         _tick = 0;
 
         Log.info("Game: onCreate");
@@ -166,12 +171,38 @@ public class Game {
     public GameInfo getInfo() { return _info; }
 
     public void unloadModule(GameModule module) {
-        module.destroy();
-        _observers.remove(module);
+        if (!module.isMandatory()) {
+            module.destroy();
+            _observers.remove(module);
+        }
+    }
+
+    public void unloadModule(Class<? extends GameModule> cls) {
+        unloadModule(getModule(cls));
     }
 
     public void loadModule(GameModule module) {
         module.create();
         _observers.add(module);
+    }
+
+    public void loadModule(Class<? extends GameModule> cls) {
+        loadModule(getModule(cls));
+    }
+
+    public void toggleModule(Class<? extends GameModule> cls) {
+        toggleModule(getModule(cls));
+    }
+
+    public void toggleModule(GameModule module) {
+        if (module.isLoaded()) {
+            if (!module.isMandatory()) {
+                module.destroy();
+                _observers.remove(module);
+            }
+        } else {
+            module.create();
+            _observers.add(module);
+        }
     }
 }

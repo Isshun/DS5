@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.game.model.item;
 //
-//import org.smallbox.faraway.core.renderer.GDXRenderer;
+//import org.smallbox.faraway.engine.renderer.GDXRenderer;
 //import org.smallbox.faraway.core.Viewport;
 //import org.smallbox.faraway.core.SpriteManager;
 //import org.smallbox.faraway.engine.SpriteModel;

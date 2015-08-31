@@ -1,8 +1,8 @@
 package org.smallbox.faraway.game;
 
-import org.smallbox.faraway.game.module.extra.QuestModule;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.module.extra.QuestModule;
 
 /**
  * Created by Alex on 06/06/2015.

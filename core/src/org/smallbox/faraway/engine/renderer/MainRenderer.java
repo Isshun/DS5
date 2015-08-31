@@ -3,7 +3,6 @@ package org.smallbox.faraway.engine.renderer;
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.renderer.GDXRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
@@ -38,11 +37,7 @@ public class MainRenderer {
 	public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
 		long time = System.currentTimeMillis();
 
-		for (BaseRenderer render: _renders) {
-			if (render.isActive(GameData.config)) {
-				render.draw(renderer, viewport, animProgress);
-			}
-		}
+        _renders.stream().filter(BaseRenderer::isLoaded).forEach(render -> render.draw(renderer, viewport, animProgress));
 
         _frame++;
 		_renderTime += System.currentTimeMillis() - time;
@@ -51,26 +46,29 @@ public class MainRenderer {
 	public void init(GameConfig config, Game game) {
 		_frame = 0;
 
-        for (Class<? extends BaseRenderer> cls : new Reflections("org.smallbox.faraway").getSubTypesOf(BaseRenderer.class)) {
-            if (!Modifier.isAbstract(cls.getModifiers())) {
-                try {
-                    Log.info("Load render: " + cls.getSimpleName());
-                    BaseRenderer render = cls.getConstructor().newInstance();
-                    if (render.isActive(config)) {
-                        _renders.add(render);
-                    }
-                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                    e.printStackTrace();
+        new Reflections("org.smallbox.faraway").getSubTypesOf(BaseRenderer.class).stream().filter(cls -> !Modifier.isAbstract(cls.getModifiers())).forEach(cls -> {
+            try {
+                Log.info("Load render: " + cls.getSimpleName());
+                BaseRenderer render = cls.getConstructor().newInstance();
+                if (render.isActive(config)) {
+                    render.load();
+                } else {
+                    render.unload();
                 }
+                _renders.add(render);
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
             }
-        }
+        });
+
+        _renders.sort((r1, r2) -> r1.getLevel() - r2.getLevel());
 
 		_worldRenderer = (WorldRenderer)getRender(WorldRenderer.class);
 		game.addObserver(_worldRenderer);
 
         _characterRenderer = (CharacterRenderer)getRender(CharacterRenderer.class);
 
-        _renders.forEach(BaseRenderer::init);
+        _renders.stream().filter(BaseRenderer::isLoaded).forEach(BaseRenderer::init);
 	}
 
     private BaseRenderer getRender(Class<? extends BaseRenderer> cls) {
@@ -95,4 +93,12 @@ public class MainRenderer {
 	public WorldRenderer getWorldRenderer() {
 		return _worldRenderer;
 	}
+
+    public void toggleRender(BaseRenderer render) {
+        if (render.isLoaded()) {
+            render.unload();
+        } else {
+            render.load();
+        }
+    }
 }

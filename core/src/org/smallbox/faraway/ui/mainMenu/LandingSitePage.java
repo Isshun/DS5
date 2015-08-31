@@ -1,6 +1,6 @@
 package org.smallbox.faraway.ui.mainMenu;
 
-import org.smallbox.faraway.core.renderer.GDXRenderer;
+import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.model.planet.LandingSiteModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.view.FrameLayout;

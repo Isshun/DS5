@@ -3,7 +3,6 @@ package org.smallbox.faraway.game.module.world;
 import com.ximpleware.*;
 import org.smallbox.faraway.data.serializer.SerializerInterface;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.area.*;
 import org.smallbox.faraway.game.model.item.ItemInfo;

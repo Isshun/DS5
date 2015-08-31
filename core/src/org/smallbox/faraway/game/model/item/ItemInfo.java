@@ -40,18 +40,14 @@ public class ItemInfo {
 	}
 
 	public static class ItemInfoPlant {
-        public static class GrowingInfoEntry {
+        public static class GrowingInfo {
+			public String 				name;
 			public double 				value;
 			public int[]				temperature;
 			public int[]				light;
 		}
-		public static class GrowingInfo {
-			public GrowingInfoEntry		stasis;
-			public GrowingInfoEntry	    partial;
-			public GrowingInfoEntry	    regular;
-			public GrowingInfoEntry	    exceptional;
-		}
-		public GrowingInfo              growing;
+		public List<GrowingInfo>	states;
+		public double 					growing;
         public int                      mature;
 	}
 

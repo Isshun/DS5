@@ -2,9 +2,9 @@ package org.smallbox.faraway.game.module.world;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.model.room.NeighborModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
+import org.smallbox.faraway.game.module.GameModule;
 
 /**
  * Created by Alex on 18/06/2015.
