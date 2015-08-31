@@ -42,7 +42,7 @@ public class ConsumableModel extends MapObjectModel {
 
     public void fixPosition() {
         if (_parcel != null && !_parcel.isWalkable()) {
-            ParcelModel parcel = WorldHelper.getNearestFreeSpace(_parcel.x, _parcel.y, true, false);
+            ParcelModel parcel = WorldHelper.getNearestFreeParcel(_parcel.x, _parcel.y, true, false);
             if (parcel != null) {
                 _parcel = parcel;
                 _x = parcel.x;

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game;
 
+import org.smallbox.faraway.game.model.area.AreaType;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.module.extra.QuestModule;
@@ -33,4 +34,6 @@ public interface GameObserver {
     default void onDeselect() {}
     default void onStartGame() {}
     default void onLog(String tag, String message) {}
+    default void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY) {}
+    default void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY) {}
 }

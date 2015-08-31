@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.helper;
 
+import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
 
@@ -111,7 +112,7 @@ public class WorldHelper {
         return !(x < 0 || y < 0 || x >= _width || y >= _height);
     }
 
-    public static ParcelModel getNearestFreeSpace(int x, int y, boolean acceptInterior, boolean acceptExterior) {
+    public static ParcelModel getNearestFreeParcel(int x, int y, boolean acceptInterior, boolean acceptExterior) {
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < i; j++) {
                 // Top
@@ -202,4 +203,56 @@ public class WorldHelper {
     public static int getApproxDistance(ParcelModel p1, ParcelModel p2) {
         return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
     }
+
+    public static ParcelModel getNearest(int x, int y, boolean allowExterior, boolean allowInterior, boolean allowCharacter, boolean allowStructure, boolean allowItem, boolean allowConsumable, boolean allowResource) {
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < i; j++) {
+                // Top
+                if (checkParcel(x + j, y + i, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x + j][y + i][0];
+                if (checkParcel(x - j, y + i, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x - j][y + i][0];
+
+                // Bottom
+                if (checkParcel(x + j, y - i, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x + j][y - i][0];
+                if (checkParcel(x - j, y - i, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x - j][y - i][0];
+
+                // Right
+                if (checkParcel(x + i, y + j, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x + i][y + j][0];
+                if (checkParcel(x + i, y - j, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x + i][y + j][0];
+
+                // Left
+                if (checkParcel(x - i, y + j, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x - i][y + j][0];
+                if (checkParcel(x - i, y - j, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x - i][y - j][0];
+            }
+        }
+        return null;
+    }
+
+    private static boolean checkParcel(int x, int y, boolean allowExterior, boolean allowInterior, boolean allowCharacter, boolean allowStructure, boolean allowItem, boolean allowConsumable, boolean allowResource) {
+        if (!WorldHelper.inMapBounds(x, y)) {
+            return false;
+        }
+        if (!allowInterior && _parcels[x][y][0].getRoom() != null && !_parcels[x][y][0].getRoom().isExterior()) {
+            return false;
+        }
+        if (!allowExterior && (_parcels[x][y][0].getRoom() == null || _parcels[x][y][0].getRoom().isExterior())) {
+            return false;
+        }
+        if (!allowStructure && _parcels[x][y][0].getStructure() != null && _parcels[x][y][0].getStructure().isSolid()) {
+            return false;
+        }
+        if (!allowResource && _parcels[x][y][0].getResource() != null) {
+            return false;
+        }
+        if (!allowItem && _parcels[x][y][0].getItem() != null) {
+            return false;
+        }
+        if (!allowConsumable && _parcels[x][y][0].getConsumable() != null) {
+            return false;
+        }
+        if (!allowCharacter && Game.getCharacterManager().countCharacterAtPos(x, y) > 0) {
+            return false;
+        }
+        return true;
+    }
+
 }

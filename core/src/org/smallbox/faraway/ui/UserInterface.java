@@ -55,7 +55,7 @@ public class UserInterface implements GameEventListener {
     private int							_keyMovePosX;
     private int							_keyMovePosY;
     private UserInteraction				_interaction;
-    private CharacterModule _characters;
+    private CharacterModule             _characters;
     private Mode 						_mode;
     private ContextualMenu 				_menu;
     private Game 						_game;

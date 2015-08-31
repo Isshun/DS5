@@ -4,6 +4,7 @@ import org.smallbox.faraway.data.serializer.SerializerInterface;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
+import org.smallbox.faraway.game.model.area.AreaType;
 
 /**
  * Created by Alex on 15/06/2015.

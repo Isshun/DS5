@@ -245,7 +245,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public void fixPosition() {
         if (parcel != null && !parcel.isWalkable()) {
-            ParcelModel parcel = WorldHelper.getNearestFreeSpace(_posX, _posY, true, false);
+            ParcelModel parcel = WorldHelper.getNearestFreeParcel(_posX, _posY, true, false);
             if (parcel != null) {
                 this.parcel = parcel;
                 _posX = parcel.x;

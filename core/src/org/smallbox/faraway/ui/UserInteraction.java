@@ -13,10 +13,7 @@ import org.smallbox.faraway.game.model.job.JobHaul;
 import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.ui.UserInterface.Mode;
-import org.smallbox.faraway.ui.cursor.DumpCursor;
-import org.smallbox.faraway.ui.cursor.GatherCursor;
-import org.smallbox.faraway.ui.cursor.MineCursor;
-import org.smallbox.faraway.ui.cursor.PickCursor;
+import org.smallbox.faraway.ui.cursor.*;
 import org.smallbox.faraway.ui.panel.right.PanelPlan.Planning;
 import org.smallbox.faraway.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -32,13 +29,13 @@ public class UserInteraction {
 
 		// Set area
 		if (_action == Action.SET_AREA) {
-			((AreaModule)Game.getInstance().getModule(AreaModule.class)).createArea(_selectedAreaType, fromX, fromY, toX, toY);
+            Game.getInstance().notify(gameObserver -> gameObserver.onAddArea(_selectedAreaType, fromX, fromY, toX, toY));
 			return true;
 		}
 
 		// Set area
 		if (_action == Action.REMOVE_AREA) {
-			((AreaModule)Game.getInstance().getModule(AreaModule.class)).removeArea(_selectedAreaType, fromX, fromY, toX, toY);
+            Game.getInstance().notify(gameObserver -> gameObserver.onRemoveArea(_selectedAreaType, fromX, fromY, toX, toY));
 			return true;
 		}
 
@@ -286,5 +283,26 @@ public class UserInteraction {
     public void set(Action action, AreaType areaType) {
         _action = action;
         _selectedAreaType = areaType;
+
+		switch (action) {
+			case NONE:
+				break;
+			case REMOVE_ITEM:
+				break;
+			case REMOVE_STRUCTURE:
+				break;
+			case BUILD_ITEM:
+				break;
+			case SET_AREA:
+				UserInterface.getInstance().setCursor(new AreaCursor());
+				break;
+			case PUT_ITEM_FREE:
+				break;
+			case REMOVE_AREA:
+				UserInterface.getInstance().setCursor(new AreaCursor());
+				break;
+			case SET_PLAN:
+				break;
+		}
     }
 }

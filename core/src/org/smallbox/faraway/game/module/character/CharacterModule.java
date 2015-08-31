@@ -190,4 +190,13 @@ public class CharacterModule extends GameUIModule {
 		_window.setVisible(false);
 	}
 
+	public int countCharacterAtPos(int posX, int posY) {
+		int count = 0;
+		for (CharacterModel character: _characters) {
+			if (character.getX() == posX && character.getY() == posY) {
+				count++;
+			}
+		}
+		return count;
+	}
 }

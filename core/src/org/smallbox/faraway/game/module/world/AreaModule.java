@@ -24,7 +24,8 @@ public class AreaModule extends GameModule {
         _updateInterval = 10;
     }
 
-    public void createArea(AreaType type, int fromX, int fromY, int toX, int toY) {
+    @Override
+    public void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY) {
         // Search existing area for current position
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
@@ -43,13 +44,16 @@ public class AreaModule extends GameModule {
         addParcelToArea(area, fromX, fromY, toX, toY);
     }
 
-    public void removeArea(AreaType type, int fromX, int fromY, int toX, int toY) {
+    @Override
+    public void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY) {
         // Search existing area for current position
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
                 for (AreaModel area: _areas) {
                     if (area.getType() == type && area.contains(x, y)) {
-                        area.removeParcel(Game.getWorldManager().getParcel(x, y));
+                        ParcelModel parcel = Game.getWorldManager().getParcel(x, y);
+                        parcel.setArea(null);
+                        area.removeParcel(parcel);
                     }
                 }
             }
