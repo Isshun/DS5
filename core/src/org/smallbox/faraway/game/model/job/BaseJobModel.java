@@ -5,6 +5,7 @@ import org.smallbox.faraway.game.helper.ItemFinder;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoAction;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -110,7 +111,7 @@ public abstract class BaseJobModel {
 		_count = 1;
         _limit = -1;
         _label = "none";
-        _finder = (ItemFinder)Game.getInstance().getModule(ItemFinder.class);
+        _finder = (ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class);
 
         Log.debug("Job #" + _id + " onCreate");
 	}

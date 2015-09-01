@@ -24,7 +24,7 @@ public abstract class View {
         _name = name;
     }
 
-    public void setAlign(boolean isAlignLeft, boolean isAlignTop) {
+    public void setTextAlign(boolean isAlignLeft, boolean isAlignTop) {
         _isAlignLeft = isAlignLeft;
         _isAlignTop = isAlignTop;
     }
@@ -68,7 +68,7 @@ public abstract class View {
     public boolean 		isVisible() { return _isVisible; }
 
     public void 		setId(int id) { _id = id; }
-    public void         setAlign(Align align) { _align = align; }
+    public void setTextAlign(Align align) { _align = align; }
     public void 		setFocus(boolean focus) { _isFocus = focus; }
     public void 		setParent(FrameLayout parent) {
         _parent = parent;
@@ -83,6 +83,10 @@ public abstract class View {
     public abstract void draw(GDXRenderer renderer, Viewport viewport);
     public abstract void draw(GDXRenderer renderer, int x, int y);
     public abstract void refresh();
+
+    public void setBackgroundColor(int color) {
+        _backgroundColor = new Color(color);
+    }
 
     public void setBackgroundColor(Color color) {
         _backgroundColor = color;

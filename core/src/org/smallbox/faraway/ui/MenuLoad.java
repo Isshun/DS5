@@ -32,8 +32,8 @@ public class MenuLoad extends MenuBase {
 		_nbFiles = 0;
 		for (final File file: FileUtils.list("saves")) {
 			UILabel lbFile = ViewFactory.getInstance().createTextView(200, 32);
-			lbFile.setCharacterSize(16);
-			lbFile.setString(file.getName());
+			lbFile.setTextSize(16);
+			lbFile.setText(file.getName());
 			lbFile.setColor(Color.WHITE);
 			lbFile.setPosition(200, 32 * _nbFiles);
 			lbFile.setOnClickListener(view -> {

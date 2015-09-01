@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game;
 
+import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.area.AreaType;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
@@ -26,6 +27,7 @@ public interface GameObserver {
     default void onYearChange(int year) {}
     default void onOpenQuest(QuestModel quest) {}
     default void onCloseQuest(QuestModel quest) {}
+    default void onSelectArea(AreaModel area) {}
     default void onSelectCharacter(CharacterModel character) {}
     default void onSelectParcel(ParcelModel parcel) {}
     default void onSelectItem(ItemModel item) {}

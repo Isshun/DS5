@@ -24,7 +24,7 @@ public class GDXLabel extends UILabel {
     }
 
     @Override
-    public void setCharacterSize(int size) {
+    public void setTextSize(int size) {
         _textSize = size;
     }
 

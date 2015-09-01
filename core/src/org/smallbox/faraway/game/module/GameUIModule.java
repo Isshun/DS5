@@ -11,7 +11,7 @@ import java.util.List;
  * Created by Alex on 30/08/2015.
  */
 public abstract class GameUIModule extends GameModule {
-    private List<UIWindow>  _windows = new ArrayList<>();
+    protected List<UIWindow>  _windows = new ArrayList<>();
 
     public void draw(GDXRenderer renderer) {
         _windows.forEach(view -> view.draw(renderer, 0, 0));

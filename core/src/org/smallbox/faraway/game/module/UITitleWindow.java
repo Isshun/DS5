@@ -32,7 +32,7 @@ public abstract class UITitleWindow extends UIWindow {
                     _lbClose.setOnClickListener(view -> onClose());
                 }
                 _lbTitle = (UILabel) findById("lb_title");
-                _lbTitle.setString(" " + title);
+                _lbTitle.setText(" " + title);
             }
 
             _frameContent = (FrameLayout) findById("frame_content");

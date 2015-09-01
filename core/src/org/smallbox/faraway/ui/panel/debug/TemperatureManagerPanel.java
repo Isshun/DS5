@@ -13,7 +13,7 @@
 //
 //    @Override
 //    protected void onCreate(ViewFactory factory) {
-//        _manager = (TemperatureModule)Game.getInstance().getModule(TemperatureModule.class);
+//        _manager = (TemperatureModule)ModuleManager.getInstance().getModule(TemperatureModule.class);
 //    }
 //
 //    @Override

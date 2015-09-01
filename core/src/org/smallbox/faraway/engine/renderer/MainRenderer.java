@@ -6,27 +6,30 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class MainRenderer {
-	private static MainRenderer         _self;
-	private static long 				_renderTime;
-	private static int 					_frame;
-	private SpriteManager 			    _spriteManager;
-	private CharacterRenderer 		    _characterRenderer;
-	private WorldRenderer 			    _worldRenderer;
-	private final List<BaseRenderer>    _renders;
+	private static MainRenderer             _self;
+	private static long 				    _renderTime;
+	private static int 					    _frame;
+    private final List<BaseRenderer>        _renders;
+    private SpriteManager 			        _spriteManager;
+	private CharacterRenderer 		        _characterRenderer;
+	private WorldRenderer 			        _worldRenderer;
 
 	public MainRenderer(GDXRenderer renderer, GameConfig config) {
 		_self = this;
 		_spriteManager = SpriteManager.getInstance();
-		_renders = new ArrayList<>();
-	}
+		_renders = ModuleManager.getInstance().getRenders();
+
+    }
 
 	public void onRefresh(int frame) {
         for (BaseRenderer render: _renders) {
@@ -46,26 +49,17 @@ public class MainRenderer {
 	public void init(GameConfig config, Game game) {
 		_frame = 0;
 
-        new Reflections("org.smallbox.faraway").getSubTypesOf(BaseRenderer.class).stream().filter(cls -> !Modifier.isAbstract(cls.getModifiers())).forEach(cls -> {
-            try {
-                Log.info("Load render: " + cls.getSimpleName());
-                BaseRenderer render = cls.getConstructor().newInstance();
-                if (render.isActive(config)) {
-                    render.load();
-                } else {
-                    render.unload();
-                }
-                _renders.add(render);
-            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
+        _renders.forEach(render -> {
+            if (render.isActive(config)) {
+                render.load();
+            } else {
+                render.unload();
             }
         });
 
         _renders.sort((r1, r2) -> r1.getLevel() - r2.getLevel());
 
 		_worldRenderer = (WorldRenderer)getRender(WorldRenderer.class);
-		game.addObserver(_worldRenderer);
-
         _characterRenderer = (CharacterRenderer)getRender(CharacterRenderer.class);
 
         _renders.stream().filter(BaseRenderer::isLoaded).forEach(BaseRenderer::init);

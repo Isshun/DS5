@@ -47,7 +47,7 @@ public class PanelConsole extends BasePanel {
 		_texts = new UILabel[NB_LINES];
 		for (int i = 0; i < NB_LINES; i++) {
 			_texts[i] = ViewFactory.getInstance().createTextView();
-			_texts[i].setCharacterSize(FONT_SIZE);
+			_texts[i].setTextSize(FONT_SIZE);
 			_texts[i].setPosition(0, i * LINE_INTERVAL);
 			frameEntries.addView(_texts[i]);
 		}
@@ -88,7 +88,7 @@ public class PanelConsole extends BasePanel {
 
 	private void refreshLabels() {
 		for (int i = 0; i <= NB_LINES - 1; i++) {
-			_texts[i].setString(_data[_level][i]);
+			_texts[i].setText(_data[_level][i]);
 
 			// Set color
 			if (_data[_level][i] != null && _data[_level][i].startsWith("[D]")) _texts[i].setColor(COLOR_DEBUG);

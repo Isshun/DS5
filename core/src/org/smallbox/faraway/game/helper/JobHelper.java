@@ -18,12 +18,12 @@ import java.util.List;
  */
 public class JobHelper {
 
-    public static BaseJobModel createGatherJob(int x, int y, boolean removeOnComplete) {
+    public static BaseJobModel createGatherJob(int x, int y) {
         ResourceModel res = WorldHelper.getResource(x, y);
         if (res == null) {
             return null;
         }
-        return JobGather.create(res, removeOnComplete);
+        return JobGather.create(res);
     }
 
     public static BaseJobModel createMiningJob(int x, int y) {
@@ -35,7 +35,7 @@ public class JobHelper {
     }
 
     public static void addGatherJob(int x, int y, boolean removeOnComplete) {
-        BaseJobModel job = createGatherJob(x, y, removeOnComplete);
+        BaseJobModel job = createGatherJob(x, y);
         if (job != null) {
             JobModule.getInstance().addJob(job);
         }
@@ -81,7 +81,7 @@ public class JobHelper {
         return job;
     }
 
-    public static BaseJobModel addGather(ResourceModel resource, boolean removeOnComplete) {
+    public static BaseJobModel addGather(ResourceModel resource) {
         if (resource == null) {
             Log.error("JobModule: gather on null area");
             return null;
@@ -94,7 +94,7 @@ public class JobHelper {
             }
         }
 
-        BaseJobModel job = JobGather.create(resource, removeOnComplete);
+        BaseJobModel job = JobGather.create(resource);
         JobModule.getInstance().addJob(job);
 
         return job;

@@ -23,6 +23,6 @@ public class LandingSitePage extends MainMenuPage {
 
     @Override
     protected void onOpen() {
-        ((UILabel)findById("lb_planet")).setString(_mainMenu.getPlanet().name);
+        ((UILabel)findById("lb_planet")).setText(_mainMenu.getPlanet().name);
     }
 }

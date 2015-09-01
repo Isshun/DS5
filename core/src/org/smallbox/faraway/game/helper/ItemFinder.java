@@ -5,6 +5,7 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.game.module.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
@@ -26,8 +27,8 @@ public class ItemFinder extends GameModule {
     protected void onLoaded() {
         _items = new ArrayList<>();
         _consumables = new ArrayList<>();
-        _pathManager = (PathManager) Game.getInstance().getModule(PathManager.class);
-        _worldModule = (WorldModule) Game.getInstance().getModule(WorldModule.class);
+        _pathManager = (PathManager) ModuleManager.getInstance().getModule(PathManager.class);
+        _worldModule = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
         _width = Game.getInstance().getInfo().worldWidth;
         _height = Game.getInstance().getInfo().worldHeight;
     }

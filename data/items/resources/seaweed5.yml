@@ -6,7 +6,8 @@ category: Algae
 isLive: true
 plant:
     mature: 5
-    growing: 0.005
+    growing: 0.05
+    cutOnGathering: true
     states:
         -   name: depleted
             value: -0.1

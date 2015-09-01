@@ -7,6 +7,7 @@ import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobMove;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.util.Log;
 
@@ -40,7 +41,7 @@ public class CheckJoyWalk extends CharacterCheck {
         // LF area
         _area = null;
         int bestDistance = Integer.MAX_VALUE;
-        for (AreaModel area: ((AreaModule)Game.getInstance().getModule(AreaModule.class)).getAreas()) {
+        for (AreaModel area: ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).getAreas()) {
             if (area.isHome()) {
                 int distance = Math.abs(character.getX() - area.getX()) + Math.abs(character.getY() - area.getY());
                 if (bestDistance > distance) {

@@ -33,8 +33,8 @@ public abstract class ViewFactory {
     }
 
     public abstract UILabel     createTextView();
-    public abstract UILabel createTextView(int width, int height);
-    public abstract ColorView createColorView();
+    public abstract UILabel     createTextView(int width, int height);
+    public abstract ColorView   createColorView();
     public abstract ColorView   createColorView(int width, int height);
     public abstract FrameLayout createFrameLayout();
     public abstract FrameLayout createFrameLayout(int width, int height);
@@ -65,7 +65,7 @@ public abstract class ViewFactory {
             }
 
             if (layout.align != null) {
-                rootView.setAlign("left".equals(layout.align[0]), "top".equals(layout.align[1]));
+                rootView.setTextAlign("left".equals(layout.align[0]), "top".equals(layout.align[1]));
             }
 
             if (layout.position != null) {

@@ -77,8 +77,8 @@ public class DebugModule extends GameUIModule {
             new CommandEntry("Kill selected",       view -> _character.setIsDead()),
             new CommandEntry("Kill all",            view -> Game.getCharacterManager().getCharacters().forEach(CharacterModel::setIsDead)),
             new CommandEntry("remove characters",   view -> Game.getCharacterManager().getCharacters().clear()),
-            new CommandEntry("Launch quest",        view -> ((QuestModule)Game.getInstance().getModule(QuestModule.class)).launchRandomQuest()),
-            new CommandEntry("Refresh rooms",       view -> ((RoomModule)Game.getInstance().getModule(RoomModule.class)).refreshRooms()),
+            new CommandEntry("Launch quest",        view -> ((QuestModule)ModuleManager.getInstance().getModule(QuestModule.class)).launchRandomQuest()),
+            new CommandEntry("Refresh rooms",       view -> ((RoomModule)ModuleManager.getInstance().getModule(RoomModule.class)).refreshRooms()),
             new CommandEntry("Remove rubbles",      view -> {
                 for (ConsumableModel consumable : Game.getWorldManager().getConsumables().stream().filter(res -> "base.rubble".equals(res.getInfo().name)).collect(Collectors.toList())) {
                     Game.getWorldManager().removeConsumable(consumable);
@@ -104,7 +104,7 @@ public class DebugModule extends GameUIModule {
             ),
             new CommandEntry("Dump managers",       view -> {
                 Log.notice("\n----------- dump -----------");
-                Game.getInstance().getModules().forEach(manager -> manager.dump());
+                ModuleManager.getInstance().getModules().forEach(manager -> manager.dump());
             }),
             new CommandEntry("Dump renders",       view -> {
                 Log.notice("\n----------- dump -----------");
@@ -114,7 +114,7 @@ public class DebugModule extends GameUIModule {
                 Log.notice("\n----------- dump -----------");
                 Arrays.asList(UserInterface.getInstance().getPanels()).forEach(panel -> panel.dump());
             }),
-            new CommandEntry("Temperature debug",       view -> Game.getInstance().toggleModule(TemperatureDebugModule.class)),
+            new CommandEntry("Temperature debug",       view -> ModuleManager.getInstance().toggleModule(TemperatureDebugModule.class)),
             new CommandEntry("Oxygen debug",            view -> UserInterface.getInstance().getPanel(OxygenManagerPanel.class).setVisible(true)),
             new CommandEntry("Job detail",              view -> UserInterface.getInstance().getPanel(JobDebugPanel.class).setVisible(true)),
             new CommandEntry("Parcel detail",           view -> UserInterface.getInstance().getPanel(ParcelDebugPanel.class).setVisible(true)),
@@ -131,13 +131,13 @@ public class DebugModule extends GameUIModule {
         int index = 0;
         for (CommandEntry command: commands) {
             UILabel lbConsumable = ViewFactory.getInstance().createTextView(100, 26);
-            lbConsumable.setCharacterSize(14);
-            lbConsumable.setAlign(View.Align.CENTER_VERTICAL);
+            lbConsumable.setTextSize(14);
+            lbConsumable.setTextAlign(View.Align.CENTER_VERTICAL);
             lbConsumable.setPosition(10, index++ * 26);
             lbConsumable.setOnClickListener(view -> {
                 command.listener.onClick(view);
             });
-            lbConsumable.setString(command.label);
+            lbConsumable.setText(command.label);
             lbConsumable.setSize(200, 26);
             frameConsumable.addView(lbConsumable);
         }
@@ -154,11 +154,11 @@ public class DebugModule extends GameUIModule {
                 int index = 0;
                 for (CommandEntry entry : COMMANDS) {
                     UILabel lbCommand = ViewFactory.getInstance().createTextView(100, 26);
-                    lbCommand.setCharacterSize(14);
-                    lbCommand.setAlign(View.Align.CENTER_VERTICAL);
+                    lbCommand.setTextSize(14);
+                    lbCommand.setTextAlign(View.Align.CENTER_VERTICAL);
                     lbCommand.setPosition(10, index++ * 26);
                     lbCommand.setOnClickListener(entry.listener);
-                    lbCommand.setString(entry.label);
+                    lbCommand.setText(entry.label);
                     lbCommand.setSize(200, 26);
                     frameCommands.addView(lbCommand);
                 }
@@ -184,7 +184,7 @@ public class DebugModule extends GameUIModule {
     @Override
     protected void onUpdate(int tick) {
         if (mView != null) {
-            ((UILabel) mView.findById("lb_mouse")).setString(
+            ((UILabel) mView.findById("lb_mouse")).setText(
                     UserInterface.getInstance().getMouseX() + "x" + UserInterface.getInstance().getMouseY());
         }
     }

@@ -9,6 +9,7 @@ import org.smallbox.faraway.game.model.area.StorageAreaModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.planet.PlanetInfo;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.ui.LinkFocusListener;
 import org.smallbox.faraway.ui.UserInterface;
@@ -41,17 +42,17 @@ public class PanelInfoArea extends BaseInfoRightPanel {
 
     private void addTitle(FrameLayout frameEntries, String title, int posY) {
         UILabel lbTitle = ViewFactory.getInstance().createTextView(180, 20);
-        lbTitle.setString(title);
-        lbTitle.setCharacterSize(18);
+        lbTitle.setText(title);
+        lbTitle.setTextSize(18);
         lbTitle.setPosition(0, posY + 10);
         frameEntries.addView(lbTitle);
     }
 
     private void addToggle(FrameLayout frameEntries, int posY, StorageAreaModel storage, Predicate<ItemInfo> predicate) {
         UILabel lbToggle = ViewFactory.getInstance().createTextView(180, 20);
-        lbToggle.setString("select all");
+        lbToggle.setText("select all");
         lbToggle.setData(true);
-        lbToggle.setCharacterSize(14);
+        lbToggle.setTextSize(14);
         lbToggle.setPosition(300, posY + 10);
         lbToggle.setOnFocusListener(new LinkFocusListener());
         lbToggle.setOnClickListener(view -> {
@@ -66,14 +67,14 @@ public class PanelInfoArea extends BaseInfoRightPanel {
 
     private void addItemEntry(FrameLayout frameEntries, ItemInfo info, int posX, int posY, String label, OnClickListener clickListener) {
         UILabel lbEntry = ViewFactory.getInstance().createTextView(180, 20);
-        lbEntry.setString(label);
+        lbEntry.setText(label);
         lbEntry.setData(info);
-        lbEntry.setCharacterSize(14);
+        lbEntry.setTextSize(14);
         lbEntry.setPosition(posX, posY);
         lbEntry.setColor(Colors.LINK_INACTIVE);
         lbEntry.setOnFocusListener(new LinkFocusListener());
         lbEntry.setOnClickListener(clickListener);
-        lbEntry.setAlign(Align.CENTER_VERTICAL);
+        lbEntry.setTextAlign(Align.CENTER_VERTICAL);
         frameEntries.addView(lbEntry);
         _entries.add(lbEntry);
     }
@@ -83,8 +84,8 @@ public class PanelInfoArea extends BaseInfoRightPanel {
 
         _area = area;
         _parcel = parcel;
-        ((UILabel)findById("lb_area")).setString(area.getName());
-        findById("bt_remove_area").setOnClickListener(view -> ((AreaModule) Game.getInstance().getModule(AreaModule.class)).remove(area));
+        ((UILabel)findById("lb_area")).setText(area.getName());
+        findById("bt_remove_area").setOnClickListener(view -> ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).remove(area));
 
         findById("frame_info_garden").setVisible(false);
         findById("frame_info_storage").setVisible(false);
@@ -125,15 +126,15 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         findById("frame_info_garden").setVisible(true);
 
         PlanetInfo planetInfo = Game.getInstance().getPlanet().getInfo();
-        ((UILabel)findById("lb_growing_period")).setString("Growing period: " + planetInfo.farming.growing[0] + " to " + planetInfo.farming.growing[1]);
+        ((UILabel)findById("lb_growing_period")).setText("Growing period: " + planetInfo.farming.growing[0] + " to " + planetInfo.farming.growing[1]);
 
         if (parcel.getResource() != null) {
             double growRate = parcel.getResource().getGrowRate();
             UILabel lbGrowRate = (UILabel)findById("lb_growing_status");
-            if (growRate < 0) { lbGrowRate.setString("Status: plant is dying"); }
-            if (growRate > 0.025) { lbGrowRate.setString("Status: partial grow"); }
-            if (growRate < 0.05) { lbGrowRate.setString("Status: regular grow"); }
-            if (growRate < 0.075) { lbGrowRate.setString("Status: exceptional grow"); }
+            if (growRate < 0) { lbGrowRate.setText("Status: plant is dying"); }
+            if (growRate > 0.025) { lbGrowRate.setText("Status: partial grow"); }
+            if (growRate < 0.05) { lbGrowRate.setText("Status: regular grow"); }
+            if (growRate < 0.075) { lbGrowRate.setText("Status: exceptional grow"); }
         }
     }
 
@@ -162,7 +163,7 @@ public class PanelInfoArea extends BaseInfoRightPanel {
             if (itemInfo.isConsumable && !itemInfo.isEquipment) {
                 addItemEntry(frameEntries, itemInfo, posX, posY, (storage.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label, view -> {
                     storage.setAccept(itemInfo, !storage.accept(itemInfo));
-                    ((UILabel)view).setString((storage.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);
+                    ((UILabel)view).setText((storage.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);
                 });
                 posY = index++ % 2 == 0 ? posY : posY + 20;
                 posX = posX == 0 ? 200 : 0;
@@ -180,7 +181,7 @@ public class PanelInfoArea extends BaseInfoRightPanel {
             if (itemInfo.isEquipment) {
                 addItemEntry(frameEntries, itemInfo, posX, posY, (storage.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label, view -> {
                     storage.setAccept(itemInfo, !storage.accept(itemInfo));
-                    ((UILabel)view).setString((storage.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);
+                    ((UILabel)view).setText((storage.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);
                 });
                 posY = index++ % 2 == 0 ? posY : posY + 20;
                 posX = posX == 0 ? 200 : 0;
@@ -191,7 +192,7 @@ public class PanelInfoArea extends BaseInfoRightPanel {
     private void refreshItem(FrameLayout frameEntries, StorageAreaModel storage) {
         frameEntries.getViews().stream().filter(view -> view.getData() instanceof ItemInfo).forEach(view -> {
             ItemInfo itemInfo = (ItemInfo) view.getData();
-            ((UILabel)view).setString((storage.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);
+            ((UILabel)view).setText((storage.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);
         });
     }
 

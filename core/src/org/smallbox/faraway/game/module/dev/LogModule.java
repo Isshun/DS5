@@ -15,6 +15,7 @@ public class LogModule extends GameModule {
 //            "TemperatureModule",
 //            "RoomModule",
             "CharacterModule"
+//            "TestModule"
 //            "JobModule",
     );
 

@@ -1,4 +1,7 @@
 position: [-400, 32]
+size: [400, 1000]
+align: [right, top]
+background: 0x131d1f
 align: [right, top]
 entries:
 

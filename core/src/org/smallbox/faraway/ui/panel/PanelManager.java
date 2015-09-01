@@ -64,15 +64,15 @@ public class PanelManager extends BaseRightPanel {
 		addView(_cursor);
 
 		UILabel lbOrder = ViewFactory.getInstance().createTextView();
-		lbOrder.setString("Select order");
-		lbOrder.setCharacterSize(FONT_SIZE_TITLE);
+		lbOrder.setText("Select order");
+		lbOrder.setTextSize(FONT_SIZE_TITLE);
 		lbOrder.setPosition(20, 20);
 		addView(lbOrder);
 		
 		_lbSearch = ViewFactory.getInstance().createTextView();
 		_lbSearch.setPosition(20, 60);
-		_lbSearch.setString("search: ");
-		_lbSearch.setCharacterSize(FONT_SIZE);
+		_lbSearch.setText("search: ");
+		_lbSearch.setTextSize(FONT_SIZE);
 		_lbSearch.setColor(Colors.LINK_INACTIVE);
 		addView(_lbSearch);
 
@@ -81,12 +81,12 @@ public class PanelManager extends BaseRightPanel {
 		for (int i = 0; i < _nbEntries; i++) {
 			_labels[i] = ViewFactory.getInstance().createTextView();
 			_labels[i].setPosition(20, 100 + i * LINE_HEIGHT);
-			_labels[i].setCharacterSize(FONT_SIZE);
+			_labels[i].setTextSize(FONT_SIZE);
 			addView(_labels[i]);
 
 			_shortcuts[i] = ViewFactory.getInstance().createTextView();
 			_shortcuts[i].setPosition(20, 100 + i * LINE_HEIGHT);
-			_shortcuts[i].setCharacterSize(FONT_SIZE);
+			_shortcuts[i].setTextSize(FONT_SIZE);
 			_shortcuts[i].setColor(Colors.LINK_ACTIVE);
 			// TODO
 			//_shortcuts[i].setStyle(TextView.UNDERLINED);
@@ -106,7 +106,7 @@ public class PanelManager extends BaseRightPanel {
 			if (_search.length() == 0) {
 				if (i == _line) {
 					_shortcuts[i].setVisible(true);
-					_shortcuts[i].setString(entry.label);
+					_shortcuts[i].setText(entry.label);
 					_shortcuts[i].setPosition(20, _shortcuts[i].getPosY());
 					_shortcuts[i].setColor(Colors.LINK_ACTIVE);
 					_labels[i].setVisible(false);
@@ -114,7 +114,7 @@ public class PanelManager extends BaseRightPanel {
 				else {
 					_shortcuts[i].setVisible(false);
 					_labels[i].setVisible(true);
-					_labels[i].setString(entry.label);
+					_labels[i].setText(entry.label);
 				}
 				i++;
 			}
@@ -123,17 +123,17 @@ public class PanelManager extends BaseRightPanel {
 				int pos = entry.label.toLowerCase().indexOf(_search);
 				if (pos != -1) {
 					if (i == _line) {
-						_shortcuts[i].setString(entry.label);
+						_shortcuts[i].setText(entry.label);
 						_shortcuts[i].setColor(Colors.LINK_ACTIVE);
 						_shortcuts[i].setPosition(20, _shortcuts[i].getPosY());
 						_labels[i].setVisible(false);
 					}
 					else {
-						_shortcuts[i].setString(entry.label.substring(pos, pos + _search.length()));
+						_shortcuts[i].setText(entry.label.substring(pos, pos + _search.length()));
 						_shortcuts[i].setColor(Colors.LINK_INACTIVE);
 						_shortcuts[i].setPosition(20 + pos * 8, _shortcuts[i].getPosY());
 						_labels[i].setVisible(true);
-						_labels[i].setString(entry.label);
+						_labels[i].setText(entry.label);
 					}
 					_shortcuts[i].setVisible(true);
 					i++;
@@ -165,7 +165,7 @@ public class PanelManager extends BaseRightPanel {
 				_search += str;
 			}
 		}
-		_lbSearch.setString("search: " + _search);
+		_lbSearch.setText("search: " + _search);
 		_cursor.setPosition(86 + (_search.length() * 8), _cursor.getPosY());
 		onRefresh(0);
 		return true;

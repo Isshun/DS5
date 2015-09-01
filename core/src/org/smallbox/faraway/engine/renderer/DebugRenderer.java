@@ -20,14 +20,14 @@ public class DebugRenderer extends BaseRenderer {
     @Override
     public void onRefresh(int frame) {
 //        UILabel lbDebug = ViewFactory.getInstance().createTextView();
-//        lbDebug.setCharacterSize(12);
+//        lbDebug.setTextSize(12);
 //
 //        _cache.begin();
 //
 //        for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
 //
-//            lbDebug.setString(String.valueOf(parcel.getLight()));
-//            lbDebug.setCharacterSize(14);
+//            lbDebug.setText(String.valueOf(parcel.getLight()));
+//            lbDebug.setTextSize(14);
 //            lbDebug.setColor(Color.WHITE);
 ////            lbDebug.setPosition((int) (parcel.x * Constant.TILE_WIDTH), (int) (parcel.y * Constant.TILE_HEIGHT));
 //            lbDebug.setPosition(0, 0);
@@ -44,11 +44,11 @@ public class DebugRenderer extends BaseRenderer {
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         UILabel lbDebug = ViewFactory.getInstance().createTextView();
-        lbDebug.setCharacterSize(14);
+        lbDebug.setTextSize(14);
         lbDebug.setColor(Color.WHITE);
         lbDebug.setPosition(0, 0);
         lbDebug.setSize(32, 32);
-        lbDebug.setAlign(View.Align.CENTER);
+        lbDebug.setTextAlign(View.Align.CENTER);
 
         int relX = UserInterface.getInstance().getMouseX();
         int relY = UserInterface.getInstance().getMouseY();
@@ -62,8 +62,8 @@ public class DebugRenderer extends BaseRenderer {
 
 //        for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
 //            if (parcel.getZ() == 0 && parcel.x > relX - 8 && parcel.x < relX + 8 && parcel.y > relY - 8 && parcel.y < relY + 8) {
-//                lbDebug.setString(String.valueOf((int)(parcel.getLight() * 10)));
-////                lbDebug.setString(parcel.x + "x" + parcel.y);
+//                lbDebug.setText(String.valueOf((int)(parcel.getLight() * 10)));
+////                lbDebug.setText(parcel.x + "x" + parcel.y);
 //                renderer.draw(lbDebug, (int) (parcel.x * Constant.TILE_WIDTH + effect.getViewport().getPosX()), (int) (parcel.y * Constant.TILE_HEIGHT + effect.getViewport().getPosY()));
 //            }
 //        }

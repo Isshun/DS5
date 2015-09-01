@@ -18,7 +18,7 @@ public abstract class UILabel extends View {
 		super(width, height);
 	}
 
-	public void setString(String string) {
+	public void setText(String string) {
         if (string == null) {
             setStringValue("");
             return;
@@ -30,7 +30,7 @@ public abstract class UILabel extends View {
         }
 	}
 
-    public void setString(String string, int value) {
+    public void setText(String string, int value) {
         if (string == null) {
             setStringValue("");
             return;
@@ -44,7 +44,7 @@ public abstract class UILabel extends View {
 //        }
     }
 
-    public void setString(String string, String value) {
+    public void setText(String string, String value) {
         if (string == null) {
             setStringValue("");
             return;
@@ -59,7 +59,7 @@ public abstract class UILabel extends View {
     }
 
 	public abstract void setStringValue(String string);
-	public abstract void setCharacterSize(int size);
+	public abstract void setTextSize(int size);
 	public abstract void setStyle(int style);
 	public abstract void setColor(Color color);
 	public abstract Color getColor();

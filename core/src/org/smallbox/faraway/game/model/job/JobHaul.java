@@ -10,6 +10,7 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.game.module.world.AreaModule;
@@ -96,7 +97,7 @@ public class JobHaul extends BaseJobModel implements GameObserver {
 
     private boolean foundStorageParcel(ConsumableModel consumable) {
         _parcel = null;
-        _storage = ((AreaModule)Game.getInstance().getModule(AreaModule.class)).getNearestFreeStorage(consumable, consumable.getParcel());
+        _storage = ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).getNearestFreeStorage(consumable, consumable.getParcel());
         if (_storage != null) {
             _parcel = _storage.getNearestFreeParcel(consumable, consumable.getX(), consumable.getY());
             if (_parcel != null) {

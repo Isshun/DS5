@@ -12,8 +12,8 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.GameUIModule;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.character.CharacterModule;
-import org.smallbox.faraway.game.module.info.ResourceInfoModule;
 import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.OnClickListener;
@@ -25,7 +25,6 @@ import org.smallbox.faraway.ui.engine.view.View;
 import org.smallbox.faraway.ui.panel.*;
 import org.smallbox.faraway.ui.panel.debug.OxygenManagerPanel;
 import org.smallbox.faraway.ui.panel.debug.ParcelDebugPanel;
-import org.smallbox.faraway.ui.panel.info.*;
 import org.smallbox.faraway.ui.panel.right.*;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
@@ -34,6 +33,10 @@ import org.smallbox.faraway.util.Utils;
 public class UserInterface implements GameEventListener {
     private int _keyPressX;
     private int _keyPressY;
+
+    public UserInteraction getInteraction() {
+        return _interaction;
+    }
 
     private static class ContextEntry {
         public String                   label;
@@ -79,26 +82,26 @@ public class UserInterface implements GameEventListener {
 //            new PanelQuest(),
 //            new PanelCharacter(	    Mode.CHARACTER,         null),
 //            new PanelInfo(		    Mode.INFO, 		        null),
-            new PanelInfoStructure(	Mode.INFO_STRUCTURE, 	null),
-            new PanelInfoItem(	    Mode.INFO_ITEM, 	    null),
-            new PanelInfoConsumable(Mode.INFO_CONSUMABLE,   null),
-            new PanelInfoParcel(	Mode.INFO_PARCEL, 	    null),
-            new PanelInfoArea(	    Mode.INFO_AREA, 	    null),
-            new PanelInfoAnimal(	Mode.INFO_ANIMAL, 	    null),
-            new PanelPlan(		    Mode.PLAN, 		        Key.P),
+//            new PanelInfoStructure(	Mode.INFO_STRUCTURE, 	null),
+//            new PanelInfoItem(	    Mode.INFO_ITEM, 	    null),
+//            new PanelInfoConsumable(Mode.INFO_CONSUMABLE,   null),
+//            new PanelInfoParcel(	Mode.INFO_PARCEL, 	    null),
+//            new PanelInfoArea(	    Mode.INFO_AREA, 	    null),
+//            new PanelInfoAnimal(	Mode.INFO_ANIMAL, 	    null),
+//            new PanelPlanModule(		    Mode.PLAN, 		        Key.P),
 //            new PanelRoom(		    Mode.ROOM, 		        Key.R),
             new PanelTooltip(	    Mode.TOOLTIP, 	        Key.F1),
             new PanelBuild(		    Mode.BUILD, 	        Key.B),
             new PanelScience(	    Mode.SCIENCE, 	        null),
-            new PanelCrew(		    Mode.CREW, 		        Key.C),
-            new PanelJobs(		    Mode.JOBS, 		        Key.O),
+//            new PanelCrew(		    Mode.CREW, 		        Key.C),
+//            new PanelJobs(		    Mode.JOBS, 		        Key.O),
             new PanelArea(		    Mode.AREA, 		        Key.A),
 //			new PanelStats(		    Mode.STATS, 	        Key.S),
             new PanelManager(	    Mode.MANAGER, 	        Key.M),
-            new PanelShortcut(	    Mode.NONE, 		        null),
+//            new PanelShortcut(	    Mode.NONE, 		        null),
             new PanelPlanet(),
             new PanelTopInfo(),
-            new PanelTopRight(),
+//            new PanelTopRight(),
 
             // Debug
 //            new TemperatureManagerPanel(),
@@ -174,7 +177,7 @@ public class UserInterface implements GameEventListener {
             }
         }
 
-        for (GameModule module: Game.getInstance().getModules()) {
+        for (GameModule module: ModuleManager.getInstance().getModules()) {
             if (module.isLoaded() && module.onMouseEvent(action, button, x, y)) {
                 return;
             }
@@ -393,7 +396,7 @@ public class UserInterface implements GameEventListener {
             panel.draw(renderer, null);
         }
 
-        for (GameModule module: Game.getInstance().getModules()) {
+        for (GameModule module: ModuleManager.getInstance().getModules()) {
             if (module.isLoaded() && module instanceof GameUIModule) {
                 ((GameUIModule)module).draw(renderer);
             }
@@ -433,7 +436,7 @@ public class UserInterface implements GameEventListener {
             }
         }
 
-        for (GameModule module: Game.getInstance().getModules()) {
+        for (GameModule module: ModuleManager.getInstance().getModules()) {
             if (module.isLoaded() && module.onKey(key)) {
                 return true;
             }
@@ -464,10 +467,6 @@ public class UserInterface implements GameEventListener {
                 if (_selector.getSelectedCharacter() != null) {
                     _selector.select(_characters.getNext(_selector.getSelectedCharacter()));
                 }
-                return true;
-
-            case SPACE:
-                _game.setRunning(!_game.isRunning());
                 return true;
 
             default: break;
@@ -590,10 +589,10 @@ public class UserInterface implements GameEventListener {
         int index = 0;
         for (ContextEntry entry: entries) {
             UILabel lbEntry = ViewFactory.getInstance().createTextView(100, 20);
-            lbEntry.setCharacterSize(14);
-            lbEntry.setString(entry.label);
+            lbEntry.setTextSize(14);
+            lbEntry.setText(entry.label);
             lbEntry.setOnClickListener(entry.listener);
-            lbEntry.setAlign(View.Align.CENTER_VERTICAL);
+            lbEntry.setTextAlign(View.Align.CENTER_VERTICAL);
             lbEntry.setPosition(4, index++ * 20);
             _context.addView(lbEntry);
         }

@@ -13,6 +13,9 @@ screen:
     resolution: [1600, 1000]
     mode: borderless
 
+mods:
+    - TestModule
+
 render:
     floor:          true
     structure:      true

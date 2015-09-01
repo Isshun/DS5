@@ -7,6 +7,7 @@ import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.room.NeighborModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.ModuleManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class TemperatureModule extends GameModule implements GameObserver {
     @Override
     public void onLoaded() {
         _temperature = _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
-        _roomModule = (RoomModule)Game.getInstance().getModule(RoomModule.class);
+        _roomModule = (RoomModule) ModuleManager.getInstance().getModule(RoomModule.class);
     }
 
     @Override

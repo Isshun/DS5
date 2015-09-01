@@ -8,6 +8,7 @@ import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemFilter;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobConsume;
+import org.smallbox.faraway.game.module.ModuleManager;
 
 /**
  * Created by Alex on 01/06/2015.
@@ -36,7 +37,7 @@ public class CheckCharacterHungry extends CharacterCheck {
 		}
 
 		// Get consumable on old
-		ConsumableModel nearestItem = (ConsumableModel)((ItemFinder)Game.getInstance().getModule(ItemFinder.class)).getNearest(filter, character);
+		ConsumableModel nearestItem = (ConsumableModel)((ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class)).getNearest(filter, character);
 		if (nearestItem != null && nearestItem.hasFreeSlot()) {
 			return JobConsume.create(character, nearestItem);
 		}

@@ -42,8 +42,8 @@ public class HomePage extends MainMenuPage {
         int index = 0;
         for (DebugEntry entry: DEBUG_ENTRIES) {
             UILabel lbEntry = ViewFactory.getInstance().createTextView(200, 36);
-            lbEntry.setString(entry.label);
-            lbEntry.setCharacterSize(18);
+            lbEntry.setText(entry.label);
+            lbEntry.setTextSize(18);
             lbEntry.setPosition(500, 100 + index * 36);
             lbEntry.setOnClickListener(entry.listener);
             addView(lbEntry);

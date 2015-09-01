@@ -5,6 +5,7 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.room.NeighborModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.ModuleManager;
 
 /**
  * Created by Alex on 18/06/2015.
@@ -28,7 +29,7 @@ public class OxygenModule extends GameModule {
 
     @Override
     protected void onUpdate(int tick) {
-        RoomModule roomModule = (RoomModule)Game.getInstance().getModule(RoomModule.class);
+        RoomModule roomModule = (RoomModule) ModuleManager.getInstance().getModule(RoomModule.class);
         if (roomModule != null) {
             for (RoomModel room : roomModule.getRoomList()) {
                 if (room.isExterior()) {

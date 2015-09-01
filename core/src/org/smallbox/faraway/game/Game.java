@@ -14,64 +14,72 @@ import org.smallbox.faraway.game.model.planet.PlanetModel;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
 import org.smallbox.faraway.game.model.planet.RegionModel;
 import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.character.CharacterModule;
 import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.game.module.world.WorldModule;
+import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
+import sun.tools.jar.resources.jar;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class Game {
-    private static CharacterModule      _characterModule;
-    private static WorldModule          _worldModule;
-    private static JobModule _jobModule;
+    private static CharacterModule          _characterModule;
+    private static WorldModule              _worldModule;
+    private static JobModule                _jobModule;
 
-    private static Game 				_self;
-    private final String                _fileName;
-    private int 						_speed = 1;
-    private GameConfig                  _config;
-    private List<GameModule>            _modules = new ArrayList<>();
-    private List<GameObserver>			_observers = new ArrayList<>();
-    private GameSerializer.GameSave     _save;
-    private PlanetModel                 _planet;
-    private RegionModel                 _region;
-    private int                         _hour = 6;
-    private int                         _day;
-    private int                         _year;
-    private GameInfo                    _info = new GameInfo();
+    private static Game 				    _self;
+    private final String                    _fileName;
+    private GameConfig                      _config;
+    private final Collection<GameModule>    _modules;
+    private List<GameObserver>			    _observers = new ArrayList<>();
+    private GameSerializer.GameSave         _save;
+    private PlanetModel                     _planet;
+    private RegionModel                     _region;
+    private int                             _hour = 6;
+    private int                             _day;
+    private int                             _year;
+    private GameInfo                        _info = new GameInfo();
 
-    public void                         toggleRunning() { _isRunning = !_isRunning; }
-    public void                         addObserver(GameObserver observer) { _observers.add(observer); }
-    public void                         setRunning(boolean running) { _isRunning = running; }
-    public void                         setSpeed(int speed) { _speed = speed; }
-    public void                         setWorldManager(WorldModule worldModule) { _worldModule = worldModule; }
+    private static int                      _tick;
+    private Viewport 					    _viewport;
+    private boolean 					    _isRunning;
 
-    public boolean                      isRunning() { return _isRunning; }
-    public GameModule                   getModule(Class<? extends GameModule> cls) { return _modules.stream().filter(cls::isInstance).findFirst().get(); }
-    public List<GameModule>             getModules() { return _modules; }
-    public int                          getSpeed() { return _speed; }
-    public static CharacterModule       getCharacterManager() { return _characterModule; }
-    public static WorldModule           getWorldManager() { return _worldModule; }
+    public void                             toggleRunning() { _isRunning = !_isRunning; }
+    public void                             addObserver(GameObserver observer) { _observers.add(observer); }
+    public void                             setRunning(boolean running) { _isRunning = running; }
+    public void                             setWorldManager(WorldModule worldModule) { _worldModule = worldModule; }
+
+    public boolean                          isRunning() { return _isRunning; }
+    public Collection<GameModule>           getModules() { return _modules; }
+    public static CharacterModule           getCharacterManager() { return _characterModule; }
+    public static WorldModule               getWorldManager() { return _worldModule; }
     public static JobModule getJobManager() { return _jobModule; }
-    public static Game                  getInstance() { return _self; }
-    public int                          getHour() { return _hour; }
-    public int                          getDay() { return _day; }
-    public int                          getYear() { return _year; }
-    public Viewport                     getViewport() { return _viewport; }
-    public static int                   getUpdate() { return _tick; }
-    public PlanetModel                  getPlanet() { return _planet; }
-    public String                       getFileName() { return _fileName; }
-    public long                         getTick() { return _tick; }
-    public RegionModel                  getRegion() { return _region; }
-
-    private static int                  _tick;
-    private Viewport 					_viewport;
-    private boolean 					_isRunning;
+    public static Game                      getInstance() { return _self; }
+    public int                              getHour() { return _hour; }
+    public int                              getDay() { return _day; }
+    public int                              getYear() { return _year; }
+    public Viewport                         getViewport() { return _viewport; }
+    public static int                       getUpdate() { return _tick; }
+    public PlanetModel                      getPlanet() { return _planet; }
+    public String                           getFileName() { return _fileName; }
+    public long                             getTick() { return _tick; }
+    public RegionModel                      getRegion() { return _region; }
 
     public Game(int width, int height, GameData data, GameConfig config, String fileName, ParticleRenderer particleRenderer, LightRenderer lightRenderer, RegionInfo regionInfo) {
         Log.debug("Game");
@@ -81,6 +89,7 @@ public class Game {
         _fileName = fileName;
         _isRunning = true;
         _viewport = new Viewport(400, 300);
+        _modules = ModuleManager.getInstance().getModules();
         GDXRenderer.getInstance().setViewport(_viewport);
         _tick = 0;
 
@@ -99,19 +108,12 @@ public class Game {
     }
 
     public void init(WorldFactory factory) {
-        new Reflections("org.smallbox.faraway").getSubTypesOf(GameModule.class).stream().filter(cls -> !Modifier.isAbstract(cls.getModifiers())).forEach(cls -> {
-            try {
-                _modules.add(cls.getConstructor().newInstance());
-            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        });
-
-        _worldModule = (WorldModule) getModule(WorldModule.class);
-        _characterModule = (CharacterModule) getModule(CharacterModule.class);
-        _jobModule = (JobModule) getModule(JobModule.class);
+        _worldModule = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
+        _characterModule = (CharacterModule) ModuleManager.getInstance().getModule(CharacterModule.class);
+        _jobModule = (JobModule) ModuleManager.getInstance().getModule(JobModule.class);
 
         _observers.addAll(_modules);
+        _observers.addAll(ModuleManager.getInstance().getRenders());
 
         _modules.stream().filter(GameModule::isLoaded).forEach(GameModule::create);
     }
@@ -170,39 +172,7 @@ public class Game {
 
     public GameInfo getInfo() { return _info; }
 
-    public void unloadModule(GameModule module) {
-        if (!module.isMandatory()) {
-            module.destroy();
-            _observers.remove(module);
-        }
-    }
-
-    public void unloadModule(Class<? extends GameModule> cls) {
-        unloadModule(getModule(cls));
-    }
-
-    public void loadModule(GameModule module) {
-        module.create();
-        _observers.add(module);
-    }
-
-    public void loadModule(Class<? extends GameModule> cls) {
-        loadModule(getModule(cls));
-    }
-
-    public void toggleModule(Class<? extends GameModule> cls) {
-        toggleModule(getModule(cls));
-    }
-
-    public void toggleModule(GameModule module) {
-        if (module.isLoaded()) {
-            if (!module.isMandatory()) {
-                module.destroy();
-                _observers.remove(module);
-            }
-        } else {
-            module.create();
-            _observers.add(module);
-        }
+    public void removeObserver(GameModule observer) {
+        _observers.remove(observer);
     }
 }

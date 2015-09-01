@@ -13,6 +13,7 @@ import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.dev.ModuleManagerModule;
 import org.smallbox.faraway.game.module.dev.RenderDebugModule;
 import org.smallbox.faraway.game.module.path.PathManager;
@@ -60,7 +61,7 @@ public class Application implements GameEventListener {
     private boolean[]               _directions;
     private long                    _nextTick;
     private long                    _lastTick;
-    private int                     _tickInterval = SPEED_3_TICK_INTERVAL;
+    private int                     _tickInterval = SPEED_1_TICK_INTERVAL;
     private boolean                 _isRunning = true;
     private final BlockingQueue<Runnable> _queue = new LinkedBlockingQueue<>();
 
@@ -114,26 +115,6 @@ public class Application implements GameEventListener {
                 _game.toggleRunning();
                 break;
 
-            case D_1:
-                _tickInterval = SPEED_1_TICK_INTERVAL;
-                _game.setSpeed(1);
-                break;
-
-            case D_2:
-                _tickInterval = SPEED_2_TICK_INTERVAL;
-                _game.setSpeed(2);
-                break;
-
-            case D_3:
-                _tickInterval = SPEED_3_TICK_INTERVAL;
-                _game.setSpeed(3);
-                break;
-
-            case D_4:
-                _tickInterval = SPEED_4_TICK_INTERVAL;
-                _game.setSpeed(4);
-                break;
-
 // Reload UI
             case F5:
                 _game.save(_game.getFileName());
@@ -147,14 +128,14 @@ public class Application implements GameEventListener {
 // Open render manager
             case F11:
                 if (Game.getInstance() != null) {
-                    Game.getInstance().toggleModule(RenderDebugModule.class);
+                    ModuleManager.getInstance().toggleModule(RenderDebugModule.class);
                 }
                 return;
 
 // Open module manager
             case F12:
                 if (Game.getInstance() != null) {
-                    Game.getInstance().toggleModule(ModuleManagerModule.class);
+                    ModuleManager.getInstance().toggleModule(ModuleManagerModule.class);
                 }
                 return;
 
@@ -242,7 +223,7 @@ public class Application implements GameEventListener {
         _game = new Game(25, 25, _data, GameData.config, null, _particleRenderer, _lightRenderer, GameData.getData().getRegion("white", "default"));
         _game.init(new WorldFactory());
 
-        startGame();
+        startGame(false);
     }
 
     public void newGame(String fileName, RegionInfo  regionInfo) {
@@ -257,7 +238,7 @@ public class Application implements GameEventListener {
 
         factory.createLandSite(_game);
 
-        startGame();
+        startGame(false);
 
         Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
     }
@@ -272,21 +253,15 @@ public class Application implements GameEventListener {
         // TODO
         _game.setRegion(GameData.getData().getRegion("arrakis", "desert"));
         _game.preload();
-        _game.init(null);
-        _game.load();
 
-        startGame();
+        startGame(true);
 
         Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
     }
 
-    private void startGame() {
+    private void startGame(boolean load) {
 
         long time = System.currentTimeMillis();
-        PathManager.getInstance().init(Game.getInstance().getInfo().worldWidth, Game.getInstance().getInfo().worldHeight);
-        Log.notice("Init paths (" + (System.currentTimeMillis() - time) + "ms)");
-
-        time = System.currentTimeMillis();
         _mainRenderer.init(GameData.config, _game);
         Log.notice("Init renderers (" + (System.currentTimeMillis() - time) + "ms)");
 
@@ -298,6 +273,16 @@ public class Application implements GameEventListener {
             time = System.currentTimeMillis();
             _lightRenderer.init();
             Log.notice("Init light (" + (System.currentTimeMillis() - time) + "ms)");
+        }
+
+        _game.init(null);
+
+        time = System.currentTimeMillis();
+        PathManager.getInstance().init(Game.getInstance().getInfo().worldWidth, Game.getInstance().getInfo().worldHeight);
+        Log.notice("Init paths (" + (System.currentTimeMillis() - time) + "ms)");
+
+        if (load) {
+            _game.load();
         }
 
         Game.getInstance().notify(GameObserver::onStartGame);
@@ -432,5 +417,29 @@ public class Application implements GameEventListener {
 
     public boolean isRunning() {
         return _isRunning;
+    }
+
+    public void setSpeed(int speed) {
+        switch (speed) {
+            case 0:
+                _tickInterval = Integer.MAX_VALUE;
+                _game.setRunning(false);
+                break;
+
+            case 1:
+                _tickInterval = SPEED_1_TICK_INTERVAL;
+                _game.setRunning(true);
+                break;
+
+            case 2:
+                _tickInterval = SPEED_2_TICK_INTERVAL;
+                _game.setRunning(true);
+                break;
+
+            case 3:
+                _tickInterval = SPEED_3_TICK_INTERVAL;
+                _game.setRunning(true);
+                break;
+        }
     }
 }

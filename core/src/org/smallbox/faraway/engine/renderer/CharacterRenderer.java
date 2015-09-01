@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.ui.GDXLabel;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
@@ -11,11 +12,13 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.JobConsume;
 import org.smallbox.faraway.util.Constant;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class CharacterRenderer extends BaseRenderer {
-    private Collection<CharacterModel> 		_characters;
-    private SpriteManager _spriteManager;
+    private List<CharacterModel>            _characters;
+    private SpriteManager                   _spriteManager;
     private int 							_frame;
 
     private static com.badlogic.gdx.graphics.Color  COLOR_CRITICAL = new com.badlogic.gdx.graphics.Color(0.8f, 0.2f, 0.3f, 1f);
@@ -23,8 +26,8 @@ public class CharacterRenderer extends BaseRenderer {
     private static com.badlogic.gdx.graphics.Color  COLOR_OK = new com.badlogic.gdx.graphics.Color(0.2f, 0.8f, 0.7f, 1f);
 
     public CharacterRenderer() {
-        _characters = Game.getInstance().getCharacterManager().getCharacters();
-        _spriteManager = (SpriteManager)SpriteManager.getInstance();
+        _characters = new ArrayList<>();
+        _spriteManager = SpriteManager.getInstance();
     }
 
     public void	onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
@@ -167,6 +170,11 @@ public class CharacterRenderer extends BaseRenderer {
 
     public int getLevel() {
         return 100;
+    }
+
+    @Override
+    public void onAddCharacter(CharacterModel character) {
+        _characters.add(character);
     }
 
 }

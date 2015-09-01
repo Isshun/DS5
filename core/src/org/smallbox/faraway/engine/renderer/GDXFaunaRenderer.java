@@ -6,6 +6,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.AnimalModel;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.MovableModel;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.extra.FaunaModule;
 import org.smallbox.faraway.util.Constant;
 
@@ -18,7 +19,7 @@ public class GDXFaunaRenderer extends BaseRenderer {
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         if (_faunaModule == null) {
-            _faunaModule = (FaunaModule) Game.getInstance().getModule(FaunaModule.class);
+            _faunaModule = (FaunaModule) ModuleManager.getInstance().getModule(FaunaModule.class);
         }
 
         for (AnimalModel animal: _faunaModule.getAnimals()) {

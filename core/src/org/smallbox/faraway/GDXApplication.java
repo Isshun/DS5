@@ -17,6 +17,7 @@ import org.smallbox.faraway.engine.renderer.GDXParticleRenderer;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.util.Log;
@@ -108,6 +109,11 @@ public class GDXApplication extends ApplicationAdapter {
         _queue.add(new LoadRunnable("Load resources", () -> {
             GameData data = new GameData();
             data.loadAll();
+        }));
+
+        // Load modules
+        _queue.add(new LoadRunnable("Load modules", () -> {
+            ModuleManager.getInstance().load();
         }));
 
         // Create app

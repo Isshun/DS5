@@ -11,6 +11,7 @@ import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobConsume;
 import org.smallbox.faraway.game.model.job.JobUse;
+import org.smallbox.faraway.game.module.ModuleManager;
 
 /**
  * Created by Alex on 01/06/2015.
@@ -38,7 +39,7 @@ public class CheckCharacterExhausted extends CharacterCheck {
         filter.effectEnergy = true;
 
         // Get nearest bed
-        MapObjectModel item = ((ItemFinder)Game.getInstance().getModule(ItemFinder.class)).getNearest(filter, character);
+        MapObjectModel item = ((ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class)).getNearest(filter, character);
         if (item == null) {
             return null;
         }

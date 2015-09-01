@@ -21,7 +21,7 @@ public class TeamPage extends MainMenuPage {
 
     @Override
     protected void onOpen() {
-        ((UILabel)findById("lb_planet")).setString(_mainMenu.getPlanet().name);
-        ((UILabel)findById("lb_landing_site")).setString(_mainMenu.getLandingSite().name);
+        ((UILabel)findById("lb_planet")).setText(_mainMenu.getPlanet().name);
+        ((UILabel)findById("lb_landing_site")).setText(_mainMenu.getLandingSite().name);
     }
 }

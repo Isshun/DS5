@@ -1,18 +1,17 @@
-package org.smallbox.faraway.game.module.info;
+package org.smallbox.faraway.game.module.panels.info;
 
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.module.GameUIModule;
 import org.smallbox.faraway.game.module.UIWindow;
 import org.smallbox.faraway.ui.engine.view.FrameLayout;
 import org.smallbox.faraway.ui.engine.view.UILabel;
-import org.smallbox.faraway.ui.engine.view.View;
 
 /**
  * Created by Alex on 01/06/2015.
  */
-public class ResourceInfoModule extends GameUIModule {
-    private class ResourceInfoModuleWindow extends UIWindow {
-        private boolean         _isLoaded;
+public class PanelInfoResourceModule extends GameUIModule {
+    private class PanelInfoResourceModuleWindow extends UIWindow {
+        private ResourceModel _resource;
         private UILabel         _lbLabel;
         private UILabel         _lbName;
         private UILabel         _lbQuantity;
@@ -28,33 +27,23 @@ public class ResourceInfoModule extends GameUIModule {
             _lbGrowState = (UILabel) content.findById("lb_grow_state");
             _lbGrowSpeed = (UILabel) content.findById("lb_grow_speed");
             _lbPos = (UILabel) content.findById("lb_pos");
-            _isLoaded = true;
         }
 
         @Override
         protected void onRefresh(int update) {
+            if (_resource != null) {
+                _lbLabel.setText(_resource.getLabel());
+                _lbName.setText(_resource.getName());
+                _lbQuantity.setText("Quantity: %d", _resource.getQuantity());
 
-        }
-
-        @Override
-        protected String getContentLayout() {
-            return "panels/info_resource.yml";
-        }
-
-        public void select(ResourceModel resource) {
-            if (_isLoaded && resource != null) {
-                _lbLabel.setString(resource.getLabel());
-                _lbName.setString(resource.getName());
-                _lbQuantity.setString("Quantity: %d", resource.getQuantity());
-
-                if (resource.isPlant()) {
-                    _lbGrowState.setString("Grow: " + (int) (resource.getRealQuantity() * 100 / resource.getTotalQuantity()) + "%");
+                if (_resource.isPlant()) {
+                    _lbGrowState.setText("Grow: " + (int) (_resource.getRealQuantity() * 100 / _resource.getTotalQuantity()) + "%");
                     _lbGrowState.setVisible(true);
 
-                    if (resource.getGrowState().name != null) {
-                        _lbGrowSpeed.setString("Grow speed: " + (int) (resource.getGrowRate() * 100) + "% (" + resource.getGrowState().name + ")");
+                    if (_resource.getGrowState() != null) {
+                        _lbGrowSpeed.setText("Grow speed: " + (int) (_resource.getGrowRate() * 100) + "% (" + _resource.getGrowState().name + ")");
                     } else {
-                        _lbGrowSpeed.setString("Grow speed: " + (int) (resource.getGrowRate() * 100) + "%");
+                        _lbGrowSpeed.setText("Grow speed: " + (int) (_resource.getGrowRate() * 100) + "%");
                     }
                     _lbGrowSpeed.setVisible(true);
                 } else {
@@ -63,17 +52,25 @@ public class ResourceInfoModule extends GameUIModule {
                 }
 
                 if (_lbPos != null) {
-                    _lbPos.setString(resource.getX() + "x" + resource.getY());
+                    _lbPos.setText(_resource.getX() + "x" + _resource.getY());
                 }
-            }
+            }        }
+
+        @Override
+        protected String getContentLayout() {
+            return "panels/info_resource.yml";
+        }
+
+        public void select(ResourceModel resource) {
+            this._resource = resource;
         }
     }
 
-    private ResourceInfoModuleWindow    _window;
+    private PanelInfoResourceModuleWindow _window;
 
     @Override
     public void onLoaded() {
-        _window = new ResourceInfoModuleWindow();
+        _window = new PanelInfoResourceModuleWindow();
         addWindow(_window);
     }
 

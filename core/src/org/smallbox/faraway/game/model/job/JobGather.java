@@ -16,7 +16,6 @@ public class JobGather extends BaseJobModel {
 	private ResourceModel 	_resource;
 	private int 			_totalCost;
 	private int 			_totalProgress;
-	private boolean 		_removeOnComplete;
 
 	@Override
 	public CharacterModel.TalentType getTalentNeeded() {
@@ -27,7 +26,7 @@ public class JobGather extends BaseJobModel {
 		super(actionInfo, x, y, new IconDrawable("data/res/ic_gather.png", 0, 0, 32, 32), new AnimDrawable("data/res/action_gather.png", 0, 0, 32, 32, 7, 10));
 	}
 
-	public static BaseJobModel create(ResourceModel resource, boolean removeOnComplete) {
+	public static BaseJobModel create(ResourceModel resource) {
 		// Resource is not gatherable
 		if (resource == null || resource.getInfo().actions == null || resource.getInfo().actions.isEmpty() || !"gather".equals(resource.getInfo().actions.get(0).type)) {
 			return null;
@@ -43,7 +42,6 @@ public class JobGather extends BaseJobModel {
 		});
 		job._resource = resource;
 		job._resource.addJob(job);
-		job._removeOnComplete = removeOnComplete;
 
 		return job;
 	}
@@ -98,7 +96,7 @@ public class JobGather extends BaseJobModel {
 		Log.info("Gather complete");
 		_resource.removeJob(null);
 
-		if (_removeOnComplete) {
+		if (_resource.getInfo().plant.cutOnGathering) {
 			Game.getWorldManager().removeResource(_resource);
 		}
 

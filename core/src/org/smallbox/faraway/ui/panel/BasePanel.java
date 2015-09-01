@@ -138,11 +138,11 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 
 	protected void addDebugView(FrameLayout frame, String text, OnClickListener clickListener) {
 		UILabel lbCommand = ViewFactory.getInstance().createTextView();
-		lbCommand.setString(text);
-		lbCommand.setCharacterSize(14);
+		lbCommand.setText(text);
+		lbCommand.setTextSize(14);
 		lbCommand.setPosition(6, 38 + 20 * _debugIndex++);
 		lbCommand.setSize(230, 20);
-		lbCommand.setAlign(Align.CENTER_VERTICAL);
+		lbCommand.setTextAlign(Align.CENTER_VERTICAL);
 		lbCommand.setOnClickListener(clickListener);
 		lbCommand.resetSize();
 		frame.addView(lbCommand);

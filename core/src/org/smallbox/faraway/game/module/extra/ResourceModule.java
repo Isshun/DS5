@@ -22,27 +22,19 @@ public class ResourceModule extends GameModule {
 
 	private static ResourceModule _self;
 
-	private ResourceData 	_science;
-	private ResourceData	_power;
-	private ResourceData	_food;
-	private ResourceData 	_water;
-	private ResourceData 	_gasoline;
-	private ResourceData 	_spice;
-
-	private ResourceData _oxygen;
+	private ResourceData 	_science = new ResourceData(Strings.LB_SCIENCE, ToolTips.RES_SCIENCE);
+	private ResourceData 	_power = new ResourceData(Strings.LB_POWER, ToolTips.RES_POWER);
+	private ResourceData 	_spice = new ResourceData("spice", ToolTips.RES_SPICE);
+	private ResourceData 	_food = new ResourceData(Strings.LB_FOOD, ToolTips.RES_FOOD);
+	private ResourceData 	_gasoline = new ResourceData(Strings.LB_GASOLINE, ToolTips.RES_GASOLINE);
+	private ResourceData 	_water = new ResourceData(Strings.LB_WATER, ToolTips.RES_WATER);
+	private ResourceData 	_oxygen = new ResourceData("o2", ToolTips.RES_OXYGEN);
 
 	public enum Message {NONE, NO_MATTER, BUILD_COMPLETE, BUILD_PROGRESS};
 
 
 	@Override
 	protected void onLoaded() {
-		_science = new ResourceData(Strings.LB_SCIENCE, ToolTips.RES_SCIENCE);
-		_power = new ResourceData(Strings.LB_POWER, ToolTips.RES_POWER);
-		_spice = new ResourceData("spice", ToolTips.RES_SPICE);
-		_food = new ResourceData(Strings.LB_FOOD, ToolTips.RES_FOOD);
-		_gasoline = new ResourceData(Strings.LB_GASOLINE, ToolTips.RES_GASOLINE);
-		_water = new ResourceData(Strings.LB_WATER, ToolTips.RES_WATER);
-		_oxygen = new ResourceData("o2", ToolTips.RES_OXYGEN);
 	}
 
 	// TODO

@@ -76,17 +76,17 @@ public class PanelBuild extends BaseRightPanel {
 			// Title
 			UILabel lbTitle = ViewFactory.getInstance().createTextView(380, 28);
 			lbTitle.setDashedString(c.label.toUpperCase(), c.items.size() + " items", NB_COLUMNS_TITLE);
-			lbTitle.setCharacterSize(FONT_SIZE_TITLE);
+			lbTitle.setTextSize(FONT_SIZE_TITLE);
 			lbTitle.setPosition(20, posY + 8);
 			lbTitle.setColor(Colors.TEXT);
 			lbTitle.setOnClickListener(view -> toggleCategory(category));
-			lbTitle.setAlign(Align.CENTER_VERTICAL);
+			lbTitle.setTextAlign(Align.CENTER_VERTICAL);
 			addView(lbTitle);
 
 //            // Shortcut
 //            TextView lbShortcut = ViewFactory.getInstance().createTextView();
-//            lbShortcut.setString(c.shortcut.toUpperCase());
-//            lbShortcut.setCharacterSize(FONT_SIZE_TITLE);
+//            lbShortcut.setText(c.shortcut.toUpperCase());
+//            lbShortcut.setTextSize(FONT_SIZE_TITLE);
 //            lbShortcut.setColor(Colors.LINK_ACTIVE);
 //            lbShortcut.setPosition(c.shortcutPos * 12 + 20, posY + 8);
 //            addView(lbShortcut);
@@ -171,9 +171,9 @@ public class PanelBuild extends BaseRightPanel {
 //                        frameChild.addView(img);
 
                         UILabel lbChild = ViewFactory.getInstance().createTextView(72, 24);
-                        lbChild.setAlign(Align.CENTER_VERTICAL);
-                        lbChild.setString(child.labelChild);
-                        lbChild.setCharacterSize(14);
+                        lbChild.setTextAlign(Align.CENTER_VERTICAL);
+                        lbChild.setText(child.labelChild);
+                        lbChild.setTextSize(14);
                         lbChild.setOnClickListener(v -> {
                             updateParentButton(frameItem, child);
                             frameMaterial.getViews().forEach(childView -> childView.setBackgroundColor(Color.CYAN));
@@ -206,7 +206,7 @@ public class PanelBuild extends BaseRightPanel {
 
     private void updateParentButton(FrameLayout frameItem, ItemInfo info) {
 //        String label = info.label.length() > 9 ? info.label.substring(0, 9) : info.label;
-        ((UILabel) frameItem.findById("lb_item")).setString(info.label.replace(" ", "\n"));
+        ((UILabel) frameItem.findById("lb_item")).setText(info.label.replace(" ", "\n"));
         ((UIImage) frameItem.findById("img_item")).setImage(SpriteManager.getInstance().getIcon(info));
         frameItem.setOnClickListener(v -> {
             _interaction.set(UserInteraction.Action.BUILD_ITEM, info);

@@ -1,10 +1,13 @@
 package org.smallbox.faraway.game.module.dev;
 
 import org.smallbox.faraway.core.ui.GDXLabel;
-import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.module.*;
 import org.smallbox.faraway.ui.engine.view.FrameLayout;
 import org.smallbox.faraway.ui.engine.view.UILabel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alex on 30/08/2015.
@@ -42,25 +45,41 @@ public class ModuleManagerModule extends GameUIModule {
             protected void onCreate(UIWindow window, FrameLayout content) {
                 window.setPosition(500, 500);
 
-                int index = 0;
-                for (GameModule module : Game.getInstance().getModules()) {
-                    UILabel lbModule = new GDXLabel();
-                    lbModule.setString((module.isLoaded() ? "[x] " : "[ ] ") + module.getClass().getSimpleName());
-                    lbModule.setCharacterSize(14);
-                    lbModule.setPosition(0, index++ * 20);
-                    lbModule.setOnClickListener(view1 -> {
-                        Game.getInstance().toggleModule(module);
-                        lbModule.setString((module.isLoaded() ? "[x] " : "[ ] ") + module.getClass().getSimpleName());
-                    });
+                List<UILabel> entries = new ArrayList<>();
+                for (GameModule module : ModuleManager.getInstance().getModulesBase()) {
+                    UILabel lbModule = createModuleView(module, module.getClass().getSimpleName(), false);
                     content.addView(lbModule);
+                    entries.add(lbModule);
+                }
+                for (GameModule module : ModuleManager.getInstance().getModulesThird()) {
+                    UILabel lbModule = createModuleView(module, module.getClass().getSimpleName(), true);
+                    content.addView(lbModule);
+                    entries.add(lbModule);
                 }
 
-                content.setSize(150, index * 20);
+                entries.sort((l1, l2) -> ((String) l1.getData()).compareTo((String) l2.getData()));
+                entries.forEach(entry -> entry.setPosition(0, entries.indexOf(entry) * 20));
+
+                content.setSize(150, entries.size() * 20);
+            }
+
+            private UILabel createModuleView(GameModule module, String name, boolean isThirdParty) {
+                UILabel lbModule = new GDXLabel();
+                lbModule.setData(name);
+                lbModule.setText((module.isLoaded() ? "[x] " : "[ ] ") + name);
+                if (isThirdParty) {
+                    lbModule.setColor(new Color(0xffcc88));
+                }
+                lbModule.setTextSize(14);
+                lbModule.setOnClickListener(view1 -> {
+                    ModuleManager.getInstance().toggleModule(module);
+                    lbModule.setText((module.isLoaded() ? "[x] " : "[ ] ") + name);
+                });
+                return lbModule;
             }
 
             @Override
             protected void onRefresh(int update) {
-
             }
 
             @Override

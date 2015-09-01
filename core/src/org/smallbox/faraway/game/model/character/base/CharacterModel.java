@@ -20,6 +20,7 @@ import org.smallbox.faraway.game.model.job.GDXDrawable;
 import org.smallbox.faraway.game.model.job.JobMove;
 import org.smallbox.faraway.game.model.job.JobUse;
 import org.smallbox.faraway.game.model.room.RoomModel;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.character.JobModule;
 import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.game.module.world.RoomModule;
@@ -137,11 +138,11 @@ public abstract class CharacterModel extends MovableModel {
         parcel = Game.getWorldManager().getParcel(x, y);
 
         _label = ViewFactory.getInstance().createTextView(_info.getFirstName().trim().length() * 6 + 1, 13);
-        _label.setString(_info.getFirstName().trim());
-        _label.setCharacterSize(10);
+        _label.setText(_info.getFirstName().trim());
+        _label.setTextSize(10);
         _label.setColor(Color.YELLOW);
         _label.setBackgroundColor(Color.BLUE);
-        _label.setAlign(View.Align.CENTER);
+        _label.setTextAlign(View.Align.CENTER);
 
         _talentsMap = new HashMap<>();
         _talents = new ArrayList<>();
@@ -260,7 +261,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public void update() {
         _needs.environment = parcel.getEnvironmentScore();
-        _needs.light = ((RoomModule)Game.getInstance().getModule(RoomModule.class)).getLight(_posX, _posY);
+        _needs.light = ((RoomModule) ModuleManager.getInstance().getModule(RoomModule.class)).getLight(_posX, _posY);
 
         // Check room temperature
         _stats.reset(this, _equipments);

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.ui.panel.debug;
 
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.world.OxygenModule;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 
@@ -12,7 +13,7 @@ public class OxygenManagerPanel extends BaseDebugPanel {
 
     @Override
     protected void onCreate(ViewFactory factory) {
-        _manager = (OxygenModule)Game.getInstance().getModule(OxygenModule.class);
+        _manager = (OxygenModule) ModuleManager.getInstance().getModule(OxygenModule.class);
     }
 
     @Override

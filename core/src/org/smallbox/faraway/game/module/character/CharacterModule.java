@@ -188,4 +188,9 @@ public class CharacterModule extends GameModule {
 		return count;
 	}
 
+	@Override
+	public int getPriority() {
+		return 10000;
+	}
+
 }

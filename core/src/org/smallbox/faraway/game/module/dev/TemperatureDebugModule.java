@@ -32,7 +32,7 @@ public class TemperatureDebugModule extends GameUIModule {
             }
         });
 
-        TemperatureModule module = (TemperatureModule)Game.getInstance().getModule(TemperatureModule.class);
+        TemperatureModule module = (TemperatureModule)ModuleManager.getInstance().getModule(TemperatureModule.class);
 
         window.addDebugView("increase", view -> module.increaseTemperature());
         window.addDebugView("decrease", view -> module.decreaseTemperature());

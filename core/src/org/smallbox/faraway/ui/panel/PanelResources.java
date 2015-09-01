@@ -49,8 +49,8 @@ public class PanelResources extends BasePanel {
             int index = 0;
             for (ItemInfo itemInfo: items.keySet()) {
                 UILabel lbItem = ViewFactory.getInstance().createTextView();
-                lbItem.setCharacterSize(14);
-                lbItem.setString(itemInfo.label + " (" + items.get(itemInfo) + ")");
+                lbItem.setTextSize(14);
+                lbItem.setText(itemInfo.label + " (" + items.get(itemInfo) + ")");
                 lbItem.setPosition(10, 10 + 20 * index++);
                 addView(lbItem);
             }

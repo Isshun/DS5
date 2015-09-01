@@ -1,11 +1,14 @@
 position: [-400, 32]
+size: [400, 1000]
+align: [right, top]
+background: 0x131d1f
 align: [right, top]
 entries:
 
     -   type: label
-        id: lb_time
-        textsize: 14
-        position: [24, 24]
+        id: lb_clock
+        textsize: 28
+        position: [20, 10]
 
     -   type: frame
         position: [0, 244]
@@ -105,3 +108,7 @@ entries:
             size: [165, 45]
             align: center
             background: 0x1d5560
+
+    -   type: frame
+        id: shortcut_entries
+        position: [0, 680]

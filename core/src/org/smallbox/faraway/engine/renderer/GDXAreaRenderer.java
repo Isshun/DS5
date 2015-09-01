@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
 
@@ -43,7 +44,7 @@ public class GDXAreaRenderer extends BaseRenderer {
         int toX = fromX + viewport.getWidth() / Constant.TILE_WIDTH;
         int toY = fromY + viewport.getHeight() / Constant.TILE_HEIGHT;
 
-        WorldModule world = (WorldModule) Game.getInstance().getModule(WorldModule.class);
+        WorldModule world = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
         for (int x = fromX; x < toX; x++) {
             for (int y = fromY; y < toY; y++) {
                 ParcelModel parcel = world.getParcel(x, y);

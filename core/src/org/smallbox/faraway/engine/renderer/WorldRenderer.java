@@ -14,7 +14,7 @@ import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
-public class WorldRenderer extends BaseRenderer implements GameObserver {
+public class WorldRenderer extends BaseRenderer {
     private static final int    CACHE_SIZE = 25;
 
     private int                 _cacheCols;
@@ -23,12 +23,26 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
     private RenderLayer[][]     _layers;
     private MapObjectModel      _itemSelected;
     private Viewport            _viewport;
+    private boolean             _firstRefresh;
 
     @Override
     public void init() {
         _spriteManager = SpriteManager.getInstance();
         _viewport = Game.getInstance().getViewport();
         _needRefresh = true;
+        _firstRefresh = true;
+        _cacheCols = (250 / CACHE_SIZE);
+        _layers = new RenderLayer[_cacheCols][_cacheCols];
+        int index = 0;
+        for (int i = 0; i < _cacheCols; i++) {
+            for (int j = 0; j < _cacheCols; j++) {
+                _layers[i][j] = new RenderLayer(index++,
+                        i * CACHE_SIZE * Constant.TILE_WIDTH,
+                        j * CACHE_SIZE * Constant.TILE_HEIGHT,
+                        CACHE_SIZE * Constant.TILE_WIDTH,
+                        CACHE_SIZE * Constant.TILE_HEIGHT);
+            }
+        }
     }
 
     public int getLevel() {
@@ -36,19 +50,8 @@ public class WorldRenderer extends BaseRenderer implements GameObserver {
     }
 
     public void onRefresh(int frame) {
-        if (_layers == null) {
-            _cacheCols = (250 / CACHE_SIZE);
-            _layers = new RenderLayer[_cacheCols][_cacheCols];
-            int index = 0;
-            for (int i = 0; i < _cacheCols; i++) {
-                for (int j = 0; j < _cacheCols; j++) {
-                    _layers[i][j] = new RenderLayer(index++,
-                            i * CACHE_SIZE * Constant.TILE_WIDTH,
-                            j * CACHE_SIZE * Constant.TILE_HEIGHT,
-                            CACHE_SIZE * Constant.TILE_WIDTH,
-                            CACHE_SIZE * Constant.TILE_HEIGHT);
-                }
-            }
+        if (_firstRefresh) {
+            _firstRefresh = false;
             refreshLayers();
         }
     }

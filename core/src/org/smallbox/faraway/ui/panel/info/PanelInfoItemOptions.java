@@ -21,8 +21,8 @@ public class PanelInfoItemOptions {
 	
 	public UILabel add(String str, OnClickListener onClickListener) {
 	    UILabel text = ViewFactory.getInstance().createTextView(100, 20);
-	    text.setString(str);
-	    text.setCharacterSize(14);
+	    text.setText(str);
+	    text.setTextSize(14);
 	    text.setPosition(_posX, _posY + 20 * _options.size());
 	    text.setOnClickListener(onClickListener);
 		_options.add(text);

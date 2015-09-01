@@ -28540,101 +28540,33 @@
 </consumable>
 </parcel>
 <parcel x='105' y='77' z='0' type='1' />
-<parcel x='105' y='78' z='0' type='1' />
+<parcel x='105' y='78' z='0' type='1'>
+<consumable id='12796' name='base.seaweed'>
+<quantity>100</quantity>
+</consumable>
+</parcel>
 <parcel x='105' y='79' z='0' type='1'>
 <consumable id='12814' name='base.vegetable'>
 <quantity>20</quantity>
 </consumable>
 </parcel>
 <parcel x='105' y='80' z='0' type='1'>
-<consumable id='12796' name='base.seaweed'>
-<quantity>91</quantity>
+<consumable id='3354' name='base.seaweed'>
+<quantity>100</quantity>
 </consumable>
 </parcel>
-<parcel x='105' y='81' z='0' type='1'>
-<resource id='3272' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='105' y='82' z='0' type='1'>
-<resource id='3273' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='105' y='83' z='0' type='1'>
-<resource id='3274' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='105' y='84' z='0' type='1'>
-<resource id='3275' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='105' y='85' z='0' type='1'>
-<resource id='3276' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='105' y='86' z='0' type='1'>
-<resource id='3277' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='105' y='87' z='0' type='1'>
-<resource id='3187' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='105' y='88' z='0' type='1'>
-<resource id='3188' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='105' y='89' z='0' type='1'>
-<resource id='3189' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='105' y='90' z='0' type='1'>
-<resource id='3190' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='105' y='91' z='0' type='1'>
-<resource id='3191' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='105' y='92' z='0' type='1'>
-<resource id='3192' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='105' y='81' z='0' type='1' />
+<parcel x='105' y='82' z='0' type='1' />
+<parcel x='105' y='83' z='0' type='1' />
+<parcel x='105' y='84' z='0' type='1' />
+<parcel x='105' y='85' z='0' type='1' />
+<parcel x='105' y='86' z='0' type='1' />
+<parcel x='105' y='87' z='0' type='1' />
+<parcel x='105' y='88' z='0' type='1' />
+<parcel x='105' y='89' z='0' type='1' />
+<parcel x='105' y='90' z='0' type='1' />
+<parcel x='105' y='91' z='0' type='1' />
+<parcel x='105' y='92' z='0' type='1' />
 <parcel x='105' y='93' z='0' type='1'>
 <structure id='196653' name='base.wall'>
 <health>250</health>
@@ -28888,100 +28820,24 @@
 <parcel x='106' y='76' z='0' type='1' />
 <parcel x='106' y='77' z='0' type='1' />
 <parcel x='106' y='78' z='0' type='1' />
-<parcel x='106' y='79' z='0' type='1'>
-<consumable id='12796' name='base.seaweed'>
-<quantity>71</quantity>
-</consumable>
-</parcel>
+<parcel x='106' y='79' z='0' type='1' />
 <parcel x='106' y='80' z='0' type='1'>
-<consumable id='12809' name='base.seaweed'>
-<quantity>35</quantity>
+<consumable id='3348' name='base.seaweed'>
+<quantity>29</quantity>
 </consumable>
 </parcel>
-<parcel x='106' y='81' z='0' type='1'>
-<resource id='3278' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='106' y='82' z='0' type='1'>
-<resource id='3279' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='106' y='83' z='0' type='1'>
-<resource id='3280' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='106' y='84' z='0' type='1'>
-<resource id='3281' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='106' y='85' z='0' type='1'>
-<resource id='3282' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='106' y='86' z='0' type='1'>
-<resource id='3283' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='106' y='87' z='0' type='1'>
-<resource id='3193' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='106' y='88' z='0' type='1'>
-<resource id='3194' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='106' y='89' z='0' type='1'>
-<resource id='3195' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='106' y='90' z='0' type='1'>
-<resource id='3196' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='106' y='91' z='0' type='1'>
-<resource id='3197' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='106' y='92' z='0' type='1'>
-<resource id='3198' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='106' y='81' z='0' type='1' />
+<parcel x='106' y='82' z='0' type='1' />
+<parcel x='106' y='83' z='0' type='1' />
+<parcel x='106' y='84' z='0' type='1' />
+<parcel x='106' y='85' z='0' type='1' />
+<parcel x='106' y='86' z='0' type='1' />
+<parcel x='106' y='87' z='0' type='1' />
+<parcel x='106' y='88' z='0' type='1' />
+<parcel x='106' y='89' z='0' type='1' />
+<parcel x='106' y='90' z='0' type='1' />
+<parcel x='106' y='91' z='0' type='1' />
+<parcel x='106' y='92' z='0' type='1' />
 <parcel x='106' y='93' z='0' type='1'>
 <structure id='196652' name='base.wall'>
 <health>250</health>
@@ -28990,13 +28846,7 @@
 </parcel>
 <parcel x='106' y='94' z='0' type='1' />
 <parcel x='106' y='95' z='0' type='1' />
-<parcel x='106' y='96' z='0' type='1'>
-<resource id='67064' name='base.seaweed3'>
-<health>0</health>
-<progress>0</progress>
-<quantity>10</quantity>
-</resource>
-</parcel>
+<parcel x='106' y='96' z='0' type='1' />
 <parcel x='106' y='97' z='0' type='1'>
 <resource id='67066' name='base.seaweed3'>
 <health>0</health>
@@ -29267,96 +29117,28 @@
 <parcel x='107' y='76' z='0' type='1' />
 <parcel x='107' y='77' z='0' type='1' />
 <parcel x='107' y='78' z='0' type='1' />
-<parcel x='107' y='79' z='0' type='1' />
+<parcel x='107' y='79' z='0' type='1'>
+<consumable id='12796' name='base.seaweed'>
+<quantity>100</quantity>
+</consumable>
+</parcel>
 <parcel x='107' y='80' z='0' type='1'>
 <consumable id='12800' name='base.vegetable'>
 <quantity>10</quantity>
 </consumable>
 </parcel>
-<parcel x='107' y='81' z='0' type='1'>
-<resource id='3284' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='107' y='82' z='0' type='1'>
-<resource id='3285' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='107' y='83' z='0' type='1'>
-<resource id='3286' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='107' y='84' z='0' type='1'>
-<resource id='3287' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='107' y='85' z='0' type='1'>
-<resource id='3288' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='107' y='86' z='0' type='1'>
-<resource id='3289' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='107' y='87' z='0' type='1'>
-<resource id='3199' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='107' y='88' z='0' type='1'>
-<resource id='3200' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='107' y='89' z='0' type='1'>
-<resource id='3201' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='107' y='90' z='0' type='1'>
-<resource id='3202' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='107' y='91' z='0' type='1'>
-<resource id='3203' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='107' y='92' z='0' type='1'>
-<resource id='3204' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='107' y='81' z='0' type='1' />
+<parcel x='107' y='82' z='0' type='1' />
+<parcel x='107' y='83' z='0' type='1' />
+<parcel x='107' y='84' z='0' type='1' />
+<parcel x='107' y='85' z='0' type='1' />
+<parcel x='107' y='86' z='0' type='1' />
+<parcel x='107' y='87' z='0' type='1' />
+<parcel x='107' y='88' z='0' type='1' />
+<parcel x='107' y='89' z='0' type='1' />
+<parcel x='107' y='90' z='0' type='1' />
+<parcel x='107' y='91' z='0' type='1' />
+<parcel x='107' y='92' z='0' type='1' />
 <parcel x='107' y='93' z='0' type='1'>
 <structure id='196651' name='base.wall'>
 <health>250</health>
@@ -29640,11 +29422,7 @@
 </parcel>
 <parcel x='108' y='75' z='0' type='1' />
 <parcel x='108' y='76' z='0' type='1' />
-<parcel x='108' y='77' z='0' type='1'>
-<consumable id='12816' name='base.seaweed'>
-<quantity>7</quantity>
-</consumable>
-</parcel>
+<parcel x='108' y='77' z='0' type='1' />
 <parcel x='108' y='78' z='0' type='1'>
 <resource id='1677' name='base.rock'>
 <health>0</health>
@@ -29654,90 +29432,18 @@
 </parcel>
 <parcel x='108' y='79' z='0' type='1' />
 <parcel x='108' y='80' z='0' type='1' />
-<parcel x='108' y='81' z='0' type='1'>
-<resource id='3290' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='108' y='82' z='0' type='1'>
-<resource id='3223' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='108' y='83' z='0' type='1'>
-<resource id='3224' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='108' y='84' z='0' type='1'>
-<resource id='3225' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='108' y='85' z='0' type='1'>
-<resource id='3291' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='108' y='86' z='0' type='1'>
-<resource id='3292' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='108' y='87' z='0' type='1'>
-<resource id='3205' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='108' y='88' z='0' type='1'>
-<resource id='3206' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='108' y='89' z='0' type='1'>
-<resource id='3207' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='108' y='90' z='0' type='1'>
-<resource id='3208' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='108' y='91' z='0' type='1'>
-<resource id='3209' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='108' y='92' z='0' type='1'>
-<resource id='3210' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='108' y='81' z='0' type='1' />
+<parcel x='108' y='82' z='0' type='1' />
+<parcel x='108' y='83' z='0' type='1' />
+<parcel x='108' y='84' z='0' type='1' />
+<parcel x='108' y='85' z='0' type='1' />
+<parcel x='108' y='86' z='0' type='1' />
+<parcel x='108' y='87' z='0' type='1' />
+<parcel x='108' y='88' z='0' type='1' />
+<parcel x='108' y='89' z='0' type='1' />
+<parcel x='108' y='90' z='0' type='1' />
+<parcel x='108' y='91' z='0' type='1' />
+<parcel x='108' y='92' z='0' type='1' />
 <parcel x='108' y='93' z='0' type='1'>
 <structure id='196650' name='base.wall'>
 <health>250</health>
@@ -29987,90 +29693,18 @@
 <parcel x='109' y='78' z='0' type='1' />
 <parcel x='109' y='79' z='0' type='1' />
 <parcel x='109' y='80' z='0' type='1' />
-<parcel x='109' y='81' z='0' type='1'>
-<resource id='3293' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='109' y='82' z='0' type='1'>
-<resource id='3226' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='109' y='83' z='0' type='1'>
-<resource id='3227' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='109' y='84' z='0' type='1'>
-<resource id='3228' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='109' y='85' z='0' type='1'>
-<resource id='3294' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='109' y='86' z='0' type='1'>
-<resource id='3295' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='109' y='87' z='0' type='1'>
-<resource id='3211' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='109' y='88' z='0' type='1'>
-<resource id='3212' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='109' y='89' z='0' type='1'>
-<resource id='3213' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='109' y='90' z='0' type='1'>
-<resource id='3214' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='109' y='91' z='0' type='1'>
-<resource id='3215' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='109' y='92' z='0' type='1'>
-<resource id='3216' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='109' y='81' z='0' type='1' />
+<parcel x='109' y='82' z='0' type='1' />
+<parcel x='109' y='83' z='0' type='1' />
+<parcel x='109' y='84' z='0' type='1' />
+<parcel x='109' y='85' z='0' type='1' />
+<parcel x='109' y='86' z='0' type='1' />
+<parcel x='109' y='87' z='0' type='1' />
+<parcel x='109' y='88' z='0' type='1' />
+<parcel x='109' y='89' z='0' type='1' />
+<parcel x='109' y='90' z='0' type='1' />
+<parcel x='109' y='91' z='0' type='1' />
+<parcel x='109' y='92' z='0' type='1' />
 <parcel x='109' y='93' z='0' type='1'>
 <structure id='196649' name='base.wall'>
 <health>250</health>
@@ -30329,99 +29963,23 @@
 </resource>
 </parcel>
 <parcel x='110' y='75' z='0' type='1' />
-<parcel x='110' y='76' z='0' type='1'>
-<consumable id='12807' name='base.seaweed'>
-<quantity>10</quantity>
-</consumable>
-</parcel>
+<parcel x='110' y='76' z='0' type='1' />
 <parcel x='110' y='77' z='0' type='1' />
 <parcel x='110' y='78' z='0' type='1' />
 <parcel x='110' y='79' z='0' type='1' />
 <parcel x='110' y='80' z='0' type='1' />
-<parcel x='110' y='81' z='0' type='1'>
-<resource id='3296' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='110' y='82' z='0' type='1'>
-<resource id='3229' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='110' y='83' z='0' type='1'>
-<resource id='3230' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='110' y='84' z='0' type='1'>
-<resource id='3231' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='110' y='85' z='0' type='1'>
-<resource id='3297' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='110' y='86' z='0' type='1'>
-<resource id='3298' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='110' y='87' z='0' type='1'>
-<resource id='3217' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='110' y='88' z='0' type='1'>
-<resource id='3218' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='110' y='89' z='0' type='1'>
-<resource id='3219' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='110' y='90' z='0' type='1'>
-<resource id='3220' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='110' y='91' z='0' type='1'>
-<resource id='3221' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='110' y='92' z='0' type='1'>
-<resource id='3222' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='110' y='81' z='0' type='1' />
+<parcel x='110' y='82' z='0' type='1' />
+<parcel x='110' y='83' z='0' type='1' />
+<parcel x='110' y='84' z='0' type='1' />
+<parcel x='110' y='85' z='0' type='1' />
+<parcel x='110' y='86' z='0' type='1' />
+<parcel x='110' y='87' z='0' type='1' />
+<parcel x='110' y='88' z='0' type='1' />
+<parcel x='110' y='89' z='0' type='1' />
+<parcel x='110' y='90' z='0' type='1' />
+<parcel x='110' y='91' z='0' type='1' />
+<parcel x='110' y='92' z='0' type='1' />
 <parcel x='110' y='93' z='0' type='1'>
 <resource id='1708' name='base.rock'>
 <health>0</health>
@@ -30675,71 +30233,23 @@
 </resource>
 </parcel>
 <parcel x='111' y='75' z='0' type='1' />
-<parcel x='111' y='76' z='0' type='1'>
-<consumable id='12810' name='base.seaweed'>
-<quantity>2</quantity>
-</consumable>
-</parcel>
+<parcel x='111' y='76' z='0' type='1' />
 <parcel x='111' y='77' z='0' type='1' />
 <parcel x='111' y='78' z='0' type='1' />
 <parcel x='111' y='79' z='0' type='1' />
-<parcel x='111' y='80' z='0' type='1' />
-<parcel x='111' y='81' z='0' type='1'>
-<resource id='3299' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
+<parcel x='111' y='80' z='0' type='1'>
+<consumable id='3408' name='base.seaweed'>
+<quantity>25</quantity>
+</consumable>
 </parcel>
-<parcel x='111' y='82' z='0' type='1'>
-<resource id='3300' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='111' y='83' z='0' type='1'>
-<resource id='3301' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='111' y='84' z='0' type='1'>
-<resource id='3302' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='111' y='85' z='0' type='1'>
-<resource id='3303' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='111' y='86' z='0' type='1'>
-<resource id='3304' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='111' y='87' z='0' type='1'>
-<resource id='3305' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='111' y='88' z='0' type='1'>
-<resource id='3306' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='111' y='81' z='0' type='1' />
+<parcel x='111' y='82' z='0' type='1' />
+<parcel x='111' y='83' z='0' type='1' />
+<parcel x='111' y='84' z='0' type='1' />
+<parcel x='111' y='85' z='0' type='1' />
+<parcel x='111' y='86' z='0' type='1' />
+<parcel x='111' y='87' z='0' type='1' />
+<parcel x='111' y='88' z='0' type='1' />
 <parcel x='111' y='89' z='0' type='1' />
 <parcel x='111' y='90' z='0' type='1'>
 <resource id='1726' name='base.rock'>
@@ -31023,63 +30533,19 @@
 <parcel x='112' y='77' z='0' type='1' />
 <parcel x='112' y='78' z='0' type='1' />
 <parcel x='112' y='79' z='0' type='1' />
-<parcel x='112' y='80' z='0' type='1' />
-<parcel x='112' y='81' z='0' type='1'>
-<resource id='3307' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
+<parcel x='112' y='80' z='0' type='1'>
+<consumable id='3490' name='base.vegetable'>
+<quantity>9</quantity>
+</consumable>
 </parcel>
-<parcel x='112' y='82' z='0' type='1'>
-<resource id='3308' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='112' y='83' z='0' type='1'>
-<resource id='3309' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='112' y='84' z='0' type='1'>
-<resource id='3310' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='112' y='85' z='0' type='1'>
-<resource id='3311' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='112' y='86' z='0' type='1'>
-<resource id='3312' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='112' y='87' z='0' type='1'>
-<resource id='3313' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='112' y='88' z='0' type='1'>
-<resource id='3314' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='112' y='81' z='0' type='1' />
+<parcel x='112' y='82' z='0' type='1' />
+<parcel x='112' y='83' z='0' type='1' />
+<parcel x='112' y='84' z='0' type='1' />
+<parcel x='112' y='85' z='0' type='1' />
+<parcel x='112' y='86' z='0' type='1' />
+<parcel x='112' y='87' z='0' type='1' />
+<parcel x='112' y='88' z='0' type='1' />
 <parcel x='112' y='89' z='0' type='1' />
 <parcel x='112' y='90' z='0' type='1'>
 <resource id='1748' name='base.rock'>
@@ -31382,64 +30848,24 @@
 <parcel x='113' y='76' z='0' type='1' />
 <parcel x='113' y='77' z='0' type='1' />
 <parcel x='113' y='78' z='0' type='1' />
-<parcel x='113' y='79' z='0' type='1' />
-<parcel x='113' y='80' z='0' type='1' />
-<parcel x='113' y='81' z='0' type='1'>
-<resource id='3315' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
+<parcel x='113' y='79' z='0' type='1'>
+<consumable id='3503' name='base.seaweed'>
+<quantity>68</quantity>
+</consumable>
 </parcel>
-<parcel x='113' y='82' z='0' type='1'>
-<resource id='3316' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
+<parcel x='113' y='80' z='0' type='1'>
+<consumable id='3471' name='base.seaweed'>
+<quantity>100</quantity>
+</consumable>
 </parcel>
-<parcel x='113' y='83' z='0' type='1'>
-<resource id='3317' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='113' y='84' z='0' type='1'>
-<resource id='3318' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='113' y='85' z='0' type='1'>
-<resource id='3319' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='113' y='86' z='0' type='1'>
-<resource id='3320' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='113' y='87' z='0' type='1'>
-<resource id='3321' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='113' y='88' z='0' type='1'>
-<resource id='3322' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='113' y='81' z='0' type='1' />
+<parcel x='113' y='82' z='0' type='1' />
+<parcel x='113' y='83' z='0' type='1' />
+<parcel x='113' y='84' z='0' type='1' />
+<parcel x='113' y='85' z='0' type='1' />
+<parcel x='113' y='86' z='0' type='1' />
+<parcel x='113' y='87' z='0' type='1' />
+<parcel x='113' y='88' z='0' type='1' />
 <parcel x='113' y='89' z='0' type='1' />
 <parcel x='113' y='90' z='0' type='1'>
 <resource id='1777' name='base.rock'>
@@ -31798,85 +31224,43 @@
 <quantity>10</quantity>
 </resource>
 </parcel>
-<parcel x='114' y='81' z='0' type='1'>
-<resource id='3323' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='114' y='82' z='0' type='1'>
-<resource id='3324' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='114' y='81' z='0' type='1' />
+<parcel x='114' y='82' z='0' type='1' />
 <parcel x='114' y='83' z='0' type='1'>
 <structure id='196648' name='base.wall'>
 <health>250</health>
 <progress>0</progress>
 </structure>
-<resource id='3325' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>0</quantity>
-</resource>
 </parcel>
 <parcel x='114' y='84' z='0' type='1'>
 <structure id='196647' name='base.wall'>
 <health>250</health>
 <progress>0</progress>
 </structure>
-<resource id='3326' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>0</quantity>
-</resource>
 </parcel>
 <parcel x='114' y='85' z='0' type='1'>
 <structure id='196646' name='base.wall'>
 <health>250</health>
 <progress>0</progress>
 </structure>
-<resource id='3327' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>0</quantity>
-</resource>
 </parcel>
 <parcel x='114' y='86' z='0' type='1'>
 <structure id='196645' name='base.wall'>
 <health>250</health>
 <progress>0</progress>
 </structure>
-<resource id='3328' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>0</quantity>
-</resource>
 </parcel>
 <parcel x='114' y='87' z='0' type='1'>
 <structure id='196644' name='base.wall'>
 <health>250</health>
 <progress>0</progress>
 </structure>
-<resource id='3329' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>0</quantity>
-</resource>
 </parcel>
 <parcel x='114' y='88' z='0' type='1'>
 <structure id='196643' name='base.wall'>
 <health>250</health>
 <progress>0</progress>
 </structure>
-<resource id='3330' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>0</quantity>
-</resource>
 </parcel>
 <parcel x='114' y='89' z='0' type='1'>
 <structure id='196642' name='base.wall'>
@@ -32228,62 +31612,14 @@
 <quantity>10</quantity>
 </resource>
 </parcel>
-<parcel x='115' y='81' z='0' type='1'>
-<resource id='3331' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='115' y='82' z='0' type='1'>
-<resource id='3332' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='115' y='83' z='0' type='1'>
-<resource id='3333' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='115' y='84' z='0' type='1'>
-<resource id='3334' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='115' y='85' z='0' type='1'>
-<resource id='3335' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='115' y='86' z='0' type='1'>
-<resource id='3336' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='115' y='87' z='0' type='1'>
-<resource id='3337' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='115' y='88' z='0' type='1'>
-<resource id='3338' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='115' y='81' z='0' type='1' />
+<parcel x='115' y='82' z='0' type='1' />
+<parcel x='115' y='83' z='0' type='1' />
+<parcel x='115' y='84' z='0' type='1' />
+<parcel x='115' y='85' z='0' type='1' />
+<parcel x='115' y='86' z='0' type='1' />
+<parcel x='115' y='87' z='0' type='1' />
+<parcel x='115' y='88' z='0' type='1' />
 <parcel x='115' y='89' z='0' type='1' />
 <parcel x='115' y='90' z='0' type='1' />
 <parcel x='115' y='91' z='0' type='1' />
@@ -32588,76 +31924,16 @@
 <quantity>10</quantity>
 </resource>
 </parcel>
-<parcel x='116' y='81' z='0' type='1'>
-<resource id='3339' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='116' y='82' z='0' type='1'>
-<resource id='3340' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='116' y='83' z='0' type='1'>
-<resource id='3341' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='116' y='84' z='0' type='1'>
-<resource id='3342' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='116' y='85' z='0' type='1'>
-<resource id='3232' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='116' y='86' z='0' type='1'>
-<resource id='3233' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='116' y='87' z='0' type='1'>
-<resource id='3234' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='116' y='88' z='0' type='1'>
-<resource id='3244' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='116' y='89' z='0' type='1'>
-<resource id='3245' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='116' y='90' z='0' type='1'>
-<resource id='3246' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='116' y='81' z='0' type='1' />
+<parcel x='116' y='82' z='0' type='1' />
+<parcel x='116' y='83' z='0' type='1' />
+<parcel x='116' y='84' z='0' type='1' />
+<parcel x='116' y='85' z='0' type='1' />
+<parcel x='116' y='86' z='0' type='1' />
+<parcel x='116' y='87' z='0' type='1' />
+<parcel x='116' y='88' z='0' type='1' />
+<parcel x='116' y='89' z='0' type='1' />
+<parcel x='116' y='90' z='0' type='1' />
 <parcel x='116' y='91' z='0' type='1' />
 <parcel x='116' y='92' z='0' type='1'>
 <resource id='1882' name='base.rock'>
@@ -32996,76 +32272,16 @@
 <quantity>10</quantity>
 </resource>
 </parcel>
-<parcel x='117' y='81' z='0' type='1'>
-<resource id='3343' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='117' y='82' z='0' type='1'>
-<resource id='3344' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='117' y='83' z='0' type='1'>
-<resource id='3345' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='117' y='84' z='0' type='1'>
-<resource id='3346' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='117' y='85' z='0' type='1'>
-<resource id='3235' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='117' y='86' z='0' type='1'>
-<resource id='3236' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='117' y='87' z='0' type='1'>
-<resource id='3237' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='117' y='88' z='0' type='1'>
-<resource id='3247' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='117' y='89' z='0' type='1'>
-<resource id='3248' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='117' y='90' z='0' type='1'>
-<resource id='3249' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='117' y='81' z='0' type='1' />
+<parcel x='117' y='82' z='0' type='1' />
+<parcel x='117' y='83' z='0' type='1' />
+<parcel x='117' y='84' z='0' type='1' />
+<parcel x='117' y='85' z='0' type='1' />
+<parcel x='117' y='86' z='0' type='1' />
+<parcel x='117' y='87' z='0' type='1' />
+<parcel x='117' y='88' z='0' type='1' />
+<parcel x='117' y='89' z='0' type='1' />
+<parcel x='117' y='90' z='0' type='1' />
 <parcel x='117' y='91' z='0' type='1' />
 <parcel x='117' y='92' z='0' type='1' />
 <parcel x='117' y='93' z='0' type='1' />
@@ -33408,77 +32624,17 @@
 </parcel>
 <parcel x='118' y='83' z='0' type='1' />
 <parcel x='118' y='84' z='0' type='1' />
-<parcel x='118' y='85' z='0' type='1'>
-<resource id='3238' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='118' y='86' z='0' type='1'>
-<resource id='3239' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='118' y='87' z='0' type='1'>
-<resource id='3240' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='118' y='88' z='0' type='1'>
-<resource id='3250' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='118' y='89' z='0' type='1'>
-<resource id='3251' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='118' y='90' z='0' type='1'>
-<resource id='3252' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='118' y='85' z='0' type='1' />
+<parcel x='118' y='86' z='0' type='1' />
+<parcel x='118' y='87' z='0' type='1' />
+<parcel x='118' y='88' z='0' type='1' />
+<parcel x='118' y='89' z='0' type='1' />
+<parcel x='118' y='90' z='0' type='1' />
 <parcel x='118' y='91' z='0' type='1' />
-<parcel x='118' y='92' z='0' type='1'>
-<resource id='3256' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='118' y='93' z='0' type='1'>
-<resource id='3257' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='118' y='94' z='0' type='1'>
-<resource id='3258' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='118' y='95' z='0' type='1'>
-<resource id='3259' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='118' y='92' z='0' type='1' />
+<parcel x='118' y='93' z='0' type='1' />
+<parcel x='118' y='94' z='0' type='1' />
+<parcel x='118' y='95' z='0' type='1' />
 <parcel x='118' y='96' z='0' type='1' />
 <parcel x='118' y='97' z='0' type='1' />
 <parcel x='118' y='98' z='0' type='1' />
@@ -33792,77 +32948,17 @@
 </parcel>
 <parcel x='119' y='83' z='0' type='1' />
 <parcel x='119' y='84' z='0' type='1' />
-<parcel x='119' y='85' z='0' type='1'>
-<resource id='3241' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='119' y='86' z='0' type='1'>
-<resource id='3242' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='119' y='87' z='0' type='1'>
-<resource id='3243' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='119' y='88' z='0' type='1'>
-<resource id='3253' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='119' y='89' z='0' type='1'>
-<resource id='3254' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='119' y='90' z='0' type='1'>
-<resource id='3255' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='119' y='85' z='0' type='1' />
+<parcel x='119' y='86' z='0' type='1' />
+<parcel x='119' y='87' z='0' type='1' />
+<parcel x='119' y='88' z='0' type='1' />
+<parcel x='119' y='89' z='0' type='1' />
+<parcel x='119' y='90' z='0' type='1' />
 <parcel x='119' y='91' z='0' type='1' />
-<parcel x='119' y='92' z='0' type='1'>
-<resource id='3260' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='119' y='93' z='0' type='1'>
-<resource id='3261' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='119' y='94' z='0' type='1'>
-<resource id='3262' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='119' y='95' z='0' type='1'>
-<resource id='3263' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='119' y='92' z='0' type='1' />
+<parcel x='119' y='93' z='0' type='1' />
+<parcel x='119' y='94' z='0' type='1' />
+<parcel x='119' y='95' z='0' type='1' />
 <parcel x='119' y='96' z='0' type='1' />
 <parcel x='119' y='97' z='0' type='1' />
 <parcel x='119' y='98' z='0' type='1' />
@@ -34234,13 +33330,7 @@
 <quantity>10</quantity>
 </resource>
 </parcel>
-<parcel x='120' y='83' z='0' type='1'>
-<resource id='24514' name='base.desert_laitue'>
-<health>0</health>
-<progress>0</progress>
-<quantity>10</quantity>
-</resource>
-</parcel>
+<parcel x='120' y='83' z='0' type='1' />
 <parcel x='120' y='84' z='0' type='1' />
 <parcel x='120' y='85' z='0' type='1' />
 <parcel x='120' y='86' z='0' type='1' />
@@ -34249,34 +33339,10 @@
 <parcel x='120' y='89' z='0' type='1' />
 <parcel x='120' y='90' z='0' type='1' />
 <parcel x='120' y='91' z='0' type='1' />
-<parcel x='120' y='92' z='0' type='1'>
-<resource id='3264' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='120' y='93' z='0' type='1'>
-<resource id='3265' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='120' y='94' z='0' type='1'>
-<resource id='3266' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='120' y='95' z='0' type='1'>
-<resource id='3267' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='120' y='92' z='0' type='1' />
+<parcel x='120' y='93' z='0' type='1' />
+<parcel x='120' y='94' z='0' type='1' />
+<parcel x='120' y='95' z='0' type='1' />
 <parcel x='120' y='96' z='0' type='1' />
 <parcel x='120' y='97' z='0' type='1' />
 <parcel x='120' y='98' z='0' type='1' />
@@ -34663,34 +33729,10 @@
 <parcel x='121' y='89' z='0' type='1' />
 <parcel x='121' y='90' z='0' type='1' />
 <parcel x='121' y='91' z='0' type='1' />
-<parcel x='121' y='92' z='0' type='1'>
-<resource id='3268' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='121' y='93' z='0' type='1'>
-<resource id='3269' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='121' y='94' z='0' type='1'>
-<resource id='3270' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
-<parcel x='121' y='95' z='0' type='1'>
-<resource id='3271' name='base.seaweed5'>
-<health>0</health>
-<progress>0</progress>
-<quantity>3</quantity>
-</resource>
-</parcel>
+<parcel x='121' y='92' z='0' type='1' />
+<parcel x='121' y='93' z='0' type='1' />
+<parcel x='121' y='94' z='0' type='1' />
+<parcel x='121' y='95' z='0' type='1' />
 <parcel x='121' y='96' z='0' type='1' />
 <parcel x='121' y='97' z='0' type='1' />
 <parcel x='121' y='98' z='0' type='1' />
@@ -35041,20 +34083,8 @@
 <parcel x='122' y='89' z='0' type='1' />
 <parcel x='122' y='90' z='0' type='1' />
 <parcel x='122' y='91' z='0' type='1' />
-<parcel x='122' y='92' z='0' type='1'>
-<resource id='71001' name='base.seaweed3'>
-<health>0</health>
-<progress>0</progress>
-<quantity>10</quantity>
-</resource>
-</parcel>
-<parcel x='122' y='93' z='0' type='1'>
-<resource id='71003' name='base.seaweed3'>
-<health>0</health>
-<progress>0</progress>
-<quantity>10</quantity>
-</resource>
-</parcel>
+<parcel x='122' y='92' z='0' type='1' />
+<parcel x='122' y='93' z='0' type='1' />
 <parcel x='122' y='94' z='0' type='1' />
 <parcel x='122' y='95' z='0' type='1' />
 <parcel x='122' y='96' z='0' type='1' />
@@ -42455,19 +41485,19 @@
 <lastname>Roach</lastname>
 <firstname>Roberta</firstname>
 <old>Roach</old>
-<x>111</x>
-<y>77</y>
+<x>106</x>
+<y>80</y>
 <gender>FEMALE</gender>
 <needs>
 <isSleeping>false</isSleeping>
 <drinking>0.0</drinking>
 <socialize>0.0</socialize>
-<food>51.24999999999778</food>
-<happiness>100.0</happiness>
-<relation>100.0</relation>
+<food>0.0</food>
+<happiness>0.0</happiness>
+<relation>0.5</relation>
 <security>0.0</security>
 <oxygen>100.0</oxygen>
-<energy>64.700000000002</energy>
+<energy>73.6000000000015</energy>
 <health>81.96775817871094</health>
 <sickness>0.0</sickness>
 <injuries>0.0</injuries>
@@ -42505,24 +41535,24 @@
 <lastname>Palmer</lastname>
 <firstname>Maricela</firstname>
 <old>Palmer</old>
-<x>108</x>
-<y>76</y>
+<x>110</x>
+<y>83</y>
 <gender>FEMALE</gender>
 <needs>
 <isSleeping>false</isSleeping>
 <drinking>0.0</drinking>
 <socialize>0.0</socialize>
-<food>36.083333333306385</food>
+<food>76.44999999996736</food>
 <happiness>100.0</happiness>
-<relation>0.0</relation>
+<relation>100.0</relation>
 <security>0.0</security>
 <oxygen>100.0</oxygen>
-<energy>9.700000000001387</energy>
+<energy>18.6000000000014</energy>
 <health>70.91073608398438</health>
 <sickness>0.0</sickness>
 <injuries>0.0</injuries>
 <satiety>0.0</satiety>
-<joy>100.0</joy>
+<joy>0.0</joy>
 </needs>
 <timetable>
 <period h='0'>0</period>
@@ -42555,24 +41585,24 @@
 <lastname>Booth</lastname>
 <firstname>Marie</firstname>
 <old>Booth</old>
-<x>111</x>
-<y>75</y>
+<x>109</x>
+<y>82</y>
 <gender>FEMALE</gender>
 <needs>
-<isSleeping>true</isSleeping>
+<isSleeping>false</isSleeping>
 <drinking>0.0</drinking>
 <socialize>0.0</socialize>
-<food>60.89999999999732</food>
-<happiness>100.0</happiness>
+<food>25.69999999999324</food>
+<happiness>85.15000000000084</happiness>
 <relation>100.0</relation>
 <security>0.0</security>
 <oxygen>100.0</oxygen>
-<energy>8.359999999999998</energy>
+<energy>4.600000000001405</energy>
 <health>71.64020538330078</health>
 <sickness>0.0</sickness>
 <injuries>0.0</injuries>
 <satiety>0.0</satiety>
-<joy>90.5</joy>
+<joy>0.0</joy>
 </needs>
 <timetable>
 <period h='0'>0</period>
@@ -42606,75 +41636,75 @@
 <area id='0' name='Storage Area #n' type='STORAGE'>
 <accept>
 <item>base.seaweed</item>
+<item>base.rubble</item>
+<item>base.spice</item>
 <item>base.brick_rock</item>
+<item>base.lavish_meal</item>
+<item>base.seafood</item>
 <item>base.iron_filings</item>
 <item>base.vegetable</item>
-<item>base.lavish_meal</item>
-<item>base.iron</item>
-<item>base.seafood</item>
-<item>base.wood</item>
-<item>base.spice</item>
-<item>base.military_meal</item>
 <item>base.military_ration</item>
-<item>base.rubble</item>
 <item>base.easy_meal</item>
+<item>base.iron</item>
+<item>base.wood</item>
 <item>base.advance_meal</item>
+<item>base.military_meal</item>
 </accept>
 <parcels>
-<parcel x='106' y='76' />
-<parcel x='107' y='78' />
+<parcel x='110' y='77' />
+<parcel x='107' y='79' />
+<parcel x='108' y='79' />
+<parcel x='112' y='79' />
 <parcel x='106' y='79' />
+<parcel x='109' y='75' />
+<parcel x='112' y='77' />
+<parcel x='108' y='75' />
+<parcel x='106' y='76' />
+<parcel x='106' y='78' />
+<parcel x='107' y='77' />
+<parcel x='106' y='77' />
+<parcel x='111' y='79' />
+<parcel x='106' y='80' />
+<parcel x='109' y='77' />
+<parcel x='107' y='75' />
+<parcel x='113' y='76' />
+<parcel x='106' y='75' />
 <parcel x='110' y='76' />
-<parcel x='113' y='80' />
-<parcel x='112' y='75' />
-<parcel x='108' y='77' />
 <parcel x='113' y='79' />
+<parcel x='110' y='80' />
+<parcel x='109' y='79' />
+<parcel x='108' y='76' />
+<parcel x='113' y='75' />
+<parcel x='111' y='80' />
+<parcel x='111' y='76' />
 <parcel x='113' y='77' />
+<parcel x='109' y='78' />
+<parcel x='107' y='80' />
+<parcel x='108' y='78' />
+<parcel x='112' y='80' />
+<parcel x='107' y='78' />
+<parcel x='111' y='77' />
+<parcel x='111' y='78' />
+<parcel x='111' y='75' />
+<parcel x='105' y='76' />
+<parcel x='105' y='79' />
+<parcel x='105' y='80' />
+<parcel x='112' y='76' />
+<parcel x='113' y='78' />
+<parcel x='105' y='77' />
+<parcel x='109' y='80' />
+<parcel x='113' y='80' />
 <parcel x='110' y='79' />
+<parcel x='108' y='77' />
+<parcel x='110' y='78' />
+<parcel x='109' y='76' />
+<parcel x='112' y='78' />
 <parcel x='108' y='80' />
 <parcel x='107' y='76' />
-<parcel x='110' y='78' />
-<parcel x='109' y='77' />
-<parcel x='107' y='77' />
-<parcel x='109' y='75' />
-<parcel x='113' y='76' />
-<parcel x='109' y='76' />
-<parcel x='110' y='75' />
 <parcel x='105' y='78' />
-<parcel x='111' y='79' />
-<parcel x='109' y='78' />
-<parcel x='110' y='77' />
-<parcel x='108' y='75' />
-<parcel x='111' y='77' />
-<parcel x='111' y='80' />
-<parcel x='111' y='78' />
-<parcel x='107' y='79' />
-<parcel x='106' y='77' />
-<parcel x='113' y='75' />
-<parcel x='108' y='79' />
-<parcel x='108' y='76' />
-<parcel x='113' y='78' />
-<parcel x='105' y='79' />
-<parcel x='109' y='79' />
-<parcel x='112' y='80' />
-<parcel x='111' y='76' />
-<parcel x='106' y='75' />
-<parcel x='107' y='75' />
-<parcel x='109' y='80' />
+<parcel x='112' y='75' />
+<parcel x='110' y='75' />
 <parcel x='105' y='75' />
-<parcel x='107' y='80' />
-<parcel x='105' y='80' />
-<parcel x='105' y='77' />
-<parcel x='110' y='80' />
-<parcel x='112' y='77' />
-<parcel x='112' y='78' />
-<parcel x='106' y='80' />
-<parcel x='111' y='75' />
-<parcel x='106' y='78' />
-<parcel x='105' y='76' />
-<parcel x='112' y='79' />
-<parcel x='108' y='78' />
-<parcel x='112' y='76' />
 </parcels>
 </area>
 </areas>

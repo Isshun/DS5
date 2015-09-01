@@ -489,4 +489,10 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
     public ParcelModel.ParcelContent getParcelContent(ParcelModel parcel) {
         return parcel.getContent();
     }
+
+    @Override
+    public int getPriority() {
+        return 10000;
+    }
+
 }

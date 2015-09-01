@@ -29,12 +29,12 @@ public class PanelTooltip extends BasePanel {
 	@Override
 	protected void onCreate(ViewFactory viewFactory) {
 		_lbToolTip = viewFactory.createTextView(0, 0);
-		_lbToolTip.setCharacterSize(FONT_SIZE_TITLE);
+		_lbToolTip.setTextSize(FONT_SIZE_TITLE);
 		_lbToolTip.setPosition(20, 18);
 		addView(_lbToolTip);
 
 		_lbContent = viewFactory.createTextView(0, 0);
-		_lbContent.setCharacterSize(FONT_SIZE);
+		_lbContent.setTextSize(FONT_SIZE);
 		_lbContent.setPosition(20, 52);
 		addView(_lbContent);
 		
@@ -43,14 +43,14 @@ public class PanelTooltip extends BasePanel {
 		addView(layoutCategory);
 		
 		_lbCategory = viewFactory.createTextView(0, 0);
-		_lbCategory.setCharacterSize(FONT_SIZE_TITLE);
+		_lbCategory.setTextSize(FONT_SIZE_TITLE);
 		_lbCategory.setPosition(0, 0);
 		layoutCategory.addView(_lbCategory);
 		
 		_lbCategories = new UILabel[NB_MAX_LINK];
 		for (int i = 0; i < NB_MAX_LINK; i++) {
 			_lbCategories[i] = viewFactory.createTextView();
-			_lbCategories[i].setCharacterSize(FONT_SIZE);
+			_lbCategories[i].setTextSize(FONT_SIZE);
 			layoutCategory.addView(_lbCategories[i]);
 		}
 	}
@@ -74,10 +74,10 @@ public class PanelTooltip extends BasePanel {
 	public void select(ToolTip tooltip) {
 
 		// Title
-		_lbToolTip.setString(tooltip.title);
+		_lbToolTip.setText(tooltip.title);
 
 		// Content
-		_lbContent.setString(getFormatedContent(tooltip.content));
+		_lbContent.setText(getFormatedContent(tooltip.content));
 
 		// Category
 		ToolTipCategory category = null;
@@ -87,12 +87,12 @@ public class PanelTooltip extends BasePanel {
 			}
 		}
 		if (category != null) {
-			_lbCategory.setString("See other tags for [" + category.title + "]");
+			_lbCategory.setText("See other tags for [" + category.title + "]");
 			int i = 0;
 			int posX = 0;
 			for (ToolTip t: category.tooltips) {
 				final ToolTip ft = t;
-				_lbCategories[i].setString("[" + t.title + "]");
+				_lbCategories[i].setText("[" + t.title + "]");
 				_lbCategories[i].setVisible(true);
 				_lbCategories[i].setPosition(posX, 32);
 				_lbCategories[i].setSize((t.title.length() + 2) * CHARACTER_WIDTH, LINE_HEIGHT);

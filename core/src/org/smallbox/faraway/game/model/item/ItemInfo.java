@@ -46,9 +46,10 @@ public class ItemInfo {
 			public int[]				temperature;
 			public int[]				light;
 		}
-		public List<GrowingInfo>	states;
+		public List<GrowingInfo>		states;
 		public double 					growing;
         public int                      mature;
+        public boolean 					cutOnGathering = true;
 	}
 
 	public static class ItemInfoReceipt {

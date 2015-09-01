@@ -7,6 +7,9 @@ import org.smallbox.faraway.game.module.*;
 import org.smallbox.faraway.ui.engine.view.FrameLayout;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Alex on 30/08/2015.
  */
@@ -16,20 +19,24 @@ public class RenderDebugModule extends GameUIModule {
         protected void onCreate(UIWindow window, FrameLayout content) {
             window.setPosition(500, 500);
 
-            int index = 0;
+            List<UILabel> entries = new ArrayList<>();
             for (BaseRenderer render: MainRenderer.getInstance().getRenders()) {
                 UILabel lbModule = new GDXLabel();
-                lbModule.setString((render.isLoaded() ? "[x] " : "[ ] ") + render.getClass().getSimpleName());
-                lbModule.setCharacterSize(14);
-                lbModule.setPosition(0, index++ * 20);
+                lbModule.setData(render.getClass().getSimpleName());
+                lbModule.setText((render.isLoaded() ? "[x] " : "[ ] ") + render.getClass().getSimpleName());
+                lbModule.setTextSize(14);
                 lbModule.setOnClickListener(view1 -> {
                     MainRenderer.getInstance().toggleRender(render);
-                    lbModule.setString((render.isLoaded() ? "[x] " : "[ ] ") + render.getClass().getSimpleName());
+                    lbModule.setText((render.isLoaded() ? "[x] " : "[ ] ") + render.getClass().getSimpleName());
                 });
+                entries.add(lbModule);
                 content.addView(lbModule);
             }
 
-            content.setSize(150, index * 20);
+            entries.sort((l1, l2) -> ((String) l1.getData()).compareTo((String)l2.getData()));
+            entries.forEach(entry -> entry.setPosition(0, entries.indexOf(entry) * 20));
+
+            content.setSize(150, entries.size() * 20);
         }
 
         @Override

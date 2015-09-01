@@ -31,7 +31,7 @@ public class LayoutFactory {
 
     public static void load(String path, FrameLayout panel, OnLayoutLoaded listener) {
         try {
-            InputStream input = new FileInputStream(new File(path));
+            InputStream input = new FileInputStream(new File(path.endsWith(".yml") ? path : path + ".yml"));
             Yaml yaml = new Yaml(new Constructor(LayoutModel.class));
             LayoutModel layout = (LayoutModel)yaml.load(input);
             if (layout.entries != null && !layout.entries.isEmpty()) {
@@ -46,7 +46,7 @@ public class LayoutFactory {
             }
 
             if (layout.align != null) {
-                panel.setAlign("left".equals(layout.align[0]), "top".equals(layout.align[1]));
+                panel.setTextAlign("left".equals(layout.align[0]), "top".equals(layout.align[1]));
             }
 
             if (layout.position != null) {
@@ -80,8 +80,8 @@ public class LayoutFactory {
 
         if (entry.align != null) {
             switch (entry.align) {
-                case "center": lbText.setAlign(UILabel.Align.CENTER); break;
-                case "center_vertical": lbText.setAlign(UILabel.Align.CENTER_VERTICAL); break;
+                case "center": lbText.setTextAlign(UILabel.Align.CENTER); break;
+                case "center_vertical": lbText.setTextAlign(UILabel.Align.CENTER_VERTICAL); break;
             }
         }
 
@@ -92,7 +92,7 @@ public class LayoutFactory {
         }
 
         if (entry.textsize != 0) {
-            lbText.setCharacterSize(entry.textsize);
+            lbText.setTextSize(entry.textsize);
         }
 
         if (entry.textcolor != 0) {
@@ -100,7 +100,7 @@ public class LayoutFactory {
         }
 
         if (entry.text != null) {
-            lbText.setString(entry.text);
+            lbText.setText(entry.text);
         }
 
 //        lbText.setSize(lbText.getContentWidth() + 10, lbText.getContentHeight() + 10);
@@ -129,7 +129,7 @@ public class LayoutFactory {
 
         if (entry.align != null) {
             switch (entry.align) {
-                case "center": frame.setAlign(UILabel.Align.CENTER); break;
+                case "center": frame.setTextAlign(UILabel.Align.CENTER); break;
             }
         }
 

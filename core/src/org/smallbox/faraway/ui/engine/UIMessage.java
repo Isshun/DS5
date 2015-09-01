@@ -18,9 +18,9 @@ public class UIMessage {
 		this.frame = 100;
 		
 		this.text = ViewFactory.getInstance().createTextView();
-		this.text.setCharacterSize(14);
+		this.text.setTextSize(14);
 		this.text.setColor(Color.WHITE);
-		this.text.setString(str);
+		this.text.setText(str);
 		this.text.setPosition(posX + 10, posY + 5);
 		
 		this.border = ViewFactory.getInstance().createColorView(this.text.getContentWidth() + 20, this.text.getContentHeight() + 20);

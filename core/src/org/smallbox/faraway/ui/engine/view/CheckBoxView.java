@@ -61,11 +61,11 @@ public class CheckBoxView extends UILabel {
 	@Override
 	public void setStringValue(String text) {
 		_label = text;
-//		super.setString(StringUtils.getDashedString(_label, "[ ]", NB_COLUMNS_NEEDS));
+//		super.setText(StringUtils.getDashedString(_label, "[ ]", NB_COLUMNS_NEEDS));
 	}
 
 	@Override
-	public void setCharacterSize(int size) {
+	public void setTextSize(int size) {
 
 	}
 
@@ -107,7 +107,7 @@ public class CheckBoxView extends UILabel {
 	public void setChecked(boolean checked) {
 		_isChecked = checked;
 		if (_label != null) {
-//			super.setString(StringUtils.getDashedString(_label, checked ? "[x]" : "[ ]", NB_COLUMNS_NEEDS));
+//			super.setText(StringUtils.getDashedString(_label, checked ? "[x]" : "[ ]", NB_COLUMNS_NEEDS));
 		}
 	}
 

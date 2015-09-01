@@ -56,8 +56,8 @@ public class PlanetPage extends MainMenuPage {
     private void addPlanetListView(FrameLayout framePlanetList, PlanetInfo planet, int index) {
         _viewFactory.load("data/ui/menu/planet_list_entry.yml", view -> {
             view.findById("frame_background").setVisible(false);
-            ((UILabel)view.findById("lb_planet")).setString(planet.name);
-            ((UILabel)view.findById("lb_type")).setString(planet.type);
+            ((UILabel)view.findById("lb_planet")).setText(planet.name);
+            ((UILabel)view.findById("lb_type")).setText(planet.type);
 
             if (planet.image != null) {
                 ((UIImage) view.findById("img_planet")).setImagePath(planet.image.thumb);
@@ -80,8 +80,8 @@ public class PlanetPage extends MainMenuPage {
     private void select(PlanetInfo planet) {
         _mainMenu.select(planet);
 
-        ((UILabel)findById("lb_detail_planet")).setString(planet.name);
-        ((UILabel)findById("lb_detail_desc")).setString(planet.desc);
+        ((UILabel)findById("lb_detail_planet")).setText(planet.name);
+        ((UILabel)findById("lb_detail_desc")).setText(planet.desc);
 
         formatPlanetStats((UILabel)findById("lb_detail_water"), "Water", planet.stats.water);
         formatPlanetStats((UILabel)findById("lb_detail_fertility"), "Fertility", planet.stats.fertility);
@@ -96,9 +96,9 @@ public class PlanetPage extends MainMenuPage {
 
     private void formatPlanetHostileStats(UILabel textView, String label, int value) {
         if (value == 0) {
-            textView.setString(StringUtils.getDashedString(label, "no", 39));
+            textView.setText(StringUtils.getDashedString(label, "no", 39));
         } else {
-            textView.setString(StringUtils.getDashedString(label, "yes (" + (value == 1 ? "few" : "many") + ")", 39));
+            textView.setText(StringUtils.getDashedString(label, "yes (" + (value == 1 ? "few" : "many") + ")", 39));
         }
         switch (value) {
             case 0: textView.setColor(COLOR_0); break;
@@ -108,7 +108,7 @@ public class PlanetPage extends MainMenuPage {
     }
 
     private void formatPlanetStats(UILabel textView, String label, int value) {
-        textView.setString(StringUtils.getDashedString(
+        textView.setText(StringUtils.getDashedString(
                 label,
                 StringUtils.getPlanetStatsText(value) + " (" + StringUtils.getPlanetStatsSymbol(value) + ")", 39));
         switch (value) {

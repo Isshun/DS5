@@ -2,20 +2,26 @@ package org.smallbox.faraway.game.module;
 
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.ui.engine.LayoutFactory;
+import org.smallbox.faraway.ui.engine.OnClickListener;
+import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UILabel;
 
 /**
  * Created by Alex on 31/08/2015.
  */
 public abstract class UIWindow extends FrameLayout {
-    protected FrameLayout             _frameMain;
-    protected FrameLayout             _frameContent;
+    protected FrameLayout       _frameMain;
+    protected FrameLayout       _frameContent;
+    private boolean             _isLoaded;
+    private int                 _debugIndex;
 
     public UIWindow() {
         _frameContent = this;
         if (getContentLayout() != null) {
             LayoutFactory.load("data/ui/" + getContentLayout(), this, null);
         }
+        _isLoaded = true;
     }
 
     protected abstract void onCreate(UIWindow window, FrameLayout content);
@@ -27,7 +33,9 @@ public abstract class UIWindow extends FrameLayout {
     }
 
     public void refresh(int update) {
-        onRefresh(update);
+        if (_isVisible && _isLoaded) {
+            onRefresh(update);
+        }
     }
 
     @Override
@@ -46,6 +54,22 @@ public abstract class UIWindow extends FrameLayout {
 
     public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
         return false;
+    }
+
+    protected void addDebugView(FrameLayout frame, String text) {
+        addDebugView(frame, text, null);
+    }
+
+    protected void addDebugView(FrameLayout frame, String text, OnClickListener clickListener) {
+        UILabel lbCommand = ViewFactory.getInstance().createTextView();
+        lbCommand.setText(text);
+        lbCommand.setTextSize(14);
+        lbCommand.setPosition(6, 38 + 20 * _debugIndex++);
+        lbCommand.setSize(230, 20);
+        lbCommand.setTextAlign(Align.CENTER_VERTICAL);
+        lbCommand.setOnClickListener(clickListener);
+        lbCommand.resetSize();
+        frame.addView(lbCommand);
     }
 
 }

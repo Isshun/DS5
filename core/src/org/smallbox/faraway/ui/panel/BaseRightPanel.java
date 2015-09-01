@@ -39,12 +39,12 @@ public abstract class BaseRightPanel extends BasePanel {
 		
 		if (_mode != Mode.NONE) {
 			UILabel lbBack = ViewFactory.getInstance().createTextView();
-			lbBack.setString("[Back]");
-			lbBack.setCharacterSize(FONT_SIZE_TITLE);
+			lbBack.setText("[Back]");
+			lbBack.setTextSize(FONT_SIZE_TITLE);
 			lbBack.setColor(Colors.LINK_INACTIVE);
 			lbBack.setPosition(22, -22);
 			lbBack.setSize(120, 32);
-			lbBack.setAlign(Align.CENTER);
+			lbBack.setTextAlign(Align.CENTER);
 			lbBack.setBackgroundColor(new Color(0x1d5560));
 			lbBack.setOnClickListener(view -> _ui.back());
 			lbBack.setOnFocusListener(new LinkFocusListener());
@@ -54,8 +54,8 @@ public abstract class BaseRightPanel extends BasePanel {
 
 	protected void addDebugView(String text, int x, int y, OnClickListener clickListener) {
 		UILabel lbCommand = ViewFactory.getInstance().createTextView();
-		lbCommand.setString("[DEV] " + text);
-		lbCommand.setCharacterSize(14);
+		lbCommand.setText("[DEV] " + text);
+		lbCommand.setTextSize(14);
 		lbCommand.setPosition(x, y);
 		lbCommand.setOnClickListener(clickListener);
 		lbCommand.resetSize();

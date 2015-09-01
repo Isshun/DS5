@@ -25,8 +25,8 @@ public class LoadPage extends MainMenuPage {
         for (File saveFile: new File("data/saves/").listFiles()) {
             if (saveFile.getName().endsWith(".sav")) {
                 UILabel lbSave = ViewFactory.getInstance().createTextView(200, 30);
-                lbSave.setCharacterSize(16);
-                lbSave.setString(saveFile.getName());
+                lbSave.setTextSize(16);
+                lbSave.setText(saveFile.getName());
                 lbSave.setPosition(0, 30 * index++);
                 lbSave.setSize(200, 30);
                 lbSave.setOnClickListener(view -> Application.getInstance().loadGame(saveFile.getName()));

@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.world.RoomModule;
 import org.smallbox.faraway.util.Constant;
 
@@ -16,7 +17,7 @@ import java.util.Random;
 public class GDXRoomRenderer extends BaseRenderer {
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-        ((RoomModule)Game.getInstance().getModule(RoomModule.class)).getRoomList().stream().forEach(room -> {
+        ((RoomModule) ModuleManager.getInstance().getModule(RoomModule.class)).getRoomList().stream().forEach(room -> {
             for (ParcelModel parcel : room.getParcels()) {
                 Random random = new Random(room.getId());
                 renderer.draw(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat(), 1f),

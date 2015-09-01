@@ -94,4 +94,11 @@ public abstract class GameModule implements GameObserver {
     public void refresh(int update) {
     }
 
+    public int getPriority() {
+        return 0;
+    }
+
+    public boolean isThirdParty() {
+        return false;
+    }
 }

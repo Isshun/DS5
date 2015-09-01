@@ -66,17 +66,17 @@ public class BaseInfoRightPanel extends BaseRightPanel {
             if (parcel != null) {
                 _frame_parcel_info.setVisible(true);
                 boolean isBuildGround = parcel.getStructure() != null && parcel.getStructure().isFloor();
-                ((UILabel) _frame_parcel_info.findById("lb_parcel_name")).setString(isBuildGround ? "Build ground" : "Ground");
-                ((UILabel) _frame_parcel_info.findById("lb_parcel_pos")).setString(parcel.x + "x" + parcel.y);
-                ((UILabel) _frame_parcel_info.findById("lb_light")).setString("light: " + parcel.getLight());
-                ((UILabel) _frame_parcel_info.findById("lb_oxygen")).setString("oxygen: " + parcel.getOxygen());
-                ((UILabel) _frame_parcel_info.findById("lb_type")).setString("type: " + parcel.getType());
+                ((UILabel) _frame_parcel_info.findById("lb_parcel_name")).setText(isBuildGround ? "Build ground" : "Ground");
+                ((UILabel) _frame_parcel_info.findById("lb_parcel_pos")).setText(parcel.x + "x" + parcel.y);
+                ((UILabel) _frame_parcel_info.findById("lb_light")).setText("light: " + parcel.getLight());
+                ((UILabel) _frame_parcel_info.findById("lb_oxygen")).setText("oxygen: " + parcel.getOxygen());
+                ((UILabel) _frame_parcel_info.findById("lb_type")).setText("type: " + parcel.getType());
 
                 if (parcel.getEnvironment() != null) {
-                    ((UILabel) _frame_parcel_info.findById("lb_blood")).setString("blood: " + parcel.getEnvironment().blood);
-                    ((UILabel) _frame_parcel_info.findById("lb_dirt")).setString("dirt: " + parcel.getEnvironment().dirt);
-                    ((UILabel) _frame_parcel_info.findById("lb_rubble")).setString("rubble: " + parcel.getEnvironment().rubble);
-                    ((UILabel) _frame_parcel_info.findById("lb_snow")).setString("snow: " + parcel.getEnvironment().snow);
+                    ((UILabel) _frame_parcel_info.findById("lb_blood")).setText("blood: " + parcel.getEnvironment().blood);
+                    ((UILabel) _frame_parcel_info.findById("lb_dirt")).setText("dirt: " + parcel.getEnvironment().dirt);
+                    ((UILabel) _frame_parcel_info.findById("lb_rubble")).setText("rubble: " + parcel.getEnvironment().rubble);
+                    ((UILabel) _frame_parcel_info.findById("lb_snow")).setText("snow: " + parcel.getEnvironment().snow);
                 }
 
                 String strConnexion = "";
@@ -84,7 +84,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
                     strConnexion += strConnexion.isEmpty() ? "Connexion: " : ", ";
                     strConnexion += connection.getToNode().x + "x" + connection.getToNode().y;
                 }
-                ((UILabel) _frame_parcel_info.findById("lb_connexion")).setString(strConnexion);
+                ((UILabel) _frame_parcel_info.findById("lb_connexion")).setText(strConnexion);
             } else {
                 _frame_parcel_info.setVisible(false);
             }
@@ -96,22 +96,22 @@ public class BaseInfoRightPanel extends BaseRightPanel {
                 RoomModel room = parcel.getRoom();
 
                 _frame_room_info.setVisible(true);
-                ((UILabel) _frame_room_info.findById("lb_room")).setString(room.isExterior() ? "Exterior" : room.getName());
-                ((UILabel) _frame_room_info.findById("lb_room_size")).setString("Size: " + (room.getParcels().size() / 2) + "m²");
-                ((UILabel) _frame_room_info.findById("lb_room_temperature")).setString("Temperature: " + (int) room.getTemperatureInfo().temperature + "°");
+                ((UILabel) _frame_room_info.findById("lb_room")).setText(room.isExterior() ? "Exterior" : room.getName());
+                ((UILabel) _frame_room_info.findById("lb_room_size")).setText("Size: " + (room.getParcels().size() / 2) + "m²");
+                ((UILabel) _frame_room_info.findById("lb_room_temperature")).setText("Temperature: " + (int) room.getTemperatureInfo().temperature + "°");
 
-                ((UILabel) _frame_room_info.findById("lb_heat_potency")).setString("HP: " + room.getTemperatureInfo().heatPotency);
-                ((UILabel) _frame_room_info.findById("lb_cold_potency")).setString("CP: " + room.getTemperatureInfo().coldPotency);
-                ((UILabel) _frame_room_info.findById("lb_heat")).setString("H: " + room.getTemperatureInfo().targetHeat);
-                ((UILabel) _frame_room_info.findById("lb_cold")).setString("C: " + room.getTemperatureInfo().targetCold);
-                ((UILabel) _frame_room_info.findById("lb_heat_left")).setString("HL: " + room.getTemperatureInfo().heatPotencyLeft);
-                ((UILabel) _frame_room_info.findById("lb_cold_left")).setString("CL: " + room.getTemperatureInfo().coldPotencyLeft);
-                ((UILabel) _frame_room_info.findById("lb_oxygen")).setString("O2: " + room.getOxygen());
+                ((UILabel) _frame_room_info.findById("lb_heat_potency")).setText("HP: " + room.getTemperatureInfo().heatPotency);
+                ((UILabel) _frame_room_info.findById("lb_cold_potency")).setText("CP: " + room.getTemperatureInfo().coldPotency);
+                ((UILabel) _frame_room_info.findById("lb_heat")).setText("H: " + room.getTemperatureInfo().targetHeat);
+                ((UILabel) _frame_room_info.findById("lb_cold")).setText("C: " + room.getTemperatureInfo().targetCold);
+                ((UILabel) _frame_room_info.findById("lb_heat_left")).setText("HL: " + room.getTemperatureInfo().heatPotencyLeft);
+                ((UILabel) _frame_room_info.findById("lb_cold_left")).setText("CL: " + room.getTemperatureInfo().coldPotencyLeft);
+                ((UILabel) _frame_room_info.findById("lb_oxygen")).setText("O2: " + room.getOxygen());
 
                 // Temperature cursor
                 int temperature = (int) room.getTemperatureInfo().temperature;
                 int position = 100 - Math.min(80, Math.max(-80, temperature)) * 80 / 100;
-                ((UILabel) _frame_room_info.findById("lb_temperature_cursor")).setString(temperature + "°");
+                ((UILabel) _frame_room_info.findById("lb_temperature_cursor")).setText(temperature + "°");
                 for (Object[] obj : TEMPERATURE_COLOR) {
                     if (temperature + 10 > (int) obj[0]) {
                         _frame_room_info.findById("temperature_cursor").setPosition(0, position - 10);
@@ -128,7 +128,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
                     for (NeighborModel neighbor : room.getNeighbors()) {
                         count += neighbor.parcels.size();
                     }
-                    ((UILabel) _frame_room_info.findById("lb_neighborhood")).setString("Neighborhood: " + count);
+                    ((UILabel) _frame_room_info.findById("lb_neighborhood")).setText("Neighborhood: " + count);
                 }
             } else {
                 _frame_room_info.setVisible(false);
@@ -143,7 +143,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
 
     protected void addJobOrder(FrameLayout frame, ReceiptModel.OrderModel order, int index) {
         UILabel lbOrder = ViewFactory.getInstance().createTextView();
-        lbOrder.setCharacterSize(14);
+        lbOrder.setTextSize(14);
         lbOrder.setPosition(0, index * 20);
 
         String str = order.consumable.getInfo().label;

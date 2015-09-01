@@ -11,10 +11,9 @@ import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobDump;
 import org.smallbox.faraway.game.model.job.JobHaul;
 import org.smallbox.faraway.game.module.character.JobModule;
-import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.cursor.*;
-import org.smallbox.faraway.ui.panel.right.PanelPlan.Planning;
+import org.smallbox.faraway.game.module.panels.PanelPlanModule.Planning;
 import org.smallbox.faraway.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -158,10 +157,10 @@ public class UserInteraction {
 		}
 	}
 
-	public void planGather(int startX, int startY, int toX, int toY, boolean removeOnComplete) {
+	public void planGather(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				BaseJobModel job = JobHelper.createGatherJob(x, y, removeOnComplete);
+				BaseJobModel job = JobHelper.createGatherJob(x, y);
 				if (job != null) {
 					JobModule.getInstance().addJob(job);
 				}
@@ -225,8 +224,8 @@ public class UserInteraction {
 		
 		switch (_selectedPlan) {
 		case DUMP: planDump(startX, startY, toX, toY); break;
-		case GATHER: planGather(startX, startY, toX, toY, false); break;
-		case CUT_PLANT: planGather(startX, startY, toX, toY, true); break;
+		case GATHER: planGather(startX, startY, toX, toY); break;
+		case CUT_PLANT: planGather(startX, startY, toX, toY); break;
 		case MINING: planMining(startX, startY, toX, toY); break;
 		case PICK: planPick(startX, startY, toX, toY); break;
 		case HAUL: planHaul(startX, startY, toX, toY); break;

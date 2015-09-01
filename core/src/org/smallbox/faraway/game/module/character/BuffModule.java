@@ -9,6 +9,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.BuffModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.util.FileUtils;
 
 import java.util.Collections;
@@ -44,7 +45,7 @@ public class BuffModule extends GameModule {
                             for (int j = 0; j < effects.length(); j++) {
                                 if (Math.random() <= effects.get(j + 1).get(2).todouble()) {
                                     printNotice("apply buff effect: " + effects.get(j + 1).get(1).toString() + " (" + buff.message + ")");
-                                    ((DiseaseModule)Game.getInstance().getModule(DiseaseModule.class)).apply(
+                                    ((DiseaseModule) ModuleManager.getInstance().getModule(DiseaseModule.class)).apply(
                                             character,
                                             effects.get(j + 1).get(1).toString(),
                                             effects.get(j + 1).get(3));

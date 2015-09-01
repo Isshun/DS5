@@ -1,5 +1,7 @@
 package org.smallbox.faraway.game.model;
 
+import java.util.List;
+
 /**
  * Created by Alex on 04/06/2015.
  */
@@ -44,6 +46,7 @@ public class GameConfig {
     public String               lang;
     public String               weather;
     public String               time;
+    public List<String>         mods;
     public int                  tickPerHour;
     public int                  inventoryMaxQuantity;
     public int                  storageMaxQuantity;

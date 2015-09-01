@@ -6,6 +6,7 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.area.GardenAreaModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.world.TemperatureModule;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class FloraModule extends GameModule {
 
     @Override
     protected void onLoaded() {
-        _temperatureModule = (TemperatureModule)Game.getInstance().getModule(TemperatureModule.class);
+        _temperatureModule = (TemperatureModule) ModuleManager.getInstance().getModule(TemperatureModule.class);
         Game.getWorldManager().getResources().forEach(resource -> {
             if (resource.getInfo().plant != null) {
                 _plants.add(resource);
@@ -51,7 +52,7 @@ public class FloraModule extends GameModule {
                 }
                 // Plan to gather
                 else if (resource.getParcel().getArea() != null && resource.getParcel().getArea() instanceof GardenAreaModel) {
-                    JobHelper.addGather(resource, false);
+                    JobHelper.addGather(resource);
                 }
             }
         }

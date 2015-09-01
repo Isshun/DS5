@@ -37,7 +37,7 @@ public class MenuSave extends MenuBase {
 
 		_textEntry = ViewFactory.getInstance().createTextView();
 		_textEntry.setPosition(0, 0);
-		_textEntry.setCharacterSize(14);
+		_textEntry.setTextSize(14);
 		_menu.addView(_textEntry);
 
 		setVisible(true);
@@ -50,8 +50,8 @@ public class MenuSave extends MenuBase {
 		int i = 0;
 		for (final File file: files) {
 			UILabel lbFile = ViewFactory.getInstance().createTextView(200, 32);
-			lbFile.setCharacterSize(16);
-			lbFile.setString(file.getName());
+			lbFile.setTextSize(16);
+			lbFile.setText(file.getName());
 			lbFile.setColor(Color.WHITE);
 			lbFile.setPosition(200, 32 * i);
 			lbFile.setOnClickListener(new OnClickListener() {
@@ -117,7 +117,7 @@ public class MenuSave extends MenuBase {
 		for (UILabel lbFile: _lbFiles) {
 			lbFile.setColor(i++ == _index ? Color.YELLOW : Color.WHITE);
 		}
-		_textEntry.setString(_saveName);
+		_textEntry.setText(_saveName);
 	}
 
 	@Override

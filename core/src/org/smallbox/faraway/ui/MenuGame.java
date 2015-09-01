@@ -52,8 +52,8 @@
 //
 //	private void refreshEntry(GDXRenderer renderer, String str, int pos) {
 //		UILabel text = ViewFactory.getInstance().createTextView();
-//		text.setString(str);
-//		text.setCharacterSize(42);
+//		text.setText(str);
+//		text.setTextSize(42);
 //		text.setColor(Color.CYAN);
 //		//text.setColor(_selected == pos ? new Color(200, 50, 140, 150) : new Color(50, 140, 200, 150));
 //
@@ -72,8 +72,8 @@
 //	public void addEntry(String str, final int pos, OnClickListener listener) {
 //		{
 //			UILabel text = ViewFactory.getInstance().createTextView(300, 52);
-//			text.setString(str);
-//			text.setCharacterSize(42);
+//			text.setText(str);
+//			text.setTextSize(42);
 //			text.setColor(Color.WHITE);
 //			text.setPosition(200, 52 * pos);
 //			text.setOnClickListener(listener);

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.ui.panel;
 
 import org.smallbox.faraway.engine.Color;
-import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.extra.ResourceModule;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.ViewFactory;
@@ -24,28 +24,28 @@ public class PanelResource extends BasePanel {
 
 	@Override
 	protected void onCreate(ViewFactory viewFactory) {
-		_resourceModule = (ResourceModule) Game.getInstance().getModule(ResourceModule.class);
+		_resourceModule = (ResourceModule) ModuleManager.getInstance().getModule(ResourceModule.class);
 
 		_spice = viewFactory.createTextView(10, 10);
-		_spice.setCharacterSize(14);
+		_spice.setTextSize(14);
 		_spice.setColor(Color.WHITE);
 		_spice.setPosition(10, 6);
 		addView(_spice);
 		
 		_energy = viewFactory.createTextView(10, 10);
-		_energy.setCharacterSize(14);
+		_energy.setTextSize(14);
 		_energy.setColor(Color.WHITE);
 		_energy.setPosition(110, 6);
 		addView(_energy);
 
 		_matter = viewFactory.createTextView(10, 10);
-		_matter.setCharacterSize(14);
+		_matter.setTextSize(14);
 		_matter.setColor(Color.WHITE);
 		_matter.setPosition(210, 6);
 		addView(_matter);
 
 		_o2 = viewFactory.createTextView(10, 10);
-		_o2.setCharacterSize(14);
+		_o2.setTextSize(14);
 		_o2.setColor(Color.WHITE);
 		_o2.setPosition(332, 6);
 		addView(_o2);
@@ -55,9 +55,9 @@ public class PanelResource extends BasePanel {
 	
 	@Override
 	public void onRefresh(int frame) {
-        _spice.setString("Food: " + String.valueOf(_resourceModule.getFood().value));
-        _o2.setString("O2: " + String.valueOf(_resourceModule.getO2().value));
-        _energy.setString("PW: " + String.valueOf(_resourceModule.getPower().value));
-        _matter.setString("M: " + String.valueOf(_resourceModule.getScience().value));
+        _spice.setText("Food: " + String.valueOf(_resourceModule.getFood().value));
+        _o2.setText("O2: " + String.valueOf(_resourceModule.getO2().value));
+        _energy.setText("PW: " + String.valueOf(_resourceModule.getPower().value));
+        _matter.setText("M: " + String.valueOf(_resourceModule.getScience().value));
 	}
 }

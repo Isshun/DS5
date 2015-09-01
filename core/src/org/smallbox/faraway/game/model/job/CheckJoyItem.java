@@ -6,6 +6,7 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ItemFilter;
 import org.smallbox.faraway.game.model.item.ItemModel;
+import org.smallbox.faraway.game.module.ModuleManager;
 
 /**
  * Created by Alex on 17/06/2015.
@@ -27,7 +28,7 @@ public class CheckJoyItem extends CharacterCheck {
     private ItemModel getItem(CharacterModel character) {
         ItemFilter filter = ItemFilter.createUsableFilter();
         filter.effectJoy = true;
-        return (ItemModel)((ItemFinder)Game.getInstance().getModule(ItemFinder.class)).getRandomNearest(filter, character);
+        return (ItemModel)((ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class)).getRandomNearest(filter, character);
     }
 
     @Override

@@ -7,7 +7,7 @@ import org.smallbox.faraway.game.model.ToolTips;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
-import org.smallbox.faraway.game.module.info.ResourceInfoModule;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.ui.panel.PanelTooltip;
 import org.smallbox.faraway.ui.panel.info.*;
@@ -113,7 +113,7 @@ public class UserInterfaceSelector {
         ParcelModel parcel = Game.getWorldManager().getParcel(x, y);
         if (parcel != null) {
             CharacterModel character = Game.getCharacterManager().getCharacterAtPos(x, y);
-            AreaModel area = ((AreaModule) Game.getInstance().getModule(AreaModule.class)).getArea(x, y);
+            AreaModel area = ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).getArea(x, y);
 
             _lastSelectedIndex = _lastSelectedParcel == parcel ? _lastSelectedIndex + 1 : 0;
             _lastSelectedParcel = parcel;
@@ -151,7 +151,7 @@ public class UserInterfaceSelector {
     }
 
     public void clean() {
-        Game.getInstance().notify(observer -> observer.onDeselect());
+        Game.getInstance().notify(GameObserver::onDeselect);
         if (_selectedCharacter != null) {
             _selectedCharacter.setSelected(false);
         }
@@ -195,7 +195,7 @@ public class UserInterfaceSelector {
     public void select(AreaModel area, ParcelModel parcel) {
         clean();
         _userInterface.setMode(UserInterface.Mode.INFO_AREA);
-        ((PanelInfoArea)_userInterface.getPanel(PanelInfoArea.class)).select(area, parcel);
+        Game.getInstance().notify(observer -> observer.onSelectArea(area));
     }
 
     public void select(ResourceModel resource) {
@@ -210,7 +210,6 @@ public class UserInterfaceSelector {
         _userInterface.setMode(UserInterface.Mode.INFO);
         _userInterface.setMode(UserInterface.Mode.INFO_ITEM);
         _selectedItem = item;
-        ((PanelInfoItem)_userInterface.getPanel(PanelInfoItem.class)).select(item);
         Game.getInstance().notify(observer -> observer.onSelectItem(item));
         Game.getInstance().notify(observer -> observer.onSelectParcel(item.getParcel()));
     }
@@ -219,7 +218,6 @@ public class UserInterfaceSelector {
         clean();
         _userInterface.setMode(UserInterface.Mode.INFO);
         _userInterface.setMode(UserInterface.Mode.INFO_CONSUMABLE);
-        ((PanelInfoConsumable)_userInterface.getPanel(PanelInfoConsumable.class)).select(consumable);
         Game.getInstance().notify(observer -> observer.onSelectConsumable(consumable));
         Game.getInstance().notify(observer -> observer.onSelectParcel(consumable.getParcel()));
     }
@@ -227,7 +225,6 @@ public class UserInterfaceSelector {
     public void select(StructureModel structure) {
         clean();
         _userInterface.setMode(UserInterface.Mode.INFO_STRUCTURE);
-        ((PanelInfoStructure)_userInterface.getPanel(PanelInfoStructure.class)).select(structure);
         Game.getInstance().notify(observer -> observer.onSelectStructure(structure));
         Game.getInstance().notify(observer -> observer.onSelectParcel(structure.getParcel()));
     }
@@ -235,7 +232,6 @@ public class UserInterfaceSelector {
     public void select(ParcelModel parcel) {
         clean();
         _userInterface.setMode(UserInterface.Mode.INFO_PARCEL);
-        ((PanelInfoParcel)_userInterface.getPanel(PanelInfoParcel.class)).select(parcel);
         Game.getInstance().notify(observer -> observer.onSelectParcel(parcel));
     }
 

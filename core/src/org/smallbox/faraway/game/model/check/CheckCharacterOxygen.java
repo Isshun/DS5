@@ -7,6 +7,7 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobMove;
 import org.smallbox.faraway.game.model.room.RoomModel;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.world.RoomModule;
 import org.smallbox.faraway.util.Log;
 
@@ -36,7 +37,7 @@ public class CheckCharacterOxygen extends CharacterCheck {
     @Override
     public boolean check(CharacterModel character) {
         if (character.getNeeds().oxygen < 20) {
-            Optional<RoomModel> roomOpt = ((RoomModule)Game.getInstance().getModule(RoomModule.class)).getRoomList().stream().filter(room -> room.getOxygen() >= 0.75).findAny();
+            Optional<RoomModel> roomOpt = ((RoomModule) ModuleManager.getInstance().getModule(RoomModule.class)).getRoomList().stream().filter(room -> room.getOxygen() >= 0.75).findAny();
             if (roomOpt.isPresent()) {
                 Optional<ParcelModel> parcelOpt = roomOpt.get().getParcels().stream().filter(ParcelModel::isWalkable).findAny();
                 if (parcelOpt.isPresent()) {

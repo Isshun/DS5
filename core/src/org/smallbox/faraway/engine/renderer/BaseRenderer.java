@@ -1,13 +1,23 @@
 package org.smallbox.faraway.engine.renderer;
 
 import org.smallbox.faraway.core.Viewport;
+import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.util.Log;
 
-public abstract class BaseRenderer {
+public abstract class BaseRenderer implements GameObserver {
+	private final boolean _isThirdParty;
 	private long 	_totalTime;
 	private int 	_nbDraw;
     private boolean _isLoaded;
+
+	public BaseRenderer() {
+		_isThirdParty = false;
+	}
+
+	public BaseRenderer(boolean isThirdParty) {
+		_isThirdParty = isThirdParty;
+	}
 
     public abstract void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress);
 	public abstract void onRefresh(int frame);

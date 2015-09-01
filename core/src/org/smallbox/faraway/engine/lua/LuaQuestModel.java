@@ -3,6 +3,7 @@ package org.smallbox.faraway.engine.lua;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.quest.QuestModel;
 import org.smallbox.faraway.game.module.quest.QuestModule;
 import org.smallbox.faraway.game.module.extra.ResourceModule;
@@ -32,7 +33,7 @@ public class LuaQuestModel {
         public void addResource(String resource, int quantity) {
             switch (resource) {
                 case "science":
-                    ((ResourceModule)Game.getInstance().getModule(ResourceModule.class)).addScience(quantity);
+                    ((ResourceModule) ModuleManager.getInstance().getModule(ResourceModule.class)).addScience(quantity);
                     break;
             }
         }
