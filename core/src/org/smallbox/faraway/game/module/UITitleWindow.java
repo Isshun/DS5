@@ -48,21 +48,6 @@ public abstract class UITitleWindow extends UIWindow {
         _frameMain.setSize(250, _frameContent.getContentHeight() + (_lbTitle != null ? 28 : 0));
     }
 
-    public void refresh(int update) {
-        super.refresh(update);
-
-        if (_lbTitle != null) {
-            _lbTitle.resetAllPos();
-        }
-        if (_lbClose != null) {
-            _lbClose.resetAllPos();
-        }
-    }
-
-    @Override
-    public void refresh() {
-    }
-
     @Override
     public int getContentWidth() {
         return 200;
@@ -84,7 +69,6 @@ public abstract class UITitleWindow extends UIWindow {
             }
             if (_isMoving && action == GameEventListener.Action.RELEASED) {
                 _isMoving = false;
-                resetAllPos();
                 return true;
             }
             if (_isMoving && action == GameEventListener.Action.MOVE) {

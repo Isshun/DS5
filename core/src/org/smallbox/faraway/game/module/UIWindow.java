@@ -39,10 +39,6 @@ public abstract class UIWindow extends UIFrame {
     }
 
     @Override
-    public void refresh() {
-    }
-
-    @Override
     public int getContentWidth() {
         return 400;
     }
@@ -68,7 +64,6 @@ public abstract class UIWindow extends UIFrame {
         lbCommand.setSize(230, 20);
         lbCommand.setTextAlign(Align.CENTER_VERTICAL);
         lbCommand.setOnClickListener(clickListener);
-        lbCommand.resetSize();
         frame.addView(lbCommand);
     }
 

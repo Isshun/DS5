@@ -38,7 +38,6 @@ public class MainMenuPage extends BasePanel {
         imageView.setScale((double)_renderer.getWidth() / width, (double)_renderer.getHeight() / height);
         _views.add(0, imageView);
         imageView.setParent(this);
-        imageView.resetPos();
     }
 
     public MainMenu.Scene getSceneType() {

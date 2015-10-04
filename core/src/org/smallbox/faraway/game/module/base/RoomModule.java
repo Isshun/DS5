@@ -14,7 +14,6 @@ import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.game.model.room.RoomModel.RoomType;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.ModuleHelper;
-import org.smallbox.faraway.game.module.base.WorldModule;
 import org.smallbox.faraway.util.AsyncTask;
 
 import java.util.ArrayList;

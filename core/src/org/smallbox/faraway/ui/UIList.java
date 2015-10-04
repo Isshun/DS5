@@ -1,12 +1,7 @@
 package org.smallbox.faraway.ui;
 
-import javafx.scene.control.TableView;
-import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.engine.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Alex on 26/09/2015.
@@ -35,8 +30,8 @@ public class UIList extends View {
 
         if (_isVisible) {
 //            if (_needResetPos) {
-                _finalX = x;
-                _finalY = y;
+//                _finalX = x;
+//                _finalY = y;
 //                View view = this;
 //                while (view != null) {
 //                    _finalX += view.getPosX();
@@ -53,15 +48,10 @@ public class UIList extends View {
 
             int offset = 0;
             for (View view : _views) {
-                view.draw(renderer, x, y + offset);
+                view.draw(renderer, _x + x, _y + y + offset);
                 offset += view.getHeight();
             }
         }
-    }
-
-    @Override
-    public void refresh() {
-
     }
 
     @Override

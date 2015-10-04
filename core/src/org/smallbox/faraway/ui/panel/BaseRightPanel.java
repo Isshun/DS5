@@ -58,7 +58,6 @@ public abstract class BaseRightPanel extends BasePanel {
 		lbCommand.setTextSize(14);
 		lbCommand.setPosition(x, y);
 		lbCommand.setOnClickListener(clickListener);
-		lbCommand.resetSize();
 		addView(lbCommand);
 	}
 

@@ -4,7 +4,6 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.core.ui.GDXImageView;
 import org.smallbox.faraway.ui.UIGrid;
 import org.smallbox.faraway.ui.UIList;
 import org.smallbox.faraway.ui.engine.UIEventManager;
@@ -60,7 +59,7 @@ public class LuaLayoutFactory {
                 break;
 
             case "image":
-                UIImage image = new GDXImageView(width, height);
+                UIImage image = new UIImage(width, height);
 
                 LuaValue src = value.get("src");
                 if (!src.isnil()) {
@@ -186,8 +185,6 @@ public class LuaLayoutFactory {
                     view.addView(LuaLayoutFactory.createView(luaModuleManager, globals, subViews.get(i)));
                 }
             }
-
-            view.resetSize();
         }
 
         return view;

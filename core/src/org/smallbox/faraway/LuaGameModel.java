@@ -1,6 +1,5 @@
 package org.smallbox.faraway;
 
-import org.luaj.vm2.Globals;
 import org.smallbox.faraway.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;

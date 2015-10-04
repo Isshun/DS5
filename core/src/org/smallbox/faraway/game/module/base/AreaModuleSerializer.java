@@ -8,7 +8,6 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.ModuleManager;
-import org.smallbox.faraway.game.module.base.AreaModule;
 import org.smallbox.faraway.util.FileUtils;
 
 import java.io.FileOutputStream;

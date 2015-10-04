@@ -2,7 +2,6 @@ package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.ui.GDXImageView;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
@@ -13,7 +12,6 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.module.GameModule;
-import org.smallbox.faraway.game.module.GameUIModule;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.base.CharacterModule;
@@ -22,8 +20,12 @@ import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.*;
-import org.smallbox.faraway.ui.panel.*;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
+import org.smallbox.faraway.ui.engine.view.UIImage;
+import org.smallbox.faraway.ui.engine.view.UILabel;
+import org.smallbox.faraway.ui.engine.view.View;
+import org.smallbox.faraway.ui.panel.BasePanel;
+import org.smallbox.faraway.ui.panel.PanelConsole;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
@@ -403,11 +405,11 @@ public class UserInterface implements GameEventListener {
 //            panel.draw(renderer, 0, 0);
 //        }
 
-        for (GameModule module: ModuleManager.getInstance().getModules()) {
-            if (module.isLoaded() && module instanceof GameUIModule) {
-                ((GameUIModule)module).draw(renderer);
-            }
-        }
+//        for (GameModule module: ModuleManager.getInstance().getModules()) {
+//            if (module.isLoaded() && module instanceof GameUIModule) {
+//                ((GameUIModule)module).draw(renderer);
+//            }
+//        }
 
         _views.stream().filter(View::isVisible).forEach(view -> view.draw(renderer, 0, 0));
 
@@ -637,7 +639,7 @@ public class UserInterface implements GameEventListener {
     }
 
     public UIImage createImage() {
-        return new GDXImageView(-1, -1);
+        return new UIImage(-1, -1);
     }
 
     public View createView() {

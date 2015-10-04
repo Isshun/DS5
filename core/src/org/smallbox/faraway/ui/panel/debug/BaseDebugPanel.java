@@ -43,7 +43,6 @@ public abstract class BaseDebugPanel extends BasePanel {
         _lbTitle.setBackgroundColor(new Color(0x11344f));
         _lbTitle.setTextAlign(Align.CENTER_VERTICAL);
         _frame.addView(_lbTitle);
-        _lbTitle.resetAllPos();
 
         _lbClose = ViewFactory.getInstance().createTextView();
         _lbClose.setText("[x]");
@@ -53,7 +52,6 @@ public abstract class BaseDebugPanel extends BasePanel {
         _lbClose.setTextAlign(Align.CENTER_VERTICAL);
         _lbClose.setOnClickListener(view -> setVisible(false));
         _frame.addView(_lbClose);
-        _lbClose.resetAllPos();
 
         onAddDebug();
         setSize(250, 38 + 20 * _debugIndex);
@@ -81,7 +79,6 @@ public abstract class BaseDebugPanel extends BasePanel {
             }
             if (_isMoving && action == GameEventListener.Action.RELEASED) {
                 _isMoving = false;
-                resetAllPos();
                 return true;
             }
             if (_isMoving && action == GameEventListener.Action.MOVE) {

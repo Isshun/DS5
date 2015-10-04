@@ -1,7 +1,6 @@
 package org.smallbox.faraway;
 
 import org.smallbox.faraway.lua.extend.LuaExtendInterface;
-import org.smallbox.faraway.lua.extend.LuaItemExtend;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core;
 
 import org.smallbox.faraway.core.ui.GDXColorView;
-import org.smallbox.faraway.core.ui.GDXImageView;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.engine.view.ColorView;
 import org.smallbox.faraway.ui.engine.view.UIFrame;
@@ -50,6 +49,6 @@ public class GDXViewFactory extends ViewFactory {
 
     @Override
     public UIImage createImageView() {
-        return new GDXImageView(0, 0);
+        return new UIImage(-1, 1);
     }
 }

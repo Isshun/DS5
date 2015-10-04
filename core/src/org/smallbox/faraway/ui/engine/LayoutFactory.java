@@ -41,7 +41,6 @@ public class LayoutFactory {
 
             if (layout.id != null) {
                 panel.setId(layout.id.hashCode());
-                panel.setName(layout.id);
             }
 
             if (layout.align != null) {
@@ -64,7 +63,6 @@ public class LayoutFactory {
             if (panel instanceof BasePanel) {
                 ((BasePanel)panel).setLoaded();
             }
-            panel.resetAllPos();
 
             if (listener != null) {
                 listener.onLayoutLoaded(layout, panel);
@@ -194,8 +192,7 @@ public class LayoutFactory {
         }
 
         if (view != null && entry.id != null) {
-            view.setId(entry.id.hashCode());
-            view.setName(entry.id);
+            view.setId(entry.id);
         }
 
         return view;

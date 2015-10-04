@@ -10,8 +10,6 @@ import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.base.AreaModule;
-import org.smallbox.faraway.ui.panel.PanelTooltip;
-import org.smallbox.faraway.ui.panel.info.PanelInfoItem;
 import org.smallbox.faraway.util.Constant;
 
 /**

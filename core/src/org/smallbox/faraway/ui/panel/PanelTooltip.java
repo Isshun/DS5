@@ -96,7 +96,6 @@ public class PanelTooltip extends BasePanel {
 				_lbCategories[i].setVisible(true);
 				_lbCategories[i].setPosition(posX, 32);
 				_lbCategories[i].setSize((t.title.length() + 2) * CHARACTER_WIDTH, LINE_HEIGHT);
-				_lbCategories[i].resetPos();
 				_lbCategories[i].setOnClickListener(view -> _ui.getSelector().select(ft));
 				posX += (t.title.length() + 2) * CHARACTER_WIDTH + 12;
 				i++;

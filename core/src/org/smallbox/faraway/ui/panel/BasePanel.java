@@ -63,12 +63,6 @@ public abstract class BasePanel extends UIFrame implements LayoutFactory.OnLayou
         _views = new ArrayList<>();
 	}
 
-    @Override
-    public void setPosition(int x, int y) {
-        super.setPosition(x, y);
-        resetPos();
-    }
-
 //    public void setSize(int width, int height) {
 //        super.setSize(width * GameData.config.resolution[0] / Constant.BASE_WIDTH, height * GameData.config.resolution[1] / Constant.BASE_HEIGHT);
 //    }
@@ -144,7 +138,6 @@ public abstract class BasePanel extends UIFrame implements LayoutFactory.OnLayou
 		lbCommand.setSize(230, 20);
 		lbCommand.setTextAlign(Align.CENTER_VERTICAL);
 		lbCommand.setOnClickListener(clickListener);
-		lbCommand.resetSize();
 		frame.addView(lbCommand);
 	}
 
@@ -208,10 +201,6 @@ public abstract class BasePanel extends UIFrame implements LayoutFactory.OnLayou
 
     protected void onDraw(GDXRenderer renderer, Viewport viewport) {
 	}
-
-    @Override
-    public void refresh() {
-    }
 
     @Override
     public int getContentWidth() {

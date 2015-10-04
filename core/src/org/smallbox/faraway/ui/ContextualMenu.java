@@ -87,9 +87,6 @@ public class ContextualMenu extends BasePanel {
 		if (_subMenu != null) {
 			_subMenu.draw(renderer, 0, 0);
 		}
-		for (View entry: _entries) {
-			entry.resetPos();
-		}
 	}
 
 //	public void removeSubMenu() {

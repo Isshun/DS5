@@ -223,7 +223,6 @@ public class PanelBuildModule extends GameUIModule {
 					view.setPosition(x, y);
 					view.setSize(72, 96);
 					layout.addView(view);
-					layout.resetAllPos();
 					_icons.put(info, view);
 				});
 			}

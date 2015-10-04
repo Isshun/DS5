@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.ui;
 
-import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.engine.view.ColorView;
@@ -52,11 +51,6 @@ public class GDXColorView extends ColorView {
         if (color != null) {
             _backgroundColor = color;
         }
-    }
-
-    @Override
-    public void refresh() {
-
     }
 
     @Override

@@ -1,53 +1,40 @@
 package org.smallbox.faraway.ui.engine.view;
 
-import org.smallbox.faraway.core.Viewport;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import org.smallbox.faraway.core.GDXSpriteModel;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 
-public abstract class UIImage extends View {
+public class UIImage extends View {
 	protected int _textureX;
 	protected int _textureY;
 	protected int _textureWidth;
 	protected int _textureHeight;
 
-	protected SpriteModel	_image;
+	private Sprite 			_sprite;
+    private SpriteModel     _spriteModel;
 	protected String 		_path;
 	protected double 		_scaleX = 1;
 	protected double 		_scaleY = 1;
 
-	public UIImage() {
-		super(-1, -1);
+	public UIImage(int width, int height) {
+		super(width, height);
 	}
-	
-	public UIImage(SpriteModel icon) {
-		super(icon.getWidth(), icon.getHeight());
-		
-		_image = icon;
-	}
-	
-//	@Override
-//	public void onDraw(GDXRenderer renderer, Viewport viewport) {
-//		if (_image != null) {
-//			renderer.draw(_image, _x + _paddingLeft, _y + _paddingTop);
-//		}
-//	}
 
-	public void setImage(SpriteModel icon) {
-		if (icon != null) {
-			setSize(icon.getWidth(), icon.getHeight());
+	public void setImage(SpriteModel spriteModel) {
+		if (spriteModel != null) {
+			setSize(spriteModel.getWidth(), spriteModel.getHeight());
+            _spriteModel = spriteModel;
 		}
-		_image = icon;
-	}
-
-	public void setSprite(SpriteModel sprite) {
-		_image = sprite;
 	}
 
 	public void setImagePath(String path) {
 		if (!path.equals(_path)) {
-			_image = null;
+			_sprite = null;
+            _path = path;
 		}
-		_path = path;
 	}
 
 	public void setScale(double scaleX, double scaleY) {
@@ -60,6 +47,51 @@ public abstract class UIImage extends View {
 		_textureY = textureY;
 		_textureWidth = textureWidth;
 		_textureHeight = textureHeight;
+	}
+
+	@Override
+	public void addView(View view) {
+
+	}
+
+	@Override
+	public void draw(GDXRenderer renderer, int x, int y) {
+        super.draw(renderer, x, y);
+
+		if (_sprite == null && _spriteModel != null) {
+            _sprite = ((GDXSpriteModel)_spriteModel).getData();
+		}
+
+		if (_sprite == null && _path != null) {
+			try {
+				Texture texture = new Texture(_path);
+				_sprite = new Sprite();
+				_sprite.setTexture(texture);
+				_sprite.setRegion(0, 0, _width, _height);
+				_sprite.flip(false, true);
+			} catch (GdxRuntimeException e) {
+//                e.printStackTrace();
+			}
+		}
+
+		if (_sprite != null) {
+			// TODO
+			if (_textureHeight != 0) {
+				_sprite.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
+				_sprite.setRegion(_textureX, _textureY, _textureWidth, _textureHeight);
+			}
+			renderer.draw(_sprite, _x + x, _y + y);
+		}
+	}
+
+	@Override
+	public int getContentWidth() {
+		return 0;
+	}
+
+	@Override
+	public int getContentHeight() {
+		return 0;
 	}
 }
 

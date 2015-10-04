@@ -19,28 +19,32 @@ public class UIGrid extends View {
     @Override
     public void addView(View view) {
         _views.add(view);
-
         view.setParent(this);
-
-//        int offsetX = 0, offsetY = 0;
-        _count = 0;
-        for (View subView : _views) {
-//            subView.setMarginTop(_rowHeight * (index / _columns));
-//            subView.setMarginLeft(_width / _columns * (index % _columns));
-//            offsetY += subView.getHeight();
-            _count++;
-        }
+        _count = _views.size();
     }
+
+//    @Override
+//    public void removeView(View view) {
+//        _views.remove(view);
+//        view.setParent(null);
+//        _count = _views.size();
+//    }
+
+    public void removeAllViews() {
+        _views.clear();
+        _count = 0;
+    }
+
 
     @Override
     public void draw(GDXRenderer renderer, int x, int y) {
         super.draw(renderer, x, y);
 
         if (_isVisible) {
-            int offsetX = x, offsetY = y;
+            int offsetX = 0, offsetY = 0;
             int index = 0;
             for (View view : _views) {
-                view.draw(renderer, x + offsetX, y + offsetY);
+                view.draw(renderer, _x + x + offsetX, _y + y + offsetY);
 
                 if (++index % _columns == 0) {
                     offsetX = 0;
@@ -50,11 +54,6 @@ public class UIGrid extends View {
                 }
             }
         }
-    }
-
-    @Override
-    public void refresh() {
-
     }
 
     @Override
@@ -74,11 +73,6 @@ public class UIGrid extends View {
 
     public void setColumns(int columns) {
         _columns = columns;
-    }
-
-    @Override
-    public void resetSize() {
-        super.resetSize();
     }
 
     public void setRowHeight(int rowHeight) {

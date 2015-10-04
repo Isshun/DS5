@@ -5,8 +5,6 @@ import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.util.StringUtils;
 
-import java.awt.*;
-
 public class UILabel extends View {
 	public static final int	REGULAR = 0;
 	public static final int	BOLD = 1;
@@ -129,18 +127,18 @@ public class UILabel extends View {
 
     @Override
     public void draw(GDXRenderer renderer, int x, int y) {
-        super.draw(renderer, x, y);
+        super.draw(renderer, _x + x, _y + y);
 
         if (_isVisible) {
             if (true) {
-                _finalX = x;
-                _finalY = y;
-                View view = this;
-                while (view != null) {
-                    _finalX += view.getPosX();
-                    _finalY += view.getPosY();
-                    view = view.getParent();
-                }
+//                _finalX = x;
+//                _finalY = y;
+//                View view = this;
+//                while (view != null) {
+//                    _finalX += view.getPosX();
+//                    _finalY += view.getPosY();
+//                    view = view.getParent();
+//                }
 
                 if (_align == Align.CENTER) {
                     _offsetX = (_width - getContentWidth()) / 2;
@@ -152,14 +150,8 @@ public class UILabel extends View {
                 }
             }
 
-//        ((GDXRenderer) renderer).draw(com.badlogic.gdx.graphics.Color.RED, _finalX, _finalY, _width, _height);
-            ((GDXRenderer) renderer).draw(_string, _textSize, _finalX + _offsetX + _paddingLeft, _finalY + _offsetY + _paddingTop, _gdxTextColor);
+            renderer.draw(_string, _textSize, _x + x + _offsetX + _paddingLeft, _y + y + _offsetY + _paddingTop, _gdxTextColor);
         }
-    }
-
-    @Override
-    public void refresh() {
-
     }
 
     @Override

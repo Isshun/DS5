@@ -1,7 +1,6 @@
 package org.smallbox.faraway.data.serializer;
 
 import com.ximpleware.*;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.AndroidModel;
 import org.smallbox.faraway.game.model.character.DroidModel;
 import org.smallbox.faraway.game.model.character.HumanModel;

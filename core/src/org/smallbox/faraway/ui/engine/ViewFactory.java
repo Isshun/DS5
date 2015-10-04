@@ -60,8 +60,7 @@ public abstract class ViewFactory {
             }
 
             if (layout.id != null) {
-                rootView.setId(layout.id.hashCode());
-                rootView.setName(layout.id);
+                rootView.setId(layout.id);
             }
 
             if (layout.align != null) {
@@ -79,8 +78,6 @@ public abstract class ViewFactory {
             if (layout.background != 0) {
                 rootView.setBackgroundColor(new Color(layout.background));
             }
-
-            rootView.resetAllPos();
 
             return rootView;
         } catch (FileNotFoundException e) {

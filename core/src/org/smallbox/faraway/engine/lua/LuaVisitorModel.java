@@ -1,6 +1,5 @@
 package org.smallbox.faraway.engine.lua;
 
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.module.ModuleHelper;
 

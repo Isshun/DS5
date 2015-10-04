@@ -13,7 +13,6 @@ import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.job.GDXDrawable;
-import org.smallbox.faraway.ui.engine.view.ColorView;
 import org.smallbox.faraway.ui.engine.view.View;
 import org.smallbox.faraway.util.Constant;
 

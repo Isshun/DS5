@@ -98,7 +98,7 @@ public class ModuleManager {
         });
 
         _modules.addAll(_modulesBase);
-        _modules.addAll(_modulesThird);
+//        _modules.addAll(_modulesThird);
         _modules.sort((m1, m2) -> m2.getPriority() - m1.getPriority());
 
         _renders.addAll(_rendersBase);

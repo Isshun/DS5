@@ -110,7 +110,6 @@ public class PanelCrewModule extends GameUIModule {
 			viewHolder.lbStatus.setVisible(false);
 			viewHolder.lbStatus.setPosition(20, Constant.UI_PADDING + 16);
 			viewHolder.lbStatusShort.setVisible(true);
-			viewHolder.frame.resetPos();
 		}
 
 		protected void setModeDetail(ViewHolder viewHolder, int i) {
@@ -121,7 +120,6 @@ public class PanelCrewModule extends GameUIModule {
 			viewHolder.lbStatus.setVisible(true);
 			viewHolder.lbStatus.setPosition(32, Constant.UI_PADDING + 16);
 			viewHolder.lbStatusShort.setVisible(false);
-			viewHolder.frame.resetPos();
 		}
 
 		void  addCharacter(int index, final CharacterModel character) {

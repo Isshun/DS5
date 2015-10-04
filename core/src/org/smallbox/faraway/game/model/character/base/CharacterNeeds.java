@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.model.character.base;
 
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoAction;

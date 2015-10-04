@@ -222,7 +222,6 @@ public class PanelInfoItem extends BaseInfoRightPanel {
 
             view.setPosition(0, index * (view.getContentHeight() + 10));
             _frameCraftEntries.addView(view);
-            view.resetAllPos();
         });
     }
 

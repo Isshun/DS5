@@ -3,7 +3,6 @@ package org.smallbox.faraway.game.module.base;
 import com.ximpleware.VTDNav;
 import org.smallbox.faraway.data.serializer.SerializerInterface;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
-import org.smallbox.faraway.game.module.base.JobModule;
 
 import java.io.FileOutputStream;
 

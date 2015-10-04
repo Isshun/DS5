@@ -5,8 +5,6 @@ import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import java.util.List;
 
 public class UIFrame extends View {
-	private boolean _needResetPos;
-
 	public UIFrame(int width, int height) {
 		super(width, height);
 	}
@@ -28,37 +26,21 @@ public class UIFrame extends View {
 	@Override
 	public void setPosition(int x, int y) {
 		super.setPosition(x, y);
-		_needResetPos = true;
+//		_needResetPos = true;
 	}
 
 	@Override
 	public void draw(GDXRenderer renderer, int x, int y) {
 		super.draw(renderer, x, y);
 
-		if (_isVisible) {
-			if (_needResetPos) {
-				_finalX = x;
-				_finalY = y;
-				View view = this;
-				while (view != null) {
-					_finalX += view.getPosX();
-					_finalY += view.getPosY();
-					view = view.getParent();
-				}
-			}
-
+        if (_isVisible) {
 			if (_views != null) {
 				for (View view : _views) {
-					view.draw(renderer, x, y);
+					view.draw(renderer, _x + x, _y + y);
 				}
 			}
 		}
 	}
-
-    @Override
-    public void refresh() {
-
-    }
 
     public void addView(View view) {
 		if (this.equals(view)) {
@@ -68,7 +50,6 @@ public class UIFrame extends View {
 		
 		view.setParent(this);
 		_views.add(view);
-		view.resetAllPos();
 	}
 
 	@Override
@@ -98,16 +79,6 @@ public class UIFrame extends View {
 	public void removeView(View view) {
 		view.remove();
 		_views.remove(view);
-	}
-
-	public void resetAllPos() {
-		for (View view: _views) {
-			if (view instanceof UIFrame) {
-				((UIFrame) view).resetAllPos();
-			} else {
-				view.resetPos();
-			}
-		}
 	}
 
     public List<View> getViews() {

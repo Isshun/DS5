@@ -2,7 +2,6 @@ package org.smallbox.faraway.ui.engine.view;
 
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.model.GameData;
@@ -21,17 +20,12 @@ public abstract class View {
 
     public List<View> _views = new ArrayList<>();
 
-    private String      _name;
     protected boolean   _isAlignLeft = true;
     protected boolean   _isAlignTop = true;
     protected int       _finalX;
     protected int       _finalY;
     private int         _marginTop;
     private int         _marginLeft;
-
-    public void setName(String name) {
-        _name = name;
-    }
 
     public void setTextAlign(boolean isAlignLeft, boolean isAlignTop) {
         _isAlignLeft = isAlignLeft;
@@ -91,6 +85,7 @@ public abstract class View {
     public boolean 		isVisible() { return _isVisible; }
 
     public void 		setId(int id) { _id = id; }
+    public void 		setId(String id) { _id = id.hashCode(); }
     public void         setTextAlign(Align align) { _align = align; }
     public void 		setFocus(boolean focus) { _isFocus = focus; }
     public void 		setParent(View parent) {
@@ -104,13 +99,14 @@ public abstract class View {
 
     public void draw(GDXRenderer renderer, int x, int y) {
         if (_isVisible) {
+            _finalX = _x + x;
+            _finalY = _y + y;
+
             if (_backgroundColor != null) {
                 renderer.draw(_backgroundColor, _x + x, _y + y, _width, _height);
             }
         }
     }
-
-    public abstract void refresh();
 
     public void setBackgroundColor(long color) {
         _backgroundColor = new Color(color);
@@ -119,10 +115,6 @@ public abstract class View {
     public void setBackgroundColor(Color color) {
         _backgroundColor = color;
     }
-
-//    public void setBackgroundColor(com.badlogic.gdx.graphics.Color color) {
-//
-//    }
 
     public void setBorderColor(Color color) {
     }
@@ -190,18 +182,6 @@ public abstract class View {
 
         _invalid = true;
     }
-
-//    protected Rectangle computeRect() {
-//        _finalX = 0;
-//        _finalY = 0;
-//        View view = this;
-//        while (view != null) {
-//            _finalX += view.getPosX() + view.getOffsetX() + view.getMarginLeft();
-//            _finalY += view.getPosY() + view.getOffsetY() + view.getMarginTop();
-//            view = view.getParent();
-//        }
-//        return new Rectangle(_finalX, _finalY, _width == -1 ? getContentWidth() + _paddingLeft + _paddingRight : _width, _height == -1 ? getContentHeight() + _paddingTop + _paddingBottom : _height);
-//    }
 
     private int getMarginLeft() {
         return _marginLeft;
@@ -289,25 +269,4 @@ public abstract class View {
         }
         return null;
     }
-
-    public void resetAllPos() {
-//        resetPos();
-    }
-
-    public void resetPos() {
-//        _rect = computeRect();
-    }
-
-    public void resetSize() {
-    }
-
-//    public void newResetAllPos() {
-//        _finalX = _x + _marginLeft;
-//        _finalY = _y + _marginTop;
-//
-//        for (View view: _views) {
-//            view.newResetAllPos();
-//        }
-//    }
-
 }

@@ -7,7 +7,6 @@ import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.ModuleHelper;
-import org.smallbox.faraway.game.module.base.WorldModule;
 import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.util.Utils;
 

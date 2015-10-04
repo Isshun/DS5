@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.helper;
 
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.module.ModuleHelper;

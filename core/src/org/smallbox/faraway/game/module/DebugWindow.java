@@ -24,7 +24,6 @@ public abstract class DebugWindow extends UITitleWindow {
         lbCommand.setSize(230, 20);
         lbCommand.setTextAlign(Align.CENTER_VERTICAL);
         lbCommand.setOnClickListener(clickListener);
-        lbCommand.resetSize();
         _frameContent.addView(lbCommand);
 
         setSize(250, _debugIndex * 20 + 28);

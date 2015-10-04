@@ -7,7 +7,6 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ItemSlot;
 import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.util.Log;
 
 public class JobUse extends BaseJobModel {

@@ -5,7 +5,6 @@ import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import java.util.ArrayList;
 import java.util.List;

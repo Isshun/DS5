@@ -1,7 +1,6 @@
 package org.smallbox.faraway.ui;
 
 import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.OnExtendListener;
 import org.smallbox.faraway.game.model.CategoryInfo;
 import org.smallbox.faraway.game.model.GameData;
