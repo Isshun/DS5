@@ -21,10 +21,7 @@ import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.Constant;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 

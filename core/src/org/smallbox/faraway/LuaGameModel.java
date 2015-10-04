@@ -3,6 +3,8 @@ package org.smallbox.faraway;
 import org.smallbox.faraway.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.module.ModuleHelper;
+import org.smallbox.faraway.game.module.base.JobModule;
 import org.smallbox.faraway.ui.LuaDataModel;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
@@ -16,12 +18,14 @@ public class LuaGameModel {
     public LuaCrewModel     crew;
     public LuaDataModel     data;
     public LuaEventsModel   events;
+    public JobModule        jobs;
 
     public LuaGameModel(LuaCrewModel luaCrew, LuaEventsModel luaEvents, UserInterface userInterface, OnExtendListener extendListener) {
         ui = userInterface;
         crew = luaCrew;
         data = new LuaDataModel(extendListener, GameData.getData());
         events = luaEvents;
+        jobs = ModuleHelper.getJobModule();
         _extendListener = extendListener;
     }
 

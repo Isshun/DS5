@@ -31,6 +31,10 @@ game.data:extend(
                     game.ui:findById("panel_main"):setVisible(false)
                     game.ui:findById("panel_crew"):setVisible(true)
                 end},
+                { type = "label", size = {180, 40}, background = 0x349394, text = "Jobs", text_size = 18, padding = 10, on_click = function(view)
+                    game.ui:findById("panel_main"):setVisible(false)
+                    game.ui:findById("panel_jobs"):setVisible(true)
+                end},
             }},
         },
 
