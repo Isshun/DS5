@@ -1,10 +1,10 @@
 package org.smallbox.faraway.game;
 
-import org.reflections.Reflections;
+import org.smallbox.faraway.Application;
+import org.smallbox.faraway.LuaModuleManager;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.data.factory.world.WorldFactory;
 import org.smallbox.faraway.data.serializer.GameSerializer;
-import org.smallbox.faraway.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.engine.renderer.LightRenderer;
 import org.smallbox.faraway.engine.renderer.ParticleRenderer;
@@ -15,36 +15,17 @@ import org.smallbox.faraway.game.model.planet.RegionInfo;
 import org.smallbox.faraway.game.model.planet.RegionModel;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.ModuleManager;
-import org.smallbox.faraway.game.module.character.CharacterModule;
-import org.smallbox.faraway.game.module.character.JobModule;
-import org.smallbox.faraway.game.module.world.WorldModule;
-import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
-import sun.tools.jar.resources.jar;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 public class Game {
-    private static CharacterModule          _characterModule;
-    private static WorldModule              _worldModule;
-    private static JobModule                _jobModule;
-
     private static Game 				    _self;
     private final String                    _fileName;
+    private final LuaModuleManager          _luaModuleManager;
     private GameConfig                      _config;
     private final Collection<GameModule>    _modules;
     private List<GameObserver>			    _observers = new ArrayList<>();
@@ -59,17 +40,14 @@ public class Game {
     private static int                      _tick;
     private Viewport 					    _viewport;
     private boolean 					    _isRunning;
+    private List<GameModule.EventListener>  _eventListeners = new ArrayList<>();
 
     public void                             toggleRunning() { _isRunning = !_isRunning; }
     public void                             addObserver(GameObserver observer) { _observers.add(observer); }
     public void                             setRunning(boolean running) { _isRunning = running; }
-    public void                             setWorldManager(WorldModule worldModule) { _worldModule = worldModule; }
 
     public boolean                          isRunning() { return _isRunning; }
     public Collection<GameModule>           getModules() { return _modules; }
-    public static CharacterModule           getCharacterManager() { return _characterModule; }
-    public static WorldModule               getWorldManager() { return _worldModule; }
-    public static JobModule getJobManager() { return _jobModule; }
     public static Game                      getInstance() { return _self; }
     public int                              getHour() { return _hour; }
     public int                              getDay() { return _day; }
@@ -90,6 +68,10 @@ public class Game {
         _isRunning = true;
         _viewport = new Viewport(400, 300);
         _modules = ModuleManager.getInstance().getModules();
+
+        _luaModuleManager = new LuaModuleManager();
+        _observers.add(_luaModuleManager);
+
         GDXRenderer.getInstance().setViewport(_viewport);
         _tick = 0;
 
@@ -108,20 +90,18 @@ public class Game {
     }
 
     public void init(WorldFactory factory) {
-        _worldModule = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
-        _characterModule = (CharacterModule) ModuleManager.getInstance().getModule(CharacterModule.class);
-        _jobModule = (JobModule) ModuleManager.getInstance().getModule(JobModule.class);
-
-        _observers.addAll(_modules);
+        _observers.addAll(ModuleManager.getInstance().getModules());
         _observers.addAll(ModuleManager.getInstance().getRenders());
-
         _modules.stream().filter(GameModule::isLoaded).forEach(GameModule::create);
+        _luaModuleManager.init();
     }
 
     public void onUpdate(int tick) {
         if (!_isRunning) {
             return;
         }
+
+        _luaModuleManager.update();
 
         _modules.stream().filter(GameModule::isLoaded).forEach(module -> module.update(tick));
 
@@ -174,5 +154,21 @@ public class Game {
 
     public void removeObserver(GameModule observer) {
         _observers.remove(observer);
+    }
+
+    public void addEventListener(GameModule.EventListener listener) {
+        _eventListeners.add(listener);
+    }
+
+    public void removeEventListener(GameModule.EventListener listener) {
+        _eventListeners.remove(listener);
+    }
+
+    public void notify(String tag, Object data) {
+        _eventListeners.forEach(listener -> {
+//            listener.
+//            listener.onEvent(data);
+        });
+//        _observers.stream().forEach(action::accept);
     }
 }

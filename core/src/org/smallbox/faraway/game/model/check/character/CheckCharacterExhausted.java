@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.model.check.character;
 
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.ItemFinder;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
@@ -11,6 +10,7 @@ import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobConsume;
 import org.smallbox.faraway.game.model.job.JobUse;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.ModuleManager;
 
 /**
@@ -20,7 +20,7 @@ public class CheckCharacterExhausted extends CharacterCheck {
 
     @Override
     public boolean check(CharacterModel character) {
-        for (ItemModel item: Game.getWorldManager().getItems()) {
+        for (ItemModel item: ModuleHelper.getWorldModule().getItems()) {
             if (item.isBed()) {
                 return true;
             }

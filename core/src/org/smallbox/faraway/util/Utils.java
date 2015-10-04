@@ -34,6 +34,12 @@ public class Utils {
 			}
 		}
 
+		for (File file: FileUtils.listRecursively("data/modules/")) {
+			if (file.lastModified() > lastModified) {
+				lastModified = file.lastModified();
+			}
+		}
+
 		for (File file: new File("data/lang/").listFiles()) {
 			if (file.lastModified() > lastModified) {
 				lastModified = file.lastModified();

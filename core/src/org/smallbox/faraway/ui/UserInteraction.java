@@ -10,10 +10,9 @@ import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobDump;
 import org.smallbox.faraway.game.model.job.JobHaul;
-import org.smallbox.faraway.game.module.character.JobModule;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.cursor.*;
-import org.smallbox.faraway.game.module.panels.PanelPlanModule.Planning;
 import org.smallbox.faraway.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -75,7 +74,7 @@ public class UserInteraction {
 	int						            _mouseMoveX;
 	int						            _mouseMoveY;
 	GameEventListener.MouseButton       _button;
-	private Planning 					_selectedPlan;
+	private String 						_selectedPlan;
 	private ItemInfo 					_selectedItemInfo;
 	private AreaType 					_selectedAreaType;
 	private UserInterface				_ui;
@@ -96,7 +95,8 @@ public class UserInteraction {
 		if (_selectedItemInfo == null) {
 			return;
 		}
-		
+
+		ItemInfo itemInfo = _selectedItemInfo;
 		for (int x = toX; x >= startX; x--) {
 			for (int y = toY; y >= startY; y--) {
 
@@ -110,11 +110,11 @@ public class UserInteraction {
 					}
 				}
 
-				JobHelper.addBuildJob(_selectedItemInfo, x, y);
+				JobHelper.addBuildJob(itemInfo, x, y);
 
 //				if (_selectedItemInfo.name.equals("base.room")) {
 //					if (x == startX || x == toX || y == startY || y == toY) {
-//						StructureModel structure = Game.getWorldManager().getStructure(x, y);
+//						StructureModel structure = ModuleHelper.getWorldModule().getStructure(x, y);
 //						if (structure == null || !structure.isDoor()) {
 //							JobHelper.addBuildJob(GameData.getData().getItemInfo("base.wall"), x, y);
 //						}
@@ -135,7 +135,7 @@ public class UserInteraction {
 			for (int y = toY; y >= startY; y--) {
 				if (_selectedItemInfo != null) {
 					Log.warning("3 " + _selectedItemInfo.name);
-					Game.getWorldManager().putObject(_selectedItemInfo, x, y, 0, 10);
+					ModuleHelper.getWorldModule().putObject(_selectedItemInfo, x, y, 0, 10);
 				}
 			}
 		}
@@ -144,7 +144,7 @@ public class UserInteraction {
 	public void removeItem(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				Game.getWorldManager().takeItem(x, y);
+				ModuleHelper.getWorldModule().takeItem(x, y);
 			}
 		}
 	}
@@ -152,7 +152,7 @@ public class UserInteraction {
 	public void removeStructure(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				Game.getWorldManager().removeStructure(x, y);
+				ModuleHelper.getWorldModule().removeStructure(x, y);
 			}
 		}
 	}
@@ -162,7 +162,7 @@ public class UserInteraction {
 			for (int y = startY; y <= toY; y++) {
 				BaseJobModel job = JobHelper.createGatherJob(x, y);
 				if (job != null) {
-					JobModule.getInstance().addJob(job);
+					ModuleHelper.getJobModule().addJob(job);
 				}
 			}
 		}
@@ -173,7 +173,7 @@ public class UserInteraction {
 			for (int y = startY; y <= toY; y++) {
 				BaseJobModel job = JobHelper.createMiningJob(x, y);
 				if (job != null) {
-					JobModule.getInstance().addJob(job);
+					ModuleHelper.getJobModule().addJob(job);
 				}
 			}
 		}
@@ -182,11 +182,11 @@ public class UserInteraction {
 	public void planPick(int startX, int startY, int toX, int toY) {
 //		for (int x = startX; x <= toX; x++) {
 //			for (int y = startY; y <= toY; y++) {
-//				ItemModel item = Game.getWorldManager().getItem(x, y);
+//				ItemModel item = ModuleHelper.getWorldModule().getItem(x, y);
 //				if (item != null) {
 //					JobModel job = JobTake.onCreate(item);
 //					if (job != null) {
-//						JobModule.getInstance().addJob(job);
+//						ModuleHelper.getJobModule().addJob(job);
 //					}
 //				}
 //			}
@@ -198,10 +198,10 @@ public class UserInteraction {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
 				if (WorldHelper.getItem(x, y) != null) {
-					JobModule.getInstance().addJob(JobDump.create(WorldHelper.getItem(x, y)));
+					ModuleHelper.getJobModule().addJob(JobDump.create(WorldHelper.getItem(x, y)));
 				}
 				if (WorldHelper.getStructure(x, y) != null) {
-					JobModule.getInstance().addJob(JobDump.create(WorldHelper.getStructure(x, y)));
+					ModuleHelper.getJobModule().addJob(JobDump.create(WorldHelper.getStructure(x, y)));
 				}
 			}
 		}
@@ -211,7 +211,7 @@ public class UserInteraction {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
 				if (WorldHelper.getConsumable(x, y) != null && WorldHelper.getConsumable(x, y).getHaul() == null) {
-					JobModule.getInstance().addJob(JobHaul.create(WorldHelper.getConsumable(x, y)));
+					ModuleHelper.getJobModule().addJob(JobHaul.create(WorldHelper.getConsumable(x, y)));
 				}
 			}
 		}
@@ -223,12 +223,11 @@ public class UserInteraction {
 		}
 		
 		switch (_selectedPlan) {
-		case DUMP: planDump(startX, startY, toX, toY); break;
-		case GATHER: planGather(startX, startY, toX, toY); break;
-		case CUT_PLANT: planGather(startX, startY, toX, toY); break;
-		case MINING: planMining(startX, startY, toX, toY); break;
-		case PICK: planPick(startX, startY, toX, toY); break;
-		case HAUL: planHaul(startX, startY, toX, toY); break;
+		case "dump": planDump(startX, startY, toX, toY); break;
+		case "gather": planGather(startX, startY, toX, toY); break;
+		case "mining": planMining(startX, startY, toX, toY); break;
+		case "pick": planPick(startX, startY, toX, toY); break;
+		case "haul": planHaul(startX, startY, toX, toY); break;
 		default: break;
 		}
 	}
@@ -240,7 +239,7 @@ public class UserInteraction {
 	public void select(ItemInfo info, Mode mode) {
 		if (mode == Mode.BUILD) {
 			clean();
-			_ui.setMode(Mode.BUILD);
+//			_ui.setMode(Mode.BUILD);
 			_action = Action.BUILD_ITEM;
 			_selectedItemInfo = info;
 		}
@@ -252,23 +251,23 @@ public class UserInteraction {
 		_selectedItemInfo = null;
 	}
 
-	public void set(Action action, Planning plan) {
+	public void set(Action action, String plan) {
 		_action = action;
 		_selectedPlan = plan;
 		switch (plan) {
-			case GATHER:
+			case "gather":
 				UserInterface.getInstance().setCursor(new GatherCursor());
 				break;
-			case MINING:
+			case "mining":
 				UserInterface.getInstance().setCursor(new MineCursor());
 				break;
-			case DUMP:
+			case "dump":
 				UserInterface.getInstance().setCursor(new DumpCursor());
 				break;
-			case PICK:
+			case "pick":
 				UserInterface.getInstance().setCursor(new PickCursor());
 				break;
-			case HAUL:
+			case "haul":
 				UserInterface.getInstance().setCursor(new PickCursor());
 				break;
 		}

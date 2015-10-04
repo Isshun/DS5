@@ -1,9 +1,9 @@
 package org.smallbox.faraway.game.model.area;
 
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 
 import java.util.Map;
 
@@ -25,7 +25,7 @@ public class GardenAreaModel extends AreaModel {
 
     private void resetFields() {
         for (ParcelModel parcel: _parcels) {
-            Game.getWorldManager().putObject(_resourceInfo, parcel.x, parcel.y, parcel.z, 0);
+            ModuleHelper.getWorldModule().putObject(_resourceInfo, parcel.x, parcel.y, parcel.z, 0);
         }
     }
 
@@ -34,7 +34,7 @@ public class GardenAreaModel extends AreaModel {
         super.addParcel(parcel);
 
         if (_resourceInfo != null && (parcel.getResource() == null || parcel.getResource().getInfo() != _resourceInfo)) {
-            Game.getWorldManager().putObject(_resourceInfo, parcel.x, parcel.y, parcel.z, 0);
+            ModuleHelper.getWorldModule().putObject(_resourceInfo, parcel.x, parcel.y, parcel.z, 0);
         }
     }
 

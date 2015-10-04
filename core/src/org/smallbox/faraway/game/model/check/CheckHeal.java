@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.game.model.check;
 //
-//import org.smallbox.faraway.game.module.character.JobModule;
+//import JobModule;
 //import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //import org.smallbox.faraway.game.model.onCheck.old.CharacterCheck;
 //import org.smallbox.faraway.game.model.job.JobModel;

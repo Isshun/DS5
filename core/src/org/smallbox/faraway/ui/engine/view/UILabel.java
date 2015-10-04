@@ -3,6 +3,8 @@ package org.smallbox.faraway.ui.engine.view;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.model.GameData;
 
+import java.awt.*;
+
 public abstract class UILabel extends View {
 	public static final int	REGULAR = 0;
 	public static final int	BOLD = 1;
@@ -11,7 +13,7 @@ public abstract class UILabel extends View {
 	private int _hash;
 
 	public UILabel() {
-		super(0, 0);
+        super(-1, -1);
 	}
 
 	public UILabel(int width, int height) {
@@ -40,7 +42,7 @@ public abstract class UILabel extends View {
         int hash = string.hashCode();
 //        if (hash != _hash) {
             string = GameData.getData() != null && GameData.getData().hasString(hash) ? GameData.getData().getString(hash) : string;
-            setStringValue(String.format(string, value));
+        setStringValue(String.format(string, value));
 //        }
     }
 
@@ -61,7 +63,8 @@ public abstract class UILabel extends View {
 	public abstract void setStringValue(String string);
 	public abstract void setTextSize(int size);
 	public abstract void setStyle(int style);
-	public abstract void setColor(Color color);
+	public abstract void setTextColor(Color color);
+	public abstract void setTextColor(int color);
 	public abstract Color getColor();
 	public abstract void setDashedString(String label, String value, int nbColumns);
 	public abstract String getString();
@@ -80,18 +83,6 @@ public abstract class UILabel extends View {
 
 	@Override
 	public void init() {
-	}
-
-	@Override
-	public void resetPos() {
-//		_width = getContentWidth();
-//		_height = getContentHeight();
-		super.resetPos();
-	}
-
-	public void resetSize() {
-		_width = getContentWidth();
-		_height = getContentHeight();
 	}
 
 	public View findById(String string) {

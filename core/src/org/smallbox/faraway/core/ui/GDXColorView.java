@@ -10,10 +10,14 @@ import org.smallbox.faraway.ui.engine.view.View;
  * Created by Alex on 04/06/2015.
  */
 public class GDXColorView extends ColorView {
-    private com.badlogic.gdx.graphics.Color _gdxBackgroundColor;
     private boolean                         _needResetPos;
     private int                             _finalX;
     private int                             _finalY;
+
+    @Override
+    public void addView(View view) {
+
+    }
 
     public GDXColorView(int width, int height) {
         super(width, height);
@@ -23,11 +27,6 @@ public class GDXColorView extends ColorView {
     public void setPosition(int x, int y) {
         super.setPosition(x, y);
         _needResetPos = true;
-    }
-
-    @Override
-    public void draw(GDXRenderer renderer, Viewport viewport) {
-        draw(renderer, 0, 0);
     }
 
     @Override
@@ -43,15 +42,15 @@ public class GDXColorView extends ColorView {
             }
         }
 
-        if (_gdxBackgroundColor != null) {
-            ((GDXRenderer)renderer).draw(_gdxBackgroundColor, _finalX + x, _finalY + y, _width, _height);
+        if (_backgroundColor != null) {
+            ((GDXRenderer)renderer).draw(_backgroundColor, _finalX + x, _finalY + y, _width, _height);
         }
     }
 
     @Override
     public void setBackgroundColor(Color color) {
         if (color != null) {
-            _gdxBackgroundColor = new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f);
+            _backgroundColor = color;
         }
     }
 

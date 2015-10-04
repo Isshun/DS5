@@ -53,7 +53,7 @@ public abstract class MenuBase {
         // TODO background
 
         for (View view: _views) {
-            view.draw(renderer, viewport);
+            view.draw(renderer, 0, 0);
         }
 
         onDraw(renderer, viewport);

@@ -1,8 +1,8 @@
 package org.smallbox.faraway.data.factory.world;
 
 import com.badlogic.gdx.math.MathUtils;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 
 public class MidpointDisplacement {
     public interface MapGenListener {
@@ -53,7 +53,7 @@ public class MidpointDisplacement {
         for(int row = 0; row < map.length; row++) {
             for (int col = 0; col < map[row].length; col++) {
                 if (map[row][col] == 2) {
-                    ParcelModel parcel = Game.getWorldManager().getParcel(row, col);
+                    ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(row, col);
                     if (parcel != null) {
                         listener.onCreate(parcel);
                     }

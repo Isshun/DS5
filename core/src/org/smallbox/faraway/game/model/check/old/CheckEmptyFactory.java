@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.game.model.check.old;
 //
-//import org.smallbox.faraway.game.module.character.JobModule;
+//import JobModule;
 //import org.smallbox.faraway.game.module.ServiceManager;
 //import org.smallbox.faraway.game.model.item.FactoryItem;
 //import org.smallbox.faraway.game.model.onCheck.Check;
@@ -11,10 +11,10 @@
 //public class CheckEmptyFactory implements Check {
 //
 //	public void onCreate(JobModule jobManager) {
-//		List<FactoryItem> factories = Game.getWorldManager().getFactories();
+//		List<FactoryItem> factories = ModuleHelper.getWorldModule().getFactories();
 //		for (FactoryItem factory: factories) {
 //			if (factory.needRefill() && factory.isWaitForRefill() == false) {
-//				JobModule.getInstance().addRefillJob(factory);
+//				ModuleHelper.getJobModule().addRefillJob(factory);
 //			}
 //		}
 //	}

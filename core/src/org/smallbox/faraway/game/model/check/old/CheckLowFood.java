@@ -1,8 +1,8 @@
 //package org.smallbox.faraway.game.model.check.old;
 //
 //import org.smallbox.faraway.game.Game;
-//import org.smallbox.faraway.game.module.character.JobModule;
-//import org.smallbox.faraway.game.module.extra.ResourceModule;
+//import JobModule;
+//import ResourceModule;
 //import org.smallbox.faraway.game.model.item.ItemFilter;
 //import org.smallbox.faraway.game.model.item.UserItem;
 //import org.smallbox.faraway.game.model.job.JobModel;

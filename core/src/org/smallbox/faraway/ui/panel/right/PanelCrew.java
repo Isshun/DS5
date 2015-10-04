@@ -5,7 +5,7 @@
 //import org.smallbox.faraway.engine.GameEventListener;
 //import org.smallbox.faraway.game.Game;
 //import org.smallbox.faraway.game.model.character.base.CharacterModel;
-//import org.smallbox.faraway.game.module.character.CharacterModule;
+//import CharacterModule;
 //import org.smallbox.faraway.ui.UserInterface;
 //import org.smallbox.faraway.ui.UserInterface.Mode;
 //import org.smallbox.faraway.ui.engine.Colors;
@@ -54,7 +54,7 @@
 //	@Override
 //	protected void onCreate(ViewFactory factory) {
 //		_viewHolderList = new ArrayList<>();
-//		_characterModule = Game.getCharacterManager();
+//		_characterModule = Game.getCharacterModule();
 //
 //		// Button small
 //		UILabel btModeSmall = factory.createTextView(50, 20);
@@ -75,7 +75,7 @@
 //		// Name
 //		_lbCount = factory.createTextView(10, 10);
 //		_lbCount.setTextSize(FONT_SIZE_TITLE);
-//		_lbCount.setColor(Color.WHITE);
+//		_lbCount.setTextColor(Color.WHITE);
 //		_lbCount.setPosition(20, 22);
 //		addView(_lbCount);
 //	}
@@ -127,14 +127,14 @@
 //			viewHolder.frame.setOnFocusListener(new OnFocusListener() {
 //				@Override
 //				public void onExit(View view) {
-//					viewHolder.lbName.setColor(Colors.LINK_INACTIVE);
+//					viewHolder.lbName.setTextColor(Colors.LINK_INACTIVE);
 //					viewHolder.lbName.setStyle(UILabel.REGULAR);
 //					//view.setBackgroundColor(null);
 //				}
 //
 //				@Override
 //				public void onEnter(View view) {
-//					viewHolder.lbName.setColor(Colors.LINK_ACTIVE);
+//					viewHolder.lbName.setTextColor(Colors.LINK_ACTIVE);
 //					viewHolder.lbName.setStyle(UILabel.UNDERLINED);
 //					//view.setBackgroundColor(new Color(40, 40, 80));
 //				}
@@ -188,7 +188,7 @@
 //			//		  text.setText(function.getName());
 //			//		  text.setPosition(_x + Constant.UI_PADDING + Constant.CHAR_WIDTH + Constant.UI_PADDING + (CREW_LINE_WIDTH * x),
 //			//						   _y + Constant.UI_PADDING + (CREW_LINE_HEIGHT * y) + 22);
-//			//		  text.setColor(function.getColor());
+//			//		  text.setTextColor(function.getColor());
 //			//		  _app.draw(text, _renderEffect);
 //
 //			_viewHolderList.add(viewHolder);
@@ -201,16 +201,16 @@
 //
 //			// Name
 //			viewHolder.lbName.setDashedString(character.getInfo().getName(), "", NB_COLUMNS);
-//			viewHolder.lbName.setColor(viewHolder.frame.isFocus() ? Colors.LINK_ACTIVE : new Color(120, 255, 255));
+//			viewHolder.lbName.setTextColor(viewHolder.frame.isFocus() ? Colors.LINK_ACTIVE : new Color(120, 255, 255));
 //
 //			// Job
 //			if (character.getJob() != null) {
 //				viewHolder.lbJob.setText(character.getJob().getShortLabel());
-//				viewHolder.lbJob.setColor(new Color(255, 255, 255));
+//				viewHolder.lbJob.setTextColor(new Color(255, 255, 255));
 //				viewHolder.lbJob.setPosition(376 - character.getJob().getShortLabel().length() * 8, 6);
 //			} else {
 //				viewHolder.lbJob.setText(Strings.LB_NO_JOB);
-//				viewHolder.lbJob.setColor(new Color(255, 255, 255, 100));
+//				viewHolder.lbJob.setTextColor(new Color(255, 255, 255, 100));
 //				viewHolder.lbJob.setPosition(376 - Strings.LB_NO_JOB.length() * 8, 6);
 //			}
 ////			// Profession

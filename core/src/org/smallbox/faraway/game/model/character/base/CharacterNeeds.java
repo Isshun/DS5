@@ -5,6 +5,7 @@ import org.smallbox.faraway.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.Constant;
 
 public class CharacterNeeds {
@@ -31,7 +32,7 @@ public class CharacterNeeds {
     public double 	satiety;
     public double 	joy;
     public double 	heat;
-    public double heatDifferenceReal;
+    public double   heatDifferenceReal;
     public int 		environment;
     public int 		light;
     public int 		pain;
@@ -69,7 +70,7 @@ public class CharacterNeeds {
         updateNeeds(_character.getType().needs);
 
         // Check peoples on proximity
-        if (Game.getCharacterManager().havePeopleOnProximity(_character)) {
+        if (ModuleHelper.getCharacterModule().havePeopleOnProximity(_character)) {
             this.relation += 1;
         } else {
             this.relation -= 0.25;
@@ -120,7 +121,9 @@ public class CharacterNeeds {
         }
 
         // Body heat
-        double heatDifference = _character.getParcel().getTemperature() - (this.heat - _character.getType().thermolysis);
+        // TODO
+//        double heatDifference = _character.getParcel().getTemperature() - (this.heat - _character.getType().thermolysis);
+        double heatDifference = 0;
         double heatDifferenceReal = 0;
 //        System.out.println("heatDifference: " + heatDifference);
 

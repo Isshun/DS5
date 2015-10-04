@@ -73,7 +73,7 @@ public abstract class BaseDebugPanel extends BasePanel {
 
     public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
         if (_isVisible) {
-            if (!_isMoving && action == GameEventListener.Action.PRESSED && _lbTitle.getRect().contains(x, y) && !_lbClose.getRect().contains(x, y)) {
+            if (!_isMoving && action == GameEventListener.Action.PRESSED && _lbTitle.contains(x, y) && !_lbClose.contains(x, y)) {
                 _movingOffsetX = x - _x;
                 _movingOffsetY = y - _y;
                 _isMoving = true;

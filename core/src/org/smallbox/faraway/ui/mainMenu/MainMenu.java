@@ -74,7 +74,7 @@ public class MainMenu {
 
     public void draw(GDXRenderer renderer, Viewport viewport) {
         renderer.clear();
-        _currentScene.draw(renderer, viewport);
+        _currentScene.draw(renderer, 0, 0);
     }
 
     public void refresh(int frame) {
@@ -90,10 +90,12 @@ public class MainMenu {
         }
 
         // Refresh UI if needed by UI files
-        long lastResModified = Utils.getLastUIModified();
-        if (frame % 8 == 0 && lastResModified > _lastModified) {
-            _lastModified = lastResModified;
-            reload();
+        if (frame % 8 == 0) {
+            long lastResModified = Utils.getLastUIModified();
+            if (lastResModified > _lastModified) {
+                _lastModified = lastResModified;
+                reload();
+            }
         }
     }
 

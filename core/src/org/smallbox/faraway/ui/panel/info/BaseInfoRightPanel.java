@@ -117,7 +117,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
                         _frame_room_info.findById("temperature_cursor").setPosition(0, position - 10);
                         _frame_room_info.findById("bg_1_temperature_cursor").setBackgroundColor((Color) obj[2]);
                         _frame_room_info.findById("bg_2_temperature_cursor").setBackgroundColor((Color) obj[2]);
-                        ((UILabel) _frame_room_info.findById("lb_temperature_cursor")).setColor(Color.WHITE);
+                        ((UILabel) _frame_room_info.findById("lb_temperature_cursor")).setTextColor(Color.WHITE);
                         break;
                     }
                 }

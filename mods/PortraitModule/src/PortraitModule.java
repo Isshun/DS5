@@ -76,7 +76,7 @@ public class PortraitModule extends GameUIModule {
     @Override
     public void onAddCharacter(CharacterModel character) {
         _characters.add(character);
-        _window.setCharacters(_characters);
+//        _window.setCharacters(_characters);
     }
 
 }

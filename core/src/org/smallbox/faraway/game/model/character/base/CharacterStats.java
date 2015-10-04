@@ -32,29 +32,9 @@ public class CharacterStats {
 
         character.addBodyStats(this);
 
-        for (ItemInfo itemInfo: equipmentsInfo) {
-            if (itemInfo.equipment.effects != null) {
-                for (ItemInfo.EquipmentEffect effect: itemInfo.equipment.effects) {
-                    // Check debuff
-                    if (effect.debuff != null) {
-                        addValues(this.debuff, effect.debuff);
-                    }
-
-                    // Check resist
-                    if (effect.resist != null) {
-                        addValues(this.resist, effect.resist);
-                    }
-
-                    // Check buff
-                    if (effect.buff != null) {
-                        addValues(this.buff, effect.buff);
-                    }
-                }
-            }
-        }
-
         this.resist.cold = Math.min(100, Math.max(0, Math.log(this.resist.coldScore * 10))) / 10;
         this.resist.heat = Math.min(100, Math.max(0, Math.log(this.resist.heatScore * 10))) / 10;
+
         this.resist.oxygen = Math.min(100, Math.max(0, Math.log(this.resist.oxygenScore * 10))) / 10;
 
         this.buff.cold = this.buff.coldScore;
@@ -64,12 +44,6 @@ public class CharacterStats {
         this.debuff.cold = this.debuff.coldScore;
         this.debuff.heat = this.debuff.heatScore;
         this.debuff.oxygen = this.debuff.oxygenScore;
-    }
-
-    private void addValues(CharacterStatsValues values, ItemInfo.EquipmentEffectValues effect) {
-        values.coldScore += effect.cold;
-        values.heatScore += effect.heat;
-        values.oxygenScore += effect.oxygen;
     }
 
     private void reset(CharacterStatsValues values) {

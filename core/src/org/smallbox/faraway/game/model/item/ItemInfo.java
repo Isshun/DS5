@@ -63,7 +63,7 @@ public class ItemInfo {
 		public String 					item;
 		public ItemInfo 				itemInfo;
 		public int[] 					quantity;
-		public float 					dropRate;
+		public double 					dropRate;
 	}
 
 	public static class ItemComponentInfo {

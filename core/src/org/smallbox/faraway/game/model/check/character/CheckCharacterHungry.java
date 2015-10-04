@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.model.check.character;
 
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.ItemFinder;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;

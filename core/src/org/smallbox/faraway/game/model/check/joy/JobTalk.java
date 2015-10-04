@@ -5,6 +5,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.path.PathManager;
 
 /**
@@ -16,7 +17,7 @@ public class JobTalk extends BaseJobModel {
     public static JobTalk create(CharacterModel character, CharacterModel friend) {
 
         if (friend.getJob() != null && friend.getJob().isJoy()) {
-            Game.getJobManager().closeJob(friend.getJob());
+            ModuleHelper.getJobModule().closeJob(friend.getJob());
         }
 
         GraphPath<ParcelModel> path = PathManager.getInstance().getPath(character.getParcel(), friend.getParcel());

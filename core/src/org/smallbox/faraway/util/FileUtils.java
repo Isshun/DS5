@@ -29,12 +29,11 @@ public class FileUtils {
 
     private static void listDirectory(List<File> list, File directory, boolean recursively) {
         for (File file: directory.listFiles()) {
+            list.add(file);
             if (file.isDirectory()) {
                 if (recursively) {
                     listDirectory(list, file, recursively);
                 }
-            } else {
-                list.add(file);
             }
         }
     }

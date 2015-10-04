@@ -1,0 +1,16 @@
+label: Iron
+width: 1
+height: 1
+tiles: [3, 8]
+type: resource
+isWalkable: false
+isCloseRoom: true
+isRock: true
+light: 0
+sealing: 1
+actions:
+    -   type: mine
+        cost: 100
+        products:
+            -   item: base.iron_filings
+                quantity: [1, 1]

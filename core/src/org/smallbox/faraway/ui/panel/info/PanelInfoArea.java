@@ -10,7 +10,7 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.game.module.ModuleManager;
-import org.smallbox.faraway.game.module.world.AreaModule;
+import org.smallbox.faraway.game.module.base.AreaModule;
 import org.smallbox.faraway.ui.LinkFocusListener;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.Colors;
@@ -71,7 +71,7 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         lbEntry.setData(info);
         lbEntry.setTextSize(14);
         lbEntry.setPosition(posX, posY);
-        lbEntry.setColor(Colors.LINK_INACTIVE);
+        lbEntry.setTextColor(Colors.LINK_INACTIVE);
         lbEntry.setOnFocusListener(new LinkFocusListener());
         lbEntry.setOnClickListener(clickListener);
         lbEntry.setTextAlign(Align.CENTER_VERTICAL);

@@ -81,12 +81,8 @@ public class GDXRenderer {
         }
     }
 
-    public void draw(ColorView view, Viewport viewport) {
-        view.draw(this, viewport);
-    }
-
     public void draw(org.smallbox.faraway.engine.Color color, int x, int y, int width, int height) {
-        draw(new Color(color.r / 255f, color.g / 255f, color.b / 255f, 1f), x, y, width, height);
+        draw(new Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f), x, y, width, height);
     }
 
     public void clear(org.smallbox.faraway.engine.Color color) {

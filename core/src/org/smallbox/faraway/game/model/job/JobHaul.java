@@ -1,7 +1,6 @@
 package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.core.drawable.IconDrawable;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.GameData;
@@ -10,10 +9,10 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.ModuleManager;
-import org.smallbox.faraway.game.module.character.JobModule;
+import org.smallbox.faraway.game.module.base.AreaModule;
 import org.smallbox.faraway.game.module.path.PathManager;
-import org.smallbox.faraway.game.module.world.AreaModule;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -141,7 +140,7 @@ public class JobHaul extends BaseJobModel implements GameObserver {
     @Override
     public void onQuit(CharacterModel character) {
         if (character.getInventory() != null) {
-            Game.getWorldManager().putConsumable(character.getInventory(), character.getX(), character.getY());
+            ModuleHelper.getWorldModule().putConsumable(character.getInventory(), character.getX(), character.getY());
             character.setInventory(null);
         }
         _consumables.forEach(consumable -> consumable.lock(null));
@@ -185,7 +184,7 @@ public class JobHaul extends BaseJobModel implements GameObserver {
     public JobActionReturn onAction(CharacterModel character) {
         if (_storage == null) {
             Log.error("JobHaul: null storage");
-            JobModule.getInstance().quitJob(this, JobAbortReason.INVALID);
+            ModuleHelper.getJobModule().quitJob(this, JobAbortReason.INVALID);
             return JobActionReturn.ABORT;
         }
 
@@ -197,16 +196,16 @@ public class JobHaul extends BaseJobModel implements GameObserver {
             // TODO: check characters inventory free space
             if (_character.getInventory() == null) {
                 _character.setInventory(consumable);
-                Game.getWorldManager().removeConsumable(consumable);
+                ModuleHelper.getWorldModule().removeConsumable(consumable);
             } else if (_character.getInventory().getInfo() == consumable.getInfo()) {
                 _character.getInventory().addQuantity(consumable.getQuantity());
                 consumable.setQuantity(0);
                 if (consumable.isEmpty()) {
-                    Game.getWorldManager().removeConsumable(consumable);
+                    ModuleHelper.getWorldModule().removeConsumable(consumable);
                 }
             } else {
                 Log.error("JobHaul: characters inventory must be empty");
-                JobModule.getInstance().quitJob(this, JobAbortReason.INVALID);
+                ModuleHelper.getJobModule().quitJob(this, JobAbortReason.INVALID);
                 return JobActionReturn.ABORT;
             }
             consumable.removeJob(this);
@@ -225,7 +224,7 @@ public class JobHaul extends BaseJobModel implements GameObserver {
                 return JobActionReturn.ABORT;
             }
             if (_parcel != null && _parcel.getConsumable() == null) {
-                Game.getWorldManager().putConsumable(_character.getInventory(), _parcel.x, _parcel.y);
+                ModuleHelper.getWorldModule().putConsumable(_character.getInventory(), _parcel.x, _parcel.y);
                 _character.setInventory(null);
                 return JobActionReturn.FINISH;
             }
@@ -255,7 +254,7 @@ public class JobHaul extends BaseJobModel implements GameObserver {
             // No empty space in any storage
             else {
                 Log.error("No empty space in any storage");
-                Game.getWorldManager().putConsumable(_character.getInventory(), _character.getX(), _character.getY());
+                ModuleHelper.getWorldModule().putConsumable(_character.getInventory(), _character.getX(), _character.getY());
                 _character.setInventory(null);
                 return JobActionReturn.ABORT;
             }

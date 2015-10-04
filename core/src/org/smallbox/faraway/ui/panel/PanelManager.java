@@ -73,7 +73,7 @@ public class PanelManager extends BaseRightPanel {
 		_lbSearch.setPosition(20, 60);
 		_lbSearch.setText("search: ");
 		_lbSearch.setTextSize(FONT_SIZE);
-		_lbSearch.setColor(Colors.LINK_INACTIVE);
+		_lbSearch.setTextColor(Colors.LINK_INACTIVE);
 		addView(_lbSearch);
 
 		_labels = new UILabel[_nbEntries];
@@ -87,7 +87,7 @@ public class PanelManager extends BaseRightPanel {
 			_shortcuts[i] = ViewFactory.getInstance().createTextView();
 			_shortcuts[i].setPosition(20, 100 + i * LINE_HEIGHT);
 			_shortcuts[i].setTextSize(FONT_SIZE);
-			_shortcuts[i].setColor(Colors.LINK_ACTIVE);
+			_shortcuts[i].setTextColor(Colors.LINK_ACTIVE);
 			// TODO
 			//_shortcuts[i].setStyle(TextView.UNDERLINED);
 			addView(_shortcuts[i]);
@@ -108,7 +108,7 @@ public class PanelManager extends BaseRightPanel {
 					_shortcuts[i].setVisible(true);
 					_shortcuts[i].setText(entry.label);
 					_shortcuts[i].setPosition(20, _shortcuts[i].getPosY());
-					_shortcuts[i].setColor(Colors.LINK_ACTIVE);
+					_shortcuts[i].setTextColor(Colors.LINK_ACTIVE);
 					_labels[i].setVisible(false);
 				}
 				else {
@@ -124,13 +124,13 @@ public class PanelManager extends BaseRightPanel {
 				if (pos != -1) {
 					if (i == _line) {
 						_shortcuts[i].setText(entry.label);
-						_shortcuts[i].setColor(Colors.LINK_ACTIVE);
+						_shortcuts[i].setTextColor(Colors.LINK_ACTIVE);
 						_shortcuts[i].setPosition(20, _shortcuts[i].getPosY());
 						_labels[i].setVisible(false);
 					}
 					else {
 						_shortcuts[i].setText(entry.label.substring(pos, pos + _search.length()));
-						_shortcuts[i].setColor(Colors.LINK_INACTIVE);
+						_shortcuts[i].setTextColor(Colors.LINK_INACTIVE);
 						_shortcuts[i].setPosition(20 + pos * 8, _shortcuts[i].getPosY());
 						_labels[i].setVisible(true);
 						_labels[i].setText(entry.label);

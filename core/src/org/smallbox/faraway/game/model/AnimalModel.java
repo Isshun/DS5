@@ -1,10 +1,10 @@
 package org.smallbox.faraway.game.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.util.Log;
 
@@ -21,7 +21,7 @@ public class AnimalModel extends MovableModel {
     public AnimalModel(int id, RegionInfo.RegionFauna faunaInfo, int x, int y) {
         super(id, x, y);
 
-        _parcel = Game.getWorldManager().getParcel(x, y);
+        _parcel = ModuleHelper.getWorldModule().getParcel(x, y);
         _info = faunaInfo;
         _direction = Direction.NONE;
     }
@@ -34,8 +34,8 @@ public class AnimalModel extends MovableModel {
         _toX = x;
         _toY = x;
 
-        _fromParcel = Game.getWorldManager().getParcel(_posX, _posY);
-        _toParcel = Game.getWorldManager().getParcel(_toX, _toY);
+        _fromParcel = ModuleHelper.getWorldModule().getParcel(_posX, _posY);
+        _toParcel = ModuleHelper.getWorldModule().getParcel(_toX, _toY);
 
         // Already on position
         if (_posX != _toX || _posY != _toY) {

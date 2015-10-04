@@ -4,13 +4,14 @@ import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 
 /**
  * Created by Alex on 20/06/2015.
  */
 public class LuaMapModel {
     public LuaValue getDropLocation() {
-        ParcelModel[][][] parcels = Game.getWorldManager().getParcels();
+        ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
         int width = Game.getInstance().getInfo().worldWidth;
         int height = Game.getInstance().getInfo().worldHeight;
 

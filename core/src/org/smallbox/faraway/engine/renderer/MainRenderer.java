@@ -1,18 +1,11 @@
 package org.smallbox.faraway.engine.renderer;
 
-import org.reflections.Reflections;
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
-import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.module.ModuleManager;
-import org.smallbox.faraway.util.Log;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class MainRenderer {

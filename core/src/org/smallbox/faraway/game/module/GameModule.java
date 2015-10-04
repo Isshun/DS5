@@ -4,12 +4,22 @@ import org.smallbox.faraway.data.serializer.SerializerInterface;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
+import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.ui.engine.UIEventManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alex on 15/06/2015.
  */
 public abstract class GameModule implements GameObserver {
     private final String TAG = getClass().getSimpleName();
+    private List<EventListener> _listeners;
+
+    public abstract class EventListener<T> {
+        public abstract void onEvent(T data);
+    }
 
     private int         _nbUpdate;
     private long        _totalTime;
@@ -29,9 +39,24 @@ public abstract class GameModule implements GameObserver {
         _isLoaded = loadOnStart();
     }
 
+    protected void addEventListener(String tag, EventListener<CharacterModel> listener) {
+        Game.getInstance().addEventListener(listener);
+        _listeners.add(listener);
+    }
+
     public void create() {
+        _listeners = new ArrayList<>();
         onLoaded();
         _isLoaded = true;
+    }
+
+    public void destroy() {
+        onDestroy();
+        _isLoaded = false;
+    }
+
+    protected void onDestroy() {
+        _listeners.forEach(Game.getInstance()::removeEventListener);
     }
 
     protected abstract void onLoaded();
@@ -73,14 +98,6 @@ public abstract class GameModule implements GameObserver {
 
     public boolean isMandatory() {
         return false;
-    }
-
-    public void destroy() {
-        onDestroy();
-        _isLoaded = false;
-    }
-
-    protected void onDestroy() {
     }
 
     public boolean onKey(GameEventListener.Key key) {

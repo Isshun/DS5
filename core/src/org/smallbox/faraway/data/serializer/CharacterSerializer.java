@@ -9,6 +9,7 @@ import org.smallbox.faraway.game.model.character.TimeTableModel;
 import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.FileUtils;
 
 import java.io.FileOutputStream;
@@ -22,7 +23,7 @@ public class CharacterSerializer implements SerializerInterface {
     @Override
     public void save(FileOutputStream fos) throws IOException {
         FileUtils.write(fos, "<characters>");
-        for (CharacterModel character: Game.getCharacterManager().getCharacters()) {
+        for (CharacterModel character: ModuleHelper.getCharacterModule().getCharacters()) {
             writeCharacter(fos, character);
         }
         FileUtils.write(fos, "</characters>");
@@ -96,13 +97,13 @@ public class CharacterSerializer implements SerializerInterface {
 
         switch (vn.toString(vn.getCurrentIndex())) {
             default:
-                character = new HumanModel(0, 0, 0, null, null, 0);
+                character = new HumanModel(0, 10, 10, null, null, 0);
                 break;
             case "android":
-                character = new AndroidModel(0, 0, 0, null, null, 0);
+                character = new AndroidModel(0, 10, 10, null, null, 0);
                 break;
             case "droid":
-                character = new DroidModel(0, 0, 0, null, null, 0);
+                character = new DroidModel(0, 10, 10, null, null, 0);
                 break;
         }
 
@@ -190,6 +191,6 @@ public class CharacterSerializer implements SerializerInterface {
         ap2.resetXPath();
         vn.pop();
 
-        Game.getCharacterManager().add(character);
+        ModuleHelper.getCharacterModule().add(character);
     }
 }

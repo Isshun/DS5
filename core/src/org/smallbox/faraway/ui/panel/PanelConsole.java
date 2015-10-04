@@ -91,12 +91,12 @@ public class PanelConsole extends BasePanel {
 			_texts[i].setText(_data[_level][i]);
 
 			// Set color
-			if (_data[_level][i] != null && _data[_level][i].startsWith("[D]")) _texts[i].setColor(COLOR_DEBUG);
-			if (_data[_level][i] != null && _data[_level][i].startsWith("[I]")) _texts[i].setColor(COLOR_INFO);
-			if (_data[_level][i] != null && _data[_level][i].startsWith("[W]")) _texts[i].setColor(COLOR_WARNING);
-			if (_data[_level][i] != null && _data[_level][i].startsWith("[E]")) _texts[i].setColor(COLOR_ERROR);
-			if (_data[_level][i] != null && _data[_level][i].startsWith("[F]")) _texts[i].setColor(COLOR_FATAL);
-			if (_data[_level][i] != null && _data[_level][i].startsWith("[N]")) _texts[i].setColor(COLOR_NOTICE);
+			if (_data[_level][i] != null && _data[_level][i].startsWith("[D]")) _texts[i].setTextColor(COLOR_DEBUG);
+			if (_data[_level][i] != null && _data[_level][i].startsWith("[I]")) _texts[i].setTextColor(COLOR_INFO);
+			if (_data[_level][i] != null && _data[_level][i].startsWith("[W]")) _texts[i].setTextColor(COLOR_WARNING);
+			if (_data[_level][i] != null && _data[_level][i].startsWith("[E]")) _texts[i].setTextColor(COLOR_ERROR);
+			if (_data[_level][i] != null && _data[_level][i].startsWith("[F]")) _texts[i].setTextColor(COLOR_FATAL);
+			if (_data[_level][i] != null && _data[_level][i].startsWith("[N]")) _texts[i].setTextColor(COLOR_NOTICE);
 		}
 	}
 }

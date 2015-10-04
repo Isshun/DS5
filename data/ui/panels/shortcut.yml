@@ -1,8 +1,6 @@
-position: [-400, 32]
+position: [0, 32]
 size: [400, 1000]
-align: [right, top]
 background: 0x131d1f
-align: [right, top]
 entries:
 
     -   type: label
@@ -51,64 +49,5 @@ entries:
             position: [215, 100]
 
     -   type: frame
-        position: [0, 380]
-        entries:
-        
-        -   type: label
-            text: Actions
-            textsize: 24
-            position: [24, 0]
-
-        -   type: label
-            id: bt_build
-            text: MENU_SHORTCUT_BUILD
-            textsize: 18
-            textcolor: 0x78ffff
-            position: [24, 45]
-            size: [165, 45]
-            align: center
-            background: 0x1d5560
-
-        -   type: label
-            id: bt_plan
-            text: MENU_SHORTCUT_PLANS
-            textsize: 18
-            textcolor: 0x78ffff
-            position: [215, 45]
-            size: [165, 45]
-            align: center
-            background: 0x1d5560
-
-        -   type: label
-            id: bt_occupation
-            text: MENU_SHORTCUT_JOBS
-            textsize: 18
-            textcolor: 0x78ffff
-            position: [24, 115]
-            size: [165, 45]
-            align: center
-            background: 0x1d5560
-
-        -   type: label
-            id: bt_area
-            text: MENU_SHORTCUT_AREAS
-            textsize: 18
-            textcolor: 0x78ffff
-            position: [215, 115]
-            size: [165, 45]
-            align: center
-            background: 0x1d5560
-
-        -   type: label
-            id: bt_crew
-            text: MENU_SHORTCUT_CREW
-            textsize: 18
-            textcolor: 0x78ffff
-            position: [24, 185]
-            size: [165, 45]
-            align: center
-            background: 0x1d5560
-
-    -   type: frame
         id: shortcut_entries
-        position: [0, 680]
+        position: [0, 380]

@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.ui.panel.debug;
 //
 //import org.smallbox.faraway.game.Game;
-//import org.smallbox.faraway.game.module.world.TemperatureModule;
+//import TemperatureModule;
 //import org.smallbox.faraway.ui.engine.ViewFactory;
 //import org.smallbox.faraway.util.StringUtils;
 //

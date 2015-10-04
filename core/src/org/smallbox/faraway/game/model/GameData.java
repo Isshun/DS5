@@ -4,6 +4,7 @@ import org.smallbox.faraway.data.loader.*;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
+import org.smallbox.faraway.ui.UICursor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class GameData {
 	public boolean 						needUIRefresh;
 	public List<IDataLoader> 			_loaders;
 	public HashMap<String, CharacterTypeInfo> characters;
+	public Map<String, UICursor> 		cursors = new HashMap<>();
 
 	public GameData() {
         _data = this;

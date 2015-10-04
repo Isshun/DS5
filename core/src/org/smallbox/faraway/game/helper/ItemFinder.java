@@ -5,9 +5,10 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.ModuleManager;
+import org.smallbox.faraway.game.module.base.WorldModule;
 import org.smallbox.faraway.game.module.path.PathManager;
-import org.smallbox.faraway.game.module.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.Map;
 public class ItemFinder extends GameModule {
 	private int 					_width;
 	private int 					_height;
-	private WorldModule _worldModule;
+	private WorldModule 			_worldModule;
 	private PathManager 			_pathManager;
 	private List<ConsumableModel> 	_consumables;
 	private List<ItemModel> 		_items;
@@ -37,7 +38,7 @@ public class ItemFinder extends GameModule {
 		if (filter.needItem) {
             int bestDistance = Integer.MAX_VALUE;
             ItemModel bestItem = null;
-            for (ItemModel item: Game.getWorldManager().getItems()) {
+            for (ItemModel item: ModuleHelper.getWorldModule().getItems()) {
                 if (item.matchFilter(filter)) {
                     int distance = WorldHelper.getApproxDistance(item.getParcel(), character.getParcel());
                     if (bestDistance > distance) {
@@ -52,7 +53,7 @@ public class ItemFinder extends GameModule {
         if (filter.needConsumable) {
             int bestDistance = Integer.MAX_VALUE;
             ConsumableModel bestConsumable = null;
-            for (ConsumableModel consumable: Game.getWorldManager().getConsumables()) {
+            for (ConsumableModel consumable: ModuleHelper.getWorldModule().getConsumables()) {
                 if (consumable.matchFilter(filter)) {
                     int distance = WorldHelper.getApproxDistance(consumable.getParcel(), character.getParcel());
                     if (bestDistance > distance) {

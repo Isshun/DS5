@@ -11,9 +11,6 @@ import org.smallbox.faraway.ui.engine.view.View;
  */
 public class GDXFrameLayout extends FrameLayout {
     private boolean _needResetPos = true;
-    private int     _finalX;
-    private int     _finalY;
-    private com.badlogic.gdx.graphics.Color _gdxBackgroundColor;
 
     public GDXFrameLayout(int width, int height) {
         super(width, height);
@@ -26,30 +23,27 @@ public class GDXFrameLayout extends FrameLayout {
     }
 
     @Override
-    public void setBackgroundColor(Color color) {
-        if (color != null) {
-            _gdxBackgroundColor = new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f);
-        }
-    }
+    public void draw(GDXRenderer renderer, int x, int y) {
+        super.draw(renderer, x, y);
 
-    @Override
-    public void draw(GDXRenderer renderer, Viewport viewport) {
-        if (_needResetPos) {
-            _finalX = 0;
-            _finalY = 0;
-            View view = this;
-            while (view != null) {
-                _finalX += view.getPosX();
-                _finalY += view.getPosY();
-                view = view.getParent();
+        if (_isVisible) {
+            if (_needResetPos) {
+                _finalX = x;
+                _finalY = y;
+                View view = this;
+                while (view != null) {
+                    _finalX += view.getPosX();
+                    _finalY += view.getPosY();
+                    view = view.getParent();
+                }
+            }
+
+            if (_views != null) {
+                for (View view : _views) {
+                    view.draw(renderer, x, y);
+                }
             }
         }
-
-        if (_isVisible && _gdxBackgroundColor != null) {
-            renderer.draw(_gdxBackgroundColor, _finalX, _finalY, _width, _height);
-        }
-
-        super.draw(renderer, viewport);
     }
 
     @Override

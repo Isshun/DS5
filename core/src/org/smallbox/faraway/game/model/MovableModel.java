@@ -1,9 +1,9 @@
 package org.smallbox.faraway.game.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.Utils;
 
 public abstract class MovableModel {
@@ -14,12 +14,12 @@ public abstract class MovableModel {
 
 	public void setY(int y) {
 		_posY = y;
-		parcel = Game.getWorldManager().getParcel(_posX, _posY);
+		parcel = ModuleHelper.getWorldModule().getParcel(_posX, _posY);
 	}
 
 	public void setX(int x) {
 		_posX = x;
-		parcel = Game.getWorldManager().getParcel(_posX, _posY);
+		parcel = ModuleHelper.getWorldModule().getParcel(_posX, _posY);
 	}
 
 	public interface OnPathComplete {

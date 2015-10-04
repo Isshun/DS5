@@ -1,9 +1,9 @@
 package org.smallbox.faraway.data.serializer;
 
 import com.ximpleware.*;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.*;
-import org.smallbox.faraway.game.module.world.WorldModule;
+import org.smallbox.faraway.game.module.ModuleHelper;
+import org.smallbox.faraway.game.module.base.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
 
 import java.io.FileOutputStream;
@@ -14,7 +14,7 @@ public class WorldSerializer implements SerializerInterface {
     @Override
     public void save(FileOutputStream fos) throws IOException {
         FileUtils.write(fos, "<parcels>");
-        for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
+        for (ParcelModel parcel: ModuleHelper.getWorldModule().getParcelList()) {
             if (parcel.z == 0) {
                 writeParcel(fos, parcel);
             }
@@ -86,7 +86,7 @@ public class WorldSerializer implements SerializerInterface {
         AutoPilot apElement = new AutoPilot(vn);
         apElement.selectXPath("*");
 
-        WorldModule manager = Game.getWorldManager();
+        WorldModule manager = ModuleHelper.getWorldModule();
 
         while (ap.evalXPath() != -1) {
             vn.push();

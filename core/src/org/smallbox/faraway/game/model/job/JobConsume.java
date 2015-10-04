@@ -1,15 +1,13 @@
 package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.core.drawable.AnimDrawable;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.util.OnMoveListener;
 
 public class JobConsume extends BaseJobModel {
 
@@ -117,7 +115,7 @@ public class JobConsume extends BaseJobModel {
 
             // Remove consumable if depleted
             if (_consumable.getQuantity() <= 0) {
-                Game.getWorldManager().removeConsumable(_consumable);
+                ModuleHelper.getWorldModule().removeConsumable(_consumable);
             }
             _consumable = null;
 

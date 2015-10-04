@@ -1,5 +1,7 @@
 package org.smallbox.faraway.ui.engine.view;
 
+import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
@@ -9,16 +11,23 @@ import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alex on 27/05/2015.
  */
 public abstract class View {
+
+    public List<View> _views = new ArrayList<>();
+
     private String      _name;
     protected boolean   _isAlignLeft = true;
     protected boolean   _isAlignTop = true;
     protected int       _finalX;
     protected int       _finalY;
+    private int         _marginTop;
+    private int         _marginLeft;
 
     public void setName(String name) {
         _name = name;
@@ -29,22 +38,36 @@ public abstract class View {
         _isAlignTop = isAlignTop;
     }
 
+    public abstract void addView(View view);
+
+    public void removeAllViews() {
+        _views.clear();
+    }
+
+    public int getHeight() {
+        return _height;
+    }
+
+    public boolean contains(int x, int y) {
+        return (_finalX <= x && _finalX + _width >= x && _finalY <= y && _finalY + _height >= y);
+    }
+
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };
 
-    protected int               _width;
-    protected int               _height;
+    protected int               _width = -1;
+    protected int               _height = -1;
     public int                  _x;
     public int                  _y;
     protected boolean			_isVisible;
-    protected Rectangle 		_rect;
+    protected Rectangle _rect;
     protected int 				_paddingLeft;
     protected int				_paddingBottom;
     protected int 				_paddingRight;
     protected int 				_paddingTop;
-    public FrameLayout          _parent;
-    protected OnClickListener _onClickListener;
+    public View _parent;
+    protected OnClickListener   _onClickListener;
     private OnClickListener     _onRightClickListener;
-    protected OnFocusListener _onFocusListener;
+    protected OnFocusListener   _onFocusListener;
     protected boolean 			_isFocus;
     protected int 				_id;
     protected int 				_borderSize;
@@ -68,29 +91,38 @@ public abstract class View {
     public boolean 		isVisible() { return _isVisible; }
 
     public void 		setId(int id) { _id = id; }
-    public void setTextAlign(Align align) { _align = align; }
+    public void         setTextAlign(Align align) { _align = align; }
     public void 		setFocus(boolean focus) { _isFocus = focus; }
-    public void 		setParent(FrameLayout parent) {
+    public void 		setParent(View parent) {
         _parent = parent;
     }
 
-    public FrameLayout 	getParent() { return _parent; }
+    public View         getParent() { return _parent; }
     public int 			getId() { return _id; }
     public int 			getPosX() { return _x; }
     public int 			getPosY() { return _y; }
 
-    protected abstract void onDraw(GDXRenderer renderer, Viewport viewport);
-    public abstract void draw(GDXRenderer renderer, Viewport viewport);
-    public abstract void draw(GDXRenderer renderer, int x, int y);
+    public void draw(GDXRenderer renderer, int x, int y) {
+        if (_isVisible) {
+            if (_backgroundColor != null) {
+                renderer.draw(_backgroundColor, _x + x, _y + y, _width, _height);
+            }
+        }
+    }
+
     public abstract void refresh();
 
-    public void setBackgroundColor(int color) {
+    public void setBackgroundColor(long color) {
         _backgroundColor = new Color(color);
     }
 
     public void setBackgroundColor(Color color) {
         _backgroundColor = color;
     }
+
+//    public void setBackgroundColor(com.badlogic.gdx.graphics.Color color) {
+//
+//    }
 
     public void setBorderColor(Color color) {
     }
@@ -102,6 +134,16 @@ public abstract class View {
     public void setOnClickListener(OnClickListener onClickListener) {
         _onClickListener = onClickListener;
         UIEventManager.getInstance().setOnClickListener(this, onClickListener);
+    }
+
+    public void setOnClickListener(LuaValue value) {
+        _onClickListener = new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                value.call(CoerceJavaToLua.coerce(this));
+            }
+        };
+        UIEventManager.getInstance().setOnClickListener(this, _onClickListener);
     }
 
     public void setOnRightClickListener(OnClickListener onClickListener) {
@@ -118,17 +160,6 @@ public abstract class View {
         if (_onClickListener != null) {
             _onClickListener.onClick(this);
         }
-    }
-
-    public Rectangle getRect() {
-        if (_rect == null) {
-            _rect = computeRect();
-        }
-        return _rect;
-    }
-
-    public void resetPos() {
-        _rect = computeRect();
     }
 
     public void setPadding(int t, int r, int b, int l) {
@@ -160,16 +191,40 @@ public abstract class View {
         _invalid = true;
     }
 
-    protected Rectangle computeRect() {
-        _finalX = 0;
-        _finalY = 0;
-        View view = this;
-        while (view != null) {
-            _finalX += view.getPosX() + view.getOffsetX();
-            _finalY += view.getPosY() + view.getOffsetY();
-            view = view.getParent();
-        }
-        return new Rectangle(_finalX, _finalY, _width == 0 ? getContentWidth() : _width, _height == 0 ? getContentHeight() : _height);
+//    protected Rectangle computeRect() {
+//        _finalX = 0;
+//        _finalY = 0;
+//        View view = this;
+//        while (view != null) {
+//            _finalX += view.getPosX() + view.getOffsetX() + view.getMarginLeft();
+//            _finalY += view.getPosY() + view.getOffsetY() + view.getMarginTop();
+//            view = view.getParent();
+//        }
+//        return new Rectangle(_finalX, _finalY, _width == -1 ? getContentWidth() + _paddingLeft + _paddingRight : _width, _height == -1 ? getContentHeight() + _paddingTop + _paddingBottom : _height);
+//    }
+
+    private int getMarginLeft() {
+        return _marginLeft;
+    }
+
+    private int getMarginTop() {
+        return _marginTop;
+    }
+
+    public void setMarginLeft(int marginLeft) {
+        _marginLeft = marginLeft;
+    }
+
+    public void setMarginTop(int marginTop) {
+        _marginTop = marginTop;
+    }
+
+    private int getPaddingLeft() {
+        return _paddingLeft;
+    }
+
+    private int getPaddingTop() {
+        return _paddingTop;
     }
 
     private int getOffsetX() {
@@ -217,8 +272,42 @@ public abstract class View {
     public abstract int getContentWidth();
     public abstract int getContentHeight();
     public void init(){}
-    public View findById(String id){return null;}
-    public void resetAllPos() {
-        resetPos();
+
+    public View findById(String id) {
+        return findById(id.hashCode());
     }
+
+    public View findById(int resId) {
+        for (View view: _views) {
+            if (view._id == resId) {
+                return view;
+            }
+            View ret = view.findById(resId);
+            if (ret != null) {
+                return ret;
+            }
+        }
+        return null;
+    }
+
+    public void resetAllPos() {
+//        resetPos();
+    }
+
+    public void resetPos() {
+//        _rect = computeRect();
+    }
+
+    public void resetSize() {
+    }
+
+//    public void newResetAllPos() {
+//        _finalX = _x + _marginLeft;
+//        _finalY = _y + _marginTop;
+//
+//        for (View view: _views) {
+//            view.newResetAllPos();
+//        }
+//    }
+
 }

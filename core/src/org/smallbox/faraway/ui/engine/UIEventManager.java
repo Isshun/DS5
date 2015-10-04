@@ -52,7 +52,7 @@ public class UIEventManager {
 
 	public boolean click(int x, int y) {
 		for (View view: _onClickListeners.keySet()) {
-			if (hasVisibleHierarchy(view) && view.getRect().contains(x, y)) {
+			if (hasVisibleHierarchy(view) && view.contains(x, y)) {
 				_onClickListeners.get(view).onClick(view);
 				return true;
 			}
@@ -62,7 +62,7 @@ public class UIEventManager {
 
 	public boolean rightClick(int x, int y) {
 		for (View view: _onRightClickListeners.keySet()) {
-			if (hasVisibleHierarchy(view) && view.getRect().contains(x, y)) {
+			if (hasVisibleHierarchy(view) && view.contains(x, y)) {
 				_onRightClickListeners.get(view).onClick(view);
 				return true;
 			}
@@ -72,7 +72,7 @@ public class UIEventManager {
 
 	public boolean has(int x, int y) {
 		for (View view: _onClickListeners.keySet()) {
-			if (hasVisibleHierarchy(view) && view.getRect().contains(x, y)) {
+			if (hasVisibleHierarchy(view) && view.contains(x, y)) {
 				return true;
 			}
 		}
@@ -91,7 +91,7 @@ public class UIEventManager {
 
 	public void onMouseMove(int x, int y) {
 		for (View view: _onFocusListeners.keySet()) {
-			if (hasVisibleHierarchy(view) && view.getRect().contains(x, y)) {
+			if (hasVisibleHierarchy(view) && view.contains(x, y)) {
                 view.onEnter();
 			}
             else if (view.isFocus()) {
@@ -108,4 +108,9 @@ public class UIEventManager {
 		_onFocusListeners.remove(view);
 	}
 
+	public void clear() {
+		_onClickListeners.clear();
+		_onRightClickListeners.clear();
+		_onFocusListeners.clear();
+	}
 }

@@ -35,7 +35,7 @@
 //            select(_itemInfo);
 //        }
 //
-//        addDebugView("Remove item", 24, 400, view -> Game.getWorldManager().removeConsumable(_consumable));
+//        addDebugView("Remove item", 24, 400, view -> ModuleHelper.getWorldModule().removeConsumable(_consumable));
 //    }
 //
 //    @Override

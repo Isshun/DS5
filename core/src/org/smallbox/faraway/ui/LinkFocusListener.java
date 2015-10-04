@@ -11,12 +11,12 @@ import org.smallbox.faraway.ui.engine.view.View;
 public class LinkFocusListener implements OnFocusListener {
     @Override
     public void onExit(View view) {
-        ((UILabel)view).setColor(Colors.LINK_INACTIVE);
+        ((UILabel)view).setTextColor(Colors.LINK_INACTIVE);
         ((UILabel)view).setStyle(UILabel.REGULAR);
     }
     @Override
     public void onEnter(View view) {
         ((UILabel)view).setStyle(UILabel.UNDERLINED);
-        ((UILabel)view).setColor(Colors.LINK_ACTIVE);
+        ((UILabel)view).setTextColor(Colors.LINK_ACTIVE);
     }
 }

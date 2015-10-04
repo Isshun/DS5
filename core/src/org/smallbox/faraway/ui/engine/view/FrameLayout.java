@@ -7,14 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class FrameLayout extends View {
-    protected List<View> 		_views = new ArrayList<>();;
-
 	public FrameLayout(int width, int height) {
 		super(width, height);
 	}
 
 	public FrameLayout() {
-		super(0, 0);
+		super(-1, -1);
 	}
 
     @Override
@@ -25,37 +23,6 @@ public abstract class FrameLayout extends View {
 		}
 
         _views.forEach(View::init);
-	}
-
-	@Override
-	protected void onDraw(GDXRenderer renderer, Viewport viewport) {
-	}
-
-	@Override
-	public void draw(GDXRenderer renderer, int x, int y) {
-		if (!_isVisible) {
-			return;
-		}
-
-		if (_backgroundColor != null) {
-			renderer.draw(_backgroundColor, _x, _y, _width, _height);
-		}
-
-		for (View view: _views) {
-			view.draw(renderer, null);
-		}
-
-		onDraw(renderer, null);
-	}
-
-	/**
-	 * FrameLayout have there own draw() method because _renderEffect parameter
-	 * is RenderStates for root element View and don't contains the right
-	 * transformation for sub elements.
-	 */
-	@Override
-	public void draw(GDXRenderer renderer, Viewport viewport) {
-		draw(renderer, 0, 0);
 	}
 
 	public void addView(View view) {
@@ -77,26 +44,6 @@ public abstract class FrameLayout extends View {
 		}
 		_views.clear();
 	}
-
-    @Override
-    public View findById(String id) {
-        return findById(id.hashCode());
-    }
-
-    private View findById(int resId) {
-        for (View view: _views) {
-            if (view._id == resId) {
-                return view;
-            }
-            if (view instanceof FrameLayout) {
-                View ret = ((FrameLayout)view).findById(resId);
-                if (ret != null) {
-                    return ret;
-                }
-            }
-        }
-        return null;
-    }
 
     public void removeAllViews() {
         _views.forEach(View::remove);

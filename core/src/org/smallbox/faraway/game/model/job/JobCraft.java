@@ -2,7 +2,6 @@ package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.core.drawable.IconDrawable;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.area.StorageAreaModel;
@@ -11,9 +10,9 @@ import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.ModuleManager;
-import org.smallbox.faraway.game.module.character.JobModule;
-import org.smallbox.faraway.game.module.world.AreaModule;
+import org.smallbox.faraway.game.module.base.AreaModule;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
@@ -122,7 +121,7 @@ public class JobCraft extends BaseBuildJobModel {
 		// Wrong call
 		if (_item == null || _item != WorldHelper.getItem(_itemPosX, _itemPosY)) {
 			Log.error("Character: actionUse on null job or null job's item or invalid item");
-			JobModule.getInstance().quitJob(this, JobAbortReason.INVALID);
+			ModuleHelper.getJobModule().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 
@@ -163,7 +162,7 @@ public class JobCraft extends BaseBuildJobModel {
                     moveToStorage(character, _storageParcel);
                     return JobActionReturn.CONTINUE;
                 } else {
-                    Game.getWorldManager().putConsumable(productConsumable, character.getX(), character.getY());
+                    ModuleHelper.getWorldModule().putConsumable(productConsumable, character.getX(), character.getY());
                 }
             }
             return closeOrQuit(character);
@@ -180,13 +179,13 @@ public class JobCraft extends BaseBuildJobModel {
 		ParcelModel parcel = _storage.getNearestFreeParcel(character.getInventory(), character.getX(), character.getY());
 		if (parcel == null) {
 			Log.warning("No free space in _storage area");
-			Game.getWorldManager().putConsumable(character.getInventory(), character.getX(), character.getY());
+			ModuleHelper.getWorldModule().putConsumable(character.getInventory(), character.getX(), character.getY());
             character.setInventory(null);
             return closeOrQuit(character);
 		}
 
         // Store inventory item to storage
-        Game.getWorldManager().putConsumable(character.getInventory(), parcel.x, parcel.y);
+        ModuleHelper.getWorldModule().putConsumable(character.getInventory(), parcel.x, parcel.y);
         character.setInventory(null);
 
 		return closeOrQuit(character);
@@ -196,7 +195,7 @@ public class JobCraft extends BaseBuildJobModel {
 
         // Unload factory
         for (ConsumableModel component: _mainItem.getComponents()) {
-            Game.getWorldManager().putConsumable(component, _mainItem.getX(), _mainItem.getY());
+            ModuleHelper.getWorldModule().putConsumable(component, _mainItem.getX(), _mainItem.getY());
         }
 
         // TODO: wrong location

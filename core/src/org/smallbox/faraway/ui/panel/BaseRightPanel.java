@@ -41,12 +41,12 @@ public abstract class BaseRightPanel extends BasePanel {
 			UILabel lbBack = ViewFactory.getInstance().createTextView();
 			lbBack.setText("[Back]");
 			lbBack.setTextSize(FONT_SIZE_TITLE);
-			lbBack.setColor(Colors.LINK_INACTIVE);
+			lbBack.setTextColor(Colors.LINK_INACTIVE);
 			lbBack.setPosition(22, -22);
 			lbBack.setSize(120, 32);
 			lbBack.setTextAlign(Align.CENTER);
 			lbBack.setBackgroundColor(new Color(0x1d5560));
-			lbBack.setOnClickListener(view -> _ui.back());
+//			lbBack.setOnClickListener(view -> _ui.back());
 			lbBack.setOnFocusListener(new LinkFocusListener());
 			addView(lbBack);
 		}

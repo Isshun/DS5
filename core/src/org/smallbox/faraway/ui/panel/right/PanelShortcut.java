@@ -4,8 +4,8 @@
 //import org.smallbox.faraway.engine.GameEventListener;
 //import org.smallbox.faraway.game.Game;
 //import org.smallbox.faraway.game.module.ModuleManager;
-//import org.smallbox.faraway.game.module.extra.ResourceModule;
-//import org.smallbox.faraway.game.module.extra.ResourceModule.ResourceData;
+//import ResourceModule;
+//import ResourceModule.ResourceData;
 //import org.smallbox.faraway.ui.LayoutModel;
 //import org.smallbox.faraway.ui.LinkFocusListener;
 //import org.smallbox.faraway.ui.UserInterface.Mode;

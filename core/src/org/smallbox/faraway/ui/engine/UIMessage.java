@@ -19,7 +19,7 @@ public class UIMessage {
 		
 		this.text = ViewFactory.getInstance().createTextView();
 		this.text.setTextSize(14);
-		this.text.setColor(Color.WHITE);
+		this.text.setTextColor(Color.WHITE);
 		this.text.setText(str);
 		this.text.setPosition(posX + 10, posY + 5);
 		

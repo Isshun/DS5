@@ -1,9 +1,9 @@
 package org.smallbox.faraway.game.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.job.BaseBuildJobModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.path.PathManager;
 
 import java.util.*;
@@ -61,7 +61,7 @@ public class ReceiptModel {
             }
 
             _potentialComponents.clear();
-            Game.getWorldManager().getConsumables().stream()
+            ModuleHelper.getWorldModule().getConsumables().stream()
                     .filter(consumable -> componentsDistance.containsKey(consumable.getInfo()))
                     .filter(consumable -> consumable.getParcel().isWalkable())
                     .forEach(consumable -> {
@@ -154,13 +154,15 @@ public class ReceiptModel {
     }
 
     public void addConsumable(ConsumableModel consumable) {
-        for (ItemInfo.ItemComponentInfo componentInfo: _componentsInfo) {
-            if (consumable.getInfo() == componentInfo.itemInfo) {
-                GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_factory.getParcel(), consumable.getParcel());
-                if (path != null) {
-                    _potentialComponents.add(new PotentialConsumable(consumable, path.getCount()));
-                    Collections.sort(_potentialComponents, (c1, c2) -> c2.distance - c1.distance);
-                    return;
+        if (_componentsInfo != null) {
+            for (ItemInfo.ItemComponentInfo componentInfo : _componentsInfo) {
+                if (consumable.getInfo() == componentInfo.itemInfo) {
+                    GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_factory.getParcel(), consumable.getParcel());
+                    if (path != null) {
+                        _potentialComponents.add(new PotentialConsumable(consumable, path.getCount()));
+                        Collections.sort(_potentialComponents, (c1, c2) -> c2.distance - c1.distance);
+                        return;
+                    }
                 }
             }
         }

@@ -8,10 +8,6 @@ public abstract class ColorView extends View {
 	public ColorView(int width, int height) {
 		super(width, height);
 	}
-	
-	@Override
-	public void onDraw(GDXRenderer renderer, Viewport viewport) {
-	}
 
 	public Color getColor() {
 		return _backgroundColor;

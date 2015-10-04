@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.game.model.check.old;
 //
 //import org.smallbox.faraway.util.Constant;
-//import org.smallbox.faraway.game.module.character.JobModule;
+//import JobModule;
 //import org.smallbox.faraway.game.module.ServiceManager;
 //import org.smallbox.faraway.game.model.characters.base.CharacterModel;
 //import org.smallbox.faraway.game.model.item.UserItem;
@@ -16,7 +16,7 @@
 //			return false;
 //		}
 //
-//		UserItem toy = Game.getWorldManager().getRandomToy(characters.getX(), characters.getY());
+//		UserItem toy = ModuleHelper.getWorldModule().getRandomToy(characters.getX(), characters.getY());
 //		if (toy == null) {
 //			return false;
 //		}

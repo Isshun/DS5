@@ -5,6 +5,7 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.engine.view.ColorView;
 
@@ -28,7 +29,7 @@ public abstract class UICursor {
 
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
-				onDraw(renderer, Game.getWorldManager().getParcel(x, y), x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY(), (x + y) % 2 == 0, isPressed);
+				onDraw(renderer, ModuleHelper.getWorldModule().getParcel(x, y), x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY(), (x + y) % 2 == 0, isPressed);
 			}
 		}
 	}

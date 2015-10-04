@@ -6,24 +6,19 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.CharacterTypeInfo;
-import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.character.BuffModel;
-import org.smallbox.faraway.game.model.character.CharacterRelationModel;
 import org.smallbox.faraway.game.model.character.DiseaseModel;
 import org.smallbox.faraway.game.model.character.TimeTableModel;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
-import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.GDXDrawable;
 import org.smallbox.faraway.game.model.job.JobMove;
 import org.smallbox.faraway.game.model.job.JobUse;
 import org.smallbox.faraway.game.model.room.RoomModel;
-import org.smallbox.faraway.game.module.ModuleManager;
-import org.smallbox.faraway.game.module.character.JobModule;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.path.PathManager;
-import org.smallbox.faraway.game.module.world.RoomModule;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
@@ -99,13 +94,12 @@ public abstract class CharacterModel extends MovableModel {
     protected boolean					_isSelected;
     protected int 						_lag;
     protected double 					_old;
-    protected CharacterRelationModel    _relations;
     protected CharacterInfoModel        _info;
     protected RoomModel 				_quarter;
     protected boolean 					_needRefresh;
     protected ConsumableModel 			_inventory;
     protected OnMoveListener 			_moveListener;
-    protected List<ItemInfo> 			_equipments;
+//    protected List<ItemInfo> 			_equipments;
     protected CharacterStats            _stats;
     protected boolean 					_isFaint;
 
@@ -128,19 +122,18 @@ public abstract class CharacterModel extends MovableModel {
         _diseases = new ArrayList<>();
         _timeTable = new TimeTableModel(Game.getInstance().getPlanet().getInfo().dayDuration);
         _old = old;
-        _relations = new CharacterRelationModel();
         _lag = (int)(Math.random() * 10);
         _isSelected = false;
         _blocked = 0;
         _direction = Direction.NONE;
         _steps = 0;
         _info = new CharacterInfoModel(name, lastName);
-        parcel = Game.getWorldManager().getParcel(x, y);
+        parcel = ModuleHelper.getWorldModule().getParcel(x, y);
 
         _label = ViewFactory.getInstance().createTextView(_info.getFirstName().trim().length() * 6 + 1, 13);
         _label.setText(_info.getFirstName().trim());
         _label.setTextSize(10);
-        _label.setColor(Color.YELLOW);
+        _label.setTextColor(Color.YELLOW);
         _label.setBackgroundColor(Color.BLUE);
         _label.setTextAlign(View.Align.CENTER);
 
@@ -152,16 +145,15 @@ public abstract class CharacterModel extends MovableModel {
             talent.index = _talents.indexOf(talent);
         }
 
-        _equipments = new ArrayList<>();
-        _equipments.add(GameData.getData().getEquipment("base.equipments.regular_shirt"));
-        _equipments.add(GameData.getData().getEquipment("base.equipments.regular_pants"));
-        _equipments.add(GameData.getData().getEquipment("base.equipments.regular_shoes"));
-        _equipments.add(GameData.getData().getEquipment("base.equipments.oxygen_bottle"));
-        _equipments.add(GameData.getData().getEquipment("base.equipments.fremen_body"));
+//        _equipments = new ArrayList<>();
+//        _equipments.add(GameData.getData().getEquipment("base.equipments.regular_shirt"));
+//        _equipments.add(GameData.getData().getEquipment("base.equipments.regular_pants"));
+//        _equipments.add(GameData.getData().getEquipment("base.equipments.regular_shoes"));
+//        _equipments.add(GameData.getData().getEquipment("base.equipments.oxygen_bottle"));
+//        _equipments.add(GameData.getData().getEquipment("base.equipments.fremen_body"));
 
         _stats = new CharacterStats();
         _stats.speed = 1;
-        _stats.reset(this, _equipments);
 
         _needs = new CharacterNeeds(this, _stats);
 
@@ -179,7 +171,6 @@ public abstract class CharacterModel extends MovableModel {
     public TalentEntry              getTalent(TalentType type) { return _talentsMap.get(type); }
     public double                   getBodyHeat() { return _needs.heat; }
     public CharacterStats           getStats() { return _stats; }
-    public List<ItemInfo>     		getEquipments() { return _equipments; }
     public ParcelModel 				getParcel() { return parcel; }
     public ConsumableModel          getInventory() { return _inventory; }
     public abstract String[][]      getEquipmentViewIds();
@@ -208,7 +199,6 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public CharacterInfoModel       getInfo() { return _info; }
-    public CharacterRelationModel   getRelations() { return _relations; }
     public double                   getMoveStep() { return _moveStep; }
     public void                     setId(int id) { _id = id; }
     public void                     setOld(int old) { _old = old; }
@@ -222,14 +212,14 @@ public abstract class CharacterModel extends MovableModel {
     public boolean 			        needRefresh() { return _needRefresh; }
 
     public void moveTo(BaseJobModel job, int toX, int toY, OnMoveListener onMoveListener) {
-        moveTo(job, Game.getWorldManager().getParcel(toX, toY), onMoveListener);
+        moveTo(job, ModuleHelper.getWorldModule().getParcel(toX, toY), onMoveListener);
     }
 
     public void moveTo(BaseJobModel job, ParcelModel toParcel, OnMoveListener onMoveListener) {
         _toX = toParcel.x;
         _toY = toParcel.y;
 
-        _fromParcel = Game.getWorldManager().getParcel(_posX, _posY);
+        _fromParcel = ModuleHelper.getWorldModule().getParcel(_posX, _posY);
         _toParcel = toParcel;
 
         // Already on position
@@ -261,10 +251,8 @@ public abstract class CharacterModel extends MovableModel {
 
     public void update() {
         _needs.environment = parcel.getEnvironmentScore();
-        _needs.light = ((RoomModule) ModuleManager.getInstance().getModule(RoomModule.class)).getLight(_posX, _posY);
-
-        // Check room temperature
-        _stats.reset(this, _equipments);
+        //TODO
+//        _needs.light = ((RoomModule) ModuleManager.getInstance().getModule(RoomModule.class)).getLight(_posX, _posY);
 
         // TODO: create JobSleep class with auto-cancel capability
         // Cancel character sleeping
@@ -272,18 +260,9 @@ public abstract class CharacterModel extends MovableModel {
         if (timetable != 0 && timetable != 1 && _needs.isSleeping && _needs.energy > 75) {
             _needs.isSleeping = false;
             if (_job != null && _job instanceof JobUse && _job.getItem() != null && _job.getItem().isSleepingItem()) {
-                JobModule.getInstance().quitJob(_job);
+                ModuleHelper.getJobModule().quitJob(_job);
             }
         }
-    }
-
-    public ItemInfo getEquipment(String location) {
-        for (ItemInfo equipment: _equipments) {
-            if (equipment.equipment.location.equals(location)) {
-                return equipment;
-            }
-        }
-        return null;
     }
 
     public void	setJob(BaseJobModel job) {
@@ -304,7 +283,7 @@ public abstract class CharacterModel extends MovableModel {
     }
 
 //	public void	setProfession(ProfessionModel.Type professionId) {
-//		ProfessionModel[] professions = Game.getCharacterManager().getProfessions();
+//		ProfessionModel[] professions = Game.getCharacterModule().getProfessions();
 //
 //        for (ProfessionModel profession : professions) {
 //            if (profession.getElevation() == professionId) {
@@ -321,19 +300,10 @@ public abstract class CharacterModel extends MovableModel {
             _stats.isAlive = false;
         }
 
-        // Leave parent quarters
-        if (_old > Constant.CHARACTER_LEAVE_HOME_OLD && _quarter != null && (_quarter.getOwner() != this || _quarter.getOwner() != _relations.getMate())) {
-            _quarter.removeOccupant(this);
-            _quarter = null;
-        }
-
 //		// Find quarter
 //		if (_quarter == null) {
 //			Game.getRoomManager().take(this, Room.Type.QUARTER);
 //		}
-
-        // New child
-        _relations.longUpdate(this);
 
         // TODO
         // No energy + no job to sleepingItem -> sleep on the ground
@@ -433,12 +403,12 @@ public abstract class CharacterModel extends MovableModel {
         if ((_posX == _toX && _posY == _toY) || _job instanceof JobMove) {
             BaseJobModel.JobActionReturn ret = _job.action(this);
             if (ret == BaseJobModel.JobActionReturn.FINISH || ret == BaseJobModel.JobActionReturn.ABORT) {
-                JobModule.getInstance().closeJob(_job);
-                JobModule.getInstance().assign(this);
+                ModuleHelper.getJobModule().closeJob(_job);
+                ModuleHelper.getJobModule().assign(this);
             }
             if (ret == BaseJobModel.JobActionReturn.QUIT) {
-                JobModule.getInstance().quitJob(_job);
-                JobModule.getInstance().assign(this);
+                ModuleHelper.getJobModule().quitJob(_job);
+                ModuleHelper.getJobModule().assign(this);
             }
         }
     }
@@ -449,7 +419,7 @@ public abstract class CharacterModel extends MovableModel {
             Log.warning("Job failed (no path)");
 
             // Abort job
-            JobModule.getInstance().quitJob(job, BaseJobModel.JobAbortReason.BLOCKED);
+            ModuleHelper.getJobModule().quitJob(job, BaseJobModel.JobAbortReason.BLOCKED);
             _job = null;
 
             if (_onPathComplete != null) {

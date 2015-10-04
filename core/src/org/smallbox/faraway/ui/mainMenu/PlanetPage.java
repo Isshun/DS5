@@ -101,9 +101,9 @@ public class PlanetPage extends MainMenuPage {
             textView.setText(StringUtils.getDashedString(label, "yes (" + (value == 1 ? "few" : "many") + ")", 39));
         }
         switch (value) {
-            case 0: textView.setColor(COLOR_0); break;
-            case 1: textView.setColor(COLOR_S2); break;
-            case 2: textView.setColor(COLOR_S3); break;
+            case 0: textView.setTextColor(COLOR_0); break;
+            case 1: textView.setTextColor(COLOR_S2); break;
+            case 2: textView.setTextColor(COLOR_S3); break;
         }
     }
 
@@ -112,12 +112,12 @@ public class PlanetPage extends MainMenuPage {
                 label,
                 StringUtils.getPlanetStatsText(value) + " (" + StringUtils.getPlanetStatsSymbol(value) + ")", 39));
         switch (value) {
-            case -3: textView.setColor(COLOR_S3); break;
-            case -2: textView.setColor(COLOR_S2); break;
-            case -1: textView.setColor(COLOR_S1); break;
-            case 0: textView.setColor(COLOR_0); break;
-            case 1: textView.setColor(COLOR_1); break;
-            case 2: textView.setColor(COLOR_2); break;
+            case -3: textView.setTextColor(COLOR_S3); break;
+            case -2: textView.setTextColor(COLOR_S2); break;
+            case -1: textView.setTextColor(COLOR_S1); break;
+            case 0: textView.setTextColor(COLOR_0); break;
+            case 1: textView.setTextColor(COLOR_1); break;
+            case 2: textView.setTextColor(COLOR_2); break;
         }
     }
 }

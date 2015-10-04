@@ -2,13 +2,12 @@ package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.core.drawable.IconDrawable;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
-import org.smallbox.faraway.game.module.character.JobModule;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
@@ -97,12 +96,12 @@ public class JobGather extends BaseJobModel {
 		_resource.removeJob(null);
 
 		if (_resource.getInfo().plant.cutOnGathering) {
-			Game.getWorldManager().removeResource(_resource);
+			ModuleHelper.getWorldModule().removeResource(_resource);
 		}
 
 		if (_actionInfo.finalProducts != null) {
 			_actionInfo.finalProducts.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo ->
-					Game.getWorldManager().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity)));
+					ModuleHelper.getWorldModule().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity)));
 		}
 	}
 
@@ -111,13 +110,13 @@ public class JobGather extends BaseJobModel {
 		// Wrong call
 		if (_resource == null) {
 			Log.error("Character: actionGather on null job or null job's item");
-			JobModule.getInstance().quitJob(this, JobAbortReason.INVALID);
+			ModuleHelper.getJobModule().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 
 		if (_resource.getInfo().actions.get(0) == null) {
 			Log.error("Character: actionGather on non gatherable item");
-			JobModule.getInstance().quitJob(this, JobAbortReason.INVALID);
+			ModuleHelper.getJobModule().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 
@@ -136,7 +135,7 @@ public class JobGather extends BaseJobModel {
 		resource.addQuantity(-1);
 		if (_actionInfo.products != null) {
 			_actionInfo.products.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo ->
-					Game.getWorldManager().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity)));
+					ModuleHelper.getWorldModule().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity)));
 		}
 
 		// Check if resource is depleted

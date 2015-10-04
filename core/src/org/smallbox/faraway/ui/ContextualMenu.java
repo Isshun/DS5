@@ -85,7 +85,7 @@ public class ContextualMenu extends BasePanel {
 	
 	public void onDraw(GDXRenderer renderer, Viewport viewport) {
 		if (_subMenu != null) {
-			_subMenu.draw(renderer, null);
+			_subMenu.draw(renderer, 0, 0);
 		}
 		for (View entry: _entries) {
 			entry.resetPos();

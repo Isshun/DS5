@@ -1,38 +1,52 @@
 package org.smallbox.faraway.ui;
 
+import org.luaj.vm2.*;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.Application;
+import org.smallbox.faraway.LuaEventsModel;
 import org.smallbox.faraway.core.Viewport;
+import org.smallbox.faraway.core.ui.GDXFrameLayout;
+import org.smallbox.faraway.core.ui.GDXImageView;
+import org.smallbox.faraway.core.ui.GDXLabel;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.GameUIModule;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.ModuleManager;
-import org.smallbox.faraway.game.module.character.CharacterModule;
+import org.smallbox.faraway.game.module.base.CharacterModule;
+import org.smallbox.faraway.LuaGameModel;
 import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
-import org.smallbox.faraway.ui.engine.view.UILabel;
-import org.smallbox.faraway.ui.engine.view.View;
+import org.smallbox.faraway.ui.engine.view.*;
 import org.smallbox.faraway.ui.panel.*;
-import org.smallbox.faraway.ui.panel.debug.OxygenManagerPanel;
 import org.smallbox.faraway.ui.panel.debug.ParcelDebugPanel;
-import org.smallbox.faraway.ui.panel.right.*;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserInterface implements GameEventListener {
     private int _keyPressX;
     private int _keyPressY;
+    public List<View> _views = new ArrayList<>();
 
     public UserInteraction getInteraction() {
         return _interaction;
@@ -74,41 +88,41 @@ public class UserInterface implements GameEventListener {
     private int 						_update;
     private long                        _lastModified;
     private FrameLayout                 _context;
-
-    private	BasePanel[]					_panels = new BasePanel[] {
-            new PanelSystem(),
-            new PanelResources(),
-
-//            new PanelQuest(),
-//            new PanelCharacter(	    Mode.CHARACTER,         null),
-//            new PanelInfo(		    Mode.INFO, 		        null),
-//            new PanelInfoStructure(	Mode.INFO_STRUCTURE, 	null),
-//            new PanelInfoItem(	    Mode.INFO_ITEM, 	    null),
-//            new PanelInfoConsumable(Mode.INFO_CONSUMABLE,   null),
-//            new PanelInfoParcel(	Mode.INFO_PARCEL, 	    null),
-//            new PanelInfoArea(	    Mode.INFO_AREA, 	    null),
-//            new PanelInfoAnimal(	Mode.INFO_ANIMAL, 	    null),
-//            new PanelPlanModule(		    Mode.PLAN, 		        Key.P),
-//            new PanelRoom(		    Mode.ROOM, 		        Key.R),
-            new PanelTooltip(	    Mode.TOOLTIP, 	        Key.F1),
-            new PanelBuild(		    Mode.BUILD, 	        Key.B),
-            new PanelScience(	    Mode.SCIENCE, 	        null),
-//            new PanelCrew(		    Mode.CREW, 		        Key.C),
-//            new PanelJobs(		    Mode.JOBS, 		        Key.O),
-            new PanelArea(		    Mode.AREA, 		        Key.A),
-//			new PanelStats(		    Mode.STATS, 	        Key.S),
-            new PanelManager(	    Mode.MANAGER, 	        Key.M),
-//            new PanelShortcut(	    Mode.NONE, 		        null),
-            new PanelPlanet(),
-            new PanelTopInfo(),
-//            new PanelTopRight(),
-
-            // Debug
-//            new TemperatureManagerPanel(),
-            new OxygenManagerPanel(),
-            new JobDebugPanel(),
-            new ParcelDebugPanel(),
-    };
+//
+//    private	BasePanel[]					_panels = new BasePanel[] {
+//            new PanelSystem(),
+//            new PanelResources(),
+//
+////            new PanelQuest(),
+////            new PanelCharacter(	    Mode.CHARACTER,         null),
+////            new PanelInfo(		    Mode.INFO, 		        null),
+////            new PanelInfoStructure(	Mode.INFO_STRUCTURE, 	null),
+////            new PanelInfoItem(	    Mode.INFO_ITEM, 	    null),
+////            new PanelInfoConsumable(Mode.INFO_CONSUMABLE,   null),
+////            new PanelInfoParcel(	Mode.INFO_PARCEL, 	    null),
+////            new PanelInfoArea(	    Mode.INFO_AREA, 	    null),
+////            new PanelInfoAnimal(	Mode.INFO_ANIMAL, 	    null),
+////            new PanelPlanModule(		    Mode.PLAN, 		        Key.P),
+////            new PanelRoom(		    Mode.ROOM, 		        Key.R),
+//            new PanelTooltip(	    Mode.TOOLTIP, 	        Key.F1),
+////            new PanelBuild(		    Mode.BUILD, 	        Key.B),
+//            new PanelScience(	    Mode.SCIENCE, 	        null),
+////            new PanelCrew(		    Mode.CREW, 		        Key.C),
+////            new PanelJobs(		    Mode.JOBS, 		        Key.O),
+//            new PanelArea(		    Mode.AREA, 		        Key.A),
+////			new PanelStats(		    Mode.STATS, 	        Key.S),
+//            new PanelManager(	    Mode.MANAGER, 	        Key.M),
+////            new PanelShortcut(	    Mode.NONE, 		        null),
+//            new PanelPlanet(),
+////            new PanelTopInfo(),
+////            new PanelTopRight(),
+//
+//            // Debug
+////            new TemperatureManagerPanel(),
+////            new OxygenManagerPanel(),
+//            new JobDebugPanel(),
+//            new ParcelDebugPanel(),
+//    };
 
     public enum Mode {
         INFO,
@@ -143,22 +157,18 @@ public class UserInterface implements GameEventListener {
 
     public void reloadTemplates() {
         // Refresh UI if needed by GameData (strings)
-        if (GameData.getData().needUIRefresh) {
-            GameData.getData().needUIRefresh = false;
-            reload();
-        }
-
         // Refresh UI if needed by UI files
         long lastResModified = Utils.getLastUIModified();
-        if (lastResModified > _lastModified) {
+        if (GameData.getData().needUIRefresh || lastResModified > _lastModified) {
+            GameData.getData().needUIRefresh = false;
             _lastModified = lastResModified;
             reload();
         }
     }
 
-    public BasePanel[] getPanels() {
-        return _panels;
-    }
+//    public BasePanel[] getPanels() {
+//        return _panels;
+//    }
 
     @Override
     public void onKeyEvent(Action action, Key key, Modifier modifier) {
@@ -171,11 +181,11 @@ public class UserInterface implements GameEventListener {
 
     @Override
     public void onMouseEvent(Action action, MouseButton button, int x, int y, boolean rightPressed) {
-        for (BasePanel panel: _panels) {
-            if (panel.isVisible() && panel.onMouseEvent(action, button, x, y)) {
-                return;
-            }
-        }
+//        for (BasePanel panel: _panels) {
+//            if (panel.isVisible() && panel.onMouseEvent(action, button, x, y)) {
+//                return;
+//            }
+//        }
 
         for (GameModule module: ModuleManager.getInstance().getModules()) {
             if (module.isLoaded() && module.onMouseEvent(action, button, x, y)) {
@@ -247,25 +257,32 @@ public class UserInterface implements GameEventListener {
     }
 
     public void reload() {
-        for (BasePanel panel: _panels) {
-            panel.removeAllViews();
-            panel.init(_viewFactory, _factory, this, _interaction);
-            panel.refresh(0);
-        }
+//        for (BasePanel panel: _panels) {
+//            panel.removeAllViews();
+//            panel.init(_viewFactory, _factory, this, _interaction);
+//            panel.refresh(0);
+//        }
+        _views.clear();
+        UIEventManager.getInstance().clear();
+        Game.getInstance().notify(GameObserver::onReloadUI);
     }
 
-    public BasePanel getPanel(Class<? extends BasePanel> panelCls) {
-        for (BasePanel panel: _panels) {
-            if (panel.getClass() == panelCls) {
-                return panel;
-            }
-        }
-        return null;
-    }
+//    public BasePanel getPanel(Class<? extends BasePanel> panelCls) {
+//        for (BasePanel panel: _panels) {
+//            if (panel.getClass() == panelCls) {
+//                return panel;
+//            }
+//        }
+//        return null;
+//    }
 
     public void putDebug(ItemInfo itemInfo) {
         _interaction.set(UserInteraction.Action.PUT_ITEM_FREE, itemInfo);
         setCursor(new BuildCursor());
+    }
+
+    public void clearCursor() {
+        _cursor = null;
     }
 
     public void setCursor(UICursor cursor) {
@@ -275,16 +292,16 @@ public class UserInterface implements GameEventListener {
     public void onCreate(Game game) {
         _game = game;
         _viewport = game.getViewport();
-        _characters = Game.getCharacterManager();
+        _characters = ModuleHelper.getCharacterModule();
         _keyLeftPressed = false;
         _keyRightPressed = false;
 
-        for (BasePanel panel: _panels) {
-            panel.init(_viewFactory, _factory, this, _interaction);
-            _game.addObserver(panel);
-        }
+//        for (BasePanel panel: _panels) {
+//            panel.init(_viewFactory, _factory, this, _interaction);
+//            _game.addObserver(panel);
+//        }
 
-        setMode(Mode.NONE);
+//        setMode(Mode.NONE);
     }
 
     public void	onMouseMove(int x, int y, boolean rightPressed) {
@@ -313,13 +330,13 @@ public class UserInterface implements GameEventListener {
         if (UIEventManager.getInstance().has(x, y)) {
             return;
         }
-
-        for (BasePanel panel: _panels) {
-            if (panel.catchClick(x, y)) {
-                _keyLeftPressed = false;
-                return;
-            }
-        }
+//
+//        for (BasePanel panel: _panels) {
+//            if (panel.catchClick(x, y)) {
+//                _keyLeftPressed = false;
+//                return;
+//            }
+//        }
 
         _keyLeftPressed = true;
         _keyPressX = x;
@@ -344,34 +361,34 @@ public class UserInterface implements GameEventListener {
     public int				getMouseX() { return _keyMovePosX; }
     public int				getMouseY() { return _keyMovePosY; }
 
-    public void toggleMode(Mode mode) {
-        setMode(_mode != mode ? mode : Mode.NONE);
-    }
-
-    public void setMode(Mode mode) {
-        _interaction.clean();
-
-        _mode = mode;
-        _menu = null;
-
-        if (mode == Mode.NONE) {
-            _interaction.clean();
-            _selector.clean();
-        }
-
-        for (BasePanel panel: _panels) {
-            if (_mode.equals(panel.getMode())) {
-                _currentPanel = panel;
-                panel.setVisible(true);
-            } else if (!panel.isAlwaysVisible()) {
-                panel.setVisible(false);
-            }
-        }
-
-        if (_currentPanel != null) {
-            _currentPanel.setVisible(true);
-        }
-    }
+//    public void toggleMode(Mode mode) {
+//        setMode(_mode != mode ? mode : Mode.NONE);
+//    }
+//
+//    public void setMode(Mode mode) {
+//        _interaction.clean();
+//
+//        _mode = mode;
+//        _menu = null;
+//
+//        if (mode == Mode.NONE) {
+//            _interaction.clean();
+//            _selector.clean();
+//        }
+//
+//        for (BasePanel panel: _panels) {
+//            if (_mode.equals(panel.getMode())) {
+//                _currentPanel = panel;
+//                panel.setVisible(true);
+//            } else if (!panel.isAlwaysVisible()) {
+//                panel.setVisible(false);
+//            }
+//        }
+//
+//        if (_currentPanel != null) {
+//            _currentPanel.setVisible(true);
+//        }
+//    }
 
     public void	onMouseWheel(int delta, int x, int y) {
         _viewport.setScale(delta, x, y);
@@ -379,22 +396,24 @@ public class UserInterface implements GameEventListener {
 
     public void onRefresh(int update) {
         _update = update;
-        for (BasePanel panel: _panels) {
-            panel.refresh(update);
-        }
+//        for (BasePanel panel: _panels) {
+//            panel.refresh(update);
+//        }
         for (GameModule module: _game.getModules()) {
             if (module.isLoaded()) {
                 module.refresh(update);
             }
         }
         _panelConsole.refresh(update);
+
+        Game.getInstance().notify(GameObserver::onRefreshUI);
     }
 
     public void onDraw(GDXRenderer renderer, int update, long renderTime) {
 
-        for (BasePanel panel: _panels) {
-            panel.draw(renderer, null);
-        }
+//        for (BasePanel panel: _panels) {
+//            panel.draw(renderer, 0, 0);
+//        }
 
         for (GameModule module: ModuleManager.getInstance().getModules()) {
             if (module.isLoaded() && module instanceof GameUIModule) {
@@ -402,8 +421,10 @@ public class UserInterface implements GameEventListener {
             }
         }
 
+        _views.stream().filter(View::isVisible).forEach(view -> view.draw(renderer, 0, 0));
+
         if (_context.isVisible()) {
-            _context.draw(renderer, null);
+            _context.draw(renderer, 0, 0);
         }
 
         //_panelConsole.draw(renderer, null);
@@ -424,17 +445,17 @@ public class UserInterface implements GameEventListener {
         renderer.draw(_selection, 100, 100);
 
         if (_menu != null) {
-            _menu.draw(renderer, null);
+            _menu.draw(renderer, 0, 0);
         }
     }
 
     public boolean checkKeyboard(Key key, int lastInput) {
 
-        for (BasePanel panel: _panels) {
-            if (panel.isVisible() && panel.checkKey(key)) {
-                return true;
-            }
-        }
+//        for (BasePanel panel: _panels) {
+//            if (panel.isVisible() && panel.checkKey(key)) {
+//                return true;
+//            }
+//        }
 
         for (GameModule module: ModuleManager.getInstance().getModules()) {
             if (module.isLoaded() && module.onKey(key)) {
@@ -456,9 +477,9 @@ public class UserInterface implements GameEventListener {
                 Application.setUpdateInterval(Application.getUpdateInterval() + 40);
                 return true;
 
-            case ESCAPE:
-                setMode(Mode.NONE);
-                return true;
+//            case ESCAPE:
+//                setMode(Mode.NONE);
+//                return true;
 
             case BACKSPACE:
                 return true;
@@ -472,12 +493,12 @@ public class UserInterface implements GameEventListener {
             default: break;
         }
 
-        for (BasePanel panel: _panels) {
-            if (key.equals(panel.getShortcut())) {
-                toggleMode(panel.getMode());
-                return true;
-            }
-        }
+//        for (BasePanel panel: _panels) {
+//            if (key.equals(panel.getShortcut())) {
+//                toggleMode(panel.getMode());
+//                return true;
+//            }
+//        }
 
         return false;
     }
@@ -489,7 +510,7 @@ public class UserInterface implements GameEventListener {
     public void onDoubleClick(int x, int y) {
 //        _keyLeftPressed = false;
 //
-//        ParcelModel area = Game.getWorldManager().getParcel(getRelativePosX(x), getRelativePosY(y));
+//        ParcelModel area = ModuleHelper.getWorldModule().getParcel(getRelativePosX(x), getRelativePosY(y));
 //        if (area != null) {
 //            ItemModel item = area.getItem();
 //            StructureModel structure = area.getStructure();
@@ -554,14 +575,14 @@ public class UserInterface implements GameEventListener {
 
     public void onRightClick(int x, int y) {
         final CharacterModel character = _selector.getSelectedCharacter();
-        final ParcelModel parcel = Game.getWorldManager().getParcel(getRelativePosX(x), getRelativePosY(y));
+        final ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(getRelativePosX(x), getRelativePosY(y));
 
         if (character != null) {
             if (character.getParcel() == parcel) {
                 openContextMenu(new ContextEntry[] {
                         new ContextEntry("Wake up", view -> character.getNeeds().setSleeping(false)),
                 }, x, y);
-            } else if (parcel.getItem() != null || parcel.getConsumable() != null || parcel.getResource() != null || (parcel.getStructure() != null && !parcel.getStructure().isFloor())) {
+            } else if (parcel != null && (parcel.getItem() != null || parcel.getConsumable() != null || parcel.getResource() != null || (parcel.getStructure() != null && !parcel.getStructure().isFloor()))) {
                 openContextMenu(new ContextEntry[] {
                         new ContextEntry("Use", view -> character.getNeeds().setSleeping(false)),
                         new ContextEntry("Dump", view -> character.getNeeds().setSleeping(false)),
@@ -608,8 +629,43 @@ public class UserInterface implements GameEventListener {
         _panelConsole.addMessage(level, message);
     }
 
-    public void back() {
-        setMode(Mode.NONE);
+//    public void back() {
+//        setMode(Mode.NONE);
+//    }
+
+    public View findById(String id) {
+        int resId = id.hashCode();
+        for (View view: _views) {
+            View v = view.findById(resId);
+            if (v != null) {
+                return v;
+            }
+        }
+        return null;
+    }
+
+    public UILabel createLabel() {
+        return new GDXLabel();
+    }
+
+    public UIImage createImage() {
+        return new GDXImageView(-1, -1);
+    }
+
+    public View createView() {
+        return new GDXFrameLayout(-1, -1);
+    }
+
+    public UIGrid createGrid() {
+        return new UIGrid(-1, -1);
+    }
+
+    public UIList createList() {
+        return new UIList(-1, -1);
+    }
+
+    public UICursor createCursor(String resId) {
+        return GameData.getData().cursors.get(resId);
     }
 
 }

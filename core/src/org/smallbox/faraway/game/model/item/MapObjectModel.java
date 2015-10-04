@@ -85,7 +85,7 @@ public abstract class MapObjectModel {
     public void             setId(int id) { _id = id; }
     public void				setPosition(int x, int y) { _x = x; _y = y; }
     public void 			setMode(int mode) { _mode = mode; }
-    public void             setParcel(ParcelModel area) { _parcel = area; }
+    public void             setParcel(ParcelModel parcel) { _parcel = parcel; }
     public void 			setX(int x) { _x = x; }
     public void 			setY(int y) { _y = y; }
     public void             setSelected(boolean selected) { _selected = selected; }

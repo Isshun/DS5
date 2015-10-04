@@ -48,7 +48,7 @@
 //			_state = State.RAW;
 //			_currentCulture = culture;
 //			for (ParcelModel area: _parcels) {
-//				Game.getWorldManager().replaceItem(_currentCulture, area.getX(), area.getY(), 0);
+//				ModuleHelper.getWorldModule().replaceItem(_currentCulture, area.getX(), area.getY(), 0);
 //			}
 //		}
 //	}
@@ -59,7 +59,7 @@
 //	public void update() {
 //		for (ParcelModel area: _parcels) {
 //			if (area.getResource() == null) {
-//				Game.getWorldManager().putObject(_currentCulture, area.getX(), area.getY(), 0, 0);
+//				ModuleHelper.getWorldModule().putObject(_currentCulture, area.getX(), area.getY(), 0, 0);
 //			}
 //
 //			ResourceModel res = area.getResource();

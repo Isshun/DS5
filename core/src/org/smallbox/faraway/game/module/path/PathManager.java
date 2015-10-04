@@ -4,7 +4,6 @@ import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.area.AreaModel;
@@ -12,6 +11,7 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.OnMoveListener;
 
 import java.util.ArrayList;
@@ -53,20 +53,20 @@ public class PathManager extends GameModule {
 		if (width == 0 || height == 0) {
 			throw new RuntimeException("PathManager init with 0 width/height");
 		}
-        _finder = new IndexedAStarPathFinder<>(Game.getWorldManager());
+        _finder = new IndexedAStarPathFinder<>(ModuleHelper.getWorldModule());
         _heuristic = (node, endNode) -> 10 * (Math.abs(node.x - endNode.x) + Math.abs(node.y - endNode.y));
 
         // Create cache
         _cache = new HashMap<>();
-        for (ParcelModel parcel: Game.getWorldManager().getParcelList()) {
+        for (ParcelModel parcel: ModuleHelper.getWorldModule().getParcelList()) {
             _cache.put(parcel, new ParcelPathCache(parcel));
         }
     }
 
 	public void getPathAsync(final OnMoveListener listener, final MovableModel movable, final BaseJobModel job, final int x, final int y) {
 //		_threadPool.execute(() -> {
-            ParcelModel fromParcel = Game.getWorldManager().getParcel(movable.getX(), movable.getY());
-            ParcelModel toParcel = Game.getWorldManager().getParcel(x, y);
+            ParcelModel fromParcel = ModuleHelper.getWorldModule().getParcel(movable.getX(), movable.getY());
+            ParcelModel toParcel = ModuleHelper.getWorldModule().getParcel(x, y);
 
             if (WorldHelper.isBlocked(x + 1, y) &&
                     WorldHelper.isBlocked(x - 1, y) &&
@@ -149,7 +149,7 @@ public class PathManager extends GameModule {
 //
 //        // Find path
 ////        _threadPool.execute(() -> {
-//            if (Game.getWorldManager().isSurroundedByBlocked(toParcel.x, toParcel.y)) {
+//            if (ModuleHelper.getWorldModule().isSurroundedByBlocked(toParcel.x, toParcel.y)) {
 //                printInfo("characters: path fail (surrounded by solid parcel)");
 //                return null;
 //            }

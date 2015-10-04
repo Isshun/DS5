@@ -14,8 +14,7 @@ import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
 import org.smallbox.faraway.game.module.ModuleManager;
-import org.smallbox.faraway.game.module.dev.ModuleManagerModule;
-import org.smallbox.faraway.game.module.dev.RenderDebugModule;
+import org.smallbox.faraway.game.module.base.WorldModule;
 import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.MenuLoad;
@@ -117,26 +116,12 @@ public class Application implements GameEventListener {
 
 // Reload UI
             case F5:
-                _game.save(_game.getFileName());
+                UserInterface.getInstance().reload();
                 return;
 
 // Kill
             case F4:
                 _renderer.close();
-                return;
-
-// Open render manager
-            case F11:
-                if (Game.getInstance() != null) {
-                    ModuleManager.getInstance().toggleModule(RenderDebugModule.class);
-                }
-                return;
-
-// Open module manager
-            case F12:
-                if (Game.getInstance() != null) {
-                    ModuleManager.getInstance().toggleModule(ModuleManagerModule.class);
-                }
                 return;
 
 // Save
@@ -233,8 +218,13 @@ public class Application implements GameEventListener {
 
         WorldFactory factory = new WorldFactory();
 
-        _game = new Game(250, 250, _data, GameData.config, fileName, _particleRenderer, _lightRenderer, regionInfo);
+        _game = new Game(50, 50, _data, GameData.config, fileName, _particleRenderer, _lightRenderer, regionInfo);
         _game.init(factory);
+
+        WorldModule world = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
+        world.create();
+        factory.create(world, regionInfo);
+        _game.save(fileName);
 
         factory.createLandSite(_game);
 

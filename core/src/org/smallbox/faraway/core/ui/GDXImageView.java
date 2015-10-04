@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.ui;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.smallbox.faraway.core.GDXSpriteModel;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.engine.SpriteModel;
@@ -17,14 +18,14 @@ public class GDXImageView extends UIImage {
     private int     _finalX;
     private int     _finalY;
 
+    @Override
+    public void addView(View view) {
+
+    }
+
     public GDXImageView(int width, int height) {
         _width = width;
         _height = height;
-    }
-
-    @Override
-    public void draw(GDXRenderer renderer, Viewport viewport) {
-        draw(renderer, 0, 0);
     }
 
     @Override
@@ -48,12 +49,16 @@ public class GDXImageView extends UIImage {
         }
 
         if (_sprite == null && _path != null) {
-            Texture texture = new Texture(_path);
+            try {
+                Texture texture = new Texture(_path);
 
-            _sprite = new Sprite();
-            _sprite.setTexture(texture);
-            _sprite.setRegion(0, 0, _width, _height);
-            _sprite.flip(false, true);
+                _sprite = new Sprite();
+                _sprite.setTexture(texture);
+                _sprite.setRegion(0, 0, _width, _height);
+                _sprite.flip(false, true);
+            } catch (GdxRuntimeException e) {
+//                e.printStackTrace();
+            }
 
             _finalX = x;
             _finalY = y;

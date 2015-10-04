@@ -6,11 +6,11 @@ import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -98,7 +98,7 @@ public class WorldRenderer extends BaseRenderer {
             for (int y = toY - 1; y >= fromY; y--) {
 //                if (cacheOnScreen(x / CACHE_SIZE, y / CACHE_SIZE)) {
 //                }
-                ParcelModel parcel = Game.getWorldManager().getParcel(x, y);
+                ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
                 if (parcel != null) {
                     if (GameData.config.render.floor) {
                         refreshFloor(layer, parcel.getType(), x, y);
@@ -297,26 +297,34 @@ public class WorldRenderer extends BaseRenderer {
 
     @Override
     public void onAddStructure(StructureModel structure){
-        _layers[structure.getX() / CACHE_SIZE][structure.getY() / CACHE_SIZE].planRefresh();
-        _needRefresh = true;
+        if (_layers != null) {
+            _layers[structure.getX() / CACHE_SIZE][structure.getY() / CACHE_SIZE].planRefresh();
+            _needRefresh = true;
+        }
     }
 
     @Override
     public void onAddItem(ItemModel item){
-        _layers[item.getX() / CACHE_SIZE][item.getY() / CACHE_SIZE].planRefresh();
-        _needRefresh = true;
+        if (_layers != null) {
+            _layers[item.getX() / CACHE_SIZE][item.getY() / CACHE_SIZE].planRefresh();
+            _needRefresh = true;
+        }
     }
 
     @Override
     public void onAddConsumable(ConsumableModel consumable){
-        _layers[consumable.getX() / CACHE_SIZE][consumable.getY() / CACHE_SIZE].planRefresh();
-        _needRefresh = true;
+        if (_layers != null) {
+            _layers[consumable.getX() / CACHE_SIZE][consumable.getY() / CACHE_SIZE].planRefresh();
+            _needRefresh = true;
+        }
     }
 
     @Override
     public void onAddResource(ResourceModel resource) {
-        _layers[resource.getX() / CACHE_SIZE][resource.getY() / CACHE_SIZE].planRefresh();
-        _needRefresh = true;
+        if (_layers != null) {
+            _layers[resource.getX() / CACHE_SIZE][resource.getY() / CACHE_SIZE].planRefresh();
+            _needRefresh = true;
+        }
     }
 
     @Override

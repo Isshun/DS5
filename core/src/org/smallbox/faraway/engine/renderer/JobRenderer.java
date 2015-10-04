@@ -3,7 +3,7 @@ package org.smallbox.faraway.engine.renderer;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameConfig;
-import org.smallbox.faraway.game.module.character.JobModule;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.Constant;
 
 public class JobRenderer extends BaseRenderer {
@@ -16,7 +16,7 @@ public class JobRenderer extends BaseRenderer {
 
 		int offsetX = viewport.getPosX();
 		int offsetY = viewport.getPosY();
-        JobModule.getInstance().getJobs().stream().filter(job -> !job.isFinish()).forEach(job ->
+        ModuleHelper.getJobModule().getJobs().stream().filter(job -> !job.isFinish()).forEach(job ->
                 job.onDraw((x, y) -> renderer.draw(job.getIconDrawable(), offsetX + x * Constant.TILE_WIDTH, offsetY + y * Constant.TILE_HEIGHT)));
 	}
 

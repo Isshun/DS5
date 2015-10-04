@@ -4,13 +4,14 @@ import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.area.AreaType;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
-import org.smallbox.faraway.game.module.quest.QuestModel;
-import org.smallbox.faraway.game.module.quest.QuestModule;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 
 /**
  * Created by Alex on 06/06/2015.
  */
 public interface GameObserver {
+    default void onReloadUI(){}
+    default void onRefreshUI(){}
     default void onAddCharacter(CharacterModel character){}
     default void onAddStructure(StructureModel structure){}
     default void onAddItem(ItemModel item){}
@@ -25,8 +26,8 @@ public interface GameObserver {
     default void onHourChange(int hour){}
     default void onDayChange(int day) {}
     default void onYearChange(int year) {}
-    default void onOpenQuest(QuestModel quest) {}
-    default void onCloseQuest(QuestModel quest) {}
+//    default void onOpenQuest(QuestModel quest) {}
+//    default void onCloseQuest(QuestModel quest) {}
     default void onSelectArea(AreaModel area) {}
     default void onSelectCharacter(CharacterModel character) {}
     default void onSelectParcel(ParcelModel parcel) {}
@@ -39,4 +40,5 @@ public interface GameObserver {
     default void onLog(String tag, String message) {}
     default void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY) {}
     default void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY) {}
+    default void onJobCreate(BaseJobModel job) {}
 }

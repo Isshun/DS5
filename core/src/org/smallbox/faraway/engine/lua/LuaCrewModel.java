@@ -2,6 +2,8 @@ package org.smallbox.faraway.engine.lua;
 
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
+import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,17 +12,23 @@ import java.util.stream.Collectors;
  * Created by Alex on 19/06/2015.
  */
 public class LuaCrewModel {
+    public int count = 42;
+
     public LuaCharacterModel add() {
-        CharacterModel character = Game.getCharacterManager().addRandom(5, 5);
+        CharacterModel character = ModuleHelper.getCharacterModule().addRandom(5, 5);
         return new LuaCharacterModel(character);
     }
 
     public LuaCharacterModel add(LuaCharacterModel luaCharacter) {
-        Game.getCharacterManager().add(luaCharacter.character);
+        ModuleHelper.getCharacterModule().add(luaCharacter.character);
         return luaCharacter;
     }
 
     public List<LuaCharacterModel> list() {
-        return Game.getCharacterManager().getCharacters().stream().map(LuaCharacterModel::new).collect(Collectors.toList());
+        return ModuleHelper.getCharacterModule().getCharacters().stream().map(LuaCharacterModel::new).collect(Collectors.toList());
+    }
+
+    public CharacterModel getSelected() {
+        return UserInterface.getInstance().getSelector().getSelectedCharacter();
     }
 }

@@ -12,7 +12,6 @@ import org.smallbox.faraway.core.GDXInputProcessor;
 import org.smallbox.faraway.core.GDXViewFactory;
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.engine.renderer.GDXLightRenderer;
 import org.smallbox.faraway.engine.renderer.GDXParticleRenderer;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.Game;
@@ -120,16 +119,16 @@ public class GDXApplication extends ApplicationAdapter {
         _queue.add(new LoadRunnable("Init app", () -> {
             ViewFactory.setInstance(new GDXViewFactory());
 
-            GDXLightRenderer lightRenderer = null;
-            if (GameData.config.render.light) {
-                lightRenderer = new GDXLightRenderer();
-            }
+//            GDXLightRenderer lightRenderer = null;
+//            if (GameData.config.render.light) {
+//                lightRenderer = new GDXLightRenderer();
+//            }
 
             GDXParticleRenderer particleRenderer = null;
             if (GameData.config.render.particle) {
                 particleRenderer = new GDXParticleRenderer();
             }
-            _application.create(_renderer, lightRenderer, particleRenderer, GameData.getData(), GameData.config);
+            _application.create(_renderer, null, particleRenderer, GameData.getData(), GameData.config);
 
             GDXInputProcessor inputProcessor = new GDXInputProcessor(_application);
             Gdx.input.setInputProcessor(inputProcessor);
@@ -142,8 +141,8 @@ public class GDXApplication extends ApplicationAdapter {
 
         _queue.add(new LoadRunnable("Resume game", () -> {
             if (GameData.config.byPassMenu) {
-//                _application.newGame("11.sav", GameData.getData().getRegion("arrakis", "desert"));
-                _application.loadGame("11.sav");
+//                _application.newGame("12.sav", GameData.getData().getRegion("arrakis", "desert"));
+                _application.loadGame("12.sav");
 //                _application.whiteRoom();
             }
         }));

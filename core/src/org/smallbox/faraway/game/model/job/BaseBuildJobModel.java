@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.model.job;
 
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.ReceiptModel;
@@ -9,6 +8,7 @@ import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.OnMoveListener;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public abstract class BaseBuildJobModel extends BaseJobModel {
                 order.status = ReceiptModel.OrderModel.Status.CARRY;
                 character.addInventory(order.consumable, order.quantity);
                 if (order.consumable.getQuantity() == 0) {
-                    Game.getWorldManager().removeConsumable(order.consumable);
+                    ModuleHelper.getWorldModule().removeConsumable(order.consumable);
                 }
 
                 // Get next consumable (same ingredient)

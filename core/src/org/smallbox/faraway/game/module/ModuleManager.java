@@ -3,8 +3,6 @@ package org.smallbox.faraway.game.module;
 import org.reflections.Reflections;
 import org.smallbox.faraway.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.GameConfig;
-import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
@@ -13,7 +11,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 

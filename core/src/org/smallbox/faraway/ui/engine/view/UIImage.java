@@ -16,7 +16,7 @@ public abstract class UIImage extends View {
 	protected double 		_scaleY = 1;
 
 	public UIImage() {
-		super(0, 0);
+		super(-1, -1);
 	}
 	
 	public UIImage(SpriteModel icon) {
@@ -25,12 +25,12 @@ public abstract class UIImage extends View {
 		_image = icon;
 	}
 	
-	@Override
-	public void onDraw(GDXRenderer renderer, Viewport viewport) {
-		if (_image != null) {
-			renderer.draw(_image, _x + _paddingLeft, _y + _paddingTop);
-		}
-	}
+//	@Override
+//	public void onDraw(GDXRenderer renderer, Viewport viewport) {
+//		if (_image != null) {
+//			renderer.draw(_image, _x + _paddingLeft, _y + _paddingTop);
+//		}
+//	}
 
 	public void setImage(SpriteModel icon) {
 		if (icon != null) {

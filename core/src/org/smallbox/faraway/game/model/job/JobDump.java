@@ -2,11 +2,11 @@ package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.core.drawable.IconDrawable;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 
 public class JobDump extends BaseJobModel {
 	private MapObjectModel 	_dumpObject;
@@ -54,7 +54,7 @@ public class JobDump extends BaseJobModel {
 
 	@Override
 	protected void onFinish() {
-		Game.getWorldManager().remove(_dumpObject);
+		ModuleHelper.getWorldModule().remove(_dumpObject);
 	}
 
 	@Override

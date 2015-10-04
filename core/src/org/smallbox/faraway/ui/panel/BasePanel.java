@@ -187,7 +187,7 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
         return _isVisible;
     }
 
-    public void draw(GDXRenderer renderer, Viewport viewport) {
+    public void draw(GDXRenderer renderer, int x, int y) {
         if (_isVisible) {
 			long time = System.currentTimeMillis();
 
@@ -196,7 +196,7 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
             }
 
             for (View view : _views) {
-                view.draw(renderer, null);
+                view.draw(renderer, x, y);
             }
 
             onDraw(renderer, null);
@@ -206,9 +206,8 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 		}
     }
 
-    @Override
     protected void onDraw(GDXRenderer renderer, Viewport viewport) {
-    }
+	}
 
     @Override
     public void refresh() {

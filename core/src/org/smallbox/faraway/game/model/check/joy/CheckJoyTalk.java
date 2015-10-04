@@ -6,6 +6,7 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.path.PathManager;
 
 /**
@@ -25,7 +26,7 @@ public class CheckJoyTalk extends CharacterCheck {
     private CharacterModel getBestCharacter(CharacterModel character) {
         int bestDistance = Integer.MAX_VALUE;
         CharacterModel bestCharacter = null;
-        for (CharacterModel friend: Game.getCharacterManager().getCharacters()) {
+        for (CharacterModel friend: ModuleHelper.getCharacterModule().getCharacters()) {
             if (friend != character && friend.isAlive() && (friend.getJob() == null || friend.getJob().isJoy())) {
                 GraphPath<ParcelModel> path = PathManager.getInstance().getPath(character.getParcel(), friend.getParcel());
                 if (path != null && path.getCount() < bestDistance) {

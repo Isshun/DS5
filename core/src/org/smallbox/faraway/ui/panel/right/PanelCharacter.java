@@ -470,7 +470,7 @@
 //
 //    private void initCharacter() {
 //        _lbName.setText(_character.getInfo().getName().toUpperCase());
-//        _lbName.setColor(_character.getInfo().getColor());
+//        _lbName.setTextColor(_character.getInfo().getColor());
 //        _nbRelation = -1;
 //        createTalents();
 //        createTimeTable();
@@ -621,7 +621,7 @@
 //        if (_character != null) {
 //            FrameLayout frame = (FrameLayout)findById("frame_debug");
 //            frame.removeAllViews();
-//            addDebugView(frame, "Environment: " + Game.getWorldManager().getEnvironmentValue(_character.getX(), _character.getY(), GameData.config.environmentDistance));
+//            addDebugView(frame, "Environment: " + ModuleHelper.getWorldModule().getEnvironmentValue(_character.getX(), _character.getY(), GameData.config.environmentDistance));
 //            addDebugView(frame, "Mood change: " + _character.getNeeds().happinessChange);
 //            addDebugView(frame, "Heat: " + _character.getNeeds().heat);
 //            addDebugView(frame, "heat diff: " + (_character.getParcel().getTemperature() - (_character.getNeeds().heat - _character.getType().thermolysis)));
@@ -658,11 +658,11 @@
 //                int mood = buff.mood;
 //                _lbBuffs[line].setText(StringUtils.getDashedString(buff.message, (mood > 0 ? "+" : "") + mood, NB_COLUMNS));
 //                if (mood < -10) {
-//                    _lbBuffs[line].setColor(COLOR_2);
+//                    _lbBuffs[line].setTextColor(COLOR_2);
 //                } else if (mood < 0) {
-//                    _lbBuffs[line].setColor(COLOR_1);
+//                    _lbBuffs[line].setTextColor(COLOR_1);
 //                } else {
-//                    _lbBuffs[line].setColor(COLOR_0);
+//                    _lbBuffs[line].setTextColor(COLOR_0);
 //                }
 //                line++;
 //            }
@@ -856,7 +856,7 @@
 //        imgNeed.setTextureRect(0, (int) (level * 16), (int) (size * GameData.config.uiScale), (int) (12 * GameData.config.uiScale));
 //
 //        lbNeed.setText(StringUtils.getDashedString(label, String.valueOf((int) value), NB_COLUMNS_NEEDS));
-//        lbNeed.setColor(color);
+//        lbNeed.setTextColor(color);
 //    }
 //
 //    private void startAnim(UILabel text, String value) {

@@ -10,7 +10,7 @@ import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.job.BaseBuildJobModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobCraft;
-import org.smallbox.faraway.game.module.character.JobModule;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.ViewFactory;
@@ -183,7 +183,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
     private void addJobListEntry(BaseJobModel job, int index) {
         _viewFactory.load("data/ui/panels/info_item_craft_entry.yml", view -> {
             view.findById("bt_suspend");
-            view.findById("bt_cancel").setOnClickListener(v -> JobModule.getInstance().removeJob(job));
+            view.findById("bt_cancel").setOnClickListener(v -> ModuleHelper.getJobModule().removeJob(job));
 
             if (job.getProgressPercent() > 0) {
                 ((UILabel)view.findById("lb_label")).setText(job.getLabel() + " (" + job.getProgressPercent() + "%)");
@@ -248,7 +248,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
 
             // Click menu entry
             for (View view : _menuAddCraftEntries.getViews()) {
-                if (view.getRect().contains(x, y)) {
+                if (view.contains(x, y)) {
                     view.onClick();
                     return true;
                 }

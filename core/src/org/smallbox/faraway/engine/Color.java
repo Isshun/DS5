@@ -45,7 +45,7 @@ public class Color {
 
     public Color(long rgb) {
         _rgb = rgb;
-        this.a = rgb > 0xffffff ? (int) ((rgb >> 22) & 0xFF) : 255;
+        this.a = rgb > 0xffffff ? (int) ((rgb >> 24) & 0xFF) : 255;
         this.r = (int) ((rgb >> 16) & 0xFF);
         this.g = (int) ((rgb >> 8) & 0xFF);
         this.b = (int) (rgb & 0xFF);

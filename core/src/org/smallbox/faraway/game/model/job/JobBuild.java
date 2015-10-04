@@ -6,7 +6,7 @@ import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
-import org.smallbox.faraway.game.module.character.JobModule;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -104,14 +104,14 @@ public class JobBuild extends BaseBuildJobModel {
 		// Wrong call
 		if (_mainItem == null) {
 			Log.error("Character: actionBuild on null job or null job's item");
-			JobModule.getInstance().quitJob(this, JobAbortReason.INVALID);
+			ModuleHelper.getJobModule().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 
 		// Item is no longer exists
 		if (_mainItem != WorldHelper.getStructure(_posX, _posY) && _mainItem != WorldHelper.getItem(_posX, _posY)) {
             Log.warning("Character #" + character.getId() + ": actionBuild on invalid mapObject");
-			JobModule.getInstance().quitJob(this, JobAbortReason.INVALID);
+			ModuleHelper.getJobModule().quitJob(this, JobAbortReason.INVALID);
 			return JobActionReturn.ABORT;
 		}
 

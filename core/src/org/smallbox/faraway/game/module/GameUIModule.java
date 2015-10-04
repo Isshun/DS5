@@ -2,7 +2,6 @@ package org.smallbox.faraway.game.module;
 
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +17,14 @@ public abstract class GameUIModule extends GameModule {
     }
 
     protected void addWindow(UIWindow window) {
-        _windows.add(window);
-        window.create();
+//        _windows.add(window);
+//        window.create();
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        _windows.clear();
+//        _windows.clear();
     }
 
     @Override

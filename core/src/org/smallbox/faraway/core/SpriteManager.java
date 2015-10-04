@@ -175,7 +175,7 @@ public class SpriteManager {
             }
         }
 
-        if (item.textureRect == null) {
+        if (sprite != null && item.textureRect == null) {
             getTextureRect(item, sprite.getData());
         }
 

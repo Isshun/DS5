@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.module;
 
+import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.engine.view.FrameLayout;
 
 /**
@@ -13,6 +14,10 @@ public class WindowBuilder {
 
     public UITitleWindow build(WindowListener listener) {
         return new UITitleWindow() {
+            @Override
+            public void draw(GDXRenderer renderer, int x, int y) {
+            }
+
             @Override
             protected void onCreate(UIWindow window, FrameLayout content) {
                 listener.onCreate(window, content);

@@ -1,13 +1,12 @@
 package org.smallbox.faraway.game.helper;
 
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.MapObjectModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.job.*;
-import org.smallbox.faraway.game.module.character.JobModule;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -37,14 +36,14 @@ public class JobHelper {
     public static void addGatherJob(int x, int y, boolean removeOnComplete) {
         BaseJobModel job = createGatherJob(x, y);
         if (job != null) {
-            JobModule.getInstance().addJob(job);
+            ModuleHelper.getJobModule().addJob(job);
         }
     }
 
     public static void addMineJob(int x, int y) {
         BaseJobModel job = createMiningJob(x, y);
         if (job != null) {
-            JobModule.getInstance().addJob(job);
+            ModuleHelper.getJobModule().addJob(job);
         }
     }
 
@@ -60,7 +59,7 @@ public class JobHelper {
     public static void addUseJob(ItemModel item) {
         BaseJobModel job = JobUse.create(item);
         if (job != null) {
-            JobModule.getInstance().addJob(job);
+            ModuleHelper.getJobModule().addJob(job);
         }
     }
 
@@ -76,7 +75,7 @@ public class JobHelper {
         }
 
         BaseJobModel job = JobBuild.create(item);
-        JobModule.getInstance().addJob(job);
+        ModuleHelper.getJobModule().addJob(job);
 
         return job;
     }
@@ -88,14 +87,14 @@ public class JobHelper {
         }
 
         // return if job already exist for this item
-        for (BaseJobModel job: JobModule.getInstance().getJobs()) {
+        for (BaseJobModel job: ModuleHelper.getJobModule().getJobs()) {
             if (job.getItem() == resource) {
                 return null;
             }
         }
 
         BaseJobModel job = JobGather.create(resource);
-        JobModule.getInstance().addJob(job);
+        ModuleHelper.getJobModule().addJob(job);
 
         return job;
     }
@@ -103,17 +102,17 @@ public class JobHelper {
     public static void addDumpJob(MapObjectModel item) {
         BaseJobModel job = JobDump.create(item);
         if (job != null) {
-            JobModule.getInstance().addJob(job);
+            ModuleHelper.getJobModule().addJob(job);
         }
     }
 
     public static void addJob(ItemModel item, ItemInfo.ItemInfoAction action) {
         switch (action.type) {
             case "cook":
-                JobModule.getInstance().addJob(JobCook.create(action, item));
+                ModuleHelper.getJobModule().addJob(JobCook.create(action, item));
                 break;
             case "craft":
-                JobModule.getInstance().addJob(JobCraft.create(action, item));
+                ModuleHelper.getJobModule().addJob(JobCraft.create(action, item));
                 break;
         }
     }
@@ -121,14 +120,14 @@ public class JobHelper {
     public static void	removeJob(MapObjectModel item) {
         List<BaseJobModel> toRemove = new ArrayList<>();
 
-        for (BaseJobModel job: JobModule.getInstance().getJobs()) {
+        for (BaseJobModel job: ModuleHelper.getJobModule().getJobs()) {
             if (job.getItem() == item) {
                 toRemove.add(job);
             }
         }
 
         for (BaseJobModel job: toRemove) {
-            JobModule.getInstance().removeJob(job);
+            ModuleHelper.getJobModule().removeJob(job);
         }
     }
 
@@ -142,7 +141,7 @@ public class JobHelper {
                 Log.error("Build structure: already exist on this area");
                 return null;
             }
-            item = Game.getWorldManager().putObject(info, x, y, 0, 0);
+            item = ModuleHelper.getWorldModule().putObject(info, x, y, 0, 0);
         }
 
         // Item
@@ -155,22 +154,22 @@ public class JobHelper {
                 Log.error("JobModule: add build on non null item");
                 return null;
             } else {
-                item = Game.getWorldManager().putObject(info, x, y, 0, 0);
+                item = ModuleHelper.getWorldModule().putObject(info, x, y, 0, 0);
             }
         }
 
         // Resource
         else if (info.isResource) {
             MapObjectModel currentItem = WorldHelper.getItem(x, y);
-            MapObjectModel currentRessource = WorldHelper.getResource(x, y);
-            if (currentRessource != null && currentRessource.getInfo().equals(info)) {
+            MapObjectModel currentResource = WorldHelper.getResource(x, y);
+            if (currentResource != null && currentResource.getInfo().equals(info)) {
                 Log.error("Build item: already exist on this area");
                 return null;
             } else if (currentItem != null) {
                 Log.error("JobModule: add build on non null item");
                 return null;
             } else {
-                item = Game.getWorldManager().putObject(info, x, y, 0, 0);
+                item = ModuleHelper.getWorldModule().putObject(info, x, y, 0, 0);
             }
         }
 

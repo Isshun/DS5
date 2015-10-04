@@ -6,7 +6,8 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
-import org.smallbox.faraway.game.module.world.WorldModule;
+import org.smallbox.faraway.game.module.ModuleHelper;
+import org.smallbox.faraway.game.module.base.WorldModule;
 import org.smallbox.faraway.util.Log;
 
 import java.util.*;
@@ -72,11 +73,11 @@ public class WorldFactory {
     }
 
     private void cleanMap(WorldModule worldModule) {
-        Game.getWorldManager().getParcelList().forEach(parcel -> {
-            ParcelModel r = Game.getWorldManager().getParcel(parcel.x + 1, parcel.y);
-            ParcelModel l = Game.getWorldManager().getParcel(parcel.x - 1, parcel.y);
-            ParcelModel t = Game.getWorldManager().getParcel(parcel.x, parcel.y + 1);
-            ParcelModel b = Game.getWorldManager().getParcel(parcel.x, parcel.y - 1);
+        ModuleHelper.getWorldModule().getParcelList().forEach(parcel -> {
+            ParcelModel r = ModuleHelper.getWorldModule().getParcel(parcel.x + 1, parcel.y);
+            ParcelModel l = ModuleHelper.getWorldModule().getParcel(parcel.x - 1, parcel.y);
+            ParcelModel t = ModuleHelper.getWorldModule().getParcel(parcel.x, parcel.y + 1);
+            ParcelModel b = ModuleHelper.getWorldModule().getParcel(parcel.x, parcel.y - 1);
 
             // Add resource on empty parcel surrounded by resources
             if (parcel.getResource() == null) {
@@ -145,7 +146,8 @@ public class WorldFactory {
                 } else {
                     resource.setValue(10);
                 }
-                worldModule.getParcelContent(parcel).resource = resource;
+                parcel.setResource(resource);
+                resource.setParcel(parcel);
             }
         }
     }
@@ -176,21 +178,21 @@ public class WorldFactory {
         } while (freeParcels.size() < 15);
 
         // Put characters
-        Game.getCharacterManager().addRandom(freeParcels.poll());
-        Game.getCharacterManager().addRandom(freeParcels.poll());
-        Game.getCharacterManager().addRandom(freeParcels.poll());
+        ModuleHelper.getCharacterModule().addRandom(freeParcels.poll());
+        ModuleHelper.getCharacterModule().addRandom(freeParcels.poll());
+        ModuleHelper.getCharacterModule().addRandom(freeParcels.poll());
 
         // Put resources
-        Game.getWorldManager().putObject("base.wood", freeParcels.poll(), 50);
-        Game.getWorldManager().putObject("base.wood", freeParcels.poll(), 50);
-        Game.getWorldManager().putObject("base.wood", freeParcels.poll(), 50);
+        ModuleHelper.getWorldModule().putObject("base.wood", freeParcels.poll(), 50);
+        ModuleHelper.getWorldModule().putObject("base.wood", freeParcels.poll(), 50);
+        ModuleHelper.getWorldModule().putObject("base.wood", freeParcels.poll(), 50);
 
-        Game.getWorldManager().putObject("base.military_meal", freeParcels.poll(), 25);
-        Game.getWorldManager().putObject("base.military_meal", freeParcels.poll(), 25);
-        Game.getWorldManager().putObject("base.military_meal", freeParcels.poll(), 25);
+        ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);
+        ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);
+        ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);
 
-        Game.getWorldManager().putObject("base.iron", freeParcels.poll(), 25);
-        Game.getWorldManager().putObject("base.iron", freeParcels.poll(), 25);
+        ModuleHelper.getWorldModule().putObject("base.iron", freeParcels.poll(), 25);
+        ModuleHelper.getWorldModule().putObject("base.iron", freeParcels.poll(), 25);
 
         game.getViewport().moveTo(startParcel.x, startParcel.y);
     }

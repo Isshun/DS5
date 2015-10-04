@@ -3,6 +3,7 @@ package org.smallbox.faraway.game.helper;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
+import org.smallbox.faraway.game.module.ModuleHelper;
 
 /**
  * Created by Alex on 09/07/2015.
@@ -249,7 +250,7 @@ public class WorldHelper {
         if (!allowConsumable && _parcels[x][y][0].getConsumable() != null) {
             return false;
         }
-        if (!allowCharacter && Game.getCharacterManager().countCharacterAtPos(x, y) > 0) {
+        if (!allowCharacter && ModuleHelper.getCharacterModule().countCharacterAtPos(x, y) > 0) {
             return false;
         }
         return true;

@@ -34,7 +34,7 @@ public class MenuLoad extends MenuBase {
 			UILabel lbFile = ViewFactory.getInstance().createTextView(200, 32);
 			lbFile.setTextSize(16);
 			lbFile.setText(file.getName());
-			lbFile.setColor(Color.WHITE);
+			lbFile.setTextColor(Color.WHITE);
 			lbFile.setPosition(200, 32 * _nbFiles);
 			lbFile.setOnClickListener(view -> {
                 onLoadListener.onLoad(file.getAbsolutePath());
@@ -52,7 +52,7 @@ public class MenuLoad extends MenuBase {
 	public void onDraw(GDXRenderer renderer, Viewport viewport) {
 		int i = 0;
 		for (UILabel lbFile: _lbFiles) {
-			lbFile.setColor(i++ == _index ? Color.YELLOW : Color.WHITE);
+			lbFile.setTextColor(i++ == _index ? Color.YELLOW : Color.WHITE);
 		}
 	}
 	

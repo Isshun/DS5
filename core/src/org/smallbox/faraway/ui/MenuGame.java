@@ -54,8 +54,8 @@
 //		UILabel text = ViewFactory.getInstance().createTextView();
 //		text.setText(str);
 //		text.setTextSize(42);
-//		text.setColor(Color.CYAN);
-//		//text.setColor(_selected == pos ? new Color(200, 50, 140, 150) : new Color(50, 140, 200, 150));
+//		text.setTextColor(Color.CYAN);
+//		//text.setTextColor(_selected == pos ? new Color(200, 50, 140, 150) : new Color(50, 140, 200, 150));
 //
 //		for (int i = -2; i <= 2; i++) {
 //			for (int j = -2; j <= 2; j++) {
@@ -64,7 +64,7 @@
 //			}
 //		}
 //
-//		text.setColor(Color.WHITE);
+//		text.setTextColor(Color.WHITE);
 //		text.setPosition(_menu.getPosX() + 200, _menu.getPosY() + 52 * pos);
 //		text.draw(renderer, null);
 //	}
@@ -74,7 +74,7 @@
 //			UILabel text = ViewFactory.getInstance().createTextView(300, 52);
 //			text.setText(str);
 //			text.setTextSize(42);
-//			text.setColor(Color.WHITE);
+//			text.setTextColor(Color.WHITE);
 //			text.setPosition(200, 52 * pos);
 //			text.setOnClickListener(listener);
 //			text.setOnFocusListener(new OnFocusListener() {

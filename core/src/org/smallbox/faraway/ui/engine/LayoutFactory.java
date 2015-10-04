@@ -96,7 +96,7 @@ public class LayoutFactory {
         }
 
         if (entry.textcolor != 0) {
-            lbText.setColor(new Color(entry.textcolor));
+            lbText.setTextColor(new Color(entry.textcolor));
         }
 
         if (entry.text != null) {
