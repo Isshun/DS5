@@ -7,10 +7,8 @@ import org.smallbox.faraway.game.module.UIWindow;
 import org.smallbox.faraway.modules.world.PowerModule;
 import org.smallbox.faraway.modules.world.TemperatureModule;
 import org.smallbox.faraway.modules.world.WeatherModule;
-import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
-import org.smallbox.faraway.ui.panel.PanelPlanet;
 import org.smallbox.faraway.util.Constant;
 
 /**
@@ -20,7 +18,7 @@ public class PanelTopInfoModule extends GameUIModule {
 
     private class PanelTopInfoModuleWindow extends UIWindow {
         @Override
-        protected void onCreate(UIWindow window, FrameLayout content) {
+        protected void onCreate(UIWindow window, UIFrame content) {
         }
 
         @Override

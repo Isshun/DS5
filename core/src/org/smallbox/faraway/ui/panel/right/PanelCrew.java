@@ -11,7 +11,7 @@
 //import org.smallbox.faraway.ui.engine.Colors;
 //import org.smallbox.faraway.ui.engine.OnFocusListener;
 //import org.smallbox.faraway.ui.engine.ViewFactory;
-//import org.smallbox.faraway.ui.engine.view.FrameLayout;
+//import org.smallbox.faraway.ui.engine.view.UIFrame;
 //import org.smallbox.faraway.ui.engine.view.UIImage;
 //import org.smallbox.faraway.ui.engine.view.UILabel;
 //import org.smallbox.faraway.ui.engine.view.View;
@@ -27,7 +27,7 @@
 //		public UILabel lbName;
 //		public UILabel lbProfession;
 //		public UIImage thumb;
-//		public FrameLayout frame;
+//		public UIFrame frame;
 //		public UILabel lbStatus;
 //		public UILabel lbJob;
 //		public UILabel lbStatusShort;

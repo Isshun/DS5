@@ -6,7 +6,7 @@ import org.smallbox.faraway.game.model.ToolTips.ToolTip;
 import org.smallbox.faraway.game.model.ToolTips.ToolTipCategory;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 public class PanelTooltip extends BasePanel {
@@ -38,7 +38,7 @@ public class PanelTooltip extends BasePanel {
 		_lbContent.setPosition(20, 52);
 		addView(_lbContent);
 		
-		FrameLayout layoutCategory = viewFactory.createFrameLayout(0, 0);
+		UIFrame layoutCategory = viewFactory.createFrameLayout(0, 0);
 		layoutCategory.setPosition(20, FRAME_HEIGHT - 66);
 		addView(layoutCategory);
 		

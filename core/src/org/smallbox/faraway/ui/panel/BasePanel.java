@@ -11,7 +11,7 @@ import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
 import org.smallbox.faraway.util.Constant;
@@ -19,7 +19,7 @@ import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 
-public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnLayoutLoaded, GameObserver {
+public abstract class BasePanel extends UIFrame implements LayoutFactory.OnLayoutLoaded, GameObserver {
     protected static final int 	LINE_HEIGHT = 20;
 	protected static final int 	FONT_SIZE_TITLE = 22;
 	protected static final int 	FONT_SIZE = 14;
@@ -132,11 +132,11 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
 		}
 	}
 
-	protected void addDebugView(FrameLayout frame, String text) {
+	protected void addDebugView(UIFrame frame, String text) {
 		addDebugView(frame, text, null);
 	}
 
-	protected void addDebugView(FrameLayout frame, String text, OnClickListener clickListener) {
+	protected void addDebugView(UIFrame frame, String text, OnClickListener clickListener) {
 		UILabel lbCommand = ViewFactory.getInstance().createTextView();
 		lbCommand.setText(text);
 		lbCommand.setTextSize(14);
@@ -238,7 +238,7 @@ public abstract class BasePanel extends FrameLayout implements LayoutFactory.OnL
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
+    public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
     }
 
 	public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {

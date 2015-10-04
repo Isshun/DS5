@@ -4,7 +4,7 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
@@ -37,13 +37,13 @@ public class PanelConsole extends BasePanel {
 	}
 
 	@Override
-	public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
+	public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
 		findById("bt_debug").setOnClickListener(view -> select("frame_debug", Log.LEVEL_DEBUG));
 		findById("bt_info").setOnClickListener(view -> select("frame_info", Log.LEVEL_INFO));
 		findById("bt_warning").setOnClickListener(view -> select("frame_warning", Log.LEVEL_WARNING));
 		findById("bt_error").setOnClickListener(view -> select("frame_error", Log.LEVEL_ERROR));
 
-		FrameLayout frameEntries = (FrameLayout) findById("frame_entries");
+		UIFrame frameEntries = (UIFrame) findById("frame_entries");
 		_texts = new UILabel[NB_LINES];
 		for (int i = 0; i < NB_LINES; i++) {
 			_texts[i] = ViewFactory.getInstance().createTextView();

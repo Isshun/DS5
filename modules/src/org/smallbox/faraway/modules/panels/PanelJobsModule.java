@@ -3,10 +3,9 @@ package org.smallbox.faraway.modules.panels;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.module.GameUIModule;
 import org.smallbox.faraway.game.module.ModuleHelper;
-import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.UIWindow;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
 
@@ -22,8 +21,8 @@ public class PanelJobsModule extends GameUIModule {
 		private JobEntry[] 			_entries;
 
 		@Override
-		protected void onCreate(UIWindow window, FrameLayout content) {
-			FrameLayout frameEntries = (FrameLayout)findById("frame_jobs");
+		protected void onCreate(UIWindow window, UIFrame content) {
+			UIFrame frameEntries = (UIFrame)findById("frame_jobs");
 			_entries = new JobEntry[75];
 			for (int i = 0; i < _entries.length; i++) {
 				final int index = i;

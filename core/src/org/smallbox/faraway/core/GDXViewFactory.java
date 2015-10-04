@@ -1,12 +1,10 @@
 package org.smallbox.faraway.core;
 
 import org.smallbox.faraway.core.ui.GDXColorView;
-import org.smallbox.faraway.core.ui.GDXFrameLayout;
 import org.smallbox.faraway.core.ui.GDXImageView;
-import org.smallbox.faraway.core.ui.GDXLabel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.engine.view.ColorView;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UIImage;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
@@ -15,25 +13,25 @@ import org.smallbox.faraway.ui.engine.view.UILabel;
  */
 public class GDXViewFactory extends ViewFactory {
     @Override
-    public FrameLayout createFrameLayout(int width, int height) {
-        GDXFrameLayout layout = new GDXFrameLayout(width, height);
+    public UIFrame createFrameLayout(int width, int height) {
+        UIFrame layout = new UIFrame(width, height);
         layout.setSize(width, height);
         return layout;
     }
 
     @Override
-    public FrameLayout createFrameLayout() {
-        return new GDXFrameLayout(0, 0);
+    public UIFrame createFrameLayout() {
+        return new UIFrame(0, 0);
     }
 
     @Override
     public UILabel createTextView() {
-        return new GDXLabel();
+        return new UILabel();
     }
 
     @Override
     public UILabel createTextView(int width, int height) {
-        GDXLabel label = new GDXLabel();
+        UILabel label = new UILabel();
         label.setSize(width, height);
         return label;
     }

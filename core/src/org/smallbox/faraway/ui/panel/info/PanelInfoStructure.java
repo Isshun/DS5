@@ -6,7 +6,7 @@
 //import org.smallbox.faraway.game.model.item.StructureModel;
 //import org.smallbox.faraway.ui.LayoutModel;
 //import org.smallbox.faraway.ui.UserInterface;
-//import org.smallbox.faraway.ui.engine.view.FrameLayout;
+//import org.smallbox.faraway.ui.engine.view.UIFrame;
 //import org.smallbox.faraway.ui.engine.view.UILabel;
 //
 ///**
@@ -20,7 +20,7 @@
 //    }
 //
 //    @Override
-//    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
+//    public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
 //        super.onLayoutLoaded(layout, panel);
 //
 //        if (_structure != null) {
@@ -58,10 +58,10 @@
 //            }
 //
 //            if (structure.getJobBuild() != null && structure.getJobBuild().getReceipt() != null) {
-//                ((FrameLayout)findById("frame_components_entries")).removeAllViews();
+//                ((UIFrame)findById("frame_components_entries")).removeAllViews();
 //                int orderIndex = 0;
 //                for (ReceiptModel.OrderModel order : structure.getJobBuild().getReceipt().getOrders()) {
-//                    addJobOrder((FrameLayout)findById("frame_components_entries"), order, orderIndex++);
+//                    addJobOrder((UIFrame)findById("frame_components_entries"), order, orderIndex++);
 //                }
 //                findById("frame_components_entries").setVisible(true);
 //            } else {

@@ -3,7 +3,7 @@ package org.smallbox.faraway.modules.panels.info;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.module.GameUIModule;
 import org.smallbox.faraway.game.module.UIWindow;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 /**
@@ -20,7 +20,7 @@ public class PanelInfoResourceModule extends GameUIModule {
         private UILabel         _lbPos;
 
         @Override
-        protected void onCreate(UIWindow window, FrameLayout content) {
+        protected void onCreate(UIWindow window, UIFrame content) {
             _lbLabel = (UILabel) content.findById("lb_label");
             _lbName = (UILabel) content.findById("lb_name");
             _lbQuantity = (UILabel) content.findById("lb_quantity");

@@ -3,18 +3,18 @@ package org.smallbox.faraway.modules.quest;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 /**
  * Created by Alex on 30/08/2015.
  */
 public class QuestModuleUI {
-    private final FrameLayout   _panel;
+    private final UIFrame _panel;
     private int                 _nbOptions;
     private QuestModel          _quest;
 
-    public QuestModuleUI(FrameLayout panel) {
+    public QuestModuleUI(UIFrame panel) {
         _panel = panel;
 
         _panel.findById("frame_message").setVisible(false);
@@ -22,7 +22,7 @@ public class QuestModuleUI {
         UILabel lbQuest = ViewFactory.getInstance().createTextView();
         lbQuest.setText("quest");
         lbQuest.setTextSize(14);
-        ((FrameLayout)_panel.findById("frame_list")).addView(lbQuest);
+        ((UIFrame)_panel.findById("frame_list")).addView(lbQuest);
     }
 
     public void onOpenQuest(QuestModel quest) {

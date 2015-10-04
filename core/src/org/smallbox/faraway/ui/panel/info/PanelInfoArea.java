@@ -16,7 +16,7 @@ import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class PanelInfoArea extends BaseInfoRightPanel {
     protected void onRefresh(int update) {
     }
 
-    private void addTitle(FrameLayout frameEntries, String title, int posY) {
+    private void addTitle(UIFrame frameEntries, String title, int posY) {
         UILabel lbTitle = ViewFactory.getInstance().createTextView(180, 20);
         lbTitle.setText(title);
         lbTitle.setTextSize(18);
@@ -48,7 +48,7 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         frameEntries.addView(lbTitle);
     }
 
-    private void addToggle(FrameLayout frameEntries, int posY, StorageAreaModel storage, Predicate<ItemInfo> predicate) {
+    private void addToggle(UIFrame frameEntries, int posY, StorageAreaModel storage, Predicate<ItemInfo> predicate) {
         UILabel lbToggle = ViewFactory.getInstance().createTextView(180, 20);
         lbToggle.setText("select all");
         lbToggle.setData(true);
@@ -65,7 +65,7 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         frameEntries.addView(lbToggle);
     }
 
-    private void addItemEntry(FrameLayout frameEntries, ItemInfo info, int posX, int posY, String label, OnClickListener clickListener) {
+    private void addItemEntry(UIFrame frameEntries, ItemInfo info, int posX, int posY, String label, OnClickListener clickListener) {
         UILabel lbEntry = ViewFactory.getInstance().createTextView(180, 20);
         lbEntry.setText(label);
         lbEntry.setData(info);
@@ -105,7 +105,7 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         int posX = 0;
         int posY = 0;
         int index = 0;
-        FrameLayout frameEntries = (FrameLayout)findById("frame_entries");
+        UIFrame frameEntries = (UIFrame)findById("frame_entries");
         frameEntries.removeAllViews();
         frameEntries.setVisible(true);
 
@@ -142,7 +142,7 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         int posX = 0;
         int posY = 0;
         int index = 0;
-        FrameLayout frameEntries = (FrameLayout)findById("frame_entries");
+        UIFrame frameEntries = (UIFrame)findById("frame_entries");
         frameEntries.removeAllViews();
         frameEntries.setVisible(true);
 
@@ -189,7 +189,7 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         }
     }
 
-    private void refreshItem(FrameLayout frameEntries, StorageAreaModel storage) {
+    private void refreshItem(UIFrame frameEntries, StorageAreaModel storage) {
         frameEntries.getViews().stream().filter(view -> view.getData() instanceof ItemInfo).forEach(view -> {
             ItemInfo itemInfo = (ItemInfo) view.getData();
             ((UILabel)view).setText((storage.accept(itemInfo) ? "[x] " : "[ ] ") + itemInfo.label);

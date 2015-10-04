@@ -6,7 +6,7 @@ import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.module.GameUIModule;
 import org.smallbox.faraway.game.module.UIWindow;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 /**
@@ -17,7 +17,7 @@ public class PanelInfoStructureModule extends GameUIModule {
         private StructureModel _structure;
 
         @Override
-        protected void onCreate(UIWindow window, FrameLayout content) {
+        protected void onCreate(UIWindow window, UIFrame content) {
             if (_structure != null) {
                 select(_structure);
             }
@@ -56,10 +56,10 @@ public class PanelInfoStructureModule extends GameUIModule {
                 }
 
                 if (structure.getJobBuild() != null && structure.getJobBuild().getReceipt() != null) {
-                    ((FrameLayout)findById("frame_components_entries")).removeAllViews();
+                    ((UIFrame)findById("frame_components_entries")).removeAllViews();
                     int orderIndex = 0;
                     for (ReceiptModel.OrderModel order : structure.getJobBuild().getReceipt().getOrders()) {
-                        addJobOrder((FrameLayout)findById("frame_components_entries"), order, orderIndex++);
+                        addJobOrder((UIFrame)findById("frame_components_entries"), order, orderIndex++);
                     }
                     findById("frame_components_entries").setVisible(true);
                 } else {
@@ -69,7 +69,7 @@ public class PanelInfoStructureModule extends GameUIModule {
             }
         }
 
-        protected void addJobOrder(FrameLayout frame, ReceiptModel.OrderModel order, int index) {
+        protected void addJobOrder(UIFrame frame, ReceiptModel.OrderModel order, int index) {
             UILabel lbOrder = ViewFactory.getInstance().createTextView();
             lbOrder.setTextSize(14);
             lbOrder.setPosition(0, index * 20);

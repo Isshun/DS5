@@ -4,7 +4,7 @@ import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.module.GameUIModule;
 import org.smallbox.faraway.game.module.UIWindow;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UIImage;
 
 /**
@@ -17,7 +17,7 @@ public class SpeedModule extends GameUIModule {
 
     private class SpeedModuleWindow extends UIWindow {
         @Override
-        protected void onCreate(UIWindow window, FrameLayout content) {
+        protected void onCreate(UIWindow window, UIFrame content) {
             ((UIImage) findById("img_speed")).setImagePath("data/res/ic_speed_1.png");
         }
 

@@ -7,7 +7,7 @@
 //import org.smallbox.faraway.ui.engine.OnClickListener;
 //import org.smallbox.faraway.ui.engine.OnFocusListener;
 //import org.smallbox.faraway.ui.engine.ViewFactory;
-//import org.smallbox.faraway.ui.engine.view.FrameLayout;
+//import org.smallbox.faraway.ui.engine.view.UIFrame;
 //import org.smallbox.faraway.ui.engine.view.UILabel;
 //import org.smallbox.faraway.ui.engine.view.View;
 //import org.smallbox.faraway.util.Constant;
@@ -21,7 +21,7 @@
 //	private int 				_index;
 //	private List<UILabel>		_lbFiles;
 //	private int 				_nbFiles;
-//	private FrameLayout _menu;
+//	private UIFrame _menu;
 //	protected int 				_selected = -1;
 //
 //	public MenuGame(final LoadListener onLoadListener) throws IOException {

@@ -1,9 +1,8 @@
 package org.smallbox.faraway.ui.engine;
 
-import org.smallbox.faraway.core.ui.GDXFrameLayout;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.ui.LayoutModel;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UIImage;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
@@ -21,15 +20,15 @@ import java.io.InputStream;
  */
 public class LayoutFactory {
     public interface OnLayoutLoaded {
-        void onLayoutLoaded(LayoutModel layout, FrameLayout panel);
+        void onLayoutLoaded(LayoutModel layout, UIFrame panel);
     }
 
     public static void load(String path, OnLayoutLoaded listener) {
-        FrameLayout panel = new GDXFrameLayout(100, 100);
+        UIFrame panel = new UIFrame(100, 100);
         load(path, panel, listener);
     }
 
-    public static void load(String path, FrameLayout panel, OnLayoutLoaded listener) {
+    public static void load(String path, UIFrame panel, OnLayoutLoaded listener) {
         try {
             InputStream input = new FileInputStream(new File(path.endsWith(".yml") ? path : path + ".yml"));
             Yaml yaml = new Yaml(new Constructor(LayoutModel.class));
@@ -125,7 +124,7 @@ public class LayoutFactory {
     }
 
     private static View createFrame(View parent, LayoutModel.LayoutEntry entry) {
-        FrameLayout frame = ViewFactory.getInstance().createFrameLayout();
+        UIFrame frame = ViewFactory.getInstance().createFrameLayout();
 
         if (entry.align != null) {
             switch (entry.align) {

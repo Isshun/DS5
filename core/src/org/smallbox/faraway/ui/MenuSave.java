@@ -7,7 +7,7 @@ import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
 import org.smallbox.faraway.util.Constant;
@@ -22,7 +22,7 @@ public class MenuSave extends MenuBase {
 	private int 				_index;
 	private List<UILabel>		_lbFiles;
 	private int 				_nbFiles;
-	private FrameLayout _menu;
+	private UIFrame _menu;
 	private String _saveName = "";
 	private UILabel _textEntry;
 

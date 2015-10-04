@@ -3,7 +3,7 @@ package org.smallbox.faraway.ui.mainMenu;
 import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.LayoutModel;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 /**
@@ -15,7 +15,7 @@ public class TeamPage extends MainMenuPage {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
+    public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
         findById("bt_land_site").setOnClickListener(view -> Application.getInstance().newGame("5.sav", null));
     }
 

@@ -1,6 +1,5 @@
 package org.smallbox.faraway.modules.panels;
 
-import org.smallbox.faraway.core.ui.GDXLabel;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
@@ -11,7 +10,7 @@ import org.smallbox.faraway.game.module.UIWindow;
 import org.smallbox.faraway.modules.extra.ResourceModule;
 import org.smallbox.faraway.ui.LinkFocusListener;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UIImage;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
@@ -71,10 +70,10 @@ public class PanelModule extends GameUIModule {
                 new PanelEntry("bt_stats",      "[ TATS]", 		"S",	1, UserInterface.Mode.STATS),
                 new PanelEntry("bt_area",       "[ AREAS]",     "A",	1, UserInterface.Mode.AREA)
         };
-        private FrameLayout     _content;
+        private UIFrame _content;
 
         @Override
-        protected void onCreate(UIWindow window, FrameLayout content) {
+        protected void onCreate(UIWindow window, UIFrame content) {
             _content = content;
             _lbClock = (UILabel) content.findById("lb_clock");
 
@@ -152,7 +151,7 @@ public class PanelModule extends GameUIModule {
         }
 
         public void addShortcut(String label, UIWindow window) {
-            UILabel btShortcut = new GDXLabel();
+            UILabel btShortcut = new UILabel();
             btShortcut.setSize(165, 45);
             btShortcut.setText(label);
             btShortcut.setTextSize(18);
@@ -164,7 +163,7 @@ public class PanelModule extends GameUIModule {
                 _windows.forEach(w -> w.setVisible(false));
                 window.setVisible(true);
             });
-            ((FrameLayout) _content.findById("shortcut_entries")).addView(btShortcut);
+            ((UIFrame) _content.findById("shortcut_entries")).addView(btShortcut);
             _nbShortcut++;
         }
     }

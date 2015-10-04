@@ -7,14 +7,13 @@ import org.smallbox.faraway.game.model.CategoryInfo;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.module.GameUIModule;
-import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.UIWindow;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UIImage;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
@@ -42,12 +41,12 @@ public class PanelBuildModule extends GameUIModule {
 		private List<View>						_iconsList;
 		protected ItemInfo 						_currentSelected;
 		private boolean 						_animRunning;
-		private Map<CategoryInfo, FrameLayout>	_layouts;
+		private Map<CategoryInfo, UIFrame>	_layouts;
 		private CategoryInfo 					_currentCategory;
 		private UILabel[] 						_iconShortcut;
 
 		@Override
-		protected void onCreate(UIWindow window, FrameLayout content) {
+		protected void onCreate(UIWindow window, UIFrame content) {
 			removeAllViews();
 			_iconShortcut = new UILabel[10];
 			_layouts = new HashMap<>();
@@ -94,7 +93,7 @@ public class PanelBuildModule extends GameUIModule {
 				final CategoryInfo category = c;
 
 				// Content
-				final FrameLayout layout = ViewFactory.getInstance().createFrameLayout();
+				final UIFrame layout = ViewFactory.getInstance().createFrameLayout();
 				layout.setPosition(20, posY + 52);
 				addView(layout);
 				_layouts.put(category, layout);
@@ -136,7 +135,7 @@ public class PanelBuildModule extends GameUIModule {
 			addView(border);
 		}
 
-		private int refreshCategory(CategoryInfo category, FrameLayout layout, int posY, boolean anim) {
+		private int refreshCategory(CategoryInfo category, UIFrame layout, int posY, boolean anim) {
 			int index = 0;
 			for (ItemInfo info: category.items) {
 				if (info.parent == null && (info.isUserItem || info.isStructure)) {
@@ -171,24 +170,24 @@ public class PanelBuildModule extends GameUIModule {
 			drawPanel(withAnim);
 		}
 
-		private void drawIcon(FrameLayout layout, int index, final ItemInfo info, boolean visible) {
+		private void drawIcon(UIFrame layout, int index, final ItemInfo info, boolean visible) {
 			if (!_icons.containsKey(info)) {
 				int x = (index % 4) * GRID_WIDTH;
 				int y = (index / 4) * GRID_HEIGHT;
 
 				ViewFactory.getInstance().load("data/ui/panels/view_build_entry.yml", view -> {
-					FrameLayout frameItem = (FrameLayout) view.findById("frame_item");
+					UIFrame frameItem = (UIFrame) view.findById("frame_item");
 					updateParentButton(frameItem, info);
 
 					frameItem.findById("frame_select").setVisible(false);
 
 					// Create child
-					FrameLayout frameMaterial = (FrameLayout) view.findById("frame_material");
+					UIFrame frameMaterial = (UIFrame) view.findById("frame_material");
 					frameMaterial.setVisible(false);
 					if (!info.childs.isEmpty()) {
 						int childIndex = 0;
 						for (ItemInfo child : info.childs) {
-							FrameLayout frameChild = ViewFactory.getInstance().createFrameLayout(72, 24);
+							UIFrame frameChild = ViewFactory.getInstance().createFrameLayout(72, 24);
 							frameChild.setBackgroundColor(Color.CYAN);
 							frameChild.setPosition(0, childIndex * 24);
 
@@ -230,7 +229,7 @@ public class PanelBuildModule extends GameUIModule {
 			}
 		}
 
-		private void updateParentButton(FrameLayout frameItem, ItemInfo info) {
+		private void updateParentButton(UIFrame frameItem, ItemInfo info) {
 //        String label = info.label.length() > 9 ? info.label.substring(0, 9) : info.label;
 			((UILabel) frameItem.findById("lb_item")).setText(info.label.replace(" ", "\n"));
 			((UIImage) frameItem.findById("img_item")).setImage(SpriteManager.getInstance().getIcon(info));

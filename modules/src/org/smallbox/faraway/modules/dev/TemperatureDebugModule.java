@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.dev;
 
 import org.smallbox.faraway.game.module.*;
 import org.smallbox.faraway.modules.world.TemperatureModule;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.util.StringUtils;
 
 /**
@@ -18,7 +18,7 @@ public class TemperatureDebugModule extends GameUIModule {
     protected void onLoaded() {
         DebugWindow window = (DebugWindow)WindowDebugBuilder.create().setTitle("Temperature Debug").build(new WindowListener() {
             @Override
-            public void onCreate(UIWindow window, FrameLayout view) {
+            public void onCreate(UIWindow window, UIFrame view) {
                 window.setPosition(500, 500);
             }
 

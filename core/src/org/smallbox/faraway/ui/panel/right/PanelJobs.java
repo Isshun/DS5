@@ -6,7 +6,7 @@
 //import org.smallbox.faraway.ui.LayoutModel;
 //import org.smallbox.faraway.ui.UserInterface.Mode;
 //import org.smallbox.faraway.ui.engine.ViewFactory;
-//import org.smallbox.faraway.ui.engine.view.FrameLayout;
+//import org.smallbox.faraway.ui.engine.view.UIFrame;
 //import org.smallbox.faraway.ui.engine.view.UILabel;
 //import org.smallbox.faraway.ui.engine.view.View;
 //import org.smallbox.faraway.ui.panel.BaseRightPanel;
@@ -26,8 +26,8 @@
 //	}
 //
 //	@Override
-//	public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
-//		FrameLayout frameEntries = (FrameLayout)findById("frame_jobs");
+//	public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
+//		UIFrame frameEntries = (UIFrame)findById("frame_jobs");
 //		_entries = new JobEntry[75];
 //		for (int i = 0; i < _entries.length; i++) {
 //			final int index = i;

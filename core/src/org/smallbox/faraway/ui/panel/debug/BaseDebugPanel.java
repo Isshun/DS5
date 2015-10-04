@@ -5,7 +5,7 @@ import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.panel.BasePanel;
 
@@ -13,7 +13,7 @@ import org.smallbox.faraway.ui.panel.BasePanel;
  * Created by Alex on 13/07/2015.
  */
 public abstract class BaseDebugPanel extends BasePanel {
-    private FrameLayout         _frame;
+    private UIFrame _frame;
     private UILabel             _lbClose;
     private UILabel             _lbTitle;
     private boolean             _isMoving;
@@ -27,8 +27,8 @@ public abstract class BaseDebugPanel extends BasePanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
-        _frame = (FrameLayout)findById("frame_dev_commands");
+    public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
+        _frame = (UIFrame)findById("frame_dev_commands");
     }
 
     @Override

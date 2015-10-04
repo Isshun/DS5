@@ -4,7 +4,7 @@ import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 import java.io.File;
@@ -18,8 +18,8 @@ public class LoadPage extends MainMenuPage {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
-        FrameLayout frameSaves = (FrameLayout)findById("frame_saves");
+    public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
+        UIFrame frameSaves = (UIFrame)findById("frame_saves");
 
         int index = 0;
         for (File saveFile: new File("data/saves/").listFiles()) {

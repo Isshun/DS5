@@ -2,7 +2,7 @@ package org.smallbox.faraway.game.module;
 
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 /**
@@ -10,7 +10,7 @@ import org.smallbox.faraway.ui.engine.view.UILabel;
  */
 public abstract class DebugWindow extends UITitleWindow {
     private int             _debugIndex;
-    protected FrameLayout   _frameContent;
+    protected UIFrame _frameContent;
 
     public void addDebugView(String text) {
         addDebugView(text, null);

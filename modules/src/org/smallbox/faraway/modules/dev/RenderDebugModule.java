@@ -1,15 +1,12 @@
 package org.smallbox.faraway.modules.dev;
 
-import org.smallbox.faraway.core.ui.GDXLabel;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.module.GameUIModule;
-import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.UITitleWindow;
 import org.smallbox.faraway.game.module.UIWindow;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 import java.util.ArrayList;
@@ -21,12 +18,12 @@ import java.util.List;
 public class RenderDebugModule extends GameUIModule {
     public class RenderDebugModuleWindow extends UITitleWindow {
         @Override
-        protected void onCreate(UIWindow window, FrameLayout content) {
+        protected void onCreate(UIWindow window, UIFrame content) {
             window.setPosition(500, 500);
 
             List<UILabel> entries = new ArrayList<>();
             for (BaseRenderer render: MainRenderer.getInstance().getRenders()) {
-                UILabel lbModule = new GDXLabel();
+                UILabel lbModule = new UILabel();
                 lbModule.setData(render.getClass().getSimpleName());
                 lbModule.setText((render.isLoaded() ? "[x] " : "[ ] ") + render.getClass().getSimpleName());
                 lbModule.setTextSize(14);

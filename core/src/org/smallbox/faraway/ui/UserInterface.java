@@ -1,14 +1,8 @@
 package org.smallbox.faraway.ui;
 
-import org.luaj.vm2.*;
-import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.Application;
-import org.smallbox.faraway.LuaEventsModel;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.ui.GDXFrameLayout;
 import org.smallbox.faraway.core.ui.GDXImageView;
-import org.smallbox.faraway.core.ui.GDXLabel;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
@@ -23,7 +17,6 @@ import org.smallbox.faraway.game.module.GameUIModule;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.base.CharacterModule;
-import org.smallbox.faraway.LuaGameModel;
 import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.OnClickListener;
@@ -31,15 +24,10 @@ import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.engine.view.*;
 import org.smallbox.faraway.ui.panel.*;
-import org.smallbox.faraway.ui.panel.debug.ParcelDebugPanel;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +75,7 @@ public class UserInterface implements GameEventListener {
     private UserInterfaceSelector       _selector;
     private int 						_update;
     private long                        _lastModified;
-    private FrameLayout                 _context;
+    private UIFrame _context;
 //
 //    private	BasePanel[]					_panels = new BasePanel[] {
 //            new PanelSystem(),
@@ -645,7 +633,7 @@ public class UserInterface implements GameEventListener {
     }
 
     public UILabel createLabel() {
-        return new GDXLabel();
+        return new UILabel();
     }
 
     public UIImage createImage() {
@@ -653,7 +641,7 @@ public class UserInterface implements GameEventListener {
     }
 
     public View createView() {
-        return new GDXFrameLayout(-1, -1);
+        return new UIFrame(-1, -1);
     }
 
     public UIGrid createGrid() {

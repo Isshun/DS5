@@ -14,7 +14,7 @@ import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
 
@@ -29,13 +29,13 @@ public class PanelInfoItem extends BaseInfoRightPanel {
     private ItemModel   _item;
     private ItemInfo    _itemInfo;
     private ViewFactory _viewFactory;
-    private FrameLayout _frameCraft;
-    private FrameLayout _frameCraftEntries;
-    private FrameLayout _menuAddCraft;
-    private FrameLayout _menuAddCraftEntries;
+    private UIFrame _frameCraft;
+    private UIFrame _frameCraftEntries;
+    private UIFrame _menuAddCraft;
+    private UIFrame _menuAddCraftEntries;
     private View        _btAddCraft;
-    private FrameLayout _frameTmp;
-    private FrameLayout _frameOwner;
+    private UIFrame _frameTmp;
+    private UIFrame _frameOwner;
 
     public PanelInfoItem(UserInterface.Mode mode, GameEventListener.Key shortcut) {
         super(mode, shortcut, "data/ui/panels/info_item.yml");
@@ -47,19 +47,19 @@ public class PanelInfoItem extends BaseInfoRightPanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
+    public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
         super.onLayoutLoaded(layout, panel);
 
-        _frameTmp = (FrameLayout) findById("frame_tmp");
+        _frameTmp = (UIFrame) findById("frame_tmp");
         _frameTmp.setVisible(false);
-        _frameCraft = (FrameLayout) findById("frame_craft");
+        _frameCraft = (UIFrame) findById("frame_craft");
         _frameCraft.setVisible(false);
-        _frameCraftEntries = (FrameLayout) findById("frame_craft_entries");
-        _frameOwner = (FrameLayout) findById("frame_owner");
+        _frameCraftEntries = (UIFrame) findById("frame_craft_entries");
+        _frameOwner = (UIFrame) findById("frame_owner");
         _frameOwner.setVisible(false);
-        _menuAddCraft = (FrameLayout) findById("menu_add_craft");
+        _menuAddCraft = (UIFrame) findById("menu_add_craft");
         _menuAddCraft.setVisible(false);
-        _menuAddCraftEntries = (FrameLayout) findById("menu_add_craft_entries");
+        _menuAddCraftEntries = (UIFrame) findById("menu_add_craft_entries");
         _btAddCraft = findById("bt_add_craft");
         _btAddCraft.setOnClickListener(view -> _menuAddCraft.setVisible(true));
 
@@ -80,7 +80,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
     }
 
     private void refreshDebug(ItemModel item) {
-        FrameLayout frame = (FrameLayout) findById("item_debug");
+        UIFrame frame = (UIFrame) findById("item_debug");
         frame.removeAllViews();
 
         int index = 0;
@@ -211,7 +211,7 @@ public class PanelInfoItem extends BaseInfoRightPanel {
             if (job instanceof BaseBuildJobModel && ((BaseBuildJobModel)job).getReceipt() != null) {
                 int orderIndex = 0;
                 for (OrderModel order: ((BaseBuildJobModel) job).getReceipt().getOrders()) {
-                    addJobOrder((FrameLayout)view.findById("frame_components_entries"), order, orderIndex++);
+                    addJobOrder((UIFrame)view.findById("frame_components_entries"), order, orderIndex++);
                 }
 //                view.findById("lb_components").setVisible(true);
                 view.findById("frame_components_entries").setVisible(true);

@@ -5,14 +5,13 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.module.GameUIModule;
 import org.smallbox.faraway.game.module.ModuleHelper;
-import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.UIWindow;
 import org.smallbox.faraway.game.module.base.CharacterModule;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UIImage;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
@@ -37,7 +36,7 @@ public class PanelCrewModule extends GameUIModule {
     private static final int    NB_COLUMNS_TITLE = Constant.NB_COLUMNS_TITLE;
 
 	private static class ViewHolder {
-        public FrameLayout  frame;
+        public UIFrame frame;
 		public UILabel      lbName;
 		public UILabel      lbProfession;
 		public UIImage      thumb;
@@ -53,7 +52,7 @@ public class PanelCrewModule extends GameUIModule {
 		protected int 					_mode;
 
 		@Override
-		protected void onCreate(UIWindow window, FrameLayout content) {
+		protected void onCreate(UIWindow window, UIFrame content) {
 			ViewFactory factory = ViewFactory.getInstance();
 			_viewHolderList = new ArrayList<>();
 			_characterModule = ModuleHelper.getCharacterModule();

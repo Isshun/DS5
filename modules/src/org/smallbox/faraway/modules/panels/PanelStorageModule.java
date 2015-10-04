@@ -5,10 +5,9 @@ import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.module.GameUIModule;
-import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.UIWindow;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 import java.util.HashMap;
@@ -21,7 +20,7 @@ public class PanelStorageModule extends GameUIModule {
     private static class PanelStorageModuleWindow extends UIWindow {
 
         @Override
-        protected void onCreate(UIWindow window, FrameLayout content) {
+        protected void onCreate(UIWindow window, UIFrame content) {
         }
 
         @Override

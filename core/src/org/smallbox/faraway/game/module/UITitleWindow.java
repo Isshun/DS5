@@ -2,14 +2,14 @@ package org.smallbox.faraway.game.module;
 
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.ui.engine.LayoutFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 /**
  * Created by Alex on 13/07/2015.
  */
 public abstract class UITitleWindow extends UIWindow {
-//    private FrameLayout             _frameContent;
+//    private UIFrame             _frameContent;
     private final boolean           _isMovable;
     private UILabel                 _lbClose;
     private UILabel                 _lbTitle;
@@ -35,7 +35,7 @@ public abstract class UITitleWindow extends UIWindow {
                 _lbTitle.setText(" " + title);
             }
 
-            _frameContent = (FrameLayout) findById("frame_content");
+            _frameContent = (UIFrame) findById("frame_content");
 
             if (contentLayout != null) {
                 LayoutFactory.load("data/ui/" + contentLayout, _frameContent, null);

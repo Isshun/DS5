@@ -2,7 +2,7 @@
 //
 //import org.smallbox.faraway.core.SpriteManager;
 //import org.smallbox.faraway.core.Viewport;
-//import org.smallbox.faraway.core.ui.GDXLabel;
+//import org.smallbox.faraway.core.ui.UILabel;
 //import org.smallbox.faraway.engine.Color;
 //import org.smallbox.faraway.engine.GameEventListener;
 //import org.smallbox.faraway.engine.renderer.GDXRenderer;
@@ -91,14 +91,14 @@
 //		private UILabel             _lbBirthName;
 //		private UILabel             _lbInventory;
 //		private View                _selectedPriority;
-//		private FrameLayout         _priorityOverlay;
+//		private UIFrame         _priorityOverlay;
 //		private int                 _priorityOverlayOffset;
 //		private List<View>          _priorityViews;
 //		private int                 _framePrioritiesPosY;
 //		private int                 _priorityOverlayPosition;
 //
 //		@Override
-//		protected void onCreate(UIWindow window, FrameLayout content) {
+//		protected void onCreate(UIWindow window, UIFrame content) {
 //			findById("bt_monitoring").setOnClickListener(view -> switchView("frame_monitoring"));
 //			findById("bt_personal_report").setOnClickListener(view -> switchView("frame_personal_report"));
 //			findById("bt_priorities").setOnClickListener(view -> switchView("frame_priorities"));
@@ -117,7 +117,7 @@
 //			_lbName = (UILabel) findById("lb_name");
 //			_lbJob = (UILabel) findById("lb_current_job");
 //
-//			FrameLayout frameBuffs = (FrameLayout)findById("frame_buffs_entries");
+//			UIFrame frameBuffs = (UIFrame)findById("frame_buffs_entries");
 //			for (int i = 0; i < NB_MAX_BUFFS; i++) {
 //				_lbBuffs[i] = ViewFactory.getInstance().createTextView();
 //				_lbBuffs[i].setTextSize(14);
@@ -125,7 +125,7 @@
 //				frameBuffs.addView(_lbBuffs[i]);
 //			}
 //
-//			FrameLayout frameDiseases = (FrameLayout)findById("frame_health_entries");
+//			UIFrame frameDiseases = (UIFrame)findById("frame_health_entries");
 //			for (int i = 0; i < NB_MAX_DISEASES; i++) {
 //				_lbDiseases[i] = ViewFactory.getInstance().createTextView();
 //				_lbDiseases[i].setTextSize(14);
@@ -193,7 +193,7 @@
 //		private void createTalents() {
 //			_priorityViews = new ArrayList<>();
 //
-//			FrameLayout framePriorities = (FrameLayout) findById("frame_priorities_entries");
+//			UIFrame framePriorities = (UIFrame) findById("frame_priorities_entries");
 //			framePriorities.removeAllViews();
 //			_framePrioritiesPosY = framePriorities.getRect().y;
 //
@@ -204,7 +204,7 @@
 //			framePriorities.addView(_priorityOverlay);
 //
 //			for (CharacterModel.TalentEntry priority: _character.getTalents()) {
-//				FrameLayout framePriority = ViewFactory.getInstance().createFrameLayout(300, 24);
+//				UIFrame framePriority = ViewFactory.getInstance().createFrameLayout(300, 24);
 //				framePriority.setPosition(0, priority.index * 28);
 ////            framePriority.setBackgroundColor(new Color(0x88121c1e));
 //				framePriority.setData(priority);
@@ -226,7 +226,7 @@
 //				frameProgress.setBackgroundColor(0x298596);
 //				framePriority.addView(frameProgress);
 //
-//				UILabel lbProgress = new GDXLabel();
+//				UILabel lbProgress = new UILabel();
 //				lbProgress.setText(String.valueOf((int) priority.level));
 //				lbProgress.setTextSize(14);
 //                lbProgress.setTextAlign(Align.CENTER);
@@ -260,7 +260,7 @@
 //		private void createInventoryInfo() {
 //			_lbInventory = (UILabel) findById("lb_inventory");
 //
-//			FrameLayout frameInventoryEntries = (FrameLayout)findById("frame_inventory_entries");
+//			UIFrame frameInventoryEntries = (UIFrame)findById("frame_inventory_entries");
 //			frameInventoryEntries.removeAllViews();
 //			UIImage[] lbInventoryEntries = new UIImage[Constant.CHARACTER_INVENTORY_SPACE];
 //			for (int i = 0; i < Constant.CHARACTER_INVENTORY_SPACE; i++) {
@@ -325,7 +325,7 @@
 //		}
 //
 //		private void createRelationShip() {
-//			FrameLayout layoutFamily = (FrameLayout) findById("frame_relationship");
+//			UIFrame layoutFamily = (UIFrame) findById("frame_relationship");
 //
 //			_familyEntries = new UILabel[NB_MAX_RELATION];
 //			_familyRelationEntries = new UILabel[NB_MAX_RELATION];
@@ -466,7 +466,7 @@
 //		}
 //
 //		private void createTimeTable() {
-//			FrameLayout frame = (FrameLayout)findById("frame_timetable_entries");
+//			UIFrame frame = (UIFrame)findById("frame_timetable_entries");
 //			frame.removeAllViews();
 //			for (int h = 0; h < Game.getInstance().getPlanet().getInfo().dayDuration; h++) {
 //				final int finalH = h;
@@ -527,13 +527,13 @@
 //
 //		private void onCharacterSelect(CharacterModel character) {
 //			// Display need frame
-//			FrameLayout frameNeeds = (FrameLayout) findById("frame_needs");
+//			UIFrame frameNeeds = (UIFrame) findById("frame_needs");
 //			frameNeeds.removeAllViews();
 //			ViewFactory.getInstance().load(character.getNeedViewPath(), frameNeeds::addView);
 //			createNeedsInfo();
 //
 //			// Display equipment frame
-//			FrameLayout frameEquipmentBody = (FrameLayout) findById("frame_equipment_body");
+//			UIFrame frameEquipmentBody = (UIFrame) findById("frame_equipment_body");
 //			frameEquipmentBody.removeAllViews();
 //			ViewFactory.getInstance().load(character.getEquipmentViewPath(), frameEquipmentBody::addView);
 //		}
@@ -608,7 +608,7 @@
 //
 //		private void refreshDebug() {
 //			if (_character != null) {
-//				FrameLayout frame = (FrameLayout)findById("frame_debug");
+//				UIFrame frame = (UIFrame)findById("frame_debug");
 //				frame.removeAllViews();
 //				addDebugView(frame, "Environment: " + ModuleHelper.getWorldModule().getEnvironmentValue(_character.getX(), _character.getY(), GameData.config.environmentDistance));
 //				addDebugView(frame, "Mood change: " + _character.getNeeds().happinessChange);

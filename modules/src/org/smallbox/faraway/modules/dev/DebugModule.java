@@ -16,7 +16,7 @@
 //import org.smallbox.faraway.ui.UserInterface;
 //import org.smallbox.faraway.ui.engine.OnClickListener;
 //import org.smallbox.faraway.ui.engine.ViewFactory;
-//import org.smallbox.faraway.ui.engine.view.FrameLayout;
+//import org.smallbox.faraway.ui.engine.view.UIFrame;
 //import org.smallbox.faraway.ui.engine.view.UILabel;
 //import org.smallbox.faraway.ui.engine.view.View;
 //import org.smallbox.faraway.ui.panel.debug.ParcelDebugPanel;
@@ -32,7 +32,7 @@
 //public class DebugModule extends GameUIModule {
 //    private CharacterModel _character;
 //
-//    private FrameLayout         mView;
+//    private UIFrame         mView;
 //
 //    private static class CommandEntry {
 //        public final OnClickListener    listener;
@@ -120,10 +120,10 @@
 //    };
 //
 //    private void openSubFrame(Collection<CommandEntry> commands) {
-//        final FrameLayout frameCommands = (FrameLayout) mView.findById("frame_dev_commands");
+//        final UIFrame frameCommands = (UIFrame) mView.findById("frame_dev_commands");
 //        frameCommands.setVisible(false);
 //
-//        final FrameLayout frameConsumable = (FrameLayout) mView.findById("frame_dev_sub");
+//        final UIFrame frameConsumable = (UIFrame) mView.findById("frame_dev_sub");
 //        frameConsumable.setVisible(true);
 //        frameConsumable.removeAllViews();
 //
@@ -146,9 +146,9 @@
 //    protected void onLoaded() {
 //        addWindow(WindowBuilder.create().setTitle("Debug").setContentLayout("panels/dev.yml").build(new WindowListener() {
 //            @Override
-//            public void onCreate(UIWindow window, FrameLayout view) {
+//            public void onCreate(UIWindow window, UIFrame view) {
 //                mView = view;
-//                FrameLayout frameCommands = (FrameLayout) view.findById("frame_dev_commands");
+//                UIFrame frameCommands = (UIFrame) view.findById("frame_dev_commands");
 //
 //                int index = 0;
 //                for (CommandEntry entry : COMMANDS) {

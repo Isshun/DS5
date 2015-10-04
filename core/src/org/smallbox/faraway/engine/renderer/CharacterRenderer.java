@@ -2,7 +2,6 @@ package org.smallbox.faraway.engine.renderer;
 
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.ui.GDXLabel;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
@@ -109,11 +108,11 @@ public class CharacterRenderer extends BaseRenderer {
 
                 // Draw label
                 if (c.getNeeds().happiness < 20) {
-                    ((GDXLabel)c.getLabelDrawable()).setBackgroundColor(COLOR_CRITICAL);
+                    c.getLabelDrawable().setBackgroundColor(COLOR_CRITICAL);
                 } else if (c.getNeeds().happiness < 40) {
-                    ((GDXLabel)c.getLabelDrawable()).setBackgroundColor(COLOR_WARNING);
+                    c.getLabelDrawable().setBackgroundColor(COLOR_WARNING);
                 } else {
-                    ((GDXLabel)c.getLabelDrawable()).setBackgroundColor(COLOR_OK);
+                    c.getLabelDrawable().setBackgroundColor(COLOR_OK);
                 }
                 renderer.draw(c.getLabelDrawable(), posX - ((c.getLabelDrawable().getContentWidth() - 24) / 2), posY - 8);
 

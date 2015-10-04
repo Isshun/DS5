@@ -10,7 +10,7 @@ import org.smallbox.faraway.game.model.room.RoomModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
 import org.smallbox.faraway.ui.panel.BaseRightPanel;
@@ -40,12 +40,12 @@ public class BaseInfoRightPanel extends BaseRightPanel {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
+    public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
         // Load parcel layout
         if (findById("frame_parcel_info") != null) {
             ViewFactory.getInstance().load("data/ui/panels/view_parcel_info.yml", view -> {
                 _frame_parcel_info = view;
-                ((FrameLayout) findById("frame_parcel_info")).addView(view);
+                ((UIFrame) findById("frame_parcel_info")).addView(view);
             });
         }
 
@@ -53,7 +53,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
         if (findById("frame_room_info") != null) {
             ViewFactory.getInstance().load("data/ui/panels/view_room_info.yml", view -> {
                 _frame_room_info = view;
-                ((FrameLayout) findById("frame_room_info")).addView(view);
+                ((UIFrame) findById("frame_room_info")).addView(view);
             });
         }
     }
@@ -141,7 +141,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
         select(_parcel);
     }
 
-    protected void addJobOrder(FrameLayout frame, ReceiptModel.OrderModel order, int index) {
+    protected void addJobOrder(UIFrame frame, ReceiptModel.OrderModel order, int index) {
         UILabel lbOrder = ViewFactory.getInstance().createTextView();
         lbOrder.setTextSize(14);
         lbOrder.setPosition(0, index * 20);

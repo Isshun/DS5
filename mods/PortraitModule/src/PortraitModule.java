@@ -1,5 +1,5 @@
 import org.smallbox.faraway.core.ui.GDXImageView;
-import org.smallbox.faraway.core.ui.GDXLabel;
+import org.smallbox.faraway.core.ui.UILabel;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.module.GameUIModule;
@@ -42,7 +42,7 @@ public class PortraitModule extends GameUIModule {
                 image.setOnClickListener(view -> Game.getInstance().notify(obs -> obs.onSelectCharacter(character)));
                 _content.addView(image);
 
-                UILabel lbFirstname = new GDXLabel();
+                UILabel lbFirstname = new UILabel();
                 lbFirstname.setText(character.getInfo().getFirstName());
                 lbFirstname.setTextSize(14);
                 lbFirstname.setSize(91, 20);
@@ -50,7 +50,7 @@ public class PortraitModule extends GameUIModule {
                 lbFirstname.setTextAlign(Align.CENTER);
                 _content.addView(lbFirstname);
 
-                UILabel lbLastname = new GDXLabel();
+                UILabel lbLastname = new UILabel();
                 lbLastname.setText(character.getInfo().getLastName());
                 lbLastname.setTextSize(14);
                 lbLastname.setSize(91, 20);

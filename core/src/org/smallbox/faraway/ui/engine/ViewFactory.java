@@ -3,7 +3,7 @@ package org.smallbox.faraway.ui.engine;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.view.ColorView;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UIImage;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.yaml.snakeyaml.Yaml;
@@ -19,7 +19,7 @@ import java.io.InputStream;
  */
 public abstract class ViewFactory {
     public interface ViewFactoryLoadListener {
-        void onLoad(FrameLayout rootView);
+        void onLoad(UIFrame rootView);
     }
 
     private static ViewFactory  _factory;
@@ -36,20 +36,20 @@ public abstract class ViewFactory {
     public abstract UILabel     createTextView(int width, int height);
     public abstract ColorView   createColorView();
     public abstract ColorView   createColorView(int width, int height);
-    public abstract FrameLayout createFrameLayout();
-    public abstract FrameLayout createFrameLayout(int width, int height);
+    public abstract UIFrame createFrameLayout();
+    public abstract UIFrame createFrameLayout(int width, int height);
     public abstract UIImage createImageView();
 
     public void load(String path, ViewFactoryLoadListener listener) {
-        FrameLayout rootView = load(path);
+        UIFrame rootView = load(path);
         if (listener != null) {
             listener.onLoad(rootView);
         }
     }
 
-    public FrameLayout load(String path) {
+    public UIFrame load(String path) {
         try {
-            FrameLayout rootView = createFrameLayout();
+            UIFrame rootView = createFrameLayout();
             InputStream input = new FileInputStream(new File(path));
             Yaml yaml = new Yaml(new Constructor(LayoutModel.class));
             LayoutModel layout = (LayoutModel)yaml.load(input);

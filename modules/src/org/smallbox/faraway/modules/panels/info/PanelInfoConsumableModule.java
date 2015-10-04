@@ -5,7 +5,7 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.module.GameUIModule;
 import org.smallbox.faraway.game.module.UIWindow;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 /**
@@ -17,7 +17,7 @@ public class PanelInfoConsumableModule extends GameUIModule {
         private ItemInfo        _itemInfo;
 
         @Override
-        protected void onCreate(UIWindow window, FrameLayout content) {
+        protected void onCreate(UIWindow window, UIFrame content) {
             if (_consumable != null) {
                 select(_consumable);
             } else if (_itemInfo != null) {

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.module;
 
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 
 /**
  * Created by Alex on 31/08/2015.
@@ -19,7 +19,7 @@ public class WindowBuilder {
             }
 
             @Override
-            protected void onCreate(UIWindow window, FrameLayout content) {
+            protected void onCreate(UIWindow window, UIFrame content) {
                 listener.onCreate(window, content);
             }
 

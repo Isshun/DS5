@@ -1,10 +1,9 @@
 package org.smallbox.faraway.modules.dev;
 
-import org.smallbox.faraway.core.ui.GDXLabel;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.module.*;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class ModuleManagerModule extends GameUIModule {
             }
 
             @Override
-            protected void onCreate(UIWindow window, FrameLayout content) {
+            protected void onCreate(UIWindow window, UIFrame content) {
                 window.setPosition(500, 500);
 
                 List<UILabel> entries = new ArrayList<>();
@@ -65,7 +64,7 @@ public class ModuleManagerModule extends GameUIModule {
             }
 
             private UILabel createModuleView(GameModule module, String name, boolean isThirdParty) {
-                UILabel lbModule = new GDXLabel();
+                UILabel lbModule = new UILabel();
                 lbModule.setData(name);
                 lbModule.setText((module.isLoaded() ? "[x] " : "[ ] ") + name);
                 if (isThirdParty) {

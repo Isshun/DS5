@@ -9,7 +9,7 @@
 //import org.smallbox.faraway.ui.LayoutModel;
 //import org.smallbox.faraway.ui.LinkFocusListener;
 //import org.smallbox.faraway.ui.UserInterface.Mode;
-//import org.smallbox.faraway.ui.engine.view.FrameLayout;
+//import org.smallbox.faraway.ui.engine.view.UIFrame;
 //import org.smallbox.faraway.ui.engine.view.UIImage;
 //import org.smallbox.faraway.ui.engine.view.UILabel;
 //import org.smallbox.faraway.ui.engine.view.View;
@@ -70,7 +70,7 @@
 //    }
 //
 //    @Override
-//    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
+//    public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
 //        _lbTime = (UILabel) findById("lb_clock");
 //
 //        _resourceModule = (ResourceModule) ModuleManager.getInstance().getModule(ResourceModule.class);

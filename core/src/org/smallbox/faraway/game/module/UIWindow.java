@@ -4,15 +4,15 @@ import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 
 /**
  * Created by Alex on 31/08/2015.
  */
-public abstract class UIWindow extends FrameLayout {
-    protected FrameLayout       _frameMain;
-    protected FrameLayout       _frameContent;
+public abstract class UIWindow extends UIFrame {
+    protected UIFrame _frameMain;
+    protected UIFrame _frameContent;
     private boolean             _isLoaded;
     private int                 _debugIndex;
 
@@ -24,7 +24,7 @@ public abstract class UIWindow extends FrameLayout {
         _isLoaded = true;
     }
 
-    protected abstract void onCreate(UIWindow window, FrameLayout content);
+    protected abstract void onCreate(UIWindow window, UIFrame content);
     protected abstract void onRefresh(int update);
     protected abstract String getContentLayout();
 
@@ -56,11 +56,11 @@ public abstract class UIWindow extends FrameLayout {
         return false;
     }
 
-    protected void addDebugView(FrameLayout frame, String text) {
+    protected void addDebugView(UIFrame frame, String text) {
         addDebugView(frame, text, null);
     }
 
-    protected void addDebugView(FrameLayout frame, String text, OnClickListener clickListener) {
+    protected void addDebugView(UIFrame frame, String text, OnClickListener clickListener) {
         UILabel lbCommand = ViewFactory.getInstance().createTextView();
         lbCommand.setText(text);
         lbCommand.setTextSize(14);

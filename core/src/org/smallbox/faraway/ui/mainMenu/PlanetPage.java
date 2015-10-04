@@ -6,7 +6,7 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.FrameLayout;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UIImage;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
@@ -35,8 +35,8 @@ public class PlanetPage extends MainMenuPage {
     }
 
     @Override
-    public void onLayoutLoaded(LayoutModel layout, FrameLayout panel) {
-        FrameLayout framePlanetList = (FrameLayout) findById("frame_planet_list");
+    public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
+        UIFrame framePlanetList = (UIFrame) findById("frame_planet_list");
         framePlanetList.removeAllViews();
 
         int index = 0;
@@ -53,7 +53,7 @@ public class PlanetPage extends MainMenuPage {
         select(GameData.getData().planets.get(0));
     }
 
-    private void addPlanetListView(FrameLayout framePlanetList, PlanetInfo planet, int index) {
+    private void addPlanetListView(UIFrame framePlanetList, PlanetInfo planet, int index) {
         _viewFactory.load("data/ui/menu/planet_list_entry.yml", view -> {
             view.findById("frame_background").setVisible(false);
             ((UILabel)view.findById("lb_planet")).setText(planet.name);

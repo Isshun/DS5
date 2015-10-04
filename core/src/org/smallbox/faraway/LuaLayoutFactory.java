@@ -4,12 +4,11 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.core.ui.GDXFrameLayout;
 import org.smallbox.faraway.core.ui.GDXImageView;
-import org.smallbox.faraway.core.ui.GDXLabel;
 import org.smallbox.faraway.ui.UIGrid;
 import org.smallbox.faraway.ui.UIList;
 import org.smallbox.faraway.ui.engine.UIEventManager;
+import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UIImage;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
@@ -30,7 +29,7 @@ public class LuaLayoutFactory {
 
         switch (value.get("type").toString()) {
             case "view":
-                view = new GDXFrameLayout(width, height);
+                view = new UIFrame(width, height);
                 break;
 
             case "list":
@@ -81,7 +80,7 @@ public class LuaLayoutFactory {
                     height = 20;
                 }
 
-                UILabel label = new GDXLabel(width, height);
+                UILabel label = new UILabel(width, height);
 
                 LuaValue text = value.get("text");
                 if (!text.isnil()) {
