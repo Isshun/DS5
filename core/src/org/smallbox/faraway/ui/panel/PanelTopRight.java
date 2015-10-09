@@ -42,17 +42,17 @@
 //        if (Game.getInstance().isRunning()) {
 //            switch (Game.getInstance().getSpeed()) {
 //                case 3:
-//                    ((UIImage) findById("img_speed")).setImagePath("data/res/ic_speed_3.png");
+//                    ((UIImage) findById("img_speed")).setImage("data/res/ic_speed_3.png");
 //                    break;
 //                case 2:
-//                    ((UIImage) findById("img_speed")).setImagePath("data/res/ic_speed_2.png");
+//                    ((UIImage) findById("img_speed")).setImage("data/res/ic_speed_2.png");
 //                    break;
 //                default:
-//                    ((UIImage) findById("img_speed")).setImagePath("data/res/ic_speed_1.png");
+//                    ((UIImage) findById("img_speed")).setImage("data/res/ic_speed_1.png");
 //                    break;
 //            }
 //        } else {
-//            ((UIImage) findById("img_speed")).setImagePath("data/res/ic_speed_0.png");
+//            ((UIImage) findById("img_speed")).setImage("data/res/ic_speed_0.png");
 //        }
 //    }
 //}

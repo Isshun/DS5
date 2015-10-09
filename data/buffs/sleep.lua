@@ -10,9 +10,9 @@ function OnUpdate(game, character)
     if _lastItemKnown then
 
         if _lastItem and _lastItem.isBed then
-            return {"Has slept in a great bed", 2, 10 }
+            return {message = "Has slept in a great bed", level = 2, mood = 10 }
         else
-            return {"Has slept on the floor", 2, -5 }
+            return {message = "Has slept on the floor", level = 2, mood = -5 }
         end
 
     end

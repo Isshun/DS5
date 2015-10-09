@@ -1,17 +1,17 @@
 function OnUpdate(game, character)
     if character.needs.pain >= 100 then
-        return {"Fainted because of the pain", 5, -25}
+        return {message = "Fainted because of the pain", level = 5, mood = -25}
     end
 
     if character.needs.pain >= 75 then
-        return {"Is in agony", 5, -25}
+        return {message = "Is in agony", level = 5, mood = -25}
     end
 
     if character.needs.pain >= 50 then
-        return {"Suffers enormously from woundings", 5, -15}
+        return {message = "Suffers enormously from woundings", level = 5, mood = -15}
     end
 
     if character.needs.pain >= 25 then
-        return {"Suffers from woundings", 5, -5}
+        return {message = "Suffers from woundings", level = 5, mood = -5}
     end
 end

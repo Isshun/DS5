@@ -9,36 +9,36 @@ function OnUpdate(game, character)
     end
 
     if _duration > 5200 then
-        return {"Is starving to death", 4, -25, {
+        return {message = "Is starving to death", level = 4, mood = -25, effects = {
             {"malnutrition", 1, {4, "extreme"}},
             {"death", 0.05, "Dead from malnutrition"}
         }}
     end
 
     if _duration > 4800 then
-        return {"Is starving to death", 4, -25, {
+        return {message = "Is starving to death", level = 4, mood = -25, effects = {
             {"malnutrition", 1, {3, "severe"}}
         }}
     end
 
     if _duration > 2400 then
-        return {"Is starving to death", 4, -25, {
+        return {message = "Is starving to death", level = 4, mood = -25, effects = {
             {"malnutrition", 1, {2, "moderate"}}
         }}
     end
 
     if _duration > 1200 then
-        return {"Suffering from hunger", 3, -15, {
+        return {message = "Suffering from hunger", level = 3, mood = -15, effects = {
             {"malnutrition", 1, {1, "slight"}}
         }}
     end
 
     if _duration > 0 then
-        return {"Feeling hungry", 2, -10}
+        return {message = "Feeling hungry", level = 2, mood = -10}
     end
 
     if character.needs.food < 25 then
-        return {"Feeling a little peckish", 1, -5}
+        return {message = "Feeling a little peckish", level = 1, mood = -5}
     end
 
 end

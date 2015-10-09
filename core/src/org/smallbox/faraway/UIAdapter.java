@@ -9,7 +9,7 @@ import java.util.Collection;
  * Created by Alex on 08/10/2015.
  */
 public class UIAdapter {
-    private final Collection<ObjectModel>   _data;
+    private Collection<ObjectModel>         _data;
     private final OnCreateView              _onCreateView;
     private boolean                         _needRefresh;
 
@@ -25,6 +25,10 @@ public class UIAdapter {
 
     public Collection<ObjectModel> getData() {
         return _data;
+    }
+
+    public void setData(Collection<ObjectModel> data) {
+        _data = data;
     }
 
     public OnCreateView getCallback() {

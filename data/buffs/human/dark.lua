@@ -8,6 +8,6 @@ function OnUpdate(game, character)
     end
 
     if _duration > 400 then
-        return {"In the dark for a long time", 1, -5 }
+        return {message = "In the dark for a long time", level = 1, mood = -5 }
     end
 end

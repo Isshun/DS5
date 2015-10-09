@@ -42,6 +42,10 @@ public abstract class View {
     public abstract void addView(View view);
 
     public void removeAllViews() {
+        _views.forEach(view -> {
+            UIEventManager.getInstance().removeListeners(view);
+            view.removeAllViews();
+        });
         _views.clear();
     }
 
@@ -124,7 +128,7 @@ public abstract class View {
                 renderer.draw(_backgroundColor, _x + x, _y + y, _width, _height);
             }
 
-            if (_adapter != null && needRefresh(_adapter)) {
+            if (_adapter != null && _adapter.getData() != null && needRefresh(_adapter)) {
                 removeAllViews();
                 _adapter.setRefresh();
                 _adapter.getData().forEach(data -> {
@@ -135,6 +139,10 @@ public abstract class View {
                 });
             }
         }
+    }
+
+    public UIAdapter getAdapter() {
+        return _adapter;
     }
 
     private void setObjectId(int objectId) {

@@ -32,7 +32,7 @@ public class MainMenuPage extends BasePanel {
         int width = 1920;
         int height = 1080;
         UIImage imageView = viewFactory.createImageView();
-        imageView.setImagePath("data/planets/background.jpg");
+        imageView.setImage("data/planets/background.jpg");
         imageView.setPosition(-_x, -_y);
         imageView.setSize(width, height);
         imageView.setScale((double)_renderer.getWidth() / width, (double)_renderer.getHeight() / height);

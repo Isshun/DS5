@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class LogModule extends GameModule {
     private static List<String> TAGS = Arrays.asList(
-//            "System",
+            "System",
 //            "WeatherModule",
 //            "TemperatureModule",
 //            "RoomModule",

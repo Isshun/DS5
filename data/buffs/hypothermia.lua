@@ -1,21 +1,21 @@
 function OnUpdate(game, character)
     if character.needs.heat <= 20 then
-        return {"I'm dying of cold", 4, -25, {
+        return {message = "I'm dying of cold", level = 4, mood = -25, effects = {
             {"faint", 0.25},
             {"death", 0.05},
         }}
     end
 
     if character.needs.heat <= 25 then
-        return {"I'm frozen", 3, -15}
+        return {message = "I'm frozen", level = 3, mood = -15}
     end
 
     if character.needs.heat <= 32 then
-        return {"I have lost the feeling in my fingers", 2, -7}
+        return {message = "I have lost the feeling in my fingers", level = 2, mood = -7}
     end
 
     if character.needs.heat <= 34 then
-        return {"I'm cold", 1, -5}
+        return {message = "I'm cold", level = 1, mood = -5}
     end
 
 end

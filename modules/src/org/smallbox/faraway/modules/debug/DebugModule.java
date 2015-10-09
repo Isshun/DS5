@@ -9,7 +9,9 @@ import org.smallbox.faraway.game.model.character.AndroidModel;
 import org.smallbox.faraway.game.model.character.DroidModel;
 import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.game.model.item.BuildableMapObject;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
+import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.module.*;
 import org.smallbox.faraway.game.module.base.RoomModule;
 import org.smallbox.faraway.modules.quest.QuestModule;
@@ -34,6 +36,7 @@ public class DebugModule extends GameUIModule {
     private CharacterModel _character;
 
     private UIList          _listCommands;
+    private ItemModel       _item;
 
     private static class CommandEntry {
         public final OnClickListener    listener;
@@ -73,6 +76,10 @@ public class DebugModule extends GameUIModule {
             new CommandEntry("Add crew (droid)",    view -> ModuleHelper.getCharacterModule().addRandom(DroidModel.class)),
             new CommandEntry("Kill selected",       view -> _character.setIsDead()),
             new CommandEntry("Kill all",            view -> ModuleHelper.getCharacterModule().getCharacters().forEach(CharacterModel::setIsDead)),
+            new CommandEntry("add components to item",   view -> {
+                _item.getComponents().add(new BuildableMapObject.ComponentModel(GameData.getData().getItemInfo("base.brick_rock"), 10, 3));
+                _item.setComplete(false);
+            }),
             new CommandEntry("remove characters",   view -> ModuleHelper.getCharacterModule().getCharacters().clear()),
             new CommandEntry("Launch quest",        view -> ((QuestModule)ModuleManager.getInstance().getModule(QuestModule.class)).launchRandomQuest()),
             new CommandEntry("Refresh rooms",       view -> ((RoomModule)ModuleManager.getInstance().getModule(RoomModule.class)).refreshRooms()),
@@ -197,6 +204,11 @@ public class DebugModule extends GameUIModule {
     @Override
     public void onSelectCharacter(CharacterModel character) {
         _character = character;
+    }
+
+    @Override
+    public void onSelectItem(ItemModel item) {
+        _item = item;
     }
 
 //    @Override

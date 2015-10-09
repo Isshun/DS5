@@ -18,7 +18,7 @@ public class SpeedModule extends GameUIModule {
     private class SpeedModuleWindow extends UIWindow {
         @Override
         protected void onCreate(UIWindow window, UIFrame content) {
-            ((UIImage) findById("img_speed")).setImagePath("data/res/ic_speed_1.png");
+            ((UIImage) findById("img_speed")).setImage("data/res/ic_speed_1.png");
         }
 
         @Override
@@ -33,16 +33,16 @@ public class SpeedModule extends GameUIModule {
         public void setSpeed(int speed) {
             switch (speed) {
                 case 3:
-                    ((UIImage) findById("img_speed")).setImagePath("data/res/ic_speed_3.png");
+                    ((UIImage) findById("img_speed")).setImage("data/res/ic_speed_3.png");
                     break;
                 case 2:
-                    ((UIImage) findById("img_speed")).setImagePath("data/res/ic_speed_2.png");
+                    ((UIImage) findById("img_speed")).setImage("data/res/ic_speed_2.png");
                     break;
                 case 1:
-                    ((UIImage) findById("img_speed")).setImagePath("data/res/ic_speed_1.png");
+                    ((UIImage) findById("img_speed")).setImage("data/res/ic_speed_1.png");
                     break;
                 default:
-                    ((UIImage) findById("img_speed")).setImagePath("data/res/ic_speed_0.png");
+                    ((UIImage) findById("img_speed")).setImage("data/res/ic_speed_0.png");
                     break;
             }
         }

@@ -35,7 +35,7 @@ public class PanelJobsModule extends GameUIModule {
 					view.setPosition(0, index * 24);
 //                view.setOnClickListener(new OnClickListener() {
 //                    @Override
-//                    public void onClick(View view) {
+//                    public void onClickListener(View view) {
 //                    }
 //                });
 //                view.setOnFocusListener(new LinkFocusListener());

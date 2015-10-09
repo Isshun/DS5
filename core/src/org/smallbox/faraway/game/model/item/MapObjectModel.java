@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.item;
 
+import org.smallbox.faraway.game.model.ObjectModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobBuild;
@@ -7,7 +8,7 @@ import org.smallbox.faraway.game.model.job.JobBuild;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MapObjectModel {
+public abstract class MapObjectModel extends ObjectModel {
     private static int 		    _maxId;
 
     private int			        _id;
@@ -189,11 +190,11 @@ public abstract class MapObjectModel {
         }
     }
 
-    public void addComponent(ConsumableModel consumable) {
+    public int addComponent(ConsumableModel consumable) {
         throw new RuntimeException("add component on MapObjectItem is not allowed");
     }
 
-    public List<ConsumableModel> 	getComponents() {
+    public List<BuildableMapObject.ComponentModel> 	getComponents() {
         throw new RuntimeException("get component on MapObjectItem is not allowed");
     }
 

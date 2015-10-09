@@ -70,6 +70,7 @@ MENU_CHARACTER_PRIORITIES: [Priorities]
 MENU_CHARACTER_STATS: [Health]
 
 Food: Nourriture
+Joy: Divertissement
 Gasoline: Essence
 Matter: Matériaux
 Water: Eau

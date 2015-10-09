@@ -64,7 +64,7 @@ game.data:extend(
                     end)
 
                     image = game.ui:createImage()
-                    image:setImagePath("data/items/" .. value.fileName .. ".png")
+                    image:setImage("data/items/" .. value.fileName .. ".png")
                     image:setSize(32, 32)
                     image:setPosition(10, 10)
                     bt_item:addView(image)

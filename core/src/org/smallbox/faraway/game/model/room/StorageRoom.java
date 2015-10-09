@@ -147,7 +147,7 @@
 //				String str = StringUtils.getDashedString(info.label, String.valueOf(itemInfos.getRoom(info)), Constant.NB_COLUMNS - 4);
 //				_options.options.add(new RoomOption(str, SpriteManager.getInstance().getIconDrawable(info), new OnClickListener() {
 //					@Override
-//					public void onClick(View view) {
+//					public void onClickListener(View view) {
 //						UserInterface.getInstance().select(finalInfo);
 //					}
 //				}));

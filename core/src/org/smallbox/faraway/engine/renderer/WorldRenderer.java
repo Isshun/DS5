@@ -211,8 +211,8 @@ public class WorldRenderer extends BaseRenderer {
         if (item != null && item.getX() == x && item.getY() == y) {
 
             // Display components
-            for (ConsumableModel component: item.getComponents()) {
-                SpriteModel sprite = _spriteManager.getItem(component, component.getCurrentFrame());
+            for (BuildableMapObject.ComponentModel component: item.getComponents()) {
+                SpriteModel sprite = _spriteManager.getItem(component.info, 0);
                 if (sprite != null) {
                     if (item.getInfo().storage != null && item.getInfo().storage.components != null) {
                         layer.draw(sprite,
@@ -225,8 +225,8 @@ public class WorldRenderer extends BaseRenderer {
             }
 
             // Display crafts
-            for (ConsumableModel component: item.getComponents()) {
-                SpriteModel sprite = _spriteManager.getItem(component, component.getCurrentFrame());
+            for (BuildableMapObject.ComponentModel component: item.getComponents()) {
+                SpriteModel sprite = _spriteManager.getItem(component.info, 0);
                 if (sprite != null) {
                     if (item.getInfo().storage != null && item.getInfo().storage.crafts != null) {
                         layer.draw(sprite,

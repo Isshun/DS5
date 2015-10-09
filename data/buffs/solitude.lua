@@ -1,13 +1,13 @@
 function OnUpdate(game, character)
     if character.needs.relation < 1 then
-        return {"About to going crazy", 3, -15 }
+        return {message = "About to going crazy", level = 3, mood = -15 }
     end
 
     if character.needs.relation < 50 then
-        return {"Begins to talk to himself", 2, -10 }
+        return {message = "Begins to talk to himself", level = 2, mood = -10 }
     end
 
     if character.needs.relation < 80 then
-        return {"Feeling lonely", 1, -5 }
+        return {message = "Feeling lonely", level = 1, mood = -5 }
     end
 end

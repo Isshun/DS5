@@ -113,4 +113,10 @@ public class UIEventManager {
 		_onRightClickListeners.clear();
 		_onFocusListeners.clear();
 	}
+
+	public void removeListeners(View view) {
+		_onRightClickListeners.remove(view);
+		_onClickListeners.remove(view);
+		_onFocusListeners.remove(view);
+	}
 }

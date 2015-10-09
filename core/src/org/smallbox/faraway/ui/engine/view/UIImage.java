@@ -30,7 +30,7 @@ public class UIImage extends View {
 		}
 	}
 
-	public void setImagePath(String path) {
+	public void setImage(String path) {
 		if (!path.equals(_path)) {
 			_sprite = null;
             _path = path;

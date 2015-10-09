@@ -1,5 +1,3 @@
-resource = nil
-
 game.data:extend(
     {
         {
@@ -16,11 +14,12 @@ game.data:extend(
                 background = 0x121c1e,
                 views = {
                     { type = "label", id = "lb_name", text = "name", text_size = 32, padding = 18},
+                    { type = "label", id = "lb_content", text = "name", text_size = 16, position = {0, 40}, padding = 18},
                     { type = "label", id = "bt_close", text = "[close]", text_size = 22, position = {650, 10}, background = 0x885566, size = {80, 32}, padding = 10, on_click = function()
-                        game.events:send("close_encyclopedia")
+                        game.events:send("encyclopedia.close")
                     end},
 
-                    { type = "view", id = "view_plant", position = {10, 54}, views = {
+                    { type = "view", id = "view_plant", visible = false, position = {10, 54}, views = {
                         { type = "label", text = "Growing states", text_size = 24, padding = 10},
                         { type = "list", id = "list_plant", position = {10, 45} },
                     }}
@@ -32,9 +31,19 @@ game.data:extend(
                     view:setVisible(false)
                 end
 
+                if event == "encyclopedia.close" then
+                    view:setVisible(false)
+                end
+
+                if event == "encyclopedia.open" then
+                    view:setVisible(true)
+                    view:findById("view_plant"):setVisible(false)
+                    view:findById("lb_name"):setText(data[1])
+                    view:findById("lb_content"):setText(data[2])
+                end
+
                 if event == "encyclopedia.open_resource" then
-                    resource = data;
-                    local info = resource:getInfo()
+                    local info = data:getInfo()
 
                     view:setVisible(true)
                     view:findById("lb_name"):setText(info.label)
@@ -73,11 +82,6 @@ game.data:extend(
                             listPlant:addView(viewState)
                         end
                     end
-                end
-
-                if event == "encyclopedia.close" then
-                    view:setVisible(false)
-                    resource = nil
                 end
             end,
         },

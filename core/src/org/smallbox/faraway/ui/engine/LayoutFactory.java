@@ -167,7 +167,7 @@ public class LayoutFactory {
         }
 
         if (entry.path != null) {
-            imageView.setImagePath(entry.path);
+            imageView.setImage(entry.path);
         }
 
         return imageView;

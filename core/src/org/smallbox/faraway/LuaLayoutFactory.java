@@ -67,7 +67,7 @@ public class LuaLayoutFactory {
 
                 LuaValue src = value.get("src");
                 if (!src.isnil()) {
-                    image.setImagePath(src.toString());
+                    image.setImage(src.toString());
                 }
 
                 LuaValue textureRect = value.get("texture_rect");

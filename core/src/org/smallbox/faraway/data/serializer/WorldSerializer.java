@@ -1,6 +1,7 @@
 package org.smallbox.faraway.data.serializer;
 
 import com.ximpleware.*;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.base.WorldModule;
@@ -8,6 +9,8 @@ import org.smallbox.faraway.util.FileUtils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WorldSerializer implements SerializerInterface {
 
@@ -52,13 +55,29 @@ public class WorldSerializer implements SerializerInterface {
         FileUtils.write(fos, "<item id='" + item.getId() + "' name='" + item.getInfo().name + "'>");
         FileUtils.write(fos, "<health>" + item.getHealth() + "</health>");
         FileUtils.write(fos, "<progress>" + item.getProgress() + "</progress>");
+        if (!item.isComplete()) {
+            writeBuildingInfo(fos, item);
+        }
         FileUtils.write(fos, "</item>");
+    }
+
+    private void writeBuildingInfo(FileOutputStream fos, BuildableMapObject object) throws IOException {
+        FileUtils.write(fos, "<building currentBuilding='" + object.getCurrentBuild() + "'>");
+        FileUtils.write(fos, "<components>");
+        for (BuildableMapObject.ComponentModel component: object.getComponents()) {
+            FileUtils.write(fos, "<component currentQuantity = '" + component.currentQuantity + "' neededQuantity = '" + component.neededQuantity + "'>" + component.info.name + "</component>");
+        }
+        FileUtils.write(fos, "</components>");
+        FileUtils.write(fos, "</building>");
     }
 
     private void writeStructure(FileOutputStream fos, StructureModel structure) throws IOException {
         FileUtils.write(fos, "<structure id='" + structure.getId() + "' name='" + structure.getInfo().name + "'>");
         FileUtils.write(fos, "<health>" + structure.getHealth() + "</health>");
         FileUtils.write(fos, "<progress>" + structure.getProgress() + "</progress>");
+        if (!structure.isComplete()) {
+            writeBuildingInfo(fos, structure);
+        }
         FileUtils.write(fos, "</structure>");
     }
 
@@ -196,30 +215,86 @@ public class WorldSerializer implements SerializerInterface {
         }
     }
 
-    private void readItem(AutoPilot apElement, VTDNav vn, WorldModule manager, int x, int y, int z) throws NavException, XPathEvalException {
+    private void readItem(AutoPilot apElement, VTDNav vn, WorldModule manager, int x, int y, int z) throws NavException, XPathEvalException, XPathParseException {
         String name = vn.toString(vn.getAttrVal("name"));
         int id = vn.parseInt(vn.getAttrVal("id"));
         int health = 0;
         int progress = 0;
+        int currentBuild = 0;
+        boolean complete = true;
+        List<BuildableMapObject.ComponentModel> components = null;
 
+        vn.push();
         while (apElement.evalXPath() != -1) {
             switch (vn.toString(vn.getCurrentIndex())) {
                 case "health":
                     health = (int)vn.parseDouble(vn.getText());
                     break;
-
                 case "progress":
                     progress = vn.parseInt(vn.getText());
+                    break;
+                case "building":
+                    complete = false;
+                    currentBuild = vn.parseInt(vn.getAttrVal("currentBuilding"));
+                    components = readBuilding(vn);
                     break;
             }
         }
         apElement.resetXPath();
+        vn.pop();
 
         ItemModel item = (ItemModel)manager.putObject(name, x, y, z, progress);
         if (item != null) {
             item.setId(id);
             item.setHealth(health);
+            item.setComplete(complete);
+            item.setBuild(currentBuild, 10);
+            if (components != null) {
+                item.setComponents(components);
+            }
         }
+    }
+
+    private List<BuildableMapObject.ComponentModel> readBuilding(VTDNav vn) throws NavException, XPathEvalException, XPathParseException {
+        List<BuildableMapObject.ComponentModel> components = null;
+        vn.push();
+
+        AutoPilot apElement = new AutoPilot(vn);
+        apElement.selectXPath("*");
+
+        while (apElement.evalXPath() != -1) {
+            switch (vn.toString(vn.getCurrentIndex())) {
+                case "components":
+                    components = readBuildingComponents(vn);
+                    break;
+            }
+        }
+//        apElement.resetXPath();
+        vn.pop();
+        return components;
+    }
+
+    private List<BuildableMapObject.ComponentModel> readBuildingComponents(VTDNav vn) throws NavException, XPathEvalException, XPathParseException {
+        List<BuildableMapObject.ComponentModel> components = new ArrayList<>();
+
+        vn.push();
+
+        AutoPilot apElement = new AutoPilot(vn);
+        apElement.selectXPath("*");
+
+        while (apElement.evalXPath() != -1) {
+            switch (vn.toString(vn.getCurrentIndex())) {
+                case "component":
+                    components.add(new BuildableMapObject.ComponentModel(
+                            GameData.getData().getItemInfo(vn.toString(vn.getText())),
+                            vn.parseInt(vn.getAttrVal("neededQuantity")),
+                            vn.parseInt(vn.getAttrVal("currentQuantity"))));
+                    break;
+            }
+        }
+
+        vn.pop();
+        return components;
     }
 
 }

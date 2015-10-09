@@ -121,6 +121,26 @@ public class SpriteManager {
         return getSprite(item.getInfo(), 0, 0, 255, false);
     }
 
+    public SpriteModel getItem(ItemInfo info, int tile) {
+        if (info == null) {
+            return null;
+        }
+
+        if (!info.isStructure) {
+            if (info.isResource) {
+                return null;
+//                return getResource(info);
+            }
+
+//            int alpha = Math.min(item.getScience() == 0 ? 255 : 75 + 180 / item.getScience() * (int)item.getProgress(), 255);
+            int alpha = 255;
+
+            return getSprite(info, 0, 0, alpha, false);
+        }
+
+        return getSprite(info, 0, 0, 255, false);
+    }
+
     public SpriteModel getItem(MapObjectModel item) {
         return getItem(item, 0);
     }

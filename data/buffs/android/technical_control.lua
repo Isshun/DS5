@@ -3,5 +3,5 @@ function OnStart(game, character)
 end
 
 function OnUpdate(game, character)
-    return {"Need to initiate maintenance cycle", 1, -5 }
+    return {message = "Need to initiate maintenance cycle", level = 1, mood = -5 }
 end

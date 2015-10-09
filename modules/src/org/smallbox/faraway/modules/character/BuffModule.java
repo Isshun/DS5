@@ -3,6 +3,7 @@ package org.smallbox.faraway.modules.character;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
+import org.smallbox.faraway.LuaEventsModel;
 import org.smallbox.faraway.engine.lua.LuaCharacterModel;
 import org.smallbox.faraway.engine.lua.LuaGameModel;
 import org.smallbox.faraway.game.Game;
@@ -11,8 +12,12 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.ModuleManager;
+import org.smallbox.faraway.lua.extend.LuaExtendInterface;
+import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.util.FileUtils;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Collections;
 
 /**
@@ -32,24 +37,28 @@ public class BuffModule extends GameModule {
         for (CharacterModel character: ModuleHelper.getCharacterModule().getCharacters()) {
             if (character.isAlive()) {
                 character.getNeeds().happinessChange = 0;
-                int length = character._buffs.size();
+                int length = character.getBuffs().size();
                 for (int i = 0; i < length; i++) {
-                    BuffModel buff = character._buffs.get(i);
+                    BuffModel buff = character.getBuffs().get(i);
                     LuaValue ret = buff.globals.get("OnUpdate").call(_luaGame, buff.luaCharacter);
                     if (!ret.isnil()) {
-                        buff.message = ret.get(1).toString();
-                        buff.level = ret.get(2).toint();
-                        buff.mood = ret.get(3).toint();
+                        buff.message = ret.get("message").toString();
+                        buff.level = ret.get("level").toint();
+                        buff.mood = ret.get("mood").toint();
 
-                        LuaValue effects = ret.get(4).isnil() ? null : ret.get(4);
-                        if (effects != null) {
-                            for (int j = 0; j < effects.length(); j++) {
-                                if (Math.random() <= effects.get(j + 1).get(2).todouble()) {
-                                    printNotice("apply buff effect: " + effects.get(j + 1).get(1).toString() + " (" + buff.message + ")");
+                        if (!ret.get("on_click").isnil()) {
+                            buff.onClickListener = view -> ret.get("on_click").call();
+                        }
+
+                        if (!ret.get("effect").isnil()) {
+                            LuaValue luaEffects = ret.get("effect");
+                            for (int j = 0; j < luaEffects.length(); j++) {
+                                if (Math.random() <= luaEffects.get(j + 1).get(2).todouble()) {
+                                    printNotice("apply buff effect: " + luaEffects.get(j + 1).get(1).toString() + " (" + buff.message + ")");
                                     ((DiseaseModule) ModuleManager.getInstance().getModule(DiseaseModule.class)).apply(
                                             character,
-                                            effects.get(j + 1).get(1).toString(),
-                                            effects.get(j + 1).get(3));
+                                            luaEffects.get(j + 1).get(1).toString(),
+                                            luaEffects.get(j + 1).get(3));
                                 }
                             }
                         }
@@ -59,7 +68,7 @@ public class BuffModule extends GameModule {
                         buff.level = 0;
                     }
                 }
-                Collections.sort(character._buffs, (b1, b2) -> b2.mood - b1.mood);
+                Collections.sort(character.getBuffs(), (b1, b2) -> b2.mood - b1.mood);
             }
         }
 //        Game.getInstance().notify(observer -> observer.onCloseQuest(quest));
@@ -71,20 +80,27 @@ public class BuffModule extends GameModule {
 
         // Load lua scripts
         FileUtils.listRecursively("data/buffs/").stream().filter(file -> file.getName().endsWith(".lua")).forEach(file -> {
-            BuffModel buff = new BuffModel();
-            buff.globals = JsePlatform.standardGlobals();
-            buff.globals.get("dofile").call(LuaValue.valueOf(file.getAbsolutePath()));
-            buff.luaCharacter = luaCharacter;
+            try {
+                BuffModel buff = new BuffModel();
+                buff.globals = JsePlatform.standardGlobals();
+                buff.globals.load("function main(g)\n game = g\n end", "main").call();
+                buff.globals.get("main").call(CoerceJavaToLua.coerce(new org.smallbox.faraway.LuaGameModel(null, new LuaEventsModel(), UserInterface.getInstance(), null)));
+                buff.globals.load(new FileReader(file), file.getName()).call();
+//            buff.globals.get("dofile").call(LuaValue.valueOf(file.getAbsolutePath()));
+                buff.luaCharacter = luaCharacter;
 
-            LuaValue onStart = buff.globals.get("OnStart");
-            if (!onStart.isnil()) {
-                LuaValue ret = onStart.call(_luaGame, buff.luaCharacter);
-                if (!ret.isnil() && !ret.toboolean()) {
-                    return;
+                LuaValue onStart = buff.globals.get("OnStart");
+                if (!onStart.isnil()) {
+                    LuaValue ret = onStart.call(_luaGame, buff.luaCharacter);
+                    if (!ret.isnil() && !ret.toboolean()) {
+                        return;
+                    }
                 }
-            }
 
-            character.addBuff(buff);
+                character.addBuff(buff);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         });
     }
 }

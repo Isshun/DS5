@@ -60,7 +60,7 @@ public class PlanetPage extends MainMenuPage {
             ((UILabel)view.findById("lb_type")).setText(planet.type);
 
             if (planet.image != null) {
-                ((UIImage) view.findById("img_planet")).setImagePath(planet.image.thumb);
+                ((UIImage) view.findById("img_planet")).setImage(planet.image.thumb);
             }
 
             view.setOnClickListener(v -> {

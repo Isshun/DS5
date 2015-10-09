@@ -26,9 +26,9 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.OnMoveListener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public abstract class CharacterModel extends MovableModel {
 
@@ -108,7 +108,7 @@ public abstract class CharacterModel extends MovableModel {
     private ParcelModel                 _toParcel;
     private ParcelModel                 _fromParcel;
     private double                      _moveStep;
-    public List<BuffModel>              _buffs;
+    private List<BuffModel>             _buffs;
     public List<DiseaseModel>           _diseases;
     protected CharacterTypeInfo         _type;
 
@@ -178,7 +178,7 @@ public abstract class CharacterModel extends MovableModel {
     public abstract String          getNeedViewPath();
     public CharacterTypeInfo        getType() { return _type; }
     public String                   getTypeName() { return _type.name; }
-    public TimeTableModel getTimetable() { return _timeTable; }
+    public TimeTableModel           getTimetable() { return _timeTable; }
 
     public abstract String		    getName();
 
@@ -247,6 +247,10 @@ public abstract class CharacterModel extends MovableModel {
 
     public List<BuffModel> getBuffs() {
         return _buffs;
+    }
+
+    public List<BuffModel> getActiveBuffs() {
+        return _buffs.stream().filter(buff -> buff.level > 0).collect(Collectors.toList());
     }
 
     public void update() {

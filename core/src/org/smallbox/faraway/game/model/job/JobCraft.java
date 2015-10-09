@@ -6,10 +6,7 @@ import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.area.StorageAreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.item.ConsumableModel;
-import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.item.ItemModel;
-import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.base.AreaModule;
@@ -194,8 +191,10 @@ public class JobCraft extends BaseBuildJobModel {
     private JobActionReturn closeOrQuit(CharacterModel character) {
 
         // Unload factory
-        for (ConsumableModel component: _mainItem.getComponents()) {
-            ModuleHelper.getWorldModule().putConsumable(component, _mainItem.getX(), _mainItem.getY());
+        for (BuildableMapObject.ComponentModel component: _mainItem.getComponents()) {
+            ConsumableModel consumable = new ConsumableModel(component.info);
+            consumable.setQuantity(component.currentQuantity);
+            ModuleHelper.getWorldModule().putConsumable(consumable, _mainItem.getX(), _mainItem.getY());
         }
 
         // TODO: wrong location
