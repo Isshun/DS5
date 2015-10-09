@@ -44,18 +44,16 @@ public class FloraModule extends GameModule {
     protected void onUpdate(int tick) {
         double light = ModuleHelper.getWorldModule().getLight() * 100;
         double temperature = _temperatureModule.getTemperature();
-        for (ResourceModel resource: _plants) {
-            if (resource.getParcel().isExterior()) {
-                // Growing
-                if (resource.getQuantity() < resource.getInfo().plant.mature) {
-                    grow(resource, light, temperature);
-                }
-                // Plan to gather
-                else if (resource.getParcel().getArea() != null && resource.getParcel().getArea() instanceof GardenAreaModel) {
-                    JobHelper.addGather(resource);
-                }
+        // Growing
+// Plan to gather
+        _plants.stream().filter(resource -> resource.getParcel().isExterior()).forEach(resource -> {
+            grow(resource, light, temperature);
+
+            // Plan to gather
+            if (resource.getParcel().getArea() != null && resource.getParcel().getArea() instanceof GardenAreaModel) {
+                JobHelper.addGather(resource);
             }
-        }
+        });
     }
 
     public void grow(ResourceModel resource, double light, double temperature) {
@@ -71,7 +69,7 @@ public class FloraModule extends GameModule {
         }
 
         if (bestState != null) {
-            resource.addQuantity(growing * bestValue);
+            resource.setQuantity(Math.min(resource.getInfo().plant.mature, resource.getQuantity() + (growing * bestValue)));
             resource.setGrowRate(bestValue);
             resource.setGrowState(bestState);
         }

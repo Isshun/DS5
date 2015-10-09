@@ -20,7 +20,7 @@ public class LuaCursorExtend implements LuaExtendInterface {
     }
 
     @Override
-    public void extend(LuaModuleManager luaModuleManager, Globals globals, LuaValue value) {
+    public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) {
         final ColorView resItem = ViewFactory.getInstance().createColorView(32, 32);
         resItem.setBackgroundColor(value.get("default").get("color").tolong());
 

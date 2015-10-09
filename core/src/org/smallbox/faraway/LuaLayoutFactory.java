@@ -4,6 +4,8 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.luaj.vm2.lib.jse.CoerceLuaToJava;
+import org.smallbox.faraway.game.model.ObjectModel;
 import org.smallbox.faraway.ui.UIGrid;
 import org.smallbox.faraway.ui.UIList;
 import org.smallbox.faraway.ui.engine.UIEventManager;
@@ -11,6 +13,8 @@ import org.smallbox.faraway.ui.engine.view.UIFrame;
 import org.smallbox.faraway.ui.engine.view.UIImage;
 import org.smallbox.faraway.ui.engine.view.UILabel;
 import org.smallbox.faraway.ui.engine.view.View;
+
+import java.util.Collection;
 
 /**
  * Created by Alex on 28/09/2015.
@@ -101,6 +105,8 @@ public class LuaLayoutFactory {
         }
 
         if (view != null) {
+            LuaValue luaView = CoerceJavaToLua.coerce(view);
+
             LuaValue id = value.get("id");
             if (!id.isnil()) {
                 view.setId(id.toString().hashCode());
@@ -128,6 +134,29 @@ public class LuaLayoutFactory {
                 view.setPadding(padding.toint(), padding.toint());
             }
 
+            LuaValue adapter = value.get("adapter");
+            if (!adapter.isnil()) {
+                LuaValue onBind = adapter.get("on_bind");
+                LuaValue subview = adapter.get("view");
+                Collection<ObjectModel> data = (Collection)CoerceLuaToJava.coerce(adapter.get("data"), Collection.class);
+                view.setAdapter(new UIAdapter(data, new UIAdapter.OnCreateView() {
+                    @Override
+                    public View onCreateView() {
+                        return createView(luaModuleManager, globals, subview);
+                    }
+
+                    @Override
+                    public void onBindView(View subview, ObjectModel data) {
+                        try {
+                            onBind.call(CoerceJavaToLua.coerce(subview), CoerceJavaToLua.coerce(data));
+                        } catch (LuaError e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }));
+                view.setPadding(padding.toint(), padding.toint());
+            }
+
             LuaValue onClick = value.get("on_click");
             if (!onClick.isnil()) {
                 UIEventManager.getInstance().setOnClickListener(view, v -> {
@@ -145,10 +174,9 @@ public class LuaLayoutFactory {
 
             LuaValue onEvent = value.get("on_event");
             if (!onEvent.isnil()) {
-                LuaValue luaView = CoerceJavaToLua.coerce(view);
-                luaModuleManager.addLuaEventListener((event, luaData) -> {
+                luaModuleManager.addLuaEventListener((event, luaData, luaTag) -> {
                     try {
-                        onEvent.call(LuaValue.valueOf(event), luaView, luaData);
+                        onEvent.call(luaTag.isnil() ? LuaValue.valueOf(event) : luaTag, luaView, luaData);
                     } catch (LuaError e) {
                         e.printStackTrace();
                     }
@@ -157,7 +185,6 @@ public class LuaLayoutFactory {
 
             LuaValue onLoad = value.get("on_load");
             if (!onLoad.isnil()) {
-                LuaValue luaView = CoerceJavaToLua.coerce(view);
                 luaModuleManager.addLuaLoadListener(() -> {
                     try {
                         onLoad.call(luaView);
@@ -169,7 +196,6 @@ public class LuaLayoutFactory {
 
             LuaValue onRefresh = value.get("on_refresh");
             if (!onRefresh.isnil()) {
-                LuaValue luaView = CoerceJavaToLua.coerce(view);
                 luaModuleManager.addLuaRefreshListener(() -> {
                     try {
                         onRefresh.call(luaView);
@@ -181,8 +207,12 @@ public class LuaLayoutFactory {
 
             LuaValue subViews = value.get("views");
             if (!subViews.isnil()) {
-                for (int i = 1; i <= subViews.length(); i++) {
-                    view.addView(LuaLayoutFactory.createView(luaModuleManager, globals, subViews.get(i)));
+                if (subViews.get("type").isnil()) {
+                    for (int i = 1; i <= subViews.length(); i++) {
+                        view.addView(LuaLayoutFactory.createView(luaModuleManager, globals, subViews.get(i)));
+                    }
+                } else {
+                    view.addView(LuaLayoutFactory.createView(luaModuleManager, globals, subViews));
                 }
             }
         }

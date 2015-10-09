@@ -2,6 +2,7 @@ package org.smallbox.faraway.lua.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.LuaModule;
 import org.smallbox.faraway.LuaModuleManager;
 
 /**
@@ -9,5 +10,5 @@ import org.smallbox.faraway.LuaModuleManager;
  */
 public interface LuaExtendInterface {
     boolean accept(String type);
-    void extend(LuaModuleManager luaModuleManager, Globals globals, LuaValue value);
+    void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value);
 }

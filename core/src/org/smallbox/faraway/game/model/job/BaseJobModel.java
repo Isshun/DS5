@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.model.job;
 
 import org.smallbox.faraway.game.helper.ItemFinder;
+import org.smallbox.faraway.game.model.ObjectModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoAction;
@@ -8,7 +9,7 @@ import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
-public abstract class BaseJobModel {
+public abstract class BaseJobModel extends ObjectModel {
     public void onDraw(onDrawCallback callback) {
         callback.onDraw(_posX, _posY);
     }

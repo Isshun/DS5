@@ -1,5 +1,6 @@
 package org.smallbox.faraway.engine.lua;
 
+import org.smallbox.faraway.game.model.ObjectModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.character.base.CharacterNeeds;
 import org.smallbox.faraway.game.model.character.base.CharacterStats;
@@ -9,8 +10,8 @@ import org.smallbox.faraway.game.model.item.ParcelModel;
 /**
  * Created by Alex on 19/06/2015.
  */
-public class LuaCharacterModel {
-    public final int                id;
+public class LuaCharacterModel extends ObjectModel {
+//    public final int                id;
     public final String             name;
     public final CharacterNeeds     needs;
     public final CharacterStats     stats;
@@ -21,7 +22,7 @@ public class LuaCharacterModel {
     public final String             faction;
 
     public LuaCharacterModel(CharacterModel character) {
-        this.id = character.getId();
+//        this.id = character.getId();
         this.name = character.getInfo().getName();
         this.faction = "fremen";
         this.needs = character.getNeeds();

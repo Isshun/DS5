@@ -114,10 +114,10 @@ public class Application implements GameEventListener {
                 _game.toggleRunning();
                 break;
 
-// Reload UI
-            case F5:
-                UserInterface.getInstance().reload();
-                return;
+//// Reload UI
+//            case F5:
+//                UserInterface.getInstance().reload();
+//                return;
 
 // Kill
             case F4:
@@ -125,16 +125,16 @@ public class Application implements GameEventListener {
                 return;
 
 // Save
-            case S:
-                if (modifier == Modifier.CONTROL) {
+            case F5:
+                if (true || modifier == Modifier.CONTROL) {
                     _game.save(_game.getFileName());
                     return;
                 }
                 break;
 
 // Load
-            case L:
-                if (modifier == Modifier.CONTROL) {
+            case F8:
+                if (true || modifier == Modifier.CONTROL) {
                     try {
                         _menu = new MenuLoad(path -> {
 // TODO NULL
@@ -162,6 +162,8 @@ public class Application implements GameEventListener {
         }
 
         _gameInterface.onKeyEvent(action, key, modifier);
+
+        _game.notify(observer -> observer.onKeyPress(key));
     }
 
     @Override
@@ -250,7 +252,6 @@ public class Application implements GameEventListener {
     }
 
     private void startGame(boolean load) {
-
         long time = System.currentTimeMillis();
         _mainRenderer.init(GameData.config, _game);
         Log.notice("Init renderers (" + (System.currentTimeMillis() - time) + "ms)");

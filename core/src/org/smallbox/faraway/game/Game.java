@@ -170,4 +170,8 @@ public class Game {
         });
 //        _observers.stream().forEach(action::accept);
     }
+
+    public LuaModuleManager getLuaModuleManager() {
+        return _luaModuleManager;
+    }
 }

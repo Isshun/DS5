@@ -2,6 +2,7 @@ game.data:extend(
 {
     {
         label = "Euglena Bloom",
+        id = "base.algae_1",
         type = "resource",
         category = "algae",
         size = {1, 1},
@@ -28,6 +29,7 @@ game.data:extend(
     },
     {
         label = "Chlorella",
+        id = "base.algae_2",
         type = "resource",
         category = "algae",
         size = {1, 1},
@@ -55,6 +57,7 @@ game.data:extend(
     {
         label = "Eel grass",
         sciLabel = "Zostera marina",
+        id = "base.algae_3",
         type = "resource",
         category = "algae",
         size = {1, 1},
@@ -81,6 +84,7 @@ game.data:extend(
     },
     {
         label = "Green Alagae",
+        id = "base.algae_4",
         type = "resource",
         category = "algae",
         size = {1, 1},
@@ -108,6 +112,7 @@ game.data:extend(
     {
         label = "Golden Brown Algae",
         sciLabel = "Chrysophyceae",
+        id = "base.algae_5",
         type = "resource",
         category = "algae",
         size = {1, 1},

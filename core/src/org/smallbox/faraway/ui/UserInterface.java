@@ -29,6 +29,7 @@ import org.smallbox.faraway.ui.panel.PanelConsole;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
+import sun.security.x509.GeneralSubtrees;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +38,14 @@ public class UserInterface implements GameEventListener {
     private int _keyPressX;
     private int _keyPressY;
     public List<View> _views = new ArrayList<>();
+    private List<View>  _moduleViews = new ArrayList<>();
 
     public UserInteraction getInteraction() {
         return _interaction;
+    }
+
+    public void addModuleView(View view) {
+        _moduleViews.add(view);
     }
 
     private static class ContextEntry {
@@ -411,7 +417,8 @@ public class UserInterface implements GameEventListener {
 //            }
 //        }
 
-        _views.stream().filter(View::isVisible).forEach(view -> view.draw(renderer, 0, 0));
+        _views.stream().filter(view -> view.isVisible() && (view.getModule() == null || view.getModule().isActivate())).forEach(view -> view.draw(renderer, 0, 0));
+        _moduleViews.stream().filter(view -> view.isVisible() && (view.getModule() == null || view.getModule().isActivate())).forEach(view -> view.draw(renderer, 0, 0));
 
         if (_context.isVisible()) {
             _context.draw(renderer, 0, 0);
@@ -656,6 +663,10 @@ public class UserInterface implements GameEventListener {
 
     public UICursor createCursor(String resId) {
         return GameData.getData().cursors.get(resId);
+    }
+
+    public void clearSelection() {
+        _selector.clean();
     }
 
 }

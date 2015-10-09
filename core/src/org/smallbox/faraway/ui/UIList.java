@@ -22,6 +22,8 @@ public class UIList extends View {
             subView.setMarginTop(offset);
             offset += subView.getHeight();
         }
+
+        setSize(_width, offset);
     }
 
     @Override

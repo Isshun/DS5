@@ -6,7 +6,7 @@ import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.Utils;
 
-public abstract class MovableModel {
+public abstract class MovableModel extends ObjectModel {
 
 	public double getMoveProgress() {
 		return _moveProgress;

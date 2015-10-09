@@ -19,4 +19,5 @@ dependencies {
     compile 'org.ogce:xpp3:1.1.6'
     compile 'org.yaml:snakeyaml:1.15'
     compile 'org.reflections:reflections:0.9.10'
+    compile 'org.json:json:20150729'
 }

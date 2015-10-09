@@ -1,0 +1,8 @@
+{
+  "id": "encyclopedia",
+  "name": "FarAway Encyclopedia Module",
+  "version": 0.1,
+  "required": [
+    {"module": "base", "min_version": 0.1}
+  ]
+}

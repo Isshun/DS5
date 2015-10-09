@@ -13,7 +13,7 @@ public class UILabel extends View {
 	private int _hash;
 
     private String                              _string;
-    private int                                 _textSize;
+    private int                                 _textSize = 14;
     private com.badlogic.gdx.graphics.Color     _gdxTextColor;
     private Color                               _textColor;
 
@@ -127,7 +127,7 @@ public class UILabel extends View {
 
     @Override
     public void draw(GDXRenderer renderer, int x, int y) {
-        super.draw(renderer, _x + x, _y + y);
+        super.draw(renderer, x, y);
 
         if (_isVisible) {
             if (true) {

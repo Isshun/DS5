@@ -1,5 +1,7 @@
 package org.smallbox.faraway.game;
 
+import org.smallbox.faraway.engine.GameEventListener;
+import org.smallbox.faraway.game.model.ObjectModel;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.area.AreaType;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
@@ -41,4 +43,6 @@ public interface GameObserver {
     default void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY) {}
     default void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY) {}
     default void onJobCreate(BaseJobModel job) {}
+    default void onCustomEvent(String tag, Object object) {}
+    default void onKeyPress(GameEventListener.Key key) {}
 }

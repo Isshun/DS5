@@ -7,7 +7,7 @@ public class ResourceModel extends ItemModel {
 	private int 	        	_tile;
 	private int 	        	_totalQuantity;
     private double          	_growRate;
-	private GrowingInfo _growState;
+	private GrowingInfo 		_growState;
 
 	public ResourceModel(ItemInfo info, int id) {
 		super(info, id);
@@ -40,6 +40,7 @@ public class ResourceModel extends ItemModel {
 	public int 		getQuantity() { return (int)_quantity; }
 	public double 	getRealQuantity() { return _quantity; }
 	public int 		getTile() { return _tile; }
+	public double 	getMaturity() { return _info.isPlant ? _quantity / _info.plant.mature : -1; }
 	public double 	getGrowRate() { return _growRate; }
 	public GrowingInfo getGrowState() { return _growState; }
 
@@ -54,4 +55,5 @@ public class ResourceModel extends ItemModel {
     public void 	setGrowRate(double growRate) { _growRate = growRate; }
 	public void 	setGrowState(GrowingInfo growState) { _growState = growState; }
 	public void 	setTile(int tile) { _tile = tile; }
+	public void 	setQuantity(double quantity) { _quantity = quantity; }
 }

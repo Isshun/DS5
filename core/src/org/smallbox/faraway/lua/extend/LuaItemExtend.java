@@ -2,6 +2,7 @@ package org.smallbox.faraway.lua.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.LuaModule;
 import org.smallbox.faraway.LuaModuleManager;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 
@@ -24,7 +25,7 @@ public class LuaItemExtend implements LuaExtendInterface {
     }
 
     @Override
-    public void extend(LuaModuleManager luaModuleManager, Globals globals, LuaValue value) {
+    public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) {
         ItemInfo itemInfo = new ItemInfo();
 
         itemInfo.name = getString(value, "name", null);

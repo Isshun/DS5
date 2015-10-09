@@ -1,9 +1,11 @@
 package org.smallbox.faraway.game.module;
 
+import org.smallbox.faraway.ModuleInfo;
 import org.smallbox.faraway.data.serializer.SerializerInterface;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
+import org.smallbox.faraway.game.model.ObjectModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 
 import java.util.ArrayList;
@@ -12,9 +14,11 @@ import java.util.List;
 /**
  * Created by Alex on 15/06/2015.
  */
-public abstract class GameModule implements GameObserver {
+public abstract class GameModule extends ObjectModel implements GameObserver {
     private final String TAG = getClass().getSimpleName();
+    private final ModuleInfo _info;
     private List<EventListener> _listeners;
+    private boolean _isActivate;
 
     public abstract class EventListener<T> {
         public abstract void onEvent(T data);
@@ -36,6 +40,8 @@ public abstract class GameModule implements GameObserver {
 
     public GameModule() {
         _isLoaded = loadOnStart();
+        _info = new ModuleInfo();
+        _info.name = TAG;
     }
 
     protected void addEventListener(String tag, EventListener<CharacterModel> listener) {
@@ -44,6 +50,8 @@ public abstract class GameModule implements GameObserver {
     }
 
     public void create() {
+        System.out.println("Load java module: " + _info.name);
+
         _listeners = new ArrayList<>();
         onLoaded();
         _isLoaded = true;
@@ -117,4 +125,17 @@ public abstract class GameModule implements GameObserver {
     public boolean isThirdParty() {
         return false;
     }
+
+    public void setActivate(boolean isActivate) {
+        _isActivate = isActivate;
+    }
+
+    public boolean isActivate() {
+        return _isActivate;
+    }
+
+    public ModuleInfo getInfo() {
+        return _info;
+    }
+
 }

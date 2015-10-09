@@ -1,0 +1,7 @@
+{
+  "id": "debug",
+  "name": "FarAway Debug Module",
+  "required": [
+    {"module": "base", "min_version": 42}
+  ]
+}

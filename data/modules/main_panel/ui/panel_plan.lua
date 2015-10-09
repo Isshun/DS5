@@ -18,7 +18,13 @@ game.data:extend(
                 { type = "label", size = {180, 40}, background = 0x8b9076, text = "Gather", text_size = 18, padding = 10, on_click = "game:setPlan('gather')"},
                 { type = "label", size = {180, 40}, background = 0x8b9076, text = "Cut", text_size = 18, padding = 10, on_click = "game:setPlan('cut')"},
             }},
-        }
+        },
+        on_event = function(event, view, data)
+            if event == game.events.on_key_press and data == "ESCAPE" then
+                view:setVisible(false)
+                game.ui:findById("panel_main"):setVisible(true)
+            end
+        end
     },
 }
 )

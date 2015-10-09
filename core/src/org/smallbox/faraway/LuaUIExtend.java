@@ -23,9 +23,10 @@ public class LuaUIExtend implements LuaExtendInterface {
     }
 
     @Override
-    public void extend(LuaModuleManager luaModuleManager, Globals globals, LuaValue value) {
+    public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) {
         UIFrame frame = new UIFrame(-1, -1);
         frame.addView(LuaLayoutFactory.createView(luaModuleManager, globals, value));
+        frame.setModule(module);
         UserInterface.getInstance()._views.add(frame);
     }
 }

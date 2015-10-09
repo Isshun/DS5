@@ -2,15 +2,19 @@ package org.smallbox.faraway.ui.engine.view;
 
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.smallbox.faraway.LuaModule;
+import org.smallbox.faraway.UIAdapter;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.game.model.ObjectModel;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -26,6 +30,9 @@ public abstract class View {
     protected int       _finalY;
     private int         _marginTop;
     private int         _marginLeft;
+    private UIAdapter   _adapter;
+    private int         _objectId;
+    private LuaModule _module;
 
     public void setTextAlign(boolean isAlignLeft, boolean isAlignTop) {
         _isAlignLeft = isAlignLeft;
@@ -46,6 +53,14 @@ public abstract class View {
         return (_finalX <= x && _finalX + _width >= x && _finalY <= y && _finalY + _height >= y);
     }
 
+    public void setModule(LuaModule module) {
+        _module = module;
+    }
+
+    public LuaModule getModule() {
+        return _module;
+    }
+
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };
 
     protected int               _width = -1;
@@ -53,7 +68,7 @@ public abstract class View {
     public int                  _x;
     public int                  _y;
     protected boolean			_isVisible;
-    protected Rectangle _rect;
+    protected Rectangle         _rect;
     protected int 				_paddingLeft;
     protected int				_paddingBottom;
     protected int 				_paddingRight;
@@ -91,6 +106,9 @@ public abstract class View {
     public void 		setParent(View parent) {
         _parent = parent;
     }
+    public void 		setAdapter(UIAdapter adapter) {
+        _adapter = adapter;
+    }
 
     public View         getParent() { return _parent; }
     public int 			getId() { return _id; }
@@ -105,7 +123,41 @@ public abstract class View {
             if (_backgroundColor != null) {
                 renderer.draw(_backgroundColor, _x + x, _y + y, _width, _height);
             }
+
+            if (_adapter != null && needRefresh(_adapter)) {
+                removeAllViews();
+                _adapter.setRefresh();
+                _adapter.getData().forEach(data -> {
+                    View subview = _adapter.getCallback().onCreateView();
+                    subview.setObjectId(data.id);
+                    _adapter.getCallback().onBindView(subview, data);
+                    addView(subview);
+                });
+            }
         }
+    }
+
+    private void setObjectId(int objectId) {
+        _objectId = objectId;
+    }
+
+    private boolean needRefresh(UIAdapter adapter) {
+        return true;
+//        if (adapter.getData().size() != _views.size()) {
+//            return true;
+//        }
+//        Iterator<ObjectModel> objIterator = adapter.getData().iterator();
+//        Iterator<View> subviewIterator = _views.iterator();
+//        while (objIterator.hasNext() && subviewIterator.hasNext()) {
+//            if (objIterator.next().id != subviewIterator.next().getObjectId()) {
+//                return true;
+//            }
+//        }
+//        return objIterator.hasNext() || subviewIterator.hasNext();
+    }
+
+    private int getObjectId() {
+        return _objectId;
     }
 
     public void setBackgroundColor(long color) {
@@ -167,6 +219,14 @@ public abstract class View {
         _paddingRight = r;
         _paddingBottom = t;
         _paddingLeft = r;
+        _invalid = true;
+    }
+
+    public void setPadding(int padding) {
+        _paddingTop = padding;
+        _paddingRight = padding;
+        _paddingBottom = padding;
+        _paddingLeft = padding;
         _invalid = true;
     }
 

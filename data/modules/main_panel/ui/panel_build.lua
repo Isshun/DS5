@@ -81,8 +81,15 @@ game.data:extend(
             end
             
         end,
-        on_event = function(eventId, view, data)
-            if (eventId == game.events.on_job_create) then
+        on_event = function(event, view, data)
+            if event == game.events.on_key_press and data == "ESCAPE" then
+                view:setVisible(false)
+                game.ui:findById("panel_main"):setVisible(true)
+                game:clearAction()
+                game.ui:clearCursor()
+            end
+
+            if (event == game.events.on_job_create) then
                 game:clearAction()
                 game.ui:clearCursor()
             end
