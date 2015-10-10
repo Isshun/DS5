@@ -4,19 +4,18 @@ import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.ui.UICursor;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.ColorView;
+import org.smallbox.faraway.ui.engine.views.UIFrame;
 
 /**
  * Created by Alex on 27/06/2015.
  */
 public class GatherCursor extends UICursor {
-    private final ColorView RES_ITEM;
+    private final UIFrame RES_ITEM;
 
     public GatherCursor() {
         super();
 
-        RES_ITEM = ViewFactory.getInstance().createColorView(32, 32);
+        RES_ITEM = new UIFrame(32, 32);
         RES_ITEM.setBackgroundColor(new Color(150, 255, 80, 140));
     }
 

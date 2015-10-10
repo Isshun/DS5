@@ -1,6 +1,6 @@
 package org.smallbox.faraway.ui.engine;
 
-import org.smallbox.faraway.ui.engine.view.View;
+import org.smallbox.faraway.ui.engine.views.View;
 
 import java.util.HashMap;
 import java.util.Map;

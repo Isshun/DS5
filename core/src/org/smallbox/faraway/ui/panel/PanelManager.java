@@ -6,8 +6,8 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.ColorView;
-import org.smallbox.faraway.ui.engine.view.UILabel;
+import org.smallbox.faraway.ui.engine.views.UIFrame;
+import org.smallbox.faraway.ui.engine.views.UILabel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.StringUtils;
 
@@ -29,7 +29,7 @@ public class PanelManager extends BaseRightPanel {
 	private List<PanelEntry> _entries;
 	private UILabel _lbSearch;
 
-	private ColorView 		_cursor;
+	private UIFrame _cursor;
 	private int				_line;
 
 	private int 			_nbResults;
@@ -58,7 +58,7 @@ public class PanelManager extends BaseRightPanel {
 	}
 
 	private void createView(ViewFactory factory) {
-		_cursor = factory.createColorView(8, 16);
+		_cursor = new UIFrame(8, 16);
 		_cursor.setBackgroundColor(Colors.LINK_INACTIVE);
 		_cursor.setPosition(86, 60);
 		addView(_cursor);

@@ -14,9 +14,9 @@
 //import org.smallbox.faraway.ui.LayoutModel;
 //import org.smallbox.faraway.ui.UserInterface;
 //import org.smallbox.faraway.ui.engine.ViewFactory;
-//import org.smallbox.faraway.ui.engine.view.UIFrame;
-//import org.smallbox.faraway.ui.engine.view.UILabel;
-//import org.smallbox.faraway.ui.engine.view.View;
+//import org.smallbox.faraway.ui.engine.views.UIFrame;
+//import org.smallbox.faraway.ui.engine.views.UILabel;
+//import org.smallbox.faraway.ui.engine.views.View;
 //
 //import java.util.stream.Collectors;
 //

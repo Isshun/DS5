@@ -4,8 +4,8 @@ import org.smallbox.faraway.Application;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.UIFrame;
-import org.smallbox.faraway.ui.engine.view.UILabel;
+import org.smallbox.faraway.ui.engine.views.UIFrame;
+import org.smallbox.faraway.ui.engine.views.UILabel;
 
 import java.io.File;
 

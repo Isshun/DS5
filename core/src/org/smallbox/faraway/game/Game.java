@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game;
 
-import org.smallbox.faraway.LuaModuleManager;
+import org.smallbox.faraway.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.data.factory.world.WorldFactory;
 import org.smallbox.faraway.data.serializer.GameSerializer;

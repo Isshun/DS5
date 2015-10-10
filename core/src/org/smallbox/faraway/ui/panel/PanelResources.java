@@ -7,7 +7,7 @@ import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.UILabel;
+import org.smallbox.faraway.ui.engine.views.UILabel;
 
 import java.util.HashMap;
 import java.util.Map;

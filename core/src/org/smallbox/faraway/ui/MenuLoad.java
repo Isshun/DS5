@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.UILabel;
+import org.smallbox.faraway.ui.engine.views.UILabel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.OnLoadListener;

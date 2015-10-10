@@ -5,7 +5,7 @@ import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.UIImage;
+import org.smallbox.faraway.ui.engine.views.UIImage;
 import org.smallbox.faraway.ui.panel.BasePanel;
 import org.smallbox.faraway.util.Constant;
 

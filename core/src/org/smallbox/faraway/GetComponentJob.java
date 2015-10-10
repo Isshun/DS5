@@ -5,13 +5,11 @@ import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.core.drawable.IconDrawable;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.MovableModel;
-import org.smallbox.faraway.game.model.ReceiptModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.BuildableMapObject;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.game.model.job.BaseBuildJobModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.base.BuildJob;
@@ -20,16 +18,12 @@ import org.smallbox.faraway.util.OnMoveListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by Alex on 09/10/2015.
  */
 public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJobModel {
-    private static int STATE_MOVE_TO_CONSUMABLE = 1;
-    private static int STATE_MOVE_TO_ITEM = 2;
-
     public static class PotentialConsumable {
         public ConsumableModel  consumable;
         public int              distance;
@@ -42,7 +36,6 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
 
     private final BuildableMapObject.ComponentModel     _component;
     private ConsumableModel                             _currentConsumable;
-    private int                                         _currentState;
     private List<PotentialConsumable>                   _potentialConsumables;
     private JobActionReturn                             _return = JobActionReturn.CONTINUE;
 
@@ -104,7 +97,6 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
     }
 
     private void moveToComponent() {
-        _currentState = STATE_MOVE_TO_CONSUMABLE;
         _currentConsumable = _potentialConsumables.get(0).consumable;
         _currentConsumable.lock(this);
         _message = "Move to " + _currentConsumable.getInfo().label;
@@ -124,7 +116,7 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
                     _character.addInventory(new ConsumableModel(_currentConsumable.getInfo()), missingQuantity);
                     _currentConsumable.setQuantity(_currentConsumable.getQuantity() - missingQuantity);
                 }
-                _potentialConsumables.remove(_currentConsumable);
+                _potentialConsumables.remove(0);
                 _currentConsumable.lock(null);
                 _currentConsumable = null;
 
@@ -150,8 +142,6 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
     protected void moveToMainItem() {
         _message = "Carry " + _character.getInventory().getInfo().label + " to " + _item.getInfo().label;
 
-        _currentState = STATE_MOVE_TO_ITEM;
-
         // TODO: Reliquat
         _posX = _item.getX();
         _posY = _item.getY();
@@ -160,22 +150,15 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
         _character.moveTo(this, _item.getParcel(), new OnMoveListener<CharacterModel>() {
             @Override
             public void onReach(BaseJobModel job, CharacterModel character) {
-//                int missingQuantity = _component.neededQuantity - _component.currentQuantity;
-//                if (_character.getInventory().getQuantity() <= missingQuantity) {
-//                    _component.currentQuantity += _character.getInventory().getQuantity();
-//                    _character.setInventory(null);
-//                } else {
-//                    _component.currentQuantity = _component.neededQuantity;
-//                    _character.getInventory().addQuantity(-missingQuantity);
-//                }
                 _item.addComponent(_character.getInventory());
 
+                // Clear inventory if consumable has been depleted
                 if (_character.getInventory().getQuantity() == 0) {
                     _character.setInventory(null);
                 }
 
                 // By-pass JobModule to start BuildJob without delay
-                if (_component.currentQuantity == _component.neededQuantity) {
+                if (_item.hasAllComponents()) {
                     ModuleHelper.getJobModule().addJob(new BuildJob(_item));
                 }
 

@@ -2,8 +2,8 @@ package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
-import org.smallbox.faraway.ui.engine.view.UILabel;
-import org.smallbox.faraway.ui.engine.view.View;
+import org.smallbox.faraway.ui.engine.views.UILabel;
+import org.smallbox.faraway.ui.engine.views.View;
 
 /**
  * Created by Alex on 25/06/2015.

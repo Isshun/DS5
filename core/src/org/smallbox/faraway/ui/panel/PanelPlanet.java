@@ -6,8 +6,7 @@ import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.model.planet.PlanetAreaModel;
 import org.smallbox.faraway.game.model.planet.PlanetModel;
 import org.smallbox.faraway.game.model.planet.RegionModel;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.ColorView;
+import org.smallbox.faraway.ui.engine.views.UIFrame;
 import org.smallbox.faraway.util.Constant;
 
 /**
@@ -25,7 +24,7 @@ public class PanelPlanet extends BasePanel {
     @Override
     protected void onDraw(GDXRenderer renderer, Viewport viewport) {
         if (_region != null) {
-            ColorView view = ViewFactory.getInstance().createColorView(10, 10);
+            UIFrame view = new UIFrame(10, 10);
             for (int x = 0; x < Constant.PLANET_WIDTH; x++) {
                 for (int y = 0; y < Constant.PLANET_HEIGHT; y++) {
                     PlanetAreaModel area = _planet.getAreas(x, y);

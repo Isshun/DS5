@@ -6,8 +6,8 @@
 //import org.smallbox.faraway.game.model.item.StructureModel;
 //import org.smallbox.faraway.ui.LayoutModel;
 //import org.smallbox.faraway.ui.UserInterface;
-//import org.smallbox.faraway.ui.engine.view.UIFrame;
-//import org.smallbox.faraway.ui.engine.view.UILabel;
+//import org.smallbox.faraway.ui.engine.views.UIFrame;
+//import org.smallbox.faraway.ui.engine.views.UILabel;
 //
 ///**
 // * Created by Alex on 01/06/2015.

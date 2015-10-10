@@ -2,10 +2,10 @@ package org.smallbox.faraway.ui.engine;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.ui.LayoutModel;
-import org.smallbox.faraway.ui.engine.view.UIFrame;
-import org.smallbox.faraway.ui.engine.view.UIImage;
-import org.smallbox.faraway.ui.engine.view.UILabel;
-import org.smallbox.faraway.ui.engine.view.View;
+import org.smallbox.faraway.ui.engine.views.UIFrame;
+import org.smallbox.faraway.ui.engine.views.UIImage;
+import org.smallbox.faraway.ui.engine.views.UILabel;
+import org.smallbox.faraway.ui.engine.views.View;
 import org.smallbox.faraway.ui.panel.BasePanel;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;

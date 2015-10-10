@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.module;
 
-import org.smallbox.faraway.ui.engine.view.UIFrame;
+import org.smallbox.faraway.ui.engine.views.UIFrame;
 
 /**
  * Created by Alex on 31/08/2015.

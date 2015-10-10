@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui.panel.info;
 
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.UILabel;
+import org.smallbox.faraway.ui.engine.views.UILabel;
 
 import java.util.ArrayList;
 import java.util.List;

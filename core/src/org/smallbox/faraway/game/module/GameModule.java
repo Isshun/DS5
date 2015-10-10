@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.module;
 
-import org.smallbox.faraway.ModuleInfo;
+import org.smallbox.faraway.module.ModuleInfo;
 import org.smallbox.faraway.data.serializer.SerializerInterface;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;

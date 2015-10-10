@@ -6,17 +6,16 @@ import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.module.ModuleHelper;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.ColorView;
+import org.smallbox.faraway.ui.engine.views.UIFrame;
 
 public abstract class UICursor {
-	protected ColorView RES_ODD;
-	protected ColorView RES_EDEN;
+	protected UIFrame RES_ODD;
+	protected UIFrame RES_EDEN;
 
 	public UICursor() {
-		RES_ODD = ViewFactory.getInstance().createColorView(32, 32);
+		RES_ODD = new UIFrame(32, 32);
 		RES_ODD.setBackgroundColor(new Color(100, 255, 100, 20));
-		RES_EDEN = ViewFactory.getInstance().createColorView(32, 32);
+		RES_EDEN = new UIFrame(32, 32);
 		RES_EDEN.setBackgroundColor(new Color(100, 255, 100, 40));
 	}
 

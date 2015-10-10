@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.game.module.ModuleManager;
 //import org.smallbox.faraway.ui.UserInterface.Mode;
 //import org.smallbox.faraway.ui.engine.ViewFactory;
-//import org.smallbox.faraway.ui.engine.view.UILabel;
+//import org.smallbox.faraway.ui.engine.views.UILabel;
 //import org.smallbox.faraway.util.Constant;
 //
 //public class PanelResource extends BasePanel {

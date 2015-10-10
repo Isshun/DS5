@@ -1,11 +1,9 @@
 package org.smallbox.faraway.core;
 
-import org.smallbox.faraway.core.ui.GDXColorView;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.ColorView;
-import org.smallbox.faraway.ui.engine.view.UIFrame;
-import org.smallbox.faraway.ui.engine.view.UIImage;
-import org.smallbox.faraway.ui.engine.view.UILabel;
+import org.smallbox.faraway.ui.engine.views.UIFrame;
+import org.smallbox.faraway.ui.engine.views.UIImage;
+import org.smallbox.faraway.ui.engine.views.UILabel;
 
 /**
  * Created by Alex on 04/06/2015.
@@ -33,18 +31,6 @@ public class GDXViewFactory extends ViewFactory {
         UILabel label = new UILabel();
         label.setSize(width, height);
         return label;
-    }
-
-    @Override
-    public ColorView createColorView() {
-        return new GDXColorView(100, 100);
-    }
-
-    @Override
-    public ColorView createColorView(int width, int height) {
-        GDXColorView view = new GDXColorView(width, height);
-        view.setSize(width, height);
-        return view;
     }
 
     @Override

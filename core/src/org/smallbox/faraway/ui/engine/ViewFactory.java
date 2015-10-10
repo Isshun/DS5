@@ -2,10 +2,9 @@ package org.smallbox.faraway.ui.engine;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.ui.LayoutModel;
-import org.smallbox.faraway.ui.engine.view.ColorView;
-import org.smallbox.faraway.ui.engine.view.UIFrame;
-import org.smallbox.faraway.ui.engine.view.UIImage;
-import org.smallbox.faraway.ui.engine.view.UILabel;
+import org.smallbox.faraway.ui.engine.views.UIFrame;
+import org.smallbox.faraway.ui.engine.views.UIImage;
+import org.smallbox.faraway.ui.engine.views.UILabel;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -34,8 +33,6 @@ public abstract class ViewFactory {
 
     public abstract UILabel     createTextView();
     public abstract UILabel     createTextView(int width, int height);
-    public abstract ColorView   createColorView();
-    public abstract ColorView   createColorView(int width, int height);
     public abstract UIFrame createFrameLayout();
     public abstract UIFrame createFrameLayout(int width, int height);
     public abstract UIImage createImageView();

@@ -9,10 +9,10 @@
 //import org.smallbox.faraway.ui.LayoutModel;
 //import org.smallbox.faraway.ui.LinkFocusListener;
 //import org.smallbox.faraway.ui.UserInterface.Mode;
-//import org.smallbox.faraway.ui.engine.view.UIFrame;
-//import org.smallbox.faraway.ui.engine.view.UIImage;
-//import org.smallbox.faraway.ui.engine.view.UILabel;
-//import org.smallbox.faraway.ui.engine.view.View;
+//import org.smallbox.faraway.ui.engine.views.UIFrame;
+//import org.smallbox.faraway.ui.engine.views.UIImage;
+//import org.smallbox.faraway.ui.engine.views.UILabel;
+//import org.smallbox.faraway.ui.engine.views.View;
 //import org.smallbox.faraway.ui.panel.BaseRightPanel;
 //
 //import java.text.DateFormat;

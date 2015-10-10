@@ -10,8 +10,9 @@ import org.smallbox.faraway.ui.engine.Colors;
 import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.view.UILabel;
-import org.smallbox.faraway.ui.engine.view.View;
+import org.smallbox.faraway.ui.engine.views.UIFrame;
+import org.smallbox.faraway.ui.engine.views.UILabel;
+import org.smallbox.faraway.ui.engine.views.View;
 import org.smallbox.faraway.util.Constant;
 
 public abstract class BaseRightPanel extends BasePanel {
@@ -33,7 +34,7 @@ public abstract class BaseRightPanel extends BasePanel {
 		super.init(viewFactory, factory, ui, interaction);
 
 		setBackgroundColor(Colors.BACKGROUND);
-		View border = ViewFactory.getInstance().createColorView(4, FRAME_HEIGHT);
+		View border = new UIFrame(4, FRAME_HEIGHT);
 		border.setBackgroundColor(Colors.BORDER);
 		addView(border);
 		

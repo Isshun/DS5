@@ -1,9 +1,7 @@
 package org.smallbox.faraway.game.model.item;
 
-import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.ObjectModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.job.BaseBuildJobModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.module.base.BuildJob;
 

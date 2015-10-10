@@ -8,7 +8,7 @@ import org.smallbox.faraway.game.model.AnimalModel;
 import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.module.ModuleManager;
-import org.smallbox.faraway.modules.extra.FaunaModule;
+import org.smallbox.faraway.module.extra.FaunaModule;
 import org.smallbox.faraway.util.Constant;
 
 /**
