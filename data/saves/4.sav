@@ -18247,7 +18247,7 @@
       </structure>
       <consumable>
         <id>697</id>
-        <name>base.brick_rock</name>
+        <name>base.calcite_brick</name>
         <progress>0</progress>
         <health>0</health>
         <quantity>13</quantity>
@@ -19146,7 +19146,7 @@
       </structure>
       <consumable>
         <id>974</id>
-        <name>base.rubble</name>
+        <name>base.calcite_rubble</name>
         <progress>0</progress>
         <health>0</health>
         <quantity>7</quantity>
@@ -22044,7 +22044,7 @@
         <string>base.seaweed5</string>
         <string>base.glasses</string>
         <string>base.rock</string>
-        <string>base.rubble</string>
+        <string>base.calcite_rubble</string>
         <string>base.easy_meal</string>
         <string>base.military_meal</string>
         <string>base.seaweed2</string>
@@ -22055,7 +22055,6 @@
         <string>base.advance_meal</string>
         <string>base.vegetable</string>
         <string>base.gardening_gloves</string>
-        <string>base.matter</string>
         <string>base.regular_shirt</string>
       </accepts>
       <type>STORAGE</type>

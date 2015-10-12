@@ -63,7 +63,7 @@ public class ItemInfo {
 		public String 					item;
 		public ItemInfo 				itemInfo;
 		public int[] 					quantity;
-		public double 					dropRate;
+		public double 					dropRate = 1;
 	}
 
 	public static class ItemComponentInfo {
@@ -152,6 +152,7 @@ public class ItemInfo {
 	public int 							width;
 	public int 							height;
 	public int 							light;
+	public int 							lightDistance;
 	public int 							cost;
 	public List<ItemInfoAction> 		actions;
 	public ItemEquipmentInfo 			equipment;

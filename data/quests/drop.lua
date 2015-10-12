@@ -1,5 +1,5 @@
 RESOURCES = {
-    "base.rubble",
+    "base.calcite_rubble",
     "base.easy_meal",
     "base.military_ration"
 }

@@ -19,8 +19,8 @@ public class ItemLoader implements IDataLoader {
 
     public void load(GameData data, String path, String packageName) {
         Log.debug("load items...");
-        FileUtils.listRecursively(path).stream().filter(file -> file.getName().endsWith(".yml")).forEach(file ->
-                loadFile(data, packageName, file));
+//        FileUtils.listRecursively(path).stream().filter(file -> file.getName().endsWith(".yml")).forEach(file ->
+//                loadFile(data, packageName, file));
         Log.debug("load items: done");
     }
 

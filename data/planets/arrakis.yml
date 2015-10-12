@@ -39,7 +39,7 @@ regions:
             -   resource: base.rock
                 pattern: mountain
 
-            -   resource: base.raw_iron
+            -   resource: base.iron
                 pattern: mineral_common_light
                 condition: rock
 
@@ -100,7 +100,7 @@ regions:
             -   resource: base.rock
                 pattern: valley
 
-            -   resource: base.raw_iron
+            -   resource: base.iron
                 pattern: mineral_common_light
                 condition: rock
 
@@ -159,7 +159,7 @@ regions:
             -   resource: base.rock
                 pattern: mineral_rare_large
 
-            -   resource: base.raw_iron
+            -   resource: base.iron
                 pattern: mineral_common_light
                 condition: rock
 

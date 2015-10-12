@@ -6,6 +6,8 @@ import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
+import org.smallbox.faraway.data.ReceiptInfo;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.module.ModuleInfo;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.engine.lua.LuaCrewModel;
@@ -15,10 +17,11 @@ import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
-import org.smallbox.faraway.module.lua.data.LuaExtendInterface;
+import org.smallbox.faraway.module.lua.data.LuaExtend;
 import org.smallbox.faraway.module.lua.data.extend.LuaItemExtend;
 import org.smallbox.faraway.module.lua.data.extend.LuaCursorExtend;
 import org.smallbox.faraway.module.lua.data.LuaExtendManager;
+import org.smallbox.faraway.module.lua.data.extend.LuaReceiptExtend;
 import org.smallbox.faraway.module.lua.data.extend.LuaUIExtend;
 import org.smallbox.faraway.module.lua.luaModel.LuaEventsModel;
 import org.smallbox.faraway.module.lua.luaModel.LuaGameModel;
@@ -44,20 +47,21 @@ public class LuaModuleManager implements GameObserver {
     private List<LuaLoadListener>       _luaLoadListeners = new ArrayList<>();
 
     private LuaCrewModel                _luaCrew;
-    private LuaEventsModel _luaEvents;
-    private LuaExtendManager _luaExtendManager;
+    private LuaEventsModel              _luaEvents;
+    private LuaExtendManager            _luaExtendManager;
     private List<LuaModule>             _modules = new ArrayList<>();
 
     public void init() {
-//        loadUI();
-
         _luaExtendManager = new LuaExtendManager();
         _luaExtendManager.addExtendFactory(new LuaUIExtend());
         _luaExtendManager.addExtendFactory(new LuaItemExtend());
+        _luaExtendManager.addExtendFactory(new LuaReceiptExtend());
         _luaExtendManager.addExtendFactory(new LuaCursorExtend());
 
         _luaCrew = new LuaCrewModel();
         _luaEvents = new LuaEventsModel();
+
+//        loadUI();
     }
 
     private void loadUI() {
@@ -79,7 +83,10 @@ public class LuaModuleManager implements GameObserver {
                 e.printStackTrace();
             }
         });
+
         _modules.forEach(this::loadModule);
+
+        GameData.getData().fix();
 
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);
 
@@ -115,9 +122,13 @@ public class LuaModuleManager implements GameObserver {
         globals.get("main").call(CoerceJavaToLua.coerce(new LuaGameModel(_luaCrew, _luaEvents, UserInterface.getInstance(), values -> {
             for (int i = 1; i <= values.length(); i++) {
                 LuaValue value = values.get(i);
-                for (LuaExtendInterface luaExtend: _luaExtendManager.getExtends()) {
+                for (LuaExtend luaExtend: _luaExtendManager.getExtends()) {
                     if (luaExtend.accept(value.get("type").toString())) {
-                        luaExtend.extend(this, luaModule, globals, value);
+                        try {
+                            luaExtend.extend(this, luaModule, globals, value);
+                        } catch (DataExtendException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     }
                 }
@@ -197,6 +208,8 @@ public class LuaModuleManager implements GameObserver {
     public void onSelectResource(ResourceModel resource) { broadcastToLuaModules(LuaEventsModel.on_resource_selected, resource); }
     public void onSelectConsumable(ConsumableModel consumable) { broadcastToLuaModules(LuaEventsModel.on_consumable_selected, consumable); }
     public void onSelectStructure(StructureModel structure) { broadcastToLuaModules(LuaEventsModel.on_structure_selected, structure); }
+    public void onSelectReceipt(ReceiptInfo receipt) { broadcastToLuaModules(LuaEventsModel.on_receipt_select, receipt); }
+    public void onOverParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_over, parcel); }
     public void onDeselect() { broadcastToLuaModules(LuaEventsModel.on_deselect, null); }
     public void onReloadUI() {loadUI();}
     public void onRefreshUI() { _luaRefreshListeners.forEach(LuaRefreshListener::onRefresh); }

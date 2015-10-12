@@ -1,0 +1,28 @@
+label: Rock workshop
+type: item
+category: workshop
+width: 3
+height: 1
+cost: 300
+
+storage:
+    components: [-1, 0]
+    crafts: [1, 0]
+
+slots:
+    - [0, 1]
+
+actions:
+    -   type: craft
+        name: action_craft
+        label: Craft brick
+        cost: 150
+        receipts:
+            -   name: brick_rock
+                label: Rock brick
+                components:
+                    -   item: base.rock
+                        quantity: 5
+                products:
+                    -   item: base.calcite_brick
+                        quantity: [5, 5]

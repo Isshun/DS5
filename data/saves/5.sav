@@ -2547,7 +2547,7 @@
       </structure>
       <consumable>
         <id>94</id>
-        <name>base.rubble</name>
+        <name>base.calcite_rubble</name>
         <progress>0</progress>
         <health>0</health>
         <quantity>30</quantity>
@@ -2585,7 +2585,7 @@
       </structure>
       <consumable>
         <id>100</id>
-        <name>base.rubble</name>
+        <name>base.calcite_rubble</name>
         <progress>0</progress>
         <health>0</health>
         <quantity>20</quantity>
@@ -2847,7 +2847,7 @@
       </structure>
       <consumable>
         <id>93</id>
-        <name>base.rubble</name>
+        <name>base.calcite_rubble</name>
         <progress>0</progress>
         <health>0</health>
         <quantity>30</quantity>
@@ -3114,7 +3114,7 @@
       </structure>
       <consumable>
         <id>104</id>
-        <name>base.rubble</name>
+        <name>base.calcite_rubble</name>
         <progress>0</progress>
         <health>0</health>
         <quantity>30</quantity>
@@ -3615,7 +3615,7 @@
       </structure>
       <consumable>
         <id>98</id>
-        <name>base.rubble</name>
+        <name>base.calcite_rubble</name>
         <progress>0</progress>
         <health>0</health>
         <quantity>20</quantity>

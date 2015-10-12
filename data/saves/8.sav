@@ -2,7 +2,7 @@
 <save>
 <parcels>
 <parcel x='0' y='0' z='0' type='1'>
-<consumable id='7911' name='base.rubble'>
+<consumable id='7911' name='base.calcite_rubble'>
 <quantity>10</quantity>
 </consumable>
 </parcel>
@@ -544,7 +544,7 @@
 </resource>
 </parcel>
 <parcel x='1' y='0' z='0' type='1'>
-<consumable id='7912' name='base.rubble'>
+<consumable id='7912' name='base.calcite_rubble'>
 <quantity>10</quantity>
 </consumable>
 </parcel>
@@ -1068,7 +1068,7 @@
 </resource>
 </parcel>
 <parcel x='2' y='0' z='0' type='1'>
-<consumable id='7913' name='base.rubble'>
+<consumable id='7913' name='base.calcite_rubble'>
 <quantity>10</quantity>
 </consumable>
 </parcel>
@@ -4415,7 +4415,7 @@
 <health>100</health>
 <progress>0</progress>
 </structure>
-<consumable id='7937' name='base.rubble'>
+<consumable id='7937' name='base.calcite_rubble'>
 <quantity>11</quantity>
 </consumable>
 </parcel>

@@ -29,7 +29,7 @@ public abstract class View {
     private int         _marginLeft;
     private UIAdapter   _adapter;
     private int         _objectId;
-    private LuaModule _module;
+    private LuaModule   _module;
 
     public void setTextAlign(boolean isAlignLeft, boolean isAlignTop) {
         _isAlignLeft = isAlignLeft;

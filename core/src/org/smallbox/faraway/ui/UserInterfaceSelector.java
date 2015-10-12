@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui;
 
+import org.smallbox.faraway.data.ReceiptInfo;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.helper.WorldHelper;
@@ -16,6 +17,8 @@ import org.smallbox.faraway.util.Constant;
  * Created by Alex on 28/06/2015.
  */
 public class UserInterfaceSelector {
+    private ParcelModel _lastMoveParcel;
+
     public interface SelectStrategy {
         boolean onSelect(CharacterModel character, ParcelModel parcel, AreaModel area);
     }
@@ -23,11 +26,11 @@ public class UserInterfaceSelector {
     private final UserInterface _userInterface;
     private CharacterModel      _selectedCharacter;
     private ItemModel           _selectedItem;
-    private ResourceModel _selectedResource;
-    private StructureModel _selectedStructure;
-    private ParcelModel _selectedParcel;
-    private AreaModel _selectedArea;
-    private ConsumableModel _selectedConsumable;
+    private ResourceModel       _selectedResource;
+    private StructureModel      _selectedStructure;
+    private ParcelModel         _selectedParcel;
+    private AreaModel           _selectedArea;
+    private ConsumableModel     _selectedConsumable;
     private ParcelModel         _lastSelectedParcel;
     private int                 _lastSelectedIndex;
 
@@ -160,6 +163,14 @@ public class UserInterfaceSelector {
         return false;
     }
 
+    public void moveAt(int x, int y) {
+        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
+        if (_lastMoveParcel != parcel) {
+            _lastMoveParcel = parcel;
+            Game.getInstance().notify(observer -> observer.onOverParcel(parcel));
+        }
+    }
+
     public void clean() {
         Game.getInstance().notify(GameObserver::onDeselect);
         if (_selectedCharacter != null) {
@@ -195,6 +206,11 @@ public class UserInterfaceSelector {
     public void select(ToolTips.ToolTip tooltip) {
 //        _userInterface.setMode(UserInterface.Mode.TOOLTIP);
 //        ((PanelTooltip)_userInterface.getPanel(PanelTooltip.class)).select(tooltip);
+    }
+
+    public void select(ReceiptInfo receipt) {
+        clean();
+        Game.getInstance().notify(observer -> observer.onSelectReceipt(receipt));
     }
 
     public void select(CharacterModel character) {

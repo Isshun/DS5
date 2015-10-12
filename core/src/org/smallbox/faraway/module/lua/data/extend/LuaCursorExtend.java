@@ -5,7 +5,7 @@ import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.module.lua.data.LuaExtendInterface;
+import org.smallbox.faraway.module.lua.data.LuaExtend;
 import org.smallbox.faraway.module.lua.LuaModule;
 import org.smallbox.faraway.module.lua.LuaModuleManager;
 import org.smallbox.faraway.ui.UICursor;
@@ -14,7 +14,7 @@ import org.smallbox.faraway.ui.engine.views.UIFrame;
 /**
  * Created by Alex on 29/09/2015.
  */
-public class LuaCursorExtend implements LuaExtendInterface {
+public class LuaCursorExtend extends LuaExtend {
     @Override
     public boolean accept(String type) {
         return "cursor".equals(type);

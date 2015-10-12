@@ -1,5 +1,7 @@
 package org.smallbox.faraway.core;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import org.smallbox.faraway.engine.SpriteModel;
@@ -14,6 +16,7 @@ public class RenderLayer {
     private final int   _y;
     private final int   _width;
     private final int   _height;
+    private Texture _texture;
     SpriteCache         _cache;
     int                 _cacheId = -1;
     private int         _count;
@@ -28,6 +31,17 @@ public class RenderLayer {
         _y = y;
         _width = width;
         _height = height;
+        createTexture();
+    }
+
+    private void createTexture() {
+        Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+        for (int x = 0; x < 32; x++) {
+            for (int y = 0; y < 32; y++) {
+                pixmap.drawPixel(x, y, 0xffffffff);
+            }
+        }
+        _texture = new Texture(pixmap);
     }
 
     public void begin() {
@@ -42,6 +56,14 @@ public class RenderLayer {
         if (_cacheId != -1) {
 //                System.out.println("draw cache #" + _index + " (cacheId: " + _cacheId + ", count: " + _count + ")");
             renderer.draw(_cache, _cacheId, viewport.getPosX() + x, viewport.getPosY() + y);
+        }
+    }
+
+    public void draw(Color color, int x, int y) {
+        if (_count < 5000) {
+            _cache.setColor(color);
+            _cache.add(_texture, x, y);
+            _count++;
         }
     }
 

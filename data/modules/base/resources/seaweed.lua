@@ -2,10 +2,11 @@ game.data:extend(
 {
     {
         label = "Euglena Bloom",
-        id = "base.algae_1",
+        name = "base.seaweed1",
+        graphics = "[base]/graphics/items/resources/desert_berry.png",
+        --graphics = "[base]/graphics/items/resources/seaweed1.png",
         type = "resource",
         category = "algae",
-        size = {1, 1},
         plant = {
             mature = 5,
             growing = 0.005,
@@ -29,10 +30,10 @@ game.data:extend(
     },
     {
         label = "Chlorella",
-        id = "base.algae_2",
+        name = "base.seaweed2",
+        graphics = "[base]/graphics/items/resources/seaweed2.png",
         type = "resource",
         category = "algae",
-        size = {1, 1},
         plant = {
             mature = 5,
             growing = 0.005,
@@ -57,10 +58,13 @@ game.data:extend(
     {
         label = "Eel grass",
         sciLabel = "Zostera marina",
-        id = "base.algae_3",
+        name = "base.seaweed3",
+--        graphics = "[base]/graphics/items/resources/seaweed3.png",
+        graphics = "[base]/graphics/items/resources/desert_green_plant.png",
         type = "resource",
         category = "algae",
         size = {1, 1},
+        light = { power = .5, radius = 5 },
         plant = {
             mature = 5,
             growing = 0.005,
@@ -84,8 +88,9 @@ game.data:extend(
     },
     {
         label = "Green Alagae",
-        id = "base.algae_4",
+        name = "base.seaweed4",
         type = "resource",
+        graphics = "[base]/graphics/items/resources/seaweed4.png",
         category = "algae",
         size = {1, 1},
         plant = {
@@ -112,7 +117,8 @@ game.data:extend(
     {
         label = "Golden Brown Algae",
         sciLabel = "Chrysophyceae",
-        id = "base.algae_5",
+        graphics = "[base]/graphics/items/resources/seaweed5.png",
+        name = "base.seaweed5",
         type = "resource",
         category = "algae",
         size = {1, 1},

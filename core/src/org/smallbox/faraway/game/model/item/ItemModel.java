@@ -37,7 +37,6 @@ public class ItemModel extends BuildableMapObject {
 	public boolean 					isFunctional() { return _isFunctional; }
 	public boolean 					isActive() { return _isActive; }
 	public boolean 					isBed() { return _info.isBed; }
-	public boolean 					isLight() { return _info.light > 0; }
 
 	public void 					setTargetTemperature(int targetTemperature) { _targetTemperature = targetTemperature; }
 	public void 					setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }

@@ -2,7 +2,8 @@ package org.smallbox.faraway.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.module.lua.data.LuaExtendInterface;
+import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.module.lua.data.LuaExtend;
 import org.smallbox.faraway.module.lua.LuaModule;
 import org.smallbox.faraway.module.lua.LuaModuleManager;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by Alex on 29/09/2015.
  */
-public class LuaItemExtend implements LuaExtendInterface {
+public class LuaItemExtend extends LuaExtend {
     @Override
     public boolean accept(String type) {
         switch (type) {
@@ -27,11 +28,45 @@ public class LuaItemExtend implements LuaExtendInterface {
 
     @Override
     public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) {
-        ItemInfo itemInfo = new ItemInfo();
+        String name = getString(value, "name", null);
+        ItemInfo itemInfo = null;
+        for (ItemInfo info: GameData.getData().items) {
+            if (info.name != null && info.name.equals(name)) {
+                itemInfo = info;
+            }
+        }
+
+        if (itemInfo == null) {
+            itemInfo = new ItemInfo();
+            GameData.getData().items.add(itemInfo);
+        }
 
         itemInfo.name = getString(value, "name", null);
         itemInfo.label = getString(value, "label", null);
         itemInfo.category = getString(value, "category", null);
+        itemInfo.type = getString(value, "type", null);
+
+        // Get category
+        if ("consumable".equals(itemInfo.type)) {
+            itemInfo.isConsumable = true;
+        } else if ("structure".equals(itemInfo.type)) {
+            itemInfo.isStructure = true;
+        } else if ("item".equals(itemInfo.type)) {
+            itemInfo.isUserItem = true;
+        } else if ("resource".equals(itemInfo.type)) {
+            itemInfo.isResource = true;
+        } else if ("equipment".equals(itemInfo.type) || itemInfo.equipment != null) {
+            itemInfo.isEquipment = true;
+            itemInfo.isConsumable = true;
+        } else {
+            throw new RuntimeException("unknown item type: " + itemInfo.type);
+        }
+
+        String graphics = getString(value, "graphics", null);
+        if (graphics != null) {
+            itemInfo.fileName = graphics.substring(graphics.indexOf(']') + 1, graphics.length());
+            itemInfo.packageName = graphics.substring(1, graphics.indexOf(']'));
+        }
 
         if (!value.get("size").isnil()) {
             itemInfo.width = value.get("size").get(1).toint();
@@ -45,6 +80,10 @@ public class LuaItemExtend implements LuaExtendInterface {
             readPlantValues(itemInfo, value.get("plant"));
         }
 
+        if (!value.get("light").isnil()) {
+            readLightValues(itemInfo, value.get("light"));
+        }
+
         if (!value.get("actions").isnil()) {
             itemInfo.actions = new ArrayList<>();
             for (int i = 1; i <= value.get("actions").length(); i++) {
@@ -53,6 +92,11 @@ public class LuaItemExtend implements LuaExtendInterface {
         }
 
         System.out.println("Extends item from lua: " + itemInfo.label);
+    }
+
+    private void readLightValues(ItemInfo itemInfo, LuaValue value) {
+        itemInfo.light = 10;
+        itemInfo.lightDistance = 4;
     }
 
     private void readActionValue(ItemInfo itemInfo, LuaValue value) {
@@ -79,6 +123,7 @@ public class LuaItemExtend implements LuaExtendInterface {
     }
 
     private void readPlantValues(ItemInfo itemInfo, LuaValue value) {
+        itemInfo.isPlant = true;
         itemInfo.plant = new ItemInfo.ItemInfoPlant();
         itemInfo.plant.mature = getInt(value, "mature", 1);
         itemInfo.plant.growing = getDouble(value, "growing", 1);
@@ -111,18 +156,6 @@ public class LuaItemExtend implements LuaExtendInterface {
 
             itemInfo.plant.states.add(growingInfo);
         }
-    }
-
-    private double getDouble(LuaValue value, String key, double defaultValue) {
-        return !value.get(key).isnil() ? value.get(key).todouble() : defaultValue;
-    }
-
-    private int getInt(LuaValue value, String key, int defaultValue) {
-        return !value.get(key).isnil() ? value.get(key).toint() : defaultValue;
-    }
-
-    private String getString(LuaValue value, String key, String defaultValue) {
-        return !value.get(key).isnil() ? value.get(key).toString() : defaultValue;
     }
 
 }

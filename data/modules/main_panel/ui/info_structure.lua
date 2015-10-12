@@ -12,6 +12,9 @@ game.data:extend(
         views =
         {
             { type = "label", id = "lb_name", text = "lb_name", text_size = 28, position = {10, 10}, size = {-1, 32}},
+            { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
+            { type = "label", text = "Structure", text_size = 12, position = {10, 8}},
+            { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
             { type = "label", id = "lb_durability", text = "lb_durability", text_size = 16, position = {10, 10}, size = {-1, 32}},
         },
         

@@ -12,9 +12,13 @@ game.data:extend(
             views =
             {
                 { type = "label", id = "lb_name", text = "name", text_size = 28, padding = 10, size = {100, 40}},
-                { type = "list", position = {0, 40}, views = {
+                { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
+                { type = "label", text = "Consumable", text_size = 12, position = {10, 8}},
+                { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
+                { type = "list", position = {0, 60}, views = {
                     { type = "label", id = "lb_position", text_size = 18, padding = 10},
                     { type = "label", id = "lb_quantity", text_size = 18, padding = 10},
+                    { type = "label", id = "lb_id", text_size = 18, padding = 10},
                 }},
                 { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {100, 40}, on_click = function()
                     game.events:send("encyclopedia.open_consumable", consumable)
@@ -37,6 +41,7 @@ game.data:extend(
                 if event == game.events.on_consumable_selected then
                     view:setVisible(true)
                     view:findById("lb_name"):setText(data:getLabel())
+                    view:findById("lb_id"):setText(data:getInfo().name)
                     consumable = data;
                 end
             end,

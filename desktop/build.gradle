@@ -35,7 +35,12 @@ eclipse {
 }
 
 dependencies {
-    compile project(":modules")
+    compile project(":modules/Debug")
+    compile project(":modules/Character")
+    compile project(":modules/World")
+    compile project(":modules/Extra")
+//    compile project(":modules/Bridge")
+    compile project(":modules/Quest")
 }
 
 task afterEclipseImport(description: "Post processing after project generation", group: "IDE") {

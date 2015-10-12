@@ -93,6 +93,8 @@ public class Game {
         _observers.addAll(ModuleManager.getInstance().getRenders());
         _modules.stream().filter(GameModule::isLoaded).forEach(GameModule::create);
         _luaModuleManager.init();
+
+        notify(GameObserver::onReloadUI);
     }
 
     public void onUpdate(int tick) {

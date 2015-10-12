@@ -83,7 +83,7 @@ public class UserInterface implements GameEventListener {
     private PanelConsole                _panelConsole;
     private UserInterfaceSelector       _selector;
     private int 						_update;
-    private long                        _lastModified;
+    private long                        _lastModified = -1;
     private UIFrame _context;
 //
 //    private	BasePanel[]					_panels = new BasePanel[] {
@@ -158,8 +158,10 @@ public class UserInterface implements GameEventListener {
         long lastResModified = Utils.getLastUIModified();
         if (GameData.getData().needUIRefresh || lastResModified > _lastModified) {
             GameData.getData().needUIRefresh = false;
+            if (_lastModified != -1) {
+                reload();
+            }
             _lastModified = lastResModified;
-            reload();
         }
     }
 
@@ -196,6 +198,9 @@ public class UserInterface implements GameEventListener {
             }
             onMouseMove(x, y, rightPressed);
             UIEventManager.getInstance().onMouseMove(x, y);
+
+            _selector.moveAt(getRelativePosX(x), getRelativePosY(y));
+
             return;
         }
 

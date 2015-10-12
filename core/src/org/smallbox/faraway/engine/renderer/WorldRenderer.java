@@ -1,5 +1,6 @@
 package org.smallbox.faraway.engine.renderer;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.core.RenderLayer;
 import org.smallbox.faraway.core.SpriteManager;
@@ -11,6 +12,7 @@ import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.module.ModuleHelper;
+import org.smallbox.faraway.game.module.base.WorldModule;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -21,6 +23,7 @@ public class WorldRenderer extends BaseRenderer {
     private boolean             _needRefresh;
     private SpriteManager       _spriteManager;
     private RenderLayer[][]     _layers;
+    private RenderLayer[][]     _layersLight;
     private MapObjectModel      _itemSelected;
     private Viewport            _viewport;
     private boolean             _firstRefresh;
@@ -32,15 +35,30 @@ public class WorldRenderer extends BaseRenderer {
         _needRefresh = true;
         _firstRefresh = true;
         _cacheCols = (250 / CACHE_SIZE);
-        _layers = new RenderLayer[_cacheCols][_cacheCols];
-        int index = 0;
-        for (int i = 0; i < _cacheCols; i++) {
-            for (int j = 0; j < _cacheCols; j++) {
-                _layers[i][j] = new RenderLayer(index++,
-                        i * CACHE_SIZE * Constant.TILE_WIDTH,
-                        j * CACHE_SIZE * Constant.TILE_HEIGHT,
-                        CACHE_SIZE * Constant.TILE_WIDTH,
-                        CACHE_SIZE * Constant.TILE_HEIGHT);
+        {
+            _layers = new RenderLayer[_cacheCols][_cacheCols];
+            int index = 0;
+            for (int i = 0; i < _cacheCols; i++) {
+                for (int j = 0; j < _cacheCols; j++) {
+                    _layers[i][j] = new RenderLayer(index++,
+                            i * CACHE_SIZE * Constant.TILE_WIDTH,
+                            j * CACHE_SIZE * Constant.TILE_HEIGHT,
+                            CACHE_SIZE * Constant.TILE_WIDTH,
+                            CACHE_SIZE * Constant.TILE_HEIGHT);
+                }
+            }
+        }
+        {
+            _layersLight = new RenderLayer[_cacheCols][_cacheCols];
+            int index = 0;
+            for (int i = 0; i < _cacheCols; i++) {
+                for (int j = 0; j < _cacheCols; j++) {
+                    _layersLight[i][j] = new RenderLayer(index++,
+                            i * CACHE_SIZE * Constant.TILE_WIDTH,
+                            j * CACHE_SIZE * Constant.TILE_HEIGHT,
+                            CACHE_SIZE * Constant.TILE_WIDTH,
+                            CACHE_SIZE * Constant.TILE_HEIGHT);
+                }
             }
         }
     }
@@ -69,6 +87,7 @@ public class WorldRenderer extends BaseRenderer {
                 if (_layers[i][j].isVisible(_viewport) && _layers[i][j].needRefresh()) {
                     _layers[i][j].refresh();
                     refreshLayer(_layers[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
+                    refreshLayerLight(_layersLight[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
                 }
             }
         }
@@ -78,9 +97,46 @@ public class WorldRenderer extends BaseRenderer {
         for (int i = 0; i < _cacheCols; i++) {
             for (int j = 0; j < _cacheCols; j++) {
                 _layers[i][j].planRefresh();
+                _layersLight[i][j].planRefresh();
             }
         }
         _needRefresh = true;
+    }
+
+    private void refreshLayerLight(RenderLayer layer, int fromX, int fromY, int toX, int toY) {
+        Log.info("Refresh layer: " + layer.getIndex());
+
+//        int mb = 1024 * 1024;
+//        Runtime runtime = Runtime.getRuntime();
+//        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
+//        int total = (int) (runtime.totalMemory() / mb);
+//        System.out.println("RefreshLayer: " + used + "/" + total);
+
+        Color[] colors = new Color[] {
+                new Color(0, 0, 0, .9f),
+                new Color(0, 0, 0, .8f),
+                new Color(0, 0, 0, .7f),
+                new Color(0, 0, 0, .6f),
+                new Color(0, 0, 0, .5f),
+                new Color(0, 0, 0, .4f),
+                new Color(0, 0, 0, .3f),
+                new Color(0, 0, 0, .2f),
+                new Color(0, 0, 0, .1f),
+                new Color(0, 0, 0, .0f),
+                new Color(0, 0, 0, .0f),
+        };
+
+        layer.begin();
+        layer.setRefresh();
+        for (int x = toX - 1; x >= fromX; x--) {
+            for (int y = toY - 1; y >= fromY; y--) {
+                ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
+                if (parcel != null) {
+                    layer.draw(colors[Math.min(10, (int)(parcel.getLight() * 10))], (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+                }
+            }
+        }
+        layer.end();
     }
 
     private void refreshLayer(RenderLayer layer, int fromX, int fromY, int toX, int toY) {
@@ -146,6 +202,24 @@ public class WorldRenderer extends BaseRenderer {
                     if (!_layers[i][j].isVisible(viewport) && _layers[i][j].isDrawable()) {
                         Log.info("clear layer: " + _layers[i][j].getIndex());
                         _layers[i][j].clear();
+                    }
+
+                    // Draw up to date layer
+                    if (_layersLight[i][j].isVisible(viewport) && !_layersLight[i][j].needRefresh() && _layersLight[i][j].isDrawable()) {
+                        _layersLight[i][j].onDraw(renderer, viewport, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
+                    }
+
+                    // Refresh needed layer
+                    if (_layersLight[i][j].isVisible(viewport) && _layersLight[i][j].needRefresh()) {
+                        Log.info("refresh layer: " + _layersLight[i][j].getIndex());
+                        _layersLight[i][j].refresh();
+                        refreshLayerLight(_layersLight[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
+                    }
+
+                    // Clear out of screen layers
+                    if (!_layersLight[i][j].isVisible(viewport) && _layersLight[i][j].isDrawable()) {
+                        Log.info("clear layer: " + _layersLight[i][j].getIndex());
+                        _layersLight[i][j].clear();
                     }
                 }
             }

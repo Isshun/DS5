@@ -2,7 +2,7 @@ package org.smallbox.faraway.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.module.lua.data.LuaExtendInterface;
+import org.smallbox.faraway.module.lua.data.LuaExtend;
 import org.smallbox.faraway.module.lua.LuaLayoutFactory;
 import org.smallbox.faraway.module.lua.LuaModule;
 import org.smallbox.faraway.module.lua.LuaModuleManager;
@@ -12,7 +12,7 @@ import org.smallbox.faraway.ui.engine.views.UIFrame;
 /**
  * Created by Alex on 29/09/2015.
  */
-public class LuaUIExtend implements LuaExtendInterface {
+public class LuaUIExtend extends LuaExtend {
     @Override
     public boolean accept(String type) {
         switch (type) {

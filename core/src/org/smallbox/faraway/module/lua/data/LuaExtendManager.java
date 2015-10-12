@@ -7,17 +7,17 @@ import java.util.List;
  * Created by Alex on 29/09/2015.
  */
 public class LuaExtendManager {
-    private List<LuaExtendInterface> _luaExtends;
+    private List<LuaExtend> _luaExtends;
 
     public LuaExtendManager() {
         _luaExtends = new ArrayList<>();
     }
 
-    public void addExtendFactory(LuaExtendInterface luaExtend) {
+    public void addExtendFactory(LuaExtend luaExtend) {
         _luaExtends.add(luaExtend);
     }
 
-    public List<LuaExtendInterface> getExtends() {
+    public List<LuaExtend> getExtends() {
         return _luaExtends;
     }
 }

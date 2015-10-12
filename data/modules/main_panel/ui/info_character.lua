@@ -12,9 +12,11 @@ game.data:extend(
             visible = false,
             views =
             {
-                { type = "label", id = "lb_name", text = "name", text_size = 28, padding = 10},
+                { type = "label", text = "Character", text_size = 12, position = {10, 8}},
+                { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
+                { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 26}, padding = 10, size = {100, 40}},
 
-                { type = "grid", position = {10, 50}, columns = 2, column_width = 190, row_height = 60, views =
+                { type = "grid", position = {10, 72}, columns = 2, column_width = 190, row_height = 60, views =
                 {
                     { type = "label", id = "bt_status", text = "Status", text_size = 20, padding = 18, background = 0x5588bb, size = {180, 50}, on_click = "mode = 1", on_refresh = function(view)
                         view:setBackgroundColor(mode == 1 and 0x4be7da or 0x689999)
@@ -34,7 +36,7 @@ game.data:extend(
                 -- Status page
                 {
                     type = "list",
-                    position = {10, 180},
+                    position = {10, 200},
                     size = {400, 400},
                     on_refresh = function(view)
                         view:setVisible(mode == 1)
@@ -90,7 +92,7 @@ game.data:extend(
                     }
                 },
 
-                { type = "view", position = {0, 180}, size = {400, 400}, on_refresh = function(view)
+                { type = "view", position = {0, 200}, size = {400, 400}, on_refresh = function(view)
                     view:setVisible(mode == 2)
                 end, views = {
                     { type = "grid", position = {0, 24}, columns = 10, column_width = 32, row_height = 32, views = {
@@ -125,7 +127,7 @@ game.data:extend(
                     }}
                 }},
 
-                { type = "view", position = {0, 180}, size = {400, 400}, on_refresh = function(view)
+                { type = "view", position = {0, 200}, size = {400, 400}, on_refresh = function(view)
                     view:setVisible(mode == 3)
                 end, views = {
                     { type = "list", position = {10, 16}, views = {
@@ -134,7 +136,7 @@ game.data:extend(
                     }},
                 }},
 
-                { type = "view", position = {0, 180}, size = {400, 400}, on_refresh = function(view)
+                { type = "view", position = {0, 200}, size = {400, 400}, on_refresh = function(view)
                     view:setVisible(mode == 4)
                 end},
             },

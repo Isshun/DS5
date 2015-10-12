@@ -134,6 +134,7 @@ public abstract class MapObjectModel extends ObjectModel {
     public boolean          isDestroy() { return _health <= 0; }
     public boolean          isDump() { return _progress <= 0; }
     public boolean          isCloseRoom() { return _info.isCloseRoom; }
+    public boolean 		    isLight() { return _info.light > 0; }
     public boolean          matchPosition(int x, int y) { return _parcel != null && _parcel.x == x && _parcel.y == y; }
     public boolean          hasJobs() { return _jobs != null && !_jobs.isEmpty(); }
 

@@ -17,6 +17,8 @@ public class LuaEventsModel {
     public static final int on_job_create = 9;
     public static final int on_custom_event = 10;
     public static final int on_key_press = 11;
+    public static final int on_parcel_over = 12;
+    public static final int on_receipt_select = 13;
 
     public void send(String tag) {
         Game.getInstance().notify(observer -> observer.onCustomEvent(tag, null));

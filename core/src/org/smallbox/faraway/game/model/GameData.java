@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model;
 
+import org.smallbox.faraway.data.ReceiptInfo;
 import org.smallbox.faraway.data.loader.*;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.planet.PlanetInfo;
@@ -14,7 +15,8 @@ import java.util.Map;
 public class GameData {
     public static GameData      		_data;
 	public static GameConfig 			config;
-	public List<ItemInfo> 				items;
+	public List<ReceiptInfo> 			receipts = new ArrayList<>();
+	public List<ItemInfo> 				items = new ArrayList<>();
 	public List<ItemInfo> 				gatherItems;
 	public List<CategoryInfo> 			categories;
 	public List<ItemInfo> 				equipments;
@@ -105,5 +107,12 @@ public class GameData {
 
 	public String getString(int hash) {
 		return _data.strings.get(hash);
+	}
+
+	public void fix() {
+		this.receipts.forEach(receipt -> receipt.products.forEach(product -> {
+			product.item = getItemInfo(product.itemName);
+			product.components.forEach(component -> component.item = getItemInfo(component.itemName));
+		}));
 	}
 }

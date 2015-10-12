@@ -168,7 +168,8 @@ public class SpriteManager {
 
             File imgFile;
             if ("base".equals(item.packageName)) {
-                imgFile = foundImageFile(item.fileName + ".png");
+                imgFile = new File("data", item.fileName);
+//                imgFile = foundImageFile(item.fileName + ".png");
             } else {
                 imgFile = new File("mods/" + item.packageName + "/items/" + item.fileName + ".png");
             }
@@ -239,22 +240,22 @@ public class SpriteManager {
         textureData.disposePixmap();
     }
 
-    private File foundImageFile(String fileName) {
-        // TODO: clean
-        for (File file: new File("data/items/").listFiles()) {
-            if (file.isDirectory() && !file.getName().equals("24")) {
-                for (File subFile: file.listFiles()) {
-                    if (subFile.getName().equals(fileName)) {
-                        return subFile;
-                    }
-                }
-            }
-            if (file.getName().equals(fileName)) {
-                return file;
-            }
-        }
-        return null;
-    }
+//    private File foundImageFile(String fileName) {
+//        // TODO: clean
+//        for (File file: new File("data/items/").listFiles()) {
+//            if (file.isDirectory() && !file.getName().equals("24")) {
+//                for (File subFile: file.listFiles()) {
+//                    if (subFile.getName().equals(fileName)) {
+//                        return subFile;
+//                    }
+//                }
+//            }
+//            if (file.getName().equals(fileName)) {
+//                return file;
+//            }
+//        }
+//        return null;
+//    }
 
     private long getSum(int spriteId, int tile, int state, int extra) {
         if (spriteId > 4096 || tile > 4096 || extra > 4096 || state > 4096) {
@@ -305,7 +306,7 @@ public class SpriteManager {
             return getSprite(info, resource.getTile(), 0, 255, false);
         }
 
-        else if (!info.actions.isEmpty() && "gather".equals(info.actions.get(0).type)) {
+        else if (info.actions != null && !info.actions.isEmpty() && "gather".equals(info.actions.get(0).type)) {
             int state = (int)(Math.min(resource.getQuantity(), info.plant.mature) + 1);
             return getSprite(info, state, 0, 255, false);
         }
