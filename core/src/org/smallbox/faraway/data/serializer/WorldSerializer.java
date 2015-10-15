@@ -157,20 +157,27 @@ public class WorldSerializer implements SerializerInterface {
         }
     }
 
-    private void readStructure(AutoPilot apElement, VTDNav vn, WorldModule manager, int x, int y, int z) throws NavException, XPathEvalException {
+    private void readStructure(AutoPilot apElement, VTDNav vn, WorldModule manager, int x, int y, int z) throws NavException, XPathEvalException, XPathParseException {
         String name = vn.toString(vn.getAttrVal("name"));
         int id = vn.parseInt(vn.getAttrVal("id"));
         int health = 0;
         int progress = 0;
+        int currentBuild = 0;
+        boolean complete = true;
+        List<BuildableMapObject.ComponentModel> components = null;
 
         while (apElement.evalXPath() != -1) {
             switch (vn.toString(vn.getCurrentIndex())) {
                 case "health":
                     health = (int)vn.parseDouble(vn.getText());
                     break;
-
                 case "progress":
                     progress = vn.parseInt(vn.getText());
+                    break;
+                case "building":
+                    complete = false;
+                    currentBuild = vn.parseInt(vn.getAttrVal("currentBuilding"));
+                    components = readBuilding(vn);
                     break;
             }
         }
@@ -180,6 +187,11 @@ public class WorldSerializer implements SerializerInterface {
         if (structure != null) {
             structure.setId(id);
             structure.setHealth(health);
+            structure.setComplete(complete);
+            structure.setBuild(currentBuild, 10);
+            if (components != null) {
+                structure.setComponents(components);
+            }
         }
     }
 

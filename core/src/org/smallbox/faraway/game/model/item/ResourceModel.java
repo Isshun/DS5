@@ -49,7 +49,7 @@ public class ResourceModel extends ItemModel {
     public boolean 	isDepleted() { return _quantity < 1; }
 	public boolean 	isMature() { return _quantity >= _totalQuantity; }
 	public boolean 	isRock() { return _info.isRock; }
-	public boolean 	isSolid() { return _info.isRock; }
+	public boolean isSolid() { return _info.isRock; }
     public boolean  isPlant() { return _info.isPlant; }
 
     public void 	setGrowRate(double growRate) { _growRate = growRate; }

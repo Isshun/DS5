@@ -18,7 +18,7 @@ public abstract class BaseJobModel extends ObjectModel {
         void onDraw(int x, int y);
     }
 
-    private boolean         _isJoy;
+    private boolean         _isEntertainment;
     protected JobStrategy   _strategy;
     protected ItemFinder    _finder;
 
@@ -26,12 +26,12 @@ public abstract class BaseJobModel extends ObjectModel {
         return _message;
     }
 
-    public void setJoy(boolean isJoy) {
-        _isJoy = isJoy;
+    public void setEntertainment(boolean isEntertainment) {
+        _isEntertainment = isEntertainment;
     }
 
-    public boolean isJoy() {
-        return _isJoy;
+    public boolean isEntertainment() {
+        return _isEntertainment;
     }
 
     public boolean hasCharacter(CharacterModel character) {
@@ -135,7 +135,7 @@ public abstract class BaseJobModel extends ObjectModel {
 	public double               getQuantity() { return _progress; }
 	public int 					getQuantityTotal() { return _cost; }
 	public int 					getProgressPercent() { return (int)(getProgress() * 100); }
-	public double               getProgress() { return (double) _progress / _cost; }
+	public double               getProgress() { return _progress; }
 	public JobStatus			getStatus() { return _status; }
     public GDXDrawable          getIconDrawable() { return _iconDrawable; }
     public GDXDrawable          getActionDrawable() { return _actionDrawable; }

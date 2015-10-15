@@ -110,7 +110,9 @@ public class UserInteraction {
 					}
 				}
 
-				JobHelper.addBuildJob(itemInfo, x, y);
+				ModuleHelper.getWorldModule().putObject(itemInfo, x, y, 0, 0);
+
+//				JobHelper.addBuildJob(itemInfo, x, y);
 
 //				if (_selectedItemInfo.name.equals("base.room")) {
 //					if (x == startX || x == toX || y == startY || y == toY) {

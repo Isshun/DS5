@@ -8,7 +8,7 @@ public class ItemFilter {
 	public boolean 	effectHappiness;
 	public boolean 	effectRelation;
 	public boolean 	effectHealth;
-	public boolean 	effectJoy;
+	public boolean 	effectEntertainment;
 	public boolean 	lookingForFactory;
 	public boolean 	lookingForItem;
 	public ItemInfo	itemMatched;

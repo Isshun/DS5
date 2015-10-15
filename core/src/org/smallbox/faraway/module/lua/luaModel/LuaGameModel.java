@@ -14,30 +14,43 @@ import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Created by Alex on 26/09/2015.
  */
 public class LuaGameModel {
-    public LuaDataModel.OnExtendListener _extendListener;
-
+    public long                     tick;
+    public int                      day;
+    public int                      hour;
+    public int                      year;
     public UserInterface            ui;
     public LuaCrewModel             crew;
-    public LuaDataModel             data;
     public LuaEventsModel           events;
     public JobModule                jobs;
     public Collection<LuaModule>    luaModules;
     public Collection<GameModule>   modules;
 
-    public LuaGameModel(LuaCrewModel luaCrew, LuaEventsModel luaEvents, UserInterface userInterface, LuaDataModel.OnExtendListener extendListener) {
+    public LuaGameModel(LuaCrewModel luaCrew, LuaEventsModel luaEvents, UserInterface userInterface) {
         ui = userInterface;
         crew = luaCrew;
-        data = new LuaDataModel(extendListener, GameData.getData());
         events = luaEvents;
         jobs = ModuleHelper.getJobModule();
         luaModules = Game.getInstance().getLuaModuleManager().getModules();
         modules = Game.getInstance().getModules();
-        _extendListener = extendListener;
+    }
+
+    public void update() {
+        Game game = Game.getInstance();
+        this.tick = game.getTick();
+        this.hour = game.getHour();
+        this.day = game.getDay();
+        this.year = game.getYear();
+    }
+
+    public GameModule   getModule(String name) {
+        Optional<GameModule> moduleOptional = this.modules.stream().filter(module -> module.getInfo().name.equals(name)).findFirst();
+        return moduleOptional.isPresent() ? moduleOptional.get() : null;
     }
 
     public void setPlan(String plan) {

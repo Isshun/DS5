@@ -1,4 +1,4 @@
-game.data:extend(
+data:extend(
 {
     {
         label = "Air conditioner",

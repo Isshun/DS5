@@ -1,5 +1,4 @@
-game.data:extend(
-{
+data:extend({
     {
         label = "Cooker",
         name = "base.cooker",
@@ -8,6 +7,8 @@ game.data:extend(
         size = {3, 1},
         cost = 42,
         receipts = {
+            "base.receipt_easy_meal",
+            "base.receipt_great_meal",
             "base.receipt_lavish_meal"
         },
         effects = {
@@ -17,5 +18,4 @@ game.data:extend(
             coldPotency = 40,
         },
     }
-}
-)
+})

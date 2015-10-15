@@ -15,7 +15,7 @@ public class JobTalk extends BaseJobModel {
 
     public static JobTalk create(CharacterModel character, CharacterModel friend) {
 
-        if (friend.getJob() != null && friend.getJob().isJoy()) {
+        if (friend.getJob() != null && friend.getJob().isEntertainment()) {
             ModuleHelper.getJobModule().closeJob(friend.getJob());
         }
 

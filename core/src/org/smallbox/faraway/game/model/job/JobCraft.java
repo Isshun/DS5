@@ -148,7 +148,7 @@ public class JobCraft extends BaseBuildJobModel {
             // Current item is done
             _progress = 0;
             for (ItemInfo.ItemProductInfo productInfo : _receipt.getProductsInfo()) {
-                ConsumableModel productConsumable = new ConsumableModel(productInfo.itemInfo);
+                ConsumableModel productConsumable = new ConsumableModel(productInfo.item);
                 productConsumable.setQuantity(Utils.getRandom(productInfo.quantity));
 
                 // Move to storage

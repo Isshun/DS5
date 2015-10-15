@@ -1,4 +1,4 @@
-game.data:extend({
+data:extend({
     {
         type = "cursor",
         id = "build_cursor",

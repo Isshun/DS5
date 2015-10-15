@@ -191,7 +191,7 @@ public class UserInterfaceSelector {
     public void select(ItemInfo itemInfo) {
         clean();
 //        _userInterface.setMode(UserInterface.Mode.INFO_ITEM);
-//        ((PanelInfoItem)_userInterface.getPanel(PanelInfoItem.class)).select(itemInfo);
+//        ((PanelInfoItem)_userInterface.getPanel(PanelInfoItem.class)).select(item);
     }
 
     public void select(MapObjectModel item) {

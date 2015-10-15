@@ -111,7 +111,7 @@
 //
 //            JobCraft jobCraft = (JobCraft)(_item.getJobs() != null && !_item.getJobs().isEmpty() && _item.getJobs().get(0) instanceof JobCraft ? _item.getJobs().get(0) : null);
 //            if (jobCraft != null && jobCraft.isRunning() && jobCraft.getReceipt() != null) {
-//                ((UILabel)findById("lb_crafts")).setText("Crafts: " + String.join(", ", jobCraft.getReceipt().getProductsInfo().stream().map(product -> product.itemInfo.label).collect(Collectors.toList())));
+//                ((UILabel)findById("lb_crafts")).setText("Crafts: " + String.join(", ", jobCraft.getReceipt().getProductsInfo().stream().map(product -> product.item.label).collect(Collectors.toList())));
 //                ((UILabel)findById("lb_users")).setText("User: " + jobCraft.getCharacter().getName());
 //            } else {
 //                ((UILabel)findById("lb_crafts")).setText("Crafts: none");

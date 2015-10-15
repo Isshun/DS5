@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.model.item;
 
 import com.badlogic.gdx.math.Rectangle;
+import org.smallbox.faraway.GraphicInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,8 +61,8 @@ public class ItemInfo {
 	}
 
 	public static class ItemProductInfo {
-		public String 					item;
-		public ItemInfo 				itemInfo;
+		public String 					itemName;
+		public ItemInfo 				item;
 		public int[] 					quantity;
 		public double 					dropRate = 1;
 	}
@@ -153,7 +154,7 @@ public class ItemInfo {
 	public int 							height;
 	public int 							light;
 	public int 							lightDistance;
-	public int 							cost;
+	public int 							cost = 10;
 	public List<ItemInfoAction> 		actions;
 	public ItemEquipmentInfo 			equipment;
 	public ItemInfoEffects 				effects;
@@ -168,9 +169,6 @@ public class ItemInfo {
 	public boolean 						isBed;
 	public boolean 						isRock;
 	public boolean 						isPlant;
-	public int 							spriteId;
-	public String						fileName;
-	public String 						packageName;
 	public String 						sciLabel;
 	public boolean 						isFactory;
 	public boolean 						isDrink;
@@ -184,7 +182,7 @@ public class ItemInfo {
 	public ItemInfo 					parentInfo;
 	public List<ItemComponentInfo>		components;
 	public List<ItemInfo> 				childs = new ArrayList<>();
-	public Rectangle 					textureRect;
+	public List<GraphicInfo> 			graphics;
 
 	public ItemInfo() {
 		width = 1;
@@ -194,7 +192,7 @@ public class ItemInfo {
 	
 	boolean matchFilter(ItemInfoEffects effects, ItemFilter filter) {
 		if (effects != null) {
-			if (filter.effectJoy && effects.joy > 0) { return true; }
+			if (filter.effectEntertainment && effects.joy > 0) { return true; }
 			if (filter.effectDrink && effects.drink > 0) { return true; }
 			if (filter.effectEnergy && effects.energy > 0) { return true; }
 			if (filter.effectFood && effects.food > 0) { return true; }

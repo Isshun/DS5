@@ -2,6 +2,7 @@ package org.smallbox.faraway.game.model;
 
 import org.smallbox.faraway.data.ReceiptInfo;
 import org.smallbox.faraway.data.loader.*;
+import org.smallbox.faraway.game.model.character.BuffModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.game.model.planet.RegionInfo;
@@ -27,6 +28,7 @@ public class GameData {
 	public List<IDataLoader> 			_loaders;
 	public HashMap<String, CharacterTypeInfo> characters;
 	public Map<String, UICursor> 		cursors = new HashMap<>();
+	public List<BuffModel>				buffs = new ArrayList<>();
 
 	public GameData() {
         _data = this;
@@ -110,9 +112,13 @@ public class GameData {
 	}
 
 	public void fix() {
-		this.receipts.forEach(receipt -> receipt.products.forEach(product -> {
-			product.item = getItemInfo(product.itemName);
-			product.components.forEach(component -> component.item = getItemInfo(component.itemName));
+		this.items.stream().filter(item -> item.actions != null)
+				.forEach(item -> item.actions.stream().filter(action -> action.products != null)
+						.forEach(action -> action.products
+								.forEach(product -> product.item = getItemInfo(product.itemName))));
+		this.receipts.forEach(receipt -> receipt.products.forEach(productInfo -> {
+			productInfo.products.forEach(product -> product.item = getItemInfo(product.itemName));
+			productInfo.components.forEach(component -> component.item = getItemInfo(component.itemName));
 		}));
 	}
 }

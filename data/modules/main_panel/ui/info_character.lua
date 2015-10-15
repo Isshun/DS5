@@ -1,7 +1,7 @@
 mode = 1
 character = nil
 
-game.data:extend(
+data:extend(
     {
         {
             type = "view",
@@ -81,8 +81,10 @@ game.data:extend(
                         { type = "list", id = "list_buff", position = {0, 75}, adapter = {
                             view = { type = "label", text_size = 14, size = {400, 20}},
                             on_bind = function(view, data)
-                                view:setDashedString(data.message, data.mood, 47)
-                                view:setTextColor(data.mood > 0 and 0xb3d035 or 0xff5555)
+                                if data.message then
+                                    view:setDashedString(data.message, data.mood, 47)
+                                    view:setTextColor(data.mood > 0 and 0xb3d035 or 0xff5555)
+                                end
                                 if data.onClickListener then
                                     view:setOnClickListener(data.onClickListener)
                                 end
@@ -176,7 +178,7 @@ game.data:extend(
                 if character ~= nil then
                     local job = character:getJob()
                     if job then
-                        view:findById("lb_job"):setDashedString(job:getMessage() and job:getMessage() or job:getLabel(), job:getProgressPercent(), 38)
+                        view:findById("lb_job"):setDashedString(job:getMessage() and job:getMessage() or job:getLabel(), job:getProgress() * 100, 38)
                     else
                         view:findById("lb_job"):setText("No job")
                     end
@@ -185,7 +187,7 @@ game.data:extend(
                     view:findById("lb_need_food"):setDashedString("Food", math.floor(character:getNeeds().food), 22)
                     view:findById("lb_need_happiness"):setDashedString("Happiness", math.floor(character:getNeeds().happiness), 22)
                     view:findById("lb_need_health"):setDashedString("Health", math.floor(character:getNeeds().health), 22)
-                    view:findById("lb_need_joy"):setDashedString("Joy", math.floor(character:getNeeds().joy), 22)
+                    view:findById("lb_need_joy"):setDashedString("Entertainment", math.floor(character:getNeeds().joy), 22)
                     view:findById("lb_need_relation"):setDashedString("Relation", math.floor(character:getNeeds().relation), 22)
 
                     view:findById("gauge_energy"):setTextureRect(0, 80, math.floor(character:getNeeds().energy * 180 / 100 / 10) * 10, 16)
@@ -195,7 +197,10 @@ game.data:extend(
                     view:findById("gauge_joy"):setTextureRect(0, 80, math.floor(character:getNeeds().joy * 180 / 100 / 10) * 10, 16)
                     view:findById("gauge_relation"):setTextureRect(0, 80, math.floor(character:getNeeds().relation * 180 / 100 / 10) * 10, 16)
 
-                    view:findById("list_buff"):getAdapter():setData(character:getActiveBuffs())
+                    local buff_module = game:getModule("BuffModule")
+                    if buff_module then
+                        view:findById("list_buff"):getAdapter():setData(buff_module:getActiveBuffs(character))
+                    end
                 end
             end
         },

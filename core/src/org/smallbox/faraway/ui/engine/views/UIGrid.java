@@ -29,8 +29,9 @@ public class UIGrid extends View {
 //        _count = _views.size();
 //    }
 
+    @Override
     public void removeAllViews() {
-        _views.clear();
+        super.removeAllViews();
         _count = 0;
     }
 

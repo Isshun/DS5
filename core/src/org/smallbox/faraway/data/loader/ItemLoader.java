@@ -2,7 +2,6 @@ package org.smallbox.faraway.data.loader;
 
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -38,9 +37,9 @@ public class ItemLoader implements IDataLoader {
         }
 
         if (info != null) {
-            info.fileName = itemFile.getName().substring(0, itemFile.getName().length() - 4);
-            info.packageName = packageName;
-            info.name = info.packageName +  '.' + info.fileName;
+//            info.fileName = itemFile.getName().substring(0, itemFile.getName().length() - 4);
+//            info.packageName = packageName;
+//            info.name = info.packageName +  '.' + info.fileName;
 
             // Get category
             if ("consumable".equals(info.type)) {
@@ -105,7 +104,7 @@ public class ItemLoader implements IDataLoader {
                         component.itemInfo = data.getItemInfo(component.item);
                     }
                     for (ItemInfo.ItemProductInfo product: receipt.products) {
-                        product.itemInfo = data.getItemInfo(product.item);
+                        product.item = data.getItemInfo(product.itemName);
                     }
                 }
             }
@@ -116,13 +115,13 @@ public class ItemLoader implements IDataLoader {
                     // Set product items (for self-product item, like rock)
                     if (action.finalProducts != null && !action.finalProducts.isEmpty()) {
                         for (ItemInfo.ItemProductInfo productInfo: action.finalProducts) {
-                            productInfo.itemInfo = data.getItemInfo(productInfo.item);
+                            productInfo.item = data.getItemInfo(productInfo.itemName);
                             productInfo.dropRate = productInfo.dropRate == 0 ? 1 : productInfo.dropRate;
                         }
                     }
                     if (action.products != null && !action.products.isEmpty()) {
                         for (ItemInfo.ItemProductInfo productInfo: action.products) {
-                            productInfo.itemInfo = data.getItemInfo(productInfo.item);
+                            productInfo.item = data.getItemInfo(productInfo.itemName);
                             productInfo.dropRate = productInfo.dropRate == 0 ? 1 : productInfo.dropRate;
                         }
                     }
@@ -132,7 +131,7 @@ public class ItemLoader implements IDataLoader {
                         for (ItemInfo.ItemInfoReceipt receiptInfo: action.receipts) {
                             if (receiptInfo.products != null) {
                                 for (ItemInfo.ItemProductInfo productInfo : receiptInfo.products) {
-                                    productInfo.itemInfo = data.getItemInfo(productInfo.item);
+                                    productInfo.item = data.getItemInfo(productInfo.itemName);
                                 }
                             }
                             if (receiptInfo.components != null) {

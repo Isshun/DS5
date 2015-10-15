@@ -36,6 +36,7 @@ public class DebugModule extends GameUIModule {
 
     private UIList          _listCommands;
     private ItemModel       _item;
+    private UILabel         _lbMemory;
 
     private static class CommandEntry {
         public final OnClickListener    listener;
@@ -104,9 +105,9 @@ public class DebugModule extends GameUIModule {
                             new CommandEntry("Relation (f)", v -> _character.getNeeds().relation = 100),
                             new CommandEntry("Relation (w)", v -> _character.getNeeds().relation = _character.getType().needs.relation.warning),
                             new CommandEntry("Relation (c)", v -> _character.getNeeds().relation = _character.getType().needs.relation.critical),
-                            new CommandEntry("Joy (f)", v -> _character.getNeeds().joy = 100),
-                            new CommandEntry("Joy (w)", v -> _character.getNeeds().joy = _character.getType().needs.joy.warning),
-                            new CommandEntry("Joy (c)", v -> _character.getNeeds().joy = _character.getType().needs.joy.critical)))
+                            new CommandEntry("Entertainment (f)", v -> _character.getNeeds().joy = 100),
+                            new CommandEntry("Entertainment (w)", v -> _character.getNeeds().joy = _character.getType().needs.joy.warning),
+                            new CommandEntry("Entertainment (c)", v -> _character.getNeeds().joy = _character.getType().needs.joy.critical)))
             ),
             new CommandEntry("Dump managers",       view -> {
                 Log.notice("\n----------- dump -----------");
@@ -144,7 +145,7 @@ public class DebugModule extends GameUIModule {
     public void onReloadUI() {
         UIFrame view = new UIFrame(200, 600);
         view.setBackgroundColor(0x121c1e);
-        view.setPosition(0, 0);
+        view.setPosition(0, 32);
 
         UILabel lbTitle = new UILabel();
         lbTitle.setText("Debug");
@@ -172,6 +173,11 @@ public class DebugModule extends GameUIModule {
 //        view.setModule();
 
         UserInterface.getInstance()._views.add(view);
+
+        _lbMemory = new UILabel();
+        _lbMemory.setTextSize(14);
+        _lbMemory.setPosition(0, 0);
+        UserInterface.getInstance()._views.add(_lbMemory);
     }
 
     @Override
@@ -201,6 +207,19 @@ public class DebugModule extends GameUIModule {
 
     @Override
     protected void onUpdate(int tick) {
+        int mb = 1024 * 1024;
+        Runtime runtime = Runtime.getRuntime();
+        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
+        int total = (int) (runtime.totalMemory() / mb);
+
+//        _used = (_used * 7 + used) / 8;
+
+//        _lbRenderTime.setText("Rendering: %dms", (int) Application.getRenderTime());
+        _lbMemory.setText("Heap: " + String.valueOf(used) + " / " + String.valueOf(total) + " Mo");
+//        _lbUpdate.setText(String.format("Update: %d/%d", Application.getLastUpdateDelay(), Application.getLastLongUpdateDelay()));
+//        _lbFloor.setText("FPS: " + MainRenderer.getFPS());
+//        _lbFrame.setText("tick: " + Game.getInstance().getTick() + " / frame: " + frame);
+
 //        if (mView != null) {
 //            ((UILabel) mView.findById("lb_mouse")).setText(
 //                    UserInterface.getInstance().getMouseX() + "x" + UserInterface.getInstance().getMouseY());

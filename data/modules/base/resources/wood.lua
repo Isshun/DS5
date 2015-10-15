@@ -1,8 +1,8 @@
-game.data:extend({
+data:extend({
     {
         label = "Wood",
         name = "base.wood",
         type = "resource",
-        graphics = "[base]/graphics/items/ground.png",
+        graphics = { path = "[base]/graphics/items/ground.png" },
     },
 })

@@ -100,7 +100,7 @@ public abstract class CharacterModel extends MovableModel {
     protected boolean 					_needRefresh;
     protected ConsumableModel 			_inventory;
     protected OnMoveListener 			_moveListener;
-//    protected List<ItemInfo> 			_equipments;
+    //    protected List<ItemInfo> 			_equipments;
     protected CharacterStats            _stats;
     protected boolean 					_isFaint;
 
@@ -216,6 +216,21 @@ public abstract class CharacterModel extends MovableModel {
         moveTo(job, ModuleHelper.getWorldModule().getParcel(toX, toY), onMoveListener);
     }
 
+    public void moveApprox(BaseJobModel job, ParcelModel toParcel, OnMoveListener onMoveListener) {
+        ParcelModel walkableParcel = null;
+        for (int offsetX = 0; offsetX <= 1; offsetX++) {
+            for (int offsetY = 0; offsetY <= 1; offsetY++) {
+                if (walkableParcel == null) {
+                    ParcelModel parcel = WorldHelper.getParcel(toParcel.x + offsetX, toParcel.y + offsetY);
+                    if (parcel != null && parcel.isWalkable()) {
+                        walkableParcel = parcel;
+                    }
+                }
+            }
+        }
+        moveTo(job, walkableParcel, onMoveListener);
+    }
+
     public void moveTo(BaseJobModel job, ParcelModel toParcel, OnMoveListener onMoveListener) {
         _toX = toParcel.x;
         _toY = toParcel.y;
@@ -248,10 +263,6 @@ public abstract class CharacterModel extends MovableModel {
 
     public List<BuffModel> getBuffs() {
         return _buffs;
-    }
-
-    public List<BuffModel> getActiveBuffs() {
-        return _buffs.stream().filter(buff -> buff.level > 0).collect(Collectors.toList());
     }
 
     public void update() {

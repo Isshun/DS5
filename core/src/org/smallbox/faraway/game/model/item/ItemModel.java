@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.item;
 
+import org.smallbox.faraway.ItemFactory;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class ItemModel extends BuildableMapObject {
     private ArrayList<ItemSlot>     _slots;
     private int 		            _nbFreeSlot = -1;
     private int 		            _nbSlot;
+    private ItemFactory 			_factory;
 
 
     public ItemModel(ItemInfo info, int id) {
@@ -32,6 +34,7 @@ public class ItemModel extends BuildableMapObject {
 	public List<ItemSlot>   		getSlots() { return _slots; }
 	public int 						getNbFreeSlots() { return _nbFreeSlot; }
 	public int 						getNbSlots() { return _nbSlot; }
+	public ItemFactory 				getFactory() { return _factory; }
 
 	public boolean 					hasFreeSlot() { return _nbFreeSlot == -1 || _nbFreeSlot > 0; }
 	public boolean 					isFunctional() { return _isFunctional; }

@@ -1,6 +1,6 @@
 consumable = nil
 
-game.data:extend(
+data:extend(
     {
         {
             type = "view",
@@ -11,7 +11,6 @@ game.data:extend(
             visible = false,
             views =
             {
-                { type = "label", id = "lb_name", text = "name", text_size = 28, padding = 10, size = {100, 40}},
                 { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
                 { type = "label", text = "Consumable", text_size = 12, position = {10, 8}},
                 { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},

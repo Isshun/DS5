@@ -19,7 +19,7 @@ import static org.smallbox.faraway.game.model.item.ItemInfo.ItemInfoPlant.Growin
  */
 public class FloraModule extends GameModule {
     private List<ResourceModel>     _plants = new ArrayList<>();
-    private TemperatureModule _temperatureModule;
+    private TemperatureModule       _temperatureModule;
 
     public FloraModule() {
         _updateInterval = 10;

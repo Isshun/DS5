@@ -89,10 +89,11 @@ public class Game {
     }
 
     public void init(WorldFactory factory) {
+        _modules.stream().filter(GameModule::isLoaded).filter(module -> module._priority > 0).forEach(GameModule::create);
         _observers.addAll(ModuleManager.getInstance().getModules());
         _observers.addAll(ModuleManager.getInstance().getRenders());
-        _modules.stream().filter(GameModule::isLoaded).forEach(GameModule::create);
         _luaModuleManager.init();
+        _modules.stream().filter(GameModule::isLoaded).filter(module -> module._priority == 0).forEach(GameModule::create);
 
         notify(GameObserver::onReloadUI);
     }

@@ -149,7 +149,7 @@ public class PanelInfoArea extends BaseInfoRightPanel {
         // Add consumable
         addTitle(frameEntries, "Consumables", posY);
         addToggle(frameEntries, posY, storage, itemInfo -> itemInfo.isConsumable && !itemInfo.isEquipment);
-//        addToggle(frameEntries, posY, itemInfo -> {
+//        addToggle(frameEntries, posY, item -> {
 //            frameEntries.getViews().forEach(v -> {
 //                if (v.getData() != null && ((ItemInfo)v.getData()).isConsumable && !((ItemInfo)v.getData()).isEquipment) {
 //                    storage.setAccept((ItemInfo)v.getData(), true);

@@ -63,22 +63,22 @@ public class JobHelper {
         }
     }
 
-    public static BaseJobModel addBuildJob(MapObjectModel item) {
-        if (item == null) {
-            Log.error("JobModule: build on null item");
-            return null;
-        }
-
-        if (item.isComplete()) {
-            Log.error("Build item: already close, nothing to do");
-            return null;
-        }
-
-        BaseJobModel job = JobBuild.create(item);
-        ModuleHelper.getJobModule().addJob(job);
-
-        return job;
-    }
+//    public static BaseJobModel addBuildJob(MapObjectModel item) {
+//        if (item == null) {
+//            Log.error("JobModule: build on null item");
+//            return null;
+//        }
+//
+//        if (item.isComplete()) {
+//            Log.error("Build item: already close, nothing to do");
+//            return null;
+//        }
+//
+//        BaseJobModel job = JobBuild.create(item);
+//        ModuleHelper.getJobModule().addJob(job);
+//
+//        return job;
+//    }
 
     public static BaseJobModel addGather(ResourceModel resource) {
         if (resource == null) {
@@ -130,50 +130,50 @@ public class JobHelper {
             ModuleHelper.getJobModule().removeJob(job);
         }
     }
-
-    public static BaseJobModel addBuildJob(ItemInfo info, int x, int y) {
-        MapObjectModel item = null;
-
-        // Structure
-        if (info.isStructure) {
-            MapObjectModel current = WorldHelper.getStructure(x, y);
-            if (current != null && current.getInfo().equals(info)) {
-                Log.error("Build structure: already exist on this area");
-                return null;
-            }
-            item = ModuleHelper.getWorldModule().putObject(info, x, y, 0, 0);
-        }
-
-        // Item
-        else if (info.isUserItem) {
-            MapObjectModel current = WorldHelper.getItem(x, y);
-            if (current != null && current.getInfo().equals(info)) {
-                Log.error("Build item: already exist on this area");
-                return null;
-            } else if (current != null) {
-                Log.error("JobModule: add build on non null item");
-                return null;
-            } else {
-                item = ModuleHelper.getWorldModule().putObject(info, x, y, 0, 0);
-            }
-        }
-
-        // Resource
-        else if (info.isResource) {
-            MapObjectModel currentItem = WorldHelper.getItem(x, y);
-            MapObjectModel currentResource = WorldHelper.getResource(x, y);
-            if (currentResource != null && currentResource.getInfo().equals(info)) {
-                Log.error("Build item: already exist on this area");
-                return null;
-            } else if (currentItem != null) {
-                Log.error("JobModule: add build on non null item");
-                return null;
-            } else {
-                item = ModuleHelper.getWorldModule().putObject(info, x, y, 0, 0);
-            }
-        }
-
-        return addBuildJob(item);
-    }
+//
+//    public static BaseJobModel addBuildJob(ItemInfo info, int x, int y) {
+//        MapObjectModel item = null;
+//
+//        // Structure
+//        if (info.isStructure) {
+//            MapObjectModel current = WorldHelper.getStructure(x, y);
+//            if (current != null && current.getInfo().equals(info)) {
+//                Log.error("Build structure: already exist on this area");
+//                return null;
+//            }
+//            item = ModuleHelper.getWorldModule().putObject(info, x, y, 0, 0);
+//        }
+//
+//        // Item
+//        else if (info.isUserItem) {
+//            MapObjectModel current = WorldHelper.getItem(x, y);
+//            if (current != null && current.getInfo().equals(info)) {
+//                Log.error("Build item: already exist on this area");
+//                return null;
+//            } else if (current != null) {
+//                Log.error("JobModule: add build on non null item");
+//                return null;
+//            } else {
+//                item = ModuleHelper.getWorldModule().putObject(info, x, y, 0, 0);
+//            }
+//        }
+//
+//        // Resource
+//        else if (info.isResource) {
+//            MapObjectModel currentItem = WorldHelper.getItem(x, y);
+//            MapObjectModel currentResource = WorldHelper.getResource(x, y);
+//            if (currentResource != null && currentResource.getInfo().equals(info)) {
+//                Log.error("Build item: already exist on this area");
+//                return null;
+//            } else if (currentItem != null) {
+//                Log.error("JobModule: add build on non null item");
+//                return null;
+//            } else {
+//                item = ModuleHelper.getWorldModule().putObject(info, x, y, 0, 0);
+//            }
+//        }
+//
+//        return addBuildJob(item);
+//    }
 
 }

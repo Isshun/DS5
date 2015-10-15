@@ -1,20 +1,18 @@
 package org.smallbox.faraway.game.model.item;
 
+import org.smallbox.faraway.GraphicInfo;
 import org.smallbox.faraway.game.model.ObjectModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
-import org.smallbox.faraway.game.model.job.JobBuild;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MapObjectModel extends ObjectModel {
     private static int 		    _maxId;
-
     private int			        _id;
     protected int			        _x;
     protected int			        _y;
-    private boolean 	        _isSolid;
     private CharacterModel      _owner;
     private String 		        _name;
     private int 		        _width;
@@ -35,7 +33,8 @@ public abstract class MapObjectModel extends ObjectModel {
     private List<BaseJobModel>  _jobs;
     protected boolean           _needRefresh;
     private double              _progress;
-    private JobBuild            _jobBuild;
+//    private JobBuild            _jobBuild;
+    private GraphicInfo         _graphic;
 
     public MapObjectModel(ItemInfo info) {
         init(info, ++_maxId);
@@ -52,7 +51,6 @@ public abstract class MapObjectModel extends ObjectModel {
         // Init
         _health = info.maxHealth;
         _lastBlocked = -1;
-        _isSolid = false;
         _owner = null;
         _id = id;
         _name = null;
@@ -62,7 +60,6 @@ public abstract class MapObjectModel extends ObjectModel {
         _width = 1;
         _height = 1;
         _matter = 1;
-        _isSolid = false;
 
         // Info
         {
@@ -74,7 +71,6 @@ public abstract class MapObjectModel extends ObjectModel {
             _nbFrame = info.frames > 0 ? info.frames : 1;
             _animFrameInterval = info.framesInterval > 0 ? info.framesInterval : 1;
             _matter = info.cost;
-            _isSolid = !info.isWalkable;
         }
     }
 
@@ -93,7 +89,7 @@ public abstract class MapObjectModel extends ObjectModel {
     public void             setBlocked(int update) { _lastBlocked = update; }
     public void             setNeedRefresh() { _needRefresh = true; }
     public boolean          needRefresh() { return _needRefresh; }
-    public void             setJobBuild(JobBuild job) { _jobBuild = job; }
+//    public void             setJobBuild(JobBuild job) { _jobBuild = job; }
 
     // Gets
     public CharacterModel   getOwner() { return _owner; }
@@ -116,13 +112,14 @@ public abstract class MapObjectModel extends ObjectModel {
     public int              getHealth() { return _health; }
     public int              getMaxHealth() { return _info.maxHealth; }
     public List<BaseJobModel> getJobs() { return _jobs; }
-    public JobBuild         getJobBuild() { return _jobBuild; }
+//    public JobBuild         getJobBuild() { return _jobBuild; }
 
     // Boolean
     public boolean          isConsumable() { return _info.isConsumable; }
     public boolean          isSelected() { return _selected; }
-    public boolean			isSolid() { return _progress >= _info.cost && _isSolid; }
-    public boolean			isComplete() { return _progress >= _info.cost; }
+    public boolean          isSolid() { return _progress >= _info.cost && !_info.isWalkable; }
+    public boolean          isWalkable() { return _progress < _info.cost || _info.isWalkable; }
+    public boolean			isComplete() { return false; }
     public boolean			isSleepingItem() { return _info.isBed; }
     public boolean			isStructure() { return _info.isStructure; }
     public boolean          isResource() { return _info.isResource; }
@@ -212,5 +209,12 @@ public abstract class MapObjectModel extends ObjectModel {
     public void addProgress(double value) {
         _progress += value;
         _needRefresh = true;
+    }
+
+    public GraphicInfo getGraphic() {
+        if (_graphic == null && _info.graphics != null) {
+            _graphic = _info.graphics.get((int) (Math.random() * _info.graphics.size()));
+        }
+        return _graphic;
     }
 }

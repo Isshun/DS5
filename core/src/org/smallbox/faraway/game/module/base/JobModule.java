@@ -52,15 +52,15 @@ public class JobModule extends GameModule {
         _priorities.add(new CheckCharacterUse());
         _priorities.add(new CheckCharacterExhausted());
         _priorities.add(new CheckCharacterHungry());
-//		_priorities.add(new CheckCharacterJoyDepleted());
+//		_priorities.add(new CheckCharacterEntertainmentDepleted());
 
         _bedCheck = new CheckCharacterExhausted();
 
         _joys = new ArrayList<>();
-//		_joys.add(new CheckJoyTalk());
+//		_joys.add(new CheckEntertainmentTalk());
         _joys.add(new CheckJoyWalk());
         _joys.add(new CheckJoyItem());
-//		_joys.add(new CheckJoySleep());
+//		_joys.add(new CheckEntertainmentSleep());
 
         printDebug("JobModule done");
     }
@@ -73,9 +73,14 @@ public class JobModule extends GameModule {
         ModuleHelper.getWorldModule().getItems().stream().filter(item -> !item.isComplete())
                 .forEach(item -> item.getComponents().stream().filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
                         .forEach(component -> _jobs.add(new GetComponentJob(item, component))));
+        ModuleHelper.getWorldModule().getStructures().stream().filter(structure -> !structure.isComplete())
+                .forEach(item -> item.getComponents().stream().filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
+                        .forEach(component -> _jobs.add(new GetComponentJob(item, component))));
 
         // Create Build jobs
         ModuleHelper.getWorldModule().getItems().stream().filter(item -> !item.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
+                .forEach(item -> _jobs.add(new BuildJob(item)));
+        ModuleHelper.getWorldModule().getStructures().stream().filter(structure -> !structure.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
                 .forEach(item -> _jobs.add(new BuildJob(item)));
 
         // Create haul jobs
@@ -115,7 +120,7 @@ public class JobModule extends GameModule {
         if (timetable == 0 || timetable == 3) {
             // Check joy depleted
             if (timetable == 0) {
-                if (assignBestJoy(character, false)) {
+                if (assignBestEntertainment(character, false)) {
                     printDebug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
                     return;
                 }
@@ -134,7 +139,7 @@ public class JobModule extends GameModule {
 
         // Free time
         if (timetable == 2) {
-            if (assignBestJoy(character, true) && character.getJob() != null) {
+            if (assignBestEntertainment(character, true) && character.getJob() != null) {
                 printDebug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
                 return;
             }
@@ -211,7 +216,7 @@ public class JobModule extends GameModule {
      * @param character
      * @return
      */
-    private boolean assignBestJoy(CharacterModel character, boolean force) {
+    private boolean assignBestEntertainment(CharacterModel character, boolean force) {
         Collections.shuffle(_joys);
         for (CharacterCheck jobCheck: _joys) {
             if ((force || jobCheck.need(character)) && jobCheck.check(character)) {
@@ -372,7 +377,7 @@ public class JobModule extends GameModule {
     }
 
     public void quitJob(BaseJobModel job, JobAbortReason reason) {
-        printDebug("Job quit: " + job.getId());
+        printDebug("Job quit: " + (job != null ? job.getId() : "unknown"));
 
         job.setStatus(JobStatus.WAITING);
 

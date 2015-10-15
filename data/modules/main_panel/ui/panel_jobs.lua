@@ -1,4 +1,4 @@
-game.data:extend(
+data:extend(
 {
     {
         type = "view",
@@ -25,8 +25,9 @@ game.data:extend(
                 },
                 data = game.jobs:getJobs(),
                 on_bind = function(view, job)
-                    view:findById("lb_job"):setText(job:getLabel())
-                    view:findById("lb_status"):setText(job:getCharacter() and job:getCharacter():getName() or "idle")
+                    view:findById("lb_job"):setDashedString(job:getLabel(), job:getCharacter() and job:getCharacter():getName() or "idle", 42)
+--                    view:findById("lb_job"):setText(job:getLabel())
+--                    view:findById("lb_status"):setText(job:getCharacter() and job:getCharacter():getName() or "idle")
                     view:findById("view_progress"):setSize(job:getProgress() * 400, 22)
                 end
             }},

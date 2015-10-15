@@ -95,8 +95,25 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 //    public double           getTemperature() { return _room != null ? _room.getTemperatureInfo().temperature : ((TemperatureModule) ModuleManager.getInstance().getModule(TemperatureModule.class)).getTemperature(); }
     public ParcelEnvironment getEnvironment() { return _environment; }
 
-    public boolean          isFree() { return !isBlocked(); }
-    public boolean          isWalkable() { return !isBlocked(); }
+    public boolean          isWalkable() {
+        // Check structure (wall, closed door)
+        if (_content != null && _content.structure != null && !_content.structure.getInfo().isWalkable && _content.structure.isComplete()) {
+            return false;
+        }
+
+        // Check structure (wall, closed door)
+        if (_content != null && _content.item != null && !_content.item.getInfo().isWalkable && _content.item.isComplete()) {
+            return false;
+        }
+
+        // Check structure (wall, closed door)
+        if (_content != null && _content.resource != null && !_content.resource.getInfo().isWalkable) {
+            return false;
+        }
+
+        return true;
+    }
+
     public boolean			isStorage() { return _isStorage; }
     public boolean          isExterior() { return _isExterior; }
     public boolean 			canSupportRoof() { return (_content != null && _content.structure != null && (_content.structure.isWall() || _content.structure.isDoor())) || (_content != null && _content.resource != null && _content.resource.isRock()); }
@@ -119,20 +136,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     @Override
     public Array<Connection<ParcelModel>> getConnections() {
         return _connections;
-    }
-
-    public boolean isBlocked() {
-        // Check structure (wall, closed door)
-        if (_content != null && _content.structure != null && _content.structure.isSolid()) {
-            return true;
-        }
-
-        // Check structure (wall, closed door)
-        if (_content != null && _content.resource != null && _content.resource.isSolid()) {
-            return true;
-        }
-
-        return false;
     }
 
     public int getEnvironmentScore() {

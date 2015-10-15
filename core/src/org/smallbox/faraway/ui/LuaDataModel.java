@@ -22,11 +22,11 @@ public class LuaDataModel {
     public final List<CategoryInfo>    categories;
     public final List<PlanetInfo>      planets;
 
-    public LuaDataModel(OnExtendListener extendListener, GameData data) {
+    public LuaDataModel(OnExtendListener extendListener) {
         _extendListener = extendListener;
-        this.items = data.items;
-        this.categories = data.categories;
-        this.planets = data.planets;
+        this.items = GameData.getData().items;
+        this.categories = GameData.getData().categories;
+        this.planets = GameData.getData().planets;
     }
 
     @SuppressWarnings("unused")

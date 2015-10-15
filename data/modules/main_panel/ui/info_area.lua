@@ -1,6 +1,8 @@
 area = nil
+category = nil
+need_refresh = nil
 
-game.data:extend(
+data:extend(
     {
         {
             type = "view",
@@ -15,7 +17,25 @@ game.data:extend(
                 { type = "list", position = {0, 40}, views = {
                     { type = "label", id = "lb_position", text_size = 18, padding = 10},
                     { type = "label", id = "lb_quantity", text_size = 18, padding = 10},
-                    { type = "grid", id = "grid_items", columns = 2, column_width = 180, row_height = 22 },
+                    { type = "grid", columns = 6, column_width = 80, row_height = 22, views = {
+                        { type = "label", text = "none", text_size = 16, padding = 10, size = {70, 32}, background = 0x556644, on_click = function()
+                            category = nil
+                            need_refresh = true
+                        end},
+                        { type = "label", text = "mineral", text_size = 16, padding = 10, size = {70, 32}, background = 0x556644, on_click = function()
+                            category = "mineral"
+                            need_refresh = true
+                        end},
+                        { type = "label", text = "organic", text_size = 16, padding = 10, size = {70, 32}, background = 0x556644, on_click = function()
+                            category = "organic"
+                            need_refresh = true
+                        end},
+                        { type = "label", text = "component", text_size = 16, padding = 10, size = {70, 32}, background = 0x556644, on_click = function()
+                            category = "component"
+                            need_refresh = true
+                        end},
+                    }},
+                    { type = "grid", id = "grid_items", columns = 2, column_width = 180, row_height = 22, position = {0, 80}},
                 }},
                 { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {100, 40}, on_click = function()
                     game.events:send("encyclopedia.open_area", area)
@@ -37,6 +57,7 @@ game.data:extend(
 
                 if event == game.events.on_area_selected then
                     area = data;
+                    need_refresh = true
                     view:setVisible(true)
                     view:findById("lb_name"):setText(data:getName())
                 end
@@ -44,27 +65,39 @@ game.data:extend(
 
             on_refresh =
             function(view)
-                if area ~= nil then
+                if area ~= nil and need_refresh then
+                    need_refresh = false
+
                     local grid = view:findById("grid_items")
                     grid:removeAllViews()
 
+                    local list_item = {}
                     local iterator = area:getItemsAccepts():entrySet():iterator()
                     while iterator:hasNext() do
                         local entry = iterator:next()
+                        if entry:getKey().category == category then
+                            table.insert(list_item, entry)
+                        end
+                    end
+
+                    for key in pairs(list_item) do
+                        local entry = list_item[key]
                         local lb_entry = game.ui:createLabel()
                         lb_entry:setText((entry:getValue() and "[x] " or "[ ] ") .. entry:getKey().label)
                         lb_entry:setTextSize(14)
                         lb_entry:setSize(180, 22)
+                        lb_entry:setBackgroundColor(0x552233)
                         lb_entry:setPadding(10)
                         lb_entry:setOnClickListener(function(subview)
                             area:setAccept(entry:getKey(), not entry:getValue())
+                            need_refresh = true
                         end)
                         grid:addView(lb_entry)
                     end
 
---                    local info = area:getInfo()
---                    view:findById("lb_position"):setText("Position: " .. area:getX() .. "x" .. area:getY())
---                    view:findById("lb_quantity"):setText("Quantity: " .. area:getQuantity())
+                    --                    local info = area:getInfo()
+                    --                    view:findById("lb_position"):setText("Position: " .. area:getX() .. "x" .. area:getY())
+                    --                    view:findById("lb_quantity"):setText("Quantity: " .. area:getQuantity())
                 end
             end
         },

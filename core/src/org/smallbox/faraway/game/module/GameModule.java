@@ -19,6 +19,7 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
     private final ModuleInfo _info;
     private List<EventListener> _listeners;
     private boolean _isActivate;
+    public int _priority = 100;
 
     public abstract class EventListener<T> {
         public abstract void onEvent(T data);

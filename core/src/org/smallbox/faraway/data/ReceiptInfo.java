@@ -15,10 +15,14 @@ public class ReceiptInfo {
         public int          quantity;
     }
 
-    public static class ReceiptProductInfo {
+    public static class ReceiptProductItemInfo {
         public String       itemName;
         public ItemInfo     item;
-        public int[]        quantity;
+        public int          quantity;
+    }
+
+    public static class ReceiptProductInfo {
+        public List<ReceiptProductItemInfo> products = new ArrayList<>();
         public List<ReceiptProductComponentInfo> components = new ArrayList<>();
     }
 

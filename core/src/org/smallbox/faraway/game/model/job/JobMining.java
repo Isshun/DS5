@@ -54,7 +54,7 @@ public class JobMining extends BaseJobModel {
 			return false;
 		}
 
-		if ((_parcel == null || _parcel.isBlocked()) && getFreeParcel() == null) {
+		if ((_parcel == null || !_parcel.isWalkable()) && getFreeParcel() == null) {
 			_reason = JobAbortReason.BLOCKED;
 			return false;
 		}
@@ -117,7 +117,7 @@ public class JobMining extends BaseJobModel {
 
         if (_actionInfo.finalProducts != null) {
             _actionInfo.finalProducts.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo -> {
-                ModuleHelper.getWorldModule().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity));
+                ModuleHelper.getWorldModule().putObject(productInfo.item, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity));
             });
         }
 	}
@@ -152,7 +152,7 @@ public class JobMining extends BaseJobModel {
         resource.addQuantity(-1);
         if (_actionInfo.products != null) {
             _actionInfo.products.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo ->
-                    ModuleHelper.getWorldModule().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity)));
+                    ModuleHelper.getWorldModule().putObject(productInfo.item, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity)));
         }
 
 		// Check if resource is depleted

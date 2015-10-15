@@ -1,6 +1,6 @@
 parcel = nil
 
-game.data:extend(
+data:extend(
     {
         {
             type = "view",
@@ -48,7 +48,7 @@ game.data:extend(
                     view:findById("lb_position"):setText("Position: " .. parcel.x .. "x" .. parcel.y)
                     view:findById("lb_light"):setText("Light: " .. parcel:getLight())
                     view:findById("lb_oxygen"):setText("Oxygen: " .. parcel:getOxygen())
-                    view:findById("lb_room"):setText("Room: " .. (room and (room:isExterior() and "exterior" or room:getType())))
+                    view:findById("lb_room"):setText("Room: " .. (room and (room:isExterior() and "exterior" or room:getType():name()) or "no"))
                     view:findById("lb_type"):setText("Type: " .. parcel:getType())
                 end
             end

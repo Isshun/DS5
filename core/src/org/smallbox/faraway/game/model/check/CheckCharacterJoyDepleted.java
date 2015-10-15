@@ -12,10 +12,10 @@
 ///**
 // * Created by Alex on 06/07/2015.
 // */
-//public class CheckCharacterJoyDepleted extends CharacterCheck {
+//public class CheckCharacterEntertainmentDepleted extends CharacterCheck {
 //    @Override
 //    public BaseJobModel create(CharacterModel character) {
-//        List<CharacterCheck> joys = ModuleHelper.getJobModule().getJoys();
+//        List<CharacterCheck> joys = ModuleHelper.getJobModule().getEntertainments();
 //
 //        Collections.shuffle(joys);
 //        for (CharacterCheck jobCheck: joys) {

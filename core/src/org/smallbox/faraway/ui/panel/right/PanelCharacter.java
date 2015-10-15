@@ -9,7 +9,7 @@
 //import org.smallbox.faraway.game.model.CharacterTypeInfo;
 //import org.smallbox.faraway.game.model.GameData;
 //import org.smallbox.faraway.game.model.ToolTips;
-//import org.smallbox.faraway.game.model.character.BuffModel;
+//import org.smallbox.faraway.module.character.BuffModel;
 //import org.smallbox.faraway.game.model.character.DiseaseModel;
 //import org.smallbox.faraway.game.model.character.base.*;
 //import org.smallbox.faraway.game.model.item.ItemInfo;

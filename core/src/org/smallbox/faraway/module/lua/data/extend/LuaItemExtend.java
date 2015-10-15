@@ -2,7 +2,9 @@ package org.smallbox.faraway.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.GraphicInfo;
 import org.smallbox.faraway.game.model.GameData;
+import org.smallbox.faraway.module.lua.DataExtendException;
 import org.smallbox.faraway.module.lua.data.LuaExtend;
 import org.smallbox.faraway.module.lua.LuaModule;
 import org.smallbox.faraway.module.lua.LuaModuleManager;
@@ -27,7 +29,7 @@ public class LuaItemExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) {
+    public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) throws DataExtendException {
         String name = getString(value, "name", null);
         ItemInfo itemInfo = null;
         for (ItemInfo info: GameData.getData().items) {
@@ -62,10 +64,16 @@ public class LuaItemExtend extends LuaExtend {
             throw new RuntimeException("unknown item type: " + itemInfo.type);
         }
 
-        String graphics = getString(value, "graphics", null);
-        if (graphics != null) {
-            itemInfo.fileName = graphics.substring(graphics.indexOf(']') + 1, graphics.length());
-            itemInfo.packageName = graphics.substring(1, graphics.indexOf(']'));
+        LuaValue luaGraphics = value.get("graphics");
+        if (!luaGraphics.isnil()) {
+            itemInfo.graphics = new ArrayList<>();
+            if (!luaGraphics.get("path").isnil()) {
+                itemInfo.graphics.add(readGraphic(luaGraphics));
+            } else if (luaGraphics.length() >= 1 && !luaGraphics.get(1).get("path").isnil()) {
+                for (int i = 1; i <= luaGraphics.length(); i++) {
+                    itemInfo.graphics.add(readGraphic(luaGraphics.get(i)));
+                }
+            }
         }
 
         if (!value.get("size").isnil()) {
@@ -74,6 +82,10 @@ public class LuaItemExtend extends LuaExtend {
         } else {
             itemInfo.width = 1;
             itemInfo.height = 1;
+        }
+
+        if (!value.get("walkable").isnil()) {
+            itemInfo.isWalkable = value.get("walkable").toboolean();
         }
 
         if (!value.get("plant").isnil()) {
@@ -94,6 +106,26 @@ public class LuaItemExtend extends LuaExtend {
         System.out.println("Extends item from lua: " + itemInfo.label);
     }
 
+    private GraphicInfo readGraphic(LuaValue luaGraphic) throws DataExtendException {
+        GraphicInfo graphicInfo;
+        if (!luaGraphic.get("path").isnil()) {
+            String path = luaGraphic.get("path").toString();
+            graphicInfo = new GraphicInfo(
+                    path.substring(1, path.indexOf(']')),
+                    path.substring(path.indexOf(']') + 1, path.length())
+            );
+        } else {
+            throw new DataExtendException(DataExtendException.Type.MANDATORY, "graphics.path");
+        }
+        if (!luaGraphic.get("x").isnil()) {
+            graphicInfo.x = luaGraphic.get("x").toint();
+        }
+        if (!luaGraphic.get("y").isnil()) {
+            graphicInfo.y = luaGraphic.get("y").toint();
+        }
+        return graphicInfo;
+    }
+
     private void readLightValues(ItemInfo itemInfo, LuaValue value) {
         itemInfo.light = 10;
         itemInfo.lightDistance = 4;
@@ -109,7 +141,7 @@ public class LuaItemExtend extends LuaExtend {
             action.products = new ArrayList<>();
             for (int i = 1; i <= luaProducts.length(); i++) {
                 ItemInfo.ItemProductInfo product = new ItemInfo.ItemProductInfo();
-                product.item = getString(luaProducts.get(i), "item", null);
+                product.itemName = getString(luaProducts.get(i), "item", null);
                 product.quantity = new int[] {
                         luaProducts.get(i).get("quantity").get(1).toint(),
                         luaProducts.get(i).get("quantity").get(2).toint()

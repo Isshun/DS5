@@ -42,9 +42,9 @@ public class CharacterStuffModule extends GameModule {
 //        stuff.add(GameData.getData().getEquipment("base.equipments.oxygen_bottle"));
 //        stuff.add(GameData.getData().getEquipment("base.equipments.fremen_body"));
 //
-//        for (ItemInfo itemInfo: stuff.getItemsInfo()) {
-//            if (itemInfo.equipment.effects != null) {
-//                for (ItemInfo.EquipmentEffect effect: itemInfo.equipment.effects) {
+//        for (ItemInfo item: stuff.getItemsInfo()) {
+//            if (item.equipment.effects != null) {
+//                for (ItemInfo.EquipmentEffect effect: item.equipment.effects) {
 //                    // Check debuff
 //                    if (effect.debuff != null) {
 //                        addValues(character.getStats().debuff, effect.debuff);

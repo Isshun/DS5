@@ -73,7 +73,7 @@ Quit: Quitter
 Resources: Ressources
 
 Food: Nourriture
-Joy: Divertissement
+Entertainment: Divertissement
 Gasoline: Essence
 Matter: Matériaux
 Water: Eau

@@ -175,7 +175,7 @@ public class WorldHelper {
 
     public static boolean isBlocked(int x, int y) {
         if (inMapBounds(x, y)) {
-            return _parcels[x][y][0] != null && _parcels[x][y][0].isBlocked();
+            return _parcels[x][y][0] != null && !_parcels[x][y][0].isWalkable();
         }
         return true;
     }

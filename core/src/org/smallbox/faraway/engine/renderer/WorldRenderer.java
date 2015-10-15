@@ -261,15 +261,15 @@ public class WorldRenderer extends BaseRenderer {
                 layer.draw(_spriteManager.getItem(structure), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }
 
-            // Wall
-            else if (structure.isWall()) {
-                layer.draw(drawWall(structure, x, y, offsetWall), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-            }
-
-            // Hull
-            else if (structure.isHull()) {
-                layer.draw(drawWall(structure, x, y, offsetWall), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-            }
+//            // Wall
+//            else if (structure.isWall()) {
+//                layer.draw(drawWall(structure, x, y, offsetWall), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+//            }
+//
+//            // Hull
+//            else if (structure.isHull()) {
+//                layer.draw(drawWall(structure, x, y, offsetWall), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+//            }
 
             else {
                 layer.draw(SpriteManager.getInstance().getItem(structure), (structure.getX() % CACHE_SIZE) * Constant.TILE_WIDTH, (structure.getY() % CACHE_SIZE) * Constant.TILE_HEIGHT);
@@ -277,16 +277,16 @@ public class WorldRenderer extends BaseRenderer {
         }
     }
 
-    private SpriteModel drawWall(StructureModel structure, int x, int y, int offsetWall) {
-        return _spriteManager.getItem(structure);
-    }
+//    private SpriteModel drawWall(StructureModel structure, int x, int y, int offsetWall) {
+//        return _spriteManager.getItem(structure, structure.isComplete() ? 0 : 1);
+//    }
 
     void	refreshItems(RenderLayer layer, ItemModel item, int x, int y) {
         if (item != null && item.getX() == x && item.getY() == y) {
 
             // Display components
             for (BuildableMapObject.ComponentModel component: item.getComponents()) {
-                SpriteModel sprite = _spriteManager.getItem(component.info, 0);
+                SpriteModel sprite = _spriteManager.getItem(component.info);
                 if (sprite != null) {
                     if (item.getInfo().storage != null && item.getInfo().storage.components != null) {
                         layer.draw(sprite,
@@ -300,7 +300,7 @@ public class WorldRenderer extends BaseRenderer {
 
             // Display crafts
             for (BuildableMapObject.ComponentModel component: item.getComponents()) {
-                SpriteModel sprite = _spriteManager.getItem(component.info, 0);
+                SpriteModel sprite = _spriteManager.getItem(component.info);
                 if (sprite != null) {
                     if (item.getInfo().storage != null && item.getInfo().storage.crafts != null) {
                         layer.draw(sprite,
@@ -354,11 +354,17 @@ public class WorldRenderer extends BaseRenderer {
 //            case 5: offset = 1; break;
 //        }
 
-            Rectangle rect = _itemSelected.getInfo().textureRect;
-            int fromX = (int)(rect.getX()/2);
-            int fromY = (int)(rect.getY()/2);
-            int toX = (int)(rect.getX() + rect.getWidth()) - 8;
-            int toY = (int)(rect.getY() + rect.getHeight()) - 8;
+            int fromX = 0;
+            int fromY = 0;
+            int toX = 32;
+            int toY = 32;
+            if (_itemSelected.getGraphic() != null && _itemSelected.getGraphic().textureRect != null) {
+                Rectangle rect = _itemSelected.getGraphic().textureRect;
+                fromX = (int)(rect.getX()/2);
+                fromY = (int)(rect.getY()/2);
+                toX = (int)(rect.getX() + rect.getWidth()) - 8;
+                toY = (int)(rect.getY() + rect.getHeight()) - 8;
+            }
 
             int x = _itemSelected.getX() * Constant.TILE_WIDTH + viewport.getPosX();
             int y = _itemSelected.getY() * Constant.TILE_HEIGHT + viewport.getPosY();

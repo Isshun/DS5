@@ -26,7 +26,7 @@ public class CheckJoyTalk extends CharacterCheck {
         int bestDistance = Integer.MAX_VALUE;
         CharacterModel bestCharacter = null;
         for (CharacterModel friend: ModuleHelper.getCharacterModule().getCharacters()) {
-            if (friend != character && friend.isAlive() && (friend.getJob() == null || friend.getJob().isJoy())) {
+            if (friend != character && friend.isAlive() && (friend.getJob() == null || friend.getJob().isEntertainment())) {
                 GraphPath<ParcelModel> path = PathManager.getInstance().getPath(character.getParcel(), friend.getParcel());
                 if (path != null && path.getCount() < bestDistance) {
                     bestDistance = path.getCount();

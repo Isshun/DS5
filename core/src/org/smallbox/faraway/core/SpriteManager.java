@@ -7,12 +7,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import org.smallbox.faraway.GraphicInfo;
 import org.smallbox.faraway.engine.SpriteModel;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.item.ItemInfo;
-import org.smallbox.faraway.game.model.item.MapObjectModel;
-import org.smallbox.faraway.game.model.item.ResourceModel;
+import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
@@ -101,87 +100,96 @@ public class SpriteManager {
         return _icons.get(path);
     }
 
-    // TODO
-    public SpriteModel getItem(MapObjectModel item, int tile) {
-        if (item == null) {
-            return null;
-        }
+//    // TODO
+//    public SpriteModel getItem(MapObjectModel item, int tile) {
+//        if (item == null) {
+//            return null;
+//        }
+//
+//        if (!item.isStructure()) {
+//            if (item.isResource()) {
+//                return getResource((ResourceModel)item);
+//            }
+//
+////            int alpha = Math.min(item.getScience() == 0 ? 255 : 75 + 180 / item.getScience() * (int)item.getProgress(), 255);
+//            int alpha = 255;
+//
+//            return getSprite(item.getInfo(), item.getGraphic(), tile, 0, alpha, false);
+//        }
+//
+//        return getSprite(item.getInfo(), item.getGraphic(), tile, 0, 255, false);
+//    }
 
-        if (!item.isStructure()) {
-            if (item.isResource()) {
-                return getResource((ResourceModel)item);
-            }
+//    public SpriteModel getItem(ItemInfo info, int tile) {
+//        if (info == null) {
+//            return null;
+//        }
+//
+//        if (!info.isStructure) {
+//            if (info.isResource) {
+//                return null;
+////                return getResource(info);
+//            }
+//
+////            int alpha = Math.min(item.getScience() == 0 ? 255 : 75 + 180 / item.getScience() * (int)item.getProgress(), 255);
+//            int alpha = 255;
+//
+//            return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, alpha, false);
+//        }
+//
+//        return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false);
+//    }
 
-//            int alpha = Math.min(item.getScience() == 0 ? 255 : 75 + 180 / item.getScience() * (int)item.getProgress(), 255);
-            int alpha = 255;
-
-            return getSprite(item.getInfo(), 0, 0, alpha, false);
-        }
-
-        return getSprite(item.getInfo(), 0, 0, 255, false);
-    }
-
-    public SpriteModel getItem(ItemInfo info, int tile) {
-        if (info == null) {
-            return null;
-        }
-
-        if (!info.isStructure) {
-            if (info.isResource) {
-                return null;
-//                return getResource(info);
-            }
-
-//            int alpha = Math.min(item.getScience() == 0 ? 255 : 75 + 180 / item.getScience() * (int)item.getProgress(), 255);
-            int alpha = 255;
-
-            return getSprite(info, 0, 0, alpha, false);
-        }
-
-        return getSprite(info, 0, 0, 255, false);
-    }
-
-    public SpriteModel getItem(MapObjectModel item) {
-        return getItem(item, 0);
-    }
+    public SpriteModel getItem(ItemInfo info) { return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false); }
+    public SpriteModel getItem(StructureModel structure) { return getSprite(structure.getInfo(), structure.getGraphic(), structure.isComplete() ? 1 : 0, 0, 255, false); }
+    public SpriteModel getItem(ItemModel item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
+    public SpriteModel getItem(ItemModel item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
+    public SpriteModel getItem(ResourceModel resource) { return getSprite(resource.getInfo(), resource.getGraphic(), 0, 0, 255, false); }
+    public SpriteModel getItem(ConsumableModel consumable) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
+    public SpriteModel getItem(ConsumableModel consumable, int currentFrame) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
 
     public SpriteModel getIcon(ItemInfo info) {
-        return getSprite(info, 0, 0, 255, true);
+        return info.graphics != null ? getSprite(info, info.graphics.get(0), 0, 0, 255, true) : null;
     }
 
-    private SpriteModel getSprite(ItemInfo item, int tile, int state, int alpha, boolean isIcon) {
-        return getSprite(item, tile, state, alpha, isIcon, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
+    private SpriteModel getSprite(ItemInfo itemInfo, GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon) {
+        return getSprite(itemInfo, graphicInfo, tile, state, alpha, isIcon, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
     }
 
-    private SpriteModel getSprite(ItemInfo item, int tile, int state, int alpha, boolean isIcon, int width, int height) {
-        if (item.spriteId == 0) {
-            item.spriteId = ++_count;
+    private SpriteModel getSprite(ItemInfo itemInfo, GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon, int width, int height) {
+        if (graphicInfo == null) {
+            return null;
         }
 
-        long sum = getSum(item.spriteId, tile, state, isIcon ? 1 : 0);
+        if (graphicInfo.spriteId == 0) {
+            graphicInfo.spriteId = ++_count;
+        }
+
+        long sum = getSum(graphicInfo.spriteId, (state * width) + graphicInfo.x, (tile * height) + graphicInfo.y, isIcon ? 1 : 0);
 
         GDXSpriteModel sprite = _sprites.get(sum);
         if (sprite == null) {
-            int tileX = state * width;
-            int tileY = tile * height;
-            int offsetY = 0;
+            int tileX = (state * width);
+            int tileY = (tile * height);
+            int offsetX = (state * width) + (graphicInfo.x);
+            int offsetY = (tile * height) + (graphicInfo.y);
 
             File imgFile;
-            if ("base".equals(item.packageName)) {
-                imgFile = new File("data", item.fileName);
+            if ("base".equals(graphicInfo.packageName)) {
+                imgFile = new File("data", graphicInfo.path);
 //                imgFile = foundImageFile(item.fileName + ".png");
             } else {
-                imgFile = new File("mods/" + item.packageName + "/items/" + item.fileName + ".png");
+                imgFile = new File("mods/" + graphicInfo.packageName + "/items/" + graphicInfo.path + ".png");
             }
             if (imgFile != null && imgFile.exists()) {
                 sprite = new GDXSpriteModel(new Texture(new FileHandle(imgFile)),
-                        tileX,
-                        tileY,
-                        item.width * width,
-                        item.height * height);
+                        offsetX,
+                        offsetY,
+                        itemInfo.width * width,
+                        itemInfo.height * height);
                 sprite.getData().setColor(new Color(255, 255, 255, alpha));
                 if (isIcon) {
-                    switch (Math.max(item.width, item.height)) {
+                    switch (Math.max(itemInfo.width, itemInfo.height)) {
                         case 2: sprite.getData().setScale(0.85f, 0.85f); break;
                         case 3: sprite.getData().setScale(0.55f, 0.55f); break;
                         case 4: sprite.getData().setScale(0.35f, 0.35f); break;
@@ -196,14 +204,14 @@ public class SpriteManager {
             }
         }
 
-        if (sprite != null && item.textureRect == null) {
-            getTextureRect(item, sprite.getData());
+        if (sprite != null && graphicInfo.textureRect == null) {
+            getTextureRect(graphicInfo, sprite.getData());
         }
 
         return sprite;
     }
 
-    private void getTextureRect(ItemInfo item, Sprite sprite) {
+    private void getTextureRect(GraphicInfo item, Sprite sprite) {
         TextureData textureData = sprite.getTexture().getTextureData();
         textureData.prepare();
         Pixmap pixmap = textureData.consumePixmap();
@@ -233,7 +241,7 @@ public class SpriteManager {
             }
         }
 
-        System.out.println("Item: " + item.name + ", " + startX + ", " + startY + ", " + endX + ", " + endY);
+//        System.out.println("Item: " + item.name + ", " + startX + ", " + startY + ", " + endX + ", " + endY);
 
         item.textureRect = new Rectangle(startX, startY, endX, endY);
 
@@ -299,26 +307,26 @@ public class SpriteManager {
         ItemInfo info = resource.getInfo();
 
         if ("base.rock".equals(info.name)) {
-            return getSprite(info, resource.getTile(), 0, 255, false);
+            return getSprite(info, resource.getGraphic(), resource.getTile(), 0, 255, false);
         }
 
         else if ("base.grass".equals(info.name)) {
-            return getSprite(info, resource.getTile(), 0, 255, false);
+            return getSprite(info, resource.getGraphic(), resource.getTile(), 0, 255, false);
         }
 
         else if (info.actions != null && !info.actions.isEmpty() && "gather".equals(info.actions.get(0).type)) {
             int state = (int)(Math.min(resource.getQuantity(), info.plant.mature) + 1);
-            return getSprite(info, state, 0, 255, false);
+            return getSprite(info, resource.getGraphic(), state, 0, 255, false);
         }
 
-        return getSprite(info, 0, 1, 255, false);
+        return getSprite(info, resource.getGraphic(), 0, 1, 255, false);
     }
 
     public SpriteModel getGround(int type) {
         if (_groundItemInfo == null) {
             _groundItemInfo = GameData.getData().getItemInfo("base.ground");
         }
-        return getSprite(_groundItemInfo, type, (int) (Math.random() * 2), 255, false, 32, 32);
+        return getSprite(_groundItemInfo, _groundItemInfo.graphics != null ? _groundItemInfo.graphics.get(0) : null, type, (int) (Math.random() * 2), 255, false, 32, 32);
     }
 
     public SpriteModel getAnimal(String path) {

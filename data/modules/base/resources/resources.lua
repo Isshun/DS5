@@ -1,15 +1,15 @@
-game.data:extend({
+data:extend({
     {
         label = "Ground",
         name = "base.ground",
         type = "resource",
-        graphics = "[base]/graphics/items/ground.png"
+        graphics = { path = "[base]/graphics/items/ground.png" }
     },
     {
         label = "Raw spice",
         name = "base.raw_spice",
         type = "resource",
-        graphics = "[base]/graphics/items/resources/raw_spice.png",
+        graphics = { path = "[base]/graphics/items/raw_spice.png" },
         plant = {
             mature = 5,
             growing = 0.005,

@@ -2,6 +2,7 @@ package org.smallbox.faraway.ui.engine.views;
 
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.smallbox.faraway.game.model.ObjectModel;
 import org.smallbox.faraway.module.lua.LuaModule;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
@@ -12,6 +13,7 @@ import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -128,12 +130,14 @@ public abstract class View {
             if (_adapter != null && _adapter.getData() != null && needRefresh(_adapter)) {
                 removeAllViews();
                 _adapter.setRefresh();
-                _adapter.getData().forEach(data -> {
+                Iterator<ObjectModel> iterator = _adapter.getData().iterator();
+                while (iterator.hasNext()) {
+                    ObjectModel data = iterator.next();
                     View subview = _adapter.getCallback().onCreateView();
                     subview.setObjectId(data.id);
                     _adapter.getCallback().onBindView(subview, data);
                     addView(subview);
-                });
+                }
             }
         }
     }

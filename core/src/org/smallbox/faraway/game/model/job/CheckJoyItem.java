@@ -26,7 +26,7 @@ public class CheckJoyItem extends CharacterCheck {
 
     private ItemModel getItem(CharacterModel character) {
         ItemFilter filter = ItemFilter.createUsableFilter();
-        filter.effectJoy = true;
+        filter.effectEntertainment = true;
         return (ItemModel)((ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class)).getRandomNearest(filter, character);
     }
 

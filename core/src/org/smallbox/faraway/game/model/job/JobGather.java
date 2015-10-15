@@ -101,7 +101,7 @@ public class JobGather extends BaseJobModel {
 
 		if (_actionInfo.finalProducts != null) {
 			_actionInfo.finalProducts.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo ->
-					ModuleHelper.getWorldModule().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity)));
+					ModuleHelper.getWorldModule().putObject(productInfo.item, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity)));
 		}
 	}
 
@@ -135,7 +135,7 @@ public class JobGather extends BaseJobModel {
 		resource.addQuantity(-1);
 		if (_actionInfo.products != null) {
 			_actionInfo.products.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo ->
-					ModuleHelper.getWorldModule().putObject(productInfo.itemInfo, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity)));
+					ModuleHelper.getWorldModule().putObject(productInfo.item, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity)));
 		}
 
 		// Check if resource is depleted

@@ -20,7 +20,7 @@ public class CheckJoyWalk extends CharacterCheck {
     @Override
     public BaseJobModel create(CharacterModel character) {
         if (_parcel == null) {
-            Log.error("[CheckJoyWalk] Create job with null parcel");
+            Log.error("[CheckEntertainmentWalk] Create job with null parcel");
             return null;
         }
 
@@ -30,7 +30,7 @@ public class CheckJoyWalk extends CharacterCheck {
         job.setStrategy(j -> j.getCharacter().getNeeds().joy += 1);
         job.setSpeedModifier(0.5);
         job.setLimit(150);
-        job.setJoy(true);
+        job.setEntertainment(true);
 
         return job;
     }

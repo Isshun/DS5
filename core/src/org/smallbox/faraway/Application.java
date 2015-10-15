@@ -111,7 +111,7 @@ public class Application implements GameEventListener {
                 break;
 
             case ESCAPE:
-                _game.toggleRunning();
+//                _game.toggleRunning();
                 break;
 
 //// Reload UI

@@ -21,7 +21,7 @@ public class CheckCharacterOxygen extends CharacterCheck {
     @Override
     public BaseJobModel create(CharacterModel character) {
         if (_parcel == null) {
-            Log.error("[CheckJoyWalk] Create job with null parcel");
+            Log.error("[CheckEntertainmentWalk] Create job with null parcel");
             return null;
         }
 

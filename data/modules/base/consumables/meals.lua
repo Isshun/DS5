@@ -1,4 +1,4 @@
-game.data:extend({
+data:extend({
     { label = "Military ration", name = "base.military_ration", type = "consumable", category = "food" },
     { label = "Easy meal", name = "base.easy_meal", type = "consumable", category = "food" },
     { label = "Great meal", name = "base.great_meal", type = "consumable", category = "food" },

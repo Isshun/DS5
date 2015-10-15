@@ -1,9 +1,9 @@
-game.data:extend(
+data:extend(
 {
     {
         label = "Euglena Bloom",
         name = "base.seaweed1",
-        graphics = "[base]/graphics/items/resources/desert_berry.png",
+        graphics = { path = "[base]/graphics/items/resources/desert_berry.png" },
         --graphics = "[base]/graphics/items/resources/seaweed1.png",
         type = "resource",
         category = "algae",
@@ -31,7 +31,7 @@ game.data:extend(
     {
         label = "Chlorella",
         name = "base.seaweed2",
-        graphics = "[base]/graphics/items/resources/seaweed2.png",
+        graphics = { path = "[base]/graphics/items/resources/seaweed2.png" },
         type = "resource",
         category = "algae",
         plant = {
@@ -60,7 +60,8 @@ game.data:extend(
         sciLabel = "Zostera marina",
         name = "base.seaweed3",
 --        graphics = "[base]/graphics/items/resources/seaweed3.png",
-        graphics = "[base]/graphics/items/resources/desert_green_plant.png",
+        graphics = { path = "[base]/graphics/items/resources/desert_green_plant.png" },
+--        graphics = "[base]/graphics/items/resources/desert_green_plant.png",
         type = "resource",
         category = "algae",
         size = {1, 1},
@@ -90,7 +91,8 @@ game.data:extend(
         label = "Green Alagae",
         name = "base.seaweed4",
         type = "resource",
-        graphics = "[base]/graphics/items/resources/seaweed4.png",
+        graphics = { path = "[base]/graphics/items/resources/seaweed4.png" },
+--        graphics = "[base]/graphics/items/resources/seaweed4.png",
         category = "algae",
         size = {1, 1},
         plant = {
@@ -117,7 +119,7 @@ game.data:extend(
     {
         label = "Golden Brown Algae",
         sciLabel = "Chrysophyceae",
-        graphics = "[base]/graphics/items/resources/seaweed5.png",
+        graphics = { path = "[base]/graphics/items/resources/seaweed5.png" },
         name = "base.seaweed5",
         type = "resource",
         category = "algae",

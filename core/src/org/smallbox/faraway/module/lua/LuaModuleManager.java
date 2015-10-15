@@ -18,13 +18,11 @@ import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.module.lua.data.LuaExtend;
-import org.smallbox.faraway.module.lua.data.extend.LuaItemExtend;
-import org.smallbox.faraway.module.lua.data.extend.LuaCursorExtend;
+import org.smallbox.faraway.module.lua.data.extend.*;
 import org.smallbox.faraway.module.lua.data.LuaExtendManager;
-import org.smallbox.faraway.module.lua.data.extend.LuaReceiptExtend;
-import org.smallbox.faraway.module.lua.data.extend.LuaUIExtend;
 import org.smallbox.faraway.module.lua.luaModel.LuaEventsModel;
 import org.smallbox.faraway.module.lua.luaModel.LuaGameModel;
+import org.smallbox.faraway.ui.LuaDataModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.util.FileUtils;
 
@@ -48,8 +46,10 @@ public class LuaModuleManager implements GameObserver {
 
     private LuaCrewModel                _luaCrew;
     private LuaEventsModel              _luaEvents;
+    private LuaGameModel                _game;
     private LuaExtendManager            _luaExtendManager;
     private List<LuaModule>             _modules = new ArrayList<>();
+    private LuaValue                    _luaGame;
 
     public void init() {
         _luaExtendManager = new LuaExtendManager();
@@ -57,9 +57,12 @@ public class LuaModuleManager implements GameObserver {
         _luaExtendManager.addExtendFactory(new LuaItemExtend());
         _luaExtendManager.addExtendFactory(new LuaReceiptExtend());
         _luaExtendManager.addExtendFactory(new LuaCursorExtend());
+        _luaExtendManager.addExtendFactory(new LuaCharacterBuffExtend());
 
         _luaCrew = new LuaCrewModel();
         _luaEvents = new LuaEventsModel();
+        _game = new LuaGameModel(_luaCrew, _luaEvents, UserInterface.getInstance());
+        _luaGame = CoerceJavaToLua.coerce(_game);
 
 //        loadUI();
     }
@@ -118,8 +121,8 @@ public class LuaModuleManager implements GameObserver {
         System.out.println("Load lua module: " + info.id + " (" + info.name + ")");
 
         Globals globals = JsePlatform.standardGlobals();
-        globals.load("function main(g)\n game = g\n end", "main").call();
-        globals.get("main").call(CoerceJavaToLua.coerce(new LuaGameModel(_luaCrew, _luaEvents, UserInterface.getInstance(), values -> {
+        globals.load("function main(g, d)\n game = g\ndata = d\n end", "main").call();
+        globals.get("main").call(_luaGame, CoerceJavaToLua.coerce(new LuaDataModel(values -> {
             for (int i = 1; i <= values.length(); i++) {
                 LuaValue value = values.get(i);
                 for (LuaExtend luaExtend: _luaExtendManager.getExtends()) {
@@ -127,6 +130,9 @@ public class LuaModuleManager implements GameObserver {
                         try {
                             luaExtend.extend(this, luaModule, globals, value);
                         } catch (DataExtendException e) {
+                            if (!value.get("name").isnil()) {
+                                System.out.println("Error during extend " + value.get("name").toString());
+                            }
                             e.printStackTrace();
                         }
                         break;
@@ -165,7 +171,7 @@ public class LuaModuleManager implements GameObserver {
     }
 
     public void update() {
-
+        _game.update();
     }
 
     public void addLuaRefreshListener(LuaRefreshListener luaRefreshListener) {

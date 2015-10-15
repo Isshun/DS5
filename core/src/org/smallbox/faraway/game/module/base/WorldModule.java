@@ -29,12 +29,14 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
     private Set<ConsumableModel>                        _consumables = new HashSet<>();
     private BlockingQueue<ResourceModel>                _resources = new LinkedBlockingQueue<>();
     private Set<ItemModel>                              _items = new HashSet<>();
+    private Set<StructureModel>                         _structures = new HashSet<>();
     private List<ParcelModel>                           _parcelList;
     private int                                         _light;
 
     public ParcelModel[][][]            getParcels() { return _parcels; }
     public List<ParcelModel>            getParcelList() { return _parcelList; }
     public Collection<ItemModel>        getItems() { return _items; }
+    public Collection<StructureModel>   getStructures() { return _structures; }
     public Collection<ResourceModel>    getResources() { return _resources; }
     public int                          getLight() { return _light; }
     public ParcelModel                  getParcel(int x, int y) { return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][0]; }
@@ -143,6 +145,7 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
         StructureModel structure = _parcels[x][y][0].getStructure();
         if (structure != null) {
             moveStructureToParcel(_parcels[x][y][0], null);
+            _structures.remove(structure);
             _game.notify(observer -> observer.onRemoveStructure(structure));
         }
     }
@@ -269,6 +272,7 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
             StructureModel structure = (StructureModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
             if (structure != null) {
                 moveStructureToParcel(_parcels[x][y][z], structure);
+                _structures.add(structure);
                 _game.notify(observer -> observer.onAddStructure(structure));
             }
             return structure;
@@ -414,7 +418,7 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
     }
 
     private void createConnection(Array<Connection<ParcelModel>> array, ParcelModel parcel, int x, int y) {
-        if (WorldHelper.inMapBounds(x, y) && !parcel.isBlocked()) {
+        if (WorldHelper.inMapBounds(x, y) && parcel.isWalkable()) {
             array.add(new ParcelConnection(parcel, _parcels[x][y][0]));
         }
     }

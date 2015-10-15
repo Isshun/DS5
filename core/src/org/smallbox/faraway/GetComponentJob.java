@@ -34,15 +34,16 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
         }
     }
 
+    private final BuildableMapObject                    _buildItem;
     private final BuildableMapObject.ComponentModel     _component;
     private ConsumableModel                             _currentConsumable;
     private List<PotentialConsumable>                   _potentialConsumables;
     private JobActionReturn                             _return = JobActionReturn.CONTINUE;
 
-    public GetComponentJob(ItemModel item, BuildableMapObject.ComponentModel component) {
+    public GetComponentJob(BuildableMapObject item, BuildableMapObject.ComponentModel component) {
         super(null, item.getX(), item.getY(), new IconDrawable("data/res/ic_build.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 64, 32, 32, 7, 10));
 
-        _item = item;
+        _buildItem = item;
         _component = component;
         _component.job = this;
     }
@@ -84,7 +85,7 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
                 .filter(consumable -> consumable.getInfo() == _component.info)
                 .filter(consumable -> consumable.getParcel().isWalkable())
                 .forEach(consumable -> {
-                    GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_item.getParcel(), consumable.getParcel());
+                    GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_buildItem.getParcel(), consumable.getParcel());
                     if (path != null) {
                         _potentialConsumables.add(new PotentialConsumable(consumable, path.getCount()));
                     }
@@ -126,7 +127,6 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
                 } else {
                     moveToMainItem();
                 }
-
             }
 
             @Override
@@ -140,17 +140,17 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
     }
 
     protected void moveToMainItem() {
-        _message = "Carry " + _character.getInventory().getInfo().label + " to " + _item.getInfo().label;
+        _message = "Carry " + _character.getInventory().getInfo().label + " to " + _buildItem.getInfo().label;
 
         // TODO: Reliquat
-        _posX = _item.getX();
-        _posY = _item.getY();
+        _posX = _buildItem.getX();
+        _posY = _buildItem.getY();
 
         // Store component in factory
-        _character.moveTo(this, _item.getParcel(), new OnMoveListener<CharacterModel>() {
+        _character.moveTo(this, _buildItem.getParcel(), new OnMoveListener<CharacterModel>() {
             @Override
             public void onReach(BaseJobModel job, CharacterModel character) {
-                _item.addComponent(_character.getInventory());
+                _buildItem.addComponent(_character.getInventory());
 
                 // Clear inventory if consumable has been depleted
                 if (_character.getInventory().getQuantity() == 0) {
@@ -158,8 +158,8 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
                 }
 
                 // By-pass JobModule to start BuildJob without delay
-                if (_item.hasAllComponents()) {
-                    ModuleHelper.getJobModule().addJob(new BuildJob(_item));
+                if (_buildItem.hasAllComponents()) {
+                    ModuleHelper.getJobModule().addJob(new BuildJob(_buildItem));
                 }
 
                 _return = _component.currentQuantity == _component.neededQuantity ? JobActionReturn.FINISH : JobActionReturn.QUIT;

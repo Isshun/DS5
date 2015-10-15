@@ -106,7 +106,7 @@ public abstract class BaseBuildJobModel extends BaseJobModel {
 
         character.moveTo(this, _posX, _posY, null);
 
-        _message = "Move " + _receipt.getProductsInfo().get(0).itemInfo.label + " to storage";
+        _message = "Move " + _receipt.getProductsInfo().get(0).item.label + " to storage";
     }
 
     @Override
