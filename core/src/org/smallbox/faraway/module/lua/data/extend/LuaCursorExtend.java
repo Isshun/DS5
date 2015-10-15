@@ -2,7 +2,9 @@ package org.smallbox.faraway.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.module.lua.data.LuaExtend;
@@ -31,11 +33,20 @@ public class LuaCursorExtend extends LuaExtend {
         final UIFrame resEden = new UIFrame(32, 32);
         resEden.setBackgroundColor(value.get("eden").get("color").tolong());
 
+        final LuaValue luaOnItem = value.get("on_item");
+
         GameData.getData().cursors.put(value.get("id").toString(), new UICursor() {
             @Override
             protected void onDraw(GDXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd, boolean isPressed) {
                 if (isPressed) {
                     renderer.draw(odd ? resOdd : resEden, x, y);
+
+                    if (parcel != null && !luaOnItem.isnil()) {
+                        LuaValue ret = luaOnItem.call(CoerceJavaToLua.coerce(parcel));
+                        if (!ret.isnil() && ret.toboolean()) {
+                            renderer.draw(resItem, x, y);
+                        }
+                    }
                 } else {
                     renderer.draw(resItem, x, y);
                 }

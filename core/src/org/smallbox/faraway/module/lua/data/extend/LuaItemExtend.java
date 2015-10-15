@@ -88,6 +88,10 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.isWalkable = value.get("walkable").toboolean();
         }
 
+        if (!value.get("stack").isnil()) {
+            itemInfo.stack = value.get("stack").toint();
+        }
+
         if (!value.get("plant").isnil()) {
             readPlantValues(itemInfo, value.get("plant"));
         }
@@ -131,7 +135,7 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.lightDistance = 4;
     }
 
-    private void readActionValue(ItemInfo itemInfo, LuaValue value) {
+    private void readActionValue(ItemInfo itemInfo, LuaValue value) throws DataExtendException {
         ItemInfo.ItemInfoAction action = new ItemInfo.ItemInfoAction();
         action.type = getString(value, "type", null);
         action.cost = getInt(value, "cost", 0);
@@ -141,11 +145,22 @@ public class LuaItemExtend extends LuaExtend {
             action.products = new ArrayList<>();
             for (int i = 1; i <= luaProducts.length(); i++) {
                 ItemInfo.ItemProductInfo product = new ItemInfo.ItemProductInfo();
-                product.itemName = getString(luaProducts.get(i), "item", null);
-                product.quantity = new int[] {
-                        luaProducts.get(i).get("quantity").get(1).toint(),
-                        luaProducts.get(i).get("quantity").get(2).toint()
-                };
+
+                // Get product item name
+                if (!luaProducts.get(i).get("item").isnil()) {
+                    product.itemName = getString(luaProducts.get(i), "item", null);
+                } else {
+                    throw new DataExtendException(DataExtendException.Type.MANDATORY, "actions.products.item");
+                }
+
+                // Get product quantity
+                if (!luaProducts.get(i).get("quantity").isnil()) {
+                    product.quantity = new int[]{
+                            luaProducts.get(i).get("quantity").get(1).toint(),
+                            luaProducts.get(i).get("quantity").get(2).toint()};
+                } else {
+                    throw new DataExtendException(DataExtendException.Type.MANDATORY, "actions.products.quantity");
+                }
                 product.dropRate = getDouble(luaProducts.get(i), "rate", 1);
                 action.products.add(product);
             }

@@ -303,24 +303,24 @@ public class SpriteManager {
         return sum;
     }
 
-    public SpriteModel getResource(ResourceModel resource) {
-        ItemInfo info = resource.getInfo();
-
-        if ("base.rock".equals(info.name)) {
-            return getSprite(info, resource.getGraphic(), resource.getTile(), 0, 255, false);
-        }
-
-        else if ("base.grass".equals(info.name)) {
-            return getSprite(info, resource.getGraphic(), resource.getTile(), 0, 255, false);
-        }
-
-        else if (info.actions != null && !info.actions.isEmpty() && "gather".equals(info.actions.get(0).type)) {
-            int state = (int)(Math.min(resource.getQuantity(), info.plant.mature) + 1);
-            return getSprite(info, resource.getGraphic(), state, 0, 255, false);
-        }
-
-        return getSprite(info, resource.getGraphic(), 0, 1, 255, false);
-    }
+//    public SpriteModel getResource(ResourceModel resource) {
+//        ItemInfo info = resource.getInfo();
+//
+//        if ("base.rock".equals(info.name)) {
+//            return getSprite(info, resource.getGraphic(), resource.getTile(), 0, 255, false);
+//        }
+//
+//        else if ("base.grass".equals(info.name)) {
+//            return getSprite(info, resource.getGraphic(), resource.getTile(), 0, 255, false);
+//        }
+//
+//        else if (info.actions != null && !info.actions.isEmpty() && "gather".equals(info.actions.get(0).type)) {
+//            int state = (int)(Math.min(resource.getQuantity(), info.plant.mature) + 1);
+//            return getSprite(info, resource.getGraphic(), state, 0, 255, false);
+//        }
+//
+//        return getSprite(info, resource.getGraphic(), 0, 1, 255, false);
+//    }
 
     public SpriteModel getGround(int type) {
         if (_groundItemInfo == null) {

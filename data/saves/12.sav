@@ -1,14 +1,26 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <save>
 <params>
-<param name='viewportX' value='116' />
-<param name='viewportY' value='128' />
+<param name='viewportX' value='164' />
+<param name='viewportY' value='-168' />
 </params>
 <parcels>
-<parcel x='0' y='0' z='0' type='1' />
+<parcel x='0' y='0' z='0' type='1'>
+<resource id='91' name='base.wood'>
+<health>0</health>
+<progress>0</progress>
+<quantity>5</quantity>
+</resource>
+</parcel>
 <parcel x='0' y='1' z='0' type='1' />
 <parcel x='0' y='2' z='0' type='1' />
-<parcel x='0' y='3' z='0' type='1' />
+<parcel x='0' y='3' z='0' type='1'>
+<resource id='9456462' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<quantity>5</quantity>
+</resource>
+</parcel>
 <parcel x='0' y='4' z='0' type='1' />
 <parcel x='0' y='5' z='0' type='1' />
 <parcel x='0' y='6' z='0' type='1' />
@@ -34,39 +46,29 @@
 <parcel x='0' y='26' z='0' type='1' />
 <parcel x='0' y='27' z='0' type='1' />
 <parcel x='0' y='28' z='0' type='1'>
-<resource id='43' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='628' name='base.wood_log'>
+<quantity>47</quantity>
+</consumable>
 </parcel>
 <parcel x='0' y='29' z='0' type='1'>
-<resource id='44' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='629' name='base.wood_log'>
+<quantity>44</quantity>
+</consumable>
 </parcel>
 <parcel x='0' y='30' z='0' type='1'>
-<resource id='45' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='625' name='base.wood_log'>
+<quantity>52</quantity>
+</consumable>
 </parcel>
 <parcel x='0' y='31' z='0' type='1'>
-<resource id='46' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='630' name='base.wood_log'>
+<quantity>48</quantity>
+</consumable>
 </parcel>
 <parcel x='0' y='32' z='0' type='1'>
-<resource id='47' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='622' name='base.wood_log'>
+<quantity>40</quantity>
+</consumable>
 </parcel>
 <parcel x='0' y='33' z='0' type='1' />
 <parcel x='0' y='34' z='0' type='1' />
@@ -156,46 +158,34 @@
 <parcel x='1' y='26' z='0' type='1' />
 <parcel x='1' y='27' z='0' type='1' />
 <parcel x='1' y='28' z='0' type='1'>
-<resource id='48' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='627' name='base.wood_log'>
+<quantity>46</quantity>
+</consumable>
 </parcel>
 <parcel x='1' y='29' z='0' type='1'>
-<resource id='49' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='626' name='base.wood_log'>
+<quantity>52</quantity>
+</consumable>
 </parcel>
 <parcel x='1' y='30' z='0' type='1'>
-<resource id='50' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='624' name='base.wood_log'>
+<quantity>49</quantity>
+</consumable>
 </parcel>
 <parcel x='1' y='31' z='0' type='1'>
-<resource id='51' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='623' name='base.wood_log'>
+<quantity>58</quantity>
+</consumable>
 </parcel>
 <parcel x='1' y='32' z='0' type='1'>
-<resource id='52' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='621' name='base.wood_log'>
+<quantity>52</quantity>
+</consumable>
 </parcel>
 <parcel x='1' y='33' z='0' type='1'>
-<resource id='53' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='631' name='base.wood_log'>
+<quantity>48</quantity>
+</consumable>
 </parcel>
 <parcel x='1' y='34' z='0' type='1' />
 <parcel x='1' y='35' z='0' type='1' />
@@ -285,18 +275,19 @@
 <parcel x='2' y='27' z='0' type='1' />
 <parcel x='2' y='28' z='0' type='1' />
 <parcel x='2' y='29' z='0' type='1'>
-<resource id='54' name='base.raw_spice'>
+<resource id='54' name='base.wood'>
 <health>0</health>
 <progress>0</progress>
-<quantity>5</quantity>
+<quantity>2</quantity>
 </resource>
+<consumable id='610' name='base.wood_log'>
+<quantity>36</quantity>
+</consumable>
 </parcel>
 <parcel x='2' y='30' z='0' type='1'>
-<resource id='55' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='638' name='base.wood_log'>
+<quantity>54</quantity>
+</consumable>
 </parcel>
 <parcel x='2' y='31' z='0' type='1'>
 <resource id='1817' name='base.seaweed3'>
@@ -306,11 +297,9 @@
 </resource>
 </parcel>
 <parcel x='2' y='32' z='0' type='1'>
-<resource id='57' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='620' name='base.wood_log'>
+<quantity>33</quantity>
+</consumable>
 </parcel>
 <parcel x='2' y='33' z='0' type='1'>
 <resource id='1822' name='base.seaweed3'>
@@ -407,39 +396,29 @@
 <parcel x='3' y='27' z='0' type='1' />
 <parcel x='3' y='28' z='0' type='1' />
 <parcel x='3' y='29' z='0' type='1'>
-<resource id='58' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='608' name='base.wood_log'>
+<quantity>56</quantity>
+</consumable>
 </parcel>
 <parcel x='3' y='30' z='0' type='1'>
-<resource id='59' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='637' name='base.wood_log'>
+<quantity>35</quantity>
+</consumable>
 </parcel>
 <parcel x='3' y='31' z='0' type='1'>
-<resource id='60' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='634' name='base.wood_log'>
+<quantity>51</quantity>
+</consumable>
 </parcel>
 <parcel x='3' y='32' z='0' type='1'>
-<resource id='61' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='619' name='base.wood_log'>
+<quantity>39</quantity>
+</consumable>
 </parcel>
 <parcel x='3' y='33' z='0' type='1'>
-<resource id='62' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='632' name='base.wood_log'>
+<quantity>53</quantity>
+</consumable>
 </parcel>
 <parcel x='3' y='34' z='0' type='1' />
 <parcel x='3' y='35' z='0' type='1' />
@@ -523,46 +502,30 @@
 <parcel x='4' y='27' z='0' type='1' />
 <parcel x='4' y='28' z='0' type='1' />
 <parcel x='4' y='29' z='0' type='1'>
-<resource id='63' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='606' name='base.wood_log'>
+<quantity>45</quantity>
+</consumable>
 </parcel>
-<parcel x='4' y='30' z='0' type='1'>
-<resource id='64' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
-</parcel>
+<parcel x='4' y='30' z='0' type='1' />
 <parcel x='4' y='31' z='0' type='1'>
-<resource id='65' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='635' name='base.wood_log'>
+<quantity>58</quantity>
+</consumable>
 </parcel>
 <parcel x='4' y='32' z='0' type='1'>
-<resource id='66' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='618' name='base.wood_log'>
+<quantity>38</quantity>
+</consumable>
 </parcel>
 <parcel x='4' y='33' z='0' type='1'>
-<resource id='67' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='633' name='base.wood_log'>
+<quantity>50</quantity>
+</consumable>
 </parcel>
 <parcel x='4' y='34' z='0' type='1'>
-<resource id='68' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='617' name='base.wood_log'>
+<quantity>32</quantity>
+</consumable>
 </parcel>
 <parcel x='4' y='35' z='0' type='1' />
 <parcel x='4' y='36' z='0' type='1' />
@@ -616,48 +579,32 @@
 </resource>
 </parcel>
 <parcel x='5' y='24' z='0' type='1'>
-<resource id='70' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='598' name='base.wood_log'>
+<quantity>45</quantity>
+</consumable>
 </parcel>
-<parcel x='5' y='25' z='0' type='1'>
-<resource id='71' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
-</parcel>
+<parcel x='5' y='25' z='0' type='1' />
 <parcel x='5' y='26' z='0' type='1'>
-<resource id='72' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='602' name='base.wood_log'>
+<quantity>41</quantity>
+</consumable>
 </parcel>
 <parcel x='5' y='27' z='0' type='1' />
 <parcel x='5' y='28' z='0' type='1' />
 <parcel x='5' y='29' z='0' type='1'>
-<resource id='73' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='607' name='base.wood_log'>
+<quantity>44</quantity>
+</consumable>
 </parcel>
 <parcel x='5' y='30' z='0' type='1'>
-<resource id='74' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='609' name='base.wood_log'>
+<quantity>49</quantity>
+</consumable>
 </parcel>
 <parcel x='5' y='31' z='0' type='1'>
-<resource id='75' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='612' name='base.wood_log'>
+<quantity>61</quantity>
+</consumable>
 </parcel>
 <parcel x='5' y='32' z='0' type='1'>
 <resource id='555' name='base.seaweed1'>
@@ -667,11 +614,9 @@
 </resource>
 </parcel>
 <parcel x='5' y='33' z='0' type='1'>
-<resource id='77' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='615' name='base.wood_log'>
+<quantity>45</quantity>
+</consumable>
 </parcel>
 <parcel x='5' y='34' z='0' type='1' />
 <parcel x='5' y='35' z='0' type='1' />
@@ -760,40 +705,22 @@
 <parcel x='6' y='20' z='0' type='1' />
 <parcel x='6' y='21' z='0' type='1' />
 <parcel x='6' y='22' z='0' type='1' />
-<parcel x='6' y='23' z='0' type='1'>
-<resource id='78' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
-</parcel>
-<parcel x='6' y='24' z='0' type='1'>
-<resource id='79' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
-</parcel>
+<parcel x='6' y='23' z='0' type='1' />
+<parcel x='6' y='24' z='0' type='1' />
 <parcel x='6' y='25' z='0' type='1'>
-<resource id='80' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='601' name='base.wood_log'>
+<quantity>53</quantity>
+</consumable>
 </parcel>
 <parcel x='6' y='26' z='0' type='1'>
-<resource id='81' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='603' name='base.wood_log'>
+<quantity>57</quantity>
+</consumable>
 </parcel>
 <parcel x='6' y='27' z='0' type='1'>
-<resource id='82' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='604' name='base.wood_log'>
+<quantity>53</quantity>
+</consumable>
 </parcel>
 <parcel x='6' y='28' z='0' type='1'>
 <resource id='2003' name='base.seaweed3'>
@@ -803,11 +730,9 @@
 </resource>
 </parcel>
 <parcel x='6' y='29' z='0' type='1'>
-<resource id='84' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='605' name='base.wood_log'>
+<quantity>52</quantity>
+</consumable>
 </parcel>
 <parcel x='6' y='30' z='0' type='1'>
 <resource id='582' name='base.seaweed1'>
@@ -817,32 +742,24 @@
 </resource>
 </parcel>
 <parcel x='6' y='31' z='0' type='1'>
-<resource id='86' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='611' name='base.wood_log'>
+<quantity>44</quantity>
+</consumable>
 </parcel>
 <parcel x='6' y='32' z='0' type='1'>
-<resource id='87' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='613' name='base.wood_log'>
+<quantity>54</quantity>
+</consumable>
 </parcel>
 <parcel x='6' y='33' z='0' type='1'>
-<resource id='88' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='614' name='base.wood_log'>
+<quantity>48</quantity>
+</consumable>
 </parcel>
 <parcel x='6' y='34' z='0' type='1'>
-<resource id='89' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='616' name='base.wood_log'>
+<quantity>61</quantity>
+</consumable>
 </parcel>
 <parcel x='6' y='35' z='0' type='1' />
 <parcel x='6' y='36' z='0' type='1' />
@@ -905,19 +822,11 @@
 <parcel x='7' y='19' z='0' type='1' />
 <parcel x='7' y='20' z='0' type='1' />
 <parcel x='7' y='21' z='0' type='1' />
-<parcel x='7' y='22' z='0' type='1'>
-<resource id='90' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
-</parcel>
+<parcel x='7' y='22' z='0' type='1' />
 <parcel x='7' y='23' z='0' type='1'>
-<resource id='91' name='base.raw_spice'>
-<health>0</health>
-<progress>0</progress>
-<quantity>5</quantity>
-</resource>
+<consumable id='597' name='base.wood_log'>
+<quantity>49</quantity>
+</consumable>
 </parcel>
 <parcel x='7' y='24' z='0' type='1'>
 <resource id='92' name='base.raw_spice'>
@@ -2428,10 +2337,6 @@
 <structure id='592' name='base.wood_wall'>
 <health>0</health>
 <progress>0</progress>
-<building currentBuilding='9'>
-<components>
-</components>
-</building>
 </structure>
 </parcel>
 <parcel x='20' y='8' z='0' type='1'>
@@ -2904,7 +2809,11 @@
 <parcel x='23' y='13' z='0' type='1' />
 <parcel x='23' y='14' z='0' type='1' />
 <parcel x='23' y='15' z='0' type='1' />
-<parcel x='23' y='16' z='0' type='1' />
+<parcel x='23' y='16' z='0' type='1'>
+<consumable id='636' name='base.wood_log'>
+<quantity>200</quantity>
+</consumable>
+</parcel>
 <parcel x='23' y='17' z='0' type='1' />
 <parcel x='23' y='18' z='0' type='1' />
 <parcel x='23' y='19' z='0' type='1' />
@@ -3062,7 +2971,11 @@
 <parcel x='24' y='13' z='0' type='1' />
 <parcel x='24' y='14' z='0' type='1' />
 <parcel x='24' y='15' z='0' type='1' />
-<parcel x='24' y='16' z='0' type='1' />
+<parcel x='24' y='16' z='0' type='1'>
+<consumable id='600' name='base.wood_log'>
+<quantity>36</quantity>
+</consumable>
+</parcel>
 <parcel x='24' y='17' z='0' type='1' />
 <parcel x='24' y='18' z='0' type='1' />
 <parcel x='24' y='19' z='0' type='1' />
@@ -6044,19 +5957,19 @@
 <lastname>Banks</lastname>
 <firstname>Paige</firstname>
 <old>Banks</old>
-<x>21</x>
-<y>8</y>
+<x>3</x>
+<y>29</y>
 <gender>MALE</gender>
 <needs>
-<isSleeping>false</isSleeping>
+<isSleeping>true</isSleeping>
 <drinking>0.0</drinking>
 <socialize>0.0</socialize>
-<food>0.0</food>
+<food>-0.05</food>
 <happiness>99.75000000000001</happiness>
-<relation>100.0</relation>
+<relation>56.0</relation>
 <security>0.0</security>
 <oxygen>100.0</oxygen>
-<energy>11.50000000000138</energy>
+<energy>92.39999999999964</energy>
 <health>79.49120330810547</health>
 <sickness>0.0</sickness>
 <injuries>0.0</injuries>
@@ -6094,8 +6007,8 @@
 <lastname>Wagner</lastname>
 <firstname>Olive</firstname>
 <old>Wagner</old>
-<x>20</x>
-<y>10</y>
+<x>5</x>
+<y>17</y>
 <gender>MALE</gender>
 <needs>
 <isSleeping>false</isSleeping>
@@ -6103,10 +6016,10 @@
 <socialize>0.0</socialize>
 <food>0.0</food>
 <happiness>73.75</happiness>
-<relation>100.0</relation>
+<relation>56.0</relation>
 <security>0.0</security>
 <oxygen>100.0</oxygen>
-<energy>98.40000000000009</energy>
+<energy>44.300000000001766</energy>
 <health>78.74639129638672</health>
 <sickness>0.0</sickness>
 <injuries>0.0</injuries>
@@ -6144,85 +6057,87 @@
 <areas>
 <area id='0' name='Storage Area #n' type='STORAGE'>
 <accept>
-<item>base.seaweed2</item>
+<item>base.sandstone</item>
+<item>base.vegetable</item>
+<item>base.seaweed</item>
 <item>base.regular_shirt</item>
 <item>base.human_body</item>
 <item>base.glasses</item>
-<item>base.oxygen_bottle</item>
-<item>base.seaweed</item>
-<item>base.military_ration</item>
+<item>base.seaweed2</item>
 <item>base.seaweed1</item>
-<item>base.vegetable</item>
-<item>base.sandstone</item>
+<item>base.military_ration</item>
+<item>base.oxygen_bottle</item>
 </accept>
 <parcels>
-<parcel x='16' y='10' />
-<parcel x='20' y='12' />
-<parcel x='19' y='10' />
-<parcel x='17' y='10' />
-<parcel x='16' y='12' />
-<parcel x='17' y='13' />
-<parcel x='18' y='8' />
-<parcel x='20' y='13' />
-<parcel x='19' y='9' />
-<parcel x='17' y='9' />
 <parcel x='15' y='13' />
-<parcel x='15' y='10' />
-<parcel x='18' y='11' />
 <parcel x='17' y='12' />
-<parcel x='19' y='13' />
+<parcel x='15' y='10' />
+<parcel x='20' y='12' />
+<parcel x='17' y='11' />
+<parcel x='16' y='8' />
+<parcel x='16' y='10' />
+<parcel x='20' y='13' />
+<parcel x='16' y='11' />
+<parcel x='15' y='12' />
+<parcel x='20' y='9' />
+<parcel x='15' y='9' />
+<parcel x='19' y='9' />
+<parcel x='17' y='8' />
+<parcel x='20' y='10' />
+<parcel x='19' y='12' />
+<parcel x='18' y='8' />
+<parcel x='17' y='9' />
+<parcel x='19' y='8' />
+<parcel x='20' y='11' />
 <parcel x='18' y='10' />
+<parcel x='16' y='12' />
+<parcel x='18' y='9' />
+<parcel x='18' y='11' />
+<parcel x='18' y='13' />
+<parcel x='15' y='8' />
 <parcel x='20' y='8' />
 <parcel x='19' y='11' />
 <parcel x='16' y='9' />
-<parcel x='15' y='12' />
-<parcel x='17' y='11' />
-<parcel x='17' y='8' />
-<parcel x='16' y='8' />
-<parcel x='19' y='8' />
-<parcel x='16' y='13' />
-<parcel x='20' y='11' />
-<parcel x='20' y='10' />
+<parcel x='19' y='13' />
 <parcel x='15' y='11' />
-<parcel x='18' y='13' />
-<parcel x='15' y='8' />
-<parcel x='18' y='9' />
-<parcel x='20' y='9' />
+<parcel x='19' y='10' />
+<parcel x='17' y='13' />
+<parcel x='16' y='13' />
+<parcel x='17' y='10' />
 <parcel x='18' y='12' />
-<parcel x='15' y='9' />
-<parcel x='19' y='12' />
-<parcel x='16' y='11' />
 </parcels>
 </area>
 <area id='0' name='Storage Area #n' type='STORAGE'>
 <accept>
+<item>base.wood_log</item>
+<item>base.raw_spice</item>
 <item>base.calcite_brick</item>
 </accept>
 <parcels>
 <parcel x='23' y='14' />
-<parcel x='24' y='14' />
-<parcel x='24' y='13' />
-<parcel x='23' y='12' />
 <parcel x='25' y='15' />
-<parcel x='25' y='11' />
-<parcel x='23' y='11' />
+<parcel x='24' y='12' />
+<parcel x='26' y='16' />
+<parcel x='25' y='16' />
+<parcel x='25' y='12' />
+<parcel x='26' y='15' />
+<parcel x='24' y='14' />
+<parcel x='26' y='12' />
+<parcel x='23' y='12' />
 <parcel x='24' y='16' />
+<parcel x='25' y='13' />
+<parcel x='24' y='13' />
+<parcel x='25' y='11' />
+<parcel x='24' y='15' />
+<parcel x='26' y='13' />
+<parcel x='24' y='11' />
+<parcel x='26' y='14' />
+<parcel x='23' y='11' />
+<parcel x='26' y='11' />
 <parcel x='23' y='16' />
 <parcel x='23' y='13' />
-<parcel x='26' y='13' />
-<parcel x='24' y='12' />
-<parcel x='26' y='11' />
 <parcel x='23' y='15' />
-<parcel x='24' y='11' />
-<parcel x='24' y='15' />
-<parcel x='26' y='14' />
-<parcel x='26' y='15' />
-<parcel x='25' y='13' />
-<parcel x='26' y='12' />
-<parcel x='26' y='16' />
-<parcel x='25' y='12' />
 <parcel x='25' y='14' />
-<parcel x='25' y='16' />
 </parcels>
 </area>
 </areas>

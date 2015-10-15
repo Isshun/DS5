@@ -23,7 +23,7 @@ public class GameData {
 	public List<ItemInfo> 				equipments;
 	public List<PlanetInfo> 			planets;
     public Map<String, WeatherModel> 	weathers;
-	public HashMap<Integer, String> 	strings;
+	public HashMap<Integer, String> 	strings = new HashMap<>();
 	public boolean 						needUIRefresh;
 	public List<IDataLoader> 			_loaders;
 	public HashMap<String, CharacterTypeInfo> characters;
@@ -121,4 +121,6 @@ public class GameData {
 			productInfo.components.forEach(component -> component.item = getItemInfo(component.itemName));
 		}));
 	}
+
+	public UICursor getCursor(String name) { return this.cursors.get(name); }
 }

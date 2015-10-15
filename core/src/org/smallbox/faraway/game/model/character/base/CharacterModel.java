@@ -56,6 +56,7 @@ public abstract class CharacterModel extends MovableModel {
         MINE,
         HAUL,
         BUILD,
+        CUT,
         CLEAN
     }
 
@@ -84,6 +85,7 @@ public abstract class CharacterModel extends MovableModel {
             new TalentEntry(TalentType.CRAFT, 	"Craft"),
             new TalentEntry(TalentType.COOK, 	"Cook"),
             new TalentEntry(TalentType.GATHER, 	"Gather"),
+            new TalentEntry(TalentType.CUT, 	"Cut"),
             new TalentEntry(TalentType.MINE, 	"Mine"),
             new TalentEntry(TalentType.HAUL, 	"Haul"),
             new TalentEntry(TalentType.CLEAN, 	"Clean"),

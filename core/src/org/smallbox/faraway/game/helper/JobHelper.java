@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.helper;
 
+import org.smallbox.faraway.JobCut;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
@@ -16,6 +17,14 @@ import java.util.List;
  * Created by Alex on 06/07/2015.
  */
 public class JobHelper {
+
+    public static BaseJobModel createCutJob(int x, int y) {
+        ResourceModel res = WorldHelper.getResource(x, y);
+        if (res == null) {
+            return null;
+        }
+        return JobCut.create(res);
+    }
 
     public static BaseJobModel createGatherJob(int x, int y) {
         ResourceModel res = WorldHelper.getResource(x, y);
@@ -130,6 +139,7 @@ public class JobHelper {
             ModuleHelper.getJobModule().removeJob(job);
         }
     }
+
 //
 //    public static BaseJobModel addBuildJob(ItemInfo info, int x, int y) {
 //        MapObjectModel item = null;

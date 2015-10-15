@@ -23,4 +23,7 @@ data:extend({
         { path = "[base]/graphics/items/consumables/organic_vegetable.png", type = "plant", x = 0, y = 0 },
         { path = "[base]/graphics/items/consumables/organic_vegetable.png", type = "plant", x = 32, y = 0 },
     }},
+    { label = "Spice", name = "base.spice", type = "consumable", category = "organic", graphics = {
+        { path = "[base]/graphics/items/consumables/spice.png", type = "plant", x = 0, y = 0 },
+    }},
 })

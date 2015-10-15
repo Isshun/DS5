@@ -445,7 +445,9 @@ public class UserInterface implements GameEventListener {
             }
         }
 
-        renderer.draw(_selection, 100, 100);
+        if (_cursor == null) {
+            renderer.draw(_selection, 100, 100);
+        }
 
         if (_menu != null) {
             _menu.draw(renderer, 0, 0);
@@ -534,9 +536,19 @@ public class UserInterface implements GameEventListener {
             return false;
         }
         _keyLeftPressed = false;
+        _selection.clear();
 
         if (_context.isVisible()) {
             _context.setVisible(false);
+            return true;
+        }
+
+        // Check user actions
+        if (_interaction.onKeyLeft(_keyPressPosX, _keyPressPosY,
+                Math.min(_keyPressPosX, _keyMovePosX),
+                Math.min(_keyPressPosY, _keyMovePosY),
+                Math.max(_keyPressPosX, _keyMovePosX),
+                Math.max(_keyPressPosY, _keyMovePosY))) {
             return true;
         }
 
@@ -547,17 +559,6 @@ public class UserInterface implements GameEventListener {
                 getRelativePosX(_selection.getToX()),
                 getRelativePosY(_selection.getToY()))) {
             _selection.clear();
-            return true;
-        }
-        _selection.clear();
-
-        // Check user actions
-        if (_interaction.onKeyLeft(
-                _keyPressPosX, _keyPressPosY,
-                Math.min(_keyPressPosX, _keyMovePosX),
-                Math.min(_keyPressPosY, _keyMovePosY),
-                Math.max(_keyPressPosX, _keyMovePosX),
-                Math.max(_keyPressPosY, _keyMovePosY))) {
             return true;
         }
 

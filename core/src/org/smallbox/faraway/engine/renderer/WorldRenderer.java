@@ -230,7 +230,7 @@ public class WorldRenderer extends BaseRenderer {
 
     private void refreshResource(RenderLayer layer, ParcelModel parcel, ResourceModel resource, int x, int y) {
         if (parcel != null && resource != null) {
-            SpriteModel sprite = resource.isRock() && WorldHelper.isSurroundedByRock(parcel) ? _spriteManager.getGround(11) : _spriteManager.getResource(resource);
+            SpriteModel sprite = resource.isRock() && WorldHelper.isSurroundedByRock(parcel) ? _spriteManager.getGround(11) : _spriteManager.getItem(resource);
             if (sprite != null) {
                 layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }

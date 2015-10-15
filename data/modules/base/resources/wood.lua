@@ -3,6 +3,8 @@ data:extend({
         label = "Wood",
         name = "base.wood",
         type = "resource",
-        graphics = { path = "[base]/graphics/items/ground.png" },
+        size = {1, 2},
+        graphics = { path = "[base]/graphics/items/resources/wood.png"},
+        actions = {{ type = "cut", cost = 1, products = {{item = "base.wood_log", quantity = {5, 15}}}}}
     },
 })

@@ -14,7 +14,6 @@ public class StringLoader implements IDataLoader {
     @Override
     public void load(GameData data) {
         try {
-            data.strings = new HashMap<>();
             File file = new File("data/lang/" + data.config.lang + ".txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"));
             String line;

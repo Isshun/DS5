@@ -4,6 +4,7 @@ import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.helper.JobHelper;
 import org.smallbox.faraway.game.helper.WorldHelper;
+import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.area.AreaType;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ResourceModel;
@@ -170,7 +171,18 @@ public class UserInteraction {
 		}
 	}
 
-	public void planMining(int startX, int startY, int toX, int toY) {
+    private void planCut(int startX, int startY, int toX, int toY) {
+        for (int x = startX; x <= toX; x++) {
+            for (int y = startY; y <= toY; y++) {
+                BaseJobModel job = JobHelper.createCutJob(x, y);
+                if (job != null) {
+                    ModuleHelper.getJobModule().addJob(job);
+                }
+            }
+        }
+    }
+
+    public void planMining(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
 				BaseJobModel job = JobHelper.createMiningJob(x, y);
@@ -230,11 +242,12 @@ public class UserInteraction {
 		case "mining": planMining(startX, startY, toX, toY); break;
 		case "pick": planPick(startX, startY, toX, toY); break;
 		case "haul": planHaul(startX, startY, toX, toY); break;
+		case "cut": planCut(startX, startY, toX, toY); break;
 		default: break;
 		}
 	}
 
-	public boolean isAction(Action action) {
+    public boolean isAction(Action action) {
 		return _action.equals(action);
 	}
 
@@ -262,6 +275,9 @@ public class UserInteraction {
 				break;
 			case "mining":
 				UserInterface.getInstance().setCursor(new MineCursor());
+				break;
+			case "cut":
+				UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cut_cursor"));
 				break;
 			case "dump":
 				UserInterface.getInstance().setCursor(new DumpCursor());

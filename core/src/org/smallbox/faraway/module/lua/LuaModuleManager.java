@@ -58,6 +58,7 @@ public class LuaModuleManager implements GameObserver {
         _luaExtendManager.addExtendFactory(new LuaReceiptExtend());
         _luaExtendManager.addExtendFactory(new LuaCursorExtend());
         _luaExtendManager.addExtendFactory(new LuaCharacterBuffExtend());
+        _luaExtendManager.addExtendFactory(new LuaLangExtend());
 
         _luaCrew = new LuaCrewModel();
         _luaEvents = new LuaEventsModel();
@@ -123,20 +124,11 @@ public class LuaModuleManager implements GameObserver {
         Globals globals = JsePlatform.standardGlobals();
         globals.load("function main(g, d)\n game = g\ndata = d\n end", "main").call();
         globals.get("main").call(_luaGame, CoerceJavaToLua.coerce(new LuaDataModel(values -> {
-            for (int i = 1; i <= values.length(); i++) {
-                LuaValue value = values.get(i);
-                for (LuaExtend luaExtend: _luaExtendManager.getExtends()) {
-                    if (luaExtend.accept(value.get("type").toString())) {
-                        try {
-                            luaExtend.extend(this, luaModule, globals, value);
-                        } catch (DataExtendException e) {
-                            if (!value.get("name").isnil()) {
-                                System.out.println("Error during extend " + value.get("name").toString());
-                            }
-                            e.printStackTrace();
-                        }
-                        break;
-                    }
+            if (!values.get("type").isnil()) {
+                extendLuaValue(values, luaModule, globals);
+            } else {
+                for (int i = 1; i <= values.length(); i++) {
+                    extendLuaValue(values.get(i), luaModule, globals);
                 }
             }
         })));
@@ -152,6 +144,22 @@ public class LuaModuleManager implements GameObserver {
         });
 
         luaModule.setActivate(true);
+    }
+
+    private void extendLuaValue(LuaValue value, LuaModule luaModule, Globals globals) {
+        for (LuaExtend luaExtend: _luaExtendManager.getExtends()) {
+            if (luaExtend.accept(value.get("type").toString())) {
+                try {
+                    luaExtend.extend(this, luaModule, globals, value);
+                } catch (DataExtendException e) {
+                    if (!value.get("name").isnil()) {
+                        System.out.println("Error during extend " + value.get("name").toString());
+                    }
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
     }
 
     private boolean hasRequiredModules(ModuleInfo info) {

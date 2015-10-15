@@ -7,7 +7,9 @@ import org.smallbox.faraway.module.lua.LuaLayoutFactory;
 import org.smallbox.faraway.module.lua.LuaModule;
 import org.smallbox.faraway.module.lua.LuaModuleManager;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.views.UIFrame;
+import org.smallbox.faraway.ui.engine.views.View;
 
 /**
  * Created by Alex on 29/09/2015.
@@ -30,6 +32,12 @@ public class LuaUIExtend extends LuaExtend {
         UIFrame frame = new UIFrame(-1, -1);
         frame.addView(LuaLayoutFactory.createView(luaModuleManager, globals, value));
         frame.setModule(module);
+
+        //TODO: not clean
+        if (frame.getViews().size() == 1) {
+            frame.getViews().get(0).setOnClickListener(view -> {});
+        }
+
         UserInterface.getInstance()._views.add(frame);
     }
 }
