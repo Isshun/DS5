@@ -3,14 +3,16 @@ data:extend({
         label = "Iron",
         name = "base.iron",
         type = "resource",
+        walkable = false,
         graphics = { path = "[base]/graphics/items/resources/raw_iron.png"},
-        actions = { type = "mine", cost = 1, products = {{name = "base.iron_part", quantity = {5, 10}}} }
+        actions = { type = "mine", cost = 1, products = {{item = "base.iron_ore", quantity = {5, 10}}} }
     },
     {
         label = "Copper",
         name = "base.copper",
         type = "resource",
+        walkable = false,
         graphics = { path = "[base]/graphics/items/resources/raw_copper.png"},
-        actions = { type = "mine", cost = 1, products = {{name = "base.copper_part", quantity = {5, 10}}} }
+        actions = { type = "mine", cost = 1, products = {{item = "base.copper_ore", quantity = {5, 10}}} }
     },
 })

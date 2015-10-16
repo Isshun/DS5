@@ -8,7 +8,7 @@ data:extend({
             {items = {{ name = "base.easy_meal", quantity = 10}}, components = {{ name = "base.seaweed", quantity = 10}}},
             {items = {{ name = "base.easy_meal", quantity = 10}}, components = {{ name = "base.seafood", quantity = 10}}},
             {items = {{ name = "base.easy_meal", quantity = 10}}, components = {{ name = "base.insect_meat", quantity = 100}}},
-            {items = {{ name = "base.easy_meal", quantity = 10}}, components = {{ name = "base.base", quantity = 10}}},
+            {items = {{ name = "base.easy_meal", quantity = 10}}, components = {{ name = "base.meat", quantity = 10}}},
         }
     },
     {

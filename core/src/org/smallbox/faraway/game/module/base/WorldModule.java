@@ -256,6 +256,9 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
         // Put item on floor
         ItemModel item = (ItemModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, progress);
         moveItemToParcel(_parcels[x][y][z], item);
+        if (item.getInfo().receipts != null && item.getInfo().receipts.size() > 0) {
+            item.setReceipt(item.getInfo().receipts.get(0));
+        }
         _items.add(item);
         _game.notify(observer -> observer.onAddItem(item));
 
@@ -271,6 +274,9 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
         if (_parcels[x][y][z].getStructure() == null || _parcels[x][y][z].getStructure().isFloor()) {
             StructureModel structure = (StructureModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
             if (structure != null) {
+                if (structure.getInfo().receipts != null && structure.getInfo().receipts.size() > 0) {
+                    structure.setReceipt(structure.getInfo().receipts.get(0));
+                }
                 moveStructureToParcel(_parcels[x][y][z], structure);
                 _structures.add(structure);
                 _game.notify(observer -> observer.onAddStructure(structure));
@@ -461,6 +467,10 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
         if (consumable != null) {
             consumable.setParcel(parcel);
             consumable.setPosition(parcel.x, parcel.y);
+
+            if (parcel.getConsumable() == null) {
+                parcel.setConsumable(consumable);
+            }
         }
     }
 

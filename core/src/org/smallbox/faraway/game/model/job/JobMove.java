@@ -10,12 +10,12 @@ public class JobMove extends BaseJobModel {
     private int 					_distance;
     private double 					_speedModifier = 1;
 
-    private JobMove(int x, int y) {
-		super(null, x, y, new IconDrawable("data/res/ic_dump.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 128, 32, 32, 7, 10));
+    private JobMove(ParcelModel jobParcel) {
+		super(null, jobParcel, new IconDrawable("data/res/ic_dump.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 128, 32, 32, 7, 10));
 	}
 
-	public static JobMove create(CharacterModel character, int x, int y) {
-		JobMove job = new JobMove(x, y);
+	public static JobMove create(CharacterModel character, ParcelModel jobParcel) {
+		JobMove job = new JobMove(jobParcel);
 		job.setCharacterRequire(character);
 		return job;
 	}
@@ -38,7 +38,7 @@ public class JobMove extends BaseJobModel {
 //		}
 
 		// Job is done
-		if (character.getX() != _posX || character.getY() != _posY) {
+		if (character.getParcel() != _targetParcel) {
 			return JobActionReturn.CONTINUE;
 		}
 
@@ -71,7 +71,7 @@ public class JobMove extends BaseJobModel {
 	}
 
 	protected void onStart(CharacterModel character){
-        _distance = character != null ? Math.abs(character.getX() - _posX) + Math.abs(character.getY() - _posY) : 0;
+        _distance = character != null ? Math.abs(character.getX() - _targetParcel.x) + Math.abs(character.getY() - _targetParcel.y) : 0;
     }
 
     public double               getProgress() { return (double)(_limit - _currentLimit) / _limit; }

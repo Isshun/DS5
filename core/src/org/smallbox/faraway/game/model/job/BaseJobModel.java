@@ -11,8 +11,10 @@ import org.smallbox.faraway.util.Log;
 
 public abstract class BaseJobModel extends ObjectModel {
     public void onDraw(onDrawCallback callback) {
-        callback.onDraw(_posX, _posY);
+        callback.onDraw(_jobParcel.x, _jobParcel.y);
     }
+
+    public void setTargetParcel(ParcelModel targetParcel) { _targetParcel = targetParcel; }
 
     public interface onDrawCallback {
         void onDraw(int x, int y);
@@ -59,8 +61,6 @@ public abstract class BaseJobModel extends ObjectModel {
     protected int 				_id;
 	protected int 				_count;
     protected int               _totalCount;
-    protected int				_posY = -1;
-	protected int 				_posX = -1;
 	protected ParcelModel       _parcel;
     protected int 	            _limit;
     protected int               _currentLimit;
@@ -84,11 +84,13 @@ public abstract class BaseJobModel extends ObjectModel {
     private GDXDrawable         _iconDrawable;
     private GDXDrawable         _actionDrawable;
     protected String            _message;
+    protected ParcelModel       _jobParcel;
+    protected ParcelModel       _targetParcel;
 
-	public BaseJobModel(ItemInfo.ItemInfoAction actionInfo, int x, int y, GDXDrawable iconDrawable, GDXDrawable actionDrawable) {
+	public BaseJobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel, GDXDrawable iconDrawable, GDXDrawable actionDrawable) {
 		init();
-		_posY = y;
-		_posX = x;
+		_jobParcel = targetParcel;
+		_targetParcel = targetParcel;
         _iconDrawable = iconDrawable;
         _actionDrawable = actionDrawable;
 		if (actionInfo != null) {
@@ -119,8 +121,6 @@ public abstract class BaseJobModel extends ObjectModel {
 	public String 				getLabel() { return _label; }
 	public abstract String 		getShortLabel();
     public abstract ParcelModel getActionParcel();
-	public int					getX() { return _posX; }
-	public int					getY() { return _posY; }
 	public int					getId() { return _id; }
 	public MapObjectModel 		getItem() { return _item; }
 	public CharacterModel       getCharacter() { return _character; }
@@ -145,6 +145,8 @@ public abstract class BaseJobModel extends ObjectModel {
     public int                  getNbBlocked() { return _nbBlocked; }
     public int                  getCount() { return _count; }
     public int                  getTotalCount() { return _totalCount; }
+    public ParcelModel          getTargetParcel() { return _targetParcel; }
+    public ParcelModel          getJobParcel() { return _jobParcel; }
     public ItemInfo.ItemInfoAction getActionInfo() { return _actionInfo; }
 
     public void                 setActionInfo(ItemInfo.ItemInfoAction action) { _actionInfo = action; _cost = action.cost; }
@@ -155,7 +157,6 @@ public abstract class BaseJobModel extends ObjectModel {
     public void					setCharacterRequire(CharacterModel character) { _characterRequire = character; }
 	public void					setFail(JobAbortReason reason, int frame) { _reason = reason; _fail = frame; }
 	public void					setBlocked(int frame) { _blocked = frame; _nbBlocked++; }
-	public void 				setPosition(int x, int y) { _posX = x; _posY = y; }
 	public void 				setSlot(ItemSlot slot) { _slot = slot; }
 	public void					setItem(ItemModel item) { _item = item; }
 	public void 				setItemFilter(ItemFilter filter) { _filter = filter; }
@@ -198,7 +199,7 @@ public abstract class BaseJobModel extends ObjectModel {
 	}
 
     protected void onStart(CharacterModel character) {
-        character.moveTo(this, _posX, _posY, null);
+        character.moveTo(this, _jobParcel, null);
     }
 
     public abstract CharacterModel.TalentType getTalentNeeded();
@@ -263,11 +264,6 @@ public abstract class BaseJobModel extends ObjectModel {
 	 * @return true if job is finish (completed or aborted)
 	 */
 	public abstract JobActionReturn onAction(CharacterModel character);
-
-	@Override
-	public String toString() {
-		return "#" + _id + " (" + getLabel() + ")";
-	}
 
     public boolean isRunning() { return _character != null; }
 

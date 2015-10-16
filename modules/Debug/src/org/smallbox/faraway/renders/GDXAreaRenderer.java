@@ -10,6 +10,7 @@ import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.base.WorldModule;
+import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.util.Constant;
 
 /**
@@ -19,6 +20,7 @@ public class GDXAreaRenderer extends BaseRenderer {
     private final SpriteManager _spriteManager;
 
     private final TextureRegion[] _regions;
+    private final TextureRegion[] _regionsSelected;
 
     private Color[] COLORS = new Color[]{
             new Color(0.5f, 0.5f, 1f, 0.4f),
@@ -36,6 +38,12 @@ public class GDXAreaRenderer extends BaseRenderer {
         _regions[2] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 64, 32, 32);
         _regions[3] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 96, 32, 32);
         _regions[4] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 128, 32, 32);
+        _regionsSelected = new TextureRegion[5];
+        _regionsSelected[0] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 32, 0, 32, 32);
+        _regionsSelected[1] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 32, 32, 32, 32);
+        _regionsSelected[2] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 32, 64, 32, 32);
+        _regionsSelected[3] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 32, 96, 32, 32);
+        _regionsSelected[4] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 32, 128, 32, 32);
     }
 
     @Override
@@ -50,7 +58,11 @@ public class GDXAreaRenderer extends BaseRenderer {
             for (int y = fromY; y < toY; y++) {
                 ParcelModel parcel = world.getParcel(x, y);
                 if (parcel != null && parcel.getArea() != null) {
-                    renderer.drawOnMap(_regions[Math.min(parcel.getArea().getTypeIndex(), 4)], x, y);
+                    if (UserInterface.getInstance().getSelector().getSelectedArea() == parcel.getArea()) {
+                        renderer.drawOnMap(_regionsSelected[Math.min(parcel.getArea().getTypeIndex(), 4)], x, y);
+                    } else {
+                        renderer.drawOnMap(_regions[Math.min(parcel.getArea().getTypeIndex(), 4)], x, y);
+                    }
                 }
             }
         }

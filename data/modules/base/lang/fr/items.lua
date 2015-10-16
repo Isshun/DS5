@@ -3,7 +3,8 @@ data:extend({
     lang = "fr",
     strings = {
         {"Bed", "Lit"},
-        {"Chess tab", "Échequier"},
+        {"Chessboard", "Échequier"},
+        {"Chess table", "Échequier"},
         {"Pink square", "Carré rose"},
         {"Bedside Table", "Table de chevet"},
         {"Chair", "Fauteuil"},

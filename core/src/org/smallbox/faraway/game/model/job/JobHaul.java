@@ -23,14 +23,13 @@ public class JobHaul extends BaseJobModel implements GameObserver {
 
     private List<ConsumableModel>   _consumables = new ArrayList<>();
     private StorageAreaModel        _storage;
-    private ParcelModel 	        _parcel;
     private Mode 			        _mode;
     private int                     _quantity;
     private ItemInfo                _itemInfo;
     private ParcelModel             _consumableParcel;
 
-    private JobHaul(int x, int y) {
-        super(null, x, y, new IconDrawable("data/res/ic_haul.png", 0, 0, 32, 32), null);
+    private JobHaul(ParcelModel jobParcel) {
+        super(null, jobParcel, new IconDrawable("data/res/ic_haul.png", 0, 0, 32, 32), null);
     }
 
     public static JobHaul create(ConsumableModel consumable) {
@@ -39,7 +38,7 @@ public class JobHaul extends BaseJobModel implements GameObserver {
             return null;
         }
 
-        JobHaul job = new JobHaul(consumable.getX(), consumable.getY());
+        JobHaul job = new JobHaul(consumable.getParcel());
         job._consumableParcel = consumable.getParcel();
         job._mode = Mode.MOVE_TO_CONSUMABLE;
         job._itemInfo = consumable.getInfo();
@@ -61,7 +60,7 @@ public class JobHaul extends BaseJobModel implements GameObserver {
     }
 
     public void getItemAround() {
-        getItemAround(_posX, _posY);
+        getItemAround(_jobParcel.x, _jobParcel.y);
     }
 
     private void getItemAround(int startX, int startY) {
@@ -95,12 +94,12 @@ public class JobHaul extends BaseJobModel implements GameObserver {
     }
 
     private boolean foundStorageParcel(ConsumableModel consumable) {
-        _parcel = null;
+        _targetParcel = null;
         _storage = ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).getNearestFreeStorage(consumable, consumable.getParcel());
         if (_storage != null) {
-            _parcel = _storage.getNearestFreeParcel(consumable, consumable.getX(), consumable.getY());
-            if (_parcel != null) {
-                _message = "Move to " + _storage.getName();
+            _targetParcel = _storage.getNearestFreeParcel(consumable, consumable.getX(), consumable.getY());
+            if (_targetParcel != null) {
+                _message = "Move " + consumable.getInfo().label + " to storage";
                 return true;
             }
         }
@@ -111,19 +110,17 @@ public class JobHaul extends BaseJobModel implements GameObserver {
         // Go to next consumable
         if (!_consumables.isEmpty()) {
             _mode = Mode.MOVE_TO_CONSUMABLE;
-            _posX = _consumables.get(0).getX();
-            _posY = _consumables.get(0).getY();
+            _targetParcel = _consumables.get(0).getParcel();
         }
 
         // Go to storage
         else {
             _mode = Mode.MOVE_TO_STORAGE;
-            _posX = _parcel.x;
-            _posY = _parcel.y;
+            _targetParcel = _targetParcel;
         }
 
         if (_character != null) {
-            _character.moveTo(this, _posX, _posY, null);
+            _character.moveTo(this, _targetParcel, null);
         }
     }
 
@@ -166,7 +163,7 @@ public class JobHaul extends BaseJobModel implements GameObserver {
         }
 
         // No available storage
-        if ((_storage == null || _parcel == null || (_parcel.getConsumable() != null && _parcel.getConsumable().getInfo() != _itemInfo)) && !foundStorageParcel(_consumables.get(0))) {
+        if ((_storage == null || _targetParcel == null || (_targetParcel.getConsumable() != null && _targetParcel.getConsumable().getInfo() != _itemInfo)) && !foundStorageParcel(_consumables.get(0))) {
             _message = "No storage area";
             return false;
         }
@@ -223,32 +220,30 @@ public class JobHaul extends BaseJobModel implements GameObserver {
                 Log.error("Character reach storage with empty inventory");
                 return JobActionReturn.ABORT;
             }
-            if (_parcel != null && _parcel.getConsumable() == null) {
-                ModuleHelper.getWorldModule().putConsumable(_character.getInventory(), _parcel.x, _parcel.y);
+            if (_targetParcel != null && _targetParcel.getConsumable() == null) {
+                ModuleHelper.getWorldModule().putConsumable(_character.getInventory(), _targetParcel.x, _targetParcel.y);
                 _character.setInventory(null);
                 return JobActionReturn.FINISH;
             }
-            if (_parcel != null && _parcel.getConsumable().getInfo() == _character.getInventory().getInfo()) {
-                int freeQuantity = Math.max(GameData.config.storageMaxQuantity, _parcel.getConsumable().getInfo().stack) - _parcel.getConsumable().getQuantity();
+            if (_targetParcel != null && _targetParcel.getConsumable().getInfo() == _character.getInventory().getInfo()) {
+                int freeQuantity = Math.max(GameData.config.storageMaxQuantity, _targetParcel.getConsumable().getInfo().stack) - _targetParcel.getConsumable().getQuantity();
                 // Store all inventory consumables on storage area
                 if (freeQuantity >= _character.getInventory().getQuantity()) {
-                    _parcel.getConsumable().addQuantity(_character.getInventory().getQuantity());
+                    _targetParcel.getConsumable().addQuantity(_character.getInventory().getQuantity());
                     _character.setInventory(null);
                     return JobActionReturn.FINISH;
                 }
                 // Store some inventory consumables
                 else {
-                    _parcel.getConsumable().addQuantity(freeQuantity);
+                    _targetParcel.getConsumable().addQuantity(freeQuantity);
                     _character.getInventory().addQuantity(-freeQuantity);
                 }
             }
 
             // Found another free storage area
             if (foundStorageParcel(_character.getInventory())) {
-                _posX = _parcel.x;
-                _posY = _parcel.y;
-                Log.info("Continue job to: " + _posX + "x" + _posY + ", left: " + _character.getInventory().getQuantity());
-                _character.moveTo(this, _posX, _posY, null);
+                Log.info("Continue job to: " + _targetParcel.x + "x" + _targetParcel.y + ", left: " + _character.getInventory().getQuantity());
+                _character.moveTo(this, _targetParcel, null);
                 return JobActionReturn.CONTINUE;
             }
             // No empty space in any storage

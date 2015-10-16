@@ -163,9 +163,9 @@ public class LuaLayoutFactory {
                 UIEventManager.getInstance().setOnClickListener(view, v -> {
                     try {
                         if (onClick.isfunction()) {
-                            onClick.call();
+                            onClick.call(luaView);
                         } else if (onClick.isstring()) {
-                            globals.load(onClick.tojstring()).call();
+                            globals.load(onClick.tojstring()).call(luaView);
                         }
                     } catch (LuaError e) {
                         e.printStackTrace();

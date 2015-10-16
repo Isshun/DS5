@@ -9,10 +9,10 @@ import org.smallbox.faraway.ui.engine.views.UIFrame;
 /**
  * Created by Alex on 27/06/2015.
  */
-public class DumpCursor extends UICursor {
+public class DestroyCursor extends UICursor {
     private final UIFrame RES_ITEM;
 
-    public DumpCursor() {
+    public DestroyCursor() {
         super();
 
         RES_ITEM = new UIFrame(32, 32);
@@ -23,7 +23,7 @@ public class DumpCursor extends UICursor {
     protected void onDraw(GDXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd, boolean isPressed) {
         if (isPressed) {
             renderer.draw(odd ? RES_ODD : RES_EDEN, x, y);
-            if (parcel != null && parcel.getItem() != null || parcel.getStructure() != null) {
+            if (parcel != null && (parcel.getItem() != null || parcel.getStructure() != null)) {
                 RES_ITEM.draw(renderer, x, y);
             }
         } else {

@@ -12,12 +12,9 @@ import org.smallbox.faraway.game.model.check.character.CheckCharacterHungry;
 import org.smallbox.faraway.game.model.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.game.model.check.old.CharacterCheck;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
-import org.smallbox.faraway.game.model.job.BaseBuildJobModel;
-import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.model.job.*;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobAbortReason;
 import org.smallbox.faraway.game.model.job.BaseJobModel.JobStatus;
-import org.smallbox.faraway.game.model.job.CheckJoyItem;
-import org.smallbox.faraway.game.model.job.JobHaul;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.Constant;
@@ -87,6 +84,10 @@ public class JobModule extends GameModule {
         _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).getItemAround());
         ModuleHelper.getWorldModule().getConsumables().stream().filter(consumable -> consumable.getHaul() == null && !consumable.inValidStorage()).forEach(consumable ->
                 addJob(JobHaul.create(consumable)));
+
+        // Create craft jobs
+        ModuleHelper.getWorldModule().getItems().stream().filter(item -> item.getFactory() != null && item.getFactory().getJob() == null)
+                .forEach(item -> _jobs.add(JobCraft.create(item)));
 
         // Remove invalid job
         _jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
@@ -273,7 +274,7 @@ public class JobModule extends GameModule {
         for (CharacterModel.TalentEntry talent: character.getTalents()) {
             for (BaseJobModel job: _jobs) {
                 if (talent.type == job.getTalentNeeded() && !job.isFinish() && job.getCharacter() == null && job.getFail() <= 0) {
-                    int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
+                    int distance = Math.abs(x - job.getJobParcel().x) + Math.abs(y - job.getJobParcel().y);
                     if (distance < bestDistance && job.check(character)) {
                         bestJob = job;
                         bestDistance = distance;
@@ -322,7 +323,7 @@ public class JobModule extends GameModule {
                     continue;
                 }
 
-                int distance = Math.abs(x - job.getX()) + Math.abs(y - job.getY());
+                int distance = Math.abs(x - job.getTargetParcel().x) + Math.abs(y - job.getTargetParcel().y);
                 if (distance < bestDistance && job.check(character)) {
                     bestJob = job;
                     bestDistance = distance;
@@ -377,41 +378,45 @@ public class JobModule extends GameModule {
     }
 
     public void quitJob(BaseJobModel job, JobAbortReason reason) {
-        printDebug("Job quit: " + (job != null ? job.getId() : "unknown"));
+        if (job != null) {
+            printDebug("Job quit: " + job.getId());
 
-        job.setStatus(JobStatus.WAITING);
+            job.setStatus(JobStatus.WAITING);
 
-        job.setFail(reason, MainRenderer.getFrame());
+            job.setFail(reason, MainRenderer.getFrame());
 
-        if (job.getCharacter() != null) {
-            job.quit(job.getCharacter());
+            if (job.getCharacter() != null) {
+                job.quit(job.getCharacter());
+            }
+
+            // Remove characters lock from item
+            if (job.getItem() != null && job.getItem().getOwner() == job.getCharacter()) {
+                job.getItem().setOwner(null);
+            }
+
+            // Abort because path to item is blocked
+            if (reason == JobAbortReason.BLOCKED) {
+                return;
+            }
+
+            // Job is invalid, don't resume
+            if (reason == JobAbortReason.INVALID) {
+                job.setStatus(JobStatus.ABORTED);
+                removeJob(job);
+                return;
+            }
+
+            // Job is USE / USE_INVENTORY / MOVE / TAKE / STORE / REFILL onAction, don't resume
+            if (!job.canBeResume()) {
+                job.setStatus(JobStatus.ABORTED);
+                removeJob(job);
+                return;
+            }
+
+            // Regular job, reset
+        } else {
+            System.out.println("[ERROR] Quit null job");
         }
-
-        // Remove characters lock from item
-        if (job.getItem() != null && job.getItem().getOwner() == job.getCharacter()) {
-            job.getItem().setOwner(null);
-        }
-
-        // Abort because path to item is blocked
-        if (reason == JobAbortReason.BLOCKED) {
-            return;
-        }
-
-        // Job is invalid, don't resume
-        if (reason == JobAbortReason.INVALID) {
-            job.setStatus(JobStatus.ABORTED);
-            removeJob(job);
-            return;
-        }
-
-        // Job is USE / USE_INVENTORY / MOVE / TAKE / STORE / REFILL onAction, don't resume
-        if (!job.canBeResume()) {
-            job.setStatus(JobStatus.ABORTED);
-            removeJob(job);
-            return;
-        }
-
-        // Regular job, reset
     }
 
     @Override

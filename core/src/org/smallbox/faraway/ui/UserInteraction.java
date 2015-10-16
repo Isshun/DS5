@@ -208,7 +208,7 @@ public class UserInteraction {
 		throw new NotImplementedException();
 	}
 
-	public void planDump(int startX, int startY, int toX, int toY) {
+	public void planDestroy(int startX, int startY, int toX, int toY) {
 		for (int x = startX; x <= toX; x++) {
 			for (int y = startY; y <= toY; y++) {
 				if (WorldHelper.getItem(x, y) != null) {
@@ -237,7 +237,7 @@ public class UserInteraction {
 		}
 		
 		switch (_selectedPlan) {
-		case "dump": planDump(startX, startY, toX, toY); break;
+		case "destroy": planDestroy(startX, startY, toX, toY); break;
 		case "gather": planGather(startX, startY, toX, toY); break;
 		case "mining": planMining(startX, startY, toX, toY); break;
 		case "pick": planPick(startX, startY, toX, toY); break;
@@ -279,8 +279,8 @@ public class UserInteraction {
 			case "cut":
 				UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cut_cursor"));
 				break;
-			case "dump":
-				UserInterface.getInstance().setCursor(new DumpCursor());
+			case "destroy":
+				UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.destroy_cursor"));
 				break;
 			case "pick":
 				UserInterface.getInstance().setCursor(new PickCursor());

@@ -115,16 +115,16 @@ public class JobHelper {
         }
     }
 
-    public static void addJob(ItemModel item, ItemInfo.ItemInfoAction action) {
-        switch (action.type) {
-            case "cook":
-                ModuleHelper.getJobModule().addJob(JobCook.create(action, item));
-                break;
-            case "craft":
-                ModuleHelper.getJobModule().addJob(JobCraft.create(action, item));
-                break;
-        }
-    }
+//    public static void addJob(ItemModel item, ItemInfo.ItemInfoAction action) {
+//        switch (action.type) {
+//            case "cook":
+//                ModuleHelper.getJobModule().addJob(JobCook.create(item));
+//                break;
+//            case "craft":
+//                ModuleHelper.getJobModule().addJob(JobCraft.create(item));
+//                break;
+//        }
+//    }
 
     public static void	removeJob(MapObjectModel item) {
         List<BaseJobModel> toRemove = new ArrayList<>();

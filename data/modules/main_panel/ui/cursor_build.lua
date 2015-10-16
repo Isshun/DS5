@@ -1,7 +1,7 @@
 data:extend({
     {
         type = "cursor",
-        id = "build_cursor",
+        id = "base.build_cursor",
         default = { color = 0x88ff0088 },
         odd = { color = 0x33ff0000 },
         eden = { color = 0x3300ff00 },

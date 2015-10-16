@@ -2,6 +2,7 @@ package org.smallbox.faraway.ui.cursor;
 
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.ui.UICursor;
 import org.smallbox.faraway.ui.engine.views.UIFrame;
@@ -23,8 +24,13 @@ public class MineCursor extends UICursor {
     protected void onDraw(GDXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd, boolean isPressed) {
         if (isPressed) {
             renderer.draw(odd ? RES_ODD : RES_EDEN, x, y);
-            if (parcel != null && parcel.getResource() != null && parcel.getResource().canBeMined()) {
-                RES_ITEM.draw(renderer, x, y);
+            if (parcel != null && parcel.getResource() != null && parcel.getResource().getInfo().actions != null) {
+                for (ItemInfo.ItemInfoAction action: parcel.getResource().getInfo().actions) {
+                    if ("mine".equals(action.type)) {
+                        RES_ITEM.draw(renderer, x, y);
+                        break;
+                    }
+                }
             }
         } else {
             renderer.draw(RES_ITEM, x, y);

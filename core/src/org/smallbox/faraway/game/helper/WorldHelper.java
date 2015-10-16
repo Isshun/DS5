@@ -82,7 +82,7 @@ public class WorldHelper {
         }
 
         ParcelModel parcel = _parcels[x][y][0];
-        if (parcel.getStructure() != null && !parcel.getStructure().isFloor()) {
+        if (parcel.getStructure() != null && !parcel.getStructure().isWalkable()) {
             return false;
         }
 
@@ -157,6 +157,51 @@ public class WorldHelper {
         if (_parcels[x][y][0].getConsumable() != null) {
             return false;
         }
+        return true;
+    }
+
+    public static ParcelModel getNearestWalkable(int x, int y, boolean acceptInterior, boolean acceptExterior) {
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < i; j++) {
+                // Top
+                if (isWalkableParcel(x + j, y + i, acceptInterior, acceptExterior)) return _parcels[x + j][y + i][0];
+                if (isWalkableParcel(x - j, y + i, acceptInterior, acceptExterior)) return _parcels[x - j][y + i][0];
+
+                // Bottom
+                if (isWalkableParcel(x + j, y - i, acceptInterior, acceptExterior)) return _parcels[x + j][y - i][0];
+                if (isWalkableParcel(x - j, y - i, acceptInterior, acceptExterior)) return _parcels[x - j][y - i][0];
+
+                // Right
+                if (isWalkableParcel(x + i, y + j, acceptInterior, acceptExterior)) return _parcels[x + i][y + j][0];
+                if (isWalkableParcel(x + i, y - j, acceptInterior, acceptExterior)) return _parcels[x + i][y + j][0];
+
+                // Left
+                if (isWalkableParcel(x - i, y + j, acceptInterior, acceptExterior)) return _parcels[x - i][y + j][0];
+                if (isWalkableParcel(x - i, y - j, acceptInterior, acceptExterior)) return _parcels[x - i][y - j][0];
+            }
+        }
+        return null;
+    }
+
+    private static boolean isWalkableParcel(int x, int y, boolean acceptInterior, boolean acceptExterior) {
+        if (!WorldHelper.inMapBounds(x, y)) {
+            return false;
+        }
+        if (!acceptInterior && _parcels[x][y][0].getRoom() != null && !_parcels[x][y][0].getRoom().isExterior()) {
+            return false;
+        }
+        if (!acceptExterior && (_parcels[x][y][0].getRoom() == null || _parcels[x][y][0].getRoom().isExterior())) {
+            return false;
+        }
+        if (_parcels[x][y][0].getStructure() != null && !_parcels[x][y][0].getStructure().isWalkable()) {
+            return false;
+        }
+        if (_parcels[x][y][0].getResource() != null && !_parcels[x][y][0].getResource().isWalkable()) {
+            return false;
+        }
+//        if (_parcels[x][y][0].getItem() != null) {
+//            return false;
+//        }
         return true;
     }
 

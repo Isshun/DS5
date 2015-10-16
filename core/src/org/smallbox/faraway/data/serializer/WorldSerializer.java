@@ -214,6 +214,7 @@ public class WorldSerializer implements SerializerInterface {
 
                 case "quantity":
                     quantity = vn.parseInt(vn.getText());
+                    quantity = 1;
                     break;
             }
         }

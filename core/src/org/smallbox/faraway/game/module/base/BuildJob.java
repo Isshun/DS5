@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.module.base;
 
+import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.core.drawable.IconDrawable;
 import org.smallbox.faraway.game.Game;
@@ -11,8 +12,8 @@ import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
-import org.smallbox.faraway.game.module.ModuleHelper;
-import org.smallbox.faraway.util.OnMoveListener;
+import org.smallbox.faraway.game.module.path.PathManager;
+import org.smallbox.faraway.util.MoveListener;
 
 /**
  * Created by Alex on 09/10/2015.
@@ -22,7 +23,7 @@ public class BuildJob extends BaseJobModel {
     private JobActionReturn _return = JobActionReturn.CONTINUE;
 
     public BuildJob(BuildableMapObject item) {
-        super(null, item.getX(), item.getY(), new IconDrawable("data/res/ic_build.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 64, 32, 32, 7, 10));
+        super(null, item.getParcel(), new IconDrawable("data/res/ic_build.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 64, 32, 32, 7, 10));
         _buildItem = item;
         _buildItem.setBuildJob(this);
     }
@@ -53,27 +54,14 @@ public class BuildJob extends BaseJobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
-        _character = character;
-
-        // TODO: reliquat
-        _posX = _buildItem.getX();
-        _posY = _buildItem.getY();
         _message = "Build " + _buildItem.getInfo().label;
 
-        _character.moveApprox(this, _buildItem.getParcel(), new OnMoveListener() {
-            @Override
-            public void onReach(BaseJobModel job, MovableModel movable) {
-            }
-
-            @Override
-            public void onFail(BaseJobModel job, MovableModel movable) {
-                _return = JobActionReturn.QUIT;
-            }
-
-            @Override
-            public void onSuccess(BaseJobModel job, MovableModel movable) {
-            }
-        });
+        GraphPath<ParcelModel> path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
+        if (path != null) {
+            _targetParcel = path.get(path.getCount() - 1);
+            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getInfo().getFirstName() + ")");
+            character.move(path);
+        }
     }
 
     @Override

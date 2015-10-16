@@ -1,5 +1,6 @@
 package org.smallbox.faraway;
 
+import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.core.drawable.IconDrawable;
 import org.smallbox.faraway.game.helper.WorldHelper;
@@ -11,6 +12,7 @@ import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.MoveListener;
 import org.smallbox.faraway.util.Utils;
 
 /**
@@ -19,8 +21,8 @@ import org.smallbox.faraway.util.Utils;
 public class JobCut extends BaseJobModel {
     private ResourceModel _resource;
 
-    private JobCut(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
-        super(actionInfo, x, y, new IconDrawable("data/res/ic_cut.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 0, 32, 32, 8, 1));
+    private JobCut(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel) {
+        super(actionInfo, jobParcel, new IconDrawable("data/res/ic_cut.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 0, 32, 32, 8, 1));
     }
 
     public static BaseJobModel create(ResourceModel res) {
@@ -32,7 +34,7 @@ public class JobCut extends BaseJobModel {
         if (res.getInfo().actions != null) {
             for (ItemInfo.ItemInfoAction action: res.getInfo().actions) {
                 if ("cut".equals(action.type)) {
-                    JobCut job = new JobCut(action, res.getX(), res.getY());
+                    JobCut job = new JobCut(action, res.getParcel());
                     job.setStrategy(j -> {
                         if (j.getCharacter().getType().needs.joy != null) {
                             j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
@@ -107,11 +109,21 @@ public class JobCut extends BaseJobModel {
 
         _parcel = parcel;
         if (parcel != null) {
-            _posX = parcel.x;
-            _posY = parcel.y;
+            _targetParcel = parcel;
         }
 
         return parcel;
+    }
+
+    @Override
+    protected void onStart(CharacterModel character) {
+        GraphPath<ParcelModel> path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
+
+        if (path != null) {
+            _targetParcel = path.get(path.getCount() - 1);
+            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getInfo().getFirstName() + ")");
+            character.move(path);
+        }
     }
 
     @Override

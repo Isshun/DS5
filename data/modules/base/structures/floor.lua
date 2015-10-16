@@ -6,7 +6,7 @@ data:extend({
         health = 200,
         walkable = true,
         graphics = { path = "[base]/graphics/items/structures/floor_wood.png", type = "structure" },
-        receipts = {{components = { name = "base.wood_log", quantity = 5}}}},
+        receipts = {{components = {{ item = "base.wood_log", quantity = 5}}}}},
     { label = "Concrete floor",
         name = "base.concrete_floor",
         type = "floor",
@@ -15,9 +15,9 @@ data:extend({
         walkable = true,
         graphics = { path = "[base]/graphics/items/structures/floor_concrete.png", type = "structure" },
         receipts = {
-            {components = { name = "base.sandstone_brick", quantity = 5}},
-            {components = { name = "base.calcite_brick", quantity = 5}},
-            {components = { name = "base.granite_brick", quantity = 5}},
+            {components = {{ item = "base.sandstone_brick", quantity = 5}}},
+            {components = {{ item = "base.calcite_brick", quantity = 5}}},
+            {components = {{ item = "base.granite_brick", quantity = 5}}},
         }},
     { label = "Metal floor",
         name = "base.metal_floor",
@@ -26,5 +26,5 @@ data:extend({
         health = 250,
         walkable = true,
         graphics = { path = "[base]/graphics/items/structures/floor_metal.png", type = "structure" },
-        receipts = {{components = { name = "base.metal_plate", quantity = 5}}}},
+        receipts = {{components = {{ item = "base.iron_plate", quantity = 5}}}}},
 })

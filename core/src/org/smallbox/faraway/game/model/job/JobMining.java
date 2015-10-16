@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.job;
 
+import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.core.drawable.IconDrawable;
 import org.smallbox.faraway.game.helper.WorldHelper;
@@ -10,13 +11,14 @@ import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.MoveListener;
 import org.smallbox.faraway.util.Utils;
 
 public class JobMining extends BaseJobModel {
     private ResourceModel 	    _resource;
 
-	private JobMining(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
-		super(actionInfo, x, y, new IconDrawable("data/res/ic_mining.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 0, 32, 32, 8, 1));
+	private JobMining(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel) {
+		super(actionInfo, jobParcel, new IconDrawable("data/res/ic_mining.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 0, 32, 32, 8, 1));
 	}
 
 	public static BaseJobModel create(ResourceModel res) {
@@ -28,7 +30,7 @@ public class JobMining extends BaseJobModel {
 		if (res.getInfo().actions != null) {
 			for (ItemInfo.ItemInfoAction action: res.getInfo().actions) {
 				if ("mine".equals(action.type)) {
-					JobMining job = new JobMining(action, res.getX(), res.getY());
+					JobMining job = new JobMining(action, res.getParcel());
 					job.setStrategy(j -> {
                         if (j.getCharacter().getType().needs.joy != null) {
                             j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
@@ -44,6 +46,30 @@ public class JobMining extends BaseJobModel {
 		return null;
 	}
 
+    @Override
+    protected void onStart(CharacterModel character) {
+        GraphPath<ParcelModel> path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
+
+        if (path != null) {
+            _targetParcel = path.get(path.getCount() - 1);
+
+            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getInfo().getFirstName() + ")");
+            character.move(path, new MoveListener<CharacterModel>() {
+                @Override
+                public void onReach(CharacterModel character) {
+                }
+
+                @Override
+                public void onFail(CharacterModel character) {
+                }
+
+                @Override
+                public void onSuccess(CharacterModel character) {
+                }
+            });
+        }
+    }
+
 	@Override
 	public boolean onCheck(CharacterModel character) {
 		System.out.println("check job: " + this);
@@ -54,10 +80,10 @@ public class JobMining extends BaseJobModel {
 			return false;
 		}
 
-		if ((_parcel == null || !_parcel.isWalkable()) && getFreeParcel() == null) {
-			_reason = JobAbortReason.BLOCKED;
-			return false;
-		}
+//		if ((_parcel == null || !_parcel.isWalkable()) && getFreeParcel() == null) {
+//			_reason = JobAbortReason.BLOCKED;
+//			return false;
+//		}
 		
 		// Item is no longer exists
 		if (_item != WorldHelper.getResource(_item.getX(), _item.getY())) {
@@ -103,8 +129,7 @@ public class JobMining extends BaseJobModel {
 
         _parcel = parcel;
         if (parcel != null) {
-            _posX = parcel.x;
-            _posY = parcel.y;
+			_targetParcel = parcel;
         }
 
 		return parcel;

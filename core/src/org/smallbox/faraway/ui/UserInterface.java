@@ -291,6 +291,10 @@ public class UserInterface implements GameEventListener {
         _cursor = cursor;
     }
 
+    public void setCursor(String cursorName) {
+        _cursor = GameData.getData().getCursor(cursorName);
+    }
+
     public void onCreate(Game game) {
         _game = game;
         _viewport = game.getViewport();

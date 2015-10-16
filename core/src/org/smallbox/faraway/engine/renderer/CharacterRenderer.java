@@ -129,12 +129,12 @@ public class CharacterRenderer extends BaseRenderer {
                 }
 
                 // Draw consume job
-                if (!c.isSleeping() && c.getJob() != null && c.getJob() instanceof JobConsume && c.getJob().getX() == c.getX() && c.getJob().getY() == c.getY()) {
+                if (!c.isSleeping() && c.getJob() != null && c.getJob() instanceof JobConsume && c.getJob().getTargetParcel() == c.getParcel()) {
                     renderer.draw(_spriteManager.getItem(((JobConsume) c.getJob()).getConsumable()), posX + 2, posY + 8);
                 }
 
                 // Draw action icon
-                if (!c.isSleeping() && c.getJob() != null && c.getJob().getActionDrawable() != null && c.getJob().getX() == c.getX() && c.getJob().getY() == c.getY()) {
+                if (!c.isSleeping() && c.getJob() != null && c.getJob().getActionDrawable() != null && c.getJob().getTargetParcel() == c.getParcel()) {
                     int x = posX;
                     int y = posY;
                     ParcelModel actionParcel = c.getJob().getActionParcel();

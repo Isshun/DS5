@@ -1,5 +1,6 @@
 package org.smallbox.faraway.game.model.job;
 
+import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.core.drawable.IconDrawable;
 import org.smallbox.faraway.game.helper.WorldHelper;
@@ -8,7 +9,9 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.module.ModuleHelper;
+import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.MoveListener;
 import org.smallbox.faraway.util.Utils;
 
 public class JobGather extends BaseJobModel {
@@ -21,8 +24,8 @@ public class JobGather extends BaseJobModel {
 		return CharacterModel.TalentType.GATHER;
 	}
 
-	private JobGather(ItemInfo.ItemInfoAction actionInfo, int x, int y) {
-		super(actionInfo, x, y, new IconDrawable("data/res/ic_gather.png", 0, 0, 32, 32), new AnimDrawable("data/res/action_gather.png", 0, 0, 32, 32, 7, 10));
+	private JobGather(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel) {
+		super(actionInfo, jobParcel, new IconDrawable("data/res/ic_gather.png", 0, 0, 32, 32), new AnimDrawable("data/res/action_gather.png", 0, 0, 32, 32, 7, 10));
 	}
 
 	public static BaseJobModel create(ResourceModel resource) {
@@ -32,7 +35,7 @@ public class JobGather extends BaseJobModel {
 		}
 
 
-		JobGather job = new JobGather(resource.getInfo().actions.get(0), resource.getX(), resource.getY());
+		JobGather job = new JobGather(resource.getInfo().actions.get(0), resource.getParcel());
 		job.setItem(resource);
 		job.setStrategy(j -> {
 			if (j.getCharacter().getType().needs.joy != null) {
@@ -46,8 +49,16 @@ public class JobGather extends BaseJobModel {
 	}
 
 	@Override
-	public void onStart(CharacterModel character) {
-		super.onStart(character);
+	protected void onStart(CharacterModel character) {
+		GraphPath<ParcelModel> path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
+
+		if (path != null) {
+			_targetParcel = path.get(path.getCount() - 1);
+
+			System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getInfo().getFirstName() + ")");
+			character.move(path);
+		}
+
 		if (_resource != null) {
 			_totalCost = _cost * _resource.getQuantity();
 		}

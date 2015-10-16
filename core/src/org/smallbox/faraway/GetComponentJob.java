@@ -8,13 +8,12 @@ import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.BuildableMapObject;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
-import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.base.BuildJob;
 import org.smallbox.faraway.game.module.path.PathManager;
-import org.smallbox.faraway.util.OnMoveListener;
+import org.smallbox.faraway.util.MoveListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +40,7 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
     private JobActionReturn                             _return = JobActionReturn.CONTINUE;
 
     public GetComponentJob(BuildableMapObject item, BuildableMapObject.ComponentModel component) {
-        super(null, item.getX(), item.getY(), new IconDrawable("data/res/ic_build.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 64, 32, 32, 7, 10));
+        super(null, item.getParcel(), new IconDrawable("data/res/ic_build.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 64, 32, 32, 7, 10));
 
         _buildItem = item;
         _component = component;
@@ -103,12 +102,11 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
         _message = "Move to " + _currentConsumable.getInfo().label;
 
         // TODO: reliquat
-        _posX = _currentConsumable.getX();
-        _posY = _currentConsumable.getY();
+        _targetParcel = _currentConsumable.getParcel();
 
-        _character.moveTo(this, _currentConsumable.getParcel(), new OnMoveListener() {
+        _character.moveTo(this, _currentConsumable.getParcel(), new MoveListener<CharacterModel>() {
             @Override
-            public void onReach(BaseJobModel job, MovableModel movable) {
+            public void onReach(CharacterModel movable) {
                 int missingQuantity = _component.neededQuantity - _component.currentQuantity;
                 if (_currentConsumable.getQuantity() <= missingQuantity) {
                     _character.addInventory(new ConsumableModel(_currentConsumable.getInfo()), _currentConsumable.getQuantity());
@@ -130,11 +128,13 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
             }
 
             @Override
-            public void onFail(BaseJobModel job, MovableModel movable) {
+            public void onFail(CharacterModel movable) {
+
             }
 
             @Override
-            public void onSuccess(BaseJobModel job, MovableModel movable) {
+            public void onSuccess(CharacterModel movable) {
+
             }
         });
     }
@@ -143,13 +143,12 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
         _message = "Carry " + _character.getInventory().getInfo().label + " to " + _buildItem.getInfo().label;
 
         // TODO: Reliquat
-        _posX = _buildItem.getX();
-        _posY = _buildItem.getY();
+        _targetParcel = _buildItem.getParcel();
 
         // Store component in factory
-        _character.moveTo(this, _buildItem.getParcel(), new OnMoveListener<CharacterModel>() {
+        _character.moveTo(this, _buildItem.getParcel(), new MoveListener<CharacterModel>() {
             @Override
-            public void onReach(BaseJobModel job, CharacterModel character) {
+            public void onReach(CharacterModel movable) {
                 _buildItem.addComponent(_character.getInventory());
 
                 // Clear inventory if consumable has been depleted
@@ -166,11 +165,13 @@ public class GetComponentJob extends org.smallbox.faraway.game.model.job.BaseJob
             }
 
             @Override
-            public void onFail(BaseJobModel job, CharacterModel character) {
+            public void onFail(CharacterModel movable) {
+
             }
 
             @Override
-            public void onSuccess(BaseJobModel job, CharacterModel character) {
+            public void onSuccess(CharacterModel movable) {
+
             }
         });
     }

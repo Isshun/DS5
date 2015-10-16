@@ -3,10 +3,12 @@ package org.smallbox.faraway.game.model.item;
 import org.smallbox.faraway.game.model.ObjectModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
+import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.base.BuildJob;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 14/07/2015.
@@ -34,6 +36,7 @@ public class BuildableMapObject extends MapObjectModel {
         }
     }
 
+    private ItemInfo.ItemInfoReceipt _receipt;
     private int                     _totalBuild = 10;
     private int                     _currentBuild;
     private boolean                 _isComplete;
@@ -89,6 +92,17 @@ public class BuildableMapObject extends MapObjectModel {
     public BuildJob         getBuildJob() { return _buildJob; }
     public CharacterModel   getBuilder() { return _buildJob != null ? _buildJob.getCharacter() : null; }
     public double           getBuildProgress() { return (double)_currentBuild / _totalBuild; }
+
+    public void setReceipt(ItemInfo.ItemInfoReceipt receipt) {
+
+        // Drop all existing components on the floor
+        _components.stream().filter(component -> component.currentQuantity > 0)
+                .forEach(component -> ModuleHelper.getWorldModule().putConsumable(component.info, component.currentQuantity, _x, _y, 0));
+
+        // Set new receipt
+        _receipt = receipt;
+        _components = receipt.components.stream().map(componentInfo -> new ComponentModel(componentInfo.item, componentInfo.quantity)).collect(Collectors.toList());
+    }
 
     @Override
     public List<ComponentModel> 	getComponents() {

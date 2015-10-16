@@ -36,9 +36,9 @@ public class JobUse extends BaseJobModel {
 		ItemSlot slot = item.takeSlot(job);
 		if (slot != null) {
 			job.setSlot(slot);
-			job.setPosition(slot.getX(), slot.getY());
+			job.setTargetParcel(WorldHelper.getParcel(slot.getX(), slot.getY()));
 		} else {
-			job.setPosition(item.getX(), item.getY());
+			job.setTargetParcel(item.getParcel());
 		}
 		job.setActionInfo(infoAction);
 		job.setItem(item);
@@ -70,7 +70,7 @@ public class JobUse extends BaseJobModel {
 		}
 		
 		// Item not reached
-		if (character.getX() != _posX || character.getY() != _posY) {
+		if (character.getParcel() != _targetParcel) {
 			return JobActionReturn.ABORT;
 		}
 
@@ -102,10 +102,10 @@ public class JobUse extends BaseJobModel {
 			}
 
 			// Set characters direction
-			if (_item.getX() > _posX) { character.setDirection(Direction.RIGHT); }
-			if (_item.getX() < _posX) { character.setDirection(Direction.LEFT); }
-			if (_item.getY() > _posY) { character.setDirection(Direction.TOP); }
-			if (_item.getY() < _posY) { character.setDirection(Direction.BOTTOM); }
+			if (_item.getX() > _targetParcel.x) { character.setDirection(Direction.RIGHT); }
+			if (_item.getX() < _targetParcel.x) { character.setDirection(Direction.LEFT); }
+			if (_item.getY() > _targetParcel.y) { character.setDirection(Direction.TOP); }
+			if (_item.getY() < _targetParcel.y) { character.setDirection(Direction.BOTTOM); }
 
             // Use item
             _item.use(_character, (int) (_cost - _progress));

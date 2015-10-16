@@ -11,7 +11,7 @@
 //import org.smallbox.faraway.game.model.item.ParcelModel;
 //import org.smallbox.faraway.game.module.ModuleHelper;
 //import org.smallbox.faraway.util.Log;
-//import org.smallbox.faraway.util.OnMoveListener;
+//import org.smallbox.faraway.util.MoveListener;
 //
 //import java.util.ArrayList;
 //
@@ -141,7 +141,7 @@
 //		_posX = parcel.x;
 //		_posY = parcel.y;
 //		_status = Status.MOVE_TO_INGREDIENT;
-//		character.moveTo(this, parcel, new OnMoveListener() {
+//		character.moveTo(this, parcel, new MoveListener() {
 //			@Override
 //			public void onReach(BaseJobModel job, MovableModel movable) {
 //				order.consumable.lock(null);
@@ -180,7 +180,7 @@
 //		_posY = _mainItem.getY();
 //
 //		// Store component in factory
-//		_character.moveTo(this, _mainItem.getParcel(), new OnMoveListener<CharacterModel>() {
+//		_character.moveTo(this, _mainItem.getParcel(), new MoveListener<CharacterModel>() {
 //			@Override
 //			public void onReach(BaseJobModel job, CharacterModel character) {
 //				if (_receipt != null) {

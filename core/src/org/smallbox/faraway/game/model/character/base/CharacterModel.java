@@ -24,12 +24,11 @@ import org.smallbox.faraway.ui.engine.views.UILabel;
 import org.smallbox.faraway.ui.engine.views.View;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.util.OnMoveListener;
+import org.smallbox.faraway.util.MoveListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class CharacterModel extends MovableModel {
 
@@ -41,11 +40,25 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public UILabel getLabelDrawable() {
+        if (_label == null) {
+            _label = ViewFactory.getInstance().createTextView(_info.getFirstName().trim().length() * 6 + 1, 13);
+            _label.setText(_info.getFirstName().trim());
+            _label.setTextSize(10);
+            _label.setTextColor(Color.YELLOW);
+            _label.setBackgroundColor(Color.BLUE);
+            _label.setTextAlign(View.Align.CENTER);
+        }
         return _label;
     }
 
     public int getZ() {
         return 0;
+    }
+
+    public void setParcel(ParcelModel parcel) {
+        this._parcel = parcel;
+        _posX = parcel.x;
+        _posY = parcel.y;
     }
 
     public enum TalentType {
@@ -101,7 +114,7 @@ public abstract class CharacterModel extends MovableModel {
     protected RoomModel 				_quarter;
     protected boolean 					_needRefresh;
     protected ConsumableModel 			_inventory;
-    protected OnMoveListener 			_moveListener;
+    protected MoveListener _moveListener;
     //    protected List<ItemInfo> 			_equipments;
     protected CharacterStats            _stats;
     protected boolean 					_isFaint;
@@ -131,14 +144,7 @@ public abstract class CharacterModel extends MovableModel {
         _direction = Direction.NONE;
         _steps = 0;
         _info = new CharacterInfoModel(name, lastName);
-        parcel = ModuleHelper.getWorldModule().getParcel(x, y);
-
-        _label = ViewFactory.getInstance().createTextView(_info.getFirstName().trim().length() * 6 + 1, 13);
-        _label.setText(_info.getFirstName().trim());
-        _label.setTextSize(10);
-        _label.setTextColor(Color.YELLOW);
-        _label.setBackgroundColor(Color.BLUE);
-        _label.setTextAlign(View.Align.CENTER);
+        _parcel = ModuleHelper.getWorldModule().getParcel(x, y);
 
         _talentsMap = new HashMap<>();
         _talents = new ArrayList<>();
@@ -174,7 +180,7 @@ public abstract class CharacterModel extends MovableModel {
     public TalentEntry              getTalent(TalentType type) { return _talentsMap.get(type); }
     public double                   getBodyHeat() { return _needs.heat; }
     public CharacterStats           getStats() { return _stats; }
-    public ParcelModel 				getParcel() { return parcel; }
+    public ParcelModel 				getParcel() { return _parcel; }
     public ConsumableModel          getInventory() { return _inventory; }
     public abstract String[][]      getEquipmentViewIds();
     public abstract String          getEquipmentViewPath();
@@ -214,11 +220,38 @@ public abstract class CharacterModel extends MovableModel {
     public boolean 			        isSleeping() { return _needs.isSleeping(); }
     public boolean 			        needRefresh() { return _needRefresh; }
 
-    public void moveTo(BaseJobModel job, int toX, int toY, OnMoveListener onMoveListener) {
-        moveTo(job, ModuleHelper.getWorldModule().getParcel(toX, toY), onMoveListener);
+    public void move(GraphPath<ParcelModel> path) {
+        move(path, null);
     }
 
-    public void moveApprox(BaseJobModel job, ParcelModel toParcel, OnMoveListener onMoveListener) {
+    public void move(GraphPath<ParcelModel> path, MoveListener<CharacterModel> moveListener) {
+        if (path != null) {
+
+            if (path.getCount() == 0) {
+                if (moveListener != null) {
+                    moveListener.onReach(this);
+                }
+                return;
+            }
+
+            ParcelModel toParcel = path.get(path.getCount()-1);
+
+            _blocked = 0;
+
+            _toX = toParcel.x;
+            _toY = toParcel.y;
+            _path = path;
+            _steps = 0;
+
+            _moveListener = moveListener;
+        }
+    }
+
+    public void moveTo(BaseJobModel job, int toX, int toY, MoveListener moveListener) {
+        moveTo(job, ModuleHelper.getWorldModule().getParcel(toX, toY), moveListener);
+    }
+
+    public void moveApprox(BaseJobModel job, ParcelModel toParcel, MoveListener moveListener) {
         ParcelModel walkableParcel = null;
         for (int offsetX = 0; offsetX <= 1; offsetX++) {
             for (int offsetY = 0; offsetY <= 1; offsetY++) {
@@ -230,10 +263,10 @@ public abstract class CharacterModel extends MovableModel {
                 }
             }
         }
-        moveTo(job, walkableParcel, onMoveListener);
+        moveTo(job, walkableParcel, moveListener);
     }
 
-    public void moveTo(BaseJobModel job, ParcelModel toParcel, OnMoveListener onMoveListener) {
+    public void moveTo(BaseJobModel job, ParcelModel toParcel, MoveListener<CharacterModel> moveListener) {
         _toX = toParcel.x;
         _toY = toParcel.y;
 
@@ -242,21 +275,21 @@ public abstract class CharacterModel extends MovableModel {
 
         // Already on position
         if (_posX == _toX && _posY == _toY) {
-            if (onMoveListener != null) {
-                onMoveListener.onReach(job, this);
+            if (moveListener != null) {
+                moveListener.onReach(this);
             }
         } else {
-            _moveListener = onMoveListener;
+            _moveListener = moveListener;
             Log.debug("move to: " + _toX + "x" + _toY);
-            PathManager.getInstance().getPathAsync(onMoveListener, this, job, _toX, _toY);
+            PathManager.getInstance().getPathAsync(moveListener, this, job, _toX, _toY);
         }
     }
 
     public void fixPosition() {
-        if (parcel != null && !parcel.isWalkable()) {
+        if (_parcel != null && !_parcel.isWalkable()) {
             ParcelModel parcel = WorldHelper.getNearestFreeParcel(_posX, _posY, true, false);
             if (parcel != null) {
-                this.parcel = parcel;
+                this._parcel = parcel;
                 _posX = parcel.x;
                 _posY = parcel.y;
             }
@@ -268,7 +301,7 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void update() {
-        _needs.environment = parcel.getEnvironmentScore();
+        _needs.environment = _parcel.getEnvironmentScore();
         //TODO
 //        _needs.light = ((RoomModule) ModuleManager.getInstance().getModule(RoomModule.class)).getLight(_posX, _posY);
 
@@ -370,7 +403,7 @@ public abstract class CharacterModel extends MovableModel {
             _moveProgress = 0;
             _moveStep = 1;
 
-            parcel = _node;
+            _parcel = _node;
             _posX = x;
             _posY = y;
             _steps++;
@@ -395,9 +428,9 @@ public abstract class CharacterModel extends MovableModel {
             }
 
             if (_moveListener != null) {
-                OnMoveListener listener = _moveListener;
+                MoveListener listener = _moveListener;
                 _moveListener = null;
-                listener.onReach(_job, this);
+                listener.onReach(this);
             }
         }
     }
@@ -418,7 +451,7 @@ public abstract class CharacterModel extends MovableModel {
         }
 
         // Check if job location is reached or instance of JobMove
-        if ((_posX == _toX && _posY == _toY) || _job instanceof JobMove) {
+        if (_parcel == _job.getTargetParcel() || _job instanceof JobMove) {
             BaseJobModel.JobActionReturn ret = _job.action(this);
             if (ret == BaseJobModel.JobActionReturn.FINISH || ret == BaseJobModel.JobActionReturn.ABORT) {
                 ModuleHelper.getJobModule().closeJob(_job);

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
+import org.smallbox.faraway.data.ReceiptInfo;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.model.job.BaseBuildJobModel;
 import org.smallbox.faraway.game.module.ModuleHelper;
@@ -12,10 +13,10 @@ import java.util.*;
  * Created by Alex on 07/06/2015.
  */
 public class ReceiptModel {
-    private List<ItemInfo.ItemProductInfo> _products;
-    private List<ItemInfo.ItemComponentInfo> _componentsInfo;
+    private List<ReceiptInfo.ReceiptProductItemInfo>      _products;
+    private List<ReceiptInfo.ReceiptProductComponentInfo>    _componentsInfo;
 
-    public List<ItemInfo.ItemProductInfo> getProductsInfo() {
+    public List<ReceiptInfo.ReceiptProductItemInfo> getProductsInfo() {
         return _products;
     }
 
@@ -36,28 +37,28 @@ public class ReceiptModel {
     private final MapObjectModel                _factory;
     private int                                 _totalDistance;
 
-    public static ReceiptModel createFromComponentInfo(MapObjectModel buildItem, List<ItemInfo.ItemComponentInfo> componentsInfo) {
-        ReceiptModel receipt = new ReceiptModel(buildItem);
-        receipt.scanComponents(componentsInfo);
-        return receipt;
-    }
+//    public static ReceiptModel createFromComponentInfo(MapObjectModel buildItem, List<ItemInfo.ItemComponentInfo> componentsInfo) {
+//        ReceiptModel receipt = new ReceiptModel(buildItem);
+//        receipt.scanComponents(componentsInfo);
+//        return receipt;
+//    }
 
-    public static ReceiptModel createFromReceiptInfo(ItemModel factory, ItemInfo.ItemInfoReceipt receiptInfo) {
-        ReceiptModel receipt = new ReceiptModel(factory);
-        receipt._products = receiptInfo.products;
-        receipt.scanComponents(receiptInfo.components);
+    public static ReceiptModel createFromReceiptInfo(ItemModel item, ReceiptInfo.ReceiptProductInfo receiptProductInfo) {
+        ReceiptModel receipt = new ReceiptModel(item);
+        receipt._products = receiptProductInfo.products;
+        receipt.scanComponents(receiptProductInfo.components);
         return receipt;
     }
 
     // Get potential consumables on WorldModule
-    private void scanComponents(List<ItemInfo.ItemComponentInfo> componentsInfo) {
+    private void scanComponents(List<ReceiptInfo.ReceiptProductComponentInfo> componentsInfo) {
         if (componentsInfo != null) {
             _componentsInfo = componentsInfo;
 
             // Add components to receipt
             Map<ItemInfo, Integer> componentsDistance = new HashMap<>();
-            for (ItemInfo.ItemComponentInfo componentInfo : componentsInfo) {
-                componentsDistance.put(componentInfo.itemInfo, componentInfo.quantity);
+            for (ReceiptInfo.ReceiptProductComponentInfo componentInfo : componentsInfo) {
+                componentsDistance.put(componentInfo.item, componentInfo.quantity);
             }
 
             _potentialComponents.clear();
@@ -84,10 +85,10 @@ public class ReceiptModel {
         // Looking for best nearest consumables
         _totalDistance = 0;
         if (_componentsInfo != null) {
-            for (ItemInfo.ItemComponentInfo componentInfo : _componentsInfo) {
+            for (ReceiptInfo.ReceiptProductComponentInfo componentInfo : _componentsInfo) {
                 int quantityLeft = componentInfo.quantity;
                 for (PotentialConsumable potentialConsumable : _potentialComponents) {
-                    if (quantityLeft > 0 && potentialConsumable.consumable.getLock() == null && potentialConsumable.consumable.getInfo() == componentInfo.itemInfo) {
+                    if (quantityLeft > 0 && potentialConsumable.consumable.getLock() == null && potentialConsumable.consumable.getInfo() == componentInfo.item) {
                         if (potentialConsumable.consumable.getQuantity() > quantityLeft) {
                             _orders.add(new OrderModel(potentialConsumable.consumable, quantityLeft));
                         } else {
@@ -108,10 +109,10 @@ public class ReceiptModel {
 
     public boolean hasComponentsOnMap() {
         if (_componentsInfo != null) {
-            for (ItemInfo.ItemComponentInfo componentInfo: _componentsInfo) {
+            for (ReceiptInfo.ReceiptProductComponentInfo componentInfo: _componentsInfo) {
                 int totalQuantity = 0;
                 for (PotentialConsumable potentialConsumable : _potentialComponents) {
-                    if (potentialConsumable.consumable.getInfo() == componentInfo.itemInfo && potentialConsumable.consumable.getLock() == null) {
+                    if (potentialConsumable.consumable.getInfo() == componentInfo.item && potentialConsumable.consumable.getLock() == null) {
                         totalQuantity += potentialConsumable.consumable.getQuantity();
                     }
                 }
@@ -155,8 +156,8 @@ public class ReceiptModel {
 
     public void addConsumable(ConsumableModel consumable) {
         if (_componentsInfo != null) {
-            for (ItemInfo.ItemComponentInfo componentInfo : _componentsInfo) {
-                if (consumable.getInfo() == componentInfo.itemInfo) {
+            for (ReceiptInfo.ReceiptProductComponentInfo componentInfo : _componentsInfo) {
+                if (consumable.getInfo() == componentInfo.item) {
                     GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_factory.getParcel(), consumable.getParcel());
                     if (path != null) {
                         _potentialComponents.add(new PotentialConsumable(consumable, path.getCount()));

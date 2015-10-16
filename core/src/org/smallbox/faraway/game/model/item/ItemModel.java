@@ -12,7 +12,7 @@ public class ItemModel extends BuildableMapObject {
 	private boolean 				_isFunctional = true;
     private boolean                 _isActive = true;
 	private int 					_potencyUse;
-    private ArrayList<ItemSlot>     _slots;
+    private List<ItemSlot>          _slots;
     private int 		            _nbFreeSlot = -1;
     private int 		            _nbSlot;
     private ItemFactory 			_factory;
@@ -21,11 +21,13 @@ public class ItemModel extends BuildableMapObject {
     public ItemModel(ItemInfo info, int id) {
 		super(info, id);
         initSlots();
+		init(info);
     }
 
 	public ItemModel(ItemInfo info) {
 		super(info);
         initSlots();
+		init(info);
 	}
 
 	public int 						getTargetTemperature() { return _targetTemperature; }
@@ -45,25 +47,35 @@ public class ItemModel extends BuildableMapObject {
 	public void 					setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }
 	public void 					setPotencyUse(int potencyUse) { _potencyUse = potencyUse; }
 
+	private void init(ItemInfo info) {
+        if (info.factory != null) {
+            _factory = new ItemFactory(info.factory);
+        }
+	}
+
 	public void initSlots() {
 		_nbFreeSlot = -1;
 
-		if (_info.actions != null) {
-			_slots = new ArrayList<>();
+//		if (_info.actions != null) {
+//			_slots = new ArrayList<>();
+//
+//			// Get slot from ItemInfo
+//			if (_info.slots != null) {
+//				_slots.addAll(_info.slots.stream().map(slot -> new ItemSlot(this, slot[0], slot[1])).collect(Collectors.toList()));
+//			}
+//
+//			// Unique slot at 0x0
+//			else {
+//				_slots.add(new ItemSlot(this, 0, 0));
+//			}
+//
+//			_nbFreeSlot = _nbSlot = _slots.size();
+//		}
 
-			// Get slot from ItemInfo
-			if (_info.slots != null) {
-				_slots.addAll(_info.slots.stream().map(slot -> new ItemSlot(this, slot[0], slot[1])).collect(Collectors.toList()));
-			}
-
-			// Unique slot at 0x0
-			else {
-				_slots.add(new ItemSlot(this, 0, 0));
-			}
-
-			_nbFreeSlot = _nbSlot = _slots.size();
-		}
-	}
+        if (_info.slots != null) {
+            _slots = _info.slots.stream().map(slot -> new ItemSlot(this, slot[0], slot[1])).collect(Collectors.toList());
+        }
+    }
 
 	public ItemSlot takeSlot(BaseJobModel job) {
 		if (_nbFreeSlot != -1) {

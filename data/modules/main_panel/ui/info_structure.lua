@@ -27,7 +27,10 @@ data:extend(
                         { type = "list", id = "list_building_components", position = {0, 10}, adapter = {
                             view = { type = "label", text_size = 14, padding = 10 },
                             on_bind = function(view, data)
-                                view:setDashedString(data.info.label .. " (" .. data.currentQuantity .. "/" .. data.neededQuantity .. ")", (data.job and (data.job:getCharacter() and data.job:getCharacter():getName() or (data.currentQuantity < data.neededQuantity and "waiting" or "complete")) or "no job"), 48)
+                                print (data.info)
+                                local left = data.info.label .. " (" .. data.currentQuantity .. "/" .. data.neededQuantity .. ")"
+                                local right = (data.job and (data.job:getCharacter() and data.job:getCharacter():getName() or (data.currentQuantity < data.neededQuantity and "waiting" or "complete")) or "no job")
+                                view:setDashedString(left, right, 48)
                             end
                         }},
                     }},

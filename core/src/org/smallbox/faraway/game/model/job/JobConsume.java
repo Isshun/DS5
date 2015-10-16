@@ -20,8 +20,8 @@ public class JobConsume extends BaseJobModel {
 	private ConsumableModel     _consumable;
     private ItemInfo            _itemInfo;
 
-	private JobConsume() {
-		super(null, -1, -1, null, new AnimDrawable("data/res/action_consume.png", 0, 0, 32, 32, 2, 10));
+	private JobConsume(ParcelModel parcel) {
+		super(null, parcel, null, new AnimDrawable("data/res/action_consume.png", 0, 0, 32, 32, 2, 10));
 	}
 
 	public static JobConsume create(CharacterModel character, ConsumableModel consumable) {
@@ -35,13 +35,13 @@ public class JobConsume extends BaseJobModel {
 			return null;
 		}
 
-		JobConsume job = new JobConsume();
-		job.setCharacterRequire(character);
+		JobConsume job = null;
 		if (character.getInventory() == consumable) {
-			job.setPosition(character.getX(), character.getY());
+			job = new JobConsume(character.getParcel());
 		} else {
-			job.setPosition(consumable.getX(), consumable.getY());
+			job = new JobConsume(consumable.getParcel());
 		}
+		job.setCharacterRequire(character);
 		job.setActionInfo(consumable.getInfo().actions.get(0));
 		job.setConsumable(consumable);
         job._itemInfo = consumable.getInfo();
@@ -71,7 +71,7 @@ public class JobConsume extends BaseJobModel {
 		}
 
 		// Item is no longer exists
-		if (_consumable != WorldHelper.getConsumable(_posX, _posY)) {
+		if (_consumable != _targetParcel.getConsumable()) {
 			_reason = JobAbortReason.INVALID;
 			return false;
 		}
@@ -101,13 +101,12 @@ public class JobConsume extends BaseJobModel {
                 return JobActionReturn.ABORT;
             }
 
-            ParcelModel parcel = WorldHelper.getNearest(_posX, _posY, true, true, false, false, false, false, false);
+            ParcelModel parcel = WorldHelper.getNearest(_targetParcel.x, _targetParcel.y, true, true, false, false, false, false, false);
             if (parcel == null) {
                 return JobActionReturn.ABORT;
             }
 
-            _posX = parcel.x;
-            _posY = parcel.y;
+            _targetParcel = parcel;
             _character.addInventory(_consumable, 1);
             if (_character.getInventory() == null || _character.getInventory().getInfo() != _consumable.getInfo()) {
                 return JobActionReturn.ABORT;

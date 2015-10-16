@@ -80,10 +80,4 @@ public class UIFrame extends View {
 		view.remove();
 		_views.remove(view);
 	}
-
-    public List<View> getViews() {
-        return _views;
-    }
-
-
 }

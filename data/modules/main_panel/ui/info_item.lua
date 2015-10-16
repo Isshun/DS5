@@ -1,42 +1,50 @@
 item = nil
 
 data:extend(
-{
     {
-        type = "view",
-        name = "ui-test",
-        position = {1200, 65},
-        size = {400, 800},
-        background = 0x121c1e,
-        visible = false,
-        views =
         {
-            { type = "label", text = "Item", text_size = 12, position = {10, 8}},
-            { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
-            { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
-            { type = "list", position = {0, 60}, views = {
-                { type = "label", id = "lb_position", text_size = 18, padding = 10},
-                { type = "list", id = "frame_building", position = {0, 40}, views = {
-                    { type = "label", text = "Building in progress", text_size = 22, padding = 10, size = {400, 26}},
-                    { type = "label", id = "lb_building_progress", text_size = 14, padding = 10},
-                    { type = "label", id = "lb_building_job", text_size = 14, padding = 10},
-                    { type = "label", id = "lb_building_character", text_size = 14, padding = 10},
-                    { type = "label", text = "Components", text_size = 20, padding = 10, position = {0, 5}},
-                    { type = "list", id = "list_building_components", position = {0, 10}, adapter = {
-                        view = { type = "label", text_size = 14, padding = 10 },
-                        on_bind = function(view, data)
-                            view:setDashedString(data.info.label .. " (" .. data.currentQuantity .. "/" .. data.neededQuantity .. ")", (data.job and (data.job:getCharacter() and data.job:getCharacter():getName() or (data.currentQuantity < data.neededQuantity and "waiting" or "complete")) or "no job"), 48)
-                        end
+            type = "view",
+            name = "ui-test",
+            position = {1200, 65},
+            size = {400, 800},
+            background = 0x121c1e,
+            visible = false,
+            views =
+            {
+                { type = "label", text = "Item", text_size = 12, position = {10, 8}},
+                { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
+                { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
+                { type = "list", position = {0, 60}, views = {
+                    { type = "label", id = "lb_position", text_size = 18, padding = 10},
+                    { type = "list", id = "frame_building", position = {0, 40}, views = {
+                        { type = "label", text = "Building in progress", text_size = 22, padding = 10, size = {400, 26}},
+                        { type = "label", id = "lb_building_progress", text_size = 14, padding = 10},
+                        { type = "label", id = "lb_building_job", text_size = 14, padding = 10},
+                        { type = "label", id = "lb_building_character", text_size = 14, padding = 10},
+                        { type = "label", text = "Components", text_size = 20, padding = 10, position = {0, 5}},
+                        { type = "list", id = "list_building_components", position = {0, 10}, adapter = {
+                            view = { type = "label", text_size = 14, padding = 10 },
+                            on_bind = function(view, data)
+                                view:setDashedString(data.info.label .. " (" .. data.currentQuantity .. "/" .. data.neededQuantity .. ")", (data.job and (data.job:getCharacter() and data.job:getCharacter():getName() or (data.currentQuantity < data.neededQuantity and "waiting" or "complete")) or "no job"), 48)
+                            end
+                        }},
+                    }},
+                    { type = "list", id = "frame_factory", position = {10, 0}, views = {
+                        { type = "label", text = "Factory", text_size = 22},
+                        { type = "label", text = "Current", text_size = 18, position = {0, 15}},
+                        { type = "label", id = "lb_factory_progress", text = "progress", position = {0, 20}},
+                        { type = "label", id = "lb_factory_components", position = {0, 20}},
+                        { type = "label", id = "lb_factory_products", position = {0, 20}},
+                        { type = "label", text = "Orders", text_size = 18, position = {0, 30}},
+                        { type = "list", id = "list_receipt", position = {0, 35}},
                     }},
                 }},
-            }},
-            { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {100, 40}, on_click = function()
-                game.events:send("encyclopedia.open_item", item)
-            end},
-        },
-        
-        on_event =
-            function(event, view, data)
+                { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {100, 40}, on_click = function()
+                    game.events:send("encyclopedia.open_item", item)
+                end},
+            },
+
+            on_event = function(event, view, data)
                 if event == game.events.on_key_press and data == "ESCAPE" then
                     view:setVisible(false)
                     game.ui:clearSelection();
@@ -53,11 +61,50 @@ data:extend(
                     view:setVisible(true)
                     view:findById("lb_name"):setText(item:getLabel())
                     view:findById("lb_position"):setText("Position: " .. item:getX() .. "x" .. item:getY())
+
+                    if item:getInfo().factory and item:getInfo().factory.receipts then
+                        view:findById("frame_factory"):setVisible(true)
+
+                        local list = view:findById("list_receipt")
+                        list:removeAllViews()
+
+                        local iterator = item:getInfo().factory.receipts:iterator()
+                        while iterator:hasNext() do
+                            local receipt = iterator:next()
+                            local frame_receipt = game.ui:createView()
+                            frame_receipt:setSize(400, 22)
+
+                            local lb_receipt = game.ui:createLabel()
+                            lb_receipt:setText(receipt.label)
+                            frame_receipt:addView(lb_receipt)
+
+                            local lb_mode = game.ui:createLabel()
+                            lb_mode:setText("mode")
+                            lb_mode:setSize(50, 22)
+                            lb_mode:setPosition(300, 0)
+                            lb_mode:setOnClickListener(function(v)
+                                lb_mode:setText("gg")
+                            end)
+                            frame_receipt:addView(lb_mode)
+
+                            local lb_active = game.ui:createLabel()
+                            lb_active:setText("[x]")
+                            lb_active:setSize(50, 22)
+                            lb_active:setPosition(358, 0)
+                            lb_active:setOnClickListener(function(v)
+                                lb_active:setText("[ ]")
+                            end)
+                            frame_receipt:addView(lb_active)
+
+                            list:addView(frame_receipt)
+                        end
+                    else
+                        view:findById("frame_factory"):setVisible(true)
+                    end
                 end
             end,
-            
-        on_refresh =
-            function(view)
+
+            on_refresh = function(view)
                 if item ~= nil then
                     view:findById("frame_building"):setVisible(not item:isComplete())
                     if not item:isComplete() then
@@ -66,8 +113,28 @@ data:extend(
                         view:findById("lb_building_character"):setText("Builder: " .. (item:getBuilder() and item:getBuilder():getName() or "no"))
                         view:findById("list_building_components"):getAdapter():setData(item:getComponents());
                     end
+
+                    if item:getFactory() and item:getFactory():getComponents() then
+                        local str = "inputs: "
+                        local iterator = item:getFactory():getComponents():iterator()
+                        while iterator:hasNext() do
+                            local component = iterator:next()
+                            str = str .. component.itemInfo.name .. " " .. component.currentQuantity .. "/" .. component.totalQuantity
+                        end
+                        view:findById("lb_factory_components"):setText(str)
+                    end
+
+                    if item:getFactory() and item:getFactory():getProducts() then
+                        local str = "outputs: "
+                        local iterator = item:getFactory():getProducts():iterator()
+                        while iterator:hasNext() do
+                            local product = iterator:next()
+                            str = str .. product.itemInfo.name .. " x" .. product.quantity
+                        end
+                        view:findById("lb_factory_products"):setText(str)
+                    end
                 end
             end
-    },
-}
+        },
+    }
 )

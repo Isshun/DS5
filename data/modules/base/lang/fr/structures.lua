@@ -10,5 +10,9 @@ data:extend({
         {"Wall", "Mur"},
         {"Window", "Fenêtre"},
         {"Hubble", "Hublot"},
+
+        {"Wood wall", "Mur en bois"},
+
+        {"Wood door", "Porte en bois"},
     }
 })

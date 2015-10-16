@@ -88,6 +88,13 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.isWalkable = value.get("walkable").toboolean();
         }
 
+        if (!value.get("slots").isnil()) {
+            itemInfo.slots = new ArrayList<>();
+            for (int i = 1; i <= value.get("slots").length(); i++) {
+                itemInfo.slots.add(new int[] {value.get("slots").get(i).get(1).toint(), value.get("slots").get(i).get(2).toint()});
+            }
+        }
+
         if (!value.get("stack").isnil()) {
             itemInfo.stack = value.get("stack").toint();
         }
@@ -100,14 +107,90 @@ public class LuaItemExtend extends LuaExtend {
             readLightValues(itemInfo, value.get("light"));
         }
 
+        if (!value.get("factory").isnil()) {
+            readFactoryValue(itemInfo, value.get("factory"));
+        }
+
         if (!value.get("actions").isnil()) {
             itemInfo.actions = new ArrayList<>();
-            for (int i = 1; i <= value.get("actions").length(); i++) {
-                readActionValue(itemInfo, value.get("actions").get(i));
+            if (!value.get("actions").get("type").isnil()) {
+                readActionValue(itemInfo, value.get("actions"));
+            } else {
+                for (int i = 1; i <= value.get("actions").length(); i++) {
+                    readActionValue(itemInfo, value.get("actions").get(i));
+                }
+            }
+        }
+
+        if (!value.get("receipts").isnil()) {
+            itemInfo.receipts = new ArrayList<>();
+            if (!value.get("receipts").get("components").isnil()) {
+                readReceiptValue(itemInfo, value.get("receipts"));
+            } else {
+                for (int i = 1; i <= value.get("receipts").length(); i++) {
+                    readReceiptValue(itemInfo, value.get("receipts").get(i));
+                }
             }
         }
 
         System.out.println("Extends item from lua: " + itemInfo.label);
+    }
+
+    private void readFactoryValue(ItemInfo itemInfo, LuaValue value) {
+        itemInfo.isFactory = true;
+        itemInfo.factory = new ItemInfo.ItemInfoFactory();
+
+        if (!value.get("slots").isnil()) {
+            if (!value.get("slots").get("inputs").isnil()) {
+                itemInfo.factory.inputsSlot = new int[] {
+                        value.get("slots").get("inputs").get(1).toint(),
+                        value.get("slots").get("inputs").get(2).toint()
+                };
+            }
+            if (!value.get("slots").get("outputs").isnil()) {
+                itemInfo.factory.outputsSlot = new int[] {
+                        value.get("slots").get("outputs").get(1).toint(),
+                        value.get("slots").get("outputs").get(2).toint()
+                };
+            }
+        }
+
+        if (!value.get("receipts").isnil()) {
+            itemInfo.factory.receiptNames = new ArrayList<>();
+            for (int i = 1; i <= value.get("receipts").length(); i++) {
+                itemInfo.factory.receiptNames.add(value.get("receipts").get(i).toString());
+            }
+        }
+    }
+
+    private void readReceiptValue(ItemInfo itemInfo, LuaValue value) throws DataExtendException {
+        ItemInfo.ItemInfoReceipt receipt = new ItemInfo.ItemInfoReceipt();
+        receipt.components = new ArrayList<>();
+
+        LuaValue luaComponents = value.get("components");
+        if (!luaComponents.isnil()) {
+            receipt.products = new ArrayList<>();
+            for (int i = 1; i <= luaComponents.length(); i++) {
+                ItemInfo.ItemComponentInfo component = new ItemInfo.ItemComponentInfo();
+
+                // Get component item name
+                if (!luaComponents.get(i).get("item").isnil()) {
+                    component.itemName = getString(luaComponents.get(i), "item", null);
+                } else {
+                    throw new DataExtendException(DataExtendException.Type.MANDATORY, "receipts.components.item");
+                }
+
+                // Get component quantity
+                if (!luaComponents.get(i).get("quantity").isnil()) {
+                    component.quantity = luaComponents.get(i).get("quantity").toint();
+                } else {
+                    throw new DataExtendException(DataExtendException.Type.MANDATORY, "receipts.components.quantity");
+                }
+                receipt.components.add(component);
+            }
+        }
+
+        itemInfo.receipts.add(receipt);
     }
 
     private GraphicInfo readGraphic(LuaValue luaGraphic) throws DataExtendException {

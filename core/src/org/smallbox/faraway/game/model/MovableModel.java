@@ -14,12 +14,12 @@ public abstract class MovableModel extends ObjectModel {
 
 	public void setY(int y) {
 		_posY = y;
-		parcel = ModuleHelper.getWorldModule().getParcel(_posX, _posY);
+		_parcel = ModuleHelper.getWorldModule().getParcel(_posX, _posY);
 	}
 
 	public void setX(int x) {
 		_posX = x;
-		parcel = ModuleHelper.getWorldModule().getParcel(_posX, _posY);
+		_parcel = ModuleHelper.getWorldModule().getParcel(_posX, _posY);
 	}
 
 	public interface OnPathComplete {
@@ -54,8 +54,7 @@ public abstract class MovableModel extends ObjectModel {
 	protected BaseJobModel 				_job;
 	protected OnPathComplete			_onPathComplete;
 	protected double                    _moveProgress;
-
-	public ParcelModel 					parcel;
+	public ParcelModel 					_parcel;
 
 	public MovableModel(int id, int x, int y) {
 		Utils.useUUID(id);

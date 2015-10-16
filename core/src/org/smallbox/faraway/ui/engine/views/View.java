@@ -117,6 +117,7 @@ public abstract class View {
     public int 			getId() { return _id; }
     public int 			getPosX() { return _x; }
     public int 			getPosY() { return _y; }
+    public List<View>   getViews() { return _views; }
 
     public void draw(GDXRenderer renderer, int x, int y) {
         if (_isVisible) {

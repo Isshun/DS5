@@ -101,7 +101,7 @@ public class ItemLoader implements IDataLoader {
             if (item.receipts != null) {
                 for (ItemInfo.ItemInfoReceipt receipt: item.receipts) {
                     for (ItemInfo.ItemComponentInfo component: receipt.components) {
-                        component.itemInfo = data.getItemInfo(component.item);
+                        component.item = data.getItemInfo(component.itemName);
                     }
                     for (ItemInfo.ItemProductInfo product: receipt.products) {
                         product.item = data.getItemInfo(product.itemName);
@@ -136,7 +136,7 @@ public class ItemLoader implements IDataLoader {
                             }
                             if (receiptInfo.components != null) {
                                 for (ItemInfo.ItemComponentInfo componentInfo : receiptInfo.components) {
-                                    componentInfo.itemInfo = data.getItemInfo(componentInfo.item);
+                                    componentInfo.item = data.getItemInfo(componentInfo.itemName);
                                 }
                             }
                         }
@@ -189,7 +189,7 @@ public class ItemLoader implements IDataLoader {
             }
             if (item.components != null) {
                 for (ItemInfo.ItemComponentInfo component: item.components) {
-                    component.itemInfo = data.getItemInfo(component.item);
+                    component.item = data.getItemInfo(component.itemName);
                 }
             }
         }

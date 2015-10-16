@@ -5,6 +5,7 @@ import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.area.AreaType;
 import org.smallbox.faraway.game.model.item.ItemInfo;
+import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.base.JobModule;
@@ -27,7 +28,7 @@ public class LuaGameModel {
     public UserInterface            ui;
     public LuaCrewModel             crew;
     public LuaEventsModel           events;
-    public JobModule                jobs;
+    public Collection<BaseJobModel> jobs;
     public Collection<LuaModule>    luaModules;
     public Collection<GameModule>   modules;
 
@@ -35,7 +36,7 @@ public class LuaGameModel {
         ui = userInterface;
         crew = luaCrew;
         events = luaEvents;
-        jobs = ModuleHelper.getJobModule();
+        jobs = ModuleHelper.getJobModule().getJobs();
         luaModules = Game.getInstance().getLuaModuleManager().getModules();
         modules = Game.getInstance().getModules();
     }

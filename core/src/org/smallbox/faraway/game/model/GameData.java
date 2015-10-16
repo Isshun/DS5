@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GameData {
     public static GameData      		_data;
@@ -112,15 +113,36 @@ public class GameData {
 	}
 
 	public void fix() {
-		this.items.stream().filter(item -> item.actions != null)
-				.forEach(item -> item.actions.stream().filter(action -> action.products != null)
-						.forEach(action -> action.products
-								.forEach(product -> product.item = getItemInfo(product.itemName))));
+		this.items.stream()
+				.forEach(item -> {
+					if (item.factory != null && item.factory.receiptNames != null) {
+                        item.factory.receipts = item.factory.receiptNames.stream().map(this::getReceipt).collect(Collectors.toList());
+					}
+					if (item.actions != null) {
+						item.actions.stream().filter(action -> action.products != null)
+								.forEach(action -> action.products
+										.forEach(product -> product.item = getItemInfo(product.itemName)));
+					}
+					if (item.receipts != null) {
+						item.receipts.stream().filter((receipt -> receipt.components != null))
+								.forEach(receipt -> receipt.components
+										.forEach(component -> component.item = getItemInfo(component.itemName)));
+					}
+				});
 		this.receipts.forEach(receipt -> receipt.products.forEach(productInfo -> {
 			productInfo.products.forEach(product -> product.item = getItemInfo(product.itemName));
 			productInfo.components.forEach(component -> component.item = getItemInfo(component.itemName));
 		}));
 	}
 
-	public UICursor getCursor(String name) { return this.cursors.get(name); }
+    private ReceiptInfo getReceipt(String receiptName) {
+        for (ReceiptInfo receipt: this.receipts) {
+            if (receipt.name.equals(receiptName)) {
+                return receipt;
+            }
+        }
+        return null;
+    }
+
+    public UICursor getCursor(String name) { return this.cursors.get(name); }
 }

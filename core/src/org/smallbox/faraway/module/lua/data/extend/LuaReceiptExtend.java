@@ -43,7 +43,7 @@ public class LuaReceiptExtend extends LuaExtend {
                 ReceiptInfo.ReceiptProductInfo productInfo = new ReceiptInfo.ReceiptProductInfo();
 
                 LuaValue luaItemsProduct = luaProduct.get("items");
-                for (int j = 1; j < luaItemsProduct.length(); j++) {
+                for (int j = 1; j <= luaItemsProduct.length(); j++) {
                     LuaValue luaComponent = luaItemsProduct.get(j);
                     ReceiptInfo.ReceiptProductItemInfo productItemInfo = new ReceiptInfo.ReceiptProductItemInfo();
                     productItemInfo.itemName = luaComponent.get("name").toString();
@@ -52,7 +52,7 @@ public class LuaReceiptExtend extends LuaExtend {
                 }
 
                 LuaValue luaComponents = luaProduct.get("components");
-                for (int j = 1; j < luaComponents.length(); j++) {
+                for (int j = 1; j <= luaComponents.length(); j++) {
                     LuaValue luaComponent = luaComponents.get(j);
                     ReceiptInfo.ReceiptProductComponentInfo componentInfo = new ReceiptInfo.ReceiptProductComponentInfo();
                     componentInfo.itemName = luaComponent.get("name").toString();
@@ -60,12 +60,7 @@ public class LuaReceiptExtend extends LuaExtend {
                     productInfo.components.add(componentInfo);
                 }
 
-//                LuaValue luaQuantity = luaProduct.get("quantity");
-//                if (!luaQuantity.isnil()) {
-//                    productInfo.quantity = new int[]{luaQuantity.get(1).toint(), luaQuantity.get(luaQuantity.length() == 2 ? 2 : 1).toint()};
-//                } else {
-//                    throw new DataExtendException(DataExtendException.Type.MANDATORY, "products.items.quantity");
-//                }
+                receiptInfo.products.add(productInfo);
             }
         }
 

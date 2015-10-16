@@ -2,6 +2,7 @@ package org.smallbox.faraway.engine.renderer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
+import org.smallbox.faraway.ItemFactory;
 import org.smallbox.faraway.core.RenderLayer;
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
@@ -23,7 +24,7 @@ public class WorldRenderer extends BaseRenderer {
     private boolean             _needRefresh;
     private SpriteManager       _spriteManager;
     private RenderLayer[][]     _layers;
-    private RenderLayer[][]     _layersLight;
+//    private RenderLayer[][]     _layersLight;
     private MapObjectModel      _itemSelected;
     private Viewport            _viewport;
     private boolean             _firstRefresh;
@@ -48,19 +49,19 @@ public class WorldRenderer extends BaseRenderer {
                 }
             }
         }
-        {
-            _layersLight = new RenderLayer[_cacheCols][_cacheCols];
-            int index = 0;
-            for (int i = 0; i < _cacheCols; i++) {
-                for (int j = 0; j < _cacheCols; j++) {
-                    _layersLight[i][j] = new RenderLayer(index++,
-                            i * CACHE_SIZE * Constant.TILE_WIDTH,
-                            j * CACHE_SIZE * Constant.TILE_HEIGHT,
-                            CACHE_SIZE * Constant.TILE_WIDTH,
-                            CACHE_SIZE * Constant.TILE_HEIGHT);
-                }
-            }
-        }
+//        {
+//            _layersLight = new RenderLayer[_cacheCols][_cacheCols];
+//            int index = 0;
+//            for (int i = 0; i < _cacheCols; i++) {
+//                for (int j = 0; j < _cacheCols; j++) {
+//                    _layersLight[i][j] = new RenderLayer(index++,
+//                            i * CACHE_SIZE * Constant.TILE_WIDTH,
+//                            j * CACHE_SIZE * Constant.TILE_HEIGHT,
+//                            CACHE_SIZE * Constant.TILE_WIDTH,
+//                            CACHE_SIZE * Constant.TILE_HEIGHT);
+//                }
+//            }
+//        }
     }
 
     public int getLevel() {
@@ -87,7 +88,7 @@ public class WorldRenderer extends BaseRenderer {
                 if (_layers[i][j].isVisible(_viewport) && _layers[i][j].needRefresh()) {
                     _layers[i][j].refresh();
                     refreshLayer(_layers[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
-                    refreshLayerLight(_layersLight[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
+//                    refreshLayerLight(_layersLight[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
                 }
             }
         }
@@ -97,7 +98,7 @@ public class WorldRenderer extends BaseRenderer {
         for (int i = 0; i < _cacheCols; i++) {
             for (int j = 0; j < _cacheCols; j++) {
                 _layers[i][j].planRefresh();
-                _layersLight[i][j].planRefresh();
+//                _layersLight[i][j].planRefresh();
             }
         }
         _needRefresh = true;
@@ -204,23 +205,23 @@ public class WorldRenderer extends BaseRenderer {
                         _layers[i][j].clear();
                     }
 
-                    // Draw up to date layer
-                    if (_layersLight[i][j].isVisible(viewport) && !_layersLight[i][j].needRefresh() && _layersLight[i][j].isDrawable()) {
-                        _layersLight[i][j].onDraw(renderer, viewport, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
-                    }
-
-                    // Refresh needed layer
-                    if (_layersLight[i][j].isVisible(viewport) && _layersLight[i][j].needRefresh()) {
-                        Log.info("refresh layer: " + _layersLight[i][j].getIndex());
-                        _layersLight[i][j].refresh();
-                        refreshLayerLight(_layersLight[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
-                    }
-
-                    // Clear out of screen layers
-                    if (!_layersLight[i][j].isVisible(viewport) && _layersLight[i][j].isDrawable()) {
-                        Log.info("clear layer: " + _layersLight[i][j].getIndex());
-                        _layersLight[i][j].clear();
-                    }
+//                    // Draw up to date layer
+//                    if (_layersLight[i][j].isVisible(viewport) && !_layersLight[i][j].needRefresh() && _layersLight[i][j].isDrawable()) {
+//                        _layersLight[i][j].onDraw(renderer, viewport, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
+//                    }
+//
+//                    // Refresh needed layer
+//                    if (_layersLight[i][j].isVisible(viewport) && _layersLight[i][j].needRefresh()) {
+//                        Log.info("refresh layer: " + _layersLight[i][j].getIndex());
+//                        _layersLight[i][j].refresh();
+//                        refreshLayerLight(_layersLight[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
+//                    }
+//
+//                    // Clear out of screen layers
+//                    if (!_layersLight[i][j].isVisible(viewport) && _layersLight[i][j].isDrawable()) {
+//                        Log.info("clear layer: " + _layersLight[i][j].getIndex());
+//                        _layersLight[i][j].clear();
+//                    }
                 }
             }
 
@@ -284,36 +285,40 @@ public class WorldRenderer extends BaseRenderer {
     void	refreshItems(RenderLayer layer, ItemModel item, int x, int y) {
         if (item != null && item.getX() == x && item.getY() == y) {
 
+            // Display item
+            layer.draw(_spriteManager.getItem(item, item.getCurrentFrame()), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+
             // Display components
-            for (BuildableMapObject.ComponentModel component: item.getComponents()) {
-                SpriteModel sprite = _spriteManager.getItem(component.info);
-                if (sprite != null) {
-                    if (item.getInfo().storage != null && item.getInfo().storage.components != null) {
-                        layer.draw(sprite,
-                                (x + item.getInfo().storage.components[0]) * Constant.TILE_WIDTH,
-                                (y + item.getInfo().storage.components[1]) * Constant.TILE_HEIGHT);
-                    } else {
-                        layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+            if (item.getFactory() != null) {
+                for (ItemFactory.ComponentEntry component : item.getFactory().getComponents()) {
+                    SpriteModel sprite = _spriteManager.getItem(component.itemInfo);
+                    if (sprite != null) {
+                        if (item.getInfo().factory != null && item.getInfo().factory.inputsSlot != null) {
+                            layer.draw(sprite,
+                                    (x + item.getInfo().factory.inputsSlot[0]) * Constant.TILE_WIDTH,
+                                    (y + item.getInfo().factory.inputsSlot[1]) * Constant.TILE_HEIGHT);
+                        } else {
+                            layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+                        }
                     }
                 }
             }
 
             // Display crafts
-            for (BuildableMapObject.ComponentModel component: item.getComponents()) {
-                SpriteModel sprite = _spriteManager.getItem(component.info);
-                if (sprite != null) {
-                    if (item.getInfo().storage != null && item.getInfo().storage.crafts != null) {
-                        layer.draw(sprite,
-                                (x + item.getInfo().storage.crafts[0]) * Constant.TILE_WIDTH,
-                                (y + item.getInfo().storage.crafts[1]) * Constant.TILE_HEIGHT);
-                    } else {
-                        layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+            if (item.getFactory() != null) {
+                for (ItemFactory.ProductEntry product : item.getFactory().getProducts()) {
+                    SpriteModel sprite = _spriteManager.getItem(product.itemInfo);
+                    if (sprite != null) {
+                        if (item.getInfo().factory != null && item.getInfo().factory.outputsSlot != null) {
+                            layer.draw(sprite,
+                                    (x + item.getInfo().factory.outputsSlot[0]) * Constant.TILE_WIDTH,
+                                    (y + item.getInfo().factory.outputsSlot[1]) * Constant.TILE_HEIGHT);
+                        } else {
+                            layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+                        }
                     }
                 }
             }
-
-            // Display item
-            layer.draw(_spriteManager.getItem(item, item.getCurrentFrame()), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
 
 //            // Display selection
 //            if (item.isSelected()) {
@@ -372,6 +377,14 @@ public class WorldRenderer extends BaseRenderer {
             renderer.draw(_spriteManager.getSelectorCorner(1), x + offset + toX, y - offset + fromY);
             renderer.draw(_spriteManager.getSelectorCorner(2), x - offset + fromX, y + offset + toY);
             renderer.draw(_spriteManager.getSelectorCorner(3), x + offset + toX, y + offset + toY);
+
+            if (_itemSelected.getInfo().slots != null) {
+                for (int[] slot: _itemSelected.getInfo().slots) {
+                    renderer.draw(_spriteManager.getIcon("data/res/ic_slot.png"),
+                            (_itemSelected.getX() + slot[0])* Constant.TILE_WIDTH + viewport.getPosX(),
+                            (_itemSelected.getY() + slot[1])* Constant.TILE_HEIGHT + viewport.getPosY());
+                }
+            }
         }
     }
 

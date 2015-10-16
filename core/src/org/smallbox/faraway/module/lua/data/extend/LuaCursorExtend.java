@@ -33,7 +33,7 @@ public class LuaCursorExtend extends LuaExtend {
         final UIFrame resEden = new UIFrame(32, 32);
         resEden.setBackgroundColor(value.get("eden").get("color").tolong());
 
-        final LuaValue luaOnItem = value.get("on_item");
+        final LuaValue luaOnParcel = value.get("on_parcel");
 
         GameData.getData().cursors.put(value.get("id").toString(), new UICursor() {
             @Override
@@ -41,8 +41,8 @@ public class LuaCursorExtend extends LuaExtend {
                 if (isPressed) {
                     renderer.draw(odd ? resOdd : resEden, x, y);
 
-                    if (parcel != null && !luaOnItem.isnil()) {
-                        LuaValue ret = luaOnItem.call(CoerceJavaToLua.coerce(parcel));
+                    if (parcel != null && !luaOnParcel.isnil()) {
+                        LuaValue ret = luaOnParcel.call(CoerceJavaToLua.coerce(parcel));
                         if (!ret.isnil() && ret.toboolean()) {
                             renderer.draw(resItem, x, y);
                         }

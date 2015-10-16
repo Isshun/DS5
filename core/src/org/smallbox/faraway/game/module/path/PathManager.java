@@ -12,7 +12,7 @@ import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.ModuleHelper;
-import org.smallbox.faraway.util.OnMoveListener;
+import org.smallbox.faraway.util.MoveListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class PathManager extends GameModule {
 
     private IndexedAStarPathFinder<ParcelModel> _finder;
     private Heuristic<ParcelModel>              _heuristic;
-    private Map<ParcelModel, ParcelPathCache> _cache;
+    private Map<ParcelModel, ParcelPathCache>   _cache;
 
     @Override
     protected void onLoaded() {
@@ -32,27 +32,27 @@ public class PathManager extends GameModule {
     }
 
     @Override
-	protected void onUpdate(int tick) {
+    protected void onUpdate(int tick) {
         _runnable.forEach(java.lang.Runnable::run);
         _runnable.clear();
-	}
+    }
 
-	private static final int 			THREAD_POOL_SIZE = 1;
+    private static final int 			THREAD_POOL_SIZE = 1;
 
-	private static PathManager _self;
-	final private ArrayList<Runnable>   _runnable;
+    private static PathManager _self;
+    final private ArrayList<Runnable>   _runnable;
     final private ExecutorService 		_threadPool;
 
-	public PathManager() {
-		_self = this;
-		_threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-		_runnable = new ArrayList<>();
-	}
+    public PathManager() {
+        _self = this;
+        _threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+        _runnable = new ArrayList<>();
+    }
 
     public void init(int width, int height) {
-		if (width == 0 || height == 0) {
-			throw new RuntimeException("PathManager init with 0 width/height");
-		}
+        if (width == 0 || height == 0) {
+            throw new RuntimeException("PathManager init with 0 width/height");
+        }
         _finder = new IndexedAStarPathFinder<>(ModuleHelper.getWorldModule());
         _heuristic = (node, endNode) -> 10 * (Math.abs(node.x - endNode.x) + Math.abs(node.y - endNode.y));
 
@@ -63,56 +63,56 @@ public class PathManager extends GameModule {
         }
     }
 
-	public void getPathAsync(final OnMoveListener listener, final MovableModel movable, final BaseJobModel job, final int x, final int y) {
+    public void getPathAsync(final MoveListener listener, final MovableModel movable, final BaseJobModel job, final int x, final int y) {
 //		_threadPool.execute(() -> {
-            ParcelModel fromParcel = ModuleHelper.getWorldModule().getParcel(movable.getX(), movable.getY());
-            ParcelModel toParcel = ModuleHelper.getWorldModule().getParcel(x, y);
+        ParcelModel fromParcel = ModuleHelper.getWorldModule().getParcel(movable.getX(), movable.getY());
+        ParcelModel toParcel = ModuleHelper.getWorldModule().getParcel(x, y);
 
-            if (WorldHelper.isBlocked(x + 1, y) &&
-                    WorldHelper.isBlocked(x - 1, y) &&
-                    WorldHelper.isBlocked(x, y + 1) &&
-                    WorldHelper.isBlocked(x, y - 1)) {
-                printInfo("characters: path fail (surrounded by solid parcel)");
-                movable.onPathFailed(job, fromParcel, toParcel);
-                if (listener != null) {
-                    listener.onFail(job, movable);
-                }
-                return;
+        if (WorldHelper.isBlocked(x + 1, y) &&
+                WorldHelper.isBlocked(x - 1, y) &&
+                WorldHelper.isBlocked(x, y + 1) &&
+                WorldHelper.isBlocked(x, y - 1)) {
+            printInfo("characters: path fail (surrounded by solid parcel)");
+            movable.onPathFailed(job, fromParcel, toParcel);
+            if (listener != null) {
+                listener.onFail(movable);
             }
+            return;
+        }
 
-            printDebug("getPathAsync");
-            GraphPath<ParcelModel> path = findPath(fromParcel, toParcel);
-            if (path != null) {
-                printInfo("characters: path success (" + fromParcel.x + "x" + fromParcel.y + " to " + toParcel.x + "x" + toParcel.y + "), job: " + job);
-                synchronized (_runnable) {
-                    _runnable.add(() -> {
-                        movable.onPathComplete(path, job, fromParcel, toParcel);
-                        if (listener != null) {
-                            listener.onSuccess(job, movable);
-                        }
-                    });
-                }
-            } else {
-                printInfo("characters: path fail");
-                synchronized (_runnable) {
-                    _runnable.add(() -> {
-                        movable.onPathFailed(job, fromParcel, toParcel);
-                        if (listener != null) {
-                            listener.onFail(job, movable);
-                        }
-                    });
-                }
+        printDebug("getPathAsync");
+        GraphPath<ParcelModel> path = findPath(fromParcel, toParcel);
+        if (path != null) {
+            printInfo("characters: path success (" + fromParcel.x + "x" + fromParcel.y + " to " + toParcel.x + "x" + toParcel.y + "), job: " + job);
+            synchronized (_runnable) {
+                _runnable.add(() -> {
+                    movable.onPathComplete(path, job, fromParcel, toParcel);
+                    if (listener != null) {
+                        listener.onSuccess(movable);
+                    }
+                });
             }
+        } else {
+            printInfo("characters: path fail");
+            synchronized (_runnable) {
+                _runnable.add(() -> {
+                    movable.onPathFailed(job, fromParcel, toParcel);
+                    if (listener != null) {
+                        listener.onFail(movable);
+                    }
+                });
+            }
+        }
 //        });
-	}
-	
-	public static PathManager getInstance() {
-		return _self;
-	}
+    }
 
-	public void close() {
-		_threadPool.shutdownNow();		
-	}
+    public static PathManager getInstance() {
+        return _self;
+    }
+
+    public void close() {
+        _threadPool.shutdownNow();
+    }
 
     public boolean hasPath(ParcelModel fromParcel, ParcelModel toParcel) {
         PathCacheModel pathCache = _cache.get(fromParcel).getPath(toParcel);
@@ -217,4 +217,25 @@ public class PathManager extends GameModule {
         }
     }
 
+    public GraphPath<ParcelModel> getBestApprox(ParcelModel fromParcel, ParcelModel toParcel) {
+        GraphPath<ParcelModel> bestPath = null;
+        if (toParcel != null) {
+            if (toParcel.isWalkable()) {
+                bestPath = getPath(fromParcel, toParcel);
+            } else {
+                for (int x = toParcel.x -1; x <= toParcel.x + 1; x++) {
+                    for (int y = toParcel.y -1; y <= toParcel.y + 1; y++) {
+                        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
+                        if (parcel != null && parcel.isWalkable()) {
+                            GraphPath<ParcelModel> path = getPath(fromParcel, parcel);
+                            if (path != null && (bestPath == null || path.getCount() < bestPath.getCount())) {
+                                bestPath = path;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return bestPath;
+    }
 }

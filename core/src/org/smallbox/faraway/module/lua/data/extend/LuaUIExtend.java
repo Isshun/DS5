@@ -32,12 +32,6 @@ public class LuaUIExtend extends LuaExtend {
         UIFrame frame = new UIFrame(-1, -1);
         frame.addView(LuaLayoutFactory.createView(luaModuleManager, globals, value));
         frame.setModule(module);
-
-        //TODO: not clean
-        if (frame.getViews().size() == 1) {
-            frame.getViews().get(0).setOnClickListener(view -> {});
-        }
-
         UserInterface.getInstance()._views.add(frame);
     }
 }

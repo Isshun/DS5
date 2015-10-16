@@ -2,11 +2,13 @@ package org.smallbox.faraway.game.model.item;
 
 import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.GraphicInfo;
+import org.smallbox.faraway.data.ReceiptInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemInfo {
+
 	public boolean hasCraftAction() {
 		if (actions != null) {
 			for (ItemInfoAction action : actions) {
@@ -60,6 +62,13 @@ public class ItemInfo {
 		public List<ItemProductInfo> 	products;
 	}
 
+	public static class ItemInfoFactory {
+		public List<ReceiptInfo>		receipts;
+		public List<String>				receiptNames;
+		public int[] inputsSlot;
+		public int[] outputsSlot;
+	}
+
 	public static class ItemProductInfo {
 		public String 					itemName;
 		public ItemInfo 				item;
@@ -68,8 +77,8 @@ public class ItemInfo {
 	}
 
 	public static class ItemComponentInfo {
-		public String 					item;
-		public ItemInfo 				itemInfo;
+		public String 					itemName;
+		public ItemInfo 				item;
 		public int 						quantity;
 	}
 //	public static class EquipmentEffectBuff {
@@ -183,6 +192,7 @@ public class ItemInfo {
 	public List<ItemComponentInfo>		components;
 	public List<ItemInfo> 				childs = new ArrayList<>();
 	public List<GraphicInfo> 			graphics;
+	public ItemInfoFactory 				factory;
 
 	public ItemInfo() {
 		width = 1;

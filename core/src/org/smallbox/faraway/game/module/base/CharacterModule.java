@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.module.base;
 
 import org.smallbox.faraway.game.Game;
+import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.MovableModel.Direction;
 import org.smallbox.faraway.game.model.character.HumanModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
@@ -79,6 +80,14 @@ public class CharacterModule extends GameModule {
 			}
 
 			else {
+				// Move stuck character
+				if (!c.getParcel().isWalkable()) {
+					ParcelModel parcel = WorldHelper.getNearestWalkable(c.getParcel().x, c.getParcel().y, true, true);
+					if (parcel != null) {
+						c.setParcel(parcel);
+					}
+				}
+
 				if (tick % 10 == c.getLag()) {
 					// Assign job
 					if (c.getJob() == null && !c.isSleeping()) {

@@ -60,7 +60,7 @@ data:extend(
                         bt_item:setBackgroundColor(0x448866)
                         bt_item:setOnClickListener(function(view)
                             game:setBuild(value)
-                            game.ui:setCursor(game.ui:createCursor("build_cursor"))
+                            game.ui:setCursor("base.build_cursor")
                         end)
 
                         if value.fileName ~= nil then
