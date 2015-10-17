@@ -2,7 +2,7 @@ package org.smallbox.faraway.engine.renderer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
-import org.smallbox.faraway.ItemFactory;
+import org.smallbox.faraway.ItemFactoryModel;
 import org.smallbox.faraway.core.RenderLayer;
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
@@ -13,7 +13,6 @@ import org.smallbox.faraway.game.model.GameConfig;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.module.ModuleHelper;
-import org.smallbox.faraway.game.module.base.WorldModule;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -290,8 +289,8 @@ public class WorldRenderer extends BaseRenderer {
 
             // Display components
             if (item.getFactory() != null) {
-                for (ItemFactory.ComponentEntry component : item.getFactory().getComponents()) {
-                    SpriteModel sprite = _spriteManager.getItem(component.itemInfo);
+                for (ItemFactoryModel.FactoryInputModel component : item.getFactory().getComponents()) {
+                    SpriteModel sprite = _spriteManager.getItem(component.consumable.getInfo());
                     if (sprite != null) {
                         if (item.getInfo().factory != null && item.getInfo().factory.inputsSlot != null) {
                             layer.draw(sprite,
@@ -306,7 +305,7 @@ public class WorldRenderer extends BaseRenderer {
 
             // Display crafts
             if (item.getFactory() != null) {
-                for (ItemFactory.ProductEntry product : item.getFactory().getProducts()) {
+                for (ItemFactoryModel.FactoryOutputModel product : item.getFactory().getProducts()) {
                     SpriteModel sprite = _spriteManager.getItem(product.itemInfo);
                     if (sprite != null) {
                         if (item.getInfo().factory != null && item.getInfo().factory.outputsSlot != null) {

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.model;
 
-import org.smallbox.faraway.data.ReceiptInfo;
+import org.smallbox.faraway.data.ReceiptGroupInfo;
 import org.smallbox.faraway.data.loader.*;
 import org.smallbox.faraway.game.model.character.BuffModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class GameData {
     public static GameData      		_data;
 	public static GameConfig 			config;
-	public List<ReceiptInfo> 			receipts = new ArrayList<>();
+	public List<ReceiptGroupInfo> 			receipts = new ArrayList<>();
 	public List<ItemInfo> 				items = new ArrayList<>();
 	public List<ItemInfo> 				gatherItems;
 	public List<CategoryInfo> 			categories;
@@ -129,14 +129,14 @@ public class GameData {
 										.forEach(component -> component.item = getItemInfo(component.itemName)));
 					}
 				});
-		this.receipts.forEach(receipt -> receipt.products.forEach(productInfo -> {
+		this.receipts.forEach(receipt -> receipt.receipts.forEach(productInfo -> {
 			productInfo.products.forEach(product -> product.item = getItemInfo(product.itemName));
 			productInfo.components.forEach(component -> component.item = getItemInfo(component.itemName));
 		}));
 	}
 
-    private ReceiptInfo getReceipt(String receiptName) {
-        for (ReceiptInfo receipt: this.receipts) {
+    private ReceiptGroupInfo getReceipt(String receiptName) {
+        for (ReceiptGroupInfo receipt: this.receipts) {
             if (receipt.name.equals(receiptName)) {
                 return receipt;
             }

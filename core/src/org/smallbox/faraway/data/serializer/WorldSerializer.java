@@ -150,7 +150,7 @@ public class WorldSerializer implements SerializerInterface {
         }
         apElement.resetXPath();
 
-        ConsumableModel consumable = (ConsumableModel)manager.putObject(name, x, y, z, quantity);
+        ConsumableModel consumable = (ConsumableModel)manager.putObject(name, x, y, z, quantity, true);
         if (consumable != null) {
             consumable.setId(id);
             consumable.setQuantity(quantity);
@@ -183,7 +183,7 @@ public class WorldSerializer implements SerializerInterface {
         }
         apElement.resetXPath();
 
-        StructureModel structure = (StructureModel)manager.putObject(name, x, y, z, progress);
+        StructureModel structure = (StructureModel)manager.putObject(name, x, y, z, progress, complete);
         if (structure != null) {
             structure.setId(id);
             structure.setHealth(health);
@@ -220,7 +220,7 @@ public class WorldSerializer implements SerializerInterface {
         }
         apElement.resetXPath();
 
-        ResourceModel resource = (ResourceModel)manager.putObject(name, x, y, z, quantity);
+        ResourceModel resource = (ResourceModel)manager.putObject(name, x, y, z, quantity, true);
         if (resource != null) {
 //            resource.setTile(tile);
 //            resource.setValue(value);
@@ -256,7 +256,7 @@ public class WorldSerializer implements SerializerInterface {
         apElement.resetXPath();
         vn.pop();
 
-        ItemModel item = (ItemModel)manager.putObject(name, x, y, z, progress);
+        ItemModel item = (ItemModel)manager.putObject(name, x, y, z, progress, complete);
         if (item != null) {
             item.setId(id);
             item.setHealth(health);

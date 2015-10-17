@@ -1,9 +1,8 @@
 package org.smallbox.faraway.game.model.item;
 
-import org.smallbox.faraway.ItemFactory;
+import org.smallbox.faraway.ItemFactoryModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +14,7 @@ public class ItemModel extends BuildableMapObject {
     private List<ItemSlot>          _slots;
     private int 		            _nbFreeSlot = -1;
     private int 		            _nbSlot;
-    private ItemFactory 			_factory;
+    private ItemFactoryModel _factory;
 
 
     public ItemModel(ItemInfo info, int id) {
@@ -36,7 +35,7 @@ public class ItemModel extends BuildableMapObject {
 	public List<ItemSlot>   		getSlots() { return _slots; }
 	public int 						getNbFreeSlots() { return _nbFreeSlot; }
 	public int 						getNbSlots() { return _nbSlot; }
-	public ItemFactory 				getFactory() { return _factory; }
+	public ItemFactoryModel getFactory() { return _factory; }
 
 	public boolean 					hasFreeSlot() { return _nbFreeSlot == -1 || _nbFreeSlot > 0; }
 	public boolean 					isFunctional() { return _isFunctional; }
@@ -47,9 +46,18 @@ public class ItemModel extends BuildableMapObject {
 	public void 					setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }
 	public void 					setPotencyUse(int potencyUse) { _potencyUse = potencyUse; }
 
-	private void init(ItemInfo info) {
+    @Override
+    public void             setParcel(ParcelModel parcel) {
+        super.setParcel(parcel);
+
+        if (_factory != null) {
+            _factory.setParcel(parcel);
+        }
+    }
+
+    private void init(ItemInfo info) {
         if (info.factory != null) {
-            _factory = new ItemFactory(info.factory);
+            _factory = new ItemFactoryModel(_parcel, info.factory);
         }
 	}
 

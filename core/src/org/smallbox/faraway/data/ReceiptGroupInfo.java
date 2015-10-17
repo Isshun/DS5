@@ -8,25 +8,27 @@ import java.util.List;
 /**
  * Created by Alex on 12/10/2015.
  */
-public class ReceiptInfo {
-    public static class ReceiptProductComponentInfo {
+public class ReceiptGroupInfo {
+    public static class ReceiptInputInfo {
         public String       itemName;
         public ItemInfo     item;
         public int          quantity;
     }
 
-    public static class ReceiptProductItemInfo {
+    public static class ReceiptOutputInfo {
         public String       itemName;
         public ItemInfo     item;
         public int          quantity;
     }
 
-    public static class ReceiptProductInfo {
-        public List<ReceiptProductItemInfo> products = new ArrayList<>();
-        public List<ReceiptProductComponentInfo> components = new ArrayList<>();
+    public static class ReceiptInfo {
+        public String                   name;
+        public String                   label;
+        public List<ReceiptOutputInfo>  products = new ArrayList<>();
+        public List<ReceiptInputInfo>   components = new ArrayList<>();
     }
 
     public String                   name;
     public String                   label;
-    public List<ReceiptProductInfo> products = new ArrayList<>();
+    public List<ReceiptInfo>        receipts = new ArrayList<>();
 }

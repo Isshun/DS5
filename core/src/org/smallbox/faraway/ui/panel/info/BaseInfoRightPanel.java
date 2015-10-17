@@ -3,7 +3,7 @@ package org.smallbox.faraway.ui.panel.info;
 import com.badlogic.gdx.ai.pfa.Connection;
 import org.smallbox.faraway.engine.Color;
 import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.game.model.ReceiptModel;
+import org.smallbox.faraway.game.model.OldReceiptModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 import org.smallbox.faraway.game.model.room.NeighborModel;
 import org.smallbox.faraway.game.model.room.RoomModel;
@@ -141,7 +141,7 @@ public class BaseInfoRightPanel extends BaseRightPanel {
         select(_parcel);
     }
 
-    protected void addJobOrder(UIFrame frame, ReceiptModel.OrderModel order, int index) {
+    protected void addJobOrder(UIFrame frame, OldReceiptModel.OrderModel order, int index) {
         UILabel lbOrder = ViewFactory.getInstance().createTextView();
         lbOrder.setTextSize(14);
         lbOrder.setPosition(0, index * 20);

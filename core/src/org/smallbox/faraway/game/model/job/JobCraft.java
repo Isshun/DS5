@@ -1,12 +1,11 @@
 package org.smallbox.faraway.game.model.job;
 
-import org.smallbox.faraway.ItemFactory;
+import org.smallbox.faraway.ItemFactoryModel;
 import org.smallbox.faraway.core.drawable.AnimDrawable;
 import org.smallbox.faraway.core.drawable.IconDrawable;
-import org.smallbox.faraway.data.ReceiptInfo;
+import org.smallbox.faraway.data.ReceiptGroupInfo;
 import org.smallbox.faraway.game.helper.WorldHelper;
-import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.ReceiptModel;
+import org.smallbox.faraway.game.model.OldReceiptModel;
 import org.smallbox.faraway.game.model.area.StorageAreaModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.*;
@@ -15,10 +14,9 @@ import org.smallbox.faraway.game.module.ModuleManager;
 import org.smallbox.faraway.game.module.base.AreaModule;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.MoveListener;
-import org.smallbox.faraway.util.Utils;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class JobCraft extends BaseBuildJobModel {
     private int                     _itemPosX;
@@ -26,7 +24,7 @@ public class JobCraft extends BaseBuildJobModel {
     private ParcelModel             _storageParcel;
     private StorageAreaModel        _storage;
     public ItemModel                _item;
-    public ItemFactory              _factory;
+    public ItemFactoryModel _factory;
 
     protected JobCraft(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel) {
         super(actionInfo, jobParcel, new IconDrawable("data/res/ic_craft.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 160, 32, 32, 7, 10));
@@ -34,28 +32,30 @@ public class JobCraft extends BaseBuildJobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
-        int bestDistance = Integer.MAX_VALUE;
-        for (ReceiptModel receipt: _receipts) {
-            receipt.reset();
-            if (bestDistance > receipt.getTotalDistance() && receipt.hasComponentsOnMap()) {
-                bestDistance = receipt.getTotalDistance();
-                _receipt = receipt;
-            }
-        }
+//        int bestDistance = Integer.MAX_VALUE;
+//        for (OldReceiptModel receipt: _receipts) {
+//            receipt.reset();
+//            if (bestDistance > receipt.getTotalDistance() && receipt.hasComponentsOnMap()) {
+//                bestDistance = receipt.getTotalDistance();
+//                _receipt = receipt;
+//            }
+//        }
+
+        _receipt = _factory.getCurrentReceipt();
 
         if (_receipt == null) {
             throw new RuntimeException("Try to start JobCraft but no receipt have enough component");
         }
 
         // Start receipt and get first component
-        _receipt.start(this);
-        moveToIngredient(character, _receipt.getCurrentOrder());
+//        _receipt.start(this);
+        moveToIngredient(character, _factory.getNextInput());
     }
 
     @Override
     public void onQuit(CharacterModel character) {
         if (_receipt != null) {
-            _receipt.close();
+//            _receipt.close();
             _receipt = null;
         }
     }
@@ -87,9 +87,8 @@ public class JobCraft extends BaseBuildJobModel {
         job._item = item;
         job._factory = item.getFactory();
         job._receipts = new ArrayList<>();
-        item.getFactory().getReceipts()
-                .forEach(receiptEntry -> receiptEntry.receiptInfo.products
-                        .forEach(product -> job._receipts.add(ReceiptModel.createFromReceiptInfo(item, product))));
+        item.getFactory().scan();
+        item.getFactory().getReceipts().forEach(product -> job._receipts.add(OldReceiptModel.createFromReceiptInfo(item, product.receiptInfo)));
         job.setStrategy(j -> {
             if (j.getCharacter().getType().needs.joy != null) {
                 j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
@@ -97,7 +96,6 @@ public class JobCraft extends BaseBuildJobModel {
         });
         job.onCheck(null);
 
-        item.getFactory().scan();
         item.addJob(job);
 
         return job;
@@ -109,33 +107,41 @@ public class JobCraft extends BaseBuildJobModel {
 
         character.moveTo(this, _targetParcel, null);
 
-        _message = "Move " + _receipt.getProductsInfo().get(0).item.label + " to storage";
+//        _message = "Move " + _receipt.getProductsInfo().get(0).item.label + " to storage";
     }
 
-    protected void moveToIngredient(CharacterModel character, ReceiptModel.OrderModel order) {
-        ParcelModel parcel = order.consumable.getParcel();
+    protected void moveToIngredient(CharacterModel character, ItemFactoryModel.FactoryInputModel factoryInput) {
+        ParcelModel parcel = factoryInput.consumable.getParcel();
+        factoryInput.consumable.lock(this);
         _targetParcel = parcel;
         _status = Status.MOVE_TO_INGREDIENT;
         character.moveTo(this, parcel, new MoveListener<CharacterModel>() {
             @Override
             public void onReach(CharacterModel character) {
-                order.consumable.lock(null);
-                order.status = ReceiptModel.OrderModel.Status.CARRY;
-                character.addInventory(order.consumable, order.quantity);
-                if (order.consumable.getQuantity() == 0) {
-                    ModuleHelper.getWorldModule().removeConsumable(order.consumable);
+                factoryInput.consumable.lock(null);
+//                order.status = OldReceiptModel.OrderModel.Status.CARRY;
+
+                int neededQuantity = Math.min(factoryInput.consumable.getQuantity(), factoryInput.quantity);
+                if (neededQuantity > 0) {
+                    character.addInventory(factoryInput.consumable, neededQuantity);
+                    if (factoryInput.consumable.getQuantity() == 0) {
+                        ModuleHelper.getWorldModule().removeConsumable(factoryInput.consumable);
+                    }
                 }
 
-                // Get next consumable (same ingredient)
-                if (_receipt.getNextOrder() != null && _receipt.getNextOrder().consumable.getInfo() == order.consumable.getInfo()
-                        && _receipt.getNextOrder().quantity + _character.getInventory().getQuantity() <= GameData.config.inventoryMaxQuantity) {
-                    _receipt.nextOrder();
-                    moveToIngredient(character, _receipt.getCurrentOrder());
-                } else {
+                // Remove consumable from factory input list
+                _factory.getComponents().remove(factoryInput);
+
+//                // Get next consumable (same ingredient)
+//                if (_receipt.getNextOrder() != null && _receipt.getNextOrder().consumable.getInfo() == order.consumable.getInfo()
+//                        && _receipt.getNextOrder().quantity + _character.getInventory().getQuantity() <= GameData.config.inventoryMaxQuantity) {
+//                    _receipt.nextOrder();
+//                    moveToIngredient(character, _receipt.getNextInput());
+//                } else {
                     moveToMainItem();
-                }
+//                }
 
-                _message = "Carry " + order.consumable.getInfo().label + " to " + _mainItem.getInfo().label;
+                _message = "Carry " + factoryInput.consumable.getInfo().label + " to " + _mainItem.getInfo().label;
             }
 
             @Override
@@ -146,7 +152,7 @@ public class JobCraft extends BaseBuildJobModel {
             public void onSuccess(CharacterModel character) {
             }
         });
-        _message = "Move to " + order.consumable.getInfo().label;
+        _message = "Move to " + factoryInput.consumable.getInfo().label;
     }
 
     protected void moveToMainItem() {
@@ -162,14 +168,14 @@ public class JobCraft extends BaseBuildJobModel {
         _character.moveTo(this, _targetParcel, new MoveListener<CharacterModel>() {
             @Override
             public void onReach(CharacterModel character) {
-                if (_receipt != null) {
-                    if (character.getInventory() != null && _receipt.getCurrentOrder() != null && character.getInventory().getInfo() == _receipt.getCurrentOrder().consumable.getInfo()) {
-                        _receipt.closeCarryingOrders();
-                        _receipt.nextOrder();
-                        _mainItem.addComponent(character.getInventory());
+                if (_factory != null) {
+                    if (character.getInventory() != null && _factory.getNextInput() != null && character.getInventory().getInfo() == _factory.getNextInput().consumable.getInfo()) {
+                        _factory.addInput(character.getInventory().getInfo(), character.getInventory().getQuantity());
+                        _factory.getNextInput();
+//                        _mainItem.addComponent(character.getInventory());
                         character.setInventory(null);
                     }
-                    _status = _receipt.isComplete() ? Status.MAIN_ACTION : Status.WAITING;
+                    _status = _factory.getCurrentReceipt() != null && _factory.getNextInput() == null ? Status.MAIN_ACTION : Status.WAITING;
                 }
             }
 
@@ -185,12 +191,22 @@ public class JobCraft extends BaseBuildJobModel {
 
     @Override
     public boolean onCheck(CharacterModel character) {
-        for (ReceiptModel receipt: _receipts) {
-            if (receipt.hasComponentsOnMap()) {
-                _message = "Waiting";
-                return true;
-            }
+        if (_factory.getCurrentReceipt() == null) {
+            _factory.scan();
         }
+
+//        for (OldReceiptModel receipt: _receipts) {
+//            if (receipt.hasComponentsOnMap()) {
+//                _message = "Waiting";
+//                return true;
+//            }
+//        }
+
+        if (_factory.getCurrentReceipt() != null) {
+            _message = "Waiting";
+            return true;
+        }
+
         _message = "Missing components";
         return false;
     }
@@ -214,7 +230,7 @@ public class JobCraft extends BaseBuildJobModel {
 
         // Move to ingredient
         if (_status == Status.WAITING) {
-            moveToIngredient(_character, _receipt.getCurrentOrder());
+            moveToIngredient(_character, _factory.getNextInput());
             return JobActionReturn.CONTINUE;
         }
 
@@ -226,6 +242,7 @@ public class JobCraft extends BaseBuildJobModel {
         // Work on factory
         if (_status == Status.MAIN_ACTION) {
             _progress += character.getTalent(CharacterModel.TalentType.CRAFT).work();
+            _factory.craft();
             if (_progress < _cost) {
                 _message = _actionInfo.label;
                 Log.debug("Character #" + character.getInfo().getName() + ": Crafting (" + _progress + ")");
@@ -237,12 +254,12 @@ public class JobCraft extends BaseBuildJobModel {
 
             // Current item is done
             _progress = 0;
-            for (ReceiptInfo.ReceiptProductItemInfo productInfo : _receipt.getProductsInfo()) {
+            for (ReceiptGroupInfo.ReceiptOutputInfo productInfo : _receipt.receiptInfo.products) {
                 ConsumableModel productConsumable = new ConsumableModel(productInfo.item);
 //                productConsumable.setQuantity(Utils.getRandom(productInfo.quantity));
                 productConsumable.setQuantity(productInfo.quantity);
 
-                _factory.addProduct(productInfo.item, productInfo.quantity);
+//                _factory.addProduct(productInfo.item, productInfo.quantity);
 
                 // Move to storage
                 _storageParcel = ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).getNearestFreeStorageParcel(productConsumable, character.getParcel());
@@ -284,9 +301,11 @@ public class JobCraft extends BaseBuildJobModel {
     private JobActionReturn closeOrQuit(CharacterModel character) {
 
         // Unload factory
-        for (ItemFactory.ComponentEntry component: _factory.getComponents()) {
-            ConsumableModel consumable = new ConsumableModel(component.itemInfo);
-            consumable.setQuantity(component.currentQuantity);
+        // TODO: non sense
+        for (ItemFactoryModel.FactoryInputModel component: _factory.getComponents()) {
+//            ConsumableModel consumable = new ConsumableModel(component.itemInfo);
+//            consumable.setQuantity(component.currentQuantity);
+            ConsumableModel consumable = component.consumable;
             ModuleHelper.getWorldModule().putConsumable(consumable, _item.getX(), _item.getY());
         }
 
@@ -301,6 +320,7 @@ public class JobCraft extends BaseBuildJobModel {
         // Work is complete
         if (_count++ >= _totalCount) {
             //Log.debug("Character #" + characters.getId() + ": work close");
+            _item.getFactory().setJob(null);
             return JobActionReturn.FINISH;
         }
 

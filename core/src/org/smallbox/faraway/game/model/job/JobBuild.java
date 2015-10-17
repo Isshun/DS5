@@ -5,7 +5,7 @@
 //import org.smallbox.faraway.game.helper.WorldHelper;
 //import org.smallbox.faraway.game.model.GameData;
 //import org.smallbox.faraway.game.model.MovableModel;
-//import org.smallbox.faraway.game.model.ReceiptModel;
+//import org.smallbox.faraway.game.model.OldReceiptModel;
 //import org.smallbox.faraway.game.model.character.base.CharacterModel;
 //import org.smallbox.faraway.game.model.item.MapObjectModel;
 //import org.smallbox.faraway.game.model.item.ParcelModel;
@@ -24,7 +24,7 @@
 //    @Override
 //    protected void onStart(CharacterModel character) {
 //        int bestDistance = Integer.MAX_VALUE;
-//        for (ReceiptModel receipt: _receipts) {
+//        for (OldReceiptModel receipt: _receipts) {
 //            receipt.reset();
 //            if (bestDistance > receipt.getTotalDistance() && receipt.hasComponentsOnMap()) {
 //                bestDistance = receipt.getTotalDistance();
@@ -38,8 +38,8 @@
 //
 //        // Start receipt and get first component
 //        _receipt.start(this);
-//		if (_receipt.getCurrentOrder() != null) {
-//			moveToIngredient(character, _receipt.getCurrentOrder());
+//		if (_receipt.getNextInput() != null) {
+//			moveToIngredient(character, _receipt.getNextInput());
 //		} else {
 //			moveToMainItem();
 //		}
@@ -68,7 +68,7 @@
 //        job._mainItem.addJob(job);
 //        job._mainItem.setJobBuild(job);
 //        job._receipts = new ArrayList<>();
-//        job._receipts.add(ReceiptModel.createFromComponentInfo(item, item.getInfo().components));
+//        job._receipts.add(OldReceiptModel.createFromComponentInfo(item, item.getInfo().components));
 //		job.setCost(item.getInfo().cost);
 //		job.setStrategy(j -> {
 //            if (j.getCharacter().getType().needs.joy != null) {
@@ -82,7 +82,7 @@
 //
 //	@Override
 //	public boolean onCheck(CharacterModel character) {
-//        for (ReceiptModel receipt: _receipts) {
+//        for (OldReceiptModel receipt: _receipts) {
 //            if (receipt.hasComponentsOnMap()) {
 //                _message = "Waiting";
 //                return true;
@@ -121,7 +121,7 @@
 //
 //		// Move to ingredient
 //		if (_status == Status.WAITING) {
-//			moveToIngredient(_character, _receipt.getCurrentOrder());
+//			moveToIngredient(_character, _receipt.getNextInput());
 //			return JobActionReturn.CONTINUE;
 //		}
 //
@@ -136,7 +136,7 @@
 //		return JobActionReturn.FINISH;
 //	}
 //
-//	protected void moveToIngredient(CharacterModel character, ReceiptModel.OrderModel order) {
+//	protected void moveToIngredient(CharacterModel character, OldReceiptModel.OrderModel order) {
 //		ParcelModel parcel = order.consumable.getParcel();
 //		_posX = parcel.x;
 //		_posY = parcel.y;
@@ -145,7 +145,7 @@
 //			@Override
 //			public void onReach(BaseJobModel job, MovableModel movable) {
 //				order.consumable.lock(null);
-//				order.status = ReceiptModel.OrderModel.Status.CARRY;
+//				order.status = OldReceiptModel.OrderModel.Status.CARRY;
 //				character.addInventory(order.consumable, order.quantity);
 //				if (order.consumable.getQuantity() == 0) {
 //					ModuleHelper.getWorldModule().removeConsumable(order.consumable);
@@ -155,7 +155,7 @@
 //				if (_receipt.getNextOrder() != null && _receipt.getNextOrder().consumable.getInfo() == order.consumable.getInfo()
 //						&& _receipt.getNextOrder().quantity + _character.getInventory().getQuantity() <= GameData.config.inventoryMaxQuantity) {
 //					_receipt.nextOrder();
-//					moveToIngredient(character, _receipt.getCurrentOrder());
+//					moveToIngredient(character, _receipt.getNextInput());
 //				} else {
 //					moveToMainItem();
 //				}
@@ -184,7 +184,7 @@
 //			@Override
 //			public void onReach(BaseJobModel job, CharacterModel character) {
 //				if (_receipt != null) {
-//					if (character.getInventory() != null && _receipt.getCurrentOrder() != null && character.getInventory().getInfo() == _receipt.getCurrentOrder().consumable.getInfo()) {
+//					if (character.getInventory() != null && _receipt.getNextInput() != null && character.getInventory().getInfo() == _receipt.getNextInput().consumable.getInfo()) {
 //						_receipt.closeCarryingOrders();
 //						_receipt.nextOrder();
 //						_mainItem.addComponent(character.getInventory());

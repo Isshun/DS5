@@ -2,7 +2,7 @@
 //
 //import org.smallbox.faraway.engine.GameEventListener;
 //import org.smallbox.faraway.game.helper.JobHelper;
-//import org.smallbox.faraway.game.model.ReceiptModel;
+//import org.smallbox.faraway.game.model.OldReceiptModel;
 //import org.smallbox.faraway.game.model.item.StructureModel;
 //import org.smallbox.faraway.ui.LayoutModel;
 //import org.smallbox.faraway.ui.UserInterface;
@@ -60,7 +60,7 @@
 //            if (structure.getJobBuild() != null && structure.getJobBuild().getReceipt() != null) {
 //                ((UIFrame)findById("frame_components_entries")).removeAllViews();
 //                int orderIndex = 0;
-//                for (ReceiptModel.OrderModel order : structure.getJobBuild().getReceipt().getOrders()) {
+//                for (OldReceiptModel.OrderModel order : structure.getJobBuild().getReceipt().getOrders()) {
 //                    addJobOrder((UIFrame)findById("frame_components_entries"), order, orderIndex++);
 //                }
 //                findById("frame_components_entries").setVisible(true);

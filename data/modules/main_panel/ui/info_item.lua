@@ -32,8 +32,10 @@ data:extend(
                     { type = "list", id = "frame_factory", position = {10, 0}, views = {
                         { type = "label", text = "Factory", text_size = 22},
                         { type = "label", text = "Current", text_size = 18, position = {0, 15}},
-                        { type = "label", id = "lb_factory_progress", text = "progress", position = {0, 20}},
+                        { type = "label", id = "lb_factory_progress", text = "lb_factory_progress", position = {0, 20}},
+                        { type = "label", id = "lb_factory_character", text = "lb_factory_character", position = {0, 20}},
                         { type = "label", id = "lb_factory_components", position = {0, 20}},
+                        { type = "label", id = "lb_factory_inputs", position = {0, 20}},
                         { type = "label", id = "lb_factory_products", position = {0, 20}},
                         { type = "label", text = "Orders", text_size = 18, position = {0, 30}},
                         { type = "list", id = "list_receipt", position = {0, 35}},
@@ -114,24 +116,49 @@ data:extend(
                         view:findById("list_building_components"):getAdapter():setData(item:getComponents());
                     end
 
-                    if item:getFactory() and item:getFactory():getComponents() then
-                        local str = "inputs: "
-                        local iterator = item:getFactory():getComponents():iterator()
-                        while iterator:hasNext() do
-                            local component = iterator:next()
-                            str = str .. component.itemInfo.name .. " " .. component.currentQuantity .. "/" .. component.totalQuantity
+                    if item:getFactory() then
+                        if item:getFactory() and item:getFactory():getCurrentReceipt() then
+                            view:findById("lb_factory_progress"):setText("Current: " .. item:getFactory():getCurrentReceipt().receiptInfo.label)
+                        else
+                            view:findById("lb_factory_progress"):setText("Current: waiting")
                         end
-                        view:findById("lb_factory_components"):setText(str)
-                    end
 
-                    if item:getFactory() and item:getFactory():getProducts() then
-                        local str = "outputs: "
-                        local iterator = item:getFactory():getProducts():iterator()
-                        while iterator:hasNext() do
-                            local product = iterator:next()
-                            str = str .. product.itemInfo.name .. " x" .. product.quantity
+                        if item:getFactory() and item:getFactory():getJob() and item:getFactory():getJob():getCharacter() then
+                            view:findById("lb_factory_character"):setText("Crafter: " .. item:getFactory():getJob():getCharacter():getName())
+                        else
+                            view:findById("lb_factory_character"):setText("Crafter: none")
                         end
-                        view:findById("lb_factory_products"):setText(str)
+
+                        if item:getFactory():getMagics() then
+                            local str = "magics: "
+                            local iterator = item:getFactory():getMagics():iterator()
+                            while iterator:hasNext() do
+                                local component = iterator:next()
+                                str = str .. component.itemInfo.name .. " " .. component.currentQuantity .. "/" .. component.totalQuantity
+                            end
+                            view:findById("lb_factory_components"):setText(str)
+                        end
+
+                        if item:getFactory():getComponents() then
+                            local str = "inputs: "
+                            local iterator = item:getFactory():getComponents():iterator()
+                            while iterator:hasNext() do
+                                local product = iterator:next()
+                                str = str .. product.consumable:getInfo().name .. " x" .. product.quantity
+                            end
+                            view:findById("lb_factory_inputs"):setText(str)
+                        end
+
+                        if item:getFactory():getProducts() then
+                            local str = "outputs: "
+                            local iterator = item:getFactory():getProducts():iterator()
+                            while iterator:hasNext() do
+                                local product = iterator:next()
+                                str = str .. product.itemInfo.name .. " x" .. product.quantity
+                            end
+                            view:findById("lb_factory_products"):setText(str)
+                        end
+
                     end
                 end
             end

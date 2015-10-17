@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game;
 
-import org.smallbox.faraway.data.ReceiptInfo;
+import org.smallbox.faraway.data.ReceiptGroupInfo;
 import org.smallbox.faraway.engine.GameEventListener;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.area.AreaType;
@@ -37,7 +37,7 @@ public interface GameObserver {
     default void onSelectResource(ResourceModel resource) {}
     default void onSelectConsumable(ConsumableModel consumable) {}
     default void onSelectStructure(StructureModel structure) {}
-    default void onSelectReceipt(ReceiptInfo receipt) {}
+    default void onSelectReceipt(ReceiptGroupInfo receipt) {}
     default void onOverParcel(ParcelModel parcel) {}
     default void onDeselect() {}
     default void onStartGame() {}

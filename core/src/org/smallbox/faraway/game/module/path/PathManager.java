@@ -1,13 +1,16 @@
 package org.smallbox.faraway.game.module.path;
 
+import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
+import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.game.helper.WorldHelper;
 import org.smallbox.faraway.game.model.MovableModel;
 import org.smallbox.faraway.game.model.area.AreaModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.item.StructureModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.module.GameModule;
@@ -21,6 +24,68 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class PathManager extends GameModule {
+    private IndexedGraph _graph;
+
+    public static class IndexedGraph implements com.badlogic.gdx.ai.pfa.indexed.IndexedGraph<ParcelModel> {
+        private final int _width;
+        private final int _height;
+        private final ParcelModel[][][] _parcels;
+
+        public IndexedGraph(ParcelModel[][][] parcels, int width, int height) {
+            _width = width;
+            _height = height;
+            _parcels = parcels;
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    for (int f = 0; f < 1; f++) {
+                        resetConnection(parcels[x][y][f]);
+                    }
+                }
+            }
+        }
+
+        public void addParcelToConnections(Array<Connection<ParcelModel>> array, ParcelModel parcel, int x, int y) {
+            ParcelModel toParcel = WorldHelper.getParcel(x, y);
+            if (parcel.isWalkable() && toParcel != null && toParcel.isWalkable()) {
+                array.add(new ParcelConnection(parcel, toParcel));
+            }
+        }
+
+        public void resetConnection(ParcelModel parcel) {
+            if (parcel != null) {
+                Array<Connection<ParcelModel>> connections = new Array<>();
+                addParcelToConnections(connections, parcel, parcel.x + 1, parcel.y);
+                addParcelToConnections(connections, parcel, parcel.x - 1, parcel.y);
+                addParcelToConnections(connections, parcel, parcel.x, parcel.y + 1);
+                addParcelToConnections(connections, parcel, parcel.x, parcel.y - 1);
+
+//        // Corners
+//        addParcelToConnections(connections, parcel, parcel.x + 1, parcel.y + 1);
+//        addParcelToConnections(connections, parcel, parcel.x + 1, parcel.y - 1);
+//        addParcelToConnections(connections, parcel, parcel.x - 1, parcel.y + 1);
+//        addParcelToConnections(connections, parcel, parcel.x - 1, parcel.y - 1);
+                parcel.setConnections(connections);
+            }
+        }
+
+        @Override
+        public Array<Connection<ParcelModel>> getConnections(ParcelModel parcel) {
+            return parcel.getConnections();
+        }
+
+        @Override
+        public int getNodeCount() {
+            return _width * _height;
+        }
+
+        public void resetAround(ParcelModel parcel) {
+            resetConnection(WorldHelper.getParcel(parcel.x, parcel.y));
+            resetConnection(WorldHelper.getParcel(parcel.x + 1, parcel.y));
+            resetConnection(WorldHelper.getParcel(parcel.x - 1, parcel.y));
+            resetConnection(WorldHelper.getParcel(parcel.x, parcel.y + 1));
+            resetConnection(WorldHelper.getParcel(parcel.x, parcel.y - 1));
+        }
+    }
 
     private IndexedAStarPathFinder<ParcelModel> _finder;
     private Heuristic<ParcelModel>              _heuristic;
@@ -28,7 +93,16 @@ public class PathManager extends GameModule {
 
     @Override
     protected void onLoaded() {
+        _graph = new IndexedGraph(ModuleHelper.getWorldModule().getParcels(), ModuleHelper.getWorldModule().getWidth(), ModuleHelper.getWorldModule().getHeight());
+//        _graph = new IndexedGraph(ModuleHelper.getWorldModule().getParcels(), width, height);
+        _finder = new IndexedAStarPathFinder<>(_graph);
+        _heuristic = (node, endNode) -> 10 * (Math.abs(node.x - endNode.x) + Math.abs(node.y - endNode.y));
 
+        // Create cache
+        _cache = new HashMap<>();
+        for (ParcelModel parcel: ModuleHelper.getWorldModule().getParcelList()) {
+            _cache.put(parcel, new ParcelPathCache(parcel));
+        }
     }
 
     @Override
@@ -53,14 +127,7 @@ public class PathManager extends GameModule {
         if (width == 0 || height == 0) {
             throw new RuntimeException("PathManager init with 0 width/height");
         }
-        _finder = new IndexedAStarPathFinder<>(ModuleHelper.getWorldModule());
-        _heuristic = (node, endNode) -> 10 * (Math.abs(node.x - endNode.x) + Math.abs(node.y - endNode.y));
 
-        // Create cache
-        _cache = new HashMap<>();
-        for (ParcelModel parcel: ModuleHelper.getWorldModule().getParcelList()) {
-            _cache.put(parcel, new ParcelPathCache(parcel));
-        }
     }
 
     public void getPathAsync(final MoveListener listener, final MovableModel movable, final BaseJobModel job, final int x, final int y) {
@@ -203,20 +270,6 @@ public class PathManager extends GameModule {
         return null;
     }
 
-    @Override
-    public void onAddStructure(StructureModel structure) {
-        if (_cache != null && structure != null) {
-            _cache.get(structure.getParcel()).getPathsBy().forEach(PathCacheModel::invalidate);
-        }
-    }
-
-    @Override
-    public void onRemoveStructure(StructureModel structure) {
-        if (_cache != null && structure != null) {
-            _cache.get(structure.getParcel()).getPathsBy().forEach(PathCacheModel::invalidate);
-        }
-    }
-
     public GraphPath<ParcelModel> getBestApprox(ParcelModel fromParcel, ParcelModel toParcel) {
         GraphPath<ParcelModel> bestPath = null;
         if (toParcel != null) {
@@ -238,4 +291,31 @@ public class PathManager extends GameModule {
         }
         return bestPath;
     }
+
+    @Override
+    public void onAddStructure(StructureModel structure) { _graph.resetAround(structure.getParcel()); }
+
+    @Override
+    public void onAddResource(ResourceModel resource) { _graph.resetAround(resource.getParcel()); }
+
+    @Override
+    public void onRemoveStructure(StructureModel structure) { _graph.resetAround(structure.getParcel()); }
+
+    @Override
+    public void onRemoveResource(ResourceModel resource) { _graph.resetAround(resource.getParcel()); }
+
+//    @Override
+//    public void onAddStructure(StructureModel structure) {
+//        if (_cache != null && structure != null) {
+//            _cache.get(structure.getParcel()).getPathsBy().forEach(PathCacheModel::invalidate);
+//        }
+//    }
+//
+//    @Override
+//    public void onRemoveStructure(StructureModel structure) {
+//        if (_cache != null && structure != null) {
+//            _cache.get(structure.getParcel()).getPathsBy().forEach(PathCacheModel::invalidate);
+//        }
+//    }
+
 }

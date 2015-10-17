@@ -133,7 +133,7 @@ public class JobCut extends BaseJobModel {
 
         if (_actionInfo.finalProducts != null) {
             _actionInfo.finalProducts.stream().filter(productInfo -> productInfo.dropRate > Math.random())
-                    .forEach(productInfo -> ModuleHelper.getWorldModule().putObject(productInfo.item, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity)));
+                    .forEach(productInfo -> ModuleHelper.getWorldModule().putObject(productInfo.item, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity), true));
         }
     }
 

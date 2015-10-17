@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.engine.Color;
 //import org.smallbox.faraway.engine.GameEventListener;
 //import org.smallbox.faraway.game.helper.JobHelper;
-//import org.smallbox.faraway.game.model.ReceiptModel;
+//import org.smallbox.faraway.game.model.OldReceiptModel;
 //import org.smallbox.faraway.game.model.item.ConsumableModel;
 //import org.smallbox.faraway.game.model.item.ItemInfo;
 //import org.smallbox.faraway.game.model.item.ItemModel;
@@ -20,7 +20,7 @@
 //
 //import java.util.stream.Collectors;
 //
-//import static org.smallbox.faraway.game.model.ReceiptModel.OrderModel;
+//import static org.smallbox.faraway.game.model.OldReceiptModel.OrderModel;
 //
 ///**
 // * Created by Alex on 01/06/2015.
@@ -85,7 +85,7 @@
 //
 //        int index = 0;
 //        if (item.getJobs() != null && !item.getJobs().isEmpty() && item.getJobs().get(0) instanceof JobCraft && ((JobCraft)item.getJobs().get(0)).getReceipt() != null) {
-//            ReceiptModel receipt = ((JobCraft)item.getJobs().get(0)).getReceipt();
+//            OldReceiptModel receipt = ((JobCraft)item.getJobs().get(0)).getReceipt();
 //            for (OrderModel order: receipt.getOrders()) {
 //                UILabel lbDebug = ViewFactory.getInstance().createTextView();
 //                lbDebug.setTextSize(14);

@@ -1,13 +1,12 @@
 package org.smallbox.faraway.game.model.job;
 
-import org.smallbox.faraway.game.model.ReceiptModel;
+import org.smallbox.faraway.game.model.OldReceiptModel;
 import org.smallbox.faraway.game.model.character.base.CharacterModel;
 import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ItemModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class JobCook extends JobCraft {
 
@@ -31,8 +30,8 @@ public class JobCook extends JobCraft {
         job._mainItem = item;
         job._receipts = new ArrayList<>();
         item.getFactory().getReceipts()
-                .forEach(receiptEntry -> receiptEntry.receiptInfo.products
-                        .forEach(product -> job._receipts.add(ReceiptModel.createFromReceiptInfo(item, product))));
+                .forEach(receiptEntry -> receiptEntry.receiptGroupInfo.receipts
+                        .forEach(product -> job._receipts.add(OldReceiptModel.createFromReceiptInfo(item, product))));
         job.setStrategy(j -> {
             if (j.getCharacter().getType().needs.joy != null) {
                 j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;

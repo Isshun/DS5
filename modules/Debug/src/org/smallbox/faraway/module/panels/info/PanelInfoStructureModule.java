@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.module.panels.info;
 //
 //import org.smallbox.faraway.game.helper.JobHelper;
-//import org.smallbox.faraway.game.model.ReceiptModel;
+//import org.smallbox.faraway.game.model.OldReceiptModel;
 //import org.smallbox.faraway.game.model.item.StructureModel;
 //import org.smallbox.faraway.game.module.GameUIModule;
 //import org.smallbox.faraway.game.module.UIWindow;
@@ -58,7 +58,7 @@
 //                if (structure.getJobBuild() != null && structure.getJobBuild().getReceipt() != null) {
 //                    ((UIFrame)findById("frame_components_entries")).removeAllViews();
 //                    int orderIndex = 0;
-//                    for (ReceiptModel.OrderModel order : structure.getJobBuild().getReceipt().getOrders()) {
+//                    for (OldReceiptModel.OrderModel order : structure.getJobBuild().getReceipt().getOrders()) {
 //                        addJobOrder((UIFrame)findById("frame_components_entries"), order, orderIndex++);
 //                    }
 //                    findById("frame_components_entries").setVisible(true);
@@ -69,7 +69,7 @@
 //            }
 //        }
 //
-//        protected void addJobOrder(UIFrame frame, ReceiptModel.OrderModel order, int index) {
+//        protected void addJobOrder(UIFrame frame, OldReceiptModel.OrderModel order, int index) {
 //            UILabel lbOrder = ViewFactory.getInstance().createTextView();
 //            lbOrder.setTextSize(14);
 //            lbOrder.setPosition(0, index * 20);

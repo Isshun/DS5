@@ -1,8 +1,5 @@
 package org.smallbox.faraway.game.module.base;
 
-import com.badlogic.gdx.ai.pfa.Connection;
-import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
-import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.data.factory.ItemFactory;
 import org.smallbox.faraway.data.factory.world.WorldFactory;
 import org.smallbox.faraway.game.Game;
@@ -11,13 +8,12 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.item.*;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.ModuleHelper;
-import org.smallbox.faraway.game.module.path.ParcelConnection;
 
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class WorldModule extends GameModule implements IndexedGraph<ParcelModel> {
+public class WorldModule extends GameModule {
     private static final int                            NB_FLOOR = 10;
 
     private WorldFactory                                _factory;
@@ -84,14 +80,6 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
 
         _parcelList = parcelList;
 
-        for (int x = 0; x < _width; x++) {
-            for (int y = 0; y < _height; y++) {
-                for (int f = 0; f < NB_FLOOR; f++) {
-                    createConnection(_parcels[x][y][f]);
-                }
-            }
-        }
-
         if (_factory != null) {
             _factory.create(this, _game.getRegion().getInfo());
         }
@@ -102,23 +90,8 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
         return true;
     }
 
-    private void createConnection(ParcelModel parcel) {
-        Array<Connection<ParcelModel>> connections = new Array<>();
-        createConnection(connections, parcel, parcel.x + 1, parcel.y);
-        createConnection(connections, parcel, parcel.x - 1, parcel.y);
-        createConnection(connections, parcel, parcel.x, parcel.y + 1);
-        createConnection(connections, parcel, parcel.x, parcel.y - 1);
-
-//        // Corners
-//        createConnection(connections, parcel, parcel.x + 1, parcel.y + 1);
-//        createConnection(connections, parcel, parcel.x + 1, parcel.y - 1);
-//        createConnection(connections, parcel, parcel.x - 1, parcel.y + 1);
-//        createConnection(connections, parcel, parcel.x - 1, parcel.y - 1);
-        parcel.setConnections(connections);
-    }
-
-    public MapObjectModel putObject(String name, int x, int y, int z, int data) {
-        return putObject(GameData.getData().getItemInfo(name), x, y, z, data);
+    public MapObjectModel putObject(String name, int x, int y, int z, int data, boolean complete) {
+        return putObject(GameData.getData().getItemInfo(name), x, y, z, data, complete);
     }
 
     public void removeItem(ItemModel item) {
@@ -203,6 +176,10 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
     }
 
     public MapObjectModel putObject(ItemInfo itemInfo, int x, int y, int z, int data) {
+        return putObject(itemInfo, x, y, z, data, true);
+    }
+
+    public MapObjectModel putObject(ItemInfo itemInfo, int x, int y, int z, int data, boolean complete) {
         if (!WorldHelper.inMapBounds(x, y)) {
             return null;
         }
@@ -212,7 +189,7 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
         }
 
         if (itemInfo.isStructure) {
-            return putStructure(itemInfo, data, x, y, z);
+            return putStructure(itemInfo, data, x, y, z, complete);
         }
 
         if (itemInfo.isUserItem) {
@@ -227,7 +204,7 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
     }
 
     public MapObjectModel putObject(String itemName, ParcelModel parcel, int data) {
-        return putObject(itemName, parcel.x, parcel.y, parcel.z, data);
+        return putObject(itemName, parcel.x, parcel.y, parcel.z, data, true);
     }
 
     private ResourceModel putResource(ItemInfo itemInfo, int matterSupply, int x, int y, int z) {
@@ -265,7 +242,7 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
         return item;
     }
 
-    private StructureModel putStructure(ItemInfo itemInfo, int matterSupply, int x, int y, int z) {
+    private StructureModel putStructure(ItemInfo itemInfo, int matterSupply, int x, int y, int z, boolean complete) {
         if (!WorldHelper.inMapBounds(x, y)) {
             return null;
         }
@@ -274,6 +251,7 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
         if (_parcels[x][y][z].getStructure() == null || _parcels[x][y][z].getStructure().isFloor()) {
             StructureModel structure = (StructureModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
             if (structure != null) {
+                structure.setComplete(complete);
                 if (structure.getInfo().receipts != null && structure.getInfo().receipts.size() > 0) {
                     structure.setReceipt(structure.getInfo().receipts.get(0));
                 }
@@ -299,7 +277,7 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
         } else {
             moveItemToParcel(_parcels[x][y][z], null);
         }
-        putObject(info, x, y, z, matterSupply);
+        putObject(info, x, y, z, matterSupply, true);
     }
 
     public void removeResource(ResourceModel resource) {
@@ -413,22 +391,6 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
         return value;
     }
 
-    @Override
-    public int getNodeCount() {
-        return _width * _height;
-    }
-
-    @Override
-    public Array<Connection<ParcelModel>> getConnections(ParcelModel parcel) {
-        return parcel.getConnections();
-    }
-
-    private void createConnection(Array<Connection<ParcelModel>> array, ParcelModel parcel, int x, int y) {
-        if (WorldHelper.inMapBounds(x, y) && parcel.isWalkable()) {
-            array.add(new ParcelConnection(parcel, _parcels[x][y][0]));
-        }
-    }
-
     private void moveItemToParcel(ParcelModel parcel, ItemModel item) {
         parcel.setItem(item);
         if (item != null) {
@@ -482,26 +444,6 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
         }
     }
 
-    @Override
-    public void onAddStructure(StructureModel structure) {
-        createConnection(structure.getParcel());
-    }
-
-    @Override
-    public void onAddResource(ResourceModel resource) {
-        createConnection(resource.getParcel());
-    }
-
-    @Override
-    public void onRemoveStructure(StructureModel structure) {
-        createConnection(structure.getParcel());
-    }
-
-    @Override
-    public void onRemoveResource(ResourceModel resource) {
-        createConnection(resource.getParcel());
-    }
-
     public ParcelModel.ParcelContent getParcelContent(ParcelModel parcel) {
         return parcel.getContent();
     }
@@ -511,4 +453,6 @@ public class WorldModule extends GameModule implements IndexedGraph<ParcelModel>
         return 10000;
     }
 
+    public int getWidth() { return _width; }
+    public int getHeight() { return _height; }
 }

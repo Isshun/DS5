@@ -1,8 +1,7 @@
 package org.smallbox.faraway.game.model.item;
 
-import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.GraphicInfo;
-import org.smallbox.faraway.data.ReceiptInfo;
+import org.smallbox.faraway.data.ReceiptGroupInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +62,7 @@ public class ItemInfo {
 	}
 
 	public static class ItemInfoFactory {
-		public List<ReceiptInfo>		receipts;
+		public List<ReceiptGroupInfo>		receipts;
 		public List<String>				receiptNames;
 		public int[] inputsSlot;
 		public int[] outputsSlot;

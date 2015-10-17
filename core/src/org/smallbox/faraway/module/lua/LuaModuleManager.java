@@ -6,7 +6,7 @@ import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
-import org.smallbox.faraway.data.ReceiptInfo;
+import org.smallbox.faraway.data.ReceiptGroupInfo;
 import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.module.ModuleInfo;
 import org.smallbox.faraway.engine.GameEventListener;
@@ -222,7 +222,7 @@ public class LuaModuleManager implements GameObserver {
     public void onSelectResource(ResourceModel resource) { broadcastToLuaModules(LuaEventsModel.on_resource_selected, resource); }
     public void onSelectConsumable(ConsumableModel consumable) { broadcastToLuaModules(LuaEventsModel.on_consumable_selected, consumable); }
     public void onSelectStructure(StructureModel structure) { broadcastToLuaModules(LuaEventsModel.on_structure_selected, structure); }
-    public void onSelectReceipt(ReceiptInfo receipt) { broadcastToLuaModules(LuaEventsModel.on_receipt_select, receipt); }
+    public void onSelectReceipt(ReceiptGroupInfo receipt) { broadcastToLuaModules(LuaEventsModel.on_receipt_select, receipt); }
     public void onOverParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_over, parcel); }
     public void onDeselect() { broadcastToLuaModules(LuaEventsModel.on_deselect, null); }
     public void onReloadUI() {loadUI();}

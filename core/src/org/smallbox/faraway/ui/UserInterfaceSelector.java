@@ -1,6 +1,6 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.data.ReceiptInfo;
+import org.smallbox.faraway.data.ReceiptGroupInfo;
 import org.smallbox.faraway.game.Game;
 import org.smallbox.faraway.game.GameObserver;
 import org.smallbox.faraway.game.helper.WorldHelper;
@@ -208,7 +208,7 @@ public class UserInterfaceSelector {
 //        ((PanelTooltip)_userInterface.getPanel(PanelTooltip.class)).select(tooltip);
     }
 
-    public void select(ReceiptInfo receipt) {
+    public void select(ReceiptGroupInfo receipt) {
         clean();
         Game.getInstance().notify(observer -> observer.onSelectReceipt(receipt));
     }
