@@ -9,8 +9,8 @@ import org.smallbox.faraway.game.model.character.base.CharacterStats;
  * Created by Alex on 17/06/2015.
  */
 public class DroidModel extends CharacterModel {
-    private static final double 	BODY_COLD_ABSORB = 100;
-    private static final double 	BODY_COLD_RESIST = 1;
+    private static final double     BODY_COLD_ABSORB = 100;
+    private static final double     BODY_COLD_RESIST = 1;
 
     public static final String[][] EQUIPMENT_VIEW_IDS = new String[][] {
             new String[] {"bt_wheel", "wheel"},

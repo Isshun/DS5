@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemFinder extends GameModule {
-	private int 					_width;
-	private int 					_height;
-	private WorldModule 			_worldModule;
-	private PathManager 			_pathManager;
-	private List<ConsumableModel> 	_consumables;
-	private List<ItemModel> 		_items;
+    private int                     _width;
+    private int                     _height;
+    private WorldModule             _worldModule;
+    private PathManager             _pathManager;
+    private List<ConsumableModel>     _consumables;
+    private List<ItemModel>         _items;
 
     @Override
     protected void onLoaded() {
@@ -35,7 +35,7 @@ public class ItemFinder extends GameModule {
     }
 
     public MapObjectModel getNearest(ItemFilter filter, CharacterModel character) {
-		if (filter.needItem) {
+        if (filter.needItem) {
             int bestDistance = Integer.MAX_VALUE;
             ItemModel bestItem = null;
             for (ItemModel item: ModuleHelper.getWorldModule().getItems()) {
@@ -47,8 +47,8 @@ public class ItemFinder extends GameModule {
                     }
                 }
             }
-			return bestItem;
-		}
+            return bestItem;
+        }
 
         if (filter.needConsumable) {
             int bestDistance = Integer.MAX_VALUE;
@@ -65,26 +65,26 @@ public class ItemFinder extends GameModule {
             return bestConsumable;
         }
 //
-//		int startX = character.getX();
-//		int startY = character.getY();
-//		int maxX = Math.max(startX, _width - startX);
-//		int maxY = Math.max(startY, _height - startY);
-//		for (int offsetX = 0; offsetX < maxX; offsetX++) {
-//			for (int offsetY = 0; offsetY < maxY; offsetY++) {
-//				ParcelModel area = _worldModule.getParcel(startX + offsetX, startY + offsetY);
+//        int startX = character.getX();
+//        int startY = character.getY();
+//        int maxX = Math.max(startX, _width - startX);
+//        int maxY = Math.max(startY, _height - startY);
+//        for (int offsetX = 0; offsetX < maxX; offsetX++) {
+//            for (int offsetY = 0; offsetY < maxY; offsetY++) {
+//                ParcelModel area = _worldModule.getParcel(startX + offsetX, startY + offsetY);
 //
-//				// Check on non-existing area
-//				if (area == null) {
-//					continue;
-//				}
+//                // Check on non-existing area
+//                if (area == null) {
+//                    continue;
+//                }
 //
-////				// Private room exists and characters is not allowed
-////				if (area.getRoom() != null && area.getRoom().isPrivate() && area.getRoom().getOccupants().contains(characters) == false) {
-////					continue;
-////				}
+////                // Private room exists and characters is not allowed
+////                if (area.getRoom() != null && area.getRoom().isPrivate() && area.getRoom().getOccupants().contains(characters) == false) {
+////                    continue;
+////                }
 //
-//				if (filter.isConsomable) {
-//					ConsumableModel consumable = WorldHelper.getConsumable(startX + offsetX, startY + offsetY);
+//                if (filter.isConsomable) {
+//                    ConsumableModel consumable = WorldHelper.getConsumable(startX + offsetX, startY + offsetY);
 //                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
 //
 //                    consumable = WorldHelper.getConsumable(startX - offsetX, startY - offsetY);
@@ -95,83 +95,83 @@ public class ItemFinder extends GameModule {
 //
 //                    consumable = WorldHelper.getConsumable(startX - offsetX, startY + offsetY);
 //                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
-//				} else {
-//					ItemModel item = WorldHelper.getItem(startX + offsetX, startY + offsetY);
-//					if (getNearestItemCheck(item, filter)) { return item; }
+//                } else {
+//                    ItemModel item = WorldHelper.getItem(startX + offsetX, startY + offsetY);
+//                    if (getNearestItemCheck(item, filter)) { return item; }
 //
-//					item = WorldHelper.getItem(startX - offsetX, startY - offsetY);
-//					if (getNearestItemCheck(item, filter)) { return item; }
+//                    item = WorldHelper.getItem(startX - offsetX, startY - offsetY);
+//                    if (getNearestItemCheck(item, filter)) { return item; }
 //
-//					item = WorldHelper.getItem(startX + offsetX, startY - offsetY);
-//					if (getNearestItemCheck(item, filter)) { return item; }
+//                    item = WorldHelper.getItem(startX + offsetX, startY - offsetY);
+//                    if (getNearestItemCheck(item, filter)) { return item; }
 //
-//					item = WorldHelper.getItem(startX - offsetX, startY + offsetY);
-//					if (getNearestItemCheck(item, filter)) { return item; }
-//				}
-//			}
-//		}
-		return null;
-	}
+//                    item = WorldHelper.getItem(startX - offsetX, startY + offsetY);
+//                    if (getNearestItemCheck(item, filter)) { return item; }
+//                }
+//            }
+//        }
+        return null;
+    }
 
-	private boolean getNearestItemCheck(MapObjectModel item, ItemFilter filter) {
-		// Item not exists
-		if (item == null) {
-			return false;
-		}
+    private boolean getNearestItemCheck(MapObjectModel item, ItemFilter filter) {
+        // Item not exists
+        if (item == null) {
+            return false;
+        }
 
-		// Item is blocked
-		if (item.getLastBlocked() != -1 && item.getLastBlocked() < Game.getUpdate() + Constant.COUNT_BEFORE_REUSE_BLOCKED_ITEM) {
-			return false;
-		}
+        // Item is blocked
+        if (item.getLastBlocked() != -1 && item.getLastBlocked() < Game.getUpdate() + Constant.COUNT_BEFORE_REUSE_BLOCKED_ITEM) {
+            return false;
+        }
 
-		// Item is not completed
-		if (!item.isComplete()) {
-			return false;
-		}
+        // Item is not completed
+        if (!item.isComplete()) {
+            return false;
+        }
 
-		// Item don't match filter
-		if (!item.matchFilter(filter)) {
-			return false;
-		}
+        // Item don't match filter
+        if (!item.matchFilter(filter)) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public ConsumableModel getNearest(ItemInfo info, ParcelModel parcel) {
-		return getNearest(info, parcel.x, parcel.y);
-	}
+    public ConsumableModel getNearest(ItemInfo info, ParcelModel parcel) {
+        return getNearest(info, parcel.x, parcel.y);
+    }
 
-	public ConsumableModel getNearest(ItemInfo info, int startX, int startY) {
-		int maxX = Math.max(startX, _width - startX);
-		int maxY = Math.max(startY, _height - startY);
-		for (int offsetX = 0; offsetX < maxX; offsetX++) {
-			for (int offsetY = 0; offsetY < maxY; offsetY++) {
-				ParcelModel area = _worldModule.getParcel(startX + offsetX, startY + offsetY);
-				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
-					return area.getConsumable();
-				}
-				area = _worldModule.getParcel(startX - offsetX, startY + offsetY);
-				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
-					return area.getConsumable();
-				}
-				area = _worldModule.getParcel(startX + offsetX, startY - offsetY);
-				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
-					return area.getConsumable();
-				}
-				area = _worldModule.getParcel(startX - offsetX, startY - offsetY);
-				if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
-					return area.getConsumable();
-				}
-			}
-		}
-		return null;
-	}
+    public ConsumableModel getNearest(ItemInfo info, int startX, int startY) {
+        int maxX = Math.max(startX, _width - startX);
+        int maxY = Math.max(startY, _height - startY);
+        for (int offsetX = 0; offsetX < maxX; offsetX++) {
+            for (int offsetY = 0; offsetY < maxY; offsetY++) {
+                ParcelModel area = _worldModule.getParcel(startX + offsetX, startY + offsetY);
+                if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
+                    return area.getConsumable();
+                }
+                area = _worldModule.getParcel(startX - offsetX, startY + offsetY);
+                if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
+                    return area.getConsumable();
+                }
+                area = _worldModule.getParcel(startX + offsetX, startY - offsetY);
+                if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
+                    return area.getConsumable();
+                }
+                area = _worldModule.getParcel(startX - offsetX, startY - offsetY);
+                if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
+                    return area.getConsumable();
+                }
+            }
+        }
+        return null;
+    }
 
-	public MapObjectModel getRandomNearest(ItemFilter filter, CharacterModel character) {
-		return getRandomNearest(filter, character.getX(), character.getY());
-	}
+    public MapObjectModel getRandomNearest(ItemFilter filter, CharacterModel character) {
+        return getRandomNearest(filter, character.getX(), character.getY());
+    }
 
-	public MapObjectModel getRandomNearest(ItemFilter filter, int x, int y) {
+    public MapObjectModel getRandomNearest(ItemFilter filter, int x, int y) {
         ParcelModel fromParcel = _worldModule.getParcel(x, y);
         List<? extends MapObjectModel> list = filter.needConsumable ? _consumables : _items;
 
@@ -199,29 +199,29 @@ public class ItemFinder extends GameModule {
         }
 
         return null;
-	}
+    }
 
-	@Override
-	protected void onUpdate(int tick) {
-	}
+    @Override
+    protected void onUpdate(int tick) {
+    }
 
-	@Override
-	public void onAddItem(ItemModel item) {
-		_items.add(item);
-	}
+    @Override
+    public void onAddItem(ItemModel item) {
+        _items.add(item);
+    }
 
-	@Override
-	public void onAddConsumable(ConsumableModel consumable) {
-		_consumables.add(consumable);
-	}
+    @Override
+    public void onAddConsumable(ConsumableModel consumable) {
+        _consumables.add(consumable);
+    }
 
-	@Override
-	public void onRemoveItem(ItemModel item) {
-		_items.remove(item);
-	}
+    @Override
+    public void onRemoveItem(ItemModel item) {
+        _items.remove(item);
+    }
 
-	@Override
-	public void onRemoveConsumable(ConsumableModel consumable) {
-		_consumables.remove(consumable);
-	}
+    @Override
+    public void onRemoveConsumable(ConsumableModel consumable) {
+        _consumables.remove(consumable);
+    }
 }

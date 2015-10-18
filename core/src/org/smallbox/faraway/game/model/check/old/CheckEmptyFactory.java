@@ -10,13 +10,13 @@
 //// Refill dispenser
 //public class CheckEmptyFactory implements Check {
 //
-//	public void onCreate(JobModule jobManager) {
-//		List<FactoryItem> factories = ModuleHelper.getWorldModule().getFactories();
-//		for (FactoryItem factory: factories) {
-//			if (factory.needRefill() && factory.isWaitForRefill() == false) {
-//				ModuleHelper.getJobModule().addRefillJob(factory);
-//			}
-//		}
-//	}
+//    public void onCreate(JobModule jobManager) {
+//        List<FactoryItem> factories = ModuleHelper.getWorldModule().getFactories();
+//        for (FactoryItem factory: factories) {
+//            if (factory.needRefill() && factory.isWaitForRefill() == false) {
+//                ModuleHelper.getJobModule().addRefillJob(factory);
+//            }
+//        }
+//    }
 //
 //}

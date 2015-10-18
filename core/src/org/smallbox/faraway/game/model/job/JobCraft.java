@@ -61,7 +61,7 @@ public class JobCraft extends BaseBuildJobModel {
     }
 
     @Override
-    public void					setItem(ItemModel item) {
+    public void                    setItem(ItemModel item) {
         super.setItem(item);
 
         if (item != null) {
@@ -311,8 +311,8 @@ public class JobCraft extends BaseBuildJobModel {
 
         // TODO: wrong location
         // Switch status to MOVE_TO_INGREDIENT
-//		_receipt.reset();
-//		_receipt = null;
+//        _receipt.reset();
+//        _receipt = null;
         _status = Status.MOVE_TO_INGREDIENT;
 
         onCheck(character);

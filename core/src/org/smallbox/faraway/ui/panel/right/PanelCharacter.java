@@ -61,29 +61,29 @@
 //    private static final Color COLOR_2 = new Color(247, 57, 57);
 //    private static final Color COLOR_3 = new Color(247, 57, 57);
 //
-//    private CharacterModel 		_character;
+//    private CharacterModel         _character;
 //    private UILabel             _lbName;
 //    private ColorView _cursor;
-//    private UIImage[] 		    _shapes = new UIImage[GAUGES.length];
-//    private UILabel[] 			_values = new UILabel[GAUGES.length];
+//    private UIImage[]             _shapes = new UIImage[GAUGES.length];
+//    private UILabel[]             _values = new UILabel[GAUGES.length];
 //    private UILabel             _lbJob;
-//    private UILabel[] 			_lbBuffs = new UILabel[NB_MAX_BUFFS];
-//    private UILabel[] 			_lbDiseases = new UILabel[NB_MAX_DISEASES];
-//    private UILabel[] 			_familyEntries;
-//    private UILabel[] 			_familyRelationEntries;
-//    private int 				_nbRelation;
+//    private UILabel[]             _lbBuffs = new UILabel[NB_MAX_BUFFS];
+//    private UILabel[]             _lbDiseases = new UILabel[NB_MAX_DISEASES];
+//    private UILabel[]             _familyEntries;
+//    private UILabel[]             _familyRelationEntries;
+//    private int                 _nbRelation;
 //    private UILabel             _lbOld;
 //
-//    private int 				_animRemain;
-//    private int 				_lastOld;
+//    private int                 _animRemain;
+//    private int                 _lastOld;
 //    private CharacterInfoModel.Gender _lastGender;
 //    private UILabel             _animLabel;
-//    private String 				_animValue;
-//    private int 				_animFrame;
-//    private int 				_animGauge;
-//    private String 				_lastEnlisted;
+//    private String                 _animValue;
+//    private int                 _animFrame;
+//    private int                 _animGauge;
+//    private String                 _lastEnlisted;
 //    private UILabel             _lbEnlisted;
-//    private String 				_lastBirthName;
+//    private String                 _lastBirthName;
 //    private UILabel             _lbBirthName;
 //    private UILabel             _lbInventory;
 //    private View _selectedPriority;
@@ -321,7 +321,7 @@
 //        for (final CharacterRelation relation: relations) {
 //            if (i < NB_MAX_RELATION) {
 //                String left = relation.getSecond().getInfo().getName();
-////				_familyEntries[i].setStyle(TextView.UNDERLINED);
+////                _familyEntries[i].setStyle(TextView.UNDERLINED);
 //                _familyEntries[i].setOnClickListener(view -> _ui.getSelector().select(relation.getSecond()));
 //
 //                String relationName = relation.getRelationLabel();
@@ -940,7 +940,7 @@
 //    }
 //
 //    @Override
-//    public boolean	onMouseMove(int x, int y) {
+//    public boolean    onMouseMove(int x, int y) {
 //        if (_selectedPriority != null) {
 //            _selectedPriority.setPosition(0, y - _framePrioritiesPosY - _priorityOverlayOffset);
 //            _priorityOverlayPosition = y - _priorityOverlayOffset;

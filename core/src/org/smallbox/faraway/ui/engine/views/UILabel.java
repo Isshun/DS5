@@ -6,29 +6,29 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.util.StringUtils;
 
 public class UILabel extends View {
-	public static final int	REGULAR = 0;
-	public static final int	BOLD = 1;
-	public static final int	ITALIC = 2;
-	public static final int	UNDERLINED = 3;
-	private int _hash1;
-	private int _hash2;
+    public static final int    REGULAR = 0;
+    public static final int    BOLD = 1;
+    public static final int    ITALIC = 2;
+    public static final int    UNDERLINED = 3;
+    private int _hash1;
+    private int _hash2;
 
     private String                              _string;
     private int                                 _textSize = 14;
     private com.badlogic.gdx.graphics.Color     _gdxTextColor;
     private Color                               _textColor;
 
-	public UILabel() {
+    public UILabel() {
         super(-1, -1);
-	}
+    }
 
     @Override
     public void addView(View view) {
     }
 
     public UILabel(int width, int height) {
-		super(width, height);
-	}
+        super(width, height);
+    }
 
     public void setText(String string) {
         if (string == null) {
@@ -40,9 +40,9 @@ public class UILabel extends View {
         if (hash != _hash1) {
             setStringValue(GameData.getData() != null && GameData.getData().hasString(hash) ? GameData.getData().getString(hash) : string);
         }
-	}
+    }
 
-	public void setText(String str1, String str2) {
+    public void setText(String str1, String str2) {
         if (str1 == null) { str1 = ""; }
         if (str2 == null) { str2 = ""; }
 
@@ -53,7 +53,7 @@ public class UILabel extends View {
             str2 = GameData.getData() != null && GameData.getData().hasString(hash2) ? GameData.getData().getString(hash2) : str2;
             setStringValue(str1 + str2);
         }
-	}
+    }
 
     public void setText(String string, int value) {
         if (string == null) {
@@ -120,9 +120,9 @@ public class UILabel extends View {
         return _string;
     }
 
-	public void setShortcut(int i) {
-		//TODO
-	}
+    public void setShortcut(int i) {
+        //TODO
+    }
 
     public void setTextPadding(int i, int i1) {
         //TODO
@@ -132,13 +132,13 @@ public class UILabel extends View {
         //TODO
     }
 
-	@Override
-	public void init() {
-	}
+    @Override
+    public void init() {
+    }
 
-	public View findById(String string) {
-		return null;
-	}
+    public View findById(String string) {
+        return null;
+    }
 
     @Override
     public void draw(GDXRenderer renderer, int x, int y) {

@@ -15,9 +15,9 @@ import org.smallbox.faraway.util.Constant;
 
 public class DebugRenderer extends BaseRenderer {
 
-	public DebugRenderer() {
+    public DebugRenderer() {
 //        _cache = ViewFactory.getInstance().createRenderLayer(0, 0, 0);
-	}
+    }
 
     @Override
     public void onRefresh(int frame) {
@@ -69,6 +69,6 @@ public class DebugRenderer extends BaseRenderer {
 //                renderer.draw(lbDebug, (int) (parcel.x * Constant.TILE_WIDTH + effect.getViewport().getPosX()), (int) (parcel.y * Constant.TILE_HEIGHT + effect.getViewport().getPosY()));
 //            }
 //        }
-	}
+    }
 
 }

@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RoomModule extends GameModule implements GameObserver {
-    private List<RoomModel>		        _roomList;
+    private List<RoomModel>                _roomList;
     private double[][]                  _oxygenLevels;
     private boolean                     _needRefresh;
     private List<ParcelModel>           _roomlessParcels;

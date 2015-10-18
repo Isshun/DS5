@@ -5,8 +5,8 @@ import org.smallbox.faraway.game.model.job.BaseJobModel;
 public class ItemSlot {
     private BaseJobModel    _job;
     private ItemModel       _item;
-    private int			    _relX;
-    private int			    _relY;
+    private int             _relX;
+    private int             _relY;
 
     public ItemSlot(ItemModel item, int x, int y) {
         _item = item;

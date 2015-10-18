@@ -16,7 +16,7 @@ import java.util.List;
 public class CharacterRenderer extends BaseRenderer {
     private List<CharacterModel>            _characters;
     private SpriteManager                   _spriteManager;
-    private int 							_frame;
+    private int                             _frame;
 
     private static Color  COLOR_CRITICAL = new Color(0xbb0000);
     private static Color  COLOR_WARNING = new Color(0xbbbb00);
@@ -30,7 +30,7 @@ public class CharacterRenderer extends BaseRenderer {
         _spriteManager = SpriteManager.getInstance();
     }
 
-    public void	onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         int viewPortX = viewport.getPosX();
         int viewPortY = viewport.getPosY();
         double viewPortScale = viewport.getScale();
@@ -51,11 +51,11 @@ public class CharacterRenderer extends BaseRenderer {
                 if (c.isAlive()) {
                     int offset = 0;
                     if (move != Direction.NONE) {
-//					offset = (int) ((c.getMoveProgress() + (c.getMoveStep() * animProgress)) * Constant.TILE_WIDTH);
+//                    offset = (int) ((c.getMoveProgress() + (c.getMoveStep() * animProgress)) * Constant.TILE_WIDTH);
 //                    if ("rhea".equals(c.getInfo().getFirstName().toLowerCase().trim())) {
 //                        Log.notice("offset: " + offset);
 //                    }
-//				offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
+//                offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
                         frame = c.getFrameIndex() / 20 % 4;
                     }
 

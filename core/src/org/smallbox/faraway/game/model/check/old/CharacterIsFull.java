@@ -7,17 +7,17 @@
 //
 //public class CharacterIsFull implements CharacterCheck {
 //
-//	@Override
-//	public boolean onCreate(JobModule jobManager, CharacterModel characters) {
-//		if (characters.isFull()) {
-//			JobModel job = JobStore.onCreate(characters);
-//			if (job != null) {
-//				jobManager.addJob(job, characters);
-//				return true;
-//			}
-//		}
+//    @Override
+//    public boolean onCreate(JobModule jobManager, CharacterModel characters) {
+//        if (characters.isFull()) {
+//            JobModel job = JobStore.onCreate(characters);
+//            if (job != null) {
+//                jobManager.addJob(job, characters);
+//                return true;
+//            }
+//        }
 //
-//		return false;
-//	}
+//        return false;
+//    }
 //
 //}

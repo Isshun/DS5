@@ -10,18 +10,18 @@
 //// Play with random object
 //public class CharacterPlayTime implements CharacterCheck {
 //
-//	@Override
-//	public boolean onCreate(JobModule jobManager, CharacterModel characters) {
-//		if ((int)(Math.random() * 100) <= Constant.CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS) {
-//			return false;
-//		}
+//    @Override
+//    public boolean onCreate(JobModule jobManager, CharacterModel characters) {
+//        if ((int)(Math.random() * 100) <= Constant.CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS) {
+//            return false;
+//        }
 //
-//		UserItem toy = ModuleHelper.getWorldModule().getRandomToy(characters.getX(), characters.getY());
-//		if (toy == null) {
-//			return false;
-//		}
+//        UserItem toy = ModuleHelper.getWorldModule().getRandomToy(characters.getX(), characters.getY());
+//        if (toy == null) {
+//            return false;
+//        }
 //
-//		jobManager.addJob(JobUse.onCreate(toy, characters), characters);
-//		return true;
-//	}
+//        jobManager.addJob(JobUse.onCreate(toy, characters), characters);
+//        return true;
+//    }
 //}

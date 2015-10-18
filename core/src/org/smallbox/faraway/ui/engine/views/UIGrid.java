@@ -9,11 +9,11 @@ import java.util.Collections;
  * Created by Alex on 28/09/2015.
  */
 public class UIGrid extends View {
-    private int _columns;
-    private int _rowHeight;
-    private int _columnWidth;
-    private int _count;
-    private boolean _keepSorted;
+    private int         _columns;
+    private int         _rowHeight;
+    private int         _columnWidth;
+    private int         _count;
+    private boolean     _keepSorted;
 
     public UIGrid(int width, int height) {
         super(width, height);

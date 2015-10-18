@@ -53,19 +53,19 @@
     $('.content').delegate('.subtree-toggle', 'click', function() {
       console.log('click');
       if($(this).hasClass('blank')) {
-	    return;
+        return;
       }
-		
-	  if($(this).hasClass('open')) {
-	    $(this).removeClass('open').addClass('closed');
-	  } else {
-		$(this).removeClass('closed').addClass('open');
-	  }
-		
+
+      if($(this).hasClass('open')) {
+        $(this).removeClass('open').addClass('closed');
+      } else {
+        $(this).removeClass('closed').addClass('open');
+      }
+
       $(this).parent().children('ul').slideToggle('fast');
     });
-	
-	$('.content').delegate('.art-preview-title', 'mouseenter', function() {
+
+    $('.content').delegate('.art-preview-title', 'mouseenter', function() {
       $(this).addClass('hover');
     });
     

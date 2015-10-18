@@ -35,9 +35,9 @@
 //    private static class PanelEntry {
 //        final String    buttonId;
 //        final Mode      mode;
-//        final String	label;
-//        final String 	shortcut;
-//        final int 		shortcutPos;
+//        final String    label;
+//        final String     shortcut;
+//        final int         shortcutPos;
 //
 //        public PanelEntry(String buttonId, String label, String shortcut, int shortcutPos, Mode mode) {
 //            this.buttonId = buttonId;
@@ -48,19 +48,19 @@
 //        }
 //    }
 //
-//    private PanelEntry	_entries[] = {
-//            new PanelEntry("bt_build",      "[ UILD]", 	    "B", 	1, Mode.BUILD),
-//            new PanelEntry("bt_occupation", "[ CCUPATION]", "O",	1, Mode.JOBS),
-//            new PanelEntry("bt_crew",       "[ REW]", 		"C", 	1, Mode.CREW),
-//            new PanelEntry("bt_room",       "[ OOM]", 		"R", 	1, Mode.ROOM),
-//            new PanelEntry("bt_plan",       "[ LAN]", 		"P",	1, Mode.PLAN),
-//            new PanelEntry("bt_manage",     "[ ANAGE]", 	"M",	1, Mode.MANAGER),
-//            new PanelEntry("bt_stats",      "[ TATS]", 		"S",	1, Mode.STATS),
-//            new PanelEntry("bt_area",       "[ AREAS]",     "A",	1, Mode.AREA)
+//    private PanelEntry    _entries[] = {
+//            new PanelEntry("bt_build",      "[ UILD]",         "B",     1, Mode.BUILD),
+//            new PanelEntry("bt_occupation", "[ CCUPATION]", "O",    1, Mode.JOBS),
+//            new PanelEntry("bt_crew",       "[ REW]",         "C",     1, Mode.CREW),
+//            new PanelEntry("bt_room",       "[ OOM]",         "R",     1, Mode.ROOM),
+//            new PanelEntry("bt_plan",       "[ LAN]",         "P",    1, Mode.PLAN),
+//            new PanelEntry("bt_manage",     "[ ANAGE]",     "M",    1, Mode.MANAGER),
+//            new PanelEntry("bt_stats",      "[ TATS]",         "S",    1, Mode.STATS),
+//            new PanelEntry("bt_area",       "[ AREAS]",     "A",    1, Mode.AREA)
 //    };
 //
 //    // TODO
-////	private MiniMapRenderer		_miniMapRenderer;
+////    private MiniMapRenderer        _miniMapRenderer;
 //    private UILabel _lbTime;
 //    private List<ResourceEntry> _resources;
 //    private UIImage _map;
@@ -109,15 +109,15 @@
 //////            _map.setSprite(_miniMapRenderer.getSprite());
 //////        }
 ////
-//		//update * 1000000
-//		Calendar cal = Calendar.getInstance();
-//		cal.set(2175, Calendar.JANUARY, 1, 0, 0);
-//		cal.add(Calendar.HOUR, update);
+//        //update * 1000000
+//        Calendar cal = Calendar.getInstance();
+//        cal.set(2175, Calendar.JANUARY, 1, 0, 0);
+//        cal.add(Calendar.HOUR, update);
 //
-//		Date date = cal.getTime();
-//		DateFormat formater = new SimpleDateFormat("dd MMMM y");
-//		_lbTime.setText(formater.format(date));
-//		_lbTime.setVisible(false);
+//        Date date = cal.getTime();
+//        DateFormat formater = new SimpleDateFormat("dd MMMM y");
+//        _lbTime.setText(formater.format(date));
+//        _lbTime.setVisible(false);
 //
 //        for (ResourceEntry res: _resources) {
 //            if (res != null) {

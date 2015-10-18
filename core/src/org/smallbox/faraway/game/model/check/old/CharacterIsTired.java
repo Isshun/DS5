@@ -13,30 +13,30 @@
 // */
 //public class CharacterIsTired implements CharacterCheck {
 //
-//	@Override
-//	public boolean onCreate(JobModule jobManager, CharacterModel characters) {
-//		if (characters.getNeeds().isExhausted()) {
-//			ItemFilter filter = ItemFilter.createUsableFilter();
-//			filter.effectEnergy = true;
+//    @Override
+//    public boolean onCreate(JobModule jobManager, CharacterModel characters) {
+//        if (characters.getNeeds().isExhausted()) {
+//            ItemFilter filter = ItemFilter.createUsableFilter();
+//            filter.effectEnergy = true;
 //
-//			// Character has quarters
-//			if (characters.getQuarter() != null) {
-//				ItemBase item = characters.getQuarter().find(filter);
-//				if (item != null) {
-//					jobManager.addJob(JobUse.onCreate(item, characters), characters);
-//					return true;
-//				}
-//			}
+//            // Character has quarters
+//            if (characters.getQuarter() != null) {
+//                ItemBase item = characters.getQuarter().find(filter);
+//                if (item != null) {
+//                    jobManager.addJob(JobUse.onCreate(item, characters), characters);
+//                    return true;
+//                }
+//            }
 //
-//			// No quarters or no usable bed in quarters
-//			ItemBase item = Game.getWorldFinder().getNearest(filter, characters);
-//			if (item != null) {
-//				jobManager.addJob(JobUse.onCreate(item, characters), characters);
-//				return true;
-//			}
-//		}
+//            // No quarters or no usable bed in quarters
+//            ItemBase item = Game.getWorldFinder().getNearest(filter, characters);
+//            if (item != null) {
+//                jobManager.addJob(JobUse.onCreate(item, characters), characters);
+//                return true;
+//            }
+//        }
 //
-//		return false;
-//	}
+//        return false;
+//    }
 //
 //}

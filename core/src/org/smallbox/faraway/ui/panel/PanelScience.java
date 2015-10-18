@@ -5,14 +5,14 @@ import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 
 public class PanelScience extends BaseRightPanel {
-	
-	public PanelScience(Mode mode, GameEventListener.Key shortcut) {
-		super(mode, shortcut);
+
+    public PanelScience(Mode mode, GameEventListener.Key shortcut) {
+        super(mode, shortcut);
   }
 
-	@Override
-	protected void onCreate(ViewFactory factory) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    protected void onCreate(ViewFactory factory) {
+        // TODO Auto-generated method stub
+
+    }
 }

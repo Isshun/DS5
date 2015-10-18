@@ -13,35 +13,35 @@
 //// TODO: change name by filter
 //public class CharacterIsHungry implements CharacterCheck {
 //
-//	@Override
-//	public boolean onCreate(JobModule jobManager, CharacterModel characters) {
-//		if (characters.getNeeds().isHungry()) {
-//			ItemFilter consomableItemFilter = ItemFilter.createConsomableFilter();
-//			consomableItemFilter.effectFood = true;
+//    @Override
+//    public boolean onCreate(JobModule jobManager, CharacterModel characters) {
+//        if (characters.getNeeds().isHungry()) {
+//            ItemFilter consomableItemFilter = ItemFilter.createConsomableFilter();
+//            consomableItemFilter.effectFood = true;
 //
-//			// Have item in inventory
-//			ItemBase item = characters.find(consomableItemFilter);
-//			if (item != null) {
-//				jobManager.addJob(JobUseInventory.onCreate(characters, item), characters);
-//				return true;
-//			}
+//            // Have item in inventory
+//            ItemBase item = characters.find(consomableItemFilter);
+//            if (item != null) {
+//                jobManager.addJob(JobUseInventory.onCreate(characters, item), characters);
+//                return true;
+//            }
 //
-//			// Take item from storage
-//			StorageRoom storage = Game.getRoomManager().findStorageContains(consomableItemFilter, characters.getX(), characters.getY());
-//			if (storage != null) {
-//				jobManager.addJob(JobTake.onCreate(characters, storage, consomableItemFilter), characters);
-//				return true;
-//			}
+//            // Take item from storage
+//            StorageRoom storage = Game.getRoomManager().findStorageContains(consomableItemFilter, characters.getX(), characters.getY());
+//            if (storage != null) {
+//                jobManager.addJob(JobTake.onCreate(characters, storage, consomableItemFilter), characters);
+//                return true;
+//            }
 //
-//			// Looking for food dispenser
-//			ItemFilter factoryFilter = ItemFilter.createFactoryFilter();
-//			factoryFilter.effectFood = true;
-//			item = Game.getWorldFinder().getNearest(factoryFilter, characters);
-//			if (item != null) {
-//				jobManager.addJob(JobUse.onCreate(item), characters);
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
+//            // Looking for food dispenser
+//            ItemFilter factoryFilter = ItemFilter.createFactoryFilter();
+//            factoryFilter.effectFood = true;
+//            item = Game.getWorldFinder().getNearest(factoryFilter, characters);
+//            if (item != null) {
+//                jobManager.addJob(JobUse.onCreate(item), characters);
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 //}

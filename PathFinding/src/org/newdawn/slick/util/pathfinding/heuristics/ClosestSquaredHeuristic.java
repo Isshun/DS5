@@ -13,14 +13,14 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
  */
 public class ClosestSquaredHeuristic implements AStarHeuristic {
 
-	/**
-	 * @see AStarHeuristic#getCost(TileBasedMap, Mover, int, int, int, int)
-	 */
-	public float getCost(TileBasedMap map, Mover mover, int x, int y, int tx, int ty) {		
-		float dx = tx - x;
-		float dy = ty - y;
-		
-		return ((dx*dx)+(dy*dy));
-	}
+    /**
+     * @see AStarHeuristic#getCost(TileBasedMap, Mover, int, int, int, int)
+     */
+    public float getCost(TileBasedMap map, Mover mover, int x, int y, int tx, int ty) {
+        float dx = tx - x;
+        float dy = ty - y;
+
+        return ((dx*dx)+(dy*dy));
+    }
 
 }

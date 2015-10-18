@@ -5,61 +5,61 @@ import org.smallbox.faraway.engine.renderer.GDXRenderer;
 import java.util.List;
 
 public class UIFrame extends View {
-	public UIFrame(int width, int height) {
-		super(width, height);
-	}
+    public UIFrame(int width, int height) {
+        super(width, height);
+    }
 
-	public UIFrame() {
-		super(-1, -1);
-	}
+    public UIFrame() {
+        super(-1, -1);
+    }
 
     @Override
-	public void init() {
-		if (_align == Align.CENTER && _parent != null) {
-			_offsetX = (_parent.getContentWidth() - _width) / 2;
-			_offsetY = (_parent.getContentHeight() - _height) / 2;
-		}
+    public void init() {
+        if (_align == Align.CENTER && _parent != null) {
+            _offsetX = (_parent.getContentWidth() - _width) / 2;
+            _offsetY = (_parent.getContentHeight() - _height) / 2;
+        }
 
         _views.forEach(View::init);
-	}
+    }
 
-	@Override
-	public void setPosition(int x, int y) {
-		super.setPosition(x, y);
-//		_needResetPos = true;
-	}
+    @Override
+    public void setPosition(int x, int y) {
+        super.setPosition(x, y);
+//        _needResetPos = true;
+    }
 
-	@Override
-	public void draw(GDXRenderer renderer, int x, int y) {
-		super.draw(renderer, x, y);
+    @Override
+    public void draw(GDXRenderer renderer, int x, int y) {
+        super.draw(renderer, x, y);
 
         if (_isVisible) {
-			if (_views != null) {
-				for (View view : _views) {
-					view.draw(renderer, _x + x, _y + y);
-				}
-			}
-		}
-	}
+            if (_views != null) {
+                for (View view : _views) {
+                    view.draw(renderer, _x + x, _y + y);
+                }
+            }
+        }
+    }
 
     public void addView(View view) {
-		if (this.equals(view)) {
-//			Log.error("UIFrame: try to add itself to childrens");
-			return;
-		}
-		
-		view.setParent(this);
-		_views.add(view);
-	}
+        if (this.equals(view)) {
+//            Log.error("UIFrame: try to add itself to childrens");
+            return;
+        }
 
-	@Override
-	protected void remove() {
-		super.remove();
-		for (View view: _views) {
-			view.remove();
-		}
-		_views.clear();
-	}
+        view.setParent(this);
+        _views.add(view);
+    }
+
+    @Override
+    protected void remove() {
+        super.remove();
+        for (View view: _views) {
+            view.remove();
+        }
+        _views.clear();
+    }
 
     @Override
     public int getContentWidth() {
@@ -73,11 +73,11 @@ public class UIFrame extends View {
 
     public void removeAllViews() {
         _views.forEach(View::remove);
-		_views.clear();
-	}
+        _views.clear();
+    }
 
-	public void removeView(View view) {
-		view.remove();
-		_views.remove(view);
-	}
+    public void removeView(View view) {
+        view.remove();
+        _views.remove(view);
+    }
 }

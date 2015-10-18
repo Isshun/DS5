@@ -44,7 +44,7 @@ public class AnimalModel extends MovableModel {
         }
     }
 
-    public void		move() {
+    public void        move() {
         _move = Direction.NONE;
 
         if (_path == null) {
@@ -95,7 +95,7 @@ public class AnimalModel extends MovableModel {
     }
 
     @Override
-    public void	onPathFailed(BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
+    public void    onPathFailed(BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
         if (_fromParcel == fromParcel && _toParcel == toParcel) {
             Log.warning("Job failed (no path)");
 
@@ -106,7 +106,7 @@ public class AnimalModel extends MovableModel {
     }
 
     @Override
-    public void	onPathComplete(GraphPath<ParcelModel> path, BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
+    public void    onPathComplete(GraphPath<ParcelModel> path, BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
         if (_fromParcel == fromParcel && _toParcel == toParcel) {
             Log.debug("Character #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
 

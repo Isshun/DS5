@@ -27,11 +27,11 @@ import java.util.Map;
 public class SpriteManager {
     private static final int                NB_SELECTOR_TILE = 4;
 
-    private static int 				        _count;
+    private static int                         _count;
     private static SpriteManager            _self;
     private Map<Integer, GDXSpriteModel>    _spritesCharacters;
-    private Map<Long, GDXSpriteModel> 		_sprites;
-    private Texture[] 				        _textureCharacters;
+    private Map<Long, GDXSpriteModel>         _sprites;
+    private Texture[]                         _textureCharacters;
     private GDXSpriteModel[]                _selectors;
     private Map<String, SpriteModel>        _icons;
     private ItemInfo                        _groundItemInfo;
@@ -289,17 +289,17 @@ public class SpriteManager {
         }
 
         long sum = texture;
-        sum = sum << 6;		// 6
+        sum = sum << 6;        // 6
         sum += x;
-        sum = sum << 12;	// 6 + 12 = 18
+        sum = sum << 12;    // 6 + 12 = 18
         sum += y;
-        sum = sum << 12;	// 18 + 12 = 30
+        sum = sum << 12;    // 18 + 12 = 30
         sum += extra1;
-        sum = sum << 10;	// 30 + 10 = 40
+        sum = sum << 10;    // 30 + 10 = 40
         sum += extra2;
-        sum = sum << 10;	// 40 + 10 = 50
+        sum = sum << 10;    // 40 + 10 = 50
         sum += alpha;
-        sum = sum << 8;		// 50 + 8 = 58
+        sum = sum << 8;        // 50 + 8 = 58
         return sum;
     }
 

@@ -75,17 +75,17 @@ public class JobCut extends BaseJobModel {
             return false;
         }
 
-//		// Resource is depleted
-//		if (_item.getMatterSupply() <= 0) {
-//			_reason = JobAbortReason.INVALID;
-//			return false;
-//		}
+//        // Resource is depleted
+//        if (_item.getMatterSupply() <= 0) {
+//            _reason = JobAbortReason.INVALID;
+//            return false;
+//        }
 
-//		// No space left in inventory
-//		if (!characters.hasInventorySpaceLeft()) {
-//			_reason = JobAbortReason.NO_LEFT_CARRY;
-//			return false;
-//		}
+//        // No space left in inventory
+//        if (!characters.hasInventorySpaceLeft()) {
+//            _reason = JobAbortReason.NO_LEFT_CARRY;
+//            return false;
+//        }
 
         return true;
     }

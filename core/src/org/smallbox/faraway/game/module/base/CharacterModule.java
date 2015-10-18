@@ -21,186 +21,186 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class CharacterModule extends GameModule {
-	private BlockingQueue<CharacterModel> 		_characters;
-	private List<CharacterModel> 				_addOnUpdate;
-	private int 								_count;
+    private BlockingQueue<CharacterModel>       _characters;
+    private List<CharacterModel>                _addOnUpdate;
+    private int                                 _count;
 
-	public CharacterModule() {
-		_characters = new LinkedBlockingQueue<>();
-		_addOnUpdate = new ArrayList<>();
-		_count = 0;
-	}
+    public CharacterModule() {
+        _characters = new LinkedBlockingQueue<>();
+        _addOnUpdate = new ArrayList<>();
+        _count = 0;
+    }
 
     @Override
     public boolean isMandatory() {
         return true;
     }
 
-    public Collection<CharacterModel> 	getCharacters() { return _characters; }
-	public int 							getCount() { return _count; }
+    public Collection<CharacterModel>     getCharacters() { return _characters; }
+    public int                             getCount() { return _count; }
 
-	// TODO
-	public CharacterModel getNext(CharacterModel character) {
-		for (CharacterModel c: _characters) {
-			if (c == character) {
-				return c;
-			}
-		}
+    // TODO
+    public CharacterModel getNext(CharacterModel character) {
+        for (CharacterModel c: _characters) {
+            if (c == character) {
+                return c;
+            }
+        }
 
-		return null;
-	}
-
-    @Override
-	public void onLoaded() {
-		ModuleHelper.setCharacterModule(this);
+        return null;
     }
 
     @Override
-	public void onUpdate(int tick) {
-		// Add new born
-		_characters.addAll(_addOnUpdate);
-		_addOnUpdate.clear();
+    public void onLoaded() {
+        ModuleHelper.setCharacterModule(this);
+    }
 
-		CharacterModel characterToRemove = null;
+    @Override
+    public void onUpdate(int tick) {
+        // Add new born
+        _characters.addAll(_addOnUpdate);
+        _addOnUpdate.clear();
 
-		for (CharacterModel c: _characters) {
-			// Check if characters is dead
-			if (!c.isAlive()) {
+        CharacterModel characterToRemove = null;
 
-				// Cancel job
-				if (c.getJob() != null) {
-					ModuleHelper.getJobModule().quitJob(c.getJob(), JobAbortReason.DIED);
-				}
+        for (CharacterModel c: _characters) {
+            // Check if characters is dead
+            if (!c.isAlive()) {
 
-				if (!c.getBuffs().isEmpty()) {
-					c.getBuffs().clear();
-				}
+                // Cancel job
+                if (c.getJob() != null) {
+                    ModuleHelper.getJobModule().quitJob(c.getJob(), JobAbortReason.DIED);
+                }
 
-//				characterToRemove = c;
-			}
+                if (!c.getBuffs().isEmpty()) {
+                    c.getBuffs().clear();
+                }
 
-			else {
-				// Move stuck character
-				if (!c.getParcel().isWalkable()) {
-					ParcelModel parcel = WorldHelper.getNearestWalkable(c.getParcel().x, c.getParcel().y, true, true);
-					if (parcel != null) {
-						c.setParcel(parcel);
-					}
-				}
+//                characterToRemove = c;
+            }
 
-				if (tick % 10 == c.getLag()) {
-					// Assign job
-					if (c.getJob() == null && !c.isSleeping()) {
-						ModuleHelper.getJobModule().assign(c);
-					}
+            else {
+                // Move stuck character
+                if (!c.getParcel().isWalkable()) {
+                    ParcelModel parcel = WorldHelper.getNearestWalkable(c.getParcel().x, c.getParcel().y, true, true);
+                    if (parcel != null) {
+                        c.setParcel(parcel);
+                    }
+                }
 
-					// Update characters (buffs, stats)
-					c.update();
-				}
+                if (tick % 10 == c.getLag()) {
+                    // Assign job
+                    if (c.getJob() == null && !c.isSleeping()) {
+                        ModuleHelper.getJobModule().assign(c);
+                    }
 
-				// Update needs
-				c.getNeeds().update();
+                    // Update characters (buffs, stats)
+                    c.update();
+                }
 
-				c.setDirection(Direction.NONE);
-				c.action();
-				c.move();
-				c.fixPosition();
-			}
-		}
+                // Update needs
+                c.getNeeds().update();
 
-		if (characterToRemove != null) {
-			_characters.remove(characterToRemove);
-		}
+                c.setDirection(Direction.NONE);
+                c.action();
+                c.move();
+                c.fixPosition();
+            }
+        }
 
-		if (tick % 10 == 0) {
-			for (CharacterModel c: _characters) {
-				c.longUpdate();
-			}
-		}
-	}
+        if (characterToRemove != null) {
+            _characters.remove(characterToRemove);
+        }
 
-	// TODO: heavy
-	public CharacterModel getCharacterAtPos(int x, int y) {
-		printDebug("getCharacterAtPos: " + x + "x" + y);
+        if (tick % 10 == 0) {
+            for (CharacterModel c: _characters) {
+                c.longUpdate();
+            }
+        }
+    }
 
-		for (CharacterModel c: _characters) {
-			if (c.getX() == x && c.getY() == y) {
-				printDebug("getCharacterAtPos: found");
-				return c;
-			}
-		}
+    // TODO: heavy
+    public CharacterModel getCharacterAtPos(int x, int y) {
+        printDebug("getCharacterAtPos: " + x + "x" + y);
 
-		return null;
-	}
+        for (CharacterModel c: _characters) {
+            if (c.getX() == x && c.getY() == y) {
+                printDebug("getCharacterAtPos: found");
+                return c;
+            }
+        }
 
-	public CharacterModel add(CharacterModel character) {
-		_count++;
-		_addOnUpdate.add(character);
+        return null;
+    }
 
-		Game.getInstance().notify(observer -> observer.onAddCharacter(character));
-		Game.getInstance().notify("base.character.join", character);
+    public CharacterModel add(CharacterModel character) {
+        _count++;
+        _addOnUpdate.add(character);
 
-		return character;
-	}
+        Game.getInstance().notify(observer -> observer.onAddCharacter(character));
+        Game.getInstance().notify("base.character.join", character);
 
-	public void remove(CharacterModel c) {
-		c.setIsDead();
-		c.getInfo().setName(Strings.LB_DECEADED);
-	}
+        return character;
+    }
 
-	public CharacterModel getCharacter(int characterId) {
-		for (CharacterModel c: _characters) {
-			if (c.getId() == characterId) {
-				return c;
-			}
-		}
-		return null;
-	}
+    public void remove(CharacterModel c) {
+        c.setIsDead();
+        c.getInfo().setName(Strings.LB_DECEADED);
+    }
 
-	public CharacterModel addRandom(int x, int y) {
-		CharacterModel character = new HumanModel(Utils.getUUID(), x, y, null, null, 16);
-		add(character);
-		return character;
-	}
+    public CharacterModel getCharacter(int characterId) {
+        for (CharacterModel c: _characters) {
+            if (c.getId() == characterId) {
+                return c;
+            }
+        }
+        return null;
+    }
 
-	public CharacterModel addRandom(ParcelModel parcel) {
-		CharacterModel character = new HumanModel(Utils.getUUID(), parcel.x, parcel.y, null, null, 16);
-		add(character);
-		return character;
-	}
+    public CharacterModel addRandom(int x, int y) {
+        CharacterModel character = new HumanModel(Utils.getUUID(), x, y, null, null, 16);
+        add(character);
+        return character;
+    }
 
-	public void addRandom(Class<? extends CharacterModel> cls) {
-		try {
-			Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, int.class, int.class, String.class, String.class, double.class);
-			CharacterModel character = constructor.newInstance(Utils.getUUID(), 10, 10, null, null, 16);
-			add(character);
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-			e.printStackTrace();
-		}
-	}
+    public CharacterModel addRandom(ParcelModel parcel) {
+        CharacterModel character = new HumanModel(Utils.getUUID(), parcel.x, parcel.y, null, null, 16);
+        add(character);
+        return character;
+    }
 
-	public boolean havePeopleOnProximity(CharacterModel character) {
-		for (CharacterModel c: _characters) {
-			if (c != character && Math.abs(c.getX() - character.getX()) + Math.abs(c.getY() - character.getY()) < 4) {
-				return true;
-			}
-		}
-		return false;
-	}
+    public void addRandom(Class<? extends CharacterModel> cls) {
+        try {
+            Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, int.class, int.class, String.class, String.class, double.class);
+            CharacterModel character = constructor.newInstance(Utils.getUUID(), 10, 10, null, null, 16);
+            add(character);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public int countCharacterAtPos(int posX, int posY) {
-		int count = 0;
-		for (CharacterModel character: _characters) {
-			if (character.getX() == posX && character.getY() == posY) {
-				count++;
-			}
-		}
-		return count;
-	}
+    public boolean havePeopleOnProximity(CharacterModel character) {
+        for (CharacterModel c: _characters) {
+            if (c != character && Math.abs(c.getX() - character.getX()) + Math.abs(c.getY() - character.getY()) < 4) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public int getPriority() {
-		return 10000;
-	}
+    public int countCharacterAtPos(int posX, int posY) {
+        int count = 0;
+        for (CharacterModel character: _characters) {
+            if (character.getX() == posX && character.getY() == posY) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public int getPriority() {
+        return 10000;
+    }
 
 }

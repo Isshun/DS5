@@ -15,36 +15,36 @@ import org.smallbox.faraway.util.MoveListener;
 import org.smallbox.faraway.util.Utils;
 
 public class JobMining extends BaseJobModel {
-    private ResourceModel 	    _resource;
+    private ResourceModel         _resource;
 
-	private JobMining(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel) {
-		super(actionInfo, jobParcel, new IconDrawable("data/res/ic_mining.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 0, 32, 32, 8, 1));
-	}
+    private JobMining(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel) {
+        super(actionInfo, jobParcel, new IconDrawable("data/res/ic_mining.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 0, 32, 32, 8, 1));
+    }
 
-	public static BaseJobModel create(ResourceModel res) {
-		// Resource is not minable
-		if (res == null) {
-			return null;
-		}
+    public static BaseJobModel create(ResourceModel res) {
+        // Resource is not minable
+        if (res == null) {
+            return null;
+        }
 
-		if (res.getInfo().actions != null) {
-			for (ItemInfo.ItemInfoAction action: res.getInfo().actions) {
-				if ("mine".equals(action.type)) {
-					JobMining job = new JobMining(action, res.getParcel());
-					job.setStrategy(j -> {
+        if (res.getInfo().actions != null) {
+            for (ItemInfo.ItemInfoAction action: res.getInfo().actions) {
+                if ("mine".equals(action.type)) {
+                    JobMining job = new JobMining(action, res.getParcel());
+                    job.setStrategy(j -> {
                         if (j.getCharacter().getType().needs.joy != null) {
                             j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
                         }
                     });
-					job.setItem(res);
-					job._resource = res;
-					return job;
-				}
-			}
-		}
+                    job.setItem(res);
+                    job._resource = res;
+                    return job;
+                }
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     @Override
     protected void onStart(CharacterModel character) {
@@ -70,47 +70,47 @@ public class JobMining extends BaseJobModel {
         }
     }
 
-	@Override
-	public boolean onCheck(CharacterModel character) {
-		System.out.println("check job: " + this);
+    @Override
+    public boolean onCheck(CharacterModel character) {
+        System.out.println("check job: " + this);
 
-		// Item is null
-		if (_item == null) {
-			_reason = JobAbortReason.INVALID;
-			return false;
-		}
+        // Item is null
+        if (_item == null) {
+            _reason = JobAbortReason.INVALID;
+            return false;
+        }
 
-//		if ((_parcel == null || !_parcel.isWalkable()) && getFreeParcel() == null) {
-//			_reason = JobAbortReason.BLOCKED;
-//			return false;
-//		}
-		
-		// Item is no longer exists
-		if (_item != WorldHelper.getResource(_item.getX(), _item.getY())) {
-			_reason = JobAbortReason.INVALID;
-			return false;
-		}
+//        if ((_parcel == null || !_parcel.isWalkable()) && getFreeParcel() == null) {
+//            _reason = JobAbortReason.BLOCKED;
+//            return false;
+//        }
 
-		if (!PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel())) {
-			return false;
-		}
-		
-//		// Resource is depleted
-//		if (_item.getMatterSupply() <= 0) {
-//			_reason = JobAbortReason.INVALID;
-//			return false;
-//		}
+        // Item is no longer exists
+        if (_item != WorldHelper.getResource(_item.getX(), _item.getY())) {
+            _reason = JobAbortReason.INVALID;
+            return false;
+        }
 
-//		// No space left in inventory
-//		if (!characters.hasInventorySpaceLeft()) {
-//			_reason = JobAbortReason.NO_LEFT_CARRY;
-//			return false;
-//		}
+        if (!PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel())) {
+            return false;
+        }
 
-		return true;
-	}
+//        // Resource is depleted
+//        if (_item.getMatterSupply() <= 0) {
+//            _reason = JobAbortReason.INVALID;
+//            return false;
+//        }
 
-	private ParcelModel getFreeParcel() {
+//        // No space left in inventory
+//        if (!characters.hasInventorySpaceLeft()) {
+//            _reason = JobAbortReason.NO_LEFT_CARRY;
+//            return false;
+//        }
+
+        return true;
+    }
+
+    private ParcelModel getFreeParcel() {
         int x = _item.getX();
         int y = _item.getY();
         ParcelModel parcel = null;
@@ -129,41 +129,41 @@ public class JobMining extends BaseJobModel {
 
         _parcel = parcel;
         if (parcel != null) {
-			_targetParcel = parcel;
+            _targetParcel = parcel;
         }
 
-		return parcel;
-	}
+        return parcel;
+    }
 
-	@Override
-	protected void onFinish() {
-		Log.info("Mine complete");
-		ModuleHelper.getWorldModule().removeResource(_resource);
+    @Override
+    protected void onFinish() {
+        Log.info("Mine complete");
+        ModuleHelper.getWorldModule().removeResource(_resource);
 
         if (_actionInfo.finalProducts != null) {
             _actionInfo.finalProducts.stream().filter(productInfo -> productInfo.dropRate > Math.random()).forEach(productInfo -> {
                 ModuleHelper.getWorldModule().putObject(productInfo.item, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity));
             });
         }
-	}
+    }
 
-	@Override
-	public JobActionReturn onAction(CharacterModel character) {
-		// Wrong call
-		if (_item == null) {
-			Log.error("Character: actionMine on null job or null job's item");
-			return JobActionReturn.ABORT;
-		}
-		
-		if (!_item.isResource()) {
-			Log.error("Character: actionMine on non resource");
-			return JobActionReturn.ABORT;
-		}
+    @Override
+    public JobActionReturn onAction(CharacterModel character) {
+        // Wrong call
+        if (_item == null) {
+            Log.error("Character: actionMine on null job or null job's item");
+            return JobActionReturn.ABORT;
+        }
 
-		if (!"mine".equals(_actionInfo.type)) {
-			Log.error("Character: actionMine on non minable item");
-			return JobActionReturn.ABORT;
-		}
+        if (!_item.isResource()) {
+            Log.error("Character: actionMine on non resource");
+            return JobActionReturn.ABORT;
+        }
+
+        if (!"mine".equals(_actionInfo.type)) {
+            Log.error("Character: actionMine on non minable item");
+            return JobActionReturn.ABORT;
+        }
 
         ResourceModel resource = (ResourceModel)_item;
 
@@ -180,23 +180,23 @@ public class JobMining extends BaseJobModel {
                     ModuleHelper.getWorldModule().putObject(productInfo.item, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity)));
         }
 
-		// Check if resource is depleted
+        // Check if resource is depleted
         if (!resource.isDepleted()) {
-			return JobActionReturn.CONTINUE;
-		}
+            return JobActionReturn.CONTINUE;
+        }
 
-		return JobActionReturn.FINISH;
-	}
+        return JobActionReturn.FINISH;
+    }
 
-	@Override
-	public String getLabel() {
-		return "Mine " + _item.getLabel();
-	}
+    @Override
+    public String getLabel() {
+        return "Mine " + _item.getLabel();
+    }
 
-	@Override
-	public String getShortLabel() {
-		return "Mine " + _item.getLabel();
-	}
+    @Override
+    public String getShortLabel() {
+        return "Mine " + _item.getLabel();
+    }
 
     @Override
     public ParcelModel getActionParcel() {

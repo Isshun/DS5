@@ -111,11 +111,11 @@ public class PathManager extends GameModule {
         _runnable.clear();
     }
 
-    private static final int 			THREAD_POOL_SIZE = 1;
+    private static final int             THREAD_POOL_SIZE = 1;
 
     private static PathManager _self;
     final private ArrayList<Runnable>   _runnable;
-    final private ExecutorService 		_threadPool;
+    final private ExecutorService         _threadPool;
 
     public PathManager() {
         _self = this;
@@ -131,7 +131,7 @@ public class PathManager extends GameModule {
     }
 
     public void getPathAsync(final MoveListener listener, final MovableModel movable, final BaseJobModel job, final int x, final int y) {
-//		_threadPool.execute(() -> {
+//        _threadPool.execute(() -> {
         ParcelModel fromParcel = ModuleHelper.getWorldModule().getParcel(movable.getX(), movable.getY());
         ParcelModel toParcel = ModuleHelper.getWorldModule().getParcel(x, y);
 

@@ -33,7 +33,7 @@ public class GDXFaunaRenderer extends BaseRenderer {
             int offset = 0;
             int frame = 0;
             if (move != MovableModel.Direction.NONE) {
-//				offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
+//                offset = (int) ((1-animProgress) * Constant.TILE_WIDTH);
                 offset = (int) ((animal.getMoveProgress()) * Constant.TILE_WIDTH);
                 frame = animal.getFrameIndex() / 20 % 4;
             }

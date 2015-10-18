@@ -13,7 +13,7 @@ import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.util.MoveListener;
 
 public class JobDump extends BaseJobModel {
-    private MapObjectModel 	_dumpObject;
+    private MapObjectModel     _dumpObject;
 
     private JobDump(ParcelModel jobParcel) {
         super(null, jobParcel, new IconDrawable("data/res/ic_dump.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 128, 32, 32, 7, 10));

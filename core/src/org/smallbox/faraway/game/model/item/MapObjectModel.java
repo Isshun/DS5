@@ -9,25 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MapObjectModel extends ObjectModel {
-    private static int 		    _maxId;
-    private int			        _id;
-    protected int			        _x;
-    protected int			        _y;
+    private static int             _maxId;
+    private int                    _id;
+    protected int                    _x;
+    protected int                    _y;
     private CharacterModel      _owner;
-    private String 		        _name;
-    private int 		        _width;
-    private int 		        _height;
-    private int 		        _matter;
-    private int 		        _mode;
-    private int			        _light;
-    protected ItemInfo	        _info;
-    private String 		        _label;
-    private int			        _currentFrame;
-    private int			        _nbFrame;
-    private int 		        _animFrame;
-    private int 		        _animFrameInterval;
-    private boolean 	        _selected;
-    private int 		        _lastBlocked;
+    private String                 _name;
+    private int                 _width;
+    private int                 _height;
+    private int                 _matter;
+    private int                 _mode;
+    private int                    _light;
+    protected ItemInfo            _info;
+    private String                 _label;
+    private int                    _currentFrame;
+    private int                    _nbFrame;
+    private int                 _animFrame;
+    private int                 _animFrameInterval;
+    private boolean             _selected;
+    private int                 _lastBlocked;
     protected ParcelModel       _parcel;
     private int                 _health;
     private List<BaseJobModel>  _jobs;
@@ -74,17 +74,17 @@ public abstract class MapObjectModel extends ObjectModel {
         }
     }
 
-    public void	setOwner(CharacterModel character) {
+    public void    setOwner(CharacterModel character) {
         _owner = character;
     }
 
     // Sets
     public void             setId(int id) { _id = id; }
-    public void				setPosition(int x, int y) { _x = x; _y = y; }
-    public void 			setMode(int mode) { _mode = mode; }
+    public void                setPosition(int x, int y) { _x = x; _y = y; }
+    public void             setMode(int mode) { _mode = mode; }
     public void             setParcel(ParcelModel parcel) { _parcel = parcel; }
-    public void 			setX(int x) { _x = x; }
-    public void 			setY(int y) { _y = y; }
+    public void             setX(int x) { _x = x; }
+    public void             setY(int y) { _y = y; }
     public void             setSelected(boolean selected) { _selected = selected; }
     public void             setBlocked(int update) { _lastBlocked = update; }
     public void             setNeedRefresh() { _needRefresh = true; }
@@ -93,18 +93,18 @@ public abstract class MapObjectModel extends ObjectModel {
 
     // Gets
     public CharacterModel   getOwner() { return _owner; }
-    public int				getWidth() { return _width; }
-    public int				getHeight() { return _height; }
-    public int				getX() { return _x; }
-    public int				getY() { return _y; }
-    public int				getId() { return _id; }
-    public String			getName() { return _name; }
-    public int 				getMode() { return _mode; }
-    public int 				getLight() { return _light; }
-    public String 			getLabel() { return _label; }
-    public ItemInfo 		getInfo() { return _info; }
-    public int 				getMatter() { return _matter; }
-    public int 				getLastBlocked() { return _lastBlocked; }
+    public int                getWidth() { return _width; }
+    public int                getHeight() { return _height; }
+    public int                getX() { return _x; }
+    public int                getY() { return _y; }
+    public int                getId() { return _id; }
+    public String            getName() { return _name; }
+    public int                 getMode() { return _mode; }
+    public int                 getLight() { return _light; }
+    public String             getLabel() { return _label; }
+    public ItemInfo         getInfo() { return _info; }
+    public int                 getMatter() { return _matter; }
+    public int                 getLastBlocked() { return _lastBlocked; }
     public ParcelModel      getParcel() { return _parcel; }
     public int              getProgress() { return (int)_progress; }
     public double           getSealing() { return _info.sealing; }
@@ -119,19 +119,19 @@ public abstract class MapObjectModel extends ObjectModel {
     public boolean          isSelected() { return _selected; }
     public boolean          isSolid() { return _progress >= _info.cost && !_info.isWalkable; }
     public boolean          isWalkable() { return _progress < _info.cost || _info.isWalkable; }
-    public boolean			isComplete() { return false; }
-    public boolean			isSleepingItem() { return _info.isBed; }
-    public boolean			isStructure() { return _info.isStructure; }
+    public boolean            isComplete() { return false; }
+    public boolean            isSleepingItem() { return _info.isBed; }
+    public boolean            isStructure() { return _info.isStructure; }
     public boolean          isResource() { return _info.isResource; }
-    public boolean 			isDoor() { return getName().equals("base.door"); }
-    public boolean 			isWall() { return getName().equals("base.wall") || getName().equals("base.window"); }
-    public boolean 			isFood() { return _info.isFood; }
-    public boolean 			isFactory() { return _info.isFactory; }
-    public boolean 			isUserItem() { return _info.isUserItem; }
+    public boolean             isDoor() { return getName().equals("base.door"); }
+    public boolean             isWall() { return getName().equals("base.wall") || getName().equals("base.window"); }
+    public boolean             isFood() { return _info.isFood; }
+    public boolean             isFactory() { return _info.isFactory; }
+    public boolean             isUserItem() { return _info.isUserItem; }
     public boolean          isDestroy() { return _health <= 0; }
     public boolean          isDump() { return _progress <= 0; }
     public boolean          isCloseRoom() { return _info.isCloseRoom; }
-    public boolean 		    isLight() { return _info.light > 0; }
+    public boolean             isLight() { return _info.light > 0; }
     public boolean          matchPosition(int x, int y) { return _parcel != null && _parcel.x == x && _parcel.y == y; }
     public boolean          hasJobs() { return _jobs != null && !_jobs.isEmpty(); }
 
@@ -192,7 +192,7 @@ public abstract class MapObjectModel extends ObjectModel {
         throw new RuntimeException("add component on MapObjectItem is not allowed");
     }
 
-    public List<BuildableMapObject.ComponentModel> 	getComponents() {
+    public List<BuildableMapObject.ComponentModel>     getComponents() {
         throw new RuntimeException("get component on MapObjectItem is not allowed");
     }
 

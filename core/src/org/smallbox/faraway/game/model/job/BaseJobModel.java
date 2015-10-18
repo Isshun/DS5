@@ -45,98 +45,98 @@ public abstract class BaseJobModel extends ObjectModel {
     }
 
     public enum JobActionReturn {
-		CONTINUE, QUIT, FINISH, ABORT
-	}
-	
+        CONTINUE, QUIT, FINISH, ABORT
+    }
+
     public enum JobStatus {
-		WAITING, RUNNING, COMPLETE, ABORTED
-	}
+        WAITING, RUNNING, COMPLETE, ABORTED
+    }
 
-	public enum JobAbortReason {
-		NO_COMPONENTS, INTERRUPT, BLOCKED, NO_LEFT_CARRY, INVALID, DIED, NO_BUILD_RESOURCES
-	};
+    public enum JobAbortReason {
+        NO_COMPONENTS, INTERRUPT, BLOCKED, NO_LEFT_CARRY, INVALID, DIED, NO_BUILD_RESOURCES
+    };
 
-	private static int 			_countInstance;
+    private static int             _countInstance;
 
-    protected int 				_id;
-	protected int 				_count;
+    protected int                 _id;
+    protected int                 _count;
     protected int               _totalCount;
-	protected ParcelModel       _parcel;
-    protected int 	            _limit;
+    protected ParcelModel       _parcel;
+    protected int                 _limit;
     protected int               _currentLimit;
-    protected int 				_fail;
-    protected int 				_blocked;
-    protected int 				_nbBlocked;
-    protected int 				_nbUsed;
-    protected int 				_cost;
-    protected int 				_durationLeft;
+    protected int                 _fail;
+    protected int                 _blocked;
+    protected int                 _nbBlocked;
+    protected int                 _nbUsed;
+    protected int                 _cost;
+    protected int                 _durationLeft;
     protected boolean           _isClose;
-    protected double 			_progress;
-	protected ItemModel         _item;
-	protected ItemFilter 		_filter;
-	protected ItemInfoAction    _actionInfo;
-	protected CharacterModel    _character;
+    protected double             _progress;
+    protected ItemModel         _item;
+    protected ItemFilter         _filter;
+    protected ItemInfoAction    _actionInfo;
+    protected CharacterModel    _character;
     protected CharacterModel    _characterRequire;
-	protected JobAbortReason 	_reason;
+    protected JobAbortReason     _reason;
     protected ItemSlot          _slot;
-    protected String 			_label;
-	protected JobStatus			_status;
+    protected String             _label;
+    protected JobStatus            _status;
     private GDXDrawable         _iconDrawable;
     private GDXDrawable         _actionDrawable;
     protected String            _message;
     protected ParcelModel       _jobParcel;
     protected ParcelModel       _targetParcel;
 
-	public BaseJobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel, GDXDrawable iconDrawable, GDXDrawable actionDrawable) {
-		init();
-		_jobParcel = targetParcel;
-		_targetParcel = targetParcel;
+    public BaseJobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel, GDXDrawable iconDrawable, GDXDrawable actionDrawable) {
+        init();
+        _jobParcel = targetParcel;
+        _targetParcel = targetParcel;
         _iconDrawable = iconDrawable;
         _actionDrawable = actionDrawable;
-		if (actionInfo != null) {
-			_actionInfo = actionInfo;
-			_cost = actionInfo.cost;
-			_progress = 0;
-		}
-	}
+        if (actionInfo != null) {
+            _actionInfo = actionInfo;
+            _cost = actionInfo.cost;
+            _progress = 0;
+        }
+    }
 
-	public BaseJobModel() {
-		init();
-	}
+    public BaseJobModel() {
+        init();
+    }
 
-	private void init() {
-		_id = ++_countInstance;
-		_item = null;
-		_filter = null;
-		_character = null;
-		_status = JobStatus.WAITING;
-		_count = 1;
+    private void init() {
+        _id = ++_countInstance;
+        _item = null;
+        _filter = null;
+        _character = null;
+        _status = JobStatus.WAITING;
+        _count = 1;
         _limit = -1;
         _label = "none";
         _finder = (ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class);
 
         Log.debug("Job #" + _id + " onCreate");
-	}
+    }
 
-	public String 				getLabel() { return _label; }
-	public abstract String 		getShortLabel();
+    public String                 getLabel() { return _label; }
+    public abstract String         getShortLabel();
     public abstract ParcelModel getActionParcel();
-	public int					getId() { return _id; }
-	public MapObjectModel 		getItem() { return _item; }
-	public CharacterModel       getCharacter() { return _character; }
-	public CharacterModel       getCharacterRequire() { return _characterRequire; }
-	public int 					getFail() { return _fail; }
-	public int 					getBlocked() { return _blocked; }
-	public JobAbortReason		getReason() { return _reason; }
-	public String 				getReasonString() { return _reason != null ? _reason.toString() : "no reason"; }
-	public ItemSlot             getSlot() { return _slot; }
-	public ItemFilter			getItemFilter() { return _filter; }
-	public int 					getNbUsed() { return _nbUsed; }
-	public double               getQuantity() { return _progress; }
-	public int 					getQuantityTotal() { return _cost; }
-	public int 					getProgressPercent() { return (int)(getProgress() * 100); }
-	public double               getProgress() { return _progress; }
-	public JobStatus			getStatus() { return _status; }
+    public int                    getId() { return _id; }
+    public MapObjectModel         getItem() { return _item; }
+    public CharacterModel       getCharacter() { return _character; }
+    public CharacterModel       getCharacterRequire() { return _characterRequire; }
+    public int                     getFail() { return _fail; }
+    public int                     getBlocked() { return _blocked; }
+    public JobAbortReason        getReason() { return _reason; }
+    public String                 getReasonString() { return _reason != null ? _reason.toString() : "no reason"; }
+    public ItemSlot             getSlot() { return _slot; }
+    public ItemFilter            getItemFilter() { return _filter; }
+    public int                     getNbUsed() { return _nbUsed; }
+    public double               getQuantity() { return _progress; }
+    public int                     getQuantityTotal() { return _cost; }
+    public int                     getProgressPercent() { return (int)(getProgress() * 100); }
+    public double               getProgress() { return _progress; }
+    public JobStatus            getStatus() { return _status; }
     public GDXDrawable          getIconDrawable() { return _iconDrawable; }
     public GDXDrawable          getActionDrawable() { return _actionDrawable; }
     public ConsumableModel      getIngredient() { return null; }
@@ -153,31 +153,31 @@ public abstract class BaseJobModel extends ObjectModel {
     public void                 setLabel(String label) { _label = label; }
     public void                 setLimit(int limit) { _currentLimit = _limit = limit; }
     public void                 setQuantity(int quantity) { _progress = quantity; }
-    public void 				setCost(int quantityTotal) { _cost = quantityTotal; }
-    public void					setCharacterRequire(CharacterModel character) { _characterRequire = character; }
-	public void					setFail(JobAbortReason reason, int frame) { _reason = reason; _fail = frame; }
-	public void					setBlocked(int frame) { _blocked = frame; _nbBlocked++; }
-	public void 				setSlot(ItemSlot slot) { _slot = slot; }
-	public void					setItem(ItemModel item) { _item = item; }
-	public void 				setItemFilter(ItemFilter filter) { _filter = filter; }
-	public void 				setStatus(JobStatus status) { _status = status; }
+    public void                 setCost(int quantityTotal) { _cost = quantityTotal; }
+    public void                    setCharacterRequire(CharacterModel character) { _characterRequire = character; }
+    public void                    setFail(JobAbortReason reason, int frame) { _reason = reason; _fail = frame; }
+    public void                    setBlocked(int frame) { _blocked = frame; _nbBlocked++; }
+    public void                 setSlot(ItemSlot slot) { _slot = slot; }
+    public void                    setItem(ItemModel item) { _item = item; }
+    public void                 setItemFilter(ItemFilter filter) { _filter = filter; }
+    public void                 setStatus(JobStatus status) { _status = status; }
     public void                 setCount(int count) { _count = count; }
     public void                 setTotalCount(int count) { _totalCount = count; }
 
-    public boolean 				hasCharacter() { return _character != null; }
+    public boolean                 hasCharacter() { return _character != null; }
     public boolean              canBeResume() { return true; }
     public boolean              isVisibleInUI() { return true; }
     public boolean              isFinish() { return _status == JobStatus.COMPLETE || _status == JobStatus.ABORTED; }
 
     public void start(CharacterModel character) {
-		if (_character == character) {
-			return;
-		}
+        if (_character == character) {
+            return;
+        }
 
-		// Remove job from old characters
-		if (_character != null) {
-			_character.setJob(null);
-		}
+        // Remove job from old characters
+        if (_character != null) {
+            _character.setJob(null);
+        }
 
         // Lock item
         if (_item != null) {
@@ -186,7 +186,7 @@ public abstract class BaseJobModel extends ObjectModel {
 
         // Set job to new characters
         _character = character;
-		if (character != null) {
+        if (character != null) {
             character.setJob(this);
 
             // Start job
@@ -196,7 +196,7 @@ public abstract class BaseJobModel extends ObjectModel {
 //            if (_posX != -1 && _posY != -1 && (_posX != character.getX() || _posY != character.getY())) {
 //            }
         }
-	}
+    }
 
     protected void onStart(CharacterModel character) {
         character.moveTo(this, _jobParcel, null);
@@ -225,7 +225,7 @@ public abstract class BaseJobModel extends ObjectModel {
         _isClose = true;
     }
 
-	public boolean check(CharacterModel character) {
+    public boolean check(CharacterModel character) {
         return onCheck(character);
     }
 
@@ -234,7 +234,7 @@ public abstract class BaseJobModel extends ObjectModel {
      * @param character
      * @return
      */
-	public abstract boolean onCheck(CharacterModel character);
+    public abstract boolean onCheck(CharacterModel character);
 
     public JobActionReturn action(CharacterModel character) {
         if (_limit != -1 && _currentLimit-- == 0) {
@@ -258,12 +258,12 @@ public abstract class BaseJobModel extends ObjectModel {
     protected abstract void onFinish();
 
     /**
-	 * Launch job onAction
-	 * 
-	 * @param character
-	 * @return true if job is finish (completed or aborted)
-	 */
-	public abstract JobActionReturn onAction(CharacterModel character);
+     * Launch job onAction
+     *
+     * @param character
+     * @return true if job is finish (completed or aborted)
+     */
+    public abstract JobActionReturn onAction(CharacterModel character);
 
     public boolean isRunning() { return _character != null; }
 

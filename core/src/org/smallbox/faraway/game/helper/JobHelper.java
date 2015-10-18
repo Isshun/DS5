@@ -57,11 +57,11 @@ public class JobHelper {
     }
 
     public static void addStoreJob(CharacterModel character) {
-//		BaseJob job = JobHaul.onCreate(characters);
-//		if (job != null) {
-//			addJob(job);
-//		}
-//		return job;
+//        BaseJob job = JobHaul.onCreate(characters);
+//        if (job != null) {
+//            addJob(job);
+//        }
+//        return job;
         throw new RuntimeException("not implemented");
     }
 
@@ -126,7 +126,7 @@ public class JobHelper {
 //        }
 //    }
 
-    public static void	removeJob(MapObjectModel item) {
+    public static void    removeJob(MapObjectModel item) {
         List<BaseJobModel> toRemove = new ArrayList<>();
 
         for (BaseJobModel job: ModuleHelper.getJobModule().getJobs()) {

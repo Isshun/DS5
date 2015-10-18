@@ -32,9 +32,9 @@ public class PanelModule extends GameUIModule {
     private static class PanelEntry {
         final String                buttonId;
         final UserInterface.Mode    mode;
-        final String	            label;
-        final String 	            shortcut;
-        final int 		            shortcutPos;
+        final String                label;
+        final String                 shortcut;
+        final int                     shortcutPos;
 
         public PanelEntry(String buttonId, String label, String shortcut, int shortcutPos, UserInterface.Mode mode) {
             this.buttonId = buttonId;
@@ -55,20 +55,20 @@ public class PanelModule extends GameUIModule {
         private int         _year;
 
         // TODO
-        //	private MiniMapRenderer		_miniMapRenderer;
+        //    private MiniMapRenderer        _miniMapRenderer;
         private List<ResourceEntry> _resources;
         private UIImage             _map;
         private ResourceModule      _resourceModule;
 
-        private PanelEntry	_entries[] = {
-                new PanelEntry("bt_build",      "[ UILD]", 	    "B", 	1, UserInterface.Mode.BUILD),
-                new PanelEntry("bt_occupation", "[ CCUPATION]", "O",	1, UserInterface.Mode.JOBS),
-                new PanelEntry("bt_crew",       "[ REW]", 		"C", 	1, UserInterface.Mode.CREW),
-                new PanelEntry("bt_room",       "[ OOM]", 		"R", 	1, UserInterface.Mode.ROOM),
-                new PanelEntry("bt_plan",       "[ LAN]", 		"P",	1, UserInterface.Mode.PLAN),
-                new PanelEntry("bt_manage",     "[ ANAGE]", 	"M",	1, UserInterface.Mode.MANAGER),
-                new PanelEntry("bt_stats",      "[ TATS]", 		"S",	1, UserInterface.Mode.STATS),
-                new PanelEntry("bt_area",       "[ AREAS]",     "A",	1, UserInterface.Mode.AREA)
+        private PanelEntry    _entries[] = {
+                new PanelEntry("bt_build",      "[ UILD]",         "B",     1, UserInterface.Mode.BUILD),
+                new PanelEntry("bt_occupation", "[ CCUPATION]", "O",    1, UserInterface.Mode.JOBS),
+                new PanelEntry("bt_crew",       "[ REW]",         "C",     1, UserInterface.Mode.CREW),
+                new PanelEntry("bt_room",       "[ OOM]",         "R",     1, UserInterface.Mode.ROOM),
+                new PanelEntry("bt_plan",       "[ LAN]",         "P",    1, UserInterface.Mode.PLAN),
+                new PanelEntry("bt_manage",     "[ ANAGE]",     "M",    1, UserInterface.Mode.MANAGER),
+                new PanelEntry("bt_stats",      "[ TATS]",         "S",    1, UserInterface.Mode.STATS),
+                new PanelEntry("bt_area",       "[ AREAS]",     "A",    1, UserInterface.Mode.AREA)
         };
         private UIFrame _content;
 

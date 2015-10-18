@@ -75,21 +75,21 @@ public abstract class View {
     protected int               _height = -1;
     public int                  _x;
     public int                  _y;
-    protected boolean			_isVisible;
+    protected boolean            _isVisible;
     protected Rectangle         _rect;
-    protected int 				_paddingLeft;
-    protected int				_paddingBottom;
-    protected int 				_paddingRight;
-    protected int 				_paddingTop;
+    protected int                 _paddingLeft;
+    protected int                _paddingBottom;
+    protected int                 _paddingRight;
+    protected int                 _paddingTop;
     public View _parent;
     protected OnClickListener   _onClickListener;
     private OnClickListener     _onRightClickListener;
     protected OnFocusListener   _onFocusListener;
-    protected boolean 			_isFocus;
-    protected int 				_id;
-    protected int 				_borderSize;
-    protected boolean 			_invalid;
-    protected Object 			_data;
+    protected boolean             _isFocus;
+    protected int                 _id;
+    protected int                 _borderSize;
+    protected boolean             _invalid;
+    protected Object             _data;
     protected Align             _align = Align.LEFT;
     protected int               _offsetX;
     protected int               _offsetY;
@@ -104,24 +104,24 @@ public abstract class View {
         _y = 0;
     }
 
-    public boolean 		isFocus() { return _isFocus; }
-    public boolean 		isVisible() { return _isVisible; }
+    public boolean         isFocus() { return _isFocus; }
+    public boolean         isVisible() { return _isVisible; }
 
-    public void 		setId(int id) { _id = id; }
-    public void 		setId(String id) { _id = id.hashCode(); }
+    public void         setId(int id) { _id = id; }
+    public void         setId(String id) { _id = id.hashCode(); }
     public void         setTextAlign(Align align) { _align = align; }
-    public void 		setFocus(boolean focus) { _isFocus = focus; }
-    public void 		setParent(View parent) {
+    public void         setFocus(boolean focus) { _isFocus = focus; }
+    public void         setParent(View parent) {
         _parent = parent;
     }
-    public void 		setAdapter(UIAdapter adapter) {
+    public void         setAdapter(UIAdapter adapter) {
         _adapter = adapter;
     }
 
     public View         getParent() { return _parent; }
-    public int 			getId() { return _id; }
-    public int 			getPosX() { return _x; }
-    public int 			getPosY() { return _y; }
+    public int             getId() { return _id; }
+    public int             getPosX() { return _x; }
+    public int             getPosY() { return _y; }
     public List<View>   getViews() { return _views; }
 
     public void draw(GDXRenderer renderer, int x, int y) {

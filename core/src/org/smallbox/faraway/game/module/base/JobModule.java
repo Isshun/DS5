@@ -27,12 +27,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class JobModule extends GameModule {
-    private List<CharacterCheck> 			_joys;
-    private List<CharacterCheck>  		    _priorities;
-    private BlockingQueue<BaseJobModel> 	_jobs;
-    private List<BaseJobModel>			    _toRemove;
-    private CharacterCheck 				    _bedCheck;
-    private int 							_nbVisibleJob;
+    private List<CharacterCheck>             _joys;
+    private List<CharacterCheck>              _priorities;
+    private BlockingQueue<BaseJobModel>     _jobs;
+    private List<BaseJobModel>                _toRemove;
+    private CharacterCheck                     _bedCheck;
+    private int                             _nbVisibleJob;
 
     @Override
     public void onLoaded() {
@@ -49,15 +49,15 @@ public class JobModule extends GameModule {
         _priorities.add(new CheckCharacterUse());
         _priorities.add(new CheckCharacterExhausted());
         _priorities.add(new CheckCharacterHungry());
-//		_priorities.add(new CheckCharacterEntertainmentDepleted());
+//        _priorities.add(new CheckCharacterEntertainmentDepleted());
 
         _bedCheck = new CheckCharacterExhausted();
 
         _joys = new ArrayList<>();
-//		_joys.add(new CheckEntertainmentTalk());
+//        _joys.add(new CheckEntertainmentTalk());
         _joys.add(new CheckJoyWalk());
         _joys.add(new CheckJoyItem());
-//		_joys.add(new CheckEntertainmentSleep());
+//        _joys.add(new CheckEntertainmentSleep());
 
         printDebug("JobModule done");
     }
@@ -190,7 +190,7 @@ public class JobModule extends GameModule {
         }
     }
 
-    public void	addJob(BaseJobModel job) {
+    public void    addJob(BaseJobModel job) {
         if (job == null || _jobs.contains(job)) {
             printError("Trying to add null or already existing job to JobModule");
             return;

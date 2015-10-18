@@ -14,27 +14,27 @@
 // */
 //public class CheckLowFood implements Check {
 //
-//	private JobModel _job;
+//    private JobModel _job;
 //
-//	public void onCreate(JobModule jobManager) {
-//		if (_job != null && _job.isFinish() == false) {
-//			return;
-//		}
+//    public void onCreate(JobModule jobManager) {
+//        if (_job != null && _job.isFinish() == false) {
+//            return;
+//        }
 //
-//		if (ResourceModule.getInstance().isLowFood() == false) {
-//			return;
-//		}
+//        if (ResourceModule.getInstance().isLowFood() == false) {
+//            return;
+//        }
 //
-//		// Search for food-factory
-//		ItemFilter itemFilter = ItemFilter.createFactoryFilter();
-//		itemFilter.effectFood = true;
-//		UserItem item = Game.getWorldFinder().find(itemFilter);
-//		if (item == null) {
-//			return;
-//		}
+//        // Search for food-factory
+//        ItemFilter itemFilter = ItemFilter.createFactoryFilter();
+//        itemFilter.effectFood = true;
+//        UserItem item = Game.getWorldFinder().find(itemFilter);
+//        if (item == null) {
+//            return;
+//        }
 //
-//		// Create job
-//		jobManager.addJob(JobUse.onCreate(item));
-//	}
+//        // Create job
+//        jobManager.addJob(JobUse.onCreate(item));
+//    }
 //
 //}

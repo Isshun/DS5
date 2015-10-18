@@ -59,57 +59,57 @@ public class UserInterface implements GameEventListener {
         }
     }
 
-    private static UserInterface		_self;
+    private static UserInterface        _self;
     private final LayoutFactory         _factory;
     private final ViewFactory           _viewFactory;
     private Viewport                    _viewport;
-    private boolean						_keyLeftPressed;
-    private boolean						_keyRightPressed;
-    private int							_keyPressPosX;
-    private int							_keyPressPosY;
-    private int							_keyMovePosX;
-    private int							_keyMovePosY;
-    private UserInteraction				_interaction;
+    private boolean                        _keyLeftPressed;
+    private boolean                        _keyRightPressed;
+    private int                            _keyPressPosX;
+    private int                            _keyPressPosY;
+    private int                            _keyMovePosX;
+    private int                            _keyMovePosY;
+    private UserInteraction                _interaction;
     private CharacterModule             _characters;
-    private Mode 						_mode;
-    private ContextualMenu 				_menu;
-    private Game 						_game;
-    private boolean 					_mouseOnMap;
-    private BasePanel 					_currentPanel;
+    private Mode                         _mode;
+    private ContextualMenu                 _menu;
+    private Game                         _game;
+    private boolean                     _mouseOnMap;
+    private BasePanel                     _currentPanel;
     private UICursor                    _cursor;
     private UISelection                 _selection;
-    private long 						_lastLeftClick;
-    private int 						_lastInput;
+    private long                         _lastLeftClick;
+    private int                         _lastInput;
     private PanelConsole                _panelConsole;
     private UserInterfaceSelector       _selector;
-    private int 						_update;
+    private int                         _update;
     private long                        _lastModified = -1;
     private UIFrame _context;
 //
-//    private	BasePanel[]					_panels = new BasePanel[] {
+//    private    BasePanel[]                    _panels = new BasePanel[] {
 //            new PanelSystem(),
 //            new PanelResources(),
 //
 ////            new PanelQuest(),
-////            new PanelCharacter(	    Mode.CHARACTER,         null),
-////            new PanelInfo(		    Mode.INFO, 		        null),
-////            new PanelInfoStructure(	Mode.INFO_STRUCTURE, 	null),
-////            new PanelInfoItem(	    Mode.INFO_ITEM, 	    null),
+////            new PanelCharacter(        Mode.CHARACTER,         null),
+////            new PanelInfo(            Mode.INFO,                 null),
+////            new PanelInfoStructure(    Mode.INFO_STRUCTURE,     null),
+////            new PanelInfoItem(        Mode.INFO_ITEM,         null),
 ////            new PanelInfoConsumable(Mode.INFO_CONSUMABLE,   null),
-////            new PanelInfoParcel(	Mode.INFO_PARCEL, 	    null),
-////            new PanelInfoArea(	    Mode.INFO_AREA, 	    null),
-////            new PanelInfoAnimal(	Mode.INFO_ANIMAL, 	    null),
-////            new PanelPlanModule(		    Mode.PLAN, 		        Key.P),
-////            new PanelRoom(		    Mode.ROOM, 		        Key.R),
-//            new PanelTooltip(	    Mode.TOOLTIP, 	        Key.F1),
-////            new PanelBuild(		    Mode.BUILD, 	        Key.B),
-//            new PanelScience(	    Mode.SCIENCE, 	        null),
-////            new PanelCrew(		    Mode.CREW, 		        Key.C),
-////            new PanelJobs(		    Mode.JOBS, 		        Key.O),
-//            new PanelArea(		    Mode.AREA, 		        Key.A),
-////			new PanelStats(		    Mode.STATS, 	        Key.S),
-//            new PanelManager(	    Mode.MANAGER, 	        Key.M),
-////            new PanelShortcut(	    Mode.NONE, 		        null),
+////            new PanelInfoParcel(    Mode.INFO_PARCEL,         null),
+////            new PanelInfoArea(        Mode.INFO_AREA,         null),
+////            new PanelInfoAnimal(    Mode.INFO_ANIMAL,         null),
+////            new PanelPlanModule(            Mode.PLAN,                 Key.P),
+////            new PanelRoom(            Mode.ROOM,                 Key.R),
+//            new PanelTooltip(        Mode.TOOLTIP,             Key.F1),
+////            new PanelBuild(            Mode.BUILD,             Key.B),
+//            new PanelScience(        Mode.SCIENCE,             null),
+////            new PanelCrew(            Mode.CREW,                 Key.C),
+////            new PanelJobs(            Mode.JOBS,                 Key.O),
+//            new PanelArea(            Mode.AREA,                 Key.A),
+////            new PanelStats(            Mode.STATS,             Key.S),
+//            new PanelManager(        Mode.MANAGER,             Key.M),
+////            new PanelShortcut(        Mode.NONE,                 null),
 //            new PanelPlanet(),
 ////            new PanelTopInfo(),
 ////            new PanelTopRight(),
@@ -310,7 +310,7 @@ public class UserInterface implements GameEventListener {
 //        setMode(Mode.NONE);
     }
 
-    public void	onMouseMove(int x, int y, boolean rightPressed) {
+    public void    onMouseMove(int x, int y, boolean rightPressed) {
         _keyMovePosX = getRelativePosX(x);
         _keyMovePosY = getRelativePosY(y);
 
@@ -332,7 +332,7 @@ public class UserInterface implements GameEventListener {
         }
     }
 
-    public void	onLeftPress(int x, int y) {
+    public void    onLeftPress(int x, int y) {
         if (UIEventManager.getInstance().has(x, y)) {
             return;
         }
@@ -353,7 +353,7 @@ public class UserInterface implements GameEventListener {
         _selection.setStart(x, y);
     }
 
-    public void	onRightPress(int x, int y) {
+    public void    onRightPress(int x, int y) {
         if (UIEventManager.getInstance().has(x, y)) {
             return;
         }
@@ -362,10 +362,10 @@ public class UserInterface implements GameEventListener {
     }
 
     public UserInterfaceSelector getSelector() { return _selector; }
-    public int 				getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
-    public int 				getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
-    public int				getMouseX() { return _keyMovePosX; }
-    public int				getMouseY() { return _keyMovePosY; }
+    public int                 getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
+    public int                 getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
+    public int                getMouseX() { return _keyMovePosX; }
+    public int                getMouseY() { return _keyMovePosY; }
 
 //    public void toggleMode(Mode mode) {
 //        setMode(_mode != mode ? mode : Mode.NONE);
@@ -396,7 +396,7 @@ public class UserInterface implements GameEventListener {
 //        }
 //    }
 
-    public void	onMouseWheel(int delta, int x, int y) {
+    public void    onMouseWheel(int delta, int x, int y) {
         _viewport.setScale(delta, x, y);
     }
 

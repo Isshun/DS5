@@ -12,30 +12,30 @@ import java.util.List;
 public abstract class MenuBase {
     private int         _x;
     private int         _y;
-	private final int   _width;
-	private final int   _height;
+    private final int   _width;
+    private final int   _height;
     private List<View>  _views;
     private boolean     _isVisible;
     private Color       _backgroundColor;
 
     public MenuBase(int width, int height) {
         _views = new ArrayList<>();
-		_width = width;
-		_height = height;
-	}
+        _width = width;
+        _height = height;
+    }
 
-	public void onKeyDown() {
-	}
+    public void onKeyDown() {
+    }
 
-	public void onKeyUp() {
-	}
+    public void onKeyUp() {
+    }
 
-	public void onKeyEnter() {
-	}
+    public void onKeyEnter() {
+    }
 
-	public boolean checkKey(GameEventListener.Key key) {
-		return false;
-	}
+    public boolean checkKey(GameEventListener.Key key) {
+        return false;
+    }
 
     protected void addView(View view) {
         _views.add(view);

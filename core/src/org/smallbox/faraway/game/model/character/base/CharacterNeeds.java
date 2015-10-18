@@ -8,36 +8,36 @@ import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.util.Constant;
 
 public class CharacterNeeds {
-    private final CharacterModel 	_character;
-    private final GameData      	_data;
+    private final CharacterModel     _character;
+    private final GameData          _data;
 
     // Actions
     public boolean isSleeping;
-    private int	_eating;
+    private int    _eating;
 
     // Stats
-    public double 	socialize;
-    public double 	drinking;
-    public double 	food;
-    public double 	happiness;
+    public double     socialize;
+    public double     drinking;
+    public double     food;
+    public double     happiness;
     public double   happinessChange;
-    public double 	relation;
-    public double 	security;
-    public double 	oxygen;
-    public double 	energy;
-    public double 	health;
-    public double 	sickness;
-    public double 	injuries;
-    public double 	satiety;
-    public double 	joy;
-    public double 	heat;
+    public double     relation;
+    public double     security;
+    public double     oxygen;
+    public double     energy;
+    public double     health;
+    public double     sickness;
+    public double     injuries;
+    public double     satiety;
+    public double     joy;
+    public double     heat;
     public double   heatDifferenceReal;
-    public int 		environment;
-    public int 		light;
-    public int 		pain;
+    public int         environment;
+    public int         light;
+    public int         pain;
 
-    private MapObjectModel 	_sleepItem;
-    private CharacterStats	_stats;
+    private MapObjectModel     _sleepItem;
+    private CharacterStats    _stats;
     private boolean isFainting;
 
     public CharacterNeeds(CharacterModel character, CharacterStats stats) {
@@ -60,12 +60,12 @@ public class CharacterNeeds {
         joy = 0;
     }
 
-    public int	getFood() { return (int)Math.ceil(food); }
-    public int	getEnergy() { return (int)Math.ceil(energy); }
+    public int    getFood() { return (int)Math.ceil(food); }
+    public int    getEnergy() { return (int)Math.ceil(energy); }
 
-    public boolean	isSleeping() { return isSleeping; }
+    public boolean    isSleeping() { return isSleeping; }
 
-    public void	update() {
+    public void    update() {
         updateNeeds(_character.getType().needs);
 
         // Check peoples on proximity

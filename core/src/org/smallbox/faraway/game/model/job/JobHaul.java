@@ -23,7 +23,7 @@
 //
 //    private List<ConsumableModel>   _consumables = new ArrayList<>();
 //    private StorageAreaModel        _storage;
-//    private Mode 			        _mode;
+//    private Mode                     _mode;
 //    private int                     _quantity;
 //    private ItemInfo                _itemInfo;
 //    private ParcelModel             _consumableParcel;

@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class Game {
-    private static Game 				    _self;
+    private static Game                     _self;
     private final String                    _fileName;
     private final LuaModuleManager          _luaModuleManager;
     private GameConfig                      _config;
     private final Collection<GameModule>    _modules;
-    private List<GameObserver>			    _observers = new ArrayList<>();
+    private List<GameObserver>                _observers = new ArrayList<>();
     private GameSerializer.GameSave         _save;
     private PlanetModel                     _planet;
     private RegionModel                     _region;
@@ -37,8 +37,8 @@ public class Game {
     private GameInfo                        _info = new GameInfo();
 
     private static int                      _tick;
-    private Viewport 					    _viewport;
-    private boolean 					    _isRunning;
+    private Viewport                         _viewport;
+    private boolean                         _isRunning;
     private List<GameModule.EventListener>  _eventListeners = new ArrayList<>();
 
     public void                             toggleRunning() { _isRunning = !_isRunning; }
@@ -123,12 +123,12 @@ public class Game {
         _tick = tick;
     }
 
-    public void	load() {
+    public void    load() {
         String filePath = "data/saves/" + _fileName;
 
         long time = System.currentTimeMillis();
 
-//		loadListener.onLoad("Load game");
+//        loadListener.onLoad("Load game");
         GameSerializer.load(filePath, _save);
         _save = null;
         System.gc();
@@ -136,10 +136,10 @@ public class Game {
         Log.info("Game loaded (2): " + (System.currentTimeMillis() - time) + "ms");
 
 //        loadListener.onLoad("Init world old");
-//		WorldFactory.cleanRock();
+//        WorldFactory.cleanRock();
     }
 
-    public void	save(final String fileName) {
+    public void    save(final String fileName) {
         GameSerializer.save("data/saves/" + fileName, _modules);
     }
 

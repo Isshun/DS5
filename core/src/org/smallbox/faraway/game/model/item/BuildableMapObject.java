@@ -105,7 +105,7 @@ public class BuildableMapObject extends MapObjectModel {
     }
 
     @Override
-    public List<ComponentModel> 	getComponents() {
+    public List<ComponentModel>     getComponents() {
         return _components;
     }
 

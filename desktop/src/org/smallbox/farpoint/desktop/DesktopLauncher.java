@@ -8,21 +8,21 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.util.Constant;
 
 public class DesktopLauncher {
-	public static void main (String[] arg) {
-		GameData data = new GameData();
-		new ConfigLoader().load(data);
+    public static void main (String[] arg) {
+        GameData data = new GameData();
+        new ConfigLoader().load(data);
 
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-//		config.samples = 2;
-		config.x = 1920 + 40;
-		config.y = 0 + 40;
-		config.width = data.config.screen.resolution[0];
-		config.height = data.config.screen.resolution[1];
-//		config.width = 100;
-//		config.height = 80;
-		config.fullscreen = false;
-		config.title = Constant.NAME + " " + Constant.VERSION;
-		new LwjglApplication(new GDXApplication(), config);
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+//        config.samples = 2;
+        config.x = 1920 + 40;
+        config.y = 0 + 40;
+        config.width = data.config.screen.resolution[0];
+        config.height = data.config.screen.resolution[1];
+//        config.width = 100;
+//        config.height = 80;
+        config.fullscreen = false;
+        config.title = Constant.NAME + " " + Constant.VERSION;
+        new LwjglApplication(new GDXApplication(), config);
 
         switch (data.config.screen.mode) {
             case "window":
@@ -37,5 +37,5 @@ public class DesktopLauncher {
                 config.fullscreen = true;
                 break;
         }
-	}
+    }
 }

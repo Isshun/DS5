@@ -154,7 +154,7 @@ public class QuestModule extends GameUIModule {
     }
 
     @Override
-    public boolean	onKey(GameEventListener.Key key) {
+    public boolean    onKey(GameEventListener.Key key) {
         return _ui != null && _ui.onKey(key);
     }
 }

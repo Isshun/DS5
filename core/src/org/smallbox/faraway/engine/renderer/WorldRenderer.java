@@ -238,7 +238,7 @@ public class WorldRenderer extends BaseRenderer {
     }
 
     // TODO: random
-    void	refreshFloor(RenderLayer layer, int type, int x, int y) {
+    void    refreshFloor(RenderLayer layer, int type, int x, int y) {
         // Draw ground
         if (type != 0) {
             SpriteModel sprite = _spriteManager.getGround(type);
@@ -247,7 +247,7 @@ public class WorldRenderer extends BaseRenderer {
     }
 
     //TODO: random
-    void	refreshStructure(RenderLayer layer, StructureModel structure, int x, int y) {
+    void    refreshStructure(RenderLayer layer, StructureModel structure, int x, int y) {
         int offsetWall = (Constant.TILE_WIDTH / 2 * 3) - Constant.TILE_HEIGHT;
 
         if (structure != null) {
@@ -281,7 +281,7 @@ public class WorldRenderer extends BaseRenderer {
 //        return _spriteManager.getItem(structure, structure.isComplete() ? 0 : 1);
 //    }
 
-    void	refreshItems(RenderLayer layer, ItemModel item, int x, int y) {
+    void    refreshItems(RenderLayer layer, ItemModel item, int x, int y) {
         if (item != null && item.getX() == x && item.getY() == y) {
 
             // Display item
@@ -331,7 +331,7 @@ public class WorldRenderer extends BaseRenderer {
         }
     }
 
-    void	refreshConsumable(RenderLayer layer, ConsumableModel consumable, int x, int y) {
+    void    refreshConsumable(RenderLayer layer, ConsumableModel consumable, int x, int y) {
         if (consumable != null) {
 
             // Regular item

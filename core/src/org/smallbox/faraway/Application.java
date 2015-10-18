@@ -29,23 +29,23 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Application implements GameEventListener {
-    public static final int 		UPDATE_INTERVAL = 50;
-    public static final int 		LONG_UPDATE_INTERVAL = 1000;
+    public static final int         UPDATE_INTERVAL = 50;
+    public static final int         LONG_UPDATE_INTERVAL = 1000;
 
-    public static final int 		SPEED_1_TICK_INTERVAL = 320;
-    public static final int 		SPEED_2_TICK_INTERVAL = 200;
-    public static final int 		SPEED_3_TICK_INTERVAL = 75;
-    public static final int 		SPEED_4_TICK_INTERVAL = 10;
+    public static final int         SPEED_1_TICK_INTERVAL = 320;
+    public static final int         SPEED_2_TICK_INTERVAL = 200;
+    public static final int         SPEED_3_TICK_INTERVAL = 75;
+    public static final int         SPEED_4_TICK_INTERVAL = 10;
 
     private static Game             _game;
-    private static MenuBase			_menu;
-    private static int 				_updateInterval = UPDATE_INTERVAL;
-    private static int 				_longUpdateInterval = LONG_UPDATE_INTERVAL;
+    private static MenuBase            _menu;
+    private static int                 _updateInterval = UPDATE_INTERVAL;
+    private static int                 _longUpdateInterval = LONG_UPDATE_INTERVAL;
     private static MainRenderer     _mainRenderer;
     private static LightRenderer    _lightRenderer;
     private static ParticleRenderer _particleRenderer;
     private static UserInterface    _gameInterface;
-    private static boolean			_isFullscreen;
+    private static boolean            _isFullscreen;
     private static GDXRenderer      _renderer;
     private static GameData         _data;
     private static Application      _self;

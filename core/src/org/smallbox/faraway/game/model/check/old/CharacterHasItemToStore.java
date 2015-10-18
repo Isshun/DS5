@@ -8,17 +8,17 @@
 //// Character has item to store
 //public class CharacterHasItemToStore implements CharacterCheck {
 //
-//	@Override
-//	public boolean onCreate(JobModule jobManager, CharacterModel characters) {
-//		if (characters.getComponents().size() > 0) {
-//			JobModel job = JobStore.onCreate(characters);
-//			if (job != null) {
-//				jobManager.addJob(job, characters);
-//				return true;
-//			}
-//		}
+//    @Override
+//    public boolean onCreate(JobModule jobManager, CharacterModel characters) {
+//        if (characters.getComponents().size() > 0) {
+//            JobModel job = JobStore.onCreate(characters);
+//            if (job != null) {
+//                jobManager.addJob(job, characters);
+//                return true;
+//            }
+//        }
 //
-//		return false;
-//	}
+//        return false;
+//    }
 //
 //}

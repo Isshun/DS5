@@ -9,6 +9,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public interface SerializerInterface {
-	void save(FileOutputStream save) throws IOException;
-	void load(VTDNav save) throws XPathParseException, NavException, XPathEvalException;
+    void save(FileOutputStream save) throws IOException;
+    void load(VTDNav save) throws XPathParseException, NavException, XPathEvalException;
 }

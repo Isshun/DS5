@@ -12,26 +12,26 @@
 //import org.smallbox.faraway.ui.panel.BaseRightPanel;
 //
 //public class PanelJobs extends BaseRightPanel {
-//	private static class JobEntry {
-//		public View 			frameJob;
-//		public UILabel			lbJob;
+//    private static class JobEntry {
+//        public View             frameJob;
+//        public UILabel            lbJob;
 //        public UILabel          lbStatus;
-//		public UILabel          lbMessage;
+//        public UILabel          lbMessage;
 //    }
 //
-//	private JobEntry[] 			_entries;
+//    private JobEntry[]             _entries;
 //
-//	public PanelJobs(Mode mode, GameEventListener.Key shortcut) {
-//		super(mode, shortcut, "data/ui/panels/jobs.yml");
-//	}
+//    public PanelJobs(Mode mode, GameEventListener.Key shortcut) {
+//        super(mode, shortcut, "data/ui/panels/jobs.yml");
+//    }
 //
-//	@Override
-//	public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
-//		UIFrame frameEntries = (UIFrame)findById("frame_jobs");
-//		_entries = new JobEntry[75];
-//		for (int i = 0; i < _entries.length; i++) {
-//			final int index = i;
-//			ViewFactory.getInstance().load("data/ui/panels/view_job_info.yml", view -> {
+//    @Override
+//    public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
+//        UIFrame frameEntries = (UIFrame)findById("frame_jobs");
+//        _entries = new JobEntry[75];
+//        for (int i = 0; i < _entries.length; i++) {
+//            final int index = i;
+//            ViewFactory.getInstance().load("data/ui/panels/view_job_info.yml", view -> {
 //                _entries[index] = new JobEntry();
 //                _entries[index].frameJob = view;
 //                _entries[index].lbJob = (UILabel) view.findById("lb_job");
@@ -46,14 +46,14 @@
 ////                view.setOnFocusListener(new LinkFocusListener());
 //                frameEntries.addView(view);
 //            });
-//		}
-//	}
+//        }
+//    }
 //
-//	@Override
-//	public void onRefresh(int update) {
-//		// Display jobs
-//		int index = 0;
-//		for (BaseJobModel job: ModuleHelper.getJobModule().getJobs()) {
+//    @Override
+//    public void onRefresh(int update) {
+//        // Display jobs
+//        int index = 0;
+//        for (BaseJobModel job: ModuleHelper.getJobModule().getJobs()) {
 //            if (index < _entries.length) {
 //                JobEntry entry = _entries[index];
 //                entry.frameJob.setVisible(true);
@@ -80,10 +80,10 @@
 //
 //                index++;
 //            }
-//		}
+//        }
 //
 //        for (; index < _entries.length; index++) {
 //            _entries[index].frameJob.setVisible(false);
 //        }
-//	}
+//    }
 //}

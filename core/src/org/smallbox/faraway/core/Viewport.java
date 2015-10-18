@@ -15,15 +15,15 @@ public class Viewport {
             1f
     };
 
-    private int 		_posX;
-    private int 		_posY;
-    private int 		_lastPosX;
-    private int 		_lastPosY;
-    private int 		_width;
-    private int 		_toScale;
-    private int 		_height;
-    private int 		_fromScale;
-    private int 		_scaleAnim;
+    private int         _posX;
+    private int         _posY;
+    private int         _lastPosX;
+    private int         _lastPosY;
+    private int         _width;
+    private int         _toScale;
+    private int         _height;
+    private int         _fromScale;
+    private int         _scaleAnim;
     private int         _zoom = ZOOM_LEVELS.length - 1;
 
     public Viewport(int x, int y) {

@@ -9,8 +9,8 @@ import org.smallbox.faraway.game.model.character.base.CharacterStats;
  * Created by Alex on 17/06/2015.
  */
 public class HumanModel extends CharacterModel {
-    public static final double 	BODY_COLD_ABSORB = 32;
-    public static final double 	BODY_COLD_RESIST = 0.25;
+    public static final double     BODY_COLD_ABSORB = 32;
+    public static final double     BODY_COLD_RESIST = 0.25;
 
     public static final String[][] EQUIPMENT_VIEW_IDS = new String[][] {
             new String[] {"bt_top", "top"},

@@ -94,33 +94,33 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     private static final TalentEntry[] TALENTS = new TalentEntry[] {
-            new TalentEntry(TalentType.HEAL, 	"Heal"),
-            new TalentEntry(TalentType.CRAFT, 	"Craft"),
-            new TalentEntry(TalentType.COOK, 	"Cook"),
-            new TalentEntry(TalentType.GATHER, 	"Gather"),
-            new TalentEntry(TalentType.CUT, 	"Cut"),
-            new TalentEntry(TalentType.MINE, 	"Mine"),
-            new TalentEntry(TalentType.HAUL, 	"Haul"),
-            new TalentEntry(TalentType.CLEAN, 	"Clean"),
-            new TalentEntry(TalentType.BUILD, 	"Build")
+            new TalentEntry(TalentType.HEAL,     "Heal"),
+            new TalentEntry(TalentType.CRAFT,     "Craft"),
+            new TalentEntry(TalentType.COOK,     "Cook"),
+            new TalentEntry(TalentType.GATHER,     "Gather"),
+            new TalentEntry(TalentType.CUT,     "Cut"),
+            new TalentEntry(TalentType.MINE,     "Mine"),
+            new TalentEntry(TalentType.HAUL,     "Haul"),
+            new TalentEntry(TalentType.CLEAN,     "Clean"),
+            new TalentEntry(TalentType.BUILD,     "Build")
     };
 
-    private CharacterNeeds				_needs;
+    private CharacterNeeds                _needs;
     private TimeTableModel              _timeTable;
-    protected boolean					_isSelected;
-    protected int 						_lag;
-    protected double 					_old;
+    protected boolean                    _isSelected;
+    protected int                         _lag;
+    protected double                     _old;
     protected CharacterInfoModel        _info;
-    protected RoomModel 				_quarter;
-    protected boolean 					_needRefresh;
-    protected ConsumableModel 			_inventory;
+    protected RoomModel                 _quarter;
+    protected boolean                     _needRefresh;
+    protected ConsumableModel             _inventory;
     protected MoveListener _moveListener;
-    //    protected List<ItemInfo> 			_equipments;
+    //    protected List<ItemInfo>             _equipments;
     protected CharacterStats            _stats;
-    protected boolean 					_isFaint;
+    protected boolean                     _isFaint;
 
     private HashMap<TalentType, TalentEntry> _talentsMap;
-    private List<TalentEntry>       	_talents;
+    private List<TalentEntry>           _talents;
     private ParcelModel                 _toParcel;
     private ParcelModel                 _fromParcel;
     private double                      _moveStep;
@@ -170,17 +170,17 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public BaseJobModel             getJob() { return _job; }
-    public CharacterNeeds	        getNeeds() { return _needs; }
-    public GraphPath<ParcelModel> 	getPath() { return _path; }
-    public int 				        getLag() { return _lag; }
-    public double			        getOld() { return _old; }
+    public CharacterNeeds            getNeeds() { return _needs; }
+    public GraphPath<ParcelModel>     getPath() { return _path; }
+    public int                         getLag() { return _lag; }
+    public double                    getOld() { return _old; }
     public RoomModel                getQuarter() { return _quarter; }
     public void                     setQuarter(RoomModel quarter) { _quarter = quarter; }
     public List<TalentEntry>        getTalents() { return _talents; }
     public TalentEntry              getTalent(TalentType type) { return _talentsMap.get(type); }
     public double                   getBodyHeat() { return _needs.heat; }
     public CharacterStats           getStats() { return _stats; }
-    public ParcelModel 				getParcel() { return _parcel; }
+    public ParcelModel                 getParcel() { return _parcel; }
     public ConsumableModel          getInventory() { return _inventory; }
     public abstract String[][]      getEquipmentViewIds();
     public abstract String          getEquipmentViewPath();
@@ -189,12 +189,12 @@ public abstract class CharacterModel extends MovableModel {
     public String                   getTypeName() { return _type.name; }
     public TimeTableModel           getTimetable() { return _timeTable; }
 
-    public abstract String		    getName();
+    public abstract String            getName();
 
     public abstract void            addBodyStats(CharacterStats stats);
     public void                     addDisease(DiseaseModel disease) { _diseases.add(disease); }
     public void                     addBuff(BuffModel buff) { _buffs.add(buff); }
-    public void				        setSelected(boolean selected) { _isSelected = selected; }
+    public void                        setSelected(boolean selected) { _isSelected = selected; }
     public void                     setIsFaint() { _isFaint = true; }
     public void                     setInventory(ConsumableModel consumable) { _inventory = consumable; }
 
@@ -215,10 +215,10 @@ public abstract class CharacterModel extends MovableModel {
         _stats.isAlive = false;
     }
 
-    public boolean			        isSelected() { return _isSelected; }
+    public boolean                    isSelected() { return _isSelected; }
     public boolean                  isAlive() { return _stats.isAlive; }
-    public boolean 			        isSleeping() { return _needs.isSleeping(); }
-    public boolean 			        needRefresh() { return _needRefresh; }
+    public boolean                     isSleeping() { return _needs.isSleeping(); }
+    public boolean                     needRefresh() { return _needRefresh; }
 
     public void move(GraphPath<ParcelModel> path) {
         move(path, null);
@@ -316,7 +316,7 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public void	setJob(BaseJobModel job) {
+    public void    setJob(BaseJobModel job) {
         // This characters already working on this job
         if (_job == job) {
             Log.warning("This job already exists on characters");
@@ -333,8 +333,8 @@ public abstract class CharacterModel extends MovableModel {
         _job = job;
     }
 
-//	public void	setProfession(ProfessionModel.Type professionId) {
-//		ProfessionModel[] professions = Game.getCharacterModule().getProfessions();
+//    public void    setProfession(ProfessionModel.Type professionId) {
+//        ProfessionModel[] professions = Game.getCharacterModule().getProfessions();
 //
 //        for (ProfessionModel profession : professions) {
 //            if (profession.getElevation() == professionId) {
@@ -342,7 +342,7 @@ public abstract class CharacterModel extends MovableModel {
 //                setProfession(profession);
 //            }
 //        }
-//	}
+//    }
 
     public void  longUpdate() {
         _old += Constant.CHARACTER_GROW_PER_UPDATE * Constant.SLOW_UPDATE_INTERVAL;
@@ -351,10 +351,10 @@ public abstract class CharacterModel extends MovableModel {
             _stats.isAlive = false;
         }
 
-//		// Find quarter
-//		if (_quarter == null) {
-//			Game.getRoomManager().take(this, Room.Type.QUARTER);
-//		}
+//        // Find quarter
+//        if (_quarter == null) {
+//            Game.getRoomManager().take(this, Room.Type.QUARTER);
+//        }
 
         // TODO
         // No energy + no job to sleepingItem -> sleep on the ground
@@ -365,7 +365,7 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public void		move() {
+    public void        move() {
         _move = Direction.NONE;
 
         if (_path == null) {
@@ -435,7 +435,7 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public void			action() {
+    public void            action() {
         if (_job == null) {
             return;
         }
@@ -465,7 +465,7 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     @Override
-    public void	onPathFailed(BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
+    public void    onPathFailed(BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
         if (_fromParcel == fromParcel && _toParcel == toParcel) {
             Log.warning("Job failed (no path)");
 
@@ -480,7 +480,7 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     @Override
-    public void	onPathComplete(GraphPath<ParcelModel> path, BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
+    public void    onPathComplete(GraphPath<ParcelModel> path, BaseJobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
         if (_fromParcel == fromParcel && _toParcel == toParcel) {
             Log.debug("Character #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
 

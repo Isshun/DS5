@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
  * Created by Alex on 15/10/2015.
  */
 public class GraphicInfo {
-    public int 							spriteId;
+    public int                             spriteId;
     public final String packageName;
     public final String path;
     public int x;

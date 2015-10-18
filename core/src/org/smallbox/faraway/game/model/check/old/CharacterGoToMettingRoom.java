@@ -9,14 +9,14 @@
 //
 //public class CharacterGoToMettingRoom implements CharacterCheck {
 //
-//	@Override
-//	public boolean onCreate(JobModule jobManager, CharacterModel characters) {
-//		Room room = Game.getRoomManager().getNearRoom(characters.getX(), characters.getY(), Room.Type.METTING);
-//		if (room != null) {
-//			jobManager.addJob(JobMove.onCreate(characters, room.getX(), room.getY(), Constant.CHARACTER_STAY_IN_METTING_ROOM * Constant.DURATION_MULTIPLIER), characters);
-//			return true;
-//		}
-//		return false;
-//	}
+//    @Override
+//    public boolean onCreate(JobModule jobManager, CharacterModel characters) {
+//        Room room = Game.getRoomManager().getNearRoom(characters.getX(), characters.getY(), Room.Type.METTING);
+//        if (room != null) {
+//            jobManager.addJob(JobMove.onCreate(characters, room.getX(), room.getY(), Constant.CHARACTER_STAY_IN_METTING_ROOM * Constant.DURATION_MULTIPLIER), characters);
+//            return true;
+//        }
+//        return false;
+//    }
 //
 //}

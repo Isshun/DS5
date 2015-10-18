@@ -80,7 +80,7 @@ public class QuestModuleUI {
         ((QuestModule) ModuleManager.getInstance().getModule(QuestModule.class)).selectQuestionOption(quest, optionIndex);
     }
 
-    public boolean	onKey(GameEventListener.Key key) {
+    public boolean    onKey(GameEventListener.Key key) {
         if (_panel.findById("frame_message").isVisible()) {
             switch (key) {
                 case D_1:

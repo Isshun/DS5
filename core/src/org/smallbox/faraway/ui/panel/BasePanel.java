@@ -20,161 +20,161 @@ import org.smallbox.faraway.util.Log;
 import java.util.ArrayList;
 
 public abstract class BasePanel extends UIFrame implements LayoutFactory.OnLayoutLoaded, GameObserver {
-    protected static final int 	LINE_HEIGHT = 20;
-	protected static final int 	FONT_SIZE_TITLE = 22;
-	protected static final int 	FONT_SIZE = 14;
-	protected static final int 	NB_COLUMNS = Constant.NB_COLUMNS;
-	protected static final int 	NB_COLUMNS_TITLE = Constant.NB_COLUMNS_TITLE;
+    protected static final int     LINE_HEIGHT = 20;
+    protected static final int     FONT_SIZE_TITLE = 22;
+    protected static final int     FONT_SIZE = 14;
+    protected static final int     NB_COLUMNS = Constant.NB_COLUMNS;
+    protected static final int     NB_COLUMNS_TITLE = Constant.NB_COLUMNS_TITLE;
 
-    protected UserInterface 		_ui;
-	protected Mode 					_mode;
-	private boolean 				_alwaysVisible;
-	private GameEventListener.Key 	_shortcut;
-	protected UserInteraction 		_interaction;
-	protected boolean 				_isVisible;
-	private boolean 				_isLoaded;
+    protected UserInterface         _ui;
+    protected Mode                     _mode;
+    private boolean                 _alwaysVisible;
+    private GameEventListener.Key     _shortcut;
+    protected UserInteraction         _interaction;
+    protected boolean                 _isVisible;
+    private boolean                 _isLoaded;
     private final String            _layoutPath;
-	private int 					_nbDraw;
-	private long 					_totalDrawTime;
-	private int 					_nbRefresh;
-	private long 					_totalRefreshTime;
-    protected int 					_debugIndex;
+    private int                     _nbDraw;
+    private long                     _totalDrawTime;
+    private int                     _nbRefresh;
+    private long                     _totalRefreshTime;
+    protected int                     _debugIndex;
 
-	public void			toogle() { _isVisible = !_isVisible; }
-	public void			open() { _isVisible = true; }
-	public void			close() { _isVisible = false; }
-	public boolean		isOpen() { return _isVisible; }
+    public void            toogle() { _isVisible = !_isVisible; }
+    public void            open() { _isVisible = true; }
+    public void            close() { _isVisible = false; }
+    public boolean        isOpen() { return _isVisible; }
 
-	public BasePanel(Mode mode, GameEventListener.Key shortcut, int x, int y, int width, int height, String layoutPath) {
+    public BasePanel(Mode mode, GameEventListener.Key shortcut, int x, int y, int width, int height, String layoutPath) {
         _layoutPath = layoutPath;
         _shortcut = shortcut;
-		_mode = mode;
-		_isVisible = false;
+        _mode = mode;
+        _isVisible = false;
         _views = new ArrayList<>();
         setSize(width, height);
         setPosition(x, y);
-	}
+    }
 
-	public BasePanel(Mode mode, GameEventListener.Key shortcut, String layoutPath) {
+    public BasePanel(Mode mode, GameEventListener.Key shortcut, String layoutPath) {
         _layoutPath = layoutPath;
         _shortcut = shortcut;
-		_mode = mode;
-		_isVisible = false;
+        _mode = mode;
+        _isVisible = false;
         _views = new ArrayList<>();
-	}
+    }
 
 //    public void setSize(int width, int height) {
 //        super.setSize(width * GameData.config.resolution[0] / Constant.BASE_WIDTH, height * GameData.config.resolution[1] / Constant.BASE_HEIGHT);
 //    }
 
     protected void setAlwaysVisible(boolean alwaysVisible) {
-		_alwaysVisible = alwaysVisible;
-		_isVisible = alwaysVisible;
-	}
+        _alwaysVisible = alwaysVisible;
+        _isVisible = alwaysVisible;
+    }
 
-	public void init(ViewFactory viewFactory, LayoutFactory layoutFactory, UserInterface ui, UserInteraction interaction) {
-		removeAllViews();
-		_ui = ui;
-		_interaction = interaction;
-		onCreate(viewFactory);
+    public void init(ViewFactory viewFactory, LayoutFactory layoutFactory, UserInterface ui, UserInteraction interaction) {
+        removeAllViews();
+        _ui = ui;
+        _interaction = interaction;
+        onCreate(viewFactory);
         if (_layoutPath != null) {
             layoutFactory.load(_layoutPath, this, this);
         }
-	}
-	
-	public boolean	checkKey(GameEventListener.Key key) {
-		if (_isVisible) {
-			return onKey(key);
-		}
-		return false;
-	}
+    }
 
-	protected boolean onKey(GameEventListener.Key key) {
-		return false;
-	}
-	
-	public void setUI(UserInterface ui) {
-		_ui = ui;
-	}
+    public boolean    checkKey(GameEventListener.Key key) {
+        if (_isVisible) {
+            return onKey(key);
+        }
+        return false;
+    }
 
-	public boolean	onMouseMove(int x, int y) {
-		if (_isVisible && x > _x && x < _x + 800 && y > _y && y < _y + 600) {
-			return true;
-		}
+    protected boolean onKey(GameEventListener.Key key) {
+        return false;
+    }
 
-		return false;
-	}
+    public void setUI(UserInterface ui) {
+        _ui = ui;
+    }
 
-	public boolean	catchClick(int x, int y) {
-		if (_isVisible && x > _x && x < _x + _width && y > _y && y < _y + _height) {
-			return true;
-		}
-		return false;
-	}
+    public boolean    onMouseMove(int x, int y) {
+        if (_isVisible && x > _x && x < _x + 800 && y > _y && y < _y + 600) {
+            return true;
+        }
 
-	public boolean	mouseRelease(GameEventListener.MouseButton button, int x, int y) {
-		return _isVisible;
-	}
-	
-	public void refresh(int update) {
-		if (_isVisible) {
-			_debugIndex = 0;
-			long time = System.currentTimeMillis();
-			onRefresh(update);
-			_totalRefreshTime += (System.currentTimeMillis() - time);
-			_nbRefresh++;
-		}
-	}
+        return false;
+    }
 
-	protected void addDebugView(UIFrame frame, String text) {
-		addDebugView(frame, text, null);
-	}
+    public boolean    catchClick(int x, int y) {
+        if (_isVisible && x > _x && x < _x + _width && y > _y && y < _y + _height) {
+            return true;
+        }
+        return false;
+    }
 
-	protected void addDebugView(UIFrame frame, String text, OnClickListener clickListener) {
-		UILabel lbCommand = ViewFactory.getInstance().createTextView();
-		lbCommand.setText(text);
-		lbCommand.setTextSize(14);
-		lbCommand.setPosition(6, 38 + 20 * _debugIndex++);
-		lbCommand.setSize(230, 20);
-		lbCommand.setTextAlign(Align.CENTER_VERTICAL);
-		lbCommand.setOnClickListener(clickListener);
-		frame.addView(lbCommand);
-	}
+    public boolean    mouseRelease(GameEventListener.MouseButton button, int x, int y) {
+        return _isVisible;
+    }
 
-	protected void onRefresh(int update) {
-	}
+    public void refresh(int update) {
+        if (_isVisible) {
+            _debugIndex = 0;
+            long time = System.currentTimeMillis();
+            onRefresh(update);
+            _totalRefreshTime += (System.currentTimeMillis() - time);
+            _nbRefresh++;
+        }
+    }
 
-	public Mode getMode() {
-		return _mode;
-	}
+    protected void addDebugView(UIFrame frame, String text) {
+        addDebugView(frame, text, null);
+    }
 
-	public boolean isAlwaysVisible() {
-		return _alwaysVisible;
-	}
+    protected void addDebugView(UIFrame frame, String text, OnClickListener clickListener) {
+        UILabel lbCommand = ViewFactory.getInstance().createTextView();
+        lbCommand.setText(text);
+        lbCommand.setTextSize(14);
+        lbCommand.setPosition(6, 38 + 20 * _debugIndex++);
+        lbCommand.setSize(230, 20);
+        lbCommand.setTextAlign(Align.CENTER_VERTICAL);
+        lbCommand.setOnClickListener(clickListener);
+        frame.addView(lbCommand);
+    }
 
-	public boolean drawCursor() {
-		return false;
-	}
+    protected void onRefresh(int update) {
+    }
 
-	public void setVisible(boolean visible) {
-		_isVisible = visible;
+    public Mode getMode() {
+        return _mode;
+    }
 
-		if (visible) {
-			onOpen();
-		} else {
-			onClose();
-		}
-	}
+    public boolean isAlwaysVisible() {
+        return _alwaysVisible;
+    }
 
-	protected void onClose() {
-	}
+    public boolean drawCursor() {
+        return false;
+    }
 
-	protected void onOpen() {
-	}
+    public void setVisible(boolean visible) {
+        _isVisible = visible;
 
-	public GameEventListener.Key getShortcut() {
-		return _shortcut;
-	}
+        if (visible) {
+            onOpen();
+        } else {
+            onClose();
+        }
+    }
+
+    protected void onClose() {
+    }
+
+    protected void onOpen() {
+    }
+
+    public GameEventListener.Key getShortcut() {
+        return _shortcut;
+    }
 
     public boolean isVisible() {
         return _isVisible;
@@ -182,9 +182,9 @@ public abstract class BasePanel extends UIFrame implements LayoutFactory.OnLayou
 
     public void draw(GDXRenderer renderer, int x, int y) {
         if (_isVisible) {
-			long time = System.currentTimeMillis();
+            long time = System.currentTimeMillis();
 
-			if (_backgroundColor != null) {
+            if (_backgroundColor != null) {
                 renderer.draw(_backgroundColor, _x, _y, _width, _height);
             }
 
@@ -194,13 +194,13 @@ public abstract class BasePanel extends UIFrame implements LayoutFactory.OnLayou
 
             onDraw(renderer, null);
 
-			_totalDrawTime += (System.currentTimeMillis() - time);
-			_nbDraw++;
-		}
+            _totalDrawTime += (System.currentTimeMillis() - time);
+            _nbDraw++;
+        }
     }
 
     protected void onDraw(GDXRenderer renderer, Viewport viewport) {
-	}
+    }
 
     @Override
     public int getContentWidth() {
@@ -215,13 +215,13 @@ public abstract class BasePanel extends UIFrame implements LayoutFactory.OnLayou
         return _height;
     }
 
-	public void setLoaded() {
-		_isLoaded = true;
-	}
+    public void setLoaded() {
+        _isLoaded = true;
+    }
 
-	public boolean isLoaded() {
-		return _isLoaded;
-	}
+    public boolean isLoaded() {
+        return _isLoaded;
+    }
 
     protected void onCreate(ViewFactory factory) {
     }
@@ -230,16 +230,16 @@ public abstract class BasePanel extends UIFrame implements LayoutFactory.OnLayou
     public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
     }
 
-	public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
-		return false;
-	}
+    public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
+        return false;
+    }
 
-	public void dump() {
-		if (_nbRefresh != 0) {
-			Log.notice("Manager: " + this.getClass().getSimpleName() + ",\trefresh: " + _nbRefresh + ",\tavg time: " + _totalRefreshTime / _nbRefresh);
-		}
-		if (_nbDraw != 0) {
-			Log.notice("Manager: " + this.getClass().getSimpleName() + ",\tdraw: " + _nbDraw + ",\tavg time: " + _totalDrawTime / _nbDraw);
-		}
-	}
+    public void dump() {
+        if (_nbRefresh != 0) {
+            Log.notice("Manager: " + this.getClass().getSimpleName() + ",\trefresh: " + _nbRefresh + ",\tavg time: " + _totalRefreshTime / _nbRefresh);
+        }
+        if (_nbDraw != 0) {
+            Log.notice("Manager: " + this.getClass().getSimpleName() + ",\tdraw: " + _nbDraw + ",\tavg time: " + _totalDrawTime / _nbDraw);
+        }
+    }
 }
