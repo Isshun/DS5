@@ -10,7 +10,8 @@ public class UILabel extends View {
 	public static final int	BOLD = 1;
 	public static final int	ITALIC = 2;
 	public static final int	UNDERLINED = 3;
-	private int _hash;
+	private int _hash1;
+	private int _hash2;
 
     private String                              _string;
     private int                                 _textSize = 14;
@@ -29,15 +30,28 @@ public class UILabel extends View {
 		super(width, height);
 	}
 
-	public void setText(String string) {
+    public void setText(String string) {
         if (string == null) {
             setStringValue("");
             return;
         }
 
         int hash = string.hashCode();
-        if (hash != _hash) {
+        if (hash != _hash1) {
             setStringValue(GameData.getData() != null && GameData.getData().hasString(hash) ? GameData.getData().getString(hash) : string);
+        }
+	}
+
+	public void setText(String str1, String str2) {
+        if (str1 == null) { str1 = ""; }
+        if (str2 == null) { str2 = ""; }
+
+        int hash1 = str1.hashCode();
+        int hash2 = str2.hashCode();
+        if (hash1 != _hash1 || hash2 != _hash2) {
+            str1 = GameData.getData() != null && GameData.getData().hasString(hash1) ? GameData.getData().getString(hash1) : str1;
+            str2 = GameData.getData() != null && GameData.getData().hasString(hash2) ? GameData.getData().getString(hash2) : str2;
+            setStringValue(str1 + str2);
         }
 	}
 
@@ -49,25 +63,25 @@ public class UILabel extends View {
 
         // TODO
         int hash = string.hashCode();
-//        if (hash != _hash) {
+//        if (hash != _hash1) {
             string = GameData.getData() != null && GameData.getData().hasString(hash) ? GameData.getData().getString(hash) : string;
         setStringValue(String.format(string, value));
 //        }
     }
 
-    public void setText(String string, String value) {
-        if (string == null) {
-            setStringValue("");
-            return;
-        }
-
-        // TODO
-        int hash = string.hashCode();
-//        if (hash != _hash) {
-            string = GameData.getData() != null && GameData.getData().hasString(hash) ? GameData.getData().getString(hash) : string;
-            setStringValue(String.format(string, value));
+//    public void setText(String string, String value) {
+//        if (string == null) {
+//            setStringValue("");
+//            return;
 //        }
-    }
+//
+//        // TODO
+//        int hash = string.hashCode();
+////        if (hash != _hash1) {
+//            string = GameData.getData() != null && GameData.getData().hasString(hash) ? GameData.getData().getString(hash) : string;
+//            setStringValue(String.format(string, value));
+////        }
+//    }
 
     public void setTextColor(Color color) {
         if (color != null && _textColor != color) {
@@ -101,6 +115,7 @@ public class UILabel extends View {
         _string = StringUtils.getDashedString(label, value, nbColumns);
     }
 
+    @Override
     public String getString() {
         return _string;
     }

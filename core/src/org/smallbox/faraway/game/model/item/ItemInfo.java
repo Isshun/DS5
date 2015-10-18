@@ -190,7 +190,7 @@ public class ItemInfo {
 	public ItemInfo 					parentInfo;
 	public List<ItemComponentInfo>		components;
 	public List<ItemInfo> 				childs = new ArrayList<>();
-	public List<GraphicInfo> 			graphics;
+	public List<GraphicInfo> 			graphics = new ArrayList<>();
 	public ItemInfoFactory 				factory;
 
 	public ItemInfo() {

@@ -66,7 +66,6 @@ public class LuaItemExtend extends LuaExtend {
 
         LuaValue luaGraphics = value.get("graphics");
         if (!luaGraphics.isnil()) {
-            itemInfo.graphics = new ArrayList<>();
             if (!luaGraphics.get("path").isnil()) {
                 itemInfo.graphics.add(readGraphic(luaGraphics));
             } else if (luaGraphics.length() >= 1 && !luaGraphics.get(1).get("path").isnil()) {
@@ -74,6 +73,9 @@ public class LuaItemExtend extends LuaExtend {
                     itemInfo.graphics.add(readGraphic(luaGraphics.get(i)));
                 }
             }
+        }
+        if (itemInfo.graphics.isEmpty()) {
+            itemInfo.graphics.add(new GraphicInfo("base", "/graphics/missing.png"));
         }
 
         if (!value.get("size").isnil()) {

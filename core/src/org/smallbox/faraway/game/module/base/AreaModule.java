@@ -5,13 +5,13 @@ import org.smallbox.faraway.game.model.GameData;
 import org.smallbox.faraway.game.model.area.*;
 import org.smallbox.faraway.game.model.item.ConsumableModel;
 import org.smallbox.faraway.game.model.item.ParcelModel;
+import org.smallbox.faraway.game.model.job.JobStore;
 import org.smallbox.faraway.game.module.GameModule;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.game.module.path.PathManager;
 import org.smallbox.faraway.util.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
  */
 public class AreaModule extends GameModule {
     private List<AreaModel> _areas = new ArrayList<>();
+    private List<StorageAreaModel> _storageAreas = new ArrayList<>();
 
     public AreaModule() {
         _updateInterval = 10;
@@ -27,6 +28,33 @@ public class AreaModule extends GameModule {
     @Override
     protected void onLoaded() {
 
+    }
+
+    @Override
+    protected void onUpdate(int tick) {
+        Collections.sort(_storageAreas, (o1, o2) -> o2.getPriority() - o1.getPriority());
+
+        // Create haul jobs
+//        _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).foundConsumablesAround());
+        ModuleHelper.getWorldModule().getConsumables().stream().filter(consumable -> consumable.getStoreJob() == null).forEach(consumable -> {
+            StorageAreaModel bestStorage = null;
+            for (StorageAreaModel storage: _storageAreas) {
+                if (storage.accept(consumable.getInfo()) && storage.hasFreeSpace(consumable.getInfo(), consumable.getQuantity())) {
+                    bestStorage = storage;
+                    break;
+                }
+            }
+            if (bestStorage != null && consumable.getStorage() != bestStorage) {
+                System.out.println("Consumable have to move in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
+                ModuleHelper.getJobModule().addJob(JobStore.create(consumable, bestStorage));
+            } else if (bestStorage != null) {
+                System.out.println("Consumable already in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
+            } else {
+                System.out.println("No best storage for " + consumable.getInfo().label);
+            }
+
+//            addJob(JobHaul.create(consumable)
+        });
     }
 
     @Override
@@ -45,7 +73,7 @@ public class AreaModule extends GameModule {
 
         // Create new area
         AreaModel area = createArea(type);
-        _areas.add(area);
+        addArea(area);
         addParcelToArea(area, fromX, fromY, toX, toY);
     }
 
@@ -101,16 +129,14 @@ public class AreaModule extends GameModule {
     }
 
     public StorageAreaModel getNearestFreeStorage(ConsumableModel consumable, ParcelModel fromParcel) {
-        int x = fromParcel.x;
-        int y = fromParcel.y;
         int bestDistance = Integer.MAX_VALUE;
         AreaModel bestArea = null;
         for (AreaModel area: _areas) {
             if (area.isStorage() && area.accept(consumable.getInfo()) && PathManager.getInstance().getPath(area, fromParcel) != null) {
-                ParcelModel parcel = ((StorageAreaModel)area).getNearestFreeParcel(consumable, x, y);
-                if (parcel != null && Utils.getDistance(parcel, x, y) < bestDistance) {
+                ParcelModel parcel = ((StorageAreaModel)area).getNearestFreeParcel(consumable, fromParcel);
+                if (parcel != null && Utils.getDistance(parcel, fromParcel) < bestDistance) {
                     bestArea = area;
-                    bestDistance = Utils.getDistance(parcel, x, y);
+                    bestDistance = Utils.getDistance(parcel, fromParcel);
                 }
             }
         }
@@ -118,16 +144,14 @@ public class AreaModule extends GameModule {
     }
 
     public ParcelModel getNearestFreeStorageParcel(ConsumableModel consumable, ParcelModel fromParcel) {
-        int x = fromParcel.x;
-        int y = fromParcel.y;
         int bestDistance = Integer.MAX_VALUE;
         ParcelModel bestParcel = null;
         for (AreaModel area: _areas) {
             if (area.isStorage() && area.accept(consumable.getInfo()) && PathManager.getInstance().getPath(area, fromParcel) != null) {
-                ParcelModel parcel = ((StorageAreaModel)area).getNearestFreeParcel(consumable, x, y);
-                if (parcel != null && Utils.getDistance(parcel, x, y) < bestDistance) {
+                ParcelModel parcel = ((StorageAreaModel)area).getNearestFreeParcel(consumable, fromParcel);
+                if (parcel != null && Utils.getDistance(parcel, fromParcel) < bestDistance) {
                     bestParcel = parcel;
-                    bestDistance = Utils.getDistance(parcel, x, y);
+                    bestDistance = Utils.getDistance(parcel, fromParcel);
                 }
             }
         }
@@ -136,16 +160,20 @@ public class AreaModule extends GameModule {
 
     public void addArea(AreaModel area) {
         _areas.add(area);
-    }
 
-    @Override
-    protected void onUpdate(int tick) {
+        if (area instanceof StorageAreaModel) {
+            _storageAreas.add((StorageAreaModel)area);
+        }
     }
 
     public void remove(AreaModel area) {
         if (area != null) {
             area.getParcels().forEach(parcel -> parcel.setArea(null));
             _areas.remove(area);
+
+            if (area instanceof StorageAreaModel) {
+                _storageAreas.remove(area);
+            }
         }
     }
 

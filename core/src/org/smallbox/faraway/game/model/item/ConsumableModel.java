@@ -1,8 +1,9 @@
 package org.smallbox.faraway.game.model.item;
 
 import org.smallbox.faraway.game.helper.WorldHelper;
+import org.smallbox.faraway.game.model.area.StorageAreaModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
-import org.smallbox.faraway.game.model.job.JobHaul;
+import org.smallbox.faraway.game.model.job.JobStore;
 
 /**
  * Created by Alex on 03/06/2015.
@@ -10,8 +11,8 @@ import org.smallbox.faraway.game.model.job.JobHaul;
 public class ConsumableModel extends MapObjectModel {
     private int             _quantity = 1;
     private int             _slots = 0;
-    private JobHaul         _job;
     private BaseJobModel    _lock;
+    private JobStore _storeJob;
 
     public ConsumableModel(ItemInfo info) {
         super(info);
@@ -32,8 +33,6 @@ public class ConsumableModel extends MapObjectModel {
     }
 
     public String getFullLabel() { return getLabel() + " (" + _quantity + ")"; }
-    public JobHaul getHaul() { return _job; }
-    public void setHaul(JobHaul job) { _job = job; }
     public boolean isEmpty() { return _quantity <= 0; }
     public void lock(BaseJobModel lock) { _lock = lock; }
     public BaseJobModel getLock() { return _lock; }
@@ -51,4 +50,10 @@ public class ConsumableModel extends MapObjectModel {
         }
     }
 
+    public StorageAreaModel getStorage() {
+        return _parcel != null && _parcel.getArea() != null && _parcel.getArea().isStorage() ? (StorageAreaModel) _parcel.getArea() : null;
+    }
+
+    public void setStoreJob(JobStore job) { _storeJob = job; }
+    public JobStore getStoreJob() { return _storeJob; }
 }

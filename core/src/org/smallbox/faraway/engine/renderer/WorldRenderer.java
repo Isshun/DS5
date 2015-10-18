@@ -288,7 +288,7 @@ public class WorldRenderer extends BaseRenderer {
             layer.draw(_spriteManager.getItem(item, item.getCurrentFrame()), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
 
             // Display components
-            if (item.getFactory() != null) {
+            if (item.getFactory() != null && item.getFactory().getComponents() != null) {
                 for (ItemFactoryModel.FactoryInputModel component : item.getFactory().getComponents()) {
                     SpriteModel sprite = _spriteManager.getItem(component.consumable.getInfo());
                     if (sprite != null) {
@@ -304,7 +304,7 @@ public class WorldRenderer extends BaseRenderer {
             }
 
             // Display crafts
-            if (item.getFactory() != null) {
+            if (item.getFactory() != null && item.getFactory().getProducts() != null) {
                 for (ItemFactoryModel.FactoryOutputModel product : item.getFactory().getProducts()) {
                     SpriteModel sprite = _spriteManager.getItem(product.itemInfo);
                     if (sprite != null) {

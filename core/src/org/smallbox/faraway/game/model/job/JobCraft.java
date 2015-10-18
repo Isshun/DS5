@@ -283,7 +283,7 @@ public class JobCraft extends BaseBuildJobModel {
             return closeOrQuit(character);
         }
 
-        ParcelModel parcel = _storage.getNearestFreeParcel(character.getInventory(), character.getX(), character.getY());
+        ParcelModel parcel = _storage.getNearestFreeParcel(character.getInventory(), character.getParcel());
         if (parcel == null) {
             Log.warning("No free space in _storage area");
             ModuleHelper.getWorldModule().putConsumable(character.getInventory(), character.getX(), character.getY());

@@ -10,7 +10,6 @@ import org.smallbox.faraway.game.model.item.ItemInfo;
 import org.smallbox.faraway.game.model.item.ResourceModel;
 import org.smallbox.faraway.game.model.job.BaseJobModel;
 import org.smallbox.faraway.game.model.job.JobDump;
-import org.smallbox.faraway.game.model.job.JobHaul;
 import org.smallbox.faraway.game.module.ModuleHelper;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.cursor.*;
@@ -222,13 +221,13 @@ public class UserInteraction {
 	}
 
 	public void planHaul(int startX, int startY, int toX, int toY) {
-		for (int x = startX; x <= toX; x++) {
-			for (int y = startY; y <= toY; y++) {
-				if (WorldHelper.getConsumable(x, y) != null && WorldHelper.getConsumable(x, y).getHaul() == null) {
-					ModuleHelper.getJobModule().addJob(JobHaul.create(WorldHelper.getConsumable(x, y)));
-				}
-			}
-		}
+//		for (int x = startX; x <= toX; x++) {
+//			for (int y = startY; y <= toY; y++) {
+//				if (WorldHelper.getConsumable(x, y) != null && WorldHelper.getConsumable(x, y).getHaul() == null) {
+//					ModuleHelper.getJobModule().addJob(JobHaul.create(WorldHelper.getConsumable(x, y)));
+//				}
+//			}
+//		}
 	}
 
 	public void plan(int startX, int startY, int toX, int toY) {

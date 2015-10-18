@@ -1666,9 +1666,6 @@
 <health>0</health>
 <progress>0</progress>
 </structure>
-<consumable id='637' name='base.seaweed'>
-<quantity>1</quantity>
-</consumable>
 </parcel>
 <parcel x='15' y='14' z='0' type='1'>
 <structure id='635' name='base.wood_floor'>
@@ -2107,6 +2104,9 @@
 <health>0</health>
 <progress>0</progress>
 </structure>
+<consumable id='640' name='base.easy_meal'>
+<quantity>10</quantity>
+</consumable>
 </parcel>
 <parcel x='18' y='10' z='0' type='1'>
 <structure id='618' name='base.wood_floor'>
@@ -2428,7 +2428,7 @@
 <progress>0</progress>
 </structure>
 <consumable id='599' name='base.seaweed'>
-<quantity>16</quantity>
+<quantity>7</quantity>
 </consumable>
 </parcel>
 <parcel x='20' y='9' z='0' type='1'>
@@ -6207,11 +6207,11 @@
 <drinking>0.0</drinking>
 <socialize>0.0</socialize>
 <food>0.0</food>
-<happiness>85.64999999999976</happiness>
-<relation>0.0</relation>
+<happiness>7.05000000000205</happiness>
+<relation>100.0</relation>
 <security>0.0</security>
 <oxygen>100.0</oxygen>
-<energy>77.1000000000013</energy>
+<energy>11.300000000001381</energy>
 <health>79.49120330810547</health>
 <sickness>0.0</sickness>
 <injuries>0.0</injuries>
@@ -6249,19 +6249,19 @@
 <lastname>Wagner</lastname>
 <firstname>Olive</firstname>
 <old>Wagner</old>
-<x>21</x>
-<y>19</y>
+<x>18</x>
+<y>9</y>
 <gender>MALE</gender>
 <needs>
 <isSleeping>false</isSleeping>
 <drinking>0.0</drinking>
 <socialize>0.0</socialize>
 <food>0.0</food>
-<happiness>58.94999999999979</happiness>
-<relation>0.0</relation>
+<happiness>0.0</happiness>
+<relation>100.0</relation>
 <security>0.0</security>
 <oxygen>100.0</oxygen>
-<energy>18.6000000000014</energy>
+<energy>98.3000000000001</energy>
 <health>78.74639129638672</health>
 <sickness>0.0</sickness>
 <injuries>0.0</injuries>
@@ -6299,90 +6299,91 @@
 <areas>
 <area id='0' name='Storage Area #n' type='STORAGE'>
 <accept>
-<item>base.human_body</item>
-<item>base.glasses</item>
+<item>base.sandstone</item>
+<item>base.seaweed</item>
+<item>base.seaweed2</item>
 <item>base.oxygen_bottle</item>
 <item>base.vegetable</item>
-<item>base.sandstone</item>
-<item>base.seaweed1</item>
-<item>base.seaweed2</item>
-<item>base.seaweed</item>
-<item>base.regular_shirt</item>
+<item>base.glasses</item>
 <item>base.military_ration</item>
+<item>base.regular_shirt</item>
+<item>base.seaweed1</item>
+<item>base.human_body</item>
 </accept>
 <parcels>
-<parcel x='18' y='13' />
-<parcel x='18' y='10' />
-<parcel x='19' y='13' />
-<parcel x='15' y='12' />
-<parcel x='15' y='8' />
-<parcel x='18' y='9' />
-<parcel x='19' y='8' />
-<parcel x='18' y='8' />
-<parcel x='19' y='9' />
-<parcel x='17' y='9' />
-<parcel x='19' y='12' />
-<parcel x='20' y='13' />
-<parcel x='16' y='10' />
-<parcel x='16' y='9' />
-<parcel x='15' y='9' />
-<parcel x='15' y='11' />
-<parcel x='20' y='8' />
-<parcel x='17' y='11' />
-<parcel x='17' y='12' />
-<parcel x='20' y='9' />
-<parcel x='17' y='13' />
-<parcel x='18' y='12' />
-<parcel x='16' y='8' />
-<parcel x='18' y='11' />
 <parcel x='15' y='13' />
-<parcel x='16' y='11' />
+<parcel x='17' y='13' />
+<parcel x='17' y='8' />
+<parcel x='18' y='8' />
+<parcel x='17' y='10' />
+<parcel x='19' y='13' />
+<parcel x='20' y='12' />
+<parcel x='18' y='13' />
+<parcel x='19' y='8' />
+<parcel x='16' y='9' />
+<parcel x='17' y='9' />
 <parcel x='15' y='10' />
-<parcel x='20' y='11' />
-<parcel x='20' y='10' />
 <parcel x='16' y='13' />
 <parcel x='16' y='12' />
-<parcel x='19' y='11' />
-<parcel x='17' y='8' />
-<parcel x='20' y='12' />
+<parcel x='20' y='9' />
+<parcel x='16' y='8' />
+<parcel x='18' y='11' />
 <parcel x='19' y='10' />
-<parcel x='17' y='10' />
+<parcel x='18' y='9' />
+<parcel x='19' y='12' />
+<parcel x='15' y='9' />
+<parcel x='15' y='12' />
+<parcel x='15' y='8' />
+<parcel x='17' y='11' />
+<parcel x='15' y='11' />
+<parcel x='16' y='11' />
+<parcel x='20' y='11' />
+<parcel x='20' y='10' />
+<parcel x='20' y='8' />
+<parcel x='18' y='12' />
+<parcel x='18' y='10' />
+<parcel x='16' y='10' />
+<parcel x='19' y='9' />
+<parcel x='20' y='13' />
+<parcel x='17' y='12' />
+<parcel x='19' y='11' />
 </parcels>
 </area>
 <area id='0' name='Storage Area #n' type='STORAGE'>
 <accept>
-<item>base.calcite_rubble</item>
-<item>base.granite_rubble</item>
-<item>base.sandstone_rubble</item>
 <item>base.raw_spice</item>
-<item>base.wood_log</item>
 <item>base.calcite_brick</item>
+<item>base.vegetable</item>
+<item>base.granite_rubble</item>
+<item>base.wood_log</item>
+<item>base.sandstone_rubble</item>
+<item>base.calcite_rubble</item>
 </accept>
 <parcels>
-<parcel x='24' y='13' />
+<parcel x='25' y='11' />
 <parcel x='25' y='12' />
 <parcel x='25' y='13' />
-<parcel x='26' y='14' />
-<parcel x='26' y='13' />
-<parcel x='24' y='15' />
-<parcel x='25' y='14' />
-<parcel x='23' y='12' />
-<parcel x='26' y='15' />
-<parcel x='23' y='11' />
-<parcel x='26' y='12' />
 <parcel x='26' y='16' />
-<parcel x='23' y='16' />
-<parcel x='24' y='11' />
-<parcel x='23' y='14' />
-<parcel x='25' y='11' />
 <parcel x='24' y='16' />
-<parcel x='25' y='16' />
-<parcel x='25' y='15' />
+<parcel x='26' y='14' />
+<parcel x='23' y='12' />
+<parcel x='23' y='16' />
+<parcel x='25' y='14' />
+<parcel x='26' y='13' />
 <parcel x='23' y='13' />
 <parcel x='24' y='14' />
-<parcel x='23' y='15' />
-<parcel x='26' y='11' />
+<parcel x='24' y='11' />
 <parcel x='24' y='12' />
+<parcel x='24' y='13' />
+<parcel x='26' y='12' />
+<parcel x='25' y='15' />
+<parcel x='23' y='11' />
+<parcel x='25' y='16' />
+<parcel x='23' y='14' />
+<parcel x='26' y='11' />
+<parcel x='26' y='15' />
+<parcel x='23' y='15' />
+<parcel x='24' y='15' />
 </parcels>
 </area>
 </areas>

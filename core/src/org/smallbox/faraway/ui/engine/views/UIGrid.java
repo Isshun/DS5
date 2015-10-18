@@ -2,6 +2,9 @@ package org.smallbox.faraway.ui.engine.views;
 
 import org.smallbox.faraway.engine.renderer.GDXRenderer;
 
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Created by Alex on 28/09/2015.
  */
@@ -10,6 +13,7 @@ public class UIGrid extends View {
     private int _rowHeight;
     private int _columnWidth;
     private int _count;
+    private boolean _keepSorted;
 
     public UIGrid(int width, int height) {
         super(width, height);
@@ -20,6 +24,14 @@ public class UIGrid extends View {
         _views.add(view);
         view.setParent(this);
         _count = _views.size();
+
+        if (_keepSorted) {
+            Collections.sort(_views, (o1, o2) -> {
+                if (o1.getString() == null) return -1;
+                if (o2.getString() == null) return 1;
+                return o1.getString().compareTo(o2.getString());
+            });
+        }
     }
 
 //    @Override
@@ -89,5 +101,9 @@ public class UIGrid extends View {
 
     public int getColumns() {
         return _columns;
+    }
+
+    public void keepSorted(boolean keepSorted) {
+        _keepSorted = keepSorted;
     }
 }

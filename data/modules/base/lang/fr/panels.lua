@@ -12,5 +12,7 @@ data:extend({
 
         {"Factory", "Production"},
         {"Orders", "Commandes"},
+
+        {"storage_content", "Inventaire"},
     }
 })

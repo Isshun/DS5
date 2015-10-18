@@ -115,6 +115,7 @@ public class ItemFactoryModel {
 
     public void scan() {
         System.out.println("scan");
+        long time = System.currentTimeMillis();
 
         // List components for all receipts
         Set <ItemInfo> allInputs = new HashSet<>();
@@ -167,12 +168,16 @@ public class ItemFactoryModel {
                     }
                 }
             });
+
+            System.out.println("inputs list");
+            _inputsList.forEach(input -> {
+                System.out.println(input.consumable.getInfo().label + " x" + input.quantity + " (" + input.consumable.getParcel().x + "x" + input.consumable.getParcel().y + ")");
+            });
+        } else {
+            System.out.println("no available receipt");
         }
 
-        System.out.println("inputs list");
-        _inputsList.forEach(input -> {
-            System.out.println(input.consumable.getInfo().label + " x" + input.quantity + " (" + input.consumable.getParcel().x + "x" + input.consumable.getParcel().y + ")");
-        });
+        System.out.println("total time: " + (System.currentTimeMillis() - time) + "ms");
     }
 
     public FactoryInputModel getNextInput() {

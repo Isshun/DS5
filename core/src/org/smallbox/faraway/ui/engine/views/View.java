@@ -32,6 +32,7 @@ public abstract class View {
     private UIAdapter   _adapter;
     private int         _objectId;
     private LuaModule   _module;
+    protected int       _hash;
 
     public void setTextAlign(boolean isAlignLeft, boolean isAlignTop) {
         _isAlignLeft = isAlignLeft;
@@ -62,6 +63,10 @@ public abstract class View {
 
     public LuaModule getModule() {
         return _module;
+    }
+
+    protected String getString() {
+        return null;
     }
 
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };

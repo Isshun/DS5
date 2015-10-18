@@ -80,10 +80,10 @@ public class JobModule extends GameModule {
         ModuleHelper.getWorldModule().getStructures().stream().filter(structure -> !structure.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
                 .forEach(item -> _jobs.add(new BuildJob(item)));
 
-        // Create haul jobs
-        _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).getItemAround());
-        ModuleHelper.getWorldModule().getConsumables().stream().filter(consumable -> consumable.getHaul() == null && !consumable.inValidStorage()).forEach(consumable ->
-                addJob(JobHaul.create(consumable)));
+//        // Create haul jobs
+//        _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).foundConsumablesAround());
+//        ModuleHelper.getWorldModule().getConsumables().stream().filter(consumable -> consumable.getHaul() == null && !consumable.inValidStorage()).forEach(consumable ->
+//                addJob(JobHaul.create(consumable)));
 
         // Create craft jobs
         ModuleHelper.getWorldModule().getItems().stream().filter(item -> item.getFactory() != null && item.getFactory().getJob() == null)
