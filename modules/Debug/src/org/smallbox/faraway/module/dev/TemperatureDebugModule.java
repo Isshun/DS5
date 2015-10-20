@@ -16,7 +16,7 @@
 //
 //    @Override
 //    protected void onLoaded() {
-//        DebugWindow window = (DebugWindow)WindowDebugBuilder.create().setTitle("Temperature Debug").build(new WindowListener() {
+//        DebugWindow window = (DebugWindow)WindowDebugBuilder.create().setTitle("Temperature Debug").build(new UIWindowListener() {
 //            @Override
 //            public void onCreate(UIWindow window, UIFrame view) {
 //                window.setPosition(500, 500);

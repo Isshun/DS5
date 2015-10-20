@@ -5,9 +5,9 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
-import org.smallbox.faraway.core.game.model.job.ConsumeJob;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.job.model.ConsumeJob;
 import org.smallbox.faraway.core.util.Constant;
 
 import java.util.ArrayList;

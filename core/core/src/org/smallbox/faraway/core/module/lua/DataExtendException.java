@@ -7,7 +7,7 @@ public class DataExtendException extends Throwable {
     private final Type      _type;
     private final String    _item;
 
-    public enum Type { MANDATORY }
+    public enum Type { MANDATORY, MISSING_PARENT }
     public DataExtendException(Type type, String item) {
         _type = type;
         _item = item;

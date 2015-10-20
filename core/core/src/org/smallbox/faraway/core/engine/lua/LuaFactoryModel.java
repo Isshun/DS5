@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.engine.lua;
 
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.character.AndroidModel;
-import org.smallbox.faraway.core.game.model.character.DroidModel;
-import org.smallbox.faraway.core.game.model.character.HumanModel;
+import org.smallbox.faraway.core.game.module.character.model.AndroidModel;
+import org.smallbox.faraway.core.game.module.character.model.DroidModel;
+import org.smallbox.faraway.core.game.module.character.model.HumanModel;
 import org.smallbox.faraway.core.util.Utils;
 
 /**

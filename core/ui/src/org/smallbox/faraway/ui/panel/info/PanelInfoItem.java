@@ -107,7 +107,7 @@
 //            ((UILabel)findById("lb_id")).setText("(" + _item.getId() + ")");
 //            ((UILabel)findById("lb_durability")).setText("Durability: " + _item.getHealth());
 //            ((UILabel)findById("lb_matter")).setText("Matter: " + _item.getMatter());
-//            ((UILabel)findById("lb_components")).setText("Components: " + String.join(", ", _item.getComponents().stream().map(ConsumableModel::getFullLabel).collect(Collectors.toList())));
+//            ((UILabel)findById("lb_components")).setText("Components: " + String.join(", ", _item.getShoppingList().stream().map(ConsumableModel::getFullLabel).collect(Collectors.toList())));
 //
 //            CraftJob jobCraft = (CraftJob)(_item.getJobs() != null && !_item.getJobs().isEmpty() && _item.getJobs().get(0) instanceof CraftJob ? _item.getJobs().get(0) : null);
 //            if (jobCraft != null && jobCraft.isRunning() && jobCraft.getReceipt() != null) {

@@ -1,9 +1,9 @@
 //package org.smallbox.faraway;
 //
 //import org.smallbox.faraway.game.GameObserver;
-//import org.smallbox.faraway.game.model.area.AreaModel;
-//import org.smallbox.faraway.game.model.area.AreaType;
-//import org.smallbox.faraway.game.model.character.base.CharacterModel;
+//import org.smallbox.faraway.game.model.model.AreaModel;
+//import org.smallbox.faraway.game.model.model.AreaType;
+//import org.smallbox.faraway.game.model.model.base.CharacterModel;
 //import org.smallbox.faraway.game.model.item.*;
 //
 //import java.util.ArrayList;

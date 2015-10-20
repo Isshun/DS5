@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.data.factory.world;
 
 import com.badlogic.gdx.math.MathUtils;
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 
 public class MidpointDisplacement {
     public interface MapGenListener {

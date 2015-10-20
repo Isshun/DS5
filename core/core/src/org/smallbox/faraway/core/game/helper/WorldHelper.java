@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.game.helper;
 
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.item.*;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 
 /**
  * Created by Alex on 09/07/2015.
@@ -42,12 +42,12 @@ public class WorldHelper {
     }
 
     /**
-     * Search for area free to receive a ConsumableItem
+     * Search for model free to receive a ConsumableItem
      *
      * @param itemInfo
      * @param x
      * @param y
-     * @return nearest free area
+     * @return nearest free model
      */
     public static ParcelModel getNearestFreeArea(ItemInfo itemInfo, int x, int y, int quantity) {
         if (itemInfo.isConsumable) {
@@ -69,14 +69,14 @@ public class WorldHelper {
     }
 
     /**
-     * Check if current area is free for consumable
+     * Check if current model is free for consumable
      *
      * @param x
      * @param y
      * @param info
      * @return
      */
-    private static boolean areaFreeForConsumable(int x, int y, ItemInfo info, int quantity) {
+    public static boolean areaFreeForConsumable(int x, int y, ItemInfo info, int quantity) {
         if (!inMapBounds(x, y)) {
             return false;
         }
@@ -90,7 +90,7 @@ public class WorldHelper {
             return false;
         }
 
-        if (parcel.getItem() != null) {
+        if (parcel.getItem() != null && !parcel.getItem().isStorageParcel(parcel)) {
             return false;
         }
 

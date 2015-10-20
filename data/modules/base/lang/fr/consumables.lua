@@ -2,9 +2,17 @@ data:extend({
     type = "lang",
     lang = "fr",
     strings = {
+        {"Raw meat", "Viande crue"},
+        {"Insect meat", "Insect crue"},
         {"Vegetable", "Légume"},
         {"Seaweed", "Algue"},
         {"Wood log", "Buche"},
+
+        {"Carrot", "Carrotte"},
+        {"Potato", "Pomme de terre"},
+        {"Rice", "Riz"},
+        {"Wheat", "Blé"},
+        {"Corn", "Maïs"},
 
         {"Calcite rubble", "Gravats de calcite"},
         {"Sandstone rubble", "Gravats de grès"},

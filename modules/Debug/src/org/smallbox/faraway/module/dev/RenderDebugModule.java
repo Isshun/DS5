@@ -1,11 +1,10 @@
 package org.smallbox.faraway.module.dev;
 
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
-import org.smallbox.faraway.core.game.module.GameUIModule;
-import org.smallbox.faraway.core.game.module.UITitleWindow;
-import org.smallbox.faraway.core.game.module.UIWindow;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.ui.engine.views.UITitleWindow;
+import org.smallbox.faraway.ui.engine.views.UIWindow;
 import org.smallbox.faraway.ui.engine.views.UIFrame;
 import org.smallbox.faraway.ui.engine.views.UILabel;
 
@@ -15,7 +14,7 @@ import java.util.List;
 /**
  * Created by Alex on 30/08/2015.
  */
-public class RenderDebugModule extends GameUIModule {
+public class RenderDebugModule extends GameModule {
     public class RenderDebugModuleWindow extends UITitleWindow {
         @Override
         protected void onCreate(UIWindow window, UIFrame content) {
@@ -79,7 +78,6 @@ public class RenderDebugModule extends GameUIModule {
 
     @Override
     protected void onLoaded() {
-        addWindow(new RenderDebugModuleWindow());
     }
 
     @Override
@@ -88,14 +86,5 @@ public class RenderDebugModule extends GameUIModule {
 
     @Override
     protected void onUpdate(int tick) {
-    }
-
-    @Override
-    public boolean onKey(GameEventListener.Key key) {
-        if (key == GameEventListener.Key.F11) {
-            _windows.forEach(window -> window.setVisible(!window.isVisible()));
-            return true;
-        }
-        return false;
     }
 }

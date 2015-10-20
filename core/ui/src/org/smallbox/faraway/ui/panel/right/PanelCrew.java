@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.engine.Color;
 //import org.smallbox.faraway.engine.GameEventListener;
 //import org.smallbox.faraway.game.Game;
-//import org.smallbox.faraway.game.model.character.base.CharacterModel;
+//import org.smallbox.faraway.game.model.model.base.CharacterModel;
 //import CharacterModule;
 //import org.smallbox.faraway.ui.UserInterface;
 //import org.smallbox.faraway.ui.UserInterface.Mode;
@@ -118,7 +118,7 @@
 //        viewHolder.frame.resetPos();
 //    }
 //
-//    void  addCharacter(int index, final CharacterModel character) {
+//    void  addCharacter(int index, final CharacterModel model) {
 //        if (index >= _viewHolderList.size()) {
 //            final ViewHolder viewHolder = new ViewHolder();
 //
@@ -173,7 +173,7 @@
 //            viewHolder.frame.addView(viewHolder.lbProfession);
 //
 //            viewHolder.thumb = ViewFactory.getInstance().createImageView();
-//            viewHolder.thumb.setImage(SpriteManager.getInstance().getCharacter(character, 0, 0));
+//            viewHolder.thumb.setImage(SpriteManager.getInstance().getCharacter(model, 0, 0));
 //            viewHolder.thumb.setPosition(0, 5);
 //            viewHolder.frame.addView(viewHolder.thumb);
 //
@@ -197,17 +197,17 @@
 //            viewHolder.frame.setVisible(true);
 //
 //            // Action
-//            viewHolder.frame.setOnClickListener(view -> _ui.getSelector().select(character));
+//            viewHolder.frame.setOnClickListener(view -> _ui.getSelector().select(model));
 //
 //            // Name
-//            viewHolder.lbName.setDashedString(character.getInfo().getName(), "", NB_COLUMNS);
+//            viewHolder.lbName.setDashedString(model.getInfo().getName(), "", NB_COLUMNS);
 //            viewHolder.lbName.setTextColor(viewHolder.frame.isFocus() ? Colors.LINK_ACTIVE : new Color(120, 255, 255));
 //
 //            // Job
-//            if (character.getJob() != null) {
-//                viewHolder.lbJob.setText(character.getJob().getShortLabel());
+//            if (model.getJob() != null) {
+//                viewHolder.lbJob.setText(model.getJob().getShortLabel());
 //                viewHolder.lbJob.setTextColor(new Color(255, 255, 255));
-//                viewHolder.lbJob.setPosition(376 - character.getJob().getShortLabel().length() * 8, 6);
+//                viewHolder.lbJob.setPosition(376 - model.getJob().getShortLabel().length() * 8, 6);
 //            } else {
 //                viewHolder.lbJob.setText(Strings.LB_NO_JOB);
 //                viewHolder.lbJob.setTextColor(new Color(255, 255, 255, 100));

@@ -4,8 +4,8 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.ui.engine.views.UIFrame;
 
 public abstract class UICursor {

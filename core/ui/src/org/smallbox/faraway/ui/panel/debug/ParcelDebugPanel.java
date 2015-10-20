@@ -1,6 +1,6 @@
 package org.smallbox.faraway.ui.panel.debug;
 
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
 /**
  * Created by Alex on 14/07/2015.

@@ -1,13 +1,13 @@
 package org.smallbox.faraway.core.game.helper;
 
-import org.smallbox.faraway.core.game.model.job.CutJob;
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.model.item.ItemModel;
-import org.smallbox.faraway.core.game.model.item.MapObjectModel;
-import org.smallbox.faraway.core.game.model.item.ResourceModel;
-import org.smallbox.faraway.core.game.model.job.*;
-import org.smallbox.faraway.core.game.model.job.abs.JobModel;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.job.model.CutJob;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.world.model.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.game.module.world.model.ResourceModel;
+import org.smallbox.faraway.core.game.module.job.model.*;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
 
 import java.util.ArrayList;
@@ -91,7 +91,7 @@ public class JobHelper {
 
     public static JobModel addGather(ResourceModel resource) {
         if (resource == null) {
-            Log.error("JobModule: gather on null area");
+            Log.error("JobModule: gather on null model");
             return null;
         }
 
@@ -148,7 +148,7 @@ public class JobHelper {
 //        if (info.isStructure) {
 //            MapObjectModel current = WorldHelper.getStructure(x, y);
 //            if (current != null && current.getInfo().equals(info)) {
-//                Log.error("Build structure: already exist on this area");
+//                Log.error("Build structure: already exist on this model");
 //                return null;
 //            }
 //            item = ModuleHelper.getWorldModule().putObject(info, x, y, 0, 0);
@@ -158,7 +158,7 @@ public class JobHelper {
 //        else if (info.isUserItem) {
 //            MapObjectModel current = WorldHelper.getItem(x, y);
 //            if (current != null && current.getInfo().equals(info)) {
-//                Log.error("Build item: already exist on this area");
+//                Log.error("Build item: already exist on this model");
 //                return null;
 //            } else if (current != null) {
 //                Log.error("JobModule: add build on non null item");
@@ -173,7 +173,7 @@ public class JobHelper {
 //            MapObjectModel currentItem = WorldHelper.getItem(x, y);
 //            MapObjectModel currentResource = WorldHelper.getResource(x, y);
 //            if (currentResource != null && currentResource.getInfo().equals(info)) {
-//                Log.error("Build item: already exist on this area");
+//                Log.error("Build item: already exist on this model");
 //                return null;
 //            } else if (currentItem != null) {
 //                Log.error("JobModule: add build on non null item");

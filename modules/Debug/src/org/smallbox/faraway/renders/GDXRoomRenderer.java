@@ -5,9 +5,9 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
-import org.smallbox.faraway.core.game.module.ModuleManager;
-import org.smallbox.faraway.core.game.module.base.RoomModule;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.util.Constant;
 
 import java.util.Random;

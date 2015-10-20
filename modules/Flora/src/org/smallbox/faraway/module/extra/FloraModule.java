@@ -2,17 +2,16 @@ package org.smallbox.faraway.module.extra;
 
 import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.area.GardenAreaModel;
-import org.smallbox.faraway.core.game.model.item.ResourceModel;
-import org.smallbox.faraway.core.game.module.GameModule;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
-import org.smallbox.faraway.core.module.ModuleInfo;
+import org.smallbox.faraway.core.game.module.area.model.GardenAreaModel;
+import org.smallbox.faraway.core.game.module.world.model.ResourceModel;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 //import org.smallbox.faraway.module.world.TemperatureModule;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.smallbox.faraway.core.game.model.item.ItemInfo.ItemInfoPlant.GrowingInfo;
+import static org.smallbox.faraway.core.game.module.world.model.ItemInfo.ItemInfoPlant.GrowingInfo;
 
 /**
  * Created by Alex on 05/07/2015.

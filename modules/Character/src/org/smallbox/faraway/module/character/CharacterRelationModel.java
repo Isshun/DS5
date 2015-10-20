@@ -1,8 +1,8 @@
 package org.smallbox.faraway.module.character;
 
-import org.smallbox.faraway.core.game.model.character.base.CharacterInfoModel;
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.model.character.base.CharacterRelation;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterInfoModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterRelation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,9 +108,9 @@ public class CharacterRelationModel {
     }
 
     public void longUpdate(CharacterModel character) {
-//        if (_nbChild < Constant.CHARACTER_MAX_CHILD && _mate != null && character.getOld() > Constant.CHARACTER_CHILD_MIN_OLD && character.getOld() < Constant.CHARACTER_CHILD_MAX_OLD && character.getOld() > _nextChildAtOld && _nextChildAtOld > 0) {
-//            _nextChildAtOld = character.getOld() + Constant.CHARACTER_DELAY_BETWEEN_CHILDS;
-//            if (((RelationModule) ModuleManager.getInstance().getModule(RelationModule.class)).createChildren(character, _mate) != null) {
+//        if (_nbChild < Constant.CHARACTER_MAX_CHILD && _mate != null && model.getOld() > Constant.CHARACTER_CHILD_MIN_OLD && model.getOld() < Constant.CHARACTER_CHILD_MAX_OLD && model.getOld() > _nextChildAtOld && _nextChildAtOld > 0) {
+//            _nextChildAtOld = model.getOld() + Constant.CHARACTER_DELAY_BETWEEN_CHILDS;
+//            if (((RelationModule) ModuleManager.getInstance().getModule(RelationModule.class)).createChildren(model, _mate) != null) {
 //                _nbChild++;
 //            }
 //        }

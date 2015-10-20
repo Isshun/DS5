@@ -1,7 +1,7 @@
 package org.smallbox.faraway.ui.panel.info;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.ui.UserInterface;
 
 /**

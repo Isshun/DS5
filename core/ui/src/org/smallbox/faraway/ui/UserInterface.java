@@ -8,19 +8,18 @@ import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.model.item.ItemInfo;
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
-import org.smallbox.faraway.core.game.module.GameModule;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
-import org.smallbox.faraway.core.game.module.ModuleManager;
-import org.smallbox.faraway.core.game.module.base.CharacterModule;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.game.module.character.CharacterModule;
 import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.*;
 import org.smallbox.faraway.ui.engine.views.*;
 import org.smallbox.faraway.ui.panel.BasePanel;
 import org.smallbox.faraway.ui.panel.PanelConsole;
@@ -518,10 +517,10 @@ public class UserInterface implements GameEventListener {
     public void onDoubleClick(int x, int y) {
 //        _keyLeftPressed = false;
 //
-//        ParcelModel area = ModuleHelper.getWorldModule().getParcel(getRelativePosX(x), getRelativePosY(y));
-//        if (area != null) {
-//            ItemModel item = area.getItem();
-//            StructureModel structure = area.getStructure();
+//        ParcelModel model = ModuleHelper.getWorldModule().getParcel(getRelativePosX(x), getRelativePosY(y));
+//        if (model != null) {
+//            ItemModel item = model.getItem();
+//            StructureModel structure = model.getStructure();
 //
 //            if (item != null) {
 //                item.nextMode();

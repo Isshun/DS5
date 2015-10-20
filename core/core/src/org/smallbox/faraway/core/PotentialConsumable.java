@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core;
 
-import org.smallbox.faraway.core.game.model.item.ConsumableModel;
-import org.smallbox.faraway.core.game.model.item.ItemInfo;
+import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
 
 /**
  * Created by Alex on 17/10/2015.

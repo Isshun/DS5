@@ -53,9 +53,9 @@ public class PlanetModel {
                     }
                 }
 
-                // Check region exists for area
+                // Check region exists for model
                 if (_areas[x][y].region == null) {
-                    throw new RuntimeException("No region for area: " + x + "x" + y);
+                    throw new RuntimeException("No region for model: " + x + "x" + y);
                 }
             }
         }

@@ -13,6 +13,7 @@ import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -137,12 +138,16 @@ public abstract class View {
                 removeAllViews();
                 _adapter.setRefresh();
                 Iterator<ObjectModel> iterator = _adapter.getData().iterator();
-                while (iterator.hasNext()) {
-                    ObjectModel data = iterator.next();
-                    View subview = _adapter.getCallback().onCreateView();
-                    subview.setObjectId(data.id);
-                    _adapter.getCallback().onBindView(subview, data);
-                    addView(subview);
+                try {
+                    while (iterator.hasNext()) {
+                        ObjectModel data = iterator.next();
+                        View subview = _adapter.getCallback().onCreateView();
+                        subview.setObjectId(data.id);
+                        _adapter.getCallback().onBindView(subview, data);
+                        addView(subview);
+                    }
+                } catch (ConcurrentModificationException e) {
+                    e.printStackTrace();
                 }
             }
         }

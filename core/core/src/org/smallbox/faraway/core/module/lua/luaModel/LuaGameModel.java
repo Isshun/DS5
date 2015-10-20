@@ -2,12 +2,13 @@ package org.smallbox.faraway.core.module.lua.luaModel;
 
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.area.AreaType;
-import org.smallbox.faraway.core.game.model.item.ItemInfo;
-import org.smallbox.faraway.core.game.model.job.abs.JobModel;
-import org.smallbox.faraway.core.game.module.GameModule;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
-import org.smallbox.faraway.core.game.module.ModuleManager;
+import org.smallbox.faraway.core.game.module.area.model.AreaType;
+import org.smallbox.faraway.core.game.module.world.WorldModule;
+import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
@@ -19,6 +20,7 @@ import java.util.Optional;
  * Created by Alex on 26/09/2015.
  */
 public class LuaGameModel {
+    public final WorldModule        world;
     public long                     tick;
     public int                      day;
     public int                      hour;
@@ -26,7 +28,7 @@ public class LuaGameModel {
     public UserInterface            ui;
     public LuaCrewModel             crew;
     public LuaEventsModel           events;
-    public Collection<JobModel> jobs;
+    public Collection<JobModel>     jobs;
     public Collection<LuaModule>    luaModules;
     public Collection<GameModule>   modules;
     public Collection<GameModule>   moduleThirds;
@@ -36,6 +38,7 @@ public class LuaGameModel {
         crew = luaCrew;
         events = luaEvents;
         jobs = ModuleHelper.getJobModule().getJobs();
+        world = ModuleHelper.getWorldModule();
         luaModules = Game.getInstance().getLuaModuleManager().getModules();
         modules = Game.getInstance().getModules();
         moduleThirds = ModuleManager.getInstance().getModulesThird();

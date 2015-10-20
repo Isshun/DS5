@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui.cursor;
 
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.ui.UICursor;
 import org.smallbox.faraway.ui.engine.views.UIFrame;
 

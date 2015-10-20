@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.util;
 
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
 import java.io.File;
 

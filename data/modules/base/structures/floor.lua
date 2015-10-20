@@ -3,14 +3,20 @@ data:extend({
         name = "base.wood_floor",
         type = "structure",
         category = "floor",
+        floor = {
+            speed = 1
+        },
         health = 200,
         walkable = true,
         graphics = { path = "[base]/graphics/items/structures/floor_wood.png", type = "structure" },
         receipts = {{components = {{ item = "base.wood_log", quantity = 5}}}}},
     { label = "Concrete floor",
         name = "base.concrete_floor",
-        type = "floor",
-        category = "structure",
+        type = "structure",
+        category = "floor",
+        floor = {
+            speed = 1
+        },
         health = 250,
         walkable = true,
         graphics = { path = "[base]/graphics/items/structures/floor_concrete.png", type = "structure" },
@@ -23,6 +29,9 @@ data:extend({
         name = "base.metal_floor",
         type = "structure",
         category = "floor",
+        floor = {
+            speed = 1
+        },
         health = 250,
         walkable = true,
         graphics = { path = "[base]/graphics/items/structures/floor_metal.png", type = "structure" },

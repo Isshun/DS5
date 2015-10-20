@@ -160,7 +160,7 @@ public class NavMeshBuilder implements PathFindingContext {
 
     /**
      * Subsection a space into smaller spaces if required to find a non-blocked
-     * area.
+     * model.
      *
      * @param map The old being processed
      * @param space The space being sections

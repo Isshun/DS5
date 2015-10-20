@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.engine.lua;
 
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.List;

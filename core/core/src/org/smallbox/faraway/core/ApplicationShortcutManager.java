@@ -4,8 +4,8 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.module.GameModule;
-import org.smallbox.faraway.core.game.module.ModuleManager;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.ui.UserInterface;
 
 /**
@@ -19,7 +19,7 @@ public class ApplicationShortcutManager {
 
         public ApplicationShortcut(GameEventListener.Key key, GameEventListener.Modifier modifier, Runnable runnable) {
             this.key = key;
-            this.modifier = modifier;
+            this.modifier = modifier != null ? modifier : GameEventListener.Modifier.NONE;
             this.runnable = runnable;
         }
     }

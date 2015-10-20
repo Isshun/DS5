@@ -2,13 +2,13 @@ package org.smallbox.faraway.module.extra;
 
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.AnimalModel;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionModel;
-import org.smallbox.faraway.core.game.module.GameModule;
+import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.util.Utils;
+import org.smallbox.faraway.module.extra.model.AnimalModel;
 
 import java.util.ArrayList;
 import java.util.List;

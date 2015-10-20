@@ -65,41 +65,7 @@ data:extend(
                     view:findById("lb_position"):setText("Position: " .. item:getX() .. "x" .. item:getY())
 
                     if item:getInfo().factory and item:getInfo().factory.receipts then
-                        view:findById("frame_factory"):setVisible(true)
-
-                        local list = view:findById("list_receipt")
-                        list:removeAllViews()
-
-                        local iterator = item:getInfo().factory.receipts:iterator()
-                        while iterator:hasNext() do
-                            local receipt = iterator:next()
-                            local frame_receipt = game.ui:createView()
-                            frame_receipt:setSize(400, 22)
-
-                            local lb_receipt = game.ui:createLabel()
-                            lb_receipt:setText(receipt.label)
-                            frame_receipt:addView(lb_receipt)
-
-                            local lb_mode = game.ui:createLabel()
-                            lb_mode:setText("mode")
-                            lb_mode:setSize(50, 22)
-                            lb_mode:setPosition(300, 0)
-                            lb_mode:setOnClickListener(function(v)
-                                lb_mode:setText("gg")
-                            end)
-                            frame_receipt:addView(lb_mode)
-
-                            local lb_active = game.ui:createLabel()
-                            lb_active:setText("[x]")
-                            lb_active:setSize(50, 22)
-                            lb_active:setPosition(358, 0)
-                            lb_active:setOnClickListener(function(v)
-                                lb_active:setText("[ ]")
-                            end)
-                            frame_receipt:addView(lb_active)
-
-                            list:addView(frame_receipt)
-                        end
+                        display_factory_info(view, item:getFactory(), item:getInfo().factory)
                     else
                         view:findById("frame_factory"):setVisible(true)
                     end
@@ -117,10 +83,10 @@ data:extend(
                     end
 
                     if item:getFactory() then
-                        if item:getFactory() and item:getFactory():getCurrentReceipt() then
-                            view:findById("lb_factory_progress"):setText("Current: " .. item:getFactory():getCurrentReceipt().receiptInfo.label)
+                        if item:getFactory() and item:getFactory():getMessage() then
+                            view:findById("lb_factory_progress"):setText("Status: " .. item:getFactory():getMessage())
                         else
-                            view:findById("lb_factory_progress"):setText("Current: waiting")
+                            view:findById("lb_factory_progress"):setText("Status: Unknown")
                         end
 
                         if item:getFactory() and item:getFactory():getJob() and item:getFactory():getJob():getCharacter() then
@@ -129,34 +95,24 @@ data:extend(
                             view:findById("lb_factory_character"):setText("Crafter: none")
                         end
 
-                        if item:getFactory():getMagics() then
-                            local str = "magics: "
-                            local iterator = item:getFactory():getMagics():iterator()
+                        if item:getFactory():getShoppingList() then
+                            local str = "shopping list: "
+                            local iterator = item:getFactory():getShoppingList():iterator()
                             while iterator:hasNext() do
-                                local component = iterator:next()
-                                str = str .. component.itemInfo.name .. " " .. component.currentQuantity .. "/" .. component.totalQuantity
+                                local product = iterator:next()
+                                str = str .. product.consumable:getInfo().name .. " x" .. product.quantity
                             end
                             view:findById("lb_factory_components"):setText(str)
                         end
 
                         if item:getFactory():getComponents() then
-                            local str = "inputs: "
+                            local str = "components: "
                             local iterator = item:getFactory():getComponents():iterator()
                             while iterator:hasNext() do
-                                local product = iterator:next()
-                                str = str .. product.consumable:getInfo().name .. " x" .. product.quantity
+                                local component = iterator:next()
+                                str = str .. component.itemInfo.name .. " " .. component.currentQuantity .. "/" .. component.totalQuantity
                             end
                             view:findById("lb_factory_inputs"):setText(str)
-                        end
-
-                        if item:getFactory():getProducts() then
-                            local str = "outputs: "
-                            local iterator = item:getFactory():getProducts():iterator()
-                            while iterator:hasNext() do
-                                local product = iterator:next()
-                                str = str .. product.itemInfo.name .. " x" .. product.quantity
-                            end
-                            view:findById("lb_factory_products"):setText(str)
                         end
 
                     end
@@ -165,3 +121,63 @@ data:extend(
         },
     }
 )
+
+function display_factory_info(view, factory, factoryInfo)
+    view:findById("frame_factory"):setVisible(true)
+
+    local list = view:findById("list_receipt")
+    list:removeAllViews()
+
+    local iterator = factory:getOrders():iterator()
+    while iterator:hasNext() do
+        local order = iterator:next()
+        local receipt = order.receiptGroupInfo
+        local frame_receipt = game.ui:createView()
+        frame_receipt:setSize(400, 22)
+
+        local lb_receipt = game.ui:createLabel()
+        lb_receipt:setText(receipt.label)
+        frame_receipt:addView(lb_receipt)
+
+        local lb_mode = game.ui:createLabel()
+        lb_mode:setText("mode")
+        lb_mode:setSize(50, 22)
+        lb_mode:setPosition(300, 0)
+        lb_mode:setOnClickListener(function(v)
+            lb_mode:setText("gg")
+        end)
+        frame_receipt:addView(lb_mode)
+
+        local lb_up = game.ui:createLabel()
+        lb_up:setText("up")
+        lb_up:setSize(50, 22)
+        lb_up:setPosition(200, 0)
+        lb_up:setOnClickListener(function(v)
+            factory:moveReceipt(receipt, -1)
+            display_factory_info(view, factory, factoryInfo)
+        end)
+        frame_receipt:addView(lb_up)
+
+        local lb_down = game.ui:createLabel()
+        lb_down:setText("down")
+        lb_down:setSize(50, 22)
+        lb_down:setPosition(250, 0)
+        lb_down:setOnClickListener(function(v)
+            factory:moveReceipt(receipt, 1)
+            display_factory_info(view, factory, factoryInfo)
+        end)
+        frame_receipt:addView(lb_down)
+
+        local lb_active = game.ui:createLabel()
+        lb_active:setText(order.isActive and "[x]" or "[ ]")
+        lb_active:setSize(50, 22)
+        lb_active:setPosition(358, 0)
+        lb_active:setOnClickListener(function(v)
+            order.isActive = not order.isActive
+            display_factory_info(view, factory, factoryInfo)
+        end)
+        frame_receipt:addView(lb_active)
+
+        list:addView(frame_receipt)
+    end
+end

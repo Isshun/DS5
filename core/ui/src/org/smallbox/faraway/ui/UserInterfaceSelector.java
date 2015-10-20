@@ -1,16 +1,16 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.core.data.ReceiptGroupInfo;
+import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.ToolTips;
-import org.smallbox.faraway.core.game.model.area.AreaModel;
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.model.item.*;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
-import org.smallbox.faraway.core.game.module.ModuleManager;
-import org.smallbox.faraway.core.game.module.base.AreaModule;
+import org.smallbox.faraway.core.game.module.area.model.AreaModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.game.module.area.AreaModule;
 import org.smallbox.faraway.core.util.Constant;
 
 /**
@@ -79,7 +79,7 @@ public class UserInterfaceSelector {
                 return false;
             },
 
-            // Select area
+            // Select model
             (character, parcel, area) -> {
                 if (area != null && !area.isHome()) {
                     select(area, parcel);

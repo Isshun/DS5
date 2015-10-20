@@ -1,11 +1,11 @@
 //package org.smallbox.faraway.modules.character;
 //
 //import org.smallbox.faraway.game.Game;
-//import org.smallbox.faraway.game.model.character.HumanModel;
-//import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
-//import org.smallbox.faraway.game.model.character.base.CharacterModel;
-//import org.smallbox.faraway.game.model.character.base.CharacterRelation;
-//import org.smallbox.faraway.game.model.character.base.CharacterRelation.Relation;
+//import org.smallbox.faraway.game.model.model.HumanModel;
+//import org.smallbox.faraway.game.model.model.base.CharacterInfoModel;
+//import org.smallbox.faraway.game.model.model.base.CharacterModel;
+//import org.smallbox.faraway.game.model.model.base.CharacterRelation;
+//import org.smallbox.faraway.game.model.model.base.CharacterRelation.Relation;
 //import org.smallbox.faraway.game.module.GameModule;
 //import org.smallbox.faraway.util.Constant;
 //import org.smallbox.faraway.util.Utils;

@@ -1,12 +1,12 @@
 package org.smallbox.faraway.core.game.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
-import org.smallbox.faraway.core.data.ReceiptGroupInfo;
-import org.smallbox.faraway.core.game.model.item.ConsumableModel;
-import org.smallbox.faraway.core.game.model.item.ItemModel;
-import org.smallbox.faraway.core.game.model.item.MapObjectModel;
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
-import org.smallbox.faraway.core.game.model.job.abs.BaseBuildJobModel;
+import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
+import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.game.module.world.model.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.job.model.abs.BaseBuildJobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 
 import java.util.ArrayList;
@@ -49,8 +49,8 @@ public class OldReceiptModel {
 
     public static OldReceiptModel createFromReceiptInfo(ItemModel item, ReceiptGroupInfo.ReceiptInfo receiptInfo) {
         OldReceiptModel receipt = new OldReceiptModel(item);
-        receipt._products = receiptInfo.products;
-        receipt.scanComponents(receiptInfo.components);
+        receipt._products = receiptInfo.outputs;
+        receipt.scanComponents(receiptInfo.inputs);
         return receipt;
     }
 

@@ -8,10 +8,10 @@ import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.WeatherModel;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
-import org.smallbox.faraway.core.game.module.GameModule;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
-import org.smallbox.faraway.core.game.module.ModuleManager;
-import org.smallbox.faraway.core.game.module.base.WorldModule;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.game.module.world.WorldModule;
 
 import java.util.ArrayList;
 import java.util.Random;

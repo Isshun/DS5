@@ -1,21 +1,21 @@
 package org.smallbox.faraway.module.debug;
 
-import org.smallbox.faraway.core.game.module.GameUIModule;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.data.factory.world.WorldFactory;
-import org.smallbox.faraway.core.game.module.ModuleManager;
+import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.character.AndroidModel;
-import org.smallbox.faraway.core.game.model.character.DroidModel;
-import org.smallbox.faraway.core.game.model.character.HumanModel;
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.model.item.BuildableMapObject;
-import org.smallbox.faraway.core.game.model.item.ConsumableModel;
-import org.smallbox.faraway.core.game.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.base.RoomModule;
+import org.smallbox.faraway.core.game.module.character.model.AndroidModel;
+import org.smallbox.faraway.core.game.module.character.model.DroidModel;
+import org.smallbox.faraway.core.game.module.character.model.HumanModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
+import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.game.module.world.model.ItemModel;
+import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.module.quest.QuestModule;
 import org.smallbox.faraway.ui.engine.views.UIList;
 import org.smallbox.faraway.ui.UserInterface;
@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 30/08/2015.
  */
-public class DebugModule extends GameUIModule {
+public class DebugModule extends GameModule {
     private CharacterModel _character;
 
     private UIList          _listCommands;
@@ -145,7 +145,7 @@ public class DebugModule extends GameUIModule {
 
     @Override
     public void onReloadUI() {
-        UIFrame view = new UIFrame(200, 600);
+        UIFrame view = new UIFrame(200, 1000);
         view.setBackgroundColor(0x121c1e);
         view.setPosition(0, 32);
 
@@ -187,7 +187,7 @@ public class DebugModule extends GameUIModule {
 
         System.out.println("debug");
 
-//        addWindow(WindowBuilder.create().setTitle("Debug").setContentLayout("panels/dev.yml").build(new WindowListener() {
+//        addWindow(WindowBuilder.create().setTitle("Debug").setContentLayout("panels/dev.yml").build(new UIWindowListener() {
 //            @Override
 //            public void onCreate(UIWindow window, UIFrame view) {
 //                mView = view;

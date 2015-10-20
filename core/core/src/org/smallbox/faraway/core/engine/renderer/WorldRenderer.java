@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.engine.renderer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
-import org.smallbox.faraway.core.game.model.item.ItemFactoryModel;
+import org.smallbox.faraway.core.game.module.world.model.ItemFactoryModel;
 import org.smallbox.faraway.core.RenderLayer;
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
@@ -11,8 +11,8 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.item.*;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
@@ -168,6 +168,15 @@ public class WorldRenderer extends BaseRenderer {
                     if (GameData.config.render.item) {
                         refreshItems(layer, parcel.getItem(), x, y);
                     }
+                }
+            }
+        }
+        for (int x = toX - 1; x >= fromX; x--) {
+            for (int y = toY - 1; y >= fromY; y--) {
+//                if (cacheOnScreen(x / CACHE_SIZE, y / CACHE_SIZE)) {
+//                }
+                ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
+                if (parcel != null) {
                     if (GameData.config.render.consumable) {
                         refreshConsumable(layer, parcel.getConsumable(), x, y);
                     }
@@ -288,14 +297,14 @@ public class WorldRenderer extends BaseRenderer {
             layer.draw(_spriteManager.getItem(item, item.getCurrentFrame()), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
 
             // Display components
-            if (item.getFactory() != null && item.getFactory().getComponents() != null) {
-                for (ItemFactoryModel.FactoryInputModel component : item.getFactory().getComponents()) {
+            if (item.getFactory() != null && item.getFactory().getShoppingList() != null) {
+                for (ItemFactoryModel.FactoryShoppingItemModel component : item.getFactory().getShoppingList()) {
                     SpriteModel sprite = _spriteManager.getItem(component.consumable.getInfo());
                     if (sprite != null) {
-                        if (item.getInfo().factory != null && item.getInfo().factory.inputsSlot != null) {
+                        if (item.getInfo().factory != null && item.getInfo().factory.inputSlots != null) {
                             layer.draw(sprite,
-                                    (x + item.getInfo().factory.inputsSlot[0]) * Constant.TILE_WIDTH,
-                                    (y + item.getInfo().factory.inputsSlot[1]) * Constant.TILE_HEIGHT);
+                                    (x + item.getInfo().factory.inputSlots[0]) * Constant.TILE_WIDTH,
+                                    (y + item.getInfo().factory.inputSlots[1]) * Constant.TILE_HEIGHT);
                         } else {
                             layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
                         }
@@ -303,21 +312,21 @@ public class WorldRenderer extends BaseRenderer {
                 }
             }
 
-            // Display crafts
-            if (item.getFactory() != null && item.getFactory().getProducts() != null) {
-                for (ItemFactoryModel.FactoryOutputModel product : item.getFactory().getProducts()) {
-                    SpriteModel sprite = _spriteManager.getItem(product.itemInfo);
-                    if (sprite != null) {
-                        if (item.getInfo().factory != null && item.getInfo().factory.outputsSlot != null) {
-                            layer.draw(sprite,
-                                    (x + item.getInfo().factory.outputsSlot[0]) * Constant.TILE_WIDTH,
-                                    (y + item.getInfo().factory.outputsSlot[1]) * Constant.TILE_HEIGHT);
-                        } else {
-                            layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-                        }
-                    }
-                }
-            }
+//            // Display crafts
+//            if (item.getFactory() != null && item.getFactory().getOutputs() != null) {
+//                for (ItemFactoryModel.FactoryOutputModel product : item.getFactory().getOutputs()) {
+//                    SpriteModel sprite = _spriteManager.getItem(product.itemInfo);
+//                    if (sprite != null) {
+//                        if (item.getInfo().factory != null && item.getInfo().factory.outputSlots != null) {
+//                            layer.draw(sprite,
+//                                    (x + item.getInfo().factory.outputSlots[0]) * Constant.TILE_WIDTH,
+//                                    (y + item.getInfo().factory.outputSlots[1]) * Constant.TILE_HEIGHT);
+//                        } else {
+//                            layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+//                        }
+//                    }
+//                }
+//            }
 
 //            // Display selection
 //            if (item.isSelected()) {

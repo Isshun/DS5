@@ -57,6 +57,11 @@ data:extend(
                     lb_job:setText(job:getLabel())
                     frame_job:addView(lb_job)
 
+                    local lb_job_message = game.ui:createLabel()
+                    lb_job_message:setText(job:getMessage())
+                    lb_job_message:setPosition(200, 0)
+                    frame_job:addView(lb_job_message)
+
 --                    local lb_mode = game.ui:createLabel()
 --                    lb_mode:setText("mode")
 --                    lb_mode:setSize(50, 22)

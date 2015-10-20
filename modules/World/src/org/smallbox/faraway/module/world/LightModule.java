@@ -1,9 +1,9 @@
 package org.smallbox.faraway.module.world;
 
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.item.*;
-import org.smallbox.faraway.core.game.module.GameModule;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,9 @@
 //package org.smallbox.faraway.module.bridge;
 //
-//import org.smallbox.faraway.core.game.model.item.*;
-//import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
+//import org.smallbox.faraway.core.game.module.world.item.*;
+//import org.smallbox.faraway.core.game.module.model.model.base.CharacterModel;
 //import org.smallbox.faraway.game.model.item.*;
-//import org.smallbox.faraway.core.game.module.GameModule;
+//import org.smallbox.faraway.core.module.GameModule;
 //import org.w3c.dom.Document;
 //import org.w3c.dom.Element;
 //
@@ -31,16 +31,16 @@
 //    }
 //
 //    @Override
-//    public void onAddCharacter(CharacterModel character) {
+//    public void onAddCharacter(CharacterModel model) {
 //        sendEvent("AddCharacter", (doc, rootElement) -> {
-//            Element characterElement = doc.createElement("character");
+//            Element characterElement = doc.createElement("model");
 //            rootElement.appendChild(characterElement);
 //
-//            appendChild(doc, characterElement, "id", character.getId());
-//            appendChild(doc, characterElement, "name", character.getName());
-//            appendChild(doc, characterElement, "x", character.getX());
-//            appendChild(doc, characterElement, "y", character.getY());
-//            appendChild(doc, characterElement, "z", character.getZ());
+//            appendChild(doc, characterElement, "id", model.getId());
+//            appendChild(doc, characterElement, "name", model.getName());
+//            appendChild(doc, characterElement, "x", model.getX());
+//            appendChild(doc, characterElement, "y", model.getY());
+//            appendChild(doc, characterElement, "z", model.getZ());
 //        });
 //    }
 //
@@ -188,7 +188,7 @@
 //    }
 //
 //    @Override
-//    public void onSelectCharacter(CharacterModel character) {
+//    public void onSelectCharacter(CharacterModel model) {
 //
 //    }
 //

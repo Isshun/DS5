@@ -97,6 +97,7 @@ data:extend(
                 { type = "view", position = {0, 200}, size = {400, 400}, on_refresh = function(view)
                     view:setVisible(mode == 2)
                 end, views = {
+                    { type = "label", id = "lb_inventory", position = {0, 10}, text_size = 14},
                     { type = "grid", position = {0, 24}, columns = 10, column_width = 32, row_height = 32, views = {
                         { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
                         { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
@@ -133,8 +134,12 @@ data:extend(
                     view:setVisible(mode == 3)
                 end, views = {
                     { type = "list", position = {10, 16}, views = {
-                        { type = "label", id = "lb_info_birth", position = {0, 10}, text_size = 14},
-                        { type = "label", id = "lb_info_enlisted", position = {0, 10}, text_size = 14},
+                        { type = "label", text = "Talents", position = {0, 10}, text_size = 24},
+                        { type = "list", id = "list_talents", position = {0, 20}},
+
+                        { type = "label", text = "Personal records", position = {0, 24}, text_size = 24},
+                        { type = "label", id = "lb_info_birth", position = {0, 30}, text_size = 14},
+                        { type = "label", id = "lb_info_enlisted", position = {0, 30}, text_size = 14},
                     }},
                 }},
 
@@ -169,6 +174,8 @@ data:extend(
                     view:findById("lb_info_enlisted"):setDashedString("Enlisted", data:getInfo():getEnlisted(), 47)
                     character = data;
 
+                    display_talents(view)
+
                     mode = 1
                 end
             end,
@@ -178,7 +185,7 @@ data:extend(
                 if character ~= nil then
                     local job = character:getJob()
                     if job then
-                        view:findById("lb_job"):setDashedString(job:getMessage() and job:getMessage() or job:getLabel(), job:getProgress() * 100, 38)
+                        view:findById("lb_job"):setDashedString(job:getMessage() and job:getMessage() or job:getLabel(), math.floor(job:getProgress() * 100), 38)
                     else
                         view:findById("lb_job"):setText("No job")
                     end
@@ -197,6 +204,12 @@ data:extend(
                     view:findById("gauge_joy"):setTextureRect(0, 80, math.floor(character:getNeeds().joy * 180 / 100 / 10) * 10, 16)
                     view:findById("gauge_relation"):setTextureRect(0, 80, math.floor(character:getNeeds().relation * 180 / 100 / 10) * 10, 16)
 
+                    if character:getInventory() then
+                        view:findById("lb_inventory"):setText("Inventory: " .. character:getInventory():getInfo().label)
+                    else
+                        view:findById("lb_inventory"):setText("Inventory: empty")
+                    end
+
                     local buff_module = game:getModule("BuffModule")
                     if buff_module then
                         view:findById("list_buff"):getAdapter():setData(buff_module:getActiveBuffs(character))
@@ -206,3 +219,42 @@ data:extend(
         },
     }
 )
+
+function display_talents(view)
+    local list = view:findById("list_talents")
+    list:removeAllViews()
+
+    local iterator = character:getTalents():iterator()
+    while iterator:hasNext() do
+        local talent = iterator:next()
+        local frame_talent = game.ui:createView()
+        frame_talent:setSize(400, 24)
+
+        local lb_talent = game.ui:createLabel()
+        lb_talent:setText(talent.name)
+        frame_talent:addView(lb_talent)
+
+        local lb_up = game.ui:createLabel()
+        lb_up:setText("up")
+        lb_up:setSize(50, 22)
+        lb_up:setBackgroundColor(0xff0000)
+        lb_up:setPosition(200, 0)
+        lb_up:setOnClickListener(function(v)
+            character:moveTalent(talent, -1)
+            display_talents(view)
+        end)
+        frame_talent:addView(lb_up)
+
+        local lb_down = game.ui:createLabel()
+        lb_down:setText("down")
+        lb_down:setSize(50, 22)
+        lb_down:setPosition(250, 0)
+        lb_down:setOnClickListener(function(v)
+            character:moveTalent(talent, 1)
+            display_talents(view)
+        end)
+        frame_talent:addView(lb_down)
+
+        list:addView(frame_talent)
+    end
+end

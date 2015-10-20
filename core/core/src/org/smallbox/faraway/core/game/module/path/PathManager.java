@@ -8,13 +8,13 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
-import org.smallbox.faraway.core.game.model.area.AreaModel;
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
-import org.smallbox.faraway.core.game.model.item.ResourceModel;
-import org.smallbox.faraway.core.game.model.item.StructureModel;
-import org.smallbox.faraway.core.game.model.job.abs.JobModel;
-import org.smallbox.faraway.core.game.module.GameModule;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.area.model.AreaModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.MoveListener;
 
 import java.util.ArrayList;
@@ -250,7 +250,7 @@ public class PathManager extends GameModule {
     public GraphPath<ParcelModel> findPath(ParcelModel fromParcel, ParcelModel toParcel) {
         long time = System.currentTimeMillis();
 
-        // Check if target parcel is not surrounded by non-walkable area
+        // Check if target parcel is not surrounded by non-walkable model
         if (WorldHelper.isSurroundedByBlocked(toParcel)) {
             _cache.get(fromParcel).addPath(toParcel, null);
             printDebug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (surrounded)");

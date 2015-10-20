@@ -4,18 +4,22 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.GraphicInfo;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.item.ItemInfo;
+import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
 import org.smallbox.faraway.core.module.lua.DataExtendException;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.module.lua.data.LuaExtend;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Alex on 29/09/2015.
  */
 public class LuaItemExtend extends LuaExtend {
+    private static Map<String, LuaValue> _cache = new HashMap<>();
+
     @Override
     public boolean accept(String type) {
         switch (type) {
@@ -31,6 +35,9 @@ public class LuaItemExtend extends LuaExtend {
     @Override
     public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) throws DataExtendException {
         String name = getString(value, "name", null);
+
+        _cache.put(name, value);
+
         ItemInfo itemInfo = null;
         for (ItemInfo info: GameData.getData().items) {
             if (info.name != null && info.name.equals(name)) {
@@ -43,6 +50,20 @@ public class LuaItemExtend extends LuaExtend {
             GameData.getData().items.add(itemInfo);
         }
 
+        if (!value.get("parent").isnil()) {
+            itemInfo.parentName = value.get("parent").toString();
+            if (_cache.containsKey(itemInfo.parentName)) {
+                readItem(itemInfo, _cache.get(itemInfo.parentName));
+            } else {
+                throw new DataExtendException(DataExtendException.Type.MISSING_PARENT, itemInfo.parentName);
+            }
+        }
+        readItem(itemInfo, value);
+
+        System.out.println("Extends item from lua: " + itemInfo.label);
+    }
+
+    private void readItem(ItemInfo itemInfo, LuaValue value) throws DataExtendException {
         itemInfo.name = getString(value, "name", null);
         itemInfo.label = getString(value, "label", null);
         itemInfo.category = getString(value, "category", null);
@@ -99,6 +120,12 @@ public class LuaItemExtend extends LuaExtend {
 
         if (!value.get("stack").isnil()) {
             itemInfo.stack = value.get("stack").toint();
+        } else {
+            itemInfo.stack = GameData.config.storageMaxQuantity;
+        }
+
+        if (!value.get("floor").isnil()) {
+            itemInfo.isFloor = true;
         }
 
         if (!value.get("plant").isnil()) {
@@ -134,8 +161,6 @@ public class LuaItemExtend extends LuaExtend {
                 }
             }
         }
-
-        System.out.println("Extends item from lua: " + itemInfo.label);
     }
 
     private void readFactoryValue(ItemInfo itemInfo, LuaValue value) {
@@ -144,13 +169,13 @@ public class LuaItemExtend extends LuaExtend {
 
         if (!value.get("slots").isnil()) {
             if (!value.get("slots").get("inputs").isnil()) {
-                itemInfo.factory.inputsSlot = new int[] {
+                itemInfo.factory.inputSlots = new int[] {
                         value.get("slots").get("inputs").get(1).toint(),
                         value.get("slots").get("inputs").get(2).toint()
                 };
             }
             if (!value.get("slots").get("outputs").isnil()) {
-                itemInfo.factory.outputsSlot = new int[] {
+                itemInfo.factory.outputSlots = new int[] {
                         value.get("slots").get("outputs").get(1).toint(),
                         value.get("slots").get("outputs").get(2).toint()
                 };
@@ -246,7 +271,7 @@ public class LuaItemExtend extends LuaExtend {
                 } else {
                     throw new DataExtendException(DataExtendException.Type.MANDATORY, "actions.products.quantity");
                 }
-                product.dropRate = getDouble(luaProducts.get(i), "rate", 1);
+                product.rate = getDouble(luaProducts.get(i), "rate", 1);
                 action.products.add(product);
             }
         }

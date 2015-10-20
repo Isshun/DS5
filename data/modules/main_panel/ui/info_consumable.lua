@@ -57,7 +57,7 @@ data:extend(
                     local store_job = consumable:getStoreJob()
                     if store_job then
                         view:findById("lb_haul"):setVisible(true)
-                        view:findById("lb_haul"):setText("Haul: " .. store_job:getMessage())
+                        view:findById("lb_haul"):setText("Haul: " .. (store_job:getMessage() and store_job:getMessage() or "no message"))
                     else
                         view:findById("lb_haul"):setVisible(false)
                     end

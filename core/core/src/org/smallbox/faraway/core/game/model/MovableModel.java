@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
-import org.smallbox.faraway.core.game.model.job.abs.JobModel;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Utils;
 
 public abstract class MovableModel extends ObjectModel {
@@ -39,22 +39,22 @@ public abstract class MovableModel extends ObjectModel {
         NONE
     };
 
-    protected ParcelModel                 _node;
-    protected int                        _posX;
-    protected int                        _posY;
-    protected int                        _toX;
-    protected int                        _toY;
-    protected int                        _id;
-    protected int                        _frameIndex;
-    protected int                        _blocked;
-    protected Direction                    _direction;
+    protected ParcelModel               _node;
+    protected int                       _posX;
+    protected int                       _posY;
+    protected int                       _toX;
+    protected int                       _toY;
+    protected int                       _id;
+    protected int                       _frameIndex;
+    protected int                       _blocked;
+    protected Direction                 _direction;
     protected Direction                 _move;
-    protected GraphPath<ParcelModel>     _path;
-    protected int                        _steps;
-    protected JobModel _job;
+    protected GraphPath<ParcelModel>    _path;
+    protected int                       _steps;
+    protected JobModel                  _job;
     protected OnPathComplete            _onPathComplete;
     protected double                    _moveProgress;
-    public ParcelModel                     _parcel;
+    protected ParcelModel               _parcel;
 
     public MovableModel(int id, int x, int y) {
         Utils.useUUID(id);
@@ -64,12 +64,12 @@ public abstract class MovableModel extends ObjectModel {
         _frameIndex = (int) (Math.random() * 1000 % 20);
     }
 
-    public int                getId() { return _id; }
-    public int                 getX() { return _posX; }
-    public int                 getY() { return _posY; }
+    public int              getId() { return _id; }
+    public int              getX() { return _posX; }
+    public int              getY() { return _posY; }
     public Direction        getDirection() { return _direction; }
-    public Direction         getMove() { return _move; }
-    public int                getFrameIndex() { return _frameIndex++; }
+    public Direction        getMove() { return _move; }
+    public int              getFrameIndex() { return _frameIndex++; }
 
     public void    setDirection(Direction direction) {
         if (_direction != direction) {

@@ -1,10 +1,10 @@
 package org.smallbox.faraway.ui;
 
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.model.item.ConsumableModel;
-import org.smallbox.faraway.core.game.model.item.ItemModel;
-import org.smallbox.faraway.core.game.model.item.StructureModel;
-import org.smallbox.faraway.core.game.model.job.abs.JobModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.game.module.world.model.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.ui.panel.debug.BaseDebugPanel;
 
 /**

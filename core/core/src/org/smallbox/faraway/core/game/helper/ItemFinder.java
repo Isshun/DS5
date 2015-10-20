@@ -2,12 +2,12 @@ package org.smallbox.faraway.core.game.helper;
 
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.model.item.*;
-import org.smallbox.faraway.core.game.module.GameModule;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
-import org.smallbox.faraway.core.game.module.ModuleManager;
-import org.smallbox.faraway.core.game.module.base.WorldModule;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.util.Constant;
 
@@ -65,21 +65,21 @@ public class ItemFinder extends GameModule {
             return bestConsumable;
         }
 //
-//        int startX = character.getX();
-//        int startY = character.getY();
+//        int startX = model.getX();
+//        int startY = model.getY();
 //        int maxX = Math.max(startX, _width - startX);
 //        int maxY = Math.max(startY, _height - startY);
 //        for (int offsetX = 0; offsetX < maxX; offsetX++) {
 //            for (int offsetY = 0; offsetY < maxY; offsetY++) {
-//                ParcelModel area = _worldModule.getParcel(startX + offsetX, startY + offsetY);
+//                ParcelModel model = _worldModule.getParcel(startX + offsetX, startY + offsetY);
 //
-//                // Check on non-existing area
-//                if (area == null) {
+//                // Check on non-existing model
+//                if (model == null) {
 //                    continue;
 //                }
 //
 ////                // Private room exists and characters is not allowed
-////                if (area.getRoom() != null && area.getRoom().isPrivate() && area.getRoom().getOccupants().contains(characters) == false) {
+////                if (model.getRoom() != null && model.getRoom().isPrivate() && model.getRoom().getOccupants().contains(characters) == false) {
 ////                    continue;
 ////                }
 //

@@ -3,8 +3,8 @@ package org.smallbox.faraway.core.engine.lua;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 
 /**
  * Created by Alex on 20/06/2015.

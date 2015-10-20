@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.module.ModuleManager;
+import org.smallbox.faraway.core.module.java.ModuleManager;
 
 import java.util.List;
 

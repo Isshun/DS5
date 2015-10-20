@@ -2,7 +2,7 @@
 //
 //import org.smallbox.faraway.engine.Color;
 //import org.smallbox.faraway.engine.GameEventListener;
-//import org.smallbox.faraway.game.model.area.AreaType;
+//import org.smallbox.faraway.game.model.model.AreaType;
 //import org.smallbox.faraway.ui.LayoutModel;
 //import org.smallbox.faraway.ui.UserInteraction;
 //import org.smallbox.faraway.ui.UserInterface;

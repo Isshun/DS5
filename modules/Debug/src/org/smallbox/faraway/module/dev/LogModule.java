@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.dev;
 
-import org.smallbox.faraway.core.game.module.GameModule;
+import org.smallbox.faraway.core.module.GameModule;
 
 import java.util.Arrays;
 import java.util.List;

@@ -3,12 +3,12 @@ package org.smallbox.faraway.module.world;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.item.ItemModel;
-import org.smallbox.faraway.core.game.model.room.NeighborModel;
-import org.smallbox.faraway.core.game.model.room.RoomModel;
-import org.smallbox.faraway.core.game.module.GameModule;
-import org.smallbox.faraway.core.game.module.ModuleManager;
-import org.smallbox.faraway.core.game.module.base.RoomModule;
+import org.smallbox.faraway.core.game.module.world.model.ItemModel;
+import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
+import org.smallbox.faraway.core.game.module.room.model.RoomModel;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.game.module.room.RoomModule;
 
 import java.util.ArrayList;
 import java.util.List;

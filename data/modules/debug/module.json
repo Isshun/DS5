@@ -3,6 +3,6 @@
   "name": "FarAway Debug Module",
   "type": "lua",
   "required": [
-    {"module": "base", "min_version": 42}
+    {"module": "base", "min_version": 0}
   ]
 }

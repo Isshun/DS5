@@ -1,9 +1,9 @@
 package org.smallbox.faraway.module.character;
 
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.model.character.base.CharacterStats;
-import org.smallbox.faraway.core.game.model.item.ItemInfo;
-import org.smallbox.faraway.core.game.module.GameModule;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterStats;
+import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.module.GameModule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class CharacterStuffModule extends GameModule {
     protected void onLoaded() {
         _data = new HashMap<>();
 
-        addEventListener("base.character.join", new EventListener<CharacterModel>() {
+        addEventListener("base.model.join", new EventListener<CharacterModel>() {
             @Override
             public void onEvent(CharacterModel character) {
 
@@ -46,23 +46,23 @@ public class CharacterStuffModule extends GameModule {
 //                for (ItemInfo.EquipmentEffect effect: item.equipment.effects) {
 //                    // Check debuff
 //                    if (effect.debuff != null) {
-//                        addValues(character.getStats().debuff, effect.debuff);
+//                        addValues(model.getStats().debuff, effect.debuff);
 //                    }
 //
 //                    // Check resist
 //                    if (effect.resist != null) {
-//                        addValues(character.getStats().resist, effect.resist);
+//                        addValues(model.getStats().resist, effect.resist);
 //                    }
 //
 //                    // Check buff
 //                    if (effect.buff != null) {
-//                        addValues(character.getStats().buff, effect.buff);
+//                        addValues(model.getStats().buff, effect.buff);
 //                    }
 //                }
 //            }
 //        }
 //
-//        _data.put(character, stuff);
+//        _data.put(model, stuff);
     }
 
     private void addValues(CharacterStats.CharacterStatsValues values, ItemInfo.EquipmentEffectValues effect) {

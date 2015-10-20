@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.data.loader;
 
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.item.ItemInfo;
+import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
 import org.smallbox.faraway.core.util.Log;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -82,7 +82,7 @@ public class ItemLoader implements IDataLoader {
 
         pass1(data);
         pass2(data);
-        pass3(data);
+//        pass3(data);
         pass4(data);
 
         if (_hasErrors) {
@@ -116,13 +116,13 @@ public class ItemLoader implements IDataLoader {
                     if (action.finalProducts != null && !action.finalProducts.isEmpty()) {
                         for (ItemInfo.ItemProductInfo productInfo: action.finalProducts) {
                             productInfo.item = data.getItemInfo(productInfo.itemName);
-                            productInfo.dropRate = productInfo.dropRate == 0 ? 1 : productInfo.dropRate;
+                            productInfo.rate = productInfo.rate == 0 ? 1 : productInfo.rate;
                         }
                     }
                     if (action.products != null && !action.products.isEmpty()) {
                         for (ItemInfo.ItemProductInfo productInfo: action.products) {
                             productInfo.item = data.getItemInfo(productInfo.itemName);
-                            productInfo.dropRate = productInfo.dropRate == 0 ? 1 : productInfo.dropRate;
+                            productInfo.rate = productInfo.rate == 0 ? 1 : productInfo.rate;
                         }
                     }
 
@@ -194,15 +194,15 @@ public class ItemLoader implements IDataLoader {
             }
         }
     }
-
-    private void pass3(GameData data) {
-        for (ItemInfo item: data.items) {
-            if (item.parent != null) {
-                item.parentInfo = data.getItemInfo(item.parent);
-                item.parentInfo.childs.add(item);
-            }
-        }
-    }
+//
+//    private void pass3(GameData data) {
+//        for (ItemInfo item: data.items) {
+//            if (item.parent != null) {
+//                item.parentInfo = data.getItemInfo(item.parent);
+//                item.parentInfo.childs.add(item);
+//            }
+//        }
+//    }
 
     private void pass4(GameData data) {
 //        for (ItemInfo item: data.items) {

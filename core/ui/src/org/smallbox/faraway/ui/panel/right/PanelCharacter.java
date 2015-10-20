@@ -9,9 +9,9 @@
 //import org.smallbox.faraway.game.model.CharacterTypeInfo;
 //import org.smallbox.faraway.game.model.GameData;
 //import org.smallbox.faraway.game.model.ToolTips;
-//import org.smallbox.faraway.module.character.BuffModel;
-//import org.smallbox.faraway.game.model.character.DiseaseModel;
-//import org.smallbox.faraway.game.model.character.base.*;
+//import org.smallbox.faraway.module.model.BuffModel;
+//import org.smallbox.faraway.game.model.model.DiseaseModel;
+//import org.smallbox.faraway.game.model.model.base.*;
 //import org.smallbox.faraway.game.model.item.ItemInfo;
 //import org.smallbox.faraway.game.model.job.BaseJobModel;
 //import org.smallbox.faraway.game.model.job.UseJob;
@@ -33,7 +33,7 @@
 //
 //public class PanelCharacter extends BaseRightPanel {
 //    private interface OnGaugeRefresh {
-//        void onGaugeRefresh(UILabel label, UIImage image, CharacterModel character, CharacterNeeds needs, CharacterTypeInfo type);
+//        void onGaugeRefresh(UILabel label, UIImage image, CharacterModel model, CharacterNeeds needs, CharacterTypeInfo type);
 //    }
 //
 //    private static final int    NB_MAX_BUFFS = 20;
@@ -47,12 +47,12 @@
 //    private ViewFactory _viewFactory;
 //
 //    private static final OnGaugeRefresh[] GAUGES = new OnGaugeRefresh[] {
-//            (label, image, character, needs, type) -> refreshNeed(label, image, "Energy", character, needs.energy, type.needs.energy),
-//            (label, image, character, needs, type) -> refreshNeed(label, image, "Food", character, needs.food, type.needs.food),
-//            (label, image, character, needs, type) -> refreshNeed(label, image, "Oxygen", character, needs.oxygen, type.needs.oxygen),
-//            (label, image, character, needs, type) -> refreshNeed(label, image, "Happiness", character, needs.happiness, type.needs.happiness),
-//            (label, image, character, needs, type) -> refreshNeed(label, image, "Relation", character, needs.relation, type.needs.relation),
-//            (label, image, character, needs, type) -> refreshNeed(label, image, "Amusement", character, needs.joy, type.needs.joy),
+//            (label, image, model, needs, type) -> refreshNeed(label, image, "Energy", model, needs.energy, type.needs.energy),
+//            (label, image, model, needs, type) -> refreshNeed(label, image, "Food", model, needs.food, type.needs.food),
+//            (label, image, model, needs, type) -> refreshNeed(label, image, "Oxygen", model, needs.oxygen, type.needs.oxygen),
+//            (label, image, model, needs, type) -> refreshNeed(label, image, "Happiness", model, needs.happiness, type.needs.happiness),
+//            (label, image, model, needs, type) -> refreshNeed(label, image, "Relation", model, needs.relation, type.needs.relation),
+//            (label, image, model, needs, type) -> refreshNeed(label, image, "Amusement", model, needs.joy, type.needs.joy),
 //    };
 //
 //    private static final Color COLOR_DEAD = new Color(180, 180, 180);
@@ -536,17 +536,17 @@
 //        }
 //    }
 //
-//    private void onCharacterSelect(CharacterModel character) {
+//    private void onCharacterSelect(CharacterModel model) {
 //        // Display need frame
 //        UIFrame frameNeeds = (UIFrame) findById("frame_needs");
 //        frameNeeds.removeAllViews();
-//        ViewFactory.getInstance().load(character.getNeedViewPath(), frameNeeds::addView);
+//        ViewFactory.getInstance().load(model.getNeedViewPath(), frameNeeds::addView);
 //        createNeedsInfo();
 //
 //        // Display equipment frame
 //        UIFrame frameEquipmentBody = (UIFrame) findById("frame_equipment_body");
 //        frameEquipmentBody.removeAllViews();
-//        ViewFactory.getInstance().load(character.getEquipmentViewPath(), frameEquipmentBody::addView);
+//        ViewFactory.getInstance().load(model.getEquipmentViewPath(), frameEquipmentBody::addView);
 //    }
 //
 //    private void refreshStatsEquipments() {
@@ -837,7 +837,7 @@
 //        }
 //    }
 //
-//    private static void refreshNeed(UILabel lbNeed, UIImage imgNeed, String label, CharacterModel character, double value, CharacterTypeInfo.NeedInfo needInfo) {
+//    private static void refreshNeed(UILabel lbNeed, UIImage imgNeed, String label, CharacterModel model, double value, CharacterTypeInfo.NeedInfo needInfo) {
 //        value = Math.min(Math.max(value, 0), 100);
 //        int level = 0;
 //        Color color = COLOR_0;
@@ -845,7 +845,7 @@
 //        else if (value < needInfo.warning) { level = 2; color = COLOR_1; }
 //        float size = Math.max(Math.round(180.0f / 100 * value / 10) * 10, 10);
 //
-//        if (!character.isAlive()) {
+//        if (!model.isAlive()) {
 //            value = 0;
 //            size = 10;
 //            color = COLOR_DEAD;
@@ -952,9 +952,9 @@
 //        return false;
 //    }
 //
-//    public void select(CharacterModel character) {
-//        _character = character;
+//    public void select(CharacterModel model) {
+//        _character = model;
 //        initCharacter();
-//        onCharacterSelect(character);
+//        onCharacterSelect(model);
 //    }
 //}

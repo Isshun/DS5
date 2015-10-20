@@ -6,16 +6,16 @@ import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
-import org.smallbox.faraway.core.data.ReceiptGroupInfo;
+import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.area.AreaModel;
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.model.item.*;
-import org.smallbox.faraway.core.game.model.job.abs.JobModel;
+import org.smallbox.faraway.core.game.module.area.model.AreaModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.core.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.module.lua.data.LuaExtendManager;
@@ -201,7 +201,7 @@ public class LuaModuleManager implements GameObserver {
         _luaEventListeners.forEach(listener -> listener.onEvent(eventId, value, LuaValue.NIL));
     }
 
-    //    default void onAddCharacter(CharacterModel character){}
+    //    default void onAddCharacter(CharacterModel model){}
 //    default void onAddStructure(StructureModel structure){}
 //    default void onAddItem(ItemModel item){}
 //    default void onAddConsumable(ConsumableModel consumable){}

@@ -2,8 +2,8 @@ package org.smallbox.faraway.core.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.data.ReceiptGroupInfo;
 import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.lua.DataExtendException;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
@@ -37,34 +37,46 @@ public class LuaReceiptExtend extends LuaExtend {
 
         receiptGroupInfo.name = getString(value, "name", null);
         receiptGroupInfo.label = getString(value, "label", null);
+        receiptGroupInfo.cost = getInt(value, "cost", 1);
 
-        LuaValue luaProducts = value.get("products");
-        if (!luaProducts.isnil()) {
+        LuaValue luaReceipts = value.get("receipts");
+        if (!luaReceipts.isnil()) {
             receiptGroupInfo.receipts = new ArrayList<>();
-            for (int i = 1; i <= luaProducts.length(); i++) {
-                LuaValue luaProduct = luaProducts.get(i);
+            for (int i = 1; i <= luaReceipts.length(); i++) {
+                LuaValue luaReceipt = luaReceipts.get(i);
                 ReceiptGroupInfo.ReceiptInfo receiptInfo = new ReceiptGroupInfo.ReceiptInfo();
                 receiptInfo.name = receiptGroupInfo.name;
                 receiptInfo.label = receiptGroupInfo.label;
+                receiptInfo.cost = getInt(luaReceipt, "cost", receiptGroupInfo.cost);
 
-                LuaValue luaItemsProduct = luaProduct.get("items");
-                receiptInfo.products = new ArrayList<>();
-                for (int j = 1; j <= luaItemsProduct.length(); j++) {
-                    LuaValue luaComponent = luaItemsProduct.get(j);
-                    ReceiptGroupInfo.ReceiptOutputInfo productItemInfo = new ReceiptGroupInfo.ReceiptOutputInfo();
-                    productItemInfo.itemName = luaComponent.get("name").toString();
-                    productItemInfo.quantity = luaComponent.get("quantity").toint();
-                    receiptInfo.products.add(productItemInfo);
+                LuaValue luaInputs = luaReceipt.get("inputs");
+                receiptInfo.inputs = new ArrayList<>();
+                for (int j = 1; j <= luaInputs.length(); j++) {
+                    LuaValue luaInput = luaInputs.get(j);
+                    ReceiptGroupInfo.ReceiptInputInfo componentInfo = new ReceiptGroupInfo.ReceiptInputInfo();
+                    componentInfo.itemName = luaInput.get("name").toString();
+                    componentInfo.quantity = luaInput.get("quantity").toint();
+                    receiptInfo.inputs.add(componentInfo);
                 }
 
-                LuaValue luaComponents = luaProduct.get("components");
-                receiptInfo.components = new ArrayList<>();
-                for (int j = 1; j <= luaComponents.length(); j++) {
-                    LuaValue luaComponent = luaComponents.get(j);
-                    ReceiptGroupInfo.ReceiptInputInfo componentInfo = new ReceiptGroupInfo.ReceiptInputInfo();
-                    componentInfo.itemName = luaComponent.get("name").toString();
-                    componentInfo.quantity = luaComponent.get("quantity").toint();
-                    receiptInfo.components.add(componentInfo);
+                LuaValue luaOutputs = luaReceipt.get("outputs");
+                receiptInfo.outputs = new ArrayList<>();
+                for (int j = 1; j <= luaOutputs.length(); j++) {
+                    LuaValue luaComponent = luaOutputs.get(j);
+                    ReceiptGroupInfo.ReceiptOutputInfo productItemInfo = new ReceiptGroupInfo.ReceiptOutputInfo();
+                    productItemInfo.itemName = luaComponent.get("name").toString();
+                    if (luaComponent.get("quantity").istable()) {
+                        productItemInfo.quantity = new int[] {
+                                luaComponent.get("quantity").get(1).toint(),
+                                luaComponent.get("quantity").get(2).toint()
+                        };
+                    } else {
+                        productItemInfo.quantity = new int[] {
+                                luaComponent.get("quantity").toint(),
+                                luaComponent.get("quantity").toint()
+                        };
+                    }
+                    receiptInfo.outputs.add(productItemInfo);
                 }
 
                 receiptGroupInfo.receipts.add(receiptInfo);

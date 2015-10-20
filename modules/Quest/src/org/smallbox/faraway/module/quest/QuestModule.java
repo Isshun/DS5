@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.lua.LuaGameModel;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.module.GameUIModule;
+import org.smallbox.faraway.core.module.GameModule;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 19/06/2015.
  */
-public class QuestModule extends GameUIModule {
+public class QuestModule extends GameModule {
 
     private QuestModuleUI       _ui;
     private List<QuestModel>    _quests;

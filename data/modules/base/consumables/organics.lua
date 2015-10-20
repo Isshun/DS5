@@ -26,4 +26,11 @@ data:extend({
     { label = "Spice", name = "base.spice", type = "consumable", category = "organic", graphics = {
         { path = "[base]/graphics/items/consumables/spice.png", type = "plant", x = 0, y = 0 },
     }},
+
+    { type = "consumable", label = "Rice", name = "base.vegetable_rice", parent = "base.vegetable" },
+    { type = "consumable", label = "Carrot", name = "base.vegetable_carrot", parent = "base.vegetable" },
+    { type = "consumable", label = "Wheat", name = "base.vegetable_wheat", parent = "base.vegetable" },
+    { type = "consumable", label = "Corn", name = "base.vegetable_corn", parent = "base.vegetable" },
+    { type = "consumable", label = "Potato", name = "base.vegetable_potato", parent = "base.vegetable" },
+
 })

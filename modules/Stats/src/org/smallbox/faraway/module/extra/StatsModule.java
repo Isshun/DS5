@@ -1,8 +1,8 @@
 package org.smallbox.faraway.module.extra;
 
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.GameModule;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class StatsModule extends GameModule {
             for (CharacterModel character: ModuleHelper.getCharacterModule().getCharacters()) {
 
 //                // In relation or single
-//                if (character.getRelations().getMate() != null) {
+//                if (model.getRelations().getMate() != null) {
 //                    nbCoupleValue++;
 //                } else {
 //                    nbSingleValue++;

@@ -2,7 +2,7 @@ entries:
 
     -   type: label
         id: bt_add_character
-        text: add character
+        text: add model
         textsize: 18
         position: [20, 100]
 

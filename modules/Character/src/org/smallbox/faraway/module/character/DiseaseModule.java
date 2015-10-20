@@ -6,10 +6,10 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.core.engine.lua.LuaCharacterModel;
 import org.smallbox.faraway.core.engine.lua.LuaGameModel;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.character.DiseaseModel;
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.GameModule;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.character.model.DiseaseModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.FileUtils;
 
 /**

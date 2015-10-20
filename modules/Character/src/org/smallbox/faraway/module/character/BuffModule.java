@@ -6,9 +6,9 @@ import org.smallbox.faraway.core.engine.lua.LuaCharacterModel;
 import org.smallbox.faraway.core.engine.lua.LuaGameModel;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.character.BuffCharacterModel;
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.GameModule;
+import org.smallbox.faraway.core.game.module.character.model.BuffCharacterModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.module.GameModule;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,17 +41,17 @@ public class BuffModule extends GameModule {
         }
 
 //        _charactersData.forEach(data -> {
-//            if (data.character.isAlive()) {
-//                data.character.getNeeds().happinessChange = 0;
+//            if (data.model.isAlive()) {
+//                data.model.getNeeds().happinessChange = 0;
 //
 //                GameData.getData().buffs.forEach(buff -> buff.update(data, tick));
 //
-////                int length = character.getBuffs().size();
+////                int length = model.getBuffs().size();
 ////                for (int i = 0; i < length; i++) {
-////                    BuffModel buff = character.getBuffs().get(i);
+////                    BuffModel buff = model.getBuffs().get(i);
 ////                    LuaValue ret = buff.globals.get("OnUpdate").call(_luaGame, buff.luaCharacter);
 ////                }
-////                Collections.sort(character.getBuffs(), (b1, b2) -> b2.mood - b1.mood);
+////                Collections.sort(model.getBuffs(), (b1, b2) -> b2.mood - b1.mood);
 ////            }
 //            }
 //        });
@@ -88,7 +88,7 @@ public class BuffModule extends GameModule {
 //                    }
 //                }
 //
-//                character.addBuff(buff);
+//                model.addBuff(buff);
 //            } catch (FileNotFoundException e) {
 //                e.printStackTrace();
 //            }

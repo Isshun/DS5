@@ -5,12 +5,12 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.area.AreaType;
-import org.smallbox.faraway.core.game.model.item.ItemInfo;
-import org.smallbox.faraway.core.game.model.item.ResourceModel;
-import org.smallbox.faraway.core.game.model.job.abs.JobModel;
-import org.smallbox.faraway.core.game.model.job.DumpJob;
-import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.area.model.AreaType;
+import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.game.module.world.model.ResourceModel;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.job.model.DumpJob;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.cursor.AreaCursor;
 import org.smallbox.faraway.ui.cursor.GatherCursor;
@@ -28,13 +28,13 @@ public class UserInteraction {
             return true;
         }
 
-        // Set area
+        // Set model
         if (_action == Action.SET_AREA) {
             Game.getInstance().notify(gameObserver -> gameObserver.onAddArea(_selectedAreaType, fromX, fromY, toX, toY));
             return true;
         }
 
-        // Set area
+        // Set model
         if (_action == Action.REMOVE_AREA) {
             Game.getInstance().notify(gameObserver -> gameObserver.onRemoveArea(_selectedAreaType, fromX, fromY, toX, toY));
             return true;
@@ -103,7 +103,7 @@ public class UserInteraction {
         for (int x = toX; x >= startX; x--) {
             for (int y = toY; y >= startY; y--) {
 
-                // Check if resource is present on area
+                // Check if resource is present on model
                 ResourceModel res = WorldHelper.getResource(x, y);
                 if (res != null) {
                     if (res.canBeMined()) {

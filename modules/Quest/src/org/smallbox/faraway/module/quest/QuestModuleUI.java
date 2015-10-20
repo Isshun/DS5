@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.quest;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.module.ModuleManager;
+import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.engine.views.UIFrame;
 import org.smallbox.faraway.ui.engine.views.UILabel;

@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game.model;
 
-import org.smallbox.faraway.core.data.ReceiptGroupInfo;
+import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 import org.smallbox.faraway.core.data.loader.*;
-import org.smallbox.faraway.core.game.model.character.BuffModel;
-import org.smallbox.faraway.core.game.model.item.ItemInfo;
+import org.smallbox.faraway.core.game.module.character.model.BuffModel;
+import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.ui.UICursor;
@@ -115,6 +115,9 @@ public class GameData {
     public void fix() {
         this.items.stream()
                 .forEach(item -> {
+                    if (item.parentName != null) {
+                        item.parent = getItemInfo(item.parentName);
+                    }
                     if (item.factory != null && item.factory.receiptNames != null) {
                         item.factory.receipts = item.factory.receiptNames.stream().map(this::getReceipt).collect(Collectors.toList());
                     }
@@ -130,8 +133,8 @@ public class GameData {
                     }
                 });
         this.receipts.forEach(receipt -> receipt.receipts.forEach(productInfo -> {
-            productInfo.products.forEach(product -> product.item = getItemInfo(product.itemName));
-            productInfo.components.forEach(component -> component.item = getItemInfo(component.itemName));
+            productInfo.outputs.forEach(product -> product.item = getItemInfo(product.itemName));
+            productInfo.inputs.forEach(component -> component.item = getItemInfo(component.itemName));
         }));
     }
 

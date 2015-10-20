@@ -1,11 +1,11 @@
 package org.smallbox.faraway.core.engine.lua;
 
 import org.smallbox.faraway.core.game.model.ObjectModel;
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.model.character.base.CharacterNeeds;
-import org.smallbox.faraway.core.game.model.character.base.CharacterStats;
-import org.smallbox.faraway.core.game.model.item.ItemInfo;
-import org.smallbox.faraway.core.game.model.item.ParcelModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterNeeds;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterStats;
+import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
 /**
  * Created by Alex on 19/06/2015.
@@ -22,7 +22,7 @@ public class LuaCharacterModel extends ObjectModel {
     public final String             faction;
 
     public LuaCharacterModel(CharacterModel character) {
-//        this.id = character.getId();
+//        this.id = model.getId();
         this.name = character.getInfo().getName();
         this.faction = "fremen";
         this.needs = character.getNeeds();

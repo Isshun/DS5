@@ -12,7 +12,7 @@ import org.smallbox.faraway.core.engine.renderer.GDXParticleRenderer;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.module.ModuleManager;
+import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.core.util.Log;

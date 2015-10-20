@@ -3,8 +3,8 @@ package org.smallbox.faraway.core.module.lua.data.extend;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.character.BuffCharacterModel;
-import org.smallbox.faraway.core.game.model.character.BuffModel;
+import org.smallbox.faraway.core.game.module.character.model.BuffCharacterModel;
+import org.smallbox.faraway.core.game.module.character.model.BuffModel;
 import org.smallbox.faraway.core.module.lua.DataExtendException;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
@@ -52,7 +52,7 @@ public class LuaCharacterBuffExtend extends LuaExtend {
 //                                if (Math.random() <= luaEffects.get(j + 1).get(2).todouble()) {
 //                                    printNotice("apply buff effect: " + luaEffects.get(j + 1).get(1).toString() + " (" + buff.message + ")");
 //                                    ((DiseaseModule) ModuleManager.getInstance().getModule(DiseaseModule.class)).apply(
-//                                            character,
+//                                            model,
 //                                            luaEffects.get(j + 1).get(1).toString(),
 //                                            luaEffects.get(j + 1).get(3));
 //                                }

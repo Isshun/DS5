@@ -1,12 +1,12 @@
 package org.smallbox.faraway.core.game;
 
-import org.smallbox.faraway.core.data.ReceiptGroupInfo;
+import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.model.area.AreaModel;
-import org.smallbox.faraway.core.game.model.area.AreaType;
-import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.core.game.model.item.*;
-import org.smallbox.faraway.core.game.model.job.abs.JobModel;
+import org.smallbox.faraway.core.game.module.area.model.AreaModel;
+import org.smallbox.faraway.core.game.module.area.model.AreaType;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 
 /**
  * Created by Alex on 06/06/2015.
