@@ -7,14 +7,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
-import org.smallbox.faraway.GraphicInfo;
-import org.smallbox.faraway.engine.SpriteModel;
-import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.item.*;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.FileUtils;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.core.engine.SpriteModel;
+import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.core.game.model.item.*;
+import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.core.util.FileUtils;
+import org.smallbox.faraway.core.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +33,7 @@ public class SpriteManager {
     private Texture[]                         _textureCharacters;
     private GDXSpriteModel[]                _selectors;
     private Map<String, SpriteModel>        _icons;
-    private ItemInfo                        _groundItemInfo;
+    private ItemInfo _groundItemInfo;
 
     private int[] _random = {
             0, 0, 1, 3, 2, 3, 1, 3, 0, 1,

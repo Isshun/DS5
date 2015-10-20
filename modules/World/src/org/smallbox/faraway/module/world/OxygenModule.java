@@ -1,12 +1,12 @@
 package org.smallbox.faraway.module.world;
 
-import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.room.NeighborModel;
-import org.smallbox.faraway.game.model.room.RoomModel;
-import org.smallbox.faraway.game.module.GameModule;
-import org.smallbox.faraway.game.module.ModuleManager;
-import org.smallbox.faraway.game.module.base.RoomModule;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.room.NeighborModel;
+import org.smallbox.faraway.core.game.model.room.RoomModel;
+import org.smallbox.faraway.core.game.module.GameModule;
+import org.smallbox.faraway.core.game.module.ModuleManager;
+import org.smallbox.faraway.core.game.module.base.RoomModule;
 
 /**
  * Created by Alex on 18/06/2015.

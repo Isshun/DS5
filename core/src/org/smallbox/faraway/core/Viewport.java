@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core;
 
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.core.util.Log;
 
 /**
  * Created by Alex on 04/06/2015.

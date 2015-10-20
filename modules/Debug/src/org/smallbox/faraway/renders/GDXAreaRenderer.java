@@ -4,14 +4,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.engine.renderer.BaseRenderer;
-import org.smallbox.faraway.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.game.model.GameConfig;
-import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.game.module.ModuleManager;
-import org.smallbox.faraway.game.module.base.WorldModule;
-import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
+import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.game.model.GameConfig;
+import org.smallbox.faraway.core.game.model.item.ParcelModel;
+import org.smallbox.faraway.core.game.module.ModuleManager;
+import org.smallbox.faraway.core.game.module.base.WorldModule;
+import org.smallbox.faraway.core.ui.UserInterface;
+import org.smallbox.faraway.core.util.Constant;
 
 /**
  * Created by Alex on 13/06/2015.

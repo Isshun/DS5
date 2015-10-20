@@ -1,17 +1,17 @@
 package org.smallbox.faraway.renders;
 
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.engine.Color;
-import org.smallbox.faraway.engine.renderer.BaseRenderer;
-import org.smallbox.faraway.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.game.model.GameConfig;
-import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.game.module.ModuleHelper;
-import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.UILabel;
-import org.smallbox.faraway.ui.engine.views.View;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
+import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.game.model.GameConfig;
+import org.smallbox.faraway.core.game.model.item.ParcelModel;
+import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.ui.UserInterface;
+import org.smallbox.faraway.core.ui.engine.ViewFactory;
+import org.smallbox.faraway.core.ui.engine.views.UILabel;
+import org.smallbox.faraway.core.ui.engine.views.View;
+import org.smallbox.faraway.core.util.Constant;
 
 public class DebugRenderer extends BaseRenderer {
 

@@ -2,13 +2,13 @@ package org.smallbox.faraway.module.character;
 
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.engine.lua.LuaCharacterModel;
-import org.smallbox.faraway.engine.lua.LuaGameModel;
-import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.character.BuffCharacterModel;
-import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.module.GameModule;
+import org.smallbox.faraway.core.engine.lua.LuaCharacterModel;
+import org.smallbox.faraway.core.engine.lua.LuaGameModel;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.character.BuffCharacterModel;
+import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.GameModule;
 
 import java.util.*;
 import java.util.stream.Collectors;

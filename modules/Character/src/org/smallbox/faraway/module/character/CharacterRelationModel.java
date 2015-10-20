@@ -1,8 +1,8 @@
 package org.smallbox.faraway.module.character;
 
-import org.smallbox.faraway.game.model.character.base.CharacterInfoModel;
-import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.character.base.CharacterRelation;
+import org.smallbox.faraway.core.game.model.character.base.CharacterInfoModel;
+import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.core.game.model.character.base.CharacterRelation;
 
 import java.util.ArrayList;
 import java.util.List;

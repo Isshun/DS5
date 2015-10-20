@@ -1,28 +1,30 @@
 package org.smallbox.faraway.module.debug;
 
-import org.smallbox.faraway.data.factory.world.WorldFactory;
-import org.smallbox.faraway.engine.GameEventListener;
-import org.smallbox.faraway.engine.renderer.MainRenderer;
-import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.character.AndroidModel;
-import org.smallbox.faraway.game.model.character.DroidModel;
-import org.smallbox.faraway.game.model.character.HumanModel;
-import org.smallbox.faraway.game.model.character.base.CharacterModel;
-import org.smallbox.faraway.game.model.item.BuildableMapObject;
-import org.smallbox.faraway.game.model.item.ConsumableModel;
-import org.smallbox.faraway.game.model.item.ItemModel;
-import org.smallbox.faraway.game.module.*;
-import org.smallbox.faraway.game.module.base.RoomModule;
+import org.smallbox.faraway.core.game.module.GameUIModule;
+import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.data.factory.world.WorldFactory;
+import org.smallbox.faraway.core.game.module.ModuleManager;
+import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.engine.renderer.MainRenderer;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.character.AndroidModel;
+import org.smallbox.faraway.core.game.model.character.DroidModel;
+import org.smallbox.faraway.core.game.model.character.HumanModel;
+import org.smallbox.faraway.core.game.model.character.base.CharacterModel;
+import org.smallbox.faraway.core.game.model.item.BuildableMapObject;
+import org.smallbox.faraway.core.game.model.item.ConsumableModel;
+import org.smallbox.faraway.core.game.model.item.ItemModel;
+import org.smallbox.faraway.core.game.module.base.RoomModule;
 import org.smallbox.faraway.module.quest.QuestModule;
-import org.smallbox.faraway.ui.engine.views.UIList;
-import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.OnClickListener;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.UIFrame;
-import org.smallbox.faraway.ui.engine.views.UILabel;
-import org.smallbox.faraway.ui.engine.views.View;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.core.ui.engine.views.UIList;
+import org.smallbox.faraway.core.ui.UserInterface;
+import org.smallbox.faraway.core.ui.engine.OnClickListener;
+import org.smallbox.faraway.core.ui.engine.ViewFactory;
+import org.smallbox.faraway.core.ui.engine.views.UIFrame;
+import org.smallbox.faraway.core.ui.engine.views.UILabel;
+import org.smallbox.faraway.core.ui.engine.views.View;
+import org.smallbox.faraway.core.util.Log;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -86,7 +88,7 @@ public class DebugModule extends GameUIModule {
                 _item.setComplete(false);
             }),
             new CommandEntry("remove characters",   view -> ModuleHelper.getCharacterModule().getCharacters().clear()),
-            new CommandEntry("Launch quest",        view -> ((QuestModule)ModuleManager.getInstance().getModule(QuestModule.class)).launchRandomQuest()),
+            new CommandEntry("Launch quest",        view -> ((QuestModule) ModuleManager.getInstance().getModule(QuestModule.class)).launchRandomQuest()),
             new CommandEntry("Refresh rooms",       view -> ((RoomModule)ModuleManager.getInstance().getModule(RoomModule.class)).refreshRooms()),
             new CommandEntry("Remove rubbles",      view -> {
                 for (ConsumableModel consumable : ModuleHelper.getWorldModule().getConsumables().stream().filter(res -> "base.calcite_rubble".equals(res.getInfo().name)).collect(Collectors.toList())) {
@@ -241,9 +243,6 @@ public class DebugModule extends GameUIModule {
 //    }
 
     public void onKeyPress(GameEventListener.Key key) {
-        if (key == GameEventListener.Key.F10) {
-            setActivate(!isActivate());
-        }
         if (key == GameEventListener.Key.BACKSPACE) {
             openFrame(COMMANDS);
         }

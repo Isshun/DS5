@@ -9,16 +9,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.engine.renderer.LightRenderer;
-import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.model.GameConfig;
-import org.smallbox.faraway.game.model.item.ItemModel;
-import org.smallbox.faraway.game.model.item.ParcelModel;
-import org.smallbox.faraway.game.model.item.ResourceModel;
-import org.smallbox.faraway.game.model.item.StructureModel;
-import org.smallbox.faraway.game.module.ModuleHelper;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.engine.renderer.LightRenderer;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.model.GameConfig;
+import org.smallbox.faraway.core.game.model.item.ItemModel;
+import org.smallbox.faraway.core.game.model.item.ParcelModel;
+import org.smallbox.faraway.core.game.model.item.ResourceModel;
+import org.smallbox.faraway.core.game.model.item.StructureModel;
+import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +131,7 @@ public class GDXLightRenderer extends LightRenderer {
     }
 
     @Override
-    public void setSunColor(org.smallbox.faraway.engine.Color color) {
+    public void setSunColor(org.smallbox.faraway.core.engine.Color color) {
         _rayHandler.setAmbientLight(new Color(color.r / 255f * 0.75f + 0.25f, color.g / 255f * 0.75f + 0.25f, color.b / 255f * 0.75f + 0.25f, 1f));
     }
 

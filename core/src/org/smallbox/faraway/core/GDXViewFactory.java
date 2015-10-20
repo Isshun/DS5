@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core;
 
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.UIFrame;
-import org.smallbox.faraway.ui.engine.views.UIImage;
-import org.smallbox.faraway.ui.engine.views.UILabel;
+import org.smallbox.faraway.core.ui.engine.ViewFactory;
+import org.smallbox.faraway.core.ui.engine.views.UIFrame;
+import org.smallbox.faraway.core.ui.engine.views.UIImage;
+import org.smallbox.faraway.core.ui.engine.views.UILabel;
 
 /**
  * Created by Alex on 04/06/2015.

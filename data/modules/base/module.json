@@ -1,5 +1,6 @@
 {
   "id": "base",
   "name": "FarAway Base Module",
+  "type": "lua",
   "version": 0.1
 }

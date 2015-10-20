@@ -1,17 +1,17 @@
 package org.smallbox.faraway.module.world;
 
-import org.smallbox.faraway.engine.Color;
-import org.smallbox.faraway.engine.renderer.LightRenderer;
-import org.smallbox.faraway.engine.renderer.ParticleRenderer;
-import org.smallbox.faraway.game.Game;
-import org.smallbox.faraway.game.GameObserver;
-import org.smallbox.faraway.game.model.GameData;
-import org.smallbox.faraway.game.model.WeatherModel;
-import org.smallbox.faraway.game.model.planet.PlanetInfo;
-import org.smallbox.faraway.game.module.GameModule;
-import org.smallbox.faraway.game.module.ModuleHelper;
-import org.smallbox.faraway.game.module.ModuleManager;
-import org.smallbox.faraway.game.module.base.WorldModule;
+import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.renderer.LightRenderer;
+import org.smallbox.faraway.core.engine.renderer.ParticleRenderer;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.WeatherModel;
+import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
+import org.smallbox.faraway.core.game.module.GameModule;
+import org.smallbox.faraway.core.game.module.ModuleHelper;
+import org.smallbox.faraway.core.game.module.ModuleManager;
+import org.smallbox.faraway.core.game.module.base.WorldModule;
 
 import java.util.ArrayList;
 import java.util.Random;
