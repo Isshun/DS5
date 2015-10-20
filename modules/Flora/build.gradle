@@ -36,5 +36,5 @@ copyResources.mustRunAfter jar
 distZip.dependsOn copyResources
 
 dependencies {
-    compile project(":core")
+    compile project(":core/core")
 }

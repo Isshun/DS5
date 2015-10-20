@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.item.ParcelModel;
 import org.smallbox.faraway.core.game.module.ModuleManager;
 import org.smallbox.faraway.core.game.module.base.WorldModule;
-import org.smallbox.faraway.core.ui.UserInterface;
+import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.core.util.Constant;
 
 /**

@@ -6,8 +6,8 @@ import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.module.GameUIModule;
 import org.smallbox.faraway.core.game.module.UITitleWindow;
 import org.smallbox.faraway.core.game.module.UIWindow;
-import org.smallbox.faraway.core.ui.engine.views.UIFrame;
-import org.smallbox.faraway.core.ui.engine.views.UILabel;
+import org.smallbox.faraway.ui.engine.views.UIFrame;
+import org.smallbox.faraway.ui.engine.views.UILabel;
 
 import java.util.ArrayList;
 import java.util.List;

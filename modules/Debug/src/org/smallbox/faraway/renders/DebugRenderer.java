@@ -7,10 +7,10 @@ import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.item.ParcelModel;
 import org.smallbox.faraway.core.game.module.ModuleHelper;
-import org.smallbox.faraway.core.ui.UserInterface;
-import org.smallbox.faraway.core.ui.engine.ViewFactory;
-import org.smallbox.faraway.core.ui.engine.views.UILabel;
-import org.smallbox.faraway.core.ui.engine.views.View;
+import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.views.UILabel;
+import org.smallbox.faraway.ui.engine.views.View;
 import org.smallbox.faraway.core.util.Constant;
 
 public class DebugRenderer extends BaseRenderer {

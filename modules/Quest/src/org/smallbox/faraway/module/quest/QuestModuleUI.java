@@ -2,9 +2,9 @@ package org.smallbox.faraway.module.quest;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.module.ModuleManager;
-import org.smallbox.faraway.core.ui.engine.ViewFactory;
-import org.smallbox.faraway.core.ui.engine.views.UIFrame;
-import org.smallbox.faraway.core.ui.engine.views.UILabel;
+import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.views.UIFrame;
+import org.smallbox.faraway.ui.engine.views.UILabel;
 
 /**
  * Created by Alex on 30/08/2015.

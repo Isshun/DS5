@@ -1,6 +1,6 @@
-include 'core'
 include 'desktop'
-include 'ui'
+include 'core/core'
+include 'core/ui'
 include 'SFMLRender'
 include 'PathFinding'
 include 'gdx-smart-font'
