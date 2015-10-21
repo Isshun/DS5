@@ -11,6 +11,7 @@ data:extend({
         {"Window", "Fenêtre"},
         {"Hubble", "Hublot"},
 
+        -- Walls
         {"Wood wall", "Mur en bois"},
         {"Sandstone wall", "Mur en grès"},
         {"Granite wall", "Mur en granite"},
@@ -19,6 +20,7 @@ data:extend({
         {"Metal wall", "Mur en métal"},
         {"Carbon fiber wall", "Mur en fibre de carbon"},
 
+        -- Floors
         {"Wooden floor", "Sol en bois"},
         {"Sandstone floor", "Sol en grès"},
         {"Granite floor", "Sol en granite"},
@@ -27,6 +29,7 @@ data:extend({
         {"Metal floor", "Sol en métal"},
         {"Carbon fiber floor", "Sol en fibre de carbon"},
 
+        -- Doors
         {"Wood door", "Porte en bois"},
         {"Sandstone door", "Porte en grès"},
         {"Granite door", "Porte en granite"},

@@ -15,11 +15,8 @@ data:extend({
         local iterator = game.world:getConsumables():iterator()
         while iterator:hasNext() do
             local consumable = iterator:next()
-            if not consumables[consumable:getInfo()] then
-                consumables[consumable:getInfo()] = consumable:getQuantity()
-            else
-                consumables[consumable:getInfo()] = consumables[consumable:getInfo()] + consumable:getQuantity()
-            end
+            local info = consumable:getInfo()
+            consumables[info] = (consumables[info] and consumables[info] or 0) + consumable:getQuantity()
         end
         table.sort(consumables, function(a,b)
             return a[1] < b[1]
