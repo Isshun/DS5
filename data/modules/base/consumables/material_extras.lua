@@ -6,5 +6,5 @@ data:extend({
         {path = "[base]/graphics/items/consumables/wood_log.png", x = 96},
     }},
     { label = "Carbon part", name = "base.carbon_part", type = "consumable" },
-    { label = "Carbon Fiber part", name = "base.carbon_fiber_part", type = "consumable" },
+    { label = "Carbon fiber part", name = "base.carbon_fiber_part", type = "consumable" },
 })

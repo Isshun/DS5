@@ -48,7 +48,7 @@ public class ItemFactoryModel {
 
     private final ItemModel                 _item;
     private CraftJob                        _job;
-    private ItemFactoryReceiptModel         _currentReceipt;
+    private ItemFactoryReceiptModel         _activeReceipt;
     private List<OrderEntry>                _orderEntries;
     private List<ItemFactoryReceiptModel>   _receiptEntries;
     private List<FactoryComponentModel>     _components;
@@ -65,8 +65,16 @@ public class ItemFactoryModel {
         if (_info.outputSlots != null) {
             _storageParcel = WorldHelper.getParcel(_item.getParcel().x + _info.outputSlots[0], _item.getParcel().y + _info.outputSlots[1]);
         }
+
         if (_info.receipts != null) {
+            // Create order from receiptInfo
             _orderEntries = _info.receipts.stream().map(OrderEntry::new).collect(Collectors.toList());
+
+            // Create receipt model for each order
+            _receiptEntries = new ArrayList<>();
+            _orderEntries.forEach(order -> _receiptEntries.addAll(order.receiptGroupInfo.receipts.stream()
+                    .map(receipt -> new ItemFactoryReceiptModel(order, receipt))
+                    .collect(Collectors.toList())));
         }
     }
 
@@ -77,14 +85,14 @@ public class ItemFactoryModel {
     public List<ItemFactoryReceiptModel>    getReceipts() { return _receiptEntries; }
     public List<FactoryComponentModel>      getComponents() { return _components; }
     public List<FactoryShoppingItemModel>   getShoppingList() { return _shoppingList; }
-    public ReceiptGroupInfo                 getCurrentReceiptGroup() { return _currentReceipt != null ? _currentReceipt.receiptGroupInfo : null; }
-    public ReceiptGroupInfo.ReceiptInfo     getCurrentReceiptInfo() { return _currentReceipt != null ? _currentReceipt.receiptInfo : null; }
-    public ItemFactoryReceiptModel          getCurrentReceipt() { return _currentReceipt; }
+    public ReceiptGroupInfo                 getCurrentReceiptGroup() { return _activeReceipt != null ? _activeReceipt.receiptGroupInfo : null; }
+    public ReceiptGroupInfo.ReceiptInfo     getCurrentReceiptInfo() { return _activeReceipt != null ? _activeReceipt.receiptInfo : null; }
+    public ItemFactoryReceiptModel          getActiveReceipt() { return _activeReceipt; }
     public ParcelModel                      getStorageParcel() { return _storageParcel; }
     public String                           getMessage() { return _message; }
 
     public int getQuantityNeeded(ItemInfo itemInfo) {
-        if (_currentReceipt != null) {
+        if (_activeReceipt != null) {
             for (FactoryComponentModel component: _components) {
                 if (itemInfo.instanceOf(component.itemInfo)) {
                     return component.totalQuantity - component.currentQuantity;
@@ -104,7 +112,7 @@ public class ItemFactoryModel {
     }
 
     public void addComponent(ItemInfo itemInfo, int quantity) {
-        if (_currentReceipt != null) {
+        if (_activeReceipt != null) {
 
             // Add current components to component list
             for (FactoryComponentModel component: _components) {
@@ -122,17 +130,17 @@ public class ItemFactoryModel {
                 }
             }
             if (allComponentsPresent) {
-                _message = _currentReceipt.receiptGroupInfo.label;
+                _message = "Crafting";
             }
         }
     }
 
     public void craft() {
-        if (_currentReceipt != null) {
-            _message = _currentReceipt.receiptGroupInfo.label;
+        if (_activeReceipt != null) {
+            _message = "Crafting";
 
             // Current item is done
-            for (ReceiptGroupInfo.ReceiptOutputInfo productInfo : _currentReceipt.receiptInfo.outputs) {
+            for (ReceiptGroupInfo.ReceiptOutputInfo productInfo : _activeReceipt.receiptInfo.outputs) {
 //                ConsumableModel productConsumable = new ConsumableModel(productInfo.item);
 //                productConsumable.setQuantity(Utils.getRandom(productInfo.quantity));
 
@@ -157,10 +165,11 @@ public class ItemFactoryModel {
                             _item.getParcel().x + _item.getInfo().factory.outputSlots[0],
                             _item.getParcel().y + _item.getInfo().factory.outputSlots[1]);
                 }
+                System.out.println("Factory: put crafted consumable on " + parcel.x + "x" + parcel.y);
                 ModuleHelper.getWorldModule().putConsumable(parcel, productInfo.item, Utils.getRandom(productInfo.quantity));
             }
 
-//            _currentReceipt.receiptInfo.outputs.forEach(productInfo -> _outputsList.add(new FactoryOutputModel(productInfo.item, productInfo.quantity)));
+//            _activeReceipt.receiptInfo.outputs.forEach(productInfo -> _outputsList.add(new FactoryOutputModel(productInfo.item, productInfo.quantity)));
 
             _message = "Stand-by";
         }
@@ -170,85 +179,98 @@ public class ItemFactoryModel {
     }
 
     public void clear() {
-        _currentReceipt = null;
+        _activeReceipt = null;
         _components.clear();
         _shoppingList.clear();
         _job = null;
     }
 
+    // TODO: ne pas utiliser les consomables locké
     public void scan() {
         System.out.println("scan");
         long time = System.currentTimeMillis();
-        _currentReceipt = null;
+        _activeReceipt = null;
 
         if (_storageParcel != null && _storageParcel.getConsumable() != null) {
             _message = "Factory is full";
             return;
         }
 
-        // List components for all receipts
+        // List itemInfo needed in all receipts
         Set <ItemInfo> allInputs = new HashSet<>();
-        _receiptEntries = new ArrayList<>();
+        _receiptEntries.stream()
+                .filter(receipt -> receipt.order.isActive)
+                .forEach(receipt -> allInputs.addAll(receipt.receiptInfo.inputs.stream().map(inputInfo -> inputInfo.item).collect(Collectors.toList())));
+
+        // Get distance for all of them
+        List<PotentialConsumable> componentsDistance = new ArrayList<>();
+        allInputs.forEach(inputInfo ->
+                ModuleHelper.getWorldModule().getConsumables().stream()
+                        .filter(consumable -> consumable.getInfo().instanceOf(inputInfo))
+                        .filter(consumable -> consumable.getParcel().isWalkable())
+                        .forEach(consumable -> {
+                            GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_item.getParcel(), consumable.getParcel());
+                            if (path != null) {
+                                componentsDistance.add(new PotentialConsumable(consumable, path.getCount()));
+                            }
+                        }));
+        Collections.sort(componentsDistance, (c1, c2) -> c2.distance - c1.distance);
+
+        // For each receipt, find total distance between factory and components
+        _receiptEntries.stream().filter(receipt -> receipt.order.isActive).forEach(receiptEntry -> receiptEntry.setPotentialComponents(componentsDistance));
+
+        // Get receipt group based on components availability
+        OrderEntry bestOrder = null;
         for (OrderEntry order: _orderEntries) {
             if (order.isActive) {
-                for (ReceiptGroupInfo.ReceiptInfo receipt : order.receiptGroupInfo.receipts) {
-                    _receiptEntries.add(new ItemFactoryReceiptModel(order.receiptGroupInfo, receipt));
-                    allInputs.addAll(receipt.inputs.stream().map(input -> input.item).collect(Collectors.toList()));
+                for (ItemFactoryReceiptModel receipt : _receiptEntries) {
+                    if (bestOrder == null && receipt.order == order && receipt.enoughComponents) {
+                        bestOrder = order;
+                    }
                 }
             }
         }
-
-        // Get distance for components list
-        List<PotentialConsumable> componentsDistance = new ArrayList<>();
-        for (ItemInfo inputInfo : allInputs) {
-            ModuleHelper.getWorldModule().getConsumables().stream()
-                    .filter(consumable -> consumable.getInfo().instanceOf(inputInfo))
-                    .filter(consumable -> consumable.getParcel().isWalkable())
-                    .forEach(consumable -> {
-                        GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_item.getParcel(), consumable.getParcel());
-                        if (path != null) {
-                            componentsDistance.add(new PotentialConsumable(consumable, path.getCount()));
-                        }
-                    });
-        }
-        Collections.sort(componentsDistance, (c1, c2) -> c2.distance - c1.distance);
-
-        // Set current receipt based on components availability
-        _receiptEntries.forEach(receiptEntry -> receiptEntry.setPotentialComponents(componentsDistance));
-        Optional<ItemFactoryReceiptModel> optionalReceipt = _receiptEntries.stream().filter(r -> r.enoughComponents).sorted((r1, r2) -> r1.totalDistance - r2.totalDistance).findFirst();
-        _currentReceipt = optionalReceipt.isPresent() ? optionalReceipt.get() : null;
-
-        // Fill consumables order list
-        if (_currentReceipt != null) {
-
-            // Fill magics list
-            _components = new ArrayList<>();
-            _currentReceipt.receiptInfo.inputs.forEach(receiptInputInfo -> {
-                _components.add(new FactoryComponentModel(receiptInputInfo.item, receiptInputInfo.quantity));
-            });
-
-            // Fill inputs consumable list
-            _shoppingList = new ArrayList<>();
-            _currentReceipt.receiptInfo.inputs.forEach(receiptInputInfo -> {
-                int quantity = 0;
-                for (PotentialConsumable potential: componentsDistance) {
-                    if (potential.itemInfo.instanceOf(receiptInputInfo.item) && quantity < receiptInputInfo.quantity) {
-                        int neededQuantity = Math.min(receiptInputInfo.quantity - quantity, potential.consumable.getQuantity());
-                        _shoppingList.add(new FactoryShoppingItemModel(potential.consumable, neededQuantity));
-                        quantity += neededQuantity;
-                    }
-                }
-            });
-
-            System.out.println("inputs list");
-            _shoppingList.forEach(input -> {
-                System.out.println(input.consumable.getInfo().label + " x" + input.quantity + " (" + input.consumable.getParcel().x + "x" + input.consumable.getParcel().y + ")");
-            });
-
-            _message = "Refilling";
-        } else {
+        if (bestOrder == null) {
             _message = "Missing components";
+            return;
         }
+
+        // Get receipt based on components distance
+        int bestDistance = Integer.MAX_VALUE;
+        _activeReceipt = null;
+        for (ItemFactoryReceiptModel receipt: _receiptEntries) {
+            if (receipt.enoughComponents && receipt.order == bestOrder && receipt.totalDistance < bestDistance) {
+                _activeReceipt = receipt;
+            }
+        }
+        if (_activeReceipt == null) {
+            throw new RuntimeException("_activeReceipt cannot be null");
+        }
+
+        // Fill components list
+        _components = _activeReceipt.receiptInfo.inputs.stream()
+                .map(receiptInputInfo -> new FactoryComponentModel(receiptInputInfo.item, receiptInputInfo.quantity))
+                .collect(Collectors.toList());
+
+        // Fill consumables shopping list
+        _shoppingList = new ArrayList<>();
+        _activeReceipt.receiptInfo.inputs.forEach(receiptInputInfo -> {
+            int quantity = 0;
+            for (PotentialConsumable potential: componentsDistance) {
+                if (potential.itemInfo.instanceOf(receiptInputInfo.item) && quantity < receiptInputInfo.quantity) {
+                    int neededQuantity = Math.min(receiptInputInfo.quantity - quantity, potential.consumable.getQuantity());
+                    _shoppingList.add(new FactoryShoppingItemModel(potential.consumable, neededQuantity));
+                    quantity += neededQuantity;
+                }
+            }
+        });
+
+        System.out.println("shopping list");
+        _shoppingList.forEach(input -> {
+            System.out.println(input.consumable.getInfo().label + " x" + input.quantity + " (" + input.consumable.getParcel().x + "x" + input.consumable.getParcel().y + ")");
+        });
+
+        _message = "Refilling";
 
         System.out.println("total time: " + (System.currentTimeMillis() - time) + "ms");
     }

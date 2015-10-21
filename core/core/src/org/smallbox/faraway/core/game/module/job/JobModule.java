@@ -1,22 +1,23 @@
 package org.smallbox.faraway.core.game.module.job;
 
-import org.smallbox.faraway.core.game.module.job.check.CheckJoyItem;
-import org.smallbox.faraway.core.game.module.job.model.*;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.CheckCharacterOxygen;
 import org.smallbox.faraway.core.game.module.job.check.CheckCharacterUse;
+import org.smallbox.faraway.core.game.module.job.check.CheckJoyItem;
 import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterExhausted;
 import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterHungry;
 import org.smallbox.faraway.core.game.module.job.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.game.module.job.model.BuildJob;
+import org.smallbox.faraway.core.game.module.job.model.CraftJob;
+import org.smallbox.faraway.core.game.module.job.model.HaulJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReason;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobStatus;
-import org.smallbox.faraway.core.game.module.job.model.abs.BaseBuildJobModel;
+import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
@@ -29,12 +30,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class JobModule extends GameModule {
-    private List<CharacterCheck>             _joys;
-    private List<CharacterCheck>              _priorities;
+    private List<CharacterCheck>        _joys;
+    private List<CharacterCheck>        _priorities;
     private BlockingQueue<JobModel>     _jobs;
-    private List<JobModel>                _toRemove;
-    private CharacterCheck                     _bedCheck;
-    private int                             _nbVisibleJob;
+    private List<JobModel>              _toRemove;
+    private CharacterCheck              _bedCheck;
+    private int                         _nbVisibleJob;
 
     @Override
     public void onLoaded() {
@@ -89,10 +90,11 @@ public class JobModule extends GameModule {
 
         // Create craft jobs
         ModuleHelper.getWorldModule().getItems().stream().filter(item -> item.getFactory() != null && item.getFactory().getJob() == null)
-                .forEach(item -> _jobs.add(CraftJob.create(item)));
+                .forEach(item -> _jobs.add(new CraftJob(item)));
 
         // Remove invalid job
         _jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
+        _jobs.stream().filter(job -> !job.isCreate()).forEach(JobModel::create);
     }
 
     public Collection<JobModel> getJobs() { return _jobs; };
@@ -184,7 +186,7 @@ public class JobModule extends GameModule {
             job.getSlot().getItem().releaseSlot(job.getSlot());
         }
 
-        job.close();
+        job.finish();
 
         _toRemove.add(job);
         if (job.isVisibleInUI()) {
@@ -423,20 +425,20 @@ public class JobModule extends GameModule {
 
     @Override
     public void onAddConsumable(ConsumableModel consumable) {
-        for (JobModel job: _jobs) {
-            if (job instanceof BaseBuildJobModel) {
-                ((BaseBuildJobModel)job).addConsumable(consumable);
-            }
-        }
+//        for (JobModel job: _jobs) {
+//            if (job instanceof BaseBuildJobModel) {
+//                ((BaseBuildJobModel)job).addConsumable(consumable);
+//            }
+//        }
     }
 
     @Override
     public void onRemoveConsumable(ConsumableModel consumable){
-        for (JobModel job: _jobs) {
-            if (job instanceof BaseBuildJobModel) {
-                ((BaseBuildJobModel)job).removeConsumable(consumable);
-            }
-        }
+//        for (JobModel job: _jobs) {
+//            if (job instanceof BaseBuildJobModel) {
+//                ((BaseBuildJobModel)job).removeConsumable(consumable);
+//            }
+//        }
     }
 
     public SerializerInterface getSerializer() {

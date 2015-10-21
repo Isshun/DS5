@@ -71,7 +71,14 @@ data:extend(
                             bt_item:addView(image)
                         end
 
+--                        local str = value.label
+--                        local index = string.find(value.label, ' ', 5, true)
+--                        if index then
+--                            str = string.sub(value.label, 0, index-1) .. "\n" .. string.sub(value.label, index+1)
+--                        end
+--
                         label = game.ui:createLabel()
+                        label:setMaxLength(10)
                         label:setText(value.label)
                         label:setTextSize(14)
                         label:setSize(400, 20)

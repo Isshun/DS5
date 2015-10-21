@@ -26,13 +26,17 @@ public class AreaModuleSerializer implements SerializerInterface {
 
             // Write accepted items
             if (area.isStorage()) {
+                StorageAreaModel storage = (StorageAreaModel) area;
+                FileUtils.write(fos, "<storage>");
+                FileUtils.write(fos, "<priority>" + storage.getPriority() + "</priority>");
                 FileUtils.write(fos, "<accept>");
-                for (Map.Entry<ItemInfo, Boolean> entry : ((StorageAreaModel) area).getItemsAccepts().entrySet()) {
+                for (Map.Entry<ItemInfo, Boolean> entry : storage.getItemsAccepts().entrySet()) {
                     if (entry.getValue()) {
                         FileUtils.write(fos, "<item>" + entry.getKey().name + "</item>");
                     }
                 }
                 FileUtils.write(fos, "</accept>");
+                FileUtils.write(fos, "</storage>");
             }
 
             // Write parcels
@@ -55,15 +59,12 @@ public class AreaModuleSerializer implements SerializerInterface {
         AutoPilot ap2 = new AutoPilot(vn);
         ap2.selectXPath("*");
 
-        AutoPilot ap3 = new AutoPilot(vn);
-        ap3.selectXPath("*");
-
         while (ap.evalXPath() != -1) {
-            readArea(ap2, ap3, vn);
+            readArea(ap2, vn);
         }
     }
 
-    private void readArea(AutoPilot ap2, AutoPilot ap3, VTDNav vn) throws NavException, XPathEvalException {
+    private void readArea(AutoPilot ap2, VTDNav vn) throws NavException, XPathEvalException, XPathParseException {
         vn.push();
 
         AreaType type = AreaType.valueOf(vn.toString(vn.getAttrVal("type")));
@@ -77,20 +78,21 @@ public class AreaModuleSerializer implements SerializerInterface {
 
         while (ap2.evalXPath() != -1) {
             switch (vn.toString(vn.getCurrentIndex())) {
-
-                case "accept":
-                    while (ap3.evalXPath() != -1) {
-                        area.setAccept(GameData.getData().getItemInfo(vn.toString(vn.getText())), true);
+                case "storage":
+                    if (area instanceof StorageAreaModel) {
+                        readStorage((StorageAreaModel) area, vn);
                     }
-                    ap3.resetXPath();
-                    break;
+                break;
 
-                case "parcels":
+                case "parcels": {
+                    AutoPilot ap3 = new AutoPilot(vn);
+                    ap3.selectXPath("*");
                     while (ap3.evalXPath() != -1) {
                         area.addParcel(ModuleHelper.getWorldModule().getParcel(vn.parseInt(vn.getAttrVal("x")), vn.parseInt(vn.getAttrVal("y"))));
                     }
                     ap3.resetXPath();
-                    break;
+                }
+                break;
             }
         }
         ap2.resetXPath();
@@ -98,5 +100,27 @@ public class AreaModuleSerializer implements SerializerInterface {
         ((AreaModule)ModuleManager.getInstance().getModule(AreaModule.class)).addArea(area);
 
         vn.pop();
+    }
+
+    private void readStorage(StorageAreaModel storage, VTDNav vn) throws XPathParseException, NavException, XPathEvalException {
+        AutoPilot ap3 = new AutoPilot(vn);
+        ap3.selectXPath("*");
+        while (ap3.evalXPath() != -1) {
+            switch (vn.toString(vn.getCurrentIndex())) {
+                case "priority":
+                    storage.setPriority(vn.parseInt(vn.getText()));
+                    break;
+
+                case "accept":
+                    AutoPilot ap4 = new AutoPilot(vn);
+                    ap4.selectXPath("*");
+                    while (ap4.evalXPath() != -1) {
+                        storage.setAccept(GameData.getData().getItemInfo(vn.toString(vn.getText())), true);
+                    }
+                    ap4.resetXPath();
+                break;
+            }
+        }
+        ap3.resetXPath();
     }
 }

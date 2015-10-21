@@ -1,7 +1,7 @@
 data:extend(
 {
     {
-        label = "Euglena Bloom",
+        label = "Euglena bloom",
         name = "base.seaweed1",
         graphics = { path = "[base]/graphics/items/resources/desert_berry.png" },
         --graphics = "[base]/graphics/items/resources/seaweed1.png",
@@ -88,7 +88,7 @@ data:extend(
         },
     },
     {
-        label = "Green Alagae",
+        label = "Green algae",
         name = "base.seaweed4",
         type = "resource",
         graphics = { path = "[base]/graphics/items/resources/seaweed4.png" },
@@ -117,7 +117,7 @@ data:extend(
         },
     },
     {
-        label = "Golden Brown Algae",
+        label = "Golden brown algae",
         sciLabel = "Chrysophyceae",
         graphics = { path = "[base]/graphics/items/resources/seaweed5.png" },
         name = "base.seaweed5",

@@ -161,7 +161,10 @@ public class WorldHelper {
     }
 
     public static ParcelModel getNearestWalkable(int x, int y, boolean acceptInterior, boolean acceptExterior) {
-        for (int i = 0; i < 20; i++) {
+        return getNearestWalkable(x, y, acceptInterior, acceptExterior, 0, 20);
+    }
+    public static ParcelModel getNearestWalkable(int x, int y, boolean acceptInterior, boolean acceptExterior, int minDistance, int maxDistance) {
+        for (int i = minDistance; i <= maxDistance; i++) {
             for (int j = 0; j < i; j++) {
                 // Top
                 if (isWalkableParcel(x + j, y + i, acceptInterior, acceptExterior)) return _parcels[x + j][y + i][0];

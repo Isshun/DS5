@@ -32,6 +32,7 @@ data:extend(
                     { type = "list", id = "frame_factory", position = {10, 0}, views = {
                         { type = "label", text = "Factory", text_size = 22},
                         { type = "label", text = "Current", text_size = 18, position = {0, 15}},
+                        { type = "label", id = "lb_factory_receipt", text = "lb_factory_receipt", position = {0, 20}},
                         { type = "label", id = "lb_factory_progress", text = "lb_factory_progress", position = {0, 20}},
                         { type = "label", id = "lb_factory_character", text = "lb_factory_character", position = {0, 20}},
                         { type = "label", id = "lb_factory_components", position = {0, 20}},
@@ -83,17 +84,16 @@ data:extend(
                     end
 
                     if item:getFactory() then
-                        if item:getFactory() and item:getFactory():getMessage() then
-                            view:findById("lb_factory_progress"):setText("Status: " .. item:getFactory():getMessage())
-                        else
-                            view:findById("lb_factory_progress"):setText("Status: Unknown")
-                        end
+                        local factory = item:getFactory()
 
-                        if item:getFactory() and item:getFactory():getJob() and item:getFactory():getJob():getCharacter() then
-                            view:findById("lb_factory_character"):setText("Crafter: " .. item:getFactory():getJob():getCharacter():getName())
-                        else
-                            view:findById("lb_factory_character"):setText("Crafter: none")
-                        end
+                        view:findById("lb_factory_progress"):setText("Status", ": ",
+                            factory:getMessage() and item:getFactory():getMessage() or "unknown")
+
+                        view:findById("lb_factory_receipt"):setText("Receipt", ": ",
+                            factory:getActiveReceipt() and factory:getActiveReceipt().receiptInfo.label or "none")
+
+                        view:findById("lb_factory_character"):setText("Crafter", ": ",
+                            factory:getJob() and factory:getJob():getCharacter() and factory:getJob():getCharacter():getName() or "none")
 
                         if item:getFactory():getShoppingList() then
                             local str = "shopping list: "

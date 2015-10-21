@@ -13,18 +13,14 @@ public class StorageAreaModel extends AreaModel {
     private static int  _count;
 
     private int         _nb;
-    private int         _priority;
+    private int         _priority = 1;
 
     public StorageAreaModel() {
         super(AreaType.STORAGE);
 
         _nb = ++_count;
 
-        for (ItemInfo itemInfo: GameData.getData().items) {
-            if (itemInfo.isConsumable) {
-                setAccept(itemInfo, false);
-            }
-        }
+        GameData.getData().consumables.forEach(itemInfo -> setAccept(itemInfo, false));
     }
 
     public ParcelModel getNearestFreeParcel(ConsumableModel consumable) {

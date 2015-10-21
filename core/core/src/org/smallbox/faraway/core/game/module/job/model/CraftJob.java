@@ -1,57 +1,78 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
-import org.smallbox.faraway.core.game.module.world.model.ItemFactoryModel;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.OldReceiptModel;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
-import org.smallbox.faraway.core.game.module.world.model.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.job.model.abs.BaseBuildJobModel;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.MoveListener;
 
-import java.util.ArrayList;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-public class CraftJob extends BaseBuildJobModel {
-    private int                     _itemPosX;
-    private int                     _itemPosY;
-    private ParcelModel             _storageParcel;
-    private StorageAreaModel        _storage;
-    public ItemModel                _item;
-    public ItemFactoryModel         _factory;
-    private double                  _current;
+public class CraftJob extends JobModel {
+    protected int                       _itemPosX;
+    protected int                       _itemPosY;
+    protected StorageAreaModel          _storage;
+    protected ItemModel                 _item;
+    protected ItemFactoryModel          _factory;
+    protected double                    _current;
+    protected Status                    _status;
+    protected ItemFactoryReceiptModel   _receipt;
 
-    protected CraftJob(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel) {
-        super(actionInfo, jobParcel, new IconDrawable("data/res/ic_craft.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 160, 32, 32, 7, 10));
+    public enum Status {
+        WAITING, MAIN_ACTION, MOVE_TO_INGREDIENT, MOVE_TO_FACTORY, MOVE_TO_STORAGE
+    }
+
+    public CraftJob(ItemModel item) {
+        super(null, item.getParcel(), new IconDrawable("data/res/ic_craft.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 160, 32, 32, 7, 10));
+        _item = item;
+    }
+
+    @Override
+    protected void onCreate() {
+        _factory = _item.getFactory();
+        _factory.setJob(this);
+        _factory.scan();
+
+        setStrategy(j -> {
+            if (j.getCharacter().getType().needs.joy != null) {
+                j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+            }
+        });
     }
 
     @Override
     protected void onStart(CharacterModel character) {
-        _receipt = _factory.getCurrentReceipt();
-        _cost = _receipt.receiptInfo.cost;
+        _receipt = _factory.getActiveReceipt();
 
         if (_receipt == null) {
-            throw new RuntimeException("Try to start CraftJob but no receipt have enough component");
+            throw new RuntimeException("Try to start CraftJob without active receipt");
         }
 
-        // Start receipt and get first component
-//        _receipt.start(this);
+        _cost = _receipt.receiptInfo.cost;
+
+        // Move character to first receipt component
         moveToIngredient(character, _factory.getNextInput());
     }
 
     @Override
     public void onQuit(CharacterModel character) {
-        if (_receipt != null) {
-            _receipt = null;
-        }
+    }
+
+    @Override
+    protected void onFinish() {
+        // Unload factory
+        _factory.getShoppingList().forEach(component -> ModuleHelper.getWorldModule().putConsumable(component.consumable, _item.getX(), _item.getY()));
+        _factory.clear();
+    }
+
+    @Override
+    public void onDraw(onDrawCallback callback) {
+        callback.onDraw(_item.getX(), _item.getY());
     }
 
     @Override
@@ -69,40 +90,82 @@ public class CraftJob extends BaseBuildJobModel {
         return CharacterModel.TalentType.CRAFT;
     }
 
-    public static CraftJob create(ItemModel item) {
-        if (item == null) {
-            throw new RuntimeException("Cannot add Craft job (item is null)");
+    @Override
+    public boolean onCheck(CharacterModel character) {
+        if (_factory.getActiveReceipt() == null) {
+            _factory.scan();
         }
 
-        CraftJob job = new CraftJob(null, item.getParcel());
-        job.setItem(item);
-        item.getFactory().setJob(job);
-        job._mainItem = item;
-        job._item = item;
-        job._factory = item.getFactory();
-        job._receipts = new ArrayList<>();
-        item.getFactory().scan();
-        item.getFactory().getReceipts().forEach(product -> job._receipts.add(OldReceiptModel.createFromReceiptInfo(item, product.receiptInfo)));
-        job.setStrategy(j -> {
-            if (j.getCharacter().getType().needs.joy != null) {
-                j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+        if (_factory != null && _factory.getStorageParcel().getConsumable() != null) {
+            _message = "Factory is full";
+            return false;
+        }
+
+        if (_factory.getActiveReceipt() == null) {
+            _message = "Missing components";
+            return false;
+        }
+
+        _message = "Waiting";
+        return true;
+    }
+
+    @Override
+    public JobActionReturn onAction(CharacterModel character) {
+        _message = _factory.getMessage();
+
+        if (_character == null) {
+            Log.error("Action on job with null characters");
+        }
+
+        // Move to ingredient
+        if (_status == Status.WAITING) {
+            moveToIngredient(_character, _factory.getNextInput());
+            return JobActionReturn.CONTINUE;
+        }
+
+//        // Move to storage
+//        if (_status == Status.MOVE_TO_STORAGE) {
+//            return onActionStorage(character);
+//        }
+
+        // Work on factory
+        if (_status == Status.MAIN_ACTION) {
+            _current += character.getTalent(CharacterModel.TalentType.CRAFT).work();;
+            _progress = _current / _cost;
+
+            if (_current < _cost) {
+                Log.debug("Character #" + character.getInfo().getName() + ": Crafting (" + _progress + ")");
+                return JobActionReturn.CONTINUE;
             }
-        });
-        job.onCheck(null);
 
-        item.addJob(job);
+            _factory.craft();
 
-        return job;
+            return JobActionReturn.FINISH;
+        }
+
+        return JobActionReturn.CONTINUE;
     }
 
-    protected void moveToStorage(CharacterModel character, ParcelModel storageParcel) {
-        _status = Status.MOVE_TO_STORAGE;
-        _targetParcel = storageParcel;
-
-        character.moveTo(this, _targetParcel, null);
-
-//        _message = "Move " + _receipt.getProductsInfo().get(0).item.label + " to storage";
-    }
+//    private JobActionReturn onActionStorage(CharacterModel character) {
+//        if (_storage == null) {
+//            return closeOrQuit(character);
+//        }
+//
+//        ParcelModel parcel = _storage.getNearestFreeParcel(character.getInventory(), character.getParcel());
+//        if (parcel == null) {
+//            Log.warning("No free space in _storage model");
+//            ModuleHelper.getWorldModule().putConsumable(character.getInventory(), character.getX(), character.getY());
+//            character.setInventory(null);
+//            return closeOrQuit(character);
+//        }
+//
+//        // Store inventory item to storage
+//        ModuleHelper.getWorldModule().putConsumable(character.getInventory(), parcel.x, parcel.y);
+//        character.setInventory(null);
+//
+//        return closeOrQuit(character);
+//    }
 
     protected void moveToIngredient(CharacterModel character, ItemFactoryModel.FactoryShoppingItemModel input) {
         ItemInfo info = input.consumable.getInfo();
@@ -135,7 +198,7 @@ public class CraftJob extends BaseBuildJobModel {
                     moveToMainItem();
                 }
 
-                _message = "Carry " + input.consumable.getInfo().label + " to " + _mainItem.getInfo().label;
+                _message = "Carry " + input.consumable.getInfo().label + " to " + _item.getInfo().label;
             }
 
             @Override
@@ -153,7 +216,7 @@ public class CraftJob extends BaseBuildJobModel {
         _status = Status.MOVE_TO_FACTORY;
 
         // Set target parcel
-        _targetParcel = _mainItem.getParcel();
+        _targetParcel = _item.getParcel();
         if (_item.getSlots() != null) {
             _targetParcel = WorldHelper.getParcel(_item.getSlots().get(0).getX(), _item.getSlots().get(0).getY());
         }
@@ -198,130 +261,6 @@ public class CraftJob extends BaseBuildJobModel {
     }
 
     @Override
-    public boolean onCheck(CharacterModel character) {
-        if (_factory.getCurrentReceipt() == null) {
-            _factory.scan();
-        }
-
-        if (_factory != null && _factory.getStorageParcel().getConsumable() != null) {
-            _message = "Factory is full";
-            return false;
-        }
-
-        if (_factory.getCurrentReceipt() == null) {
-            _message = "Missing components";
-            return false;
-        }
-
-        _message = "Waiting";
-        return true;
-    }
-
-    @Override
-    protected void onFinish() {
-    }
-
-    @Override
-    public JobActionReturn onAction(CharacterModel character) {
-        if (_character == null) {
-            Log.error("Action on job with null characters");
-        }
-
-        // Wrong call
-        if (_item == null || _item != WorldHelper.getItem(_itemPosX, _itemPosY)) {
-            Log.error("Character: actionUse on null job or null job's item or invalid item");
-            ModuleHelper.getJobModule().quitJob(this, JobAbortReason.INVALID);
-            return JobActionReturn.ABORT;
-        }
-
-        // Move to ingredient
-        if (_status == Status.WAITING) {
-            moveToIngredient(_character, _factory.getNextInput());
-            return JobActionReturn.CONTINUE;
-        }
-
-        // Move to storage
-        if (_status == Status.MOVE_TO_STORAGE) {
-            return onActionStorage(character);
-        }
-
-        // Work on factory
-        if (_status == Status.MAIN_ACTION) {
-            _current += character.getTalent(CharacterModel.TalentType.CRAFT).work();;
-            _progress = _current / _cost;
-
-            if (_current < _cost) {
-                _message = _receipt.receiptInfo.label;
-                Log.debug("Character #" + character.getInfo().getName() + ": Crafting (" + _progress + ")");
-                return JobActionReturn.CONTINUE;
-            }
-
-            _factory.craft();
-
-            // Clear factory
-            _factory.clear();
-
-            return closeOrQuit(character);
-        }
-
-        return JobActionReturn.CONTINUE;
-    }
-
-    private JobActionReturn onActionStorage(CharacterModel character) {
-        if (_storage == null) {
-            return closeOrQuit(character);
-        }
-
-        ParcelModel parcel = _storage.getNearestFreeParcel(character.getInventory(), character.getParcel());
-        if (parcel == null) {
-            Log.warning("No free space in _storage model");
-            ModuleHelper.getWorldModule().putConsumable(character.getInventory(), character.getX(), character.getY());
-            character.setInventory(null);
-            return closeOrQuit(character);
-        }
-
-        // Store inventory item to storage
-        ModuleHelper.getWorldModule().putConsumable(character.getInventory(), parcel.x, parcel.y);
-        character.setInventory(null);
-
-        return closeOrQuit(character);
-    }
-
-    private JobActionReturn closeOrQuit(CharacterModel character) {
-
-        // Unload factory
-        // TODO: non sense
-        for (ItemFactoryModel.FactoryShoppingItemModel component: _factory.getShoppingList()) {
-//            ConsumableModel consumable = new ConsumableModel(component.itemInfo);
-//            consumable.setQuantity(component.currentQuantity);
-            ConsumableModel consumable = component.consumable;
-            ModuleHelper.getWorldModule().putConsumable(consumable, _item.getX(), _item.getY());
-        }
-
-        // TODO: wrong location
-        // Switch status to MOVE_TO_INGREDIENT
-//        _receipt.reset();
-//        _receipt = null;
-        _status = Status.MOVE_TO_INGREDIENT;
-
-//        onCheck(character);
-
-        return JobActionReturn.FINISH;
-
-//        // Work is complete
-//        if (_current >= _cost) {
-//            //Log.debug("Character #" + characters.getId() + ": work close");
-//            _item.getFactory().setJob(null);
-//            return JobActionReturn.FINISH;
-//        }
-//
-//        // Some remains
-//        else {
-//            return JobActionReturn.QUIT;
-//        }
-    }
-
-    @Override
     public String getLabel() {
         return _factory != null && _factory.getMessage() != null ? _factory.getMessage() : "unk craft";
     }
@@ -329,6 +268,11 @@ public class CraftJob extends BaseBuildJobModel {
     @Override
     public String getShortLabel() {
         return "work";
+    }
+
+    @Override
+    public ParcelModel getActionParcel() {
+        return _item.getParcel();
     }
 
     @Override

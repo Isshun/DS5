@@ -15,21 +15,23 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GameData {
-    public static GameData              _data;
-    public static GameConfig             config;
-    public List<ReceiptGroupInfo>             receipts = new ArrayList<>();
-    public List<ItemInfo>                 items = new ArrayList<>();
-    public List<ItemInfo>                 gatherItems;
-    public List<CategoryInfo>             categories;
-    public List<ItemInfo>                 equipments;
-    public List<PlanetInfo>             planets;
-    public Map<String, WeatherModel>     weathers;
-    public HashMap<Integer, String>     strings = new HashMap<>();
-    public boolean                         needUIRefresh;
-    public List<IDataLoader>             _loaders;
-    public HashMap<String, CharacterTypeInfo> characters;
-    public Map<String, UICursor>         cursors = new HashMap<>();
-    public List<BuffModel>                buffs = new ArrayList<>();
+    public static GameData                      _data;
+    public static GameConfig                    config;
+
+    public List<ReceiptGroupInfo>               receipts = new ArrayList<>();
+    public List<ItemInfo>                       items = new ArrayList<>();
+    public List<ItemInfo>                       gatherItems;
+    public List<CategoryInfo>                   categories;
+    public List<ItemInfo>                       equipments;
+    public List<PlanetInfo>                     planets;
+    public Map<String, WeatherModel>            weathers;
+    public HashMap<Integer, String>             strings = new HashMap<>();
+    public boolean                              needUIRefresh;
+    public List<IDataLoader>                    _loaders;
+    public HashMap<String, CharacterTypeInfo>   characters;
+    public Map<String, UICursor>                cursors = new HashMap<>();
+    public List<BuffModel>                      buffs = new ArrayList<>();
+    public List<ItemInfo>                       consumables;
 
     public GameData() {
         _data = this;
@@ -39,7 +41,6 @@ public class GameData {
         _loaders.add(new ConfigLoader());
         _loaders.add(new WeatherLoader());
         _loaders.add(new EquipmentLoader());
-        _loaders.add(new StringLoader());
         _loaders.add(new ItemLoader());
         _loaders.add(new PlanetLoader());
         _loaders.add(new CategoryLoader());
@@ -136,6 +137,8 @@ public class GameData {
             productInfo.outputs.forEach(product -> product.item = getItemInfo(product.itemName));
             productInfo.inputs.forEach(component -> component.item = getItemInfo(component.itemName));
         }));
+
+        this.consumables = this.items.stream().filter(item -> item.isConsumable).collect(Collectors.toList());
     }
 
     private ReceiptGroupInfo getReceipt(String receiptName) {

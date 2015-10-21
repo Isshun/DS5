@@ -36,11 +36,16 @@ public class StoreJob extends JobModel implements GameObserver {
             return null;
         }
 
-        StoreJob job = new StoreJob(consumable.getParcel());
+        ParcelModel targetParcel = WorldHelper.getNearestWalkable(consumable.getParcel().x, consumable.getParcel().y, true, true, 1, 1);
+        if (targetParcel == null) {
+            return null;
+        }
+
+        StoreJob job = new StoreJob(targetParcel);
         consumable.setStoreJob(job);
         job._storage = storage;
         job._jobParcel = storage.getNearestFreeParcel(consumable);
-        job._targetParcel = consumable.getParcel();
+        job._targetParcel = targetParcel;
         job._mode = Mode.MOVE_TO_CONSUMABLE;
         job._itemInfo = consumable.getInfo();
         job.setStrategy(j -> {
@@ -96,7 +101,9 @@ public class StoreJob extends JobModel implements GameObserver {
         // Go to next consumable
         if (!_consumables.isEmpty()) {
             _mode = Mode.MOVE_TO_CONSUMABLE;
-            _targetParcel = _consumables.get(0).getParcel();
+            ParcelModel consumableParcel = _consumables.get(0).getParcel();
+            ParcelModel targetParcel = WorldHelper.getNearestWalkable(consumableParcel.x, consumableParcel.y, true, true, 1, 1);
+            _targetParcel = targetParcel != null ? targetParcel : consumableParcel;
         }
 
         // Go to storage

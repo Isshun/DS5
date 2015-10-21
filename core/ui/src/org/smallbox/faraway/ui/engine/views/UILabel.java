@@ -12,11 +12,14 @@ public class UILabel extends View {
     public static final int    UNDERLINED = 3;
     private int _hash1;
     private int _hash2;
+    private int _hash3;
+    private int _hash4;
 
     private String                              _string;
     private int                                 _textSize = 14;
     private com.badlogic.gdx.graphics.Color     _gdxTextColor;
     private Color                               _textColor;
+    private int                                 _maxLength;
 
     public UILabel() {
         super(-1, -1);
@@ -28,6 +31,10 @@ public class UILabel extends View {
 
     public UILabel(int width, int height) {
         super(width, height);
+    }
+
+    public void setMaxLength(int maxLength) {
+        _maxLength = maxLength;
     }
 
     public void setText(String string) {
@@ -52,6 +59,41 @@ public class UILabel extends View {
             str1 = GameData.getData() != null && GameData.getData().hasString(hash1) ? GameData.getData().getString(hash1) : str1;
             str2 = GameData.getData() != null && GameData.getData().hasString(hash2) ? GameData.getData().getString(hash2) : str2;
             setStringValue(str1 + str2);
+        }
+    }
+
+    public void setText(String str1, String str2, String str3) {
+        if (str1 == null) { str1 = ""; }
+        if (str2 == null) { str2 = ""; }
+        if (str3 == null) { str3 = ""; }
+
+        int hash1 = str1.hashCode();
+        int hash2 = str2.hashCode();
+        int hash3 = str3.hashCode();
+        if (hash1 != _hash1 || hash2 != _hash2 || hash3 != _hash3) {
+            str1 = GameData.getData() != null && GameData.getData().hasString(hash1) ? GameData.getData().getString(hash1) : str1;
+            str2 = GameData.getData() != null && GameData.getData().hasString(hash2) ? GameData.getData().getString(hash2) : str2;
+            str3 = GameData.getData() != null && GameData.getData().hasString(hash3) ? GameData.getData().getString(hash3) : str3;
+            setStringValue(str1 + str2 + str3);
+        }
+    }
+
+    public void setText(String str1, String str2, String str3, String str4) {
+        if (str1 == null) { str1 = ""; }
+        if (str2 == null) { str2 = ""; }
+        if (str3 == null) { str3 = ""; }
+        if (str4 == null) { str4 = ""; }
+
+        int hash1 = str1.hashCode();
+        int hash2 = str2.hashCode();
+        int hash3 = str3.hashCode();
+        int hash4 = str4.hashCode();
+        if (hash1 != _hash1 || hash2 != _hash2 || hash3 != _hash3 || hash4 != _hash4) {
+            str1 = GameData.getData() != null && GameData.getData().hasString(hash1) ? GameData.getData().getString(hash1) : str1;
+            str2 = GameData.getData() != null && GameData.getData().hasString(hash2) ? GameData.getData().getString(hash2) : str2;
+            str3 = GameData.getData() != null && GameData.getData().hasString(hash3) ? GameData.getData().getString(hash3) : str3;
+            str4 = GameData.getData() != null && GameData.getData().hasString(hash4) ? GameData.getData().getString(hash4) : str4;
+            setStringValue(str1 + str2 + str3 + str4);
         }
     }
 
@@ -96,6 +138,12 @@ public class UILabel extends View {
     }
 
     public void setStringValue(String string) {
+        if (_maxLength > 0) {
+            int index = string.indexOf(' ', _maxLength / 2);
+            if (index != -1) {
+                string = string.substring(0, index) + '\n' + string.substring(index+1);
+            }
+        }
         _string = string;
     }
 

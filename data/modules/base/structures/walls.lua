@@ -31,7 +31,7 @@ data:extend({
         health = 450,
         walkable = false,
         receipts = {{components = { item = "base.metal_plate", quantity = 10}}}},
-    { label = "Carbon Fiber wall",
+    { label = "Carbon fiber wall",
         name = "base.carbon_fiber_wall",
         type = "structure",
         walkable = false,

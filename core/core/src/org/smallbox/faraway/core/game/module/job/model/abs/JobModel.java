@@ -7,7 +7,6 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.module.java.ModuleManager;
-import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
 public abstract class JobModel extends ObjectModel {
@@ -19,30 +18,6 @@ public abstract class JobModel extends ObjectModel {
 
     public interface onDrawCallback {
         void onDraw(int x, int y);
-    }
-
-    private boolean         _isEntertainment;
-    protected JobStrategy   _strategy;
-    protected ItemFinder    _finder;
-
-    public String getMessage() {
-        return _message;
-    }
-
-    public void setEntertainment(boolean isEntertainment) {
-        _isEntertainment = isEntertainment;
-    }
-
-    public boolean isEntertainment() {
-        return _isEntertainment;
-    }
-
-    public boolean hasCharacter(CharacterModel character) {
-        return _character != null && _character == character;
-    }
-
-    public void setStrategy(JobStrategy strategy) {
-        _strategy = strategy;
     }
 
     public enum JobActionReturn {
@@ -69,7 +44,7 @@ public abstract class JobModel extends ObjectModel {
     protected int               _nbUsed;
     protected int               _cost;
     protected int               _durationLeft;
-    protected boolean           _isClose;
+    protected boolean           _isFinish;
     protected double            _progress;
     protected ItemModel         _item;
     protected ItemFilter        _filter;
@@ -85,6 +60,10 @@ public abstract class JobModel extends ObjectModel {
     protected String            _message;
     protected ParcelModel       _jobParcel;
     protected ParcelModel       _targetParcel;
+    private boolean             _isEntertainment;
+    protected JobStrategy       _strategy;
+    protected ItemFinder        _finder;
+    private boolean _isCreate;
 
     public JobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel, GDXDrawable iconDrawable, GDXDrawable actionDrawable) {
         init();
@@ -116,6 +95,7 @@ public abstract class JobModel extends ObjectModel {
         Log.debug("Job #" + _id + " onCreate");
     }
 
+    public String                   getMessage() { return _message; }
     public String                   getLabel() { return _label; }
     public abstract String          getShortLabel();
     public abstract ParcelModel     getActionParcel();
@@ -138,6 +118,8 @@ public abstract class JobModel extends ObjectModel {
     public ParcelModel              getJobParcel() { return _jobParcel; }
     public ItemInfo.ItemInfoAction  getActionInfo() { return _actionInfo; }
 
+    public void                     setEntertainment(boolean isEntertainment) { _isEntertainment = isEntertainment; }
+    public void                     setStrategy(JobStrategy strategy) { _strategy = strategy; }
     public void                     setActionInfo(ItemInfo.ItemInfoAction action) { _actionInfo = action; _cost = action.cost; }
     public void                     setLabel(String label) { _label = label; }
     public void                     setLimit(int limit) { _currentLimit = _limit = limit; }
@@ -151,10 +133,18 @@ public abstract class JobModel extends ObjectModel {
     public void                     setItemFilter(ItemFilter filter) { _filter = filter; }
     public void                     setStatus(JobStatus status) { _status = status; }
 
-    public boolean                  hasCharacter() { return _character != null; }
     public boolean                  canBeResume() { return true; }
+    public boolean                  hasCharacter(CharacterModel character) { return _character != null && _character == character; }
+    public boolean                  hasCharacter() { return _character != null; }
     public boolean                  isVisibleInUI() { return true; }
     public boolean                  isFinish() { return _status == JobStatus.COMPLETE || _status == JobStatus.ABORTED; }
+    public boolean                  isEntertainment() { return _isEntertainment; }
+    public boolean                  isCreate() { return _isCreate; }
+
+    public void create() {
+        _isCreate = true;
+        onCreate();
+    }
 
     public void start(CharacterModel character) {
         if (_character == character) {
@@ -185,9 +175,13 @@ public abstract class JobModel extends ObjectModel {
         }
     }
 
-    protected void onStart(CharacterModel character) {
-        character.moveTo(this, _jobParcel, null);
-    }
+    protected void onCreate() {}
+    protected abstract boolean onCheck(CharacterModel character);
+    protected void onStart(CharacterModel character) { character.moveTo(this, _jobParcel, null); }
+    public abstract JobActionReturn onAction(CharacterModel character);
+    protected void onQuit(CharacterModel character) {}
+    protected abstract void onFinish();
+
 
     public abstract CharacterModel.TalentType getTalentNeeded();
 
@@ -197,31 +191,24 @@ public abstract class JobModel extends ObjectModel {
      */
     public void quit(CharacterModel character) {
         onQuit(character);
-        character.setJob(null);
+        if (character.getJob() == this) {
+            character.setJob(null);
+        }
         _character = null;
     }
 
-    protected void onQuit(CharacterModel character) {
-    }
-
-    public void close() {
-        if (_isClose) {
+    public void finish() {
+        onFinish();
+        if (_isFinish) {
             Log.error("Try to close already closed job");
             return;
         }
-        _isClose = true;
+        _isFinish = true;
     }
 
     public boolean check(CharacterModel character) {
         return onCheck(character);
     }
-
-    /**
-     *
-     * @param character
-     * @return
-     */
-    public abstract boolean onCheck(CharacterModel character);
 
     public JobActionReturn action(CharacterModel character) {
         if (_limit != -1 && _currentLimit-- == 0) {
@@ -241,16 +228,6 @@ public abstract class JobModel extends ObjectModel {
 
         return ret;
     }
-
-    protected abstract void onFinish();
-
-    /**
-     * Launch job onAction
-     *
-     * @param character
-     * @return true if job is finish (completed or aborted)
-     */
-    public abstract JobActionReturn onAction(CharacterModel character);
 
     public boolean isRunning() { return _character != null; }
 

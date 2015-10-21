@@ -3,10 +3,9 @@ package org.smallbox.faraway.ui.panel.info;
 import com.badlogic.gdx.ai.pfa.Connection;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.model.OldReceiptModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.ViewFactory;
@@ -141,20 +140,20 @@ public class BaseInfoRightPanel extends BaseRightPanel {
         select(_parcel);
     }
 
-    protected void addJobOrder(UIFrame frame, OldReceiptModel.OrderModel order, int index) {
-        UILabel lbOrder = ViewFactory.getInstance().createTextView();
-        lbOrder.setTextSize(14);
-        lbOrder.setPosition(0, index * 20);
-
-        String str = order.consumable.getInfo().label;
-        switch (order.status) {
-            case NONE: lbOrder.setDashedString(str, "waiting", 42); break;
-            case CARRY: lbOrder.setDashedString(str, "carrying", 42); break;
-            case STORED: lbOrder.setDashedString(str, "ok", 42); break;
-        }
-
-
-        frame.addView(lbOrder);
-    }
+//    protected void addJobOrder(UIFrame frame, OldReceiptModel.OrderModel order, int index) {
+//        UILabel lbOrder = ViewFactory.getInstance().createTextView();
+//        lbOrder.setTextSize(14);
+//        lbOrder.setPosition(0, index * 20);
+//
+//        String str = order.consumable.getInfo().label;
+//        switch (order.status) {
+//            case NONE: lbOrder.setDashedString(str, "waiting", 42); break;
+//            case CARRY: lbOrder.setDashedString(str, "carrying", 42); break;
+//            case STORED: lbOrder.setDashedString(str, "ok", 42); break;
+//        }
+//
+//
+//        frame.addView(lbOrder);
+//    }
 
 }

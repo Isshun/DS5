@@ -22,7 +22,21 @@ public class LuaLangExtend extends LuaExtend {
         LuaValue luaStrings = value.get("strings");
         if (!luaStrings.isnil()) {
             for (int i = 1; i <= luaStrings.length(); i++) {
-                GameData.getData().strings.put(luaStrings.get(i).get(1).toString().hashCode(), luaStrings.get(i).get(2).toString());
+                String str1 = luaStrings.get(i).get(1).toString();
+                String str2 = luaStrings.get(i).get(2).toString();
+
+                // Exact case
+                GameData.getData().strings.put(str1.hashCode(), str2);
+
+                // Lower case
+                if (!str1.toLowerCase().equals(str1)) {
+                    GameData.getData().strings.put(str1.toLowerCase().hashCode(), str2.toLowerCase());
+                }
+
+                // Capitalized
+                GameData.getData().strings.put(
+                        (Character.toUpperCase(str1.toLowerCase().charAt(0)) + str1.substring(1)).hashCode(),
+                        Character.toUpperCase(str2.toLowerCase().charAt(0)) + str2.substring(1));
             }
         }
     }

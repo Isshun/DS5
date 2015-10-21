@@ -1,12 +1,13 @@
 data:extend({
     type = "view",
     name = "info_parcel",
-    position = {200, 10},
+    position = {200, 20},
     size = {200, 600},
     background = 0x121c1e,
     visible = true,
     views = {
-        { type = "list", id = "list_consumables", position = {10, 40}}
+        { type = "label", text = "Consomables", text_size = 16, padding = 10, size = {200, 30}, background = 0x333333},
+        { type = "list", id = "list_consumables", position = {10, 40}},
     },
 
     on_refresh = function(view)

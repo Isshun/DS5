@@ -37,21 +37,21 @@ public class AreaModule extends GameModule {
     protected void onUpdate(int tick) {
         Collections.sort(_storageAreas, (o1, o2) -> o2.getPriority() - o1.getPriority());
 
-        // Create haul jobs
+        // Create store jobs
 //        _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).foundConsumablesAround());
-        ModuleHelper.getWorldModule().getConsumables().stream().filter(consumable -> consumable.getStoreJob() == null).forEach(consumable -> {
-            StorageAreaModel bestStorage = getBestStorage(consumable);
-            if (bestStorage != null && consumable.getStorage() != bestStorage) {
-                System.out.println("Consumable have to move in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
-                ModuleHelper.getJobModule().addJob(StoreJob.create(consumable, bestStorage));
-            } else if (bestStorage != null) {
-                System.out.println("Consumable already in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
-            } else {
-                System.out.println("No best storage for " + consumable.getInfo().label);
-            }
+        ModuleHelper.getWorldModule().getConsumables().stream().filter(consumable -> consumable.getStoreJob() == null).forEach(this::storeConsumable);
+    }
 
-//            addJob(JobHaul.create(consumable)
-        });
+    private void storeConsumable(ConsumableModel consumable) {
+        StorageAreaModel bestStorage = getBestStorage(consumable);
+        if (bestStorage != null && consumable.getStorage() != bestStorage) {
+            System.out.println("Consumable have to move in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
+            ModuleHelper.getJobModule().addJob(StoreJob.create(consumable, bestStorage));
+        } else if (bestStorage != null) {
+            System.out.println("Consumable already in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
+        } else {
+            System.out.println("No best storage for " + consumable.getInfo().label);
+        }
     }
 
     public StorageAreaModel getBestStorage(ConsumableModel consumable) {
@@ -63,6 +63,13 @@ public class AreaModule extends GameModule {
             }
         }
         return bestStorage;
+    }
+
+    @Override
+    public void onAddConsumable(ConsumableModel consumable) {
+        if (consumable.getStoreJob() == null) {
+            storeConsumable(consumable);
+        }
     }
 
     @Override

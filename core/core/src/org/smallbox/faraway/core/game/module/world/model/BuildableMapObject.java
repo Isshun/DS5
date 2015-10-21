@@ -39,7 +39,6 @@ public class BuildableMapObject extends MapObjectModel {
     private ItemInfo.ItemInfoReceipt _receipt;
     private int                     _totalBuild = 10;
     private int                     _currentBuild;
-    private boolean                 _isComplete;
     private BuildJob                _buildJob;
     private List<ComponentModel>    _components = new ArrayList<>();
 
@@ -76,9 +75,6 @@ public class BuildableMapObject extends MapObjectModel {
     }
 
     public boolean          build() { return _isComplete = (_isComplete || ++_currentBuild >= _totalBuild); }
-
-    @Override
-    public boolean          isComplete() { return _isComplete; }
 
     public void             setComponents(List<ComponentModel> components) {
         _components = components;

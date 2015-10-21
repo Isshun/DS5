@@ -49,14 +49,14 @@ data:extend(
             function(view)
                 if resource ~= nil then
                     local info = resource:getInfo()
-                    view:findById("lb_position"):setText("Position: " .. resource:getX() .. "x" .. resource:getY())
-                    view:findById("lb_quantity"):setText("Quantity: " .. resource:getQuantity())
+                    view:findById("lb_position"):setText("Position", ": ", resource:getX() .. "x" .. resource:getY())
+                    view:findById("lb_quantity"):setText("Quantity", ": ", resource:getQuantity())
                     if info.isPlant then
-                        view:findById("lb_maturity"):setText("Maturity: " .. (resource:getMaturity() * 100) .. "%")
+                        view:findById("lb_maturity"):setText("Maturity", ": ", math.floor(resource:getMaturity() * 100) .. "%")
                         view:findById("lb_maturity"):setVisible(true)
                         local growState = resource:getGrowState()
                         if growState then
-                            view:findById("lb_grow_state"):setText("Grow state: " .. growState.name .. " (" .. (growState.value * 100) .. "%)")
+                            view:findById("lb_grow_state"):setText("Grow state", ": ", growState.name, " (" .. (growState.value * 100) .. "%)")
                             view:findById("lb_grow_state"):setVisible(true)
                         end
                     else

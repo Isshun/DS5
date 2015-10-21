@@ -47,12 +47,12 @@ data:extend(
                 if parcel ~= nil then
                     local room = parcel:getRoom()
                     view:findById("lb_name"):setText("Ground")
-                    view:findById("lb_position"):setText("Position: " .. parcel.x .. "x" .. parcel.y)
-                    view:findById("lb_light"):setText("Light: " .. parcel:getLight())
-                    view:findById("lb_oxygen"):setText("Oxygen: " .. parcel:getOxygen())
-                    view:findById("lb_room"):setText("Room: " .. (room and (room:isExterior() and "exterior" or room:getType():name()) or "no"))
-                    view:findById("lb_type"):setText("Type: " .. parcel:getType())
-                    view:findById("lb_walkable"):setText("Walkable: " .. (parcel:isWalkable() and "yes" or "no"))
+                    view:findById("lb_position"):setText("Position", ": ", parcel.x .. "x" .. parcel.y)
+                    view:findById("lb_light"):setText("Light", ": ", parcel:getLight())
+                    view:findById("lb_oxygen"):setText("Oxygen", ": ", parcel:getOxygen())
+                    view:findById("lb_room"):setText("Room", ": ", (room and (room:isExterior() and "exterior" or room:getType():name()) or "no"))
+                    view:findById("lb_type"):setText("Type", ": ", parcel:getType())
+                    view:findById("lb_walkable"):setText("Walkable", ": ", (parcel:isWalkable() and "yes" or "no"))
 
                     if parcel:getConnections() then
                         local str = "Connections: "

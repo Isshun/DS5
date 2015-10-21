@@ -9,32 +9,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MapObjectModel extends ObjectModel {
-    private static int             _maxId;
-    private int                    _id;
-    protected int                    _x;
-    protected int                    _y;
+    private static int          _maxId;
+    private int                 _id;
+    protected int               _x;
+    protected int               _y;
     private CharacterModel      _owner;
-    private String                 _name;
+    private String              _name;
     private int                 _width;
     private int                 _height;
     private int                 _matter;
     private int                 _mode;
-    private int                    _light;
-    protected ItemInfo            _info;
-    private String                 _label;
-    private int                    _currentFrame;
-    private int                    _nbFrame;
+    private int                 _light;
+    protected ItemInfo          _info;
+    private String              _label;
+    private int                 _currentFrame;
+    private int                 _nbFrame;
     private int                 _animFrame;
     private int                 _animFrameInterval;
     private boolean             _selected;
     private int                 _lastBlocked;
     protected ParcelModel       _parcel;
     private int                 _health;
-    private List<JobModel>  _jobs;
+    private List<JobModel>      _jobs;
     protected boolean           _needRefresh;
     private double              _progress;
 //    private JobBuild            _jobBuild;
     private GraphicInfo         _graphic;
+    protected boolean           _isComplete = true;
 
     public MapObjectModel(ItemInfo info) {
         init(info, ++_maxId);
@@ -118,20 +119,20 @@ public abstract class MapObjectModel extends ObjectModel {
     public boolean          isConsumable() { return _info.isConsumable; }
     public boolean          isSelected() { return _selected; }
     public boolean          isSolid() { return _progress >= _info.cost && !_info.isWalkable; }
-    public boolean          isWalkable() { return _progress < _info.cost || _info.isWalkable; }
-    public boolean            isComplete() { return false; }
-    public boolean            isSleepingItem() { return _info.isBed; }
-    public boolean            isStructure() { return _info.isStructure; }
+    public boolean          isWalkable() { return !_isComplete || _info.isWalkable; }
+    public boolean          isComplete() { return _isComplete; }
+    public boolean          isSleepingItem() { return _info.isBed; }
+    public boolean          isStructure() { return _info.isStructure; }
     public boolean          isResource() { return _info.isResource; }
-    public boolean             isDoor() { return getName().equals("base.door"); }
-    public boolean             isWall() { return getName().equals("base.wall") || getName().equals("base.window"); }
-    public boolean             isFood() { return _info.isFood; }
-    public boolean             isFactory() { return _info.isFactory; }
-    public boolean             isUserItem() { return _info.isUserItem; }
+    public boolean          isDoor() { return getName().equals("base.door"); }
+    public boolean          isWall() { return getName().equals("base.wall") || getName().equals("base.window"); }
+    public boolean          isFood() { return _info.isFood; }
+    public boolean          isFactory() { return _info.isFactory; }
+    public boolean          isUserItem() { return _info.isUserItem; }
     public boolean          isDestroy() { return _health <= 0; }
     public boolean          isDump() { return _progress <= 0; }
     public boolean          isCloseRoom() { return _info.isCloseRoom; }
-    public boolean             isLight() { return _info.light > 0; }
+    public boolean          isLight() { return _info.light > 0; }
     public boolean          matchPosition(int x, int y) { return _parcel != null && _parcel.x == x && _parcel.y == y; }
     public boolean          hasJobs() { return _jobs != null && !_jobs.isEmpty(); }
 
