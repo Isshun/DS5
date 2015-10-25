@@ -14,12 +14,14 @@ data:extend({
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
         { type = "list", position = {0, 60}, views = {
             { type = "label", id = "lb_position", text_size = 18, padding = 10},
+            { type = "label", id = "lb_complete", text_size = 18, padding = 10},
             { type = "list", id = "frame_building", position = {0, 40}, views = {
-                { type = "label", text = "Building in progress", text_size = 22, padding = 10, size = {400, 26}},
-                { type = "label", id = "lb_building_progress", text_size = 14, padding = 10},
-                { type = "label", id = "lb_building_job", text_size = 14, padding = 10},
-                { type = "label", id = "lb_building_character", text_size = 14, padding = 10},
-                { type = "label", text = "Components", text_size = 20, padding = 10, position = {0, 5}},
+                { type = "label", id = "lb_building", text = "Building in progress", text_size = 22, padding = 10, size = {400, 26}},
+                { type = "image", id = "img_building_progress", position = {10, 12}, src = "data/graphics/needbar.png", size = {380, 16}, texture_rect = {0, 0, 100, 16}},
+                { type = "label", id = "lb_building_progress", text_size = 14, padding = 10, position = {0, 10}},
+                { type = "label", id = "lb_building_job", text_size = 14, padding = 10, position = {0, 10}},
+                { type = "label", id = "lb_building_character", text_size = 14, padding = 10, position = {0, 10}},
+                { type = "label", text = "Components", text_size = 20, padding = 10, position = {0, 15}},
                 { type = "list", id = "list_building_components", position = {0, 10}, adapter = {
                     view = { type = "label", text_size = 14, padding = 10 },
                     on_bind = function(view, data)
@@ -66,7 +68,7 @@ data:extend({
             if item:getInfo().factory and item:getInfo().factory.receipts then
                 display_factory_info(view, item:getFactory(), item:getInfo().factory)
             else
-                view:findById("frame_factory"):setVisible(true)
+                view:findById("frame_factory"):setVisible(false)
             end
         end
     end,
@@ -74,7 +76,11 @@ data:extend({
     on_refresh = function(view)
         if item ~= nil then
             view:findById("frame_building"):setVisible(not item:isComplete())
+
+            view:findById("lb_complete"):setText("Complete", ": ", item:isComplete())
             if not item:isComplete() then
+                view:findById("lb_building"):setDashedString("Building", item:getBuildProgress() > 0 and math.floor(item:getBuildProgress() * 100) or "waiting", 32)
+                view:findById("img_building_progress"):setTextureRect(0, 80, math.floor(item:getBuildProgress() * 380 / 10) * 10, 16)
                 view:findById("lb_building_progress"):setText("Progress: " .. item:getCurrentBuild() .. "/" .. item:getTotalBuild())
                 view:findById("lb_building_job"):setText("Build job: " .. (item:getBuildJob() and "yes" or "no"))
                 view:findById("lb_building_character"):setText("Builder: " .. (item:getBuilder() and item:getBuilder():getName() or "no"))
@@ -112,7 +118,6 @@ data:extend({
                     end
                     view:findById("lb_factory_inputs"):setText(str)
                 end
-
             end
         end
     end

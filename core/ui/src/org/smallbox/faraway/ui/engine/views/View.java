@@ -34,6 +34,8 @@ public abstract class View {
     private int         _objectId;
     private LuaModule   _module;
     protected int       _hash;
+    protected int       _fixedWidth = -1;
+    protected int       _fixedHeight = -1;
 
     public void setTextAlign(boolean isAlignLeft, boolean isAlignTop) {
         _isAlignLeft = isAlignLeft;
@@ -68,6 +70,11 @@ public abstract class View {
 
     protected String getString() {
         return null;
+    }
+
+    public void setFixedSize(int width, int height) {
+        _fixedWidth = width;
+        _fixedHeight = height;
     }
 
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };

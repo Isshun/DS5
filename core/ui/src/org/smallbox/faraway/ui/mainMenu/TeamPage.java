@@ -14,12 +14,10 @@ public class TeamPage extends MainMenuPage {
         super(mainMenu, renderer, scene, "data/ui/menu/team.yml");
     }
 
-    @Override
     public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
         findById("bt_land_site").setOnClickListener(view -> Application.getInstance().newGame("5.sav", null));
     }
 
-    @Override
     protected void onOpen() {
         ((UILabel)findById("lb_planet")).setText(_mainMenu.getPlanet().name);
         ((UILabel)findById("lb_landing_site")).setText(_mainMenu.getLandingSite().name);

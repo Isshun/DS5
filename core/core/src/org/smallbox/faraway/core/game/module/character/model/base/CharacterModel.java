@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.module.character.model.BuffModel;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseModel;
 import org.smallbox.faraway.core.game.module.character.model.TimeTableModel;
+import org.smallbox.faraway.core.game.module.job.SleepJob;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.job.model.MoveJob;
@@ -203,7 +204,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public boolean                      isSelected() { return _isSelected; }
     public boolean                      isAlive() { return _stats.isAlive; }
-    public boolean                      isSleeping() { return _needs.isSleeping(); }
+    public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob; }
     public boolean                      needRefresh() { return _needRefresh; }
 
 
@@ -436,12 +437,8 @@ public abstract class CharacterModel extends MovableModel {
             return;
         }
 
-        if (getNeeds().isSleeping && (!(_job instanceof UseJob) || _job.getItem() == null || !_job.getItem().isSleepingItem())) {
-            return;
-        }
-
         // Check if job location is reached or instance of MoveJob
-        if (_parcel == _job.getTargetParcel() || _job instanceof MoveJob) {
+        if (_parcel == _job.getTargetParcel() || _job.getTargetParcel() == null || _job instanceof MoveJob) {
             JobModel.JobActionReturn ret = _job.action(this);
             if (_job != null) {
                 if (ret == JobModel.JobActionReturn.FINISH || ret == JobModel.JobActionReturn.ABORT) {

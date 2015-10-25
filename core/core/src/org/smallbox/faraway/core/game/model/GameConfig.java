@@ -55,4 +55,5 @@ public class GameConfig {
     public int                  maxNearDistance;
     public double               uiScale;
     public ScreenValues         screen;
+    public int                  defaultBuildCost = 10;
 }

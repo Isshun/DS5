@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
+import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
@@ -37,17 +38,23 @@ public class BuildableMapObject extends MapObjectModel {
     }
 
     private ItemInfo.ItemInfoReceipt _receipt;
-    private int                     _totalBuild = 10;
+    private int                     _totalBuild;
     private int                     _currentBuild;
     private BuildJob                _buildJob;
     private List<ComponentModel>    _components = new ArrayList<>();
 
     public BuildableMapObject(ItemInfo info, int id) {
         super(info, id);
+        init(info);
     }
 
     public BuildableMapObject(ItemInfo info) {
         super(info);
+        init(info);
+    }
+
+    private void init(ItemInfo info) {
+        _totalBuild = info.build != null ? info.build.cost : GameData.config.defaultBuildCost;
     }
 
     @Override

@@ -6,17 +6,16 @@ import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
+import org.smallbox.faraway.core.game.module.job.model.DumpJob;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ResourceModel;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.job.model.DumpJob;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
-import org.smallbox.faraway.ui.UserInterface.Mode;
+import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.cursor.AreaCursor;
 import org.smallbox.faraway.ui.cursor.GatherCursor;
 import org.smallbox.faraway.ui.cursor.MineCursor;
 import org.smallbox.faraway.ui.cursor.PickCursor;
-import org.smallbox.faraway.core.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class UserInteraction {
@@ -71,25 +70,23 @@ public class UserInteraction {
         NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_AREA, PUT_ITEM_FREE, REMOVE_AREA, SET_PLAN
     }
 
-    Action                                _action;
-    int                                    _startPressX;
-    int                                    _startPressY;
-    int                                    _mouseMoveX;
-    int                                    _mouseMoveY;
+    Action                              _action;
+    int                                 _startPressX;
+    int                                 _startPressY;
+    int                                 _mouseMoveX;
+    int                                 _mouseMoveY;
     GameEventListener.MouseButton       _button;
-    private String                         _selectedPlan;
-    private ItemInfo                     _selectedItemInfo;
-    private AreaType                     _selectedAreaType;
-    private UserInterface                _ui;
+    private String                      _selectedPlan;
+    private ItemInfo                    _selectedItemInfo;
+    private AreaType                    _selectedAreaType;
 
-    UserInteraction(UserInterface ui) {
+    UserInteraction() {
         _startPressX = 0;
         _startPressY = 0;
         _mouseMoveX = 0;
         _mouseMoveY = 0;
         _button = null;
         _action = Action.NONE;
-        _ui = ui;
     }
 
     public Action  getAction() { return _action; }
@@ -251,15 +248,6 @@ public class UserInteraction {
 
     public boolean isAction(Action action) {
         return _action.equals(action);
-    }
-
-    public void select(ItemInfo info, Mode mode) {
-        if (mode == Mode.BUILD) {
-            clean();
-//            _ui.setMode(Mode.BUILD);
-            _action = Action.BUILD_ITEM;
-            _selectedItemInfo = info;
-        }
     }
 
     public void clean() {

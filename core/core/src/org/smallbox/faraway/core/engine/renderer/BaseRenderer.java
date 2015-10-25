@@ -25,6 +25,14 @@ public abstract class BaseRenderer implements GameObserver {
     public int getLevel() {
         return 0;
     }
+
+    public void update() {
+        onUpdate();
+    }
+
+    protected void onUpdate() {
+    }
+
     public void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         long time = System.currentTimeMillis();
         onDraw(renderer, viewport, animProgress);

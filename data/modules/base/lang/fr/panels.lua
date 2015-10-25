@@ -16,6 +16,14 @@ data:extend({
         {"No job", "Aucune"},
         {"Needs", "Besoins"},
         {"Buffs", "Effets"},
+        {"Sleep on the ground", "Dors sur le sol"},
+        {"Sleep in bed", "Dors dans un lit"},
+
+        -- Tabs
+        {"Status", "Status"},
+        {"Inventory", "Inventaire"},
+        {"Info", "Info"},
+        {"Health", "Santé"},
 
         {"Energy", "Energie"},
         {"Food", "Nourriture"},
@@ -57,6 +65,7 @@ data:extend({
         {"Crafter", "Artisant"},
         {"Missing components", "Ingrédients manquants"},
         {"Current", "En cours"},
+        {"Waiting", "En attente"},
 
         {"up", "haut"},
         {"down", "bas"},

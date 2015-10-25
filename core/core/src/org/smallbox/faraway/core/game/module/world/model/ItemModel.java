@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
+import org.smallbox.faraway.core.game.module.job.SleepJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 
 import java.util.ArrayList;
@@ -119,5 +120,9 @@ public class ItemModel extends BuildableMapObject {
 
     public boolean isStorageParcel(ParcelModel parcel) {
         return _storageSlot != null && _parcel.x + _storageSlot[0] == parcel.x && _parcel.y + _storageSlot[1] == parcel.y;
+    }
+
+    public void freeSlot(JobModel job) {
+
     }
 }

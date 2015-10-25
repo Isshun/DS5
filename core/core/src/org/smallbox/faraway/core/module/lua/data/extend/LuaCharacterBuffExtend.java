@@ -23,6 +23,8 @@ public class LuaCharacterBuffExtend extends LuaExtend {
     public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) throws DataExtendException {
         BuffModel buff = new BuffModel();
 
+        buff.setVisible(value.get("visible").isnil() || value.get("visible").toboolean());
+
         LuaValue onStart = value.get("on_start");
         LuaValue onUpdate = value.get("on_update");
         buff.setListener(new BuffModel.BuffListener() {

@@ -1,7 +1,6 @@
 package org.smallbox.faraway.ui.engine.views;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 
@@ -16,9 +15,6 @@ public abstract class UIWindow extends UIFrame {
 
     public UIWindow() {
         _frameContent = this;
-        if (getContentLayout() != null) {
-            LayoutFactory.load("data/ui/" + getContentLayout(), this, null);
-        }
         _isLoaded = true;
     }
 

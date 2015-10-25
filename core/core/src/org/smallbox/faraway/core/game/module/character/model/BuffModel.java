@@ -15,17 +15,16 @@ public class BuffModel extends ObjectModel {
     public int              _level;
     public int              _mood;
     private BuffListener    _listener;
+    private boolean         _visible;
 
     public void setListener(BuffListener listener) { _listener = listener; }
     public void setLevel(int level) { _level = level; }
     public void setMood(int mood) { _mood = mood; }
     public void setMessage(String message) { _message = message; }
+    public void setVisible(boolean visible) { _visible = visible; }
 
-    public void start(BuffCharacterModel data) {
-        _listener.onStart(data);
-    }
+    public boolean  isVisible() { return _visible; }
 
-    public void update(BuffCharacterModel data, int update) {
-        _listener.onUpdate(data, update);
-    }
+    public void start(BuffCharacterModel data) { _listener.onStart(data); }
+    public void update(BuffCharacterModel data, int update) { _listener.onUpdate(data, update); }
 }

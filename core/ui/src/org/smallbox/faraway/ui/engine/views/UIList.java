@@ -22,7 +22,9 @@ public class UIList extends View {
             offset += subView.getHeight();
         }
 
-        setSize(_width, offset);
+        if (_fixedWidth == -1 || _fixedHeight == -1) {
+            setSize(_width, offset);
+        }
     }
 
     @Override

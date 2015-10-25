@@ -18,29 +18,10 @@ public class Utils {
         }
     }
 
-    public static long getLastUIModified() {
+    public static long getLastDataModified() {
         long lastModified = 0;
 
-        for (File file: new File("data/ui/").listFiles()) {
-            if (file.isDirectory()) {
-                for (File subFile : file.listFiles()) {
-                    if (subFile.lastModified() > lastModified) {
-                        lastModified = subFile.lastModified();
-                    }
-                }
-            }
-            if (file.lastModified() > lastModified) {
-                lastModified = file.lastModified();
-            }
-        }
-
         for (File file: FileUtils.listRecursively("data/modules/")) {
-            if (file.lastModified() > lastModified) {
-                lastModified = file.lastModified();
-            }
-        }
-
-        for (File file: new File("data/lang/").listFiles()) {
             if (file.lastModified() > lastModified) {
                 lastModified = file.lastModified();
             }

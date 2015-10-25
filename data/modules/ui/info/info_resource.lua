@@ -17,6 +17,7 @@ data:extend({
             { type = "label", id = "lb_quantity", text_size = 18, padding = 10},
             { type = "label", id = "lb_maturity", text_size = 18, padding = 10},
             { type = "label", id = "lb_grow_state", text_size = 18, padding = 10},
+            { type = "label", id = "lb_tile", text_size = 18, padding = 10},
         }},
         { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 30}, size = {90, 40}, on_click = function()
             game.events:send("encyclopedia.open_resource", resource)
@@ -49,6 +50,8 @@ data:extend({
             local info = resource:getInfo()
             view:findById("lb_position"):setText("Position", ": ", resource:getX() .. "x" .. resource:getY())
             view:findById("lb_quantity"):setText("Quantity", ": ", resource:getQuantity())
+            view:findById("lb_tile"):setText("Tile: " .. resource:getTile())
+
             if info.isPlant then
                 view:findById("lb_maturity"):setText("Maturity", ": ", math.floor(resource:getMaturity() * 100) .. "%")
                 view:findById("lb_maturity"):setVisible(true)

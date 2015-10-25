@@ -16,12 +16,10 @@ public class LandingSitePage extends MainMenuPage {
         _mainMenu.select(new LandingSiteModel());
     }
 
-    @Override
     public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
         findById("bt_land").setOnClickListener(view -> _mainMenu.select(MainMenu.Scene.TEAM));
     }
 
-    @Override
     protected void onOpen() {
         ((UILabel)findById("lb_planet")).setText(_mainMenu.getPlanet().name);
     }

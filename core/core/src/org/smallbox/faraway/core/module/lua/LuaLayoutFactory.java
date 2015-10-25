@@ -32,6 +32,9 @@ public class LuaLayoutFactory {
 
             case "list":
                 view = new UIList(width, height);
+                if (width != -1 && height != -1) {
+                    view.setFixedSize(width, height);
+                }
                 break;
 
             case "grid":

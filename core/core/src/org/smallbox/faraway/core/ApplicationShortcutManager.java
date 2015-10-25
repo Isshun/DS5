@@ -44,6 +44,9 @@ public class ApplicationShortcutManager {
 //            _isFullscreen = !_isFullscreen;
 //            _renderer.setFullScreen(_isFullscreen);
         }),
+        new ApplicationShortcut(GameEventListener.Key.F4, GameEventListener.Modifier.ALT, () -> {
+            Application.getInstance().setRunning(false);
+        }),
     };
 
     public static void onKeyPress(GameEventListener.Key key, GameEventListener.Modifier modifier) {

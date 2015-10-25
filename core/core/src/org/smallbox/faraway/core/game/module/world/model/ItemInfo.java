@@ -128,6 +128,10 @@ public class ItemInfo {
         public EquipmentEffectValues     absorb;
     }
 
+    public static class ItemBuildInfo {
+        public int                          cost;
+    }
+
     public static class ItemInfoEffects {
         public int                        food;
         public int                         drink;
@@ -185,6 +189,7 @@ public class ItemInfo {
     public boolean                         isDrink;
     public boolean                         isCloseRoom;
     public boolean                          isFloor;
+    public ItemBuildInfo                    build;
     public int                             maxHealth;
     public int                             power;
     public double                         sealing;

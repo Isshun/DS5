@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.engine.renderer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
+import org.smallbox.faraway.core.GraphicInfo;
 import org.smallbox.faraway.core.game.module.world.model.ItemFactoryModel;
 import org.smallbox.faraway.core.RenderLayer;
 import org.smallbox.faraway.core.SpriteManager;
@@ -17,13 +18,49 @@ import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
 public class WorldRenderer extends BaseRenderer {
+    private int[][][] TEMPLATES = new int[][][] {
+            new int[][] {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}},
+            new int[][] {{1, 1, 1}, {1, 1, 1}, {1, 1, 0}},
+            new int[][] {{1, 1, 1}, {1, 1, 1}, {0, 1, 1}},
+            new int[][] {{1, 1, 0}, {1, 1, 1}, {1, 1, 1}},
+            new int[][] {{0, 1, 1}, {1, 1, 1}, {1, 1, 1}},
+
+            // Inner without corners
+            new int[][] {{0, 1, 0}, {1, 1, 1}, {0, 1, 0}},
+            new int[][] {{0, 0, 0}, {1, 1, 1}, {0, 1, 0}},
+            new int[][] {{0, 1, 0}, {1, 1, 1}, {0, 0, 0}},
+            new int[][] {{0, 1, 0}, {0, 1, 1}, {0, 1, 0}},
+            new int[][] {{0, 1, 0}, {1, 1, 0}, {0, 1, 0}},
+
+            // T
+            new int[][] {{2, 1, 2}, {0, 1, 0}, {2, 0, 2}},
+            new int[][] {{2, 0, 2}, {0, 1, 0}, {2, 1, 2}},
+            new int[][] {{2, 0, 2}, {1, 1, 0}, {2, 0, 2}},
+            new int[][] {{2, 0, 2}, {0, 1, 1}, {2, 0, 2}},
+
+            // =
+            new int[][] {{2, 1, 2}, {0, 1, 0}, {2, 1, 2}},
+            new int[][] {{2, 0, 2}, {1, 1, 1}, {2, 0, 2}},
+
+            // Corners
+            new int[][] {{2, 2, 2}, {2, 2, 1}, {2, 1, 1}},
+            new int[][] {{2, 1, 1}, {2, 2, 1}, {2, 2, 2}},
+            new int[][] {{2, 2, 2}, {1, 2, 2}, {1, 1, 2}},
+            new int[][] {{1, 1, 2}, {1, 2, 2}, {2, 2, 2}},
+
+            new int[][] {{0, 0, 0}, {0, 0, 1}, {2, 1, 0}},
+            new int[][] {{2, 1, 2}, {1, 0, 0}, {0, 0, 2}},
+            new int[][] {{2, 0, 2}, {1, 0, 0}, {2, 1, 2}},
+            new int[][] {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
+    };
+
     private static final int    CACHE_SIZE = 25;
 
     private int                 _cacheCols;
     private boolean             _needRefresh;
     private SpriteManager       _spriteManager;
     private RenderLayer[][]     _layers;
-//    private RenderLayer[][]     _layersLight;
+    //    private RenderLayer[][]     _layersLight;
     private MapObjectModel _itemSelected;
     private Viewport            _viewport;
     private boolean             _firstRefresh;
@@ -186,62 +223,163 @@ public class WorldRenderer extends BaseRenderer {
         layer.end();
     }
 
+    @Override
+    protected void onUpdate() {
+        ModuleHelper.getWorldModule().getResources().forEach(resource -> {
+            if (resource.getInfo().graphics != null && resource.getInfo().graphics.get(0).type == GraphicInfo.Type.TERRAIN) {
+                ParcelModel parcel = resource.getParcel();
+
+                boolean topLeft = !(WorldHelper.getResource(parcel.x - 1, parcel.y - 1) == null || WorldHelper.getResource(parcel.x - 1, parcel.y - 1).getInfo() != resource.getInfo());
+                boolean top = !(WorldHelper.getResource(parcel.x, parcel.y - 1) == null || WorldHelper.getResource(parcel.x, parcel.y - 1).getInfo() != resource.getInfo());
+                boolean topRight = !(WorldHelper.getResource(parcel.x + 1, parcel.y - 1) == null || WorldHelper.getResource(parcel.x + 1, parcel.y - 1).getInfo() != resource.getInfo());
+
+                boolean left = !(WorldHelper.getResource(parcel.x - 1, parcel.y) == null || WorldHelper.getResource(parcel.x - 1, parcel.y).getInfo() != resource.getInfo());
+                boolean right = !(WorldHelper.getResource(parcel.x + 1, parcel.y) == null || WorldHelper.getResource(parcel.x + 1, parcel.y).getInfo() != resource.getInfo());
+
+                boolean bottomLeft = !(WorldHelper.getResource(parcel.x - 1, parcel.y + 1) == null || WorldHelper.getResource(parcel.x - 1, parcel.y + 1).getInfo() != resource.getInfo());
+                boolean bottom = !(WorldHelper.getResource(parcel.x, parcel.y + 1) == null || WorldHelper.getResource(parcel.x, parcel.y + 1).getInfo() != resource.getInfo());
+                boolean bottomRight = !(WorldHelper.getResource(parcel.x + 1, parcel.y + 1) == null || WorldHelper.getResource(parcel.x + 1, parcel.y + 1).getInfo() != resource.getInfo());
+
+                int tile = 0;
+
+                if (topLeft)     { tile |= 0b10000000; }
+                if (top)         { tile |= 0b01000000; }
+                if (topRight)    { tile |= 0b00100000; }
+                if (left)        { tile |= 0b00010000; }
+                if (right)       { tile |= 0b00001000; }
+                if (bottomLeft)  { tile |= 0b00000100; }
+                if (bottom)      { tile |= 0b00000010; }
+                if (bottomRight) { tile |= 0b00000001; }
+
+                resource.setTile(tile);
+            }
+//            SpriteModel sprite = resource.isRock() && WorldHelper.isSurroundedByRock(parcel) ? _spriteManager.getGround(11) : _spriteManager.getItem(resource, tile, tile);
+//            if (sprite != null) {
+//                layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH + offsetX, (y % CACHE_SIZE) * Constant.TILE_HEIGHT + offsetX);
+//            }
+        });
+    }
+
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-        if (_needRefresh) {
-            _needRefresh = false;
-            refreshLayers();
+        int fromX = (int) ((-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale());
+        int fromY = (int) ((-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale());
+        int toX = fromX + 50;
+        int toY = fromY + 40;
+
+        int offsetX = viewport.getPosX();
+        int offsetY = viewport.getPosY();
+
+        for (int x = toX; x >= fromX; x--) {
+            for (int y = toY; y >= fromY; y--) {
+                ParcelModel parcel = WorldHelper.getParcel(x, y);
+                if (parcel != null) {
+                    renderer.draw(_spriteManager.getGround(1), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+                }
+            }
         }
 
-        if (_layers != null) {
-            for (int i = _cacheCols - 1; i >= 0; i--) {
-                for (int j = _cacheCols - 1; j >= 0; j--) {
-                    // Draw up to date layer
-                    if (_layers[i][j].isVisible(viewport) && !_layers[i][j].needRefresh() && _layers[i][j].isDrawable()) {
-                        _layers[i][j].onDraw(renderer, viewport, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
+        for (int x = toX; x >= fromX; x--) {
+            for (int y = toY; y >= fromY; y--) {
+                ParcelModel parcel = WorldHelper.getParcel(x, y);
+                if (parcel != null) {
+                    if (parcel.getResource() != null) {
+                        if (parcel.getResource().getTile() == 42) {
+                            renderer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX - 16, (y * Constant.TILE_HEIGHT) + offsetY - 16);
+                        } else {
+                            renderer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+                        }
                     }
-
-                    // Refresh needed layer
-                    if (_layers[i][j].isVisible(viewport) && _layers[i][j].needRefresh()) {
-                        Log.info("refresh layer: " + _layers[i][j].getIndex());
-                        _layers[i][j].refresh();
-                        refreshLayer(_layers[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
+                    if (parcel.getStructure() != null) {
+                        renderer.draw(_spriteManager.getItem(parcel.getStructure()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
                     }
-
-                    // Clear out of screen layers
-                    if (!_layers[i][j].isVisible(viewport) && _layers[i][j].isDrawable()) {
-                        Log.info("clear layer: " + _layers[i][j].getIndex());
-                        _layers[i][j].clear();
+                    if (parcel.getItem() != null && parcel == parcel.getItem().getParcel()) {
+                        renderer.draw(_spriteManager.getItem(parcel.getItem()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
                     }
+                    if (parcel.getConsumable() != null) {
+                        renderer.draw(_spriteManager.getItem(parcel.getConsumable()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+                    }
+                }
+            }
+        }
 
+//        System.out.println("from " + fromX + "x" + fromY);
+//
+//        if (_needRefresh) {
+//            _needRefresh = false;
+//            refreshLayers();
+//        }
+//
+//        if (_layers != null) {
+//            for (int i = _cacheCols - 1; i >= 0; i--) {
+//                for (int j = _cacheCols - 1; j >= 0; j--) {
 //                    // Draw up to date layer
-//                    if (_layersLight[i][j].isVisible(viewport) && !_layersLight[i][j].needRefresh() && _layersLight[i][j].isDrawable()) {
-//                        _layersLight[i][j].onDraw(renderer, viewport, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
+//                    if (_layers[i][j].isVisible(viewport) && !_layers[i][j].needRefresh() && _layers[i][j].isDrawable()) {
+//                        _layers[i][j].onDraw(renderer, viewport, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
 //                    }
 //
 //                    // Refresh needed layer
-//                    if (_layersLight[i][j].isVisible(viewport) && _layersLight[i][j].needRefresh()) {
-//                        Log.info("refresh layer: " + _layersLight[i][j].getIndex());
-//                        _layersLight[i][j].refresh();
-//                        refreshLayerLight(_layersLight[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
+//                    if (_layers[i][j].isVisible(viewport) && _layers[i][j].needRefresh()) {
+//                        Log.info("refresh layer: " + _layers[i][j].getIndex());
+//                        _layers[i][j].refresh();
+//                        refreshLayer(_layers[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
 //                    }
 //
 //                    // Clear out of screen layers
-//                    if (!_layersLight[i][j].isVisible(viewport) && _layersLight[i][j].isDrawable()) {
-//                        Log.info("clear layer: " + _layersLight[i][j].getIndex());
-//                        _layersLight[i][j].clear();
+//                    if (!_layers[i][j].isVisible(viewport) && _layers[i][j].isDrawable()) {
+//                        Log.info("clear layer: " + _layers[i][j].getIndex());
+//                        _layers[i][j].clear();
 //                    }
-                }
-            }
-
-            onDrawSelected(renderer, viewport, animProgress);
-        }
+//
+////                    // Draw up to date layer
+////                    if (_layersLight[i][j].isVisible(viewport) && !_layersLight[i][j].needRefresh() && _layersLight[i][j].isDrawable()) {
+////                        _layersLight[i][j].onDraw(renderer, viewport, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
+////                    }
+////
+////                    // Refresh needed layer
+////                    if (_layersLight[i][j].isVisible(viewport) && _layersLight[i][j].needRefresh()) {
+////                        Log.info("refresh layer: " + _layersLight[i][j].getIndex());
+////                        _layersLight[i][j].refresh();
+////                        refreshLayerLight(_layersLight[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
+////                    }
+////
+////                    // Clear out of screen layers
+////                    if (!_layersLight[i][j].isVisible(viewport) && _layersLight[i][j].isDrawable()) {
+////                        Log.info("clear layer: " + _layersLight[i][j].getIndex());
+////                        _layersLight[i][j].clear();
+////                    }
+//                }
+//            }
+//
+//            onDrawSelected(renderer, viewport, animProgress);
+//        }
     }
 
     private void refreshResource(RenderLayer layer, ParcelModel parcel, ResourceModel resource, int x, int y) {
         if (parcel != null && resource != null) {
-            SpriteModel sprite = resource.isRock() && WorldHelper.isSurroundedByRock(parcel) ? _spriteManager.getGround(11) : _spriteManager.getItem(resource);
+            boolean topLeft = !(WorldHelper.getResource(parcel.x - 1, parcel.y - 1) == null || WorldHelper.getResource(parcel.x - 1, parcel.y - 1).getInfo() != resource.getInfo());
+            boolean top = !(WorldHelper.getResource(parcel.x, parcel.y - 1) == null || WorldHelper.getResource(parcel.x, parcel.y - 1).getInfo() != resource.getInfo());
+            boolean topRight = !(WorldHelper.getResource(parcel.x + 1, parcel.y - 1) == null || WorldHelper.getResource(parcel.x + 1, parcel.y - 1).getInfo() != resource.getInfo());
+
+            boolean left = !(WorldHelper.getResource(parcel.x - 1, parcel.y) == null || WorldHelper.getResource(parcel.x - 1, parcel.y).getInfo() != resource.getInfo());
+            boolean right = !(WorldHelper.getResource(parcel.x + 1, parcel.y) == null || WorldHelper.getResource(parcel.x + 1, parcel.y).getInfo() != resource.getInfo());
+
+            boolean bottomLeft = !(WorldHelper.getResource(parcel.x - 1, parcel.y + 1) == null || WorldHelper.getResource(parcel.x - 1, parcel.y + 1).getInfo() != resource.getInfo());
+            boolean bottom = !(WorldHelper.getResource(parcel.x, parcel.y + 1) == null || WorldHelper.getResource(parcel.x, parcel.y + 1).getInfo() != resource.getInfo());
+            boolean bottomRight = !(WorldHelper.getResource(parcel.x + 1, parcel.y + 1) == null || WorldHelper.getResource(parcel.x + 1, parcel.y + 1).getInfo() != resource.getInfo());
+
+            int tile = 0;
+            int offsetX = 0;
+            int offsetY = 0;
+
+            if (!top && !bottom && !right && !left) {
+                tile = 42;
+                offsetX = -16;
+                offsetY = -16;
+            }
+
+            SpriteModel sprite = resource.isRock() && WorldHelper.isSurroundedByRock(parcel) ? _spriteManager.getGround(11) : _spriteManager.getItem(resource, tile, tile);
             if (sprite != null) {
-                layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+                layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH + offsetX, (y % CACHE_SIZE) * Constant.TILE_HEIGHT + offsetX);
             }
         }
     }

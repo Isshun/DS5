@@ -13,8 +13,7 @@ data:extend({
         { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 26}, padding = 10, size = {100, 40}},
 
-        { type = "grid", position = {10, 72}, columns = 2, column_width = 190, row_height = 60, views =
-        {
+        { type = "grid", position = {10, 72}, columns = 2, column_width = 190, row_height = 60, views = {
             { type = "label", id = "bt_status", text = "Status", text_size = 20, padding = 18, background = 0x5588bb, size = {180, 50}, on_click = "mode = 1", on_refresh = function(view)
                 view:setBackgroundColor(mode == 1 and 0x4be7da or 0x689999)
             end},
@@ -27,8 +26,7 @@ data:extend({
             { type = "label", id = "bt_health", text = "Health", text_size = 20, padding = 18, background = 0x5588bb, size = {180, 50}, on_click = "mode = 4", on_refresh = function(view)
                 view:setBackgroundColor(mode == 4 and 0x4be7da or 0x689999)
             end},
-        }
-        },
+        }},
 
         -- Status page
         {

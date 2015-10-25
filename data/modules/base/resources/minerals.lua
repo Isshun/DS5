@@ -12,7 +12,7 @@ data:extend({
         name = "base.calcite",
         type = "resource",
         walkable = false,
-        graphics = { path = "[base]/graphics/items/resources/calcite.png"},
+        graphics = { path = "[base]/graphics/items/resources/calcite.png", type = "terrain" },
         actions = { type = "mine", cost = 1, products = {{item = "base.calcite_rubble", quantity = {5, 10}}} }
     },
     {

@@ -177,7 +177,7 @@ public abstract class JobModel extends ObjectModel {
 
     protected void onCreate() {}
     protected abstract boolean onCheck(CharacterModel character);
-    protected void onStart(CharacterModel character) { character.moveTo(this, _jobParcel, null); }
+    protected void onStart(CharacterModel character) { if (_jobParcel != null) character.moveTo(this, _jobParcel, null); }
     public abstract JobActionReturn onAction(CharacterModel character);
     protected void onQuit(CharacterModel character) {}
     protected abstract void onFinish();

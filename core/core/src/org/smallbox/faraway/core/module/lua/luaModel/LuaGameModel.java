@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.module.lua.luaModel;
 
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
@@ -59,6 +60,12 @@ public class LuaGameModel {
 
     public void setPlan(String plan) {
         UserInterface.getInstance().getInteraction().set(UserInteraction.Action.SET_PLAN, plan);
+    }
+
+    public void setSpeed(int speed) {
+        if (GameManager.getInstance().isRunning()) {
+            GameManager.getInstance().getGame().setSpeed(speed);
+        }
     }
 
     public void setArea(String area) {

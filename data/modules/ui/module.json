@@ -1,6 +1,6 @@
 {
-  "id": "base_system_ui",
-  "name": "FarAway System UI Module",
+  "id": "base_ui",
+  "name": "FarAway UI Module",
   "version": 0.1,
   "type": "lua",
   "required": [

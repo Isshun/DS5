@@ -32,16 +32,16 @@ public class GDXApplication extends ApplicationAdapter {
         }
     }
 
-    public static final BlockingQueue<LoadRunnable> _queue = new LinkedBlockingQueue<>();
-    private Runnable        _currentRunnable;
-    private String          _currentMessage;
-    private SpriteBatch     _batch;
-    private GDXRenderer     _renderer;
-    private Application     _application;
-    private long            _startTime = -1;
-    private long            _lastRender;
-    private BitmapFont[]    _fonts;
-    private BitmapFont      _systemFont;
+    private final BlockingQueue<LoadRunnable>   _queue = new LinkedBlockingQueue<>();
+    private Runnable                            _currentRunnable;
+    private String                              _currentMessage;
+    private SpriteBatch                         _batch;
+    private GDXRenderer                         _renderer;
+    private Application                         _application;
+    private long                                _startTime = -1;
+    private long                                _lastRender;
+    private BitmapFont[]                        _fonts;
+    private BitmapFont                          _systemFont;
 
     @Override
     public void create () {
@@ -97,7 +97,7 @@ public class GDXApplication extends ApplicationAdapter {
         }));
 
         _queue.add(new LoadRunnable("Create app", () -> {
-            _application = new Application(_renderer);
+            _application = Application.getInstance();
         }));
 
         // Load resources
@@ -132,7 +132,7 @@ public class GDXApplication extends ApplicationAdapter {
             Gdx.graphics.setVSync(true);
             Gdx.graphics.requestRendering();
 
-            _application.setInputDirection(inputProcessor.getDirection());
+            _application.setInputProcessor(inputProcessor);
         }));
 
         _queue.add(new LoadRunnable("Resume game", () -> {

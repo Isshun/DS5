@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.module.lua.DataExtendException;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.util.Constant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,6 +110,15 @@ public class LuaItemExtend extends LuaExtend {
 
         if (!value.get("walkable").isnil()) {
             itemInfo.isWalkable = value.get("walkable").toboolean();
+        }
+
+        if (!value.get("build").isnil()) {
+            itemInfo.build = new ItemInfo.ItemBuildInfo();
+            if (!value.get("build").get("cost").isnil()) {
+                itemInfo.build.cost = value.get("build").get("cost").toint();
+            } else {
+                itemInfo.build.cost = GameData.config.defaultBuildCost;
+            }
         }
 
         if (!value.get("slots").isnil()) {
@@ -231,6 +241,9 @@ public class LuaItemExtend extends LuaExtend {
         } else {
             throw new DataExtendException(DataExtendException.Type.MANDATORY, "graphics.path");
         }
+        if (!luaGraphic.get("type").isnil()) {
+            graphicInfo.type = GraphicInfo.Type.valueOf(luaGraphic.get("type").toString().toUpperCase());
+        }
         if (!luaGraphic.get("x").isnil()) {
             graphicInfo.x = luaGraphic.get("x").toint();
         }
@@ -249,6 +262,16 @@ public class LuaItemExtend extends LuaExtend {
         ItemInfo.ItemInfoAction action = new ItemInfo.ItemInfoAction();
         action.type = getString(value, "type", null);
         action.cost = getInt(value, "cost", 0);
+
+        LuaValue luaEffects = value.get("effects");
+        if (!luaEffects.isnil()) {
+            action.effects = new ItemInfo.ItemInfoEffects();
+            for (int i = 1; i <= luaEffects.length(); i++) {
+                if ("energy".equals(luaEffects.get(i).get("type").toString())) {
+                    action.effects.energy = luaEffects.get(i).get("quantity").toint();
+                }
+            }
+        }
 
         LuaValue luaProducts = value.get("products");
         if (!luaProducts.isnil()) {

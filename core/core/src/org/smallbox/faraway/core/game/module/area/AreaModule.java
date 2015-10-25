@@ -48,9 +48,9 @@ public class AreaModule extends GameModule {
             System.out.println("Consumable have to move in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
             ModuleHelper.getJobModule().addJob(StoreJob.create(consumable, bestStorage));
         } else if (bestStorage != null) {
-            System.out.println("Consumable already in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
+//            System.out.println("Consumable already in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
         } else {
-            System.out.println("No best storage for " + consumable.getInfo().label);
+//            System.out.println("No best storage for " + consumable.getInfo().label);
         }
     }
 

@@ -45,41 +45,42 @@ public abstract class ViewFactory {
     }
 
     public UIFrame load(String path) {
-        try {
-            UIFrame rootView = createFrameLayout();
-            InputStream input = new FileInputStream(new File(path));
-            Yaml yaml = new Yaml(new Constructor(LayoutModel.class));
-            LayoutModel layout = (LayoutModel)yaml.load(input);
-            if (layout.entries != null && !layout.entries.isEmpty()) {
-                for (LayoutModel.LayoutEntry entry : layout.entries) {
-                    rootView.addView(LayoutFactory.createFromLayout(null, entry));
-                }
-            }
-
-            if (layout.id != null) {
-                rootView.setId(layout.id);
-            }
-
-            if (layout.align != null) {
-                rootView.setTextAlign("left".equals(layout.align[0]), "top".equals(layout.align[1]));
-            }
-
-            if (layout.position != null) {
-                rootView.setPosition(layout.position[0], layout.position[1]);
-            }
-
-            if (layout.size != null) {
-                rootView.setSize(layout.size[0], layout.size[1]);
-            }
-
-            if (layout.background != 0) {
-                rootView.setBackgroundColor(new Color(layout.background));
-            }
-
-            return rootView;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+        throw new RuntimeException("deprecated");
+//        try {
+//            UIFrame rootView = createFrameLayout();
+//            InputStream input = new FileInputStream(new File(path));
+//            Yaml yaml = new Yaml(new Constructor(LayoutModel.class));
+//            LayoutModel layout = (LayoutModel)yaml.load(input);
+//            if (layout.entries != null && !layout.entries.isEmpty()) {
+//                for (LayoutModel.LayoutEntry entry : layout.entries) {
+//                    rootView.addView(LayoutFactory.createFromLayout(null, entry));
+//                }
+//            }
+//
+//            if (layout.id != null) {
+//                rootView.setId(layout.id);
+//            }
+//
+//            if (layout.align != null) {
+//                rootView.setTextAlign("left".equals(layout.align[0]), "top".equals(layout.align[1]));
+//            }
+//
+//            if (layout.position != null) {
+//                rootView.setPosition(layout.position[0], layout.position[1]);
+//            }
+//
+//            if (layout.size != null) {
+//                rootView.setSize(layout.size[0], layout.size[1]);
+//            }
+//
+//            if (layout.background != 0) {
+//                rootView.setBackgroundColor(new Color(layout.background));
+//            }
+//
+//            return rootView;
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
     }
 }

@@ -33,7 +33,6 @@ public class HomePage extends MainMenuPage {
         setVisible(true);
     }
 
-    @Override
     public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
         findById("bt_new_colony").setOnClickListener(view -> _mainMenu.select(MainMenu.Scene.PLANETS));
         findById("bt_load_colony").setOnClickListener(view -> _mainMenu.select(MainMenu.Scene.LOAD));

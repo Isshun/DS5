@@ -3,7 +3,7 @@ data:extend({
         label = "Raw spice",
         name = "base.raw_spice",
         type = "resource",
-        graphics = { path = "[base]/graphics/items/resources/raw_spice.png" },
+        graphics = { path = "[base]/graphics/items/resources/raw_spice_2.png", type = "terrain" },
         plant = {
             mature = 5,
             growing = 0.005,

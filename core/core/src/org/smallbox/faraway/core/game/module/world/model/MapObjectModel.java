@@ -35,7 +35,7 @@ public abstract class MapObjectModel extends ObjectModel {
     private double              _progress;
 //    private JobBuild            _jobBuild;
     private GraphicInfo         _graphic;
-    protected boolean           _isComplete = true;
+    protected boolean           _isComplete = false;
 
     public MapObjectModel(ItemInfo info) {
         init(info, ++_maxId);

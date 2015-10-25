@@ -7,20 +7,17 @@ import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.TeamModel;
 import org.smallbox.faraway.core.game.model.planet.LandingSiteModel;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
-import org.smallbox.faraway.ui.engine.LayoutFactory;
+import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.panel.BasePanel;
-import org.smallbox.faraway.core.util.Utils;
 
 /**
  * Created by Alex on 02/06/2015.
  */
 public class MainMenu {
-    private final LayoutFactory _layoutFactory;
     private final ViewFactory   _viewFactory;
-    private MainMenuPage _currentScene;
-    private MainMenuPage[]     _scenes;
+    private MainMenuPage        _currentScene;
+    private MainMenuPage[]      _scenes;
     private int                 _refresh;
     private long                _lastModified;
     private PlanetInfo          _planet;
@@ -56,8 +53,7 @@ public class MainMenu {
 
     public enum Scene {HOME, PLANETS, LAND_SITE, LOAD, TEAM}
 
-    public MainMenu(LayoutFactory layoutFactory, ViewFactory viewFactory, GDXRenderer renderer) {
-        _layoutFactory = layoutFactory;
+    public MainMenu(ViewFactory viewFactory, GDXRenderer renderer) {
         _viewFactory = viewFactory;
         _scenes = new MainMenuPage[] {
                 new HomePage(this, renderer, Scene.HOME),
@@ -68,7 +64,7 @@ public class MainMenu {
         };
         _currentScene = _scenes[0];
         for (MainMenuPage scene: _scenes) {
-            scene.init(viewFactory, layoutFactory, null, null);
+            scene.init(viewFactory, null, null);
         }
     }
 
@@ -79,9 +75,6 @@ public class MainMenu {
 
     public void refresh(int frame) {
         _refresh = frame;
-        for (BasePanel panel: _scenes) {
-            panel.refresh(frame);
-        }
 
         // Refresh UI if needed by GameData (strings)
         if (GameData.getData().needUIRefresh) {
@@ -91,7 +84,7 @@ public class MainMenu {
 
         // Refresh UI if needed by UI files
         if (frame % 8 == 0) {
-            long lastResModified = Utils.getLastUIModified();
+            long lastResModified = Utils.getLastDataModified();
             if (lastResModified > _lastModified) {
                 _lastModified = lastResModified;
                 reload();
@@ -102,8 +95,8 @@ public class MainMenu {
     private void reload() {
         for (MainMenuPage scene: _scenes) {
             scene.removeAllViews();
-            scene.init(_viewFactory, _layoutFactory, null, null);
-            scene.refresh(0);
+            scene.init(_viewFactory, null, null);
+//            scene.refresh(0);
         }
     }
 

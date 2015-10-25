@@ -3,34 +3,34 @@ package org.smallbox.faraway.ui;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.ui.UserInterface.Mode;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.engine.views.UILabel;
+import org.smallbox.faraway.ui.engine.views.UIList;
 import org.smallbox.faraway.ui.engine.views.View;
-import org.smallbox.faraway.ui.panel.BasePanel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContextualMenu extends BasePanel {
-    public final static int        LINE_HEIGHT = 22;
-    public final static int        PADDING_V = 4;
+public class ContextualMenu extends UIList {
+    public final static int     LINE_HEIGHT = 22;
+    public final static int     PADDING_V = 4;
     private final static int    PADDING_H = 4;
-    private int                    ENTRY_WIDTH;
-    private int                    ENTRY_HEIGHT = LINE_HEIGHT;
+    private int                 ENTRY_WIDTH;
+    private int                 ENTRY_HEIGHT = LINE_HEIGHT;
 
-    private List<UILabel>        _entries;
-    private ContextualMenu         _subMenu;
+    private List<UILabel>       _entries;
+    private ContextualMenu      _subMenu;
     private int                 _initPosX;
     private int                 _initPosY;
 
     public ContextualMenu(int tileIndex, int x, int y, int width, int height, Viewport viewport) {
-        super(Mode.NONE, null, x, y, width, height, null);
+        super(width, height);
+        setPosition(x, y);
         setVisible(true);
 
-        ENTRY_WIDTH = (int) (width - PADDING_H * 2);
+        ENTRY_WIDTH = width - PADDING_H * 2;
 //        _x = (int) pos.x - viewport.getPosX();
 //        _y = (int) pos.y - viewport.getPosY();
 
@@ -102,11 +102,4 @@ public class ContextualMenu extends BasePanel {
             _subMenu.setViewPortPosition(_initPosX + x, _initPosY + y);
         }
     }
-
-    @Override
-    protected void onCreate(ViewFactory factory) {
-        // TODO Auto-generated method stub
-
-    }
-
 }

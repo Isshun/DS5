@@ -17,7 +17,6 @@ public class LoadPage extends MainMenuPage {
         super(mainMenu, renderer, scene, "data/ui/menu/load.yml");
     }
 
-    @Override
     public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
         UIFrame frameSaves = (UIFrame)findById("frame_saves");
 

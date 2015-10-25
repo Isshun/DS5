@@ -4,10 +4,8 @@ import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.job.check.CheckCharacterOxygen;
-import org.smallbox.faraway.core.game.module.job.check.CheckCharacterUse;
-import org.smallbox.faraway.core.game.module.job.check.CheckJoyItem;
-import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterExhausted;
+import org.smallbox.faraway.core.game.module.job.check.*;
+import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterEnergyWarning;
 import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterHungry;
 import org.smallbox.faraway.core.game.module.job.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
@@ -34,8 +32,7 @@ public class JobModule extends GameModule {
     private List<CharacterCheck>        _priorities;
     private BlockingQueue<JobModel>     _jobs;
     private List<JobModel>              _toRemove;
-    private CharacterCheck              _bedCheck;
-    private int                         _nbVisibleJob;
+    private List<CharacterCheck>        _sleeps;
 
     @Override
     public void onLoaded() {
@@ -48,19 +45,22 @@ public class JobModule extends GameModule {
         _updateInterval = 10;
 
         _priorities = new ArrayList<>();
+        _priorities.add(new CheckCharacterEnergyCritical());
         _priorities.add(new CheckCharacterOxygen());
         _priorities.add(new CheckCharacterUse());
-        _priorities.add(new CheckCharacterExhausted());
+        _priorities.add(new CheckCharacterEnergyWarning());
         _priorities.add(new CheckCharacterHungry());
 //        _priorities.add(new CheckCharacterEntertainmentDepleted());
 
-        _bedCheck = new CheckCharacterExhausted();
 
         _joys = new ArrayList<>();
 //        _joys.add(new CheckEntertainmentTalk());
         _joys.add(new CheckJoyWalk());
         _joys.add(new CheckJoyItem());
 //        _joys.add(new CheckEntertainmentSleep());
+
+        _sleeps = new ArrayList<>();
+        _sleeps.add(new CheckCharacterTimetableSleep());
 
         printDebug("JobModule done");
     }
@@ -108,66 +108,63 @@ public class JobModule extends GameModule {
         int timetable = character.getTimetable().get(Game.getInstance().getHour());
 
         // Priority jobs
-        if (assignBestPriority(character) && character.getJob() != null) {
-            printDebug("assign priority job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
-            return;
+        JobModel job = getBestPriority(character);
+
+        // Sleep jobs (sleep time)
+        if (job == null && timetable == 1) {
+            job = getBestSleep(character, true);
         }
 
-        // Sleep time
-        if (timetable == 1) {
-            if (assignBestSleep(character)) {
-                printDebug("assign sleep job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
-                return;
-            }
+        // Entertainment jobs (auto time)
+        if (job == null && timetable == 0) {
+            job = getBestEntertainment(character, false);
         }
 
-        // Free and regular jobs
-        if (timetable == 0 || timetable == 3) {
-            // Check joy depleted
-            if (timetable == 0) {
-                if (assignBestEntertainment(character, false)) {
-                    printDebug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
-                    return;
-                }
-            }
-
-            if (assignBestRegular(character) && character.getJob() != null) {
-                printDebug("assign regular job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
-                return;
-            }
-
-            if (assignFailedJob(character) && character.getJob() != null) {
-                printDebug("assign failed job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
-                return;
-            }
+        // Regular jobs (auto and work time)
+        if (job == null && (timetable == 0 || timetable == 3)) {
+            job = getBestRegular(character);
         }
 
-        // Free time
+        // Failed jobs (auto and work time)
+        if (job == null && (timetable == 0 || timetable == 3)) {
+            job = getFailedJob(character);
+        }
+
+        // Entertainment jobs (free time)
         if (timetable == 2) {
-            if (assignBestEntertainment(character, true) && character.getJob() != null) {
-                printDebug("assign joy job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
-                return;
+            job = getBestEntertainment(character, true);
+        }
+
+        if (job != null) {
+            assign(character, job);
+        }
+    }
+
+    private JobModel getBestSleep(CharacterModel character, boolean force) {
+        for (CharacterCheck check: _sleeps) {
+            if ((force || check.need(character)) && check.check(character)) {
+                return check.create(character);
             }
+        }
+        return null;
+    }
+
+    private void assign(CharacterModel character, JobModel job) {
+        if (job != null) {
+            assignJob(character, job);
+            if (character.getJob() != job) {
+                printError("Fail to assign job");
+            } else {
+                printDebug("assign job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
+            }
+        } else {
+            printError("Try to assign null job");
         }
     }
 
     @Override
     public boolean isMandatory() {
         return true;
-    }
-
-    private boolean assignBestSleep(CharacterModel character) {
-        if (_bedCheck.check(character)) {
-            JobModel job = _bedCheck.create(character);
-            if (job != null) {
-                assignJob(character, job);
-                if (character.getJob() != job) {
-                    printError("Fail to assign job");
-                }
-                return true;
-            }
-        }
-        return false;
     }
 
     public void removeJob(JobModel job) {
@@ -189,19 +186,12 @@ public class JobModule extends GameModule {
         job.finish();
 
         _toRemove.add(job);
-        if (job.isVisibleInUI()) {
-            _nbVisibleJob--;
-        }
     }
 
     public void    addJob(JobModel job) {
         if (job == null || _jobs.contains(job)) {
             printError("Trying to add null or already existing job to JobModule");
             return;
-        }
-
-        if (job.isVisibleInUI()) {
-            _nbVisibleJob++;
         }
 
         printDebug("add job: " + job.getLabel());
@@ -221,22 +211,14 @@ public class JobModule extends GameModule {
      * @param character
      * @return
      */
-    private boolean assignBestEntertainment(CharacterModel character, boolean force) {
+    private JobModel getBestEntertainment(CharacterModel character, boolean force) {
         Collections.shuffle(_joys);
-        for (CharacterCheck jobCheck: _joys) {
-            if ((force || jobCheck.need(character)) && jobCheck.check(character)) {
-                JobModel job = jobCheck.create(character);
-                if (job != null) {
-                    assignJob(character, job);
-                    if (character.getJob() != job) {
-                        printError("Fail to assign job");
-                    }
-                    return true;
-                }
+        for (CharacterCheck check: _joys) {
+            if ((force || check.need(character)) && check.check(character)) {
+                return check.create(character);
             }
         }
-
-        return false;
+        return null;
     }
 
     /**
@@ -245,21 +227,13 @@ public class JobModule extends GameModule {
      * @param character
      * @return
      */
-    private boolean assignBestPriority(CharacterModel character) {
+    private JobModel getBestPriority(CharacterModel character) {
         for (CharacterCheck jobCheck: _priorities) {
             if (jobCheck.need(character) && jobCheck.check(character)) {
-                JobModel job = jobCheck.create(character);
-                if (job != null) {
-                    assignJob(character, job);
-                    if (character.getJob() != job) {
-                        printError("Fail to assign job");
-                    }
-                    return true;
-                }
+                return jobCheck.create(character);
             }
         }
-
-        return false;
+        return null;
     }
 
     /**
@@ -268,7 +242,7 @@ public class JobModule extends GameModule {
      * @param character
      */
     // TODO: one pass + onCheck profession
-    private boolean assignBestRegular(CharacterModel character) {
+    private JobModel getBestRegular(CharacterModel character) {
         int x = character.getX();
         int y = character.getY();
         int bestDistance = Integer.MAX_VALUE;
@@ -285,17 +259,9 @@ public class JobModule extends GameModule {
                     }
                 }
             }
-            // Job found for current talent
-            if (bestJob != null) {
-                assignJob(character, bestJob);
-                if (character.getJob() != bestJob) {
-                    printError("Fail to assign job");
-                }
-                return true;
-            }
         }
 
-        return false;
+        return bestJob;
     }
 
     /**
@@ -315,7 +281,7 @@ public class JobModule extends GameModule {
      * @param character
      * @return
      */
-    private boolean assignFailedJob(CharacterModel character) {
+    private JobModel getFailedJob(CharacterModel character) {
         int x = character.getX();
         int y = character.getY();
         int bestDistance = Integer.MAX_VALUE;
@@ -335,13 +301,7 @@ public class JobModule extends GameModule {
             }
         }
 
-        // Job found
-        if (bestJob != null) {
-            assignJob(character, bestJob);
-            return true;
-        }
-
-        return false;
+        return bestJob;
     }
 
     public void addJob(JobModel job, CharacterModel character) {

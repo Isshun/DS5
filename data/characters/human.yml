@@ -31,7 +31,7 @@ needs:
         critical: 5
         change:
             wake: -0.1
-            sleep: 0.22
+            sleep: 0.32
 
     joy:
         warning: 25

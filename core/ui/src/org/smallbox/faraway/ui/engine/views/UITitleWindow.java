@@ -1,7 +1,6 @@
 package org.smallbox.faraway.ui.engine.views;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.ui.engine.LayoutFactory;
 
 /**
  * Created by Alex on 13/07/2015.
@@ -20,25 +19,25 @@ public abstract class UITitleWindow extends UIWindow {
         final String mainLayout = title != null ? "data/ui/base/floating_title_window.yml" : "data/ui/base/floating_window.yml";
         final String contentLayout = getContentLayout();
         _isMovable = isMovable();
-        LayoutFactory.load(mainLayout, this, (l1, p1) -> {
-            _frameMain = p1;
-
-            if (title != null) {
-                _lbClose = (UILabel) findById("lb_close");
-                _lbClose.setVisible(isClosable());
-                if (isClosable()) {
-                    _lbClose.setOnClickListener(view -> onClose());
-                }
-                _lbTitle = (UILabel) findById("lb_title");
-                _lbTitle.setText(" " + title);
-            }
-
-            _frameContent = (UIFrame) findById("frame_content");
-
-            if (contentLayout != null) {
-                LayoutFactory.load("data/ui/" + contentLayout, _frameContent, null);
-            }
-        });
+//        LayoutFactory.load(mainLayout, this, (l1, p1) -> {
+//            _frameMain = p1;
+//
+//            if (title != null) {
+//                _lbClose = (UILabel) findById("lb_close");
+//                _lbClose.setVisible(isClosable());
+//                if (isClosable()) {
+//                    _lbClose.setOnClickListener(view -> onClose());
+//                }
+//                _lbTitle = (UILabel) findById("lb_title");
+//                _lbTitle.setText(" " + title);
+//            }
+//
+//            _frameContent = (UIFrame) findById("frame_content");
+//
+//            if (contentLayout != null) {
+//                LayoutFactory.load("data/ui/" + contentLayout, _frameContent, null);
+//            }
+//        });
     }
 
     public void create() {

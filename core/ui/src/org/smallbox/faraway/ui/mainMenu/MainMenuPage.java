@@ -1,34 +1,31 @@
 package org.smallbox.faraway.ui.mainMenu;
 
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.LayoutFactory;
 import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.views.UIFrame;
 import org.smallbox.faraway.ui.engine.views.UIImage;
-import org.smallbox.faraway.ui.panel.BasePanel;
-import org.smallbox.faraway.core.util.Constant;
 
 /**
  * Created by Alex on 02/06/2015.
  */
-public class MainMenuPage extends BasePanel {
+public class MainMenuPage extends UIFrame {
     protected final MainMenu.Scene  _scene;
     protected final MainMenu        _mainMenu;
     protected final GDXRenderer     _renderer;
 
     public MainMenuPage(MainMenu mainMenu, GDXRenderer renderer, MainMenu.Scene scene, String layoutPath) {
-        super(null, null, 0, 0, renderer.getWidth(), renderer.getHeight(), layoutPath);
+        super(renderer.getWidth(), renderer.getHeight());
         setPosition((renderer.getWidth() - Constant.BASE_WIDTH) / 2, (renderer.getHeight() - Constant.BASE_HEIGHT) / 2);
         _scene = scene;
         _mainMenu = mainMenu;
         _renderer = renderer;
     }
 
-    @Override
-    public void init(ViewFactory viewFactory, LayoutFactory layoutFactory, UserInterface ui, UserInteraction interaction) {
-        super.init(viewFactory, layoutFactory, ui, interaction);
-
+    public void init(ViewFactory viewFactory, UserInterface ui, UserInteraction interaction) {
         int width = 1920;
         int height = 1080;
         UIImage imageView = viewFactory.createImageView();
@@ -44,8 +41,10 @@ public class MainMenuPage extends BasePanel {
         return _scene;
     }
 
-    @Override
     public void open() {
-        onOpen();
+    }
+
+    public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
+        return false;
     }
 }

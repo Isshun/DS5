@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class Game {
+public class Game extends BaseGame {
     private static Game                     _self;
     private final String                    _fileName;
     private final LuaModuleManager          _luaModuleManager;
@@ -36,10 +36,10 @@ public class Game {
     private int                             _day;
     private int                             _year;
     private GameInfo                        _info = new GameInfo();
+    private boolean[]                       _directions = new boolean[4];
 
     private static int                      _tick;
     private Viewport                         _viewport;
-    private boolean                         _isRunning;
     private List<GameModule.EventListener>  _eventListeners = new ArrayList<>();
 
     public void                             toggleRunning() { _isRunning = !_isRunning; }
@@ -103,7 +103,8 @@ public class Game {
         notify(GameObserver::onReloadUI);
     }
 
-    public void onUpdate(int tick) {
+    @Override
+    protected void onUpdate(int tick) {
         if (!_isRunning) {
             return;
         }
@@ -127,6 +128,14 @@ public class Game {
         }
 
         _tick = tick;
+    }
+
+    @Override
+    protected void onRender(int frame) {
+        if (_directions[0]) { _viewport.move(20, 0); }
+        if (_directions[1]) { _viewport.move(0, 20); }
+        if (_directions[2]) { _viewport.move(-20, 0); }
+        if (_directions[3]) { _viewport.move(0, -20); }
     }
 
     public void    load() {
@@ -157,6 +166,9 @@ public class Game {
         // TODO magic
     }
 
+    public void setInputDirection(boolean[] directions) {
+        _directions = directions;
+    }
 
     public GameInfo getInfo() { return _info; }
 

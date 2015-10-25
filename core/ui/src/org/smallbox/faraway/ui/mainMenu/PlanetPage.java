@@ -29,12 +29,10 @@ public class PlanetPage extends MainMenuPage {
         super(mainMenu, renderer, scene, "data/ui/menu/planet_list.yml");
     }
 
-    @Override
     public void onCreate(ViewFactory viewFactory) {
         _viewFactory = viewFactory;
     }
 
-    @Override
     public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
         UIFrame framePlanetList = (UIFrame) findById("frame_planet_list");
         framePlanetList.removeAllViews();

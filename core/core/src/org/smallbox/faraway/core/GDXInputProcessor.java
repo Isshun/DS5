@@ -2,6 +2,7 @@ package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.InputProcessor;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.util.Constant;
 
 import static com.badlogic.gdx.Input.Buttons;
@@ -253,7 +254,11 @@ public class GDXInputProcessor implements InputProcessor {
     @Override
     public boolean touchDragged(int x, int y, int pointer) {
         if (_lastMouseButton == Buttons.RIGHT) {
-            _application.onDrag(x, y);
+            if (GameManager.getInstance().isRunning()) {
+                GameManager.getInstance().getGame().getViewport().update(x, y);
+                return true;
+            }
+            return false;
         } else {
             _application.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
         }

@@ -31,6 +31,10 @@ public class MainRenderer {
         }
     }
 
+    public void onUpdate() {
+        _renders.stream().filter(BaseRenderer::isLoaded).forEach(render -> render.update());
+    }
+
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         long time = System.currentTimeMillis();
 

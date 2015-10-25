@@ -22,18 +22,42 @@ function setCategory(view, category)
 end
 
 data:extend({
-    type = "view",
-    name = "ui-test",
+    type = "list",
+    id = "info_area",
     position = {1200, 65},
     size = {400, 800},
     background = 0x121c1e,
     visible = false,
-    views =
-    {
+    views = {
         { type = "label", id = "lb_name", text = "name", text_size = 28, padding = 10, size = {100, 40}},
+        { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {100, 40}, on_click = function()
+            game.events:send("encyclopedia.open_area", g_area)
+        end},
+        { type = "grid", position = {10, 10}, columns = 2, column_width = 190, row_height = 60, views = {
+            { type = "label", id = "bt_inventory", text = "Content", text_size = 20, padding = 18, background = 0x4be7da, size = {180, 50},
+                on_click = function()
+                    game.ui:findById("info_area"):findById("bt_inventory"):setBackgroundColor(0x4be7da);
+                    game.ui:findById("info_area"):findById("bt_rules"):setBackgroundColor(0x689999);
+                    game.ui:findById("info_area"):findById("frame_inventory"):setVisible(true);
+                    game.ui:findById("info_area"):findById("frame_rules"):setVisible(false);
+                end},
+            { type = "label", id = "bt_rules", text = "Rules", text_size = 20, padding = 18, background = 0x689999, size = {180, 50},
+                on_click = function()
+                    game.ui:findById("info_area"):findById("bt_inventory"):setBackgroundColor(0x689999);
+                    game.ui:findById("info_area"):findById("bt_rules"):setBackgroundColor(0x4be7da);
+                    game.ui:findById("info_area"):findById("frame_inventory"):setVisible(false);
+                    game.ui:findById("info_area"):findById("frame_rules"):setVisible(true);
+                end},
+        }},
         { type = "list", position = {0, 40}, views = {
             { type = "label", id = "lb_position", text_size = 18, padding = 10},
             { type = "label", id = "lb_quantity", text_size = 18, padding = 10},
+        }},
+        { type = "list", id = "frame_inventory", position = {0, 40}, views = {
+            { type = "label", text = "Inventory", text_size = 18, padding = 10},
+            { type = "list", id = "list_storage_content", position = {5, 75}},
+        }},
+        { type = "list", id = "frame_rules", visible = false, position = {0, 40}, views = {
             { type = "view", size = {400, 32}, views = {
                 { type = "label", text = "Priority", text_size = 18, padding = 10},
                 { type = "label", text = "[1]", id = "bt_priority_1", text_size = 18, padding = 10, size = {32, 32}, position = {230, 0}, on_click = function(v) setPriority(v, 1) end},
@@ -50,12 +74,7 @@ data:extend({
                 { type = "label", text = "food", text_size = 16, padding = 10, size = {88, 32}, background = 0x556644, on_click = function(view) setCategory(view, "food") end},
             }},
             { type = "grid", id = "grid_items", columns = 2, column_width = 190, row_height = 24, position = {5, 30}},
-            { type = "label", text = "storage_content", text_size = 22, padding = 10, position = {0, 60}},
-            { type = "list", id = "list_storage_content", position = {5, 75}},
         }},
-        { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {100, 40}, on_click = function()
-            game.events:send("encyclopedia.open_area", g_area)
-        end},
     },
 
     on_event =

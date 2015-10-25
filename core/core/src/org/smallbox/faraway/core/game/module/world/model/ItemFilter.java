@@ -2,21 +2,21 @@ package org.smallbox.faraway.core.game.module.world.model;
 
 
 public class ItemFilter {
-    public boolean     effectFood;
-    public boolean     effectDrink;
-    public boolean     effectEnergy;
-    public boolean     effectHappiness;
-    public boolean     effectRelation;
-    public boolean     effectHealth;
-    public boolean     effectEntertainment;
-    public boolean     lookingForFactory;
-    public boolean     lookingForItem;
-    public ItemInfo    itemMatched;
-    public ItemInfo itemNeeded;
-    public Boolean     needFreeSlot;
-    public boolean isFree;
-    public boolean needItem;
-    public boolean needConsumable;
+    public boolean      effectFood;
+    public boolean      effectDrink;
+    public boolean      effectEnergy;
+    public boolean      effectHappiness;
+    public boolean      effectRelation;
+    public boolean      effectHealth;
+    public boolean      effectEntertainment;
+    public boolean      lookingForFactory;
+    public boolean      lookingForItem;
+    public ItemInfo     itemMatched;
+    public ItemInfo     itemNeeded;
+    public Boolean      needFreeSlot;
+    public boolean      isFree;
+    public boolean      needItem;
+    public boolean      needConsumable;
 
     private ItemFilter(boolean isFactory, boolean isImmediate) {
         this.lookingForFactory = isFactory;
