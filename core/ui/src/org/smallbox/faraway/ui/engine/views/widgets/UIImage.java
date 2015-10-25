@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui.engine.views;
+package org.smallbox.faraway.ui.engine.views.widgets;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;

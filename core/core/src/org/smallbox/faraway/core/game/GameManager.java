@@ -5,11 +5,11 @@ import org.smallbox.faraway.core.data.factory.world.WorldFactory;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.core.module.java.ModuleManager;
-import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.core.game.module.world.WorldModule;
+import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.ui.UserInterface;
 
 /**
  * Created by Alex on 20/10/2015.

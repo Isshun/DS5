@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.module.lua.data.LuaExtend;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.views.UIFrame;
+import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
 
 /**
  * Created by Alex on 29/09/2015.

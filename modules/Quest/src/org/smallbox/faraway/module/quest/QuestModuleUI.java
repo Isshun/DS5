@@ -2,9 +2,8 @@ package org.smallbox.faraway.module.quest;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.module.java.ModuleManager;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.UIFrame;
-import org.smallbox.faraway.ui.engine.views.UILabel;
+import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 
 /**
  * Created by Alex on 30/08/2015.
@@ -19,7 +18,7 @@ public class QuestModuleUI {
 
         _panel.findById("frame_message").setVisible(false);
 
-        UILabel lbQuest = ViewFactory.getInstance().createTextView();
+        UILabel lbQuest = new UILabel();
         lbQuest.setText("quest");
         lbQuest.setTextSize(14);
         ((UIFrame)_panel.findById("frame_list")).addView(lbQuest);

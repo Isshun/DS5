@@ -1,0 +1,9 @@
+{
+  "id": "test",
+  "name": "Test Module",
+  "version": 0.1,
+  "type": "lua",
+  "required": [
+    {"module": "base", "min_version": 0.1}
+  ]
+}

@@ -1,10 +1,10 @@
 package org.smallbox.faraway.core.module.java;
 
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.ui.engine.views.UIFrame;
 import org.smallbox.faraway.ui.engine.views.UITitleWindow;
 import org.smallbox.faraway.ui.engine.views.UIWindow;
 import org.smallbox.faraway.ui.engine.views.UIWindowListener;
+import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
 
 /**
  * Created by Alex on 31/08/2015.

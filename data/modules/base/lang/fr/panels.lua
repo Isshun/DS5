@@ -5,7 +5,7 @@ data:extend({
         {"Item", "Objet"},
         {"Structure", "Structure"},
         {"Resource", "Ressource"},
-        {"Consumable", "Consomable"},
+        {"Consumable", "Consommable"},
         {"Character", "Personnage"},
 
         -- Character info
@@ -20,7 +20,7 @@ data:extend({
         {"Sleep in bed", "Dors dans un lit"},
 
         -- Tabs
-        {"Status", "Status"},
+        {"Status", "Statut"},
         {"Inventory", "Inventaire"},
         {"Info", "Info"},
         {"Health", "Santé"},
@@ -62,7 +62,7 @@ data:extend({
         {"exceptional", "exceptionnelle"},
 
         {"Receipt", "Recette"},
-        {"Crafter", "Artisant"},
+        {"Crafter", "Artisan"},
         {"Missing components", "Ingrédients manquants"},
         {"Current", "En cours"},
         {"Waiting", "En attente"},

@@ -3,13 +3,13 @@ package org.smallbox.faraway.core.game.module.area;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.area.model.*;
+import org.smallbox.faraway.core.game.module.job.model.StoreJob;
+import org.smallbox.faraway.core.game.module.path.PathManager;
+import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.job.model.StoreJob;
 import org.smallbox.faraway.core.module.GameModule;
-import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.util.Utils;
 
 import java.util.ArrayList;

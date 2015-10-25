@@ -1,11 +1,9 @@
 package org.smallbox.faraway.ui.engine;
 
-import org.smallbox.faraway.ui.engine.views.View;
+import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.HashMap;
 import java.util.Map;
-
-
 
 public class UIEventManager {
     private static UIEventManager         _self;

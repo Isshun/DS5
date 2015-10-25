@@ -3,9 +3,9 @@ package org.smallbox.faraway.core.game.module.world.model;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.job.model.BuildJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
-import org.smallbox.faraway.core.game.module.job.model.BuildJob;
 
 import java.util.ArrayList;
 import java.util.List;

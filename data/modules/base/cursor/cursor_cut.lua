@@ -1,6 +1,6 @@
 data:extend({
     type = "cursor",
-    id = "base.cut_cursor",
+    id = "base.cursor.cut",
     default = { color = 0x88ff0088 },
     odd = { color = 0x33ff8833 },
     eden = { color = 0x3388ff33 },

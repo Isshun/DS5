@@ -7,7 +7,8 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.ui.engine.UIEventManager;
-import org.smallbox.faraway.ui.engine.views.*;
+import org.smallbox.faraway.ui.engine.views.UIAdapter;
+import org.smallbox.faraway.ui.engine.views.widgets.*;
 
 import java.util.Collection;
 

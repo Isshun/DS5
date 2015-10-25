@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui.engine.views;
+package org.smallbox.faraway.ui.engine.views.widgets;
 
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 

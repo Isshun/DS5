@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.module.lua.DataExtendException;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.util.Constant;
 
 import java.util.ArrayList;
 import java.util.HashMap;

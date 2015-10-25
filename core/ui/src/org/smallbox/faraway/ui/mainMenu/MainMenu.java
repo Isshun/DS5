@@ -9,13 +9,11 @@ import org.smallbox.faraway.core.game.model.planet.LandingSiteModel;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.ui.engine.UIEventManager;
-import org.smallbox.faraway.ui.engine.ViewFactory;
 
 /**
  * Created by Alex on 02/06/2015.
  */
 public class MainMenu {
-    private final ViewFactory   _viewFactory;
     private MainMenuPage        _currentScene;
     private MainMenuPage[]      _scenes;
     private int                 _refresh;
@@ -53,8 +51,7 @@ public class MainMenu {
 
     public enum Scene {HOME, PLANETS, LAND_SITE, LOAD, TEAM}
 
-    public MainMenu(ViewFactory viewFactory, GDXRenderer renderer) {
-        _viewFactory = viewFactory;
+    public MainMenu(GDXRenderer renderer) {
         _scenes = new MainMenuPage[] {
                 new HomePage(this, renderer, Scene.HOME),
                 new LoadPage(this, renderer, Scene.LOAD),
@@ -64,7 +61,7 @@ public class MainMenu {
         };
         _currentScene = _scenes[0];
         for (MainMenuPage scene: _scenes) {
-            scene.init(viewFactory, null, null);
+            scene.init(null, null);
         }
     }
 
@@ -95,7 +92,7 @@ public class MainMenu {
     private void reload() {
         for (MainMenuPage scene: _scenes) {
             scene.removeAllViews();
-            scene.init(_viewFactory, null, null);
+            scene.init(null, null);
 //            scene.refresh(0);
         }
     }

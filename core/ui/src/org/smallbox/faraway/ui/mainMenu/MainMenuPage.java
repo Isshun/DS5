@@ -5,9 +5,8 @@ import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.UIFrame;
-import org.smallbox.faraway.ui.engine.views.UIImage;
+import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.ui.engine.views.widgets.UIImage;
 
 /**
  * Created by Alex on 02/06/2015.
@@ -25,10 +24,10 @@ public class MainMenuPage extends UIFrame {
         _renderer = renderer;
     }
 
-    public void init(ViewFactory viewFactory, UserInterface ui, UserInteraction interaction) {
+    public void init(UserInterface ui, UserInteraction interaction) {
         int width = 1920;
         int height = 1080;
-        UIImage imageView = viewFactory.createImageView();
+        UIImage imageView = new UIImage(width, height);
         imageView.setImage("data/planets/background.jpg");
         imageView.setPosition(-_x, -_y);
         imageView.setSize(width, height);

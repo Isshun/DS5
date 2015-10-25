@@ -1,12 +1,11 @@
 package org.smallbox.faraway.core.game.helper;
 
-import org.smallbox.faraway.core.game.module.job.model.CutJob;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.job.model.*;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ResourceModel;
-import org.smallbox.faraway.core.game.module.job.model.*;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
 

@@ -1,8 +1,8 @@
 package org.smallbox.faraway.ui.engine;
 
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.ui.engine.views.UIFrame;
-import org.smallbox.faraway.ui.engine.views.UILabel;
+import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 
 public class UIMessage {
     public int                 posX;
@@ -17,7 +17,7 @@ public class UIMessage {
         this.posY = posY;
         this.frame = 100;
 
-        this.text = ViewFactory.getInstance().createTextView();
+        this.text = new UILabel();
         this.text.setTextSize(14);
         this.text.setTextColor(Color.WHITE);
         this.text.setText(str);

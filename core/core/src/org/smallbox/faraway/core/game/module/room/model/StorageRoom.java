@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.game.model.room;
 //
 //import org.smallbox.faraway.ui.engine.OnClickListener;
-//import org.smallbox.faraway.ui.engine.views.View;
+//import org.smallbox.faraway.ui.engine.views.widgets.View;
 //import org.smallbox.faraway.util.Constant;
 //import org.smallbox.faraway.util.Log;
 //import org.smallbox.faraway.util.StringUtils;

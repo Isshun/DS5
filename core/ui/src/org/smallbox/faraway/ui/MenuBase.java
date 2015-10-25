@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.ui.engine.views.View;
+import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,11 +7,10 @@ import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
-import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.UILabel;
-import org.smallbox.faraway.ui.engine.views.View;
 import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 public class DebugRenderer extends BaseRenderer {
 
@@ -21,7 +20,7 @@ public class DebugRenderer extends BaseRenderer {
 
     @Override
     public void onRefresh(int frame) {
-//        UILabel lbDebug = ViewFactory.getInstance().createTextView();
+//        UILabel lbDebug = new UILabel();
 //        lbDebug.setTextSize(12);
 //
 //        _cache.begin();
@@ -45,7 +44,7 @@ public class DebugRenderer extends BaseRenderer {
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-        UILabel lbDebug = ViewFactory.getInstance().createTextView();
+        UILabel lbDebug = new UILabel();
         lbDebug.setTextSize(14);
         lbDebug.setTextColor(Color.WHITE);
         lbDebug.setPosition(0, 0);

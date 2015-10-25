@@ -1,6 +1,6 @@
 data:extend({
     type = "cursor",
-    id = "base.destroy_cursor",
+    id = "base.cursor.destroy",
     default = { color = 0x88ff5555 },
     odd = { color = 0x33999999 },
     eden = { color = 0x33555555 },

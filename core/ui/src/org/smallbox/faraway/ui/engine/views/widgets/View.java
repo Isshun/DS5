@@ -1,4 +1,4 @@
-package org.smallbox.faraway.ui.engine.views;
+package org.smallbox.faraway.ui.engine.views.widgets;
 
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
+import org.smallbox.faraway.ui.engine.views.UIAdapter;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public abstract class View {
     protected int       _finalY;
     private int         _marginTop;
     private int         _marginLeft;
-    private UIAdapter   _adapter;
+    private UIAdapter _adapter;
     private int         _objectId;
     private LuaModule   _module;
     protected int       _hash;
@@ -207,6 +208,7 @@ public abstract class View {
         UIEventManager.getInstance().setOnClickListener(this, onClickListener);
     }
 
+    // TODO: crash in lua throw on main thread
     public void setOnClickListener(LuaValue value) {
         _onClickListener = new OnClickListener() {
             @Override

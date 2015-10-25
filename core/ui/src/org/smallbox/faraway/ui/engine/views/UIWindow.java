@@ -2,7 +2,8 @@ package org.smallbox.faraway.ui.engine.views;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.ui.engine.OnClickListener;
-import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 
 /**
  * Created by Alex on 31/08/2015.
@@ -51,7 +52,7 @@ public abstract class UIWindow extends UIFrame {
     }
 
     protected void addDebugView(UIFrame frame, String text, OnClickListener clickListener) {
-        UILabel lbCommand = ViewFactory.getInstance().createTextView();
+        UILabel lbCommand = new UILabel();
         lbCommand.setText(text);
         lbCommand.setTextSize(14);
         lbCommand.setPosition(6, 38 + 20 * _debugIndex++);

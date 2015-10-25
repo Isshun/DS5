@@ -3,7 +3,6 @@ package org.smallbox.faraway.core.engine.drawable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 
 /**
  * Created by Alex on 15/07/2015.

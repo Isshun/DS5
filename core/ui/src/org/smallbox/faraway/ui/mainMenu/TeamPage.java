@@ -3,8 +3,8 @@ package org.smallbox.faraway.ui.mainMenu;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.LayoutModel;
-import org.smallbox.faraway.ui.engine.views.UIFrame;
-import org.smallbox.faraway.ui.engine.views.UILabel;
+import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 
 /**
  * Created by Alex on 02/06/2015.

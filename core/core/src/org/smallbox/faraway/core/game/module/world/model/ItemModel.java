@@ -1,9 +1,7 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
-import org.smallbox.faraway.core.game.module.job.SleepJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

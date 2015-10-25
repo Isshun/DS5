@@ -1,7 +1,5 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
-import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
-
 import java.util.List;
 
 /**

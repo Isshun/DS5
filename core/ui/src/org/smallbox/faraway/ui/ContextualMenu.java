@@ -5,10 +5,9 @@ import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.UILabel;
-import org.smallbox.faraway.ui.engine.views.UIList;
-import org.smallbox.faraway.ui.engine.views.View;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ public class ContextualMenu extends UIList {
     }
     
     public void addEntry(String label, OnClickListener listener, final OnFocusListener onFocusListener) {
-        final UILabel text = ViewFactory.getInstance().createTextView(ENTRY_WIDTH, ENTRY_HEIGHT);
+        final UILabel text = new UILabel(ENTRY_WIDTH, ENTRY_HEIGHT);
         text.setText(label);
         text.setTextSize(12);
         text.setPadding(2, 4);

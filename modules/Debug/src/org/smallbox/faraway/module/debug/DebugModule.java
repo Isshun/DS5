@@ -1,9 +1,6 @@
 package org.smallbox.faraway.module.debug;
 
-import org.smallbox.faraway.core.module.GameModule;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.data.factory.world.WorldFactory;
-import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
@@ -12,19 +9,21 @@ import org.smallbox.faraway.core.game.module.character.model.AndroidModel;
 import org.smallbox.faraway.core.game.module.character.model.DroidModel;
 import org.smallbox.faraway.core.game.module.character.model.HumanModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemModel;
-import org.smallbox.faraway.core.game.module.room.RoomModule;
+import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.module.quest.QuestModule;
-import org.smallbox.faraway.ui.engine.views.UIList;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.OnClickListener;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.UIFrame;
-import org.smallbox.faraway.ui.engine.views.UILabel;
-import org.smallbox.faraway.ui.engine.views.View;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -132,7 +131,7 @@ public class DebugModule extends GameModule {
     private void openFrame(Collection<CommandEntry> commands) {
         _listCommands.removeAllViews();
         for (CommandEntry entry : commands) {
-            UILabel lbCommand = ViewFactory.getInstance().createTextView(100, 26);
+            UILabel lbCommand = new UILabel(100, 26);
             lbCommand.setTextSize(14);
             lbCommand.setTextAlign(View.Align.CENTER_VERTICAL);
             lbCommand.setOnClickListener(entry.listener);

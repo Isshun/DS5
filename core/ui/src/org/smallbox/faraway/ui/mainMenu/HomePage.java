@@ -5,9 +5,8 @@ import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.OnClickListener;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.UIFrame;
-import org.smallbox.faraway.ui.engine.views.UILabel;
+import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 
 /**
  * Created by Alex on 02/06/2015.
@@ -40,7 +39,7 @@ public class HomePage extends MainMenuPage {
 
         int index = 0;
         for (DebugEntry entry: DEBUG_ENTRIES) {
-            UILabel lbEntry = ViewFactory.getInstance().createTextView(200, 36);
+            UILabel lbEntry = new UILabel(200, 36);
             lbEntry.setText(entry.label);
             lbEntry.setTextSize(18);
             lbEntry.setPosition(500, 100 + index * 36);

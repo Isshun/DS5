@@ -13,7 +13,7 @@ data:extend({
                 { type = "label", text = "Arrakis / Desert", text_size = 16, position = {220, 0}},
             }},
             { type = "image", src = "data/graphics/fake_map.png", position = {10, 0}, size = {380, 240}},
-            { type = "grid", position = {10, 16}, columns = 2, column_width = 195, row_height = 60, views = {
+            { type = "grid", id = "main_grid", position = {10, 16}, columns = 2, column_width = 195, row_height = 60, views = {
                 { type = "label", size = {180, 40}, background = 0x349394, text = "Build", text_size = 18, padding = 10, shortcut = "open_build_panel", on_click = function(view)
                     game.ui:findById("panel_main"):setVisible(false)
                     game.ui:findById("panel_build"):setVisible(true)

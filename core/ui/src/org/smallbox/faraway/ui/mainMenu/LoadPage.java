@@ -3,9 +3,8 @@ package org.smallbox.faraway.ui.mainMenu;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.LayoutModel;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.UIFrame;
-import org.smallbox.faraway.ui.engine.views.UILabel;
+import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 
 import java.io.File;
 
@@ -23,7 +22,7 @@ public class LoadPage extends MainMenuPage {
         int index = 0;
         for (File saveFile: new File("data/saves/").listFiles()) {
             if (saveFile.getName().endsWith(".sav")) {
-                UILabel lbSave = ViewFactory.getInstance().createTextView(200, 30);
+                UILabel lbSave = new UILabel(200, 30);
                 lbSave.setTextSize(16);
                 lbSave.setText(saveFile.getName());
                 lbSave.setPosition(0, 30 * index++);

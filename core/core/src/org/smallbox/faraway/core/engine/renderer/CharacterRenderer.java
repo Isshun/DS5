@@ -6,8 +6,8 @@ import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.job.model.ConsumeJob;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 
 import java.util.ArrayList;
@@ -51,11 +51,17 @@ public class CharacterRenderer extends BaseRenderer {
                 if (c.isAlive()) {
                     int offset = 0;
                     if (move != Direction.NONE) {
-//                    offset = (int) ((c.getMoveProgress() + (c.getMoveStep() * animProgress)) * Constant.TILE_WIDTH);
-//                    if ("rhea".equals(c.getInfo().getFirstName().toLowerCase().trim())) {
-//                        Log.notice("offset: " + offset);
-//                    }
-//                offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
+//                    offset = (int) ((-c.getMoveProgress() + (c.getMoveStep() * animProgress)) * Constant.TILE_WIDTH);
+                        offset = -(int)(((c.getMoveStep() * (1-animProgress))) * Constant.TILE_WIDTH);
+//                        if (animProgress > 1) {
+//                            offset += Constant.TILE_WIDTH;
+//                        }
+                        if ("paige".equals(c.getInfo().getFirstName().toLowerCase().trim())) {
+//                            System.out.println("offset: " + c.getMoveProgress());
+//                            System.out.println("offset: " + offset + ", animProgress: " + animProgress);
+                            System.out.println("animProgress: " + animProgress);
+                        }
+//                        offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
                         frame = c.getFrameIndex() / 20 % 4;
                     }
 

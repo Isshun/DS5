@@ -1,6 +1,7 @@
 package org.smallbox.faraway.ui.engine.views;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 
 /**
  * Created by Alex on 13/07/2015.
@@ -9,7 +10,7 @@ public abstract class UITitleWindow extends UIWindow {
 //    private UIFrame             _frameContent;
     private final boolean           _isMovable;
     private UILabel                 _lbClose;
-    private UILabel                 _lbTitle;
+    private UILabel _lbTitle;
     private boolean                 _isMoving;
     private int                     _movingOffsetX;
     private int                     _movingOffsetY;

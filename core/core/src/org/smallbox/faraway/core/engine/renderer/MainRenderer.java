@@ -10,13 +10,13 @@ import org.smallbox.faraway.core.module.java.ModuleManager;
 import java.util.List;
 
 public class MainRenderer {
-    private static MainRenderer             _self;
-    private static long                     _renderTime;
-    private static int                         _frame;
-    private final List<BaseRenderer>        _renders;
-    private SpriteManager                     _spriteManager;
-    private CharacterRenderer                 _characterRenderer;
-    private WorldRenderer                     _worldRenderer;
+    private static MainRenderer         _self;
+    private static long                 _renderTime;
+    private static int                  _frame;
+    private final List<BaseRenderer>    _renders;
+    private SpriteManager               _spriteManager;
+    private CharacterRenderer           _characterRenderer;
+    private WorldRenderer               _worldRenderer;
 
     public MainRenderer(GDXRenderer renderer, GameConfig config) {
         _self = this;

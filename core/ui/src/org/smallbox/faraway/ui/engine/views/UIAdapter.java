@@ -1,6 +1,7 @@
 package org.smallbox.faraway.ui.engine.views;
 
 import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.Collection;
 

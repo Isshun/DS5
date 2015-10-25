@@ -3,15 +3,13 @@ data:extend({
     lang = "fr",
     strings = {
         {"Raw meat", "Viande crue"},
-        {"Insect meat", "Insect crue"},
+        {"Insect meat", "Insècte crue"},
         {"Vegetable", "Légume"},
         {"Seaweed", "Algue"},
         {"Seafood", "Fruit de mer"},
-        {"Wood log", "Buche"},
+        {"Wood log", "Bûche"},
 
-        {"Desert laitue", "Laitue du desert"},
-
-        {"Carrot", "Carrotte"},
+        {"Carrot", "Carotte"},
         {"Potato", "Pomme de terre"},
         {"Rice", "Riz"},
         {"Wheat", "Blé"},
@@ -22,11 +20,11 @@ data:extend({
         {"Sandstone rubble", "Gravats de grès"},
         {"Granite rubble", "Gravats de granite"},
 
-        {"Calcite brick", "Brick en calcite"},
-        {"Sandstone brick", "Brick en grès"},
-        {"Granite brick", "Brick en granite"},
+        {"Calcite brick", "Brique en calcite"},
+        {"Sandstone brick", "Brique en grès"},
+        {"Granite brick", "Brique en granite"},
 
-        {"Carbon fiber plate", "Plaque de fibre de carbon"},
+        {"Carbon fiber plate", "Plaque de fibre de carbone"},
         {"Copper plate", "Plaque de cuivre"},
         {"Iron plate", "Plaque de fer"},
 
@@ -35,11 +33,11 @@ data:extend({
 
         {"Easy meal", "Repas simple"},
         {"Great meal", "Bon repas"},
-        {"Lavish meal", "Repas copieu"},
+        {"Lavish meal", "Repas copieux"},
 
-        {"Human body", "Corp humain"},
+        {"Human body", "Corps humain"},
         {"Regular shirt", "T-Shirt standard"},
         {"Glasses", "Lunettes"},
-        {"Oxygen bottle", "Bouteille d'oxygen"},
+        {"Oxygen bottle", "Bouteille d'oxygène"},
     }
 })

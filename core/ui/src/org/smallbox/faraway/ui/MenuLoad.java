@@ -3,11 +3,10 @@ package org.smallbox.faraway.ui;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.UILabel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.OnLoadListener;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +30,7 @@ public class MenuLoad extends MenuBase {
         _lbFiles = new ArrayList<>();
         _nbFiles = 0;
         for (final File file: FileUtils.list("saves")) {
-            UILabel lbFile = ViewFactory.getInstance().createTextView(200, 32);
+            UILabel lbFile = new UILabel(200, 32);
             lbFile.setTextSize(16);
             lbFile.setText(file.getName());
             lbFile.setTextColor(Color.WHITE);

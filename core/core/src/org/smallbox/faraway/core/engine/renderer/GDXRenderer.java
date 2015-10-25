@@ -10,11 +10,11 @@ import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.core.GDXSpriteModel;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.SpriteModel;
+import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.util.Constant;
-import org.smallbox.faraway.ui.engine.views.View;
+import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 /**
  * Created by Alex on 04/06/2015.

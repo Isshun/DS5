@@ -12,10 +12,6 @@ import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ResourceModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.ui.cursor.AreaCursor;
-import org.smallbox.faraway.ui.cursor.GatherCursor;
-import org.smallbox.faraway.ui.cursor.MineCursor;
-import org.smallbox.faraway.ui.cursor.PickCursor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class UserInteraction {
@@ -261,22 +257,19 @@ public class UserInteraction {
         _selectedPlan = plan;
         switch (plan) {
             case "gather":
-                UserInterface.getInstance().setCursor(new GatherCursor());
+                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.gather"));
                 break;
             case "mining":
-                UserInterface.getInstance().setCursor(new MineCursor());
+                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.mine"));
                 break;
             case "cut":
-                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cut_cursor"));
+                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.cut"));
                 break;
             case "destroy":
-                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.destroy_cursor"));
-                break;
-            case "pick":
-                UserInterface.getInstance().setCursor(new PickCursor());
+                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.destroy"));
                 break;
             case "haul":
-                UserInterface.getInstance().setCursor(new PickCursor());
+                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.haul"));
                 break;
         }
     }
@@ -300,12 +293,12 @@ public class UserInteraction {
             case BUILD_ITEM:
                 break;
             case SET_AREA:
-                UserInterface.getInstance().setCursor(new AreaCursor());
+                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.area"));
                 break;
             case PUT_ITEM_FREE:
                 break;
             case REMOVE_AREA:
-                UserInterface.getInstance().setCursor(new AreaCursor());
+                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.area"));
                 break;
             case SET_PLAN:
                 break;

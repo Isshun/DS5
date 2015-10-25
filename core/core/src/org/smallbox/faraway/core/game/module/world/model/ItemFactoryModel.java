@@ -4,8 +4,8 @@ import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.PotentialConsumable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.job.model.CraftJob;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.module.path.PathManager;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Utils;
 
 import java.util.*;
@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
  */
 public class ItemFactoryModel {
     public static class OrderEntry {
-        public final ReceiptGroupInfo               receiptGroupInfo;
-        public int                                  mode;
-        public boolean                              isActive;
+        public final ReceiptGroupInfo   receiptGroupInfo;
+        public int                      mode;
+        public boolean                  isActive;
 
         public OrderEntry(ReceiptGroupInfo receiptGroupInfo) {
             this.receiptGroupInfo = receiptGroupInfo;
@@ -53,6 +53,8 @@ public class ItemFactoryModel {
     private List<ItemFactoryReceiptModel>   _receiptEntries;
     private List<FactoryComponentModel>     _components;
     private List<FactoryShoppingItemModel>  _shoppingList;
+    // TODO: file d'attente de sortie
+//    private List<FactoryShoppingItemModel>  _shoppingList;
     private final ItemInfo.ItemInfoFactory  _info;
     private ParcelModel                     _storageParcel;
     private String                          _message;
@@ -185,7 +187,7 @@ public class ItemFactoryModel {
         _job = null;
     }
 
-    // TODO: ne pas utiliser les consomables locké
+    // TODO: ne pas utiliser les consomables lockï¿½
     public void scan() {
         System.out.println("scan");
         long time = System.currentTimeMillis();

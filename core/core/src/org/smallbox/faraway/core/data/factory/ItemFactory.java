@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.data.factory;
 
-import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
+import org.smallbox.faraway.core.game.module.world.model.*;
 
 public class ItemFactory {
 

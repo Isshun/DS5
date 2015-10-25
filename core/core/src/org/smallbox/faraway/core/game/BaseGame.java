@@ -25,13 +25,15 @@ public abstract class BaseGame {
     // Render
     private int                     _frame;
     private int                     _renderTime;
+    private double                  animationProgress;
 
     public void update() {
         // Update
         if (_nextUpdate < System.currentTimeMillis()) {
             _nextUpdate = System.currentTimeMillis() + _tickInterval;
+            _tick += 1;
             MainRenderer.getInstance().onUpdate();
-            onUpdate(_tick++);
+            onUpdate(_tick);
         }
     }
 
@@ -41,7 +43,7 @@ public abstract class BaseGame {
         long time = System.currentTimeMillis();
 
         // Draw
-        double animationProgress = ((double) (System.currentTimeMillis() - _nextUpdate) / _tickInterval);
+        animationProgress = 1 - ((double)(_nextUpdate - System.currentTimeMillis()) / _tickInterval);
         renderer.clear(new Color(0, 0, 0));
         renderer.begin();
         MainRenderer.getInstance().onDraw(renderer, viewport, animationProgress);

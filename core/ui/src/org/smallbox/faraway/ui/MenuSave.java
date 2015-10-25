@@ -5,12 +5,9 @@ import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.ui.engine.OnClickListener;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.UIFrame;
-import org.smallbox.faraway.ui.engine.views.UILabel;
-import org.smallbox.faraway.ui.engine.views.View;
 import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,12 +27,12 @@ public class MenuSave extends MenuBase {
         super(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
         setBackgroundColor(new Color(0, 0, 0, 150));
 
-        _menu = ViewFactory.getInstance().createFrameLayout(FRAME_WIDTH, FRAME_HEIGHT);
+        _menu = new UIFrame(FRAME_WIDTH, FRAME_HEIGHT);
         _menu.setPosition(Constant.WINDOW_WIDTH / 2 - FRAME_WIDTH / 2, Constant.WINDOW_HEIGHT / 2 - FRAME_HEIGHT / 2);
         _menu.setBackgroundColor(new Color(200, 200, 200, 50));
         addView(_menu);
 
-        _textEntry = ViewFactory.getInstance().createTextView();
+        _textEntry = new UILabel();
         _textEntry.setPosition(0, 0);
         _textEntry.setTextSize(14);
         _menu.addView(_textEntry);
@@ -49,15 +46,12 @@ public class MenuSave extends MenuBase {
         _nbFiles = files.length;
         int i = 0;
         for (final File file: files) {
-            UILabel lbFile = ViewFactory.getInstance().createTextView(200, 32);
+            UILabel lbFile = new UILabel(200, 32);
             lbFile.setTextSize(16);
             lbFile.setText(file.getName());
             lbFile.setTextColor(Color.WHITE);
             lbFile.setPosition(200, 32 * i);
-            lbFile.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                }
+            lbFile.setOnClickListener(view -> {
             });
             _lbFiles.add(lbFile);
             _menu.addView(lbFile);

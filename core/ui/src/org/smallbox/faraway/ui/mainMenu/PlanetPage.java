@@ -4,13 +4,10 @@ import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
-import org.smallbox.faraway.ui.LayoutModel;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.UIFrame;
-import org.smallbox.faraway.ui.engine.views.UIImage;
-import org.smallbox.faraway.ui.engine.views.UILabel;
-import org.smallbox.faraway.ui.engine.views.View;
 import org.smallbox.faraway.core.util.StringUtils;
+import org.smallbox.faraway.ui.LayoutModel;
+import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 
 /**
  * Created by Alex on 02/06/2015.
@@ -23,14 +20,8 @@ public class PlanetPage extends MainMenuPage {
     private static final Color COLOR_1 = new Color(120, 255, 255);
     private static final Color COLOR_2 = new Color(120, 255, 255);
 
-    private ViewFactory _viewFactory;
-
     public PlanetPage(MainMenu mainMenu, GDXRenderer renderer, MainMenu.Scene scene) {
         super(mainMenu, renderer, scene, "data/ui/menu/planet_list.yml");
-    }
-
-    public void onCreate(ViewFactory viewFactory) {
-        _viewFactory = viewFactory;
     }
 
     public void onLayoutLoaded(LayoutModel layout, UIFrame panel) {
@@ -52,27 +43,27 @@ public class PlanetPage extends MainMenuPage {
     }
 
     private void addPlanetListView(UIFrame framePlanetList, PlanetInfo planet, int index) {
-        _viewFactory.load("data/ui/menu/planet_list_entry.yml", view -> {
-            view.findById("frame_background").setVisible(false);
-            ((UILabel)view.findById("lb_planet")).setText(planet.name);
-            ((UILabel)view.findById("lb_type")).setText(planet.type);
-
-            if (planet.image != null) {
-                ((UIImage) view.findById("img_planet")).setImage(planet.image.thumb);
-            }
-
-            view.setOnClickListener(v -> {
-                for (View v1: framePlanetList.getViews()) {
-                    v1.findById("frame_background").setVisible(false);
-                }
-                select(planet);
-                view.findById("frame_background").setVisible(true);
-            });
-            view.setSize(260, 120);
-            view.setPosition(20, 20 + index * 120);
-
-            framePlanetList.addView(view);
-        });
+//        _viewFactory.load("data/ui/menu/planet_list_entry.yml", view -> {
+//            view.findById("frame_background").setVisible(false);
+//            ((UILabel)view.findById("lb_planet")).setText(planet.name);
+//            ((UILabel)view.findById("lb_type")).setText(planet.type);
+//
+//            if (planet.image != null) {
+//                ((UIImage) view.findById("img_planet")).setImage(planet.image.thumb);
+//            }
+//
+//            view.setOnClickListener(v -> {
+//                for (View v1: framePlanetList.getViews()) {
+//                    v1.findById("frame_background").setVisible(false);
+//                }
+//                select(planet);
+//                view.findById("frame_background").setVisible(true);
+//            });
+//            view.setSize(260, 120);
+//            view.setPosition(20, 20 + index * 120);
+//
+//            framePlanetList.addView(view);
+//        });
     }
 
     private void select(PlanetInfo planet) {

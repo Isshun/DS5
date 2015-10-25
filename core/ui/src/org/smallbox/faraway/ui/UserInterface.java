@@ -15,11 +15,9 @@ import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.ui.cursor.BuildCursor;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
-import org.smallbox.faraway.ui.engine.ViewFactory;
-import org.smallbox.faraway.ui.engine.views.*;
+import org.smallbox.faraway.ui.engine.views.widgets.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +63,7 @@ public class UserInterface implements GameEventListener {
         _interaction = new UserInteraction();
         _selector = new UserInterfaceSelector(this);
         _selection = new UISelection();
-        _context = ViewFactory.getInstance().createFrameLayout();
+        _context = new UIFrame();
         _context.setVisible(false);
     }
 
@@ -82,9 +80,9 @@ public class UserInterface implements GameEventListener {
 
     // Used by lua modules
     public UILabel                  createLabel() { return new UILabel(); }
-    public UIImage                  createImage() { return new UIImage(-1, -1); }
+    public UIImage createImage() { return new UIImage(-1, -1); }
     public View                     createView() { return new UIFrame(-1, -1); }
-    public UIGrid                   createGrid() { return new UIGrid(-1, -1); }
+    public UIGrid createGrid() { return new UIGrid(-1, -1); }
     public UIList                   createList() { return new UIList(-1, -1); }
     public void                     clearSelection() { _selector.clean(); }
 
@@ -167,7 +165,7 @@ public class UserInterface implements GameEventListener {
 
     public void putDebug(ItemInfo itemInfo) {
         _interaction.set(UserInteraction.Action.PUT_ITEM_FREE, itemInfo);
-        setCursor(new BuildCursor());
+        setCursor(GameData.getData().getCursor("base.cursor.build"));
     }
 
     public void    onMouseMove(int x, int y, boolean rightPressed) {
@@ -343,7 +341,7 @@ public class UserInterface implements GameEventListener {
 
         int index = 0;
         for (ContextEntry entry: entries) {
-            UILabel lbEntry = ViewFactory.getInstance().createTextView(100, 20);
+            UILabel lbEntry = new UILabel(100, 20);
             lbEntry.setTextSize(14);
             lbEntry.setText(entry.label);
             lbEntry.setOnClickListener(entry.listener);

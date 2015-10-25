@@ -15,7 +15,6 @@ import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.ui.MenuBase;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.ViewFactory;
 import org.smallbox.faraway.ui.mainMenu.MainMenu;
 
 import java.util.concurrent.BlockingQueue;
@@ -46,7 +45,7 @@ public class Application implements GameEventListener {
     public boolean isRunning() { return _isRunning; }
 
     public void create(GDXRenderer renderer, LightRenderer lightRenderer, ParticleRenderer particleRenderer, GameData data, GameConfig config) {
-        _mainMenu = new MainMenu(ViewFactory.getInstance(), renderer);
+        _mainMenu = new MainMenu(renderer);
         _mainMenu.open();
     }
 

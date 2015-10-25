@@ -1,8 +1,9 @@
 package org.smallbox.faraway.core.game.module.character.model.base;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
-import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
+import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.CharacterTypeInfo;
@@ -11,22 +12,19 @@ import org.smallbox.faraway.core.game.module.character.model.BuffModel;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseModel;
 import org.smallbox.faraway.core.game.module.character.model.TimeTableModel;
 import org.smallbox.faraway.core.game.module.job.SleepJob;
+import org.smallbox.faraway.core.game.module.job.model.MoveJob;
+import org.smallbox.faraway.core.game.module.job.model.UseJob;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.path.PathManager;
+import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.job.model.MoveJob;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
-import org.smallbox.faraway.core.game.module.job.model.UseJob;
-import org.smallbox.faraway.core.game.module.room.model.RoomModel;
-import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
-import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.ui.engine.views.UILabel;
-import org.smallbox.faraway.ui.engine.views.View;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.MoveListener;
-import org.smallbox.faraway.ui.engine.ViewFactory;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +38,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public UILabel getLabelDrawable() {
         if (_label == null) {
-            _label = ViewFactory.getInstance().createTextView(_info.getFirstName().trim().length() * 6 + 1, 13);
+            _label = new UILabel(_info.getFirstName().trim().length() * 6 + 1, 13);
             _label.setText(_info.getFirstName().trim());
             _label.setTextSize(10);
             _label.setTextColor(Color.YELLOW);
@@ -386,12 +384,15 @@ public abstract class CharacterModel extends MovableModel {
             else if (y < _posY) setMove(Direction.TOP);
 
             // Increase move progress
+            if (_moveProgress >= 1) {
+                _moveProgress = 0;
+            }
             _moveStep = 1 * _stats.speed * (_job != null ? _job.getSpeedModifier() : 1);
             _moveProgress += _moveStep;
             if (_moveProgress < 1) {
                 return;
             }
-            _moveProgress = 0;
+            _moveProgress = 1;
             _moveStep = 1;
 
             _parcel = _node;

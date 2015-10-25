@@ -15,6 +15,7 @@ data:extend({
         { type = "list", position = {0, 60}, views = {
             { type = "label", id = "lb_durability", text = "lb_durability", text_size = 16, position = {10, 10}, size = {-1, 32}},
             { type = "label", id = "lb_walkable", text = "lb_walkable", text_size = 16, position = {10, 10}, size = {-1, 32}},
+            { type = "label", id = "lb_complete", text = "lb_complete", text_size = 16, position = {10, 10}, size = {-1, 32}},
             { type = "list", id = "frame_building", position = {0, 40}, views = {
                 { type = "label", text = "Building in progress", text_size = 22, padding = 10, size = {400, 26}},
                 { type = "label", id = "lb_building_progress", text_size = 14, padding = 10},
@@ -66,6 +67,7 @@ data:extend({
         if structure ~= nil then
             view:findById("lb_durability"):setText(structure:getHealth() .. "/" .. structure:getMaxHealth())
             view:findById("lb_walkable"):setText("Walkable: " .. (structure:getInfo().isWalkable and "yes" or "no"))
+            view:findById("lb_complete"):setText("Complete: " .. (structure:isComplete() and "yes" or "no"))
 
             view:findById("frame_building"):setVisible(not structure:isComplete())
             if not structure:isComplete() then

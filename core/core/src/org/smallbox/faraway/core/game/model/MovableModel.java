@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.game.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Utils;
 
